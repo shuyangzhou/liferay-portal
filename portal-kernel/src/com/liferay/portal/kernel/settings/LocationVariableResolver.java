@@ -27,11 +27,24 @@ import java.io.IOException;
  */
 public class LocationVariableResolver {
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #LocationVariableResolver(
+	 *			   ResourceManager, SettingsLocatorHelper)}
+	 */
+	@Deprecated
 	public LocationVariableResolver(
 		ResourceManager resourceManager, SettingsFactory settingsFactory) {
 
+		throw new UnsupportedOperationException();
+	}
+
+	public LocationVariableResolver(
+		ResourceManager resourceManager,
+		SettingsLocatorHelper settingsLocatorHelper) {
+
 		_resourceManager = resourceManager;
-		_settingsFactory = settingsFactory;
+		_settingsLocatorHelper = settingsLocatorHelper;
 	}
 
 	public boolean isLocationVariable(String value) {
@@ -122,13 +135,11 @@ public class LocationVariableResolver {
 				"Invalid server property location " + location);
 		}
 
-		String serviceName = location.substring(0, i);
+		Settings settings = _settingsLocatorHelper.getConfigurationBeanSettings(
+			location.substring(0, i),
+			_settingsLocatorHelper.getPortalPropertiesSettings());
 
-		Settings settings = _settingsFactory.getServerSettings(serviceName);
-
-		String property = location.substring(i + 1);
-
-		return settings.getValue(property, null);
+		return settings.getValue(location.substring(i + 1), null);
 	}
 
 	private static final String _LOCATION_VARIABLE_END = "}";
@@ -138,6 +149,6 @@ public class LocationVariableResolver {
 	private static final String _LOCATION_VARIABLE_START = "${";
 
 	private final ResourceManager _resourceManager;
-	private final SettingsFactory _settingsFactory;
+	private final SettingsLocatorHelper _settingsLocatorHelper;
 
 }

@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
 import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.settings.SettingsDescriptor;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
+import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -36,6 +36,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Tomas Polesovsky
@@ -70,7 +71,7 @@ public class PortalSettingsCASFormMVCActionCommand
 			return;
 		}
 
-		Settings settings = SettingsFactoryUtil.getSettings(
+		Settings settings = _settingsFactory.getSettings(
 			new CompanyServiceSettingsLocator(
 				themeDisplay.getCompanyId(), CASConstants.SERVICE_NAME));
 
@@ -78,8 +79,7 @@ public class PortalSettingsCASFormMVCActionCommand
 			settings.getModifiableSettings();
 
 		SettingsDescriptor settingsDescriptor =
-			SettingsFactoryUtil.getSettingsDescriptor(
-				CASConstants.SERVICE_NAME);
+			_settingsFactory.getSettingsDescriptor(CASConstants.SERVICE_NAME);
 
 		for (String name : settingsDescriptor.getAllKeys()) {
 			String value = ParamUtil.getString(actionRequest, "cas--" + name);
@@ -145,5 +145,8 @@ public class PortalSettingsCASFormMVCActionCommand
 			SessionErrors.add(actionRequest, "casNoSuchUserURLInvalid");
 		}
 	}
+
+	@Reference
+	private SettingsFactory _settingsFactory;
 
 }
