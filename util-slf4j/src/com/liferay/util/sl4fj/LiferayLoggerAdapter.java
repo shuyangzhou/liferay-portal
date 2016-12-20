@@ -213,17 +213,19 @@ public class LiferayLoggerAdapter
 		Marker marker, String fqcn, int level, String message,
 		Object[] arguments, Throwable t) {
 
+		// The cases are ordered by frequency and not alphabetically
+
 		switch (level) {
-			case LocationAwareLogger.DEBUG_INT:
-				if (isDebugEnabled()) {
-					_log.debug(_getMessage(message, arguments), t);
+			case LocationAwareLogger.TRACE_INT:
+				if (isTraceEnabled()) {
+					_log.trace(_getMessage(message, arguments), t);
 				}
 
 				break;
 
-			case LocationAwareLogger.ERROR_INT:
-				if (isErrorEnabled()) {
-					_log.error(_getMessage(message, arguments), t);
+			case LocationAwareLogger.DEBUG_INT:
+				if (isDebugEnabled()) {
+					_log.debug(_getMessage(message, arguments), t);
 				}
 
 				break;
@@ -235,16 +237,16 @@ public class LiferayLoggerAdapter
 
 				break;
 
-			case LocationAwareLogger.TRACE_INT:
-				if (isTraceEnabled()) {
-					_log.trace(_getMessage(message, arguments), t);
+			case LocationAwareLogger.WARN_INT:
+				if (isWarnEnabled()) {
+					_log.warn(_getMessage(message, arguments), t);
 				}
 
 				break;
 
-			case LocationAwareLogger.WARN_INT:
-				if (isWarnEnabled()) {
-					_log.warn(_getMessage(message, arguments), t);
+			case LocationAwareLogger.ERROR_INT:
+				if (isErrorEnabled()) {
+					_log.error(_getMessage(message, arguments), t);
 				}
 
 				break;
