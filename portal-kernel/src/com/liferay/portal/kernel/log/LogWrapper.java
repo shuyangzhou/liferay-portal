@@ -23,6 +23,15 @@ public class LogWrapper implements Log {
 		_log = log;
 	}
 
+	public void clearCache() {
+		_debugEnabled = null;
+		_errorEnabled = null;
+		_fatalEnabled = null;
+		_infoEnabled = null;
+		_traceEnabled = null;
+		_warnEnabled = null;
+	}
+
 	@Override
 	public void debug(Object msg) {
 		try {
@@ -149,36 +158,86 @@ public class LogWrapper implements Log {
 
 	@Override
 	public boolean isDebugEnabled() {
-		return _log.isDebugEnabled();
+		Boolean debugEnabled = _debugEnabled;
+
+		if (debugEnabled == null) {
+			debugEnabled = _log.isDebugEnabled();
+
+			_debugEnabled = debugEnabled;
+		}
+
+		return debugEnabled;
 	}
 
 	@Override
 	public boolean isErrorEnabled() {
-		return _log.isErrorEnabled();
+		Boolean errorEnabled = _errorEnabled;
+
+		if (errorEnabled == null) {
+			errorEnabled = _log.isErrorEnabled();
+
+			_errorEnabled = errorEnabled;
+		}
+
+		return errorEnabled;
 	}
 
 	@Override
 	public boolean isFatalEnabled() {
-		return _log.isFatalEnabled();
+		Boolean fatalEnabled = _fatalEnabled;
+
+		if (fatalEnabled == null) {
+			fatalEnabled = _log.isFatalEnabled();
+
+			_fatalEnabled = fatalEnabled;
+		}
+
+		return fatalEnabled;
 	}
 
 	@Override
 	public boolean isInfoEnabled() {
-		return _log.isInfoEnabled();
+		Boolean infoEnabled = _infoEnabled;
+
+		if (infoEnabled == null) {
+			infoEnabled = _log.isInfoEnabled();
+
+			_infoEnabled = infoEnabled;
+		}
+
+		return infoEnabled;
 	}
 
 	@Override
 	public boolean isTraceEnabled() {
-		return _log.isTraceEnabled();
+		Boolean traceEnabled = _traceEnabled;
+
+		if (traceEnabled == null) {
+			traceEnabled = _log.isTraceEnabled();
+
+			_traceEnabled = traceEnabled;
+		}
+
+		return traceEnabled;
 	}
 
 	@Override
 	public boolean isWarnEnabled() {
-		return _log.isWarnEnabled();
+		Boolean warnEnabled = _warnEnabled;
+
+		if (warnEnabled == null) {
+			warnEnabled = _log.isWarnEnabled();
+
+			_warnEnabled = warnEnabled;
+		}
+
+		return warnEnabled;
 	}
 
 	public void setLog(Log log) {
 		_log = log;
+
+		clearCache();
 	}
 
 	@Override
@@ -250,6 +309,12 @@ public class LogWrapper implements Log {
 		System.err.println(msg);
 	}
 
+	private volatile Boolean _debugEnabled;
+	private volatile Boolean _errorEnabled;
+	private volatile Boolean _fatalEnabled;
+	private volatile Boolean _infoEnabled;
 	private Log _log;
+	private volatile Boolean _traceEnabled;
+	private volatile Boolean _warnEnabled;
 
 }
