@@ -104,6 +104,15 @@ if (portletTitleBasedNavigation) {
 					<liferay-util:include page="/admin/common/article_social_bookmarks.jsp" servletContext="<%= application %>" />
 				</c:if>
 
+				<liferay-expando:custom-attributes-available className="<%= KBArticle.class.getName() %>">
+					<liferay-expando:custom-attribute-list
+						className="<%= KBArticle.class.getName() %>"
+						classPK="<%= kbArticle.getKbArticleId() %>"
+						editable="<%= false %>"
+						label="<%= true %>"
+					/>
+				</liferay-expando:custom-attributes-available>
+
 				<liferay-util:include page="/admin/common/article_assets.jsp" servletContext="<%= application %>" />
 
 				<c:if test="<%= showKBArticleAttachments %>">

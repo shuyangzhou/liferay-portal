@@ -137,7 +137,7 @@ List<AnnouncementsEntry> announcementsEntries = announcementsEntriesSearchContai
 
 				<liferay-ui:search-container-column-text
 					name="type"
-					value="<%= entry.getType() %>"
+					value="<%= LanguageUtil.get(resourceBundle, entry.getType()) %>"
 				/>
 
 				<liferay-ui:search-container-column-date
