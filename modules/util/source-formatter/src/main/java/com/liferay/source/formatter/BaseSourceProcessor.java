@@ -668,7 +668,8 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	protected void checkResourceUtil(
 		String line, String fileName, String absolutePath, int lineCount) {
 
-		if (!portalSource || fileName.endsWith("ResourceBundleUtil.java") ||
+		if ((!portalSource && !subrepository) ||
+			fileName.endsWith("ResourceBundleUtil.java") ||
 			isExcludedPath(RUN_OUTSIDE_PORTAL_EXCLUDES, absolutePath)) {
 
 			return;
@@ -764,7 +765,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	protected String fixCompatClassImports(String absolutePath, String content)
 		throws Exception {
 
-		if (portalSource || !_usePortalCompatImport ||
+		if (portalSource || subrepository || !_usePortalCompatImport ||
 			absolutePath.contains("/ext-") ||
 			absolutePath.contains("/portal-compat-shared/")) {
 
@@ -967,7 +968,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	protected String fixIncorrectParameterTypeForLanguageUtil(
 		String content, boolean autoFix, String fileName) {
 
-		if (portalSource) {
+		if (portalSource || subrepository) {
 			return content;
 		}
 
@@ -3005,6 +3006,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		"^(\".\"|StringPool\\.([A-Z_]+))$");
 	protected static Pattern stringUtilReplacePattern = Pattern.compile(
 		"StringUtil\\.(replace(First|Last)?)\\((.*?)\\);\n", Pattern.DOTALL);
+	protected static boolean subrepository;
 	protected static Pattern taglibSessionKeyPattern = Pattern.compile(
 		"<liferay-ui:error [^>]+>|<liferay-ui:success [^>]+>",
 		Pattern.MULTILINE);
@@ -3039,6 +3041,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 			_sourceFormatterHelper.init();
 
 			portalSource = _isPortalSource();
+			subrepository = _isSubrepository();
 
 			_sourceFormatterMessagesMap = new HashMap<>();
 		}
@@ -3067,8 +3070,10 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 			return true;
 		}
 
-		// Subrepositories should be treated as portal
+		return false;
+	}
 
+	private boolean _isSubrepository() {
 		String baseDirAbsolutePath = getAbsolutePath(
 			sourceFormatterArgs.getBaseDirName());
 
