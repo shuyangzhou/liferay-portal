@@ -5781,6 +5781,8 @@ cluster.link.channel.system.properties=\
 	jgroups.mping.mcast_port:${multicast.group.port["cluster-link-mping"]},\
 	jgroups.mping.ip_ttl:8
 
+cluster.link.autodetect.address=
+
 web.server.display.node=true</echo>
 			</then>
 		</if>
