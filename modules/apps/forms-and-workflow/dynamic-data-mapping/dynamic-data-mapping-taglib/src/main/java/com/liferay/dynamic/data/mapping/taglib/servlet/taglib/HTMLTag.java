@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 
 /**
@@ -156,6 +157,15 @@ public class HTMLTag extends BaseHTMLTag {
 
 	protected String getRandomNamespace() {
 		return PortalUtil.generateRandomKey(request, "taglib_ddm_init-ext");
+	}
+
+	@Override
+	protected int processEndTag() throws Exception {
+		JspWriter jspWriter = pageContext.getOut();
+
+		jspWriter.write("</div>");
+
+		return EVAL_PAGE;
 	}
 
 	@Override

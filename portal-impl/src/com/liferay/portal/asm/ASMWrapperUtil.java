@@ -31,14 +31,13 @@ import org.objectweb.asm.Type;
 public class ASMWrapperUtil {
 
 	public static <T> T createASMWrapper(
-		Class<T> interfaceClass, Object delegateObject, T defaultObject) {
+		ClassLoader classLoader, Class<T> interfaceClass, Object delegateObject,
+		T defaultObject) {
 
 		if (!interfaceClass.isInterface()) {
 			throw new IllegalArgumentException(
 				interfaceClass + " is not an interface");
 		}
-
-		ClassLoader classLoader = interfaceClass.getClassLoader();
 
 		String asmWrapperClassName = interfaceClass.getName() + "ASMWrapper";
 

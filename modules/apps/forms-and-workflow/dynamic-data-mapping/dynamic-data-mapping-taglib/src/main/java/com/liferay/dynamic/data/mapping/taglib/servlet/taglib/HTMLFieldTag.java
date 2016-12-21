@@ -17,6 +17,7 @@ package com.liferay.dynamic.data.mapping.taglib.servlet.taglib;
 import com.liferay.dynamic.data.mapping.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.dynamic.data.mapping.taglib.servlet.taglib.base.BaseHTMLFieldTag;
 
+import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 
 /**
@@ -29,6 +30,15 @@ public class HTMLFieldTag extends BaseHTMLFieldTag {
 		super.setPageContext(pageContext);
 
 		setServletContext(ServletContextUtil.getServletContext());
+	}
+
+	@Override
+	protected int processEndTag() throws Exception {
+		JspWriter jspWriter = pageContext.getOut();
+
+		jspWriter.write("</div>");
+
+		return EVAL_PAGE;
 	}
 
 }

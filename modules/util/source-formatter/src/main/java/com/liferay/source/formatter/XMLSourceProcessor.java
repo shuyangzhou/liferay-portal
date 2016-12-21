@@ -435,8 +435,10 @@ public class XMLSourceProcessor extends BaseSourceProcessor {
 			formatPortletPreferencesXML(fileName, newContent);
 		}
 		else if (fileName.endsWith("/liferay-portlet.xml") ||
-				 (portalSource && fileName.endsWith("/portlet-custom.xml")) ||
-				 (!portalSource && fileName.endsWith("/portlet.xml"))) {
+				 ((portalSource || subrepository) &&
+				  fileName.endsWith("/portlet-custom.xml")) ||
+				 (!portalSource && !subrepository &&
+				  fileName.endsWith("/portlet.xml"))) {
 
 			newContent = formatPortletXML(fileName, absolutePath, newContent);
 		}
@@ -459,20 +461,23 @@ public class XMLSourceProcessor extends BaseSourceProcessor {
 
 			formatSolrSchema(fileName, newContent);
 		}
-		else if (portalSource && fileName.endsWith("/struts-config.xml")) {
+		else if ((portalSource || subrepository) &&
+				 fileName.endsWith("/struts-config.xml")) {
 			formatStrutsConfigXML(fileName, newContent);
 		}
-		else if (portalSource &&
+		else if ((portalSource || subrepository) &&
 				 fileName.endsWith("/test-ignorable-error-lines.xml")) {
 
 			formatTestIgnorableErrorLinesXml(fileName, newContent);
 		}
-		else if (portalSource && fileName.endsWith("/tiles-defs.xml")) {
+		else if ((portalSource || subrepository) &&
+				 fileName.endsWith("/tiles-defs.xml")) {
 			formatTilesDefsXML(fileName, newContent);
 		}
-		else if ((portalSource &&
+		else if (((portalSource || subrepository) &&
 				  fileName.endsWith("portal-web/docroot/WEB-INF/web.xml")) ||
-				 (!portalSource && fileName.endsWith("/web.xml"))) {
+				 (!portalSource && !subrepository &&
+				  fileName.endsWith("/web.xml"))) {
 
 			newContent = formatWebXML(fileName, newContent);
 		}
@@ -1109,7 +1114,7 @@ public class XMLSourceProcessor extends BaseSourceProcessor {
 	protected String formatWebXML(String fileName, String content)
 		throws Exception {
 
-		if (!portalSource) {
+		if (!portalSource && !subrepository) {
 			String webXML = ContentUtil.get(
 				"com/liferay/portal/deploy/dependencies/web.xml");
 

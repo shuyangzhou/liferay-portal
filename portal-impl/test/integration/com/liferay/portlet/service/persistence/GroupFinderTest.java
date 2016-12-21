@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
+import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.ResourceAction;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
@@ -27,6 +28,7 @@ import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.RolePermissions;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceTypePermissionLocalServiceUtil;
@@ -35,6 +37,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.GroupFinderUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.OrganizationTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ResourcePermissionTestUtil;
 import com.liferay.portal.kernel.test.util.ResourceTypePermissionTestUtil;
@@ -74,6 +77,7 @@ public class GroupFinderTest {
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 		_group = GroupTestUtil.addGroup();
+		_organization = OrganizationTestUtil.addOrganization(true);
 
 		List<ResourceAction> resourceActions =
 			ResourceActionLocalServiceUtil.getResourceActions(0, 1);
@@ -104,6 +108,8 @@ public class GroupFinderTest {
 	public static void tearDownClass() throws Exception {
 		GroupLocalServiceUtil.deleteGroup(_group);
 		GroupLocalServiceUtil.deleteGroup(_userGroupGroup);
+
+		OrganizationLocalServiceUtil.deleteOrganization(_organization);
 
 		ResourcePermissionLocalServiceUtil.deleteResourcePermission(
 			_resourcePermission);
@@ -163,6 +169,32 @@ public class GroupFinderTest {
 			"The method findByC_C_N_D should have returned the group " +
 				_group.getGroupId(),
 			exists);
+	}
+
+	@Test
+	public void testFindByC_C_PG_N_D() throws Exception {
+		_userGroup = UserGroupTestUtil.addUserGroup();
+		_userGroupUser = UserTestUtil.addUser();
+
+		UserGroupLocalServiceUtil.addUserUserGroup(
+			_userGroupUser.getUserId(), _userGroup);
+
+		Group group = _organization.getGroup();
+
+		GroupLocalServiceUtil.addUserGroupGroup(
+			_userGroup.getUserGroupId(), group.getGroupId());
+
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
+
+		params.put("inherit", true);
+		params.put("usersGroups", _userGroupUser.getUserId());
+
+		List<Group> groups = GroupFinderUtil.findByC_C_PG_N_D(
+			_organization.getCompanyId(), null,
+			GroupConstants.DEFAULT_PARENT_GROUP_ID, null, null, params, true,
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+		Assert.assertTrue(groups.contains(group));
 	}
 
 	@Test
@@ -305,6 +337,7 @@ public class GroupFinderTest {
 	private static ResourceAction _arbitraryResourceAction;
 	private static Group _group;
 	private static ResourceAction _modelResourceAction;
+	private static Organization _organization;
 	private static ResourcePermission _resourcePermission;
 	private static ResourceTypePermission _resourceTypePermission;
 	private static UserGroup _userGroup;

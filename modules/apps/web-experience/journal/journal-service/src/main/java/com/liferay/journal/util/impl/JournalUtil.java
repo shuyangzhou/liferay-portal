@@ -1325,6 +1325,10 @@ public class JournalUtil {
 
 		List<Element> elements = newElement.elements("dynamic-content");
 
+		if ((elements == null) || elements.isEmpty()) {
+			return;
+		}
+
 		Element newContentElement = elements.get(0);
 
 		String newLanguageId = newContentElement.attributeValue("language-id");

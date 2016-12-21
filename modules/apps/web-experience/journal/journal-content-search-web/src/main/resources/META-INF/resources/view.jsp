@@ -16,9 +16,13 @@
 
 <%@ include file="/init.jsp" %>
 
+<portlet:renderURL var="backURL">
+	<portlet:param name="mvcPath" value="/view.jsp" />
+</portlet:renderURL>
+
 <portlet:renderURL var="searchURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 	<portlet:param name="mvcPath" value="/search.jsp" />
-	<portlet:param name="backURL" value="<%= currentURL %>" />
+	<portlet:param name="backURL" value="<%= backURL %>" />
 
 	<c:if test="<%= Validator.isNotNull(journalContentSearchPortletInstanceConfiguration.targetPortletId()) %>">
 		<portlet:param name="targetPortletId" value="<%= journalContentSearchPortletInstanceConfiguration.targetPortletId() %>" />
