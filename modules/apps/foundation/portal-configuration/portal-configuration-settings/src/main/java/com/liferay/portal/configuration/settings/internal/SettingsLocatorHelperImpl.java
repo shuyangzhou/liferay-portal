@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.settings.LocationVariableResolver;
 import com.liferay.portal.kernel.settings.PortletPreferencesSettings;
 import com.liferay.portal.kernel.settings.PropertiesSettings;
 import com.liferay.portal.kernel.settings.Settings;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.settings.SettingsLocatorHelper;
 import com.liferay.portal.kernel.settings.definition.ConfigurationBeanDeclaration;
 import com.liferay.portal.kernel.settings.definition.ConfigurationPidMapping;
@@ -85,8 +84,7 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 
 		return new ConfigurationBeanSettings(
 			new LocationVariableResolver(
-				getResourceManager(configurationPid),
-				SettingsFactoryUtil.getSettingsFactory()),
+				getResourceManager(configurationPid), this),
 			getConfigurationBean(configurationPid), parentSettings);
 	}
 
@@ -136,7 +134,7 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 			new LocationVariableResolver(
 				new ClassLoaderResourceManager(
 					PortalClassLoaderUtil.getClassLoader()),
-				SettingsFactoryUtil.getSettingsFactory()),
+				this),
 			getPortalProperties());
 	}
 

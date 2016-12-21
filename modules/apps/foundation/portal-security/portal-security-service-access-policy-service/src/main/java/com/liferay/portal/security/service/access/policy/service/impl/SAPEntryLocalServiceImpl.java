@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
+import com.liferay.portal.kernel.settings.TypedSettings;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -43,6 +44,7 @@ import com.liferay.portal.security.service.access.policy.model.SAPEntryConstants
 import com.liferay.portal.security.service.access.policy.service.base.SAPEntryLocalServiceBaseImpl;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -108,6 +110,39 @@ public class SAPEntryLocalServiceImpl extends SAPEntryLocalServiceBaseImpl {
 				SAPConfiguration.class,
 				new CompanyServiceSettingsLocator(
 					companyId, SAPConstants.SERVICE_NAME));
+
+		if (!"SYSTEM_DEFAULT".equals(sapConfiguration.systemDefaultSAPEntryName())) {
+			Class<?> clazz = sapConfiguration.getClass();
+
+			String value = null;
+
+			try {
+				Field field = clazz.getSuperclass().getDeclaredField("h");
+
+				field.setAccessible(true);
+
+				Object obj = field.get(sapConfiguration);
+
+				clazz = obj.getClass();
+
+				field = clazz.getDeclaredField("_typedSettings");
+
+				field.setAccessible(true);
+
+				TypedSettings typedSettings = (TypedSettings)field.get(obj);
+
+				value = typedSettings.getValue("systemDefaultSAPEntryName");
+			}
+			catch (ReflectiveOperationException roe) {
+				throw new PortalException(roe);
+			}
+
+			System.out.println(
+				"###########sapConfiguration.systemDefaultSAPEntryName()=" +
+					sapConfiguration.systemDefaultSAPEntryName() + "\n" +
+					"###########sapConfiguration.h._typedSettings.getValue(" +
+						"\"systemDefaultSAPEntryName\")=" + value);
+		}
 
 		SAPEntry systemDefaultSAPEntry = sapEntryPersistence.fetchByC_N(
 			companyId, sapConfiguration.systemDefaultSAPEntryName());
