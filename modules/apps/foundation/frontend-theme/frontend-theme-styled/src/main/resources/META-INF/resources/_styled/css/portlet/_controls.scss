@@ -71,7 +71,9 @@ body.portlet {
 
 .portlet {
 	.visible-interaction {
-		display: none;
+		@media (min-width: $grid-float-breakpoint) {
+			display: none;
+		}
 	}
 
 	&:active, &:hover, &:focus, &.active {
