@@ -928,7 +928,9 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 
 			StorageType storageType = StorageType.MEMORY_CLUSTERED;
 
-			if (schedulerEntry == null) {
+			if ((schedulerEntry == null) ||
+				(schedulerEntry.getTrigger() == null)) {
+
 				return null;
 			}
 
