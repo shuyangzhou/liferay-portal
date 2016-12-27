@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.osgi.web.servlet.context.helper.definition.WebResourceCollectionDefinition;
+import com.liferay.portal.servlet.delegate.ServletContextDelegate;
 
 import java.io.IOException;
 
@@ -71,7 +72,8 @@ public class CustomServletContextHelper
 
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		_servletContext = servletContextEvent.getServletContext();
+		_servletContext = ServletContextDelegate.create(
+			servletContextEvent.getServletContext());
 	}
 
 	@Override

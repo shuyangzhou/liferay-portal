@@ -47,7 +47,8 @@ public class ASMWrapperUtilTest {
 	@Test
 	public void testASMWrapper() throws Exception {
 		Object asmWrapper = ASMWrapperUtil.createASMWrapper(
-			TestInterface.class, new TestDelegate(), new TestDefault());
+			TestInterface.class.getClassLoader(), TestInterface.class,
+			new TestDelegate(), new TestDefault());
 
 		Class<?> asmWrapperClass = asmWrapper.getClass();
 
@@ -82,14 +83,20 @@ public class ASMWrapperUtilTest {
 	@Test
 	public void testCreateASMWrapper() throws Exception {
 		Object asmWrapper = ASMWrapperUtil.createASMWrapper(
-			TestInterface.class, new TestDelegate(), new TestDefault());
+			TestInterface.class.getClassLoader(), TestInterface.class,
+			new TestDelegate(), new TestDefault());
 
 		Class<?> asmWrapperClass = asmWrapper.getClass();
 
 		Assert.assertEquals(Modifier.PUBLIC, asmWrapperClass.getModifiers());
+
+		Package pkg = TestDelegate.class.getPackage();
+
 		Assert.assertEquals(
-			TestInterface.class.getName() + "ASMWrapper",
+			pkg.getName() + "." + TestInterface.class.getSimpleName() +
+				"ASMWrapper",
 			asmWrapperClass.getName());
+
 		Assert.assertSame(Object.class, asmWrapperClass.getSuperclass());
 
 		Method[] expectedMethods = _getDeclaredMethods(TestInterface.class);
@@ -111,7 +118,8 @@ public class ASMWrapperUtilTest {
 	public void testErrorCreateASMWrapper() throws Exception {
 		try {
 			ASMWrapperUtil.createASMWrapper(
-				Object.class, new Object(), Object.class);
+				ClassLoader.getSystemClassLoader(), Object.class, new Object(),
+				Object.class);
 
 			Assert.fail();
 		}
@@ -126,7 +134,8 @@ public class ASMWrapperUtilTest {
 
 		try {
 			ASMWrapperUtil.createASMWrapper(
-				TestInterface.class, new TestDelegate(), new TestDefault());
+				TestInterface.class.getClassLoader(), TestInterface.class,
+				new TestDelegate(), new TestDefault());
 
 			Assert.fail();
 		}
