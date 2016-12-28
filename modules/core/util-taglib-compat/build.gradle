@@ -12,6 +12,29 @@ importClasses {
 	}
 }
 
+updateFileVersions {
+	String buildPropertiesRegex = /com\.liferay\.util\.taglib\.compat-(\d.+?)\.jar/
+
+	match(buildPropertiesRegex, "../../../build.properties")
+
+	replaceOnlyIf = [{
+		String group, String replacement, String content ->
+
+		if (content =~ buildPropertiesRegex) {
+			return true
+		}
+
+		VersionNumber groupVersionNumber = VersionNumber.parse(group)
+		VersionNumber replacementVersionNumber = VersionNumber.parse(replacement)
+
+		if (groupVersionNumber.major != replacementVersionNumber.major) {
+			return true
+		}
+
+		return false
+	}]
+}
+
 Properties importedClassesProperties = new Properties()
 
 File importedClassesPropertiesFile = file("imported-classes.properties")
