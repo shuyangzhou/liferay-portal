@@ -2529,7 +2529,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  ortal.kernel.facebook;version="7.0.0";uses:="com.liferay.portal.kerne
  l.json,javax.portlet",com.liferay.portal.kernel.flash;version="6.2.0"
  ,com.liferay.portal.kernel.format;version="7.0.0",com.liferay.portal.
- kernel.image;version="7.0.0";uses:="com.liferay.portal.kernel.excepti
+ kernel.image;version="7.1.0";uses:="com.liferay.portal.kernel.excepti
  on,com.liferay.portal.kernel.model,javax.servlet",com.liferay.portal.
  kernel.increment;version="7.0.0",com.liferay.portal.kernel.instance.l
  ifecycle;version="1.0.0";uses:="com.liferay.portal.kernel.model",com.
