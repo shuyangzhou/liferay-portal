@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.InitialThreadLocal;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ServerDetector;
@@ -32,8 +33,8 @@ import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.Security;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -76,12 +77,14 @@ public class Encryptor {
 	public static byte[] decryptUnencodedAsBytes(Key key, byte[] encryptedBytes)
 		throws EncryptorException {
 
+		Map<String, Cipher> decryptCiphers = _decryptCiphersThreadLocal.get();
+
 		String algorithm = key.getAlgorithm();
 
 		String cacheKey = algorithm.concat(StringPool.POUND).concat(
 			key.toString());
 
-		Cipher cipher = _decryptCipherMap.get(cacheKey);
+		Cipher cipher = decryptCiphers.get(cacheKey);
 
 		try {
 			if (cipher == null) {
@@ -91,12 +94,10 @@ public class Encryptor {
 
 				cipher.init(Cipher.DECRYPT_MODE, key);
 
-				_decryptCipherMap.put(cacheKey, cipher);
+				decryptCiphers.put(cacheKey, cipher);
 			}
 
-			synchronized (cipher) {
-				return cipher.doFinal(encryptedBytes);
-			}
+			return cipher.doFinal(encryptedBytes);
 		}
 		catch (Exception e) {
 			throw new EncryptorException(e);
@@ -151,12 +152,14 @@ public class Encryptor {
 	public static byte[] encryptUnencoded(Key key, byte[] plainBytes)
 		throws EncryptorException {
 
+		Map<String, Cipher> encryptCiphers = _encryptCiphersThreadLocal.get();
+
 		String algorithm = key.getAlgorithm();
 
 		String cacheKey = algorithm.concat(StringPool.POUND).concat(
 			key.toString());
 
-		Cipher cipher = _encryptCipherMap.get(cacheKey);
+		Cipher cipher = encryptCiphers.get(cacheKey);
 
 		try {
 			if (cipher == null) {
@@ -166,12 +169,10 @@ public class Encryptor {
 
 				cipher.init(Cipher.ENCRYPT_MODE, key);
 
-				_encryptCipherMap.put(cacheKey, cipher);
+				encryptCiphers.put(cacheKey, cipher);
 			}
 
-			synchronized (cipher) {
-				return cipher.doFinal(plainBytes);
-			}
+			return cipher.doFinal(plainBytes);
 		}
 		catch (Exception e) {
 			throw new EncryptorException(e);
@@ -258,9 +259,13 @@ public class Encryptor {
 
 	private static final Log _log = LogFactoryUtil.getLog(Encryptor.class);
 
-	private static final Map<String, Cipher> _decryptCipherMap =
-		new ConcurrentHashMap<>(1, 1f, 1);
-	private static final Map<String, Cipher> _encryptCipherMap =
-		new ConcurrentHashMap<>(1, 1f, 1);
+	private static final ThreadLocal<Map<String, Cipher>>
+		_decryptCiphersThreadLocal = new InitialThreadLocal<>(
+			Encryptor.class.getName() + "._ciphersThreadLocal",
+			new HashMap<>());
+	private static final ThreadLocal<Map<String, Cipher>>
+		_encryptCiphersThreadLocal = new InitialThreadLocal<>(
+			Encryptor.class.getName() + "._ciphersThreadLocal",
+			new HashMap<>());
 
 }
