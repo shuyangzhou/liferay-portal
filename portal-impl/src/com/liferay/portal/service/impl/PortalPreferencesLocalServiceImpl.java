@@ -152,9 +152,7 @@ public class PortalPreferencesLocalServiceImpl
 
 		portalPreferences.setPreferences(xml);
 
-		portalPreferencesPersistence.update(portalPreferences);
-
-		return portalPreferences;
+		return portalPreferencesPersistence.update(portalPreferences);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
