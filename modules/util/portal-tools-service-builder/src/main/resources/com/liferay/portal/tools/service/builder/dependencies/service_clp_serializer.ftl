@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -216,26 +217,22 @@ public class ClpSerializer {
 
 	public static Throwable translateThrowable(Throwable throwable) {
 		if (_useReflectionToTranslateThrowable) {
-			try {
-				UnsyncByteArrayOutputStream unsyncByteArrayOutputStream = new UnsyncByteArrayOutputStream();
-				ObjectOutputStream objectOutputStream = new ObjectOutputStream(unsyncByteArrayOutputStream);
+			UnsyncByteArrayOutputStream unsyncByteArrayOutputStream = new UnsyncByteArrayOutputStream();
+
+			UnsyncByteArrayInputStream unsyncByteArrayInputStream = new UnsyncByteArrayInputStream(unsyncByteArrayOutputStream.unsafeGetByteArray(), 0, unsyncByteArrayOutputStream.size());
+
+			Thread currentThread = Thread.currentThread();
+
+			ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+			try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(unsyncByteArrayOutputStream);
+				ObjectInputStream objectInputStream = new ClassLoaderObjectInputStream(unsyncByteArrayInputStream, contextClassLoader)) {
 
 				objectOutputStream.writeObject(throwable);
 
 				objectOutputStream.flush();
-				objectOutputStream.close();
-
-				UnsyncByteArrayInputStream unsyncByteArrayInputStream = new UnsyncByteArrayInputStream(unsyncByteArrayOutputStream.unsafeGetByteArray(), 0, unsyncByteArrayOutputStream.size());
-
-				Thread currentThread = Thread.currentThread();
-
-				ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-
-				ObjectInputStream objectInputStream = new ClassLoaderObjectInputStream(unsyncByteArrayInputStream, contextClassLoader);
 
 				throwable = (Throwable)objectInputStream.readObject();
-
-				objectInputStream.close();
 
 				return throwable;
 			}
