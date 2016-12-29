@@ -28,6 +28,6 @@ dependencies {
 	provided project(":apps:foundation:friendly-url:friendly-url-api")
 	provided project(":apps:foundation:frontend-taglib:frontend-taglib")
 	provided project(":apps:web-experience:asset:asset-taglib")
-	provided project(":core:portal-impl-compat")
-	provided project(":core:portal-kernel-compat")
+	provided project(":core:portal-compat:blogs:portal-impl-blogs-compat")
+	provided project(":core:portal-compat:blogs:portal-kernel-blogs-compat")
 }
