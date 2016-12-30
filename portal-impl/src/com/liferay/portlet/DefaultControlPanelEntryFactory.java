@@ -30,22 +30,27 @@ import com.liferay.registry.ServiceTracker;
 public class DefaultControlPanelEntryFactory {
 
 	public static ControlPanelEntry getInstance() {
-		return _serviceTracker.getService();
+		return ServiceTrackerHolder._serviceTracker.getService();
 	}
 
-	private static final ServiceTracker<ControlPanelEntry, ControlPanelEntry>
-		_serviceTracker;
+	private static class ServiceTrackerHolder {
 
-	static {
-		Registry registry = RegistryUtil.getRegistry();
+		private static final
+			ServiceTracker<ControlPanelEntry, ControlPanelEntry>
+				_serviceTracker;
 
-		Filter filter = registry.getFilter(
-			"(&(!(javax.portlet.name=*))(objectClass=" +
-				ControlPanelEntry.class.getName() + "))");
+		static {
+			Registry registry = RegistryUtil.getRegistry();
 
-		_serviceTracker = registry.trackServices(filter);
+			Filter filter = registry.getFilter(
+				"(&(!(javax.portlet.name=*))(objectClass=" +
+					ControlPanelEntry.class.getName() + "))");
 
-		_serviceTracker.open();
+			_serviceTracker = registry.trackServices(filter);
+
+			_serviceTracker.open();
+		}
+
 	}
 
 }
