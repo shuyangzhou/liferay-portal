@@ -43,14 +43,10 @@ public abstract class BaseButtonRowTag extends com.liferay.taglib.util.IncludeTa
 
 	public void setCssClass(java.lang.String cssClass) {
 		_cssClass = cssClass;
-
-		setScopedAttribute("cssClass", cssClass);
 	}
 
 	public void setId(java.lang.String id) {
 		_id = id;
-
-		setScopedAttribute("id", id);
 	}
 
 	@Override

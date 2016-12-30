@@ -51,26 +51,18 @@ public abstract class BaseNavBarTag extends com.liferay.taglib.util.IncludeTag {
 
 	public void setCssClass(java.lang.String cssClass) {
 		_cssClass = cssClass;
-
-		setScopedAttribute("cssClass", cssClass);
 	}
 
 	public void setData(java.lang.Object data) {
 		_data = data;
-
-		setScopedAttribute("data", data);
 	}
 
 	public void setId(java.lang.String id) {
 		_id = id;
-
-		setScopedAttribute("id", id);
 	}
 
 	public void setMarkupView(java.lang.String markupView) {
 		_markupView = markupView;
-
-		setScopedAttribute("markupView", markupView);
 	}
 
 	@Override

@@ -39,8 +39,6 @@ public abstract class BaseFieldsetGroupTag extends com.liferay.taglib.util.Inclu
 
 	public void setMarkupView(java.lang.String markupView) {
 		_markupView = markupView;
-
-		setScopedAttribute("markupView", markupView);
 	}
 
 	@Override

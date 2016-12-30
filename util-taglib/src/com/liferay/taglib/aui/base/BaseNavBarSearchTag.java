@@ -51,26 +51,18 @@ public abstract class BaseNavBarSearchTag extends com.liferay.taglib.util.Includ
 
 	public void setCssClass(java.lang.String cssClass) {
 		_cssClass = cssClass;
-
-		setScopedAttribute("cssClass", cssClass);
 	}
 
 	public void setFile(java.lang.String file) {
 		_file = file;
-
-		setScopedAttribute("file", file);
 	}
 
 	public void setId(java.lang.String id) {
 		_id = id;
-
-		setScopedAttribute("id", id);
 	}
 
 	public void setSearchContainer(com.liferay.portal.kernel.dao.search.SearchContainer<?> searchContainer) {
 		_searchContainer = searchContainer;
-
-		setScopedAttribute("searchContainer", searchContainer);
 	}
 
 	@Override

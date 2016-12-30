@@ -75,62 +75,42 @@ public abstract class BaseComponentTag extends com.liferay.taglib.util.IncludeTa
 
 	public void setDefineVar(boolean defineVar) {
 		_defineVar = defineVar;
-
-		setScopedAttribute("defineVar", defineVar);
 	}
 
 	public void setExcludeAttributes(java.lang.String excludeAttributes) {
 		_excludeAttributes = excludeAttributes;
-
-		setScopedAttribute("excludeAttributes", excludeAttributes);
 	}
 
 	public void setJavaScriptAttributes(java.lang.String javaScriptAttributes) {
 		_javaScriptAttributes = javaScriptAttributes;
-
-		setScopedAttribute("javaScriptAttributes", javaScriptAttributes);
 	}
 
 	public void setModule(java.lang.String module) {
 		_module = module;
-
-		setScopedAttribute("module", module);
 	}
 
 	public void setName(java.lang.String name) {
 		_name = name;
-
-		setScopedAttribute("name", name);
 	}
 
 	public void setOptions(java.util.Map<java.lang.String, java.lang.Object> options) {
 		_options = options;
-
-		setScopedAttribute("options", options);
 	}
 
 	public void setScriptPosition(java.lang.String scriptPosition) {
 		_scriptPosition = scriptPosition;
-
-		setScopedAttribute("scriptPosition", scriptPosition);
 	}
 
 	public void setTagPageContext(javax.servlet.jsp.JspContext tagPageContext) {
 		_tagPageContext = tagPageContext;
-
-		setScopedAttribute("tagPageContext", tagPageContext);
 	}
 
 	public void setUseJavaScript(java.io.Serializable useJavaScript) {
 		_useJavaScript = useJavaScript;
-
-		setScopedAttribute("useJavaScript", useJavaScript);
 	}
 
 	public void setVar(java.lang.String var) {
 		_var = var;
-
-		setScopedAttribute("var", var);
 	}
 
 	@Override

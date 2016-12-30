@@ -79,68 +79,46 @@ public abstract class BaseWorkflowStatusTag extends com.liferay.taglib.util.Incl
 
 	public void setBean(java.lang.Object bean) {
 		_bean = bean;
-
-		setScopedAttribute("bean", bean);
 	}
 
 	public void setHelpMessage(java.lang.String helpMessage) {
 		_helpMessage = helpMessage;
-
-		setScopedAttribute("helpMessage", helpMessage);
 	}
 
 	public void setId(java.lang.String id) {
 		_id = id;
-
-		setScopedAttribute("id", id);
 	}
 
 	public void setMarkupView(java.lang.String markupView) {
 		_markupView = markupView;
-
-		setScopedAttribute("markupView", markupView);
 	}
 
 	public void setModel(java.lang.Class<?> model) {
 		_model = model;
-
-		setScopedAttribute("model", model);
 	}
 
 	public void setShowHelpMessage(boolean showHelpMessage) {
 		_showHelpMessage = showHelpMessage;
-
-		setScopedAttribute("showHelpMessage", showHelpMessage);
 	}
 
 	public void setShowIcon(boolean showIcon) {
 		_showIcon = showIcon;
-
-		setScopedAttribute("showIcon", showIcon);
 	}
 
 	public void setShowLabel(boolean showLabel) {
 		_showLabel = showLabel;
-
-		setScopedAttribute("showLabel", showLabel);
 	}
 
 	public void setStatus(java.lang.Integer status) {
 		_status = status;
-
-		setScopedAttribute("status", status);
 	}
 
 	public void setStatusMessage(java.lang.String statusMessage) {
 		_statusMessage = statusMessage;
-
-		setScopedAttribute("statusMessage", statusMessage);
 	}
 
 	public void setVersion(java.lang.String version) {
 		_version = version;
-
-		setScopedAttribute("version", version);
 	}
 
 	@Override

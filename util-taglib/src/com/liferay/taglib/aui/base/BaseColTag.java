@@ -67,50 +67,34 @@ public abstract class BaseColTag extends com.liferay.taglib.util.IncludeTag {
 
 	public void setCssClass(java.lang.String cssClass) {
 		_cssClass = cssClass;
-
-		setScopedAttribute("cssClass", cssClass);
 	}
 
 	public void setId(java.lang.String id) {
 		_id = id;
-
-		setScopedAttribute("id", id);
 	}
 
 	public void setLg(java.lang.String lg) {
 		_lg = lg;
-
-		setScopedAttribute("lg", lg);
 	}
 
 	public void setMd(java.lang.String md) {
 		_md = md;
-
-		setScopedAttribute("md", md);
 	}
 
 	public void setSm(java.lang.String sm) {
 		_sm = sm;
-
-		setScopedAttribute("sm", sm);
 	}
 
 	public void setSpan(int span) {
 		_span = span;
-
-		setScopedAttribute("span", span);
 	}
 
 	public void setWidth(int width) {
 		_width = width;
-
-		setScopedAttribute("width", width);
 	}
 
 	public void setXs(java.lang.String xs) {
 		_xs = xs;
-
-		setScopedAttribute("xs", xs);
 	}
 
 	@Override

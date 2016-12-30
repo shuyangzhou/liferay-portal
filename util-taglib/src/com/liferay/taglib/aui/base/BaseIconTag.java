@@ -71,56 +71,38 @@ public abstract class BaseIconTag extends com.liferay.taglib.util.IncludeTag {
 
 	public void setCssClass(java.lang.String cssClass) {
 		_cssClass = cssClass;
-
-		setScopedAttribute("cssClass", cssClass);
 	}
 
 	public void setData(java.util.Map<java.lang.String, java.lang.Object> data) {
 		_data = data;
-
-		setScopedAttribute("data", data);
 	}
 
 	public void setId(java.lang.String id) {
 		_id = id;
-
-		setScopedAttribute("id", id);
 	}
 
 	public void setImage(java.lang.String image) {
 		_image = image;
-
-		setScopedAttribute("image", image);
 	}
 
 	public void setLabel(java.lang.String label) {
 		_label = label;
-
-		setScopedAttribute("label", label);
 	}
 
 	public void setMarkupView(java.lang.String markupView) {
 		_markupView = markupView;
-
-		setScopedAttribute("markupView", markupView);
 	}
 
 	public void setSrc(java.lang.String src) {
 		_src = src;
-
-		setScopedAttribute("src", src);
 	}
 
 	public void setTarget(java.lang.String target) {
 		_target = target;
-
-		setScopedAttribute("target", target);
 	}
 
 	public void setUrl(java.lang.String url) {
 		_url = url;
-
-		setScopedAttribute("url", url);
 	}
 
 	@Override

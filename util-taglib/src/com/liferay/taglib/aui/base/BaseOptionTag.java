@@ -71,56 +71,38 @@ public abstract class BaseOptionTag extends com.liferay.taglib.util.IncludeTag {
 
 	public void setCssClass(java.lang.String cssClass) {
 		_cssClass = cssClass;
-
-		setScopedAttribute("cssClass", cssClass);
 	}
 
 	public void setData(java.util.Map<java.lang.String, java.lang.Object> data) {
 		_data = data;
-
-		setScopedAttribute("data", data);
 	}
 
 	public void setDisabled(boolean disabled) {
 		_disabled = disabled;
-
-		setScopedAttribute("disabled", disabled);
 	}
 
 	public void setLabel(java.lang.Object label) {
 		_label = label;
-
-		setScopedAttribute("label", label);
 	}
 
 	public void setLocalizeLabel(boolean localizeLabel) {
 		_localizeLabel = localizeLabel;
-
-		setScopedAttribute("localizeLabel", localizeLabel);
 	}
 
 	public void setSelected(boolean selected) {
 		_selected = selected;
-
-		setScopedAttribute("selected", selected);
 	}
 
 	public void setStyle(java.lang.String style) {
 		_style = style;
-
-		setScopedAttribute("style", style);
 	}
 
 	public void setUseModelValue(boolean useModelValue) {
 		_useModelValue = useModelValue;
-
-		setScopedAttribute("useModelValue", useModelValue);
 	}
 
 	public void setValue(java.lang.Object value) {
 		_value = value;
-
-		setScopedAttribute("value", value);
 	}
 
 	@Override

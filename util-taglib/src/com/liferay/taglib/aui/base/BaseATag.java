@@ -82,74 +82,50 @@ public abstract class BaseATag extends com.liferay.taglib.util.IncludeTag {
 
 	public void setAriaRole(java.lang.String ariaRole) {
 		_ariaRole = ariaRole;
-
-		setScopedAttribute("ariaRole", ariaRole);
 	}
 
 	public void setCssClass(java.lang.String cssClass) {
 		_cssClass = cssClass;
-
-		setScopedAttribute("cssClass", cssClass);
 	}
 
 	public void setData(java.util.Map<java.lang.String, java.lang.Object> data) {
 		_data = data;
-
-		setScopedAttribute("data", data);
 	}
 
 	public void setHref(java.lang.String href) {
 		_href = href;
-
-		setScopedAttribute("href", href);
 	}
 
 	public void setIconCssClass(java.lang.String iconCssClass) {
 		_iconCssClass = iconCssClass;
-
-		setScopedAttribute("iconCssClass", iconCssClass);
 	}
 
 	public void setId(java.lang.String id) {
 		_id = id;
-
-		setScopedAttribute("id", id);
 	}
 
 	public void setLabel(java.lang.String label) {
 		_label = label;
-
-		setScopedAttribute("label", label);
 	}
 
 	public void setLang(java.lang.String lang) {
 		_lang = lang;
-
-		setScopedAttribute("lang", lang);
 	}
 
 	public void setLocalizeLabel(boolean localizeLabel) {
 		_localizeLabel = localizeLabel;
-
-		setScopedAttribute("localizeLabel", localizeLabel);
 	}
 
 	public void setOnClick(java.lang.String onClick) {
 		_onClick = onClick;
-
-		setScopedAttribute("onClick", onClick);
 	}
 
 	public void setTarget(java.lang.String target) {
 		_target = target;
-
-		setScopedAttribute("target", target);
 	}
 
 	public void setTitle(java.lang.String title) {
 		_title = title;
-
-		setScopedAttribute("title", title);
 	}
 
 	@Override

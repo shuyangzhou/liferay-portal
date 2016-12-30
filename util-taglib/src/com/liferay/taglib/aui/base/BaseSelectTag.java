@@ -159,188 +159,126 @@ public abstract class BaseSelectTag extends com.liferay.taglib.BaseValidatorTagS
 
 	public void setBean(java.lang.Object bean) {
 		_bean = bean;
-
-		setScopedAttribute("bean", bean);
 	}
 
 	public void setChangesContext(boolean changesContext) {
 		_changesContext = changesContext;
-
-		setScopedAttribute("changesContext", changesContext);
 	}
 
 	public void setCssClass(java.lang.String cssClass) {
 		_cssClass = cssClass;
-
-		setScopedAttribute("cssClass", cssClass);
 	}
 
 	public void setData(java.util.Map<java.lang.String, java.lang.Object> data) {
 		_data = data;
-
-		setScopedAttribute("data", data);
 	}
 
 	public void setDisabled(boolean disabled) {
 		_disabled = disabled;
-
-		setScopedAttribute("disabled", disabled);
 	}
 
 	public void setField(java.lang.String field) {
 		_field = field;
-
-		setScopedAttribute("field", field);
 	}
 
 	public void setFirst(boolean first) {
 		_first = first;
-
-		setScopedAttribute("first", first);
 	}
 
 	public void setHelpMessage(java.lang.String helpMessage) {
 		_helpMessage = helpMessage;
-
-		setScopedAttribute("helpMessage", helpMessage);
 	}
 
 	public void setId(java.lang.String id) {
 		_id = id;
-
-		setScopedAttribute("id", id);
 	}
 
 	public void setIgnoreRequestValue(boolean ignoreRequestValue) {
 		_ignoreRequestValue = ignoreRequestValue;
-
-		setScopedAttribute("ignoreRequestValue", ignoreRequestValue);
 	}
 
 	public void setInlineField(boolean inlineField) {
 		_inlineField = inlineField;
-
-		setScopedAttribute("inlineField", inlineField);
 	}
 
 	public void setInlineLabel(java.lang.String inlineLabel) {
 		_inlineLabel = inlineLabel;
-
-		setScopedAttribute("inlineLabel", inlineLabel);
 	}
 
 	public void setLabel(java.lang.String label) {
 		_label = label;
-
-		setScopedAttribute("label", label);
 	}
 
 	public void setLast(boolean last) {
 		_last = last;
-
-		setScopedAttribute("last", last);
 	}
 
 	public void setListType(java.lang.String listType) {
 		_listType = listType;
-
-		setScopedAttribute("listType", listType);
 	}
 
 	public void setListTypeFieldName(java.lang.String listTypeFieldName) {
 		_listTypeFieldName = listTypeFieldName;
-
-		setScopedAttribute("listTypeFieldName", listTypeFieldName);
 	}
 
 	public void setLocalizeLabel(boolean localizeLabel) {
 		_localizeLabel = localizeLabel;
-
-		setScopedAttribute("localizeLabel", localizeLabel);
 	}
 
 	public void setModel(java.lang.Class<?> model) {
 		_model = model;
-
-		setScopedAttribute("model", model);
 	}
 
 	public void setMultiple(boolean multiple) {
 		_multiple = multiple;
-
-		setScopedAttribute("multiple", multiple);
 	}
 
 	public void setName(java.lang.String name) {
 		_name = name;
-
-		setScopedAttribute("name", name);
 	}
 
 	public void setOnChange(java.lang.String onChange) {
 		_onChange = onChange;
-
-		setScopedAttribute("onChange", onChange);
 	}
 
 	public void setOnClick(java.lang.String onClick) {
 		_onClick = onClick;
-
-		setScopedAttribute("onClick", onClick);
 	}
 
 	public void setPrefix(java.lang.String prefix) {
 		_prefix = prefix;
-
-		setScopedAttribute("prefix", prefix);
 	}
 
 	public void setRequired(boolean required) {
 		_required = required;
-
-		setScopedAttribute("required", required);
 	}
 
 	public void setShowEmptyOption(boolean showEmptyOption) {
 		_showEmptyOption = showEmptyOption;
-
-		setScopedAttribute("showEmptyOption", showEmptyOption);
 	}
 
 	public void setShowRequiredLabel(boolean showRequiredLabel) {
 		_showRequiredLabel = showRequiredLabel;
-
-		setScopedAttribute("showRequiredLabel", showRequiredLabel);
 	}
 
 	public void setSuffix(java.lang.String suffix) {
 		_suffix = suffix;
-
-		setScopedAttribute("suffix", suffix);
 	}
 
 	public void setTitle(java.lang.String title) {
 		_title = title;
-
-		setScopedAttribute("title", title);
 	}
 
 	public void setUseNamespace(boolean useNamespace) {
 		_useNamespace = useNamespace;
-
-		setScopedAttribute("useNamespace", useNamespace);
 	}
 
 	public void setValue(java.lang.Object value) {
 		_value = value;
-
-		setScopedAttribute("value", value);
 	}
 
 	public void setWrapperCssClass(java.lang.String wrapperCssClass) {
 		_wrapperCssClass = wrapperCssClass;
-
-		setScopedAttribute("wrapperCssClass", wrapperCssClass);
 	}
 
 	@Override

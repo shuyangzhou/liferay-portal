@@ -219,278 +219,186 @@ public abstract class BaseInputTag extends com.liferay.taglib.BaseValidatorTagSu
 
 	public void setAutoFocus(boolean autoFocus) {
 		_autoFocus = autoFocus;
-
-		setScopedAttribute("autoFocus", autoFocus);
 	}
 
 	public void setAutoSize(boolean autoSize) {
 		_autoSize = autoSize;
-
-		setScopedAttribute("autoSize", autoSize);
 	}
 
 	public void setBean(java.lang.Object bean) {
 		_bean = bean;
-
-		setScopedAttribute("bean", bean);
 	}
 
 	public void setChangesContext(boolean changesContext) {
 		_changesContext = changesContext;
-
-		setScopedAttribute("changesContext", changesContext);
 	}
 
 	public void setChecked(boolean checked) {
 		_checked = checked;
-
-		setScopedAttribute("checked", checked);
 	}
 
 	public void setClassPK(long classPK) {
 		_classPK = classPK;
-
-		setScopedAttribute("classPK", classPK);
 	}
 
 	public void setClassTypePK(long classTypePK) {
 		_classTypePK = classTypePK;
-
-		setScopedAttribute("classTypePK", classTypePK);
 	}
 
 	public void setCssClass(java.lang.String cssClass) {
 		_cssClass = cssClass;
-
-		setScopedAttribute("cssClass", cssClass);
 	}
 
 	public void setData(java.lang.Object data) {
 		_data = data;
-
-		setScopedAttribute("data", data);
 	}
 
 	public void setDateTogglerCheckboxLabel(java.lang.String dateTogglerCheckboxLabel) {
 		_dateTogglerCheckboxLabel = dateTogglerCheckboxLabel;
-
-		setScopedAttribute("dateTogglerCheckboxLabel", dateTogglerCheckboxLabel);
 	}
 
 	public void setDefaultLanguageId(java.lang.String defaultLanguageId) {
 		_defaultLanguageId = defaultLanguageId;
-
-		setScopedAttribute("defaultLanguageId", defaultLanguageId);
 	}
 
 	public void setDisabled(boolean disabled) {
 		_disabled = disabled;
-
-		setScopedAttribute("disabled", disabled);
 	}
 
 	public void setField(java.lang.String field) {
 		_field = field;
-
-		setScopedAttribute("field", field);
 	}
 
 	public void setFieldParam(java.lang.String fieldParam) {
 		_fieldParam = fieldParam;
-
-		setScopedAttribute("fieldParam", fieldParam);
 	}
 
 	public void setFirst(boolean first) {
 		_first = first;
-
-		setScopedAttribute("first", first);
 	}
 
 	public void setFormName(java.lang.String formName) {
 		_formName = formName;
-
-		setScopedAttribute("formName", formName);
 	}
 
 	public void setHelpMessage(java.lang.String helpMessage) {
 		_helpMessage = helpMessage;
-
-		setScopedAttribute("helpMessage", helpMessage);
 	}
 
 	public void setHelpTextCssClass(java.lang.String helpTextCssClass) {
 		_helpTextCssClass = helpTextCssClass;
-
-		setScopedAttribute("helpTextCssClass", helpTextCssClass);
 	}
 
 	public void setId(java.lang.String id) {
 		_id = id;
-
-		setScopedAttribute("id", id);
 	}
 
 	public void setIgnoreRequestValue(boolean ignoreRequestValue) {
 		_ignoreRequestValue = ignoreRequestValue;
-
-		setScopedAttribute("ignoreRequestValue", ignoreRequestValue);
 	}
 
 	public void setInlineField(boolean inlineField) {
 		_inlineField = inlineField;
-
-		setScopedAttribute("inlineField", inlineField);
 	}
 
 	public void setInlineLabel(java.lang.String inlineLabel) {
 		_inlineLabel = inlineLabel;
-
-		setScopedAttribute("inlineLabel", inlineLabel);
 	}
 
 	public void setLabel(java.lang.String label) {
 		_label = label;
-
-		setScopedAttribute("label", label);
 	}
 
 	public void setLanguageId(java.lang.String languageId) {
 		_languageId = languageId;
-
-		setScopedAttribute("languageId", languageId);
 	}
 
 	public void setLast(boolean last) {
 		_last = last;
-
-		setScopedAttribute("last", last);
 	}
 
 	public void setLocalized(boolean localized) {
 		_localized = localized;
-
-		setScopedAttribute("localized", localized);
 	}
 
 	public void setLocalizeLabel(boolean localizeLabel) {
 		_localizeLabel = localizeLabel;
-
-		setScopedAttribute("localizeLabel", localizeLabel);
 	}
 
 	public void setMax(java.lang.Object max) {
 		_max = max;
-
-		setScopedAttribute("max", max);
 	}
 
 	public void setMin(java.lang.Object min) {
 		_min = min;
-
-		setScopedAttribute("min", min);
 	}
 
 	public void setModel(java.lang.Class<?> model) {
 		_model = model;
-
-		setScopedAttribute("model", model);
 	}
 
 	public void setMultiple(boolean multiple) {
 		_multiple = multiple;
-
-		setScopedAttribute("multiple", multiple);
 	}
 
 	public void setName(java.lang.String name) {
 		_name = name;
-
-		setScopedAttribute("name", name);
 	}
 
 	public void setOnChange(java.lang.String onChange) {
 		_onChange = onChange;
-
-		setScopedAttribute("onChange", onChange);
 	}
 
 	public void setOnClick(java.lang.String onClick) {
 		_onClick = onClick;
-
-		setScopedAttribute("onClick", onClick);
 	}
 
 	public void setPlaceholder(java.lang.String placeholder) {
 		_placeholder = placeholder;
-
-		setScopedAttribute("placeholder", placeholder);
 	}
 
 	public void setPrefix(java.lang.String prefix) {
 		_prefix = prefix;
-
-		setScopedAttribute("prefix", prefix);
 	}
 
 	public void setRequired(boolean required) {
 		_required = required;
-
-		setScopedAttribute("required", required);
 	}
 
 	public void setResizable(boolean resizable) {
 		_resizable = resizable;
-
-		setScopedAttribute("resizable", resizable);
 	}
 
 	public void setShowRequiredLabel(boolean showRequiredLabel) {
 		_showRequiredLabel = showRequiredLabel;
-
-		setScopedAttribute("showRequiredLabel", showRequiredLabel);
 	}
 
 	public void setSuffix(java.lang.String suffix) {
 		_suffix = suffix;
-
-		setScopedAttribute("suffix", suffix);
 	}
 
 	public void setTitle(java.lang.String title) {
 		_title = title;
-
-		setScopedAttribute("title", title);
 	}
 
 	public void setType(java.lang.String type) {
 		_type = type;
-
-		setScopedAttribute("type", type);
 	}
 
 	public void setUseNamespace(boolean useNamespace) {
 		_useNamespace = useNamespace;
-
-		setScopedAttribute("useNamespace", useNamespace);
 	}
 
 	public void setValue(java.lang.Object value) {
 		_value = value;
-
-		setScopedAttribute("value", value);
 	}
 
 	public void setWrappedField(boolean wrappedField) {
 		_wrappedField = wrappedField;
-
-		setScopedAttribute("wrappedField", wrappedField);
 	}
 
 	public void setWrapperCssClass(java.lang.String wrapperCssClass) {
 		_wrapperCssClass = wrapperCssClass;
-
-		setScopedAttribute("wrapperCssClass", wrapperCssClass);
 	}
 
 	@Override

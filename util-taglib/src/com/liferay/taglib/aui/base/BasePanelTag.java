@@ -55,32 +55,22 @@ public abstract class BasePanelTag extends com.liferay.taglib.util.IncludeTag {
 
 	public void setCollapsed(boolean collapsed) {
 		_collapsed = collapsed;
-
-		setScopedAttribute("collapsed", collapsed);
 	}
 
 	public void setCollapsible(boolean collapsible) {
 		_collapsible = collapsible;
-
-		setScopedAttribute("collapsible", collapsible);
 	}
 
 	public void setId(java.lang.String id) {
 		_id = id;
-
-		setScopedAttribute("id", id);
 	}
 
 	public void setLabel(java.lang.String label) {
 		_label = label;
-
-		setScopedAttribute("label", label);
 	}
 
 	public void setLocalizeLabel(boolean localizeLabel) {
 		_localizeLabel = localizeLabel;
-
-		setScopedAttribute("localizeLabel", localizeLabel);
 	}
 
 	@Override
