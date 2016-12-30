@@ -63,44 +63,30 @@ public abstract class BaseTranslationManagerTag extends com.liferay.taglib.util.
 
 	public void setAvailableLocales(java.util.Locale[] availableLocales) {
 		_availableLocales = availableLocales;
-
-		setScopedAttribute("availableLocales", availableLocales);
 	}
 
 	public void setChangeableDefaultLanguage(boolean changeableDefaultLanguage) {
 		_changeableDefaultLanguage = changeableDefaultLanguage;
-
-		setScopedAttribute("changeableDefaultLanguage", changeableDefaultLanguage);
 	}
 
 	public void setDefaultLanguageId(java.lang.String defaultLanguageId) {
 		_defaultLanguageId = defaultLanguageId;
-
-		setScopedAttribute("defaultLanguageId", defaultLanguageId);
 	}
 
 	public void setEditingLanguageId(java.lang.String editingLanguageId) {
 		_editingLanguageId = editingLanguageId;
-
-		setScopedAttribute("editingLanguageId", editingLanguageId);
 	}
 
 	public void setId(java.lang.String id) {
 		_id = id;
-
-		setScopedAttribute("id", id);
 	}
 
 	public void setInitialize(boolean initialize) {
 		_initialize = initialize;
-
-		setScopedAttribute("initialize", initialize);
 	}
 
 	public void setReadOnly(boolean readOnly) {
 		_readOnly = readOnly;
-
-		setScopedAttribute("readOnly", readOnly);
 	}
 
 	@Override

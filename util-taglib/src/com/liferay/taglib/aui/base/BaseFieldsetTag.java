@@ -71,56 +71,38 @@ public abstract class BaseFieldsetTag extends com.liferay.taglib.util.IncludeTag
 
 	public void setCollapsed(boolean collapsed) {
 		_collapsed = collapsed;
-
-		setScopedAttribute("collapsed", collapsed);
 	}
 
 	public void setCollapsible(boolean collapsible) {
 		_collapsible = collapsible;
-
-		setScopedAttribute("collapsible", collapsible);
 	}
 
 	public void setColumn(boolean column) {
 		_column = column;
-
-		setScopedAttribute("column", column);
 	}
 
 	public void setCssClass(java.lang.String cssClass) {
 		_cssClass = cssClass;
-
-		setScopedAttribute("cssClass", cssClass);
 	}
 
 	public void setHelpMessage(java.lang.String helpMessage) {
 		_helpMessage = helpMessage;
-
-		setScopedAttribute("helpMessage", helpMessage);
 	}
 
 	public void setId(java.lang.String id) {
 		_id = id;
-
-		setScopedAttribute("id", id);
 	}
 
 	public void setLabel(java.lang.String label) {
 		_label = label;
-
-		setScopedAttribute("label", label);
 	}
 
 	public void setLocalizeLabel(boolean localizeLabel) {
 		_localizeLabel = localizeLabel;
-
-		setScopedAttribute("localizeLabel", localizeLabel);
 	}
 
 	public void setMarkupView(java.lang.String markupView) {
 		_markupView = markupView;
-
-		setScopedAttribute("markupView", markupView);
 	}
 
 	@Override

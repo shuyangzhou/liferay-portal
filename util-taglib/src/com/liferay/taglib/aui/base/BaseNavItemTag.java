@@ -123,134 +123,90 @@ public abstract class BaseNavItemTag extends com.liferay.taglib.util.IncludeTag 
 
 	public void setAnchorCssClass(java.lang.String anchorCssClass) {
 		_anchorCssClass = anchorCssClass;
-
-		setScopedAttribute("anchorCssClass", anchorCssClass);
 	}
 
 	public void setAnchorData(java.lang.Object anchorData) {
 		_anchorData = anchorData;
-
-		setScopedAttribute("anchorData", anchorData);
 	}
 
 	public void setAnchorId(java.lang.String anchorId) {
 		_anchorId = anchorId;
-
-		setScopedAttribute("anchorId", anchorId);
 	}
 
 	public void setAriaLabel(java.lang.String ariaLabel) {
 		_ariaLabel = ariaLabel;
-
-		setScopedAttribute("ariaLabel", ariaLabel);
 	}
 
 	public void setAriaRole(java.lang.String ariaRole) {
 		_ariaRole = ariaRole;
-
-		setScopedAttribute("ariaRole", ariaRole);
 	}
 
 	public void setCssClass(java.lang.String cssClass) {
 		_cssClass = cssClass;
-
-		setScopedAttribute("cssClass", cssClass);
 	}
 
 	public void setData(java.lang.Object data) {
 		_data = data;
-
-		setScopedAttribute("data", data);
 	}
 
 	public void setDropdown(boolean dropdown) {
 		_dropdown = dropdown;
-
-		setScopedAttribute("dropdown", dropdown);
 	}
 
 	public void setHref(java.lang.Object href) {
 		_href = href;
-
-		setScopedAttribute("href", href);
 	}
 
 	public void setIconCssClass(java.lang.String iconCssClass) {
 		_iconCssClass = iconCssClass;
-
-		setScopedAttribute("iconCssClass", iconCssClass);
 	}
 
 	public void setIconSrc(java.lang.String iconSrc) {
 		_iconSrc = iconSrc;
-
-		setScopedAttribute("iconSrc", iconSrc);
 	}
 
 	public void setId(java.lang.String id) {
 		_id = id;
-
-		setScopedAttribute("id", id);
 	}
 
 	public void setLabel(java.lang.String label) {
 		_label = label;
-
-		setScopedAttribute("label", label);
 	}
 
 	public void setLocalizeLabel(boolean localizeLabel) {
 		_localizeLabel = localizeLabel;
-
-		setScopedAttribute("localizeLabel", localizeLabel);
 	}
 
 	public void setSelected(boolean selected) {
 		_selected = selected;
-
-		setScopedAttribute("selected", selected);
 	}
 
 	public void setState(java.lang.String state) {
 		_state = state;
-
-		setScopedAttribute("state", state);
 	}
 
 	public void setTarget(java.lang.String target) {
 		_target = target;
-
-		setScopedAttribute("target", target);
 	}
 
 	public void setTitle(java.lang.String title) {
 		_title = title;
-
-		setScopedAttribute("title", title);
 	}
 
 	public void setToggle(boolean toggle) {
 		_toggle = toggle;
-
-		setScopedAttribute("toggle", toggle);
 	}
 
 	public void setToggleTouch(boolean toggleTouch) {
 		_toggleTouch = toggleTouch;
-
-		setScopedAttribute("toggleTouch", toggleTouch);
 	}
 
 	public void setUseDialog(boolean useDialog) {
 		_useDialog = useDialog;
-
-		setScopedAttribute("useDialog", useDialog);
 	}
 
 	public void setWrapDropDownMenu(boolean wrapDropDownMenu) {
 		_wrapDropDownMenu = wrapDropDownMenu;
-
-		setScopedAttribute("wrapDropDownMenu", wrapDropDownMenu);
 	}
 
 	@Override

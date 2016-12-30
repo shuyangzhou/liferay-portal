@@ -46,20 +46,14 @@ public abstract class BaseModelContextTag extends com.liferay.taglib.util.Includ
 
 	public void setBean(java.lang.Object bean) {
 		_bean = bean;
-
-		setScopedAttribute("bean", bean);
 	}
 
 	public void setDefaultLanguageId(java.lang.String defaultLanguageId) {
 		_defaultLanguageId = defaultLanguageId;
-
-		setScopedAttribute("defaultLanguageId", defaultLanguageId);
 	}
 
 	public void setModel(java.lang.Class<?> model) {
 		_model = model;
-
-		setScopedAttribute("model", model);
 	}
 
 	@Override
