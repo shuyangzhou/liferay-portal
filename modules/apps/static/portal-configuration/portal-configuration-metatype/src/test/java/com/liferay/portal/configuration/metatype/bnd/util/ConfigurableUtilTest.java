@@ -79,13 +79,11 @@ public class ConfigurableUtilTest {
 
 		// Test Map
 
-		Map<String, String> properties = new HashMap<>();
-
-		properties.put("testReqiredString", "testReqiredString2");
-
 		_assertTestConfiguration(
 			ConfigurableUtil.createConfigurable(
-				TestConfiguration.class, properties),
+				TestConfiguration.class,
+				Collections.singletonMap(
+					"testReqiredString", "testReqiredString2")),
 			"testReqiredString2");
 	}
 
