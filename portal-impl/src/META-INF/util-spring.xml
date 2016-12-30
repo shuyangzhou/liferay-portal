@@ -535,7 +535,6 @@
 	<bean class="com.liferay.portal.verify.model.WebSiteVerifiableModel" />
 	<bean class="com.liferay.portal.workflow.LayoutRevisionWorkflowHandler" id="com.liferay.portal.workflow.LayoutRevisionWorkflowHandler" />
 	<bean class="com.liferay.portal.workflow.UserWorkflowHandler" id="com.liferay.portal.workflow.UserWorkflowHandler" />
-	<bean class="com.liferay.portlet.DefaultControlPanelEntryFactory" id="com.liferay.portlet.DefaultControlPanelEntryFactory" />
 	<bean class="com.liferay.portlet.PortletContainerImpl" id="com.liferay.portlet.PortletContainerImpl">
 		<property name="portletConfigurationIconMenu" ref="com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIconMenu" />
 		<property name="portletToolbar" ref="com.liferay.portal.kernel.portlet.toolbar.PortletToolbar" />
