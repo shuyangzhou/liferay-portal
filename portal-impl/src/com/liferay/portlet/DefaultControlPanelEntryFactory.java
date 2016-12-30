@@ -28,10 +28,13 @@ import com.liferay.registry.ServiceTracker;
 public class DefaultControlPanelEntryFactory {
 
 	public static ControlPanelEntry getInstance() {
-		return _instance._serviceTracker.getService();
+		return _serviceTracker.getService();
 	}
 
-	private DefaultControlPanelEntryFactory() {
+	private static final ServiceTracker<ControlPanelEntry, ControlPanelEntry>
+		_serviceTracker;
+
+	static {
 		Registry registry = RegistryUtil.getRegistry();
 
 		Filter filter = registry.getFilter(
@@ -42,11 +45,5 @@ public class DefaultControlPanelEntryFactory {
 
 		_serviceTracker.open();
 	}
-
-	private static final DefaultControlPanelEntryFactory _instance =
-		new DefaultControlPanelEntryFactory();
-
-	private final ServiceTracker<ControlPanelEntry, ControlPanelEntry>
-		_serviceTracker;
 
 }
