@@ -24,7 +24,9 @@ import com.liferay.registry.ServiceTracker;
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
  * @author Peter Fellwock
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class DefaultControlPanelEntryFactory {
 
 	public static ControlPanelEntry getInstance() {
