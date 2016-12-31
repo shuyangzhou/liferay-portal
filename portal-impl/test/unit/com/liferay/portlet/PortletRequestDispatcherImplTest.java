@@ -24,6 +24,8 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.impl.PortletAppImpl;
 import com.liferay.portal.model.impl.PortletImpl;
 import com.liferay.portal.util.PortalImpl;
+import com.liferay.registry.BasicRegistryImpl;
+import com.liferay.registry.RegistryUtil;
 
 import java.util.Collections;
 import java.util.Set;
@@ -124,6 +126,10 @@ public class PortletRequestDispatcherImplTest {
 				true, _portletContext, "/testPath|");
 
 		portletRequestDispatcher.include(_portletRequest, _portletResponse);
+	}
+
+	static {
+		RegistryUtil.setRegistry(new BasicRegistryImpl());
 	}
 
 	private static final Portlet _portlet = new PortletImpl() {

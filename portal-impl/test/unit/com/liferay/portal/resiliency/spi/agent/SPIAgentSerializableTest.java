@@ -43,6 +43,8 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.impl.PortletImpl;
 import com.liferay.portal.test.rule.AdviseWith;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
+import com.liferay.registry.BasicRegistryImpl;
+import com.liferay.registry.RegistryUtil;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -88,6 +90,8 @@ public class SPIAgentSerializableTest {
 
 	@Before
 	public void setUp() {
+		RegistryUtil.setRegistry(new BasicRegistryImpl());
+
 		Thread currentThread = Thread.currentThread();
 
 		_classLoader = new URLClassLoader(

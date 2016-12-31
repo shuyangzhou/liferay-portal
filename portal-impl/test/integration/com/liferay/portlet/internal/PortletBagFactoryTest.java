@@ -14,9 +14,10 @@
 
 package com.liferay.portlet.internal;
 
-import com.liferay.portal.kernel.bean.BeanLocatorException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.model.impl.PortletAppImpl;
 import com.liferay.portal.model.impl.PortletImpl;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.PortletBagFactory;
@@ -91,63 +92,50 @@ public class PortletBagFactoryTest {
 
 	@Test
 	public void test4_initializedInstance() throws Exception {
-		try {
-			PortletImpl portletImpl = new PortletImpl();
+		PortletImpl portletImpl = new PortletImpl();
 
-			portletImpl.setPortletClass(MVCPortlet.class.getName());
+		portletImpl.setPortletApp(new PortletAppImpl(StringPool.BLANK));
+		portletImpl.setPortletClass(MVCPortlet.class.getName());
 
-			PortletBagFactory portletBagFactory = new PortletBagFactory();
+		PortletBagFactory portletBagFactory = new PortletBagFactory();
 
-			Class<?> clazz = getClass();
+		Class<?> clazz = getClass();
 
-			portletBagFactory.setClassLoader(clazz.getClassLoader());
+		portletBagFactory.setClassLoader(clazz.getClassLoader());
 
-			portletBagFactory.setServletContext(new MockServletContext());
-			portletBagFactory.setWARFile(false);
+		portletBagFactory.setServletContext(new MockServletContext());
+		portletBagFactory.setWARFile(false);
 
-			portletBagFactory.create(portletImpl);
-
-			Assert.fail();
-		}
-		catch (BeanLocatorException ble) {
-		}
-		catch (NullPointerException npe) {
-		}
+		portletBagFactory.create(portletImpl);
 	}
 
 	@Test
 	public void test5_concreteInstance() throws Exception {
-		try {
-			PortletImpl portletImpl = new PortletImpl();
+		PortletImpl portletImpl = new PortletImpl();
 
-			final MVCPortlet mvcPortlet = new MVCPortlet();
+		portletImpl.setPortletApp(new PortletAppImpl(StringPool.BLANK));
 
-			PortletBagFactory portletBagFactory = new PortletBagFactory() {
+		final MVCPortlet mvcPortlet = new MVCPortlet();
 
-				@Override
-				protected Portlet getPortletInstance(
-					com.liferay.portal.kernel.model.Portlet portlet) {
+		PortletBagFactory portletBagFactory = new PortletBagFactory() {
 
-					return mvcPortlet;
-				}
+			@Override
+			protected Portlet getPortletInstance(
+				com.liferay.portal.kernel.model.Portlet portlet) {
 
-			};
+				return mvcPortlet;
+			}
 
-			Class<?> clazz = getClass();
+		};
 
-			portletBagFactory.setClassLoader(clazz.getClassLoader());
+		Class<?> clazz = getClass();
 
-			portletBagFactory.setServletContext(new MockServletContext());
-			portletBagFactory.setWARFile(false);
+		portletBagFactory.setClassLoader(clazz.getClassLoader());
 
-			portletBagFactory.create(portletImpl);
+		portletBagFactory.setServletContext(new MockServletContext());
+		portletBagFactory.setWARFile(false);
 
-			Assert.fail();
-		}
-		catch (BeanLocatorException ble) {
-		}
-		catch (NullPointerException npe) {
-		}
+		portletBagFactory.create(portletImpl);
 	}
 
 }
