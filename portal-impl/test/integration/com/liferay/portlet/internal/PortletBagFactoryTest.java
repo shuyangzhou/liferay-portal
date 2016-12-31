@@ -16,14 +16,16 @@ package com.liferay.portlet.internal;
 
 import com.liferay.portal.kernel.bean.BeanLocatorException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.model.impl.PortletImpl;
+import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portlet.PortletBagFactory;
 
 import javax.portlet.Portlet;
 
-import junit.framework.TestCase;
-
 import org.junit.Assert;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 import org.springframework.mock.web.MockServletContext;
@@ -31,7 +33,12 @@ import org.springframework.mock.web.MockServletContext;
 /**
  * @author Raymond Augé
  */
-public class PortletBagFactoryTest extends TestCase {
+public class PortletBagFactoryTest {
+
+	@ClassRule
+	@Rule
+	public static final AggregateTestRule aggregateTestRule =
+		new LiferayIntegrationTestRule();
 
 	@Test
 	public void test1() throws Exception {
