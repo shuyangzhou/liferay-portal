@@ -47,6 +47,10 @@ public class InstanceFactory {
 			Thread currentThread = Thread.currentThread();
 
 			classLoader = currentThread.getContextClassLoader();
+
+			if (classLoader == null) {
+				classLoader = ClassLoader.getSystemClassLoader();
+			}
 		}
 
 		Class<?> clazz = classLoader.loadClass(className);
