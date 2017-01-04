@@ -17,7 +17,7 @@ package com.liferay.asset.publisher.web.servlet.taglib.ui;
 import com.liferay.asset.publisher.web.constants.AssetPublisherConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.servlet.taglib.ui.FormNavigatorEntry;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import javax.servlet.ServletContext;
 
@@ -45,7 +45,7 @@ public class RSSFormNavigatorEntry extends BaseConfigurationFormNavigatorEntry {
 
 	@Override
 	public boolean isVisible(User user, Object formModelBean) {
-		if (!PortalUtil.isRSSFeedsEnabled()) {
+		if (!_portal.isRSSFeedsEnabled()) {
 			return false;
 		}
 
@@ -69,5 +69,8 @@ public class RSSFormNavigatorEntry extends BaseConfigurationFormNavigatorEntry {
 	protected String getJspPath() {
 		return "/configuration/rss.jsp";
 	}
+
+	@Reference
+	private Portal _portal;
 
 }

@@ -83,7 +83,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -158,7 +158,7 @@ public class LayoutAdminPortlet extends MVCPortlet {
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
+			portal.getUploadPortletRequest(actionRequest);
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -299,10 +299,10 @@ public class LayoutAdminPortlet extends MVCPortlet {
 			stagingGroupId, privateLayout, layout.getLayoutId(),
 			layout.getTypeSettingsProperties());
 
-		String redirect = PortalUtil.getLayoutFullURL(layout, themeDisplay);
+		String redirect = portal.getLayoutFullURL(layout, themeDisplay);
 
 		if (layout.isTypeURL()) {
-			redirect = PortalUtil.getGroupFriendlyURL(
+			redirect = portal.getGroupFriendlyURL(
 				layout.getLayoutSet(), themeDisplay);
 		}
 
@@ -414,7 +414,7 @@ public class LayoutAdminPortlet extends MVCPortlet {
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
+			portal.getUploadPortletRequest(actionRequest);
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -514,7 +514,7 @@ public class LayoutAdminPortlet extends MVCPortlet {
 				groupId, privateLayout, layoutId, layout.getTypeSettings());
 		}
 
-		HttpServletResponse response = PortalUtil.getHttpServletResponse(
+		HttpServletResponse response = portal.getHttpServletResponse(
 			actionResponse);
 
 		EventsProcessorUtil.process(
@@ -527,7 +527,7 @@ public class LayoutAdminPortlet extends MVCPortlet {
 			stagingGroupId, privateLayout, layout.getLayoutId(),
 			layout.getTypeSettingsProperties());
 
-		String redirect = PortalUtil.getLayoutFullURL(layout, themeDisplay);
+		String redirect = portal.getLayoutFullURL(layout, themeDisplay);
 
 		MultiSessionMessages.add(actionRequest, "layoutUpdated", layout);
 
@@ -627,13 +627,12 @@ public class LayoutAdminPortlet extends MVCPortlet {
 
 		MultiSessionMessages.add(
 			actionRequest,
-			PortalUtil.getPortletId(actionRequest) + "requestProcessed");
+			portal.getPortletId(actionRequest) + "requestProcessed");
 
 		Layout layout = themeDisplay.getLayout();
 
 		actionResponse.sendRedirect(
-			layout.getRegularURL(
-				PortalUtil.getHttpServletRequest(actionRequest)));
+			layout.getRegularURL(portal.getHttpServletRequest(actionRequest)));
 	}
 
 	/**
@@ -693,14 +692,14 @@ public class LayoutAdminPortlet extends MVCPortlet {
 
 		MultiSessionMessages.add(
 			actionRequest,
-			PortalUtil.getPortletId(actionRequest) + "requestProcessed");
+			portal.getPortletId(actionRequest) + "requestProcessed");
 	}
 
 	public void selectLayoutSetBranch(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+		HttpServletRequest request = portal.getHttpServletRequest(
 			actionRequest);
 
 		long groupId = ParamUtil.getLong(actionRequest, "groupId");
@@ -732,7 +731,7 @@ public class LayoutAdminPortlet extends MVCPortlet {
 
 		actionRequest.setAttribute(
 			WebKeys.REDIRECT,
-			PortalUtil.getLayoutURL(themeDisplay.getLayout(), themeDisplay));
+			portal.getLayoutURL(themeDisplay.getLayout(), themeDisplay));
 	}
 
 	protected void deleteThemeSettingsProperties(
@@ -822,7 +821,7 @@ public class LayoutAdminPortlet extends MVCPortlet {
 	protected String getEmptyLayoutSetURL(
 		PortletRequest portletRequest, long groupId, boolean privateLayout) {
 
-		PortletURL emptyLayoutSetURL = PortalUtil.getControlPanelPortletURL(
+		PortletURL emptyLayoutSetURL = portal.getControlPanelPortletURL(
 			portletRequest, LayoutAdminPortletKeys.GROUP_PAGES,
 			PortletRequest.RENDER_PHASE);
 
@@ -941,8 +940,7 @@ public class LayoutAdminPortlet extends MVCPortlet {
 		Layout redirectLayout = layoutLocalService.fetchLayout(newRefererPlid);
 
 		if (redirectLayout != null) {
-			redirect = PortalUtil.getLayoutFullURL(
-				redirectLayout, themeDisplay);
+			redirect = portal.getLayoutFullURL(redirectLayout, themeDisplay);
 		}
 		else {
 			redirect = getEmptyLayoutSetURL(
@@ -1394,6 +1392,10 @@ public class LayoutAdminPortlet extends MVCPortlet {
 	protected MDRActionService mdrActionService;
 	protected MDRRuleGroupInstanceLocalService mdrRuleGroupInstanceLocalService;
 	protected MDRRuleGroupInstanceService mdrRuleGroupInstanceService;
+
+	@Reference
+	protected Portal portal;
+
 	protected PortletLocalService portletLocalService;
 	protected PortletPreferencesLocalService portletPreferencesLocalService;
 	protected ThemeLocalService themeLocalService;

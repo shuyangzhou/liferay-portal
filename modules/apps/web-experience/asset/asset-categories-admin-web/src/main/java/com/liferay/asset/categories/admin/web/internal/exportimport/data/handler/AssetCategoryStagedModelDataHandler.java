@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Element;
@@ -313,7 +313,7 @@ public class AssetCategoryStagedModelDataHandler
 			titleMap = new HashMap<>();
 		}
 
-		titleMap.put(PortalUtil.getSiteDefaultLocale(groupId), name);
+		titleMap.put(_portal.getSiteDefaultLocale(groupId), name);
 
 		return titleMap;
 	}
@@ -343,5 +343,8 @@ public class AssetCategoryStagedModelDataHandler
 	private AssetCategoryPropertyLocalService
 		_assetCategoryPropertyLocalService;
 	private AssetVocabularyLocalService _assetVocabularyLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

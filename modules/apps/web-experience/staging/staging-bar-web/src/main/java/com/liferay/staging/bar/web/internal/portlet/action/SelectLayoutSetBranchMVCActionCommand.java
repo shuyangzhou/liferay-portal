@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.service.LayoutSetBranchLocalService;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.staging.bar.web.internal.portlet.constants.StagingBarPortletKeys;
 
 import javax.portlet.ActionRequest;
@@ -54,7 +54,7 @@ public class SelectLayoutSetBranchMVCActionCommand
 		throws Exception {
 
 		try {
-			HttpServletRequest request = PortalUtil.getHttpServletRequest(
+			HttpServletRequest request = _portal.getHttpServletRequest(
 				actionRequest);
 
 			long groupId = ParamUtil.getLong(actionRequest, "groupId");
@@ -101,5 +101,8 @@ public class SelectLayoutSetBranchMVCActionCommand
 
 	private LayoutSetBranchLocalService _layoutSetBranchLocalService;
 	private LayoutSetLocalService _layoutSetLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }
