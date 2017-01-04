@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
@@ -100,7 +100,7 @@ public class BookmarksEntryAssetRendererFactory
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse, long classTypeId) {
 
-		PortletURL portletURL = PortalUtil.getControlPanelPortletURL(
+		PortletURL portletURL = _portal.getControlPanelPortletURL(
 			liferayPortletRequest, getGroup(liferayPortletRequest),
 			BookmarksPortletKeys.BOOKMARKS, 0, 0, PortletRequest.RENDER_PHASE);
 
@@ -166,6 +166,10 @@ public class BookmarksEntryAssetRendererFactory
 	}
 
 	private BookmarksEntryLocalService _bookmarksEntryLocalService;
+
+	@Reference
+	private Portal _portal;
+
 	private ServletContext _servletContext;
 
 }

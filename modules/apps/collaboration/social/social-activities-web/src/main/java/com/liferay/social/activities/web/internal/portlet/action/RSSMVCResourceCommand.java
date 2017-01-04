@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -159,7 +159,7 @@ public class RSSMVCResourceCommand extends BaseRSSMVCResourceCommand {
 
 		syndLinks.add(alternateSyndLink);
 
-		alternateSyndLink.setHref(PortalUtil.getLayoutFullURL(themeDisplay));
+		alternateSyndLink.setHref(_portal.getLayoutFullURL(themeDisplay));
 		alternateSyndLink.setRel("alternate");
 
 		syndFeed.setPublishedDate(new Date());
@@ -244,6 +244,10 @@ public class RSSMVCResourceCommand extends BaseRSSMVCResourceCommand {
 	}
 
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private Portal _portal;
+
 	private SocialActivitiesQueryHelper _socialActivitiesQueryHelper;
 	private SocialActivityInterpreterLocalService
 		_socialActivityInterpreterLocalService;

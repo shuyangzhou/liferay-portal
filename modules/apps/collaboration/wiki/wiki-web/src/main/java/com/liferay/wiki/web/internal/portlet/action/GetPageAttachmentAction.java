@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.struts.BaseStrutsAction;
 import com.liferay.portal.kernel.struts.StrutsAction;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.trash.kernel.util.TrashUtil;
@@ -87,7 +87,7 @@ public class GetPageAttachmentAction extends BaseStrutsAction {
 				}
 			}
 			else {
-				PortalUtil.sendError(e, request, response);
+				_portal.sendError(e, request, response);
 			}
 
 			return null;
@@ -137,6 +137,9 @@ public class GetPageAttachmentAction extends BaseStrutsAction {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		GetPageAttachmentAction.class);
+
+	@Reference
+	private Portal _portal;
 
 	private WikiPageService _wikiPageService;
 

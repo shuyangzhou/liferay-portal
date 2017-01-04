@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -155,7 +155,7 @@ public class EditEntryMVCActionCommand extends BaseMVCActionCommand {
 				displayDateHour += 12;
 			}
 
-			displayDate = PortalUtil.getDate(
+			displayDate = _portal.getDate(
 				displayDateMonth, displayDateDay, displayDateYear,
 				displayDateHour, displayDateMinute, themeDisplay.getTimeZone(),
 				EntryDisplayDateException.class);
@@ -178,7 +178,7 @@ public class EditEntryMVCActionCommand extends BaseMVCActionCommand {
 			expirationDateHour += 12;
 		}
 
-		Date expirationDate = PortalUtil.getDate(
+		Date expirationDate = _portal.getDate(
 			expirationDateMonth, expirationDateDay, expirationDateYear,
 			expirationDateHour, expirationDateMinute,
 			themeDisplay.getTimeZone(), EntryExpirationDateException.class);
@@ -199,5 +199,8 @@ public class EditEntryMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	private AnnouncementsEntryService _announcementsEntryService;
+
+	@Reference
+	private Portal _portal;
 
 }

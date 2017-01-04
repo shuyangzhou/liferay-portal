@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Function;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.ratings.kernel.model.RatingsEntry;
@@ -197,7 +197,7 @@ public class MBCommentManagerImpl implements CommentManager {
 
 	@Override
 	public int getCommentsCount(String className, long classPK) {
-		long classNameId = PortalUtil.getClassNameId(className);
+		long classNameId = _portal.getClassNameId(className);
 
 		return _mbMessageLocalService.getDiscussionMessagesCount(
 			classNameId, classPK, WorkflowConstants.STATUS_APPROVED);
@@ -376,6 +376,10 @@ public class MBCommentManagerImpl implements CommentManager {
 	private MBDiscussionLocalService _mbDiscussionLocalService;
 	private MBMessageLocalService _mbMessageLocalService;
 	private MBThreadLocalService _mbThreadLocalService;
+
+	@Reference
+	private Portal _portal;
+
 	private RatingsEntryLocalService _ratingsEntryLocalService;
 	private RatingsStatsLocalService _ratingsStatsLocalService;
 

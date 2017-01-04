@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.service.LayoutPrototypeLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.DefaultLayoutPrototypesUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.language.LanguageResources;
@@ -99,7 +99,7 @@ public class AddLayoutPrototypePortalInstanceLifecycleListener
 
 		preferences.put(
 			"classNameId",
-			String.valueOf(PortalUtil.getClassNameId(BlogsEntry.class)));
+			String.valueOf(_portal.getClassNameId(BlogsEntry.class)));
 		preferences.put("showAssetCount", Boolean.TRUE.toString());
 
 		DefaultLayoutPrototypesUtil.updatePortletSetup(
@@ -148,6 +148,10 @@ public class AddLayoutPrototypePortalInstanceLifecycleListener
 	}
 
 	private LayoutPrototypeLocalService _layoutPrototypeLocalService;
+
+	@Reference
+	private Portal _portal;
+
 	private UserLocalService _userLocalService;
 
 }

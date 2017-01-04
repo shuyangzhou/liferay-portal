@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
@@ -72,7 +72,7 @@ public class MentionsBlogsEntryServiceWrapper
 			return entry;
 		}
 
-		long siteGroupId = PortalUtil.getSiteGroupId(entry.getGroupId());
+		long siteGroupId = _portal.getSiteGroupId(entry.getGroupId());
 
 		if (!MentionsUtil.isMentionsEnabled(siteGroupId)) {
 			return entry;
@@ -121,5 +121,8 @@ public class MentionsBlogsEntryServiceWrapper
 	private BlogsEntryLocalService _blogsEntryLocalService;
 	private ConfigurationProvider _configurationProvider;
 	private MentionsNotifier _mentionsNotifier;
+
+	@Reference
+	private Portal _portal;
 
 }

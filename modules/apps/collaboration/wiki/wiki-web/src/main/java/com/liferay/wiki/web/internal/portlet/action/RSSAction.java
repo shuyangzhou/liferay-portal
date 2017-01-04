@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.struts.StrutsAction;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.RSSUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -61,7 +60,7 @@ public class RSSAction extends BaseRSSStrutsAction {
 		String displayStyle = ParamUtil.getString(
 			request, "displayStyle", RSSUtil.DISPLAY_STYLE_DEFAULT);
 
-		String layoutFullURL = PortalUtil.getLayoutFullURL(
+		String layoutFullURL = _portal.getLayoutFullURL(
 			themeDisplay.getScopeGroupId(), WikiPortletKeys.WIKI);
 
 		StringBundler sb = new StringBundler(4);
@@ -116,6 +115,9 @@ public class RSSAction extends BaseRSSStrutsAction {
 	protected void setWikiPageService(WikiPageService wikiPageService) {
 		_wikiPageService = wikiPageService;
 	}
+
+	@Reference
+	private Portal _portal;
 
 	private WikiPageService _wikiPageService;
 
