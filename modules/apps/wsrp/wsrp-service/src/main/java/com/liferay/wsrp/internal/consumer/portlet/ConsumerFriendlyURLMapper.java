@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.portlet.FriendlyURLMapper;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.wsrp.constants.WSRPPortletKeys;
 
@@ -31,6 +31,7 @@ import javax.portlet.PortletMode;
 import javax.portlet.WindowState;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael Young
@@ -134,8 +135,7 @@ public class ConsumerFriendlyURLMapper extends BaseFriendlyURLMapper {
 			friendlyURLPath.substring(pos4 + 1, pos5));
 
 		String name =
-			PortalUtil.getPortletNamespace(portletId) +
-				"wsrp-navigationalState";
+			_portal.getPortletNamespace(portletId) + "wsrp-navigationalState";
 
 		addParameter(parameterMap, name, friendlyURLPath.substring(pos5 + 1));
 	}
@@ -165,5 +165,8 @@ public class ConsumerFriendlyURLMapper extends BaseFriendlyURLMapper {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ConsumerFriendlyURLMapper.class);
+
+	@Reference
+	private Portal _portal;
 
 }

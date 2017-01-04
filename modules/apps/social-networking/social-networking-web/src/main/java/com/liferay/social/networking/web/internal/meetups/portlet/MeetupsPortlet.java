@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.social.networking.constants.SocialNetworkingPortletKeys;
 import com.liferay.social.networking.service.MeetupsEntryLocalService;
@@ -87,7 +87,7 @@ public class MeetupsPortlet extends MVCPortlet {
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
+			_portal.getUploadPortletRequest(actionRequest);
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -199,5 +199,8 @@ public class MeetupsPortlet extends MVCPortlet {
 
 	private MeetupsEntryLocalService _meetupsEntryLocalService;
 	private MeetupsRegistrationLocalService _meetupsRegistrationLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

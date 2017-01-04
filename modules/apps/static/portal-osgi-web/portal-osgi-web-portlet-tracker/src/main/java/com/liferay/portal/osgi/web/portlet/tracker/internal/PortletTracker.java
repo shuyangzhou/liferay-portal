@@ -44,7 +44,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -121,7 +121,7 @@ public class PortletTracker
 			portletName = clazz.getName();
 		}
 
-		String portletId = PortalUtil.getJsSafePortletId(portletName);
+		String portletId = _portal.getJsSafePortletId(portletName);
 
 		portletId = StringUtil.replace(
 			portletId, new char[] {'$'}, new char[] {'_'});
@@ -1116,6 +1116,9 @@ public class PortletTracker
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
+
+	@Reference
+	private Portal _portal;
 
 	@Reference
 	private PortletInstanceFactory _portletInstanceFactory;

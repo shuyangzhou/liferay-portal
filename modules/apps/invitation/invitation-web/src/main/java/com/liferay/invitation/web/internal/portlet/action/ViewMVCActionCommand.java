@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -110,10 +110,9 @@ public class ViewMVCActionCommand extends BaseMVCActionCommand {
 
 		Layout layout = themeDisplay.getLayout();
 
-		String portalURL = PortalUtil.getPortalURL(actionRequest);
+		String portalURL = _portal.getPortalURL(actionRequest);
 
-		String layoutFullURL = PortalUtil.getLayoutFullURL(
-			layout, themeDisplay);
+		String layoutFullURL = _portal.getLayoutFullURL(layout, themeDisplay);
 
 		Map<Locale, String> localizedSubjectMap =
 			InvitationUtil.getEmailMessageSubjectMap(portletPreferences);
@@ -160,7 +159,7 @@ public class ViewMVCActionCommand extends BaseMVCActionCommand {
 			Company company = themeDisplay.getCompany();
 
 			message.setMessageId(
-				PortalUtil.getMailId(
+				_portal.getMailId(
 					company.getMx(), InvitationUtil.MESSAGE_POP_PORTLET_PREFIX,
 					PortalUUIDUtil.generate()));
 
@@ -169,7 +168,7 @@ public class ViewMVCActionCommand extends BaseMVCActionCommand {
 
 		SessionMessages.add(actionRequest, "invitationSent");
 
-		String redirect = PortalUtil.escapeRedirect(
+		String redirect = _portal.escapeRedirect(
 			ParamUtil.getString(actionRequest, "redirect"));
 
 		if (Validator.isNotNull(redirect)) {
@@ -185,5 +184,8 @@ public class ViewMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	private MailService _mailService;
+
+	@Reference
+	private Portal _portal;
 
 }
