@@ -71,11 +71,17 @@ public class JSLoaderModulesTracker
 
 		_jsLoaderModules.put(serviceReference, jsLoaderModule);
 
+		_lastModified = System.currentTimeMillis();
+
 		return serviceReference;
 	}
 
 	public Collection<JSLoaderModule> getJSLoaderModules() {
 		return _jsLoaderModules.values();
+	}
+
+	public long getLastModified() {
+		return _lastModified;
 	}
 
 	public long getTrackingCount() {
@@ -98,6 +104,8 @@ public class JSLoaderModulesTracker
 		ServiceReference<ServletContext> trackedServiceReference) {
 
 		_jsLoaderModules.remove(serviceReference);
+
+		_lastModified = System.currentTimeMillis();
 	}
 
 	@Deactivate
@@ -114,6 +122,7 @@ public class JSLoaderModulesTracker
 	private volatile Details _details;
 	private final Map<ServiceReference<ServletContext>, JSLoaderModule>
 		_jsLoaderModules = new ConcurrentSkipListMap<>();
+	private volatile long _lastModified = System.currentTimeMillis();
 	private ServiceTracker<ServletContext, ServiceReference<ServletContext>>
 		_serviceTracker;
 

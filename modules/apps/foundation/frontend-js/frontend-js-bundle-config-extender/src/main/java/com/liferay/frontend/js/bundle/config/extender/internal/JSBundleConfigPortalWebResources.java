@@ -73,7 +73,7 @@ public class JSBundleConfigPortalWebResources {
 
 		@Override
 		public long getLastModified() {
-			return _jsBundleConfigTracker.getTrackingCount();
+			return _jsBundleConfigTracker.getLastModified();
 		}
 
 		@Override

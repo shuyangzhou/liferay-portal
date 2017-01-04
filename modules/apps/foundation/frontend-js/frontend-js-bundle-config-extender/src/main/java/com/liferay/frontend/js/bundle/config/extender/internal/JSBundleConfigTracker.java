@@ -82,6 +82,8 @@ public class JSBundleConfigTracker
 				_jsConfigs.put(
 					serviceReference, new JSConfig(servletContext, url));
 
+				_lastModified = System.currentTimeMillis();
+
 				return serviceReference;
 			}
 		}
@@ -91,6 +93,10 @@ public class JSBundleConfigTracker
 
 	public Collection<JSConfig> getJSConfigs() {
 		return _jsConfigs.values();
+	}
+
+	public long getLastModified() {
+		return _lastModified;
 	}
 
 	public long getTrackingCount() {
@@ -116,6 +122,8 @@ public class JSBundleConfigTracker
 
 		if (jsConfig != null) {
 			_bundleContext.ungetService(serviceReference);
+
+			_lastModified = System.currentTimeMillis();
 		}
 	}
 
@@ -149,6 +157,7 @@ public class JSBundleConfigTracker
 	private BundleContext _bundleContext;
 	private final Map<ServiceReference<ServletContext>, JSConfig> _jsConfigs =
 		new ConcurrentSkipListMap<>();
+	private volatile long _lastModified = System.currentTimeMillis();
 	private ServiceTracker<ServletContext, ServiceReference<ServletContext>>
 		_serviceTracker;
 

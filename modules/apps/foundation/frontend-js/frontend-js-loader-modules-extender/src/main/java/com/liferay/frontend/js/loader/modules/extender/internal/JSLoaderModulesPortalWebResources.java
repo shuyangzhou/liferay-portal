@@ -72,7 +72,7 @@ public class JSLoaderModulesPortalWebResources {
 
 		@Override
 		public long getLastModified() {
-			return _jsLoaderModulesTracker.getTrackingCount();
+			return _jsLoaderModulesTracker.getLastModified();
 		}
 
 		@Override
