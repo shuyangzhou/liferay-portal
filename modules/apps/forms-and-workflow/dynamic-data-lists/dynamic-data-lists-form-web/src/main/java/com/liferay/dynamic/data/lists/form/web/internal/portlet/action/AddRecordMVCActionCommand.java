@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 
 import javax.portlet.ActionRequest;
@@ -94,7 +94,7 @@ public class AddRecordMVCActionCommand extends BaseMVCActionCommand {
 		if (SessionErrors.isEmpty(actionRequest) &&
 			Validator.isNotNull(redirectURL)) {
 
-			String portletId = PortalUtil.getPortletId(actionRequest);
+			String portletId = _portal.getPortletId(actionRequest);
 
 			SessionMessages.add(
 				actionRequest, portletId,
@@ -169,5 +169,8 @@ public class AddRecordMVCActionCommand extends BaseMVCActionCommand {
 	private DDLRecordService _ddlRecordService;
 	private DDLRecordSetService _ddlRecordSetService;
 	private DDMFormValuesFactory _ddmFormValuesFactory;
+
+	@Reference
+	private Portal _portal;
 
 }
