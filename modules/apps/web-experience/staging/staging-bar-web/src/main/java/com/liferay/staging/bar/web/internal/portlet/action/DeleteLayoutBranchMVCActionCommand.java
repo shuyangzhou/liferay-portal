@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.service.LayoutBranchService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.staging.bar.web.internal.portlet.constants.StagingBarPortletKeys;
 
 import javax.portlet.ActionRequest;
@@ -61,7 +61,7 @@ public class DeleteLayoutBranchMVCActionCommand extends BaseMVCActionCommand {
 			if (layoutBranchId == currentLayoutBranchId) {
 				SessionMessages.add(
 					actionRequest,
-					PortalUtil.getPortletId(actionRequest) +
+					_portal.getPortletId(actionRequest) +
 						SessionMessages.KEY_SUFFIX_PORTLET_NOT_AJAXABLE);
 			}
 
@@ -83,5 +83,8 @@ public class DeleteLayoutBranchMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	private LayoutBranchService _layoutBranchService;
+
+	@Reference
+	private Portal _portal;
 
 }

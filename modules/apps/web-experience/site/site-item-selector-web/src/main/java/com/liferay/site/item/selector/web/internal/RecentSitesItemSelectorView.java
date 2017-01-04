@@ -20,7 +20,7 @@ import com.liferay.item.selector.criteria.URLItemSelectorReturnType;
 import com.liferay.item.selector.criteria.UUIDItemSelectorReturnType;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.site.constants.SiteWebKeys;
 import com.liferay.site.item.selector.criterion.SiteItemSelectorCriterion;
@@ -74,7 +74,7 @@ public class RecentSitesItemSelectorView
 
 	@Override
 	public String getTitle(Locale locale) {
-		ResourceBundle resourceBundle = PortalUtil.getResourceBundle(locale);
+		ResourceBundle resourceBundle = _portal.getResourceBundle(locale);
 
 		return ResourceBundleUtil.getString(resourceBundle, "recent");
 	}
@@ -143,6 +143,10 @@ public class RecentSitesItemSelectorView
 				}));
 
 	private GroupURLProvider _groupURLProvider;
+
+	@Reference
+	private Portal _portal;
+
 	private RecentGroupManager _recentGroupManager;
 	private ServletContext _servletContext;
 

@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.ui.util.SessionTreeJSClicks;
@@ -82,7 +82,7 @@ public class ExportLayoutsMVCActionCommand extends BaseMVCActionCommand {
 		if (Validator.isNull(cmd)) {
 			SessionMessages.add(
 				actionRequest,
-				PortalUtil.getPortletId(actionRequest) +
+				_portal.getPortletId(actionRequest) +
 					SessionMessages.KEY_SUFFIX_FORCE_SEND_REDIRECT);
 
 			hideDefaultSuccessMessage(actionRequest);
@@ -212,7 +212,7 @@ public class ExportLayoutsMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	protected void setLayoutIdMap(ActionRequest actionRequest) {
-		HttpServletRequest portletRequest = PortalUtil.getHttpServletRequest(
+		HttpServletRequest portletRequest = _portal.getHttpServletRequest(
 			actionRequest);
 
 		long groupId = ParamUtil.getLong(actionRequest, "groupId");
@@ -245,5 +245,8 @@ public class ExportLayoutsMVCActionCommand extends BaseMVCActionCommand {
 		_exportImportConfigurationLocalService;
 	private ExportImportService _exportImportService;
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

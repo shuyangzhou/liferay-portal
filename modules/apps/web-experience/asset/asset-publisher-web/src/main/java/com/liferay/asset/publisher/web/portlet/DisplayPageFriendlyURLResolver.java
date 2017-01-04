@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.InheritableMap;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -71,8 +71,7 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 		Layout layout = getJournalArticleLayout(
 			groupId, privateLayout, friendlyURL);
 
-		String layoutActualURL = PortalUtil.getLayoutActualURL(
-			layout, mainPath);
+		String layoutActualURL = _portal.getLayoutActualURL(layout, mainPath);
 
 		InheritableMap<String, String[]> actualParams = new InheritableMap<>();
 
@@ -121,7 +120,7 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 		actualParams.put(
 			"p_j_a_id", new String[] {String.valueOf(journalArticle.getId())});
 
-		String namespace = PortalUtil.getPortletNamespace(
+		String namespace = _portal.getPortletNamespace(
 			defaultAssetPublisherPortletId);
 
 		actualParams.put(
@@ -149,17 +148,17 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 				layoutActualURL + StringPool.QUESTION + queryString;
 		}
 
-		Locale locale = PortalUtil.getLocale(request);
+		Locale locale = _portal.getLocale(request);
 
-		PortalUtil.addPageSubtitle(journalArticle.getTitle(locale), request);
-		PortalUtil.addPageDescription(
+		_portal.addPageSubtitle(journalArticle.getTitle(locale), request);
+		_portal.addPageDescription(
 			journalArticle.getDescription(locale), request);
 
 		List<AssetTag> assetTags = _assetTagLocalService.getTags(
 			JournalArticle.class.getName(), journalArticle.getPrimaryKey());
 
 		if (!assetTags.isEmpty()) {
-			PortalUtil.addPageKeywords(
+			_portal.addPageKeywords(
 				ListUtil.toString(assetTags, AssetTag.NAME_ACCESSOR), request);
 		}
 
@@ -222,5 +221,8 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 	private AssetTagLocalService _assetTagLocalService;
 	private JournalArticleLocalService _journalArticleLocalService;
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

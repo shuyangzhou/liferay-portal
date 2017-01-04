@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.configuration.css.web.internal.constants.PortletConfigurationCSSPortletKeys;
@@ -120,7 +120,7 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 
 				defaultPortletTitlesJSONObject.put(
 					languageId,
-					PortalUtil.getPortletTitle(rootPortletId, languageId));
+					_portal.getPortletTitle(rootPortletId, languageId));
 			}
 
 			portletSetupJSONObject.put(
@@ -215,7 +215,7 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 
 			String rootPortletId = PortletConstants.getRootPortletId(portletId);
 
-			String defaultPortletTitle = PortalUtil.getPortletTitle(
+			String defaultPortletTitle = _portal.getPortletTitle(
 				rootPortletId, languageId);
 
 			if ((title != null) &&
@@ -261,5 +261,8 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletConfigurationCSSPortlet.class);
+
+	@Reference
+	private Portal _portal;
 
 }

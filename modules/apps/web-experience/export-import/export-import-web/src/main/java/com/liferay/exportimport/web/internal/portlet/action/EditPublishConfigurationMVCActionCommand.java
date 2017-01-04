@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -67,7 +66,7 @@ public class EditPublishConfigurationMVCActionCommand
 	protected void addSessionMessages(ActionRequest actionRequest)
 		throws Exception {
 
-		String portletId = PortalUtil.getPortletId(actionRequest);
+		String portletId = portal.getPortletId(actionRequest);
 		long exportImportConfigurationId = ParamUtil.getLong(
 			actionRequest, "exportImportConfigurationId");
 
