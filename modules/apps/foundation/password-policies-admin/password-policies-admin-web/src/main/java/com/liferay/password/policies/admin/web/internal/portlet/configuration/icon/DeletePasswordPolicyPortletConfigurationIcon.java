@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.service.PasswordPolicyLocalService;
 import com.liferay.portal.kernel.service.permission.PasswordPolicyPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -125,12 +125,15 @@ public class DeletePasswordPolicyPortletConfigurationIcon
 	}
 
 	private long _getPasswordPolicyId(PortletRequest portletRequest) {
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+		HttpServletRequest request = _portal.getHttpServletRequest(
 			portletRequest);
 
 		return ParamUtil.getLong(request, "passwordPolicyId");
 	}
 
 	private PasswordPolicyLocalService _passwordPolicyLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.CookieKeys;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -70,8 +70,8 @@ public class RememberMeAutoLogin extends BaseAutoLogin {
 
 		// LEP-5188
 
-		String proxyPath = PortalUtil.getPathProxy();
-		String contextPath = PortalUtil.getPathContext();
+		String proxyPath = _portal.getPathProxy();
+		String contextPath = _portal.getPathContext();
 
 		if (proxyPath.equals(contextPath)) {
 			if (Validator.isNotNull(request.getContextPath())) {
@@ -90,7 +90,7 @@ public class RememberMeAutoLogin extends BaseAutoLogin {
 			Validator.isNotNull(autoPassword) &&
 			Validator.isNotNull(rememberMe)) {
 
-			Company company = PortalUtil.getCompany(request);
+			Company company = _portal.getCompany(request);
 
 			KeyValuePair kvp = null;
 
@@ -109,7 +109,7 @@ public class RememberMeAutoLogin extends BaseAutoLogin {
 		// LPS-11218
 
 		if (credentials != null) {
-			Company company = PortalUtil.getCompany(request);
+			Company company = _portal.getCompany(request);
 
 			User defaultUser = _userLocalService.getDefaultUser(
 				company.getCompanyId());
@@ -151,6 +151,9 @@ public class RememberMeAutoLogin extends BaseAutoLogin {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		RememberMeAutoLogin.class);
+
+	@Reference
+	private Portal _portal;
 
 	private UserLocalService _userLocalService;
 

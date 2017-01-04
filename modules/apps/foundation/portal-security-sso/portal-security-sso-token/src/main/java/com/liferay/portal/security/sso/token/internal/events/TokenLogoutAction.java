@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.sso.token.configuration.TokenConfiguration;
 import com.liferay.portal.security.sso.token.constants.TokenConstants;
@@ -74,7 +74,7 @@ public class TokenLogoutAction extends Action {
 	@Override
 	public void run(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			long companyId = PortalUtil.getCompanyId(request);
+			long companyId = _portal.getCompanyId(request);
 
 			TokenConfiguration tokenCompanyServiceSettings =
 				_configurationProvider.getConfiguration(
@@ -144,5 +144,8 @@ public class TokenLogoutAction extends Action {
 	private ConfigurationProvider _configurationProvider;
 	private final Map<LogoutProcessorType, LogoutProcessor> _logoutProcessors =
 		new ConcurrentHashMap<>();
+
+	@Reference
+	private Portal _portal;
 
 }
