@@ -17,6 +17,7 @@ package com.liferay.portal.security.auth.verifier.internal.request.parameter.mod
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifier;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.security.auth.verifier.internal.module.BaseAuthVerifierPublisher;
 import com.liferay.portal.security.auth.verifier.request.parameter.RequestParameterAuthVerifier;
 
@@ -46,7 +47,7 @@ public class RequestParameterAuthVerifierPublisher
 		BundleContext bundleContext, Map<String, Object> properties) {
 
 		_authVerifier = new RequestParameterAuthVerifier(
-			_configurationProvider, _userLocalService);
+			_configurationProvider, _portal, _userLocalService);
 
 		super.activate(bundleContext, properties);
 	}
@@ -78,12 +79,18 @@ public class RequestParameterAuthVerifierPublisher
 	}
 
 	@Reference(unbind = "-")
+	protected void setPortal(Portal portal) {
+		_portal = portal;
+	}
+
+	@Reference(unbind = "-")
 	protected void setUserLocalService(UserLocalService userLocalService) {
 		_userLocalService = userLocalService;
 	}
 
 	private AuthVerifier _authVerifier;
 	private ConfigurationProvider _configurationProvider;
+	private Portal _portal;
 	private UserLocalService _userLocalService;
 
 }

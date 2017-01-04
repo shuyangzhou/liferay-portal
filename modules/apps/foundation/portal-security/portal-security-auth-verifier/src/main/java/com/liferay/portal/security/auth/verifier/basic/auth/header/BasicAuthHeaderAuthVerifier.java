@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
 import com.liferay.portal.kernel.security.auto.login.AutoLoginException;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.security.auto.login.basic.auth.header.BasicAuthHeaderAutoLogin;
 
 import java.util.Properties;
@@ -37,9 +38,10 @@ public class BasicAuthHeaderAuthVerifier
 	extends BasicAuthHeaderAutoLogin implements AuthVerifier {
 
 	public BasicAuthHeaderAuthVerifier(
-		ConfigurationProvider configurationProvider) {
+		ConfigurationProvider configurationProvider, Portal portal) {
 
 		setConfigurationProvider(configurationProvider);
+		setPortal(portal);
 	}
 
 	@Override
