@@ -45,7 +45,7 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -194,7 +194,7 @@ public class AdminPortlet extends BaseKBPortlet {
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
 			UploadPortletRequest uploadPortletRequest =
-				PortalUtil.getUploadPortletRequest(actionRequest);
+				_portal.getUploadPortletRequest(actionRequest);
 
 			checkExceededSizeLimit(actionRequest);
 
@@ -243,7 +243,7 @@ public class AdminPortlet extends BaseKBPortlet {
 		String resourceID = GetterUtil.getString(
 			resourceRequest.getResourceID());
 
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+		HttpServletRequest request = _portal.getHttpServletRequest(
 			resourceRequest);
 
 		if (resourceID.equals("infoPanel")) {
@@ -287,7 +287,7 @@ public class AdminPortlet extends BaseKBPortlet {
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			KBWebKeys.THEME_DISPLAY);
 
-		String portletId = PortalUtil.getPortletId(actionRequest);
+		String portletId = _portal.getPortletId(actionRequest);
 
 		kbArticleService.subscribeGroupKBArticles(
 			themeDisplay.getScopeGroupId(), portletId);
@@ -300,7 +300,7 @@ public class AdminPortlet extends BaseKBPortlet {
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			KBWebKeys.THEME_DISPLAY);
 
-		String portletId = PortalUtil.getPortletId(actionRequest);
+		String portletId = _portal.getPortletId(actionRequest);
 
 		kbArticleService.unsubscribeGroupKBArticles(
 			themeDisplay.getScopeGroupId(), portletId);
@@ -372,7 +372,7 @@ public class AdminPortlet extends BaseKBPortlet {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		String portletId = PortalUtil.getPortletId(actionRequest);
+		String portletId = _portal.getPortletId(actionRequest);
 
 		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
 
@@ -469,7 +469,7 @@ public class AdminPortlet extends BaseKBPortlet {
 
 			KBArticle kbArticle = null;
 
-			long kbArticleClassNameId = PortalUtil.getClassNameId(
+			long kbArticleClassNameId = _portal.getClassNameId(
 				KBArticleConstants.getClassName());
 
 			long resourceClassNameId = ParamUtil.getLong(
@@ -492,7 +492,7 @@ public class AdminPortlet extends BaseKBPortlet {
 			KBArticle parentKBArticle = null;
 			KBFolder parentKBFolder = null;
 
-			long kbFolderClassNameId = PortalUtil.getClassNameId(
+			long kbFolderClassNameId = _portal.getClassNameId(
 				KBFolderConstants.getClassName());
 
 			long parentResourceClassNameId = ParamUtil.getLong(
@@ -600,5 +600,8 @@ public class AdminPortlet extends BaseKBPortlet {
 	)
 	protected void setRelease(Release release) {
 	}
+
+	@Reference
+	private Portal _portal;
 
 }

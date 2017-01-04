@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
@@ -224,12 +224,12 @@ public class ArticlePortlet extends BaseKBPortlet {
 
 		if (Validator.isNull(kbFolderUrlTitle)) {
 			kbArticle = _kbArticleLocalService.fetchKBArticleByUrlTitle(
-				PortalUtil.getScopeGroupId(renderRequest),
+				_portal.getScopeGroupId(renderRequest),
 				KBFolderConstants.DEFAULT_PARENT_FOLDER_ID, urlTitle);
 		}
 		else {
 			kbArticle = _kbArticleLocalService.fetchKBArticleByUrlTitle(
-				PortalUtil.getScopeGroupId(renderRequest), kbFolderUrlTitle,
+				_portal.getScopeGroupId(renderRequest), kbFolderUrlTitle,
 				urlTitle);
 		}
 
@@ -255,5 +255,8 @@ public class ArticlePortlet extends BaseKBPortlet {
 	}
 
 	private KBArticleLocalService _kbArticleLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }
