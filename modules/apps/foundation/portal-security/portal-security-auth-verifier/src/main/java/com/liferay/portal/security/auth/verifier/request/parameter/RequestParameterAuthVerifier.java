@@ -14,11 +14,13 @@
 
 package com.liferay.portal.security.auth.verifier.request.parameter;
 
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.auth.AccessControlContext;
 import com.liferay.portal.kernel.security.auth.AuthException;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifier;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
 import com.liferay.portal.kernel.security.auto.login.AutoLoginException;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.security.auto.login.request.parameter.RequestParameterAutoLogin;
 
 import java.util.Properties;
@@ -28,6 +30,22 @@ import java.util.Properties;
  */
 public class RequestParameterAuthVerifier
 	extends RequestParameterAutoLogin implements AuthVerifier {
+
+	/**
+	 * @deprecated As of 2.0.0, replaced by {@link
+	 *		#RequestParameterAuthVerifier(ConfigurationProvider, UserLocalService)}
+	 */
+	@Deprecated
+	public RequestParameterAuthVerifier() {
+	}
+
+	public RequestParameterAuthVerifier(
+		ConfigurationProvider configurationProvider,
+		UserLocalService userLocalService) {
+
+		setConfigurationProvider(configurationProvider);
+		setUserLocalService(userLocalService);
+	}
 
 	@Override
 	public String getAuthType() {
