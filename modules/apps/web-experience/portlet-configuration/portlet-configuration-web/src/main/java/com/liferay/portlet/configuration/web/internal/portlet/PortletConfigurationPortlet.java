@@ -56,7 +56,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -278,13 +278,13 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 
 		SessionMessages.add(
 			actionRequest,
-			PortalUtil.getPortletId(actionRequest) +
+			_portal.getPortletId(actionRequest) +
 				SessionMessages.KEY_SUFFIX_REFRESH_PORTLET,
 			portletResource);
 
 		SessionMessages.add(
 			actionRequest,
-			PortalUtil.getPortletId(actionRequest) +
+			_portal.getPortletId(actionRequest) +
 				SessionMessages.KEY_SUFFIX_UPDATED_CONFIGURATION);
 	}
 
@@ -317,13 +317,13 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 
 		SessionMessages.add(
 			actionRequest,
-			PortalUtil.getPortletId(actionRequest) +
+			_portal.getPortletId(actionRequest) +
 				SessionMessages.KEY_SUFFIX_REFRESH_PORTLET,
 			portletResource);
 
 		SessionMessages.add(
 			actionRequest,
-			PortalUtil.getPortletId(actionRequest) +
+			_portal.getPortletId(actionRequest) +
 				SessionMessages.KEY_SUFFIX_UPDATED_CONFIGURATION);
 	}
 
@@ -442,7 +442,7 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 
 		SessionMessages.add(
 			actionRequest,
-			PortalUtil.getPortletId(actionRequest) +
+			_portal.getPortletId(actionRequest) +
 				SessionMessages.KEY_SUFFIX_REFRESH_PORTLET,
 			portletResource);
 	}
@@ -871,7 +871,7 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 			ServletContext servletContext =
 				(ServletContext)portletRequest.getAttribute(WebKeys.CTX);
 
-			portletTitle = PortalUtil.getPortletTitle(
+			portletTitle = _portal.getPortletTitle(
 				portlet, servletContext, themeDisplay.getLocale());
 		}
 
@@ -1054,7 +1054,7 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 
 		String newScopeName = (String)newScopeTuple.getObject(1);
 
-		String newPortletTitle = PortalUtil.getNewPortletTitle(
+		String newPortletTitle = _portal.getNewPortletTitle(
 			portletTitle, oldScopeName, newScopeName);
 
 		if (!newPortletTitle.equals(portletTitle)) {
@@ -1074,6 +1074,10 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 	private GroupLocalService _groupLocalService;
 	private LayoutLocalService _layoutLocalService;
 	private PermissionService _permissionService;
+
+	@Reference
+	private Portal _portal;
+
 	private PortletLocalService _portletLocalService;
 	private PortletPermission _portletPermission;
 	private PortletPreferencesLocalService _portletPreferencesLocalService;
@@ -1092,7 +1096,7 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 				PortletRequest portletRequest =
 					_portletRequestThreadLocal.get();
 
-				long companyId = PortalUtil.getCompanyId(portletRequest);
+				long companyId = _portal.getCompanyId(portletRequest);
 
 				String portletResource = ParamUtil.getString(
 					portletRequest, "portletResource");
@@ -1101,7 +1105,7 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 					companyId, portletResource);
 
 				HttpServletRequest httpServletRequest =
-					PortalUtil.getHttpServletRequest(portletRequest);
+					_portal.getHttpServletRequest(portletRequest);
 
 				PortletConfig portletConfig = PortletConfigFactoryUtil.create(
 					portlet, httpServletRequest.getServletContext());

@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -123,7 +123,7 @@ public class PublishRecordSetMVCResourceCommand extends BaseMVCResourceCommand {
 			boolean published)
 		throws PortalException {
 
-		long companyId = PortalUtil.getCompanyId(resourceRequest);
+		long companyId = _portal.getCompanyId(resourceRequest);
 
 		Role role = _roleLocalService.getRole(companyId, RoleConstants.GUEST);
 
@@ -146,6 +146,10 @@ public class PublishRecordSetMVCResourceCommand extends BaseMVCResourceCommand {
 
 	private DDLRecordSetService _ddlRecordSetService;
 	private DDMFormValuesQueryFactory _ddmFormValuesQueryFactory;
+
+	@Reference
+	private Portal _portal;
+
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
 	private RoleLocalService _roleLocalService;
 

@@ -40,7 +40,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
@@ -199,9 +199,9 @@ public class AssetPublisherPortlet extends MVCPortlet {
 		boolean enableRss = GetterUtil.getBoolean(
 			portletPreferences.getValue("enableRss", null));
 
-		if (!PortalUtil.isRSSFeedsEnabled() || !enableRss) {
+		if (!portal.isRSSFeedsEnabled() || !enableRss) {
 			try {
-				PortalUtil.sendRSSFeedsDisabledError(
+				portal.sendRSSFeedsDisabledError(
 					resourceRequest, resourceResponse);
 			}
 			catch (ServletException se) {
@@ -216,7 +216,7 @@ public class AssetPublisherPortlet extends MVCPortlet {
 				resourceResponse.getPortletOutputStream()) {
 
 			String rootPortletId = PortletConstants.getRootPortletId(
-				PortalUtil.getPortletId(resourceRequest));
+				portal.getPortletId(resourceRequest));
 
 			AssetPublisherCustomizer assetPublisherCustomizer =
 				assetPublisherCustomizerRegistry.getAssetPublisherCustomizer(
@@ -286,7 +286,7 @@ public class AssetPublisherPortlet extends MVCPortlet {
 
 		try {
 			String rootPortletId = PortletConstants.getRootPortletId(
-				PortalUtil.getPortletId(renderRequest));
+				portal.getPortletId(renderRequest));
 
 			AssetPublisherCustomizer assetPublisherCustomizer =
 				assetPublisherCustomizerRegistry.getAssetPublisherCustomizer(
@@ -328,6 +328,9 @@ public class AssetPublisherPortlet extends MVCPortlet {
 
 	@Reference
 	protected AssetPublisherCustomizerRegistry assetPublisherCustomizerRegistry;
+
+	@Reference
+	protected Portal portal;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AssetPublisherPortlet.class);

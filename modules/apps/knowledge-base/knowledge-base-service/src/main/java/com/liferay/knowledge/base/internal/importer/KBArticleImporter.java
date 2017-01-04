@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
@@ -233,7 +233,7 @@ public class KBArticleImporter {
 			KBArticle introKBArticle = introFileNameKBArticleMap.get(introFile);
 
 			if ((introFile != null) && (introKBArticle == null)) {
-				long sectionResourceClassNameId = PortalUtil.getClassNameId(
+				long sectionResourceClassNameId = _portal.getClassNameId(
 					KBFolderConstants.getClassName());
 				long sectionResourcePrimaryKey = parentKBFolderId;
 
@@ -241,7 +241,7 @@ public class KBArticleImporter {
 					folder.getParentFolderIntroFile());
 
 				if (parentIntroKBArticle != null) {
-					sectionResourceClassNameId = PortalUtil.getClassNameId(
+					sectionResourceClassNameId = _portal.getClassNameId(
 						KBArticleConstants.getClassName());
 					sectionResourcePrimaryKey =
 						parentIntroKBArticle.getResourcePrimKey();
@@ -258,12 +258,12 @@ public class KBArticleImporter {
 				introFileNameKBArticleMap.put(introFile, introKBArticle);
 			}
 
-			long sectionResourceClassNameId = PortalUtil.getClassNameId(
+			long sectionResourceClassNameId = _portal.getClassNameId(
 				KBFolderConstants.getClassName());
 			long sectionResourcePrimaryKey = parentKBFolderId;
 
 			if (introKBArticle != null) {
-				sectionResourceClassNameId = PortalUtil.getClassNameId(
+				sectionResourceClassNameId = _portal.getClassNameId(
 					KBArticleConstants.getClassName());
 				sectionResourcePrimaryKey = introKBArticle.getResourcePrimKey();
 			}
@@ -302,5 +302,8 @@ public class KBArticleImporter {
 		KBArticleImporter.class);
 
 	private KBArchiveFactory _kbArchiveFactory;
+
+	@Reference
+	private Portal _portal;
 
 }

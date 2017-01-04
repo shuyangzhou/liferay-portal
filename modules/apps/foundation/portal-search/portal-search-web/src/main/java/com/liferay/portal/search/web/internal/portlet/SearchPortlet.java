@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.search.PortalOpenSearchImpl;
 import com.liferay.portal.search.web.constants.SearchPortletKeys;
@@ -38,6 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Eudaldo Alonso
@@ -76,10 +77,10 @@ public class SearchPortlet extends MVCPortlet {
 			resourceRequest.getResourceID());
 
 		if (resourceID.equals("getOpenSearchXML")) {
-			HttpServletRequest request = PortalUtil.getHttpServletRequest(
+			HttpServletRequest request = _portal.getHttpServletRequest(
 				resourceRequest);
 
-			HttpServletResponse response = PortalUtil.getHttpServletResponse(
+			HttpServletResponse response = _portal.getHttpServletResponse(
 				resourceResponse);
 
 			try {
@@ -90,7 +91,7 @@ public class SearchPortlet extends MVCPortlet {
 			}
 			catch (Exception e) {
 				try {
-					PortalUtil.sendError(e, request, response);
+					_portal.sendError(e, request, response);
 				}
 				catch (ServletException se) {
 				}
@@ -124,7 +125,7 @@ public class SearchPortlet extends MVCPortlet {
 			openSearchResourceURL.toString(),
 			openSearchDescriptionXMLURL.toString());
 
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+		HttpServletRequest request = _portal.getHttpServletRequest(
 			resourceRequest);
 
 		String xml = openSearch.search(
@@ -134,5 +135,8 @@ public class SearchPortlet extends MVCPortlet {
 
 		return xml.getBytes();
 	}
+
+	@Reference
+	private Portal _portal;
 
 }

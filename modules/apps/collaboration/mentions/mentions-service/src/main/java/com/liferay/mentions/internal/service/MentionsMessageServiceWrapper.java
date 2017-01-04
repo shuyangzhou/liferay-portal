@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -76,7 +76,7 @@ public class MentionsMessageServiceWrapper
 			return message;
 		}
 
-		long siteGroupId = PortalUtil.getSiteGroupId(message.getGroupId());
+		long siteGroupId = _portal.getSiteGroupId(message.getGroupId());
 
 		if (!MentionsUtil.isMentionsEnabled(siteGroupId)) {
 			return message;
@@ -149,5 +149,8 @@ public class MentionsMessageServiceWrapper
 	private ConfigurationProvider _configurationProvider;
 	private MBMessageLocalService _mbMessageLocalService;
 	private MentionsNotifier _mentionsNotifier;
+
+	@Reference
+	private Portal _portal;
 
 }

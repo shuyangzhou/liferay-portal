@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StackTraceUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -116,7 +116,7 @@ public class ServerManagerServlet extends HttpServlet {
 
 	protected boolean isValidUser(HttpServletRequest request) {
 		try {
-			User user = PortalUtil.getUser(request);
+			User user = _portal.getUser(request);
 
 			PermissionChecker permissionChecker =
 				PermissionCheckerFactoryUtil.create(user);
@@ -179,5 +179,8 @@ public class ServerManagerServlet extends HttpServlet {
 
 	@Reference
 	private ExecutorServiceRegistry _executorServiceRegistry;
+
+	@Reference
+	private Portal _portal;
 
 }

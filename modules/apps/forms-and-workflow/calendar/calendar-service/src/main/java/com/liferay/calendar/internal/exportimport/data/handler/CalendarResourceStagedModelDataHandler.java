@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.HashMap;
@@ -116,7 +116,7 @@ public class CalendarResourceStagedModelDataHandler
 		CalendarResource calendarResource) {
 
 		if (calendarResource.getClassNameId() ==
-				PortalUtil.getClassNameId(CalendarResource.class)) {
+				_portal.getClassNameId(CalendarResource.class)) {
 
 			return true;
 		}
@@ -140,7 +140,7 @@ public class CalendarResourceStagedModelDataHandler
 		}
 
 		if (calendarResource.getClassNameId() ==
-				PortalUtil.getClassNameId(User.class)) {
+				_portal.getClassNameId(User.class)) {
 
 			User user = _userLocalService.getUser(
 				calendarResource.getClassPK());
@@ -276,12 +276,12 @@ public class CalendarResourceStagedModelDataHandler
 		long classPK = 0;
 
 		if (calendarResource.getClassNameId() ==
-				PortalUtil.getClassNameId(Group.class)) {
+				_portal.getClassNameId(Group.class)) {
 
 			classPK = portletDataContext.getScopeGroupId();
 		}
 		else if (calendarResource.getClassNameId() ==
-					PortalUtil.getClassNameId(User.class)) {
+					_portal.getClassNameId(User.class)) {
 
 			classPK = userId;
 		}
@@ -367,6 +367,10 @@ public class CalendarResourceStagedModelDataHandler
 	private CalendarLocalService _calendarLocalService;
 	private CalendarResourceLocalService _calendarResourceLocalService;
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private Portal _portal;
+
 	private UserLocalService _userLocalService;
 
 }

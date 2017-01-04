@@ -49,7 +49,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -154,7 +154,7 @@ public class MarketplaceAppManagerPortlet extends MVCPortlet {
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
+			_portal.getUploadPortletRequest(actionRequest);
 
 		String fileName = GetterUtil.getString(
 			uploadPortletRequest.getFileName("file"));
@@ -536,6 +536,10 @@ public class MarketplaceAppManagerPortlet extends MVCPortlet {
 	private PanelCategoryRegistry _panelCategoryRegistry;
 	private PluginSettingLocalService _pluginSettingLocalService;
 	private PluginSettingService _pluginSettingService;
+
+	@Reference
+	private Portal _portal;
+
 	private PortletService _portletService;
 
 }

@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -39,7 +39,7 @@ public class GroupModelListener extends BaseModelListener<Group> {
 	@Override
 	public void onAfterUpdate(Group group) throws ModelListenerException {
 		try {
-			long classNameId = PortalUtil.getClassNameId(Group.class);
+			long classNameId = _portal.getClassNameId(Group.class);
 
 			CalendarResource calendarResource =
 				_calendarResourceLocalService.fetchCalendarResource(
@@ -69,7 +69,7 @@ public class GroupModelListener extends BaseModelListener<Group> {
 
 			// Global calendar resource
 
-			long classNameId = PortalUtil.getClassNameId(Group.class);
+			long classNameId = _portal.getClassNameId(Group.class);
 
 			CalendarResource calendarResource =
 				_calendarResourceLocalService.fetchCalendarResource(
@@ -98,5 +98,8 @@ public class GroupModelListener extends BaseModelListener<Group> {
 	}
 
 	private CalendarResourceLocalService _calendarResourceLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

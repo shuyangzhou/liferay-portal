@@ -22,7 +22,7 @@ import com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderResponse;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
@@ -122,12 +122,15 @@ public class WorkflowDefinitionsDataProvider implements DDMDataProvider {
 	}
 
 	protected long getCompanyId(HttpServletRequest httpServletRequest) {
-		return PortalUtil.getCompanyId(httpServletRequest);
+		return _portal.getCompanyId(httpServletRequest);
 	}
 
 	protected Locale getLocale(HttpServletRequest httpServletRequest) {
-		return PortalUtil.getLocale(httpServletRequest);
+		return _portal.getLocale(httpServletRequest);
 	}
+
+	@Reference
+	private Portal _portal;
 
 	@Reference
 	private WorkflowDefinitionManager _workflowDefinitionManager;

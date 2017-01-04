@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.upgrade.util.UpgradeProcessUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -65,7 +65,7 @@ public class DefaultDDMStructureHelperImpl
 			ServiceContext serviceContext)
 		throws Exception {
 
-		Locale locale = PortalUtil.getSiteDefaultLocale(groupId);
+		Locale locale = _portal.getSiteDefaultLocale(groupId);
 
 		List<Element> structureElements = getDDMStructures(
 			classLoader, fileName, locale);
@@ -141,7 +141,7 @@ public class DefaultDDMStructureHelperImpl
 				templateElement.elementText("cacheable"));
 
 			_ddmTemplateLocalService.addTemplate(
-				userId, groupId, PortalUtil.getClassNameId(DDMStructure.class),
+				userId, groupId, _portal.getClassNameId(DDMStructure.class),
 				ddmStructure.getStructureId(), ddmStructure.getClassNameId(),
 				ddmTemplateKey, nameMap, null,
 				DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY,
@@ -285,5 +285,8 @@ public class DefaultDDMStructureHelperImpl
 	private DDMStructureLocalService _ddmStructureLocalService;
 	private DDMTemplateLocalService _ddmTemplateLocalService;
 	private DDMXML _ddmXML;
+
+	@Reference
+	private Portal _portal;
 
 }

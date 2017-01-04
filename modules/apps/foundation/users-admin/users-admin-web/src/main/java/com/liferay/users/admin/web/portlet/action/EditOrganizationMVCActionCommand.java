@@ -54,7 +54,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -163,7 +163,7 @@ public class EditOrganizationMVCActionCommand extends BaseMVCActionCommand {
 				}
 
 				if (e instanceof RequiredOrganizationException) {
-					String redirect = PortalUtil.escapeRedirect(
+					String redirect = _portal.escapeRedirect(
 						ParamUtil.getString(actionRequest, "redirect"));
 
 					long organizationId = ParamUtil.getLong(
@@ -310,5 +310,8 @@ public class EditOrganizationMVCActionCommand extends BaseMVCActionCommand {
 
 	private DLAppLocalService _dlAppLocalService;
 	private OrganizationService _organizationService;
+
+	@Reference
+	private Portal _portal;
 
 }

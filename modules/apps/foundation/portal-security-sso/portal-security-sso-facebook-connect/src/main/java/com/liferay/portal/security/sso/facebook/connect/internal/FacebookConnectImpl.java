@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.sso.facebook.connect.configuration.FacebookConnectConfiguration;
 import com.liferay.portal.security.sso.facebook.connect.constants.FacebookConnectConstants;
@@ -185,10 +185,10 @@ public class FacebookConnectImpl implements FacebookConnect {
 
 	@Override
 	public String getProfileImageURL(PortletRequest portletRequest) {
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+		HttpServletRequest request = _portal.getHttpServletRequest(
 			portletRequest);
 
-		request = PortalUtil.getOriginalServletRequest(request);
+		request = _portal.getOriginalServletRequest(request);
 
 		HttpSession session = request.getSession();
 
@@ -199,7 +199,7 @@ public class FacebookConnectImpl implements FacebookConnect {
 			return null;
 		}
 
-		long companyId = PortalUtil.getCompanyId(request);
+		long companyId = _portal.getCompanyId(request);
 
 		String token = (String)session.getAttribute(
 			FacebookConnectWebKeys.FACEBOOK_ACCESS_TOKEN);
@@ -264,5 +264,8 @@ public class FacebookConnectImpl implements FacebookConnect {
 		FacebookConnectImpl.class);
 
 	private ConfigurationProvider _configurationProvider;
+
+	@Reference
+	private Portal _portal;
 
 }

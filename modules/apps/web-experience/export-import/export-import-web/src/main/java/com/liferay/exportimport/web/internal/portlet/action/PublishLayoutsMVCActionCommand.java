@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.ui.util.SessionTreeJSClicks;
@@ -44,6 +44,7 @@ import javax.portlet.PortletURL;
 import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Daniel Kocsis
@@ -68,7 +69,7 @@ public class PublishLayoutsMVCActionCommand extends BaseMVCActionCommand {
 		if (Validator.isNull(cmd)) {
 			SessionMessages.add(
 				actionRequest,
-				PortalUtil.getPortletId(actionRequest) +
+				_portal.getPortletId(actionRequest) +
 					SessionMessages.KEY_SUFFIX_FORCE_SEND_REDIRECT);
 
 			hideDefaultSuccessMessage(actionRequest);
@@ -157,7 +158,7 @@ public class PublishLayoutsMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	protected void setLayoutIdMap(ActionRequest actionRequest) {
-		HttpServletRequest portletRequest = PortalUtil.getHttpServletRequest(
+		HttpServletRequest portletRequest = _portal.getHttpServletRequest(
 			actionRequest);
 
 		long groupId = ParamUtil.getLong(actionRequest, "groupId");
@@ -191,5 +192,8 @@ public class PublishLayoutsMVCActionCommand extends BaseMVCActionCommand {
 
 		actionRequest.setAttribute(WebKeys.REDIRECT, renderURL.toString());
 	}
+
+	@Reference
+	private Portal _portal;
 
 }

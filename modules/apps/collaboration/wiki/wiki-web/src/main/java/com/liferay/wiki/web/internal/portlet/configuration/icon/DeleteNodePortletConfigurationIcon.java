@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfiguration
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.trash.kernel.util.TrashUtil;
@@ -77,7 +77,7 @@ public class DeleteNodePortletConfigurationIcon
 		try {
 			WikiNode node = ActionUtil.getNode(portletRequest);
 
-			PortletURL portletURL = PortalUtil.getControlPanelPortletURL(
+			PortletURL portletURL = _portal.getControlPanelPortletURL(
 				portletRequest, WikiPortletKeys.WIKI_ADMIN,
 				PortletRequest.ACTION_PHASE);
 
@@ -91,7 +91,7 @@ public class DeleteNodePortletConfigurationIcon
 				portletURL.setParameter(Constants.CMD, Constants.DELETE);
 			}
 
-			PortletURL viewNodesURL = PortalUtil.getControlPanelPortletURL(
+			PortletURL viewNodesURL = _portal.getControlPanelPortletURL(
 				portletRequest, WikiPortletKeys.WIKI_ADMIN,
 				PortletRequest.RENDER_PHASE);
 
@@ -154,6 +154,9 @@ public class DeleteNodePortletConfigurationIcon
 	protected void setWikiNodeService(WikiNodeService wikiNodeService) {
 		_wikiNodeService = wikiNodeService;
 	}
+
+	@Reference
+	private Portal _portal;
 
 	private WikiNodeService _wikiNodeService;
 

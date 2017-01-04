@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.SessionClicks;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -45,8 +45,8 @@ public class LatentGroupProvider implements GroupProvider {
 			return group;
 		}
 
-		HttpServletRequest originalRequest =
-			PortalUtil.getOriginalServletRequest(request);
+		HttpServletRequest originalRequest = _portal.getOriginalServletRequest(
+			request);
 
 		long groupId = GetterUtil.getLong(
 			SessionClicks.get(
@@ -61,8 +61,8 @@ public class LatentGroupProvider implements GroupProvider {
 
 	@Override
 	public void setGroup(HttpServletRequest request, Group group) {
-		HttpServletRequest originalRequest =
-			PortalUtil.getOriginalServletRequest(request);
+		HttpServletRequest originalRequest = _portal.getOriginalServletRequest(
+			request);
 
 		SessionClicks.put(
 			originalRequest.getSession(), _KEY_LATENT_GROUP,
@@ -78,5 +78,8 @@ public class LatentGroupProvider implements GroupProvider {
 		"com.liferay.site.application.list_latentGroup";
 
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

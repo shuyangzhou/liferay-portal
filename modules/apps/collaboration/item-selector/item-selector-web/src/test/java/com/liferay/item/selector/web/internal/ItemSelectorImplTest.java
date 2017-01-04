@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -75,6 +76,8 @@ public class ItemSelectorImplTest extends PowerMockito {
 
 		_itemSelectorImpl.setItemSelectorCriterionSerializer(
 			_stubItemSelectorCriterionSerializer);
+		ReflectionTestUtil.setFieldValue(
+			_itemSelectorImpl, "_portal", new PortalImpl());
 
 		_mediaItemSelectorCriterion = new MediaItemSelectorCriterion();
 

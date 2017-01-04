@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.trash.kernel.service.TrashEntryService;
 import com.liferay.wiki.service.WikiPageService;
@@ -44,7 +44,7 @@ public class WikiAttachmentsHelper {
 
 	public void addAttachments(ActionRequest actionRequest) throws Exception {
 		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
+			_portal.getUploadPortletRequest(actionRequest);
 
 		long nodeId = ParamUtil.getLong(actionRequest, "nodeId");
 		String title = ParamUtil.getString(actionRequest, "title");
@@ -151,6 +151,9 @@ public class WikiAttachmentsHelper {
 	protected void setWikiPageService(WikiPageService wikiPageService) {
 		_wikiPageService = wikiPageService;
 	}
+
+	@Reference
+	private Portal _portal;
 
 	private TrashEntryService _trashEntryService;
 	private WikiPageService _wikiPageService;

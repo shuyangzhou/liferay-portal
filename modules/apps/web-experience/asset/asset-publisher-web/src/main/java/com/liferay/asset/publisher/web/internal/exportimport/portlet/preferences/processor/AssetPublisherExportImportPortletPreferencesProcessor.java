@@ -66,7 +66,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
@@ -680,7 +680,7 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 			try {
 				long classNameId = GetterUtil.getLong(oldValue);
 
-				String className = PortalUtil.getClassName(classNameId);
+				String className = _portal.getClassName(classNameId);
 
 				newValues[i++] = className;
 			}
@@ -736,7 +736,7 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 		long anyAssetType = GetterUtil.getLong(anyAssetTypeString);
 
 		if (anyAssetType > 0) {
-			anyAssetTypeClassName = PortalUtil.getClassName(anyAssetType);
+			anyAssetTypeClassName = _portal.getClassName(anyAssetType);
 		}
 
 		Portlet portlet = _portletLocalService.getPortletById(
@@ -1056,7 +1056,7 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 			}
 
 			try {
-				long classNameId = PortalUtil.getClassNameId(oldValue);
+				long classNameId = _portal.getClassNameId(oldValue);
 
 				newValues[i++] = String.valueOf(classNameId);
 			}
@@ -1270,6 +1270,10 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 	private GroupLocalService _groupLocalService;
 	private LayoutLocalService _layoutLocalService;
 	private OrganizationLocalService _organizationLocalService;
+
+	@Reference
+	private Portal _portal;
+
 	private PortletLocalService _portletLocalService;
 	private ReferencedStagedModelImporterCapability
 		_referencedStagedModelImporterCapability;

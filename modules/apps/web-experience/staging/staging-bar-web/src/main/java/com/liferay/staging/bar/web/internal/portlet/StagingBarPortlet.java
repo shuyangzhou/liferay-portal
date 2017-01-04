@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.staging.bar.web.internal.portlet.constants.StagingBarPortletKeys;
@@ -88,7 +88,7 @@ public class StagingBarPortlet extends MVCPortlet {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+		HttpServletRequest request = _portal.getHttpServletRequest(
 			actionRequest);
 
 		long layoutRevisionId = ParamUtil.getLong(
@@ -190,7 +190,7 @@ public class StagingBarPortlet extends MVCPortlet {
 
 		MultiSessionMessages.add(
 			actionRequest,
-			PortalUtil.getPortletId(actionRequest) + "requestProcessed");
+			_portal.getPortletId(actionRequest) + "requestProcessed");
 
 		sendRedirect(actionRequest, actionResponse);
 	}
@@ -289,5 +289,8 @@ public class StagingBarPortlet extends MVCPortlet {
 	private LayoutSetBranchLocalService _layoutSetBranchLocalService;
 	private LayoutSetBranchService _layoutSetBranchService;
 	private LayoutSetLocalService _layoutSetLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

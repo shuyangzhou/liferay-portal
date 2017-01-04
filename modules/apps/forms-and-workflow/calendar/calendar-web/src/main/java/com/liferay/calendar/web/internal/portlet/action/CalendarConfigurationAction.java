@@ -18,7 +18,7 @@ import com.liferay.calendar.constants.CalendarPortletKeys;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.SessionClicks;
 
 import javax.portlet.ActionRequest;
@@ -134,8 +134,8 @@ public class CalendarConfigurationAction extends DefaultConfigurationAction {
 		portletPreferences.setValue(
 			"weekStartsOn", String.valueOf(weekStartsOn));
 
-		HttpServletRequest httpServletRequest =
-			PortalUtil.getHttpServletRequest(actionRequest);
+		HttpServletRequest httpServletRequest = _portal.getHttpServletRequest(
+			actionRequest);
 
 		SessionClicks.put(
 			httpServletRequest, "com.liferay.calendar.web_defaultView",
@@ -143,5 +143,8 @@ public class CalendarConfigurationAction extends DefaultConfigurationAction {
 
 		portletPreferences.store();
 	}
+
+	@Reference
+	private Portal _portal;
 
 }

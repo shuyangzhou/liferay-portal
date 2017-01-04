@@ -17,7 +17,7 @@ package com.liferay.asset.publisher.web.internal.portlet.filter;
 import com.liferay.asset.publisher.web.constants.AssetPublisherPortletKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.RenderParametersPool;
@@ -35,6 +35,7 @@ import javax.portlet.filter.RenderFilter;
 import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Juergen Kappler
@@ -59,8 +60,8 @@ public class AssetPublisherRenderParametersPortletFilter
 			FilterChain filterChain)
 		throws IOException, PortletException {
 
-		HttpServletRequest httpServletRequest =
-			PortalUtil.getHttpServletRequest(renderRequest);
+		HttpServletRequest httpServletRequest = _portal.getHttpServletRequest(
+			renderRequest);
 
 		long categoryId = ParamUtil.getLong(renderRequest, "categoryId");
 		String tag = ParamUtil.getString(renderRequest, "tag");
@@ -82,10 +83,13 @@ public class AssetPublisherRenderParametersPortletFilter
 		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String portletId = PortalUtil.getPortletId(renderRequest);
+		String portletId = _portal.getPortletId(renderRequest);
 
 		RenderParametersPool.clear(
 			httpServletRequest, themeDisplay.getPlid(), portletId);
 	}
+
+	@Reference
+	private Portal _portal;
 
 }

@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.upload.UploadServletRequest;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -53,6 +53,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Shinn Lok
@@ -87,7 +88,7 @@ public class SyncJSONFilter implements Filter {
 		if (uuid != null) {
 			syncDevice =
 				SyncDeviceLocalServiceUtil.fetchSyncDeviceByUuidAndCompanyId(
-					uuid, PortalUtil.getCompanyId(httpServletRequest));
+					uuid, _portal.getCompanyId(httpServletRequest));
 		}
 
 		if (syncDevice == null) {
@@ -120,7 +121,7 @@ public class SyncJSONFilter implements Filter {
 			}
 
 			if (!(httpServletRequest instanceof UploadServletRequest)) {
-				servletRequest = PortalUtil.getUploadServletRequest(
+				servletRequest = _portal.getUploadServletRequest(
 					httpServletRequest);
 			}
 
@@ -145,7 +146,7 @@ public class SyncJSONFilter implements Filter {
 		Throwable throwable = null;
 
 		if (PrefsPropsUtil.getBoolean(
-				PortalUtil.getCompanyId(httpServletRequest),
+				_portal.getCompanyId(httpServletRequest),
 				SyncServiceConfigurationKeys.SYNC_SERVICES_ENABLED,
 				SyncServiceConfigurationValues.SYNC_SERVICES_ENABLED)) {
 
@@ -162,7 +163,7 @@ public class SyncJSONFilter implements Filter {
 					_ABSOLUTE_SYNC_CLIENT_MIN_BUILD_DESKTOP;
 
 				syncClientMinBuild = PrefsPropsUtil.getInteger(
-					PortalUtil.getCompanyId(httpServletRequest),
+					_portal.getCompanyId(httpServletRequest),
 					SyncServiceConfigurationKeys.SYNC_CLIENT_MIN_BUILD_DESKTOP,
 					SyncServiceConfigurationValues.
 						SYNC_CLIENT_MIN_BUILD_DESKTOP);
@@ -172,7 +173,7 @@ public class SyncJSONFilter implements Filter {
 					_ABSOLUTE_SYNC_CLIENT_MIN_BUILD_ANDROID;
 
 				syncClientMinBuild = PrefsPropsUtil.getInteger(
-					PortalUtil.getCompanyId(httpServletRequest),
+					_portal.getCompanyId(httpServletRequest),
 					SyncServiceConfigurationKeys.SYNC_CLIENT_MIN_BUILD_ANDROID,
 					SyncServiceConfigurationValues.
 						SYNC_CLIENT_MIN_BUILD_ANDROID);
@@ -182,7 +183,7 @@ public class SyncJSONFilter implements Filter {
 					_ABSOLUTE_SYNC_CLIENT_MIN_BUILD_IOS;
 
 				syncClientMinBuild = PrefsPropsUtil.getInteger(
-					PortalUtil.getCompanyId(httpServletRequest),
+					_portal.getCompanyId(httpServletRequest),
 					SyncServiceConfigurationKeys.SYNC_CLIENT_MIN_BUILD_IOS,
 					SyncServiceConfigurationValues.SYNC_CLIENT_MIN_BUILD_IOS);
 			}
@@ -282,5 +283,8 @@ public class SyncJSONFilter implements Filter {
 	private static final int _ABSOLUTE_SYNC_CLIENT_MIN_BUILD_DESKTOP = 3200;
 
 	private static final int _ABSOLUTE_SYNC_CLIENT_MIN_BUILD_IOS = 7;
+
+	@Reference
+	private Portal _portal;
 
 }

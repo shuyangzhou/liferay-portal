@@ -16,7 +16,7 @@ package com.liferay.wiki.web.internal.portlet.action;
 
 import com.liferay.document.library.display.context.DLMimeTypeDisplayContext;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.wiki.constants.WikiPortletKeys;
 import com.liferay.wiki.constants.WikiWebKeys;
 import com.liferay.wiki.engine.impl.WikiEngineRenderer;
@@ -53,7 +53,7 @@ public class ViewMVCRenderCommand extends BaseViewPageMVCRenderCommand {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortletException {
 
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+		HttpServletRequest request = _portal.getHttpServletRequest(
 			renderRequest);
 
 		request.setAttribute(
@@ -96,6 +96,10 @@ public class ViewMVCRenderCommand extends BaseViewPageMVCRenderCommand {
 	}
 
 	private DLMimeTypeDisplayContext _dlMimeTypeDisplayContext;
+
+	@Reference
+	private Portal _portal;
+
 	private WikiEngineRenderer _wikiEngineRenderer;
 
 }
