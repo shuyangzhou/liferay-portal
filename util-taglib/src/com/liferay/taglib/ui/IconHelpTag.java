@@ -16,7 +16,6 @@ package com.liferay.taglib.ui;
 
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.taglib.FileAvailabilityUtil;
 import com.liferay.taglib.util.TagResourceBundleUtil;
 
 import java.util.ResourceBundle;
@@ -31,28 +30,24 @@ public class IconHelpTag extends IconTag {
 
 	@Override
 	protected String getPage() {
-		if (FileAvailabilityUtil.isAvailable(servletContext, _PAGE)) {
-			return _PAGE;
-		}
-		else {
-			return null;
-		}
+		return super.getPage();
 	}
 
 	@Override
 	protected void setAttributes(HttpServletRequest request) {
-		request.setAttribute("liferay-ui:icon-help:id", StringUtil.randomId());
+		setCssClass("taglib-icon-help");
+		setIcon("question-circle-full");
+		setId(StringUtil.randomId());
+		setMarkupView("lexicon");
 
 		ResourceBundle resourceBundle = TagResourceBundleUtil.getResourceBundle(
 			pageContext);
 
-		String message = LanguageUtil.get(resourceBundle, getMessage());
+		setMessage(LanguageUtil.get(resourceBundle, getMessage()));
 
-		request.setAttribute("liferay-ui:icon-help:message", message);
+		setToolTip(true);
 
 		super.setAttributes(request);
 	}
-
-	private static final String _PAGE = "/html/taglib/ui/icon_help/page.jsp";
 
 }
