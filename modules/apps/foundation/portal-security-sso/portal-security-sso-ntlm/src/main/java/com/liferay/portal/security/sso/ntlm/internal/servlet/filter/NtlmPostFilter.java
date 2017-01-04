@@ -62,10 +62,13 @@ public class NtlmPostFilter extends BaseFilter {
 	public boolean isFilterEnabled(
 		HttpServletRequest request, HttpServletResponse response) {
 
+		if (!BrowserSnifferUtil.isIe(request)) {
+			return false;
+		}
+
 		String method = request.getMethod();
 
-		if (!BrowserSnifferUtil.isIe(request) ||
-			!method.equals(HttpMethods.POST)) {
+		if (!method.equals(HttpMethods.POST)) {
 
 			return false;
 		}
