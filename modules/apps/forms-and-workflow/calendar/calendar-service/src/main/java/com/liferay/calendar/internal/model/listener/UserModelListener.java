@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import java.util.Locale;
 
@@ -37,7 +37,7 @@ public class UserModelListener extends BaseModelListener<User> {
 	@Override
 	public void onAfterUpdate(User user) throws ModelListenerException {
 		try {
-			long classNameId = PortalUtil.getClassNameId(User.class);
+			long classNameId = _portal.getClassNameId(User.class);
 
 			CalendarResource calendarResource =
 				_calendarResourceLocalService.fetchCalendarResource(
@@ -67,5 +67,8 @@ public class UserModelListener extends BaseModelListener<User> {
 	}
 
 	private CalendarResourceLocalService _calendarResourceLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

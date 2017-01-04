@@ -71,7 +71,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
@@ -139,10 +139,9 @@ public class DDMImpl implements DDM {
 			return null;
 		}
 
-		long ddmStructureClassNameId = PortalUtil.getClassNameId(
+		long ddmStructureClassNameId = _portal.getClassNameId(
 			DDMStructure.class);
-		long ddmTemplateClassNameId = PortalUtil.getClassNameId(
-			DDMTemplate.class);
+		long ddmTemplateClassNameId = _portal.getClassNameId(DDMTemplate.class);
 
 		if (classNameId == ddmStructureClassNameId) {
 			DDMStructure structure = DDMStructureLocalServiceUtil.getStructure(
@@ -326,7 +325,7 @@ public class DDMImpl implements DDM {
 			Layout layout = _layoutLocalService.getLayout(
 				groupId, privateLayout, layoutId);
 
-			fieldValue = PortalUtil.getLayoutFriendlyURL(layout, themeDisplay);
+			fieldValue = _portal.getLayoutFriendlyURL(layout, themeDisplay);
 		}
 		else if (type.equals(DDMImpl.TYPE_RADIO) ||
 				 type.equals(DDMImpl.TYPE_SELECT)) {
@@ -1009,7 +1008,7 @@ public class DDMImpl implements DDM {
 					int fieldValueYear = GetterUtil.getInteger(
 						serviceContext.getAttribute(fieldNameValue + "Year"));
 
-					fieldValueDate = PortalUtil.getDate(
+					fieldValueDate = _portal.getDate(
 						fieldValueMonth, fieldValueDay, fieldValueYear,
 						TimeZoneUtil.getTimeZone("UTC"), null);
 				}
@@ -1336,5 +1335,8 @@ public class DDMImpl implements DDM {
 	private FieldsToDDMFormValuesConverter _fieldsToDDMFormValuesConverter;
 	private ImageLocalService _imageLocalService;
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }
