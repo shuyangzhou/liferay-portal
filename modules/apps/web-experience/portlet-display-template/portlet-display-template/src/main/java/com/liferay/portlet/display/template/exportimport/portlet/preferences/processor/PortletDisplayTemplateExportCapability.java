@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portlet.display.template.PortletDisplayTemplate;
 import com.liferay.portlet.display.template.PortletDisplayTemplateUtil;
@@ -107,7 +107,7 @@ public class PortletDisplayTemplateExportCapability implements Capability {
 
 		String className = templateHandler.getClassName();
 
-		return PortalUtil.getClassNameId(className);
+		return portal.getClassNameId(className);
 	}
 
 	protected String getDisplayStyle(
@@ -153,6 +153,9 @@ public class PortletDisplayTemplateExportCapability implements Capability {
 
 		_portletLocalService = portletLocalService;
 	}
+
+	@Reference
+	protected Portal portal;
 
 	private PortletLocalService _portletLocalService;
 
