@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.search.SearchContextFactory;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.wiki.constants.WikiPortletKeys;
 import com.liferay.wiki.search.WikiPageTitleSearcher;
@@ -69,7 +69,7 @@ public class AutocompletePageTitleMVCResourceCommand
 			JSONArray jsonArray = getJSONArray(
 				resourceRequest, resourceResponse);
 
-			HttpServletResponse response = PortalUtil.getHttpServletResponse(
+			HttpServletResponse response = _portal.getHttpServletResponse(
 				resourceResponse);
 
 			response.setContentType(ContentTypes.APPLICATION_JSON);
@@ -94,7 +94,7 @@ public class AutocompletePageTitleMVCResourceCommand
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+		HttpServletRequest request = _portal.getHttpServletRequest(
 			resourceRequest);
 
 		SearchContext searchContext = SearchContextFactory.getInstance(request);
@@ -126,6 +126,9 @@ public class AutocompletePageTitleMVCResourceCommand
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AutocompletePageTitleMVCResourceCommand.class);
+
+	@Reference
+	private Portal _portal;
 
 	private WikiPageTitleSearcher _wikiPageTitleSearcher;
 

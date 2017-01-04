@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.trash.BaseTrashHandler;
 import com.liferay.portal.kernel.trash.TrashHandler;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.PortletRequest;
@@ -115,14 +115,13 @@ public class BlogsEntryTrashHandler extends BaseTrashHandler {
 		String portletId = PortletProviderUtil.getPortletId(
 			BlogsEntry.class.getName(), PortletProvider.Action.VIEW);
 
-		long plid = PortalUtil.getPlidFromPortletId(
-			entry.getGroupId(), portletId);
+		long plid = _portal.getPlidFromPortletId(entry.getGroupId(), portletId);
 
 		if (plid == LayoutConstants.DEFAULT_PLID) {
 			portletId = PortletProviderUtil.getPortletId(
 				BlogsEntry.class.getName(), PortletProvider.Action.MANAGE);
 
-			portletURL = PortalUtil.getControlPanelPortletURL(
+			portletURL = _portal.getControlPanelPortletURL(
 				portletRequest, portletId, PortletRequest.RENDER_PHASE);
 		}
 		else {
@@ -155,5 +154,8 @@ public class BlogsEntryTrashHandler extends BaseTrashHandler {
 	}
 
 	private BlogsEntryLocalService _blogsEntryLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

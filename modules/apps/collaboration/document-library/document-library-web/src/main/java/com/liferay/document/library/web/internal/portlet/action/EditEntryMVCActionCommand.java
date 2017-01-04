@@ -41,7 +41,7 @@ import com.liferay.portal.kernel.servlet.ServletResponseConstants;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -223,7 +223,7 @@ public class EditEntryMVCActionCommand extends BaseMVCActionCommand {
 			WindowState windowState = actionRequest.getWindowState();
 
 			if (windowState.equals(LiferayWindowState.POP_UP)) {
-				String redirect = PortalUtil.escapeRedirect(
+				String redirect = _portal.escapeRedirect(
 					ParamUtil.getString(actionRequest, "redirect"));
 
 				if (Validator.isNotNull(redirect)) {
@@ -250,8 +250,8 @@ public class EditEntryMVCActionCommand extends BaseMVCActionCommand {
 			   SourceFileNameException e) {
 
 			if (e instanceof DuplicateFileEntryException) {
-				HttpServletResponse response =
-					PortalUtil.getHttpServletResponse(actionResponse);
+				HttpServletResponse response = _portal.getHttpServletResponse(
+					actionResponse);
 
 				response.setStatus(
 					ServletResponseConstants.SC_DUPLICATE_FILE_EXCEPTION);
@@ -335,6 +335,10 @@ public class EditEntryMVCActionCommand extends BaseMVCActionCommand {
 
 	private DLAppService _dlAppService;
 	private DLTrashService _dlTrashService;
+
+	@Reference
+	private Portal _portal;
+
 	private TrashEntryService _trashEntryService;
 
 }

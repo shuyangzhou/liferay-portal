@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.SubscriptionLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.messageboards.MBGroupServiceSettings;
 import com.liferay.portlet.messageboards.service.permission.MBCategoryPermission;
@@ -73,7 +73,7 @@ public class CategorySubscriptionPortletConfigurationIcon
 	public String getURL(
 		PortletRequest portletRequest, PortletResponse portletResponse) {
 
-		PortletURL portletURL = PortalUtil.getControlPanelPortletURL(
+		PortletURL portletURL = _portal.getControlPanelPortletURL(
 			portletRequest, MBPortletKeys.MESSAGE_BOARDS_ADMIN,
 			PortletRequest.ACTION_PHASE);
 
@@ -97,7 +97,7 @@ public class CategorySubscriptionPortletConfigurationIcon
 		}
 
 		portletURL.setParameter(
-			"redirect", PortalUtil.getCurrentURL(portletRequest));
+			"redirect", _portal.getCurrentURL(portletRequest));
 		portletURL.setParameter(
 			"mbCategoryId", String.valueOf(category.getCategoryId()));
 
@@ -154,6 +154,9 @@ public class CategorySubscriptionPortletConfigurationIcon
 			themeDisplay.getCompanyId(), themeDisplay.getUserId(),
 			MBCategory.class.getName(), category.getCategoryId());
 	}
+
+	@Reference
+	private Portal _portal;
 
 	private SubscriptionLocalService _subscriptionLocalService;
 

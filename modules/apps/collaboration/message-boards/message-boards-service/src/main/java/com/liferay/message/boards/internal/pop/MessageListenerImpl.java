@@ -37,7 +37,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StreamUtil;
@@ -207,7 +207,7 @@ public class MessageListenerImpl implements MessageListener {
 				MBMessage.class.getName(), PortletProvider.Action.VIEW);
 
 			serviceContext.setLayoutFullURL(
-				PortalUtil.getLayoutFullURL(
+				_portal.getLayoutFullURL(
 					groupId, portletId,
 					StringUtil.equalsIgnoreCase(
 						Http.HTTPS, PropsValues.WEB_SERVER_PROTOCOL)));
@@ -355,6 +355,10 @@ public class MessageListenerImpl implements MessageListener {
 	private MBCategoryLocalService _mbCategoryLocalService;
 	private MBMessageLocalService _mbMessageLocalService;
 	private MBMessageService _mbMessageService;
+
+	@Reference
+	private Portal _portal;
+
 	private UserLocalService _userLocalService;
 
 }

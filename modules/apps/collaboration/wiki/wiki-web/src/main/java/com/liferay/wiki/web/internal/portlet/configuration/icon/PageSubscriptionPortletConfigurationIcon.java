@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.SubscriptionLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.wiki.configuration.WikiGroupServiceOverriddenConfiguration;
@@ -83,7 +83,7 @@ public class PageSubscriptionPortletConfigurationIcon
 		try {
 			WikiPage page = ActionUtil.getPage(portletRequest);
 
-			PortletURL portletURL = PortalUtil.getControlPanelPortletURL(
+			PortletURL portletURL = _portal.getControlPanelPortletURL(
 				portletRequest, WikiPortletKeys.WIKI_ADMIN,
 				PortletRequest.ACTION_PHASE);
 
@@ -116,7 +116,7 @@ public class PageSubscriptionPortletConfigurationIcon
 
 	@Override
 	public boolean isShow(PortletRequest portletRequest) {
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+		HttpServletRequest request = _portal.getHttpServletRequest(
 			portletRequest);
 
 		WikiRequestHelper wikiRequestHelper = new WikiRequestHelper(request);
@@ -162,6 +162,9 @@ public class PageSubscriptionPortletConfigurationIcon
 
 		_subscriptionLocalService = subscriptionLocalService;
 	}
+
+	@Reference
+	private Portal _portal;
 
 	private SubscriptionLocalService _subscriptionLocalService;
 

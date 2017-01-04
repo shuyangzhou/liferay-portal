@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 
 import javax.portlet.ActionRequest;
@@ -51,7 +51,7 @@ public class MoveCategoryMVCActionCommand extends BaseMVCActionCommand {
 		try {
 			moveCategory(actionRequest, actionResponse);
 
-			String redirect = PortalUtil.escapeRedirect(
+			String redirect = _portal.escapeRedirect(
 				ParamUtil.getString(actionRequest, "redirect"));
 
 			if (Validator.isNotNull(redirect)) {
@@ -85,5 +85,8 @@ public class MoveCategoryMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	private MBCategoryService _mbCategoryService;
+
+	@Reference
+	private Portal _portal;
 
 }
