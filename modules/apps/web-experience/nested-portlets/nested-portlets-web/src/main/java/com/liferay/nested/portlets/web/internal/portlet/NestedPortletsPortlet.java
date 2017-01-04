@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.service.LayoutTemplateLocalService;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -96,7 +96,7 @@ public class NestedPortletsPortlet extends MVCPortlet {
 		try {
 			NestedPortletsDisplayContext nestedPortletsDisplayContext =
 				new NestedPortletsDisplayContext(
-					PortalUtil.getHttpServletRequest(renderRequest));
+					_portal.getHttpServletRequest(renderRequest));
 
 			layoutTemplateId =
 				nestedPortletsDisplayContext.getLayoutTemplateId();
@@ -246,5 +246,8 @@ public class NestedPortletsPortlet extends MVCPortlet {
 
 	private LayoutLocalService _layoutLocalService;
 	private LayoutTemplateLocalService _layoutTemplateLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

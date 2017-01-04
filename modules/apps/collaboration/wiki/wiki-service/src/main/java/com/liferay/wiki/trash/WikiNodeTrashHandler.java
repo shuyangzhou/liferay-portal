@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
 import com.liferay.portal.kernel.trash.TrashRenderer;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -226,11 +226,11 @@ public class WikiNodeTrashHandler extends BaseWikiTrashHandler {
 
 		WikiNode node = _wikiNodeLocalService.getNode(classPK);
 
-		long plid = PortalUtil.getPlidFromPortletId(
+		long plid = _portal.getPlidFromPortletId(
 			node.getGroupId(), WikiPortletKeys.WIKI);
 
 		if (plid == LayoutConstants.DEFAULT_PLID) {
-			portletURL = PortalUtil.getControlPanelPortletURL(
+			portletURL = _portal.getControlPanelPortletURL(
 				portletRequest, WikiPortletKeys.WIKI_ADMIN,
 				PortletRequest.RENDER_PHASE);
 		}
@@ -269,6 +269,9 @@ public class WikiNodeTrashHandler extends BaseWikiTrashHandler {
 
 		_wikiPageLocalService = wikiPageLocalService;
 	}
+
+	@Reference
+	private Portal _portal;
 
 	private WikiNodeLocalService _wikiNodeLocalService;
 	private WikiPageLocalService _wikiPageLocalService;

@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -114,7 +114,7 @@ public class PrivateMessagingUserNotificationHandler
 
 		String title = ResourceBundleUtil.getString(
 			resourceBundle, "x-sent-you-a-message", HtmlUtil.escape(
-				PortalUtil.getUserName(userId, StringPool.BLANK)));
+				_portal.getUserName(userId, StringPool.BLANK)));
 
 		return StringUtil.replace(
 			getBodyTemplate(), new String[] {"[$BODY$]", "[$TITLE$]"},
@@ -160,7 +160,7 @@ public class PrivateMessagingUserNotificationHandler
 
 		Group group = user.getGroup();
 
-		long portletPlid = PortalUtil.getPlidFromPortletId(
+		long portletPlid = _portal.getPlidFromPortletId(
 			group.getGroupId(), true,
 			PrivateMessagingPortletKeys.PRIVATE_MESSAGING);
 
@@ -219,6 +219,10 @@ public class PrivateMessagingUserNotificationHandler
 
 	private MBMessageLocalService _mbMessageLocalService;
 	private MBThreadLocalService _mbThreadLocalService;
+
+	@Reference
+	private Portal _portal;
+
 	private UserNotificationEventLocalService
 		_userNotificationEventLocalService;
 	private UserThreadLocalService _userThreadLocalService;

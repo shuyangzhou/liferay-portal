@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.social.kernel.exception.NoSuchRequestException;
@@ -54,7 +54,7 @@ public class UpdateRequestMVCRenderCommand extends BaseMVCActionCommand {
 		try {
 			updateRequest(actionRequest);
 
-			String redirect = PortalUtil.escapeRedirect(
+			String redirect = _portal.escapeRedirect(
 				ParamUtil.getString(actionRequest, "redirect"));
 
 			if (Validator.isNotNull(redirect)) {
@@ -84,6 +84,9 @@ public class UpdateRequestMVCRenderCommand extends BaseMVCActionCommand {
 
 		_socialRequestService.updateRequest(requestId, status, themeDisplay);
 	}
+
+	@Reference
+	private Portal _portal;
 
 	private SocialRequestService _socialRequestService;
 

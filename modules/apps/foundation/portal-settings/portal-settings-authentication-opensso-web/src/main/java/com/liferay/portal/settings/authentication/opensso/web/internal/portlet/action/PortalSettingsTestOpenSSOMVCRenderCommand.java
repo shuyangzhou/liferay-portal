@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderConstants;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.settings.web.constants.PortalSettingsPortletKeys;
 
 import javax.portlet.PortletException;
@@ -55,9 +55,9 @@ public class PortalSettingsTestOpenSSOMVCRenderCommand
 
 		try {
 			HttpServletRequest httpServletRequest =
-				PortalUtil.getHttpServletRequest(renderRequest);
+				_portal.getHttpServletRequest(renderRequest);
 			HttpServletResponse httpServletResponse =
-				PortalUtil.getHttpServletResponse(renderResponse);
+				_portal.getHttpServletResponse(renderResponse);
 
 			requestDispatcher.include(httpServletRequest, httpServletResponse);
 		}
@@ -85,6 +85,9 @@ public class PortalSettingsTestOpenSSOMVCRenderCommand
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalSettingsTestOpenSSOMVCRenderCommand.class);
+
+	@Reference
+	private Portal _portal;
 
 	private ServletContext _servletContext;
 

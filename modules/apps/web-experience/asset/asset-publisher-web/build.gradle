@@ -8,7 +8,6 @@ dependencies {
 	provided group: "com.liferay", name: "com.liferay.frontend.taglib", version: "2.0.0"
 	provided group: "com.liferay", name: "com.liferay.petra.content", version: "1.0.0"
 	provided group: "com.liferay", name: "com.liferay.portal.upgrade", version: "2.0.0"
-	provided group: "com.liferay", name: "com.liferay.portlet.display.template", version: "2.0.0"
 	provided group: "com.liferay", name: "com.liferay.rss.util", version: "1.0.0"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "2.6.0"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "[2.7.0,3.0.0)"
@@ -22,5 +21,6 @@ dependencies {
 	provided group: "rome", name: "rome", version: "1.0"
 	provided project(":apps:web-experience:asset:asset-taglib")
 	provided project(":apps:web-experience:journal:journal-api")
+	provided project(":apps:web-experience:portlet-display-template:portlet-display-template")
 	provided project(":apps:web-experience:site:site-api")
 }

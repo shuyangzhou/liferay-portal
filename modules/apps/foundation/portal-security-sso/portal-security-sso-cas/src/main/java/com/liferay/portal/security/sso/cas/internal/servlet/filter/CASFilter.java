@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.servlet.BaseFilter;
 import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.sso.cas.configuration.CASConfiguration;
 import com.liferay.portal.security.sso.cas.constants.CASConstants;
@@ -101,7 +101,7 @@ public class CASFilter extends BaseFilter {
 		HttpServletRequest request, HttpServletResponse response) {
 
 		try {
-			long companyId = PortalUtil.getCompanyId(request);
+			long companyId = _portal.getCompanyId(request);
 
 			CASConfiguration casConfiguration =
 				_configurationProvider.getConfiguration(
@@ -169,7 +169,7 @@ public class CASFilter extends BaseFilter {
 
 		HttpSession session = request.getSession();
 
-		long companyId = PortalUtil.getCompanyId(request);
+		long companyId = _portal.getCompanyId(request);
 
 		CASConfiguration casConfiguration =
 			_configurationProvider.getConfiguration(
@@ -265,5 +265,8 @@ public class CASFilter extends BaseFilter {
 		new ConcurrentHashMap<>();
 
 	private ConfigurationProvider _configurationProvider;
+
+	@Reference
+	private Portal _portal;
 
 }

@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.portletdisplaytemplate.BasePortletDisplayTempla
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
 import com.liferay.portal.kernel.theme.NavItem;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portlet.display.template.PortletDisplayTemplateConstants;
@@ -39,6 +39,7 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Juergen Kappler
@@ -77,7 +78,7 @@ public class SiteNavigationMenuPortletDisplayTemplateHandler
 		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 			"content.Language", locale, getClass());
 
-		String portletTitle = PortalUtil.getPortletTitle(
+		String portletTitle = _portal.getPortletTitle(
 			SiteNavigationMenuPortletKeys.SITE_NAVIGATION_MENU, resourceBundle);
 
 		return portletTitle.concat(StringPool.SPACE).concat(
@@ -149,6 +150,9 @@ public class SiteNavigationMenuPortletDisplayTemplateHandler
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SiteNavigationMenuPortletDisplayTemplateHandler.class);
+
+	@Reference
+	private Portal _portal;
 
 	private volatile SiteNavigationMenuWebTemplateConfiguration
 		_siteNavigationMenuWebTemplateConfiguration;

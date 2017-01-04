@@ -17,7 +17,7 @@ package com.liferay.layout.item.selector.web;
 import com.liferay.item.selector.ItemSelectorView;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 
 import java.util.Locale;
@@ -43,7 +43,7 @@ public class PublicLayoutsItemSelectorView extends BaseLayoutsItemSelectorView {
 
 	@Override
 	public String getTitle(Locale locale) {
-		ResourceBundle resourceBundle = PortalUtil.getResourceBundle(locale);
+		ResourceBundle resourceBundle = _portal.getResourceBundle(locale);
 
 		return ResourceBundleUtil.getString(resourceBundle, "public-pages");
 	}
@@ -71,6 +71,9 @@ public class PublicLayoutsItemSelectorView extends BaseLayoutsItemSelectorView {
 	public void setServletContext(ServletContext servletContext) {
 		_servletContext = servletContext;
 	}
+
+	@Reference
+	private Portal _portal;
 
 	private ServletContext _servletContext;
 

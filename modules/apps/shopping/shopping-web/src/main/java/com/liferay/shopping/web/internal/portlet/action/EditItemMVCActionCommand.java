@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.shopping.constants.ShoppingPortletKeys;
@@ -140,7 +140,7 @@ public class EditItemMVCActionCommand extends BaseMVCActionCommand {
 
 	protected void updateItem(ActionRequest actionRequest) throws Exception {
 		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
+			_portal.getUploadPortletRequest(actionRequest);
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -291,6 +291,9 @@ public class EditItemMVCActionCommand extends BaseMVCActionCommand {
 				largeFile, itemFields, itemPrices, serviceContext);
 		}
 	}
+
+	@Reference
+	private Portal _portal;
 
 	private ShoppingItemService _shoppingItemService;
 

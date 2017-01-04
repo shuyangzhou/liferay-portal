@@ -96,7 +96,7 @@ import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -198,7 +198,7 @@ public class CalendarPortlet extends MVCPortlet {
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
+			_portal.getUploadPortletRequest(actionRequest);
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -470,7 +470,7 @@ public class CalendarPortlet extends MVCPortlet {
 		if (calendarResourceId <= 0) {
 			_calendarResourceService.addCalendarResource(
 				serviceContext.getScopeGroupId(),
-				PortalUtil.getClassNameId(CalendarResource.class), 0,
+				_portal.getClassNameId(CalendarResource.class), 0,
 				PortalUUIDUtil.generate(), code, nameMap, descriptionMap,
 				active, serviceContext);
 		}
@@ -753,7 +753,7 @@ public class CalendarPortlet extends MVCPortlet {
 		String editCalendarURL = getRedirect(actionRequest, actionResponse);
 
 		if (Validator.isNull(editCalendarURL)) {
-			editCalendarURL = PortalUtil.getLayoutFullURL(themeDisplay);
+			editCalendarURL = _portal.getLayoutFullURL(themeDisplay);
 		}
 
 		String namespace = actionResponse.getNamespace();
@@ -1207,8 +1207,8 @@ public class CalendarPortlet extends MVCPortlet {
 		boolean enableRss = GetterUtil.getBoolean(
 			portletPreferences.getValue("enableRss", null), true);
 
-		if (!PortalUtil.isRSSFeedsEnabled() || !enableRss) {
-			PortalUtil.sendRSSFeedsDisabledError(
+		if (!_portal.isRSSFeedsEnabled() || !enableRss) {
+			_portal.sendRSSFeedsDisabledError(
 				resourceRequest, resourceResponse);
 
 			return;
@@ -1329,14 +1329,14 @@ public class CalendarPortlet extends MVCPortlet {
 			SearchContainer.DEFAULT_DELTA);
 
 		for (Group group : groups) {
-			long groupClassNameId = PortalUtil.getClassNameId(Group.class);
+			long groupClassNameId = _portal.getClassNameId(Group.class);
 
 			addCalendar(
 				resourceRequest, calendarsSet, groupClassNameId,
 				group.getGroupId());
 		}
 
-		long userClassNameId = PortalUtil.getClassNameId(User.class);
+		long userClassNameId = _portal.getClassNameId(User.class);
 
 		List<User> users = _userLocalService.search(
 			themeDisplay.getCompanyId(), keywords, 0, null, 0,
@@ -1641,6 +1641,10 @@ public class CalendarPortlet extends MVCPortlet {
 	private CalendarResourceService _calendarResourceService;
 	private CalendarService _calendarService;
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private Portal _portal;
+
 	private UserLocalService _userLocalService;
 
 }

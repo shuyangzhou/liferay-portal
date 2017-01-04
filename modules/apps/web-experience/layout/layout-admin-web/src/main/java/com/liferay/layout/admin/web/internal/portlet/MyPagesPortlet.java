@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.servlet.DynamicServletRequest;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portlet.RenderRequestImpl;
 import com.liferay.portlet.sites.action.ActionUtil;
 
@@ -67,7 +66,7 @@ public class MyPagesPortlet extends LayoutAdminPortlet {
 		throws IOException, PortletException {
 
 		try {
-			User user = PortalUtil.getUser(renderRequest);
+			User user = portal.getUser(renderRequest);
 
 			RenderRequestImpl renderRequestImpl =
 				(RenderRequestImpl)renderRequest;

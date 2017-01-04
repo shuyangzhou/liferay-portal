@@ -49,7 +49,7 @@ import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.InetAddressUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.scheduler.SchedulerClusterInvokingThreadLocal;
@@ -128,7 +128,7 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 				_jsonFactory.createJSONObject(_jsonFactory.serialize(message)));
 
 			auditMessage.setServerName(InetAddressUtil.getLocalHostName());
-			auditMessage.setServerPort(PortalUtil.getPortalLocalPort(false));
+			auditMessage.setServerPort(_portal.getPortalLocalPort(false));
 
 			_auditRouter.route(auditMessage);
 		}
@@ -898,6 +898,10 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	private JSONFactory _jsonFactory;
 	private final Map<String, ServiceRegistration<MessageListener>>
 		_messageListenerServiceRegistrations = new HashMap<>();
+
+	@Reference
+	private Portal _portal;
+
 	private SchedulerEngine _schedulerEngine;
 	private volatile SchedulerEngineHelperConfiguration
 		_schedulerEngineHelperConfiguration;

@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -222,10 +222,10 @@ public class InviteMembersPortlet extends MVCPortlet {
 
 		serviceContext.setAttribute("redirectURL", portletURL.toString());
 
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+		HttpServletRequest request = _portal.getHttpServletRequest(
 			actionRequest);
 
-		String createAccountURL = PortalUtil.getCreateAccountURL(
+		String createAccountURL = _portal.getCreateAccountURL(
 			request, themeDisplay);
 
 		serviceContext.setAttribute("createAccountURL", createAccountURL);
@@ -300,6 +300,10 @@ public class InviteMembersPortlet extends MVCPortlet {
 	private GroupLocalService _groupLocalService;
 	private InviteMembersUserHelper _inviteMembersUserHelper;
 	private MemberRequestLocalService _memberRequestLocalService;
+
+	@Reference
+	private Portal _portal;
+
 	private UserLocalService _userLocalService;
 
 }

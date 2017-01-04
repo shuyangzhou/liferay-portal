@@ -47,7 +47,7 @@ import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -105,7 +105,7 @@ public class SaveRecordSetMVCCommandHelper {
 
 		return ddmStructureService.addStructure(
 			groupId, DDMStructureConstants.DEFAULT_PARENT_STRUCTURE_ID,
-			PortalUtil.getClassNameId(DDLRecordSet.class), structureKey,
+			_portal.getClassNameId(DDLRecordSet.class), structureKey,
 			getLocalizedMap(themeDisplay.getSiteDefaultLocale(), name),
 			getLocalizedMap(themeDisplay.getSiteDefaultLocale(), description),
 			ddmForm, ddmFormLayout, storageType,
@@ -398,5 +398,8 @@ public class SaveRecordSetMVCCommandHelper {
 	@Reference
 	protected volatile WorkflowDefinitionLinkLocalService
 		workflowDefinitionLinkLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

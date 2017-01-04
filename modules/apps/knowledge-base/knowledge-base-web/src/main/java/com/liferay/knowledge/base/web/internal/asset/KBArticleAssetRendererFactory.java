@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import javax.portlet.PortletRequest;
@@ -117,7 +117,7 @@ public class KBArticleAssetRendererFactory
 			LiferayPortletResponse liferayPortletResponse, long classTypeId)
 		throws PortalException {
 
-		PortletURL portletURL = PortalUtil.getControlPanelPortletURL(
+		PortletURL portletURL = _portal.getControlPanelPortletURL(
 			liferayPortletRequest, getGroup(liferayPortletRequest),
 			KBPortletKeys.KNOWLEDGE_BASE_ADMIN, 0, 0,
 			PortletRequest.RENDER_PHASE);
@@ -177,6 +177,10 @@ public class KBArticleAssetRendererFactory
 	}
 
 	private KBArticleLocalService _kbArticleLocalService;
+
+	@Reference
+	private Portal _portal;
+
 	private ServletContext _servletContext;
 
 }

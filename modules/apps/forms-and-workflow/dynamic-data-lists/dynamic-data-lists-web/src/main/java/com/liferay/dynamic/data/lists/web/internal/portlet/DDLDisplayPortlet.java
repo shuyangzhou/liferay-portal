@@ -37,7 +37,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PrefsParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -103,7 +103,7 @@ public class DDLDisplayPortlet extends MVCPortlet {
 
 			setDDLRecordSetRequestAttribute(renderRequest);
 
-			HttpServletRequest request = PortalUtil.getHttpServletRequest(
+			HttpServletRequest request = _portal.getHttpServletRequest(
 				renderRequest);
 
 			DDLDisplayContext ddlDisplayContext = new DDLDisplayContext(
@@ -252,6 +252,10 @@ public class DDLDisplayPortlet extends MVCPortlet {
 	private volatile DDLWebConfiguration _ddlWebConfiguration;
 	private DDMDisplayRegistry _ddmDisplayRegistry;
 	private DDMTemplateLocalService _ddmTemplateLocalService;
+
+	@Reference
+	private Portal _portal;
+
 	private StorageEngine _storageEngine;
 
 }

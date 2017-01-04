@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Function;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.util.PropsValues;
@@ -97,7 +96,7 @@ public class Trackback {
 
 		StringBundler sb = new StringBundler(4);
 
-		sb.append(PortalUtil.getLayoutFullURL(themeDisplay));
+		sb.append(_portal.getLayoutFullURL(themeDisplay));
 		sb.append(Portal.FRIENDLY_URL_SEPARATOR);
 		sb.append("blogs/");
 		sb.append(entry.getUrlTitle());
@@ -126,6 +125,9 @@ public class Trackback {
 
 	@Reference
 	private LinkbackConsumer _linkbackConsumer;
+
+	@Reference
+	private Portal _portal;
 
 	@Reference
 	private UserLocalService _userLocalService;

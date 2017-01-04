@@ -81,7 +81,7 @@ import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -418,7 +418,7 @@ public class ContactsCenterPortlet extends MVCPortlet {
 
 			JSONObject extraDataJSONObject = JSONFactoryUtil.createJSONObject();
 
-			String portletId = PortalUtil.getPortletId(actionRequest);
+			String portletId = portal.getPortletId(actionRequest);
 
 			extraDataJSONObject.put(
 				"portletId", PortletConstants.getRootPortletId(portletId));
@@ -1235,6 +1235,9 @@ public class ContactsCenterPortlet extends MVCPortlet {
 
 	@Reference
 	protected EntryLocalService entryLocalService;
+
+	@Reference
+	protected Portal portal;
 
 	@Reference
 	protected RoleLocalService roleLocalService;

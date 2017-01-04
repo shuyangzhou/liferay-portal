@@ -20,7 +20,7 @@ import com.liferay.bookmarks.service.BookmarksEntryService;
 import com.liferay.portal.kernel.struts.BaseStrutsAction;
 import com.liferay.portal.kernel.struts.StrutsAction;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,7 +63,7 @@ public class OpenEntryAction extends BaseStrutsAction {
 			return null;
 		}
 		catch (Exception e) {
-			PortalUtil.sendError(e, request, response);
+			_portal.sendError(e, request, response);
 
 			return null;
 		}
@@ -77,5 +77,8 @@ public class OpenEntryAction extends BaseStrutsAction {
 	}
 
 	private BookmarksEntryService _bookmarksEntryService;
+
+	@Reference
+	private Portal _portal;
 
 }

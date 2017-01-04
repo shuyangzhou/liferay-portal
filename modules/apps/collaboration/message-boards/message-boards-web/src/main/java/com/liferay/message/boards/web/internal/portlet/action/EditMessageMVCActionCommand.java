@@ -56,7 +56,7 @@ import com.liferay.portal.kernel.upload.UploadRequestSizeException;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -181,7 +181,7 @@ public class EditMessageMVCActionCommand extends BaseMVCActionCommand {
 					sendRedirect(actionRequest, actionResponse, redirect);
 				}
 				else {
-					String redirect = PortalUtil.escapeRedirect(
+					String redirect = _portal.escapeRedirect(
 						ParamUtil.getString(actionRequest, "redirect"));
 
 					if (Validator.isNotNull(redirect)) {
@@ -377,7 +377,7 @@ public class EditMessageMVCActionCommand extends BaseMVCActionCommand {
 
 		try {
 			UploadPortletRequest uploadPortletRequest =
-				PortalUtil.getUploadPortletRequest(actionRequest);
+				_portal.getUploadPortletRequest(actionRequest);
 
 			for (int i = 1; i <= 5; i++) {
 				String fileName = uploadPortletRequest.getFileName(
@@ -510,5 +510,8 @@ public class EditMessageMVCActionCommand extends BaseMVCActionCommand {
 	private MBMessageService _mbMessageService;
 	private MBThreadLocalService _mbThreadLocalService;
 	private MBThreadService _mbThreadService;
+
+	@Reference
+	private Portal _portal;
 
 }
