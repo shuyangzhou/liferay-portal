@@ -14,7 +14,9 @@
 
 package com.liferay.portal.security.auth.verifier.internal.request.parameter.module;
 
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifier;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.security.auth.verifier.internal.module.BaseAuthVerifierPublisher;
 import com.liferay.portal.security.auth.verifier.request.parameter.RequestParameterAuthVerifier;
 
@@ -26,6 +28,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Tomas Polesovsky
@@ -41,6 +44,9 @@ public class RequestParameterAuthVerifierPublisher
 	@Override
 	protected void activate(
 		BundleContext bundleContext, Map<String, Object> properties) {
+
+		_authVerifier = new RequestParameterAuthVerifier(
+			_configurationProvider, _userLocalService);
 
 		super.activate(bundleContext, properties);
 	}
@@ -64,7 +70,20 @@ public class RequestParameterAuthVerifierPublisher
 		super.modified(bundleContext, properties);
 	}
 
-	private final AuthVerifier _authVerifier =
-		new RequestParameterAuthVerifier();
+	@Reference(unbind = "-")
+	protected void setConfigurationProvider(
+		ConfigurationProvider configurationProvider) {
+
+		_configurationProvider = configurationProvider;
+	}
+
+	@Reference(unbind = "-")
+	protected void setUserLocalService(UserLocalService userLocalService) {
+		_userLocalService = userLocalService;
+	}
+
+	private AuthVerifier _authVerifier;
+	private ConfigurationProvider _configurationProvider;
+	private UserLocalService _userLocalService;
 
 }

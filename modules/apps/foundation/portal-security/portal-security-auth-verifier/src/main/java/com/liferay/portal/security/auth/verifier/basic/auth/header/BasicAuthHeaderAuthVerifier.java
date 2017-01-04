@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.auth.verifier.basic.auth.header;
 
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.auth.AccessControlContext;
 import com.liferay.portal.kernel.security.auth.AuthException;
 import com.liferay.portal.kernel.security.auth.http.HttpAuthManagerUtil;
@@ -34,6 +35,12 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class BasicAuthHeaderAuthVerifier
 	extends BasicAuthHeaderAutoLogin implements AuthVerifier {
+
+	public BasicAuthHeaderAuthVerifier(
+		ConfigurationProvider configurationProvider) {
+
+		setConfigurationProvider(configurationProvider);
+	}
 
 	@Override
 	public String getAuthType() {
