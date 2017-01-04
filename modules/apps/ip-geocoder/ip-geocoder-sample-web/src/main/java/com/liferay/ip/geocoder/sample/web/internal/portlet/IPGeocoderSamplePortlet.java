@@ -18,7 +18,7 @@ import com.liferay.ip.geocoder.IPGeocoder;
 import com.liferay.ip.geocoder.IPInfo;
 import com.liferay.ip.geocoder.sample.web.internal.constants.IPGeocoderSamplePortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import java.io.IOException;
 
@@ -34,6 +34,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Julio Camarero
@@ -65,7 +66,7 @@ public class IPGeocoderSamplePortlet extends MVCPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
 
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+		HttpServletRequest request = _portal.getHttpServletRequest(
 			renderRequest);
 
 		ServiceReference<IPGeocoder> serviceReference =
@@ -94,5 +95,8 @@ public class IPGeocoderSamplePortlet extends MVCPortlet {
 	}
 
 	private static BundleContext _bundleContext;
+
+	@Reference
+	private Portal _portal;
 
 }

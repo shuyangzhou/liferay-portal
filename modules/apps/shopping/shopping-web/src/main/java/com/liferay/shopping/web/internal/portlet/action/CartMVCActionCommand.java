@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.shopping.constants.ShoppingPortletKeys;
 import com.liferay.shopping.exception.CartMinQuantityException;
@@ -63,7 +63,7 @@ public class CartMVCActionCommand extends BaseMVCActionCommand {
 		try {
 			updateCart(actionRequest, actionResponse);
 
-			String redirect = PortalUtil.escapeRedirect(
+			String redirect = _portal.escapeRedirect(
 				ParamUtil.getString(actionRequest, "redirect"));
 
 			if (Validator.isNotNull(redirect)) {
@@ -156,6 +156,9 @@ public class CartMVCActionCommand extends BaseMVCActionCommand {
 			addSuccessMessage(actionRequest, actionResponse);
 		}
 	}
+
+	@Reference
+	private Portal _portal;
 
 	private ShoppingCartLocalService _shoppingCartLocalService;
 	private ShoppingItemLocalService _shoppingItemLocalService;
