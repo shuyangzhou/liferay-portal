@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.servlet.DynamicServletRequest;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portlet.RenderRequestImpl;
 
 import javax.portlet.PortletException;
@@ -28,6 +28,7 @@ import javax.portlet.RenderResponse;
 import javax.portlet.WindowState;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Pei-Jung Lan
@@ -56,7 +57,7 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 		}
 
 		try {
-			User user = PortalUtil.getUser(renderRequest);
+			User user = _portal.getUser(renderRequest);
 
 			RenderRequestImpl renderRequestImpl =
 				(RenderRequestImpl)renderRequest;
@@ -74,5 +75,8 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 			throw new PortletException(pe);
 		}
 	}
+
+	@Reference
+	private Portal _portal;
 
 }

@@ -66,7 +66,7 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PwdGenerator;
 import com.liferay.portal.kernel.util.Validator;
@@ -106,7 +106,7 @@ public class CreateAccountMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+		HttpServletRequest request = _portal.getHttpServletRequest(
 			actionRequest);
 
 		HttpSession session = request.getSession();
@@ -299,7 +299,7 @@ public class CreateAccountMVCActionCommand extends BaseMVCActionCommand {
 				themeDisplay.getScopeGroupId(), false,
 				PropsValues.COMPANY_SECURITY_STRANGERS_URL);
 
-			String redirect = PortalUtil.getLayoutURL(layout, themeDisplay);
+			String redirect = _portal.getLayoutURL(layout, themeDisplay);
 
 			sendRedirect(actionRequest, actionResponse, redirect);
 		}
@@ -361,14 +361,14 @@ public class CreateAccountMVCActionCommand extends BaseMVCActionCommand {
 			login = user.getEmailAddress();
 		}
 
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+		HttpServletRequest request = _portal.getHttpServletRequest(
 			actionRequest);
 
-		String redirect = PortalUtil.escapeRedirect(
+		String redirect = _portal.escapeRedirect(
 			ParamUtil.getString(actionRequest, "redirect"));
 
 		if (Validator.isNotNull(redirect)) {
-			HttpServletResponse response = PortalUtil.getHttpServletResponse(
+			HttpServletResponse response = _portal.getHttpServletResponse(
 				actionResponse);
 
 			_authenticatedSessionManager.login(
@@ -407,8 +407,8 @@ public class CreateAccountMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		HttpServletRequest request = PortalUtil.getOriginalServletRequest(
-			PortalUtil.getHttpServletRequest(actionRequest));
+		HttpServletRequest request = _portal.getOriginalServletRequest(
+			_portal.getHttpServletRequest(actionRequest));
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -531,6 +531,10 @@ public class CreateAccountMVCActionCommand extends BaseMVCActionCommand {
 	private AuthenticatedSessionManager _authenticatedSessionManager;
 
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private Portal _portal;
+
 	private UserLocalService _userLocalService;
 	private UserService _userService;
 

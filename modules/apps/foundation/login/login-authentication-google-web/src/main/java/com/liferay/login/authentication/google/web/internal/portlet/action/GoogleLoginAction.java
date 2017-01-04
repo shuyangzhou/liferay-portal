@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.struts.StrutsAction;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -117,7 +117,7 @@ public class GoogleLoginAction extends BaseStrutsAction {
 	}
 
 	protected String getReturnRequestUri(HttpServletRequest request) {
-		return PortalUtil.getPortalURL(request) + PortalUtil.getPathMain() +
+		return _portal.getPortalURL(request) + _portal.getPathMain() +
 			_REDIRECT_URI;
 	}
 
@@ -176,5 +176,8 @@ public class GoogleLoginAction extends BaseStrutsAction {
 
 	@Reference
 	private GoogleAuthorization _googleAuthorization;
+
+	@Reference
+	private Portal _portal;
 
 }

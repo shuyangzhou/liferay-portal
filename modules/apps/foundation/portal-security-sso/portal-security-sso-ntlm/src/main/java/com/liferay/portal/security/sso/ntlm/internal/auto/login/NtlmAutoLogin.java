@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.auto.login.AutoLogin;
 import com.liferay.portal.kernel.security.auto.login.BaseAutoLogin;
 import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.security.exportimport.UserImporter;
 import com.liferay.portal.security.sso.ntlm.configuration.NtlmConfiguration;
 import com.liferay.portal.security.sso.ntlm.constants.NtlmConstants;
@@ -53,7 +53,7 @@ public class NtlmAutoLogin extends BaseAutoLogin {
 			HttpServletRequest request, HttpServletResponse response)
 		throws Exception {
 
-		long companyId = PortalUtil.getCompanyId(request);
+		long companyId = _portal.getCompanyId(request);
 
 		NtlmConfiguration ntlmConfiguration =
 			_configurationProvider.getConfiguration(
@@ -104,6 +104,10 @@ public class NtlmAutoLogin extends BaseAutoLogin {
 	}
 
 	private ConfigurationProvider _configurationProvider;
+
+	@Reference
+	private Portal _portal;
+
 	private UserImporter _userImporter;
 
 }

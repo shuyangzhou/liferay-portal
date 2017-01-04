@@ -38,7 +38,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -171,7 +171,7 @@ public class ForgotPasswordMVCActionCommand extends BaseMVCActionCommand {
 				}
 			}
 			else {
-				PortalUtil.sendError(e, actionRequest, actionResponse);
+				_portal.sendError(e, actionRequest, actionResponse);
 			}
 		}
 	}
@@ -276,7 +276,7 @@ public class ForgotPasswordMVCActionCommand extends BaseMVCActionCommand {
 			actionRequest, emailFromName, emailFromAddress, emailToAddress,
 			subject, body);
 
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+		HttpServletRequest request = _portal.getHttpServletRequest(
 			actionRequest);
 
 		SessionMessages.add(request, "passwordSent");
@@ -288,6 +288,9 @@ public class ForgotPasswordMVCActionCommand extends BaseMVCActionCommand {
 	protected void setUserLocalService(UserLocalService userLocalService) {
 		_userLocalService = userLocalService;
 	}
+
+	@Reference
+	private Portal _portal;
 
 	private UserLocalService _userLocalService;
 

@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -213,7 +213,7 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 
 				controlContext.put("variant", variant);
 
-				HttpServletRequest request = PortalUtil.getHttpServletRequest(
+				HttpServletRequest request = _portal.getHttpServletRequest(
 					renderRequest);
 
 				imageEditorCapability.prepareContext(controlContext, request);
@@ -240,6 +240,9 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 
 	@Reference
 	private ImageEditorCapabilityTracker _imageEditorCapabilityTracker;
+
+	@Reference
+	private Portal _portal;
 
 	@Reference(
 		target = "(bundle.symbolic.name=com.liferay.frontend.image.editor.web)"

@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.AutoResetThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.monitoring.internal.statistics.portal.PortalRequestDataSample;
 
@@ -152,7 +152,7 @@ public class MonitoringFilter
 			FilterChain filterChain)
 		throws IOException, ServletException {
 
-		long companyId = PortalUtil.getCompanyId(request);
+		long companyId = _portal.getCompanyId(request);
 		long groupId = getGroupId(request);
 
 		PortalRequestDataSample portalRequestDataSample = null;
@@ -266,6 +266,10 @@ public class MonitoringFilter
 	private DataSampleFactory _dataSampleFactory;
 	private LayoutLocalService _layoutLocalService;
 	private boolean _monitorPortalRequest;
+
+	@Reference
+	private Portal _portal;
+
 	private PortletMonitoringControl _portletMonitoringControl;
 	private ServiceMonitoringControl _serviceMonitoringControl;
 
