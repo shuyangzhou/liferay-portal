@@ -38,6 +38,7 @@ public class IconHelpTag extends IconTag {
 		setCssClass("taglib-icon-help");
 		setIcon("question-circle-full");
 		setId(StringUtil.randomId());
+		setLocalizeMessage(false);
 		setMarkupView("lexicon");
 
 		ResourceBundle resourceBundle = TagResourceBundleUtil.getResourceBundle(
