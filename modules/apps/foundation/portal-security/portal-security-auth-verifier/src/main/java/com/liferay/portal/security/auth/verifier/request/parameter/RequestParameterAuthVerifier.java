@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.security.auth.verifier.AuthVerifier;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
 import com.liferay.portal.kernel.security.auto.login.AutoLoginException;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.security.auto.login.request.parameter.RequestParameterAutoLogin;
 
 import java.util.Properties;
@@ -33,17 +34,19 @@ public class RequestParameterAuthVerifier
 
 	/**
 	 * @deprecated As of 2.0.0, replaced by {@link
-	 *		#RequestParameterAuthVerifier(ConfigurationProvider, UserLocalService)}
+	 *		#RequestParameterAuthVerifier(ConfigurationProvider, Portal,
+	 *		UserLocalService)}
 	 */
 	@Deprecated
 	public RequestParameterAuthVerifier() {
 	}
 
 	public RequestParameterAuthVerifier(
-		ConfigurationProvider configurationProvider,
+		ConfigurationProvider configurationProvider, Portal portal,
 		UserLocalService userLocalService) {
 
 		setConfigurationProvider(configurationProvider);
+		setPortal(portal);
 		setUserLocalService(userLocalService);
 	}
 
