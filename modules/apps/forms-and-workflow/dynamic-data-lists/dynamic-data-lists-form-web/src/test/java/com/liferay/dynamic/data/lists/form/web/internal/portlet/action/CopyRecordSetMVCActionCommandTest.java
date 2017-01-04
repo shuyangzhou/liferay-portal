@@ -34,6 +34,7 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.servlet.PortletServlet;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
@@ -71,10 +72,11 @@ public class CopyRecordSetMVCActionCommandTest {
 
 	@Before
 	public void setUp() throws Exception {
+		setUpPortalUtil();
+
 		setUpActionRequest();
 		setUpCopyRecordSetMVCActionCommand();
 		setUpLanguageUtil();
-		setUpPortalUtil();
 		setUpResourceBundleUtil();
 	}
 
@@ -139,6 +141,9 @@ public class CopyRecordSetMVCActionCommandTest {
 			ddmFormValuesFactory.getClass(), "_serviceTrackerMap");
 
 		field.set(ddmFormValuesFactory, _serviceTrackerMap);
+
+		ReflectionTestUtil.setFieldValue(
+			ddmFormValuesFactory, "_portal", PortalUtil.getPortal());
 
 		return ddmFormValuesFactory;
 	}

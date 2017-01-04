@@ -18,6 +18,7 @@ import aQute.bnd.osgi.Constants;
 
 import aQute.lib.converter.Converter;
 
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
@@ -455,6 +456,9 @@ public class JSLoaderModulesServletTest extends PowerMockito {
 
 		JSLoaderModulesServlet jsLoaderModulesServlet =
 			new JSLoaderModulesServlet();
+
+		ReflectionTestUtil.setFieldValue(
+			jsLoaderModulesServlet, "_portal", PortalUtil.getPortal());
 
 		jsLoaderModulesServlet.activate(
 			mock(ComponentContext.class), mock(Details.class));
