@@ -1870,6 +1870,8 @@ public class LanguageImpl implements Language, Serializable {
 				}
 			}
 
+			Set<String> duplicateLanguageCodes = new HashSet<>();
+
 			for (String languageId : languageIds) {
 				Locale locale = LocaleUtil.fromLanguageId(languageId, false);
 
@@ -1882,13 +1884,20 @@ public class LanguageImpl implements Language, Serializable {
 				}
 
 				if (_languageCodeLocalesMap.containsKey(languageCode)) {
-					_duplicateLanguageCodes.add(languageCode);
+					duplicateLanguageCodes.add(languageCode);
 				}
 				else {
 					_languageCodeLocalesMap.put(languageCode, locale);
 				}
 
 				_languageIdLocalesMap.put(languageId, locale);
+			}
+
+			if (duplicateLanguageCodes.isEmpty()) {
+				_duplicateLanguageCodes = Collections.emptySet();
+			}
+			else {
+				_duplicateLanguageCodes = duplicateLanguageCodes;
 			}
 
 			for (String languageId : PropsValues.LOCALES_BETA) {
@@ -1909,7 +1918,7 @@ public class LanguageImpl implements Language, Serializable {
 		}
 
 		private final Set<Locale> _availableLocales;
-		private final Set<String> _duplicateLanguageCodes = new HashSet<>();
+		private final Set<String> _duplicateLanguageCodes;
 		private final Map<String, Locale> _languageCodeLocalesMap =
 			new HashMap<>();
 		private final Map<String, Locale> _languageIdLocalesMap =

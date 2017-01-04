@@ -79,8 +79,14 @@ public abstract class AbstractPortletRequestWhitelist
 	public Set<String> resetPortletInvocationWhitelist() {
 		_portletInvocationWhitelist = SetUtil.fromArray(
 			getWhitelistPropsValues());
-		_portletInvocationWhitelist = Collections.unmodifiableSet(
-			_portletInvocationWhitelist);
+
+		if (_portletInvocationWhitelist.isEmpty()) {
+			_portletInvocationWhitelist = Collections.emptySet();
+		}
+		else {
+			_portletInvocationWhitelist = Collections.unmodifiableSet(
+				_portletInvocationWhitelist);
+		}
 
 		return _portletInvocationWhitelist;
 	}
@@ -89,8 +95,14 @@ public abstract class AbstractPortletRequestWhitelist
 	public Set<String> resetPortletInvocationWhitelistActions() {
 		_portletInvocationWhitelistActions = SetUtil.fromArray(
 			getWhitelistActionsPropsValues());
-		_portletInvocationWhitelistActions = Collections.unmodifiableSet(
-			_portletInvocationWhitelistActions);
+
+		if (_portletInvocationWhitelistActions.isEmpty()) {
+			_portletInvocationWhitelistActions = Collections.emptySet();
+		}
+		else {
+			_portletInvocationWhitelistActions = Collections.unmodifiableSet(
+				_portletInvocationWhitelistActions);
+		}
 
 		return _portletInvocationWhitelistActions;
 	}
