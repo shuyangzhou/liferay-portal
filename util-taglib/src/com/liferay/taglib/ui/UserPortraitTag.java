@@ -89,8 +89,11 @@ public class UserPortraitTag extends IncludeTag {
 		_cssClass = cssClass;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public void setImageCssClass(String imageCssClass) {
-		_imageCssClass = imageCssClass;
 	}
 
 	public void setUserId(long userId) {
@@ -104,7 +107,6 @@ public class UserPortraitTag extends IncludeTag {
 	@Override
 	protected void cleanUp() {
 		_cssClass = StringPool.BLANK;
-		_imageCssClass = StringPool.BLANK;
 		_userId = 0;
 		_userName = StringPool.BLANK;
 	}
@@ -164,7 +166,6 @@ public class UserPortraitTag extends IncludeTag {
 		UserPortraitTag.class);
 
 	private String _cssClass = StringPool.BLANK;
-	private String _imageCssClass = StringPool.BLANK;
 	private long _userId;
 	private String _userName = StringPool.BLANK;
 
