@@ -99,12 +99,24 @@ public class PortalPreferencesImpl
 	public PortalPreferencesImpl clone() {
 		String originalXML = getOriginalXML();
 
-		if ((_portalPreferences == null) ||
-			Objects.equals(originalXML, _portalPreferences.getPreferences())) {
-
+		if (_portalPreferences == null) {
 			return new PortalPreferencesImpl(
-				getOwnerId(), getOwnerType(), originalXML,
+				getOwnerId(), getOwnerType(), getOriginalXML(),
 				new HashMap<>(getOriginalPreferences()), isSignedIn());
+		}
+		else if (Objects.equals(
+					originalXML, _portalPreferences.getPreferences())) {
+
+			PortalPreferencesImpl portalPreferencesImpl =
+				new PortalPreferencesImpl(
+					getOwnerId(), getOwnerType(), originalXML,
+					new HashMap<>(getOriginalPreferences()), isSignedIn());
+
+			portalPreferencesImpl._portalPreferences =
+				(com.liferay.portal.kernel.model.PortalPreferences)
+					_portalPreferences.clone();
+
+			return portalPreferencesImpl;
 		}
 
 		return new PortalPreferencesImpl(_portalPreferences, isSignedIn());
