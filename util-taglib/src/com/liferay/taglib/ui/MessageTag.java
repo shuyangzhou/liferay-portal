@@ -29,6 +29,7 @@ import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
@@ -36,59 +37,73 @@ import javax.servlet.jsp.tagext.TagSupport;
  */
 public class MessageTag extends TagSupport {
 
+	public static void doTag(
+			Object[] arguments, boolean escape, boolean escapeAttribute,
+			String key, boolean localizeKey, boolean translateArguments,
+			boolean unicode, PageContext pageContext)
+		throws Exception {
+
+		String value = StringPool.BLANK;
+
+		HttpServletRequest request =
+			(HttpServletRequest)pageContext.getRequest();
+
+		if (!unicode) {
+			unicode = GetterUtil.getBoolean(
+				request.getAttribute(WebKeys.JAVASCRIPT_CONTEXT));
+		}
+
+		ResourceBundle resourceBundle = TagResourceBundleUtil.getResourceBundle(
+			pageContext);
+
+		if (arguments == null) {
+			if (!localizeKey) {
+				value = key;
+			}
+			else if (escape) {
+				value = HtmlUtil.escape(LanguageUtil.get(resourceBundle, key));
+			}
+			else if (escapeAttribute) {
+				value = HtmlUtil.escapeAttribute(
+					LanguageUtil.get(resourceBundle, key));
+			}
+			else if (unicode) {
+				value = UnicodeLanguageUtil.get(resourceBundle, key);
+			}
+			else {
+				value = LanguageUtil.get(resourceBundle, key);
+			}
+		}
+		else {
+			if (unicode) {
+				value = UnicodeLanguageUtil.format(
+					resourceBundle, key, arguments, translateArguments);
+			}
+			else {
+				value = LanguageUtil.format(
+					resourceBundle, key, arguments, translateArguments);
+			}
+		}
+
+		if (Validator.isNotNull(value)) {
+			JspWriter jspWriter = pageContext.getOut();
+
+			jspWriter.write(value);
+		}
+	}
+
+	public static void doTag(String key, PageContext pageContext)
+		throws Exception {
+
+		doTag(null, false, false, key, true, true, false, pageContext);
+	}
+
 	@Override
 	public int doEndTag() throws JspException {
 		try {
-			String value = StringPool.BLANK;
-
-			HttpServletRequest request =
-				(HttpServletRequest)pageContext.getRequest();
-
-			boolean unicode = GetterUtil.getBoolean(
-				request.getAttribute(WebKeys.JAVASCRIPT_CONTEXT));
-
-			if (unicode) {
-				_unicode = unicode;
-			}
-
-			ResourceBundle resourceBundle =
-				TagResourceBundleUtil.getResourceBundle(pageContext);
-
-			if (_arguments == null) {
-				if (!_localizeKey) {
-					value = _key;
-				}
-				else if (_escape) {
-					value = HtmlUtil.escape(
-						LanguageUtil.get(resourceBundle, _key));
-				}
-				else if (_escapeAttribute) {
-					value = HtmlUtil.escapeAttribute(
-						LanguageUtil.get(resourceBundle, _key));
-				}
-				else if (_unicode) {
-					value = UnicodeLanguageUtil.get(resourceBundle, _key);
-				}
-				else {
-					value = LanguageUtil.get(resourceBundle, _key);
-				}
-			}
-			else {
-				if (_unicode) {
-					value = UnicodeLanguageUtil.format(
-						resourceBundle, _key, _arguments, _translateArguments);
-				}
-				else {
-					value = LanguageUtil.format(
-						resourceBundle, _key, _arguments, _translateArguments);
-				}
-			}
-
-			if (Validator.isNotNull(value)) {
-				JspWriter jspWriter = pageContext.getOut();
-
-				jspWriter.write(value);
-			}
+			doTag(
+				_arguments, _escape, _escapeAttribute, _key, _localizeKey,
+				_translateArguments, _unicode, pageContext);
 
 			return EVAL_PAGE;
 		}
