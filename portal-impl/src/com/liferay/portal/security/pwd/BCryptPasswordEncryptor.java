@@ -32,12 +32,7 @@ public class BCryptPasswordEncryptor
 	extends BasePasswordEncryptor implements PasswordEncryptor {
 
 	@Override
-	public String[] getSupportedAlgorithmTypes() {
-		return new String[] {PasswordEncryptorUtil.TYPE_BCRYPT};
-	}
-
-	@Override
-	protected String doEncrypt(
+	public String encrypt(
 		String algorithm, String plainTextPassword, String encryptedPassword) {
 
 		String salt = null;
@@ -58,6 +53,11 @@ public class BCryptPasswordEncryptor
 		}
 
 		return BCrypt.hashpw(plainTextPassword, salt);
+	}
+
+	@Override
+	public String[] getSupportedAlgorithmTypes() {
+		return new String[] {PasswordEncryptorUtil.TYPE_BCRYPT};
 	}
 
 	private static final int _ROUNDS = 10;

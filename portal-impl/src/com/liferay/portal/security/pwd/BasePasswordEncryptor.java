@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.security.pwd.PasswordEncryptor;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsUtil;
 
 /**
@@ -37,27 +36,9 @@ public abstract class BasePasswordEncryptor implements PasswordEncryptor {
 	}
 
 	@Override
-	public String encrypt(
-			String algorithm, String plainTextPassword,
-			String encryptedPassword)
-		throws PwdEncryptorException {
-
-		if (Validator.isNull(plainTextPassword)) {
-			throw new PwdEncryptorException("Unable to encrypt blank password");
-		}
-
-		return doEncrypt(algorithm, plainTextPassword, encryptedPassword);
-	}
-
-	@Override
 	public String getDefaultPasswordAlgorithmType() {
 		return _PASSWORDS_ENCRYPTION_ALGORITHM;
 	}
-
-	protected abstract String doEncrypt(
-			String algorithm, String plainTextPassword,
-			String encryptedPassword)
-		throws PwdEncryptorException;
 
 	private static final String _PASSWORDS_ENCRYPTION_ALGORITHM =
 		StringUtil.toUpperCase(

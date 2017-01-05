@@ -33,6 +33,42 @@ import java.util.Map;
 public class CompositePasswordEncryptor
 	extends BasePasswordEncryptor implements PasswordEncryptor {
 
+	public void afterPropertiesSet() {
+		if (_defaultAlgorithmPasswordEncryptor == null) {
+			_defaultAlgorithmPasswordEncryptor = _select(
+				getDefaultPasswordAlgorithmType());
+		}
+	}
+
+	@Override
+	public String encrypt(String plainTextPassword, String encryptedPassword)
+		throws PwdEncryptorException {
+
+		if (Validator.isNull(plainTextPassword)) {
+			throw new PwdEncryptorException("Unable to encrypt blank password");
+		}
+
+		return _defaultAlgorithmPasswordEncryptor.encrypt(
+			getDefaultPasswordAlgorithmType(), plainTextPassword,
+			encryptedPassword);
+	}
+
+	@Override
+	public String encrypt(
+			String algorithm, String plainTextPassword,
+			String encryptedPassword)
+		throws PwdEncryptorException {
+
+		if (Validator.isNull(plainTextPassword)) {
+			throw new PwdEncryptorException("Unable to encrypt blank password");
+		}
+
+		PasswordEncryptor passwordEncryptor = _select(algorithm);
+
+		return passwordEncryptor.encrypt(
+			algorithm, plainTextPassword, encryptedPassword);
+	}
+
 	@Override
 	public String[] getSupportedAlgorithmTypes() {
 		throw new UnsupportedOperationException();
@@ -70,12 +106,7 @@ public class CompositePasswordEncryptor
 		}
 	}
 
-	@Override
-	protected String doEncrypt(
-			String algorithm, String plainTextPassword,
-			String encryptedPassword)
-		throws PwdEncryptorException {
-
+	private PasswordEncryptor _select(String algorithm) {
 		if (Validator.isNull(algorithm)) {
 			throw new IllegalArgumentException("Invalid algorithm");
 		}
@@ -108,13 +139,13 @@ public class CompositePasswordEncryptor
 					" to encrypt password using " + algorithm);
 		}
 
-		return passwordEncryptor.encrypt(
-			algorithm, plainTextPassword, encryptedPassword);
+		return passwordEncryptor;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CompositePasswordEncryptor.class);
 
+	private PasswordEncryptor _defaultAlgorithmPasswordEncryptor;
 	private PasswordEncryptor _defaultPasswordEncryptor;
 	private final Map<String, PasswordEncryptor> _passwordEncryptors =
 		new HashMap<>();

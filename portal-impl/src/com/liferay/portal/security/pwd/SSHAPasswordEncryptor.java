@@ -37,12 +37,7 @@ public class SSHAPasswordEncryptor
 	extends BasePasswordEncryptor implements PasswordEncryptor {
 
 	@Override
-	public String[] getSupportedAlgorithmTypes() {
-		return new String[] {PasswordEncryptorUtil.TYPE_SSHA};
-	}
-
-	@Override
-	protected String doEncrypt(
+	public String encrypt(
 			String algorithm, String plainTextPassword,
 			String encryptedPassword)
 		throws PwdEncryptorException {
@@ -67,6 +62,11 @@ public class SSHAPasswordEncryptor
 		catch (UnsupportedEncodingException uee) {
 			throw new PwdEncryptorException(uee.getMessage(), uee);
 		}
+	}
+
+	@Override
+	public String[] getSupportedAlgorithmTypes() {
+		return new String[] {PasswordEncryptorUtil.TYPE_SSHA};
 	}
 
 	protected byte[] getSaltBytes(String encryptedPassword)

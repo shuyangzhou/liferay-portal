@@ -36,15 +36,7 @@ public class CryptPasswordEncryptor
 	extends BasePasswordEncryptor implements PasswordEncryptor {
 
 	@Override
-	public String[] getSupportedAlgorithmTypes() {
-		return new String[] {
-			PasswordEncryptorUtil.TYPE_UFC_CRYPT,
-			PasswordEncryptorUtil.TYPE_UFC_CRYPT
-		};
-	}
-
-	@Override
-	protected String doEncrypt(
+	public String encrypt(
 			String algorithm, String plainTextPassword,
 			String encryptedPassword)
 		throws PwdEncryptorException {
@@ -58,6 +50,14 @@ public class CryptPasswordEncryptor
 		catch (UnsupportedEncodingException uee) {
 			throw new PwdEncryptorException(uee.getMessage(), uee);
 		}
+	}
+
+	@Override
+	public String[] getSupportedAlgorithmTypes() {
+		return new String[] {
+			PasswordEncryptorUtil.TYPE_UFC_CRYPT,
+			PasswordEncryptorUtil.TYPE_UFC_CRYPT
+		};
 	}
 
 	protected byte[] getSalt(String encryptedPassword)

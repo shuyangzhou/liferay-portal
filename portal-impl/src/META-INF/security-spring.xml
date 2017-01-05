@@ -74,8 +74,8 @@
 		<property name="resourceActions" ref="com.liferay.portal.kernel.security.permission.ResourceActions" />
 	</bean>
 	<bean class="com.liferay.portal.security.permission.UserBagFactoryImpl" id="com.liferay.portal.kernel.security.permission.UserBagFactory" />
-	<bean class="com.liferay.portal.security.pwd.LegacyAlgorithmAwarePasswordEncryptor" id="com.liferay.portal.kernel.security.pwd.PasswordEncryptor">
-		<property name="parentPasswordEncryptor" ref="com.liferay.portal.security.pwd.CompositePasswordEncryptor" />
+	<bean class="com.liferay.portal.security.pwd.LegacyAlgorithmAwarePasswordEncryptor" factory-method="create" id="com.liferay.portal.kernel.security.pwd.PasswordEncryptor">
+		<constructor-arg ref="com.liferay.portal.security.pwd.CompositePasswordEncryptor" />
 	</bean>
 	<bean class="com.liferay.portal.kernel.security.pwd.PasswordEncryptorUtil" id="com.liferay.portal.kernel.security.pwd.PasswordEncryptorUtil">
 		<property name="passwordEncryptor" ref="com.liferay.portal.kernel.security.pwd.PasswordEncryptor" />

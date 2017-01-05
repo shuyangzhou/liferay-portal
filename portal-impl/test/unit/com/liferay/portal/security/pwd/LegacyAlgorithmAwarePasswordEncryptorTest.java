@@ -53,10 +53,6 @@ public class LegacyAlgorithmAwarePasswordEncryptorTest {
 		PasswordEncryptorUtil passwordEncryptorUtil =
 			new PasswordEncryptorUtil();
 
-		LegacyAlgorithmAwarePasswordEncryptor
-			legacyAlgorithmAwarePasswordEncryptor =
-				new LegacyAlgorithmAwarePasswordEncryptor();
-
 		CompositePasswordEncryptor compositePasswordEncryptor =
 			new CompositePasswordEncryptor();
 
@@ -73,11 +69,9 @@ public class LegacyAlgorithmAwarePasswordEncryptorTest {
 
 		compositePasswordEncryptor.setPasswordEncryptors(passwordEncryptors);
 
-		legacyAlgorithmAwarePasswordEncryptor.setParentPasswordEncryptor(
-			compositePasswordEncryptor);
-
 		passwordEncryptorUtil.setPasswordEncryptor(
-			legacyAlgorithmAwarePasswordEncryptor);
+			LegacyAlgorithmAwarePasswordEncryptor.create(
+				compositePasswordEncryptor));
 	}
 
 	@Test

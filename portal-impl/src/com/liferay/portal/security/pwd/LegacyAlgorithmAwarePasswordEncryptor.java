@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.pwd.PasswordEncryptor;
 import com.liferay.portal.kernel.util.CharPool;
-import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
@@ -31,49 +30,24 @@ import com.liferay.portal.util.PropsValues;
 public class LegacyAlgorithmAwarePasswordEncryptor
 	extends BasePasswordEncryptor {
 
-	@Override
-	public String[] getSupportedAlgorithmTypes() {
-		return _parentPasswordEncryptor.getSupportedAlgorithmTypes();
-	}
-
-	public void setParentPasswordEncryptor(
-		PasswordEncryptor defaultPasswordEncryptor) {
-
-		_parentPasswordEncryptor = defaultPasswordEncryptor;
-	}
-
-	@Override
-	protected String doEncrypt(
-			String algorithm, String plainTextPassword,
-			String encryptedPassword)
-		throws PwdEncryptorException {
+	public static PasswordEncryptor create(
+		PasswordEncryptor parentPasswordEncryptor) {
 
 		if (Validator.isNull(
 				PropsValues.PASSWORDS_ENCRYPTION_ALGORITHM_LEGACY)) {
 
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Skipping passwords upgrade scheme because " +
-						PropsKeys.PASSWORDS_ENCRYPTION_ALGORITHM_LEGACY +
-							" is blank");
-			}
-
-			try {
-				return _parentPasswordEncryptor.encrypt(
-					algorithm, plainTextPassword, encryptedPassword);
-			}
-			catch (Exception e) {
-				StringBundler sb = new StringBundler(5);
-
-				sb.append("Password upgrade was not successfully configured. ");
-				sb.append("Please set the property ");
-				sb.append("\"passwords.encryption.algorithm.legacy\" with ");
-				sb.append("the previous password encryption algorithm and ");
-				sb.append("restart.");
-
-				throw new PwdEncryptorException(sb.toString(), e);
-			}
+			return parentPasswordEncryptor;
 		}
+
+		return new LegacyAlgorithmAwarePasswordEncryptor(
+			parentPasswordEncryptor);
+	}
+
+	@Override
+	public String encrypt(
+			String algorithm, String plainTextPassword,
+			String encryptedPassword)
+		throws PwdEncryptorException {
 
 		if (_log.isDebugEnabled()) {
 			String message =
@@ -147,6 +121,11 @@ public class LegacyAlgorithmAwarePasswordEncryptor
 		return sb.toString();
 	}
 
+	@Override
+	public String[] getSupportedAlgorithmTypes() {
+		return _parentPasswordEncryptor.getSupportedAlgorithmTypes();
+	}
+
 	protected String getAlgorithmName(String algorithm) {
 		int index = algorithm.indexOf(CharPool.SLASH);
 
@@ -157,9 +136,15 @@ public class LegacyAlgorithmAwarePasswordEncryptor
 		return algorithm;
 	}
 
+	private LegacyAlgorithmAwarePasswordEncryptor(
+		PasswordEncryptor parentPasswordEncryptor) {
+
+		_parentPasswordEncryptor = parentPasswordEncryptor;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		LegacyAlgorithmAwarePasswordEncryptor.class);
 
-	private PasswordEncryptor _parentPasswordEncryptor;
+	private final PasswordEncryptor _parentPasswordEncryptor;
 
 }

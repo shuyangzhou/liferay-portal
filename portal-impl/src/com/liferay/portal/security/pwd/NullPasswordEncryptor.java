@@ -25,15 +25,15 @@ public class NullPasswordEncryptor
 	extends BasePasswordEncryptor implements PasswordEncryptor {
 
 	@Override
-	public String[] getSupportedAlgorithmTypes() {
-		return new String[] {PasswordEncryptorUtil.TYPE_NONE};
-	}
-
-	@Override
-	protected String doEncrypt(
+	public String encrypt(
 		String algorithm, String plainTextPassword, String encryptedPassword) {
 
 		return plainTextPassword;
+	}
+
+	@Override
+	public String[] getSupportedAlgorithmTypes() {
+		return new String[] {PasswordEncryptorUtil.TYPE_NONE};
 	}
 
 }
