@@ -456,45 +456,6 @@ public class PortletPreferencesLocalServiceImpl
 			strict);
 	}
 
-	private javax.portlet.PortletPreferences _getPreferences(
-		long companyId, long ownerId, int ownerType, long plid,
-		String portletId, String defaultPreferences, boolean strict) {
-
-		PortletPreferences portletPreferences =
-			portletPreferencesPersistence.fetchByO_O_P_P(
-				ownerId, ownerType, plid, portletId);
-
-		if (portletPreferences == null) {
-			Portlet portlet = portletLocalService.fetchPortletById(
-				companyId, portletId);
-
-			if (strict &&
-				(Validator.isNull(defaultPreferences) ||
-				 ((portlet != null) && portlet.isUndeployedPortlet()))) {
-
-				if (portlet == null) {
-					defaultPreferences = PortletConstants.DEFAULT_PREFERENCES;
-				}
-				else {
-					defaultPreferences = portlet.getDefaultPreferences();
-				}
-
-				return PortletPreferencesFactoryUtil.strictFromXML(
-					companyId, ownerId, ownerType, plid, portletId,
-					defaultPreferences);
-			}
-
-			portletPreferences =
-				portletPreferencesLocalService.addPortletPreferences(
-					companyId, ownerId, ownerType, plid, portletId, portlet,
-					defaultPreferences);
-		}
-
-		return PortletPreferencesFactoryUtil.fromXML(
-			companyId, ownerId, ownerType, plid, portletId,
-			portletPreferences.getPreferences());
-	}
-
 	private LayoutRevision _getLayoutRevision(Layout layout) {
 		LayoutRevision layoutRevision =
 			layoutRevisionPersistence.fetchByPrimaryKey(layout.getPlid());
@@ -533,6 +494,45 @@ public class PortletPreferencesLocalServiceImpl
 		}
 
 		return LayoutStagingUtil.getLayoutRevision(layout);
+	}
+
+	private javax.portlet.PortletPreferences _getPreferences(
+		long companyId, long ownerId, int ownerType, long plid,
+		String portletId, String defaultPreferences, boolean strict) {
+
+		PortletPreferences portletPreferences =
+			portletPreferencesPersistence.fetchByO_O_P_P(
+				ownerId, ownerType, plid, portletId);
+
+		if (portletPreferences == null) {
+			Portlet portlet = portletLocalService.fetchPortletById(
+				companyId, portletId);
+
+			if (strict &&
+				(Validator.isNull(defaultPreferences) ||
+				 ((portlet != null) && portlet.isUndeployedPortlet()))) {
+
+				if (portlet == null) {
+					defaultPreferences = PortletConstants.DEFAULT_PREFERENCES;
+				}
+				else {
+					defaultPreferences = portlet.getDefaultPreferences();
+				}
+
+				return PortletPreferencesFactoryUtil.strictFromXML(
+					companyId, ownerId, ownerType, plid, portletId,
+					defaultPreferences);
+			}
+
+			portletPreferences =
+				portletPreferencesLocalService.addPortletPreferences(
+					companyId, ownerId, ownerType, plid, portletId, portlet,
+					defaultPreferences);
+		}
+
+		return PortletPreferencesFactoryUtil.fromXML(
+			companyId, ownerId, ownerType, plid, portletId,
+			portletPreferences.getPreferences());
 	}
 
 	private long _swapPlidForPortletPreferences(long plid) {
