@@ -696,8 +696,7 @@ public class PortletPreferencesFactoryImpl
 		}
 
 		return PortletPreferencesLocalServiceUtil.getStrictPreferences(
-			layout.getCompanyId(), ownerId, ownerType, layout.getPlid(),
-			portletId);
+			layout, ownerId, ownerType, portletId);
 	}
 
 	@Override

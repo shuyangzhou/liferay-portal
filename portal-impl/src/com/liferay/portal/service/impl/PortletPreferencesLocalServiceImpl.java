@@ -360,6 +360,26 @@ public class PortletPreferencesLocalServiceImpl
 		}
 	)
 	public javax.portlet.PortletPreferences getStrictPreferences(
+		Layout layout, long ownerId, int ownerType, String portletId) {
+
+		long plid = _swapPlidForUpdatePreferences(layout);
+
+		return _getPreferences(
+			layout.getCompanyId(), ownerId, ownerType, plid, portletId, null,
+			true);
+	}
+
+	@Override
+	@Retry(
+		acceptor = ExceptionRetryAcceptor.class,
+		properties = {
+			@Property(
+				name = ExceptionRetryAcceptor.EXCEPTION_NAME,
+				value = "org.springframework.dao.DataIntegrityViolationException"
+			)
+		}
+	)
+	public javax.portlet.PortletPreferences getStrictPreferences(
 		long companyId, long ownerId, int ownerType, long plid,
 		String portletId) {
 
@@ -431,6 +451,15 @@ public class PortletPreferencesLocalServiceImpl
 
 		plid = _swapPlidForPreferences(plid);
 
+		return _getPreferences(
+			companyId, ownerId, ownerType, plid, portletId, defaultPreferences,
+			strict);
+	}
+
+	private javax.portlet.PortletPreferences _getPreferences(
+		long companyId, long ownerId, int ownerType, long plid,
+		String portletId, String defaultPreferences, boolean strict) {
+
 		PortletPreferences portletPreferences =
 			portletPreferencesPersistence.fetchByO_O_P_P(
 				ownerId, ownerType, plid, portletId);
@@ -461,12 +490,24 @@ public class PortletPreferencesLocalServiceImpl
 					defaultPreferences);
 		}
 
-		PortletPreferencesImpl portletPreferencesImpl =
-			(PortletPreferencesImpl)PortletPreferencesFactoryUtil.fromXML(
-				companyId, ownerId, ownerType, plid, portletId,
-				portletPreferences.getPreferences());
+		return PortletPreferencesFactoryUtil.fromXML(
+			companyId, ownerId, ownerType, plid, portletId,
+			portletPreferences.getPreferences());
+	}
 
-		return portletPreferencesImpl;
+	private LayoutRevision _getLayoutRevision(Layout layout) {
+		LayoutRevision layoutRevision =
+			layoutRevisionPersistence.fetchByPrimaryKey(layout.getPlid());
+
+		if (layoutRevision != null) {
+			return layoutRevision;
+		}
+
+		if (!LayoutStagingUtil.isBranchingLayout(layout)) {
+			return null;
+		}
+
+		return LayoutStagingUtil.getLayoutRevision(layout);
 	}
 
 	private LayoutRevision _getLayoutRevision(long plid) {
@@ -536,12 +577,18 @@ public class PortletPreferencesLocalServiceImpl
 		}
 	}
 
-	private long _swapPlidForUpdatePreferences(long plid) {
+	private long _swapPlidForUpdatePreferences(Layout layout) {
 		if (!StagingAdvicesThreadLocal.isEnabled()) {
-			return plid;
+			return layout.getPlid();
 		}
 
-		LayoutRevision layoutRevision = _getLayoutRevision(plid);
+		LayoutRevision layoutRevision = _getLayoutRevision(layout);
+
+		return _swapPlidForUpdatePreferences(layoutRevision, layout.getPlid());
+	}
+
+	private long _swapPlidForUpdatePreferences(
+		LayoutRevision layoutRevision, long plid) {
 
 		if (layoutRevision == null) {
 			return plid;
@@ -586,6 +633,16 @@ public class PortletPreferencesLocalServiceImpl
 		ProxiedLayoutsThreadLocal.clearProxiedLayouts();
 
 		return plid;
+	}
+
+	private long _swapPlidForUpdatePreferences(long plid) {
+		if (!StagingAdvicesThreadLocal.isEnabled()) {
+			return plid;
+		}
+
+		LayoutRevision layoutRevision = _getLayoutRevision(plid);
+
+		return _swapPlidForUpdatePreferences(layoutRevision, plid);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
