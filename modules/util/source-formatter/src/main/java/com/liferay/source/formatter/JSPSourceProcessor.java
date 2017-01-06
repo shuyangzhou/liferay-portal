@@ -2124,11 +2124,6 @@ public class JSPSourceProcessor extends BaseSourceProcessor {
 			"PortletResponse", "resourceResponse",
 			"(PortletResponse)request.getAttribute(JavaConstants." +
 				"JAVAX_PORTLET_RESPONSE)"
-		},
-		new String[] {
-			"SearchContainerReference", "searchContainerReference",
-			"(SearchContainerReference)request.getAttribute(WebKeys." +
-				"SEARCH_CONTAINER_REFERENCE)"
 		}
 	};
 
