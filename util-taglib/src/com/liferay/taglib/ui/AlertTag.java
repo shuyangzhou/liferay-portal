@@ -87,12 +87,18 @@ public class AlertTag extends IncludeTag {
 		_closeable = closeable;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public void setCssClass(String cssClass) {
-		_cssClass = cssClass;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public void setDestroyOnHide(boolean destroyOnHide) {
-		_destroyOnHide = destroyOnHide;
 	}
 
 	public void setIcon(String icon) {
@@ -127,8 +133,6 @@ public class AlertTag extends IncludeTag {
 		_closeable = true;
 		_icon = "info-circle";
 		_message = StringPool.BLANK;
-		_cssClass = null;
-		_destroyOnHide = false;
 		_targetNode = StringPool.BLANK;
 		_timeout = -1;
 		_title = StringPool.BLANK;
@@ -163,8 +167,6 @@ public class AlertTag extends IncludeTag {
 
 	private Integer _animationTime = 500;
 	private boolean _closeable = true;
-	private String _cssClass;
-	private boolean _destroyOnHide;
 	private String _icon = "info-circle";
 	private String _message = StringPool.BLANK;
 	private String _targetNode = StringPool.BLANK;
