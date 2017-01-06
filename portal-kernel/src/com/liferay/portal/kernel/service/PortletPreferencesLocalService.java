@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletPreferences;
@@ -290,6 +291,14 @@ public interface PortletPreferencesLocalService extends BaseLocalService,
 	public javax.portlet.PortletPreferences getPreferences(long companyId,
 		long ownerId, int ownerType, long plid, java.lang.String portletId,
 		java.lang.String defaultPreferences);
+
+	@Retry(acceptor = ExceptionRetryAcceptor.class, properties =  {
+		@Property(name = ExceptionRetryAcceptor.EXCEPTION_NAME, value = "org.springframework.dao.DataIntegrityViolationException")
+	}
+	)
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public javax.portlet.PortletPreferences getStrictPreferences(
+		Layout layout, long ownerId, int ownerType, java.lang.String portletId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public javax.portlet.PortletPreferences getStrictPreferences(
