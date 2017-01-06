@@ -26,6 +26,21 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class SearchContainerReference {
 
+	public static SearchContainerReference getSearchContainerReference(
+		HttpServletRequest request, String namespace) {
+
+		SearchContainerReference searchContainerReference =
+			(SearchContainerReference)request.getAttribute(
+				WebKeys.SEARCH_CONTAINER_REFERENCE);
+
+		if (searchContainerReference == null) {
+			searchContainerReference = new SearchContainerReference(
+				request, namespace);
+		}
+
+		return searchContainerReference;
+	}
+
 	public SearchContainerReference(
 		HttpServletRequest request, String namespace) {
 
