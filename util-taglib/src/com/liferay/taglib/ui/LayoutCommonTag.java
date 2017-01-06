@@ -14,14 +14,22 @@
 
 package com.liferay.taglib.ui;
 
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.taglib.portletext.RuntimeTag;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.JspWriter;
 
 /**
  * @author Eudaldo Alonso
@@ -45,7 +53,7 @@ public class LayoutCommonTag extends IncludeTag {
 	}
 
 	@Override
-	protected void setAttributes(HttpServletRequest request) {
+	protected int processEndTag() throws Exception {
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
@@ -59,15 +67,52 @@ public class LayoutCommonTag extends IncludeTag {
 			}
 		}
 
-		request.setAttribute(
-			"liferay-ui:layout-common:includeStaticPortlets",
-			_includeStaticPortlets);
-		request.setAttribute(
-			"liferay-ui:layout-common:includeWebServerDisplayNode",
-			_includeWebServerDisplayNode);
+		if (_includeStaticPortlets) {
+			Company company = themeDisplay.getCompany();
+			HttpServletResponse response =
+				(HttpServletResponse)pageContext.getResponse();
+
+			for (String portletId : _LAYOUT_STATIC_PORTLETS_ALL) {
+				if (PortletLocalServiceUtil.hasPortlet(
+						company.getCompanyId(), portletId)) {
+
+					RuntimeTag.doTag(portletId, pageContext, request, response);
+				}
+			}
+		}
+
+		JspWriter jspWriter = pageContext.getOut();
+
+		if (_includeWebServerDisplayNode) {
+			jspWriter.write("<div class=\"alert alert-info\">");
+
+			MessageTag.doTag("node", pageContext);
+
+			jspWriter.write(": ");
+			jspWriter.write(
+				StringUtil.toLowerCase(PortalUtil.getComputerName()));
+			jspWriter.write(StringPool.COLON);
+			jspWriter.write(
+				String.valueOf(PortalUtil.getPortalLocalPort(false)));
+			jspWriter.write("</div>");
+		}
+
+		jspWriter.write("<form action=\"#\" id=\"hrefFm\" method=\"post\" ");
+		jspWriter.write("name=\"hrefFm\">");
+		jspWriter.write("<span></span>");
+		jspWriter.write("</form>");
+
+		return EVAL_PAGE;
+	}
+
+	@Override
+	protected void setAttributes(HttpServletRequest request) {
 	}
 
 	private static final boolean _CLEAN_UP_SET_ATTRIBUTES = true;
+
+	private static final String[] _LAYOUT_STATIC_PORTLETS_ALL =
+		PropsUtil.getArray(PropsKeys.LAYOUT_STATIC_PORTLETS_ALL);
 
 	private static final String _PAGE =
 		"/html/taglib/ui/layout_common/page.jsp";
