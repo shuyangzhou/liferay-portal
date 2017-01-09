@@ -9,7 +9,7 @@
 	companyPortletPreferences = prefsPropsUtil.getPreferences(companyId)
 />
 
-<#if mapsAPIProvider = "">
+<#if validator.isNull(mapsAPIProvider)>
 	<#assign mapsAPIProvider = companyPortletPreferences.getValue("mapsAPIProvider", "Google") />
 </#if>
 

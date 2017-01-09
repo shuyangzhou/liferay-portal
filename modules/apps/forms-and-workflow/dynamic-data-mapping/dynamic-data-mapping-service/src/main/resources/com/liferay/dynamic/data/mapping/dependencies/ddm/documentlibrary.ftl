@@ -1,6 +1,6 @@
 <#include "../init.ftl">
 
-<#if !(fields?? && fields.get(fieldName)??) && (fieldRawValue == "")>
+<#if !(fields?? && fields.get(fieldName)??) && validator.isNull(fieldRawValue)>
 	<#assign fieldRawValue = predefinedValue />
 </#if>
 
@@ -10,14 +10,14 @@
 	fileEntryTitle = ""
 />
 
-<#if fieldRawValue != "">
+<#if validator.isNotNull(fieldRawValue)>
 	<#assign
 		fileJSONObject = getFileJSONObject(fieldRawValue)
 
 		fileEntry = getFileEntry(fileJSONObject)
 	/>
 
-	<#if fileEntry != "">
+	<#if validator.isNotNull(fileEntry)>
 		<#assign fileEntryTitle = fileEntry.getTitle() />
 	</#if>
 </#if>

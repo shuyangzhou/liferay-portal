@@ -6,7 +6,7 @@
 	YEAR = staticUtil["java.util.Calendar"].YEAR
 />
 
-<#if fieldValue != "">
+<#if validator.isNotNull(fieldValue)>
 	<#if hasFieldValue>
 		<#assign
 			dateValue = fieldRawValue?date["yyyy-MM-dd"]

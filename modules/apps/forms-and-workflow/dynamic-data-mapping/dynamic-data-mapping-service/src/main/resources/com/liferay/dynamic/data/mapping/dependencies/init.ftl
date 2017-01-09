@@ -34,7 +34,7 @@
 	parentName = parentFieldStructure.name!""
 	parentType = parentFieldStructure.type!""
 
-	isChildField = parentName?? && (parentName != "") && ((parentType == "radio") || (parentType == "select"))
+	isChildField = validator.isNotNull(parentName) && ((parentType == "radio") || (parentType == "select"))
 />
 
 <#if isChildField>
@@ -83,7 +83,7 @@
 		fieldRawValue = field.getValue(requestedLocale, valueIndex)!
 	/>
 
-	<#if fieldValue != "">
+	<#if validator.isNotNull(fieldValue)>
 		<#assign hasFieldValue = true />
 	</#if>
 </#if>

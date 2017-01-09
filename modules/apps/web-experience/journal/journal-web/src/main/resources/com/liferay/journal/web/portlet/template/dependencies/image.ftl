@@ -7,7 +7,7 @@
 </#if>
 
 <#if language == "ftl">
-${r"<#if"} ${variableName}?? && ${variableName} != "">
+${r"<#if"} validator.isNotNull(${variableName})>
 	<img alt="${getVariableReferenceCode(variableAltName)}" src="${getVariableReferenceCode(variableName)}" />
 ${r"</#if>"}
 <#else>

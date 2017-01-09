@@ -4,7 +4,7 @@
 	${r"<#assign"} latitude = 0>
 	${r"<#assign"} longitude = 0>
 
-	${r"<#if"} (${variableName} != "")>
+	${r"<#if"} validator.isNotNull(${variableName})>
 		${r"<#assign"} geolocationJSONObject = jsonFactoryUtil.createJSONObject(${variableName})>
 
 		${r"<#assign"} latitude = geolocationJSONObject.getDouble("latitude")>
