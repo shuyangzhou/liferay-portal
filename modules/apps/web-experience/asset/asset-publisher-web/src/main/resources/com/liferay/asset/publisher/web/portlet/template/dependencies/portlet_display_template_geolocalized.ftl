@@ -65,7 +65,7 @@
 
 		<@liferay.silently propertiesJSONObject.put("abstract", entryAbstract) />
 
-		<#if mapsAPIProvider = "Google">
+		<#if stringUtil.equals(mapsAPIProvider, "Google")>
 			<#assign
 				images = {
 					"com.liferay.document.library.kernel.model.DLFileEntry": "${themeDisplay.getProtocol()}://maps.google.com/mapfiles/ms/icons/green-dot.png",

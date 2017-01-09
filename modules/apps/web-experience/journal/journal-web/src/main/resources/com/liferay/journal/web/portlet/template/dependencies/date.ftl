@@ -1,6 +1,6 @@
 <#include "init.ftl">
 
-<#if language == "ftl">
+<#if stringUtil.equals(language, "ftl")>
 ${r"<#assign"} ${name}_Data = getterUtil.getString(${variableName})>
 
 ${r"<#if"} validator.isNotNull(${name}_Data)>
