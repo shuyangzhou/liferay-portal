@@ -4,7 +4,7 @@
 	variableName = name + ".getSiblings()"
 />
 
-<#if language == "ftl">
+<#if stringUtil.equals(language, "ftl")>
 ${r"<#if"} ${variableName}?has_content>
 	${r"<#list"} ${variableName} as ${itemName}>
 		${templateContent}

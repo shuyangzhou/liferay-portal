@@ -7,11 +7,11 @@
 <#assign cssClass = "" />
 
 <#if fieldStructure.width??>
-	<#if fieldStructure.width == "large">
+	<#if stringUtil.equals(fieldStructure.width, "large")>
 		<#assign cssClass = "input-large" />
-	<#elseif fieldStructure.width == "medium">
+	<#elseif stringUtil.equals(fieldStructure.width, "medium")>
 		<#assign cssClass = "input-medium" />
-	<#elseif fieldStructure.width == "small">
+	<#elseif stringUtil.equals(fieldStructure.width, "small")>
 		<#assign cssClass = "input-small" />
 	</#if>
 </#if>
@@ -20,7 +20,7 @@
 
 <#assign repeatable = false />
 
-<#if fieldStructure.repeatable?? && (fieldStructure.repeatable == "true") && (!ignoreRepeatable?? || !ignoreRepeatable)>
+<#if stringUtil.equals(fieldStructure.repeatable, "true") && (!ignoreRepeatable?? || !ignoreRepeatable)>
 	<#assign repeatable = true />
 </#if>
 
@@ -34,7 +34,7 @@
 	parentName = parentFieldStructure.name!""
 	parentType = parentFieldStructure.type!""
 
-	isChildField = parentName?? && (parentName != "") && ((parentType == "radio") || (parentType == "select"))
+	isChildField = validator.isNotNull(parentName) && (stringUtil.equals(parentType, "radio") || stringUtil.equals(parentType, "select"))
 />
 
 <#if isChildField>
@@ -83,7 +83,7 @@
 		fieldRawValue = field.getValue(requestedLocale, valueIndex)!
 	/>
 
-	<#if fieldValue != "">
+	<#if validator.isNotNull(fieldValue)>
 		<#assign hasFieldValue = true />
 	</#if>
 </#if>
@@ -92,7 +92,7 @@
 
 <#assign disabled = false />
 
-<#if fieldStructure.disabled?? && (fieldStructure.disabled == "true")>
+<#if stringUtil.equals(fieldStructure.disabled, "true")>
 	<#assign disabled = true />
 </#if>
 
@@ -100,7 +100,7 @@
 
 <#assign label = fieldStructure.label!"" />
 
-<#if fieldStructure.showLabel?? && (fieldStructure.showLabel == "false")>
+<#if stringUtil.equals(fieldStructure.showLabel, "false")>
 	<#assign label = "" />
 </#if>
 
@@ -108,7 +108,7 @@
 
 <#assign required = false />
 
-<#if fieldStructure.required?? && (fieldStructure.required == "true")>
+<#if stringUtil.equals(fieldStructure.required, "true")>
 	<#assign required = true />
 </#if>
 

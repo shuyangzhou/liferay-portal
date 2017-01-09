@@ -22,7 +22,7 @@
 			journalArticle = fetchLatestArticle(jsonObject)
 		/>
 
-		<#if journalArticle != "">
+		<#if validator.isNotNull(journalArticle)>
 			${escape(journalArticle.getTitle(requestedLocale))}
 		</#if>
 	</#if>

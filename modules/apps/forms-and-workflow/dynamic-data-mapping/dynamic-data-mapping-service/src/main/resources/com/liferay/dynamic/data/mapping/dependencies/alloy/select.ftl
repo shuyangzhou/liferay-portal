@@ -2,7 +2,7 @@
 
 <#assign multiple = false />
 
-<#if fieldStructure.multiple?? && (fieldStructure.multiple == "true")>
+<#if stringUtil.equals(fieldStructure.multiple, "true")>
 	<#assign multiple = true />
 </#if>
 

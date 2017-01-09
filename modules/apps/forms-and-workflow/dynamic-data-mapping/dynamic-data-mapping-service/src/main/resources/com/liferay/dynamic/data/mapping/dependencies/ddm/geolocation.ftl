@@ -7,7 +7,7 @@
 	fieldRawValue = paramUtil.getString(request, "${namespacedFieldName}", fieldRawValue)
 />
 
-<#if fieldRawValue != "">
+<#if validator.isNotNull(fieldRawValue)>
 	<#assign
 		geolocationJSONObject = jsonFactoryUtil.createJSONObject(fieldRawValue)
 

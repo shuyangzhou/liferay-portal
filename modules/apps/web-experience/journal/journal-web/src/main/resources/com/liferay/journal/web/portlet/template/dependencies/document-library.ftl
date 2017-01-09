@@ -2,7 +2,7 @@
 
 <#assign localeVariable = "locale" />
 
-<#if language == "vm">
+<#if stringUtil.equals(language, "vm")>
 	<#assign localeVariable = "$" + localeVariable />
 </#if>
 
