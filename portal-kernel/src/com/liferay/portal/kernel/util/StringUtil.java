@@ -479,6 +479,26 @@ public class StringUtil {
 	}
 
 	/**
+	 * Returns <code>true</code> if the strings are equal.
+	 *
+	 * @param  s1 the first string to compare
+	 * @param  s2 the second string to compare
+	 * @return <code>true</code> if the strings are equal;
+	 *         <code>false</code> otherwise
+	 */
+	public static boolean equals(String s1, String s2) {
+		if (s1 == s2) {
+			return true;
+		}
+
+		if ((s1 == null) || (s2 == null)) {
+			return false;
+		}
+
+		return s1.equals(s2);
+	}
+
+	/**
 	 * Returns <code>true</code> if the strings are equal, ignoring new line
 	 * characters.
 	 *

@@ -56,7 +56,7 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	property = {
 		"javax.portlet.name=" + InvitationPortletKeys.INVITATION,
-		"mvc.command.name=view"
+		"mvc.command.name=/invitation/view"
 	},
 	service = MVCActionCommand.class
 )
@@ -173,10 +173,8 @@ public class ViewMVCActionCommand extends BaseMVCActionCommand {
 			ParamUtil.getString(actionRequest, "redirect"));
 
 		if (Validator.isNotNull(redirect)) {
-			actionResponse.setRenderParameter("mvcPath", redirect);
+			actionResponse.sendRedirect(redirect);
 		}
-
-		actionResponse.setRenderParameter("mvcPath", "/view.jsp");
 	}
 
 	@Reference(unbind = "-")

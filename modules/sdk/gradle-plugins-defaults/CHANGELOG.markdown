@@ -884,10 +884,13 @@ used.
 version 1.1.1.
 
 ### Fixed
-- [LPS-69606]: Fix artifact publish commands for the "WSDD" commit in older
+- [LPS-69606]: Fix artifact publish commands for the *WSDD* commit in older
 versions of Git.
 
 ## 2.4.9 - 2017-01-06
+
+### Changed
+- [LPS-69706]: Update the [Liferay Gradle Plugins] dependency to version 3.0.68.
 
 ### Fixed
 - [LPS-65179]: Fix artifact publish commands in case of local unstaged changes.
@@ -904,7 +907,6 @@ versions of Git.
 [LPS-61099]: https://issues.liferay.com/browse/LPS-61099
 [LPS-61987]: https://issues.liferay.com/browse/LPS-61987
 [LPS-65179]: https://issues.liferay.com/browse/LPS-65179
-[LPS-66396]: https://issues.liferay.com/browse/LPS-66396
 [LPS-66396]: https://issues.liferay.com/browse/LPS-66396
 [LPS-66762]: https://issues.liferay.com/browse/LPS-66762
 [LPS-66853]: https://issues.liferay.com/browse/LPS-66853
@@ -968,6 +970,7 @@ versions of Git.
 [LPS-69606]: https://issues.liferay.com/browse/LPS-69606
 [LPS-69618]: https://issues.liferay.com/browse/LPS-69618
 [LPS-69677]: https://issues.liferay.com/browse/LPS-69677
+[LPS-69706]: https://issues.liferay.com/browse/LPS-69706
 [LPS-69719]: https://issues.liferay.com/browse/LPS-69719
 [LPS-69730]: https://issues.liferay.com/browse/LPS-69730
 [LPS-69802]: https://issues.liferay.com/browse/LPS-69802

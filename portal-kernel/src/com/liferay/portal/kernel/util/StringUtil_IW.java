@@ -93,6 +93,10 @@ public class StringUtil_IW {
 		return StringUtil.endsWith(s, end);
 	}
 
+	public boolean equals(java.lang.String s1, java.lang.String s2) {
+		return StringUtil.equals(s1, s2);
+	}
+
 	public boolean equalsIgnoreBreakLine(java.lang.String s1,
 		java.lang.String s2) {
 		return StringUtil.equalsIgnoreBreakLine(s1, s2);

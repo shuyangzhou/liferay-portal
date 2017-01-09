@@ -362,17 +362,6 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 
 		mbMessagePersistence.update(message);
 
-		// Attachments
-
-		if (ListUtil.isNotEmpty(inputStreamOVPs)) {
-			Folder folder = message.addAttachmentsFolder();
-
-			PortletFileRepositoryUtil.addPortletFileEntries(
-				message.getGroupId(), userId, MBMessage.class.getName(),
-				message.getMessageId(), MBConstants.SERVICE_NAME,
-				folder.getFolderId(), inputStreamOVPs);
-		}
-
 		// Resources
 
 		if ((parentMessageId !=
@@ -400,6 +389,17 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 				addMessageResources(
 					message, serviceContext.getModelPermissions());
 			}
+		}
+
+		// Attachments
+
+		if (ListUtil.isNotEmpty(inputStreamOVPs)) {
+			Folder folder = message.addAttachmentsFolder();
+
+			PortletFileRepositoryUtil.addPortletFileEntries(
+				message.getGroupId(), userId, MBMessage.class.getName(),
+				message.getMessageId(), MBConstants.SERVICE_NAME,
+				folder.getFolderId(), inputStreamOVPs);
 		}
 
 		// Asset

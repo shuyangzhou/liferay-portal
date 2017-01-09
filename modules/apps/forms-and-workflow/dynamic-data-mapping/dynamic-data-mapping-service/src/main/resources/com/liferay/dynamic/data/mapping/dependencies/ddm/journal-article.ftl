@@ -1,6 +1,6 @@
 <#include "../init.ftl">
 
-<#if !(fields?? && fields.get(fieldName)??) && fieldRawValue == "">
+<#if !(fields?? && fields.get(fieldName)??) && validator.isNull(fieldRawValue)>
 	<#assign fieldRawValue = predefinedValue />
 </#if>
 
@@ -10,14 +10,14 @@
 	assetTitle = ""
 />
 
-<#if fieldRawValue != "">
+<#if validator.isNotNull(fieldRawValue)>
 	<#assign
 		fieldJournalJSONObject = jsonFactoryUtil.createJSONObject(fieldRawValue)
 
 		journalArticle = fetchLatestArticle(fieldJournalJSONObject)
 	/>
 
-	<#if journalArticle != "">
+	<#if validator.isNotNull(journalArticle)>
 		<#assign selectedAssetTitle = journalArticle.getTitle(requestedLocale) />
 	</#if>
 </#if>
