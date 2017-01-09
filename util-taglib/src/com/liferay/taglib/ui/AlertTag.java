@@ -14,7 +14,20 @@
 
 package com.liferay.taglib.ui;
 
+import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.taglib.aui.ScriptTag;
 import com.liferay.taglib.util.IncludeTag;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.portlet.PortletResponse;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,6 +43,42 @@ public class AlertTag extends IncludeTag {
 		return EVAL_BODY_INCLUDE;
 	}
 
+	@Override
+	public int processEndTag() throws Exception {
+		Map<String, String> values = new HashMap<>();
+
+		values.put("animationTime", String.valueOf(_animationTime));
+		values.put("closeable", String.valueOf(_closeable));
+		values.put("icon", String.valueOf(_icon));
+		values.put("message", HtmlUtil.escapeJS(_message));
+
+		HttpServletRequest request =
+			(HttpServletRequest)pageContext.getRequest();
+
+		PortletResponse portletResponse = (PortletResponse)request.getAttribute(
+			JavaConstants.JAVAX_PORTLET_RESPONSE);
+
+		if (portletResponse == null) {
+			values.put("namespace", StringPool.BLANK);
+		}
+		else {
+			values.put("namespace", portletResponse.getNamespace());
+		}
+
+		values.put("targetNode", _targetNode);
+		values.put("timeout", String.valueOf(_timeout));
+		values.put("title", _title);
+		values.put("type", _type);
+
+		String result = StringUtil.replace(
+			_alertTemplate, StringPool.POUND, StringPool.POUND, values);
+
+		ScriptTag.doTag(
+			null, null, "liferay-alert", result, getBodyContent(), pageContext);
+
+		return EVAL_PAGE;
+	}
+
 	public void setAnimationTime(Integer animationTime) {
 		_animationTime = animationTime;
 	}
@@ -38,12 +87,18 @@ public class AlertTag extends IncludeTag {
 		_closeable = closeable;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public void setCssClass(String cssClass) {
-		_cssClass = cssClass;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public void setDestroyOnHide(boolean destroyOnHide) {
-		_destroyOnHide = destroyOnHide;
 	}
 
 	public void setIcon(String icon) {
@@ -77,12 +132,10 @@ public class AlertTag extends IncludeTag {
 		_animationTime = 500;
 		_closeable = true;
 		_icon = "info-circle";
-		_message = null;
-		_cssClass = null;
-		_destroyOnHide = false;
-		_targetNode = null;
+		_message = StringPool.BLANK;
+		_targetNode = StringPool.BLANK;
 		_timeout = -1;
-		_title = null;
+		_title = StringPool.BLANK;
 		_type = "info";
 	}
 
@@ -93,16 +146,19 @@ public class AlertTag extends IncludeTag {
 
 	@Override
 	protected void setAttributes(HttpServletRequest request) {
-		setNamespacedAttribute(request, "animationTime", _animationTime);
-		setNamespacedAttribute(request, "closeable", _closeable);
-		setNamespacedAttribute(request, "icon", _icon);
-		setNamespacedAttribute(request, "message", _message);
-		setNamespacedAttribute(request, "cssClass", _cssClass);
-		setNamespacedAttribute(request, "destroyOnHide", _destroyOnHide);
-		setNamespacedAttribute(request, "targetNode", _targetNode);
-		setNamespacedAttribute(request, "timeout", _timeout);
-		setNamespacedAttribute(request, "title", _title);
-		setNamespacedAttribute(request, "type", _type);
+	}
+
+	private static final String _alertTemplate;
+
+	static {
+		try (InputStream inputStream = AlertTag.class.getResourceAsStream(
+				"alert/alert.tmpl")) {
+
+			_alertTemplate = StringUtil.read(inputStream);
+		}
+		catch (IOException ioe) {
+			throw new ExceptionInInitializerError(ioe);
+		}
 	}
 
 	private static final String _ATTRIBUTE_NAMESPACE = "liferay-ui:alert:";
@@ -111,13 +167,11 @@ public class AlertTag extends IncludeTag {
 
 	private Integer _animationTime = 500;
 	private boolean _closeable = true;
-	private String _cssClass;
-	private boolean _destroyOnHide;
 	private String _icon = "info-circle";
-	private String _message;
-	private String _targetNode;
+	private String _message = StringPool.BLANK;
+	private String _targetNode = StringPool.BLANK;
 	private Integer _timeout = -1;
-	private String _title;
+	private String _title = StringPool.BLANK;
 	private String _type = "info";
 
 }
