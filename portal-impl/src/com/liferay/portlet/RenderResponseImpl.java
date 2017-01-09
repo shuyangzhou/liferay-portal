@@ -67,7 +67,7 @@ public class RenderResponseImpl
 		// See LEP-2188
 
 		ThemeDisplay themeDisplay =
-			(ThemeDisplay)_portletRequestImpl.getAttribute(
+			(ThemeDisplay)portletRequestImpl.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
@@ -85,11 +85,8 @@ public class RenderResponseImpl
 		String portletName, long companyId, long plid) {
 
 		super.init(portletRequestImpl, response, portletName, companyId, plid);
-
-		_portletRequestImpl = portletRequestImpl;
 	}
 
-	private PortletRequestImpl _portletRequestImpl;
 	private String _resourceName;
 	private String _title;
 	private Boolean _useDefaultTemplate;
