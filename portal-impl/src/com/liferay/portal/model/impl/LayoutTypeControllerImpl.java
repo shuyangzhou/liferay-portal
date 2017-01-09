@@ -124,6 +124,8 @@ public class LayoutTypeControllerImpl implements LayoutTypeController {
 			Layout layout)
 		throws Exception {
 
+		request.setAttribute(WebKeys.SEL_LAYOUT, layout);
+
 		ServletContext servletContext = (ServletContext)request.getAttribute(
 			WebKeys.CTX);
 

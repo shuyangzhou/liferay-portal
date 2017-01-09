@@ -25,7 +25,7 @@
 		<aui:a href="<%= viewURL %>" label="invite-friends" />
 	</c:when>
 	<c:otherwise>
-		<portlet:actionURL name="view" var="portletURL" />
+		<portlet:actionURL name="/invitation/view" var="portletURL" />
 
 		<portlet:renderURL var="redirectURL" windowState="<%= WindowState.NORMAL.toString() %>" />
 

@@ -6,7 +6,7 @@
 	themeDisplayVariable = "themeDisplay"
 />
 
-<#if language == "vm">
+<#if stringUtil.equals(language, "vm")>
 	<#assign
 		localeVariable = "$" + localeVariable
 
@@ -18,14 +18,14 @@
 
 <#assign fieldValueVariable = "cur_record.getDDMFormFieldValues(\"" + name + "\")?first" />
 
-<#if language == "vm">
+<#if stringUtil.equals(language, "vm")>
 	<#assign fieldValueVariable = "$cur_record.getDDMFormFieldValues(\"" + name + "\").get(0)" />
 </#if>
 
 <#-- Util -->
 
 <#function getVariableReferenceCode variableName>
-	<#if language == "ftl">
+	<#if stringUtil.equals(language, "ftl")>
 		<#return "${" + variableName + "}">
 	<#else>
 		<#return "$" + variableName>

@@ -9,7 +9,7 @@
 <#else>
 	<#assign includeAllChildNavItems = false />
 
-	<#if includedLayouts == "all">
+	<#if stringUtil.equals(includedLayouts, "all")>
 		<#assign includeAllChildNavItems = true />
 	</#if>
 

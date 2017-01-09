@@ -1160,7 +1160,7 @@
 
 		<execute macro="MessageboardsThread#addPG">
 			<var name="threadBody" value="MB Thread Message Body" />
-			<var name="threadSubject" value="MB Thread Message Subject" />
+			<var name="threadSubject" value="MB Thread Message Subject GMMB1" />
 		</execute>
 
 		<execute function="Pause" locator1="30000" />
@@ -1174,7 +1174,7 @@
 
 		<execute macro="Gmail#viewMail">
 			<var name="emailFromUserName" value="Test Test" />
-			<var name="gmailAssetType" value="MB Category Name New Message" />
+			<var name="gmailAssetType" value="GMMB1" />
 			<var name="gmailMessageBody" value="MB Thread Message Body" />
 			<var name="gmailMessageTitle" value="MB Category Name New Message: MB Thread Message Subject GMMB1" />
 		</execute>

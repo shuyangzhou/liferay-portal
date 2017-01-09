@@ -153,7 +153,7 @@
 		is_portlet_page = false
 	/>
 
-	<#if page.getType() = "portlet">
+	<#if stringUtil.equals(page.getType(), "portlet")>
 		<#assign is_portlet_page = true />
 	</#if>
 
@@ -256,7 +256,7 @@
 	<#assign the_title = htmlUtil.escape(the_title) />
 </#if>
 
-<#if the_title ?has_content && company_name != site_name && !page_group.isLayoutPrototype()>
+<#if the_title ?has_content && !stringUtil.equals(company_name, site_name) && !page_group.isLayoutPrototype()>
 	<#assign the_title = the_title + " - " + site_name />
 </#if>
 

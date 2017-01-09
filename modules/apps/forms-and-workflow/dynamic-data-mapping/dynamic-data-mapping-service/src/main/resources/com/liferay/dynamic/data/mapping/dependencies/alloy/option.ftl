@@ -30,7 +30,7 @@
 	selected = paramUtil.getParameterValues(request, namespacedParentFieldName, parentFieldRawValues)?seq_contains(fieldStructure.value)
 />
 
-<#if parentType == "select">
+<#if stringUtil.equals(parentType, "select")>
 	<@liferay_aui.option
 		cssClass=cssClass
 		label=escapeAttribute(fieldStructure.label)
@@ -39,7 +39,7 @@
 	/>
 <#else>
 	<@liferay_aui.input checked=selected cssClass=cssClass label=escape(fieldStructure.label) name="${namespacedParentFieldName}" type="radio" value=fieldStructure.value>
-		<#if parentFieldStructure.required?? && (parentFieldStructure.required == "true")>
+		<#if stringUtil.equals(parentFieldStructure.required, "true")>
 			<@liferay_aui.validator name="required" />
 		</#if>
 	</@liferay_aui.input>
