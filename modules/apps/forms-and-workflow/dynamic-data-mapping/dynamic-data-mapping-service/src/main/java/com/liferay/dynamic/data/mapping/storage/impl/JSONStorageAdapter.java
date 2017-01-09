@@ -29,7 +29,7 @@ import com.liferay.dynamic.data.mapping.storage.StorageType;
 import com.liferay.dynamic.data.mapping.validator.DDMFormValuesValidator;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import java.util.List;
 
@@ -50,8 +50,7 @@ public class JSONStorageAdapter extends BaseStorageAdapter {
 
 		validate(ddmFormValues, serviceContext);
 
-		long classNameId = PortalUtil.getClassNameId(
-			DDMContent.class.getName());
+		long classNameId = _portal.getClassNameId(DDMContent.class.getName());
 
 		String serializedDDMFormValues = _ddmFormValuesJSONSerializer.serialize(
 			ddmFormValues);
@@ -195,5 +194,8 @@ public class JSONStorageAdapter extends BaseStorageAdapter {
 	private DDMFormValuesValidator _ddmFormValuesValidator;
 	private DDMStorageLinkLocalService _ddmStorageLinkLocalService;
 	private DDMStructureLocalService _ddmStructureLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

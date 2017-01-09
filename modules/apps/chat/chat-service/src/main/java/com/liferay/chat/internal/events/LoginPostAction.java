@@ -17,12 +17,13 @@ package com.liferay.chat.internal.events;
 import com.liferay.chat.jabber.JabberUtil;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.LifecycleAction;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Bruno Farache
@@ -36,10 +37,13 @@ public class LoginPostAction extends Action {
 
 	@Override
 	public void run(HttpServletRequest request, HttpServletResponse response) {
-		long userId = PortalUtil.getUserId(request);
-		String password = PortalUtil.getUserPassword(request);
+		long userId = _portal.getUserId(request);
+		String password = _portal.getUserPassword(request);
 
 		JabberUtil.login(userId, password);
 	}
+
+	@Reference
+	private Portal _portal;
 
 }

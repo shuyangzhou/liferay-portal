@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import java.util.List;
 
@@ -94,7 +94,7 @@ public class CardinalityAssetEntryValidator implements AssetEntryValidator {
 	protected boolean isCategorizable(
 		long groupId, long classNameId, long classPK) {
 
-		String className = PortalUtil.getClassName(classNameId);
+		String className = _portal.getClassName(classNameId);
 
 		AssetRendererFactory<?> assetRendererFactory =
 			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
@@ -182,5 +182,8 @@ public class CardinalityAssetEntryValidator implements AssetEntryValidator {
 	private AssetVocabularyLocalService _assetVocabularyLocalService;
 	private ClassNameLocalService _classNameLocalService;
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

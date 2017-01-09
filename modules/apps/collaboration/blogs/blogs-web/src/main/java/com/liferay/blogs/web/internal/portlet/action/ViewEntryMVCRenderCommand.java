@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderConstants;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PropsValues;
@@ -85,15 +85,15 @@ public class ViewEntryMVCRenderCommand implements MVCRenderCommand {
 				portletURL.setParameter(
 					"urlTitle", mainFriendlyURL.getUrlTitle());
 
-				HttpServletResponse response =
-					PortalUtil.getHttpServletResponse(renderResponse);
+				HttpServletResponse response = _portal.getHttpServletResponse(
+					renderResponse);
 
 				response.sendRedirect(portletURL.toString());
 
 				return MVCRenderConstants.MVC_PATH_VALUE_SKIP_DISPATCH;
 			}
 
-			HttpServletRequest request = PortalUtil.getHttpServletRequest(
+			HttpServletRequest request = _portal.getHttpServletRequest(
 				renderRequest);
 
 			request.setAttribute(WebKeys.BLOGS_ENTRY, entry);
@@ -101,11 +101,11 @@ public class ViewEntryMVCRenderCommand implements MVCRenderCommand {
 			if (PropsValues.BLOGS_PINGBACK_ENABLED) {
 				if ((entry != null) && entry.isAllowPingbacks()) {
 					HttpServletResponse response =
-						PortalUtil.getHttpServletResponse(renderResponse);
+						_portal.getHttpServletResponse(renderResponse);
 
 					response.addHeader(
 						"X-Pingback",
-						PortalUtil.getPortalURL(renderRequest) +
+						_portal.getPortalURL(renderRequest) +
 							"/xmlrpc/pingback");
 				}
 			}
@@ -134,5 +134,8 @@ public class ViewEntryMVCRenderCommand implements MVCRenderCommand {
 	}
 
 	private FriendlyURLLocalService _friendlyURLLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

@@ -14,7 +14,9 @@
 
 package com.liferay.portal.security.auth.verifier.internal.basic.auth.header.module;
 
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifier;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.security.auth.verifier.basic.auth.header.BasicAuthHeaderAuthVerifier;
 import com.liferay.portal.security.auth.verifier.internal.module.BaseAuthVerifierPublisher;
 
@@ -26,6 +28,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Tomas Polesovsky
@@ -41,6 +44,9 @@ public class BasicAuthHeaderAuthVerifierPublisher
 	@Override
 	protected void activate(
 		BundleContext bundleContext, Map<String, Object> properties) {
+
+		_authVerifier = new BasicAuthHeaderAuthVerifier(
+			_configurationProvider, _portal);
 
 		super.activate(bundleContext, properties);
 	}
@@ -64,6 +70,18 @@ public class BasicAuthHeaderAuthVerifierPublisher
 		super.modified(bundleContext, properties);
 	}
 
+	@Reference(unbind = "-")
+	protected void setConfigurationProvider(
+		ConfigurationProvider configurationProvider) {
+
+		_configurationProvider = configurationProvider;
+	}
+
+	@Reference(unbind = "-")
+	protected void setPortal(Portal portal) {
+		_portal = portal;
+	}
+
 	@Override
 	protected String translateKey(String authVerifierPropertyName, String key) {
 		if (key.equals("forceBasicAuth")) {
@@ -73,7 +91,8 @@ public class BasicAuthHeaderAuthVerifierPublisher
 		return super.translateKey(authVerifierPropertyName, key);
 	}
 
-	private final AuthVerifier _authVerifier =
-		new BasicAuthHeaderAuthVerifier();
+	private AuthVerifier _authVerifier;
+	private ConfigurationProvider _configurationProvider;
+	private Portal _portal;
 
 }

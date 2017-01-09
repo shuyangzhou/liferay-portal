@@ -22,7 +22,7 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
 import com.liferay.dynamic.data.mapping.webdav.DDMWebDav;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.webdav.BaseWebDAVStorageImpl;
 import com.liferay.portal.kernel.webdav.Resource;
 import com.liferay.portal.kernel.webdav.WebDAVException;
@@ -55,7 +55,7 @@ public class DDLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 
 		return _ddmWebDav.deleteResource(
 			webDAVRequest, getRootPath(), getToken(),
-			PortalUtil.getClassNameId(DDLRecordSet.class));
+			_portal.getClassNameId(DDLRecordSet.class));
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class DDLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 
 		return _ddmWebDav.getResource(
 			webDAVRequest, getRootPath(), getToken(),
-			PortalUtil.getClassNameId(DDLRecordSet.class));
+			_portal.getClassNameId(DDLRecordSet.class));
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class DDLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 	public int putResource(WebDAVRequest webDAVRequest) throws WebDAVException {
 		return _ddmWebDav.putResource(
 			webDAVRequest, getRootPath(), getToken(),
-			PortalUtil.getClassNameId(DDLRecordSet.class));
+			_portal.getClassNameId(DDLRecordSet.class));
 	}
 
 	protected List<Resource> getFolders(WebDAVRequest webDAVRequest)
@@ -125,7 +125,7 @@ public class DDLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 		List<DDMStructure> ddmStructures =
 			_ddmStructureLocalService.getStructures(
 				webDAVRequest.getGroupId(),
-				PortalUtil.getClassNameId(DDLRecordSet.class));
+				_portal.getClassNameId(DDLRecordSet.class));
 
 		for (DDMStructure ddmStructure : ddmStructures) {
 			Resource resource = _ddmWebDav.toResource(
@@ -145,7 +145,7 @@ public class DDLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 		List<DDMTemplate> ddmTemplates =
 			_ddmTemplateLocalService.getTemplatesByStructureClassNameId(
 				webDAVRequest.getGroupId(),
-				PortalUtil.getClassNameId(DDLRecordSet.class),
+				_portal.getClassNameId(DDLRecordSet.class),
 				WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS, null);
 
@@ -181,5 +181,8 @@ public class DDLWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 	private DDMStructureLocalService _ddmStructureLocalService;
 	private DDMTemplateLocalService _ddmTemplateLocalService;
 	private DDMWebDav _ddmWebDav;
+
+	@Reference
+	private Portal _portal;
 
 }

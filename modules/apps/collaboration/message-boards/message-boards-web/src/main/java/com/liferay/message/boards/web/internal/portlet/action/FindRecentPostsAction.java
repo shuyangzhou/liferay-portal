@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.struts.BaseStrutsAction;
 import com.liferay.portal.kernel.struts.StrutsAction;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import javax.portlet.PortletMode;
 import javax.portlet.PortletRequest;
@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -66,10 +67,13 @@ public class FindRecentPostsAction extends BaseStrutsAction {
 			return null;
 		}
 		catch (Exception e) {
-			PortalUtil.sendError(e, request, response);
+			_portal.sendError(e, request, response);
 
 			return null;
 		}
 	}
+
+	@Reference
+	private Portal _portal;
 
 }

@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.portlet.configuration.icon.BasePortletConfigura
 import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIcon;
 import com.liferay.portal.kernel.service.SubscriptionLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.ActionRequest;
@@ -63,7 +63,7 @@ public class KBArticleGroupSubscriptionPortletConfigurationIcon
 	public String getURL(
 		PortletRequest portletRequest, PortletResponse portletResponse) {
 
-		PortletURL portletURL = PortalUtil.getControlPanelPortletURL(
+		PortletURL portletURL = _portal.getControlPanelPortletURL(
 			portletRequest, KBPortletKeys.KNOWLEDGE_BASE_ADMIN,
 			PortletRequest.ACTION_PHASE);
 
@@ -77,7 +77,7 @@ public class KBArticleGroupSubscriptionPortletConfigurationIcon
 		}
 
 		portletURL.setParameter(
-			"redirect", PortalUtil.getCurrentURL(portletRequest));
+			"redirect", _portal.getCurrentURL(portletRequest));
 
 		return portletURL.toString();
 	}
@@ -112,6 +112,9 @@ public class KBArticleGroupSubscriptionPortletConfigurationIcon
 			themeDisplay.getCompanyId(), themeDisplay.getUserId(),
 			KBArticle.class.getName(), themeDisplay.getScopeGroupId());
 	}
+
+	@Reference
+	private Portal _portal;
 
 	private SubscriptionLocalService _subscriptionLocalService;
 

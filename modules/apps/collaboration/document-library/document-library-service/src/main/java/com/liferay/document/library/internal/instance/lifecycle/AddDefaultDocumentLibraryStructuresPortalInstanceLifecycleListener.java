@@ -41,7 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.upgrade.util.UpgradeProcessUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.xml.Document;
@@ -89,8 +89,7 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 
 		_defaultDDMStructureHelper.addDDMStructures(
 			defaultUserId, group.getGroupId(),
-			PortalUtil.getClassNameId(DLFileEntryMetadata.class),
-			getClassLoader(),
+			_portal.getClassNameId(DLFileEntryMetadata.class), getClassLoader(),
 			"com/liferay/document/library/events/dependencies" +
 				"/document-library-structures.xml",
 			serviceContext);
@@ -114,8 +113,7 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 
 			DDMStructure ddmStructure =
 				_ddmStructureLocalService.fetchStructure(
-					groupId,
-					PortalUtil.getClassNameId(DLFileEntryMetadata.class),
+					groupId, _portal.getClassNameId(DLFileEntryMetadata.class),
 					ddmStructureKey);
 
 			if (ddmStructure == null) {
@@ -125,7 +123,7 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 			ddmStructureIds.add(ddmStructure.getStructureId());
 		}
 
-		Locale locale = PortalUtil.getSiteDefaultLocale(groupId);
+		Locale locale = _portal.getSiteDefaultLocale(groupId);
 
 		String definition =
 			_defaultDDMStructureHelper.getDynamicDDMStructureDefinition(
@@ -210,7 +208,7 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 			long userId, long groupId, ServiceContext serviceContext)
 		throws Exception {
 
-		Locale locale = PortalUtil.getSiteDefaultLocale(groupId);
+		Locale locale = _portal.getSiteDefaultLocale(groupId);
 
 		String xsd = buildDLRawMetadataXML(
 			RawMetadataProcessorUtil.getFields(), locale);
@@ -233,8 +231,7 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 
 			DDMStructure ddmStructure =
 				_ddmStructureLocalService.fetchStructure(
-					groupId,
-					PortalUtil.getClassNameId(RawMetadataProcessor.class),
+					groupId, _portal.getClassNameId(RawMetadataProcessor.class),
 					name);
 
 			DDMForm ddmForm = _ddmFormXSDDeserializer.deserialize(
@@ -260,7 +257,7 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 				_ddmStructureLocalService.addStructure(
 					userId, groupId,
 					DDMStructureConstants.DEFAULT_PARENT_STRUCTURE_ID,
-					PortalUtil.getClassNameId(RawMetadataProcessor.class), name,
+					_portal.getClassNameId(RawMetadataProcessor.class), name,
 					nameMap, descriptionMap, ddmForm, ddmFormLayout,
 					StorageType.JSON.toString(),
 					DDMStructureConstants.TYPE_DEFAULT, serviceContext);
@@ -395,6 +392,10 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 	private DefaultDDMStructureHelper _defaultDDMStructureHelper;
 	private DLFileEntryTypeLocalService _dlFileEntryTypeLocalService;
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private Portal _portal;
+
 	private UserLocalService _userLocalService;
 
 }

@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
@@ -122,7 +122,7 @@ public class DDLRecordAssetRendererFactory
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse, long classTypeId) {
 
-		PortletURL portletURL = PortalUtil.getControlPanelPortletURL(
+		PortletURL portletURL = _portal.getControlPanelPortletURL(
 			liferayPortletRequest, getGroup(liferayPortletRequest),
 			DDLPortletKeys.DYNAMIC_DATA_LISTS, 0, 0,
 			PortletRequest.RENDER_PHASE);
@@ -182,6 +182,10 @@ public class DDLRecordAssetRendererFactory
 
 	private DDLRecordLocalService _ddlRecordLocalService;
 	private DDLRecordVersionLocalService _ddlRecordVersionLocalService;
+
+	@Reference
+	private Portal _portal;
+
 	private ServletContext _servletContext;
 
 }

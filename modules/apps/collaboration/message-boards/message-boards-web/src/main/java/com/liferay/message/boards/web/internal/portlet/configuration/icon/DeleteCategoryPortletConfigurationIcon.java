@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfiguration
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.messageboards.service.permission.MBCategoryPermission;
@@ -36,6 +36,7 @@ import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Sergio González
@@ -71,7 +72,7 @@ public class DeleteCategoryPortletConfigurationIcon
 		PortletRequest portletRequest, PortletResponse portletResponse) {
 
 		try {
-			PortletURL deleteURL = PortalUtil.getControlPanelPortletURL(
+			PortletURL deleteURL = _portal.getControlPanelPortletURL(
 				portletRequest, MBPortletKeys.MESSAGE_BOARDS_ADMIN,
 				PortletRequest.ACTION_PHASE);
 
@@ -90,7 +91,7 @@ public class DeleteCategoryPortletConfigurationIcon
 
 			deleteURL.setParameter(Constants.CMD, cmd);
 
-			PortletURL parentCategoryURL = PortalUtil.getControlPanelPortletURL(
+			PortletURL parentCategoryURL = _portal.getControlPanelPortletURL(
 				portletRequest, MBPortletKeys.MESSAGE_BOARDS_ADMIN,
 				PortletRequest.RENDER_PHASE);
 
@@ -176,5 +177,8 @@ public class DeleteCategoryPortletConfigurationIcon
 
 		return false;
 	}
+
+	@Reference
+	private Portal _portal;
 
 }

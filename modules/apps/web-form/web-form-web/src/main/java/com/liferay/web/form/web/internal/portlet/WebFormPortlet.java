@@ -43,7 +43,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -118,7 +118,7 @@ public class WebFormPortlet extends MVCPortlet {
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String portletId = PortalUtil.getPortletId(actionRequest);
+		String portletId = _portal.getPortletId(actionRequest);
 
 		PortletPermissionUtil.check(
 			themeDisplay.getPermissionChecker(), themeDisplay.getPlid(),
@@ -144,7 +144,7 @@ public class WebFormPortlet extends MVCPortlet {
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String portletId = PortalUtil.getPortletId(actionRequest);
+		String portletId = _portal.getPortletId(actionRequest);
 
 		PortletPreferences preferences =
 			PortletPreferencesFactoryUtil.getPortletSetup(
@@ -339,7 +339,7 @@ public class WebFormPortlet extends MVCPortlet {
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String portletId = PortalUtil.getPortletId(resourceRequest);
+		String portletId = _portal.getPortletId(resourceRequest);
 
 		PortletPermissionUtil.check(
 			themeDisplay.getPermissionChecker(), themeDisplay.getPlid(),
@@ -626,6 +626,9 @@ public class WebFormPortlet extends MVCPortlet {
 	private static ExpandoTableLocalService _expandoTableLocalService;
 	private static ExpandoValueLocalService _expandoValueLocalService;
 	private static MailService _mailService;
+
+	@Reference
+	private Portal _portal;
 
 	private WebFormGroupServiceConfiguration _webFormGroupServiceConfiguration;
 

@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -58,6 +58,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Marcellus Tavares
@@ -94,8 +95,7 @@ public class DDMFormValuesFactoryImpl implements DDMFormValuesFactory {
 	public DDMFormValues create(
 		PortletRequest portletRequest, DDMForm ddmForm) {
 
-		return create(
-			PortalUtil.getHttpServletRequest(portletRequest), ddmForm);
+		return create(_portal.getHttpServletRequest(portletRequest), ddmForm);
 	}
 
 	@Activate
@@ -545,10 +545,10 @@ public class DDMFormValuesFactoryImpl implements DDMFormValuesFactory {
 	protected String getPortletNamespace(
 		HttpServletRequest httpServletRequest) {
 
-		String portletId = PortalUtil.getPortletId(httpServletRequest);
+		String portletId = _portal.getPortletId(httpServletRequest);
 
 		if (Validator.isNotNull(portletId)) {
-			return PortalUtil.getPortletNamespace(portletId);
+			return _portal.getPortletNamespace(portletId);
 		}
 
 		return StringPool.BLANK;
@@ -719,6 +719,10 @@ public class DDMFormValuesFactoryImpl implements DDMFormValuesFactory {
 	private final DDMFormFieldValueRequestParameterRetriever
 		_defaultDDMFormFieldValueRequestParameterRetriever =
 			new DefaultDDMFormFieldValueRequestParameterRetriever();
+
+	@Reference
+	private Portal _portal;
+
 	private ServiceTrackerMap
 		<String, DDMFormFieldValueRequestParameterRetriever> _serviceTrackerMap;
 

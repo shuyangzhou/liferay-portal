@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.wiki.constants.WikiPortletKeys;
 
@@ -31,6 +31,7 @@ import java.util.Map;
 import javax.portlet.ResourceURL;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Roberto Díaz
@@ -84,7 +85,7 @@ public class WikiCreoleAutoCompleteEditorConfigContributor
 
 		String source =
 			autoCompletePageTitleURL.toString() + "&" +
-				PortalUtil.getPortletNamespace(portletDisplay.getId());
+				_portal.getPortletNamespace(portletDisplay.getId());
 
 		triggerJSONObject.put("source", source);
 
@@ -111,5 +112,8 @@ public class WikiCreoleAutoCompleteEditorConfigContributor
 
 		jsonObject.put("extraPlugins", extraPlugins);
 	}
+
+	@Reference
+	private Portal _portal;
 
 }

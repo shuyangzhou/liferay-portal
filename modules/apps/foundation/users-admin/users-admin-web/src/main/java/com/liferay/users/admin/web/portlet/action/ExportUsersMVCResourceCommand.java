@@ -40,7 +40,7 @@ import com.liferay.portal.kernel.util.CSVUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ProgressTracker;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -84,7 +84,7 @@ public class ExportUsersMVCResourceCommand extends BaseMVCResourceCommand {
 		try {
 			SessionMessages.add(
 				resourceRequest,
-				PortalUtil.getPortletId(resourceRequest) +
+				_portal.getPortletId(resourceRequest) +
 					SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
 
 			String keywords = ParamUtil.getString(resourceRequest, "keywords");
@@ -276,6 +276,9 @@ public class ExportUsersMVCResourceCommand extends BaseMVCResourceCommand {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ExportUsersMVCResourceCommand.class);
+
+	@Reference
+	private Portal _portal;
 
 	private UserLocalService _userLocalService;
 

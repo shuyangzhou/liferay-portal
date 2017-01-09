@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -61,7 +61,7 @@ public class AddTemplateMVCActionCommand extends DDMBaseMVCActionCommand {
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
+			portal.getUploadPortletRequest(actionRequest);
 
 		long groupId = ParamUtil.getLong(uploadPortletRequest, "groupId");
 		long classNameId = ParamUtil.getLong(
@@ -168,5 +168,8 @@ public class AddTemplateMVCActionCommand extends DDMBaseMVCActionCommand {
 	}
 
 	protected DDMTemplateService ddmTemplateService;
+
+	@Reference
+	protected Portal portal;
 
 }

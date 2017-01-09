@@ -43,7 +43,7 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -107,11 +107,11 @@ public class EditFileEntryTypeMVCActionCommand extends BaseMVCActionCommand {
 			if (SessionErrors.isEmpty(actionRequest)) {
 				SessionMessages.add(
 					actionRequest,
-					PortalUtil.getPortletId(actionRequest) +
+					_portal.getPortletId(actionRequest) +
 						SessionMessages.KEY_SUFFIX_REFRESH_PORTLET,
 					DLPortletKeys.DOCUMENT_LIBRARY);
 
-				String redirect = PortalUtil.escapeRedirect(
+				String redirect = _portal.escapeRedirect(
 					ParamUtil.getString(actionRequest, "redirect"));
 
 				if (Validator.isNotNull(redirect)) {
@@ -266,5 +266,8 @@ public class EditFileEntryTypeMVCActionCommand extends BaseMVCActionCommand {
 	private DLAppService _dlAppService;
 	private DLFileEntryTypeService _dlFileEntryTypeService;
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

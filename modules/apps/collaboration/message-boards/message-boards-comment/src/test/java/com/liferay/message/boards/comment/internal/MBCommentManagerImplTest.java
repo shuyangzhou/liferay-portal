@@ -20,6 +20,7 @@ import com.liferay.message.boards.kernel.model.MBThread;
 import com.liferay.message.boards.kernel.service.MBMessageLocalService;
 import com.liferay.portal.kernel.comment.DuplicateCommentException;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.Function;
 import com.liferay.portal.kernel.util.Portal;
@@ -51,6 +52,9 @@ public class MBCommentManagerImplTest extends Mockito {
 		setUpMBCommentManagerImpl();
 		setUpPortalUtil();
 		setUpServiceContext();
+
+		ReflectionTestUtil.setFieldValue(
+			_mbCommentManagerImpl, "_portal", _portal);
 	}
 
 	@Test

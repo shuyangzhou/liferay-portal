@@ -46,7 +46,7 @@ import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -506,7 +506,7 @@ public class BlogsEntryStagedModelDataHandler
 			PortletDataContext portletDataContext, BlogsEntry blogsEntry)
 		throws PortletDataException {
 
-		long classNameId = PortalUtil.getClassNameId(BlogsEntry.class);
+		long classNameId = _portal.getClassNameId(BlogsEntry.class);
 
 		List<FriendlyURL> friendlyURLs =
 			_friendlyURLLocalService.getFriendlyURLs(
@@ -610,5 +610,8 @@ public class BlogsEntryStagedModelDataHandler
 	private BlogsEntryLocalService _blogsEntryLocalService;
 	private FriendlyURLLocalService _friendlyURLLocalService;
 	private ImageLocalService _imageLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

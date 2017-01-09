@@ -39,7 +39,7 @@ import com.liferay.portal.kernel.upload.UploadException;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.upload.UploadRequestSizeException;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -142,7 +142,7 @@ public class EditFileEntryImageEditorMVCActionCommand
 			WebKeys.THEME_DISPLAY);
 
 		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
+			_portal.getUploadPortletRequest(actionRequest);
 
 		long fileEntryId = ParamUtil.getLong(
 			uploadPortletRequest, "fileEntryId");
@@ -193,6 +193,9 @@ public class EditFileEntryImageEditorMVCActionCommand
 
 	@Reference
 	private DLAppService _dlAppService;
+
+	@Reference
+	private Portal _portal;
 
 	@Reference(
 		target = "(bundle.symbolic.name=com.liferay.frontend.image.editor.integration.document.library)",

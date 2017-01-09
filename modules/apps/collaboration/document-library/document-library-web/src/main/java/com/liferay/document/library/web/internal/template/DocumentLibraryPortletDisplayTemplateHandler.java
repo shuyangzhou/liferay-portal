@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.portletdisplaytemplate.PortletDisplayTemplateMa
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.HashMap;
@@ -41,6 +41,7 @@ import java.util.Map;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Eduardo Garcia
@@ -75,7 +76,7 @@ public class DocumentLibraryPortletDisplayTemplateHandler
 
 	@Override
 	public String getName(Locale locale) {
-		String portletTitle = PortalUtil.getPortletTitle(
+		String portletTitle = _portal.getPortletTitle(
 			DLPortletKeys.DOCUMENT_LIBRARY, locale);
 
 		return portletTitle.concat(StringPool.SPACE).concat(
@@ -147,5 +148,8 @@ public class DocumentLibraryPortletDisplayTemplateHandler
 		DocumentLibraryPortletDisplayTemplateHandler.class);
 
 	private volatile DLConfiguration _dlConfiguration;
+
+	@Reference
+	private Portal _portal;
 
 }

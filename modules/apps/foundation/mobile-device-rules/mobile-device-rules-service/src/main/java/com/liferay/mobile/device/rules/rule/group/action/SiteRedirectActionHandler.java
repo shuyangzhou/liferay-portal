@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -119,7 +119,7 @@ public class SiteRedirectActionHandler extends BaseRedirectActionHandler {
 		}
 
 		if (layout != null) {
-			return PortalUtil.getLayoutURL(layout, themeDisplay);
+			return _portal.getLayoutURL(layout, themeDisplay);
 		}
 
 		if (_log.isWarnEnabled()) {
@@ -149,5 +149,8 @@ public class SiteRedirectActionHandler extends BaseRedirectActionHandler {
 
 	private GroupLocalService _groupLocalService;
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

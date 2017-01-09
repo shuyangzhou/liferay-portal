@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.struts.BaseStrutsAction;
 import com.liferay.portal.kernel.struts.StrutsAction;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.UnsyncPrintWriterPool;
 import com.liferay.shopping.configuration.ShoppingGroupServiceOverriddenConfiguration;
 import com.liferay.shopping.constants.ShoppingConstants;
@@ -151,7 +151,7 @@ public class PayPalNotificationAction extends BaseStrutsAction {
 			return null;
 		}
 		catch (Exception e) {
-			PortalUtil.sendError(e, request, response);
+			_portal.sendError(e, request, response);
 
 			return null;
 		}
@@ -228,6 +228,9 @@ public class PayPalNotificationAction extends BaseStrutsAction {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PayPalNotificationAction.class);
+
+	@Reference
+	private Portal _portal;
 
 	private ShoppingOrderLocalService _shoppingOrderLocalService;
 
