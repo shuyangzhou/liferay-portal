@@ -30,7 +30,7 @@
 
 		<#assign fieldLayout = layoutLocalService.fetchLayout(fieldLayoutGroupId, fieldLayoutJSONObject.getBoolean("privateLayout"), fieldLayoutJSONObject.getLong("layoutId"))!"" />
 
-		<#if (fieldLayout?? && fieldLayout != "")>
+		<#if validator.isNotNull(fieldLayout)>
 			<a href="${fieldLayout.getRegularURL(request)}">${escape(fieldLayout.getName(requestedLocale))}</a>
 		</#if>
 	</#if>
