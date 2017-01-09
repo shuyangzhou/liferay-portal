@@ -39,14 +39,14 @@ public abstract class MimeResponseImpl
 
 	@Override
 	public void flushBuffer() throws IOException {
-		_response.flushBuffer();
+		response.flushBuffer();
 
 		_calledFlushBuffer = true;
 	}
 
 	@Override
 	public int getBufferSize() {
-		return _response.getBufferSize();
+		return response.getBufferSize();
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public abstract class MimeResponseImpl
 
 	@Override
 	public String getCharacterEncoding() {
-		return _response.getCharacterEncoding();
+		return response.getCharacterEncoding();
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public abstract class MimeResponseImpl
 
 	@Override
 	public Locale getLocale() {
-		return _portletRequestImpl.getLocale();
+		return portletRequestImpl.getLocale();
 	}
 
 	@Override
@@ -78,12 +78,12 @@ public abstract class MimeResponseImpl
 		}
 
 		if (_contentType == null) {
-			setContentType(_portletRequestImpl.getResponseContentType());
+			setContentType(portletRequestImpl.getResponseContentType());
 		}
 
 		_calledGetPortletOutputStream = true;
 
-		return _response.getOutputStream();
+		return response.getOutputStream();
 	}
 
 	@Override
@@ -94,12 +94,12 @@ public abstract class MimeResponseImpl
 		}
 
 		if (_contentType == null) {
-			setContentType(_portletRequestImpl.getResponseContentType());
+			setContentType(portletRequestImpl.getResponseContentType());
 		}
 
 		_calledGetWriter = true;
 
-		return _response.getWriter();
+		return response.getWriter();
 	}
 
 	public boolean isCalledFlushBuffer() {
@@ -116,7 +116,7 @@ public abstract class MimeResponseImpl
 
 	@Override
 	public boolean isCommitted() {
-		return _response.isCommitted();
+		return response.isCommitted();
 	}
 
 	@Override
@@ -134,12 +134,12 @@ public abstract class MimeResponseImpl
 				"Cannot reset a buffer that has been flushed");
 		}
 
-		_response.resetBuffer();
+		response.resetBuffer();
 	}
 
 	@Override
 	public void setBufferSize(int bufferSize) {
-		_response.setBufferSize(bufferSize);
+		response.setBufferSize(bufferSize);
 	}
 
 	@Override
@@ -149,10 +149,10 @@ public abstract class MimeResponseImpl
 		}
 
 		String lifecycle = getLifecycle();
-		WindowState windowState = _portletRequestImpl.getWindowState();
+		WindowState windowState = portletRequestImpl.getWindowState();
 
 		if (!contentType.startsWith(
-				_portletRequestImpl.getResponseContentType()) &&
+				portletRequestImpl.getResponseContentType()) &&
 			!lifecycle.equals(PortletRequest.RESOURCE_PHASE) &&
 			!windowState.equals(LiferayWindowState.EXCLUSIVE)) {
 
@@ -162,7 +162,7 @@ public abstract class MimeResponseImpl
 
 		_contentType = contentType;
 
-		_response.setContentType(contentType);
+		response.setContentType(contentType);
 	}
 
 	@Override
@@ -171,16 +171,11 @@ public abstract class MimeResponseImpl
 		String portletName, long companyId, long plid) {
 
 		super.init(portletRequestImpl, response, portletName, companyId, plid);
-
-		_portletRequestImpl = portletRequestImpl;
-		_response = response;
 	}
 
 	private boolean _calledFlushBuffer;
 	private boolean _calledGetPortletOutputStream;
 	private boolean _calledGetWriter;
 	private String _contentType;
-	private PortletRequestImpl _portletRequestImpl;
-	private HttpServletResponse _response;
 
 }

@@ -147,16 +147,16 @@ public abstract class StateAwareResponseImpl
 			throw new IllegalStateException();
 		}
 
-		if (!_portletRequestImpl.isPortletModeAllowed(portletMode)) {
+		if (!portletRequestImpl.isPortletModeAllowed(portletMode)) {
 			throw new PortletModeException(portletMode.toString(), portletMode);
 		}
 
 		try {
 			_portletMode = PortalUtil.updatePortletMode(
-				_portletName, _user, _layout, portletMode,
-				_portletRequestImpl.getHttpServletRequest());
+				portletName, _user, _layout, portletMode,
+				portletRequestImpl.getHttpServletRequest());
 
-			_portletRequestImpl.setPortletMode(_portletMode);
+			portletRequestImpl.setPortletMode(_portletMode);
 		}
 		catch (Exception e) {
 			throw new PortletModeException(e, portletMode);
@@ -249,16 +249,16 @@ public abstract class StateAwareResponseImpl
 			throw new IllegalStateException();
 		}
 
-		if (!_portletRequestImpl.isWindowStateAllowed(windowState)) {
+		if (!portletRequestImpl.isWindowStateAllowed(windowState)) {
 			throw new WindowStateException(windowState.toString(), windowState);
 		}
 
 		try {
 			_windowState = PortalUtil.updateWindowState(
-				_portletName, _user, _layout, windowState,
-				_portletRequestImpl.getHttpServletRequest());
+				portletName, _user, _layout, windowState,
+				portletRequestImpl.getHttpServletRequest());
 
-			_portletRequestImpl.setWindowState(_windowState);
+			portletRequestImpl.setWindowState(_windowState);
 		}
 		catch (Exception e) {
 			throw new WindowStateException(e, windowState);
@@ -277,8 +277,6 @@ public abstract class StateAwareResponseImpl
 			portletRequestImpl, response, portletName, layout.getCompanyId(),
 			layout.getPlid());
 
-		_portletRequestImpl = portletRequestImpl;
-		_portletName = portletName;
 		_user = user;
 		_layout = layout;
 
@@ -345,8 +343,6 @@ public abstract class StateAwareResponseImpl
 	private Layout _layout;
 	private Map<String, String[]> _params = new LinkedHashMap<>();
 	private PortletMode _portletMode;
-	private String _portletName;
-	private PortletRequestImpl _portletRequestImpl;
 	private Map<String, String[]> _publicRenderParameters;
 	private String _redirectLocation;
 	private User _user;
