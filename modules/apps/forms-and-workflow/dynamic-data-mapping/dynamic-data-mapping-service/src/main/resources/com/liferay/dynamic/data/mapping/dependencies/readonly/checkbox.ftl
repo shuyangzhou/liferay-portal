@@ -16,7 +16,7 @@
 			/>
 		</#if>
 
-		<#if fieldValue == "true">
+		<#if stringUtil.equals(fieldValue, "true")>
 			<@liferay_ui.message key=escape("yes") />
 		<#else>
 			<@liferay_ui.message key=escape("no") />

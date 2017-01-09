@@ -1,5 +1,5 @@
 <div aria-expanded="true" class="collapse navbar-collapse" id="navigationCollapse">
-	<#if main_search_class != "no-screen">
+	<#if !stringUtil.equals(main_search_class, "no-screen")>
 		<nav id="search" role="navigation">
 			<div class="${main_search_class} navbar-form navbar-right" role="search">
 				<#assign VOID = freeMarkerPortletPreferences.setValue("portletSetupPortletDecoratorId", "barebone") />

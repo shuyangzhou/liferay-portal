@@ -1,6 +1,6 @@
 <#assign itemName = "curValue_" + name />
 
-<#if language == "ftl">
+<#if stringUtil.equals(language, "ftl")>
 	<#assign fieldValues = "cur_record.getDDMFormFieldValues(\"" + name + "\")" />
 
 	${r"<#if"} ${fieldValues}?has_content>
