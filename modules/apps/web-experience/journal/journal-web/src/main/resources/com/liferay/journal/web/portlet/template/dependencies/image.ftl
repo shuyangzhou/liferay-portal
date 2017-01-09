@@ -6,7 +6,7 @@
 	<#assign variableAltName = "cur_" + variableAltName />
 </#if>
 
-<#if language == "ftl">
+<#if stringUtil.equals(language, "ftl")>
 ${r"<#if"} validator.isNotNull(${variableName})>
 	<img alt="${getVariableReferenceCode(variableAltName)}" src="${getVariableReferenceCode(variableName)}" />
 ${r"</#if>"}

@@ -45,7 +45,7 @@
 	</#if>
 
 	<div class="${portlet_content_css_class}">
-		<#if portlet_display.getPortletDecoratorId() == "trending">
+		<#if stringUtil.equals(portlet_display.getPortletDecoratorId(), "trending")>
 			<div class="user-icon user-icon-porygon user-icon-xl">
 				<svg class="lexicon-icon">
 					<use xlink:href="${themeDisplay.getPathThemeImages()}/lexicon/icons.svg#star" />
@@ -59,9 +59,9 @@
 			</a>
 		</#if>
 
-		<#if portlet_decorator_name == "trending">
+		<#if stringUtil.equals(portlet_decorator_name, "trending")>
 			<div class="text-center"><h2 class="portlet-title-text">${portlet_title}</h2></div>
-		<#elseif portlet_decorator_name != "barebone">
+		<#elseif !stringUtil.equals(portlet_decorator_name, "barebone")>
 			<h2 class="portlet-title-text">${portlet_title}</h2>
 		</#if>
 

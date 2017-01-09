@@ -1,6 +1,6 @@
 <#include "init.ftl">
 
-<#if language == "ftl">
+<#if stringUtil.equals(language, "ftl")>
 	${r"<#assign"} latitude = 0>
 	${r"<#assign"} longitude = 0>
 

@@ -1,6 +1,6 @@
 <#include "init.ftl">
 
-<#if language == "ftl">
+<#if stringUtil.equals(language, "ftl")>
 ${r"<#if"} getterUtil.getBoolean(${variableName})>
 	[$CURSOR$]
 ${r"</#if>"}
