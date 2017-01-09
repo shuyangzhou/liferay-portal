@@ -169,12 +169,10 @@ public class SearchContainerTag<R> extends ParamAndPropertyAncestorTagImpl {
 				_searchContainer.getTotalVar(), _searchContainer.getTotal());
 			pageContext.setAttribute(_var, _searchContainer);
 
-			SearchContainerReference searchContainerReference =
-				(SearchContainerReference)pageContext.getAttribute(
-					"searchContainerReference");
-
-			if ((searchContainerReference != null) &&
-				!_var.equals(SearchContainer.DEFAULT_VAR)) {
+			if (!_var.equals(SearchContainer.DEFAULT_VAR)) {
+				SearchContainerReference searchContainerReference =
+					SearchContainerReference.getSearchContainerReference(
+						request, portletResponse.getNamespace());
 
 				searchContainerReference.register(_var, _searchContainer);
 			}

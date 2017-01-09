@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.dao.search;
 import com.liferay.portal.kernel.util.DeterminateKeyGenerator;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -27,13 +28,13 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
@@ -147,11 +148,17 @@ public class SearchContainer<R> {
 
 		_emptyResultsMessage = emptyResultsMessage;
 
-		SearchContainerReference searchContainerReference =
-			(SearchContainerReference)portletRequest.getAttribute(
-				WebKeys.SEARCH_CONTAINER_REFERENCE);
+		HttpServletRequest request = PortalUtil.getHttpServletRequest(
+			portletRequest);
 
-		if (searchContainerReference != null) {
+		PortletResponse portletResponse = (PortletResponse)request.getAttribute(
+			JavaConstants.JAVAX_PORTLET_RESPONSE);
+
+		if (portletResponse != null) {
+			SearchContainerReference searchContainerReference =
+				SearchContainerReference.getSearchContainerReference(
+					request, portletResponse.getNamespace());
+
 			searchContainerReference.register(this);
 		}
 
