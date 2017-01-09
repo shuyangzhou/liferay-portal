@@ -71,9 +71,9 @@ public class IncludeTag extends AttributesTagSupport {
 				page = getEndPage();
 			}
 
-			callSetAttributes();
-
 			if (themeResourceExists(page)) {
+				callSetAttributes();
+
 				doIncludeTheme(page);
 
 				return EVAL_PAGE;
@@ -84,6 +84,8 @@ public class IncludeTag extends AttributesTagSupport {
 
 				return processEndTag();
 			}
+
+			callSetAttributes();
 
 			doInclude(page, false);
 
@@ -102,9 +104,9 @@ public class IncludeTag extends AttributesTagSupport {
 		try {
 			String page = getStartPage();
 
-			callSetAttributes();
-
 			if (themeResourceExists(page)) {
+				callSetAttributes();
+
 				doIncludeTheme(page);
 
 				return EVAL_BODY_INCLUDE;
@@ -115,6 +117,8 @@ public class IncludeTag extends AttributesTagSupport {
 
 				return processStartTag();
 			}
+
+			callSetAttributes();
 
 			doInclude(page, true);
 
