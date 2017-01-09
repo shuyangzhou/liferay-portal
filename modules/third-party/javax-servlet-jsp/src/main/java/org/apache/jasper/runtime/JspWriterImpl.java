@@ -140,7 +140,7 @@ public class JspWriterImpl extends JspWriter {
 	this.response = response;
         allocateCharBuffer();
 
-		if (!response.isCommitted()) {
+		if ((sz > 0) && !response.isCommitted()) {
 			// START OF IASRI 4641975/6172992
 			try {
 				response.setBufferSize(sz);
@@ -157,7 +157,7 @@ public class JspWriterImpl extends JspWriter {
 	this.bufferSize=sz;
         allocateCharBuffer();
 
-		if (!response.isCommitted()) {
+		if ((sz > 0) && !response.isCommitted()) {
 			// START OF IASRI 4641975/6172992
 			try {
 				response.setBufferSize(sz);
