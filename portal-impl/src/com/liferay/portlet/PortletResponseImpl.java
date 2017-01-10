@@ -225,7 +225,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	@Override
 	public PortletURL createActionURL() {
-		return createActionURL(_portletName);
+		return createActionURL(portletName);
 	}
 
 	@Override
@@ -274,7 +274,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	@Override
 	public LiferayPortletURL createLiferayPortletURL(String lifecycle) {
-		return createLiferayPortletURL(_portletName, lifecycle);
+		return createLiferayPortletURL(portletName, lifecycle);
 	}
 
 	@Override
@@ -286,7 +286,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	@Override
 	public PortletURL createRenderURL() {
-		return createRenderURL(_portletName);
+		return createRenderURL(portletName);
 	}
 
 	@Override
@@ -297,7 +297,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	@Override
 	public ResourceURL createResourceURL() {
-		return createResourceURL(_portletName);
+		return createResourceURL(portletName);
 	}
 
 	@Override
@@ -319,7 +319,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		}
 
 		if (_urlEncoder != null) {
-			return _urlEncoder.encodeURL(_response, path);
+			return _urlEncoder.encodeURL(response, path);
 		}
 		else {
 			return path;
@@ -331,12 +331,12 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	}
 
 	public HttpServletRequest getHttpServletRequest() {
-		return _portletRequestImpl.getHttpServletRequest();
+		return portletRequestImpl.getHttpServletRequest();
 	}
 
 	@Override
 	public HttpServletResponse getHttpServletResponse() {
-		return _response;
+		return response;
 	}
 
 	public abstract String getLifecycle();
@@ -348,7 +348,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		}
 
 		if (_namespace == null) {
-			_namespace = PortalUtil.getPortletNamespace(_portletName);
+			_namespace = PortalUtil.getPortletNamespace(portletName);
 		}
 
 		return _namespace;
@@ -363,7 +363,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		if (_portlet == null) {
 			try {
 				_portlet = PortletLocalServiceUtil.getPortletById(
-					_companyId, _portletName);
+					_companyId, portletName);
 			}
 			catch (Exception e) {
 				_log.error(e);
@@ -374,11 +374,11 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	}
 
 	public String getPortletName() {
-		return _portletName;
+		return portletName;
 	}
 
 	public PortletRequestImpl getPortletRequest() {
-		return _portletRequestImpl;
+		return portletRequestImpl;
 	}
 
 	@Override
@@ -451,7 +451,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		_plid = plid;
 
 		if (_plid <= 0) {
-			Layout layout = (Layout)_portletRequestImpl.getAttribute(
+			Layout layout = (Layout)portletRequestImpl.getAttribute(
 				WebKeys.LAYOUT);
 
 			if (layout != null) {
@@ -575,12 +575,12 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		boolean includeLinkToLayoutUuid) {
 
 		try {
-			Layout layout = (Layout)_portletRequestImpl.getAttribute(
+			Layout layout = (Layout)portletRequestImpl.getAttribute(
 				WebKeys.LAYOUT);
 
 			if (layout == null) {
 				ThemeDisplay themeDisplay =
-					(ThemeDisplay)_portletRequestImpl.getAttribute(
+					(ThemeDisplay)portletRequestImpl.getAttribute(
 						WebKeys.THEME_DISPLAY);
 
 				if (themeDisplay != null) {
@@ -591,7 +591,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 			if (_portletSetup == null) {
 				_portletSetup =
 					PortletPreferencesFactoryUtil.getStrictLayoutPortletSetup(
-						layout, _portletName);
+						layout, this.portletName);
 			}
 
 			String linkToLayoutUuid = GetterUtil.getString(
@@ -680,7 +680,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 		if (portletURL == null) {
 			portletURL = PortletURLFactoryUtil.create(
-				_portletRequestImpl, portletName, plid, lifecycle);
+				portletRequestImpl, portletName, plid, lifecycle);
 		}
 
 		PortletApp portletApp = portlet.getPortletApp();
@@ -709,14 +709,14 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		}
 
 		try {
-			portletURL.setWindowState(_portletRequestImpl.getWindowState());
+			portletURL.setWindowState(portletRequestImpl.getWindowState());
 		}
 		catch (WindowStateException wse) {
 			_log.error(wse.getMessage());
 		}
 
 		try {
-			portletURL.setPortletMode(_portletRequestImpl.getPortletMode());
+			portletURL.setPortletMode(portletRequestImpl.getPortletMode());
 		}
 		catch (PortletModeException pme) {
 			_log.error(pme.getMessage());
@@ -733,14 +733,18 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		PortletRequestImpl portletRequestImpl, HttpServletResponse response,
 		String portletName, long companyId, long plid) {
 
-		_portletRequestImpl = portletRequestImpl;
-		_response = response;
-		_portletName = portletName;
+		this.portletRequestImpl = portletRequestImpl;
+		this.response = response;
+		this.portletName = portletName;
 		_companyId = companyId;
 		_wsrp = ParamUtil.getBoolean(getHttpServletRequest(), "wsrp");
 
 		setPlid(plid);
 	}
+
+	protected String portletName;
+	protected PortletRequestImpl portletRequestImpl;
+	protected HttpServletResponse response;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletResponseImpl.class);
@@ -755,10 +759,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	private String _namespace;
 	private long _plid;
 	private Portlet _portlet;
-	private String _portletName;
-	private PortletRequestImpl _portletRequestImpl;
 	private PortletPreferences _portletSetup;
-	private HttpServletResponse _response;
 	private URLEncoder _urlEncoder;
 	private boolean _wsrp;
 
@@ -784,7 +785,7 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		private final boolean _includeLinkToLayoutUuid;
 		private final String _lifecycle;
 		private long _plid;
-		private String _portletName;
+		private final String _portletName;
 
 	}
 
