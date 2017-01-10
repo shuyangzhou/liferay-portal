@@ -144,7 +144,7 @@ RenderRequestImpl renderRequestImpl = RenderRequestFactory.create(request, portl
 
 BufferCacheServletResponse bufferCacheServletResponse = new BufferCacheServletResponse(response);
 
-RenderResponseImpl renderResponseImpl = RenderResponseFactory.create(renderRequestImpl, bufferCacheServletResponse, portletId, company.getCompanyId(), plid);
+RenderResponseImpl renderResponseImpl = RenderResponseFactory.create(renderRequestImpl, bufferCacheServletResponse);
 
 if (stateMin) {
 	renderResponseImpl.setUseDefaultTemplate(true);

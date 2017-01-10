@@ -22,24 +22,39 @@ import javax.servlet.http.HttpServletResponse;
 public class RenderResponseFactory {
 
 	public static RenderResponseImpl create(
+		RenderRequestImpl renderRequestImpl, HttpServletResponse response) {
+
+		RenderResponseImpl renderResponseImpl = new RenderResponseImpl();
+
+		renderResponseImpl.init(renderRequestImpl, response);
+
+		return renderResponseImpl;
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #create(RenderRequestImpl, HttpServletResponse)}
+	 */
+	@Deprecated
+	public static RenderResponseImpl create(
 			RenderRequestImpl renderRequestImpl, HttpServletResponse response,
 			String portletName, long companyId)
 		throws Exception {
 
-		return create(renderRequestImpl, response, portletName, companyId, 0);
+		return create(renderRequestImpl, response);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #create(RenderRequestImpl, HttpServletResponse)}
+	 */
+	@Deprecated
 	public static RenderResponseImpl create(
 			RenderRequestImpl renderRequestImpl, HttpServletResponse response,
 			String portletName, long companyId, long plid)
 		throws Exception {
 
-		RenderResponseImpl renderResponseImpl = new RenderResponseImpl();
-
-		renderResponseImpl.init(
-			renderRequestImpl, response, portletName, companyId, plid);
-
-		return renderResponseImpl;
+		return create(renderRequestImpl, response);
 	}
 
 }

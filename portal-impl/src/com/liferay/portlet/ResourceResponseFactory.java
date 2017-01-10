@@ -22,25 +22,40 @@ import javax.servlet.http.HttpServletResponse;
 public class ResourceResponseFactory {
 
 	public static ResourceResponseImpl create(
+		ResourceRequestImpl resourceRequestImpl, HttpServletResponse response) {
+
+		ResourceResponseImpl resourceResponseImpl = new ResourceResponseImpl();
+
+		resourceResponseImpl.init(resourceRequestImpl, response);
+
+		return resourceResponseImpl;
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #create(ResourceRequestImpl, HttpServletResponse)}
+	 */
+	@Deprecated
+	public static ResourceResponseImpl create(
 			ResourceRequestImpl resourceRequestImpl,
 			HttpServletResponse response, String portletName, long companyId)
 		throws Exception {
 
-		return create(resourceRequestImpl, response, portletName, companyId, 0);
+		return create(resourceRequestImpl, response);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #create(ResourceRequestImpl, HttpServletResponse)}
+	 */
+	@Deprecated
 	public static ResourceResponseImpl create(
 			ResourceRequestImpl resourceRequestImpl,
 			HttpServletResponse response, String portletName, long companyId,
 			long plid)
 		throws Exception {
 
-		ResourceResponseImpl resourceResponseImpl = new ResourceResponseImpl();
-
-		resourceResponseImpl.init(
-			resourceRequestImpl, response, portletName, companyId, plid);
-
-		return resourceResponseImpl;
+		return create(resourceRequestImpl, response);
 	}
 
 }

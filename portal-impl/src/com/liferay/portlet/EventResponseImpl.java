@@ -40,14 +40,25 @@ public class EventResponseImpl
 	public void setRenderParameters(EventRequest eventRequest) {
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #init(PortletRequestImpl, HttpServletResponse, User, Layout)}
+	 */
+	@Deprecated
 	protected void init(
 			PortletRequestImpl portletRequestImpl, HttpServletResponse response,
 			String portletName, User user, Layout layout)
 		throws PortletModeException, WindowStateException {
 
-		init(
-			portletRequestImpl, response, portletName, user, layout, null,
-			null);
+		init(portletRequestImpl, response, user, layout);
+	}
+
+	protected void init(
+			PortletRequestImpl portletRequestImpl, HttpServletResponse response,
+			User user, Layout layout)
+		throws PortletModeException, WindowStateException {
+
+		init(portletRequestImpl, response, user, layout, false);
 	}
 
 }
