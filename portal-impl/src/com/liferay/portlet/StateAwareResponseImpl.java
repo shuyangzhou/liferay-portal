@@ -273,9 +273,7 @@ public abstract class StateAwareResponseImpl
 			WindowState windowState, PortletMode portletMode)
 		throws PortletModeException, WindowStateException {
 
-		super.init(
-			portletRequestImpl, response, portletName, layout.getCompanyId(),
-			layout.getPlid());
+		super.init(portletRequestImpl, response);
 
 		_user = user;
 		_layout = layout;

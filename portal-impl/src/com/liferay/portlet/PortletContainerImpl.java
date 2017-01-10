@@ -796,12 +796,8 @@ public class PortletContainerImpl implements PortletContainer {
 			request, portlet, invokerPortlet, portletContext, windowState,
 			portletMode, portletPreferences, layout.getPlid());
 
-		long companyId = PortalUtil.getCompanyId(request);
-
 		ResourceResponseImpl resourceResponseImpl =
-			ResourceResponseFactory.create(
-				resourceRequestImpl, response, portlet.getPortletId(),
-				companyId);
+			ResourceResponseFactory.create(resourceRequestImpl, response);
 
 		resourceRequestImpl.defineObjects(portletConfig, resourceResponseImpl);
 

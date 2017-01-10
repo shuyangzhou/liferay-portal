@@ -261,7 +261,7 @@ public class PortalRequestProcessor extends TilesRequestProcessor {
 			WindowState.MAXIMIZED, PortletMode.VIEW, portletPreferences);
 
 		RenderResponseImpl renderResponseImpl = RenderResponseFactory.create(
-			renderRequestImpl, response, portletId, portlet.getCompanyId());
+			renderRequestImpl, response);
 
 		renderRequestImpl.defineObjects(portletConfig, renderResponseImpl);
 
