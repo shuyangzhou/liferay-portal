@@ -14,11 +14,14 @@
 
 package com.liferay.portal.kernel.dao.search;
 
+import com.liferay.portal.kernel.servlet.PortletServlet;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -140,6 +143,13 @@ public class SearchContainerTest {
 
 	protected void buildSearchContainer(int cur) {
 		PortletRequest portletRequest = PowerMockito.mock(PortletRequest.class);
+
+		PowerMockito.when(
+			portletRequest.getAttribute(
+				PortletServlet.PORTLET_SERVLET_REQUEST)
+		).thenReturn(
+			PowerMockito.mock(HttpServletRequest.class)
+		);
 
 		PortletURL portletURL = PowerMockito.mock(PortletURL.class);
 

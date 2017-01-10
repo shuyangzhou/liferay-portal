@@ -359,6 +359,11 @@ boolean showRestoreButton = (searchTerms.getStatus() != WorkflowConstants.STATUS
 </c:if>
 
 <aui:script>
+
+	<%
+	SearchContainerReference searchContainerReference = SearchContainerReference.getSearchContainerReference(request, renderResponse.getNamespace());
+	%>
+
 	Liferay.Util.toggleSearchContainerButton('#<portlet:namespace />deactivate', '#<portlet:namespace /><%= searchContainerReference.getId(request, "userSearchContainer") %>SearchContainer', document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
 	Liferay.Util.toggleSearchContainerButton('#<portlet:namespace />restore', '#<portlet:namespace /><%= searchContainerReference.getId(request, "userSearchContainer") %>SearchContainer', document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
 </aui:script>

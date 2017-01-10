@@ -200,5 +200,10 @@ boolean hasAddOrganizationPermission = PortalPermissionUtil.contains(permissionC
 </c:if>
 
 <aui:script>
+
+	<%
+	SearchContainerReference searchContainerReference = SearchContainerReference.getSearchContainerReference(request, renderResponse.getNamespace());
+	%>
+
 	Liferay.Util.toggleSearchContainerButton('#<portlet:namespace />delete', '#<portlet:namespace /><%= searchContainerReference.getId(request, "organizationSearchContainer") %>SearchContainer', document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
 </aui:script>
