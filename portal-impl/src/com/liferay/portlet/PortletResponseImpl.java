@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProviderUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
-import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.URLEncoder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -360,16 +359,6 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	@Override
 	public Portlet getPortlet() {
-		if (_portlet == null) {
-			try {
-				_portlet = PortletLocalServiceUtil.getPortletById(
-					_companyId, portletName);
-			}
-			catch (Exception e) {
-				_log.error(e);
-			}
-		}
-
 		return _portlet;
 	}
 
@@ -730,16 +719,33 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 	}
 
 	protected void init(
-		PortletRequestImpl portletRequestImpl, HttpServletResponse response,
-		String portletName, long companyId, long plid) {
+		PortletRequestImpl portletRequestImpl, HttpServletResponse response) {
 
 		this.portletRequestImpl = portletRequestImpl;
 		this.response = response;
-		this.portletName = portletName;
-		_companyId = companyId;
-		_wsrp = ParamUtil.getBoolean(getHttpServletRequest(), "wsrp");
 
-		setPlid(plid);
+		_portlet = portletRequestImpl.getPortlet();
+
+		portletName = _portlet.getPortletId();
+
+		_companyId = _portlet.getCompanyId();
+
+		_wsrp = ParamUtil.getBoolean(
+			portletRequestImpl.getHttpServletRequest(), "wsrp");
+
+		setPlid(portletRequestImpl.getPlid());
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #init(PortletRequestImpl, HttpServletResponse)}
+	 */
+	@Deprecated
+	protected void init(
+		PortletRequestImpl portletRequestImpl, HttpServletResponse response,
+		String portletName, long companyId, long plid) {
+
+		init(portletRequestImpl, response);
 	}
 
 	protected String portletName;
