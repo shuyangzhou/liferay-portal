@@ -31,6 +31,20 @@ import org.osgi.framework.ServiceRegistration;
  */
 public class InitFilter extends BasePortalFilter {
 
+	public static final String SKIP_FILTER = InitFilter.class + "SKIP_FILTER";
+
+	@Override
+	public boolean isFilterEnabled(
+		HttpServletRequest request, HttpServletResponse response) {
+
+		if (request.getAttribute(SKIP_FILTER) != null) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
 	public void setServiceRegistration(
 		ServiceRegistration<Filter> serviceRegistration) {
 
@@ -44,6 +58,8 @@ public class InitFilter extends BasePortalFilter {
 			HttpServletRequest request, HttpServletResponse response,
 			FilterChain filterChain)
 		throws Exception {
+
+		request.setAttribute(SKIP_FILTER, Boolean.TRUE);
 
 		_countDownLatch.await();
 
