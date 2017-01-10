@@ -267,10 +267,23 @@ public abstract class StateAwareResponseImpl
 		_calledSetRenderParameter = true;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #init(PortletRequestImpl, HttpServletResponse, User, Layout)}
+	 */
+	@Deprecated
 	protected void init(
 			PortletRequestImpl portletRequestImpl, HttpServletResponse response,
 			String portletName, User user, Layout layout,
 			WindowState windowState, PortletMode portletMode)
+		throws PortletModeException, WindowStateException {
+
+		init(portletRequestImpl, response, user, layout, true);
+	}
+
+	protected void init(
+			PortletRequestImpl portletRequestImpl, HttpServletResponse response,
+			User user, Layout layout, boolean setWindowStateAndPortletMode)
 		throws PortletModeException, WindowStateException {
 
 		super.init(portletRequestImpl, response);
@@ -285,12 +298,9 @@ public abstract class StateAwareResponseImpl
 		_publicRenderParameters = PublicRenderParametersPool.get(
 			getHttpServletRequest(), layout.getPlid(), portletApp.isWARFile());
 
-		if (windowState != null) {
-			setWindowState(windowState);
-		}
-
-		if (portletMode != null) {
-			setPortletMode(portletMode);
+		if (setWindowStateAndPortletMode) {
+			setWindowState(portletRequestImpl.getWindowState());
+			setPortletMode(portletRequestImpl.getPortletMode());
 		}
 
 		// Set _calledSetRenderParameter to false because setWindowState and

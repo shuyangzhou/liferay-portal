@@ -407,8 +407,7 @@ public class PortletContainerImpl implements PortletContainer {
 
 			ActionResponseImpl actionResponseImpl =
 				ActionResponseFactory.create(
-					actionRequestImpl, response, portlet.getPortletId(), user,
-					layout, windowState, portletMode);
+					actionRequestImpl, response, user, layout);
 
 			actionRequestImpl.defineObjects(portletConfig, actionResponseImpl);
 
@@ -553,8 +552,7 @@ public class PortletContainerImpl implements PortletContainer {
 		Layout requestLayout = (Layout)request.getAttribute(WebKeys.LAYOUT);
 
 		EventResponseImpl eventResponseImpl = EventResponseFactory.create(
-			eventRequestImpl, response, portlet.getPortletId(), user,
-			requestLayout);
+			eventRequestImpl, response, user, requestLayout);
 
 		eventRequestImpl.defineObjects(portletConfig, eventResponseImpl);
 

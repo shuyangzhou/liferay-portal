@@ -17,6 +17,9 @@ package com.liferay.portlet;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.User;
 
+import javax.portlet.PortletModeException;
+import javax.portlet.WindowStateException;
+
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -24,15 +27,27 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class EventResponseFactory {
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #create(EventRequestImpl, HttpServletResponse, User, Layout)}
+	 */
+	@Deprecated
 	public static EventResponseImpl create(
 			EventRequestImpl eventRequestImpl, HttpServletResponse response,
 			String portletName, User user, Layout layout)
 		throws Exception {
 
+		return create(eventRequestImpl, response, user, layout);
+	}
+
+	public static EventResponseImpl create(
+			EventRequestImpl eventRequestImpl, HttpServletResponse response,
+			User user, Layout layout)
+		throws PortletModeException, WindowStateException {
+
 		EventResponseImpl eventResponseImpl = new EventResponseImpl();
 
-		eventResponseImpl.init(
-			eventRequestImpl, response, portletName, user, layout);
+		eventResponseImpl.init(eventRequestImpl, response, user, layout);
 
 		return eventResponseImpl;
 	}
