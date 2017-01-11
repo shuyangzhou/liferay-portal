@@ -1,0 +1,6 @@
+Bundle-Name: Liferay Portal Scripting Test
+Bundle-SymbolicName: com.liferay.portal.scripting.test
+Bundle-Version: 1.0.0
+Include-Resource: test-classes/integration
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Scripting Engines
