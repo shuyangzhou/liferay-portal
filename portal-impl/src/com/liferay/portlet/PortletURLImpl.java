@@ -52,6 +52,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.security.lang.DoPrivilegedUtil;
+import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.util.Encryptor;
 import com.liferay.util.EncryptorException;
@@ -215,7 +216,7 @@ public class PortletURLImpl
 		if (_portlet == null) {
 			try {
 				_portlet = PortletLocalServiceUtil.getPortletById(
-					PortalUtil.getCompanyId(_request), _portletId);
+					PortalInstances.getCompanyId(_request), _portletId);
 			}
 			catch (SystemException se) {
 				_log.error(se.getMessage());

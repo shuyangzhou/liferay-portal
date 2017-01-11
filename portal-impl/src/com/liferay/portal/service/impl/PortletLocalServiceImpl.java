@@ -98,6 +98,7 @@ import com.liferay.registry.ServiceReference;
 import com.liferay.registry.ServiceTracker;
 import com.liferay.registry.ServiceTrackerCustomizer;
 import com.liferay.util.ContentUtil;
+import com.liferay.util.JS;
 
 import java.net.URL;
 
@@ -416,7 +417,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 	@Override
 	@Skip
 	public Portlet fetchPortletById(long companyId, String portletId) {
-		portletId = PortalUtil.getJsSafePortletId(portletId);
+		portletId = JS.getSafeName(portletId);
 
 		Map<String, Portlet> companyPortletsMap = getPortletsMap(companyId);
 
@@ -693,7 +694,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 	@Override
 	@Skip
 	public boolean hasPortlet(long companyId, String portletId) {
-		portletId = PortalUtil.getJsSafePortletId(portletId);
+		portletId = JS.getSafeName(portletId);
 
 		Portlet portlet = null;
 
@@ -981,7 +982,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 	public Portlet updatePortlet(
 		long companyId, String portletId, String roles, boolean active) {
 
-		portletId = PortalUtil.getJsSafePortletId(portletId);
+		portletId = JS.getSafeName(portletId);
 
 		Portlet portlet = portletPersistence.fetchByC_P(companyId, portletId);
 
@@ -1066,7 +1067,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 						servletContextName;
 			}
 
-			portletId = PortalUtil.getJsSafePortletId(portletId);
+			portletId = JS.getSafeName(portletId);
 
 			Portlet portlet = portletsMap.get(portletId);
 
@@ -1090,7 +1091,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		String servletContextNameSuffix = null;
 
 		if (Validator.isNotNull(servletContextName)) {
-			servletContextNameSuffix = PortalUtil.getJsSafePortletId(
+			servletContextNameSuffix = JS.getSafeName(
 				PortletConstants.WAR_SEPARATOR.concat(servletContextName));
 		}
 
@@ -1318,7 +1319,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 							servletContextName;
 				}
 
-				portletId = PortalUtil.getJsSafePortletId(portletId);
+				portletId = JS.getSafeName(portletId);
 
 				portletIds.add(portletId);
 				curPortletIds.add(portletId);
@@ -1369,7 +1370,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			if ((servletContextName != null) && portletApp.isWARFile() &&
 				portletId.endsWith(
 					PortletConstants.WAR_SEPARATOR +
-						PortalUtil.getJsSafePortletId(servletContextName)) &&
+						JS.getSafeName(servletContextName)) &&
 				!portletIds.contains(portletId)) {
 
 				undefinedPortletIds.add(portletId);
@@ -1406,7 +1407,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 				servletContextName);
 		}
 
-		portletId = PortalUtil.getJsSafePortletId(portletId);
+		portletId = JS.getSafeName(portletId);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Reading portlet extension " + portletId);
@@ -2051,7 +2052,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 				servletContextName);
 		}
 
-		portletId = PortalUtil.getJsSafePortletId(portletId);
+		portletId = JS.getSafeName(portletId);
 
 		if (portletId.length() >
 				PortletInstance.PORTLET_INSTANCE_KEY_MAX_LENGTH) {

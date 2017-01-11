@@ -16,11 +16,11 @@ package com.liferay.portal.layoutconfiguration.util.xml;
 
 import com.liferay.portal.kernel.layoutconfiguration.util.xml.RuntimeLogic;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portlet.RenderResponseImpl;
+import com.liferay.util.JS;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.RenderResponse;
@@ -66,7 +66,7 @@ public class ActionURLLogic extends RuntimeLogic {
 		String portletId = root.attributeValue("portlet-name");
 
 		if (portletId != null) {
-			portletId = PortalUtil.getJsSafePortletId(portletId);
+			portletId = JS.getSafeName(portletId);
 
 			liferayPortletURL.setPortletId(portletId);
 		}

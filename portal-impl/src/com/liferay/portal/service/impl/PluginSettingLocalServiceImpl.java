@@ -21,10 +21,10 @@ import com.liferay.portal.kernel.model.Plugin;
 import com.liferay.portal.kernel.model.PluginSetting;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.impl.PluginSettingImpl;
 import com.liferay.portal.service.base.PluginSettingLocalServiceBaseImpl;
+import com.liferay.util.JS;
 
 /**
  * @author Jorge Ferrer
@@ -116,7 +116,7 @@ public class PluginSettingLocalServiceImpl
 		long companyId, String pluginId, String pluginType, String roles,
 		boolean active) {
 
-		pluginId = PortalUtil.getJsSafePortletId(pluginId);
+		pluginId = JS.getSafeName(pluginId);
 
 		PluginSetting pluginSetting = pluginSettingPersistence.fetchByC_I_T(
 			companyId, pluginId, pluginType);
