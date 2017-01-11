@@ -14,6 +14,7 @@
 
 package com.liferay.portal.spring.hibernate;
 
+import com.liferay.portal.dao.orm.hibernate.event.CIMergeEventListener;
 import com.liferay.portal.dao.orm.hibernate.event.MVCCSynchronizerPostUpdateEventListener;
 import com.liferay.portal.dao.orm.hibernate.event.NestableAutoFlushEventListener;
 import com.liferay.portal.dao.orm.hibernate.event.NestableFlushEventListener;
@@ -184,6 +185,13 @@ public class PortalHibernateConfiguration extends LocalSessionFactoryBean {
 					new PostUpdateEventListener[] {
 						MVCCSynchronizerPostUpdateEventListener.INSTANCE
 					});
+
+				if (System.getenv("JENKINS_HOME") != null) {
+					eventListeners.setMergeEventListeners(
+						new CIMergeEventListener[] {
+							CIMergeEventListener.INSTANCE
+						});
+				}
 			}
 		}
 		catch (Exception e1) {
