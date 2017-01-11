@@ -115,7 +115,8 @@ public class SecureFilter extends BasePortalFilter {
 
 			if (userId > 0) {
 				request = setCredentials(
-					request, session, userId, HttpServletRequest.BASIC_AUTH);
+					request, session, UserLocalServiceUtil.getUser(userId),
+					HttpServletRequest.BASIC_AUTH);
 			}
 			else {
 				HttpAuthorizationHeader httpAuthorizationHeader =
@@ -158,7 +159,8 @@ public class SecureFilter extends BasePortalFilter {
 
 			if (userId > 0) {
 				request = setCredentials(
-					request, session, userId, HttpServletRequest.DIGEST_AUTH);
+					request, session, UserLocalServiceUtil.getUser(userId),
+					HttpServletRequest.DIGEST_AUTH);
 			}
 			else {
 				HttpAuthorizationHeader httpAuthorizationHeader =
@@ -297,7 +299,7 @@ public class SecureFilter extends BasePortalFilter {
 
 			if (!user.isDefaultUser()) {
 				request = setCredentials(
-					request, request.getSession(), user.getUserId(), null);
+					request, request.getSession(), user, null);
 			}
 			else {
 				if (_digestAuthEnabled) {
@@ -316,6 +318,12 @@ public class SecureFilter extends BasePortalFilter {
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #setCredentials(
+	 *             HttpServletRequest, HttpSession, User, String)}
+	 */
+	@Deprecated
 	protected HttpServletRequest setCredentials(
 			HttpServletRequest request, HttpSession session, long userId,
 			String authType)
@@ -324,6 +332,24 @@ public class SecureFilter extends BasePortalFilter {
 		User user = UserLocalServiceUtil.getUser(userId);
 
 		String userIdString = String.valueOf(userId);
+
+		request = new ProtectedServletRequest(request, userIdString, authType);
+
+		session.setAttribute(_AUTHENTICATED_USER, userIdString);
+
+		session.setAttribute(WebKeys.USER, user);
+
+		initThreadLocals(request);
+
+		return request;
+	}
+
+	protected HttpServletRequest setCredentials(
+			HttpServletRequest request, HttpSession session, User user,
+			String authType)
+		throws Exception {
+
+		String userIdString = String.valueOf(user.getUserId());
 
 		request = new ProtectedServletRequest(request, userIdString, authType);
 
