@@ -329,25 +329,23 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 		PermissionChecker permissionChecker, long[] groupIds,
 		String userIdField) {
 
-		StringBundler sb = new StringBundler();
-
-		sb.append(StringPool.OPEN_PARENTHESIS);
-
-		sb.append("ResourcePermission.roleId IN (");
+		StringBundler sb = new StringBundler(9);
 
 		long[] roleIds = getRoleIds(groupIds);
 
-		if (roleIds.length == 0) {
-			roleIds = _NO_ROLE_IDS;
+		if (roleIds.length > 0) {
+			sb.append("(ResourcePermission.roleId IN (");
+			sb.append(StringUtil.merge(roleIds));
+			sb.append(")");
 		}
 
-		sb.append(StringUtil.merge(roleIds));
-
-		sb.append(StringPool.CLOSE_PARENTHESIS);
-
 		if (permissionChecker.isSignedIn()) {
-			sb.append(" OR ");
-			sb.append("(");
+			if (sb.index() > 0) {
+				sb.append(" OR ");
+			}
+			else {
+				sb.append("(");
+			}
 
 			long userId = permissionChecker.getUserId();
 
@@ -363,8 +361,9 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 
 			sb.append(")");
 		}
-
-		sb.append(StringPool.CLOSE_PARENTHESIS);
+		else if (sb.index() > 0) {
+			sb.append(")");
+		}
 
 		return sb.toString();
 	}
@@ -757,8 +756,6 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 	private static final String _GROUP_BY_CLAUSE = " GROUP BY ";
 
 	private static final long _NO_RESOURCE_BLOCKS_ID = -1;
-
-	private static final long[] _NO_ROLE_IDS = {0};
 
 	private static final String _ORDER_BY_CLAUSE = " ORDER BY ";
 
