@@ -47,9 +47,6 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -112,17 +109,15 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 
 	@Test
 	public void testCompanyScope() throws Exception {
-		Role role = RoleTestUtil.addRole(
+		_role = RoleTestUtil.addRole(
 			"scopeCompanyRole", RoleConstants.TYPE_REGULAR);
 
-		_roles.add(role);
-
-		RoleLocalServiceUtil.addUserRole(_user.getUserId(), role);
+		RoleLocalServiceUtil.addUserRole(_user.getUserId(), _role);
 
 		ResourcePermissionLocalServiceUtil.addResourcePermission(
 			CompanyThreadLocal.getCompanyId(), _CLASS_NAME,
 			ResourceConstants.SCOPE_COMPANY,
-			String.valueOf(role.getCompanyId()), role.getRoleId(),
+			String.valueOf(_role.getCompanyId()), _role.getRoleId(),
 			ActionKeys.VIEW);
 
 		PermissionChecker permissionChecker =
@@ -141,49 +136,40 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 
 	@Test
 	public void testGetRoles() throws Exception {
-		Group group = GroupTestUtil.addGroup();
+		_groupThree = GroupTestUtil.addGroup();
 
-		try {
-			Role role = RoleTestUtil.addRole(
-				"testRole", RoleConstants.TYPE_SITE);
+		_role = RoleTestUtil.addRole("testRole", RoleConstants.TYPE_SITE);
 
-			_roles.add(role);
+		_addGroupRole(_groupThree, "testRole");
 
-			_addGroupRole(group, "testRole");
+		PermissionChecker permissionChecker =
+			PermissionCheckerFactoryUtil.create(_user);
 
-			PermissionChecker permissionChecker =
-				PermissionCheckerFactoryUtil.create(_user);
+		PermissionThreadLocal.setPermissionChecker(permissionChecker);
 
-			PermissionThreadLocal.setPermissionChecker(permissionChecker);
+		long[] roleIds = getRoleIds(_groupThree.getGroupId());
 
-			long[] roleIds = getRoleIds(group.getGroupId());
+		Role guestRole = RoleLocalServiceUtil.getRole(
+			_groupThree.getCompanyId(), RoleConstants.GUEST);
 
-			Role guestRole = RoleLocalServiceUtil.getRole(
-				group.getCompanyId(), RoleConstants.GUEST);
+		Role siteMemberRole = RoleLocalServiceUtil.getRole(
+			_groupThree.getCompanyId(), RoleConstants.SITE_MEMBER);
 
-			Role siteMemberRole = RoleLocalServiceUtil.getRole(
-				group.getCompanyId(), RoleConstants.SITE_MEMBER);
+		Role userRole = RoleLocalServiceUtil.getRole(
+			_groupThree.getCompanyId(), RoleConstants.USER);
 
-			Role userRole = RoleLocalServiceUtil.getRole(
-				group.getCompanyId(), RoleConstants.USER);
+		String msg = StringUtil.merge(roleIds);
 
-			String msg = StringUtil.merge(roleIds);
+		Assert.assertTrue(msg, ArrayUtil.contains(roleIds, _role.getRoleId()));
 
-			Assert.assertTrue(
-				msg, ArrayUtil.contains(roleIds, role.getRoleId()));
+		Assert.assertTrue(
+			msg, ArrayUtil.contains(roleIds, guestRole.getRoleId()));
 
-			Assert.assertTrue(
-				msg, ArrayUtil.contains(roleIds, guestRole.getRoleId()));
+		Assert.assertTrue(
+			msg, ArrayUtil.contains(roleIds, siteMemberRole.getRoleId()));
 
-			Assert.assertTrue(
-				msg, ArrayUtil.contains(roleIds, siteMemberRole.getRoleId()));
-
-			Assert.assertTrue(
-				msg, ArrayUtil.contains(roleIds, userRole.getRoleId()));
-		}
-		finally {
-			GroupLocalServiceUtil.deleteGroup(group);
-		}
+		Assert.assertTrue(
+			msg, ArrayUtil.contains(roleIds, userRole.getRoleId()));
 	}
 
 	@Test
@@ -209,17 +195,14 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 
 	@Test
 	public void testGroupScope() throws Exception {
-		Role role = RoleTestUtil.addRole(
-			"scopeGroupRole", RoleConstants.TYPE_SITE);
-
-		_roles.add(role);
+		_role = RoleTestUtil.addRole("scopeGroupRole", RoleConstants.TYPE_SITE);
 
 		_addGroupRole(_groupOne, "scopeGroupRole");
 
 		ResourcePermissionLocalServiceUtil.addResourcePermission(
 			CompanyThreadLocal.getCompanyId(), _CLASS_NAME,
 			ResourceConstants.SCOPE_GROUP,
-			String.valueOf(_groupOne.getGroupId()), role.getRoleId(),
+			String.valueOf(_groupOne.getGroupId()), _role.getRoleId(),
 			ActionKeys.VIEW);
 
 		PermissionChecker permissionChecker =
@@ -238,10 +221,8 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 
 	@Test
 	public void testGroupTemplateScope() throws Exception {
-		Role role = RoleTestUtil.addRole(
+		_role = RoleTestUtil.addRole(
 			"scopeGroupTemplateRole", RoleConstants.TYPE_SITE);
-
-		_roles.add(role);
 
 		_addGroupRole(_groupOne, "scopeGroupTemplateRole");
 
@@ -249,7 +230,7 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 			CompanyThreadLocal.getCompanyId(), _CLASS_NAME,
 			ResourceConstants.SCOPE_GROUP_TEMPLATE,
 			String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID),
-			role.getRoleId(), ActionKeys.VIEW);
+			_role.getRoleId(), ActionKeys.VIEW);
 
 		PermissionChecker permissionChecker =
 			PermissionCheckerFactoryUtil.create(_user);
@@ -269,13 +250,13 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 	public void testInvalidCompany() throws Exception {
 		Company company = CompanyTestUtil.addCompany();
 
-		Group group = GroupTestUtil.addGroup();
+		_groupThree = GroupTestUtil.addGroup();
 
-		group.setCompanyId(company.getCompanyId());
+		_groupThree.setCompanyId(company.getCompanyId());
 
-		GroupLocalServiceUtil.updateGroup(group);
+		GroupLocalServiceUtil.updateGroup(_groupThree);
 
-		_addGroupRole(group, RoleConstants.SITE_MEMBER);
+		_addGroupRole(_groupThree, RoleConstants.SITE_MEMBER);
 
 		_addGroupRole(_groupOne, RoleConstants.SITE_MEMBER);
 
@@ -287,7 +268,8 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 		replacePermissionCheck(
 			_SQL_PLAIN, _CLASS_NAME, _CLASS_PK_FIELD, _USER_ID_FIELD,
 			_GROUP_ID_FIELD,
-			new long[] {_groupOne.getGroupId(), group.getGroupId()}, null);
+			new long[] {_groupOne.getGroupId(), _groupThree.getGroupId()},
+			null);
 	}
 
 	@Test
@@ -482,12 +464,15 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 	private Group _groupOne;
 
 	@DeleteAfterTestRun
+	private Group _groupThree;
+
+	@DeleteAfterTestRun
 	private Group _groupTwo;
 
 	private PermissionChecker _originalPermissionChecker;
 
 	@DeleteAfterTestRun
-	private final List<Role> _roles = new ArrayList<>();
+	private Role _role;
 
 	@DeleteAfterTestRun
 	private User _user;
