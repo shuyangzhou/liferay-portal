@@ -14,6 +14,9 @@
 
 package com.liferay.portal.kernel.upgrade;
 
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -26,6 +29,12 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.ReadOnlyException;
@@ -224,12 +233,14 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 					"getUpdatePortletPreferencesWhereClause");
 		}
 
-		StringBundler sb = new StringBundler(portletIds.length * 5 - 1);
+		StringBundler sb = new StringBundler(portletIds.length * 5 + 3);
+
+		sb.append(StringPool.OPEN_PARENTHESIS);
 
 		for (int i = 0; i < portletIds.length; i++) {
 			String portletId = portletIds[i];
 
-			sb.append("portletId ");
+			sb.append("PortletPreferences.portletId ");
 
 			if (portletId.contains(StringPool.PERCENT)) {
 				sb.append(" like '");
@@ -247,114 +258,75 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 			}
 		}
 
+		sb.append(StringPool.CLOSE_PARENTHESIS);
+
 		return sb.toString();
 	}
 
 	protected void updatePortletPreferences() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
-			StringBundler sb = new StringBundler(4);
+			DB db = DBManagerUtil.getDB();
 
-			sb.append("select portletPreferencesId, ownerId, ownerType, ");
-			sb.append("plid, portletId, preferences from PortletPreferences");
+			DBType dbType = db.getDBType();
 
-			String whereClause = getUpdatePortletPreferencesWhereClause();
+			boolean asyncUpdate = false;
 
-			if (Validator.isNotNull(whereClause)) {
-				sb.append(" where ");
-				sb.append(whereClause);
+			if ((dbType == DBType.SQLSERVER) || (dbType == DBType.SYBASE)) {
+				asyncUpdate = true;
 			}
 
-			try (PreparedStatement ps1 = connection.prepareStatement(
-					sb.toString());
-				PreparedStatement ps2 =
+			Set<Long> deletes = new HashSet<>();
+
+			try (PreparedStatement ps =
 					AutoBatchPreparedStatementUtil.concurrentAutoBatch(
 						connection,
 						"update PortletPreferences set preferences = ? where " +
-							"portletPreferencesId = ?");
-				PreparedStatement ps3 =
+							"portletPreferencesId = ?")) {
+
+				_parseQuery(
+					"PortletItem", false, "ownerId", "portletItemId", ps,
+					deletes, PortletKeys.PREFS_OWNER_TYPE_ARCHIVED,
+					asyncUpdate);
+
+				_parseQuery(
+					null, false, "ownerId", null, ps, deletes,
+					PortletKeys.PREFS_OWNER_TYPE_COMPANY, asyncUpdate);
+
+				_parseQuery(
+					"Group_", false, "ownerId", "groupId", ps, deletes,
+					PortletKeys.PREFS_OWNER_TYPE_GROUP, asyncUpdate);
+
+				_parseQuery(
+					"Layout", false, "plid", "plid", ps, deletes,
+					PortletKeys.PREFS_OWNER_TYPE_LAYOUT, asyncUpdate);
+
+				_parseQuery(
+					"LayoutRevision", true, "plid", "layoutRevisionId", ps,
+					deletes, PortletKeys.PREFS_OWNER_TYPE_LAYOUT, asyncUpdate);
+
+				_parseQuery(
+					"Organization_", false, "ownerId", "organizationId", ps,
+					deletes, PortletKeys.PREFS_OWNER_TYPE_ORGANIZATION,
+					asyncUpdate);
+
+				_parseQuery(
+					"User_", false, "ownerId", "userId", ps, deletes,
+					PortletKeys.PREFS_OWNER_TYPE_USER, asyncUpdate);
+			}
+
+			try (PreparedStatement ps =
 					AutoBatchPreparedStatementUtil.concurrentAutoBatch(
 						connection,
 						"delete from PortletPreferences where " +
-							"portletPreferencesId = ?");
-				ResultSet rs = ps1.executeQuery()) {
+							"portletPreferencesId = ?")) {
 
-				while (rs.next()) {
-					long portletPreferencesId = rs.getLong(
-						"portletPreferencesId");
-					long ownerId = rs.getLong("ownerId");
-					int ownerType = rs.getInt("ownerType");
-					long plid = rs.getLong("plid");
-					String portletId = rs.getString("portletId");
-					String preferences = GetterUtil.getString(
-						rs.getString("preferences"));
+				for (long portletPreferencesId : deletes) {
+					ps.setLong(1, portletPreferencesId);
 
-					long companyId = 0;
-
-					if (ownerType == PortletKeys.PREFS_OWNER_TYPE_ARCHIVED) {
-						companyId = getCompanyId(
-							"select companyId from PortletItem where " +
-								"portletItemId = ?",
-							ownerId);
-					}
-					else if (ownerType ==
-								PortletKeys.PREFS_OWNER_TYPE_COMPANY) {
-
-						companyId = ownerId;
-					}
-					else if (ownerType == PortletKeys.PREFS_OWNER_TYPE_GROUP) {
-						Object[] group = getGroup(ownerId);
-
-						if (group != null) {
-							companyId = (Long)group[1];
-						}
-					}
-					else if (ownerType == PortletKeys.PREFS_OWNER_TYPE_LAYOUT) {
-						Object[] layout = getLayout(plid);
-
-						if (layout != null) {
-							companyId = (Long)layout[1];
-						}
-					}
-					else if (ownerType ==
-								PortletKeys.PREFS_OWNER_TYPE_ORGANIZATION) {
-
-						companyId = getCompanyId(
-							"select companyId from Organization_ where " +
-								"organizationId = ?",
-							ownerId);
-					}
-					else if (ownerType == PortletKeys.PREFS_OWNER_TYPE_USER) {
-						companyId = getCompanyId(
-							"select companyId from User_ where userId = ?",
-							ownerId);
-					}
-					else {
-						throw new UnsupportedOperationException(
-							"Unsupported owner type " + ownerType);
-					}
-
-					if (companyId > 0) {
-						String newPreferences = upgradePreferences(
-							companyId, ownerId, ownerType, plid, portletId,
-							preferences);
-
-						if (!preferences.equals(newPreferences)) {
-							ps2.setString(1, newPreferences);
-							ps2.setLong(2, portletPreferencesId);
-
-							ps2.addBatch();
-						}
-					}
-					else {
-						ps3.setLong(1, portletPreferencesId);
-
-						ps3.addBatch();
-					}
-
-					ps2.executeBatch();
-
-					ps3.executeBatch();
+					ps.addBatch();
 				}
+
+				ps.executeBatch();
 			}
 		}
 	}
@@ -398,5 +370,141 @@ public abstract class BaseUpgradePortletPreferences extends UpgradeProcess {
 			long companyId, long ownerId, int ownerType, long plid,
 			String portletId, String xml)
 		throws Exception;
+
+	private String _getQuery(
+		String joinTable, boolean innerJoin, String preferenceKeyColumn,
+		String primaryKeyColumn, int ownerType) {
+
+		StringBundler sb = new StringBundler(25);
+
+		sb.append(_SELECT);
+
+		if (joinTable != null) {
+			sb.append(StringPool.COMMA_AND_SPACE);
+			sb.append(joinTable);
+			sb.append(".companyId");
+		}
+
+		sb.append(" from PortletPreferences");
+
+		if (joinTable != null) {
+			sb.append(innerJoin ? " inner join " : " left outer join ");
+			sb.append(joinTable);
+			sb.append(" on PortletPreferences.");
+			sb.append(preferenceKeyColumn);
+			sb.append(" = ");
+			sb.append(joinTable);
+			sb.append(StringPool.PERIOD);
+			sb.append(primaryKeyColumn);
+		}
+
+		sb.append(" where (PortletPreferences.ownerType = ");
+		sb.append(String.valueOf(ownerType));
+		sb.append(") and ((preferences not like '%<portlet-preferences %/>%')");
+
+		if ((joinTable != null) && !innerJoin) {
+			sb.append(" or (");
+			sb.append(joinTable);
+			sb.append(StringPool.PERIOD);
+			sb.append(primaryKeyColumn);
+			sb.append(" is null)");
+		}
+
+		sb.append(StringPool.CLOSE_PARENTHESIS);
+
+		String whereClause = getUpdatePortletPreferencesWhereClause();
+
+		if (Validator.isNotNull(whereClause)) {
+			sb.append(" and (");
+			sb.append(whereClause);
+			sb.append(StringPool.CLOSE_PARENTHESIS);
+		}
+
+		return sb.toString();
+	}
+
+	private void _parseQuery(
+			String joinTable, boolean innerJoin, String preferenceKeyColumn,
+			String primaryKeyColumn, PreparedStatement psUpdate,
+			Set<Long> deletes, int ownerType, boolean asyncUpdate)
+		throws Exception {
+
+		String processName = "ownerType=" + ownerType;
+
+		String query = _getQuery(
+			joinTable, innerJoin, preferenceKeyColumn, primaryKeyColumn,
+			ownerType);
+
+		Map<Long, String> updates = new HashMap<>();
+
+		try (LoggingTimer loggingTimer = new LoggingTimer(processName);
+			PreparedStatement psRead = connection.prepareStatement(query);
+			ResultSet rs = psRead.executeQuery()) {
+
+			while (rs.next()) {
+				long portletPreferencesId = rs.getLong("portletPreferencesId");
+				long ownerId = rs.getLong("ownerId");
+				long plid = rs.getLong("plid");
+				String portletId = rs.getString("portletId");
+				String preferences = GetterUtil.getString(
+					rs.getString("preferences"));
+
+				long companyId = 0;
+
+				if (primaryKeyColumn == null) {
+					companyId = ownerId;
+				}
+				else {
+					companyId = rs.getLong("companyId");
+				}
+
+				if (companyId > 0) {
+					deletes.remove(portletPreferencesId);
+
+					String newPreferences = upgradePreferences(
+						companyId, ownerId, ownerType, plid, portletId,
+						preferences);
+
+					if (!preferences.equals(newPreferences)) {
+						if (asyncUpdate) {
+							updates.put(portletPreferencesId, newPreferences);
+						}
+						else {
+							psUpdate.setString(1, newPreferences);
+							psUpdate.setLong(2, portletPreferencesId);
+
+							psUpdate.addBatch();
+						}
+					}
+				}
+				else {
+					deletes.add(portletPreferencesId);
+				}
+			}
+		}
+
+		_processUpdates(processName, updates, psUpdate);
+	}
+
+	private void _processUpdates(
+			String processName, Map<Long, String> updates, PreparedStatement ps)
+		throws Exception {
+
+		try (LoggingTimer loggingTimer = new LoggingTimer(processName)) {
+			for (Entry<Long, String> entry : updates.entrySet()) {
+				ps.setString(1, entry.getValue());
+				ps.setLong(2, entry.getKey());
+
+				ps.addBatch();
+			}
+
+			ps.executeBatch();
+		}
+	}
+
+	private static final String _SELECT =
+		"select PortletPreferences.portletPreferencesId, " +
+			"PortletPreferences.ownerId, PortletPreferences.plid, " +
+				"PortletPreferences.portletId, PortletPreferences.preferences";
 
 }
