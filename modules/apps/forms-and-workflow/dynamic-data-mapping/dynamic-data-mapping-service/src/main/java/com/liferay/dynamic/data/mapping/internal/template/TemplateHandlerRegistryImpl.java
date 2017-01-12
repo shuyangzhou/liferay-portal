@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.language.LanguageResources;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -94,10 +93,7 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 
 	@Override
 	public List<TemplateHandler> getTemplateHandlers() {
-		List<TemplateHandler> templateHandlers = new ArrayList<>(
-			_templateHandlers.values());
-
-		return Collections.unmodifiableList(templateHandlers);
+		return new ArrayList<>(_templateHandlers.values());
 	}
 
 	@Activate
