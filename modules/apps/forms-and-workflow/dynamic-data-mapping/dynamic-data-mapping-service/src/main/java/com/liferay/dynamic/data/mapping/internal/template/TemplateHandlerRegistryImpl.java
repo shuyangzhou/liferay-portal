@@ -221,12 +221,6 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 	private class TemplateHandlerPortalInstanceLifecycleListener
 		extends BasePortalInstanceLifecycleListener {
 
-		public TemplateHandlerPortalInstanceLifecycleListener(
-			TemplateHandler templateHandler) {
-
-			_templateHandler = templateHandler;
-		}
-
 		@Override
 		public void portalInstanceRegistered(Company company) throws Exception {
 			long classNameId = _portal.getClassNameId(
@@ -320,6 +314,12 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 			}
 
 			return map;
+		}
+
+		private TemplateHandlerPortalInstanceLifecycleListener(
+			TemplateHandler templateHandler) {
+
+			_templateHandler = templateHandler;
 		}
 
 		private static final String _PORTLET_DISPLAY_TEMPLATE_CLASS_NAME =
