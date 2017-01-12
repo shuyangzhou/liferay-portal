@@ -31,14 +31,11 @@ import org.osgi.framework.ServiceRegistration;
  */
 public class InitFilter extends BasePortalFilter {
 
-	public static final String SKIP_FILTER =
-		InitFilter.class.getName() + "SKIP_FILTER";
-
 	@Override
 	public boolean isFilterEnabled(
 		HttpServletRequest request, HttpServletResponse response) {
 
-		if (request.getAttribute(SKIP_FILTER) != null) {
+		if (request.getAttribute(_SKIP_FILTER) != null) {
 			return false;
 		}
 		else {
@@ -60,7 +57,7 @@ public class InitFilter extends BasePortalFilter {
 			FilterChain filterChain)
 		throws Exception {
 
-		request.setAttribute(SKIP_FILTER, Boolean.TRUE);
+		request.setAttribute(_SKIP_FILTER, Boolean.TRUE);
 
 		_countDownLatch.await();
 
@@ -82,6 +79,9 @@ public class InitFilter extends BasePortalFilter {
 				InitFilter.class.getName(), request, response, filterChain);
 		}
 	}
+
+	private static final String _SKIP_FILTER =
+		InitFilter.class.getName() + "SKIP_FILTER";
 
 	private final CompeteLatch _competeLatch = new CompeteLatch();
 	private final CountDownLatch _countDownLatch = new CountDownLatch(1);
