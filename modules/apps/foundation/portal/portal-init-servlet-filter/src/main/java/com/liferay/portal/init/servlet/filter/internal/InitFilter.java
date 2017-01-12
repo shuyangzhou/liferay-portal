@@ -35,12 +35,7 @@ public class InitFilter extends BasePortalFilter {
 	public boolean isFilterEnabled(
 		HttpServletRequest request, HttpServletResponse response) {
 
-		if (request.getAttribute(_SKIP_FILTER) != null) {
-			return false;
-		}
-		else {
-			return true;
-		}
+		return request.getAttribute(_SKIP_FILTER) != Boolean.TRUE;
 	}
 
 	public void setServiceRegistration(
