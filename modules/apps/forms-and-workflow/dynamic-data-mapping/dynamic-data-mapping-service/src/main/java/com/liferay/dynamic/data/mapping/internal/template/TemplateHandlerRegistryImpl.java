@@ -173,8 +173,6 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 
 		_templateHandlers.remove(templateHandler.getClassName());
 
-		_templateHandlers.put(templateHandler.getClassName(), templateHandler);
-
 		ServiceRegistration<?> serviceRegistration =
 			_serviceRegistrations.remove(templateHandler.getClassName());
 
