@@ -67,12 +67,12 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 
 	@Before
 	public void setUp() throws Exception {
-		_user = UserTestUtil.addUser();
-
 		_groupOne = GroupTestUtil.addGroup();
 		_groupTwo = GroupTestUtil.addGroup();
 
 		_groupIds = new long[] {_groupOne.getGroupId(), _groupTwo.getGroupId()};
+
+		_user = UserTestUtil.addUser();
 
 		_originalPermissionChecker =
 			PermissionThreadLocal.getPermissionChecker();
@@ -88,10 +88,7 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 		_addGroupRole(_groupOne, RoleConstants.SITE_MEMBER);
 		_addGroupRole(_groupTwo, RoleConstants.SITE_MEMBER);
 
-		PermissionChecker permissionChecker =
-			PermissionCheckerFactoryUtil.create(_user);
-
-		PermissionThreadLocal.setPermissionChecker(permissionChecker);
+		_setPermissionChecker();
 
 		_assertClauseOrdering(_SQL_PLAIN + _SQL_WHERE, _WHERE_CLAUSE);
 		_assertClauseOrdering(_SQL_PLAIN + _SQL_GROUP_BY, _GROUP_BY_CLAUSE);
@@ -120,10 +117,7 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 			String.valueOf(_role.getCompanyId()), _role.getRoleId(),
 			ActionKeys.VIEW);
 
-		PermissionChecker permissionChecker =
-			PermissionCheckerFactoryUtil.create(_user);
-
-		PermissionThreadLocal.setPermissionChecker(permissionChecker);
+		_setPermissionChecker();
 
 		String sql = replacePermissionCheckJoin(
 			_SQL_PLAIN, _CLASS_NAME, _CLASS_PK_FIELD, _USER_ID_FIELD,
@@ -142,32 +136,24 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 
 		_addGroupRole(_groupThree, "testRole");
 
-		PermissionChecker permissionChecker =
-			PermissionCheckerFactoryUtil.create(_user);
-
-		PermissionThreadLocal.setPermissionChecker(permissionChecker);
-
-		long[] roleIds = getRoleIds(_groupThree.getGroupId());
+		_setPermissionChecker();
 
 		Role guestRole = RoleLocalServiceUtil.getRole(
 			_groupThree.getCompanyId(), RoleConstants.GUEST);
-
 		Role siteMemberRole = RoleLocalServiceUtil.getRole(
 			_groupThree.getCompanyId(), RoleConstants.SITE_MEMBER);
-
 		Role userRole = RoleLocalServiceUtil.getRole(
 			_groupThree.getCompanyId(), RoleConstants.USER);
+
+		long[] roleIds = getRoleIds(_groupThree.getGroupId());
 
 		String msg = StringUtil.merge(roleIds);
 
 		Assert.assertTrue(msg, ArrayUtil.contains(roleIds, _role.getRoleId()));
-
 		Assert.assertTrue(
 			msg, ArrayUtil.contains(roleIds, guestRole.getRoleId()));
-
 		Assert.assertTrue(
 			msg, ArrayUtil.contains(roleIds, siteMemberRole.getRoleId()));
-
 		Assert.assertTrue(
 			msg, ArrayUtil.contains(roleIds, userRole.getRoleId()));
 	}
@@ -177,18 +163,18 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 		_addGroupRole(_groupOne, RoleConstants.SITE_ADMINISTRATOR);
 		_addGroupRole(_groupTwo, RoleConstants.SITE_MEMBER);
 
-		String sql = _replacePermissionCheckJoin(
-			_SQL_PLAIN, _CLASS_NAME, _CLASS_PK_FIELD, _USER_ID_FIELD,
-			_GROUP_ID_FIELD, _groupIds, _user);
+		_setPermissionChecker();
 
-		PermissionChecker permissionChecker =
-			PermissionCheckerFactoryUtil.create(_user);
+		String sql = _replacePermissionCheckJoin(_SQL_PLAIN);
+
+		Role ownerRole = RoleLocalServiceUtil.getRole(
+			TestPropsValues.getCompanyId(), RoleConstants.OWNER);
 
 		StringBundler sb = new StringBundler(3);
 
 		sb.append(" OR ((ResourcePermission.primKeyId = 0) AND ");
 		sb.append("(ResourcePermission.roleId = ");
-		sb.append(permissionChecker.getOwnerRoleId());
+		sb.append(ownerRole.getRoleId());
 
 		Assert.assertTrue(sql, sql.contains(sb.toString()));
 	}
@@ -205,10 +191,7 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 			String.valueOf(_groupOne.getGroupId()), _role.getRoleId(),
 			ActionKeys.VIEW);
 
-		PermissionChecker permissionChecker =
-			PermissionCheckerFactoryUtil.create(_user);
-
-		PermissionThreadLocal.setPermissionChecker(permissionChecker);
+		_setPermissionChecker();
 
 		String sql = replacePermissionCheck(
 			_SQL_PLAIN, _CLASS_NAME, _CLASS_PK_FIELD, _USER_ID_FIELD,
@@ -232,10 +215,7 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 			String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID),
 			_role.getRoleId(), ActionKeys.VIEW);
 
-		PermissionChecker permissionChecker =
-			PermissionCheckerFactoryUtil.create(_user);
-
-		PermissionThreadLocal.setPermissionChecker(permissionChecker);
+		_setPermissionChecker();
 
 		String sql = replacePermissionCheckJoin(
 			_SQL_PLAIN, _CLASS_NAME, _CLASS_PK_FIELD, _USER_ID_FIELD,
@@ -260,10 +240,7 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 
 		_addGroupRole(_groupOne, RoleConstants.SITE_MEMBER);
 
-		PermissionChecker permissionChecker =
-			PermissionCheckerFactoryUtil.create(_user);
-
-		PermissionThreadLocal.setPermissionChecker(permissionChecker);
+		_setPermissionChecker();
 
 		replacePermissionCheck(
 			_SQL_PLAIN, _CLASS_NAME, _CLASS_PK_FIELD, _USER_ID_FIELD,
@@ -279,10 +256,7 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 
 		UserLocalServiceUtil.addRoleUser(role.getRoleId(), _user);
 
-		PermissionChecker permissionChecker =
-			PermissionCheckerFactoryUtil.create(_user);
-
-		PermissionThreadLocal.setPermissionChecker(permissionChecker);
+		_setPermissionChecker();
 
 		Assert.assertFalse(isEnabled(_groupIds));
 	}
@@ -291,10 +265,7 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 	public void testIsNotEnabledSiteAdmin() throws Exception {
 		_addGroupRole(_groupOne, RoleConstants.SITE_ADMINISTRATOR);
 
-		PermissionChecker permissionChecker =
-			PermissionCheckerFactoryUtil.create(_user);
-
-		PermissionThreadLocal.setPermissionChecker(permissionChecker);
+		_setPermissionChecker();
 
 		Assert.assertFalse(isEnabled(_groupOne.getGroupId()));
 		Assert.assertTrue(isEnabled(_groupTwo.getGroupId()));
@@ -305,11 +276,11 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 		_addGroupRole(_groupOne, RoleConstants.SITE_MEMBER);
 		_addGroupRole(_groupTwo, RoleConstants.SITE_MEMBER);
 
-		String sql = _replacePermissionCheckJoin(
-			_SQL_PLAIN, _CLASS_NAME, _CLASS_PK_FIELD, _USER_ID_FIELD,
-			_GROUP_ID_FIELD, _groupIds, _user);
+		_setPermissionChecker();
 
-		_assertAndOrWhereClause(sql, _CLASS_PK_FIELD, null);
+		String sql = _replacePermissionCheckJoin(_SQL_PLAIN);
+
+		_assertWhereClause(sql, _CLASS_PK_FIELD);
 
 		StringBundler sb = new StringBundler(4);
 
@@ -338,12 +309,14 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 
 		_assertValidSql(sql);
 
-		sql = _replacePermissionCheckJoin(
-			_SQL_PLAIN + _SQL_WHERE, _CLASS_NAME, _CLASS_PK_FIELD,
-			_USER_ID_FIELD, _GROUP_ID_FIELD, _groupIds, _user);
+		sql = _replacePermissionCheckJoin(_SQL_PLAIN + _SQL_WHERE);
 
-		_assertAndOrWhereClause(
-			sql, _CLASS_PK_FIELD, _SQL_WHERE.substring(_WHERE_CLAUSE.length()));
+		_assertWhereClause(sql, _CLASS_PK_FIELD);
+
+		Assert.assertTrue(
+			sql,
+			sql.endsWith(
+				" AND " + _SQL_WHERE.substring(_WHERE_CLAUSE.length())));
 
 		_assertValidSql(sql);
 	}
@@ -355,28 +328,6 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 		UserGroupRoleLocalServiceUtil.addUserGroupRoles(
 			new long[] {_user.getUserId()}, group.getGroupId(),
 			role.getRoleId());
-	}
-
-	private void _assertAndOrWhereClause(
-		String sql, String classPK, String tail) {
-
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(_WHERE_CLAUSE);
-		sb.append("(");
-		sb.append(classPK);
-		sb.append(" IN (");
-
-		Assert.assertTrue(sql, sql.contains(sb.toString()));
-
-		if (tail != null) {
-			sb = new StringBundler(2);
-
-			sb.append(" AND ");
-			sb.append(tail);
-
-			Assert.assertTrue(sql, sql.endsWith(sb.toString()));
-		}
 	}
 
 	private void _assertClauseOrdering(String sql, String endingClause) {
@@ -411,19 +362,28 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 		}
 	}
 
-	private String _replacePermissionCheckJoin(
-			String sql, String className, String classPKField,
-			String userIdField, String groupIdField, long[] groupIds, User user)
-		throws Exception {
+	private void _assertWhereClause(String sql, String classPK) {
+		StringBundler sb = new StringBundler(4);
 
+		sb.append(_WHERE_CLAUSE);
+		sb.append("(");
+		sb.append(classPK);
+		sb.append(" IN (");
+
+		Assert.assertTrue(sql, sql.contains(sb.toString()));
+	}
+
+	private String _replacePermissionCheckJoin(String sql) throws Exception {
+		return replacePermissionCheckJoin(
+			sql, _CLASS_NAME, _CLASS_PK_FIELD, _USER_ID_FIELD, _GROUP_ID_FIELD,
+			_groupIds, null);
+	}
+
+	private void _setPermissionChecker() throws Exception {
 		PermissionChecker permissionChecker =
-			PermissionCheckerFactoryUtil.create(user);
+			PermissionCheckerFactoryUtil.create(_user);
 
 		PermissionThreadLocal.setPermissionChecker(permissionChecker);
-
-		return replacePermissionCheckJoin(
-			sql, className, classPKField, userIdField, groupIdField, groupIds,
-			null);
 	}
 
 	private static final String _CLASS_NAME =
@@ -439,9 +399,6 @@ public class InlineSQLHelperImplTest extends InlineSQLHelperImpl {
 	private static final String _ORDER_BY_CLAUSE = " ORDER BY ";
 
 	private static final String _RESOURCE_PERMISSION = "ResourcePermission";
-
-	private static final String _RESOURCE_PERMISSION_PRIM_KEY =
-		_RESOURCE_PERMISSION + ".primKeyId";
 
 	private static final String _SQL_GROUP_BY = " GROUP BY " + _CLASS_PK_FIELD;
 
