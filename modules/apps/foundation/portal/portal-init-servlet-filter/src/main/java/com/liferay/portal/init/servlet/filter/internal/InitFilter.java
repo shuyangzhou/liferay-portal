@@ -31,7 +31,8 @@ import org.osgi.framework.ServiceRegistration;
  */
 public class InitFilter extends BasePortalFilter {
 
-	public static final String SKIP_FILTER = InitFilter.class + "SKIP_FILTER";
+	public static final String SKIP_FILTER =
+		InitFilter.class.getName() + "SKIP_FILTER";
 
 	@Override
 	public boolean isFilterEnabled(
