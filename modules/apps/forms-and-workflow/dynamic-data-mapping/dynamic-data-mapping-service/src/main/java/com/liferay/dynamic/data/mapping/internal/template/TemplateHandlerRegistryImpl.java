@@ -203,7 +203,7 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 		_userLocalService = userLocalService;
 	}
 
-	private volatile BundleContext _bundleContext;
+	private BundleContext _bundleContext;
 	private DDMTemplateManager _ddmTemplateManager;
 	private GroupLocalService _groupLocalService;
 	private Portal _portal;
