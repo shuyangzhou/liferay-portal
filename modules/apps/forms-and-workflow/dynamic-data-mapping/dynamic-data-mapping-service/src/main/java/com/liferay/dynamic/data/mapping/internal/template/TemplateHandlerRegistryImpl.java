@@ -90,11 +90,15 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 		for (Map.Entry<String, TemplateHandler> entry :
 				_templateHandlerByClassNames.entrySet()) {
 
-			if (_serviceRegistrations.containsKey(entry.getKey())) {
+			String className = entry.getKey();
+			TemplateHandler templateHandler = entry.getValue();
+
+			_templateHandlerByIds.put(
+				_portal.getClassNameId(className), templateHandler);
+
+			if (_serviceRegistrations.containsKey(className)) {
 				continue;
 			}
-
-			TemplateHandler templateHandler = entry.getValue();
 
 			registerPortalInstanceLifecycleListener(templateHandler);
 		}
@@ -112,12 +116,13 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 		String className = templateHandler.getClassName();
 
 		_templateHandlerByClassNames.put(className, templateHandler);
-		_templateHandlerByIds.put(
-			_portal.getClassNameId(className), templateHandler);
 
 		if (_bundleContext == null) {
 			return;
 		}
+
+		_templateHandlerByIds.put(
+			_portal.getClassNameId(className), templateHandler);
 
 		registerPortalInstanceLifecycleListener(templateHandler);
 	}
@@ -166,7 +171,10 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 		String className = templateHandler.getClassName();
 
 		_templateHandlerByClassNames.remove(className);
-		_templateHandlerByIds.remove(_portal.getClassNameId(className));
+
+		if (_portal != null) {
+			_templateHandlerByIds.remove(_portal.getClassNameId(className));
+		}
 
 		ServiceRegistration<?> serviceRegistration =
 			_serviceRegistrations.remove(className);
