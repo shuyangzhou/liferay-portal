@@ -83,11 +83,17 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 	public Settings getConfigurationBeanSettings(
 		String configurationPid, Settings parentSettings) {
 
+		Object configurationBean = getConfigurationBean(configurationPid);
+
+		if (configurationBean == null) {
+			return parentSettings;
+		}
+
 		return new ConfigurationBeanSettings(
 			new LocationVariableResolver(
 				getResourceManager(configurationPid),
 				SettingsFactoryUtil.getSettingsFactory()),
-			getConfigurationBean(configurationPid), parentSettings);
+			configurationBean, parentSettings);
 	}
 
 	public PortletPreferences getGroupPortletPreferences(

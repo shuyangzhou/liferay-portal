@@ -32,6 +32,15 @@ public class ConfigurationBeanSettings
 
 		super(parentSettings);
 
+		if (locationVariableResolver == null) {
+			throw new NullPointerException(
+				"Location variable resolver is null");
+		}
+
+		if (configurationBean == null) {
+			throw new NullPointerException("Configuration bean is null");
+		}
+
 		_locationVariableResolver = locationVariableResolver;
 		_configurationBean = configurationBean;
 	}
@@ -72,10 +81,6 @@ public class ConfigurationBeanSettings
 	}
 
 	private Object _getProperty(String key) {
-		if (_configurationBean == null) {
-			return null;
-		}
-
 		Class<?> clazz = _configurationBean.getClass();
 
 		try {
