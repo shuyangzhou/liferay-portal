@@ -330,6 +330,13 @@ public class PortletPreferencesLocalServiceUtil {
 	}
 
 	public static javax.portlet.PortletPreferences getStrictPreferences(
+		com.liferay.portal.kernel.model.Layout layout, long ownerId,
+		int ownerType, java.lang.String portletId) {
+		return getService()
+				   .getStrictPreferences(layout, ownerId, ownerType, portletId);
+	}
+
+	public static javax.portlet.PortletPreferences getStrictPreferences(
 		com.liferay.portal.kernel.model.PortletPreferencesIds portletPreferencesIds) {
 		return getService().getStrictPreferences(portletPreferencesIds);
 	}
