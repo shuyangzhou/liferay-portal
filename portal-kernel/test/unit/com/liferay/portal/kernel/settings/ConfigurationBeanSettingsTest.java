@@ -110,12 +110,29 @@ public class ConfigurationBeanSettingsTest extends PowerMockito {
 
 	@Test
 	public void testGetValueWithNullConfigurationBean() {
-		_configurationBeanSettings = new ConfigurationBeanSettings(
-			null, null, null);
+		try {
+			_configurationBeanSettings = new ConfigurationBeanSettings(
+				_mockLocationVariableResolver, null, null);
 
-		Assert.assertEquals(
-			"defaultValue",
-			_configurationBeanSettings.getValue("anyKey", "defaultValue"));
+			Assert.fail();
+		}
+		catch (NullPointerException npe) {
+			Assert.assertEquals("Configuration bean is null", npe.getMessage());
+		}
+	}
+
+	@Test
+	public void testGetValueWithNullLocationVariableResolver() {
+		try {
+			_configurationBeanSettings = new ConfigurationBeanSettings(
+				null, null, null);
+
+			Assert.fail();
+		}
+		catch (NullPointerException npe) {
+			Assert.assertEquals(
+				"Location variable resolver is null", npe.getMessage());
+		}
 	}
 
 	private ConfigurationBean _configurationBean;
