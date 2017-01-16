@@ -956,6 +956,18 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>lib/portal/ant-launcher.jar</file-name>
+				<version>1.8.2</version>
+				<project-name>Ant</project-name>
+				<project-url>http://ant.apache.org</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License 2.0</license-name>
+						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
 				<file-name>lib/portal/antlr2.jar</file-name>
 				<version>2.7.7</version>
 				<project-name>ANTLR</project-name>
