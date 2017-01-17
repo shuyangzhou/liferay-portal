@@ -14,7 +14,10 @@
 
 package com.liferay.taglib.ui;
 
+import static javax.servlet.jsp.tagext.Tag.EVAL_PAGE;
+
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -22,6 +25,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspWriter;
 
 /**
  * @author Eudaldo Alonso
@@ -36,7 +40,11 @@ public class LayoutCommonTag extends IncludeTag {
 
 	@Override
 	protected String getPage() {
-		return _PAGE;
+		if (_includeStaticPortlets || _includeWebServerDisplayNode) {
+			return _PAGE;
+		}
+
+		return null;
 	}
 
 	@Override
@@ -45,27 +53,40 @@ public class LayoutCommonTag extends IncludeTag {
 	}
 
 	@Override
+	protected int processEndTag() throws Exception {
+		JspWriter jspWriter = pageContext.getOut();
+
+		jspWriter.write(
+			"<form action=\"#\" id=\"hrefFm\" method=\"post\" " +
+				"name=\"hrefFm\"><span></span></form>");
+
+		return EVAL_PAGE;
+	}
+
+	@Override
 	protected void setAttributes(HttpServletRequest request) {
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		if (!themeDisplay.isStateExclusive() && !themeDisplay.isStatePopUp() &&
-			!themeDisplay.isWidget()) {
+		if (_hasLayoutStaticPortlets && !themeDisplay.isStateExclusive() &&
+			!themeDisplay.isStatePopUp() && !themeDisplay.isWidget()) {
 
 			_includeStaticPortlets = true;
 		}
-
-		request.setAttribute(
-			"liferay-ui:layout-common:includeStaticPortlets",
-			_includeStaticPortlets);
 
 		if (_WEB_SERVER_DISPLAY_NODE && !themeDisplay.isStatePopUp()) {
 			_includeWebServerDisplayNode = true;
 		}
 
-		request.setAttribute(
-			"liferay-ui:layout-common:includeWebServerDisplayNode",
-			_includeWebServerDisplayNode);
+		if (_includeStaticPortlets || _includeWebServerDisplayNode) {
+			request.setAttribute(
+				"liferay-ui:layout-common:includeStaticPortlets",
+				_includeStaticPortlets);
+
+			request.setAttribute(
+				"liferay-ui:layout-common:includeWebServerDisplayNode",
+				_includeWebServerDisplayNode);
+		}
 	}
 
 	private static final boolean _CLEAN_UP_SET_ATTRIBUTES = true;
@@ -75,6 +96,9 @@ public class LayoutCommonTag extends IncludeTag {
 
 	private static final boolean _WEB_SERVER_DISPLAY_NODE =
 		GetterUtil.getBoolean(PropsUtil.get(PropsKeys.WEB_SERVER_DISPLAY_NODE));
+
+	private static final boolean _hasLayoutStaticPortlets = !ArrayUtil.isEmpty(
+		PropsUtil.getArray(PropsKeys.LAYOUT_STATIC_PORTLETS_ALL));
 
 	private boolean _includeStaticPortlets;
 	private boolean _includeWebServerDisplayNode;
