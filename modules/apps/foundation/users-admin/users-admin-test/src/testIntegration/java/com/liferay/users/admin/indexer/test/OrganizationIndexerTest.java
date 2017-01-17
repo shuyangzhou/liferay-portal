@@ -157,25 +157,13 @@ public class OrganizationIndexerTest {
 	protected void assertHits(String keywords, int length) throws Exception {
 		Hits hits = search(keywords);
 
-		Assert.assertEquals(length, hits.getLength());
+		Assert.assertEquals(hits.toString(), length, hits.getLength());
 	}
 
 	protected void assertSearch(String keywords, List<String> names)
 		throws Exception {
 
 		Assert.assertEquals(toString(names), toString(getNames(keywords)));
-	}
-
-	protected String getNames(List<Organization> organizations) {
-		List<String> names = new ArrayList<>(organizations.size());
-
-		for (Organization organization : organizations) {
-			names.add(organization.getName());
-		}
-
-		Collections.sort(names);
-
-		return names.toString();
 	}
 
 	protected List<String> getNames(String keywords) throws Exception {
@@ -196,11 +184,13 @@ public class OrganizationIndexerTest {
 		SearchContext searchContext = new SearchContext();
 
 		searchContext.setCompanyId(TestPropsValues.getCompanyId());
+		searchContext.setEntryClassNames(
+			new String[] {Organization.class.getName()});
 		searchContext.setKeywords(keywords);
 
 		QueryConfig queryConfig = searchContext.getQueryConfig();
 
-		queryConfig.addSelectedFieldNames(Field.NAME);
+		queryConfig.setSelectedFieldNames(Field.NAME);
 
 		return _indexer.search(searchContext);
 	}
