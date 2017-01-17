@@ -213,17 +213,34 @@ public class DynamicServletRequest extends HttpServletRequestWrapper {
 
 	@Override
 	public Enumeration<String> getParameterNames() {
-		Set<String> names = new LinkedHashSet<>();
+		if (_params.isEmpty()) {
+			if (_inherit) {
+				return super.getParameterNames();
+			}
+
+			return Collections.emptyEnumeration();
+		}
+
+		Set<String> names = null;
 
 		if (_inherit) {
 			Enumeration<String> enu = super.getParameterNames();
 
 			while (enu.hasMoreElements()) {
+				if (names == null) {
+					names = new LinkedHashSet<>();
+				}
+
 				names.add(enu.nextElement());
 			}
 		}
 
-		names.addAll(_params.keySet());
+		if (names == null) {
+			names = _params.keySet();
+		}
+		else {
+			names.addAll(_params.keySet());
+		}
 
 		return Collections.enumeration(names);
 	}
