@@ -159,7 +159,8 @@ public class UpgradePermission extends UpgradeProcess {
 				new String[] {
 					"com/liferay/portal/upgrade/v6_1_0/dependencies" +
 						"/resource-actions.xml"
-				});
+				},
+				new String[0]);
 
 			// LPS-14202 and LPS-17841
 

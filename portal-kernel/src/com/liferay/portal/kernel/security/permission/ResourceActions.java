@@ -151,7 +151,7 @@ public interface ResourceActions {
 
 	public void readAndCheck(
 			String servletContextName, ClassLoader classLoader,
-			String[] sources)
+			String[] sources, String[] portlets)
 		throws Exception;
 
 }

@@ -702,10 +702,10 @@ public class ResourceActionsImpl implements ResourceActions {
 	@Override
 	public void readAndCheck(
 			String servletContextName, ClassLoader classLoader,
-			String[] sources)
+			String[] sources, String[] portlets)
 		throws Exception {
 
-		Set<String> portletNames = new HashSet<>();
+		Set<String> portletNames = new HashSet<>(Arrays.asList(portlets));
 
 		for (String source : sources) {
 			read(servletContextName, classLoader, source, portletNames);

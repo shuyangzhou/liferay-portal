@@ -278,11 +278,11 @@ public class ResourceActionsUtil {
 
 	public static void readAndCheck(
 			String servletContextName, ClassLoader classLoader,
-			String[] sources)
+			String[] sources, String[] portlets)
 		throws Exception {
 
 		getResourceActions().readAndCheck(
-			servletContextName, classLoader, sources);
+			servletContextName, classLoader, sources, portlets);
 	}
 
 	public void setResourceActions(ResourceActions resourceActions) {

@@ -184,7 +184,9 @@ public class ServiceConfiguratorImpl implements ServiceConfigurator {
 			_resourceActions.readAndCheck(
 				null, classLoader,
 				StringUtil.split(
-					configuration.get(PropsKeys.RESOURCE_ACTIONS_CONFIGS)));
+					configuration.get(PropsKeys.RESOURCE_ACTIONS_CONFIGS)),
+				StringUtil.split(
+					configuration.get("service.configurator.portlet.ids")));
 		}
 		catch (Exception e) {
 			_log.error(
