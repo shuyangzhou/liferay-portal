@@ -29,9 +29,27 @@ import org.osgi.framework.BundleContext;
  */
 public interface LPKGDeployer {
 
+	/**
+	 * Deploys the LPKG file. This method returns the list of bundles in the
+	 * LPKG file, which includes the LPKG bundle and all its app bundles (if any
+	 * exist). For example, if the LPKG file included four app bundles, then
+	 * five bundles are returned (i.e. one LPKG bundle and four app bundles).
+	 *
+	 * @param  bundleContext the context used to install the bundle into the
+	 *         OSGi container
+	 * @param  lpkgFile the LPKG file to deploy
+	 * @return the LPKG file bundle and its included app bundles
+	 * @throws IOException if an IO failure during installation occurred
+	 */
 	public List<Bundle> deploy(BundleContext bundleContext, File lpkgFile)
 		throws IOException;
 
+	/**
+	 * Returns the deployed LPKG bundles together with their app bundles.
+	 *
+	 * @return the map of bundles with the LPKG bundle as the key and the LPKG's
+	 *         app bundle list as the value
+	 */
 	public Map<Bundle, List<Bundle>> getDeployedLPKGBundles();
 
 	public InputStream toBundle(File lpkgFile) throws IOException;
