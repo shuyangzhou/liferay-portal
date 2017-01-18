@@ -661,8 +661,6 @@ that may or may not be enforced with a unique index at the database level. Case
 		int start, int end, OrderByComparator<${entity.name}> orderByComparator) {
 			<#if finder.hasColumn("groupId")>
 				if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			<#elseif finder.hasColumn("companyId")>
-				if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
 			<#else>
 				if (!InlineSQLHelperUtil.isEnabled()) {
 			</#if>
@@ -797,8 +795,6 @@ that may or may not be enforced with a unique index at the database level. Case
 			OrderByComparator<${entity.name}> orderByComparator) throws ${noSuchEntity}Exception {
 				<#if finder.hasColumn("groupId")>
 					if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-				<#elseif finder.hasColumn("companyId")>
-					if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
 				<#else>
 					if (!InlineSQLHelperUtil.isEnabled()) {
 				</#if>
@@ -1157,8 +1153,6 @@ that may or may not be enforced with a unique index at the database level. Case
 							groupId
 						</#if>
 					)) {
-				<#elseif finder.hasColumn("companyId")>
-					if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
 				<#else>
 					if (!InlineSQLHelperUtil.isEnabled()) {
 				</#if>
