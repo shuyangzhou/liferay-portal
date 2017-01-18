@@ -14,9 +14,13 @@
  */
 --%>
 
-<%@ include file="/init.jsp" %>
+<%@ include file="/init-fast.jsp" %>
 
 <%
+PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+
+String portletName = portletConfig.getPortletName();
+
 String mvcRenderCommandName = ParamUtil.getString(request, "mvcRenderCommandName");
 
 boolean showAnonymousIcon = false;
