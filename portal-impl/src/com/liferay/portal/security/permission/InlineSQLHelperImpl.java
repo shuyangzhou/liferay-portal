@@ -677,7 +677,7 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 			sb2.append(" IN (");
 
 			for (int i = 0; i < groupIds.length; i++) {
-				if (!isEnabled(0, groupIds[i])) {
+				if (!isEnabled(groupIds[i])) {
 					sb2.append(groupIds[i]);
 					sb2.append(", ");
 
