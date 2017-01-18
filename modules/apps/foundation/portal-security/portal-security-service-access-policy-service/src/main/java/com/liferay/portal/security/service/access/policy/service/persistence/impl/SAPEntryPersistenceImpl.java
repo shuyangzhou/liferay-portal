@@ -1577,7 +1577,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	@Override
 	public List<SAPEntry> filterFindByUuid_C(String uuid, long companyId,
 		int start, int end, OrderByComparator<SAPEntry> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_C(uuid, companyId, start, end, orderByComparator);
 		}
 
@@ -1687,7 +1687,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 		String uuid, long companyId,
 		OrderByComparator<SAPEntry> orderByComparator)
 		throws NoSuchEntryException {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_C_PrevAndNext(sapEntryId, uuid, companyId,
 				orderByComparator);
 		}
@@ -1970,7 +1970,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 */
 	@Override
 	public int filterCountByUuid_C(String uuid, long companyId) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return countByUuid_C(uuid, companyId);
 		}
 
@@ -2516,7 +2516,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	@Override
 	public List<SAPEntry> filterFindByCompanyId(long companyId, int start,
 		int end, OrderByComparator<SAPEntry> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByCompanyId(companyId, start, end, orderByComparator);
 		}
 
@@ -2606,7 +2606,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	public SAPEntry[] filterFindByCompanyId_PrevAndNext(long sapEntryId,
 		long companyId, OrderByComparator<SAPEntry> orderByComparator)
 		throws NoSuchEntryException {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByCompanyId_PrevAndNext(sapEntryId, companyId,
 				orderByComparator);
 		}
@@ -2850,7 +2850,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 */
 	@Override
 	public int filterCountByCompanyId(long companyId) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return countByCompanyId(companyId);
 		}
 
@@ -3410,7 +3410,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	public List<SAPEntry> filterFindByC_D(long companyId,
 		boolean defaultSAPEntry, int start, int end,
 		OrderByComparator<SAPEntry> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByC_D(companyId, defaultSAPEntry, start, end,
 				orderByComparator);
 		}
@@ -3507,7 +3507,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 		long companyId, boolean defaultSAPEntry,
 		OrderByComparator<SAPEntry> orderByComparator)
 		throws NoSuchEntryException {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByC_D_PrevAndNext(sapEntryId, companyId,
 				defaultSAPEntry, orderByComparator);
 		}
@@ -3762,7 +3762,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	 */
 	@Override
 	public int filterCountByC_D(long companyId, boolean defaultSAPEntry) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return countByC_D(companyId, defaultSAPEntry);
 		}
 
