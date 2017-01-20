@@ -67,6 +67,11 @@ public class SampleSQLBuilder {
 
 			properties.load(reader);
 
+			File tempDir = new File(
+				properties.getProperty("sample.sql.output.dir"));
+
+			tempDir.mkdirs();
+
 			DataFactory dataFactory = new DataFactory(properties);
 
 			new SampleSQLBuilder(properties, dataFactory);

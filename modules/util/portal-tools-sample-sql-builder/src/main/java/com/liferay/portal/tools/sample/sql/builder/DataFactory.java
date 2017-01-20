@@ -219,6 +219,7 @@ import com.liferay.wiki.model.impl.WikiNodeModelImpl;
 import com.liferay.wiki.model.impl.WikiPageModelImpl;
 import com.liferay.wiki.model.impl.WikiPageResourceModelImpl;
 import com.liferay.wiki.social.WikiActivityKeys;
+import java.io.File;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -913,7 +914,10 @@ public class DataFactory {
 				csvFileName,
 				new UnsyncBufferedWriter(
 					new OutputStreamWriter(
-						new FileOutputStream(csvFileName.concat(".csv"))),
+						new FileOutputStream(
+							new File(
+								properties.getProperty("sample.sql.output.dir"),
+								csvFileName.concat(".csv")))),
 					_WRITER_BUFFER_SIZE) {
 
 					@Override
