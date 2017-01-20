@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.registry.Registry;
@@ -184,11 +183,13 @@ public class MVCPortletAuthTokenWhitelist extends BaseAuthTokenWhitelist {
 		String namespace = PortalUtil.getPortletNamespace(portletId);
 
 		String[] actionNames = ParamUtil.getParameterValues(
-			request, namespace + ActionRequest.ACTION_NAME);
+			request, namespace.concat(ActionRequest.ACTION_NAME));
 
-		String actions = StringUtil.merge(actionNames);
+		if (actionNames == null) {
+			return StringPool.EMPTY_ARRAY;
+		}
 
-		return StringUtil.split(actions);
+		return actionNames;
 	}
 
 	protected String[] getMVCActionCommandNames(
@@ -199,15 +200,17 @@ public class MVCPortletAuthTokenWhitelist extends BaseAuthTokenWhitelist {
 
 		String[] actionNames = parameterMap.get(ActionRequest.ACTION_NAME);
 
-		String actions = StringUtil.merge(actionNames);
+		if (actionNames == null) {
+			return StringPool.EMPTY_ARRAY;
+		}
 
-		return StringUtil.split(actions);
+		return actionNames;
 	}
 
 	protected String getWhitelistValue(
 		String portletName, String whitelistAction) {
 
-		return portletName + StringPool.POUND + whitelistAction;
+		return portletName.concat(StringPool.POUND).concat(whitelistAction);
 	}
 
 	protected void trackWhitelistServices(
