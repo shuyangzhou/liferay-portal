@@ -15,15 +15,39 @@
 package com.liferay.product.navigation.product.menu.web.internal.product.navigation.control.menu;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
+import com.liferay.portal.kernel.util.SessionClicks;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.product.navigation.control.menu.BaseJSPProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuCategoryKeys;
+import com.liferay.product.navigation.product.menu.web.constants.ProductNavigationProductMenuPortletKeys;
+import com.liferay.product.navigation.product.menu.web.constants.ProductNavigationProductMenuWebKeys;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+import javax.portlet.PortletURL;
+import javax.portlet.RenderRequest;
+import javax.portlet.WindowStateException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -49,7 +73,68 @@ public class ProductMenuProductNavigationControlMenuEntry
 
 	@Override
 	public String getIconJspPath() {
-		return "/portlet/control_menu/product_menu_control_menu_entry_icon.jsp";
+		return null;
+	}
+
+	@Override
+	public boolean includeIcon(
+			HttpServletRequest request, HttpServletResponse response)
+		throws IOException {
+
+		Map<String, String> values = new HashMap<>();
+
+		String portletNamespace = PortalUtil.getPortletNamespace(
+			ProductNavigationProductMenuPortletKeys.
+				PRODUCT_NAVIGATION_PRODUCT_MENU);
+
+		values.put("portletNamespace", portletNamespace);
+
+		values.put("title", HtmlUtil.escape(LanguageUtil.get(request, "menu")));
+
+		String productMenuState = SessionClicks.get(
+			request,
+			ProductNavigationProductMenuWebKeys.
+				PRODUCT_NAVIGATION_PRODUCT_MENU_STATE,
+			"closed");
+
+		if (Objects.equals(productMenuState, "open")) {
+			values.put("cssClass", "active");
+			values.put("dataURL", StringPool.BLANK);
+		}
+		else {
+			values.put("cssClass", StringPool.BLANK);
+
+			ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+			PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
+
+			PortletURL portletURL = PortletURLFactoryUtil.create(
+				request,
+				ProductNavigationProductMenuPortletKeys.
+					PRODUCT_NAVIGATION_PRODUCT_MENU,
+				RenderRequest.RENDER_PHASE);
+
+			portletURL.setParameter("mvcPath", "/portlet/product_menu.jsp");
+			portletURL.setParameter("selPpid", portletDisplay.getId());
+
+			try {
+				portletURL.setWindowState(LiferayWindowState.EXCLUSIVE);
+			}
+			catch (WindowStateException wse) {
+				ReflectionUtil.throwException(wse);
+			}
+
+			values.put("dataURL", "data-url='" + portletURL.toString() + "'");
+		}
+
+		String result = StringUtil.replace(_TMPL_CONTENT, "${", "}", values);
+
+		Writer writer = response.getWriter();
+
+		writer.write(result);
+
+		return true;
 	}
 
 	@Override
@@ -78,5 +163,8 @@ public class ProductMenuProductNavigationControlMenuEntry
 	public void setServletContext(ServletContext servletContext) {
 		super.setServletContext(servletContext);
 	}
+
+	private static final String _TMPL_CONTENT = StringUtil.read(
+		ProductMenuProductNavigationControlMenuEntry.class, "icon.tmpl");
 
 }
