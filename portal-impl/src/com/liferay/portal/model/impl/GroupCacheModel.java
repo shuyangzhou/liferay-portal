@@ -203,11 +203,14 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 
 		groupImpl.resetOriginalValues();
 
+		groupImpl.setStagingGroup(_stagingGroup);
+
 		return groupImpl;
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
 		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
 
@@ -244,6 +247,8 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 		inheritContent = objectInput.readBoolean();
 
 		active = objectInput.readBoolean();
+
+		_stagingGroup = (Group)objectInput.readObject();
 	}
 
 	@Override
@@ -327,6 +332,8 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 		objectOutput.writeBoolean(inheritContent);
 
 		objectOutput.writeBoolean(active);
+
+		objectOutput.writeObject(_stagingGroup);
 	}
 
 	public long mvccVersion;
@@ -351,4 +358,5 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 	public int remoteStagingGroupCount;
 	public boolean inheritContent;
 	public boolean active;
+	public Group _stagingGroup;
 }

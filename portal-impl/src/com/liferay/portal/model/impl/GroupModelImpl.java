@@ -1114,6 +1114,13 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return _originalActive;
 	}
 
+	public Group getStagingGroup() {
+		return null;
+	}
+
+	public void setStagingGroup(Group stagingGroup) {
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -1355,6 +1362,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 		groupModelImpl._setOriginalActive = false;
 
+		setStagingGroup(null);
+
 		groupModelImpl._columnBitmask = 0;
 	}
 
@@ -1447,6 +1456,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		groupCacheModel.inheritContent = getInheritContent();
 
 		groupCacheModel.active = getActive();
+
+		groupCacheModel._stagingGroup = getStagingGroup();
 
 		return groupCacheModel;
 	}
