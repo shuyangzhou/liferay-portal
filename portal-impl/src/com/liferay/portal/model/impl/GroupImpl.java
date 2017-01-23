@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.UserPersonalSite;
+import com.liferay.portal.kernel.model.cache.CacheField;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
@@ -108,6 +109,7 @@ public class GroupImpl extends GroupBaseImpl {
 
 	@Override
 	public void clearStagingGroup() {
+		_hasStagingGroup = null;
 		_stagingGroup = null;
 	}
 
@@ -315,6 +317,11 @@ public class GroupImpl extends GroupBaseImpl {
 		}
 
 		return StringPool.BLANK;
+	}
+
+	@Override
+	public Boolean getHasStagingGroup() {
+		return _hasStagingGroup;
 	}
 
 	@Override
@@ -797,16 +804,21 @@ public class GroupImpl extends GroupBaseImpl {
 			return false;
 		}
 
-		if (_stagingGroup != null) {
-			return true;
+		if (_hasStagingGroup == null) {
+			if (_stagingGroup == null) {
+				_stagingGroup = GroupLocalServiceUtil.fetchStagingGroup(
+					getGroupId());
+			}
+
+			if (_stagingGroup == null) {
+				_hasStagingGroup = false;
+			}
+			else {
+				_hasStagingGroup = true;
+			}
 		}
 
-		try {
-			return GroupLocalServiceUtil.hasStagingGroup(getGroupId());
-		}
-		catch (Exception e) {
-			return false;
-		}
+		return _hasStagingGroup;
 	}
 
 	/**
@@ -1136,6 +1148,11 @@ public class GroupImpl extends GroupBaseImpl {
 	}
 
 	@Override
+	public void setHasStagingGroup(Boolean hasStagingGroup) {
+		_hasStagingGroup = hasStagingGroup;
+	}
+
+	@Override
 	public void setTypeSettings(String typeSettings) {
 		_typeSettingsProperties = null;
 
@@ -1171,6 +1188,9 @@ public class GroupImpl extends GroupBaseImpl {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(GroupImpl.class);
+
+	@CacheField
+	private Boolean _hasStagingGroup;
 
 	private Group _liveGroup;
 	private Group _stagingGroup;
