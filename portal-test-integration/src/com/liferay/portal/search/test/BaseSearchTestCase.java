@@ -274,20 +274,10 @@ public abstract class BaseSearchTestCase {
 		assertGroupEntriesCount(expectedCount, 0);
 	}
 
-	protected void assertGroupEntriesCount(
-			final long expectedCount, final long userId)
+	protected void assertGroupEntriesCount(long expectedCount, long userId)
 		throws Exception {
 
 		Hits hits = searchGroupEntries(group.getGroupId(), userId);
-
-		if (hits == null) {
-			long actualCount = searchGroupEntriesCount(
-				group.getGroupId(), userId);
-
-			Assert.assertEquals(expectedCount, actualCount);
-
-			return;
-		}
 
 		Assert.assertEquals(hits.toString(), expectedCount, hits.getLength());
 	}
@@ -764,12 +754,6 @@ public abstract class BaseSearchTestCase {
 		throws Exception {
 
 		return null;
-	}
-
-	protected long searchGroupEntriesCount(long groupId, long userId)
-		throws Exception {
-
-		return -1;
 	}
 
 	protected void searchMyEntries() throws Exception {
