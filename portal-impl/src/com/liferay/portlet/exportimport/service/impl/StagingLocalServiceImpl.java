@@ -275,6 +275,8 @@ public class StagingLocalServiceImpl extends StagingLocalServiceBaseImpl {
 			serviceContext.setAttribute("staging", String.valueOf(true));
 
 			addStagingGroup(userId, liveGroup, serviceContext);
+
+			liveGroup.clearStagingGroup();
 		}
 
 		checkDefaultLayoutSetBranches(
