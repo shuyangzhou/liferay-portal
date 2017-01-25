@@ -2743,7 +2743,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  kernel.resource.manager;version="1.0.0";uses:="com.liferay.portal.ker
  nel.resource",com.liferay.portal.kernel.sanitizer;version="7.0.0";use
  s:="com.liferay.portal.kernel.exception",com.liferay.portal.kernel.sc
- heduler;version="7.1.0";uses:="com.liferay.portal.kernel.exception,co
+ heduler;version="7.2.0";uses:="com.liferay.portal.kernel.exception,co
  m.liferay.portal.kernel.messaging,com.liferay.portal.kernel.messaging
  .proxy,com.liferay.portal.kernel.scheduler.messaging,com.liferay.port
  al.kernel.util,javax.portlet",com.liferay.portal.kernel.scheduler.con
