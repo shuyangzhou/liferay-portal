@@ -16,11 +16,9 @@ package com.liferay.portlet.configuration.css.web.internal.servlet.taglib;
 
 import com.liferay.portal.kernel.servlet.taglib.BaseDynamicInclude;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.template.SimpleTemplate;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import java.util.Collections;
 import java.util.Map;
@@ -45,11 +43,7 @@ public class PortletConfigurationCSSBottomDynamicInclude
 			String key)
 		throws IOException {
 
-		PrintWriter printWriter = response.getWriter();
-
-		printWriter.print(
-			StringUtil.replace(
-				_TMPL_CONTENT, StringPool.POUND, StringPool.POUND, _values));
+		_definitionsTemplate.processTemplate(response.getWriter(), _values);
 	}
 
 	@Override
@@ -66,9 +60,10 @@ public class PortletConfigurationCSSBottomDynamicInclude
 			"contextPath", servletContext.getContextPath());
 	}
 
-	private static final String _TMPL_CONTENT = StringUtil.read(
-		PortletConfigurationCSSBottomDynamicInclude.class,
-		"/META-INF/resources/definitions.tmpl");
+	private static final SimpleTemplate _definitionsTemplate =
+		new SimpleTemplate(
+			PortletConfigurationCSSBottomDynamicInclude.class,
+			"/META-INF/resources/definitions.tmpl");
 
 	private Map<String, String> _values;
 
