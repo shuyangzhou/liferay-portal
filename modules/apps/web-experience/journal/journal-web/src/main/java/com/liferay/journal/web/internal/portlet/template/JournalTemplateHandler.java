@@ -28,6 +28,7 @@ import com.liferay.journal.util.JournalContent;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateVariableCodeHandler;
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
@@ -180,6 +181,11 @@ public class JournalTemplateHandler extends BaseDDMTemplateHandler {
 					"boolean", "date", "document-library", "geolocation",
 					"image", "link-to-page"
 				}));
+
+	@Reference(
+		target = "(&(release.bundle.symbolic.name=com.liferay.journal.service)(release.schema.version=1.1.1))"
+	)
+	private Release _release;
 
 	@Reference
 	private Portal _portal;
