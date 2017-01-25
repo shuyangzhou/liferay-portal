@@ -36,6 +36,10 @@ public class InlineSQLHelperUtil {
 		return getInlineSQLHelper().isEnabled(groupId);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #isEnabled(long)}}
+	 */
+	@Deprecated
 	public static boolean isEnabled(long companyId, long groupId) {
 		return getInlineSQLHelper().isEnabled(companyId, groupId);
 	}

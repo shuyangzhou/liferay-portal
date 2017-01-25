@@ -1597,7 +1597,7 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 	public List<LayoutPrototype> filterFindByUuid_C(String uuid,
 		long companyId, int start, int end,
 		OrderByComparator<LayoutPrototype> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_C(uuid, companyId, start, end, orderByComparator);
 		}
 
@@ -1709,7 +1709,7 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 		long layoutPrototypeId, String uuid, long companyId,
 		OrderByComparator<LayoutPrototype> orderByComparator)
 		throws NoSuchLayoutPrototypeException {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_C_PrevAndNext(layoutPrototypeId, uuid, companyId,
 				orderByComparator);
 		}
@@ -1993,7 +1993,7 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 	 */
 	@Override
 	public int filterCountByUuid_C(String uuid, long companyId) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return countByUuid_C(uuid, companyId);
 		}
 
@@ -2548,7 +2548,7 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 	@Override
 	public List<LayoutPrototype> filterFindByCompanyId(long companyId,
 		int start, int end, OrderByComparator<LayoutPrototype> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByCompanyId(companyId, start, end, orderByComparator);
 		}
 
@@ -2641,7 +2641,7 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 		long layoutPrototypeId, long companyId,
 		OrderByComparator<LayoutPrototype> orderByComparator)
 		throws NoSuchLayoutPrototypeException {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByCompanyId_PrevAndNext(layoutPrototypeId, companyId,
 				orderByComparator);
 		}
@@ -2886,7 +2886,7 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 	 */
 	@Override
 	public int filterCountByCompanyId(long companyId) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return countByCompanyId(companyId);
 		}
 
@@ -3449,7 +3449,7 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 	public List<LayoutPrototype> filterFindByC_A(long companyId,
 		boolean active, int start, int end,
 		OrderByComparator<LayoutPrototype> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByC_A(companyId, active, start, end, orderByComparator);
 		}
 
@@ -3547,7 +3547,7 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 		long layoutPrototypeId, long companyId, boolean active,
 		OrderByComparator<LayoutPrototype> orderByComparator)
 		throws NoSuchLayoutPrototypeException {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByC_A_PrevAndNext(layoutPrototypeId, companyId, active,
 				orderByComparator);
 		}
@@ -3803,7 +3803,7 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 	 */
 	@Override
 	public int filterCountByC_A(long companyId, boolean active) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return countByC_A(companyId, active);
 		}
 
