@@ -143,12 +143,11 @@ public class PortletConfigImpl implements LiferayPortletConfig {
 	public ResourceBundle getResourceBundle(Locale locale) {
 		String resourceBundleClassName = _portlet.getResourceBundle();
 
-		ResourceBundle resourceBundle = null;
-
 		if (Validator.isNull(resourceBundleClassName)) {
 			String resourceBundleId = _portlet.getPortletId();
 
-			resourceBundle = _resourceBundles.get(resourceBundleId);
+			ResourceBundle resourceBundle = _resourceBundles.get(
+				resourceBundleId);
 
 			if (resourceBundle == null) {
 				resourceBundle = new PortletResourceBundle(
@@ -167,34 +166,31 @@ public class PortletConfigImpl implements LiferayPortletConfig {
 		sb.append(locale.getCountry());
 		sb.append(locale.getVariant());
 
-		if (resourceBundle == null) {
-			if (!_portletApp.isWARFile() &&
-				resourceBundleClassName.equals(
-					StrutsResourceBundle.class.getName())) {
+		ResourceBundle resourceBundle = null;
 
-				String resourceBundleId = sb.toString();
+		if (!_portletApp.isWARFile() &&
+			resourceBundleClassName.equals(
+				StrutsResourceBundle.class.getName())) {
 
-				resourceBundle = _resourceBundles.get(resourceBundleId);
+			String resourceBundleId = sb.toString();
 
-				if (resourceBundle == null) {
-					resourceBundle = new StrutsResourceBundle(
-						_portletName, locale);
-				}
+			resourceBundle = _resourceBundles.get(resourceBundleId);
 
-				_resourceBundles.put(resourceBundleId, resourceBundle);
-			}
-			else {
-				PortletBag portletBag = PortletBagPool.get(
-					_portlet.getRootPortletId());
-
-				resourceBundle = portletBag.getResourceBundle(locale);
+			if (resourceBundle == null) {
+				resourceBundle = new StrutsResourceBundle(_portletName, locale);
 			}
 
-			resourceBundle = new PortletResourceBundle(
-				resourceBundle, _portlet.getPortletInfo());
+			_resourceBundles.put(resourceBundleId, resourceBundle);
+		}
+		else {
+			PortletBag portletBag = PortletBagPool.get(
+				_portlet.getRootPortletId());
+
+			resourceBundle = portletBag.getResourceBundle(locale);
 		}
 
-		return resourceBundle;
+		return new PortletResourceBundle(
+			resourceBundle, _portlet.getPortletInfo());
 	}
 
 	@Override
