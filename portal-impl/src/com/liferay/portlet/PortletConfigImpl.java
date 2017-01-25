@@ -159,18 +159,18 @@ public class PortletConfigImpl implements LiferayPortletConfig {
 			return resourceBundle;
 		}
 
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(_portlet.getPortletId());
-		sb.append(locale.getLanguage());
-		sb.append(locale.getCountry());
-		sb.append(locale.getVariant());
-
 		ResourceBundle resourceBundle = null;
 
 		if (!_portletApp.isWARFile() &&
 			resourceBundleClassName.equals(
 				StrutsResourceBundle.class.getName())) {
+
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_portlet.getPortletId());
+			sb.append(locale.getLanguage());
+			sb.append(locale.getCountry());
+			sb.append(locale.getVariant());
 
 			String resourceBundleId = sb.toString();
 
