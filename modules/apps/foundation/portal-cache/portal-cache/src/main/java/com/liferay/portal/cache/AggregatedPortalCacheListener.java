@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.cache.SkipReplicationThreadLocal;
 
 import java.io.Serializable;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -71,6 +72,33 @@ public class AggregatedPortalCacheListener<K extends Serializable, V>
 
 	public boolean isEmpty() {
 		return _portalCacheListeners.isEmpty();
+	}
+
+	public void notifyEntriesRemoved(
+			PortalCache<K, V> portalCache, Collection<K> keys, int timeToLive)
+		throws PortalCacheException {
+
+		for (Map.Entry<PortalCacheListener<K, V>, PortalCacheListenerScope>
+				entry : _portalCacheListeners.entrySet()) {
+
+			PortalCacheListener<K, V> portalCacheListener = entry.getKey();
+
+			if (_shouldDeliver(portalCacheListener, entry.getValue())) {
+				if (portalCacheListener instanceof PortalCacheReplicator) {
+					PortalCacheReplicator portalCacheReplicator =
+						(PortalCacheReplicator)portalCacheListener;
+
+					portalCacheReplicator.notifyEntriesRemoved(
+						portalCache, keys, timeToLive);
+				}
+				else {
+					for (K key : keys) {
+						portalCacheListener.notifyEntryRemoved(
+							portalCache, key, null, timeToLive);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
