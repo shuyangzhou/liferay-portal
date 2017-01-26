@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.language.LanguageResources;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -94,10 +93,7 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 
 	@Override
 	public List<TemplateHandler> getTemplateHandlers() {
-		List<TemplateHandler> templateHandlers = new ArrayList<>(
-			_templateHandlers.values());
-
-		return Collections.unmodifiableList(templateHandlers);
+		return new ArrayList<>(_templateHandlers.values());
 	}
 
 	@Activate
@@ -177,8 +173,6 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 
 		_templateHandlers.remove(templateHandler.getClassName());
 
-		_templateHandlers.put(templateHandler.getClassName(), templateHandler);
-
 		ServiceRegistration<?> serviceRegistration =
 			_serviceRegistrations.remove(templateHandler.getClassName());
 
@@ -226,12 +220,6 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 
 	private class TemplateHandlerPortalInstanceLifecycleListener
 		extends BasePortalInstanceLifecycleListener {
-
-		public TemplateHandlerPortalInstanceLifecycleListener(
-			TemplateHandler templateHandler) {
-
-			_templateHandler = templateHandler;
-		}
 
 		@Override
 		public void portalInstanceRegistered(Company company) throws Exception {
@@ -326,6 +314,12 @@ public class TemplateHandlerRegistryImpl implements TemplateHandlerRegistry {
 			}
 
 			return map;
+		}
+
+		private TemplateHandlerPortalInstanceLifecycleListener(
+			TemplateHandler templateHandler) {
+
+			_templateHandler = templateHandler;
 		}
 
 		private static final String _PORTLET_DISPLAY_TEMPLATE_CLASS_NAME =
