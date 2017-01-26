@@ -37,15 +37,23 @@ import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
-import com.liferay.portal.kernel.util.ResourceBundleLoaderUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.webdav.WebDAVStorage;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.xmlrpc.Method;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceTracker;
+import com.liferay.registry.ServiceTrackerCustomizer;
+import com.liferay.registry.ServiceTrackerFieldUpdaterCustomizer;
 import com.liferay.social.kernel.model.SocialActivityInterpreter;
 import com.liferay.social.kernel.model.SocialRequestInterpreter;
 
 import java.io.Closeable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 import java.util.Locale;
@@ -176,6 +184,10 @@ public class PortletBagImpl implements PortletBag {
 		close(_webDAVStorageInstances);
 		close(_workflowHandlerInstances);
 		close(_xmlRpcMethodInstances);
+
+		if (_serviceTracker != null) {
+			close(_serviceTracker);
+		}
 	}
 
 	@Override
@@ -260,17 +272,19 @@ public class PortletBagImpl implements PortletBag {
 
 	@Override
 	public ResourceBundle getResourceBundle(Locale locale) {
-		ResourceBundleLoader resourceBundleLoader =
-			ResourceBundleLoaderUtil.
-				getResourceBundleLoaderByServletContextNameAndBaseName(
-					_servletContext.getServletContextName(),
-					getResourceBundleBaseName());
+		if (_serviceTracker == null) {
+			synchronized (this) {
+				if (_serviceTracker == null) {
+					_serviceTracker = _registerServiceTrackerCustomizer();
+				}
+			}
+		}
 
-		if (resourceBundleLoader == null) {
+		if (_resourceBundleLoader == null) {
 			return null;
 		}
 
-		return resourceBundleLoader.loadResourceBundle(
+		return _resourceBundleLoader.loadResourceBundle(
 			LocaleUtil.toLanguageId(locale));
 	}
 
@@ -376,6 +390,46 @@ public class PortletBagImpl implements PortletBag {
 		}
 	}
 
+	private ServiceTracker<ResourceBundleLoader, ResourceBundleLoader>
+		_registerServiceTrackerCustomizer() {
+
+		try {
+			Field field = PortletBagImpl.class.getField(
+				"_resourceBundleLoader");
+
+			ServiceTrackerCustomizer<ResourceBundleLoader, ResourceBundleLoader>
+				serviceTrackerCustomizer =
+					new ServiceTrackerFieldUpdaterCustomizer<>(
+						field, this, _resourceBundleLoader);
+
+			Registry registry = RegistryUtil.getRegistry();
+
+			StringBundler sb = new StringBundler(7);
+
+			sb.append("(&(objectClass=");
+			sb.append(ResourceBundleLoader.class.getName());
+			sb.append("(&(resource.bundle.base.name=");
+			sb.append(getResourceBundleBaseName());
+			sb.append(")(servlet.context.name=");
+			sb.append(_servletContext.getServletContextName());
+			sb.append("))");
+
+			ServiceTracker<ResourceBundleLoader, ResourceBundleLoader>
+				serviceTracker = registry.trackServices(
+					registry.getFilter(sb.toString()),
+					serviceTrackerCustomizer);
+
+			serviceTracker.open();
+
+			_resourceBundleLoader = (ResourceBundleLoader)field.get(this);
+
+			return serviceTracker;
+		}
+		catch (Exception e) {
+			return ReflectionUtil.throwException(e);
+		}
+	}
+
 	private final List<AssetRendererFactory<?>> _assetRendererFactoryInstances;
 	private final List<AtomCollectionAdapter<?>>
 		_atomCollectionAdapterInstances;
@@ -395,8 +449,11 @@ public class PortletBagImpl implements PortletBag {
 	private String _portletName;
 	private final List<PreferencesValidator> _preferencesValidatorInstances;
 	private final String _resourceBundleBaseName;
+	private volatile ResourceBundleLoader _resourceBundleLoader;
 	private final List<SchedulerEventMessageListener>
 		_schedulerEventMessageListeners;
+	private ServiceTracker<ResourceBundleLoader, ResourceBundleLoader>
+		_serviceTracker;
 	private final ServletContext _servletContext;
 	private final List<SocialActivityInterpreter>
 		_socialActivityInterpreterInstances;
