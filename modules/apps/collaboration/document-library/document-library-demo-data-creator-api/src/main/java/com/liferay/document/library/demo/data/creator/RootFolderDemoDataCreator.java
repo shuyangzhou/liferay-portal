@@ -20,13 +20,11 @@ import com.liferay.portal.kernel.repository.model.Folder;
 /**
  * @author Alejandro Hernández
  */
-public interface RootFolderDemoDataCreator {
+public interface RootFolderDemoDataCreator extends BaseFolderDemoDataCreator {
 
 	public Folder create(long userId, long groupId) throws PortalException;
 
 	public Folder create(long userId, long groupId, String name)
 		throws PortalException;
-
-	public void delete() throws PortalException;
 
 }

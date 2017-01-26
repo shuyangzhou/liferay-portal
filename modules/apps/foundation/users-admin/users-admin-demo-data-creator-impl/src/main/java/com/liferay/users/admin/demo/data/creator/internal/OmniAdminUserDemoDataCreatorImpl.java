@@ -35,7 +35,7 @@ public class OmniAdminUserDemoDataCreatorImpl
 	public User create(long companyId, String emailAddress)
 		throws PortalException {
 
-		User user = createBaseUser(companyId, emailAddress);
+		User user = createUser(companyId, emailAddress);
 
 		Role role = _roleLocalService.getRole(
 			companyId, RoleConstants.ADMINISTRATOR);

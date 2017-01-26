@@ -31,7 +31,7 @@ public class BasicUserDemoDataCreatorImpl
 	public User create(long companyId, String emailAddress)
 		throws PortalException {
 
-		return createBaseUser(companyId, emailAddress);
+		return createUser(companyId, emailAddress);
 	}
 
 }

@@ -39,7 +39,7 @@ public class SiteAdminUserDemoDataCreatorImpl
 
 		Group group = _groupLocalService.getGroup(groupId);
 
-		User user = createBaseUser(group.getCompanyId(), emailAddress);
+		User user = createUser(group.getCompanyId(), emailAddress);
 
 		userLocalService.setGroupUsers(groupId, new long[] {user.getUserId()});
 

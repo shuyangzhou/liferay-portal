@@ -40,7 +40,7 @@ import org.osgi.service.component.annotations.Reference;
 public abstract class BaseUserDemoDataCreator
 	implements BasicUserDemoDataCreator {
 
-	public User createBaseUser(long companyId, String emailAddress)
+	public User createUser(long companyId, String emailAddress)
 		throws PortalException {
 
 		User user = userLocalService.fetchUserByEmailAddress(
