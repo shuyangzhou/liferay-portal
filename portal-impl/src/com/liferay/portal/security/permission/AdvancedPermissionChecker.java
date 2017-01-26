@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.Team;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -121,11 +122,8 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 	 * @throws Exception if an exception occurred
 	 */
 	public long[] getGuestUserRoleIds() throws Exception {
-		Group guestGroup = GroupLocalServiceUtil.getGroup(
-			getCompanyId(), GroupConstants.GUEST);
-
 		long[] roleIds = PermissionCacheUtil.getUserGroupRoleIds(
-			defaultUserId, guestGroup.getGroupId());
+			defaultUserId, _guestGroupId);
 
 		if (roleIds != null) {
 			return roleIds;
@@ -133,7 +131,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 
 		try {
 			List<Role> roles = RoleLocalServiceUtil.getUserRelatedRoles(
-				defaultUserId, Collections.singletonList(guestGroup));
+				defaultUserId, _guestGroupId);
 
 			// Only use the guest group for deriving the roles for
 			// unauthenticated users. Do not add the group to the permission bag
@@ -145,11 +143,11 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			Arrays.sort(roleIds);
 
 			PermissionCacheUtil.putUserGroupRoleIds(
-				defaultUserId, guestGroup.getGroupId(), roleIds);
+				defaultUserId, _guestGroupId, roleIds);
 		}
 		catch (Exception e) {
 			PermissionCacheUtil.removeUserGroupRoleIds(
-				defaultUserId, guestGroup.getGroupId());
+				defaultUserId, _guestGroupId);
 
 			throw e;
 		}
@@ -441,6 +439,21 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 
 		return value;
+	}
+
+	@Override
+	public void init(User user) {
+		super.init(user);
+
+		try {
+			Group guestGroup = GroupLocalServiceUtil.getGroup(
+				user.getCompanyId(), GroupConstants.GUEST);
+
+			_guestGroupId = guestGroup.getGroupId();
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
 	}
 
 	@Override
@@ -1627,5 +1640,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AdvancedPermissionChecker.class);
+
+	private long _guestGroupId;
 
 }
