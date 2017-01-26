@@ -14,10 +14,20 @@
 
 package com.liferay.taglib.aui;
 
+import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
+import com.liferay.portal.kernel.servlet.DirectRequestDispatcherFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.aui.base.BaseIconTag;
+import com.liferay.taglib.servlet.PipingServletResponse;
 
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Eduardo Lundgren
@@ -27,15 +37,41 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class IconTag extends BaseIconTag {
 
-	@Override
-	protected String getPage() {
-		String markupView = getMarkupView();
+	public static String doTag(
+			String cssClass, String image, String markupView,
+			HttpServletRequest request, HttpServletResponse response)
+		throws IOException, ServletException {
 
-		if (Validator.isNotNull(markupView)) {
-			return "/html/taglib/aui/icon/" + markupView + "/page.jsp";
+		ServletContext servletContext = (ServletContext)request.getAttribute(
+			WebKeys.CTX);
+
+		RequestDispatcher requestDispatcher =
+			DirectRequestDispatcherFactoryUtil.getRequestDispatcher(
+				servletContext, _getPage(markupView));
+
+		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
+
+		request.setAttribute("aui:icon:cssClass", cssClass);
+		request.setAttribute("aui:icon:image", image);
+		request.setAttribute("aui:icon:markupView", markupView);
+
+		try {
+			requestDispatcher.include(
+				request,
+				new PipingServletResponse(response, unsyncStringWriter));
+		}
+		finally {
+			request.removeAttribute("aui:icon:cssClass");
+			request.removeAttribute("aui:icon:image");
+			request.removeAttribute("aui:icon:markupView");
 		}
 
-		return "/html/taglib/aui/icon/page.jsp";
+		return unsyncStringWriter.toString();
+	}
+
+	@Override
+	protected String getPage() {
+		return _getPage(getMarkupView());
 	}
 
 	@Override
@@ -51,6 +87,14 @@ public class IconTag extends BaseIconTag {
 		}
 
 		super.setAttributes(request);
+	}
+
+	private static String _getPage(String markupView) {
+		if (Validator.isNotNull(markupView)) {
+			return "/html/taglib/aui/icon/" + markupView + "/page.jsp";
+		}
+
+		return "/html/taglib/aui/icon/page.jsp";
 	}
 
 }
