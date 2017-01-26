@@ -356,6 +356,24 @@ public class SecureFilter extends BasePortalFilter {
 		return request;
 	}
 
+	protected HttpServletRequest setCredentials(
+			HttpServletRequest request, HttpSession session, User user,
+			String authType)
+		throws Exception {
+
+		String userIdString = String.valueOf(user.getUserId());
+
+		request = new ProtectedServletRequest(request, userIdString, authType);
+
+		session.setAttribute(_AUTHENTICATED_USER, userIdString);
+
+		session.setAttribute(WebKeys.USER, user);
+
+		initThreadLocals(request);
+
+		return request;
+	}
+
 	protected void setUsePermissionChecker(boolean usePermissionChecker) {
 		_usePermissionChecker = usePermissionChecker;
 	}
