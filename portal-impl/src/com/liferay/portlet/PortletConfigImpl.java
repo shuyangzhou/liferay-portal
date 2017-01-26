@@ -52,6 +52,9 @@ public class PortletConfigImpl implements LiferayPortletConfig {
 		_portlet = portlet;
 		_portletContext = portletContext;
 
+		_portletInfos = PortletResourceBundle.getPortletInfos(
+			_portlet.getPortletInfo());
+
 		_copyRequestParameters = GetterUtil.getBoolean(
 			getInitParameter("copy-request-parameters"));
 		_portletApp = portlet.getPortletApp();
@@ -150,8 +153,7 @@ public class PortletConfigImpl implements LiferayPortletConfig {
 				resourceBundleId);
 
 			if (resourceBundle == null) {
-				resourceBundle = new PortletResourceBundle(
-					_portlet.getPortletInfo());
+				resourceBundle = new PortletResourceBundle(null, _portletInfos);
 
 				_resourceBundles.put(resourceBundleId, resourceBundle);
 			}
@@ -189,8 +191,7 @@ public class PortletConfigImpl implements LiferayPortletConfig {
 			resourceBundle = portletBag.getResourceBundle(locale);
 		}
 
-		return new PortletResourceBundle(
-			resourceBundle, _portlet.getPortletInfo());
+		return new PortletResourceBundle(resourceBundle, _portletInfos);
 	}
 
 	@Override
@@ -234,6 +235,7 @@ public class PortletConfigImpl implements LiferayPortletConfig {
 	private final Portlet _portlet;
 	private final PortletApp _portletApp;
 	private final PortletContext _portletContext;
+	private final Map<String, String> _portletInfos;
 	private final String _portletName;
 	private final Map<String, ResourceBundle> _resourceBundles;
 
