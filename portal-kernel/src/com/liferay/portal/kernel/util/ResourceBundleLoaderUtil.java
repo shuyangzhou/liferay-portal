@@ -42,12 +42,17 @@ public class ResourceBundleLoaderUtil {
 			servletContextName);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static ResourceBundleLoader
 		getResourceBundleLoaderByServletContextNameAndBaseName(
 			String servletContextName, String baseName) {
 
-		return _servletContextNameAndBaseNameServiceTrackerMap.getService(
-			baseName + "#" + servletContextName);
+		return ServiceTrackerHolder.
+			_servletContextNameAndBaseNameServiceTrackerMap.getService(
+				baseName + "#" + servletContextName);
 	}
 
 	public static void setPortalResourceBundleLoader(
@@ -59,43 +64,51 @@ public class ResourceBundleLoaderUtil {
 	private ResourceBundleLoaderUtil() {
 	}
 
+	private static final ServiceTrackerMap<String, ResourceBundleLoader>
+		_bundleSymbolicNameServiceTrackerMap;
+	private static ResourceBundleLoader _portalResourceBundleLoader;
+	private static final ServiceTrackerMap<String, ResourceBundleLoader>
+		_servletContextNameServiceTrackerMap;
+
 	static {
 		_bundleSymbolicNameServiceTrackerMap =
 			ServiceTrackerCollections.openSingleValueMap(
 				ResourceBundleLoader.class, "bundle.symbolic.name");
-		_servletContextNameAndBaseNameServiceTrackerMap =
-			ServiceTrackerCollections.openSingleValueMap(
-				ResourceBundleLoader.class,
-				"(&(resource.bundle.base.name=*)(servlet.context.name=*))",
-				new ServiceReferenceMapper<String, ResourceBundleLoader>() {
-
-					@Override
-					public void map(
-						ServiceReference<ResourceBundleLoader> serviceReference,
-						Emitter<String> emitter) {
-
-						Object baseName = serviceReference.getProperty(
-							"resource.bundle.base.name");
-						Object servletContextName =
-							serviceReference.getProperty(
-								"servlet.context.name");
-
-						emitter.emit(baseName + "#" + servletContextName);
-					}
-
-				});
 		_servletContextNameServiceTrackerMap =
 			ServiceTrackerCollections.openSingleValueMap(
 				ResourceBundleLoader.class, "servlet.context.name");
 	}
 
-	private static ResourceBundleLoader _portalResourceBundleLoader;
+	private static class ServiceTrackerHolder {
 
-	private static final ServiceTrackerMap<String, ResourceBundleLoader>
-		_bundleSymbolicNameServiceTrackerMap;
-	private static final ServiceTrackerMap<String, ResourceBundleLoader>
-		_servletContextNameAndBaseNameServiceTrackerMap;
-	private static final ServiceTrackerMap<String, ResourceBundleLoader>
-		_servletContextNameServiceTrackerMap;
+		private static final ServiceTrackerMap<String, ResourceBundleLoader>
+			_servletContextNameAndBaseNameServiceTrackerMap;
+
+		static {
+			_servletContextNameAndBaseNameServiceTrackerMap =
+				ServiceTrackerCollections.openSingleValueMap(
+					ResourceBundleLoader.class,
+					"(&(resource.bundle.base.name=*)(servlet.context.name=*))",
+					new ServiceReferenceMapper<String, ResourceBundleLoader>() {
+
+						@Override
+						public void map(
+							ServiceReference<ResourceBundleLoader>
+								serviceReference,
+							Emitter<String> emitter) {
+
+							Object baseName = serviceReference.getProperty(
+								"resource.bundle.base.name");
+							Object servletContextName =
+								serviceReference.getProperty(
+									"servlet.context.name");
+
+							emitter.emit(baseName + "#" + servletContextName);
+						}
+
+					});
+		}
+
+	}
 
 }
