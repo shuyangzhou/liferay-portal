@@ -29,17 +29,10 @@ page import="com.liferay.application.list.PanelCategory" %><%@
 page import="com.liferay.application.list.PanelCategoryRegistry" %><%@
 page import="com.liferay.application.list.constants.ApplicationListWebKeys" %><%@
 page import="com.liferay.application.list.display.context.logic.PanelCategoryHelper" %><%@
-page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
-page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
-page import="com.liferay.portal.kernel.portlet.PortletURLFactoryUtil" %><%@
-page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.product.navigation.simulation.application.list.SimulationPanelCategory" %><%@
 page import="com.liferay.product.navigation.simulation.web.constants.ProductNavigationSimulationPortletKeys" %><%@
 page import="com.liferay.taglib.aui.AUIUtil" %>
-
-<%@ page import="javax.portlet.PortletRequest" %><%@
-page import="javax.portlet.PortletURL" %>
 
 <liferay-frontend:defineObjects />
 
