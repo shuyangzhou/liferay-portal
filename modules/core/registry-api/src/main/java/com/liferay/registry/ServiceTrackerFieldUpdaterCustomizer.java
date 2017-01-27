@@ -14,6 +14,8 @@
 
 package com.liferay.registry;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -37,7 +39,14 @@ public class ServiceTrackerFieldUpdaterCustomizer<S, T>
 		}
 
 		_serviceField = serviceField;
-		_serviceHolder = serviceHolder;
+
+		if (serviceHolder == null) {
+			_serviceHolderReference = null;
+		}
+		else {
+			_serviceHolderReference = new WeakReference<>(serviceHolder);
+		}
+
 		_dummyTrackedService = dummyTrackedService;
 	}
 
@@ -99,13 +108,23 @@ public class ServiceTrackerFieldUpdaterCustomizer<S, T>
 	}
 
 	protected void doServiceUpdate(T newService) {
+		Object serviceHolder = null;
+
+		if (_serviceHolderReference != null) {
+			serviceHolder = _serviceHolderReference.get();
+
+			if (serviceHolder == null) {
+				return;
+			}
+		}
+
 		try {
-			T oldService = (T)_serviceField.get(_serviceHolder);
+			T oldService = (T)_serviceField.get(serviceHolder);
 
 			if (newService != oldService) {
 				beforeServiceUpdate(oldService, newService);
 
-				_serviceField.set(_serviceHolder, newService);
+				_serviceField.set(serviceHolder, newService);
 
 				afterServiceUpdate(oldService, newService);
 			}
@@ -126,7 +145,7 @@ public class ServiceTrackerFieldUpdaterCustomizer<S, T>
 
 	private final T _dummyTrackedService;
 	private final Field _serviceField;
-	private final Object _serviceHolder;
+	private final Reference<?> _serviceHolderReference;
 	private final Map<ServiceReference<S>, T> _trackedServices =
 		new ConcurrentHashMap<>();
 
