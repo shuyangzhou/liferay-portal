@@ -14,9 +14,13 @@
 
 package com.liferay.portal.kernel.util;
 
-import java.util.HashMap;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.util.Enumeration;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Carlos Sierra Andrés
@@ -31,33 +35,55 @@ public class CacheResourceBundleLoader implements ResourceBundleLoader {
 
 	@Override
 	public ResourceBundle loadResourceBundle(String languageId) {
-		if (_resourceBundles.containsKey(languageId)) {
-			return _resourceBundles.get(languageId);
-		}
+		ResourceBundle resourceBundle = _resourceBundles.get(languageId);
 
-		synchronized (_resourceBundles) {
-			if (_resourceBundles.containsKey(languageId)) {
-				return _resourceBundles.get(languageId);
-			}
-
-			ResourceBundle resourceBundle;
-
+		if (resourceBundle == null) {
 			try {
 				resourceBundle = _resourceBundleLoader.loadResourceBundle(
 					languageId);
 			}
 			catch (Exception e) {
-				resourceBundle = null;
+				if (_log.isDebugEnabled()) {
+					_log.debug(e, e);
+				}
 			}
 
-			_resourceBundles.put(languageId, resourceBundle);
-
-			return resourceBundle;
+			if (resourceBundle == null) {
+				_resourceBundles.put(languageId, _nullResourceBundle);
+			}
+			else {
+				_resourceBundles.put(languageId, resourceBundle);
+			}
 		}
+		else if (resourceBundle == _nullResourceBundle) {
+			return null;
+		}
+
+		return resourceBundle;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		CacheResourceBundleLoader.class);
+
+	private static final ResourceBundle _nullResourceBundle =
+		new NullResourceBundle();
 
 	private final ResourceBundleLoader _resourceBundleLoader;
 	private final Map<String, ResourceBundle> _resourceBundles =
-		new HashMap<>();
+		new ConcurrentHashMap<>();
+
+	private static class NullResourceBundle extends ResourceBundle {
+
+		@Override
+		public Enumeration<String> getKeys() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		protected Object handleGetObject(String key) {
+			throw new UnsupportedOperationException();
+		}
+
+	}
 
 }
