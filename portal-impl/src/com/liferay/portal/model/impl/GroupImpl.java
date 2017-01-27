@@ -289,29 +289,24 @@ public class GroupImpl extends GroupBaseImpl {
 	public String getDisplayURL(
 		ThemeDisplay themeDisplay, boolean privateLayout) {
 
-		if (!privateLayout && (getPublicLayoutsPageCount() > 0)) {
-			try {
+		try {
+			LayoutSet layoutSet = LayoutSetLocalServiceUtil.getLayoutSet(
+				getGroupId(), privateLayout);
+
+			if ((layoutSet.getPageCount() > 0) ||
+				(isUser() &&
+				 LayoutLocalServiceUtil.getLayoutsCount(this, privateLayout) >
+					 0)) {
+
 				String groupFriendlyURL = PortalUtil.getGroupFriendlyURL(
-					getPublicLayoutSet(), themeDisplay);
+					layoutSet, themeDisplay);
 
 				return PortalUtil.addPreservedParameters(
 					themeDisplay, groupFriendlyURL);
-			}
-			catch (PortalException pe) {
-				_log.error(pe, pe);
 			}
 		}
-		else if (privateLayout && (getPrivateLayoutsPageCount() > 0)) {
-			try {
-				String groupFriendlyURL = PortalUtil.getGroupFriendlyURL(
-					getPrivateLayoutSet(), themeDisplay);
-
-				return PortalUtil.addPreservedParameters(
-					themeDisplay, groupFriendlyURL);
-			}
-			catch (PortalException pe) {
-				_log.error(pe);
-			}
+		catch (PortalException pe) {
+			_log.error(pe, pe);
 		}
 
 		return StringPool.BLANK;
