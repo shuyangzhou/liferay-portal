@@ -85,6 +85,44 @@ public class ServiceProxyFactory {
 		}
 	}
 
+	public static <T, V> T newServiceTrackedInstance(
+		Class<T> serviceClass, Class<V> declaringClass, V declaringInstance,
+		String fieldName, String filterString, boolean blocking) {
+
+		if (declaringInstance == null) {
+			return newServiceTrackedInstance(
+				serviceClass, declaringClass, fieldName, filterString,
+				blocking);
+		}
+
+		try {
+			Field field = declaringClass.getDeclaredField(fieldName);
+
+			if (Modifier.isStatic(field.getModifiers())) {
+				throw new IllegalArgumentException(field + " is static");
+			}
+
+			field.setAccessible(true);
+
+			T serviceInstance = null;
+
+			synchronized (declaringInstance) {
+				serviceInstance = (T)field.get(declaringInstance);
+
+				if (serviceInstance == null) {
+					return _newServiceTrackedInstance(
+						serviceClass, declaringInstance, field, filterString,
+						blocking, false);
+				}
+			}
+
+			return serviceInstance;
+		}
+		catch (ReflectiveOperationException roe) {
+			return ReflectionUtil.throwException(roe);
+		}
+	}
+
 	private static <T, V> T _newServiceTrackedInstance(
 			Class<T> serviceClass, V declaringInstance, Field field,
 			String filterString, boolean blocking,
@@ -134,44 +172,6 @@ public class ServiceProxyFactory {
 		}
 
 		return (T)field.get(declaringInstance);
-	}
-
-	public static <T, V> T newServiceTrackedInstance(
-		Class<T> serviceClass, Class<V> declaringClass, V declaringInstance,
-		String fieldName, String filterString, boolean blocking) {
-
-		if (declaringInstance == null) {
-			return newServiceTrackedInstance(
-				serviceClass, declaringClass, fieldName, filterString,
-				blocking);
-		}
-
-		try {
-			Field field = declaringClass.getDeclaredField(fieldName);
-
-			if (Modifier.isStatic(field.getModifiers())) {
-				throw new IllegalArgumentException(field + " is static");
-			}
-
-			field.setAccessible(true);
-
-			T serviceInstance = null;
-
-			synchronized (declaringInstance) {
-				serviceInstance = (T)field.get(declaringInstance);
-
-				if (serviceInstance == null) {
-					return _newServiceTrackedInstance(
-						serviceClass, declaringInstance, field, filterString,
-						blocking, false);
-				}
-			}
-
-			return serviceInstance;
-		}
-		catch (ReflectiveOperationException roe) {
-			return ReflectionUtil.throwException(roe);
-		}
 	}
 
 	private static <T> ServiceTracker<T, T> _openServiceTracker(
