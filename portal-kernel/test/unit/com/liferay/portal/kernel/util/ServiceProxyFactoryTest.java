@@ -14,6 +14,9 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.portal.kernel.memory.FinalizeAction;
+import com.liferay.portal.kernel.memory.FinalizeManager;
+import com.liferay.portal.kernel.test.GCUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.test.rule.TimeoutTestRule;
@@ -21,14 +24,20 @@ import com.liferay.registry.BasicRegistryImpl;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 import com.liferay.registry.ServiceRegistration;
+import com.liferay.registry.ServiceTracker;
 
+import java.lang.ref.PhantomReference;
+import java.lang.ref.Reference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -65,14 +74,96 @@ public class ServiceProxyFactoryTest {
 	}
 
 	@Test
+	public void testCloseServiceTrackerFinalizeAction() throws Exception {
+		TestServiceUtil testServiceUtil = new TestServiceUtil();
+
+		ServiceProxyFactory.newServiceTrackedInstance(
+			TestService.class, TestServiceUtil.class, testServiceUtil,
+			"nonStaticField", null, false);
+
+		FinalizeAction finalizeAction = null;
+
+		Map<Reference<?>, FinalizeAction> finalizeActions =
+			ReflectionTestUtil.getFieldValue(
+				FinalizeManager.class, "_finalizeActions");
+
+		for (Map.Entry<Reference<?>, FinalizeAction> entry :
+				finalizeActions.entrySet()) {
+
+			Reference<?> reference = entry.getKey();
+
+			if (!(reference instanceof PhantomReference<?>)) {
+				continue;
+			}
+
+			Object referent = ReflectionTestUtil.getFieldValue(
+				reference, "referent");
+
+			if (referent != testServiceUtil) {
+				continue;
+			}
+
+			finalizeAction = entry.getValue();
+
+			Class<?> clazz = finalizeAction.getClass();
+
+			Assert.assertEquals(
+				"com.liferay.portal.kernel.util.ServiceProxyFactory$" +
+					"CloseServiceTrackerFinalizeAction",
+				clazz.getName());
+
+			break;
+		}
+
+		Assert.assertNotNull(finalizeAction);
+
+		final AtomicBoolean atomicBoolean = new AtomicBoolean();
+
+		final ServiceTracker<TestService, TestService> serviceTracker =
+			ReflectionTestUtil.getFieldValue(finalizeAction, "_serviceTracker");
+
+		ReflectionTestUtil.setFieldValue(
+			finalizeAction, "_serviceTracker",
+			ProxyUtil.newProxyInstance(
+				FinalizeManager.class.getClassLoader(),
+				new Class<?>[] {ServiceTracker.class},
+				new InvocationHandler() {
+
+					@Override
+					public Object invoke(
+							Object proxy, Method method, Object[] args)
+						throws Throwable {
+
+						if (method.equals(
+								ServiceTracker.class.getMethod("close"))) {
+
+							atomicBoolean.set(true);
+						}
+
+						return method.invoke(serviceTracker, args);
+					}
+
+				}));
+
+		testServiceUtil = null;
+
+		GCUtil.gc(true);
+
+		ReflectionTestUtil.invoke(
+			FinalizeManager.class, "_pollingCleanup", new Class<?>[0]);
+
+		Assert.assertTrue(atomicBoolean.get());
+	}
+
+	@Test
 	public void testMisc() throws Exception {
 
 		// Test 1, wrong field
 
 		try {
 			ServiceProxyFactory.newServiceTrackedInstance(
-				TestService.class, TestServiceUtil.class, "wrongFieldName",
-				false);
+				TestService.class, TestServiceUtil.class, null,
+				"wrongFieldName", null, false);
 
 			Assert.fail();
 		}
@@ -81,7 +172,43 @@ public class ServiceProxyFactoryTest {
 			Assert.assertEquals("wrongFieldName", throwable.getMessage());
 		}
 
-		// Test 2, field is not static
+		try {
+			TestServiceUtil testServiceUtil = new TestServiceUtil();
+
+			ServiceProxyFactory.newServiceTrackedInstance(
+				TestService.class, TestServiceUtil.class, testServiceUtil,
+				"wrongFieldName", null, false);
+
+			Assert.fail();
+		}
+		catch (Throwable throwable) {
+			Assert.assertSame(NoSuchFieldException.class, throwable.getClass());
+			Assert.assertEquals("wrongFieldName", throwable.getMessage());
+		}
+
+		// Test 2, field is static
+
+		try {
+			TestServiceUtil testServiceUtil = new TestServiceUtil();
+
+			ServiceProxyFactory.newServiceTrackedInstance(
+				TestService.class, TestServiceUtil.class, testServiceUtil,
+				"testService", null, false);
+
+			Assert.fail();
+		}
+		catch (Throwable throwable) {
+			Assert.assertSame(
+				IllegalArgumentException.class, throwable.getClass());
+
+			Field testServiceField = ReflectionUtil.getDeclaredField(
+				TestServiceUtil.class, "testService");
+
+			Assert.assertEquals(
+				testServiceField + " is static", throwable.getMessage());
+		}
+
+		// Test 3, field is not static
 
 		try {
 			ServiceProxyFactory.newServiceTrackedInstance(
@@ -101,7 +228,21 @@ public class ServiceProxyFactoryTest {
 				testServiceField + " is not static", throwable.getMessage());
 		}
 
-		// Test 3, test constructor
+		// Test 4, field already set
+
+		TestServiceUtil testServiceUtil = new TestServiceUtil();
+
+		TestService testService = new TestServiceImpl();
+
+		testServiceUtil.nonStaticField = testService;
+
+		ServiceProxyFactory.newServiceTrackedInstance(
+			TestService.class, TestServiceUtil.class, testServiceUtil,
+			"nonStaticField", null, false);
+
+		Assert.assertSame(testService, testServiceUtil.nonStaticField);
+
+		// Test 5, test constructor
 
 		new ServiceProxyFactory();
 	}
@@ -114,6 +255,17 @@ public class ServiceProxyFactoryTest {
 	@Test
 	public void testNonblockingProxyWithFilter() throws Exception {
 		_testNonBlockingProxy(true);
+	}
+
+	@Test
+	public void testNonblockingProxyWithInstanceField() throws Exception {
+		TestServiceUtil testServiceUtil = new TestServiceUtil();
+
+		TestService testService = ServiceProxyFactory.newServiceTrackedInstance(
+			TestService.class, TestServiceUtil.class, testServiceUtil,
+			"nonStaticField", null, false);
+
+		_testNonBlockingProxy(false, testService, testServiceUtil);
 	}
 
 	@Test
@@ -246,6 +398,14 @@ public class ServiceProxyFactoryTest {
 				TestService.class, TestServiceUtil.class, "testService", false);
 		}
 
+		_testNonBlockingProxy(filterEnabled, testService, null);
+	}
+
+	private void _testNonBlockingProxy(
+			boolean filterEnabled, TestService testService,
+			TestServiceUtil testServiceUtil)
+		throws Exception {
+
 		Assert.assertTrue(ProxyUtil.isProxyClass(testService.getClass()));
 		Assert.assertNotSame(TestServiceImpl.class, testService.getClass());
 
@@ -266,7 +426,14 @@ public class ServiceProxyFactoryTest {
 				TestService.class, new TestServiceImpl());
 		}
 
-		TestService newTestService = TestServiceUtil.testService;
+		TestService newTestService = null;
+
+		if (testServiceUtil == null) {
+			newTestService = TestServiceUtil.testService;
+		}
+		else {
+			newTestService = testServiceUtil.nonStaticField;
+		}
 
 		Assert.assertEquals(
 			_TEST_SERVICE_NAME, newTestService.getTestServiceName());
@@ -322,7 +489,7 @@ public class ServiceProxyFactoryTest {
 
 		public static volatile TestService testService;
 
-		public TestService nonStaticField;
+		public volatile TestService nonStaticField;
 
 	}
 
