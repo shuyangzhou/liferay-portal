@@ -200,8 +200,6 @@ public int countBy${finder.name}(
 	) {
 		<#if finder.hasColumn("groupId")>
 			if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-		<#elseif finder.hasColumn("companyId")>
-			if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
 		<#else>
 			if (!InlineSQLHelperUtil.isEnabled()) {
 		</#if>
@@ -321,8 +319,6 @@ public int countBy${finder.name}(
 						groupId
 					</#if>
 				)) {
-			<#elseif finder.hasColumn("companyId")>
-				if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
 			<#else>
 				if (!InlineSQLHelperUtil.isEnabled()) {
 			</#if>

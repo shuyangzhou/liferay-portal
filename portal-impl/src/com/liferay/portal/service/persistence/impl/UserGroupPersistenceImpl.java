@@ -1589,7 +1589,7 @@ public class UserGroupPersistenceImpl extends BasePersistenceImpl<UserGroup>
 	@Override
 	public List<UserGroup> filterFindByUuid_C(String uuid, long companyId,
 		int start, int end, OrderByComparator<UserGroup> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_C(uuid, companyId, start, end, orderByComparator);
 		}
 
@@ -1699,7 +1699,7 @@ public class UserGroupPersistenceImpl extends BasePersistenceImpl<UserGroup>
 		String uuid, long companyId,
 		OrderByComparator<UserGroup> orderByComparator)
 		throws NoSuchUserGroupException {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByUuid_C_PrevAndNext(userGroupId, uuid, companyId,
 				orderByComparator);
 		}
@@ -1982,7 +1982,7 @@ public class UserGroupPersistenceImpl extends BasePersistenceImpl<UserGroup>
 	 */
 	@Override
 	public int filterCountByUuid_C(String uuid, long companyId) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return countByUuid_C(uuid, companyId);
 		}
 
@@ -2532,7 +2532,7 @@ public class UserGroupPersistenceImpl extends BasePersistenceImpl<UserGroup>
 	@Override
 	public List<UserGroup> filterFindByCompanyId(long companyId, int start,
 		int end, OrderByComparator<UserGroup> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByCompanyId(companyId, start, end, orderByComparator);
 		}
 
@@ -2622,7 +2622,7 @@ public class UserGroupPersistenceImpl extends BasePersistenceImpl<UserGroup>
 	public UserGroup[] filterFindByCompanyId_PrevAndNext(long userGroupId,
 		long companyId, OrderByComparator<UserGroup> orderByComparator)
 		throws NoSuchUserGroupException {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByCompanyId_PrevAndNext(userGroupId, companyId,
 				orderByComparator);
 		}
@@ -2866,7 +2866,7 @@ public class UserGroupPersistenceImpl extends BasePersistenceImpl<UserGroup>
 	 */
 	@Override
 	public int filterCountByCompanyId(long companyId) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return countByCompanyId(companyId);
 		}
 
@@ -3427,7 +3427,7 @@ public class UserGroupPersistenceImpl extends BasePersistenceImpl<UserGroup>
 	public List<UserGroup> filterFindByC_P(long companyId,
 		long parentUserGroupId, int start, int end,
 		OrderByComparator<UserGroup> orderByComparator) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByC_P(companyId, parentUserGroupId, start, end,
 				orderByComparator);
 		}
@@ -3524,7 +3524,7 @@ public class UserGroupPersistenceImpl extends BasePersistenceImpl<UserGroup>
 		long companyId, long parentUserGroupId,
 		OrderByComparator<UserGroup> orderByComparator)
 		throws NoSuchUserGroupException {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return findByC_P_PrevAndNext(userGroupId, companyId,
 				parentUserGroupId, orderByComparator);
 		}
@@ -3779,7 +3779,7 @@ public class UserGroupPersistenceImpl extends BasePersistenceImpl<UserGroup>
 	 */
 	@Override
 	public int filterCountByC_P(long companyId, long parentUserGroupId) {
-		if (!InlineSQLHelperUtil.isEnabled(companyId, 0)) {
+		if (!InlineSQLHelperUtil.isEnabled()) {
 			return countByC_P(companyId, parentUserGroupId);
 		}
 

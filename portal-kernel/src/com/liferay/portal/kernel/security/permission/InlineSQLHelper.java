@@ -47,7 +47,9 @@ public interface InlineSQLHelper {
 	 * @param  groupId the primary key of the group
 	 * @return <code>true</code> if the inline SQL helper is enabled for the
 	 *         company or group; <code>false</code> otherwise
+	 * @deprecated As of 7.0.0, replaced by {@link #isEnabled(long)}}
 	 */
+	@Deprecated
 	public boolean isEnabled(long companyId, long groupId);
 
 	/**
