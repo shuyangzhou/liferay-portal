@@ -14,10 +14,10 @@
 
 package com.liferay.portal.init.servlet.filter.internal;
 
-import com.liferay.portal.kernel.concurrent.CompeteLatch;
 import com.liferay.portal.servlet.filters.BasePortalFilter;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -47,27 +47,33 @@ public class InitFilter extends BasePortalFilter {
 
 		_countDownLatch.await();
 
-		if (_competeLatch.compete()) {
-			try {
+		try {
+			if (!_reentrantLock.isHeldByCurrentThread() &&
+				_reentrantLock.tryLock()) {
+
+				try {
+					processFilter(
+						InitFilter.class.getName(), request, response,
+						filterChain);
+				}
+				finally {
+					_serviceRegistration.unregister();
+				}
+			}
+			else {
+				_reentrantLock.lock();
+
 				processFilter(
 					InitFilter.class.getName(), request, response, filterChain);
 			}
-			finally {
-				_serviceRegistration.unregister();
-
-				_competeLatch.done();
-			}
 		}
-		else {
-			_competeLatch.await();
-
-			processFilter(
-				InitFilter.class.getName(), request, response, filterChain);
+		finally {
+			_reentrantLock.unlock();
 		}
 	}
 
-	private final CompeteLatch _competeLatch = new CompeteLatch();
 	private final CountDownLatch _countDownLatch = new CountDownLatch(1);
+	private final ReentrantLock _reentrantLock = new ReentrantLock();
 	private ServiceRegistration<Filter> _serviceRegistration;
 
 }
