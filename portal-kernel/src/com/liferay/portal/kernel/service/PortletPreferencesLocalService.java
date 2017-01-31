@@ -127,6 +127,10 @@ public interface PortletPreferencesLocalService extends BaseLocalService,
 		long portletPreferencesId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PortletPreferences fetchPortletPreferences(long ownerId,
+		int ownerType, long plid, java.lang.String portletId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PortletPreferences fetchPortletPreferences(long portletPreferencesId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
