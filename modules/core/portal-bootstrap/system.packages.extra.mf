@@ -3501,7 +3501,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  et.http";version="1.0.0",com.liferay.portal.xsl;uses:="com.liferay.po
  rtal.kernel.template,javax.xml.transform";version="1.0.0",com.liferay
  .portal.zip;uses:="com.liferay.portal.kernel.zip";version="1.0.0",com
- .liferay.portlet;version="1.5.0";uses:="com.liferay.asset.kernel.mode
+ .liferay.portlet;version="1.6.0";uses:="com.liferay.asset.kernel.mode
  l,com.liferay.expando.kernel.model,com.liferay.exportimport.kernel.la
  r,com.liferay.portal.kernel.atom,com.liferay.portal.kernel.exception,
  com.liferay.portal.kernel.model,com.liferay.portal.kernel.notificatio
