@@ -126,6 +126,13 @@ public class PortletPreferencesLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.kernel.model.PortletPreferences fetchPortletPreferences(
+		long ownerId, int ownerType, long plid, java.lang.String portletId) {
+		return _portletPreferencesLocalService.fetchPortletPreferences(ownerId,
+			ownerType, plid, portletId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.PortletPreferences fetchPortletPreferences(
 		long portletPreferencesId) {
 		return _portletPreferencesLocalService.fetchPortletPreferences(portletPreferencesId);
 	}

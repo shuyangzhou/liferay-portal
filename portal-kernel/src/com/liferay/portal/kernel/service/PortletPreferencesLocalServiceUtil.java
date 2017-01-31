@@ -124,6 +124,12 @@ public class PortletPreferencesLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.PortletPreferences fetchPortletPreferences(
+		long ownerId, int ownerType, long plid, java.lang.String portletId) {
+		return getService()
+				   .fetchPortletPreferences(ownerId, ownerType, plid, portletId);
+	}
+
+	public static com.liferay.portal.kernel.model.PortletPreferences fetchPortletPreferences(
 		long portletPreferencesId) {
 		return getService().fetchPortletPreferences(portletPreferencesId);
 	}
