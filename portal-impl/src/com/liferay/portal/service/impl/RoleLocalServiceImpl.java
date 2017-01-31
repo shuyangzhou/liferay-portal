@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.exception.NoSuchRoleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.RequiredRoleException;
 import com.liferay.portal.kernel.exception.RoleNameException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -74,11 +75,14 @@ import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.users.admin.kernel.util.UsersAdminUtil;
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -1044,7 +1048,32 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 			return Collections.emptyList();
 		}
 
-		return roleFinder.findByU_G(userId, groups);
+		Set<Serializable> roleIds = new HashSet<>();
+
+		for (long roleId : userPersistence.getRolePrimaryKeys(userId)) {
+			roleIds.add(roleId);
+		}
+
+		for (Group group : groups) {
+			for (long roleId : groupPersistence.getRolePrimaryKeys(
+					group.getGroupId())) {
+
+				roleIds.add(roleId);
+			}
+		}
+
+		Map<Serializable, Role> roles = rolePersistence.fetchByPrimaryKeys(
+			roleIds);
+
+		if (roles.size() != roleIds.size()) {
+			roleIds.removeAll(roles.keySet());
+
+			throw new SystemException(
+				"Unable to fetch roles with ids: " + roleIds + "for user id: " +
+					userId + " and groups: " + groups);
+		}
+
+		return new ArrayList<>(roles.values());
 	}
 
 	/**
@@ -1058,7 +1087,28 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 	 */
 	@Override
 	public List<Role> getUserRelatedRoles(long userId, long groupId) {
-		return roleFinder.findByU_G(userId, groupId);
+		Set<Serializable> roleIds = new HashSet<>();
+
+		for (long roleId : userPersistence.getRolePrimaryKeys(userId)) {
+			roleIds.add(roleId);
+		}
+
+		for (long roleId : groupPersistence.getRolePrimaryKeys(groupId)) {
+			roleIds.add(roleId);
+		}
+
+		Map<Serializable, Role> roles = rolePersistence.fetchByPrimaryKeys(
+			roleIds);
+
+		if (roles.size() != roleIds.size()) {
+			roleIds.removeAll(roles.keySet());
+
+			throw new SystemException(
+				"Unable to fetch roles with ids: " + roleIds + "for user id: " +
+					userId + " and group id: " + groupId);
+		}
+
+		return new ArrayList<>(roles.values());
 	}
 
 	/**
@@ -1072,7 +1122,30 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 	 */
 	@Override
 	public List<Role> getUserRelatedRoles(long userId, long[] groupIds) {
-		return roleFinder.findByU_G(userId, groupIds);
+		Set<Serializable> roleIds = new HashSet<>();
+
+		for (long roleId : userPersistence.getRolePrimaryKeys(userId)) {
+			roleIds.add(roleId);
+		}
+
+		for (long groupId : groupIds) {
+			for (long roleId : groupPersistence.getRolePrimaryKeys(groupId)) {
+				roleIds.add(roleId);
+			}
+		}
+
+		Map<Serializable, Role> roles = rolePersistence.fetchByPrimaryKeys(
+			roleIds);
+
+		if (roles.size() != roleIds.size()) {
+			roleIds.removeAll(roles.keySet());
+
+			throw new SystemException(
+				"Unable to fetch roles with ids: " + roleIds + "for user id: " +
+					userId + " and group ids: " + Arrays.toString(groupIds));
+		}
+
+		return new ArrayList<>(roles.values());
 	}
 
 	/**
