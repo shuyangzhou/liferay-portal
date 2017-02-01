@@ -33,40 +33,57 @@ import java.util.Set;
  */
 public class PortletResourceBundle extends ResourceBundle {
 
-	public PortletResourceBundle(PortletInfo portletInfo) {
-		this(null, portletInfo);
-	}
+	public static Map<String, String> getPortletInfos(PortletInfo portletInfo) {
+		if (portletInfo == null) {
+			return Collections.emptyMap();
+		}
 
-	public PortletResourceBundle(
-		ResourceBundle parentResourceBundle, PortletInfo portletInfo) {
-
-		parent = parentResourceBundle;
+		Map<String, String> portletInfos = new HashMap<>();
 
 		String description = portletInfo.getDescription();
 
 		if (description != null) {
-			_portletInfos.put(
+			portletInfos.put(
 				JavaConstants.JAVAX_PORTLET_DESCRIPTION, description);
 		}
 
 		String keywords = portletInfo.getKeywords();
 
 		if (keywords != null) {
-			_portletInfos.put(JavaConstants.JAVAX_PORTLET_KEYWORDS, keywords);
+			portletInfos.put(JavaConstants.JAVAX_PORTLET_KEYWORDS, keywords);
 		}
 
 		String shortTitle = portletInfo.getShortTitle();
 
 		if (shortTitle != null) {
-			_portletInfos.put(
+			portletInfos.put(
 				JavaConstants.JAVAX_PORTLET_SHORT_TITLE, shortTitle);
 		}
 
 		String title = portletInfo.getTitle();
 
 		if (title != null) {
-			_portletInfos.put(JavaConstants.JAVAX_PORTLET_TITLE, title);
+			portletInfos.put(JavaConstants.JAVAX_PORTLET_TITLE, title);
 		}
+
+		return portletInfos;
+	}
+
+	public PortletResourceBundle(PortletInfo portletInfo) {
+		this(null, portletInfo);
+	}
+
+	public PortletResourceBundle(
+		ResourceBundle parentResourceBundle, Map<String, String> portletInfos) {
+
+		parent = parentResourceBundle;
+		_portletInfos = portletInfos;
+	}
+
+	public PortletResourceBundle(
+		ResourceBundle parentResourceBundle, PortletInfo portletInfo) {
+
+		this(parentResourceBundle, getPortletInfos(portletInfo));
 	}
 
 	@Override
@@ -109,6 +126,6 @@ public class PortletResourceBundle extends ResourceBundle {
 		return _portletInfos.keySet();
 	}
 
-	private final Map<String, String> _portletInfos = new HashMap<>();
+	private final Map<String, String> _portletInfos;
 
 }
