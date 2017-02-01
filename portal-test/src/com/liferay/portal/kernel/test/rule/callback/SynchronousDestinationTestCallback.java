@@ -161,6 +161,8 @@ public class SynchronousDestinationTestCallback
 				DestinationNames.BACKGROUND_TASK);
 			Filter backgroundTaskStatusFilter = _registerDestinationFilter(
 				DestinationNames.BACKGROUND_TASK_STATUS);
+			Filter kaleoGraphWalkerFilter = _registerDestinationFilter(
+				"liferay/kaleo_graph_walker");
 			Filter mailFilter = _registerDestinationFilter(
 				DestinationNames.MAIL);
 			Filter pdfProcessorFilter = _registerDestinationFilter(
@@ -172,8 +174,8 @@ public class SynchronousDestinationTestCallback
 
 			serviceDependencyManager.registerDependencies(
 				asyncFilter, backgroundTaskFilter, backgroundTaskStatusFilter,
-				mailFilter, pdfProcessorFilter, rawMetaDataProcessorFilter,
-				subscrpitionSenderFilter);
+				kaleoGraphWalkerFilter, mailFilter, pdfProcessorFilter,
+				rawMetaDataProcessorFilter, subscrpitionSenderFilter);
 
 			boolean schedulerEnabled = GetterUtil.getBoolean(
 				PropsUtil.get(PropsKeys.SCHEDULER_ENABLED));
@@ -198,6 +200,7 @@ public class SynchronousDestinationTestCallback
 				DestinationNames.DOCUMENT_LIBRARY_RAW_METADATA_PROCESSOR);
 			replaceDestination(
 				DestinationNames.DOCUMENT_LIBRARY_SYNC_EVENT_PROCESSOR);
+			replaceDestination("liferay/kaleo_graph_walker");
 			replaceDestination(DestinationNames.MAIL);
 			replaceDestination(DestinationNames.SCHEDULER_ENGINE);
 			replaceDestination(DestinationNames.SUBSCRIPTION_SENDER);
