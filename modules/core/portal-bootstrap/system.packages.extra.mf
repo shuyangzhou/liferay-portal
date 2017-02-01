@@ -2575,7 +2575,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  el.xml",com.liferay.portal.kernel.microsofttranslator;version="6.2.0"
  ;uses:="com.liferay.portal.kernel.exception",com.liferay.portal.kerne
  l.mobile.device;version="7.0.1";uses:="javax.servlet.http",com.lifera
- y.portal.kernel.model;version="1.0.1";uses:="com.liferay.asset.kernel
+ y.portal.kernel.model;version="1.1.0";uses:="com.liferay.asset.kernel
  .model,com.liferay.expando.kernel.model,com.liferay.exportimport.kern
  el.lar,com.liferay.portal.kernel.annotation,com.liferay.portal.kernel
  .application.type,com.liferay.portal.kernel.atom,com.liferay.portal.k
