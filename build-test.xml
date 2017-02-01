@@ -2840,6 +2840,23 @@ go</echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="setup-testable-tomcat-jpda-address">
+		<sequential>
+			<if>
+				<not>
+					<resourcecontains resource="${app.server.tomcat.dir}/bin/setenv.sh" substring="JPDA_ADDRESS" />
+				</not>
+				<then>
+					<echo file="${app.server.tomcat.dir}/bin/setenv.sh" append="true">
+						<![CDATA[
+							JPDA_ADDRESS="8000"
+						]]>
+					</echo>
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="setup-testable-tomcat-logging">
 		<sequential>
 			<if>
