@@ -248,10 +248,14 @@ public class NestableFlushEventListenerTest {
 
 			session.save(_className1);
 
+			_className1.setValue(RandomTestUtil.randomString());
+
 			_className2 = new ClassNameImpl();
 
 			_className2.setPrimaryKey(_keys[1]);
 			_className2.setValue(_values[1]);
+
+			_className2.setValue(RandomTestUtil.randomString());
 
 			session.save(_className2);
 		}
