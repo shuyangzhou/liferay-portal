@@ -370,6 +370,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 
 		stopWatch.start();
 
+		boolean checkOwnerPermission = false;
 		Group group = null;
 
 		try {
@@ -397,6 +398,8 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 				// Site" group.
 
 				if (group.isUser() && (group.getClassPK() == getUserId())) {
+					checkOwnerPermission = true;
+
 					group = GroupLocalServiceUtil.getGroup(
 						getCompanyId(), GroupConstants.USER_PERSONAL_SITE);
 
@@ -418,8 +421,15 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 
 		try {
-			value = hasPermissionImpl(
-				groupId, name, primKey, roleIds, actionId);
+			if (checkOwnerPermission) {
+				value = hasOwnerPermission(
+					getCompanyId(), name, primKey, getUserId(), actionId);
+			}
+
+			if ((value == null) || !value) {
+				value = hasPermissionImpl(
+					groupId, name, primKey, roleIds, actionId);
+			}
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
