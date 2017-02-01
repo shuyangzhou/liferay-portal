@@ -1327,8 +1327,27 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 			if (overrideLPKGFileNames.contains(location)) {
 				bundle.uninstall();
+
+				refreshBundles.add(bundle);
 			}
 		}
+
+		final CountDownLatch countDownLatch1 = new CountDownLatch(1);
+
+		frameworkWiring.refreshBundles(
+			refreshBundles,
+			new FrameworkListener() {
+
+				@Override
+				public void frameworkEvent(FrameworkEvent event) {
+					countDownLatch1.countDown();
+				}
+
+			});
+
+		countDownLatch1.await();
+
+		refreshBundles.clear();
 
 		Bundle[] initialBundles = bundleContext.getBundles();
 
@@ -1343,7 +1362,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 				continue;
 			}
 
-			final CountDownLatch countDownLatch = new CountDownLatch(1);
+			final CountDownLatch countDownLatch2 = new CountDownLatch(1);
 
 			BundleTracker<Void> bundleTracker = new BundleTracker<Void>(
 				_framework.getBundleContext(), Bundle.ACTIVE, null) {
@@ -1353,7 +1372,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 					Bundle trackedBundle, BundleEvent bundleEvent) {
 
 					if (trackedBundle == bundle) {
-						countDownLatch.countDown();
+						countDownLatch2.countDown();
 
 						close();
 					}
@@ -1365,7 +1384,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 			bundleTracker.open();
 
-			countDownLatch.await();
+			countDownLatch2.await();
 		}
 
 		throwableCollector.rethrow();
