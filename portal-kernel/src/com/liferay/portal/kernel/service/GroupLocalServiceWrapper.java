@@ -314,6 +314,12 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	}
 
 	@Override
+	public com.liferay.portal.kernel.model.Group fetchStagingGroup(
+		long liveGroupId) {
+		return _groupLocalService.fetchStagingGroup(liveGroupId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.model.Group fetchUserGroup(
 		long companyId, long userId) {
 		return _groupLocalService.fetchUserGroup(companyId, userId);

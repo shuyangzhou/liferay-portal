@@ -271,6 +271,9 @@ public interface GroupLocalService extends BaseLocalService,
 		long companyId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Group fetchStagingGroup(long liveGroupId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Group fetchUserGroup(long companyId, long userId);
 
 	/**
