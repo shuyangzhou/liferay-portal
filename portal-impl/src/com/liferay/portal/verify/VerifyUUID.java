@@ -14,9 +14,9 @@
 
 package com.liferay.portal.verify;
 
+import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.concurrent.ThrowableAwareRunnable;
-import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -77,37 +77,100 @@ public class VerifyUUID extends VerifyProcess {
 	protected void verifyUUID(VerifiableUUIDModel verifiableUUIDModel)
 		throws Exception {
 
+		long maxPrimKeyValue = _getMaxPrimaryKeyValue(verifiableUUIDModel);
+
 		StringBundler sb = new StringBundler(5);
 
 		sb.append("update ");
 		sb.append(verifiableUUIDModel.getTableName());
-		sb.append(" set uuid_ = ? where ");
+		sb.append(" set uuid_ = CONCAT(?, cast_text(");
 		sb.append(verifiableUUIDModel.getPrimaryKeyColumnName());
-		sb.append(" = ?");
+		sb.append(")) where (uuid_ is null) and (");
+		sb.append(verifiableUUIDModel.getPrimaryKeyColumnName());
+		sb.append(" >= ?) and (");
+		sb.append(verifiableUUIDModel.getPrimaryKeyColumnName());
+		sb.append(" < ?)");
+
+		String updateSQL = sb.toString();
+
+		updateSQL = SQLTransformer.transform(updateSQL);
 
 		try (LoggingTimer loggingTimer = new LoggingTimer(
 				verifiableUUIDModel.getTableName());
 			Connection con = DataAccess.getUpgradeOptimizedConnection();
-			PreparedStatement ps1 = con.prepareStatement(
-				"select " + verifiableUUIDModel.getPrimaryKeyColumnName() +
-					" from " + verifiableUUIDModel.getTableName() +
-						" where uuid_ is null or uuid_ = ''");
-			ResultSet rs = ps1.executeQuery();
-			PreparedStatement ps2 = AutoBatchPreparedStatementUtil.autoBatch(
-				con.prepareStatement(sb.toString()))) {
+			PreparedStatement ps = con.prepareStatement(updateSQL)) {
 
-			while (rs.next()) {
-				long pk = rs.getLong(
-					verifiableUUIDModel.getPrimaryKeyColumnName());
+			List<String> pastPrefixes = new ArrayList<>();
 
-				ps2.setString(1, PortalUUIDUtil.generate());
-				ps2.setLong(2, pk);
+			int primKeyLength = 1;
+			long primKeyValue = 1;
 
-				ps2.addBatch();
+			while (primKeyValue <= maxPrimKeyValue) {
+				String prefix = _getNonConflictingPrefix(
+					pastPrefixes, primKeyLength);
+
+				ps.setString(1, prefix);
+
+				ps.setLong(2, primKeyValue);
+				ps.setLong(3, primKeyValue * 10);
+
+				ps.executeUpdate();
+
+				primKeyLength++;
+				primKeyValue *= 10;
 			}
-
-			ps2.executeBatch();
 		}
+	}
+
+	private long _getMaxPrimaryKeyValue(VerifiableUUIDModel verifiableUUIDModel)
+		throws Exception {
+
+		StringBundler sb = new StringBundler();
+
+		sb.append("select max(");
+		sb.append(verifiableUUIDModel.getPrimaryKeyColumnName());
+		sb.append(") as maxPrimaryKeyValue from ");
+		sb.append(verifiableUUIDModel.getTableName());
+
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
+
+			if (rs.next()) {
+				return rs.getLong("maxPrimaryKeyValue");
+			}
+		}
+
+		return 0;
+	}
+
+	private String _getNonConflictingPrefix(
+		List<String> pastPrefixes, int suffixLength) {
+
+		String prefix = null;
+
+		boolean unique = false;
+
+		while (!unique) {
+			String uuid = PortalUUIDUtil.generate();
+
+			prefix = uuid.substring(0, uuid.length() - suffixLength);
+
+			unique = true;
+
+			for (String pastPrefix : pastPrefixes) {
+				if (pastPrefix.length() > prefix.length()) {
+					unique &= !pastPrefix.startsWith(prefix);
+				}
+				else {
+					unique &= !prefix.startsWith(pastPrefix);
+				}
+			}
+		}
+
+		pastPrefixes.add(prefix);
+
+		return prefix;
 	}
 
 	private class VerifyUUIDRunnable extends ThrowableAwareRunnable {
