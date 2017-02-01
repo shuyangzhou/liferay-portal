@@ -15,11 +15,9 @@
 package com.liferay.portlet;
 
 import com.liferay.portal.kernel.model.PortletInfo;
-import com.liferay.portal.kernel.util.JavaConstants;
 
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
@@ -42,31 +40,7 @@ public class PortletResourceBundle extends ResourceBundle {
 
 		parent = parentResourceBundle;
 
-		String description = portletInfo.getDescription();
-
-		if (description != null) {
-			_portletInfos.put(
-				JavaConstants.JAVAX_PORTLET_DESCRIPTION, description);
-		}
-
-		String keywords = portletInfo.getKeywords();
-
-		if (keywords != null) {
-			_portletInfos.put(JavaConstants.JAVAX_PORTLET_KEYWORDS, keywords);
-		}
-
-		String shortTitle = portletInfo.getShortTitle();
-
-		if (shortTitle != null) {
-			_portletInfos.put(
-				JavaConstants.JAVAX_PORTLET_SHORT_TITLE, shortTitle);
-		}
-
-		String title = portletInfo.getTitle();
-
-		if (title != null) {
-			_portletInfos.put(JavaConstants.JAVAX_PORTLET_TITLE, title);
-		}
+		_portletInfos = portletInfo.getPortletInfoMap();
 	}
 
 	@Override
@@ -109,6 +83,6 @@ public class PortletResourceBundle extends ResourceBundle {
 		return _portletInfos.keySet();
 	}
 
-	private final Map<String, String> _portletInfos = new HashMap<>();
+	private final Map<String, String> _portletInfos;
 
 }
