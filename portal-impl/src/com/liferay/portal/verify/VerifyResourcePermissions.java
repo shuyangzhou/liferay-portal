@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.verify.model.VerifiableResourcedModel;
 import com.liferay.portal.util.PortalInstances;
 
@@ -43,8 +44,11 @@ import java.sql.ResultSet;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Raymond Augé
@@ -116,7 +120,7 @@ public class VerifyResourcePermissions extends VerifyProcess {
 			long ownerId, int cur, int total)
 		throws Exception {
 
-		if (_log.isInfoEnabled() && (((cur + 1) % 100) == 0)) {
+		if (_log.isInfoEnabled() && (((cur + 1) % 1000) == 0)) {
 			cur++;
 
 			_log.info(
@@ -178,21 +182,108 @@ public class VerifyResourcePermissions extends VerifyProcess {
 			Role role, VerifiableResourcedModel verifiableResourcedModel)
 		throws Exception {
 
-		int total = 0;
+		long companyId = role.getCompanyId();
 
-		try (LoggingTimer loggingTimer = new LoggingTimer(
-				verifiableResourcedModel.getTableName());
-			Connection con = DataAccess.getUpgradeOptimizedConnection();
+		Map<Long, Long> ownerIds = null;
+
+		String modelName = verifiableResourcedModel.getModelName();
+
+		if (modelName.equals(User.class.getName())) {
+			ownerIds = _getUserOwnerIds(companyId);
+		}
+		else {
+			ownerIds = _getOwnerIds(companyId, verifiableResourcedModel);
+		}
+
+		StringBundler sb = new StringBundler(11);
+
+		sb.append("select ");
+		sb.append("count(*) ");
+		sb.append("from ResourcePermission WHERE (companyId = ");
+		sb.append(companyId);
+		sb.append(") and (name = '");
+		sb.append(modelName);
+		sb.append("') and (scope = ");
+		sb.append(ResourceConstants.SCOPE_INDIVIDUAL);
+		sb.append(") and (roleId = ");
+		sb.append(role.getRoleId());
+		sb.append(StringPool.CLOSE_PARENTHESIS);
+
+		long total = 0;
+
+		try (Connection con = DataAccess.getUpgradeOptimizedConnection();
 			PreparedStatement ps = con.prepareStatement(
-				"select count(*) from " +
-					verifiableResourcedModel.getTableName() +
-						" where companyId = " + role.getCompanyId());
+				sb.toString(), ResultSet.TYPE_FORWARD_ONLY,
+				ResultSet.CONCUR_UPDATABLE);
 			ResultSet rs = ps.executeQuery()) {
 
 			if (rs.next()) {
-				total = rs.getInt(1);
+				total = rs.getLong(1);
 			}
 		}
+
+		sb.setStringAt("resourcePermissionId, primKeyId, ownerId ", 1);
+
+		try (LoggingTimer loggingTimer = new LoggingTimer(
+				verifiableResourcedModel.getModelName());
+			Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(
+				sb.toString(), ResultSet.TYPE_FORWARD_ONLY,
+				ResultSet.CONCUR_UPDATABLE);
+			ResultSet rs = ps.executeQuery()) {
+
+			for (int i = 1; rs.next(); i++) {
+				if (_log.isInfoEnabled() && ((i % 1000) == 0)) {
+					_log.info(
+						"Processed " + i + " of " + total +
+							" resource permissions for company = " + companyId +
+								" and model " + modelName);
+				}
+
+				long primKeyId = rs.getLong("primKeyId");
+
+				Long newOwnerId = ownerIds.remove(primKeyId);
+
+				Long oldOwnerId = rs.getLong("ownerId");
+
+				if (newOwnerId == null) {
+					rs.deleteRow();
+				}
+				else if (!newOwnerId.equals(oldOwnerId)) {
+					rs.updateLong("ownerId", newOwnerId);
+
+					rs.updateRow();
+				}
+			}
+		}
+
+		total = ownerIds.size();
+
+		Set<Map.Entry<Long, Long>> entries = ownerIds.entrySet();
+
+		Iterator<Map.Entry<Long, Long>> entryIterator = entries.iterator();
+
+		for (int i = 0; entryIterator.hasNext(); i++) {
+			if (_log.isInfoEnabled() && ((i % 1000) == 0)) {
+				_log.info(
+					"Added " + i + " of " + total +
+						" missing resource permissions for company = " +
+						companyId + " and model " + modelName);
+			}
+
+			Map.Entry<Long, Long> entry = entryIterator.next();
+
+			long ownerId = entry.getValue();
+			String primKey = String.valueOf(entry.getKey());
+
+			ResourceLocalServiceUtil.addResources(
+				companyId, 0, ownerId, modelName, primKey, false, false, false);
+		}
+	}
+
+	private Map<Long, Long> _getOwnerIds(
+			long companyId, VerifiableResourcedModel verifiableResourcedModel)
+		throws Exception {
 
 		StringBundler sb = new StringBundler(8);
 
@@ -203,25 +294,87 @@ public class VerifyResourcePermissions extends VerifyProcess {
 		sb.append(" from ");
 		sb.append(verifiableResourcedModel.getTableName());
 		sb.append(" where companyId = ");
-		sb.append(role.getCompanyId());
+		sb.append(companyId);
+
+		Map<Long, Long> ownerIds = new HashMap<>();
 
 		try (LoggingTimer loggingTimer = new LoggingTimer(
-				verifiableResourcedModel.getTableName());
+				verifiableResourcedModel.getModelName());
 			Connection con = DataAccess.getUpgradeOptimizedConnection();
 			PreparedStatement ps = con.prepareStatement(sb.toString());
 			ResultSet rs = ps.executeQuery()) {
 
-			for (int i = 0; rs.next(); i++) {
+			while (rs.next()) {
 				long primKey = rs.getLong(
 					verifiableResourcedModel.getPrimaryKeyColumnName());
 				long userId = rs.getLong(
 					verifiableResourcedModel.getUserIdColumnName());
 
-				verifyResourcedModel(
-					role.getCompanyId(),
-					verifiableResourcedModel.getModelName(), primKey, role,
-					userId, i, total);
+				ownerIds.put(primKey, userId);
 			}
+		}
+
+		return ownerIds;
+	}
+
+	private Map<Long, Long> _getUserOwnerIds(long companyId) throws Exception {
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("select User_.userId as userUserId, Contact_.userId as ");
+		sb.append("contactUserId from User_ left join Contact_ on ");
+		sb.append("User_.contactId = Contact_.contactId where ");
+		sb.append("User_.companyId = ");
+		sb.append(companyId);
+
+		Map<Long, Long> ownerIds = new HashMap<>();
+
+		try (LoggingTimer loggingTimer = new LoggingTimer(User.class.getName());
+			Connection con = DataAccess.getUpgradeOptimizedConnection();
+			PreparedStatement ps = con.prepareStatement(sb.toString());
+			ResultSet rs = ps.executeQuery()) {
+
+			while (rs.next()) {
+				long userUserId = rs.getLong("userUserId");
+				long contactUserId = rs.getLong("contactUserId");
+
+				if (contactUserId > 0) {
+					ownerIds.put(userUserId, contactUserId);
+				}
+				else {
+					ownerIds.put(userUserId, userUserId);
+				}
+			}
+		}
+
+		return ownerIds;
+	}
+
+	private void _verifyResourcedModel(
+			long companyId, String modelName, long primKey, Long oldOwnerId,
+			Long newOwnerId, Role role, int cur, int total)
+		throws Exception {
+
+		if (_log.isInfoEnabled() && (((cur + 1) % 100) == 0)) {
+			cur++;
+
+			_log.info(
+				"Processed " + cur + " of " + total + " resource permissions " +
+					"for company = " + companyId + " and model " + modelName);
+		}
+
+		if (oldOwnerId == null) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"No resource found for {" + companyId + ", " + modelName +
+						", " + ResourceConstants.SCOPE_INDIVIDUAL + ", " +
+							primKey + ", " + role.getRoleId() + "}");
+			}
+
+			ResourceLocalServiceUtil.addResources(
+				companyId, 0, newOwnerId, modelName, String.valueOf(primKey),
+				false, false, false);
+
+			return;
 		}
 	}
 
