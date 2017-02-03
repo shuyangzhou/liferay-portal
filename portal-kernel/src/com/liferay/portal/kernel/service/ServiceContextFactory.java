@@ -95,19 +95,16 @@ public class ServiceContextFactory {
 			serviceContext.setUserId(user.getUserId());
 		}
 		else {
-			long companyId = PortalUtil.getCompanyId(request);
-
-			serviceContext.setCompanyId(companyId);
+			serviceContext.setCompanyId(PortalUtil.getCompanyId(request));
 
 			Group guestGroup = GroupLocalServiceUtil.getGroup(
 				serviceContext.getCompanyId(), GroupConstants.GUEST);
 
 			serviceContext.setScopeGroupId(guestGroup.getGroupId());
 
-			long plid = LayoutLocalServiceUtil.getDefaultPlid(
-				serviceContext.getScopeGroupId(), false);
-
-			serviceContext.setPlid(plid);
+			serviceContext.setPlid(
+				LayoutLocalServiceUtil.getDefaultPlid(
+					serviceContext.getScopeGroupId(), false));
 
 			User user = null;
 
@@ -167,24 +164,18 @@ public class ServiceContextFactory {
 
 		// Command
 
-		String cmd = ParamUtil.getString(request, Constants.CMD);
-
-		serviceContext.setCommand(cmd);
+		serviceContext.setCommand(ParamUtil.getString(request, Constants.CMD));
 
 		// Current URL
 
-		String currentURL = PortalUtil.getCurrentURL(request);
-
-		serviceContext.setCurrentURL(currentURL);
+		serviceContext.setCurrentURL(PortalUtil.getCurrentURL(request));
 
 		// Form date
 
 		long formDateLong = ParamUtil.getLong(request, "formDate");
 
 		if (formDateLong > 0) {
-			Date formDate = new Date(formDateLong);
-
-			serviceContext.setFormDate(formDate);
+			serviceContext.setFormDate(new Date(formDateLong));
 		}
 
 		// Permissions
@@ -196,17 +187,14 @@ public class ServiceContextFactory {
 			serviceContext.setModelPermissions(modelPermissions);
 		}
 		else {
-			boolean addGroupPermissions = ParamUtil.getBoolean(
-				request, "addGroupPermissions");
-			boolean addGuestPermissions = ParamUtil.getBoolean(
-				request, "addGuestPermissions");
-			String[] groupPermissions = PortalUtil.getGroupPermissions(request);
-			String[] guestPermissions = PortalUtil.getGuestPermissions(request);
-
-			serviceContext.setAddGroupPermissions(addGroupPermissions);
-			serviceContext.setAddGuestPermissions(addGuestPermissions);
-			serviceContext.setGroupPermissions(groupPermissions);
-			serviceContext.setGuestPermissions(guestPermissions);
+			serviceContext.setAddGroupPermissions(
+				ParamUtil.getBoolean(request, "addGroupPermissions"));
+			serviceContext.setAddGuestPermissions(
+				ParamUtil.getBoolean(request, "addGuestPermissions"));
+			serviceContext.setGroupPermissions(
+				PortalUtil.getGroupPermissions(request));
+			serviceContext.setGuestPermissions(
+				PortalUtil.getGuestPermissions(request));
 		}
 
 		// Portlet preferences ids
@@ -261,46 +249,38 @@ public class ServiceContextFactory {
 		}
 
 		if (updateAssetCategoryIds) {
-			long[] assetCategoryIds = ArrayUtil.toArray(
-				assetCategoryIdsList.toArray(
-					new Long[assetCategoryIdsList.size()]));
-
-			serviceContext.setAssetCategoryIds(assetCategoryIds);
+			serviceContext.setAssetCategoryIds(
+				ArrayUtil.toArray(
+					assetCategoryIdsList.toArray(
+						new Long[assetCategoryIdsList.size()])));
 		}
 
-		boolean assetEntryVisible = ParamUtil.getBoolean(
-			request, "assetEntryVisible", true);
-
-		serviceContext.setAssetEntryVisible(assetEntryVisible);
+		serviceContext.setAssetEntryVisible(
+			ParamUtil.getBoolean(request, "assetEntryVisible", true));
 
 		String assetLinkEntryIdsString = request.getParameter(
 			"assetLinksSearchContainerPrimaryKeys");
 
 		if (assetLinkEntryIdsString != null) {
-			long[] assetLinkEntryIds = StringUtil.split(
-				assetLinkEntryIdsString, 0L);
-
-			serviceContext.setAssetLinkEntryIds(assetLinkEntryIds);
+			serviceContext.setAssetLinkEntryIds(
+				StringUtil.split(assetLinkEntryIdsString, 0L));
 		}
 
-		Double assetPriority = ParamUtil.getDouble(request, "assetPriority");
-
-		serviceContext.setAssetPriority(assetPriority);
+		serviceContext.setAssetPriority(
+			ParamUtil.getDouble(request, "assetPriority"));
 
 		String assetTagNamesString = request.getParameter("assetTagNames");
 
 		if (assetTagNamesString != null) {
-			String[] assetTagNames = StringUtil.split(assetTagNamesString);
-
-			serviceContext.setAssetTagNames(assetTagNames);
+			serviceContext.setAssetTagNames(
+				StringUtil.split(assetTagNamesString));
 		}
 
 		// Workflow
 
-		int workflowAction = ParamUtil.getInteger(
-			request, "workflowAction", WorkflowConstants.ACTION_PUBLISH);
-
-		serviceContext.setWorkflowAction(workflowAction);
+		serviceContext.setWorkflowAction(
+			ParamUtil.getInteger(
+				request, "workflowAction", WorkflowConstants.ACTION_PUBLISH));
 
 		return serviceContext;
 	}
