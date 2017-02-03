@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.cache.PortalCacheManager;
 
 import java.io.Serializable;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -100,6 +101,11 @@ public class PortalCacheWrapper<K extends Serializable, V>
 	@Override
 	public void removeAll() {
 		portalCache.removeAll();
+	}
+
+	@Override
+	public void removeAll(Collection<K> keys) {
+		portalCache.removeAll(keys);
 	}
 
 	public void setPortalCache(PortalCache<K, V> portalCache) {
