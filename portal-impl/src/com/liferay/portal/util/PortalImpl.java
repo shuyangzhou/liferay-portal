@@ -1390,12 +1390,12 @@ public class PortalImpl implements Portal {
 		if (forceLayoutFriendlyURL) {
 			canonicalLayoutFriendlyURL = defaultLayoutFriendlyURL;
 		}
-		else if ((groupFriendlyURL.contains(
-					layout.getFriendlyURL(themeDisplay.getLocale())) ||
+		else if ((!layout.isFirstParent() ||
+				  Validator.isNotNull(parametersURL)) &&
+				 (groupFriendlyURL.contains(
+					 layout.getFriendlyURL(themeDisplay.getLocale())) ||
 				  groupFriendlyURL.contains(
-					  StringPool.SLASH + layout.getLayoutId())) &&
-				 (!layout.isFirstParent() ||
-				  Validator.isNotNull(parametersURL))) {
+					  StringPool.SLASH + layout.getLayoutId()))) {
 
 			canonicalLayoutFriendlyURL = defaultLayoutFriendlyURL;
 		}
