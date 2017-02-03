@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -67,14 +68,27 @@ public class ServiceContextFactory {
 		if (themeDisplay != null) {
 			serviceContext.setCompanyId(themeDisplay.getCompanyId());
 			serviceContext.setLanguageId(themeDisplay.getLanguageId());
-			serviceContext.setLayoutFullURL(
-				PortalUtil.getCanonicalURL(
-					PortalUtil.getLayoutFullURL(themeDisplay), themeDisplay,
-					themeDisplay.getLayout(), true));
-			serviceContext.setLayoutURL(
-				PortalUtil.getCanonicalURL(
-					PortalUtil.getLayoutURL(themeDisplay), themeDisplay,
-					themeDisplay.getLayout(), true));
+
+			String layoutURL = PortalUtil.getLayoutURL(themeDisplay);
+
+			String layoutFullURL = layoutURL;
+
+			String canoncialURL = PortalUtil.getCanonicalURL(
+				layoutURL, themeDisplay, themeDisplay.getLayout(), true);
+
+			String fullCanonicalURL = canoncialURL;
+
+			if (!HttpUtil.hasProtocol(layoutURL)) {
+				layoutFullURL =
+					PortalUtil.getPortalURL(themeDisplay) + layoutURL;
+
+				fullCanonicalURL = PortalUtil.getCanonicalURL(
+					layoutFullURL, themeDisplay, themeDisplay.getLayout(),
+					true);
+			}
+
+			serviceContext.setLayoutFullURL(fullCanonicalURL);
+			serviceContext.setLayoutURL(canoncialURL);
 			serviceContext.setPlid(themeDisplay.getPlid());
 			serviceContext.setScopeGroupId(themeDisplay.getScopeGroupId());
 			serviceContext.setSignedIn(themeDisplay.isSignedIn());
