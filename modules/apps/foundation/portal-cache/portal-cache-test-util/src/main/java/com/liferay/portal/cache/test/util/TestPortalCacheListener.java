@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.HashUtil;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.Assert;
@@ -57,6 +58,13 @@ public class TestPortalCacheListener<K extends Serializable, V>
 		_assertAction(
 			ActionType.REMOVE_ALL, null, null,
 			PortalCache.DEFAULT_TIME_TO_LIVE);
+	}
+
+	public void assertRemoveAll(Collection<K> keys) {
+		for (K key : keys) {
+			_assertAction(
+				ActionType.REMOVE, key, null, PortalCache.DEFAULT_TIME_TO_LIVE);
+		}
 	}
 
 	public void assertRemoved(K key, V value) {
