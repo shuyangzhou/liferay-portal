@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.cache.PortalCacheListenerScope;
 import com.liferay.portal.kernel.cache.PortalCacheManager;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -477,6 +479,64 @@ public class EhcachePortalCacheTest {
 		_defaultPortalCacheListener.assertPut(_KEY_1, _VALUE_1);
 		_defaultPortalCacheListener.assertPut(_KEY_2, _VALUE_2);
 		_defaultPortalCacheListener.assertRemoveAll();
+
+		_defaultPortalCacheListener.reset();
+
+		_defaultPortalCacheReplicator.assertActionsCount(2);
+		_defaultPortalCacheReplicator.assertPut(_KEY_1, _VALUE_1);
+		_defaultPortalCacheReplicator.assertPut(_KEY_2, _VALUE_2);
+
+		_defaultPortalCacheReplicator.reset();
+
+		// Remove 6
+
+		_ehcachePortalCache.put(_KEY_1, _VALUE_1);
+		_ehcachePortalCache.put(_KEY_2, _VALUE_2);
+		_ehcachePortalCache.put(_KEY_3, _VALUE_3);
+
+		Collection<String> keys = new HashSet<>();
+
+		keys.add(_KEY_1);
+		keys.add(_KEY_2);
+
+		_ehcachePortalCache.removeAll(keys);
+
+		Assert.assertNull(_ehcachePortalCache.get(_KEY_1));
+		Assert.assertNull(_ehcachePortalCache.get(_KEY_2));
+		Assert.assertEquals(_VALUE_3, _ehcachePortalCache.get(_KEY_3));
+
+		_defaultPortalCacheListener.assertActionsCount(5);
+		_defaultPortalCacheListener.assertPut(_KEY_1, _VALUE_1);
+		_defaultPortalCacheListener.assertPut(_KEY_2, _VALUE_2);
+		_defaultPortalCacheListener.assertPut(_KEY_3, _VALUE_3);
+		_defaultPortalCacheListener.assertRemoveAll(keys);
+
+		_defaultPortalCacheListener.reset();
+
+		_defaultPortalCacheReplicator.assertActionsCount(5);
+		_defaultPortalCacheReplicator.assertPut(_KEY_1, _VALUE_1);
+		_defaultPortalCacheReplicator.assertPut(_KEY_2, _VALUE_2);
+		_defaultPortalCacheReplicator.assertPut(_KEY_3, _VALUE_3);
+		_defaultPortalCacheReplicator.assertRemoveAll(keys);
+
+		_defaultPortalCacheReplicator.reset();
+
+		// Remove 7
+
+		_ehcachePortalCache.put(_KEY_1, _VALUE_1);
+		_ehcachePortalCache.put(_KEY_2, _VALUE_2);
+
+		PortalCacheHelperUtil.removeAllWithoutReplicator(
+			_ehcachePortalCache, keys);
+
+		Assert.assertNull(_ehcachePortalCache.get(_KEY_1));
+		Assert.assertNull(_ehcachePortalCache.get(_KEY_2));
+		Assert.assertEquals(_VALUE_3, _ehcachePortalCache.get(_KEY_3));
+
+		_defaultPortalCacheListener.assertActionsCount(4);
+		_defaultPortalCacheListener.assertPut(_KEY_1, _VALUE_1);
+		_defaultPortalCacheListener.assertPut(_KEY_2, _VALUE_2);
+		_defaultPortalCacheListener.assertRemoveAll(keys);
 
 		_defaultPortalCacheListener.reset();
 

@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.cache.PortalCacheManager;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -131,6 +132,13 @@ public class TestPortalCache<K extends Serializable, V>
 		}
 
 		return removed;
+	}
+
+	@Override
+	protected void doRemoveAll(Collection<K> keys) {
+		for (K key : keys) {
+			doRemove(key);
+		}
 	}
 
 	@Override
