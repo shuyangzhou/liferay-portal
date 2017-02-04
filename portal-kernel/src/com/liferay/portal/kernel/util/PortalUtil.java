@@ -1809,6 +1809,10 @@ public class PortalUtil {
 		return getPortal().getUniqueElementId(request, namespace, id);
 	}
 
+	public static String getUniqueElementId(String namespace, String id) {
+		return getPortal().getUniqueElementId(namespace, id);
+	}
+
 	public static UploadPortletRequest getUploadPortletRequest(
 		PortletRequest portletRequest) {
 

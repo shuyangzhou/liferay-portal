@@ -621,6 +621,10 @@ public interface WebKeys {
 
 	public static final String TREE_SELECTED_NODES = "TREE_SELECTED_NODES";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String UNIQUE_ELEMENT_IDS = "LIFERAY_SHARED_UNIQUE_ELEMENT_IDS";
 
 	public static final String UPLOAD_EXCEPTION = "UPLOAD_EXCEPTION";

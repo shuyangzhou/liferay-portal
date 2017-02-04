@@ -5367,6 +5367,11 @@ public class PortalImpl implements Portal {
 		return _allSystemSiteRoles;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #getUniqueElementId(String, String)}
+	 */
+	@Deprecated
 	@Override
 	public String getUniqueElementId(
 		HttpServletRequest request, String namespace, String elementId) {
@@ -5407,12 +5412,28 @@ public class PortalImpl implements Portal {
 		return uniqueElementId;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #getUniqueElementId(String, String)}
+	 */
+	@Deprecated
 	@Override
 	public String getUniqueElementId(
 		PortletRequest request, String namespace, String elementId) {
 
 		return getUniqueElementId(
 			getHttpServletRequest(request), namespace, elementId);
+	}
+
+	private static final Log _logWebServerServlet = LogFactoryUtil.getLog(
+		WebServerServlet.class);
+
+	@Override
+	public String getUniqueElementId(String namespace, String elementId) {
+		String uniqueElementId = namespace.concat(elementId);
+
+		return uniqueElementId.concat(
+			String.valueOf(_idCounter.getAndIncrement()));
 	}
 
 	@Override
@@ -8221,8 +8242,8 @@ public class PortalImpl implements Portal {
 		themeDisplay.setLocale(locale);
 	}
 
-	private static final Log _logWebServerServlet = LogFactoryUtil.getLog(
-		WebServerServlet.class);
+	private static final MethodHandler _resetCDNHostsMethodHandler =
+		new MethodHandler(new MethodKey(PortalUtil.class, "resetCDNHosts"));
 
 	private static final String _J_SECURITY_CHECK = "j_security_check";
 
@@ -8232,8 +8253,7 @@ public class PortalImpl implements Portal {
 	private static final String _LOCALHOST = "localhost";
 
 	private static final Locale _NULL_LOCALE;
-	private static final MethodHandler _resetCDNHostsMethodHandler =
-		new MethodHandler(new MethodKey(PortalUtil.class, "resetCDNHosts"));
+	private static final Date _upTime = new Date();
 
 	private static final String _PRIVATE_GROUP_SERVLET_MAPPING =
 		PropsValues.LAYOUT_FRIENDLY_URL_PRIVATE_GROUP_SERVLET_MAPPING;
@@ -8248,8 +8268,6 @@ public class PortalImpl implements Portal {
 
 	private static final Map<Long, String> _cdnHostHttpMap =
 		new ConcurrentHashMap<>();
-	private static final Date _upTime = new Date();
-
 	static {
 		Locale locale = Locale.getDefault();
 
@@ -8273,6 +8291,8 @@ public class PortalImpl implements Portal {
 		new EditDiscussionStrutsAction();
 	private final GetCommentsStrutsAction _getCommentsStrutsAction =
 		new GetCommentsStrutsAction();
+	private final AtomicInteger _idCounter = new AtomicInteger();
+
 	private final String _pathContext;
 	private final String _pathFriendlyURLPrivateGroup;
 	private final String _pathFriendlyURLPrivateUser;
