@@ -220,7 +220,7 @@ public class SearchContainer<R> {
 		}
 
 		if (Validator.isNotNull(_id)) {
-			_id = PortalUtil.getUniqueElementId(request, namespace, _id);
+			_id = PortalUtil.getUniqueElementId(namespace, _id);
 			_uniqueId = true;
 
 			return _id;
@@ -244,7 +244,7 @@ public class SearchContainer<R> {
 
 			id = id.concat("SearchContainer");
 
-			_id = PortalUtil.getUniqueElementId(request, namespace, id);
+			_id = PortalUtil.getUniqueElementId(namespace, id);
 
 			_uniqueId = true;
 

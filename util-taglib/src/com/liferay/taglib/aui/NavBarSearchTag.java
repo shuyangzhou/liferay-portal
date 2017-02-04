@@ -131,7 +131,7 @@ public class NavBarSearchTag extends BaseNavBarSearchTag {
 
 		if (Validator.isNull(_namespacedId)) {
 			_namespacedId = PortalUtil.getUniqueElementId(
-				request, StringPool.BLANK, AUIUtil.normalizeId("navBar"));
+				StringPool.BLANK, AUIUtil.normalizeId("navBar"));
 		}
 
 		PortletResponse portletResponse = (PortletResponse)request.getAttribute(
