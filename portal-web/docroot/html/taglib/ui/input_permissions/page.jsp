@@ -24,7 +24,7 @@ ServiceContext#deriveDefaultPermissions(long, String).
 <%@ include file="/html/taglib/ui/input_permissions/init.jsp" %>
 
 <%
-String uniqueNamespace = namespace + PortalUtil.getUniqueElementId(request, namespace, StringPool.BLANK);
+String uniqueNamespace = namespace + PortalUtil.getUniqueElementId(namespace, StringPool.BLANK);
 
 if (!uniqueNamespace.endsWith(StringPool.UNDERLINE)) {
 	uniqueNamespace = uniqueNamespace.concat(StringPool.UNDERLINE);

@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.taglib.BaseValidatorTagSupport;
 import com.liferay.taglib.aui.base.BaseValidatorTagImpl;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.tagext.BodyContent;
 import javax.servlet.jsp.tagext.BodyTag;
 
@@ -85,10 +84,7 @@ public class ValidatorTagImpl
 
 			sb.append(StringPool.UNDERLINE);
 
-			HttpServletRequest request =
-				(HttpServletRequest)pageContext.getRequest();
-
-			sb.append(PortalUtil.getUniqueElementId(request, namespace, name));
+			sb.append(PortalUtil.getUniqueElementId(namespace, name));
 
 			name = sb.toString();
 		}

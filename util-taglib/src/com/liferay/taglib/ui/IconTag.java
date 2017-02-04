@@ -374,8 +374,7 @@ public class IconTag extends IncludeTag {
 				namespace = portletResponse.getNamespace();
 			}
 
-			id = PortalUtil.getUniqueElementId(
-				getOriginalServletRequest(), namespace, id);
+			id = PortalUtil.getUniqueElementId(namespace, id);
 		}
 		else {
 			id = PortalUtil.generateRandomKey(request, IconTag.class.getName());

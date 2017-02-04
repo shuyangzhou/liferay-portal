@@ -85,7 +85,7 @@ public class FieldsetTag extends BaseFieldsetTag {
 			getCollapsible()) {
 
 			String id = PortalUtil.getUniqueElementId(
-				request, _getNamespace(), AUIUtil.normalizeId(getLabel()));
+				_getNamespace(), AUIUtil.normalizeId(getLabel()));
 
 			setId(_getNamespace() + id);
 		}

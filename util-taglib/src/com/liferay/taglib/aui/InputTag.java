@@ -246,7 +246,7 @@ public class InputTag extends BaseInputTag {
 			}
 			else {
 				id = PortalUtil.getUniqueElementId(
-					request, StringPool.BLANK, AUIUtil.normalizeId(name));
+					StringPool.BLANK, AUIUtil.normalizeId(name));
 			}
 		}
 
