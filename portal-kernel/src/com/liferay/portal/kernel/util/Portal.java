@@ -1119,6 +1119,8 @@ public interface Portal {
 	public String getUniqueElementId(
 		PortletRequest request, String namespace, String id);
 
+	public String getUniqueElementId(String namespace, String elementId);
+
 	public UploadPortletRequest getUploadPortletRequest(
 		PortletRequest portletRequest);
 
