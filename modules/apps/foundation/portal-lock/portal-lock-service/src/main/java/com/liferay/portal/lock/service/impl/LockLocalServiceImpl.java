@@ -157,56 +157,6 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 			userId, className, key, owner, inheritable, expirationTime);
 	}
 
-	private Lock _lock(
-			long userId, String className, String key, String owner,
-			boolean inheritable, long expirationTime)
-		throws PortalException {
-
-		Date now = new Date();
-
-		Lock lock = lockPersistence.fetchByC_K(className, key);
-
-		if (lock != null) {
-			if (lock.isExpired()) {
-				expireLock(lock);
-
-				lock = null;
-			}
-			else if (lock.getUserId() != userId) {
-				throw new DuplicateLockException(lock);
-			}
-		}
-
-		if (lock == null) {
-			User user = userLocalService.getUser(userId);
-
-			long lockId = counterLocalService.increment();
-
-			lock = lockPersistence.create(lockId);
-
-			lock.setCompanyId(user.getCompanyId());
-			lock.setUserId(user.getUserId());
-			lock.setUserName(user.getFullName());
-			lock.setClassName(className);
-			lock.setKey(key);
-			lock.setOwner(owner);
-			lock.setInheritable(inheritable);
-		}
-
-		lock.setCreateDate(now);
-
-		if (expirationTime == 0) {
-			lock.setExpirationDate(null);
-		}
-		else {
-			lock.setExpirationDate(new Date(now.getTime() + expirationTime));
-		}
-
-		lockPersistence.update(lock);
-
-		return lock;
-	}
-
 	/**
 	 * @deprecated As of 2.0.0, see {@link #tryLock(String, String, String)}
 	 */
@@ -443,6 +393,56 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 				lock = null;
 			}
 		}
+
+		return lock;
+	}
+
+	private Lock _lock(
+			long userId, String className, String key, String owner,
+			boolean inheritable, long expirationTime)
+		throws PortalException {
+
+		Date now = new Date();
+
+		Lock lock = lockPersistence.fetchByC_K(className, key);
+
+		if (lock != null) {
+			if (lock.isExpired()) {
+				expireLock(lock);
+
+				lock = null;
+			}
+			else if (lock.getUserId() != userId) {
+				throw new DuplicateLockException(lock);
+			}
+		}
+
+		if (lock == null) {
+			User user = userLocalService.getUser(userId);
+
+			long lockId = counterLocalService.increment();
+
+			lock = lockPersistence.create(lockId);
+
+			lock.setCompanyId(user.getCompanyId());
+			lock.setUserId(user.getUserId());
+			lock.setUserName(user.getFullName());
+			lock.setClassName(className);
+			lock.setKey(key);
+			lock.setOwner(owner);
+			lock.setInheritable(inheritable);
+		}
+
+		lock.setCreateDate(now);
+
+		if (expirationTime == 0) {
+			lock.setExpirationDate(null);
+		}
+		else {
+			lock.setExpirationDate(new Date(now.getTime() + expirationTime));
+		}
+
+		lockPersistence.update(lock);
 
 		return lock;
 	}
