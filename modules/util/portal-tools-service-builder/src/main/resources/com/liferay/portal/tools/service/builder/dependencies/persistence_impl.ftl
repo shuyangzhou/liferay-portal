@@ -677,14 +677,50 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew
-			<#if columnBitmaskEnabled>
-				|| !${entity.name}ModelImpl.COLUMN_BITMASK_ENABLED
-			</#if>
-			) {
+		<#if columnBitmaskEnabled>
+			if (!${entity.name}ModelImpl.COLUMN_BITMASK_ENABLED) {
+				finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			}
 
-			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		}
+			<#if collectionFinderList?size != 0>
+				else
+			</#if>
+		</#if>
+
+		<#if (collectionFinderList?size != 0) || !columnBitmaskEnabled>
+			if (isNew) {
+				<#if columnBitmaskEnabled>
+					<#assign firstCol = true />
+
+					<#list collectionFinderList as finder>
+						<#if !finder.hasCustomComparator()>
+							<#assign finderColsList = finder.getColumns() />
+
+							<#if firstCol>
+								<#assign firstCol = false />
+
+								Object[]
+							</#if>
+
+							args = new Object[] {
+								<#list finderColsList as finderCol>
+									${entity.varName}ModelImpl.get${finderCol.methodName}()
+
+									<#if finderCol_has_next>
+										,
+									</#if>
+								</#list>
+							};
+
+							finderCache.removeResult(FINDER_PATH_COUNT_BY_${finder.name?upper_case}, args);
+							finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_${finder.name?upper_case}, args);
+						</#if>
+					</#list>
+				<#else>
+					finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+				</#if>
+			}
+		</#if>
 
 		<#if collectionFinderList?size != 0>
 			<#assign hasEqualComparator = false />
