@@ -14,11 +14,14 @@
 
 package com.liferay.portal.kernel.cache;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.nio.intraband.proxy.annotation.Id;
 import com.liferay.portal.kernel.nio.intraband.proxy.annotation.Proxy;
 
 import java.io.Serializable;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,6 +29,7 @@ import java.util.List;
  * @author Edward Han
  * @author Shuyang Zhou
  */
+@ProviderType
 public interface PortalCache<K extends Serializable, V> {
 
 	public static final int DEFAULT_TIME_TO_LIVE = 0;
@@ -66,6 +70,9 @@ public interface PortalCache<K extends Serializable, V> {
 
 	@Proxy
 	public void removeAll();
+
+	@Proxy
+	public void removeAll(Collection<K> keys);
 
 	public void unregisterPortalCacheListener(
 		PortalCacheListener<K, V> portalCacheListener);

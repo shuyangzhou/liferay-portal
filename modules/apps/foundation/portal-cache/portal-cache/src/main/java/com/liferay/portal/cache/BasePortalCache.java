@@ -20,6 +20,8 @@ import com.liferay.portal.kernel.cache.PortalCacheManager;
 
 import java.io.Serializable;
 
+import java.util.Collection;
+
 /**
  * @author Tina Tian
  */
@@ -137,6 +139,15 @@ public abstract class BasePortalCache<K extends Serializable, V>
 	}
 
 	@Override
+	public void removeAll(Collection<K> keys) {
+		if (keys.isEmpty()) {
+			return;
+		}
+
+		doRemoveAll(keys);
+	}
+
+	@Override
 	public V replace(K key, V value) {
 		return replace(key, value, DEFAULT_TIME_TO_LIVE);
 	}
@@ -206,6 +217,8 @@ public abstract class BasePortalCache<K extends Serializable, V>
 	protected abstract void doRemove(K key);
 
 	protected abstract boolean doRemove(K key, V value);
+
+	protected abstract void doRemoveAll(Collection<K> keys);
 
 	protected abstract V doReplace(K key, V value, int timeToLive);
 

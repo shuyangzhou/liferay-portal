@@ -59,6 +59,7 @@ import com.liferay.registry.RegistryUtil;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -383,6 +384,13 @@ public class ToolDependencies {
 					_portalCacheListeners) {
 
 				portalCacheListener.notifyRemoveAll(this);
+			}
+		}
+
+		@Override
+		public void removeAll(Collection<K> keys) {
+			for (K key : keys) {
+				remove(key);
 			}
 		}
 

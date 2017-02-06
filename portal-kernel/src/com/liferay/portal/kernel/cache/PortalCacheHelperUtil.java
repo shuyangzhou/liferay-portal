@@ -16,6 +16,8 @@ package com.liferay.portal.kernel.cache;
 
 import java.io.Serializable;
 
+import java.util.Collection;
+
 /**
  * @author Tina Tian
  */
@@ -58,6 +60,25 @@ public class PortalCacheHelperUtil {
 
 		try {
 			portalCache.removeAll();
+		}
+		finally {
+			if (!skip) {
+				SkipReplicationThreadLocal.setEnabled(false);
+			}
+		}
+	}
+
+	public static <K extends Serializable> void removeAllWithoutReplicator(
+		PortalCache<K, ?> portalCache, Collection<K> keys) {
+
+		boolean skip = SkipReplicationThreadLocal.isEnabled();
+
+		if (!skip) {
+			SkipReplicationThreadLocal.setEnabled(true);
+		}
+
+		try {
+			portalCache.removeAll(keys);
 		}
 		finally {
 			if (!skip) {

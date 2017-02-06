@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -147,6 +148,10 @@ public class CachelessTableMapperImpl
 
 		@Override
 		public void removeAll() {
+		}
+
+		@Override
+		public void removeAll(Collection<Long> keys) {
 		}
 
 		@Override

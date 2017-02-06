@@ -14,9 +14,12 @@
 
 package com.liferay.portal.cache;
 
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheListener;
 
 import java.io.Serializable;
+
+import java.util.Collection;
 
 /**
  * @author Tina Tian
@@ -47,5 +50,8 @@ public interface PortalCacheReplicator
 		"replicateUpdatesViaCopy";
 
 	public static final String REPLICATOR = "replicator";
+
+	public void notifyEntriesRemoved(
+		PortalCache<K, V> portalCache, Collection<K> keys, int timeToLive);
 
 }
