@@ -1052,8 +1052,6 @@ public class LayoutImpl extends LayoutBaseImpl {
 			return false;
 		}
 
-		List<Portlet> portlets = new ArrayList<>();
-
 		Set<String> layoutPortletIds = _getLayoutPortletIds();
 
 		for (PortletPreferences portletPreference : portletPreferences) {
@@ -1069,52 +1067,6 @@ public class LayoutImpl extends LayoutBaseImpl {
 				continue;
 			}
 
-			Portlet embeddedPortlet = portlet;
-
-			if (portlet.isInstanceable()) {
-
-				// Instanceable portlets do not need to be cloned because they
-				// are already cloned. See the method getPortletById in the
-				// class PortletLocalServiceImpl and how it references the
-				// method getClonedInstance in the class PortletImpl.
-
-			}
-			else {
-				portlet = new PortletWrapper(portlet) {
-
-					@Override
-					public boolean getStatic() {
-						return _staticPortlet;
-					}
-
-					@Override
-					public boolean isStatic() {
-						return _staticPortlet;
-					}
-
-					@Override
-					public void setStatic(boolean staticPortlet) {
-						_staticPortlet = staticPortlet;
-					}
-
-					private boolean _staticPortlet;
-
-				};
-			}
-
-			// We set embedded portlets as static on order to avoid adding the
-			// close and/or move icons.
-
-			embeddedPortlet.setStatic(true);
-
-			portlets.add(embeddedPortlet);
-		}
-
-		if (portlets.isEmpty()) {
-			return false;
-		}
-
-		for (Portlet portlet : portlets) {
 			if (Objects.equals(portlet.getPortletId(), portletId)) {
 				return true;
 			}
