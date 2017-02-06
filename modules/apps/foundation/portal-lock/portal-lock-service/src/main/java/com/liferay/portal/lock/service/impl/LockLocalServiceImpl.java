@@ -128,7 +128,7 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 
 	/**
 	 * @deprecated As of 2.0.0, see {@link #tryLock(
-	 * 				long, String, String, String, boolean, long)}
+	 * 				long, String, long, String, boolean, long)}
 	 */
 	@Deprecated
 	@Override
