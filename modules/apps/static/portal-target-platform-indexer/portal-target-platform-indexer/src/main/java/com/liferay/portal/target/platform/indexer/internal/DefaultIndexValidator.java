@@ -68,7 +68,7 @@ public class DefaultIndexValidator implements IndexValidator {
 		try (ResolverValidator resolverValidator = new ResolverValidator()) {
 			ResourceBuilder resourceBuilder = new ResourceBuilder();
 
-			resourceBuilder.addEE(EE.JavaSE_1_7);
+			resourceBuilder.addEE(EE.JavaSE_1_8);
 			resourceBuilder.addManifest(OSGI_CORE.R6_0_0.getManifest());
 
 			_includeTargetPlatform(resourceBuilder, identities);
