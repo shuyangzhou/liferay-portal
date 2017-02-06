@@ -1045,13 +1045,76 @@ public class LayoutImpl extends LayoutBaseImpl {
 
 	@Override
 	public boolean isPortletEmbedded(String portletId, long groupId) {
-		List<Portlet> embeddedPortlets = getEmbeddedPortlets(groupId);
+		List<PortletPreferences> portletPreferences = _getPortletPreferences(
+			groupId);
 
-		if (embeddedPortlets.isEmpty()) {
+		if (portletPreferences.isEmpty()) {
 			return false;
 		}
 
-		for (Portlet portlet : embeddedPortlets) {
+		List<Portlet> portlets = new ArrayList<>();
+
+		Set<String> layoutPortletIds = _getLayoutPortletIds();
+
+		for (PortletPreferences portletPreference : portletPreferences) {
+			String currentPortletId = portletPreference.getPortletId();
+
+			Portlet portlet = PortletLocalServiceUtil.getPortletById(
+				getCompanyId(), currentPortletId);
+
+			if ((portlet == null) || !portlet.isReady() ||
+				portlet.isUndeployedPortlet() || !portlet.isActive() ||
+				!layoutPortletIds.contains(currentPortletId)) {
+
+				continue;
+			}
+
+			Portlet embeddedPortlet = portlet;
+
+			if (portlet.isInstanceable()) {
+
+				// Instanceable portlets do not need to be cloned because they
+				// are already cloned. See the method getPortletById in the
+				// class PortletLocalServiceImpl and how it references the
+				// method getClonedInstance in the class PortletImpl.
+
+			}
+			else {
+				portlet = new PortletWrapper(portlet) {
+
+					@Override
+					public boolean getStatic() {
+						return _staticPortlet;
+					}
+
+					@Override
+					public boolean isStatic() {
+						return _staticPortlet;
+					}
+
+					@Override
+					public void setStatic(boolean staticPortlet) {
+						_staticPortlet = staticPortlet;
+					}
+
+					private boolean _staticPortlet;
+
+				};
+			}
+
+			// We set embedded portlets as static on order to avoid adding the
+			// close and/or move icons.
+
+			embeddedPortlet.setStatic(true);
+
+			portlets.add(embeddedPortlet);
+		}
+
+		if (portlets.isEmpty()) {
+			return false;
+		}
+
+		for (Portlet portlet : portlets) {
 			if (Objects.equals(portlet.getPortletId(), portletId)) {
 				return true;
 			}
