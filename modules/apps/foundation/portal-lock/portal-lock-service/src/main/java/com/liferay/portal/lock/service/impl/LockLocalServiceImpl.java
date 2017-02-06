@@ -153,6 +153,15 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 			boolean inheritable, long expirationTime)
 		throws PortalException {
 
+		return _lock(
+			userId, className, key, owner, inheritable, expirationTime);
+	}
+
+	private Lock _lock(
+			long userId, String className, String key, String owner,
+			boolean inheritable, long expirationTime)
+		throws PortalException {
+
 		Date now = new Date();
 
 		Lock lock = lockPersistence.fetchByC_K(className, key);
