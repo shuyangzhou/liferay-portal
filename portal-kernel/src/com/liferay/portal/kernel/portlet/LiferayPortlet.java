@@ -500,6 +500,10 @@ public class LiferayPortlet extends GenericPortlet {
 	}
 
 	protected boolean isAddSuccessMessage(ActionRequest actionRequest) {
+		if (!addProcessActionSuccessMessage) {
+			return false;
+		}
+
 		String portletId = PortalUtil.getPortletId(actionRequest);
 
 		if (SessionMessages.contains(
