@@ -101,8 +101,6 @@ public class PortletServlet extends HttpServlet {
 
 		HttpSession session = _getSharedSession(request, portletRequest);
 
-		PortletSessionTracker.add(session);
-
 		portletSession.setHttpSession(session);
 
 		try {

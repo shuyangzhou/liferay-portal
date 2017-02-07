@@ -30,7 +30,9 @@ import javax.servlet.http.HttpSession;
  *
  * @author Rudy Hilado
  * @author Shuyang Zhou
+ * @deprecated As of 7.1.0
  */
+@Deprecated
 public class PortletSessionTracker {
 
 	public static void add(HttpSession session) {
