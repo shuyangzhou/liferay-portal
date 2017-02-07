@@ -646,7 +646,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				}
 			</#if>
 
-			if (${entity.varName}.isNew()) {
+			if (isNew) {
 				session.save(${entity.varName});
 
 				${entity.varName}.setNew(false);
