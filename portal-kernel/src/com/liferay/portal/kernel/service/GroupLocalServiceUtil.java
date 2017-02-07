@@ -301,6 +301,11 @@ public class GroupLocalServiceUtil {
 		return getService().fetchGroupByUuidAndCompanyId(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.model.Group fetchStagingGroup(
+		long liveGroupId) {
+		return getService().fetchStagingGroup(liveGroupId);
+	}
+
 	public static com.liferay.portal.kernel.model.Group fetchUserGroup(
 		long companyId, long userId) {
 		return getService().fetchUserGroup(companyId, userId);

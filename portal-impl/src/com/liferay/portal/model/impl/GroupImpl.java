@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.UserPersonalSite;
+import com.liferay.portal.kernel.model.cache.CacheField;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
@@ -644,7 +645,7 @@ public class GroupImpl extends GroupBaseImpl {
 		}
 
 		try {
-			if (_stagingGroup == null) {
+			if ((_stagingGroup == null) || (_stagingGroup == _nullGroup)) {
 				_stagingGroup = GroupLocalServiceUtil.getStagingGroup(
 					getGroupId());
 
@@ -792,16 +793,21 @@ public class GroupImpl extends GroupBaseImpl {
 			return false;
 		}
 
-		if (_stagingGroup != null) {
-			return true;
-		}
-
-		try {
-			return GroupLocalServiceUtil.hasStagingGroup(getGroupId());
-		}
-		catch (Exception e) {
+		if (_stagingGroup == _nullGroup) {
 			return false;
 		}
+		else if (_stagingGroup == null) {
+			_stagingGroup = GroupLocalServiceUtil.fetchStagingGroup(
+				getGroupId());
+
+			if (_stagingGroup == null) {
+				_stagingGroup = _nullGroup;
+
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -1167,8 +1173,13 @@ public class GroupImpl extends GroupBaseImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(GroupImpl.class);
 
+	private static final Group _nullGroup = new GroupImpl();
+
 	private Group _liveGroup;
+
+	@CacheField(propagateToInterface = true)
 	private Group _stagingGroup;
+
 	private UnicodeProperties _typeSettingsProperties;
 
 	private static class ClassNameIds {
