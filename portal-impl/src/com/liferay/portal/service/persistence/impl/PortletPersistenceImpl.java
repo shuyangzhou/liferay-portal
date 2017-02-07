@@ -1077,7 +1077,7 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 		try {
 			session = openSession();
 
-			if (portlet.isNew()) {
+			if (isNew) {
 				session.save(portlet);
 
 				portlet.setNew(false);
@@ -1095,8 +1095,17 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !PortletModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!PortletModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { portletModelImpl.getCompanyId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
+				args);
 		}
 
 		else {

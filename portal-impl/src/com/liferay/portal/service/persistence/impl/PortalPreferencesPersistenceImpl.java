@@ -564,7 +564,7 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 		try {
 			session = openSession();
 
-			if (portalPreferences.isNew()) {
+			if (isNew) {
 				session.save(portalPreferences);
 
 				portalPreferences.setNew(false);
@@ -582,7 +582,7 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !PortalPreferencesModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!PortalPreferencesModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 

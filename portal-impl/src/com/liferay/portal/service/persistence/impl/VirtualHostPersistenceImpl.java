@@ -812,7 +812,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 		try {
 			session = openSession();
 
-			if (virtualHost.isNew()) {
+			if (isNew) {
 				session.save(virtualHost);
 
 				virtualHost.setNew(false);
@@ -830,7 +830,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !VirtualHostModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!VirtualHostModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 

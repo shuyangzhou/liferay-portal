@@ -2181,7 +2181,7 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 		try {
 			session = openSession();
 
-			if (ddmStorageLink.isNew()) {
+			if (isNew) {
 				session.save(ddmStorageLink);
 
 				ddmStorageLink.setNew(false);
@@ -2199,8 +2199,32 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !DDMStorageLinkModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!DDMStorageLinkModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { ddmStorageLinkModelImpl.getUuid() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
+				args);
+
+			args = new Object[] {
+					ddmStorageLinkModelImpl.getUuid(),
+					ddmStorageLinkModelImpl.getCompanyId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C,
+				args);
+
+			args = new Object[] { ddmStorageLinkModelImpl.getStructureId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_STRUCTUREID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STRUCTUREID,
+				args);
 		}
 
 		else {

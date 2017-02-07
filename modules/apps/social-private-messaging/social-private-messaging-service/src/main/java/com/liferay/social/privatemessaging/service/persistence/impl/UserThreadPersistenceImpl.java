@@ -2718,7 +2718,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 		try {
 			session = openSession();
 
-			if (userThread.isNew()) {
+			if (isNew) {
 				session.save(userThread);
 
 				userThread.setNew(false);
@@ -2736,8 +2736,42 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !UserThreadModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!UserThreadModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { userThreadModelImpl.getUserId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
+				args);
+
+			args = new Object[] { userThreadModelImpl.getMbThreadId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_MBTHREADID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MBTHREADID,
+				args);
+
+			args = new Object[] {
+					userThreadModelImpl.getUserId(),
+					userThreadModelImpl.getDeleted()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_D, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_D,
+				args);
+
+			args = new Object[] {
+					userThreadModelImpl.getUserId(),
+					userThreadModelImpl.getRead(),
+					userThreadModelImpl.getDeleted()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_R_D, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_R_D,
+				args);
 		}
 
 		else {

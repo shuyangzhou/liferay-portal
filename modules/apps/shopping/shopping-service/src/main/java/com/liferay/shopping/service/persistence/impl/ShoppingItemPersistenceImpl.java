@@ -2253,7 +2253,7 @@ public class ShoppingItemPersistenceImpl extends BasePersistenceImpl<ShoppingIte
 		try {
 			session = openSession();
 
-			if (shoppingItem.isNew()) {
+			if (isNew) {
 				session.save(shoppingItem);
 
 				shoppingItem.setNew(false);
@@ -2271,8 +2271,20 @@ public class ShoppingItemPersistenceImpl extends BasePersistenceImpl<ShoppingIte
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !ShoppingItemModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!ShoppingItemModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
+			Object[] args = new Object[] {
+					shoppingItemModelImpl.getGroupId(),
+					shoppingItemModelImpl.getCategoryId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C,
+				args);
 		}
 
 		else {

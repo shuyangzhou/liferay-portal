@@ -1482,7 +1482,7 @@ public class PushNotificationsDevicePersistenceImpl extends BasePersistenceImpl<
 		try {
 			session = openSession();
 
-			if (pushNotificationsDevice.isNew()) {
+			if (isNew) {
 				session.save(pushNotificationsDevice);
 
 				pushNotificationsDevice.setNew(false);
@@ -1500,8 +1500,20 @@ public class PushNotificationsDevicePersistenceImpl extends BasePersistenceImpl<
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !PushNotificationsDeviceModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!PushNotificationsDeviceModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
+			Object[] args = new Object[] {
+					pushNotificationsDeviceModelImpl.getUserId(),
+					pushNotificationsDeviceModelImpl.getPlatform()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_P, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_P,
+				args);
 		}
 
 		else {

@@ -1015,7 +1015,7 @@ public class DLSyncEventPersistenceImpl extends BasePersistenceImpl<DLSyncEvent>
 		try {
 			session = openSession();
 
-			if (dlSyncEvent.isNew()) {
+			if (isNew) {
 				session.save(dlSyncEvent);
 
 				dlSyncEvent.setNew(false);
@@ -1033,8 +1033,12 @@ public class DLSyncEventPersistenceImpl extends BasePersistenceImpl<DLSyncEvent>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !DLSyncEventModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!DLSyncEventModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
 		}
 
 		entityCache.putResult(DLSyncEventModelImpl.ENTITY_CACHE_ENABLED,

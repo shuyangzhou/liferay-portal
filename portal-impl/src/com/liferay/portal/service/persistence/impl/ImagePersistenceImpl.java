@@ -756,7 +756,7 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 		try {
 			session = openSession();
 
-			if (image.isNew()) {
+			if (isNew) {
 				session.save(image);
 
 				image.setNew(false);
@@ -774,8 +774,12 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !ImageModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!ImageModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
 		}
 
 		entityCache.putResult(ImageModelImpl.ENTITY_CACHE_ENABLED,

@@ -4031,7 +4031,7 @@ public class FriendlyURLPersistenceImpl extends BasePersistenceImpl<FriendlyURL>
 		try {
 			session = openSession();
 
-			if (friendlyURL.isNew()) {
+			if (isNew) {
 				session.save(friendlyURL);
 
 				friendlyURL.setNew(false);
@@ -4049,8 +4049,46 @@ public class FriendlyURLPersistenceImpl extends BasePersistenceImpl<FriendlyURL>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !FriendlyURLModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!FriendlyURLModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { friendlyURLModelImpl.getUuid() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
+				args);
+
+			args = new Object[] {
+					friendlyURLModelImpl.getUuid(),
+					friendlyURLModelImpl.getCompanyId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C,
+				args);
+
+			args = new Object[] {
+					friendlyURLModelImpl.getGroupId(),
+					friendlyURLModelImpl.getClassNameId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C,
+				args);
+
+			args = new Object[] {
+					friendlyURLModelImpl.getCompanyId(),
+					friendlyURLModelImpl.getGroupId(),
+					friendlyURLModelImpl.getClassNameId(),
+					friendlyURLModelImpl.getClassPK()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_G_C_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_G_C_C,
+				args);
 		}
 
 		else {

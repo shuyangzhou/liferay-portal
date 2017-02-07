@@ -272,7 +272,7 @@ public class ClusterGroupPersistenceImpl extends BasePersistenceImpl<ClusterGrou
 		try {
 			session = openSession();
 
-			if (clusterGroup.isNew()) {
+			if (isNew) {
 				session.save(clusterGroup);
 
 				clusterGroup.setNew(false);
