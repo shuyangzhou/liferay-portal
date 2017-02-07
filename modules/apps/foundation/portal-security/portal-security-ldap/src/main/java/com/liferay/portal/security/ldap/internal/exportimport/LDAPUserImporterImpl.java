@@ -88,7 +88,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 
@@ -364,39 +363,39 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 			return;
 		}
 
+		long defaultUserId = _userLocalService.getDefaultUserId(companyId);
+
+		LDAPImportConfiguration ldapImportConfiguration =
+			_ldapImportConfigurationProvider.getConfiguration(companyId);
+
+		Lock lock = null;
+
 		try {
-			long defaultUserId = _userLocalService.getDefaultUserId(companyId);
-
-			LDAPImportConfiguration ldapImportConfiguration =
-				_ldapImportConfigurationProvider.getConfiguration(companyId);
-
-			Optional<Lock> optional = _lockManager.tryLock(
+			lock = _lockManager.lock(
 				defaultUserId, UserImporter.class.getName(), companyId,
 				LDAPUserImporterImpl.class.getName(), false,
 				ldapImportConfiguration.importLockExpirationTime());
 
-			if (optional.isPresent()) {
-				Collection<LDAPServerConfiguration> ldapServerConfigurations =
-					_ldapServerConfigurationProvider.getConfigurations(
-						companyId);
+			Collection<LDAPServerConfiguration> ldapServerConfigurations =
+				_ldapServerConfigurationProvider.getConfigurations(companyId);
 
-				for (LDAPServerConfiguration ldapServerConfiguration :
-						ldapServerConfigurations) {
+			for (LDAPServerConfiguration ldapServerConfiguration :
+					ldapServerConfigurations) {
 
-					importUsers(
-						ldapServerConfiguration.ldapServerId(), companyId);
-				}
+				importUsers(ldapServerConfiguration.ldapServerId(), companyId);
 			}
-			else {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Skipping LDAP import for company " + companyId +
-							" because another LDAP import is in process");
-				}
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Skipping LDAP import for company " + companyId +
+						" because another LDAP import is in process");
 			}
 		}
 		finally {
-			_lockManager.unlock(UserImporter.class.getName(), companyId);
+			if (lock != null) {
+				_lockManager.unlock(UserImporter.class.getName(), companyId);
+			}
 		}
 	}
 
