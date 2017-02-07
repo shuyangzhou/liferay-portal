@@ -559,7 +559,7 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !ClassNameModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!ClassNameModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
