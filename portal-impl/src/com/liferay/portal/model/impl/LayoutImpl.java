@@ -1076,7 +1076,15 @@ public class LayoutImpl extends LayoutBaseImpl {
 			return false;
 		}
 
-		Set<String> layoutPortletIds = _getLayoutPortletIds();
+		Set<String> layoutPortletIds = new HashSet<>();
+
+		for (PortletPreferences portletPreference :
+				PortletPreferencesLocalServiceUtil.getPortletPreferences(
+					PortletKeys.PREFS_OWNER_ID_DEFAULT,
+					PortletKeys.PREFS_OWNER_TYPE_LAYOUT, getPlid())) {
+
+			layoutPortletIds.add(portletPreference.getPortletId());
+		}
 
 		Portlet portlet = PortletLocalServiceUtil.getPortletById(
 			getCompanyId(), portletId);
