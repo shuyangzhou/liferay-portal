@@ -1047,6 +1047,15 @@ public class LayoutImpl extends LayoutBaseImpl {
 	public boolean isPortletEmbedded(String portletId, long groupId) {
 		PortletPreferences portletPreferences =
 			PortletPreferencesLocalServiceUtil.fetchPortletPreferences(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT,
+				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, getPlid(), portletId);
+
+		if (portletPreferences == null) {
+			return false;
+		}
+
+		portletPreferences =
+			PortletPreferencesLocalServiceUtil.fetchPortletPreferences(
 				groupId, PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
 				PortletKeys.PREFS_PLID_SHARED, portletId);
 
@@ -1067,15 +1076,6 @@ public class LayoutImpl extends LayoutBaseImpl {
 						portletId);
 			}
 		}
-
-		if (portletPreferences == null) {
-			return false;
-		}
-
-		portletPreferences =
-			PortletPreferencesLocalServiceUtil.fetchPortletPreferences(
-				PortletKeys.PREFS_OWNER_ID_DEFAULT,
-				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, getPlid(), portletId);
 
 		if (portletPreferences == null) {
 			return false;
