@@ -149,7 +149,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.upload.UploadServletRequest;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.AutoResetThreadLocal;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ClassUtil;
@@ -5438,25 +5437,10 @@ public class PortalImpl implements Portal {
 
 	@Override
 	public String getUniqueElementId(String namespace, String elementId) {
-		String uniqueElementId = elementId;
+		String uniqueElementId = namespace.concat(elementId);
 
-		Map<String, Integer> uniqueElementIdMap =
-			_UNIQUE_ELEMENT_ID_THREAD_LOCAL.get();
-
-		String namespacedElementId = namespace.concat(elementId);
-
-		Integer id = uniqueElementIdMap.get(namespacedElementId);
-
-		if (id == null) {
-			uniqueElementIdMap.put(namespacedElementId, 1);
-
-			return uniqueElementId;
-		}
-		else {
-			uniqueElementIdMap.put(namespacedElementId, id + 1);
-
-			return uniqueElementId.concat(String.valueOf(id));
-		}
+		return uniqueElementId.concat(
+			String.valueOf(_idCounter.getAndIncrement()));
 	}
 
 	@Override
@@ -8287,13 +8271,10 @@ public class PortalImpl implements Portal {
 	private static final String _PUBLIC_GROUP_SERVLET_MAPPING =
 		PropsValues.LAYOUT_FRIENDLY_URL_PUBLIC_SERVLET_MAPPING;
 
-	private static final ThreadLocal<Map<String, Integer>>
-		_UNIQUE_ELEMENT_ID_THREAD_LOCAL = new AutoResetThreadLocal<>(
-			PortalImpl.class + "_UNIQUE_ELEMENT_ID_THREAD_LOCAL",
-			new HashMap<String, Integer>());
-
 	private static final Log _log = LogFactoryUtil.getLog(PortalImpl.class);
 
+	private static final Map<Long, String> _cdnHostHttpMap =
+		new ConcurrentHashMap<>();
 	static {
 		Locale locale = Locale.getDefault();
 
@@ -8317,9 +8298,8 @@ public class PortalImpl implements Portal {
 		new EditDiscussionStrutsAction();
 	private final GetCommentsStrutsAction _getCommentsStrutsAction =
 		new GetCommentsStrutsAction();
+	private final AtomicInteger _idCounter = new AtomicInteger();
 
-	private static final Map<Long, String> _cdnHostHttpMap =
-		new ConcurrentHashMap<>();
 	private final String _pathContext;
 	private final String _pathFriendlyURLPrivateGroup;
 	private final String _pathFriendlyURLPrivateUser;
