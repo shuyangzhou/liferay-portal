@@ -1076,22 +1076,20 @@ public class LayoutImpl extends LayoutBaseImpl {
 			return false;
 		}
 
-		Set<String> layoutPortletIds = new HashSet<>();
+		portletPreferences =
+			PortletPreferencesLocalServiceUtil.fetchPortletPreferences(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT,
+				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, getPlid(), portletId);
 
-		for (PortletPreferences portletPreference :
-				PortletPreferencesLocalServiceUtil.getPortletPreferences(
-					PortletKeys.PREFS_OWNER_ID_DEFAULT,
-					PortletKeys.PREFS_OWNER_TYPE_LAYOUT, getPlid())) {
-
-			layoutPortletIds.add(portletPreference.getPortletId());
+		if (portletPreferences == null) {
+			return false;
 		}
 
 		Portlet portlet = PortletLocalServiceUtil.getPortletById(
 			getCompanyId(), portletId);
 
 		if ((portlet == null) || !portlet.isReady() ||
-			portlet.isUndeployedPortlet() || !portlet.isActive() ||
-			!layoutPortletIds.contains(portletId)) {
+			portlet.isUndeployedPortlet() || !portlet.isActive()) {
 
 			return false;
 		}
