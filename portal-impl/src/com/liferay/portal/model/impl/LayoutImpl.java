@@ -1045,8 +1045,29 @@ public class LayoutImpl extends LayoutBaseImpl {
 
 	@Override
 	public boolean isPortletEmbedded(String portletId, long groupId) {
-		List<PortletPreferences> portletPreferences = _getPortletPreferences(
-			groupId);
+		List<PortletPreferences> portletPreferences =
+			PortletPreferencesLocalServiceUtil.getPortletPreferences(
+				groupId, PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
+				PortletKeys.PREFS_PLID_SHARED);
+
+		if (isTypePortlet()) {
+			LayoutTypePortlet layoutTypePortlet =
+				(LayoutTypePortlet)getLayoutType();
+
+			PortalPreferences portalPreferences =
+				layoutTypePortlet.getPortalPreferences();
+
+			if ((portalPreferences != null) &&
+				layoutTypePortlet.isCustomizable()) {
+
+				portletPreferences = ListUtil.copy(portletPreferences);
+
+				portletPreferences.addAll(
+					PortletPreferencesLocalServiceUtil.getPortletPreferences(
+						portalPreferences.getUserId(),
+						PortletKeys.PREFS_OWNER_TYPE_USER, getPlid()));
+			}
+		}
 
 		if (portletPreferences.isEmpty()) {
 			return false;
