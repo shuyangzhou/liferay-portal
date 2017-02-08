@@ -84,6 +84,10 @@ public class OpenIdConnectProviderRegistryImpl
 
 	@Override
 	public Collection<String> getOpenIdConnectProviderNames() {
+		if (_openIdConnectProvidersPerName.isEmpty()) {
+			return Collections.emptySet();
+		}
+
 		return Collections.unmodifiableCollection(
 			_openIdConnectProvidersPerName.keySet());
 	}

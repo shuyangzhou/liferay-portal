@@ -51,19 +51,22 @@ public class OpenIdConnectNavigationPreDynamicInclude
 			String key)
 		throws IOException {
 
+		Collection<String> openIdConnectProviderNames =
+			_openIdConnectProviderRegistry.getOpenIdConnectProviderNames();
+
+		if (openIdConnectProviderNames.isEmpty()) {
+			return;
+		}
+
 		String mvcRenderCommandName = ParamUtil.getString(
 			request, "mvcRenderCommandName");
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		Collection<String> openIdConnectProviderNames =
-			_openIdConnectProviderRegistry.getOpenIdConnectProviderNames();
-
 		if (mvcRenderCommandName.equals(
 				OpenIdConnectWebKeys.OPEN_ID_CONNECT_REQUEST_ACTION_NAME) ||
-			!_openIdConnect.isEnabled(themeDisplay.getCompanyId()) ||
-			openIdConnectProviderNames.isEmpty()) {
+			!_openIdConnect.isEnabled(themeDisplay.getCompanyId())) {
 
 			return;
 		}
