@@ -3686,8 +3686,57 @@ public class KaleoLogPersistenceImpl extends BasePersistenceImpl<KaleoLog>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !KaleoLogModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!KaleoLogModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { kaleoLogModelImpl.getCompanyId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
+				args);
+
+			args = new Object[] { kaleoLogModelImpl.getKaleoDefinitionId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONID,
+				args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID,
+				args);
+
+			args = new Object[] { kaleoLogModelImpl.getKaleoInstanceId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEOINSTANCEID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEOINSTANCEID,
+				args);
+
+			args = new Object[] { kaleoLogModelImpl.getKaleoTaskInstanceTokenId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEOTASKINSTANCETOKENID,
+				args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEOTASKINSTANCETOKENID,
+				args);
+
+			args = new Object[] {
+					kaleoLogModelImpl.getKaleoInstanceTokenId(),
+					kaleoLogModelImpl.getType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_KITI_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KITI_T,
+				args);
+
+			args = new Object[] {
+					kaleoLogModelImpl.getKaleoClassName(),
+					kaleoLogModelImpl.getKaleoClassPK(),
+					kaleoLogModelImpl.getKaleoInstanceTokenId(),
+					kaleoLogModelImpl.getType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_KCN_KCPK_KITI_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KCN_KCPK_KITI_T,
+				args);
 		}
 
 		else {

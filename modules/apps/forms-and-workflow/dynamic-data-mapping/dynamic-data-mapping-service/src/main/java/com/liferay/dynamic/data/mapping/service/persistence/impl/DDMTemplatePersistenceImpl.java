@@ -12230,8 +12230,117 @@ public class DDMTemplatePersistenceImpl extends BasePersistenceImpl<DDMTemplate>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !DDMTemplateModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!DDMTemplateModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { ddmTemplateModelImpl.getUuid() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
+				args);
+
+			args = new Object[] {
+					ddmTemplateModelImpl.getUuid(),
+					ddmTemplateModelImpl.getCompanyId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C,
+				args);
+
+			args = new Object[] { ddmTemplateModelImpl.getGroupId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
+				args);
+
+			args = new Object[] { ddmTemplateModelImpl.getClassPK() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_CLASSPK, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CLASSPK,
+				args);
+
+			args = new Object[] { ddmTemplateModelImpl.getTemplateKey() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_TEMPLATEKEY, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TEMPLATEKEY,
+				args);
+
+			args = new Object[] { ddmTemplateModelImpl.getType() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_TYPE, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TYPE,
+				args);
+
+			args = new Object[] { ddmTemplateModelImpl.getLanguage() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_LANGUAGE, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_LANGUAGE,
+				args);
+
+			args = new Object[] {
+					ddmTemplateModelImpl.getGroupId(),
+					ddmTemplateModelImpl.getClassNameId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C,
+				args);
+
+			args = new Object[] {
+					ddmTemplateModelImpl.getGroupId(),
+					ddmTemplateModelImpl.getClassPK()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_CPK, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_CPK,
+				args);
+
+			args = new Object[] {
+					ddmTemplateModelImpl.getGroupId(),
+					ddmTemplateModelImpl.getClassNameId(),
+					ddmTemplateModelImpl.getClassPK()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_C_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C_C,
+				args);
+
+			args = new Object[] {
+					ddmTemplateModelImpl.getClassNameId(),
+					ddmTemplateModelImpl.getClassPK(),
+					ddmTemplateModelImpl.getType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_C_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_C_T,
+				args);
+
+			args = new Object[] {
+					ddmTemplateModelImpl.getGroupId(),
+					ddmTemplateModelImpl.getClassNameId(),
+					ddmTemplateModelImpl.getClassPK(),
+					ddmTemplateModelImpl.getType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_C_C_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C_C_T,
+				args);
+
+			args = new Object[] {
+					ddmTemplateModelImpl.getGroupId(),
+					ddmTemplateModelImpl.getClassNameId(),
+					ddmTemplateModelImpl.getClassPK(),
+					ddmTemplateModelImpl.getType(),
+					ddmTemplateModelImpl.getMode()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_C_C_T_M, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_C_C_T_M,
+				args);
 		}
 
 		else {

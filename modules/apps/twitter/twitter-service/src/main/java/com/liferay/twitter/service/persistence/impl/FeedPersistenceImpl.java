@@ -628,7 +628,7 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !FeedModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!FeedModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 

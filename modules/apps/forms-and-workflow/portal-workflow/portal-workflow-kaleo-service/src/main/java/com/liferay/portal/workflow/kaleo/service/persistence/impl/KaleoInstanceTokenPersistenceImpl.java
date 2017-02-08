@@ -3091,8 +3091,53 @@ public class KaleoInstanceTokenPersistenceImpl extends BasePersistenceImpl<Kaleo
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !KaleoInstanceTokenModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!KaleoInstanceTokenModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
+			Object[] args = new Object[] {
+					kaleoInstanceTokenModelImpl.getCompanyId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
+				args);
+
+			args = new Object[] {
+					kaleoInstanceTokenModelImpl.getKaleoDefinitionId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONID,
+				args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID,
+				args);
+
+			args = new Object[] { kaleoInstanceTokenModelImpl.getKaleoInstanceId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEOINSTANCEID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEOINSTANCEID,
+				args);
+
+			args = new Object[] {
+					kaleoInstanceTokenModelImpl.getCompanyId(),
+					kaleoInstanceTokenModelImpl.getParentKaleoInstanceTokenId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_PKITI, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_PKITI,
+				args);
+
+			args = new Object[] {
+					kaleoInstanceTokenModelImpl.getCompanyId(),
+					kaleoInstanceTokenModelImpl.getParentKaleoInstanceTokenId(),
+					kaleoInstanceTokenModelImpl.getCompletionDate()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_PKITI_CD, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_PKITI_CD,
+				args);
 		}
 
 		else {
