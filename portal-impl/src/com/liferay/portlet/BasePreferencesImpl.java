@@ -47,9 +47,13 @@ public abstract class BasePreferencesImpl implements Serializable {
 	}
 
 	public Map<String, String[]> getMap() {
-		Map<String, String[]> map = new HashMap<>();
-
 		Map<String, Preference> preferences = getPreferences();
+
+		if (preferences.isEmpty()) {
+			return Collections.emptyMap();
+		}
+
+		Map<String, String[]> map = new HashMap<>();
 
 		for (Map.Entry<String, Preference> entry : preferences.entrySet()) {
 			String key = entry.getKey();
@@ -60,7 +64,7 @@ public abstract class BasePreferencesImpl implements Serializable {
 			map.put(key, actualValues);
 		}
 
-		return Collections.unmodifiableMap(map);
+		return map;
 	}
 
 	public Enumeration<String> getNames() {
@@ -86,18 +90,17 @@ public abstract class BasePreferencesImpl implements Serializable {
 
 		Preference preference = preferences.get(key);
 
-		String[] values = null;
-
-		if (preference != null) {
-			values = preference.getValues();
-		}
-
-		if (!isNull(values)) {
-			return getActualValue(values[0]);
-		}
-		else {
+		if (preference == null) {
 			return getActualValue(def);
 		}
+
+		String[] values = preference.getValues();
+
+		if (isNull(values)) {
+			return def;
+		}
+
+		return getActualValue(values[0]);
 	}
 
 	public String[] getValues(String key, String[] def) {
@@ -109,18 +112,17 @@ public abstract class BasePreferencesImpl implements Serializable {
 
 		Preference preference = preferences.get(key);
 
-		String[] values = null;
-
-		if (preference != null) {
-			values = preference.getValues();
-		}
-
-		if (!isNull(values)) {
-			return getActualValues(values);
-		}
-		else {
+		if (preference == null) {
 			return getActualValues(def);
 		}
+
+		String[] values = preference.getValues();
+
+		if (isNull(values)) {
+			return def;
+		}
+
+		return getActualValues(values);
 	}
 
 	public boolean isReadOnly(String key) {
@@ -161,6 +163,8 @@ public abstract class BasePreferencesImpl implements Serializable {
 			preference = new Preference(key, value);
 
 			modifiedPreferences.put(key, preference);
+
+			return;
 		}
 
 		if (preference.isReadOnly()) {
@@ -192,6 +196,8 @@ public abstract class BasePreferencesImpl implements Serializable {
 			preference = new Preference(key, values);
 
 			modifiedPreferences.put(key, preference);
+
+			return;
 		}
 
 		if (preference.isReadOnly()) {
