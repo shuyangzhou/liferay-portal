@@ -185,31 +185,17 @@ public class LockLocalServiceUtil {
 		return getService().getLockByUuidAndCompanyId(uuid, companyId);
 	}
 
-	/**
-	* @deprecated As of 2.0.0, see {@link #tryLock(
-	String, String, String, String)}
-	*/
-	@Deprecated
 	public static com.liferay.portal.lock.model.Lock lock(
 		java.lang.String className, java.lang.String key,
 		java.lang.String expectedOwner, java.lang.String updatedOwner) {
 		return getService().lock(className, key, expectedOwner, updatedOwner);
 	}
 
-	/**
-	* @deprecated As of 2.0.0, see {@link #tryLock(String, String, String)}
-	*/
-	@Deprecated
 	public static com.liferay.portal.lock.model.Lock lock(
 		java.lang.String className, java.lang.String key, java.lang.String owner) {
 		return getService().lock(className, key, owner);
 	}
 
-	/**
-	* @deprecated As of 2.0.0, see {@link #tryLock(
-	long, String, String, String, boolean, long)}
-	*/
-	@Deprecated
 	public static com.liferay.portal.lock.model.Lock lock(long userId,
 		java.lang.String className, java.lang.String key,
 		java.lang.String owner, boolean inheritable, long expirationTime)
@@ -219,11 +205,16 @@ public class LockLocalServiceUtil {
 			expirationTime);
 	}
 
-	/**
-	* @deprecated As of 2.0.0, see {@link #tryLock(
-	long, String, String, String, boolean, long)}
-	*/
-	@Deprecated
+	public static com.liferay.portal.lock.model.Lock lock(long userId,
+		java.lang.String className, java.lang.String key,
+		java.lang.String owner, boolean inheritable, long expirationTime,
+		boolean renew)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .lock(userId, className, key, owner, inheritable,
+			expirationTime, renew);
+	}
+
 	public static com.liferay.portal.lock.model.Lock lock(long userId,
 		java.lang.String className, long key, java.lang.String owner,
 		boolean inheritable, long expirationTime)
@@ -231,6 +222,15 @@ public class LockLocalServiceUtil {
 		return getService()
 				   .lock(userId, className, key, owner, inheritable,
 			expirationTime);
+	}
+
+	public static com.liferay.portal.lock.model.Lock lock(long userId,
+		java.lang.String className, long key, java.lang.String owner,
+		boolean inheritable, long expirationTime, boolean renew)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .lock(userId, className, key, owner, inheritable,
+			expirationTime, renew);
 	}
 
 	public static com.liferay.portal.lock.model.Lock refresh(
@@ -332,33 +332,6 @@ public class LockLocalServiceUtil {
 	public static java.util.List<com.liferay.portal.lock.model.Lock> getLocks(
 		int start, int end) {
 		return getService().getLocks(start, end);
-	}
-
-	public static java.util.Optional<com.liferay.portal.lock.model.Lock> tryLock(
-		java.lang.String className, java.lang.String key,
-		java.lang.String expectedOwner, java.lang.String updatedOwner) {
-		return getService().tryLock(className, key, expectedOwner, updatedOwner);
-	}
-
-	public static java.util.Optional<com.liferay.portal.lock.model.Lock> tryLock(
-		java.lang.String className, java.lang.String key, java.lang.String owner) {
-		return getService().tryLock(className, key, owner);
-	}
-
-	public static java.util.Optional<com.liferay.portal.lock.model.Lock> tryLock(
-		long userId, java.lang.String className, java.lang.String key,
-		java.lang.String owner, boolean inheritable, long expirationTime) {
-		return getService()
-				   .tryLock(userId, className, key, owner, inheritable,
-			expirationTime);
-	}
-
-	public static java.util.Optional<com.liferay.portal.lock.model.Lock> tryLock(
-		long userId, java.lang.String className, long key,
-		java.lang.String owner, boolean inheritable, long expirationTime) {
-		return getService()
-				   .tryLock(userId, className, key, owner, inheritable,
-			expirationTime);
 	}
 
 	/**

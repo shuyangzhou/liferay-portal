@@ -76,12 +76,30 @@ public class LockManagerUtil {
 	}
 
 	public static Lock lock(
+			long userId, String className, long key, String owner,
+			boolean inheritable, long expirationTime, boolean renew)
+		throws PortalException {
+
+		return _lockManager.lock(
+			userId, className, key, owner, inheritable, expirationTime, renew);
+	}
+
+	public static Lock lock(
 			long userId, String className, String key, String owner,
 			boolean inheritable, long expirationTime)
 		throws PortalException {
 
 		return _lockManager.lock(
 			userId, className, key, owner, inheritable, expirationTime);
+	}
+
+	public static Lock lock(
+			long userId, String className, String key, String owner,
+			boolean inheritable, long expirationTime, boolean renew)
+		throws PortalException {
+
+		return _lockManager.lock(
+			userId, className, key, owner, inheritable, expirationTime, renew);
 	}
 
 	public static Lock lock(String className, String key, String owner) {

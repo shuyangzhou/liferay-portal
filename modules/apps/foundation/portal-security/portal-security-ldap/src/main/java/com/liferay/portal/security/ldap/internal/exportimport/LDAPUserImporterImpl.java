@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.exception.NoSuchRoleException;
 import com.liferay.portal.kernel.exception.NoSuchUserGroupException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.lock.DuplicateLockException;
 import com.liferay.portal.kernel.lock.Lock;
 import com.liferay.portal.kernel.lock.LockManager;
 import com.liferay.portal.kernel.log.Log;
@@ -88,7 +89,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 
@@ -365,35 +365,59 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 			return;
 		}
 
+		LDAPImportConfiguration ldapImportConfiguration =
+			_ldapImportConfigurationProvider.getConfiguration(companyId);
+
 		try {
-			long defaultUserId = _userLocalService.getDefaultUserId(companyId);
+			long userId = _userLocalService.getDefaultUserId(companyId);
 
-			LDAPImportConfiguration ldapImportConfiguration =
-				_ldapImportConfigurationProvider.getConfiguration(companyId);
-
-			Optional<Lock> optional = _lockManager.tryLock(
-				defaultUserId, UserImporter.class.getName(), companyId,
+			Lock lock = _lockManager.lock(
+				userId, UserImporter.class.getName(), companyId,
 				LDAPUserImporterImpl.class.getName(), false,
-				ldapImportConfiguration.importLockExpirationTime());
+				ldapImportConfiguration.importLockExpirationTime(), false);
 
-			if (optional.isPresent()) {
-				Collection<LDAPServerConfiguration> ldapServerConfigurations =
-					_ldapServerConfigurationProvider.getConfigurations(
-						companyId);
-
-				for (LDAPServerConfiguration ldapServerConfiguration :
-						ldapServerConfigurations) {
-
-					importUsers(
-						ldapServerConfiguration.ldapServerId(), companyId);
-				}
-			}
-			else {
+			if (!lock.isNew()) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(
 						"Skipping LDAP import for company " + companyId +
-							" because another LDAP import is in process");
+							" because another LDAP import is in process by " +
+								"the same user " + userId);
 				}
+
+				return;
+			}
+		}
+		catch (DuplicateLockException dle) {
+			if (_log.isDebugEnabled()) {
+				Lock lock = dle.getLock();
+
+				_log.debug(
+					"Skipping LDAP import for company " + companyId +
+						" because another LDAP import is in process by " +
+							"another user " + lock.getUserId());
+			}
+
+			return;
+		}
+		catch (Throwable t) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Skipping LDAP import for company " + companyId +
+						" because unable to lock the lock",
+					t);
+			}
+
+			return;
+		}
+
+		try {
+			Collection<LDAPServerConfiguration> ldapServerConfigurations =
+				_ldapServerConfigurationProvider.getConfigurations(companyId);
+
+			for (LDAPServerConfiguration ldapServerConfiguration :
+					ldapServerConfigurations) {
+
+				importUsers(ldapServerConfiguration.ldapServerId(), companyId);
 			}
 		}
 		finally {
