@@ -29,6 +29,11 @@ public interface SettingsFactory {
 	public List<ArchivedSettings> getPortletInstanceArchivedSettingsList(
 		long groupId, String portletId);
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             SettingsLocatorHelper#getServerSettings(String)}
+	 */
+	@Deprecated
 	public Settings getServerSettings(String settingsId);
 
 	public Settings getSettings(SettingsLocator settingsLocator)

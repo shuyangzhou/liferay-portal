@@ -37,12 +37,9 @@ public class CompanyServiceSettingsLocator implements SettingsLocator {
 
 	@Override
 	public Settings getSettings() {
-		Settings portalPropertiesSettings =
-			_settingsLocatorHelper.getPortalPropertiesSettings();
-
 		Settings configurationBeanSettings =
 			_settingsLocatorHelper.getConfigurationBeanSettings(
-				_configurationPid, portalPropertiesSettings);
+				_configurationPid);
 
 		Settings portalPreferencesSettings =
 			_settingsLocatorHelper.getPortalPreferencesSettings(

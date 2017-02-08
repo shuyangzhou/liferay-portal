@@ -41,6 +41,11 @@ public class SettingsFactoryUtil {
 			groupId, portletId);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             SettingsLocatorHelperUtil#getServerSettings(String)}
+	 */
+	@Deprecated
 	public static Settings getServerSettings(String settingsId) {
 		return getSettingsFactory().getServerSettings(settingsId);
 	}

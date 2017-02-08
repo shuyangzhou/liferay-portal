@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.settings.SettingsException;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.settings.SettingsLocator;
 import com.liferay.portal.kernel.settings.SettingsLocatorHelper;
+import com.liferay.portal.kernel.settings.SettingsLocatorHelperUtil;
 import com.liferay.portal.kernel.settings.definition.ConfigurationBeanDeclaration;
 import com.liferay.portal.kernel.settings.definition.ConfigurationPidMapping;
 
@@ -100,13 +101,17 @@ public class SettingsFactoryImpl implements SettingsFactory {
 		return archivedSettingsList;
 	}
 
+	/**
+	 * @deprecated As of 2.0.0, replaced by {@link
+	 *             SettingsLocatorHelperImpl#getServerSettings(String)}
+	 */
+	@Deprecated
 	@Override
 	public Settings getServerSettings(String settingsId) {
-		Settings portalPropertiesSettings =
-			_settingsLocatorHelper.getPortalPropertiesSettings();
+		SettingsLocatorHelper settingsLocatorHelper =
+			SettingsLocatorHelperUtil.getSettingsLocatorHelper();
 
-		return _settingsLocatorHelper.getConfigurationBeanSettings(
-			settingsId, portalPropertiesSettings);
+		return settingsLocatorHelper.getServerSettings(settingsId);
 	}
 
 	@Override
@@ -260,13 +265,6 @@ public class SettingsFactoryImpl implements SettingsFactory {
 		_portletItemLocalService = portletItemLocalService;
 	}
 
-	@Reference(unbind = "-")
-	protected void setSettingsLocatorHelper(
-		SettingsLocatorHelper settingsLocatorHelper) {
-
-		_settingsLocatorHelper = settingsLocatorHelper;
-	}
-
 	protected void unregister(String settingsId) {
 		_fallbackKeysMap.remove(settingsId);
 
@@ -300,6 +298,5 @@ public class SettingsFactoryImpl implements SettingsFactory {
 	private PortletItemLocalService _portletItemLocalService;
 	private final Map<String, SettingsDescriptor> _settingsDescriptors =
 		new ConcurrentHashMap<>();
-	private SettingsLocatorHelper _settingsLocatorHelper;
 
 }

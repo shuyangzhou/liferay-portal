@@ -44,10 +44,10 @@ public class LocationVariableResolverTest extends PowerMockito {
 		_mockResourceManager = new MockResourceManager(
 			"En un lugar de la Mancha...");
 
-		_mockSettingsFactory = mock(SettingsFactory.class);
+		_mockSettingsLocatorHelper = mock(SettingsLocatorHelper.class);
 
 		_locationVariableResolver = new LocationVariableResolver(
-			_mockResourceManager, _mockSettingsFactory);
+			_mockResourceManager, _mockSettingsLocatorHelper);
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class LocationVariableResolverTest extends PowerMockito {
 		);
 
 		when(
-			_mockSettingsFactory.getServerSettings("com.liferay.portal")
+			_mockSettingsLocatorHelper.getServerSettings("com.liferay.portal")
 		).thenReturn(
 			mockSettings
 		);
@@ -129,6 +129,6 @@ public class LocationVariableResolverTest extends PowerMockito {
 
 	private LocationVariableResolver _locationVariableResolver;
 	private MockResourceManager _mockResourceManager;
-	private SettingsFactory _mockSettingsFactory;
+	private SettingsLocatorHelper _mockSettingsLocatorHelper;
 
 }

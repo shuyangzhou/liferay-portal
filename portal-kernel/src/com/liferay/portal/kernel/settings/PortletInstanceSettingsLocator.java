@@ -49,12 +49,9 @@ public class PortletInstanceSettingsLocator implements SettingsLocator {
 	public Settings getSettings() throws SettingsException {
 		long companyId = getCompanyId(_layout.getGroupId());
 
-		Settings portalPropertiesSettings =
-			_settingsLocatorHelper.getPortalPropertiesSettings();
-
 		Settings configurationBeanSettings =
 			_settingsLocatorHelper.getConfigurationBeanSettings(
-				_configurationPid, portalPropertiesSettings);
+				_configurationPid);
 
 		Settings portalPreferencesSettings =
 			_settingsLocatorHelper.getPortalPreferencesSettings(

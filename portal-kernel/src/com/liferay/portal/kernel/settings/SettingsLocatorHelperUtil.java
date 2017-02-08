@@ -33,6 +33,16 @@ public class SettingsLocatorHelperUtil {
 		return _settingsLocatorHelpers.get(0);
 	}
 
+	public Settings getConfigurationBeanSettings(String settingsId) {
+		return getSettingsLocatorHelper().getConfigurationBeanSettings(
+			settingsId);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #getConfigurationBeanSettings(String)}
+	 */
+	@Deprecated
 	public Settings getConfigurationBeanSettings(
 		String settingsId, Settings parentSettings) {
 
@@ -54,6 +64,10 @@ public class SettingsLocatorHelperUtil {
 			companyId, parentSettings);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public Settings getPortalPropertiesSettings() {
 		return getSettingsLocatorHelper().getPortalPropertiesSettings();
 	}
@@ -64,6 +78,10 @@ public class SettingsLocatorHelperUtil {
 		return getSettingsLocatorHelper().
 			getPortletInstancePortletPreferencesSettings(
 				companyId, plid, portletId, parentSettings);
+	}
+
+	public Settings getServerSettings(String settingsId) {
+		return getSettingsLocatorHelper().getServerSettings(settingsId);
 	}
 
 	private static final ServiceTrackerList<SettingsLocatorHelper>

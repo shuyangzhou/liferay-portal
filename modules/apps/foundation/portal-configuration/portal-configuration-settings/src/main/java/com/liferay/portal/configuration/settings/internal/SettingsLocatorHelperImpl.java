@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.resource.manager.ClassLoaderResourceManager;
 import com.liferay.portal.kernel.resource.manager.ResourceManager;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.service.PortalPreferencesLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.settings.ConfigurationBeanSettings;
@@ -32,16 +31,15 @@ import com.liferay.portal.kernel.settings.LocationVariableResolver;
 import com.liferay.portal.kernel.settings.PortletPreferencesSettings;
 import com.liferay.portal.kernel.settings.PropertiesSettings;
 import com.liferay.portal.kernel.settings.Settings;
-import com.liferay.portal.kernel.settings.SettingsFactoryUtil;
 import com.liferay.portal.kernel.settings.SettingsLocatorHelper;
 import com.liferay.portal.kernel.settings.definition.ConfigurationBeanDeclaration;
 import com.liferay.portal.kernel.settings.definition.ConfigurationPidMapping;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.Props;
+import com.liferay.portal.util.PrefsPropsUtil;
 
-import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -58,7 +56,7 @@ import org.osgi.service.component.annotations.ReferencePolicy;
  * @author Iván Zaera
  * @author Jorge Ferrer
  */
-@Component(service = SettingsLocatorHelper.class)
+@Component(immediate = true, service = SettingsLocatorHelper.class)
 @DoPrivileged
 public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 
@@ -80,20 +78,29 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 	}
 
 	@Override
-	public Settings getConfigurationBeanSettings(
-		String configurationPid, Settings parentSettings) {
-
+	public Settings getConfigurationBeanSettings(String configurationPid) {
 		Object configurationBean = getConfigurationBean(configurationPid);
 
 		if (configurationBean == null) {
-			return parentSettings;
+			return _portalPropertiesSettings;
 		}
 
 		return new ConfigurationBeanSettings(
 			new LocationVariableResolver(
-				getResourceManager(configurationPid),
-				SettingsFactoryUtil.getSettingsFactory()),
-			configurationBean, parentSettings);
+				getResourceManager(configurationPid), this),
+			configurationBean, _portalPropertiesSettings);
+	}
+
+	/**
+	 * @deprecated As of 2.0.0, replaced by {@link
+	 *             #getConfigurationBeanSettings(String)}
+	 */
+	@Deprecated
+	@Override
+	public Settings getConfigurationBeanSettings(
+		String configurationPid, Settings parentSettings) {
+
+		return getConfigurationBeanSettings(configurationPid);
 	}
 
 	public PortletPreferences getGroupPortletPreferences(
@@ -119,31 +126,21 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 			getGroupPortletPreferences(groupId, settingsId), parentSettings);
 	}
 
-	public PortletPreferences getPortalPreferences(long companyId) {
-		return _portalPreferencesLocalService.getPreferences(
-			companyId, PortletKeys.PREFS_OWNER_TYPE_COMPANY);
-	}
-
 	@Override
 	public Settings getPortalPreferencesSettings(
 		long companyId, Settings parentSettings) {
 
 		return new PortletPreferencesSettings(
-			getPortalPreferences(companyId), parentSettings);
+			PrefsPropsUtil.getPreferences(companyId), parentSettings);
 	}
 
-	public Properties getPortalProperties() {
-		return PropsUtil.getProperties();
-	}
-
+	/**
+	 * @deprecated As of 2.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public Settings getPortalPropertiesSettings() {
-		return new PropertiesSettings(
-			new LocationVariableResolver(
-				new ClassLoaderResourceManager(
-					PortalClassLoaderUtil.getClassLoader()),
-				SettingsFactoryUtil.getSettingsFactory()),
-			getPortalProperties());
+		return _portalPropertiesSettings;
 	}
 
 	public PortletPreferences getPortletInstancePortletPreferences(
@@ -185,6 +182,11 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 		return new PortletPreferencesSettings(
 			getPortletInstancePortletPreferences(companyId, plid, portletId),
 			parentSettings);
+	}
+
+	@Override
+	public Settings getServerSettings(String settingsId) {
+		return getConfigurationBeanSettings(settingsId);
 	}
 
 	@Activate
@@ -284,13 +286,6 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 	}
 
 	@Reference(unbind = "-")
-	protected void setPortalPreferencesLocalService(
-		PortalPreferencesLocalService portalPreferencesLocalService) {
-
-		_portalPreferencesLocalService = portalPreferencesLocalService;
-	}
-
-	@Reference(unbind = "-")
 	protected void setPortletLocalService(
 		PortletLocalService portletLocalService) {
 	}
@@ -300,6 +295,16 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 		PortletPreferencesLocalService portletPreferencesLocalService) {
 
 		_portletPreferencesLocalService = portletPreferencesLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setProps(Props props) {
+		_portalPropertiesSettings = new PropertiesSettings(
+			new LocationVariableResolver(
+				new ClassLoaderResourceManager(
+					PortalClassLoaderUtil.getClassLoader()),
+				this),
+			props.getProperties());
 	}
 
 	protected void unsetConfigurationBeanDeclaration(
@@ -335,7 +340,7 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 	private final ConcurrentMap<Class<?>, ConfigurationBeanManagedService>
 		_configurationBeanManagedServices = new ConcurrentHashMap<>();
 	private GroupLocalService _groupLocalService;
-	private PortalPreferencesLocalService _portalPreferencesLocalService;
+	private Settings _portalPropertiesSettings;
 	private PortletPreferencesLocalService _portletPreferencesLocalService;
 
 }

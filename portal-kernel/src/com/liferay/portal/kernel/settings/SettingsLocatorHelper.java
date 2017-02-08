@@ -14,14 +14,24 @@
 
 package com.liferay.portal.kernel.settings;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * @author Iván Zaera
  */
+@ProviderType
 public interface SettingsLocatorHelper {
 
 	public Settings getCompanyPortletPreferencesSettings(
 		long companyId, String settingsId, Settings parentSettings);
 
+	public Settings getConfigurationBeanSettings(String configurationPid);
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #getConfigurationBeanSettings(String)}
+	 */
+	@Deprecated
 	public Settings getConfigurationBeanSettings(
 		String configurationPid, Settings parentSettings);
 
@@ -31,6 +41,10 @@ public interface SettingsLocatorHelper {
 	public Settings getPortalPreferencesSettings(
 		long companyId, Settings parentSettings);
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public Settings getPortalPropertiesSettings();
 
 	public Settings getPortletInstancePortletPreferencesSettings(
@@ -39,5 +53,7 @@ public interface SettingsLocatorHelper {
 
 	public Settings getPortletInstancePortletPreferencesSettings(
 		long companyId, long plid, String portletId, Settings parentSettings);
+
+	public Settings getServerSettings(String settingsId);
 
 }

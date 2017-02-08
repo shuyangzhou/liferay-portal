@@ -43,12 +43,9 @@ public class GroupServiceSettingsLocator implements SettingsLocator {
 	public Settings getSettings() throws SettingsException {
 		long companyId = getCompanyId(_groupId);
 
-		Settings portalPropertiesSettings =
-			_settingsLocatorHelper.getPortalPropertiesSettings();
-
 		Settings configurationBeanSettings =
 			_settingsLocatorHelper.getConfigurationBeanSettings(
-				_configurationPid, portalPropertiesSettings);
+				_configurationPid);
 
 		Settings portalPreferencesSettings =
 			_settingsLocatorHelper.getPortalPreferencesSettings(
