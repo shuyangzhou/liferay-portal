@@ -788,7 +788,7 @@ public class ShoppingItemPricePersistenceImpl extends BasePersistenceImpl<Shoppi
 		try {
 			session = openSession();
 
-			if (shoppingItemPrice.isNew()) {
+			if (isNew) {
 				session.save(shoppingItemPrice);
 
 				shoppingItemPrice.setNew(false);
@@ -806,8 +806,17 @@ public class ShoppingItemPricePersistenceImpl extends BasePersistenceImpl<Shoppi
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !ShoppingItemPriceModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!ShoppingItemPriceModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { shoppingItemPriceModelImpl.getItemId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_ITEMID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ITEMID,
+				args);
 		}
 
 		else {

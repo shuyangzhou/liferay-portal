@@ -1156,7 +1156,7 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 		try {
 			session = openSession();
 
-			if (listType.isNew()) {
+			if (isNew) {
 				session.save(listType);
 
 				listType.setNew(false);
@@ -1174,8 +1174,17 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !ListTypeModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!ListTypeModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { listTypeModelImpl.getType() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_TYPE, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TYPE,
+				args);
 		}
 
 		else {

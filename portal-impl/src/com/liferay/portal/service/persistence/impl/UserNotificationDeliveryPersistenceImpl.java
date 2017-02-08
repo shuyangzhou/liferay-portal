@@ -1201,7 +1201,7 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 		try {
 			session = openSession();
 
-			if (userNotificationDelivery.isNew()) {
+			if (isNew) {
 				session.save(userNotificationDelivery);
 
 				userNotificationDelivery.setNew(false);
@@ -1219,8 +1219,19 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !UserNotificationDeliveryModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!UserNotificationDeliveryModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
+			Object[] args = new Object[] {
+					userNotificationDeliveryModelImpl.getUserId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
+				args);
 		}
 
 		else {

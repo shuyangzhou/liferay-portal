@@ -1888,7 +1888,7 @@ public class KaleoNotificationRecipientPersistenceImpl
 		try {
 			session = openSession();
 
-			if (kaleoNotificationRecipient.isNew()) {
+			if (isNew) {
 				session.save(kaleoNotificationRecipient);
 
 				kaleoNotificationRecipient.setNew(false);
@@ -1906,9 +1906,37 @@ public class KaleoNotificationRecipientPersistenceImpl
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew ||
-				!KaleoNotificationRecipientModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!KaleoNotificationRecipientModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
+			Object[] args = new Object[] {
+					kaleoNotificationRecipientModelImpl.getCompanyId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
+				args);
+
+			args = new Object[] {
+					kaleoNotificationRecipientModelImpl.getKaleoDefinitionId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONID,
+				args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID,
+				args);
+
+			args = new Object[] {
+					kaleoNotificationRecipientModelImpl.getKaleoNotificationId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEONOTIFICATIONID,
+				args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEONOTIFICATIONID,
+				args);
 		}
 
 		else {

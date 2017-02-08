@@ -2106,7 +2106,7 @@ public class RecentLayoutSetBranchPersistenceImpl extends BasePersistenceImpl<Re
 		try {
 			session = openSession();
 
-			if (recentLayoutSetBranch.isNew()) {
+			if (isNew) {
 				session.save(recentLayoutSetBranch);
 
 				recentLayoutSetBranch.setNew(false);
@@ -2124,8 +2124,34 @@ public class RecentLayoutSetBranchPersistenceImpl extends BasePersistenceImpl<Re
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !RecentLayoutSetBranchModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!RecentLayoutSetBranchModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
+			Object[] args = new Object[] {
+					recentLayoutSetBranchModelImpl.getGroupId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
+				args);
+
+			args = new Object[] { recentLayoutSetBranchModelImpl.getUserId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
+				args);
+
+			args = new Object[] {
+					recentLayoutSetBranchModelImpl.getLayoutSetBranchId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_LAYOUTSETBRANCHID,
+				args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_LAYOUTSETBRANCHID,
+				args);
 		}
 
 		else {

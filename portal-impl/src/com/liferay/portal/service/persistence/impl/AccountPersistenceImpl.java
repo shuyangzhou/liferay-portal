@@ -302,7 +302,7 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 		try {
 			session = openSession();
 
-			if (account.isNew()) {
+			if (isNew) {
 				session.save(account);
 
 				account.setNew(false);

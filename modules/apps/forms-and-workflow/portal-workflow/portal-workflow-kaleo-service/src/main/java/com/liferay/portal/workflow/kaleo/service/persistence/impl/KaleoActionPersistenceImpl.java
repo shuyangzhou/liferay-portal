@@ -2608,7 +2608,7 @@ public class KaleoActionPersistenceImpl extends BasePersistenceImpl<KaleoAction>
 		try {
 			session = openSession();
 
-			if (kaleoAction.isNew()) {
+			if (isNew) {
 				session.save(kaleoAction);
 
 				kaleoAction.setNew(false);
@@ -2626,8 +2626,43 @@ public class KaleoActionPersistenceImpl extends BasePersistenceImpl<KaleoAction>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !KaleoActionModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!KaleoActionModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { kaleoActionModelImpl.getCompanyId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
+				args);
+
+			args = new Object[] { kaleoActionModelImpl.getKaleoDefinitionId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONID,
+				args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID,
+				args);
+
+			args = new Object[] {
+					kaleoActionModelImpl.getKaleoClassName(),
+					kaleoActionModelImpl.getKaleoClassPK()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_KCN_KCPK, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KCN_KCPK,
+				args);
+
+			args = new Object[] {
+					kaleoActionModelImpl.getKaleoClassName(),
+					kaleoActionModelImpl.getKaleoClassPK(),
+					kaleoActionModelImpl.getExecutionType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_KCN_KCPK_ET, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KCN_KCPK_ET,
+				args);
 		}
 
 		else {

@@ -1206,7 +1206,7 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 		try {
 			session = openSession();
 
-			if (oAuthConsumer.isNew()) {
+			if (isNew) {
 				session.save(oAuthConsumer);
 
 				oAuthConsumer.setNew(false);
@@ -1224,8 +1224,17 @@ public class OAuthConsumerPersistenceImpl extends BasePersistenceImpl<OAuthConsu
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !OAuthConsumerModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!OAuthConsumerModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { oAuthConsumerModelImpl.getGadgetKey() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_GADGETKEY, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GADGETKEY,
+				args);
 		}
 
 		else {
