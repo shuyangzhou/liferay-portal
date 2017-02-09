@@ -360,54 +360,6 @@
 		</execute>
 	</command>
 
-	<command name="AddDocumentShortcutSiteDocument" priority="4">
-		<var name="dmDocumentDescription" value="DM Document Description" />
-		<var name="dmDocumentFile" value="Document_1.doc" />
-		<var name="dmDocumentTitle" value="DM Document Title" />
-		<var name="dmDocumentUploader" value="DM Document Description" />
-		<var name="dmDocumentVersionNumber" value="1.0" />
-		<var name="siteDescription" value="Open Site Description" />
-		<var name="siteName" value="Open Site Name" />
-		<var name="siteType" value="Open" />
-		<var name="soPage" value="true" />
-
-		<execute macro="SOUserBar#addSOSite">
-			<var name="siteDescription" value="${siteDescription}" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteType" value="${siteType}" />
-		</execute>
-
-		<execute macro="Navigator#gotoPage">
-			<var name="pageName" value="Documents" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteURL" value="true" />
-		</execute>
-
-		<execute macro="DMDocument#addPG">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-			<var name="dmDocumentFile" value="${dmDocumentFile}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-		</execute>
-
-		<execute macro="Navigator#gotoPage">
-			<var name="pageName" value="${pageName}" />
-			<var name="soDashboard" value="true" />
-			<var name="soPage" value="true" />
-		</execute>
-
-		<execute macro="DMDocument#addShortcutPG">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-			<var name="siteName" value="${siteName}" />
-		</execute>
-
-		<execute macro="DMDocument#viewAllPG">
-			<var name="dmDocumentDescription" value="${dmDocumentDescription}" />
-			<var name="dmDocumentTitle" value="${dmDocumentTitle}" />
-			<var name="dmDocumentVersionNumber" value="${dmDocumentVersionNumber}" />
-		</execute>
-	</command>
-
 	<command name="AddDocumentType" priority="4">
 		<var name="dmDocumentDescription" value="DM Folder Document Description" />
 		<var name="dmDocumentFile" value="Document_1.doc" />

@@ -14,35 +14,21 @@
 
 package com.liferay.dynamic.data.lists.form.web.internal.portlet.action;
 
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
-
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.dynamic.data.lists.model.DDLRecordSetSettings;
-import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldValueRequestParameterRetriever;
 import com.liferay.dynamic.data.mapping.form.values.factory.DDMFormValuesFactory;
-import com.liferay.dynamic.data.mapping.form.values.factory.internal.DDMFormValuesFactoryImpl;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
+import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.model.Value;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
-import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.servlet.PortletServlet;
-import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.util.PortalImpl;
-
-import java.lang.reflect.Field;
 
 import java.util.List;
 import java.util.Locale;
@@ -57,24 +43,19 @@ import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.portlet.MockActionRequest;
 
 /**
  * @author Marcellus Tavares
  */
 @PrepareForTest(ResourceBundleUtil.class)
 @RunWith(PowerMockRunner.class)
-public class CopyRecordSetMVCActionCommandTest {
+public class CopyRecordSetMVCActionCommandTest extends PowerMockito {
 
 	@Before
 	public void setUp() throws Exception {
-		setUpPortalUtil();
-
-		setUpActionRequest();
 		setUpCopyRecordSetMVCActionCommand();
 		setUpLanguageUtil();
 		setUpResourceBundleUtil();
@@ -82,7 +63,15 @@ public class CopyRecordSetMVCActionCommandTest {
 
 	@Test
 	public void testCreateRecordSetSettingsDDMFormValues() throws Exception {
+		DDMForm expectedRecordSetSettingsDDMForm = DDMFormFactory.create(
+			DDLRecordSetSettings.class);
+
 		DDLRecordSet recordSet = mock(DDLRecordSet.class);
+
+		DDMFormValues ddmFormValues = createDDMFormValues(
+			expectedRecordSetSettingsDDMForm);
+
+		when(recordSet.getSettingsDDMFormValues()).thenReturn(ddmFormValues);
 
 		String expectedStorageType = StringUtil.randomString();
 
@@ -91,12 +80,16 @@ public class CopyRecordSetMVCActionCommandTest {
 		_copyRecordSetMVCActionCommand.saveRecordSetMVCCommandHelper =
 			_saveRecordSetMVCCommandHelper;
 
+		when(
+			_ddmFormValuesFactory.create(
+				Matchers.any(ActionRequest.class), Matchers.any(DDMForm.class))
+		).thenReturn(
+			ddmFormValues
+		);
+
 		DDMFormValues recordSetSettingsDDMFormValues =
 			_copyRecordSetMVCActionCommand.createRecordSetSettingsDDMFormValues(
 				_actionRequest, recordSet);
-
-		DDMForm expectedRecordSetSettingsDDMForm = DDMFormFactory.create(
-			DDLRecordSetSettings.class);
 
 		Assert.assertEquals(
 			expectedRecordSetSettingsDDMForm,
@@ -104,6 +97,9 @@ public class CopyRecordSetMVCActionCommandTest {
 
 		List<DDMFormFieldValue> recordSetSettingsDDMFormFieldValues =
 			recordSetSettingsDDMFormValues.getDDMFormFieldValues();
+
+		System.out.println(
+			getDDMFormFieldsSize(expectedRecordSetSettingsDDMForm));
 
 		Assert.assertEquals(
 			recordSetSettingsDDMFormFieldValues.toString(),
@@ -124,29 +120,51 @@ public class CopyRecordSetMVCActionCommandTest {
 			storageTypeDDMFormFieldValueValue.getString(LocaleUtil.US));
 	}
 
-	protected DDMFormValuesFactory createDDMFormValuesFactory()
-		throws Exception {
+	protected DDMFormFieldValue createDDMFormFieldValue(
+		String instanceId, String name, Value value) {
 
-		DDMFormValuesFactory ddmFormValuesFactory =
-			new DDMFormValuesFactoryImpl();
+		DDMFormFieldValue ddmFormFieldValue = new DDMFormFieldValue();
 
-		mockStatic(ServiceTrackerMapFactory.class);
+		ddmFormFieldValue.setInstanceId(instanceId);
+		ddmFormFieldValue.setName(name);
+		ddmFormFieldValue.setValue(value);
 
-		when(
-			_serviceTrackerMap.containsKey(Matchers.anyString())
-		).thenReturn(
-			false
-		);
+		return ddmFormFieldValue;
+	}
 
-		Field field = ReflectionUtil.getDeclaredField(
-			ddmFormValuesFactory.getClass(), "_serviceTrackerMap");
+	protected DDMFormFieldValue createDDMFormFieldValue(
+		String name, Value value) {
 
-		field.set(ddmFormValuesFactory, _serviceTrackerMap);
+		return createDDMFormFieldValue(StringUtil.randomString(), name, value);
+	}
 
-		ReflectionTestUtil.setFieldValue(
-			ddmFormValuesFactory, "_portal", PortalUtil.getPortal());
+	protected DDMFormValues createDDMFormValues(DDMForm ddmForm) {
+		DDMFormValues ddmFormValues = new DDMFormValues(ddmForm);
 
-		return ddmFormValuesFactory;
+		ddmFormValues.setAvailableLocales(ddmForm.getAvailableLocales());
+		ddmFormValues.setDefaultLocale(ddmForm.getDefaultLocale());
+
+		List<DDMFormField> ddmFormFields = ddmForm.getDDMFormFields();
+
+		for (DDMFormField ddmFormField : ddmFormFields) {
+			DDMFormFieldValue ddmFormFieldValue =
+				createLocalizedDDMFormFieldValue(
+					ddmFormField.getName(), "test");
+
+			ddmFormValues.addDDMFormFieldValue(ddmFormFieldValue);
+		}
+
+		return ddmFormValues;
+	}
+
+	protected DDMFormFieldValue createLocalizedDDMFormFieldValue(
+		String name, String enValue) {
+
+		Value localizedValue = new LocalizedValue(LocaleUtil.US);
+
+		localizedValue.addString(LocaleUtil.US, enValue);
+
+		return createDDMFormFieldValue(name, localizedValue);
 	}
 
 	protected int getDDMFormFieldsSize(DDMForm ddmForm) {
@@ -167,19 +185,14 @@ public class CopyRecordSetMVCActionCommandTest {
 		);
 	}
 
-	protected void setUpActionRequest() {
-		_actionRequest = new MockActionRequest();
-
-		_actionRequest.setAttribute(
-			PortletServlet.PORTLET_SERVLET_REQUEST,
-			new MockHttpServletRequest());
-	}
-
 	protected void setUpCopyRecordSetMVCActionCommand() throws Exception {
 		_copyRecordSetMVCActionCommand = new CopyRecordSetMVCActionCommand();
 
-		_copyRecordSetMVCActionCommand.ddmFormValuesFactory =
-			createDDMFormValuesFactory();
+		field(
+			CopyRecordSetMVCActionCommand.class, "ddmFormValuesFactory"
+		).set(
+			_copyRecordSetMVCActionCommand, _ddmFormValuesFactory
+		);
 	}
 
 	protected void setUpLanguageUtil() {
@@ -188,12 +201,6 @@ public class CopyRecordSetMVCActionCommandTest {
 		Language language = mock(Language.class);
 
 		languageUtil.setLanguage(language);
-	}
-
-	protected void setUpPortalUtil() {
-		PortalUtil portalUtil = new PortalUtil();
-
-		portalUtil.setPortal(new PortalImpl());
 	}
 
 	protected void setUpResourceBundleUtil() {
@@ -208,14 +215,15 @@ public class CopyRecordSetMVCActionCommandTest {
 		);
 	}
 
+	@Mock
 	private ActionRequest _actionRequest;
+
 	private CopyRecordSetMVCActionCommand _copyRecordSetMVCActionCommand;
 
 	@Mock
-	private SaveRecordSetMVCCommandHelper _saveRecordSetMVCCommandHelper;
+	private DDMFormValuesFactory _ddmFormValuesFactory;
 
 	@Mock
-	private ServiceTrackerMap
-		<String, DDMFormFieldValueRequestParameterRetriever> _serviceTrackerMap;
+	private SaveRecordSetMVCCommandHelper _saveRecordSetMVCCommandHelper;
 
 }

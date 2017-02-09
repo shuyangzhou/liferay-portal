@@ -122,6 +122,43 @@
 		<execute macro="PortletEntry#publish" />
 	</command>
 
+	<command name="addDMShortcutCP">
+		<execute macro="DMNavigator#gotoAddDocumentType">
+			<var name="dmDocumentTypeName" value="Shortcut" />
+		</execute>
+
+		<execute function="Click" locator1="DocumentsAndMediaAddShortcut#SELECT_SITE_BUTTON" />
+
+		<var name="key_siteName" value="${siteName}" />
+
+		<execute macro="IFrame#selectModalFrame" />
+
+		<execute function="AssertClick" locator1="SitesSelectSite#CHOOSE_BUTTON" value1="Choose" />
+
+		<execute function="SelectFrameTop" value1="relative=top" />
+
+		<execute function="Click" locator1="DocumentsAndMediaAddShortcut#SELECT_DOCUMENT_BUTTON" />
+
+		<execute macro="IFrame#selectModalFrame" />
+
+		<if>
+			<isset var="dmFolderName" />
+			<then>
+				<var name="key_dmFolderName" value="${dmFolderName}" />
+
+				<execute function="AssertClick" locator1="DocumentsAndMediaAddShortcut#SELECT_FILE_FOLDER_NAME" value1="${dmFolderName}" />
+			</then>
+		</if>
+
+		<var name="key_dmDocumentTitle" value="${dmDocumentTitle}" />
+
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="DocumentsAndMediaAddShortcut#SELECT_FILE_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
+
+		<execute function="SelectFrameTop" value1="relative=top" />
+
+		<execute macro="PortletEntry#save" />
+	</command>
+
 	<command name="addDocumentTypeCmdCP">
 		<execute macro="DMNavigator#gotoAddDocumentType">
 			<var name="dmDocumentTypeName" value="${dmDocumentTypeName}" />

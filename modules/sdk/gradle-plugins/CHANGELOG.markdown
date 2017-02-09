@@ -1042,11 +1042,15 @@ to version 1.0.80.
 - [LPS-69271]: Update the [Liferay Gradle Plugins Source Formatter] dependency
 to version 1.0.81.
 
-## 3.1.8 - 2017-02-07
+## 3.1.8 - 2017-02-08
 
 ### Changed
 - [LPS-70510]: Deploy theme projects to the
 `[liferay.appServerParentDir]/deploy` directory by default.
+- [LPS-70515]: Update the [Liferay Source Formatter] dependency to version
+1.0.349.
+- [LPS-70515]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 1.0.82.
 
 [Gradle Bundle Plugin]: https://github.com/TomDmitriev/gradle-bundle-plugin
 [Liferay Ant BND]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/ant-bnd
@@ -1145,4 +1149,5 @@ to version 1.0.81.
 [LPS-70336]: https://issues.liferay.com/browse/LPS-70336
 [LPS-70379]: https://issues.liferay.com/browse/LPS-70379
 [LPS-70510]: https://issues.liferay.com/browse/LPS-70510
+[LPS-70515]: https://issues.liferay.com/browse/LPS-70515
 [LRDOCS-3023]: https://issues.liferay.com/browse/LRDOCS-3023

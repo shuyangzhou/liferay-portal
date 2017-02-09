@@ -303,6 +303,8 @@
 			<var name="kbArticleTitle" value="Child Article Title" />
 		</execute>
 
+		<execute function="Pause" locator1="5000" />
+
 		<execute macro="Navigator#gotoPage">
 			<var name="pageName" value="Knowledge Base Display Page" />
 		</execute>

@@ -71,6 +71,60 @@
 		</execute>
 	</command>
 
+	<command name="AddShortcutToSiteDocument" priority="3">
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoControlPanelSites">
+			<var name="portlet" value="Sites" />
+		</execute>
+
+		<execute macro="Site#addCP">
+			<var name="siteName" value="Site Name" />
+			<var name="siteType" value="Blank" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesContent">
+			<var name="portlet" value="Documents and Media" />
+		</execute>
+
+		<execute macro="DMDocument#addCP">
+			<var name="dmDocumentDescription" value="DM Document Description" />
+			<var name="dmDocumentFile" value="Document_1.txt" />
+			<var name="dmDocumentTitle" value="DM Document Title" />
+		</execute>
+
+		<execute macro="DMNavigator#gotoDocumentCP">
+			<var name="dmDocumentTitle" value="DM Document Title" />
+		</execute>
+
+		<execute macro="DMDocument#viewCP">
+			<var name="dmDocumentTitle" value="DM Document Title" />
+		</execute>
+
+		<execute macro="Navigator#openSiteURL">
+			<var name="siteName" value="Liferay" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesContent">
+			<var name="portlet" value="Documents and Media" />
+		</execute>
+
+		<execute macro="DMDocument#addDMShortcutCP">
+			<var name="dmDocumentDescription" value="DM Document Description" />
+			<var name="dmDocumentTitle" value="DM Document Title" />
+			<var name="siteName" value="Site Name" />
+		</execute>
+
+		<execute macro="DMNavigator#gotoDocumentCP">
+			<var name="dmDocumentTitle" value="DM Document Title" />
+		</execute>
+
+		<execute macro="DMDocument#viewCP">
+			<var name="dmDocumentSize" value="0KB" />
+			<var name="dmDocumentTitle" value="DM Document Title" />
+		</execute>
+	</command>
+
 	<command name="EditDocument" priority="5">
 		<property name="portal.acceptance" value="true" />
 
@@ -297,6 +351,8 @@
 		<execute macro="ProductMenu#gotoSitesContent">
 			<var name="portlet" value="Documents and Media" />
 		</execute>
+
+		<execute function="AssertVisible" locator1="ControlMenu#HEADER_TITLE" value1="Documents and Media" />
 
 		<execute macro="ImageEditor#gotoImageEditorViaDM">
 			<var name="dmDocumentTitle" value="Document_2.jpg" />

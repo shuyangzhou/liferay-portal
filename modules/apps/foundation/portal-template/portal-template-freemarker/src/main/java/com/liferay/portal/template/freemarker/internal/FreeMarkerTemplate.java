@@ -24,15 +24,29 @@ import com.liferay.portal.template.TemplateResourceThreadLocal;
 
 import freemarker.core.ParseException;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
+import freemarker.ext.util.WrapperTemplateModel;
 
+import freemarker.template.AdapterTemplateModel;
+import freemarker.template.Configuration;
+import freemarker.template.ObjectWrapper;
+import freemarker.template.SimpleCollection;
+import freemarker.template.Template;
+import freemarker.template.TemplateCollectionModel;
+import freemarker.template.TemplateHashModelEx;
+import freemarker.template.TemplateModel;
+import freemarker.template.TemplateModelException;
+import freemarker.template.TemplateModelWithAPISupport;
+import freemarker.template.WrappingTemplateModel;
+import freemarker.template.utility.ObjectWrapperWithAPISupport;
+
+import java.io.Serializable;
 import java.io.Writer;
 
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -118,7 +132,7 @@ public class FreeMarkerTemplate extends AbstractSingleResourceTemplate {
 					TemplateConstants.DEFAUT_ENCODING);
 			}
 
-			template.process(context, writer);
+			template.process(new CachableDefaultMapAdapter(context), writer);
 		}
 		catch (PrivilegedActionException pae) {
 			throw pae.getException();
@@ -129,8 +143,93 @@ public class FreeMarkerTemplate extends AbstractSingleResourceTemplate {
 		}
 	}
 
+	private static final TemplateModel _NULL_TEMPLATE_MODEL =
+		new TemplateModel() {};
+
 	private final Configuration _configuration;
 	private final boolean _privileged;
+
+	private class CachableDefaultMapAdapter
+		extends WrappingTemplateModel
+		implements TemplateHashModelEx, AdapterTemplateModel,
+				   WrapperTemplateModel, TemplateModelWithAPISupport,
+				   Serializable {
+
+		public CachableDefaultMapAdapter(Map<String, Object> map) {
+			super(FreeMarkerManager.getBeansWrapper());
+
+			_innerMap = map;
+			_objectWrapper = getObjectWrapper();
+			_wrappedValueMap = new HashMap<>();
+		}
+
+		@Override
+		public TemplateModel get(String key) throws TemplateModelException {
+			TemplateModel templateModel = _wrappedValueMap.get(key);
+
+			if (templateModel == _NULL_TEMPLATE_MODEL) {
+				return null;
+			}
+			else if (templateModel != null) {
+				return templateModel;
+			}
+
+			Object value = _innerMap.get(key);
+
+			if (value == null) {
+				_wrappedValueMap.put(key, _NULL_TEMPLATE_MODEL);
+
+				return null;
+			}
+
+			templateModel = wrap(value);
+
+			_wrappedValueMap.put(key, templateModel);
+
+			return templateModel;
+		}
+
+		@Override
+		public Object getAdaptedObject(Class hint) {
+			return _innerMap;
+		}
+
+		@Override
+		public TemplateModel getAPI() throws TemplateModelException {
+			return ((ObjectWrapperWithAPISupport)_objectWrapper).wrapAsAPI(
+				_innerMap);
+		}
+
+		@Override
+		public Object getWrappedObject() {
+			return _innerMap;
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return _innerMap.isEmpty();
+		}
+
+		@Override
+		public TemplateCollectionModel keys() {
+			return new SimpleCollection(_innerMap.keySet(), _objectWrapper);
+		}
+
+		@Override
+		public int size() {
+			return _innerMap.size();
+		}
+
+		@Override
+		public TemplateCollectionModel values() {
+			return new SimpleCollection(_innerMap.values(), _objectWrapper);
+		}
+
+		private final Map<String, Object> _innerMap;
+		private final ObjectWrapper _objectWrapper;
+		private final Map<String, TemplateModel> _wrappedValueMap;
+
+	}
 
 	private class TemplatePrivilegedExceptionAction
 		implements PrivilegedExceptionAction<Template> {
