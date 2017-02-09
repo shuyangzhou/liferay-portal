@@ -68,12 +68,16 @@ public class ServiceContextFactory {
 			serviceContext.setCompanyId(themeDisplay.getCompanyId());
 			serviceContext.setLanguageId(themeDisplay.getLanguageId());
 
+			String layoutFullURL = PortalUtil.getLayoutFullURL(themeDisplay);
+
 			String fullCanonicalURL = PortalUtil.getCanonicalURL(
-				PortalUtil.getLayoutFullURL(themeDisplay), themeDisplay,
+				layoutFullURL, themeDisplay,
 				themeDisplay.getLayout(), true);
 
+			String layoutURL = PortalUtil.getLayoutURL(themeDisplay);
+
 			String canonicalURL = PortalUtil.getCanonicalURL(
-				PortalUtil.getLayoutURL(themeDisplay), themeDisplay,
+				layoutURL, themeDisplay,
 				themeDisplay.getLayout(), true);
 
 			serviceContext.setLayoutFullURL(fullCanonicalURL);
