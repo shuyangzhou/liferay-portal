@@ -292,9 +292,11 @@ public class MVCPortlet extends LiferayPortlet {
 				return;
 			}
 
-			renderRequest.setAttribute(
-				getMVCPathAttributeName(renderResponse.getNamespace()),
-				mvcPath);
+			if (Validator.isNotNull(mvcPath)) {
+				renderRequest.setAttribute(
+					getMVCPathAttributeName(renderResponse.getNamespace()),
+					mvcPath);
+			}
 		}
 
 		super.render(renderRequest, renderResponse);
