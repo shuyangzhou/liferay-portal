@@ -67,14 +67,17 @@ public class ServiceContextFactory {
 		if (themeDisplay != null) {
 			serviceContext.setCompanyId(themeDisplay.getCompanyId());
 			serviceContext.setLanguageId(themeDisplay.getLanguageId());
-			serviceContext.setLayoutFullURL(
-				PortalUtil.getCanonicalURL(
-					PortalUtil.getLayoutFullURL(themeDisplay), themeDisplay,
-					themeDisplay.getLayout(), true));
-			serviceContext.setLayoutURL(
-				PortalUtil.getCanonicalURL(
-					PortalUtil.getLayoutURL(themeDisplay), themeDisplay,
-					themeDisplay.getLayout(), true));
+
+			String fullCanonicalURL = PortalUtil.getCanonicalURL(
+				PortalUtil.getLayoutFullURL(themeDisplay), themeDisplay,
+				themeDisplay.getLayout(), true);
+
+			String canonicalURL = PortalUtil.getCanonicalURL(
+				PortalUtil.getLayoutURL(themeDisplay), themeDisplay,
+				themeDisplay.getLayout(), true);
+
+			serviceContext.setLayoutFullURL(fullCanonicalURL);
+			serviceContext.setLayoutURL(canonicalURL);
 			serviceContext.setPlid(themeDisplay.getPlid());
 			serviceContext.setScopeGroupId(themeDisplay.getScopeGroupId());
 			serviceContext.setSignedIn(themeDisplay.isSignedIn());
