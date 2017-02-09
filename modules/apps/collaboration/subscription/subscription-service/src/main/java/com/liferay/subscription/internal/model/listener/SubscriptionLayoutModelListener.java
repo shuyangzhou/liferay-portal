@@ -12,46 +12,34 @@
  * details.
  */
 
-package com.liferay.subscription.internal.service;
+package com.liferay.subscription.internal.model.listener;
 
+import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.service.LayoutLocalService;
-import com.liferay.portal.kernel.service.LayoutLocalServiceWrapper;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.service.SubscriptionLocalService;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Adolfo Pérez
+ * @author Shuyang Zhou
  */
-@Component(immediate = true, service = ServiceWrapper.class)
-public class SubscriptionLayoutLocalServiceWrapper
-	extends LayoutLocalServiceWrapper {
-
-	public SubscriptionLayoutLocalServiceWrapper() {
-		super(null);
-	}
-
-	public SubscriptionLayoutLocalServiceWrapper(
-		LayoutLocalService layoutLocalService) {
-
-		super(layoutLocalService);
-	}
+@Component(immediate = true, service = ModelListener.class)
+public class SubscriptionLayoutModelListener extends BaseModelListener<Layout> {
 
 	@Override
-	public void deleteLayout(
-			Layout layout, boolean updateLayoutSet,
-			ServiceContext serviceContext)
-		throws PortalException {
-
-		super.deleteLayout(layout, updateLayoutSet, serviceContext);
-
-		_subscriptionLocalService.deleteSubscriptions(
-			layout.getCompanyId(), Layout.class.getName(), layout.getPlid());
+	public void onAfterRemove(Layout layout) {
+		try {
+			_subscriptionLocalService.deleteSubscriptions(
+				layout.getCompanyId(), Layout.class.getName(),
+				layout.getPlid());
+		}
+		catch (PortalException pe) {
+			throw new ModelListenerException(pe);
+		}
 	}
 
 	@Reference(unbind = "-")
