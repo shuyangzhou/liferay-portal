@@ -1045,19 +1045,59 @@ public class LayoutImpl extends LayoutBaseImpl {
 
 	@Override
 	public boolean isPortletEmbedded(String portletId, long groupId) {
-		List<Portlet> embeddedPortlets = getEmbeddedPortlets(groupId);
+		PortletPreferences portletPreferences =
+			PortletPreferencesLocalServiceUtil.fetchPortletPreferences(
+				groupId, PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
+				PortletKeys.PREFS_PLID_SHARED, portletId);
 
-		if (embeddedPortlets.isEmpty()) {
+		if (portletPreferences == null) {
 			return false;
 		}
 
-		for (Portlet portlet : embeddedPortlets) {
-			if (Objects.equals(portlet.getPortletId(), portletId)) {
-				return true;
-			}
+		Portlet portlet = PortletLocalServiceUtil.getPortletById(
+			getCompanyId(), portletId);
+
+		if ((portlet == null) || !portlet.isReady() ||
+			portlet.isUndeployedPortlet() || !portlet.isActive()) {
+
+			return false;
 		}
 
-		return false;
+		portletPreferences =
+			PortletPreferencesLocalServiceUtil.fetchPortletPreferences(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT,
+				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, getPlid(), portletId);
+
+		if (portletPreferences != null) {
+			return true;
+		}
+
+		if (!isTypePortlet()) {
+			return false;
+		}
+
+		LayoutTypePortlet layoutTypePortlet =
+			(LayoutTypePortlet)getLayoutType();
+
+		PortalPreferences portalPreferences =
+			layoutTypePortlet.getPortalPreferences();
+
+		if ((portalPreferences == null) ||
+			!layoutTypePortlet.isCustomizable()) {
+
+			return false;
+		}
+
+		portletPreferences =
+			PortletPreferencesLocalServiceUtil.fetchPortletPreferences(
+				portalPreferences.getUserId(),
+				PortletKeys.PREFS_OWNER_TYPE_USER, getPlid(), portletId);
+
+		if (portletPreferences == null) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

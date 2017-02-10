@@ -156,6 +156,15 @@ public class PortletPreferencesLocalServiceImpl
 	}
 
 	@Override
+	public PortletPreferences fetchPortletPreferences(
+		long ownerId, int ownerType, long plid, String portletId) {
+
+		return portletPreferencesPersistence.fetchByO_O_P_P(
+			ownerId, ownerType, _swapPlidForPortletPreferences(plid),
+			portletId);
+	}
+
+	@Override
 	public javax.portlet.PortletPreferences fetchPreferences(
 		long companyId, long ownerId, int ownerType, long plid,
 		String portletId) {
