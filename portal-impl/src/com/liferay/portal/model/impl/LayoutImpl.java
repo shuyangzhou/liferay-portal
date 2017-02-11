@@ -1065,10 +1065,6 @@ public class LayoutImpl extends LayoutBaseImpl {
 						portalPreferences.getUserId(),
 						PortletKeys.PREFS_OWNER_TYPE_USER, getPlid(),
 						portletId);
-
-				if (portletPreferences == null) {
-					return false;
-				}
 			}
 		}
 
