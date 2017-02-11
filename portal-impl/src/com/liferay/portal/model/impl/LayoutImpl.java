@@ -1045,12 +1045,12 @@ public class LayoutImpl extends LayoutBaseImpl {
 
 	@Override
 	public boolean isPortletEmbedded(String portletId, long groupId) {
-		List<PortletPreferences> portletPreferences =
-			PortletPreferencesLocalServiceUtil.getPortletPreferences(
+		PortletPreferences portletPreferences =
+			PortletPreferencesLocalServiceUtil.fetchPortletPreferences(
 				groupId, PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
-				PortletKeys.PREFS_PLID_SHARED);
+				PortletKeys.PREFS_PLID_SHARED, portletId);
 
-		if (isTypePortlet()) {
+		if ((portletPreferences == null) && isTypePortlet()) {
 			LayoutTypePortlet layoutTypePortlet =
 				(LayoutTypePortlet)getLayoutType();
 
@@ -1060,40 +1060,35 @@ public class LayoutImpl extends LayoutBaseImpl {
 			if ((portalPreferences != null) &&
 				layoutTypePortlet.isCustomizable()) {
 
-				portletPreferences = ListUtil.copy(portletPreferences);
-
-				portletPreferences.addAll(
-					PortletPreferencesLocalServiceUtil.getPortletPreferences(
+				portletPreferences =
+					PortletPreferencesLocalServiceUtil.fetchPortletPreferences(
 						portalPreferences.getUserId(),
-						PortletKeys.PREFS_OWNER_TYPE_USER, getPlid()));
+						PortletKeys.PREFS_OWNER_TYPE_USER, getPlid(),
+						portletId);
+
+				if (portletPreferences == null) {
+					return false;
+				}
 			}
 		}
 
-		if (portletPreferences.isEmpty()) {
+		if (portletPreferences == null) {
 			return false;
 		}
 
 		Set<String> layoutPortletIds = _getLayoutPortletIds();
 
-		for (PortletPreferences portletPreference : portletPreferences) {
-			String currentPortletId = portletPreference.getPortletId();
+		Portlet portlet = PortletLocalServiceUtil.getPortletById(
+			getCompanyId(), portletId);
 
-			Portlet portlet = PortletLocalServiceUtil.getPortletById(
-				getCompanyId(), currentPortletId);
+		if ((portlet == null) || !portlet.isReady() ||
+			portlet.isUndeployedPortlet() || !portlet.isActive() ||
+			!layoutPortletIds.contains(portletId)) {
 
-			if ((portlet == null) || !portlet.isReady() ||
-				portlet.isUndeployedPortlet() || !portlet.isActive() ||
-				!layoutPortletIds.contains(currentPortletId)) {
-
-				continue;
-			}
-
-			if (Objects.equals(portlet.getPortletId(), portletId)) {
-				return true;
-			}
+			return false;
 		}
 
-		return false;
+		return true;
 	}
 
 	/**
