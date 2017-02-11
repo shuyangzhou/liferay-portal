@@ -19,7 +19,6 @@ import com.liferay.frontend.js.spa.web.configuration.SPAConfigurationUtil;
 import com.liferay.osgi.util.StringPlus;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.servlet.ServletResponseConstants;
@@ -31,6 +30,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
@@ -94,7 +94,10 @@ public class SPAUtil {
 	}
 
 	public String getPortletsBlacklist(ThemeDisplay themeDisplay) {
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		StringBundler sb = new StringBundler();
+
+		sb.append(StringPool.OPEN_CURLY_BRACE);
+
 		List<Portlet> companyPortlets = _portletLocalService.getPortlets(
 			themeDisplay.getCompanyId());
 
@@ -103,11 +106,22 @@ public class SPAUtil {
 				!portlet.isUndeployedPortlet() && portlet.isActive() &&
 				portlet.isReady()) {
 
-				jsonObject.put(portlet.getPortletId(), true);
+				sb.append(StringPool.QUOTE);
+				sb.append(portlet.getPortletId());
+				sb.append("\":true,");
 			}
 		}
 
-		return jsonObject.toString();
+		if (sb.index() == 1) {
+			sb.append(StringPool.CLOSE_CURLY_BRACE);
+		}
+		else {
+			sb.setIndex(sb.index() - 1);
+
+			sb.append("\":true}");
+		}
+
+		return sb.toString();
 	}
 
 	public int getRequestTimeout() {
