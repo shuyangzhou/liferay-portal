@@ -809,9 +809,12 @@ public class LayoutImpl extends LayoutBaseImpl {
 	@Override
 	public UnicodeProperties getTypeSettingsProperties() {
 		if (_typeSettingsProperties == null) {
-			_typeSettingsProperties = new UnicodeProperties(true);
+			UnicodeProperties typeSettingsProperties = new UnicodeProperties(
+				true);
 
-			_typeSettingsProperties.fastLoad(super.getTypeSettings());
+			typeSettingsProperties.fastLoad(super.getTypeSettings());
+
+			_typeSettingsProperties = typeSettingsProperties;
 		}
 
 		return _typeSettingsProperties;
@@ -1483,6 +1486,6 @@ public class LayoutImpl extends LayoutBaseImpl {
 
 	private LayoutSet _layoutSet;
 	private transient LayoutType _layoutType;
-	private UnicodeProperties _typeSettingsProperties;
+	private volatile UnicodeProperties _typeSettingsProperties;
 
 }

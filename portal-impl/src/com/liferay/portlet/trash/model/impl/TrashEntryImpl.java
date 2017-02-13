@@ -40,9 +40,12 @@ public class TrashEntryImpl extends TrashEntryBaseImpl {
 	@Override
 	public UnicodeProperties getTypeSettingsProperties() {
 		if (_typeSettingsProperties == null) {
-			_typeSettingsProperties = new UnicodeProperties(true);
+			UnicodeProperties typeSettingsProperties = new UnicodeProperties(
+				true);
 
-			_typeSettingsProperties.fastLoad(super.getTypeSettings());
+			typeSettingsProperties.fastLoad(super.getTypeSettings());
+
+			_typeSettingsProperties = typeSettingsProperties;
 		}
 
 		return _typeSettingsProperties;
@@ -102,6 +105,6 @@ public class TrashEntryImpl extends TrashEntryBaseImpl {
 	}
 
 	private TrashEntry _rootEntry;
-	private UnicodeProperties _typeSettingsProperties;
+	private volatile UnicodeProperties _typeSettingsProperties;
 
 }

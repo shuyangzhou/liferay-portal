@@ -53,14 +53,16 @@ public class LayoutSetPrototypeImpl extends LayoutSetPrototypeBaseImpl {
 	@Override
 	public UnicodeProperties getSettingsProperties() {
 		if (_settingsProperties == null) {
-			_settingsProperties = new UnicodeProperties(true);
+			UnicodeProperties settingsProperties = new UnicodeProperties(true);
 
 			try {
-				_settingsProperties.load(super.getSettings());
+				settingsProperties.load(super.getSettings());
 			}
 			catch (IOException ioe) {
 				_log.error(ioe, ioe);
 			}
+
+			_settingsProperties = settingsProperties;
 		}
 
 		return _settingsProperties;
@@ -95,6 +97,6 @@ public class LayoutSetPrototypeImpl extends LayoutSetPrototypeBaseImpl {
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutSetPrototypeImpl.class);
 
-	private UnicodeProperties _settingsProperties;
+	private volatile UnicodeProperties _settingsProperties;
 
 }

@@ -138,14 +138,17 @@ public class ExpandoColumnImpl extends ExpandoColumnBaseImpl {
 	@Override
 	public UnicodeProperties getTypeSettingsProperties() {
 		if (_typeSettingsProperties == null) {
-			_typeSettingsProperties = new UnicodeProperties(true);
+			UnicodeProperties typeSettingsProperties = new UnicodeProperties(
+				true);
 
 			try {
-				_typeSettingsProperties.load(super.getTypeSettings());
+				typeSettingsProperties.load(super.getTypeSettings());
 			}
 			catch (IOException ioe) {
 				_log.error(ioe, ioe);
 			}
+
+			_typeSettingsProperties = typeSettingsProperties;
 		}
 
 		return _typeSettingsProperties;
@@ -170,6 +173,6 @@ public class ExpandoColumnImpl extends ExpandoColumnBaseImpl {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ExpandoColumnImpl.class);
 
-	private UnicodeProperties _typeSettingsProperties;
+	private volatile UnicodeProperties _typeSettingsProperties;
 
 }
