@@ -215,14 +215,7 @@ public class SearchContainer<R> {
 	}
 
 	public String getId(HttpServletRequest request, String namespace) {
-		if (_uniqueId) {
-			return _id;
-		}
-
 		if (Validator.isNotNull(_id)) {
-			_id = PortalUtil.getUniqueElementId(namespace, _id);
-			_uniqueId = true;
-
 			return _id;
 		}
 
@@ -246,16 +239,12 @@ public class SearchContainer<R> {
 
 			_id = PortalUtil.getUniqueElementId(namespace, id);
 
-			_uniqueId = true;
-
 			return _id;
 		}
 
 		id = DeterminateKeyGenerator.generate("taglib_search_container");
 
 		_id = id.concat("SearchContainer");
-
-		_uniqueId = true;
 
 		return _id;
 	}
@@ -580,6 +569,5 @@ public class SearchContainer<R> {
 	private int _start;
 	private int _total;
 	private String _totalVar;
-	private boolean _uniqueId;
 
 }
