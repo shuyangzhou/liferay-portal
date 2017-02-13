@@ -3217,8 +3217,53 @@ public class AssetLinkPersistenceImpl extends BasePersistenceImpl<AssetLink>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !AssetLinkModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!AssetLinkModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { assetLinkModelImpl.getEntryId1() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_E1, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_E1,
+				args);
+
+			args = new Object[] { assetLinkModelImpl.getEntryId2() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_E2, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_E2,
+				args);
+
+			args = new Object[] {
+					assetLinkModelImpl.getEntryId1(),
+					assetLinkModelImpl.getEntryId2()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_E_E, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_E_E,
+				args);
+
+			args = new Object[] {
+					assetLinkModelImpl.getEntryId1(),
+					assetLinkModelImpl.getType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_E1_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_E1_T,
+				args);
+
+			args = new Object[] {
+					assetLinkModelImpl.getEntryId2(),
+					assetLinkModelImpl.getType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_E2_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_E2_T,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
 		else {

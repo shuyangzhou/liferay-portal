@@ -4603,8 +4603,75 @@ public class EntryPersistenceImpl extends BasePersistenceImpl<Entry>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !EntryModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!EntryModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { entryModelImpl.getCreateDate() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_CREATEDATE, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CREATEDATE,
+				args);
+
+			args = new Object[] { entryModelImpl.getFromUserId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_FROMUSERID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_FROMUSERID,
+				args);
+
+			args = new Object[] { entryModelImpl.getToUserId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_TOUSERID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TOUSERID,
+				args);
+
+			args = new Object[] {
+					entryModelImpl.getCreateDate(),
+					entryModelImpl.getFromUserId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_F, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_F,
+				args);
+
+			args = new Object[] {
+					entryModelImpl.getCreateDate(), entryModelImpl.getToUserId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_T,
+				args);
+
+			args = new Object[] {
+					entryModelImpl.getFromUserId(), entryModelImpl.getToUserId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_F_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_F_T,
+				args);
+
+			args = new Object[] {
+					entryModelImpl.getCreateDate(),
+					entryModelImpl.getFromUserId(), entryModelImpl.getToUserId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_F_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_F_T,
+				args);
+
+			args = new Object[] {
+					entryModelImpl.getFromUserId(), entryModelImpl.getToUserId(),
+					entryModelImpl.getContent()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_F_T_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_F_T_C,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
 		else {

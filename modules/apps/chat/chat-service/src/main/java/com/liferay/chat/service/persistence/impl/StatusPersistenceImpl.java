@@ -2071,8 +2071,35 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !StatusModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!StatusModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { statusModelImpl.getModifiedDate() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_MODIFIEDDATE, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_MODIFIEDDATE,
+				args);
+
+			args = new Object[] { statusModelImpl.getOnline() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_ONLINE, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ONLINE,
+				args);
+
+			args = new Object[] {
+					statusModelImpl.getModifiedDate(),
+					statusModelImpl.getOnline()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_M_O, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_M_O,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
 		else {

@@ -9019,8 +9019,106 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !BackgroundTaskModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!BackgroundTaskModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { backgroundTaskModelImpl.getGroupId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
+				args);
+
+			args = new Object[] { backgroundTaskModelImpl.getCompanyId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
+				args);
+
+			args = new Object[] { backgroundTaskModelImpl.getCompleted() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPLETED, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPLETED,
+				args);
+
+			args = new Object[] { backgroundTaskModelImpl.getStatus() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_STATUS, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STATUS,
+				args);
+
+			args = new Object[] {
+					backgroundTaskModelImpl.getGroupId(),
+					backgroundTaskModelImpl.getTaskExecutorClassName()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T,
+				args);
+
+			args = new Object[] {
+					backgroundTaskModelImpl.getGroupId(),
+					backgroundTaskModelImpl.getStatus()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_S, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_S,
+				args);
+
+			args = new Object[] {
+					backgroundTaskModelImpl.getTaskExecutorClassName(),
+					backgroundTaskModelImpl.getStatus()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_T_S, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_T_S,
+				args);
+
+			args = new Object[] {
+					backgroundTaskModelImpl.getGroupId(),
+					backgroundTaskModelImpl.getName(),
+					backgroundTaskModelImpl.getTaskExecutorClassName()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_N_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_N_T,
+				args);
+
+			args = new Object[] {
+					backgroundTaskModelImpl.getGroupId(),
+					backgroundTaskModelImpl.getTaskExecutorClassName(),
+					backgroundTaskModelImpl.getCompleted()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_T_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T_C,
+				args);
+
+			args = new Object[] {
+					backgroundTaskModelImpl.getGroupId(),
+					backgroundTaskModelImpl.getTaskExecutorClassName(),
+					backgroundTaskModelImpl.getStatus()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_T_S, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_T_S,
+				args);
+
+			args = new Object[] {
+					backgroundTaskModelImpl.getGroupId(),
+					backgroundTaskModelImpl.getName(),
+					backgroundTaskModelImpl.getTaskExecutorClassName(),
+					backgroundTaskModelImpl.getCompleted()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_N_T_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_N_T_C,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
 		else {
