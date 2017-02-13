@@ -246,15 +246,13 @@ public class Entity {
 	}
 
 	public List<EntityFinder> getCollectionFinderList() {
-		List<EntityFinder> finderList = ListUtil.copy(_finderList);
+		List<EntityFinder> finderList = new ArrayList<>(_finderList.size());
 
-		Iterator<EntityFinder> itr = finderList.iterator();
+		for (EntityFinder entityFinder : _finderList) {
+			if (entityFinder.isCollection() &&
+				!entityFinder.hasCustomComparator()) {
 
-		while (itr.hasNext()) {
-			EntityFinder finder = itr.next();
-
-			if (!finder.isCollection()) {
-				itr.remove();
+				finderList.add(entityFinder);
 			}
 		}
 
