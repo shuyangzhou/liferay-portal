@@ -654,12 +654,14 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew
-			<#if columnBitmaskEnabled>
-				|| !${entity.name}ModelImpl.COLUMN_BITMASK_ENABLED
-			</#if>
-			) {
+		<#if columnBitmaskEnabled>
+			if (!${entity.name}ModelImpl.COLUMN_BITMASK_ENABLED) {
+				finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+			}
+			else
+		</#if>
 
+		if (isNew) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
