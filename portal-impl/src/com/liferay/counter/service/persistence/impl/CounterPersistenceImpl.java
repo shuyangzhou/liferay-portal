@@ -270,7 +270,7 @@ public class CounterPersistenceImpl extends BasePersistenceImpl<Counter>
 		try {
 			session = openSession();
 
-			if (counter.isNew()) {
+			if (isNew) {
 				session.save(counter);
 
 				counter.setNew(false);
