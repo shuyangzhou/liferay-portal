@@ -284,9 +284,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 	public void deployPortlet(Portlet portlet) throws Exception {
 		PortletApp portletApp = portlet.getPortletApp();
 
-		if (portletApp != null) {
-			_portletApps.put(portletApp.getServletContextName(), portletApp);
-		}
+		_portletApps.put(portletApp.getServletContextName(), portletApp);
 
 		ServletContext servletContext = portletApp.getServletContext();
 
