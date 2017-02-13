@@ -849,12 +849,10 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 						entry.getKey(), entry.getValue());
 
 					if ((oldPortletId != null) &&
-						!oldPortletId.equals(entry.getValue())) {
+						!oldPortletId.equals(entry.getValue()) &&
+						_log.isWarnEnabled()) {
 
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Duplicate struts path " + entry.getKey());
-						}
+						_log.warn("Duplicate struts path " + entry.getKey());
 					}
 				}
 			}
@@ -1036,13 +1034,12 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			for (Portlet portlet : _portletsMap.values()) {
 				String strutsPath = portlet.getStrutsPath();
 
-				if (portletIdsByStrutsPath.containsKey(strutsPath)) {
-					if (_log.isWarnEnabled()) {
-						_log.warn("Duplicate struts path " + strutsPath);
-					}
-				}
+				String oldPortletId = portletIdsByStrutsPath.put(
+					strutsPath, portlet.getPortletId());
 
-				portletIdsByStrutsPath.put(strutsPath, portlet.getPortletId());
+				if ((oldPortletId != null) && _log.isWarnEnabled()) {
+					_log.warn("Duplicate struts path " + strutsPath);
+				}
 			}
 
 			_portletIdsByStrutsPath = portletIdsByStrutsPath;
@@ -1459,18 +1456,14 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		String strutsPath = portletModel.getStrutsPath();
 
 		if (Validator.isNotNull(strutsPath)) {
-			if (portletIdsByStrutsPath.containsKey(strutsPath)) {
-				String strutsPathPortletId = portletIdsByStrutsPath.get(
-					strutsPath);
+			String oldPortletId = portletIdsByStrutsPath.put(
+				strutsPath, portletId);
 
-				if (!strutsPathPortletId.equals(portletId)) {
-					if (_log.isWarnEnabled()) {
-						_log.warn("Duplicate struts path " + strutsPath);
-					}
-				}
+			if ((oldPortletId != null) && !oldPortletId.equals(portletId) &&
+				_log.isWarnEnabled()) {
+
+				_log.warn("Duplicate struts path " + strutsPath);
 			}
-
-			portletIdsByStrutsPath.put(strutsPath, portletId);
 		}
 
 		portletModel.setParentStrutsPath(
