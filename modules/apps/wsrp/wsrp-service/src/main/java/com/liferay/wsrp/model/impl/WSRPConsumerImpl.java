@@ -52,22 +52,18 @@ public class WSRPConsumerImpl extends WSRPConsumerBaseImpl {
 
 	@Override
 	public UnicodeProperties getRegistrationProperties() {
-		if (_registrationProperties != null) {
-			return _registrationProperties;
+		if (_registrationProperties == null) {
+			UnicodeProperties registrationProperties = new UnicodeProperties();
+
+			try {
+				registrationProperties.load(getRegistrationPropertiesString());
+			}
+			catch (IOException ioe) {
+				_log.error(ioe, ioe);
+			}
+
+			_registrationProperties = registrationProperties;
 		}
-
-		UnicodeProperties registrationProperties = new UnicodeProperties();
-
-		String registrationPropertiesString = getRegistrationPropertiesString();
-
-		try {
-			registrationProperties.load(registrationPropertiesString);
-		}
-		catch (IOException ioe) {
-			_log.error(ioe, ioe);
-		}
-
-		_registrationProperties = registrationProperties;
 
 		return _registrationProperties;
 	}
