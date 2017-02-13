@@ -287,8 +287,6 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			_portletApps.put(portletApp.getServletContextName(), portletApp);
 		}
 
-		clearCache();
-
 		ServletContext servletContext = portletApp.getServletContext();
 
 		PortletBagFactory portletBagFactory = new PortletBagFactory();
@@ -302,6 +300,8 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		portletBagFactory.create(portlet, true);
 
 		_portletsMap.put(portlet.getRootPortletId(), portlet);
+
+		clearCache();
 	}
 
 	@Override
