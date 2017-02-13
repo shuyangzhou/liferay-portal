@@ -202,7 +202,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		// Refresh security path to portlet id mapping for all portlets
 
-		_portletIdsByStrutsPath.clear();
+		_portletIdsByStrutsPath = null;
 
 		// Refresh company portlets
 
@@ -713,7 +713,6 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		_portletApps.clear();
 		_portletsMap.clear();
-		_portletIdsByStrutsPath.clear();
 
 		try {
 			PortletApp portletApp = getPortletApp(StringPool.BLANK);
@@ -735,12 +734,19 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 				_portletsMap.put(entry.getKey(), entry.getValue());
 			}
 
+			Map<String, String> portletIdsByStrutsPath =
+				new ConcurrentHashMap<>();
+
 			Set<String> liferayPortletIds = readLiferayPortletXML(
-				StringPool.BLANK, servletContext, xmls[2], portletsMap);
+				StringPool.BLANK, servletContext, xmls[2], portletsMap,
+				portletIdsByStrutsPath);
 
 			liferayPortletIds.addAll(
 				readLiferayPortletXML(
-					StringPool.BLANK, servletContext, xmls[3], portletsMap));
+					StringPool.BLANK, servletContext, xmls[3], portletsMap,
+					portletIdsByStrutsPath));
+
+			_portletIdsByStrutsPath = portletIdsByStrutsPath;
 
 			// Check for missing entries in liferay-portlet.xml
 
@@ -823,8 +829,19 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 					servletContextName, servletContext, xmls[1],
 					servletURLPatterns, pluginPackage));
 
+			Map<String, String> portletIdsByStrutsPath =
+				_portletIdsByStrutsPath;
+
+			if (portletIdsByStrutsPath == null) {
+				portletIdsByStrutsPath = new HashMap<>();
+			}
+			else {
+				portletIdsByStrutsPath = new HashMap<>(portletIdsByStrutsPath);
+			}
+
 			liferayPortletIds = readLiferayPortletXML(
-				servletContextName, servletContext, xmls[2], portletsMap);
+				servletContextName, servletContext, xmls[2], portletsMap,
+				portletIdsByStrutsPath);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -995,25 +1012,31 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 	}
 
 	protected String getPortletId(String securityPath) {
-		if (_portletIdsByStrutsPath.isEmpty()) {
+		Map<String, String> portletIdsByStrutsPath = _portletIdsByStrutsPath;
+
+		if (portletIdsByStrutsPath == null) {
+			portletIdsByStrutsPath = new ConcurrentHashMap<>();
+
 			for (Portlet portlet : _portletsMap.values()) {
 				String strutsPath = portlet.getStrutsPath();
 
-				if (_portletIdsByStrutsPath.containsKey(strutsPath)) {
+				if (portletIdsByStrutsPath.containsKey(strutsPath)) {
 					if (_log.isWarnEnabled()) {
 						_log.warn("Duplicate struts path " + strutsPath);
 					}
 				}
 
-				_portletIdsByStrutsPath.put(strutsPath, portlet.getPortletId());
+				portletIdsByStrutsPath.put(strutsPath, portlet.getPortletId());
 			}
+
+			_portletIdsByStrutsPath = portletIdsByStrutsPath;
 		}
 
-		String portletId = _portletIdsByStrutsPath.get(securityPath);
+		String portletId = portletIdsByStrutsPath.get(securityPath);
 
 		if (Validator.isNull(portletId)) {
 			for (Map.Entry<String, String> entry :
-					_portletIdsByStrutsPath.entrySet()) {
+					portletIdsByStrutsPath.entrySet()) {
 
 				String strutsPath = entry.getKey();
 
@@ -1381,7 +1404,8 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 	protected void readLiferayPortletXML(
 		String servletContextName, ServletContext servletContext,
 		Set<String> liferayPortletIds, Map<String, String> roleMappers,
-		Element portletElement, Map<String, Portlet> portletsMap) {
+		Element portletElement, Map<String, Portlet> portletsMap,
+		Map<String, String> portletIdsByStrutsPath) {
 
 		String portletId = portletElement.elementText("portlet-name");
 
@@ -1419,8 +1443,8 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		String strutsPath = portletModel.getStrutsPath();
 
 		if (Validator.isNotNull(strutsPath)) {
-			if (_portletIdsByStrutsPath.containsKey(strutsPath)) {
-				String strutsPathPortletId = _portletIdsByStrutsPath.get(
+			if (portletIdsByStrutsPath.containsKey(strutsPath)) {
+				String strutsPathPortletId = portletIdsByStrutsPath.get(
 					strutsPath);
 
 				if (!strutsPathPortletId.equals(portletId)) {
@@ -1430,7 +1454,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 				}
 			}
 
-			_portletIdsByStrutsPath.put(strutsPath, portletId);
+			portletIdsByStrutsPath.put(strutsPath, portletId);
 		}
 
 		portletModel.setParentStrutsPath(
@@ -1966,7 +1990,8 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 	protected Set<String> readLiferayPortletXML(
 			String servletContextName, ServletContext servletContext,
-			String xml, Map<String, Portlet> portletsMap)
+			String xml, Map<String, Portlet> portletsMap,
+			Map<String, String> portletIdsByStrutsPath)
 		throws Exception {
 
 		Set<String> liferayPortletIds = new HashSet<>();
@@ -2011,7 +2036,8 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		for (Element portletElement : rootElement.elements("portlet")) {
 			readLiferayPortletXML(
 				servletContextName, servletContext, liferayPortletIds,
-				roleMappers, portletElement, portletsMap);
+				roleMappers, portletElement, portletsMap,
+				portletIdsByStrutsPath);
 		}
 
 		return liferayPortletIds;
@@ -2590,8 +2616,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 	private static final Map<String, PortletApp> _portletApps =
 		new ConcurrentHashMap<>();
-	private static final Map<String, String> _portletIdsByStrutsPath =
-		new ConcurrentHashMap<>();
+	private static volatile Map<String, String> _portletIdsByStrutsPath;
 	private static final Map<String, Portlet> _portletsMap =
 		new ConcurrentHashMap<>();
 	private static final Map<Long, Map<String, Portlet>> _portletsMaps =
