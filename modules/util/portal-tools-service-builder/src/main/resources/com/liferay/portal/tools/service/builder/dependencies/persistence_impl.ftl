@@ -499,29 +499,10 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 		<#assign
 			collectionFinderList = entity.getCollectionFinderList()
-
-			castEntityModelImpl = false
+			uniqueFinderList = entity.getUniqueFinderList()
 		/>
 
-		<#if entity.isHierarchicalTree()>
-			<#assign castEntityModelImpl = true />
-		</#if>
-
-		<#if collectionFinderList?size != 0>
-			<#assign castEntityModelImpl = true />
-		</#if>
-
-		<#assign uniqueFinderList = entity.getUniqueFinderList() />
-
-		<#if uniqueFinderList?size &gt; 0>
-			<#assign castEntityModelImpl = true />
-		</#if>
-
-		<#if entity.hasColumn("createDate", "Date") && entity.hasColumn("modifiedDate", "Date")>
-			<#assign castEntityModelImpl = true />
-		</#if>
-
-		<#if castEntityModelImpl>
+		<#if entity.isHierarchicalTree() || (collectionFinderList?size != 0) || (uniqueFinderList?size &gt; 0) || (entity.hasColumn("createDate", "Date") && entity.hasColumn("modifiedDate", "Date"))>
 			${entity.name}ModelImpl ${entity.varName}ModelImpl = (${entity.name}ModelImpl)${entity.varName};
 		</#if>
 
