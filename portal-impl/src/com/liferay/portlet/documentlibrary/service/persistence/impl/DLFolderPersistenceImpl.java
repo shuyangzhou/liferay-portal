@@ -12557,8 +12557,116 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !DLFolderModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!DLFolderModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { dlFolderModelImpl.getUuid() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
+				args);
+
+			args = new Object[] {
+					dlFolderModelImpl.getUuid(),
+					dlFolderModelImpl.getCompanyId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C,
+				args);
+
+			args = new Object[] { dlFolderModelImpl.getGroupId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
+				args);
+
+			args = new Object[] { dlFolderModelImpl.getCompanyId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
+				args);
+
+			args = new Object[] { dlFolderModelImpl.getRepositoryId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_REPOSITORYID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_REPOSITORYID,
+				args);
+
+			args = new Object[] {
+					dlFolderModelImpl.getGroupId(),
+					dlFolderModelImpl.getParentFolderId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_P, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_P,
+				args);
+
+			args = new Object[] {
+					dlFolderModelImpl.getRepositoryId(),
+					dlFolderModelImpl.getParentFolderId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_R_P, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_R_P,
+				args);
+
+			args = new Object[] {
+					dlFolderModelImpl.getParentFolderId(),
+					dlFolderModelImpl.getName()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_P_N, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_P_N,
+				args);
+
+			args = new Object[] {
+					dlFolderModelImpl.getGroupId(),
+					dlFolderModelImpl.getMountPoint(),
+					dlFolderModelImpl.getParentFolderId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_M_P, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_M_P,
+				args);
+
+			args = new Object[] {
+					dlFolderModelImpl.getGroupId(),
+					dlFolderModelImpl.getMountPoint(),
+					dlFolderModelImpl.getParentFolderId(),
+					dlFolderModelImpl.getHidden()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_M_P_H, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_M_P_H,
+				args);
+
+			args = new Object[] {
+					dlFolderModelImpl.getGroupId(),
+					dlFolderModelImpl.getParentFolderId(),
+					dlFolderModelImpl.getHidden(), dlFolderModelImpl.getStatus()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_P_H_S, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_P_H_S,
+				args);
+
+			args = new Object[] {
+					dlFolderModelImpl.getGroupId(),
+					dlFolderModelImpl.getMountPoint(),
+					dlFolderModelImpl.getParentFolderId(),
+					dlFolderModelImpl.getHidden(), dlFolderModelImpl.getStatus()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_M_P_H_S, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_M_P_H_S,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
 		else {

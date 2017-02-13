@@ -7917,8 +7917,114 @@ public class MicroblogsEntryPersistenceImpl extends BasePersistenceImpl<Microblo
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !MicroblogsEntryModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!MicroblogsEntryModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { microblogsEntryModelImpl.getCompanyId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
+				args);
+
+			args = new Object[] { microblogsEntryModelImpl.getUserId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
+				args);
+
+			args = new Object[] {
+					microblogsEntryModelImpl.getUserId(),
+					microblogsEntryModelImpl.getType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_T,
+				args);
+
+			args = new Object[] {
+					microblogsEntryModelImpl.getCreatorClassNameId(),
+					microblogsEntryModelImpl.getCreatorClassPK()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_CCNI_CCPK, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CCNI_CCPK,
+				args);
+
+			args = new Object[] {
+					microblogsEntryModelImpl.getCreatorClassNameId(),
+					microblogsEntryModelImpl.getType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_CCNI_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CCNI_T,
+				args);
+
+			args = new Object[] {
+					microblogsEntryModelImpl.getType(),
+					microblogsEntryModelImpl.getParentMicroblogsEntryId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_T_P, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_T_P,
+				args);
+
+			args = new Object[] {
+					microblogsEntryModelImpl.getCompanyId(),
+					microblogsEntryModelImpl.getCreatorClassNameId(),
+					microblogsEntryModelImpl.getCreatorClassPK()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_CCNI_CCPK, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_CCNI_CCPK,
+				args);
+
+			args = new Object[] {
+					microblogsEntryModelImpl.getCompanyId(),
+					microblogsEntryModelImpl.getCreatorClassNameId(),
+					microblogsEntryModelImpl.getType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_CCNI_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_CCNI_T,
+				args);
+
+			args = new Object[] {
+					microblogsEntryModelImpl.getCreatorClassNameId(),
+					microblogsEntryModelImpl.getCreatorClassPK(),
+					microblogsEntryModelImpl.getType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_CCNI_CCPK_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_CCNI_CCPK_T,
+				args);
+
+			args = new Object[] {
+					microblogsEntryModelImpl.getCompanyId(),
+					microblogsEntryModelImpl.getCreatorClassNameId(),
+					microblogsEntryModelImpl.getCreatorClassPK(),
+					microblogsEntryModelImpl.getType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_CCNI_CCPK_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_CCNI_CCPK_T,
+				args);
+
+			args = new Object[] {
+					microblogsEntryModelImpl.getUserId(),
+					microblogsEntryModelImpl.getCreateDate(),
+					microblogsEntryModelImpl.getType(),
+					microblogsEntryModelImpl.getSocialRelationType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_C_T_S, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_C_T_S,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
 		else {

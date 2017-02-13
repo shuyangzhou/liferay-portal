@@ -6702,8 +6702,88 @@ public class ResourcePermissionPersistenceImpl extends BasePersistenceImpl<Resou
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !ResourcePermissionModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!ResourcePermissionModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { resourcePermissionModelImpl.getName() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_NAME, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_NAME,
+				args);
+
+			args = new Object[] { resourcePermissionModelImpl.getScope() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_SCOPE, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_SCOPE,
+				args);
+
+			args = new Object[] { resourcePermissionModelImpl.getRoleId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_ROLEID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ROLEID,
+				args);
+
+			args = new Object[] {
+					resourcePermissionModelImpl.getCompanyId(),
+					resourcePermissionModelImpl.getName(),
+					resourcePermissionModelImpl.getScope()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_N_S, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_N_S,
+				args);
+
+			args = new Object[] {
+					resourcePermissionModelImpl.getCompanyId(),
+					resourcePermissionModelImpl.getScope(),
+					resourcePermissionModelImpl.getPrimKey()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_S_P, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_S_P,
+				args);
+
+			args = new Object[] {
+					resourcePermissionModelImpl.getCompanyId(),
+					resourcePermissionModelImpl.getName(),
+					resourcePermissionModelImpl.getScope(),
+					resourcePermissionModelImpl.getPrimKey()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_N_S_P, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_N_S_P,
+				args);
+
+			args = new Object[] {
+					resourcePermissionModelImpl.getCompanyId(),
+					resourcePermissionModelImpl.getName(),
+					resourcePermissionModelImpl.getScope(),
+					resourcePermissionModelImpl.getPrimKey(),
+					resourcePermissionModelImpl.getRoleId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_N_S_P_R, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_N_S_P_R,
+				args);
+
+			args = new Object[] {
+					resourcePermissionModelImpl.getCompanyId(),
+					resourcePermissionModelImpl.getName(),
+					resourcePermissionModelImpl.getScope(),
+					resourcePermissionModelImpl.getPrimKeyId(),
+					resourcePermissionModelImpl.getRoleId(),
+					resourcePermissionModelImpl.getViewActionId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_N_S_P_R_V, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_N_S_P_R_V,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
 		else {

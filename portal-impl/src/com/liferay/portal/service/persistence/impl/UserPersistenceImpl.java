@@ -7854,8 +7854,83 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !UserModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!UserModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+		else
+		 if (isNew) {
+			Object[] args = new Object[] { userModelImpl.getUuid() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
+				args);
+
+			args = new Object[] {
+					userModelImpl.getUuid(), userModelImpl.getCompanyId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C,
+				args);
+
+			args = new Object[] { userModelImpl.getCompanyId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPANYID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
+				args);
+
+			args = new Object[] { userModelImpl.getEmailAddress() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_EMAILADDRESS, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_EMAILADDRESS,
+				args);
+
+			args = new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getCreateDate()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_CD, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_CD,
+				args);
+
+			args = new Object[] {
+					userModelImpl.getCompanyId(),
+					userModelImpl.getModifiedDate()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_MD, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_MD,
+				args);
+
+			args = new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getStatus()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_S, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_S,
+				args);
+
+			args = new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getCreateDate(),
+					userModelImpl.getModifiedDate()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_CD_MD, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_CD_MD,
+				args);
+
+			args = new Object[] {
+					userModelImpl.getCompanyId(), userModelImpl.getDefaultUser(),
+					userModelImpl.getStatus()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_DU_S, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_DU_S,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
 		else {

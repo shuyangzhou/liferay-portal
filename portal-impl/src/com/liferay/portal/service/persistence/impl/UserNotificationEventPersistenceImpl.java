@@ -8523,8 +8523,143 @@ public class UserNotificationEventPersistenceImpl extends BasePersistenceImpl<Us
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew || !UserNotificationEventModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!UserNotificationEventModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+		else
+		 if (isNew) {
+			Object[] args = new Object[] {
+					userNotificationEventModelImpl.getUuid()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
+				args);
+
+			args = new Object[] {
+					userNotificationEventModelImpl.getUuid(),
+					userNotificationEventModelImpl.getCompanyId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID_C, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C,
+				args);
+
+			args = new Object[] { userNotificationEventModelImpl.getUserId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_USERID,
+				args);
+
+			args = new Object[] { userNotificationEventModelImpl.getType() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_TYPE, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_TYPE,
+				args);
+
+			args = new Object[] {
+					userNotificationEventModelImpl.getUserId(),
+					userNotificationEventModelImpl.getDeliveryType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_DT, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_DT,
+				args);
+
+			args = new Object[] {
+					userNotificationEventModelImpl.getUserId(),
+					userNotificationEventModelImpl.getDelivered()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_D, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_D,
+				args);
+
+			args = new Object[] {
+					userNotificationEventModelImpl.getUserId(),
+					userNotificationEventModelImpl.getArchived()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_A, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_A,
+				args);
+
+			args = new Object[] {
+					userNotificationEventModelImpl.getUserId(),
+					userNotificationEventModelImpl.getDeliveryType(),
+					userNotificationEventModelImpl.getDelivered()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_DT_D, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_DT_D,
+				args);
+
+			args = new Object[] {
+					userNotificationEventModelImpl.getUserId(),
+					userNotificationEventModelImpl.getDeliveryType(),
+					userNotificationEventModelImpl.getArchived()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_DT_A, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_DT_A,
+				args);
+
+			args = new Object[] {
+					userNotificationEventModelImpl.getUserId(),
+					userNotificationEventModelImpl.getDelivered(),
+					userNotificationEventModelImpl.getActionRequired()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_D_A, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_D_A,
+				args);
+
+			args = new Object[] {
+					userNotificationEventModelImpl.getUserId(),
+					userNotificationEventModelImpl.getActionRequired(),
+					userNotificationEventModelImpl.getArchived()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_A_A, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_A_A,
+				args);
+
+			args = new Object[] {
+					userNotificationEventModelImpl.getUserId(),
+					userNotificationEventModelImpl.getType(),
+					userNotificationEventModelImpl.getDeliveryType(),
+					userNotificationEventModelImpl.getDelivered()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_T_DT_D, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_T_DT_D,
+				args);
+
+			args = new Object[] {
+					userNotificationEventModelImpl.getUserId(),
+					userNotificationEventModelImpl.getDeliveryType(),
+					userNotificationEventModelImpl.getDelivered(),
+					userNotificationEventModelImpl.getActionRequired()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_DT_D_A, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_DT_D_A,
+				args);
+
+			args = new Object[] {
+					userNotificationEventModelImpl.getUserId(),
+					userNotificationEventModelImpl.getDeliveryType(),
+					userNotificationEventModelImpl.getActionRequired(),
+					userNotificationEventModelImpl.getArchived()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_DT_A_A, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_DT_A_A,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
 		else {

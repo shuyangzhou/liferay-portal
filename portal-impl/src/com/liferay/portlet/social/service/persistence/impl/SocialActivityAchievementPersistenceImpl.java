@@ -3458,9 +3458,59 @@ public class SocialActivityAchievementPersistenceImpl
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew ||
-				!SocialActivityAchievementModelImpl.COLUMN_BITMASK_ENABLED) {
+		if (!SocialActivityAchievementModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+		}
+		else
+		 if (isNew) {
+			Object[] args = new Object[] {
+					socialActivityAchievementModelImpl.getGroupId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPID,
+				args);
+
+			args = new Object[] {
+					socialActivityAchievementModelImpl.getGroupId(),
+					socialActivityAchievementModelImpl.getUserId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_U, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_U,
+				args);
+
+			args = new Object[] {
+					socialActivityAchievementModelImpl.getGroupId(),
+					socialActivityAchievementModelImpl.getName()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_N, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_N,
+				args);
+
+			args = new Object[] {
+					socialActivityAchievementModelImpl.getGroupId(),
+					socialActivityAchievementModelImpl.getFirstInGroup()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_F, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_F,
+				args);
+
+			args = new Object[] {
+					socialActivityAchievementModelImpl.getGroupId(),
+					socialActivityAchievementModelImpl.getUserId(),
+					socialActivityAchievementModelImpl.getFirstInGroup()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_U_F, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_G_U_F,
+				args);
+
+			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+				FINDER_ARGS_EMPTY);
 		}
 
 		else {
