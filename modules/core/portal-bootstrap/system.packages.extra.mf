@@ -2600,7 +2600,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  n,com.liferay.portal.kernel.io.unsync,com.liferay.portal.kernel.model
  ,com.liferay.portal.kernel.security.permission,com.liferay.portal.ker
  nel.service,javax.servlet,javax.servlet.http",com.liferay.portal.kern
- el.module.configuration;version="1.0.0";uses:="com.liferay.portal.ker
+ el.module.configuration;version="1.1.0";uses:="com.liferay.portal.ker
  nel.exception,com.liferay.portal.kernel.model,com.liferay.portal.kern
  el.settings",com.liferay.portal.kernel.module.framework;version="1.1.
  0",com.liferay.portal.kernel.module.framework.service;version="1.0.0"
