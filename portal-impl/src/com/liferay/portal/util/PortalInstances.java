@@ -165,51 +165,6 @@ public class PortalInstances {
 		return companyId;
 	}
 
-	private static long _getCompanyIdByVirtualHosts(
-		HttpServletRequest request) {
-
-		String host = PortalUtil.getHost(request);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Host " + host);
-		}
-
-		if (Validator.isNull(host) || isVirtualHostsIgnoreHost(host)) {
-			return 0;
-		}
-
-		try {
-			VirtualHost virtualHost =
-				VirtualHostLocalServiceUtil.fetchVirtualHost(host);
-
-			if (virtualHost == null) {
-				return 0;
-			}
-
-			if (virtualHost.getLayoutSetId() != 0) {
-				LayoutSet layoutSet = LayoutSetLocalServiceUtil.getLayoutSet(
-					virtualHost.getLayoutSetId());
-
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Company " + virtualHost.getCompanyId() +
-							" is associated with layout set " +
-								virtualHost.getLayoutSetId());
-				}
-
-				request.setAttribute(
-					WebKeys.VIRTUAL_HOST_LAYOUT_SET, layoutSet);
-			}
-
-			return virtualHost.getCompanyId();
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		return 0;
-	}
-
 	public static long[] getCompanyIds() {
 		return _companyIds;
 	}
@@ -465,19 +420,52 @@ public class PortalInstances {
 		WebAppPool.remove(companyId, WebKeys.PORTLET_CATEGORY);
 	}
 
-	private PortalInstances() {
+	private static long _getCompanyIdByVirtualHosts(
+		HttpServletRequest request) {
+
+		String host = PortalUtil.getHost(request);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Host " + host);
+		}
+
+		if (Validator.isNull(host) || isVirtualHostsIgnoreHost(host)) {
+			return 0;
+		}
+
+		try {
+			VirtualHost virtualHost =
+				VirtualHostLocalServiceUtil.fetchVirtualHost(host);
+
+			if (virtualHost == null) {
+				return 0;
+			}
+
+			if (virtualHost.getLayoutSetId() != 0) {
+				LayoutSet layoutSet = LayoutSetLocalServiceUtil.getLayoutSet(
+					virtualHost.getLayoutSetId());
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Company " + virtualHost.getCompanyId() +
+							" is associated with layout set " +
+								virtualHost.getLayoutSetId());
+				}
+
+				request.setAttribute(
+					WebKeys.VIRTUAL_HOST_LAYOUT_SET, layoutSet);
+			}
+
+			return virtualHost.getCompanyId();
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
+
+		return 0;
 	}
 
-	static {
-		_companyIds = new long[0];
-		_autoLoginIgnoreHosts = SetUtil.fromArray(
-			PropsUtil.getArray(PropsKeys.AUTO_LOGIN_IGNORE_HOSTS));
-		_autoLoginIgnorePaths = SetUtil.fromArray(
-			PropsUtil.getArray(PropsKeys.AUTO_LOGIN_IGNORE_PATHS));
-		_virtualHostsIgnoreHosts = SetUtil.fromArray(
-			PropsUtil.getArray(PropsKeys.VIRTUAL_HOSTS_IGNORE_HOSTS));
-		_virtualHostsIgnorePaths = SetUtil.fromArray(
-			PropsUtil.getArray(PropsKeys.VIRTUAL_HOSTS_IGNORE_PATHS));
+	private PortalInstances() {
 	}
 
 	private static final String _GET_COMPANY_IDS =
@@ -492,5 +480,17 @@ public class PortalInstances {
 	private static final Set<String> _virtualHostsIgnoreHosts;
 	private static final Set<String> _virtualHostsIgnorePaths;
 	private static String[] _webIds;
+
+	static {
+		_companyIds = new long[0];
+		_autoLoginIgnoreHosts = SetUtil.fromArray(
+			PropsUtil.getArray(PropsKeys.AUTO_LOGIN_IGNORE_HOSTS));
+		_autoLoginIgnorePaths = SetUtil.fromArray(
+			PropsUtil.getArray(PropsKeys.AUTO_LOGIN_IGNORE_PATHS));
+		_virtualHostsIgnoreHosts = SetUtil.fromArray(
+			PropsUtil.getArray(PropsKeys.VIRTUAL_HOSTS_IGNORE_HOSTS));
+		_virtualHostsIgnorePaths = SetUtil.fromArray(
+			PropsUtil.getArray(PropsKeys.VIRTUAL_HOSTS_IGNORE_PATHS));
+	}
 
 }
