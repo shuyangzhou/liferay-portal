@@ -63,76 +63,6 @@ import javax.servlet.http.HttpServletRequest;
 public class PortalInstances {
 
 	public static void addCompanyId(long companyId) {
-		_instance._addCompanyId(companyId);
-	}
-
-	public static long getCompanyId(HttpServletRequest request) {
-		return _instance._getCompanyId(request);
-	}
-
-	public static long[] getCompanyIds() {
-		return _instance._getCompanyIds();
-	}
-
-	public static long[] getCompanyIdsBySQL() throws SQLException {
-		return _instance._getCompanyIdsBySQL();
-	}
-
-	public static long getDefaultCompanyId() {
-		return _instance._getDefaultCompanyId();
-	}
-
-	public static String[] getWebIds() {
-		return _instance._getWebIds();
-	}
-
-	public static long initCompany(
-		ServletContext servletContext, String webId) {
-
-		return _instance._initCompany(servletContext, webId);
-	}
-
-	public static boolean isAutoLoginIgnoreHost(String host) {
-		return _instance._isAutoLoginIgnoreHost(host);
-	}
-
-	public static boolean isAutoLoginIgnorePath(String path) {
-		return _instance._isAutoLoginIgnorePath(path);
-	}
-
-	public static boolean isCompanyActive(long companyId) {
-		return _instance._isCompanyActive(companyId);
-	}
-
-	public static boolean isVirtualHostsIgnoreHost(String host) {
-		return _instance._isVirtualHostsIgnoreHost(host);
-	}
-
-	public static boolean isVirtualHostsIgnorePath(String path) {
-		return _instance._isVirtualHostsIgnorePath(path);
-	}
-
-	public static void reload(ServletContext servletContext) {
-		_instance._reload(servletContext);
-	}
-
-	public static void removeCompany(long companyId) {
-		_instance._removeCompanyId(companyId);
-	}
-
-	private PortalInstances() {
-		_companyIds = new long[0];
-		_autoLoginIgnoreHosts = SetUtil.fromArray(
-			PropsUtil.getArray(PropsKeys.AUTO_LOGIN_IGNORE_HOSTS));
-		_autoLoginIgnorePaths = SetUtil.fromArray(
-			PropsUtil.getArray(PropsKeys.AUTO_LOGIN_IGNORE_PATHS));
-		_virtualHostsIgnoreHosts = SetUtil.fromArray(
-			PropsUtil.getArray(PropsKeys.VIRTUAL_HOSTS_IGNORE_HOSTS));
-		_virtualHostsIgnorePaths = SetUtil.fromArray(
-			PropsUtil.getArray(PropsKeys.VIRTUAL_HOSTS_IGNORE_PATHS));
-	}
-
-	private void _addCompanyId(long companyId) {
 		if (ArrayUtil.contains(_companyIds, companyId)) {
 			return;
 		}
@@ -146,7 +76,7 @@ public class PortalInstances {
 		_companyIds = companyIds;
 	}
 
-	private long _getCompanyId(HttpServletRequest request) {
+	public static long getCompanyId(HttpServletRequest request) {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Get company id");
 		}
@@ -197,7 +127,7 @@ public class PortalInstances {
 		}
 
 		if (companyId <= 0) {
-			companyId = _getDefaultCompanyId();
+			companyId = getDefaultCompanyId();
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("Default company id " + companyId);
@@ -235,14 +165,16 @@ public class PortalInstances {
 		return companyId;
 	}
 
-	private long _getCompanyIdByVirtualHosts(HttpServletRequest request) {
+	private static long _getCompanyIdByVirtualHosts(
+		HttpServletRequest request) {
+
 		String host = PortalUtil.getHost(request);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Host " + host);
 		}
 
-		if (Validator.isNull(host) || _isVirtualHostsIgnoreHost(host)) {
+		if (Validator.isNull(host) || isVirtualHostsIgnoreHost(host)) {
 			return 0;
 		}
 
@@ -278,11 +210,11 @@ public class PortalInstances {
 		return 0;
 	}
 
-	private long[] _getCompanyIds() {
+	public static long[] getCompanyIds() {
 		return _companyIds;
 	}
 
-	private long[] _getCompanyIdsBySQL() throws SQLException {
+	public static long[] getCompanyIdsBySQL() throws SQLException {
 		List<Long> companyIds = new ArrayList<>();
 
 		Connection con = null;
@@ -310,11 +242,11 @@ public class PortalInstances {
 			companyIds.toArray(new Long[companyIds.size()]));
 	}
 
-	private long _getDefaultCompanyId() {
+	public static long getDefaultCompanyId() {
 		return _companyIds[0];
 	}
 
-	private String[] _getWebIds() {
+	public static String[] getWebIds() {
 		if (_webIds != null) {
 			return _webIds;
 		}
@@ -353,7 +285,8 @@ public class PortalInstances {
 		return _webIds;
 	}
 
-	private long _initCompany(ServletContext servletContext, String webId) {
+	public static long initCompany(
+		ServletContext servletContext, String webId) {
 
 		// Begin initializing company
 
@@ -470,15 +403,15 @@ public class PortalInstances {
 		return companyId;
 	}
 
-	private boolean _isAutoLoginIgnoreHost(String host) {
+	public static boolean isAutoLoginIgnoreHost(String host) {
 		return _autoLoginIgnoreHosts.contains(host);
 	}
 
-	private boolean _isAutoLoginIgnorePath(String path) {
+	public static boolean isAutoLoginIgnorePath(String path) {
 		return _autoLoginIgnorePaths.contains(path);
 	}
 
-	private boolean _isCompanyActive(long companyId) {
+	public static boolean isCompanyActive(long companyId) {
 		try {
 			Company company = CompanyLocalServiceUtil.fetchCompanyById(
 				companyId);
@@ -494,26 +427,26 @@ public class PortalInstances {
 		return false;
 	}
 
-	private boolean _isVirtualHostsIgnoreHost(String host) {
+	public static boolean isVirtualHostsIgnoreHost(String host) {
 		return _virtualHostsIgnoreHosts.contains(host);
 	}
 
-	private boolean _isVirtualHostsIgnorePath(String path) {
+	public static boolean isVirtualHostsIgnorePath(String path) {
 		return _virtualHostsIgnorePaths.contains(path);
 	}
 
-	private void _reload(ServletContext servletContext) {
+	public static void reload(ServletContext servletContext) {
 		_companyIds = new long[0];
 		_webIds = null;
 
-		String[] webIds = _getWebIds();
+		String[] webIds = getWebIds();
 
 		for (String webId : webIds) {
-			_initCompany(servletContext, webId);
+			initCompany(servletContext, webId);
 		}
 	}
 
-	private void _removeCompanyId(long companyId) {
+	public static void removeCompany(long companyId) {
 		try {
 			EventsProcessorUtil.process(
 				PropsKeys.APPLICATION_SHUTDOWN_EVENTS,
@@ -527,9 +460,24 @@ public class PortalInstances {
 		_companyIds = ArrayUtil.remove(_companyIds, companyId);
 		_webIds = null;
 
-		_getWebIds();
+		getWebIds();
 
 		WebAppPool.remove(companyId, WebKeys.PORTLET_CATEGORY);
+	}
+
+	private PortalInstances() {
+	}
+
+	static {
+		_companyIds = new long[0];
+		_autoLoginIgnoreHosts = SetUtil.fromArray(
+			PropsUtil.getArray(PropsKeys.AUTO_LOGIN_IGNORE_HOSTS));
+		_autoLoginIgnorePaths = SetUtil.fromArray(
+			PropsUtil.getArray(PropsKeys.AUTO_LOGIN_IGNORE_PATHS));
+		_virtualHostsIgnoreHosts = SetUtil.fromArray(
+			PropsUtil.getArray(PropsKeys.VIRTUAL_HOSTS_IGNORE_HOSTS));
+		_virtualHostsIgnorePaths = SetUtil.fromArray(
+			PropsUtil.getArray(PropsKeys.VIRTUAL_HOSTS_IGNORE_PATHS));
 	}
 
 	private static final String _GET_COMPANY_IDS =
@@ -538,13 +486,11 @@ public class PortalInstances {
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalInstances.class);
 
-	private static final PortalInstances _instance = new PortalInstances();
-
-	private final Set<String> _autoLoginIgnoreHosts;
-	private final Set<String> _autoLoginIgnorePaths;
-	private long[] _companyIds;
-	private final Set<String> _virtualHostsIgnoreHosts;
-	private final Set<String> _virtualHostsIgnorePaths;
-	private String[] _webIds;
+	private static final Set<String> _autoLoginIgnoreHosts;
+	private static final Set<String> _autoLoginIgnorePaths;
+	private static long[] _companyIds;
+	private static final Set<String> _virtualHostsIgnoreHosts;
+	private static final Set<String> _virtualHostsIgnorePaths;
+	private static String[] _webIds;
 
 }
