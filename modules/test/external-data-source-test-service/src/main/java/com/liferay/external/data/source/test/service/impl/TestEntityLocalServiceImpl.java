@@ -34,7 +34,8 @@ import com.liferay.external.data.source.test.service.base.TestEntityLocalService
  */
 @ProviderType
 public class TestEntityLocalServiceImpl extends TestEntityLocalServiceBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. Always use {@link com.liferay.external.data.source.test.service.TestEntityLocalServiceUtil} to access the test entity local service.
