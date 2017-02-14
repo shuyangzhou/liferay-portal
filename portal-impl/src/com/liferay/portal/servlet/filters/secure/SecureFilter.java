@@ -101,16 +101,11 @@ public class SecureFilter extends BasePortalFilter {
 
 		HttpSession session = request.getSession();
 
-		long userId = GetterUtil.getLong(
-			(String)session.getAttribute(_AUTHENTICATED_USER));
+		User user = (User)session.getAttribute(WebKeys.USER);
 
-		if (userId > 0) {
-			request = new ProtectedServletRequest(
-				request, String.valueOf(userId), HttpServletRequest.BASIC_AUTH);
+		if (user == null) {
+			long userId = 0;
 
-			initThreadLocals(request);
-		}
-		else {
 			try {
 				userId = HttpAuthManagerUtil.getBasicUserId(request);
 			}
@@ -134,6 +129,13 @@ public class SecureFilter extends BasePortalFilter {
 				return null;
 			}
 		}
+		else {
+			request = new ProtectedServletRequest(
+				request, String.valueOf(user.getUserId()),
+				HttpServletRequest.BASIC_AUTH);
+
+			initThreadLocals(request);
+		}
 
 		return request;
 	}
@@ -144,17 +146,11 @@ public class SecureFilter extends BasePortalFilter {
 
 		HttpSession session = request.getSession();
 
-		long userId = GetterUtil.getLong(
-			(String)session.getAttribute(_AUTHENTICATED_USER));
+		User user = (User)session.getAttribute(WebKeys.USER);
 
-		if (userId > 0) {
-			request = new ProtectedServletRequest(
-				request, String.valueOf(userId),
-				HttpServletRequest.DIGEST_AUTH);
+		if (user == null) {
+			long userId = 0;
 
-			initThreadLocals(request);
-		}
-		else {
 			try {
 				userId = HttpAuthManagerUtil.getDigestUserId(request);
 			}
@@ -177,6 +173,13 @@ public class SecureFilter extends BasePortalFilter {
 
 				return null;
 			}
+		}
+		else {
+			request = new ProtectedServletRequest(
+				request, String.valueOf(user.getUserId()),
+				HttpServletRequest.DIGEST_AUTH);
+
+			initThreadLocals(request);
 		}
 
 		return request;
@@ -343,11 +346,8 @@ public class SecureFilter extends BasePortalFilter {
 			String authType)
 		throws Exception {
 
-		String userIdString = String.valueOf(user.getUserId());
-
-		request = new ProtectedServletRequest(request, userIdString, authType);
-
-		session.setAttribute(_AUTHENTICATED_USER, userIdString);
+		request = new ProtectedServletRequest(
+			request, String.valueOf(user.getUserId()), authType);
 
 		session.setAttribute(WebKeys.USER, user);
 
@@ -359,9 +359,6 @@ public class SecureFilter extends BasePortalFilter {
 	protected void setUsePermissionChecker(boolean usePermissionChecker) {
 		_usePermissionChecker = usePermissionChecker;
 	}
-
-	private static final String _AUTHENTICATED_USER =
-		SecureFilter.class + "_AUTHENTICATED_USER";
 
 	private static final Log _log = LogFactoryUtil.getLog(SecureFilter.class);
 
