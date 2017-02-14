@@ -14,8 +14,6 @@
 
 package com.liferay.external.data.source.test.service.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.external.data.source.test.service.base.TestEntityLocalServiceBaseImpl;
 
 /**
@@ -32,9 +30,9 @@ import com.liferay.external.data.source.test.service.base.TestEntityLocalService
  * @see TestEntityLocalServiceBaseImpl
  * @see com.liferay.external.data.source.test.service.TestEntityLocalServiceUtil
  */
-@ProviderType
 public class TestEntityLocalServiceImpl extends TestEntityLocalServiceBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. Always use {@link com.liferay.external.data.source.test.service.TestEntityLocalServiceUtil} to access the test entity local service.
