@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.module.configuration;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.PortletInstance;
 import com.liferay.portal.kernel.settings.SettingsLocator;
@@ -21,6 +23,7 @@ import com.liferay.portal.kernel.settings.SettingsLocator;
 /**
  * @author Jorge Ferrer
  */
+@ProviderType
 public interface ConfigurationProvider {
 
 	public <T> T getCompanyConfiguration(Class<T> clazz, long companyId)
@@ -33,8 +36,17 @@ public interface ConfigurationProvider {
 	public <T> T getGroupConfiguration(Class<T> clazz, long groupId)
 		throws ConfigurationException;
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #getPortletInstanceConfiguration(Class, Layout, String)}
+	 */
+	@Deprecated
 	public <T> T getPortletInstanceConfiguration(
 			Class<T> clazz, Layout layout, PortletInstance portletInstance)
+		throws ConfigurationException;
+
+	public <T> T getPortletInstanceConfiguration(
+			Class<T> clazz, Layout layout, String portletId)
 		throws ConfigurationException;
 
 }

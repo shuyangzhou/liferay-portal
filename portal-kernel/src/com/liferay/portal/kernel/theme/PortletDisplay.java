@@ -16,7 +16,6 @@ package com.liferay.portal.kernel.theme;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.PortletInstance;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIconMenu;
@@ -259,20 +258,13 @@ public class PortletDisplay implements Cloneable, Serializable {
 	public <T> T getPortletInstanceConfiguration(Class<T> clazz)
 		throws ConfigurationException {
 
-		String portletId = null;
-
-		if (Validator.isNotNull(_portletResource)) {
-			portletId = _portletResource;
+		if (Validator.isNull(_portletResource)) {
+			return ConfigurationProviderUtil.getPortletInstanceConfiguration(
+				clazz, _themeDisplay.getLayout(), _id);
 		}
-		else {
-			portletId = _id;
-		}
-
-		PortletInstance portletInstance =
-			PortletInstance.fromPortletInstanceKey(portletId);
 
 		return ConfigurationProviderUtil.getPortletInstanceConfiguration(
-			clazz, _themeDisplay.getLayout(), portletInstance);
+			clazz, _themeDisplay.getLayout(), _portletResource);
 	}
 
 	public String getPortletName() {

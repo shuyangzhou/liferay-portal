@@ -108,26 +108,36 @@ public class ConfigurationProviderImpl implements ConfigurationProvider {
 				groupId, settingsId, configurationPid));
 	}
 
+	/**
+	 * @deprecated As of 2.0.0, replaced by {@link
+	 *             #getPortletInstanceConfiguration(Class, Layout, String)}
+	 */
+	@Deprecated
 	@Override
 	public <T> T getPortletInstanceConfiguration(
 			Class<T> clazz, Layout layout, PortletInstance portletInstance)
 		throws ConfigurationException {
 
+		return getPortletInstanceConfiguration(
+			clazz, layout, portletInstance.getPortletInstanceKey());
+	}
+
+	@Override
+	public <T> T getPortletInstanceConfiguration(
+			Class<T> clazz, Layout layout, String portletId)
+		throws ConfigurationException {
+
 		String configurationPid = _getConfigurationPid(clazz);
 
-		String portletInstanceKey = portletInstance.getPortletInstanceKey();
+		if (Validator.isNull(configurationPid)) {
+			return getConfiguration(
+				clazz, new PortletInstanceSettingsLocator(layout, portletId));
+		}
 
-		if (Validator.isNotNull(configurationPid)) {
-			return getConfiguration(
-				clazz,
-				new PortletInstanceSettingsLocator(
-					layout, portletInstanceKey, configurationPid));
-		}
-		else {
-			return getConfiguration(
-				clazz,
-				new PortletInstanceSettingsLocator(layout, portletInstanceKey));
-		}
+		return getConfiguration(
+			clazz,
+			new PortletInstanceSettingsLocator(
+				layout, portletId, configurationPid));
 	}
 
 	protected <T> Class<?> getOverrideClass(Class<T> clazz) {

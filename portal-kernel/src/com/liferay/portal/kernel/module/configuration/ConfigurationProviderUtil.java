@@ -61,15 +61,28 @@ public class ConfigurationProviderUtil {
 		return configurationProvider.getGroupConfiguration(clazz, groupId);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #getPortletInstanceConfiguration(Class, Layout, String)}
+	 */
+	@Deprecated
 	public static <T> T getPortletInstanceConfiguration(
 			Class<T> clazz, Layout layout, PortletInstance portletInstance)
+		throws ConfigurationException {
+
+		return getPortletInstanceConfiguration(
+			clazz, layout, portletInstance.getPortletInstanceKey());
+	}
+
+	public static <T> T getPortletInstanceConfiguration(
+			Class<T> clazz, Layout layout, String portletId)
 		throws ConfigurationException {
 
 		ConfigurationProvider configurationProvider =
 			getConfigurationProvider();
 
 		return configurationProvider.getPortletInstanceConfiguration(
-			clazz, layout, portletInstance);
+			clazz, layout, portletId);
 	}
 
 	private static final ServiceTrackerList<ConfigurationProvider>
