@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
+import java.util.Collection;
 import java.util.Properties;
 
 import net.sf.ehcache.event.CacheEventListener;
@@ -114,6 +115,14 @@ public class EhcachePortalCacheListenerFactory
 		@Override
 		public void dispose() {
 			_portalCacheReplicator.dispose();
+		}
+
+		@Override
+		public void notifyEntriesRemoved(
+			PortalCache<K, V> portalCache, Collection<K> keys, int timeToLive) {
+
+			_portalCacheReplicator.notifyEntriesRemoved(
+				portalCache, keys, timeToLive);
 		}
 
 		@Override

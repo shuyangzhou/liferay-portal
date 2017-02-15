@@ -2459,7 +2459,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  y.portal.kernel.json,com.liferay.portal.kernel.template,javax.servlet
  .http",com.liferay.portal.kernel.bean;version="7.1.0";uses:="javax.po
  rtlet,javax.servlet.http",com.liferay.portal.kernel.cache;version="7.
- 1.0";uses:="com.liferay.portal.kernel.nio.intraband.proxy.annotation,
+ 2.0";uses:="com.liferay.portal.kernel.nio.intraband.proxy.annotation,
  com.liferay.portal.kernel.spring.osgi",com.liferay.portal.kernel.cach
  e.configurator;version="1.0.0",com.liferay.portal.kernel.cache.index;
  version="6.2.0";uses:="com.liferay.portal.kernel.cache",com.liferay.p
@@ -2869,7 +2869,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  ay.portal.kernel.dao.orm,com.liferay.portal.kernel.exception,com.life
  ray.portal.kernel.model,com.liferay.portal.kernel.security.permission
  ,com.liferay.portal.kernel.service,com.liferay.portal.kernel.util",co
- m.liferay.portal.kernel.service.persistence.impl;version="1.2.0";uses
+ m.liferay.portal.kernel.service.persistence.impl;version="1.3.0";uses
  :="com.liferay.portal.kernel.cache,com.liferay.portal.kernel.dao.db,c
  om.liferay.portal.kernel.dao.jdbc,com.liferay.portal.kernel.dao.orm,c
  om.liferay.portal.kernel.exception,com.liferay.portal.kernel.model,co

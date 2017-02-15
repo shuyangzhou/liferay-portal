@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.cache.PortalCacheManager;
 
 import java.io.Serializable;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -127,6 +128,16 @@ public class EhcachePortalCache<K extends Serializable, V>
 		Element element = new Element(key, value);
 
 		return ehcache.removeElement(element);
+	}
+
+	@Override
+	protected void doRemoveAll(Collection<K> keys) {
+		for (K key : keys) {
+			ehcache.removeQuiet(key);
+		}
+
+		aggregatedPortalCacheListener.notifyEntriesRemoved(
+			this, keys, DEFAULT_TIME_TO_LIVE);
 	}
 
 	@Override

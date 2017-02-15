@@ -63,9 +63,7 @@ public class PortalCacheIndexer<I, K extends Serializable, V> {
 			return;
 		}
 
-		for (K key : keys) {
-			_portalCache.remove(key);
-		}
+		_portalCache.removeAll(keys);
 	}
 
 	private void _addIndexedCacheKey(K key) {

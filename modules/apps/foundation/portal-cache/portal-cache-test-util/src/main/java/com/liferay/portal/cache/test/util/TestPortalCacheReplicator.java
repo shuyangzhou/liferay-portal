@@ -15,8 +15,11 @@
 package com.liferay.portal.cache.test.util;
 
 import com.liferay.portal.cache.PortalCacheReplicator;
+import com.liferay.portal.kernel.cache.PortalCache;
 
 import java.io.Serializable;
+
+import java.util.Collection;
 
 /**
  * @author Tina Tian
@@ -25,4 +28,14 @@ public class TestPortalCacheReplicator
 	<K extends Serializable, V extends Serializable>
 		extends TestPortalCacheListener<K, V>
 		implements PortalCacheReplicator<K, V> {
+
+	@Override
+	public void notifyEntriesRemoved(
+		PortalCache<K, V> portalCache, Collection<K> keys, int timeToLive) {
+
+		for (K key : keys) {
+			notifyEntryRemoved(portalCache, key, null, timeToLive);
+		}
+	}
+
 }
