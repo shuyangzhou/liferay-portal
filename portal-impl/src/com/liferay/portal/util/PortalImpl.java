@@ -5436,11 +5436,8 @@ public class PortalImpl implements Portal {
 		WebServerServlet.class);
 
 	@Override
-	public String getUniqueElementId(String namespace, String elementId) {
-		String uniqueElementId = namespace.concat(elementId);
-
-		return uniqueElementId.concat(
-			String.valueOf(_idCounter.getAndIncrement()));
+	public String getUniqueElementId(String elementId) {
+		return elementId.concat(String.valueOf(_idCounter.getAndIncrement()));
 	}
 
 	@Override

@@ -1817,7 +1817,7 @@ public class PortalUtil {
 	}
 
 	public static String getUniqueElementId(String namespace, String id) {
-		return getPortal().getUniqueElementId(namespace, id);
+		return getPortal().getUniqueElementId(id);
 	}
 
 	public static UploadPortletRequest getUploadPortletRequest(
