@@ -115,17 +115,41 @@ public class LPKGBundleTrackerCustomizer
 						continue;
 					}
 
-					Bundle newBundle = _bundleContext.installBundle(
-						url.getPath(), url.openStream());
+					try {
+						Bundle newBundle = _bundleContext.installBundle(
+							url.getPath(), url.openStream());
 
-					BundleStartLevel bundleStartLevel = newBundle.adapt(
-						BundleStartLevel.class);
+						BundleStartLevel bundleStartLevel = newBundle.adapt(
+							BundleStartLevel.class);
 
-					bundleStartLevel.setStartLevel(
-						PropsValues.
-							MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
+						bundleStartLevel.setStartLevel(
+							PropsValues.
+								MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
 
-					bundles.add(newBundle);
+						bundles.add(newBundle);
+					}
+					catch (BundleException be) {
+						Matcher matcher = _sameVersionPattern.matcher(
+							be.getMessage());
+
+						if (!matcher.matches()) {
+							throw be;
+						}
+
+						if (!_log.isInfoEnabled()) {
+							continue;
+						}
+
+						StringBundler sb = new StringBundler(5);
+
+						sb.append("Skipping installation of bundle \"");
+						sb.append(matcher.group(1));
+						sb.append("\" with version \"");
+						sb.append(matcher.group(2));
+						sb.append(" because it is already installed");
+
+						_log.info(sb.toString());
+					}
 				}
 			}
 
@@ -480,6 +504,9 @@ public class LPKGBundleTrackerCustomizer
 
 	private static final Pattern _pattern = Pattern.compile(
 		"/(.*?)(-\\d+\\.\\d+\\.\\d+)(\\..+)?(\\.[jw]ar)");
+	private static final Pattern _sameVersionPattern = Pattern.compile(
+		"A bundle is already installed with the name \"(.*)\" and version " +
+			"\"(.*)\"");
 
 	private final BundleContext _bundleContext;
 	private final Set<String> _overrideFileNames;
