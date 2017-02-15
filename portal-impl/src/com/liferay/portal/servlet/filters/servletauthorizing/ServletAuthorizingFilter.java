@@ -114,7 +114,7 @@ public class ServletAuthorizingFilter extends BasePortalFilter {
 
 				// User id
 
-				session.setAttribute(WebKeys.USER_ID, Long.valueOf(userId));
+				session.setAttribute(WebKeys.USER, user);
 
 				// User locale
 
