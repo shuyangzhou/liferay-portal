@@ -99,14 +99,17 @@ public class DLFileVersionImpl extends DLFileVersionBaseImpl {
 	@Override
 	public UnicodeProperties getExtraSettingsProperties() {
 		if (_extraSettingsProperties == null) {
-			_extraSettingsProperties = new UnicodeProperties(true);
+			UnicodeProperties extraSettingsProperties = new UnicodeProperties(
+				true);
 
 			try {
-				_extraSettingsProperties.load(super.getExtraSettings());
+				extraSettingsProperties.load(super.getExtraSettings());
 			}
 			catch (IOException ioe) {
 				_log.error(ioe, ioe);
 			}
+
+			_extraSettingsProperties = extraSettingsProperties;
 		}
 
 		return _extraSettingsProperties;
@@ -151,6 +154,6 @@ public class DLFileVersionImpl extends DLFileVersionBaseImpl {
 		DLFileVersionImpl.class);
 
 	private transient ExpandoBridge _expandoBridge;
-	private UnicodeProperties _extraSettingsProperties;
+	private volatile UnicodeProperties _extraSettingsProperties;
 
 }

@@ -117,14 +117,16 @@ public class LayoutSetBranchImpl extends LayoutSetBranchBaseImpl {
 	@Override
 	public UnicodeProperties getSettingsProperties() {
 		if (_settingsProperties == null) {
-			_settingsProperties = new UnicodeProperties(true);
+			UnicodeProperties settingsProperties = new UnicodeProperties(true);
 
 			try {
-				_settingsProperties.load(super.getSettings());
+				settingsProperties.load(super.getSettings());
 			}
 			catch (IOException ioe) {
 				_log.error(ioe, ioe);
 			}
+
+			_settingsProperties = settingsProperties;
 		}
 
 		return _settingsProperties;
@@ -215,6 +217,6 @@ public class LayoutSetBranchImpl extends LayoutSetBranchBaseImpl {
 		LayoutSetBranchImpl.class);
 
 	private LayoutSet _layoutSet;
-	private UnicodeProperties _settingsProperties;
+	private volatile UnicodeProperties _settingsProperties;
 
 }

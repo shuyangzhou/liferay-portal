@@ -695,14 +695,17 @@ public class GroupImpl extends GroupBaseImpl {
 	@Override
 	public UnicodeProperties getTypeSettingsProperties() {
 		if (_typeSettingsProperties == null) {
-			_typeSettingsProperties = new UnicodeProperties(true);
+			UnicodeProperties typeSettingsProperties = new UnicodeProperties(
+				true);
 
 			try {
-				_typeSettingsProperties.load(super.getTypeSettings());
+				typeSettingsProperties.load(super.getTypeSettings());
 			}
 			catch (IOException ioe) {
 				_log.error(ioe, ioe);
 			}
+
+			_typeSettingsProperties = typeSettingsProperties;
 		}
 
 		return _typeSettingsProperties;
@@ -1169,7 +1172,7 @@ public class GroupImpl extends GroupBaseImpl {
 
 	private Group _liveGroup;
 	private Group _stagingGroup;
-	private UnicodeProperties _typeSettingsProperties;
+	private volatile UnicodeProperties _typeSettingsProperties;
 
 	private static class ClassNameIds {
 

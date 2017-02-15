@@ -39,15 +39,19 @@ public class CalendarNotificationTemplateImpl
 	@Override
 	public UnicodeProperties getNotificationTypeSettingsProperties() {
 		if (_notificationTypeSettingsProperties == null) {
-			_notificationTypeSettingsProperties = new UnicodeProperties(true);
+			UnicodeProperties notificationTypeSettingsProperties =
+				new UnicodeProperties(true);
 
 			try {
-				_notificationTypeSettingsProperties.load(
+				notificationTypeSettingsProperties.load(
 					super.getNotificationTypeSettings());
 			}
 			catch (IOException ioe) {
 				_log.error(ioe, ioe);
 			}
+
+			_notificationTypeSettingsProperties =
+				notificationTypeSettingsProperties;
 		}
 
 		return _notificationTypeSettingsProperties;
@@ -74,6 +78,6 @@ public class CalendarNotificationTemplateImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		CalendarNotificationTemplateImpl.class);
 
-	private UnicodeProperties _notificationTypeSettingsProperties;
+	private volatile UnicodeProperties _notificationTypeSettingsProperties;
 
 }

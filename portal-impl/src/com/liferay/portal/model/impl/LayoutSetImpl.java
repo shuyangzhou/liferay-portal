@@ -188,14 +188,16 @@ public class LayoutSetImpl extends LayoutSetBaseImpl {
 	@Override
 	public UnicodeProperties getSettingsProperties() {
 		if (_settingsProperties == null) {
-			_settingsProperties = new UnicodeProperties(true);
+			UnicodeProperties settingsProperties = new UnicodeProperties(true);
 
 			try {
-				_settingsProperties.load(super.getSettings());
+				settingsProperties.load(super.getSettings());
 			}
 			catch (IOException ioe) {
 				_log.error(ioe, ioe);
 			}
+
+			_settingsProperties = settingsProperties;
 		}
 
 		return _settingsProperties;
@@ -342,7 +344,7 @@ public class LayoutSetImpl extends LayoutSetBaseImpl {
 	@CacheField(propagateToInterface = true)
 	private String _companyFallbackVirtualHostname;
 
-	private UnicodeProperties _settingsProperties;
+	private volatile UnicodeProperties _settingsProperties;
 
 	@CacheField(propagateToInterface = true)
 	private String _virtualHostname;

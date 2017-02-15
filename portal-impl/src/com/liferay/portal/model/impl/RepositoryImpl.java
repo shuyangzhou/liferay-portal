@@ -41,9 +41,12 @@ public class RepositoryImpl extends RepositoryBaseImpl {
 	@Override
 	public UnicodeProperties getTypeSettingsProperties() {
 		if (_typeSettingsProperties == null) {
-			_typeSettingsProperties = new UnicodeProperties(true);
+			UnicodeProperties typeSettingsProperties = new UnicodeProperties(
+				true);
 
-			_typeSettingsProperties.fastLoad(super.getTypeSettings());
+			typeSettingsProperties.fastLoad(super.getTypeSettings());
+
+			_typeSettingsProperties = typeSettingsProperties;
 		}
 
 		return _typeSettingsProperties;
@@ -65,6 +68,6 @@ public class RepositoryImpl extends RepositoryBaseImpl {
 		super.setTypeSettings(_typeSettingsProperties.toString());
 	}
 
-	private UnicodeProperties _typeSettingsProperties;
+	private volatile UnicodeProperties _typeSettingsProperties;
 
 }

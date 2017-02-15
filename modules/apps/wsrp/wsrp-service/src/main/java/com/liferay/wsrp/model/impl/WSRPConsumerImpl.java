@@ -52,19 +52,17 @@ public class WSRPConsumerImpl extends WSRPConsumerBaseImpl {
 
 	@Override
 	public UnicodeProperties getRegistrationProperties() {
-		if (_registrationProperties != null) {
-			return _registrationProperties;
-		}
+		if (_registrationProperties == null) {
+			UnicodeProperties registrationProperties = new UnicodeProperties();
 
-		_registrationProperties = new UnicodeProperties();
+			try {
+				registrationProperties.load(getRegistrationPropertiesString());
+			}
+			catch (IOException ioe) {
+				_log.error(ioe, ioe);
+			}
 
-		String registrationPropertiesString = getRegistrationPropertiesString();
-
-		try {
-			_registrationProperties.load(registrationPropertiesString);
-		}
-		catch (IOException ioe) {
-			_log.error(ioe, ioe);
+			_registrationProperties = registrationProperties;
 		}
 
 		return _registrationProperties;
@@ -93,6 +91,6 @@ public class WSRPConsumerImpl extends WSRPConsumerBaseImpl {
 		WSRPConsumerImpl.class);
 
 	private RegistrationContext _registrationContext;
-	private UnicodeProperties _registrationProperties;
+	private volatile UnicodeProperties _registrationProperties;
 
 }
