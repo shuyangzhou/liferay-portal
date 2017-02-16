@@ -30,7 +30,7 @@
 
 	<%
 	for (PortletConfigurationIcon portletConfigurationIcon : portletConfigurationIcons) {
-		boolean include = portletConfigurationIcon.include(request, new PipingServletResponse(pageContext));
+		boolean include = portletConfigurationIcon.include(request, PipingServletResponse.createPipingServletResponse(pageContext));
 
 		if (!include) {
 	%>

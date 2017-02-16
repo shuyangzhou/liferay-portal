@@ -14,7 +14,6 @@
 
 package com.liferay.taglib.servlet;
 
-import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.taglib.BodyContentWrapper;
 
 import java.io.IOException;
@@ -197,12 +196,7 @@ public class PageContextWrapper extends PageContext {
 
 	@Override
 	public BodyContent pushBody() {
-		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
-
-		BodyContent bodyContent = (BodyContent)_pageContext.pushBody(
-			unsyncStringWriter);
-
-		return new BodyContentWrapper(bodyContent, unsyncStringWriter);
+		return new BodyContentWrapper(_pageContext.pushBody());
 	}
 
 	@Override
