@@ -36,7 +36,7 @@
 				<%
 				request.setAttribute(MapProviderWebKeys.MAP_PROVIDER_CONFIGURATION_PREFIX, configurationPrefix);
 
-				mapProvider.includeConfiguration(request, new PipingServletResponse(pageContext));
+				mapProvider.includeConfiguration(request, PingServletResponse.createPipingServletResponse(pageContext));
 				%>
 
 			</div>
