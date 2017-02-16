@@ -1729,6 +1729,30 @@ app.server.type=@{app.server.type}]]></echo>
 		<run-functional-test app.server.type="wildfly" database.type="mariadb" />
 	</target>
 
+	<target name="gradle-plugins-test-jdk8">
+		<run-batch-test>
+			<test-action>
+				<for param="gradle.plugin.dir">
+					<path>
+						<dirset
+							dir="modules/sdk"
+							excludes="${gradle.plugins.test.excludes}"
+							includes="gradle-plugins-*"
+						/>
+					</path>
+					<sequential>
+						<if>
+							<resourcecontains resource="@{gradle.plugin.dir}/build.gradle" substring="gradleTest" />
+							<then>
+								<gradle-execute dir="@{gradle.plugin.dir}" task="gradleTest" />
+							</then>
+						</if>
+					</sequential>
+				</for>
+			</test-action>
+		</run-batch-test>
+	</target>
+
 	<target name="integration-db2105-jdk8">
 		<run-integration-test database.type="db2" />
 	</target>

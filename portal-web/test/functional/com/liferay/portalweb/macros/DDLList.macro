@@ -32,12 +32,16 @@
 
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
 
-		<execute function="Type" locator1="TextInput#NAME" value1="${ddlListName}" />
+		<execute macro="PortletEntry#inputName">
+			<var name="name" value="${ddlListName}" />
+		</execute>
 
 		<if>
 			<isset var="ddlListDescription" />
 			<then>
-				<execute function="Type" locator1="TextArea#DESCRIPTION" value1="${ddlListDescription}" />
+				<execute macro="PortletEntry#inputDescription">
+					<var name="description" value="${ddlListDescription}" />
+				</execute>
 			</then>
 		</if>
 
@@ -128,12 +132,16 @@
 
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
 
-		<execute function="Type" locator1="TextInput#NAME" value1="${ddlListNameEdit}" />
+		<execute macro="PortletEntry#inputName">
+			<var name="name" value="${ddlListNameEdit}" />
+		</execute>
 
 		<if>
 			<isset var="ddlListDescription" />
 			<then>
-				<execute function="Type" locator1="TextArea#DESCRIPTION" value1="${ddlListDescriptionEdit}" />
+				<execute macro="PortletEntry#inputDescription">
+					<var name="description" value="${ddlListDescriptionEdit}" />
+				</execute>
 			</then>
 		</if>
 

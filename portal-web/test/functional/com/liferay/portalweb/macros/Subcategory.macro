@@ -15,12 +15,16 @@
 
 		<var name="key_subcategoryName" value="${subCategoryName}" />
 
-		<execute function="Type" locator1="TextInput#TITLE" value1="${subcategoryName}" />
+		<execute macro="PortletEntry#inputTitle">
+			<var name="title" value="${subcategoryName}" />
+		</execute>
 
 		<if>
 			<isset var="subcategoryDescription" />
 			<then>
-				<execute function="Type" locator1="TextArea#DESCRIPTION" value1="${subcategoryDescription}" />
+				<execute macro="PortletEntry#inputDescription">
+					<var name="description" value="${subcategoryDescription}" />
+				</execute>
 			</then>
 		</if>
 
@@ -39,7 +43,9 @@
 
 		<execute function="AssertClick" locator1="MenuItem#ADD_SUBCATEGORY" value1="Add Subcategory" />
 
-		<execute function="Type" locator1="TextInput#TITLE" value1="${subcategoryName}" />
+		<execute macro="PortletEntry#inputTitle">
+			<var name="title" value="${subcategoryName}" />
+		</execute>
 
 		<execute macro="Button#clickSave" />
 
@@ -61,7 +67,9 @@
 
 		<var name="key_subcategoryName" value="${subCategoryName}" />
 
-		<execute function="Type" locator1="TextInput#TITLE" value1="${subcategoryName}" />
+		<execute macro="PortletEntry#inputTitle">
+			<var name="title" value="${subcategoryName}" />
+		</execute>
 
 		<execute macro="Panel#expandPanel">
 			<var name="panelHeading" value="Properties" />
@@ -130,7 +138,9 @@
 
 		<execute function="AssertClick" locator1="MenuItem#EDIT" value1="Edit" />
 
-		<execute function="Type" locator1="TextInput#TITLE" value1="${subcategoryNameEdit}" />
+		<execute macro="PortletEntry#inputTitle">
+			<var name="title" value="${subcategoryNameEdit}" />
+		</execute>
 
 		<execute macro="PortletEntry#save" />
 	</command>

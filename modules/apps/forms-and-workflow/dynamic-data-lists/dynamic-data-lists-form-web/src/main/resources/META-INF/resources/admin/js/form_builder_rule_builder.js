@@ -216,7 +216,7 @@ AUI.add(
 								data = [
 									badgeTemplate(
 										{
-											content: action.target
+											content: action.label
 										}
 									)
 								];

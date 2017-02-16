@@ -30,12 +30,16 @@
 	<command name="addCP" summary="Add a vocabulary named '${vocabularyName}'">
 		<execute function="Click" locator1="Button#PLUS" />
 
-		<execute function="Type" locator1="TextInput#NAME" value1="${vocabularyName}" />
+		<execute macro="PortletEntry#inputName">
+			<var name="name" value="${vocabularyName}" />
+		</execute>
 
 		<if>
 			<isset var="vocabularyDescription" />
 			<then>
-				<execute function="Type" locator1="TextArea#DESCRIPTION" value1="${vocabularyDescription}" />
+				<execute macro="PortletEntry#inputDescription">
+					<var name="description" value="${vocabularyDescription}" />
+				</execute>
 			</then>
 		</if>
 
@@ -53,7 +57,9 @@
 
 				<execute function="Click" locator1="CategoriesEditVocabulary#LOCALIZATION_NAME" />
 
-				<execute function="Type" locator1="TextInput#NAME" value1="${localizationName}" />
+				<execute macro="PortletEntry#inputName">
+					<var name="name" value="${localizationName}" />
+				</execute>
 			</then>
 		</if>
 
@@ -64,7 +70,9 @@
 
 				<execute function="Click" locator1="CategoriesEditVocabulary#LOCALIZATION_NAME" />
 
-				<execute function="Type" locator1="TextInput#NAME" value1="${localization2Name}" />
+				<execute macro="PortletEntry#inputName">
+					<var name="name" value="${localization2Name}" />
+				</execute>
 			</then>
 		</if>
 
@@ -74,7 +82,9 @@
 	<command name="addViewableByCP">
 		<execute function="Click" locator1="Button#PLUS" />
 
-		<execute function="Type" locator1="TextInput#NAME" value1="${vocabularyName}" />
+		<execute macro="PortletEntry#inputName">
+			<var name="name" value="${vocabularyName}" />
+		</execute>
 
 		<execute macro="Panel#expandPanel">
 			<var name="panelHeading" value="Permissions" />
@@ -92,7 +102,9 @@
 	<command name="addVocabularyWithNullTitle">
 		<execute function="Click" locator1="Button#PLUS" />
 
-		<execute function="Type" locator1="TextInput#NAME" value1=" " />
+		<execute macro="PortletEntry#inputName">
+			<var name="name" value=" " />
+		</execute>
 
 		<execute macro="Button#clickSave" />
 
@@ -102,7 +114,9 @@
 	<command name="addWithAssociatedAssetTypeCP">
 		<execute function="Click" locator1="Button#PLUS" />
 
-		<execute function="Type" locator1="TextInput#NAME" value1="${vocabularyName}" />
+		<execute macro="PortletEntry#inputName">
+			<var name="name" value="${vocabularyName}" />
+		</execute>
 
 		<execute macro="Vocabulary#addAssociatedAssetType">
 			<var name="assetType" value="${assetType}" />
@@ -185,7 +199,9 @@
 		<if>
 			<isset var="vocabularyNameEdit" />
 			<then>
-				<execute function="Type" locator1="TextInput#TITLE" value1="${vocabularyNameEdit}" />
+				<execute macro="PortletEntry#inputTitle">
+					<var name="title" value="${vocabularyNameEdit}" />
+				</execute>
 			</then>
 		</if>
 

@@ -6,8 +6,13 @@
 
 		<execute macro="LexiconEntry#gotoAdd" />
 
-		<execute function="Type" locator1="TextInput#NAME" value1="${campaignName}" />
-		<execute function="Type" locator1="TextArea#DESCRIPTION" value1="${campaignDescription}" />
+		<execute macro="PortletEntry#inputName">
+			<var name="name" value="${campaignName}" />
+		</execute>
+
+		<execute macro="PortletEntry#inputDescription">
+			<var name="description" value="${campaignDescription}" />
+		</execute>
 
 		<if>
 			<isset var="userSegmentSelect" />
@@ -37,8 +42,13 @@
 	</command>
 
 	<command name="addReportName">
-		<execute function="Type" locator1="TextInput#NAME" value1="${reportName}" />
-		<execute function="Type" locator1="TextArea#DESCRIPTION" value1="${reportDescription}" />
+		<execute macro="PortletEntry#inputName">
+			<var name="name" value="${reportName}" />
+		</execute>
+
+		<execute macro="PortletEntry#inputDescription">
+			<var name="description" value="${reportDescription}" />
+		</execute>
 	</command>
 
 	<command name="addTrackingActionContentCP">
@@ -181,8 +191,13 @@
 
 		<execute function="Click" locator1="MenuItem#EDIT" />
 
-		<execute function="Type" locator1="TextInput#NAME" value1="${campaignNameEdit}" />
-		<execute function="Type" locator1="TextArea#DESCRIPTION" value1="${campaignDescriptionEdit}" />
+		<execute macro="PortletEntry#inputName">
+			<var name="name" value="${campaignNameEdit}" />
+		</execute>
+
+		<execute macro="PortletEntry#inputDescription">
+			<var name="description" value="${campaignDescriptionEdit}" />
+		</execute>
 
 		<if>
 			<isset var="userSegmentSelectEdit" />
