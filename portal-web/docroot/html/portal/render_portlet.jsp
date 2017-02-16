@@ -632,11 +632,18 @@ else {
 	urlMax.setWindowState(WindowState.MAXIMIZED);
 }
 
-try {
-	BeanPropertiesUtil.setProperty(urlMax, "windowStateRestoreCurrentView", true);
+if (urlMax instanceof PortletURLImpl) {
+	PortletURLImpl portletURLImpl = (PortletURLImpl)urlMax;
+
+	portletURLImpl.setWindowStateRestoreCurrentView(true);
 }
-catch (Exception e) {
-	_log.error(ClassUtil.getClassName(urlMax) + " must implement the method setWindowStateRestoreCurrentView(boolean)", e);
+else {
+	try {
+		BeanPropertiesUtil.setProperty(urlMax, "windowStateRestoreCurrentView", true);
+	}
+	catch (Exception e) {
+		_log.error(ClassUtil.getClassName(urlMax) + " must implement the method setWindowStateRestoreCurrentView(boolean)", e);
+	}
 }
 
 urlMax.setEscapeXml(false);

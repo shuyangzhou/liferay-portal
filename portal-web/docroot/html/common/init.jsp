@@ -177,6 +177,7 @@ page import="com.liferay.portal.util.PropsValues" %><%@
 page import="com.liferay.portal.util.ShutdownUtil" %><%@
 page import="com.liferay.portal.util.WebAppPool" %><%@
 page import="com.liferay.portlet.PortletResponseImpl" %><%@
+page import="com.liferay.portlet.PortletURLImpl" %><%@
 page import="com.liferay.portlet.RenderParametersPool" %><%@
 page import="com.liferay.portlet.RenderRequestFactory" %><%@
 page import="com.liferay.portlet.RenderRequestImpl" %><%@
