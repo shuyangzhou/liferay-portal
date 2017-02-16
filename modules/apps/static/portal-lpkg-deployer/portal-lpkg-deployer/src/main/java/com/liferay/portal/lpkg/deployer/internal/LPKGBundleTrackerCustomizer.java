@@ -304,9 +304,12 @@ public class LPKGBundleTrackerCustomizer
 			Version version = new Version(
 				attributes.getValue(Constants.BUNDLE_VERSION));
 
+			String location = url.getPath();
+
 			for (Bundle installedBundle : _bundleContext.getBundles()) {
 				if (symbolicName.equals(installedBundle.getSymbolicName()) &&
-					version.equals(installedBundle.getVersion())) {
+					version.equals(installedBundle.getVersion()) &&
+					!location.equals(installedBundle.getLocation())) {
 
 					if (_log.isInfoEnabled()) {
 						StringBundler sb = new StringBundler();
