@@ -314,9 +314,10 @@ public class InputTag extends BaseInputTag {
 			return;
 		}
 
-		FormTag formTag = (FormTag)findAncestorWithClass(this, FormTag.class);
+		List<String> checkboxNames = (List<String>)request.getAttribute(
+			"LIFERAY_SHARED_aui:form:checkboxNames");
 
-		if (formTag != null) {
+		if (checkboxNames != null) {
 			String inputName = getInputName();
 
 			String languageId = getLanguageId();
@@ -326,7 +327,7 @@ public class InputTag extends BaseInputTag {
 					inputName, languageId);
 			}
 
-			formTag.addCheckboxName(inputName);
+			checkboxNames.add(inputName);
 		}
 	}
 

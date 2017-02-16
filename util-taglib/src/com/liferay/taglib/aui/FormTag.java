@@ -34,14 +34,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class FormTag extends BaseFormTag {
 
-	public void addCheckboxName(String checkboxName) {
-		if (_checkboxNames == null) {
-			_checkboxNames = new ArrayList<>();
-		}
-
-		_checkboxNames.add(checkboxName);
-	}
-
 	public void addValidatorTags(
 		String name, List<ValidatorTag> validatorTags) {
 
@@ -67,7 +59,7 @@ public class FormTag extends BaseFormTag {
 	protected void cleanUp() {
 		super.cleanUp();
 
-		_checkboxNames = null;
+		_checkboxNames.clear();
 
 		if (_validatorTagsMap != null) {
 			for (List<ValidatorTag> validatorTags :
@@ -102,15 +94,13 @@ public class FormTag extends BaseFormTag {
 				"aui:form:validatorTagsMap", _validatorTagsMap);
 		}
 
-		if (_checkboxNames != null) {
-			request.setAttribute(
-				"LIFERAY_SHARED_aui:form:checkboxNames", _checkboxNames);
-		}
+		request.setAttribute(
+			"LIFERAY_SHARED_aui:form:checkboxNames", _checkboxNames);
 	}
 
 	private static final boolean _CLEAN_UP_SET_ATTRIBUTES = true;
 
-	private List<String> _checkboxNames;
+	private final List<String> _checkboxNames = new ArrayList<>();
 	private Map<String, List<ValidatorTag>> _validatorTagsMap;
 
 }

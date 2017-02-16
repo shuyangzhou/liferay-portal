@@ -14,10 +14,9 @@
 
 package com.liferay.taglib.ui;
 
-import static com.liferay.taglib.TagSupport.findAncestorWithClass;
-
-import com.liferay.taglib.aui.FormTag;
 import com.liferay.taglib.util.IncludeTag;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
@@ -92,10 +91,11 @@ public class InputCheckBoxTag extends IncludeTag {
 	}
 
 	protected void updateFormCheckboxNames() {
-		FormTag formTag = (FormTag)findAncestorWithClass(this, FormTag.class);
+		List<String> checkboxNames = (List<String>)request.getAttribute(
+			"aui:form:checkboxNames");
 
-		if (formTag != null) {
-			formTag.addCheckboxName(_param);
+		if (checkboxNames != null) {
+			checkboxNames.add(_param);
 		}
 	}
 
