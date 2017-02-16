@@ -16,11 +16,6 @@ dependencies {
 }
 
 task testJS
-task wrapSoyTemplates
-
-classes {
-	dependsOn wrapSoyTemplates
-}
 
 testJS {
 	dependsOn gulpTest
@@ -38,17 +33,8 @@ transpileJS {
 	srcIncludes = "**/*.es.js"
 }
 
-wrapSoyTemplates {
-	doLast {
-		FileTree soyJsFileTree = fileTree(dir: "classes", include: "**/*.soy.js")
-
-		String soyJsWrapperHeader = "AUI.add('liferay-ddm-form-field-grid-template', function(A) {"
-		String soyJsWrapperFooter = "}, '', {requires: ['soyutils']});";
-
-		soyJsFileTree.each {
-			File soyJsFile ->
-
-			soyJsFile.text = soyJsWrapperHeader + soyJsFile.text.replace("(typeof ddm == 'undefined') { var ddm = {}; }", "(typeof ddm == 'undefined') { window.ddm = {}; }") + soyJsWrapperFooter
-		}
-	}
+wrapSoyAlloyTemplate {
+	enabled = true
+	moduleName = "liferay-ddm-form-field-grid-template"
+	namespace = "ddm"
 }

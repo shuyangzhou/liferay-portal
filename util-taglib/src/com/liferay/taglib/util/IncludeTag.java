@@ -357,9 +357,9 @@ public class IncludeTag extends AttributesTagSupport {
 				WebKeys.SERVLET_CONTEXT_INCLUDE_FILTER_STRICT, _strict);
 		}
 
-		HttpServletResponse response = new PipingServletResponse(pageContext);
-
-		includePage(page, response);
+		includePage(
+			page,
+			PipingServletResponse.createPipingServletResponse(pageContext));
 
 		if (_THEME_JSP_OVERRIDE_ENABLED) {
 			request.removeAttribute(

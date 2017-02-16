@@ -54,8 +54,13 @@
 
 		<execute macro="LexiconEntry#gotoAdd" />
 
-		<execute function="Type" locator1="TextInput#NAME" value1="${userSegmentName}" />
-		<execute function="Type" locator1="TextArea#DESCRIPTION" value1="${userSegmentDescription}" />
+		<execute macro="PortletEntry#inputName">
+			<var name="name" value="${userSegmentName}" />
+		</execute>
+
+		<execute macro="PortletEntry#inputDescription">
+			<var name="description" value="${userSegmentDescription}" />
+		</execute>
 	</command>
 
 	<command name="addRuleCmdCP">
@@ -348,8 +353,13 @@
 
 		<execute function="Click" locator1="MenuItem#EDIT" />
 
-		<execute function="Type" locator1="TextInput#NAME" value1="${userSegmentNameEdit}" />
-		<execute function="Type" locator1="TextArea#DESCRIPTION" value1="${userSegmentDescriptionEdit}" />
+		<execute macro="PortletEntry#inputName">
+			<var name="name" value="${userSegmentNameEdit}" />
+		</execute>
+
+		<execute macro="PortletEntry#inputDescription">
+			<var name="description" value="${userSegmentDescriptionEdit}" />
+		</execute>
 
 		<if>
 			<isset var="userSegmentRuleDeleteList" />

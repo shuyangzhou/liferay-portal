@@ -48,7 +48,8 @@ import com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderParameterSe
 							value = {
 								"url", "username", "password", "filterable",
 								"filterParameterName", "cacheable",
-								"inputParameters", "outputParameters"
+								"pagination", "inputParameters",
+								"outputParameters"
 							}
 						)
 					}
@@ -80,6 +81,11 @@ public interface DDMRESTDataProviderSettings
 		}
 	)
 	public String filterParameterName();
+
+	@DDMFormField(
+		label = "%enable-pagination", properties = "showAsSwitcher=true"
+	)
+	public boolean pagination();
 
 	@DDMFormField(
 		label = "%password",
