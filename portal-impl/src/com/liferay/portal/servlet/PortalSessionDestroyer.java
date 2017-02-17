@@ -110,11 +110,13 @@ public class PortalSessionDestroyer extends BasePortalLifecycle {
 					DestinationNames.LIVE_USERS, jsonObject.toString());
 			}
 
-			String userUUID = (String)_httpSession.getAttribute(
-				WebKeys.USER_UUID);
+			if (PropsValues.AUTH_USER_UUID_STORE_ENABLED) {
+				String userUUID = (String)_httpSession.getAttribute(
+					WebKeys.USER_UUID);
 
-			if (Validator.isNotNull(userUUID)) {
-				AuthenticatedUserUUIDStoreUtil.unregister(userUUID);
+				if (Validator.isNotNull(userUUID)) {
+					AuthenticatedUserUUIDStoreUtil.unregister(userUUID);
+				}
 			}
 		}
 		catch (IllegalStateException ise) {

@@ -220,17 +220,6 @@ public class AuthenticatedSessionManagerImpl
 
 		int loginMaxAge = PropsValues.COMPANY_SECURITY_AUTO_LOGIN_MAX_AGE;
 
-		String userUUID = userIdString.concat(StringPool.PERIOD).concat(
-			String.valueOf(System.nanoTime()));
-
-		Cookie userUUIDCookie = new Cookie(
-			CookieKeys.USER_UUID,
-			Encryptor.encrypt(company.getKeyObj(), userUUID));
-
-		userUUIDCookie.setPath(StringPool.SLASH);
-
-		session.setAttribute(WebKeys.USER_UUID, userUUID);
-
 		if (PropsValues.SESSION_DISABLED) {
 			rememberMe = true;
 		}
@@ -238,7 +227,6 @@ public class AuthenticatedSessionManagerImpl
 		if (rememberMe) {
 			companyIdCookie.setMaxAge(loginMaxAge);
 			idCookie.setMaxAge(loginMaxAge);
-			userUUIDCookie.setMaxAge(loginMaxAge);
 		}
 		else {
 
@@ -250,7 +238,6 @@ public class AuthenticatedSessionManagerImpl
 
 			companyIdCookie.setMaxAge(-1);
 			idCookie.setMaxAge(-1);
-			userUUIDCookie.setMaxAge(-1);
 		}
 
 		boolean secure = request.isSecure();
@@ -269,7 +256,6 @@ public class AuthenticatedSessionManagerImpl
 
 		CookieKeys.addCookie(request, response, companyIdCookie, secure);
 		CookieKeys.addCookie(request, response, idCookie, secure);
-		CookieKeys.addCookie(request, response, userUUIDCookie, secure);
 
 		if (rememberMe) {
 			Cookie loginCookie = new Cookie(CookieKeys.LOGIN, login);
@@ -322,7 +308,29 @@ public class AuthenticatedSessionManagerImpl
 			CookieKeys.addCookie(request, response, screenNameCookie, secure);
 		}
 
-		AuthenticatedUserUUIDStoreUtil.register(userUUID);
+		if (PropsValues.AUTH_USER_UUID_STORE_ENABLED) {
+			String userUUID = userIdString.concat(StringPool.PERIOD).concat(
+				String.valueOf(System.nanoTime()));
+
+			Cookie userUUIDCookie = new Cookie(
+				CookieKeys.USER_UUID,
+				Encryptor.encrypt(company.getKeyObj(), userUUID));
+
+			userUUIDCookie.setPath(StringPool.SLASH);
+
+			session.setAttribute(WebKeys.USER_UUID, userUUID);
+
+			if (rememberMe) {
+				userUUIDCookie.setMaxAge(loginMaxAge);
+			}
+			else {
+				userUUIDCookie.setMaxAge(-1);
+			}
+
+			CookieKeys.addCookie(request, response, userUUIDCookie, secure);
+
+			AuthenticatedUserUUIDStoreUtil.register(userUUID);
+		}
 	}
 
 	@Override

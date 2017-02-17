@@ -639,6 +639,10 @@ public interface WebKeys {
 
 	public static final String USER_PASSWORD = "USER_PASSWORD";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String USER_UUID = "USER_UUID";
 
 	public static final String USERS_NOTIFIED = "USERS_NOTIFIED";

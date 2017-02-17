@@ -159,6 +159,8 @@ public interface PropsKeys {
 
 	public static final String AUTH_TOKEN_SHARED_SECRET = "auth.token.shared.secret";
 
+	public static final String AUTH_USER_UUID_STORE_ENABLED = "auth.user.uuid.store.enabled";
+
 	public static final String AUTH_VERIFIER = "auth.verifier.";
 
 	public static final String AUTH_VERIFIER_PIPELINE = "auth.verifier.pipeline";
