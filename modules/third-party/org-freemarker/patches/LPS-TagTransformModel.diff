@@ -1,0 +1,22 @@
+diff --git a/freemarker/ext/jsp/TagTransformModel.java b/freemarker/ext/jsp/TagTransformModel.java
+index 05c5f94..75bb2f9 100644
+--- a/freemarker/ext/jsp/TagTransformModel.java
++++ b/freemarker/ext/jsp/TagTransformModel.java
+@@ -77,9 +77,8 @@ class TagTransformModel extends JspTagModelBase implements TemplateTransformMode
+                 }
+                 usesAdapter = false;
+             }
+-            else {                
+-                out = new JspWriterAdapter(out);
+-                pageContext.pushWriter((JspWriter)out);
++            else {
++                pageContext.pushWriter(new JspWriterAdapter(out));
+                 usesAdapter = true;
+             }
+             JspWriter w = new TagWriter(out, tag, pageContext, usesAdapter);
+@@ -412,3 +411,4 @@ class TagTransformModel extends JspTagModelBase implements TemplateTransformMode
+         
+     }
+ }
++/* @generated */
+\ No newline at end of file
