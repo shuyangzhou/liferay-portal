@@ -18,21 +18,61 @@ import com.liferay.portal.kernel.io.WriterOutputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.ServletOutputStreamAdapter;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.UnsyncPrintWriterPool;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 
+import java.lang.reflect.Field;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
+import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.BodyContent;
 
 /**
  * @author Shuyang Zhou
  */
 public class PipingServletResponse extends HttpServletResponseWrapper {
+
+	public static HttpServletResponse createPipingServletResponse(
+		PageContext pageContext) {
+
+		HttpServletResponse httpServletResponse =
+			(HttpServletResponse)pageContext.getResponse();
+
+		JspWriter jspWriter = pageContext.getOut();
+
+		if (jspWriter instanceof BodyContent) {
+
+			// Unable to unwrap page context with pushed body
+
+			return new PipingServletResponse(httpServletResponse, jspWriter);
+		}
+
+		try {
+			Field outField = ReflectionUtil.getDeclaredField(
+				jspWriter.getClass(), "out");
+
+			Object out = outField.get(jspWriter);
+
+			if (out == httpServletResponse.getWriter()) {
+				return httpServletResponse;
+			}
+		}
+		catch (Exception e) {
+			ReflectionUtil.throwException(e);
+		}
+
+		System.out.println(
+			"######Failed direct return for " + pageContext + ", out=" +
+				pageContext.getOut());
+
+		return new PipingServletResponse(httpServletResponse, jspWriter);
+	}
 
 	public PipingServletResponse(
 		HttpServletResponse response, OutputStream outputStream) {
@@ -80,6 +120,11 @@ public class PipingServletResponse extends HttpServletResponseWrapper {
 		_printWriter = UnsyncPrintWriterPool.borrow(writer);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #createPipingServletResponseIfNeeded(PageContext)}
+	 */
+	@Deprecated
 	public PipingServletResponse(PageContext pageContext) {
 		this(
 			(HttpServletResponse)pageContext.getResponse(),
