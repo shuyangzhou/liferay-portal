@@ -141,7 +141,10 @@ public class SecureFilter extends BasePortalFilter {
 				request, String.valueOf(user.getUserId()),
 				HttpServletRequest.BASIC_AUTH);
 
-			initThreadLocals(request);
+			initThreadLocals(user);
+
+			PrincipalThreadLocal.setPassword(
+				PortalUtil.getUserPassword(request));
 		}
 
 		return request;
@@ -186,12 +189,20 @@ public class SecureFilter extends BasePortalFilter {
 				request, String.valueOf(user.getUserId()),
 				HttpServletRequest.DIGEST_AUTH);
 
-			initThreadLocals(request);
+			initThreadLocals(user);
+
+			PrincipalThreadLocal.setPassword(
+				PortalUtil.getUserPassword(request));
 		}
 
 		return request;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #initThreadLocals(User)}
+	 */
+	@Deprecated
 	protected void initThreadLocals(HttpServletRequest request)
 		throws Exception {
 
@@ -356,9 +367,9 @@ public class SecureFilter extends BasePortalFilter {
 		request = new ProtectedServletRequest(
 			request, String.valueOf(user.getUserId()), authType);
 
-		session.setAttribute(WebKeys.USER, user);
+		initThreadLocals(user);
 
-		initThreadLocals(request);
+		PrincipalThreadLocal.setPassword(PortalUtil.getUserPassword(request));
 
 		return request;
 	}
