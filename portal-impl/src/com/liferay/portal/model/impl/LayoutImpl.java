@@ -490,7 +490,13 @@ public class LayoutImpl extends LayoutBaseImpl {
 	 */
 	@Override
 	public String getFriendlyURL(Locale locale) {
-		String friendlyURL = getFriendlyURL();
+		String friendlyURL = _friendlyURLs.get(locale);
+
+		if (friendlyURL != null) {
+			return friendlyURL;
+		}
+
+		friendlyURL = getFriendlyURL();
 
 		try {
 			Group group = getGroup();
@@ -509,6 +515,8 @@ public class LayoutImpl extends LayoutBaseImpl {
 				if (!ArrayUtil.contains(
 						locales, LanguageUtil.getLanguageId(locale))) {
 
+					_friendlyURLs.put(locale, friendlyURL);
+
 					return friendlyURL;
 				}
 			}
@@ -521,6 +529,8 @@ public class LayoutImpl extends LayoutBaseImpl {
 		}
 		catch (Exception e) {
 		}
+
+		_friendlyURLs.put(locale, friendlyURL);
 
 		return friendlyURL;
 	}
@@ -1479,6 +1489,7 @@ public class LayoutImpl extends LayoutBaseImpl {
 		_initFriendlyURLKeywords();
 	}
 
+	private final Map<Locale, String> _friendlyURLs = new HashMap<>();
 	private LayoutSet _layoutSet;
 	private transient LayoutType _layoutType;
 	private UnicodeProperties _typeSettingsProperties;
