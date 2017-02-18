@@ -490,12 +490,10 @@ public class LayoutImpl extends LayoutBaseImpl {
 	 */
 	@Override
 	public String getFriendlyURL(Locale locale) {
-		Layout layout = this;
-
-		String friendlyURL = layout.getFriendlyURL();
+		String friendlyURL = getFriendlyURL();
 
 		try {
-			Group group = layout.getGroup();
+			Group group = getGroup();
 
 			UnicodeProperties typeSettingsProperties =
 				group.getTypeSettingsProperties();
@@ -517,7 +515,7 @@ public class LayoutImpl extends LayoutBaseImpl {
 
 			LayoutFriendlyURL layoutFriendlyURL =
 				LayoutFriendlyURLLocalServiceUtil.getLayoutFriendlyURL(
-					layout.getPlid(), LocaleUtil.toLanguageId(locale));
+					getPlid(), LocaleUtil.toLanguageId(locale));
 
 			friendlyURL = layoutFriendlyURL.getFriendlyURL();
 		}
