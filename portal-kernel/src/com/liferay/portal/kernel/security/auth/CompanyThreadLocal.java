@@ -46,6 +46,10 @@ public class CompanyThreadLocal {
 	}
 
 	public static void setCompanyId(Long companyId) {
+		if (companyId.equals(_companyId.get())) {
+			return;
+		}
+
 		if (_log.isDebugEnabled()) {
 			_log.debug("setCompanyId " + companyId);
 		}
