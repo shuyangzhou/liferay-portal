@@ -9,7 +9,7 @@ String buildProfile = System.properties["build.profile"]
 
 File systemPackagesExtraManifestFile = file("system.packages.extra.mf")
 
-if (!System.getenv("JENKINS_HOME") || !systemPackagesExtraManifestFile.exists()) {
+if (true || !System.getenv("JENKINS_HOME") || !systemPackagesExtraManifestFile.exists()) {
 	systemPackagesExtraManifestFile = new File(buildDir, "system.packages.extra.mf")
 
 	task buildSystemPackagesExtraManifest
