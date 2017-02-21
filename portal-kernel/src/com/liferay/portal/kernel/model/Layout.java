@@ -381,6 +381,12 @@ public interface Layout extends LayoutModel, PersistedModel {
 	*/
 	public boolean isLayoutPrototypeLinkActive();
 
+	public boolean isPortletEmbedded(java.lang.String portletId);
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #isPortletEmbedded(String)}
+	*/
+	@java.lang.Deprecated()
 	public boolean isPortletEmbedded(java.lang.String portletId, long groupId);
 
 	/**
