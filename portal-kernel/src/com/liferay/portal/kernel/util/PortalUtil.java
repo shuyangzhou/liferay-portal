@@ -1722,6 +1722,19 @@ public class PortalUtil {
 	}
 
 	public static String getSiteAdminURL(
+			Company company, Group group, String ppid,
+			Map<String, String[]> params)
+		throws PortalException {
+
+		return getPortal().getSiteAdminURL(company, group, ppid, params);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #getSiteAdminURL(Company, Group, String, Map)}
+	 */
+	@Deprecated
+	public static String getSiteAdminURL(
 			Group group, String ppid, Map<String, String[]> params)
 		throws PortalException {
 
