@@ -1052,7 +1052,7 @@ public class LayoutImpl extends LayoutBaseImpl {
 	}
 
 	@Override
-	public boolean isPortletEmbedded(String portletId, long groupId) {
+	public boolean isPortletEmbedded(String portletId) {
 		PortletPreferences portletPreferences =
 			PortletPreferencesLocalServiceUtil.fetchPortletPreferences(
 				PortletKeys.PREFS_OWNER_ID_DEFAULT,
@@ -1064,7 +1064,7 @@ public class LayoutImpl extends LayoutBaseImpl {
 
 		portletPreferences =
 			PortletPreferencesLocalServiceUtil.fetchPortletPreferences(
-				groupId, PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
+				getGroupId(), PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
 				PortletKeys.PREFS_PLID_SHARED, portletId);
 
 		if ((portletPreferences == null) && isTypePortlet()) {
@@ -1099,6 +1099,15 @@ public class LayoutImpl extends LayoutBaseImpl {
 		}
 
 		return true;
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #isPortletEmbedded(String)}
+	 */
+	@Deprecated
+	@Override
+	public boolean isPortletEmbedded(String portletId, long groupId) {
+		return isPortletEmbedded(portletId);
 	}
 
 	/**
