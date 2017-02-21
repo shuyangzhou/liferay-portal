@@ -1053,6 +1053,13 @@ public class LayoutImpl extends LayoutBaseImpl {
 
 	@Override
 	public boolean isPortletEmbedded(String portletId, long groupId) {
+		if ((groupId != 0) && _log.isWarnEnabled()) {
+			_log.warn(
+				"Group id parameter has been deprecated. Always pass 0 to " +
+					"avoid this warning. The owner group will always be " +
+						"current layout's group.");
+		}
+
 		PortletPreferences portletPreferences =
 			PortletPreferencesLocalServiceUtil.fetchPortletPreferences(
 				PortletKeys.PREFS_OWNER_ID_DEFAULT,
@@ -1064,7 +1071,7 @@ public class LayoutImpl extends LayoutBaseImpl {
 
 		portletPreferences =
 			PortletPreferencesLocalServiceUtil.fetchPortletPreferences(
-				groupId, PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
+				getGroupId(), PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
 				PortletKeys.PREFS_PLID_SHARED, portletId);
 
 		if ((portletPreferences == null) && isTypePortlet()) {
