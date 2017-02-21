@@ -114,7 +114,7 @@ public class PortletInstanceSettingsLocator implements SettingsLocator {
 
 		if (_layout.isSupportsEmbeddedPortlets()) {
 			_embeddedPortlet = _layout.isPortletEmbedded(
-				_portletInstanceKey, _layout.getGroupId());
+				_portletInstanceKey, 0);
 		}
 
 		return _embeddedPortlet;
