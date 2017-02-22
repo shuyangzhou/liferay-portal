@@ -94,8 +94,12 @@ public class UserPortraitTag extends IncludeTag {
 	public void setImageCssClass(String imageCssClass) {
 	}
 
+	public void setUser(User user) {
+		_user = user;
+	}
+
 	public void setUserId(long userId) {
-		_userId = userId;
+		_user = UserLocalServiceUtil.fetchUser(userId);
 	}
 
 	public void setUserName(String userName) {
@@ -105,7 +109,7 @@ public class UserPortraitTag extends IncludeTag {
 	@Override
 	protected void cleanUp() {
 		_cssClass = StringPool.BLANK;
-		_userId = 0;
+		_user = null;
 		_userName = StringPool.BLANK;
 	}
 
@@ -115,7 +119,7 @@ public class UserPortraitTag extends IncludeTag {
 	}
 
 	protected User getUser() {
-		return UserLocalServiceUtil.fetchUser(_userId);
+		return _user;
 	}
 
 	protected String getUserInitials(User user) {
@@ -164,7 +168,7 @@ public class UserPortraitTag extends IncludeTag {
 		UserPortraitTag.class);
 
 	private String _cssClass = StringPool.BLANK;
-	private long _userId;
+	private User _user;
 	private String _userName = StringPool.BLANK;
 
 }
