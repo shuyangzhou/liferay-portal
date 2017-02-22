@@ -272,7 +272,8 @@ public abstract class BaseDB implements DB {
 			s = con.createStatement();
 
 			for (int i = 0; i < sqls.length; i++) {
-				String sql = buildSQL(sqls[i]);
+				String sql = buildSQL(
+					applyMaxStringIndexLengthLimitation(sqls[i]));
 
 				sql = SQLTransformer.transform(sql.trim());
 
@@ -362,8 +363,7 @@ public abstract class BaseDB implements DB {
 			boolean failOnError)
 		throws IOException, NamingException, SQLException {
 
-		template = applyMaxStringIndexLengthLimitation(
-			_columnLengthPattern.matcher(template));
+		template = applyMaxStringIndexLengthLimitation(template);
 
 		if (evaluate) {
 			try {
@@ -529,8 +529,7 @@ public abstract class BaseDB implements DB {
 			}
 		}
 
-		indexesSQL = applyMaxStringIndexLengthLimitation(
-			_columnLengthPattern.matcher(indexesSQL));
+		indexesSQL = applyMaxStringIndexLengthLimitation(indexesSQL);
 
 		addIndexes(con, indexesSQL, validIndexNames);
 	}
@@ -547,7 +546,11 @@ public abstract class BaseDB implements DB {
 		}
 	}
 
-	protected String applyMaxStringIndexLengthLimitation(Matcher matcher) {
+	protected String applyMaxStringIndexLengthLimitation(String template) {
+		if (!template.contains("[$COLUMN_LENGTH:")) {
+			return template;
+		}
+
 		DBType dbType = getDBType();
 
 		int stringIndexMaxLength = GetterUtil.getInteger(
@@ -557,6 +560,8 @@ public abstract class BaseDB implements DB {
 			-1);
 
 		String replacement = "\\(" + stringIndexMaxLength + "\\)";
+
+		Matcher matcher = _columnLengthPattern.matcher(template);
 
 		if (stringIndexMaxLength < 0) {
 			if (dbType.equals(DBType.SYBASE)) {
@@ -711,8 +716,7 @@ public abstract class BaseDB implements DB {
 		}
 
 		if (fileName.equals("indexes")) {
-			template = applyMaxStringIndexLengthLimitation(
-				_columnLengthPattern.matcher(template));
+			template = applyMaxStringIndexLengthLimitation(template);
 
 			if (getDBType() == DBType.SYBASE) {
 				template = removeBooleanIndexes(sqlDir, template);
