@@ -1072,7 +1072,10 @@ public class MainServlet extends ActionServlet {
 
 		session.setAttribute(Globals.LOCALE_KEY, user.getLocale());
 		session.setAttribute(WebKeys.USER, user);
-		session.setAttribute(WebKeys.USER_ID, Long.valueOf(userId));
+
+		if (PropsValues.USER_ID_SESSION_ATTRIBUTE_ENABLED) {
+			session.setAttribute(WebKeys.USER_ID, Long.valueOf(userId));
+		}
 
 		session.removeAttribute("j_remoteuser");
 
