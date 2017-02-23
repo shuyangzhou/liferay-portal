@@ -362,6 +362,8 @@ public class SecureFilter extends BasePortalFilter {
 		request = new ProtectedServletRequest(
 			request, String.valueOf(user.getUserId()), authType);
 
+		session.setAttribute(WebKeys.USER, user);
+
 		PrincipalThreadLocal.setPassword(PortalUtil.getUserPassword(request));
 
 		return request;
