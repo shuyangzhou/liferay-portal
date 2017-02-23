@@ -132,7 +132,10 @@ public class FreeMarkerTemplate extends AbstractSingleResourceTemplate {
 					TemplateConstants.DEFAUT_ENCODING);
 			}
 
-			template.process(new CachableDefaultMapAdapter(context), writer);
+			template.process(
+				new CachableDefaultMapAdapter(
+					context, template.getObjectWrapper()),
+				writer);
 		}
 		catch (PrivilegedActionException pae) {
 			throw pae.getException();
@@ -219,11 +222,13 @@ public class FreeMarkerTemplate extends AbstractSingleResourceTemplate {
 			return new SimpleCollection(_map.values(), _objectWrapper);
 		}
 
-		private CachableDefaultMapAdapter(Map<String, Object> map) {
-			super(FreeMarkerManager.getBeansWrapper());
+		private CachableDefaultMapAdapter(
+			Map<String, Object> map, ObjectWrapper objectWrapper) {
+
+			super(objectWrapper);
 
 			_map = map;
-			_objectWrapper = FreeMarkerManager.getBeansWrapper();
+			_objectWrapper = objectWrapper;
 			_wrappedValueMap = new HashMap<>();
 		}
 
