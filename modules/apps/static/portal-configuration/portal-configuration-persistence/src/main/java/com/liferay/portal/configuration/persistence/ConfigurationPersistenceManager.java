@@ -371,14 +371,21 @@ public class ConfigurationPersistenceManager
 			configurationModelListener.onBeforeSave(pid, dictionary);
 		}
 
+		UnsyncByteArrayOutputStream outputStream =
+			new UnsyncByteArrayOutputStream();
+
+		ConfigurationHandler.write(outputStream, dictionary);
+
+		String dictionaryString = outputStream.toString();
+
 		Lock lock = _readWriteLock.writeLock();
 
 		try {
 			lock.lock();
 
-			storeInDatabase(pid, dictionary);
+			storeInDatabase(pid, dictionaryString);
 
-			_dictionaries.put(pid, dictionary);
+			_dictionaries.put(pid, toDictionary(dictionaryString));
 		}
 		finally {
 			lock.unlock();
@@ -538,6 +545,10 @@ public class ConfigurationPersistenceManager
 		resultSet.updateString(2, outputStream.toString());
 	}
 
+	/**
+	 * @deprecated As of 2.1.0, replaced by {@link #storeInDatabase(String, String)}
+	 */
+	@Deprecated
 	protected void storeInDatabase(String pid, Dictionary<?, ?> dictionary)
 		throws IOException {
 
@@ -545,6 +556,12 @@ public class ConfigurationPersistenceManager
 			new UnsyncByteArrayOutputStream();
 
 		ConfigurationHandler.write(outputStream, dictionary);
+
+		storeInDatabase(pid, outputStream.toString());
+	}
+
+	protected void storeInDatabase(String pid, String dictionaryString)
+		throws IOException {
 
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -560,7 +577,7 @@ public class ConfigurationPersistenceManager
 					"update Configuration_ set dictionary = ? where " +
 						"configurationId = ?"));
 
-			preparedStatement.setString(1, outputStream.toString());
+			preparedStatement.setString(1, dictionaryString);
 			preparedStatement.setString(2, pid);
 
 			if (preparedStatement.executeUpdate() == 0) {
@@ -570,7 +587,7 @@ public class ConfigurationPersistenceManager
 						"dictionary) values (?, ?)");
 
 				preparedStatement.setString(1, pid);
-				preparedStatement.setString(2, outputStream.toString());
+				preparedStatement.setString(2, dictionaryString);
 
 				preparedStatement.executeUpdate();
 			}
@@ -582,8 +599,6 @@ public class ConfigurationPersistenceManager
 		}
 		finally {
 			cleanUp(connection, preparedStatement, resultSet);
-
-			outputStream.close();
 		}
 	}
 
