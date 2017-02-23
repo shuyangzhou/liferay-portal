@@ -47,7 +47,7 @@ public class IconTag extends BaseIconTag {
 
 		RequestDispatcher requestDispatcher =
 			DirectRequestDispatcherFactoryUtil.getRequestDispatcher(
-				servletContext, _getPage(markupView));
+				servletContext, _PAGE);
 
 		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
 
@@ -71,7 +71,7 @@ public class IconTag extends BaseIconTag {
 
 	@Override
 	protected String getPage() {
-		return _getPage(getMarkupView());
+		return _PAGE;
 	}
 
 	@Override
@@ -89,12 +89,6 @@ public class IconTag extends BaseIconTag {
 		super.setAttributes(request);
 	}
 
-	private static String _getPage(String markupView) {
-		if (Validator.isNotNull(markupView)) {
-			return "/html/taglib/aui/icon/" + markupView + "/page.jsp";
-		}
-
-		return "/html/taglib/aui/icon/page.jsp";
-	}
+	private static final String _PAGE = "/html/taglib/aui/icon/page.jsp";
 
 }
