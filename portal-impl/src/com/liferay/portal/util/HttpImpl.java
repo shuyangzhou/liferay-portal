@@ -378,10 +378,6 @@ public class HttpImpl implements Http {
 
 	@Override
 	public String encodeURL(String url, boolean escapeSpaces) {
-		if (Validator.isNull(url)) {
-			return url;
-		}
-
 		return URLCodec.encodeURL(url, StringPool.UTF8, escapeSpaces);
 	}
 
