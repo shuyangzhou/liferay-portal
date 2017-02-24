@@ -1238,7 +1238,8 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			LayoutSet layoutSet = layoutSetLocalService.getLayoutSet(
 				groupId, privateLayout);
 
-			if (!_mergeLayouts(
+			if (layoutSet.isLayoutSetPrototypeLinkActive() &&
+				!_mergeLayouts(
 					group, layoutSet, groupId, privateLayout, parentLayoutId)) {
 
 				return layoutPersistence.findByG_P_P(
