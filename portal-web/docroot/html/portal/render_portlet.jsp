@@ -425,8 +425,19 @@ sb.append("&p_p_id=");
 sb.append(portletDisplay.getId());
 sb.append("&p_v_l_s_g_id=");
 sb.append(themeDisplay.getSiteGroupId());
-sb.append("&doAsUserId=");
-sb.append(HttpUtil.encodeURL(themeDisplay.getDoAsUserId()));
+
+String doAsUserId = themeDisplay.getDoAsUserId();
+
+if (doAsUserId.isEmpty()) {
+	doAsUserId = null;
+}
+else {
+	doAsUserId = HttpUtil.encodeURL(doAsUserId);
+
+	sb.append("&doAsUserId=");
+	sb.append(doAsUserId);
+}
+
 sb.append("&");
 sb.append(Constants.CMD);
 sb.append("=");
@@ -438,8 +449,11 @@ StringBundler innerSB = new StringBundler(5);
 innerSB.append(themeDisplay.getPathMain());
 innerSB.append("/portal/layout?p_l_id=");
 innerSB.append(plid);
-innerSB.append("&doAsUserId=");
-innerSB.append(themeDisplay.getDoAsUserId());
+
+if (doAsUserId != null) {
+	innerSB.append("&doAsUserId=");
+	innerSB.append(doAsUserId);
+}
 
 sb.append(HttpUtil.encodeURL(innerSB.toString()));
 
@@ -687,8 +701,12 @@ sb.append("&p_p_restore=");
 sb.append(portletDisplay.isStateMin());
 sb.append("&p_v_l_s_g_id=");
 sb.append(themeDisplay.getSiteGroupId());
-sb.append("&doAsUserId=");
-sb.append(HttpUtil.encodeURL(themeDisplay.getDoAsUserId()));
+
+if (doAsUserId != null) {
+	sb.append("&doAsUserId=");
+	sb.append(HttpUtil.encodeURL(doAsUserId));
+}
+
 sb.append("&");
 sb.append(Constants.CMD);
 sb.append("=minimize&referer=");
@@ -700,8 +718,11 @@ innerSB.append("/portal/layout?p_auth=");
 innerSB.append(AuthTokenUtil.getToken(request));
 innerSB.append("&p_l_id=");
 innerSB.append(plid);
-innerSB.append("&doAsUserId=");
-innerSB.append(themeDisplay.getDoAsUserId());
+
+if (doAsUserId != null) {
+	innerSB.append("&doAsUserId=");
+	innerSB.append(doAsUserId);
+}
 
 sb.append(HttpUtil.encodeURL(innerSB.toString()));
 
