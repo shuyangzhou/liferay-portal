@@ -73,8 +73,12 @@ public class CompanyImpl extends CompanyBaseImpl {
 
 	@Override
 	public Account getAccount() throws PortalException {
-		return AccountLocalServiceUtil.getAccount(
-			getCompanyId(), getAccountId());
+		if (_account == null) {
+			_account = AccountLocalServiceUtil.getAccount(
+				getCompanyId(), getAccountId());
+		}
+
+		return _account;
 	}
 
 	@Override
@@ -392,6 +396,8 @@ public class CompanyImpl extends CompanyBaseImpl {
 
 		return defaultValue;
 	}
+
+	private Account _account;
 
 	@CacheField
 	private CompanySecurityBag _companySecurityBag;
