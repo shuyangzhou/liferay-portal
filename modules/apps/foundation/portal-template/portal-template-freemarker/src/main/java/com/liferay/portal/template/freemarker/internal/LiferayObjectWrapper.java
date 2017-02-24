@@ -85,6 +85,10 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 			return null;
 		}
 
+		if (object instanceof TemplateModel) {
+			return (TemplateModel)object;
+		}
+
 		Class<?> clazz = object.getClass();
 
 		String className = clazz.getName();
