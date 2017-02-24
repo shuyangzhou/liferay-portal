@@ -107,6 +107,8 @@ import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -707,7 +709,7 @@ public class ServiceBuilder {
 			}
 
 			_ejbList = new ArrayList<>();
-			_entityMappings = new HashMap<>();
+			_entityMappingsMetadata = new HashMap<>();
 
 			List<Element> entityElements = rootElement.elements("entity");
 
@@ -1241,7 +1243,10 @@ public class ServiceBuilder {
 	}
 
 	public EntityMapping getEntityMapping(String mappingTable) {
-		return _entityMappings.get(mappingTable);
+		EntityMappingMetadata entityMappingMetadata =
+			_entityMappingsMetadata.get(mappingTable);
+
+		return entityMappingMetadata.getEntityMapping();
 	}
 
 	public String getGeneratorClass(String idType) {
@@ -1291,21 +1296,15 @@ public class ServiceBuilder {
 	public List<EntityColumn> getMappingEntities(String mappingTable)
 		throws Exception {
 
-		List<EntityColumn> mappingEntitiesPKList = new ArrayList<>();
+		EntityMappingMetadata entityMappingMetadata =
+			_entityMappingsMetadata.get(mappingTable);
 
-		EntityMapping entityMapping = _entityMappings.get(mappingTable);
-
-		for (int i = 0; i < 3; i++) {
-			Entity entity = getEntity(entityMapping.getEntity(i));
-
-			if (entity == null) {
-				return null;
-			}
-
-			mappingEntitiesPKList.addAll(entity.getPKList());
+		if (entityMappingMetadata != null) {
+			return entityMappingMetadata.getAllColumns();
 		}
-
-		return mappingEntitiesPKList;
+		else {
+			return null;
+		}
 	}
 
 	public int getMaxLength(String model, String field) {
@@ -3564,12 +3563,15 @@ public class ServiceBuilder {
 			}
 		}
 
-		for (Map.Entry<String, EntityMapping> entry :
-				_entityMappings.entrySet()) {
+		for (EntityMappingMetadata entityMappingMetadata :
+				_entityMappingsMetadata.values()) {
 
-			EntityMapping entityMapping = entry.getValue();
+			EntityMapping entityMapping =
+				entityMappingMetadata.getEntityMapping();
 
-			_getCreateMappingTableIndex(entityMapping, indexMetadataMap);
+			indexMetadataMap.put(
+				entityMapping.getTable(),
+				entityMappingMetadata.getIndexesMetadata());
 		}
 
 		StringBundler sb = new StringBundler();
@@ -3800,10 +3802,11 @@ public class ServiceBuilder {
 			}
 		}
 
-		for (Map.Entry<String, EntityMapping> entry :
-				_entityMappings.entrySet()) {
+		for (EntityMappingMetadata entityMappingMetadata :
+				_entityMappingsMetadata.values()) {
 
-			EntityMapping entityMapping = entry.getValue();
+			EntityMapping entityMapping =
+				entityMappingMetadata.getEntityMapping();
 
 			String createMappingTableSQL = _getCreateMappingTableSQL(
 				entityMapping);
@@ -4145,80 +4148,17 @@ public class ServiceBuilder {
 		return context;
 	}
 
-	private void _getCreateMappingTableIndex(
-			EntityMapping entityMapping,
-			Map<String, List<IndexMetadata>> indexMetadataMap)
-		throws Exception {
-
-		Entity[] entities = new Entity[3];
-
-		for (int i = 0; i < entities.length; i++) {
-			entities[i] = getEntity(entityMapping.getEntity(i));
-
-			if (entities[i] == null) {
-				return;
-			}
-		}
-
-		String tableName = entityMapping.getTable();
-
-		for (Entity entity : entities) {
-			List<EntityColumn> pkList = entity.getPKList();
-
-			for (int j = 0; j < pkList.size(); j++) {
-				EntityColumn col = pkList.get(j);
-
-				String colDBName = col.getDBName();
-
-				IndexMetadata indexMetadata =
-					IndexMetadataFactoryUtil.createIndexMetadata(
-						false, tableName, colDBName);
-
-				_addIndexMetadata(indexMetadataMap, tableName, indexMetadata);
-			}
-		}
-	}
-
 	private String _getCreateMappingTableSQL(EntityMapping entityMapping)
 		throws Exception {
 
-		Entity[] entities = new Entity[3];
+		EntityMappingMetadata entityMappingMetadata =
+			_entityMappingsMetadata.get(entityMapping.getTable());
 
-		for (int i = 0; i < entities.length; i++) {
-			entities[i] = getEntity(entityMapping.getEntity(i));
+		Entity[] entities = entityMappingMetadata.getEntities();
 
-			if (entities[i] == null) {
-				return null;
-			}
+		if (entities == null) {
+			return null;
 		}
-
-		Arrays.sort(
-			entities,
-			new Comparator<Entity>() {
-
-				@Override
-				public int compare(Entity entity1, Entity entity2) {
-					String name1 = entity1.getName();
-					String name2 = entity2.getName();
-
-					if (Objects.equals(
-							entity1.getPackagePath(), "com.liferay.portal") &&
-						name1.equals("Company")) {
-
-						return -1;
-					}
-
-					if (Objects.equals(
-							entity2.getPackagePath(), "com.liferay.portal") &&
-						name2.equals("Company")) {
-
-						return 1;
-					}
-
-					return name1.compareTo(name2);
-				}
-
-			});
 
 		StringBundler sb = new StringBundler();
 
@@ -4299,23 +4239,11 @@ public class ServiceBuilder {
 
 		sb.append("\tprimary key (");
 
-		for (int i = 1; i < entities.length; i++) {
-			Entity entity = entities[i];
+		List<String> columnsName =
+			entityMappingMetadata.getPkColumns().stream().map(
+				col -> col.getDBName()).collect(Collectors.toList());
 
-			List<EntityColumn> pkList = entity.getPKList();
-
-			for (int j = 0; j < pkList.size(); j++) {
-				EntityColumn col = pkList.get(j);
-
-				String colDBName = col.getDBName();
-
-				if ((i != 1) || (j != 0)) {
-					sb.append(", ");
-				}
-
-				sb.append(colDBName);
-			}
-		}
+		sb.append(String.join(", ", columnsName));
 
 		sb.append(")\n");
 		sb.append(");");
@@ -4429,15 +4357,10 @@ public class ServiceBuilder {
 		if (entity.hasCompoundPK()) {
 			sb.append("\tprimary key (");
 
-			for (int j = 0; j < pkList.size(); j++) {
-				EntityColumn pk = pkList.get(j);
+			List<String> columnsName = pkList.stream().map(
+				col -> col.getDBName()).collect(Collectors.toList());
 
-				sb.append(pk.getDBName());
-
-				if ((j + 1) != pkList.size()) {
-					sb.append(", ");
-				}
-			}
+			sb.append(String.join(", ", columnsName));
 
 			sb.append(")\n");
 		}
@@ -5187,8 +5110,9 @@ public class ServiceBuilder {
 				EntityMapping entityMapping = new EntityMapping(
 					mappingTable, ejbName, collectionEntity);
 
-				if (!_entityMappings.containsKey(mappingTable)) {
-					_entityMappings.put(mappingTable, entityMapping);
+				if (!_entityMappingsMetadata.containsKey(mappingTable)) {
+					_entityMappingsMetadata.put(
+						mappingTable, new EntityMappingMetadata(entityMapping));
 				}
 			}
 		}
@@ -5774,7 +5698,7 @@ public class ServiceBuilder {
 	private boolean _buildNumberIncrement;
 	private String _currentTplName;
 	private List<Entity> _ejbList;
-	private Map<String, EntityMapping> _entityMappings;
+	private Map<String, EntityMappingMetadata> _entityMappingsMetadata;
 	private Map<String, Entity> _entityPool = new HashMap<>();
 	private String _hbmFileName;
 	private String _implDirName;
@@ -5849,5 +5773,173 @@ public class ServiceBuilder {
 	private String _tplServiceUtil = _TPL_ROOT + "service_util.ftl";
 	private String _tplServiceWrapper = _TPL_ROOT + "service_wrapper.ftl";
 	private String _tplSpringXml = _TPL_ROOT + "spring_xml.ftl";
+
+	private class EntityMappingMetadata {
+
+		public EntityMappingMetadata(EntityMapping entityMapping) throws Exception {
+			_allColumns = new ArrayList<>();
+			_entityMapping = entityMapping;
+			_indexesMetadata = new ArrayList<>();
+			_pkColumns = new ArrayList<>();
+		}
+
+		public List<EntityColumn> getAllColumns() throws Exception {
+			if (!_allColumns.isEmpty()) {
+				return _allColumns;
+			}
+
+			Entity[] entities = getEntities();
+
+			if (entities == null) {
+				return null;
+			}
+
+			Arrays.stream(entities).forEach(e -> _allColumns.addAll(e.getPKList()));
+
+			return _allColumns;
+		}
+
+		public Entity[] getEntities() throws Exception {
+			if (_entities != null) {
+				return _entities;
+			}
+
+			_entities = new Entity[3];
+
+			for (int i = 0; i < _entities.length; i++) {
+				_entities[i] = getEntity(_entityMapping.getEntity(i));
+
+				if (_entities[i] == null) {
+					_entities = null;
+					return null;
+				}
+			}
+
+			Entity[] defaultEntities = Arrays.stream(_entities).filter(
+				e -> _isDefaultMappingEntity(e)).toArray(Entity[]::new);
+
+			Entity[] mappingEntities = Arrays.stream(_entities).filter(
+				e -> !_isDefaultMappingEntity(e)).toArray(Entity[]::new);
+
+			Arrays.sort(
+				mappingEntities,
+				(Entity e1, Entity e2) -> e1.getName().compareTo(e2.getName()));
+
+			_entities = Stream.concat(
+				Arrays.stream(defaultEntities), Arrays.stream(mappingEntities)).
+					toArray(Entity[]::new);
+
+			return _entities;
+		}
+
+		public EntityMapping getEntityMapping() {
+			return _entityMapping;
+		}
+
+		public List<IndexMetadata> getIndexesMetadata() throws Exception {
+			if (!_indexesMetadata.isEmpty()) {
+				return _indexesMetadata;
+			}
+
+			List<EntityColumn> allColumns = getAllColumns();
+
+			_indexesMetadata = allColumns.stream().map(
+				column ->
+					IndexMetadataFactoryUtil.createIndexMetadata(
+						false, _entityMapping.getTable(), column.getDBName())
+			).filter(
+					indexMetadata -> !_isRedundantToPk(indexMetadata)).collect(
+					Collectors.toList());
+
+			return _indexesMetadata;
+		}
+
+		public List<EntityColumn> getPkColumns() throws Exception {
+			if (!_pkColumns.isEmpty()) {
+				return _pkColumns;
+			}
+
+			Entity[] entities = _getPkEntities();
+
+			if (entities == null) {
+				return null;
+			}
+
+			Arrays.stream(entities).forEach(e -> _pkColumns.addAll(e.getPKList()));
+
+			return _pkColumns;
+		}
+
+		private Entity[] _getPkEntities() throws Exception {
+			Entity[] entities = getEntities();
+
+			if (entities == null) {
+				return null;
+			}
+
+			entities = Arrays.stream(entities).filter(
+				e -> !_isDefaultMappingEntity(e)).toArray(Entity[]::new);
+
+			return entities;
+		}
+
+		private IndexMetadata _getPkMetadata() throws Exception {
+			if (_pkMetadata != null) {
+				return _pkMetadata;
+			}
+
+			List<EntityColumn> pkColumns = getPkColumns();
+
+			List<String> pkColumnsName = pkColumns.stream().map(
+				pkColumn -> pkColumn.getDBName()).collect(Collectors.toList());
+
+			_pkMetadata = new IndexMetadata(
+				"PRIMARY", _entityMapping.getTable(), true,
+				pkColumnsName.stream().toArray(String[]::new));
+
+			return _pkMetadata;
+		}
+
+		private boolean _isDefaultMappingEntity(Entity entity) {
+			String packagePath = entity.getPackagePath();
+			String name = entity.getName();
+
+			if (Objects.equals(
+					packagePath, EntityMapping.DEFAULT_MAPPING_PACKAGE) &&
+				name.equals(EntityMapping.DEFAULT_MAPPING_CLASS)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		private boolean _isRedundantToPk(IndexMetadata indexMetadata) {
+			IndexMetadata pkMetadata = null;
+
+			try {
+				pkMetadata = _getPkMetadata();
+			}
+			catch (Exception e) {
+				return true;
+			}
+
+			Boolean redundantTo = indexMetadata.redundantTo(pkMetadata);
+
+			if ((redundantTo != null) && redundantTo) {
+				return true;
+			}
+
+			return false;
+		}
+
+		private final List<EntityColumn> _allColumns;
+		private Entity[] _entities;
+		private final EntityMapping _entityMapping;
+		private List<IndexMetadata> _indexesMetadata;
+		private final List<EntityColumn> _pkColumns;
+		private IndexMetadata _pkMetadata;
+
+	}
 
 }

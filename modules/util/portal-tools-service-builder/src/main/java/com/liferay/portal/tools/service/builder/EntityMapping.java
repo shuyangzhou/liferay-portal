@@ -20,9 +20,13 @@ package com.liferay.portal.tools.service.builder;
  */
 public class EntityMapping {
 
+	public static final String DEFAULT_MAPPING_CLASS = "Company";
+
+	public static final String DEFAULT_MAPPING_PACKAGE = "com.liferay.portal";
+
 	public EntityMapping(String table, String entity1, String entity2) {
 		_table = table;
-		_entities[0] = "com.liferay.portal.Company";
+		_entities[0] = DEFAULT_MAPPING_PACKAGE + "." + DEFAULT_MAPPING_CLASS;
 		_entities[1] = entity1;
 		_entities[2] = entity2;
 	}
