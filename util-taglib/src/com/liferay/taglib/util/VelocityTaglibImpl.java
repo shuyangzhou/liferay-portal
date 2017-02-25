@@ -564,8 +564,7 @@ public class VelocityTaglibImpl implements VelocityTaglib {
 	@Deprecated
 	@Override
 	public void layoutIcon(Layout layout) throws Exception {
-		com.liferay.taglib.theme.LayoutIconTag.doTag(
-			layout, _servletContext, _request, _response);
+		com.liferay.taglib.theme.LayoutIconTag.doTag(layout, _pageContext);
 	}
 
 	@Override
