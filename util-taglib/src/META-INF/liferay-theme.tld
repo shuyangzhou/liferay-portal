@@ -25,7 +25,7 @@
 	<tag>
 		<name>layout-icon</name>
 		<tag-class>com.liferay.taglib.theme.LayoutIconTag</tag-class>
-		<body-content>JSP</body-content>
+		<body-content>empty</body-content>
 		<attribute>
 			<name>layout</name>
 			<required>true</required>

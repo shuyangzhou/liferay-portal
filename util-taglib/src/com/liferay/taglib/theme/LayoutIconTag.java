@@ -62,7 +62,7 @@ public class LayoutIconTag
 
 		setRequestAttributes(request, _layout);
 
-		return EVAL_BODY_BUFFERED;
+		return SKIP_BODY;
 	}
 
 	public void setLayout(Layout layout) {
