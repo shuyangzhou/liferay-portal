@@ -48,7 +48,7 @@ public class PageContextWrapper extends PageContext {
 
 	@Override
 	public Object findAttribute(String name) {
-		return _pageContext.findAttribute(name);
+		return _pageContext.getAttribute(name);
 	}
 
 	@Override
