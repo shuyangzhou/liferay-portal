@@ -24,9 +24,7 @@ import javax.servlet.jsp.tagext.BodyTag;
 
 /**
  * @author Brian Wing Shun Chan
- * @deprecated As of 7.0.0, with no direct replacement
  */
-@Deprecated
 public class LayoutIconTag
 	extends com.liferay.taglib.util.IncludeTag implements BodyTag {
 
