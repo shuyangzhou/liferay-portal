@@ -393,7 +393,7 @@ public class IncludeTag extends AttributesTagSupport {
 	}
 
 	protected void logUnavailablePage(String page) {
-		if ((page == null) || !_log.isWarnEnabled()) {
+		if ((page == null) || !_log.isDebugEnabled()) {
 			return;
 		}
 
@@ -451,7 +451,7 @@ public class IncludeTag extends AttributesTagSupport {
 			}
 		}
 
-		_log.warn(sb.toString());
+		_log.debug(sb.toString());
 	}
 
 	protected int processEndTag() throws Exception {
