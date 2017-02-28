@@ -14,28 +14,12 @@
  */
 --%>
 
-<%@ include file="/html/taglib/init.jsp" %>
+<%@ include file="/html/common/init.jsp" %>
 
 <%
 String message = (String)request.getAttribute("liferay-ui:success:message");
 String targetNode = (String)request.getAttribute("liferay-ui:success:targetNode");
 int timeout = GetterUtil.getInteger(request.getAttribute("liferay-ui:success:timeout"));
-boolean translateMessage = GetterUtil.getBoolean((String)request.getAttribute("liferay-ui:success:translateMessage"));
-
-String bodyContentString = StringPool.BLANK;
-
-Object bodyContent = request.getAttribute("liferay-ui:success:bodyContent");
-
-if (bodyContent != null) {
-	bodyContentString = bodyContent.toString();
-}
-
-if (Validator.isNotNull(bodyContentString)) {
-	message = bodyContentString;
-}
-else if (translateMessage) {
-	message = LanguageUtil.get(resourceBundle, message);
-}
 %>
 
 <liferay-ui:alert

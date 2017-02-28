@@ -14,10 +14,17 @@
 
 package com.liferay.taglib.ui;
 
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.util.IncludeTag;
+import com.liferay.taglib.util.TagResourceBundleUtil;
+
+import java.util.ResourceBundle;
 
 import javax.portlet.PortletRequest;
 
@@ -109,12 +116,33 @@ public class SuccessTag extends IncludeTag implements BodyTag {
 
 	@Override
 	protected void setAttributes(HttpServletRequest request) {
-		request.setAttribute("liferay-ui:success:message", _message);
+		String message = _message;
+
+		String bodyContentString = null;
+
+		Object bodyContent = getBodyContentWrapper();
+
+		if (bodyContent != null) {
+			bodyContentString = bodyContent.toString();
+		}
+
+		if (Validator.isNotNull(bodyContentString)) {
+			message = bodyContentString;
+		}
+		else if (_translateMessage) {
+			ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+			ResourceBundle resourceBundle =
+				TagResourceBundleUtil.getResourceBundle(
+					request, themeDisplay.getLocale());
+
+			message = LanguageUtil.get(resourceBundle, message);
+		}
+
+		request.setAttribute("liferay-ui:success:message", message);
 		request.setAttribute("liferay-ui:success:targetNode", _targetNode);
 		request.setAttribute("liferay-ui:success:timeout", _timeout);
-		request.setAttribute(
-			"liferay-ui:success:translateMessage",
-			String.valueOf(_translateMessage));
 	}
 
 	private static final String _ATTRIBUTE_NAMESPACE = "liferay-ui:success:";
