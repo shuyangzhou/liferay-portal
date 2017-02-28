@@ -31,6 +31,15 @@ import javax.servlet.jsp.tagext.BodyTag;
 public class SuccessTag extends IncludeTag implements BodyTag {
 
 	@Override
+	public int doEndTag() throws JspException {
+		if (_hasMessage) {
+			return super.doEndTag();
+		}
+
+		return EVAL_PAGE;
+	}
+
+	@Override
 	public int doStartTag() throws JspException {
 		setAttributeNamespace(_ATTRIBUTE_NAMESPACE);
 
@@ -39,10 +48,14 @@ public class SuccessTag extends IncludeTag implements BodyTag {
 
 		if (portletRequest == null) {
 			if (SessionMessages.contains(request, _key)) {
+				_hasMessage = true;
+
 				return super.doStartTag();
 			}
 		}
 		else if (MultiSessionMessages.contains(portletRequest, _key)) {
+			_hasMessage = true;
+
 			return super.doStartTag();
 		}
 
@@ -71,6 +84,7 @@ public class SuccessTag extends IncludeTag implements BodyTag {
 
 	@Override
 	protected void cleanUp() {
+		_hasMessage = false;
 		_key = null;
 		_message = null;
 		_targetNode = null;
@@ -95,7 +109,6 @@ public class SuccessTag extends IncludeTag implements BodyTag {
 
 	@Override
 	protected void setAttributes(HttpServletRequest request) {
-		request.setAttribute("liferay-ui:success:key", _key);
 		request.setAttribute("liferay-ui:success:message", _message);
 		request.setAttribute("liferay-ui:success:targetNode", _targetNode);
 		request.setAttribute("liferay-ui:success:timeout", _timeout);
@@ -110,6 +123,7 @@ public class SuccessTag extends IncludeTag implements BodyTag {
 
 	private static final String _PAGE = "/html/taglib/ui/success/page.jsp";
 
+	private boolean _hasMessage;
 	private String _key;
 	private String _message;
 	private String _targetNode;

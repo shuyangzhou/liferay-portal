@@ -17,7 +17,6 @@
 <%@ include file="/html/taglib/init.jsp" %>
 
 <%
-String key = (String)request.getAttribute("liferay-ui:success:key");
 String message = (String)request.getAttribute("liferay-ui:success:message");
 String targetNode = (String)request.getAttribute("liferay-ui:success:targetNode");
 int timeout = GetterUtil.getInteger(request.getAttribute("liferay-ui:success:timeout"));
@@ -39,12 +38,10 @@ else if (translateMessage) {
 }
 %>
 
-<c:if test="<%= ((portletRequest != null) && MultiSessionMessages.contains(portletRequest, key)) || SessionMessages.contains(request, key) %>">
-	<liferay-ui:alert
-		icon="check"
-		message="<%= message %>"
-		targetNode="<%= targetNode %>"
-		timeout="<%= timeout %>"
-		type="success"
-	/>
-</c:if>
+<liferay-ui:alert
+	icon="check"
+	message="<%= message %>"
+	targetNode="<%= targetNode %>"
+	timeout="<%= timeout %>"
+	type="success"
+/>
