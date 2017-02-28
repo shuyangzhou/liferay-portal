@@ -70,6 +70,15 @@ public class SuccessTag extends IncludeTag implements BodyTag {
 	}
 
 	@Override
+	protected void cleanUp() {
+		_key = null;
+		_message = null;
+		_targetNode = null;
+		_timeout = 5000;
+		_translateMessage = true;
+	}
+
+	@Override
 	protected String getPage() {
 		return _PAGE;
 	}
