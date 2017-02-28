@@ -37,16 +37,16 @@ public class SuccessTag extends IncludeTag implements BodyTag {
 		PortletRequest portletRequest = (PortletRequest)request.getAttribute(
 			JavaConstants.JAVAX_PORTLET_REQUEST);
 
-		if (portletRequest != null) {
-			if (!MultiSessionMessages.contains(portletRequest, _key)) {
-				return SKIP_BODY;
+		if (portletRequest == null) {
+			if (SessionMessages.contains(request, _key)) {
+				return super.doStartTag();
 			}
 		}
-		else if (!SessionMessages.contains(request, _key)) {
-			return SKIP_BODY;
+		else if (MultiSessionMessages.contains(portletRequest, _key)) {
+			return super.doStartTag();
 		}
 
-		return super.doStartTag();
+		return SKIP_BODY;
 	}
 
 	public void setKey(String key) {
