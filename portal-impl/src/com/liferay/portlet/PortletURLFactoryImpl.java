@@ -14,8 +14,6 @@
 
 package com.liferay.portlet;
 
-import static com.liferay.portal.kernel.portlet.PortletURLFactoryUtil.getPortletURLFactory;
-
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
@@ -60,12 +58,10 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 		Layout layout = themeDisplay.getLayout();
 
 		if (layout != null) {
-			return getPortletURLFactory().create(
-				request, portlet, layout, lifecycle);
+			return create(request, portlet, layout, lifecycle);
 		}
 
-		return getPortletURLFactory().create(
-			request, portlet, themeDisplay.getPlid(), lifecycle);
+		return create(request, portlet, themeDisplay.getPlid(), lifecycle);
 	}
 
 	@Override
@@ -94,12 +90,10 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 		Layout layout = themeDisplay.getLayout();
 
 		if (layout != null) {
-			return getPortletURLFactory().create(
-				request, portletId, layout, lifecycle);
+			return create(request, portletId, layout, lifecycle);
 		}
 
-		return getPortletURLFactory().create(
-			request, portletId, themeDisplay.getPlid(), lifecycle);
+		return create(request, portletId, themeDisplay.getPlid(), lifecycle);
 	}
 
 	@Override
