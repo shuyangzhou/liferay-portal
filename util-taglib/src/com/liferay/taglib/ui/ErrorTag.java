@@ -39,11 +39,15 @@ public class ErrorTag extends IncludeTag implements BodyTag {
 		PortletRequest portletRequest = (PortletRequest)request.getAttribute(
 			JavaConstants.JAVAX_PORTLET_REQUEST);
 
-		if (!SessionErrors.contains(portletRequest, _key)) {
+		Object value = SessionErrors.get(portletRequest, _key);
+
+		if (value == null) {
 			return SKIP_BODY;
 		}
 
-		Object value = getException(portletRequest);
+		if (_exception != null) {
+			value = SessionErrors.get(portletRequest, _exception.getName());
+		}
 
 		if (value == null) {
 			return SKIP_BODY;
