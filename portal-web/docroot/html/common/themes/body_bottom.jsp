@@ -14,9 +14,11 @@
  */
 --%>
 
-<%@ include file="/html/common/themes/init.jsp" %>
+<%@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%-- Raw Text --%>
+<%@ page import="com.liferay.portal.kernel.util.StringBundler" %>
+<%@ page import="com.liferay.portal.kernel.util.WebKeys" %>
+<%@ page import="com.liferay.taglib.util.OutputTag" %>
 
 <%
 StringBundler bodyBottomSB = OutputTag.getData(request, WebKeys.PAGE_BODY_BOTTOM);
