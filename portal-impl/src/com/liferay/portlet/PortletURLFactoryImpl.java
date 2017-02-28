@@ -17,6 +17,7 @@ package com.liferay.portlet;
 import static com.liferay.portal.kernel.portlet.PortletURLFactoryUtil.getPortletURLFactory;
 
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletURLFactory;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
@@ -32,6 +33,40 @@ import javax.servlet.http.HttpServletRequest;
  */
 @DoPrivileged
 public class PortletURLFactoryImpl implements PortletURLFactory {
+
+	@Override
+	public LiferayPortletURL create(
+		HttpServletRequest request, Portlet portlet, Layout layout,
+		String lifecycle) {
+
+		return new PortletURLImpl(request, portlet, layout, lifecycle);
+	}
+
+	@Override
+	public LiferayPortletURL create(
+		HttpServletRequest request, Portlet portlet, long plid,
+		String lifecycle) {
+
+		return new PortletURLImpl(request, portlet, plid, lifecycle);
+	}
+
+	@Override
+	public LiferayPortletURL create(
+		HttpServletRequest request, Portlet portlet, String lifecycle) {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		Layout layout = themeDisplay.getLayout();
+
+		if (layout != null) {
+			return getPortletURLFactory().create(
+				request, portlet, layout, lifecycle);
+		}
+
+		return getPortletURLFactory().create(
+			request, portlet, themeDisplay.getPlid(), lifecycle);
+	}
 
 	@Override
 	public LiferayPortletURL create(
@@ -65,6 +100,39 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 
 		return getPortletURLFactory().create(
 			request, portletId, themeDisplay.getPlid(), lifecycle);
+	}
+
+	@Override
+	public LiferayPortletURL create(
+		PortletRequest portletRequest, Portlet portlet, Layout layout,
+		String lifecycle) {
+
+		return new PortletURLImpl(portletRequest, portlet, layout, lifecycle);
+	}
+
+	@Override
+	public LiferayPortletURL create(
+		PortletRequest portletRequest, Portlet portlet, long plid,
+		String lifecycle) {
+
+		return new PortletURLImpl(portletRequest, portlet, plid, lifecycle);
+	}
+
+	@Override
+	public LiferayPortletURL create(
+		PortletRequest portletRequest, Portlet portlet, String lifecycle) {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		Layout layout = themeDisplay.getLayout();
+
+		if (layout != null) {
+			return create(portletRequest, portlet, layout, lifecycle);
+		}
+
+		return create(
+			portletRequest, portlet, themeDisplay.getPlid(), lifecycle);
 	}
 
 	@Override
