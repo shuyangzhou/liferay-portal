@@ -110,12 +110,7 @@ public class SuccessTag extends IncludeTag implements BodyTag {
 	}
 
 	@Override
-	protected int processStartTag() throws Exception {
-		return EVAL_BODY_BUFFERED;
-	}
-
-	@Override
-	protected void setAttributes(HttpServletRequest request) {
+	public int processEndTag() throws Exception {
 		String message = _message;
 
 		String bodyContentString = null;
@@ -140,9 +135,26 @@ public class SuccessTag extends IncludeTag implements BodyTag {
 			message = LanguageUtil.get(resourceBundle, message);
 		}
 
-		request.setAttribute("liferay-ui:success:message", message);
-		request.setAttribute("liferay-ui:success:targetNode", _targetNode);
-		request.setAttribute("liferay-ui:success:timeout", _timeout);
+		AlertTag alertTag = new AlertTag();
+
+		alertTag.setIcon("check");
+		alertTag.setMessage(message);
+		alertTag.setTargetNode(_targetNode);
+		alertTag.setTimeout(_timeout);
+		alertTag.setType("success");
+
+		alertTag.doTag(pageContext);
+
+		return EVAL_PAGE;
+	}
+
+	@Override
+	protected int processStartTag() throws Exception {
+		return EVAL_BODY_BUFFERED;
+	}
+
+	@Override
+	protected void setAttributes(HttpServletRequest request) {
 	}
 
 	private static final String _ATTRIBUTE_NAMESPACE = "liferay-ui:success:";
