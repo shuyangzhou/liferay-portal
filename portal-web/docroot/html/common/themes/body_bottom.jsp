@@ -20,14 +20,10 @@
 
 <%
 StringBundler bodyBottomSB = OutputTag.getData(request, WebKeys.PAGE_BODY_BOTTOM);
-%>
 
-<c:if test="<%= bodyBottomSB != null %>">
-
-	<%
+if (bodyBottomSB != null) {
 	bodyBottomSB.writeTo(out);
-	%>
-
-</c:if>
+}
+%>
 
 <liferay-util:include page="/html/common/themes/body_bottom-ext.jsp" />
