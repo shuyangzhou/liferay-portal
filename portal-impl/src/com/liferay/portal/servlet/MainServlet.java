@@ -1042,7 +1042,7 @@ public class MainServlet extends ActionServlet {
 			long companyId, long userId, String remoteUser)
 		throws PortalException {
 
-		if ((userId > 0) || (remoteUser == null)) {
+		if (remoteUser == null) {
 			return userId;
 		}
 
