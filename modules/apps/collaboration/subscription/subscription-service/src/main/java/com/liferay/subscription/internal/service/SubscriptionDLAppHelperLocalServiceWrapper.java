@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.EscapableLocalizableFunction;
 import com.liferay.portal.kernel.util.GroupSubscriptionCheckSubscriptionSender;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
@@ -199,8 +200,10 @@ public class SubscriptionDLAppHelperLocalServiceWrapper
 				"[$FOLDER_NAME$]", folder.getName(), true);
 		}
 		else {
-			subscriptionSender.setLocalizedContextAttributeWithFunction(
-				"[$FOLDER_NAME$]", locale -> LanguageUtil.get(locale, "home"));
+			subscriptionSender.setLocalizedContextAttribute(
+				"[$FOLDER_NAME$]",
+				new EscapableLocalizableFunction(
+					locale -> LanguageUtil.get(locale, "home")));
 		}
 
 		subscriptionSender.setContextAttributes(
@@ -216,8 +219,10 @@ public class SubscriptionDLAppHelperLocalServiceWrapper
 		subscriptionSender.setHtmlFormat(true);
 		subscriptionSender.setLocalizedBodyMap(
 			LocalizationUtil.getMap(bodyLocalizedValuesMap));
-		subscriptionSender.setLocalizedContextAttributeWithFunction(
-			"[$DOCUMENT_TYPE$]", locale -> dlFileEntryType.getName(locale));
+		subscriptionSender.setLocalizedContextAttribute(
+			"[$DOCUMENT_TYPE$]",
+			new EscapableLocalizableFunction(
+				locale -> dlFileEntryType.getName(locale)));
 		subscriptionSender.setLocalizedSubjectMap(
 			LocalizationUtil.getMap(subjectLocalizedValuesMap));
 		subscriptionSender.setMailId(

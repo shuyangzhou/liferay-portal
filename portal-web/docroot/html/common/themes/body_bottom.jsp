@@ -14,20 +14,18 @@
  */
 --%>
 
-<%@ include file="/html/common/themes/init.jsp" %>
+<%@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%-- Raw Text --%>
+<%@ page import="com.liferay.portal.kernel.util.StringBundler" %>
+<%@ page import="com.liferay.portal.kernel.util.WebKeys" %>
+<%@ page import="com.liferay.taglib.util.OutputTag" %>
 
 <%
 StringBundler bodyBottomSB = OutputTag.getData(request, WebKeys.PAGE_BODY_BOTTOM);
-%>
 
-<c:if test="<%= bodyBottomSB != null %>">
-
-	<%
+if (bodyBottomSB != null) {
 	bodyBottomSB.writeTo(out);
-	%>
-
-</c:if>
+}
+%>
 
 <liferay-util:include page="/html/common/themes/body_bottom-ext.jsp" />
