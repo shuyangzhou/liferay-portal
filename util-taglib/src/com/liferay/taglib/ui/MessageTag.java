@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.taglib.DirectTag;
 import com.liferay.taglib.util.TagResourceBundleUtil;
 
 import java.util.ResourceBundle;
@@ -35,7 +36,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 /**
  * @author Brian Wing Shun Chan
  */
-public class MessageTag extends TagSupport {
+public class MessageTag extends TagSupport implements DirectTag {
 
 	public static void doTag(
 			Object[] arguments, boolean escape, boolean escapeAttribute,
