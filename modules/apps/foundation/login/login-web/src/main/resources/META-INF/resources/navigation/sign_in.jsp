@@ -14,9 +14,15 @@
  */
 --%>
 
-<%@ include file="/init.jsp" %>
+<%@ include file="/init-fast.jsp" %>
 
 <%
+ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+
+PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+
+String portletName = portletConfig.getPortletName();
+
 String mvcRenderCommandName = ParamUtil.getString(request, "mvcRenderCommandName");
 
 boolean showSignInIcon = false;

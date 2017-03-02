@@ -14,9 +14,13 @@
  */
 --%>
 
-<%@ include file="/init.jsp" %>
+<%@ include file="/init-fast.jsp" %>
 
 <%
+ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+
+Company company = themeDisplay.getCompany();
+
 String mvcRenderCommandName = ParamUtil.getString(request, "mvcRenderCommandName");
 
 boolean showForgotPasswordIcon = false;
