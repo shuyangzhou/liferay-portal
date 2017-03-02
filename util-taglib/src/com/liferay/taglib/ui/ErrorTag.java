@@ -33,17 +33,37 @@ import javax.servlet.jsp.tagext.BodyTag;
 public class ErrorTag extends IncludeTag implements BodyTag {
 
 	@Override
+	public int doEndTag() throws JspException {
+		if (_hasError) {
+			return super.doEndTag();
+		}
+
+		return EVAL_PAGE;
+	}
+
+	@Override
 	public int doStartTag() throws JspException {
+		if (SessionErrors.isEmpty(request)) {
+			return SKIP_BODY;
+		}
+		else {
+			_hasError = true;
+		}
+
 		setAttributeNamespace(_ATTRIBUTE_NAMESPACE);
 
 		PortletRequest portletRequest = (PortletRequest)request.getAttribute(
 			JavaConstants.JAVAX_PORTLET_REQUEST);
 
-		if (!SessionErrors.contains(portletRequest, _key)) {
+		Object value = SessionErrors.get(portletRequest, _key);
+
+		if (value == null) {
 			return SKIP_BODY;
 		}
 
-		Object value = getException(portletRequest);
+		if (_exception != null) {
+			value = SessionErrors.get(portletRequest, _exception.getName());
+		}
 
 		if (value == null) {
 			return SKIP_BODY;
@@ -92,6 +112,7 @@ public class ErrorTag extends IncludeTag implements BodyTag {
 
 		_exception = null;
 		_focusField = null;
+		_hasError = false;
 		_key = null;
 		_message = null;
 		_rowBreak = StringPool.BLANK;
@@ -165,6 +186,7 @@ public class ErrorTag extends IncludeTag implements BodyTag {
 
 	private Class<?> _exception;
 	private String _focusField;
+	private boolean _hasError;
 	private String _key;
 	private String _message;
 	private String _rowBreak = StringPool.BLANK;
