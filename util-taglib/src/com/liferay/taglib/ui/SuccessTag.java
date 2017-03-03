@@ -69,6 +69,45 @@ public class SuccessTag extends IncludeTag implements BodyTag {
 		return SKIP_BODY;
 	}
 
+	@Override
+	public int processEndTag() throws Exception {
+		String message = _message;
+
+		String bodyContentString = null;
+
+		Object bodyContent = getBodyContentWrapper();
+
+		if (bodyContent != null) {
+			bodyContentString = bodyContent.toString();
+		}
+
+		if (Validator.isNotNull(bodyContentString)) {
+			message = bodyContentString;
+		}
+		else if (_translateMessage) {
+			ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+			ResourceBundle resourceBundle =
+				TagResourceBundleUtil.getResourceBundle(
+					request, themeDisplay.getLocale());
+
+			message = LanguageUtil.get(resourceBundle, message);
+		}
+
+		AlertTag alertTag = new AlertTag();
+
+		alertTag.setIcon("check");
+		alertTag.setMessage(message);
+		alertTag.setTargetNode(_targetNode);
+		alertTag.setTimeout(_timeout);
+		alertTag.setType("success");
+
+		alertTag.doTag(pageContext);
+
+		return EVAL_PAGE;
+	}
+
 	public void setKey(String key) {
 		_key = key;
 	}
@@ -107,45 +146,6 @@ public class SuccessTag extends IncludeTag implements BodyTag {
 	@Override
 	protected boolean isCleanUpSetAttributes() {
 		return _CLEAN_UP_SET_ATTRIBUTES;
-	}
-
-	@Override
-	public int processEndTag() throws Exception {
-		String message = _message;
-
-		String bodyContentString = null;
-
-		Object bodyContent = getBodyContentWrapper();
-
-		if (bodyContent != null) {
-			bodyContentString = bodyContent.toString();
-		}
-
-		if (Validator.isNotNull(bodyContentString)) {
-			message = bodyContentString;
-		}
-		else if (_translateMessage) {
-			ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
-			ResourceBundle resourceBundle =
-				TagResourceBundleUtil.getResourceBundle(
-					request, themeDisplay.getLocale());
-
-			message = LanguageUtil.get(resourceBundle, message);
-		}
-
-		AlertTag alertTag = new AlertTag();
-
-		alertTag.setIcon("check");
-		alertTag.setMessage(message);
-		alertTag.setTargetNode(_targetNode);
-		alertTag.setTimeout(_timeout);
-		alertTag.setType("success");
-
-		alertTag.doTag(pageContext);
-
-		return EVAL_PAGE;
 	}
 
 	@Override
