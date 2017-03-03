@@ -267,6 +267,7 @@
 /portal-web/docroot/WEB-INF/portlet-ext.xml
 /portal-web/docroot/WEB-INF/src
 /portal-web/docroot/WEB-INF/tld/aui.tld
+/portal-web/docroot/WEB-INF/tld/c.tld
 /portal-web/docroot/WEB-INF/tld/ddm.tld
 /portal-web/docroot/WEB-INF/tld/liferay-*.tld
 /portal-web/docroot/WEB-INF/tmp
