@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.messaging.proxy;
 
 import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSender;
 import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactoryUtil;
 import com.liferay.portal.kernel.messaging.sender.SingleDestinationSynchronousMessageSender;
@@ -79,6 +80,10 @@ public abstract class BaseProxyBean {
 	}
 
 	public Object synchronousSend(ProxyRequest proxyRequest) throws Exception {
+		if (!MessageBusUtil.hasMessageListener(_destinationName)) {
+			return proxyRequest.execute(this);
+		}
+
 		SingleDestinationSynchronousMessageSender
 			singleDestinationSynchronousMessageSender =
 				SingleDestinationMessageSenderFactoryUtil.
