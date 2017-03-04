@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.lang.DoPrivilegedBean;
@@ -62,6 +63,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -851,6 +853,8 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 		_mergePublicRenderParameters(
 			dynamicRequest, publicRenderParametersMap, preferences);
 
+		_processCheckbox(dynamicRequest);
+
 		_request = dynamicRequest;
 		_originalRequest = request;
 		_portlet = portlet;
@@ -1014,6 +1018,28 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 			}
 			else {
 				dynamicRequest.setParameterValues(name, newValues);
+			}
+		}
+	}
+
+	private void _processCheckbox(DynamicServletRequest dynamicServletRequest) {
+		String checkboxNames = dynamicServletRequest.getParameter(
+			"checkboxNames");
+
+		if (Validator.isNull(checkboxNames)) {
+			return;
+		}
+
+		for (String checkboxName : StringUtil.split(checkboxNames)) {
+			String value = dynamicServletRequest.getParameter(checkboxName);
+
+			if (value == null) {
+				dynamicServletRequest.setParameter(
+					checkboxName, Boolean.FALSE.toString());
+			}
+			else if (Objects.equals(value, "on")) {
+				dynamicServletRequest.setParameter(
+					checkboxName, Boolean.TRUE.toString());
 			}
 		}
 	}
