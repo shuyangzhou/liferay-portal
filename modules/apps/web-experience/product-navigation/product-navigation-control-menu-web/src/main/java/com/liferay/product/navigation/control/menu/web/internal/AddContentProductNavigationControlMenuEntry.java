@@ -14,6 +14,7 @@
 
 package com.liferay.product.navigation.control.menu.web.internal;
 
+import com.liferay.alloy.taglib.alloy_util.ScriptTag;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Layout;
@@ -26,12 +27,15 @@ import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.product.navigation.control.menu.BaseJSPProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuCategoryKeys;
 import com.liferay.product.navigation.control.menu.web.internal.constants.ProductNavigationControlMenuPortletKeys;
 import com.liferay.taglib.aui.IconTag;
+import com.liferay.taglib.ui.MessageTag;
+import com.liferay.taglib.util.BodyBottomTag;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -44,6 +48,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.PageContext;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -74,13 +80,29 @@ public class AddContentProductNavigationControlMenuEntry
 	}
 
 	@Override
-	public boolean includeIcon(
+	public boolean includeBody(
 			HttpServletRequest request, HttpServletResponse response)
 		throws IOException {
 
-		String portletNamespace = _portal.getPortletNamespace(
-			ProductNavigationControlMenuPortletKeys.
-				PRODUCT_NAVIGATION_CONTROL_MENU);
+		BodyBottomTag bodyBottomTag = new BodyBottomTag();
+
+		bodyBottomTag.setOutputKey("addContentMenu");
+
+		try {
+			bodyBottomTag.doBodyTag(
+				request, response, this::_processBodyBottomTagBody);
+		}
+		catch (JspException je) {
+			throw new IOException(je);
+		}
+
+		return true;
+	}
+
+	@Override
+	public boolean includeIcon(
+			HttpServletRequest request, HttpServletResponse response)
+		throws IOException {
 
 		Writer writer = response.getWriter();
 
@@ -91,7 +113,7 @@ public class AddContentProductNavigationControlMenuEntry
 		writer.write(
 			"data-content=\"body\" data-open-class=\"open-admin-panel\" " +
 				"data-qa-id=\"add\" data-target=\"#");
-		writer.write(portletNamespace);
+		writer.write(_portletNamespace);
 		writer.write("addPanelId\" data-title=\"");
 		writer.write(_html.escape(_language.get(request, "add")));
 		writer.write(
@@ -122,7 +144,7 @@ public class AddContentProductNavigationControlMenuEntry
 		addPanelURL.write(writer);
 
 		writer.write("\" href=\"javascript:;\" id=\"");
-		writer.write(portletNamespace);
+		writer.write(_portletNamespace);
 		writer.write("addToggleId\">");
 
 		IconTag iconTag = new IconTag();
@@ -237,14 +259,84 @@ public class AddContentProductNavigationControlMenuEntry
 			ActionKeys.UPDATE);
 	}
 
+	@Reference(unbind = "-")
+	protected void setPortal(Portal portal) {
+		_portletNamespace = portal.getPortletNamespace(
+			ProductNavigationControlMenuPortletKeys.
+				PRODUCT_NAVIGATION_CONTROL_MENU);
+	}
+
+	private void _processBodyBottomTagBody(PageContext pageContext) {
+		JspWriter jspWriter = pageContext.getOut();
+
+		try {
+			jspWriter.write(
+				"<div class=\"closed hidden-print lfr-add-panel " +
+					"lfr-admin-panel sidenav-fixed sidenav-menu-slider " +
+						"sidenav-right\" id=\"");
+			jspWriter.write(_portletNamespace);
+			jspWriter.write("addPanelId\">");
+			jspWriter.write(
+				"<div class=\"product-menu sidebar sidebar-inverse " +
+					"sidenav-menu\"><div class=\"sidebar-header\"><span>");
+
+			MessageTag messageTag = new MessageTag();
+
+			messageTag.setKey("add");
+
+			messageTag.doTag(pageContext);
+
+			jspWriter.write("</span>");
+
+			IconTag iconTag = new IconTag();
+
+			iconTag.setCssClass("icon-monospaced sidenav-close");
+			iconTag.setImage("times");
+			iconTag.setMarkupView("lexicon");
+			iconTag.setUrl("javascript:;");
+
+			iconTag.doTag(pageContext);
+
+			jspWriter.write(
+				"</div><div class=\"sidebar-body\"></div></div></div>");
+
+			ScriptTag scriptTag = new ScriptTag();
+
+			scriptTag.setUse("liferay-store,io-request,parse-content");
+
+			scriptTag.doBodyTag(pageContext, this::_processScriptTagBody);
+		}
+		catch (Exception e) {
+			ReflectionUtil.throwException(e);
+		}
+	}
+
+	private void _processScriptTagBody(PageContext pageContext) {
+		JspWriter jspWriter = pageContext.getOut();
+
+		try {
+			jspWriter.write("var addToggle = $('#");
+			jspWriter.write(_portletNamespace);
+			jspWriter.write("addToggleId');");
+			jspWriter.write(
+				"addToggle.sideNavigation();Liferay.once('screenLoad'," +
+					"function() {var sideNavigation = addToggle.data(" +
+						"'lexicon.sidenav');");
+			jspWriter.write(
+				"if (sideNavigation) {sideNavigation.destroy();}});");
+		}
+		catch (IOException ioe) {
+			ReflectionUtil.throwException(ioe);
+		}
+	}
+
 	@Reference
 	private Html _html;
 
 	@Reference
 	private Language _language;
 
-	@Reference
-	private Portal _portal;
+	private String _portletNamespace;
 
 	@Reference
 	private PortletURLFactory _portletURLFactory;
