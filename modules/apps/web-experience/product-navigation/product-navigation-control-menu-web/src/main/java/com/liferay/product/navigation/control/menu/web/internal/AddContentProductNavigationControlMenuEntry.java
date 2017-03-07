@@ -15,19 +15,35 @@
 package com.liferay.product.navigation.control.menu.web.internal;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutTypeController;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
+import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.PortletURLFactory;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.Html;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.product.navigation.control.menu.BaseJSPProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuCategoryKeys;
+import com.liferay.product.navigation.control.menu.web.internal.constants.ProductNavigationControlMenuPortletKeys;
+import com.liferay.taglib.aui.IconTag;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletURL;
+import javax.portlet.WindowStateException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.JspException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -55,6 +71,76 @@ public class AddContentProductNavigationControlMenuEntry
 	@Override
 	public String getIconJspPath() {
 		return "/entries/add_content_icon.jsp";
+	}
+
+	@Override
+	public boolean includeIcon(
+			HttpServletRequest request, HttpServletResponse response)
+		throws IOException {
+
+		String portletNamespace = _portal.getPortletNamespace(
+			ProductNavigationControlMenuPortletKeys.
+				PRODUCT_NAVIGATION_CONTROL_MENU);
+
+		Writer writer = response.getWriter();
+
+		writer.write("<li class=\"control-menu-nav-item\">");
+		writer.write(
+			"<a class=\"control-menu-icon lfr-portal-tooltip " +
+				"product-menu-toggle sidenav-toggler\" ");
+		writer.write(
+			"data-content=\"body\" data-open-class=\"open-admin-panel\" " +
+				"data-qa-id=\"add\" data-target=\"#");
+		writer.write(portletNamespace);
+		writer.write("addPanelId\" data-title=\"");
+		writer.write(_html.escape(_language.get(request, "add")));
+		writer.write(
+			"\" data-toggle=\"sidenav\" data-type=\"fixed-push\" " +
+				"data-type-mobile=\"fixed\" data-url=\"");
+
+		PortletURL addPanelURL = _portletURLFactory.create(
+			request,
+			ProductNavigationControlMenuPortletKeys.
+				PRODUCT_NAVIGATION_CONTROL_MENU,
+			PortletRequest.RENDER_PHASE);
+
+		addPanelURL.setParameter("mvcPath", "/add_panel.jsp");
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		addPanelURL.setParameter(
+			"stateMaximized", String.valueOf(themeDisplay.isStateMaximized()));
+
+		try {
+			addPanelURL.setWindowState(LiferayWindowState.EXCLUSIVE);
+		}
+		catch (WindowStateException wse) {
+			throw new IOException(wse);
+		}
+
+		addPanelURL.write(writer);
+
+		writer.write("\" href=\"javascript:;\" id=\"");
+		writer.write(portletNamespace);
+		writer.write("addToggleId\">");
+
+		IconTag iconTag = new IconTag();
+
+		iconTag.setCssClass("icon-monospaced");
+		iconTag.setImage("plus");
+		iconTag.setMarkupView("lexicon");
+
+		try {
+			iconTag.doTag(request, response);
+		}
+		catch (JspException je) {
+			throw new IOException(je);
+		}
+
+		writer.write("</a></li>");
+
+		return true;
 	}
 
 	@Override
@@ -150,5 +236,17 @@ public class AddContentProductNavigationControlMenuEntry
 			themeDisplay.getPermissionChecker(), themeDisplay.getLayout(),
 			ActionKeys.UPDATE);
 	}
+
+	@Reference
+	private Html _html;
+
+	@Reference
+	private Language _language;
+
+	@Reference
+	private Portal _portal;
+
+	@Reference
+	private PortletURLFactory _portletURLFactory;
 
 }
