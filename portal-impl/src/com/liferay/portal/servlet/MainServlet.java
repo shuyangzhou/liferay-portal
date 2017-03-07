@@ -725,23 +725,14 @@ public class MainServlet extends ActionServlet {
 	}
 
 	protected String getRemoteUser(HttpServletRequest request, long userId) {
-		String remoteUser = request.getRemoteUser();
-
-		if (!PropsValues.PORTAL_JAAS_ENABLE) {
+		if (PropsValues.PORTAL_JAAS_ENABLE) {
+			return request.getRemoteUser();
+		}
+		else {
 			HttpSession session = request.getSession();
 
-			String jRemoteUser = (String)session.getAttribute("j_remoteuser");
-
-			if (jRemoteUser != null) {
-				remoteUser = jRemoteUser;
-			}
+			return (String)session.getAttribute("j_remoteuser");
 		}
-
-		if ((userId > 0) && (remoteUser == null)) {
-			remoteUser = String.valueOf(userId);
-		}
-
-		return remoteUser;
 	}
 
 	@Override
