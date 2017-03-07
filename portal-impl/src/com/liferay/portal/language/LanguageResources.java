@@ -291,11 +291,27 @@ public class LanguageResources {
 			newLanguageMap.putAll(oldLanguageMap);
 		}
 
-		newLanguageMap.putAll(languageMap);
+		Map<String, String> diffLanguageMap = new HashMap<>();
+
+		for (Map.Entry<String, String> entry : languageMap.entrySet()) {
+			String key = entry.getKey();
+			String value = entry.getValue();
+
+			String oldValue = null;
+
+			if (value == null) {
+				oldValue = newLanguageMap.remove(key);
+			}
+			else {
+				oldValue = newLanguageMap.put(key, value);
+			}
+
+			diffLanguageMap.put(entry.getKey(), oldValue);
+		}
 
 		_languageMaps.put(locale, newLanguageMap);
 
-		return oldLanguageMap;
+		return diffLanguageMap;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -397,10 +413,10 @@ public class LanguageResources {
 				languageMap.put(key, value);
 			}
 
-			Map<String, String> oldLanguageMap = _putLanguageMap(
+			Map<String, String> diffLanguageMap = _putLanguageMap(
 				locale, languageMap);
 
-			_oldLanguageMaps.put(serviceReference, oldLanguageMap);
+			_diffLanguageMap.put(serviceReference, diffLanguageMap);
 
 			return resourceBundle;
 		}
@@ -431,14 +447,14 @@ public class LanguageResources {
 				locale = new Locale(StringPool.BLANK);
 			}
 
-			Map<String, String> languageMap = _oldLanguageMaps.get(
+			Map<String, String> languageMap = _diffLanguageMap.remove(
 				serviceReference);
 
 			_putLanguageMap(locale, languageMap);
 		}
 
 		private final Map<ServiceReference<?>, Map<String, String>>
-			_oldLanguageMaps = new HashMap<>();
+			_diffLanguageMap = new HashMap<>();
 
 	}
 
