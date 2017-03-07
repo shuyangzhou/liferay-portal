@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.model.Team;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.UserBag;
+import com.liferay.portal.kernel.security.permission.UserBagFactoryUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
@@ -65,42 +67,25 @@ public class AnnouncementsUtil {
 
 		// Organization announcements
 
-		List<Group> groupsList = new ArrayList<>();
+		UserBag userBag = UserBagFactoryUtil.create(userId);
 
-		List<Organization> organizations =
-			OrganizationLocalServiceUtil.getUserOrganizations(userId);
+		List<Group> groupsList = new ArrayList<>(userBag.getGroups());
+
+		List<Organization> organizations = new ArrayList<>(
+			userBag.getUserOrgs());
 
 		if (!organizations.isEmpty()) {
-			List<Organization> organizationsList = new ArrayList<>();
-
-			organizationsList.addAll(organizations);
-
-			for (Organization organization : organizations) {
-				groupsList.add(organization.getGroup());
-
-				List<Organization> parentOrganizations =
-					OrganizationLocalServiceUtil.getParentOrganizations(
-						organization.getOrganizationId());
-
-				for (Organization parentOrganization : parentOrganizations) {
-					organizationsList.add(parentOrganization);
-					groupsList.add(parentOrganization.getGroup());
-				}
-			}
-
 			scopes.put(
 				_ORGANIZATION_CLASS_NAME_ID,
-				_getOrganizationIds(organizationsList));
+				_getOrganizationIds(organizations));
 		}
 
 		// Site announcements
 
-		List<Group> groups = GroupLocalServiceUtil.getUserGroups(userId, true);
+		List<Group> groups = new ArrayList<>(userBag.getUserGroups());
 
 		if (!groups.isEmpty()) {
 			scopes.put(_GROUP_CLASS_NAME_ID, _getGroupIds(groups));
-
-			groupsList.addAll(groups);
 		}
 
 		// User group announcements
@@ -110,10 +95,6 @@ public class AnnouncementsUtil {
 
 		if (!userGroups.isEmpty()) {
 			scopes.put(_USER_GROUP_CLASS_NAME_ID, _getUserGroupIds(userGroups));
-
-			for (UserGroup userGroup : userGroups) {
-				groupsList.add(userGroup.getGroup());
-			}
 		}
 
 		// Role announcements
@@ -121,8 +102,7 @@ public class AnnouncementsUtil {
 		Set<Role> roles = new LinkedHashSet<>();
 
 		if (!groupsList.isEmpty()) {
-			roles.addAll(
-				RoleLocalServiceUtil.getUserRelatedRoles(userId, groupsList));
+			roles.addAll(userBag.getRoles());
 
 			for (Group group : groupsList) {
 				roles.addAll(
