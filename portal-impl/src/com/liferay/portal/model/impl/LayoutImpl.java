@@ -1052,20 +1052,15 @@ public class LayoutImpl extends LayoutBaseImpl {
 	}
 
 	@Override
-	public boolean isPortletEmbedded(String portletId, long groupId) {
+	public boolean isPortletEmbedded(String portletId) {
 		PortletPreferences portletPreferences =
-			PortletPreferencesLocalServiceUtil.fetchPortletPreferences(
-				PortletKeys.PREFS_OWNER_ID_DEFAULT,
-				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, getPlid(), portletId);
+			_getDefaultOwnerPortletPreferences(portletId);
 
 		if (portletPreferences == null) {
 			return false;
 		}
 
-		portletPreferences =
-			PortletPreferencesLocalServiceUtil.fetchPortletPreferences(
-				groupId, PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
-				PortletKeys.PREFS_PLID_SHARED, portletId);
+		portletPreferences = _getGroupOwnerPortletPreferences(portletId);
 
 		if ((portletPreferences == null) && isTypePortlet()) {
 			LayoutTypePortlet layoutTypePortlet =
@@ -1099,6 +1094,15 @@ public class LayoutImpl extends LayoutBaseImpl {
 		}
 
 		return true;
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #isPortletEmbedded(String)}
+	 */
+	@Deprecated
+	@Override
+	public boolean isPortletEmbedded(String portletId, long groupId) {
+		return isPortletEmbedded(portletId);
 	}
 
 	/**
@@ -1339,6 +1343,44 @@ public class LayoutImpl extends LayoutBaseImpl {
 		}
 	}
 
+	private PortletPreferences _getDefaultOwnerPortletPreferences(
+		String portletId) {
+
+		if (_defaultOwnerPortletPreferences == null) {
+			_defaultOwnerPortletPreferences = new HashMap<>();
+
+			for (PortletPreferences portletPreferences :
+					PortletPreferencesLocalServiceUtil.getPortletPreferences(
+						PortletKeys.PREFS_OWNER_ID_DEFAULT,
+						PortletKeys.PREFS_OWNER_TYPE_LAYOUT, getPlid())) {
+
+				_defaultOwnerPortletPreferences.put(
+					portletPreferences.getPortletId(), portletPreferences);
+			}
+		}
+
+		return _defaultOwnerPortletPreferences.get(portletId);
+	}
+
+	private PortletPreferences _getGroupOwnerPortletPreferences(
+		String portletId) {
+
+		if (_groupOwnerPortletPreferences == null) {
+			_groupOwnerPortletPreferences = new HashMap<>();
+
+			for (PortletPreferences portletPreferences :
+					PortletPreferencesLocalServiceUtil.getPortletPreferences(
+						getGroupId(), PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
+						PortletKeys.PREFS_PLID_SHARED)) {
+
+				_groupOwnerPortletPreferences.put(
+					portletPreferences.getPortletId(), portletPreferences);
+			}
+		}
+
+		return _defaultOwnerPortletPreferences.get(portletId);
+	}
+
 	private Set<String> _getLayoutPortletIds() {
 		Set<String> layoutPortletIds = new HashSet<>();
 
@@ -1522,7 +1564,9 @@ public class LayoutImpl extends LayoutBaseImpl {
 		_initFriendlyURLKeywords();
 	}
 
+	private Map<String, PortletPreferences> _defaultOwnerPortletPreferences;
 	private final Map<Locale, String> _friendlyURLs = new HashMap<>();
+	private Map<String, PortletPreferences> _groupOwnerPortletPreferences;
 	private LayoutSet _layoutSet;
 	private transient LayoutType _layoutType;
 	private UnicodeProperties _typeSettingsProperties;

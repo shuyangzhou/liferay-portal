@@ -569,6 +569,15 @@ public class LayoutWrapper implements Layout, ModelWrapper<Layout> {
 	}
 
 	@Override
+	public boolean isPortletEmbedded(java.lang.String portletId) {
+		return _layout.isPortletEmbedded(portletId);
+	}
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #isPortletEmbedded(String)}
+	*/
+	@Deprecated
+	@Override
 	public boolean isPortletEmbedded(java.lang.String portletId, long groupId) {
 		return _layout.isPortletEmbedded(portletId, groupId);
 	}
