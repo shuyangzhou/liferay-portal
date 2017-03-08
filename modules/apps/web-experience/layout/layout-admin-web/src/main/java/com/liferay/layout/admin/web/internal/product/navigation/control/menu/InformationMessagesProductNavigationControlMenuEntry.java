@@ -132,18 +132,18 @@ public class InformationMessagesProductNavigationControlMenuEntry
 
 		Layout layout = themeDisplay.getLayout();
 
-		if (!LayoutPermissionUtil.containsWithoutViewableGroup(
-				themeDisplay.getPermissionChecker(), layout, false,
-				ActionKeys.UPDATE)) {
-
-			return false;
-		}
-
 		Group group = layout.getGroup();
 
 		if (!SitesUtil.isLayoutUpdateable(layout) ||
 			(layout.isLayoutPrototypeLinkActive() &&
 			 !group.hasStagingGroup())) {
+
+			if (!LayoutPermissionUtil.containsWithoutViewableGroup(
+					themeDisplay.getPermissionChecker(), layout, false,
+					ActionKeys.UPDATE)) {
+
+				return false;
+			}
 
 			return true;
 		}
