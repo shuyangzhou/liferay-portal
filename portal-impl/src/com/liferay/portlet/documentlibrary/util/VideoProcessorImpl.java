@@ -616,6 +616,38 @@ public class VideoProcessorImpl
 			sourceFileVersion, destinationFileVersion);
 	}
 
+	private static String _convertVideo(LiferayConverter liferayConverter)
+		throws ProcessException {
+
+		XugglerAutoInstallHelper.installNativeLibraries();
+
+		Properties systemProperties = System.getProperties();
+
+		SystemEnv.setProperties(systemProperties);
+
+		try {
+			liferayConverter.convert();
+		}
+		catch (Exception e) {
+			throw new ProcessException(e);
+		}
+		finally {
+			Thread[] threads = ThreadUtil.getThreads();
+
+			for (Thread thread : threads) {
+				if (!thread.isDaemon()) {
+					String threadName = thread.getName();
+
+					if (!StringUtil.equalsIgnoreCase(threadName, "main")) {
+						System.exit(-1);
+					}
+				}
+			}
+		}
+
+		return StringPool.BLANK;
+	}
+
 	private static final String[] _PREVIEW_TYPES =
 		PropsValues.DL_FILE_ENTRY_PREVIEW_VIDEO_CONTAINERS;
 
@@ -647,12 +679,6 @@ public class VideoProcessorImpl
 
 		@Override
 		public String call() throws ProcessException {
-			XugglerAutoInstallHelper.installNativeLibraries();
-
-			Properties systemProperties = System.getProperties();
-
-			SystemEnv.setProperties(systemProperties);
-
 			Class<?> clazz = getClass();
 
 			ClassLoader classLoader = clazz.getClassLoader();
@@ -667,26 +693,11 @@ public class VideoProcessorImpl
 					_outputFile.getCanonicalPath(), _videoContainer,
 					_videoProperties, _ffpresetProperties);
 
-				liferayConverter.convert();
+				return _convertVideo(liferayConverter);
 			}
 			catch (Exception e) {
 				throw new ProcessException(e);
 			}
-			finally {
-				Thread[] threads = ThreadUtil.getThreads();
-
-				for (Thread thread : threads) {
-					if (!thread.isDaemon()) {
-						String threadName = thread.getName();
-
-						if (!StringUtil.equalsIgnoreCase(threadName, "main")) {
-							System.exit(-1);
-						}
-					}
-				}
-			}
-
-			return StringPool.BLANK;
 		}
 
 		private static final long serialVersionUID = 1L;
@@ -730,15 +741,9 @@ public class VideoProcessorImpl
 
 		@Override
 		public String call() throws ProcessException {
-			XugglerAutoInstallHelper.installNativeLibraries();
-
 			Class<?> clazz = getClass();
 
 			ClassLoader classLoader = clazz.getClassLoader();
-
-			Properties systemProperties = System.getProperties();
-
-			SystemEnv.setProperties(systemProperties);
 
 			Log4JUtil.initLog4J(
 				_serverId, _liferayHome, classLoader, new Log4jLogFactoryImpl(),
@@ -750,26 +755,11 @@ public class VideoProcessorImpl
 						_inputFile.getCanonicalPath(), _outputFile, _extension,
 						_height, _width, _percentage);
 
-				liferayConverter.convert();
+				return _convertVideo(liferayConverter);
 			}
 			catch (Exception e) {
 				throw new ProcessException(e);
 			}
-			finally {
-				Thread[] threads = ThreadUtil.getThreads();
-
-				for (Thread thread : threads) {
-					if (!thread.isDaemon()) {
-						String threadName = thread.getName();
-
-						if (!StringUtil.equalsIgnoreCase(threadName, "main")) {
-							System.exit(-1);
-						}
-					}
-				}
-			}
-
-			return StringPool.BLANK;
 		}
 
 		private static final long serialVersionUID = 1L;
