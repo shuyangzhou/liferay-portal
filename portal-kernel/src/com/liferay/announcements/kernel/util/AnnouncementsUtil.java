@@ -84,10 +84,10 @@ public class AnnouncementsUtil {
 
 		// Site announcements
 
-		List<Group> groups = new ArrayList<>(userBag.getUserGroups());
+		long[] groupIds = userBag.getUserGroupIds();
 
-		if (!groups.isEmpty()) {
-			scopes.put(_GROUP_CLASS_NAME_ID, _getGroupIds(groups));
+		if (groupIds.length > 0) {
+			scopes.put(_GROUP_CLASS_NAME_ID, groupIds);
 		}
 
 		// User group announcements
@@ -247,18 +247,6 @@ public class AnnouncementsUtil {
 		}
 
 		return filteredUserGroups;
-	}
-
-	private static long[] _getGroupIds(List<Group> groups) {
-		long[] groupIds = new long[groups.size()];
-
-		int i = 0;
-
-		for (Group group : groups) {
-			groupIds[i++] = group.getGroupId();
-		}
-
-		return groupIds;
 	}
 
 	private static long[] _getRoleIds(Set<Role> roles) {
