@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.Team;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
+import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.kernel.security.permission.UserBagFactoryUtil;
@@ -30,6 +31,7 @@ import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.TeamLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserGroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserGroupRoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.service.permission.OrganizationPermissionUtil;
@@ -37,6 +39,7 @@ import com.liferay.portal.kernel.service.permission.RolePermissionUtil;
 import com.liferay.portal.kernel.service.permission.UserGroupPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -104,10 +107,15 @@ public class AnnouncementsUtil {
 		if (!groupsList.isEmpty()) {
 			roles.addAll(userBag.getRoles());
 
+			List<UserGroupRole> userGroupRoles =
+				UserGroupRoleLocalServiceUtil.getUserGroupRoles(userId);
+
+			long[] userGroupRoleRoleIds = ListUtil.toLongArray(
+				userGroupRoles, UserGroupRole.ROLE_ID_ACCESSOR);
+
+			roles.addAll(RoleLocalServiceUtil.getRoles(userGroupRoleRoleIds));
+
 			for (Group group : groupsList) {
-				roles.addAll(
-					RoleLocalServiceUtil.getUserGroupRoles(
-						userId, group.getGroupId()));
 				roles.addAll(
 					RoleLocalServiceUtil.getUserGroupGroupRoles(
 						userId, group.getGroupId()));
