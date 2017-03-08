@@ -97,7 +97,10 @@ public class AnnouncementsUtil {
 			UserGroupLocalServiceUtil.getUserUserGroups(userId);
 
 		if (!userGroups.isEmpty()) {
-			scopes.put(_USER_GROUP_CLASS_NAME_ID, _getUserGroupIds(userGroups));
+			long[] userGroupIds = ListUtil.toLongArray(
+				userGroups, UserGroup.USER_GROUP_ID_ACCESSOR);
+
+			scopes.put(_USER_GROUP_CLASS_NAME_ID, userGroupIds);
 		}
 
 		// Role announcements
@@ -254,18 +257,6 @@ public class AnnouncementsUtil {
 		}
 
 		return filteredUserGroups;
-	}
-
-	private static long[] _getUserGroupIds(List<UserGroup> userGroups) {
-		long[] userGroupIds = new long[userGroups.size()];
-
-		int i = 0;
-
-		for (UserGroup userGroup : userGroups) {
-			userGroupIds[i++] = userGroup.getUserGroupId();
-		}
-
-		return userGroupIds;
 	}
 
 	private static final long _GROUP_CLASS_NAME_ID = PortalUtil.getClassNameId(
