@@ -61,7 +61,7 @@ public class PortletConfigurationIconTracker {
 	protected static Set<String> getPaths(
 		String portletId, PortletRequest portletRequest) {
 
-		Set<String> paths = _defaultPaths;
+		Set<String> paths = null;
 
 		for (PortletConfigurationIconLocator portletConfigurationIconLocator :
 				_serviceTrackerList) {
@@ -69,20 +69,40 @@ public class PortletConfigurationIconTracker {
 			String path = portletConfigurationIconLocator.getPath(
 				portletRequest);
 
-			if (!path.isEmpty() && !path.equals(StringPool.DASH)) {
-				if (paths == _defaultPaths) {
-					paths = new HashSet<>();
+			if (!path.isEmpty()) {
+				if (path.equals(StringPool.DASH)) {
+					if (paths == null) {
+						paths = _defaultPaths;
+					}
+					else if (paths != _defaultPaths) {
+						paths.add(path);
+					}
 				}
+				else {
+					if (paths == null) {
+						paths = new HashSet<>();
+					}
+					else if (paths == _defaultPaths) {
+						paths = new HashSet<>();
 
-				paths.add(path);
+						paths.add(StringPool.DASH);
+					}
 
-				List<String> defaultViews =
-					portletConfigurationIconLocator.getDefaultViews(portletId);
+					paths.add(path);
 
-				if (defaultViews.contains(path)) {
-					paths.add(StringPool.DASH);
+					List<String> defaultViews =
+						portletConfigurationIconLocator.getDefaultViews(
+							portletId);
+
+					if (defaultViews.contains(path)) {
+						paths.add(StringPool.DASH);
+					}
 				}
 			}
+		}
+
+		if (paths == null) {
+			paths = _defaultPaths;
 		}
 
 		return paths;
