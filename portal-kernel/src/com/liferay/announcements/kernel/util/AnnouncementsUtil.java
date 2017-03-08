@@ -40,15 +40,16 @@ import com.liferay.portal.kernel.service.permission.OrganizationPermissionUtil;
 import com.liferay.portal.kernel.service.permission.RolePermissionUtil;
 import com.liferay.portal.kernel.service.permission.UserGroupPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -101,26 +102,28 @@ public class AnnouncementsUtil {
 
 		// Role announcements
 
-		Set<Role> roles = new LinkedHashSet<>(userBag.getRoles());
+		Set<Long> roleIds = SetUtil.fromArray(userBag.getRoleIds());
 
 		if (!groupsList.isEmpty()) {
 			List<UserGroupRole> userGroupRoles =
 				UserGroupRoleLocalServiceUtil.getUserGroupRoles(userId);
 
-			long[] userGroupRoleRoleIds = ListUtil.toLongArray(
-				userGroupRoles, UserGroupRole.ROLE_ID_ACCESSOR);
+			for (int i = 0; i < userGroupRoles.size(); i++) {
+				UserGroupRole userGroupRole = userGroupRoles.get(i);
 
-			roles.addAll(RoleLocalServiceUtil.getRoles(userGroupRoleRoleIds));
+				roleIds.add(userGroupRole.getRoleId());
+			}
 
 			List<UserGroupGroupRole> userGroupGroupRoles =
 				UserGroupGroupRoleLocalServiceUtil.getUserGroupGroupRolesByUser(
 					userId);
 
-			long[] userGroupGroupRoleRoleIds = ListUtil.toLongArray(
-				userGroupGroupRoles, UserGroupGroupRole.ROLE_ID_ACCESSOR);
+			for (int i = 0; i < userGroupGroupRoles.size(); i++) {
+				UserGroupGroupRole userGroupGroupRole = userGroupGroupRoles.get(
+					i);
 
-			roles.addAll(
-				RoleLocalServiceUtil.getRoles(userGroupGroupRoleRoleIds));
+				roleIds.add(userGroupGroupRole.getRoleId());
+			}
 		}
 
 		List<Team> teams = TeamLocalServiceUtil.getUserTeams(userId);
@@ -131,18 +134,24 @@ public class AnnouncementsUtil {
 
 		long companyId = user.getCompanyId();
 
-		roles.addAll(
-			RoleLocalServiceUtil.getTeamRolesByTeamIds(companyId, teamIds));
+		List<Role> teamRoles = RoleLocalServiceUtil.getTeamRolesByTeamIds(
+			companyId, teamIds);
+
+		for (int i = 0; i < teamRoles.size(); i++) {
+			Role teamRole = teamRoles.get(i);
+
+			roleIds.add(teamRole.getRoleId());
+		}
 
 		if (_PERMISSIONS_CHECK_GUEST_ENABLED) {
 			Role guestRole = RoleLocalServiceUtil.getRole(
 				companyId, RoleConstants.GUEST);
 
-			roles.add(guestRole);
+			roleIds.add(guestRole.getRoleId());
 		}
 
-		if (!roles.isEmpty()) {
-			scopes.put(_ROLE_CLASS_NAME_ID, _getRoleIds(roles));
+		if (!roleIds.isEmpty()) {
+			scopes.put(_ROLE_CLASS_NAME_ID, ArrayUtil.toLongArray(roleIds));
 		}
 
 		return scopes;
@@ -245,18 +254,6 @@ public class AnnouncementsUtil {
 		}
 
 		return filteredUserGroups;
-	}
-
-	private static long[] _getRoleIds(Set<Role> roles) {
-		long[] roleIds = new long[roles.size()];
-
-		int i = 0;
-
-		for (Role role : roles) {
-			roleIds[i++] = role.getRoleId();
-		}
-
-		return roleIds;
 	}
 
 	private static long[] _getUserGroupIds(List<UserGroup> userGroups) {
