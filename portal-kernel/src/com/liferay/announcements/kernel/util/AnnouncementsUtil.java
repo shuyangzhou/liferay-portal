@@ -101,11 +101,9 @@ public class AnnouncementsUtil {
 
 		// Role announcements
 
-		Set<Role> roles = new LinkedHashSet<>();
+		Set<Role> roles = new LinkedHashSet<>(userBag.getRoles());
 
 		if (!groupsList.isEmpty()) {
-			roles.addAll(userBag.getRoles());
-
 			List<UserGroupRole> userGroupRoles =
 				UserGroupRoleLocalServiceUtil.getUserGroupRoles(userId);
 
@@ -123,9 +121,6 @@ public class AnnouncementsUtil {
 
 			roles.addAll(
 				RoleLocalServiceUtil.getRoles(userGroupGroupRoleRoleIds));
-		}
-		else {
-			roles.addAll(RoleLocalServiceUtil.getUserRoles(userId));
 		}
 
 		List<Team> teams = TeamLocalServiceUtil.getUserTeams(userId);
