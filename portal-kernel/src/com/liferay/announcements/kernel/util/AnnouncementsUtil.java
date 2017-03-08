@@ -76,13 +76,10 @@ public class AnnouncementsUtil {
 
 		List<Group> groupsList = new ArrayList<>(userBag.getGroups());
 
-		List<Organization> organizations = new ArrayList<>(
-			userBag.getUserOrgs());
+		long[] organizationIds = userBag.getUserOrgIds();
 
-		if (!organizations.isEmpty()) {
-			scopes.put(
-				_ORGANIZATION_CLASS_NAME_ID,
-				_getOrganizationIds(organizations));
+		if (organizationIds.length > 0) {
+			scopes.put(_ORGANIZATION_CLASS_NAME_ID, organizationIds);
 		}
 
 		// Site announcements
@@ -262,20 +259,6 @@ public class AnnouncementsUtil {
 		}
 
 		return groupIds;
-	}
-
-	private static long[] _getOrganizationIds(
-		List<Organization> organizations) {
-
-		long[] organizationIds = new long[organizations.size()];
-
-		int i = 0;
-
-		for (Organization organization : organizations) {
-			organizationIds[i++] = organization.getOrganizationId();
-		}
-
-		return organizationIds;
 	}
 
 	private static long[] _getRoleIds(Set<Role> roles) {
