@@ -158,12 +158,16 @@ public class LayoutPermissionImpl
 			return false;
 		}
 
-		Boolean hasPermission = StagingPermissionUtil.hasPermission(
-			permissionChecker, layout.getGroup(), Layout.class.getName(),
-			layout.getGroupId(), null, actionId);
+		Group group = layout.getGroup();
 
-		if (hasPermission != null) {
-			return hasPermission.booleanValue();
+		if (group.hasLocalOrRemoteStagingGroup()) {
+			Boolean hasPermission = StagingPermissionUtil.hasPermission(
+				permissionChecker, group, Layout.class.getName(),
+				layout.getGroupId(), null, actionId);
+
+			if (hasPermission != null) {
+				return hasPermission.booleanValue();
+			}
 		}
 
 		return containsWithViewableGroup(
