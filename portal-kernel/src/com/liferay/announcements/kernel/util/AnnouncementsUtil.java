@@ -130,15 +130,18 @@ public class AnnouncementsUtil {
 
 		List<Team> teams = TeamLocalServiceUtil.getUserTeams(userId);
 
-		for (Team team : teams) {
-			roles.add(team.getRole());
-		}
+		long[] teamIds = ListUtil.toLongArray(teams, Team.TEAM_ID_ACCESSOR);
+
+		User user = UserLocalServiceUtil.getUserById(userId);
+
+		long companyId = user.getCompanyId();
+
+		roles.addAll(
+			RoleLocalServiceUtil.getTeamRolesByTeamIds(companyId, teamIds));
 
 		if (_PERMISSIONS_CHECK_GUEST_ENABLED) {
-			User user = UserLocalServiceUtil.getUserById(userId);
-
 			Role guestRole = RoleLocalServiceUtil.getRole(
-				user.getCompanyId(), RoleConstants.GUEST);
+				companyId, RoleConstants.GUEST);
 
 			roles.add(guestRole);
 		}
