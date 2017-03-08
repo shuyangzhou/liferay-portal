@@ -397,17 +397,65 @@ public class GetterUtil {
 
 		value = value.trim();
 
-		value = _toLowerCase(value);
+		if (value.length() > 4) {
+			return false;
+		}
 
-		if (value.equals(BOOLEANS[0]) || value.equals(BOOLEANS[1]) ||
-			value.equals(BOOLEANS[2]) || value.equals(BOOLEANS[3]) ||
-			value.equals(BOOLEANS[4])) {
+		if (value.length() == 4) {
+			char c = value.charAt(0);
+
+			if ((c != 't') && (c != 'T')) {
+				return false;
+			}
+
+			c = value.charAt(1);
+
+			if ((c != 'r') && (c != 'R')) {
+				return false;
+			}
+
+			c = value.charAt(2);
+
+			if ((c != 'u') && (c != 'U')) {
+				return false;
+			}
+
+			c = value.charAt(3);
+
+			if ((c != 'e') && (c != 'E')) {
+				return false;
+			}
 
 			return true;
 		}
-		else {
-			return false;
+
+		if (value.length() == 2) {
+			char c = value.charAt(0);
+
+			if ((c != 'o') && (c != 'O')) {
+				return false;
+			}
+
+			c = value.charAt(1);
+
+			if ((c != 'n') && (c != 'N')) {
+				return false;
+			}
+
+			return true;
 		}
+
+		if (value.length() == 1) {
+			char c = value.charAt(0);
+
+			if ((c == '1') || (c == 't') || (c == 'T') || (c == 'y') ||
+				(c == 'Y')) {
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
