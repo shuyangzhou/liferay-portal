@@ -111,9 +111,7 @@ public class AnnouncementsUtil {
 			List<UserGroupRole> userGroupRoles =
 				UserGroupRoleLocalServiceUtil.getUserGroupRoles(userId);
 
-			for (int i = 0; i < userGroupRoles.size(); i++) {
-				UserGroupRole userGroupRole = userGroupRoles.get(i);
-
+			for (UserGroupRole userGroupRole : userGroupRoles) {
 				roleIds.add(userGroupRole.getRoleId());
 			}
 
@@ -121,10 +119,7 @@ public class AnnouncementsUtil {
 				UserGroupGroupRoleLocalServiceUtil.getUserGroupGroupRolesByUser(
 					userId);
 
-			for (int i = 0; i < userGroupGroupRoles.size(); i++) {
-				UserGroupGroupRole userGroupGroupRole = userGroupGroupRoles.get(
-					i);
-
+			for (UserGroupGroupRole userGroupGroupRole : userGroupGroupRoles) {
 				roleIds.add(userGroupGroupRole.getRoleId());
 			}
 		}
@@ -140,9 +135,7 @@ public class AnnouncementsUtil {
 		List<Role> teamRoles = RoleLocalServiceUtil.getTeamRolesByTeamIds(
 			companyId, teamIds);
 
-		for (int i = 0; i < teamRoles.size(); i++) {
-			Role teamRole = teamRoles.get(i);
-
+		for (Role teamRole : teamRoles) {
 			roleIds.add(teamRole.getRoleId());
 		}
 
