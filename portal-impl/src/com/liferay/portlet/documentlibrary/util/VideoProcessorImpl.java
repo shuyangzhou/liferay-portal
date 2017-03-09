@@ -318,7 +318,7 @@ public class VideoProcessorImpl
 	}
 
 	private static String _convertVideo(LiferayConverter liferayConverter)
-		throws ProcessException {
+		throws Exception {
 
 		XugglerAutoInstallHelper.installNativeLibraries();
 
@@ -328,25 +328,18 @@ public class VideoProcessorImpl
 
 		try {
 			liferayConverter.convert();
-		}
-		catch (Exception e) {
-			throw new ProcessException(e);
+
+			return StringPool.BLANK;
 		}
 		finally {
-			Thread[] threads = ThreadUtil.getThreads();
+			for (Thread thread : ThreadUtil.getThreads()) {
+				if (!thread.isDaemon() &&
+					!StringUtil.equalsIgnoreCase(thread.getName(), "main")) {
 
-			for (Thread thread : threads) {
-				if (!thread.isDaemon()) {
-					String threadName = thread.getName();
-
-					if (!StringUtil.equalsIgnoreCase(threadName, "main")) {
-						System.exit(-1);
-					}
+					System.exit(-1);
 				}
 			}
 		}
-
-		return StringPool.BLANK;
 	}
 
 	private void _generateThumbnailXuggler(
