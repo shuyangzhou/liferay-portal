@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.Team;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
+import com.liferay.portal.kernel.model.UserGroupGroupRole;
 import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.UserBag;
@@ -30,6 +31,7 @@ import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.TeamLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserGroupGroupRoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserGroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
@@ -115,11 +117,15 @@ public class AnnouncementsUtil {
 
 			roles.addAll(RoleLocalServiceUtil.getRoles(userGroupRoleRoleIds));
 
-			for (Group group : groupsList) {
-				roles.addAll(
-					RoleLocalServiceUtil.getUserGroupGroupRoles(
-						userId, group.getGroupId()));
-			}
+			List<UserGroupGroupRole> userGroupGroupRoles =
+				UserGroupGroupRoleLocalServiceUtil.getUserGroupGroupRolesByUser(
+					userId);
+
+			long[] userGroupGroupRoleRoleIds = ListUtil.toLongArray(
+				userGroupGroupRoles, UserGroupGroupRole.ROLE_ID_ACCESSOR);
+
+			roles.addAll(
+				RoleLocalServiceUtil.getRoles(userGroupGroupRoleRoleIds));
 		}
 		else {
 			roles.addAll(RoleLocalServiceUtil.getUserRoles(userId));
