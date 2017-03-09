@@ -132,11 +132,13 @@ public class AnnouncementsUtil {
 
 		long companyId = user.getCompanyId();
 
-		List<Role> teamRoles = RoleLocalServiceUtil.getTeamRolesByTeamIds(
-			companyId, teamIds);
+		if (teamIds.length > 0) {
+			List<Role> teamRoles = RoleLocalServiceUtil.getTeamRolesByTeamIds(
+				companyId, teamIds);
 
-		for (Role teamRole : teamRoles) {
-			roleIds.add(teamRole.getRoleId());
+			for (Role teamRole : teamRoles) {
+				roleIds.add(teamRole.getRoleId());
+			}
 		}
 
 		if (_PERMISSIONS_CHECK_GUEST_ENABLED) {
