@@ -75,8 +75,6 @@ public class AnnouncementsUtil {
 
 		UserBag userBag = UserBagFactoryUtil.create(userId);
 
-		List<Group> groupsList = new ArrayList<>(userBag.getGroups());
-
 		long[] organizationIds = userBag.getUserOrgIds();
 
 		if (organizationIds.length > 0) {
@@ -107,7 +105,9 @@ public class AnnouncementsUtil {
 
 		Set<Long> roleIds = SetUtil.fromArray(userBag.getRoleIds());
 
-		if (!groupsList.isEmpty()) {
+		if ((groupIds.length > 0) || (organizationIds.length > 0) ||
+			!userGroups.isEmpty()) {
+
 			List<UserGroupRole> userGroupRoles =
 				UserGroupRoleLocalServiceUtil.getUserGroupRoles(userId);
 
