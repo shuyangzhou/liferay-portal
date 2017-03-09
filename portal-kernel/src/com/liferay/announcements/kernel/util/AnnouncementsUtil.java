@@ -105,16 +105,16 @@ public class AnnouncementsUtil {
 
 		Set<Long> roleIds = SetUtil.fromArray(userBag.getRoleIds());
 
-		if ((groupIds.length > 0) || (organizationIds.length > 0) ||
-			!userGroups.isEmpty()) {
-
+		if ((groupIds.length > 0) || (organizationIds.length > 0)) {
 			List<UserGroupRole> userGroupRoles =
 				UserGroupRoleLocalServiceUtil.getUserGroupRoles(userId);
 
 			for (UserGroupRole userGroupRole : userGroupRoles) {
 				roleIds.add(userGroupRole.getRoleId());
 			}
+		}
 
+		if (!userGroups.isEmpty()) {
 			List<UserGroupGroupRole> userGroupGroupRoles =
 				UserGroupGroupRoleLocalServiceUtil.getUserGroupGroupRolesByUser(
 					userId);
