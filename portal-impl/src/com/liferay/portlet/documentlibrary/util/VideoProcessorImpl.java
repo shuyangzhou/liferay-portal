@@ -317,6 +317,38 @@ public class VideoProcessorImpl
 		}
 	}
 
+	private static String _convertVideo(LiferayConverter liferayConverter)
+		throws ProcessException {
+
+		XugglerAutoInstallHelper.installNativeLibraries();
+
+		Properties systemProperties = System.getProperties();
+
+		SystemEnv.setProperties(systemProperties);
+
+		try {
+			liferayConverter.convert();
+		}
+		catch (Exception e) {
+			throw new ProcessException(e);
+		}
+		finally {
+			Thread[] threads = ThreadUtil.getThreads();
+
+			for (Thread thread : threads) {
+				if (!thread.isDaemon()) {
+					String threadName = thread.getName();
+
+					if (!StringUtil.equalsIgnoreCase(threadName, "main")) {
+						System.exit(-1);
+					}
+				}
+			}
+		}
+
+		return StringPool.BLANK;
+	}
+
 	private void _generateThumbnailXuggler(
 			FileVersion fileVersion, File file, int height, int width)
 		throws Exception {
@@ -614,38 +646,6 @@ public class VideoProcessorImpl
 		sendGenerationMessage(
 			DestinationNames.DOCUMENT_LIBRARY_VIDEO_PROCESSOR,
 			sourceFileVersion, destinationFileVersion);
-	}
-
-	private static String _convertVideo(LiferayConverter liferayConverter)
-		throws ProcessException {
-
-		XugglerAutoInstallHelper.installNativeLibraries();
-
-		Properties systemProperties = System.getProperties();
-
-		SystemEnv.setProperties(systemProperties);
-
-		try {
-			liferayConverter.convert();
-		}
-		catch (Exception e) {
-			throw new ProcessException(e);
-		}
-		finally {
-			Thread[] threads = ThreadUtil.getThreads();
-
-			for (Thread thread : threads) {
-				if (!thread.isDaemon()) {
-					String threadName = thread.getName();
-
-					if (!StringUtil.equalsIgnoreCase(threadName, "main")) {
-						System.exit(-1);
-					}
-				}
-			}
-		}
-
-		return StringPool.BLANK;
 	}
 
 	private static final String[] _PREVIEW_TYPES =
