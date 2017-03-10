@@ -110,6 +110,55 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	@Override
 	public void check(String portletName) {
+		PortletResourceActionsBag portletResourceActionsBag =
+			_portletResourceActionsBags.get(portletName);
+
+		if (portletResourceActionsBag == null) {
+			portletResourceActionsBag = new PortletResourceActionsBag();
+
+			Set<String> resourceActions =
+				portletResourceActionsBag.getPortletResourceActions();
+
+			resourceActions.addAll(getPortletMimeTypeActions(portletName));
+
+			if (!portletName.equals(PortletKeys.PORTAL)) {
+				checkPortletActions(portletName, resourceActions);
+			}
+
+			Set<String> groupDefaultActions =
+				portletResourceActionsBag.
+					getPortletResourceGroupDefaultActions();
+
+			checkPortletGroupDefaultActions(groupDefaultActions);
+
+			Set<String> guestDefaultActions =
+				portletResourceActionsBag.
+					getPortletResourceGuestDefaultActions();
+
+			checkPortletGuestDefaultActions(guestDefaultActions);
+
+			Set<String> guestUnsupportedActions =
+				portletResourceActionsBag.
+					getPortletResourceGuestUnsupportedActions();
+
+			if (!guestUnsupportedActions.contains(ActionKeys.CONFIGURATION)) {
+				guestUnsupportedActions.add(ActionKeys.CONFIGURATION);
+			}
+
+			if (!guestUnsupportedActions.contains(ActionKeys.PERMISSIONS)) {
+				guestUnsupportedActions.add(ActionKeys.PERMISSIONS);
+			}
+
+			Set<String> layoutManagerActions =
+				portletResourceActionsBag.
+					getPortletResourceLayoutManagerActions();
+
+			checkPortletLayoutManagerActions(layoutManagerActions);
+
+			_portletResourceActionsBags.put(
+				portletName, portletResourceActionsBag);
+		}
+
 		ResourceActionLocalServiceUtil.checkResourceActions(
 			portletName, getPortletResourceActions(portletName));
 
@@ -1467,7 +1516,9 @@ public class ResourceActionsImpl implements ResourceActions {
 			return _portletRootModelResource;
 		}
 
-		public void setPortletRootModelResource(String portletRootModelResource) {
+		public void setPortletRootModelResource(
+			String portletRootModelResource) {
+
 			_portletRootModelResource = portletRootModelResource;
 		}
 
