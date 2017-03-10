@@ -1934,6 +1934,7 @@
 					Users_UserGroups ON
 						(Users_UserGroups.userGroupId = UserGroupGroupRole.userGroupId)
 				WHERE
+					[$WHERE$]
 					(Users_UserGroups.userId = ?)
 			)
 		]]>
