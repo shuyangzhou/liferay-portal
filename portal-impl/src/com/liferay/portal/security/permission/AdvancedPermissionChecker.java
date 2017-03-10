@@ -674,20 +674,25 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 				}
 			}
 
-			List<Role> userGroupGroupRoles =
-				RoleLocalServiceUtil.getUserGroupGroupRoles(userId, groupId);
+			long[] userUserGroupIds = userBag.getUserUserGroupsIds();
 
-			for (Role userGroupGroupRole : userGroupGroupRoles) {
-				roleIdsSet.add(userGroupGroupRole.getRoleId());
-			}
-
-			if (parentGroupId > 0) {
-				userGroupGroupRoles =
+			if (userUserGroupIds.length > 0) {
+				List<Role> userGroupGroupRoles =
 					RoleLocalServiceUtil.getUserGroupGroupRoles(
-						userId, parentGroupId);
+						userId, groupId);
 
 				for (Role userGroupGroupRole : userGroupGroupRoles) {
 					roleIdsSet.add(userGroupGroupRole.getRoleId());
+				}
+
+				if (parentGroupId > 0) {
+					userGroupGroupRoles =
+						RoleLocalServiceUtil.getUserGroupGroupRoles(
+							userId, parentGroupId);
+
+					for (Role userGroupGroupRole : userGroupGroupRoles) {
+						roleIdsSet.add(userGroupGroupRole.getRoleId());
+					}
 				}
 			}
 
