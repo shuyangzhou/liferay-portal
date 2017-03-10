@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.Team;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.UserGroupGroupRole;
 import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -50,6 +51,7 @@ import com.liferay.portal.kernel.service.ResourceLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.TeamLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserGroupGroupRoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPrototypePermissionUtil;
 import com.liferay.portal.kernel.service.permission.LayoutSetPrototypePermissionUtil;
@@ -677,20 +679,24 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			long[] userUserGroupIds = userBag.getUserUserGroupsIds();
 
 			if (userUserGroupIds.length > 0) {
-				List<Role> userGroupGroupRoles =
-					RoleLocalServiceUtil.getUserGroupGroupRoles(
-						userId, groupId);
+				List<UserGroupGroupRole> userGroupGroupRoles =
+					UserGroupGroupRoleLocalServiceUtil.
+						getUserGroupGroupRolesByUser(userId, groupId);
 
-				for (Role userGroupGroupRole : userGroupGroupRoles) {
+				for (UserGroupGroupRole userGroupGroupRole :
+						userGroupGroupRoles) {
+
 					roleIdsSet.add(userGroupGroupRole.getRoleId());
 				}
 
 				if (parentGroupId > 0) {
 					userGroupGroupRoles =
-						RoleLocalServiceUtil.getUserGroupGroupRoles(
-							userId, parentGroupId);
+						UserGroupGroupRoleLocalServiceUtil.
+							getUserGroupGroupRoles(userId, parentGroupId);
 
-					for (Role userGroupGroupRole : userGroupGroupRoles) {
+					for (UserGroupGroupRole userGroupGroupRole :
+							userGroupGroupRoles) {
+
 						roleIdsSet.add(userGroupGroupRole.getRoleId());
 					}
 				}
