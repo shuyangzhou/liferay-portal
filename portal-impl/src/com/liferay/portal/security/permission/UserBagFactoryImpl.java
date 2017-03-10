@@ -90,7 +90,7 @@ public class UserBagFactoryImpl implements UserBagFactory {
 
 				userBag = new UserBagImpl(
 					userId, userGroups, userOrgs, userOrgGroupIds,
-					userUserGroupGroupIds, userRoleIds);
+					userUserGroups, userUserGroupGroupIds, userRoleIds);
 			}
 			else {
 				List<Role> userRoles = RoleLocalServiceUtil.getUserRelatedRoles(
@@ -98,7 +98,7 @@ public class UserBagFactoryImpl implements UserBagFactory {
 
 				userBag = new UserBagImpl(
 					userId, userGroups, userOrgs, userOrgGroupIds,
-					userUserGroupGroupIds, userRoles);
+					userUserGroups, userUserGroupGroupIds, userRoles);
 			}
 
 			PermissionCacheUtil.putUserBag(userId, userBag);
