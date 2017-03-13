@@ -17,117 +17,120 @@
 <%@ include file="/html/taglib/aui/input/init.jsp" %>
 
 <liferay-util:buffer var="labelContent">
-	<c:if test="<%= Validator.isNotNull(label) %>">
-		<c:if test='<%= type.equals("toggle-switch") %>'>
-			<span class="toggle-switch-label">
+	<c:if test='<%= !type.equals("hidden") %>'>
+		<c:if test="<%= Validator.isNotNull(label) %>">
+			<c:if test='<%= type.equals("toggle-switch") %>'>
+				<span class="toggle-switch-label">
+			</c:if>
+
+			<liferay-ui:message key="<%= label %>" localizeKey="<%= localizeLabel %>" />
+
+			<c:if test='<%= type.equals("toggle-switch") %>'>
+				</span>
+			</c:if>
+
+			<c:if test='<%= required && showRequiredLabel && !type.equals("radio") %>'>
+				<aui:icon cssClass="reference-mark text-warning" image="asterisk" markupView="lexicon" />
+
+				<span class="hide-accessible"><liferay-ui:message key="required" /></span>
+			</c:if>
+
+			<c:if test='<%= Validator.isNotNull(helpMessage) && !type.equals("toggle-switch") %>'>
+				<liferay-ui:icon-help message="<%= helpMessage %>" />
+			</c:if>
+
+			<c:if test="<%= changesContext %>">
+				<span class="hide-accessible">(<liferay-ui:message key="changing-the-value-of-this-field-reloads-the-page" />)</span>
+			</c:if>
 		</c:if>
 
-		<liferay-ui:message key="<%= label %>" localizeKey="<%= localizeLabel %>" />
-
-		<c:if test='<%= type.equals("toggle-switch") %>'>
-			</span>
-		</c:if>
-
-		<c:if test='<%= required && showRequiredLabel && !type.equals("radio") %>'>
-			<aui:icon cssClass="reference-mark text-warning" image="asterisk" markupView="lexicon" />
-
-			<span class="hide-accessible"><liferay-ui:message key="required" /></span>
-		</c:if>
-
-		<c:if test='<%= Validator.isNotNull(helpMessage) && !type.equals("toggle-switch") %>'>
-			<liferay-ui:icon-help message="<%= helpMessage %>" />
-		</c:if>
-
-		<c:if test="<%= changesContext %>">
-			<span class="hide-accessible">(<liferay-ui:message key="changing-the-value-of-this-field-reloads-the-page" />)</span>
-		</c:if>
-	</c:if>
-
-	<c:if test='<%= type.equals("toggle-card") || type.equals("toggle-switch") %>'>
-
-		<%
-		String buttonIconOff = (String)dynamicAttributes.get("buttonIconOff");
-		String buttonIconOn = (String)dynamicAttributes.get("buttonIconOn");
-		String iconOff = (String)dynamicAttributes.get("iconOff");
-		String iconOn = (String)dynamicAttributes.get("iconOn");
-		String labelOff = (String)dynamicAttributes.get("labelOff");
-		String labelOn = (String)dynamicAttributes.get("labelOn");
-
-		if (localizeLabel) {
-			if (Validator.isNotNull(labelOff)) {
-				labelOff = LanguageUtil.get(resourceBundle, labelOff);
-			}
-
-			if (Validator.isNotNull(labelOn)) {
-				labelOn = LanguageUtil.get(resourceBundle, labelOn);
-			}
-		}
-		%>
-
-		<c:if test='<%= type.equals("toggle-card") %>'>
+		<c:if test='<%= type.equals("toggle-card") || type.equals("toggle-switch") %>'>
 
 			<%
-			if (Validator.isNull(iconOff)) {
-				iconOff = "icon-circle-blank";
-			}
+			String buttonIconOff = (String)dynamicAttributes.get("buttonIconOff");
+			String buttonIconOn = (String)dynamicAttributes.get("buttonIconOn");
+			String iconOff = (String)dynamicAttributes.get("iconOff");
+			String iconOn = (String)dynamicAttributes.get("iconOn");
+			String labelOff = (String)dynamicAttributes.get("labelOff");
+			String labelOn = (String)dynamicAttributes.get("labelOn");
 
-			if (Validator.isNull(iconOn)) {
-				iconOn = "icon-ok";
-			}
+			if (localizeLabel) {
+				if (Validator.isNotNull(labelOff)) {
+					labelOff = LanguageUtil.get(resourceBundle, labelOff);
+				}
 
-			if (Validator.isNull(labelOff)) {
-				labelOff = label;
-			}
-
-			if (Validator.isNull(labelOn)) {
-				labelOn = label;
+				if (Validator.isNotNull(labelOn)) {
+					labelOn = LanguageUtil.get(resourceBundle, labelOn);
+				}
 			}
 			%>
 
-			<div class="toggle-card-container">
-				<div class="toggle-card-cell">
-					<div class="toggle-card-icon">
-						<span class="toggle-card-off <%= iconOff %>"></span>
-						<span class="toggle-card-on <%= iconOn %>"></span>
+			<c:choose>
+				<c:when test='<%= type.equals("toggle-card") %>'>
+
+					<%
+					if (Validator.isNull(iconOff)) {
+						iconOff = "icon-circle-blank";
+					}
+
+					if (Validator.isNull(iconOn)) {
+						iconOn = "icon-ok";
+					}
+
+					if (Validator.isNull(labelOff)) {
+						labelOff = label;
+					}
+
+					if (Validator.isNull(labelOn)) {
+						labelOn = label;
+					}
+					%>
+
+					<div class="toggle-card-container">
+						<div class="toggle-card-cell">
+							<div class="toggle-card-icon">
+								<span class="toggle-card-off <%= iconOff %>"></span>
+								<span class="toggle-card-on <%= iconOn %>"></span>
+							</div>
+
+							<div class="toggle-card-label">
+								<c:if test="<%= Validator.isNotNull(labelOff) %>">
+									<span class="toggle-card-off"><%= labelOff %></span>
+								</c:if>
+
+								<c:if test="<%= Validator.isNotNull(labelOn) %>">
+									<span class="toggle-card-on"><%= labelOn %></span>
+								</c:if>
+							</div>
+						</div>
 					</div>
+				</c:when>
+				<c:when test='<%= type.equals("toggle-switch") %>'>
+					<span aria-hidden="true" class="toggle-switch-bar">
+						<span class="toggle-switch-handle" data-label-off="<%= (Validator.isNotNull(labelOff) ? HtmlUtil.escapeAttribute(labelOff) : LanguageUtil.get(resourceBundle, "no")) %>" data-label-on="<%= (Validator.isNotNull(labelOn) ? HtmlUtil.escapeAttribute(labelOn) : LanguageUtil.get(resourceBundle, "yes")) %>">
+							<c:if test="<%= Validator.isNotNull(buttonIconOn) %>">
+								<span class="button-icon <%= Validator.isNotNull(buttonIconOff) ? "button-icon-on" : StringPool.BLANK %> toggle-switch-icon <%= buttonIconOn %>"></span>
+							</c:if>
 
-					<div class="toggle-card-label">
-						<c:if test="<%= Validator.isNotNull(labelOff) %>">
-							<span class="toggle-card-off"><%= labelOff %></span>
-						</c:if>
+							<c:if test="<%= Validator.isNotNull(buttonIconOff) %>">
+								<span class="button-icon button-icon-off toggle-switch-icon <%= buttonIconOff %>"></span>
+							</c:if>
 
-						<c:if test="<%= Validator.isNotNull(labelOn) %>">
-							<span class="toggle-card-on"><%= labelOn %></span>
-						</c:if>
-					</div>
-				</div>
-			</div>
-		</c:if>
+							<c:if test="<%= Validator.isNotNull(iconOn) %>">
+								<span class="toggle-switch-icon toggle-switch-icon-on <%= iconOn %>"></span>
+							</c:if>
 
-		<c:if test='<%= type.equals("toggle-switch") %>'>
-			<span aria-hidden="true" class="toggle-switch-bar">
-				<span class="toggle-switch-handle" data-label-off="<%= (Validator.isNotNull(labelOff) ? HtmlUtil.escapeAttribute(labelOff) : LanguageUtil.get(resourceBundle, "no")) %>" data-label-on="<%= (Validator.isNotNull(labelOn) ? HtmlUtil.escapeAttribute(labelOn) : LanguageUtil.get(resourceBundle, "yes")) %>">
-					<c:if test="<%= Validator.isNotNull(buttonIconOn) %>">
-						<span class="button-icon <%= Validator.isNotNull(buttonIconOff) ? "button-icon-on" : StringPool.BLANK %> toggle-switch-icon <%= buttonIconOn %>"></span>
+							<c:if test="<%= Validator.isNotNull(iconOff) %>">
+								<span class="toggle-switch-icon toggle-switch-icon-off <%= iconOff %>"></span>
+							</c:if>
+						</span>
+					</span>
+
+					<c:if test="<%= Validator.isNotNull(helpMessage) %>">
+						<span class="toggle-switch-text toggle-switch-text-right"><liferay-ui:icon-help message="<%= helpMessage %>" /></span>
 					</c:if>
-
-					<c:if test="<%= Validator.isNotNull(buttonIconOff) %>">
-						<span class="button-icon button-icon-off toggle-switch-icon <%= buttonIconOff %>"></span>
-					</c:if>
-
-					<c:if test="<%= Validator.isNotNull(iconOn) %>">
-						<span class="toggle-switch-icon toggle-switch-icon-on <%= iconOn %>"></span>
-					</c:if>
-
-					<c:if test="<%= Validator.isNotNull(iconOff) %>">
-						<span class="toggle-switch-icon toggle-switch-icon-off <%= iconOff %>"></span>
-					</c:if>
-				</span>
-			</span>
-
-			<c:if test="<%= Validator.isNotNull(helpMessage) %>">
-				<span class="toggle-switch-text toggle-switch-text-right"><liferay-ui:icon-help message="<%= helpMessage %>" /></span>
-			</c:if>
+				</c:when>
+			</c:choose>
 		</c:if>
 	</c:if>
 </liferay-util:buffer>
