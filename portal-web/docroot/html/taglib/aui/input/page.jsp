@@ -17,7 +17,7 @@
 <%@ include file="/html/taglib/aui/input/init.jsp" %>
 
 <liferay-util:buffer var="labelContent">
-	<c:if test='<%= !type.equals("hidden") %>'>
+	<c:if test='<%= !type.equals("assetCategories") && !type.equals("hidden") %>'>
 		<c:if test="<%= Validator.isNotNull(label) %>">
 			<c:if test='<%= type.equals("toggle-switch") %>'>
 				<span class="toggle-switch-label">
