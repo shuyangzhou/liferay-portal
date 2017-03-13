@@ -79,6 +79,4 @@ if (radioField) {
 if (inputWrapperClass.equals("boolean")) {
 	inputWrapperClass = "checkbox";
 }
-
-String labelTag = AUIUtil.buildLabel(baseTypeCssClass, inlineField, showForLabel, forLabel);
 %>

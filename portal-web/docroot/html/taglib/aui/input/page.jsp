@@ -144,7 +144,7 @@ boolean choiceField = checkboxField || radioField;
 </c:if>
 
 <c:if test='<%= choiceField || Validator.isNotNull(labelContent) %>'>
-	<label <%= labelTag %>>
+	<label <%= AUIUtil.buildLabel(baseTypeCssClass, inlineField, showForLabel, forLabel) %>>
 		<c:if test='<%= !choiceField && !inlineLabel.equals("right") %>'>
 				<%= labelContent %>
 			</label>
