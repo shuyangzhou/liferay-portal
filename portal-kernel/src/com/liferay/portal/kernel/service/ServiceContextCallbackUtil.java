@@ -24,7 +24,9 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * @author Akos Thurzo
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class ServiceContextCallbackUtil {
 
 	public static void registerPopCallback(String name, Callable<?> callable) {
