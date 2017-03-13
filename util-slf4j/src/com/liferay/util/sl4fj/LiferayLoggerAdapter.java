@@ -44,7 +44,9 @@ public class LiferayLoggerAdapter
 
 	@Override
 	public void debug(String message) {
-		_log.debug(message);
+		if (isDebugEnabled()) {
+			_log.debug(message);
+		}
 	}
 
 	@Override
@@ -82,12 +84,16 @@ public class LiferayLoggerAdapter
 
 	@Override
 	public void debug(String message, Throwable t) {
-		_log.debug(message, t);
+		if (isDebugEnabled()) {
+			_log.debug(message, t);
+		}
 	}
 
 	@Override
 	public void error(String message) {
-		_log.error(message);
+		if (isErrorEnabled()) {
+			_log.error(message);
+		}
 	}
 
 	@Override
@@ -125,12 +131,16 @@ public class LiferayLoggerAdapter
 
 	@Override
 	public void error(String message, Throwable t) {
-		_log.error(message, t);
+		if (isErrorEnabled()) {
+			_log.error(message, t);
+		}
 	}
 
 	@Override
 	public void info(String message) {
-		_log.info(message);
+		if (isInfoEnabled()) {
+			_log.info(message);
+		}
 	}
 
 	@Override
@@ -168,7 +178,9 @@ public class LiferayLoggerAdapter
 
 	@Override
 	public void info(String message, Throwable t) {
-		_log.info(message, t);
+		if (isInfoEnabled()) {
+			_log.info(message, t);
+		}
 	}
 
 	@Override
@@ -201,43 +213,56 @@ public class LiferayLoggerAdapter
 		Marker marker, String fqcn, int level, String message,
 		Object[] arguments, Throwable t) {
 
-		FormattingTuple formattingTuple = MessageFormatter.arrayFormat(
-			message, arguments);
+		// The cases are ordered by frequency and not alphabetically
 
 		switch (level) {
-			case LocationAwareLogger.DEBUG_INT:
-				_log.debug(formattingTuple.getMessage(), t);
+			case LocationAwareLogger.TRACE_INT:
+				if (isTraceEnabled()) {
+					_log.trace(_getMessage(message, arguments), t);
+				}
 
 				break;
 
-			case LocationAwareLogger.ERROR_INT:
-				_log.error(formattingTuple.getMessage(), t);
+			case LocationAwareLogger.DEBUG_INT:
+				if (isDebugEnabled()) {
+					_log.debug(_getMessage(message, arguments), t);
+				}
 
 				break;
 
 			case LocationAwareLogger.INFO_INT:
-				_log.info(formattingTuple.getMessage(), t);
-
-				break;
-
-			case LocationAwareLogger.TRACE_INT:
-				_log.trace(formattingTuple.getMessage(), t);
+				if (isInfoEnabled()) {
+					_log.info(_getMessage(message, arguments), t);
+				}
 
 				break;
 
 			case LocationAwareLogger.WARN_INT:
-				_log.warn(formattingTuple.getMessage(), t);
+				if (isWarnEnabled()) {
+					_log.warn(_getMessage(message, arguments), t);
+				}
+
+				break;
+
+			case LocationAwareLogger.ERROR_INT:
+				if (isErrorEnabled()) {
+					_log.error(_getMessage(message, arguments), t);
+				}
 
 				break;
 
 			default:
-				_log.info(formattingTuple.getMessage(), t);
+				if (isInfoEnabled()) {
+					_log.info(_getMessage(message, arguments), t);
+				}
 		}
 	}
 
 	@Override
 	public void trace(String message) {
-		_log.trace(message);
+		if (isTraceEnabled()) {
+			_log.trace(message);
+		}
 	}
 
 	@Override
@@ -275,12 +300,16 @@ public class LiferayLoggerAdapter
 
 	@Override
 	public void trace(String message, Throwable t) {
-		_log.trace(message, t);
+		if (isTraceEnabled()) {
+			_log.trace(message, t);
+		}
 	}
 
 	@Override
 	public void warn(String message) {
-		_log.warn(message);
+		if (isWarnEnabled()) {
+			_log.warn(message);
+		}
 	}
 
 	@Override
@@ -318,7 +347,16 @@ public class LiferayLoggerAdapter
 
 	@Override
 	public void warn(String message, Throwable t) {
-		_log.warn(message, t);
+		if (isWarnEnabled()) {
+			_log.warn(message, t);
+		}
+	}
+
+	private String _getMessage(String message, Object[] arguments) {
+		FormattingTuple formattingTuple = MessageFormatter.arrayFormat(
+			message, arguments);
+
+		return formattingTuple.getMessage();
 	}
 
 	private final transient Log _log;

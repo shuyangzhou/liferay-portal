@@ -237,6 +237,8 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		String priority = ParamUtil.getString(actionRequest, "priority");
 
 		Log4JUtil.setLevel(loggerName, priority, true);
+
+		LogFactoryUtil.clearCache();
 	}
 
 	protected void cacheDb() throws Exception {

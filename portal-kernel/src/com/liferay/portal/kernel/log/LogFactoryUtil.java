@@ -27,6 +27,12 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class LogFactoryUtil {
 
+	public static void clearCache() {
+		for (LogWrapper logWrapper : _logWrappers.values()) {
+			logWrapper.clearCache();
+		}
+	}
+
 	public static Log getLog(Class<?> c) {
 		return getLog(c.getName());
 	}
