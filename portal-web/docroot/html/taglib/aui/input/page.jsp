@@ -16,8 +16,12 @@
 
 <%@ include file="/html/taglib/aui/input/init.jsp" %>
 
+<%
+boolean choiceField = checkboxField || radioField;
+%>
+
 <liferay-util:buffer var="labelContent">
-	<c:if test='<%= !type.equals("assetCategories") && !type.equals("hidden") %>'>
+	<c:if test='<%= !choiceField && !type.equals("assetCategories") && !type.equals("hidden") %>'>
 		<c:if test="<%= Validator.isNotNull(label) %>">
 			<c:if test='<%= type.equals("toggle-switch") %>'>
 				<span class="toggle-switch-label">
@@ -139,11 +143,7 @@
 	<div class="<%= inputWrapperClass %>">
 </c:if>
 
-<%
-boolean choiceField = checkboxField || radioField;
-%>
-
-<c:if test='<%= Validator.isNotNull(labelContent) %>'>
+<c:if test='<%= choiceField || Validator.isNotNull(labelContent) %>'>
 	<label <%= labelTag %>>
 		<c:if test='<%= !choiceField && !inlineLabel.equals("right") %>'>
 				<%= labelContent %>
