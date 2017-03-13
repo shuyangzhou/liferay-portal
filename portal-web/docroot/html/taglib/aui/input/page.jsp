@@ -16,12 +16,6 @@
 
 <%@ include file="/html/taglib/aui/input/init.jsp" %>
 
-<c:if test="<%= Validator.isNotNull(helpMessage) %>">
-	<liferay-util:buffer var="helpMessageContent">
-		<liferay-ui:icon-help message="<%= helpMessage %>" />
-	</liferay-util:buffer>
-</c:if>
-
 <liferay-util:buffer var="labelContent">
 	<c:if test="<%= Validator.isNotNull(label) %>">
 		<c:if test='<%= type.equals("toggle-switch") %>'>
@@ -41,7 +35,7 @@
 		</c:if>
 
 		<c:if test='<%= Validator.isNotNull(helpMessage) && !type.equals("toggle-switch") %>'>
-			<%= pageContext.getAttribute("helpMessageContent") %>
+			<liferay-ui:icon-help message="<%= helpMessage %>" />
 		</c:if>
 
 		<c:if test="<%= changesContext %>">
@@ -132,7 +126,7 @@
 			</span>
 
 			<c:if test="<%= Validator.isNotNull(helpMessage) %>">
-				<span class="toggle-switch-text toggle-switch-text-right"><%= pageContext.getAttribute("helpMessageContent") %></span>
+				<span class="toggle-switch-text toggle-switch-text-right"><liferay-ui:icon-help message="<%= helpMessage %>" /></span>
 			</c:if>
 		</c:if>
 	</c:if>
