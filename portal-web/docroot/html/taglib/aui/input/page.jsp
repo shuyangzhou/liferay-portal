@@ -143,7 +143,7 @@
 boolean choiceField = checkboxField || radioField;
 %>
 
-<c:if test='<%= !type.equals("assetCategories") && !type.equals("hidden") && Validator.isNotNull(labelContent) %>'>
+<c:if test='<%= Validator.isNotNull(labelContent) %>'>
 	<label <%= labelTag %>>
 		<c:if test='<%= !choiceField && !inlineLabel.equals("right") %>'>
 				<%= labelContent %>
@@ -383,7 +383,7 @@ boolean choiceField = checkboxField || radioField;
 	</div>
 </c:if>
 
-<c:if test='<%= !type.equals("assetCategories") && !type.equals("hidden") && Validator.isNotNull(labelContent) %>'>
+<c:if test='<%= Validator.isNotNull(labelContent) %>'>
 	<c:if test='<%= choiceField || inlineLabel.equals("right") %>'>
 			<%= labelContent %>
 		</label>
