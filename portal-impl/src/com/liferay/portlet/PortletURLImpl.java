@@ -90,12 +90,30 @@ public class PortletURLImpl
 	implements LiferayPortletURL, PortletURL, ResourceURL, Serializable {
 
 	public PortletURLImpl(
+		HttpServletRequest request, Portlet portlet, Layout layout,
+		String lifecycle) {
+
+		this(
+			request, portlet.getPortletId(), portlet, null, layout.getPlid(),
+			layout, lifecycle);
+	}
+
+	public PortletURLImpl(
+		HttpServletRequest request, Portlet portlet, long plid,
+		String lifecycle) {
+
+		this(
+			request, portlet.getPortletId(), portlet, null, plid, null,
+			lifecycle);
+	}
+
+	public PortletURLImpl(
 		HttpServletRequest request, String portletId, Layout layout,
 		String lifecycle) {
 
-		this(request, portletId, null, layout.getPlid(), lifecycle);
-
-		_layout = layout;
+		this(
+			request, portletId, null, null, layout.getPlid(), layout,
+			lifecycle);
 	}
 
 	public PortletURLImpl(
@@ -106,14 +124,32 @@ public class PortletURLImpl
 	}
 
 	public PortletURLImpl(
+		PortletRequest portletRequest, Portlet portlet, Layout layout,
+		String lifecycle) {
+
+		this(
+			PortalUtil.getHttpServletRequest(portletRequest),
+			portlet.getPortletId(), portlet, portletRequest, layout.getPlid(),
+			layout, lifecycle);
+	}
+
+	public PortletURLImpl(
+		PortletRequest portletRequest, Portlet portlet, long plid,
+		String lifecycle) {
+
+		this(
+			PortalUtil.getHttpServletRequest(portletRequest),
+			portlet.getPortletId(), portlet, portletRequest, plid, null,
+			lifecycle);
+	}
+
+	public PortletURLImpl(
 		PortletRequest portletRequest, String portletId, Layout layout,
 		String lifecycle) {
 
 		this(
-			PortalUtil.getHttpServletRequest(portletRequest), portletId,
-			portletRequest, layout.getPlid(), lifecycle);
-
-		_layout = layout;
+			PortalUtil.getHttpServletRequest(portletRequest), portletId, null,
+			portletRequest, layout.getPlid(), layout, lifecycle);
 	}
 
 	public PortletURLImpl(
@@ -720,13 +756,16 @@ public class PortletURLImpl
 	}
 
 	protected PortletURLImpl(
-		HttpServletRequest request, String portletId,
-		PortletRequest portletRequest, long plid, String lifecycle) {
+		HttpServletRequest request, String portletId, Portlet portlet,
+		PortletRequest portletRequest, long plid, Layout layout,
+		String lifecycle) {
 
 		_request = request;
 		_portletId = portletId;
+		_portlet = portlet;
 		_portletRequest = portletRequest;
 		_plid = plid;
+		_layout = layout;
 		_lifecycle = lifecycle;
 		_parametersIncludedInPath = Collections.emptySet();
 		_params = new LinkedHashMap<>();
@@ -734,7 +773,7 @@ public class PortletURLImpl
 		_secure = PortalUtil.isSecure(request);
 		_wsrp = ParamUtil.getBoolean(request, "wsrp");
 
-		Portlet portlet = getPortlet();
+		portlet = getPortlet();
 
 		if (portlet != null) {
 			Set<String> autopropagatedParameters =
@@ -760,13 +799,22 @@ public class PortletURLImpl
 				PropsValues.PORTLET_URL_ESCAPE_XML);
 		}
 
-		Layout layout = (Layout)request.getAttribute(WebKeys.LAYOUT);
+		if (layout == null) {
+			layout = (Layout)request.getAttribute(WebKeys.LAYOUT);
 
-		if ((layout != null) && (layout.getPlid() == _plid) &&
-			(layout instanceof VirtualLayout)) {
+			if ((layout != null) && (layout.getPlid() == _plid) &&
+				(layout instanceof VirtualLayout)) {
 
-			_layout = layout;
+				_layout = layout;
+			}
 		}
+	}
+
+	protected PortletURLImpl(
+		HttpServletRequest request, String portletId,
+		PortletRequest portletRequest, long plid, String lifecycle) {
+
+		this(request, portletId, null, portletRequest, plid, null, lifecycle);
 	}
 
 	protected void addPortalAuthToken(StringBundler sb, Key key) {
