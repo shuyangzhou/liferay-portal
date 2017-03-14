@@ -5736,12 +5736,12 @@ public class PortalImpl implements Portal {
 
 		HttpSession session = request.getSession();
 
-		userIdObj = (Long)session.getAttribute(WebKeys.USER_ID);
+		User userObj = (User)session.getAttribute(WebKeys.USER);
 
-		if (userIdObj != null) {
-			request.setAttribute(WebKeys.USER_ID, userIdObj);
+		if (userObj != null) {
+			request.setAttribute(WebKeys.USER_ID, userObj.getUserId());
 
-			return userIdObj.longValue();
+			return userObj.getUserId();
 		}
 		else {
 			return 0;
@@ -7680,9 +7680,9 @@ public class PortalImpl implements Portal {
 
 		HttpSession session = request.getSession();
 
-		Long realUserIdObj = (Long)session.getAttribute(WebKeys.USER_ID);
+		User realUserObj = (User)session.getAttribute(WebKeys.USER);
 
-		if (realUserIdObj == null) {
+		if (realUserObj == null) {
 			return 0;
 		}
 
@@ -7691,7 +7691,7 @@ public class PortalImpl implements Portal {
 		long[] organizationIds = doAsUser.getOrganizationIds();
 
 		User realUser = UserLocalServiceUtil.getUserById(
-			realUserIdObj.longValue());
+			realUserObj.getUserId());
 
 		PermissionChecker permissionChecker =
 			PermissionCheckerFactoryUtil.create(realUser);
@@ -7707,7 +7707,7 @@ public class PortalImpl implements Portal {
 		}
 
 		_log.error(
-			"User " + realUserIdObj + " does not have the permission to " +
+			"User " + realUserObj + " does not have the permission to " +
 				"impersonate " + doAsUserId);
 
 		return 0;

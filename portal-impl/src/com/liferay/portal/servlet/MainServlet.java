@@ -725,23 +725,14 @@ public class MainServlet extends ActionServlet {
 	}
 
 	protected String getRemoteUser(HttpServletRequest request, long userId) {
-		String remoteUser = request.getRemoteUser();
-
-		if (!PropsValues.PORTAL_JAAS_ENABLE) {
+		if (PropsValues.PORTAL_JAAS_ENABLE) {
+			return request.getRemoteUser();
+		}
+		else {
 			HttpSession session = request.getSession();
 
-			String jRemoteUser = (String)session.getAttribute("j_remoteuser");
-
-			if (jRemoteUser != null) {
-				remoteUser = jRemoteUser;
-			}
+			return (String)session.getAttribute("j_remoteuser");
 		}
-
-		if ((userId > 0) && (remoteUser == null)) {
-			remoteUser = String.valueOf(userId);
-		}
-
-		return remoteUser;
 	}
 
 	@Override
@@ -1042,7 +1033,7 @@ public class MainServlet extends ActionServlet {
 			long companyId, long userId, String remoteUser)
 		throws PortalException {
 
-		if ((userId > 0) || (remoteUser == null)) {
+		if (remoteUser == null) {
 			return userId;
 		}
 
@@ -1072,7 +1063,10 @@ public class MainServlet extends ActionServlet {
 
 		session.setAttribute(Globals.LOCALE_KEY, user.getLocale());
 		session.setAttribute(WebKeys.USER, user);
-		session.setAttribute(WebKeys.USER_ID, Long.valueOf(userId));
+
+		if (PropsValues.USER_ID_SESSION_ATTRIBUTE_ENABLED) {
+			session.setAttribute(WebKeys.USER_ID, Long.valueOf(userId));
+		}
 
 		session.removeAttribute("j_remoteuser");
 
