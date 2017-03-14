@@ -80,7 +80,6 @@ import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.rendering.ImageType;
-import org.apache.pdfbox.rendering.PDFRenderer;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -92,7 +91,10 @@ import org.osgi.service.component.annotations.Component;
  * @author Sergio González
  * @author Ivica Cardic
  */
-@Component(immediate = true, service = {DLProcessor.class, PDFProcessor.class})
+@Component(
+	immediate = true, property = {"service.ranking:Integer=1"},
+	service = {DLProcessor.class, PDFProcessor.class}
+)
 public class PDFProcessorImpl
 	extends DLPreviewableProcessor implements PDFProcessor {
 
