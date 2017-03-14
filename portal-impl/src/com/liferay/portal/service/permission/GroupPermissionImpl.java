@@ -27,7 +27,14 @@ import com.liferay.portal.kernel.service.permission.GroupPermission;
 import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
 import com.liferay.portal.kernel.service.permission.UserPermissionUtil;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
+import com.liferay.portal.kernel.util.AutoResetThreadLocal;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.util.PropsValues;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Brian Wing Shun Chan
@@ -84,6 +91,56 @@ public class GroupPermissionImpl
 
 	@Override
 	public boolean contains(
+			PermissionChecker permissionChecker, Group group, String actionId)
+		throws PortalException {
+
+		Map<String, Boolean> permissions = _cache.get();
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append(StringUtil.toHexString(group.getGroupId()));
+		sb.append(StringPool.POUND);
+		sb.append(StringUtil.toHexString(group.getMvccVersion()));
+		sb.append(StringPool.POUND);
+		sb.append(actionId);
+
+		String key = sb.toString();
+
+		Boolean permission = permissions.get(key);
+
+		if (permission == null) {
+			permission = _contains(permissionChecker, group, actionId);
+
+			permissions.put(key, permission);
+		}
+
+		return permission;
+	}
+
+	@Override
+	public boolean contains(
+			PermissionChecker permissionChecker, long groupId, String actionId)
+		throws PortalException {
+
+		if (groupId > 0) {
+			Group group = GroupLocalServiceUtil.getGroup(groupId);
+
+			return contains(permissionChecker, group, actionId);
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean contains(
+		PermissionChecker permissionChecker, String actionId) {
+
+		return permissionChecker.hasPermission(
+			0, Group.class.getName(), Group.class.getName(), actionId);
+	}
+
+	private boolean _contains(
 			PermissionChecker permissionChecker, Group group, String actionId)
 		throws PortalException {
 
@@ -194,27 +251,7 @@ public class GroupPermissionImpl
 		return false;
 	}
 
-	@Override
-	public boolean contains(
-			PermissionChecker permissionChecker, long groupId, String actionId)
-		throws PortalException {
-
-		if (groupId > 0) {
-			Group group = GroupLocalServiceUtil.getGroup(groupId);
-
-			return contains(permissionChecker, group, actionId);
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean contains(
-		PermissionChecker permissionChecker, String actionId) {
-
-		return permissionChecker.hasPermission(
-			0, Group.class.getName(), Group.class.getName(), actionId);
-	}
+	private static final ThreadLocal<Map<String, Boolean>> _cache =
+		new AutoResetThreadLocal<>("_cache", new HashMap<>());
 
 }
