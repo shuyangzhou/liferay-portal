@@ -16,9 +16,11 @@ package com.liferay.portal.kernel.security.permission;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Brian Wing Shun Chan
@@ -47,6 +49,8 @@ public interface PermissionChecker extends Cloneable {
 	 * @return the primary key of the owner role
 	 */
 	public long getOwnerRoleId();
+
+	public Map<Object, Object> getPermissionCache();
 
 	public List<Long> getResourceBlockIds(
 		long companyId, long groupId, long userId, String name,
@@ -107,6 +111,12 @@ public interface PermissionChecker extends Cloneable {
 	public boolean hasOwnerPermission(
 		long companyId, String name, String primKey, long ownerId,
 		String actionId);
+
+	public boolean hasPermission(
+		Group group, String name, long primKey, String actionId);
+
+	public boolean hasPermission(
+		Group group, String name, String primKey, String actionId);
 
 	/**
 	 * Returns <code>true</code> if the user has permission to perform the

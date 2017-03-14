@@ -42,7 +42,9 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemEnv;
+import com.liferay.portal.kernel.util.ThreadUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xuggler.XugglerUtil;
 import com.liferay.portal.log.Log4jLogFactoryImpl;
@@ -315,6 +317,16 @@ public class VideoProcessorImpl
 		}
 	}
 
+	private static void _destroyHangingThread() {
+		for (Thread thread : ThreadUtil.getThreads()) {
+			if ((thread != null) && !thread.isDaemon() &&
+				!StringUtil.equalsIgnoreCase(thread.getName(), "main")) {
+
+				System.exit(-1);
+			}
+		}
+	}
+
 	private void _generateThumbnailXuggler(
 			FileVersion fileVersion, File file, int height, int width)
 		throws Exception {
@@ -507,38 +519,47 @@ public class VideoProcessorImpl
 
 		stopWatch.start();
 
-		if (PropsValues.DL_FILE_ENTRY_PREVIEW_FORK_PROCESS_ENABLED) {
-			ProcessCallable<String> processCallable =
-				new LiferayVideoProcessCallable(
-					ServerDetector.getServerId(),
-					PropsUtil.get(PropsKeys.LIFERAY_HOME),
-					Log4JUtil.getCustomLogSettings(), sourceFile,
-					destinationFile, containerType,
+		try {
+			if (PropsValues.DL_FILE_ENTRY_PREVIEW_FORK_PROCESS_ENABLED) {
+				ProcessCallable<String> processCallable =
+					new LiferayVideoProcessCallable(
+						ServerDetector.getServerId(),
+						PropsUtil.get(PropsKeys.LIFERAY_HOME),
+						Log4JUtil.getCustomLogSettings(), sourceFile,
+						destinationFile, containerType,
+						PropsUtil.getProperties(
+							PropsKeys.DL_FILE_ENTRY_PREVIEW_VIDEO, false),
+						PropsUtil.getProperties(
+							PropsKeys.XUGGLER_FFPRESET, true));
+
+				ProcessChannel<String> processChannel =
+					ProcessExecutorUtil.execute(
+						ClassPathUtil.getPortalProcessConfig(),
+						processCallable);
+
+				Future<String> future =
+					processChannel.getProcessNoticeableFuture();
+
+				String processIdentity = String.valueOf(
+					fileVersion.getFileVersionId());
+
+				futures.put(processIdentity, future);
+
+				future.get();
+			}
+			else {
+				LiferayConverter liferayConverter = new LiferayVideoConverter(
+					sourceFile.getCanonicalPath(),
+					destinationFile.getCanonicalPath(), containerType,
 					PropsUtil.getProperties(
 						PropsKeys.DL_FILE_ENTRY_PREVIEW_VIDEO, false),
 					PropsUtil.getProperties(PropsKeys.XUGGLER_FFPRESET, true));
 
-			ProcessChannel<String> processChannel = ProcessExecutorUtil.execute(
-				ClassPathUtil.getPortalProcessConfig(), processCallable);
-
-			Future<String> future = processChannel.getProcessNoticeableFuture();
-
-			String processIdentity = String.valueOf(
-				fileVersion.getFileVersionId());
-
-			futures.put(processIdentity, future);
-
-			future.get();
+				liferayConverter.convert();
+			}
 		}
-		else {
-			LiferayConverter liferayConverter = new LiferayVideoConverter(
-				sourceFile.getCanonicalPath(),
-				destinationFile.getCanonicalPath(), containerType,
-				PropsUtil.getProperties(
-					PropsKeys.DL_FILE_ENTRY_PREVIEW_VIDEO, false),
-				PropsUtil.getProperties(PropsKeys.XUGGLER_FFPRESET, true));
-
-			liferayConverter.convert();
+		catch (Exception e) {
+			_log.error(e, e);
 		}
 
 		addFileToStore(
@@ -661,6 +682,9 @@ public class VideoProcessorImpl
 			catch (Exception e) {
 				throw new ProcessException(e);
 			}
+			finally {
+				_destroyHangingThread();
+			}
 
 			return StringPool.BLANK;
 		}
@@ -730,6 +754,9 @@ public class VideoProcessorImpl
 			}
 			catch (Exception e) {
 				throw new ProcessException(e);
+			}
+			finally {
+				_destroyHangingThread();
 			}
 
 			return StringPool.BLANK;

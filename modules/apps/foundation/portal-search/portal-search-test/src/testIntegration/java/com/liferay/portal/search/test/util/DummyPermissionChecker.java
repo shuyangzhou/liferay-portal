@@ -14,11 +14,14 @@
 
 package com.liferay.portal.search.test.util;
 
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.UserBag;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author André de Oliveira
@@ -45,6 +48,11 @@ public class DummyPermissionChecker implements PermissionChecker {
 	@Override
 	public long getOwnerRoleId() {
 		return 0;
+	}
+
+	@Override
+	public Map<Object, Object> getPermissionCache() {
+		return _permissioCache;
 	}
 
 	@Override
@@ -87,6 +95,20 @@ public class DummyPermissionChecker implements PermissionChecker {
 	public boolean hasOwnerPermission(
 		long companyId, String name, String primKey, long ownerId,
 		String actionId) {
+
+		return false;
+	}
+
+	@Override
+	public boolean hasPermission(
+		Group group, String name, long primKey, String actionId) {
+
+		return false;
+	}
+
+	@Override
+	public boolean hasPermission(
+		Group group, String name, String primKey, String actionId) {
 
 		return false;
 	}
@@ -163,5 +185,7 @@ public class DummyPermissionChecker implements PermissionChecker {
 	public boolean isSignedIn() {
 		return false;
 	}
+
+	private final Map<Object, Object> _permissioCache = new HashMap<>();
 
 }

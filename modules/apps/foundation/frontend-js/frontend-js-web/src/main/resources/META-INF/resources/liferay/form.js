@@ -146,7 +146,9 @@ AUI.add(
 					_afterGetFieldsByName: function(fieldName) {
 						var instance = this;
 
-						if (fieldName.endsWith('Editor')) {
+						var editorString = 'Editor';
+
+						if (fieldName.lastIndexOf(editorString) === (fieldName.length - editorString.length)) {
 							var formNode = instance.formNode;
 
 							return new A.Do.AlterReturn(

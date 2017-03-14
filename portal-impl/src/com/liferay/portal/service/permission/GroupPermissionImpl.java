@@ -27,7 +27,11 @@ import com.liferay.portal.kernel.service.permission.GroupPermission;
 import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
 import com.liferay.portal.kernel.service.permission.UserPermissionUtil;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
+import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.util.PropsValues;
+
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Brian Wing Shun Chan
@@ -87,6 +91,50 @@ public class GroupPermissionImpl
 			PermissionChecker permissionChecker, Group group, String actionId)
 		throws PortalException {
 
+		Map<Object, Object> permissionCache =
+			permissionChecker.getPermissionCache();
+
+		CacheKey cacheKey = new CacheKey(
+			group.getGroupId(), group.getMvccVersion(), actionId);
+
+		Boolean contains = (Boolean)permissionCache.get(cacheKey);
+
+		if (contains == null) {
+			contains = _contains(permissionChecker, group, actionId);
+
+			permissionCache.put(cacheKey, contains);
+		}
+
+		return contains;
+	}
+
+	@Override
+	public boolean contains(
+			PermissionChecker permissionChecker, long groupId, String actionId)
+		throws PortalException {
+
+		if (groupId > 0) {
+			Group group = GroupLocalServiceUtil.getGroup(groupId);
+
+			return contains(permissionChecker, group, actionId);
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean contains(
+		PermissionChecker permissionChecker, String actionId) {
+
+		return permissionChecker.hasPermission(
+			null, Group.class.getName(), Group.class.getName(), actionId);
+	}
+
+	private boolean _contains(
+			PermissionChecker permissionChecker, Group group, String actionId)
+		throws PortalException {
+
 		if ((actionId.equals(ActionKeys.ADD_LAYOUT) ||
 			 actionId.equals(ActionKeys.MANAGE_LAYOUTS)) &&
 			((group.hasLocalOrRemoteStagingGroup() &&
@@ -95,6 +143,8 @@ public class GroupPermissionImpl
 
 			return false;
 		}
+
+		Group originalGroup = group;
 
 		long groupId = group.getGroupId();
 
@@ -122,7 +172,7 @@ public class GroupPermissionImpl
 
 		if (actionId.equals(ActionKeys.ADD_COMMUNITY) &&
 			(permissionChecker.hasPermission(
-				groupId, Group.class.getName(), groupId,
+				originalGroup, Group.class.getName(), groupId,
 				ActionKeys.MANAGE_SUBGROUPS) ||
 			 PortalPermissionUtil.contains(
 				 permissionChecker, ActionKeys.ADD_COMMUNITY))) {
@@ -131,7 +181,7 @@ public class GroupPermissionImpl
 		}
 		else if (actionId.equals(ActionKeys.ADD_LAYOUT) &&
 				 permissionChecker.hasPermission(
-					 groupId, Group.class.getName(), groupId,
+					 originalGroup, Group.class.getName(), groupId,
 					 ActionKeys.MANAGE_LAYOUTS)) {
 
 			return true;
@@ -140,33 +190,33 @@ public class GroupPermissionImpl
 				  actionId.equals(ActionKeys.EXPORT_IMPORT_PORTLET_INFO) ||
 				  actionId.equals(ActionKeys.PUBLISH_PORTLET_INFO)) &&
 				 permissionChecker.hasPermission(
-					 groupId, Group.class.getName(), groupId,
+					 originalGroup, Group.class.getName(), groupId,
 					 ActionKeys.PUBLISH_STAGING)) {
 
 			return true;
 		}
 		else if (actionId.equals(ActionKeys.VIEW) &&
 				 (permissionChecker.hasPermission(
-					 groupId, Group.class.getName(), groupId,
+					 originalGroup, Group.class.getName(), groupId,
 					 ActionKeys.ASSIGN_USER_ROLES) ||
 				  permissionChecker.hasPermission(
-					 groupId, Group.class.getName(), groupId,
+					 originalGroup, Group.class.getName(), groupId,
 					 ActionKeys.MANAGE_LAYOUTS))) {
 
 			return true;
 		}
 		else if (actionId.equals(ActionKeys.VIEW_STAGING) &&
 				 (permissionChecker.hasPermission(
-					 groupId, Group.class.getName(), groupId,
+					 originalGroup, Group.class.getName(), groupId,
 					 ActionKeys.MANAGE_LAYOUTS) ||
 				  permissionChecker.hasPermission(
-					 groupId, Group.class.getName(), groupId,
+					 originalGroup, Group.class.getName(), groupId,
 					 ActionKeys.MANAGE_STAGING) ||
 				  permissionChecker.hasPermission(
-					 groupId, Group.class.getName(), groupId,
+					 originalGroup, Group.class.getName(), groupId,
 					 ActionKeys.PUBLISH_STAGING) ||
 				  permissionChecker.hasPermission(
-					 groupId, Group.class.getName(), groupId,
+					 originalGroup, Group.class.getName(), groupId,
 					 ActionKeys.UPDATE))) {
 
 			return true;
@@ -175,7 +225,7 @@ public class GroupPermissionImpl
 		// Group id must be set so that users can modify their personal pages
 
 		if (permissionChecker.hasPermission(
-				groupId, Group.class.getName(), groupId, actionId)) {
+				originalGroup, Group.class.getName(), groupId, actionId)) {
 
 			return true;
 		}
@@ -194,27 +244,49 @@ public class GroupPermissionImpl
 		return false;
 	}
 
-	@Override
-	public boolean contains(
-			PermissionChecker permissionChecker, long groupId, String actionId)
-		throws PortalException {
+	private static class CacheKey {
 
-		if (groupId > 0) {
-			Group group = GroupLocalServiceUtil.getGroup(groupId);
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
 
-			return contains(permissionChecker, group, actionId);
-		}
-		else {
+			if (!(obj instanceof CacheKey)) {
+				return false;
+			}
+
+			CacheKey cacheKey = (CacheKey)obj;
+
+			if ((_groupId == cacheKey._groupId) &&
+				(_mvccVersion == cacheKey._mvccVersion) &&
+				Objects.equals(_actionId, cacheKey._actionId)) {
+
+				return true;
+			}
+
 			return false;
 		}
-	}
 
-	@Override
-	public boolean contains(
-		PermissionChecker permissionChecker, String actionId) {
+		@Override
+		public int hashCode() {
+			int hash = HashUtil.hash(0, _groupId);
 
-		return permissionChecker.hasPermission(
-			0, Group.class.getName(), Group.class.getName(), actionId);
+			hash = HashUtil.hash(hash, _mvccVersion);
+
+			return HashUtil.hash(hash, _actionId);
+		}
+
+		private CacheKey(long groupId, long mvccVersion, String actionId) {
+			_groupId = groupId;
+			_mvccVersion = mvccVersion;
+			_actionId = actionId;
+		}
+
+		private final String _actionId;
+		private final long _groupId;
+		private final long _mvccVersion;
+
 	}
 
 }
