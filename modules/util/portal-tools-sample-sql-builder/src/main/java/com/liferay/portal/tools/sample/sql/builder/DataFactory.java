@@ -663,6 +663,15 @@ public class DataFactory {
 		return groupIds;
 	}
 
+	public String getPortletId(String portletPrefix) {
+		StringBundler sb = new StringBundler(2);
+
+		sb.append(portletPrefix);
+		sb.append(PortletConstants.generateInstanceId());
+
+		return sb.toString();
+	}
+
 	public RoleModel getPowerUserRoleModel() {
 		return _powerUserRoleModel;
 	}
