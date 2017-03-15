@@ -415,8 +415,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 
 		try {
-			value = _hasPermissionImpl(
-				group, name, primKey, roleIds, actionId);
+			value = _hasPermissionImpl(group, name, primKey, roleIds, actionId);
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
@@ -917,82 +916,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		return _hasGuestPermission(group, name, primKey, actionId);
 	}
 
-	private boolean _hasGuestPermission(
-		Group group, String name, String primKey, String actionId) {
-
-		List<String> resourceActions = ResourceActionsUtil.getResourceActions(
-			name);
-
-		if (!resourceActions.contains(actionId)) {
-			return false;
-		}
-
-		if (name.indexOf(CharPool.PERIOD) != -1) {
-
-			// Check unsupported model actions
-
-			List<String> actions =
-				ResourceActionsUtil.getModelResourceGuestUnsupportedActions(
-					name);
-
-			if (actions.contains(actionId)) {
-				return false;
-			}
-		}
-		else {
-
-			// Check unsupported portlet actions
-
-			List<String> actions =
-				ResourceActionsUtil.getPortletResourceGuestUnsupportedActions(
-					name);
-
-			if (actions.contains(actionId)) {
-				return false;
-			}
-		}
-
-		long companyId = user.getCompanyId();
-		long groupId = 0;
-
-		if (group != null) {
-			companyId = group.getCompanyId();
-			groupId = group.getGroupId();
-		}
-
-		try {
-			if (ResourceBlockLocalServiceUtil.isSupported(name)) {
-				ResourceBlockIdsBag resourceBlockIdsBag =
-					getGuestResourceBlockIdsBag(companyId, groupId, name);
-
-				return ResourceBlockLocalServiceUtil.hasPermission(
-					name, GetterUtil.getLong(primKey), actionId,
-					resourceBlockIdsBag);
-			}
-
-			List<Resource> resources = getResources(
-				companyId, groupId, name, primKey, actionId);
-
-			resources = fixMissingResources(
-				companyId, groupId, name, primKey, actionId, resources);
-
-			return ResourceLocalServiceUtil.hasUserPermissions(
-				defaultUserId, groupId, resources, actionId,
-				getGuestUserRoleIds());
-		}
-		catch (NoSuchResourcePermissionException nsrpe) {
-			throw new IllegalArgumentException(
-				"Someone may be trying to circumvent the permission checker: " +
-					nsrpe.getMessage(),
-				nsrpe);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			return false;
-		}
-	}
-
 	/**
 	 * @deprecated As of 7.0.0, with no direct replacement
 	 */
@@ -1008,28 +931,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 
 		return _hasPermissionImpl(group, name, primKey, roleIds, actionId);
-	}
-
-	private boolean _hasPermissionImpl(
-		Group group, String name, String primKey, long[] roleIds,
-		String actionId) {
-
-		try {
-			if (!signedIn) {
-				return _hasGuestPermission(group, name, primKey, actionId);
-			}
-
-			return _hasUserPermissionImpl(
-				group, name, primKey, roleIds, actionId);
-		}
-		catch (IllegalArgumentException iae) {
-			throw iae;
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			return false;
-		}
 	}
 
 	/**
@@ -1048,75 +949,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 
 		return _hasUserPermissionImpl(group, name, primKey, roleIds, actionId);
-	}
-
-	private boolean _hasUserPermissionImpl(
-			Group group, String name, String primKey, long[] roleIds,
-			String actionId)
-		throws Exception {
-
-		StopWatch stopWatch = new StopWatch();
-
-		stopWatch.start();
-
-		long companyId = user.getCompanyId();
-		long groupId = 0;
-
-		if (group != null) {
-			companyId = group.getCompanyId();
-			groupId = group.getGroupId();
-		}
-
-		try {
-			boolean hasPermission = doCheckPermission(
-				companyId, groupId, name, primKey, roleIds, actionId,
-				stopWatch);
-
-			if (hasPermission) {
-				return true;
-			}
-		}
-		catch (NoSuchResourcePermissionException nsrpe) {
-			throw new IllegalArgumentException(
-				"Someone may be trying to circumvent the permission checker: " +
-					nsrpe.getMessage(),
-				nsrpe);
-		}
-
-		if (isOmniadmin()) {
-			return true;
-		}
-
-		if (name.equals(Organization.class.getName())) {
-			if (isOrganizationAdminImpl(GetterUtil.getLong(primKey))) {
-				return true;
-			}
-		}
-
-		if (isCompanyAdminImpl(companyId)) {
-			return true;
-		}
-
-		if (_isGroupAdminImpl(group)) {
-			boolean hasLayoutManagerPermission = true;
-
-			// Check if the layout manager has permission to do this action for
-			// the current portlet
-
-			if (Validator.isNotNull(name) && Validator.isNotNull(primKey) &&
-				primKey.contains(PortletConstants.LAYOUT_SEPARATOR)) {
-
-				hasLayoutManagerPermission =
-					PortletPermissionUtil.hasLayoutManagerPermission(
-						name, actionId);
-			}
-
-			if (hasLayoutManagerPermission) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	protected boolean isCompanyAdminImpl(long companyId) throws Exception {
@@ -1364,46 +1196,6 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		Group group = GroupLocalServiceUtil.fetchGroup(groupId);
 
 		return _isGroupAdminImpl(group);
-	}
-
-	private boolean _isGroupAdminImpl(Group group) throws Exception {
-		if (!signedIn) {
-			return false;
-		}
-
-		if (isOmniadmin()) {
-			return true;
-		}
-
-		if (group == null) {
-			return false;
-		}
-
-		if (isCompanyAdmin(group.getCompanyId())) {
-			return true;
-		}
-
-		Boolean value = PermissionCacheUtil.getUserPrimaryKeyRole(
-			getUserId(), group.getGroupId(), RoleConstants.SITE_ADMINISTRATOR);
-
-		try {
-			if (value == null) {
-				value = isGroupAdminImpl(group);
-
-				PermissionCacheUtil.putUserPrimaryKeyRole(
-					getUserId(), group.getGroupId(),
-					RoleConstants.SITE_ADMINISTRATOR, value);
-			}
-		}
-		catch (Exception e) {
-			PermissionCacheUtil.removeUserPrimaryKeyRole(
-				getUserId(), group.getGroupId(),
-				RoleConstants.SITE_ADMINISTRATOR);
-
-			throw e;
-		}
-
-		return value;
 	}
 
 	protected boolean isGroupMemberImpl(long groupId) throws Exception {
@@ -1699,6 +1491,213 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 	 */
 	@Deprecated
 	protected static final String RESULTS_SEPARATOR = "_RESULTS_SEPARATOR_";
+
+	private boolean _hasGuestPermission(
+		Group group, String name, String primKey, String actionId) {
+
+		List<String> resourceActions = ResourceActionsUtil.getResourceActions(
+			name);
+
+		if (!resourceActions.contains(actionId)) {
+			return false;
+		}
+
+		if (name.indexOf(CharPool.PERIOD) != -1) {
+
+			// Check unsupported model actions
+
+			List<String> actions =
+				ResourceActionsUtil.getModelResourceGuestUnsupportedActions(
+					name);
+
+			if (actions.contains(actionId)) {
+				return false;
+			}
+		}
+		else {
+
+			// Check unsupported portlet actions
+
+			List<String> actions =
+				ResourceActionsUtil.getPortletResourceGuestUnsupportedActions(
+					name);
+
+			if (actions.contains(actionId)) {
+				return false;
+			}
+		}
+
+		long companyId = user.getCompanyId();
+		long groupId = 0;
+
+		if (group != null) {
+			companyId = group.getCompanyId();
+			groupId = group.getGroupId();
+		}
+
+		try {
+			if (ResourceBlockLocalServiceUtil.isSupported(name)) {
+				ResourceBlockIdsBag resourceBlockIdsBag =
+					getGuestResourceBlockIdsBag(companyId, groupId, name);
+
+				return ResourceBlockLocalServiceUtil.hasPermission(
+					name, GetterUtil.getLong(primKey), actionId,
+					resourceBlockIdsBag);
+			}
+
+			List<Resource> resources = getResources(
+				companyId, groupId, name, primKey, actionId);
+
+			resources = fixMissingResources(
+				companyId, groupId, name, primKey, actionId, resources);
+
+			return ResourceLocalServiceUtil.hasUserPermissions(
+				defaultUserId, groupId, resources, actionId,
+				getGuestUserRoleIds());
+		}
+		catch (NoSuchResourcePermissionException nsrpe) {
+			throw new IllegalArgumentException(
+				"Someone may be trying to circumvent the permission checker: " +
+					nsrpe.getMessage(),
+				nsrpe);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			return false;
+		}
+	}
+
+	private boolean _hasPermissionImpl(
+		Group group, String name, String primKey, long[] roleIds,
+		String actionId) {
+
+		try {
+			if (!signedIn) {
+				return _hasGuestPermission(group, name, primKey, actionId);
+			}
+
+			return _hasUserPermissionImpl(
+				group, name, primKey, roleIds, actionId);
+		}
+		catch (IllegalArgumentException iae) {
+			throw iae;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			return false;
+		}
+	}
+
+	private boolean _hasUserPermissionImpl(
+			Group group, String name, String primKey, long[] roleIds,
+			String actionId)
+		throws Exception {
+
+		StopWatch stopWatch = new StopWatch();
+
+		stopWatch.start();
+
+		long companyId = user.getCompanyId();
+		long groupId = 0;
+
+		if (group != null) {
+			companyId = group.getCompanyId();
+			groupId = group.getGroupId();
+		}
+
+		try {
+			boolean hasPermission = doCheckPermission(
+				companyId, groupId, name, primKey, roleIds, actionId,
+				stopWatch);
+
+			if (hasPermission) {
+				return true;
+			}
+		}
+		catch (NoSuchResourcePermissionException nsrpe) {
+			throw new IllegalArgumentException(
+				"Someone may be trying to circumvent the permission checker: " +
+					nsrpe.getMessage(),
+				nsrpe);
+		}
+
+		if (isOmniadmin()) {
+			return true;
+		}
+
+		if (name.equals(Organization.class.getName())) {
+			if (isOrganizationAdminImpl(GetterUtil.getLong(primKey))) {
+				return true;
+			}
+		}
+
+		if (isCompanyAdminImpl(companyId)) {
+			return true;
+		}
+
+		if (_isGroupAdminImpl(group)) {
+			boolean hasLayoutManagerPermission = true;
+
+			// Check if the layout manager has permission to do this action for
+			// the current portlet
+
+			if (Validator.isNotNull(name) && Validator.isNotNull(primKey) &&
+				primKey.contains(PortletConstants.LAYOUT_SEPARATOR)) {
+
+				hasLayoutManagerPermission =
+					PortletPermissionUtil.hasLayoutManagerPermission(
+						name, actionId);
+			}
+
+			if (hasLayoutManagerPermission) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean _isGroupAdminImpl(Group group) throws Exception {
+		if (!signedIn) {
+			return false;
+		}
+
+		if (isOmniadmin()) {
+			return true;
+		}
+
+		if (group == null) {
+			return false;
+		}
+
+		if (isCompanyAdmin(group.getCompanyId())) {
+			return true;
+		}
+
+		Boolean value = PermissionCacheUtil.getUserPrimaryKeyRole(
+			getUserId(), group.getGroupId(), RoleConstants.SITE_ADMINISTRATOR);
+
+		try {
+			if (value == null) {
+				value = isGroupAdminImpl(group);
+
+				PermissionCacheUtil.putUserPrimaryKeyRole(
+					getUserId(), group.getGroupId(),
+					RoleConstants.SITE_ADMINISTRATOR, value);
+			}
+		}
+		catch (Exception e) {
+			PermissionCacheUtil.removeUserPrimaryKeyRole(
+				getUserId(), group.getGroupId(),
+				RoleConstants.SITE_ADMINISTRATOR);
+
+			throw e;
+		}
+
+		return value;
+	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AdvancedPermissionChecker.class);
