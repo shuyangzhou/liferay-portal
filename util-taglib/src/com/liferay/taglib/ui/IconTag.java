@@ -399,9 +399,11 @@ public class IconTag extends IncludeTag {
 			return _method;
 		}
 
-		String url = getUrl();
+		if (_url == null) {
+			return "post";
+		}
 
-		if (url.contains("p_p_lifecycle=0")) {
+		if (_url.contains("p_p_lifecycle=0")) {
 			return "get";
 		}
 
