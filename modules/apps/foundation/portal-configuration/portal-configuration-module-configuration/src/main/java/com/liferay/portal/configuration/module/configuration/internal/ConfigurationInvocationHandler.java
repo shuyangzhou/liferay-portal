@@ -148,16 +148,14 @@ public class ConfigurationInvocationHandler<S> implements InvocationHandler {
 
 		Class<?> returnType = method.getReturnType();
 
-		Object value = null;
-
 		Meta.AD annotation = method.getAnnotation(Meta.AD.class);
 
 		if ((annotation != null) && !Meta.NULL.equals(annotation.id())) {
-			value = _getValue(returnType, annotation.id());
-		}
+			Object value = _getValue(returnType, annotation.id());
 
-		if (value != null) {
-			return value;
+			if (value != null) {
+				return value;
+			}
 		}
 
 		if (returnType.equals(boolean.class)) {
