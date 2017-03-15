@@ -184,7 +184,18 @@ public class IconTag extends IncludeTag {
 		_useDialog = false;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected Map<String, Object> getData() {
+		ResourceBundle resourceBundle = TagResourceBundleUtil.getResourceBundle(
+			pageContext);
+
+		return _getData(resourceBundle);
+	}
+
+	private Map<String, Object> _getData(ResourceBundle resourceBundle) {
 		Map<String, Object> data = null;
 
 		if (_data != null) {
@@ -197,9 +208,6 @@ public class IconTag extends IncludeTag {
 		if (_useDialog && Validator.isNull(data.get("title"))) {
 			String message = getProcessedMessage();
 
-			ResourceBundle resourceBundle =
-				TagResourceBundleUtil.getResourceBundle(pageContext);
-
 			if (_localizeMessage) {
 				message = LanguageUtil.get(resourceBundle, message);
 			}
@@ -210,12 +218,22 @@ public class IconTag extends IncludeTag {
 		return data;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected String getDetails() {
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
 		ResourceBundle resourceBundle = TagResourceBundleUtil.getResourceBundle(
 			pageContext);
+
+		return _getDetails(themeDisplay, resourceBundle);
+	}
+
+	private String _getDetails(
+		ThemeDisplay themeDisplay, ResourceBundle resourceBundle) {
 
 		String details = null;
 
@@ -459,13 +477,21 @@ public class IconTag extends IncludeTag {
 		return _url;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected String getSrc() {
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		return _getSrc(themeDisplay);
+	}
+
+	private String _getSrc(ThemeDisplay themeDisplay) {
 		if (Validator.isNotNull(_src)) {
 			return _src;
 		}
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
-			WebKeys.THEME_DISPLAY);
 
 		if (isAUIImage()) {
 			return themeDisplay.getPathThemeImages().concat("/spacer.png");
@@ -484,15 +510,23 @@ public class IconTag extends IncludeTag {
 		return StringPool.BLANK;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected String getSrcHover() {
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		return _getSrcHover(themeDisplay);
+	}
+
+	private String _getSrcHover(ThemeDisplay themeDisplay) {
 		if (Validator.isNotNull(_srcHover) || Validator.isNull(_imageHover)) {
 			return _srcHover;
 		}
 
 		StringBundler sb = new StringBundler(4);
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
-			WebKeys.THEME_DISPLAY);
 
 		sb.append(themeDisplay.getPathThemeImages());
 
@@ -581,13 +615,21 @@ public class IconTag extends IncludeTag {
 
 	@Override
 	protected void setAttributes(HttpServletRequest request) {
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		ResourceBundle resourceBundle = TagResourceBundleUtil.getResourceBundle(
+			pageContext);
+
 		request.setAttribute("liferay-ui:icon:alt", _alt);
 		request.setAttribute("liferay-ui:icon:ariaRole", _ariaRole);
 		request.setAttribute(
 			"liferay-ui:icon:auiImage", String.valueOf(isAUIImage()));
 		request.setAttribute("liferay-ui:icon:cssClass", _cssClass);
-		request.setAttribute("liferay-ui:icon:data", getData());
-		request.setAttribute("liferay-ui:icon:details", getDetails());
+		request.setAttribute("liferay-ui:icon:data", _getData(resourceBundle));
+		request.setAttribute(
+			"liferay-ui:icon:details",
+			_getDetails(themeDisplay, resourceBundle));
 		request.setAttribute(
 			"liferay-ui:icon:forcePost", String.valueOf(isForcePost()));
 		request.setAttribute("liferay-ui:icon:icon", _icon);
@@ -606,8 +648,9 @@ public class IconTag extends IncludeTag {
 		request.setAttribute("liferay-ui:icon:message", getProcessedMessage());
 		request.setAttribute("liferay-ui:icon:method", getMethod());
 		request.setAttribute("liferay-ui:icon:onClick", getOnClick());
-		request.setAttribute("liferay-ui:icon:src", getSrc());
-		request.setAttribute("liferay-ui:icon:srcHover", getSrcHover());
+		request.setAttribute("liferay-ui:icon:src", _getSrc(themeDisplay));
+		request.setAttribute(
+			"liferay-ui:icon:srcHover", _getSrcHover(themeDisplay));
 		request.setAttribute("liferay-ui:icon:target", _target);
 
 		boolean toolTip = false;
