@@ -314,14 +314,12 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 			configurationBeanDeclaration.getConfigurationBeanClass();
 
 		ConfigurationBeanManagedService configurationBeanManagedService =
-			_configurationBeanManagedServices.get(configurationBeanClass);
+			_configurationBeanManagedServices.remove(configurationBeanClass);
 
 		configurationBeanManagedService.unregister();
 
 		_configurationBeanClasses.remove(
 			configurationBeanManagedService.getConfigurationPid());
-
-		_configurationBeanManagedServices.remove(configurationBeanClass);
 	}
 
 	protected void unsetConfigurationPidMapping(
