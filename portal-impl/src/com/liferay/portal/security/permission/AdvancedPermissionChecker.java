@@ -415,8 +415,8 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 
 		try {
-			value = hasPermissionImpl(
-				groupId, name, primKey, roleIds, actionId);
+			value = _hasPermissionImpl(
+				group, name, primKey, roleIds, actionId);
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
@@ -492,7 +492,13 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 	@Override
 	public boolean isGroupAdmin(long groupId) {
 		try {
-			return isGroupAdminImpl(groupId);
+			Group group = null;
+
+			if (groupId > 0) {
+				group = GroupLocalServiceUtil.fetchGroup(groupId);
+			}
+
+			return _isGroupAdminImpl(group);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -894,9 +900,25 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		return resources;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected boolean hasGuestPermission(
 			long groupId, String name, String primKey, String actionId)
 		throws Exception {
+
+		Group group = null;
+
+		if (groupId > 0) {
+			group = GroupLocalServiceUtil.fetchGroup(groupId);
+		}
+
+		return _hasGuestPermission(group, name, primKey, actionId);
+	}
+
+	private boolean _hasGuestPermission(
+		Group group, String name, String primKey, String actionId) {
 
 		List<String> resourceActions = ResourceActionsUtil.getResourceActions(
 			name);
@@ -931,11 +953,11 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 
 		long companyId = user.getCompanyId();
+		long groupId = 0;
 
-		if (groupId > 0) {
-			Group group = GroupLocalServiceUtil.getGroup(groupId);
-
+		if (group != null) {
 			companyId = group.getCompanyId();
+			groupId = group.getGroupId();
 		}
 
 		try {
@@ -971,17 +993,34 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected boolean hasPermissionImpl(
 		long groupId, String name, String primKey, long[] roleIds,
 		String actionId) {
 
+		Group group = null;
+
+		if (groupId > 0) {
+			group = GroupLocalServiceUtil.fetchGroup(groupId);
+		}
+
+		return _hasPermissionImpl(group, name, primKey, roleIds, actionId);
+	}
+
+	private boolean _hasPermissionImpl(
+		Group group, String name, String primKey, long[] roleIds,
+		String actionId) {
+
 		try {
 			if (!signedIn) {
-				return hasGuestPermission(groupId, name, primKey, actionId);
+				return _hasGuestPermission(group, name, primKey, actionId);
 			}
 
-			return hasUserPermissionImpl(
-				groupId, name, primKey, roleIds, actionId);
+			return _hasUserPermissionImpl(
+				group, name, primKey, roleIds, actionId);
 		}
 		catch (IllegalArgumentException iae) {
 			throw iae;
@@ -993,8 +1032,26 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected boolean hasUserPermissionImpl(
 			long groupId, String name, String primKey, long[] roleIds,
+			String actionId)
+		throws Exception {
+
+		Group group = null;
+
+		if (groupId > 0) {
+			group = GroupLocalServiceUtil.fetchGroup(groupId);
+		}
+
+		return _hasUserPermissionImpl(group, name, primKey, roleIds, actionId);
+	}
+
+	private boolean _hasUserPermissionImpl(
+			Group group, String name, String primKey, long[] roleIds,
 			String actionId)
 		throws Exception {
 
@@ -1003,11 +1060,11 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		stopWatch.start();
 
 		long companyId = user.getCompanyId();
+		long groupId = 0;
 
-		if (groupId > 0) {
-			Group group = GroupLocalServiceUtil.getGroup(groupId);
-
+		if (group != null) {
 			companyId = group.getCompanyId();
+			groupId = group.getGroupId();
 		}
 
 		try {
@@ -1040,7 +1097,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			return true;
 		}
 
-		if (isGroupAdminImpl(groupId)) {
+		if (_isGroupAdminImpl(group)) {
 			boolean hasLayoutManagerPermission = true;
 
 			// Check if the layout manager has permission to do this action for
@@ -1299,7 +1356,17 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		return false;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected boolean isGroupAdminImpl(long groupId) throws Exception {
+		Group group = GroupLocalServiceUtil.fetchGroup(groupId);
+
+		return _isGroupAdminImpl(group);
+	}
+
+	private boolean _isGroupAdminImpl(Group group) throws Exception {
 		if (!signedIn) {
 			return false;
 		}
@@ -1308,11 +1375,9 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 			return true;
 		}
 
-		if (groupId <= 0) {
+		if (group == null) {
 			return false;
 		}
-
-		Group group = GroupLocalServiceUtil.getGroup(groupId);
 
 		if (isCompanyAdmin(group.getCompanyId())) {
 			return true;
