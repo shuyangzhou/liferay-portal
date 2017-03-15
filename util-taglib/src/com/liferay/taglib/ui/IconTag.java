@@ -525,16 +525,17 @@ public class IconTag extends IncludeTag {
 			return false;
 		}
 
+		if (_url == null) {
+			return false;
+		}
+
 		String method = getMethod();
 
-		if (method.equals("post")) {
-			String url = getUrl();
+		if (method.equals("post") &&
+			(_url.startsWith(Http.HTTP_WITH_SLASH) ||
+			 _url.startsWith(Http.HTTPS_WITH_SLASH))) {
 
-			if (url.startsWith(Http.HTTP_WITH_SLASH) ||
-				url.startsWith(Http.HTTPS_WITH_SLASH)) {
-
-				return true;
-			}
+			return true;
 		}
 
 		return false;
