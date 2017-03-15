@@ -86,11 +86,11 @@ public class ConfigurationBeanManagedService implements ManagedService {
 				new UpdatePrivilegedAction(properties));
 		}
 		else {
-			doUdated(properties);
+			doUpdated(properties);
 		}
 	}
 
-	protected void doUdated(Dictionary<String, ?> properties) {
+	protected void doUpdated(Dictionary<String, ?> properties) {
 		if (properties == null) {
 			properties = new HashMapDictionary<>();
 		}
@@ -104,20 +104,20 @@ public class ConfigurationBeanManagedService implements ManagedService {
 
 		_configurationBeanServiceRegistration = _bundleContext.registerService(
 			_configurationBeanClass.getName(), _configurationBean,
-			new HashMapDictionary<String, Object>());
+			new HashMapDictionary<>());
 	}
 
 	protected class UpdatePrivilegedAction implements PrivilegedAction<Void> {
 
-		public UpdatePrivilegedAction(Dictionary<String, ?> properties) {
-			_properties = properties;
-		}
-
 		@Override
 		public Void run() {
-			doUdated(_properties);
+			doUpdated(_properties);
 
 			return null;
+		}
+
+		private UpdatePrivilegedAction(Dictionary<String, ?> properties) {
+			_properties = properties;
 		}
 
 		private final Dictionary<String, ?> _properties;
