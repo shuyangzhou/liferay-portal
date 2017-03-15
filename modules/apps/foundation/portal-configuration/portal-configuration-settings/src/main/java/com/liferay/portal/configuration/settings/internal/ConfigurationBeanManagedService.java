@@ -55,23 +55,13 @@ public class ConfigurationBeanManagedService implements ManagedService {
 		return _configurationPid;
 	}
 
-	public boolean register() {
-		if (_bundleContext != null) {
-			Dictionary<String, Object> properties = new HashMapDictionary<>();
+	public void register() {
+		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
-			properties.put(Constants.SERVICE_PID, _configurationPid);
+		properties.put(Constants.SERVICE_PID, _configurationPid);
 
-			_managedServiceServiceRegistration = _bundleContext.registerService(
-				ManagedService.class, this, properties);
-
-			return true;
-		}
-
-		return false;
-	}
-
-	public void setBundleContext(BundleContext bundleContext) {
-		_bundleContext = bundleContext;
+		_managedServiceServiceRegistration = _bundleContext.registerService(
+			ManagedService.class, this, properties);
 	}
 
 	public void unregister() {
@@ -124,7 +114,7 @@ public class ConfigurationBeanManagedService implements ManagedService {
 
 	}
 
-	private BundleContext _bundleContext;
+	private final BundleContext _bundleContext;
 	private volatile Object _configurationBean;
 	private final Class<?> _configurationBeanClass;
 	private ServiceRegistration<?> _configurationBeanServiceRegistration;

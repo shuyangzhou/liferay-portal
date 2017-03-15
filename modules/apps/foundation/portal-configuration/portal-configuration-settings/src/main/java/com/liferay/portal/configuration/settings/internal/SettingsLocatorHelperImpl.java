@@ -46,11 +46,14 @@ import java.util.concurrent.ConcurrentMap;
 import javax.portlet.PortletPreferences;
 
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Iván Zaera
@@ -191,15 +194,15 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_bundleContext = bundleContext;
+		_configurationBeanDeclarationServiceTracker =
+			new ConfigurationBeanDeclarationServiceTracker(bundleContext);
 
-		for (ConfigurationBeanManagedService configurationBeanManagedService :
-				_configurationBeanManagedServices.values()) {
+		_configurationBeanDeclarationServiceTracker.open();
+	}
 
-			configurationBeanManagedService.setBundleContext(bundleContext);
-
-			configurationBeanManagedService.register();
-		}
+	@Deactivate
+	protected void deactivate() {
+		_configurationBeanDeclarationServiceTracker.close();
 	}
 
 	protected Object getConfigurationBean(String configurationPid) {
@@ -227,41 +230,6 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 
 		return new ClassLoaderResourceManager(
 			configurationBeanClass.getClassLoader());
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC
-	)
-	protected void setConfigurationBeanDeclaration(
-		ConfigurationBeanDeclaration configurationBeanDeclaration) {
-
-		Class<?> configurationBeanClass =
-			configurationBeanDeclaration.getConfigurationBeanClass();
-
-		if (_configurationBeanManagedServices.containsKey(
-				configurationBeanClass)) {
-
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Configuration bean declaration for configuration bean " +
-						configurationBeanClass.getName() + " already exists");
-			}
-
-			return;
-		}
-
-		ConfigurationBeanManagedService configurationBeanManagedService =
-			new ConfigurationBeanManagedService(
-				_bundleContext, configurationBeanClass);
-
-		_configurationBeanClasses.put(
-			configurationBeanManagedService.getConfigurationPid(),
-			configurationBeanClass);
-		_configurationBeanManagedServices.put(
-			configurationBeanClass, configurationBeanManagedService);
-
-		configurationBeanManagedService.register();
 	}
 
 	@Reference(
@@ -307,21 +275,6 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 			props.getProperties());
 	}
 
-	protected void unsetConfigurationBeanDeclaration(
-		ConfigurationBeanDeclaration configurationBeanDeclaration) {
-
-		Class<?> configurationBeanClass =
-			configurationBeanDeclaration.getConfigurationBeanClass();
-
-		ConfigurationBeanManagedService configurationBeanManagedService =
-			_configurationBeanManagedServices.remove(configurationBeanClass);
-
-		configurationBeanManagedService.unregister();
-
-		_configurationBeanClasses.remove(
-			configurationBeanManagedService.getConfigurationPid());
-	}
-
 	protected void unsetConfigurationPidMapping(
 		ConfigurationPidMapping configurationPidMapping) {
 
@@ -332,13 +285,68 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SettingsLocatorHelperImpl.class);
 
-	private BundleContext _bundleContext;
 	private final ConcurrentMap<String, Class<?>> _configurationBeanClasses =
 		new ConcurrentHashMap<>();
+	private ServiceTracker
+		<ConfigurationBeanDeclaration, ConfigurationBeanManagedService>
+			_configurationBeanDeclarationServiceTracker;
 	private final ConcurrentMap<Class<?>, ConfigurationBeanManagedService>
 		_configurationBeanManagedServices = new ConcurrentHashMap<>();
 	private GroupLocalService _groupLocalService;
 	private Settings _portalPropertiesSettings;
 	private PortletPreferencesLocalService _portletPreferencesLocalService;
+
+	private class ConfigurationBeanDeclarationServiceTracker
+		extends ServiceTracker
+			<ConfigurationBeanDeclaration, ConfigurationBeanManagedService> {
+
+		@Override
+		public ConfigurationBeanManagedService addingService(
+			ServiceReference<ConfigurationBeanDeclaration> serviceReference) {
+
+			ConfigurationBeanDeclaration configurationBeanDeclaration =
+				context.getService(serviceReference);
+
+			Class<?> configurationBeanClass =
+				configurationBeanDeclaration.getConfigurationBeanClass();
+
+			ConfigurationBeanManagedService configurationBeanManagedService =
+				new ConfigurationBeanManagedService(
+					context, configurationBeanClass);
+
+			_configurationBeanClasses.put(
+				configurationBeanManagedService.getConfigurationPid(),
+				configurationBeanClass);
+			_configurationBeanManagedServices.put(
+				configurationBeanClass, configurationBeanManagedService);
+
+			configurationBeanManagedService.register();
+
+			return configurationBeanManagedService;
+		}
+
+		@Override
+		public void removedService(
+			ServiceReference<ConfigurationBeanDeclaration> serviceReference,
+			ConfigurationBeanManagedService configurationBeanManagedService) {
+
+			context.ungetService(serviceReference);
+
+			_configurationBeanManagedServices.remove(
+				configurationBeanManagedService.getConfigurationBeanClass());
+
+			configurationBeanManagedService.unregister();
+
+			_configurationBeanClasses.remove(
+				configurationBeanManagedService.getConfigurationPid());
+		}
+
+		private ConfigurationBeanDeclarationServiceTracker(
+			BundleContext context) {
+
+			super(context, ConfigurationBeanDeclaration.class, null);
+		}
+
+	}
 
 }
