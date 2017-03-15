@@ -195,6 +195,287 @@ public class IconTag extends IncludeTag {
 		return _getData(resourceBundle);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
+	protected String getDetails() {
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		ResourceBundle resourceBundle = TagResourceBundleUtil.getResourceBundle(
+			pageContext);
+
+		return _getDetails(themeDisplay, resourceBundle);
+	}
+
+	protected String getId() {
+		if (Validator.isNotNull(_id)) {
+			return _id;
+		}
+
+		String id = (String)request.getAttribute("liferay-ui:icon-menu:id");
+
+		String message = _message;
+
+		if (Validator.isNull(message)) {
+			message = _image;
+		}
+
+		if (Validator.isNotNull(id) && Validator.isNotNull(message)) {
+			id = id.concat(StringPool.UNDERLINE).concat(
+				FriendlyURLNormalizerUtil.normalize(message));
+
+			PortletResponse portletResponse =
+				(PortletResponse)request.getAttribute(
+					JavaConstants.JAVAX_PORTLET_RESPONSE);
+
+			String namespace = StringPool.BLANK;
+
+			if (portletResponse != null) {
+				namespace = portletResponse.getNamespace();
+			}
+
+			id = PortalUtil.getUniqueElementId(
+				getOriginalServletRequest(), namespace, id);
+		}
+		else {
+			id = PortalUtil.generateRandomKey(request, IconTag.class.getName());
+		}
+
+		id = HtmlUtil.getAUICompatibleId(id);
+
+		return id;
+	}
+
+	protected String getImage() {
+		return _image;
+	}
+
+	protected String getMessage() {
+		return _message;
+	}
+
+	protected String getMethod() {
+		if (Validator.isNotNull(_method)) {
+			return _method;
+		}
+
+		if (_url == null) {
+			return "post";
+		}
+
+		if (_url.contains("p_p_lifecycle=0")) {
+			return "get";
+		}
+
+		return "post";
+	}
+
+	protected String getOnClick() {
+		String onClick = StringPool.BLANK;
+
+		if (Validator.isNotNull(_onClick)) {
+			onClick = _onClick;
+
+			if (!onClick.endsWith(StringPool.SEMICOLON)) {
+				onClick = onClick + StringPool.SEMICOLON;
+			}
+		}
+
+		if (isForcePost()) {
+			StringBundler sb = new StringBundler(5);
+
+			sb.append("event.preventDefault();");
+			sb.append(onClick);
+			sb.append("submitForm(document.hrefFm, '");
+			sb.append(getUrl());
+			sb.append("')");
+
+			onClick = sb.toString();
+		}
+
+		return onClick;
+	}
+
+	@Override
+	protected String getPage() {
+		return "/html/taglib/ui/icon/page.jsp";
+	}
+
+	protected String getProcessedMessage() {
+		if (_message != null) {
+			return _message;
+		}
+
+		return StringUtil.replace(
+			_image, new String[] {StringPool.UNDERLINE, _AUI_PATH},
+			new String[] {StringPool.DASH, StringPool.BLANK});
+	}
+
+	protected String getProcessedUrl() {
+		if (isForcePost()) {
+			return "javascript:;";
+		}
+
+		return _url;
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
+	protected String getSrc() {
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		return _getSrc(themeDisplay);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
+	protected String getSrcHover() {
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		return _getSrcHover(themeDisplay);
+	}
+
+	protected String getUrl() {
+		return GetterUtil.getString(_url);
+	}
+
+	protected boolean isAUIImage() {
+		if ((_image != null) && _image.startsWith(_AUI_PATH)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	protected boolean isCleanUpSetAttributes() {
+		return _CLEAN_UP_SET_ATTRIBUTES;
+	}
+
+	protected boolean isForcePost() {
+		if (StringUtil.equalsIgnoreCase(_target, "_blank")) {
+			return false;
+		}
+
+		if (_url == null) {
+			return false;
+		}
+
+		String method = getMethod();
+
+		if (method.equals("post") &&
+			(_url.startsWith(Http.HTTP_WITH_SLASH) ||
+			 _url.startsWith(Http.HTTPS_WITH_SLASH))) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	protected boolean isLabel() {
+		if (_label != null) {
+			return _label;
+		}
+
+		IntegerWrapper iconListIconCount = (IntegerWrapper)request.getAttribute(
+			"liferay-ui:icon-list:icon-count");
+
+		if (iconListIconCount != null) {
+			Boolean iconListSingleIcon = (Boolean)request.getAttribute(
+				"liferay-ui:icon-list:single-icon");
+
+			if (iconListSingleIcon != null) {
+				_label = true;
+
+				return true;
+			}
+		}
+
+		IntegerWrapper iconMenuIconCount = (IntegerWrapper)request.getAttribute(
+			"liferay-ui:icon-menu:icon-count");
+
+		if (iconMenuIconCount != null) {
+			Boolean iconMenuSingleIcon = (Boolean)request.getAttribute(
+				"liferay-ui:icon-menu:single-icon");
+
+			if (iconMenuSingleIcon != null) {
+				_label = true;
+
+				return true;
+			}
+		}
+
+		_label = false;
+
+		return false;
+	}
+
+	@Override
+	protected void setAttributes(HttpServletRequest request) {
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		ResourceBundle resourceBundle = TagResourceBundleUtil.getResourceBundle(
+			pageContext);
+
+		request.setAttribute("liferay-ui:icon:alt", _alt);
+		request.setAttribute("liferay-ui:icon:ariaRole", _ariaRole);
+		request.setAttribute(
+			"liferay-ui:icon:auiImage", String.valueOf(isAUIImage()));
+		request.setAttribute("liferay-ui:icon:cssClass", _cssClass);
+		request.setAttribute("liferay-ui:icon:data", _getData(resourceBundle));
+		request.setAttribute(
+			"liferay-ui:icon:details",
+			_getDetails(themeDisplay, resourceBundle));
+		request.setAttribute(
+			"liferay-ui:icon:forcePost", String.valueOf(isForcePost()));
+		request.setAttribute("liferay-ui:icon:icon", _icon);
+		request.setAttribute("liferay-ui:icon:iconCssClass", _iconCssClass);
+		request.setAttribute("liferay-ui:icon:id", getId());
+		request.setAttribute("liferay-ui:icon:image", _image);
+		request.setAttribute("liferay-ui:icon:imageHover", _imageHover);
+		request.setAttribute(
+			"liferay-ui:icon:label", String.valueOf(isLabel()));
+		request.setAttribute("liferay-ui:icon:lang", _lang);
+		request.setAttribute("liferay-ui:icon:linkCssClass", _linkCssClass);
+		request.setAttribute(
+			"liferay-ui:icon:localizeMessage",
+			String.valueOf(_localizeMessage));
+		request.setAttribute("liferay-ui:icon:markupView", _markupView);
+		request.setAttribute("liferay-ui:icon:message", getProcessedMessage());
+		request.setAttribute("liferay-ui:icon:method", getMethod());
+		request.setAttribute("liferay-ui:icon:onClick", getOnClick());
+		request.setAttribute("liferay-ui:icon:src", _getSrc(themeDisplay));
+		request.setAttribute(
+			"liferay-ui:icon:srcHover", _getSrcHover(themeDisplay));
+		request.setAttribute("liferay-ui:icon:target", _target);
+
+		boolean toolTip = false;
+
+		if (_toolTip != null) {
+			toolTip = _toolTip.booleanValue();
+		}
+		else if (!isLabel() && Validator.isNotNull(getProcessedMessage())) {
+			toolTip = true;
+		}
+
+		request.setAttribute(
+			"liferay-ui:icon:toolTip", String.valueOf(toolTip));
+
+		request.setAttribute("liferay-ui:icon:url", getProcessedUrl());
+		request.setAttribute(
+			"liferay-ui:icon:useDialog", String.valueOf(_useDialog));
+	}
+
 	private Map<String, Object> _getData(ResourceBundle resourceBundle) {
 		Map<String, Object> data = null;
 
@@ -216,20 +497,6 @@ public class IconTag extends IncludeTag {
 		}
 
 		return data;
-	}
-
-	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
-	 */
-	@Deprecated
-	protected String getDetails() {
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		ResourceBundle resourceBundle = TagResourceBundleUtil.getResourceBundle(
-			pageContext);
-
-		return _getDetails(themeDisplay, resourceBundle);
 	}
 
 	private String _getDetails(
@@ -365,129 +632,6 @@ public class IconTag extends IncludeTag {
 		return details;
 	}
 
-	protected String getId() {
-		if (Validator.isNotNull(_id)) {
-			return _id;
-		}
-
-		String id = (String)request.getAttribute("liferay-ui:icon-menu:id");
-
-		String message = _message;
-
-		if (Validator.isNull(message)) {
-			message = _image;
-		}
-
-		if (Validator.isNotNull(id) && Validator.isNotNull(message)) {
-			id = id.concat(StringPool.UNDERLINE).concat(
-				FriendlyURLNormalizerUtil.normalize(message));
-
-			PortletResponse portletResponse =
-				(PortletResponse)request.getAttribute(
-					JavaConstants.JAVAX_PORTLET_RESPONSE);
-
-			String namespace = StringPool.BLANK;
-
-			if (portletResponse != null) {
-				namespace = portletResponse.getNamespace();
-			}
-
-			id = PortalUtil.getUniqueElementId(
-				getOriginalServletRequest(), namespace, id);
-		}
-		else {
-			id = PortalUtil.generateRandomKey(request, IconTag.class.getName());
-		}
-
-		id = HtmlUtil.getAUICompatibleId(id);
-
-		return id;
-	}
-
-	protected String getImage() {
-		return _image;
-	}
-
-	protected String getMessage() {
-		return _message;
-	}
-
-	protected String getMethod() {
-		if (Validator.isNotNull(_method)) {
-			return _method;
-		}
-
-		if (_url == null) {
-			return "post";
-		}
-
-		if (_url.contains("p_p_lifecycle=0")) {
-			return "get";
-		}
-
-		return "post";
-	}
-
-	protected String getOnClick() {
-		String onClick = StringPool.BLANK;
-
-		if (Validator.isNotNull(_onClick)) {
-			onClick = _onClick;
-
-			if (!onClick.endsWith(StringPool.SEMICOLON)) {
-				onClick = onClick + StringPool.SEMICOLON;
-			}
-		}
-
-		if (isForcePost()) {
-			StringBundler sb = new StringBundler(5);
-
-			sb.append("event.preventDefault();");
-			sb.append(onClick);
-			sb.append("submitForm(document.hrefFm, '");
-			sb.append(getUrl());
-			sb.append("')");
-
-			onClick = sb.toString();
-		}
-
-		return onClick;
-	}
-
-	@Override
-	protected String getPage() {
-		return "/html/taglib/ui/icon/page.jsp";
-	}
-
-	protected String getProcessedMessage() {
-		if (_message != null) {
-			return _message;
-		}
-
-		return StringUtil.replace(
-			_image, new String[] {StringPool.UNDERLINE, _AUI_PATH},
-			new String[] {StringPool.DASH, StringPool.BLANK});
-	}
-
-	protected String getProcessedUrl() {
-		if (isForcePost()) {
-			return "javascript:;";
-		}
-
-		return _url;
-	}
-
-	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
-	 */
-	@Deprecated
-	protected String getSrc() {
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		return _getSrc(themeDisplay);
-	}
-
 	private String _getSrc(ThemeDisplay themeDisplay) {
 		if (Validator.isNotNull(_src)) {
 			return _src;
@@ -510,17 +654,6 @@ public class IconTag extends IncludeTag {
 		return StringPool.BLANK;
 	}
 
-	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
-	 */
-	@Deprecated
-	protected String getSrcHover() {
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		return _getSrcHover(themeDisplay);
-	}
-
 	private String _getSrcHover(ThemeDisplay themeDisplay) {
 		if (Validator.isNotNull(_srcHover) || Validator.isNull(_imageHover)) {
 			return _srcHover;
@@ -535,139 +668,6 @@ public class IconTag extends IncludeTag {
 		sb.append(".png");
 
 		return sb.toString();
-	}
-
-	protected String getUrl() {
-		return GetterUtil.getString(_url);
-	}
-
-	protected boolean isAUIImage() {
-		if ((_image != null) && _image.startsWith(_AUI_PATH)) {
-			return true;
-		}
-
-		return false;
-	}
-
-	@Override
-	protected boolean isCleanUpSetAttributes() {
-		return _CLEAN_UP_SET_ATTRIBUTES;
-	}
-
-	protected boolean isForcePost() {
-		if (StringUtil.equalsIgnoreCase(_target, "_blank")) {
-			return false;
-		}
-
-		if (_url == null) {
-			return false;
-		}
-
-		String method = getMethod();
-
-		if (method.equals("post") &&
-			(_url.startsWith(Http.HTTP_WITH_SLASH) ||
-			 _url.startsWith(Http.HTTPS_WITH_SLASH))) {
-
-			return true;
-		}
-
-		return false;
-	}
-
-	protected boolean isLabel() {
-		if (_label != null) {
-			return _label;
-		}
-
-		IntegerWrapper iconListIconCount = (IntegerWrapper)request.getAttribute(
-			"liferay-ui:icon-list:icon-count");
-
-		if (iconListIconCount != null) {
-			Boolean iconListSingleIcon = (Boolean)request.getAttribute(
-				"liferay-ui:icon-list:single-icon");
-
-			if (iconListSingleIcon != null) {
-				_label = true;
-
-				return true;
-			}
-		}
-
-		IntegerWrapper iconMenuIconCount = (IntegerWrapper)request.getAttribute(
-			"liferay-ui:icon-menu:icon-count");
-
-		if (iconMenuIconCount != null) {
-			Boolean iconMenuSingleIcon = (Boolean)request.getAttribute(
-				"liferay-ui:icon-menu:single-icon");
-
-			if (iconMenuSingleIcon != null) {
-				_label = true;
-
-				return true;
-			}
-		}
-
-		_label = false;
-
-		return false;
-	}
-
-	@Override
-	protected void setAttributes(HttpServletRequest request) {
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		ResourceBundle resourceBundle = TagResourceBundleUtil.getResourceBundle(
-			pageContext);
-
-		request.setAttribute("liferay-ui:icon:alt", _alt);
-		request.setAttribute("liferay-ui:icon:ariaRole", _ariaRole);
-		request.setAttribute(
-			"liferay-ui:icon:auiImage", String.valueOf(isAUIImage()));
-		request.setAttribute("liferay-ui:icon:cssClass", _cssClass);
-		request.setAttribute("liferay-ui:icon:data", _getData(resourceBundle));
-		request.setAttribute(
-			"liferay-ui:icon:details",
-			_getDetails(themeDisplay, resourceBundle));
-		request.setAttribute(
-			"liferay-ui:icon:forcePost", String.valueOf(isForcePost()));
-		request.setAttribute("liferay-ui:icon:icon", _icon);
-		request.setAttribute("liferay-ui:icon:iconCssClass", _iconCssClass);
-		request.setAttribute("liferay-ui:icon:id", getId());
-		request.setAttribute("liferay-ui:icon:image", _image);
-		request.setAttribute("liferay-ui:icon:imageHover", _imageHover);
-		request.setAttribute(
-			"liferay-ui:icon:label", String.valueOf(isLabel()));
-		request.setAttribute("liferay-ui:icon:lang", _lang);
-		request.setAttribute("liferay-ui:icon:linkCssClass", _linkCssClass);
-		request.setAttribute(
-			"liferay-ui:icon:localizeMessage",
-			String.valueOf(_localizeMessage));
-		request.setAttribute("liferay-ui:icon:markupView", _markupView);
-		request.setAttribute("liferay-ui:icon:message", getProcessedMessage());
-		request.setAttribute("liferay-ui:icon:method", getMethod());
-		request.setAttribute("liferay-ui:icon:onClick", getOnClick());
-		request.setAttribute("liferay-ui:icon:src", _getSrc(themeDisplay));
-		request.setAttribute(
-			"liferay-ui:icon:srcHover", _getSrcHover(themeDisplay));
-		request.setAttribute("liferay-ui:icon:target", _target);
-
-		boolean toolTip = false;
-
-		if (_toolTip != null) {
-			toolTip = _toolTip.booleanValue();
-		}
-		else if (!isLabel() && Validator.isNotNull(getProcessedMessage())) {
-			toolTip = true;
-		}
-
-		request.setAttribute(
-			"liferay-ui:icon:toolTip", String.valueOf(toolTip));
-
-		request.setAttribute("liferay-ui:icon:url", getProcessedUrl());
-		request.setAttribute(
-			"liferay-ui:icon:useDialog", String.valueOf(_useDialog));
 	}
 
 	private static final String _AUI_PATH = "../aui/";
