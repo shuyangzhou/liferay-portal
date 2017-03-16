@@ -732,52 +732,6 @@ public class PortletURLImpl
 		}
 	}
 
-	private PortletURLImpl(
-		HttpServletRequest request, String portletId,
-		PortletRequest portletRequest, Layout layout, String lifecycle) {
-
-		_request = request;
-		_portletId = portletId;
-		_portletRequest = portletRequest;
-		_layout = layout;
-		_lifecycle = lifecycle;
-		_parametersIncludedInPath = Collections.emptySet();
-		_params = new LinkedHashMap<>();
-		_removePublicRenderParameters = new LinkedHashMap<>();
-		_secure = PortalUtil.isSecure(request);
-		_wsrp = ParamUtil.getBoolean(request, "wsrp");
-
-		Portlet portlet = getPortlet();
-
-		if (portlet != null) {
-			Set<String> autopropagatedParameters =
-				portlet.getAutopropagatedParameters();
-
-			for (String autopropagatedParameter : autopropagatedParameters) {
-				if (PortalUtil.isReservedParameter(autopropagatedParameter)) {
-					continue;
-				}
-
-				String value = request.getParameter(autopropagatedParameter);
-
-				if (value != null) {
-					setParameter(autopropagatedParameter, value);
-				}
-			}
-
-			PortletApp portletApp = portlet.getPortletApp();
-
-			_escapeXml = MapUtil.getBoolean(
-				portletApp.getContainerRuntimeOptions(),
-				LiferayPortletConfig.RUNTIME_OPTION_ESCAPE_XML,
-				PropsValues.PORTLET_URL_ESCAPE_XML);
-		}
-
-		if (layout != null) {
-			_plid = layout.getPlid();
-		}
-	}
-
 	protected void addPortalAuthToken(StringBundler sb, Key key) {
 		AuthTokenUtil.addCSRFToken(_request, this);
 	}
@@ -1278,6 +1232,52 @@ public class PortletURLImpl
 	protected void removeParameter(String name) {
 		if (_params.containsKey(name)) {
 			_params.remove(name);
+		}
+	}
+
+	private PortletURLImpl(
+		HttpServletRequest request, String portletId,
+		PortletRequest portletRequest, Layout layout, String lifecycle) {
+
+		_request = request;
+		_portletId = portletId;
+		_portletRequest = portletRequest;
+		_layout = layout;
+		_lifecycle = lifecycle;
+		_parametersIncludedInPath = Collections.emptySet();
+		_params = new LinkedHashMap<>();
+		_removePublicRenderParameters = new LinkedHashMap<>();
+		_secure = PortalUtil.isSecure(request);
+		_wsrp = ParamUtil.getBoolean(request, "wsrp");
+
+		Portlet portlet = getPortlet();
+
+		if (portlet != null) {
+			Set<String> autopropagatedParameters =
+				portlet.getAutopropagatedParameters();
+
+			for (String autopropagatedParameter : autopropagatedParameters) {
+				if (PortalUtil.isReservedParameter(autopropagatedParameter)) {
+					continue;
+				}
+
+				String value = request.getParameter(autopropagatedParameter);
+
+				if (value != null) {
+					setParameter(autopropagatedParameter, value);
+				}
+			}
+
+			PortletApp portletApp = portlet.getPortletApp();
+
+			_escapeXml = MapUtil.getBoolean(
+				portletApp.getContainerRuntimeOptions(),
+				LiferayPortletConfig.RUNTIME_OPTION_ESCAPE_XML,
+				PropsValues.PORTLET_URL_ESCAPE_XML);
+		}
+
+		if (layout != null) {
+			_plid = layout.getPlid();
 		}
 	}
 
