@@ -93,9 +93,7 @@ public class PortletURLImpl
 		HttpServletRequest request, String portletId, Layout layout,
 		String lifecycle) {
 
-		this(request, portletId, null, layout.getPlid(), lifecycle);
-
-		_layout = layout;
+		this(request, portletId, null, layout, lifecycle);
 	}
 
 	public PortletURLImpl(
@@ -111,9 +109,7 @@ public class PortletURLImpl
 
 		this(
 			PortalUtil.getHttpServletRequest(portletRequest), portletId,
-			portletRequest, layout.getPlid(), lifecycle);
-
-		_layout = layout;
+			portletRequest, layout, lifecycle);
 	}
 
 	public PortletURLImpl(
@@ -723,10 +719,27 @@ public class PortletURLImpl
 		HttpServletRequest request, String portletId,
 		PortletRequest portletRequest, long plid, String lifecycle) {
 
+		this(request, portletId, portletRequest, null, lifecycle);
+
+		_plid = plid;
+
+		Layout layout = (Layout)request.getAttribute(WebKeys.LAYOUT);
+
+		if ((layout != null) && (layout.getPlid() == plid) &&
+			(layout instanceof VirtualLayout)) {
+
+			_layout = layout;
+		}
+	}
+
+	private PortletURLImpl(
+		HttpServletRequest request, String portletId,
+		PortletRequest portletRequest, Layout layout, String lifecycle) {
+
 		_request = request;
 		_portletId = portletId;
 		_portletRequest = portletRequest;
-		_plid = plid;
+		_layout = layout;
 		_lifecycle = lifecycle;
 		_parametersIncludedInPath = Collections.emptySet();
 		_params = new LinkedHashMap<>();
@@ -760,12 +773,8 @@ public class PortletURLImpl
 				PropsValues.PORTLET_URL_ESCAPE_XML);
 		}
 
-		Layout layout = (Layout)request.getAttribute(WebKeys.LAYOUT);
-
-		if ((layout != null) && (layout.getPlid() == _plid) &&
-			(layout instanceof VirtualLayout)) {
-
-			_layout = layout;
+		if (layout != null) {
+			_plid = layout.getPlid();
 		}
 	}
 
