@@ -22,6 +22,7 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 
 import java.util.Dictionary;
+import java.util.function.Consumer;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
@@ -34,21 +35,15 @@ import org.osgi.service.cm.ManagedService;
 public class ConfigurationBeanManagedService implements ManagedService {
 
 	public ConfigurationBeanManagedService(
-		BundleContext bundleContext, Class<?> configurationBeanClass) {
+		BundleContext bundleContext, Class<?> configurationBeanClass,
+		Consumer<Object> configurationBeanConsumer) {
 
 		_bundleContext = bundleContext;
 		_configurationBeanClass = configurationBeanClass;
+		_configurationBeanConsumer = configurationBeanConsumer;
 
 		_configurationPid = ConfigurationPidUtil.getConfigurationPid(
 			configurationBeanClass);
-	}
-
-	public Object getConfigurationBean() {
-		return _configurationBean;
-	}
-
-	public Class<?> getConfigurationBeanClass() {
-		return _configurationBeanClass;
 	}
 
 	public String getConfigurationPid() {
@@ -88,6 +83,8 @@ public class ConfigurationBeanManagedService implements ManagedService {
 		_configurationBean = ConfigurableUtil.createConfigurable(
 			_configurationBeanClass, properties);
 
+		_configurationBeanConsumer.accept(_configurationBean);
+
 		if (_configurationBeanServiceRegistration != null) {
 			_configurationBeanServiceRegistration.unregister();
 		}
@@ -117,6 +114,7 @@ public class ConfigurationBeanManagedService implements ManagedService {
 	private final BundleContext _bundleContext;
 	private volatile Object _configurationBean;
 	private final Class<?> _configurationBeanClass;
+	private final Consumer<Object> _configurationBeanConsumer;
 	private ServiceRegistration<?> _configurationBeanServiceRegistration;
 	private final String _configurationPid;
 	private ServiceRegistration<ManagedService>

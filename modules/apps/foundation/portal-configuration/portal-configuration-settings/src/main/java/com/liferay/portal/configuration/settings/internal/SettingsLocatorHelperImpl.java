@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.resource.manager.ClassLoaderResourceManager;
-import com.liferay.portal.kernel.resource.manager.ResourceManager;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
@@ -40,6 +39,7 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.util.PrefsPropsUtil;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -82,16 +82,21 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 
 	@Override
 	public Settings getConfigurationBeanSettings(String configurationPid) {
-		Object configurationBean = getConfigurationBean(configurationPid);
+		Class<?> configurationBeanClass = _configurationBeanClasses.get(
+			configurationPid);
 
-		if (configurationBean == null) {
+		if (configurationBeanClass == null) {
 			return _portalPropertiesSettings;
 		}
 
-		return new ConfigurationBeanSettings(
-			new LocationVariableResolver(
-				getResourceManager(configurationPid), this),
-			configurationBean, _portalPropertiesSettings);
+		Settings configurationBeanSettings = _configurationBeanSettings.get(
+			configurationBeanClass);
+
+		if (configurationBeanSettings == null) {
+			return _portalPropertiesSettings;
+		}
+
+		return configurationBeanSettings;
 	}
 
 	/**
@@ -205,33 +210,6 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 		_configurationBeanDeclarationServiceTracker.close();
 	}
 
-	protected Object getConfigurationBean(String configurationPid) {
-		Class<?> configurationBeanClass = _configurationBeanClasses.get(
-			configurationPid);
-
-		if (configurationBeanClass == null) {
-			return null;
-		}
-
-		ConfigurationBeanManagedService configurationBeanManagedService =
-			_configurationBeanManagedServices.get(configurationBeanClass);
-
-		return configurationBeanManagedService.getConfigurationBean();
-	}
-
-	protected ResourceManager getResourceManager(String configurationPid) {
-		Class<?> configurationBeanClass = _configurationBeanClasses.get(
-			configurationPid);
-
-		if (configurationBeanClass == null) {
-			return new ClassLoaderResourceManager(
-				PortalClassLoaderUtil.getClassLoader());
-		}
-
-		return new ClassLoaderResourceManager(
-			configurationBeanClass.getClassLoader());
-	}
-
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC
@@ -290,8 +268,8 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 	private ServiceTracker
 		<ConfigurationBeanDeclaration, ConfigurationBeanManagedService>
 			_configurationBeanDeclarationServiceTracker;
-	private final ConcurrentMap<Class<?>, ConfigurationBeanManagedService>
-		_configurationBeanManagedServices = new ConcurrentHashMap<>();
+	private final Map<Class<?>, Settings> _configurationBeanSettings =
+		new ConcurrentHashMap<>();
 	private GroupLocalService _groupLocalService;
 	private Settings _portalPropertiesSettings;
 	private PortletPreferencesLocalService _portletPreferencesLocalService;
@@ -312,13 +290,26 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 
 			ConfigurationBeanManagedService configurationBeanManagedService =
 				new ConfigurationBeanManagedService(
-					context, configurationBeanClass);
+					context, configurationBeanClass,
+					(configurationBean) -> {
+						ClassLoader classLoader =
+							configurationBeanClass.getClassLoader();
+
+						LocationVariableResolver locationVariableResolver =
+							new LocationVariableResolver(
+								new ClassLoaderResourceManager(classLoader),
+								SettingsLocatorHelperImpl.this);
+
+						_configurationBeanSettings.put(
+							configurationBeanClass,
+							new ConfigurationBeanSettings(
+								locationVariableResolver, configurationBean,
+								_portalPropertiesSettings));
+					});
 
 			_configurationBeanClasses.put(
 				configurationBeanManagedService.getConfigurationPid(),
 				configurationBeanClass);
-			_configurationBeanManagedServices.put(
-				configurationBeanClass, configurationBeanManagedService);
 
 			configurationBeanManagedService.register();
 
@@ -332,12 +323,12 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 
 			context.ungetService(serviceReference);
 
-			_configurationBeanManagedServices.remove(
-				configurationBeanManagedService.getConfigurationBeanClass());
-
 			configurationBeanManagedService.unregister();
 
 			_configurationBeanClasses.remove(
+				configurationBeanManagedService.getConfigurationPid());
+
+			_configurationBeanSettings.remove(
 				configurationBeanManagedService.getConfigurationPid());
 		}
 
