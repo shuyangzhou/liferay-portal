@@ -91,15 +91,13 @@ public class RestrictPortletServletRequest
 			String key = entry.getKey();
 			Object value = entry.getValue();
 
-			if (value == null) {
+			if (value == _nullValue) {
 				names.remove(key);
 			}
 			else {
 				names.add(key);
 			}
 		}
-
-		names.addAll(_attributes.keySet());
 
 		return Collections.enumeration(names);
 	}
