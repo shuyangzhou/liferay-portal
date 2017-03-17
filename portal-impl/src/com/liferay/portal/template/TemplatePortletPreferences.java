@@ -16,9 +16,8 @@ package com.liferay.portal.template;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.PortletConstants;
-import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
-import com.liferay.portlet.PortletPreferencesImpl;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.util.xml.XMLUtil;
 
 import java.util.Collections;
 import java.util.Map;
@@ -34,29 +33,38 @@ public class TemplatePortletPreferences {
 	public String getPreferences(Map<String, Object> preferences)
 		throws ReadOnlyException {
 
-		PortletPreferencesImpl portletPreferencesImpl =
-			new PortletPreferencesImpl();
+		StringBundler sb = new StringBundler();
+
+		sb.append("<portlet-preferences>");
 
 		for (Map.Entry<String, Object> entry : preferences.entrySet()) {
-			Object value = entry.getValue();
+			sb.append("<preference><name>");
+			sb.append(entry.getKey());
+			sb.append("</name>");
 
-			if (value instanceof String) {
-				portletPreferencesImpl.setValue(entry.getKey(), (String)value);
+			String[] values = _NULL_VALUE;
+
+			Object valueObject = entry.getValue();
+
+			if (valueObject instanceof String) {
+				values = new String[] {(String)valueObject};
 			}
-			else if (value instanceof String[]) {
-				portletPreferencesImpl.setValues(
-					entry.getKey(), (String[])value);
+			else if (valueObject instanceof String[]) {
+				values = (String[])valueObject;
 			}
+
+			for (String value : values) {
+				sb.append("<value>");
+				sb.append(XMLUtil.toCompactSafe(value));
+				sb.append("</value>");
+			}
+
+			sb.append("</preference>");
 		}
 
-		try {
-			return PortletPreferencesFactoryUtil.toXML(portletPreferencesImpl);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
+		sb.append("</portlet-preferences>");
 
-			return PortletConstants.DEFAULT_PREFERENCES;
-		}
+		return sb.toString();
 	}
 
 	public String getPreferences(String key, String value)
@@ -86,6 +94,8 @@ public class TemplatePortletPreferences {
 	public void setValues(String key, String[] values)
 		throws ReadOnlyException {
 	}
+
+	private static final String[] _NULL_VALUE = new String[] {"NULL_VALUE"};
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		TemplatePortletPreferences.class);
