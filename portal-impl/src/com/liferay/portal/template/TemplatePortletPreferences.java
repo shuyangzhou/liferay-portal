@@ -21,6 +21,9 @@ import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.util.AutoResetThreadLocal;
 import com.liferay.portlet.PortletPreferencesImpl;
 
+import java.util.Collections;
+import java.util.Map;
+
 import javax.portlet.ReadOnlyException;
 
 /**
@@ -29,13 +32,23 @@ import javax.portlet.ReadOnlyException;
  */
 public class TemplatePortletPreferences {
 
-	public String getPreferences(String key, String value)
+	public String getPreferences(Map<String, Object> preferences)
 		throws ReadOnlyException {
 
 		PortletPreferencesImpl portletPreferencesImpl =
 			new PortletPreferencesImpl();
 
-		portletPreferencesImpl.setValue(key, value);
+		for (Map.Entry<String, Object> entry : preferences.entrySet()) {
+			Object value = entry.getValue();
+
+			if (value instanceof String) {
+				portletPreferencesImpl.setValue(entry.getKey(), (String)value);
+			}
+			else if (value instanceof String[]) {
+				portletPreferencesImpl.setValues(
+					entry.getKey(), (String[])value);
+			}
+		}
 
 		try {
 			return PortletPreferencesFactoryUtil.toXML(portletPreferencesImpl);
@@ -45,6 +58,12 @@ public class TemplatePortletPreferences {
 
 			return PortletConstants.DEFAULT_PREFERENCES;
 		}
+	}
+
+	public String getPreferences(String key, String value)
+		throws ReadOnlyException {
+
+		return getPreferences(Collections.singletonMap(key, value));
 	}
 
 	public void reset() {
