@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
-import com.liferay.portal.kernel.util.AutoResetThreadLocal;
 import com.liferay.portlet.PortletPreferencesImpl;
 
 import java.util.Collections;
@@ -66,57 +65,29 @@ public class TemplatePortletPreferences {
 		return getPreferences(Collections.singletonMap(key, value));
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public void reset() {
-		PortletPreferencesImpl portletPreferencesImpl =
-			_portletPreferencesImplThreadLocal.get();
-
-		portletPreferencesImpl.reset();
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public void setValue(String key, String value) throws ReadOnlyException {
-		PortletPreferencesImpl portletPreferencesImpl =
-			_portletPreferencesImplThreadLocal.get();
-
-		portletPreferencesImpl.setValue(key, value);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public void setValues(String key, String[] values)
 		throws ReadOnlyException {
-
-		PortletPreferencesImpl portletPreferencesImpl =
-			_portletPreferencesImplThreadLocal.get();
-
-		portletPreferencesImpl.setValues(key, values);
-	}
-
-	@Override
-	public String toString() {
-		PortletPreferencesImpl portletPreferencesImpl =
-			_portletPreferencesImplThreadLocal.get();
-
-		try {
-			return PortletPreferencesFactoryUtil.toXML(portletPreferencesImpl);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			return PortletConstants.DEFAULT_PREFERENCES;
-		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		TemplatePortletPreferences.class);
-
-	private final ThreadLocal<PortletPreferencesImpl>
-		_portletPreferencesImplThreadLocal =
-			new AutoResetThreadLocal<PortletPreferencesImpl>(
-				TemplatePortletPreferences.class.getName()) {
-
-				@Override
-				protected PortletPreferencesImpl initialValue() {
-					return new PortletPreferencesImpl();
-				}
-
-			};
 
 }
