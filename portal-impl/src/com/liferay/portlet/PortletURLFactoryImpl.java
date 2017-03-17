@@ -15,6 +15,7 @@
 package com.liferay.portlet;
 
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.impl.VirtualLayout;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletURLFactory;
@@ -32,6 +33,32 @@ import javax.servlet.http.HttpServletRequest;
  */
 @DoPrivileged
 public class PortletURLFactoryImpl implements PortletURLFactory {
+
+	@Override
+	public LiferayPortletURL create(
+		HttpServletRequest request, Portlet portlet, Layout layout,
+		String lifecycle) {
+
+		return new PortletURLImpl(request, portlet, layout, lifecycle);
+	}
+
+	@Override
+	public LiferayPortletURL create(
+		HttpServletRequest request, Portlet portlet, String lifecycle) {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		Layout layout = themeDisplay.getLayout();
+
+		if (layout == null) {
+			layout = _getLayout(
+				(Layout)request.getAttribute(WebKeys.LAYOUT),
+				themeDisplay.getPlid());
+		}
+
+		return new PortletURLImpl(request, portlet, layout, lifecycle);
+	}
 
 	@Override
 	public LiferayPortletURL create(
@@ -68,6 +95,14 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 		}
 
 		return create(request, portletId, layout, lifecycle);
+	}
+
+	@Override
+	public LiferayPortletURL create(
+		PortletRequest portletRequest, Portlet portlet, Layout layout,
+		String lifecycle) {
+
+		return new PortletURLImpl(portletRequest, portlet, layout, lifecycle);
 	}
 
 	@Override
