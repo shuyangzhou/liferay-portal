@@ -29,6 +29,24 @@ import javax.portlet.ReadOnlyException;
  */
 public class TemplatePortletPreferences {
 
+	public String getPreferences(String key, String value)
+		throws ReadOnlyException {
+
+		PortletPreferencesImpl portletPreferencesImpl =
+			new PortletPreferencesImpl();
+
+		portletPreferencesImpl.setValue(key, value);
+
+		try {
+			return PortletPreferencesFactoryUtil.toXML(portletPreferencesImpl);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			return PortletConstants.DEFAULT_PREFERENCES;
+		}
+	}
+
 	public void reset() {
 		PortletPreferencesImpl portletPreferencesImpl =
 			_portletPreferencesImplThreadLocal.get();
