@@ -121,15 +121,9 @@ public class TemplatePortletPreferencesTest {
 			// ways to prove that the fix indeed eliminates the race condition.
 
 			synchronized (_templatePortletPreferences) {
-				_templatePortletPreferences.setValue(
+				return _templatePortletPreferences.getPreferences(
 					randomString, randomString);
 			}
-
-			String xml = _templatePortletPreferences.toString();
-
-			_templatePortletPreferences.reset();
-
-			return xml;
 		}
 
 	}
