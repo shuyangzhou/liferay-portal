@@ -77,7 +77,7 @@ public class TemplatePortletPreferencesTest {
 	}
 
 	@Test
-	public void testSetValue() throws Exception {
+	public void testGetPreferences() throws Exception {
 		Callable<String> callable = new TemplateCallable();
 
 		List<Future<String>> futures = new ArrayList<>(_THREADS_SIZE);
