@@ -389,30 +389,42 @@ public class IconTag extends IncludeTag {
 		IntegerWrapper iconListIconCount = (IntegerWrapper)request.getAttribute(
 			"liferay-ui:icon-list:icon-count");
 
-		Boolean iconListSingleIcon = (Boolean)request.getAttribute(
-			"liferay-ui:icon-list:single-icon");
-
-		if ((iconListIconCount != null) || (iconListSingleIcon != null)) {
+		if (iconListIconCount != null) {
 			_label = true;
 
-			return _label;
+			return true;
 		}
 
 		IntegerWrapper iconMenuIconCount = (IntegerWrapper)request.getAttribute(
 			"liferay-ui:icon-menu:icon-count");
 
+		if (iconMenuIconCount != null) {
+			_label = true;
+
+			return true;
+		}
+
+		Boolean iconListSingleIcon = (Boolean)request.getAttribute(
+			"liferay-ui:icon-list:single-icon");
+
+		if (iconListSingleIcon != null) {
+			_label = true;
+
+			return true;
+		}
+
 		Boolean iconMenuSingleIcon = (Boolean)request.getAttribute(
 			"liferay-ui:icon-menu:single-icon");
 
-		if ((iconMenuIconCount != null) || (iconMenuSingleIcon != null)) {
+		if (iconMenuSingleIcon != null) {
 			_label = true;
 
-			return _label;
+			return true;
 		}
 
 		_label = false;
 
-		return _label;
+		return false;
 	}
 
 	@Override
