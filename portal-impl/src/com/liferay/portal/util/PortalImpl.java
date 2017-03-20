@@ -5699,49 +5699,53 @@ public class PortalImpl implements Portal {
 			return userIdObj.longValue();
 		}
 
-		String actionName = getPortletParam(request, "actionName");
-		String mvcRenderCommandName = ParamUtil.getString(
-			request, "mvcRenderCommandName");
-		String path = GetterUtil.getString(request.getPathInfo());
-		String strutsAction = getStrutsAction(request);
+		String doAsUserIdString = ParamUtil.getString(
+			request, "doAsUserId", null);
 
-		boolean alwaysAllowDoAsUser = false;
+		if (doAsUserIdString != null) {
+			String actionName = getPortletParam(request, "actionName");
+			String mvcRenderCommandName = ParamUtil.getString(
+				request, "mvcRenderCommandName");
+			String path = GetterUtil.getString(request.getPathInfo());
+			String strutsAction = getStrutsAction(request);
 
-		if (actionName.equals("addFile") ||
-			mvcRenderCommandName.equals("/document_library/edit_file_entry") ||
-			path.equals("/portal/session_click") ||
-			isAlwaysAllowDoAsUser(
-				actionName, mvcRenderCommandName, path, strutsAction)) {
+			boolean alwaysAllowDoAsUser = false;
 
-			try {
-				alwaysAllowDoAsUser = isAlwaysAllowDoAsUser(request);
-			}
-			catch (Exception e) {
-				_log.error(e, e);
-			}
-		}
+			if (actionName.equals("addFile") ||
+				mvcRenderCommandName.equals(
+					"/document_library/edit_file_entry") ||
+				path.equals("/portal/session_click") ||
+				isAlwaysAllowDoAsUser(
+					actionName, mvcRenderCommandName, path, strutsAction)) {
 
-		if ((!PropsValues.PORTAL_JAAS_ENABLE &&
-			 PropsValues.PORTAL_IMPERSONATION_ENABLE) ||
-			alwaysAllowDoAsUser) {
-
-			String doAsUserIdString = ParamUtil.getString(
-				request, "doAsUserId");
-
-			try {
-				long doAsUserId = getDoAsUserId(
-					request, doAsUserIdString, alwaysAllowDoAsUser);
-
-				if (doAsUserId > 0) {
-					if (_log.isDebugEnabled()) {
-						_log.debug("Impersonating user " + doAsUserId);
-					}
-
-					return doAsUserId;
+				try {
+					alwaysAllowDoAsUser = isAlwaysAllowDoAsUser(request);
+				}
+				catch (Exception e) {
+					_log.error(e, e);
 				}
 			}
-			catch (Exception e) {
-				_log.error("Unable to impersonate user " + doAsUserIdString, e);
+
+			if ((!PropsValues.PORTAL_JAAS_ENABLE &&
+				 PropsValues.PORTAL_IMPERSONATION_ENABLE) ||
+				alwaysAllowDoAsUser) {
+
+				try {
+					long doAsUserId = getDoAsUserId(
+						request, doAsUserIdString, alwaysAllowDoAsUser);
+
+					if (doAsUserId > 0) {
+						if (_log.isDebugEnabled()) {
+							_log.debug("Impersonating user " + doAsUserId);
+						}
+
+						return doAsUserId;
+					}
+				}
+				catch (Exception e) {
+					_log.error(
+						"Unable to impersonate user " + doAsUserIdString, e);
+				}
 			}
 		}
 
