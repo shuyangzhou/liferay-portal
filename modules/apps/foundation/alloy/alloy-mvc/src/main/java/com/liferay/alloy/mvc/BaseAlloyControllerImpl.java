@@ -655,7 +655,7 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 		Layout layout = themeDisplay.getLayout();
 
 		PortletURL portletURL = PortletURLFactoryUtil.create(
-			request, portlet.getPortletId(), layout.getPlid(), lifecycle);
+			request, portlet, layout, lifecycle);
 
 		portletURL.setParameter("action", action);
 		portletURL.setParameter("controller", controller);

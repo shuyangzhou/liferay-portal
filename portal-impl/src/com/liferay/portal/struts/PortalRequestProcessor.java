@@ -340,7 +340,7 @@ public class PortalRequestProcessor extends TilesRequestProcessor {
 		}
 
 		LiferayPortletURL portletURL = PortletURLFactoryUtil.create(
-			request, portletId, layout, PortletRequest.RENDER_PHASE);
+			request, portlet, layout, PortletRequest.RENDER_PHASE);
 
 		Map<String, String[]> parameterMap = request.getParameterMap();
 
