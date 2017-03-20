@@ -18,8 +18,10 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
-import com.liferay.portal.kernel.util.AutoResetThreadLocal;
 import com.liferay.portlet.PortletPreferencesImpl;
+
+import java.util.Collections;
+import java.util.Map;
 
 import javax.portlet.ReadOnlyException;
 
@@ -29,33 +31,23 @@ import javax.portlet.ReadOnlyException;
  */
 public class TemplatePortletPreferences {
 
-	public void reset() {
-		PortletPreferencesImpl portletPreferencesImpl =
-			_portletPreferencesImplThreadLocal.get();
-
-		portletPreferencesImpl.reset();
-	}
-
-	public void setValue(String key, String value) throws ReadOnlyException {
-		PortletPreferencesImpl portletPreferencesImpl =
-			_portletPreferencesImplThreadLocal.get();
-
-		portletPreferencesImpl.setValue(key, value);
-	}
-
-	public void setValues(String key, String[] values)
+	public String getPreferences(Map<String, Object> preferences)
 		throws ReadOnlyException {
 
 		PortletPreferencesImpl portletPreferencesImpl =
-			_portletPreferencesImplThreadLocal.get();
+			new PortletPreferencesImpl();
 
-		portletPreferencesImpl.setValues(key, values);
-	}
+		for (Map.Entry<String, Object> entry : preferences.entrySet()) {
+			Object value = entry.getValue();
 
-	@Override
-	public String toString() {
-		PortletPreferencesImpl portletPreferencesImpl =
-			_portletPreferencesImplThreadLocal.get();
+			if (value instanceof String) {
+				portletPreferencesImpl.setValue(entry.getKey(), (String)value);
+			}
+			else if (value instanceof String[]) {
+				portletPreferencesImpl.setValues(
+					entry.getKey(), (String[])value);
+			}
+		}
 
 		try {
 			return PortletPreferencesFactoryUtil.toXML(portletPreferencesImpl);
@@ -67,19 +59,35 @@ public class TemplatePortletPreferences {
 		}
 	}
 
+	public String getPreferences(String key, String value)
+		throws ReadOnlyException {
+
+		return getPreferences(Collections.singletonMap(key, value));
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
+	public void reset() {
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
+	public void setValue(String key, String value) throws ReadOnlyException {
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
+	public void setValues(String key, String[] values)
+		throws ReadOnlyException {
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		TemplatePortletPreferences.class);
-
-	private final ThreadLocal<PortletPreferencesImpl>
-		_portletPreferencesImplThreadLocal =
-			new AutoResetThreadLocal<PortletPreferencesImpl>(
-				TemplatePortletPreferences.class.getName()) {
-
-				@Override
-				protected PortletPreferencesImpl initialValue() {
-					return new PortletPreferencesImpl();
-				}
-
-			};
 
 }
