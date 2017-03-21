@@ -75,7 +75,7 @@ public class LPKGVersionChangeLogAssertorTest {
 		boolean hasLog = false;
 
 		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(
-				logsPath, "*.log")) {
+				logsPath, "liferay*.log")) {
 
 			for (Path logPath : directoryStream) {
 				hasLog = true;
