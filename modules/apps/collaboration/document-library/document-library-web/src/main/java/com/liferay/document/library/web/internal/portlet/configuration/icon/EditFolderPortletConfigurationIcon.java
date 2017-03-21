@@ -116,7 +116,9 @@ public class EditFolderPortletConfigurationIcon
 	}
 
 	@Override
-	public boolean isShow(PortletRequest portletRequest) {
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
+
 		try {
 			long folderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
 
@@ -133,10 +135,6 @@ public class EditFolderPortletConfigurationIcon
 			else {
 				folderId = folder.getFolderId();
 			}
-
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)portletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
 
 			return DLFolderPermission.contains(
 				themeDisplay.getPermissionChecker(),

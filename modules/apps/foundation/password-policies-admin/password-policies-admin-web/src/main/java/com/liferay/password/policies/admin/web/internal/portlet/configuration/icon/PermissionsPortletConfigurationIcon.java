@@ -87,12 +87,10 @@ public class PermissionsPortletConfigurationIcon
 	}
 
 	@Override
-	public boolean isShow(PortletRequest portletRequest) {
-		try {
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)portletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
 
+		try {
 			if (PasswordPolicyPermissionUtil.contains(
 					themeDisplay.getPermissionChecker(),
 					_getPasswordPolicyId(portletRequest),

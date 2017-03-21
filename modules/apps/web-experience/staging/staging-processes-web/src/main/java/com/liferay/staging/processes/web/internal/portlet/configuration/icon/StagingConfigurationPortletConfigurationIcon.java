@@ -87,16 +87,15 @@ public class StagingConfigurationPortletConfigurationIcon
 	}
 
 	@Override
-	public boolean isShow(PortletRequest portletRequest) {
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
+
 		boolean showStagingConfiguration = GetterUtil.getBoolean(
 			portletRequest.getParameter("showStagingConfiguration"));
 
 		if (showStagingConfiguration) {
 			return false;
 		}
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
 
 		Group group = themeDisplay.getScopeGroup();
 

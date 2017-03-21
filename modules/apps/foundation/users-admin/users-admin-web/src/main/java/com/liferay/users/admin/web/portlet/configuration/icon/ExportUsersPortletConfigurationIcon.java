@@ -80,6 +80,13 @@ public class ExportUsersPortletConfigurationIcon
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
+		return isShow(portletRequest, themeDisplay);
+	}
+
+	@Override
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
+
 		PermissionChecker permissionChecker =
 			themeDisplay.getPermissionChecker();
 
