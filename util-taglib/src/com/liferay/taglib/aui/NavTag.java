@@ -187,7 +187,7 @@ public class NavTag extends BaseNavTag implements BodyTag {
 
 		if (Validator.isNull(_namespacedId)) {
 			_namespacedId = PortalUtil.getUniqueElementId(
-				request, StringPool.BLANK, AUIUtil.normalizeId("navTag"));
+				StringPool.BLANK, AUIUtil.normalizeId("navTag"));
 		}
 
 		PortletResponse portletResponse = (PortletResponse)request.getAttribute(
