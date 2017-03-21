@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.portlet.configuration.icon;
 
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+
 import java.io.IOException;
 
 import java.util.Map;
@@ -74,6 +76,12 @@ public interface PortletConfigurationIcon {
 	public boolean isLabel();
 
 	public boolean isShow(PortletRequest portletRequest);
+
+	public default boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
+
+		return isShow(portletRequest);
+	}
 
 	public boolean isToolTip();
 
