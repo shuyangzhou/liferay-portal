@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.service.permission.OrganizationPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 import com.liferay.users.admin.web.portlet.action.ActionUtil;
 
@@ -96,9 +95,8 @@ public class AssignOrganizationRolesPortletConfigurationIcon
 	}
 
 	@Override
-	public boolean isShow(PortletRequest portletRequest) {
-		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
 
 		try {
 			PermissionChecker permissionChecker =

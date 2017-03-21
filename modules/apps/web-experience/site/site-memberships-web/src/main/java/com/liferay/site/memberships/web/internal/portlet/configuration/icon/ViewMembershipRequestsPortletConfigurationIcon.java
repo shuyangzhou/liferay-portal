@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.site.memberships.web.internal.constants.SiteMembershipsPortletKeys;
 
 import java.util.ResourceBundle;
@@ -73,9 +72,8 @@ public class ViewMembershipRequestsPortletConfigurationIcon
 	}
 
 	@Override
-	public boolean isShow(PortletRequest portletRequest) {
-		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
 
 		String tabs1 = ParamUtil.getString(portletRequest, "tabs1", "users");
 

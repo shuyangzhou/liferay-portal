@@ -89,12 +89,10 @@ public class EditEntryPortletConfigurationIcon
 	}
 
 	@Override
-	public boolean isShow(PortletRequest portletRequest) {
-		try {
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)portletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
 
+		try {
 			AnnouncementsEntry entry = ActionUtil.getEntry(portletRequest);
 
 			return AnnouncementsEntryPermission.contains(

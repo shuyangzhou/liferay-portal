@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfiguration
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -88,7 +87,9 @@ public class MoveFolderPortletConfigurationIcon
 	}
 
 	@Override
-	public boolean isShow(PortletRequest portletRequest) {
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
+
 		try {
 			BookmarksFolder folder = ActionUtil.getFolder(portletRequest);
 
@@ -97,10 +98,6 @@ public class MoveFolderPortletConfigurationIcon
 
 				return false;
 			}
-
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)portletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
 
 			if (BookmarksFolderPermissionChecker.contains(
 					themeDisplay.getPermissionChecker(), folder,

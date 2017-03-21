@@ -97,9 +97,8 @@ public class FolderPermissionPortletConfigurationIcon
 	}
 
 	@Override
-	public boolean isShow(PortletRequest portletRequest) {
-		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
 
 		try {
 			Folder folder = ActionUtil.getFolder(portletRequest);

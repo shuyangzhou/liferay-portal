@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
-import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.ResourceBundle;
 
@@ -84,7 +83,9 @@ public class CopyApplicationsPortletConfigurationIcon
 	}
 
 	@Override
-	public boolean isShow(PortletRequest portletRequest) {
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
+
 		try {
 			Layout layout = getLayout(portletRequest);
 
@@ -117,10 +118,6 @@ public class CopyApplicationsPortletConfigurationIcon
 			if (group.isLayoutPrototype()) {
 				return false;
 			}
-
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)portletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
 
 			if (LayoutPermissionUtil.contains(
 					themeDisplay.getPermissionChecker(), layout,

@@ -96,9 +96,8 @@ public class ManageSiteTemplatesConfigurationIcon
 	}
 
 	@Override
-	public boolean isShow(PortletRequest portletRequest) {
-		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
 
 		if (PortalPermissionUtil.contains(
 				themeDisplay.getPermissionChecker(),

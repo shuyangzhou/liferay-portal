@@ -131,15 +131,13 @@ public class DeleteThreadPortletConfigurationIcon
 	}
 
 	@Override
-	public boolean isShow(PortletRequest portletRequest) {
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
+
 		try {
 			MBMessage message = ActionUtil.getMessage(portletRequest);
 
 			MBThread thread = message.getThread();
-
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)portletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
 
 			if (MBMessagePermission.contains(
 					themeDisplay.getPermissionChecker(), message,

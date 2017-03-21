@@ -111,7 +111,9 @@ public class OpenInMSOfficeFileEntryPortletConfigurationIcon
 	}
 
 	@Override
-	public boolean isShow(PortletRequest portletRequest) {
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
+
 		try {
 			HttpServletRequest request = _portal.getHttpServletRequest(
 				portletRequest);
@@ -120,10 +122,6 @@ public class OpenInMSOfficeFileEntryPortletConfigurationIcon
 
 			FileVersion fileVersion = ActionUtil.getFileVersion(
 				portletRequest, fileEntry);
-
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)portletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
 
 			ResourceBundle resourceBundle =
 				_resourceBundleLoader.loadResourceBundle(

@@ -86,7 +86,9 @@ public class PermissionsPortletConfigurationIcon
 	}
 
 	@Override
-	public boolean isShow(PortletRequest portletRequest) {
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
+
 		try {
 			Layout layout = getLayout(portletRequest);
 
@@ -99,10 +101,6 @@ public class PermissionsPortletConfigurationIcon
 			if (group.isLayoutPrototype()) {
 				return false;
 			}
-
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)portletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
 
 			if (LayoutPermissionUtil.contains(
 					themeDisplay.getPermissionChecker(),
