@@ -30,36 +30,10 @@ import javax.servlet.ServletContext;
 public class ServletContextPool {
 
 	public static void clear() {
-		_instance._servletContexts.clear();
+		_servletContexts.clear();
 	}
 
 	public static boolean containsKey(String servletContextName) {
-		return _instance._containsKey(servletContextName);
-	}
-
-	public static ServletContext get(String servletContextName) {
-		return _instance._get(servletContextName);
-	}
-
-	public static Set<String> keySet() {
-		return _instance._keySet();
-	}
-
-	public static void put(
-		String servletContextName, ServletContext servletContext) {
-
-		_instance._put(servletContextName, servletContext);
-	}
-
-	public static ServletContext remove(String servletContextName) {
-		return _instance._remove(servletContextName);
-	}
-
-	private ServletContextPool() {
-		_servletContexts = new ConcurrentHashMap<>();
-	}
-
-	private boolean _containsKey(String servletContextName) {
 		if (servletContextName == null) {
 			return false;
 		}
@@ -73,7 +47,7 @@ public class ServletContextPool {
 		return value;
 	}
 
-	private ServletContext _get(String servletContextName) {
+	public static ServletContext get(String servletContextName) {
 		ServletContext servletContext = _servletContexts.get(
 			servletContextName);
 
@@ -84,11 +58,11 @@ public class ServletContextPool {
 		return servletContext;
 	}
 
-	private Set<String> _keySet() {
+	public static Set<String> keySet() {
 		return _servletContexts.keySet();
 	}
 
-	private void _put(
+	public static void put(
 		String servletContextName, ServletContext servletContext) {
 
 		if (_log.isDebugEnabled()) {
@@ -98,7 +72,7 @@ public class ServletContextPool {
 		_servletContexts.put(servletContextName, servletContext);
 	}
 
-	private ServletContext _remove(String servletContextName) {
+	public static ServletContext remove(String servletContextName) {
 
 		// We should never remove the portal context. See LPS-12683.
 
@@ -121,9 +95,7 @@ public class ServletContextPool {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ServletContextPool.class);
 
-	private static final ServletContextPool _instance =
-		new ServletContextPool();
-
-	private final Map<String, ServletContext> _servletContexts;
+	private static final Map<String, ServletContext> _servletContexts =
+		new ConcurrentHashMap<>();
 
 }
