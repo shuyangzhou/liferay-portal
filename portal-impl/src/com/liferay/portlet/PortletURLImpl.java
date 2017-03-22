@@ -834,7 +834,7 @@ public class PortletURLImpl
 			String name = entry.getKey();
 
 			if (!isParameterIncludedInPath(name)) {
-				sb.append(HttpUtil.encodeURL(name));
+				sb.append(name);
 				sb.append(StringPool.EQUAL);
 				sb.append(processValue(key, entry.getValue()));
 				sb.append(StringPool.AMPERSAND);
