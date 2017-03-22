@@ -845,8 +845,7 @@ public class PortletURLImpl
 			try {
 				Company company = PortalUtil.getCompany(_request);
 
-				sb.append("doAsUserId");
-				sb.append(StringPool.EQUAL);
+				sb.append("doAsUserId=");
 				sb.append(processValue(company.getKeyObj(), _doAsUserId));
 				sb.append(StringPool.AMPERSAND);
 			}
@@ -858,8 +857,7 @@ public class PortletURLImpl
 			String doAsUserId = themeDisplay.getDoAsUserId();
 
 			if (Validator.isNotNull(doAsUserId)) {
-				sb.append("doAsUserId");
-				sb.append(StringPool.EQUAL);
+				sb.append("doAsUserId=");
 				sb.append(processValue(key, doAsUserId));
 				sb.append(StringPool.AMPERSAND);
 			}
@@ -872,8 +870,7 @@ public class PortletURLImpl
 		}
 
 		if (Validator.isNotNull(doAsUserLanguageId)) {
-			sb.append("doAsUserLanguageId");
-			sb.append(StringPool.EQUAL);
+			sb.append("doAsUserLanguageId=");
 			sb.append(processValue(key, doAsUserLanguageId));
 			sb.append(StringPool.AMPERSAND);
 		}
@@ -885,8 +882,7 @@ public class PortletURLImpl
 		}
 
 		if (doAsGroupId > 0) {
-			sb.append("doAsGroupId");
-			sb.append(StringPool.EQUAL);
+			sb.append("doAsGroupId=");
 			sb.append(processValue(key, doAsGroupId));
 			sb.append(StringPool.AMPERSAND);
 		}
@@ -898,8 +894,7 @@ public class PortletURLImpl
 		}
 
 		if (refererGroupId > 0) {
-			sb.append("refererGroupId");
-			sb.append(StringPool.EQUAL);
+			sb.append("refererGroupId=");
 			sb.append(processValue(key, refererGroupId));
 			sb.append(StringPool.AMPERSAND);
 		}
@@ -911,8 +906,7 @@ public class PortletURLImpl
 		}
 
 		if (refererPlid > 0) {
-			sb.append("refererPlid");
-			sb.append(StringPool.EQUAL);
+			sb.append("refererPlid=");
 			sb.append(processValue(key, refererPlid));
 			sb.append(StringPool.AMPERSAND);
 		}
