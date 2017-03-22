@@ -1555,7 +1555,7 @@ public class LayoutTypePortletImpl
 
 		String selector1 = StringPool.BLANK;
 
-		Group group = layout.getGroup();
+		Group group = _getGroup();
 
 		if (group == null) {
 			_log.error("Unable to get group " + layout.getGroupId());
@@ -1847,11 +1847,7 @@ public class LayoutTypePortletImpl
 
 	protected boolean isLayoutSetPrototype() {
 		try {
-			Layout layout = getLayout();
-
-			LayoutSet layoutSet = layout.getLayoutSet();
-
-			Group group = layoutSet.getGroup();
+			Group group = _getGroup();
 
 			return group.isLayoutSetPrototype();
 		}
@@ -1941,6 +1937,16 @@ public class LayoutTypePortletImpl
 			_dateFormat.format(new Date()));
 	}
 
+	private Group _getGroup() {
+		if (_group == null) {
+			Layout layout = getLayout();
+
+			_group = layout.getGroup();
+		}
+
+		return _group;
+	}
+
 	private static final String _MODIFIED_DATE = "modifiedDate";
 
 	private static final String _NESTED_PORTLETS_NAMESPACE =
@@ -1956,6 +1962,7 @@ public class LayoutTypePortletImpl
 		FastDateFormatFactoryUtil.getSimpleDateFormat(
 			PropsValues.INDEX_DATE_FORMAT_PATTERN);
 	private boolean _enablePortletLayoutListener = true;
+	private Group _group;
 	private Layout _layoutSetPrototypeLayout;
 	private PortalPreferences _portalPreferences;
 	private boolean _updatePermission;
