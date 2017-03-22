@@ -837,12 +837,7 @@ public class PortletURLImpl
 		if (Validator.isNull(_layoutFriendlyURL)) {
 			sb.append(PortalUtil.getPortalURL(_request, _secure));
 			sb.append(themeDisplay.getPathMain());
-			sb.append("/portal/layout?");
-
-			addPortalAuthToken(sb, key);
-
-			sb.append("p_l_id");
-			sb.append(StringPool.EQUAL);
+			sb.append("/portal/layout?p_l_id=");
 			sb.append(processValue(key, _plid));
 			sb.append(StringPool.AMPERSAND);
 		}
@@ -868,10 +863,9 @@ public class PortletURLImpl
 			}
 
 			sb.append(StringPool.QUESTION);
-
-			addPortalAuthToken(sb, key);
 		}
 
+		addPortalAuthToken(sb, key);
 		addPortletAuthToken(sb, key);
 
 		for (Map.Entry<String, String> entry :
