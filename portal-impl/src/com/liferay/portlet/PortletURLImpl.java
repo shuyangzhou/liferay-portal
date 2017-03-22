@@ -308,6 +308,10 @@ public class PortletURLImpl
 
 	@Override
 	public Map<String, String> getReservedParameterMap() {
+		return Collections.unmodifiableMap(_getReservedParameterMap());
+	}
+
+	private Map<String, String> _getReservedParameterMap() {
 		if (_reservedParameters != null) {
 			return _reservedParameters;
 		}
@@ -345,8 +349,6 @@ public class PortletURLImpl
 		if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
 			_reservedParameters.put("p_p_cacheability", _cacheability);
 		}
-
-		_reservedParameters = Collections.unmodifiableMap(_reservedParameters);
 
 		return _reservedParameters;
 	}
