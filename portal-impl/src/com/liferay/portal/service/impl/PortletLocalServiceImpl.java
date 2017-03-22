@@ -70,6 +70,7 @@ import com.liferay.portal.kernel.util.ClassLoaderPool;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringPool;
@@ -455,6 +456,11 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by
+	 * {@link #getFriendlyURLMapperPortlets(String)}
+	 */
+	@Deprecated
 	@Override
 	@Skip
 	public List<Portlet> getFriendlyURLMapperPortlets() {
@@ -472,6 +478,47 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			}
 
 			portlets.add(portlet);
+		}
+
+		return portlets;
+	}
+
+	@Override
+	@Skip
+	public List<Portlet> getFriendlyURLMapperPortlets(String url) {
+		FriendlyURLMapper[] friendlyURLMappers = _friendlyURLMappers.get();
+
+		List<Portlet> portlets = new ArrayList<>(friendlyURLMappers.length);
+
+		for (FriendlyURLMapper friendlyURLMapper : friendlyURLMappers) {
+			String mapping = friendlyURLMapper.getMapping();
+
+			if (url.endsWith(StringPool.SLASH.concat(mapping))) {
+				url += StringPool.SLASH;
+			}
+
+			int pos = -1;
+
+			if (friendlyURLMapper.isCheckMappingWithPrefix()) {
+				pos = url.indexOf(
+					Portal.FRIENDLY_URL_SEPARATOR + mapping + StringPool.SLASH);
+			}
+			else {
+				pos = url.indexOf(
+					StringPool.SLASH + mapping + StringPool.SLASH);
+			}
+
+			if (pos != -1) {
+				Portlet portlet = _portletsMap.get(
+					PortletConstants.getRootPortletId(
+						friendlyURLMapper.getPortletId()));
+
+				if (!isValid(portlet)) {
+					continue;
+				}
+
+				portlets.add(portlet);
+			}
 		}
 
 		return portlets;
