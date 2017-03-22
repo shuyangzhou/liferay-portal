@@ -311,48 +311,6 @@ public class PortletURLImpl
 		return Collections.unmodifiableMap(_getReservedParameterMap());
 	}
 
-	private Map<String, String> _getReservedParameterMap() {
-		if (_reservedParameters != null) {
-			return _reservedParameters;
-		}
-
-		_reservedParameters = new LinkedHashMap<>();
-
-		_reservedParameters.put("p_p_id", _portletId);
-
-		if (_lifecycle.equals(PortletRequest.ACTION_PHASE)) {
-			_reservedParameters.put("p_p_lifecycle", "1");
-		}
-		else if (_lifecycle.equals(PortletRequest.RENDER_PHASE)) {
-			_reservedParameters.put("p_p_lifecycle", "0");
-		}
-		else if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-			_reservedParameters.put("p_p_lifecycle", "2");
-		}
-
-		if (_windowStateString != null) {
-			_reservedParameters.put("p_p_state", _windowStateString);
-		}
-
-		if (_windowStateRestoreCurrentView) {
-			_reservedParameters.put("p_p_state_rcv", "1");
-		}
-
-		if (_portletModeString != null) {
-			_reservedParameters.put("p_p_mode", _portletModeString);
-		}
-
-		if (_resourceID != null) {
-			_reservedParameters.put("p_p_resource_id", _resourceID);
-		}
-
-		if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-			_reservedParameters.put("p_p_cacheability", _cacheability);
-		}
-
-		return _reservedParameters;
-	}
-
 	@Override
 	public String getResourceID() {
 		return _resourceID;
@@ -1327,6 +1285,48 @@ public class PortletURLImpl
 			PortletLocalServiceUtil.fetchPortletById(
 				PortalUtil.getCompanyId(request), portletId),
 			portletRequest, layout, lifecycle);
+	}
+
+	private Map<String, String> _getReservedParameterMap() {
+		if (_reservedParameters != null) {
+			return _reservedParameters;
+		}
+
+		_reservedParameters = new LinkedHashMap<>();
+
+		_reservedParameters.put("p_p_id", _portletId);
+
+		if (_lifecycle.equals(PortletRequest.ACTION_PHASE)) {
+			_reservedParameters.put("p_p_lifecycle", "1");
+		}
+		else if (_lifecycle.equals(PortletRequest.RENDER_PHASE)) {
+			_reservedParameters.put("p_p_lifecycle", "0");
+		}
+		else if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+			_reservedParameters.put("p_p_lifecycle", "2");
+		}
+
+		if (_windowStateString != null) {
+			_reservedParameters.put("p_p_state", _windowStateString);
+		}
+
+		if (_windowStateRestoreCurrentView) {
+			_reservedParameters.put("p_p_state_rcv", "1");
+		}
+
+		if (_portletModeString != null) {
+			_reservedParameters.put("p_p_mode", _portletModeString);
+		}
+
+		if (_resourceID != null) {
+			_reservedParameters.put("p_p_resource_id", _resourceID);
+		}
+
+		if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+			_reservedParameters.put("p_p_cacheability", _cacheability);
+		}
+
+		return _reservedParameters;
 	}
 
 	private Map<String, String[]> _mergeWithRenderParameters(
