@@ -139,6 +139,7 @@ public class PortletContainerTestUtil {
 		themeDisplay.setCompany(company);
 
 		themeDisplay.setLayout(layout);
+		themeDisplay.setLayoutSet(layout.getLayoutSet());
 		themeDisplay.setPlid(layout.getPlid());
 		themeDisplay.setPortalURL(TestPropsValues.PORTAL_URL);
 		themeDisplay.setRequest(httpServletRequest);
