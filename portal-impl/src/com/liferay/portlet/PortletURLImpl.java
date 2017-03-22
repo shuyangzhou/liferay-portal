@@ -829,7 +829,7 @@ public class PortletURLImpl
 		addPortletAuthToken(sb, key);
 
 		for (Map.Entry<String, String> entry :
-				getReservedParameterMap().entrySet()) {
+				_getReservedParameterMap().entrySet()) {
 
 			String name = entry.getKey();
 
