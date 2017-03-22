@@ -56,6 +56,13 @@ public class ScriptDataPortletFilter implements RenderFilter, ResourceFilter {
 
 		filterChain.doFilter(renderRequest, renderResponse);
 
+		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		if (!themeDisplay.isIsolated() && !themeDisplay.isStateExclusive()) {
+			return;
+		}
+
 		HttpServletRequest request = PortalUtil.getHttpServletRequest(
 			renderRequest);
 
@@ -66,12 +73,7 @@ public class ScriptDataPortletFilter implements RenderFilter, ResourceFilter {
 			return;
 		}
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		if (themeDisplay.isIsolated() || themeDisplay.isStateExclusive()) {
-			_flushScriptData(scriptData, _getMimeResponseImpl(renderResponse));
-		}
+		_flushScriptData(scriptData, _getMimeResponseImpl(renderResponse));
 	}
 
 	@Override
