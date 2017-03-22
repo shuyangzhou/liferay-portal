@@ -459,14 +459,14 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 	@Override
 	@Skip
 	public List<Portlet> getFriendlyURLMapperPortlets() {
-		String[] friendlyURLMapperRootPortletIds =
-			_friendlyURLMapperRootPortletIds.get();
+		FriendlyURLMapper[] friendlyURLMappers = _friendlyURLMappers.get();
 
-		List<Portlet> portlets = new ArrayList<>(
-			friendlyURLMapperRootPortletIds.length);
+		List<Portlet> portlets = new ArrayList<>(friendlyURLMappers.length);
 
-		for (String rootPortletId : friendlyURLMapperRootPortletIds) {
-			Portlet portlet = _portletsMap.get(rootPortletId);
+		for (FriendlyURLMapper friendlyURLMapper : friendlyURLMappers) {
+			Portlet portlet = _portletsMap.get(
+				PortletConstants.getRootPortletId(
+					friendlyURLMapper.getPortletId()));
 
 			if ((portlet == null) || !portlet.isActive() ||
 				!portlet.isInclude() || !portlet.isReady() ||
@@ -2623,93 +2623,50 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 	private static final Map<ClassLoader, Configuration>
 		_propertiesConfigurations = new ConcurrentHashMap<>();
 
-	private final AtomicReference<String[]> _friendlyURLMapperRootPortletIds =
-		new AtomicReference<>(new String[0]);
-	private ServiceTracker<FriendlyURLMapper, String[]> _serviceTracker;
+	private final AtomicReference<FriendlyURLMapper[]> _friendlyURLMappers =
+		new AtomicReference<>(new FriendlyURLMapper[0]);
+	private ServiceTracker<FriendlyURLMapper, FriendlyURLMapper>
+		_serviceTracker;
 
 	private class FriendlyURLMapperServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer<FriendlyURLMapper, String[]> {
+		implements ServiceTrackerCustomizer
+			<FriendlyURLMapper, FriendlyURLMapper> {
 
 		@Override
-		public String[] addingService(
+		public FriendlyURLMapper addingService(
 			ServiceReference<FriendlyURLMapper> serviceReference) {
 
-			Object propertyValue = serviceReference.getProperty(
-				"javax.portlet.name");
+			Registry registry = RegistryUtil.getRegistry();
 
-			if (propertyValue == null) {
-				return null;
+			FriendlyURLMapper friendlyURLMapper = registry.getService(
+				serviceReference);
+
+			while (true) {
+				FriendlyURLMapper[] friendlyURLMappers =
+					_friendlyURLMappers.get();
+
+				FriendlyURLMapper[] newFriendlyURLMapperRootPortletIds =
+					ArrayUtil.append(friendlyURLMappers, friendlyURLMapper);
+
+				Arrays.sort(newFriendlyURLMapperRootPortletIds);
+
+				if (_friendlyURLMappers.compareAndSet(
+						friendlyURLMappers,
+						newFriendlyURLMapperRootPortletIds)) {
+
+					break;
+				}
 			}
 
-			if (propertyValue instanceof String) {
-				String portletId = (String)propertyValue;
-
-				String rootPortletId = PortletConstants.getRootPortletId(
-					portletId);
-
-				while (true) {
-					String[] friendlyURLMapperRootPortletIds =
-						_friendlyURLMapperRootPortletIds.get();
-
-					String[] newFriendlyURLMapperRootPortletIds =
-						ArrayUtil.append(
-							friendlyURLMapperRootPortletIds, rootPortletId);
-
-					Arrays.sort(newFriendlyURLMapperRootPortletIds);
-
-					if (_friendlyURLMapperRootPortletIds.compareAndSet(
-							friendlyURLMapperRootPortletIds,
-							newFriendlyURLMapperRootPortletIds)) {
-
-						break;
-					}
-				}
-
-				return new String[] {rootPortletId};
-			}
-
-			if (propertyValue instanceof String[]) {
-				String[] portletIds = (String[])propertyValue;
-
-				String[] rootPortletIds = new String[portletIds.length];
-
-				for (int i = 0; i < portletIds.length; i++) {
-					String rootPortletId = PortletConstants.getRootPortletId(
-						portletIds[i]);
-
-					rootPortletIds[i] = rootPortletId;
-				}
-
-				while (true) {
-					String[] friendlyURLMapperRootPortletIds =
-						_friendlyURLMapperRootPortletIds.get();
-
-					String[] newFriendlyURLMapperRootPortletIds =
-						ArrayUtil.append(
-							friendlyURLMapperRootPortletIds, rootPortletIds);
-
-					Arrays.sort(newFriendlyURLMapperRootPortletIds);
-
-					if (_friendlyURLMapperRootPortletIds.compareAndSet(
-							friendlyURLMapperRootPortletIds,
-							newFriendlyURLMapperRootPortletIds)) {
-
-						break;
-					}
-				}
-
-				return rootPortletIds;
-			}
-
-			return null;
+			return friendlyURLMapper;
 		}
 
 		@Override
 		public void modifiedService(
 			ServiceReference<FriendlyURLMapper> serviceReference,
-			String[] rootPortletIds) {
+			FriendlyURLMapper friendlyURLMapper) {
 
-			removedService(serviceReference, rootPortletIds);
+			removedService(serviceReference, friendlyURLMapper);
 
 			addingService(serviceReference);
 		}
@@ -2717,23 +2674,19 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		@Override
 		public void removedService(
 			ServiceReference<FriendlyURLMapper> serviceReference,
-			String[] rootPortletIds) {
+			FriendlyURLMapper friendlyURLMapper) {
 
 			while (true) {
-				String[] friendlyURLMapperRootPortletIds =
-					_friendlyURLMapperRootPortletIds.get();
+				FriendlyURLMapper[] friendlyURLMappers =
+					_friendlyURLMappers.get();
 
-				String[] newFriendlyURLMapperRootPortletIds =
-					friendlyURLMapperRootPortletIds;
+				FriendlyURLMapper[] newFriendlyURLMappers = friendlyURLMappers;
 
-				for (String rootPortletId : rootPortletIds) {
-					newFriendlyURLMapperRootPortletIds = ArrayUtil.remove(
-						newFriendlyURLMapperRootPortletIds, rootPortletId);
-				}
+				newFriendlyURLMappers = ArrayUtil.remove(
+					newFriendlyURLMappers, friendlyURLMapper);
 
-				if (_friendlyURLMapperRootPortletIds.compareAndSet(
-						friendlyURLMapperRootPortletIds,
-						newFriendlyURLMapperRootPortletIds)) {
+				if (_friendlyURLMappers.compareAndSet(
+						friendlyURLMappers, newFriendlyURLMappers)) {
 
 					break;
 				}
