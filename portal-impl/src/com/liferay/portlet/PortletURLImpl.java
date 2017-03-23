@@ -939,6 +939,10 @@ public class PortletURLImpl
 
 		int previousSbIndex = sb.index();
 
+		String namespace = getNamespace();
+
+		String encodedNamespace = HttpUtil.encodeURL(namespace);
+
 		for (Map.Entry<String, String[]> entry : renderParams.entrySet()) {
 			String name = entry.getKey();
 			String[] values = entry.getValue();
@@ -954,9 +958,23 @@ public class PortletURLImpl
 				name = publicRenderParameterName;
 			}
 
-			name = HttpUtil.encodeURL(prependNamespace(name));
+			boolean appendNamespace = false;
+
+			if (!PortalUtil.isReservedParameter(name) &&
+				!name.startsWith(
+					PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE) &&
+				!name.startsWith(namespace)) {
+
+				appendNamespace = true;
+			}
+
+			name = HttpUtil.encodeURL(name);
 
 			for (String value : values) {
+				if (appendNamespace) {
+					sb.append(encodedNamespace);
+				}
+
 				sb.append(name);
 				sb.append(StringPool.EQUAL);
 				sb.append(processValue(key, value));
