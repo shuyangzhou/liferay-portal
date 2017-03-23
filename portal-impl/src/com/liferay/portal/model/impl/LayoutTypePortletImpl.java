@@ -1555,7 +1555,7 @@ public class LayoutTypePortletImpl
 
 		String selector1 = StringPool.BLANK;
 
-		Group group = layout.getGroup();
+		Group group = getGroup();
 
 		if (group == null) {
 			_log.error("Unable to get group " + layout.getGroupId());
@@ -1847,11 +1847,7 @@ public class LayoutTypePortletImpl
 
 	protected boolean isLayoutSetPrototype() {
 		try {
-			Layout layout = getLayout();
-
-			LayoutSet layoutSet = layout.getLayoutSet();
-
-			Group group = layoutSet.getGroup();
+			Group group = getGroup();
 
 			return group.isLayoutSetPrototype();
 		}

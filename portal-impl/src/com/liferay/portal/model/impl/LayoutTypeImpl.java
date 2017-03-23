@@ -14,6 +14,7 @@
 
 package com.liferay.portal.model.impl;
 
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutType;
 import com.liferay.portal.kernel.model.LayoutTypeAccessPolicy;
@@ -146,10 +147,19 @@ public class LayoutTypeImpl implements LayoutType {
 			StringPool.CLOSE_CURLY_BRACE, variables);
 	}
 
+	protected Group getGroup() {
+		if (_group == null) {
+			_group = _layout.getGroup();
+		}
+
+		return _group;
+	}
+
 	private static final String _URL =
 		"${liferay:mainPath}/portal/layout?p_l_id=${liferay:plid}&" +
 			"p_v_l_s_g_id=${liferay:pvlsgid}";
 
+	private Group _group;
 	private final Layout _layout;
 	private final LayoutTypeAccessPolicy _layoutTypeAccessPolicy;
 	private final LayoutTypeController _layoutTypeController;
