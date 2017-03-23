@@ -88,11 +88,7 @@ public class ServiceContextFactory {
 			serviceContext.setScopeGroupId(themeDisplay.getScopeGroupId());
 			serviceContext.setSignedIn(themeDisplay.isSignedIn());
 			serviceContext.setTimeZone(themeDisplay.getTimeZone());
-
-			User user = themeDisplay.getUser();
-
-			serviceContext.setUserDisplayURL(user.getDisplayURL(themeDisplay));
-			serviceContext.setUserId(user.getUserId());
+			serviceContext.setUserId(themeDisplay.getUserId());
 		}
 		else {
 			serviceContext.setCompanyId(PortalUtil.getCompanyId(request));
@@ -315,11 +311,7 @@ public class ServiceContextFactory {
 				PortalUtil.getPortalURL(portletRequest));
 			serviceContext.setSignedIn(themeDisplay.isSignedIn());
 			serviceContext.setTimeZone(themeDisplay.getTimeZone());
-
-			User user = themeDisplay.getUser();
-
-			serviceContext.setUserDisplayURL(user.getDisplayURL(themeDisplay));
-			serviceContext.setUserId(user.getUserId());
+			serviceContext.setUserId(themeDisplay.getUserId());
 		}
 
 		serviceContext.setScopeGroupId(themeDisplay.getScopeGroupId());

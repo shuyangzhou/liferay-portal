@@ -17,12 +17,15 @@ package com.liferay.portal.kernel.service;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.PortletPreferencesIds;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
@@ -36,6 +39,7 @@ import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -135,7 +139,11 @@ public class ServiceContext implements Cloneable, Serializable {
 		serviceContext.setRequest(getRequest());
 		serviceContext.setScopeGroupId(getScopeGroupId());
 		serviceContext.setSignedIn(isSignedIn());
-		serviceContext.setUserDisplayURL(getUserDisplayURL());
+
+		if (_userDisplayURL != null) {
+			serviceContext.setUserDisplayURL(_userDisplayURL);
+		}
+
 		serviceContext.setUserId(getUserId());
 		serviceContext.setUuid(getUuid());
 		serviceContext.setWorkflowAction(getWorkflowAction());
@@ -719,6 +727,27 @@ public class ServiceContext implements Cloneable, Serializable {
 	 *         page
 	 */
 	public String getUserDisplayURL() {
+		if (_userDisplayURL == null) {
+			ThemeDisplay themeDisplay = getThemeDisplay();
+
+			if (themeDisplay == null) {
+				return null;
+			}
+
+			User user = themeDisplay.getUser();
+
+			try {
+				_userDisplayURL = user.getDisplayURL(themeDisplay);
+			}
+			catch (PortalException pe) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(pe, pe);
+				}
+
+				_userDisplayURL = StringPool.BLANK;
+			}
+		}
+
 		return _userDisplayURL;
 	}
 
@@ -1029,8 +1058,8 @@ public class ServiceContext implements Cloneable, Serializable {
 			setTimeZone(serviceContext.getTimeZone());
 		}
 
-		if (Validator.isNotNull(serviceContext.getUserDisplayURL())) {
-			setUserDisplayURL(serviceContext.getUserDisplayURL());
+		if (Validator.isNotNull(serviceContext._userDisplayURL)) {
+			setUserDisplayURL(serviceContext._userDisplayURL);
 		}
 
 		if (serviceContext.getUserId() > 0) {
@@ -1545,6 +1574,8 @@ public class ServiceContext implements Cloneable, Serializable {
 			}
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(ServiceContext.class);
 
 	private boolean _addGroupPermissions;
 	private boolean _addGuestPermissions;
