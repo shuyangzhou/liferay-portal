@@ -935,16 +935,6 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		}
 	}
 
-	private boolean _isValid(Portlet portlet) {
-		if ((portlet == null) || !portlet.isActive() || !portlet.isInclude() ||
-			!portlet.isReady() || portlet.isUndeployedPortlet()) {
-
-			return false;
-		}
-
-		return true;
-	}
-
 	@Override
 	public Map<String, Portlet> loadGetPortletsMap(long companyId) {
 		Map<String, Portlet> portletsMap = new ConcurrentHashMap<>();
@@ -2620,6 +2610,16 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		return updatePortlet(companyId, portletId, roles, active);
 	}
 
+	private boolean _isValid(Portlet portlet) {
+		if ((portlet == null) || !portlet.isActive() || !portlet.isInclude() ||
+			!portlet.isReady() || portlet.isUndeployedPortlet()) {
+
+			return false;
+		}
+
+		return true;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletLocalServiceImpl.class);
 
@@ -2649,8 +2649,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 				portletIdFriendlyURLMapperComposite) {
 
 			return _comparator.compare(
-				_portletId,
-				portletIdFriendlyURLMapperComposite.getFriendlyURLMapper());
+				_portletId, portletIdFriendlyURLMapperComposite.getPortletId());
 		}
 
 		public FriendlyURLMapper getFriendlyURLMapper() {
