@@ -26,6 +26,10 @@ public class PortletParameterUtil {
 	public static String addNamespace(String portletId, String queryString) {
 		String[] parameters = StringUtil.split(queryString, CharPool.AMPERSAND);
 
+		if (parameters.length == 0) {
+			return "p_p_id=".concat(portletId);
+		}
+
 		StringBundler sb = new StringBundler(2 + parameters.length * 4);
 
 		sb.append("p_p_id=");
