@@ -48,6 +48,8 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -113,7 +115,11 @@ public class ServiceContext implements Cloneable, Serializable {
 		serviceContext.setFailOnPortalException(isFailOnPortalException());
 		serviceContext.setGroupPermissions(getGroupPermissions());
 		serviceContext.setGuestPermissions(getGuestPermissions());
-		serviceContext.setHeaders(getHeaders());
+
+		if (_headers != null) {
+			serviceContext.setHeaders(_headers);
+		}
+
 		serviceContext.setIndexingEnabled(isIndexingEnabled());
 		serviceContext.setLanguageId(getLanguageId());
 		serviceContext.setLayoutFullURL(getLayoutFullURL());
@@ -427,6 +433,22 @@ public class ServiceContext implements Cloneable, Serializable {
 	 */
 	@JSON(include = false)
 	public Map<String, String> getHeaders() {
+		if ((_headers == null) && (_request != null)) {
+			Map<String, String> headerMap = new HashMap<>();
+
+			Enumeration<String> enu = _request.getHeaderNames();
+
+			while (enu.hasMoreElements()) {
+				String header = enu.nextElement();
+
+				String value = _request.getHeader(header);
+
+				headerMap.put(header, value);
+			}
+
+			_headers = headerMap;
+		}
+
 		return _headers;
 	}
 
@@ -987,8 +1009,8 @@ public class ServiceContext implements Cloneable, Serializable {
 			setGuestPermissions(serviceContext.getGuestPermissions());
 		}
 
-		if (serviceContext.getHeaders() != null) {
-			setHeaders(serviceContext.getHeaders());
+		if (serviceContext._headers != null) {
+			setHeaders(serviceContext._headers);
 		}
 
 		setIndexingEnabled(serviceContext.isIndexingEnabled());

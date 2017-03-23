@@ -199,20 +199,6 @@ public class ServiceContextFactory {
 
 		// Request
 
-		Map<String, String> headerMap = new HashMap<>();
-
-		Enumeration<String> enu = request.getHeaderNames();
-
-		while (enu.hasMoreElements()) {
-			String header = enu.nextElement();
-
-			String value = request.getHeader(header);
-
-			headerMap.put(header, value);
-		}
-
-		serviceContext.setHeaders(headerMap);
-
 		serviceContext.setRemoteAddr(request.getRemoteAddr());
 		serviceContext.setRemoteHost(request.getRemoteHost());
 		serviceContext.setRequest(request);
@@ -393,20 +379,6 @@ public class ServiceContextFactory {
 		serviceContext.setPortletId(PortalUtil.getPortletId(portletRequest));
 
 		// Request
-
-		Map<String, String> headerMap = new HashMap<>();
-
-		enu = request.getHeaderNames();
-
-		while (enu.hasMoreElements()) {
-			String header = enu.nextElement();
-
-			String value = request.getHeader(header);
-
-			headerMap.put(header, value);
-		}
-
-		serviceContext.setHeaders(headerMap);
 
 		serviceContext.setRemoteAddr(request.getRemoteAddr());
 		serviceContext.setRemoteHost(request.getRemoteHost());
