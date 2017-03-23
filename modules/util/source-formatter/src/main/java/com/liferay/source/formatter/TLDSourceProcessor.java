@@ -17,6 +17,7 @@ package com.liferay.source.formatter;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.source.formatter.checks.FileCheck;
 import com.liferay.source.formatter.checks.WhitespaceCheck;
+import com.liferay.source.formatter.checks.comparator.ElementComparator;
 
 import java.io.File;
 
@@ -99,7 +100,7 @@ public class TLDSourceProcessor extends BaseSourceProcessor {
 	private static class TagElementComparator extends ElementComparator {
 
 		@Override
-		protected String getElementName(Element element) {
+		public String getElementName(Element element) {
 			Element nameElement = element.element(getNameAttribute());
 
 			return nameElement.getText();

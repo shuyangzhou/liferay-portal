@@ -126,7 +126,7 @@
 
 		<execute function="Pause" locator1="1000" />
 
-		<execute function="AssertTextEquals" locator1="Comments#ENTRY_COUNT_PANEL" value1="${commentCount} Comments" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="Comments#ENTRY_COUNT_PANEL" value1="${commentCount} Comment" />
 
 		<var name="key_userFullName" value="${userFullName}" />
 
