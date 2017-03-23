@@ -130,17 +130,15 @@ public class DeleteFolderPortletConfigurationIcon
 	}
 
 	@Override
-	public boolean isShow(PortletRequest portletRequest) {
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
+
 		try {
 			BookmarksFolder folder = ActionUtil.getFolder(portletRequest);
 
 			if (folder == null) {
 				return false;
 			}
-
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)portletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
 
 			if (BookmarksFolderPermissionChecker.contains(
 					themeDisplay.getPermissionChecker(), folder,

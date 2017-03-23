@@ -131,17 +131,15 @@ public class DeleteCategoryPortletConfigurationIcon
 	}
 
 	@Override
-	public boolean isShow(PortletRequest portletRequest) {
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
+
 		try {
 			MBCategory category = ActionUtil.getCategory(portletRequest);
 
 			if (category == null) {
 				return false;
 			}
-
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)portletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
 
 			if (MBCategoryPermission.contains(
 					themeDisplay.getPermissionChecker(), category,

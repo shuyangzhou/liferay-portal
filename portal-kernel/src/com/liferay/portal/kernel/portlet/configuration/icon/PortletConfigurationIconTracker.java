@@ -15,7 +15,9 @@
 package com.liferay.portal.kernel.portlet.configuration.icon;
 
 import com.liferay.portal.kernel.portlet.configuration.icon.locator.PortletConfigurationIconLocator;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.registry.collections.ServiceTrackerCollections;
 import com.liferay.registry.collections.ServiceTrackerList;
 import com.liferay.registry.collections.ServiceTrackerMap;
@@ -97,6 +99,9 @@ public class PortletConfigurationIconTracker {
 		List<PortletConfigurationIcon> portletConfigurationIcons =
 			new ArrayList<>();
 
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
 		for (String path : getPaths(portletId, portletRequest)) {
 			List<PortletConfigurationIcon> portletPortletConfigurationIcons =
 				_serviceTrackerMap.getService(getKey(StringPool.STAR, path));
@@ -106,7 +111,8 @@ public class PortletConfigurationIconTracker {
 						portletPortletConfigurationIcons) {
 
 					if (!filter ||
-						portletConfigurationIcon.isShow(portletRequest)) {
+						portletConfigurationIcon.isShow(
+							portletRequest, themeDisplay)) {
 
 						portletConfigurationIcons.add(portletConfigurationIcon);
 					}
@@ -126,7 +132,8 @@ public class PortletConfigurationIconTracker {
 				if (!portletConfigurationIcons.contains(
 						portletConfigurationIcon) &&
 					(!filter ||
-					 portletConfigurationIcon.isShow(portletRequest))) {
+					 portletConfigurationIcon.isShow(
+						 portletRequest, themeDisplay))) {
 
 					portletConfigurationIcons.add(portletConfigurationIcon);
 				}
