@@ -997,13 +997,19 @@ public class PortletURLImpl
 			}
 		}
 
-		String result = sb.toString();
+		String lastString = sb.stringAt(sb.index() - 1);
 
-		if (result.endsWith(StringPool.AMPERSAND) ||
-			result.endsWith(StringPool.QUESTION)) {
+		char lastChar = lastString.charAt(lastString.length() - 1);
 
-			result = result.substring(0, result.length() - 1);
+		if ((lastChar == CharPool.AMPERSAND) ||
+			(lastChar == CharPool.QUESTION)) {
+
+			sb.setStringAt(
+				lastString.substring(0, lastString.length() - 1),
+				sb.index() - 1);
 		}
+
+		String result = sb.toString();
 
 		if (!CookieKeys.hasSessionId(_request)) {
 			result = PortalUtil.getURLWithSessionId(
