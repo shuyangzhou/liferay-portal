@@ -60,8 +60,7 @@ if (baseType.equals("email") || baseType.equals("password") || baseType.equals("
 if (type.equals("toggle-card")) {
 	fieldCssClass += " toggle-card";
 }
-
-if (type.equals("toggle-switch")) {
+else if (type.equals("toggle-switch")) {
 	fieldCssClass += " toggle-switch";
 }
 
@@ -80,6 +79,4 @@ if (radioField) {
 if (inputWrapperClass.equals("boolean")) {
 	inputWrapperClass = "checkbox";
 }
-
-String labelTag = AUIUtil.buildLabel(baseTypeCssClass, inlineField, showForLabel, forLabel);
 %>
