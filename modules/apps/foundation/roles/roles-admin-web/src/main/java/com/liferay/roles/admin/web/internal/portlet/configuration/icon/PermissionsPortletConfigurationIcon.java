@@ -100,12 +100,10 @@ public class PermissionsPortletConfigurationIcon
 	}
 
 	@Override
-	public boolean isShow(PortletRequest portletRequest) {
-		try {
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)portletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
+	public boolean isShow(
+		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
 
+		try {
 			long roleId = _getRoleId(portletRequest);
 
 			Role role = _roleService.fetchRole(roleId);
