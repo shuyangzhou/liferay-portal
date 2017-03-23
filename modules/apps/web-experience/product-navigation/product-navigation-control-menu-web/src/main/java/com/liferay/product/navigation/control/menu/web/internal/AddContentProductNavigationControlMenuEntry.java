@@ -86,8 +86,8 @@ public class AddContentProductNavigationControlMenuEntry
 			return false;
 		}
 
-		if (!(hasCustomizePermission(themeDisplay) ||
-			  hasUpdateLayoutPermission(themeDisplay))) {
+		if (!(hasUpdateLayoutPermission(themeDisplay) ||
+			hasCustomizePermission(themeDisplay))) {
 
 			return false;
 		}
