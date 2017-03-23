@@ -427,9 +427,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			new ArrayList<>();
 
 		for (Portlet portlet : getPortlets()) {
-			if (!portlet.isActive() || !portlet.isInclude() ||
-				!portlet.isReady() || portlet.isUndeployedPortlet()) {
-
+			if (!_isValid(portlet)) {
 				continue;
 			}
 
@@ -475,10 +473,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			Portlet portlet = _portletsMap.get(
 				portletIdFriendlyURLMapperComposite.getPortletId());
 
-			if ((portlet == null) || !portlet.isActive() ||
-				!portlet.isInclude() || !portlet.isReady() ||
-				portlet.isUndeployedPortlet()) {
-
+			if (!_isValid(portlet)) {
 				continue;
 			}
 
@@ -494,9 +489,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		List<FriendlyURLMapper> friendlyURLMappers = new ArrayList<>();
 
 		for (Portlet portlet : getPortlets()) {
-			if (!portlet.isActive() || !portlet.isInclude() ||
-				!portlet.isReady() || portlet.isUndeployedPortlet()) {
-
+			if (!_isValid(portlet)) {
 				continue;
 			}
 
@@ -940,6 +933,16 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		finally {
 			clearCache();
 		}
+	}
+
+	private boolean _isValid(Portlet portlet) {
+		if ((portlet == null) || !portlet.isActive() || !portlet.isInclude() ||
+			!portlet.isReady() || portlet.isUndeployedPortlet()) {
+
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override
