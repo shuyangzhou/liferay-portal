@@ -308,47 +308,7 @@ public class PortletURLImpl
 
 	@Override
 	public Map<String, String> getReservedParameterMap() {
-		if (_reservedParameters != null) {
-			return _reservedParameters;
-		}
-
-		_reservedParameters = new LinkedHashMap<>();
-
-		_reservedParameters.put("p_p_id", _portletId);
-
-		if (_lifecycle.equals(PortletRequest.ACTION_PHASE)) {
-			_reservedParameters.put("p_p_lifecycle", "1");
-		}
-		else if (_lifecycle.equals(PortletRequest.RENDER_PHASE)) {
-			_reservedParameters.put("p_p_lifecycle", "0");
-		}
-		else if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-			_reservedParameters.put("p_p_lifecycle", "2");
-		}
-
-		if (_windowStateString != null) {
-			_reservedParameters.put("p_p_state", _windowStateString);
-		}
-
-		if (_windowStateRestoreCurrentView) {
-			_reservedParameters.put("p_p_state_rcv", "1");
-		}
-
-		if (_portletModeString != null) {
-			_reservedParameters.put("p_p_mode", _portletModeString);
-		}
-
-		if (_resourceID != null) {
-			_reservedParameters.put("p_p_resource_id", _resourceID);
-		}
-
-		if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-			_reservedParameters.put("p_p_cacheability", _cacheability);
-		}
-
-		_reservedParameters = Collections.unmodifiableMap(_reservedParameters);
-
-		return _reservedParameters;
+		return Collections.unmodifiableMap(_getReservedParameterMap());
 	}
 
 	@Override
@@ -425,9 +385,8 @@ public class PortletURLImpl
 
 		QName qName = publicRenderParameter.getQName();
 
-		_removePublicRenderParameters.put(
-			PortletQNameUtil.getRemovePublicRenderParameterName(qName),
-			new String[] {"1"});
+		_removePublicRenderParameters.add(
+			PortletQNameUtil.getRemovePublicRenderParameterName(qName));
 	}
 
 	@Override
@@ -837,12 +796,7 @@ public class PortletURLImpl
 		if (Validator.isNull(_layoutFriendlyURL)) {
 			sb.append(PortalUtil.getPortalURL(_request, _secure));
 			sb.append(themeDisplay.getPathMain());
-			sb.append("/portal/layout?");
-
-			addPortalAuthToken(sb, key);
-
-			sb.append("p_l_id");
-			sb.append(StringPool.EQUAL);
+			sb.append("/portal/layout?p_l_id=");
 			sb.append(processValue(key, _plid));
 			sb.append(StringPool.AMPERSAND);
 		}
@@ -868,19 +822,18 @@ public class PortletURLImpl
 			}
 
 			sb.append(StringPool.QUESTION);
-
-			addPortalAuthToken(sb, key);
 		}
 
+		addPortalAuthToken(sb, key);
 		addPortletAuthToken(sb, key);
 
 		for (Map.Entry<String, String> entry :
-				getReservedParameterMap().entrySet()) {
+				_getReservedParameterMap().entrySet()) {
 
 			String name = entry.getKey();
 
 			if (!isParameterIncludedInPath(name)) {
-				sb.append(HttpUtil.encodeURL(name));
+				sb.append(name);
 				sb.append(StringPool.EQUAL);
 				sb.append(processValue(key, entry.getValue()));
 				sb.append(StringPool.AMPERSAND);
@@ -891,8 +844,7 @@ public class PortletURLImpl
 			try {
 				Company company = PortalUtil.getCompany(_request);
 
-				sb.append("doAsUserId");
-				sb.append(StringPool.EQUAL);
+				sb.append("doAsUserId=");
 				sb.append(processValue(company.getKeyObj(), _doAsUserId));
 				sb.append(StringPool.AMPERSAND);
 			}
@@ -904,8 +856,7 @@ public class PortletURLImpl
 			String doAsUserId = themeDisplay.getDoAsUserId();
 
 			if (Validator.isNotNull(doAsUserId)) {
-				sb.append("doAsUserId");
-				sb.append(StringPool.EQUAL);
+				sb.append("doAsUserId=");
 				sb.append(processValue(key, doAsUserId));
 				sb.append(StringPool.AMPERSAND);
 			}
@@ -918,8 +869,7 @@ public class PortletURLImpl
 		}
 
 		if (Validator.isNotNull(doAsUserLanguageId)) {
-			sb.append("doAsUserLanguageId");
-			sb.append(StringPool.EQUAL);
+			sb.append("doAsUserLanguageId=");
 			sb.append(processValue(key, doAsUserLanguageId));
 			sb.append(StringPool.AMPERSAND);
 		}
@@ -931,8 +881,7 @@ public class PortletURLImpl
 		}
 
 		if (doAsGroupId > 0) {
-			sb.append("doAsGroupId");
-			sb.append(StringPool.EQUAL);
+			sb.append("doAsGroupId=");
 			sb.append(processValue(key, doAsGroupId));
 			sb.append(StringPool.AMPERSAND);
 		}
@@ -944,8 +893,7 @@ public class PortletURLImpl
 		}
 
 		if (refererGroupId > 0) {
-			sb.append("refererGroupId");
-			sb.append(StringPool.EQUAL);
+			sb.append("refererGroupId=");
 			sb.append(processValue(key, refererGroupId));
 			sb.append(StringPool.AMPERSAND);
 		}
@@ -957,15 +905,12 @@ public class PortletURLImpl
 		}
 
 		if (refererPlid > 0) {
-			sb.append("refererPlid");
-			sb.append(StringPool.EQUAL);
+			sb.append("refererPlid=");
 			sb.append(processValue(key, refererPlid));
 			sb.append(StringPool.AMPERSAND);
 		}
 
-		for (Map.Entry<String, String[]> entry :
-				_removePublicRenderParameters.entrySet()) {
-
+		if (!_removePublicRenderParameters.isEmpty()) {
 			String lastString = sb.stringAt(sb.index() - 1);
 
 			if (lastString.charAt(lastString.length() - 1) !=
@@ -974,10 +919,16 @@ public class PortletURLImpl
 				sb.append(StringPool.AMPERSAND);
 			}
 
-			sb.append(HttpUtil.encodeURL(entry.getKey()));
-			sb.append(StringPool.EQUAL);
-			sb.append(processValue(key, entry.getValue()[0]));
-			sb.append(StringPool.AMPERSAND);
+			String removeValue = processValue(key, "1");
+
+			for (String removedPublicParameter :
+					_removePublicRenderParameters) {
+
+				sb.append(HttpUtil.encodeURL(removedPublicParameter));
+				sb.append(StringPool.EQUAL);
+				sb.append(removeValue);
+				sb.append(StringPool.AMPERSAND);
+			}
 		}
 
 		Map<String, String[]> renderParams = _params;
@@ -988,28 +939,48 @@ public class PortletURLImpl
 
 		int previousSbIndex = sb.index();
 
-		for (Map.Entry<String, String[]> entry : renderParams.entrySet()) {
-			String name = entry.getKey();
-			String[] values = entry.getValue();
+		if (!renderParams.isEmpty()) {
+			String namespace = getNamespace();
 
-			if (isParameterIncludedInPath(name)) {
-				continue;
-			}
+			String encodedNamespace = HttpUtil.encodeURL(namespace);
 
-			String publicRenderParameterName = getPublicRenderParameterName(
-				name);
+			for (Map.Entry<String, String[]> entry : renderParams.entrySet()) {
+				String name = entry.getKey();
+				String[] values = entry.getValue();
 
-			if (Validator.isNotNull(publicRenderParameterName)) {
-				name = publicRenderParameterName;
-			}
+				if (isParameterIncludedInPath(name)) {
+					continue;
+				}
 
-			name = HttpUtil.encodeURL(prependNamespace(name));
+				String publicRenderParameterName = getPublicRenderParameterName(
+					name);
 
-			for (String value : values) {
-				sb.append(name);
-				sb.append(StringPool.EQUAL);
-				sb.append(processValue(key, value));
-				sb.append(StringPool.AMPERSAND);
+				if (Validator.isNotNull(publicRenderParameterName)) {
+					name = publicRenderParameterName;
+				}
+
+				boolean appendNamespace = false;
+
+				if (!PortalUtil.isReservedParameter(name) &&
+					!name.startsWith(
+						PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE) &&
+					!name.startsWith(namespace)) {
+
+					appendNamespace = true;
+				}
+
+				name = HttpUtil.encodeURL(name);
+
+				for (String value : values) {
+					if (appendNamespace) {
+						sb.append(encodedNamespace);
+					}
+
+					sb.append(name);
+					sb.append(StringPool.EQUAL);
+					sb.append(processValue(key, value));
+					sb.append(StringPool.AMPERSAND);
+				}
 			}
 		}
 
@@ -1046,13 +1017,19 @@ public class PortletURLImpl
 			}
 		}
 
-		String result = sb.toString();
+		String lastString = sb.stringAt(sb.index() - 1);
 
-		if (result.endsWith(StringPool.AMPERSAND) ||
-			result.endsWith(StringPool.QUESTION)) {
+		char lastChar = lastString.charAt(lastString.length() - 1);
 
-			result = result.substring(0, result.length() - 1);
+		if ((lastChar == CharPool.AMPERSAND) ||
+			(lastChar == CharPool.QUESTION)) {
+
+			sb.setStringAt(
+				lastString.substring(0, lastString.length() - 1),
+				sb.index() - 1);
 		}
+
+		String result = sb.toString();
 
 		if (!CookieKeys.hasSessionId(_request)) {
 			result = PortalUtil.getURLWithSessionId(
@@ -1287,7 +1264,7 @@ public class PortletURLImpl
 		_lifecycle = lifecycle;
 		_parametersIncludedInPath = Collections.emptySet();
 		_params = new LinkedHashMap<>();
-		_removePublicRenderParameters = new LinkedHashMap<>();
+		_removePublicRenderParameters = new LinkedHashSet<>();
 		_secure = PortalUtil.isSecure(request);
 		_wsrp = ParamUtil.getBoolean(request, "wsrp");
 
@@ -1333,15 +1310,55 @@ public class PortletURLImpl
 			portletRequest, layout, lifecycle);
 	}
 
+	private Map<String, String> _getReservedParameterMap() {
+		if (_reservedParameters != null) {
+			return _reservedParameters;
+		}
+
+		_reservedParameters = new LinkedHashMap<>();
+
+		_reservedParameters.put("p_p_id", _portletId);
+
+		if (_lifecycle.equals(PortletRequest.ACTION_PHASE)) {
+			_reservedParameters.put("p_p_lifecycle", "1");
+		}
+		else if (_lifecycle.equals(PortletRequest.RENDER_PHASE)) {
+			_reservedParameters.put("p_p_lifecycle", "0");
+		}
+		else if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+			_reservedParameters.put("p_p_lifecycle", "2");
+		}
+
+		if (_windowStateString != null) {
+			_reservedParameters.put("p_p_state", _windowStateString);
+		}
+
+		if (_windowStateRestoreCurrentView) {
+			_reservedParameters.put("p_p_state_rcv", "1");
+		}
+
+		if (_portletModeString != null) {
+			_reservedParameters.put("p_p_mode", _portletModeString);
+		}
+
+		if (_resourceID != null) {
+			_reservedParameters.put("p_p_resource_id", _resourceID);
+		}
+
+		if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+			_reservedParameters.put("p_p_cacheability", _cacheability);
+		}
+
+		return _reservedParameters;
+	}
+
 	private Map<String, String[]> _mergeWithRenderParameters(
 		Map<String, String[]> portletURLParams) {
 
 		String namespace = getNamespace();
 
-		Layout layout = getLayout();
-
 		Map<String, String[]> renderParameters = RenderParametersPool.get(
-			_request, layout.getPlid(), getPortlet().getPortletId());
+			_request, _plid, _portletId);
 
 		if (renderParameters == null) {
 			return portletURLParams;
@@ -1407,7 +1424,7 @@ public class PortletURLImpl
 	private long _refererGroupId;
 	private long _refererPlid;
 	private Set<String> _removedParameterNames;
-	private final Map<String, String[]> _removePublicRenderParameters;
+	private final Set<String> _removePublicRenderParameters;
 	private final HttpServletRequest _request;
 	private Map<String, String> _reservedParameters;
 	private String _resourceID;
