@@ -71,6 +71,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.NullSafeStringComparator;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringPool;
@@ -456,6 +457,53 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		}
 	}
 
+	@Override
+	@Skip
+	public Portlet getFriendlyURLMapperPortlet(String url) {
+		PortletIdFriendlyURLMapperComposite[]
+			portletIdFriendlyURLMapperComposites =
+				_portletIdFriendlyURLMapperComposites.get();
+
+		for (PortletIdFriendlyURLMapperComposite
+				portletIdFriendlyURLMapperComposite :
+					portletIdFriendlyURLMapperComposites) {
+
+			FriendlyURLMapper friendlyURLMapper =
+				portletIdFriendlyURLMapperComposite.getFriendlyURLMapper();
+
+			int pos = -1;
+
+			String mapping = friendlyURLMapper.getMapping();
+
+			if (friendlyURLMapper.isCheckMappingWithPrefix()) {
+				pos = url.indexOf(
+					Portal.FRIENDLY_URL_SEPARATOR + mapping + StringPool.SLASH);
+			}
+			else {
+				pos = url.indexOf(
+					StringPool.SLASH + mapping + StringPool.SLASH);
+			}
+
+			if (pos != -1) {
+				Portlet portlet = _portletsMap.get(
+					portletIdFriendlyURLMapperComposite.getPortletId());
+
+				if (!_isValid(portlet)) {
+					continue;
+				}
+
+				return portlet;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by
+	 * {@link #getFriendlyURLMapperPortlet(String))}
+	 */
+	@Deprecated
 	@Override
 	@Skip
 	public List<Portlet> getFriendlyURLMapperPortlets() {
