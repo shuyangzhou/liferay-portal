@@ -4226,89 +4226,72 @@ public class PortalImpl implements Portal {
 				Map<String, Object> requestContext)
 		throws PortalException {
 
-		boolean foundFriendlyURLMapper = false;
-
 		String friendlyURL = url;
 		String queryString = StringPool.BLANK;
 
-		List<Portlet> portlets =
-			PortletLocalServiceUtil.getFriendlyURLMapperPortlets();
+		if (!url.endsWith(StringPool.SLASH)) {
+			url = url.concat(StringPool.SLASH);
+		}
 
-		for (Portlet portlet : portlets) {
+		Portlet portlet = PortletLocalServiceUtil.getFriendlyURLMapperPortlet(
+			url);
+
+		if (portlet != null) {
 			FriendlyURLMapper friendlyURLMapper =
 				portlet.getFriendlyURLMapperInstance();
 
-			if (url.endsWith(
-					StringPool.SLASH + friendlyURLMapper.getMapping())) {
+			String mapping = friendlyURLMapper.getMapping();
 
-				url += StringPool.SLASH;
-			}
-
-			int pos = -1;
+			int pos = url.indexOf(
+				StringPool.SLASH + mapping + StringPool.SLASH);
 
 			if (friendlyURLMapper.isCheckMappingWithPrefix()) {
-				pos = url.indexOf(
-					FRIENDLY_URL_SEPARATOR + friendlyURLMapper.getMapping() +
-						StringPool.SLASH);
+				pos -= 2;
+			}
+
+			friendlyURL = url.substring(0, pos);
+
+			InheritableMap<String, String[]> actualParams =
+				new InheritableMap<>();
+
+			if (params != null) {
+				actualParams.setParentMap(params);
+			}
+
+			Map<String, String> prpIdentifiers = new HashMap<>();
+
+			Set<PublicRenderParameter> publicRenderParameters =
+				portlet.getPublicRenderParameters();
+
+			for (PublicRenderParameter publicRenderParameter :
+					publicRenderParameters) {
+
+				QName qName = publicRenderParameter.getQName();
+
+				String publicRenderParameterIdentifier = qName.getLocalPart();
+				String publicRenderParameterName =
+					PortletQNameUtil.getPublicRenderParameterName(qName);
+
+				prpIdentifiers.put(
+					publicRenderParameterIdentifier, publicRenderParameterName);
+			}
+
+			FriendlyURLMapperThreadLocal.setPRPIdentifiers(prpIdentifiers);
+
+			if (friendlyURLMapper.isCheckMappingWithPrefix()) {
+				friendlyURLMapper.populateParams(
+					url.substring(pos + 2), actualParams, requestContext);
 			}
 			else {
-				pos = url.indexOf(
-					StringPool.SLASH + friendlyURLMapper.getMapping() +
-						StringPool.SLASH);
+				friendlyURLMapper.populateParams(
+					url.substring(pos), actualParams, requestContext);
 			}
 
-			if (pos != -1) {
-				foundFriendlyURLMapper = true;
-
-				friendlyURL = url.substring(0, pos);
-
-				InheritableMap<String, String[]> actualParams =
-					new InheritableMap<>();
-
-				if (params != null) {
-					actualParams.setParentMap(params);
-				}
-
-				Map<String, String> prpIdentifiers = new HashMap<>();
-
-				Set<PublicRenderParameter> publicRenderParameters =
-					portlet.getPublicRenderParameters();
-
-				for (PublicRenderParameter publicRenderParameter :
-						publicRenderParameters) {
-
-					QName qName = publicRenderParameter.getQName();
-
-					String publicRenderParameterIdentifier =
-						qName.getLocalPart();
-					String publicRenderParameterName =
-						PortletQNameUtil.getPublicRenderParameterName(qName);
-
-					prpIdentifiers.put(
-						publicRenderParameterIdentifier,
-						publicRenderParameterName);
-				}
-
-				FriendlyURLMapperThreadLocal.setPRPIdentifiers(prpIdentifiers);
-
-				if (friendlyURLMapper.isCheckMappingWithPrefix()) {
-					friendlyURLMapper.populateParams(
-						url.substring(pos + 2), actualParams, requestContext);
-				}
-				else {
-					friendlyURLMapper.populateParams(
-						url.substring(pos), actualParams, requestContext);
-				}
-
-				queryString =
-					StringPool.AMPERSAND +
-						HttpUtil.parameterMapToString(actualParams, false);
-
-				break;
-			}
+			queryString =
+				StringPool.AMPERSAND +
+					HttpUtil.parameterMapToString(actualParams, false);
 		}
-
-		if (!foundFriendlyURLMapper) {
+		else {
 			int x = url.indexOf(FRIENDLY_URL_SEPARATOR);
 
 			if (x != -1) {
