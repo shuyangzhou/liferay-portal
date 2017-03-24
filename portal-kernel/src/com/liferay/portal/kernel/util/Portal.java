@@ -766,6 +766,9 @@ public interface Portal {
 			Layout layout, ThemeDisplay themeDisplay, Locale locale)
 		throws PortalException;
 
+	public String getLayoutFriendlyURL(ThemeDisplay themeDisplay)
+		throws PortalException;
+
 	public LayoutFriendlyURLComposite getLayoutFriendlyURLComposite(
 			long groupId, boolean privateLayout, String friendlyURL,
 			Map<String, String[]> params, Map<String, Object> requestContext)
