@@ -32,6 +32,6 @@ public class LPKGIndexValidatorThreadLocal {
 
 	private static final ThreadLocal<Boolean> _enabled =
 		new AutoResetThreadLocal<>(
-			CompanyThreadLocal.class + "._enabled", true);
+			CompanyThreadLocal.class + "._enabled", () -> Boolean.TRUE);
 
 }

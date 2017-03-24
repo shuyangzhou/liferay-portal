@@ -32,6 +32,6 @@ public class SchedulerClusterInvokingThreadLocal {
 	private static final ThreadLocal<Boolean> _enabled =
 		new InitialThreadLocal<>(
 			SchedulerClusterInvokingThreadLocal.class + "._enabled",
-			Boolean.TRUE);
+			() -> Boolean.TRUE);
 
 }

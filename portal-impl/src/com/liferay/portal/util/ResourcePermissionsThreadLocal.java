@@ -51,9 +51,8 @@ public class ResourcePermissionsThreadLocal {
 	}
 
 	private static final ThreadLocal<Map<Long, ResourcePermission>>
-		_resourcePermissions = new InitialThreadLocal
-			<Map<Long, ResourcePermission>>(
-				ResourcePermissionsThreadLocal.class + "._resourcePermissions",
-				null);
+		_resourcePermissions = new InitialThreadLocal<>(
+			ResourcePermissionsThreadLocal.class + "._resourcePermissions",
+			() -> null);
 
 }

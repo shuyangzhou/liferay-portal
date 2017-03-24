@@ -261,7 +261,7 @@ public class MonitoringFilter
 	private static final ThreadLocal<AtomicInteger> _processFilterCount =
 		new AutoResetThreadLocal<>(
 			MonitoringFilter.class + "._processFilterCount",
-			new AtomicInteger(0));
+			AtomicInteger::new);
 
 	private DataSampleFactory _dataSampleFactory;
 	private LayoutLocalService _layoutLocalService;

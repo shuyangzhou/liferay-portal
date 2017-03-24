@@ -152,7 +152,7 @@ public class ThreadLocalCacheManager {
 	private static final ThreadLocal<ThreadLocalCaches>
 		_eternalThreadLocalCaches = new InitialThreadLocal<ThreadLocalCaches>(
 			ThreadLocalCacheManager.class + "._eternalThreadLocalCaches",
-			null) {
+			() -> null) {
 
 			@Override
 			protected ThreadLocalCaches initialValue() {
@@ -164,7 +164,7 @@ public class ThreadLocalCacheManager {
 	private static final ThreadLocal<ThreadLocalCaches>
 		_requestThreadLocalCaches = new InitialThreadLocal<ThreadLocalCaches>(
 			ThreadLocalCacheManager.class + "._requestThreadLocalCaches",
-			null) {
+			() -> null) {
 
 			@Override
 			protected ThreadLocalCaches initialValue() {

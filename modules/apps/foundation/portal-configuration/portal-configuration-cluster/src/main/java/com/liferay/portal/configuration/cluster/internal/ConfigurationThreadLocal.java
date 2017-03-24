@@ -31,6 +31,6 @@ public class ConfigurationThreadLocal {
 
 	private static final ThreadLocal<Boolean> _localUpdate =
 		new InitialThreadLocal<>(
-			InitialThreadLocal.class + "._localUpdate", false);
+			InitialThreadLocal.class + "._localUpdate", () -> Boolean.FALSE);
 
 }

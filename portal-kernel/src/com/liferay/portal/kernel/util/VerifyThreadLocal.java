@@ -29,6 +29,7 @@ public class VerifyThreadLocal {
 
 	private static final ThreadLocal<Boolean> _verifyInProgress =
 		new AutoResetThreadLocal<>(
-			VerifyThreadLocal.class + "._verifyInProgress", false);
+			VerifyThreadLocal.class + "._verifyInProgress",
+			() -> Boolean.FALSE);
 
 }

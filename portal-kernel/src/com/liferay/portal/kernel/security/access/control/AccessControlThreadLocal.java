@@ -32,6 +32,6 @@ public class AccessControlThreadLocal {
 
 	private static final ThreadLocal<Boolean> _remoteAccess =
 		new AutoResetThreadLocal<>(
-			AutoResetThreadLocal.class + "._remoteAccess", false);
+			AutoResetThreadLocal.class + "._remoteAccess", () -> Boolean.FALSE);
 
 }
