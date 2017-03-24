@@ -88,11 +88,7 @@ public class ServiceContextFactory {
 			serviceContext.setScopeGroupId(themeDisplay.getScopeGroupId());
 			serviceContext.setSignedIn(themeDisplay.isSignedIn());
 			serviceContext.setTimeZone(themeDisplay.getTimeZone());
-
-			User user = themeDisplay.getUser();
-
-			serviceContext.setUserDisplayURL(user.getDisplayURL(themeDisplay));
-			serviceContext.setUserId(user.getUserId());
+			serviceContext.setUserId(themeDisplay.getUserId());
 		}
 		else {
 			serviceContext.setCompanyId(PortalUtil.getCompanyId(request));
@@ -203,20 +199,6 @@ public class ServiceContextFactory {
 
 		// Request
 
-		Map<String, String> headerMap = new HashMap<>();
-
-		Enumeration<String> enu = request.getHeaderNames();
-
-		while (enu.hasMoreElements()) {
-			String header = enu.nextElement();
-
-			String value = request.getHeader(header);
-
-			headerMap.put(header, value);
-		}
-
-		serviceContext.setHeaders(headerMap);
-
 		serviceContext.setRemoteAddr(request.getRemoteAddr());
 		serviceContext.setRemoteHost(request.getRemoteHost());
 		serviceContext.setRequest(request);
@@ -315,11 +297,7 @@ public class ServiceContextFactory {
 				PortalUtil.getPortalURL(portletRequest));
 			serviceContext.setSignedIn(themeDisplay.isSignedIn());
 			serviceContext.setTimeZone(themeDisplay.getTimeZone());
-
-			User user = themeDisplay.getUser();
-
-			serviceContext.setUserDisplayURL(user.getDisplayURL(themeDisplay));
-			serviceContext.setUserId(user.getUserId());
+			serviceContext.setUserId(themeDisplay.getUserId());
 		}
 
 		serviceContext.setScopeGroupId(themeDisplay.getScopeGroupId());
@@ -401,20 +379,6 @@ public class ServiceContextFactory {
 		serviceContext.setPortletId(PortalUtil.getPortletId(portletRequest));
 
 		// Request
-
-		Map<String, String> headerMap = new HashMap<>();
-
-		enu = request.getHeaderNames();
-
-		while (enu.hasMoreElements()) {
-			String header = enu.nextElement();
-
-			String value = request.getHeader(header);
-
-			headerMap.put(header, value);
-		}
-
-		serviceContext.setHeaders(headerMap);
 
 		serviceContext.setRemoteAddr(request.getRemoteAddr());
 		serviceContext.setRemoteHost(request.getRemoteHost());

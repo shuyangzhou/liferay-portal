@@ -17,12 +17,15 @@ package com.liferay.portal.kernel.service;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.PortletPreferencesIds;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
@@ -36,6 +39,7 @@ import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -44,6 +48,8 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -109,7 +115,11 @@ public class ServiceContext implements Cloneable, Serializable {
 		serviceContext.setFailOnPortalException(isFailOnPortalException());
 		serviceContext.setGroupPermissions(getGroupPermissions());
 		serviceContext.setGuestPermissions(getGuestPermissions());
-		serviceContext.setHeaders(getHeaders());
+
+		if (_headers != null) {
+			serviceContext.setHeaders(_headers);
+		}
+
 		serviceContext.setIndexingEnabled(isIndexingEnabled());
 		serviceContext.setLanguageId(getLanguageId());
 		serviceContext.setLayoutFullURL(getLayoutFullURL());
@@ -135,7 +145,11 @@ public class ServiceContext implements Cloneable, Serializable {
 		serviceContext.setRequest(getRequest());
 		serviceContext.setScopeGroupId(getScopeGroupId());
 		serviceContext.setSignedIn(isSignedIn());
-		serviceContext.setUserDisplayURL(getUserDisplayURL());
+
+		if (_userDisplayURL != null) {
+			serviceContext.setUserDisplayURL(_userDisplayURL);
+		}
+
 		serviceContext.setUserId(getUserId());
 		serviceContext.setUuid(getUuid());
 		serviceContext.setWorkflowAction(getWorkflowAction());
@@ -419,6 +433,22 @@ public class ServiceContext implements Cloneable, Serializable {
 	 */
 	@JSON(include = false)
 	public Map<String, String> getHeaders() {
+		if ((_headers == null) && (_request != null)) {
+			Map<String, String> headerMap = new HashMap<>();
+
+			Enumeration<String> enu = _request.getHeaderNames();
+
+			while (enu.hasMoreElements()) {
+				String header = enu.nextElement();
+
+				String value = _request.getHeader(header);
+
+				headerMap.put(header, value);
+			}
+
+			_headers = headerMap;
+		}
+
 		return _headers;
 	}
 
@@ -719,6 +749,27 @@ public class ServiceContext implements Cloneable, Serializable {
 	 *         page
 	 */
 	public String getUserDisplayURL() {
+		if (_userDisplayURL == null) {
+			ThemeDisplay themeDisplay = getThemeDisplay();
+
+			if (themeDisplay == null) {
+				return null;
+			}
+
+			User user = themeDisplay.getUser();
+
+			try {
+				_userDisplayURL = user.getDisplayURL(themeDisplay);
+			}
+			catch (PortalException pe) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(pe, pe);
+				}
+
+				_userDisplayURL = StringPool.BLANK;
+			}
+		}
+
 		return _userDisplayURL;
 	}
 
@@ -958,8 +1009,8 @@ public class ServiceContext implements Cloneable, Serializable {
 			setGuestPermissions(serviceContext.getGuestPermissions());
 		}
 
-		if (serviceContext.getHeaders() != null) {
-			setHeaders(serviceContext.getHeaders());
+		if (serviceContext._headers != null) {
+			setHeaders(serviceContext._headers);
 		}
 
 		setIndexingEnabled(serviceContext.isIndexingEnabled());
@@ -1029,8 +1080,8 @@ public class ServiceContext implements Cloneable, Serializable {
 			setTimeZone(serviceContext.getTimeZone());
 		}
 
-		if (Validator.isNotNull(serviceContext.getUserDisplayURL())) {
-			setUserDisplayURL(serviceContext.getUserDisplayURL());
+		if (Validator.isNotNull(serviceContext._userDisplayURL)) {
+			setUserDisplayURL(serviceContext._userDisplayURL);
 		}
 
 		if (serviceContext.getUserId() > 0) {
@@ -1545,6 +1596,8 @@ public class ServiceContext implements Cloneable, Serializable {
 			}
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(ServiceContext.class);
 
 	private boolean _addGroupPermissions;
 	private boolean _addGuestPermissions;
