@@ -82,6 +82,6 @@ public class CurrentPlatformTransactionManagerUtil {
 		_platformTransactionManagersThreadLocal = new InitialThreadLocal<>(
 			CurrentPlatformTransactionManagerUtil.class +
 				"._platformTransactionManagersThreadLocal",
-			new ArrayDeque<>());
+			ArrayDeque::new);
 
 }

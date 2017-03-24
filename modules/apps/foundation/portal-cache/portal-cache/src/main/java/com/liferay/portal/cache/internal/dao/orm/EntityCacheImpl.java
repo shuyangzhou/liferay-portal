@@ -370,7 +370,7 @@ public class EntityCacheImpl
 
 			_localCache = new AutoResetThreadLocal<>(
 				FinderCacheImpl.class + "._localCache",
-				new LRUMap(localCacheMaxSize));
+				() -> new LRUMap(localCacheMaxSize));
 		}
 		else {
 			_localCacheAvailable = false;
