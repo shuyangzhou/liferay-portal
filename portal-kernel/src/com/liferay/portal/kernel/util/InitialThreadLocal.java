@@ -60,12 +60,11 @@ public class InitialThreadLocal<T> extends CentralizedThreadLocal<T> {
 
 	@Override
 	public String toString() {
-		if (_name != null) {
-			return _name;
-		}
-		else {
+		if (_name == null) {
 			return super.toString();
 		}
+
+		return _name;
 	}
 
 	@Override
