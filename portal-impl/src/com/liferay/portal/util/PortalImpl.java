@@ -4337,20 +4337,10 @@ public class PortalImpl implements Portal {
 			friendlyURL = friendlyURL.substring(0, friendlyURL.length() - 1);
 		}
 
-		Layout layout = null;
-
-		if (Validator.isNotNull(friendlyURL)) {
-			layout = LayoutLocalServiceUtil.getFriendlyURLLayout(
-				groupId, privateLayout, friendlyURL);
-		}
-		else {
-			long defaultPlid = LayoutLocalServiceUtil.getDefaultPlid(
-				groupId, privateLayout);
-
-			layout = LayoutLocalServiceUtil.getLayout(defaultPlid);
-		}
-
-		return new LayoutQueryStringComposite(layout, friendlyURL, queryString);
+		return new LayoutQueryStringComposite(
+			LayoutLocalServiceUtil.getFriendlyURLLayout(
+				groupId, privateLayout, friendlyURL),
+			friendlyURL, queryString);
 	}
 
 	@Override
