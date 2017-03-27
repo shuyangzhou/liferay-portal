@@ -69,7 +69,11 @@ public class IncludeTag extends AttributesTagSupport {
 				page = getEndPage();
 			}
 
-			callSetAttributes();
+			if (!isCleanUpSetAttributes() ||
+				!(request instanceof TrackedServletRequest)) {
+
+				callSetAttributes();
+			}
 
 			if (themeResourceExists(page)) {
 				doIncludeTheme(page);
