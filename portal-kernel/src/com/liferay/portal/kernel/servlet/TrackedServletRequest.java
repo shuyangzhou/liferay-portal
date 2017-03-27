@@ -14,8 +14,8 @@
 
 package com.liferay.portal.kernel.servlet;
 
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,26 +30,29 @@ public class TrackedServletRequest extends HttpServletRequestWrapper {
 		super(request);
 	}
 
+	public Object getAttribute(String name) {
+		Object object = _attributes.get(name);
+
+		if (object != null) {
+			return object;
+		}
+
+		return super.getAttribute(name);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public Set<String> getSetAttributes() {
-		if (_setAttributes == null) {
-			return Collections.emptySet();
-		}
-		else {
-			return _setAttributes;
-		}
+		return _attributes.keySet();
 	}
 
 	@Override
 	public void setAttribute(String name, Object obj) {
-		if (_setAttributes == null) {
-			_setAttributes = new HashSet<>();
-		}
-
-		_setAttributes.add(name);
-
-		super.setAttribute(name, obj);
+		_attributes.put(name, obj);
 	}
 
-	private Set<String> _setAttributes;
+	private final Map<String, Object> _attributes = new HashMap<>();
 
 }

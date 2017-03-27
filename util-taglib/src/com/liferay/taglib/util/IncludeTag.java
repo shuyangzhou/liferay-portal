@@ -151,12 +151,8 @@ public class IncludeTag extends AttributesTagSupport {
 	}
 
 	protected void callSetAttributes() {
-		HttpServletRequest request = getOriginalServletRequest();
-
 		if (isCleanUpSetAttributes()) {
-			_trackedRequest = new TrackedServletRequest(request);
-
-			request = _trackedRequest;
+			request = new TrackedServletRequest(request);
 		}
 
 		setNamespacedAttribute(request, "bodyContent", getBodyContentWrapper());
@@ -170,12 +166,11 @@ public class IncludeTag extends AttributesTagSupport {
 	}
 
 	protected void cleanUpSetAttributes() {
-		if (isCleanUpSetAttributes() && (_trackedRequest != null)) {
-			for (String name : _trackedRequest.getSetAttributes()) {
-				_trackedRequest.removeAttribute(name);
-			}
+		if (isCleanUpSetAttributes()) {
+			TrackedServletRequest trackedServletRequest =
+				(TrackedServletRequest)request;
 
-			_trackedRequest = null;
+			request = (HttpServletRequest)trackedServletRequest.getRequest();
 		}
 	}
 
@@ -509,7 +504,6 @@ public class IncludeTag extends AttributesTagSupport {
 
 	private String _page;
 	private boolean _strict;
-	private TrackedServletRequest _trackedRequest;
 	private boolean _useCustomPage = true;
 
 }
