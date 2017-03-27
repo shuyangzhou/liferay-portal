@@ -159,10 +159,7 @@ public class PortletConstants {
 	 * @return the instance ID of the portlet
 	 */
 	public static String getInstanceId(String portletId) {
-		PortletInstance portletInstance =
-			PortletInstance.fromPortletInstanceKey(portletId);
-
-		return portletInstance.getInstanceId();
+		return PortletInstance.getInstanceId(portletId);
 	}
 
 	/**
@@ -172,10 +169,7 @@ public class PortletConstants {
 	 * @return the root portlet ID of the portlet
 	 */
 	public static String getRootPortletId(String portletId) {
-		PortletInstance portletInstance =
-			PortletInstance.fromPortletInstanceKey(portletId);
-
-		return portletInstance.getPortletName();
+		return PortletInstance.getPortletName(portletId);
 	}
 
 	/**
@@ -186,10 +180,7 @@ public class PortletConstants {
 	 * @return the user ID of the portlet
 	 */
 	public static long getUserId(String portletId) {
-		PortletInstance portletInstance =
-			PortletInstance.fromPortletInstanceKey(portletId);
-
-		return portletInstance.getUserId();
+		return PortletInstance.getUserId(portletId);
 	}
 
 	public static boolean hasIdenticalRootPortletId(
@@ -211,10 +202,13 @@ public class PortletConstants {
 	 *         <code>false</code> otherwise
 	 */
 	public static boolean hasInstanceId(String portletId) {
-		PortletInstance portletInstance =
-			PortletInstance.fromPortletInstanceKey(portletId);
+		String instanceId = PortletInstance.getInstanceId(portletId);
 
-		return portletInstance.hasInstanceId();
+		if (Validator.isNull(instanceId)) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -225,10 +219,13 @@ public class PortletConstants {
 	 *         <code>false</code> otherwise
 	 */
 	public static boolean hasUserId(String portletId) {
-		PortletInstance portletInstance =
-			PortletInstance.fromPortletInstanceKey(portletId);
+		long userId = PortletInstance.getUserId(portletId);
 
-		return portletInstance.hasUserId();
+		if (userId > 0) {
+			return true;
+		}
+
+		return false;
 	}
 
 }
