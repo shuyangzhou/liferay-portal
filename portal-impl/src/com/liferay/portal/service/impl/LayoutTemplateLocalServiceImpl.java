@@ -66,6 +66,7 @@ public class LayoutTemplateLocalServiceImpl
 	extends LayoutTemplateLocalServiceBaseImpl {
 
 	@Override
+	@Skip
 	public String getContent(
 		String layoutTemplateId, boolean standard, String themeId) {
 
@@ -109,6 +110,7 @@ public class LayoutTemplateLocalServiceImpl
 	}
 
 	@Override
+	@Skip
 	public LayoutTemplate getLayoutTemplate(
 		String layoutTemplateId, boolean standard, String themeId) {
 
@@ -152,6 +154,7 @@ public class LayoutTemplateLocalServiceImpl
 	}
 
 	@Override
+	@Skip
 	public List<LayoutTemplate> getLayoutTemplates() {
 		List<LayoutTemplate> customLayoutTemplates = new ArrayList<>(
 			_portalCustom.size() + _warCustom.size());
@@ -163,6 +166,7 @@ public class LayoutTemplateLocalServiceImpl
 	}
 
 	@Override
+	@Skip
 	public List<LayoutTemplate> getLayoutTemplates(String themeId) {
 		Map<String, LayoutTemplate> themesCustom = _getThemesCustom(themeId);
 

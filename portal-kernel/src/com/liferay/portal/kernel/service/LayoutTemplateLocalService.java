@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.LayoutTemplate;
 import com.liferay.portal.kernel.plugin.PluginPackage;
+import com.liferay.portal.kernel.spring.aop.Skip;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -51,10 +52,12 @@ public interface LayoutTemplateLocalService extends BaseLocalService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link LayoutTemplateLocalServiceUtil} to access the layout template local service. Add custom service methods to {@link com.liferay.portal.service.impl.LayoutTemplateLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	@Skip
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LayoutTemplate getLayoutTemplate(java.lang.String layoutTemplateId,
 		boolean standard, java.lang.String themeId);
 
+	@Skip
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.lang.String getContent(java.lang.String layoutTemplateId,
 		boolean standard, java.lang.String themeId);
@@ -66,9 +69,11 @@ public interface LayoutTemplateLocalService extends BaseLocalService {
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
+	@Skip
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LayoutTemplate> getLayoutTemplates();
 
+	@Skip
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LayoutTemplate> getLayoutTemplates(java.lang.String themeId);
 
