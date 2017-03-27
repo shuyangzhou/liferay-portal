@@ -4287,9 +4287,8 @@ public class PortalImpl implements Portal {
 					url.substring(pos), actualParams, requestContext);
 			}
 
-			queryString =
-				StringPool.AMPERSAND +
-					HttpUtil.parameterMapToString(actualParams, false);
+			queryString = StringPool.AMPERSAND.concat(
+				HttpUtil.parameterMapToString(actualParams, false));
 		}
 		else {
 			int x = url.indexOf(FRIENDLY_URL_SEPARATOR);
@@ -4323,9 +4322,8 @@ public class PortalImpl implements Portal {
 						"p_p_state",
 						new String[] {WindowState.MAXIMIZED.toString()});
 
-					queryString =
-						StringPool.AMPERSAND +
-							HttpUtil.parameterMapToString(actualParams, false);
+					queryString = StringPool.AMPERSAND.concat(
+						HttpUtil.parameterMapToString(actualParams, false));
 				}
 			}
 		}
