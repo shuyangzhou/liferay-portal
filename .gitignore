@@ -154,12 +154,14 @@
 /lib/portal/commons-math.jar
 /lib/portal/commons-pool.jar
 /lib/portal/commons-validator.jar
+/lib/portal/concurrent.jar
 /lib/portal/displaytag.jar
 /lib/portal/dom4j.jar
 /lib/portal/easyconf.jar
 /lib/portal/ecs.jar
 /lib/portal/fontbox.jar
 /lib/portal/hibernate-commons-annotations.jar
+/lib/portal/hikaricp.jar
 /lib/portal/htmlparser.jar
 /lib/portal/httpclient.jar
 /lib/portal/httpmime.jar
@@ -167,10 +169,12 @@
 /lib/portal/isoparser.jar
 /lib/portal/jai_codec.jar
 /lib/portal/java-libpst.jar
+/lib/portal/javassist.jar
 /lib/portal/jaxb-impl.jar
 /lib/portal/jaxen.jar
 /lib/portal/jaxws-rt.jar
 /lib/portal/jcl-over-slf4j.jar
+/lib/portal/jcommon.jar
 /lib/portal/jempbox.jar
 /lib/portal/jericho-html.jar
 /lib/portal/jfreechart.jar
