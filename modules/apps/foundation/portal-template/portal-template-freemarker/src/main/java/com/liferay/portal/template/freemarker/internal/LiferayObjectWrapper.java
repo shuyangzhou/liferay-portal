@@ -17,10 +17,12 @@ package com.liferay.portal.template.freemarker.internal;
 import com.liferay.portal.kernel.concurrent.ConcurrentReferenceKeyHashMap;
 import com.liferay.portal.kernel.memory.FinalizeManager;
 import com.liferay.portal.kernel.templateparser.TemplateNode;
+import com.liferay.portal.kernel.util.ListWrapper;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.EnumerationModel;
+import freemarker.ext.beans.MapModel;
 import freemarker.ext.beans.ResourceBundleModel;
 import freemarker.ext.beans.StringModel;
 import freemarker.ext.util.ModelFactory;
@@ -28,13 +30,15 @@ import freemarker.ext.util.ModelFactory;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.ObjectWrapper;
+import freemarker.template.SimpleSequence;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 import java.lang.reflect.Field;
-
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -94,6 +98,14 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 		String className = clazz.getName();
 
 		if (className.startsWith("com.liferay.")) {
+			if (object instanceof List) {
+				return _LIST_MODEL_FACTORY.create(object, this);
+			}
+
+			if (object instanceof Map) {
+				return _MAP_MODEL_FACTORY.create(object, this);
+			}
+
 			return _STRING_MODEL_FACTORY.create(object, this);
 		}
 
@@ -128,6 +140,14 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 			return _ENUMERATION_MODEL_FACTORY.create(object, this);
 		}
 
+		if (object instanceof List) {
+			return _LIST_MODEL_FACTORY.create(object, this);
+		}
+
+		if (object instanceof Map) {
+			return _MAP_MODEL_FACTORY.create(object, this);
+		}
+
 		_modelFactories.put(object.getClass(), _STRING_MODEL_FACTORY);
 
 		return _STRING_MODEL_FACTORY.create(object, this);
@@ -145,6 +165,32 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 			}
 
 		};
+
+	private static final ModelFactory _LIST_MODEL_FACTORY =
+			new ModelFactory() {
+
+				@Override
+				public TemplateModel create(
+					Object object, ObjectWrapper objectWrapper) {
+
+					return new SimpleSequence(
+						(Collection)object, (BeansWrapper)objectWrapper);
+				}
+
+			};
+
+	private static final ModelFactory _MAP_MODEL_FACTORY =
+			new ModelFactory() {
+
+				@Override
+				public TemplateModel create(
+					Object object, ObjectWrapper objectWrapper) {
+
+					return new MapModel(
+						(Map)object, (BeansWrapper)objectWrapper);
+				}
+
+			};
 
 	private static final ModelFactory _RESOURCE_BUNDLE_MODEL_FACTORY =
 		new ModelFactory() {
