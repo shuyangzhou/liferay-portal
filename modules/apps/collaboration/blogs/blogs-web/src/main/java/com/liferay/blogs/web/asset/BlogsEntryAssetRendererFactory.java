@@ -87,7 +87,12 @@ public class BlogsEntryAssetRendererFactory
 
 		BlogsEntry entry = _blogsEntryService.getEntry(groupId, urlTitle);
 
-		return new BlogsEntryAssetRenderer(entry, _resourceBundleLoader);
+		BlogsEntryAssetRenderer blogsEntryAssetRenderer =
+			new BlogsEntryAssetRenderer(entry, _resourceBundleLoader);
+
+		blogsEntryAssetRenderer.setServletContext(_servletContext);
+
+		return blogsEntryAssetRenderer;
 	}
 
 	@Override
