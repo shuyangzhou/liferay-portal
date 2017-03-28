@@ -40,15 +40,46 @@ public class DefineObjectsTag extends TagSupport {
 
 	@Override
 	public int doStartTag() throws JspException {
-		PortletURL currentURLObj = getCurrentURLObj();
+		HttpServletRequest request =
+			(HttpServletRequest)pageContext.getRequest();
 
-		if (currentURLObj != null) {
-			pageContext.setAttribute("currentURL", currentURLObj.toString());
-			pageContext.setAttribute("currentURLObj", currentURLObj);
+		PortletRequest portletRequest = (PortletRequest)request.getAttribute(
+			JavaConstants.JAVAX_PORTLET_REQUEST);
+
+		if (portletRequest != null) {
+			LiferayPortletRequest liferayPortletRequest =
+				PortalUtil.getLiferayPortletRequest(portletRequest);
+
+			PortletResponse portletResponse =
+				(PortletResponse)request.getAttribute(
+					JavaConstants.JAVAX_PORTLET_RESPONSE);
+
+			if (portletResponse != null) {
+				LiferayPortletResponse liferayPortletResponse =
+					PortalUtil.getLiferayPortletResponse(portletResponse);
+
+				PortletURL currentURLObj = PortletURLUtil.getCurrent(
+					liferayPortletRequest, liferayPortletResponse);
+
+				pageContext.setAttribute(
+					"currentURL", currentURLObj.toString());
+				pageContext.setAttribute("currentURLObj", currentURLObj);
+			}
+
+			pageContext.setAttribute(
+				"windowState", liferayPortletRequest.getWindowState());
 		}
 
-		pageContext.setAttribute("resourceBundle", getResourceBundle());
-		pageContext.setAttribute("windowState", getWindowState());
+		if (_overrideResourceBundle != null) {
+			pageContext.setAttribute("resourceBundle", _overrideResourceBundle);
+		}
+		else {
+			Locale locale = PortalUtil.getLocale(request);
+
+			pageContext.setAttribute(
+				"resourceBundle",
+				TagResourceBundleUtil.getResourceBundle(request, locale));
+		}
 
 		return SKIP_BODY;
 	}
