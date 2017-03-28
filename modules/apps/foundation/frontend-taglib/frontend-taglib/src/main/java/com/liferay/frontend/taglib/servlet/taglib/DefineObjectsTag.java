@@ -90,6 +90,10 @@ public class DefineObjectsTag extends TagSupport {
 		_overrideResourceBundle = overrideResourceBundle;
 	}
 
+	/**
+	 * @deprecated As of 2.1.0, with no direct replacement
+	 */
+	@Deprecated
 	protected PortletURL getCurrentURLObj() {
 		LiferayPortletRequest liferayPortletRequest =
 			getLiferayPortletRequest();
@@ -107,6 +111,10 @@ public class DefineObjectsTag extends TagSupport {
 			liferayPortletRequest, liferayPortletResponse);
 	}
 
+	/**
+	 * @deprecated As of 2.1.0, with no direct replacement
+	 */
+	@Deprecated
 	protected LiferayPortletRequest getLiferayPortletRequest() {
 		HttpServletRequest request =
 			(HttpServletRequest)pageContext.getRequest();
@@ -121,6 +129,10 @@ public class DefineObjectsTag extends TagSupport {
 		return PortalUtil.getLiferayPortletRequest(portletRequest);
 	}
 
+	/**
+	 * @deprecated As of 2.1.0, with no direct replacement
+	 */
+	@Deprecated
 	protected LiferayPortletResponse getLiferayPortletResponse() {
 		HttpServletRequest request =
 			(HttpServletRequest)pageContext.getRequest();
@@ -135,6 +147,10 @@ public class DefineObjectsTag extends TagSupport {
 		return PortalUtil.getLiferayPortletResponse(portletResponse);
 	}
 
+	/**
+	 * @deprecated As of 2.1.0, with no direct replacement
+	 */
+	@Deprecated
 	protected ResourceBundle getResourceBundle() {
 		if (_overrideResourceBundle != null) {
 			return _overrideResourceBundle;
@@ -148,6 +164,10 @@ public class DefineObjectsTag extends TagSupport {
 		return TagResourceBundleUtil.getResourceBundle(request, locale);
 	}
 
+	/**
+	 * @deprecated As of 2.1.0, with no direct replacement
+	 */
+	@Deprecated
 	protected WindowState getWindowState() {
 		LiferayPortletRequest liferayPortletRequest =
 			getLiferayPortletRequest();
