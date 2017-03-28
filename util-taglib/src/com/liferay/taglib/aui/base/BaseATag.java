@@ -146,23 +146,7 @@ public abstract class BaseATag extends com.liferay.taglib.util.IncludeTag {
 		_title = null;
 	}
 
-	@Override
-	protected String getEndPage() {
-		return _END_PAGE;
-	}
-
-	@Override
-	protected String getStartPage() {
-		return _START_PAGE;
-	}
-
 	protected static final String _ATTRIBUTE_NAMESPACE = "aui:a:";
-
-	private static final String _END_PAGE =
-		"/html/taglib/aui/a/end.jsp";
-
-	private static final String _START_PAGE =
-		"/html/taglib/aui/a/start.jsp";
 
 	private java.lang.String _ariaRole = null;
 	private java.lang.String _cssClass = null;
