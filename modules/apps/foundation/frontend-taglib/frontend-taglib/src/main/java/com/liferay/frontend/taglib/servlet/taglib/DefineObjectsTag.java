@@ -77,14 +77,6 @@ public class DefineObjectsTag extends TagSupport {
 	}
 
 	protected LiferayPortletRequest getLiferayPortletRequest() {
-		LiferayPortletRequest liferayPortletRequest =
-			(LiferayPortletRequest)pageContext.getAttribute(
-				"liferayPortletRequest");
-
-		if (liferayPortletRequest != null) {
-			return liferayPortletRequest;
-		}
-
 		HttpServletRequest request =
 			(HttpServletRequest)pageContext.getRequest();
 
@@ -99,14 +91,6 @@ public class DefineObjectsTag extends TagSupport {
 	}
 
 	protected LiferayPortletResponse getLiferayPortletResponse() {
-		LiferayPortletResponse liferayPortletResponse =
-			(LiferayPortletResponse)pageContext.getAttribute(
-				"liferayPortletResponse");
-
-		if (liferayPortletResponse != null) {
-			return liferayPortletResponse;
-		}
-
 		HttpServletRequest request =
 			(HttpServletRequest)pageContext.getRequest();
 
