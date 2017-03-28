@@ -164,7 +164,7 @@ public class CentralizedThreadLocal<T> extends ThreadLocal<T> {
 			threadLocalMap._table.length);
 
 		for (Entry entry : threadLocalMap._table) {
-			if (entry != null) {
+			while (entry != null) {
 				CentralizedThreadLocal<Object> centralizedThreadLocal =
 					(CentralizedThreadLocal<Object>)entry._key;
 
@@ -173,6 +173,8 @@ public class CentralizedThreadLocal<T> extends ThreadLocal<T> {
 				if (value != null) {
 					map.put(centralizedThreadLocal, value);
 				}
+
+				entry = entry._next;
 			}
 		}
 
