@@ -205,14 +205,14 @@ public class LocalizationImpl implements Localization {
 			return defaultValue;
 		}
 
-		String systemDefaultLanguageId = LocaleUtil.toLanguageId(
-			LocaleUtil.getSiteDefault());
-
 		String value = _getCachedValue(xml, requestedLanguageId, useDefault);
 
 		if (value != null) {
 			return value;
 		}
+
+		String systemDefaultLanguageId = LocaleUtil.toLanguageId(
+			LocaleUtil.getSiteDefault());
 
 		String priorityLanguageId = null;
 
