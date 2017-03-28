@@ -5,8 +5,8 @@ apply plugin: "com.liferay.patcher"
 task deployJar(type: Copy)
 task patch(type: PatchTask)
 
-sourceCompatibility = "1.6"
-targetCompatibility = "1.6"
+sourceCompatibility = "1.5"
+targetCompatibility = "1.5"
 
 dependencies {
 	compile group: "org.hibernate", name: "hibernate-core", optional, version: "3.6.10.Final"
@@ -36,6 +36,11 @@ patch {
 
 	fileNames "org/hibernate/cache/UpdateTimestampsCache.java"
 	fileNames "org/hibernate/intercept/FieldInterceptionHelper.java"
+	fileNames "org/hibernate/engine/jdbc/BlobProxy.java"
+	fileNames "org/hibernate/engine/jdbc/ClobProxy.java"
+	fileNames "org/hibernate/engine/jdbc/NClobProxy.java"
+	fileNames "org/hibernate/engine/jdbc/SerializableBlobProxy.java"
+	fileNames "org/hibernate/engine/jdbc/SerializableClobProxy.java"
 
 	originalLibModuleName = "hibernate-core"
 }
