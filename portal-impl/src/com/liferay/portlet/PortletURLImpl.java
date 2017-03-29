@@ -705,6 +705,41 @@ public class PortletURLImpl
 	}
 
 	@Override
+	public void visitReservedParameters(BiConsumer<String, String> biConsumer) {
+		biConsumer.accept("p_p_id", _portletId);
+
+		if (_lifecycle.equals(PortletRequest.ACTION_PHASE)) {
+			biConsumer.accept("p_p_lifecycle", "1");
+		}
+		else if (_lifecycle.equals(PortletRequest.RENDER_PHASE)) {
+			biConsumer.accept("p_p_lifecycle", "0");
+		}
+		else if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+			biConsumer.accept("p_p_lifecycle", "2");
+		}
+
+		if (_windowStateString != null) {
+			biConsumer.accept("p_p_state", _windowStateString);
+		}
+
+		if (_windowStateRestoreCurrentView) {
+			biConsumer.accept("p_p_state_rcv", "1");
+		}
+
+		if (_portletModeString != null) {
+			biConsumer.accept("p_p_mode", _portletModeString);
+		}
+
+		if (_resourceID != null) {
+			biConsumer.accept("p_p_resource_id", _resourceID);
+		}
+
+		if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+			biConsumer.accept("p_p_cacheability", _cacheability);
+		}
+	}
+
+	@Override
 	public void write(Writer writer) throws IOException {
 		write(writer, _escapeXml);
 	}
@@ -752,21 +787,6 @@ public class PortletURLImpl
 
 	protected void clearCache() {
 		_toString = null;
-	}
-
-	private Key _getKey() {
-		try {
-			if (_encrypt) {
-				Company company = PortalUtil.getCompany(_request);
-
-				return company.getKeyObj();
-			}
-		}
-		catch (Exception e) {
-			_log.error(e);
-		}
-
-		return null;
 	}
 
 	protected String generateToString() {
@@ -1312,39 +1332,19 @@ public class PortletURLImpl
 		sb.append(HttpUtil.encodeURL(name));
 	}
 
-	@Override
-	public void visitReservedParameters(BiConsumer<String, String> biConsumer) {
-		biConsumer.accept("p_p_id", _portletId);
+	private Key _getKey() {
+		try {
+			if (_encrypt) {
+				Company company = PortalUtil.getCompany(_request);
 
-		if (_lifecycle.equals(PortletRequest.ACTION_PHASE)) {
-			biConsumer.accept("p_p_lifecycle", "1");
+				return company.getKeyObj();
+			}
 		}
-		else if (_lifecycle.equals(PortletRequest.RENDER_PHASE)) {
-			biConsumer.accept("p_p_lifecycle", "0");
-		}
-		else if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-			biConsumer.accept("p_p_lifecycle", "2");
+		catch (Exception e) {
+			_log.error(e);
 		}
 
-		if (_windowStateString != null) {
-			biConsumer.accept("p_p_state", _windowStateString);
-		}
-
-		if (_windowStateRestoreCurrentView) {
-			biConsumer.accept("p_p_state_rcv", "1");
-		}
-
-		if (_portletModeString != null) {
-			biConsumer.accept("p_p_mode", _portletModeString);
-		}
-
-		if (_resourceID != null) {
-			biConsumer.accept("p_p_resource_id", _resourceID);
-		}
-
-		if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-			biConsumer.accept("p_p_cacheability", _cacheability);
-		}
+		return null;
 	}
 
 	private Map<String, String[]> _mergeWithRenderParameters(
