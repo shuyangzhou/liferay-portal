@@ -821,8 +821,6 @@ public class HttpImpl implements Http {
 			return parameterMap;
 		}
 
-		Map<String, List<String>> tempParameterMap = new LinkedHashMap<>();
-
 		String[] parameters = StringUtil.split(queryString, CharPool.AMPERSAND);
 
 		for (String parameter : parameters) {
@@ -853,25 +851,15 @@ public class HttpImpl implements Http {
 					}
 				}
 
-				List<String> values = tempParameterMap.get(key);
+				String[] values = parameterMap.get(key);
 
 				if (values == null) {
-					values = new ArrayList<>();
-
-					tempParameterMap.put(key, values);
+					parameterMap.put(key, new String[] {value});
 				}
-
-				values.add(value);
+				else {
+					parameterMap.put(key, ArrayUtil.append(values, value));
+				}
 			}
-		}
-
-		for (Map.Entry<String, List<String>> entry :
-				tempParameterMap.entrySet()) {
-
-			String key = entry.getKey();
-			List<String> values = entry.getValue();
-
-			parameterMap.put(key, values.toArray(new String[values.size()]));
 		}
 
 		return parameterMap;
