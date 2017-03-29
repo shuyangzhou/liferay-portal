@@ -32,8 +32,12 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.workflow.permission.WorkflowPermissionUtil;
 import com.liferay.portal.util.PropsValues;
+
+import java.util.Map;
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -116,104 +120,21 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 		PermissionChecker permissionChecker, JournalArticle article,
 		String actionId) {
 
-		String portletId = PortletProviderUtil.getPortletId(
-			JournalArticle.class.getName(), PortletProvider.Action.EDIT);
+		Map<Object, Object> permissionChecksMap =
+			permissionChecker.getPermissionChecksMap();
 
-		Boolean hasPermission = StagingPermissionUtil.hasPermission(
-			permissionChecker, article.getGroupId(),
-			JournalArticle.class.getName(), article.getResourcePrimKey(),
-			portletId, actionId);
+		CacheKey cacheKey = new CacheKey(
+			article.getGroupId(), article.getArticleId(), actionId);
 
-		if (hasPermission != null) {
-			return hasPermission.booleanValue();
+		Boolean contains = (Boolean)permissionChecksMap.get(cacheKey);
+
+		if (contains == null) {
+			contains = _contains(permissionChecker, article, actionId);
+
+			permissionChecksMap.put(cacheKey, contains);
 		}
 
-		if (article.isDraft()) {
-			if (actionId.equals(ActionKeys.VIEW) &&
-				!contains(permissionChecker, article, ActionKeys.UPDATE)) {
-
-				return false;
-			}
-		}
-		else if (article.isPending()) {
-			hasPermission = WorkflowPermissionUtil.hasPermission(
-				permissionChecker, article.getGroupId(),
-				JournalArticle.class.getName(), article.getResourcePrimKey(),
-				actionId);
-
-			if (hasPermission != null) {
-				return hasPermission.booleanValue();
-			}
-		}
-
-		JournalServiceConfiguration journalServiceConfiguration = null;
-
-		try {
-			journalServiceConfiguration =
-				_configurationProvider.getCompanyConfiguration(
-					JournalServiceConfiguration.class,
-					permissionChecker.getCompanyId());
-		}
-		catch (ConfigurationException ce) {
-			_log.error(
-				"Unable to get journal service configuration for company " +
-					permissionChecker.getCompanyId(),
-				ce);
-
-			return false;
-		}
-
-		if (actionId.equals(ActionKeys.VIEW) &&
-			!journalServiceConfiguration.articleViewPermissionsCheckEnabled()) {
-
-			return true;
-		}
-
-		if (actionId.equals(ActionKeys.VIEW) &&
-			PropsValues.PERMISSIONS_VIEW_DYNAMIC_INHERITANCE) {
-
-			long folderId = article.getFolderId();
-
-			if (folderId == JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
-				if (!JournalPermission.contains(
-						permissionChecker, article.getGroupId(), actionId)) {
-
-					return false;
-				}
-			}
-			else {
-				JournalFolder folder = _journalFolderLocalService.fetchFolder(
-					folderId);
-
-				if (folder != null) {
-					if (!JournalFolderPermission.contains(
-							permissionChecker, folder, ActionKeys.ACCESS) &&
-						!JournalFolderPermission.contains(
-							permissionChecker, folder, ActionKeys.VIEW)) {
-
-						return false;
-					}
-				}
-				else {
-					if (!article.isInTrash()) {
-						_log.error("Unable to get journal folder " + folderId);
-
-						return false;
-					}
-				}
-			}
-		}
-
-		if (permissionChecker.hasOwnerPermission(
-				article.getCompanyId(), JournalArticle.class.getName(),
-				article.getResourcePrimKey(), article.getUserId(), actionId)) {
-
-			return true;
-		}
-
-		return permissionChecker.hasPermission(
-			article.getGroupId(), JournalArticle.class.getName(),
-			article.getResourcePrimKey(), actionId);
+		return contains;
 	}
 
 	public static boolean contains(
@@ -319,11 +240,160 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 		_journalFolderLocalService = journalFolderLocalService;
 	}
 
+	private static boolean _contains(
+		PermissionChecker permissionChecker, JournalArticle article,
+		String actionId) {
+
+		String portletId = PortletProviderUtil.getPortletId(
+			JournalArticle.class.getName(), PortletProvider.Action.EDIT);
+
+		Boolean hasPermission = StagingPermissionUtil.hasPermission(
+			permissionChecker, article.getGroupId(),
+			JournalArticle.class.getName(), article.getResourcePrimKey(),
+			portletId, actionId);
+
+		if (hasPermission != null) {
+			return hasPermission.booleanValue();
+		}
+
+		if (article.isDraft()) {
+			if (actionId.equals(ActionKeys.VIEW) &&
+				!contains(permissionChecker, article, ActionKeys.UPDATE)) {
+
+				return false;
+			}
+		}
+		else if (article.isPending()) {
+			hasPermission = WorkflowPermissionUtil.hasPermission(
+				permissionChecker, article.getGroupId(),
+				JournalArticle.class.getName(), article.getResourcePrimKey(),
+				actionId);
+
+			if (hasPermission != null) {
+				return hasPermission.booleanValue();
+			}
+		}
+
+		JournalServiceConfiguration journalServiceConfiguration = null;
+
+		try {
+			journalServiceConfiguration =
+				_configurationProvider.getCompanyConfiguration(
+					JournalServiceConfiguration.class,
+					permissionChecker.getCompanyId());
+		}
+		catch (ConfigurationException ce) {
+			_log.error(
+				"Unable to get journal service configuration for company " +
+					permissionChecker.getCompanyId(),
+				ce);
+
+			return false;
+		}
+
+		if (actionId.equals(ActionKeys.VIEW) &&
+			!journalServiceConfiguration.articleViewPermissionsCheckEnabled()) {
+
+			return true;
+		}
+
+		if (actionId.equals(ActionKeys.VIEW) &&
+			PropsValues.PERMISSIONS_VIEW_DYNAMIC_INHERITANCE) {
+
+			long folderId = article.getFolderId();
+
+			if (folderId == JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
+				if (!JournalPermission.contains(
+						permissionChecker, article.getGroupId(), actionId)) {
+
+					return false;
+				}
+			}
+			else {
+				JournalFolder folder = _journalFolderLocalService.fetchFolder(
+					folderId);
+
+				if (folder != null) {
+					if (!JournalFolderPermission.contains(
+							permissionChecker, folder, ActionKeys.ACCESS) &&
+						!JournalFolderPermission.contains(
+							permissionChecker, folder, ActionKeys.VIEW)) {
+
+						return false;
+					}
+				}
+				else {
+					if (!article.isInTrash()) {
+						_log.error("Unable to get journal folder " + folderId);
+
+						return false;
+					}
+				}
+			}
+		}
+
+		if (permissionChecker.hasOwnerPermission(
+				article.getCompanyId(), JournalArticle.class.getName(),
+				article.getResourcePrimKey(), article.getUserId(), actionId)) {
+
+			return true;
+		}
+
+		return permissionChecker.hasPermission(
+			article.getGroupId(), JournalArticle.class.getName(),
+			article.getResourcePrimKey(), actionId);
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalArticlePermission.class);
 
 	private static ConfigurationProvider _configurationProvider;
 	private static JournalArticleLocalService _journalArticleLocalService;
 	private static JournalFolderLocalService _journalFolderLocalService;
+
+	private static class CacheKey {
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof CacheKey)) {
+				return false;
+			}
+
+			CacheKey cacheKey = (CacheKey)obj;
+
+			if ((_groupId == cacheKey._groupId) &&
+				Objects.equals(_articleId, cacheKey._articleId) &&
+				Objects.equals(_actionId, cacheKey._actionId)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			int hash = HashUtil.hash(0, _groupId);
+
+			hash = HashUtil.hash(hash, _articleId);
+
+			return HashUtil.hash(hash, _actionId);
+		}
+
+		private CacheKey(long groupId, String articleId, String actionId) {
+			_groupId = groupId;
+			_articleId = articleId;
+			_actionId = actionId;
+		}
+
+		private final String _actionId;
+		private final String _articleId;
+		private final long _groupId;
+
+	}
 
 }

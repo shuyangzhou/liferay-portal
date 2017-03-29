@@ -428,6 +428,17 @@ public class JournalPortlet extends MVCPortlet {
 		updateArticle(actionRequest, actionResponse);
 	}
 
+	@Override
+	public void processAction(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws IOException, PortletException {
+
+		actionRequest.setAttribute(
+			JournalWebConfiguration.class.getName(), _journalWebConfiguration);
+
+		super.processAction(actionRequest, actionResponse);
+	}
+
 	public void removeAddMenuFavItem(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {

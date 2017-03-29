@@ -18,18 +18,27 @@ import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.journal.exception.ArticleIdException;
 import com.liferay.journal.exception.DuplicateArticleIdException;
 import com.liferay.journal.exception.NoSuchArticleException;
+import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleService;
+import com.liferay.portal.kernel.portlet.PortletProvider;
+import com.liferay.portal.kernel.portlet.PortletProviderUtil;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletContext;
+import javax.portlet.PortletRequest;
 import javax.portlet.PortletRequestDispatcher;
 import javax.portlet.PortletSession;
+import javax.portlet.PortletURL;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -58,8 +67,34 @@ public class CopyArticleMVCActionCommand extends BaseMVCActionCommand {
 			actionRequest, "autoArticleId");
 		double version = ParamUtil.getDouble(actionRequest, "version");
 
-		_journalArticleService.copyArticle(
+		JournalArticle newArticle = _journalArticleService.copyArticle(
 			groupId, oldArticleId, newArticleId, autoArticleId, version);
+
+		String redirect = ParamUtil.getString(actionRequest, WebKeys.REDIRECT);
+
+		if (!Validator.isBlank(redirect)) {
+			redirect = PortalUtil.escapeRedirect(redirect);
+		}
+		else {
+			PortletURL listURL = PortletURLFactoryUtil.create(
+				actionRequest, JournalPortletKeys.JOURNAL,
+				PortletRequest.RENDER_PHASE);
+
+			redirect = listURL.toString();
+		}
+
+		PortletURL redirectURL = PortletProviderUtil.getPortletURL(
+			actionRequest, JournalArticle.class.getName(),
+			PortletProvider.Action.EDIT);
+
+		redirectURL.setParameter("articleId", newArticle.getArticleId());
+		redirectURL.setParameter("groupId", String.valueOf(groupId));
+		redirectURL.setParameter("mvcPath", "/edit_article.jsp");
+		redirectURL.setParameter("redirect", redirect);
+
+		actionRequest.setAttribute(WebKeys.REDIRECT, redirectURL.toString());
+
+		hideDefaultSuccessMessage(actionRequest);
 	}
 
 	@Override
