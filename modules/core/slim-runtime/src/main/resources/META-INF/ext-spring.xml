@@ -34,7 +34,7 @@
 		<property name="cacheKeyGenerators">
 			<map>
 				<entry key="com.liferay.portal.kernel.dao.orm.FinderCache#BaseModel">
-					<bean class="com.liferay.portal.cache.key.HashCodeCacheKeyGenerator" />
+					<bean class="com.liferay.portal.cache.key.HashCodeHexStringCacheKeyGenerator" />
 				</entry>
 				<entry key="com.liferay.portlet.PortletPreferencesFactoryImpl">
 					<bean class="com.liferay.portal.cache.key.MessageDigestCacheKeyGenerator">
