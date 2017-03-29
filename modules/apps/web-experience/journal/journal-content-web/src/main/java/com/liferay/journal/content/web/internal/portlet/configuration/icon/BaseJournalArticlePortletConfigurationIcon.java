@@ -14,7 +14,6 @@
 
 package com.liferay.journal.content.web.internal.portlet.configuration.icon;
 
-import com.liferay.journal.content.web.configuration.JournalContentPortletInstanceConfiguration;
 import com.liferay.journal.content.web.internal.display.context.JournalContentDisplayContext;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -42,14 +41,8 @@ public abstract class BaseJournalArticlePortletConfigurationIcon
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
 		try {
-			JournalContentPortletInstanceConfiguration
-				journalContentPortletInstanceConfiguration =
-					portletDisplay.getPortletInstanceConfiguration(
-						JournalContentPortletInstanceConfiguration.class);
-
-			return new JournalContentDisplayContext(
-				portletRequest, portletResponse,
-				journalContentPortletInstanceConfiguration);
+			return JournalContentDisplayContext.create(
+				portletRequest, portletResponse, portletDisplay);
 		}
 		catch (PortalException pe) {
 			_log.error("Unable to create display context", pe);

@@ -854,9 +854,28 @@ public class JournalArticleLocalServiceImpl
 
 		// Article localization
 
+		String urlTitle = JournalUtil.getUrlTitle(id, oldArticle.getUrlTitle());
+
+		int uniqueUrlTitleCount = _getUniqueUrlTitleCount(
+			groupId, newArticleId, urlTitle);
+
+		Map<Locale, String> newTitleMap = oldArticle.getTitleMap();
+
+		for (Locale locale : newTitleMap.keySet()) {
+			StringBundler sb = new StringBundler(5);
+
+			sb.append(newTitleMap.get(locale));
+			sb.append(StringPool.SPACE);
+			sb.append(LanguageUtil.get(locale, "duplicate"));
+			sb.append(StringPool.SPACE);
+			sb.append(uniqueUrlTitleCount);
+
+			newTitleMap.put(locale, sb.toString());
+		}
+
 		_addArticleLocalizedFields(
-			newArticle.getCompanyId(), newArticle.getId(),
-			oldArticle.getTitleMap(), oldArticle.getDescriptionMap());
+			newArticle.getCompanyId(), newArticle.getId(), newTitleMap,
+			oldArticle.getDescriptionMap());
 
 		// Resources
 
@@ -8258,6 +8277,33 @@ public class JournalArticleLocalServiceImpl
 				JournalServiceConfiguration.class, companyId);
 
 		return journalServiceConfiguration.checkInterval();
+	}
+
+	private int _getUniqueUrlTitleCount(
+			long groupId, String articleId, String urlTitle)
+		throws PortalException {
+
+		for (int i = 1;; i++) {
+			JournalArticle article = fetchArticleByUrlTitle(groupId, urlTitle);
+
+			if ((article == null) ||
+				Objects.equals(articleId, article.getArticleId())) {
+
+				return i - 1;
+			}
+			else {
+				String suffix = StringPool.DASH + i;
+
+				String prefix = urlTitle;
+
+				if (urlTitle.length() > suffix.length()) {
+					prefix = urlTitle.substring(
+						0, urlTitle.length() - suffix.length());
+				}
+
+				urlTitle = prefix + suffix;
+			}
+		}
 	}
 
 	private List<JournalArticleLocalization> _updateArticleLocalizedFields(

@@ -496,6 +496,9 @@ public class JournalPortlet extends MVCPortlet {
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws IOException, PortletException {
 
+		resourceRequest.setAttribute(
+			JournalWebConfiguration.class.getName(), _journalWebConfiguration);
+
 		String resourceID = GetterUtil.getString(
 			resourceRequest.getResourceID());
 
