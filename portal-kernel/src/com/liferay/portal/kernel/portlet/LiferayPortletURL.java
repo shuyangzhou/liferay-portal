@@ -14,10 +14,13 @@
 
 package com.liferay.portal.kernel.portlet;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.Serializable;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 import javax.portlet.PortletURL;
 import javax.portlet.ResourceURL;
@@ -28,6 +31,7 @@ import javax.portlet.ResourceURL;
  * @author Brian Wing Shun Chan
  * @see    com.liferay.portlet.PortletURLImpl
  */
+@ProviderType
 public interface LiferayPortletURL
 	extends PortletURL, ResourceURL, Serializable {
 
@@ -85,7 +89,10 @@ public interface LiferayPortletURL
 	 * </p>
 	 *
 	 * @return the reserved parameter names and values in a read-only map
+	 * @deprecated As of 7.0.0, replaced by {@link #visitReservedParameters(
+	 *             BiConsumer)}
 	 */
+	@Deprecated
 	public Map<String, String> getReservedParameterMap();
 
 	/**
@@ -307,5 +314,7 @@ public interface LiferayPortletURL
 	public void setRefererPlid(long refererPlid);
 
 	public void setRemovedParameterNames(Set<String> removedParamNames);
+
+	public void visitReservedParameters(BiConsumer<String, String> biConsumer);
 
 }

@@ -69,6 +69,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 import javax.portlet.PortletMode;
 import javax.portlet.PortletModeException;
@@ -306,9 +307,18 @@ public class PortletURLImpl
 		return _removedParameterNames;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #visitReservedParameters(
+	 *             BiConsumer)}
+	 */
+	@Deprecated
 	@Override
 	public Map<String, String> getReservedParameterMap() {
-		return Collections.unmodifiableMap(_getReservedParameterMap());
+		LinkedHashMap<String, String> linkedHashMap = new LinkedHashMap<>();
+
+		visitReservedParameters(linkedHashMap::put);
+
+		return Collections.unmodifiableMap(linkedHashMap);
 	}
 
 	@Override
@@ -741,8 +751,22 @@ public class PortletURLImpl
 	}
 
 	protected void clearCache() {
-		_reservedParameters = null;
 		_toString = null;
+	}
+
+	private Key _getKey() {
+		try {
+			if (_encrypt) {
+				Company company = PortalUtil.getCompany(_request);
+
+				return company.getKeyObj();
+			}
+		}
+		catch (Exception e) {
+			_log.error(e);
+		}
+
+		return null;
 	}
 
 	protected String generateToString() {
@@ -780,18 +804,7 @@ public class PortletURLImpl
 			_log.error(e);
 		}
 
-		Key key = null;
-
-		try {
-			if (_encrypt) {
-				Company company = PortalUtil.getCompany(_request);
-
-				key = company.getKeyObj();
-			}
-		}
-		catch (Exception e) {
-			_log.error(e);
-		}
+		Key key = _getKey();
 
 		if (Validator.isNull(_layoutFriendlyURL)) {
 			sb.append(PortalUtil.getPortalURL(_request, _secure));
@@ -827,18 +840,14 @@ public class PortletURLImpl
 		addPortalAuthToken(sb, key);
 		addPortletAuthToken(sb, key);
 
-		for (Map.Entry<String, String> entry :
-				_getReservedParameterMap().entrySet()) {
-
-			String name = entry.getKey();
-
+		visitReservedParameters((name, value) -> {
 			if (!isParameterIncludedInPath(name)) {
 				sb.append(name);
 				sb.append(StringPool.EQUAL);
-				sb.append(processValue(key, entry.getValue()));
+				sb.append(processValue(key, value));
 				sb.append(StringPool.AMPERSAND);
 			}
-		}
+		});
 
 		if (_doAsUserId > 0) {
 			try {
@@ -1303,46 +1312,39 @@ public class PortletURLImpl
 		sb.append(HttpUtil.encodeURL(name));
 	}
 
-	private Map<String, String> _getReservedParameterMap() {
-		if (_reservedParameters != null) {
-			return _reservedParameters;
-		}
-
-		_reservedParameters = new LinkedHashMap<>();
-
-		_reservedParameters.put("p_p_id", _portletId);
+	@Override
+	public void visitReservedParameters(BiConsumer<String, String> biConsumer) {
+		biConsumer.accept("p_p_id", _portletId);
 
 		if (_lifecycle.equals(PortletRequest.ACTION_PHASE)) {
-			_reservedParameters.put("p_p_lifecycle", "1");
+			biConsumer.accept("p_p_lifecycle", "1");
 		}
 		else if (_lifecycle.equals(PortletRequest.RENDER_PHASE)) {
-			_reservedParameters.put("p_p_lifecycle", "0");
+			biConsumer.accept("p_p_lifecycle", "0");
 		}
 		else if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-			_reservedParameters.put("p_p_lifecycle", "2");
+			biConsumer.accept("p_p_lifecycle", "2");
 		}
 
 		if (_windowStateString != null) {
-			_reservedParameters.put("p_p_state", _windowStateString);
+			biConsumer.accept("p_p_state", _windowStateString);
 		}
 
 		if (_windowStateRestoreCurrentView) {
-			_reservedParameters.put("p_p_state_rcv", "1");
+			biConsumer.accept("p_p_state_rcv", "1");
 		}
 
 		if (_portletModeString != null) {
-			_reservedParameters.put("p_p_mode", _portletModeString);
+			biConsumer.accept("p_p_mode", _portletModeString);
 		}
 
 		if (_resourceID != null) {
-			_reservedParameters.put("p_p_resource_id", _resourceID);
+			biConsumer.accept("p_p_resource_id", _resourceID);
 		}
 
 		if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-			_reservedParameters.put("p_p_cacheability", _cacheability);
+			biConsumer.accept("p_p_cacheability", _cacheability);
 		}
-
-		return _reservedParameters;
 	}
 
 	private Map<String, String[]> _mergeWithRenderParameters(
@@ -1420,7 +1422,6 @@ public class PortletURLImpl
 	private Set<String> _removedParameterNames;
 	private final Set<String> _removePublicRenderParameters;
 	private final HttpServletRequest _request;
-	private Map<String, String> _reservedParameters;
 	private String _resourceID;
 	private boolean _secure;
 	private String _toString;
