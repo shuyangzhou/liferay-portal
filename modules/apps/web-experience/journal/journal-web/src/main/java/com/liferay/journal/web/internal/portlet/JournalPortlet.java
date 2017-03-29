@@ -467,6 +467,8 @@ public class JournalPortlet extends MVCPortlet {
 				JournalWebKeys.ITEM_SELECTOR, _itemSelector);
 		}
 
+		System.out.println("###################" + _journalWebConfiguration);
+
 		renderRequest.setAttribute(
 			JournalWebConfiguration.class.getName(), _journalWebConfiguration);
 

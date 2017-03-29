@@ -14,6 +14,8 @@
 
 package com.liferay.journal.util;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.templateparser.TransformerListener;
 
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.List;
 /**
  * @author Pavel Savinov
  */
+@ProviderType
 public interface JournalTransformerListenerRegistry {
 
 	public TransformerListener getTransformerListener(String className);
