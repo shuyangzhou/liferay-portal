@@ -17,7 +17,6 @@ package com.liferay.portal.template.freemarker.internal;
 import com.liferay.portal.kernel.concurrent.ConcurrentReferenceKeyHashMap;
 import com.liferay.portal.kernel.memory.FinalizeManager;
 import com.liferay.portal.kernel.templateparser.TemplateNode;
-import com.liferay.portal.kernel.util.ListWrapper;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 
 import freemarker.ext.beans.BeansWrapper;
@@ -35,6 +34,7 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 import java.lang.reflect.Field;
+
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -166,31 +166,27 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 
 		};
 
-	private static final ModelFactory _LIST_MODEL_FACTORY =
-			new ModelFactory() {
+	private static final ModelFactory _LIST_MODEL_FACTORY = new ModelFactory() {
 
-				@Override
-				public TemplateModel create(
-					Object object, ObjectWrapper objectWrapper) {
+		@Override
+		public TemplateModel create(
+			Object object, ObjectWrapper objectWrapper) {
 
-					return new SimpleSequence(
-						(Collection)object, (BeansWrapper)objectWrapper);
-				}
+			return new SimpleSequence((Collection)object, objectWrapper);
+		}
 
-			};
+	};
 
-	private static final ModelFactory _MAP_MODEL_FACTORY =
-			new ModelFactory() {
+	private static final ModelFactory _MAP_MODEL_FACTORY = new ModelFactory() {
 
-				@Override
-				public TemplateModel create(
-					Object object, ObjectWrapper objectWrapper) {
+		@Override
+		public TemplateModel create(
+			Object object, ObjectWrapper objectWrapper) {
 
-					return new MapModel(
-						(Map)object, (BeansWrapper)objectWrapper);
-				}
+			return new MapModel((Map)object, (BeansWrapper)objectWrapper);
+		}
 
-			};
+	};
 
 	private static final ModelFactory _RESOURCE_BUNDLE_MODEL_FACTORY =
 		new ModelFactory() {
