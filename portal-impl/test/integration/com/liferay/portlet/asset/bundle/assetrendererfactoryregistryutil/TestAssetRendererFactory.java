@@ -18,6 +18,7 @@ import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.ClassTypeReader;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -71,6 +72,14 @@ public class TestAssetRendererFactory
 	@Override
 	public AssetRenderer<TestAssetRendererModel> getAssetRenderer(
 		long groupId, String urlTitle) {
+
+		return null;
+	}
+
+	@Override
+	public AssetRenderer<TestAssetRendererModel> getAssetRenderer(
+			TestAssetRendererModel entry, int type)
+		throws PortalException {
 
 		return null;
 	}

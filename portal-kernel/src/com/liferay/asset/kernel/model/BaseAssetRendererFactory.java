@@ -80,6 +80,13 @@ public abstract class BaseAssetRendererFactory<T>
 	}
 
 	@Override
+	public AssetRenderer<T> getAssetRenderer(T entry, int type)
+		throws PortalException {
+
+		return null;
+	}
+
+	@Override
 	public String getClassName() {
 		return _className;
 	}

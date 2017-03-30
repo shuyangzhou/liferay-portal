@@ -14,6 +14,8 @@
 
 package com.liferay.asset.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -34,6 +36,7 @@ import javax.portlet.WindowState;
  * @author Raymond Augé
  * @author Sergio González
  */
+@ProviderType
 public interface AssetRendererFactory<T> {
 
 	public static final int TYPE_LATEST = 0;
@@ -52,6 +55,9 @@ public interface AssetRendererFactory<T> {
 		throws PortalException;
 
 	public AssetRenderer<T> getAssetRenderer(long groupId, String urlTitle)
+		throws PortalException;
+
+	public AssetRenderer<T> getAssetRenderer(T entry, int type)
 		throws PortalException;
 
 	public String getClassName();
