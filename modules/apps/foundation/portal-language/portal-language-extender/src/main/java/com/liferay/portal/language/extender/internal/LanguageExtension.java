@@ -17,6 +17,7 @@ package com.liferay.portal.language.extender.internal;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.util.AggregateResourceBundle;
 import com.liferay.portal.kernel.util.CacheResourceBundleLoader;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -26,6 +27,7 @@ import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -160,7 +162,7 @@ public class LanguageExtension implements Extension {
 		}
 
 		@Override
-		public ResourceBundle loadResourceBundle(String languageId) {
+		public ResourceBundle loadResourceBundle(Locale locale) {
 			List<ResourceBundle> resourceBundles = new ArrayList<>();
 
 			for (ServiceTracker<ResourceBundleLoader, ResourceBundleLoader>
@@ -170,7 +172,7 @@ public class LanguageExtension implements Extension {
 					serviceTracker.getService();
 
 				ResourceBundle resourceBundle =
-					resourceBundleLoader.loadResourceBundle(languageId);
+					resourceBundleLoader.loadResourceBundle(locale);
 
 				if (resourceBundle != null) {
 					resourceBundles.add(resourceBundle);
@@ -188,6 +190,15 @@ public class LanguageExtension implements Extension {
 			return new AggregateResourceBundle(
 				resourceBundles.toArray(
 					new ResourceBundle[resourceBundles.size()]));
+		}
+
+		/**
+		 * @deprecated As of 2.0.0, replaced by {@link #loadResourceBundle(
+		 *             Locale)}
+		 */
+		@Deprecated
+		public ResourceBundle loadResourceBundle(String languageId) {
+			return loadResourceBundle(LocaleUtil.fromLanguageId(languageId));
 		}
 
 		private final
