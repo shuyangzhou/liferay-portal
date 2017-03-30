@@ -29,7 +29,7 @@ ResourceBundleLoaderProvider resourceBundleLoaderProvider = (ResourceBundleLoade
 
 ResourceBundleLoader resourceBundleLoader = resourceBundleLoaderProvider.getResourceBundleLoader(factoryConfigurationModel.getBundleSymbolicName());
 
-ResourceBundle componentResourceBundle = resourceBundleLoader.loadResourceBundle(LanguageUtil.getLanguageId(request));
+ResourceBundle componentResourceBundle = resourceBundleLoader.loadResourceBundle(PortalUtil.getLocale(request));
 
 String factoryConfigurationModelName = (componentResourceBundle != null) ? LanguageUtil.get(componentResourceBundle, factoryConfigurationModel.getName()) : factoryConfigurationModel.getName();
 

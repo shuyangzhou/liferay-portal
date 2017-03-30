@@ -400,17 +400,34 @@ public abstract class BaseDDMDisplay implements DDMDisplay {
 		return false;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected ResourceBundle getBaseDDMDisplayResourceBundle(
 		String languageId) {
 
+		return _getBaseDDMDisplayResourceBundle(
+			LocaleUtil.fromLanguageId(languageId));
+	}
+
+	private ResourceBundle _getBaseDDMDisplayResourceBundle(Locale locale) {
 		Class<?> baseDDMDisplayClazz = BaseDDMDisplay.class;
 
 		return ResourceBundleUtil.getBundle(
-			"content.Language", LocaleUtil.fromLanguageId(languageId),
-			baseDDMDisplayClazz.getClassLoader());
+			"content.Language", locale, baseDDMDisplayClazz.getClassLoader());
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected ResourceBundle getDDMDisplayResourceBundle(String languageId) {
+		return _getDDMDisplayResourceBundle(
+			LocaleUtil.fromLanguageId(languageId));
+	}
+
+	private ResourceBundle _getDDMDisplayResourceBundle(Locale locale) {
 		Bundle bundle = FrameworkUtil.getBundle(getClass());
 
 		ResourceBundleLoader resourceBundleLoader =
@@ -422,7 +439,7 @@ public abstract class BaseDDMDisplay implements DDMDisplay {
 			return null;
 		}
 
-		return resourceBundleLoader.loadResourceBundle(languageId);
+		return resourceBundleLoader.loadResourceBundle(locale);
 	}
 
 	protected String getDefaultEditTemplateTitle(Locale locale) {
@@ -435,29 +452,35 @@ public abstract class BaseDDMDisplay implements DDMDisplay {
 		return LanguageUtil.get(locale, "templates");
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected ResourceBundle getPortalResourceBundle(String languageId) {
+		return _getPortalResourceBundle(LocaleUtil.fromLanguageId(languageId));
+	}
+
+	private ResourceBundle _getPortalResourceBundle(Locale locale) {
 		ResourceBundleLoader portalResourceBundleLoader =
 			ResourceBundleLoaderUtil.getPortalResourceBundleLoader();
 
-		return portalResourceBundleLoader.loadResourceBundle(languageId);
+		return portalResourceBundleLoader.loadResourceBundle(locale);
 	}
 
 	protected ResourceBundle getResourceBundle(Locale locale) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-
-		ResourceBundle ddmDisplayResourceBundle = getDDMDisplayResourceBundle(
-			languageId);
+		ResourceBundle ddmDisplayResourceBundle = _getDDMDisplayResourceBundle(
+			locale);
 
 		if (ddmDisplayResourceBundle == null) {
 			return new AggregateResourceBundle(
-				getBaseDDMDisplayResourceBundle(languageId),
-				getPortalResourceBundle(languageId));
+				_getBaseDDMDisplayResourceBundle(locale),
+				_getPortalResourceBundle(locale));
 		}
 
 		return new AggregateResourceBundle(
 			ddmDisplayResourceBundle,
-			getBaseDDMDisplayResourceBundle(languageId),
-			getPortalResourceBundle(languageId));
+			_getBaseDDMDisplayResourceBundle(locale),
+			_getPortalResourceBundle(locale));
 	}
 
 	protected String getViewTemplatesURL(

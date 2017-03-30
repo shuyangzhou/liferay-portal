@@ -23,7 +23,6 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -91,13 +90,15 @@ public class DDMFormRendererHelper {
 			_resourceBundleLoaderProvider.getResourceBundleLoader(
 				bundleSymbolicName);
 
+		Locale locale = getLocale();
+
 		ResourceBundle resourceBundle = resourceBundleLoader.loadResourceBundle(
-			LocaleUtil.toLanguageId(getLocale()));
+			locale);
 
 		ConfigurationModelToDDMFormConverter
 			configurationModelToDDMFormConverter =
 				new ConfigurationModelToDDMFormConverter(
-					_configurationModel, getLocale(), resourceBundle);
+					_configurationModel, locale, resourceBundle);
 
 		return configurationModelToDDMFormConverter.getDDMForm();
 	}
@@ -109,13 +110,15 @@ public class DDMFormRendererHelper {
 			_resourceBundleLoaderProvider.getResourceBundleLoader(
 				bundleSymbolicName);
 
+		Locale locale = getLocale();
+
 		ResourceBundle resourceBundle = resourceBundleLoader.loadResourceBundle(
-			LocaleUtil.toLanguageId(getLocale()));
+			locale);
 
 		ConfigurationModelToDDMFormValuesConverter
 			configurationModelToDDMFormValuesConverter =
 				new ConfigurationModelToDDMFormValuesConverter(
-					_configurationModel, ddmForm, getLocale(), resourceBundle);
+					_configurationModel, ddmForm, locale, resourceBundle);
 
 		return configurationModelToDDMFormValuesConverter.getDDMFormValues();
 	}

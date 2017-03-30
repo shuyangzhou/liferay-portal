@@ -14,7 +14,6 @@
 
 package com.liferay.taglib.util;
 
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.AggregateResourceBundle;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.JavaConstants;
@@ -47,8 +46,7 @@ public class TagResourceBundleUtil {
 			request);
 
 		if (resourceBundleLoader != null) {
-			return resourceBundleLoader.loadResourceBundle(
-				LanguageUtil.getLanguageId(locale));
+			return resourceBundleLoader.loadResourceBundle(locale);
 		}
 
 		ResourceBundle portletResourceBundle = getPortletResourceBundle(
