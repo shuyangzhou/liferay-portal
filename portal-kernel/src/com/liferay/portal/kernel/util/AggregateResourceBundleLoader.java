@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -31,7 +32,7 @@ public class AggregateResourceBundleLoader implements ResourceBundleLoader {
 	}
 
 	@Override
-	public ResourceBundle loadResourceBundle(String languageId) {
+	public ResourceBundle loadResourceBundle(Locale locale) {
 		List<ResourceBundle> resourceBundles = new ArrayList<>();
 
 		for (ResourceBundleLoader resourceBundleLoader :
@@ -39,7 +40,7 @@ public class AggregateResourceBundleLoader implements ResourceBundleLoader {
 
 			try {
 				ResourceBundle resourceBundle =
-					resourceBundleLoader.loadResourceBundle(languageId);
+					resourceBundleLoader.loadResourceBundle(locale);
 
 				if (resourceBundle != null) {
 					resourceBundles.add(resourceBundle);
@@ -50,6 +51,8 @@ public class AggregateResourceBundleLoader implements ResourceBundleLoader {
 		}
 
 		if (resourceBundles.isEmpty()) {
+			String languageId = LocaleUtil.toLanguageId(locale);
+
 			throw new MissingResourceException(
 				"Resource bundle loader " + this + " was unable to load " +
 					"resource bundle for " + languageId,
@@ -63,6 +66,15 @@ public class AggregateResourceBundleLoader implements ResourceBundleLoader {
 		return new AggregateResourceBundle(
 			resourceBundles.toArray(
 				new ResourceBundle[resourceBundles.size()]));
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #loadResourceBundle(Locale)}
+	 */
+	@Deprecated
+	@Override
+	public ResourceBundle loadResourceBundle(String languageId) {
+		return loadResourceBundle(LocaleUtil.fromLanguageId(languageId));
 	}
 
 	private final ResourceBundleLoader[] _resourceBundleLoaders;
