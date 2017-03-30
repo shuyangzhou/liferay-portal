@@ -4057,14 +4057,13 @@ public class StringUtil {
 			return false;
 		}
 
-		String temp = s.substring(0, start.length());
+		for (int i = 0; i < start.length(); i++) {
+			if (!equalsIgnoreCase(s.charAt(i), start.charAt(i))) {
+				return false;
+			}
+		}
 
-		if (equalsIgnoreCase(temp, start)) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return true;
 	}
 
 	/**
