@@ -38,7 +38,6 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -98,8 +97,8 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 		String className = clazz.getName();
 
 		if (className.startsWith("com.liferay.")) {
-			if (object instanceof List) {
-				return _LIST_MODEL_FACTORY.create(object, this);
+			if (object instanceof Collection) {
+				return _COLLECTION_MODEL_FACTORY.create(object, this);
 			}
 
 			if (object instanceof Map) {
@@ -140,8 +139,8 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 			return _ENUMERATION_MODEL_FACTORY.create(object, this);
 		}
 
-		if (object instanceof List) {
-			return _LIST_MODEL_FACTORY.create(object, this);
+		if (object instanceof Collection) {
+			return _COLLECTION_MODEL_FACTORY.create(object, this);
 		}
 
 		if (object instanceof Map) {
@@ -152,6 +151,18 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 
 		return _STRING_MODEL_FACTORY.create(object, this);
 	}
+
+	private static final ModelFactory _COLLECTION_MODEL_FACTORY =
+		new ModelFactory() {
+
+			@Override
+			public TemplateModel create(
+				Object object, ObjectWrapper objectWrapper) {
+
+				return new SimpleSequence((Collection)object, objectWrapper);
+			}
+
+		};
 
 	private static final ModelFactory _ENUMERATION_MODEL_FACTORY =
 		new ModelFactory() {
@@ -165,17 +176,6 @@ public class LiferayObjectWrapper extends DefaultObjectWrapper {
 			}
 
 		};
-
-	private static final ModelFactory _LIST_MODEL_FACTORY = new ModelFactory() {
-
-		@Override
-		public TemplateModel create(
-			Object object, ObjectWrapper objectWrapper) {
-
-			return new SimpleSequence((Collection)object, objectWrapper);
-		}
-
-	};
 
 	private static final ModelFactory _MAP_MODEL_FACTORY = new ModelFactory() {
 
