@@ -5392,7 +5392,7 @@ public class PortalImpl implements Portal {
 				}
 				else {
 					timestamp = PortalWebResourcesUtil.getPathLastModified(
-						uri, theme.getTimestamp());
+						path, theme.getTimestamp());
 				}
 			}
 
