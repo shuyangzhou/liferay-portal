@@ -52,10 +52,11 @@ public class DDMDataProviderPortletConfigurationIcon
 
 	@Override
 	public String getMessage(PortletRequest portletRequest) {
-		String languageId = getLanguageId(portletRequest);
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 
 		ResourceBundle resourceBundle =
-			_resourceBundleLoader.loadResourceBundle(languageId);
+			_resourceBundleLoader.loadResourceBundle(themeDisplay.getLocale());
 
 		return LanguageUtil.get(resourceBundle, getMessageKey());
 	}
@@ -100,13 +101,6 @@ public class DDMDataProviderPortletConfigurationIcon
 	@Override
 	public boolean isUseDialog() {
 		return false;
-	}
-
-	protected String getLanguageId(PortletRequest portletRequest) {
-		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		return themeDisplay.getLanguageId();
 	}
 
 	protected String getMessageKey() {
