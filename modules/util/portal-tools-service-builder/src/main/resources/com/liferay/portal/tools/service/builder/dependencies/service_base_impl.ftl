@@ -75,10 +75,8 @@ import ${apiPackagePath}.service.${entity.name}${sessionTypeName}Service;
 	import ${packagePath}.model.impl.${entity.name}Impl;
 </#if>
 
-<#if entity.hasLocalizationColumns()>
-	<#assign localizationEntity = entity.toLocalizationEntity() />
-
-	import ${apiPackagePath}.model.${localizationEntity.name};
+<#if entity.localizationEntity??>
+	import ${apiPackagePath}.model.${entity.name}Localization;
 </#if>
 
 <#list referenceList as tempEntity>
@@ -972,25 +970,27 @@ import ${apiPackagePath}.service.${entity.name}${sessionTypeName}Service;
 		</#list>
 	</#if>
 
-	<#if stringUtil.equals(sessionTypeName, "Local") && entity.hasLocalizationColumns()>
-		<#assign localizationEntity = entity.toLocalizationEntity() />
+	<#if stringUtil.equals(sessionTypeName, "Local") && (entity.localizationEntity??)>
+		<#assign
+			localizationEntity = entity.localizationEntity
+			localizationColumns = entity.localizationColumns
+			pkColumn = entity.getPKList()?first
+		/>
 
 		@Override
 		public ${localizationEntity.name} fetch${localizationEntity.name}(${entity.PKClassName} ${entity.PKVarName}, String languageId) {
-			return ${localizationEntity.varName}Persistence.fetchBy${localizationEntity.localizationFinderName}(${entity.PKVarName}, languageId);
+			return ${localizationEntity.varName}Persistence.fetchBy${pkColumn.methodName}_LanguageId(${entity.PKVarName}, languageId);
 		}
 
 		@Override
 		public ${localizationEntity.name} get${localizationEntity.name}(${entity.PKClassName} ${entity.PKVarName}, String languageId) throws PortalException {
-			return ${localizationEntity.varName}Persistence.findBy${localizationEntity.localizationFinderName}(${entity.PKVarName}, languageId);
+			return ${localizationEntity.varName}Persistence.findBy${pkColumn.methodName}_LanguageId(${entity.PKVarName}, languageId);
 		}
 
 		@Override
 		public List<${localizationEntity.name}> get${localizationEntity.names}(${entity.PKClassName} ${entity.PKVarName}) {
-			return ${localizationEntity.varName}Persistence.findBy${entity.name}PK(${entity.PKVarName});
+			return ${localizationEntity.varName}Persistence.findBy${pkColumn.methodName}(${entity.PKVarName});
 		}
-
-		<#assign localizationColumns = entity.localizationColumns />
 
 		protected ${localizationEntity.name} update${localizationEntity.name}(
 			${entity.name} ${entity.varName}, String languageId,
@@ -1003,7 +1003,7 @@ import ${apiPackagePath}.service.${entity.name}${sessionTypeName}Service;
 			</#list>
 			) throws PortalException {
 
-			${localizationEntity.name} ${localizationEntity.varName} = ${localizationEntity.varName}Persistence.fetchBy${localizationEntity.localizationFinderName}(${entity.varName}.getPrimaryKey(), languageId);
+			${localizationEntity.name} ${localizationEntity.varName} = ${localizationEntity.varName}Persistence.fetchBy${pkColumn.methodName}_LanguageId(${entity.varName}.getPrimaryKey(), languageId);
 
 			if (${localizationEntity.varName} == null) {
 				long ${localizationEntity.varName}Id = counterLocalService.increment();
@@ -1014,7 +1014,7 @@ import ${apiPackagePath}.service.${entity.name}${sessionTypeName}Service;
 					${localizationEntity.varName}.setCompanyId(${entity.varName}.getCompanyId());
 				</#if>
 
-				${localizationEntity.varName}.set${localizationEntity.primaryKeyMethodName}(${entity.varName}.getPrimaryKey());
+				${localizationEntity.varName}.set${pkColumn.methodName}(${entity.varName}.getPrimaryKey());
 				${localizationEntity.varName}.setLanguageId(languageId);
 			}
 
@@ -1056,7 +1056,7 @@ import ${apiPackagePath}.service.${entity.name}${sessionTypeName}Service;
 
 			List<${localizationEntity.name}> ${localizationEntity.varNames} = new ArrayList<${localizationEntity.name}>(localizedValuesMap.size());
 
-			for (${localizationEntity.name} ${localizationEntity.varName} : ${localizationEntity.varName}Persistence.findBy${entity.name}PK(${entity.varName}.getPrimaryKey())) {
+			for (${localizationEntity.name} ${localizationEntity.varName} : ${localizationEntity.varName}Persistence.findBy${pkColumn.methodName}(${entity.varName}.getPrimaryKey())) {
 				String[] localizedValues = localizedValuesMap.remove(${localizationEntity.varName}.getLanguageId());
 
 				if (localizedValues == null) {
@@ -1083,7 +1083,7 @@ import ${apiPackagePath}.service.${entity.name}${sessionTypeName}Service;
 					${localizationEntity.varName}.setCompanyId(${entity.varName}.getCompanyId());
 				</#if>
 
-				${localizationEntity.varName}.set${localizationEntity.primaryKeyMethodName}(${entity.varName}.getPrimaryKey());
+				${localizationEntity.varName}.set${pkColumn.methodName}(${entity.varName}.getPrimaryKey());
 				${localizationEntity.varName}.setLanguageId(languageId);
 
 				<#list localizationColumns as column>

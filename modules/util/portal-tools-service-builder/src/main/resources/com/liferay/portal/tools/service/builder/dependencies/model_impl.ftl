@@ -26,10 +26,8 @@ import ${apiPackagePath}.model.${entity.name}Soap;
 	</#if>
 </#list>
 
-<#if entity.hasLocalizationColumns()>
-	<#assign localizationEntity = entity.toLocalizationEntity() />
-
-	import ${apiPackagePath}.model.${localizationEntity.name};
+<#if entity.localizationEntity??>
+	import ${apiPackagePath}.model.${entity.name}Localization;
 </#if>
 
 import ${apiPackagePath}.service.${entity.name}LocalServiceUtil;
@@ -449,8 +447,8 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		</#list>
 	}
 
-	<#if entity.hasLocalizationColumns()>
-		<#assign localizationEntity = entity.toLocalizationEntity() />
+	<#if entity.localizationEntity??>
+		<#assign localizationEntity = entity.localizationEntity />
 
 		<#list entity.localizationColumns as column>
 			@Override
