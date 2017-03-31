@@ -56,7 +56,7 @@ public class IGDisplayContextProvider {
 
 			ResourceBundle resourceBundle =
 				_resourceBundleLoader.loadResourceBundle(
-					themeDisplay.getLanguageId());
+					themeDisplay.getLocale());
 
 			IGViewFileVersionDisplayContext igViewFileVersionDisplayContext =
 				new DefaultIGViewFileVersionDisplayContext(
@@ -93,7 +93,7 @@ public class IGDisplayContextProvider {
 
 			ResourceBundle resourceBundle =
 				_resourceBundleLoader.loadResourceBundle(
-					themeDisplay.getLanguageId());
+					themeDisplay.getLocale());
 
 			IGViewFileVersionDisplayContext igViewFileVersionDisplayContext =
 				new DefaultIGViewFileVersionDisplayContext(

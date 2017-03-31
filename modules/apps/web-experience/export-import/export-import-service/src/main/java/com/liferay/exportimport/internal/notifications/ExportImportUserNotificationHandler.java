@@ -36,9 +36,11 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.StringPool;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.portlet.PortletRequest;
@@ -69,11 +71,10 @@ public class ExportImportUserNotificationHandler
 			ServiceContext serviceContext)
 		throws Exception {
 
-		String languageId = LanguageUtil.getLanguageId(
-			serviceContext.getRequest());
+		Locale locale = _portal.getLocale(serviceContext.getRequest());
 
 		ResourceBundle resourceBundle =
-			_resourceBundleLoader.loadResourceBundle(languageId);
+			_resourceBundleLoader.loadResourceBundle(locale);
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 			userNotificationEvent.getPayload());
@@ -166,6 +167,9 @@ public class ExportImportUserNotificationHandler
 	@Reference
 	private ExportImportConfigurationLocalService
 		_exportImportConfigurationLocalService;
+
+	@Reference
+	private Portal _portal;
 
 	@Reference
 	private PortletLocalService _portletLocalService;

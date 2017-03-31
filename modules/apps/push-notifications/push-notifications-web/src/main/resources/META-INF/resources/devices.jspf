@@ -91,7 +91,7 @@ ResourceBundleLoaderProvider resourceBundleLoaderProvider = (ResourceBundleLoade
 			<%
 			ResourceBundleLoader platformResourceBundleLoader = resourceBundleLoaderProvider.getResourceBundleLoader(pushNotificationsDevice.getPlatform());
 
-			ResourceBundle platformResourceBundle = platformResourceBundleLoader.loadResourceBundle(LanguageUtil.getLanguageId(request));
+			ResourceBundle platformResourceBundle = platformResourceBundleLoader.loadResourceBundle(PortalUtil.getLocale(request));
 			%>
 
 			<liferay-ui:search-container-column-text
