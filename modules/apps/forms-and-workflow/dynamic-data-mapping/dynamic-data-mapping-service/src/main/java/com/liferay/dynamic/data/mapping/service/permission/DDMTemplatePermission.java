@@ -246,11 +246,12 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 	public static String getTemplateModelResourceName(long resourceClassNameId)
 		throws PortalException {
 
+		String className = PortalUtil.getClassName(resourceClassNameId);
+
 		ServiceWrapper<DDMTemplatePermissionSupport>
 			templatePermissionSupportServiceWrapper =
 				_ddmPermissionSupportTracker.
-					getDDMTemplatePermissionSupportServiceWrapper(
-						resourceClassNameId);
+					getDDMTemplatePermissionSupportServiceWrapper(className);
 
 		Map<String, Object> properties =
 			templatePermissionSupportServiceWrapper.getProperties();
@@ -263,8 +264,7 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 		}
 
 		return ResourceActionsUtil.getCompositeModelName(
-			PortalUtil.getClassName(resourceClassNameId),
-			DDMTemplate.class.getName());
+			className, DDMTemplate.class.getName());
 	}
 
 	@Override
