@@ -322,9 +322,8 @@ public class IncludeTag extends AttributesTagSupport {
 			TagDynamicIdFactoryRegistry.getTagDynamicIdFactory(tagClassName);
 
 		if (tagDynamicIdFactory != null) {
-			httpServletResponse = new PipingServletResponse(
-				(HttpServletResponse)pageContext.getResponse(),
-				pageContext.getOut());
+			httpServletResponse =
+				PipingServletResponse.createPipingServletResponse(pageContext);
 
 			tagDynamicId = tagDynamicIdFactory.getTagDynamicId(
 				request, httpServletResponse, this);
