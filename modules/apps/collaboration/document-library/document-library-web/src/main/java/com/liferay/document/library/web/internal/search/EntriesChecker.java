@@ -26,16 +26,12 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileShortcut;
 import com.liferay.portal.kernel.repository.model.Folder;
-import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portlet.documentlibrary.service.permission.DLFileEntryPermission;
-import com.liferay.portlet.documentlibrary.service.permission.DLFileShortcutPermission;
-import com.liferay.portlet.documentlibrary.service.permission.DLFolderPermission;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -109,58 +105,16 @@ public class EntriesChecker extends EmptyOnClickRowChecker {
 			}
 		}
 
-		boolean showInput = false;
-
 		String name = null;
 
 		if (fileEntry != null) {
 			name = FileEntry.class.getSimpleName();
-
-			try {
-				if (DLFileEntryPermission.contains(
-						_permissionChecker, fileEntry, ActionKeys.DELETE) ||
-					DLFileEntryPermission.contains(
-						_permissionChecker, fileEntry, ActionKeys.UPDATE)) {
-
-					showInput = true;
-				}
-			}
-			catch (Exception e) {
-			}
 		}
 		else if (fileShortcut != null) {
 			name = DLFileShortcut.class.getSimpleName();
-
-			try {
-				if (DLFileShortcutPermission.contains(
-						_permissionChecker, fileShortcut, ActionKeys.DELETE) ||
-					DLFileShortcutPermission.contains(
-						_permissionChecker, fileShortcut, ActionKeys.UPDATE)) {
-
-					showInput = true;
-				}
-			}
-			catch (Exception e) {
-			}
 		}
 		else if (folder != null) {
 			name = Folder.class.getSimpleName();
-
-			try {
-				if (DLFolderPermission.contains(
-						_permissionChecker, folder, ActionKeys.DELETE) ||
-					DLFolderPermission.contains(
-						_permissionChecker, folder, ActionKeys.UPDATE)) {
-
-					showInput = true;
-				}
-			}
-			catch (Exception e) {
-			}
-		}
-
-		if (!showInput) {
-			return StringPool.BLANK;
 		}
 
 		String checkBoxRowIds = getEntryRowIds();

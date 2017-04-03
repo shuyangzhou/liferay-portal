@@ -18,8 +18,6 @@ import com.liferay.bookmarks.model.BookmarksEntry;
 import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.service.BookmarksEntryLocalServiceUtil;
 import com.liferay.bookmarks.service.BookmarksFolderLocalServiceUtil;
-import com.liferay.bookmarks.service.permission.BookmarksEntryPermissionChecker;
-import com.liferay.bookmarks.service.permission.BookmarksFolderPermissionChecker;
 import com.liferay.document.library.kernel.model.DLFileShortcut;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.RowChecker;
@@ -27,7 +25,6 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
-import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -84,39 +81,13 @@ public class EntriesChecker extends EmptyOnClickRowChecker {
 				entryId);
 		}
 
-		boolean showInput = false;
-
 		String name = null;
 
 		if (entry != null) {
 			name = BookmarksEntry.class.getSimpleName();
-
-			try {
-				if (BookmarksEntryPermissionChecker.contains(
-						_permissionChecker, entry, ActionKeys.DELETE)) {
-
-					showInput = true;
-				}
-			}
-			catch (Exception e) {
-			}
 		}
 		else if (folder != null) {
 			name = BookmarksFolder.class.getSimpleName();
-
-			try {
-				if (BookmarksFolderPermissionChecker.contains(
-						_permissionChecker, folder, ActionKeys.DELETE)) {
-
-					showInput = true;
-				}
-			}
-			catch (Exception e) {
-			}
-		}
-
-		if (!showInput) {
-			return StringPool.BLANK;
 		}
 
 		String checkBoxRowIds = getEntryRowIds();

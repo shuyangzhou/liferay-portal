@@ -35,7 +35,7 @@ portletURL.setParameter("tag", StringPool.BLANK);
 
 <liferay-frontend:management-bar
 	disabled="<%= total == 0 %>"
-	includeCheckBox="<%= !user.isDefaultUser() %>"
+	includeCheckBox="<%= true %>"
 	searchContainerId="<%= searchContainerId %>"
 >
 	<liferay-frontend:management-bar-buttons>
@@ -72,7 +72,9 @@ portletURL.setParameter("tag", StringPool.BLANK);
 			label="info"
 		/>
 
-		<liferay-frontend:management-bar-button href='<%= "javascript:" + renderResponse.getNamespace() + "deleteEntries();" %>' icon='<%= TrashUtil.isTrashEnabled(scopeGroupId) ? "trash" : "times" %>' label='<%= TrashUtil.isTrashEnabled(scopeGroupId) ? "recycle-bin" : "delete" %>' />
+		<c:if test="<%= !user.isDefaultUser() %>">
+			<liferay-frontend:management-bar-button href='<%= "javascript:" + renderResponse.getNamespace() + "deleteEntries();" %>' icon='<%= TrashUtil.isTrashEnabled(scopeGroupId) ? "trash" : "times" %>' label='<%= TrashUtil.isTrashEnabled(scopeGroupId) ? "recycle-bin" : "delete" %>' />
+		</c:if>
 	</liferay-frontend:management-bar-action-buttons>
 </liferay-frontend:management-bar>
 
