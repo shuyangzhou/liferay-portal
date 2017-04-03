@@ -137,16 +137,8 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 		String templateModelResourceName = getTemplateModelResourceName(
 			template.getResourceClassNameId());
 
-		if (permissionChecker.hasOwnerPermission(
-				template.getCompanyId(), templateModelResourceName,
-				template.getTemplateId(), template.getUserId(), actionId)) {
-
-			return true;
-		}
-
-		return permissionChecker.hasPermission(
-			template.getGroupId(), templateModelResourceName,
-			template.getTemplateId(), actionId);
+		return _contains(
+			permissionChecker, template, templateModelResourceName, actionId);
 	}
 
 	/**
@@ -167,10 +159,12 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 			DDMTemplate template, String portletId, String actionId)
 		throws PortalException {
 
+		String templateModelResourceName = getTemplateModelResourceName(
+			template.getResourceClassNameId());
+
 		if (Validator.isNotNull(portletId)) {
 			Boolean hasPermission = StagingPermissionUtil.hasPermission(
-				permissionChecker, groupId,
-				getTemplateModelResourceName(template.getResourceClassNameId()),
+				permissionChecker, groupId, templateModelResourceName,
 				template.getTemplateId(), portletId, actionId);
 
 			if (hasPermission != null) {
@@ -178,7 +172,8 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 			}
 		}
 
-		return contains(permissionChecker, template, actionId);
+		return _contains(
+			permissionChecker, template, templateModelResourceName, actionId);
 	}
 
 	public static boolean contains(
@@ -319,6 +314,23 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 		DDMTemplateLocalService ddmTemplateLocalService) {
 
 		_ddmTemplateLocalService = ddmTemplateLocalService;
+	}
+
+	private static boolean _contains(
+			PermissionChecker permissionChecker, DDMTemplate template,
+			String templateModelResourceName, String actionId)
+		throws PortalException {
+
+		if (permissionChecker.hasOwnerPermission(
+				template.getCompanyId(), templateModelResourceName,
+				template.getTemplateId(), template.getUserId(), actionId)) {
+
+			return true;
+		}
+
+		return permissionChecker.hasPermission(
+			template.getGroupId(), templateModelResourceName,
+			template.getTemplateId(), actionId);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
