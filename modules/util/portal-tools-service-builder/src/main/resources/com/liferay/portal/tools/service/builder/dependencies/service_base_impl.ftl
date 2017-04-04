@@ -1130,6 +1130,29 @@ import ${apiPackagePath}.service.${entity.name}${sessionTypeName}Service;
 		}
 	</#if>
 
+	<#if stringUtil.equals(sessionTypeName, "Local") && entity.hasLocalizationColumns()>
+		<#assign localizationEntity = entity.toLocalizationEntity() />
+
+		<#list localizationEntity.getFinderList() as finder>
+			<#if !finder.isCollection()>
+				<#list entity.getLocalizationColumns() as column>
+					@Override
+					public String get${localizationEntity.primaryEntityName}${column.getName}(${entity.PKClassName} ${entity.PKVarName}, String languageId) {
+						${entity.name}Localization ${entity.varName}Localization = ${entity.varName}LocalizationPersistence.fetchBy${finder.name}(${entity.PKVarName}, languageId);
+
+						if (${entity.varName}Localization == null) {
+							return null;
+						}
+
+						return ${entity.varName}Localization.get${column.getName}();
+					}
+				</#list>
+			</#if>
+		</#list>
+
+		
+	</#if>
+
 	<#if entity.hasColumns()>
 		protected Class<?> getModelClass() {
 			return ${entity.name}.class;

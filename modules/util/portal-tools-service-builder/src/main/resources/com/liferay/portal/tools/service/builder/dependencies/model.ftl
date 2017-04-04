@@ -168,6 +168,12 @@ public interface ${entity.name}Model extends
 	 */
 	public void setPrimaryKey(${entity.PKClassName} primaryKey);
 
+	<#if entity.getLocalizationColumns()>
+		<#list entity.regularColList as column>
+			
+		</#list>
+	</#if>
+
 	<#list entity.regularColList as column>
 		<#if stringUtil.equals(column.name, "classNameId")>
 			/**
