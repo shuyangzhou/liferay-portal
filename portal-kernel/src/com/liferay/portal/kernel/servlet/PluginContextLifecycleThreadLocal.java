@@ -40,10 +40,10 @@ public class PluginContextLifecycleThreadLocal {
 	private static final ThreadLocal<Boolean> _destroying =
 		new InitialThreadLocal<>(
 			PluginContextLifecycleThreadLocal.class + "._destroying",
-			Boolean.FALSE);
+			() -> Boolean.FALSE);
 	private static final ThreadLocal<Boolean> _initializing =
 		new InitialThreadLocal<>(
 			PluginContextLifecycleThreadLocal.class + "._initializing",
-			Boolean.FALSE);
+			() -> Boolean.FALSE);
 
 }

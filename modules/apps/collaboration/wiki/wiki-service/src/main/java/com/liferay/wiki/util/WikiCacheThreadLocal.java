@@ -31,6 +31,6 @@ public class WikiCacheThreadLocal {
 
 	private static final ThreadLocal<Boolean> _clearCache =
 		new InitialThreadLocal<>(
-			WikiCacheThreadLocal.class + "._clearCache", true);
+			WikiCacheThreadLocal.class + "._clearCache", () -> Boolean.TRUE);
 
 }

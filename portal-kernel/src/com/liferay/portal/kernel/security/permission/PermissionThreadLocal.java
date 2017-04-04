@@ -105,16 +105,16 @@ public class PermissionThreadLocal {
 
 	private static final ThreadLocal<Boolean> _addResource =
 		new AutoResetThreadLocal<>(
-			PermissionThreadLocal.class + "._addResource", true);
+			PermissionThreadLocal.class + "._addResource", () -> Boolean.TRUE);
 	private static final ThreadLocal<Set<String>> _flushResourceBlockEnabled =
-		new AutoResetThreadLocal<Set<String>>(
+		new AutoResetThreadLocal<>(
 			PermissionThreadLocal.class + "._flushResourceBlockEnabled",
-			new HashSet<String>());
+			HashSet::new);
 	private static final ThreadLocal<Set<String>>
-		_flushResourcePermissionEnabled = new AutoResetThreadLocal<Set<String>>(
+		_flushResourcePermissionEnabled = new AutoResetThreadLocal<>(
 			PermissionThreadLocal.class +
 				"._flushResourcePermissionEnabled",
-			new HashSet<String>());
+			HashSet::new);
 
 	private static final ThreadLocal<PermissionChecker> _permissionChecker =
 		new AutoResetThreadLocal<PermissionChecker>(

@@ -33,6 +33,6 @@ public class UserGroupImportTransactionThreadLocal {
 		new InitialThreadLocal<>(
 			UserGroupImportTransactionThreadLocal.class +
 				"._originatesFromImport",
-			false);
+			() -> Boolean.FALSE);
 
 }

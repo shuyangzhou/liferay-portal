@@ -42,10 +42,8 @@ public class TemplateResourceThreadLocal {
 	}
 
 	private static final ThreadLocal<Map<String, TemplateResource>>
-		_templateResources =
-			new InitialThreadLocal<Map<String, TemplateResource>>(
-				TemplateResourceThreadLocal.class.getName() +
-					"._templateResources",
-				new HashMap<String, TemplateResource>());
+		_templateResources = new InitialThreadLocal<>(
+			TemplateResourceThreadLocal.class.getName() + "._templateResources",
+			HashMap::new);
 
 }

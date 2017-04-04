@@ -84,9 +84,11 @@ public class CompanyThreadLocal {
 
 	private static final ThreadLocal<Long> _companyId =
 		new AutoResetThreadLocal<>(
-			CompanyThreadLocal.class + "._companyId", CompanyConstants.SYSTEM);
+			CompanyThreadLocal.class + "._companyId",
+			() -> CompanyConstants.SYSTEM);
 	private static final ThreadLocal<Boolean> _deleteInProcess =
 		new AutoResetThreadLocal<>(
-			CompanyThreadLocal.class + "._deleteInProcess", false);
+			CompanyThreadLocal.class + "._deleteInProcess",
+			() -> Boolean.FALSE);
 
 }

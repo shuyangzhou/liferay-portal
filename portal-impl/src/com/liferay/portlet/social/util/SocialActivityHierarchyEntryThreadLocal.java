@@ -77,6 +77,6 @@ public class SocialActivityHierarchyEntryThreadLocal {
 		_activityHierarchyEntries = new AutoResetThreadLocal<>(
 			SocialActivityHierarchyEntryThreadLocal.class +
 				"._activityHierarchyEntries",
-			new Stack<SocialActivityHierarchyEntry>());
+			Stack::new);
 
 }

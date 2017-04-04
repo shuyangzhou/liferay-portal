@@ -83,11 +83,12 @@ public class MergeLayoutPrototypesThreadLocal {
 
 	private static final ThreadLocal<Boolean> _inProgress =
 		new AutoResetThreadLocal<>(
-			MergeLayoutPrototypesThreadLocal.class + "._inProgress", false);
+			MergeLayoutPrototypesThreadLocal.class + "._inProgress",
+			() -> Boolean.FALSE);
 	private static final ThreadLocal<Set<MethodKey>> _mergeComplete =
-		new AutoResetThreadLocal<Set<MethodKey>>(
+		new AutoResetThreadLocal<>(
 			MergeLayoutPrototypesThreadLocal.class + "._mergeComplete",
-			new HashSet<MethodKey>());
+			HashSet::new);
 
 	private static class MethodKey {
 

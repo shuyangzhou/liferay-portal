@@ -43,10 +43,10 @@ public class UserImportTransactionThreadLocal {
 	private static final ThreadLocal<String> _originalEmailAddress =
 		new AutoResetThreadLocal<>(
 			UserImportTransactionThreadLocal.class + "._originalEmailAddress",
-			StringPool.BLANK);
+			() -> StringPool.BLANK);
 	private static final ThreadLocal<Boolean> _originatesFromImport =
 		new InitialThreadLocal<>(
 			UserImportTransactionThreadLocal.class + "._originatesFromImport",
-			false);
+			() -> Boolean.FALSE);
 
 }

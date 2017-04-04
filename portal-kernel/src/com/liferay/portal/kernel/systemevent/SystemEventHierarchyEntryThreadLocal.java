@@ -167,6 +167,6 @@ public class SystemEventHierarchyEntryThreadLocal {
 		_systemEventHierarchyEntries = new AutoResetThreadLocal<>(
 			SystemEventHierarchyEntryThreadLocal.class +
 				"._systemEventHierarchyEntries",
-			new Stack<SystemEventHierarchyEntry>());
+			Stack::new);
 
 }

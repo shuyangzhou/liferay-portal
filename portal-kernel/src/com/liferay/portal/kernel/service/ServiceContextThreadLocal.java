@@ -52,7 +52,7 @@ public class ServiceContextThreadLocal {
 		_serviceContextThreadLocal =
 			new AutoResetThreadLocal<LinkedList<ServiceContext>>(
 				ServiceContextThreadLocal.class + "._serviceContextThreadLocal",
-				new LinkedList<>()) {
+				LinkedList::new) {
 
 				@Override
 				protected LinkedList<ServiceContext> copy(
