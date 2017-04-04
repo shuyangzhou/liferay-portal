@@ -1,0 +1,90 @@
+diff --git a/org/dom4j/tree/QNameCache.java b/org/dom4j/tree/QNameCache.java
+index 345a093..06714fc 100644
+--- a/org/dom4j/tree/QNameCache.java
++++ b/org/dom4j/tree/QNameCache.java
+@@ -33,15 +33,29 @@ import org.dom4j.QName;
+  */
+ public class QNameCache {
+     /** Cache of {@link QName}instances with no namespace */
+-    protected Map noNamespaceCache = Collections
+-            .synchronizedMap(new WeakHashMap());
++    protected ThreadLocal noNamespaceCache = new ThreadLocal() {
++        protected Object initialValue() {
++            return new WeakHashMap();
++        }
++    };
++
++    protected Map noNamespaceCache() {
++        return (Map) noNamespaceCache.get();
++    }
+ 
+     /**
+      * Cache of {@link Map}instances indexed by namespace which contain caches
+      * of {@link QName}for each name
+      */
+-    protected Map namespaceCache = Collections
+-            .synchronizedMap(new WeakHashMap());
++    protected ThreadLocal namespaceCache = new ThreadLocal() {
++        protected Object initialValue() {
++            return new WeakHashMap();
++        }
++    };
++
++    protected Map namespaceCache() {
++        return (Map) namespaceCache.get();
++    }
+ 
+     /**
+      * The document factory associated with new QNames instances in this cache
+@@ -63,9 +77,9 @@ public class QNameCache {
+      */
+     public List getQNames() {
+         List answer = new ArrayList();
+-        answer.addAll(noNamespaceCache.values());
++        answer.addAll(noNamespaceCache().values());
+ 
+-        for (Iterator it = namespaceCache.values().iterator(); it.hasNext();) {
++        for (Iterator it = namespaceCache().values().iterator(); it.hasNext();) {
+             Map map = (Map) it.next();
+             answer.addAll(map.values());
+         }
+@@ -85,7 +99,7 @@ public class QNameCache {
+         QName answer = null;
+ 
+         if (name != null) {
+-            answer = (QName) noNamespaceCache.get(name);
++            answer = (QName) noNamespaceCache().get(name);
+         } else {
+             name = "";
+         }
+@@ -93,7 +107,7 @@ public class QNameCache {
+         if (answer == null) {
+             answer = createQName(name);
+             answer.setDocumentFactory(documentFactory);
+-            noNamespaceCache.put(name, answer);
++            noNamespaceCache().put(name, answer);
+         }
+ 
+         return answer;
+@@ -197,18 +211,18 @@ public class QNameCache {
+      */
+     protected Map getNamespaceCache(Namespace namespace) {
+         if (namespace == Namespace.NO_NAMESPACE) {
+-            return noNamespaceCache;
++            return noNamespaceCache();
+         }
+ 
+         Map answer = null;
+ 
+         if (namespace != null) {
+-            answer = (Map) namespaceCache.get(namespace);
++            answer = (Map) namespaceCache().get(namespace);
+         }
+ 
+         if (answer == null) {
+             answer = createMap();
+-            namespaceCache.put(namespace, answer);
++            namespaceCache().put(namespace, answer);
+         }
+ 
+         return answer;

@@ -1,0 +1,3 @@
+Bundle-SymbolicName: org.dom4j
+Bundle-Version: 1.6.1.LIFERAY-PATCHED-1
+Export-Package: org.dom4j.*
