@@ -148,6 +148,10 @@ public interface PortletLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Portlet fetchPortletById(long companyId, java.lang.String portletId);
 
+	@Skip
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Portlet getFriendlyURLMapperPortlet(java.lang.String url);
+
 	/**
 	* Returns the portlet with the primary key.
 	*
@@ -254,6 +258,11 @@ public interface PortletLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<CustomAttributesDisplay> getCustomAttributesDisplays();
 
+	/**
+	* @deprecated As of 7.0.0, replaced by
+	{@link #getFriendlyURLMapperPortlet(String))}
+	*/
+	@java.lang.Deprecated
 	@Skip
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Portlet> getFriendlyURLMapperPortlets();
