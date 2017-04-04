@@ -59,10 +59,10 @@ public class GroupThreadLocal {
 
 	private static final ThreadLocal<Boolean> _deleteInProcess =
 		new AutoResetThreadLocal<>(
-			GroupThreadLocal.class + "._deleteInProcess", false);
+			GroupThreadLocal.class + "._deleteInProcess", () -> Boolean.FALSE);
 	private static final ThreadLocal<Long> _groupId =
 		new AutoResetThreadLocal<>(
 			GroupThreadLocal.class + "._groupId",
-			GroupConstants.DEFAULT_LIVE_GROUP_ID);
+			() -> GroupConstants.DEFAULT_LIVE_GROUP_ID);
 
 }

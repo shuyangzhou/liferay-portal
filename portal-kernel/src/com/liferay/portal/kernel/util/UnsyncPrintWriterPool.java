@@ -80,11 +80,11 @@ public class UnsyncPrintWriterPool {
 			new AutoResetThreadLocal<>(
 				UnsyncPrintWriterPool.class.getName() +
 					"._borrowedUnsyncPrintWritersThreadLocal",
-				new ArrayList<UnsyncPrintWriter>());
+				ArrayList::new);
 	private static final ThreadLocal<Boolean> _enabledThreadLocal =
 		new AutoResetThreadLocal<>(
 			UnsyncPrintWriterPool.class.getName() + "._enabledThreadLocal",
-			false);
+			() -> Boolean.FALSE);
 	private static final SoftReferencePool<UnsyncPrintWriter, Writer>
 		_unsyncPrintWriterSoftReferencePool = new SoftReferencePool<>(
 			new UnsyncPrintWriterPoolAction(), 8192);

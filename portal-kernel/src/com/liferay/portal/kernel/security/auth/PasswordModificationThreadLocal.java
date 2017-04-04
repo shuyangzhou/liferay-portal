@@ -39,7 +39,8 @@ public class PasswordModificationThreadLocal {
 
 	private static final ThreadLocal<Boolean> _passwordModified =
 		new AutoResetThreadLocal<>(
-			PrincipalThreadLocal.class + "._passwordModified", false);
+			PrincipalThreadLocal.class + "._passwordModified",
+			() -> Boolean.FALSE);
 	private static final ThreadLocal<String> _passwordUnencrypted =
 		new AutoResetThreadLocal<>(
 			PrincipalThreadLocal.class + "._passwordUnencrypted");

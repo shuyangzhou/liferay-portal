@@ -130,7 +130,7 @@ public class PACLTestRule implements TestRule {
 		private static final ThreadLocal<Boolean> _dummyDataSourceEnabled =
 			new InitialThreadLocal<>(
 				PACLTestRuleThreadLocal.class + "._dummyDataSourceEnabled",
-				false);
+				() -> Boolean.FALSE);
 
 	}
 

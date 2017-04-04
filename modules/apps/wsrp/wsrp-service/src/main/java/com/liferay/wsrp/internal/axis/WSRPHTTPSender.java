@@ -182,10 +182,10 @@ public class WSRPHTTPSender extends HTTPSender {
 
 	private static final ThreadLocal<String> _currentCookie =
 		new InitialThreadLocal<>(
-			SimpleHTTPSender.class + "._currentCookie", StringPool.BLANK);
+			SimpleHTTPSender.class + "._currentCookie", () -> StringPool.BLANK);
 	private static final ThreadLocal<HttpServletRequest> _currentRequest =
 		new InitialThreadLocal<>(
-			SimpleHTTPSender.class + "._currentRequest", null);
+			SimpleHTTPSender.class + "._currentRequest", () -> null);
 
 	private final String[] _forwardCookies;
 	private final String[] _forwardHeaders;

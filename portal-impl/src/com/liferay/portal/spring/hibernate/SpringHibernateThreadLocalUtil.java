@@ -118,7 +118,7 @@ public class SpringHibernateThreadLocalUtil {
 
 					if (threadLocal instanceof NamedThreadLocal) {
 						threadLocal = new InitialThreadLocal<>(
-							(String)nameField.get(threadLocal), null);
+							(String)nameField.get(threadLocal), () -> null);
 					}
 					else {
 						threadLocal = new CentralizedThreadLocal<>(false);

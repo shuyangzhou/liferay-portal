@@ -31,6 +31,7 @@ public class BufferOverflowThreadLocal {
 
 	private static final ThreadLocal<Boolean> _overflowMode =
 		new AutoResetThreadLocal<>(
-			BufferOverflowThreadLocal.class + "._overflowMode", false);
+			BufferOverflowThreadLocal.class + "._overflowMode",
+			() -> Boolean.FALSE);
 
 }

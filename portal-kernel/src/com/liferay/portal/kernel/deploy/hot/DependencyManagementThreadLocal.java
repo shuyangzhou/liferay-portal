@@ -42,7 +42,8 @@ public class DependencyManagementThreadLocal {
 				true)) {
 
 			_enabled = new AutoResetThreadLocal<>(
-				DependencyManagementThreadLocal.class + ".enabled", true);
+				DependencyManagementThreadLocal.class + ".enabled",
+				() -> Boolean.TRUE);
 		}
 		else {
 			_enabled = new ThreadLocal<Boolean>() {

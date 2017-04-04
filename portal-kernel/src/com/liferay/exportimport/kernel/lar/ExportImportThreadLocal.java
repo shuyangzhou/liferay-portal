@@ -172,42 +172,48 @@ public class ExportImportThreadLocal {
 	private static final ThreadLocal<Boolean> _initialLayoutStagingInProcess =
 		new AutoResetThreadLocal<>(
 			ExportImportThreadLocal.class + "._initialLayoutStagingInProcess",
-			false);
+			() -> Boolean.FALSE);
 	private static final ThreadLocal<Boolean>
 		_layoutDataDeletionImportInProcess = new AutoResetThreadLocal<>(
 			ExportImportThreadLocal.class +
 				"._layoutDataDeletionImportInProcess",
-			false);
+			() -> Boolean.FALSE);
 	private static final ThreadLocal<Boolean> _layoutExportInProcess =
 		new AutoResetThreadLocal<>(
-			ExportImportThreadLocal.class + "._layoutExportInProcess", false);
+			ExportImportThreadLocal.class + "._layoutExportInProcess",
+			() -> Boolean.FALSE);
 	private static final ThreadLocal<Boolean> _layoutImportInProcess =
 		new AutoResetThreadLocal<>(
-			ExportImportThreadLocal.class + "._layoutImportInProcess", false);
+			ExportImportThreadLocal.class + "._layoutImportInProcess",
+			() -> Boolean.FALSE);
 	private static final ThreadLocal<Boolean> _layoutStagingInProcess =
 		new AutoResetThreadLocal<>(
-			ExportImportThreadLocal.class + "._layoutStagingInProcess", false);
+			ExportImportThreadLocal.class + "._layoutStagingInProcess",
+			() -> Boolean.FALSE);
 	private static final ThreadLocal<Boolean> _layoutValidationInProcess =
 		new AutoResetThreadLocal<>(
 			ExportImportThreadLocal.class + "._layoutValidationInProcess",
-			false);
+			() -> Boolean.FALSE);
 	private static final ThreadLocal<Boolean>
 		_portletDataDeletionImportInProcess = new AutoResetThreadLocal<>(
 			ExportImportThreadLocal.class +
 				"._portletDataDeletionImportInProcess",
-			false);
+			() -> Boolean.FALSE);
 	private static final ThreadLocal<Boolean> _portletExportInProcess =
 		new AutoResetThreadLocal<>(
-			ExportImportThreadLocal.class + "._portletExportInProcess", false);
+			ExportImportThreadLocal.class + "._portletExportInProcess",
+			() -> Boolean.FALSE);
 	private static final ThreadLocal<Boolean> _portletImportInProcess =
 		new AutoResetThreadLocal<>(
-			ExportImportThreadLocal.class + "._portletImportInProcess", false);
+			ExportImportThreadLocal.class + "._portletImportInProcess",
+			() -> Boolean.FALSE);
 	private static final ThreadLocal<Boolean> _portletStagingInProcess =
 		new AutoResetThreadLocal<>(
-			ExportImportThreadLocal.class + "._portletStagingInProcess", false);
+			ExportImportThreadLocal.class + "._portletStagingInProcess",
+			() -> Boolean.FALSE);
 	private static final ThreadLocal<Boolean> _portletValidationInProcess =
 		new AutoResetThreadLocal<>(
 			ExportImportThreadLocal.class + "._portletValidationInProcess",
-			false);
+			() -> Boolean.FALSE);
 
 }

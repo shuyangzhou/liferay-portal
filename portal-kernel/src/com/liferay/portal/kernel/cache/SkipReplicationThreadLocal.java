@@ -32,6 +32,6 @@ public class SkipReplicationThreadLocal {
 	private static final ThreadLocal<Boolean> _skipReplicationThreadLocal =
 		new InitialThreadLocal<>(
 			SkipReplicationThreadLocal.class + "._skipReplicationThreadLocal",
-			false);
+			() -> Boolean.FALSE);
 
 }

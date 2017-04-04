@@ -106,10 +106,9 @@ public class PublicRenderParametersPool {
 		PublicRenderParametersPool.class);
 
 	private static final ThreadLocal<Map<String, String[]>>
-		_publicRenderParametersMap =
-			new AutoResetThreadLocal<Map<String, String[]>>(
-				PublicRenderParametersPool.class +
-					"._publicRenderParametersMap",
-				new HashMap<String, String[]>());
+		_publicRenderParametersMap = new AutoResetThreadLocal<>(
+			PublicRenderParametersPool.class +
+				"._publicRenderParametersMap",
+			HashMap::new);
 
 }
