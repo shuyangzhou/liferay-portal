@@ -526,6 +526,11 @@ public class DDMTemplateWrapper implements DDMTemplate,
 		return _ddmTemplate.getNameCurrentValue();
 	}
 
+	@Override
+	public java.lang.String getResourceClassName() {
+		return _ddmTemplate.getResourceClassName();
+	}
+
 	/**
 	* Returns the script of this ddm template.
 	*
@@ -1106,6 +1111,11 @@ public class DDMTemplateWrapper implements DDMTemplate,
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_ddmTemplate.setPrimaryKeyObj(primaryKeyObj);
+	}
+
+	@Override
+	public void setResourceClassName(java.lang.String resourceClassName) {
+		_ddmTemplate.setResourceClassName(resourceClassName);
 	}
 
 	/**
