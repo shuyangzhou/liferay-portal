@@ -110,14 +110,42 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 			long resourceClassNameId)
 		throws PortalException {
 
-		if (!containsAddTemplatePermission(
-				permissionChecker, groupId, classNameId, resourceClassNameId)) {
+		ServiceWrapper<DDMTemplatePermissionSupport>
+			templatePermissionSupportServiceWrapper =
+				_ddmPermissionSupportTracker.
+					getDDMTemplatePermissionSupportServiceWrapper(
+						resourceClassNameId);
 
+		_checkAddTemplatePermission(
+			permissionChecker, groupId, classNameId,
+			templatePermissionSupportServiceWrapper);
+	}
+
+	public static void checkAddTemplatePermission(
+			PermissionChecker permissionChecker, long groupId, long classNameId,
+			String resourceClassName)
+		throws PortalException {
+
+		ServiceWrapper<DDMTemplatePermissionSupport>
+			templatePermissionSupportServiceWrapper =
+				_ddmPermissionSupportTracker.
+					getDDMTemplatePermissionSupportServiceWrapper(
+						resourceClassName);
+
+		_checkAddTemplatePermission(
+			permissionChecker, groupId, classNameId,
+			templatePermissionSupportServiceWrapper);
+	}
+
+	private static void _checkAddTemplatePermission(
+			PermissionChecker permissionChecker, long groupId, long classNameId,
 			ServiceWrapper<DDMTemplatePermissionSupport>
-				templatePermissionSupportServiceWrapper =
-					_ddmPermissionSupportTracker.
-						getDDMTemplatePermissionSupportServiceWrapper(
-							resourceClassNameId);
+				templatePermissionSupportServiceWrapper)
+		throws PortalException {
+
+		if (!_containsAddTemplatePermission(
+				permissionChecker, groupId, classNameId,
+				templatePermissionSupportServiceWrapper)) {
 
 			throw new PrincipalException.MustHavePermission(
 				permissionChecker,
@@ -225,6 +253,33 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 				_ddmPermissionSupportTracker.
 					getDDMTemplatePermissionSupportServiceWrapper(
 						resourceClassNameId);
+
+		return _containsAddTemplatePermission(
+			permissionChecker, groupId, classNameId,
+			templatePermissionSupportServiceWrapper);
+	}
+
+	public static boolean containsAddTemplatePermission(
+			PermissionChecker permissionChecker, long groupId, long classNameId,
+			String resourceClassName)
+		throws PortalException {
+
+		ServiceWrapper<DDMTemplatePermissionSupport>
+			templatePermissionSupportServiceWrapper =
+				_ddmPermissionSupportTracker.
+					getDDMTemplatePermissionSupportServiceWrapper(
+						resourceClassName);
+
+		return _containsAddTemplatePermission(
+			permissionChecker, groupId, classNameId,
+			templatePermissionSupportServiceWrapper);
+	}
+
+	private static boolean _containsAddTemplatePermission(
+			PermissionChecker permissionChecker, long groupId, long classNameId,
+			ServiceWrapper<DDMTemplatePermissionSupport>
+				templatePermissionSupportServiceWrapper)
+		throws PortalException {
 
 		String resourceName = getResourceName(
 			templatePermissionSupportServiceWrapper, classNameId);
