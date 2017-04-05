@@ -50,7 +50,7 @@ public class DDMStructurePermission extends BaseResourcePermissionChecker {
 		if (!contains(permissionChecker, structure, actionId)) {
 			throw new PrincipalException.MustHavePermission(
 				permissionChecker,
-				getStructureModelResourceName(structure.getClassNameId()),
+				getStructureModelResourceName(structure.getClassName()),
 				structure.getStructureId(), actionId);
 		}
 	}
@@ -113,7 +113,7 @@ public class DDMStructurePermission extends BaseResourcePermissionChecker {
 		throws PortalException {
 
 		String structureModelResourceName = getStructureModelResourceName(
-			structure.getClassNameId());
+			structure.getClassName());
 
 		if (Validator.isNotNull(portletId)) {
 			Boolean hasPermission = StagingPermissionUtil.hasPermission(
@@ -186,10 +186,17 @@ public class DDMStructurePermission extends BaseResourcePermissionChecker {
 	public static String getStructureModelResourceName(long classNameId)
 		throws PortalException {
 
+		return getStructureModelResourceName(
+			PortalUtil.getClassName(classNameId));
+	}
+
+	public static String getStructureModelResourceName(String className)
+		throws PortalException {
+
 		ServiceWrapper<DDMStructurePermissionSupport>
 			structurePermissionSupportServiceWrapper =
 				_ddmPermissionSupportTracker.
-					getDDMStructurePermissionSupportServiceWrapper(classNameId);
+					getDDMStructurePermissionSupportServiceWrapper(className);
 
 		Map<String, Object> properties =
 			structurePermissionSupportServiceWrapper.getProperties();
@@ -202,7 +209,7 @@ public class DDMStructurePermission extends BaseResourcePermissionChecker {
 		}
 
 		return ResourceActionsUtil.getCompositeModelName(
-			PortalUtil.getClassName(classNameId), DDMStructure.class.getName());
+			className, DDMStructure.class.getName());
 	}
 
 	@Override
