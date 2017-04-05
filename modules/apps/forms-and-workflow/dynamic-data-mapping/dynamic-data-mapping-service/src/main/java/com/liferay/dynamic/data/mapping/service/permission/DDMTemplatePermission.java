@@ -53,7 +53,7 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 		if (!contains(permissionChecker, template, actionId)) {
 			throw new PrincipalException.MustHavePermission(
 				permissionChecker,
-				getTemplateModelResourceName(template.getResourceClassNameId()),
+				getTemplateModelResourceName(template.getResourceClassName()),
 				template.getTemplateId(), actionId);
 		}
 	}
@@ -68,7 +68,7 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 
 			throw new PrincipalException.MustHavePermission(
 				permissionChecker,
-				getTemplateModelResourceName(template.getResourceClassNameId()),
+				getTemplateModelResourceName(template.getResourceClassName()),
 				template.getTemplateId(), actionId);
 		}
 	}
@@ -85,7 +85,7 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 
 			throw new PrincipalException.MustHavePermission(
 				permissionChecker,
-				getTemplateModelResourceName(template.getResourceClassNameId()),
+				getTemplateModelResourceName(template.getResourceClassName()),
 				templateId, actionId);
 		}
 	}
@@ -100,7 +100,7 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 		if (!contains(permissionChecker, template, actionId)) {
 			throw new PrincipalException.MustHavePermission(
 				permissionChecker,
-				getTemplateModelResourceName(template.getResourceClassNameId()),
+				getTemplateModelResourceName(template.getResourceClassName()),
 				templateId, actionId);
 		}
 	}
@@ -110,23 +110,31 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 			long resourceClassNameId)
 		throws PortalException {
 
-		if (!containsAddTemplatePermission(
-				permissionChecker, groupId, classNameId, resourceClassNameId)) {
+		ServiceWrapper<DDMTemplatePermissionSupport>
+			templatePermissionSupportServiceWrapper =
+				_ddmPermissionSupportTracker.
+					getDDMTemplatePermissionSupportServiceWrapper(
+						resourceClassNameId);
 
-			ServiceWrapper<DDMTemplatePermissionSupport>
-				templatePermissionSupportServiceWrapper =
-					_ddmPermissionSupportTracker.
-						getDDMTemplatePermissionSupportServiceWrapper(
-							resourceClassNameId);
+		_checkAddTemplatePermission(
+			permissionChecker, groupId, classNameId,
+			templatePermissionSupportServiceWrapper);
+	}
 
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker,
-				getResourceName(
-					templatePermissionSupportServiceWrapper, classNameId),
-				groupId,
-				getAddTemplateActionId(
-					templatePermissionSupportServiceWrapper));
-		}
+	public static void checkAddTemplatePermission(
+			PermissionChecker permissionChecker, long groupId, long classNameId,
+			String resourceClassName)
+		throws PortalException {
+
+		ServiceWrapper<DDMTemplatePermissionSupport>
+			templatePermissionSupportServiceWrapper =
+				_ddmPermissionSupportTracker.
+					getDDMTemplatePermissionSupportServiceWrapper(
+						resourceClassName);
+
+		_checkAddTemplatePermission(
+			permissionChecker, groupId, classNameId,
+			templatePermissionSupportServiceWrapper);
 	}
 
 	public static boolean contains(
@@ -135,7 +143,7 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 		throws PortalException {
 
 		String templateModelResourceName = getTemplateModelResourceName(
-			template.getResourceClassNameId());
+			template.getResourceClassName());
 
 		if (permissionChecker.hasOwnerPermission(
 				template.getCompanyId(), templateModelResourceName,
@@ -170,7 +178,7 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 		if (Validator.isNotNull(portletId)) {
 			Boolean hasPermission = StagingPermissionUtil.hasPermission(
 				permissionChecker, groupId,
-				getTemplateModelResourceName(template.getResourceClassNameId()),
+				getTemplateModelResourceName(template.getResourceClassName()),
 				template.getTemplateId(), portletId, actionId);
 
 			if (hasPermission != null) {
@@ -226,45 +234,46 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 					getDDMTemplatePermissionSupportServiceWrapper(
 						resourceClassNameId);
 
-		String resourceName = getResourceName(
-			templatePermissionSupportServiceWrapper, classNameId);
-
-		List<String> portletNames = ResourceActionsUtil.getPortletNames();
-
-		if (portletNames.contains(resourceName)) {
-			return PortletPermissionUtil.contains(
-				permissionChecker, groupId, null, resourceName,
-				getAddTemplateActionId(
-					templatePermissionSupportServiceWrapper));
-		}
-
-		return contains(
-			permissionChecker, resourceName, groupId,
-			getAddTemplateActionId(templatePermissionSupportServiceWrapper));
+		return _containsAddTemplatePermission(
+			permissionChecker, groupId, classNameId,
+			templatePermissionSupportServiceWrapper);
 	}
 
-	public static String getTemplateModelResourceName(long resourceClassNameId)
+	public static boolean containsAddTemplatePermission(
+			PermissionChecker permissionChecker, long groupId, long classNameId,
+			String resourceClassName)
 		throws PortalException {
 
 		ServiceWrapper<DDMTemplatePermissionSupport>
 			templatePermissionSupportServiceWrapper =
 				_ddmPermissionSupportTracker.
 					getDDMTemplatePermissionSupportServiceWrapper(
-						resourceClassNameId);
+						resourceClassName);
 
-		Map<String, Object> properties =
-			templatePermissionSupportServiceWrapper.getProperties();
+		return _containsAddTemplatePermission(
+			permissionChecker, groupId, classNameId,
+			templatePermissionSupportServiceWrapper);
+	}
 
-		boolean defaultModelResourceName = MapUtil.getBoolean(
-			properties, "default.model.resource.name");
+	public static String getTemplateModelResourceName(long resourceClassNameId)
+		throws PortalException {
 
-		if (defaultModelResourceName) {
-			return DDMTemplate.class.getName();
-		}
+		String resourceClassName = PortalUtil.getClassName(resourceClassNameId);
 
-		return ResourceActionsUtil.getCompositeModelName(
-			PortalUtil.getClassName(resourceClassNameId),
-			DDMTemplate.class.getName());
+		return getTemplateModelResourceName(resourceClassName);
+	}
+
+	public static String getTemplateModelResourceName(String resourceClassName)
+		throws PortalException {
+
+		ServiceWrapper<DDMTemplatePermissionSupport>
+			templatePermissionSupportServiceWrapper =
+				_ddmPermissionSupportTracker.
+					getDDMTemplatePermissionSupportServiceWrapper(
+						resourceClassName);
+
+		return _getTemplateModelResourceName(
+			resourceClassName, templatePermissionSupportServiceWrapper);
 	}
 
 	@Override
@@ -319,6 +328,69 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 		DDMTemplateLocalService ddmTemplateLocalService) {
 
 		_ddmTemplateLocalService = ddmTemplateLocalService;
+	}
+
+	private static void _checkAddTemplatePermission(
+			PermissionChecker permissionChecker, long groupId, long classNameId,
+			ServiceWrapper<DDMTemplatePermissionSupport>
+				templatePermissionSupportServiceWrapper)
+		throws PortalException {
+
+		if (!_containsAddTemplatePermission(
+				permissionChecker, groupId, classNameId,
+				templatePermissionSupportServiceWrapper)) {
+
+			throw new PrincipalException.MustHavePermission(
+				permissionChecker,
+				getResourceName(
+					templatePermissionSupportServiceWrapper, classNameId),
+				groupId,
+				getAddTemplateActionId(
+					templatePermissionSupportServiceWrapper));
+		}
+	}
+
+	private static boolean _containsAddTemplatePermission(
+			PermissionChecker permissionChecker, long groupId, long classNameId,
+			ServiceWrapper<DDMTemplatePermissionSupport>
+				templatePermissionSupportServiceWrapper)
+		throws PortalException {
+
+		String resourceName = getResourceName(
+			templatePermissionSupportServiceWrapper, classNameId);
+
+		List<String> portletNames = ResourceActionsUtil.getPortletNames();
+
+		if (portletNames.contains(resourceName)) {
+			return PortletPermissionUtil.contains(
+				permissionChecker, groupId, null, resourceName,
+				getAddTemplateActionId(
+					templatePermissionSupportServiceWrapper));
+		}
+
+		return contains(
+			permissionChecker, resourceName, groupId,
+			getAddTemplateActionId(templatePermissionSupportServiceWrapper));
+	}
+
+	private static String _getTemplateModelResourceName(
+			String resourceClassName,
+			ServiceWrapper<DDMTemplatePermissionSupport>
+				templatePermissionSupportServiceWrapper)
+		throws PortalException {
+
+		Map<String, Object> properties =
+			templatePermissionSupportServiceWrapper.getProperties();
+
+		boolean defaultModelResourceName = MapUtil.getBoolean(
+			properties, "default.model.resource.name");
+
+		if (defaultModelResourceName) {
+			return DDMTemplate.class.getName();
+		}
+
+		return ResourceActionsUtil.getCompositeModelName(
+			resourceClassName, DDMTemplate.class.getName());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
