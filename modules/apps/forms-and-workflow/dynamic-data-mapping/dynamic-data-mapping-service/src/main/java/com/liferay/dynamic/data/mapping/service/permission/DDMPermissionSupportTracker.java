@@ -60,17 +60,24 @@ public class DDMPermissionSupportTracker {
 				long resourceClassNameId)
 		throws PortalException {
 
-		String className = _portal.getClassName(resourceClassNameId);
+		return getDDMTemplatePermissionSupportServiceWrapper(
+			_portal.getClassName(resourceClassNameId));
+	}
+
+	public ServiceWrapper<DDMTemplatePermissionSupport>
+			getDDMTemplatePermissionSupportServiceWrapper(
+				String resourceClassName)
+		throws PortalException {
 
 		ServiceWrapper<DDMTemplatePermissionSupport>
 			ddmTemplatePermissionSupportServiceWrapper =
 				_ddmTemplatePermissionSupportServiceTrackerMap.getService(
-					className);
+					resourceClassName);
 
 		if (ddmTemplatePermissionSupportServiceWrapper == null) {
 			throw new PortalException(
 				"The model does not support DDMTemplate permission checking " +
-					className);
+					resourceClassName);
 		}
 
 		return ddmTemplatePermissionSupportServiceWrapper;
