@@ -201,6 +201,8 @@ page import="javax.portlet.WindowState" %>
 <%
 JournalWebConfiguration journalWebConfiguration = (JournalWebConfiguration)request.getAttribute(JournalWebConfiguration.class.getName());
 
+System.out.println("@@@@@@@@@from jsp " + journalWebConfiguration);
+
 JournalDisplayContext journalDisplayContext = new JournalDisplayContext(request, liferayPortletRequest, liferayPortletResponse, portletPreferences);
 
 JournalWebRequestHelper journalWebRequestHelper = new JournalWebRequestHelper(request);
