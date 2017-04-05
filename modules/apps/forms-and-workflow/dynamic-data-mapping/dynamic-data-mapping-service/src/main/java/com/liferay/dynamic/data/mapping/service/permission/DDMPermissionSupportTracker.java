@@ -76,6 +76,25 @@ public class DDMPermissionSupportTracker {
 		return ddmTemplatePermissionSupportServiceWrapper;
 	}
 
+	public ServiceWrapper<DDMTemplatePermissionSupport>
+			getDDMTemplatePermissionSupportServiceWrapper(
+				String resourceClassName)
+		throws PortalException {
+
+		ServiceWrapper<DDMTemplatePermissionSupport>
+			ddmTemplatePermissionSupportServiceWrapper =
+				_ddmTemplatePermissionSupportServiceTrackerMap.getService(
+					resourceClassName);
+
+		if (ddmTemplatePermissionSupportServiceWrapper == null) {
+			throw new PortalException(
+				"The model does not support DDMTemplate permission checking " +
+					resourceClassName);
+		}
+
+		return ddmTemplatePermissionSupportServiceWrapper;
+	}
+
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_ddmStructurePermissionSupportServiceTrackerMap =
