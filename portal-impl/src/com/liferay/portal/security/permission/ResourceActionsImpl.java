@@ -30,8 +30,6 @@ import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.ModelResourceActionsBag;
-import com.liferay.portal.kernel.security.permission.PortletResourceActionsBag;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.service.GroupServiceUtil;
 import com.liferay.portal.kernel.service.PortletLocalService;
@@ -1410,5 +1408,170 @@ public class ResourceActionsImpl implements ResourceActions {
 	private final ServiceTrackerList<ResourceBundleLoader>
 		_resourceBundleLoaders;
 	private final Set<String> _rootModelResources = new HashSet<>();
+
+	private interface ModelResourceActionsBag extends ResourceActionsBag {
+
+		public Set<String> getResourceOwnerDefaultActions();
+
+		public Map<String, Double> getResourceWeights();
+
+	}
+
+	private class ModelResourceActionsBagImpl
+		extends ResourceActionsBagImpl implements ModelResourceActionsBag {
+
+		public ModelResourceActionsBagImpl() {
+		}
+
+		public ModelResourceActionsBagImpl(
+			ModelResourceActionsBag modelResourceActionsBag) {
+
+			super(modelResourceActionsBag);
+
+			_resourceOwnerDefaultActions.addAll(
+				modelResourceActionsBag.getResourceOwnerDefaultActions());
+			_resourceWeights.putAll(
+				modelResourceActionsBag.getResourceWeights());
+		}
+
+		@Override
+		public ModelResourceActionsBag clone() {
+			return new ModelResourceActionsBagImpl(this);
+		}
+
+		@Override
+		public Set<String> getResourceOwnerDefaultActions() {
+			return _resourceOwnerDefaultActions;
+		}
+
+		@Override
+		public Map<String, Double> getResourceWeights() {
+			return _resourceWeights;
+		}
+
+		private final Set<String> _resourceOwnerDefaultActions =
+			new HashSet<>();
+		private final Map<String, Double> _resourceWeights = new HashMap<>();
+
+	}
+
+	private interface PortletResourceActionsBag extends ResourceActionsBag {
+
+		public Map<String, String> getPortletRootModelResources();
+
+		public Set<String> getResourceLayoutManagerActions();
+
+	}
+
+	private class PortletResourceActionsBagImpl
+		extends ResourceActionsBagImpl implements PortletResourceActionsBag {
+
+		public PortletResourceActionsBagImpl() {
+		}
+
+		public PortletResourceActionsBagImpl(
+			PortletResourceActionsBag portletResourceActionsBag) {
+
+			super(portletResourceActionsBag);
+
+			_portletRootModelResources.putAll(
+				portletResourceActionsBag.getPortletRootModelResources());
+			_resourceLayoutManagerActions.addAll(
+				portletResourceActionsBag.getResourceLayoutManagerActions());
+		}
+
+		@Override
+		public PortletResourceActionsBag clone() {
+			return new PortletResourceActionsBagImpl(this);
+		}
+
+		@Override
+		public Map<String, String> getPortletRootModelResources() {
+			return _portletRootModelResources;
+		}
+
+		@Override
+		public Set<String> getResourceLayoutManagerActions() {
+			return _resourceLayoutManagerActions;
+		}
+
+		private final Map<String, String> _portletRootModelResources =
+			new HashMap<>();
+		private final Set<String> _resourceLayoutManagerActions =
+			new HashSet<>();
+
+	}
+
+	private interface ResourceActionsBag {
+
+		public Set<String> getResourceActions();
+
+		public Set<String> getResourceGroupDefaultActions();
+
+		public Set<String> getResourceGuestDefaultActions();
+
+		public Set<String> getResourceGuestUnsupportedActions();
+
+		public Set<String> getResources();
+
+	}
+
+	private class ResourceActionsBagImpl
+		implements Cloneable, ResourceActionsBag {
+
+		public ResourceActionsBagImpl() {
+		}
+
+		public ResourceActionsBagImpl(ResourceActionsBag resourceActionsBag) {
+			_resourceActions.addAll(resourceActionsBag.getResourceActions());
+			_resourceGroupDefaultActions.addAll(
+				resourceActionsBag.getResourceGroupDefaultActions());
+			_resourceGuestDefaultActions.addAll(
+				resourceActionsBag.getResourceGuestDefaultActions());
+			_resourceGuestUnsupportedActions.addAll(
+				resourceActionsBag.getResourceGuestUnsupportedActions());
+			_resources.addAll(resourceActionsBag.getResources());
+		}
+
+		@Override
+		public ResourceActionsBag clone() {
+			return new ResourceActionsBagImpl(this);
+		}
+
+		@Override
+		public Set<String> getResourceActions() {
+			return _resourceActions;
+		}
+
+		@Override
+		public Set<String> getResourceGroupDefaultActions() {
+			return _resourceGroupDefaultActions;
+		}
+
+		@Override
+		public Set<String> getResourceGuestDefaultActions() {
+			return _resourceGuestDefaultActions;
+		}
+
+		@Override
+		public Set<String> getResourceGuestUnsupportedActions() {
+			return _resourceGuestUnsupportedActions;
+		}
+
+		@Override
+		public Set<String> getResources() {
+			return _resources;
+		}
+
+		private final Set<String> _resourceActions = new HashSet<>();
+		private final Set<String> _resourceGroupDefaultActions =
+			new HashSet<>();
+		private final Set<String> _resourceGuestDefaultActions =
+			new HashSet<>();
+		private final Set<String> _resourceGuestUnsupportedActions =
+			new HashSet<>();
+		private final Set<String> _resources = new HashSet<>();
+
+	}
 
 }
