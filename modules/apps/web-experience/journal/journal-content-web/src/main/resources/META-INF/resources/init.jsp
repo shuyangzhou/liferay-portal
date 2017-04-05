@@ -72,9 +72,13 @@ page import="javax.portlet.WindowState" %>
 <portlet:defineObjects />
 
 <%
-JournalContentDisplayContext journalContentDisplayContext = JournalContentDisplayContext.create(liferayPortletRequest, liferayPortletResponse, portletDisplay);
+JournalContentDisplayContext journalContentDisplayContext = JournalContentDisplayContext.create(liferayPortletRequest, liferayPortletResponse, portletDisplay, _ddmStructureClassNameId);
 
 Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(locale, timeZone);
+%>
+
+<%!
+private long _ddmStructureClassNameId = PortalUtil.getClassNameId(DDMStructure.class);
 %>
 
 <%@ include file="/init-ext.jsp" %>
