@@ -14,9 +14,11 @@
 
 package com.liferay.journal.content.web.internal.portlet.configuration.icon;
 
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.journal.content.web.constants.JournalContentPortletKeys;
 import com.liferay.journal.content.web.internal.display.context.JournalContentDisplayContext;
 import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIcon;
+import com.liferay.portal.kernel.util.Portal;
 
 import javax.portlet.PortletRequest;
 
@@ -52,7 +54,8 @@ public class EditTemplatePortletConfigurationIcon
 	@Override
 	public boolean isShow(PortletRequest portletRequest) {
 		JournalContentDisplayContext journalContentDisplayContext =
-			getJournalContentDisplayContext(portletRequest, null);
+			getJournalContentDisplayContext(
+				portletRequest, null, _ddmStructureClassNameId);
 
 		if (journalContentDisplayContext.isShowEditTemplateIcon()) {
 			return true;
@@ -79,5 +82,12 @@ public class EditTemplatePortletConfigurationIcon
 	public void setServletContext(ServletContext servletContext) {
 		super.setServletContext(servletContext);
 	}
+
+	@Reference(unbind = "-")
+	protected void setPortal(Portal portal) {
+		_ddmStructureClassNameId = portal.getClassNameId(DDMStructure.class);
+	}
+
+	private long _ddmStructureClassNameId;
 
 }

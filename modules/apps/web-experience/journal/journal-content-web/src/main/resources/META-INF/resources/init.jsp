@@ -77,4 +77,8 @@ JournalContentDisplayContext journalContentDisplayContext = JournalContentDispla
 Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(locale, timeZone);
 %>
 
+<%!
+private long _ddmStructureClassNameId = PortalUtil.getClassNameId(DDMStructure.class);
+%>
+
 <%@ include file="/init-ext.jsp" %>
