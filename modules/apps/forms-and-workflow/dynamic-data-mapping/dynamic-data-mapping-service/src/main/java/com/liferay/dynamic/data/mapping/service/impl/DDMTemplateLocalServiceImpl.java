@@ -280,7 +280,7 @@ public class DDMTemplateLocalServiceImpl
 
 		String resourceName =
 			DDMTemplatePermission.getTemplateModelResourceName(
-				template.getResourceClassNameId());
+				template.getResourceClassName());
 
 		resourceLocalService.addResources(
 			template.getCompanyId(), template.getGroupId(),
@@ -302,7 +302,7 @@ public class DDMTemplateLocalServiceImpl
 
 		String resourceName =
 			DDMTemplatePermission.getTemplateModelResourceName(
-				template.getResourceClassNameId());
+				template.getResourceClassName());
 
 		resourceLocalService.addModelResources(
 			template.getCompanyId(), template.getGroupId(),
@@ -420,7 +420,7 @@ public class DDMTemplateLocalServiceImpl
 
 		String resourceName =
 			DDMTemplatePermission.getTemplateModelResourceName(
-				template.getResourceClassNameId());
+				template.getResourceClassName());
 
 		resourceLocalService.deleteResource(
 			template.getCompanyId(), resourceName,
