@@ -19,6 +19,7 @@ import com.liferay.dynamic.data.mapping.service.DDMTemplateVersionLocalServiceUt
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Image;
+import com.liferay.portal.kernel.model.cache.CacheField;
 import com.liferay.portal.kernel.service.ImageLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -66,6 +67,16 @@ public class DDMTemplateImpl extends DDMTemplateBaseImpl {
 
 		return DDMTemplateVersionLocalServiceUtil.getLatestTemplateVersion(
 			getTemplateId());
+	}
+
+	@Override
+	public String getResourceClassName() {
+		if (_resourceClassName == null) {
+			_resourceClassName = PortalUtil.getClassName(
+				getResourceClassNameId());
+		}
+
+		return _resourceClassName;
 	}
 
 	@Override
@@ -146,9 +157,24 @@ public class DDMTemplateImpl extends DDMTemplateBaseImpl {
 	}
 
 	@Override
+	public void setResourceClassName(String resourceClassName) {
+		_resourceClassName = resourceClassName;
+	}
+
+	@Override
+	public void setResourceClassNameId(long resourceClassNameId) {
+		super.setResourceClassNameId(resourceClassNameId);
+
+		_resourceClassName = null;
+	}
+
+	@Override
 	public void setSmallImageType(String smallImageType) {
 		_smallImageType = smallImageType;
 	}
+
+	@CacheField(propagateToInterface = true)
+	private String _resourceClassName;
 
 	private String _smallImageType;
 
