@@ -58,7 +58,6 @@ public class PortletRequestModel implements Serializable {
 		_portletRequest = portletRequest;
 		_portletResponse = portletResponse;
 
-		_containerNamespace = portletRequest.getContextPath();
 		_contentType = portletRequest.getResponseContentType();
 		_serverName = portletRequest.getServerName();
 		_serverPort = portletRequest.getServerPort();
@@ -128,7 +127,7 @@ public class PortletRequestModel implements Serializable {
 	}
 
 	public String getContainerNamespace() {
-		return _containerNamespace;
+		return _contextPath;
 	}
 
 	public String getContentType() {
@@ -633,7 +632,6 @@ public class PortletRequestModel implements Serializable {
 
 	protected PortletRequestModel() {
 		_authType = null;
-		_containerNamespace = null;
 		_contentType = null;
 		_contextPath = null;
 		_lifecycle = null;
@@ -856,7 +854,6 @@ public class PortletRequestModel implements Serializable {
 	private Map<String, Object> _applicationScopeSessionAttributes;
 	private Map<String, Object> _attributes;
 	private final String _authType;
-	private final String _containerNamespace;
 	private final String _contentType;
 	private final String _contextPath;
 	private final String _lifecycle;
