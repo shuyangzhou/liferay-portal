@@ -105,133 +105,6 @@ public class PortletRequestModel implements Serializable {
 		}
 	}
 
-	private void _initURLs() {
-		if ((_resourceURL == null) &&
-			(_portletResponse instanceof MimeResponse)) {
-
-			MimeResponse mimeResponse = (MimeResponse)_portletResponse;
-
-			try {
-				PortletURL actionURL = mimeResponse.createActionURL();
-
-				_actionURL = actionURL.toString();
-			}
-			catch (IllegalStateException ise) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(ise.getMessage());
-				}
-			}
-
-			try {
-				PortletURL renderURL = mimeResponse.createRenderURL();
-
-				_renderURL = renderURL.toString();
-
-				try {
-					renderURL.setWindowState(LiferayWindowState.EXCLUSIVE);
-
-					_renderURLExclusive = renderURL.toString();
-				}
-				catch (WindowStateException wse) {
-				}
-
-				try {
-					renderURL.setWindowState(LiferayWindowState.MAXIMIZED);
-
-					_renderURLMaximized = renderURL.toString();
-				}
-				catch (WindowStateException wse) {
-				}
-
-				try {
-					renderURL.setWindowState(LiferayWindowState.MINIMIZED);
-
-					_renderURLMinimized = renderURL.toString();
-				}
-				catch (WindowStateException wse) {
-				}
-
-				try {
-					renderURL.setWindowState(LiferayWindowState.NORMAL);
-
-					_renderURLNormal = renderURL.toString();
-				}
-				catch (WindowStateException wse) {
-				}
-
-				try {
-					renderURL.setWindowState(LiferayWindowState.POP_UP);
-
-					_renderURLPopUp = renderURL.toString();
-				}
-				catch (WindowStateException wse) {
-				}
-			}
-			catch (IllegalStateException ise) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(ise.getMessage());
-				}
-			}
-
-			ResourceURL resourceURL = mimeResponse.createResourceURL();
-
-			String resourceURLString = HttpUtil.removeParameter(
-				resourceURL.toString(), _portletNamespace + "struts_action");
-
-			resourceURLString = HttpUtil.removeParameter(
-				resourceURLString, _portletNamespace + "redirect");
-
-			_resourceURL = resourceURL.toString();
-		}
-	}
-
-	private void _initParameters() {
-		if (_parameters != null) {
-			return;
-		}
-
-		_parameters = new HashMap<>(_portletRequest.getParameterMap());
-	}
-
-	private void _initAttributes() {
-		if (_attributes != null) {
-			return;
-		}
-
-		_attributes = new HashMap<>();
-
-		Enumeration<String> enumeration = _portletRequest.getAttributeNames();
-
-		while (enumeration.hasMoreElements()) {
-			String name = enumeration.nextElement();
-
-			Object value = _portletRequest.getAttribute(name);
-
-			_attributes.put(name, value);
-		}
-	}
-
-	private void _initPortletSessionAttributes() {
-		if (_portletScopeSessioAttributes != null) {
-			return;
-		}
-
-		PortletSession portletSession = _portletRequest.getPortletSession();
-
-		try {
-			_portletScopeSessioAttributes = portletSession.getAttributeMap(
-				PortletSession.PORTLET_SCOPE);
-
-			_applicationScopeSessionAttributes = portletSession.getAttributeMap(
-				PortletSession.APPLICATION_SCOPE);
-		}
-		catch (IllegalStateException ise) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(ise.getMessage());
-			}
-		}
-	}
-
 	public String getActionURL() {
 		_initURLs();
 
@@ -846,6 +719,133 @@ public class PortletRequestModel implements Serializable {
 			}
 
 			return true;
+		}
+	}
+
+	private void _initAttributes() {
+		if (_attributes != null) {
+			return;
+		}
+
+		_attributes = new HashMap<>();
+
+		Enumeration<String> enumeration = _portletRequest.getAttributeNames();
+
+		while (enumeration.hasMoreElements()) {
+			String name = enumeration.nextElement();
+
+			Object value = _portletRequest.getAttribute(name);
+
+			_attributes.put(name, value);
+		}
+	}
+
+	private void _initParameters() {
+		if (_parameters != null) {
+			return;
+		}
+
+		_parameters = new HashMap<>(_portletRequest.getParameterMap());
+	}
+
+	private void _initPortletSessionAttributes() {
+		if (_portletScopeSessioAttributes != null) {
+			return;
+		}
+
+		PortletSession portletSession = _portletRequest.getPortletSession();
+
+		try {
+			_portletScopeSessioAttributes = portletSession.getAttributeMap(
+				PortletSession.PORTLET_SCOPE);
+
+			_applicationScopeSessionAttributes = portletSession.getAttributeMap(
+				PortletSession.APPLICATION_SCOPE);
+		}
+		catch (IllegalStateException ise) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(ise.getMessage());
+			}
+		}
+	}
+
+	private void _initURLs() {
+		if ((_resourceURL == null) &&
+			(_portletResponse instanceof MimeResponse)) {
+
+			MimeResponse mimeResponse = (MimeResponse)_portletResponse;
+
+			try {
+				PortletURL actionURL = mimeResponse.createActionURL();
+
+				_actionURL = actionURL.toString();
+			}
+			catch (IllegalStateException ise) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(ise.getMessage());
+				}
+			}
+
+			try {
+				PortletURL renderURL = mimeResponse.createRenderURL();
+
+				_renderURL = renderURL.toString();
+
+				try {
+					renderURL.setWindowState(LiferayWindowState.EXCLUSIVE);
+
+					_renderURLExclusive = renderURL.toString();
+				}
+				catch (WindowStateException wse) {
+				}
+
+				try {
+					renderURL.setWindowState(LiferayWindowState.MAXIMIZED);
+
+					_renderURLMaximized = renderURL.toString();
+				}
+				catch (WindowStateException wse) {
+				}
+
+				try {
+					renderURL.setWindowState(LiferayWindowState.MINIMIZED);
+
+					_renderURLMinimized = renderURL.toString();
+				}
+				catch (WindowStateException wse) {
+				}
+
+				try {
+					renderURL.setWindowState(LiferayWindowState.NORMAL);
+
+					_renderURLNormal = renderURL.toString();
+				}
+				catch (WindowStateException wse) {
+				}
+
+				try {
+					renderURL.setWindowState(LiferayWindowState.POP_UP);
+
+					_renderURLPopUp = renderURL.toString();
+				}
+				catch (WindowStateException wse) {
+				}
+			}
+			catch (IllegalStateException ise) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(ise.getMessage());
+				}
+			}
+
+			ResourceURL resourceURL = mimeResponse.createResourceURL();
+
+			String resourceURLString = HttpUtil.removeParameter(
+				resourceURL.toString(), _portletNamespace + "struts_action");
+
+			resourceURLString = HttpUtil.removeParameter(
+				resourceURLString, _portletNamespace + "redirect");
+
+			_resourceURL = resourceURL.toString();
 		}
 	}
 
