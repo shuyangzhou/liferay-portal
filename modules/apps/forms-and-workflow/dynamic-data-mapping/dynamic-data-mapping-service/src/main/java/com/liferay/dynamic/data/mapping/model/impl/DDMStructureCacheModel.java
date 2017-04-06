@@ -215,6 +215,8 @@ public class DDMStructureCacheModel implements CacheModel<DDMStructure>,
 
 		ddmStructureImpl.resetOriginalValues();
 
+		ddmStructureImpl.setClassName(_className);
+
 		ddmStructureImpl.setDDMForm(_ddmForm);
 
 		return ddmStructureImpl;
@@ -252,6 +254,7 @@ public class DDMStructureCacheModel implements CacheModel<DDMStructure>,
 		type = objectInput.readInt();
 		lastPublishDate = objectInput.readLong();
 
+		_className = (java.lang.String)objectInput.readObject();
 		_ddmForm = (com.liferay.dynamic.data.mapping.model.DDMForm)objectInput.readObject();
 	}
 
@@ -341,6 +344,7 @@ public class DDMStructureCacheModel implements CacheModel<DDMStructure>,
 		objectOutput.writeInt(type);
 		objectOutput.writeLong(lastPublishDate);
 
+		objectOutput.writeObject(_className);
 		objectOutput.writeObject(_ddmForm);
 	}
 
@@ -364,5 +368,6 @@ public class DDMStructureCacheModel implements CacheModel<DDMStructure>,
 	public String storageType;
 	public int type;
 	public long lastPublishDate;
+	public java.lang.String _className;
 	public com.liferay.dynamic.data.mapping.model.DDMForm _ddmForm;
 }
