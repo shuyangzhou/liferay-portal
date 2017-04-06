@@ -256,10 +256,13 @@ public class PortletTransactionManager implements PlatformTransactionManager {
 		}
 
 		public void reset() {
-			_portletSession.flush();
-
-			SpringHibernateThreadLocalUtil.setResource(
-				_portletSessionFactory, _previousPortletSessionHolder);
+			try {
+				_portletSession.flush();
+			}
+			finally {
+				SpringHibernateThreadLocalUtil.setResource(
+					_portletSessionFactory, _previousPortletSessionHolder);
+			}
 		}
 
 		@Override
