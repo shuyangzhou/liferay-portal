@@ -617,26 +617,6 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 		return _originalParentStructureId;
 	}
 
-	@Override
-	public String getClassName() {
-		if (getClassNameId() <= 0) {
-			return StringPool.BLANK;
-		}
-
-		return PortalUtil.getClassName(getClassNameId());
-	}
-
-	@Override
-	public void setClassName(String className) {
-		long classNameId = 0;
-
-		if (Validator.isNotNull(className)) {
-			classNameId = PortalUtil.getClassNameId(className);
-		}
-
-		setClassNameId(classNameId);
-	}
-
 	@JSON
 	@Override
 	public long getClassNameId() {
@@ -978,6 +958,13 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 		_lastPublishDate = lastPublishDate;
 	}
 
+	public java.lang.String getClassName() {
+		return null;
+	}
+
+	public void setClassName(java.lang.String className) {
+	}
+
 	public com.liferay.dynamic.data.mapping.model.DDMForm getDDMForm() {
 		return null;
 	}
@@ -1213,6 +1200,8 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 
 		ddmStructureModelImpl._originalDescription = ddmStructureModelImpl._description;
 
+		setClassName(null);
+
 		setDDMForm(null);
 
 		ddmStructureModelImpl._columnBitmask = 0;
@@ -1336,6 +1325,8 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 		else {
 			ddmStructureCacheModel.lastPublishDate = Long.MIN_VALUE;
 		}
+
+		ddmStructureCacheModel._className = getClassName();
 
 		ddmStructureCacheModel._ddmForm = getDDMForm();
 
