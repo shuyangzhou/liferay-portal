@@ -24,6 +24,7 @@ import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Miguel Pastor
+ * @author Vernon Singleton
  */
 @Component(immediate = true, service = AutoDeployListener.class)
 public class TCKPortletAutoDeployListener extends PortletAutoDeployListener {
