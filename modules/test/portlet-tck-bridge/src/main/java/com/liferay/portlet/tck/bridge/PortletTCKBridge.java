@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.tck.bridge;
 
+import com.liferay.petra.log4j.Log4JUtil;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -24,6 +25,7 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.struts.StrutsActionRegistryUtil;
 import com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration;
+import com.liferay.portlet.tck.bridge.setup.Setup;
 import com.liferay.portlet.tck.bridge.struts.PortletTCKStrutsAction;
 
 import java.io.IOException;
@@ -50,6 +52,7 @@ import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Matthew Tambara
+ * @author Vernon Singleton
  */
 @Component(
 	configurationPid = "com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration"
@@ -61,13 +64,39 @@ public class PortletTCKBridge {
 	protected void activate(ComponentContext componentContext) {
 		deactivate();
 
+		if (!_log.isInfoEnabled()) {
+			Log4JUtil.setLevel("com.liferay.portlet.tck.bridge", "INFO", true);
+		}
+
+		PortletTCKBridgeConfiguration portletTCKBridgeConfiguration =
+			ConfigurableUtil.createConfigurable(
+				PortletTCKBridgeConfiguration.class,
+				componentContext.getProperties());
+
+		String[] servletContextNames =
+			portletTCKBridgeConfiguration.servletContextNames();
+
+		// Wait for portlet wars to deploy ...
+		// They need to be available before setting up sites and pages
+
+		for (String servletContextName : servletContextNames) {
+			_waitForDeployment(
+				servletContextName, System.currentTimeMillis(),
+				portletTCKBridgeConfiguration.timeout() * Time.SECOND);
+		}
+
+		// Wait for the portlet-tck-theme to deploy ...
+
+		_waitForDeployment(
+			"portlet-tck-theme", System.currentTimeMillis(),
+			portletTCKBridgeConfiguration.timeout() * Time.SECOND);
+
+		Setup.setupPortletTCKSite(portletTCKBridgeConfiguration);
+
 		StrutsActionRegistryUtil.register(_PATH, new PortletTCKStrutsAction());
 
 		FutureTask<Void> futureTask = new FutureTask<>(
-			new HandshakeServerCallable(
-				ConfigurableUtil.createConfigurable(
-					PortletTCKBridgeConfiguration.class,
-					componentContext.getProperties())));
+			new HandshakeServerCallable(portletTCKBridgeConfiguration));
 
 		_handshakeServerFuture = futureTask;
 
@@ -95,6 +124,62 @@ public class PortletTCKBridge {
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
+	private void _waitForDeployment(
+		String servletContextName, long startTime, long timeout) {
+
+		while ((System.currentTimeMillis() - startTime) < timeout) {
+			ServletContext servletContext = ServletContextPool.get(
+				servletContextName);
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"_waitForDeployment: of servletContextName = " +
+						servletContextName + " ...");
+			}
+
+			boolean found = false;
+
+			if (servletContext != null) {
+				found = true;
+			}
+
+			if (found) {
+				if (servletContext.getAttribute(WebKeys.PLUGIN_PORTLETS) ==
+						null) {
+
+					if (servletContext.getAttribute(WebKeys.PLUGIN_THEMES) ==
+							null) {
+
+						found = false;
+					}
+				}
+			}
+
+			if (found) {
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"_waitForDeployment: found servletContextName = " +
+							servletContextName);
+				}
+
+				return;
+			}
+			else {
+				try {
+					Thread.sleep(100);
+				}
+				catch (InterruptedException ie) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(ie.getMessage());
+					}
+				}
+			}
+		}
+
+		_log.error("Timeout waiting for " + servletContextName);
+		_log.error(ThreadUtil.threadDump());
+	}
+
 	private static final String _PATH = "/portal/tck";
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -106,16 +191,6 @@ public class PortletTCKBridge {
 
 		@Override
 		public Void call() throws IOException {
-			long startTime = System.currentTimeMillis();
-
-			for (String servletContextName :
-					_portletTCKBridgeConfiguration.servletContextNames()) {
-
-				_waitForDeployment(
-					servletContextName, startTime,
-					_portletTCKBridgeConfiguration.timeout() * Time.SECOND);
-			}
-
 			try (ServerSocket serverSocket = new ServerSocket(
 					_portletTCKBridgeConfiguration.handshakeServerPort())) {
 
@@ -141,33 +216,6 @@ public class PortletTCKBridge {
 			PortletTCKBridgeConfiguration portletTCKBridgeConfiguration) {
 
 			_portletTCKBridgeConfiguration = portletTCKBridgeConfiguration;
-		}
-
-		private void _waitForDeployment(
-			String servletContextName, long startTime, long timeout) {
-
-			while ((System.currentTimeMillis() - startTime) < timeout) {
-				ServletContext serviceContext = ServletContextPool.get(
-					servletContextName);
-
-				if ((serviceContext == null) ||
-					(serviceContext.getAttribute(WebKeys.PLUGIN_PORTLETS) ==
-						null)) {
-
-					try {
-						Thread.sleep(100);
-					}
-					catch (InterruptedException ie) {
-					}
-				}
-				else {
-					return;
-				}
-			}
-
-			_log.error("Timeout on waiting " + servletContextName);
-
-			_log.error(ThreadUtil.threadDump());
 		}
 
 		private final PortletTCKBridgeConfiguration
