@@ -96,6 +96,15 @@ public class DDMStructureImpl extends DDMStructureBaseImpl {
 	}
 
 	@Override
+	public String getClassName() {
+		if (_className == null) {
+			_className = PortalUtil.getClassName(getClassNameId());
+		}
+
+		return _className;
+	}
+
+	@Override
 	public DDMForm getDDMForm() {
 		if (_ddmForm == null) {
 			try {
@@ -419,6 +428,11 @@ public class DDMStructureImpl extends DDMStructureBaseImpl {
 	}
 
 	@Override
+	public void setClassName(String className) {
+		_className = className;
+	}
+
+	@Override
 	public void setDDMForm(DDMForm ddmForm) {
 		_ddmForm = ddmForm;
 	}
@@ -475,6 +489,9 @@ public class DDMStructureImpl extends DDMStructureBaseImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDMStructureImpl.class);
+
+	@CacheField
+	private String _className;
 
 	@CacheField(methodName = "DDMForm", propagateToInterface = true)
 	private DDMForm _ddmForm;
