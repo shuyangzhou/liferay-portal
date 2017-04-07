@@ -443,7 +443,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 	}
 
 	<#list entity.regularColList as column>
-		<#if stringUtil.equals(column.name, "classNameId")>
+		<#if stringUtil.equals(column.name, "classNameId") && !hasClassNameCacheField>
 			@Override
 			public String getClassName() {
 				if (getClassNameId() <= 0) {
