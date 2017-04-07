@@ -433,7 +433,7 @@ public abstract class BaseSocialActivityInterpreter
 		}
 
 		ResourceBundle resourceBundle = resourceBundleLoader.loadResourceBundle(
-			LanguageUtil.getLanguageId(serviceContext.getLocale()));
+			serviceContext.getLocale());
 
 		return LanguageUtil.format(
 			resourceBundle, titlePattern, titleArguments);
@@ -618,7 +618,7 @@ public abstract class BaseSocialActivityInterpreter
 		ResourceBundleLoader resourceBundleLoader = getResourceBundleLoader();
 
 		ResourceBundle resourceBundle = resourceBundleLoader.loadResourceBundle(
-			serviceContext.getLanguageId());
+			serviceContext.getLocale());
 
 		String title = LanguageUtil.get(resourceBundle, key);
 

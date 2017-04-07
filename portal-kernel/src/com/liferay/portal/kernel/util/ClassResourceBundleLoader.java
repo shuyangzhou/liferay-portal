@@ -32,10 +32,17 @@ public class ClassResourceBundleLoader implements ResourceBundleLoader {
 	}
 
 	@Override
-	public ResourceBundle loadResourceBundle(String languageId) {
-		Locale locale = LocaleUtil.fromLanguageId(languageId);
-
+	public ResourceBundle loadResourceBundle(Locale locale) {
 		return ResourceBundleUtil.getBundle(_baseName, locale, _classLoader);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #loadResourceBundle(Locale)}
+	 */
+	@Deprecated
+	@Override
+	public ResourceBundle loadResourceBundle(String languageId) {
+		return loadResourceBundle(LocaleUtil.fromLanguageId(languageId));
 	}
 
 	private final String _baseName;

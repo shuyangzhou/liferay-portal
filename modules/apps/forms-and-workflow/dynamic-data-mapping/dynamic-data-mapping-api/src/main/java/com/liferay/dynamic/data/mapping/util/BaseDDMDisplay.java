@@ -400,29 +400,24 @@ public abstract class BaseDDMDisplay implements DDMDisplay {
 		return false;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected ResourceBundle getBaseDDMDisplayResourceBundle(
 		String languageId) {
 
-		Class<?> baseDDMDisplayClazz = BaseDDMDisplay.class;
-
-		return ResourceBundleUtil.getBundle(
-			"content.Language", LocaleUtil.fromLanguageId(languageId),
-			baseDDMDisplayClazz.getClassLoader());
+		return _getBaseDDMDisplayResourceBundle(
+			LocaleUtil.fromLanguageId(languageId));
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected ResourceBundle getDDMDisplayResourceBundle(String languageId) {
-		Bundle bundle = FrameworkUtil.getBundle(getClass());
-
-		ResourceBundleLoader resourceBundleLoader =
-			ResourceBundleLoaderUtil.
-				getResourceBundleLoaderByBundleSymbolicName(
-					bundle.getSymbolicName());
-
-		if (resourceBundleLoader == null) {
-			return null;
-		}
-
-		return resourceBundleLoader.loadResourceBundle(languageId);
+		return _getDDMDisplayResourceBundle(
+			LocaleUtil.fromLanguageId(languageId));
 	}
 
 	protected String getDefaultEditTemplateTitle(Locale locale) {
@@ -435,29 +430,27 @@ public abstract class BaseDDMDisplay implements DDMDisplay {
 		return LanguageUtil.get(locale, "templates");
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected ResourceBundle getPortalResourceBundle(String languageId) {
-		ResourceBundleLoader portalResourceBundleLoader =
-			ResourceBundleLoaderUtil.getPortalResourceBundleLoader();
-
-		return portalResourceBundleLoader.loadResourceBundle(languageId);
+		return _getPortalResourceBundle(LocaleUtil.fromLanguageId(languageId));
 	}
 
 	protected ResourceBundle getResourceBundle(Locale locale) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-
-		ResourceBundle ddmDisplayResourceBundle = getDDMDisplayResourceBundle(
-			languageId);
+		ResourceBundle ddmDisplayResourceBundle = _getDDMDisplayResourceBundle(
+			locale);
 
 		if (ddmDisplayResourceBundle == null) {
 			return new AggregateResourceBundle(
-				getBaseDDMDisplayResourceBundle(languageId),
-				getPortalResourceBundle(languageId));
+				_getBaseDDMDisplayResourceBundle(locale),
+				_getPortalResourceBundle(locale));
 		}
 
 		return new AggregateResourceBundle(
-			ddmDisplayResourceBundle,
-			getBaseDDMDisplayResourceBundle(languageId),
-			getPortalResourceBundle(languageId));
+			ddmDisplayResourceBundle, _getBaseDDMDisplayResourceBundle(locale),
+			_getPortalResourceBundle(locale));
 	}
 
 	protected String getViewTemplatesURL(
@@ -479,6 +472,35 @@ public abstract class BaseDDMDisplay implements DDMDisplay {
 			"resourceClassNameId", String.valueOf(resourceClassNameId));
 
 		return portletURL.toString();
+	}
+
+	private ResourceBundle _getBaseDDMDisplayResourceBundle(Locale locale) {
+		Class<?> baseDDMDisplayClazz = BaseDDMDisplay.class;
+
+		return ResourceBundleUtil.getBundle(
+			"content.Language", locale, baseDDMDisplayClazz.getClassLoader());
+	}
+
+	private ResourceBundle _getDDMDisplayResourceBundle(Locale locale) {
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+
+		ResourceBundleLoader resourceBundleLoader =
+			ResourceBundleLoaderUtil.
+				getResourceBundleLoaderByBundleSymbolicName(
+					bundle.getSymbolicName());
+
+		if (resourceBundleLoader == null) {
+			return null;
+		}
+
+		return resourceBundleLoader.loadResourceBundle(locale);
+	}
+
+	private ResourceBundle _getPortalResourceBundle(Locale locale) {
+		ResourceBundleLoader portalResourceBundleLoader =
+			ResourceBundleLoaderUtil.getPortalResourceBundleLoader();
+
+		return portalResourceBundleLoader.loadResourceBundle(locale);
 	}
 
 	private static final Set<String> _templateLanguageTypes = SetUtil.fromArray(

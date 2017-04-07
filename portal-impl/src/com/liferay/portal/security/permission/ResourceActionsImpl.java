@@ -43,7 +43,6 @@ import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -941,13 +940,11 @@ public class ResourceActionsImpl implements ResourceActions {
 			return null;
 		}
 
-		String languageId = LocaleUtil.toLanguageId(locale);
-
 		for (ResourceBundleLoader resourceBundleLoader :
 				_resourceBundleLoaders) {
 
 			ResourceBundle resourceBundle =
-				resourceBundleLoader.loadResourceBundle(languageId);
+				resourceBundleLoader.loadResourceBundle(locale);
 
 			if (resourceBundle == null) {
 				continue;
