@@ -33,7 +33,8 @@ public abstract class BaseJournalArticlePortletConfigurationIcon
 	extends BaseJSPPortletConfigurationIcon {
 
 	protected JournalContentDisplayContext getJournalContentDisplayContext(
-		PortletRequest portletRequest, PortletResponse portletResponse) {
+		PortletRequest portletRequest, PortletResponse portletResponse,
+		long ddmStructureClassNameId) {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -42,7 +43,8 @@ public abstract class BaseJournalArticlePortletConfigurationIcon
 
 		try {
 			return JournalContentDisplayContext.create(
-				portletRequest, portletResponse, portletDisplay);
+				portletRequest, portletResponse, portletDisplay,
+				ddmStructureClassNameId);
 		}
 		catch (PortalException pe) {
 			_log.error("Unable to create display context", pe);
