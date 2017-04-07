@@ -70,8 +70,32 @@ public class NavItem implements Serializable {
 
 		List<NavItem> navItems = new ArrayList<>(layouts.size());
 
+		if (!navItems.isEmpty()) {
+			ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+			for (Layout layout : layouts) {
+				navItems.add(
+					new NavItem(request, themeDisplay, layout, contextObjects));
+			}
+		}
+
+		return navItems;
+	}
+
+	public static List<NavItem> fromLayouts(
+		HttpServletRequest request, ThemeDisplay themeDisplay,
+		List<Layout> layouts, Map<String, Object> contextObjects) {
+
+		if (layouts == null) {
+			return null;
+		}
+
+		List<NavItem> navItems = new ArrayList<>(layouts.size());
+
 		for (Layout layout : layouts) {
-			navItems.add(new NavItem(request, layout, contextObjects));
+			navItems.add(
+				new NavItem(request, themeDisplay, layout, contextObjects));
 		}
 
 		return navItems;
@@ -81,9 +105,17 @@ public class NavItem implements Serializable {
 		HttpServletRequest request, Layout layout,
 		Map<String, Object> contextObjects) {
 
+		this(
+			request, (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY),
+			layout, contextObjects);
+	}
+
+	public NavItem(
+		HttpServletRequest request, ThemeDisplay themeDisplay, Layout layout,
+		Map<String, Object> contextObjects) {
+
 		_request = request;
-		_themeDisplay = (ThemeDisplay)request.getAttribute(
-			WebKeys.THEME_DISPLAY);
+		_themeDisplay = themeDisplay;
 		_layout = layout;
 		_contextObjects = contextObjects;
 	}
@@ -147,7 +179,8 @@ public class NavItem implements Serializable {
 			List<Layout> layouts = _layout.getChildren(
 				_themeDisplay.getPermissionChecker());
 
-			_children = fromLayouts(_request, layouts, _contextObjects);
+			_children = fromLayouts(
+				_request, _themeDisplay, layouts, _contextObjects);
 		}
 
 		return _children;
