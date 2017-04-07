@@ -50,7 +50,7 @@ public class DDMStructurePermission extends BaseResourcePermissionChecker {
 		if (!contains(permissionChecker, structure, actionId)) {
 			throw new PrincipalException.MustHavePermission(
 				permissionChecker,
-				getStructureModelResourceName(structure.getClassNameId()),
+				getStructureModelResourceName(structure.getClassName()),
 				structure.getStructureId(), actionId);
 		}
 	}
@@ -113,7 +113,7 @@ public class DDMStructurePermission extends BaseResourcePermissionChecker {
 		throws PortalException {
 
 		String structureModelResourceName = getStructureModelResourceName(
-			structure.getClassNameId());
+			structure.getClassName());
 
 		if (Validator.isNotNull(portletId)) {
 			Boolean hasPermission = StagingPermissionUtil.hasPermission(
@@ -203,6 +203,28 @@ public class DDMStructurePermission extends BaseResourcePermissionChecker {
 
 		return ResourceActionsUtil.getCompositeModelName(
 			PortalUtil.getClassName(classNameId), DDMStructure.class.getName());
+	}
+
+	public static String getStructureModelResourceName(String className)
+		throws PortalException {
+
+		ServiceWrapper<DDMStructurePermissionSupport>
+			structurePermissionSupportServiceWrapper =
+				_ddmPermissionSupportTracker.
+					getDDMStructurePermissionSupportServiceWrapper(className);
+
+		Map<String, Object> properties =
+			structurePermissionSupportServiceWrapper.getProperties();
+
+		boolean defaultModelResourceName = MapUtil.getBoolean(
+			properties, "default.model.resource.name");
+
+		if (defaultModelResourceName) {
+			return DDMStructure.class.getName();
+		}
+
+		return ResourceActionsUtil.getCompositeModelName(
+			className, DDMStructure.class.getName());
 	}
 
 	@Override
