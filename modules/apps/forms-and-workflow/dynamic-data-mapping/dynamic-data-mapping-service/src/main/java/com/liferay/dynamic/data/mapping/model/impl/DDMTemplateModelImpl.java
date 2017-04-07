@@ -1155,6 +1155,13 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 		_lastPublishDate = lastPublishDate;
 	}
 
+	public java.lang.String getResourceClassName() {
+		return null;
+	}
+
+	public void setResourceClassName(java.lang.String resourceClassName) {
+	}
+
 	@Override
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(PortalUtil.getClassNameId(
@@ -1394,6 +1401,8 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 		ddmTemplateModelImpl._setOriginalSmallImageId = false;
 
+		setResourceClassName(null);
+
 		ddmTemplateModelImpl._columnBitmask = 0;
 	}
 
@@ -1545,6 +1554,8 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 		else {
 			ddmTemplateCacheModel.lastPublishDate = Long.MIN_VALUE;
 		}
+
+		ddmTemplateCacheModel._resourceClassName = getResourceClassName();
 
 		return ddmTemplateCacheModel;
 	}

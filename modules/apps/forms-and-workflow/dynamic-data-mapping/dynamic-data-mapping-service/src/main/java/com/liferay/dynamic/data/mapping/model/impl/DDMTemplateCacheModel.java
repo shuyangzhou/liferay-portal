@@ -251,11 +251,14 @@ public class DDMTemplateCacheModel implements CacheModel<DDMTemplate>,
 
 		ddmTemplateImpl.resetOriginalValues();
 
+		ddmTemplateImpl.setResourceClassName(_resourceClassName);
+
 		return ddmTemplateImpl;
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
 		uuid = objectInput.readUTF();
 
 		templateId = objectInput.readLong();
@@ -293,6 +296,8 @@ public class DDMTemplateCacheModel implements CacheModel<DDMTemplate>,
 		smallImageId = objectInput.readLong();
 		smallImageURL = objectInput.readUTF();
 		lastPublishDate = objectInput.readLong();
+
+		_resourceClassName = (java.lang.String)objectInput.readObject();
 	}
 
 	@Override
@@ -408,6 +413,8 @@ public class DDMTemplateCacheModel implements CacheModel<DDMTemplate>,
 		}
 
 		objectOutput.writeLong(lastPublishDate);
+
+		objectOutput.writeObject(_resourceClassName);
 	}
 
 	public String uuid;
@@ -436,4 +443,5 @@ public class DDMTemplateCacheModel implements CacheModel<DDMTemplate>,
 	public long smallImageId;
 	public String smallImageURL;
 	public long lastPublishDate;
+	public java.lang.String _resourceClassName;
 }

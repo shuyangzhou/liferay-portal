@@ -55,6 +55,24 @@ public class DDMPermissionSupportTracker {
 		return ddmStructurePermissionSupportServiceWrapper;
 	}
 
+	public ServiceWrapper<DDMStructurePermissionSupport>
+			getDDMStructurePermissionSupportServiceWrapper(String className)
+		throws PortalException {
+
+		ServiceWrapper<DDMStructurePermissionSupport>
+			ddmStructurePermissionSupportServiceWrapper =
+				_ddmStructurePermissionSupportServiceTrackerMap.getService(
+					className);
+
+		if (ddmStructurePermissionSupportServiceWrapper == null) {
+			throw new PortalException(
+				"The model does not support DDMStructure permission checking " +
+					className);
+		}
+
+		return ddmStructurePermissionSupportServiceWrapper;
+	}
+
 	public ServiceWrapper<DDMTemplatePermissionSupport>
 			getDDMTemplatePermissionSupportServiceWrapper(
 				long resourceClassNameId)
@@ -71,6 +89,25 @@ public class DDMPermissionSupportTracker {
 			throw new PortalException(
 				"The model does not support DDMTemplate permission checking " +
 					className);
+		}
+
+		return ddmTemplatePermissionSupportServiceWrapper;
+	}
+
+	public ServiceWrapper<DDMTemplatePermissionSupport>
+			getDDMTemplatePermissionSupportServiceWrapper(
+				String resourceClassName)
+		throws PortalException {
+
+		ServiceWrapper<DDMTemplatePermissionSupport>
+			ddmTemplatePermissionSupportServiceWrapper =
+				_ddmTemplatePermissionSupportServiceTrackerMap.getService(
+					resourceClassName);
+
+		if (ddmTemplatePermissionSupportServiceWrapper == null) {
+			throw new PortalException(
+				"The model does not support DDMTemplate permission checking " +
+					resourceClassName);
 		}
 
 		return ddmTemplatePermissionSupportServiceWrapper;
