@@ -1162,6 +1162,85 @@ public class LayoutFriendlyURLUtil {
 	}
 
 	/**
+	* Returns all the layout friendly urls where plid = any &#63; and languageId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutFriendlyURLModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param plids the plids
+	* @param languageId the language ID
+	* @return the matching layout friendly urls
+	*/
+	public static List<LayoutFriendlyURL> findByP_L(long[] plids,
+		java.lang.String languageId) {
+		return getPersistence().findByP_L(plids, languageId);
+	}
+
+	/**
+	* Returns a range of all the layout friendly urls where plid = any &#63; and languageId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutFriendlyURLModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param plids the plids
+	* @param languageId the language ID
+	* @param start the lower bound of the range of layout friendly urls
+	* @param end the upper bound of the range of layout friendly urls (not inclusive)
+	* @return the range of matching layout friendly urls
+	*/
+	public static List<LayoutFriendlyURL> findByP_L(long[] plids,
+		java.lang.String languageId, int start, int end) {
+		return getPersistence().findByP_L(plids, languageId, start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the layout friendly urls where plid = any &#63; and languageId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutFriendlyURLModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param plids the plids
+	* @param languageId the language ID
+	* @param start the lower bound of the range of layout friendly urls
+	* @param end the upper bound of the range of layout friendly urls (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching layout friendly urls
+	*/
+	public static List<LayoutFriendlyURL> findByP_L(long[] plids,
+		java.lang.String languageId, int start, int end,
+		OrderByComparator<LayoutFriendlyURL> orderByComparator) {
+		return getPersistence()
+				   .findByP_L(plids, languageId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the layout friendly urls where plid = &#63; and languageId = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutFriendlyURLModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param plid the plid
+	* @param languageId the language ID
+	* @param start the lower bound of the range of layout friendly urls
+	* @param end the upper bound of the range of layout friendly urls (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching layout friendly urls
+	*/
+	public static List<LayoutFriendlyURL> findByP_L(long[] plids,
+		java.lang.String languageId, int start, int end,
+		OrderByComparator<LayoutFriendlyURL> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByP_L(plids, languageId, start, end, orderByComparator,
+			retrieveFromCache);
+	}
+
+	/**
 	* Returns the layout friendly url where plid = &#63; and languageId = &#63; or throws a {@link NoSuchLayoutFriendlyURLException} if it could not be found.
 	*
 	* @param plid the plid
@@ -1222,6 +1301,17 @@ public class LayoutFriendlyURLUtil {
 	*/
 	public static int countByP_L(long plid, java.lang.String languageId) {
 		return getPersistence().countByP_L(plid, languageId);
+	}
+
+	/**
+	* Returns the number of layout friendly urls where plid = any &#63; and languageId = &#63;.
+	*
+	* @param plids the plids
+	* @param languageId the language ID
+	* @return the number of matching layout friendly urls
+	*/
+	public static int countByP_L(long[] plids, java.lang.String languageId) {
+		return getPersistence().countByP_L(plids, languageId);
 	}
 
 	/**

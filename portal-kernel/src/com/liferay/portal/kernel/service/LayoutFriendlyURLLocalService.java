@@ -25,6 +25,8 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutFriendlyURL;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
@@ -318,6 +320,10 @@ public interface LayoutFriendlyURLLocalService extends BaseLocalService,
 		long companyId, long groupId, long plid, boolean privateLayout,
 		Map<Locale, java.lang.String> friendlyURLMap,
 		ServiceContext serviceContext) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Map<java.lang.Long, java.lang.String> getLayoutFriendlyURLs(
+		Group siteGroup, List<Layout> layouts, java.lang.String languageId);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
