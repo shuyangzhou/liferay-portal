@@ -24,6 +24,7 @@ import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -76,7 +77,7 @@ public class LanguageFilterTracker {
 		}
 
 		@Override
-		public ResourceBundle loadResourceBundle(String languageId) {
+		public ResourceBundle loadResourceBundle(Locale locale) {
 			ResourceBundleLoader resourceBundleLoader =
 				_serviceTracker.getService();
 
@@ -85,17 +86,16 @@ public class LanguageFilterTracker {
 
 			if (resourceBundleLoader != null) {
 				ResourceBundle resourceBundle =
-					resourceBundleLoader.loadResourceBundle(languageId);
+					resourceBundleLoader.loadResourceBundle(locale);
 
 				if (resourceBundle != null) {
 					return new AggregateResourceBundle(
 						resourceBundle,
-						portalResourceBundleLoader.loadResourceBundle(
-							languageId));
+						portalResourceBundleLoader.loadResourceBundle(locale));
 				}
 			}
 
-			return portalResourceBundleLoader.loadResourceBundle(languageId);
+			return portalResourceBundleLoader.loadResourceBundle(locale);
 		}
 
 		private final ServiceTracker<ResourceBundleLoader, ResourceBundleLoader>

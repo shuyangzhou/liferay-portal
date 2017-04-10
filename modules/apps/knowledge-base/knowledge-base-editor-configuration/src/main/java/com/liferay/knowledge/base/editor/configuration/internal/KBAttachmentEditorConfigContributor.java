@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.language.LanguageResources;
@@ -173,8 +172,7 @@ public class KBAttachmentEditorConfigContributor
 			"resourcePrimKey", String.valueOf(resourcePrimKey));
 
 		ResourceBundle resourceBundle =
-			_resourceBundleLoader.loadResourceBundle(
-				LocaleUtil.toLanguageId(themeDisplay.getLocale()));
+			_resourceBundleLoader.loadResourceBundle(themeDisplay.getLocale());
 
 		ItemSelectorCriterion uploadItemSelectorCriterion =
 			new UploadItemSelectorCriterion(

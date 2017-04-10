@@ -65,7 +65,7 @@ public class MicroblogsUserNotificationHandler
 
 		ResourceBundle resourceBundle =
 			_resourceBundleLoader.loadResourceBundle(
-				serviceContext.getLanguageId());
+				serviceContext.getLocale());
 
 		MicroblogsEntry microblogsEntry =
 			_microblogsEntryLocalService.fetchMicroblogsEntry(

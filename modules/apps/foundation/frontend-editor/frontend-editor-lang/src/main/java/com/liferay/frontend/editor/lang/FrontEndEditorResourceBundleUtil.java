@@ -38,8 +38,7 @@ public class FrontEndEditorResourceBundleUtil {
 				resourceBundleLoader,
 				LanguageUtil.getPortalResourceBundleLoader());
 
-		return aggregateResourceBundleLoader.loadResourceBundle(
-			LanguageUtil.getLanguageId(locale));
+		return aggregateResourceBundleLoader.loadResourceBundle(locale);
 	}
 
 }

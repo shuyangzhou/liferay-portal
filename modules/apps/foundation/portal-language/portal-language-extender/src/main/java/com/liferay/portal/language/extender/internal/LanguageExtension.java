@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -160,7 +161,7 @@ public class LanguageExtension implements Extension {
 		}
 
 		@Override
-		public ResourceBundle loadResourceBundle(String languageId) {
+		public ResourceBundle loadResourceBundle(Locale locale) {
 			List<ResourceBundle> resourceBundles = new ArrayList<>();
 
 			for (ServiceTracker<ResourceBundleLoader, ResourceBundleLoader>
@@ -170,7 +171,7 @@ public class LanguageExtension implements Extension {
 					serviceTracker.getService();
 
 				ResourceBundle resourceBundle =
-					resourceBundleLoader.loadResourceBundle(languageId);
+					resourceBundleLoader.loadResourceBundle(locale);
 
 				if (resourceBundle != null) {
 					resourceBundles.add(resourceBundle);
