@@ -17,6 +17,13 @@ package ${packagePath}.model.impl;
 </#if>
 
 import ${apiPackagePath}.model.${entity.name};
+
+<#if entity.hasLocalizationColumns()>
+	<#assign localizationEntity = entity.toLocalizationEntity() />
+
+	import ${apiPackagePath}.model.${localizationEntity.name};
+</#if>
+
 import ${apiPackagePath}.model.${entity.name}Model;
 import ${apiPackagePath}.model.${entity.name}Soap;
 
@@ -33,6 +40,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
+import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
@@ -75,6 +83,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the ${entity.name} service. Represents a row in the &quot;${entity.table}&quot; database table, with each column mapped to a property of this class.
@@ -441,6 +450,43 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 			}
 		</#list>
 	}
+
+	<#if entity.hasLocalizationColumns()>
+		<#assign localizationEntity = entity.toLocalizationEntity() />
+
+		<#list entity.localizationColumns as column>
+			public String get${column.methodName}(String languageId) {
+				return get${column.methodName}(languageId, true);
+			}
+
+			public String get${column.methodName}(String languageId, boolean useDefault) {
+				if (useDefault) {
+					return LocalizationUtil.getLocalization(
+						new Function<String, String> () {
+
+							@Override
+							public String apply(String languageId) {
+								return _get${column.methodName}(languageId);
+							}
+
+						},
+						languageId, getDefaultLanguageId());
+				}
+
+				return _get${column.methodName}(languageId);
+			}
+
+			private String _get${column.methodName}(String languageId) {
+				${localizationEntity.name} ${localizationEntity.varName} = ${entity.name}LocalServiceUtil.fetch${localizationEntity.name}(getPrimaryKey(), languageId);
+
+				if (${localizationEntity.varName} == null) {
+					return StringPool.BLANK;
+				}
+
+				return ${localizationEntity.varName}.get${column.methodName}();
+			}
+		</#list>
+	</#if>
 
 	<#list entity.regularColList as column>
 		<#if stringUtil.equals(column.name, "classNameId") && !hasClassNameCacheField>
