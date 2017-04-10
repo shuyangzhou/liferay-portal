@@ -60,9 +60,8 @@ public class LanguageResources {
 		new ResourceBundleLoader() {
 
 			@Override
-			public ResourceBundle loadResourceBundle(String languageId) {
-				return LanguageResources.getResourceBundle(
-					LocaleUtil.fromLanguageId(languageId));
+			public ResourceBundle loadResourceBundle(Locale locale) {
+				return LanguageResources.getResourceBundle(locale);
 			}
 
 		};

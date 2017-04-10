@@ -60,8 +60,7 @@ public class FileVersionDiscussionDLViewFileVersionDisplayContext
 	@Override
 	public String getDiscussionLabel(Locale locale) {
 		ResourceBundle resourceBundle =
-			_resourceBundleLoader.loadResourceBundle(
-				LanguageUtil.getLanguageId(locale));
+			_resourceBundleLoader.loadResourceBundle(locale);
 
 		String label = "comments-for-version-x";
 

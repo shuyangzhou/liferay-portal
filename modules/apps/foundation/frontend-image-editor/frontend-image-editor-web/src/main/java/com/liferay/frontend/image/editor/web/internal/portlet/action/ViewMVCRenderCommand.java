@@ -98,13 +98,12 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 
 		template.put("saveURL", saveURL);
 
+		Locale locale = themeDisplay.getLocale();
+
 		ResourceBundle resourceBundle =
-			_resourceBundleLoader.loadResourceBundle(
-				themeDisplay.getLanguageId());
+			_resourceBundleLoader.loadResourceBundle(locale);
 
 		Map<String, Object> strings = new HashMap<>();
-
-		Locale locale = themeDisplay.getLocale();
 
 		strings.put("apply", LanguageUtil.get(locale, "apply"));
 		strings.put("cancel", LanguageUtil.get(locale, "cancel"));

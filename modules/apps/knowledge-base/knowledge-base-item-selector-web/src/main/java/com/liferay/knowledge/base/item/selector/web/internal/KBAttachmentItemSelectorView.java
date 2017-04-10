@@ -24,7 +24,6 @@ import com.liferay.knowledge.base.item.selector.web.internal.display.context.KBA
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.language.LanguageResources;
@@ -77,8 +76,7 @@ public class KBAttachmentItemSelectorView
 	@Override
 	public String getTitle(Locale locale) {
 		ResourceBundle resourceBundle =
-			_resourceBundleLoader.loadResourceBundle(
-				LocaleUtil.toLanguageId(locale));
+			_resourceBundleLoader.loadResourceBundle(locale);
 
 		return ResourceBundleUtil.getString(
 			resourceBundle, "article-attachments");

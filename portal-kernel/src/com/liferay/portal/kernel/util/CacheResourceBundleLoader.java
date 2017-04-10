@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,8 +35,8 @@ public class CacheResourceBundleLoader implements ResourceBundleLoader {
 	}
 
 	@Override
-	public ResourceBundle loadResourceBundle(String languageId) {
-		ResourceBundle resourceBundle = _resourceBundles.get(languageId);
+	public ResourceBundle loadResourceBundle(Locale locale) {
+		ResourceBundle resourceBundle = _resourceBundles.get(locale);
 
 		if (resourceBundle == _nullResourceBundle) {
 			return null;
@@ -44,7 +45,7 @@ public class CacheResourceBundleLoader implements ResourceBundleLoader {
 		if (resourceBundle == null) {
 			try {
 				resourceBundle = _resourceBundleLoader.loadResourceBundle(
-					languageId);
+					locale);
 			}
 			catch (Exception e) {
 				if (_log.isDebugEnabled()) {
@@ -53,14 +54,23 @@ public class CacheResourceBundleLoader implements ResourceBundleLoader {
 			}
 
 			if (resourceBundle == null) {
-				_resourceBundles.put(languageId, _nullResourceBundle);
+				_resourceBundles.put(locale, _nullResourceBundle);
 			}
 			else {
-				_resourceBundles.put(languageId, resourceBundle);
+				_resourceBundles.put(locale, resourceBundle);
 			}
 		}
 
 		return resourceBundle;
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #loadResourceBundle(Locale)}
+	 */
+	@Deprecated
+	@Override
+	public ResourceBundle loadResourceBundle(String languageId) {
+		return loadResourceBundle(LocaleUtil.fromLanguageId(languageId));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -82,7 +92,7 @@ public class CacheResourceBundleLoader implements ResourceBundleLoader {
 		};
 
 	private final ResourceBundleLoader _resourceBundleLoader;
-	private final Map<String, ResourceBundle> _resourceBundles =
+	private final Map<Locale, ResourceBundle> _resourceBundles =
 		new ConcurrentHashMap<>();
 
 }

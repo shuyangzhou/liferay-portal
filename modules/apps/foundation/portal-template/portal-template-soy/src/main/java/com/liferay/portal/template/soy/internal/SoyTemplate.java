@@ -240,8 +240,7 @@ public class SoyTemplate extends AbstractMultiResourceTemplate {
 				resourceBundleLoaders.toArray(
 					new ResourceBundleLoader[resourceBundleLoaders.size()]));
 
-		return aggregateResourceBundleLoader.loadResourceBundle(
-			LanguageUtil.getLanguageId(locale));
+		return aggregateResourceBundleLoader.loadResourceBundle(locale);
 	}
 
 	private final boolean _privileged;
