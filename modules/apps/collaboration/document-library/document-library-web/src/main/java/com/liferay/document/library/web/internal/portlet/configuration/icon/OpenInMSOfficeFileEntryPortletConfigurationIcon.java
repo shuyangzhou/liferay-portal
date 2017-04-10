@@ -61,8 +61,7 @@ public class OpenInMSOfficeFileEntryPortletConfigurationIcon
 			WebKeys.THEME_DISPLAY);
 
 		ResourceBundle resourceBundle =
-			_resourceBundleLoader.loadResourceBundle(
-				themeDisplay.getLanguageId());
+			_resourceBundleLoader.loadResourceBundle(themeDisplay.getLocale());
 
 		return LanguageUtil.get(resourceBundle, "open-in-ms-office");
 	}
@@ -127,7 +126,7 @@ public class OpenInMSOfficeFileEntryPortletConfigurationIcon
 
 			ResourceBundle resourceBundle =
 				_resourceBundleLoader.loadResourceBundle(
-					themeDisplay.getLanguageId());
+					themeDisplay.getLocale());
 
 			UIItemsBuilder uiItemsBuilder = new UIItemsBuilder(
 				request, fileVersion, resourceBundle);

@@ -65,7 +65,6 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.AggregateResourceBundle;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -365,13 +364,11 @@ public class DDLFormAdminDisplayContext {
 	public ResourceBundle getResourceBundle() {
 		Locale locale = getSiteDefaultLocale();
 
-		String languageId = LocaleUtil.toLanguageId(locale);
-
 		ResourceBundleLoader portalResourceBundleLoader =
 			ResourceBundleLoaderUtil.getPortalResourceBundleLoader();
 
 		ResourceBundle portalResourceBundle =
-			portalResourceBundleLoader.loadResourceBundle(languageId);
+			portalResourceBundleLoader.loadResourceBundle(locale);
 
 		ResourceBundle portletResourceBundle = ResourceBundleUtil.getBundle(
 			"content.Language", getSiteDefaultLocale(), getClass());

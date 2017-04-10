@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -103,7 +102,7 @@ public class InviteMembersUserNotificationHandler
 
 		ResourceBundle resourceBundle =
 			_resourceBundleLoader.loadResourceBundle(
-				LocaleUtil.toLanguageId(serviceContext.getLocale()));
+				serviceContext.getLocale());
 
 		String title = ResourceBundleUtil.getString(
 			resourceBundle, "x-invited-you-to-join-x",

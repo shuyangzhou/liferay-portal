@@ -60,8 +60,17 @@ public class LanguageResources {
 		new ResourceBundleLoader() {
 
 			@Override
+			public ResourceBundle loadResourceBundle(Locale locale) {
+				return LanguageResources.getResourceBundle(locale);
+			}
+
+			/**
+			 * @deprecated As of 7.0.0, replaced by {@link #loadResourceBundle(
+			 *             Locale)}
+			 */
+			@Deprecated
 			public ResourceBundle loadResourceBundle(String languageId) {
-				return LanguageResources.getResourceBundle(
+				return loadResourceBundle(
 					LocaleUtil.fromLanguageId(languageId));
 			}
 

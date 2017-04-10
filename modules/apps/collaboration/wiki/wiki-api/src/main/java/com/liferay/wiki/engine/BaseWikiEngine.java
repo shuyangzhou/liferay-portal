@@ -14,7 +14,6 @@
 
 package com.liferay.wiki.engine;
 
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.language.LanguageResources;
@@ -64,7 +63,7 @@ public abstract class BaseWikiEngine implements WikiEngine {
 		ResourceBundleLoader resourceBundleLoader = getResourceBundleLoader();
 
 		ResourceBundle resourceBundle = resourceBundleLoader.loadResourceBundle(
-			LocaleUtil.toLanguageId(locale));
+			locale);
 
 		String format = getFormat();
 
