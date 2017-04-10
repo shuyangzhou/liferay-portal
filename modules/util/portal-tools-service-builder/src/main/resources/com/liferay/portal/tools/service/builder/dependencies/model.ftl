@@ -168,6 +168,14 @@ public interface ${entity.name}Model extends
 	 */
 	public void setPrimaryKey(${entity.PKClassName} primaryKey);
 
+	<#list entity.localizationColumns as column>
+		@AutoEscape
+		public String get${column.methodName}(String languageId);
+
+		@AutoEscape
+		public String get${column.methodName}(String languageId, boolean useDefault);
+	</#list>
+
 	<#list entity.regularColList as column>
 		<#if stringUtil.equals(column.name, "classNameId")>
 			/**
