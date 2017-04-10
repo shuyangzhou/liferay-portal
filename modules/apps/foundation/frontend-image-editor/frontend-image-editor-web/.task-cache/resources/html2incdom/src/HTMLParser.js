@@ -190,7 +190,11 @@ define([], function () {
 				tagName = tagName.toLowerCase();
 
 				if (block[tagName]) {
-					while (stack.last() && inline[stack.last()]) {
+					// Close last tag if it's inline, except if it's a "span" (since people
+					// usually add anything they want to spans, and browsers allow it).
+					// Note: this exception for "span" was added manually (i.e. it's not
+					// present in the original code).
+					while (stack.last() && inline[stack.last()] && stack.last() !== 'span') {
 						parseEndTag("", stack.last());
 					}
 				}
