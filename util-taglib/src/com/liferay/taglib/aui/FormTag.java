@@ -15,17 +15,24 @@
 package com.liferay.taglib.aui;
 
 import com.liferay.portal.kernel.servlet.taglib.aui.ValidatorTag;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.taglib.aui.base.BaseFormTag;
+import com.liferay.taglib.util.InlineUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspWriter;
 
 /**
  * @author Julio Camarero
@@ -67,6 +74,65 @@ public class FormTag extends BaseFormTag {
 	@Override
 	protected boolean isCleanUpSetAttributes() {
 		return _CLEAN_UP_SET_ATTRIBUTES;
+	}
+
+	@Override
+	protected int processStartTag() throws Exception {
+		String namespace = null;
+
+		PortletRequest portletRequest = (PortletRequest)request.getAttribute(
+			JavaConstants.JAVAX_PORTLET_REQUEST);
+
+		if (portletRequest != null) {
+			PortletResponse portletResponse =
+				(PortletResponse)request.getAttribute(
+					JavaConstants.JAVAX_PORTLET_RESPONSE);
+
+			namespace = AUIUtil.getNamespace(portletRequest, portletResponse);
+		}
+
+		if (Validator.isNull(namespace)) {
+			namespace = AUIUtil.getNamespace(request);
+		}
+
+		JspWriter jspWriter = pageContext.getOut();
+
+		jspWriter.write("<form action=\"");
+		jspWriter.write(HtmlUtil.escapeAttribute(getAction()));
+
+		jspWriter.write("\" class=\"form ");
+		jspWriter.write(GetterUtil.getString(getCssClass()));
+
+		if (getInlineLabels()) {
+			jspWriter.write(" field-labels-inline");
+		}
+
+		jspWriter.write("\" data-fm-namespace=\"");
+		jspWriter.write(namespace);
+
+		String escapedName = HtmlUtil.escapeAttribute(getName());
+
+		jspWriter.write("\" id=\"");
+		jspWriter.write(namespace);
+		jspWriter.write(escapedName);
+
+		jspWriter.write("\" method=\"");
+		jspWriter.write(getMethod());
+
+		jspWriter.write("\" name=\"");
+		jspWriter.write(namespace);
+		jspWriter.write(escapedName);
+		jspWriter.write("\"");
+
+		jspWriter.write(
+			InlineUtil.buildDynamicAttributes(getDynamicAttributes()));
+
+		if (Validator.isNotNull(getOnSubmit())) {
+			jspWriter.write(
+				"<fieldset class=\"input-container\" disabled=\"disabled\">");
+		}
+
+		return EVAL_BODY_INCLUDE;
 	}
 
 	@Override
