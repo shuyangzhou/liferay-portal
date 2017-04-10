@@ -135,9 +135,17 @@ public class ASMWrapperUtilTest {
 		for (int i = 0, j = 0; i < expectedMethods.length; i++, j++) {
 			String actualMethodName = actualMethods[j].getName();
 
-			if (actualMethodName.equals("equals") ||
-				actualMethodName.equals("hashCode") ||
-				actualMethodName.equals("toString")) {
+			if (actualMethodName.equals("equals")) {
+				Assert.assertTrue(asmWrapper.equals(null));
+
+				j++;
+			}
+			else if (actualMethodName.equals("hashCode")) {
+				Assert.assertEquals(0, asmWrapper.hashCode());
+				j++;
+			}
+			else if (actualMethodName.equals("toString")) {
+				Assert.assertEquals("test", asmWrapper.toString());
 
 				j++;
 			}
@@ -237,8 +245,23 @@ public class ASMWrapperUtilTest {
 
 	public static class TestDelegate {
 
+		@Override
+		public boolean equals(Object object) {
+			return true;
+		}
+
+		@Override
+		public int hashCode() {
+			return 0;
+		}
+
 		public Object objectMethod(Object object) {
 			return new Object();
+		}
+
+		@Override
+		public String toString() {
+			return "test";
 		}
 
 	}
