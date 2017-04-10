@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.servlet.URLEncoder;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.util.ClassUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -276,8 +275,7 @@ public class PortletBagImpl implements PortletBag {
 					"_resourceBundleLoader", sb.toString(), false);
 		}
 
-		return _resourceBundleLoader.loadResourceBundle(
-			LocaleUtil.toLanguageId(locale));
+		return _resourceBundleLoader.loadResourceBundle(locale);
 	}
 
 	@Override

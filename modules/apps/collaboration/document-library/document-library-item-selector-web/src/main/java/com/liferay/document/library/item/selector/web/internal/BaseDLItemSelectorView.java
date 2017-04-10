@@ -18,7 +18,6 @@ import com.liferay.document.library.item.selector.web.internal.display.context.D
 import com.liferay.item.selector.ItemSelectorCriterion;
 import com.liferay.item.selector.ItemSelectorReturnTypeResolverHandler;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.language.LanguageResources;
@@ -63,7 +62,7 @@ public abstract class BaseDLItemSelectorView<T extends ItemSelectorCriterion>
 		ResourceBundleLoader resourceBundleLoader = getResourceBundleLoader();
 
 		ResourceBundle resourceBundle = resourceBundleLoader.loadResourceBundle(
-			LocaleUtil.toLanguageId(locale));
+			locale);
 
 		return ResourceBundleUtil.getString(
 			resourceBundle, "documents-and-media");
