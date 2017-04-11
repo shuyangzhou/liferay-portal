@@ -2807,9 +2807,17 @@ public class PortalImpl implements Portal {
 			return null;
 		}
 
+		LayoutSet layoutSet = themeDisplay.getLayoutSet();
+
+		if ((layoutSet == null) ||
+			(layoutSet.getGroupId() != layout.getGroupId()) ||
+			(layoutSet.getPrivateLayout() != layout.getPrivateLayout())) {
+
+			layoutSet = layout.getLayoutSet();
+		}
+
 		String groupFriendlyURL = getGroupFriendlyURL(
-			layout.getLayoutSet(), themeDisplay, false,
-			layout.isTypeControlPanel());
+			layoutSet, themeDisplay, false, layout.isTypeControlPanel());
 
 		return groupFriendlyURL.concat(
 			themeDisplay.getLayoutFriendlyURL(layout));
