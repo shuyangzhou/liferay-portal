@@ -1476,16 +1476,16 @@ public class LayoutImpl extends LayoutBaseImpl {
 			}
 		}
 
-		String portalURL = PortalUtil.getPortalURL(request);
-
 		String url = PortalUtil.getLayoutURL(this, themeDisplay);
 
-		if (!CookieKeys.hasSessionId(request) &&
-			(url.startsWith(portalURL) || url.startsWith(StringPool.SLASH))) {
+		if (!CookieKeys.hasSessionId(request)) {
+			String portalURL = PortalUtil.getPortalURL(request);
 
-			HttpSession session = request.getSession();
+			if (url.startsWith(portalURL) || url.startsWith(StringPool.SLASH)) {
+				HttpSession session = request.getSession();
 
-			url = PortalUtil.getURLWithSessionId(url, session.getId());
+				url = PortalUtil.getURLWithSessionId(url, session.getId());
+			}
 		}
 
 		if (!resetMaxState) {
