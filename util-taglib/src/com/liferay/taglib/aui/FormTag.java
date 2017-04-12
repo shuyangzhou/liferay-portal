@@ -15,7 +15,6 @@
 package com.liferay.taglib.aui;
 
 import com.liferay.portal.kernel.servlet.taglib.aui.ValidatorTag;
-import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.taglib.aui.base.BaseFormTag;
 
 import java.util.ArrayList;
@@ -72,12 +71,6 @@ public class FormTag extends BaseFormTag {
 	@Override
 	protected void setAttributes(HttpServletRequest request) {
 		super.setAttributes(request);
-
-		if (getEscapeXml()) {
-			String action = getAction();
-
-			super.setAction(HtmlUtil.escape(action));
-		}
 
 		request.setAttribute("aui:form:validatorTagsMap", _validatorTagsMap);
 		request.setAttribute(
