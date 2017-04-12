@@ -1144,8 +1144,23 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 					String fileName = StringUtil.toLowerCase(
 						fileNamePath.toString());
 
-					if (fileName.endsWith(".jar")) {
+					Matcher matcher = _pattern.matcher(fileName);
+
+					if (!matcher.matches()) {
 						jarPaths.add(filePath.toAbsolutePath());
+
+						return FileVisitResult.CONTINUE;
+					}
+
+					if (_log.isWarnEnabled()) {
+						StringBundler sb = new StringBundler(3);
+
+						sb.append("Override static jar ");
+						sb.append(fileName);
+						sb.append(
+							" has invalid file name and will be ignored.");
+
+						_log.warn(sb.toString());
 					}
 
 					return FileVisitResult.CONTINUE;
@@ -1214,6 +1229,10 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 				if (bundle != null) {
 					bundles.add(bundle);
+
+					Path fileNamePath = jarPath.getFileName();
+
+					String fileName = fileNamePath.toString();
 
 					overrideStaticFileNames.add(
 						path.substring(path.lastIndexOf(StringPool.SLASH) + 1));
