@@ -64,6 +64,7 @@ public class PortletURLImplTest {
 		Layout layout = LayoutTestUtil.addLayout(_group);
 
 		themeDisplay.setLayout(layout);
+		themeDisplay.setLayoutSet(layout.getLayoutSet());
 		themeDisplay.setPlid(layout.getPlid());
 
 		themeDisplay.setPortalURL("http://localhost:8080");
