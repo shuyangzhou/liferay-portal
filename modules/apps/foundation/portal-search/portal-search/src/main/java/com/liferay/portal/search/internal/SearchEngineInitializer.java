@@ -15,6 +15,7 @@
 package com.liferay.portal.search.internal;
 
 import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
+import com.liferay.portal.kernel.executor.PortalExecutorManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
@@ -38,8 +39,11 @@ import org.apache.commons.lang.time.StopWatch;
  */
 public class SearchEngineInitializer implements Runnable {
 
-	public SearchEngineInitializer(long companyId) {
+	public SearchEngineInitializer(
+		long companyId, PortalExecutorManager portalExecutorManager) {
+
 		_companyId = companyId;
+		_portalExecutorManager = portalExecutorManager;
 		_usedSearchEngineIds = new HashSet<>();
 	}
 
@@ -88,7 +92,9 @@ public class SearchEngineInitializer implements Runnable {
 		catch (InterruptedException ie) {
 		}
 
-		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(0, 10);
+		ThreadPoolExecutor threadPoolExecutor =
+			_portalExecutorManager.getPortalExecutor(
+				SearchEngineInitializer.class.getName());
 
 		StopWatch stopWatch = new StopWatch();
 
@@ -146,9 +152,6 @@ public class SearchEngineInitializer implements Runnable {
 				_log.info("Reindexing Lucene failed");
 			}
 		}
-		finally {
-			threadPoolExecutor.shutdownNow();
-		}
 
 		_finished = true;
 	}
@@ -178,6 +181,7 @@ public class SearchEngineInitializer implements Runnable {
 
 	private final long _companyId;
 	private boolean _finished;
+	private final PortalExecutorManager _portalExecutorManager;
 	private final Set<String> _usedSearchEngineIds;
 
 }
