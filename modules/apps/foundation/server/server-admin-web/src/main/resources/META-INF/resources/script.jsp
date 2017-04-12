@@ -17,7 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String language = ParamUtil.getString(renderRequest, "language", "javascript");
+String language = ParamUtil.getString(renderRequest, "language", "groovy");
 
 if (SessionMessages.contains(renderRequest, "language")) {
 	language = (String)SessionMessages.get(renderRequest, "language");

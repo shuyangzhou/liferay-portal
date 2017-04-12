@@ -409,6 +409,15 @@ public class LayoutFriendlyURLLocalServiceWrapper
 			serviceContext);
 	}
 
+	@Override
+	public java.util.Map<java.lang.Long, java.lang.String> getLayoutFriendlyURLs(
+		com.liferay.portal.kernel.model.Group siteGroup,
+		java.util.List<com.liferay.portal.kernel.model.Layout> layouts,
+		java.lang.String languageId) {
+		return _layoutFriendlyURLLocalService.getLayoutFriendlyURLs(siteGroup,
+			layouts, languageId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*

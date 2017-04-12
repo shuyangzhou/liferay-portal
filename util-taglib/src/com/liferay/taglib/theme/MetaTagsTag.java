@@ -14,8 +14,6 @@
 
 package com.liferay.taglib.theme;
 
-import static jodd.datetime.JDateTimeDefault.locale;
-
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -85,6 +83,7 @@ public class MetaTagsTag extends com.liferay.taglib.util.IncludeTag {
 		}
 
 		String currentLanguageId = LanguageUtil.getLanguageId(request);
+		Locale currentLocale = themeDisplay.getLocale();
 		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
@@ -94,7 +93,7 @@ public class MetaTagsTag extends com.liferay.taglib.util.IncludeTag {
 		String w3cDefaultLanguageId = LocaleUtil.toW3cLanguageId(
 			defaultLanguageId);
 
-		String metaRobots = layout.getRobots(locale, false);
+		String metaRobots = layout.getRobots(currentLocale, false);
 		String metaRobotsLanguageId = w3cCurrentLanguageId;
 
 		if (Validator.isNull(metaRobots)) {
@@ -107,7 +106,7 @@ public class MetaTagsTag extends com.liferay.taglib.util.IncludeTag {
 				HtmlUtil.escape(metaRobots), metaRobotsLanguageId, "robots");
 		}
 
-		String metaDescription = layout.getDescription(locale, false);
+		String metaDescription = layout.getDescription(currentLocale, false);
 		String metaDescriptionLanguageId = w3cCurrentLanguageId;
 
 		if (Validator.isNull(metaDescription)) {
@@ -144,7 +143,7 @@ public class MetaTagsTag extends com.liferay.taglib.util.IncludeTag {
 				"description");
 		}
 
-		String metaKeywords = layout.getKeywords(locale, false);
+		String metaKeywords = layout.getKeywords(currentLocale, false);
 		String metaKeywordsLanguageId = w3cCurrentLanguageId;
 
 		if (Validator.isNull(metaKeywords)) {

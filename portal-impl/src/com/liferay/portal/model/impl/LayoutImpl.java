@@ -490,13 +490,7 @@ public class LayoutImpl extends LayoutBaseImpl {
 	 */
 	@Override
 	public String getFriendlyURL(Locale locale) {
-		String friendlyURL = _friendlyURLs.get(locale);
-
-		if (friendlyURL != null) {
-			return friendlyURL;
-		}
-
-		friendlyURL = getFriendlyURL();
+		String friendlyURL = getFriendlyURL();
 
 		try {
 			Group group = getGroup();
@@ -515,8 +509,6 @@ public class LayoutImpl extends LayoutBaseImpl {
 				if (!ArrayUtil.contains(
 						locales, LanguageUtil.getLanguageId(locale))) {
 
-					_friendlyURLs.put(locale, friendlyURL);
-
 					return friendlyURL;
 				}
 			}
@@ -529,8 +521,6 @@ public class LayoutImpl extends LayoutBaseImpl {
 		}
 		catch (Exception e) {
 		}
-
-		_friendlyURLs.put(locale, friendlyURL);
 
 		return friendlyURL;
 	}
@@ -1486,16 +1476,16 @@ public class LayoutImpl extends LayoutBaseImpl {
 			}
 		}
 
-		String portalURL = PortalUtil.getPortalURL(request);
-
 		String url = PortalUtil.getLayoutURL(this, themeDisplay);
 
-		if (!CookieKeys.hasSessionId(request) &&
-			(url.startsWith(portalURL) || url.startsWith(StringPool.SLASH))) {
+		if (!CookieKeys.hasSessionId(request)) {
+			String portalURL = PortalUtil.getPortalURL(request);
 
-			HttpSession session = request.getSession();
+			if (url.startsWith(portalURL) || url.startsWith(StringPool.SLASH)) {
+				HttpSession session = request.getSession();
 
-			url = PortalUtil.getURLWithSessionId(url, session.getId());
+				url = PortalUtil.getURLWithSessionId(url, session.getId());
+			}
 		}
 
 		if (!resetMaxState) {
@@ -1522,7 +1512,6 @@ public class LayoutImpl extends LayoutBaseImpl {
 		_initFriendlyURLKeywords();
 	}
 
-	private final Map<Locale, String> _friendlyURLs = new HashMap<>();
 	private LayoutSet _layoutSet;
 	private transient LayoutType _layoutType;
 	private UnicodeProperties _typeSettingsProperties;
