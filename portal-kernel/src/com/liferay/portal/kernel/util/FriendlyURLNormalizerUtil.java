@@ -50,12 +50,10 @@ public class FriendlyURLNormalizerUtil {
 			friendlyURL);
 	}
 
-	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
-	 */
-	@Deprecated
 	public void setFriendlyURLNormalizer(
 		FriendlyURLNormalizer friendlyURLNormalizer) {
+
+		_friendlyURLNormalizer = friendlyURLNormalizer;
 	}
 
 	private static volatile FriendlyURLNormalizer _friendlyURLNormalizer =
