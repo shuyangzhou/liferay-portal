@@ -36,10 +36,12 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.LayoutFriendlyURLPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.impl.LayoutFriendlyURLImpl;
@@ -47,6 +49,8 @@ import com.liferay.portal.model.impl.LayoutFriendlyURLModelImpl;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -3596,6 +3600,23 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 	private static final String _FINDER_COLUMN_P_F_FRIENDLYURL_1 = "layoutFriendlyURL.friendlyURL IS NULL";
 	private static final String _FINDER_COLUMN_P_F_FRIENDLYURL_2 = "layoutFriendlyURL.friendlyURL = ?";
 	private static final String _FINDER_COLUMN_P_F_FRIENDLYURL_3 = "(layoutFriendlyURL.friendlyURL IS NULL OR layoutFriendlyURL.friendlyURL = '')";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_P_L = new FinderPath(LayoutFriendlyURLModelImpl.ENTITY_CACHE_ENABLED,
+			LayoutFriendlyURLModelImpl.FINDER_CACHE_ENABLED,
+			LayoutFriendlyURLImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByP_L",
+			new String[] {
+				Long.class.getName(), String.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_P_L = new FinderPath(LayoutFriendlyURLModelImpl.ENTITY_CACHE_ENABLED,
+			LayoutFriendlyURLModelImpl.FINDER_CACHE_ENABLED,
+			LayoutFriendlyURLImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByP_L",
+			new String[] { Long.class.getName(), String.class.getName() },
+			LayoutFriendlyURLModelImpl.PLID_COLUMN_BITMASK |
+			LayoutFriendlyURLModelImpl.LANGUAGEID_COLUMN_BITMASK);
 	public static final FinderPath FINDER_PATH_FETCH_BY_P_L = new FinderPath(LayoutFriendlyURLModelImpl.ENTITY_CACHE_ENABLED,
 			LayoutFriendlyURLModelImpl.FINDER_CACHE_ENABLED,
 			LayoutFriendlyURLImpl.class, FINDER_CLASS_NAME_ENTITY,
@@ -3607,6 +3628,239 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 			LayoutFriendlyURLModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByP_L",
 			new String[] { Long.class.getName(), String.class.getName() });
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_COUNT_BY_P_L = new FinderPath(LayoutFriendlyURLModelImpl.ENTITY_CACHE_ENABLED,
+			LayoutFriendlyURLModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByP_L",
+			new String[] { Long.class.getName(), String.class.getName() });
+
+	/**
+	 * Returns all the layout friendly urls where plid = any &#63; and languageId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutFriendlyURLModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param plids the plids
+	 * @param languageId the language ID
+	 * @return the matching layout friendly urls
+	 */
+	@Override
+	public List<LayoutFriendlyURL> findByP_L(long[] plids, String languageId) {
+		return findByP_L(plids, languageId, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the layout friendly urls where plid = any &#63; and languageId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutFriendlyURLModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param plids the plids
+	 * @param languageId the language ID
+	 * @param start the lower bound of the range of layout friendly urls
+	 * @param end the upper bound of the range of layout friendly urls (not inclusive)
+	 * @return the range of matching layout friendly urls
+	 */
+	@Override
+	public List<LayoutFriendlyURL> findByP_L(long[] plids, String languageId,
+		int start, int end) {
+		return findByP_L(plids, languageId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the layout friendly urls where plid = any &#63; and languageId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutFriendlyURLModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param plids the plids
+	 * @param languageId the language ID
+	 * @param start the lower bound of the range of layout friendly urls
+	 * @param end the upper bound of the range of layout friendly urls (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching layout friendly urls
+	 */
+	@Override
+	public List<LayoutFriendlyURL> findByP_L(long[] plids, String languageId,
+		int start, int end,
+		OrderByComparator<LayoutFriendlyURL> orderByComparator) {
+		return findByP_L(plids, languageId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the layout friendly urls where plid = &#63; and languageId = &#63;, optionally using the finder cache.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LayoutFriendlyURLModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param plid the plid
+	 * @param languageId the language ID
+	 * @param start the lower bound of the range of layout friendly urls
+	 * @param end the upper bound of the range of layout friendly urls (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of matching layout friendly urls
+	 */
+	@Override
+	public List<LayoutFriendlyURL> findByP_L(long[] plids, String languageId,
+		int start, int end,
+		OrderByComparator<LayoutFriendlyURL> orderByComparator,
+		boolean retrieveFromCache) {
+		if (plids == null) {
+			plids = new long[0];
+		}
+		else if (plids.length > 1) {
+			plids = ArrayUtil.unique(plids);
+
+			Arrays.sort(plids);
+		}
+
+		if (plids.length == 1) {
+			LayoutFriendlyURL layoutFriendlyURL = fetchByP_L(plids[0],
+					languageId);
+
+			if (layoutFriendlyURL == null) {
+				return Collections.emptyList();
+			}
+			else {
+				List<LayoutFriendlyURL> list = new ArrayList<LayoutFriendlyURL>(1);
+
+				list.add(layoutFriendlyURL);
+
+				return list;
+			}
+		}
+
+		boolean pagination = true;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderArgs = new Object[] { StringUtil.merge(plids), languageId };
+		}
+		else {
+			finderArgs = new Object[] {
+					StringUtil.merge(plids), languageId,
+					
+					start, end, orderByComparator
+				};
+		}
+
+		List<LayoutFriendlyURL> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<LayoutFriendlyURL>)finderCache.getResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_P_L,
+					finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (LayoutFriendlyURL layoutFriendlyURL : list) {
+					if (!ArrayUtil.contains(plids, layoutFriendlyURL.getPlid()) ||
+							!Objects.equals(languageId,
+								layoutFriendlyURL.getLanguageId())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = new StringBundler();
+
+			query.append(_SQL_SELECT_LAYOUTFRIENDLYURL_WHERE);
+
+			if (plids.length > 0) {
+				query.append(StringPool.OPEN_PARENTHESIS);
+
+				query.append(_FINDER_COLUMN_P_L_PLID_7);
+
+				query.append(StringUtil.merge(plids));
+
+				query.append(StringPool.CLOSE_PARENTHESIS);
+
+				query.append(StringPool.CLOSE_PARENTHESIS);
+
+				query.append(WHERE_AND);
+			}
+
+			boolean bindLanguageId = false;
+
+			if (languageId == null) {
+				query.append(_FINDER_COLUMN_P_L_LANGUAGEID_1);
+			}
+			else if (languageId.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_P_L_LANGUAGEID_3);
+			}
+			else {
+				bindLanguageId = true;
+
+				query.append(_FINDER_COLUMN_P_L_LANGUAGEID_2);
+			}
+
+			query.setStringAt(removeConjunction(query.stringAt(query.index() -
+						1)), query.index() - 1);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(LayoutFriendlyURLModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindLanguageId) {
+					qPos.add(languageId);
+				}
+
+				if (!pagination) {
+					list = (List<LayoutFriendlyURL>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<LayoutFriendlyURL>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
+
+				cacheResult(list);
+
+				finderCache.putResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_P_L,
+					finderArgs, list);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_P_L,
+					finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
 
 	/**
 	 * Returns the layout friendly url where plid = &#63; and languageId = &#63; or throws a {@link NoSuchLayoutFriendlyURLException} if it could not be found.
@@ -3848,7 +4102,101 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 		return count.intValue();
 	}
 
+	/**
+	 * Returns the number of layout friendly urls where plid = any &#63; and languageId = &#63;.
+	 *
+	 * @param plids the plids
+	 * @param languageId the language ID
+	 * @return the number of matching layout friendly urls
+	 */
+	@Override
+	public int countByP_L(long[] plids, String languageId) {
+		if (plids == null) {
+			plids = new long[0];
+		}
+		else if (plids.length > 1) {
+			plids = ArrayUtil.unique(plids);
+
+			Arrays.sort(plids);
+		}
+
+		Object[] finderArgs = new Object[] { StringUtil.merge(plids), languageId };
+
+		Long count = (Long)finderCache.getResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_P_L,
+				finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler();
+
+			query.append(_SQL_COUNT_LAYOUTFRIENDLYURL_WHERE);
+
+			if (plids.length > 0) {
+				query.append(StringPool.OPEN_PARENTHESIS);
+
+				query.append(_FINDER_COLUMN_P_L_PLID_7);
+
+				query.append(StringUtil.merge(plids));
+
+				query.append(StringPool.CLOSE_PARENTHESIS);
+
+				query.append(StringPool.CLOSE_PARENTHESIS);
+
+				query.append(WHERE_AND);
+			}
+
+			boolean bindLanguageId = false;
+
+			if (languageId == null) {
+				query.append(_FINDER_COLUMN_P_L_LANGUAGEID_1);
+			}
+			else if (languageId.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_P_L_LANGUAGEID_3);
+			}
+			else {
+				bindLanguageId = true;
+
+				query.append(_FINDER_COLUMN_P_L_LANGUAGEID_2);
+			}
+
+			query.setStringAt(removeConjunction(query.stringAt(query.index() -
+						1)), query.index() - 1);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindLanguageId) {
+					qPos.add(languageId);
+				}
+
+				count = (Long)q.uniqueResult();
+
+				finderCache.putResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_P_L,
+					finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_P_L,
+					finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
 	private static final String _FINDER_COLUMN_P_L_PLID_2 = "layoutFriendlyURL.plid = ? AND ";
+	private static final String _FINDER_COLUMN_P_L_PLID_7 = "layoutFriendlyURL.plid IN (";
 	private static final String _FINDER_COLUMN_P_L_LANGUAGEID_1 = "layoutFriendlyURL.languageId IS NULL";
 	private static final String _FINDER_COLUMN_P_L_LANGUAGEID_2 = "layoutFriendlyURL.languageId = ?";
 	private static final String _FINDER_COLUMN_P_L_LANGUAGEID_3 = "(layoutFriendlyURL.languageId IS NULL OR layoutFriendlyURL.languageId = '')";
@@ -5269,6 +5617,15 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 				args);
 
 			args = new Object[] {
+					layoutFriendlyURLModelImpl.getPlid(),
+					layoutFriendlyURLModelImpl.getLanguageId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_P_L, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_P_L,
+				args);
+
+			args = new Object[] {
 					layoutFriendlyURLModelImpl.getGroupId(),
 					layoutFriendlyURLModelImpl.getPrivateLayout(),
 					layoutFriendlyURLModelImpl.getFriendlyURL()
@@ -5391,6 +5748,27 @@ public class LayoutFriendlyURLPersistenceImpl extends BasePersistenceImpl<Layout
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_P_F, args);
 				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_P_F,
+					args);
+			}
+
+			if ((layoutFriendlyURLModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_P_L.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						layoutFriendlyURLModelImpl.getOriginalPlid(),
+						layoutFriendlyURLModelImpl.getOriginalLanguageId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_P_L, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_P_L,
+					args);
+
+				args = new Object[] {
+						layoutFriendlyURLModelImpl.getPlid(),
+						layoutFriendlyURLModelImpl.getLanguageId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_P_L, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_P_L,
 					args);
 			}
 

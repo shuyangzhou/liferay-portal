@@ -248,6 +248,12 @@ public class LayoutFriendlyURLPersistenceTest {
 	}
 
 	@Test
+	public void testCountByP_LArrayable() throws Exception {
+		_persistence.countByP_L(new long[] { RandomTestUtil.nextLong(), 0L },
+			RandomTestUtil.randomString());
+	}
+
+	@Test
 	public void testCountByG_P_F() throws Exception {
 		_persistence.countByG_P_F(RandomTestUtil.nextLong(),
 			RandomTestUtil.randomBoolean(), StringPool.BLANK);

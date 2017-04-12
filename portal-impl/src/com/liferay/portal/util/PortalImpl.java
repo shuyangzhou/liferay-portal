@@ -187,6 +187,7 @@ import com.liferay.portal.kernel.util.StringComparator;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -1188,9 +1189,16 @@ public class PortalImpl implements Portal {
 
 					String canonicalURLSuffix = canonicalURL.substring(pos);
 
-					canonicalURLSuffix = StringUtil.replaceFirst(
-						canonicalURLSuffix, layout.getFriendlyURL(),
-						layout.getFriendlyURL(locale));
+					if (locale.equals(themeDisplay.getLocale())) {
+						canonicalURLSuffix = StringUtil.replaceFirst(
+							canonicalURLSuffix, layout.getFriendlyURL(),
+							themeDisplay.getLayoutFriendlyURL(layout));
+					}
+					else {
+						canonicalURLSuffix = StringUtil.replaceFirst(
+							canonicalURLSuffix, layout.getFriendlyURL(),
+							layout.getFriendlyURL(locale));
+					}
 
 					canonicalURL = canonicalURLPrefix.concat(
 						canonicalURLSuffix);
@@ -1411,12 +1419,22 @@ public class PortalImpl implements Portal {
 
 		String canonicalLayoutFriendlyURL = StringPool.BLANK;
 
-		String defaultLayoutFriendlyURL = layout.getFriendlyURL(
-			getSiteDefaultLocale(layout.getGroupId()));
+		String defaultLayoutFriendlyURL = null;
+
+		Locale siteDefaultLocale = getSiteDefaultLocale(layout.getGroupId());
+
+		if (siteDefaultLocale.equals(themeDisplay.getLocale())) {
+			defaultLayoutFriendlyURL = themeDisplay.getLayoutFriendlyURL(
+				layout);
+		}
+		else {
+			defaultLayoutFriendlyURL = layout.getFriendlyURL(
+				getSiteDefaultLocale(layout.getGroupId()));
+		}
 
 		if ((!layout.isFirstParent() || Validator.isNotNull(parametersURL)) &&
 			(groupFriendlyURL.contains(
-				layout.getFriendlyURL(themeDisplay.getLocale())) ||
+				themeDisplay.getLayoutFriendlyURL(layout)) ||
 			 groupFriendlyURL.contains(
 				 StringPool.SLASH + layout.getLayoutId()))) {
 
@@ -2794,7 +2812,7 @@ public class PortalImpl implements Portal {
 			layout.isTypeControlPanel());
 
 		return groupFriendlyURL.concat(
-			layout.getFriendlyURL(themeDisplay.getLocale()));
+			themeDisplay.getLayoutFriendlyURL(layout));
 	}
 
 	@Override
@@ -2844,7 +2862,7 @@ public class PortalImpl implements Portal {
 			layout.isTypeControlPanel());
 
 		return groupFriendlyURL.concat(
-			layout.getFriendlyURL(themeDisplay.getLocale()));
+			themeDisplay.getLayoutFriendlyURL(layout));
 	}
 
 	@Override
@@ -3572,10 +3590,10 @@ public class PortalImpl implements Portal {
 		String friendlyURL = StringPool.SLASH;
 
 		if (requestURI.contains(layoutFriendlyURL)) {
-			requestURI = StringUtil.replaceFirst(
-				requestURI, layoutFriendlyURL, layout.getFriendlyURL(locale));
-
 			friendlyURL = layout.getFriendlyURL(locale);
+
+			requestURI = StringUtil.replaceFirst(
+				requestURI, layoutFriendlyURL, friendlyURL);
 		}
 
 		LayoutSet layoutSet = layout.getLayoutSet();
@@ -5178,8 +5196,7 @@ public class PortalImpl implements Portal {
 		}
 
 		for (Layout layout : layouts) {
-			String friendlyURL = layout.getFriendlyURL(
-				themeDisplay.getLocale());
+			String friendlyURL = themeDisplay.getLayoutFriendlyURL(layout);
 
 			if (friendlyURL.equals(PropsValues.AUTH_LOGIN_SITE_URL)) {
 				if (themeDisplay.getLayout() == null) {
@@ -5271,7 +5288,7 @@ public class PortalImpl implements Portal {
 				sb.append("&themeId=");
 			}
 
-			sb.append(HttpUtil.encodeURL(theme.getThemeId()));
+			sb.append(URLCodec.encodeURL(theme.getThemeId()));
 		}
 
 		if (uri.endsWith(".jsp") &&
@@ -5287,7 +5304,7 @@ public class PortalImpl implements Portal {
 				sb.append("&colorSchemeId=");
 			}
 
-			sb.append(HttpUtil.encodeURL(colorScheme.getColorSchemeId()));
+			sb.append(URLCodec.encodeURL(colorScheme.getColorSchemeId()));
 		}
 
 		// Minifier
@@ -6723,7 +6740,7 @@ public class PortalImpl implements Portal {
 		sb.append(clazz.getName());
 
 		sb.append("&previousURL=");
-		sb.append(HttpUtil.encodeURL(getCurrentURL(actionRequest)));
+		sb.append(URLCodec.encodeURL(getCurrentURL(actionRequest)));
 
 		actionResponse.sendRedirect(sb.toString());
 	}
@@ -7256,8 +7273,8 @@ public class PortalImpl implements Portal {
 
 		if (Validator.isNotNull(redirectParam)) {
 			String newRedirectParam = StringUtil.replace(
-				redirectParam, HttpUtil.encodeURL(oldPath),
-				HttpUtil.encodeURL(newPath));
+				redirectParam, URLCodec.encodeURL(oldPath),
+				URLCodec.encodeURL(newPath));
 
 			queryString = StringUtil.replace(
 				queryString, redirectParam, newRedirectParam);
@@ -7930,7 +7947,7 @@ public class PortalImpl implements Portal {
 		}
 
 		sb.append(group.getFriendlyURL());
-		sb.append(layout.getFriendlyURL(themeDisplay.getLocale()));
+		sb.append(themeDisplay.getLayoutFriendlyURL(layout));
 
 		sb.append(FRIENDLY_URL_SEPARATOR);
 
