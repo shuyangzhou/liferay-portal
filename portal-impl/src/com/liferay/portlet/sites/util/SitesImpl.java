@@ -534,7 +534,7 @@ public class SitesImpl implements Sites {
 		}
 
 		Group group = layout.getGroup();
-		String oldFriendlyURL = layout.getFriendlyURL(themeDisplay.getLocale());
+		String oldFriendlyURL = themeDisplay.getLayoutFriendlyURL(layout);
 
 		if (group.isStagingGroup() &&
 			!GroupPermissionUtil.contains(
