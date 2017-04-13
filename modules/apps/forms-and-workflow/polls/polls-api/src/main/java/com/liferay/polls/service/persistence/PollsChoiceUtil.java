@@ -872,6 +872,10 @@ public class PollsChoiceUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static PollsChoicePersistence getPersistence() {
 		return _serviceTracker.getService();
 	}

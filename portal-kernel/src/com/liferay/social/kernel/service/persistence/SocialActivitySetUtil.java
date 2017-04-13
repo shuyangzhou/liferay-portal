@@ -1384,6 +1384,10 @@ public class SocialActivitySetUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static SocialActivitySetPersistence getPersistence() {
 		if (_persistence == null) {
 			_persistence = (SocialActivitySetPersistence)PortalBeanLocatorUtil.locate(SocialActivitySetPersistence.class.getName());

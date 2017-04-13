@@ -2762,6 +2762,10 @@ public class MicroblogsEntryUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static MicroblogsEntryPersistence getPersistence() {
 		return _serviceTracker.getService();
 	}

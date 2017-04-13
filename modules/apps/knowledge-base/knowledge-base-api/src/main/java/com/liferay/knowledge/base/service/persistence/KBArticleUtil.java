@@ -9574,6 +9574,10 @@ public class KBArticleUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static KBArticlePersistence getPersistence() {
 		return _serviceTracker.getService();
 	}

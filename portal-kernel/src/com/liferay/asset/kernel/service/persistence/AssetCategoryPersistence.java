@@ -2832,6 +2832,8 @@ public interface AssetCategoryPersistence extends BasePersistence<AssetCategory>
 	@Override
 	public java.util.Set<java.lang.String> getBadColumnNames();
 
+	public java.util.Map<java.lang.String, java.lang.String> getDBColumnMap();
+
 	public long countAncestors(AssetCategory assetCategory);
 
 	public long countDescendants(AssetCategory assetCategory);

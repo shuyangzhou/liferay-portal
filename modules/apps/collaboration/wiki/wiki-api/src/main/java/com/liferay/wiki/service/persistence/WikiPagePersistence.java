@@ -5593,4 +5593,6 @@ public interface WikiPagePersistence extends BasePersistence<WikiPage> {
 
 	@Override
 	public java.util.Set<java.lang.String> getBadColumnNames();
+
+	public java.util.Map<java.lang.String, java.lang.String> getDBColumnMap();
 }

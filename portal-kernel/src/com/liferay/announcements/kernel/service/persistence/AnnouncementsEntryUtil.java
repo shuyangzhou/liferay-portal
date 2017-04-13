@@ -1529,6 +1529,10 @@ public class AnnouncementsEntryUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static AnnouncementsEntryPersistence getPersistence() {
 		if (_persistence == null) {
 			_persistence = (AnnouncementsEntryPersistence)PortalBeanLocatorUtil.locate(AnnouncementsEntryPersistence.class.getName());
