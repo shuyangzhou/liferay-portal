@@ -50,14 +50,7 @@ public class UserBagFactoryImpl implements UserBagFactory {
 		}
 
 		try {
-			List<Group> userGroups = GroupLocalServiceUtil.getUserGroups(
-				userId, true);
-
-			Set<Long> allGroupIds = new HashSet<>(userGroups.size());
-
-			for (Group userGroup : userGroups) {
-				allGroupIds.add(userGroup.getGroupId());
-			}
+			Set<Long> allGroupIds = new HashSet<>();
 
 			Collection<Organization> userOrgs = getUserOrgs(userId);
 
@@ -84,12 +77,34 @@ public class UserBagFactoryImpl implements UserBagFactory {
 				allGroupIds.add(groupId);
 			}
 
+			long[] userGroupIds = null;
+
+			if (userOrgs.isEmpty() && userUserGroups.isEmpty()) {
+				userGroupIds = UserLocalServiceUtil.getGroupPrimaryKeys(userId);
+			}
+			else {
+				List<Group> userGroups = GroupLocalServiceUtil.getUserGroups(
+					userId, true);
+
+				userGroupIds = new long[userGroups.size()];
+
+				for (int i = 0; i < userGroups.size(); i++) {
+					Group userGroup = userGroups.get(i);
+
+					long groupId = userGroup.getGroupId();
+
+					userGroupIds[i] = groupId;
+
+					allGroupIds.add(groupId);
+				}
+			}
+
 			if (allGroupIds.isEmpty()) {
 				long[] userRoleIds = UserLocalServiceUtil.getRolePrimaryKeys(
 					userId);
 
 				userBag = new UserBagImpl(
-					userId, userGroups, userOrgs, userOrgGroupIds,
+					userId, userGroupIds, userOrgs, userOrgGroupIds,
 					userUserGroups, userUserGroupGroupIds, userRoleIds);
 			}
 			else {
@@ -97,7 +112,7 @@ public class UserBagFactoryImpl implements UserBagFactory {
 					userId, ArrayUtil.toLongArray(allGroupIds));
 
 				userBag = new UserBagImpl(
-					userId, userGroups, userOrgs, userOrgGroupIds,
+					userId, userGroupIds, userOrgs, userOrgGroupIds,
 					userUserGroups, userUserGroupGroupIds, userRoles);
 			}
 
