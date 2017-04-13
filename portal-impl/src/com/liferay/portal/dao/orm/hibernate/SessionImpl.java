@@ -83,7 +83,7 @@ public class SessionImpl implements Session {
 		throws ORMException {
 
 		try {
-			queryString = SQLTransformer.transformFromJPQLToHQL(queryString);
+			queryString = SQLTransformer.transform(queryString);
 
 			return DoPrivilegedUtil.wrapWhenActive(
 				new QueryImpl(_session.createQuery(queryString), strictName));
@@ -103,7 +103,7 @@ public class SessionImpl implements Session {
 		throws ORMException {
 
 		try {
-			queryString = SQLTransformer.transformFromJPQLToHQL(queryString);
+			queryString = SQLTransformer.transform(queryString);
 
 			return DoPrivilegedUtil.wrapWhenActive(
 				new SQLQueryImpl(
@@ -127,7 +127,7 @@ public class SessionImpl implements Session {
 		throws ORMException {
 
 		try {
-			queryString = SQLTransformer.transformFromJPQLToHQL(queryString);
+			queryString = SQLTransformer.transform(queryString);
 
 			SQLQuery sqlQuery = new SQLQueryImpl(
 				_session.createSQLQuery(queryString), strictName);

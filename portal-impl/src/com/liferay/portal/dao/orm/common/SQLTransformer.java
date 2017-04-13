@@ -14,15 +14,12 @@
 
 package com.liferay.portal.dao.orm.common;
 
-import com.liferay.portal.dao.sql.transformer.HQLToJPQLTransformerLogic;
-import com.liferay.portal.dao.sql.transformer.JPQLToHQLTransformerLogic;
 import com.liferay.portal.dao.sql.transformer.SQLTransformerFactory;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 /**
  * @author Brian Wing Shun Chan
@@ -43,29 +40,19 @@ public class SQLTransformer {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #transformFromHQLToJQPL(
-	 *             String)}
+	 * @deprecated As of 7.0.0, replaced by {@link #transform(String)}
 	 */
 	@Deprecated
 	public static String transformFromHqlToJpql(String sql) {
-		return transformFromHQLToJQPL(sql);
-	}
-
-	public static String transformFromHQLToJQPL(String sql) {
-		return _instance._transformFromHQLToJPQL(sql);
+		return transform(sql);
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #transformFromJPQLToHQL(
-	 *             String)}
+	 * @deprecated As of 7.0.0, replaced by {@link #transform(String)}
 	 */
 	@Deprecated
 	public static String transformFromJpqlToHql(String sql) {
-		return transformFromJPQLToHQL(sql);
-	}
-
-	public static String transformFromJPQLToHQL(String sql) {
-		return _instance._transformFromJPQLToHQL(sql);
+		return transform(sql);
 	}
 
 	private SQLTransformer() {
@@ -89,49 +76,6 @@ public class SQLTransformer {
 		DB db = DBManagerUtil.getDB();
 
 		_sqlTransformer = SQLTransformerFactory.getSQLTransformer(db);
-	}
-
-	private String _transformFromHQLToJPQL(String sql) {
-		String newSQL = _transformedSqls.get(sql);
-
-		if (newSQL != null) {
-			return newSQL;
-		}
-
-		newSQL = _sqlTransformer.transform(sql);
-
-		Function[] functions = {
-			HQLToJPQLTransformerLogic.getPositionalParameterFunction(),
-			HQLToJPQLTransformerLogic.getNotEqualsFunction(),
-			HQLToJPQLTransformerLogic.getCompositeIdMarkerFunction()
-		};
-
-		for (Function<String, String> function : functions) {
-			newSQL = function.apply(newSQL);
-		}
-
-		_transformedSqls.put(sql, newSQL);
-
-		return newSQL;
-	}
-
-	private String _transformFromJPQLToHQL(String sql) {
-		String newSQL = _transformedSqls.get(sql);
-
-		if (newSQL != null) {
-			return newSQL;
-		}
-
-		newSQL = _sqlTransformer.transform(sql);
-
-		Function<String, String> countFunction =
-			JPQLToHQLTransformerLogic.getCountFunction();
-
-		newSQL = countFunction.apply(newSQL);
-
-		_transformedSqls.put(sql, newSQL);
-
-		return newSQL;
 	}
 
 	private static final SQLTransformer _instance = new SQLTransformer();
