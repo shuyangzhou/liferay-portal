@@ -138,10 +138,8 @@ public class XStreamConfiguratorRegistryUtil {
 
 		Map<Class<?>, String> aliases = XStreamAliasRegistryUtil.getAliases();
 
-		if (MapUtil.isNotEmpty(aliases)) {
-			for (Class<?> clazz : aliases.keySet()) {
-				classLoaders.add(clazz.getClassLoader());
-			}
+		for (Class<?> clazz : aliases.keySet()) {
+			classLoaders.add(clazz.getClassLoader());
 		}
 
 		XStream xStream = new XStream(
