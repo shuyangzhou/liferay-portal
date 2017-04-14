@@ -1148,158 +1148,6 @@ public class PortalImpl implements Portal {
 			canonicalURL, themeDisplay, layout, availableLocales);
 	}
 
-	private Map<Locale, String> _getAlternateURLs(
-			String canonicalURL, ThemeDisplay themeDisplay, Layout layout,
-			Set<Locale> availableLocales)
-		throws PortalException {
-
-		String virtualHostname = getVirtualHostname(
-			themeDisplay.getLayoutSet());
-
-		if (Validator.isNull(virtualHostname)) {
-			Company company = themeDisplay.getCompany();
-
-			virtualHostname = company.getVirtualHostname();
-		}
-
-		String portalDomain = themeDisplay.getPortalDomain();
-
-		Locale siteDefaultLocale = getSiteDefaultLocale(layout.getGroupId());
-
-		if (!Validator.isBlank(portalDomain) &&
-			!StringUtil.equalsIgnoreCase(portalDomain, _LOCALHOST) &&
-			StringUtil.equalsIgnoreCase(virtualHostname, _LOCALHOST)) {
-
-			virtualHostname = portalDomain;
-		}
-
-		Map<Locale, String> alternateURLs = new HashMap<>();
-
-		if (Validator.isNull(virtualHostname)) {
-			for (Locale locale : availableLocales) {
-				String i18nPath = buildI18NPath(locale);
-
-				alternateURLs.put(
-					locale,
-					canonicalURL.replaceFirst(
-						_PUBLIC_GROUP_SERVLET_MAPPING,
-						i18nPath.concat(_PUBLIC_GROUP_SERVLET_MAPPING)));
-			}
-
-			return alternateURLs;
-		}
-
-		// www.liferay.com:8080/ctx/page to www.liferay.com:8080/ctx/es/page
-
-		int pos = canonicalURL.indexOf(virtualHostname);
-
-		if (pos > 0) {
-			pos = canonicalURL.indexOf(
-				CharPool.SLASH, pos + virtualHostname.length());
-
-			if (Validator.isNotNull(_pathContext)) {
-				pos = canonicalURL.indexOf(
-					CharPool.SLASH, pos + _pathContext.length());
-			}
-		}
-
-		if ((pos <= 0) || (pos >= canonicalURL.length())) {
-			for (Locale locale : availableLocales) {
-				alternateURLs.put(
-					locale, canonicalURL.concat(buildI18NPath(locale)));
-			}
-
-			return alternateURLs;
-		}
-
-		boolean replaceFriendlyURL = true;
-
-		String currentURL = canonicalURL.substring(pos);
-
-		int[] friendlyURLIndex = getGroupFriendlyURLIndex(currentURL);
-
-		if (friendlyURLIndex != null) {
-			int y = friendlyURLIndex[1];
-
-			currentURL = currentURL.substring(y);
-
-			if (currentURL.equals(StringPool.SLASH)) {
-				replaceFriendlyURL = false;
-			}
-		}
-
-		List<LayoutFriendlyURL> layoutFriendlyURLs = null;
-
-		String groupFriendlyURLPrefix = null;
-
-		if (replaceFriendlyURL) {
-			layoutFriendlyURLs =
-				LayoutFriendlyURLLocalServiceUtil.getLayoutFriendlyURLs(
-					layout.getPlid());
-
-			if (layout instanceof VirtualLayout) {
-				VirtualLayout virtualLayout = (VirtualLayout)layout;
-
-				layout = virtualLayout.getSourceLayout();
-
-				Group group = layout.getGroup();
-
-				groupFriendlyURLPrefix =
-					VirtualLayoutConstants.CANONICAL_URL_SEPARATOR.concat(
-						group.getFriendlyURL());
-			}
-		}
-
-		String canonicalURLPrefix = canonicalURL.substring(0, pos);
-		String canonicalURLSuffix = canonicalURL.substring(pos);
-
-		for (Locale locale : availableLocales) {
-			String languageId = LocaleUtil.toLanguageId(locale);
-
-			if (replaceFriendlyURL) {
-				String friendlyURL = null;
-
-				for (LayoutFriendlyURL layoutFriendlyURL : layoutFriendlyURLs) {
-					if (!languageId.equals(layoutFriendlyURL.getLanguageId())) {
-						continue;
-					}
-
-					friendlyURL = layoutFriendlyURL.getFriendlyURL();
-
-					if (groupFriendlyURLPrefix != null) {
-						friendlyURL = groupFriendlyURLPrefix.concat(
-							friendlyURL);
-					}
-
-					break;
-				}
-
-				if (friendlyURL != null) {
-					canonicalURLSuffix = StringUtil.replaceFirst(
-						canonicalURLSuffix, layout.getFriendlyURL(),
-						friendlyURL);
-				}
-
-				canonicalURL = canonicalURLPrefix.concat(canonicalURLSuffix);
-			}
-
-			if (siteDefaultLocale.equals(locale) &&
-				(PropsValues.LOCALE_PREPEND_FRIENDLY_URL_STYLE != 2)) {
-
-				alternateURLs.put(locale, canonicalURL);
-			}
-			else {
-				alternateURLs.put(
-					locale,
-					canonicalURLPrefix.concat(
-						_buildI18NPath(languageId, locale)).concat(
-							canonicalURLSuffix));
-			}
-		}
-
-		return alternateURLs;
-	}
-
 	@Override
 	public long[] getAncestorSiteGroupIds(long groupId) {
 		int i = 0;
@@ -7540,26 +7388,6 @@ public class PortalImpl implements Portal {
 		return _buildI18NPath(languageId, locale);
 	}
 
-	private String _buildI18NPath(String languageId, Locale locale) {
-		if (Validator.isNull(languageId)) {
-			return null;
-		}
-
-		if (LanguageUtil.isDuplicateLanguageCode(locale.getLanguage())) {
-			Locale priorityLocale = LanguageUtil.getLocale(
-				locale.getLanguage());
-
-			if (locale.equals(priorityLocale)) {
-				languageId = locale.getLanguage();
-			}
-		}
-		else {
-			languageId = locale.getLanguage();
-		}
-
-		return StringPool.SLASH.concat(languageId);
-	}
-
 	protected Set<Group> doGetAncestorSiteGroups(
 		long groupId, boolean checkContentSharingWithChildrenEnabled) {
 
@@ -8315,6 +8143,178 @@ public class PortalImpl implements Portal {
 		themeDisplay.setI18nLanguageId(i18nLanguageId);
 		themeDisplay.setI18nPath(i18nPath);
 		themeDisplay.setLocale(locale);
+	}
+
+	private String _buildI18NPath(String languageId, Locale locale) {
+		if (Validator.isNull(languageId)) {
+			return null;
+		}
+
+		if (LanguageUtil.isDuplicateLanguageCode(locale.getLanguage())) {
+			Locale priorityLocale = LanguageUtil.getLocale(
+				locale.getLanguage());
+
+			if (locale.equals(priorityLocale)) {
+				languageId = locale.getLanguage();
+			}
+		}
+		else {
+			languageId = locale.getLanguage();
+		}
+
+		return StringPool.SLASH.concat(languageId);
+	}
+
+	private Map<Locale, String> _getAlternateURLs(
+			String canonicalURL, ThemeDisplay themeDisplay, Layout layout,
+			Set<Locale> availableLocales)
+		throws PortalException {
+
+		String virtualHostname = getVirtualHostname(
+			themeDisplay.getLayoutSet());
+
+		if (Validator.isNull(virtualHostname)) {
+			Company company = themeDisplay.getCompany();
+
+			virtualHostname = company.getVirtualHostname();
+		}
+
+		String portalDomain = themeDisplay.getPortalDomain();
+
+		Locale siteDefaultLocale = getSiteDefaultLocale(layout.getGroupId());
+
+		if (!Validator.isBlank(portalDomain) &&
+			!StringUtil.equalsIgnoreCase(portalDomain, _LOCALHOST) &&
+			StringUtil.equalsIgnoreCase(virtualHostname, _LOCALHOST)) {
+
+			virtualHostname = portalDomain;
+		}
+
+		Map<Locale, String> alternateURLs = new HashMap<>();
+
+		if (Validator.isNull(virtualHostname)) {
+			for (Locale locale : availableLocales) {
+				String i18nPath = buildI18NPath(locale);
+
+				alternateURLs.put(
+					locale,
+					canonicalURL.replaceFirst(
+						_PUBLIC_GROUP_SERVLET_MAPPING,
+						i18nPath.concat(_PUBLIC_GROUP_SERVLET_MAPPING)));
+			}
+
+			return alternateURLs;
+		}
+
+		// www.liferay.com:8080/ctx/page to www.liferay.com:8080/ctx/es/page
+
+		int pos = canonicalURL.indexOf(virtualHostname);
+
+		if (pos > 0) {
+			pos = canonicalURL.indexOf(
+				CharPool.SLASH, pos + virtualHostname.length());
+
+			if (Validator.isNotNull(_pathContext)) {
+				pos = canonicalURL.indexOf(
+					CharPool.SLASH, pos + _pathContext.length());
+			}
+		}
+
+		if ((pos <= 0) || (pos >= canonicalURL.length())) {
+			for (Locale locale : availableLocales) {
+				alternateURLs.put(
+					locale, canonicalURL.concat(buildI18NPath(locale)));
+			}
+
+			return alternateURLs;
+		}
+
+		boolean replaceFriendlyURL = true;
+
+		String currentURL = canonicalURL.substring(pos);
+
+		int[] friendlyURLIndex = getGroupFriendlyURLIndex(currentURL);
+
+		if (friendlyURLIndex != null) {
+			int y = friendlyURLIndex[1];
+
+			currentURL = currentURL.substring(y);
+
+			if (currentURL.equals(StringPool.SLASH)) {
+				replaceFriendlyURL = false;
+			}
+		}
+
+		List<LayoutFriendlyURL> layoutFriendlyURLs = null;
+
+		String groupFriendlyURLPrefix = null;
+
+		if (replaceFriendlyURL) {
+			layoutFriendlyURLs =
+				LayoutFriendlyURLLocalServiceUtil.getLayoutFriendlyURLs(
+					layout.getPlid());
+
+			if (layout instanceof VirtualLayout) {
+				VirtualLayout virtualLayout = (VirtualLayout)layout;
+
+				layout = virtualLayout.getSourceLayout();
+
+				Group group = layout.getGroup();
+
+				groupFriendlyURLPrefix =
+					VirtualLayoutConstants.CANONICAL_URL_SEPARATOR.concat(
+						group.getFriendlyURL());
+			}
+		}
+
+		String canonicalURLPrefix = canonicalURL.substring(0, pos);
+		String canonicalURLSuffix = canonicalURL.substring(pos);
+
+		for (Locale locale : availableLocales) {
+			String languageId = LocaleUtil.toLanguageId(locale);
+
+			if (replaceFriendlyURL) {
+				String friendlyURL = null;
+
+				for (LayoutFriendlyURL layoutFriendlyURL : layoutFriendlyURLs) {
+					if (!languageId.equals(layoutFriendlyURL.getLanguageId())) {
+						continue;
+					}
+
+					friendlyURL = layoutFriendlyURL.getFriendlyURL();
+
+					if (groupFriendlyURLPrefix != null) {
+						friendlyURL = groupFriendlyURLPrefix.concat(
+							friendlyURL);
+					}
+
+					break;
+				}
+
+				if (friendlyURL != null) {
+					canonicalURLSuffix = StringUtil.replaceFirst(
+						canonicalURLSuffix, layout.getFriendlyURL(),
+						friendlyURL);
+				}
+
+				canonicalURL = canonicalURLPrefix.concat(canonicalURLSuffix);
+			}
+
+			if (siteDefaultLocale.equals(locale) &&
+				(PropsValues.LOCALE_PREPEND_FRIENDLY_URL_STYLE != 2)) {
+
+				alternateURLs.put(locale, canonicalURL);
+			}
+			else {
+				alternateURLs.put(
+					locale,
+					canonicalURLPrefix.concat(
+						_buildI18NPath(languageId, locale)).concat(
+							canonicalURLSuffix));
+			}
+		}
+
+		return alternateURLs;
 	}
 
 	private String _getGroupFriendlyURL(
