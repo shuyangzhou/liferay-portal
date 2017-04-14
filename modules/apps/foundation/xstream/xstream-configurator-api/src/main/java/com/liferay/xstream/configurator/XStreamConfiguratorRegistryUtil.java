@@ -22,7 +22,6 @@ import com.liferay.exportimport.kernel.xstream.XStreamConverter;
 import com.liferay.exportimport.kernel.xstream.XStreamType;
 import com.liferay.exportimport.xstream.ConverterAdapter;
 import com.liferay.exportimport.xstream.XStreamStagedModelTypeHierarchyPermission;
-import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.concurrent.ConcurrentHashSet;
 import com.liferay.portal.kernel.util.AggregateClassLoader;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -49,6 +48,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
@@ -68,8 +68,7 @@ public class XStreamConfiguratorRegistryUtil {
 
 		Set<ClassLoader> classLoaders = new HashSet<>();
 
-		Set<XStreamConfigurator> xStreamConfigurators =
-			_xStreamConfigurators;
+		Set<XStreamConfigurator> xStreamConfigurators = _xStreamConfigurators;
 
 		for (XStreamConfigurator xStreamConfigurator : xStreamConfigurators) {
 			Class<?> clazz = xStreamConfigurator.getClass();
@@ -112,11 +111,16 @@ public class XStreamConfiguratorRegistryUtil {
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
-		_serviceTracker = ServiceTrackerFactory.open(
-			_bundleContext, XStreamConfigurator.class,
+		_serviceTracker = new ServiceTracker(
+			bundleContext, XStreamConfigurator.class,
 			new XStreamConfiguratorServiceTrackerCustomizer());
 
 		_serviceTracker.open();
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
 	}
 
 	private static XStream _buildXStream() {
