@@ -17,7 +17,6 @@ package com.liferay.xstream.configurator;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.exportimport.kernel.xstream.XStreamAliasRegistryUtil;
-import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.concurrent.ConcurrentHashSet;
 import com.liferay.portal.kernel.util.AggregateClassLoader;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -26,16 +25,18 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Mate Thurzo
  */
+@Component(immediate = true)
 @ProviderType
 public class XStreamConfiguratorRegistryUtil {
 
@@ -71,24 +72,27 @@ public class XStreamConfiguratorRegistryUtil {
 		return new HashSet<>(_xStreamConfigurators);
 	}
 
-	private XStreamConfiguratorRegistryUtil() {
-		Bundle bundle = FrameworkUtil.getBundle(
-			XStreamConfiguratorRegistryUtil.class);
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
 
-		_bundleContext = bundle.getBundleContext();
-
-		_serviceTracker = ServiceTrackerFactory.open(
-			_bundleContext, XStreamConfigurator.class,
+		_serviceTracker = new ServiceTracker<>(
+			bundleContext, XStreamConfigurator.class,
 			new XStreamConfiguratorServiceTrackerCustomizer());
 
 		_serviceTracker.open();
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
+	}
+
 	private static final Set<XStreamConfigurator> _xStreamConfigurators =
 		new ConcurrentHashSet<>();
 
-	private final BundleContext _bundleContext;
-	private final ServiceTracker<XStreamConfigurator, XStreamConfigurator>
+	private BundleContext _bundleContext;
+	private ServiceTracker<XStreamConfigurator, XStreamConfigurator>
 		_serviceTracker;
 
 	private class XStreamConfiguratorServiceTrackerCustomizer
