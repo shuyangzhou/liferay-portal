@@ -18,7 +18,6 @@ import com.liferay.layouts.admin.kernel.util.Sitemap;
 import com.liferay.layouts.admin.kernel.util.SitemapURLProvider;
 import com.liferay.layouts.admin.kernel.util.SitemapURLProviderRegistryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutTypeController;
@@ -43,7 +42,6 @@ import com.liferay.portal.util.PropsValues;
 import java.text.DateFormat;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -165,18 +163,7 @@ public class SitemapImpl implements Sitemap {
 			String canonicalURL, ThemeDisplay themeDisplay, Layout layout)
 		throws PortalException {
 
-		Map<Locale, String> alternateURLs = new HashMap<>();
-
-		for (Locale availableLocale : LanguageUtil.getAvailableLocales(
-				layout.getGroupId())) {
-
-			String alternateURL = PortalUtil.getAlternateURL(
-				canonicalURL, themeDisplay, availableLocale, layout);
-
-			alternateURLs.put(availableLocale, alternateURL);
-		}
-
-		return alternateURLs;
+		return PortalUtil.getAlternateURLs(canonicalURL, themeDisplay, layout);
 	}
 
 	@Override
