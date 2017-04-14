@@ -73,6 +73,8 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 			majorVersion = "0";
 		}
 
+		String userAgent = getUserAgent(request);
+
 		StringBundler sb = new StringBundler(60);
 
 		sb.append("{acceptsGzip: function() {return ");
@@ -88,52 +90,52 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 		sb.append(version);
 		sb.append("';},");
 		sb.append("isAir: function() {return ");
-		sb.append(isAir(request));
+		sb.append(_isAir(userAgent));
 		sb.append(";},");
 		sb.append("isChrome: function() {return ");
-		sb.append(isChrome(request));
+		sb.append(_isChrome(userAgent));
 		sb.append(";},");
 		sb.append("isFirefox: function() {return ");
-		sb.append(isFirefox(request));
+		sb.append(_isFirefox(userAgent));
 		sb.append(";},");
 		sb.append("isGecko: function() {return ");
-		sb.append(isGecko(request));
+		sb.append(_isGecko(userAgent));
 		sb.append(";},");
 		sb.append("isIe: function() {return ");
-		sb.append(isIe(request));
+		sb.append(isIe(userAgent));
 		sb.append(";},");
 		sb.append("isIphone: function() {return ");
-		sb.append(isIphone(request));
+		sb.append(_isIphone(userAgent));
 		sb.append(";},");
 		sb.append("isLinux: function() {return ");
-		sb.append(isLinux(request));
+		sb.append(_isLinux(userAgent));
 		sb.append(";},");
 		sb.append("isMac: function() {return ");
-		sb.append(isMac(request));
+		sb.append(_isMac(userAgent));
 		sb.append(";},");
 		sb.append("isMobile: function() {return ");
-		sb.append(isMobile(request));
+		sb.append(_isMobile(userAgent));
 		sb.append(";},");
 		sb.append("isMozilla: function() {return ");
-		sb.append(isMozilla(request));
+		sb.append(_isMozilla(userAgent));
 		sb.append(";},");
 		sb.append("isOpera: function() {return ");
-		sb.append(isOpera(request));
+		sb.append(_isOpera(userAgent));
 		sb.append(";},");
 		sb.append("isRtf: function() {return ");
-		sb.append(isRtf(request));
+		sb.append(_isRtf(userAgent, version));
 		sb.append(";},");
 		sb.append("isSafari: function() {return ");
-		sb.append(isSafari(request));
+		sb.append(_isSafari(userAgent));
 		sb.append(";},");
 		sb.append("isSun: function() {return ");
-		sb.append(isSun(request));
+		sb.append(_isSun(userAgent));
 		sb.append(";},");
 		sb.append("isWebKit: function() {return ");
-		sb.append(isWebKit(request));
+		sb.append(_isWebKit(userAgent));
 		sb.append(";},");
 		sb.append("isWindows: function() {return ");
-		sb.append(isWindows(request));
+		sb.append(_isWindows(userAgent));
 		sb.append(";}};");
 
 		return sb.toString();
@@ -184,10 +186,32 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 		return version;
 	}
 
+	private String _getVersion(HttpServletRequest request, String userAgent) {
+		String version = (String)request.getAttribute(
+			WebKeys.BROWSER_SNIFFER_VERSION);
+
+		if (version != null) {
+			return version;
+		}
+
+		version = parseVersion(userAgent, versionLeadings, versionSeparators);
+
+		if (version.isEmpty()) {
+			version = parseVersion(
+				userAgent, revisionLeadings, revisionSeparators);
+		}
+
+		request.setAttribute(WebKeys.BROWSER_SNIFFER_VERSION, version);
+
+		return version;
+	}
+
 	@Override
 	public boolean isAir(HttpServletRequest request) {
-		String userAgent = getUserAgent(request);
+		return _isAir(getUserAgent(request));
+	}
 
+	private boolean _isAir(String userAgent) {
 		if (userAgent.contains("adobeair")) {
 			return true;
 		}
@@ -197,8 +221,10 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 
 	@Override
 	public boolean isAndroid(HttpServletRequest request) {
-		String userAgent = getUserAgent(request);
+		return _isAndroid(getUserAgent(request));
+	}
 
+	private boolean _isAndroid(String userAgent) {
 		if (userAgent.contains("android")) {
 			return true;
 		}
@@ -208,8 +234,10 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 
 	@Override
 	public boolean isChrome(HttpServletRequest request) {
-		String userAgent = getUserAgent(request);
+		return _isChrome(getUserAgent(request));
+	}
 
+	private boolean _isChrome(String userAgent) {
 		if (userAgent.contains("chrome")) {
 			return true;
 		}
@@ -224,8 +252,10 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 
 	@Override
 	public boolean isGecko(HttpServletRequest request) {
-		String userAgent = getUserAgent(request);
+		return _isGecko(getUserAgent(request));
+	}
 
+	private boolean _isGecko(String userAgent) {
 		if (userAgent.contains("gecko")) {
 			return true;
 		}
@@ -266,8 +296,10 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 
 	@Override
 	public boolean isIphone(HttpServletRequest request) {
-		String userAgent = getUserAgent(request);
+		return _isIphone(getUserAgent(request));
+	}
 
+	private boolean _isIphone(String userAgent) {
 		if (userAgent.contains("iphone")) {
 			return true;
 		}
@@ -277,8 +309,10 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 
 	@Override
 	public boolean isLinux(HttpServletRequest request) {
-		String userAgent = getUserAgent(request);
+		return _isLinux(getUserAgent(request));
+	}
 
+	private boolean _isLinux(String userAgent) {
 		if (userAgent.contains("linux")) {
 			return true;
 		}
@@ -288,8 +322,10 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 
 	@Override
 	public boolean isMac(HttpServletRequest request) {
-		String userAgent = getUserAgent(request);
+		return _isMac(getUserAgent(request));
+	}
 
+	private boolean _isMac(String userAgent) {
 		if (userAgent.contains("mac")) {
 			return true;
 		}
@@ -299,8 +335,10 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 
 	@Override
 	public boolean isMobile(HttpServletRequest request) {
-		String userAgent = getUserAgent(request);
+		return _isMobile(getUserAgent(request));
+	}
 
+	private boolean _isMobile(String userAgent) {
 		if (userAgent.contains("mobile") ||
 			(userAgent.contains("android") && userAgent.contains("nexus"))) {
 
@@ -312,22 +350,15 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 
 	@Override
 	public boolean isMozilla(HttpServletRequest request) {
-		String userAgent = getUserAgent(request);
-
-		if (userAgent.contains("mozilla") &&
-			!(userAgent.contains("compatible") ||
-			  userAgent.contains("webkit"))) {
-
-			return true;
-		}
-
-		return false;
+		return _isMozilla(getUserAgent(request));
 	}
 
 	@Override
 	public boolean isOpera(HttpServletRequest request) {
-		String userAgent = getUserAgent(request);
+		return _isOpera(getUserAgent(request));
+	}
 
+	private boolean _isOpera(String userAgent) {
 		if (userAgent.contains("opera")) {
 			return true;
 		}
@@ -337,38 +368,42 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 
 	@Override
 	public boolean isRtf(HttpServletRequest request) {
-		if (isAndroid(request)) {
+		return _isRtf(getUserAgent(request), getVersion(request));
+	}
+
+	private boolean _isRtf(String userAgent, String version) {
+		if (_isAndroid(userAgent)) {
 			return true;
 		}
 
-		if (isChrome(request)) {
+		if (_isChrome(userAgent)) {
 			return true;
 		}
 
-		float majorVersion = getMajorVersion(request);
+		float majorVersion = GetterUtil.getFloat(version);
 
-		if (isIe(request) && (majorVersion >= 5.5)) {
+		if (isIe(userAgent) && (majorVersion >= 5.5)) {
 			return true;
 		}
 
-		if (isMozilla(request) && (majorVersion >= 1.3)) {
+		if (_isMozilla(userAgent) && (majorVersion >= 1.3)) {
 			return true;
 		}
 
-		if (isOpera(request)) {
-			if (isMobile(request) && (majorVersion >= 10.0)) {
+		if (_isOpera(userAgent)) {
+			if (_isMobile(userAgent) && (majorVersion >= 10.0)) {
 				return true;
 			}
-			else if (!isMobile(request)) {
+			else if (!_isMobile(userAgent)) {
 				return true;
 			}
 		}
 
-		if (isSafari(request)) {
-			if (isMobile(request) && (majorVersion >= 5.0)) {
+		if (_isSafari(userAgent)) {
+			if (_isMobile(userAgent) && (majorVersion >= 5.0)) {
 				return true;
 			}
-			else if (!isMobile(request) && (majorVersion >= 3.0)) {
+			else if (!_isMobile(userAgent) && (majorVersion >= 3.0)) {
 				return true;
 			}
 		}
@@ -387,10 +422,20 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 		return false;
 	}
 
+	private boolean _isSafari(String userAgent) {
+		if (_isWebKit(userAgent) && userAgent.contains("safari")) {
+			return true;
+		}
+
+		return false;
+	}
+
 	@Override
 	public boolean isSun(HttpServletRequest request) {
-		String userAgent = getUserAgent(request);
+		return _isSun(getUserAgent(request));
+	}
 
+	private boolean _isSun(String userAgent) {
 		if (userAgent.contains("sunos")) {
 			return true;
 		}
@@ -400,8 +445,10 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 
 	@Override
 	public boolean isWebKit(HttpServletRequest request) {
-		String userAgent = getUserAgent(request);
+		return _isWebKit(getUserAgent(request));
+	}
 
+	private boolean _isWebKit(String userAgent) {
 		for (String webKitAlias : _WEBKIT_ALIASES) {
 			if (userAgent.contains(webKitAlias)) {
 				return true;
@@ -413,8 +460,10 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 
 	@Override
 	public boolean isWindows(HttpServletRequest request) {
-		String userAgent = getUserAgent(request);
+		return _isWindows(getUserAgent(request));
+	}
 
+	private boolean _isWindows(String userAgent) {
 		for (String windowsAlias : _WINDOWS_ALIASES) {
 			if (userAgent.contains(windowsAlias)) {
 				return true;
