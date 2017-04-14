@@ -38,14 +38,20 @@ if (!themeDisplay.isSignedIn() && layout.isPublicLayout()) {
 	Set<Locale> availableLocales = LanguageUtil.getAvailableLocales(themeDisplay.getSiteGroupId());
 
 	if (availableLocales.size() > 1) {
-		for (Locale availableLocale : availableLocales) {
+		Map<Locale, String> alternateURLs = PortalUtil.getAlternateURLs(canonicalURL, themeDisplay, layout);
+
+		Locale defaultLocale = LocaleUtil.getDefault();
+
+		for (Map.Entry<Locale, String> entry : alternateURLs.entrySet()) {
+			Locale availableLocale = entry.getKey();
+			String alternateURL = entry.getValue();
 	%>
 
-			<c:if test="<%= availableLocale.equals(LocaleUtil.getDefault()) %>">
+			<c:if test="<%= availableLocale.equals(defaultLocale) %>">
 				<link data-senna-track="temporary" href="<%= HtmlUtil.escapeAttribute(canonicalURL) %>" hreflang="x-default" rel="alternate" />
 			</c:if>
 
-			<link data-senna-track="temporary" href="<%= HtmlUtil.escapeAttribute(PortalUtil.getAlternateURL(canonicalURL, themeDisplay, availableLocale, layout)) %>" hreflang="<%= LocaleUtil.toW3cLanguageId(availableLocale) %>" rel="alternate" />
+			<link data-senna-track="temporary" href="<%= HtmlUtil.escapeAttribute(alternateURL) %>" hreflang="<%= LocaleUtil.toW3cLanguageId(availableLocale) %>" rel="alternate" />
 
 	<%
 		}
