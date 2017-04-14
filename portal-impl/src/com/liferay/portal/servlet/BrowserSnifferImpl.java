@@ -186,37 +186,9 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 		return version;
 	}
 
-	private String _getVersion(HttpServletRequest request, String userAgent) {
-		String version = (String)request.getAttribute(
-			WebKeys.BROWSER_SNIFFER_VERSION);
-
-		if (version != null) {
-			return version;
-		}
-
-		version = parseVersion(userAgent, versionLeadings, versionSeparators);
-
-		if (version.isEmpty()) {
-			version = parseVersion(
-				userAgent, revisionLeadings, revisionSeparators);
-		}
-
-		request.setAttribute(WebKeys.BROWSER_SNIFFER_VERSION, version);
-
-		return version;
-	}
-
 	@Override
 	public boolean isAir(HttpServletRequest request) {
 		return _isAir(getUserAgent(request));
-	}
-
-	private boolean _isAir(String userAgent) {
-		if (userAgent.contains("adobeair")) {
-			return true;
-		}
-
-		return false;
 	}
 
 	@Override
@@ -224,25 +196,9 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 		return _isAndroid(getUserAgent(request));
 	}
 
-	private boolean _isAndroid(String userAgent) {
-		if (userAgent.contains("android")) {
-			return true;
-		}
-
-		return false;
-	}
-
 	@Override
 	public boolean isChrome(HttpServletRequest request) {
 		return _isChrome(getUserAgent(request));
-	}
-
-	private boolean _isChrome(String userAgent) {
-		if (userAgent.contains("chrome")) {
-			return true;
-		}
-
-		return false;
 	}
 
 	@Override
@@ -253,14 +209,6 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 	@Override
 	public boolean isGecko(HttpServletRequest request) {
 		return _isGecko(getUserAgent(request));
-	}
-
-	private boolean _isGecko(String userAgent) {
-		if (userAgent.contains("gecko")) {
-			return true;
-		}
-
-		return false;
 	}
 
 	@Override
@@ -299,25 +247,9 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 		return _isIphone(getUserAgent(request));
 	}
 
-	private boolean _isIphone(String userAgent) {
-		if (userAgent.contains("iphone")) {
-			return true;
-		}
-
-		return false;
-	}
-
 	@Override
 	public boolean isLinux(HttpServletRequest request) {
 		return _isLinux(getUserAgent(request));
-	}
-
-	private boolean _isLinux(String userAgent) {
-		if (userAgent.contains("linux")) {
-			return true;
-		}
-
-		return false;
 	}
 
 	@Override
@@ -325,27 +257,9 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 		return _isMac(getUserAgent(request));
 	}
 
-	private boolean _isMac(String userAgent) {
-		if (userAgent.contains("mac")) {
-			return true;
-		}
-
-		return false;
-	}
-
 	@Override
 	public boolean isMobile(HttpServletRequest request) {
 		return _isMobile(getUserAgent(request));
-	}
-
-	private boolean _isMobile(String userAgent) {
-		if (userAgent.contains("mobile") ||
-			(userAgent.contains("android") && userAgent.contains("nexus"))) {
-
-			return true;
-		}
-
-		return false;
 	}
 
 	@Override
@@ -358,57 +272,9 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 		return _isOpera(getUserAgent(request));
 	}
 
-	private boolean _isOpera(String userAgent) {
-		if (userAgent.contains("opera")) {
-			return true;
-		}
-
-		return false;
-	}
-
 	@Override
 	public boolean isRtf(HttpServletRequest request) {
 		return _isRtf(getUserAgent(request), getVersion(request));
-	}
-
-	private boolean _isRtf(String userAgent, String version) {
-		if (_isAndroid(userAgent)) {
-			return true;
-		}
-
-		if (_isChrome(userAgent)) {
-			return true;
-		}
-
-		float majorVersion = GetterUtil.getFloat(version);
-
-		if (isIe(userAgent) && (majorVersion >= 5.5)) {
-			return true;
-		}
-
-		if (_isMozilla(userAgent) && (majorVersion >= 1.3)) {
-			return true;
-		}
-
-		if (_isOpera(userAgent)) {
-			if (_isMobile(userAgent) && (majorVersion >= 10.0)) {
-				return true;
-			}
-			else if (!_isMobile(userAgent)) {
-				return true;
-			}
-		}
-
-		if (_isSafari(userAgent)) {
-			if (_isMobile(userAgent) && (majorVersion >= 5.0)) {
-				return true;
-			}
-			else if (!_isMobile(userAgent) && (majorVersion >= 3.0)) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	@Override
@@ -422,25 +288,9 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 		return false;
 	}
 
-	private boolean _isSafari(String userAgent) {
-		if (_isWebKit(userAgent) && userAgent.contains("safari")) {
-			return true;
-		}
-
-		return false;
-	}
-
 	@Override
 	public boolean isSun(HttpServletRequest request) {
 		return _isSun(getUserAgent(request));
-	}
-
-	private boolean _isSun(String userAgent) {
-		if (userAgent.contains("sunos")) {
-			return true;
-		}
-
-		return false;
 	}
 
 	@Override
@@ -448,29 +298,9 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 		return _isWebKit(getUserAgent(request));
 	}
 
-	private boolean _isWebKit(String userAgent) {
-		for (String webKitAlias : _WEBKIT_ALIASES) {
-			if (userAgent.contains(webKitAlias)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	@Override
 	public boolean isWindows(HttpServletRequest request) {
 		return _isWindows(getUserAgent(request));
-	}
-
-	private boolean _isWindows(String userAgent) {
-		for (String windowsAlias : _WINDOWS_ALIASES) {
-			if (userAgent.contains(windowsAlias)) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	protected static String parseVersion(
@@ -616,6 +446,50 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 	protected static char[] versionSeparators =
 		{CharPool.BACK_SLASH, CharPool.SLASH};
 
+	private String _getVersion(HttpServletRequest request, String userAgent) {
+		String version = (String)request.getAttribute(
+			WebKeys.BROWSER_SNIFFER_VERSION);
+
+		if (version != null) {
+			return version;
+		}
+
+		version = parseVersion(userAgent, versionLeadings, versionSeparators);
+
+		if (version.isEmpty()) {
+			version = parseVersion(
+				userAgent, revisionLeadings, revisionSeparators);
+		}
+
+		request.setAttribute(WebKeys.BROWSER_SNIFFER_VERSION, version);
+
+		return version;
+	}
+
+	private boolean _isAir(String userAgent) {
+		if (userAgent.contains("adobeair")) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isAndroid(String userAgent) {
+		if (userAgent.contains("android")) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isChrome(String userAgent) {
+		if (userAgent.contains("chrome")) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private boolean _isFirefox(String userAgent) {
 		if (!_isMozilla(userAgent)) {
 			return false;
@@ -625,6 +499,48 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 			if (userAgent.contains(firefoxAlias)) {
 				return true;
 			}
+		}
+
+		return false;
+	}
+
+	private boolean _isGecko(String userAgent) {
+		if (userAgent.contains("gecko")) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isIphone(String userAgent) {
+		if (userAgent.contains("iphone")) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isLinux(String userAgent) {
+		if (userAgent.contains("linux")) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isMac(String userAgent) {
+		if (userAgent.contains("mac")) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isMobile(String userAgent) {
+		if (userAgent.contains("mobile") ||
+			(userAgent.contains("android") && userAgent.contains("nexus"))) {
+
+			return true;
 		}
 
 		return false;
@@ -641,6 +557,90 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 
 		if (userAgent.contains("mozilla")) {
 			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isOpera(String userAgent) {
+		if (userAgent.contains("opera")) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isRtf(String userAgent, String version) {
+		if (_isAndroid(userAgent)) {
+			return true;
+		}
+
+		if (_isChrome(userAgent)) {
+			return true;
+		}
+
+		float majorVersion = GetterUtil.getFloat(version);
+
+		if (isIe(userAgent) && (majorVersion >= 5.5)) {
+			return true;
+		}
+
+		if (_isMozilla(userAgent) && (majorVersion >= 1.3)) {
+			return true;
+		}
+
+		if (_isOpera(userAgent)) {
+			if (_isMobile(userAgent) && (majorVersion >= 10.0)) {
+				return true;
+			}
+			else if (!_isMobile(userAgent)) {
+				return true;
+			}
+		}
+
+		if (_isSafari(userAgent)) {
+			if (_isMobile(userAgent) && (majorVersion >= 5.0)) {
+				return true;
+			}
+			else if (!_isMobile(userAgent) && (majorVersion >= 3.0)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean _isSafari(String userAgent) {
+		if (_isWebKit(userAgent) && userAgent.contains("safari")) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isSun(String userAgent) {
+		if (userAgent.contains("sunos")) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isWebKit(String userAgent) {
+		for (String webKitAlias : _WEBKIT_ALIASES) {
+			if (userAgent.contains(webKitAlias)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean _isWindows(String userAgent) {
+		for (String windowsAlias : _WINDOWS_ALIASES) {
+			if (userAgent.contains(windowsAlias)) {
+				return true;
+			}
 		}
 
 		return false;
