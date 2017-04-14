@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.model.ColorScheme;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
@@ -285,6 +286,31 @@ public class ThemeDisplay
 		}
 
 		return _contact;
+	}
+
+	public Group getControlPanelGroup() {
+		if (_controlPanelGroup == null) {
+			try {
+				_controlPanelGroup = GroupLocalServiceUtil.getGroup(
+					_company.getCompanyId(), GroupConstants.CONTROL_PANEL);
+			}
+			catch (PortalException pe) {
+				ReflectionUtil.throwException(pe);
+			}
+		}
+
+		return _controlPanelGroup;
+	}
+
+	public Layout getControlPanelLayout() {
+		if (_controlPanelLayout == null) {
+			Group controlPanelGroup = getControlPanelGroup();
+
+			_controlPanelLayout = LayoutLocalServiceUtil.fetchDefaultLayout(
+				controlPanelGroup.getGroupId(), true);
+		}
+
+		return _controlPanelLayout;
 	}
 
 	/**
@@ -1882,6 +1908,8 @@ public class ThemeDisplay
 	private int _companyLogoHeight;
 	private int _companyLogoWidth;
 	private Contact _contact;
+	private Group _controlPanelGroup;
+	private Layout _controlPanelLayout;
 	private User _defaultUser;
 	private Device _device;
 	private long _doAsGroupId;
