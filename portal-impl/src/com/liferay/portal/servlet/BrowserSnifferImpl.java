@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.servlet.BrowserSniffer;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -60,6 +61,83 @@ public class BrowserSnifferImpl implements BrowserSniffer {
 		else {
 			return BROWSER_ID_OTHER;
 		}
+	}
+
+	@Override
+	public String getJavaScriptBrowser(HttpServletRequest request) {
+		StringBundler sb = new StringBundler(60);
+
+		sb.append("{acceptsGzip: function() {return ");
+		sb.append(acceptsGzip(request));
+		sb.append(";},");
+
+		String version = getVersion(request);
+
+		String majorVersion = version;
+
+		if (version.isEmpty()) {
+			majorVersion = "0";
+		}
+
+		sb.append("getMajorVersion: function() {return ");
+		sb.append(majorVersion);
+		sb.append(";},");
+		sb.append("getRevision: function() {return '");
+		sb.append(getRevision(request));
+		sb.append("';},");
+		sb.append("getVersion: function() {return '");
+		sb.append(version);
+		sb.append("';},");
+		sb.append("isAir: function() {return ");
+		sb.append(isAir(request));
+		sb.append(";},");
+		sb.append("isChrome: function() {return ");
+		sb.append(isChrome(request));
+		sb.append(";},");
+		sb.append("isFirefox: function() {return ");
+		sb.append(isFirefox(request));
+		sb.append(";},");
+		sb.append("isGecko: function() {return ");
+		sb.append(isGecko(request));
+		sb.append(";},");
+		sb.append("isIe: function() {return ");
+		sb.append(isIe(request));
+		sb.append(";},");
+		sb.append("isIphone: function() {return ");
+		sb.append(isIphone(request));
+		sb.append(";},");
+		sb.append("isLinux: function() {return ");
+		sb.append(isLinux(request));
+		sb.append(";},");
+		sb.append("isMac: function() {return ");
+		sb.append(isMac(request));
+		sb.append(";},");
+		sb.append("isMobile: function() {return ");
+		sb.append(isMobile(request));
+		sb.append(";},");
+		sb.append("isMozilla: function() {return ");
+		sb.append(isMozilla(request));
+		sb.append(";},");
+		sb.append("isOpera: function() {return ");
+		sb.append(isOpera(request));
+		sb.append(";},");
+		sb.append("isRtf: function() {return ");
+		sb.append(isRtf(request));
+		sb.append(";},");
+		sb.append("isSafari: function() {return ");
+		sb.append(isSafari(request));
+		sb.append(";},");
+		sb.append("isSun: function() {return ");
+		sb.append(isSun(request));
+		sb.append(";},");
+		sb.append("isWebKit: function() {return ");
+		sb.append(isWebKit(request));
+		sb.append(";},");
+		sb.append("isWindows: function() {return ");
+		sb.append(isWindows(request));
+		sb.append(";}};");
+
+		return sb.toString();
 	}
 
 	@Override
