@@ -59,6 +59,10 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 @ProviderType
 public class XStreamConfiguratorRegistryUtil {
 
+	/**
+	 * @deprecated As of 2.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static ClassLoader getConfiguratorsClassLoader(
 		ClassLoader masterClassLoader) {
 
@@ -116,20 +120,43 @@ public class XStreamConfiguratorRegistryUtil {
 	}
 
 	private static XStream _buildXStream() {
+		Set<ClassLoader> classLoaders = new HashSet<>();
+
+		Set<XStreamConfigurator> xStreamConfigurators = _xStreamConfigurators;
+
+		for (XStreamConfigurator xStreamConfigurator : xStreamConfigurators) {
+			Class<?> clazz = xStreamConfigurator.getClass();
+
+			classLoaders.add(clazz.getClassLoader());
+		}
+
+		// Temporary code to fetch class loaders from the old framework too
+
+		Map<Class<?>, String> aliases = XStreamAliasRegistryUtil.getAliases();
+
+		if (MapUtil.isNotEmpty(aliases)) {
+			for (Class<?> clazz : aliases.keySet()) {
+				classLoaders.add(clazz.getClassLoader());
+			}
+		}
+
 		XStream xStream = new XStream(
 			null, new XppDriver(),
 			new ClassLoaderReference(
-				getConfiguratorsClassLoader(XStream.class.getClassLoader())));
+				AggregateClassLoader.getAggregateClassLoader(
+					XStream.class.getClassLoader(),
+					classLoaders.toArray(
+						new ClassLoader[classLoaders.size()]))));
 
 		xStream.omitField(HashMap.class, "cache_bitmask");
 
-		if (_xStreamConfigurators.isEmpty()) {
+		if (xStreamConfigurators.isEmpty()) {
 			return xStream;
 		}
 
 		List<String> allowedTypeNames = new ArrayList<>();
 
-		for (XStreamConfigurator xStreamConfigurator : _xStreamConfigurators) {
+		for (XStreamConfigurator xStreamConfigurator : xStreamConfigurators) {
 			List<XStreamAlias> xStreamAliases =
 				xStreamConfigurator.getXStreamAliases();
 
