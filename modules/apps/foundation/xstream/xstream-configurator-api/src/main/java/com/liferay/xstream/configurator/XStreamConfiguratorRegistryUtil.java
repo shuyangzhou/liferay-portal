@@ -69,7 +69,7 @@ public class XStreamConfiguratorRegistryUtil {
 		Set<ClassLoader> classLoaders = new HashSet<>();
 
 		Set<XStreamConfigurator> xStreamConfigurators =
-			_instance._getXStreamConfigurators();
+			_xStreamConfigurators;
 
 		for (XStreamConfigurator xStreamConfigurator : xStreamConfigurators) {
 			Class<?> clazz = xStreamConfigurator.getClass();
@@ -105,7 +105,7 @@ public class XStreamConfiguratorRegistryUtil {
 	}
 
 	public static Set<XStreamConfigurator> getXStreamConfigurators() {
-		return _instance._getXStreamConfigurators();
+		return new HashSet<>(_xStreamConfigurators);
 	}
 
 	@Activate
@@ -224,9 +224,6 @@ public class XStreamConfiguratorRegistryUtil {
 		float[].class, int[].class, Locale.class, long[].class, Number.class,
 		Number[].class, short[].class, String.class, String[].class
 	};
-
-	private static final XStreamConfiguratorRegistryUtil _instance =
-		new XStreamConfiguratorRegistryUtil();
 
 	private static transient XStream _xStream;
 	private static final Set<XStreamConfigurator> _xStreamConfigurators =
