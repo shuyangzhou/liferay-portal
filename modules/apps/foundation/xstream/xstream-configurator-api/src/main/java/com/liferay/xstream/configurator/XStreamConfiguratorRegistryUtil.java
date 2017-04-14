@@ -126,7 +126,8 @@ public class XStreamConfiguratorRegistryUtil {
 	private static XStream _buildXStream() {
 		Set<ClassLoader> classLoaders = new HashSet<>();
 
-		Set<XStreamConfigurator> xStreamConfigurators = _xStreamConfigurators;
+		Set<XStreamConfigurator> xStreamConfigurators = new HashSet<>(
+			_xStreamConfigurators);
 
 		for (XStreamConfigurator xStreamConfigurator : xStreamConfigurators) {
 			Class<?> clazz = xStreamConfigurator.getClass();
