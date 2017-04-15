@@ -676,6 +676,11 @@ public class LayoutImpl extends LayoutBaseImpl {
 		return _layoutType;
 	}
 
+	@Override
+	public LayoutTypeController getLayoutTypeController() {
+		return LayoutTypeControllerTracker.getLayoutTypeController(getType());
+	}
+
 	/**
 	 * Returns the current layout's linked layout.
 	 *
