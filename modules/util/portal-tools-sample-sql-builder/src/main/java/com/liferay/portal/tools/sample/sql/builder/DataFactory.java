@@ -360,21 +360,34 @@ public class DataFactory {
 		return _administratorRoleModel;
 	}
 
-	public List<Long> getAssetCategoryIds(long groupId) {
-		SimpleCounter counter = _assetCategoryCounters.get(groupId);
+	public List<Long> getAssetCategoryIds(AssetEntryModel assetEntryModel) {
+		long groupId = assetEntryModel.getGroupId();
 
-		if (counter == null) {
-			counter = new SimpleCounter(0);
+		Map<Long, List<AssetCategoryModel>> assetCategoryModelsMap =
+			_assetCategoryModelsMapArray[(int)groupId - 1];
 
-			_assetCategoryCounters.put(groupId, counter);
+		if ((assetCategoryModelsMap == null) ||
+			assetCategoryModelsMap.isEmpty()) {
+
+			return Collections.emptyList();
 		}
 
+		long classNameId = assetEntryModel.getClassNameId();
+
 		List<AssetCategoryModel> assetCategoryModels =
-			_assetCategoryModelsArray[(int)groupId - 1];
+			assetCategoryModelsMap.get(classNameId);
 
 		if ((assetCategoryModels == null) || assetCategoryModels.isEmpty()) {
 			return Collections.emptyList();
 		}
+
+		if (_assetCategoryCounters == null) {
+			_assetCategoryCounters =
+				(Map<Long, SimpleCounter>[])new HashMap<?, ?>[_maxGroupsCount];
+		}
+
+		SimpleCounter counter = getSimpleCounter(
+			_assetCategoryCounters, groupId, classNameId);
 
 		List<Long> assetCategoryIds = new ArrayList<>(
 			_maxAssetEntryToAssetCategoryCount);
@@ -394,30 +407,44 @@ public class DataFactory {
 	public List<AssetCategoryModel> getAssetCategoryModels() {
 		List<AssetCategoryModel> allAssetCategoryModels = new ArrayList<>();
 
-		for (List<AssetCategoryModel> assetCategoryModels :
-				_assetCategoryModelsArray) {
+		for (Map<Long, List<AssetCategoryModel>> assetCategoryModelsMap :
+				_assetCategoryModelsMapArray) {
 
-			allAssetCategoryModels.addAll(assetCategoryModels);
+			for (List<AssetCategoryModel> assetCategoryModels :
+					assetCategoryModelsMap.values()) {
+
+				allAssetCategoryModels.addAll(assetCategoryModels);
+			}
 		}
 
 		return allAssetCategoryModels;
 	}
 
-	public List<Long> getAssetTagIds(long groupId) {
-		SimpleCounter counter = _assetTagCounters.get(groupId);
+	public List<Long> getAssetTagIds(AssetEntryModel assetEntryModel) {
+		long groupId = assetEntryModel.getGroupId();
 
-		if (counter == null) {
-			counter = new SimpleCounter(0);
+		Map<Long, List<AssetTagModel>> assetTagModelsMap =
+			_assetTagModelsMapArray[(int)groupId - 1];
 
-			_assetTagCounters.put(groupId, counter);
+		if ((assetTagModelsMap == null) || assetTagModelsMap.isEmpty()) {
+			return Collections.emptyList();
 		}
 
-		List<AssetTagModel> assetTagModels =
-			_assetTagModelsArray[(int)groupId - 1];
+		long classNameId = assetEntryModel.getClassNameId();
+
+		List<AssetTagModel> assetTagModels = assetTagModelsMap.get(classNameId);
 
 		if ((assetTagModels == null) || assetTagModels.isEmpty()) {
 			return Collections.emptyList();
 		}
+
+		if (_assetTagCounters == null) {
+			_assetTagCounters =
+				(Map<Long, SimpleCounter>[])new HashMap<?, ?>[_maxGroupsCount];
+		}
+
+		SimpleCounter counter = getSimpleCounter(
+			_assetTagCounters, groupId, classNameId);
 
 		List<Long> assetTagIds = new ArrayList<>(_maxAssetEntryToAssetTagCount);
 
@@ -435,8 +462,14 @@ public class DataFactory {
 	public List<AssetTagModel> getAssetTagModels() {
 		List<AssetTagModel> allAssetTagModels = new ArrayList<>();
 
-		for (List<AssetTagModel> assetTagModels : _assetTagModelsArray) {
-			allAssetTagModels.addAll(assetTagModels);
+		for (Map<Long, List<AssetTagModel>> assetTagModelsMap :
+				_assetTagModelsMapArray) {
+
+			for (List<AssetTagModel> assetTagModels :
+					assetTagModelsMap.values()) {
+
+				allAssetTagModels.addAll(assetTagModels);
+			}
 		}
 
 		return allAssetTagModels;
@@ -704,6 +737,9 @@ public class DataFactory {
 	public void initAssetCategoryModels() {
 		_assetCategoryModelsArray =
 			(List<AssetCategoryModel>[])new List<?>[_maxGroupsCount];
+		_assetCategoryModelsMapArray =
+			(Map<Long, List<AssetCategoryModel>>[])
+				new HashMap<?, ?>[_maxGroupsCount];
 		_assetVocabularyModelsArray =
 			(List<AssetVocabularyModel>[])new List<?>[_maxGroupsCount];
 		_defaultAssetVocabularyModel = newAssetVocabularyModel(
@@ -753,14 +789,44 @@ public class DataFactory {
 				}
 			}
 
-			_assetCategoryModelsArray[i - 1] = assetCategoryModels;
 			_assetVocabularyModelsArray[i - 1] = assetVocabularyModels;
+			_assetCategoryModelsArray[i - 1] = assetCategoryModels;
+
+			Map<Long, List<AssetCategoryModel>> assetCategoryModelsMap =
+				new HashMap<>();
+
+			int totalAssetCategoryModelSize = assetCategoryModels.size();
+
+			int assetCategoryModelSizeForEachType =
+				totalAssetCategoryModelSize / 3;
+
+			assetCategoryModelsMap.put(
+				getClassNameId(BlogsEntry.class),
+				assetCategoryModels.subList(
+					0, assetCategoryModelSizeForEachType));
+
+			assetCategoryModelsMap.put(
+				getClassNameId(JournalArticle.class),
+				assetCategoryModels.subList(
+					assetCategoryModelSizeForEachType,
+					assetCategoryModelSizeForEachType * 2));
+
+			assetCategoryModelsMap.put(
+				getClassNameId(WikiPage.class),
+				assetCategoryModels.subList(
+					assetCategoryModelSizeForEachType * 2,
+					totalAssetCategoryModelSize));
+
+			_assetCategoryModelsMapArray[i - 1] = assetCategoryModelsMap;
 		}
 	}
 
 	public void initAssetTagModels() {
 		_assetTagModelsArray =
 			(List<AssetTagModel>[])new List<?>[_maxGroupsCount];
+		_assetTagModelsMapArray =
+			(Map<Long, List<AssetTagModel>>[])
+				new HashMap<?, ?>[_maxGroupsCount];
 		_assetTagStatsModelsArray =
 			(List<AssetTagStatsModel>[])new List<?>[_maxGroupsCount];
 
@@ -805,6 +871,29 @@ public class DataFactory {
 
 			_assetTagModelsArray[i - 1] = assetTagModels;
 			_assetTagStatsModelsArray[i - 1] = assetTagStatsModels;
+
+			Map<Long, List<AssetTagModel>> assetTagModelsMap = new HashMap<>();
+
+			int totalAssetTagModelSize = assetTagModels.size();
+
+			int assetTagModelSizeForEachType = totalAssetTagModelSize / 3;
+
+			assetTagModelsMap.put(
+				getClassNameId(BlogsEntry.class),
+				assetTagModels.subList(0, assetTagModelSizeForEachType));
+
+			assetTagModelsMap.put(
+				getClassNameId(JournalArticle.class),
+				assetTagModels.subList(
+					assetTagModelSizeForEachType,
+					assetTagModelSizeForEachType * 2));
+
+			assetTagModelsMap.put(
+				getClassNameId(WikiPage.class),
+				assetTagModels.subList(
+					assetTagModelSizeForEachType * 2, totalAssetTagModelSize));
+
+			_assetTagModelsMapArray[i - 1] = assetTagModelsMap;
 		}
 	}
 
@@ -2805,6 +2894,30 @@ public class DataFactory {
 			_DEPENDENCIES_DIR + resourceName);
 	}
 
+	protected SimpleCounter getSimpleCounter(
+		Map<Long, SimpleCounter>[] simpleCountersArray, long groupId,
+		long classNameId) {
+
+		Map<Long, SimpleCounter> simpleCounters =
+			simpleCountersArray[(int)groupId - 1];
+
+		if (simpleCounters == null) {
+			simpleCounters = new HashMap<>();
+
+			simpleCountersArray[(int)groupId - 1] = simpleCounters;
+		}
+
+		SimpleCounter simpleCounter = simpleCounters.get(classNameId);
+
+		if (simpleCounter == null) {
+			simpleCounter = new SimpleCounter(0);
+
+			simpleCounters.put(classNameId, simpleCounter);
+		}
+
+		return simpleCounter;
+	}
+
 	protected AssetCategoryModel newAssetCategoryModel(
 		long groupId, long lastRightCategoryId, String name,
 		long vocabularyId) {
@@ -3582,14 +3695,15 @@ public class DataFactory {
 	private final long _accountId;
 	private AccountModel _accountModel;
 	private RoleModel _administratorRoleModel;
-	private final Map<Long, SimpleCounter> _assetCategoryCounters =
-		new HashMap<>();
+	private Map<Long, SimpleCounter>[] _assetCategoryCounters;
 	private List<AssetCategoryModel>[] _assetCategoryModelsArray;
+	private Map<Long, List<AssetCategoryModel>>[] _assetCategoryModelsMapArray;
 	private String _assetPublisherQueryName;
 	private final Map<Long, Integer> _assetPublisherQueryStartIndex =
 		new HashMap<>();
-	private final Map<Long, SimpleCounter> _assetTagCounters = new HashMap<>();
+	private Map<Long, SimpleCounter>[] _assetTagCounters;
 	private List<AssetTagModel>[] _assetTagModelsArray;
+	private Map<Long, List<AssetTagModel>>[] _assetTagModelsMapArray;
 	private List<AssetTagStatsModel>[] _assetTagStatsModelsArray;
 	private List<AssetVocabularyModel>[] _assetVocabularyModelsArray;
 	private final Map<String, ClassNameModel> _classNameModels =
