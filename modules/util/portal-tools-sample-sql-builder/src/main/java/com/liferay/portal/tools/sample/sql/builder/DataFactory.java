@@ -2176,15 +2176,15 @@ public class DataFactory {
 				plid, portletId, PortletConstants.DEFAULT_PREFERENCES);
 		}
 
-		SimpleCounter counter = _assetPublisherQueryCounter.get(groupId);
+		Integer startIndex = _assetPublisherQueryStartIndex.get(groupId);
 
-		if (counter == null) {
-			counter = new SimpleCounter(0);
-
-			_assetPublisherQueryCounter.put(groupId, counter);
+		if (startIndex == null) {
+			startIndex = 0;
 		}
 
 		String[] assetPublisherQueryValues = null;
+
+		ObjectValuePair<String[], Integer> objectValuePair;
 
 		if (_assetPublisherQueryName.equals("assetCategories")) {
 			List<AssetCategoryModel> assetCategoryModels =
@@ -2197,9 +2197,8 @@ public class DataFactory {
 					plid, portletId, PortletConstants.DEFAULT_PREFERENCES);
 			}
 
-			assetPublisherQueryValues =
-				getAssetPublisherAssetCategoriesQueryValues(
-					assetCategoryModels, (int)counter.get());
+			objectValuePair = getAssetPublisherAssetCategoriesQueryValues(
+				assetCategoryModels, startIndex);
 		}
 		else {
 			List<AssetTagModel> assetTagModels =
@@ -2210,9 +2209,13 @@ public class DataFactory {
 					plid, portletId, PortletConstants.DEFAULT_PREFERENCES);
 			}
 
-			assetPublisherQueryValues = getAssetPublisherAssetTagsQueryValues(
-				assetTagModels, (int)counter.get());
+			objectValuePair = getAssetPublisherAssetTagsQueryValues(
+				assetTagModels, startIndex);
 		}
+
+		assetPublisherQueryValues = objectValuePair.getKey();
+
+		_assetPublisherQueryStartIndex.put(groupId, objectValuePair.getValue());
 
 		PortletPreferences jxPortletPreferences =
 			(PortletPreferences)_defaultAssetPublisherPortletPreference.clone();
@@ -2727,8 +2730,9 @@ public class DataFactory {
 		}
 	}
 
-	protected String[] getAssetPublisherAssetCategoriesQueryValues(
-		List<AssetCategoryModel> assetCategoryModels, int index) {
+	protected ObjectValuePair<String[], Integer>
+		getAssetPublisherAssetCategoriesQueryValues(
+			List<AssetCategoryModel> assetCategoryModels, int index) {
 
 		AssetCategoryModel assetCategoryModel0 = assetCategoryModels.get(
 			index % assetCategoryModels.size());
@@ -2738,20 +2742,27 @@ public class DataFactory {
 		AssetCategoryModel assetCategoryModel2 = assetCategoryModels.get(
 			(index + _maxAssetEntryToAssetCategoryCount * 2) %
 				assetCategoryModels.size());
-		AssetCategoryModel assetCategoryModel3 = assetCategoryModels.get(
-			(index + _maxAssetEntryToAssetCategoryCount * 3) %
-				assetCategoryModels.size());
 
-		return new String[] {
-			String.valueOf(assetCategoryModel0.getCategoryId()),
-			String.valueOf(assetCategoryModel1.getCategoryId()),
-			String.valueOf(assetCategoryModel2.getCategoryId()),
-			String.valueOf(assetCategoryModel3.getCategoryId())
-		};
+		int lastIndex =
+			(index + _maxAssetEntryToAssetCategoryCount * 3) %
+				assetCategoryModels.size();
+
+		AssetCategoryModel assetCategoryModel3 = assetCategoryModels.get(
+			lastIndex);
+
+		return new ObjectValuePair<String[], Integer>(
+			new String[] {
+				String.valueOf(assetCategoryModel0.getCategoryId()),
+				String.valueOf(assetCategoryModel1.getCategoryId()),
+				String.valueOf(assetCategoryModel2.getCategoryId()),
+				String.valueOf(assetCategoryModel3.getCategoryId())
+			},
+			lastIndex);
 	}
 
-	protected String[] getAssetPublisherAssetTagsQueryValues(
-		List<AssetTagModel> assetTagModels, int index) {
+	protected ObjectValuePair<String[], Integer>
+		getAssetPublisherAssetTagsQueryValues(
+			List<AssetTagModel> assetTagModels, int index) {
 
 		AssetTagModel assetTagModel0 = assetTagModels.get(
 			index % assetTagModels.size());
@@ -2760,14 +2771,18 @@ public class DataFactory {
 		AssetTagModel assetTagModel2 = assetTagModels.get(
 			(index + _maxAssetEntryToAssetTagCount * 2) %
 				assetTagModels.size());
-		AssetTagModel assetTagModel3 = assetTagModels.get(
-			(index + _maxAssetEntryToAssetTagCount * 3) %
-				assetTagModels.size());
 
-		return new String[] {
-			assetTagModel0.getName(), assetTagModel1.getName(),
-			assetTagModel2.getName(), assetTagModel3.getName()
-		};
+		int lastIndex =
+			(index + _maxAssetEntryToAssetTagCount * 3) % assetTagModels.size();
+
+		AssetTagModel assetTagModel3 = assetTagModels.get(lastIndex);
+
+		return new ObjectValuePair<String[], Integer>(
+			new String[] {
+				assetTagModel0.getName(), assetTagModel1.getName(),
+				assetTagModel2.getName(), assetTagModel3.getName()
+			},
+			lastIndex);
 	}
 
 	protected String getClassName(long classNameId) {
@@ -3570,9 +3585,9 @@ public class DataFactory {
 	private final Map<Long, SimpleCounter> _assetCategoryCounters =
 		new HashMap<>();
 	private List<AssetCategoryModel>[] _assetCategoryModelsArray;
-	private final Map<Long, SimpleCounter> _assetPublisherQueryCounter =
-		new HashMap<>();
 	private String _assetPublisherQueryName;
+	private final Map<Long, Integer> _assetPublisherQueryStartIndex =
+		new HashMap<>();
 	private final Map<Long, SimpleCounter> _assetTagCounters = new HashMap<>();
 	private List<AssetTagModel>[] _assetTagModelsArray;
 	private List<AssetTagStatsModel>[] _assetTagStatsModelsArray;
