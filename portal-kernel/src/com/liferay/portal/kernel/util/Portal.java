@@ -311,6 +311,10 @@ public interface Portal {
 			Layout layout)
 		throws PortalException;
 
+	public Map<Locale, String> getAlternateURLs(
+			String canonicalURL, ThemeDisplay themeDisplay, Layout layout)
+		throws PortalException;
+
 	public long[] getAncestorSiteGroupIds(long groupId);
 
 	/**
