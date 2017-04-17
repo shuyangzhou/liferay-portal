@@ -815,27 +815,25 @@ public class DataFactory {
 			Map<Long, List<AssetCategoryModel>> assetCategoryModelsMap =
 				new HashMap<>();
 
+			int assetEntryTypeCount = _assetClassNameIdsArray.length;
+
 			int totalAssetCategoryModelSize = assetCategoryModels.size();
 
 			int assetCategoryModelSizeForEachType =
-				totalAssetCategoryModelSize / 3;
+				totalAssetCategoryModelSize / assetEntryTypeCount;
 
-			assetCategoryModelsMap.put(
-				getClassNameId(BlogsEntry.class),
-				assetCategoryModels.subList(
-					0, assetCategoryModelSizeForEachType));
+			for (int j = 0; j < assetEntryTypeCount; j++) {
+				int fromIndex = j * assetCategoryModelSizeForEachType;
+				int toIndex = (j + 1) * assetCategoryModelSizeForEachType;
 
-			assetCategoryModelsMap.put(
-				getClassNameId(JournalArticle.class),
-				assetCategoryModels.subList(
-					assetCategoryModelSizeForEachType,
-					assetCategoryModelSizeForEachType * 2));
+				if (j == (assetEntryTypeCount - 1)) {
+					toIndex = totalAssetCategoryModelSize;
+				}
 
-			assetCategoryModelsMap.put(
-				getClassNameId(WikiPage.class),
-				assetCategoryModels.subList(
-					assetCategoryModelSizeForEachType * 2,
-					totalAssetCategoryModelSize));
+				assetCategoryModelsMap.put(
+					_assetClassNameIdsArray[j],
+					assetCategoryModels.subList(fromIndex, toIndex));
+			}
 
 			_assetCategoryModelsMapArray[i - 1] = assetCategoryModelsMap;
 		}
@@ -894,24 +892,25 @@ public class DataFactory {
 
 			Map<Long, List<AssetTagModel>> assetTagModelsMap = new HashMap<>();
 
+			int assetEntryTypeCount = _assetClassNameIdsArray.length;
+
 			int totalAssetTagModelSize = assetTagModels.size();
 
-			int assetTagModelSizeForEachType = totalAssetTagModelSize / 3;
+			int assetTagModelSizeForEachType =
+				totalAssetTagModelSize / assetEntryTypeCount;
 
-			assetTagModelsMap.put(
-				getClassNameId(BlogsEntry.class),
-				assetTagModels.subList(0, assetTagModelSizeForEachType));
+			for (int j = 0; j < assetEntryTypeCount; j++) {
+				int fromIndex = j * assetTagModelSizeForEachType;
+				int toIndex = (j + 1) * assetTagModelSizeForEachType;
 
-			assetTagModelsMap.put(
-				getClassNameId(JournalArticle.class),
-				assetTagModels.subList(
-					assetTagModelSizeForEachType,
-					assetTagModelSizeForEachType * 2));
+				if (j == (assetEntryTypeCount - 1)) {
+					toIndex = totalAssetTagModelSize;
+				}
 
-			assetTagModelsMap.put(
-				getClassNameId(WikiPage.class),
-				assetTagModels.subList(
-					assetTagModelSizeForEachType * 2, totalAssetTagModelSize));
+				assetTagModelsMap.put(
+					_assetClassNameIdsArray[j],
+					assetTagModels.subList(fromIndex, toIndex));
+			}
 
 			_assetTagModelsMapArray[i - 1] = assetTagModelsMap;
 		}
@@ -2316,8 +2315,8 @@ public class DataFactory {
 			Map<Long, List<AssetTagModel>> assetTagModelsMap =
 				_assetTagModelsMapArray[(int)groupId - 1];
 
-			List<AssetTagModel> assetTagModels =
-				assetTagModelsMap.get(getNextClassNameIdForAsset(groupId));
+			List<AssetTagModel> assetTagModels = assetTagModelsMap.get(
+				getNextClassNameIdForAsset(groupId));
 
 			if ((assetTagModels == null) || assetTagModels.isEmpty()) {
 				return newPortletPreferencesModel(
