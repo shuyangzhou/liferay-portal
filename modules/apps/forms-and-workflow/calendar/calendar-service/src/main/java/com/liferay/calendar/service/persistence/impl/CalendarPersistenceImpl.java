@@ -4670,8 +4670,8 @@ public class CalendarPersistenceImpl extends BasePersistenceImpl<Calendar>
 	private static final String _SQL_SELECT_CALENDAR = "SELECT calendar FROM Calendar calendar";
 	private static final String _SQL_SELECT_CALENDAR_WHERE_PKS_IN = "SELECT calendar FROM Calendar calendar WHERE calendarId IN (";
 	private static final String _SQL_SELECT_CALENDAR_WHERE = "SELECT calendar FROM Calendar calendar WHERE ";
-	private static final String _SQL_COUNT_CALENDAR = "SELECT COUNT(calendar) FROM Calendar calendar";
-	private static final String _SQL_COUNT_CALENDAR_WHERE = "SELECT COUNT(calendar) FROM Calendar calendar WHERE ";
+	private static final String _SQL_COUNT_CALENDAR = "SELECT COUNT(*) FROM Calendar calendar";
+	private static final String _SQL_COUNT_CALENDAR_WHERE = "SELECT COUNT(*) FROM Calendar calendar WHERE ";
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN = "calendar.calendarId";
 	private static final String _FILTER_ENTITY_TABLE_FILTER_USERID_COLUMN = "calendar.userId";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "calendar.";

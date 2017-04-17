@@ -3334,8 +3334,8 @@ public class DLFileEntryMetadataPersistenceImpl extends BasePersistenceImpl<DLFi
 	private static final String _SQL_SELECT_DLFILEENTRYMETADATA = "SELECT dlFileEntryMetadata FROM DLFileEntryMetadata dlFileEntryMetadata";
 	private static final String _SQL_SELECT_DLFILEENTRYMETADATA_WHERE_PKS_IN = "SELECT dlFileEntryMetadata FROM DLFileEntryMetadata dlFileEntryMetadata WHERE fileEntryMetadataId IN (";
 	private static final String _SQL_SELECT_DLFILEENTRYMETADATA_WHERE = "SELECT dlFileEntryMetadata FROM DLFileEntryMetadata dlFileEntryMetadata WHERE ";
-	private static final String _SQL_COUNT_DLFILEENTRYMETADATA = "SELECT COUNT(dlFileEntryMetadata) FROM DLFileEntryMetadata dlFileEntryMetadata";
-	private static final String _SQL_COUNT_DLFILEENTRYMETADATA_WHERE = "SELECT COUNT(dlFileEntryMetadata) FROM DLFileEntryMetadata dlFileEntryMetadata WHERE ";
+	private static final String _SQL_COUNT_DLFILEENTRYMETADATA = "SELECT COUNT(*) FROM DLFileEntryMetadata dlFileEntryMetadata";
+	private static final String _SQL_COUNT_DLFILEENTRYMETADATA_WHERE = "SELECT COUNT(*) FROM DLFileEntryMetadata dlFileEntryMetadata WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "dlFileEntryMetadata.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No DLFileEntryMetadata exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No DLFileEntryMetadata exists with the key {";

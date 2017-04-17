@@ -3895,8 +3895,8 @@ public class PollsVotePersistenceImpl extends BasePersistenceImpl<PollsVote>
 	private static final String _SQL_SELECT_POLLSVOTE = "SELECT pollsVote FROM PollsVote pollsVote";
 	private static final String _SQL_SELECT_POLLSVOTE_WHERE_PKS_IN = "SELECT pollsVote FROM PollsVote pollsVote WHERE voteId IN (";
 	private static final String _SQL_SELECT_POLLSVOTE_WHERE = "SELECT pollsVote FROM PollsVote pollsVote WHERE ";
-	private static final String _SQL_COUNT_POLLSVOTE = "SELECT COUNT(pollsVote) FROM PollsVote pollsVote";
-	private static final String _SQL_COUNT_POLLSVOTE_WHERE = "SELECT COUNT(pollsVote) FROM PollsVote pollsVote WHERE ";
+	private static final String _SQL_COUNT_POLLSVOTE = "SELECT COUNT(*) FROM PollsVote pollsVote";
+	private static final String _SQL_COUNT_POLLSVOTE_WHERE = "SELECT COUNT(*) FROM PollsVote pollsVote WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "pollsVote.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No PollsVote exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No PollsVote exists with the key {";

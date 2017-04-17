@@ -1987,8 +1987,8 @@ public class PushNotificationsDevicePersistenceImpl extends BasePersistenceImpl<
 	private static final String _SQL_SELECT_PUSHNOTIFICATIONSDEVICE_WHERE_PKS_IN =
 		"SELECT pushNotificationsDevice FROM PushNotificationsDevice pushNotificationsDevice WHERE pushNotificationsDeviceId IN (";
 	private static final String _SQL_SELECT_PUSHNOTIFICATIONSDEVICE_WHERE = "SELECT pushNotificationsDevice FROM PushNotificationsDevice pushNotificationsDevice WHERE ";
-	private static final String _SQL_COUNT_PUSHNOTIFICATIONSDEVICE = "SELECT COUNT(pushNotificationsDevice) FROM PushNotificationsDevice pushNotificationsDevice";
-	private static final String _SQL_COUNT_PUSHNOTIFICATIONSDEVICE_WHERE = "SELECT COUNT(pushNotificationsDevice) FROM PushNotificationsDevice pushNotificationsDevice WHERE ";
+	private static final String _SQL_COUNT_PUSHNOTIFICATIONSDEVICE = "SELECT COUNT(*) FROM PushNotificationsDevice pushNotificationsDevice";
+	private static final String _SQL_COUNT_PUSHNOTIFICATIONSDEVICE_WHERE = "SELECT COUNT(*) FROM PushNotificationsDevice pushNotificationsDevice WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "pushNotificationsDevice.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No PushNotificationsDevice exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No PushNotificationsDevice exists with the key {";

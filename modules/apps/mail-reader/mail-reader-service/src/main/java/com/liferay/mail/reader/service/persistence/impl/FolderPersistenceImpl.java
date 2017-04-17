@@ -1604,8 +1604,8 @@ public class FolderPersistenceImpl extends BasePersistenceImpl<Folder>
 	private static final String _SQL_SELECT_FOLDER = "SELECT folder FROM Folder folder";
 	private static final String _SQL_SELECT_FOLDER_WHERE_PKS_IN = "SELECT folder FROM Folder folder WHERE folderId IN (";
 	private static final String _SQL_SELECT_FOLDER_WHERE = "SELECT folder FROM Folder folder WHERE ";
-	private static final String _SQL_COUNT_FOLDER = "SELECT COUNT(folder) FROM Folder folder";
-	private static final String _SQL_COUNT_FOLDER_WHERE = "SELECT COUNT(folder) FROM Folder folder WHERE ";
+	private static final String _SQL_COUNT_FOLDER = "SELECT COUNT(*) FROM Folder folder";
+	private static final String _SQL_COUNT_FOLDER_WHERE = "SELECT COUNT(*) FROM Folder folder WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "folder.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Folder exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Folder exists with the key {";

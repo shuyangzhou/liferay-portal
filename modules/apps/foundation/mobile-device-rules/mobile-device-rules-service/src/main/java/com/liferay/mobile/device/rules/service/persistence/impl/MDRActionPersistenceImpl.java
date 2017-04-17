@@ -2818,8 +2818,8 @@ public class MDRActionPersistenceImpl extends BasePersistenceImpl<MDRAction>
 	private static final String _SQL_SELECT_MDRACTION = "SELECT mdrAction FROM MDRAction mdrAction";
 	private static final String _SQL_SELECT_MDRACTION_WHERE_PKS_IN = "SELECT mdrAction FROM MDRAction mdrAction WHERE actionId IN (";
 	private static final String _SQL_SELECT_MDRACTION_WHERE = "SELECT mdrAction FROM MDRAction mdrAction WHERE ";
-	private static final String _SQL_COUNT_MDRACTION = "SELECT COUNT(mdrAction) FROM MDRAction mdrAction";
-	private static final String _SQL_COUNT_MDRACTION_WHERE = "SELECT COUNT(mdrAction) FROM MDRAction mdrAction WHERE ";
+	private static final String _SQL_COUNT_MDRACTION = "SELECT COUNT(*) FROM MDRAction mdrAction";
+	private static final String _SQL_COUNT_MDRACTION_WHERE = "SELECT COUNT(*) FROM MDRAction mdrAction WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "mdrAction.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No MDRAction exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No MDRAction exists with the key {";

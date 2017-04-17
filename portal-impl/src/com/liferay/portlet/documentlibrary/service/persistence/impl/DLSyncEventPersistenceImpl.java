@@ -1486,8 +1486,8 @@ public class DLSyncEventPersistenceImpl extends BasePersistenceImpl<DLSyncEvent>
 	private static final String _SQL_SELECT_DLSYNCEVENT = "SELECT dlSyncEvent FROM DLSyncEvent dlSyncEvent";
 	private static final String _SQL_SELECT_DLSYNCEVENT_WHERE_PKS_IN = "SELECT dlSyncEvent FROM DLSyncEvent dlSyncEvent WHERE syncEventId IN (";
 	private static final String _SQL_SELECT_DLSYNCEVENT_WHERE = "SELECT dlSyncEvent FROM DLSyncEvent dlSyncEvent WHERE ";
-	private static final String _SQL_COUNT_DLSYNCEVENT = "SELECT COUNT(dlSyncEvent) FROM DLSyncEvent dlSyncEvent";
-	private static final String _SQL_COUNT_DLSYNCEVENT_WHERE = "SELECT COUNT(dlSyncEvent) FROM DLSyncEvent dlSyncEvent WHERE ";
+	private static final String _SQL_COUNT_DLSYNCEVENT = "SELECT COUNT(*) FROM DLSyncEvent dlSyncEvent";
+	private static final String _SQL_COUNT_DLSYNCEVENT_WHERE = "SELECT COUNT(*) FROM DLSyncEvent dlSyncEvent WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "dlSyncEvent.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No DLSyncEvent exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No DLSyncEvent exists with the key {";

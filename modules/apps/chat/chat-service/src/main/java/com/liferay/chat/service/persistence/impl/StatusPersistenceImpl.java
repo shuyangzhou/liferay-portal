@@ -2598,8 +2598,8 @@ public class StatusPersistenceImpl extends BasePersistenceImpl<Status>
 	private static final String _SQL_SELECT_STATUS = "SELECT status FROM Status status";
 	private static final String _SQL_SELECT_STATUS_WHERE_PKS_IN = "SELECT status FROM Status status WHERE statusId IN (";
 	private static final String _SQL_SELECT_STATUS_WHERE = "SELECT status FROM Status status WHERE ";
-	private static final String _SQL_COUNT_STATUS = "SELECT COUNT(status) FROM Status status";
-	private static final String _SQL_COUNT_STATUS_WHERE = "SELECT COUNT(status) FROM Status status WHERE ";
+	private static final String _SQL_COUNT_STATUS = "SELECT COUNT(*) FROM Status status";
+	private static final String _SQL_COUNT_STATUS_WHERE = "SELECT COUNT(*) FROM Status status WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "status.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Status exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Status exists with the key {";

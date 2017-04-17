@@ -5532,8 +5532,8 @@ public class AddressPersistenceImpl extends BasePersistenceImpl<Address>
 	private static final String _SQL_SELECT_ADDRESS = "SELECT address FROM Address address";
 	private static final String _SQL_SELECT_ADDRESS_WHERE_PKS_IN = "SELECT address FROM Address address WHERE addressId IN (";
 	private static final String _SQL_SELECT_ADDRESS_WHERE = "SELECT address FROM Address address WHERE ";
-	private static final String _SQL_COUNT_ADDRESS = "SELECT COUNT(address) FROM Address address";
-	private static final String _SQL_COUNT_ADDRESS_WHERE = "SELECT COUNT(address) FROM Address address WHERE ";
+	private static final String _SQL_COUNT_ADDRESS = "SELECT COUNT(*) FROM Address address";
+	private static final String _SQL_COUNT_ADDRESS_WHERE = "SELECT COUNT(*) FROM Address address WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "address.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Address exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Address exists with the key {";

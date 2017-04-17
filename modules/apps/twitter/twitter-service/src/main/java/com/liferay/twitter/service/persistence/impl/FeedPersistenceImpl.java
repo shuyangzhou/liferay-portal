@@ -1077,8 +1077,8 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 	private static final String _SQL_SELECT_FEED = "SELECT feed FROM Feed feed";
 	private static final String _SQL_SELECT_FEED_WHERE_PKS_IN = "SELECT feed FROM Feed feed WHERE feedId IN (";
 	private static final String _SQL_SELECT_FEED_WHERE = "SELECT feed FROM Feed feed WHERE ";
-	private static final String _SQL_COUNT_FEED = "SELECT COUNT(feed) FROM Feed feed";
-	private static final String _SQL_COUNT_FEED_WHERE = "SELECT COUNT(feed) FROM Feed feed WHERE ";
+	private static final String _SQL_COUNT_FEED = "SELECT COUNT(*) FROM Feed feed";
+	private static final String _SQL_COUNT_FEED_WHERE = "SELECT COUNT(*) FROM Feed feed WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "feed.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Feed exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Feed exists with the key {";

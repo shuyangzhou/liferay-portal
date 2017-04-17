@@ -3122,8 +3122,8 @@ public class RepositoryEntryPersistenceImpl extends BasePersistenceImpl<Reposito
 	private static final String _SQL_SELECT_REPOSITORYENTRY = "SELECT repositoryEntry FROM RepositoryEntry repositoryEntry";
 	private static final String _SQL_SELECT_REPOSITORYENTRY_WHERE_PKS_IN = "SELECT repositoryEntry FROM RepositoryEntry repositoryEntry WHERE repositoryEntryId IN (";
 	private static final String _SQL_SELECT_REPOSITORYENTRY_WHERE = "SELECT repositoryEntry FROM RepositoryEntry repositoryEntry WHERE ";
-	private static final String _SQL_COUNT_REPOSITORYENTRY = "SELECT COUNT(repositoryEntry) FROM RepositoryEntry repositoryEntry";
-	private static final String _SQL_COUNT_REPOSITORYENTRY_WHERE = "SELECT COUNT(repositoryEntry) FROM RepositoryEntry repositoryEntry WHERE ";
+	private static final String _SQL_COUNT_REPOSITORYENTRY = "SELECT COUNT(*) FROM RepositoryEntry repositoryEntry";
+	private static final String _SQL_COUNT_REPOSITORYENTRY_WHERE = "SELECT COUNT(*) FROM RepositoryEntry repositoryEntry WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "repositoryEntry.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No RepositoryEntry exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No RepositoryEntry exists with the key {";

@@ -10123,8 +10123,8 @@ public class UserPersistenceImpl extends BasePersistenceImpl<User>
 	private static final String _SQL_SELECT_USER = "SELECT user FROM User user";
 	private static final String _SQL_SELECT_USER_WHERE_PKS_IN = "SELECT user FROM User user WHERE userId IN (";
 	private static final String _SQL_SELECT_USER_WHERE = "SELECT user FROM User user WHERE ";
-	private static final String _SQL_COUNT_USER = "SELECT COUNT(user) FROM User user";
-	private static final String _SQL_COUNT_USER_WHERE = "SELECT COUNT(user) FROM User user WHERE ";
+	private static final String _SQL_COUNT_USER = "SELECT COUNT(*) FROM User user";
+	private static final String _SQL_COUNT_USER_WHERE = "SELECT COUNT(*) FROM User user WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "user.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No User exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No User exists with the key {";

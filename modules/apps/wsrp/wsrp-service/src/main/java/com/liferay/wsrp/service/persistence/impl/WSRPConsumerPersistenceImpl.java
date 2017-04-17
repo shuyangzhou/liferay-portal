@@ -2511,8 +2511,8 @@ public class WSRPConsumerPersistenceImpl extends BasePersistenceImpl<WSRPConsume
 	private static final String _SQL_SELECT_WSRPCONSUMER = "SELECT wsrpConsumer FROM WSRPConsumer wsrpConsumer";
 	private static final String _SQL_SELECT_WSRPCONSUMER_WHERE_PKS_IN = "SELECT wsrpConsumer FROM WSRPConsumer wsrpConsumer WHERE wsrpConsumerId IN (";
 	private static final String _SQL_SELECT_WSRPCONSUMER_WHERE = "SELECT wsrpConsumer FROM WSRPConsumer wsrpConsumer WHERE ";
-	private static final String _SQL_COUNT_WSRPCONSUMER = "SELECT COUNT(wsrpConsumer) FROM WSRPConsumer wsrpConsumer";
-	private static final String _SQL_COUNT_WSRPCONSUMER_WHERE = "SELECT COUNT(wsrpConsumer) FROM WSRPConsumer wsrpConsumer WHERE ";
+	private static final String _SQL_COUNT_WSRPCONSUMER = "SELECT COUNT(*) FROM WSRPConsumer wsrpConsumer";
+	private static final String _SQL_COUNT_WSRPCONSUMER_WHERE = "SELECT COUNT(*) FROM WSRPConsumer wsrpConsumer WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "wsrpConsumer.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WSRPConsumer exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No WSRPConsumer exists with the key {";

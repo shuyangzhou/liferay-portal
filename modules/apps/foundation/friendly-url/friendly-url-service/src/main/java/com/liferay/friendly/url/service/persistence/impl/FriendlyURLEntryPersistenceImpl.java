@@ -4662,8 +4662,8 @@ public class FriendlyURLEntryPersistenceImpl extends BasePersistenceImpl<Friendl
 	private static final String _SQL_SELECT_FRIENDLYURLENTRY = "SELECT friendlyURLEntry FROM FriendlyURLEntry friendlyURLEntry";
 	private static final String _SQL_SELECT_FRIENDLYURLENTRY_WHERE_PKS_IN = "SELECT friendlyURLEntry FROM FriendlyURLEntry friendlyURLEntry WHERE friendlyURLEntryId IN (";
 	private static final String _SQL_SELECT_FRIENDLYURLENTRY_WHERE = "SELECT friendlyURLEntry FROM FriendlyURLEntry friendlyURLEntry WHERE ";
-	private static final String _SQL_COUNT_FRIENDLYURLENTRY = "SELECT COUNT(friendlyURLEntry) FROM FriendlyURLEntry friendlyURLEntry";
-	private static final String _SQL_COUNT_FRIENDLYURLENTRY_WHERE = "SELECT COUNT(friendlyURLEntry) FROM FriendlyURLEntry friendlyURLEntry WHERE ";
+	private static final String _SQL_COUNT_FRIENDLYURLENTRY = "SELECT COUNT(*) FROM FriendlyURLEntry friendlyURLEntry";
+	private static final String _SQL_COUNT_FRIENDLYURLENTRY_WHERE = "SELECT COUNT(*) FROM FriendlyURLEntry friendlyURLEntry WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "friendlyURLEntry.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No FriendlyURLEntry exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No FriendlyURLEntry exists with the key {";

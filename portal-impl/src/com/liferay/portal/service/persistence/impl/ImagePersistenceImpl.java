@@ -1222,8 +1222,8 @@ public class ImagePersistenceImpl extends BasePersistenceImpl<Image>
 	private static final String _SQL_SELECT_IMAGE = "SELECT image FROM Image image";
 	private static final String _SQL_SELECT_IMAGE_WHERE_PKS_IN = "SELECT image FROM Image image WHERE imageId IN (";
 	private static final String _SQL_SELECT_IMAGE_WHERE = "SELECT image FROM Image image WHERE ";
-	private static final String _SQL_COUNT_IMAGE = "SELECT COUNT(image) FROM Image image";
-	private static final String _SQL_COUNT_IMAGE_WHERE = "SELECT COUNT(image) FROM Image image WHERE ";
+	private static final String _SQL_COUNT_IMAGE = "SELECT COUNT(*) FROM Image image";
+	private static final String _SQL_COUNT_IMAGE_WHERE = "SELECT COUNT(*) FROM Image image WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "image.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Image exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Image exists with the key {";

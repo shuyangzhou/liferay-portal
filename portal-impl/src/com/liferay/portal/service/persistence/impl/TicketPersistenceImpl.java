@@ -2292,8 +2292,8 @@ public class TicketPersistenceImpl extends BasePersistenceImpl<Ticket>
 	private static final String _SQL_SELECT_TICKET = "SELECT ticket FROM Ticket ticket";
 	private static final String _SQL_SELECT_TICKET_WHERE_PKS_IN = "SELECT ticket FROM Ticket ticket WHERE ticketId IN (";
 	private static final String _SQL_SELECT_TICKET_WHERE = "SELECT ticket FROM Ticket ticket WHERE ";
-	private static final String _SQL_COUNT_TICKET = "SELECT COUNT(ticket) FROM Ticket ticket";
-	private static final String _SQL_COUNT_TICKET_WHERE = "SELECT COUNT(ticket) FROM Ticket ticket WHERE ";
+	private static final String _SQL_COUNT_TICKET = "SELECT COUNT(*) FROM Ticket ticket";
+	private static final String _SQL_COUNT_TICKET_WHERE = "SELECT COUNT(*) FROM Ticket ticket WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "ticket.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Ticket exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Ticket exists with the key {";

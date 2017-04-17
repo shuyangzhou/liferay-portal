@@ -3002,8 +3002,8 @@ public class DLContentPersistenceImpl extends BasePersistenceImpl<DLContent>
 	private static final String _SQL_SELECT_DLCONTENT = "SELECT dlContent FROM DLContent dlContent";
 	private static final String _SQL_SELECT_DLCONTENT_WHERE_PKS_IN = "SELECT dlContent FROM DLContent dlContent WHERE contentId IN (";
 	private static final String _SQL_SELECT_DLCONTENT_WHERE = "SELECT dlContent FROM DLContent dlContent WHERE ";
-	private static final String _SQL_COUNT_DLCONTENT = "SELECT COUNT(dlContent) FROM DLContent dlContent";
-	private static final String _SQL_COUNT_DLCONTENT_WHERE = "SELECT COUNT(dlContent) FROM DLContent dlContent WHERE ";
+	private static final String _SQL_COUNT_DLCONTENT = "SELECT COUNT(*) FROM DLContent dlContent";
+	private static final String _SQL_COUNT_DLCONTENT_WHERE = "SELECT COUNT(*) FROM DLContent dlContent WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "dlContent.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No DLContent exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No DLContent exists with the key {";

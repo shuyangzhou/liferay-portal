@@ -3954,8 +3954,8 @@ public class GadgetPersistenceImpl extends BasePersistenceImpl<Gadget>
 	private static final String _SQL_SELECT_GADGET = "SELECT gadget FROM Gadget gadget";
 	private static final String _SQL_SELECT_GADGET_WHERE_PKS_IN = "SELECT gadget FROM Gadget gadget WHERE gadgetId IN (";
 	private static final String _SQL_SELECT_GADGET_WHERE = "SELECT gadget FROM Gadget gadget WHERE ";
-	private static final String _SQL_COUNT_GADGET = "SELECT COUNT(gadget) FROM Gadget gadget";
-	private static final String _SQL_COUNT_GADGET_WHERE = "SELECT COUNT(gadget) FROM Gadget gadget WHERE ";
+	private static final String _SQL_COUNT_GADGET = "SELECT COUNT(*) FROM Gadget gadget";
+	private static final String _SQL_COUNT_GADGET_WHERE = "SELECT COUNT(*) FROM Gadget gadget WHERE ";
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN = "gadget.gadgetId";
 	private static final String _FILTER_SQL_SELECT_GADGET_WHERE = "SELECT DISTINCT {gadget.*} FROM OpenSocial_Gadget gadget WHERE ";
 	private static final String _FILTER_SQL_SELECT_GADGET_NO_INLINE_DISTINCT_WHERE_1 =

@@ -2490,8 +2490,8 @@ public class MemberRequestPersistenceImpl extends BasePersistenceImpl<MemberRequ
 	private static final String _SQL_SELECT_MEMBERREQUEST = "SELECT memberRequest FROM MemberRequest memberRequest";
 	private static final String _SQL_SELECT_MEMBERREQUEST_WHERE_PKS_IN = "SELECT memberRequest FROM MemberRequest memberRequest WHERE memberRequestId IN (";
 	private static final String _SQL_SELECT_MEMBERREQUEST_WHERE = "SELECT memberRequest FROM MemberRequest memberRequest WHERE ";
-	private static final String _SQL_COUNT_MEMBERREQUEST = "SELECT COUNT(memberRequest) FROM MemberRequest memberRequest";
-	private static final String _SQL_COUNT_MEMBERREQUEST_WHERE = "SELECT COUNT(memberRequest) FROM MemberRequest memberRequest WHERE ";
+	private static final String _SQL_COUNT_MEMBERREQUEST = "SELECT COUNT(*) FROM MemberRequest memberRequest";
+	private static final String _SQL_COUNT_MEMBERREQUEST_WHERE = "SELECT COUNT(*) FROM MemberRequest memberRequest WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "memberRequest.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No MemberRequest exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No MemberRequest exists with the key {";

@@ -1569,8 +1569,8 @@ public class PortletPersistenceImpl extends BasePersistenceImpl<Portlet>
 	private static final String _SQL_SELECT_PORTLET = "SELECT portlet FROM Portlet portlet";
 	private static final String _SQL_SELECT_PORTLET_WHERE_PKS_IN = "SELECT portlet FROM Portlet portlet WHERE id_ IN (";
 	private static final String _SQL_SELECT_PORTLET_WHERE = "SELECT portlet FROM Portlet portlet WHERE ";
-	private static final String _SQL_COUNT_PORTLET = "SELECT COUNT(portlet) FROM Portlet portlet";
-	private static final String _SQL_COUNT_PORTLET_WHERE = "SELECT COUNT(portlet) FROM Portlet portlet WHERE ";
+	private static final String _SQL_COUNT_PORTLET = "SELECT COUNT(*) FROM Portlet portlet";
+	private static final String _SQL_COUNT_PORTLET_WHERE = "SELECT COUNT(*) FROM Portlet portlet WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "portlet.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Portlet exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Portlet exists with the key {";

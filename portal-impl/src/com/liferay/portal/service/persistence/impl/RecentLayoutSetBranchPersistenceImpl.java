@@ -2655,8 +2655,8 @@ public class RecentLayoutSetBranchPersistenceImpl extends BasePersistenceImpl<Re
 	private static final String _SQL_SELECT_RECENTLAYOUTSETBRANCH = "SELECT recentLayoutSetBranch FROM RecentLayoutSetBranch recentLayoutSetBranch";
 	private static final String _SQL_SELECT_RECENTLAYOUTSETBRANCH_WHERE_PKS_IN = "SELECT recentLayoutSetBranch FROM RecentLayoutSetBranch recentLayoutSetBranch WHERE recentLayoutSetBranchId IN (";
 	private static final String _SQL_SELECT_RECENTLAYOUTSETBRANCH_WHERE = "SELECT recentLayoutSetBranch FROM RecentLayoutSetBranch recentLayoutSetBranch WHERE ";
-	private static final String _SQL_COUNT_RECENTLAYOUTSETBRANCH = "SELECT COUNT(recentLayoutSetBranch) FROM RecentLayoutSetBranch recentLayoutSetBranch";
-	private static final String _SQL_COUNT_RECENTLAYOUTSETBRANCH_WHERE = "SELECT COUNT(recentLayoutSetBranch) FROM RecentLayoutSetBranch recentLayoutSetBranch WHERE ";
+	private static final String _SQL_COUNT_RECENTLAYOUTSETBRANCH = "SELECT COUNT(*) FROM RecentLayoutSetBranch recentLayoutSetBranch";
+	private static final String _SQL_COUNT_RECENTLAYOUTSETBRANCH_WHERE = "SELECT COUNT(*) FROM RecentLayoutSetBranch recentLayoutSetBranch WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "recentLayoutSetBranch.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No RecentLayoutSetBranch exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No RecentLayoutSetBranch exists with the key {";

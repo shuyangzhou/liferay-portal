@@ -3286,8 +3286,8 @@ public class CalendarNotificationTemplatePersistenceImpl
 	private static final String _SQL_SELECT_CALENDARNOTIFICATIONTEMPLATE_WHERE_PKS_IN =
 		"SELECT calendarNotificationTemplate FROM CalendarNotificationTemplate calendarNotificationTemplate WHERE calendarNotificationTemplateId IN (";
 	private static final String _SQL_SELECT_CALENDARNOTIFICATIONTEMPLATE_WHERE = "SELECT calendarNotificationTemplate FROM CalendarNotificationTemplate calendarNotificationTemplate WHERE ";
-	private static final String _SQL_COUNT_CALENDARNOTIFICATIONTEMPLATE = "SELECT COUNT(calendarNotificationTemplate) FROM CalendarNotificationTemplate calendarNotificationTemplate";
-	private static final String _SQL_COUNT_CALENDARNOTIFICATIONTEMPLATE_WHERE = "SELECT COUNT(calendarNotificationTemplate) FROM CalendarNotificationTemplate calendarNotificationTemplate WHERE ";
+	private static final String _SQL_COUNT_CALENDARNOTIFICATIONTEMPLATE = "SELECT COUNT(*) FROM CalendarNotificationTemplate calendarNotificationTemplate";
+	private static final String _SQL_COUNT_CALENDARNOTIFICATIONTEMPLATE_WHERE = "SELECT COUNT(*) FROM CalendarNotificationTemplate calendarNotificationTemplate WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "calendarNotificationTemplate.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No CalendarNotificationTemplate exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No CalendarNotificationTemplate exists with the key {";

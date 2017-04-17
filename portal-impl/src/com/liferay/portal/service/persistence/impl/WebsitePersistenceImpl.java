@@ -4864,8 +4864,8 @@ public class WebsitePersistenceImpl extends BasePersistenceImpl<Website>
 	private static final String _SQL_SELECT_WEBSITE = "SELECT website FROM Website website";
 	private static final String _SQL_SELECT_WEBSITE_WHERE_PKS_IN = "SELECT website FROM Website website WHERE websiteId IN (";
 	private static final String _SQL_SELECT_WEBSITE_WHERE = "SELECT website FROM Website website WHERE ";
-	private static final String _SQL_COUNT_WEBSITE = "SELECT COUNT(website) FROM Website website";
-	private static final String _SQL_COUNT_WEBSITE_WHERE = "SELECT COUNT(website) FROM Website website WHERE ";
+	private static final String _SQL_COUNT_WEBSITE = "SELECT COUNT(*) FROM Website website";
+	private static final String _SQL_COUNT_WEBSITE_WHERE = "SELECT COUNT(*) FROM Website website WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "website.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Website exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Website exists with the key {";

@@ -1643,8 +1643,8 @@ public class ListTypePersistenceImpl extends BasePersistenceImpl<ListType>
 	private static final String _SQL_SELECT_LISTTYPE = "SELECT listType FROM ListType listType";
 	private static final String _SQL_SELECT_LISTTYPE_WHERE_PKS_IN = "SELECT listType FROM ListType listType WHERE listTypeId IN (";
 	private static final String _SQL_SELECT_LISTTYPE_WHERE = "SELECT listType FROM ListType listType WHERE ";
-	private static final String _SQL_COUNT_LISTTYPE = "SELECT COUNT(listType) FROM ListType listType";
-	private static final String _SQL_COUNT_LISTTYPE_WHERE = "SELECT COUNT(listType) FROM ListType listType WHERE ";
+	private static final String _SQL_COUNT_LISTTYPE = "SELECT COUNT(*) FROM ListType listType";
+	private static final String _SQL_COUNT_LISTTYPE_WHERE = "SELECT COUNT(*) FROM ListType listType WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "listType.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No ListType exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No ListType exists with the key {";

@@ -1284,8 +1284,8 @@ public class PasswordTrackerPersistenceImpl extends BasePersistenceImpl<Password
 	private static final String _SQL_SELECT_PASSWORDTRACKER = "SELECT passwordTracker FROM PasswordTracker passwordTracker";
 	private static final String _SQL_SELECT_PASSWORDTRACKER_WHERE_PKS_IN = "SELECT passwordTracker FROM PasswordTracker passwordTracker WHERE passwordTrackerId IN (";
 	private static final String _SQL_SELECT_PASSWORDTRACKER_WHERE = "SELECT passwordTracker FROM PasswordTracker passwordTracker WHERE ";
-	private static final String _SQL_COUNT_PASSWORDTRACKER = "SELECT COUNT(passwordTracker) FROM PasswordTracker passwordTracker";
-	private static final String _SQL_COUNT_PASSWORDTRACKER_WHERE = "SELECT COUNT(passwordTracker) FROM PasswordTracker passwordTracker WHERE ";
+	private static final String _SQL_COUNT_PASSWORDTRACKER = "SELECT COUNT(*) FROM PasswordTracker passwordTracker";
+	private static final String _SQL_COUNT_PASSWORDTRACKER_WHERE = "SELECT COUNT(*) FROM PasswordTracker passwordTracker WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "passwordTracker.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No PasswordTracker exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No PasswordTracker exists with the key {";

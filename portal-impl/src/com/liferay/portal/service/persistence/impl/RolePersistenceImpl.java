@@ -10572,8 +10572,8 @@ public class RolePersistenceImpl extends BasePersistenceImpl<Role>
 	private static final String _SQL_SELECT_ROLE = "SELECT role FROM Role role";
 	private static final String _SQL_SELECT_ROLE_WHERE_PKS_IN = "SELECT role FROM Role role WHERE roleId IN (";
 	private static final String _SQL_SELECT_ROLE_WHERE = "SELECT role FROM Role role WHERE ";
-	private static final String _SQL_COUNT_ROLE = "SELECT COUNT(role) FROM Role role";
-	private static final String _SQL_COUNT_ROLE_WHERE = "SELECT COUNT(role) FROM Role role WHERE ";
+	private static final String _SQL_COUNT_ROLE = "SELECT COUNT(*) FROM Role role";
+	private static final String _SQL_COUNT_ROLE_WHERE = "SELECT COUNT(*) FROM Role role WHERE ";
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN = "role.roleId";
 	private static final String _FILTER_SQL_SELECT_ROLE_WHERE = "SELECT DISTINCT {role.*} FROM Role_ role WHERE ";
 	private static final String _FILTER_SQL_SELECT_ROLE_NO_INLINE_DISTINCT_WHERE_1 =

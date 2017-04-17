@@ -2116,8 +2116,8 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	private static final String _SQL_SELECT_MESSAGE = "SELECT message FROM Message message";
 	private static final String _SQL_SELECT_MESSAGE_WHERE_PKS_IN = "SELECT message FROM Message message WHERE messageId IN (";
 	private static final String _SQL_SELECT_MESSAGE_WHERE = "SELECT message FROM Message message WHERE ";
-	private static final String _SQL_COUNT_MESSAGE = "SELECT COUNT(message) FROM Message message";
-	private static final String _SQL_COUNT_MESSAGE_WHERE = "SELECT COUNT(message) FROM Message message WHERE ";
+	private static final String _SQL_COUNT_MESSAGE = "SELECT COUNT(*) FROM Message message";
+	private static final String _SQL_COUNT_MESSAGE_WHERE = "SELECT COUNT(*) FROM Message message WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "message.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Message exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Message exists with the key {";

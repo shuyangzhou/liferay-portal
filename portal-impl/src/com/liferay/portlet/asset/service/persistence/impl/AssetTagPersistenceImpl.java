@@ -5758,8 +5758,8 @@ public class AssetTagPersistenceImpl extends BasePersistenceImpl<AssetTag>
 	private static final String _SQL_SELECT_ASSETTAG = "SELECT assetTag FROM AssetTag assetTag";
 	private static final String _SQL_SELECT_ASSETTAG_WHERE_PKS_IN = "SELECT assetTag FROM AssetTag assetTag WHERE tagId IN (";
 	private static final String _SQL_SELECT_ASSETTAG_WHERE = "SELECT assetTag FROM AssetTag assetTag WHERE ";
-	private static final String _SQL_COUNT_ASSETTAG = "SELECT COUNT(assetTag) FROM AssetTag assetTag";
-	private static final String _SQL_COUNT_ASSETTAG_WHERE = "SELECT COUNT(assetTag) FROM AssetTag assetTag WHERE ";
+	private static final String _SQL_COUNT_ASSETTAG = "SELECT COUNT(*) FROM AssetTag assetTag";
+	private static final String _SQL_COUNT_ASSETTAG_WHERE = "SELECT COUNT(*) FROM AssetTag assetTag WHERE ";
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN = "assetTag.tagId";
 	private static final String _FILTER_SQL_SELECT_ASSETTAG_WHERE = "SELECT DISTINCT {assetTag.*} FROM AssetTag assetTag WHERE ";
 	private static final String _FILTER_SQL_SELECT_ASSETTAG_NO_INLINE_DISTINCT_WHERE_1 =

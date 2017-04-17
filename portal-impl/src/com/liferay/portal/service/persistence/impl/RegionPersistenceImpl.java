@@ -2650,8 +2650,8 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 	private static final String _SQL_SELECT_REGION = "SELECT region FROM Region region";
 	private static final String _SQL_SELECT_REGION_WHERE_PKS_IN = "SELECT region FROM Region region WHERE regionId IN (";
 	private static final String _SQL_SELECT_REGION_WHERE = "SELECT region FROM Region region WHERE ";
-	private static final String _SQL_COUNT_REGION = "SELECT COUNT(region) FROM Region region";
-	private static final String _SQL_COUNT_REGION_WHERE = "SELECT COUNT(region) FROM Region region WHERE ";
+	private static final String _SQL_COUNT_REGION = "SELECT COUNT(*) FROM Region region";
+	private static final String _SQL_COUNT_REGION_WHERE = "SELECT COUNT(*) FROM Region region WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "region.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Region exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Region exists with the key {";

@@ -4289,8 +4289,8 @@ public class ModulePersistenceImpl extends BasePersistenceImpl<Module>
 	private static final String _SQL_SELECT_MODULE = "SELECT module FROM Module module";
 	private static final String _SQL_SELECT_MODULE_WHERE_PKS_IN = "SELECT module FROM Module module WHERE moduleId IN (";
 	private static final String _SQL_SELECT_MODULE_WHERE = "SELECT module FROM Module module WHERE ";
-	private static final String _SQL_COUNT_MODULE = "SELECT COUNT(module) FROM Module module";
-	private static final String _SQL_COUNT_MODULE_WHERE = "SELECT COUNT(module) FROM Module module WHERE ";
+	private static final String _SQL_COUNT_MODULE = "SELECT COUNT(*) FROM Module module";
+	private static final String _SQL_COUNT_MODULE_WHERE = "SELECT COUNT(*) FROM Module module WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "module.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Module exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Module exists with the key {";

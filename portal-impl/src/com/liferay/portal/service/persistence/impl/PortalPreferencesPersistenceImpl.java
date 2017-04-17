@@ -1028,8 +1028,8 @@ public class PortalPreferencesPersistenceImpl extends BasePersistenceImpl<Portal
 	private static final String _SQL_SELECT_PORTALPREFERENCES = "SELECT portalPreferences FROM PortalPreferences portalPreferences";
 	private static final String _SQL_SELECT_PORTALPREFERENCES_WHERE_PKS_IN = "SELECT portalPreferences FROM PortalPreferences portalPreferences WHERE portalPreferencesId IN (";
 	private static final String _SQL_SELECT_PORTALPREFERENCES_WHERE = "SELECT portalPreferences FROM PortalPreferences portalPreferences WHERE ";
-	private static final String _SQL_COUNT_PORTALPREFERENCES = "SELECT COUNT(portalPreferences) FROM PortalPreferences portalPreferences";
-	private static final String _SQL_COUNT_PORTALPREFERENCES_WHERE = "SELECT COUNT(portalPreferences) FROM PortalPreferences portalPreferences WHERE ";
+	private static final String _SQL_COUNT_PORTALPREFERENCES = "SELECT COUNT(*) FROM PortalPreferences portalPreferences";
+	private static final String _SQL_COUNT_PORTALPREFERENCES_WHERE = "SELECT COUNT(*) FROM PortalPreferences portalPreferences WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "portalPreferences.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No PortalPreferences exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No PortalPreferences exists with the key {";

@@ -7338,8 +7338,8 @@ public class SocialRequestPersistenceImpl extends BasePersistenceImpl<SocialRequ
 	private static final String _SQL_SELECT_SOCIALREQUEST = "SELECT socialRequest FROM SocialRequest socialRequest";
 	private static final String _SQL_SELECT_SOCIALREQUEST_WHERE_PKS_IN = "SELECT socialRequest FROM SocialRequest socialRequest WHERE requestId IN (";
 	private static final String _SQL_SELECT_SOCIALREQUEST_WHERE = "SELECT socialRequest FROM SocialRequest socialRequest WHERE ";
-	private static final String _SQL_COUNT_SOCIALREQUEST = "SELECT COUNT(socialRequest) FROM SocialRequest socialRequest";
-	private static final String _SQL_COUNT_SOCIALREQUEST_WHERE = "SELECT COUNT(socialRequest) FROM SocialRequest socialRequest WHERE ";
+	private static final String _SQL_COUNT_SOCIALREQUEST = "SELECT COUNT(*) FROM SocialRequest socialRequest";
+	private static final String _SQL_COUNT_SOCIALREQUEST_WHERE = "SELECT COUNT(*) FROM SocialRequest socialRequest WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "socialRequest.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No SocialRequest exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No SocialRequest exists with the key {";

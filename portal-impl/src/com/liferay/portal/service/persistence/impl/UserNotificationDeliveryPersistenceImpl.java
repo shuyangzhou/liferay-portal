@@ -1706,8 +1706,8 @@ public class UserNotificationDeliveryPersistenceImpl extends BasePersistenceImpl
 	private static final String _SQL_SELECT_USERNOTIFICATIONDELIVERY_WHERE_PKS_IN =
 		"SELECT userNotificationDelivery FROM UserNotificationDelivery userNotificationDelivery WHERE userNotificationDeliveryId IN (";
 	private static final String _SQL_SELECT_USERNOTIFICATIONDELIVERY_WHERE = "SELECT userNotificationDelivery FROM UserNotificationDelivery userNotificationDelivery WHERE ";
-	private static final String _SQL_COUNT_USERNOTIFICATIONDELIVERY = "SELECT COUNT(userNotificationDelivery) FROM UserNotificationDelivery userNotificationDelivery";
-	private static final String _SQL_COUNT_USERNOTIFICATIONDELIVERY_WHERE = "SELECT COUNT(userNotificationDelivery) FROM UserNotificationDelivery userNotificationDelivery WHERE ";
+	private static final String _SQL_COUNT_USERNOTIFICATIONDELIVERY = "SELECT COUNT(*) FROM UserNotificationDelivery userNotificationDelivery";
+	private static final String _SQL_COUNT_USERNOTIFICATIONDELIVERY_WHERE = "SELECT COUNT(*) FROM UserNotificationDelivery userNotificationDelivery WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "userNotificationDelivery.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No UserNotificationDelivery exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No UserNotificationDelivery exists with the key {";

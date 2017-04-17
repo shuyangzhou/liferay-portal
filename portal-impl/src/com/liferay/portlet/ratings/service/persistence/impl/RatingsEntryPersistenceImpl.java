@@ -3464,8 +3464,8 @@ public class RatingsEntryPersistenceImpl extends BasePersistenceImpl<RatingsEntr
 	private static final String _SQL_SELECT_RATINGSENTRY = "SELECT ratingsEntry FROM RatingsEntry ratingsEntry";
 	private static final String _SQL_SELECT_RATINGSENTRY_WHERE_PKS_IN = "SELECT ratingsEntry FROM RatingsEntry ratingsEntry WHERE entryId IN (";
 	private static final String _SQL_SELECT_RATINGSENTRY_WHERE = "SELECT ratingsEntry FROM RatingsEntry ratingsEntry WHERE ";
-	private static final String _SQL_COUNT_RATINGSENTRY = "SELECT COUNT(ratingsEntry) FROM RatingsEntry ratingsEntry";
-	private static final String _SQL_COUNT_RATINGSENTRY_WHERE = "SELECT COUNT(ratingsEntry) FROM RatingsEntry ratingsEntry WHERE ";
+	private static final String _SQL_COUNT_RATINGSENTRY = "SELECT COUNT(*) FROM RatingsEntry ratingsEntry";
+	private static final String _SQL_COUNT_RATINGSENTRY_WHERE = "SELECT COUNT(*) FROM RatingsEntry ratingsEntry WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "ratingsEntry.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No RatingsEntry exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No RatingsEntry exists with the key {";

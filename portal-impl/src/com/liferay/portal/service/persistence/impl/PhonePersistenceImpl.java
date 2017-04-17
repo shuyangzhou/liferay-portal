@@ -4835,8 +4835,8 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 	private static final String _SQL_SELECT_PHONE = "SELECT phone FROM Phone phone";
 	private static final String _SQL_SELECT_PHONE_WHERE_PKS_IN = "SELECT phone FROM Phone phone WHERE phoneId IN (";
 	private static final String _SQL_SELECT_PHONE_WHERE = "SELECT phone FROM Phone phone WHERE ";
-	private static final String _SQL_COUNT_PHONE = "SELECT COUNT(phone) FROM Phone phone";
-	private static final String _SQL_COUNT_PHONE_WHERE = "SELECT COUNT(phone) FROM Phone phone WHERE ";
+	private static final String _SQL_COUNT_PHONE = "SELECT COUNT(*) FROM Phone phone";
+	private static final String _SQL_COUNT_PHONE_WHERE = "SELECT COUNT(*) FROM Phone phone WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "phone.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Phone exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Phone exists with the key {";

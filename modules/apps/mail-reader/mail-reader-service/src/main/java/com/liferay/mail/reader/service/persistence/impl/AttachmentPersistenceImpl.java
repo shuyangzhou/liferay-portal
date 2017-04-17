@@ -1282,8 +1282,8 @@ public class AttachmentPersistenceImpl extends BasePersistenceImpl<Attachment>
 	private static final String _SQL_SELECT_ATTACHMENT = "SELECT attachment FROM Attachment attachment";
 	private static final String _SQL_SELECT_ATTACHMENT_WHERE_PKS_IN = "SELECT attachment FROM Attachment attachment WHERE attachmentId IN (";
 	private static final String _SQL_SELECT_ATTACHMENT_WHERE = "SELECT attachment FROM Attachment attachment WHERE ";
-	private static final String _SQL_COUNT_ATTACHMENT = "SELECT COUNT(attachment) FROM Attachment attachment";
-	private static final String _SQL_COUNT_ATTACHMENT_WHERE = "SELECT COUNT(attachment) FROM Attachment attachment WHERE ";
+	private static final String _SQL_COUNT_ATTACHMENT = "SELECT COUNT(*) FROM Attachment attachment";
+	private static final String _SQL_COUNT_ATTACHMENT_WHERE = "SELECT COUNT(*) FROM Attachment attachment WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "attachment.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Attachment exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Attachment exists with the key {";

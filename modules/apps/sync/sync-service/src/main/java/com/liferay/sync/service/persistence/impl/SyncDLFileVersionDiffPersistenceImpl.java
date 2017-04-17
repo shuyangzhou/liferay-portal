@@ -2159,8 +2159,8 @@ public class SyncDLFileVersionDiffPersistenceImpl extends BasePersistenceImpl<Sy
 	private static final String _SQL_SELECT_SYNCDLFILEVERSIONDIFF = "SELECT syncDLFileVersionDiff FROM SyncDLFileVersionDiff syncDLFileVersionDiff";
 	private static final String _SQL_SELECT_SYNCDLFILEVERSIONDIFF_WHERE_PKS_IN = "SELECT syncDLFileVersionDiff FROM SyncDLFileVersionDiff syncDLFileVersionDiff WHERE syncDLFileVersionDiffId IN (";
 	private static final String _SQL_SELECT_SYNCDLFILEVERSIONDIFF_WHERE = "SELECT syncDLFileVersionDiff FROM SyncDLFileVersionDiff syncDLFileVersionDiff WHERE ";
-	private static final String _SQL_COUNT_SYNCDLFILEVERSIONDIFF = "SELECT COUNT(syncDLFileVersionDiff) FROM SyncDLFileVersionDiff syncDLFileVersionDiff";
-	private static final String _SQL_COUNT_SYNCDLFILEVERSIONDIFF_WHERE = "SELECT COUNT(syncDLFileVersionDiff) FROM SyncDLFileVersionDiff syncDLFileVersionDiff WHERE ";
+	private static final String _SQL_COUNT_SYNCDLFILEVERSIONDIFF = "SELECT COUNT(*) FROM SyncDLFileVersionDiff syncDLFileVersionDiff";
+	private static final String _SQL_COUNT_SYNCDLFILEVERSIONDIFF_WHERE = "SELECT COUNT(*) FROM SyncDLFileVersionDiff syncDLFileVersionDiff WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "syncDLFileVersionDiff.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No SyncDLFileVersionDiff exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No SyncDLFileVersionDiff exists with the key {";

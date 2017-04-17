@@ -1053,8 +1053,8 @@ public class ReleasePersistenceImpl extends BasePersistenceImpl<Release>
 	private static final String _SQL_SELECT_RELEASE = "SELECT release FROM Release release";
 	private static final String _SQL_SELECT_RELEASE_WHERE_PKS_IN = "SELECT release FROM Release release WHERE releaseId IN (";
 	private static final String _SQL_SELECT_RELEASE_WHERE = "SELECT release FROM Release release WHERE ";
-	private static final String _SQL_COUNT_RELEASE = "SELECT COUNT(release) FROM Release release";
-	private static final String _SQL_COUNT_RELEASE_WHERE = "SELECT COUNT(release) FROM Release release WHERE ";
+	private static final String _SQL_COUNT_RELEASE = "SELECT COUNT(*) FROM Release release";
+	private static final String _SQL_COUNT_RELEASE_WHERE = "SELECT COUNT(*) FROM Release release WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "release.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Release exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Release exists with the key {";

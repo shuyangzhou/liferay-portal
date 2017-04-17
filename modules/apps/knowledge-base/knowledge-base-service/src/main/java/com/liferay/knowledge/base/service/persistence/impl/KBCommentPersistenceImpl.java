@@ -6060,8 +6060,8 @@ public class KBCommentPersistenceImpl extends BasePersistenceImpl<KBComment>
 	private static final String _SQL_SELECT_KBCOMMENT = "SELECT kbComment FROM KBComment kbComment";
 	private static final String _SQL_SELECT_KBCOMMENT_WHERE_PKS_IN = "SELECT kbComment FROM KBComment kbComment WHERE kbCommentId IN (";
 	private static final String _SQL_SELECT_KBCOMMENT_WHERE = "SELECT kbComment FROM KBComment kbComment WHERE ";
-	private static final String _SQL_COUNT_KBCOMMENT = "SELECT COUNT(kbComment) FROM KBComment kbComment";
-	private static final String _SQL_COUNT_KBCOMMENT_WHERE = "SELECT COUNT(kbComment) FROM KBComment kbComment WHERE ";
+	private static final String _SQL_COUNT_KBCOMMENT = "SELECT COUNT(*) FROM KBComment kbComment";
+	private static final String _SQL_COUNT_KBCOMMENT_WHERE = "SELECT COUNT(*) FROM KBComment kbComment WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "kbComment.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No KBComment exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No KBComment exists with the key {";

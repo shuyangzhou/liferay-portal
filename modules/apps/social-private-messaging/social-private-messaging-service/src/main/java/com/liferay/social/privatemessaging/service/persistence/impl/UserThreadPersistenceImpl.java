@@ -3305,8 +3305,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 	private static final String _SQL_SELECT_USERTHREAD = "SELECT userThread FROM UserThread userThread";
 	private static final String _SQL_SELECT_USERTHREAD_WHERE_PKS_IN = "SELECT userThread FROM UserThread userThread WHERE userThreadId IN (";
 	private static final String _SQL_SELECT_USERTHREAD_WHERE = "SELECT userThread FROM UserThread userThread WHERE ";
-	private static final String _SQL_COUNT_USERTHREAD = "SELECT COUNT(userThread) FROM UserThread userThread";
-	private static final String _SQL_COUNT_USERTHREAD_WHERE = "SELECT COUNT(userThread) FROM UserThread userThread WHERE ";
+	private static final String _SQL_COUNT_USERTHREAD = "SELECT COUNT(*) FROM UserThread userThread";
+	private static final String _SQL_COUNT_USERTHREAD_WHERE = "SELECT COUNT(*) FROM UserThread userThread WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "userThread.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No UserThread exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No UserThread exists with the key {";

@@ -1286,8 +1286,8 @@ public class ShoppingItemFieldPersistenceImpl extends BasePersistenceImpl<Shoppi
 	private static final String _SQL_SELECT_SHOPPINGITEMFIELD = "SELECT shoppingItemField FROM ShoppingItemField shoppingItemField";
 	private static final String _SQL_SELECT_SHOPPINGITEMFIELD_WHERE_PKS_IN = "SELECT shoppingItemField FROM ShoppingItemField shoppingItemField WHERE itemFieldId IN (";
 	private static final String _SQL_SELECT_SHOPPINGITEMFIELD_WHERE = "SELECT shoppingItemField FROM ShoppingItemField shoppingItemField WHERE ";
-	private static final String _SQL_COUNT_SHOPPINGITEMFIELD = "SELECT COUNT(shoppingItemField) FROM ShoppingItemField shoppingItemField";
-	private static final String _SQL_COUNT_SHOPPINGITEMFIELD_WHERE = "SELECT COUNT(shoppingItemField) FROM ShoppingItemField shoppingItemField WHERE ";
+	private static final String _SQL_COUNT_SHOPPINGITEMFIELD = "SELECT COUNT(*) FROM ShoppingItemField shoppingItemField";
+	private static final String _SQL_COUNT_SHOPPINGITEMFIELD_WHERE = "SELECT COUNT(*) FROM ShoppingItemField shoppingItemField WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "shoppingItemField.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No ShoppingItemField exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No ShoppingItemField exists with the key {";

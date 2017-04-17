@@ -5267,8 +5267,8 @@ public class EntryPersistenceImpl extends BasePersistenceImpl<Entry>
 	private static final String _SQL_SELECT_ENTRY = "SELECT entry FROM Entry entry";
 	private static final String _SQL_SELECT_ENTRY_WHERE_PKS_IN = "SELECT entry FROM Entry entry WHERE entryId IN (";
 	private static final String _SQL_SELECT_ENTRY_WHERE = "SELECT entry FROM Entry entry WHERE ";
-	private static final String _SQL_COUNT_ENTRY = "SELECT COUNT(entry) FROM Entry entry";
-	private static final String _SQL_COUNT_ENTRY_WHERE = "SELECT COUNT(entry) FROM Entry entry WHERE ";
+	private static final String _SQL_COUNT_ENTRY = "SELECT COUNT(*) FROM Entry entry";
+	private static final String _SQL_COUNT_ENTRY_WHERE = "SELECT COUNT(*) FROM Entry entry WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "entry.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Entry exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Entry exists with the key {";

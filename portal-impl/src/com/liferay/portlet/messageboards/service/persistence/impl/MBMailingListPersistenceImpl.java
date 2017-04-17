@@ -3087,8 +3087,8 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 	private static final String _SQL_SELECT_MBMAILINGLIST = "SELECT mbMailingList FROM MBMailingList mbMailingList";
 	private static final String _SQL_SELECT_MBMAILINGLIST_WHERE_PKS_IN = "SELECT mbMailingList FROM MBMailingList mbMailingList WHERE mailingListId IN (";
 	private static final String _SQL_SELECT_MBMAILINGLIST_WHERE = "SELECT mbMailingList FROM MBMailingList mbMailingList WHERE ";
-	private static final String _SQL_COUNT_MBMAILINGLIST = "SELECT COUNT(mbMailingList) FROM MBMailingList mbMailingList";
-	private static final String _SQL_COUNT_MBMAILINGLIST_WHERE = "SELECT COUNT(mbMailingList) FROM MBMailingList mbMailingList WHERE ";
+	private static final String _SQL_COUNT_MBMAILINGLIST = "SELECT COUNT(*) FROM MBMailingList mbMailingList";
+	private static final String _SQL_COUNT_MBMAILINGLIST_WHERE = "SELECT COUNT(*) FROM MBMailingList mbMailingList WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "mbMailingList.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No MBMailingList exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No MBMailingList exists with the key {";

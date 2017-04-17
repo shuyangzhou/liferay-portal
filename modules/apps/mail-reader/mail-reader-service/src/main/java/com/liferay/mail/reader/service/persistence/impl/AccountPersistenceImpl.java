@@ -1625,8 +1625,8 @@ public class AccountPersistenceImpl extends BasePersistenceImpl<Account>
 	private static final String _SQL_SELECT_ACCOUNT = "SELECT account FROM Account account";
 	private static final String _SQL_SELECT_ACCOUNT_WHERE_PKS_IN = "SELECT account FROM Account account WHERE accountId IN (";
 	private static final String _SQL_SELECT_ACCOUNT_WHERE = "SELECT account FROM Account account WHERE ";
-	private static final String _SQL_COUNT_ACCOUNT = "SELECT COUNT(account) FROM Account account";
-	private static final String _SQL_COUNT_ACCOUNT_WHERE = "SELECT COUNT(account) FROM Account account WHERE ";
+	private static final String _SQL_COUNT_ACCOUNT = "SELECT COUNT(*) FROM Account account";
+	private static final String _SQL_COUNT_ACCOUNT_WHERE = "SELECT COUNT(*) FROM Account account WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "account.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Account exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Account exists with the key {";

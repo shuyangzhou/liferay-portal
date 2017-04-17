@@ -4922,8 +4922,8 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 	private static final String _SQL_SELECT_SAPENTRY = "SELECT sapEntry FROM SAPEntry sapEntry";
 	private static final String _SQL_SELECT_SAPENTRY_WHERE_PKS_IN = "SELECT sapEntry FROM SAPEntry sapEntry WHERE sapEntryId IN (";
 	private static final String _SQL_SELECT_SAPENTRY_WHERE = "SELECT sapEntry FROM SAPEntry sapEntry WHERE ";
-	private static final String _SQL_COUNT_SAPENTRY = "SELECT COUNT(sapEntry) FROM SAPEntry sapEntry";
-	private static final String _SQL_COUNT_SAPENTRY_WHERE = "SELECT COUNT(sapEntry) FROM SAPEntry sapEntry WHERE ";
+	private static final String _SQL_COUNT_SAPENTRY = "SELECT COUNT(*) FROM SAPEntry sapEntry";
+	private static final String _SQL_COUNT_SAPENTRY_WHERE = "SELECT COUNT(*) FROM SAPEntry sapEntry WHERE ";
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN = "sapEntry.sapEntryId";
 	private static final String _FILTER_SQL_SELECT_SAPENTRY_WHERE = "SELECT DISTINCT {sapEntry.*} FROM SAPEntry sapEntry WHERE ";
 	private static final String _FILTER_SQL_SELECT_SAPENTRY_NO_INLINE_DISTINCT_WHERE_1 =

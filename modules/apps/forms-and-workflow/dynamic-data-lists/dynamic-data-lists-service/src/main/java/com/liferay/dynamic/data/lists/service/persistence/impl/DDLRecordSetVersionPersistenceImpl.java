@@ -2200,8 +2200,8 @@ public class DDLRecordSetVersionPersistenceImpl extends BasePersistenceImpl<DDLR
 	private static final String _SQL_SELECT_DDLRECORDSETVERSION = "SELECT ddlRecordSetVersion FROM DDLRecordSetVersion ddlRecordSetVersion";
 	private static final String _SQL_SELECT_DDLRECORDSETVERSION_WHERE_PKS_IN = "SELECT ddlRecordSetVersion FROM DDLRecordSetVersion ddlRecordSetVersion WHERE recordSetVersionId IN (";
 	private static final String _SQL_SELECT_DDLRECORDSETVERSION_WHERE = "SELECT ddlRecordSetVersion FROM DDLRecordSetVersion ddlRecordSetVersion WHERE ";
-	private static final String _SQL_COUNT_DDLRECORDSETVERSION = "SELECT COUNT(ddlRecordSetVersion) FROM DDLRecordSetVersion ddlRecordSetVersion";
-	private static final String _SQL_COUNT_DDLRECORDSETVERSION_WHERE = "SELECT COUNT(ddlRecordSetVersion) FROM DDLRecordSetVersion ddlRecordSetVersion WHERE ";
+	private static final String _SQL_COUNT_DDLRECORDSETVERSION = "SELECT COUNT(*) FROM DDLRecordSetVersion ddlRecordSetVersion";
+	private static final String _SQL_COUNT_DDLRECORDSETVERSION_WHERE = "SELECT COUNT(*) FROM DDLRecordSetVersion ddlRecordSetVersion WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "ddlRecordSetVersion.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No DDLRecordSetVersion exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No DDLRecordSetVersion exists with the key {";

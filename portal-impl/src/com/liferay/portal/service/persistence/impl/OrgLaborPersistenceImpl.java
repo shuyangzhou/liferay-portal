@@ -1290,8 +1290,8 @@ public class OrgLaborPersistenceImpl extends BasePersistenceImpl<OrgLabor>
 	private static final String _SQL_SELECT_ORGLABOR = "SELECT orgLabor FROM OrgLabor orgLabor";
 	private static final String _SQL_SELECT_ORGLABOR_WHERE_PKS_IN = "SELECT orgLabor FROM OrgLabor orgLabor WHERE orgLaborId IN (";
 	private static final String _SQL_SELECT_ORGLABOR_WHERE = "SELECT orgLabor FROM OrgLabor orgLabor WHERE ";
-	private static final String _SQL_COUNT_ORGLABOR = "SELECT COUNT(orgLabor) FROM OrgLabor orgLabor";
-	private static final String _SQL_COUNT_ORGLABOR_WHERE = "SELECT COUNT(orgLabor) FROM OrgLabor orgLabor WHERE ";
+	private static final String _SQL_COUNT_ORGLABOR = "SELECT COUNT(*) FROM OrgLabor orgLabor";
+	private static final String _SQL_COUNT_ORGLABOR_WHERE = "SELECT COUNT(*) FROM OrgLabor orgLabor WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "orgLabor.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No OrgLabor exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No OrgLabor exists with the key {";

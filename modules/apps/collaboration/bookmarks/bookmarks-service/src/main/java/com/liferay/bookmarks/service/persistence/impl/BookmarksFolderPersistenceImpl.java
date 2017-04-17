@@ -7966,8 +7966,8 @@ public class BookmarksFolderPersistenceImpl extends BasePersistenceImpl<Bookmark
 	private static final String _SQL_SELECT_BOOKMARKSFOLDER = "SELECT bookmarksFolder FROM BookmarksFolder bookmarksFolder";
 	private static final String _SQL_SELECT_BOOKMARKSFOLDER_WHERE_PKS_IN = "SELECT bookmarksFolder FROM BookmarksFolder bookmarksFolder WHERE folderId IN (";
 	private static final String _SQL_SELECT_BOOKMARKSFOLDER_WHERE = "SELECT bookmarksFolder FROM BookmarksFolder bookmarksFolder WHERE ";
-	private static final String _SQL_COUNT_BOOKMARKSFOLDER = "SELECT COUNT(bookmarksFolder) FROM BookmarksFolder bookmarksFolder";
-	private static final String _SQL_COUNT_BOOKMARKSFOLDER_WHERE = "SELECT COUNT(bookmarksFolder) FROM BookmarksFolder bookmarksFolder WHERE ";
+	private static final String _SQL_COUNT_BOOKMARKSFOLDER = "SELECT COUNT(*) FROM BookmarksFolder bookmarksFolder";
+	private static final String _SQL_COUNT_BOOKMARKSFOLDER_WHERE = "SELECT COUNT(*) FROM BookmarksFolder bookmarksFolder WHERE ";
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN = "bookmarksFolder.folderId";
 	private static final String _FILTER_ENTITY_TABLE_FILTER_USERID_COLUMN = "bookmarksFolder.userId";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "bookmarksFolder.";

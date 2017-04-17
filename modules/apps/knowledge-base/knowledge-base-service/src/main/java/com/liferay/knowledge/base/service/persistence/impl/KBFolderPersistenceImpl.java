@@ -3884,8 +3884,8 @@ public class KBFolderPersistenceImpl extends BasePersistenceImpl<KBFolder>
 	private static final String _SQL_SELECT_KBFOLDER = "SELECT kbFolder FROM KBFolder kbFolder";
 	private static final String _SQL_SELECT_KBFOLDER_WHERE_PKS_IN = "SELECT kbFolder FROM KBFolder kbFolder WHERE kbFolderId IN (";
 	private static final String _SQL_SELECT_KBFOLDER_WHERE = "SELECT kbFolder FROM KBFolder kbFolder WHERE ";
-	private static final String _SQL_COUNT_KBFOLDER = "SELECT COUNT(kbFolder) FROM KBFolder kbFolder";
-	private static final String _SQL_COUNT_KBFOLDER_WHERE = "SELECT COUNT(kbFolder) FROM KBFolder kbFolder WHERE ";
+	private static final String _SQL_COUNT_KBFOLDER = "SELECT COUNT(*) FROM KBFolder kbFolder";
+	private static final String _SQL_COUNT_KBFOLDER_WHERE = "SELECT COUNT(*) FROM KBFolder kbFolder WHERE ";
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN = "kbFolder.kbFolderId";
 	private static final String _FILTER_SQL_SELECT_KBFOLDER_WHERE = "SELECT DISTINCT {kbFolder.*} FROM KBFolder kbFolder WHERE ";
 	private static final String _FILTER_SQL_SELECT_KBFOLDER_NO_INLINE_DISTINCT_WHERE_1 =

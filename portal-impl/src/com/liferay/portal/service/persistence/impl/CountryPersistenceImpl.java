@@ -2045,8 +2045,8 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 	private static final String _SQL_SELECT_COUNTRY = "SELECT country FROM Country country";
 	private static final String _SQL_SELECT_COUNTRY_WHERE_PKS_IN = "SELECT country FROM Country country WHERE countryId IN (";
 	private static final String _SQL_SELECT_COUNTRY_WHERE = "SELECT country FROM Country country WHERE ";
-	private static final String _SQL_COUNT_COUNTRY = "SELECT COUNT(country) FROM Country country";
-	private static final String _SQL_COUNT_COUNTRY_WHERE = "SELECT COUNT(country) FROM Country country WHERE ";
+	private static final String _SQL_COUNT_COUNTRY = "SELECT COUNT(*) FROM Country country";
+	private static final String _SQL_COUNT_COUNTRY_WHERE = "SELECT COUNT(*) FROM Country country WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "country.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Country exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Country exists with the key {";

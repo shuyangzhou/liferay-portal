@@ -2038,8 +2038,8 @@ public class CompanyPersistenceImpl extends BasePersistenceImpl<Company>
 	private static final String _SQL_SELECT_COMPANY = "SELECT company FROM Company company";
 	private static final String _SQL_SELECT_COMPANY_WHERE_PKS_IN = "SELECT company FROM Company company WHERE companyId IN (";
 	private static final String _SQL_SELECT_COMPANY_WHERE = "SELECT company FROM Company company WHERE ";
-	private static final String _SQL_COUNT_COMPANY = "SELECT COUNT(company) FROM Company company";
-	private static final String _SQL_COUNT_COMPANY_WHERE = "SELECT COUNT(company) FROM Company company WHERE ";
+	private static final String _SQL_COUNT_COMPANY = "SELECT COUNT(*) FROM Company company";
+	private static final String _SQL_COUNT_COMPANY_WHERE = "SELECT COUNT(*) FROM Company company WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "company.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Company exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Company exists with the key {";

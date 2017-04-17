@@ -7148,8 +7148,8 @@ public class SyncDLObjectPersistenceImpl extends BasePersistenceImpl<SyncDLObjec
 	private static final String _SQL_SELECT_SYNCDLOBJECT = "SELECT syncDLObject FROM SyncDLObject syncDLObject";
 	private static final String _SQL_SELECT_SYNCDLOBJECT_WHERE_PKS_IN = "SELECT syncDLObject FROM SyncDLObject syncDLObject WHERE syncDLObjectId IN (";
 	private static final String _SQL_SELECT_SYNCDLOBJECT_WHERE = "SELECT syncDLObject FROM SyncDLObject syncDLObject WHERE ";
-	private static final String _SQL_COUNT_SYNCDLOBJECT = "SELECT COUNT(syncDLObject) FROM SyncDLObject syncDLObject";
-	private static final String _SQL_COUNT_SYNCDLOBJECT_WHERE = "SELECT COUNT(syncDLObject) FROM SyncDLObject syncDLObject WHERE ";
+	private static final String _SQL_COUNT_SYNCDLOBJECT = "SELECT COUNT(*) FROM SyncDLObject syncDLObject";
+	private static final String _SQL_COUNT_SYNCDLOBJECT_WHERE = "SELECT COUNT(*) FROM SyncDLObject syncDLObject WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "syncDLObject.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No SyncDLObject exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No SyncDLObject exists with the key {";

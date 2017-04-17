@@ -1001,8 +1001,8 @@ public class ClassNamePersistenceImpl extends BasePersistenceImpl<ClassName>
 	private static final String _SQL_SELECT_CLASSNAME = "SELECT className FROM ClassName className";
 	private static final String _SQL_SELECT_CLASSNAME_WHERE_PKS_IN = "SELECT className FROM ClassName className WHERE classNameId IN (";
 	private static final String _SQL_SELECT_CLASSNAME_WHERE = "SELECT className FROM ClassName className WHERE ";
-	private static final String _SQL_COUNT_CLASSNAME = "SELECT COUNT(className) FROM ClassName className";
-	private static final String _SQL_COUNT_CLASSNAME_WHERE = "SELECT COUNT(className) FROM ClassName className WHERE ";
+	private static final String _SQL_COUNT_CLASSNAME = "SELECT COUNT(*) FROM ClassName className";
+	private static final String _SQL_COUNT_CLASSNAME_WHERE = "SELECT COUNT(*) FROM ClassName className WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "className.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No ClassName exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No ClassName exists with the key {";

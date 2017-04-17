@@ -2788,8 +2788,8 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 	private static final String _SQL_SELECT_LOCK = "SELECT lock FROM Lock lock";
 	private static final String _SQL_SELECT_LOCK_WHERE_PKS_IN = "SELECT lock FROM Lock lock WHERE lockId IN (";
 	private static final String _SQL_SELECT_LOCK_WHERE = "SELECT lock FROM Lock lock WHERE ";
-	private static final String _SQL_COUNT_LOCK = "SELECT COUNT(lock) FROM Lock lock";
-	private static final String _SQL_COUNT_LOCK_WHERE = "SELECT COUNT(lock) FROM Lock lock WHERE ";
+	private static final String _SQL_COUNT_LOCK = "SELECT COUNT(*) FROM Lock lock";
+	private static final String _SQL_COUNT_LOCK_WHERE = "SELECT COUNT(*) FROM Lock lock WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "lock.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Lock exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Lock exists with the key {";

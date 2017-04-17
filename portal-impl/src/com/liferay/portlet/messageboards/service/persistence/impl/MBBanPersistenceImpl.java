@@ -4062,8 +4062,8 @@ public class MBBanPersistenceImpl extends BasePersistenceImpl<MBBan>
 	private static final String _SQL_SELECT_MBBAN = "SELECT mbBan FROM MBBan mbBan";
 	private static final String _SQL_SELECT_MBBAN_WHERE_PKS_IN = "SELECT mbBan FROM MBBan mbBan WHERE banId IN (";
 	private static final String _SQL_SELECT_MBBAN_WHERE = "SELECT mbBan FROM MBBan mbBan WHERE ";
-	private static final String _SQL_COUNT_MBBAN = "SELECT COUNT(mbBan) FROM MBBan mbBan";
-	private static final String _SQL_COUNT_MBBAN_WHERE = "SELECT COUNT(mbBan) FROM MBBan mbBan WHERE ";
+	private static final String _SQL_COUNT_MBBAN = "SELECT COUNT(*) FROM MBBan mbBan";
+	private static final String _SQL_COUNT_MBBAN_WHERE = "SELECT COUNT(*) FROM MBBan mbBan WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "mbBan.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No MBBan exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No MBBan exists with the key {";

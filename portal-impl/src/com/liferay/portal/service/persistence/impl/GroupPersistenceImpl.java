@@ -11913,8 +11913,8 @@ public class GroupPersistenceImpl extends BasePersistenceImpl<Group>
 	private static final String _SQL_SELECT_GROUP_ = "SELECT group_ FROM Group group_";
 	private static final String _SQL_SELECT_GROUP__WHERE_PKS_IN = "SELECT group_ FROM Group group_ WHERE groupId IN (";
 	private static final String _SQL_SELECT_GROUP__WHERE = "SELECT group_ FROM Group group_ WHERE ";
-	private static final String _SQL_COUNT_GROUP_ = "SELECT COUNT(group_) FROM Group group_";
-	private static final String _SQL_COUNT_GROUP__WHERE = "SELECT COUNT(group_) FROM Group group_ WHERE ";
+	private static final String _SQL_COUNT_GROUP_ = "SELECT COUNT(*) FROM Group group_";
+	private static final String _SQL_COUNT_GROUP__WHERE = "SELECT COUNT(*) FROM Group group_ WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "group_.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Group exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Group exists with the key {";

@@ -2794,8 +2794,8 @@ public class MDRRulePersistenceImpl extends BasePersistenceImpl<MDRRule>
 	private static final String _SQL_SELECT_MDRRULE = "SELECT mdrRule FROM MDRRule mdrRule";
 	private static final String _SQL_SELECT_MDRRULE_WHERE_PKS_IN = "SELECT mdrRule FROM MDRRule mdrRule WHERE ruleId IN (";
 	private static final String _SQL_SELECT_MDRRULE_WHERE = "SELECT mdrRule FROM MDRRule mdrRule WHERE ";
-	private static final String _SQL_COUNT_MDRRULE = "SELECT COUNT(mdrRule) FROM MDRRule mdrRule";
-	private static final String _SQL_COUNT_MDRRULE_WHERE = "SELECT COUNT(mdrRule) FROM MDRRule mdrRule WHERE ";
+	private static final String _SQL_COUNT_MDRRULE = "SELECT COUNT(*) FROM MDRRule mdrRule";
+	private static final String _SQL_COUNT_MDRRULE_WHERE = "SELECT COUNT(*) FROM MDRRule mdrRule WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "mdrRule.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No MDRRule exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No MDRRule exists with the key {";

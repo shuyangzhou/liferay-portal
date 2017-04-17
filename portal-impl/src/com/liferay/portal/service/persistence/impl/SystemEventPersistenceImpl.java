@@ -3131,8 +3131,8 @@ public class SystemEventPersistenceImpl extends BasePersistenceImpl<SystemEvent>
 	private static final String _SQL_SELECT_SYSTEMEVENT = "SELECT systemEvent FROM SystemEvent systemEvent";
 	private static final String _SQL_SELECT_SYSTEMEVENT_WHERE_PKS_IN = "SELECT systemEvent FROM SystemEvent systemEvent WHERE systemEventId IN (";
 	private static final String _SQL_SELECT_SYSTEMEVENT_WHERE = "SELECT systemEvent FROM SystemEvent systemEvent WHERE ";
-	private static final String _SQL_COUNT_SYSTEMEVENT = "SELECT COUNT(systemEvent) FROM SystemEvent systemEvent";
-	private static final String _SQL_COUNT_SYSTEMEVENT_WHERE = "SELECT COUNT(systemEvent) FROM SystemEvent systemEvent WHERE ";
+	private static final String _SQL_COUNT_SYSTEMEVENT = "SELECT COUNT(*) FROM SystemEvent systemEvent";
+	private static final String _SQL_COUNT_SYSTEMEVENT_WHERE = "SELECT COUNT(*) FROM SystemEvent systemEvent WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "systemEvent.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No SystemEvent exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No SystemEvent exists with the key {";

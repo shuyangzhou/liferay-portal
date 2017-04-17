@@ -3076,8 +3076,8 @@ public class SyncDevicePersistenceImpl extends BasePersistenceImpl<SyncDevice>
 	private static final String _SQL_SELECT_SYNCDEVICE = "SELECT syncDevice FROM SyncDevice syncDevice";
 	private static final String _SQL_SELECT_SYNCDEVICE_WHERE_PKS_IN = "SELECT syncDevice FROM SyncDevice syncDevice WHERE syncDeviceId IN (";
 	private static final String _SQL_SELECT_SYNCDEVICE_WHERE = "SELECT syncDevice FROM SyncDevice syncDevice WHERE ";
-	private static final String _SQL_COUNT_SYNCDEVICE = "SELECT COUNT(syncDevice) FROM SyncDevice syncDevice";
-	private static final String _SQL_COUNT_SYNCDEVICE_WHERE = "SELECT COUNT(syncDevice) FROM SyncDevice syncDevice WHERE ";
+	private static final String _SQL_COUNT_SYNCDEVICE = "SELECT COUNT(*) FROM SyncDevice syncDevice";
+	private static final String _SQL_COUNT_SYNCDEVICE_WHERE = "SELECT COUNT(*) FROM SyncDevice syncDevice WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "syncDevice.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No SyncDevice exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No SyncDevice exists with the key {";

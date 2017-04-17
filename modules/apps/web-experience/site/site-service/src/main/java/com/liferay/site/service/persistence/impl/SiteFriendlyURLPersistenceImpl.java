@@ -3839,8 +3839,8 @@ public class SiteFriendlyURLPersistenceImpl extends BasePersistenceImpl<SiteFrie
 	private static final String _SQL_SELECT_SITEFRIENDLYURL = "SELECT siteFriendlyURL FROM SiteFriendlyURL siteFriendlyURL";
 	private static final String _SQL_SELECT_SITEFRIENDLYURL_WHERE_PKS_IN = "SELECT siteFriendlyURL FROM SiteFriendlyURL siteFriendlyURL WHERE siteFriendlyURLId IN (";
 	private static final String _SQL_SELECT_SITEFRIENDLYURL_WHERE = "SELECT siteFriendlyURL FROM SiteFriendlyURL siteFriendlyURL WHERE ";
-	private static final String _SQL_COUNT_SITEFRIENDLYURL = "SELECT COUNT(siteFriendlyURL) FROM SiteFriendlyURL siteFriendlyURL";
-	private static final String _SQL_COUNT_SITEFRIENDLYURL_WHERE = "SELECT COUNT(siteFriendlyURL) FROM SiteFriendlyURL siteFriendlyURL WHERE ";
+	private static final String _SQL_COUNT_SITEFRIENDLYURL = "SELECT COUNT(*) FROM SiteFriendlyURL siteFriendlyURL";
+	private static final String _SQL_COUNT_SITEFRIENDLYURL_WHERE = "SELECT COUNT(*) FROM SiteFriendlyURL siteFriendlyURL WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "siteFriendlyURL.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No SiteFriendlyURL exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No SiteFriendlyURL exists with the key {";

@@ -3300,8 +3300,8 @@ public class MBDiscussionPersistenceImpl extends BasePersistenceImpl<MBDiscussio
 	private static final String _SQL_SELECT_MBDISCUSSION = "SELECT mbDiscussion FROM MBDiscussion mbDiscussion";
 	private static final String _SQL_SELECT_MBDISCUSSION_WHERE_PKS_IN = "SELECT mbDiscussion FROM MBDiscussion mbDiscussion WHERE discussionId IN (";
 	private static final String _SQL_SELECT_MBDISCUSSION_WHERE = "SELECT mbDiscussion FROM MBDiscussion mbDiscussion WHERE ";
-	private static final String _SQL_COUNT_MBDISCUSSION = "SELECT COUNT(mbDiscussion) FROM MBDiscussion mbDiscussion";
-	private static final String _SQL_COUNT_MBDISCUSSION_WHERE = "SELECT COUNT(mbDiscussion) FROM MBDiscussion mbDiscussion WHERE ";
+	private static final String _SQL_COUNT_MBDISCUSSION = "SELECT COUNT(*) FROM MBDiscussion mbDiscussion";
+	private static final String _SQL_COUNT_MBDISCUSSION_WHERE = "SELECT COUNT(*) FROM MBDiscussion mbDiscussion WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "mbDiscussion.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No MBDiscussion exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No MBDiscussion exists with the key {";

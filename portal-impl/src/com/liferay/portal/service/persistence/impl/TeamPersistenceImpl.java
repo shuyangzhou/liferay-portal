@@ -4033,8 +4033,8 @@ public class TeamPersistenceImpl extends BasePersistenceImpl<Team>
 	private static final String _SQL_SELECT_TEAM = "SELECT team FROM Team team";
 	private static final String _SQL_SELECT_TEAM_WHERE_PKS_IN = "SELECT team FROM Team team WHERE teamId IN (";
 	private static final String _SQL_SELECT_TEAM_WHERE = "SELECT team FROM Team team WHERE ";
-	private static final String _SQL_COUNT_TEAM = "SELECT COUNT(team) FROM Team team";
-	private static final String _SQL_COUNT_TEAM_WHERE = "SELECT COUNT(team) FROM Team team WHERE ";
+	private static final String _SQL_COUNT_TEAM = "SELECT COUNT(*) FROM Team team";
+	private static final String _SQL_COUNT_TEAM_WHERE = "SELECT COUNT(*) FROM Team team WHERE ";
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN = "team.teamId";
 	private static final String _FILTER_SQL_SELECT_TEAM_WHERE = "SELECT DISTINCT {team.*} FROM Team team WHERE ";
 	private static final String _FILTER_SQL_SELECT_TEAM_NO_INLINE_DISTINCT_WHERE_1 =

@@ -3308,8 +3308,8 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 	private static final String _SQL_SELECT_DLFILERANK = "SELECT dlFileRank FROM DLFileRank dlFileRank";
 	private static final String _SQL_SELECT_DLFILERANK_WHERE_PKS_IN = "SELECT dlFileRank FROM DLFileRank dlFileRank WHERE fileRankId IN (";
 	private static final String _SQL_SELECT_DLFILERANK_WHERE = "SELECT dlFileRank FROM DLFileRank dlFileRank WHERE ";
-	private static final String _SQL_COUNT_DLFILERANK = "SELECT COUNT(dlFileRank) FROM DLFileRank dlFileRank";
-	private static final String _SQL_COUNT_DLFILERANK_WHERE = "SELECT COUNT(dlFileRank) FROM DLFileRank dlFileRank WHERE ";
+	private static final String _SQL_COUNT_DLFILERANK = "SELECT COUNT(*) FROM DLFileRank dlFileRank";
+	private static final String _SQL_COUNT_DLFILERANK_WHERE = "SELECT COUNT(*) FROM DLFileRank dlFileRank WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "dlFileRank.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No DLFileRank exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No DLFileRank exists with the key {";

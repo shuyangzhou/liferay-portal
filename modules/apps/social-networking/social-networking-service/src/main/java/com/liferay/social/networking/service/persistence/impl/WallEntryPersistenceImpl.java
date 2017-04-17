@@ -2388,8 +2388,8 @@ public class WallEntryPersistenceImpl extends BasePersistenceImpl<WallEntry>
 	private static final String _SQL_SELECT_WALLENTRY = "SELECT wallEntry FROM WallEntry wallEntry";
 	private static final String _SQL_SELECT_WALLENTRY_WHERE_PKS_IN = "SELECT wallEntry FROM WallEntry wallEntry WHERE wallEntryId IN (";
 	private static final String _SQL_SELECT_WALLENTRY_WHERE = "SELECT wallEntry FROM WallEntry wallEntry WHERE ";
-	private static final String _SQL_COUNT_WALLENTRY = "SELECT COUNT(wallEntry) FROM WallEntry wallEntry";
-	private static final String _SQL_COUNT_WALLENTRY_WHERE = "SELECT COUNT(wallEntry) FROM WallEntry wallEntry WHERE ";
+	private static final String _SQL_COUNT_WALLENTRY = "SELECT COUNT(*) FROM WallEntry wallEntry";
+	private static final String _SQL_COUNT_WALLENTRY_WHERE = "SELECT COUNT(*) FROM WallEntry wallEntry WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "wallEntry.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WallEntry exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No WallEntry exists with the key {";
