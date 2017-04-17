@@ -15,6 +15,8 @@
 package com.liferay.portal.service.persistence.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ResourceBlock;
 import com.liferay.portal.kernel.service.persistence.ResourceBlockPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
@@ -24,6 +26,10 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class ResourceBlockFinderBaseImpl extends BasePersistenceImpl<ResourceBlock> {
+	public ResourceBlockFinderBaseImpl() {
+		setModelClass(ResourceBlock.class);
+	}
+
 	/**
 	 * Returns the resource block persistence.
 	 *
@@ -45,4 +51,5 @@ public class ResourceBlockFinderBaseImpl extends BasePersistenceImpl<ResourceBlo
 
 	@BeanReference(type = ResourceBlockPersistence.class)
 	protected ResourceBlockPersistence resourceBlockPersistence;
+	private static final Log _log = LogFactoryUtil.getLog(ResourceBlockFinderBaseImpl.class);
 }

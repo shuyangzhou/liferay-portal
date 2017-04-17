@@ -15,6 +15,8 @@
 package com.liferay.portlet.ratings.service.persistence.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 
 import com.liferay.ratings.kernel.model.RatingsStats;
@@ -25,6 +27,10 @@ import com.liferay.ratings.kernel.service.persistence.RatingsStatsPersistence;
  * @generated
  */
 public class RatingsStatsFinderBaseImpl extends BasePersistenceImpl<RatingsStats> {
+	public RatingsStatsFinderBaseImpl() {
+		setModelClass(RatingsStats.class);
+	}
+
 	/**
 	 * Returns the ratings stats persistence.
 	 *
@@ -46,4 +52,5 @@ public class RatingsStatsFinderBaseImpl extends BasePersistenceImpl<RatingsStats
 
 	@BeanReference(type = RatingsStatsPersistence.class)
 	protected RatingsStatsPersistence ratingsStatsPersistence;
+	private static final Log _log = LogFactoryUtil.getLog(RatingsStatsFinderBaseImpl.class);
 }

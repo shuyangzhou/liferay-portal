@@ -18,6 +18,8 @@ import com.liferay.contacts.model.Entry;
 import com.liferay.contacts.service.persistence.EntryPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 
 /**
@@ -25,6 +27,10 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class EntryFinderBaseImpl extends BasePersistenceImpl<Entry> {
+	public EntryFinderBaseImpl() {
+		setModelClass(Entry.class);
+	}
+
 	/**
 	 * Returns the entry persistence.
 	 *
@@ -45,4 +51,5 @@ public class EntryFinderBaseImpl extends BasePersistenceImpl<Entry> {
 
 	@BeanReference(type = EntryPersistence.class)
 	protected EntryPersistence entryPersistence;
+	private static final Log _log = LogFactoryUtil.getLog(EntryFinderBaseImpl.class);
 }

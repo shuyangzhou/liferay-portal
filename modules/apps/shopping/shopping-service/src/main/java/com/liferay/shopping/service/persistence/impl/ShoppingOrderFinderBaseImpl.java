@@ -15,11 +15,18 @@
 package com.liferay.shopping.service.persistence.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 
 import com.liferay.shopping.model.ShoppingOrder;
 import com.liferay.shopping.service.persistence.ShoppingOrderPersistence;
 
+import java.lang.reflect.Field;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -27,6 +34,26 @@ import java.util.Set;
  * @generated
  */
 public class ShoppingOrderFinderBaseImpl extends BasePersistenceImpl<ShoppingOrder> {
+	public ShoppingOrderFinderBaseImpl() {
+		setModelClass(ShoppingOrder.class);
+
+		try {
+			Field field = ReflectionUtil.getDeclaredField(BasePersistenceImpl.class,
+					"_dbColumnNames");
+
+			Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+			dbColumnNames.put("number", "number_");
+
+			field.set(this, dbColumnNames);
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
+		}
+	}
+
 	@Override
 	public Set<String> getBadColumnNames() {
 		return getShoppingOrderPersistence().getBadColumnNames();
@@ -53,4 +80,5 @@ public class ShoppingOrderFinderBaseImpl extends BasePersistenceImpl<ShoppingOrd
 
 	@BeanReference(type = ShoppingOrderPersistence.class)
 	protected ShoppingOrderPersistence shoppingOrderPersistence;
+	private static final Log _log = LogFactoryUtil.getLog(ShoppingOrderFinderBaseImpl.class);
 }

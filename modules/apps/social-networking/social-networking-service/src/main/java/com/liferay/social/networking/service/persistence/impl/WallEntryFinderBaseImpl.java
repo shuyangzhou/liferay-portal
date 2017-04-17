@@ -15,6 +15,8 @@
 package com.liferay.social.networking.service.persistence.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 
 import com.liferay.social.networking.model.WallEntry;
@@ -25,6 +27,10 @@ import com.liferay.social.networking.service.persistence.WallEntryPersistence;
  * @generated
  */
 public class WallEntryFinderBaseImpl extends BasePersistenceImpl<WallEntry> {
+	public WallEntryFinderBaseImpl() {
+		setModelClass(WallEntry.class);
+	}
+
 	/**
 	 * Returns the wall entry persistence.
 	 *
@@ -46,4 +52,5 @@ public class WallEntryFinderBaseImpl extends BasePersistenceImpl<WallEntry> {
 
 	@BeanReference(type = WallEntryPersistence.class)
 	protected WallEntryPersistence wallEntryPersistence;
+	private static final Log _log = LogFactoryUtil.getLog(WallEntryFinderBaseImpl.class);
 }
