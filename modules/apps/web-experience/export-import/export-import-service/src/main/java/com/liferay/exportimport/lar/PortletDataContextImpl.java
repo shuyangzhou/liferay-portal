@@ -35,11 +35,6 @@ import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.exportimport.kernel.lar.UserIdStrategy;
-import com.liferay.exportimport.kernel.xstream.XStreamAlias;
-import com.liferay.exportimport.kernel.xstream.XStreamConverter;
-import com.liferay.exportimport.kernel.xstream.XStreamType;
-import com.liferay.exportimport.xstream.ConverterAdapter;
-import com.liferay.exportimport.xstream.XStreamStagedModelTypeHierarchyPermission;
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.dao.orm.Conjunction;
@@ -86,7 +81,6 @@ import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
-import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -100,20 +94,13 @@ import com.liferay.portal.kernel.xml.XPath;
 import com.liferay.portal.kernel.zip.ZipReader;
 import com.liferay.portal.kernel.zip.ZipWriter;
 import com.liferay.ratings.kernel.model.RatingsEntry;
-import com.liferay.xstream.configurator.XStreamConfigurator;
 import com.liferay.xstream.configurator.XStreamConfiguratorRegistryUtil;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.core.ClassLoaderReference;
-import com.thoughtworks.xstream.io.xml.XppDriver;
-import com.thoughtworks.xstream.security.NoTypePermission;
-import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-
-import java.sql.Timestamp;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -121,7 +108,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -143,9 +129,9 @@ import jodd.bean.BeanUtil;
 public class PortletDataContextImpl implements PortletDataContext {
 
 	public PortletDataContextImpl(LockManager lockManager) {
-		initXStream();
-
 		_lockManager = lockManager;
+
+		_xStream = XStreamConfiguratorRegistryUtil.getXStream();
 	}
 
 	/**
@@ -2621,79 +2607,11 @@ public class PortletDataContextImpl implements PortletDataContext {
 		return 0;
 	}
 
+	/**
+	 * @deprecated As of 3.5.0, with no direct replacement
+	 */
+	@Deprecated
 	protected void initXStream() {
-		_xStream = new XStream(
-			null, new XppDriver(),
-			new ClassLoaderReference(
-				XStreamConfiguratorRegistryUtil.getConfiguratorsClassLoader(
-					XStream.class.getClassLoader())));
-
-		_xStream.omitField(HashMap.class, "cache_bitmask");
-
-		Set<XStreamConfigurator> xStreamConfigurators =
-			XStreamConfiguratorRegistryUtil.getXStreamConfigurators();
-
-		if (SetUtil.isEmpty(xStreamConfigurators)) {
-			return;
-		}
-
-		List<String> allowedTypeNames = new ArrayList<>();
-
-		for (XStreamConfigurator xStreamConfigurator : xStreamConfigurators) {
-			List<XStreamAlias> xStreamAliases =
-				xStreamConfigurator.getXStreamAliases();
-
-			if (ListUtil.isNotEmpty(xStreamAliases)) {
-				for (XStreamAlias xStreamAlias : xStreamAliases) {
-					_xStream.alias(
-						xStreamAlias.getName(), xStreamAlias.getClazz());
-				}
-			}
-
-			List<XStreamConverter> xStreamConverters =
-				xStreamConfigurator.getXStreamConverters();
-
-			if (ListUtil.isNotEmpty(xStreamConverters)) {
-				for (XStreamConverter xStreamConverter : xStreamConverters) {
-					_xStream.registerConverter(
-						new ConverterAdapter(xStreamConverter),
-						XStream.PRIORITY_VERY_HIGH);
-				}
-			}
-
-			List<XStreamType> xStreamTypes =
-				xStreamConfigurator.getAllowedXStreamTypes();
-
-			if (ListUtil.isNotEmpty(xStreamTypes)) {
-				for (XStreamType xStreamType : xStreamTypes) {
-					allowedTypeNames.add(xStreamType.getTypeExpression());
-				}
-			}
-		}
-
-		// For default permissions, first wipe than add default
-
-		_xStream.addPermission(NoTypePermission.NONE);
-
-		// Add permissions
-
-		_xStream.addPermission(PrimitiveTypePermission.PRIMITIVES);
-		_xStream.addPermission(
-			XStreamStagedModelTypeHierarchyPermission.STAGED_MODELS);
-
-		_xStream.allowTypes(_XSTREAM_DEFAULT_ALLOWED_TYPES);
-
-		_xStream.allowTypeHierarchy(List.class);
-		_xStream.allowTypeHierarchy(Map.class);
-		_xStream.allowTypeHierarchy(Timestamp.class);
-		_xStream.allowTypeHierarchy(Set.class);
-
-		_xStream.allowTypes(allowedTypeNames.toArray(new String[0]));
-
-		_xStream.allowTypesByWildcard(
-			new String[] {
-				"com.thoughtworks.xstream.mapper.DynamicProxyMapper*"
-			});
 	}
 
 	protected boolean isResourceMain(ClassedModel classedModel) {
@@ -2725,12 +2643,6 @@ public class PortletDataContextImpl implements PortletDataContext {
 			element.addAttribute("attached-class-name", attachedClassName);
 		}
 	}
-
-	private static final Class<?>[] _XSTREAM_DEFAULT_ALLOWED_TYPES = {
-		boolean[].class, byte[].class, Date.class, Date[].class, double[].class,
-		float[].class, int[].class, Locale.class, long[].class, Number.class,
-		Number[].class, short[].class, String.class, String[].class
-	};
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletDataContextImpl.class);
@@ -2783,7 +2695,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	private String _type;
 	private transient UserIdStrategy _userIdStrategy;
 	private long _userPersonalSiteGroupId;
-	private transient XStream _xStream;
+	private final XStream _xStream;
 	private transient ZipReader _zipReader;
 	private transient ZipWriter _zipWriter;
 
