@@ -15,6 +15,7 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
+import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.exception.LayoutSetVirtualHostException;
 import com.liferay.portal.kernel.exception.NoSuchImageException;
 import com.liferay.portal.kernel.exception.NoSuchVirtualHostException;
@@ -29,6 +30,7 @@ import com.liferay.portal.kernel.model.LayoutSetBranch;
 import com.liferay.portal.kernel.model.LayoutSetStagingHandler;
 import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.ColorSchemeFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -37,6 +39,8 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.ThemeFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.impl.LayoutSetImpl;
+import com.liferay.portal.model.impl.LayoutSetModelImpl;
 import com.liferay.portal.service.base.LayoutSetLocalServiceBaseImpl;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
@@ -47,6 +51,7 @@ import java.io.InputStream;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * @author Brian Wing Shun Chan
@@ -486,6 +491,21 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 			try {
 				virtualHostPersistence.removeByC_L(
 					layoutSet.getCompanyId(), layoutSet.getLayoutSetId());
+
+				TransactionCommitCallbackUtil.registerCallback(
+					new Callable<Void>() {
+
+						@Override
+						public Void call() {
+							EntityCacheUtil.removeResult(
+								LayoutSetModelImpl.ENTITY_CACHE_ENABLED,
+								LayoutSetImpl.class,
+								layoutSet.getLayoutSetId());
+
+							return null;
+						}
+
+					});
 			}
 			catch (NoSuchVirtualHostException nsvhe) {
 
