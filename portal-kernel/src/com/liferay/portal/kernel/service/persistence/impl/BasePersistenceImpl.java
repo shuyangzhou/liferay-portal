@@ -40,21 +40,27 @@ import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.NullSafeStringComparator;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import java.sql.Connection;
 import java.sql.Types;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -437,15 +443,16 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 	protected String getColumnName(
 		String entityAlias, String fieldName, boolean sqlQuery) {
 
-		String columnName = fieldName;
-
-		Set<String> badColumnNames = getBadColumnNames();
-
-		if (badColumnNames.contains(fieldName)) {
-			columnName = columnName.concat(StringPool.UNDERLINE);
+		if (_dbColumnNamesMap == null) {
+			_dbColumnNamesMap = _getDBColumnNamesMap();
 		}
 
-		if (sqlQuery) {
+		String columnName = _dbColumnNamesMap.get(fieldName);
+
+		if (columnName == null) {
+			columnName = fieldName;
+		}
+		else if (sqlQuery) {
 			fieldName = columnName;
 		}
 
@@ -537,12 +544,80 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 	@Deprecated
 	protected ModelListener<T>[] listeners = new ModelListener[0];
 
+	private Map<String, String> _getDBColumnNamesMap() {
+		Map<String, String> dbColumnNamesMap = new HashMap<>();
+
+		try {
+			Class<?> clazz = getClass();
+
+			Method createMethod = null;
+
+			for (Method method : clazz.getMethods()) {
+				if ("create".equals(method.getName())) {
+					createMethod = method;
+
+					break;
+				}
+			}
+
+			Class<?>[] parameterTypes = createMethod.getParameterTypes();
+
+			T t = null;
+
+			if (parameterTypes[0].isPrimitive()) {
+				t = (T)createMethod.invoke(this, 0);
+			}
+			else {
+				t = (T)createMethod.invoke(
+					this, parameterTypes[0].newInstance());
+			}
+
+			clazz = t.getClass();
+
+			clazz = clazz.getSuperclass();
+			clazz = clazz.getSuperclass();
+
+			Field tableColumnsField = clazz.getField("TABLE_COLUMNS");
+
+			Object[][] tableColumns = (Object[][])tableColumnsField.get(null);
+
+			Object model = clazz.newInstance();
+
+			String json = model.toString();
+
+			int start = 1;
+			int end = json.indexOf(CharPool.EQUAL);
+			int index = 0;
+
+			while (index < tableColumns.length) {
+				String name = json.substring(start, end);
+				String dbName = (String)tableColumns[index][0];
+
+				if (!name.equals(dbName)) {
+					dbColumnNamesMap.put(name, dbName);
+				}
+
+				start = json.indexOf(StringPool.COMMA_AND_SPACE, end) + 2;
+
+				end = json.indexOf(CharPool.EQUAL, start + 1);
+
+				index++;
+			}
+		}
+		catch (ReflectiveOperationException roe) {
+			ReflectionUtil.throwException(roe);
+		}
+
+		return dbColumnNamesMap;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		BasePersistenceImpl.class);
 
 	private int _databaseOrderByMaxColumns;
 	private DataSource _dataSource;
 	private DB _db;
+	private Map<String, String> _dbColumnNamesMap;
 	private Dialect _dialect;
 	private Class<T> _modelClass;
 	private SessionFactory _sessionFactory;
