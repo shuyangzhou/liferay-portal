@@ -585,6 +585,8 @@ public class SiteAdminPortlet extends MVCPortlet {
 			group.isManualMembership(), group.getMembershipRestriction(),
 			group.getFriendlyURL(), group.isInheritContent(), active,
 			serviceContext);
+
+		themeDisplay.setScopeGroupId(groupId);
 	}
 
 	protected Group updateGroup(ActionRequest actionRequest) throws Exception {
@@ -913,6 +915,8 @@ public class SiteAdminPortlet extends MVCPortlet {
 
 			StagingUtil.updateStaging(actionRequest, liveGroup);
 		}
+
+		themeDisplay.setSiteGroupId(liveGroup.getGroupId());
 
 		return liveGroup;
 	}
