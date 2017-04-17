@@ -2871,7 +2871,7 @@ public class DataFactory {
 				String.valueOf(assetCategoryModel2.getCategoryId()),
 				String.valueOf(assetCategoryModel3.getCategoryId())
 			},
-			lastIndex);
+			lastIndex + _maxAssetEntryToAssetCategoryCount);
 	}
 
 	protected ObjectValuePair<String[], Integer>
@@ -2896,7 +2896,7 @@ public class DataFactory {
 				assetTagModel0.getName(), assetTagModel1.getName(),
 				assetTagModel2.getName(), assetTagModel3.getName()
 			},
-			lastIndex);
+			lastIndex + _maxAssetEntryToAssetTagCount);
 	}
 
 	protected String getClassName(long classNameId) {
