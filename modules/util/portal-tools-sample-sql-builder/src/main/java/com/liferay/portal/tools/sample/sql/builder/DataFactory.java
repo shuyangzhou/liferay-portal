@@ -328,6 +328,11 @@ public class DataFactory {
 			(PortletPreferencesImpl)_portletPreferencesFactory.fromDefaultXML(
 				defaultAssetPublisherPreference);
 
+		_assetClassNameIdsArray = new long[] {
+			getClassNameId(BlogsEntry.class),
+			getClassNameId(JournalArticle.class), getClassNameId(WikiPage.class)
+		};
+
 		initAssetCategoryModels();
 		initAssetTagModels();
 		initCompanyModel();
@@ -694,6 +699,21 @@ public class DataFactory {
 		}
 
 		return groupIds;
+	}
+
+	public long getNextClassNameIdForAsset(long groupId) {
+		Integer counter = _assetClassIdIndexMap.get(groupId);
+
+		if (counter == null) {
+			counter = 0;
+		}
+
+		long classNameId =
+			_assetClassNameIdsArray[counter % _assetClassNameIdsArray.length];
+
+		_assetClassIdIndexMap.put(groupId, ++counter);
+
+		return classNameId;
 	}
 
 	public String getPortletId(String portletPrefix) {
@@ -2276,8 +2296,11 @@ public class DataFactory {
 		ObjectValuePair<String[], Integer> objectValuePair;
 
 		if (_assetPublisherQueryName.equals("assetCategories")) {
+			Map<Long, List<AssetCategoryModel>> assetCategoryModelsMap =
+				_assetCategoryModelsMapArray[(int)groupId - 1];
+
 			List<AssetCategoryModel> assetCategoryModels =
-				_assetCategoryModelsArray[(int)groupId - 1];
+				assetCategoryModelsMap.get(getNextClassNameIdForAsset(groupId));
 
 			if ((assetCategoryModels == null) ||
 				assetCategoryModels.isEmpty()) {
@@ -2290,8 +2313,11 @@ public class DataFactory {
 				assetCategoryModels, startIndex);
 		}
 		else {
+			Map<Long, List<AssetTagModel>> assetTagModelsMap =
+				_assetTagModelsMapArray[(int)groupId - 1];
+
 			List<AssetTagModel> assetTagModels =
-				_assetTagModelsArray[(int)groupId - 1];
+				assetTagModelsMap.get(getNextClassNameIdForAsset(groupId));
 
 			if ((assetTagModels == null) || assetTagModels.isEmpty()) {
 				return newPortletPreferencesModel(
@@ -3698,6 +3724,8 @@ public class DataFactory {
 	private Map<Long, SimpleCounter>[] _assetCategoryCounters;
 	private List<AssetCategoryModel>[] _assetCategoryModelsArray;
 	private Map<Long, List<AssetCategoryModel>>[] _assetCategoryModelsMapArray;
+	private final Map<Long, Integer> _assetClassIdIndexMap = new HashMap<>();
+	private final long[] _assetClassNameIdsArray;
 	private String _assetPublisherQueryName;
 	private final Map<Long, Integer> _assetPublisherQueryStartIndex =
 		new HashMap<>();
