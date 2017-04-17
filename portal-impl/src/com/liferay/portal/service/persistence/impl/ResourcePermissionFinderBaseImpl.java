@@ -24,6 +24,10 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class ResourcePermissionFinderBaseImpl extends BasePersistenceImpl<ResourcePermission> {
+	public ResourcePermissionFinderBaseImpl() {
+		setModelClass(ResourcePermission.class);
+	}
+
 	/**
 	 * Returns the resource permission persistence.
 	 *

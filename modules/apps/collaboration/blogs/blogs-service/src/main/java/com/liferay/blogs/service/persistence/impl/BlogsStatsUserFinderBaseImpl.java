@@ -25,6 +25,10 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class BlogsStatsUserFinderBaseImpl extends BasePersistenceImpl<BlogsStatsUser> {
+	public BlogsStatsUserFinderBaseImpl() {
+		setModelClass(BlogsStatsUser.class);
+	}
+
 	/**
 	 * Returns the blogs stats user persistence.
 	 *

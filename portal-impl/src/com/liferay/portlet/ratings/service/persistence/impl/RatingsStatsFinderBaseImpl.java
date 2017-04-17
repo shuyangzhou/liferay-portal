@@ -25,6 +25,10 @@ import com.liferay.ratings.kernel.service.persistence.RatingsStatsPersistence;
  * @generated
  */
 public class RatingsStatsFinderBaseImpl extends BasePersistenceImpl<RatingsStats> {
+	public RatingsStatsFinderBaseImpl() {
+		setModelClass(RatingsStats.class);
+	}
+
 	/**
 	 * Returns the ratings stats persistence.
 	 *

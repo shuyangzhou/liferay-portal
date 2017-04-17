@@ -24,6 +24,10 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class ResourceBlockFinderBaseImpl extends BasePersistenceImpl<ResourceBlock> {
+	public ResourceBlockFinderBaseImpl() {
+		setModelClass(ResourceBlock.class);
+	}
+
 	/**
 	 * Returns the resource block persistence.
 	 *
