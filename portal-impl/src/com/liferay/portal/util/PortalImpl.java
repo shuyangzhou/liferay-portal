@@ -7825,14 +7825,9 @@ public class PortalImpl implements Portal {
 			boolean canonicalURL, boolean controlPanel)
 		throws PortalException {
 
-		Group group = themeDisplay.getSiteGroup();
-
-		if (group.getGroupId() != layoutSet.getGroupId()) {
-			group = layoutSet.getGroup();
-		}
-
 		return _getGroupFriendlyURL(
-			group, layoutSet, themeDisplay, canonicalURL, controlPanel);
+			layoutSet.getGroup(), layoutSet, themeDisplay, canonicalURL,
+			controlPanel);
 	}
 
 	protected String[] getGroupPermissions(
