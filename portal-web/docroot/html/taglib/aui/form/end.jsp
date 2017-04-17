@@ -16,8 +16,6 @@
 
 <%@ include file="/html/taglib/aui/form/init.jsp" %>
 
-	<aui:input name="formDate" type="hidden" value="<%= System.currentTimeMillis() %>" />
-
 	<c:if test="<%= (checkboxNames != null) && !checkboxNames.isEmpty() %>">
 		<aui:input name="checkboxNames" type="hidden" value="<%= StringUtil.merge(checkboxNames) %>" />
 	</c:if>
