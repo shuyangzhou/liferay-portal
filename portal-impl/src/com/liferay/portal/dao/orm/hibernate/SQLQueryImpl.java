@@ -35,6 +35,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.Criteria;
+
 /**
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
@@ -55,6 +57,16 @@ public class SQLQueryImpl implements SQLQuery {
 		}
 
 		_names = names;
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, Is only used in Liferay 6.2
+	 */
+	@Deprecated
+	@Override
+	public SQLQuery addDistinctOnRootEntity() {
+		_sqlQuery.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return this;
 	}
 
 	@Override
