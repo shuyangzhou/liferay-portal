@@ -103,7 +103,7 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 
 			PortletPreferences portletSetup =
 				PortletPreferencesFactoryUtil.getStrictLayoutPortletSetup(
-					layout, portletId);
+					themeDisplay, layout, portletId);
 
 			JSONObject portletSetupJSONObject =
 				PortletSetupUtil.cssToJSONObject(portletSetup);
@@ -174,7 +174,7 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 
 		PortletPreferences portletSetup =
 			PortletPreferencesFactoryUtil.getStrictLayoutPortletSetup(
-				layout, portletId);
+				themeDisplay, layout, portletId);
 
 		String css = ParamUtil.getString(actionRequest, "css");
 

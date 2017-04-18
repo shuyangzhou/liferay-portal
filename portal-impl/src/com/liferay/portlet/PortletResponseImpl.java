@@ -566,21 +566,18 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		try {
 			Layout layout = (Layout)portletRequestImpl.getAttribute(
 				WebKeys.LAYOUT);
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)portletRequestImpl.getAttribute(
+					WebKeys.THEME_DISPLAY);
 
-			if (layout == null) {
-				ThemeDisplay themeDisplay =
-					(ThemeDisplay)portletRequestImpl.getAttribute(
-						WebKeys.THEME_DISPLAY);
-
-				if (themeDisplay != null) {
-					layout = themeDisplay.getLayout();
-				}
+			if ((layout == null) && (themeDisplay != null)) {
+				layout = themeDisplay.getLayout();
 			}
 
 			if (_portletSetup == null) {
 				_portletSetup =
 					PortletPreferencesFactoryUtil.getStrictLayoutPortletSetup(
-						layout, this.portletName);
+						themeDisplay, layout, this.portletName);
 			}
 
 			String linkToLayoutUuid = GetterUtil.getString(
