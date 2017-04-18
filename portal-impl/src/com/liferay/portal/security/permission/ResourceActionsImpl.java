@@ -116,13 +116,13 @@ public class ResourceActionsImpl implements ResourceActions {
 			portletResourceActionsBag = new PortletResourceActionsBagImpl(
 				portletName);
 
-			Set<String> resoureceActions =
+			Set<String> resourceActions =
 				portletResourceActionsBag.getResourceActions();
 
-			resoureceActions.addAll(getPortletMimeTypeActions(portletName));
+			resourceActions.addAll(getPortletMimeTypeActions(portletName));
 
 			if (!portletName.equals(PortletKeys.PORTAL)) {
-				checkPortletActions(portletName, resoureceActions);
+				checkPortletActions(portletName, resourceActions);
 			}
 
 			Set<String> groupDefaultActions =
