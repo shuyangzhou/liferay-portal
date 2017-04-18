@@ -4735,53 +4735,6 @@ public class PortalImpl implements Portal {
 		return _getScopeGroupId(null, layout, portletId);
 	}
 
-	private long _getScopeGroupId(
-		ThemeDisplay themeDisplay, Layout layout, String portletId) {
-
-		if (layout == null) {
-			return 0;
-		}
-
-		if (Validator.isNull(portletId)) {
-			return layout.getGroupId();
-		}
-
-		try {
-			PortletPreferences portletSetup =
-				PortletPreferencesFactoryUtil.getStrictLayoutPortletSetup(
-					themeDisplay, layout, portletId);
-
-			String scopeType = GetterUtil.getString(
-				portletSetup.getValue("lfrScopeType", null));
-
-			if (Validator.isNull(scopeType)) {
-				return layout.getGroupId();
-			}
-
-			if (scopeType.equals("company")) {
-				Group companyGroup = GroupLocalServiceUtil.getCompanyGroup(
-					layout.getCompanyId());
-
-				return companyGroup.getGroupId();
-			}
-
-			String scopeLayoutUuid = GetterUtil.getString(
-				portletSetup.getValue("lfrScopeLayoutUuid", null));
-
-			Layout scopeLayout =
-				LayoutLocalServiceUtil.getLayoutByUuidAndGroupId(
-					scopeLayoutUuid, layout.getGroupId(),
-					layout.isPrivateLayout());
-
-			Group scopeGroup = scopeLayout.getScopeGroup();
-
-			return scopeGroup.getGroupId();
-		}
-		catch (Exception e) {
-			return layout.getGroupId();
-		}
-	}
-
 	@Override
 	public long getScopeGroupId(long plid) {
 		Layout layout = null;
@@ -8547,6 +8500,53 @@ public class PortalImpl implements Portal {
 		}
 
 		return portletTitle;
+	}
+
+	private long _getScopeGroupId(
+		ThemeDisplay themeDisplay, Layout layout, String portletId) {
+
+		if (layout == null) {
+			return 0;
+		}
+
+		if (Validator.isNull(portletId)) {
+			return layout.getGroupId();
+		}
+
+		try {
+			PortletPreferences portletSetup =
+				PortletPreferencesFactoryUtil.getStrictLayoutPortletSetup(
+					themeDisplay, layout, portletId);
+
+			String scopeType = GetterUtil.getString(
+				portletSetup.getValue("lfrScopeType", null));
+
+			if (Validator.isNull(scopeType)) {
+				return layout.getGroupId();
+			}
+
+			if (scopeType.equals("company")) {
+				Group companyGroup = GroupLocalServiceUtil.getCompanyGroup(
+					layout.getCompanyId());
+
+				return companyGroup.getGroupId();
+			}
+
+			String scopeLayoutUuid = GetterUtil.getString(
+				portletSetup.getValue("lfrScopeLayoutUuid", null));
+
+			Layout scopeLayout =
+				LayoutLocalServiceUtil.getLayoutByUuidAndGroupId(
+					scopeLayoutUuid, layout.getGroupId(),
+					layout.isPrivateLayout());
+
+			Group scopeGroup = scopeLayout.getScopeGroup();
+
+			return scopeGroup.getGroupId();
+		}
+		catch (Exception e) {
+			return layout.getGroupId();
+		}
 	}
 
 	private Group _getSiteGroup(long groupId) {
