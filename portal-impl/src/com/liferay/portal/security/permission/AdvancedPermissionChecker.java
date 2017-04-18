@@ -113,7 +113,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 	}
 
-	public long[] getGuestUserRoleIds() throws Exception {
+	public long[] getGuestUserRoleIds() {
 		long[] roleIds = PermissionCacheUtil.getUserGroupRoleIds(
 			defaultUserId, _guestGroupId);
 
