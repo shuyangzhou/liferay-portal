@@ -113,7 +113,8 @@ public class ResourceActionsImpl implements ResourceActions {
 			_portletResourceActionsBags.get(portletName);
 
 		if (portletResourceActionsBag == null) {
-			portletResourceActionsBag = new PortletResourceActionsBagImpl();
+			portletResourceActionsBag = new PortletResourceActionsBagImpl(
+				portletName);
 
 			Set<String> resoureceActions =
 				portletResourceActionsBag.getResourceActions();
@@ -846,7 +847,8 @@ public class ResourceActionsImpl implements ResourceActions {
 				return modelResourceActionsBag;
 			}
 
-			modelResourceActionsBag = new ModelResourceActionsBagImpl();
+			modelResourceActionsBag = new ModelResourceActionsBagImpl(
+				modelName);
 
 			_modelResourceActionsBags.put(modelName, modelResourceActionsBag);
 		}
@@ -923,7 +925,8 @@ public class ResourceActionsImpl implements ResourceActions {
 				return portletResourceActionsBag;
 			}
 
-			portletResourceActionsBag = new PortletResourceActionsBagImpl();
+			portletResourceActionsBag = new PortletResourceActionsBagImpl(
+				portletName);
 
 			_portletResourceActionsBags.put(
 				portletName, portletResourceActionsBag);

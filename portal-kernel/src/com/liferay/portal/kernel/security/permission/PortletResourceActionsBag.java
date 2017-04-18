@@ -25,6 +25,8 @@ import java.util.Set;
 @ProviderType
 public interface PortletResourceActionsBag extends ResourceActionsBag {
 
+	public String getPortletName();
+
 	public String getPortletRootModelResource();
 
 	/**
