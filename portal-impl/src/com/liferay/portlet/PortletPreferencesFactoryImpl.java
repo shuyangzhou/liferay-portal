@@ -698,6 +698,24 @@ public class PortletPreferencesFactoryImpl
 	}
 
 	@Override
+	public PortletPreferences getStrictLayoutPortletSetup(
+		ThemeDisplay themeDisplay, Layout layout, String portletId) {
+
+		PortletPreferences portletPreferences = null;
+
+		if ((themeDisplay != null) && (themeDisplay.getLayout() == layout)) {
+			portletPreferences = themeDisplay.getStrictLayoutPortletSetup(
+				portletId);
+		}
+
+		if (portletPreferences == null) {
+			return getStrictLayoutPortletSetup(layout, portletId);
+		}
+
+		return portletPreferences;
+	}
+
+	@Override
 	public PortletPreferences getStrictPortletSetup(
 		Layout layout, String portletId) {
 

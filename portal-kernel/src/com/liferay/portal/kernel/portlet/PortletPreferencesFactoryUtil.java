@@ -251,6 +251,13 @@ public class PortletPreferencesFactoryUtil {
 			layout, portletId);
 	}
 
+	public static PortletPreferences getStrictLayoutPortletSetup(
+		ThemeDisplay themeDisplay, Layout layout, String portletId) {
+
+		return getPortletPreferencesFactory().getStrictLayoutPortletSetup(
+			themeDisplay, layout, portletId);
+	}
+
 	public static PortletPreferences getStrictPortletSetup(
 		Layout layout, String portletId) {
 
