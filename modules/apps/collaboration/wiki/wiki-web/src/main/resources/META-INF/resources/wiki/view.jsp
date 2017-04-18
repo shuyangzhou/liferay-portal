@@ -19,6 +19,8 @@
 <liferay-util:dynamic-include key="com.liferay.wiki.web#/wiki/view.jsp#pre" />
 
 <%
+WikiPortletInstanceOverriddenConfiguration wikiPortletInstanceOverriddenConfiguration = wikiRequestHelper.getWikiPortletInstanceOverridenConfiguration();
+
 boolean followRedirect = ParamUtil.getBoolean(request, "followRedirect", true);
 
 WikiNode node = (WikiNode)request.getAttribute(WikiWebKeys.WIKI_NODE);
