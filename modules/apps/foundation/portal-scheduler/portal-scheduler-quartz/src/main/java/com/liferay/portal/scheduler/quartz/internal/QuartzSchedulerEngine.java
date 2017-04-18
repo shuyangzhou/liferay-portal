@@ -60,7 +60,9 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
+import org.quartz.ListenerManager;
 import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.Scheduler;
 import org.quartz.Trigger;
@@ -68,6 +70,7 @@ import org.quartz.TriggerKey;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.jdbcjobstore.UpdateLockRowSemaphore;
 import org.quartz.impl.matchers.GroupMatcher;
+import org.quartz.listeners.TriggerListenerSupport;
 
 /**
  * @author Michael C. Han
@@ -414,6 +417,56 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			initJobState();
 
 			_memoryScheduler.start();
+
+			ListenerManager listenerManager =
+				_memoryScheduler.getListenerManager();
+
+			listenerManager.addTriggerListener(
+				new TriggerListenerSupport() {
+
+					@Override
+					public String getName() {
+						return _TRIGGER_LISTENER_NAME;
+					}
+
+					@Override
+					public boolean vetoJobExecution(
+						Trigger trigger, JobExecutionContext context) {
+
+						JobDetail jobDetail = null;
+
+						try {
+							jobDetail = _memoryScheduler.getJobDetail(
+								trigger.getJobKey());
+						}
+						catch (org.quartz.SchedulerException se) {
+							return false;
+						}
+
+						if (jobDetail == null) {
+							return false;
+						}
+
+						JobDataMap jobDataMap = jobDetail.getJobDataMap();
+
+						if (!jobDataMap.containsKey(SchedulerEngine.DISABLE)) {
+							return false;
+						}
+
+						boolean disabled = (boolean)jobDataMap.get(
+							SchedulerEngine.DISABLE);
+
+						if (disabled) {
+							jobDataMap.put(SchedulerEngine.DISABLE, false);
+
+							return true;
+						}
+						else {
+							return false;
+						}
+					}
+
+				});
 		}
 		catch (Exception e) {
 			throw new SchedulerException("Unable to start scheduler", e);
@@ -787,6 +840,17 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			jobDataMap.put(
 				SchedulerEngine.STORAGE_TYPE, storageType.toString());
 
+			boolean disabled = false;
+
+			if ((trigger.getNextFireTime() != null) &&
+				(trigger.getNextFireTime().getTime() + _EPSILON_MILLISECONDS) <
+					System.currentTimeMillis()) {
+
+				disabled = true;
+			}
+
+			jobDataMap.put(SchedulerEngine.DISABLE, disabled);
+
 			JobState jobState = new JobState(
 				TriggerState.NORMAL,
 				message.getInteger(SchedulerEngine.EXCEPTIONS_MAX_SIZE));
@@ -995,6 +1059,11 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 
 		scheduler.addJob(jobDetail, true);
 	}
+
+	private static final long _EPSILON_MILLISECONDS = 10000;
+
+	private static final String _TRIGGER_LISTENER_NAME =
+		"QUARTZ_TRIGGER_LISTENER";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		QuartzSchedulerEngine.class);
