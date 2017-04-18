@@ -113,6 +113,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 	}
 
+	@Override
 	public long[] getGuestUserRoleIds() {
 		long[] roleIds = PermissionCacheUtil.getUserGroupRoleIds(
 			defaultUserId, _guestGroupId);

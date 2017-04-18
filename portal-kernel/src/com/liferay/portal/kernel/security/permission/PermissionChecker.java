@@ -39,6 +39,8 @@ public interface PermissionChecker extends Cloneable {
 	 */
 	public long getCompanyId();
 
+	public long[] getGuestUserRoleIds();
+
 	public List<Long> getOwnerResourceBlockIds(
 		long companyId, long groupId, String name, String actionId);
 
