@@ -128,7 +128,7 @@ public class PortletPreferencesSettings extends BaseModifiableSettings {
 	 */
 	@Deprecated
 	protected boolean isNull(String value) {
-		if ((value == null) || value.equals(_NULL_VALUE)) {
+		if (value == null) {
 			return true;
 		}
 
@@ -174,8 +174,6 @@ public class PortletPreferencesSettings extends BaseModifiableSettings {
 
 		return actualValues;
 	}
-
-	private static final String _NULL_VALUE = "NULL_VALUE";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletPreferencesSettings.class);
