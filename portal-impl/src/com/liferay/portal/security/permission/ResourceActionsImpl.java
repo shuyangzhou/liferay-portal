@@ -156,9 +156,10 @@ public class ResourceActionsImpl implements ResourceActions {
 		}
 
 		ResourceActionLocalServiceUtil.checkResourceActions(
-			portletName, getPortletResourceActions(portletName));
+			portletName,
+			new ArrayList<>(portletResourceActionsBag.getResourceActions()));
 
-		for (String modelName : getPortletModelResources(portletName)) {
+		for (String modelName : portletResourceActionsBag.getResources()) {
 			ResourceActionLocalServiceUtil.checkResourceActions(
 				modelName, getModelResourceActions(modelName));
 		}
