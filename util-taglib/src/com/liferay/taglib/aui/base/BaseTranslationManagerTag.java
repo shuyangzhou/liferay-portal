@@ -109,13 +109,13 @@ public abstract class BaseTranslationManagerTag extends com.liferay.taglib.util.
 
 	@Override
 	protected void setAttributes(HttpServletRequest request) {
-		setNamespacedAttribute(request, "availableLocales", _availableLocales);
-		setNamespacedAttribute(request, "changeableDefaultLanguage", _changeableDefaultLanguage);
-		setNamespacedAttribute(request, "defaultLanguageId", _defaultLanguageId);
-		setNamespacedAttribute(request, "editingLanguageId", _editingLanguageId);
-		setNamespacedAttribute(request, "id", _id);
-		setNamespacedAttribute(request, "initialize", _initialize);
-		setNamespacedAttribute(request, "readOnly", _readOnly);
+		request.setAttribute("aui:translation-manager:availableLocales", _availableLocales);
+		request.setAttribute("aui:translation-manager:changeableDefaultLanguage", String.valueOf(_changeableDefaultLanguage));
+		request.setAttribute("aui:translation-manager:defaultLanguageId", _defaultLanguageId);
+		request.setAttribute("aui:translation-manager:editingLanguageId", _editingLanguageId);
+		request.setAttribute("aui:translation-manager:id", _id);
+		request.setAttribute("aui:translation-manager:initialize", String.valueOf(_initialize));
+		request.setAttribute("aui:translation-manager:readOnly", String.valueOf(_readOnly));
 	}
 
 	protected static final String _ATTRIBUTE_NAMESPACE = "aui:translation-manager:";
