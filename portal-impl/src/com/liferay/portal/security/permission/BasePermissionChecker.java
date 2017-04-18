@@ -46,6 +46,11 @@ public abstract class BasePermissionChecker implements PermissionChecker {
 	}
 
 	@Override
+	public long[] getGuestUserRoleIds() {
+		return PermissionChecker.DEFAULT_ROLE_IDS;
+	}
+
+	@Override
 	public List<Long> getOwnerResourceBlockIds(
 		long companyId, long groupId, String name, String actionId) {
 
