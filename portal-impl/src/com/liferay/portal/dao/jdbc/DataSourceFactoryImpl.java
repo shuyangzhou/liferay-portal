@@ -50,6 +50,8 @@ import com.liferay.registry.ServiceTrackerCustomizer;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
+import java.io.Closeable;
+
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -103,6 +105,16 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			}
 
 			tomcatDataSource.close();
+		}
+		else if (dataSource instanceof BasicDataSource) {
+			BasicDataSource basicDataSource = (BasicDataSource)dataSource;
+
+			basicDataSource.close();
+		}
+		else if (dataSource instanceof Closeable) {
+			Closeable closeable = (Closeable)dataSource;
+
+			closeable.close();
 		}
 	}
 
