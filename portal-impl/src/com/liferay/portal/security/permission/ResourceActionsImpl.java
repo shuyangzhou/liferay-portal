@@ -1409,15 +1409,13 @@ public class ResourceActionsImpl implements ResourceActions {
 		_resourceBundleLoaders;
 	private final Set<String> _rootModelResources = new HashSet<>();
 
-	private class ModelResourceActionsBag extends ResourceActionsBag {
+	private class ModelResourceActionsBag implements Cloneable {
 
 		public ModelResourceActionsBag() {
 		}
 
 		public ModelResourceActionsBag(
 			ModelResourceActionsBag modelResourceActionsBag) {
-
-			super(modelResourceActionsBag);
 
 			_resourceOwnerDefaultActions.addAll(
 				modelResourceActionsBag.getResourceOwnerDefaultActions());
@@ -1428,77 +1426,6 @@ public class ResourceActionsImpl implements ResourceActions {
 		@Override
 		public ModelResourceActionsBag clone() {
 			return new ModelResourceActionsBag(this);
-		}
-
-		public Set<String> getResourceOwnerDefaultActions() {
-			return _resourceOwnerDefaultActions;
-		}
-
-		public Map<String, Double> getResourceWeights() {
-			return _resourceWeights;
-		}
-
-		private final Set<String> _resourceOwnerDefaultActions =
-			new HashSet<>();
-		private final Map<String, Double> _resourceWeights = new HashMap<>();
-
-	}
-
-	private class PortletResourceActionsBag extends ResourceActionsBag {
-
-		public PortletResourceActionsBag() {
-		}
-
-		public PortletResourceActionsBag(
-			PortletResourceActionsBag portletResourceActionsBag) {
-
-			super(portletResourceActionsBag);
-
-			_portletRootModelResources.putAll(
-				portletResourceActionsBag.getPortletRootModelResources());
-			_resourceLayoutManagerActions.addAll(
-				portletResourceActionsBag.getResourceLayoutManagerActions());
-		}
-
-		@Override
-		public PortletResourceActionsBag clone() {
-			return new PortletResourceActionsBag(this);
-		}
-
-		public Map<String, String> getPortletRootModelResources() {
-			return _portletRootModelResources;
-		}
-
-		public Set<String> getResourceLayoutManagerActions() {
-			return _resourceLayoutManagerActions;
-		}
-
-		private final Map<String, String> _portletRootModelResources =
-			new HashMap<>();
-		private final Set<String> _resourceLayoutManagerActions =
-			new HashSet<>();
-
-	}
-
-	private class ResourceActionsBag implements Cloneable {
-
-		public ResourceActionsBag() {
-		}
-
-		public ResourceActionsBag(ResourceActionsBag resourceActionsBag) {
-			_resourceActions.addAll(resourceActionsBag.getResourceActions());
-			_resourceGroupDefaultActions.addAll(
-				resourceActionsBag.getResourceGroupDefaultActions());
-			_resourceGuestDefaultActions.addAll(
-				resourceActionsBag.getResourceGuestDefaultActions());
-			_resourceGuestUnsupportedActions.addAll(
-				resourceActionsBag.getResourceGuestUnsupportedActions());
-			_resources.addAll(resourceActionsBag.getResources());
-		}
-
-		@Override
-		public ResourceActionsBag clone() {
-			return new ResourceActionsBag(this);
 		}
 
 		public Set<String> getResourceActions() {
@@ -1517,8 +1444,16 @@ public class ResourceActionsImpl implements ResourceActions {
 			return _resourceGuestUnsupportedActions;
 		}
 
+		public Set<String> getResourceOwnerDefaultActions() {
+			return _resourceOwnerDefaultActions;
+		}
+
 		public Set<String> getResources() {
 			return _resources;
+		}
+
+		public Map<String, Double> getResourceWeights() {
+			return _resourceWeights;
 		}
 
 		private final Set<String> _resourceActions = new HashSet<>();
@@ -1527,6 +1462,71 @@ public class ResourceActionsImpl implements ResourceActions {
 		private final Set<String> _resourceGuestDefaultActions =
 			new HashSet<>();
 		private final Set<String> _resourceGuestUnsupportedActions =
+			new HashSet<>();
+		private final Set<String> _resourceOwnerDefaultActions =
+			new HashSet<>();
+		private final Set<String> _resources = new HashSet<>();
+		private final Map<String, Double> _resourceWeights = new HashMap<>();
+
+	}
+
+	private class PortletResourceActionsBag implements Cloneable {
+
+		public PortletResourceActionsBag() {
+		}
+
+		public PortletResourceActionsBag(
+			PortletResourceActionsBag portletResourceActionsBag) {
+
+			_portletRootModelResources.putAll(
+				portletResourceActionsBag.getPortletRootModelResources());
+			_resourceLayoutManagerActions.addAll(
+				portletResourceActionsBag.getResourceLayoutManagerActions());
+		}
+
+		@Override
+		public PortletResourceActionsBag clone() {
+			return new PortletResourceActionsBag(this);
+		}
+
+		public Map<String, String> getPortletRootModelResources() {
+			return _portletRootModelResources;
+		}
+
+		public Set<String> getResourceActions() {
+			return _resourceActions;
+		}
+
+		public Set<String> getResourceGroupDefaultActions() {
+			return _resourceGroupDefaultActions;
+		}
+
+		public Set<String> getResourceGuestDefaultActions() {
+			return _resourceGuestDefaultActions;
+		}
+
+		public Set<String> getResourceGuestUnsupportedActions() {
+			return _resourceGuestUnsupportedActions;
+		}
+
+		public Set<String> getResourceLayoutManagerActions() {
+			return _resourceLayoutManagerActions;
+		}
+
+		public Set<String> getResources() {
+			return _resources;
+		}
+
+		private final Map<String, String> _portletRootModelResources =
+			new HashMap<>();
+		private final Set<String> _resourceActions = new HashSet<>();
+		private final Set<String> _resourceGroupDefaultActions =
+			new HashSet<>();
+		private final Set<String> _resourceGuestDefaultActions =
+			new HashSet<>();
+		private final Set<String> _resourceGuestUnsupportedActions =
+			new HashSet<>();
+		private final Set<String> _resourceLayoutManagerActions =
 			new HashSet<>();
 		private final Set<String> _resources = new HashSet<>();
 
