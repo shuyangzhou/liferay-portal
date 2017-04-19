@@ -51,6 +51,19 @@ public class AssetPublisherHelper {
 		LiferayPortletResponse liferayPortletResponse, AssetEntry assetEntry,
 		boolean viewInContext) {
 
+		AssetRenderer<?> assetRenderer = assetEntry.getAssetRenderer();
+
+		return getAssetViewURL(
+			liferayPortletRequest, liferayPortletResponse, assetRenderer,
+			assetEntry, viewInContext);
+	}
+
+	public static String getAssetViewURL(
+		LiferayPortletRequest liferayPortletRequest,
+		LiferayPortletResponse liferayPortletResponse,
+		AssetRenderer<?> assetRenderer, AssetEntry assetEntry,
+		boolean viewInContext) {
+
 		PortletURL viewFullContentURL =
 			liferayPortletResponse.createRenderURL();
 
@@ -74,9 +87,7 @@ public class AssetPublisherHelper {
 		viewFullContentURL.setParameter("redirect", redirectURL.toString());
 
 		AssetRendererFactory<?> assetRendererFactory =
-			assetEntry.getAssetRendererFactory();
-
-		AssetRenderer<?> assetRenderer = assetEntry.getAssetRenderer();
+			assetRenderer.getAssetRendererFactory();
 
 		viewFullContentURL.setParameter("type", assetRendererFactory.getType());
 
