@@ -1493,6 +1493,10 @@ public class EmailAddressUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static EmailAddressPersistence getPersistence() {
 		if (_persistence == null) {
 			_persistence = (EmailAddressPersistence)PortalBeanLocatorUtil.locate(EmailAddressPersistence.class.getName());

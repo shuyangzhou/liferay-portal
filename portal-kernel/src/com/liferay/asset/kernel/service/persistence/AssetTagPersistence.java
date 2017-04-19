@@ -1355,4 +1355,6 @@ public interface AssetTagPersistence extends BasePersistence<AssetTag> {
 
 	@Override
 	public java.util.Set<java.lang.String> getBadColumnNames();
+
+	public java.util.Map<java.lang.String, java.lang.String> getDBColumnMap();
 }

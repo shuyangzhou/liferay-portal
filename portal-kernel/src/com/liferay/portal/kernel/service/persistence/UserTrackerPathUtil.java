@@ -424,6 +424,10 @@ public class UserTrackerPathUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static UserTrackerPathPersistence getPersistence() {
 		if (_persistence == null) {
 			_persistence = (UserTrackerPathPersistence)PortalBeanLocatorUtil.locate(UserTrackerPathPersistence.class.getName());

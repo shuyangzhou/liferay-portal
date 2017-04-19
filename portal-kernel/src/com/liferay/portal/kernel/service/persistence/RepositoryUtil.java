@@ -875,6 +875,10 @@ public class RepositoryUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static RepositoryPersistence getPersistence() {
 		if (_persistence == null) {
 			_persistence = (RepositoryPersistence)PortalBeanLocatorUtil.locate(RepositoryPersistence.class.getName());

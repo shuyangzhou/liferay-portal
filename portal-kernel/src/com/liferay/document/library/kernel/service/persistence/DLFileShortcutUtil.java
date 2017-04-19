@@ -1998,6 +1998,10 @@ public class DLFileShortcutUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static DLFileShortcutPersistence getPersistence() {
 		if (_persistence == null) {
 			_persistence = (DLFileShortcutPersistence)PortalBeanLocatorUtil.locate(DLFileShortcutPersistence.class.getName());

@@ -1111,6 +1111,10 @@ public class PasswordPolicyUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static PasswordPolicyPersistence getPersistence() {
 		if (_persistence == null) {
 			_persistence = (PasswordPolicyPersistence)PortalBeanLocatorUtil.locate(PasswordPolicyPersistence.class.getName());

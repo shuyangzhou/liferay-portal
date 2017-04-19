@@ -2950,6 +2950,10 @@ public class RoleUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static RolePersistence getPersistence() {
 		if (_persistence == null) {
 			_persistence = (RolePersistence)PortalBeanLocatorUtil.locate(RolePersistence.class.getName());

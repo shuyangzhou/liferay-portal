@@ -1011,6 +1011,10 @@ public class SocialActivityCounterUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static SocialActivityCounterPersistence getPersistence() {
 		if (_persistence == null) {
 			_persistence = (SocialActivityCounterPersistence)PortalBeanLocatorUtil.locate(SocialActivityCounterPersistence.class.getName());

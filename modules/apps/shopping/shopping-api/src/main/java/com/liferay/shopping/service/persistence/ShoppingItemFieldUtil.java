@@ -421,6 +421,10 @@ public class ShoppingItemFieldUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static ShoppingItemFieldPersistence getPersistence() {
 		return _serviceTracker.getService();
 	}

@@ -2104,6 +2104,10 @@ public class CalendarBookingUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static CalendarBookingPersistence getPersistence() {
 		return _serviceTracker.getService();
 	}

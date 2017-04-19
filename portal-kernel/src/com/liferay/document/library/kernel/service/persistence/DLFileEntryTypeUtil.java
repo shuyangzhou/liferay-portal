@@ -1292,6 +1292,10 @@ public class DLFileEntryTypeUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static DLFileEntryTypePersistence getPersistence() {
 		if (_persistence == null) {
 			_persistence = (DLFileEntryTypePersistence)PortalBeanLocatorUtil.locate(DLFileEntryTypePersistence.class.getName());

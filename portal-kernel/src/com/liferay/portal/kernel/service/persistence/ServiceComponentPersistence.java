@@ -349,4 +349,6 @@ public interface ServiceComponentPersistence extends BasePersistence<ServiceComp
 
 	@Override
 	public java.util.Set<java.lang.String> getBadColumnNames();
+
+	public java.util.Map<java.lang.String, java.lang.String> getDBColumnMap();
 }

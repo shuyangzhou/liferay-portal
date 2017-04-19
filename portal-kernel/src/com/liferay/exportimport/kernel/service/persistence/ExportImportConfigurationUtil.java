@@ -1140,6 +1140,10 @@ public class ExportImportConfigurationUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static ExportImportConfigurationPersistence getPersistence() {
 		if (_persistence == null) {
 			_persistence = (ExportImportConfigurationPersistence)PortalBeanLocatorUtil.locate(ExportImportConfigurationPersistence.class.getName());

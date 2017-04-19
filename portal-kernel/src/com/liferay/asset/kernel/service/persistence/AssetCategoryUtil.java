@@ -3513,6 +3513,10 @@ public class AssetCategoryUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static long countAncestors(AssetCategory assetCategory) {
 		return getPersistence().countAncestors(assetCategory);
 	}

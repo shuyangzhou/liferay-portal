@@ -1021,6 +1021,10 @@ public class MDRRuleGroupUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static MDRRuleGroupPersistence getPersistence() {
 		return _serviceTracker.getService();
 	}

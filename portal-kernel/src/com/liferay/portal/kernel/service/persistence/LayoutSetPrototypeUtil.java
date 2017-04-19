@@ -1251,6 +1251,10 @@ public class LayoutSetPrototypeUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static LayoutSetPrototypePersistence getPersistence() {
 		if (_persistence == null) {
 			_persistence = (LayoutSetPrototypePersistence)PortalBeanLocatorUtil.locate(LayoutSetPrototypePersistence.class.getName());

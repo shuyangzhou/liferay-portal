@@ -1754,6 +1754,10 @@ public class LayoutFriendlyURLUtil {
 		return getPersistence().getBadColumnNames();
 	}
 
+	public static java.util.Map<java.lang.String, java.lang.String> getDBColumnMap() {
+		return getPersistence().getDBColumnMap();
+	}
+
 	public static LayoutFriendlyURLPersistence getPersistence() {
 		if (_persistence == null) {
 			_persistence = (LayoutFriendlyURLPersistence)PortalBeanLocatorUtil.locate(LayoutFriendlyURLPersistence.class.getName());
