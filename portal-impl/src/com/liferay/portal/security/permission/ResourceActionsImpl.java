@@ -1409,24 +1409,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		_resourceBundleLoaders;
 	private final Set<String> _rootModelResources = new HashSet<>();
 
-	private class ModelResourceActionsBag implements Cloneable {
-
-		public ModelResourceActionsBag() {
-		}
-
-		public ModelResourceActionsBag(
-			ModelResourceActionsBag modelResourceActionsBag) {
-
-			_resourceOwnerDefaultActions.addAll(
-				modelResourceActionsBag.getResourceOwnerDefaultActions());
-			_resourceWeights.putAll(
-				modelResourceActionsBag.getResourceWeights());
-		}
-
-		@Override
-		public ModelResourceActionsBag clone() {
-			return new ModelResourceActionsBag(this);
-		}
+	private class ModelResourceActionsBag {
 
 		public Set<String> getResourceActions() {
 			return _resourceActions;
@@ -1470,24 +1453,7 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	}
 
-	private class PortletResourceActionsBag implements Cloneable {
-
-		public PortletResourceActionsBag() {
-		}
-
-		public PortletResourceActionsBag(
-			PortletResourceActionsBag portletResourceActionsBag) {
-
-			_portletRootModelResources.putAll(
-				portletResourceActionsBag.getPortletRootModelResources());
-			_resourceLayoutManagerActions.addAll(
-				portletResourceActionsBag.getResourceLayoutManagerActions());
-		}
-
-		@Override
-		public PortletResourceActionsBag clone() {
-			return new PortletResourceActionsBag(this);
-		}
+	private class PortletResourceActionsBag {
 
 		public Map<String, String> getPortletRootModelResources() {
 			return _portletRootModelResources;
