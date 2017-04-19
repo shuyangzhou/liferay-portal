@@ -15,6 +15,8 @@
 package com.liferay.shopping.service.persistence.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 
 import com.liferay.shopping.model.ShoppingCategory;
@@ -25,6 +27,10 @@ import com.liferay.shopping.service.persistence.ShoppingCategoryPersistence;
  * @generated
  */
 public class ShoppingCategoryFinderBaseImpl extends BasePersistenceImpl<ShoppingCategory> {
+	public ShoppingCategoryFinderBaseImpl() {
+		setModelClass(ShoppingCategory.class);
+	}
+
 	/**
 	 * Returns the shopping category persistence.
 	 *
@@ -46,4 +52,5 @@ public class ShoppingCategoryFinderBaseImpl extends BasePersistenceImpl<Shopping
 
 	@BeanReference(type = ShoppingCategoryPersistence.class)
 	protected ShoppingCategoryPersistence shoppingCategoryPersistence;
+	private static final Log _log = LogFactoryUtil.getLog(ShoppingCategoryFinderBaseImpl.class);
 }

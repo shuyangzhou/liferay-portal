@@ -15,6 +15,8 @@
 package com.liferay.portal.service.persistence.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ResourceTypePermission;
 import com.liferay.portal.kernel.service.persistence.ResourceTypePermissionPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
@@ -24,6 +26,10 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class ResourceTypePermissionFinderBaseImpl extends BasePersistenceImpl<ResourceTypePermission> {
+	public ResourceTypePermissionFinderBaseImpl() {
+		setModelClass(ResourceTypePermission.class);
+	}
+
 	/**
 	 * Returns the resource type permission persistence.
 	 *
@@ -45,4 +51,5 @@ public class ResourceTypePermissionFinderBaseImpl extends BasePersistenceImpl<Re
 
 	@BeanReference(type = ResourceTypePermissionPersistence.class)
 	protected ResourceTypePermissionPersistence resourceTypePermissionPersistence;
+	private static final Log _log = LogFactoryUtil.getLog(ResourceTypePermissionFinderBaseImpl.class);
 }

@@ -18,6 +18,8 @@ import com.liferay.blogs.model.BlogsStatsUser;
 import com.liferay.blogs.service.persistence.BlogsStatsUserPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 
 /**
@@ -25,6 +27,10 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class BlogsStatsUserFinderBaseImpl extends BasePersistenceImpl<BlogsStatsUser> {
+	public BlogsStatsUserFinderBaseImpl() {
+		setModelClass(BlogsStatsUser.class);
+	}
+
 	/**
 	 * Returns the blogs stats user persistence.
 	 *
@@ -46,4 +52,5 @@ public class BlogsStatsUserFinderBaseImpl extends BasePersistenceImpl<BlogsStats
 
 	@BeanReference(type = BlogsStatsUserPersistence.class)
 	protected BlogsStatsUserPersistence blogsStatsUserPersistence;
+	private static final Log _log = LogFactoryUtil.getLog(BlogsStatsUserFinderBaseImpl.class);
 }

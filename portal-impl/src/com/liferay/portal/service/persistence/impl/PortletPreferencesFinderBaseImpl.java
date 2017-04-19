@@ -15,6 +15,8 @@
 package com.liferay.portal.service.persistence.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.service.persistence.PortletPreferencesPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
@@ -24,6 +26,10 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class PortletPreferencesFinderBaseImpl extends BasePersistenceImpl<PortletPreferences> {
+	public PortletPreferencesFinderBaseImpl() {
+		setModelClass(PortletPreferences.class);
+	}
+
 	/**
 	 * Returns the portlet preferences persistence.
 	 *
@@ -45,4 +51,5 @@ public class PortletPreferencesFinderBaseImpl extends BasePersistenceImpl<Portle
 
 	@BeanReference(type = PortletPreferencesPersistence.class)
 	protected PortletPreferencesPersistence portletPreferencesPersistence;
+	private static final Log _log = LogFactoryUtil.getLog(PortletPreferencesFinderBaseImpl.class);
 }

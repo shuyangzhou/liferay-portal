@@ -15,6 +15,8 @@
 package com.liferay.portal.service.persistence.impl;
 
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.service.persistence.UserGroupRolePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
@@ -24,6 +26,10 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class UserGroupRoleFinderBaseImpl extends BasePersistenceImpl<UserGroupRole> {
+	public UserGroupRoleFinderBaseImpl() {
+		setModelClass(UserGroupRole.class);
+	}
+
 	/**
 	 * Returns the user group role persistence.
 	 *
@@ -45,4 +51,5 @@ public class UserGroupRoleFinderBaseImpl extends BasePersistenceImpl<UserGroupRo
 
 	@BeanReference(type = UserGroupRolePersistence.class)
 	protected UserGroupRolePersistence userGroupRolePersistence;
+	private static final Log _log = LogFactoryUtil.getLog(UserGroupRoleFinderBaseImpl.class);
 }

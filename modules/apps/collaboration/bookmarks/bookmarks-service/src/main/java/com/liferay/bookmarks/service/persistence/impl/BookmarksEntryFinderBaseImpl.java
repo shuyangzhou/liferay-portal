@@ -18,8 +18,15 @@ import com.liferay.bookmarks.model.BookmarksEntry;
 import com.liferay.bookmarks.service.persistence.BookmarksEntryPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 
+import java.lang.reflect.Field;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -27,6 +34,26 @@ import java.util.Set;
  * @generated
  */
 public class BookmarksEntryFinderBaseImpl extends BasePersistenceImpl<BookmarksEntry> {
+	public BookmarksEntryFinderBaseImpl() {
+		setModelClass(BookmarksEntry.class);
+
+		try {
+			Field field = ReflectionUtil.getDeclaredField(BasePersistenceImpl.class,
+					"_dbColumnNames");
+
+			Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+			dbColumnNames.put("uuid", "uuid_");
+
+			field.set(this, dbColumnNames);
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
+		}
+	}
+
 	@Override
 	public Set<String> getBadColumnNames() {
 		return getBookmarksEntryPersistence().getBadColumnNames();
@@ -53,4 +80,5 @@ public class BookmarksEntryFinderBaseImpl extends BasePersistenceImpl<BookmarksE
 
 	@BeanReference(type = BookmarksEntryPersistence.class)
 	protected BookmarksEntryPersistence bookmarksEntryPersistence;
+	private static final Log _log = LogFactoryUtil.getLog(BookmarksEntryFinderBaseImpl.class);
 }
