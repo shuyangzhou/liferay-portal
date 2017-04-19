@@ -20,6 +20,8 @@ import com.liferay.portal.kernel.cluster.ClusterNode;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -33,11 +35,14 @@ import com.liferay.portal.kernel.security.auth.session.AuthenticatedSessionManag
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.servlet.HttpHeaders;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.CookieKeys;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -82,6 +87,42 @@ public class AuthenticatedSessionManagerImpl
 		throws Exception {
 
 		request = PortalUtil.getOriginalServletRequest(request);
+
+		String queryString = request.getQueryString();
+
+		if (queryString.contains("password=")) {
+			String passwordParameterName = "password=";
+
+			String portletId = PortalUtil.getPortletId(request);
+
+			if (portletId != null) {
+				passwordParameterName =
+					PortalUtil.getPortletNamespace(portletId) +
+						passwordParameterName;
+			}
+
+			int index = queryString.indexOf(passwordParameterName);
+
+			if ((index == 0) ||
+				((index > 0) &&
+				 (queryString.charAt(index - 1) == CharPool.AMPERSAND))) {
+
+				if (_log.isWarnEnabled()) {
+					String referer = request.getHeader(HttpHeaders.REFERER);
+
+					StringBundler sb = new StringBundler(4);
+
+					sb.append("Ignoring login attempt because the password ");
+					sb.append("parameter was found for the request with the ");
+					sb.append("referer header: ");
+					sb.append(referer);
+
+					_log.warn(sb.toString());
+				}
+
+				return;
+			}
+		}
 
 		CookieKeys.validateSupportCookie(request);
 
@@ -453,5 +494,8 @@ public class AuthenticatedSessionManagerImpl
 			return user;
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AuthenticatedSessionManagerImpl.class);
 
 }
