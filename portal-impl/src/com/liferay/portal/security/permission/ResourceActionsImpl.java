@@ -839,7 +839,7 @@ public class ResourceActionsImpl implements ResourceActions {
 				return modelResourceActionsBag;
 			}
 
-			modelResourceActionsBag = new ModelResourceActionsBagImpl();
+			modelResourceActionsBag = new ModelResourceActionsBag();
 
 			_modelResourceActionsBags.put(modelName, modelResourceActionsBag);
 		}
@@ -916,7 +916,7 @@ public class ResourceActionsImpl implements ResourceActions {
 				return portletResourceActionsBag;
 			}
 
-			portletResourceActionsBag = new PortletResourceActionsBagImpl();
+			portletResourceActionsBag = new PortletResourceActionsBag();
 
 			_portletResourceActionsBags.put(
 				portletName, portletResourceActionsBag);
@@ -1409,21 +1409,12 @@ public class ResourceActionsImpl implements ResourceActions {
 		_resourceBundleLoaders;
 	private final Set<String> _rootModelResources = new HashSet<>();
 
-	private interface ModelResourceActionsBag extends ResourceActionsBag {
+	private class ModelResourceActionsBag extends ResourceActionsBag {
 
-		public Set<String> getResourceOwnerDefaultActions();
-
-		public Map<String, Double> getResourceWeights();
-
-	}
-
-	private class ModelResourceActionsBagImpl
-		extends ResourceActionsBagImpl implements ModelResourceActionsBag {
-
-		public ModelResourceActionsBagImpl() {
+		public ModelResourceActionsBag() {
 		}
 
-		public ModelResourceActionsBagImpl(
+		public ModelResourceActionsBag(
 			ModelResourceActionsBag modelResourceActionsBag) {
 
 			super(modelResourceActionsBag);
@@ -1436,15 +1427,13 @@ public class ResourceActionsImpl implements ResourceActions {
 
 		@Override
 		public ModelResourceActionsBag clone() {
-			return new ModelResourceActionsBagImpl(this);
+			return new ModelResourceActionsBag(this);
 		}
 
-		@Override
 		public Set<String> getResourceOwnerDefaultActions() {
 			return _resourceOwnerDefaultActions;
 		}
 
-		@Override
 		public Map<String, Double> getResourceWeights() {
 			return _resourceWeights;
 		}
@@ -1455,21 +1444,12 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	}
 
-	private interface PortletResourceActionsBag extends ResourceActionsBag {
+	private class PortletResourceActionsBag extends ResourceActionsBag {
 
-		public Map<String, String> getPortletRootModelResources();
-
-		public Set<String> getResourceLayoutManagerActions();
-
-	}
-
-	private class PortletResourceActionsBagImpl
-		extends ResourceActionsBagImpl implements PortletResourceActionsBag {
-
-		public PortletResourceActionsBagImpl() {
+		public PortletResourceActionsBag() {
 		}
 
-		public PortletResourceActionsBagImpl(
+		public PortletResourceActionsBag(
 			PortletResourceActionsBag portletResourceActionsBag) {
 
 			super(portletResourceActionsBag);
@@ -1482,15 +1462,13 @@ public class ResourceActionsImpl implements ResourceActions {
 
 		@Override
 		public PortletResourceActionsBag clone() {
-			return new PortletResourceActionsBagImpl(this);
+			return new PortletResourceActionsBag(this);
 		}
 
-		@Override
 		public Map<String, String> getPortletRootModelResources() {
 			return _portletRootModelResources;
 		}
 
-		@Override
 		public Set<String> getResourceLayoutManagerActions() {
 			return _resourceLayoutManagerActions;
 		}
@@ -1502,27 +1480,12 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	}
 
-	private interface ResourceActionsBag {
+	private class ResourceActionsBag implements Cloneable {
 
-		public Set<String> getResourceActions();
-
-		public Set<String> getResourceGroupDefaultActions();
-
-		public Set<String> getResourceGuestDefaultActions();
-
-		public Set<String> getResourceGuestUnsupportedActions();
-
-		public Set<String> getResources();
-
-	}
-
-	private class ResourceActionsBagImpl
-		implements Cloneable, ResourceActionsBag {
-
-		public ResourceActionsBagImpl() {
+		public ResourceActionsBag() {
 		}
 
-		public ResourceActionsBagImpl(ResourceActionsBag resourceActionsBag) {
+		public ResourceActionsBag(ResourceActionsBag resourceActionsBag) {
 			_resourceActions.addAll(resourceActionsBag.getResourceActions());
 			_resourceGroupDefaultActions.addAll(
 				resourceActionsBag.getResourceGroupDefaultActions());
@@ -1535,30 +1498,25 @@ public class ResourceActionsImpl implements ResourceActions {
 
 		@Override
 		public ResourceActionsBag clone() {
-			return new ResourceActionsBagImpl(this);
+			return new ResourceActionsBag(this);
 		}
 
-		@Override
 		public Set<String> getResourceActions() {
 			return _resourceActions;
 		}
 
-		@Override
 		public Set<String> getResourceGroupDefaultActions() {
 			return _resourceGroupDefaultActions;
 		}
 
-		@Override
 		public Set<String> getResourceGuestDefaultActions() {
 			return _resourceGuestDefaultActions;
 		}
 
-		@Override
 		public Set<String> getResourceGuestUnsupportedActions() {
 			return _resourceGuestUnsupportedActions;
 		}
 
-		@Override
 		public Set<String> getResources() {
 			return _resources;
 		}
