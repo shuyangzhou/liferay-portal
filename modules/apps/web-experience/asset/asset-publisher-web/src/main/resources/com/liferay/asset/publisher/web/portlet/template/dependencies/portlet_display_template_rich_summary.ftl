@@ -18,12 +18,8 @@
 
 		entryTitle = htmlUtil.escape(assetRenderer.getTitle(locale))
 
-		viewURL = assetPublisherHelper.getAssetViewURL(renderRequest, renderResponse, entry)
+		viewURL = assetPublisherHelper.getAssetViewURL(renderRequest, renderResponse, assetRenderer, entry, !stringUtil.equals(assetLinkBehavior, "showFullContent"))
 	/>
-
-	<#if !stringUtil.equals(assetLinkBehavior, "showFullContent")>
-		<#assign viewURL = assetPublisherHelper.getAssetViewURL(renderRequest, renderResponse, entry, true) />
-	</#if>
 
 	<div class="asset-abstract">
 		<div class="pull-right">
