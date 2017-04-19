@@ -25,6 +25,10 @@ import com.liferay.shopping.service.persistence.ShoppingCategoryPersistence;
  * @generated
  */
 public class ShoppingCategoryFinderBaseImpl extends BasePersistenceImpl<ShoppingCategory> {
+	public ShoppingCategoryFinderBaseImpl() {
+		setModelClass(ShoppingCategory.class);
+	}
+
 	/**
 	 * Returns the shopping category persistence.
 	 *

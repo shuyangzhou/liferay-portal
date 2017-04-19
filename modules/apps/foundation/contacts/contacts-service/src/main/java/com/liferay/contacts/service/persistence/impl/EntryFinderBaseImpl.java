@@ -25,6 +25,10 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class EntryFinderBaseImpl extends BasePersistenceImpl<Entry> {
+	public EntryFinderBaseImpl() {
+		setModelClass(Entry.class);
+	}
+
 	/**
 	 * Returns the entry persistence.
 	 *

@@ -65,6 +65,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -74,6 +75,8 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -206,6 +209,25 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 	public ${entity.name}PersistenceImpl() {
 		setModelClass(${entity.name}.class);
+
+		<#if entity.badNamedColumnsList?size != 0>
+			try {
+				Field field = ReflectionUtil.getDeclaredField(BasePersistenceImpl.class, "_dbColumnNames");
+
+				Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+				<#list entity.badNamedColumnsList as column>
+					dbColumnNames.put("${column.name}", "${column.DBName}");
+				</#list>
+
+				field.set(this, dbColumnNames);
+			}
+			catch (Exception e) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(e, e);
+				}
+			}
+		</#if>
 	}
 
 	/**

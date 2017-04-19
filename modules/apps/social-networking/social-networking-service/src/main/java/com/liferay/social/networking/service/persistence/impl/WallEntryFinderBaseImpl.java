@@ -25,6 +25,10 @@ import com.liferay.social.networking.service.persistence.WallEntryPersistence;
  * @generated
  */
 public class WallEntryFinderBaseImpl extends BasePersistenceImpl<WallEntry> {
+	public WallEntryFinderBaseImpl() {
+		setModelClass(WallEntry.class);
+	}
+
 	/**
 	 * Returns the wall entry persistence.
 	 *

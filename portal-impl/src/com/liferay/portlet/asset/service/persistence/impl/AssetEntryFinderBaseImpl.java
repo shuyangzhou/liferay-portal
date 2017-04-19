@@ -25,6 +25,10 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class AssetEntryFinderBaseImpl extends BasePersistenceImpl<AssetEntry> {
+	public AssetEntryFinderBaseImpl() {
+		setModelClass(AssetEntry.class);
+	}
+
 	/**
 	 * Returns the asset entry persistence.
 	 *

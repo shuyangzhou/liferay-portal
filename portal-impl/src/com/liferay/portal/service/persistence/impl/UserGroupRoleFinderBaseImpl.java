@@ -24,6 +24,10 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class UserGroupRoleFinderBaseImpl extends BasePersistenceImpl<UserGroupRole> {
+	public UserGroupRoleFinderBaseImpl() {
+		setModelClass(UserGroupRole.class);
+	}
+
 	/**
 	 * Returns the user group role persistence.
 	 *

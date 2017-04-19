@@ -18,8 +18,15 @@ import com.liferay.polls.model.PollsQuestion;
 import com.liferay.polls.service.persistence.PollsQuestionPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 
+import java.lang.reflect.Field;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -27,6 +34,26 @@ import java.util.Set;
  * @generated
  */
 public class PollsQuestionFinderBaseImpl extends BasePersistenceImpl<PollsQuestion> {
+	public PollsQuestionFinderBaseImpl() {
+		setModelClass(PollsQuestion.class);
+
+		try {
+			Field field = ReflectionUtil.getDeclaredField(BasePersistenceImpl.class,
+					"_dbColumnNames");
+
+			Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+			dbColumnNames.put("uuid", "uuid_");
+
+			field.set(this, dbColumnNames);
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
+		}
+	}
+
 	@Override
 	public Set<String> getBadColumnNames() {
 		return getPollsQuestionPersistence().getBadColumnNames();
@@ -53,4 +80,5 @@ public class PollsQuestionFinderBaseImpl extends BasePersistenceImpl<PollsQuesti
 
 	@BeanReference(type = PollsQuestionPersistence.class)
 	protected PollsQuestionPersistence pollsQuestionPersistence;
+	private static final Log _log = LogFactoryUtil.getLog(PollsQuestionFinderBaseImpl.class);
 }
