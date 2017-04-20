@@ -53,7 +53,6 @@ import com.liferay.portal.search.configuration.SearchPermissionCheckerConfigurat
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -401,12 +400,9 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 				_roleLocalService.getRole(companyId, RoleConstants.GUEST));
 		}
 		else {
-			Group guestGroup = _groupLocalService.getGroup(
-				companyId, GroupConstants.GUEST);
-
 			roles.addAll(
-				_roleLocalService.getUserRelatedRoles(
-					userId, Collections.singletonList(guestGroup)));
+				_roleLocalService.getRoles(
+					permissionChecker.getGuestUserRoleIds()));
 		}
 
 		int termsCount = roles.size();

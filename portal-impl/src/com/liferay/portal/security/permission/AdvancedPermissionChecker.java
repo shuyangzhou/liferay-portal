@@ -113,13 +113,8 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		}
 	}
 
-	/**
-	 * Returns the permission checker bag for the guest user.
-	 *
-	 * @return the permission checker bag for the guest user
-	 * @throws Exception if an exception occurred
-	 */
-	public long[] getGuestUserRoleIds() throws Exception {
+	@Override
+	public long[] getGuestUserRoleIds() {
 		long[] roleIds = PermissionCacheUtil.getUserGroupRoleIds(
 			defaultUserId, _guestGroupId);
 
