@@ -1409,7 +1409,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		_resourceBundleLoaders;
 	private final Set<String> _rootModelResources = new HashSet<>();
 
-	private class ModelResourceActionsBag {
+	private static class ModelResourceActionsBag {
 
 		public Set<String> getResourceActions() {
 			return _resourceActions;
@@ -1453,7 +1453,7 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	}
 
-	private class PortletResourceActionsBag {
+	private static class PortletResourceActionsBag {
 
 		public Map<String, String> getPortletRootModelResources() {
 			return _portletRootModelResources;
