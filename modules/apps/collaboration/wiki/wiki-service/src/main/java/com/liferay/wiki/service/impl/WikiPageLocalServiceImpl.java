@@ -596,12 +596,11 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 		// Resource
 
-		WikiPageResource pageResource =
-			wikiPageResourceLocalService.fetchPageResource(
-				page.getNodeId(), page.getTitle());
+		WikiPageResource pageResource = wikiPageResourcePersistence.fetchByN_T(
+			page.getNodeId(), page.getTitle());
 
 		if (pageResource != null) {
-			wikiPageResourceLocalService.deleteWikiPageResource(pageResource);
+			wikiPageResourcePersistence.remove(pageResource);
 		}
 
 		// Attachments
@@ -878,7 +877,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 	@Override
 	public WikiPage fetchPage(long resourcePrimKey) {
 		WikiPageResource pageResource =
-			wikiPageResourceLocalService.fetchWikiPageResource(resourcePrimKey);
+			wikiPageResourcePersistence.fetchByPrimaryKey(resourcePrimKey);
 
 		if (pageResource == null) {
 			return null;
@@ -1164,7 +1163,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		throws PortalException {
 
 		WikiPageResource pageResource =
-			wikiPageResourceLocalService.getPageResource(resourcePrimKey);
+			wikiPageResourcePersistence.findByPrimaryKey(resourcePrimKey);
 
 		return getPage(pageResource.getNodeId(), pageResource.getTitle(), head);
 	}
@@ -2021,7 +2020,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		throws PortalException {
 
 		WikiPageResource pageResource =
-			wikiPageResourceLocalService.getPageResource(resourcePrimKey);
+			wikiPageResourcePersistence.findByPrimaryKey(resourcePrimKey);
 
 		List<WikiPage> pages = wikiPagePersistence.findByN_T(
 			pageResource.getNodeId(), pageResource.getTitle(), 0, 1,
