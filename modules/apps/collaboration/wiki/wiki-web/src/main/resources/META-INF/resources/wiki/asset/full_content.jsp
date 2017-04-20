@@ -14,7 +14,7 @@
  */
 --%>
 
-<%@ include file="/wiki/init.jsp" %>
+<%@ include file="/init.jsp" %>
 
 <%
 WikiPage wikiPage = (WikiPage)request.getAttribute(WikiWebKeys.WIKI_PAGE);

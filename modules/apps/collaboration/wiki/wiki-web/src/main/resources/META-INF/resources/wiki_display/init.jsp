@@ -18,10 +18,6 @@
 
 <%@ page import="com.liferay.wiki.configuration.WikiGroupServiceConfiguration" %><%@
 page import="com.liferay.wiki.exception.NoSuchNodeException" %><%@
-page import="com.liferay.wiki.model.WikiNode" %><%@
-page import="com.liferay.wiki.model.WikiPage" %><%@
-page import="com.liferay.wiki.service.WikiNodeServiceUtil" %><%@
-page import="com.liferay.wiki.service.WikiPageLocalServiceUtil" %><%@
 page import="com.liferay.wiki.web.util.WikiWebComponentProvider" %>
 
 <%
