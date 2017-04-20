@@ -517,10 +517,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		PortletResourceActionsBag portletResourceActionsBag =
 			getPortletResourceActionsBag(portletName);
 
-		Map<String, String> portletRootModelResource =
-			portletResourceActionsBag.getPortletRootModelResources();
-
-		return portletRootModelResource.get(portletName);
+		return portletResourceActionsBag.getPortletRootModelResource();
 	}
 
 	@Override
@@ -1223,10 +1220,7 @@ public class ResourceActionsImpl implements ResourceActions {
 			if (root) {
 				_rootModelResources.add(name);
 
-				Map<String, String> portletRootModelResource =
-					portletResourceActionsBag.getPortletRootModelResources();
-
-				portletRootModelResource.put(portletName, name);
+				portletResourceActionsBag.setPortletRootModelResource(name);
 			}
 		}
 
@@ -1469,8 +1463,12 @@ public class ResourceActionsImpl implements ResourceActions {
 			return _portletResourceLayoutManagerActions;
 		}
 
-		public Map<String, String> getPortletRootModelResources() {
-			return _portletRootModelResources;
+		public String getPortletRootModelResource() {
+			return _portletRootModelResource;
+		}
+
+		public void setPortletRootModelResource(String portletRootModelResource) {
+			_portletRootModelResource = portletRootModelResource;
 		}
 
 		private final Set<String> _modelResources = new HashSet<>();
@@ -1483,8 +1481,7 @@ public class ResourceActionsImpl implements ResourceActions {
 			new HashSet<>();
 		private final Set<String> _portletResourceLayoutManagerActions =
 			new HashSet<>();
-		private final Map<String, String> _portletRootModelResources =
-			new HashMap<>();
+		private String _portletRootModelResource;
 
 	}
 
