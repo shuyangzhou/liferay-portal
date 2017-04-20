@@ -36,9 +36,18 @@ editPageURL.setParameter("nodeId", String.valueOf(wikiPage.getNodeId()));
 editPageURL.setPortletMode(PortletMode.VIEW);
 editPageURL.setWindowState(WindowState.MAXIMIZED);
 
-String attachmentURLPrefix = themeDisplay.getPathMain() + "/wiki/get_page_attachment?p_l_id=" + themeDisplay.getPlid() + "&nodeId=" + wikiPage.getNodeId() + "&title=" + URLCodec.encodeURL(wikiPage.getTitle()) + "&fileName=";
+StringBundler sb = new StringBundler(8);
 
-WikiPageDisplay pageDisplay = WikiPageLocalServiceUtil.getPageDisplay(wikiPage, viewPageURL, editPageURL, attachmentURLPrefix, ServiceContextFactory.getInstance(request));
+sb.append(themeDisplay.getPathMain());
+sb.append("/wiki/get_page_attachment?p_l_id=");
+sb.append(themeDisplay.getPlid());
+sb.append("&nodeId=");
+sb.append(wikiPage.getNodeId());
+sb.append("&title=");
+sb.append(URLCodec.encodeURL(wikiPage.getTitle()));
+sb.append("&fileName=");
+
+WikiPageDisplay pageDisplay = WikiPageLocalServiceUtil.getPageDisplay(wikiPage, viewPageURL, editPageURL, sb.toString(), ServiceContextFactory.getInstance(request));
 %>
 
 <%= StringUtil.shorten(HtmlUtil.stripHtml(pageDisplay.getFormattedContent()), abstractLength) %>
