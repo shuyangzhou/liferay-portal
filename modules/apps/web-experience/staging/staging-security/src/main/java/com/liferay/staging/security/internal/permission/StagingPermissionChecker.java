@@ -53,6 +53,11 @@ public class StagingPermissionChecker implements PermissionChecker {
 	}
 
 	@Override
+	public long[] getGuestUserRoleIds() {
+		return _permissionChecker.getGuestUserRoleIds();
+	}
+
+	@Override
 	public List<Long> getOwnerResourceBlockIds(
 		long companyId, long groupId, String name, String actionId) {
 

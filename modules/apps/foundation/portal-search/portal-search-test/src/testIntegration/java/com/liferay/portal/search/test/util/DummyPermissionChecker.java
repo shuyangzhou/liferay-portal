@@ -39,6 +39,11 @@ public class DummyPermissionChecker implements PermissionChecker {
 	}
 
 	@Override
+	public long[] getGuestUserRoleIds() {
+		return null;
+	}
+
+	@Override
 	public List<Long> getOwnerResourceBlockIds(
 		long companyId, long groupId, String name, String actionId) {
 
