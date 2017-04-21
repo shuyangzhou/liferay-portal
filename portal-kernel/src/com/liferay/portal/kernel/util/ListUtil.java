@@ -495,7 +495,7 @@ public class ListUtil {
 			return _EMPTY_LONG_ARRAY;
 		}
 
-		long[] array = (long[])Array.newInstance(long.class, list.size());
+		long[] array = new long[list.size()];
 
 		for (int i = 0; i < list.size(); i++) {
 			T bean = list.get(i);
