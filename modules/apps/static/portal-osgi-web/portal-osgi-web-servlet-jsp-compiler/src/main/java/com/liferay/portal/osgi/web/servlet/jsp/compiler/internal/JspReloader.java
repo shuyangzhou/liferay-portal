@@ -38,35 +38,39 @@ public class JspReloader {
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_bundleTracker = new BundleTracker<>(
-			bundleContext, Bundle.ACTIVE,
-			new BundleTrackerCustomizer<Void>() {
+			bundleContext, -1,
+			new BundleTrackerCustomizer<Bundle>() {
 
 				@Override
-				public Void addingBundle(
+				public Bundle addingBundle(
 					Bundle bundle, BundleEvent bundleEvent) {
 
-					File file = new File(
-						_WORK_DIR,
-						bundle.getSymbolicName() + StringPool.DASH +
-							bundle.getVersion());
-
-					if (file.exists() &&
-						(file.lastModified() < bundle.getLastModified())) {
-
-						FileUtil.deltree(file);
-					}
-
-					return null;
+					return bundle;
 				}
 
 				@Override
 				public void modifiedBundle(
-					Bundle bundle, BundleEvent bundleEvent, Void object) {
+					Bundle bundle, BundleEvent bundleEvent, Bundle oldBundle) {
+
+					int event = bundleEvent.getType();
+
+					if ((event == BundleEvent.UPDATED) ||
+						(event == BundleEvent.UNINSTALLED)) {
+
+						File file = new File(
+							_WORK_DIR,
+							bundle.getSymbolicName() + StringPool.DASH +
+								bundle.getVersion());
+
+						if (file.exists()) {
+							FileUtil.deltree(file);
+						}
+					}
 				}
 
 				@Override
 				public void removedBundle(
-					Bundle bundle, BundleEvent bundleEvent, Void object) {
+					Bundle bundle, BundleEvent bundleEvent, Bundle oldBundle) {
 				}
 
 			});
@@ -82,6 +86,6 @@ public class JspReloader {
 	private static final String _WORK_DIR =
 		PropsValues.LIFERAY_HOME + File.separator + "work" + File.separator;
 
-	private BundleTracker<Void> _bundleTracker;
+	private BundleTracker<Bundle> _bundleTracker;
 
 }
