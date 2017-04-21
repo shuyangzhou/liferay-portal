@@ -24,7 +24,9 @@ public class PortletURLImplWrapper extends PortletURLImpl {
 
 		super(
 			portletResponseImpl.getPortletRequest(),
-			portletResponseImpl.getPortletName(), plid, lifecycle);
+			portletResponseImpl.getPortlet(), null, lifecycle);
+
+		setPlid(plid);
 	}
 
 }
