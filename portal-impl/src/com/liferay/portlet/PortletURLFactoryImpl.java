@@ -67,17 +67,11 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 		HttpServletRequest request, String portletId, Layout layout,
 		String lifecycle) {
 
-		Portlet portlet = PortletLocalServiceUtil.fetchPortletById(
-			PortalUtil.getCompanyId(request), portletId);
-
-		PortletURLImpl portletURLImpl = new PortletURLImpl(
-			request, portlet, layout, lifecycle);
-
-		if (portlet == null) {
-			portletURLImpl.setPortletId(portletId);
-		}
-
-		return portletURLImpl;
+		return new PortletURLImpl(
+			request,
+			PortletLocalServiceUtil.getPortletById(
+				PortalUtil.getCompanyId(request), portletId),
+			layout, lifecycle);
 	}
 
 	@Override
@@ -122,17 +116,11 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 		PortletRequest portletRequest, String portletId, Layout layout,
 		String lifecycle) {
 
-		Portlet portlet = PortletLocalServiceUtil.fetchPortletById(
-			PortalUtil.getCompanyId(portletRequest), portletId);
-
-		PortletURLImpl portletURLImpl = new PortletURLImpl(
-			portletRequest, portlet, layout, lifecycle);
-
-		if (portlet == null) {
-			portletURLImpl.setPortletId(portletId);
-		}
-
-		return portletURLImpl;
+		return new PortletURLImpl(
+			portletRequest,
+			PortletLocalServiceUtil.getPortletById(
+				PortalUtil.getCompanyId(portletRequest), portletId),
+			layout, lifecycle);
 	}
 
 	@Override
