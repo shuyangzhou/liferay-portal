@@ -186,7 +186,14 @@ public class PortletURLImpl
 	public Layout getLayout() {
 		if (_layout == null) {
 			try {
-				if (_plid > 0) {
+				Layout layout = (Layout)_request.getAttribute(WebKeys.LAYOUT);
+
+				if ((layout != null) && (layout.getPlid() == _plid) &&
+					(layout instanceof VirtualLayout)) {
+
+					_layout = layout;
+				}
+				else if (_plid > 0) {
 					_layout = LayoutLocalServiceUtil.getLayout(_plid);
 				}
 			}
@@ -742,14 +749,6 @@ public class PortletURLImpl
 		this(request, portletId, portletRequest, null, lifecycle);
 
 		_plid = plid;
-
-		Layout layout = (Layout)request.getAttribute(WebKeys.LAYOUT);
-
-		if ((layout != null) && (layout.getPlid() == plid) &&
-			(layout instanceof VirtualLayout)) {
-
-			_layout = layout;
-		}
 	}
 
 	protected void addPortalAuthToken(StringBundler sb, Key key) {
