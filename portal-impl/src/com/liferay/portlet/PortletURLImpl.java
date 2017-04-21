@@ -1311,7 +1311,7 @@ public class PortletURLImpl
 
 		this(
 			request,
-			PortletLocalServiceUtil.fetchPortletById(
+			PortletLocalServiceUtil.getPortletById(
 				PortalUtil.getCompanyId(request), portletId),
 			portletRequest, layout, lifecycle);
 	}
