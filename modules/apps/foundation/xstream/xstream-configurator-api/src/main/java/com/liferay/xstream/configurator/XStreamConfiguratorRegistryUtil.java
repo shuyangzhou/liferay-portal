@@ -44,8 +44,7 @@ public class XStreamConfiguratorRegistryUtil {
 
 		Set<ClassLoader> classLoaders = new HashSet<>();
 
-		Set<XStreamConfigurator> xStreamConfigurators =
-			_instance._getXStreamConfigurators();
+		Set<XStreamConfigurator> xStreamConfigurators = _xStreamConfigurators;
 
 		for (XStreamConfigurator xStreamConfigurator : xStreamConfigurators) {
 			Class<?> clazz = xStreamConfigurator.getClass();
@@ -69,7 +68,7 @@ public class XStreamConfiguratorRegistryUtil {
 	}
 
 	public static Set<XStreamConfigurator> getXStreamConfigurators() {
-		return _instance._getXStreamConfigurators();
+		return new HashSet<>(_xStreamConfigurators);
 	}
 
 	private XStreamConfiguratorRegistryUtil() {
@@ -85,18 +84,12 @@ public class XStreamConfiguratorRegistryUtil {
 		_serviceTracker.open();
 	}
 
-	private Set<XStreamConfigurator> _getXStreamConfigurators() {
-		return _xStreamConfigurators;
-	}
-
-	private static final XStreamConfiguratorRegistryUtil _instance =
-		new XStreamConfiguratorRegistryUtil();
+	private static final Set<XStreamConfigurator> _xStreamConfigurators =
+		new ConcurrentHashSet<>();
 
 	private final BundleContext _bundleContext;
 	private final ServiceTracker<XStreamConfigurator, XStreamConfigurator>
 		_serviceTracker;
-	private final Set<XStreamConfigurator> _xStreamConfigurators =
-		new ConcurrentHashSet<>();
 
 	private class XStreamConfiguratorServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer
