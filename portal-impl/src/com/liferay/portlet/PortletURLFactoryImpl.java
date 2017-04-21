@@ -69,7 +69,7 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 
 		return new PortletURLImpl(
 			request,
-			PortletLocalServiceUtil.fetchPortletById(
+			PortletLocalServiceUtil.getPortletById(
 				PortalUtil.getCompanyId(request), portletId),
 			layout, lifecycle);
 	}
@@ -81,7 +81,7 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 
 		return new PortletURLImpl(
 			request,
-			PortletLocalServiceUtil.fetchPortletById(
+			PortletLocalServiceUtil.getPortletById(
 				PortalUtil.getCompanyId(request), portletId),
 			_getLayout((Layout)request.getAttribute(WebKeys.LAYOUT), plid),
 			lifecycle);
@@ -104,7 +104,7 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 
 		return new PortletURLImpl(
 			request,
-			PortletLocalServiceUtil.fetchPortletById(
+			PortletLocalServiceUtil.getPortletById(
 				PortalUtil.getCompanyId(request), portletId),
 			layout, lifecycle);
 	}
@@ -124,7 +124,7 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 
 		return new PortletURLImpl(
 			portletRequest,
-			PortletLocalServiceUtil.fetchPortletById(
+			PortletLocalServiceUtil.getPortletById(
 				PortalUtil.getCompanyId(portletRequest), portletId),
 			layout, lifecycle);
 	}
@@ -136,7 +136,7 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 
 		return new PortletURLImpl(
 			portletRequest,
-			PortletLocalServiceUtil.fetchPortletById(
+			PortletLocalServiceUtil.getPortletById(
 				PortalUtil.getCompanyId(portletRequest), portletId),
 			_getLayout(
 				(Layout)portletRequest.getAttribute(WebKeys.LAYOUT), plid),
@@ -160,7 +160,7 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 
 		return new PortletURLImpl(
 			portletRequest,
-			PortletLocalServiceUtil.fetchPortletById(
+			PortletLocalServiceUtil.getPortletById(
 				PortalUtil.getCompanyId(portletRequest), portletId),
 			layout, lifecycle);
 	}

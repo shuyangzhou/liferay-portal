@@ -14,7 +14,6 @@
 
 package com.liferay.portlet;
 
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -187,7 +186,14 @@ public class PortletURLImpl
 	public Layout getLayout() {
 		if (_layout == null) {
 			try {
-				if (_plid > 0) {
+				Layout layout = (Layout)_request.getAttribute(WebKeys.LAYOUT);
+
+				if ((layout != null) && (layout.getPlid() == _plid) &&
+					(layout instanceof VirtualLayout)) {
+
+					_layout = layout;
+				}
+				else if (_plid > 0) {
 					_layout = LayoutLocalServiceUtil.getLayout(_plid);
 				}
 			}
@@ -246,39 +252,25 @@ public class PortletURLImpl
 	}
 
 	public Portlet getPortlet() {
-		if (_portlet == null) {
-			try {
-				_portlet = PortletLocalServiceUtil.getPortletById(
-					PortalUtil.getCompanyId(_request), _portletId);
-			}
-			catch (SystemException se) {
-				_log.error(se.getMessage());
-			}
-		}
-
 		return _portlet;
 	}
 
 	public String getPortletFriendlyURLPath() {
 		String portletFriendlyURLPath = null;
 
-		Portlet portlet = getPortlet();
+		if (_portlet.isUndeployedPortlet()) {
+			return portletFriendlyURLPath;
+		}
 
-		if (portlet != null) {
-			if (portlet.isUndeployedPortlet()) {
-				return portletFriendlyURLPath;
-			}
+		FriendlyURLMapper friendlyURLMapper =
+			_portlet.getFriendlyURLMapperInstance();
 
-			FriendlyURLMapper friendlyURLMapper =
-				portlet.getFriendlyURLMapperInstance();
+		if (friendlyURLMapper != null) {
+			portletFriendlyURLPath = friendlyURLMapper.buildPath(this);
 
-			if (friendlyURLMapper != null) {
-				portletFriendlyURLPath = friendlyURLMapper.buildPath(this);
-
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Portlet friendly URL path " + portletFriendlyURLPath);
-				}
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Portlet friendly URL path " + portletFriendlyURLPath);
 			}
 		}
 
@@ -377,14 +369,8 @@ public class PortletURLImpl
 			throw new IllegalArgumentException();
 		}
 
-		Portlet portlet = getPortlet();
-
-		if (portlet == null) {
-			return;
-		}
-
 		PublicRenderParameter publicRenderParameter =
-			portlet.getPublicRenderParameter(name);
+			_portlet.getPublicRenderParameter(name);
 
 		if (publicRenderParameter == null) {
 			if (_log.isWarnEnabled()) {
@@ -603,16 +589,11 @@ public class PortletURLImpl
 	public void setPortletMode(PortletMode portletMode)
 		throws PortletModeException {
 
-		if (_portletRequest != null) {
-			Portlet portlet = getPortlet();
+		if ((_portletRequest != null) &&
+			!_portlet.hasPortletMode(
+				_portletRequest.getResponseContentType(), portletMode)) {
 
-			if ((portlet != null) &&
-				!portlet.hasPortletMode(
-					_portletRequest.getResponseContentType(), portletMode)) {
-
-				throw new PortletModeException(
-					portletMode.toString(), portletMode);
-			}
+			throw new PortletModeException(portletMode.toString(), portletMode);
 		}
 
 		_portletModeString = portletMode.toString();
@@ -768,14 +749,6 @@ public class PortletURLImpl
 		this(request, portletId, portletRequest, null, lifecycle);
 
 		_plid = plid;
-
-		Layout layout = (Layout)request.getAttribute(WebKeys.LAYOUT);
-
-		if ((layout != null) && (layout.getPlid() == plid) &&
-			(layout instanceof VirtualLayout)) {
-
-			_layout = layout;
-		}
 	}
 
 	protected void addPortalAuthToken(StringBundler sb, Key key) {
@@ -1177,20 +1150,16 @@ public class PortletURLImpl
 	}
 
 	protected String getPublicRenderParameterName(String name) {
-		Portlet portlet = getPortlet();
-
 		String publicRenderParameterName = null;
 
-		if (portlet != null) {
-			PublicRenderParameter publicRenderParameter =
-				portlet.getPublicRenderParameter(name);
+		PublicRenderParameter publicRenderParameter =
+			_portlet.getPublicRenderParameter(name);
 
-			if (publicRenderParameter != null) {
-				QName qName = publicRenderParameter.getQName();
+		if (publicRenderParameter != null) {
+			QName qName = publicRenderParameter.getQName();
 
-				publicRenderParameterName =
-					PortletQNameUtil.getPublicRenderParameterName(qName);
-			}
+			publicRenderParameterName =
+				PortletQNameUtil.getPublicRenderParameterName(qName);
 		}
 
 		return publicRenderParameterName;
@@ -1274,31 +1243,29 @@ public class PortletURLImpl
 		_secure = PortalUtil.isSecure(request);
 		_wsrp = ParamUtil.getBoolean(request, "wsrp");
 
-		if (portlet != null) {
-			_portletId = portlet.getPortletId();
+		_portletId = portlet.getPortletId();
 
-			Set<String> autopropagatedParameters =
-				portlet.getAutopropagatedParameters();
+		Set<String> autopropagatedParameters =
+			portlet.getAutopropagatedParameters();
 
-			for (String autopropagatedParameter : autopropagatedParameters) {
-				if (PortalUtil.isReservedParameter(autopropagatedParameter)) {
-					continue;
-				}
-
-				String value = request.getParameter(autopropagatedParameter);
-
-				if (value != null) {
-					setParameter(autopropagatedParameter, value);
-				}
+		for (String autopropagatedParameter : autopropagatedParameters) {
+			if (PortalUtil.isReservedParameter(autopropagatedParameter)) {
+				continue;
 			}
 
-			PortletApp portletApp = portlet.getPortletApp();
+			String value = request.getParameter(autopropagatedParameter);
 
-			_escapeXml = MapUtil.getBoolean(
-				portletApp.getContainerRuntimeOptions(),
-				LiferayPortletConfig.RUNTIME_OPTION_ESCAPE_XML,
-				PropsValues.PORTLET_URL_ESCAPE_XML);
+			if (value != null) {
+				setParameter(autopropagatedParameter, value);
+			}
 		}
+
+		PortletApp portletApp = portlet.getPortletApp();
+
+		_escapeXml = MapUtil.getBoolean(
+			portletApp.getContainerRuntimeOptions(),
+			LiferayPortletConfig.RUNTIME_OPTION_ESCAPE_XML,
+			PropsValues.PORTLET_URL_ESCAPE_XML);
 
 		if (layout != null) {
 			_plid = layout.getPlid();
@@ -1311,7 +1278,7 @@ public class PortletURLImpl
 
 		this(
 			request,
-			PortletLocalServiceUtil.fetchPortletById(
+			PortletLocalServiceUtil.getPortletById(
 				PortalUtil.getCompanyId(request), portletId),
 			portletRequest, layout, lifecycle);
 	}
@@ -1414,7 +1381,7 @@ public class PortletURLImpl
 	private Set<String> _parametersIncludedInPath;
 	private Map<String, String[]> _params;
 	private long _plid;
-	private Portlet _portlet;
+	private final Portlet _portlet;
 	private String _portletId;
 	private String _portletModeString;
 	private final PortletRequest _portletRequest;
