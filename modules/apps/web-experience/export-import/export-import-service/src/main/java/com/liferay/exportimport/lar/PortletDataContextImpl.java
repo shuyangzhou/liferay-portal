@@ -86,7 +86,6 @@ import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
-import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -2641,7 +2640,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 		_xStream.omitField(HashMap.class, "cache_bitmask");
 
-		if (SetUtil.isEmpty(xStreamConfigurators)) {
+		if (xStreamConfigurators.isEmpty()) {
 			return;
 		}
 

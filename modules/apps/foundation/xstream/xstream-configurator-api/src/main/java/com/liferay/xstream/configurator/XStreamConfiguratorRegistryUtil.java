@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.exportimport.kernel.xstream.XStreamAliasRegistryUtil;
 import com.liferay.portal.kernel.concurrent.ConcurrentHashSet;
 import com.liferay.portal.kernel.util.AggregateClassLoader;
-import com.liferay.portal.kernel.util.MapUtil;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -57,7 +56,7 @@ public class XStreamConfiguratorRegistryUtil {
 
 		Map<Class<?>, String> aliases = XStreamAliasRegistryUtil.getAliases();
 
-		if (MapUtil.isNotEmpty(aliases)) {
+		if (!aliases.isEmpty()) {
 			for (Class<?> clazz : aliases.keySet()) {
 				classLoaders.add(clazz.getClassLoader());
 			}
