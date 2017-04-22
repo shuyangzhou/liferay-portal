@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.model.PublicRenderParameter;
-import com.liferay.portal.kernel.model.impl.VirtualLayout;
 import com.liferay.portal.kernel.portlet.FriendlyURLMapper;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
@@ -771,9 +770,7 @@ public class PortletURLImpl
 
 		Layout layout = (Layout)request.getAttribute(WebKeys.LAYOUT);
 
-		if ((layout != null) && (layout.getPlid() == plid) &&
-			(layout instanceof VirtualLayout)) {
-
+		if ((layout != null) && (layout.getPlid() == plid)) {
 			_layout = layout;
 		}
 	}
