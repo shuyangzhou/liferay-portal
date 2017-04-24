@@ -488,8 +488,7 @@ public class ResourceActionsImpl implements ResourceActions {
 			_getPortletResourceActionsBag(name);
 
 		Set<String> actions =
-			portletResourceActionsBag.
-				getGuestUnsupportedActions();
+			portletResourceActionsBag.getGuestUnsupportedActions();
 
 		if (actions.contains(ActionKeys.CONFIGURATION) &&
 			actions.contains(ActionKeys.PERMISSIONS)) {
@@ -600,7 +599,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		long companyId, Group group, String modelResource, int[] roleTypes) {
 
 		if (roleTypes == null) {
-			roleTypes = _getRoleTypes(companyId, group, modelResource);
+			roleTypes = _getRoleTypes(group, modelResource);
 		}
 
 		return roleLocalService.getRoles(companyId, roleTypes);
@@ -705,6 +704,15 @@ public class ResourceActionsImpl implements ResourceActions {
 			check(portletName);
 		}
 	}
+
+	@BeanReference(type = PortletLocalService.class)
+	protected PortletLocalService portletLocalService;
+
+	@BeanReference(type = ResourceActionLocalService.class)
+	protected ResourceActionLocalService resourceActionLocalService;
+
+	@BeanReference(type = RoleLocalService.class)
+	protected RoleLocalService roleLocalService;
 
 	private void _checkGuestUnsupportedActions(
 		Set<String> guestUnsupportedActions, Set<String> guestDefaultActions) {
@@ -952,9 +960,7 @@ public class ResourceActionsImpl implements ResourceActions {
 		return null;
 	}
 
-	private int[] _getRoleTypes(
-		long companyId, Group group, String modelResource) {
-
+	private int[] _getRoleTypes(Group group, String modelResource) {
 		int[] types = RoleConstants.TYPES_REGULAR_AND_SITE;
 
 		if (isPortalModelResource(modelResource)) {
@@ -1150,7 +1156,8 @@ public class ResourceActionsImpl implements ResourceActions {
 
 		guestUnsupportedActions.clear();
 
-		guestUnsupportedActions.addAll(_readActionKeys(guestUnsupportedElement));
+		guestUnsupportedActions.addAll(
+			_readActionKeys(guestUnsupportedElement));
 
 		_checkGuestUnsupportedActions(
 			guestUnsupportedActions, guestDefaultActions);
@@ -1369,15 +1376,6 @@ public class ResourceActionsImpl implements ResourceActions {
 		return supportsActions;
 	}
 
-	@BeanReference(type = PortletLocalService.class)
-	protected PortletLocalService portletLocalService;
-
-	@BeanReference(type = ResourceActionLocalService.class)
-	protected ResourceActionLocalService resourceActionLocalService;
-
-	@BeanReference(type = RoleLocalService.class)
-	protected RoleLocalService roleLocalService;
-
 	private static final String _ACTION_NAME_PREFIX = "action.";
 
 	private static final String _COMPOSITE_MODEL_NAME_SEPARATOR =
@@ -1468,7 +1466,9 @@ public class ResourceActionsImpl implements ResourceActions {
 			return _portletRootModelResource;
 		}
 
-		public void setPortletRootModelResource(String portletRootModelResource) {
+		public void setPortletRootModelResource(
+			String portletRootModelResource) {
+
 			_portletRootModelResource = portletRootModelResource;
 		}
 
