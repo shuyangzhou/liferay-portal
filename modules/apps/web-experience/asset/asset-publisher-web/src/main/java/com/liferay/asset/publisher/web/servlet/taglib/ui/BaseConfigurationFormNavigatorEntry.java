@@ -61,7 +61,8 @@ public abstract class BaseConfigurationFormNavigatorEntry
 
 		PortletPreferences portletSetup =
 			PortletPreferencesFactoryUtil.getStrictLayoutPortletSetup(
-				themeDisplay.getLayout(), portletDisplay.getPortletResource());
+				themeDisplay, themeDisplay.getLayout(),
+				portletDisplay.getPortletResource());
 
 		String selectionStyle = GetterUtil.getString(
 			portletSetup.getValue("selectionStyle", null), "dynamic");

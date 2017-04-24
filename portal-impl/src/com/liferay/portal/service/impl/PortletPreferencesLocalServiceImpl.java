@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.model.LayoutStagingHandler;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletConstants;
+import com.liferay.portal.kernel.model.PortletInstance;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.model.PortletPreferencesIds;
 import com.liferay.portal.kernel.model.User;
@@ -38,6 +39,7 @@ import com.liferay.portal.kernel.spring.aop.Property;
 import com.liferay.portal.kernel.spring.aop.Retry;
 import com.liferay.portal.kernel.spring.aop.Skip;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
@@ -47,7 +49,9 @@ import com.liferay.portlet.PortletPreferencesImpl;
 import com.liferay.portlet.exportimport.staging.ProxiedLayoutsThreadLocal;
 import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Brian Wing Shun Chan
@@ -376,6 +380,56 @@ public class PortletPreferencesLocalServiceImpl
 			portletPreferencesIds.getOwnerType(),
 			portletPreferencesIds.getPlid(),
 			portletPreferencesIds.getPortletId());
+	}
+
+	@Override
+	public Map<String, javax.portlet.PortletPreferences> getStrictPreferences(
+		Layout layout, List<Portlet> portlets) {
+
+		long companyId = layout.getCompanyId();
+		long plid = layout.getPlid();
+
+		plid = _swapPlidForPreferences(plid);
+
+		Map<String, javax.portlet.PortletPreferences> portletPreferencesMap =
+			new HashMap<>();
+
+		for (Portlet portlet : portlets) {
+			long ownerId = PortletKeys.PREFS_OWNER_ID_DEFAULT;
+			int ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
+
+			PortletInstance portletInstance =
+				PortletInstance.fromPortletInstanceKey(portlet.getPortletId());
+
+			if (portletInstance.hasUserId()) {
+				ownerId = portletInstance.getUserId();
+				ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
+			}
+
+			PortletPreferences portletsPreferences =
+				portletPreferencesPersistence.fetchByO_O_P_P(
+					ownerId, ownerType, plid, portlet.getPortletId());
+
+			javax.portlet.PortletPreferences portletPreferences = null;
+
+			if (portletsPreferences == null) {
+				portletPreferences =
+					PortletPreferencesFactoryUtil.strictFromXML(
+						companyId, ownerId, ownerType, plid,
+						portlet.getPortletId(),
+						portlet.getDefaultPreferences());
+			}
+			else {
+				portletPreferences = PortletPreferencesFactoryUtil.fromXML(
+					companyId, ownerId, ownerType, plid, portlet.getPortletId(),
+					portletsPreferences.getPreferences());
+			}
+
+			portletPreferencesMap.put(
+				portlet.getPortletId(), portletPreferences);
+		}
+
+		return portletPreferencesMap;
 	}
 
 	@Override

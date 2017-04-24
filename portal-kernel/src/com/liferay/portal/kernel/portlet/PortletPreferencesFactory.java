@@ -133,6 +133,9 @@ public interface PortletPreferencesFactory {
 	public PortletPreferences getStrictLayoutPortletSetup(
 		Layout layout, String portletId);
 
+	public PortletPreferences getStrictLayoutPortletSetup(
+		ThemeDisplay themeDisplay, Layout layout, String portletId);
+
 	public PortletPreferences getStrictPortletSetup(
 		Layout layout, String portletId);
 
