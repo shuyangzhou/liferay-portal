@@ -69,8 +69,8 @@ public abstract class BaseRowTag extends com.liferay.taglib.util.IncludeTag {
 
 	@Override
 	protected void setAttributes(HttpServletRequest request) {
-		setNamespacedAttribute(request, "cssClass", _cssClass);
-		setNamespacedAttribute(request, "id", _id);
+		request.setAttribute("aui:row:cssClass", _cssClass);
+		request.setAttribute("aui:row:id", _id);
 	}
 
 	protected static final String _ATTRIBUTE_NAMESPACE = "aui:row:";
