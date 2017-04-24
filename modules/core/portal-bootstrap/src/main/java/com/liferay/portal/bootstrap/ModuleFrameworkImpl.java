@@ -1150,6 +1150,10 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 					String fileName = StringUtil.toLowerCase(
 						fileNamePath.toString());
 
+					if (!fileName.endsWith(".jar")) {
+						return FileVisitResult.CONTINUE;
+					}
+
 					Matcher matcher = _pattern.matcher(fileName);
 
 					if (!matcher.matches()) {
