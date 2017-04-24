@@ -28,6 +28,7 @@ public class ModelResourceActionsBagImpl
 	extends ResourceActionsBagImpl implements ModelResourceActionsBag {
 
 	public ModelResourceActionsBagImpl() {
+		_modelName = null;
 	}
 
 	public ModelResourceActionsBagImpl(
@@ -35,14 +36,24 @@ public class ModelResourceActionsBagImpl
 
 		super(modelResourceActionsBag);
 
+		_modelName = modelResourceActionsBag.getModelName();
 		_resourceOwnerDefaultActions.addAll(
 			modelResourceActionsBag.getResourceOwnerDefaultActions());
 		_resourceWeights.putAll(modelResourceActionsBag.getResourceWeights());
 	}
 
+	public ModelResourceActionsBagImpl(String modelName) {
+		_modelName = modelName;
+	}
+
 	@Override
 	public ModelResourceActionsBag clone() {
 		return new ModelResourceActionsBagImpl(this);
+	}
+
+	@Override
+	public String getModelName() {
+		return _modelName;
 	}
 
 	@Override
@@ -55,6 +66,7 @@ public class ModelResourceActionsBagImpl
 		return _resourceWeights;
 	}
 
+	private final String _modelName;
 	private final Set<String> _resourceOwnerDefaultActions = new HashSet<>();
 	private final Map<String, Double> _resourceWeights = new HashMap<>();
 

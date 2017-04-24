@@ -16,7 +16,7 @@ package com.liferay.portal.security.permission;
 
 import com.liferay.portal.kernel.security.permission.PortletResourceActionsBag;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -27,7 +27,13 @@ import java.util.Set;
 public class PortletResourceActionsBagImpl
 	extends ResourceActionsBagImpl implements PortletResourceActionsBag {
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #PortletResourceActionsBagImpl(String)}
+	 */
+	@Deprecated
 	public PortletResourceActionsBagImpl() {
+		_portletName = null;
 	}
 
 	public PortletResourceActionsBagImpl(
@@ -35,10 +41,15 @@ public class PortletResourceActionsBagImpl
 
 		super(portletResourceActionsBag);
 
-		_portletRootModelResources.putAll(
-			portletResourceActionsBag.getPortletRootModelResources());
+		_portletName = portletResourceActionsBag.getPortletName();
+		_portletRootModelResource =
+			portletResourceActionsBag.getPortletRootModelResource();
 		_resourceLayoutManagerActions.addAll(
 			portletResourceActionsBag.getResourceLayoutManagerActions());
+	}
+
+	public PortletResourceActionsBagImpl(String portletName) {
+		_portletName = portletName;
 	}
 
 	@Override
@@ -47,8 +58,24 @@ public class PortletResourceActionsBagImpl
 	}
 
 	@Override
+	public String getPortletName() {
+		return _portletName;
+	}
+
+	@Override
+	public String getPortletRootModelResource() {
+		return _portletRootModelResource;
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #getPortletRootModelResource()}
+	 */
+	@Deprecated
+	@Override
 	public Map<String, String> getPortletRootModelResources() {
-		return _portletRootModelResources;
+		return Collections.singletonMap(
+			_portletName, _portletRootModelResource);
 	}
 
 	@Override
@@ -56,8 +83,13 @@ public class PortletResourceActionsBagImpl
 		return _resourceLayoutManagerActions;
 	}
 
-	private final Map<String, String> _portletRootModelResources =
-		new HashMap<>();
+	@Override
+	public void setPortletRootModelResource(String portletRootModelResource) {
+		_portletRootModelResource = portletRootModelResource;
+	}
+
+	private final String _portletName;
+	private String _portletRootModelResource;
 	private final Set<String> _resourceLayoutManagerActions = new HashSet<>();
 
 }
