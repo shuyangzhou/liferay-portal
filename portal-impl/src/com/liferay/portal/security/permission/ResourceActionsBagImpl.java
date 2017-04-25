@@ -21,7 +21,9 @@ import java.util.Set;
 
 /**
  * @author László Csontos
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class ResourceActionsBagImpl implements Cloneable, ResourceActionsBag {
 
 	public ResourceActionsBagImpl() {
