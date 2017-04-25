@@ -106,6 +106,10 @@ public abstract class BaseIndexingTestCase {
 		return new TermQueryImpl(Field.ENTRY_CLASS_NAME, _entryClassName);
 	}
 
+	protected IndexSearcher getIndexSearcher() {
+		return _indexSearcher;
+	}
+
 	protected Hits search(SearchContext searchContext) throws Exception {
 		return search(searchContext, getDefaultQuery());
 	}
