@@ -58,6 +58,7 @@ import com.liferay.portal.search.solr.internal.facet.CompositeFacetProcessor;
 import com.liferay.portal.search.solr.internal.facet.SolrFacetFieldCollector;
 import com.liferay.portal.search.solr.internal.facet.SolrFacetQueryCollector;
 import com.liferay.portal.search.solr.stats.StatsTranslator;
+import com.liferay.portal.util.PropsValues;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -114,8 +115,6 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 		stopWatch.start();
 
 		try {
-			int total = (int)searchCount(searchContext, query);
-
 			int start = searchContext.getStart();
 			int end = searchContext.getEnd();
 
@@ -127,19 +126,29 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 			}
 
 			if (end == QueryUtil.ALL_POS) {
-				end = total;
+				end = PropsValues.INDEX_SEARCH_LIMIT;
 			}
 			else if (end < 0) {
 				throw new IllegalArgumentException("Invalid end " + end);
 			}
 
-			int[] startAndEnd = SearchPaginationUtil.calculateStartAndEnd(
-				start, end, total);
+			Hits hits = null;
 
-			start = startAndEnd[0];
-			end = startAndEnd[1];
+			while (true) {
+				hits = doSearchHits(searchContext, query, start, end);
 
-			Hits hits = doSearchHits(searchContext, query, start, end);
+				Document[] documents = hits.getDocs();
+
+				if ((documents.length != 0) || (start == 0)) {
+					break;
+				}
+
+				int[] startAndEnd = SearchPaginationUtil.calculateStartAndEnd(
+					start, end, hits.getLength());
+
+				start = startAndEnd[0];
+				end = startAndEnd[1];
+			}
 
 			hits.setStart(stopWatch.getStartTime());
 
