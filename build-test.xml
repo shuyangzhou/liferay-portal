@@ -2227,6 +2227,12 @@ tell application "Safari" to quit
 	<macrodef name="prepare-tomcat-setenv">
 		<sequential>
 			<replace file="${app.server.tomcat.bin.dir}/setenv${file.suffix.bat}" token="${app.server.tomcat.setenv.gc.old}" value="${app.server.tomcat.setenv.gc.new}" />
+
+			<echo append="true" file="${app.server.tomcat.bin.dir}/setenv${file.suffix.bat}">
+				<![CDATA[
+					CATALINA_OPTS="${CATALINA_OPTS} -XX:+PrintFlagsFinal -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/tomcat-oom-heap-dump.bin"
+				]]>
+			</echo>
 		</sequential>
 	</macrodef>
 
