@@ -119,9 +119,18 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 			int start = searchContext.getStart();
 			int end = searchContext.getEnd();
 
-			if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS)) {
+			if (start == QueryUtil.ALL_POS) {
 				start = 0;
+			}
+			else if (start < 0) {
+				throw new IllegalArgumentException("Invalid start " + start);
+			}
+
+			if (end == QueryUtil.ALL_POS) {
 				end = total;
+			}
+			else if (end < 0) {
+				throw new IllegalArgumentException("Invalid end " + end);
 			}
 
 			int[] startAndEnd = SearchPaginationUtil.calculateStartAndEnd(
