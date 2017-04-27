@@ -47,6 +47,7 @@ import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchContextFactory;
 import com.liferay.portal.kernel.search.Sort;
@@ -841,7 +842,12 @@ public class AssetUtil {
 		searchContext.setEnd(end);
 		searchContext.setGroupIds(assetEntryQuery.getGroupIds());
 
-		if (Validator.isNotNull(assetEntryQuery.getKeywords())) {
+		if (Validator.isNull(assetEntryQuery.getKeywords())) {
+			QueryConfig queryConfig = searchContext.getQueryConfig();
+
+			queryConfig.setScoreEnabled(false);
+		}
+		else {
 			searchContext.setLike(true);
 		}
 
