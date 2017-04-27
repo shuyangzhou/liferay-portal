@@ -69,6 +69,10 @@ public class IncludeTag extends AttributesTagSupport {
 				page = getEndPage();
 			}
 
+			if (Validator.isNull(page)) {
+				return processEndTag();
+			}
+
 			callSetAttributes();
 
 			if (themeResourceExists(page)) {
@@ -99,6 +103,10 @@ public class IncludeTag extends AttributesTagSupport {
 	public int doStartTag() throws JspException {
 		try {
 			String page = getStartPage();
+
+			if (Validator.isNull(page)) {
+				return processStartTag();
+			}
 
 			callSetAttributes();
 
