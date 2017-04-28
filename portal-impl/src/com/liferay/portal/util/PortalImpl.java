@@ -3551,12 +3551,8 @@ public class PortalImpl implements Portal {
 			pos = path.length();
 		}
 
-		String siteFriendlyURL =
-			FriendlyURLNormalizerUtil.normalizeWithEncoding(
-				HttpUtil.decodeURL(path.substring(0, pos)));
-
 		Group group = GroupLocalServiceUtil.fetchFriendlyURLGroup(
-			companyId, siteFriendlyURL);
+			companyId, path.substring(0, pos));
 
 		if (group != null) {
 			String localisedFriendlyURL =
@@ -3565,7 +3561,7 @@ public class PortalImpl implements Portal {
 
 			if (!Validator.isBlank(localisedFriendlyURL)) {
 				requestURI = requestURI.replace(
-					siteFriendlyURL, localisedFriendlyURL);
+					group.getFriendlyURL(), localisedFriendlyURL);
 			}
 		}
 
