@@ -379,11 +379,6 @@ app.server.type=@{app.server.type}]]></echo>
 				<equals arg1="@{app.server.type}" arg2="tomcat" />
 				<then>
 					<setup-testable-tomcat />
-
-					<replace file="${app.server.tomcat.bin.dir}/setenv${file.suffix.bat}">
-						<replacetoken><![CDATA[-Xmx1024m -XX:MaxPermSize=256m]]></replacetoken>
-						<replacevalue><![CDATA[-verbose:gc -Xloggc:/tmp/tomcat-gc.log -Xms512m -Xmx512m -XX:MaxNewSize=32m -XX:MaxPermSize=200m -XX:MaxTenuringThreshold=0 -XX:NewSize=32m -XX:ParallelGCThreads=2 -XX:PermSize=200m -XX:+PrintGCCause -XX:+PrintGCDetails -XX:SurvivorRatio=65536 -XX:TargetSurvivorRatio=0 -XX:+UseParNewGC]]></replacevalue>
-					</replace>
 				</then>
 			</if>
 
