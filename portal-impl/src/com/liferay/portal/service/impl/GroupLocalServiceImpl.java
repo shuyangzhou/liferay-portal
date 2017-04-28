@@ -988,11 +988,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			return null;
 		}
 
-		String normalizedFriendlyURL = getFriendlyURL(
-			HttpUtil.decodePath(friendlyURL));
-
 		Group group = SitesFriendlyURLAdapterUtil.getGroup(
-			companyId, normalizedFriendlyURL);
+			companyId, friendlyURL);
 
 		if (group != null) {
 			return group;

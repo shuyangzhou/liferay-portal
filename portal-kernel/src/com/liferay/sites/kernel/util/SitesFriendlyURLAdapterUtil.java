@@ -16,6 +16,9 @@ package com.liferay.sites.kernel.util;
 
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -31,7 +34,12 @@ public class SitesFriendlyURLAdapterUtil {
 			_sitesFriendlyURLAdapter;
 
 		if (sitesFriendlyURLAdapter != null) {
-			return sitesFriendlyURLAdapter.getGroup(companyId, friendlyURL);
+			String normalizedFriendlyURL =
+				FriendlyURLNormalizerUtil.normalizeWithEncoding(
+					HttpUtil.decodePath(friendlyURL));
+
+			return sitesFriendlyURLAdapter.getGroup(
+				companyId, normalizedFriendlyURL);
 		}
 
 		return null;
