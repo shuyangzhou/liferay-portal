@@ -201,7 +201,7 @@ public class I18nFilter extends BasePortalFilter {
 
 			String siteFriendlyURL =
 				SitesFriendlyURLAdapterUtil.getSiteFriendlyURL(
-					group.getGroupId(), locale);
+					group, i18nLanguageId);
 
 			if (groupFriendlyURL.equals(siteFriendlyURL)) {
 				redirect =

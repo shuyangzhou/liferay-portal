@@ -988,8 +988,6 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			return null;
 		}
 
-		friendlyURL = getFriendlyURL(HttpUtil.decodePath(friendlyURL));
-
 		Group group = SitesFriendlyURLAdapterUtil.getGroup(
 			companyId, friendlyURL);
 
@@ -997,7 +995,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			return group;
 		}
 
-		return groupPersistence.fetchByC_F(companyId, friendlyURL);
+		return groupPersistence.fetchByC_F(
+			companyId, getFriendlyURL(friendlyURL));
 	}
 
 	@Override

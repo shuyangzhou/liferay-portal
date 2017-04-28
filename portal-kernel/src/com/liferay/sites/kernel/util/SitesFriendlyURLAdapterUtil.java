@@ -15,11 +15,10 @@
 package com.liferay.sites.kernel.util;
 
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.StringPool;
-
-import java.util.Locale;
 
 /**
  * @author Pavel Savinov
@@ -31,21 +30,25 @@ public class SitesFriendlyURLAdapterUtil {
 			_sitesFriendlyURLAdapter;
 
 		if (sitesFriendlyURLAdapter != null) {
-			return sitesFriendlyURLAdapter.getGroup(companyId, friendlyURL);
+			String normalizedFriendlyURL =
+				FriendlyURLNormalizerUtil.normalizeWithEncoding(
+					HttpUtil.decodePath(friendlyURL));
+
+			return sitesFriendlyURLAdapter.getGroup(
+				companyId, normalizedFriendlyURL);
 		}
 
 		return null;
 	}
 
-	public static String getSiteFriendlyURL(long groupId, Locale locale) {
+	public static String getSiteFriendlyURL(Group group, String languageId) {
 		SitesFriendlyURLAdapter sitesFriendlyURLAdapter =
 			_sitesFriendlyURLAdapter;
 
 		if (sitesFriendlyURLAdapter != null) {
-			return sitesFriendlyURLAdapter.getSiteFriendlyURL(groupId, locale);
+			return sitesFriendlyURLAdapter.getSiteFriendlyURL(
+				group, languageId);
 		}
-
-		Group group = GroupLocalServiceUtil.fetchGroup(groupId);
 
 		if (group != null) {
 			return group.getFriendlyURL();
@@ -57,6 +60,6 @@ public class SitesFriendlyURLAdapterUtil {
 	private static volatile SitesFriendlyURLAdapter _sitesFriendlyURLAdapter =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			SitesFriendlyURLAdapter.class, SitesFriendlyURLAdapterUtil.class,
-			"_sitesFriendlyURLAdapter", false);
+			"_sitesFriendlyURLAdapter", false, true);
 
 }
