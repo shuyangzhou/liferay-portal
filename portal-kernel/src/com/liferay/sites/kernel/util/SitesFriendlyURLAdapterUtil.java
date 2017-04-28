@@ -57,6 +57,6 @@ public class SitesFriendlyURLAdapterUtil {
 	private static volatile SitesFriendlyURLAdapter _sitesFriendlyURLAdapter =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			SitesFriendlyURLAdapter.class, SitesFriendlyURLAdapterUtil.class,
-			"_sitesFriendlyURLAdapter", false);
+			"_sitesFriendlyURLAdapter", false, true);
 
 }
