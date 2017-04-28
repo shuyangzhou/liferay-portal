@@ -68,6 +68,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Brian Wing Shun Chan
@@ -153,27 +156,32 @@ public class FriendlyURLServlet extends HttpServlet {
 
 		Locale locale = portal.getLocale(request);
 
-		SiteFriendlyURL siteFriendlyURL =
-			siteFriendlyURLLocalService.fetchSiteFriendlyURL(
-				companyId, group.getGroupId(), LocaleUtil.toLanguageId(locale));
-
-		if ((siteFriendlyURL == null) ||
-			Validator.isNull(siteFriendlyURL.getFriendlyURL())) {
-
-			siteFriendlyURL =
-				siteFriendlyURLLocalService.fetchSiteFriendlyURLByFriendlyURL(
-					companyId, friendlyURL);
-		}
-
 		SiteFriendlyURL alternativeSiteFriendlyURL = null;
 
-		if ((siteFriendlyURL != null) &&
-			!StringUtil.equalsIgnoreCase(
-				siteFriendlyURL.getFriendlyURL(), friendlyURL)) {
+		if (siteFriendlyURLLocalService != null) {
+			SiteFriendlyURL siteFriendlyURL =
+				siteFriendlyURLLocalService.fetchSiteFriendlyURL(
+					companyId, group.getGroupId(),
+					LocaleUtil.toLanguageId(locale));
 
-			alternativeSiteFriendlyURL =
-				siteFriendlyURLLocalService.fetchSiteFriendlyURLByFriendlyURL(
-					siteFriendlyURL.getCompanyId(), friendlyURL);
+			if ((siteFriendlyURL == null) ||
+				Validator.isNull(siteFriendlyURL.getFriendlyURL())) {
+
+				siteFriendlyURL =
+					siteFriendlyURLLocalService.
+						fetchSiteFriendlyURLByFriendlyURL(
+							companyId, friendlyURL);
+			}
+
+			if ((siteFriendlyURL != null) &&
+				!StringUtil.equalsIgnoreCase(
+					siteFriendlyURL.getFriendlyURL(), friendlyURL)) {
+
+				alternativeSiteFriendlyURL =
+					siteFriendlyURLLocalService.
+						fetchSiteFriendlyURLByFriendlyURL(
+							siteFriendlyURL.getCompanyId(), friendlyURL);
+			}
 		}
 
 		// Layout friendly URL
@@ -546,8 +554,12 @@ public class FriendlyURLServlet extends HttpServlet {
 	@Reference
 	protected Portal portal;
 
-	@Reference
-	protected SiteFriendlyURLLocalService siteFriendlyURLLocalService;
+	@Reference(
+		cardinality = ReferenceCardinality.OPTIONAL,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	protected volatile SiteFriendlyURLLocalService siteFriendlyURLLocalService;
 
 	@Reference
 	protected UserLocalService userLocalService;
