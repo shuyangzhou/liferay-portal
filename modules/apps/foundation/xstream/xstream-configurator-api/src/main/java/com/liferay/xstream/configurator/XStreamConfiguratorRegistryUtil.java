@@ -17,25 +17,25 @@ package com.liferay.xstream.configurator;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.exportimport.kernel.xstream.XStreamAliasRegistryUtil;
-import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.concurrent.ConcurrentHashSet;
 import com.liferay.portal.kernel.util.AggregateClassLoader;
-import com.liferay.portal.kernel.util.MapUtil;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Mate Thurzo
  */
+@Component(immediate = true)
 @ProviderType
 public class XStreamConfiguratorRegistryUtil {
 
@@ -44,8 +44,7 @@ public class XStreamConfiguratorRegistryUtil {
 
 		Set<ClassLoader> classLoaders = new HashSet<>();
 
-		Set<XStreamConfigurator> xStreamConfigurators =
-			_instance._getXStreamConfigurators();
+		Set<XStreamConfigurator> xStreamConfigurators = _xStreamConfigurators;
 
 		for (XStreamConfigurator xStreamConfigurator : xStreamConfigurators) {
 			Class<?> clazz = xStreamConfigurator.getClass();
@@ -57,7 +56,7 @@ public class XStreamConfiguratorRegistryUtil {
 
 		Map<Class<?>, String> aliases = XStreamAliasRegistryUtil.getAliases();
 
-		if (MapUtil.isNotEmpty(aliases)) {
+		if (!aliases.isEmpty()) {
 			for (Class<?> clazz : aliases.keySet()) {
 				classLoaders.add(clazz.getClassLoader());
 			}
@@ -69,34 +68,31 @@ public class XStreamConfiguratorRegistryUtil {
 	}
 
 	public static Set<XStreamConfigurator> getXStreamConfigurators() {
-		return _instance._getXStreamConfigurators();
+		return new HashSet<>(_xStreamConfigurators);
 	}
 
-	private XStreamConfiguratorRegistryUtil() {
-		Bundle bundle = FrameworkUtil.getBundle(
-			XStreamConfiguratorRegistryUtil.class);
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
 
-		_bundleContext = bundle.getBundleContext();
-
-		_serviceTracker = ServiceTrackerFactory.open(
-			_bundleContext, XStreamConfigurator.class,
+		_serviceTracker = new ServiceTracker<>(
+			bundleContext, XStreamConfigurator.class,
 			new XStreamConfiguratorServiceTrackerCustomizer());
 
 		_serviceTracker.open();
 	}
 
-	private Set<XStreamConfigurator> _getXStreamConfigurators() {
-		return _xStreamConfigurators;
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
 	}
 
-	private static final XStreamConfiguratorRegistryUtil _instance =
-		new XStreamConfiguratorRegistryUtil();
-
-	private final BundleContext _bundleContext;
-	private final ServiceTracker<XStreamConfigurator, XStreamConfigurator>
-		_serviceTracker;
-	private final Set<XStreamConfigurator> _xStreamConfigurators =
+	private static final Set<XStreamConfigurator> _xStreamConfigurators =
 		new ConcurrentHashSet<>();
+
+	private BundleContext _bundleContext;
+	private ServiceTracker<XStreamConfigurator, XStreamConfigurator>
+		_serviceTracker;
 
 	private class XStreamConfiguratorServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer
