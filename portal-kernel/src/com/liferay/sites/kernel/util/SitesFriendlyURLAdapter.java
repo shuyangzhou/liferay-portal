@@ -16,8 +16,6 @@ package com.liferay.sites.kernel.util;
 
 import com.liferay.portal.kernel.model.Group;
 
-import java.util.Locale;
-
 /**
  * @author Pavel Savinov
  */
@@ -25,6 +23,6 @@ public interface SitesFriendlyURLAdapter {
 
 	public Group getGroup(long companyId, String friendlyURL);
 
-	public String getSiteFriendlyURL(long groupId, Locale locale);
+	public String getSiteFriendlyURL(Group group, String languageId);
 
 }

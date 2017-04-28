@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.struts.LastPath;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -347,7 +348,9 @@ public class VirtualHostFilter extends BasePortalFilter {
 
 					forwardURL.append(
 						SitesFriendlyURLAdapterUtil.getSiteFriendlyURL(
-							group.getGroupId(), PortalUtil.getLocale(request)));
+							group,
+							LocaleUtil.toLanguageId(
+								PortalUtil.getLocale(request))));
 				}
 			}
 

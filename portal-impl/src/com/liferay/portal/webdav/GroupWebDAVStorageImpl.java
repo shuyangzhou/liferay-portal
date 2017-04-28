@@ -15,6 +15,7 @@
 package com.liferay.portal.webdav;
 
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.webdav.BaseResourceImpl;
@@ -76,7 +77,7 @@ public class GroupWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 
 				String siteFriendlyURL =
 					SitesFriendlyURLAdapterUtil.getSiteFriendlyURL(
-						group.getGroupId(), locale);
+						group, LocaleUtil.toLanguageId(locale));
 
 				String path = webDAVRequest.getPath();
 
