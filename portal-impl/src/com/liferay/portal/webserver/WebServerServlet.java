@@ -1214,7 +1214,7 @@ public class WebServerServlet extends HttpServlet {
 		for (Group group : groups) {
 			String siteFriendlyURL =
 				SitesFriendlyURLAdapterUtil.getSiteFriendlyURL(
-					group.getGroupId(), user.getLocale());
+					group, user.getLanguageId());
 
 			if (_isDirectoryIndexingEnabled(group)) {
 				String name = HttpUtil.fixPath(siteFriendlyURL);

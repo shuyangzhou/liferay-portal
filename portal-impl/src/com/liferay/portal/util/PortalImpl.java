@@ -161,7 +161,6 @@ import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.CookieKeys;
 import com.liferay.portal.kernel.util.DeterminateKeyGenerator;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
@@ -3091,7 +3090,7 @@ public class PortalImpl implements Portal {
 		String layoutSetFriendlyURL =
 			_pathContext + friendlyURL +
 				SitesFriendlyURLAdapterUtil.getSiteFriendlyURL(
-					group.getGroupId(), themeDisplay.getLocale());
+					group, themeDisplay.getLanguageId());
 
 		return addPreservedParameters(themeDisplay, layoutSetFriendlyURL);
 	}
@@ -3551,21 +3550,17 @@ public class PortalImpl implements Portal {
 			pos = path.length();
 		}
 
-		String siteFriendlyURL =
-			FriendlyURLNormalizerUtil.normalizeWithEncoding(
-				HttpUtil.decodeURL(path.substring(0, pos)));
-
 		Group group = GroupLocalServiceUtil.fetchFriendlyURLGroup(
-			companyId, siteFriendlyURL);
+			companyId, path.substring(0, pos));
 
 		if (group != null) {
 			String localisedFriendlyURL =
 				SitesFriendlyURLAdapterUtil.getSiteFriendlyURL(
-					group.getGroupId(), locale);
+					group, LocaleUtil.toLanguageId(locale));
 
 			if (!Validator.isBlank(localisedFriendlyURL)) {
 				requestURI = requestURI.replace(
-					siteFriendlyURL, localisedFriendlyURL);
+					group.getFriendlyURL(), localisedFriendlyURL);
 			}
 		}
 
@@ -7873,7 +7868,7 @@ public class PortalImpl implements Portal {
 
 		sb.append(
 			SitesFriendlyURLAdapterUtil.getSiteFriendlyURL(
-				group.getGroupId(), themeDisplay.getLocale()));
+				group, themeDisplay.getLanguageId()));
 		sb.append(themeDisplay.getLayoutFriendlyURL(layout));
 
 		sb.append(FRIENDLY_URL_SEPARATOR);
@@ -8463,7 +8458,7 @@ public class PortalImpl implements Portal {
 		sb.append(friendlyURL);
 		sb.append(
 			SitesFriendlyURLAdapterUtil.getSiteFriendlyURL(
-				group.getGroupId(), themeDisplay.getLocale()));
+				group, themeDisplay.getLanguageId()));
 
 		return sb.toString();
 	}
