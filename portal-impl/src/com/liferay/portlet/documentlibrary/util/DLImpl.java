@@ -910,7 +910,7 @@ public class DLImpl implements DL {
 
 		webDavURL.append(
 			SitesFriendlyURLAdapterUtil.getSiteFriendlyURL(
-				group.getGroupId(), themeDisplay.getLocale()));
+				group, themeDisplay.getLanguageId()));
 		webDavURL.append("/document_library");
 
 		StringBuilder sb = new StringBuilder();

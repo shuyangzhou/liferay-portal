@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.VirtualLayoutConstants;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LayoutTypePortletFactoryUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -76,7 +77,7 @@ public class VirtualLayout extends LayoutWrapper {
 
 			sb.append(
 				SitesFriendlyURLAdapterUtil.getSiteFriendlyURL(
-					group.getGroupId(), locale));
+					group, LocaleUtil.toLanguageId(locale)));
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -188,15 +189,18 @@ public class VirtualLayout extends LayoutWrapper {
 					_LAYOUT_FRIENDLY_URL_PRIVATE_USER_SERVLET_MAPPING);
 			}
 
+			String languageId = LocaleUtil.toLanguageId(locale);
+
 			int pos = layoutURL.indexOf(
 				SitesFriendlyURLAdapterUtil.getSiteFriendlyURL(
-					group.getGroupId(), locale));
+					group, languageId));
 
 			sb.append(layoutURL.substring(0, pos));
 
 			sb.append(
 				SitesFriendlyURLAdapterUtil.getSiteFriendlyURL(
-					_targetGroup.getGroupId(), locale));
+					_targetGroup, languageId));
+
 			sb.append(getFriendlyURL(locale));
 
 			pos = layoutURL.indexOf(StringPool.QUESTION);
