@@ -204,6 +204,13 @@
 /lib/portal/jhlabs-filters.jar
 /lib/portal/jna.jar
 /lib/portal/jodconverter.jar
+/lib/portal/jodd-bean.jar
+/lib/portal/jodd-core.jar
+/lib/portal/jodd-http.jar
+/lib/portal/jodd-json.jar
+/lib/portal/jodd-proxetta.jar
+/lib/portal/jodd-servlet.jar
+/lib/portal/jodd-upload.jar
 /lib/portal/json-java.jar
 /lib/portal/jrcs-diff.jar
 /lib/portal/jsr107cache.jar
@@ -235,6 +242,7 @@
 /lib/portal/poi.jar
 /lib/portal/portals-bridges.jar
 /lib/portal/rdffilter.jar
+/lib/portal/rome.jar
 /lib/portal/rometools.jar
 /lib/portal/saaj-api.jar
 /lib/portal/saaj-impl.jar
