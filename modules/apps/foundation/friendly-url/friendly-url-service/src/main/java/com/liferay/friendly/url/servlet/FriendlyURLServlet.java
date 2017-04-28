@@ -157,9 +157,7 @@ public class FriendlyURLServlet extends HttpServlet {
 			siteFriendlyURLLocalService.fetchSiteFriendlyURL(
 				companyId, group.getGroupId(), LocaleUtil.toLanguageId(locale));
 
-		if ((siteFriendlyURL == null) ||
-			Validator.isNull(siteFriendlyURL.getFriendlyURL())) {
-
+		if (siteFriendlyURL == null) {
 			siteFriendlyURL =
 				siteFriendlyURLLocalService.fetchSiteFriendlyURLByFriendlyURL(
 					companyId, friendlyURL);
@@ -244,12 +242,6 @@ public class FriendlyURLServlet extends HttpServlet {
 					Locale originalLocale = setAlternativeLayoutFriendlyURL(
 						request, layout, layoutFriendlyURLCompositeFriendlyURL,
 						alternativeSiteFriendlyURL);
-
-					if (!LanguageUtil.isAvailableLocale(
-							group.getGroupId(), i18nLanguageId)) {
-
-						locale = originalLocale;
-					}
 
 					String redirect = portal.getLocalizedFriendlyURL(
 						request, layout, locale, originalLocale);

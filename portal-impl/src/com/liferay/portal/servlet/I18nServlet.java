@@ -134,15 +134,13 @@ public class I18nServlet extends HttpServlet {
 	}
 
 	protected I18nData getI18nData(HttpServletRequest request) {
-		String path = GetterUtil.getString(request.getRequestURI());
-
-		String i18nLanguageId = request.getServletPath();
-
-		path = path.replaceFirst(i18nLanguageId, "");
+		String path = GetterUtil.getString(request.getPathInfo());
 
 		if (Validator.isNull(path)) {
 			path = "/";
 		}
+
+		String i18nLanguageId = request.getServletPath();
 
 		int pos = i18nLanguageId.lastIndexOf(CharPool.SLASH);
 

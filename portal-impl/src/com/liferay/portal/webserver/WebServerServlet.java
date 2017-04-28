@@ -107,7 +107,6 @@ import com.liferay.portal.model.impl.ImageImpl;
 import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.documentlibrary.util.DocumentConversionUtil;
-import com.liferay.sites.kernel.util.SitesFriendlyURLAdapterUtil;
 import com.liferay.trash.kernel.model.TrashEntry;
 import com.liferay.trash.kernel.util.TrashUtil;
 import com.liferay.users.admin.kernel.file.uploads.UserFileUploadsSettings;
@@ -1212,12 +1211,8 @@ public class WebServerServlet extends HttpServlet {
 		List<Group> groups = WebDAVUtil.getGroups(user);
 
 		for (Group group : groups) {
-			String siteFriendlyURL =
-				SitesFriendlyURLAdapterUtil.getSiteFriendlyURL(
-					group.getGroupId(), user.getLocale());
-
 			if (_isDirectoryIndexingEnabled(group)) {
-				String name = HttpUtil.fixPath(siteFriendlyURL);
+				String name = HttpUtil.fixPath(group.getFriendlyURL());
 
 				WebServerEntry webServerEntry = new WebServerEntry(
 					path, name + StringPool.SLASH, null, null,

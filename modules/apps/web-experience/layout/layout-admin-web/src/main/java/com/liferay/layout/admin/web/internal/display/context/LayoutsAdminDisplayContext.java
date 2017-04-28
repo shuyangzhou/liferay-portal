@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserGroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -36,8 +35,6 @@ import com.liferay.portal.util.LayoutDescription;
 import com.liferay.portal.util.LayoutListUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.layoutsadmin.display.context.GroupDisplayContextHelper;
-import com.liferay.site.model.SiteFriendlyURL;
-import com.liferay.site.service.SiteFriendlyURLLocalServiceUtil;
 
 import java.util.List;
 
@@ -229,22 +226,6 @@ public class LayoutsAdminDisplayContext extends BaseLayoutDisplayContext {
 		}
 
 		return _selUser;
-	}
-
-	public String getSiteFriendlyURL() {
-		String languageId = LocaleUtil.toLanguageId(themeDisplay.getLocale());
-
-		SiteFriendlyURL siteFriendlyURL =
-			SiteFriendlyURLLocalServiceUtil.fetchSiteFriendlyURL(
-				themeDisplay.getCompanyId(), getGroupId(), languageId);
-
-		if (siteFriendlyURL != null) {
-			return siteFriendlyURL.getFriendlyURL();
-		}
-
-		Group group = getGroup();
-
-		return group.getFriendlyURL();
 	}
 
 	@Override

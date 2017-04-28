@@ -15,7 +15,6 @@
 package com.liferay.portal.webdav;
 
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.webdav.BaseResourceImpl;
 import com.liferay.portal.kernel.webdav.BaseWebDAVStorageImpl;
@@ -23,11 +22,9 @@ import com.liferay.portal.kernel.webdav.Resource;
 import com.liferay.portal.kernel.webdav.WebDAVException;
 import com.liferay.portal.kernel.webdav.WebDAVRequest;
 import com.liferay.portal.kernel.webdav.WebDAVUtil;
-import com.liferay.sites.kernel.util.SitesFriendlyURLAdapterUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author Alexander Chow
@@ -65,22 +62,15 @@ public class GroupWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 	protected void verifyGroup(WebDAVRequest webDAVRequest)
 		throws WebDAVException {
 
+		String path = webDAVRequest.getPath();
+
 		try {
 			long userId = webDAVRequest.getUserId();
 
 			List<Group> groups = WebDAVUtil.getGroups(userId);
 
 			for (Group group : groups) {
-				Locale locale = PortalUtil.getLocale(
-					webDAVRequest.getHttpServletRequest());
-
-				String siteFriendlyURL =
-					SitesFriendlyURLAdapterUtil.getSiteFriendlyURL(
-						group.getGroupId(), locale);
-
-				String path = webDAVRequest.getPath();
-
-				if (path.equals(siteFriendlyURL)) {
+				if (path.equals(group.getFriendlyURL())) {
 					return;
 				}
 			}
@@ -90,7 +80,7 @@ public class GroupWebDAVStorageImpl extends BaseWebDAVStorageImpl {
 
 		throw new WebDAVException(
 			"Invalid group for given credentials " +
-				webDAVRequest.getRootPath() + webDAVRequest.getPath());
+				webDAVRequest.getRootPath() + path);
 	}
 
 }

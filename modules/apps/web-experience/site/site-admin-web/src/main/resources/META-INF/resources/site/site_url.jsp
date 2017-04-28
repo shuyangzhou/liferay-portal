@@ -108,14 +108,10 @@ String privateVirtualHost = ParamUtil.getString(request, "privateVirtualHost", B
 		<liferay-ui:message arguments="<%= new Object[] {themeDisplay.getPortalURL() + themeDisplay.getPathFriendlyURLPublic(), themeDisplay.getPortalURL() + themeDisplay.getPathFriendlyURLPrivateGroup()} %>" key="the-friendly-url-is-appended-to-x-for-public-pages-and-x-for-private-pages" translateArguments="<%= false %>" />
 	</p>
 
-	<label for="<portlet:namespace />friendlyURL"><liferay-ui:message key="friendly-url" /></label>
-
-	<liferay-ui:input-localized defaultLanguageId="<%= LocaleUtil.toLanguageId(themeDisplay.getSiteDefaultLocale()) %>" name="friendlyURL" xml="<%= HttpUtil.decodeURL(siteAdminDisplayContext.getFriendlyURLsXML(liveGroup)) %>" />
+	<aui:input label="friendly-url" name="friendlyURL" />
 
 	<c:if test="<%= liveGroup.hasStagingGroup() %>">
-		<label for="<portlet:namespace />friendlyURL"><liferay-ui:message key="staging-friendly-url" /></label>
-
-		<liferay-ui:input-localized defaultLanguageId="<%= LocaleUtil.toLanguageId(themeDisplay.getSiteDefaultLocale()) %>" name="stagingFriendlyURL" xml="<%= HttpUtil.decodeURL(siteAdminDisplayContext.getFriendlyURLsXML(stagingGroup)) %>" />
+		<aui:input bean="<%= stagingGroup %>" field="friendlyURL" fieldParam="stagingFriendlyURL" label="staging-friendly-url" model="<%= Group.class %>" name="stagingFriendlyURL" />
 	</c:if>
 
 	<p class="text-muted">
