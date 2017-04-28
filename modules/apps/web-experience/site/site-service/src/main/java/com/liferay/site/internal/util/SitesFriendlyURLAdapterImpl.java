@@ -16,14 +16,11 @@ package com.liferay.site.internal.util;
 
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.site.model.SiteFriendlyURL;
 import com.liferay.site.service.SiteFriendlyURLLocalService;
 import com.liferay.sites.kernel.util.SitesFriendlyURLAdapter;
-
-import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -48,17 +45,14 @@ public class SitesFriendlyURLAdapterImpl implements SitesFriendlyURLAdapter {
 	}
 
 	@Override
-	public String getSiteFriendlyURL(long groupId, Locale locale) {
-		Group group = _groupLocalService.fetchGroup(groupId);
-
+	public String getSiteFriendlyURL(Group group, String languageId) {
 		if (group == null) {
 			return StringPool.BLANK;
 		}
 
 		SiteFriendlyURL siteFriendlyURL =
 			_siteFriendlyURLLocalService.fetchSiteFriendlyURL(
-				group.getCompanyId(), group.getGroupId(),
-				LocaleUtil.toLanguageId(locale));
+				group.getCompanyId(), group.getGroupId(), languageId);
 
 		if ((siteFriendlyURL != null) &&
 			Validator.isNotNull(siteFriendlyURL.getFriendlyURL())) {
