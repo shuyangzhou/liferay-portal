@@ -2102,14 +2102,12 @@ tell application "Safari" to quit
 						</then>
 						<else>
 							<ant antfile="build-dist.xml" inheritAll="false" target="build-dist-tomcat" />
-
-							<setup-testable-tomcat />
 						</else>
 					</if>
 				</else>
 			</if>
 
-			<prepare-tomcat-setenv />
+			<setup-testable-tomcat />
 
 			<antcall inheritAll="false" target="prepare-test-build-tomcat-dependents" />
 
@@ -2251,12 +2249,6 @@ tell application "Safari" to quit
 					<var name="app.server.bundle.index" unset="true" />
 				</then>
 			</if>
-		</sequential>
-	</macrodef>
-
-	<macrodef name="prepare-tomcat-setenv">
-		<sequential>
-			<replace file="${app.server.tomcat.bin.dir}/setenv${file.suffix.bat}" token="${app.server.tomcat.setenv.gc.old}" value="${app.server.tomcat.setenv.gc.new}" />
 		</sequential>
 	</macrodef>
 
