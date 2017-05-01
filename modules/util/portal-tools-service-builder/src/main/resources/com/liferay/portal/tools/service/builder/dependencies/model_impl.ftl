@@ -450,6 +450,21 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 	<#if entity.localizationEntity??>
 		<#assign localizationEntity = entity.localizationEntity />
 
+		@Override
+		public String[] getAvailableLanguageIds() {
+			List<${localizationEntity.name}> ${localizationEntity.varNames} = ${entity.name}LocalServiceUtil.get${localizationEntity.names}(getPrimaryKey());
+
+			String[] availableLanguageIds = new String[${localizationEntity.varNames}.size()];
+
+			for (int i = 0; i < availableLanguageIds.length; i++) {
+				${localizationEntity.name} ${localizationEntity.varName} = ${localizationEntity.varNames}.get(i);
+
+				availableLanguageIds[i] = ${localizationEntity.varName}.getLanguageId();
+			}
+
+			return availableLanguageIds;
+		}
+
 		<#list entity.localizationColumns as column>
 			@Override
 			public String get${column.methodName}() {
