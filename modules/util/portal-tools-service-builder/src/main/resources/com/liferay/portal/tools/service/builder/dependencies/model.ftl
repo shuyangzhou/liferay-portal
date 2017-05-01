@@ -362,6 +362,8 @@ public interface ${entity.name}Model extends
 	</#list>
 
 	<#if entity.localizationEntity??>
+		public String[] getAvailableLanguageIds();
+
 		<#list entity.localizationColumns as column>
 			public String get${column.methodName}();
 
