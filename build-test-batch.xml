@@ -685,6 +685,13 @@ app.server.type=@{app.server.type}]]></echo>
 							</antcall>
 
 							<antcall inheritAll="false" target="setup-sdk" />
+
+							<if>
+								<equals arg1="${app.server.type}" arg2="tomcat" />
+								<then>
+									<setup-testable-tomcat />
+								</then>
+							</if>
 						</then>
 						<elseif>
 							<and>
