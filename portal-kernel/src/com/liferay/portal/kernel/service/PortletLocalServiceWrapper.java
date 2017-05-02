@@ -157,6 +157,12 @@ public class PortletLocalServiceWrapper implements PortletLocalService,
 		return _portletLocalService.fetchPortletById(companyId, portletId);
 	}
 
+	@Override
+	public com.liferay.portal.kernel.model.Portlet getFriendlyURLMapperPortlet(
+		java.lang.String url) {
+		return _portletLocalService.getFriendlyURLMapperPortlet(url);
+	}
+
 	/**
 	* Returns the portlet with the primary key.
 	*
@@ -304,6 +310,11 @@ public class PortletLocalServiceWrapper implements PortletLocalService,
 		return _portletLocalService.getCustomAttributesDisplays();
 	}
 
+	/**
+	* @deprecated As of 7.0.0, replaced by
+	{@link #getFriendlyURLMapperPortlet(String))}
+	*/
+	@Deprecated
 	@Override
 	public java.util.List<com.liferay.portal.kernel.model.Portlet> getFriendlyURLMapperPortlets() {
 		return _portletLocalService.getFriendlyURLMapperPortlets();
