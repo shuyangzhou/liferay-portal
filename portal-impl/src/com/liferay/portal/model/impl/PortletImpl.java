@@ -146,7 +146,10 @@ public class PortletImpl extends PortletBaseImpl {
 
 	/**
 	 * Constructs a portlet with the specified parameters.
+	 *
+	 * @deprecated As of 7.0.0, with no direct replacement
 	 */
+	@Deprecated
 	public PortletImpl(
 		String portletId, Portlet rootPortlet, PluginPackage pluginPackage,
 		PluginSetting pluginSetting, long companyId, String icon,
@@ -466,58 +469,7 @@ public class PortletImpl extends PortletBaseImpl {
 	 */
 	@Override
 	public Object clone() {
-		PortletImpl portletImpl = new PortletImpl(
-			getPortletId(), getRootPortlet(), getPluginPackage(),
-			getDefaultPluginSetting(), getCompanyId(), getIcon(),
-			getVirtualPath(), getStrutsPath(), getParentStrutsPath(),
-			getPortletName(), getDisplayName(), getPortletClass(),
-			getConfigurationActionClass(), getIndexerClasses(),
-			getOpenSearchClass(), getSchedulerEntries(), getPortletURLClass(),
-			getFriendlyURLMapperClass(), getFriendlyURLMapping(),
-			getFriendlyURLRoutes(), getURLEncoderClass(),
-			getPortletDataHandlerClass(), getStagedModelDataHandlerClasses(),
-			getTemplateHandlerClass(), getPortletLayoutListenerClass(),
-			getPollerProcessorClass(), getPopMessageListenerClass(),
-			getSocialActivityInterpreterClasses(),
-			getSocialRequestInterpreterClass(),
-			getUserNotificationDefinitions(),
-			getUserNotificationHandlerClasses(), getWebDAVStorageToken(),
-			getWebDAVStorageClass(), getXmlRpcMethodClass(),
-			getControlPanelEntryCategory(), getControlPanelEntryWeight(),
-			getControlPanelEntryClass(), getAssetRendererFactoryClasses(),
-			getAtomCollectionAdapterClasses(),
-			getCustomAttributesDisplayClasses(), getPermissionPropagatorClass(),
-			getTrashHandlerClasses(), getWorkflowHandlerClasses(),
-			getDefaultPreferences(), getPreferencesValidator(),
-			isPreferencesCompanyWide(), isPreferencesUniquePerLayout(),
-			isPreferencesOwnedByGroup(), isUseDefaultTemplate(),
-			isShowPortletAccessDenied(), isShowPortletInactive(),
-			isActionURLRedirect(), isRestoreCurrentView(), isMaximizeEdit(),
-			isMaximizeHelp(), isPopUpPrint(), isLayoutCacheable(),
-			isInstanceable(), isRemoteable(), isScopeable(),
-			isSinglePageApplication(), getUserPrincipalStrategy(),
-			isPrivateRequestAttributes(), isPrivateSessionAttributes(),
-			getAutopropagatedParameters(), isRequiresNamespacedParameters(),
-			getActionTimeout(), getRenderTimeout(), getRenderWeight(),
-			isAjaxable(), getHeaderPortalCss(), getHeaderPortletCss(),
-			getHeaderPortalJavaScript(), getHeaderPortletJavaScript(),
-			getFooterPortalCss(), getFooterPortletCss(),
-			getFooterPortalJavaScript(), getFooterPortletJavaScript(),
-			getCssClassWrapper(), isAddDefaultResource(), getRoles(),
-			getUnlinkedRoles(), getRoleMappers(), isSystem(), isActive(),
-			isInclude(), getInitParams(), getExpCache(), getPortletModes(),
-			getWindowStates(), getSupportedLocales(), getResourceBundle(),
-			getPortletInfo(), getPortletFilters(), getProcessingEvents(),
-			getPublishingEvents(), getPublicRenderParameters(),
-			getPortletApp());
-
-		portletImpl.setApplicationTypes(getApplicationTypes());
-		portletImpl.setId(getId());
-		portletImpl.setUndeployedPortlet(isUndeployedPortlet());
-
-		portletImpl._rootPortletId = _rootPortletId;
-
-		return portletImpl;
+		return new PortletImpl(this);
 	}
 
 	/**
@@ -4104,6 +4056,132 @@ public class PortletImpl extends PortletBaseImpl {
 				serviceRegistrar.destroy();
 			}
 		}
+	}
+
+	private PortletImpl(PortletImpl portlet) {
+		super.setPortletId(portlet.getPortletId());
+
+		_rootPortlet = portlet._rootPortlet;
+		_rootPortletId = portlet._rootPortletId;
+
+		super.setRoles(portlet.getRoles());
+
+		_rolesArray = new String[portlet._rolesArray.length];
+
+		System.arraycopy(
+			portlet._rolesArray, 0, _rolesArray, 0, portlet._rolesArray.length);
+
+		setActive(portlet.isActive());
+		setCompanyId(portlet.getCompanyId());
+		setId(portlet.getId());
+
+		_applicationTypes.addAll(portlet._applicationTypes);
+
+		_processingEvents.addAll(portlet._processingEvents);
+		_processingEventsByQName.putAll(portlet._processingEventsByQName);
+
+		_publishingEvents.addAll(portlet._publishingEvents);
+
+		_publicRenderParameters.addAll(portlet._publicRenderParameters);
+		_publicRenderParametersByIdentifier.putAll(
+			portlet._publicRenderParametersByIdentifier);
+		_publicRenderParametersByQName.putAll(
+			portlet._publicRenderParametersByQName);
+
+		_actionTimeout = portlet._actionTimeout;
+		_actionURLRedirect = portlet._actionURLRedirect;
+		_addDefaultResource = portlet._addDefaultResource;
+		_ajaxable = portlet._ajaxable;
+		_assetRendererFactoryClasses = portlet._assetRendererFactoryClasses;
+		_atomCollectionAdapterClasses = portlet._atomCollectionAdapterClasses;
+		_autopropagatedParameters = portlet._autopropagatedParameters;
+		_configurationActionClass = portlet._configurationActionClass;
+		_controlPanelEntryCategory = portlet._controlPanelEntryCategory;
+		_controlPanelEntryClass = portlet._controlPanelEntryClass;
+		_controlPanelEntryWeight = portlet._controlPanelEntryWeight;
+		_cssClassWrapper = portlet._cssClassWrapper;
+		_customAttributesDisplayClasses =
+			portlet._customAttributesDisplayClasses;
+		_defaultPluginSetting = portlet._defaultPluginSetting;
+		_defaultPreferences = portlet._defaultPreferences;
+		_displayName = portlet._displayName;
+		_expCache = portlet._expCache;
+		_footerPortalCss = portlet._footerPortalCss;
+		_footerPortalJavaScript = portlet._footerPortalJavaScript;
+		_footerPortletCss = portlet._footerPortletCss;
+		_footerPortletJavaScript = portlet._footerPortletJavaScript;
+		_friendlyURLMapperClass = portlet._friendlyURLMapperClass;
+		_friendlyURLMapping = portlet._friendlyURLMapping;
+		_friendlyURLRoutes = portlet._friendlyURLRoutes;
+		_headerPortalCss = portlet._headerPortalCss;
+		_headerPortalJavaScript = portlet._headerPortalJavaScript;
+		_headerPortletCss = portlet._headerPortletCss;
+		_headerPortletJavaScript = portlet._headerPortletJavaScript;
+		_icon = portlet._icon;
+		_include = portlet._include;
+		_indexerClasses = portlet._indexerClasses;
+		_initParams = portlet._initParams;
+		_instanceable = portlet._instanceable;
+		_layoutCacheable = portlet._layoutCacheable;
+		_maximizeEdit = portlet._maximizeEdit;
+		_maximizeHelp = portlet._maximizeHelp;
+		_openSearchClass = portlet._openSearchClass;
+		_parentStrutsPath = portlet._parentStrutsPath;
+		_permissionPropagatorClass = portlet._permissionPropagatorClass;
+		_pluginPackage = portlet._pluginPackage;
+		_pollerProcessorClass = portlet._pollerProcessorClass;
+		_popMessageListenerClass = portlet._popMessageListenerClass;
+		_popUpPrint = portlet._popUpPrint;
+		_portletApp = portlet._portletApp;
+		_portletClass = portlet._portletClass;
+		_portletDataHandlerClass = portlet._portletDataHandlerClass;
+		_portletFilters = portlet._portletFilters;
+		_portletInfo = portlet._portletInfo;
+		_portletLayoutListenerClass = portlet._portletLayoutListenerClass;
+		_portletModes = portlet._portletModes;
+		_portletName = portlet._portletName;
+		_portletURLClass = portlet._portletURLClass;
+		_preferencesCompanyWide = portlet._preferencesCompanyWide;
+		_preferencesOwnedByGroup = portlet._preferencesOwnedByGroup;
+		_preferencesUniquePerLayout = portlet._preferencesUniquePerLayout;
+		_preferencesValidator = portlet._preferencesValidator;
+		_privateRequestAttributes = portlet._privateRequestAttributes;
+		_privateSessionAttributes = portlet._privateSessionAttributes;
+		_remoteable = portlet._remoteable;
+		_renderTimeout = portlet._renderTimeout;
+		_renderWeight = portlet._renderWeight;
+		_requiresNamespacedParameters = portlet._requiresNamespacedParameters;
+		_resourceBundle = portlet._resourceBundle;
+		_restoreCurrentView = portlet._restoreCurrentView;
+		_roleMappers = portlet._roleMappers;
+		_schedulerEntries = portlet._schedulerEntries;
+		_scopeable = portlet._scopeable;
+		_showPortletAccessDenied = portlet._showPortletAccessDenied;
+		_showPortletInactive = portlet._showPortletInactive;
+		_singlePageApplication = portlet._singlePageApplication;
+		_socialActivityInterpreterClasses =
+			portlet._socialActivityInterpreterClasses;
+		_socialRequestInterpreterClass = portlet._socialRequestInterpreterClass;
+		_stagedModelDataHandlerClasses = portlet._stagedModelDataHandlerClasses;
+		_strutsPath = portlet._strutsPath;
+		_supportedLocales = portlet._supportedLocales;
+		_system = portlet._system;
+		_templateHandlerClass = portlet._templateHandlerClass;
+		_trashHandlerClasses = portlet._trashHandlerClasses;
+		_undeployedPortlet = portlet._undeployedPortlet;
+		_unlinkedRoles = portlet._unlinkedRoles;
+		_urlEncoderClass = portlet._urlEncoderClass;
+		_useDefaultTemplate = portlet._useDefaultTemplate;
+		_userNotificationDefinitions = portlet._userNotificationDefinitions;
+		_userNotificationHandlerClasses =
+			portlet._userNotificationHandlerClasses;
+		_userPrincipalStrategy = portlet._userPrincipalStrategy;
+		_virtualPath = portlet._virtualPath;
+		_webDAVStorageClass = portlet._webDAVStorageClass;
+		_webDAVStorageToken = portlet._webDAVStorageToken;
+		_windowStates = portlet._windowStates;
+		_workflowHandlerClasses = portlet._workflowHandlerClasses;
+		_xmlRpcMethodClass = portlet._xmlRpcMethodClass;
 	}
 
 	/**
