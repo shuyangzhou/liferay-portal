@@ -156,7 +156,10 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		String resourceName, String resourceClassPK) {
 
 		try {
-			doUpdatePermissionFields(resourceName, resourceClassPK);
+			Indexer<?> indexer = _indexerRegistry.nullSafeGetIndexer(
+				resourceName);
+
+			indexer.reindex(resourceName, GetterUtil.getLong(resourceClassPK));
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -388,15 +391,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		fullBooleanFilter.add(permissionBooleanFilter, BooleanClauseOccur.MUST);
 
 		return fullBooleanFilter;
-	}
-
-	protected void doUpdatePermissionFields(
-			String resourceName, String resourceClassPK)
-		throws Exception {
-
-		Indexer<?> indexer = _indexerRegistry.nullSafeGetIndexer(resourceName);
-
-		indexer.reindex(resourceName, GetterUtil.getLong(resourceClassPK));
 	}
 
 	private SearchPermissionContext _createSearchPermissionContext(
