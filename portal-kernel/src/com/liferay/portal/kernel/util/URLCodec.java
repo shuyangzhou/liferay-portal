@@ -137,6 +137,8 @@ public class URLCodec {
 
 		StringBuilder sb = null;
 
+		int lastReplacementIndex = 0;
+
 		CharsetEncoder charsetEncoder = null;
 
 		char[] hexes = new char[2];
@@ -145,66 +147,33 @@ public class URLCodec {
 			char c = rawURLString.charAt(i);
 
 			if ((c < 128) && _validChars[c]) {
-				if (sb != null) {
-					sb.append(c);
-				}
-
 				continue;
 			}
 
 			if (sb == null) {
-				sb = new StringBuilder(rawURLString.length());
+				sb = new StringBuilder(rawURLString.length() + 64);
 
 				sb.append(rawURLString, 0, i);
 			}
+			else if (i > lastReplacementIndex) {
+				sb.append(rawURLString, lastReplacementIndex, i);
+			}
 
-			// The cases are ordered by frequency and not alphabetically
+			if (c < 128) {
+				char[] encodingReplacement = _ENCODING_REPLACEMENTS[c];
 
-			switch (c) {
-				case CharPool.SLASH :
-					sb.append("%2F");
-
-					continue;
-
-				case CharPool.EQUAL :
-					sb.append("%3D");
-
-					continue;
-
-				case CharPool.AMPERSAND :
-					sb.append("%26");
-
-					continue;
-
-				case CharPool.PERCENT :
-					sb.append("%25");
-
-					continue;
-
-				case CharPool.SPACE :
-					if (escapeSpaces) {
-						sb.append("%20");
-					}
-					else {
+				if (encodingReplacement != null) {
+					if (!escapeSpaces && (c == CharPool.SPACE)) {
 						sb.append(CharPool.PLUS);
 					}
+					else {
+						sb.append(encodingReplacement);
+					}
+
+					lastReplacementIndex = i + 1;
 
 					continue;
-
-				case CharPool.PLUS :
-					sb.append("%2B");
-
-					continue;
-
-				case CharPool.COLON :
-					sb.append("%3A");
-
-					continue;
-
-				case CharPool.QUESTION :
-					sb.append("%3F");
-
-					continue;
+				}
 			}
 
 			CharBuffer charBuffer = _getRawCharBuffer(
@@ -216,6 +185,8 @@ public class URLCodec {
 			}
 
 			i += charBuffer.length() - 1;
+
+			lastReplacementIndex = i + 1;
 
 			ByteBuffer byteBuffer = null;
 
@@ -239,9 +210,13 @@ public class URLCodec {
 		if (sb == null) {
 			return rawURLString;
 		}
-		else {
-			return sb.toString();
+
+		if (lastReplacementIndex < rawURLString.length()) {
+			sb.append(
+				rawURLString, lastReplacementIndex, rawURLString.length());
 		}
+
+		return sb.toString();
 	}
 
 	private static int _charToHex(char c) {
@@ -323,11 +298,41 @@ public class URLCodec {
 		return CharBuffer.wrap(rawString, start, start + count);
 	}
 
+	private static final char[] _AMPERSAND_REPLACEMENT =
+		new char[] {'%', '2', '6'};
+
+	private static final char[] _COLON_REPLACEMENT = new char[] {'%', '3', 'A'};
+
+	private static final char[][] _ENCODING_REPLACEMENTS = new char[128][];
+
+	private static final char[] _EQUAL_REPLACEMENT = new char[] {'%', '3', 'D'};
+
+	private static final char[] _PERCENT_REPLACEMENT =
+		new char[] {'%', '2', '5'};
+
+	private static final char[] _PLUS_REPLACEMENT = new char[] {'%', '2', 'B'};
+
+	private static final char[] _QUESTION_REPLACEMENT =
+		new char[] {'%', '3', 'F'};
+
+	private static final char[] _SLASH_REPLACEMENT = new char[] {'%', '2', 'F'};
+
+	private static final char[] _SPACE_REPLACEMENT = new char[] {'%', '2', '0'};
+
 	private static final Log _log = LogFactoryUtil.getLog(URLCodec.class);
 
 	private static final boolean[] _validChars = new boolean[128];
 
 	static {
+		_ENCODING_REPLACEMENTS[CharPool.AMPERSAND] = _AMPERSAND_REPLACEMENT;
+		_ENCODING_REPLACEMENTS[CharPool.COLON] = _COLON_REPLACEMENT;
+		_ENCODING_REPLACEMENTS[CharPool.EQUAL] = _EQUAL_REPLACEMENT;
+		_ENCODING_REPLACEMENTS[CharPool.PERCENT] = _PERCENT_REPLACEMENT;
+		_ENCODING_REPLACEMENTS[CharPool.PLUS] = _PLUS_REPLACEMENT;
+		_ENCODING_REPLACEMENTS[CharPool.SLASH] = _SLASH_REPLACEMENT;
+		_ENCODING_REPLACEMENTS[CharPool.SPACE] = _SPACE_REPLACEMENT;
+		_ENCODING_REPLACEMENTS[CharPool.QUESTION] = _QUESTION_REPLACEMENT;
+
 		for (int i = 'a'; i <= 'z'; i++) {
 			_validChars[i] = true;
 		}
