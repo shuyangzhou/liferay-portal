@@ -119,7 +119,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 				viewActionId = ActionKeys.VIEW;
 			}
 
-			doAddPermissionFields_6(
+			_addPermissionFields(
 				companyId, groupId, className, classPK, viewActionId, document);
 		}
 		catch (NoSuchResourceException nsre) {
@@ -138,7 +138,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		BooleanFilter booleanFilter, SearchContext searchContext) {
 
 		try {
-			booleanFilter = doGetPermissionBooleanFilter(
+			booleanFilter = _getPermissionBooleanFilter(
 				companyId, groupIds, userId, className, booleanFilter,
 				searchContext);
 		}
@@ -172,7 +172,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 				SearchPermissionCheckerConfiguration.class, properties);
 	}
 
-	protected void doAddPermissionFields_6(
+	private void _addPermissionFields(
 			long companyId, long groupId, String className, String classPK,
 			String viewActionId, Document doc)
 		throws Exception {
@@ -214,7 +214,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			groupRoleIds.toArray(new String[groupRoleIds.size()]));
 	}
 
-	protected BooleanFilter doGetPermissionBooleanFilter(
+	private BooleanFilter _getPermissionBooleanFilter(
 			long companyId, long[] searchGroupIds, long userId,
 			String className, BooleanFilter booleanFilter,
 			SearchContext searchContext)
@@ -265,12 +265,12 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 
 		searchContext.setSearchPermissionContext(searchPermissionContext);
 
-		return doGetPermissionFilter_6(
+		return _getPermissionFilter(
 			companyId, searchGroupIds, userId, permissionChecker, className,
 			booleanFilter, searchPermissionContext);
 	}
 
-	protected BooleanFilter doGetPermissionFilter_6(
+	private BooleanFilter _getPermissionFilter(
 			long companyId, long[] searchGroupIds, long userId,
 			PermissionChecker permissionChecker, String className,
 			BooleanFilter booleanFilter,
