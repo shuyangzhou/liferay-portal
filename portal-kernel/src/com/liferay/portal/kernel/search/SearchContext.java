@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.search;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.search.facet.Facet;
@@ -37,6 +39,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Brian Wing Shun Chan
  * @author Julio Camarero
  */
+@ProviderType
 public class SearchContext implements Serializable {
 
 	public void addFacet(Facet facet) {
@@ -190,6 +193,10 @@ public class SearchContext implements Serializable {
 		}
 
 		return _searchEngineId;
+	}
+
+	public Object getSearchPermissionContext() {
+		return _searchPermissionContext;
 	}
 
 	public Sort[] getSorts() {
@@ -405,6 +412,10 @@ public class SearchContext implements Serializable {
 		}
 	}
 
+	public void setSearchPermissionContext(Object searchPermissionContext) {
+		_searchPermissionContext = searchPermissionContext;
+	}
+
 	public void setSorts(Sort... sorts) {
 		_sorts = sorts;
 	}
@@ -419,6 +430,8 @@ public class SearchContext implements Serializable {
 
 	public void setUserId(long userId) {
 		_userId = userId;
+
+		_searchPermissionContext = null;
 	}
 
 	private boolean _andSearch;
@@ -454,6 +467,7 @@ public class SearchContext implements Serializable {
 	private boolean _scopeStrict = true;
 	private float _scoresThreshold;
 	private String _searchEngineId;
+	private Object _searchPermissionContext;
 	private Sort[] _sorts;
 	private int _start = QueryUtil.ALL_POS;
 	private final Map<String, Stats> _stats = new ConcurrentHashMap<>();
