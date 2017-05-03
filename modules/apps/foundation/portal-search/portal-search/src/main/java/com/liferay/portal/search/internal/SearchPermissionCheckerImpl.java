@@ -399,8 +399,8 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		}
 
 		TermsFilter groupsTermsFilter = new TermsFilter(Field.GROUP_ID);
-		TermsFilter groupRolesTermsFilter = new TermsFilter(
-			Field.GROUP_ROLE_ID);
+		TermsFilter groupRolesTermsFilter =
+			searchPermissionContext._groupRolesTermsFilter;
 		TermsFilter rolesTermsFilter =
 			searchPermissionContext._rolesTermsFilter;
 
@@ -440,11 +440,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 					ActionKeys.VIEW)) {
 
 				groupsTermsFilter.addValue(String.valueOf(groupId));
-			}
-
-			for (Role groupRole : groupRoles) {
-				groupRolesTermsFilter.addValue(
-					groupId + StringPool.DASH + groupRole.getRoleId());
 			}
 		}
 
@@ -541,10 +536,24 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 
 			_roleIds = ArrayUtil.toLongArray(roleIds);
 			_regularRoleIds = ArrayUtil.toLongArray(regularRoleIds);
+
+			for (Map.Entry<Long, List<Role>> entry :
+					_usersGroupIdsToRoles.entrySet()) {
+
+				long groupId = entry.getKey();
+				List<Role> groupRoles = entry.getValue();
+
+				for (Role groupRole : groupRoles) {
+					_groupRolesTermsFilter.addValue(
+						groupId + StringPool.DASH + groupRole.getRoleId());
+				}
+			}
 		}
 
 		private static final long serialVersionUID = 1L;
 
+		private final TermsFilter _groupRolesTermsFilter = new TermsFilter(
+			Field.GROUP_ROLE_ID);
 		private final long[] _regularRoleIds;
 		private final long[] _roleIds;
 		private final TermsFilter _rolesTermsFilter = new TermsFilter(
