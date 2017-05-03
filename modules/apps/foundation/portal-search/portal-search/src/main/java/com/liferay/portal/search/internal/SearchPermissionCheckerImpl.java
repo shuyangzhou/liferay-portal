@@ -386,7 +386,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			SearchPermissionContext searchPermissionContext)
 		throws Exception {
 
-		Set<Role> roles = searchPermissionContext._roles;
 		Map<Long, List<Role>> usersGroupIdsToRoles =
 			searchPermissionContext._usersGroupIdsToRoles;
 
@@ -399,26 +398,15 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		TermsFilter groupsTermsFilter = new TermsFilter(Field.GROUP_ID);
 		TermsFilter groupRolesTermsFilter = new TermsFilter(
 			Field.GROUP_ROLE_ID);
-		TermsFilter rolesTermsFilter = new TermsFilter(Field.ROLE_ID);
+		TermsFilter rolesTermsFilter =
+			searchPermissionContext._rolesTermsFilter;
 
-		List<Long> roleIds = new ArrayList<>(roles.size());
-		List<Long> regularRoleIds = new ArrayList<>();
-
-		for (Role role : roles) {
-			roleIds.add(role.getRoleId());
-
-			if (role.getType() == RoleConstants.TYPE_REGULAR) {
-				regularRoleIds.add(role.getRoleId());
-			}
-
-			rolesTermsFilter.addValue(String.valueOf(role.getRoleId()));
-		}
-
-		long[] roleIdsArray = ArrayUtil.toLongArray(roleIds);
+		long[] roleIds = searchPermissionContext._roleIds;
+		long[] regularRoleIds = searchPermissionContext._regularRoleIds;
 
 		if (_resourcePermissionLocalService.hasResourcePermission(
 				companyId, className, ResourceConstants.SCOPE_COMPANY,
-				String.valueOf(companyId), roleIdsArray, ActionKeys.VIEW)) {
+				String.valueOf(companyId), roleIds, ActionKeys.VIEW)) {
 
 			return booleanFilter;
 		}
@@ -426,7 +414,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		if (_resourcePermissionLocalService.hasResourcePermission(
 				companyId, className, ResourceConstants.SCOPE_GROUP_TEMPLATE,
 				String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID),
-				ArrayUtil.toLongArray(regularRoleIds), ActionKeys.VIEW)) {
+				regularRoleIds, ActionKeys.VIEW)) {
 
 			return booleanFilter;
 		}
@@ -440,7 +428,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			if (permissionChecker.isGroupAdmin(groupId) ||
 				_resourcePermissionLocalService.hasResourcePermission(
 					companyId, className, ResourceConstants.SCOPE_GROUP,
-					String.valueOf(groupId), roleIdsArray, ActionKeys.VIEW) ||
+					String.valueOf(groupId), roleIds, ActionKeys.VIEW) ||
 				_resourcePermissionLocalService.hasResourcePermission(
 					companyId, className,
 					ResourceConstants.SCOPE_GROUP_TEMPLATE,
@@ -464,7 +452,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 				if (!usersGroupIds.contains(searchGroupId) &&
 					_resourcePermissionLocalService.hasResourcePermission(
 						companyId, className, ResourceConstants.SCOPE_GROUP,
-						String.valueOf(searchGroupId), roleIdsArray,
+						String.valueOf(searchGroupId), roleIds,
 						ActionKeys.VIEW)) {
 
 					groupsTermsFilter.addValue(String.valueOf(searchGroupId));
@@ -533,11 +521,29 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		private SearchPermissionContext(
 			Set<Role> roles, Map<Long, List<Role>> usersGroupIdsToRoles) {
 
-			_roles = roles;
 			_usersGroupIdsToRoles = usersGroupIdsToRoles;
+
+			List<Long> roleIds = new ArrayList<>(roles.size());
+			List<Long> regularRoleIds = new ArrayList<>();
+
+			for (Role role : roles) {
+				roleIds.add(role.getRoleId());
+
+				if (role.getType() == RoleConstants.TYPE_REGULAR) {
+					regularRoleIds.add(role.getRoleId());
+				}
+
+				_rolesTermsFilter.addValue(String.valueOf(role.getRoleId()));
+			}
+
+			_roleIds = ArrayUtil.toLongArray(roleIds);
+			_regularRoleIds = ArrayUtil.toLongArray(regularRoleIds);
 		}
 
-		private final Set<Role> _roles;
+		private final long[] _regularRoleIds;
+		private final long[] _roleIds;
+		private final TermsFilter _rolesTermsFilter = new TermsFilter(
+			Field.ROLE_ID);
 		private final Map<Long, List<Role>> _usersGroupIdsToRoles;
 
 	}
