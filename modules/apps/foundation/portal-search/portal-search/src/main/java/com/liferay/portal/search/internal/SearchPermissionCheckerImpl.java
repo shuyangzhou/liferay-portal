@@ -51,6 +51,8 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.configuration.SearchPermissionCheckerConfiguration;
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -238,35 +240,46 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			permissionChecker = PermissionCheckerFactoryUtil.create(user);
 		}
 
-		if (permissionChecker.getUserBag() == null) {
+		Object searchPermissionContextObject = searchContext.getAttribute(
+			"searchPermissionContext");
+
+		SearchPermissionContext searchPermissionContext = null;
+
+		if (searchPermissionContextObject != null) {
+			if (searchPermissionContextObject == _nullSearchPermissionContext) {
+				return booleanFilter;
+			}
+		}
+		else if (!permissionChecker.isCompanyAdmin(companyId)) {
+			searchPermissionContext = _createSearchPermissionContext(
+				companyId, userId, permissionChecker);
+		}
+
+		if (searchPermissionContext == null) {
+			searchContext.setAttribute(
+				"searchPermissionContext", _nullSearchPermissionContext);
+
 			return booleanFilter;
 		}
 
-		if (permissionChecker.isCompanyAdmin(companyId)) {
-			return booleanFilter;
-		}
-
-		Set<Role> roles = new HashSet<>();
-		Map<Long, List<Role>> usersGroupIdsToRoles = new HashMap<>();
-
-		if (!populate(
-				companyId, userId, permissionChecker, roles,
-				usersGroupIdsToRoles)) {
-
-			return booleanFilter;
-		}
+		searchContext.setAttribute(
+			"searchPermissionContext", searchPermissionContext);
 
 		return doGetPermissionFilter_6(
 			companyId, searchGroupIds, userId, permissionChecker, className,
-			booleanFilter, roles, usersGroupIdsToRoles);
+			booleanFilter, searchPermissionContext);
 	}
 
 	protected BooleanFilter doGetPermissionFilter_6(
 			long companyId, long[] searchGroupIds, long userId,
 			PermissionChecker permissionChecker, String className,
-			BooleanFilter booleanFilter, Set<Role> roles,
-			Map<Long, List<Role>> usersGroupIdsToRoles)
+			BooleanFilter booleanFilter,
+			SearchPermissionContext searchPermissionContext)
 		throws Exception {
+
+		Set<Role> roles = searchPermissionContext._roles;
+		Map<Long, List<Role>> usersGroupIdsToRoles =
+			searchPermissionContext._usersGroupIdsToRoles;
 
 		BooleanFilter permissionBooleanFilter = new BooleanFilter();
 
@@ -386,12 +399,18 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		indexer.reindex(resourceName, GetterUtil.getLong(resourceClassPK));
 	}
 
-	protected boolean populate(
-			long companyId, long userId, PermissionChecker permissionChecker,
-			Set<Role> roles, Map<Long, List<Role>> usersGroupIdsToRoles)
+	private SearchPermissionContext _createSearchPermissionContext(
+			long companyId, long userId, PermissionChecker permissionChecker)
 		throws Exception {
 
 		UserBag userBag = permissionChecker.getUserBag();
+
+		if (userBag == null) {
+			return null;
+		}
+
+		Set<Role> roles = new HashSet<>();
+		Map<Long, List<Role>> usersGroupIdsToRoles = new HashMap<>();
 
 		if (permissionChecker.isSignedIn()) {
 			roles.addAll(userBag.getRoles());
@@ -417,7 +436,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 						"roles: " + termsCount + " > " + permissionTermsLimit);
 			}
 
-			return false;
+			return null;
 		}
 
 		Role organizationUserRole = _roleLocalService.getRole(
@@ -437,7 +456,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 							permissionTermsLimit);
 			}
 
-			return false;
+			return null;
 		}
 
 		for (Group group : groups) {
@@ -482,15 +501,17 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 								termsCount + " > " + permissionTermsLimit);
 				}
 
-				return false;
+				return null;
 			}
 		}
 
-		return true;
+		return new SearchPermissionContext(roles, usersGroupIdsToRoles);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SearchPermissionCheckerImpl.class);
+
+	private static final String _nullSearchPermissionContext = StringPool.BLANK;
 
 	@Reference
 	private GroupLocalService _groupLocalService;
@@ -515,5 +536,21 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	private static class SearchPermissionContext implements Serializable {
+
+		private SearchPermissionContext(
+			Set<Role> roles, Map<Long, List<Role>> usersGroupIdsToRoles) {
+
+			_roles = roles;
+			_usersGroupIdsToRoles = usersGroupIdsToRoles;
+		}
+
+		private static final long serialVersionUID = 1L;
+
+		private final Set<Role> _roles;
+		private final Map<Long, List<Role>> _usersGroupIdsToRoles;
+
+	}
 
 }

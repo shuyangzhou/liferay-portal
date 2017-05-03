@@ -419,6 +419,10 @@ public class SearchContext implements Serializable {
 
 	public void setUserId(long userId) {
 		_userId = userId;
+
+		if (_attributes != null) {
+			_attributes.remove("searchPermissionContext");
+		}
 	}
 
 	private boolean _andSearch;
