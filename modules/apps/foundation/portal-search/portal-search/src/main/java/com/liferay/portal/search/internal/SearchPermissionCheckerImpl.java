@@ -55,7 +55,6 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -227,7 +226,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		}
 
 		Set<Role> roles = new HashSet<>();
-		Map<Long, List<Role>> usersGroupIdsToRoles = new HashMap<>();
 
 		if (permissionChecker.isSignedIn()) {
 			roles.addAll(userBag.getRoles());
@@ -262,6 +260,9 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			companyId, RoleConstants.SITE_MEMBER);
 
 		Collection<Group> groups = userBag.getGroups();
+
+		List<UsersGroupIdRoles> usersGroupIdsRoles = new ArrayList<>(
+			groups.size());
 
 		termsCount += groups.size();
 
@@ -306,7 +307,8 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 				groupRoles.add(siteMemberRole);
 			}
 
-			usersGroupIdsToRoles.put(group.getGroupId(), groupRoles);
+			usersGroupIdsRoles.add(
+				new UsersGroupIdRoles(group.getGroupId(), groupRoles));
 
 			termsCount += groupRoles.size();
 
@@ -322,7 +324,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			}
 		}
 
-		return new SearchPermissionContext(roles, usersGroupIdsToRoles);
+		return new SearchPermissionContext(roles, usersGroupIdsRoles);
 	}
 
 	private BooleanFilter _getPermissionBooleanFilter(
@@ -389,8 +391,8 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			SearchPermissionContext searchPermissionContext)
 		throws Exception {
 
-		Map<Long, List<Role>> usersGroupIdsToRoles =
-			searchPermissionContext._usersGroupIdsToRoles;
+		List<UsersGroupIdRoles> usersGroupIdsRoles =
+			searchPermissionContext._usersGroupIdsRoles;
 
 		BooleanFilter permissionBooleanFilter = new BooleanFilter();
 
@@ -422,11 +424,9 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			return booleanFilter;
 		}
 
-		for (Map.Entry<Long, List<Role>> entry :
-				usersGroupIdsToRoles.entrySet()) {
-
-			long groupId = entry.getKey();
-			List<Role> groupRoles = entry.getValue();
+		for (UsersGroupIdRoles usersGroupIdRoles : usersGroupIdsRoles) {
+			long groupId = usersGroupIdRoles._groupId;
+			List<Role> groupRoles = usersGroupIdRoles._groupRoles;
 
 			if (permissionChecker.isGroupAdmin(groupId) ||
 				_resourcePermissionLocalService.hasResourcePermission(
@@ -444,10 +444,8 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		}
 
 		if (ArrayUtil.isNotEmpty(searchGroupIds)) {
-			Set<Long> usersGroupIds = usersGroupIdsToRoles.keySet();
-
 			for (long searchGroupId : searchGroupIds) {
-				if (!usersGroupIds.contains(searchGroupId) &&
+				if (!searchPermissionContext.containsGroupId(searchGroupId) &&
 					_resourcePermissionLocalService.hasResourcePermission(
 						companyId, className, ResourceConstants.SCOPE_GROUP,
 						String.valueOf(searchGroupId), roleIds,
@@ -516,10 +514,20 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 
 	private static class SearchPermissionContext implements Serializable {
 
-		private SearchPermissionContext(
-			Set<Role> roles, Map<Long, List<Role>> usersGroupIdsToRoles) {
+		public boolean containsGroupId(long groupId) {
+			for (UsersGroupIdRoles usersGroupIdRoles : _usersGroupIdsRoles) {
+				if (groupId == usersGroupIdRoles._groupId) {
+					return true;
+				}
+			}
 
-			_usersGroupIdsToRoles = usersGroupIdsToRoles;
+			return false;
+		}
+
+		private SearchPermissionContext(
+			Set<Role> roles, List<UsersGroupIdRoles> usersGroupIdsRoles) {
+
+			_usersGroupIdsRoles = usersGroupIdsRoles;
 
 			List<Long> roleIds = new ArrayList<>(roles.size());
 			List<Long> regularRoleIds = new ArrayList<>();
@@ -537,11 +545,9 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			_roleIds = ArrayUtil.toLongArray(roleIds);
 			_regularRoleIds = ArrayUtil.toLongArray(regularRoleIds);
 
-			for (Map.Entry<Long, List<Role>> entry :
-					_usersGroupIdsToRoles.entrySet()) {
-
-				long groupId = entry.getKey();
-				List<Role> groupRoles = entry.getValue();
+			for (UsersGroupIdRoles usersGroupIdRoles : _usersGroupIdsRoles) {
+				long groupId = usersGroupIdRoles._groupId;
+				List<Role> groupRoles = usersGroupIdRoles._groupRoles;
 
 				for (Role groupRole : groupRoles) {
 					_groupRolesTermsFilter.addValue(
@@ -558,7 +564,21 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		private final long[] _roleIds;
 		private final TermsFilter _rolesTermsFilter = new TermsFilter(
 			Field.ROLE_ID);
-		private final Map<Long, List<Role>> _usersGroupIdsToRoles;
+		private final List<UsersGroupIdRoles> _usersGroupIdsRoles;
+
+	}
+
+	private static class UsersGroupIdRoles implements Serializable {
+
+		private UsersGroupIdRoles(long groupId, List<Role> groupRoles) {
+			_groupId = groupId;
+			_groupRoles = groupRoles;
+		}
+
+		private static final long serialVersionUID = 1L;
+
+		private final long _groupId;
+		private final List<Role> _groupRoles;
 
 	}
 
