@@ -27,8 +27,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
 
-import java.util.Locale;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -83,21 +81,20 @@ public class MetaTagsTag extends com.liferay.taglib.util.IncludeTag {
 		}
 
 		String currentLanguageId = LanguageUtil.getLanguageId(request);
-		Locale currentLocale = themeDisplay.getLocale();
-		Locale defaultLocale = LocaleUtil.getSiteDefault();
-
-		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
+		String defaultLanguageId = LocaleUtil.toLanguageId(
+			LocaleUtil.getSiteDefault());
 
 		String w3cCurrentLanguageId = LocaleUtil.toW3cLanguageId(
 			currentLanguageId);
 		String w3cDefaultLanguageId = LocaleUtil.toW3cLanguageId(
 			defaultLanguageId);
 
-		String metaRobots = layout.getRobots(currentLocale, false);
+		String metaRobots = layout.getRobots(
+			themeDisplay.getLanguageId(), false);
 		String metaRobotsLanguageId = w3cCurrentLanguageId;
 
 		if (Validator.isNull(metaRobots)) {
-			metaRobots = layout.getRobots(defaultLocale);
+			metaRobots = layout.getRobots(defaultLanguageId);
 			metaRobotsLanguageId = w3cDefaultLanguageId;
 		}
 
@@ -106,11 +103,12 @@ public class MetaTagsTag extends com.liferay.taglib.util.IncludeTag {
 				HtmlUtil.escape(metaRobots), metaRobotsLanguageId, "robots");
 		}
 
-		String metaDescription = layout.getDescription(currentLocale, false);
+		String metaDescription = layout.getDescription(
+			themeDisplay.getLanguageId(), false);
 		String metaDescriptionLanguageId = w3cCurrentLanguageId;
 
 		if (Validator.isNull(metaDescription)) {
-			metaDescription = layout.getDescription(defaultLocale);
+			metaDescription = layout.getDescription(defaultLanguageId);
 			metaDescriptionLanguageId = w3cDefaultLanguageId;
 		}
 
@@ -143,11 +141,12 @@ public class MetaTagsTag extends com.liferay.taglib.util.IncludeTag {
 				"description");
 		}
 
-		String metaKeywords = layout.getKeywords(currentLocale, false);
+		String metaKeywords = layout.getKeywords(
+			themeDisplay.getLanguageId(), false);
 		String metaKeywordsLanguageId = w3cCurrentLanguageId;
 
 		if (Validator.isNull(metaKeywords)) {
-			metaKeywords = layout.getKeywords(defaultLocale);
+			metaKeywords = layout.getKeywords(defaultLanguageId);
 			metaKeywordsLanguageId = w3cDefaultLanguageId;
 		}
 
