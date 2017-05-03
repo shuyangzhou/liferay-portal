@@ -216,6 +216,115 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			groupRoleIds.toArray(new String[groupRoleIds.size()]));
 	}
 
+	private SearchPermissionContext _createSearchPermissionContext(
+			long companyId, long userId, PermissionChecker permissionChecker)
+		throws Exception {
+
+		UserBag userBag = permissionChecker.getUserBag();
+
+		if (userBag == null) {
+			return null;
+		}
+
+		Set<Role> roles = new HashSet<>();
+		Map<Long, List<Role>> usersGroupIdsToRoles = new HashMap<>();
+
+		if (permissionChecker.isSignedIn()) {
+			roles.addAll(userBag.getRoles());
+
+			roles.add(
+				_roleLocalService.getRole(companyId, RoleConstants.GUEST));
+		}
+		else {
+			roles.addAll(
+				_roleLocalService.getRoles(
+					permissionChecker.getGuestUserRoleIds()));
+		}
+
+		int termsCount = roles.size();
+
+		int permissionTermsLimit =
+			_searchPermissionCheckerConfiguration.permissionTermsLimit();
+
+		if (termsCount > permissionTermsLimit) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Skipping presearch permission checking due to too many " +
+						"roles: " + termsCount + " > " + permissionTermsLimit);
+			}
+
+			return null;
+		}
+
+		Role organizationUserRole = _roleLocalService.getRole(
+			companyId, RoleConstants.ORGANIZATION_USER);
+		Role siteMemberRole = _roleLocalService.getRole(
+			companyId, RoleConstants.SITE_MEMBER);
+
+		Collection<Group> groups = userBag.getGroups();
+
+		termsCount += groups.size();
+
+		if (termsCount > permissionTermsLimit) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Skipping presearch permission checking due to too many " +
+						"roles and groups: " + termsCount + " > " +
+							permissionTermsLimit);
+			}
+
+			return null;
+		}
+
+		for (Group group : groups) {
+			long[] roleIds = permissionChecker.getRoleIds(
+				userId, group.getGroupId());
+
+			List<Role> groupRoles = _roleLocalService.getRoles(roleIds);
+
+			roles.addAll(groupRoles);
+
+			Iterator<Role> iterator = groupRoles.iterator();
+
+			while (iterator.hasNext()) {
+				Role groupRole = iterator.next();
+
+				if ((groupRole.getType() != RoleConstants.TYPE_ORGANIZATION) &&
+					(groupRole.getType() != RoleConstants.TYPE_SITE)) {
+
+					iterator.remove();
+				}
+			}
+
+			if (group.isOrganization() &&
+				!groupRoles.contains(organizationUserRole)) {
+
+				groupRoles.add(organizationUserRole);
+			}
+
+			if (group.isSite() && !groupRoles.contains(siteMemberRole)) {
+				groupRoles.add(siteMemberRole);
+			}
+
+			usersGroupIdsToRoles.put(group.getGroupId(), groupRoles);
+
+			termsCount += groupRoles.size();
+
+			if (termsCount > permissionTermsLimit) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Skipping presearch permission checking due to too " +
+							"many roles, groups, and groupRoles: " +
+								termsCount + " > " + permissionTermsLimit);
+				}
+
+				return null;
+			}
+		}
+
+		return new SearchPermissionContext(roles, usersGroupIdsToRoles);
+	}
+
 	private BooleanFilter _getPermissionBooleanFilter(
 			long companyId, long[] searchGroupIds, long userId,
 			String className, BooleanFilter booleanFilter,
@@ -391,115 +500,6 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		fullBooleanFilter.add(permissionBooleanFilter, BooleanClauseOccur.MUST);
 
 		return fullBooleanFilter;
-	}
-
-	private SearchPermissionContext _createSearchPermissionContext(
-			long companyId, long userId, PermissionChecker permissionChecker)
-		throws Exception {
-
-		UserBag userBag = permissionChecker.getUserBag();
-
-		if (userBag == null) {
-			return null;
-		}
-
-		Set<Role> roles = new HashSet<>();
-		Map<Long, List<Role>> usersGroupIdsToRoles = new HashMap<>();
-
-		if (permissionChecker.isSignedIn()) {
-			roles.addAll(userBag.getRoles());
-
-			roles.add(
-				_roleLocalService.getRole(companyId, RoleConstants.GUEST));
-		}
-		else {
-			roles.addAll(
-				_roleLocalService.getRoles(
-					permissionChecker.getGuestUserRoleIds()));
-		}
-
-		int termsCount = roles.size();
-
-		int permissionTermsLimit =
-			_searchPermissionCheckerConfiguration.permissionTermsLimit();
-
-		if (termsCount > permissionTermsLimit) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Skipping presearch permission checking due to too many " +
-						"roles: " + termsCount + " > " + permissionTermsLimit);
-			}
-
-			return null;
-		}
-
-		Role organizationUserRole = _roleLocalService.getRole(
-			companyId, RoleConstants.ORGANIZATION_USER);
-		Role siteMemberRole = _roleLocalService.getRole(
-			companyId, RoleConstants.SITE_MEMBER);
-
-		Collection<Group> groups = userBag.getGroups();
-
-		termsCount += groups.size();
-
-		if (termsCount > permissionTermsLimit) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Skipping presearch permission checking due to too many " +
-						"roles and groups: " + termsCount + " > " +
-							permissionTermsLimit);
-			}
-
-			return null;
-		}
-
-		for (Group group : groups) {
-			long[] roleIds = permissionChecker.getRoleIds(
-				userId, group.getGroupId());
-
-			List<Role> groupRoles = _roleLocalService.getRoles(roleIds);
-
-			roles.addAll(groupRoles);
-
-			Iterator<Role> iterator = groupRoles.iterator();
-
-			while (iterator.hasNext()) {
-				Role groupRole = iterator.next();
-
-				if ((groupRole.getType() != RoleConstants.TYPE_ORGANIZATION) &&
-					(groupRole.getType() != RoleConstants.TYPE_SITE)) {
-
-					iterator.remove();
-				}
-			}
-
-			if (group.isOrganization() &&
-				!groupRoles.contains(organizationUserRole)) {
-
-				groupRoles.add(organizationUserRole);
-			}
-
-			if (group.isSite() && !groupRoles.contains(siteMemberRole)) {
-				groupRoles.add(siteMemberRole);
-			}
-
-			usersGroupIdsToRoles.put(group.getGroupId(), groupRoles);
-
-			termsCount += groupRoles.size();
-
-			if (termsCount > permissionTermsLimit) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Skipping presearch permission checking due to too " +
-							"many roles, groups, and groupRoles: " +
-								termsCount + " > " + permissionTermsLimit);
-				}
-
-				return null;
-			}
-		}
-
-		return new SearchPermissionContext(roles, usersGroupIdsToRoles);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
