@@ -222,6 +222,17 @@
 			<finder-column name="classNameId" />
 			<finder-column name="classPK" />
 		</finder>
+		<finder name="G_C_V" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="classNameId" />
+			<finder-column name="visible" />
+		</finder>
+		<finder name="G_C_P_E" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="classNameId" />
+			<finder-column name="publishDate" />
+			<finder-column name="expirationDate" />
+		</finder>
 
 		<!-- References -->
 
