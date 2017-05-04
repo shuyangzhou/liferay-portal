@@ -672,8 +672,14 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 		}
 
 		if (portletURL == null) {
-			portletURL = PortletURLFactoryUtil.create(
-				portletRequestImpl, portletName, plid, lifecycle);
+			if (portletName.equals(portlet.getPortletId())) {
+				portletURL = PortletURLFactoryUtil.create(
+					portletRequestImpl, portlet, plid, lifecycle);
+			}
+			else {
+				portletURL = PortletURLFactoryUtil.create(
+					portletRequestImpl, portletName, plid, lifecycle);
+			}
 		}
 
 		PortletApp portletApp = portlet.getPortletApp();
