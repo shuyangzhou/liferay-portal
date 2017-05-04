@@ -112,6 +112,18 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 
 	@Override
 	public LiferayPortletURL create(
+		PortletRequest portletRequest, Portlet portlet, long plid,
+		String lifecycle) {
+
+		return new PortletURLImpl(
+			portletRequest, portlet,
+			_getLayout(
+				(Layout)portletRequest.getAttribute(WebKeys.LAYOUT), plid),
+			lifecycle);
+	}
+
+	@Override
+	public LiferayPortletURL create(
 		PortletRequest portletRequest, String portletId, Layout layout,
 		String lifecycle) {
 

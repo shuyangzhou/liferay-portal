@@ -72,6 +72,14 @@ public class PortletURLFactoryUtil {
 	}
 
 	public static LiferayPortletURL create(
+		PortletRequest portletRequest, Portlet portlet, long plid,
+		String lifecycle) {
+
+		return getPortletURLFactory().create(
+			portletRequest, portlet, plid, lifecycle);
+	}
+
+	public static LiferayPortletURL create(
 		PortletRequest portletRequest, String portletId, Layout layout,
 		String lifecycle) {
 

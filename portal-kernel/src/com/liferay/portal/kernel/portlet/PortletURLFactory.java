@@ -52,6 +52,10 @@ public interface PortletURLFactory {
 		String lifecycle);
 
 	public LiferayPortletURL create(
+		PortletRequest portletRequest, Portlet portlet, long plid,
+		String lifecycle);
+
+	public LiferayPortletURL create(
 		PortletRequest portletRequest, String portletId, Layout layout,
 		String lifecycle);
 
