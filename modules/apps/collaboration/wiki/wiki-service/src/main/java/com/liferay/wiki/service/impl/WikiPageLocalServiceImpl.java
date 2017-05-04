@@ -130,8 +130,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.PortletMode;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
+import javax.portlet.WindowState;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -1287,6 +1290,38 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 				page.getNodeId(), page.getTitle(), viewPageURL, editPageURL,
 				attachmentURLPrefix);
 		}
+
+		return getPageDisplay(
+			page, viewPageURL, editPageURL, attachmentURLPrefix);
+	}
+
+	@Override
+	public WikiPageDisplay getPageDisplay(
+			WikiPage page, PortletURL viewPageURL, String currentURL,
+			String attachmentURLPrefix, HttpServletRequest request)
+		throws Exception {
+
+		boolean workflowAssetPreview = false;
+
+		if (request != null) {
+			workflowAssetPreview = GetterUtil.getBoolean(
+				request.getAttribute(WebKeys.WORKFLOW_ASSET_PREVIEW));
+		}
+
+		if (!workflowAssetPreview && page.isApproved()) {
+			return wikiCacheHelper.getDisplay(
+				page.getNodeId(), page.getTitle(), viewPageURL, currentURL,
+				attachmentURLPrefix, request);
+		}
+
+		PortletURL editPageURL = PortletURLFactoryUtil.create(
+			request, WikiPortletKeys.WIKI, PortletRequest.ACTION_PHASE);
+
+		editPageURL.setParameter(ActionRequest.ACTION_NAME, "/wiki/edit_page");
+		editPageURL.setParameter("redirect", currentURL);
+		editPageURL.setParameter("nodeId", String.valueOf(page.getNodeId()));
+		editPageURL.setPortletMode(PortletMode.VIEW);
+		editPageURL.setWindowState(WindowState.MAXIMIZED);
 
 		return getPageDisplay(
 			page, viewPageURL, editPageURL, attachmentURLPrefix);
