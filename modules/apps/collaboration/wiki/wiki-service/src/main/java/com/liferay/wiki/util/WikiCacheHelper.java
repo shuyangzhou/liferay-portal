@@ -19,9 +19,11 @@ import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.wiki.constants.WikiPortletKeys;
 import com.liferay.wiki.engine.WikiEngine;
 import com.liferay.wiki.engine.impl.WikiEngineRenderer;
@@ -97,20 +99,31 @@ public class WikiCacheHelper {
 	}
 
 	public WikiPageDisplay getDisplay(
-			long nodeId, String title, PortletURL viewPageURL,
-			String currentURL, String attachmentURLPrefix,
-			HttpServletRequest request)
+			long nodeId, String title, String currentURL,
+			String attachmentURLPrefix, HttpServletRequest request)
 		throws PortletException {
 
 		StopWatch stopWatch = new StopWatch();
 
 		stopWatch.start();
 
-		String key = _encodeKey(nodeId, title, viewPageURL.toString());
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		String key = _encodeKey(
+			nodeId, title, String.valueOf(themeDisplay.getPlid()));
 
 		WikiPageDisplay pageDisplay = (WikiPageDisplay)_portalCache.get(key);
 
 		if (pageDisplay == null) {
+			PortletURL viewPageURL = PortletURLFactoryUtil.create(
+				request, WikiPortletKeys.WIKI, PortletRequest.ACTION_PHASE);
+
+			viewPageURL.setParameter(ActionRequest.ACTION_NAME, "/wiki/view");
+			viewPageURL.setParameter("nodeId", String.valueOf(nodeId));
+			viewPageURL.setPortletMode(PortletMode.VIEW);
+			viewPageURL.setWindowState(WindowState.MAXIMIZED);
+
 			PortletURL editPageURL = PortletURLFactoryUtil.create(
 				request, WikiPortletKeys.WIKI, PortletRequest.ACTION_PHASE);
 
@@ -131,9 +144,8 @@ public class WikiCacheHelper {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				"getDisplay for {" + nodeId + ", " + title + ", " +
-					viewPageURL + ", " + currentURL + "} takes " +
-						stopWatch.getTime() + " ms");
+				"getDisplay for {" + nodeId + ", " + title + ", " + currentURL +
+					"} takes " + stopWatch.getTime() + " ms");
 		}
 
 		return pageDisplay;

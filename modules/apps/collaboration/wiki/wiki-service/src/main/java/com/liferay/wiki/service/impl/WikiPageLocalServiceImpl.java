@@ -1297,8 +1297,8 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 	@Override
 	public WikiPageDisplay getPageDisplay(
-			WikiPage page, PortletURL viewPageURL, String currentURL,
-			String attachmentURLPrefix, HttpServletRequest request)
+			WikiPage page, String currentURL, String attachmentURLPrefix,
+			HttpServletRequest request)
 		throws Exception {
 
 		boolean workflowAssetPreview = false;
@@ -1310,9 +1310,17 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 		if (!workflowAssetPreview && page.isApproved()) {
 			return wikiCacheHelper.getDisplay(
-				page.getNodeId(), page.getTitle(), viewPageURL, currentURL,
+				page.getNodeId(), page.getTitle(), currentURL,
 				attachmentURLPrefix, request);
 		}
+
+		PortletURL viewPageURL = PortletURLFactoryUtil.create(
+			request, WikiPortletKeys.WIKI, PortletRequest.ACTION_PHASE);
+
+		viewPageURL.setParameter(ActionRequest.ACTION_NAME, "/wiki/view");
+		viewPageURL.setParameter("nodeId", String.valueOf(page.getNodeId()));
+		viewPageURL.setPortletMode(PortletMode.VIEW);
+		viewPageURL.setWindowState(WindowState.MAXIMIZED);
 
 		PortletURL editPageURL = PortletURLFactoryUtil.create(
 			request, WikiPortletKeys.WIKI, PortletRequest.ACTION_PHASE);
