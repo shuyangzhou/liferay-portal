@@ -52,6 +52,8 @@ import java.util.Map;
 
 import javax.portlet.PortletURL;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Provides the local service interface for WikiPage. Methods of this
  * service will not have security checks based on the propagated JAAS
@@ -325,6 +327,12 @@ public interface WikiPageLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public WikiPage updateWikiPage(WikiPage wikiPage);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public WikiPageDisplay getPageDisplay(WikiPage page,
+		PortletURL viewPageURL, java.lang.String currentURL,
+		java.lang.String attachmentURLPrefix, HttpServletRequest request)
+		throws java.lang.Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WikiPageDisplay getPageDisplay(WikiPage page,
