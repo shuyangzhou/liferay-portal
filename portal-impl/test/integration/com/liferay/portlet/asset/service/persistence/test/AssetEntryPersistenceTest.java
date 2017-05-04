@@ -299,6 +299,24 @@ public class AssetEntryPersistenceTest {
 	}
 
 	@Test
+	public void testCountByG_C_V() throws Exception {
+		_persistence.countByG_C_V(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean());
+
+		_persistence.countByG_C_V(0L, 0L, RandomTestUtil.randomBoolean());
+	}
+
+	@Test
+	public void testCountByG_C_P_E() throws Exception {
+		_persistence.countByG_C_P_E(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), RandomTestUtil.nextDate(),
+			RandomTestUtil.nextDate());
+
+		_persistence.countByG_C_P_E(0L, 0L, RandomTestUtil.nextDate(),
+			RandomTestUtil.nextDate());
+	}
+
+	@Test
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		AssetEntry newAssetEntry = addAssetEntry();
 

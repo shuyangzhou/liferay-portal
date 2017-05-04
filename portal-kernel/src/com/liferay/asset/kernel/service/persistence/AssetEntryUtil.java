@@ -1196,6 +1196,416 @@ public class AssetEntryUtil {
 	}
 
 	/**
+	* Returns all the asset entries where groupId = &#63; and classNameId = &#63; and visible = &#63;.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param visible the visible
+	* @return the matching asset entries
+	*/
+	public static List<AssetEntry> findByG_C_V(long groupId, long classNameId,
+		boolean visible) {
+		return getPersistence().findByG_C_V(groupId, classNameId, visible);
+	}
+
+	/**
+	* Returns a range of all the asset entries where groupId = &#63; and classNameId = &#63; and visible = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param visible the visible
+	* @param start the lower bound of the range of asset entries
+	* @param end the upper bound of the range of asset entries (not inclusive)
+	* @return the range of matching asset entries
+	*/
+	public static List<AssetEntry> findByG_C_V(long groupId, long classNameId,
+		boolean visible, int start, int end) {
+		return getPersistence()
+				   .findByG_C_V(groupId, classNameId, visible, start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the asset entries where groupId = &#63; and classNameId = &#63; and visible = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param visible the visible
+	* @param start the lower bound of the range of asset entries
+	* @param end the upper bound of the range of asset entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching asset entries
+	*/
+	public static List<AssetEntry> findByG_C_V(long groupId, long classNameId,
+		boolean visible, int start, int end,
+		OrderByComparator<AssetEntry> orderByComparator) {
+		return getPersistence()
+				   .findByG_C_V(groupId, classNameId, visible, start, end,
+			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the asset entries where groupId = &#63; and classNameId = &#63; and visible = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param visible the visible
+	* @param start the lower bound of the range of asset entries
+	* @param end the upper bound of the range of asset entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching asset entries
+	*/
+	public static List<AssetEntry> findByG_C_V(long groupId, long classNameId,
+		boolean visible, int start, int end,
+		OrderByComparator<AssetEntry> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_C_V(groupId, classNameId, visible, start, end,
+			orderByComparator, retrieveFromCache);
+	}
+
+	/**
+	* Returns the first asset entry in the ordered set where groupId = &#63; and classNameId = &#63; and visible = &#63;.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param visible the visible
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching asset entry
+	* @throws NoSuchEntryException if a matching asset entry could not be found
+	*/
+	public static AssetEntry findByG_C_V_First(long groupId, long classNameId,
+		boolean visible, OrderByComparator<AssetEntry> orderByComparator)
+		throws com.liferay.asset.kernel.exception.NoSuchEntryException {
+		return getPersistence()
+				   .findByG_C_V_First(groupId, classNameId, visible,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the first asset entry in the ordered set where groupId = &#63; and classNameId = &#63; and visible = &#63;.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param visible the visible
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching asset entry, or <code>null</code> if a matching asset entry could not be found
+	*/
+	public static AssetEntry fetchByG_C_V_First(long groupId, long classNameId,
+		boolean visible, OrderByComparator<AssetEntry> orderByComparator) {
+		return getPersistence()
+				   .fetchByG_C_V_First(groupId, classNameId, visible,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the last asset entry in the ordered set where groupId = &#63; and classNameId = &#63; and visible = &#63;.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param visible the visible
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching asset entry
+	* @throws NoSuchEntryException if a matching asset entry could not be found
+	*/
+	public static AssetEntry findByG_C_V_Last(long groupId, long classNameId,
+		boolean visible, OrderByComparator<AssetEntry> orderByComparator)
+		throws com.liferay.asset.kernel.exception.NoSuchEntryException {
+		return getPersistence()
+				   .findByG_C_V_Last(groupId, classNameId, visible,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the last asset entry in the ordered set where groupId = &#63; and classNameId = &#63; and visible = &#63;.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param visible the visible
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching asset entry, or <code>null</code> if a matching asset entry could not be found
+	*/
+	public static AssetEntry fetchByG_C_V_Last(long groupId, long classNameId,
+		boolean visible, OrderByComparator<AssetEntry> orderByComparator) {
+		return getPersistence()
+				   .fetchByG_C_V_Last(groupId, classNameId, visible,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the asset entries before and after the current asset entry in the ordered set where groupId = &#63; and classNameId = &#63; and visible = &#63;.
+	*
+	* @param entryId the primary key of the current asset entry
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param visible the visible
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next asset entry
+	* @throws NoSuchEntryException if a asset entry with the primary key could not be found
+	*/
+	public static AssetEntry[] findByG_C_V_PrevAndNext(long entryId,
+		long groupId, long classNameId, boolean visible,
+		OrderByComparator<AssetEntry> orderByComparator)
+		throws com.liferay.asset.kernel.exception.NoSuchEntryException {
+		return getPersistence()
+				   .findByG_C_V_PrevAndNext(entryId, groupId, classNameId,
+			visible, orderByComparator);
+	}
+
+	/**
+	* Removes all the asset entries where groupId = &#63; and classNameId = &#63; and visible = &#63; from the database.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param visible the visible
+	*/
+	public static void removeByG_C_V(long groupId, long classNameId,
+		boolean visible) {
+		getPersistence().removeByG_C_V(groupId, classNameId, visible);
+	}
+
+	/**
+	* Returns the number of asset entries where groupId = &#63; and classNameId = &#63; and visible = &#63;.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param visible the visible
+	* @return the number of matching asset entries
+	*/
+	public static int countByG_C_V(long groupId, long classNameId,
+		boolean visible) {
+		return getPersistence().countByG_C_V(groupId, classNameId, visible);
+	}
+
+	/**
+	* Returns all the asset entries where groupId = &#63; and classNameId = &#63; and publishDate = &#63; and expirationDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param publishDate the publish date
+	* @param expirationDate the expiration date
+	* @return the matching asset entries
+	*/
+	public static List<AssetEntry> findByG_C_P_E(long groupId,
+		long classNameId, Date publishDate, Date expirationDate) {
+		return getPersistence()
+				   .findByG_C_P_E(groupId, classNameId, publishDate,
+			expirationDate);
+	}
+
+	/**
+	* Returns a range of all the asset entries where groupId = &#63; and classNameId = &#63; and publishDate = &#63; and expirationDate = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param publishDate the publish date
+	* @param expirationDate the expiration date
+	* @param start the lower bound of the range of asset entries
+	* @param end the upper bound of the range of asset entries (not inclusive)
+	* @return the range of matching asset entries
+	*/
+	public static List<AssetEntry> findByG_C_P_E(long groupId,
+		long classNameId, Date publishDate, Date expirationDate, int start,
+		int end) {
+		return getPersistence()
+				   .findByG_C_P_E(groupId, classNameId, publishDate,
+			expirationDate, start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the asset entries where groupId = &#63; and classNameId = &#63; and publishDate = &#63; and expirationDate = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param publishDate the publish date
+	* @param expirationDate the expiration date
+	* @param start the lower bound of the range of asset entries
+	* @param end the upper bound of the range of asset entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching asset entries
+	*/
+	public static List<AssetEntry> findByG_C_P_E(long groupId,
+		long classNameId, Date publishDate, Date expirationDate, int start,
+		int end, OrderByComparator<AssetEntry> orderByComparator) {
+		return getPersistence()
+				   .findByG_C_P_E(groupId, classNameId, publishDate,
+			expirationDate, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the asset entries where groupId = &#63; and classNameId = &#63; and publishDate = &#63; and expirationDate = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AssetEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param publishDate the publish date
+	* @param expirationDate the expiration date
+	* @param start the lower bound of the range of asset entries
+	* @param end the upper bound of the range of asset entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching asset entries
+	*/
+	public static List<AssetEntry> findByG_C_P_E(long groupId,
+		long classNameId, Date publishDate, Date expirationDate, int start,
+		int end, OrderByComparator<AssetEntry> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByG_C_P_E(groupId, classNameId, publishDate,
+			expirationDate, start, end, orderByComparator, retrieveFromCache);
+	}
+
+	/**
+	* Returns the first asset entry in the ordered set where groupId = &#63; and classNameId = &#63; and publishDate = &#63; and expirationDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param publishDate the publish date
+	* @param expirationDate the expiration date
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching asset entry
+	* @throws NoSuchEntryException if a matching asset entry could not be found
+	*/
+	public static AssetEntry findByG_C_P_E_First(long groupId,
+		long classNameId, Date publishDate, Date expirationDate,
+		OrderByComparator<AssetEntry> orderByComparator)
+		throws com.liferay.asset.kernel.exception.NoSuchEntryException {
+		return getPersistence()
+				   .findByG_C_P_E_First(groupId, classNameId, publishDate,
+			expirationDate, orderByComparator);
+	}
+
+	/**
+	* Returns the first asset entry in the ordered set where groupId = &#63; and classNameId = &#63; and publishDate = &#63; and expirationDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param publishDate the publish date
+	* @param expirationDate the expiration date
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching asset entry, or <code>null</code> if a matching asset entry could not be found
+	*/
+	public static AssetEntry fetchByG_C_P_E_First(long groupId,
+		long classNameId, Date publishDate, Date expirationDate,
+		OrderByComparator<AssetEntry> orderByComparator) {
+		return getPersistence()
+				   .fetchByG_C_P_E_First(groupId, classNameId, publishDate,
+			expirationDate, orderByComparator);
+	}
+
+	/**
+	* Returns the last asset entry in the ordered set where groupId = &#63; and classNameId = &#63; and publishDate = &#63; and expirationDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param publishDate the publish date
+	* @param expirationDate the expiration date
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching asset entry
+	* @throws NoSuchEntryException if a matching asset entry could not be found
+	*/
+	public static AssetEntry findByG_C_P_E_Last(long groupId, long classNameId,
+		Date publishDate, Date expirationDate,
+		OrderByComparator<AssetEntry> orderByComparator)
+		throws com.liferay.asset.kernel.exception.NoSuchEntryException {
+		return getPersistence()
+				   .findByG_C_P_E_Last(groupId, classNameId, publishDate,
+			expirationDate, orderByComparator);
+	}
+
+	/**
+	* Returns the last asset entry in the ordered set where groupId = &#63; and classNameId = &#63; and publishDate = &#63; and expirationDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param publishDate the publish date
+	* @param expirationDate the expiration date
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching asset entry, or <code>null</code> if a matching asset entry could not be found
+	*/
+	public static AssetEntry fetchByG_C_P_E_Last(long groupId,
+		long classNameId, Date publishDate, Date expirationDate,
+		OrderByComparator<AssetEntry> orderByComparator) {
+		return getPersistence()
+				   .fetchByG_C_P_E_Last(groupId, classNameId, publishDate,
+			expirationDate, orderByComparator);
+	}
+
+	/**
+	* Returns the asset entries before and after the current asset entry in the ordered set where groupId = &#63; and classNameId = &#63; and publishDate = &#63; and expirationDate = &#63;.
+	*
+	* @param entryId the primary key of the current asset entry
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param publishDate the publish date
+	* @param expirationDate the expiration date
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next asset entry
+	* @throws NoSuchEntryException if a asset entry with the primary key could not be found
+	*/
+	public static AssetEntry[] findByG_C_P_E_PrevAndNext(long entryId,
+		long groupId, long classNameId, Date publishDate, Date expirationDate,
+		OrderByComparator<AssetEntry> orderByComparator)
+		throws com.liferay.asset.kernel.exception.NoSuchEntryException {
+		return getPersistence()
+				   .findByG_C_P_E_PrevAndNext(entryId, groupId, classNameId,
+			publishDate, expirationDate, orderByComparator);
+	}
+
+	/**
+	* Removes all the asset entries where groupId = &#63; and classNameId = &#63; and publishDate = &#63; and expirationDate = &#63; from the database.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param publishDate the publish date
+	* @param expirationDate the expiration date
+	*/
+	public static void removeByG_C_P_E(long groupId, long classNameId,
+		Date publishDate, Date expirationDate) {
+		getPersistence()
+			.removeByG_C_P_E(groupId, classNameId, publishDate, expirationDate);
+	}
+
+	/**
+	* Returns the number of asset entries where groupId = &#63; and classNameId = &#63; and publishDate = &#63; and expirationDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param classNameId the class name ID
+	* @param publishDate the publish date
+	* @param expirationDate the expiration date
+	* @return the number of matching asset entries
+	*/
+	public static int countByG_C_P_E(long groupId, long classNameId,
+		Date publishDate, Date expirationDate) {
+		return getPersistence()
+				   .countByG_C_P_E(groupId, classNameId, publishDate,
+			expirationDate);
+	}
+
+	/**
 	* Caches the asset entry in the entity cache if it is enabled.
 	*
 	* @param assetEntry the asset entry
