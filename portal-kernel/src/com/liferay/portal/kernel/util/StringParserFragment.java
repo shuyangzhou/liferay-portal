@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.concurrent.ConcurrentReferenceValueHashMap;
 import com.liferay.portal.kernel.memory.FinalizeManager;
 
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -45,7 +44,7 @@ public class StringParserFragment {
 	}
 
 	public String getPattern() {
-		return _pattern.toString();
+		return _matcher.toString();
 	}
 
 	public String getToken() {
@@ -57,9 +56,7 @@ public class StringParserFragment {
 	}
 
 	public boolean matches(String parameter) {
-		Matcher matcher = _pattern.matcher(parameter);
-
-		return matcher.matches();
+		return _matcher.matches(parameter);
 	}
 
 	protected StringParserFragment(String fragment) {
@@ -75,7 +72,7 @@ public class StringParserFragment {
 		if (index < 0) {
 			name = fragment.substring(1, fragment.length() - 1);
 
-			_pattern = _defaultPattern;
+			_matcher = _defaultMatcher;
 		}
 		else {
 			name = fragment.substring(1, index);
@@ -87,7 +84,7 @@ public class StringParserFragment {
 					"Pattern is null: " + fragment);
 			}
 
-			_pattern = Pattern.compile(pattern);
+			_matcher = _getMatcher(pattern);
 		}
 
 		if (name.isEmpty()) {
@@ -114,14 +111,159 @@ public class StringParserFragment {
 			StringPool.CLOSE_CURLY_BRACE);
 	}
 
-	private static final Pattern _defaultPattern = Pattern.compile("[^/\\.]+");
+	private Matcher _getMatcher(String pattern) {
+		if (pattern.equals("\\d+")) {
+			return new DigitMatcher();
+		}
+
+		if (pattern.equals("[^/]+")) {
+			return new NotSlashMatcher();
+		}
+
+		if (pattern.equals("(?!id$)[^/]+") || pattern.equals("(?!id\\)[^/]+")) {
+			return new NotIdMatcher(pattern);
+		}
+
+		return new PatternMatcher(pattern);
+	}
+
+	private static final Matcher _defaultMatcher = new DefaultMatcher();
 	private static final Map<String, StringParserFragment>
 		_stringParserFragments = new ConcurrentReferenceValueHashMap<>(
 			FinalizeManager.SOFT_REFERENCE_FACTORY);
 
+	private final Matcher _matcher;
 	private final String _name;
-	private final Pattern _pattern;
 	private final boolean _raw;
 	private final String _token;
+
+	private static class DefaultMatcher implements Matcher {
+
+		@Override
+		public boolean matches(String s) {
+			if (s.isEmpty()) {
+				return false;
+			}
+
+			for (int i = 0; i < s.length(); i++) {
+				char c = s.charAt(i);
+
+				if ((c == CharPool.SLASH) || (c == CharPool.PERIOD)) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		@Override
+		public String toString() {
+			return "[^/\\.]+";
+		}
+
+	}
+
+	private static class DigitMatcher implements Matcher {
+
+		@Override
+		public boolean matches(String s) {
+			if (s.isEmpty()) {
+				return false;
+			}
+
+			for (int i = 0; i < s.length(); i++) {
+				char c = s.charAt(i);
+
+				if ((c < CharPool.NUMBER_0) || (c > CharPool.NUMBER_9)) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		@Override
+		public String toString() {
+			return "\\d+";
+		}
+
+	}
+
+	private static class NotIdMatcher implements Matcher {
+
+		@Override
+		public boolean matches(String s) {
+			if (s.equals("id") || (s.indexOf(CharPool.SLASH) != -1)) {
+				return false;
+			}
+
+			return true;
+		}
+
+		@Override
+		public String toString() {
+			return _pattern;
+		}
+
+		private NotIdMatcher(String pattern) {
+			_pattern = pattern;
+		}
+
+		private final String _pattern;
+
+	}
+
+	private static class NotSlashMatcher implements Matcher {
+
+		@Override
+		public boolean matches(String s) {
+			if (s.isEmpty()) {
+				return false;
+			}
+
+			if (s.indexOf(CharPool.SLASH) == -1) {
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public String toString() {
+			return "[^/]+";
+		}
+
+	}
+
+	private static class PatternMatcher implements Matcher {
+
+		@Override
+		public boolean matches(String s) {
+			java.util.regex.Matcher matcher = _pattern.matcher(s);
+
+			return matcher.matches();
+		}
+
+		@Override
+		public String toString() {
+			return _pattern.toString();
+		}
+
+		private PatternMatcher(String pattern) {
+			_pattern = Pattern.compile(pattern);
+		}
+
+		private final Pattern _pattern;
+
+	}
+
+	private interface Matcher {
+
+		public boolean matches(String s);
+
+		@Override
+		public String toString();
+
+	}
 
 }
