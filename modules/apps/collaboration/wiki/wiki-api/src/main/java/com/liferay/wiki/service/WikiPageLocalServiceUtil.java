@@ -437,6 +437,16 @@ public class WikiPageLocalServiceUtil {
 	}
 
 	public static com.liferay.wiki.model.WikiPageDisplay getPageDisplay(
+		com.liferay.wiki.model.WikiPage page, java.lang.String currentURL,
+		java.lang.String attachmentURLPrefix,
+		javax.servlet.http.HttpServletRequest request)
+		throws java.lang.Exception {
+		return getService()
+				   .getPageDisplay(page, currentURL, attachmentURLPrefix,
+			request);
+	}
+
+	public static com.liferay.wiki.model.WikiPageDisplay getPageDisplay(
 		com.liferay.wiki.model.WikiPage page,
 		javax.portlet.PortletURL viewPageURL,
 		javax.portlet.PortletURL editPageURL,
