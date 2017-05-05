@@ -34,12 +34,12 @@ import java.util.regex.Pattern;
 public class StringParser {
 
 	public static StringParser create(String chunk) {
-		StringParser stringParser = _stringParserFragmentsCache.get(chunk);
+		StringParser stringParser = _stringParserCache.get(chunk);
 
 		if (stringParser == null) {
 			stringParser = new StringParser(chunk);
 
-			_stringParserFragmentsCache.put(chunk, stringParser);
+			_stringParserCache.put(chunk, stringParser);
 		}
 
 		return stringParser;
@@ -303,7 +303,7 @@ public class StringParser {
 		"[\\{\\}\\(\\)\\[\\]\\*\\+\\?\\$\\^\\.\\#\\\\]");
 	private static final Pattern _fragmentPattern = Pattern.compile(
 		"\\{.+?\\}");
-	private static final Map<String, StringParser> _stringParserFragmentsCache =
+	private static final Map<String, StringParser> _stringParserCache =
 		new ConcurrentReferenceValueHashMap<>(
 			FinalizeManager.SOFT_REFERENCE_FACTORY);
 
