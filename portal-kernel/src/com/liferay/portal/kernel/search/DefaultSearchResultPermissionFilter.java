@@ -16,16 +16,12 @@ package com.liferay.portal.kernel.search;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.search.facet.Facet;
-import com.liferay.portal.kernel.search.facet.FacetPostProcessor;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.registry.collections.ServiceTrackerCollections;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +42,7 @@ public class DefaultSearchResultPermissionFilter
 	@Override
 	protected void filterHits(Hits hits, SearchContext searchContext) {
 		List<Document> docs = new ArrayList<>();
-		List<Document> excludeDocs = new ArrayList<>();
+		int excludeDocsSize = 0;
 		List<Float> scores = new ArrayList<>();
 
 		boolean companyAdmin = _permissionChecker.isCompanyAdmin(
@@ -66,15 +62,7 @@ public class DefaultSearchResultPermissionFilter
 				scores.add(hits.score(i));
 			}
 			else {
-				excludeDocs.add(documents[i]);
-			}
-		}
-
-		for (Facet facet : ListUtil.fromMapValues(searchContext.getFacets())) {
-			for (FacetPostProcessor facetPostProcessor :
-					getFacetPostProcessors()) {
-
-				facetPostProcessor.exclude(excludeDocs, facet);
+				excludeDocsSize++;
 			}
 		}
 
@@ -83,16 +71,7 @@ public class DefaultSearchResultPermissionFilter
 		hits.setSearchTime(
 			(float)(System.currentTimeMillis() - hits.getStart()) /
 				Time.SECOND);
-		hits.setLength(hits.getLength() - excludeDocs.size());
-	}
-
-	protected List<FacetPostProcessor> getFacetPostProcessors() {
-		if (_facetPostProcessors == null) {
-			_facetPostProcessors = ServiceTrackerCollections.openList(
-				FacetPostProcessor.class);
-		}
-
-		return _facetPostProcessors;
+		hits.setLength(hits.getLength() - excludeDocsSize);
 	}
 
 	@Override
@@ -167,7 +146,6 @@ public class DefaultSearchResultPermissionFilter
 		DefaultSearchResultPermissionFilter.class);
 
 	private final BaseIndexer<?> _baseIndexer;
-	private List<FacetPostProcessor> _facetPostProcessors;
 	private final PermissionChecker _permissionChecker;
 
 }
