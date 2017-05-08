@@ -2976,17 +2976,11 @@ go</echo>
 		<sequential>
 			<setup-testable-tomcat-logging />
 
-			<setup-testable-tomcat-aspectj-agent />
-
-			<setup-testable-tomcat-gc />
-
-			<setup-testable-tomcat-jmx />
-
-			<setup-testable-tomcat-jpda-address />
-
 			<setup-testable-tomcat-manager />
 
 			<setup-testable-tomcat-osgi-modules />
+
+			<setup-testable-tomcat-setenv />
 		</sequential>
 	</macrodef>
 
@@ -3245,6 +3239,18 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 			<copy todir="${liferay.home}/osgi/modules">
 				<fileset dir="${liferay.home}/osgi/test" />
 			</copy>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="setup-testable-tomcat-setenv">
+		<sequential>
+			<setup-testable-tomcat-aspectj-agent />
+
+			<setup-testable-tomcat-gc />
+
+			<setup-testable-tomcat-jmx />
+
+			<setup-testable-tomcat-jpda-address />
 		</sequential>
 	</macrodef>
 
