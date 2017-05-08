@@ -1,0 +1,25 @@
+diff --git a/org/elasticsearch/indices/cache/query/IndicesQueryCache.java b/org/elasticsearch/indices/cache/query/IndicesQueryCache.java
+index 23b4bc8..bdb98c6 100644
+--- a/org/elasticsearch/indices/cache/query/IndicesQueryCache.java
++++ b/org/elasticsearch/indices/cache/query/IndicesQueryCache.java
+@@ -218,13 +218,7 @@ public class IndicesQueryCache extends AbstractComponent implements QueryCache,
+ 
+     @Override
+     public Weight doCache(Weight weight, QueryCachingPolicy policy) {
+-        while (weight instanceof CachingWeightWrapper) {
+-            weight = ((CachingWeightWrapper) weight).in;
+-        }
+-        final Weight in = cache.doCache(weight, policy);
+-        // We wrap the weight to track the readers it sees and map them with
+-        // the shards they belong to
+-        return new CachingWeightWrapper(in);
++        return weight;
+     }
+ 
+     private class CachingWeightWrapper extends Weight {
+@@ -329,3 +323,4 @@ public class IndicesQueryCache extends AbstractComponent implements QueryCache,
+         shardStats.remove(shardId);
+     }
+ }
++/* @generated */
+\ No newline at end of file
