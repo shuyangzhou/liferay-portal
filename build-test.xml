@@ -3039,6 +3039,37 @@ go</echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="setup-testable-tomcat-heap-dump-on-oom">
+		<sequential>
+			<var name="heap.dump.on.oom" value="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${app.server.tomcat.setenv.heap.dump.path}" />
+
+			<if>
+				<not>
+					<resourcecontains resource="${app.server.tomcat.dir}/bin/setenv.bat" substring="${heap.dump.on.oom}" />
+				</not>
+				<then>
+					<echo append="true" file="${app.server.tomcat.dir}/bin/setenv.bat">
+						<![CDATA[
+							set "CATALINA_OPTS=%CATALINA_OPTS% ${heap.dump.on.oom}"
+						]]>
+					</echo>
+				</then>
+			</if>
+			<if>
+				<not>
+					<resourcecontains resource="${app.server.tomcat.dir}/bin/setenv.sh" substring="${heap.dump.on.oom}" />
+				</not>
+				<then>
+					<echo append="true" file="${app.server.tomcat.dir}/bin/setenv.sh">
+						<![CDATA[
+							CATALINA_OPTS="${CATALINA_OPTS} ${heap.dump.on.oom}"
+						]]>
+					</echo>
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="setup-testable-tomcat-jmx">
 		<sequential>
 			<var name="testable.tomcat.jmx.opts" value="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=${jmx.remote.authenticate} -Dcom.sun.management.jmxremote.port=${jmx.remote.port} -Dcom.sun.management.jmxremote.ssl=${jmx.remote.ssl}" />
@@ -3278,6 +3309,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 			<setup-testable-tomcat-aspectj-agent />
 
 			<setup-testable-tomcat-gc />
+
+			<setup-testable-tomcat-heap-dump-on-oom />
 
 			<setup-testable-tomcat-jmx />
 
