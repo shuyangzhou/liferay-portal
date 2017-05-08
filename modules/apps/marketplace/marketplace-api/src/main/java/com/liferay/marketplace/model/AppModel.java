@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.marketplace.model.impl.AppModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface AppModel extends BaseModel<App>, ShardedModel,
 	StagedAuditedModel {
@@ -72,6 +74,7 @@ public interface AppModel extends BaseModel<App>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -87,6 +90,7 @@ public interface AppModel extends BaseModel<App>, ShardedModel,
 	 *
 	 * @return the app ID of this app
 	 */
+	@JSON
 	public long getAppId();
 
 	/**
@@ -102,6 +106,7 @@ public interface AppModel extends BaseModel<App>, ShardedModel,
 	 * @return the company ID of this app
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -118,6 +123,7 @@ public interface AppModel extends BaseModel<App>, ShardedModel,
 	 * @return the user ID of this app
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -151,6 +157,7 @@ public interface AppModel extends BaseModel<App>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -167,6 +174,7 @@ public interface AppModel extends BaseModel<App>, ShardedModel,
 	 * @return the create date of this app
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -183,6 +191,7 @@ public interface AppModel extends BaseModel<App>, ShardedModel,
 	 * @return the modified date of this app
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -198,6 +207,7 @@ public interface AppModel extends BaseModel<App>, ShardedModel,
 	 *
 	 * @return the remote app ID of this app
 	 */
+	@JSON
 	public long getRemoteAppId();
 
 	/**
@@ -213,6 +223,7 @@ public interface AppModel extends BaseModel<App>, ShardedModel,
 	 * @return the title of this app
 	 */
 	@AutoEscape
+	@JSON
 	public String getTitle();
 
 	/**
@@ -228,6 +239,7 @@ public interface AppModel extends BaseModel<App>, ShardedModel,
 	 * @return the description of this app
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -243,6 +255,7 @@ public interface AppModel extends BaseModel<App>, ShardedModel,
 	 * @return the category of this app
 	 */
 	@AutoEscape
+	@JSON
 	public String getCategory();
 
 	/**
@@ -258,6 +271,7 @@ public interface AppModel extends BaseModel<App>, ShardedModel,
 	 * @return the icon url of this app
 	 */
 	@AutoEscape
+	@JSON
 	public String getIconURL();
 
 	/**
@@ -273,6 +287,7 @@ public interface AppModel extends BaseModel<App>, ShardedModel,
 	 * @return the version of this app
 	 */
 	@AutoEscape
+	@JSON
 	public String getVersion();
 
 	/**
@@ -287,6 +302,7 @@ public interface AppModel extends BaseModel<App>, ShardedModel,
 	 *
 	 * @return the required of this app
 	 */
+	@JSON
 	public boolean getRequired();
 
 	/**
@@ -294,6 +310,7 @@ public interface AppModel extends BaseModel<App>, ShardedModel,
 	 *
 	 * @return <code>true</code> if this app is required; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isRequired();
 
 	/**

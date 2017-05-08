@@ -23,7 +23,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.AddressModel;
 import com.liferay.portal.kernel.model.AddressSoap;
@@ -63,7 +62,6 @@ import java.util.Map;
  * @see AddressModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class AddressModelImpl extends BaseModelImpl<Address>
 	implements AddressModel {
@@ -392,7 +390,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -403,7 +400,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -427,7 +423,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getAddressId() {
 		return _addressId;
@@ -438,7 +433,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		_addressId = addressId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -461,7 +455,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -500,7 +493,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -516,7 +508,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -529,7 +520,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -566,7 +556,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -589,7 +578,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getClassPK() {
 		return _classPK;
@@ -612,7 +600,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		return _originalClassPK;
 	}
 
-	@JSON
 	@Override
 	public String getStreet1() {
 		if (_street1 == null) {
@@ -628,7 +615,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		_street1 = street1;
 	}
 
-	@JSON
 	@Override
 	public String getStreet2() {
 		if (_street2 == null) {
@@ -644,7 +630,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		_street2 = street2;
 	}
 
-	@JSON
 	@Override
 	public String getStreet3() {
 		if (_street3 == null) {
@@ -660,7 +645,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		_street3 = street3;
 	}
 
-	@JSON
 	@Override
 	public String getCity() {
 		if (_city == null) {
@@ -676,7 +660,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		_city = city;
 	}
 
-	@JSON
 	@Override
 	public String getZip() {
 		if (_zip == null) {
@@ -692,7 +675,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		_zip = zip;
 	}
 
-	@JSON
 	@Override
 	public long getRegionId() {
 		return _regionId;
@@ -703,7 +685,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		_regionId = regionId;
 	}
 
-	@JSON
 	@Override
 	public long getCountryId() {
 		return _countryId;
@@ -714,7 +695,6 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		_countryId = countryId;
 	}
 
-	@JSON
 	@Override
 	public long getTypeId() {
 		return _typeId;
@@ -725,13 +705,11 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		_typeId = typeId;
 	}
 
-	@JSON
 	@Override
 	public boolean getMailing() {
 		return _mailing;
 	}
 
-	@JSON
 	@Override
 	public boolean isMailing() {
 		return _mailing;
@@ -754,13 +732,11 @@ public class AddressModelImpl extends BaseModelImpl<Address>
 		return _originalMailing;
 	}
 
-	@JSON
 	@Override
 	public boolean getPrimary() {
 		return _primary;
 	}
 
-	@JSON
 	@Override
 	public boolean isPrimary() {
 		return _primary;

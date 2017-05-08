@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -41,6 +42,7 @@ import java.util.Date;
  * @see com.liferay.push.notifications.model.impl.PushNotificationsDeviceModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface PushNotificationsDeviceModel extends BaseModel<PushNotificationsDevice>,
 	ShardedModel {
@@ -69,6 +71,7 @@ public interface PushNotificationsDeviceModel extends BaseModel<PushNotification
 	 *
 	 * @return the push notifications device ID of this push notifications device
 	 */
+	@JSON
 	public long getPushNotificationsDeviceId();
 
 	/**
@@ -84,6 +87,7 @@ public interface PushNotificationsDeviceModel extends BaseModel<PushNotification
 	 * @return the company ID of this push notifications device
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -99,6 +103,7 @@ public interface PushNotificationsDeviceModel extends BaseModel<PushNotification
 	 *
 	 * @return the user ID of this push notifications device
 	 */
+	@JSON
 	public long getUserId();
 
 	/**
@@ -127,6 +132,7 @@ public interface PushNotificationsDeviceModel extends BaseModel<PushNotification
 	 *
 	 * @return the create date of this push notifications device
 	 */
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -142,6 +148,7 @@ public interface PushNotificationsDeviceModel extends BaseModel<PushNotification
 	 * @return the platform of this push notifications device
 	 */
 	@AutoEscape
+	@JSON
 	public String getPlatform();
 
 	/**
@@ -157,6 +164,7 @@ public interface PushNotificationsDeviceModel extends BaseModel<PushNotification
 	 * @return the token of this push notifications device
 	 */
 	@AutoEscape
+	@JSON
 	public String getToken();
 
 	/**

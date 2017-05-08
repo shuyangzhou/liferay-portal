@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -41,6 +42,7 @@ import java.util.Date;
  * @see com.liferay.sync.model.impl.SyncDLObjectModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel {
 	/*
@@ -68,6 +70,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 *
 	 * @return the sync dl object ID of this sync dl object
 	 */
+	@JSON
 	public long getSyncDLObjectId();
 
 	/**
@@ -83,6 +86,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 * @return the company ID of this sync dl object
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -98,6 +102,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 *
 	 * @return the user ID of this sync dl object
 	 */
+	@JSON
 	public long getUserId();
 
 	/**
@@ -127,6 +132,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 * @return the user name of this sync dl object
 	 */
 	@AutoEscape
+	@JSON
 	public String getUserName();
 
 	/**
@@ -141,6 +147,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 *
 	 * @return the create time of this sync dl object
 	 */
+	@JSON
 	public long getCreateTime();
 
 	/**
@@ -155,6 +162,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 *
 	 * @return the modified time of this sync dl object
 	 */
+	@JSON
 	public long getModifiedTime();
 
 	/**
@@ -169,6 +177,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 *
 	 * @return the repository ID of this sync dl object
 	 */
+	@JSON
 	public long getRepositoryId();
 
 	/**
@@ -183,6 +192,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 *
 	 * @return the parent folder ID of this sync dl object
 	 */
+	@JSON
 	public long getParentFolderId();
 
 	/**
@@ -198,6 +208,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 * @return the tree path of this sync dl object
 	 */
 	@AutoEscape
+	@JSON(include = false)
 	public String getTreePath();
 
 	/**
@@ -213,6 +224,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 * @return the name of this sync dl object
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -228,6 +240,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 * @return the extension of this sync dl object
 	 */
 	@AutoEscape
+	@JSON
 	public String getExtension();
 
 	/**
@@ -243,6 +256,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 * @return the mime type of this sync dl object
 	 */
 	@AutoEscape
+	@JSON
 	public String getMimeType();
 
 	/**
@@ -258,6 +272,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 * @return the description of this sync dl object
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -273,6 +288,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 * @return the change log of this sync dl object
 	 */
 	@AutoEscape
+	@JSON
 	public String getChangeLog();
 
 	/**
@@ -288,6 +304,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 * @return the extra settings of this sync dl object
 	 */
 	@AutoEscape
+	@JSON
 	public String getExtraSettings();
 
 	/**
@@ -303,6 +320,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 * @return the version of this sync dl object
 	 */
 	@AutoEscape
+	@JSON
 	public String getVersion();
 
 	/**
@@ -317,6 +335,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 *
 	 * @return the version ID of this sync dl object
 	 */
+	@JSON
 	public long getVersionId();
 
 	/**
@@ -331,6 +350,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 *
 	 * @return the size of this sync dl object
 	 */
+	@JSON
 	public long getSize();
 
 	/**
@@ -346,6 +366,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 * @return the checksum of this sync dl object
 	 */
 	@AutoEscape
+	@JSON
 	public String getChecksum();
 
 	/**
@@ -361,6 +382,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 * @return the event of this sync dl object
 	 */
 	@AutoEscape
+	@JSON
 	public String getEvent();
 
 	/**
@@ -376,6 +398,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 * @return the lan token key of this sync dl object
 	 */
 	@AutoEscape
+	@JSON
 	public String getLanTokenKey();
 
 	/**
@@ -390,6 +413,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 *
 	 * @return the last permission change date of this sync dl object
 	 */
+	@JSON(include = false)
 	public Date getLastPermissionChangeDate();
 
 	/**
@@ -404,6 +428,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 *
 	 * @return the lock expiration date of this sync dl object
 	 */
+	@JSON
 	public Date getLockExpirationDate();
 
 	/**
@@ -418,6 +443,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 *
 	 * @return the lock user ID of this sync dl object
 	 */
+	@JSON
 	public long getLockUserId();
 
 	/**
@@ -447,6 +473,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 * @return the lock user name of this sync dl object
 	 */
 	@AutoEscape
+	@JSON
 	public String getLockUserName();
 
 	/**
@@ -462,6 +489,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 * @return the type of this sync dl object
 	 */
 	@AutoEscape
+	@JSON
 	public String getType();
 
 	/**
@@ -476,6 +504,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 *
 	 * @return the type pk of this sync dl object
 	 */
+	@JSON
 	public long getTypePK();
 
 	/**
@@ -491,6 +520,7 @@ public interface SyncDLObjectModel extends BaseModel<SyncDLObject>, ShardedModel
 	 * @return the type uuid of this sync dl object
 	 */
 	@AutoEscape
+	@JSON
 	public String getTypeUuid();
 
 	/**

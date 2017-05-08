@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -36,6 +37,7 @@ import java.io.Serializable;
  * @see com.liferay.portal.model.impl.LayoutBranchModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface LayoutBranchModel extends BaseModel<LayoutBranch>, MVCCModel,
 	ShardedModel {
@@ -65,6 +67,7 @@ public interface LayoutBranchModel extends BaseModel<LayoutBranch>, MVCCModel,
 	 * @return the mvcc version of this layout branch
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -80,6 +83,7 @@ public interface LayoutBranchModel extends BaseModel<LayoutBranch>, MVCCModel,
 	 *
 	 * @return the layout branch ID of this layout branch
 	 */
+	@JSON
 	public long getLayoutBranchId();
 
 	/**
@@ -94,6 +98,7 @@ public interface LayoutBranchModel extends BaseModel<LayoutBranch>, MVCCModel,
 	 *
 	 * @return the group ID of this layout branch
 	 */
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -109,6 +114,7 @@ public interface LayoutBranchModel extends BaseModel<LayoutBranch>, MVCCModel,
 	 * @return the company ID of this layout branch
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -124,6 +130,7 @@ public interface LayoutBranchModel extends BaseModel<LayoutBranch>, MVCCModel,
 	 *
 	 * @return the user ID of this layout branch
 	 */
+	@JSON
 	public long getUserId();
 
 	/**
@@ -153,6 +160,7 @@ public interface LayoutBranchModel extends BaseModel<LayoutBranch>, MVCCModel,
 	 * @return the user name of this layout branch
 	 */
 	@AutoEscape
+	@JSON
 	public String getUserName();
 
 	/**
@@ -167,6 +175,7 @@ public interface LayoutBranchModel extends BaseModel<LayoutBranch>, MVCCModel,
 	 *
 	 * @return the layout set branch ID of this layout branch
 	 */
+	@JSON
 	public long getLayoutSetBranchId();
 
 	/**
@@ -181,6 +190,7 @@ public interface LayoutBranchModel extends BaseModel<LayoutBranch>, MVCCModel,
 	 *
 	 * @return the plid of this layout branch
 	 */
+	@JSON
 	public long getPlid();
 
 	/**
@@ -196,6 +206,7 @@ public interface LayoutBranchModel extends BaseModel<LayoutBranch>, MVCCModel,
 	 * @return the name of this layout branch
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -211,6 +222,7 @@ public interface LayoutBranchModel extends BaseModel<LayoutBranch>, MVCCModel,
 	 * @return the description of this layout branch
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -225,6 +237,7 @@ public interface LayoutBranchModel extends BaseModel<LayoutBranch>, MVCCModel,
 	 *
 	 * @return the master of this layout branch
 	 */
+	@JSON
 	public boolean getMaster();
 
 	/**
@@ -232,6 +245,7 @@ public interface LayoutBranchModel extends BaseModel<LayoutBranch>, MVCCModel,
 	 *
 	 * @return <code>true</code> if this layout branch is master; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isMaster();
 
 	/**

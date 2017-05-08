@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -60,7 +59,6 @@ import java.util.Map;
  * @see SocialActivityModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 	implements SocialActivityModel {
@@ -331,7 +329,6 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getActivityId() {
 		return _activityId;
@@ -342,7 +339,6 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 		_activityId = activityId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -365,7 +361,6 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -388,7 +383,6 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -427,7 +421,6 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public long getCreateDate() {
 		return _createDate;
@@ -450,7 +443,6 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 		return _originalCreateDate;
 	}
 
-	@JSON
 	@Override
 	public long getActivitySetId() {
 		return _activitySetId;
@@ -473,7 +465,6 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 		return _originalActivitySetId;
 	}
 
-	@JSON
 	@Override
 	public long getMirrorActivityId() {
 		return _mirrorActivityId;
@@ -516,7 +507,6 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -539,7 +529,6 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getClassPK() {
 		return _classPK;
@@ -562,7 +551,6 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 		return _originalClassPK;
 	}
 
-	@JSON
 	@Override
 	public long getParentClassNameId() {
 		return _parentClassNameId;
@@ -573,7 +561,6 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 		_parentClassNameId = parentClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getParentClassPK() {
 		return _parentClassPK;
@@ -584,7 +571,6 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 		_parentClassPK = parentClassPK;
 	}
 
-	@JSON
 	@Override
 	public int getType() {
 		return _type;
@@ -607,7 +593,6 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 		return _originalType;
 	}
 
-	@JSON
 	@Override
 	public String getExtraData() {
 		if (_extraData == null) {
@@ -623,7 +608,6 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 		_extraData = extraData;
 	}
 
-	@JSON
 	@Override
 	public long getReceiverUserId() {
 		return _receiverUserId;

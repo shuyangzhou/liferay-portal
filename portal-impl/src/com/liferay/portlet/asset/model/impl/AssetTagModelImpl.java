@@ -27,7 +27,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -62,7 +61,6 @@ import java.util.Map;
  * @see AssetTagModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class AssetTagModelImpl extends BaseModelImpl<AssetTag>
 	implements AssetTagModel {
@@ -307,7 +305,6 @@ public class AssetTagModelImpl extends BaseModelImpl<AssetTag>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -331,7 +328,6 @@ public class AssetTagModelImpl extends BaseModelImpl<AssetTag>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getTagId() {
 		return _tagId;
@@ -342,7 +338,6 @@ public class AssetTagModelImpl extends BaseModelImpl<AssetTag>
 		_tagId = tagId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -365,7 +360,6 @@ public class AssetTagModelImpl extends BaseModelImpl<AssetTag>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -388,7 +382,6 @@ public class AssetTagModelImpl extends BaseModelImpl<AssetTag>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -415,7 +408,6 @@ public class AssetTagModelImpl extends BaseModelImpl<AssetTag>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -431,7 +423,6 @@ public class AssetTagModelImpl extends BaseModelImpl<AssetTag>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -442,7 +433,6 @@ public class AssetTagModelImpl extends BaseModelImpl<AssetTag>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -459,7 +449,6 @@ public class AssetTagModelImpl extends BaseModelImpl<AssetTag>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -485,7 +474,6 @@ public class AssetTagModelImpl extends BaseModelImpl<AssetTag>
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public int getAssetCount() {
 		return _assetCount;
@@ -496,7 +484,6 @@ public class AssetTagModelImpl extends BaseModelImpl<AssetTag>
 		_assetCount = assetCount;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

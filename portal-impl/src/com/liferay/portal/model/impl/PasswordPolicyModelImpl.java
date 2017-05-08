@@ -23,7 +23,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.model.PasswordPolicyModel;
@@ -61,7 +60,6 @@ import java.util.Map;
  * @see PasswordPolicyModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 	implements PasswordPolicyModel {
@@ -538,7 +536,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -549,7 +546,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -573,7 +569,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getPasswordPolicyId() {
 		return _passwordPolicyId;
@@ -584,7 +579,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_passwordPolicyId = passwordPolicyId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -607,7 +601,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -634,7 +627,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -650,7 +642,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -661,7 +652,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -678,13 +668,11 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public boolean getDefaultPolicy() {
 		return _defaultPolicy;
 	}
 
-	@JSON
 	@Override
 	public boolean isDefaultPolicy() {
 		return _defaultPolicy;
@@ -707,7 +695,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		return _originalDefaultPolicy;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -733,7 +720,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -749,13 +735,11 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_description = description;
 	}
 
-	@JSON
 	@Override
 	public boolean getChangeable() {
 		return _changeable;
 	}
 
-	@JSON
 	@Override
 	public boolean isChangeable() {
 		return _changeable;
@@ -766,13 +750,11 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_changeable = changeable;
 	}
 
-	@JSON
 	@Override
 	public boolean getChangeRequired() {
 		return _changeRequired;
 	}
 
-	@JSON
 	@Override
 	public boolean isChangeRequired() {
 		return _changeRequired;
@@ -783,7 +765,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_changeRequired = changeRequired;
 	}
 
-	@JSON
 	@Override
 	public long getMinAge() {
 		return _minAge;
@@ -794,13 +775,11 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_minAge = minAge;
 	}
 
-	@JSON
 	@Override
 	public boolean getCheckSyntax() {
 		return _checkSyntax;
 	}
 
-	@JSON
 	@Override
 	public boolean isCheckSyntax() {
 		return _checkSyntax;
@@ -811,13 +790,11 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_checkSyntax = checkSyntax;
 	}
 
-	@JSON
 	@Override
 	public boolean getAllowDictionaryWords() {
 		return _allowDictionaryWords;
 	}
 
-	@JSON
 	@Override
 	public boolean isAllowDictionaryWords() {
 		return _allowDictionaryWords;
@@ -828,7 +805,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_allowDictionaryWords = allowDictionaryWords;
 	}
 
-	@JSON
 	@Override
 	public int getMinAlphanumeric() {
 		return _minAlphanumeric;
@@ -839,7 +815,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_minAlphanumeric = minAlphanumeric;
 	}
 
-	@JSON
 	@Override
 	public int getMinLength() {
 		return _minLength;
@@ -850,7 +825,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_minLength = minLength;
 	}
 
-	@JSON
 	@Override
 	public int getMinLowerCase() {
 		return _minLowerCase;
@@ -861,7 +835,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_minLowerCase = minLowerCase;
 	}
 
-	@JSON
 	@Override
 	public int getMinNumbers() {
 		return _minNumbers;
@@ -872,7 +845,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_minNumbers = minNumbers;
 	}
 
-	@JSON
 	@Override
 	public int getMinSymbols() {
 		return _minSymbols;
@@ -883,7 +855,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_minSymbols = minSymbols;
 	}
 
-	@JSON
 	@Override
 	public int getMinUpperCase() {
 		return _minUpperCase;
@@ -894,7 +865,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_minUpperCase = minUpperCase;
 	}
 
-	@JSON
 	@Override
 	public String getRegex() {
 		if (_regex == null) {
@@ -910,13 +880,11 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_regex = regex;
 	}
 
-	@JSON
 	@Override
 	public boolean getHistory() {
 		return _history;
 	}
 
-	@JSON
 	@Override
 	public boolean isHistory() {
 		return _history;
@@ -927,7 +895,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_history = history;
 	}
 
-	@JSON
 	@Override
 	public int getHistoryCount() {
 		return _historyCount;
@@ -938,13 +905,11 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_historyCount = historyCount;
 	}
 
-	@JSON
 	@Override
 	public boolean getExpireable() {
 		return _expireable;
 	}
 
-	@JSON
 	@Override
 	public boolean isExpireable() {
 		return _expireable;
@@ -955,7 +920,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_expireable = expireable;
 	}
 
-	@JSON
 	@Override
 	public long getMaxAge() {
 		return _maxAge;
@@ -966,7 +930,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_maxAge = maxAge;
 	}
 
-	@JSON
 	@Override
 	public long getWarningTime() {
 		return _warningTime;
@@ -977,7 +940,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_warningTime = warningTime;
 	}
 
-	@JSON
 	@Override
 	public int getGraceLimit() {
 		return _graceLimit;
@@ -988,13 +950,11 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_graceLimit = graceLimit;
 	}
 
-	@JSON
 	@Override
 	public boolean getLockout() {
 		return _lockout;
 	}
 
-	@JSON
 	@Override
 	public boolean isLockout() {
 		return _lockout;
@@ -1005,7 +965,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_lockout = lockout;
 	}
 
-	@JSON
 	@Override
 	public int getMaxFailure() {
 		return _maxFailure;
@@ -1016,7 +975,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_maxFailure = maxFailure;
 	}
 
-	@JSON
 	@Override
 	public long getLockoutDuration() {
 		return _lockoutDuration;
@@ -1027,13 +985,11 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_lockoutDuration = lockoutDuration;
 	}
 
-	@JSON
 	@Override
 	public boolean getRequireUnlock() {
 		return _requireUnlock;
 	}
 
-	@JSON
 	@Override
 	public boolean isRequireUnlock() {
 		return _requireUnlock;
@@ -1044,7 +1000,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_requireUnlock = requireUnlock;
 	}
 
-	@JSON
 	@Override
 	public long getResetFailureCount() {
 		return _resetFailureCount;
@@ -1055,7 +1010,6 @@ public class PasswordPolicyModelImpl extends BaseModelImpl<PasswordPolicy>
 		_resetFailureCount = resetFailureCount;
 	}
 
-	@JSON
 	@Override
 	public long getResetTicketMaxAge() {
 		return _resetTicketMaxAge;

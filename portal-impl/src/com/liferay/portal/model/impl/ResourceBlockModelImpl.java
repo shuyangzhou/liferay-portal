@@ -20,7 +20,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ResourceBlock;
 import com.liferay.portal.kernel.model.ResourceBlockModel;
@@ -54,7 +53,6 @@ import java.util.Map;
  * @see ResourceBlockModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 	implements ResourceBlockModel {
@@ -250,7 +248,6 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -261,7 +258,6 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getResourceBlockId() {
 		return _resourceBlockId;
@@ -272,7 +268,6 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 		_resourceBlockId = resourceBlockId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -295,7 +290,6 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -318,7 +312,6 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -344,7 +337,6 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getPermissionsHash() {
 		if (_permissionsHash == null) {
@@ -370,7 +362,6 @@ public class ResourceBlockModelImpl extends BaseModelImpl<ResourceBlock>
 		return GetterUtil.getString(_originalPermissionsHash);
 	}
 
-	@JSON
 	@Override
 	public long getReferenceCount() {
 		return _referenceCount;

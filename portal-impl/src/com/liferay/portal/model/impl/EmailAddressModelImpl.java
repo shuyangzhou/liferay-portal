@@ -23,7 +23,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.EmailAddress;
 import com.liferay.portal.kernel.model.EmailAddressModel;
@@ -63,7 +62,6 @@ import java.util.Map;
  * @see EmailAddressModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 	implements EmailAddressModel {
@@ -321,7 +319,6 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -332,7 +329,6 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -356,7 +352,6 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getEmailAddressId() {
 		return _emailAddressId;
@@ -367,7 +362,6 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 		_emailAddressId = emailAddressId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -390,7 +384,6 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -429,7 +422,6 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -445,7 +437,6 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -458,7 +449,6 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -495,7 +485,6 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -518,7 +507,6 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getClassPK() {
 		return _classPK;
@@ -541,7 +529,6 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 		return _originalClassPK;
 	}
 
-	@JSON
 	@Override
 	public String getAddress() {
 		if (_address == null) {
@@ -557,7 +544,6 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 		_address = address;
 	}
 
-	@JSON
 	@Override
 	public long getTypeId() {
 		return _typeId;
@@ -568,13 +554,11 @@ public class EmailAddressModelImpl extends BaseModelImpl<EmailAddress>
 		_typeId = typeId;
 	}
 
-	@JSON
 	@Override
 	public boolean getPrimary() {
 		return _primary;
 	}
 
-	@JSON
 	@Override
 	public boolean isPrimary() {
 		return _primary;

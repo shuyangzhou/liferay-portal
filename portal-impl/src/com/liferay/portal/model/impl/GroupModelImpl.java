@@ -22,7 +22,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupModel;
@@ -65,7 +64,6 @@ import java.util.TreeSet;
  * @see GroupModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 	/*
@@ -457,7 +455,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -468,7 +465,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -492,7 +488,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -515,7 +510,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -538,7 +532,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getCreatorUserId() {
 		return _creatorUserId;
@@ -585,7 +578,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -608,7 +600,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getClassPK() {
 		return _classPK;
@@ -631,7 +622,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return _originalClassPK;
 	}
 
-	@JSON
 	@Override
 	public long getParentGroupId() {
 		return _parentGroupId;
@@ -654,7 +644,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return _originalParentGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getLiveGroupId() {
 		return _liveGroupId;
@@ -677,7 +666,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return _originalLiveGroupId;
 	}
 
-	@JSON
 	@Override
 	public String getTreePath() {
 		if (_treePath == null) {
@@ -693,7 +681,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		_treePath = treePath;
 	}
 
-	@JSON
 	@Override
 	public String getGroupKey() {
 		if (_groupKey == null) {
@@ -719,7 +706,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return GetterUtil.getString(_originalGroupKey);
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -760,7 +746,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return _nameCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getNameCurrentValue() {
 		Locale locale = getLocale(_nameCurrentLanguageId);
@@ -820,7 +805,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -861,7 +845,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return _descriptionCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getDescriptionCurrentValue() {
 		Locale locale = getLocale(_descriptionCurrentLanguageId);
@@ -923,7 +906,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public int getType() {
 		return _type;
@@ -946,7 +928,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return _originalType;
 	}
 
-	@JSON
 	@Override
 	public String getTypeSettings() {
 		if (_typeSettings == null) {
@@ -962,13 +943,11 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		_typeSettings = typeSettings;
 	}
 
-	@JSON
 	@Override
 	public boolean getManualMembership() {
 		return _manualMembership;
 	}
 
-	@JSON
 	@Override
 	public boolean isManualMembership() {
 		return _manualMembership;
@@ -979,7 +958,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		_manualMembership = manualMembership;
 	}
 
-	@JSON
 	@Override
 	public int getMembershipRestriction() {
 		return _membershipRestriction;
@@ -990,7 +968,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		_membershipRestriction = membershipRestriction;
 	}
 
-	@JSON
 	@Override
 	public String getFriendlyURL() {
 		if (_friendlyURL == null) {
@@ -1016,13 +993,11 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return GetterUtil.getString(_originalFriendlyURL);
 	}
 
-	@JSON
 	@Override
 	public boolean getSite() {
 		return _site;
 	}
 
-	@JSON
 	@Override
 	public boolean isSite() {
 		return _site;
@@ -1045,7 +1020,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return _originalSite;
 	}
 
-	@JSON
 	@Override
 	public int getRemoteStagingGroupCount() {
 		return _remoteStagingGroupCount;
@@ -1056,13 +1030,11 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		_remoteStagingGroupCount = remoteStagingGroupCount;
 	}
 
-	@JSON
 	@Override
 	public boolean getInheritContent() {
 		return _inheritContent;
 	}
 
-	@JSON
 	@Override
 	public boolean isInheritContent() {
 		return _inheritContent;
@@ -1085,13 +1057,11 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return _originalInheritContent;
 	}
 
-	@JSON
 	@Override
 	public boolean getActive() {
 		return _active;
 	}
 
-	@JSON
 	@Override
 	public boolean isActive() {
 		return _active;

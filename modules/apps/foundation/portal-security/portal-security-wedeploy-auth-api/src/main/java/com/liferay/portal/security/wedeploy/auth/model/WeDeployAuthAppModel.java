@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.portal.security.wedeploy.auth.model.impl.WeDeployAuthAppModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface WeDeployAuthAppModel extends AuditedModel,
 	BaseModel<WeDeployAuthApp>, ShardedModel {
@@ -70,6 +72,7 @@ public interface WeDeployAuthAppModel extends AuditedModel,
 	 *
 	 * @return the we deploy auth app ID of this we deploy auth app
 	 */
+	@JSON
 	public long getWeDeployAuthAppId();
 
 	/**
@@ -85,6 +88,7 @@ public interface WeDeployAuthAppModel extends AuditedModel,
 	 * @return the company ID of this we deploy auth app
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -101,6 +105,7 @@ public interface WeDeployAuthAppModel extends AuditedModel,
 	 * @return the user ID of this we deploy auth app
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -134,6 +139,7 @@ public interface WeDeployAuthAppModel extends AuditedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -150,6 +156,7 @@ public interface WeDeployAuthAppModel extends AuditedModel,
 	 * @return the create date of this we deploy auth app
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -166,6 +173,7 @@ public interface WeDeployAuthAppModel extends AuditedModel,
 	 * @return the modified date of this we deploy auth app
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -182,6 +190,7 @@ public interface WeDeployAuthAppModel extends AuditedModel,
 	 * @return the name of this we deploy auth app
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -197,6 +206,7 @@ public interface WeDeployAuthAppModel extends AuditedModel,
 	 * @return the client ID of this we deploy auth app
 	 */
 	@AutoEscape
+	@JSON
 	public String getClientId();
 
 	/**
@@ -212,6 +222,7 @@ public interface WeDeployAuthAppModel extends AuditedModel,
 	 * @return the client secret of this we deploy auth app
 	 */
 	@AutoEscape
+	@JSON
 	public String getClientSecret();
 
 	/**

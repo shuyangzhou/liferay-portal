@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.microblogs.model.impl.MicroblogsEntryModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface MicroblogsEntryModel extends AuditedModel,
 	BaseModel<MicroblogsEntry>, ShardedModel {
@@ -70,6 +72,7 @@ public interface MicroblogsEntryModel extends AuditedModel,
 	 *
 	 * @return the microblogs entry ID of this microblogs entry
 	 */
+	@JSON
 	public long getMicroblogsEntryId();
 
 	/**
@@ -85,6 +88,7 @@ public interface MicroblogsEntryModel extends AuditedModel,
 	 * @return the company ID of this microblogs entry
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -101,6 +105,7 @@ public interface MicroblogsEntryModel extends AuditedModel,
 	 * @return the user ID of this microblogs entry
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -134,6 +139,7 @@ public interface MicroblogsEntryModel extends AuditedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -150,6 +156,7 @@ public interface MicroblogsEntryModel extends AuditedModel,
 	 * @return the create date of this microblogs entry
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -166,6 +173,7 @@ public interface MicroblogsEntryModel extends AuditedModel,
 	 * @return the modified date of this microblogs entry
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -181,6 +189,7 @@ public interface MicroblogsEntryModel extends AuditedModel,
 	 *
 	 * @return the creator class name ID of this microblogs entry
 	 */
+	@JSON
 	public long getCreatorClassNameId();
 
 	/**
@@ -195,6 +204,7 @@ public interface MicroblogsEntryModel extends AuditedModel,
 	 *
 	 * @return the creator class pk of this microblogs entry
 	 */
+	@JSON
 	public long getCreatorClassPK();
 
 	/**
@@ -210,6 +220,7 @@ public interface MicroblogsEntryModel extends AuditedModel,
 	 * @return the content of this microblogs entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getContent();
 
 	/**
@@ -224,6 +235,7 @@ public interface MicroblogsEntryModel extends AuditedModel,
 	 *
 	 * @return the type of this microblogs entry
 	 */
+	@JSON
 	public int getType();
 
 	/**
@@ -238,6 +250,7 @@ public interface MicroblogsEntryModel extends AuditedModel,
 	 *
 	 * @return the parent microblogs entry ID of this microblogs entry
 	 */
+	@JSON
 	public long getParentMicroblogsEntryId();
 
 	/**
@@ -252,6 +265,7 @@ public interface MicroblogsEntryModel extends AuditedModel,
 	 *
 	 * @return the social relation type of this microblogs entry
 	 */
+	@JSON
 	public int getSocialRelationType();
 
 	/**

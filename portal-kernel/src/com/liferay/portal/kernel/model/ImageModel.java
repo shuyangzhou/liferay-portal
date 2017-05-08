@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ import java.util.Date;
  * @see com.liferay.portal.model.impl.ImageModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface ImageModel extends BaseModel<Image>, MVCCModel, ShardedModel {
 	/*
@@ -66,6 +68,7 @@ public interface ImageModel extends BaseModel<Image>, MVCCModel, ShardedModel {
 	 * @return the mvcc version of this image
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -81,6 +84,7 @@ public interface ImageModel extends BaseModel<Image>, MVCCModel, ShardedModel {
 	 *
 	 * @return the image ID of this image
 	 */
+	@JSON
 	public long getImageId();
 
 	/**
@@ -96,6 +100,7 @@ public interface ImageModel extends BaseModel<Image>, MVCCModel, ShardedModel {
 	 * @return the company ID of this image
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -111,6 +116,7 @@ public interface ImageModel extends BaseModel<Image>, MVCCModel, ShardedModel {
 	 *
 	 * @return the modified date of this image
 	 */
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -126,6 +132,7 @@ public interface ImageModel extends BaseModel<Image>, MVCCModel, ShardedModel {
 	 * @return the type of this image
 	 */
 	@AutoEscape
+	@JSON
 	public String getType();
 
 	/**
@@ -140,6 +147,7 @@ public interface ImageModel extends BaseModel<Image>, MVCCModel, ShardedModel {
 	 *
 	 * @return the height of this image
 	 */
+	@JSON
 	public int getHeight();
 
 	/**
@@ -154,6 +162,7 @@ public interface ImageModel extends BaseModel<Image>, MVCCModel, ShardedModel {
 	 *
 	 * @return the width of this image
 	 */
+	@JSON
 	public int getWidth();
 
 	/**
@@ -168,6 +177,7 @@ public interface ImageModel extends BaseModel<Image>, MVCCModel, ShardedModel {
 	 *
 	 * @return the size of this image
 	 */
+	@JSON
 	public int getSize();
 
 	/**

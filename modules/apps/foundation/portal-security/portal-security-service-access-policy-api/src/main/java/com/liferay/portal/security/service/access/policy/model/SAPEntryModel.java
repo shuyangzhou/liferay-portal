@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.LocalizedModel;
@@ -46,6 +47,7 @@ import java.util.Map;
  * @see com.liferay.portal.security.service.access.policy.model.impl.SAPEntryModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	ShardedModel, StagedAuditedModel {
@@ -76,6 +78,7 @@ public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -91,6 +94,7 @@ public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	 *
 	 * @return the sap entry ID of this sap entry
 	 */
+	@JSON
 	public long getSapEntryId();
 
 	/**
@@ -106,6 +110,7 @@ public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	 * @return the company ID of this sap entry
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -122,6 +127,7 @@ public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	 * @return the user ID of this sap entry
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -155,6 +161,7 @@ public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -171,6 +178,7 @@ public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	 * @return the create date of this sap entry
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -187,6 +195,7 @@ public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	 * @return the modified date of this sap entry
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -203,6 +212,7 @@ public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	 * @return the allowed service signatures of this sap entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getAllowedServiceSignatures();
 
 	/**
@@ -217,6 +227,7 @@ public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	 *
 	 * @return the default sap entry of this sap entry
 	 */
+	@JSON
 	public boolean getDefaultSAPEntry();
 
 	/**
@@ -224,6 +235,7 @@ public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	 *
 	 * @return <code>true</code> if this sap entry is default sap entry; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isDefaultSAPEntry();
 
 	/**
@@ -238,6 +250,7 @@ public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	 *
 	 * @return the enabled of this sap entry
 	 */
+	@JSON
 	public boolean getEnabled();
 
 	/**
@@ -245,6 +258,7 @@ public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	 *
 	 * @return <code>true</code> if this sap entry is enabled; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isEnabled();
 
 	/**
@@ -260,6 +274,7 @@ public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	 * @return the name of this sap entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -274,6 +289,7 @@ public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	 *
 	 * @return the title of this sap entry
 	 */
+	@JSON
 	public String getTitle();
 
 	/**
@@ -318,6 +334,7 @@ public interface SAPEntryModel extends BaseModel<SAPEntry>, LocalizedModel,
 	public String getTitleCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getTitleCurrentValue();
 
 	/**

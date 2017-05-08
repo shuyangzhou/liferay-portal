@@ -20,7 +20,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetModel;
@@ -55,7 +54,6 @@ import java.util.Map;
  * @see LayoutSetModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 	implements LayoutSetModel {
@@ -334,7 +332,6 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -345,7 +342,6 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getLayoutSetId() {
 		return _layoutSetId;
@@ -356,7 +352,6 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		_layoutSetId = layoutSetId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -379,7 +374,6 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -390,7 +384,6 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -401,7 +394,6 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -418,13 +410,11 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public boolean getPrivateLayout() {
 		return _privateLayout;
 	}
 
-	@JSON
 	@Override
 	public boolean isPrivateLayout() {
 		return _privateLayout;
@@ -447,7 +437,6 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		return _originalPrivateLayout;
 	}
 
-	@JSON
 	@Override
 	public long getLogoId() {
 		return _logoId;
@@ -470,7 +459,6 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		return _originalLogoId;
 	}
 
-	@JSON
 	@Override
 	public String getThemeId() {
 		if (_themeId == null) {
@@ -486,7 +474,6 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		_themeId = themeId;
 	}
 
-	@JSON
 	@Override
 	public String getColorSchemeId() {
 		if (_colorSchemeId == null) {
@@ -502,7 +489,6 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		_colorSchemeId = colorSchemeId;
 	}
 
-	@JSON
 	@Override
 	public String getCss() {
 		if (_css == null) {
@@ -518,7 +504,6 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		_css = css;
 	}
 
-	@JSON
 	@Override
 	public int getPageCount() {
 		return _pageCount;
@@ -529,7 +514,6 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		_pageCount = pageCount;
 	}
 
-	@JSON
 	@Override
 	public String getSettings() {
 		if (_settings == null) {
@@ -545,7 +529,6 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		_settings = settings;
 	}
 
-	@JSON
 	@Override
 	public String getLayoutSetPrototypeUuid() {
 		if (_layoutSetPrototypeUuid == null) {
@@ -571,13 +554,11 @@ public class LayoutSetModelImpl extends BaseModelImpl<LayoutSet>
 		return GetterUtil.getString(_originalLayoutSetPrototypeUuid);
 	}
 
-	@JSON
 	@Override
 	public boolean getLayoutSetPrototypeLinkEnabled() {
 		return _layoutSetPrototypeLinkEnabled;
 	}
 
-	@JSON
 	@Override
 	public boolean isLayoutSetPrototypeLinkEnabled() {
 		return _layoutSetPrototypeLinkEnabled;

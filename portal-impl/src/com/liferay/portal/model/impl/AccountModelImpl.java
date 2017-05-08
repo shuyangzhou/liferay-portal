@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.Account;
 import com.liferay.portal.kernel.model.AccountModel;
 import com.liferay.portal.kernel.model.AccountSoap;
@@ -58,7 +57,6 @@ import java.util.Map;
  * @see AccountModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class AccountModelImpl extends BaseModelImpl<Account>
 	implements AccountModel {
@@ -347,7 +345,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -358,7 +355,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getAccountId() {
 		return _accountId;
@@ -369,7 +365,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		_accountId = accountId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -380,7 +375,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -407,7 +401,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -423,7 +416,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -434,7 +426,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -451,7 +442,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getParentAccountId() {
 		return _parentAccountId;
@@ -462,7 +452,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		_parentAccountId = parentAccountId;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -478,7 +467,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		_name = name;
 	}
 
-	@JSON
 	@Override
 	public String getLegalName() {
 		if (_legalName == null) {
@@ -494,7 +482,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		_legalName = legalName;
 	}
 
-	@JSON
 	@Override
 	public String getLegalId() {
 		if (_legalId == null) {
@@ -510,7 +497,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		_legalId = legalId;
 	}
 
-	@JSON
 	@Override
 	public String getLegalType() {
 		if (_legalType == null) {
@@ -526,7 +512,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		_legalType = legalType;
 	}
 
-	@JSON
 	@Override
 	public String getSicCode() {
 		if (_sicCode == null) {
@@ -542,7 +527,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		_sicCode = sicCode;
 	}
 
-	@JSON
 	@Override
 	public String getTickerSymbol() {
 		if (_tickerSymbol == null) {
@@ -558,7 +542,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		_tickerSymbol = tickerSymbol;
 	}
 
-	@JSON
 	@Override
 	public String getIndustry() {
 		if (_industry == null) {
@@ -574,7 +557,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		_industry = industry;
 	}
 
-	@JSON
 	@Override
 	public String getType() {
 		if (_type == null) {
@@ -590,7 +572,6 @@ public class AccountModelImpl extends BaseModelImpl<Account>
 		_type = type;
 	}
 
-	@JSON
 	@Override
 	public String getSize() {
 		if (_size == null) {

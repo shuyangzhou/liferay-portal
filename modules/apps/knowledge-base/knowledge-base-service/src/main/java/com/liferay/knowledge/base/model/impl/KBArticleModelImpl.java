@@ -27,7 +27,6 @@ import com.liferay.knowledge.base.model.KBArticleSoap;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -64,7 +63,6 @@ import java.util.Map;
  * @see KBArticleModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 	implements KBArticleModel {
@@ -491,7 +489,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -515,7 +512,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getKbArticleId() {
 		return _kbArticleId;
@@ -526,7 +522,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		_kbArticleId = kbArticleId;
 	}
 
-	@JSON
 	@Override
 	public long getResourcePrimKey() {
 		return _resourcePrimKey;
@@ -554,7 +549,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		return _originalResourcePrimKey;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -577,7 +571,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -600,7 +593,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -627,7 +619,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -643,7 +634,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -654,7 +644,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -673,7 +662,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getRootResourcePrimKey() {
 		return _rootResourcePrimKey;
@@ -684,7 +672,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		_rootResourcePrimKey = rootResourcePrimKey;
 	}
 
-	@JSON
 	@Override
 	public long getParentResourceClassNameId() {
 		return _parentResourceClassNameId;
@@ -695,7 +682,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		_parentResourceClassNameId = parentResourceClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getParentResourcePrimKey() {
 		return _parentResourcePrimKey;
@@ -718,7 +704,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		return _originalParentResourcePrimKey;
 	}
 
-	@JSON
 	@Override
 	public long getKbFolderId() {
 		return _kbFolderId;
@@ -741,7 +726,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		return _originalKbFolderId;
 	}
 
-	@JSON
 	@Override
 	public int getVersion() {
 		return _version;
@@ -764,7 +748,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		return _originalVersion;
 	}
 
-	@JSON
 	@Override
 	public String getTitle() {
 		if (_title == null) {
@@ -780,7 +763,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		_title = title;
 	}
 
-	@JSON
 	@Override
 	public String getUrlTitle() {
 		if (_urlTitle == null) {
@@ -806,7 +788,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		return GetterUtil.getString(_originalUrlTitle);
 	}
 
-	@JSON
 	@Override
 	public String getContent() {
 		if (_content == null) {
@@ -822,7 +803,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		_content = content;
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -838,7 +818,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		_description = description;
 	}
 
-	@JSON
 	@Override
 	public double getPriority() {
 		return _priority;
@@ -849,7 +828,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		_priority = priority;
 	}
 
-	@JSON
 	@Override
 	public String getSections() {
 		if (_sections == null) {
@@ -875,7 +853,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		return GetterUtil.getString(_originalSections);
 	}
 
-	@JSON
 	@Override
 	public int getViewCount() {
 		return _viewCount;
@@ -886,13 +863,11 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		_viewCount = viewCount;
 	}
 
-	@JSON
 	@Override
 	public boolean getLatest() {
 		return _latest;
 	}
 
-	@JSON
 	@Override
 	public boolean isLatest() {
 		return _latest;
@@ -915,13 +890,11 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		return _originalLatest;
 	}
 
-	@JSON
 	@Override
 	public boolean getMain() {
 		return _main;
 	}
 
-	@JSON
 	@Override
 	public boolean isMain() {
 		return _main;
@@ -944,7 +917,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		return _originalMain;
 	}
 
-	@JSON
 	@Override
 	public String getSourceURL() {
 		if (_sourceURL == null) {
@@ -960,7 +932,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		_sourceURL = sourceURL;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;
@@ -971,7 +942,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		_lastPublishDate = lastPublishDate;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;
@@ -994,7 +964,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		return _originalStatus;
 	}
 
-	@JSON
 	@Override
 	public long getStatusByUserId() {
 		return _statusByUserId;
@@ -1021,7 +990,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
@@ -1037,7 +1005,6 @@ public class KBArticleModelImpl extends BaseModelImpl<KBArticle>
 		_statusByUserName = statusByUserName;
 	}
 
-	@JSON
 	@Override
 	public Date getStatusDate() {
 		return _statusDate;

@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -62,7 +61,6 @@ import java.util.Map;
  * @see TrashEntryModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 	implements TrashEntryModel {
@@ -298,7 +296,6 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getEntryId() {
 		return _entryId;
@@ -309,7 +306,6 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 		_entryId = entryId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -332,7 +328,6 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -355,7 +350,6 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -382,7 +376,6 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -398,7 +391,6 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -439,7 +431,6 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -462,7 +453,6 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getClassPK() {
 		return _classPK;
@@ -485,7 +475,6 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 		return _originalClassPK;
 	}
 
-	@JSON
 	@Override
 	public long getSystemEventSetKey() {
 		return _systemEventSetKey;
@@ -496,7 +485,6 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 		_systemEventSetKey = systemEventSetKey;
 	}
 
-	@JSON
 	@Override
 	public String getTypeSettings() {
 		if (_typeSettings == null) {
@@ -512,7 +500,6 @@ public class TrashEntryModelImpl extends BaseModelImpl<TrashEntry>
 		_typeSettings = typeSettings;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;

@@ -17,6 +17,7 @@ package com.liferay.expando.kernel.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -38,6 +39,7 @@ import java.io.Serializable;
  * @see com.liferay.portlet.expando.model.impl.ExpandoValueModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface ExpandoValueModel extends AttachedModel, BaseModel<ExpandoValue>,
 	ShardedModel {
@@ -66,6 +68,7 @@ public interface ExpandoValueModel extends AttachedModel, BaseModel<ExpandoValue
 	 *
 	 * @return the value ID of this expando value
 	 */
+	@JSON
 	public long getValueId();
 
 	/**
@@ -81,6 +84,7 @@ public interface ExpandoValueModel extends AttachedModel, BaseModel<ExpandoValue
 	 * @return the company ID of this expando value
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -96,6 +100,7 @@ public interface ExpandoValueModel extends AttachedModel, BaseModel<ExpandoValue
 	 *
 	 * @return the table ID of this expando value
 	 */
+	@JSON
 	public long getTableId();
 
 	/**
@@ -110,6 +115,7 @@ public interface ExpandoValueModel extends AttachedModel, BaseModel<ExpandoValue
 	 *
 	 * @return the column ID of this expando value
 	 */
+	@JSON
 	public long getColumnId();
 
 	/**
@@ -124,6 +130,7 @@ public interface ExpandoValueModel extends AttachedModel, BaseModel<ExpandoValue
 	 *
 	 * @return the row ID of this expando value
 	 */
+	@JSON
 	public long getRowId();
 
 	/**
@@ -149,6 +156,7 @@ public interface ExpandoValueModel extends AttachedModel, BaseModel<ExpandoValue
 	 * @return the class name ID of this expando value
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -165,6 +173,7 @@ public interface ExpandoValueModel extends AttachedModel, BaseModel<ExpandoValue
 	 * @return the class pk of this expando value
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -181,6 +190,7 @@ public interface ExpandoValueModel extends AttachedModel, BaseModel<ExpandoValue
 	 * @return the data of this expando value
 	 */
 	@AutoEscape
+	@JSON
 	public String getData();
 
 	/**

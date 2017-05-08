@@ -27,7 +27,6 @@ import com.liferay.knowledge.base.model.KBTemplateSoap;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -63,7 +62,6 @@ import java.util.Map;
  * @see KBTemplateModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class KBTemplateModelImpl extends BaseModelImpl<KBTemplate>
 	implements KBTemplateModel {
@@ -298,7 +296,6 @@ public class KBTemplateModelImpl extends BaseModelImpl<KBTemplate>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -322,7 +319,6 @@ public class KBTemplateModelImpl extends BaseModelImpl<KBTemplate>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getKbTemplateId() {
 		return _kbTemplateId;
@@ -333,7 +329,6 @@ public class KBTemplateModelImpl extends BaseModelImpl<KBTemplate>
 		_kbTemplateId = kbTemplateId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -356,7 +351,6 @@ public class KBTemplateModelImpl extends BaseModelImpl<KBTemplate>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -379,7 +373,6 @@ public class KBTemplateModelImpl extends BaseModelImpl<KBTemplate>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -406,7 +399,6 @@ public class KBTemplateModelImpl extends BaseModelImpl<KBTemplate>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -422,7 +414,6 @@ public class KBTemplateModelImpl extends BaseModelImpl<KBTemplate>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -433,7 +424,6 @@ public class KBTemplateModelImpl extends BaseModelImpl<KBTemplate>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -452,7 +442,6 @@ public class KBTemplateModelImpl extends BaseModelImpl<KBTemplate>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public String getTitle() {
 		if (_title == null) {
@@ -468,7 +457,6 @@ public class KBTemplateModelImpl extends BaseModelImpl<KBTemplate>
 		_title = title;
 	}
 
-	@JSON
 	@Override
 	public String getContent() {
 		if (_content == null) {
@@ -484,7 +472,6 @@ public class KBTemplateModelImpl extends BaseModelImpl<KBTemplate>
 		_content = content;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

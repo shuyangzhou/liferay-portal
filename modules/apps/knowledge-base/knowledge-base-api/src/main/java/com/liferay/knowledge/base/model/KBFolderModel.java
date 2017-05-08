@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.knowledge.base.model.impl.KBFolderModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface KBFolderModel extends BaseModel<KBFolder>, ShardedModel,
 	StagedGroupedModel {
@@ -72,6 +74,7 @@ public interface KBFolderModel extends BaseModel<KBFolder>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -87,6 +90,7 @@ public interface KBFolderModel extends BaseModel<KBFolder>, ShardedModel,
 	 *
 	 * @return the kb folder ID of this kb folder
 	 */
+	@JSON
 	public long getKbFolderId();
 
 	/**
@@ -102,6 +106,7 @@ public interface KBFolderModel extends BaseModel<KBFolder>, ShardedModel,
 	 * @return the group ID of this kb folder
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -118,6 +123,7 @@ public interface KBFolderModel extends BaseModel<KBFolder>, ShardedModel,
 	 * @return the company ID of this kb folder
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -134,6 +140,7 @@ public interface KBFolderModel extends BaseModel<KBFolder>, ShardedModel,
 	 * @return the user ID of this kb folder
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -167,6 +174,7 @@ public interface KBFolderModel extends BaseModel<KBFolder>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -183,6 +191,7 @@ public interface KBFolderModel extends BaseModel<KBFolder>, ShardedModel,
 	 * @return the create date of this kb folder
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -199,6 +208,7 @@ public interface KBFolderModel extends BaseModel<KBFolder>, ShardedModel,
 	 * @return the modified date of this kb folder
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -214,6 +224,7 @@ public interface KBFolderModel extends BaseModel<KBFolder>, ShardedModel,
 	 *
 	 * @return the parent kb folder ID of this kb folder
 	 */
+	@JSON
 	public long getParentKBFolderId();
 
 	/**
@@ -229,6 +240,7 @@ public interface KBFolderModel extends BaseModel<KBFolder>, ShardedModel,
 	 * @return the name of this kb folder
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -244,6 +256,7 @@ public interface KBFolderModel extends BaseModel<KBFolder>, ShardedModel,
 	 * @return the url title of this kb folder
 	 */
 	@AutoEscape
+	@JSON
 	public String getUrlTitle();
 
 	/**
@@ -259,6 +272,7 @@ public interface KBFolderModel extends BaseModel<KBFolder>, ShardedModel,
 	 * @return the description of this kb folder
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -274,6 +288,7 @@ public interface KBFolderModel extends BaseModel<KBFolder>, ShardedModel,
 	 * @return the last publish date of this kb folder
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

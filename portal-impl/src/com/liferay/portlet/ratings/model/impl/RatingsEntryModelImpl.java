@@ -23,7 +23,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -63,7 +62,6 @@ import java.util.Map;
  * @see RatingsEntryModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 	implements RatingsEntryModel {
@@ -291,7 +289,6 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -315,7 +312,6 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getEntryId() {
 		return _entryId;
@@ -326,7 +322,6 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 		_entryId = entryId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -349,7 +344,6 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -388,7 +382,6 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -404,7 +397,6 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -415,7 +407,6 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -452,7 +443,6 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -475,7 +465,6 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getClassPK() {
 		return _classPK;
@@ -498,7 +487,6 @@ public class RatingsEntryModelImpl extends BaseModelImpl<RatingsEntry>
 		return _originalClassPK;
 	}
 
-	@JSON
 	@Override
 	public double getScore() {
 		return _score;

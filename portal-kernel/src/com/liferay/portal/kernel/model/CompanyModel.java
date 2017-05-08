@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -36,6 +37,7 @@ import java.io.Serializable;
  * @see com.liferay.portal.model.impl.CompanyModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface CompanyModel extends BaseModel<Company>, MVCCModel {
 	/*
@@ -64,6 +66,7 @@ public interface CompanyModel extends BaseModel<Company>, MVCCModel {
 	 * @return the mvcc version of this company
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -79,6 +82,7 @@ public interface CompanyModel extends BaseModel<Company>, MVCCModel {
 	 *
 	 * @return the company ID of this company
 	 */
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -93,6 +97,7 @@ public interface CompanyModel extends BaseModel<Company>, MVCCModel {
 	 *
 	 * @return the account ID of this company
 	 */
+	@JSON
 	public long getAccountId();
 
 	/**
@@ -108,6 +113,7 @@ public interface CompanyModel extends BaseModel<Company>, MVCCModel {
 	 * @return the web ID of this company
 	 */
 	@AutoEscape
+	@JSON
 	public String getWebId();
 
 	/**
@@ -123,6 +129,7 @@ public interface CompanyModel extends BaseModel<Company>, MVCCModel {
 	 * @return the key of this company
 	 */
 	@AutoEscape
+	@JSON
 	public String getKey();
 
 	/**
@@ -138,6 +145,7 @@ public interface CompanyModel extends BaseModel<Company>, MVCCModel {
 	 * @return the mx of this company
 	 */
 	@AutoEscape
+	@JSON
 	public String getMx();
 
 	/**
@@ -153,6 +161,7 @@ public interface CompanyModel extends BaseModel<Company>, MVCCModel {
 	 * @return the home url of this company
 	 */
 	@AutoEscape
+	@JSON
 	public String getHomeURL();
 
 	/**
@@ -167,6 +176,7 @@ public interface CompanyModel extends BaseModel<Company>, MVCCModel {
 	 *
 	 * @return the logo ID of this company
 	 */
+	@JSON
 	public long getLogoId();
 
 	/**
@@ -181,6 +191,7 @@ public interface CompanyModel extends BaseModel<Company>, MVCCModel {
 	 *
 	 * @return the system of this company
 	 */
+	@JSON
 	public boolean getSystem();
 
 	/**
@@ -188,6 +199,7 @@ public interface CompanyModel extends BaseModel<Company>, MVCCModel {
 	 *
 	 * @return <code>true</code> if this company is system; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isSystem();
 
 	/**
@@ -202,6 +214,7 @@ public interface CompanyModel extends BaseModel<Company>, MVCCModel {
 	 *
 	 * @return the max users of this company
 	 */
+	@JSON
 	public int getMaxUsers();
 
 	/**
@@ -216,6 +229,7 @@ public interface CompanyModel extends BaseModel<Company>, MVCCModel {
 	 *
 	 * @return the active of this company
 	 */
+	@JSON
 	public boolean getActive();
 
 	/**
@@ -223,6 +237,7 @@ public interface CompanyModel extends BaseModel<Company>, MVCCModel {
 	 *
 	 * @return <code>true</code> if this company is active; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isActive();
 
 	/**

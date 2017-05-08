@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -43,6 +44,7 @@ import java.util.Date;
  * @see com.liferay.knowledge.base.model.impl.KBCommentModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface KBCommentModel extends AttachedModel, BaseModel<KBComment>,
 	ShardedModel, StagedGroupedModel {
@@ -73,6 +75,7 @@ public interface KBCommentModel extends AttachedModel, BaseModel<KBComment>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -88,6 +91,7 @@ public interface KBCommentModel extends AttachedModel, BaseModel<KBComment>,
 	 *
 	 * @return the kb comment ID of this kb comment
 	 */
+	@JSON
 	public long getKbCommentId();
 
 	/**
@@ -103,6 +107,7 @@ public interface KBCommentModel extends AttachedModel, BaseModel<KBComment>,
 	 * @return the group ID of this kb comment
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -119,6 +124,7 @@ public interface KBCommentModel extends AttachedModel, BaseModel<KBComment>,
 	 * @return the company ID of this kb comment
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -135,6 +141,7 @@ public interface KBCommentModel extends AttachedModel, BaseModel<KBComment>,
 	 * @return the user ID of this kb comment
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -168,6 +175,7 @@ public interface KBCommentModel extends AttachedModel, BaseModel<KBComment>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -184,6 +192,7 @@ public interface KBCommentModel extends AttachedModel, BaseModel<KBComment>,
 	 * @return the create date of this kb comment
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -200,6 +209,7 @@ public interface KBCommentModel extends AttachedModel, BaseModel<KBComment>,
 	 * @return the modified date of this kb comment
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -226,6 +236,7 @@ public interface KBCommentModel extends AttachedModel, BaseModel<KBComment>,
 	 * @return the class name ID of this kb comment
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -242,6 +253,7 @@ public interface KBCommentModel extends AttachedModel, BaseModel<KBComment>,
 	 * @return the class pk of this kb comment
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -258,6 +270,7 @@ public interface KBCommentModel extends AttachedModel, BaseModel<KBComment>,
 	 * @return the content of this kb comment
 	 */
 	@AutoEscape
+	@JSON
 	public String getContent();
 
 	/**
@@ -272,6 +285,7 @@ public interface KBCommentModel extends AttachedModel, BaseModel<KBComment>,
 	 *
 	 * @return the user rating of this kb comment
 	 */
+	@JSON
 	public int getUserRating();
 
 	/**
@@ -287,6 +301,7 @@ public interface KBCommentModel extends AttachedModel, BaseModel<KBComment>,
 	 * @return the last publish date of this kb comment
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**
@@ -302,6 +317,7 @@ public interface KBCommentModel extends AttachedModel, BaseModel<KBComment>,
 	 *
 	 * @return the status of this kb comment
 	 */
+	@JSON
 	public int getStatus();
 
 	/**

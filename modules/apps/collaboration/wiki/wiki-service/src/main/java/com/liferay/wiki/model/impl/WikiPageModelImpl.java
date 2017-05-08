@@ -24,7 +24,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.TrashedModel;
@@ -67,7 +66,6 @@ import java.util.Map;
  * @see WikiPageModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 	implements WikiPageModel {
@@ -441,7 +439,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -465,7 +462,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getPageId() {
 		return _pageId;
@@ -476,7 +472,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		_pageId = pageId;
 	}
 
-	@JSON
 	@Override
 	public long getResourcePrimKey() {
 		return _resourcePrimKey;
@@ -504,7 +499,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		return _originalResourcePrimKey;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -527,7 +521,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -550,7 +543,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -589,7 +581,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -605,7 +596,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -616,7 +606,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -633,7 +622,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getNodeId() {
 		return _nodeId;
@@ -656,7 +644,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		return _originalNodeId;
 	}
 
-	@JSON
 	@Override
 	public String getTitle() {
 		if (_title == null) {
@@ -682,7 +669,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		return GetterUtil.getString(_originalTitle);
 	}
 
-	@JSON
 	@Override
 	public double getVersion() {
 		return _version;
@@ -705,13 +691,11 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		return _originalVersion;
 	}
 
-	@JSON
 	@Override
 	public boolean getMinorEdit() {
 		return _minorEdit;
 	}
 
-	@JSON
 	@Override
 	public boolean isMinorEdit() {
 		return _minorEdit;
@@ -722,7 +706,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		_minorEdit = minorEdit;
 	}
 
-	@JSON
 	@Override
 	public String getContent() {
 		if (_content == null) {
@@ -738,7 +721,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		_content = content;
 	}
 
-	@JSON
 	@Override
 	public String getSummary() {
 		if (_summary == null) {
@@ -754,7 +736,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		_summary = summary;
 	}
 
-	@JSON
 	@Override
 	public String getFormat() {
 		if (_format == null) {
@@ -780,13 +761,11 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		return GetterUtil.getString(_originalFormat);
 	}
 
-	@JSON
 	@Override
 	public boolean getHead() {
 		return _head;
 	}
 
-	@JSON
 	@Override
 	public boolean isHead() {
 		return _head;
@@ -809,7 +788,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		return _originalHead;
 	}
 
-	@JSON
 	@Override
 	public String getParentTitle() {
 		if (_parentTitle == null) {
@@ -835,7 +813,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		return GetterUtil.getString(_originalParentTitle);
 	}
 
-	@JSON
 	@Override
 	public String getRedirectTitle() {
 		if (_redirectTitle == null) {
@@ -861,7 +838,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		return GetterUtil.getString(_originalRedirectTitle);
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;
@@ -872,7 +848,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		_lastPublishDate = lastPublishDate;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;
@@ -895,7 +870,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		return _originalStatus;
 	}
 
-	@JSON
 	@Override
 	public long getStatusByUserId() {
 		return _statusByUserId;
@@ -922,7 +896,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
@@ -938,7 +911,6 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		_statusByUserName = statusByUserName;
 	}
 
-	@JSON
 	@Override
 	public Date getStatusDate() {
 		return _statusDate;

@@ -28,7 +28,6 @@ import com.liferay.polls.model.PollsQuestionSoap;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -70,7 +69,6 @@ import java.util.TreeSet;
  * @see PollsQuestionModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 	implements PollsQuestionModel {
@@ -325,7 +323,6 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -349,7 +346,6 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getQuestionId() {
 		return _questionId;
@@ -360,7 +356,6 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 		_questionId = questionId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -383,7 +378,6 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -406,7 +400,6 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -433,7 +426,6 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -449,7 +441,6 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -462,7 +453,6 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -479,7 +469,6 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public String getTitle() {
 		if (_title == null) {
@@ -520,7 +509,6 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 		return _titleCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getTitleCurrentValue() {
 		Locale locale = getLocale(_titleCurrentLanguageId);
@@ -578,7 +566,6 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 				"Title", LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -619,7 +606,6 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 		return _descriptionCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getDescriptionCurrentValue() {
 		Locale locale = getLocale(_descriptionCurrentLanguageId);
@@ -681,7 +667,6 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public Date getExpirationDate() {
 		return _expirationDate;
@@ -692,7 +677,6 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 		_expirationDate = expirationDate;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;
@@ -703,7 +687,6 @@ public class PollsQuestionModelImpl extends BaseModelImpl<PollsQuestion>
 		_lastPublishDate = lastPublishDate;
 	}
 
-	@JSON
 	@Override
 	public Date getLastVoteDate() {
 		return _lastVoteDate;

@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.LocalizedModel;
@@ -46,6 +47,7 @@ import java.util.Map;
  * @see com.liferay.calendar.model.impl.CalendarModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	ShardedModel, StagedGroupedModel {
@@ -76,6 +78,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -91,6 +94,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 *
 	 * @return the calendar ID of this calendar
 	 */
+	@JSON
 	public long getCalendarId();
 
 	/**
@@ -106,6 +110,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 * @return the group ID of this calendar
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -122,6 +127,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 * @return the company ID of this calendar
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -138,6 +144,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 * @return the user ID of this calendar
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -171,6 +178,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -187,6 +195,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 * @return the create date of this calendar
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -203,6 +212,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 * @return the modified date of this calendar
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -218,6 +228,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 *
 	 * @return the resource block ID of this calendar
 	 */
+	@JSON
 	public long getResourceBlockId();
 
 	/**
@@ -232,6 +243,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 *
 	 * @return the calendar resource ID of this calendar
 	 */
+	@JSON
 	public long getCalendarResourceId();
 
 	/**
@@ -246,6 +258,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 *
 	 * @return the name of this calendar
 	 */
+	@JSON
 	public String getName();
 
 	/**
@@ -290,6 +303,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	public String getNameCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getNameCurrentValue();
 
 	/**
@@ -345,6 +359,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 *
 	 * @return the description of this calendar
 	 */
+	@JSON
 	public String getDescription();
 
 	/**
@@ -389,6 +404,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	public String getDescriptionCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getDescriptionCurrentValue();
 
 	/**
@@ -447,6 +463,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 * @return the time zone ID of this calendar
 	 */
 	@AutoEscape
+	@JSON
 	public String getTimeZoneId();
 
 	/**
@@ -461,6 +478,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 *
 	 * @return the color of this calendar
 	 */
+	@JSON
 	public int getColor();
 
 	/**
@@ -475,6 +493,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 *
 	 * @return the default calendar of this calendar
 	 */
+	@JSON
 	public boolean getDefaultCalendar();
 
 	/**
@@ -482,6 +501,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 *
 	 * @return <code>true</code> if this calendar is default calendar; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isDefaultCalendar();
 
 	/**
@@ -496,6 +516,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 *
 	 * @return the enable comments of this calendar
 	 */
+	@JSON
 	public boolean getEnableComments();
 
 	/**
@@ -503,6 +524,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 *
 	 * @return <code>true</code> if this calendar is enable comments; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isEnableComments();
 
 	/**
@@ -517,6 +539,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 *
 	 * @return the enable ratings of this calendar
 	 */
+	@JSON
 	public boolean getEnableRatings();
 
 	/**
@@ -524,6 +547,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 *
 	 * @return <code>true</code> if this calendar is enable ratings; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isEnableRatings();
 
 	/**
@@ -539,6 +563,7 @@ public interface CalendarModel extends BaseModel<Calendar>, LocalizedModel,
 	 * @return the last publish date of this calendar
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

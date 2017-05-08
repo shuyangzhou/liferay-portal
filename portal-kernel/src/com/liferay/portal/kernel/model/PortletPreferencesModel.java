@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -36,6 +37,7 @@ import java.io.Serializable;
  * @see com.liferay.portal.model.impl.PortletPreferencesModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface PortletPreferencesModel extends BaseModel<PortletPreferences>,
 	MVCCModel, ShardedModel {
@@ -65,6 +67,7 @@ public interface PortletPreferencesModel extends BaseModel<PortletPreferences>,
 	 * @return the mvcc version of this portlet preferences
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -80,6 +83,7 @@ public interface PortletPreferencesModel extends BaseModel<PortletPreferences>,
 	 *
 	 * @return the portlet preferences ID of this portlet preferences
 	 */
+	@JSON
 	public long getPortletPreferencesId();
 
 	/**
@@ -95,6 +99,7 @@ public interface PortletPreferencesModel extends BaseModel<PortletPreferences>,
 	 * @return the company ID of this portlet preferences
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -110,6 +115,7 @@ public interface PortletPreferencesModel extends BaseModel<PortletPreferences>,
 	 *
 	 * @return the owner ID of this portlet preferences
 	 */
+	@JSON
 	public long getOwnerId();
 
 	/**
@@ -124,6 +130,7 @@ public interface PortletPreferencesModel extends BaseModel<PortletPreferences>,
 	 *
 	 * @return the owner type of this portlet preferences
 	 */
+	@JSON
 	public int getOwnerType();
 
 	/**
@@ -138,6 +145,7 @@ public interface PortletPreferencesModel extends BaseModel<PortletPreferences>,
 	 *
 	 * @return the plid of this portlet preferences
 	 */
+	@JSON
 	public long getPlid();
 
 	/**
@@ -153,6 +161,7 @@ public interface PortletPreferencesModel extends BaseModel<PortletPreferences>,
 	 * @return the portlet ID of this portlet preferences
 	 */
 	@AutoEscape
+	@JSON
 	public String getPortletId();
 
 	/**
@@ -168,6 +177,7 @@ public interface PortletPreferencesModel extends BaseModel<PortletPreferences>,
 	 * @return the preferences of this portlet preferences
 	 */
 	@AutoEscape
+	@JSON
 	public String getPreferences();
 
 	/**

@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -40,6 +41,7 @@ import java.util.Date;
  * @see com.liferay.portlet.announcements.model.impl.AnnouncementsFlagModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface AnnouncementsFlagModel extends BaseModel<AnnouncementsFlag>,
 	ShardedModel {
@@ -68,6 +70,7 @@ public interface AnnouncementsFlagModel extends BaseModel<AnnouncementsFlag>,
 	 *
 	 * @return the flag ID of this announcements flag
 	 */
+	@JSON
 	public long getFlagId();
 
 	/**
@@ -83,6 +86,7 @@ public interface AnnouncementsFlagModel extends BaseModel<AnnouncementsFlag>,
 	 * @return the company ID of this announcements flag
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -98,6 +102,7 @@ public interface AnnouncementsFlagModel extends BaseModel<AnnouncementsFlag>,
 	 *
 	 * @return the user ID of this announcements flag
 	 */
+	@JSON
 	public long getUserId();
 
 	/**
@@ -126,6 +131,7 @@ public interface AnnouncementsFlagModel extends BaseModel<AnnouncementsFlag>,
 	 *
 	 * @return the create date of this announcements flag
 	 */
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -140,6 +146,7 @@ public interface AnnouncementsFlagModel extends BaseModel<AnnouncementsFlag>,
 	 *
 	 * @return the entry ID of this announcements flag
 	 */
+	@JSON
 	public long getEntryId();
 
 	/**
@@ -154,6 +161,7 @@ public interface AnnouncementsFlagModel extends BaseModel<AnnouncementsFlag>,
 	 *
 	 * @return the value of this announcements flag
 	 */
+	@JSON
 	public int getValue();
 
 	/**

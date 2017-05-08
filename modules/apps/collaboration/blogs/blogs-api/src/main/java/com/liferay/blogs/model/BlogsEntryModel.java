@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -45,6 +46,7 @@ import java.util.Date;
  * @see com.liferay.blogs.model.impl.BlogsEntryModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	StagedGroupedModel, TrashedModel, WorkflowedModel {
@@ -75,6 +77,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -90,6 +93,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 *
 	 * @return the entry ID of this blogs entry
 	 */
+	@JSON
 	public long getEntryId();
 
 	/**
@@ -105,6 +109,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the group ID of this blogs entry
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -121,6 +126,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the company ID of this blogs entry
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -137,6 +143,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the user ID of this blogs entry
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -170,6 +177,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -186,6 +194,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the create date of this blogs entry
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -202,6 +211,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the modified date of this blogs entry
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -218,6 +228,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the title of this blogs entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getTitle();
 
 	/**
@@ -233,6 +244,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the subtitle of this blogs entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getSubtitle();
 
 	/**
@@ -248,6 +260,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the url title of this blogs entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getUrlTitle();
 
 	/**
@@ -263,6 +276,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the description of this blogs entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -278,6 +292,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the content of this blogs entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getContent();
 
 	/**
@@ -292,6 +307,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 *
 	 * @return the display date of this blogs entry
 	 */
+	@JSON
 	public Date getDisplayDate();
 
 	/**
@@ -306,6 +322,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 *
 	 * @return the allow pingbacks of this blogs entry
 	 */
+	@JSON
 	public boolean getAllowPingbacks();
 
 	/**
@@ -313,6 +330,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 *
 	 * @return <code>true</code> if this blogs entry is allow pingbacks; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isAllowPingbacks();
 
 	/**
@@ -327,6 +345,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 *
 	 * @return the allow trackbacks of this blogs entry
 	 */
+	@JSON
 	public boolean getAllowTrackbacks();
 
 	/**
@@ -334,6 +353,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 *
 	 * @return <code>true</code> if this blogs entry is allow trackbacks; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isAllowTrackbacks();
 
 	/**
@@ -349,6 +369,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the trackbacks of this blogs entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getTrackbacks();
 
 	/**
@@ -364,6 +385,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the cover image caption of this blogs entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getCoverImageCaption();
 
 	/**
@@ -378,6 +400,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 *
 	 * @return the cover image file entry ID of this blogs entry
 	 */
+	@JSON
 	public long getCoverImageFileEntryId();
 
 	/**
@@ -393,6 +416,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the cover image url of this blogs entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getCoverImageURL();
 
 	/**
@@ -407,6 +431,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 *
 	 * @return the small image of this blogs entry
 	 */
+	@JSON
 	public boolean getSmallImage();
 
 	/**
@@ -414,6 +439,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 *
 	 * @return <code>true</code> if this blogs entry is small image; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isSmallImage();
 
 	/**
@@ -428,6 +454,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 *
 	 * @return the small image file entry ID of this blogs entry
 	 */
+	@JSON
 	public long getSmallImageFileEntryId();
 
 	/**
@@ -442,6 +469,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 *
 	 * @return the small image ID of this blogs entry
 	 */
+	@JSON
 	public long getSmallImageId();
 
 	/**
@@ -457,6 +485,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the small image url of this blogs entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getSmallImageURL();
 
 	/**
@@ -472,6 +501,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the last publish date of this blogs entry
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**
@@ -488,6 +518,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the status of this blogs entry
 	 */
 	@Override
+	@JSON
 	public int getStatus();
 
 	/**
@@ -504,6 +535,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the status by user ID of this blogs entry
 	 */
 	@Override
+	@JSON
 	public long getStatusByUserId();
 
 	/**
@@ -537,6 +569,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getStatusByUserName();
 
 	/**
@@ -553,6 +586,7 @@ public interface BlogsEntryModel extends BaseModel<BlogsEntry>, ShardedModel,
 	 * @return the status date of this blogs entry
 	 */
 	@Override
+	@JSON
 	public Date getStatusDate();
 
 	/**

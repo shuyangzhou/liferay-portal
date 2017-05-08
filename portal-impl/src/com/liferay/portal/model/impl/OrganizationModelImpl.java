@@ -23,7 +23,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.OrganizationModel;
@@ -61,7 +60,6 @@ import java.util.Map;
  * @see OrganizationModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class OrganizationModelImpl extends BaseModelImpl<Organization>
 	implements OrganizationModel {
@@ -386,7 +384,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -397,7 +394,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -421,7 +417,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getOrganizationId() {
 		return _organizationId;
@@ -444,7 +439,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		return _originalOrganizationId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -467,7 +461,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -494,7 +487,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -510,7 +502,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -521,7 +512,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -538,7 +528,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getParentOrganizationId() {
 		return _parentOrganizationId;
@@ -561,7 +550,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		return _originalParentOrganizationId;
 	}
 
-	@JSON
 	@Override
 	public String getTreePath() {
 		if (_treePath == null) {
@@ -587,7 +575,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		return GetterUtil.getString(_originalTreePath);
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -613,7 +600,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getType() {
 		if (_type == null) {
@@ -629,13 +615,11 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		_type = type;
 	}
 
-	@JSON
 	@Override
 	public boolean getRecursable() {
 		return _recursable;
 	}
 
-	@JSON
 	@Override
 	public boolean isRecursable() {
 		return _recursable;
@@ -646,7 +630,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		_recursable = recursable;
 	}
 
-	@JSON
 	@Override
 	public long getRegionId() {
 		return _regionId;
@@ -657,7 +640,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		_regionId = regionId;
 	}
 
-	@JSON
 	@Override
 	public long getCountryId() {
 		return _countryId;
@@ -668,7 +650,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		_countryId = countryId;
 	}
 
-	@JSON
 	@Override
 	public long getStatusId() {
 		return _statusId;
@@ -679,7 +660,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		_statusId = statusId;
 	}
 
-	@JSON
 	@Override
 	public String getComments() {
 		if (_comments == null) {
@@ -695,7 +675,6 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		_comments = comments;
 	}
 
-	@JSON
 	@Override
 	public long getLogoId() {
 		return _logoId;

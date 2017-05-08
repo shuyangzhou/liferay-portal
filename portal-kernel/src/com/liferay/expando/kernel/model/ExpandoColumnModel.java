@@ -17,6 +17,7 @@ package com.liferay.expando.kernel.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -37,6 +38,7 @@ import java.io.Serializable;
  * @see com.liferay.portlet.expando.model.impl.ExpandoColumnModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface ExpandoColumnModel extends BaseModel<ExpandoColumn>,
 	ShardedModel {
@@ -65,6 +67,7 @@ public interface ExpandoColumnModel extends BaseModel<ExpandoColumn>,
 	 *
 	 * @return the column ID of this expando column
 	 */
+	@JSON
 	public long getColumnId();
 
 	/**
@@ -80,6 +83,7 @@ public interface ExpandoColumnModel extends BaseModel<ExpandoColumn>,
 	 * @return the company ID of this expando column
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -95,6 +99,7 @@ public interface ExpandoColumnModel extends BaseModel<ExpandoColumn>,
 	 *
 	 * @return the table ID of this expando column
 	 */
+	@JSON
 	public long getTableId();
 
 	/**
@@ -110,6 +115,7 @@ public interface ExpandoColumnModel extends BaseModel<ExpandoColumn>,
 	 * @return the name of this expando column
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -124,6 +130,7 @@ public interface ExpandoColumnModel extends BaseModel<ExpandoColumn>,
 	 *
 	 * @return the type of this expando column
 	 */
+	@JSON
 	public int getType();
 
 	/**
@@ -139,6 +146,7 @@ public interface ExpandoColumnModel extends BaseModel<ExpandoColumn>,
 	 * @return the default data of this expando column
 	 */
 	@AutoEscape
+	@JSON
 	public String getDefaultData();
 
 	/**
@@ -154,6 +162,7 @@ public interface ExpandoColumnModel extends BaseModel<ExpandoColumn>,
 	 * @return the type settings of this expando column
 	 */
 	@AutoEscape
+	@JSON
 	public String getTypeSettings();
 
 	/**

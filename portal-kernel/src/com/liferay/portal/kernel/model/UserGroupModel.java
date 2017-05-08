@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ import java.util.Date;
  * @see com.liferay.portal.model.impl.UserGroupModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface UserGroupModel extends BaseModel<UserGroup>, MVCCModel,
 	ShardedModel, StagedAuditedModel {
@@ -67,6 +69,7 @@ public interface UserGroupModel extends BaseModel<UserGroup>, MVCCModel,
 	 * @return the mvcc version of this user group
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -84,6 +87,7 @@ public interface UserGroupModel extends BaseModel<UserGroup>, MVCCModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -99,6 +103,7 @@ public interface UserGroupModel extends BaseModel<UserGroup>, MVCCModel,
 	 *
 	 * @return the user group ID of this user group
 	 */
+	@JSON
 	public long getUserGroupId();
 
 	/**
@@ -114,6 +119,7 @@ public interface UserGroupModel extends BaseModel<UserGroup>, MVCCModel,
 	 * @return the company ID of this user group
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -130,6 +136,7 @@ public interface UserGroupModel extends BaseModel<UserGroup>, MVCCModel,
 	 * @return the user ID of this user group
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -163,6 +170,7 @@ public interface UserGroupModel extends BaseModel<UserGroup>, MVCCModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -179,6 +187,7 @@ public interface UserGroupModel extends BaseModel<UserGroup>, MVCCModel,
 	 * @return the create date of this user group
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -195,6 +204,7 @@ public interface UserGroupModel extends BaseModel<UserGroup>, MVCCModel,
 	 * @return the modified date of this user group
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -210,6 +220,7 @@ public interface UserGroupModel extends BaseModel<UserGroup>, MVCCModel,
 	 *
 	 * @return the parent user group ID of this user group
 	 */
+	@JSON
 	public long getParentUserGroupId();
 
 	/**
@@ -225,6 +236,7 @@ public interface UserGroupModel extends BaseModel<UserGroup>, MVCCModel,
 	 * @return the name of this user group
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -240,6 +252,7 @@ public interface UserGroupModel extends BaseModel<UserGroup>, MVCCModel,
 	 * @return the description of this user group
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -254,6 +267,7 @@ public interface UserGroupModel extends BaseModel<UserGroup>, MVCCModel,
 	 *
 	 * @return the added by ldap import of this user group
 	 */
+	@JSON
 	public boolean getAddedByLDAPImport();
 
 	/**
@@ -261,6 +275,7 @@ public interface UserGroupModel extends BaseModel<UserGroup>, MVCCModel,
 	 *
 	 * @return <code>true</code> if this user group is added by ldap import; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isAddedByLDAPImport();
 
 	/**

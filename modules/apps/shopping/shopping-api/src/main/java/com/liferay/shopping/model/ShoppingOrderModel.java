@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.GroupedModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.shopping.model.impl.ShoppingOrderModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	GroupedModel, ShardedModel {
@@ -70,6 +72,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return the order ID of this shopping order
 	 */
+	@JSON
 	public long getOrderId();
 
 	/**
@@ -85,6 +88,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the group ID of this shopping order
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -101,6 +105,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the company ID of this shopping order
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -117,6 +122,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the user ID of this shopping order
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -150,6 +156,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -166,6 +173,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the create date of this shopping order
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -182,6 +190,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the modified date of this shopping order
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -198,6 +207,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the number of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getNumber();
 
 	/**
@@ -212,6 +222,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return the tax of this shopping order
 	 */
+	@JSON
 	public double getTax();
 
 	/**
@@ -226,6 +237,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return the shipping of this shopping order
 	 */
+	@JSON
 	public double getShipping();
 
 	/**
@@ -241,6 +253,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the alt shipping of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getAltShipping();
 
 	/**
@@ -255,6 +268,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return the requires shipping of this shopping order
 	 */
+	@JSON
 	public boolean getRequiresShipping();
 
 	/**
@@ -262,6 +276,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return <code>true</code> if this shopping order is requires shipping; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isRequiresShipping();
 
 	/**
@@ -276,6 +291,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return the insure of this shopping order
 	 */
+	@JSON
 	public boolean getInsure();
 
 	/**
@@ -283,6 +299,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return <code>true</code> if this shopping order is insure; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isInsure();
 
 	/**
@@ -297,6 +314,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return the insurance of this shopping order
 	 */
+	@JSON
 	public double getInsurance();
 
 	/**
@@ -312,6 +330,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the coupon codes of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getCouponCodes();
 
 	/**
@@ -326,6 +345,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return the coupon discount of this shopping order
 	 */
+	@JSON
 	public double getCouponDiscount();
 
 	/**
@@ -341,6 +361,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the billing first name of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getBillingFirstName();
 
 	/**
@@ -356,6 +377,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the billing last name of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getBillingLastName();
 
 	/**
@@ -371,6 +393,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the billing email address of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getBillingEmailAddress();
 
 	/**
@@ -386,6 +409,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the billing company of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getBillingCompany();
 
 	/**
@@ -401,6 +425,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the billing street of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getBillingStreet();
 
 	/**
@@ -416,6 +441,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the billing city of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getBillingCity();
 
 	/**
@@ -431,6 +457,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the billing state of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getBillingState();
 
 	/**
@@ -446,6 +473,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the billing zip of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getBillingZip();
 
 	/**
@@ -461,6 +489,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the billing country of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getBillingCountry();
 
 	/**
@@ -476,6 +505,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the billing phone of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getBillingPhone();
 
 	/**
@@ -490,6 +520,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return the ship to billing of this shopping order
 	 */
+	@JSON
 	public boolean getShipToBilling();
 
 	/**
@@ -497,6 +528,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return <code>true</code> if this shopping order is ship to billing; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isShipToBilling();
 
 	/**
@@ -512,6 +544,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the shipping first name of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getShippingFirstName();
 
 	/**
@@ -527,6 +560,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the shipping last name of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getShippingLastName();
 
 	/**
@@ -542,6 +576,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the shipping email address of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getShippingEmailAddress();
 
 	/**
@@ -557,6 +592,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the shipping company of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getShippingCompany();
 
 	/**
@@ -572,6 +608,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the shipping street of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getShippingStreet();
 
 	/**
@@ -587,6 +624,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the shipping city of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getShippingCity();
 
 	/**
@@ -602,6 +640,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the shipping state of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getShippingState();
 
 	/**
@@ -617,6 +656,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the shipping zip of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getShippingZip();
 
 	/**
@@ -632,6 +672,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the shipping country of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getShippingCountry();
 
 	/**
@@ -647,6 +688,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the shipping phone of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getShippingPhone();
 
 	/**
@@ -662,6 +704,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the cc name of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getCcName();
 
 	/**
@@ -677,6 +720,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the cc type of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getCcType();
 
 	/**
@@ -692,6 +736,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the cc number of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getCcNumber();
 
 	/**
@@ -706,6 +751,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return the cc exp month of this shopping order
 	 */
+	@JSON
 	public int getCcExpMonth();
 
 	/**
@@ -720,6 +766,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return the cc exp year of this shopping order
 	 */
+	@JSON
 	public int getCcExpYear();
 
 	/**
@@ -735,6 +782,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the cc ver number of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getCcVerNumber();
 
 	/**
@@ -750,6 +798,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the comments of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getComments();
 
 	/**
@@ -765,6 +814,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the pp txn ID of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getPpTxnId();
 
 	/**
@@ -780,6 +830,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the pp payment status of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getPpPaymentStatus();
 
 	/**
@@ -794,6 +845,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return the pp payment gross of this shopping order
 	 */
+	@JSON
 	public double getPpPaymentGross();
 
 	/**
@@ -809,6 +861,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the pp receiver email of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getPpReceiverEmail();
 
 	/**
@@ -824,6 +877,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 * @return the pp payer email of this shopping order
 	 */
 	@AutoEscape
+	@JSON
 	public String getPpPayerEmail();
 
 	/**
@@ -838,6 +892,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return the send order email of this shopping order
 	 */
+	@JSON
 	public boolean getSendOrderEmail();
 
 	/**
@@ -845,6 +900,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return <code>true</code> if this shopping order is send order email; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isSendOrderEmail();
 
 	/**
@@ -859,6 +915,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return the send shipping email of this shopping order
 	 */
+	@JSON
 	public boolean getSendShippingEmail();
 
 	/**
@@ -866,6 +923,7 @@ public interface ShoppingOrderModel extends BaseModel<ShoppingOrder>,
 	 *
 	 * @return <code>true</code> if this shopping order is send shipping email; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isSendShippingEmail();
 
 	/**

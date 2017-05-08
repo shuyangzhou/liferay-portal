@@ -20,7 +20,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.CountryModel;
@@ -54,7 +53,6 @@ import java.util.Map;
  * @see CountryModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class CountryModelImpl extends BaseModelImpl<Country>
 	implements CountryModel {
@@ -269,7 +267,6 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -280,7 +277,6 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getCountryId() {
 		return _countryId;
@@ -291,7 +287,6 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 		_countryId = countryId;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -317,7 +312,6 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getA2() {
 		if (_a2 == null) {
@@ -343,7 +337,6 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 		return GetterUtil.getString(_originalA2);
 	}
 
-	@JSON
 	@Override
 	public String getA3() {
 		if (_a3 == null) {
@@ -369,7 +362,6 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 		return GetterUtil.getString(_originalA3);
 	}
 
-	@JSON
 	@Override
 	public String getNumber() {
 		if (_number == null) {
@@ -385,7 +377,6 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 		_number = number;
 	}
 
-	@JSON
 	@Override
 	public String getIdd() {
 		if (_idd == null) {
@@ -401,13 +392,11 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 		_idd = idd;
 	}
 
-	@JSON
 	@Override
 	public boolean getZipRequired() {
 		return _zipRequired;
 	}
 
-	@JSON
 	@Override
 	public boolean isZipRequired() {
 		return _zipRequired;
@@ -418,13 +407,11 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 		_zipRequired = zipRequired;
 	}
 
-	@JSON
 	@Override
 	public boolean getActive() {
 		return _active;
 	}
 
-	@JSON
 	@Override
 	public boolean isActive() {
 		return _active;

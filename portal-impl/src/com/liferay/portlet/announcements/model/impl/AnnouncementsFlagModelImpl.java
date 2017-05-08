@@ -25,7 +25,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -60,7 +59,6 @@ import java.util.Map;
  * @see AnnouncementsFlagModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class AnnouncementsFlagModelImpl extends BaseModelImpl<AnnouncementsFlag>
 	implements AnnouncementsFlagModel {
@@ -246,7 +244,6 @@ public class AnnouncementsFlagModelImpl extends BaseModelImpl<AnnouncementsFlag>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getFlagId() {
 		return _flagId;
@@ -257,7 +254,6 @@ public class AnnouncementsFlagModelImpl extends BaseModelImpl<AnnouncementsFlag>
 		_flagId = flagId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -268,7 +264,6 @@ public class AnnouncementsFlagModelImpl extends BaseModelImpl<AnnouncementsFlag>
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -307,7 +302,6 @@ public class AnnouncementsFlagModelImpl extends BaseModelImpl<AnnouncementsFlag>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -320,7 +314,6 @@ public class AnnouncementsFlagModelImpl extends BaseModelImpl<AnnouncementsFlag>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public long getEntryId() {
 		return _entryId;
@@ -343,7 +336,6 @@ public class AnnouncementsFlagModelImpl extends BaseModelImpl<AnnouncementsFlag>
 		return _originalEntryId;
 	}
 
-	@JSON
 	@Override
 	public int getValue() {
 		return _value;

@@ -20,7 +20,6 @@ import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.model.ExpandoTableModel;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -50,7 +49,6 @@ import java.util.Map;
  * @see ExpandoTableModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class ExpandoTableModelImpl extends BaseModelImpl<ExpandoTable>
 	implements ExpandoTableModel {
@@ -173,7 +171,6 @@ public class ExpandoTableModelImpl extends BaseModelImpl<ExpandoTable>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getTableId() {
 		return _tableId;
@@ -184,7 +181,6 @@ public class ExpandoTableModelImpl extends BaseModelImpl<ExpandoTable>
 		_tableId = tableId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -227,7 +223,6 @@ public class ExpandoTableModelImpl extends BaseModelImpl<ExpandoTable>
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -250,7 +245,6 @@ public class ExpandoTableModelImpl extends BaseModelImpl<ExpandoTable>
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {

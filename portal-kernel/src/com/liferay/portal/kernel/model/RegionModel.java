@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -36,6 +37,7 @@ import java.io.Serializable;
  * @see com.liferay.portal.model.impl.RegionModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface RegionModel extends BaseModel<Region>, MVCCModel {
 	/*
@@ -64,6 +66,7 @@ public interface RegionModel extends BaseModel<Region>, MVCCModel {
 	 * @return the mvcc version of this region
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -79,6 +82,7 @@ public interface RegionModel extends BaseModel<Region>, MVCCModel {
 	 *
 	 * @return the region ID of this region
 	 */
+	@JSON
 	public long getRegionId();
 
 	/**
@@ -93,6 +97,7 @@ public interface RegionModel extends BaseModel<Region>, MVCCModel {
 	 *
 	 * @return the country ID of this region
 	 */
+	@JSON
 	public long getCountryId();
 
 	/**
@@ -108,6 +113,7 @@ public interface RegionModel extends BaseModel<Region>, MVCCModel {
 	 * @return the region code of this region
 	 */
 	@AutoEscape
+	@JSON
 	public String getRegionCode();
 
 	/**
@@ -123,6 +129,7 @@ public interface RegionModel extends BaseModel<Region>, MVCCModel {
 	 * @return the name of this region
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -137,6 +144,7 @@ public interface RegionModel extends BaseModel<Region>, MVCCModel {
 	 *
 	 * @return the active of this region
 	 */
+	@JSON
 	public boolean getActive();
 
 	/**
@@ -144,6 +152,7 @@ public interface RegionModel extends BaseModel<Region>, MVCCModel {
 	 *
 	 * @return <code>true</code> if this region is active; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isActive();
 
 	/**

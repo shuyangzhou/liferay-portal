@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.LocalizedModel;
@@ -46,6 +47,7 @@ import java.util.Map;
  * @see com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	LocalizedModel, ShardedModel, StagedGroupedModel {
@@ -76,6 +78,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -91,6 +94,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	 *
 	 * @return the category ID of this asset category
 	 */
+	@JSON
 	public long getCategoryId();
 
 	/**
@@ -106,6 +110,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	 * @return the group ID of this asset category
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -122,6 +127,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	 * @return the company ID of this asset category
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -138,6 +144,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	 * @return the user ID of this asset category
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -171,6 +178,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -187,6 +195,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	 * @return the create date of this asset category
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -203,6 +212,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	 * @return the modified date of this asset category
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -218,6 +228,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	 *
 	 * @return the parent category ID of this asset category
 	 */
+	@JSON
 	public long getParentCategoryId();
 
 	/**
@@ -232,6 +243,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	 *
 	 * @return the left category ID of this asset category
 	 */
+	@JSON
 	public long getLeftCategoryId();
 
 	/**
@@ -246,6 +258,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	 *
 	 * @return the right category ID of this asset category
 	 */
+	@JSON
 	public long getRightCategoryId();
 
 	/**
@@ -261,6 +274,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	 * @return the name of this asset category
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -275,6 +289,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	 *
 	 * @return the title of this asset category
 	 */
+	@JSON
 	public String getTitle();
 
 	/**
@@ -319,6 +334,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	public String getTitleCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getTitleCurrentValue();
 
 	/**
@@ -374,6 +390,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	 *
 	 * @return the description of this asset category
 	 */
+	@JSON
 	public String getDescription();
 
 	/**
@@ -418,6 +435,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	public String getDescriptionCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getDescriptionCurrentValue();
 
 	/**
@@ -475,6 +493,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	 *
 	 * @return the vocabulary ID of this asset category
 	 */
+	@JSON
 	public long getVocabularyId();
 
 	/**
@@ -490,6 +509,7 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	 * @return the last publish date of this asset category
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

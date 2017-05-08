@@ -20,7 +20,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.OrgLabor;
 import com.liferay.portal.kernel.model.OrgLaborModel;
@@ -53,7 +52,6 @@ import java.util.Map;
  * @see OrgLaborModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 	implements OrgLaborModel {
@@ -366,7 +364,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -377,7 +374,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getOrgLaborId() {
 		return _orgLaborId;
@@ -388,7 +384,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_orgLaborId = orgLaborId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -399,7 +394,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getOrganizationId() {
 		return _organizationId;
@@ -422,7 +416,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		return _originalOrganizationId;
 	}
 
-	@JSON
 	@Override
 	public long getTypeId() {
 		return _typeId;
@@ -435,7 +428,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_typeId = typeId;
 	}
 
-	@JSON
 	@Override
 	public int getSunOpen() {
 		return _sunOpen;
@@ -446,7 +438,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_sunOpen = sunOpen;
 	}
 
-	@JSON
 	@Override
 	public int getSunClose() {
 		return _sunClose;
@@ -457,7 +448,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_sunClose = sunClose;
 	}
 
-	@JSON
 	@Override
 	public int getMonOpen() {
 		return _monOpen;
@@ -468,7 +458,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_monOpen = monOpen;
 	}
 
-	@JSON
 	@Override
 	public int getMonClose() {
 		return _monClose;
@@ -479,7 +468,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_monClose = monClose;
 	}
 
-	@JSON
 	@Override
 	public int getTueOpen() {
 		return _tueOpen;
@@ -490,7 +478,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_tueOpen = tueOpen;
 	}
 
-	@JSON
 	@Override
 	public int getTueClose() {
 		return _tueClose;
@@ -501,7 +488,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_tueClose = tueClose;
 	}
 
-	@JSON
 	@Override
 	public int getWedOpen() {
 		return _wedOpen;
@@ -512,7 +498,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_wedOpen = wedOpen;
 	}
 
-	@JSON
 	@Override
 	public int getWedClose() {
 		return _wedClose;
@@ -523,7 +508,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_wedClose = wedClose;
 	}
 
-	@JSON
 	@Override
 	public int getThuOpen() {
 		return _thuOpen;
@@ -534,7 +518,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_thuOpen = thuOpen;
 	}
 
-	@JSON
 	@Override
 	public int getThuClose() {
 		return _thuClose;
@@ -545,7 +528,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_thuClose = thuClose;
 	}
 
-	@JSON
 	@Override
 	public int getFriOpen() {
 		return _friOpen;
@@ -556,7 +538,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_friOpen = friOpen;
 	}
 
-	@JSON
 	@Override
 	public int getFriClose() {
 		return _friClose;
@@ -567,7 +548,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_friClose = friClose;
 	}
 
-	@JSON
 	@Override
 	public int getSatOpen() {
 		return _satOpen;
@@ -578,7 +558,6 @@ public class OrgLaborModelImpl extends BaseModelImpl<OrgLabor>
 		_satOpen = satOpen;
 	}
 
-	@JSON
 	@Override
 	public int getSatClose() {
 		return _satClose;

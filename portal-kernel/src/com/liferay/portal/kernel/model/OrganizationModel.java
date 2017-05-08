@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ import java.util.Date;
  * @see com.liferay.portal.model.impl.OrganizationModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	ShardedModel, StagedAuditedModel {
@@ -67,6 +69,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 * @return the mvcc version of this organization
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -84,6 +87,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -99,6 +103,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 *
 	 * @return the organization ID of this organization
 	 */
+	@JSON
 	public long getOrganizationId();
 
 	/**
@@ -114,6 +119,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 * @return the company ID of this organization
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -130,6 +136,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 * @return the user ID of this organization
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -163,6 +170,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -179,6 +187,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 * @return the create date of this organization
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -195,6 +204,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 * @return the modified date of this organization
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -210,6 +220,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 *
 	 * @return the parent organization ID of this organization
 	 */
+	@JSON
 	public long getParentOrganizationId();
 
 	/**
@@ -225,6 +236,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 * @return the tree path of this organization
 	 */
 	@AutoEscape
+	@JSON
 	public String getTreePath();
 
 	/**
@@ -240,6 +252,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 * @return the name of this organization
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -254,6 +267,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 *
 	 * @return the type of this organization
 	 */
+	@JSON
 	public String getType();
 
 	/**
@@ -268,6 +282,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 *
 	 * @return the recursable of this organization
 	 */
+	@JSON
 	public boolean getRecursable();
 
 	/**
@@ -275,6 +290,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 *
 	 * @return <code>true</code> if this organization is recursable; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isRecursable();
 
 	/**
@@ -289,6 +305,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 *
 	 * @return the region ID of this organization
 	 */
+	@JSON
 	public long getRegionId();
 
 	/**
@@ -303,6 +320,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 *
 	 * @return the country ID of this organization
 	 */
+	@JSON
 	public long getCountryId();
 
 	/**
@@ -317,6 +335,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 *
 	 * @return the status ID of this organization
 	 */
+	@JSON
 	public long getStatusId();
 
 	/**
@@ -332,6 +351,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 * @return the comments of this organization
 	 */
 	@AutoEscape
+	@JSON
 	public String getComments();
 
 	/**
@@ -346,6 +366,7 @@ public interface OrganizationModel extends BaseModel<Organization>, MVCCModel,
 	 *
 	 * @return the logo ID of this organization
 	 */
+	@JSON
 	public long getLogoId();
 
 	/**

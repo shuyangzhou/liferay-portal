@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ import java.util.Date;
  * @see com.liferay.portal.model.impl.PasswordPolicyModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCModel,
 	ShardedModel, StagedAuditedModel {
@@ -67,6 +69,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 * @return the mvcc version of this password policy
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -84,6 +87,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -99,6 +103,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the password policy ID of this password policy
 	 */
+	@JSON
 	public long getPasswordPolicyId();
 
 	/**
@@ -114,6 +119,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 * @return the company ID of this password policy
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -130,6 +136,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 * @return the user ID of this password policy
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -163,6 +170,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -179,6 +187,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 * @return the create date of this password policy
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -195,6 +204,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 * @return the modified date of this password policy
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -210,6 +220,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the default policy of this password policy
 	 */
+	@JSON
 	public boolean getDefaultPolicy();
 
 	/**
@@ -217,6 +228,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return <code>true</code> if this password policy is default policy; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isDefaultPolicy();
 
 	/**
@@ -232,6 +244,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 * @return the name of this password policy
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -247,6 +260,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 * @return the description of this password policy
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -261,6 +275,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the changeable of this password policy
 	 */
+	@JSON
 	public boolean getChangeable();
 
 	/**
@@ -268,6 +283,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return <code>true</code> if this password policy is changeable; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isChangeable();
 
 	/**
@@ -282,6 +298,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the change required of this password policy
 	 */
+	@JSON
 	public boolean getChangeRequired();
 
 	/**
@@ -289,6 +306,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return <code>true</code> if this password policy is change required; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isChangeRequired();
 
 	/**
@@ -303,6 +321,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the min age of this password policy
 	 */
+	@JSON
 	public long getMinAge();
 
 	/**
@@ -317,6 +336,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the check syntax of this password policy
 	 */
+	@JSON
 	public boolean getCheckSyntax();
 
 	/**
@@ -324,6 +344,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return <code>true</code> if this password policy is check syntax; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isCheckSyntax();
 
 	/**
@@ -338,6 +359,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the allow dictionary words of this password policy
 	 */
+	@JSON
 	public boolean getAllowDictionaryWords();
 
 	/**
@@ -345,6 +367,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return <code>true</code> if this password policy is allow dictionary words; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isAllowDictionaryWords();
 
 	/**
@@ -359,6 +382,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the min alphanumeric of this password policy
 	 */
+	@JSON
 	public int getMinAlphanumeric();
 
 	/**
@@ -373,6 +397,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the min length of this password policy
 	 */
+	@JSON
 	public int getMinLength();
 
 	/**
@@ -387,6 +412,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the min lower case of this password policy
 	 */
+	@JSON
 	public int getMinLowerCase();
 
 	/**
@@ -401,6 +427,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the min numbers of this password policy
 	 */
+	@JSON
 	public int getMinNumbers();
 
 	/**
@@ -415,6 +442,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the min symbols of this password policy
 	 */
+	@JSON
 	public int getMinSymbols();
 
 	/**
@@ -429,6 +457,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the min upper case of this password policy
 	 */
+	@JSON
 	public int getMinUpperCase();
 
 	/**
@@ -444,6 +473,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 * @return the regex of this password policy
 	 */
 	@AutoEscape
+	@JSON
 	public String getRegex();
 
 	/**
@@ -458,6 +488,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the history of this password policy
 	 */
+	@JSON
 	public boolean getHistory();
 
 	/**
@@ -465,6 +496,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return <code>true</code> if this password policy is history; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isHistory();
 
 	/**
@@ -479,6 +511,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the history count of this password policy
 	 */
+	@JSON
 	public int getHistoryCount();
 
 	/**
@@ -493,6 +526,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the expireable of this password policy
 	 */
+	@JSON
 	public boolean getExpireable();
 
 	/**
@@ -500,6 +534,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return <code>true</code> if this password policy is expireable; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isExpireable();
 
 	/**
@@ -514,6 +549,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the max age of this password policy
 	 */
+	@JSON
 	public long getMaxAge();
 
 	/**
@@ -528,6 +564,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the warning time of this password policy
 	 */
+	@JSON
 	public long getWarningTime();
 
 	/**
@@ -542,6 +579,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the grace limit of this password policy
 	 */
+	@JSON
 	public int getGraceLimit();
 
 	/**
@@ -556,6 +594,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the lockout of this password policy
 	 */
+	@JSON
 	public boolean getLockout();
 
 	/**
@@ -563,6 +602,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return <code>true</code> if this password policy is lockout; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isLockout();
 
 	/**
@@ -577,6 +617,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the max failure of this password policy
 	 */
+	@JSON
 	public int getMaxFailure();
 
 	/**
@@ -591,6 +632,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the lockout duration of this password policy
 	 */
+	@JSON
 	public long getLockoutDuration();
 
 	/**
@@ -605,6 +647,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the require unlock of this password policy
 	 */
+	@JSON
 	public boolean getRequireUnlock();
 
 	/**
@@ -612,6 +655,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return <code>true</code> if this password policy is require unlock; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isRequireUnlock();
 
 	/**
@@ -626,6 +670,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the reset failure count of this password policy
 	 */
+	@JSON
 	public long getResetFailureCount();
 
 	/**
@@ -640,6 +685,7 @@ public interface PasswordPolicyModel extends BaseModel<PasswordPolicy>, MVCCMode
 	 *
 	 * @return the reset ticket max age of this password policy
 	 */
+	@JSON
 	public long getResetTicketMaxAge();
 
 	/**

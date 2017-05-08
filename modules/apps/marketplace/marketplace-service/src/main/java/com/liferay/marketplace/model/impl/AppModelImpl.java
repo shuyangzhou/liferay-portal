@@ -27,7 +27,6 @@ import com.liferay.marketplace.model.AppSoap;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -62,7 +61,6 @@ import java.util.Map;
  * @see AppModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 	/*
@@ -327,7 +325,6 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -351,7 +348,6 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getAppId() {
 		return _appId;
@@ -362,7 +358,6 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		_appId = appId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -385,7 +380,6 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -412,7 +406,6 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -428,7 +421,6 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -439,7 +431,6 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -456,7 +447,6 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getRemoteAppId() {
 		return _remoteAppId;
@@ -479,7 +469,6 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		return _originalRemoteAppId;
 	}
 
-	@JSON
 	@Override
 	public String getTitle() {
 		if (_title == null) {
@@ -495,7 +484,6 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		_title = title;
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -511,7 +499,6 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		_description = description;
 	}
 
-	@JSON
 	@Override
 	public String getCategory() {
 		if (_category == null) {
@@ -537,7 +524,6 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		return GetterUtil.getString(_originalCategory);
 	}
 
-	@JSON
 	@Override
 	public String getIconURL() {
 		if (_iconURL == null) {
@@ -553,7 +539,6 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		_iconURL = iconURL;
 	}
 
-	@JSON
 	@Override
 	public String getVersion() {
 		if (_version == null) {
@@ -569,13 +554,11 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		_version = version;
 	}
 
-	@JSON
 	@Override
 	public boolean getRequired() {
 		return _required;
 	}
 
-	@JSON
 	@Override
 	public boolean isRequired() {
 		return _required;

@@ -23,7 +23,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Team;
 import com.liferay.portal.kernel.model.TeamModel;
@@ -61,7 +60,6 @@ import java.util.Map;
  * @see TeamModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 	/*
@@ -323,7 +321,6 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -334,7 +331,6 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -358,7 +354,6 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getTeamId() {
 		return _teamId;
@@ -369,7 +364,6 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 		_teamId = teamId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -392,7 +386,6 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -419,7 +412,6 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -435,7 +427,6 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -446,7 +437,6 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -463,7 +453,6 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -486,7 +475,6 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -512,7 +500,6 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -528,7 +515,6 @@ public class TeamModelImpl extends BaseModelImpl<Team> implements TeamModel {
 		_description = description;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

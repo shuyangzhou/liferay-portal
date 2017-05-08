@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.ContactModel;
@@ -60,7 +59,6 @@ import java.util.Map;
  * @see ContactModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class ContactModelImpl extends BaseModelImpl<Contact>
 	implements ContactModel {
@@ -476,7 +474,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -487,7 +484,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getContactId() {
 		return _contactId;
@@ -498,7 +494,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_contactId = contactId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -521,7 +516,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -548,7 +542,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -564,7 +557,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -575,7 +567,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -612,7 +603,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -635,7 +625,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getClassPK() {
 		return _classPK;
@@ -658,7 +647,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		return _originalClassPK;
 	}
 
-	@JSON
 	@Override
 	public long getAccountId() {
 		return _accountId;
@@ -681,7 +669,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		return _originalAccountId;
 	}
 
-	@JSON
 	@Override
 	public long getParentContactId() {
 		return _parentContactId;
@@ -692,7 +679,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_parentContactId = parentContactId;
 	}
 
-	@JSON
 	@Override
 	public String getEmailAddress() {
 		if (_emailAddress == null) {
@@ -708,7 +694,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_emailAddress = emailAddress;
 	}
 
-	@JSON
 	@Override
 	public String getFirstName() {
 		if (_firstName == null) {
@@ -724,7 +709,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_firstName = firstName;
 	}
 
-	@JSON
 	@Override
 	public String getMiddleName() {
 		if (_middleName == null) {
@@ -740,7 +724,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_middleName = middleName;
 	}
 
-	@JSON
 	@Override
 	public String getLastName() {
 		if (_lastName == null) {
@@ -756,7 +739,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_lastName = lastName;
 	}
 
-	@JSON
 	@Override
 	public long getPrefixId() {
 		return _prefixId;
@@ -767,7 +749,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_prefixId = prefixId;
 	}
 
-	@JSON
 	@Override
 	public long getSuffixId() {
 		return _suffixId;
@@ -778,13 +759,11 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_suffixId = suffixId;
 	}
 
-	@JSON
 	@Override
 	public boolean getMale() {
 		return _male;
 	}
 
-	@JSON
 	@Override
 	public boolean isMale() {
 		return _male;
@@ -795,7 +774,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_male = male;
 	}
 
-	@JSON
 	@Override
 	public Date getBirthday() {
 		return _birthday;
@@ -806,7 +784,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_birthday = birthday;
 	}
 
-	@JSON
 	@Override
 	public String getSmsSn() {
 		if (_smsSn == null) {
@@ -822,7 +799,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_smsSn = smsSn;
 	}
 
-	@JSON
 	@Override
 	public String getFacebookSn() {
 		if (_facebookSn == null) {
@@ -838,7 +814,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_facebookSn = facebookSn;
 	}
 
-	@JSON
 	@Override
 	public String getJabberSn() {
 		if (_jabberSn == null) {
@@ -854,7 +829,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_jabberSn = jabberSn;
 	}
 
-	@JSON
 	@Override
 	public String getSkypeSn() {
 		if (_skypeSn == null) {
@@ -870,7 +844,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_skypeSn = skypeSn;
 	}
 
-	@JSON
 	@Override
 	public String getTwitterSn() {
 		if (_twitterSn == null) {
@@ -886,7 +859,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_twitterSn = twitterSn;
 	}
 
-	@JSON
 	@Override
 	public String getEmployeeStatusId() {
 		if (_employeeStatusId == null) {
@@ -902,7 +874,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_employeeStatusId = employeeStatusId;
 	}
 
-	@JSON
 	@Override
 	public String getEmployeeNumber() {
 		if (_employeeNumber == null) {
@@ -918,7 +889,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_employeeNumber = employeeNumber;
 	}
 
-	@JSON
 	@Override
 	public String getJobTitle() {
 		if (_jobTitle == null) {
@@ -934,7 +904,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_jobTitle = jobTitle;
 	}
 
-	@JSON
 	@Override
 	public String getJobClass() {
 		if (_jobClass == null) {
@@ -950,7 +919,6 @@ public class ContactModelImpl extends BaseModelImpl<Contact>
 		_jobClass = jobClass;
 	}
 
-	@JSON
 	@Override
 	public String getHoursOfOperation() {
 		if (_hoursOfOperation == null) {

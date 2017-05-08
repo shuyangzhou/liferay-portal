@@ -26,7 +26,6 @@ import com.liferay.exportimport.kernel.model.ExportImportConfigurationSoap;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.TrashedModel;
@@ -65,7 +64,6 @@ import java.util.Map;
  * @see ExportImportConfigurationModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImportConfiguration>
 	implements ExportImportConfigurationModel {
@@ -355,7 +353,6 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -366,7 +363,6 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getExportImportConfigurationId() {
 		return _exportImportConfigurationId;
@@ -377,7 +373,6 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 		_exportImportConfigurationId = exportImportConfigurationId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -400,7 +395,6 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -423,7 +417,6 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -450,7 +443,6 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -466,7 +458,6 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -479,7 +470,6 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -496,7 +486,6 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -512,7 +501,6 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 		_name = name;
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -528,7 +516,6 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 		_description = description;
 	}
 
-	@JSON
 	@Override
 	public int getType() {
 		return _type;
@@ -551,7 +538,6 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 		return _originalType;
 	}
 
-	@JSON
 	@Override
 	public String getSettings() {
 		if (_settings == null) {
@@ -567,7 +553,6 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 		_settings = settings;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;
@@ -590,7 +575,6 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 		return _originalStatus;
 	}
 
-	@JSON
 	@Override
 	public long getStatusByUserId() {
 		return _statusByUserId;
@@ -617,7 +601,6 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
@@ -633,7 +616,6 @@ public class ExportImportConfigurationModelImpl extends BaseModelImpl<ExportImpo
 		_statusByUserName = statusByUserName;
 	}
 
-	@JSON
 	@Override
 	public Date getStatusDate() {
 		return _statusDate;

@@ -23,7 +23,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.Website;
@@ -63,7 +62,6 @@ import java.util.Map;
  * @see WebsiteModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class WebsiteModelImpl extends BaseModelImpl<Website>
 	implements WebsiteModel {
@@ -331,7 +329,6 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -342,7 +339,6 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -366,7 +362,6 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getWebsiteId() {
 		return _websiteId;
@@ -377,7 +372,6 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 		_websiteId = websiteId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -400,7 +394,6 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -439,7 +432,6 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -455,7 +447,6 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -468,7 +459,6 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -505,7 +495,6 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -528,7 +517,6 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getClassPK() {
 		return _classPK;
@@ -551,7 +539,6 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 		return _originalClassPK;
 	}
 
-	@JSON
 	@Override
 	public String getUrl() {
 		if (_url == null) {
@@ -567,7 +554,6 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 		_url = url;
 	}
 
-	@JSON
 	@Override
 	public long getTypeId() {
 		return _typeId;
@@ -578,13 +564,11 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 		_typeId = typeId;
 	}
 
-	@JSON
 	@Override
 	public boolean getPrimary() {
 		return _primary;
 	}
 
-	@JSON
 	@Override
 	public boolean isPrimary() {
 		return _primary;
@@ -607,7 +591,6 @@ public class WebsiteModelImpl extends BaseModelImpl<Website>
 		return _originalPrimary;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

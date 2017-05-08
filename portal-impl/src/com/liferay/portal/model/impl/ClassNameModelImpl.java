@@ -20,7 +20,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.ClassNameModel;
@@ -56,7 +55,6 @@ import java.util.Map;
  * @see ClassNameModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class ClassNameModelImpl extends BaseModelImpl<ClassName>
 	implements ClassNameModel {
@@ -209,7 +207,6 @@ public class ClassNameModelImpl extends BaseModelImpl<ClassName>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -240,7 +237,6 @@ public class ClassNameModelImpl extends BaseModelImpl<ClassName>
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -251,7 +247,6 @@ public class ClassNameModelImpl extends BaseModelImpl<ClassName>
 		_classNameId = classNameId;
 	}
 
-	@JSON
 	@Override
 	public String getValue() {
 		if (_value == null) {

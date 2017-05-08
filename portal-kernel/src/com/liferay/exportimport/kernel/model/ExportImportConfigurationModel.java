@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.GroupedModel;
@@ -46,6 +47,7 @@ import java.util.Date;
  * @see com.liferay.portlet.exportimport.model.impl.ExportImportConfigurationModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface ExportImportConfigurationModel extends BaseModel<ExportImportConfiguration>,
 	GroupedModel, MVCCModel, ShardedModel, TrashedModel, WorkflowedModel {
@@ -75,6 +77,7 @@ public interface ExportImportConfigurationModel extends BaseModel<ExportImportCo
 	 * @return the mvcc version of this export import configuration
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -90,6 +93,7 @@ public interface ExportImportConfigurationModel extends BaseModel<ExportImportCo
 	 *
 	 * @return the export import configuration ID of this export import configuration
 	 */
+	@JSON
 	public long getExportImportConfigurationId();
 
 	/**
@@ -105,6 +109,7 @@ public interface ExportImportConfigurationModel extends BaseModel<ExportImportCo
 	 * @return the group ID of this export import configuration
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -121,6 +126,7 @@ public interface ExportImportConfigurationModel extends BaseModel<ExportImportCo
 	 * @return the company ID of this export import configuration
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -137,6 +143,7 @@ public interface ExportImportConfigurationModel extends BaseModel<ExportImportCo
 	 * @return the user ID of this export import configuration
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -170,6 +177,7 @@ public interface ExportImportConfigurationModel extends BaseModel<ExportImportCo
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -186,6 +194,7 @@ public interface ExportImportConfigurationModel extends BaseModel<ExportImportCo
 	 * @return the create date of this export import configuration
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -202,6 +211,7 @@ public interface ExportImportConfigurationModel extends BaseModel<ExportImportCo
 	 * @return the modified date of this export import configuration
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -218,6 +228,7 @@ public interface ExportImportConfigurationModel extends BaseModel<ExportImportCo
 	 * @return the name of this export import configuration
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -233,6 +244,7 @@ public interface ExportImportConfigurationModel extends BaseModel<ExportImportCo
 	 * @return the description of this export import configuration
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -247,6 +259,7 @@ public interface ExportImportConfigurationModel extends BaseModel<ExportImportCo
 	 *
 	 * @return the type of this export import configuration
 	 */
+	@JSON
 	public int getType();
 
 	/**
@@ -262,6 +275,7 @@ public interface ExportImportConfigurationModel extends BaseModel<ExportImportCo
 	 * @return the settings of this export import configuration
 	 */
 	@AutoEscape
+	@JSON
 	public String getSettings();
 
 	/**
@@ -277,6 +291,7 @@ public interface ExportImportConfigurationModel extends BaseModel<ExportImportCo
 	 * @return the status of this export import configuration
 	 */
 	@Override
+	@JSON
 	public int getStatus();
 
 	/**
@@ -293,6 +308,7 @@ public interface ExportImportConfigurationModel extends BaseModel<ExportImportCo
 	 * @return the status by user ID of this export import configuration
 	 */
 	@Override
+	@JSON
 	public long getStatusByUserId();
 
 	/**
@@ -326,6 +342,7 @@ public interface ExportImportConfigurationModel extends BaseModel<ExportImportCo
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getStatusByUserName();
 
 	/**
@@ -342,6 +359,7 @@ public interface ExportImportConfigurationModel extends BaseModel<ExportImportCo
 	 * @return the status date of this export import configuration
 	 */
 	@Override
+	@JSON
 	public Date getStatusDate();
 
 	/**

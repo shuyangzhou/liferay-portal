@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ import java.util.Date;
  * @see com.liferay.portal.model.impl.LayoutSetBranchModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	GroupedModel, MVCCModel, ShardedModel {
@@ -67,6 +69,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 * @return the mvcc version of this layout set branch
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -82,6 +85,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 *
 	 * @return the layout set branch ID of this layout set branch
 	 */
+	@JSON
 	public long getLayoutSetBranchId();
 
 	/**
@@ -97,6 +101,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 * @return the group ID of this layout set branch
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -113,6 +118,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 * @return the company ID of this layout set branch
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -129,6 +135,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 * @return the user ID of this layout set branch
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -162,6 +169,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -178,6 +186,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 * @return the create date of this layout set branch
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -194,6 +203,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 * @return the modified date of this layout set branch
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -209,6 +219,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 *
 	 * @return the private layout of this layout set branch
 	 */
+	@JSON
 	public boolean getPrivateLayout();
 
 	/**
@@ -216,6 +227,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 *
 	 * @return <code>true</code> if this layout set branch is private layout; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isPrivateLayout();
 
 	/**
@@ -231,6 +243,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 * @return the name of this layout set branch
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -246,6 +259,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 * @return the description of this layout set branch
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -260,6 +274,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 *
 	 * @return the master of this layout set branch
 	 */
+	@JSON
 	public boolean getMaster();
 
 	/**
@@ -267,6 +282,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 *
 	 * @return <code>true</code> if this layout set branch is master; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isMaster();
 
 	/**
@@ -281,6 +297,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 *
 	 * @return the logo ID of this layout set branch
 	 */
+	@JSON
 	public long getLogoId();
 
 	/**
@@ -296,6 +313,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 * @return the theme ID of this layout set branch
 	 */
 	@AutoEscape
+	@JSON
 	public String getThemeId();
 
 	/**
@@ -311,6 +329,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 * @return the color scheme ID of this layout set branch
 	 */
 	@AutoEscape
+	@JSON
 	public String getColorSchemeId();
 
 	/**
@@ -326,6 +345,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 * @return the css of this layout set branch
 	 */
 	@AutoEscape
+	@JSON
 	public String getCss();
 
 	/**
@@ -341,6 +361,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 * @return the settings of this layout set branch
 	 */
 	@AutoEscape
+	@JSON
 	public String getSettings();
 
 	/**
@@ -356,6 +377,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 * @return the layout set prototype uuid of this layout set branch
 	 */
 	@AutoEscape
+	@JSON
 	public String getLayoutSetPrototypeUuid();
 
 	/**
@@ -370,6 +392,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 *
 	 * @return the layout set prototype link enabled of this layout set branch
 	 */
+	@JSON
 	public boolean getLayoutSetPrototypeLinkEnabled();
 
 	/**
@@ -377,6 +400,7 @@ public interface LayoutSetBranchModel extends BaseModel<LayoutSetBranch>,
 	 *
 	 * @return <code>true</code> if this layout set branch is layout set prototype link enabled; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isLayoutSetPrototypeLinkEnabled();
 
 	/**

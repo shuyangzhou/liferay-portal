@@ -28,7 +28,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.TrashedModel;
@@ -67,7 +66,6 @@ import java.util.Map;
  * @see DLFileShortcutModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 	implements DLFileShortcutModel {
@@ -376,7 +374,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -400,7 +397,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getFileShortcutId() {
 		return _fileShortcutId;
@@ -411,7 +407,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		_fileShortcutId = fileShortcutId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -434,7 +429,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -457,7 +451,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -484,7 +477,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -500,7 +492,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -511,7 +502,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -528,7 +518,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getRepositoryId() {
 		return _repositoryId;
@@ -539,7 +528,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		_repositoryId = repositoryId;
 	}
 
-	@JSON
 	@Override
 	public long getFolderId() {
 		return _folderId;
@@ -562,7 +550,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		return _originalFolderId;
 	}
 
-	@JSON
 	@Override
 	public long getToFileEntryId() {
 		return _toFileEntryId;
@@ -585,7 +572,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		return _originalToFileEntryId;
 	}
 
-	@JSON
 	@Override
 	public String getTreePath() {
 		if (_treePath == null) {
@@ -601,13 +587,11 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		_treePath = treePath;
 	}
 
-	@JSON
 	@Override
 	public boolean getActive() {
 		return _active;
 	}
 
-	@JSON
 	@Override
 	public boolean isActive() {
 		return _active;
@@ -630,7 +614,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		return _originalActive;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;
@@ -641,7 +624,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		_lastPublishDate = lastPublishDate;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;
@@ -664,7 +646,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		return _originalStatus;
 	}
 
-	@JSON
 	@Override
 	public long getStatusByUserId() {
 		return _statusByUserId;
@@ -691,7 +672,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
@@ -707,7 +687,6 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		_statusByUserName = statusByUserName;
 	}
 
-	@JSON
 	@Override
 	public Date getStatusDate() {
 		return _statusDate;

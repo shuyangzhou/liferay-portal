@@ -28,7 +28,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -69,7 +68,6 @@ import java.util.TreeSet;
  * @see AssetCategoryModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 	implements AssetCategoryModel {
@@ -369,7 +367,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -393,7 +390,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getCategoryId() {
 		return _categoryId;
@@ -404,7 +400,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		_categoryId = categoryId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -427,7 +422,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -450,7 +444,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -477,7 +470,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -493,7 +485,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -504,7 +495,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -521,7 +511,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getParentCategoryId() {
 		return _parentCategoryId;
@@ -544,7 +533,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		return _originalParentCategoryId;
 	}
 
-	@JSON
 	@Override
 	public long getLeftCategoryId() {
 		return _leftCategoryId;
@@ -555,7 +543,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		_leftCategoryId = leftCategoryId;
 	}
 
-	@JSON
 	@Override
 	public long getRightCategoryId() {
 		return _rightCategoryId;
@@ -566,7 +553,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		_rightCategoryId = rightCategoryId;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -592,7 +578,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getTitle() {
 		if (_title == null) {
@@ -633,7 +618,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		return _titleCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getTitleCurrentValue() {
 		Locale locale = getLocale(_titleCurrentLanguageId);
@@ -691,7 +675,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 				"Title", LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -732,7 +715,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		return _descriptionCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getDescriptionCurrentValue() {
 		Locale locale = getLocale(_descriptionCurrentLanguageId);
@@ -794,7 +776,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public long getVocabularyId() {
 		return _vocabularyId;
@@ -817,7 +798,6 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		return _originalVocabularyId;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

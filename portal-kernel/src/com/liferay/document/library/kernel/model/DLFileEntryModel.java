@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -45,6 +46,7 @@ import java.util.Date;
  * @see com.liferay.portlet.documentlibrary.model.impl.DLFileEntryModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	ShardedModel, StagedGroupedModel, TrashedModel {
@@ -75,6 +77,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -90,6 +93,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 *
 	 * @return the file entry ID of this document library file entry
 	 */
+	@JSON
 	public long getFileEntryId();
 
 	/**
@@ -105,6 +109,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the group ID of this document library file entry
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -121,6 +126,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the company ID of this document library file entry
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -137,6 +143,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the user ID of this document library file entry
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -170,6 +177,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -186,6 +194,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the create date of this document library file entry
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -202,6 +211,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the modified date of this document library file entry
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -228,6 +238,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the class name ID of this document library file entry
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -244,6 +255,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the class pk of this document library file entry
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -259,6 +271,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 *
 	 * @return the repository ID of this document library file entry
 	 */
+	@JSON
 	public long getRepositoryId();
 
 	/**
@@ -273,6 +286,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 *
 	 * @return the folder ID of this document library file entry
 	 */
+	@JSON
 	public long getFolderId();
 
 	/**
@@ -288,6 +302,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the tree path of this document library file entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getTreePath();
 
 	/**
@@ -303,6 +318,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the name of this document library file entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -318,6 +334,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the file name of this document library file entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getFileName();
 
 	/**
@@ -333,6 +350,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the extension of this document library file entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getExtension();
 
 	/**
@@ -348,6 +366,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the mime type of this document library file entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getMimeType();
 
 	/**
@@ -363,6 +382,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the title of this document library file entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getTitle();
 
 	/**
@@ -378,6 +398,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the description of this document library file entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -393,6 +414,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the extra settings of this document library file entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getExtraSettings();
 
 	/**
@@ -407,6 +429,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 *
 	 * @return the file entry type ID of this document library file entry
 	 */
+	@JSON
 	public long getFileEntryTypeId();
 
 	/**
@@ -422,6 +445,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the version of this document library file entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getVersion();
 
 	/**
@@ -436,6 +460,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 *
 	 * @return the size of this document library file entry
 	 */
+	@JSON
 	public long getSize();
 
 	/**
@@ -450,6 +475,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 *
 	 * @return the read count of this document library file entry
 	 */
+	@JSON
 	public int getReadCount();
 
 	/**
@@ -464,6 +490,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 *
 	 * @return the small image ID of this document library file entry
 	 */
+	@JSON
 	public long getSmallImageId();
 
 	/**
@@ -478,6 +505,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 *
 	 * @return the large image ID of this document library file entry
 	 */
+	@JSON
 	public long getLargeImageId();
 
 	/**
@@ -492,6 +520,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 *
 	 * @return the custom1 image ID of this document library file entry
 	 */
+	@JSON
 	public long getCustom1ImageId();
 
 	/**
@@ -506,6 +535,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 *
 	 * @return the custom2 image ID of this document library file entry
 	 */
+	@JSON
 	public long getCustom2ImageId();
 
 	/**
@@ -520,6 +550,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 *
 	 * @return the manual check in required of this document library file entry
 	 */
+	@JSON
 	public boolean getManualCheckInRequired();
 
 	/**
@@ -527,6 +558,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 *
 	 * @return <code>true</code> if this document library file entry is manual check in required; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isManualCheckInRequired();
 
 	/**
@@ -542,6 +574,7 @@ public interface DLFileEntryModel extends AttachedModel, BaseModel<DLFileEntry>,
 	 * @return the last publish date of this document library file entry
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

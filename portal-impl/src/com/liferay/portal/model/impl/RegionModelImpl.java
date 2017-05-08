@@ -20,7 +20,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.model.RegionModel;
@@ -54,7 +53,6 @@ import java.util.Map;
  * @see RegionModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class RegionModelImpl extends BaseModelImpl<Region>
 	implements RegionModel {
@@ -239,7 +237,6 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -250,7 +247,6 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getRegionId() {
 		return _regionId;
@@ -261,7 +257,6 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 		_regionId = regionId;
 	}
 
-	@JSON
 	@Override
 	public long getCountryId() {
 		return _countryId;
@@ -284,7 +279,6 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 		return _originalCountryId;
 	}
 
-	@JSON
 	@Override
 	public String getRegionCode() {
 		if (_regionCode == null) {
@@ -310,7 +304,6 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 		return GetterUtil.getString(_originalRegionCode);
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -328,13 +321,11 @@ public class RegionModelImpl extends BaseModelImpl<Region>
 		_name = name;
 	}
 
-	@JSON
 	@Override
 	public boolean getActive() {
 		return _active;
 	}
 
-	@JSON
 	@Override
 	public boolean isActive() {
 		return _active;

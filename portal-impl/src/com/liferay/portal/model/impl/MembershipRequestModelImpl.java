@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MembershipRequest;
 import com.liferay.portal.kernel.model.MembershipRequestModel;
@@ -59,7 +58,6 @@ import java.util.Map;
  * @see MembershipRequestModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 	implements MembershipRequestModel {
@@ -295,7 +293,6 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -306,7 +303,6 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getMembershipRequestId() {
 		return _membershipRequestId;
@@ -317,7 +313,6 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 		_membershipRequestId = membershipRequestId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -340,7 +335,6 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -351,7 +345,6 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -390,7 +383,6 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -403,7 +395,6 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public String getComments() {
 		if (_comments == null) {
@@ -419,7 +410,6 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 		_comments = comments;
 	}
 
-	@JSON
 	@Override
 	public String getReplyComments() {
 		if (_replyComments == null) {
@@ -435,7 +425,6 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 		_replyComments = replyComments;
 	}
 
-	@JSON
 	@Override
 	public Date getReplyDate() {
 		return _replyDate;
@@ -446,7 +435,6 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 		_replyDate = replyDate;
 	}
 
-	@JSON
 	@Override
 	public long getReplierUserId() {
 		return _replierUserId;
@@ -473,7 +461,6 @@ public class MembershipRequestModelImpl extends BaseModelImpl<MembershipRequest>
 	public void setReplierUserUuid(String replierUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public long getStatusId() {
 		return _statusId;

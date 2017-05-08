@@ -20,7 +20,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletModel;
@@ -54,7 +53,6 @@ import java.util.Map;
  * @see PortletModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class PortletModelImpl extends BaseModelImpl<Portlet>
 	implements PortletModel {
@@ -238,7 +236,6 @@ public class PortletModelImpl extends BaseModelImpl<Portlet>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -249,7 +246,6 @@ public class PortletModelImpl extends BaseModelImpl<Portlet>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getId() {
 		return _id;
@@ -260,7 +256,6 @@ public class PortletModelImpl extends BaseModelImpl<Portlet>
 		_id = id;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -283,7 +278,6 @@ public class PortletModelImpl extends BaseModelImpl<Portlet>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public String getPortletId() {
 		if (_portletId == null) {
@@ -309,7 +303,6 @@ public class PortletModelImpl extends BaseModelImpl<Portlet>
 		return GetterUtil.getString(_originalPortletId);
 	}
 
-	@JSON
 	@Override
 	public String getRoles() {
 		if (_roles == null) {
@@ -325,13 +318,11 @@ public class PortletModelImpl extends BaseModelImpl<Portlet>
 		_roles = roles;
 	}
 
-	@JSON
 	@Override
 	public boolean getActive() {
 		return _active;
 	}
 
-	@JSON
 	@Override
 	public boolean isActive() {
 		return _active;

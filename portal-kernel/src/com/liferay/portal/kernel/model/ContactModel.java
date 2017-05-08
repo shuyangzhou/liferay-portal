@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ import java.util.Date;
  * @see com.liferay.portal.model.impl.ContactModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface ContactModel extends AttachedModel, AuditedModel,
 	BaseModel<Contact>, MVCCModel, ShardedModel {
@@ -67,6 +69,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the mvcc version of this contact
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -82,6 +85,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 *
 	 * @return the contact ID of this contact
 	 */
+	@JSON
 	public long getContactId();
 
 	/**
@@ -97,6 +101,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the company ID of this contact
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -113,6 +118,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the user ID of this contact
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -146,6 +152,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -162,6 +169,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the create date of this contact
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -178,6 +186,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the modified date of this contact
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -204,6 +213,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the class name ID of this contact
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -220,6 +230,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the class pk of this contact
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -235,6 +246,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 *
 	 * @return the account ID of this contact
 	 */
+	@JSON
 	public long getAccountId();
 
 	/**
@@ -249,6 +261,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 *
 	 * @return the parent contact ID of this contact
 	 */
+	@JSON
 	public long getParentContactId();
 
 	/**
@@ -264,6 +277,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the email address of this contact
 	 */
 	@AutoEscape
+	@JSON
 	public String getEmailAddress();
 
 	/**
@@ -279,6 +293,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the first name of this contact
 	 */
 	@AutoEscape
+	@JSON
 	public String getFirstName();
 
 	/**
@@ -294,6 +309,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the middle name of this contact
 	 */
 	@AutoEscape
+	@JSON
 	public String getMiddleName();
 
 	/**
@@ -309,6 +325,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the last name of this contact
 	 */
 	@AutoEscape
+	@JSON
 	public String getLastName();
 
 	/**
@@ -323,6 +340,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 *
 	 * @return the prefix ID of this contact
 	 */
+	@JSON
 	public long getPrefixId();
 
 	/**
@@ -337,6 +355,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 *
 	 * @return the suffix ID of this contact
 	 */
+	@JSON
 	public long getSuffixId();
 
 	/**
@@ -351,6 +370,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 *
 	 * @return the male of this contact
 	 */
+	@JSON
 	public boolean getMale();
 
 	/**
@@ -358,6 +378,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 *
 	 * @return <code>true</code> if this contact is male; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isMale();
 
 	/**
@@ -372,6 +393,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 *
 	 * @return the birthday of this contact
 	 */
+	@JSON
 	public Date getBirthday();
 
 	/**
@@ -387,6 +409,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the sms sn of this contact
 	 */
 	@AutoEscape
+	@JSON
 	public String getSmsSn();
 
 	/**
@@ -402,6 +425,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the facebook sn of this contact
 	 */
 	@AutoEscape
+	@JSON
 	public String getFacebookSn();
 
 	/**
@@ -417,6 +441,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the jabber sn of this contact
 	 */
 	@AutoEscape
+	@JSON
 	public String getJabberSn();
 
 	/**
@@ -432,6 +457,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the skype sn of this contact
 	 */
 	@AutoEscape
+	@JSON
 	public String getSkypeSn();
 
 	/**
@@ -447,6 +473,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the twitter sn of this contact
 	 */
 	@AutoEscape
+	@JSON
 	public String getTwitterSn();
 
 	/**
@@ -462,6 +489,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the employee status ID of this contact
 	 */
 	@AutoEscape
+	@JSON
 	public String getEmployeeStatusId();
 
 	/**
@@ -477,6 +505,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the employee number of this contact
 	 */
 	@AutoEscape
+	@JSON
 	public String getEmployeeNumber();
 
 	/**
@@ -492,6 +521,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the job title of this contact
 	 */
 	@AutoEscape
+	@JSON
 	public String getJobTitle();
 
 	/**
@@ -507,6 +537,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the job class of this contact
 	 */
 	@AutoEscape
+	@JSON
 	public String getJobClass();
 
 	/**
@@ -522,6 +553,7 @@ public interface ContactModel extends AttachedModel, AuditedModel,
 	 * @return the hours of operation of this contact
 	 */
 	@AutoEscape
+	@JSON
 	public String getHoursOfOperation();
 
 	/**

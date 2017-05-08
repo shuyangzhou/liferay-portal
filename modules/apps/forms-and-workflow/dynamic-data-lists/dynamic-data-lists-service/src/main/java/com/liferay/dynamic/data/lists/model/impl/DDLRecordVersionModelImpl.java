@@ -25,7 +25,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -60,7 +59,6 @@ import java.util.Map;
  * @see DDLRecordVersionModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 	implements DDLRecordVersionModel {
@@ -348,7 +346,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getRecordVersionId() {
 		return _recordVersionId;
@@ -359,7 +356,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 		_recordVersionId = recordVersionId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -370,7 +366,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 		_groupId = groupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -381,7 +376,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -408,7 +402,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -424,7 +417,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -435,7 +427,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public long getDDMStorageId() {
 		return _DDMStorageId;
@@ -446,7 +437,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 		_DDMStorageId = DDMStorageId;
 	}
 
-	@JSON
 	@Override
 	public long getRecordSetId() {
 		return _recordSetId;
@@ -469,7 +459,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 		return _originalRecordSetId;
 	}
 
-	@JSON
 	@Override
 	public String getRecordSetVersion() {
 		if (_recordSetVersion == null) {
@@ -495,7 +484,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 		return GetterUtil.getString(_originalRecordSetVersion);
 	}
 
-	@JSON
 	@Override
 	public long getRecordId() {
 		return _recordId;
@@ -518,7 +506,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 		return _originalRecordId;
 	}
 
-	@JSON
 	@Override
 	public String getVersion() {
 		if (_version == null) {
@@ -544,7 +531,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 		return GetterUtil.getString(_originalVersion);
 	}
 
-	@JSON
 	@Override
 	public int getDisplayIndex() {
 		return _displayIndex;
@@ -555,7 +541,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 		_displayIndex = displayIndex;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;
@@ -578,7 +563,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 		return _originalStatus;
 	}
 
-	@JSON
 	@Override
 	public long getStatusByUserId() {
 		return _statusByUserId;
@@ -605,7 +589,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
@@ -621,7 +604,6 @@ public class DDLRecordVersionModelImpl extends BaseModelImpl<DDLRecordVersion>
 		_statusByUserName = statusByUserName;
 	}
 
-	@JSON
 	@Override
 	public Date getStatusDate() {
 		return _statusDate;

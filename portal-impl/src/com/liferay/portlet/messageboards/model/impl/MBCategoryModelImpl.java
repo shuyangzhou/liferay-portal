@@ -28,7 +28,6 @@ import com.liferay.message.boards.kernel.model.MBCategorySoap;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.TrashedModel;
@@ -67,7 +66,6 @@ import java.util.Map;
  * @see MBCategoryModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 	implements MBCategoryModel {
@@ -395,7 +393,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -419,7 +416,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getCategoryId() {
 		return _categoryId;
@@ -442,7 +438,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		return _originalCategoryId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -465,7 +460,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -488,7 +482,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -515,7 +508,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -531,7 +523,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -542,7 +533,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -559,7 +549,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getParentCategoryId() {
 		return _parentCategoryId;
@@ -582,7 +571,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		return _originalParentCategoryId;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -600,7 +588,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		_name = name;
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -616,7 +603,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		_description = description;
 	}
 
-	@JSON
 	@Override
 	public String getDisplayStyle() {
 		if (_displayStyle == null) {
@@ -632,7 +618,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		_displayStyle = displayStyle;
 	}
 
-	@JSON
 	@Override
 	public int getThreadCount() {
 		return _threadCount;
@@ -643,7 +628,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		_threadCount = threadCount;
 	}
 
-	@JSON
 	@Override
 	public int getMessageCount() {
 		return _messageCount;
@@ -654,7 +638,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		_messageCount = messageCount;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPostDate() {
 		return _lastPostDate;
@@ -665,7 +648,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		_lastPostDate = lastPostDate;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;
@@ -676,7 +658,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		_lastPublishDate = lastPublishDate;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;
@@ -699,7 +680,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		return _originalStatus;
 	}
 
-	@JSON
 	@Override
 	public long getStatusByUserId() {
 		return _statusByUserId;
@@ -726,7 +706,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
@@ -742,7 +721,6 @@ public class MBCategoryModelImpl extends BaseModelImpl<MBCategory>
 		_statusByUserName = statusByUserName;
 	}
 
-	@JSON
 	@Override
 	public Date getStatusDate() {
 		return _statusDate;

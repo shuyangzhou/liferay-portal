@@ -25,7 +25,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -59,7 +58,6 @@ import java.util.Map;
  * @see AssetCategoryPropertyModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryProperty>
 	implements AssetCategoryPropertyModel {
@@ -275,7 +273,6 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 		}
 	}
 
-	@JSON
 	@Override
 	public long getCategoryPropertyId() {
 		return _categoryPropertyId;
@@ -286,7 +283,6 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 		_categoryPropertyId = categoryPropertyId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -309,7 +305,6 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -336,7 +331,6 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -352,7 +346,6 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -363,7 +356,6 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -380,7 +372,6 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getCategoryId() {
 		return _categoryId;
@@ -403,7 +394,6 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 		return _originalCategoryId;
 	}
 
-	@JSON
 	@Override
 	public String getKey() {
 		if (_key == null) {
@@ -429,7 +419,6 @@ public class AssetCategoryPropertyModelImpl extends BaseModelImpl<AssetCategoryP
 		return GetterUtil.getString(_originalKey);
 	}
 
-	@JSON
 	@Override
 	public String getValue() {
 		if (_value == null) {

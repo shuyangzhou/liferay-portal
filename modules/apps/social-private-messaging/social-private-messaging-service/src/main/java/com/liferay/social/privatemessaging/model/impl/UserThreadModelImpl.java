@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -60,7 +59,6 @@ import java.util.Map;
  * @see UserThreadModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class UserThreadModelImpl extends BaseModelImpl<UserThread>
 	implements UserThreadModel {
@@ -286,7 +284,6 @@ public class UserThreadModelImpl extends BaseModelImpl<UserThread>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getUserThreadId() {
 		return _userThreadId;
@@ -297,7 +294,6 @@ public class UserThreadModelImpl extends BaseModelImpl<UserThread>
 		_userThreadId = userThreadId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -308,7 +304,6 @@ public class UserThreadModelImpl extends BaseModelImpl<UserThread>
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -347,7 +342,6 @@ public class UserThreadModelImpl extends BaseModelImpl<UserThread>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -363,7 +357,6 @@ public class UserThreadModelImpl extends BaseModelImpl<UserThread>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -374,7 +367,6 @@ public class UserThreadModelImpl extends BaseModelImpl<UserThread>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -393,7 +385,6 @@ public class UserThreadModelImpl extends BaseModelImpl<UserThread>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getMbThreadId() {
 		return _mbThreadId;
@@ -416,7 +407,6 @@ public class UserThreadModelImpl extends BaseModelImpl<UserThread>
 		return _originalMbThreadId;
 	}
 
-	@JSON
 	@Override
 	public long getTopMBMessageId() {
 		return _topMBMessageId;
@@ -427,13 +417,11 @@ public class UserThreadModelImpl extends BaseModelImpl<UserThread>
 		_topMBMessageId = topMBMessageId;
 	}
 
-	@JSON
 	@Override
 	public boolean getRead() {
 		return _read;
 	}
 
-	@JSON
 	@Override
 	public boolean isRead() {
 		return _read;
@@ -456,13 +444,11 @@ public class UserThreadModelImpl extends BaseModelImpl<UserThread>
 		return _originalRead;
 	}
 
-	@JSON
 	@Override
 	public boolean getDeleted() {
 		return _deleted;
 	}
 
-	@JSON
 	@Override
 	public boolean isDeleted() {
 		return _deleted;

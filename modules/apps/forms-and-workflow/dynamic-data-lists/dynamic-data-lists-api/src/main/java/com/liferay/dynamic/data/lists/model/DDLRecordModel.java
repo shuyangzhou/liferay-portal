@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.dynamic.data.lists.model.impl.DDLRecordModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	StagedGroupedModel {
@@ -72,6 +74,7 @@ public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -87,6 +90,7 @@ public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	 *
 	 * @return the record ID of this ddl record
 	 */
+	@JSON
 	public long getRecordId();
 
 	/**
@@ -102,6 +106,7 @@ public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	 * @return the group ID of this ddl record
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -118,6 +123,7 @@ public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	 * @return the company ID of this ddl record
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -134,6 +140,7 @@ public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	 * @return the user ID of this ddl record
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -167,6 +174,7 @@ public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -182,6 +190,7 @@ public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	 *
 	 * @return the version user ID of this ddl record
 	 */
+	@JSON
 	public long getVersionUserId();
 
 	/**
@@ -211,6 +220,7 @@ public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	 * @return the version user name of this ddl record
 	 */
 	@AutoEscape
+	@JSON
 	public String getVersionUserName();
 
 	/**
@@ -226,6 +236,7 @@ public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	 * @return the create date of this ddl record
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -242,6 +253,7 @@ public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	 * @return the modified date of this ddl record
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -257,6 +269,7 @@ public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	 *
 	 * @return the ddm storage ID of this ddl record
 	 */
+	@JSON
 	public long getDDMStorageId();
 
 	/**
@@ -271,6 +284,7 @@ public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	 *
 	 * @return the record set ID of this ddl record
 	 */
+	@JSON
 	public long getRecordSetId();
 
 	/**
@@ -286,6 +300,7 @@ public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	 * @return the record set version of this ddl record
 	 */
 	@AutoEscape
+	@JSON
 	public String getRecordSetVersion();
 
 	/**
@@ -301,6 +316,7 @@ public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	 * @return the version of this ddl record
 	 */
 	@AutoEscape
+	@JSON
 	public String getVersion();
 
 	/**
@@ -315,6 +331,7 @@ public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	 *
 	 * @return the display index of this ddl record
 	 */
+	@JSON
 	public int getDisplayIndex();
 
 	/**
@@ -330,6 +347,7 @@ public interface DDLRecordModel extends BaseModel<DDLRecord>, ShardedModel,
 	 * @return the last publish date of this ddl record
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

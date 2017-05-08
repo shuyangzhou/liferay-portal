@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -41,6 +42,7 @@ import java.util.Map;
  * @see com.liferay.portal.model.impl.RoleModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedModel,
 	MVCCModel, ShardedModel, StagedAuditedModel {
@@ -70,6 +72,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	 * @return the mvcc version of this role
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -87,6 +90,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -102,6 +106,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	 *
 	 * @return the role ID of this role
 	 */
+	@JSON
 	public long getRoleId();
 
 	/**
@@ -117,6 +122,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	 * @return the company ID of this role
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -133,6 +139,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	 * @return the user ID of this role
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -166,6 +173,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -182,6 +190,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	 * @return the create date of this role
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -198,6 +207,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	 * @return the modified date of this role
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -224,6 +234,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	 * @return the class name ID of this role
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -240,6 +251,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	 * @return the class pk of this role
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -256,6 +268,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	 * @return the name of this role
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -270,6 +283,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	 *
 	 * @return the title of this role
 	 */
+	@JSON
 	public String getTitle();
 
 	/**
@@ -314,6 +328,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	public String getTitleCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getTitleCurrentValue();
 
 	/**
@@ -369,6 +384,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	 *
 	 * @return the description of this role
 	 */
+	@JSON
 	public String getDescription();
 
 	/**
@@ -413,6 +429,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	public String getDescriptionCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getDescriptionCurrentValue();
 
 	/**
@@ -470,6 +487,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	 *
 	 * @return the type of this role
 	 */
+	@JSON
 	public int getType();
 
 	/**
@@ -485,6 +503,7 @@ public interface RoleModel extends AttachedModel, BaseModel<Role>, LocalizedMode
 	 * @return the subtype of this role
 	 */
 	@AutoEscape
+	@JSON
 	public String getSubtype();
 
 	/**

@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.opensocial.model.impl.GadgetModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface GadgetModel extends BaseModel<Gadget>, ShardedModel, StagedModel {
 	/*
@@ -71,6 +73,7 @@ public interface GadgetModel extends BaseModel<Gadget>, ShardedModel, StagedMode
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -86,6 +89,7 @@ public interface GadgetModel extends BaseModel<Gadget>, ShardedModel, StagedMode
 	 *
 	 * @return the gadget ID of this gadget
 	 */
+	@JSON
 	public long getGadgetId();
 
 	/**
@@ -101,6 +105,7 @@ public interface GadgetModel extends BaseModel<Gadget>, ShardedModel, StagedMode
 	 * @return the company ID of this gadget
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -117,6 +122,7 @@ public interface GadgetModel extends BaseModel<Gadget>, ShardedModel, StagedMode
 	 * @return the create date of this gadget
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -133,6 +139,7 @@ public interface GadgetModel extends BaseModel<Gadget>, ShardedModel, StagedMode
 	 * @return the modified date of this gadget
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -149,6 +156,7 @@ public interface GadgetModel extends BaseModel<Gadget>, ShardedModel, StagedMode
 	 * @return the name of this gadget
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -164,6 +172,7 @@ public interface GadgetModel extends BaseModel<Gadget>, ShardedModel, StagedMode
 	 * @return the url of this gadget
 	 */
 	@AutoEscape
+	@JSON
 	public String getUrl();
 
 	/**
@@ -179,6 +188,7 @@ public interface GadgetModel extends BaseModel<Gadget>, ShardedModel, StagedMode
 	 * @return the portlet category names of this gadget
 	 */
 	@AutoEscape
+	@JSON
 	public String getPortletCategoryNames();
 
 	/**
@@ -193,6 +203,7 @@ public interface GadgetModel extends BaseModel<Gadget>, ShardedModel, StagedMode
 	 *
 	 * @return the last publish date of this gadget
 	 */
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.LayoutSetBranch;
 import com.liferay.portal.kernel.model.LayoutSetBranchModel;
@@ -58,7 +57,6 @@ import java.util.Map;
  * @see LayoutSetBranchModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 	implements LayoutSetBranchModel {
@@ -377,7 +375,6 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -388,7 +385,6 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getLayoutSetBranchId() {
 		return _layoutSetBranchId;
@@ -399,7 +395,6 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		_layoutSetBranchId = layoutSetBranchId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -422,7 +417,6 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -433,7 +427,6 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -460,7 +453,6 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -476,7 +468,6 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -487,7 +478,6 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -504,13 +494,11 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public boolean getPrivateLayout() {
 		return _privateLayout;
 	}
 
-	@JSON
 	@Override
 	public boolean isPrivateLayout() {
 		return _privateLayout;
@@ -533,7 +521,6 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		return _originalPrivateLayout;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -559,7 +546,6 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -575,13 +561,11 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		_description = description;
 	}
 
-	@JSON
 	@Override
 	public boolean getMaster() {
 		return _master;
 	}
 
-	@JSON
 	@Override
 	public boolean isMaster() {
 		return _master;
@@ -604,7 +588,6 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		return _originalMaster;
 	}
 
-	@JSON
 	@Override
 	public long getLogoId() {
 		return _logoId;
@@ -615,7 +598,6 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		_logoId = logoId;
 	}
 
-	@JSON
 	@Override
 	public String getThemeId() {
 		if (_themeId == null) {
@@ -631,7 +613,6 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		_themeId = themeId;
 	}
 
-	@JSON
 	@Override
 	public String getColorSchemeId() {
 		if (_colorSchemeId == null) {
@@ -647,7 +628,6 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		_colorSchemeId = colorSchemeId;
 	}
 
-	@JSON
 	@Override
 	public String getCss() {
 		if (_css == null) {
@@ -663,7 +643,6 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		_css = css;
 	}
 
-	@JSON
 	@Override
 	public String getSettings() {
 		if (_settings == null) {
@@ -679,7 +658,6 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		_settings = settings;
 	}
 
-	@JSON
 	@Override
 	public String getLayoutSetPrototypeUuid() {
 		if (_layoutSetPrototypeUuid == null) {
@@ -695,13 +673,11 @@ public class LayoutSetBranchModelImpl extends BaseModelImpl<LayoutSetBranch>
 		_layoutSetPrototypeUuid = layoutSetPrototypeUuid;
 	}
 
-	@JSON
 	@Override
 	public boolean getLayoutSetPrototypeLinkEnabled() {
 		return _layoutSetPrototypeLinkEnabled;
 	}
 
-	@JSON
 	@Override
 	public boolean isLayoutSetPrototypeLinkEnabled() {
 		return _layoutSetPrototypeLinkEnabled;

@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -59,7 +58,6 @@ import java.util.Map;
  * @see SyncDLObjectModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 	implements SyncDLObjectModel {
@@ -469,7 +467,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getSyncDLObjectId() {
 		return _syncDLObjectId;
@@ -480,7 +477,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_syncDLObjectId = syncDLObjectId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -491,7 +487,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -518,7 +513,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -534,7 +528,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public long getCreateTime() {
 		return _createTime;
@@ -545,7 +538,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_createTime = createTime;
 	}
 
-	@JSON
 	@Override
 	public long getModifiedTime() {
 		return _modifiedTime;
@@ -568,7 +560,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		return _originalModifiedTime;
 	}
 
-	@JSON
 	@Override
 	public long getRepositoryId() {
 		return _repositoryId;
@@ -591,7 +582,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		return _originalRepositoryId;
 	}
 
-	@JSON
 	@Override
 	public long getParentFolderId() {
 		return _parentFolderId;
@@ -614,7 +604,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		return _originalParentFolderId;
 	}
 
-	@JSON(include = false)
 	@Override
 	public String getTreePath() {
 		if (_treePath == null) {
@@ -640,7 +629,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		return GetterUtil.getString(_originalTreePath);
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -656,7 +644,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_name = name;
 	}
 
-	@JSON
 	@Override
 	public String getExtension() {
 		if (_extension == null) {
@@ -672,7 +659,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_extension = extension;
 	}
 
-	@JSON
 	@Override
 	public String getMimeType() {
 		if (_mimeType == null) {
@@ -688,7 +674,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_mimeType = mimeType;
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -704,7 +689,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_description = description;
 	}
 
-	@JSON
 	@Override
 	public String getChangeLog() {
 		if (_changeLog == null) {
@@ -720,7 +704,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_changeLog = changeLog;
 	}
 
-	@JSON
 	@Override
 	public String getExtraSettings() {
 		if (_extraSettings == null) {
@@ -736,7 +719,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_extraSettings = extraSettings;
 	}
 
-	@JSON
 	@Override
 	public String getVersion() {
 		if (_version == null) {
@@ -762,7 +744,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		return GetterUtil.getString(_originalVersion);
 	}
 
-	@JSON
 	@Override
 	public long getVersionId() {
 		return _versionId;
@@ -773,7 +754,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_versionId = versionId;
 	}
 
-	@JSON
 	@Override
 	public long getSize() {
 		return _size;
@@ -784,7 +764,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_size = size;
 	}
 
-	@JSON
 	@Override
 	public String getChecksum() {
 		if (_checksum == null) {
@@ -800,7 +779,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_checksum = checksum;
 	}
 
-	@JSON
 	@Override
 	public String getEvent() {
 		if (_event == null) {
@@ -826,7 +804,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		return GetterUtil.getString(_originalEvent);
 	}
 
-	@JSON
 	@Override
 	public String getLanTokenKey() {
 		if (_lanTokenKey == null) {
@@ -842,7 +819,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_lanTokenKey = lanTokenKey;
 	}
 
-	@JSON(include = false)
 	@Override
 	public Date getLastPermissionChangeDate() {
 		return _lastPermissionChangeDate;
@@ -853,7 +829,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_lastPermissionChangeDate = lastPermissionChangeDate;
 	}
 
-	@JSON
 	@Override
 	public Date getLockExpirationDate() {
 		return _lockExpirationDate;
@@ -864,7 +839,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_lockExpirationDate = lockExpirationDate;
 	}
 
-	@JSON
 	@Override
 	public long getLockUserId() {
 		return _lockUserId;
@@ -891,7 +865,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 	public void setLockUserUuid(String lockUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getLockUserName() {
 		if (_lockUserName == null) {
@@ -907,7 +880,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		_lockUserName = lockUserName;
 	}
 
-	@JSON
 	@Override
 	public String getType() {
 		if (_type == null) {
@@ -933,7 +905,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		return GetterUtil.getString(_originalType);
 	}
 
-	@JSON
 	@Override
 	public long getTypePK() {
 		return _typePK;
@@ -956,7 +927,6 @@ public class SyncDLObjectModelImpl extends BaseModelImpl<SyncDLObject>
 		return _originalTypePK;
 	}
 
-	@JSON
 	@Override
 	public String getTypeUuid() {
 		if (_typeUuid == null) {

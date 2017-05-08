@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -45,6 +46,7 @@ import java.util.Date;
  * @see com.liferay.portlet.documentlibrary.model.impl.DLFileShortcutModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	ShardedModel, StagedGroupedModel, TrashedModel, WorkflowedModel {
@@ -75,6 +77,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -90,6 +93,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 *
 	 * @return the file shortcut ID of this document library file shortcut
 	 */
+	@JSON
 	public long getFileShortcutId();
 
 	/**
@@ -105,6 +109,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 * @return the group ID of this document library file shortcut
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -121,6 +126,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 * @return the company ID of this document library file shortcut
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -137,6 +143,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 * @return the user ID of this document library file shortcut
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -170,6 +177,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -186,6 +194,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 * @return the create date of this document library file shortcut
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -202,6 +211,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 * @return the modified date of this document library file shortcut
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -217,6 +227,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 *
 	 * @return the repository ID of this document library file shortcut
 	 */
+	@JSON
 	public long getRepositoryId();
 
 	/**
@@ -231,6 +242,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 *
 	 * @return the folder ID of this document library file shortcut
 	 */
+	@JSON
 	public long getFolderId();
 
 	/**
@@ -245,6 +257,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 *
 	 * @return the to file entry ID of this document library file shortcut
 	 */
+	@JSON
 	public long getToFileEntryId();
 
 	/**
@@ -260,6 +273,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 * @return the tree path of this document library file shortcut
 	 */
 	@AutoEscape
+	@JSON
 	public String getTreePath();
 
 	/**
@@ -274,6 +288,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 *
 	 * @return the active of this document library file shortcut
 	 */
+	@JSON
 	public boolean getActive();
 
 	/**
@@ -281,6 +296,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 *
 	 * @return <code>true</code> if this document library file shortcut is active; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isActive();
 
 	/**
@@ -296,6 +312,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 * @return the last publish date of this document library file shortcut
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**
@@ -312,6 +329,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 * @return the status of this document library file shortcut
 	 */
 	@Override
+	@JSON
 	public int getStatus();
 
 	/**
@@ -328,6 +346,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 * @return the status by user ID of this document library file shortcut
 	 */
 	@Override
+	@JSON
 	public long getStatusByUserId();
 
 	/**
@@ -361,6 +380,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getStatusByUserName();
 
 	/**
@@ -377,6 +397,7 @@ public interface DLFileShortcutModel extends BaseModel<DLFileShortcut>,
 	 * @return the status date of this document library file shortcut
 	 */
 	@Override
+	@JSON
 	public Date getStatusDate();
 
 	/**

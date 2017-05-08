@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -45,6 +46,7 @@ import java.util.Date;
  * @see com.liferay.bookmarks.model.impl.BookmarksEntryModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	ShardedModel, StagedGroupedModel, TrashedModel, WorkflowedModel {
@@ -75,6 +77,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -90,6 +93,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 *
 	 * @return the entry ID of this bookmarks entry
 	 */
+	@JSON
 	public long getEntryId();
 
 	/**
@@ -105,6 +109,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 * @return the group ID of this bookmarks entry
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -121,6 +126,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 * @return the company ID of this bookmarks entry
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -137,6 +143,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 * @return the user ID of this bookmarks entry
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -170,6 +177,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -186,6 +194,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 * @return the create date of this bookmarks entry
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -202,6 +211,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 * @return the modified date of this bookmarks entry
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -217,6 +227,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 *
 	 * @return the resource block ID of this bookmarks entry
 	 */
+	@JSON
 	public long getResourceBlockId();
 
 	/**
@@ -231,6 +242,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 *
 	 * @return the folder ID of this bookmarks entry
 	 */
+	@JSON
 	public long getFolderId();
 
 	/**
@@ -246,6 +258,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 * @return the tree path of this bookmarks entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getTreePath();
 
 	/**
@@ -261,6 +274,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 * @return the name of this bookmarks entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -276,6 +290,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 * @return the url of this bookmarks entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getUrl();
 
 	/**
@@ -291,6 +306,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 * @return the description of this bookmarks entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -305,6 +321,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 *
 	 * @return the visits of this bookmarks entry
 	 */
+	@JSON
 	public int getVisits();
 
 	/**
@@ -319,6 +336,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 *
 	 * @return the priority of this bookmarks entry
 	 */
+	@JSON
 	public int getPriority();
 
 	/**
@@ -334,6 +352,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 * @return the last publish date of this bookmarks entry
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**
@@ -350,6 +369,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 * @return the status of this bookmarks entry
 	 */
 	@Override
+	@JSON
 	public int getStatus();
 
 	/**
@@ -366,6 +386,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 * @return the status by user ID of this bookmarks entry
 	 */
 	@Override
+	@JSON
 	public long getStatusByUserId();
 
 	/**
@@ -399,6 +420,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getStatusByUserName();
 
 	/**
@@ -415,6 +437,7 @@ public interface BookmarksEntryModel extends BaseModel<BookmarksEntry>,
 	 * @return the status date of this bookmarks entry
 	 */
 	@Override
+	@JSON
 	public Date getStatusDate();
 
 	/**

@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.TrashedModel;
@@ -73,7 +72,6 @@ import java.util.TreeSet;
  * @see CalendarBookingModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 	implements CalendarBookingModel {
@@ -510,7 +508,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -534,7 +531,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getCalendarBookingId() {
 		return _calendarBookingId;
@@ -545,7 +541,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		_calendarBookingId = calendarBookingId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -568,7 +563,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -591,7 +585,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -618,7 +611,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -634,7 +626,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -645,7 +636,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -662,7 +652,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getResourceBlockId() {
 		return _resourceBlockId;
@@ -685,7 +674,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		return _originalResourceBlockId;
 	}
 
-	@JSON
 	@Override
 	public long getCalendarId() {
 		return _calendarId;
@@ -708,7 +696,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		return _originalCalendarId;
 	}
 
-	@JSON
 	@Override
 	public long getCalendarResourceId() {
 		return _calendarResourceId;
@@ -731,7 +718,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		return _originalCalendarResourceId;
 	}
 
-	@JSON
 	@Override
 	public long getParentCalendarBookingId() {
 		return _parentCalendarBookingId;
@@ -754,7 +740,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		return _originalParentCalendarBookingId;
 	}
 
-	@JSON
 	@Override
 	public long getRecurringCalendarBookingId() {
 		return _recurringCalendarBookingId;
@@ -777,7 +762,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		return _originalRecurringCalendarBookingId;
 	}
 
-	@JSON
 	@Override
 	public String getVEventUid() {
 		if (_vEventUid == null) {
@@ -803,7 +787,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		return GetterUtil.getString(_originalVEventUid);
 	}
 
-	@JSON
 	@Override
 	public String getTitle() {
 		if (_title == null) {
@@ -844,7 +827,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		return _titleCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getTitleCurrentValue() {
 		Locale locale = getLocale(_titleCurrentLanguageId);
@@ -904,7 +886,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 				"Title", LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -945,7 +926,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		return _descriptionCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getDescriptionCurrentValue() {
 		Locale locale = getLocale(_descriptionCurrentLanguageId);
@@ -1007,7 +987,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getLocation() {
 		if (_location == null) {
@@ -1023,7 +1002,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		_location = location;
 	}
 
-	@JSON
 	@Override
 	public long getStartTime() {
 		return _startTime;
@@ -1036,7 +1014,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		_startTime = startTime;
 	}
 
-	@JSON
 	@Override
 	public long getEndTime() {
 		return _endTime;
@@ -1047,13 +1024,11 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		_endTime = endTime;
 	}
 
-	@JSON
 	@Override
 	public boolean getAllDay() {
 		return _allDay;
 	}
 
-	@JSON
 	@Override
 	public boolean isAllDay() {
 		return _allDay;
@@ -1064,7 +1039,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		_allDay = allDay;
 	}
 
-	@JSON
 	@Override
 	public String getRecurrence() {
 		if (_recurrence == null) {
@@ -1080,7 +1054,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		_recurrence = recurrence;
 	}
 
-	@JSON
 	@Override
 	public long getFirstReminder() {
 		return _firstReminder;
@@ -1091,7 +1064,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		_firstReminder = firstReminder;
 	}
 
-	@JSON
 	@Override
 	public String getFirstReminderType() {
 		if (_firstReminderType == null) {
@@ -1107,7 +1079,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		_firstReminderType = firstReminderType;
 	}
 
-	@JSON
 	@Override
 	public long getSecondReminder() {
 		return _secondReminder;
@@ -1118,7 +1089,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		_secondReminder = secondReminder;
 	}
 
-	@JSON
 	@Override
 	public String getSecondReminderType() {
 		if (_secondReminderType == null) {
@@ -1134,7 +1104,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		_secondReminderType = secondReminderType;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;
@@ -1145,7 +1114,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		_lastPublishDate = lastPublishDate;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;
@@ -1168,7 +1136,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		return _originalStatus;
 	}
 
-	@JSON
 	@Override
 	public long getStatusByUserId() {
 		return _statusByUserId;
@@ -1195,7 +1162,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
@@ -1211,7 +1177,6 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		_statusByUserName = statusByUserName;
 	}
 
-	@JSON
 	@Override
 	public Date getStatusDate() {
 		return _statusDate;

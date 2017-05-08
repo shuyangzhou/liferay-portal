@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.LayoutBranch;
 import com.liferay.portal.kernel.model.LayoutBranchModel;
@@ -57,7 +56,6 @@ import java.util.Map;
  * @see LayoutBranchModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 	implements LayoutBranchModel {
@@ -293,7 +291,6 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -304,7 +301,6 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getLayoutBranchId() {
 		return _layoutBranchId;
@@ -315,7 +311,6 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 		_layoutBranchId = layoutBranchId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -326,7 +321,6 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 		_groupId = groupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -337,7 +331,6 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -364,7 +357,6 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -380,7 +372,6 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public long getLayoutSetBranchId() {
 		return _layoutSetBranchId;
@@ -403,7 +394,6 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 		return _originalLayoutSetBranchId;
 	}
 
-	@JSON
 	@Override
 	public long getPlid() {
 		return _plid;
@@ -426,7 +416,6 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 		return _originalPlid;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -452,7 +441,6 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -468,13 +456,11 @@ public class LayoutBranchModelImpl extends BaseModelImpl<LayoutBranch>
 		_description = description;
 	}
 
-	@JSON
 	@Override
 	public boolean getMaster() {
 		return _master;
 	}
 
-	@JSON
 	@Override
 	public boolean isMaster() {
 		return _master;

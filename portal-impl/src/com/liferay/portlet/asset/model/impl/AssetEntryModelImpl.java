@@ -26,7 +26,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -67,7 +66,6 @@ import java.util.TreeSet;
  * @see AssetEntryModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 	implements AssetEntryModel {
@@ -491,7 +489,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getEntryId() {
 		return _entryId;
@@ -502,7 +499,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		_entryId = entryId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -525,7 +521,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -548,7 +543,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -575,7 +569,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -591,7 +584,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -602,7 +594,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -639,7 +630,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -662,7 +652,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getClassPK() {
 		return _classPK;
@@ -685,7 +674,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		return _originalClassPK;
 	}
 
-	@JSON
 	@Override
 	public String getClassUuid() {
 		if (_classUuid == null) {
@@ -711,7 +699,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		return GetterUtil.getString(_originalClassUuid);
 	}
 
-	@JSON
 	@Override
 	public long getClassTypeId() {
 		return _classTypeId;
@@ -722,13 +709,11 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		_classTypeId = classTypeId;
 	}
 
-	@JSON
 	@Override
 	public boolean getListable() {
 		return _listable;
 	}
 
-	@JSON
 	@Override
 	public boolean isListable() {
 		return _listable;
@@ -739,13 +724,11 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		_listable = listable;
 	}
 
-	@JSON
 	@Override
 	public boolean getVisible() {
 		return _visible;
 	}
 
-	@JSON
 	@Override
 	public boolean isVisible() {
 		return _visible;
@@ -768,7 +751,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		return _originalVisible;
 	}
 
-	@JSON
 	@Override
 	public Date getStartDate() {
 		return _startDate;
@@ -779,7 +761,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		_startDate = startDate;
 	}
 
-	@JSON
 	@Override
 	public Date getEndDate() {
 		return _endDate;
@@ -790,7 +771,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		_endDate = endDate;
 	}
 
-	@JSON
 	@Override
 	public Date getPublishDate() {
 		return _publishDate;
@@ -811,7 +791,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		return _originalPublishDate;
 	}
 
-	@JSON
 	@Override
 	public Date getExpirationDate() {
 		return _expirationDate;
@@ -832,7 +811,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		return _originalExpirationDate;
 	}
 
-	@JSON
 	@Override
 	public String getMimeType() {
 		if (_mimeType == null) {
@@ -848,7 +826,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		_mimeType = mimeType;
 	}
 
-	@JSON
 	@Override
 	public String getTitle() {
 		if (_title == null) {
@@ -889,7 +866,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		return _titleCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getTitleCurrentValue() {
 		Locale locale = getLocale(_titleCurrentLanguageId);
@@ -947,7 +923,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 				"Title", LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -988,7 +963,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		return _descriptionCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getDescriptionCurrentValue() {
 		Locale locale = getLocale(_descriptionCurrentLanguageId);
@@ -1050,7 +1024,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getSummary() {
 		if (_summary == null) {
@@ -1091,7 +1064,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		return _summaryCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getSummaryCurrentValue() {
 		Locale locale = getLocale(_summaryCurrentLanguageId);
@@ -1150,7 +1122,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 				getSummary(), "Summary", LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getUrl() {
 		if (_url == null) {
@@ -1166,7 +1137,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		_url = url;
 	}
 
-	@JSON
 	@Override
 	public String getLayoutUuid() {
 		if (_layoutUuid == null) {
@@ -1192,7 +1162,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		return GetterUtil.getString(_originalLayoutUuid);
 	}
 
-	@JSON
 	@Override
 	public int getHeight() {
 		return _height;
@@ -1203,7 +1172,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		_height = height;
 	}
 
-	@JSON
 	@Override
 	public int getWidth() {
 		return _width;
@@ -1214,7 +1182,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		_width = width;
 	}
 
-	@JSON
 	@Override
 	public double getPriority() {
 		return _priority;
@@ -1225,7 +1192,6 @@ public class AssetEntryModelImpl extends BaseModelImpl<AssetEntry>
 		_priority = priority;
 	}
 
-	@JSON
 	@Override
 	public int getViewCount() {
 		return _viewCount;

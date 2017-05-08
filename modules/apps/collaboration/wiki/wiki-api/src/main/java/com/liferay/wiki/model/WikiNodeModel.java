@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
@@ -46,6 +47,7 @@ import java.util.Date;
  * @see com.liferay.wiki.model.impl.WikiNodeModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	ShardedModel, StagedGroupedModel, TrashedModel, WorkflowedModel {
@@ -76,6 +78,7 @@ public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -91,6 +94,7 @@ public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	 *
 	 * @return the node ID of this wiki node
 	 */
+	@JSON
 	public long getNodeId();
 
 	/**
@@ -106,6 +110,7 @@ public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	 * @return the group ID of this wiki node
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -122,6 +127,7 @@ public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	 * @return the company ID of this wiki node
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -138,6 +144,7 @@ public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	 * @return the user ID of this wiki node
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -171,6 +178,7 @@ public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -187,6 +195,7 @@ public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	 * @return the create date of this wiki node
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -203,6 +212,7 @@ public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	 * @return the modified date of this wiki node
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -219,6 +229,7 @@ public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	 * @return the name of this wiki node
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -234,6 +245,7 @@ public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	 * @return the description of this wiki node
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -248,6 +260,7 @@ public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	 *
 	 * @return the last post date of this wiki node
 	 */
+	@JSON
 	public Date getLastPostDate();
 
 	/**
@@ -263,6 +276,7 @@ public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	 * @return the last publish date of this wiki node
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**
@@ -279,6 +293,7 @@ public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	 * @return the status of this wiki node
 	 */
 	@Override
+	@JSON
 	public int getStatus();
 
 	/**
@@ -295,6 +310,7 @@ public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	 * @return the status by user ID of this wiki node
 	 */
 	@Override
+	@JSON
 	public long getStatusByUserId();
 
 	/**
@@ -328,6 +344,7 @@ public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getStatusByUserName();
 
 	/**
@@ -344,6 +361,7 @@ public interface WikiNodeModel extends BaseModel<WikiNode>, ContainerModel,
 	 * @return the status date of this wiki node
 	 */
 	@Override
+	@JSON
 	public Date getStatusDate();
 
 	/**

@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.persistence.UserGroupRolePK;
 
@@ -36,6 +37,7 @@ import java.io.Serializable;
  * @see com.liferay.portal.model.impl.UserGroupRoleModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface UserGroupRoleModel extends BaseModel<UserGroupRole>, MVCCModel,
 	ShardedModel {
@@ -65,6 +67,7 @@ public interface UserGroupRoleModel extends BaseModel<UserGroupRole>, MVCCModel,
 	 * @return the mvcc version of this user group role
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -80,6 +83,7 @@ public interface UserGroupRoleModel extends BaseModel<UserGroupRole>, MVCCModel,
 	 *
 	 * @return the user ID of this user group role
 	 */
+	@JSON
 	public long getUserId();
 
 	/**
@@ -108,6 +112,7 @@ public interface UserGroupRoleModel extends BaseModel<UserGroupRole>, MVCCModel,
 	 *
 	 * @return the group ID of this user group role
 	 */
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -122,6 +127,7 @@ public interface UserGroupRoleModel extends BaseModel<UserGroupRole>, MVCCModel,
 	 *
 	 * @return the role ID of this user group role
 	 */
+	@JSON
 	public long getRoleId();
 
 	/**
@@ -137,6 +143,7 @@ public interface UserGroupRoleModel extends BaseModel<UserGroupRole>, MVCCModel,
 	 * @return the company ID of this user group role
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**

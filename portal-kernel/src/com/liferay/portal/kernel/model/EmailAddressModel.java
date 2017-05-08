@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ import java.util.Date;
  * @see com.liferay.portal.model.impl.EmailAddressModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface EmailAddressModel extends AttachedModel, BaseModel<EmailAddress>,
 	MVCCModel, ShardedModel, StagedAuditedModel {
@@ -67,6 +69,7 @@ public interface EmailAddressModel extends AttachedModel, BaseModel<EmailAddress
 	 * @return the mvcc version of this email address
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -84,6 +87,7 @@ public interface EmailAddressModel extends AttachedModel, BaseModel<EmailAddress
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -99,6 +103,7 @@ public interface EmailAddressModel extends AttachedModel, BaseModel<EmailAddress
 	 *
 	 * @return the email address ID of this email address
 	 */
+	@JSON
 	public long getEmailAddressId();
 
 	/**
@@ -114,6 +119,7 @@ public interface EmailAddressModel extends AttachedModel, BaseModel<EmailAddress
 	 * @return the company ID of this email address
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -130,6 +136,7 @@ public interface EmailAddressModel extends AttachedModel, BaseModel<EmailAddress
 	 * @return the user ID of this email address
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -163,6 +170,7 @@ public interface EmailAddressModel extends AttachedModel, BaseModel<EmailAddress
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -179,6 +187,7 @@ public interface EmailAddressModel extends AttachedModel, BaseModel<EmailAddress
 	 * @return the create date of this email address
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -195,6 +204,7 @@ public interface EmailAddressModel extends AttachedModel, BaseModel<EmailAddress
 	 * @return the modified date of this email address
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -221,6 +231,7 @@ public interface EmailAddressModel extends AttachedModel, BaseModel<EmailAddress
 	 * @return the class name ID of this email address
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -237,6 +248,7 @@ public interface EmailAddressModel extends AttachedModel, BaseModel<EmailAddress
 	 * @return the class pk of this email address
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -253,6 +265,7 @@ public interface EmailAddressModel extends AttachedModel, BaseModel<EmailAddress
 	 * @return the address of this email address
 	 */
 	@AutoEscape
+	@JSON
 	public String getAddress();
 
 	/**
@@ -267,6 +280,7 @@ public interface EmailAddressModel extends AttachedModel, BaseModel<EmailAddress
 	 *
 	 * @return the type ID of this email address
 	 */
+	@JSON
 	public long getTypeId();
 
 	/**
@@ -281,6 +295,7 @@ public interface EmailAddressModel extends AttachedModel, BaseModel<EmailAddress
 	 *
 	 * @return the primary of this email address
 	 */
+	@JSON
 	public boolean getPrimary();
 
 	/**
@@ -288,6 +303,7 @@ public interface EmailAddressModel extends AttachedModel, BaseModel<EmailAddress
 	 *
 	 * @return <code>true</code> if this email address is primary; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isPrimary();
 
 	/**

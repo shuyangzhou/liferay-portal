@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -40,6 +41,7 @@ import java.io.Serializable;
  * @see com.liferay.portlet.social.model.impl.SocialActivitySettingModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface SocialActivitySettingModel extends BaseModel<SocialActivitySetting>,
 	ShardedModel, TypedModel {
@@ -68,6 +70,7 @@ public interface SocialActivitySettingModel extends BaseModel<SocialActivitySett
 	 *
 	 * @return the activity setting ID of this social activity setting
 	 */
+	@JSON
 	public long getActivitySettingId();
 
 	/**
@@ -82,6 +85,7 @@ public interface SocialActivitySettingModel extends BaseModel<SocialActivitySett
 	 *
 	 * @return the group ID of this social activity setting
 	 */
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -97,6 +101,7 @@ public interface SocialActivitySettingModel extends BaseModel<SocialActivitySett
 	 * @return the company ID of this social activity setting
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -123,6 +128,7 @@ public interface SocialActivitySettingModel extends BaseModel<SocialActivitySett
 	 * @return the class name ID of this social activity setting
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -138,6 +144,7 @@ public interface SocialActivitySettingModel extends BaseModel<SocialActivitySett
 	 *
 	 * @return the activity type of this social activity setting
 	 */
+	@JSON
 	public int getActivityType();
 
 	/**
@@ -153,6 +160,7 @@ public interface SocialActivitySettingModel extends BaseModel<SocialActivitySett
 	 * @return the name of this social activity setting
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -168,6 +176,7 @@ public interface SocialActivitySettingModel extends BaseModel<SocialActivitySett
 	 * @return the value of this social activity setting
 	 */
 	@AutoEscape
+	@JSON
 	public String getValue();
 
 	/**

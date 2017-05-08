@@ -17,7 +17,6 @@ package com.liferay.portal.model.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.UserGroupGroupRole;
 import com.liferay.portal.kernel.model.UserGroupGroupRoleModel;
@@ -50,7 +49,6 @@ import java.util.Map;
  * @see UserGroupGroupRoleModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class UserGroupGroupRoleModelImpl extends BaseModelImpl<UserGroupGroupRole>
 	implements UserGroupGroupRoleModel {
@@ -227,7 +225,6 @@ public class UserGroupGroupRoleModelImpl extends BaseModelImpl<UserGroupGroupRol
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -238,7 +235,6 @@ public class UserGroupGroupRoleModelImpl extends BaseModelImpl<UserGroupGroupRol
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getUserGroupId() {
 		return _userGroupId;
@@ -261,7 +257,6 @@ public class UserGroupGroupRoleModelImpl extends BaseModelImpl<UserGroupGroupRol
 		return _originalUserGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -284,7 +279,6 @@ public class UserGroupGroupRoleModelImpl extends BaseModelImpl<UserGroupGroupRol
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getRoleId() {
 		return _roleId;
@@ -307,7 +301,6 @@ public class UserGroupGroupRoleModelImpl extends BaseModelImpl<UserGroupGroupRol
 		return _originalRoleId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;

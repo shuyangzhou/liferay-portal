@@ -27,7 +27,6 @@ import com.liferay.knowledge.base.model.KBCommentSoap;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -64,7 +63,6 @@ import java.util.Map;
  * @see KBCommentModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 	implements KBCommentModel {
@@ -333,7 +331,6 @@ public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -357,7 +354,6 @@ public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getKbCommentId() {
 		return _kbCommentId;
@@ -368,7 +364,6 @@ public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 		_kbCommentId = kbCommentId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -391,7 +386,6 @@ public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -414,7 +408,6 @@ public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -453,7 +446,6 @@ public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -469,7 +461,6 @@ public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -480,7 +471,6 @@ public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -519,7 +509,6 @@ public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -542,7 +531,6 @@ public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getClassPK() {
 		return _classPK;
@@ -565,7 +553,6 @@ public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 		return _originalClassPK;
 	}
 
-	@JSON
 	@Override
 	public String getContent() {
 		if (_content == null) {
@@ -581,7 +568,6 @@ public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 		_content = content;
 	}
 
-	@JSON
 	@Override
 	public int getUserRating() {
 		return _userRating;
@@ -592,7 +578,6 @@ public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 		_userRating = userRating;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;
@@ -603,7 +588,6 @@ public class KBCommentModelImpl extends BaseModelImpl<KBComment>
 		_lastPublishDate = lastPublishDate;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;

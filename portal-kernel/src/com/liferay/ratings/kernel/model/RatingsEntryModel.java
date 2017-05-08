@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -43,6 +44,7 @@ import java.util.Date;
  * @see com.liferay.portlet.ratings.model.impl.RatingsEntryModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface RatingsEntryModel extends AttachedModel, BaseModel<RatingsEntry>,
 	ShardedModel, StagedAuditedModel {
@@ -73,6 +75,7 @@ public interface RatingsEntryModel extends AttachedModel, BaseModel<RatingsEntry
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -88,6 +91,7 @@ public interface RatingsEntryModel extends AttachedModel, BaseModel<RatingsEntry
 	 *
 	 * @return the entry ID of this ratings entry
 	 */
+	@JSON
 	public long getEntryId();
 
 	/**
@@ -103,6 +107,7 @@ public interface RatingsEntryModel extends AttachedModel, BaseModel<RatingsEntry
 	 * @return the company ID of this ratings entry
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -119,6 +124,7 @@ public interface RatingsEntryModel extends AttachedModel, BaseModel<RatingsEntry
 	 * @return the user ID of this ratings entry
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -152,6 +158,7 @@ public interface RatingsEntryModel extends AttachedModel, BaseModel<RatingsEntry
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -168,6 +175,7 @@ public interface RatingsEntryModel extends AttachedModel, BaseModel<RatingsEntry
 	 * @return the create date of this ratings entry
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -184,6 +192,7 @@ public interface RatingsEntryModel extends AttachedModel, BaseModel<RatingsEntry
 	 * @return the modified date of this ratings entry
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -210,6 +219,7 @@ public interface RatingsEntryModel extends AttachedModel, BaseModel<RatingsEntry
 	 * @return the class name ID of this ratings entry
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -226,6 +236,7 @@ public interface RatingsEntryModel extends AttachedModel, BaseModel<RatingsEntry
 	 * @return the class pk of this ratings entry
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -241,6 +252,7 @@ public interface RatingsEntryModel extends AttachedModel, BaseModel<RatingsEntry
 	 *
 	 * @return the score of this ratings entry
 	 */
+	@JSON
 	public double getScore();
 
 	/**

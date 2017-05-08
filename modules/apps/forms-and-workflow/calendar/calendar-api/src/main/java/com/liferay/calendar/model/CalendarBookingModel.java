@@ -21,6 +21,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.LocalizedModel;
@@ -49,6 +50,7 @@ import java.util.Map;
  * @see com.liferay.calendar.model.impl.CalendarBookingModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	LocalizedModel, ShardedModel, StagedGroupedModel, TrashedModel,
@@ -80,6 +82,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -95,6 +98,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 *
 	 * @return the calendar booking ID of this calendar booking
 	 */
+	@JSON
 	public long getCalendarBookingId();
 
 	/**
@@ -110,6 +114,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * @return the group ID of this calendar booking
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -126,6 +131,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * @return the company ID of this calendar booking
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -142,6 +148,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * @return the user ID of this calendar booking
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -175,6 +182,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -191,6 +199,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * @return the create date of this calendar booking
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -207,6 +216,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * @return the modified date of this calendar booking
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -222,6 +232,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 *
 	 * @return the resource block ID of this calendar booking
 	 */
+	@JSON
 	public long getResourceBlockId();
 
 	/**
@@ -236,6 +247,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 *
 	 * @return the calendar ID of this calendar booking
 	 */
+	@JSON
 	public long getCalendarId();
 
 	/**
@@ -250,6 +262,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 *
 	 * @return the calendar resource ID of this calendar booking
 	 */
+	@JSON
 	public long getCalendarResourceId();
 
 	/**
@@ -264,6 +277,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 *
 	 * @return the parent calendar booking ID of this calendar booking
 	 */
+	@JSON
 	public long getParentCalendarBookingId();
 
 	/**
@@ -278,6 +292,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 *
 	 * @return the recurring calendar booking ID of this calendar booking
 	 */
+	@JSON
 	public long getRecurringCalendarBookingId();
 
 	/**
@@ -293,6 +308,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * @return the v event uid of this calendar booking
 	 */
 	@AutoEscape
+	@JSON
 	public String getVEventUid();
 
 	/**
@@ -307,6 +323,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 *
 	 * @return the title of this calendar booking
 	 */
+	@JSON
 	public String getTitle();
 
 	/**
@@ -351,6 +368,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	public String getTitleCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getTitleCurrentValue();
 
 	/**
@@ -406,6 +424,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 *
 	 * @return the description of this calendar booking
 	 */
+	@JSON
 	public String getDescription();
 
 	/**
@@ -450,6 +469,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	public String getDescriptionCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getDescriptionCurrentValue();
 
 	/**
@@ -508,6 +528,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * @return the location of this calendar booking
 	 */
 	@AutoEscape
+	@JSON
 	public String getLocation();
 
 	/**
@@ -522,6 +543,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 *
 	 * @return the start time of this calendar booking
 	 */
+	@JSON
 	public long getStartTime();
 
 	/**
@@ -536,6 +558,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 *
 	 * @return the end time of this calendar booking
 	 */
+	@JSON
 	public long getEndTime();
 
 	/**
@@ -550,6 +573,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 *
 	 * @return the all day of this calendar booking
 	 */
+	@JSON
 	public boolean getAllDay();
 
 	/**
@@ -557,6 +581,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 *
 	 * @return <code>true</code> if this calendar booking is all day; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isAllDay();
 
 	/**
@@ -572,6 +597,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * @return the recurrence of this calendar booking
 	 */
 	@AutoEscape
+	@JSON
 	public String getRecurrence();
 
 	/**
@@ -586,6 +612,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 *
 	 * @return the first reminder of this calendar booking
 	 */
+	@JSON
 	public long getFirstReminder();
 
 	/**
@@ -601,6 +628,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * @return the first reminder type of this calendar booking
 	 */
 	@AutoEscape
+	@JSON
 	public String getFirstReminderType();
 
 	/**
@@ -615,6 +643,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 *
 	 * @return the second reminder of this calendar booking
 	 */
+	@JSON
 	public long getSecondReminder();
 
 	/**
@@ -630,6 +659,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * @return the second reminder type of this calendar booking
 	 */
 	@AutoEscape
+	@JSON
 	public String getSecondReminderType();
 
 	/**
@@ -645,6 +675,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * @return the last publish date of this calendar booking
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**
@@ -661,6 +692,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * @return the status of this calendar booking
 	 */
 	@Override
+	@JSON
 	public int getStatus();
 
 	/**
@@ -677,6 +709,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * @return the status by user ID of this calendar booking
 	 */
 	@Override
+	@JSON
 	public long getStatusByUserId();
 
 	/**
@@ -710,6 +743,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getStatusByUserName();
 
 	/**
@@ -726,6 +760,7 @@ public interface CalendarBookingModel extends BaseModel<CalendarBooking>,
 	 * @return the status date of this calendar booking
 	 */
 	@Override
+	@JSON
 	public Date getStatusDate();
 
 	/**
