@@ -2986,6 +2986,8 @@ go</echo>
 
 			<setup-testable-tomcat-aspectj-agent />
 
+			<setup-testable-tomcat-gc />
+
 			<setup-testable-tomcat-jmx />
 
 			<setup-testable-tomcat-jpda-address />
@@ -3009,6 +3011,44 @@ go</echo>
 						]]>
 					</echo>
 				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="setup-testable-tomcat-gc">
+		<sequential>
+			<if>
+				<resourcecontains resource="${app.server.tomcat.dir}/bin/setenv.bat" substring="${app.server.tomcat.setenv.gc.old}" />
+				<then>
+					<replace file="${app.server.tomcat.dir}/bin/setenv.bat" token="${app.server.tomcat.setenv.gc.old}" value="${app.server.tomcat.setenv.gc.new}" />
+				</then>
+				<else>
+					<if>
+						<not>
+							<resourcecontains resource="${app.server.tomcat.dir}/bin/setenv.bat" substring="${app.server.tomcat.setenv.gc.new}" />
+						</not>
+						<then>
+							<fail message="Unable to setup tomcat gc properties for ${app.server.tomcat.dir}/bin/setenv.bat" />
+						</then>
+					</if>
+				</else>
+			</if>
+
+			<if>
+				<resourcecontains resource="${app.server.tomcat.dir}/bin/setenv.sh" substring="${app.server.tomcat.setenv.gc.old}" />
+				<then>
+					<replace file="${app.server.tomcat.dir}/bin/setenv.sh" token="${app.server.tomcat.setenv.gc.old}" value="${app.server.tomcat.setenv.gc.new}" />
+				</then>
+				<else>
+					<if>
+						<not>
+							<resourcecontains resource="${app.server.tomcat.dir}/bin/setenv.sh" substring="${app.server.tomcat.setenv.gc.new}" />
+						</not>
+						<then>
+							<fail message="Unable to setup tomcat gc properties for ${app.server.tomcat.dir}/bin/setenv.sh" />
+						</then>
+					</if>
+				</else>
 			</if>
 		</sequential>
 	</macrodef>
