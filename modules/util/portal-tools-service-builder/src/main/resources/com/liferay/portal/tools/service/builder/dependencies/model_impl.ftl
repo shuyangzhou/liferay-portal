@@ -43,7 +43,6 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
@@ -98,10 +97,6 @@ import java.util.function.Function;
 
 <#if classDeprecated>
 	@Deprecated
-</#if>
-
-<#if entity.jsonEnabled>
-	@JSON(strict = true)
 </#if>
 
 @ProviderType
@@ -534,12 +529,6 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 			}
 		</#if>
 
-		<#if column.jsonEnabled>
-			@JSON
-		<#elseif entity.jsonEnabled>
-			@JSON(include = false)
-		</#if>
-
 		@Override
 		public ${column.genericizedType} get${column.methodName}() {
 			<#if stringUtil.equals(column.type, "String") && column.isConvertNull()>
@@ -602,7 +591,6 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 				return _${column.name}CurrentLanguageId;
 			}
 
-			@JSON
 			@Override
 			public String get${column.methodName}CurrentValue() {
 				Locale locale = getLocale(_${column.name}CurrentLanguageId);
@@ -617,10 +605,6 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		</#if>
 
 		<#if column.type== "boolean">
-			<#if column.jsonEnabled>
-				@JSON
-			</#if>
-
 			@Override
 			public ${column.type} is${column.methodName}() {
 				return _${column.name};
