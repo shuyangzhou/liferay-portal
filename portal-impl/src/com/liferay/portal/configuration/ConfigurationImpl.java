@@ -26,16 +26,18 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.lang.reflect.Field;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -203,7 +205,7 @@ public class ConfigurationImpl
 
 	@Override
 	public String get(String key, Filter filter) {
-		String filterCacheKey = _buildFilterCacheKey(key, filter);
+		FilterCacheKey filterCacheKey = _buildFilterCacheKey(key, filter);
 
 		Object value = null;
 
@@ -256,7 +258,7 @@ public class ConfigurationImpl
 
 	@Override
 	public String[] getArray(String key, Filter filter) {
-		String filterCacheKey = _buildFilterCacheKey(key, filter);
+		FilterCacheKey filterCacheKey = _buildFilterCacheKey(key, filter);
 
 		Object value = null;
 
@@ -380,19 +382,12 @@ public class ConfigurationImpl
 		clearCache();
 	}
 
-	private String _buildFilterCacheKey(String key, Filter filter) {
+	private FilterCacheKey _buildFilterCacheKey(String key, Filter filter) {
 		if (filter.getVariables() != null) {
 			return null;
 		}
 
-		String[] selectors = filter.getSelectors();
-
-		StringBundler sb = new StringBundler(selectors.length + 1);
-
-		sb.append(key);
-		sb.append(selectors);
-
-		return sb.toString();
+		return new FilterCacheKey(key, filter);
 	}
 
 	private Object _fixArrayValue(String[] array) {
@@ -487,9 +482,45 @@ public class ConfigurationImpl
 		new ConcurrentHashMap<>();
 	private final Map<String, Object> _configurationCache =
 		new ConcurrentHashMap<>();
-	private final Map<String, Object> _configurationFilterArrayCache =
+	private final Map<FilterCacheKey, Object> _configurationFilterArrayCache =
 		new ConcurrentHashMap<>();
-	private final Map<String, Object> _configurationFilterCache =
+	private final Map<FilterCacheKey, Object> _configurationFilterCache =
 		new ConcurrentHashMap<>();
+
+	private static class FilterCacheKey {
+
+		@Override
+		public boolean equals(Object object) {
+			FilterCacheKey filterCacheKey = (FilterCacheKey)object;
+
+			if (Objects.equals(_key, filterCacheKey._key) &&
+				Arrays.equals(_selectors, filterCacheKey._selectors)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			int hashCode = HashUtil.hash(0, _key);
+
+			for (String selector : _selectors) {
+				hashCode = HashUtil.hash(hashCode, selector);
+			}
+
+			return hashCode;
+		}
+
+		private FilterCacheKey(String key, Filter filter) {
+			_key = key;
+			_selectors = filter.getSelectors();
+		}
+
+		private final String _key;
+		private final String[] _selectors;
+
+	}
 
 }
