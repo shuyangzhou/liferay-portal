@@ -144,14 +144,17 @@ public class ConfigurationImpl
 
 	@Override
 	public void clearCache() {
-		_values.clear();
+		_configurationArrayCache.clear();
+		_configurationCache.clear();
+		_configurationFilterArrayCache.clear();
+		_configurationFilterCache.clear();
 
 		_properties = null;
 	}
 
 	@Override
 	public boolean contains(String key) {
-		Object value = _values.get(key);
+		Object value = _configurationCache.get(key);
 
 		if (value == null) {
 			ComponentProperties componentProperties = getComponentProperties();
@@ -162,7 +165,7 @@ public class ConfigurationImpl
 				value = _nullValue;
 			}
 
-			_values.put(key, value);
+			_configurationCache.put(key, value);
 		}
 
 		if (value == _nullValue) {
@@ -174,7 +177,7 @@ public class ConfigurationImpl
 
 	@Override
 	public String get(String key) {
-		Object value = _values.get(key);
+		Object value = _configurationCache.get(key);
 
 		if (value == null) {
 			ComponentProperties componentProperties = getComponentProperties();
@@ -185,7 +188,7 @@ public class ConfigurationImpl
 				value = _nullValue;
 			}
 
-			_values.put(key, value);
+			_configurationCache.put(key, value);
 		}
 		else if (_PRINT_DUPLICATE_CALLS_TO_GET) {
 			System.out.println("Duplicate call to get " + key);
@@ -200,12 +203,12 @@ public class ConfigurationImpl
 
 	@Override
 	public String get(String key, Filter filter) {
-		String filterCacheKey = buildFilterCacheKey(key, filter, false);
+		String filterCacheKey = _buildFilterCacheKey(key, filter);
 
 		Object value = null;
 
 		if (filterCacheKey != null) {
-			value = _values.get(filterCacheKey);
+			value = _configurationFilterCache.get(filterCacheKey);
 		}
 
 		if (value == null) {
@@ -219,7 +222,7 @@ public class ConfigurationImpl
 					value = _nullValue;
 				}
 
-				_values.put(filterCacheKey, value);
+				_configurationFilterCache.put(filterCacheKey, value);
 			}
 		}
 
@@ -232,9 +235,7 @@ public class ConfigurationImpl
 
 	@Override
 	public String[] getArray(String key) {
-		String cacheKey = _ARRAY_KEY_PREFIX.concat(key);
-
-		Object value = _values.get(cacheKey);
+		Object value = _configurationArrayCache.get(key);
 
 		if (value == null) {
 			ComponentProperties componentProperties = getComponentProperties();
@@ -243,7 +244,7 @@ public class ConfigurationImpl
 
 			value = _fixArrayValue(array);
 
-			_values.put(cacheKey, value);
+			_configurationArrayCache.put(key, value);
 		}
 
 		if (value instanceof String[]) {
@@ -255,12 +256,12 @@ public class ConfigurationImpl
 
 	@Override
 	public String[] getArray(String key, Filter filter) {
-		String filterCacheKey = buildFilterCacheKey(key, filter, true);
+		String filterCacheKey = _buildFilterCacheKey(key, filter);
 
 		Object value = null;
 
 		if (filterCacheKey != null) {
-			value = _values.get(filterCacheKey);
+			value = _configurationFilterArrayCache.get(filterCacheKey);
 		}
 
 		if (value == null) {
@@ -272,7 +273,7 @@ public class ConfigurationImpl
 			value = _fixArrayValue(array);
 
 			if (filterCacheKey != null) {
-				_values.put(filterCacheKey, value);
+				_configurationFilterArrayCache.put(filterCacheKey, value);
 			}
 		}
 
@@ -379,29 +380,14 @@ public class ConfigurationImpl
 		clearCache();
 	}
 
-	protected String buildFilterCacheKey(
-		String key, Filter filter, boolean arrayValue) {
-
+	private String _buildFilterCacheKey(String key, Filter filter) {
 		if (filter.getVariables() != null) {
 			return null;
 		}
 
 		String[] selectors = filter.getSelectors();
 
-		int length = 0;
-
-		if (arrayValue) {
-			length = selectors.length + 2;
-		}
-		else {
-			length = selectors.length + 1;
-		}
-
-		StringBundler sb = new StringBundler(length);
-
-		if (arrayValue) {
-			sb.append(_ARRAY_KEY_PREFIX);
-		}
+		StringBundler sb = new StringBundler(selectors.length + 1);
 
 		sb.append(key);
 		sb.append(selectors);
@@ -486,8 +472,6 @@ public class ConfigurationImpl
 		return (Map)properties;
 	}
 
-	private static final String _ARRAY_KEY_PREFIX = "ARRAY_";
-
 	private static final boolean _PRINT_DUPLICATE_CALLS_TO_GET = false;
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -499,6 +483,13 @@ public class ConfigurationImpl
 	private final ComponentConfiguration _componentConfiguration;
 	private final Set<String> _printedSources = new HashSet<>();
 	private Properties _properties;
-	private final Map<String, Object> _values = new ConcurrentHashMap<>();
+	private final Map<String, Object> _configurationArrayCache =
+		new ConcurrentHashMap<>();
+	private final Map<String, Object> _configurationCache =
+		new ConcurrentHashMap<>();
+	private final Map<String, Object> _configurationFilterArrayCache =
+		new ConcurrentHashMap<>();
+	private final Map<String, Object> _configurationFilterCache =
+		new ConcurrentHashMap<>();
 
 }
