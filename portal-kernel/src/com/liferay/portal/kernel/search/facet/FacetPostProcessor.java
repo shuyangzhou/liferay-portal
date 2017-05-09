@@ -12,36 +12,20 @@
  * details.
  */
 
-package com.liferay.portal.kernel.search.facet.collector;
+package com.liferay.portal.kernel.search.facet;
 
-import com.liferay.portal.kernel.util.StringPool;
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.portal.kernel.search.Document;
+
+import java.util.Collection;
 
 /**
- * @author Michael C. Han
+ * @author André de Oliveira
  */
-public class DefaultTermCollector implements TermCollector {
+@ProviderType
+public interface FacetPostProcessor {
 
-	public DefaultTermCollector(String term, int frequency) {
-		_term = term;
-		_frequency = frequency;
-	}
-
-	@Override
-	public int getFrequency() {
-		return _frequency;
-	}
-
-	@Override
-	public String getTerm() {
-		return _term;
-	}
-
-	@Override
-	public String toString() {
-		return _term + StringPool.EQUAL + _frequency;
-	}
-
-	private final int _frequency;
-	private final String _term;
+	public void exclude(Collection<Document> documents, Facet facet);
 
 }

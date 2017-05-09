@@ -12,36 +12,32 @@
  * details.
  */
 
-package com.liferay.portal.kernel.search.facet.collector;
+package com.liferay.portal.search.internal.test.util;
 
-import com.liferay.portal.kernel.util.StringPool;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * @author Michael C. Han
+ * @author André de Oliveira
  */
-public class DefaultTermCollector implements TermCollector {
+public class SearchMapUtil {
 
-	public DefaultTermCollector(String term, int frequency) {
-		_term = term;
-		_frequency = frequency;
+	@SafeVarargs
+	public static <K, V> Map<K, V> join(
+		final Map<? extends K, ? extends V> map1,
+		final Map<? extends K, ? extends V> map2,
+		final Map<? extends K, ? extends V>... maps) {
+
+		return new HashMap<K, V>() {
+			{
+				putAll(map1);
+				putAll(map2);
+
+				for (Map<? extends K, ? extends V> map : maps) {
+					putAll(map);
+				}
+			}
+		};
 	}
-
-	@Override
-	public int getFrequency() {
-		return _frequency;
-	}
-
-	@Override
-	public String getTerm() {
-		return _term;
-	}
-
-	@Override
-	public String toString() {
-		return _term + StringPool.EQUAL + _frequency;
-	}
-
-	private final int _frequency;
-	private final String _term;
 
 }
