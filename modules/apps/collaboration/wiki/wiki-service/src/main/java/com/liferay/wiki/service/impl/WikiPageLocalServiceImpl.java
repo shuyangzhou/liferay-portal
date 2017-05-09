@@ -64,6 +64,7 @@ import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -1278,14 +1279,18 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 		HttpServletRequest request = serviceContext.getRequest();
 
-		boolean workflowAssetPreview = false;
-
 		if (request != null) {
-			workflowAssetPreview = GetterUtil.getBoolean(
-				request.getAttribute(WebKeys.WORKFLOW_ASSET_PREVIEW));
+			try {
+				return getPageDisplay(
+					page, viewPageURL, PortalUtil.getCurrentURL(request),
+					attachmentURLPrefix, request);
+			}
+			catch (Exception e) {
+				ReflectionUtil.throwException(e);
+			}
 		}
 
-		if (!workflowAssetPreview && page.isApproved()) {
+		if (page.isApproved()) {
 			return wikiCacheHelper.getDisplay(
 				page.getNodeId(), page.getTitle(), viewPageURL, editPageURL,
 				attachmentURLPrefix);
@@ -1301,12 +1306,8 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			String attachmentURLPrefix, HttpServletRequest request)
 		throws Exception {
 
-		boolean workflowAssetPreview = false;
-
-		if (request != null) {
-			workflowAssetPreview = GetterUtil.getBoolean(
-				request.getAttribute(WebKeys.WORKFLOW_ASSET_PREVIEW));
-		}
+		boolean workflowAssetPreview = GetterUtil.getBoolean(
+			request.getAttribute(WebKeys.WORKFLOW_ASSET_PREVIEW));
 
 		if (!workflowAssetPreview && page.isApproved()) {
 			return wikiCacheHelper.getDisplay(
