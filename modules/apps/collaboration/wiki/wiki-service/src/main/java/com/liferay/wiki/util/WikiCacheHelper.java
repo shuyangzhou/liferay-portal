@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -69,74 +70,18 @@ public class WikiCacheHelper {
 		long nodeId, String title, PortletURL viewPageURL,
 		PortletURL editPageURL, String attachmentURLPrefix) {
 
-		StopWatch stopWatch = new StopWatch();
-
-		stopWatch.start();
-
-		String key = _encodeKey(nodeId, title, viewPageURL.toString());
-
-		WikiPageDisplay pageDisplay = (WikiPageDisplay)_portalCache.get(key);
-
-		if (pageDisplay == null) {
-			pageDisplay = _getPageDisplay(
-				nodeId, title, viewPageURL, editPageURL, attachmentURLPrefix);
-
-			if (pageDisplay != null) {
-				_portalCache.put(key, pageDisplay);
-			}
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				"getDisplay for {" + nodeId + ", " + title + ", " +
-					viewPageURL + ", " + editPageURL + "} takes " +
-						stopWatch.getTime() + " ms");
-		}
-
-		return pageDisplay;
+		return _getDisplay(
+			nodeId, title, viewPageURL, null, editPageURL, attachmentURLPrefix,
+			null);
 	}
 
 	public WikiPageDisplay getDisplay(
-			long nodeId, String title, PortletURL viewPageURL,
-			String currentURL, String attachmentURLPrefix,
-			HttpServletRequest request)
-		throws PortletException {
+		long nodeId, String title, PortletURL viewPageURL, String currentURL,
+		String attachmentURLPrefix, HttpServletRequest request) {
 
-		StopWatch stopWatch = new StopWatch();
-
-		stopWatch.start();
-
-		String key = _encodeKey(nodeId, title, viewPageURL.toString());
-
-		WikiPageDisplay pageDisplay = (WikiPageDisplay)_portalCache.get(key);
-
-		if (pageDisplay == null) {
-			PortletURL editPageURL = PortletURLFactoryUtil.create(
-				request, WikiPortletKeys.WIKI, PortletRequest.ACTION_PHASE);
-
-			editPageURL.setParameter(
-				ActionRequest.ACTION_NAME, "/wiki/edit_page");
-			editPageURL.setParameter("redirect", currentURL);
-			editPageURL.setParameter("nodeId", String.valueOf(nodeId));
-			editPageURL.setPortletMode(PortletMode.VIEW);
-			editPageURL.setWindowState(WindowState.MAXIMIZED);
-
-			pageDisplay = _getPageDisplay(
-				nodeId, title, viewPageURL, editPageURL, attachmentURLPrefix);
-
-			if (pageDisplay != null) {
-				_portalCache.put(key, pageDisplay);
-			}
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				"getDisplay for {" + nodeId + ", " + title + ", " +
-					viewPageURL + ", " + currentURL + "} takes " +
-						stopWatch.getTime() + " ms");
-		}
-
-		return pageDisplay;
+		return _getDisplay(
+			nodeId, title, viewPageURL, currentURL, null, attachmentURLPrefix,
+			request);
 	}
 
 	public Map<String, Boolean> getOutgoingLinks(
@@ -201,6 +146,56 @@ public class WikiCacheHelper {
 		}
 
 		return sb.toString();
+	}
+
+	private WikiPageDisplay _getDisplay(
+		long nodeId, String title, PortletURL viewPageURL, String currentURL,
+		PortletURL editPageURL, String attachmentURLPrefix,
+		HttpServletRequest request) {
+
+		StopWatch stopWatch = new StopWatch();
+
+		stopWatch.start();
+
+		String key = _encodeKey(nodeId, title, viewPageURL.toString());
+
+		WikiPageDisplay pageDisplay = (WikiPageDisplay)_portalCache.get(key);
+
+		if (pageDisplay == null) {
+			if (editPageURL == null) {
+				editPageURL = PortletURLFactoryUtil.create(
+					request, WikiPortletKeys.WIKI, PortletRequest.ACTION_PHASE);
+
+				editPageURL.setParameter(
+					ActionRequest.ACTION_NAME, "/wiki/edit_page");
+				editPageURL.setParameter("redirect", currentURL);
+				editPageURL.setParameter("nodeId", String.valueOf(nodeId));
+
+				try {
+					editPageURL.setPortletMode(PortletMode.VIEW);
+					editPageURL.setWindowState(WindowState.MAXIMIZED);
+				}
+				catch (PortletException pe) {
+					ReflectionUtil.throwException(pe);
+				}
+			}
+
+			pageDisplay = _getPageDisplay(
+				nodeId, title, viewPageURL, editPageURL, attachmentURLPrefix);
+
+			if (pageDisplay != null) {
+				_portalCache.put(key, pageDisplay);
+			}
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"getDisplay for {" + nodeId + ", " + title + ", " +
+					viewPageURL + ", " + editPageURL + "} takes " +
+						stopWatch.getTime() + " ms");
+		}
+
+		return pageDisplay;
 	}
 
 	private WikiPageDisplay _getPageDisplay(
