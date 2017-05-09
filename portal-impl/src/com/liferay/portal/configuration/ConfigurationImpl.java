@@ -241,7 +241,9 @@ public class ConfigurationImpl
 
 			String[] array = componentProperties.getStringArray(key);
 
-			value = fixArrayValue(cacheKey, array);
+			value = _fixArrayValue(array);
+
+			_values.put(cacheKey, value);
 		}
 
 		if (value instanceof String[]) {
@@ -267,7 +269,11 @@ public class ConfigurationImpl
 			String[] array = componentProperties.getStringArray(
 				key, getEasyConfFilter(filter));
 
-			value = fixArrayValue(filterCacheKey, array);
+			value = _fixArrayValue(array);
+
+			if (filterCacheKey != null) {
+				_values.put(filterCacheKey, value);
+			}
 		}
 
 		if (value instanceof String[]) {
@@ -403,11 +409,7 @@ public class ConfigurationImpl
 		return sb.toString();
 	}
 
-	protected Object fixArrayValue(String cacheKey, String[] array) {
-		if (cacheKey == null) {
-			return array;
-		}
-
+	private Object _fixArrayValue(String[] array) {
 		Object value = _nullValue;
 
 		if (ArrayUtil.isNotEmpty(array)) {
@@ -429,8 +431,6 @@ public class ConfigurationImpl
 				value = array;
 			}
 		}
-
-		_values.put(cacheKey, value);
 
 		return value;
 	}
