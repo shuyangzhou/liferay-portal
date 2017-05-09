@@ -382,40 +382,6 @@ public class ConfigurationImpl
 		clearCache();
 	}
 
-	private FilterCacheKey _buildFilterCacheKey(String key, Filter filter) {
-		if (filter.getVariables() != null) {
-			return null;
-		}
-
-		return new FilterCacheKey(key, filter);
-	}
-
-	private Object _fixArrayValue(String[] array) {
-		Object value = _nullValue;
-
-		if (ArrayUtil.isNotEmpty(array)) {
-
-			// Commons Configuration parses an empty property into a String
-			// array with one String containing one space. It also leaves a
-			// trailing array member if you set a property in more than one
-			// line.
-
-			if (Validator.isNull(array[array.length - 1])) {
-				String[] subarray = new String[array.length - 1];
-
-				System.arraycopy(array, 0, subarray, 0, subarray.length);
-
-				array = subarray;
-			}
-
-			if (array.length > 0) {
-				value = array;
-			}
-		}
-
-		return value;
-	}
-
 	protected ComponentProperties getComponentProperties() {
 		return _componentConfiguration.getProperties();
 	}
@@ -467,6 +433,40 @@ public class ConfigurationImpl
 		return (Map)properties;
 	}
 
+	private FilterCacheKey _buildFilterCacheKey(String key, Filter filter) {
+		if (filter.getVariables() != null) {
+			return null;
+		}
+
+		return new FilterCacheKey(key, filter);
+	}
+
+	private Object _fixArrayValue(String[] array) {
+		Object value = _nullValue;
+
+		if (ArrayUtil.isNotEmpty(array)) {
+
+			// Commons Configuration parses an empty property into a String
+			// array with one String containing one space. It also leaves a
+			// trailing array member if you set a property in more than one
+			// line.
+
+			if (Validator.isNull(array[array.length - 1])) {
+				String[] subarray = new String[array.length - 1];
+
+				System.arraycopy(array, 0, subarray, 0, subarray.length);
+
+				array = subarray;
+			}
+
+			if (array.length > 0) {
+				value = array;
+			}
+		}
+
+		return value;
+	}
+
 	private static final boolean _PRINT_DUPLICATE_CALLS_TO_GET = false;
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -476,8 +476,6 @@ public class ConfigurationImpl
 	private static final Object _nullValue = new Object();
 
 	private final ComponentConfiguration _componentConfiguration;
-	private final Set<String> _printedSources = new HashSet<>();
-	private Properties _properties;
 	private final Map<String, Object> _configurationArrayCache =
 		new ConcurrentHashMap<>();
 	private final Map<String, Object> _configurationCache =
@@ -486,6 +484,8 @@ public class ConfigurationImpl
 		new ConcurrentHashMap<>();
 	private final Map<FilterCacheKey, Object> _configurationFilterCache =
 		new ConcurrentHashMap<>();
+	private final Set<String> _printedSources = new HashSet<>();
+	private Properties _properties;
 
 	private static class FilterCacheKey {
 
