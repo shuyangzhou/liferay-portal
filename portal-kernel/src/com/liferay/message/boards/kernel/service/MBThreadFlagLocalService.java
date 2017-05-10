@@ -80,6 +80,7 @@ public interface MBThreadFlagLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public MBThreadFlag addMBThreadFlag(MBThreadFlag mbThreadFlag);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public MBThreadFlag addThreadFlag(long userId, MBThread thread,
 		ServiceContext serviceContext) throws PortalException;
 
