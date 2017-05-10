@@ -17,7 +17,6 @@ package com.liferay.portlet.messageboards.service.impl;
 import com.liferay.message.boards.kernel.model.MBThread;
 import com.liferay.message.boards.kernel.model.MBThreadFlag;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.SystemEventConstants;
@@ -66,23 +65,7 @@ public class MBThreadFlagLocalServiceImpl
 				serviceContext.getModifiedDate(thread.getLastPostDate()));
 			threadFlag.setThreadId(threadId);
 
-			try {
-				mbThreadFlagPersistence.update(threadFlag);
-			}
-			catch (SystemException se) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Add failed, fetch {userId=" + userId + ", threadId=" +
-							threadId + "}");
-				}
-
-				threadFlag = mbThreadFlagPersistence.fetchByU_T(
-					userId, threadId, false);
-
-				if (threadFlag == null) {
-					throw se;
-				}
-			}
+			mbThreadFlagPersistence.update(threadFlag);
 		}
 		else if (!DateUtil.equals(
 					threadFlag.getModifiedDate(), thread.getLastPostDate())) {
