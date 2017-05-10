@@ -236,10 +236,11 @@ public class PortletConstants {
 	 *         <code>false</code> otherwise
 	 */
 	public static boolean hasUserId(String portletId) {
-		PortletInstance portletInstance =
-			PortletInstance.fromPortletInstanceKey(portletId);
+		if (getUserId(portletId) > 0) {
+			return true;
+		}
 
-		return portletInstance.hasUserId();
+		return false;
 	}
 
 	private static String _assemblePortletId(
