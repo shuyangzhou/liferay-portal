@@ -49,10 +49,9 @@ import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import javax.portlet.PortletURL;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Provides the local service interface for WikiPage. Methods of this
@@ -330,9 +329,9 @@ public interface WikiPageLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WikiPageDisplay getPageDisplay(WikiPage page,
-		PortletURL viewPageURL, java.lang.String currentURL,
-		java.lang.String attachmentURLPrefix, HttpServletRequest request)
-		throws java.lang.Exception;
+		PortletURL viewPageURL, Supplier<PortletURL> editPageURLSupplier,
+		java.lang.String attachmentURLPrefix, ServiceContext serviceContext)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WikiPageDisplay getPageDisplay(WikiPage page,

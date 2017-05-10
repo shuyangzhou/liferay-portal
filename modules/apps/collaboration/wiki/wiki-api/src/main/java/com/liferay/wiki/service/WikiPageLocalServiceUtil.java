@@ -438,13 +438,14 @@ public class WikiPageLocalServiceUtil {
 
 	public static com.liferay.wiki.model.WikiPageDisplay getPageDisplay(
 		com.liferay.wiki.model.WikiPage page,
-		javax.portlet.PortletURL viewPageURL, java.lang.String currentURL,
+		javax.portlet.PortletURL viewPageURL,
+		java.util.function.Supplier<javax.portlet.PortletURL> editPageURLSupplier,
 		java.lang.String attachmentURLPrefix,
-		javax.servlet.http.HttpServletRequest request)
-		throws java.lang.Exception {
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .getPageDisplay(page, viewPageURL, currentURL,
-			attachmentURLPrefix, request);
+				   .getPageDisplay(page, viewPageURL, editPageURLSupplier,
+			attachmentURLPrefix, serviceContext);
 	}
 
 	public static com.liferay.wiki.model.WikiPageDisplay getPageDisplay(
