@@ -2102,14 +2102,12 @@ tell application "Safari" to quit
 						</then>
 						<else>
 							<ant antfile="build-dist.xml" inheritAll="false" target="build-dist-tomcat" />
-
-							<setup-testable-tomcat />
 						</else>
 					</if>
 				</else>
 			</if>
 
-			<prepare-tomcat-setenv />
+			<setup-testable-tomcat />
 
 			<antcall inheritAll="false" target="prepare-test-build-tomcat-dependents" />
 
@@ -2251,12 +2249,6 @@ tell application "Safari" to quit
 					<var name="app.server.bundle.index" unset="true" />
 				</then>
 			</if>
-		</sequential>
-	</macrodef>
-
-	<macrodef name="prepare-tomcat-setenv">
-		<sequential>
-			<replace file="${app.server.tomcat.bin.dir}/setenv${file.suffix.bat}" token="${app.server.tomcat.setenv.gc.old}" value="${app.server.tomcat.setenv.gc.new}" />
 		</sequential>
 	</macrodef>
 
@@ -2986,6 +2978,10 @@ go</echo>
 
 			<setup-testable-tomcat-aspectj-agent />
 
+			<setup-testable-tomcat-gc />
+
+			<setup-testable-tomcat-heap-dump-on-OOM />
+
 			<setup-testable-tomcat-jmx />
 
 			<setup-testable-tomcat-jpda-address />
@@ -2993,6 +2989,8 @@ go</echo>
 			<setup-testable-tomcat-manager />
 
 			<setup-testable-tomcat-osgi-modules />
+
+			<setup-testable-tomcat-print-final-flags />
 		</sequential>
 	</macrodef>
 
@@ -3006,6 +3004,59 @@ go</echo>
 					<echo append="true" file="${app.server.tomcat.dir}/bin/setenv.sh">
 						<![CDATA[
 							CATALINA_OPTS="${CATALINA_OPTS} ${aspectj.agent} -Dorg.aspectj.weaver.loadtime.configuration=${aspectj.configuration}"
+						]]>
+					</echo>
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="setup-testable-tomcat-gc">
+		<sequential>
+			<if>
+				<not>
+					<resourcecontains resource="${app.server.tomcat.dir}/bin/setenv.bat" substring="${app.server.tomcat.setenv.gc.new}" />
+				</not>
+				<then>
+					<replace file="${app.server.tomcat.dir}/bin/setenv.bat" token="${app.server.tomcat.setenv.gc.old}" value="${app.server.tomcat.setenv.gc.new}" />
+				</then>
+			</if>
+
+			<if>
+				<not>
+					<resourcecontains resource="${app.server.tomcat.dir}/bin/setenv.sh" substring="${app.server.tomcat.setenv.gc.new}" />
+				</not>
+				<then>
+					<replace file="${app.server.tomcat.dir}/bin/setenv.sh" token="${app.server.tomcat.setenv.gc.old}" value="${app.server.tomcat.setenv.gc.new}" />
+				</then>
+			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="setup-testable-tomcat-heap-dump-on-OOM">
+		<sequential>
+			<var name="heap.dump.on.OOM" value="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${app.server.tomcat.setenv.heap.dump.path}" />
+
+			<if>
+				<not>
+					<resourcecontains resource="${app.server.tomcat.dir}/bin/setenv.bat" substring="${heap.dump.on.OOM}" />
+				</not>
+				<then>
+					<echo append="true" file="${app.server.tomcat.dir}/bin/setenv.bat">
+						<![CDATA[
+							set "CATALINA_OPTS=%CATALINA_OPTS% ${heap.dump.on.OOM}"
+						]]>
+					</echo>
+				</then>
+			</if>
+			<if>
+				<not>
+					<resourcecontains resource="${app.server.tomcat.dir}/bin/setenv.sh" substring="${heap.dump.on.OOM}" />
+				</not>
+				<then>
+					<echo append="true" file="${app.server.tomcat.dir}/bin/setenv.sh">
+						<![CDATA[
+							CATALINA_OPTS="${CATALINA_OPTS} ${heap.dump.on.OOM}"
 						]]>
 					</echo>
 				</then>
@@ -3213,6 +3264,37 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 			<copy todir="${liferay.home}/osgi/modules">
 				<fileset dir="${liferay.home}/osgi/test" />
 			</copy>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="setup-testable-tomcat-print-final-flags">
+		<sequential>
+			<var name="print.final.flags" value="-XX:+PrintFlagsFinal" />
+
+			<if>
+				<not>
+					<resourcecontains resource="${app.server.tomcat.dir}/bin/setenv.bat" substring="${print.final.flags}" />
+				</not>
+				<then>
+					<echo append="true" file="${app.server.tomcat.dir}/bin/setenv.bat">
+						<![CDATA[
+							set "CATALINA_OPTS=%CATALINA_OPTS% ${print.final.flags}"
+						]]>
+					</echo>
+				</then>
+			</if>
+			<if>
+				<not>
+					<resourcecontains resource="${app.server.tomcat.dir}/bin/setenv.sh" substring="${print.final.flags}" />
+				</not>
+				<then>
+					<echo append="true" file="${app.server.tomcat.dir}/bin/setenv.sh">
+						<![CDATA[
+							CATALINA_OPTS="${CATALINA_OPTS} ${print.final.flags}"
+						]]>
+					</echo>
+				</then>
+			</if>
 		</sequential>
 	</macrodef>
 
