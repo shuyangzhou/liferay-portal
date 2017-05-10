@@ -293,7 +293,18 @@ public class DLFileEntryImpl extends DLFileEntryBaseImpl {
 	@Override
 	public boolean hasLock() {
 		try {
-			return DLFileEntryServiceUtil.hasFileEntryLock(getFileEntryId());
+			long folderId = getFolderId();
+
+			boolean hasLock = LockManagerUtil.hasLock(
+				getUserId(), DLFileEntry.class.getName(), getFileEntryId());
+
+			if (!hasLock &&
+				(folderId != DLFolderConstants.DEFAULT_PARENT_FOLDER_ID)) {
+
+				hasLock = DLFolderLocalServiceUtil.hasInheritableLock(folderId);
+			}
+
+			return hasLock;
 		}
 		catch (Exception e) {
 			if (_log.isWarnEnabled()) {
