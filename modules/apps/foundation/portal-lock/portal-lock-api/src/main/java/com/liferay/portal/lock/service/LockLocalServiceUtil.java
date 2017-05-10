@@ -131,6 +131,16 @@ public class LockLocalServiceUtil {
 		return getService().deleteLock(lockId);
 	}
 
+	public static com.liferay.portal.lock.model.Lock fetchLock(
+		java.lang.String className, java.lang.String key) {
+		return getService().fetchLock(className, key);
+	}
+
+	public static com.liferay.portal.lock.model.Lock fetchLock(
+		java.lang.String className, long key) {
+		return getService().fetchLock(className, key);
+	}
+
 	public static com.liferay.portal.lock.model.Lock fetchLock(long lockId) {
 		return getService().fetchLock(lockId);
 	}

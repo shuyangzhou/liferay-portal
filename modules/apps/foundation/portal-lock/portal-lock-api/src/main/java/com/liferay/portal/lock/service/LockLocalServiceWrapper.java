@@ -134,6 +134,18 @@ public class LockLocalServiceWrapper implements LockLocalService,
 	}
 
 	@Override
+	public com.liferay.portal.lock.model.Lock fetchLock(
+		java.lang.String className, java.lang.String key) {
+		return _lockLocalService.fetchLock(className, key);
+	}
+
+	@Override
+	public com.liferay.portal.lock.model.Lock fetchLock(
+		java.lang.String className, long key) {
+		return _lockLocalService.fetchLock(className, key);
+	}
+
+	@Override
 	public com.liferay.portal.lock.model.Lock fetchLock(long lockId) {
 		return _lockLocalService.fetchLock(lockId);
 	}

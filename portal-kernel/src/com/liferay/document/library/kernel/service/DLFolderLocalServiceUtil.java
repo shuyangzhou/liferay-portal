@@ -53,8 +53,7 @@ public class DLFolderLocalServiceUtil {
 		return getService().hasFolderLock(userId, folderId);
 	}
 
-	public static boolean hasInheritableLock(long folderId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static boolean hasInheritableLock(long folderId) {
 		return getService().hasInheritableLock(folderId);
 	}
 

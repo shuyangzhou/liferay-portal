@@ -130,6 +130,12 @@ public interface LockLocalService extends BaseLocalService,
 	public Lock deleteLock(long lockId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Lock fetchLock(java.lang.String className, java.lang.String key);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Lock fetchLock(java.lang.String className, long key);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Lock fetchLock(long lockId);
 
 	/**
