@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.PortletInstance;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -265,17 +266,16 @@ public class DefaultFriendlyURLMapper extends BaseFriendlyURLMapper {
 		if (Validator.isNotNull(portletInstanceKey)) {
 			routeParameters.put("p_p_id", portletInstanceKey);
 
-			PortletInstance portletInstance =
-				PortletInstance.fromPortletInstanceKey(portletInstanceKey);
+			long userId = PortletConstants.getUserId(portletInstanceKey);
+			String instanceId = PortletConstants.getInstanceId(
+				portletInstanceKey);
 
 			routeParameters.put(
 				"userIdAndInstanceId",
-				portletInstance.getUserIdAndInstanceId());
+				_assembleUserIdAndInstanceId(userId, instanceId));
 
-			if (PortletConstants.hasInstanceId(portletInstanceKey)) {
-				routeParameters.put(
-					"instanceId",
-					PortletConstants.getInstanceId(portletInstanceKey));
+			if (Validator.isNotNull(instanceId)) {
+				routeParameters.put("instanceId", instanceId);
 			}
 		}
 
@@ -406,6 +406,27 @@ public class DefaultFriendlyURLMapper extends BaseFriendlyURLMapper {
 
 	protected Set<String> defaultIgnoredParameters;
 	protected Map<String, String> defaultReservedParameters;
+
+	private String _assembleUserIdAndInstanceId(
+		long userId, String instanceId) {
+
+		if ((userId <= 0) && Validator.isBlank(instanceId)) {
+			return null;
+		}
+
+		StringBundler sb = new StringBundler(3);
+
+		if (userId > 0) {
+			sb.append(userId);
+			sb.append(StringPool.UNDERLINE);
+		}
+
+		if (instanceId != null) {
+			sb.append(instanceId);
+		}
+
+		return sb.toString();
+	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultFriendlyURLMapper.class);
