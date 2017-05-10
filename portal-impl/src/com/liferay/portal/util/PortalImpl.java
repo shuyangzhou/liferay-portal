@@ -119,6 +119,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
+import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
@@ -200,6 +201,7 @@ import com.liferay.portal.model.impl.LayoutTypeImpl;
 import com.liferay.portal.plugin.PluginPackageUtil;
 import com.liferay.portal.security.jaas.JAASHelper;
 import com.liferay.portal.security.lang.DoPrivilegedUtil;
+import com.liferay.portal.security.permission.PermissionCacheUtil;
 import com.liferay.portal.security.sso.SSOUtil;
 import com.liferay.portal.servlet.filters.i18n.I18nFilter;
 import com.liferay.portal.spring.context.PortalContextLoaderListener;
@@ -4848,15 +4850,27 @@ public class PortalImpl implements Portal {
 				PropsKeys.
 					SITES_CONTENT_SHARING_THROUGH_ADMINISTRATORS_ENABLED)) {
 
-			LinkedHashMap<String, Object> groupParams = new LinkedHashMap<>();
+			UserBag userBag = PermissionCacheUtil.getUserBag(userId);
 
-			groupParams.put("site", Boolean.TRUE);
-			groupParams.put("usersGroups", userId);
+			if (userBag == null) {
+				LinkedHashMap<String, Object> groupParams =
+					new LinkedHashMap<>();
 
-			groups.addAll(
-				GroupLocalServiceUtil.search(
-					companyId, null, null, groupParams, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null));
+				groupParams.put("site", Boolean.TRUE);
+				groupParams.put("usersGroups", userId);
+
+				groups.addAll(
+					GroupLocalServiceUtil.search(
+						companyId, null, null, groupParams, QueryUtil.ALL_POS,
+						QueryUtil.ALL_POS, null));
+			}
+			else {
+				for (Group group : userBag.getUserGroups()) {
+					if (group.isSite()) {
+						groups.add(group);
+					}
+				}
+			}
 		}
 
 		// Ancestor sites and global site
