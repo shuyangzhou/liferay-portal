@@ -19,8 +19,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.security.InvalidParameterException;
-
 /**
  * @author Brian Wing Shun Chan
  */
@@ -135,19 +133,8 @@ public class PortletConstants {
 	public static String assemblePortletId(
 		String portletId, String instanceId) {
 
-		if (portletId.contains(_USER_SEPARATOR)) {
-			throw new InvalidParameterException(
-				"The portletName '" + portletId +
-					"' must not contain the keyword " + _USER_SEPARATOR);
-		}
-
-		if (portletId.contains(_INSTANCE_SEPARATOR)) {
-			throw new InvalidParameterException(
-				"The portletName '" + portletId +
-					"' must not contain the keyword " + _INSTANCE_SEPARATOR);
-		}
-
-		return _assemblePortletId(portletId, 0, instanceId);
+		return _assemblePortletId(
+			getRootPortletId(portletId), getUserId(portletId), instanceId);
 	}
 
 	public static String generateInstanceId() {
