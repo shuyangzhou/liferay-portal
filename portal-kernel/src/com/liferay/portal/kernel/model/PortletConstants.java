@@ -159,10 +159,13 @@ public class PortletConstants {
 	 * @return the instance ID of the portlet
 	 */
 	public static String getInstanceId(String portletId) {
-		PortletInstance portletInstance =
-			PortletInstance.fromPortletInstanceKey(portletId);
+		int index = portletId.indexOf(_INSTANCE_SEPARATOR);
 
-		return portletInstance.getInstanceId();
+		if (index == -1) {
+			return null;
+		}
+
+		return portletId.substring(index + _INSTANCE_SEPARATOR.length());
 	}
 
 	/**
@@ -230,5 +233,7 @@ public class PortletConstants {
 
 		return portletInstance.hasUserId();
 	}
+
+	private static final String _INSTANCE_SEPARATOR = "_INSTANCE_";
 
 }
