@@ -109,6 +109,9 @@
 	<bean class="com.liferay.portlet.messageboards.service.persistence.impl.MBThreadFinderImpl" id="com.liferay.message.boards.kernel.service.persistence.MBThreadFinder" parent="basePersistence" />
 	<bean class="com.liferay.portlet.messageboards.service.impl.MBThreadFlagLocalServiceImpl" id="com.liferay.message.boards.kernel.service.MBThreadFlagLocalService" />
 	<bean class="com.liferay.portlet.messageboards.service.persistence.impl.MBThreadFlagPersistenceImpl" id="com.liferay.message.boards.kernel.service.persistence.MBThreadFlagPersistence" parent="basePersistence" />
+	<bean class="com.liferay.portal.service.impl.ABCTestEntityLocalServiceImpl" id="com.liferay.portal.kernel.service.ABCTestEntityLocalService" />
+	<bean class="com.liferay.portal.service.persistence.impl.ABCTestEntityPersistenceImpl" id="com.liferay.portal.kernel.service.persistence.ABCTestEntityPersistence" parent="basePersistence" />
+	<bean class="com.liferay.portal.service.persistence.impl.ABCTestEntityLocalizationPersistenceImpl" id="com.liferay.portal.kernel.service.persistence.ABCTestEntityLocalizationPersistence" parent="basePersistence" />
 	<bean class="com.liferay.portal.service.impl.AccountLocalServiceImpl" id="com.liferay.portal.kernel.service.AccountLocalService" />
 	<bean class="com.liferay.portal.service.impl.AccountServiceImpl" id="com.liferay.portal.kernel.service.AccountService" />
 	<bean class="com.liferay.portal.service.persistence.impl.AccountPersistenceImpl" id="com.liferay.portal.kernel.service.persistence.AccountPersistence" parent="basePersistence" />

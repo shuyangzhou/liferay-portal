@@ -1,3 +1,22 @@
+create table ABCTestEntity (
+	mvccVersion LONG default 0 not null,
+	abcTestEntityId VARCHAR(75) not null primary key,
+	companyId LONG,
+	groupId LONG,
+	defaultLanguageId VARCHAR(75) null
+);
+
+create table ABCTestEntityLocalization (
+	mvccVersion LONG default 0 not null,
+	abcTestEntityLocalizationId LONG not null primary key,
+	companyId LONG,
+	abcTestEntityId VARCHAR(75) null,
+	languageId VARCHAR(75) null,
+	name VARCHAR(75) null,
+	description VARCHAR(75) null,
+	groupId LONG
+);
+
 create table Account_ (
 	mvccVersion LONG default 0 not null,
 	accountId LONG not null primary key,

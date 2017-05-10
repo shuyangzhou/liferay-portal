@@ -35,6 +35,8 @@
 	<import class="com.liferay.message.boards.kernel.model.MBStatsUser" />
 	<import class="com.liferay.message.boards.kernel.model.MBThread" />
 	<import class="com.liferay.message.boards.kernel.model.MBThreadFlag" />
+	<import class="com.liferay.portal.kernel.model.ABCTestEntity" />
+	<import class="com.liferay.portal.kernel.model.ABCTestEntityLocalization" />
 	<import class="com.liferay.portal.kernel.model.Account" />
 	<import class="com.liferay.portal.kernel.model.Address" />
 	<import class="com.liferay.portal.kernel.model.BrowserTracker" />
@@ -117,6 +119,27 @@
 			<generator class="assigned" />
 		</id>
 		<property name="currentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class dynamic-update="true" name="com.liferay.portal.model.impl.ABCTestEntityImpl" table="ABCTestEntity">
+		<id name="abcTestEntityId" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<version access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" name="mvccVersion" type="long" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="defaultLanguageId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class dynamic-update="true" name="com.liferay.portal.model.impl.ABCTestEntityLocalizationImpl" table="ABCTestEntityLocalization">
+		<id name="abcTestEntityLocalizationId" type="long">
+			<generator class="assigned" />
+		</id>
+		<version access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" name="mvccVersion" type="long" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="abcTestEntityId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="languageId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class dynamic-update="true" name="com.liferay.portal.model.impl.AccountImpl" table="Account_">
 		<id name="accountId" type="long">
