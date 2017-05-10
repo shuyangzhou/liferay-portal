@@ -206,12 +206,10 @@ public class PortletConstants {
 	public static boolean hasIdenticalRootPortletId(
 		String portletId1, String portletId2) {
 
-		PortletInstance portletInstance1 =
-			PortletInstance.fromPortletInstanceKey(portletId1);
-		PortletInstance portletInstance2 =
-			PortletInstance.fromPortletInstanceKey(portletId2);
+		portletId1 = getRootPortletId(portletId1);
+		portletId2 = getRootPortletId(portletId2);
 
-		return portletInstance1.hasIdenticalPortletName(portletInstance2);
+		return portletId1.equals(portletId2);
 	}
 
 	/**
