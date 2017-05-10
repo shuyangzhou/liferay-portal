@@ -31,6 +31,54 @@ import java.io.Writer;
  */
 public class StringBundler implements Serializable {
 
+	public static String toString(String[] array, int fromIndex, int toIndex) {
+		if (toIndex == 0) {
+			return StringPool.BLANK;
+		}
+
+		if (toIndex == 1) {
+			return array[0];
+		}
+
+		if (toIndex == 2) {
+			return array[0].concat(array[1]);
+		}
+
+		if (toIndex == 3) {
+			return array[0].concat(array[1]).concat(array[2]);
+		}
+
+		int length = 0;
+
+		for (int i = fromIndex; i < toIndex; i++) {
+			length += array[i].length();
+		}
+
+		UnsafeStringBuilder usb = null;
+
+		if (length > _THREAD_LOCAL_BUFFER_LIMIT) {
+			usb = _unsafeStringBuilderThreadLocal.get();
+
+			if (usb == null) {
+				usb = new UnsafeStringBuilder(length);
+
+				_unsafeStringBuilderThreadLocal.set(usb);
+			}
+			else {
+				usb.resetAndEnsureCapacity(length);
+			}
+		}
+		else {
+			usb = new UnsafeStringBuilder(length);
+		}
+
+		for (int i = fromIndex; i < toIndex; i++) {
+			usb.append(array[i]);
+		}
+
+		return usb.toString();
+	}
+
 	public StringBundler() {
 		_array = new String[_DEFAULT_ARRAY_CAPACITY];
 	}
@@ -227,51 +275,7 @@ public class StringBundler implements Serializable {
 
 	@Override
 	public String toString() {
-		if (_arrayIndex == 0) {
-			return StringPool.BLANK;
-		}
-
-		if (_arrayIndex == 1) {
-			return _array[0];
-		}
-
-		if (_arrayIndex == 2) {
-			return _array[0].concat(_array[1]);
-		}
-
-		if (_arrayIndex == 3) {
-			return _array[0].concat(_array[1]).concat(_array[2]);
-		}
-
-		int length = 0;
-
-		for (int i = 0; i < _arrayIndex; i++) {
-			length += _array[i].length();
-		}
-
-		UnsafeStringBuilder usb = null;
-
-		if (length > _THREAD_LOCAL_BUFFER_LIMIT) {
-			usb = _unsafeStringBuilderThreadLocal.get();
-
-			if (usb == null) {
-				usb = new UnsafeStringBuilder(length);
-
-				_unsafeStringBuilderThreadLocal.set(usb);
-			}
-			else {
-				usb.resetAndEnsureCapacity(length);
-			}
-		}
-		else {
-			usb = new UnsafeStringBuilder(length);
-		}
-
-		for (int i = 0; i < _arrayIndex; i++) {
-			usb.append(_array[i]);
-		}
-
-		return usb.toString();
+		return toString(_array, 0, _arrayIndex);
 	}
 
 	public void writeTo(Writer writer) throws IOException {
