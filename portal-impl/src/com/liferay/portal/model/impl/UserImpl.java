@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.model.Website;
 import com.liferay.portal.kernel.security.auth.EmailAddressGenerator;
 import com.liferay.portal.kernel.security.auth.FullNameGenerator;
 import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
+import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.ContactLocalServiceUtil;
@@ -68,6 +69,7 @@ import com.liferay.portal.kernel.util.TimeZoneUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.security.auth.EmailAddressGeneratorFactory;
+import com.liferay.portal.security.permission.PermissionCacheUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
@@ -790,6 +792,28 @@ public class UserImpl extends UserBaseImpl {
 	public boolean hasMySites() throws PortalException {
 		if (isDefaultUser()) {
 			return false;
+		}
+
+		UserBag userBag = PermissionCacheUtil.getUserBag(getUserId());
+
+		if (userBag != null) {
+			long[] groupIds = userBag.getUserGroupIds();
+
+			if (groupIds.length > 0) {
+				return true;
+			}
+
+			groupIds = userBag.getUserOrgGroupIds();
+
+			if (groupIds.length > 0) {
+				return true;
+			}
+
+			groupIds = userBag.getUserUserGroupsIds();
+
+			if (groupIds.length > 0) {
+				return true;
+			}
 		}
 
 		List<Group> groups = getMySiteGroups(1);
