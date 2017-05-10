@@ -48,7 +48,6 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.PortletConstants;
-import com.liferay.portal.kernel.model.PortletInstance;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
@@ -1125,11 +1124,8 @@ public class AssetPublisherUtil {
 			long ownerId, int ownerType, long plid, String portletId)
 		throws PortalException {
 
-		PortletInstance portletInstance =
-			PortletInstance.fromPortletInstanceKey(portletId);
-
-		if (portletInstance.hasUserId()) {
-			ownerId = portletInstance.getUserId();
+		if (PortletConstants.hasUserId(portletId)) {
+			ownerId = PortletConstants.getUserId(portletId);
 			ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
 		}
 
