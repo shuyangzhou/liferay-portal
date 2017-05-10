@@ -58,6 +58,30 @@ public class LockManagerImpl implements LockManager {
 	}
 
 	@Override
+	public Lock fetchLock(String className, long key) {
+		com.liferay.portal.lock.model.Lock lock = _lockLocalService.fetchLock(
+			className, key);
+
+		if (lock == null) {
+			return null;
+		}
+
+		return new LockImpl(lock);
+	}
+
+	@Override
+	public Lock fetchLock(String className, String key) {
+		com.liferay.portal.lock.model.Lock lock = _lockLocalService.fetchLock(
+			className, key);
+
+		if (lock == null) {
+			return null;
+		}
+
+		return new LockImpl(lock);
+	}
+
+	@Override
 	public Lock getLock(String className, long key) throws PortalException {
 		try {
 			return new LockImpl(_lockLocalService.getLock(className, key));

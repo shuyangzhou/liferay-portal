@@ -38,6 +38,14 @@ public class LockManagerUtil {
 		return _lockManager.getLock(className, key);
 	}
 
+	public static Lock fetchLock(String className, String key) {
+		return _lockManager.fetchLock(className, key);
+	}
+
+	public static Lock fetchLock(String className, long key) {
+		return _lockManager.fetchLock(className, key);
+	}
+
 	public static Lock getLock(String className, String key)
 		throws PortalException {
 
