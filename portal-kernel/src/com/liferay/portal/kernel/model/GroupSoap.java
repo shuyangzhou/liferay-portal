@@ -44,8 +44,6 @@ public class GroupSoap implements Serializable {
 		soapModel.setLiveGroupId(model.getLiveGroupId());
 		soapModel.setTreePath(model.getTreePath());
 		soapModel.setGroupKey(model.getGroupKey());
-		soapModel.setName(model.getName());
-		soapModel.setDescription(model.getDescription());
 		soapModel.setType(model.getType());
 		soapModel.setTypeSettings(model.getTypeSettings());
 		soapModel.setManualMembership(model.getManualMembership());
@@ -55,6 +53,7 @@ public class GroupSoap implements Serializable {
 		soapModel.setRemoteStagingGroupCount(model.getRemoteStagingGroupCount());
 		soapModel.setInheritContent(model.getInheritContent());
 		soapModel.setActive(model.getActive());
+		soapModel.setDefaultLanguageId(model.getDefaultLanguageId());
 
 		return soapModel;
 	}
@@ -195,22 +194,6 @@ public class GroupSoap implements Serializable {
 		_groupKey = groupKey;
 	}
 
-	public String getName() {
-		return _name;
-	}
-
-	public void setName(String name) {
-		_name = name;
-	}
-
-	public String getDescription() {
-		return _description;
-	}
-
-	public void setDescription(String description) {
-		_description = description;
-	}
-
 	public int getType() {
 		return _type;
 	}
@@ -299,6 +282,14 @@ public class GroupSoap implements Serializable {
 		_active = active;
 	}
 
+	public String getDefaultLanguageId() {
+		return _defaultLanguageId;
+	}
+
+	public void setDefaultLanguageId(String defaultLanguageId) {
+		_defaultLanguageId = defaultLanguageId;
+	}
+
 	private long _mvccVersion;
 	private String _uuid;
 	private long _groupId;
@@ -310,8 +301,6 @@ public class GroupSoap implements Serializable {
 	private long _liveGroupId;
 	private String _treePath;
 	private String _groupKey;
-	private String _name;
-	private String _description;
 	private int _type;
 	private String _typeSettings;
 	private boolean _manualMembership;
@@ -321,4 +310,5 @@ public class GroupSoap implements Serializable {
 	private int _remoteStagingGroupCount;
 	private boolean _inheritContent;
 	private boolean _active;
+	private String _defaultLanguageId;
 }

@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.service.persistence.AccountPersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
 import com.liferay.portal.kernel.service.persistence.GroupFinder;
+import com.liferay.portal.kernel.service.persistence.GroupLocalizationPersistence;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutFinder;
 import com.liferay.portal.kernel.service.persistence.LayoutPersistence;
@@ -1140,6 +1141,25 @@ public abstract class GroupServiceBaseImpl extends BaseServiceImpl
 	public void setTrashEntryPersistence(
 		TrashEntryPersistence trashEntryPersistence) {
 		this.trashEntryPersistence = trashEntryPersistence;
+	}
+
+	/**
+	 * Returns the group localization persistence.
+	 *
+	 * @return the group localization persistence
+	 */
+	public GroupLocalizationPersistence getGroupLocalizationPersistence() {
+		return groupLocalizationPersistence;
+	}
+
+	/**
+	 * Sets the group localization persistence.
+	 *
+	 * @param groupLocalizationPersistence the group localization persistence
+	 */
+	public void setGroupLocalizationPersistence(
+		GroupLocalizationPersistence groupLocalizationPersistence) {
+		this.groupLocalizationPersistence = groupLocalizationPersistence;
 	}
 
 	/**
@@ -2617,6 +2637,8 @@ public abstract class GroupServiceBaseImpl extends BaseServiceImpl
 	protected com.liferay.trash.kernel.service.TrashEntryService trashEntryService;
 	@BeanReference(type = TrashEntryPersistence.class)
 	protected TrashEntryPersistence trashEntryPersistence;
+	@BeanReference(type = GroupLocalizationPersistence.class)
+	protected GroupLocalizationPersistence groupLocalizationPersistence;
 	@BeanReference(type = com.liferay.portal.kernel.service.LayoutLocalService.class)
 	protected com.liferay.portal.kernel.service.LayoutLocalService layoutLocalService;
 	@BeanReference(type = com.liferay.portal.kernel.service.LayoutService.class)

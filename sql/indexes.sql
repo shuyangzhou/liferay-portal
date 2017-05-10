@@ -163,6 +163,8 @@ create index IX_1827A2E5 on ExportImportConfiguration (companyId);
 create index IX_38FA468D on ExportImportConfiguration (groupId, status);
 create index IX_47CC6234 on ExportImportConfiguration (groupId, type_, status);
 
+create unique index IX_C3338453 on GroupLocalization (groupId, languageId[$COLUMN_LENGTH:75$]);
+
 create index IX_8257E37B on Group_ (classNameId, classPK);
 create index IX_BD3CB13A on Group_ (classNameId, groupId, companyId, parentGroupId);
 create index IX_DDC91A87 on Group_ (companyId, active_);

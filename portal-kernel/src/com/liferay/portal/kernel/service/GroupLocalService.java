@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.GroupLocalization;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.PersistedModel;
@@ -551,6 +552,14 @@ public interface GroupLocalService extends BaseLocalService,
 	public Group updateSite(long groupId, boolean site)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public GroupLocalization fetchGroupLocalization(long groupId,
+		java.lang.String languageId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public GroupLocalization getGroupLocalization(long groupId,
+		java.lang.String languageId) throws PortalException;
+
 	/**
 	* @throws PortalException
 	*/
@@ -933,6 +942,9 @@ public interface GroupLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Group> getCompanyGroups(long companyId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<GroupLocalization> getGroupLocalizations(long groupId);
 
 	/**
 	* Returns a range of all the groups.

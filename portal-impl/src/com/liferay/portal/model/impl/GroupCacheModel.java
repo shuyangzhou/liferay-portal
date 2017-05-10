@@ -77,7 +77,7 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(45);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -101,10 +101,6 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 		sb.append(treePath);
 		sb.append(", groupKey=");
 		sb.append(groupKey);
-		sb.append(", name=");
-		sb.append(name);
-		sb.append(", description=");
-		sb.append(description);
 		sb.append(", type=");
 		sb.append(type);
 		sb.append(", typeSettings=");
@@ -123,6 +119,8 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 		sb.append(inheritContent);
 		sb.append(", active=");
 		sb.append(active);
+		sb.append(", defaultLanguageId=");
+		sb.append(defaultLanguageId);
 		sb.append("}");
 
 		return sb.toString();
@@ -163,20 +161,6 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 			groupImpl.setGroupKey(groupKey);
 		}
 
-		if (name == null) {
-			groupImpl.setName(StringPool.BLANK);
-		}
-		else {
-			groupImpl.setName(name);
-		}
-
-		if (description == null) {
-			groupImpl.setDescription(StringPool.BLANK);
-		}
-		else {
-			groupImpl.setDescription(description);
-		}
-
 		groupImpl.setType(type);
 
 		if (typeSettings == null) {
@@ -200,6 +184,13 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 		groupImpl.setRemoteStagingGroupCount(remoteStagingGroupCount);
 		groupImpl.setInheritContent(inheritContent);
 		groupImpl.setActive(active);
+
+		if (defaultLanguageId == null) {
+			groupImpl.setDefaultLanguageId(StringPool.BLANK);
+		}
+		else {
+			groupImpl.setDefaultLanguageId(defaultLanguageId);
+		}
 
 		groupImpl.resetOriginalValues();
 
@@ -226,8 +217,6 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 		liveGroupId = objectInput.readLong();
 		treePath = objectInput.readUTF();
 		groupKey = objectInput.readUTF();
-		name = objectInput.readUTF();
-		description = objectInput.readUTF();
 
 		type = objectInput.readInt();
 		typeSettings = objectInput.readUTF();
@@ -244,6 +233,7 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 		inheritContent = objectInput.readBoolean();
 
 		active = objectInput.readBoolean();
+		defaultLanguageId = objectInput.readUTF();
 	}
 
 	@Override
@@ -286,20 +276,6 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 			objectOutput.writeUTF(groupKey);
 		}
 
-		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
-		}
-		else {
-			objectOutput.writeUTF(name);
-		}
-
-		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
-		}
-		else {
-			objectOutput.writeUTF(description);
-		}
-
 		objectOutput.writeInt(type);
 
 		if (typeSettings == null) {
@@ -327,6 +303,13 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 		objectOutput.writeBoolean(inheritContent);
 
 		objectOutput.writeBoolean(active);
+
+		if (defaultLanguageId == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(defaultLanguageId);
+		}
 	}
 
 	public long mvccVersion;
@@ -340,8 +323,6 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 	public long liveGroupId;
 	public String treePath;
 	public String groupKey;
-	public String name;
-	public String description;
 	public int type;
 	public String typeSettings;
 	public boolean manualMembership;
@@ -351,4 +332,5 @@ public class GroupCacheModel implements CacheModel<Group>, Externalizable,
 	public int remoteStagingGroupCount;
 	public boolean inheritContent;
 	public boolean active;
+	public String defaultLanguageId;
 }

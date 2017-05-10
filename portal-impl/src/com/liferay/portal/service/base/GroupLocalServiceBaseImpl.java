@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.GroupLocalization;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.search.Indexable;
@@ -55,6 +56,7 @@ import com.liferay.portal.kernel.service.persistence.AccountPersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
 import com.liferay.portal.kernel.service.persistence.GroupFinder;
+import com.liferay.portal.kernel.service.persistence.GroupLocalizationPersistence;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutFinder;
 import com.liferay.portal.kernel.service.persistence.LayoutPersistence;
@@ -100,7 +102,10 @@ import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -888,6 +893,124 @@ public abstract class GroupLocalServiceBaseImpl extends BaseLocalServiceImpl
 		userPersistence.setGroups(userId, groupIds);
 	}
 
+	@Override
+	public GroupLocalization fetchGroupLocalization(long groupId,
+		String languageId) {
+		return groupLocalizationPersistence.fetchByGroupId_LanguageId(groupId,
+			languageId);
+	}
+
+	@Override
+	public GroupLocalization getGroupLocalization(long groupId,
+		String languageId) throws PortalException {
+		return groupLocalizationPersistence.findByGroupId_LanguageId(groupId,
+			languageId);
+	}
+
+	@Override
+	public List<GroupLocalization> getGroupLocalizations(long groupId) {
+		return groupLocalizationPersistence.findByGroupId(groupId);
+	}
+
+	protected GroupLocalization updateGroupLocalization(Group group,
+		String languageId, String name, String description)
+		throws PortalException {
+		GroupLocalization groupLocalization = groupLocalizationPersistence.fetchByGroupId_LanguageId(group.getGroupId(),
+				languageId);
+
+		if (groupLocalization == null) {
+			long groupLocalizationId = counterLocalService.increment();
+
+			groupLocalization = groupLocalizationPersistence.create(groupLocalizationId);
+
+			groupLocalization.setGroupId(group.getGroupId());
+			groupLocalization.setLanguageId(languageId);
+		}
+
+		groupLocalization.setCompanyId(group.getCompanyId());
+
+		groupLocalization.setName(name);
+		groupLocalization.setDescription(description);
+
+		return groupLocalizationPersistence.update(groupLocalization);
+	}
+
+	protected List<GroupLocalization> updateGroupLocalizations(Group group,
+		Map<String, String> nameMap, Map<String, String> descriptionMap)
+		throws PortalException {
+		Map<String, String[]> localizedValuesMap = new HashMap<String, String[]>();
+
+		for (Map.Entry<String, String> entry : nameMap.entrySet()) {
+			String languageId = entry.getKey();
+
+			String[] localizedValues = localizedValuesMap.get(languageId);
+
+			if (localizedValues == null) {
+				localizedValues = new String[2];
+
+				localizedValuesMap.put(languageId, localizedValues);
+			}
+
+			localizedValues[0] = entry.getValue();
+		}
+
+		for (Map.Entry<String, String> entry : descriptionMap.entrySet()) {
+			String languageId = entry.getKey();
+
+			String[] localizedValues = localizedValuesMap.get(languageId);
+
+			if (localizedValues == null) {
+				localizedValues = new String[2];
+
+				localizedValuesMap.put(languageId, localizedValues);
+			}
+
+			localizedValues[1] = entry.getValue();
+		}
+
+		List<GroupLocalization> groupLocalizations = new ArrayList<GroupLocalization>(localizedValuesMap.size());
+
+		for (GroupLocalization groupLocalization : groupLocalizationPersistence.findByGroupId(
+				group.getGroupId())) {
+			String[] localizedValues = localizedValuesMap.remove(groupLocalization.getLanguageId());
+
+			if (localizedValues == null) {
+				groupLocalizationPersistence.remove(groupLocalization);
+			}
+			else {
+				groupLocalization.setCompanyId(group.getCompanyId());
+
+				groupLocalization.setName(localizedValues[0]);
+				groupLocalization.setDescription(localizedValues[1]);
+
+				groupLocalizations.add(groupLocalizationPersistence.update(
+						groupLocalization));
+			}
+		}
+
+		for (Map.Entry<String, String[]> entry : localizedValuesMap.entrySet()) {
+			String languageId = entry.getKey();
+			String[] localizedValues = entry.getValue();
+
+			long groupLocalizationId = counterLocalService.increment();
+
+			GroupLocalization groupLocalization = groupLocalizationPersistence.create(groupLocalizationId);
+
+			groupLocalization.setGroupId(group.getGroupId());
+			groupLocalization.setCompanyId(group.getCompanyId());
+
+			groupLocalization.setLanguageId(languageId);
+
+			groupLocalization.setName(localizedValues[0]);
+			groupLocalization.setDescription(localizedValues[1]);
+
+			groupLocalizations.add(groupLocalizationPersistence.update(
+					groupLocalization));
+		}
+
+		return groupLocalizations;
+	}
+
 	/**
 	 * Returns the group local service.
 	 *
@@ -1618,6 +1741,25 @@ public abstract class GroupLocalServiceBaseImpl extends BaseLocalServiceImpl
 	public void setTrashEntryPersistence(
 		TrashEntryPersistence trashEntryPersistence) {
 		this.trashEntryPersistence = trashEntryPersistence;
+	}
+
+	/**
+	 * Returns the group localization persistence.
+	 *
+	 * @return the group localization persistence
+	 */
+	public GroupLocalizationPersistence getGroupLocalizationPersistence() {
+		return groupLocalizationPersistence;
+	}
+
+	/**
+	 * Sets the group localization persistence.
+	 *
+	 * @param groupLocalizationPersistence the group localization persistence
+	 */
+	public void setGroupLocalizationPersistence(
+		GroupLocalizationPersistence groupLocalizationPersistence) {
+		this.groupLocalizationPersistence = groupLocalizationPersistence;
 	}
 
 	/**
@@ -2744,6 +2886,8 @@ public abstract class GroupLocalServiceBaseImpl extends BaseLocalServiceImpl
 	protected com.liferay.trash.kernel.service.TrashEntryLocalService trashEntryLocalService;
 	@BeanReference(type = TrashEntryPersistence.class)
 	protected TrashEntryPersistence trashEntryPersistence;
+	@BeanReference(type = GroupLocalizationPersistence.class)
+	protected GroupLocalizationPersistence groupLocalizationPersistence;
 	@BeanReference(type = com.liferay.portal.kernel.service.LayoutLocalService.class)
 	protected com.liferay.portal.kernel.service.LayoutLocalService layoutLocalService;
 	@BeanReference(type = LayoutPersistence.class)

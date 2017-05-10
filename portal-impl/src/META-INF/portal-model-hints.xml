@@ -810,14 +810,6 @@
 		<field name="groupKey" type="String">
 			<hint name="max-length">150</hint>
 		</field>
-		<field localized="true" name="name" type="String">
-			<hint name="display-width">210</hint>
-			<hint name="max-length">4000</hint>
-			<validator name="required" />
-		</field>
-		<field localized="true" name="description" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
 		<field name="type" type="int" />
 		<field name="typeSettings" type="String">
 			<hint-collection name="CLOB" />
@@ -831,6 +823,16 @@
 		<field name="remoteStagingGroupCount" type="int" />
 		<field name="inheritContent" type="boolean" />
 		<field name="active" type="boolean" />
+		<field name="defaultLanguageId" type="String" />
+	</model>
+	<model name="com.liferay.portal.kernel.model.GroupLocalization">
+		<field name="mvccVersion" type="long" />
+		<field name="groupLocalizationId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="languageId" type="String" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
 	</model>
 	<model name="com.liferay.portal.kernel.model.Image">
 		<field name="mvccVersion" type="long" />
