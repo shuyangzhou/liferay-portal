@@ -29,6 +29,10 @@ public interface LockManager {
 	public Lock createLock(
 		long lockId, long companyId, long userId, String userName);
 
+	public Lock fetchLock(String className, long key);
+
+	public Lock fetchLock(String className, String key);
+
 	public Lock getLock(String className, long key) throws PortalException;
 
 	public Lock getLock(String className, String key) throws PortalException;

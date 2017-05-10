@@ -32,6 +32,14 @@ public class LockManagerUtil {
 		return _lockManager.createLock(lockId, companyId, userId, userName);
 	}
 
+	public static Lock fetchLock(String className, long key) {
+		return _lockManager.fetchLock(className, key);
+	}
+
+	public static Lock fetchLock(String className, String key) {
+		return _lockManager.fetchLock(className, key);
+	}
+
 	public static Lock getLock(String className, long key)
 		throws PortalException {
 

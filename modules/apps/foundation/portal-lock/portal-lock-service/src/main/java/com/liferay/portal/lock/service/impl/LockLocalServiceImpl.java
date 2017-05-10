@@ -51,6 +51,26 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 	}
 
 	@Override
+	public Lock fetchLock(String className, long key) {
+		return fetchLock(className, String.valueOf(key));
+	}
+
+	@Override
+	public Lock fetchLock(String className, String key) {
+		Lock lock = lockPersistence.fetchByC_K(className, key);
+
+		if (lock != null) {
+			if (lock.isExpired()) {
+				expireLock(lock);
+
+				lock = null;
+			}
+		}
+
+		return lock;
+	}
+
+	@Override
 	public Lock getLock(String className, long key) throws PortalException {
 		return getLock(className, String.valueOf(key));
 	}
@@ -426,20 +446,6 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 				lockListener.onAfterExpire(key);
 			}
 		}
-	}
-
-	protected Lock fetchLock(String className, String key) {
-		Lock lock = lockPersistence.fetchByC_K(className, key);
-
-		if (lock != null) {
-			if (lock.isExpired()) {
-				expireLock(lock);
-
-				lock = null;
-			}
-		}
-
-		return lock;
 	}
 
 	private final TransactionConfig _transactionConfig =
