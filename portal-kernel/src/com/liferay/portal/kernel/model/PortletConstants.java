@@ -176,10 +176,17 @@ public class PortletConstants {
 	 * @return the root portlet ID of the portlet
 	 */
 	public static String getRootPortletId(String portletId) {
-		PortletInstance portletInstance =
-			PortletInstance.fromPortletInstanceKey(portletId);
+		int x = portletId.indexOf(_USER_SEPARATOR);
+		int y = portletId.indexOf(_INSTANCE_SEPARATOR);
 
-		return portletInstance.getPortletName();
+		if ((x == -1) && (y == -1)) {
+			return portletId;
+		}
+		else if (x != -1) {
+			return portletId.substring(0, x);
+		}
+
+		return portletId.substring(0, y);
 	}
 
 	/**

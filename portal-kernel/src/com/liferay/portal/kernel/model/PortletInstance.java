@@ -188,17 +188,7 @@ public class PortletInstance {
 	}
 
 	private static String _getPortletName(String portletInstanceKey) {
-		int x = portletInstanceKey.indexOf(_USER_SEPARATOR);
-		int y = portletInstanceKey.indexOf(_INSTANCE_SEPARATOR);
-
-		if ((x == -1) && (y == -1)) {
-			return portletInstanceKey;
-		}
-		else if (x != -1) {
-			return portletInstanceKey.substring(0, x);
-		}
-
-		return portletInstanceKey.substring(0, y);
+		return PortletConstants.getRootPortletId(portletInstanceKey);
 	}
 
 	private static long _getUserId(String portletInstanceKey) {
