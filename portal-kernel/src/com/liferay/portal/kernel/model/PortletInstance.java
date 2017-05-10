@@ -202,20 +202,7 @@ public class PortletInstance {
 	}
 
 	private static long _getUserId(String portletInstanceKey) {
-		int x = portletInstanceKey.indexOf(_USER_SEPARATOR);
-		int y = portletInstanceKey.indexOf(_INSTANCE_SEPARATOR);
-
-		if (x == -1) {
-			return 0;
-		}
-
-		if (y != -1) {
-			return GetterUtil.getLong(
-				portletInstanceKey.substring(x + _USER_SEPARATOR.length(), y));
-		}
-
-		return GetterUtil.getLong(
-			portletInstanceKey.substring(x + _USER_SEPARATOR.length()));
+		return PortletConstants.getUserId(portletInstanceKey);
 	}
 
 	private void _validatePortletName(String portletName) {

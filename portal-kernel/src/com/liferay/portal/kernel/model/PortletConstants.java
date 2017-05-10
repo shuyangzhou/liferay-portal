@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.model;
 
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -189,10 +190,20 @@ public class PortletConstants {
 	 * @return the user ID of the portlet
 	 */
 	public static long getUserId(String portletId) {
-		PortletInstance portletInstance =
-			PortletInstance.fromPortletInstanceKey(portletId);
+		int x = portletId.indexOf(_USER_SEPARATOR);
+		int y = portletId.indexOf(_INSTANCE_SEPARATOR);
 
-		return portletInstance.getUserId();
+		if (x == -1) {
+			return 0;
+		}
+
+		if (y != -1) {
+			return GetterUtil.getLong(
+				portletId.substring(x + _USER_SEPARATOR.length(), y));
+		}
+
+		return GetterUtil.getLong(
+			portletId.substring(x + _USER_SEPARATOR.length()));
 	}
 
 	public static boolean hasIdenticalRootPortletId(
@@ -235,5 +246,7 @@ public class PortletConstants {
 	}
 
 	private static final String _INSTANCE_SEPARATOR = "_INSTANCE_";
+
+	private static final String _USER_SEPARATOR = "_USER_";
 
 }
