@@ -82,7 +82,7 @@ public interface DLFolderLocalService extends BaseLocalService,
 	public boolean hasFolderLock(long userId, long folderId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasInheritableLock(long folderId) throws PortalException;
+	public boolean hasInheritableLock(long folderId);
 
 	public boolean verifyInheritableLock(long folderId,
 		java.lang.String lockUuid) throws PortalException;
