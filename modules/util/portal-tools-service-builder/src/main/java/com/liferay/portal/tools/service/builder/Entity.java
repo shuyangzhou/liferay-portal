@@ -322,12 +322,12 @@ public class Entity implements Comparable<Entity> {
 		return TextFormatter.formatPlural(_humanName);
 	}
 
-	public List<EntityColumn> getLocalizationColumns() {
-		return _localizationColumns;
+	public List<EntityColumn> getLocalizedColumns() {
+		return _localizedColumns;
 	}
 
-	public Entity getLocalizationEntity() {
-		return _localizationEntity;
+	public Entity getLocalizedEntity() {
+		return _localizedEntity;
 	}
 
 	public String getName() {
@@ -879,14 +879,14 @@ public class Entity implements Comparable<Entity> {
 		}
 	}
 
-	public void setLocalizationColumns(List<EntityColumn> localizationColumns) {
-		_localizationColumns = localizationColumns;
+	public void setLocalizedColumns(List<EntityColumn> localizedColumns) {
+		_localizedColumns = localizedColumns;
 	}
 
-	public void setLocalizationEntity(Entity localizationEntity) {
-		_localizationEntity = localizationEntity;
+	public void setLocalizedEntity(Entity localizedEntity) {
+		_localizedEntity = localizedEntity;
 
-		_referenceList.add(localizationEntity);
+		_referenceList.add(localizedEntity);
 	}
 
 	public void setParentTransients(List<String> transients) {
@@ -937,8 +937,8 @@ public class Entity implements Comparable<Entity> {
 	private final List<EntityFinder> _finderList;
 	private final String _humanName;
 	private final boolean _jsonEnabled;
-	private List<EntityColumn> _localizationColumns;
-	private Entity _localizationEntity;
+	private List<EntityColumn> _localizedColumns;
+	private Entity _localizedEntity;
 	private final boolean _localService;
 	private final boolean _mvccEnabled;
 	private final String _name;

@@ -5582,7 +5582,7 @@ public class ServiceBuilder {
 
 		if (pkList.size() > 1) {
 			throw new IllegalArgumentException(
-				"Cannot use localization table with compound primary key");
+				"Cannot use localized entity with compound primary key");
 		}
 
 		EntityColumn pkColumn = pkList.get(0);
@@ -5606,10 +5606,10 @@ public class ServiceBuilder {
 
 		if (localizedColumnElements.isEmpty()) {
 			throw new IllegalArgumentException(
-				"Cannot use localization table without localized columns");
+				"Cannot use localized entity table without localized columns");
 		}
 
-		List<EntityColumn> localizationColumns = new ArrayList<>(
+		List<EntityColumn> localizedColumns = new ArrayList<>(
 			localizedColumnElements.size());
 
 		for (Element localizedColumnElement : localizedColumnElements) {
@@ -5626,7 +5626,7 @@ public class ServiceBuilder {
 				}
 			}
 
-			localizationColumns.add(new EntityColumn(columnName, columnDBName));
+			localizedColumns.add(new EntityColumn(columnName, columnDBName));
 
 			newLocalizedColumnElement = newLocalizedEntityElement.addElement(
 				"column");
@@ -5754,10 +5754,10 @@ public class ServiceBuilder {
 			}
 		}
 
-		Entity localizationEntity = _parseEntity(newLocalizedEntityElement);
+		Entity localizedEntity = _parseEntity(newLocalizedEntityElement);
 
-		entity.setLocalizationColumns(localizationColumns);
-		entity.setLocalizationEntity(localizationEntity);
+		entity.setLocalizedColumns(localizedColumns);
+		entity.setLocalizedEntity(localizedEntity);
 	}
 
 	private String _processTemplate(String name, Map<String, Object> context)

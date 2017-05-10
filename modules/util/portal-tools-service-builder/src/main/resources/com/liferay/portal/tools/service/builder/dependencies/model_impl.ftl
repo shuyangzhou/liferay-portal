@@ -26,7 +26,7 @@ import ${apiPackagePath}.model.${entity.name}Soap;
 	</#if>
 </#list>
 
-<#if entity.localizationEntity??>
+<#if entity.localizedEntity??>
 	import ${apiPackagePath}.model.${entity.name}Localization;
 </#if>
 
@@ -447,25 +447,25 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		</#list>
 	}
 
-	<#if entity.localizationEntity??>
-		<#assign localizationEntity = entity.localizationEntity />
+	<#if entity.localizedEntity??>
+		<#assign localizedEntity = entity.localizedEntity />
 
 		@Override
 		public String[] getAvailableLanguageIds() {
-			List<${localizationEntity.name}> ${localizationEntity.varNames} = ${entity.name}LocalServiceUtil.get${localizationEntity.names}(getPrimaryKey());
+			List<${localizedEntity.name}> ${localizedEntity.varNames} = ${entity.name}LocalServiceUtil.get${localizedEntity.names}(getPrimaryKey());
 
-			String[] availableLanguageIds = new String[${localizationEntity.varNames}.size()];
+			String[] availableLanguageIds = new String[${localizedEntity.varNames}.size()];
 
 			for (int i = 0; i < availableLanguageIds.length; i++) {
-				${localizationEntity.name} ${localizationEntity.varName} = ${localizationEntity.varNames}.get(i);
+				${localizedEntity.name} ${localizedEntity.varName} = ${localizedEntity.varNames}.get(i);
 
-				availableLanguageIds[i] = ${localizationEntity.varName}.getLanguageId();
+				availableLanguageIds[i] = ${localizedEntity.varName}.getLanguageId();
 			}
 
 			return availableLanguageIds;
 		}
 
-		<#list entity.localizationColumns as column>
+		<#list entity.localizedColumns as column>
 			@Override
 			public String get${column.methodName}() {
 				return get${column.methodName}(getDefaultLanguageId(), false);
@@ -503,23 +503,23 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 			public Map<String, String> getLanguageIdTo${column.methodName}Map() {
 				Map<String, String> languageIdTo${column.methodName}Map = new HashMap<String, String>();
 
-				List<${localizationEntity.name}> ${localizationEntity.varNames} = ${entity.name}LocalServiceUtil.get${localizationEntity.names}(getPrimaryKey());
+				List<${localizedEntity.name}> ${localizedEntity.varNames} = ${entity.name}LocalServiceUtil.get${localizedEntity.names}(getPrimaryKey());
 
-				for (${localizationEntity.name} ${localizationEntity.varName} : ${localizationEntity.varNames}) {
-					languageIdTo${column.methodName}Map.put(${localizationEntity.varName}.getLanguageId(), ${localizationEntity.varName}.get${column.methodName}());
+				for (${localizedEntity.name} ${localizedEntity.varName} : ${localizedEntity.varNames}) {
+					languageIdTo${column.methodName}Map.put(${localizedEntity.varName}.getLanguageId(), ${localizedEntity.varName}.get${column.methodName}());
 				}
 
 				return languageIdTo${column.methodName}Map;
 			}
 
 			private String _get${column.methodName}(String languageId) {
-				${localizationEntity.name} ${localizationEntity.varName} = ${entity.name}LocalServiceUtil.fetch${localizationEntity.name}(getPrimaryKey(), languageId);
+				${localizedEntity.name} ${localizedEntity.varName} = ${entity.name}LocalServiceUtil.fetch${localizedEntity.name}(getPrimaryKey(), languageId);
 
-				if (${localizationEntity.varName} == null) {
+				if (${localizedEntity.varName} == null) {
 					return StringPool.BLANK;
 				}
 
-				return ${localizationEntity.varName}.get${column.methodName}();
+				return ${localizedEntity.varName}.get${column.methodName}();
 			}
 		</#list>
 	</#if>
