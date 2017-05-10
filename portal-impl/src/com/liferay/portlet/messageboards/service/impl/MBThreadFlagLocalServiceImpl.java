@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portlet.messageboards.service.base.MBThreadFlagLocalServiceBaseImpl;
 
@@ -36,6 +38,7 @@ public class MBThreadFlagLocalServiceImpl
 	extends MBThreadFlagLocalServiceBaseImpl {
 
 	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public MBThreadFlag addThreadFlag(
 			long userId, MBThread thread, ServiceContext serviceContext)
 		throws PortalException {
@@ -51,6 +54,13 @@ public class MBThreadFlagLocalServiceImpl
 		MBThreadFlag threadFlag = mbThreadFlagPersistence.fetchByU_T(
 			userId, threadId);
 
+		if ((threadFlag != null) &&
+			DateUtil.equals(
+				threadFlag.getModifiedDate(), thread.getLastPostDate())) {
+
+			return threadFlag;
+		}
+
 		if (threadFlag == null) {
 			long threadFlagId = counterLocalService.increment();
 
@@ -64,18 +74,12 @@ public class MBThreadFlagLocalServiceImpl
 			threadFlag.setModifiedDate(
 				serviceContext.getModifiedDate(thread.getLastPostDate()));
 			threadFlag.setThreadId(threadId);
-
-			mbThreadFlagPersistence.update(threadFlag);
 		}
-		else if (!DateUtil.equals(
-					threadFlag.getModifiedDate(), thread.getLastPostDate())) {
-
+		else {
 			threadFlag.setModifiedDate(thread.getLastPostDate());
-
-			mbThreadFlagPersistence.update(threadFlag);
 		}
 
-		return threadFlag;
+		return mbThreadFlagLocalService.updateMBThreadFlag(threadFlag);
 	}
 
 	@Override
