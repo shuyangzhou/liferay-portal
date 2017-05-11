@@ -36,6 +36,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.exportimport.kernel.lar.UserIdStrategy;
 import com.liferay.exportimport.kernel.xstream.XStreamAlias;
+import com.liferay.exportimport.kernel.xstream.XStreamAliasRegistryUtil;
 import com.liferay.exportimport.kernel.xstream.XStreamConverter;
 import com.liferay.exportimport.kernel.xstream.XStreamType;
 import com.liferay.exportimport.xstream.ConverterAdapter;
@@ -2642,13 +2643,19 @@ public class PortletDataContextImpl implements PortletDataContext {
 		Set<XStreamConfigurator> xStreamConfigurators =
 			XStreamConfiguratorRegistryUtil.getXStreamConfigurators();
 
+		Map<Class<?>, String> xStreamAliasesMap =
+			XStreamAliasRegistryUtil.getAliases();
+
 		if ((_xStream != null) &&
-			xStreamConfigurators.equals(_xStreamConfigurators)) {
+			xStreamConfigurators.equals(_xStreamConfigurators) &&
+			xStreamAliasesMap.equals(_xStreamAliases)) {
 
 			return;
 		}
 
 		_xStreamConfigurators = xStreamConfigurators;
+
+		_xStreamAliases = xStreamAliasesMap;
 
 		_xStream = new XStream(
 			null, new XppDriver(),
@@ -2761,6 +2768,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 		PortletDataContextImpl.class);
 
 	private static transient XStream _xStream;
+	private static Map<Class<?>, String> _xStreamAliases;
 	private static Set<XStreamConfigurator> _xStreamConfigurators;
 
 	private final Map<String, long[]> _assetCategoryIdsMap = new HashMap<>();
