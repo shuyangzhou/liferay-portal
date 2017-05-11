@@ -358,8 +358,6 @@ public class PingbackMethodImplTest extends PowerMockito {
 	protected void execute(String targetURI) {
 		PingbackMethodImpl pingbackMethodImpl = getPingbackMethodImpl();
 
-		ReflectionTestUtil.setFieldValue(pingbackMethodImpl, "_http", _http);
-
 		pingbackMethodImpl.setArguments(new Object[] {_SOURCE_URI, targetURI});
 
 		pingbackMethodImpl.execute(_COMPANY_ID);
@@ -370,6 +368,9 @@ public class PingbackMethodImplTest extends PowerMockito {
 
 		ReflectionTestUtil.setFieldValue(
 			pingbackMethodImpl, "_commentManager", _commentManager);
+
+		ReflectionTestUtil.setFieldValue(
+			pingbackMethodImpl, "_http", HttpUtil.getHttp());
 
 		ReflectionTestUtil.setFieldValue(
 			pingbackMethodImpl, "_portal", PortalUtil.getPortal());
