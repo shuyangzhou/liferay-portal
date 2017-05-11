@@ -1,8 +1,35 @@
 <?xml version="1.0"?>
-<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.1.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_1_0.dtd">
 
 <service-builder api-package-path="com.liferay.portal.kernel" auto-import-default-references="false" mvcc-enabled="true" package-path="com.liferay.portal">
 	<namespace>Portal</namespace>
+	<entity name="ABCTestEntity" local-service="true" remote-service="false">
+
+		<column name="abcTestEntityId" primary="true" type="String" />
+
+		<column name="companyId" type="long" />
+
+		<column name="groupId" type="long" />
+
+		<localized-entity>
+			<column name="groupId" type="long" />
+
+			<order>
+				<order-column name="name" />
+			</order>
+
+			<localized-column name="name" />
+			<localized-column name="description" />
+
+			<finder name="GroupId" return-type="Collection">
+				<finder-column name="groupId" />
+			</finder>
+			<finder name="G_N" return-type="ABCTestEntityLocalization" unique="true">
+				<finder-column name="groupId" />
+				<finder-column name="name" />
+			</finder>
+		</localized-entity>
+	</entity>
 	<entity local-service="true" name="Account" remote-service="true">
 
 		<!-- PK fields -->

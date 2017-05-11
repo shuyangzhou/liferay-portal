@@ -1,3 +1,6 @@
+create unique index IX_E201A953 on ABCTestEntityLocalization (abcTestEntityId[$COLUMN_LENGTH:75$], languageId[$COLUMN_LENGTH:75$]);
+create unique index IX_BDA12D33 on ABCTestEntityLocalization (groupId, name[$COLUMN_LENGTH:75$]);
+
 create index IX_923BD178 on Address (companyId, classNameId, classPK, mailing);
 create index IX_9226DBB4 on Address (companyId, classNameId, classPK, primary_);
 create index IX_5BC8B0D4 on Address (userId);
