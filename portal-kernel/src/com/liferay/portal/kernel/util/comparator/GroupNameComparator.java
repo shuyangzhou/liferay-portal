@@ -43,15 +43,15 @@ public class GroupNameComparator extends OrderByComparator<Group> {
 
 	public GroupNameComparator(boolean ascending, Locale locale) {
 		_ascending = ascending;
-		_locale = locale;
 
-		_collator = Collator.getInstance(_locale);
+		_collator = Collator.getInstance(locale);
+		_languageId = LocaleUtil.toLanguageId(locale);
 	}
 
 	@Override
 	public int compare(Group group1, Group group2) {
-		String name1 = group1.getName(_locale);
-		String name2 = group2.getName(_locale);
+		String name1 = group1.getName(_languageId);
+		String name2 = group2.getName(_languageId);
 
 		int value = _collator.compare(name1, name2);
 
@@ -85,6 +85,6 @@ public class GroupNameComparator extends OrderByComparator<Group> {
 
 	private final boolean _ascending;
 	private final Collator _collator;
-	private final Locale _locale;
+	private final String _languageId;
 
 }
