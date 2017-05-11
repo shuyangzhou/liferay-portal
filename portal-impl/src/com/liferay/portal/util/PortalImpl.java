@@ -8328,16 +8328,16 @@ public class PortalImpl implements Portal {
 				(canonicalURL ||
 				 !StringUtil.equalsIgnoreCase(virtualHostname, _LOCALHOST))) {
 
-				String canonicalDomain = getCanonicalDomain(
+				virtualHostname = getCanonicalDomain(
 					virtualHostname, portalDomain);
 
-				virtualHostname = getPortalURL(
-					canonicalDomain, themeDisplay.getServerPort(),
-					themeDisplay.isSecure());
-
 				if ((canonicalURL ||
-					 canonicalDomain.startsWith(portalDomain)) &&
+					 virtualHostname.startsWith(portalDomain)) &&
 					!controlPanel) {
+
+					virtualHostname = getPortalURL(
+						virtualHostname, themeDisplay.getServerPort(),
+						themeDisplay.isSecure());
 
 					String path = StringPool.BLANK;
 
