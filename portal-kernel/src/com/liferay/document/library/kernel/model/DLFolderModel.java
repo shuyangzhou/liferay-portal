@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
@@ -46,6 +47,7 @@ import java.util.Date;
  * @see com.liferay.portlet.documentlibrary.model.impl.DLFolderModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	ShardedModel, StagedGroupedModel, TrashedModel, WorkflowedModel {
@@ -76,6 +78,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -91,6 +94,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 *
 	 * @return the folder ID of this document library folder
 	 */
+	@JSON
 	public long getFolderId();
 
 	/**
@@ -106,6 +110,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 * @return the group ID of this document library folder
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -122,6 +127,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 * @return the company ID of this document library folder
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -138,6 +144,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 * @return the user ID of this document library folder
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -171,6 +178,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -187,6 +195,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 * @return the create date of this document library folder
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -203,6 +212,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 * @return the modified date of this document library folder
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -218,6 +228,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 *
 	 * @return the repository ID of this document library folder
 	 */
+	@JSON
 	public long getRepositoryId();
 
 	/**
@@ -232,6 +243,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 *
 	 * @return the mount point of this document library folder
 	 */
+	@JSON
 	public boolean getMountPoint();
 
 	/**
@@ -239,6 +251,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 *
 	 * @return <code>true</code> if this document library folder is mount point; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isMountPoint();
 
 	/**
@@ -253,6 +266,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 *
 	 * @return the parent folder ID of this document library folder
 	 */
+	@JSON
 	public long getParentFolderId();
 
 	/**
@@ -268,6 +282,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 * @return the tree path of this document library folder
 	 */
 	@AutoEscape
+	@JSON
 	public String getTreePath();
 
 	/**
@@ -283,6 +298,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 * @return the name of this document library folder
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -298,6 +314,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 * @return the description of this document library folder
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -312,6 +329,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 *
 	 * @return the last post date of this document library folder
 	 */
+	@JSON
 	public Date getLastPostDate();
 
 	/**
@@ -326,6 +344,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 *
 	 * @return the default file entry type ID of this document library folder
 	 */
+	@JSON
 	public long getDefaultFileEntryTypeId();
 
 	/**
@@ -340,6 +359,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 *
 	 * @return the hidden of this document library folder
 	 */
+	@JSON
 	public boolean getHidden();
 
 	/**
@@ -347,6 +367,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 *
 	 * @return <code>true</code> if this document library folder is hidden; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isHidden();
 
 	/**
@@ -361,6 +382,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 *
 	 * @return the restriction type of this document library folder
 	 */
+	@JSON
 	public int getRestrictionType();
 
 	/**
@@ -376,6 +398,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 * @return the last publish date of this document library folder
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**
@@ -392,6 +415,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 * @return the status of this document library folder
 	 */
 	@Override
+	@JSON
 	public int getStatus();
 
 	/**
@@ -408,6 +432,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 * @return the status by user ID of this document library folder
 	 */
 	@Override
+	@JSON
 	public long getStatusByUserId();
 
 	/**
@@ -441,6 +466,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getStatusByUserName();
 
 	/**
@@ -457,6 +483,7 @@ public interface DLFolderModel extends BaseModel<DLFolder>, ContainerModel,
 	 * @return the status date of this document library folder
 	 */
 	@Override
+	@JSON
 	public Date getStatusDate();
 
 	/**

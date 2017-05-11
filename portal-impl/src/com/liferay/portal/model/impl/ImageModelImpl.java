@@ -20,7 +20,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Image;
 import com.liferay.portal.kernel.model.ImageModel;
@@ -55,7 +54,6 @@ import java.util.Map;
  * @see ImageModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 	/*
@@ -257,7 +255,6 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -268,7 +265,6 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getImageId() {
 		return _imageId;
@@ -281,7 +277,6 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 		_imageId = imageId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -292,7 +287,6 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -303,7 +297,6 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public String getType() {
 		if (_type == null) {
@@ -319,7 +312,6 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 		_type = type;
 	}
 
-	@JSON
 	@Override
 	public int getHeight() {
 		return _height;
@@ -330,7 +322,6 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 		_height = height;
 	}
 
-	@JSON
 	@Override
 	public int getWidth() {
 		return _width;
@@ -341,7 +332,6 @@ public class ImageModelImpl extends BaseModelImpl<Image> implements ImageModel {
 		_width = width;
 	}
 
-	@JSON
 	@Override
 	public int getSize() {
 		return _size;

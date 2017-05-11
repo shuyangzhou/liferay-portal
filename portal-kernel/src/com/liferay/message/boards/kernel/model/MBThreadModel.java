@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
@@ -46,6 +47,7 @@ import java.util.Date;
  * @see com.liferay.portlet.messageboards.model.impl.MBThreadModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	ShardedModel, StagedGroupedModel, TrashedModel, WorkflowedModel {
@@ -76,6 +78,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -91,6 +94,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 *
 	 * @return the thread ID of this message boards thread
 	 */
+	@JSON
 	public long getThreadId();
 
 	/**
@@ -106,6 +110,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 * @return the group ID of this message boards thread
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -122,6 +127,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 * @return the company ID of this message boards thread
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -138,6 +144,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 * @return the user ID of this message boards thread
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -171,6 +178,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -187,6 +195,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 * @return the create date of this message boards thread
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -203,6 +212,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 * @return the modified date of this message boards thread
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -218,6 +228,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 *
 	 * @return the category ID of this message boards thread
 	 */
+	@JSON
 	public long getCategoryId();
 
 	/**
@@ -232,6 +243,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 *
 	 * @return the root message ID of this message boards thread
 	 */
+	@JSON
 	public long getRootMessageId();
 
 	/**
@@ -246,6 +258,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 *
 	 * @return the root message user ID of this message boards thread
 	 */
+	@JSON
 	public long getRootMessageUserId();
 
 	/**
@@ -274,6 +287,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 *
 	 * @return the message count of this message boards thread
 	 */
+	@JSON
 	public int getMessageCount();
 
 	/**
@@ -288,6 +302,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 *
 	 * @return the view count of this message boards thread
 	 */
+	@JSON
 	public int getViewCount();
 
 	/**
@@ -302,6 +317,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 *
 	 * @return the last post by user ID of this message boards thread
 	 */
+	@JSON
 	public long getLastPostByUserId();
 
 	/**
@@ -330,6 +346,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 *
 	 * @return the last post date of this message boards thread
 	 */
+	@JSON
 	public Date getLastPostDate();
 
 	/**
@@ -344,6 +361,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 *
 	 * @return the priority of this message boards thread
 	 */
+	@JSON
 	public double getPriority();
 
 	/**
@@ -358,6 +376,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 *
 	 * @return the question of this message boards thread
 	 */
+	@JSON
 	public boolean getQuestion();
 
 	/**
@@ -365,6 +384,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 *
 	 * @return <code>true</code> if this message boards thread is question; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isQuestion();
 
 	/**
@@ -380,6 +400,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 * @return the last publish date of this message boards thread
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**
@@ -396,6 +417,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 * @return the status of this message boards thread
 	 */
 	@Override
+	@JSON
 	public int getStatus();
 
 	/**
@@ -412,6 +434,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 * @return the status by user ID of this message boards thread
 	 */
 	@Override
+	@JSON
 	public long getStatusByUserId();
 
 	/**
@@ -445,6 +468,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getStatusByUserName();
 
 	/**
@@ -461,6 +485,7 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	 * @return the status date of this message boards thread
 	 */
 	@Override
+	@JSON
 	public Date getStatusDate();
 
 	/**

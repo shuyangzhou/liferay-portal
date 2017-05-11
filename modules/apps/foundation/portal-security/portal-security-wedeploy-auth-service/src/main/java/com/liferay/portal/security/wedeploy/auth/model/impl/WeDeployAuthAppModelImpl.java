@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -58,7 +57,6 @@ import java.util.Map;
  * @see WeDeployAuthAppModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class WeDeployAuthAppModelImpl extends BaseModelImpl<WeDeployAuthApp>
 	implements WeDeployAuthAppModel {
@@ -273,7 +271,6 @@ public class WeDeployAuthAppModelImpl extends BaseModelImpl<WeDeployAuthApp>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getWeDeployAuthAppId() {
 		return _weDeployAuthAppId;
@@ -284,7 +281,6 @@ public class WeDeployAuthAppModelImpl extends BaseModelImpl<WeDeployAuthApp>
 		_weDeployAuthAppId = weDeployAuthAppId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -295,7 +291,6 @@ public class WeDeployAuthAppModelImpl extends BaseModelImpl<WeDeployAuthApp>
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -322,7 +317,6 @@ public class WeDeployAuthAppModelImpl extends BaseModelImpl<WeDeployAuthApp>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -338,7 +332,6 @@ public class WeDeployAuthAppModelImpl extends BaseModelImpl<WeDeployAuthApp>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -349,7 +342,6 @@ public class WeDeployAuthAppModelImpl extends BaseModelImpl<WeDeployAuthApp>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -366,7 +358,6 @@ public class WeDeployAuthAppModelImpl extends BaseModelImpl<WeDeployAuthApp>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -382,7 +373,6 @@ public class WeDeployAuthAppModelImpl extends BaseModelImpl<WeDeployAuthApp>
 		_name = name;
 	}
 
-	@JSON
 	@Override
 	public String getClientId() {
 		if (_clientId == null) {
@@ -408,7 +398,6 @@ public class WeDeployAuthAppModelImpl extends BaseModelImpl<WeDeployAuthApp>
 		return GetterUtil.getString(_originalClientId);
 	}
 
-	@JSON
 	@Override
 	public String getClientSecret() {
 		if (_clientSecret == null) {

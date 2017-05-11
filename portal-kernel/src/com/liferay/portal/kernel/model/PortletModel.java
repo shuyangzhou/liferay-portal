@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -36,6 +37,7 @@ import java.io.Serializable;
  * @see com.liferay.portal.model.impl.PortletModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface PortletModel extends BaseModel<Portlet>, MVCCModel, ShardedModel {
 	/*
@@ -64,6 +66,7 @@ public interface PortletModel extends BaseModel<Portlet>, MVCCModel, ShardedMode
 	 * @return the mvcc version of this portlet
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -79,6 +82,7 @@ public interface PortletModel extends BaseModel<Portlet>, MVCCModel, ShardedMode
 	 *
 	 * @return the ID of this portlet
 	 */
+	@JSON
 	public long getId();
 
 	/**
@@ -94,6 +98,7 @@ public interface PortletModel extends BaseModel<Portlet>, MVCCModel, ShardedMode
 	 * @return the company ID of this portlet
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -110,6 +115,7 @@ public interface PortletModel extends BaseModel<Portlet>, MVCCModel, ShardedMode
 	 * @return the portlet ID of this portlet
 	 */
 	@AutoEscape
+	@JSON
 	public String getPortletId();
 
 	/**
@@ -125,6 +131,7 @@ public interface PortletModel extends BaseModel<Portlet>, MVCCModel, ShardedMode
 	 * @return the roles of this portlet
 	 */
 	@AutoEscape
+	@JSON
 	public String getRoles();
 
 	/**
@@ -139,6 +146,7 @@ public interface PortletModel extends BaseModel<Portlet>, MVCCModel, ShardedMode
 	 *
 	 * @return the active of this portlet
 	 */
+	@JSON
 	public boolean getActive();
 
 	/**
@@ -146,6 +154,7 @@ public interface PortletModel extends BaseModel<Portlet>, MVCCModel, ShardedMode
 	 *
 	 * @return <code>true</code> if this portlet is active; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isActive();
 
 	/**

@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -43,6 +44,7 @@ import java.util.Date;
  * @see com.liferay.portlet.documentlibrary.model.impl.DLFileVersionModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	ShardedModel, StagedGroupedModel, WorkflowedModel {
@@ -73,6 +75,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -88,6 +91,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 *
 	 * @return the file version ID of this document library file version
 	 */
+	@JSON
 	public long getFileVersionId();
 
 	/**
@@ -103,6 +107,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the group ID of this document library file version
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -119,6 +124,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the company ID of this document library file version
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -135,6 +141,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the user ID of this document library file version
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -168,6 +175,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -184,6 +192,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the create date of this document library file version
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -200,6 +209,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the modified date of this document library file version
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -215,6 +225,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 *
 	 * @return the repository ID of this document library file version
 	 */
+	@JSON
 	public long getRepositoryId();
 
 	/**
@@ -229,6 +240,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 *
 	 * @return the folder ID of this document library file version
 	 */
+	@JSON
 	public long getFolderId();
 
 	/**
@@ -243,6 +255,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 *
 	 * @return the file entry ID of this document library file version
 	 */
+	@JSON
 	public long getFileEntryId();
 
 	/**
@@ -258,6 +271,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the tree path of this document library file version
 	 */
 	@AutoEscape
+	@JSON
 	public String getTreePath();
 
 	/**
@@ -273,6 +287,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the file name of this document library file version
 	 */
 	@AutoEscape
+	@JSON
 	public String getFileName();
 
 	/**
@@ -288,6 +303,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the extension of this document library file version
 	 */
 	@AutoEscape
+	@JSON
 	public String getExtension();
 
 	/**
@@ -303,6 +319,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the mime type of this document library file version
 	 */
 	@AutoEscape
+	@JSON
 	public String getMimeType();
 
 	/**
@@ -318,6 +335,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the title of this document library file version
 	 */
 	@AutoEscape
+	@JSON
 	public String getTitle();
 
 	/**
@@ -333,6 +351,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the description of this document library file version
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -348,6 +367,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the change log of this document library file version
 	 */
 	@AutoEscape
+	@JSON
 	public String getChangeLog();
 
 	/**
@@ -363,6 +383,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the extra settings of this document library file version
 	 */
 	@AutoEscape
+	@JSON
 	public String getExtraSettings();
 
 	/**
@@ -377,6 +398,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 *
 	 * @return the file entry type ID of this document library file version
 	 */
+	@JSON
 	public long getFileEntryTypeId();
 
 	/**
@@ -392,6 +414,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the version of this document library file version
 	 */
 	@AutoEscape
+	@JSON
 	public String getVersion();
 
 	/**
@@ -406,6 +429,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 *
 	 * @return the size of this document library file version
 	 */
+	@JSON
 	public long getSize();
 
 	/**
@@ -421,6 +445,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the checksum of this document library file version
 	 */
 	@AutoEscape
+	@JSON
 	public String getChecksum();
 
 	/**
@@ -436,6 +461,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the last publish date of this document library file version
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**
@@ -452,6 +478,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the status of this document library file version
 	 */
 	@Override
+	@JSON
 	public int getStatus();
 
 	/**
@@ -468,6 +495,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the status by user ID of this document library file version
 	 */
 	@Override
+	@JSON
 	public long getStatusByUserId();
 
 	/**
@@ -501,6 +529,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getStatusByUserName();
 
 	/**
@@ -517,6 +546,7 @@ public interface DLFileVersionModel extends BaseModel<DLFileVersion>,
 	 * @return the status date of this document library file version
 	 */
 	@Override
+	@JSON
 	public Date getStatusDate();
 
 	/**

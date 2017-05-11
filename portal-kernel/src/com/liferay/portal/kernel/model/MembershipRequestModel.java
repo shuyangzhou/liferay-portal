@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ import java.util.Date;
  * @see com.liferay.portal.model.impl.MembershipRequestModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface MembershipRequestModel extends BaseModel<MembershipRequest>,
 	MVCCModel, ShardedModel {
@@ -67,6 +69,7 @@ public interface MembershipRequestModel extends BaseModel<MembershipRequest>,
 	 * @return the mvcc version of this membership request
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -82,6 +85,7 @@ public interface MembershipRequestModel extends BaseModel<MembershipRequest>,
 	 *
 	 * @return the membership request ID of this membership request
 	 */
+	@JSON
 	public long getMembershipRequestId();
 
 	/**
@@ -96,6 +100,7 @@ public interface MembershipRequestModel extends BaseModel<MembershipRequest>,
 	 *
 	 * @return the group ID of this membership request
 	 */
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -111,6 +116,7 @@ public interface MembershipRequestModel extends BaseModel<MembershipRequest>,
 	 * @return the company ID of this membership request
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -126,6 +132,7 @@ public interface MembershipRequestModel extends BaseModel<MembershipRequest>,
 	 *
 	 * @return the user ID of this membership request
 	 */
+	@JSON
 	public long getUserId();
 
 	/**
@@ -154,6 +161,7 @@ public interface MembershipRequestModel extends BaseModel<MembershipRequest>,
 	 *
 	 * @return the create date of this membership request
 	 */
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -169,6 +177,7 @@ public interface MembershipRequestModel extends BaseModel<MembershipRequest>,
 	 * @return the comments of this membership request
 	 */
 	@AutoEscape
+	@JSON
 	public String getComments();
 
 	/**
@@ -184,6 +193,7 @@ public interface MembershipRequestModel extends BaseModel<MembershipRequest>,
 	 * @return the reply comments of this membership request
 	 */
 	@AutoEscape
+	@JSON
 	public String getReplyComments();
 
 	/**
@@ -198,6 +208,7 @@ public interface MembershipRequestModel extends BaseModel<MembershipRequest>,
 	 *
 	 * @return the reply date of this membership request
 	 */
+	@JSON
 	public Date getReplyDate();
 
 	/**
@@ -212,6 +223,7 @@ public interface MembershipRequestModel extends BaseModel<MembershipRequest>,
 	 *
 	 * @return the replier user ID of this membership request
 	 */
+	@JSON
 	public long getReplierUserId();
 
 	/**
@@ -240,6 +252,7 @@ public interface MembershipRequestModel extends BaseModel<MembershipRequest>,
 	 *
 	 * @return the status ID of this membership request
 	 */
+	@JSON
 	public long getStatusId();
 
 	/**

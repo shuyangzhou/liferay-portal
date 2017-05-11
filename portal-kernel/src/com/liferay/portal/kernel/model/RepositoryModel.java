@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ import java.util.Date;
  * @see com.liferay.portal.model.impl.RepositoryModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	ShardedModel, StagedGroupedModel, TypedModel {
@@ -67,6 +69,7 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	 * @return the mvcc version of this repository
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -84,6 +87,7 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -99,6 +103,7 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	 *
 	 * @return the repository ID of this repository
 	 */
+	@JSON
 	public long getRepositoryId();
 
 	/**
@@ -114,6 +119,7 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	 * @return the group ID of this repository
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -130,6 +136,7 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	 * @return the company ID of this repository
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -146,6 +153,7 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	 * @return the user ID of this repository
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -179,6 +187,7 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -195,6 +204,7 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	 * @return the create date of this repository
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -211,6 +221,7 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	 * @return the modified date of this repository
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -237,6 +248,7 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	 * @return the class name ID of this repository
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -253,6 +265,7 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	 * @return the name of this repository
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -268,6 +281,7 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	 * @return the description of this repository
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -283,6 +297,7 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	 * @return the portlet ID of this repository
 	 */
 	@AutoEscape
+	@JSON
 	public String getPortletId();
 
 	/**
@@ -298,6 +313,7 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	 * @return the type settings of this repository
 	 */
 	@AutoEscape
+	@JSON
 	public String getTypeSettings();
 
 	/**
@@ -312,6 +328,7 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	 *
 	 * @return the dl folder ID of this repository
 	 */
+	@JSON
 	public long getDlFolderId();
 
 	/**
@@ -327,6 +344,7 @@ public interface RepositoryModel extends BaseModel<Repository>, MVCCModel,
 	 * @return the last publish date of this repository
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

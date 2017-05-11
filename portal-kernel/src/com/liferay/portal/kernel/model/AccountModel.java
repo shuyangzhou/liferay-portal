@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ import java.util.Date;
  * @see com.liferay.portal.model.impl.AccountModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCModel,
 	ShardedModel {
@@ -67,6 +69,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 * @return the mvcc version of this account
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -82,6 +85,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 *
 	 * @return the account ID of this account
 	 */
+	@JSON
 	public long getAccountId();
 
 	/**
@@ -97,6 +101,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 * @return the company ID of this account
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -113,6 +118,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 * @return the user ID of this account
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -146,6 +152,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -162,6 +169,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 * @return the create date of this account
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -178,6 +186,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 * @return the modified date of this account
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -193,6 +202,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 *
 	 * @return the parent account ID of this account
 	 */
+	@JSON
 	public long getParentAccountId();
 
 	/**
@@ -208,6 +218,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 * @return the name of this account
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -223,6 +234,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 * @return the legal name of this account
 	 */
 	@AutoEscape
+	@JSON
 	public String getLegalName();
 
 	/**
@@ -238,6 +250,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 * @return the legal ID of this account
 	 */
 	@AutoEscape
+	@JSON
 	public String getLegalId();
 
 	/**
@@ -253,6 +266,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 * @return the legal type of this account
 	 */
 	@AutoEscape
+	@JSON
 	public String getLegalType();
 
 	/**
@@ -268,6 +282,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 * @return the sic code of this account
 	 */
 	@AutoEscape
+	@JSON
 	public String getSicCode();
 
 	/**
@@ -283,6 +298,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 * @return the ticker symbol of this account
 	 */
 	@AutoEscape
+	@JSON
 	public String getTickerSymbol();
 
 	/**
@@ -298,6 +314,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 * @return the industry of this account
 	 */
 	@AutoEscape
+	@JSON
 	public String getIndustry();
 
 	/**
@@ -313,6 +330,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 * @return the type of this account
 	 */
 	@AutoEscape
+	@JSON
 	public String getType();
 
 	/**
@@ -328,6 +346,7 @@ public interface AccountModel extends AuditedModel, BaseModel<Account>, MVCCMode
 	 * @return the size of this account
 	 */
 	@AutoEscape
+	@JSON
 	public String getSize();
 
 	/**

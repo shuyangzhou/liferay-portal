@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -36,6 +37,7 @@ import java.io.Serializable;
  * @see com.liferay.portal.model.impl.ListTypeModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface ListTypeModel extends BaseModel<ListType>, MVCCModel {
 	/*
@@ -64,6 +66,7 @@ public interface ListTypeModel extends BaseModel<ListType>, MVCCModel {
 	 * @return the mvcc version of this list type
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -79,6 +82,7 @@ public interface ListTypeModel extends BaseModel<ListType>, MVCCModel {
 	 *
 	 * @return the list type ID of this list type
 	 */
+	@JSON
 	public long getListTypeId();
 
 	/**
@@ -94,6 +98,7 @@ public interface ListTypeModel extends BaseModel<ListType>, MVCCModel {
 	 * @return the name of this list type
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -109,6 +114,7 @@ public interface ListTypeModel extends BaseModel<ListType>, MVCCModel {
 	 * @return the type of this list type
 	 */
 	@AutoEscape
+	@JSON
 	public String getType();
 
 	/**

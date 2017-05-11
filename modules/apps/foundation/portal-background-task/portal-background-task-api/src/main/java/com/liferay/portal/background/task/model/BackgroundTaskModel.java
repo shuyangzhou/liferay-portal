@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.GroupedModel;
@@ -44,6 +45,7 @@ import java.util.Map;
  * @see com.liferay.portal.background.task.model.impl.BackgroundTaskModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	GroupedModel, MVCCModel, ShardedModel {
@@ -73,6 +75,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 * @return the mvcc version of this background task
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -88,6 +91,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 *
 	 * @return the background task ID of this background task
 	 */
+	@JSON
 	public long getBackgroundTaskId();
 
 	/**
@@ -103,6 +107,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 * @return the group ID of this background task
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -119,6 +124,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 * @return the company ID of this background task
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -135,6 +141,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 * @return the user ID of this background task
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -168,6 +175,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -184,6 +192,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 * @return the create date of this background task
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -200,6 +209,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 * @return the modified date of this background task
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -216,6 +226,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 * @return the name of this background task
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -231,6 +242,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 * @return the servlet context names of this background task
 	 */
 	@AutoEscape
+	@JSON
 	public String getServletContextNames();
 
 	/**
@@ -246,6 +258,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 * @return the task executor class name of this background task
 	 */
 	@AutoEscape
+	@JSON
 	public String getTaskExecutorClassName();
 
 	/**
@@ -260,6 +273,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 *
 	 * @return the task context map of this background task
 	 */
+	@JSON
 	public Map<String, Serializable> getTaskContextMap();
 
 	/**
@@ -274,6 +288,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 *
 	 * @return the completed of this background task
 	 */
+	@JSON
 	public boolean getCompleted();
 
 	/**
@@ -281,6 +296,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 *
 	 * @return <code>true</code> if this background task is completed; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isCompleted();
 
 	/**
@@ -295,6 +311,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 *
 	 * @return the completion date of this background task
 	 */
+	@JSON
 	public Date getCompletionDate();
 
 	/**
@@ -309,6 +326,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 *
 	 * @return the status of this background task
 	 */
+	@JSON
 	public int getStatus();
 
 	/**
@@ -324,6 +342,7 @@ public interface BackgroundTaskModel extends BaseModel<BackgroundTask>,
 	 * @return the status message of this background task
 	 */
 	@AutoEscape
+	@JSON
 	public String getStatusMessage();
 
 	/**

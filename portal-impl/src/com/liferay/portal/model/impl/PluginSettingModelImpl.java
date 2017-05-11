@@ -20,7 +20,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.PluginSetting;
 import com.liferay.portal.kernel.model.PluginSettingModel;
@@ -54,7 +53,6 @@ import java.util.Map;
  * @see PluginSettingModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 	implements PluginSettingModel {
@@ -249,7 +247,6 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -260,7 +257,6 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getPluginSettingId() {
 		return _pluginSettingId;
@@ -271,7 +267,6 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 		_pluginSettingId = pluginSettingId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -294,7 +289,6 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public String getPluginId() {
 		if (_pluginId == null) {
@@ -320,7 +314,6 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 		return GetterUtil.getString(_originalPluginId);
 	}
 
-	@JSON
 	@Override
 	public String getPluginType() {
 		if (_pluginType == null) {
@@ -346,7 +339,6 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 		return GetterUtil.getString(_originalPluginType);
 	}
 
-	@JSON
 	@Override
 	public String getRoles() {
 		if (_roles == null) {
@@ -362,13 +354,11 @@ public class PluginSettingModelImpl extends BaseModelImpl<PluginSetting>
 		_roles = roles;
 	}
 
-	@JSON
 	@Override
 	public boolean getActive() {
 		return _active;
 	}
 
-	@JSON
 	@Override
 	public boolean isActive() {
 		return _active;

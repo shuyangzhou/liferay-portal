@@ -27,7 +27,6 @@ import com.liferay.polls.model.PollsVoteSoap;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -62,7 +61,6 @@ import java.util.Map;
  * @see PollsVoteModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 	implements PollsVoteModel {
@@ -310,7 +308,6 @@ public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -334,7 +331,6 @@ public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getVoteId() {
 		return _voteId;
@@ -345,7 +341,6 @@ public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 		_voteId = voteId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -368,7 +363,6 @@ public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -391,7 +385,6 @@ public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -430,7 +423,6 @@ public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -446,7 +438,6 @@ public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -457,7 +448,6 @@ public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -474,7 +464,6 @@ public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getQuestionId() {
 		return _questionId;
@@ -497,7 +486,6 @@ public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 		return _originalQuestionId;
 	}
 
-	@JSON
 	@Override
 	public long getChoiceId() {
 		return _choiceId;
@@ -520,7 +508,6 @@ public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 		return _originalChoiceId;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;
@@ -531,7 +518,6 @@ public class PollsVoteModelImpl extends BaseModelImpl<PollsVote>
 		_lastPublishDate = lastPublishDate;
 	}
 
-	@JSON
 	@Override
 	public Date getVoteDate() {
 		return _voteDate;

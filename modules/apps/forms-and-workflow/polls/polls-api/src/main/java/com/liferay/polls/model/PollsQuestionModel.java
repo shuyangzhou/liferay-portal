@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.LocalizedModel;
@@ -46,6 +47,7 @@ import java.util.Map;
  * @see com.liferay.polls.model.impl.PollsQuestionModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface PollsQuestionModel extends BaseModel<PollsQuestion>,
 	LocalizedModel, ShardedModel, StagedGroupedModel {
@@ -76,6 +78,7 @@ public interface PollsQuestionModel extends BaseModel<PollsQuestion>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -91,6 +94,7 @@ public interface PollsQuestionModel extends BaseModel<PollsQuestion>,
 	 *
 	 * @return the question ID of this polls question
 	 */
+	@JSON
 	public long getQuestionId();
 
 	/**
@@ -106,6 +110,7 @@ public interface PollsQuestionModel extends BaseModel<PollsQuestion>,
 	 * @return the group ID of this polls question
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -122,6 +127,7 @@ public interface PollsQuestionModel extends BaseModel<PollsQuestion>,
 	 * @return the company ID of this polls question
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -138,6 +144,7 @@ public interface PollsQuestionModel extends BaseModel<PollsQuestion>,
 	 * @return the user ID of this polls question
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -171,6 +178,7 @@ public interface PollsQuestionModel extends BaseModel<PollsQuestion>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -187,6 +195,7 @@ public interface PollsQuestionModel extends BaseModel<PollsQuestion>,
 	 * @return the create date of this polls question
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -203,6 +212,7 @@ public interface PollsQuestionModel extends BaseModel<PollsQuestion>,
 	 * @return the modified date of this polls question
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -218,6 +228,7 @@ public interface PollsQuestionModel extends BaseModel<PollsQuestion>,
 	 *
 	 * @return the title of this polls question
 	 */
+	@JSON
 	public String getTitle();
 
 	/**
@@ -262,6 +273,7 @@ public interface PollsQuestionModel extends BaseModel<PollsQuestion>,
 	public String getTitleCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getTitleCurrentValue();
 
 	/**
@@ -317,6 +329,7 @@ public interface PollsQuestionModel extends BaseModel<PollsQuestion>,
 	 *
 	 * @return the description of this polls question
 	 */
+	@JSON
 	public String getDescription();
 
 	/**
@@ -361,6 +374,7 @@ public interface PollsQuestionModel extends BaseModel<PollsQuestion>,
 	public String getDescriptionCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getDescriptionCurrentValue();
 
 	/**
@@ -418,6 +432,7 @@ public interface PollsQuestionModel extends BaseModel<PollsQuestion>,
 	 *
 	 * @return the expiration date of this polls question
 	 */
+	@JSON
 	public Date getExpirationDate();
 
 	/**
@@ -433,6 +448,7 @@ public interface PollsQuestionModel extends BaseModel<PollsQuestion>,
 	 * @return the last publish date of this polls question
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**
@@ -448,6 +464,7 @@ public interface PollsQuestionModel extends BaseModel<PollsQuestion>,
 	 *
 	 * @return the last vote date of this polls question
 	 */
+	@JSON
 	public Date getLastVoteDate();
 
 	/**

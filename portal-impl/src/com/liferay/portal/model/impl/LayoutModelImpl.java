@@ -24,7 +24,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutModel;
@@ -68,7 +67,6 @@ import java.util.TreeSet;
  * @see LayoutModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class LayoutModelImpl extends BaseModelImpl<Layout>
 	implements LayoutModel {
@@ -506,7 +504,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -517,7 +514,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -541,7 +537,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getPlid() {
 		return _plid;
@@ -552,7 +547,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		_plid = plid;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -575,7 +569,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -598,7 +591,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -625,7 +617,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -641,7 +632,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -652,7 +642,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -669,13 +658,11 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public boolean getPrivateLayout() {
 		return _privateLayout;
 	}
 
-	@JSON
 	@Override
 	public boolean isPrivateLayout() {
 		return _privateLayout;
@@ -698,7 +685,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return _originalPrivateLayout;
 	}
 
-	@JSON
 	@Override
 	public long getLayoutId() {
 		return _layoutId;
@@ -721,7 +707,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return _originalLayoutId;
 	}
 
-	@JSON
 	@Override
 	public long getParentLayoutId() {
 		return _parentLayoutId;
@@ -744,7 +729,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return _originalParentLayoutId;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -785,7 +769,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return _nameCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getNameCurrentValue() {
 		Locale locale = getLocale(_nameCurrentLanguageId);
@@ -843,7 +826,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getTitle() {
 		if (_title == null) {
@@ -884,7 +866,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return _titleCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getTitleCurrentValue() {
 		Locale locale = getLocale(_titleCurrentLanguageId);
@@ -942,7 +923,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 				"Title", LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -983,7 +963,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return _descriptionCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getDescriptionCurrentValue() {
 		Locale locale = getLocale(_descriptionCurrentLanguageId);
@@ -1045,7 +1024,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getKeywords() {
 		if (_keywords == null) {
@@ -1086,7 +1064,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return _keywordsCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getKeywordsCurrentValue() {
 		Locale locale = getLocale(_keywordsCurrentLanguageId);
@@ -1146,7 +1123,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getRobots() {
 		if (_robots == null) {
@@ -1187,7 +1163,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return _robotsCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getRobotsCurrentValue() {
 		Locale locale = getLocale(_robotsCurrentLanguageId);
@@ -1245,7 +1220,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 				"Robots", LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getType() {
 		if (_type == null) {
@@ -1271,7 +1245,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return GetterUtil.getString(_originalType);
 	}
 
-	@JSON
 	@Override
 	public String getTypeSettings() {
 		if (_typeSettings == null) {
@@ -1287,13 +1260,11 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		_typeSettings = typeSettings;
 	}
 
-	@JSON
 	@Override
 	public boolean getHidden() {
 		return _hidden;
 	}
 
-	@JSON
 	@Override
 	public boolean isHidden() {
 		return _hidden;
@@ -1304,7 +1275,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		_hidden = hidden;
 	}
 
-	@JSON
 	@Override
 	public String getFriendlyURL() {
 		if (_friendlyURL == null) {
@@ -1330,7 +1300,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return GetterUtil.getString(_originalFriendlyURL);
 	}
 
-	@JSON
 	@Override
 	public long getIconImageId() {
 		return _iconImageId;
@@ -1353,7 +1322,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return _originalIconImageId;
 	}
 
-	@JSON
 	@Override
 	public String getThemeId() {
 		if (_themeId == null) {
@@ -1369,7 +1337,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		_themeId = themeId;
 	}
 
-	@JSON
 	@Override
 	public String getColorSchemeId() {
 		if (_colorSchemeId == null) {
@@ -1385,7 +1352,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		_colorSchemeId = colorSchemeId;
 	}
 
-	@JSON
 	@Override
 	public String getCss() {
 		if (_css == null) {
@@ -1401,7 +1367,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		_css = css;
 	}
 
-	@JSON
 	@Override
 	public int getPriority() {
 		return _priority;
@@ -1424,7 +1389,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return _originalPriority;
 	}
 
-	@JSON
 	@Override
 	public String getLayoutPrototypeUuid() {
 		if (_layoutPrototypeUuid == null) {
@@ -1450,13 +1414,11 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return GetterUtil.getString(_originalLayoutPrototypeUuid);
 	}
 
-	@JSON
 	@Override
 	public boolean getLayoutPrototypeLinkEnabled() {
 		return _layoutPrototypeLinkEnabled;
 	}
 
-	@JSON
 	@Override
 	public boolean isLayoutPrototypeLinkEnabled() {
 		return _layoutPrototypeLinkEnabled;
@@ -1468,7 +1430,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		_layoutPrototypeLinkEnabled = layoutPrototypeLinkEnabled;
 	}
 
-	@JSON
 	@Override
 	public String getSourcePrototypeLayoutUuid() {
 		if (_sourcePrototypeLayoutUuid == null) {
@@ -1494,7 +1455,6 @@ public class LayoutModelImpl extends BaseModelImpl<Layout>
 		return GetterUtil.getString(_originalSourcePrototypeLayoutUuid);
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

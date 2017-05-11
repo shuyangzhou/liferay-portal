@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.portlet.asset.model.impl.AssetTagModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface AssetTagModel extends BaseModel<AssetTag>, ShardedModel,
 	StagedGroupedModel {
@@ -72,6 +74,7 @@ public interface AssetTagModel extends BaseModel<AssetTag>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -87,6 +90,7 @@ public interface AssetTagModel extends BaseModel<AssetTag>, ShardedModel,
 	 *
 	 * @return the tag ID of this asset tag
 	 */
+	@JSON
 	public long getTagId();
 
 	/**
@@ -102,6 +106,7 @@ public interface AssetTagModel extends BaseModel<AssetTag>, ShardedModel,
 	 * @return the group ID of this asset tag
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -118,6 +123,7 @@ public interface AssetTagModel extends BaseModel<AssetTag>, ShardedModel,
 	 * @return the company ID of this asset tag
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -134,6 +140,7 @@ public interface AssetTagModel extends BaseModel<AssetTag>, ShardedModel,
 	 * @return the user ID of this asset tag
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -167,6 +174,7 @@ public interface AssetTagModel extends BaseModel<AssetTag>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -183,6 +191,7 @@ public interface AssetTagModel extends BaseModel<AssetTag>, ShardedModel,
 	 * @return the create date of this asset tag
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -199,6 +208,7 @@ public interface AssetTagModel extends BaseModel<AssetTag>, ShardedModel,
 	 * @return the modified date of this asset tag
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -215,6 +225,7 @@ public interface AssetTagModel extends BaseModel<AssetTag>, ShardedModel,
 	 * @return the name of this asset tag
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -229,6 +240,7 @@ public interface AssetTagModel extends BaseModel<AssetTag>, ShardedModel,
 	 *
 	 * @return the asset count of this asset tag
 	 */
+	@JSON
 	public int getAssetCount();
 
 	/**
@@ -244,6 +256,7 @@ public interface AssetTagModel extends BaseModel<AssetTag>, ShardedModel,
 	 * @return the last publish date of this asset tag
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

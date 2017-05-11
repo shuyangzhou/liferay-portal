@@ -25,7 +25,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -58,7 +57,6 @@ import java.util.Map;
  * @see AnnouncementsDeliveryModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsDelivery>
 	implements AnnouncementsDeliveryModel {
@@ -254,7 +252,6 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 		}
 	}
 
-	@JSON
 	@Override
 	public long getDeliveryId() {
 		return _deliveryId;
@@ -265,7 +262,6 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 		_deliveryId = deliveryId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -276,7 +272,6 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -315,7 +310,6 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public String getType() {
 		if (_type == null) {
@@ -341,13 +335,11 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 		return GetterUtil.getString(_originalType);
 	}
 
-	@JSON
 	@Override
 	public boolean getEmail() {
 		return _email;
 	}
 
-	@JSON
 	@Override
 	public boolean isEmail() {
 		return _email;
@@ -358,13 +350,11 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 		_email = email;
 	}
 
-	@JSON
 	@Override
 	public boolean getSms() {
 		return _sms;
 	}
 
-	@JSON
 	@Override
 	public boolean isSms() {
 		return _sms;
@@ -375,13 +365,11 @@ public class AnnouncementsDeliveryModelImpl extends BaseModelImpl<AnnouncementsD
 		_sms = sms;
 	}
 
-	@JSON
 	@Override
 	public boolean getWebsite() {
 		return _website;
 	}
 
-	@JSON
 	@Override
 	public boolean isWebsite() {
 		return _website;

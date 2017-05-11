@@ -26,7 +26,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -67,7 +66,6 @@ import java.util.TreeSet;
  * @see DDLRecordSetVersionModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVersion>
 	implements DDLRecordSetVersionModel {
@@ -354,7 +352,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 		}
 	}
 
-	@JSON
 	@Override
 	public long getRecordSetVersionId() {
 		return _recordSetVersionId;
@@ -365,7 +362,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 		_recordSetVersionId = recordSetVersionId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -376,7 +372,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 		_groupId = groupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -387,7 +382,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -414,7 +408,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -430,7 +423,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -441,7 +433,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public long getRecordSetId() {
 		return _recordSetId;
@@ -464,7 +455,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 		return _originalRecordSetId;
 	}
 
-	@JSON
 	@Override
 	public long getDDMStructureVersionId() {
 		return _DDMStructureVersionId;
@@ -475,7 +465,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 		_DDMStructureVersionId = DDMStructureVersionId;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -516,7 +505,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 		return _nameCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getNameCurrentValue() {
 		Locale locale = getLocale(_nameCurrentLanguageId);
@@ -574,7 +562,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -615,7 +602,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 		return _descriptionCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getDescriptionCurrentValue() {
 		Locale locale = getLocale(_descriptionCurrentLanguageId);
@@ -677,7 +663,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getSettings() {
 		if (_settings == null) {
@@ -693,7 +678,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 		_settings = settings;
 	}
 
-	@JSON
 	@Override
 	public String getVersion() {
 		if (_version == null) {
@@ -719,7 +703,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 		return GetterUtil.getString(_originalVersion);
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;
@@ -742,7 +725,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 		return _originalStatus;
 	}
 
-	@JSON
 	@Override
 	public long getStatusByUserId() {
 		return _statusByUserId;
@@ -769,7 +751,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
@@ -785,7 +766,6 @@ public class DDLRecordSetVersionModelImpl extends BaseModelImpl<DDLRecordSetVers
 		_statusByUserName = statusByUserName;
 	}
 
-	@JSON
 	@Override
 	public Date getStatusDate() {
 		return _statusDate;

@@ -28,7 +28,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -69,7 +68,6 @@ import java.util.TreeSet;
  * @see AssetVocabularyModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 	implements AssetVocabularyModel {
@@ -325,7 +323,6 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -349,7 +346,6 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getVocabularyId() {
 		return _vocabularyId;
@@ -360,7 +356,6 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 		_vocabularyId = vocabularyId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -383,7 +378,6 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -406,7 +400,6 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -433,7 +426,6 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -449,7 +441,6 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -460,7 +451,6 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -477,7 +467,6 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -503,7 +492,6 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getTitle() {
 		if (_title == null) {
@@ -544,7 +532,6 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 		return _titleCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getTitleCurrentValue() {
 		Locale locale = getLocale(_titleCurrentLanguageId);
@@ -602,7 +589,6 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 				"Title", LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -643,7 +629,6 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 		return _descriptionCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getDescriptionCurrentValue() {
 		Locale locale = getLocale(_descriptionCurrentLanguageId);
@@ -705,7 +690,6 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getSettings() {
 		if (_settings == null) {
@@ -721,7 +705,6 @@ public class AssetVocabularyModelImpl extends BaseModelImpl<AssetVocabulary>
 		_settings = settings;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

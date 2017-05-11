@@ -23,7 +23,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserModel;
@@ -60,7 +59,6 @@ import java.util.Map;
  * @see UserModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 	/*
@@ -664,7 +662,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -675,7 +672,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -699,7 +695,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -738,7 +733,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -761,7 +755,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -782,7 +775,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		return _originalCreateDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -809,13 +801,11 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		return _originalModifiedDate;
 	}
 
-	@JSON
 	@Override
 	public boolean getDefaultUser() {
 		return _defaultUser;
 	}
 
-	@JSON
 	@Override
 	public boolean isDefaultUser() {
 		return _defaultUser;
@@ -838,7 +828,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		return _originalDefaultUser;
 	}
 
-	@JSON
 	@Override
 	public long getContactId() {
 		return _contactId;
@@ -861,7 +850,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		return _originalContactId;
 	}
 
-	@JSON(include = false)
 	@Override
 	public String getPassword() {
 		if (_password == null) {
@@ -877,7 +865,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_password = password;
 	}
 
-	@JSON(include = false)
 	@Override
 	public boolean getPasswordEncrypted() {
 		return _passwordEncrypted;
@@ -893,7 +880,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_passwordEncrypted = passwordEncrypted;
 	}
 
-	@JSON(include = false)
 	@Override
 	public boolean getPasswordReset() {
 		return _passwordReset;
@@ -909,7 +895,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_passwordReset = passwordReset;
 	}
 
-	@JSON(include = false)
 	@Override
 	public Date getPasswordModifiedDate() {
 		return _passwordModifiedDate;
@@ -920,7 +905,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_passwordModifiedDate = passwordModifiedDate;
 	}
 
-	@JSON(include = false)
 	@Override
 	public String getDigest() {
 		if (_digest == null) {
@@ -936,7 +920,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_digest = digest;
 	}
 
-	@JSON
 	@Override
 	public String getReminderQueryQuestion() {
 		if (_reminderQueryQuestion == null) {
@@ -952,7 +935,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_reminderQueryQuestion = reminderQueryQuestion;
 	}
 
-	@JSON
 	@Override
 	public String getReminderQueryAnswer() {
 		if (_reminderQueryAnswer == null) {
@@ -968,7 +950,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_reminderQueryAnswer = reminderQueryAnswer;
 	}
 
-	@JSON
 	@Override
 	public int getGraceLoginCount() {
 		return _graceLoginCount;
@@ -979,7 +960,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_graceLoginCount = graceLoginCount;
 	}
 
-	@JSON
 	@Override
 	public String getScreenName() {
 		if (_screenName == null) {
@@ -1005,7 +985,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		return GetterUtil.getString(_originalScreenName);
 	}
 
-	@JSON
 	@Override
 	public String getEmailAddress() {
 		if (_emailAddress == null) {
@@ -1031,7 +1010,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		return GetterUtil.getString(_originalEmailAddress);
 	}
 
-	@JSON
 	@Override
 	public long getFacebookId() {
 		return _facebookId;
@@ -1054,7 +1032,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		return _originalFacebookId;
 	}
 
-	@JSON
 	@Override
 	public String getGoogleUserId() {
 		if (_googleUserId == null) {
@@ -1080,7 +1057,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		return GetterUtil.getString(_originalGoogleUserId);
 	}
 
-	@JSON
 	@Override
 	public long getLdapServerId() {
 		return _ldapServerId;
@@ -1091,7 +1067,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_ldapServerId = ldapServerId;
 	}
 
-	@JSON
 	@Override
 	public String getOpenId() {
 		if (_openId == null) {
@@ -1117,7 +1092,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		return GetterUtil.getString(_originalOpenId);
 	}
 
-	@JSON
 	@Override
 	public long getPortraitId() {
 		return _portraitId;
@@ -1140,7 +1114,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		return _originalPortraitId;
 	}
 
-	@JSON
 	@Override
 	public String getLanguageId() {
 		if (_languageId == null) {
@@ -1156,7 +1129,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_languageId = languageId;
 	}
 
-	@JSON
 	@Override
 	public String getTimeZoneId() {
 		if (_timeZoneId == null) {
@@ -1172,7 +1144,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_timeZoneId = timeZoneId;
 	}
 
-	@JSON
 	@Override
 	public String getGreeting() {
 		if (_greeting == null) {
@@ -1188,7 +1159,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_greeting = greeting;
 	}
 
-	@JSON
 	@Override
 	public String getComments() {
 		if (_comments == null) {
@@ -1204,7 +1174,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_comments = comments;
 	}
 
-	@JSON
 	@Override
 	public String getFirstName() {
 		if (_firstName == null) {
@@ -1220,7 +1189,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_firstName = firstName;
 	}
 
-	@JSON
 	@Override
 	public String getMiddleName() {
 		if (_middleName == null) {
@@ -1236,7 +1204,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_middleName = middleName;
 	}
 
-	@JSON
 	@Override
 	public String getLastName() {
 		if (_lastName == null) {
@@ -1252,7 +1219,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_lastName = lastName;
 	}
 
-	@JSON
 	@Override
 	public String getJobTitle() {
 		if (_jobTitle == null) {
@@ -1268,7 +1234,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_jobTitle = jobTitle;
 	}
 
-	@JSON
 	@Override
 	public Date getLoginDate() {
 		return _loginDate;
@@ -1279,7 +1244,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_loginDate = loginDate;
 	}
 
-	@JSON
 	@Override
 	public String getLoginIP() {
 		if (_loginIP == null) {
@@ -1295,7 +1259,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_loginIP = loginIP;
 	}
 
-	@JSON
 	@Override
 	public Date getLastLoginDate() {
 		return _lastLoginDate;
@@ -1306,7 +1269,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_lastLoginDate = lastLoginDate;
 	}
 
-	@JSON
 	@Override
 	public String getLastLoginIP() {
 		if (_lastLoginIP == null) {
@@ -1322,7 +1284,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_lastLoginIP = lastLoginIP;
 	}
 
-	@JSON
 	@Override
 	public Date getLastFailedLoginDate() {
 		return _lastFailedLoginDate;
@@ -1333,7 +1294,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_lastFailedLoginDate = lastFailedLoginDate;
 	}
 
-	@JSON
 	@Override
 	public int getFailedLoginAttempts() {
 		return _failedLoginAttempts;
@@ -1344,13 +1304,11 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_failedLoginAttempts = failedLoginAttempts;
 	}
 
-	@JSON
 	@Override
 	public boolean getLockout() {
 		return _lockout;
 	}
 
-	@JSON
 	@Override
 	public boolean isLockout() {
 		return _lockout;
@@ -1361,7 +1319,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_lockout = lockout;
 	}
 
-	@JSON
 	@Override
 	public Date getLockoutDate() {
 		return _lockoutDate;
@@ -1372,13 +1329,11 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_lockoutDate = lockoutDate;
 	}
 
-	@JSON
 	@Override
 	public boolean getAgreedToTermsOfUse() {
 		return _agreedToTermsOfUse;
 	}
 
-	@JSON
 	@Override
 	public boolean isAgreedToTermsOfUse() {
 		return _agreedToTermsOfUse;
@@ -1389,13 +1344,11 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_agreedToTermsOfUse = agreedToTermsOfUse;
 	}
 
-	@JSON
 	@Override
 	public boolean getEmailAddressVerified() {
 		return _emailAddressVerified;
 	}
 
-	@JSON
 	@Override
 	public boolean isEmailAddressVerified() {
 		return _emailAddressVerified;
@@ -1406,7 +1359,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 		_emailAddressVerified = emailAddressVerified;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;

@@ -27,7 +27,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -62,7 +61,6 @@ import java.util.Map;
  * @see CalendarNotificationTemplateModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<CalendarNotificationTemplate>
 	implements CalendarNotificationTemplateModel {
@@ -346,7 +344,6 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -370,7 +367,6 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getCalendarNotificationTemplateId() {
 		return _calendarNotificationTemplateId;
@@ -382,7 +378,6 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		_calendarNotificationTemplateId = calendarNotificationTemplateId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -405,7 +400,6 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -428,7 +422,6 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -455,7 +448,6 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -471,7 +463,6 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -482,7 +473,6 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -499,7 +489,6 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getCalendarId() {
 		return _calendarId;
@@ -522,7 +511,6 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		return _originalCalendarId;
 	}
 
-	@JSON
 	@Override
 	public String getNotificationType() {
 		if (_notificationType == null) {
@@ -548,7 +536,6 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		return GetterUtil.getString(_originalNotificationType);
 	}
 
-	@JSON
 	@Override
 	public String getNotificationTypeSettings() {
 		if (_notificationTypeSettings == null) {
@@ -564,7 +551,6 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		_notificationTypeSettings = notificationTypeSettings;
 	}
 
-	@JSON
 	@Override
 	public String getNotificationTemplateType() {
 		if (_notificationTemplateType == null) {
@@ -590,7 +576,6 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		return GetterUtil.getString(_originalNotificationTemplateType);
 	}
 
-	@JSON
 	@Override
 	public String getSubject() {
 		if (_subject == null) {
@@ -606,7 +591,6 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		_subject = subject;
 	}
 
-	@JSON
 	@Override
 	public String getBody() {
 		if (_body == null) {
@@ -622,7 +606,6 @@ public class CalendarNotificationTemplateModelImpl extends BaseModelImpl<Calenda
 		_body = body;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

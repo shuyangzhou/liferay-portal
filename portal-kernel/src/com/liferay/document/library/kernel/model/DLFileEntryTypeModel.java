@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.LocalizedModel;
@@ -46,6 +47,7 @@ import java.util.Map;
  * @see com.liferay.portlet.documentlibrary.model.impl.DLFileEntryTypeModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface DLFileEntryTypeModel extends BaseModel<DLFileEntryType>,
 	LocalizedModel, ShardedModel, StagedGroupedModel {
@@ -76,6 +78,7 @@ public interface DLFileEntryTypeModel extends BaseModel<DLFileEntryType>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -91,6 +94,7 @@ public interface DLFileEntryTypeModel extends BaseModel<DLFileEntryType>,
 	 *
 	 * @return the file entry type ID of this document library file entry type
 	 */
+	@JSON
 	public long getFileEntryTypeId();
 
 	/**
@@ -106,6 +110,7 @@ public interface DLFileEntryTypeModel extends BaseModel<DLFileEntryType>,
 	 * @return the group ID of this document library file entry type
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -122,6 +127,7 @@ public interface DLFileEntryTypeModel extends BaseModel<DLFileEntryType>,
 	 * @return the company ID of this document library file entry type
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -138,6 +144,7 @@ public interface DLFileEntryTypeModel extends BaseModel<DLFileEntryType>,
 	 * @return the user ID of this document library file entry type
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -171,6 +178,7 @@ public interface DLFileEntryTypeModel extends BaseModel<DLFileEntryType>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -187,6 +195,7 @@ public interface DLFileEntryTypeModel extends BaseModel<DLFileEntryType>,
 	 * @return the create date of this document library file entry type
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -203,6 +212,7 @@ public interface DLFileEntryTypeModel extends BaseModel<DLFileEntryType>,
 	 * @return the modified date of this document library file entry type
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -219,6 +229,7 @@ public interface DLFileEntryTypeModel extends BaseModel<DLFileEntryType>,
 	 * @return the file entry type key of this document library file entry type
 	 */
 	@AutoEscape
+	@JSON
 	public String getFileEntryTypeKey();
 
 	/**
@@ -233,6 +244,7 @@ public interface DLFileEntryTypeModel extends BaseModel<DLFileEntryType>,
 	 *
 	 * @return the name of this document library file entry type
 	 */
+	@JSON
 	public String getName();
 
 	/**
@@ -277,6 +289,7 @@ public interface DLFileEntryTypeModel extends BaseModel<DLFileEntryType>,
 	public String getNameCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getNameCurrentValue();
 
 	/**
@@ -332,6 +345,7 @@ public interface DLFileEntryTypeModel extends BaseModel<DLFileEntryType>,
 	 *
 	 * @return the description of this document library file entry type
 	 */
+	@JSON
 	public String getDescription();
 
 	/**
@@ -376,6 +390,7 @@ public interface DLFileEntryTypeModel extends BaseModel<DLFileEntryType>,
 	public String getDescriptionCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getDescriptionCurrentValue();
 
 	/**
@@ -434,6 +449,7 @@ public interface DLFileEntryTypeModel extends BaseModel<DLFileEntryType>,
 	 * @return the last publish date of this document library file entry type
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

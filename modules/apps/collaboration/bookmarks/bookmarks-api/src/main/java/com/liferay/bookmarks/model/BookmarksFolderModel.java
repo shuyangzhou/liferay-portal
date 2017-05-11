@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
@@ -46,6 +47,7 @@ import java.util.Date;
  * @see com.liferay.bookmarks.model.impl.BookmarksFolderModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	ContainerModel, ShardedModel, StagedGroupedModel, TrashedModel,
@@ -77,6 +79,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -92,6 +95,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 *
 	 * @return the folder ID of this bookmarks folder
 	 */
+	@JSON
 	public long getFolderId();
 
 	/**
@@ -107,6 +111,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 * @return the group ID of this bookmarks folder
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -123,6 +128,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 * @return the company ID of this bookmarks folder
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -139,6 +145,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 * @return the user ID of this bookmarks folder
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -172,6 +179,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -188,6 +196,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 * @return the create date of this bookmarks folder
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -204,6 +213,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 * @return the modified date of this bookmarks folder
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -219,6 +229,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 *
 	 * @return the resource block ID of this bookmarks folder
 	 */
+	@JSON
 	public long getResourceBlockId();
 
 	/**
@@ -233,6 +244,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 *
 	 * @return the parent folder ID of this bookmarks folder
 	 */
+	@JSON
 	public long getParentFolderId();
 
 	/**
@@ -248,6 +260,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 * @return the tree path of this bookmarks folder
 	 */
 	@AutoEscape
+	@JSON
 	public String getTreePath();
 
 	/**
@@ -263,6 +276,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 * @return the name of this bookmarks folder
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -278,6 +292,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 * @return the description of this bookmarks folder
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -293,6 +308,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 * @return the last publish date of this bookmarks folder
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**
@@ -309,6 +325,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 * @return the status of this bookmarks folder
 	 */
 	@Override
+	@JSON
 	public int getStatus();
 
 	/**
@@ -325,6 +342,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 * @return the status by user ID of this bookmarks folder
 	 */
 	@Override
+	@JSON
 	public long getStatusByUserId();
 
 	/**
@@ -358,6 +376,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getStatusByUserName();
 
 	/**
@@ -374,6 +393,7 @@ public interface BookmarksFolderModel extends BaseModel<BookmarksFolder>,
 	 * @return the status date of this bookmarks folder
 	 */
 	@Override
+	@JSON
 	public Date getStatusDate();
 
 	/**

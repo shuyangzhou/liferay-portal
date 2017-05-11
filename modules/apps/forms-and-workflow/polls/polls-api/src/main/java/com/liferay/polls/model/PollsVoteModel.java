@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.polls.model.impl.PollsVoteModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface PollsVoteModel extends BaseModel<PollsVote>, ShardedModel,
 	StagedGroupedModel {
@@ -72,6 +74,7 @@ public interface PollsVoteModel extends BaseModel<PollsVote>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -87,6 +90,7 @@ public interface PollsVoteModel extends BaseModel<PollsVote>, ShardedModel,
 	 *
 	 * @return the vote ID of this polls vote
 	 */
+	@JSON
 	public long getVoteId();
 
 	/**
@@ -102,6 +106,7 @@ public interface PollsVoteModel extends BaseModel<PollsVote>, ShardedModel,
 	 * @return the group ID of this polls vote
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -118,6 +123,7 @@ public interface PollsVoteModel extends BaseModel<PollsVote>, ShardedModel,
 	 * @return the company ID of this polls vote
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -134,6 +140,7 @@ public interface PollsVoteModel extends BaseModel<PollsVote>, ShardedModel,
 	 * @return the user ID of this polls vote
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -167,6 +174,7 @@ public interface PollsVoteModel extends BaseModel<PollsVote>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -183,6 +191,7 @@ public interface PollsVoteModel extends BaseModel<PollsVote>, ShardedModel,
 	 * @return the create date of this polls vote
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -199,6 +208,7 @@ public interface PollsVoteModel extends BaseModel<PollsVote>, ShardedModel,
 	 * @return the modified date of this polls vote
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -214,6 +224,7 @@ public interface PollsVoteModel extends BaseModel<PollsVote>, ShardedModel,
 	 *
 	 * @return the question ID of this polls vote
 	 */
+	@JSON
 	public long getQuestionId();
 
 	/**
@@ -228,6 +239,7 @@ public interface PollsVoteModel extends BaseModel<PollsVote>, ShardedModel,
 	 *
 	 * @return the choice ID of this polls vote
 	 */
+	@JSON
 	public long getChoiceId();
 
 	/**
@@ -243,6 +255,7 @@ public interface PollsVoteModel extends BaseModel<PollsVote>, ShardedModel,
 	 * @return the last publish date of this polls vote
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**
@@ -258,6 +271,7 @@ public interface PollsVoteModel extends BaseModel<PollsVote>, ShardedModel,
 	 *
 	 * @return the vote date of this polls vote
 	 */
+	@JSON
 	public Date getVoteDate();
 
 	/**

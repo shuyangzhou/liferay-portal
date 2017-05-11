@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -36,6 +37,7 @@ import java.io.Serializable;
  * @see com.liferay.portal.model.impl.PluginSettingModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface PluginSettingModel extends BaseModel<PluginSetting>, MVCCModel,
 	ShardedModel {
@@ -65,6 +67,7 @@ public interface PluginSettingModel extends BaseModel<PluginSetting>, MVCCModel,
 	 * @return the mvcc version of this plugin setting
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -80,6 +83,7 @@ public interface PluginSettingModel extends BaseModel<PluginSetting>, MVCCModel,
 	 *
 	 * @return the plugin setting ID of this plugin setting
 	 */
+	@JSON
 	public long getPluginSettingId();
 
 	/**
@@ -95,6 +99,7 @@ public interface PluginSettingModel extends BaseModel<PluginSetting>, MVCCModel,
 	 * @return the company ID of this plugin setting
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -111,6 +116,7 @@ public interface PluginSettingModel extends BaseModel<PluginSetting>, MVCCModel,
 	 * @return the plugin ID of this plugin setting
 	 */
 	@AutoEscape
+	@JSON
 	public String getPluginId();
 
 	/**
@@ -126,6 +132,7 @@ public interface PluginSettingModel extends BaseModel<PluginSetting>, MVCCModel,
 	 * @return the plugin type of this plugin setting
 	 */
 	@AutoEscape
+	@JSON
 	public String getPluginType();
 
 	/**
@@ -141,6 +148,7 @@ public interface PluginSettingModel extends BaseModel<PluginSetting>, MVCCModel,
 	 * @return the roles of this plugin setting
 	 */
 	@AutoEscape
+	@JSON
 	public String getRoles();
 
 	/**
@@ -155,6 +163,7 @@ public interface PluginSettingModel extends BaseModel<PluginSetting>, MVCCModel,
 	 *
 	 * @return the active of this plugin setting
 	 */
+	@JSON
 	public boolean getActive();
 
 	/**
@@ -162,6 +171,7 @@ public interface PluginSettingModel extends BaseModel<PluginSetting>, MVCCModel,
 	 *
 	 * @return <code>true</code> if this plugin setting is active; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isActive();
 
 	/**

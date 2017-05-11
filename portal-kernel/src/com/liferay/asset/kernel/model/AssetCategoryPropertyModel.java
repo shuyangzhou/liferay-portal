@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.portlet.asset.model.impl.AssetCategoryPropertyModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface AssetCategoryPropertyModel extends AuditedModel,
 	BaseModel<AssetCategoryProperty>, ShardedModel {
@@ -70,6 +72,7 @@ public interface AssetCategoryPropertyModel extends AuditedModel,
 	 *
 	 * @return the category property ID of this asset category property
 	 */
+	@JSON
 	public long getCategoryPropertyId();
 
 	/**
@@ -85,6 +88,7 @@ public interface AssetCategoryPropertyModel extends AuditedModel,
 	 * @return the company ID of this asset category property
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -101,6 +105,7 @@ public interface AssetCategoryPropertyModel extends AuditedModel,
 	 * @return the user ID of this asset category property
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -134,6 +139,7 @@ public interface AssetCategoryPropertyModel extends AuditedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -150,6 +156,7 @@ public interface AssetCategoryPropertyModel extends AuditedModel,
 	 * @return the create date of this asset category property
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -166,6 +173,7 @@ public interface AssetCategoryPropertyModel extends AuditedModel,
 	 * @return the modified date of this asset category property
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -181,6 +189,7 @@ public interface AssetCategoryPropertyModel extends AuditedModel,
 	 *
 	 * @return the category ID of this asset category property
 	 */
+	@JSON
 	public long getCategoryId();
 
 	/**
@@ -196,6 +205,7 @@ public interface AssetCategoryPropertyModel extends AuditedModel,
 	 * @return the key of this asset category property
 	 */
 	@AutoEscape
+	@JSON
 	public String getKey();
 
 	/**
@@ -211,6 +221,7 @@ public interface AssetCategoryPropertyModel extends AuditedModel,
 	 * @return the value of this asset category property
 	 */
 	@AutoEscape
+	@JSON
 	public String getValue();
 
 	/**

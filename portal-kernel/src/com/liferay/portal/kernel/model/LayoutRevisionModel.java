@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -41,6 +42,7 @@ import java.util.Map;
  * @see com.liferay.portal.model.impl.LayoutRevisionModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	GroupedModel, LocalizedModel, MVCCModel, ShardedModel, WorkflowedModel {
@@ -70,6 +72,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 * @return the mvcc version of this layout revision
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -85,6 +88,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return the layout revision ID of this layout revision
 	 */
+	@JSON
 	public long getLayoutRevisionId();
 
 	/**
@@ -100,6 +104,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 * @return the group ID of this layout revision
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -116,6 +121,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 * @return the company ID of this layout revision
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -132,6 +138,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 * @return the user ID of this layout revision
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -165,6 +172,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -181,6 +189,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 * @return the create date of this layout revision
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -197,6 +206,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 * @return the modified date of this layout revision
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -212,6 +222,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return the layout set branch ID of this layout revision
 	 */
+	@JSON
 	public long getLayoutSetBranchId();
 
 	/**
@@ -226,6 +237,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return the layout branch ID of this layout revision
 	 */
+	@JSON
 	public long getLayoutBranchId();
 
 	/**
@@ -240,6 +252,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return the parent layout revision ID of this layout revision
 	 */
+	@JSON
 	public long getParentLayoutRevisionId();
 
 	/**
@@ -254,6 +267,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return the head of this layout revision
 	 */
+	@JSON
 	public boolean getHead();
 
 	/**
@@ -261,6 +275,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return <code>true</code> if this layout revision is head; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isHead();
 
 	/**
@@ -275,6 +290,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return the major of this layout revision
 	 */
+	@JSON
 	public boolean getMajor();
 
 	/**
@@ -282,6 +298,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return <code>true</code> if this layout revision is major; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isMajor();
 
 	/**
@@ -296,6 +313,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return the plid of this layout revision
 	 */
+	@JSON
 	public long getPlid();
 
 	/**
@@ -310,6 +328,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return the private layout of this layout revision
 	 */
+	@JSON
 	public boolean getPrivateLayout();
 
 	/**
@@ -317,6 +336,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return <code>true</code> if this layout revision is private layout; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isPrivateLayout();
 
 	/**
@@ -331,6 +351,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return the name of this layout revision
 	 */
+	@JSON
 	public String getName();
 
 	/**
@@ -375,6 +396,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	public String getNameCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getNameCurrentValue();
 
 	/**
@@ -430,6 +452,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return the title of this layout revision
 	 */
+	@JSON
 	public String getTitle();
 
 	/**
@@ -474,6 +497,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	public String getTitleCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getTitleCurrentValue();
 
 	/**
@@ -529,6 +553,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return the description of this layout revision
 	 */
+	@JSON
 	public String getDescription();
 
 	/**
@@ -573,6 +598,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	public String getDescriptionCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getDescriptionCurrentValue();
 
 	/**
@@ -630,6 +656,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return the keywords of this layout revision
 	 */
+	@JSON
 	public String getKeywords();
 
 	/**
@@ -674,6 +701,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	public String getKeywordsCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getKeywordsCurrentValue();
 
 	/**
@@ -730,6 +758,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return the robots of this layout revision
 	 */
+	@JSON
 	public String getRobots();
 
 	/**
@@ -774,6 +803,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	public String getRobotsCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getRobotsCurrentValue();
 
 	/**
@@ -830,6 +860,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 * @return the type settings of this layout revision
 	 */
 	@AutoEscape
+	@JSON
 	public String getTypeSettings();
 
 	/**
@@ -844,6 +875,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 *
 	 * @return the icon image ID of this layout revision
 	 */
+	@JSON
 	public long getIconImageId();
 
 	/**
@@ -859,6 +891,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 * @return the theme ID of this layout revision
 	 */
 	@AutoEscape
+	@JSON
 	public String getThemeId();
 
 	/**
@@ -874,6 +907,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 * @return the color scheme ID of this layout revision
 	 */
 	@AutoEscape
+	@JSON
 	public String getColorSchemeId();
 
 	/**
@@ -889,6 +923,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 * @return the css of this layout revision
 	 */
 	@AutoEscape
+	@JSON
 	public String getCss();
 
 	/**
@@ -904,6 +939,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 * @return the status of this layout revision
 	 */
 	@Override
+	@JSON
 	public int getStatus();
 
 	/**
@@ -920,6 +956,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 * @return the status by user ID of this layout revision
 	 */
 	@Override
+	@JSON
 	public long getStatusByUserId();
 
 	/**
@@ -953,6 +990,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getStatusByUserName();
 
 	/**
@@ -969,6 +1007,7 @@ public interface LayoutRevisionModel extends BaseModel<LayoutRevision>,
 	 * @return the status date of this layout revision
 	 */
 	@Override
+	@JSON
 	public Date getStatusDate();
 
 	/**

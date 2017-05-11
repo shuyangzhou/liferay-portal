@@ -22,7 +22,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.model.LayoutRevisionModel;
@@ -67,7 +66,6 @@ import java.util.TreeSet;
  * @see LayoutRevisionModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 	implements LayoutRevisionModel {
@@ -486,7 +484,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -497,7 +494,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getLayoutRevisionId() {
 		return _layoutRevisionId;
@@ -508,7 +504,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		_layoutRevisionId = layoutRevisionId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -519,7 +514,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		_groupId = groupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -530,7 +524,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -557,7 +550,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -573,7 +565,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -584,7 +575,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -603,7 +593,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getLayoutSetBranchId() {
 		return _layoutSetBranchId;
@@ -626,7 +615,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		return _originalLayoutSetBranchId;
 	}
 
-	@JSON
 	@Override
 	public long getLayoutBranchId() {
 		return _layoutBranchId;
@@ -649,7 +637,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		return _originalLayoutBranchId;
 	}
 
-	@JSON
 	@Override
 	public long getParentLayoutRevisionId() {
 		return _parentLayoutRevisionId;
@@ -672,13 +659,11 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		return _originalParentLayoutRevisionId;
 	}
 
-	@JSON
 	@Override
 	public boolean getHead() {
 		return _head;
 	}
 
-	@JSON
 	@Override
 	public boolean isHead() {
 		return _head;
@@ -701,13 +686,11 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		return _originalHead;
 	}
 
-	@JSON
 	@Override
 	public boolean getMajor() {
 		return _major;
 	}
 
-	@JSON
 	@Override
 	public boolean isMajor() {
 		return _major;
@@ -718,7 +701,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		_major = major;
 	}
 
-	@JSON
 	@Override
 	public long getPlid() {
 		return _plid;
@@ -741,13 +723,11 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		return _originalPlid;
 	}
 
-	@JSON
 	@Override
 	public boolean getPrivateLayout() {
 		return _privateLayout;
 	}
 
-	@JSON
 	@Override
 	public boolean isPrivateLayout() {
 		return _privateLayout;
@@ -758,7 +738,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		_privateLayout = privateLayout;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -799,7 +778,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		return _nameCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getNameCurrentValue() {
 		Locale locale = getLocale(_nameCurrentLanguageId);
@@ -857,7 +835,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getTitle() {
 		if (_title == null) {
@@ -898,7 +875,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		return _titleCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getTitleCurrentValue() {
 		Locale locale = getLocale(_titleCurrentLanguageId);
@@ -956,7 +932,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 				"Title", LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -997,7 +972,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		return _descriptionCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getDescriptionCurrentValue() {
 		Locale locale = getLocale(_descriptionCurrentLanguageId);
@@ -1059,7 +1033,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getKeywords() {
 		if (_keywords == null) {
@@ -1100,7 +1073,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		return _keywordsCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getKeywordsCurrentValue() {
 		Locale locale = getLocale(_keywordsCurrentLanguageId);
@@ -1160,7 +1132,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getRobots() {
 		if (_robots == null) {
@@ -1201,7 +1172,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		return _robotsCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getRobotsCurrentValue() {
 		Locale locale = getLocale(_robotsCurrentLanguageId);
@@ -1259,7 +1229,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 				"Robots", LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getTypeSettings() {
 		if (_typeSettings == null) {
@@ -1275,7 +1244,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		_typeSettings = typeSettings;
 	}
 
-	@JSON
 	@Override
 	public long getIconImageId() {
 		return _iconImageId;
@@ -1286,7 +1254,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		_iconImageId = iconImageId;
 	}
 
-	@JSON
 	@Override
 	public String getThemeId() {
 		if (_themeId == null) {
@@ -1302,7 +1269,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		_themeId = themeId;
 	}
 
-	@JSON
 	@Override
 	public String getColorSchemeId() {
 		if (_colorSchemeId == null) {
@@ -1318,7 +1284,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		_colorSchemeId = colorSchemeId;
 	}
 
-	@JSON
 	@Override
 	public String getCss() {
 		if (_css == null) {
@@ -1334,7 +1299,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		_css = css;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;
@@ -1357,7 +1321,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		return _originalStatus;
 	}
 
-	@JSON
 	@Override
 	public long getStatusByUserId() {
 		return _statusByUserId;
@@ -1384,7 +1347,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
@@ -1400,7 +1362,6 @@ public class LayoutRevisionModelImpl extends BaseModelImpl<LayoutRevision>
 		_statusByUserName = statusByUserName;
 	}
 
-	@JSON
 	@Override
 	public Date getStatusDate() {
 		return _statusDate;

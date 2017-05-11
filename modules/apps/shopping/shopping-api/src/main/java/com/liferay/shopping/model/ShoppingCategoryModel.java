@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.GroupedModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.shopping.model.impl.ShoppingCategoryModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface ShoppingCategoryModel extends BaseModel<ShoppingCategory>,
 	GroupedModel, ShardedModel {
@@ -70,6 +72,7 @@ public interface ShoppingCategoryModel extends BaseModel<ShoppingCategory>,
 	 *
 	 * @return the category ID of this shopping category
 	 */
+	@JSON
 	public long getCategoryId();
 
 	/**
@@ -85,6 +88,7 @@ public interface ShoppingCategoryModel extends BaseModel<ShoppingCategory>,
 	 * @return the group ID of this shopping category
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -101,6 +105,7 @@ public interface ShoppingCategoryModel extends BaseModel<ShoppingCategory>,
 	 * @return the company ID of this shopping category
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -117,6 +122,7 @@ public interface ShoppingCategoryModel extends BaseModel<ShoppingCategory>,
 	 * @return the user ID of this shopping category
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -150,6 +156,7 @@ public interface ShoppingCategoryModel extends BaseModel<ShoppingCategory>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -166,6 +173,7 @@ public interface ShoppingCategoryModel extends BaseModel<ShoppingCategory>,
 	 * @return the create date of this shopping category
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -182,6 +190,7 @@ public interface ShoppingCategoryModel extends BaseModel<ShoppingCategory>,
 	 * @return the modified date of this shopping category
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -197,6 +206,7 @@ public interface ShoppingCategoryModel extends BaseModel<ShoppingCategory>,
 	 *
 	 * @return the parent category ID of this shopping category
 	 */
+	@JSON
 	public long getParentCategoryId();
 
 	/**
@@ -212,6 +222,7 @@ public interface ShoppingCategoryModel extends BaseModel<ShoppingCategory>,
 	 * @return the name of this shopping category
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -227,6 +238,7 @@ public interface ShoppingCategoryModel extends BaseModel<ShoppingCategory>,
 	 * @return the description of this shopping category
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**

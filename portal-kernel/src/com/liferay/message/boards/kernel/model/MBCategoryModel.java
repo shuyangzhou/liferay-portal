@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
@@ -46,6 +47,7 @@ import java.util.Date;
  * @see com.liferay.portlet.messageboards.model.impl.MBCategoryModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	ShardedModel, StagedGroupedModel, TrashedModel, WorkflowedModel {
@@ -76,6 +78,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -91,6 +94,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 *
 	 * @return the category ID of this message boards category
 	 */
+	@JSON
 	public long getCategoryId();
 
 	/**
@@ -106,6 +110,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 * @return the group ID of this message boards category
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -122,6 +127,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 * @return the company ID of this message boards category
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -138,6 +144,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 * @return the user ID of this message boards category
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -171,6 +178,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -187,6 +195,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 * @return the create date of this message boards category
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -203,6 +212,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 * @return the modified date of this message boards category
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -218,6 +228,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 *
 	 * @return the parent category ID of this message boards category
 	 */
+	@JSON
 	public long getParentCategoryId();
 
 	/**
@@ -233,6 +244,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 * @return the name of this message boards category
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -248,6 +260,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 * @return the description of this message boards category
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -263,6 +276,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 * @return the display style of this message boards category
 	 */
 	@AutoEscape
+	@JSON
 	public String getDisplayStyle();
 
 	/**
@@ -277,6 +291,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 *
 	 * @return the thread count of this message boards category
 	 */
+	@JSON
 	public int getThreadCount();
 
 	/**
@@ -291,6 +306,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 *
 	 * @return the message count of this message boards category
 	 */
+	@JSON
 	public int getMessageCount();
 
 	/**
@@ -305,6 +321,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 *
 	 * @return the last post date of this message boards category
 	 */
+	@JSON
 	public Date getLastPostDate();
 
 	/**
@@ -320,6 +337,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 * @return the last publish date of this message boards category
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**
@@ -336,6 +354,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 * @return the status of this message boards category
 	 */
 	@Override
+	@JSON
 	public int getStatus();
 
 	/**
@@ -352,6 +371,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 * @return the status by user ID of this message boards category
 	 */
 	@Override
+	@JSON
 	public long getStatusByUserId();
 
 	/**
@@ -385,6 +405,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getStatusByUserName();
 
 	/**
@@ -401,6 +422,7 @@ public interface MBCategoryModel extends BaseModel<MBCategory>, ContainerModel,
 	 * @return the status date of this message boards category
 	 */
 	@Override
+	@JSON
 	public Date getStatusDate();
 
 	/**

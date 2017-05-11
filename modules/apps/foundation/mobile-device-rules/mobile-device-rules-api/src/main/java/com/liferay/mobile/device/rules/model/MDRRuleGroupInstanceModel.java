@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -43,6 +44,7 @@ import java.util.Date;
  * @see com.liferay.mobile.device.rules.model.impl.MDRRuleGroupInstanceModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface MDRRuleGroupInstanceModel extends AttachedModel,
 	BaseModel<MDRRuleGroupInstance>, ShardedModel, StagedGroupedModel {
@@ -73,6 +75,7 @@ public interface MDRRuleGroupInstanceModel extends AttachedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -88,6 +91,7 @@ public interface MDRRuleGroupInstanceModel extends AttachedModel,
 	 *
 	 * @return the rule group instance ID of this mdr rule group instance
 	 */
+	@JSON
 	public long getRuleGroupInstanceId();
 
 	/**
@@ -103,6 +107,7 @@ public interface MDRRuleGroupInstanceModel extends AttachedModel,
 	 * @return the group ID of this mdr rule group instance
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -119,6 +124,7 @@ public interface MDRRuleGroupInstanceModel extends AttachedModel,
 	 * @return the company ID of this mdr rule group instance
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -135,6 +141,7 @@ public interface MDRRuleGroupInstanceModel extends AttachedModel,
 	 * @return the user ID of this mdr rule group instance
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -168,6 +175,7 @@ public interface MDRRuleGroupInstanceModel extends AttachedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -184,6 +192,7 @@ public interface MDRRuleGroupInstanceModel extends AttachedModel,
 	 * @return the create date of this mdr rule group instance
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -200,6 +209,7 @@ public interface MDRRuleGroupInstanceModel extends AttachedModel,
 	 * @return the modified date of this mdr rule group instance
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -226,6 +236,7 @@ public interface MDRRuleGroupInstanceModel extends AttachedModel,
 	 * @return the class name ID of this mdr rule group instance
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -242,6 +253,7 @@ public interface MDRRuleGroupInstanceModel extends AttachedModel,
 	 * @return the class pk of this mdr rule group instance
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -257,6 +269,7 @@ public interface MDRRuleGroupInstanceModel extends AttachedModel,
 	 *
 	 * @return the rule group ID of this mdr rule group instance
 	 */
+	@JSON
 	public long getRuleGroupId();
 
 	/**
@@ -271,6 +284,7 @@ public interface MDRRuleGroupInstanceModel extends AttachedModel,
 	 *
 	 * @return the priority of this mdr rule group instance
 	 */
+	@JSON
 	public int getPriority();
 
 	/**
@@ -286,6 +300,7 @@ public interface MDRRuleGroupInstanceModel extends AttachedModel,
 	 * @return the last publish date of this mdr rule group instance
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

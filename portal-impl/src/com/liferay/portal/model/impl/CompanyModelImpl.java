@@ -20,7 +20,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyModel;
@@ -54,7 +53,6 @@ import java.util.Map;
  * @see CompanyModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class CompanyModelImpl extends BaseModelImpl<Company>
 	implements CompanyModel {
@@ -290,7 +288,6 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -301,7 +298,6 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -312,7 +308,6 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getAccountId() {
 		return _accountId;
@@ -323,7 +318,6 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		_accountId = accountId;
 	}
 
-	@JSON
 	@Override
 	public String getWebId() {
 		if (_webId == null) {
@@ -349,7 +343,6 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		return GetterUtil.getString(_originalWebId);
 	}
 
-	@JSON
 	@Override
 	public String getKey() {
 		if (_key == null) {
@@ -365,7 +358,6 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		_key = key;
 	}
 
-	@JSON
 	@Override
 	public String getMx() {
 		if (_mx == null) {
@@ -391,7 +383,6 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		return GetterUtil.getString(_originalMx);
 	}
 
-	@JSON
 	@Override
 	public String getHomeURL() {
 		if (_homeURL == null) {
@@ -407,7 +398,6 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		_homeURL = homeURL;
 	}
 
-	@JSON
 	@Override
 	public long getLogoId() {
 		return _logoId;
@@ -430,13 +420,11 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		return _originalLogoId;
 	}
 
-	@JSON
 	@Override
 	public boolean getSystem() {
 		return _system;
 	}
 
-	@JSON
 	@Override
 	public boolean isSystem() {
 		return _system;
@@ -459,7 +447,6 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		return _originalSystem;
 	}
 
-	@JSON
 	@Override
 	public int getMaxUsers() {
 		return _maxUsers;
@@ -470,13 +457,11 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		_maxUsers = maxUsers;
 	}
 
-	@JSON
 	@Override
 	public boolean getActive() {
 		return _active;
 	}
 
-	@JSON
 	@Override
 	public boolean isActive() {
 		return _active;

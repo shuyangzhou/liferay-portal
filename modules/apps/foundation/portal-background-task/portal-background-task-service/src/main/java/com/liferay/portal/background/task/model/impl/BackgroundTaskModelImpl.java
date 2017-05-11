@@ -24,7 +24,6 @@ import com.liferay.portal.background.task.model.BackgroundTaskModel;
 import com.liferay.portal.background.task.model.BackgroundTaskSoap;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -59,7 +58,6 @@ import java.util.Map;
  * @see BackgroundTaskModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 	implements BackgroundTaskModel {
@@ -350,7 +348,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -361,7 +358,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getBackgroundTaskId() {
 		return _backgroundTaskId;
@@ -372,7 +368,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		_backgroundTaskId = backgroundTaskId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -395,7 +390,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -418,7 +412,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -445,7 +438,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -461,7 +453,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -474,7 +465,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -491,7 +481,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -517,7 +506,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getServletContextNames() {
 		if (_servletContextNames == null) {
@@ -533,7 +521,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		_servletContextNames = servletContextNames;
 	}
 
-	@JSON
 	@Override
 	public String getTaskExecutorClassName() {
 		if (_taskExecutorClassName == null) {
@@ -559,7 +546,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		return GetterUtil.getString(_originalTaskExecutorClassName);
 	}
 
-	@JSON
 	@Override
 	public Map<String, Serializable> getTaskContextMap() {
 		return _taskContextMap;
@@ -570,13 +556,11 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		_taskContextMap = taskContextMap;
 	}
 
-	@JSON
 	@Override
 	public boolean getCompleted() {
 		return _completed;
 	}
 
-	@JSON
 	@Override
 	public boolean isCompleted() {
 		return _completed;
@@ -599,7 +583,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		return _originalCompleted;
 	}
 
-	@JSON
 	@Override
 	public Date getCompletionDate() {
 		return _completionDate;
@@ -610,7 +593,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		_completionDate = completionDate;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;
@@ -633,7 +615,6 @@ public class BackgroundTaskModelImpl extends BaseModelImpl<BackgroundTask>
 		return _originalStatus;
 	}
 
-	@JSON
 	@Override
 	public String getStatusMessage() {
 		if (_statusMessage == null) {

@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.GroupedModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.shopping.model.impl.ShoppingCouponModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	GroupedModel, ShardedModel {
@@ -70,6 +72,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 *
 	 * @return the coupon ID of this shopping coupon
 	 */
+	@JSON
 	public long getCouponId();
 
 	/**
@@ -85,6 +88,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 * @return the group ID of this shopping coupon
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -101,6 +105,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 * @return the company ID of this shopping coupon
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -117,6 +122,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 * @return the user ID of this shopping coupon
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -150,6 +156,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -166,6 +173,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 * @return the create date of this shopping coupon
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -182,6 +190,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 * @return the modified date of this shopping coupon
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -198,6 +207,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 * @return the code of this shopping coupon
 	 */
 	@AutoEscape
+	@JSON
 	public String getCode();
 
 	/**
@@ -213,6 +223,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 * @return the name of this shopping coupon
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -228,6 +239,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 * @return the description of this shopping coupon
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -242,6 +254,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 *
 	 * @return the start date of this shopping coupon
 	 */
+	@JSON
 	public Date getStartDate();
 
 	/**
@@ -256,6 +269,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 *
 	 * @return the end date of this shopping coupon
 	 */
+	@JSON
 	public Date getEndDate();
 
 	/**
@@ -270,6 +284,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 *
 	 * @return the active of this shopping coupon
 	 */
+	@JSON
 	public boolean getActive();
 
 	/**
@@ -277,6 +292,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 *
 	 * @return <code>true</code> if this shopping coupon is active; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isActive();
 
 	/**
@@ -292,6 +308,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 * @return the limit categories of this shopping coupon
 	 */
 	@AutoEscape
+	@JSON
 	public String getLimitCategories();
 
 	/**
@@ -307,6 +324,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 * @return the limit skus of this shopping coupon
 	 */
 	@AutoEscape
+	@JSON
 	public String getLimitSkus();
 
 	/**
@@ -321,6 +339,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 *
 	 * @return the min order of this shopping coupon
 	 */
+	@JSON
 	public double getMinOrder();
 
 	/**
@@ -335,6 +354,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 *
 	 * @return the discount of this shopping coupon
 	 */
+	@JSON
 	public double getDiscount();
 
 	/**
@@ -350,6 +370,7 @@ public interface ShoppingCouponModel extends BaseModel<ShoppingCoupon>,
 	 * @return the discount type of this shopping coupon
 	 */
 	@AutoEscape
+	@JSON
 	public String getDiscountType();
 
 	/**

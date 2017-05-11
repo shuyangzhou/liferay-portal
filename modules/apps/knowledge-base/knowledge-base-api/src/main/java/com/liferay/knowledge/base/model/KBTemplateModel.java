@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.knowledge.base.model.impl.KBTemplateModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface KBTemplateModel extends BaseModel<KBTemplate>, ShardedModel,
 	StagedGroupedModel {
@@ -72,6 +74,7 @@ public interface KBTemplateModel extends BaseModel<KBTemplate>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -87,6 +90,7 @@ public interface KBTemplateModel extends BaseModel<KBTemplate>, ShardedModel,
 	 *
 	 * @return the kb template ID of this kb template
 	 */
+	@JSON
 	public long getKbTemplateId();
 
 	/**
@@ -102,6 +106,7 @@ public interface KBTemplateModel extends BaseModel<KBTemplate>, ShardedModel,
 	 * @return the group ID of this kb template
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -118,6 +123,7 @@ public interface KBTemplateModel extends BaseModel<KBTemplate>, ShardedModel,
 	 * @return the company ID of this kb template
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -134,6 +140,7 @@ public interface KBTemplateModel extends BaseModel<KBTemplate>, ShardedModel,
 	 * @return the user ID of this kb template
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -167,6 +174,7 @@ public interface KBTemplateModel extends BaseModel<KBTemplate>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -183,6 +191,7 @@ public interface KBTemplateModel extends BaseModel<KBTemplate>, ShardedModel,
 	 * @return the create date of this kb template
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -199,6 +208,7 @@ public interface KBTemplateModel extends BaseModel<KBTemplate>, ShardedModel,
 	 * @return the modified date of this kb template
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -215,6 +225,7 @@ public interface KBTemplateModel extends BaseModel<KBTemplate>, ShardedModel,
 	 * @return the title of this kb template
 	 */
 	@AutoEscape
+	@JSON
 	public String getTitle();
 
 	/**
@@ -230,6 +241,7 @@ public interface KBTemplateModel extends BaseModel<KBTemplate>, ShardedModel,
 	 * @return the content of this kb template
 	 */
 	@AutoEscape
+	@JSON
 	public String getContent();
 
 	/**
@@ -245,6 +257,7 @@ public interface KBTemplateModel extends BaseModel<KBTemplate>, ShardedModel,
 	 * @return the last publish date of this kb template
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

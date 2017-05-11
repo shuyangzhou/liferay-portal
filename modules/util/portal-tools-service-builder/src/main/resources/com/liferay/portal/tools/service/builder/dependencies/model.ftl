@@ -11,6 +11,7 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -56,6 +57,10 @@ import java.util.Map;
 
 <#if classDeprecated>
 	@Deprecated
+</#if>
+
+<#if entity.jsonEnabled>
+	@JSON(strict = true)
 </#if>
 
 @ProviderType
@@ -215,6 +220,11 @@ public interface ${entity.name}Model extends
 			@Override
 		</#if>
 
+		<#if column.jsonEnabled>
+			@JSON
+		<#elseif entity.jsonEnabled>
+			@JSON(include = false)
+		</#if>
 		public ${column.genericizedType} get${column.methodName}();
 
 		<#if column.localized>
@@ -260,6 +270,7 @@ public interface ${entity.name}Model extends
 			public String get${column.methodName}CurrentLanguageId();
 
 			@AutoEscape
+			@JSON
 			public String get${column.methodName}CurrentValue();
 
 			/**
@@ -276,6 +287,9 @@ public interface ${entity.name}Model extends
 			 *
 			 * @return <code>true</code> if this ${entity.humanName} is ${column.humanName}; <code>false</code> otherwise
 			 */
+			<#if column.jsonEnabled>
+				@JSON
+			</#if>
 			public boolean is${column.methodName}();
 		</#if>
 

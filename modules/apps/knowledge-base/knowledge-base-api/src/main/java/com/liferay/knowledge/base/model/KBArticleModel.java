@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ResourcedModel;
@@ -44,6 +45,7 @@ import java.util.Date;
  * @see com.liferay.knowledge.base.model.impl.KBArticleModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	ShardedModel, StagedGroupedModel, WorkflowedModel {
@@ -74,6 +76,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -89,6 +92,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 *
 	 * @return the kb article ID of this kb article
 	 */
+	@JSON
 	public long getKbArticleId();
 
 	/**
@@ -104,6 +108,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 * @return the resource prim key of this kb article
 	 */
 	@Override
+	@JSON
 	public long getResourcePrimKey();
 
 	/**
@@ -123,6 +128,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 * @return the group ID of this kb article
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -139,6 +145,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 * @return the company ID of this kb article
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -155,6 +162,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 * @return the user ID of this kb article
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -188,6 +196,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -204,6 +213,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 * @return the create date of this kb article
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -220,6 +230,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 * @return the modified date of this kb article
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -235,6 +246,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 *
 	 * @return the root resource prim key of this kb article
 	 */
+	@JSON
 	public long getRootResourcePrimKey();
 
 	/**
@@ -249,6 +261,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 *
 	 * @return the parent resource class name ID of this kb article
 	 */
+	@JSON
 	public long getParentResourceClassNameId();
 
 	/**
@@ -263,6 +276,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 *
 	 * @return the parent resource prim key of this kb article
 	 */
+	@JSON
 	public long getParentResourcePrimKey();
 
 	/**
@@ -277,6 +291,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 *
 	 * @return the kb folder ID of this kb article
 	 */
+	@JSON
 	public long getKbFolderId();
 
 	/**
@@ -291,6 +306,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 *
 	 * @return the version of this kb article
 	 */
+	@JSON
 	public int getVersion();
 
 	/**
@@ -306,6 +322,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 * @return the title of this kb article
 	 */
 	@AutoEscape
+	@JSON
 	public String getTitle();
 
 	/**
@@ -321,6 +338,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 * @return the url title of this kb article
 	 */
 	@AutoEscape
+	@JSON
 	public String getUrlTitle();
 
 	/**
@@ -336,6 +354,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 * @return the content of this kb article
 	 */
 	@AutoEscape
+	@JSON
 	public String getContent();
 
 	/**
@@ -351,6 +370,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 * @return the description of this kb article
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -365,6 +385,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 *
 	 * @return the priority of this kb article
 	 */
+	@JSON
 	public double getPriority();
 
 	/**
@@ -380,6 +401,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 * @return the sections of this kb article
 	 */
 	@AutoEscape
+	@JSON
 	public String getSections();
 
 	/**
@@ -394,6 +416,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 *
 	 * @return the view count of this kb article
 	 */
+	@JSON
 	public int getViewCount();
 
 	/**
@@ -408,6 +431,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 *
 	 * @return the latest of this kb article
 	 */
+	@JSON
 	public boolean getLatest();
 
 	/**
@@ -415,6 +439,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 *
 	 * @return <code>true</code> if this kb article is latest; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isLatest();
 
 	/**
@@ -429,6 +454,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 *
 	 * @return the main of this kb article
 	 */
+	@JSON
 	public boolean getMain();
 
 	/**
@@ -436,6 +462,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 *
 	 * @return <code>true</code> if this kb article is main; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isMain();
 
 	/**
@@ -451,6 +478,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 * @return the source url of this kb article
 	 */
 	@AutoEscape
+	@JSON
 	public String getSourceURL();
 
 	/**
@@ -466,6 +494,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 * @return the last publish date of this kb article
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**
@@ -482,6 +511,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 * @return the status of this kb article
 	 */
 	@Override
+	@JSON
 	public int getStatus();
 
 	/**
@@ -498,6 +528,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 * @return the status by user ID of this kb article
 	 */
 	@Override
+	@JSON
 	public long getStatusByUserId();
 
 	/**
@@ -531,6 +562,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getStatusByUserName();
 
 	/**
@@ -547,6 +579,7 @@ public interface KBArticleModel extends BaseModel<KBArticle>, ResourcedModel,
 	 * @return the status date of this kb article
 	 */
 	@Override
+	@JSON
 	public Date getStatusDate();
 
 	/**

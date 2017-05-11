@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ import java.util.Date;
  * @see com.liferay.portal.model.impl.UserModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	StagedModel {
@@ -67,6 +69,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the mvcc version of this user
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -84,6 +87,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -99,6 +103,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the user ID of this user
 	 */
+	@JSON
 	public long getUserId();
 
 	/**
@@ -128,6 +133,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the company ID of this user
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -144,6 +150,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the create date of this user
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -160,6 +167,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the modified date of this user
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -175,6 +183,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the default user of this user
 	 */
+	@JSON
 	public boolean getDefaultUser();
 
 	/**
@@ -182,6 +191,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return <code>true</code> if this user is default user; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isDefaultUser();
 
 	/**
@@ -196,6 +206,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the contact ID of this user
 	 */
+	@JSON
 	public long getContactId();
 
 	/**
@@ -211,6 +222,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the password of this user
 	 */
 	@AutoEscape
+	@JSON(include = false)
 	public String getPassword();
 
 	/**
@@ -225,6 +237,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the password encrypted of this user
 	 */
+	@JSON(include = false)
 	public boolean getPasswordEncrypted();
 
 	/**
@@ -246,6 +259,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the password reset of this user
 	 */
+	@JSON(include = false)
 	public boolean getPasswordReset();
 
 	/**
@@ -267,6 +281,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the password modified date of this user
 	 */
+	@JSON(include = false)
 	public Date getPasswordModifiedDate();
 
 	/**
@@ -282,6 +297,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the digest of this user
 	 */
 	@AutoEscape
+	@JSON(include = false)
 	public String getDigest();
 
 	/**
@@ -297,6 +313,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the reminder query question of this user
 	 */
 	@AutoEscape
+	@JSON
 	public String getReminderQueryQuestion();
 
 	/**
@@ -312,6 +329,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the reminder query answer of this user
 	 */
 	@AutoEscape
+	@JSON
 	public String getReminderQueryAnswer();
 
 	/**
@@ -326,6 +344,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the grace login count of this user
 	 */
+	@JSON
 	public int getGraceLoginCount();
 
 	/**
@@ -341,6 +360,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the screen name of this user
 	 */
 	@AutoEscape
+	@JSON
 	public String getScreenName();
 
 	/**
@@ -356,6 +376,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the email address of this user
 	 */
 	@AutoEscape
+	@JSON
 	public String getEmailAddress();
 
 	/**
@@ -370,6 +391,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the facebook ID of this user
 	 */
+	@JSON
 	public long getFacebookId();
 
 	/**
@@ -385,6 +407,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the google user ID of this user
 	 */
 	@AutoEscape
+	@JSON
 	public String getGoogleUserId();
 
 	/**
@@ -399,6 +422,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the ldap server ID of this user
 	 */
+	@JSON
 	public long getLdapServerId();
 
 	/**
@@ -414,6 +438,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the open ID of this user
 	 */
 	@AutoEscape
+	@JSON
 	public String getOpenId();
 
 	/**
@@ -428,6 +453,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the portrait ID of this user
 	 */
+	@JSON
 	public long getPortraitId();
 
 	/**
@@ -443,6 +469,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the language ID of this user
 	 */
 	@AutoEscape
+	@JSON
 	public String getLanguageId();
 
 	/**
@@ -458,6 +485,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the time zone ID of this user
 	 */
 	@AutoEscape
+	@JSON
 	public String getTimeZoneId();
 
 	/**
@@ -473,6 +501,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the greeting of this user
 	 */
 	@AutoEscape
+	@JSON
 	public String getGreeting();
 
 	/**
@@ -488,6 +517,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the comments of this user
 	 */
 	@AutoEscape
+	@JSON
 	public String getComments();
 
 	/**
@@ -503,6 +533,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the first name of this user
 	 */
 	@AutoEscape
+	@JSON
 	public String getFirstName();
 
 	/**
@@ -518,6 +549,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the middle name of this user
 	 */
 	@AutoEscape
+	@JSON
 	public String getMiddleName();
 
 	/**
@@ -533,6 +565,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the last name of this user
 	 */
 	@AutoEscape
+	@JSON
 	public String getLastName();
 
 	/**
@@ -548,6 +581,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the job title of this user
 	 */
 	@AutoEscape
+	@JSON
 	public String getJobTitle();
 
 	/**
@@ -562,6 +596,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the login date of this user
 	 */
+	@JSON
 	public Date getLoginDate();
 
 	/**
@@ -577,6 +612,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the login ip of this user
 	 */
 	@AutoEscape
+	@JSON
 	public String getLoginIP();
 
 	/**
@@ -591,6 +627,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the last login date of this user
 	 */
+	@JSON
 	public Date getLastLoginDate();
 
 	/**
@@ -606,6 +643,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 * @return the last login ip of this user
 	 */
 	@AutoEscape
+	@JSON
 	public String getLastLoginIP();
 
 	/**
@@ -620,6 +658,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the last failed login date of this user
 	 */
+	@JSON
 	public Date getLastFailedLoginDate();
 
 	/**
@@ -634,6 +673,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the failed login attempts of this user
 	 */
+	@JSON
 	public int getFailedLoginAttempts();
 
 	/**
@@ -648,6 +688,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the lockout of this user
 	 */
+	@JSON
 	public boolean getLockout();
 
 	/**
@@ -655,6 +696,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return <code>true</code> if this user is lockout; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isLockout();
 
 	/**
@@ -669,6 +711,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the lockout date of this user
 	 */
+	@JSON
 	public Date getLockoutDate();
 
 	/**
@@ -683,6 +726,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the agreed to terms of use of this user
 	 */
+	@JSON
 	public boolean getAgreedToTermsOfUse();
 
 	/**
@@ -690,6 +734,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return <code>true</code> if this user is agreed to terms of use; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isAgreedToTermsOfUse();
 
 	/**
@@ -704,6 +749,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the email address verified of this user
 	 */
+	@JSON
 	public boolean getEmailAddressVerified();
 
 	/**
@@ -711,6 +757,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return <code>true</code> if this user is email address verified; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isEmailAddressVerified();
 
 	/**
@@ -725,6 +772,7 @@ public interface UserModel extends BaseModel<User>, MVCCModel, ShardedModel,
 	 *
 	 * @return the status of this user
 	 */
+	@JSON
 	public int getStatus();
 
 	/**

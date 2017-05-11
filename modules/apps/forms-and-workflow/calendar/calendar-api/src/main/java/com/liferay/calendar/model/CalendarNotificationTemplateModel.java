@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.calendar.model.impl.CalendarNotificationTemplateModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNotificationTemplate>,
 	ShardedModel, StagedGroupedModel {
@@ -72,6 +74,7 @@ public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNot
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -87,6 +90,7 @@ public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNot
 	 *
 	 * @return the calendar notification template ID of this calendar notification template
 	 */
+	@JSON
 	public long getCalendarNotificationTemplateId();
 
 	/**
@@ -103,6 +107,7 @@ public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNot
 	 * @return the group ID of this calendar notification template
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -119,6 +124,7 @@ public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNot
 	 * @return the company ID of this calendar notification template
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -135,6 +141,7 @@ public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNot
 	 * @return the user ID of this calendar notification template
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -168,6 +175,7 @@ public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNot
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -184,6 +192,7 @@ public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNot
 	 * @return the create date of this calendar notification template
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -200,6 +209,7 @@ public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNot
 	 * @return the modified date of this calendar notification template
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -215,6 +225,7 @@ public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNot
 	 *
 	 * @return the calendar ID of this calendar notification template
 	 */
+	@JSON
 	public long getCalendarId();
 
 	/**
@@ -230,6 +241,7 @@ public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNot
 	 * @return the notification type of this calendar notification template
 	 */
 	@AutoEscape
+	@JSON
 	public String getNotificationType();
 
 	/**
@@ -245,6 +257,7 @@ public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNot
 	 * @return the notification type settings of this calendar notification template
 	 */
 	@AutoEscape
+	@JSON
 	public String getNotificationTypeSettings();
 
 	/**
@@ -260,6 +273,7 @@ public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNot
 	 * @return the notification template type of this calendar notification template
 	 */
 	@AutoEscape
+	@JSON
 	public String getNotificationTemplateType();
 
 	/**
@@ -275,6 +289,7 @@ public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNot
 	 * @return the subject of this calendar notification template
 	 */
 	@AutoEscape
+	@JSON
 	public String getSubject();
 
 	/**
@@ -290,6 +305,7 @@ public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNot
 	 * @return the body of this calendar notification template
 	 */
 	@AutoEscape
+	@JSON
 	public String getBody();
 
 	/**
@@ -305,6 +321,7 @@ public interface CalendarNotificationTemplateModel extends BaseModel<CalendarNot
 	 * @return the last publish date of this calendar notification template
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

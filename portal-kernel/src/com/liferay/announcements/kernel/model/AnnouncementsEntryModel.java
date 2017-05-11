@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -43,6 +44,7 @@ import java.util.Date;
  * @see com.liferay.portlet.announcements.model.impl.AnnouncementsEntryModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface AnnouncementsEntryModel extends AttachedModel,
 	BaseModel<AnnouncementsEntry>, ShardedModel, StagedAuditedModel {
@@ -73,6 +75,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -88,6 +91,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 *
 	 * @return the entry ID of this announcements entry
 	 */
+	@JSON
 	public long getEntryId();
 
 	/**
@@ -103,6 +107,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 * @return the company ID of this announcements entry
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -119,6 +124,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 * @return the user ID of this announcements entry
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -152,6 +158,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -168,6 +175,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 * @return the create date of this announcements entry
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -184,6 +192,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 * @return the modified date of this announcements entry
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -210,6 +219,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 * @return the class name ID of this announcements entry
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -226,6 +236,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 * @return the class pk of this announcements entry
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -242,6 +253,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 * @return the title of this announcements entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getTitle();
 
 	/**
@@ -257,6 +269,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 * @return the content of this announcements entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getContent();
 
 	/**
@@ -272,6 +285,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 * @return the url of this announcements entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getUrl();
 
 	/**
@@ -287,6 +301,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 * @return the type of this announcements entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getType();
 
 	/**
@@ -301,6 +316,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 *
 	 * @return the display date of this announcements entry
 	 */
+	@JSON
 	public Date getDisplayDate();
 
 	/**
@@ -315,6 +331,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 *
 	 * @return the expiration date of this announcements entry
 	 */
+	@JSON
 	public Date getExpirationDate();
 
 	/**
@@ -329,6 +346,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 *
 	 * @return the priority of this announcements entry
 	 */
+	@JSON
 	public int getPriority();
 
 	/**
@@ -343,6 +361,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 *
 	 * @return the alert of this announcements entry
 	 */
+	@JSON
 	public boolean getAlert();
 
 	/**
@@ -350,6 +369,7 @@ public interface AnnouncementsEntryModel extends AttachedModel,
 	 *
 	 * @return <code>true</code> if this announcements entry is alert; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isAlert();
 
 	/**

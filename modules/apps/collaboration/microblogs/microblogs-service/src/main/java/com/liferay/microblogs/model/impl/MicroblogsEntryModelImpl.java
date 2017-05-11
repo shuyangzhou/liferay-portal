@@ -25,7 +25,6 @@ import com.liferay.microblogs.model.MicroblogsEntrySoap;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -60,7 +59,6 @@ import java.util.Map;
  * @see MicroblogsEntryModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 	implements MicroblogsEntryModel {
@@ -312,7 +310,6 @@ public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMicroblogsEntryId() {
 		return _microblogsEntryId;
@@ -323,7 +320,6 @@ public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 		_microblogsEntryId = microblogsEntryId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -346,7 +342,6 @@ public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -385,7 +380,6 @@ public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -401,7 +395,6 @@ public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -422,7 +415,6 @@ public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 		return _originalCreateDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -439,7 +431,6 @@ public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getCreatorClassNameId() {
 		return _creatorClassNameId;
@@ -462,7 +453,6 @@ public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 		return _originalCreatorClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getCreatorClassPK() {
 		return _creatorClassPK;
@@ -485,7 +475,6 @@ public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 		return _originalCreatorClassPK;
 	}
 
-	@JSON
 	@Override
 	public String getContent() {
 		if (_content == null) {
@@ -501,7 +490,6 @@ public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 		_content = content;
 	}
 
-	@JSON
 	@Override
 	public int getType() {
 		return _type;
@@ -524,7 +512,6 @@ public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 		return _originalType;
 	}
 
-	@JSON
 	@Override
 	public long getParentMicroblogsEntryId() {
 		return _parentMicroblogsEntryId;
@@ -547,7 +534,6 @@ public class MicroblogsEntryModelImpl extends BaseModelImpl<MicroblogsEntry>
 		return _originalParentMicroblogsEntryId;
 	}
 
-	@JSON
 	@Override
 	public int getSocialRelationType() {
 		return _socialRelationType;

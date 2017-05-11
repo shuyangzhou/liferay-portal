@@ -23,7 +23,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.PhoneModel;
@@ -63,7 +62,6 @@ import java.util.Map;
  * @see PhoneModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 	/*
@@ -330,7 +328,6 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -341,7 +338,6 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -365,7 +361,6 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getPhoneId() {
 		return _phoneId;
@@ -376,7 +371,6 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 		_phoneId = phoneId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -399,7 +393,6 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -438,7 +431,6 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -454,7 +446,6 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -467,7 +458,6 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -504,7 +494,6 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -527,7 +516,6 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getClassPK() {
 		return _classPK;
@@ -550,7 +538,6 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 		return _originalClassPK;
 	}
 
-	@JSON
 	@Override
 	public String getNumber() {
 		if (_number == null) {
@@ -566,7 +553,6 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 		_number = number;
 	}
 
-	@JSON
 	@Override
 	public String getExtension() {
 		if (_extension == null) {
@@ -582,7 +568,6 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 		_extension = extension;
 	}
 
-	@JSON
 	@Override
 	public long getTypeId() {
 		return _typeId;
@@ -593,13 +578,11 @@ public class PhoneModelImpl extends BaseModelImpl<Phone> implements PhoneModel {
 		_typeId = typeId;
 	}
 
-	@JSON
 	@Override
 	public boolean getPrimary() {
 		return _primary;
 	}
 
-	@JSON
 	@Override
 	public boolean isPrimary() {
 		return _primary;

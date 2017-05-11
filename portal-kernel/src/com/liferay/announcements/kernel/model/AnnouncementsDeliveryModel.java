@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -39,6 +40,7 @@ import java.io.Serializable;
  * @see com.liferay.portlet.announcements.model.impl.AnnouncementsDeliveryModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface AnnouncementsDeliveryModel extends BaseModel<AnnouncementsDelivery>,
 	ShardedModel {
@@ -67,6 +69,7 @@ public interface AnnouncementsDeliveryModel extends BaseModel<AnnouncementsDeliv
 	 *
 	 * @return the delivery ID of this announcements delivery
 	 */
+	@JSON
 	public long getDeliveryId();
 
 	/**
@@ -82,6 +85,7 @@ public interface AnnouncementsDeliveryModel extends BaseModel<AnnouncementsDeliv
 	 * @return the company ID of this announcements delivery
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -97,6 +101,7 @@ public interface AnnouncementsDeliveryModel extends BaseModel<AnnouncementsDeliv
 	 *
 	 * @return the user ID of this announcements delivery
 	 */
+	@JSON
 	public long getUserId();
 
 	/**
@@ -126,6 +131,7 @@ public interface AnnouncementsDeliveryModel extends BaseModel<AnnouncementsDeliv
 	 * @return the type of this announcements delivery
 	 */
 	@AutoEscape
+	@JSON
 	public String getType();
 
 	/**
@@ -140,6 +146,7 @@ public interface AnnouncementsDeliveryModel extends BaseModel<AnnouncementsDeliv
 	 *
 	 * @return the email of this announcements delivery
 	 */
+	@JSON
 	public boolean getEmail();
 
 	/**
@@ -147,6 +154,7 @@ public interface AnnouncementsDeliveryModel extends BaseModel<AnnouncementsDeliv
 	 *
 	 * @return <code>true</code> if this announcements delivery is email; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isEmail();
 
 	/**
@@ -161,6 +169,7 @@ public interface AnnouncementsDeliveryModel extends BaseModel<AnnouncementsDeliv
 	 *
 	 * @return the sms of this announcements delivery
 	 */
+	@JSON
 	public boolean getSms();
 
 	/**
@@ -168,6 +177,7 @@ public interface AnnouncementsDeliveryModel extends BaseModel<AnnouncementsDeliv
 	 *
 	 * @return <code>true</code> if this announcements delivery is sms; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isSms();
 
 	/**
@@ -182,6 +192,7 @@ public interface AnnouncementsDeliveryModel extends BaseModel<AnnouncementsDeliv
 	 *
 	 * @return the website of this announcements delivery
 	 */
+	@JSON
 	public boolean getWebsite();
 
 	/**
@@ -189,6 +200,7 @@ public interface AnnouncementsDeliveryModel extends BaseModel<AnnouncementsDeliv
 	 *
 	 * @return <code>true</code> if this announcements delivery is website; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isWebsite();
 
 	/**

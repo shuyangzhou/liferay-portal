@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -35,6 +36,7 @@ import java.io.Serializable;
  * @see com.liferay.portal.model.impl.OrgLaborModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	ShardedModel {
@@ -64,6 +66,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 * @return the mvcc version of this org labor
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -79,6 +82,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the org labor ID of this org labor
 	 */
+	@JSON
 	public long getOrgLaborId();
 
 	/**
@@ -94,6 +98,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 * @return the company ID of this org labor
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -109,6 +114,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the organization ID of this org labor
 	 */
+	@JSON
 	public long getOrganizationId();
 
 	/**
@@ -123,6 +129,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the type ID of this org labor
 	 */
+	@JSON
 	public long getTypeId();
 
 	/**
@@ -137,6 +144,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the sun open of this org labor
 	 */
+	@JSON
 	public int getSunOpen();
 
 	/**
@@ -151,6 +159,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the sun close of this org labor
 	 */
+	@JSON
 	public int getSunClose();
 
 	/**
@@ -165,6 +174,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the mon open of this org labor
 	 */
+	@JSON
 	public int getMonOpen();
 
 	/**
@@ -179,6 +189,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the mon close of this org labor
 	 */
+	@JSON
 	public int getMonClose();
 
 	/**
@@ -193,6 +204,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the tue open of this org labor
 	 */
+	@JSON
 	public int getTueOpen();
 
 	/**
@@ -207,6 +219,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the tue close of this org labor
 	 */
+	@JSON
 	public int getTueClose();
 
 	/**
@@ -221,6 +234,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the wed open of this org labor
 	 */
+	@JSON
 	public int getWedOpen();
 
 	/**
@@ -235,6 +249,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the wed close of this org labor
 	 */
+	@JSON
 	public int getWedClose();
 
 	/**
@@ -249,6 +264,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the thu open of this org labor
 	 */
+	@JSON
 	public int getThuOpen();
 
 	/**
@@ -263,6 +279,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the thu close of this org labor
 	 */
+	@JSON
 	public int getThuClose();
 
 	/**
@@ -277,6 +294,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the fri open of this org labor
 	 */
+	@JSON
 	public int getFriOpen();
 
 	/**
@@ -291,6 +309,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the fri close of this org labor
 	 */
+	@JSON
 	public int getFriClose();
 
 	/**
@@ -305,6 +324,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the sat open of this org labor
 	 */
+	@JSON
 	public int getSatOpen();
 
 	/**
@@ -319,6 +339,7 @@ public interface OrgLaborModel extends BaseModel<OrgLabor>, MVCCModel,
 	 *
 	 * @return the sat close of this org labor
 	 */
+	@JSON
 	public int getSatClose();
 
 	/**

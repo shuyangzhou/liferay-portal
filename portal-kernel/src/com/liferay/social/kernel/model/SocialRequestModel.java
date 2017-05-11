@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -40,6 +41,7 @@ import java.io.Serializable;
  * @see com.liferay.portlet.social.model.impl.SocialRequestModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface SocialRequestModel extends AttachedModel,
 	BaseModel<SocialRequest>, ShardedModel {
@@ -69,6 +71,7 @@ public interface SocialRequestModel extends AttachedModel,
 	 * @return the uuid of this social request
 	 */
 	@AutoEscape
+	@JSON
 	public String getUuid();
 
 	/**
@@ -83,6 +86,7 @@ public interface SocialRequestModel extends AttachedModel,
 	 *
 	 * @return the request ID of this social request
 	 */
+	@JSON
 	public long getRequestId();
 
 	/**
@@ -97,6 +101,7 @@ public interface SocialRequestModel extends AttachedModel,
 	 *
 	 * @return the group ID of this social request
 	 */
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -112,6 +117,7 @@ public interface SocialRequestModel extends AttachedModel,
 	 * @return the company ID of this social request
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -127,6 +133,7 @@ public interface SocialRequestModel extends AttachedModel,
 	 *
 	 * @return the user ID of this social request
 	 */
+	@JSON
 	public long getUserId();
 
 	/**
@@ -155,6 +162,7 @@ public interface SocialRequestModel extends AttachedModel,
 	 *
 	 * @return the create date of this social request
 	 */
+	@JSON
 	public long getCreateDate();
 
 	/**
@@ -169,6 +177,7 @@ public interface SocialRequestModel extends AttachedModel,
 	 *
 	 * @return the modified date of this social request
 	 */
+	@JSON
 	public long getModifiedDate();
 
 	/**
@@ -194,6 +203,7 @@ public interface SocialRequestModel extends AttachedModel,
 	 * @return the class name ID of this social request
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -210,6 +220,7 @@ public interface SocialRequestModel extends AttachedModel,
 	 * @return the class pk of this social request
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -225,6 +236,7 @@ public interface SocialRequestModel extends AttachedModel,
 	 *
 	 * @return the type of this social request
 	 */
+	@JSON
 	public int getType();
 
 	/**
@@ -240,6 +252,7 @@ public interface SocialRequestModel extends AttachedModel,
 	 * @return the extra data of this social request
 	 */
 	@AutoEscape
+	@JSON
 	public String getExtraData();
 
 	/**
@@ -254,6 +267,7 @@ public interface SocialRequestModel extends AttachedModel,
 	 *
 	 * @return the receiver user ID of this social request
 	 */
+	@JSON
 	public long getReceiverUserId();
 
 	/**
@@ -282,6 +296,7 @@ public interface SocialRequestModel extends AttachedModel,
 	 *
 	 * @return the status of this social request
 	 */
+	@JSON
 	public int getStatus();
 
 	/**

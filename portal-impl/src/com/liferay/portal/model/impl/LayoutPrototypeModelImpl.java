@@ -24,7 +24,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.LayoutPrototype;
 import com.liferay.portal.kernel.model.LayoutPrototypeModel;
@@ -68,7 +67,6 @@ import java.util.TreeSet;
  * @see LayoutPrototypeModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class LayoutPrototypeModelImpl extends BaseModelImpl<LayoutPrototype>
 	implements LayoutPrototypeModel {
@@ -314,7 +312,6 @@ public class LayoutPrototypeModelImpl extends BaseModelImpl<LayoutPrototype>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -325,7 +322,6 @@ public class LayoutPrototypeModelImpl extends BaseModelImpl<LayoutPrototype>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -349,7 +345,6 @@ public class LayoutPrototypeModelImpl extends BaseModelImpl<LayoutPrototype>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getLayoutPrototypeId() {
 		return _layoutPrototypeId;
@@ -360,7 +355,6 @@ public class LayoutPrototypeModelImpl extends BaseModelImpl<LayoutPrototype>
 		_layoutPrototypeId = layoutPrototypeId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -383,7 +377,6 @@ public class LayoutPrototypeModelImpl extends BaseModelImpl<LayoutPrototype>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -410,7 +403,6 @@ public class LayoutPrototypeModelImpl extends BaseModelImpl<LayoutPrototype>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -426,7 +418,6 @@ public class LayoutPrototypeModelImpl extends BaseModelImpl<LayoutPrototype>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -437,7 +428,6 @@ public class LayoutPrototypeModelImpl extends BaseModelImpl<LayoutPrototype>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -454,7 +444,6 @@ public class LayoutPrototypeModelImpl extends BaseModelImpl<LayoutPrototype>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -495,7 +484,6 @@ public class LayoutPrototypeModelImpl extends BaseModelImpl<LayoutPrototype>
 		return _nameCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getNameCurrentValue() {
 		Locale locale = getLocale(_nameCurrentLanguageId);
@@ -553,7 +541,6 @@ public class LayoutPrototypeModelImpl extends BaseModelImpl<LayoutPrototype>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -594,7 +581,6 @@ public class LayoutPrototypeModelImpl extends BaseModelImpl<LayoutPrototype>
 		return _descriptionCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getDescriptionCurrentValue() {
 		Locale locale = getLocale(_descriptionCurrentLanguageId);
@@ -656,7 +642,6 @@ public class LayoutPrototypeModelImpl extends BaseModelImpl<LayoutPrototype>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getSettings() {
 		if (_settings == null) {
@@ -672,13 +657,11 @@ public class LayoutPrototypeModelImpl extends BaseModelImpl<LayoutPrototype>
 		_settings = settings;
 	}
 
-	@JSON
 	@Override
 	public boolean getActive() {
 		return _active;
 	}
 
-	@JSON
 	@Override
 	public boolean isActive() {
 		return _active;

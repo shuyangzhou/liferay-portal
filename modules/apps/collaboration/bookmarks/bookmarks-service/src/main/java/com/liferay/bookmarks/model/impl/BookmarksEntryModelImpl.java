@@ -28,7 +28,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.TrashedModel;
@@ -67,7 +66,6 @@ import java.util.Map;
  * @see BookmarksEntryModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 	implements BookmarksEntryModel {
@@ -406,7 +404,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -430,7 +427,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getEntryId() {
 		return _entryId;
@@ -441,7 +437,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		_entryId = entryId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -464,7 +459,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -487,7 +481,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -526,7 +519,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -542,7 +534,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -553,7 +544,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -570,7 +560,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getResourceBlockId() {
 		return _resourceBlockId;
@@ -593,7 +582,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		return _originalResourceBlockId;
 	}
 
-	@JSON
 	@Override
 	public long getFolderId() {
 		return _folderId;
@@ -616,7 +604,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		return _originalFolderId;
 	}
 
-	@JSON
 	@Override
 	public String getTreePath() {
 		if (_treePath == null) {
@@ -632,7 +619,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		_treePath = treePath;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -650,7 +636,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		_name = name;
 	}
 
-	@JSON
 	@Override
 	public String getUrl() {
 		if (_url == null) {
@@ -666,7 +651,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		_url = url;
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -682,7 +666,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		_description = description;
 	}
 
-	@JSON
 	@Override
 	public int getVisits() {
 		return _visits;
@@ -693,7 +676,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		_visits = visits;
 	}
 
-	@JSON
 	@Override
 	public int getPriority() {
 		return _priority;
@@ -704,7 +686,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		_priority = priority;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;
@@ -715,7 +696,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		_lastPublishDate = lastPublishDate;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;
@@ -738,7 +718,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		return _originalStatus;
 	}
 
-	@JSON
 	@Override
 	public long getStatusByUserId() {
 		return _statusByUserId;
@@ -765,7 +744,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
@@ -781,7 +759,6 @@ public class BookmarksEntryModelImpl extends BaseModelImpl<BookmarksEntry>
 		_statusByUserName = statusByUserName;
 	}
 
-	@JSON
 	@Override
 	public Date getStatusDate() {
 		return _statusDate;

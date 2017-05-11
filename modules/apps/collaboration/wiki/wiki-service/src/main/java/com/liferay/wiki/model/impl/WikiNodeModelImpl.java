@@ -24,7 +24,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.TrashedModel;
@@ -67,7 +66,6 @@ import java.util.Map;
  * @see WikiNodeModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 	implements WikiNodeModel {
@@ -353,7 +351,6 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -377,7 +374,6 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getNodeId() {
 		return _nodeId;
@@ -388,7 +384,6 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 		_nodeId = nodeId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -411,7 +406,6 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -434,7 +428,6 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -461,7 +454,6 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -477,7 +469,6 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -488,7 +479,6 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -505,7 +495,6 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -531,7 +520,6 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -547,7 +535,6 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 		_description = description;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPostDate() {
 		return _lastPostDate;
@@ -558,7 +545,6 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 		_lastPostDate = lastPostDate;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;
@@ -569,7 +555,6 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 		_lastPublishDate = lastPublishDate;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;
@@ -592,7 +577,6 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 		return _originalStatus;
 	}
 
-	@JSON
 	@Override
 	public long getStatusByUserId() {
 		return _statusByUserId;
@@ -619,7 +603,6 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
@@ -635,7 +618,6 @@ public class WikiNodeModelImpl extends BaseModelImpl<WikiNode>
 		_statusByUserName = statusByUserName;
 	}
 
-	@JSON
 	@Override
 	public Date getStatusDate() {
 		return _statusDate;

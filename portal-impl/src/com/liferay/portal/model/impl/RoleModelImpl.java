@@ -24,7 +24,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleModel;
@@ -68,7 +67,6 @@ import java.util.TreeSet;
  * @see RoleModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 	/*
@@ -363,7 +361,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -374,7 +371,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -398,7 +394,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getRoleId() {
 		return _roleId;
@@ -409,7 +404,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 		_roleId = roleId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -432,7 +426,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -459,7 +452,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -475,7 +467,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -486,7 +477,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -523,7 +513,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -546,7 +535,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getClassPK() {
 		return _classPK;
@@ -569,7 +557,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 		return _originalClassPK;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -595,7 +582,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getTitle() {
 		if (_title == null) {
@@ -636,7 +622,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 		return _titleCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getTitleCurrentValue() {
 		Locale locale = getLocale(_titleCurrentLanguageId);
@@ -694,7 +679,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 				"Title", LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -735,7 +719,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 		return _descriptionCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getDescriptionCurrentValue() {
 		Locale locale = getLocale(_descriptionCurrentLanguageId);
@@ -797,7 +780,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public int getType() {
 		return _type;
@@ -820,7 +802,6 @@ public class RoleModelImpl extends BaseModelImpl<Role> implements RoleModel {
 		return _originalType;
 	}
 
-	@JSON
 	@Override
 	public String getSubtype() {
 		if (_subtype == null) {

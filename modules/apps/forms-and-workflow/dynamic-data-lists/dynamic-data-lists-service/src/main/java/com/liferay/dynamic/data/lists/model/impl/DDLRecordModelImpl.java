@@ -27,7 +27,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -62,7 +61,6 @@ import java.util.Map;
  * @see DDLRecordModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 	implements DDLRecordModel {
@@ -350,7 +348,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -374,7 +371,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getRecordId() {
 		return _recordId;
@@ -385,7 +381,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 		_recordId = recordId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -408,7 +403,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -431,7 +425,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -470,7 +463,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -486,7 +478,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public long getVersionUserId() {
 		return _versionUserId;
@@ -513,7 +504,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 	public void setVersionUserUuid(String versionUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getVersionUserName() {
 		if (_versionUserName == null) {
@@ -529,7 +519,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 		_versionUserName = versionUserName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -540,7 +529,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -557,7 +545,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getDDMStorageId() {
 		return _DDMStorageId;
@@ -568,7 +555,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 		_DDMStorageId = DDMStorageId;
 	}
 
-	@JSON
 	@Override
 	public long getRecordSetId() {
 		return _recordSetId;
@@ -591,7 +577,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 		return _originalRecordSetId;
 	}
 
-	@JSON
 	@Override
 	public String getRecordSetVersion() {
 		if (_recordSetVersion == null) {
@@ -617,7 +602,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 		return GetterUtil.getString(_originalRecordSetVersion);
 	}
 
-	@JSON
 	@Override
 	public String getVersion() {
 		if (_version == null) {
@@ -633,7 +617,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 		_version = version;
 	}
 
-	@JSON
 	@Override
 	public int getDisplayIndex() {
 		return _displayIndex;
@@ -644,7 +627,6 @@ public class DDLRecordModelImpl extends BaseModelImpl<DDLRecord>
 		_displayIndex = displayIndex;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

@@ -20,7 +20,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.ListTypeModel;
@@ -54,7 +53,6 @@ import java.util.Map;
  * @see ListTypeModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class ListTypeModelImpl extends BaseModelImpl<ListType>
 	implements ListTypeModel {
@@ -217,7 +215,6 @@ public class ListTypeModelImpl extends BaseModelImpl<ListType>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -228,7 +225,6 @@ public class ListTypeModelImpl extends BaseModelImpl<ListType>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getListTypeId() {
 		return _listTypeId;
@@ -239,7 +235,6 @@ public class ListTypeModelImpl extends BaseModelImpl<ListType>
 		_listTypeId = listTypeId;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -265,7 +260,6 @@ public class ListTypeModelImpl extends BaseModelImpl<ListType>
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getType() {
 		if (_type == null) {

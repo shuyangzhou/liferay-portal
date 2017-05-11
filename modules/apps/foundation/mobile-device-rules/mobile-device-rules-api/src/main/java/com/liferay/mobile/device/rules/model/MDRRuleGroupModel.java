@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.LocalizedModel;
@@ -46,6 +47,7 @@ import java.util.Map;
  * @see com.liferay.mobile.device.rules.model.impl.MDRRuleGroupModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface MDRRuleGroupModel extends BaseModel<MDRRuleGroup>,
 	LocalizedModel, ShardedModel, StagedGroupedModel {
@@ -76,6 +78,7 @@ public interface MDRRuleGroupModel extends BaseModel<MDRRuleGroup>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -91,6 +94,7 @@ public interface MDRRuleGroupModel extends BaseModel<MDRRuleGroup>,
 	 *
 	 * @return the rule group ID of this mdr rule group
 	 */
+	@JSON
 	public long getRuleGroupId();
 
 	/**
@@ -106,6 +110,7 @@ public interface MDRRuleGroupModel extends BaseModel<MDRRuleGroup>,
 	 * @return the group ID of this mdr rule group
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -122,6 +127,7 @@ public interface MDRRuleGroupModel extends BaseModel<MDRRuleGroup>,
 	 * @return the company ID of this mdr rule group
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -138,6 +144,7 @@ public interface MDRRuleGroupModel extends BaseModel<MDRRuleGroup>,
 	 * @return the user ID of this mdr rule group
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -171,6 +178,7 @@ public interface MDRRuleGroupModel extends BaseModel<MDRRuleGroup>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -187,6 +195,7 @@ public interface MDRRuleGroupModel extends BaseModel<MDRRuleGroup>,
 	 * @return the create date of this mdr rule group
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -203,6 +212,7 @@ public interface MDRRuleGroupModel extends BaseModel<MDRRuleGroup>,
 	 * @return the modified date of this mdr rule group
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -218,6 +228,7 @@ public interface MDRRuleGroupModel extends BaseModel<MDRRuleGroup>,
 	 *
 	 * @return the name of this mdr rule group
 	 */
+	@JSON
 	public String getName();
 
 	/**
@@ -262,6 +273,7 @@ public interface MDRRuleGroupModel extends BaseModel<MDRRuleGroup>,
 	public String getNameCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getNameCurrentValue();
 
 	/**
@@ -317,6 +329,7 @@ public interface MDRRuleGroupModel extends BaseModel<MDRRuleGroup>,
 	 *
 	 * @return the description of this mdr rule group
 	 */
+	@JSON
 	public String getDescription();
 
 	/**
@@ -361,6 +374,7 @@ public interface MDRRuleGroupModel extends BaseModel<MDRRuleGroup>,
 	public String getDescriptionCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getDescriptionCurrentValue();
 
 	/**
@@ -419,6 +433,7 @@ public interface MDRRuleGroupModel extends BaseModel<MDRRuleGroup>,
 	 * @return the last publish date of this mdr rule group
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

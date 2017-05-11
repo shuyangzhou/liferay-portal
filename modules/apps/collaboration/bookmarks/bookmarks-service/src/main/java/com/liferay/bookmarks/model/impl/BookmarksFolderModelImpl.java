@@ -28,7 +28,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.TrashedModel;
@@ -67,7 +66,6 @@ import java.util.Map;
  * @see BookmarksFolderModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 	implements BookmarksFolderModel {
@@ -377,7 +375,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -401,7 +398,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getFolderId() {
 		return _folderId;
@@ -424,7 +420,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 		return _originalFolderId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -447,7 +442,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -470,7 +464,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -497,7 +490,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -513,7 +505,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -524,7 +515,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -541,7 +531,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getResourceBlockId() {
 		return _resourceBlockId;
@@ -564,7 +553,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 		return _originalResourceBlockId;
 	}
 
-	@JSON
 	@Override
 	public long getParentFolderId() {
 		return _parentFolderId;
@@ -587,7 +575,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 		return _originalParentFolderId;
 	}
 
-	@JSON
 	@Override
 	public String getTreePath() {
 		if (_treePath == null) {
@@ -603,7 +590,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 		_treePath = treePath;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -621,7 +607,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 		_name = name;
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -637,7 +622,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 		_description = description;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;
@@ -648,7 +632,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 		_lastPublishDate = lastPublishDate;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;
@@ -671,7 +654,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 		return _originalStatus;
 	}
 
-	@JSON
 	@Override
 	public long getStatusByUserId() {
 		return _statusByUserId;
@@ -698,7 +680,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
@@ -714,7 +695,6 @@ public class BookmarksFolderModelImpl extends BaseModelImpl<BookmarksFolder>
 		_statusByUserName = statusByUserName;
 	}
 
-	@JSON
 	@Override
 	public Date getStatusDate() {
 		return _statusDate;

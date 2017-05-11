@@ -28,7 +28,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -69,7 +68,6 @@ import java.util.TreeSet;
  * @see DDLRecordSetModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 	implements DDLRecordSetModel {
@@ -385,7 +383,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -409,7 +406,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getRecordSetId() {
 		return _recordSetId;
@@ -420,7 +416,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		_recordSetId = recordSetId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -443,7 +438,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -466,7 +460,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -493,7 +486,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -509,7 +501,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public long getVersionUserId() {
 		return _versionUserId;
@@ -536,7 +527,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 	public void setVersionUserUuid(String versionUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getVersionUserName() {
 		if (_versionUserName == null) {
@@ -552,7 +542,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		_versionUserName = versionUserName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -563,7 +552,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -580,7 +568,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getDDMStructureId() {
 		return _DDMStructureId;
@@ -591,7 +578,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		_DDMStructureId = DDMStructureId;
 	}
 
-	@JSON
 	@Override
 	public String getRecordSetKey() {
 		if (_recordSetKey == null) {
@@ -617,7 +603,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		return GetterUtil.getString(_originalRecordSetKey);
 	}
 
-	@JSON
 	@Override
 	public String getVersion() {
 		if (_version == null) {
@@ -633,7 +618,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		_version = version;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -674,7 +658,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		return _nameCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getNameCurrentValue() {
 		Locale locale = getLocale(_nameCurrentLanguageId);
@@ -732,7 +715,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -773,7 +755,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		return _descriptionCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getDescriptionCurrentValue() {
 		Locale locale = getLocale(_descriptionCurrentLanguageId);
@@ -835,7 +816,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public int getMinDisplayRows() {
 		return _minDisplayRows;
@@ -846,7 +826,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		_minDisplayRows = minDisplayRows;
 	}
 
-	@JSON
 	@Override
 	public int getScope() {
 		return _scope;
@@ -857,7 +836,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		_scope = scope;
 	}
 
-	@JSON
 	@Override
 	public String getSettings() {
 		if (_settings == null) {
@@ -873,7 +851,6 @@ public class DDLRecordSetModelImpl extends BaseModelImpl<DDLRecordSet>
 		_settings = settings;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

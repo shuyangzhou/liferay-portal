@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.sync.model.impl.SyncDeviceModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface SyncDeviceModel extends BaseModel<SyncDevice>, ShardedModel,
 	StagedAuditedModel {
@@ -72,6 +74,7 @@ public interface SyncDeviceModel extends BaseModel<SyncDevice>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -87,6 +90,7 @@ public interface SyncDeviceModel extends BaseModel<SyncDevice>, ShardedModel,
 	 *
 	 * @return the sync device ID of this sync device
 	 */
+	@JSON
 	public long getSyncDeviceId();
 
 	/**
@@ -102,6 +106,7 @@ public interface SyncDeviceModel extends BaseModel<SyncDevice>, ShardedModel,
 	 * @return the company ID of this sync device
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -118,6 +123,7 @@ public interface SyncDeviceModel extends BaseModel<SyncDevice>, ShardedModel,
 	 * @return the user ID of this sync device
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -151,6 +157,7 @@ public interface SyncDeviceModel extends BaseModel<SyncDevice>, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -167,6 +174,7 @@ public interface SyncDeviceModel extends BaseModel<SyncDevice>, ShardedModel,
 	 * @return the create date of this sync device
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -183,6 +191,7 @@ public interface SyncDeviceModel extends BaseModel<SyncDevice>, ShardedModel,
 	 * @return the modified date of this sync device
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -199,6 +208,7 @@ public interface SyncDeviceModel extends BaseModel<SyncDevice>, ShardedModel,
 	 * @return the type of this sync device
 	 */
 	@AutoEscape
+	@JSON
 	public String getType();
 
 	/**
@@ -213,6 +223,7 @@ public interface SyncDeviceModel extends BaseModel<SyncDevice>, ShardedModel,
 	 *
 	 * @return the build number of this sync device
 	 */
+	@JSON
 	public long getBuildNumber();
 
 	/**
@@ -227,6 +238,7 @@ public interface SyncDeviceModel extends BaseModel<SyncDevice>, ShardedModel,
 	 *
 	 * @return the feature set of this sync device
 	 */
+	@JSON
 	public int getFeatureSet();
 
 	/**
@@ -242,6 +254,7 @@ public interface SyncDeviceModel extends BaseModel<SyncDevice>, ShardedModel,
 	 * @return the hostname of this sync device
 	 */
 	@AutoEscape
+	@JSON
 	public String getHostname();
 
 	/**
@@ -256,6 +269,7 @@ public interface SyncDeviceModel extends BaseModel<SyncDevice>, ShardedModel,
 	 *
 	 * @return the status of this sync device
 	 */
+	@JSON
 	public int getStatus();
 
 	/**

@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -36,6 +37,7 @@ import java.io.Serializable;
  * @see com.liferay.portal.model.impl.CountryModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface CountryModel extends BaseModel<Country>, MVCCModel {
 	/*
@@ -64,6 +66,7 @@ public interface CountryModel extends BaseModel<Country>, MVCCModel {
 	 * @return the mvcc version of this country
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -79,6 +82,7 @@ public interface CountryModel extends BaseModel<Country>, MVCCModel {
 	 *
 	 * @return the country ID of this country
 	 */
+	@JSON
 	public long getCountryId();
 
 	/**
@@ -94,6 +98,7 @@ public interface CountryModel extends BaseModel<Country>, MVCCModel {
 	 * @return the name of this country
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -109,6 +114,7 @@ public interface CountryModel extends BaseModel<Country>, MVCCModel {
 	 * @return the a2 of this country
 	 */
 	@AutoEscape
+	@JSON
 	public String getA2();
 
 	/**
@@ -124,6 +130,7 @@ public interface CountryModel extends BaseModel<Country>, MVCCModel {
 	 * @return the a3 of this country
 	 */
 	@AutoEscape
+	@JSON
 	public String getA3();
 
 	/**
@@ -139,6 +146,7 @@ public interface CountryModel extends BaseModel<Country>, MVCCModel {
 	 * @return the number of this country
 	 */
 	@AutoEscape
+	@JSON
 	public String getNumber();
 
 	/**
@@ -154,6 +162,7 @@ public interface CountryModel extends BaseModel<Country>, MVCCModel {
 	 * @return the idd of this country
 	 */
 	@AutoEscape
+	@JSON
 	public String getIdd();
 
 	/**
@@ -168,6 +177,7 @@ public interface CountryModel extends BaseModel<Country>, MVCCModel {
 	 *
 	 * @return the zip required of this country
 	 */
+	@JSON
 	public boolean getZipRequired();
 
 	/**
@@ -175,6 +185,7 @@ public interface CountryModel extends BaseModel<Country>, MVCCModel {
 	 *
 	 * @return <code>true</code> if this country is zip required; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isZipRequired();
 
 	/**
@@ -189,6 +200,7 @@ public interface CountryModel extends BaseModel<Country>, MVCCModel {
 	 *
 	 * @return the active of this country
 	 */
+	@JSON
 	public boolean getActive();
 
 	/**
@@ -196,6 +208,7 @@ public interface CountryModel extends BaseModel<Country>, MVCCModel {
 	 *
 	 * @return <code>true</code> if this country is active; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isActive();
 
 	/**

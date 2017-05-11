@@ -27,7 +27,6 @@ import com.liferay.message.boards.kernel.model.MBBanSoap;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -62,7 +61,6 @@ import java.util.Map;
  * @see MBBanModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 	/*
@@ -288,7 +286,6 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -312,7 +309,6 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getBanId() {
 		return _banId;
@@ -323,7 +319,6 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 		_banId = banId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -346,7 +341,6 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -369,7 +363,6 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -408,7 +401,6 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -424,7 +416,6 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -435,7 +426,6 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -452,7 +442,6 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getBanUserId() {
 		return _banUserId;
@@ -491,7 +480,6 @@ public class MBBanModelImpl extends BaseModelImpl<MBBan> implements MBBanModel {
 		return _originalBanUserId;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

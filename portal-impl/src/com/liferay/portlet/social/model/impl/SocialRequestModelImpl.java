@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -60,7 +59,6 @@ import java.util.Map;
  * @see SocialRequestModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 	implements SocialRequestModel {
@@ -321,7 +319,6 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -345,7 +342,6 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getRequestId() {
 		return _requestId;
@@ -358,7 +354,6 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 		_requestId = requestId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -381,7 +376,6 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -404,7 +398,6 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -443,7 +436,6 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public long getCreateDate() {
 		return _createDate;
@@ -454,7 +446,6 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public long getModifiedDate() {
 		return _modifiedDate;
@@ -485,7 +476,6 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -508,7 +498,6 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getClassPK() {
 		return _classPK;
@@ -531,7 +520,6 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 		return _originalClassPK;
 	}
 
-	@JSON
 	@Override
 	public int getType() {
 		return _type;
@@ -554,7 +542,6 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 		return _originalType;
 	}
 
-	@JSON
 	@Override
 	public String getExtraData() {
 		if (_extraData == null) {
@@ -570,7 +557,6 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 		_extraData = extraData;
 	}
 
-	@JSON
 	@Override
 	public long getReceiverUserId() {
 		return _receiverUserId;
@@ -609,7 +595,6 @@ public class SocialRequestModelImpl extends BaseModelImpl<SocialRequest>
 		return _originalReceiverUserId;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;

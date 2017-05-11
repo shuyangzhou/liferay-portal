@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ import java.util.Date;
  * @see com.liferay.portal.model.impl.TeamModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface TeamModel extends BaseModel<Team>, MVCCModel, ShardedModel,
 	StagedGroupedModel {
@@ -67,6 +69,7 @@ public interface TeamModel extends BaseModel<Team>, MVCCModel, ShardedModel,
 	 * @return the mvcc version of this team
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -84,6 +87,7 @@ public interface TeamModel extends BaseModel<Team>, MVCCModel, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -99,6 +103,7 @@ public interface TeamModel extends BaseModel<Team>, MVCCModel, ShardedModel,
 	 *
 	 * @return the team ID of this team
 	 */
+	@JSON
 	public long getTeamId();
 
 	/**
@@ -114,6 +119,7 @@ public interface TeamModel extends BaseModel<Team>, MVCCModel, ShardedModel,
 	 * @return the company ID of this team
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -130,6 +136,7 @@ public interface TeamModel extends BaseModel<Team>, MVCCModel, ShardedModel,
 	 * @return the user ID of this team
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -163,6 +170,7 @@ public interface TeamModel extends BaseModel<Team>, MVCCModel, ShardedModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -179,6 +187,7 @@ public interface TeamModel extends BaseModel<Team>, MVCCModel, ShardedModel,
 	 * @return the create date of this team
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -195,6 +204,7 @@ public interface TeamModel extends BaseModel<Team>, MVCCModel, ShardedModel,
 	 * @return the modified date of this team
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -211,6 +221,7 @@ public interface TeamModel extends BaseModel<Team>, MVCCModel, ShardedModel,
 	 * @return the group ID of this team
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -227,6 +238,7 @@ public interface TeamModel extends BaseModel<Team>, MVCCModel, ShardedModel,
 	 * @return the name of this team
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -242,6 +254,7 @@ public interface TeamModel extends BaseModel<Team>, MVCCModel, ShardedModel,
 	 * @return the description of this team
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -257,6 +270,7 @@ public interface TeamModel extends BaseModel<Team>, MVCCModel, ShardedModel,
 	 * @return the last publish date of this team
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

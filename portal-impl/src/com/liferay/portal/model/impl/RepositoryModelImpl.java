@@ -23,7 +23,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Repository;
 import com.liferay.portal.kernel.model.RepositoryModel;
@@ -62,7 +61,6 @@ import java.util.Map;
  * @see RepositoryModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class RepositoryModelImpl extends BaseModelImpl<Repository>
 	implements RepositoryModel {
@@ -349,7 +347,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -360,7 +357,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -384,7 +380,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getRepositoryId() {
 		return _repositoryId;
@@ -395,7 +390,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 		_repositoryId = repositoryId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -418,7 +412,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -441,7 +434,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -468,7 +460,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -484,7 +475,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -495,7 +485,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -532,7 +521,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -543,7 +531,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 		_classNameId = classNameId;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -569,7 +556,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -585,7 +571,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 		_description = description;
 	}
 
-	@JSON
 	@Override
 	public String getPortletId() {
 		if (_portletId == null) {
@@ -611,7 +596,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 		return GetterUtil.getString(_originalPortletId);
 	}
 
-	@JSON
 	@Override
 	public String getTypeSettings() {
 		if (_typeSettings == null) {
@@ -627,7 +611,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 		_typeSettings = typeSettings;
 	}
 
-	@JSON
 	@Override
 	public long getDlFolderId() {
 		return _dlFolderId;
@@ -638,7 +621,6 @@ public class RepositoryModelImpl extends BaseModelImpl<Repository>
 		_dlFolderId = dlFolderId;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

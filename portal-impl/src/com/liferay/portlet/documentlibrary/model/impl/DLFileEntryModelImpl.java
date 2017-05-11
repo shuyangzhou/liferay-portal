@@ -28,7 +28,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.TrashedModel;
@@ -67,7 +66,6 @@ import java.util.Map;
  * @see DLFileEntryModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 	implements DLFileEntryModel {
@@ -504,7 +502,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -528,7 +525,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getFileEntryId() {
 		return _fileEntryId;
@@ -539,7 +535,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		_fileEntryId = fileEntryId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -562,7 +557,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -585,7 +579,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -624,7 +617,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -640,7 +632,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -651,7 +642,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -688,7 +678,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -699,7 +688,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		_classNameId = classNameId;
 	}
 
-	@JSON
 	@Override
 	public long getClassPK() {
 		return _classPK;
@@ -710,7 +698,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		_classPK = classPK;
 	}
 
-	@JSON
 	@Override
 	public long getRepositoryId() {
 		return _repositoryId;
@@ -733,7 +720,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		return _originalRepositoryId;
 	}
 
-	@JSON
 	@Override
 	public long getFolderId() {
 		return _folderId;
@@ -756,7 +742,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		return _originalFolderId;
 	}
 
-	@JSON
 	@Override
 	public String getTreePath() {
 		if (_treePath == null) {
@@ -772,7 +757,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		_treePath = treePath;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -798,7 +782,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getFileName() {
 		if (_fileName == null) {
@@ -824,7 +807,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		return GetterUtil.getString(_originalFileName);
 	}
 
-	@JSON
 	@Override
 	public String getExtension() {
 		if (_extension == null) {
@@ -840,7 +822,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		_extension = extension;
 	}
 
-	@JSON
 	@Override
 	public String getMimeType() {
 		if (_mimeType == null) {
@@ -866,7 +847,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		return GetterUtil.getString(_originalMimeType);
 	}
 
-	@JSON
 	@Override
 	public String getTitle() {
 		if (_title == null) {
@@ -892,7 +872,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		return GetterUtil.getString(_originalTitle);
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -908,7 +887,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		_description = description;
 	}
 
-	@JSON
 	@Override
 	public String getExtraSettings() {
 		if (_extraSettings == null) {
@@ -924,7 +902,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		_extraSettings = extraSettings;
 	}
 
-	@JSON
 	@Override
 	public long getFileEntryTypeId() {
 		return _fileEntryTypeId;
@@ -947,7 +924,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		return _originalFileEntryTypeId;
 	}
 
-	@JSON
 	@Override
 	public String getVersion() {
 		if (_version == null) {
@@ -963,7 +939,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		_version = version;
 	}
 
-	@JSON
 	@Override
 	public long getSize() {
 		return _size;
@@ -974,7 +949,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		_size = size;
 	}
 
-	@JSON
 	@Override
 	public int getReadCount() {
 		return _readCount;
@@ -985,7 +959,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		_readCount = readCount;
 	}
 
-	@JSON
 	@Override
 	public long getSmallImageId() {
 		return _smallImageId;
@@ -1008,7 +981,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		return _originalSmallImageId;
 	}
 
-	@JSON
 	@Override
 	public long getLargeImageId() {
 		return _largeImageId;
@@ -1031,7 +1003,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		return _originalLargeImageId;
 	}
 
-	@JSON
 	@Override
 	public long getCustom1ImageId() {
 		return _custom1ImageId;
@@ -1054,7 +1025,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		return _originalCustom1ImageId;
 	}
 
-	@JSON
 	@Override
 	public long getCustom2ImageId() {
 		return _custom2ImageId;
@@ -1077,13 +1047,11 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		return _originalCustom2ImageId;
 	}
 
-	@JSON
 	@Override
 	public boolean getManualCheckInRequired() {
 		return _manualCheckInRequired;
 	}
 
-	@JSON
 	@Override
 	public boolean isManualCheckInRequired() {
 		return _manualCheckInRequired;
@@ -1094,7 +1062,6 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		_manualCheckInRequired = manualCheckInRequired;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

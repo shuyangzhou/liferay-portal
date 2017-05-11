@@ -20,7 +20,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -57,7 +56,6 @@ import java.util.Map;
  * @see SocialActivitySettingModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivitySetting>
 	implements SocialActivitySettingModel {
@@ -255,7 +253,6 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 		}
 	}
 
-	@JSON
 	@Override
 	public long getActivitySettingId() {
 		return _activitySettingId;
@@ -266,7 +263,6 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 		_activitySettingId = activitySettingId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -289,7 +285,6 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -320,7 +315,6 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -343,7 +337,6 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public int getActivityType() {
 		return _activityType;
@@ -366,7 +359,6 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 		return _originalActivityType;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -392,7 +384,6 @@ public class SocialActivitySettingModelImpl extends BaseModelImpl<SocialActivity
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getValue() {
 		if (_value == null) {

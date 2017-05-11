@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -41,6 +42,7 @@ import java.util.Map;
  * @see com.liferay.portal.model.impl.LayoutModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCModel,
 	ShardedModel, StagedGroupedModel {
@@ -70,6 +72,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 * @return the mvcc version of this layout
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -87,6 +90,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -102,6 +106,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 *
 	 * @return the plid of this layout
 	 */
+	@JSON
 	public long getPlid();
 
 	/**
@@ -117,6 +122,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 * @return the group ID of this layout
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -133,6 +139,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 * @return the company ID of this layout
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -149,6 +156,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 * @return the user ID of this layout
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -182,6 +190,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -198,6 +207,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 * @return the create date of this layout
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -214,6 +224,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 * @return the modified date of this layout
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -229,6 +240,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 *
 	 * @return the private layout of this layout
 	 */
+	@JSON
 	public boolean getPrivateLayout();
 
 	/**
@@ -236,6 +248,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 *
 	 * @return <code>true</code> if this layout is private layout; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isPrivateLayout();
 
 	/**
@@ -250,6 +263,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 *
 	 * @return the layout ID of this layout
 	 */
+	@JSON
 	public long getLayoutId();
 
 	/**
@@ -264,6 +278,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 *
 	 * @return the parent layout ID of this layout
 	 */
+	@JSON
 	public long getParentLayoutId();
 
 	/**
@@ -278,6 +293,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 *
 	 * @return the name of this layout
 	 */
+	@JSON
 	public String getName();
 
 	/**
@@ -322,6 +338,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	public String getNameCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getNameCurrentValue();
 
 	/**
@@ -377,6 +394,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 *
 	 * @return the title of this layout
 	 */
+	@JSON
 	public String getTitle();
 
 	/**
@@ -421,6 +439,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	public String getTitleCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getTitleCurrentValue();
 
 	/**
@@ -476,6 +495,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 *
 	 * @return the description of this layout
 	 */
+	@JSON
 	public String getDescription();
 
 	/**
@@ -520,6 +540,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	public String getDescriptionCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getDescriptionCurrentValue();
 
 	/**
@@ -577,6 +598,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 *
 	 * @return the keywords of this layout
 	 */
+	@JSON
 	public String getKeywords();
 
 	/**
@@ -621,6 +643,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	public String getKeywordsCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getKeywordsCurrentValue();
 
 	/**
@@ -677,6 +700,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 *
 	 * @return the robots of this layout
 	 */
+	@JSON
 	public String getRobots();
 
 	/**
@@ -721,6 +745,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	public String getRobotsCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getRobotsCurrentValue();
 
 	/**
@@ -777,6 +802,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 * @return the type of this layout
 	 */
 	@AutoEscape
+	@JSON
 	public String getType();
 
 	/**
@@ -792,6 +818,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 * @return the type settings of this layout
 	 */
 	@AutoEscape
+	@JSON
 	public String getTypeSettings();
 
 	/**
@@ -806,6 +833,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 *
 	 * @return the hidden of this layout
 	 */
+	@JSON
 	public boolean getHidden();
 
 	/**
@@ -813,6 +841,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 *
 	 * @return <code>true</code> if this layout is hidden; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isHidden();
 
 	/**
@@ -828,6 +857,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 * @return the friendly url of this layout
 	 */
 	@AutoEscape
+	@JSON
 	public String getFriendlyURL();
 
 	/**
@@ -842,6 +872,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 *
 	 * @return the icon image ID of this layout
 	 */
+	@JSON
 	public long getIconImageId();
 
 	/**
@@ -857,6 +888,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 * @return the theme ID of this layout
 	 */
 	@AutoEscape
+	@JSON
 	public String getThemeId();
 
 	/**
@@ -872,6 +904,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 * @return the color scheme ID of this layout
 	 */
 	@AutoEscape
+	@JSON
 	public String getColorSchemeId();
 
 	/**
@@ -887,6 +920,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 * @return the css of this layout
 	 */
 	@AutoEscape
+	@JSON
 	public String getCss();
 
 	/**
@@ -901,6 +935,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 *
 	 * @return the priority of this layout
 	 */
+	@JSON
 	public int getPriority();
 
 	/**
@@ -916,6 +951,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 * @return the layout prototype uuid of this layout
 	 */
 	@AutoEscape
+	@JSON
 	public String getLayoutPrototypeUuid();
 
 	/**
@@ -930,6 +966,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 *
 	 * @return the layout prototype link enabled of this layout
 	 */
+	@JSON
 	public boolean getLayoutPrototypeLinkEnabled();
 
 	/**
@@ -937,6 +974,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 *
 	 * @return <code>true</code> if this layout is layout prototype link enabled; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isLayoutPrototypeLinkEnabled();
 
 	/**
@@ -953,6 +991,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 * @return the source prototype layout uuid of this layout
 	 */
 	@AutoEscape
+	@JSON
 	public String getSourcePrototypeLayoutUuid();
 
 	/**
@@ -968,6 +1007,7 @@ public interface LayoutModel extends BaseModel<Layout>, LocalizedModel, MVCCMode
 	 * @return the last publish date of this layout
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.LocalizedModel;
@@ -46,6 +47,7 @@ import java.util.Map;
  * @see com.liferay.portlet.asset.model.impl.AssetVocabularyModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface AssetVocabularyModel extends BaseModel<AssetVocabulary>,
 	LocalizedModel, ShardedModel, StagedGroupedModel {
@@ -76,6 +78,7 @@ public interface AssetVocabularyModel extends BaseModel<AssetVocabulary>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -91,6 +94,7 @@ public interface AssetVocabularyModel extends BaseModel<AssetVocabulary>,
 	 *
 	 * @return the vocabulary ID of this asset vocabulary
 	 */
+	@JSON
 	public long getVocabularyId();
 
 	/**
@@ -106,6 +110,7 @@ public interface AssetVocabularyModel extends BaseModel<AssetVocabulary>,
 	 * @return the group ID of this asset vocabulary
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -122,6 +127,7 @@ public interface AssetVocabularyModel extends BaseModel<AssetVocabulary>,
 	 * @return the company ID of this asset vocabulary
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -138,6 +144,7 @@ public interface AssetVocabularyModel extends BaseModel<AssetVocabulary>,
 	 * @return the user ID of this asset vocabulary
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -171,6 +178,7 @@ public interface AssetVocabularyModel extends BaseModel<AssetVocabulary>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -187,6 +195,7 @@ public interface AssetVocabularyModel extends BaseModel<AssetVocabulary>,
 	 * @return the create date of this asset vocabulary
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -203,6 +212,7 @@ public interface AssetVocabularyModel extends BaseModel<AssetVocabulary>,
 	 * @return the modified date of this asset vocabulary
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -219,6 +229,7 @@ public interface AssetVocabularyModel extends BaseModel<AssetVocabulary>,
 	 * @return the name of this asset vocabulary
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -233,6 +244,7 @@ public interface AssetVocabularyModel extends BaseModel<AssetVocabulary>,
 	 *
 	 * @return the title of this asset vocabulary
 	 */
+	@JSON
 	public String getTitle();
 
 	/**
@@ -277,6 +289,7 @@ public interface AssetVocabularyModel extends BaseModel<AssetVocabulary>,
 	public String getTitleCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getTitleCurrentValue();
 
 	/**
@@ -332,6 +345,7 @@ public interface AssetVocabularyModel extends BaseModel<AssetVocabulary>,
 	 *
 	 * @return the description of this asset vocabulary
 	 */
+	@JSON
 	public String getDescription();
 
 	/**
@@ -376,6 +390,7 @@ public interface AssetVocabularyModel extends BaseModel<AssetVocabulary>,
 	public String getDescriptionCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getDescriptionCurrentValue();
 
 	/**
@@ -434,6 +449,7 @@ public interface AssetVocabularyModel extends BaseModel<AssetVocabulary>,
 	 * @return the settings of this asset vocabulary
 	 */
 	@AutoEscape
+	@JSON
 	public String getSettings();
 
 	/**
@@ -449,6 +465,7 @@ public interface AssetVocabularyModel extends BaseModel<AssetVocabulary>,
 	 * @return the last publish date of this asset vocabulary
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

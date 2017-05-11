@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -36,6 +37,7 @@ import java.io.Serializable;
  * @see com.liferay.portal.model.impl.ResourceBlockModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface ResourceBlockModel extends BaseModel<ResourceBlock>, MVCCModel,
 	ShardedModel {
@@ -65,6 +67,7 @@ public interface ResourceBlockModel extends BaseModel<ResourceBlock>, MVCCModel,
 	 * @return the mvcc version of this resource block
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -80,6 +83,7 @@ public interface ResourceBlockModel extends BaseModel<ResourceBlock>, MVCCModel,
 	 *
 	 * @return the resource block ID of this resource block
 	 */
+	@JSON
 	public long getResourceBlockId();
 
 	/**
@@ -95,6 +99,7 @@ public interface ResourceBlockModel extends BaseModel<ResourceBlock>, MVCCModel,
 	 * @return the company ID of this resource block
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -110,6 +115,7 @@ public interface ResourceBlockModel extends BaseModel<ResourceBlock>, MVCCModel,
 	 *
 	 * @return the group ID of this resource block
 	 */
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -125,6 +131,7 @@ public interface ResourceBlockModel extends BaseModel<ResourceBlock>, MVCCModel,
 	 * @return the name of this resource block
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -140,6 +147,7 @@ public interface ResourceBlockModel extends BaseModel<ResourceBlock>, MVCCModel,
 	 * @return the permissions hash of this resource block
 	 */
 	@AutoEscape
+	@JSON
 	public String getPermissionsHash();
 
 	/**
@@ -154,6 +162,7 @@ public interface ResourceBlockModel extends BaseModel<ResourceBlock>, MVCCModel,
 	 *
 	 * @return the reference count of this resource block
 	 */
+	@JSON
 	public long getReferenceCount();
 
 	/**

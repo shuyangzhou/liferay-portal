@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.dynamic.data.lists.model.impl.DDLRecordVersionModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	ShardedModel, WorkflowedModel {
@@ -70,6 +72,7 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	 *
 	 * @return the record version ID of this ddl record version
 	 */
+	@JSON
 	public long getRecordVersionId();
 
 	/**
@@ -84,6 +87,7 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	 *
 	 * @return the group ID of this ddl record version
 	 */
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -99,6 +103,7 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	 * @return the company ID of this ddl record version
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -114,6 +119,7 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	 *
 	 * @return the user ID of this ddl record version
 	 */
+	@JSON
 	public long getUserId();
 
 	/**
@@ -143,6 +149,7 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	 * @return the user name of this ddl record version
 	 */
 	@AutoEscape
+	@JSON
 	public String getUserName();
 
 	/**
@@ -157,6 +164,7 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	 *
 	 * @return the create date of this ddl record version
 	 */
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -171,6 +179,7 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	 *
 	 * @return the ddm storage ID of this ddl record version
 	 */
+	@JSON
 	public long getDDMStorageId();
 
 	/**
@@ -185,6 +194,7 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	 *
 	 * @return the record set ID of this ddl record version
 	 */
+	@JSON
 	public long getRecordSetId();
 
 	/**
@@ -200,6 +210,7 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	 * @return the record set version of this ddl record version
 	 */
 	@AutoEscape
+	@JSON
 	public String getRecordSetVersion();
 
 	/**
@@ -214,6 +225,7 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	 *
 	 * @return the record ID of this ddl record version
 	 */
+	@JSON
 	public long getRecordId();
 
 	/**
@@ -229,6 +241,7 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	 * @return the version of this ddl record version
 	 */
 	@AutoEscape
+	@JSON
 	public String getVersion();
 
 	/**
@@ -243,6 +256,7 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	 *
 	 * @return the display index of this ddl record version
 	 */
+	@JSON
 	public int getDisplayIndex();
 
 	/**
@@ -258,6 +272,7 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	 * @return the status of this ddl record version
 	 */
 	@Override
+	@JSON
 	public int getStatus();
 
 	/**
@@ -274,6 +289,7 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	 * @return the status by user ID of this ddl record version
 	 */
 	@Override
+	@JSON
 	public long getStatusByUserId();
 
 	/**
@@ -307,6 +323,7 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getStatusByUserName();
 
 	/**
@@ -323,6 +340,7 @@ public interface DDLRecordVersionModel extends BaseModel<DDLRecordVersion>,
 	 * @return the status date of this ddl record version
 	 */
 	@Override
+	@JSON
 	public Date getStatusDate();
 
 	/**

@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.social.privatemessaging.model.impl.UserThreadModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface UserThreadModel extends AuditedModel, BaseModel<UserThread>,
 	ShardedModel {
@@ -70,6 +72,7 @@ public interface UserThreadModel extends AuditedModel, BaseModel<UserThread>,
 	 *
 	 * @return the user thread ID of this user thread
 	 */
+	@JSON
 	public long getUserThreadId();
 
 	/**
@@ -85,6 +88,7 @@ public interface UserThreadModel extends AuditedModel, BaseModel<UserThread>,
 	 * @return the company ID of this user thread
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -101,6 +105,7 @@ public interface UserThreadModel extends AuditedModel, BaseModel<UserThread>,
 	 * @return the user ID of this user thread
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -134,6 +139,7 @@ public interface UserThreadModel extends AuditedModel, BaseModel<UserThread>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -150,6 +156,7 @@ public interface UserThreadModel extends AuditedModel, BaseModel<UserThread>,
 	 * @return the create date of this user thread
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -166,6 +173,7 @@ public interface UserThreadModel extends AuditedModel, BaseModel<UserThread>,
 	 * @return the modified date of this user thread
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -181,6 +189,7 @@ public interface UserThreadModel extends AuditedModel, BaseModel<UserThread>,
 	 *
 	 * @return the mb thread ID of this user thread
 	 */
+	@JSON
 	public long getMbThreadId();
 
 	/**
@@ -195,6 +204,7 @@ public interface UserThreadModel extends AuditedModel, BaseModel<UserThread>,
 	 *
 	 * @return the top mb message ID of this user thread
 	 */
+	@JSON
 	public long getTopMBMessageId();
 
 	/**
@@ -209,6 +219,7 @@ public interface UserThreadModel extends AuditedModel, BaseModel<UserThread>,
 	 *
 	 * @return the read of this user thread
 	 */
+	@JSON
 	public boolean getRead();
 
 	/**
@@ -216,6 +227,7 @@ public interface UserThreadModel extends AuditedModel, BaseModel<UserThread>,
 	 *
 	 * @return <code>true</code> if this user thread is read; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isRead();
 
 	/**
@@ -230,6 +242,7 @@ public interface UserThreadModel extends AuditedModel, BaseModel<UserThread>,
 	 *
 	 * @return the deleted of this user thread
 	 */
+	@JSON
 	public boolean getDeleted();
 
 	/**
@@ -237,6 +250,7 @@ public interface UserThreadModel extends AuditedModel, BaseModel<UserThread>,
 	 *
 	 * @return <code>true</code> if this user thread is deleted; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isDeleted();
 
 	/**

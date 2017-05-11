@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -46,6 +47,7 @@ import java.util.Date;
  * @see com.liferay.portlet.messageboards.model.impl.MBMessageModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	ShardedModel, StagedGroupedModel, TrashedModel, WorkflowedModel {
@@ -76,6 +78,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -91,6 +94,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 *
 	 * @return the message ID of this message-boards message
 	 */
+	@JSON
 	public long getMessageId();
 
 	/**
@@ -106,6 +110,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 * @return the group ID of this message-boards message
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -122,6 +127,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 * @return the company ID of this message-boards message
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -138,6 +144,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 * @return the user ID of this message-boards message
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -171,6 +178,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -187,6 +195,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 * @return the create date of this message-boards message
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -203,6 +212,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 * @return the modified date of this message-boards message
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -229,6 +239,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 * @return the class name ID of this message-boards message
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -245,6 +256,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 * @return the class pk of this message-boards message
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -260,6 +272,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 *
 	 * @return the category ID of this message-boards message
 	 */
+	@JSON
 	public long getCategoryId();
 
 	/**
@@ -274,6 +287,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 *
 	 * @return the thread ID of this message-boards message
 	 */
+	@JSON
 	public long getThreadId();
 
 	/**
@@ -288,6 +302,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 *
 	 * @return the root message ID of this message-boards message
 	 */
+	@JSON
 	public long getRootMessageId();
 
 	/**
@@ -302,6 +317,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 *
 	 * @return the parent message ID of this message-boards message
 	 */
+	@JSON
 	public long getParentMessageId();
 
 	/**
@@ -317,6 +333,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 * @return the subject of this message-boards message
 	 */
 	@AutoEscape
+	@JSON
 	public String getSubject();
 
 	/**
@@ -332,6 +349,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 * @return the body of this message-boards message
 	 */
 	@AutoEscape
+	@JSON
 	public String getBody();
 
 	/**
@@ -347,6 +365,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 * @return the format of this message-boards message
 	 */
 	@AutoEscape
+	@JSON
 	public String getFormat();
 
 	/**
@@ -361,6 +380,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 *
 	 * @return the anonymous of this message-boards message
 	 */
+	@JSON
 	public boolean getAnonymous();
 
 	/**
@@ -368,6 +388,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 *
 	 * @return <code>true</code> if this message-boards message is anonymous; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isAnonymous();
 
 	/**
@@ -382,6 +403,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 *
 	 * @return the priority of this message-boards message
 	 */
+	@JSON
 	public double getPriority();
 
 	/**
@@ -396,6 +418,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 *
 	 * @return the allow pingbacks of this message-boards message
 	 */
+	@JSON
 	public boolean getAllowPingbacks();
 
 	/**
@@ -403,6 +426,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 *
 	 * @return <code>true</code> if this message-boards message is allow pingbacks; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isAllowPingbacks();
 
 	/**
@@ -417,6 +441,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 *
 	 * @return the answer of this message-boards message
 	 */
+	@JSON
 	public boolean getAnswer();
 
 	/**
@@ -424,6 +449,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 *
 	 * @return <code>true</code> if this message-boards message is answer; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isAnswer();
 
 	/**
@@ -439,6 +465,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 * @return the last publish date of this message-boards message
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**
@@ -455,6 +482,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 * @return the status of this message-boards message
 	 */
 	@Override
+	@JSON
 	public int getStatus();
 
 	/**
@@ -471,6 +499,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 * @return the status by user ID of this message-boards message
 	 */
 	@Override
+	@JSON
 	public long getStatusByUserId();
 
 	/**
@@ -504,6 +533,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getStatusByUserName();
 
 	/**
@@ -520,6 +550,7 @@ public interface MBMessageModel extends AttachedModel, BaseModel<MBMessage>,
 	 * @return the status date of this message-boards message
 	 */
 	@Override
+	@JSON
 	public Date getStatusDate();
 
 	/**

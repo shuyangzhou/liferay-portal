@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -59,7 +58,6 @@ import java.util.Map;
  * @see PushNotificationsDeviceModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class PushNotificationsDeviceModelImpl extends BaseModelImpl<PushNotificationsDevice>
 	implements PushNotificationsDeviceModel {
@@ -248,7 +246,6 @@ public class PushNotificationsDeviceModelImpl extends BaseModelImpl<PushNotifica
 		}
 	}
 
-	@JSON
 	@Override
 	public long getPushNotificationsDeviceId() {
 		return _pushNotificationsDeviceId;
@@ -259,7 +256,6 @@ public class PushNotificationsDeviceModelImpl extends BaseModelImpl<PushNotifica
 		_pushNotificationsDeviceId = pushNotificationsDeviceId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -270,7 +266,6 @@ public class PushNotificationsDeviceModelImpl extends BaseModelImpl<PushNotifica
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -309,7 +304,6 @@ public class PushNotificationsDeviceModelImpl extends BaseModelImpl<PushNotifica
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -320,7 +314,6 @@ public class PushNotificationsDeviceModelImpl extends BaseModelImpl<PushNotifica
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public String getPlatform() {
 		if (_platform == null) {
@@ -346,7 +339,6 @@ public class PushNotificationsDeviceModelImpl extends BaseModelImpl<PushNotifica
 		return GetterUtil.getString(_originalPlatform);
 	}
 
-	@JSON
 	@Override
 	public String getToken() {
 		if (_token == null) {

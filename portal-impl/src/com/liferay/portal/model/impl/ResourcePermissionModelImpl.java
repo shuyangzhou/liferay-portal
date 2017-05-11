@@ -20,7 +20,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.ResourcePermissionModel;
@@ -54,7 +53,6 @@ import java.util.Map;
  * @see ResourcePermissionModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermission>
 	implements ResourcePermissionModel {
@@ -294,7 +292,6 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -305,7 +302,6 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getResourcePermissionId() {
 		return _resourcePermissionId;
@@ -316,7 +312,6 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 		_resourcePermissionId = resourcePermissionId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -339,7 +334,6 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -365,7 +359,6 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public int getScope() {
 		return _scope;
@@ -388,7 +381,6 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 		return _originalScope;
 	}
 
-	@JSON
 	@Override
 	public String getPrimKey() {
 		if (_primKey == null) {
@@ -414,7 +406,6 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 		return GetterUtil.getString(_originalPrimKey);
 	}
 
-	@JSON
 	@Override
 	public long getPrimKeyId() {
 		return _primKeyId;
@@ -437,7 +428,6 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 		return _originalPrimKeyId;
 	}
 
-	@JSON
 	@Override
 	public long getRoleId() {
 		return _roleId;
@@ -460,7 +450,6 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 		return _originalRoleId;
 	}
 
-	@JSON
 	@Override
 	public long getOwnerId() {
 		return _ownerId;
@@ -471,7 +460,6 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 		_ownerId = ownerId;
 	}
 
-	@JSON
 	@Override
 	public long getActionIds() {
 		return _actionIds;
@@ -482,13 +470,11 @@ public class ResourcePermissionModelImpl extends BaseModelImpl<ResourcePermissio
 		_actionIds = actionIds;
 	}
 
-	@JSON
 	@Override
 	public boolean getViewActionId() {
 		return _viewActionId;
 	}
 
-	@JSON
 	@Override
 	public boolean isViewActionId() {
 		return _viewActionId;

@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ import java.util.Date;
  * @see com.liferay.portal.model.impl.AddressModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	MVCCModel, ShardedModel, StagedAuditedModel {
@@ -67,6 +69,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 * @return the mvcc version of this address
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -84,6 +87,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -99,6 +103,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 *
 	 * @return the address ID of this address
 	 */
+	@JSON
 	public long getAddressId();
 
 	/**
@@ -114,6 +119,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 * @return the company ID of this address
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -130,6 +136,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 * @return the user ID of this address
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -163,6 +170,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -179,6 +187,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 * @return the create date of this address
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -195,6 +204,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 * @return the modified date of this address
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -221,6 +231,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 * @return the class name ID of this address
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -237,6 +248,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 * @return the class pk of this address
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -253,6 +265,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 * @return the street1 of this address
 	 */
 	@AutoEscape
+	@JSON
 	public String getStreet1();
 
 	/**
@@ -268,6 +281,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 * @return the street2 of this address
 	 */
 	@AutoEscape
+	@JSON
 	public String getStreet2();
 
 	/**
@@ -283,6 +297,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 * @return the street3 of this address
 	 */
 	@AutoEscape
+	@JSON
 	public String getStreet3();
 
 	/**
@@ -298,6 +313,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 * @return the city of this address
 	 */
 	@AutoEscape
+	@JSON
 	public String getCity();
 
 	/**
@@ -313,6 +329,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 * @return the zip of this address
 	 */
 	@AutoEscape
+	@JSON
 	public String getZip();
 
 	/**
@@ -327,6 +344,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 *
 	 * @return the region ID of this address
 	 */
+	@JSON
 	public long getRegionId();
 
 	/**
@@ -341,6 +359,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 *
 	 * @return the country ID of this address
 	 */
+	@JSON
 	public long getCountryId();
 
 	/**
@@ -355,6 +374,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 *
 	 * @return the type ID of this address
 	 */
+	@JSON
 	public long getTypeId();
 
 	/**
@@ -369,6 +389,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 *
 	 * @return the mailing of this address
 	 */
+	@JSON
 	public boolean getMailing();
 
 	/**
@@ -376,6 +397,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 *
 	 * @return <code>true</code> if this address is mailing; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isMailing();
 
 	/**
@@ -390,6 +412,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 *
 	 * @return the primary of this address
 	 */
+	@JSON
 	public boolean getPrimary();
 
 	/**
@@ -397,6 +420,7 @@ public interface AddressModel extends AttachedModel, BaseModel<Address>,
 	 *
 	 * @return <code>true</code> if this address is primary; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isPrimary();
 
 	/**

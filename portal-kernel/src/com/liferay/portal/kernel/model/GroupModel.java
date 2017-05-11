@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -40,6 +41,7 @@ import java.util.Map;
  * @see com.liferay.portal.model.impl.GroupModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	LocalizedModel, MVCCModel, ShardedModel {
@@ -69,6 +71,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 * @return the mvcc version of this group
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -85,6 +88,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 * @return the uuid of this group
 	 */
 	@AutoEscape
+	@JSON
 	public String getUuid();
 
 	/**
@@ -99,6 +103,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return the group ID of this group
 	 */
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -114,6 +119,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 * @return the company ID of this group
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -129,6 +135,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return the creator user ID of this group
 	 */
+	@JSON
 	public long getCreatorUserId();
 
 	/**
@@ -168,6 +175,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 * @return the class name ID of this group
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -184,6 +192,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 * @return the class pk of this group
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -199,6 +208,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return the parent group ID of this group
 	 */
+	@JSON
 	public long getParentGroupId();
 
 	/**
@@ -213,6 +223,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return the live group ID of this group
 	 */
+	@JSON
 	public long getLiveGroupId();
 
 	/**
@@ -228,6 +239,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 * @return the tree path of this group
 	 */
 	@AutoEscape
+	@JSON
 	public String getTreePath();
 
 	/**
@@ -243,6 +255,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 * @return the group key of this group
 	 */
 	@AutoEscape
+	@JSON
 	public String getGroupKey();
 
 	/**
@@ -257,6 +270,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return the name of this group
 	 */
+	@JSON
 	public String getName();
 
 	/**
@@ -301,6 +315,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	public String getNameCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getNameCurrentValue();
 
 	/**
@@ -356,6 +371,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return the description of this group
 	 */
+	@JSON
 	public String getDescription();
 
 	/**
@@ -400,6 +416,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	public String getDescriptionCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getDescriptionCurrentValue();
 
 	/**
@@ -457,6 +474,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return the type of this group
 	 */
+	@JSON
 	public int getType();
 
 	/**
@@ -472,6 +490,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 * @return the type settings of this group
 	 */
 	@AutoEscape
+	@JSON
 	public String getTypeSettings();
 
 	/**
@@ -486,6 +505,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return the manual membership of this group
 	 */
+	@JSON
 	public boolean getManualMembership();
 
 	/**
@@ -493,6 +513,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return <code>true</code> if this group is manual membership; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isManualMembership();
 
 	/**
@@ -507,6 +528,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return the membership restriction of this group
 	 */
+	@JSON
 	public int getMembershipRestriction();
 
 	/**
@@ -522,6 +544,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 * @return the friendly url of this group
 	 */
 	@AutoEscape
+	@JSON
 	public String getFriendlyURL();
 
 	/**
@@ -536,6 +559,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return the site of this group
 	 */
+	@JSON
 	public boolean getSite();
 
 	/**
@@ -543,6 +567,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return <code>true</code> if this group is site; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isSite();
 
 	/**
@@ -557,6 +582,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return the remote staging group count of this group
 	 */
+	@JSON
 	public int getRemoteStagingGroupCount();
 
 	/**
@@ -571,6 +597,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return the inherit content of this group
 	 */
+	@JSON
 	public boolean getInheritContent();
 
 	/**
@@ -578,6 +605,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return <code>true</code> if this group is inherit content; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isInheritContent();
 
 	/**
@@ -592,6 +620,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return the active of this group
 	 */
+	@JSON
 	public boolean getActive();
 
 	/**
@@ -599,6 +628,7 @@ public interface GroupModel extends AttachedModel, BaseModel<Group>,
 	 *
 	 * @return <code>true</code> if this group is active; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isActive();
 
 	/**

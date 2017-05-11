@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ import java.util.Date;
  * @see com.liferay.portal.model.impl.LayoutSetModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	ShardedModel {
@@ -67,6 +69,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 * @return the mvcc version of this layout set
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -82,6 +85,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 *
 	 * @return the layout set ID of this layout set
 	 */
+	@JSON
 	public long getLayoutSetId();
 
 	/**
@@ -96,6 +100,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 *
 	 * @return the group ID of this layout set
 	 */
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -111,6 +116,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 * @return the company ID of this layout set
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -126,6 +132,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 *
 	 * @return the create date of this layout set
 	 */
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -140,6 +147,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 *
 	 * @return the modified date of this layout set
 	 */
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -154,6 +162,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 *
 	 * @return the private layout of this layout set
 	 */
+	@JSON
 	public boolean getPrivateLayout();
 
 	/**
@@ -161,6 +170,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 *
 	 * @return <code>true</code> if this layout set is private layout; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isPrivateLayout();
 
 	/**
@@ -175,6 +185,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 *
 	 * @return the logo ID of this layout set
 	 */
+	@JSON
 	public long getLogoId();
 
 	/**
@@ -190,6 +201,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 * @return the theme ID of this layout set
 	 */
 	@AutoEscape
+	@JSON
 	public String getThemeId();
 
 	/**
@@ -205,6 +217,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 * @return the color scheme ID of this layout set
 	 */
 	@AutoEscape
+	@JSON
 	public String getColorSchemeId();
 
 	/**
@@ -220,6 +233,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 * @return the css of this layout set
 	 */
 	@AutoEscape
+	@JSON
 	public String getCss();
 
 	/**
@@ -234,6 +248,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 *
 	 * @return the page count of this layout set
 	 */
+	@JSON
 	public int getPageCount();
 
 	/**
@@ -249,6 +264,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 * @return the settings of this layout set
 	 */
 	@AutoEscape
+	@JSON
 	public String getSettings();
 
 	/**
@@ -264,6 +280,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 * @return the layout set prototype uuid of this layout set
 	 */
 	@AutoEscape
+	@JSON
 	public String getLayoutSetPrototypeUuid();
 
 	/**
@@ -278,6 +295,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 *
 	 * @return the layout set prototype link enabled of this layout set
 	 */
+	@JSON
 	public boolean getLayoutSetPrototypeLinkEnabled();
 
 	/**
@@ -285,6 +303,7 @@ public interface LayoutSetModel extends BaseModel<LayoutSet>, MVCCModel,
 	 *
 	 * @return <code>true</code> if this layout set is layout set prototype link enabled; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isLayoutSetPrototypeLinkEnabled();
 
 	/**

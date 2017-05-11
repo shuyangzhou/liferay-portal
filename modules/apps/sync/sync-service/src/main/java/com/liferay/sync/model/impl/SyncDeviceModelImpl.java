@@ -23,7 +23,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -62,7 +61,6 @@ import java.util.Map;
  * @see SyncDeviceModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class SyncDeviceModelImpl extends BaseModelImpl<SyncDevice>
 	implements SyncDeviceModel {
@@ -308,7 +306,6 @@ public class SyncDeviceModelImpl extends BaseModelImpl<SyncDevice>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -332,7 +329,6 @@ public class SyncDeviceModelImpl extends BaseModelImpl<SyncDevice>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getSyncDeviceId() {
 		return _syncDeviceId;
@@ -343,7 +339,6 @@ public class SyncDeviceModelImpl extends BaseModelImpl<SyncDevice>
 		_syncDeviceId = syncDeviceId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -366,7 +361,6 @@ public class SyncDeviceModelImpl extends BaseModelImpl<SyncDevice>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -405,7 +399,6 @@ public class SyncDeviceModelImpl extends BaseModelImpl<SyncDevice>
 		return _originalUserId;
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -431,7 +424,6 @@ public class SyncDeviceModelImpl extends BaseModelImpl<SyncDevice>
 		return GetterUtil.getString(_originalUserName);
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -442,7 +434,6 @@ public class SyncDeviceModelImpl extends BaseModelImpl<SyncDevice>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -459,7 +450,6 @@ public class SyncDeviceModelImpl extends BaseModelImpl<SyncDevice>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public String getType() {
 		if (_type == null) {
@@ -475,7 +465,6 @@ public class SyncDeviceModelImpl extends BaseModelImpl<SyncDevice>
 		_type = type;
 	}
 
-	@JSON
 	@Override
 	public long getBuildNumber() {
 		return _buildNumber;
@@ -486,7 +475,6 @@ public class SyncDeviceModelImpl extends BaseModelImpl<SyncDevice>
 		_buildNumber = buildNumber;
 	}
 
-	@JSON
 	@Override
 	public int getFeatureSet() {
 		return _featureSet;
@@ -497,7 +485,6 @@ public class SyncDeviceModelImpl extends BaseModelImpl<SyncDevice>
 		_featureSet = featureSet;
 	}
 
-	@JSON
 	@Override
 	public String getHostname() {
 		if (_hostname == null) {
@@ -513,7 +500,6 @@ public class SyncDeviceModelImpl extends BaseModelImpl<SyncDevice>
 		_hostname = hostname;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;

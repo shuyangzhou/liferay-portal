@@ -28,7 +28,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -69,7 +68,6 @@ import java.util.TreeSet;
  * @see CalendarResourceModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 	implements CalendarResourceModel {
@@ -369,7 +367,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -393,7 +390,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getCalendarResourceId() {
 		return _calendarResourceId;
@@ -404,7 +400,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		_calendarResourceId = calendarResourceId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -427,7 +422,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -450,7 +444,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -477,7 +470,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -493,7 +485,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -504,7 +495,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -521,7 +511,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getResourceBlockId() {
 		return _resourceBlockId;
@@ -564,7 +553,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -587,7 +575,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getClassPK() {
 		return _classPK;
@@ -610,7 +597,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		return _originalClassPK;
 	}
 
-	@JSON
 	@Override
 	public String getClassUuid() {
 		if (_classUuid == null) {
@@ -626,7 +612,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		_classUuid = classUuid;
 	}
 
-	@JSON
 	@Override
 	public String getCode() {
 		if (_code == null) {
@@ -652,7 +637,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		return GetterUtil.getString(_originalCode);
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -693,7 +677,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		return _nameCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getNameCurrentValue() {
 		Locale locale = getLocale(_nameCurrentLanguageId);
@@ -751,7 +734,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -792,7 +774,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		return _descriptionCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getDescriptionCurrentValue() {
 		Locale locale = getLocale(_descriptionCurrentLanguageId);
@@ -854,13 +835,11 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public boolean getActive() {
 		return _active;
 	}
 
-	@JSON
 	@Override
 	public boolean isActive() {
 		return _active;
@@ -883,7 +862,6 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		return _originalActive;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

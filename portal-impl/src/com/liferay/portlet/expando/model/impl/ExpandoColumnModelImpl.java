@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.model.ExpandoColumnModel;
 import com.liferay.expando.kernel.model.ExpandoColumnSoap;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -51,7 +50,6 @@ import java.util.Map;
  * @see ExpandoColumnModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 	implements ExpandoColumnModel {
@@ -244,7 +242,6 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getColumnId() {
 		return _columnId;
@@ -255,7 +252,6 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 		_columnId = columnId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -266,7 +262,6 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getTableId() {
 		return _tableId;
@@ -289,7 +284,6 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 		return _originalTableId;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -315,7 +309,6 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public int getType() {
 		return _type;
@@ -326,7 +319,6 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 		_type = type;
 	}
 
-	@JSON
 	@Override
 	public String getDefaultData() {
 		if (_defaultData == null) {
@@ -342,7 +334,6 @@ public class ExpandoColumnModelImpl extends BaseModelImpl<ExpandoColumn>
 		_defaultData = defaultData;
 	}
 
-	@JSON
 	@Override
 	public String getTypeSettings() {
 		if (_typeSettings == null) {

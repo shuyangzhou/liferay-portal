@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -36,6 +37,7 @@ import java.io.Serializable;
  * @see com.liferay.portal.model.impl.ResourcePermissionModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface ResourcePermissionModel extends BaseModel<ResourcePermission>,
 	MVCCModel, ShardedModel {
@@ -65,6 +67,7 @@ public interface ResourcePermissionModel extends BaseModel<ResourcePermission>,
 	 * @return the mvcc version of this resource permission
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -80,6 +83,7 @@ public interface ResourcePermissionModel extends BaseModel<ResourcePermission>,
 	 *
 	 * @return the resource permission ID of this resource permission
 	 */
+	@JSON
 	public long getResourcePermissionId();
 
 	/**
@@ -95,6 +99,7 @@ public interface ResourcePermissionModel extends BaseModel<ResourcePermission>,
 	 * @return the company ID of this resource permission
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -111,6 +116,7 @@ public interface ResourcePermissionModel extends BaseModel<ResourcePermission>,
 	 * @return the name of this resource permission
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -125,6 +131,7 @@ public interface ResourcePermissionModel extends BaseModel<ResourcePermission>,
 	 *
 	 * @return the scope of this resource permission
 	 */
+	@JSON
 	public int getScope();
 
 	/**
@@ -140,6 +147,7 @@ public interface ResourcePermissionModel extends BaseModel<ResourcePermission>,
 	 * @return the prim key of this resource permission
 	 */
 	@AutoEscape
+	@JSON
 	public String getPrimKey();
 
 	/**
@@ -154,6 +162,7 @@ public interface ResourcePermissionModel extends BaseModel<ResourcePermission>,
 	 *
 	 * @return the prim key ID of this resource permission
 	 */
+	@JSON
 	public long getPrimKeyId();
 
 	/**
@@ -168,6 +177,7 @@ public interface ResourcePermissionModel extends BaseModel<ResourcePermission>,
 	 *
 	 * @return the role ID of this resource permission
 	 */
+	@JSON
 	public long getRoleId();
 
 	/**
@@ -182,6 +192,7 @@ public interface ResourcePermissionModel extends BaseModel<ResourcePermission>,
 	 *
 	 * @return the owner ID of this resource permission
 	 */
+	@JSON
 	public long getOwnerId();
 
 	/**
@@ -196,6 +207,7 @@ public interface ResourcePermissionModel extends BaseModel<ResourcePermission>,
 	 *
 	 * @return the action IDs of this resource permission
 	 */
+	@JSON
 	public long getActionIds();
 
 	/**
@@ -210,6 +222,7 @@ public interface ResourcePermissionModel extends BaseModel<ResourcePermission>,
 	 *
 	 * @return the view action ID of this resource permission
 	 */
+	@JSON
 	public boolean getViewActionId();
 
 	/**
@@ -217,6 +230,7 @@ public interface ResourcePermissionModel extends BaseModel<ResourcePermission>,
 	 *
 	 * @return <code>true</code> if this resource permission is view action ID; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isViewActionId();
 
 	/**

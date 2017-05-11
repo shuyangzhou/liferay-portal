@@ -26,7 +26,6 @@ import com.liferay.opensocial.model.GadgetModel;
 import com.liferay.opensocial.model.GadgetSoap;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -59,7 +58,6 @@ import java.util.Map;
  * @see GadgetModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class GadgetModelImpl extends BaseModelImpl<Gadget>
 	implements GadgetModel {
@@ -275,7 +273,6 @@ public class GadgetModelImpl extends BaseModelImpl<Gadget>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -299,7 +296,6 @@ public class GadgetModelImpl extends BaseModelImpl<Gadget>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getGadgetId() {
 		return _gadgetId;
@@ -310,7 +306,6 @@ public class GadgetModelImpl extends BaseModelImpl<Gadget>
 		_gadgetId = gadgetId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -333,7 +328,6 @@ public class GadgetModelImpl extends BaseModelImpl<Gadget>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -344,7 +338,6 @@ public class GadgetModelImpl extends BaseModelImpl<Gadget>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -361,7 +354,6 @@ public class GadgetModelImpl extends BaseModelImpl<Gadget>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -379,7 +371,6 @@ public class GadgetModelImpl extends BaseModelImpl<Gadget>
 		_name = name;
 	}
 
-	@JSON
 	@Override
 	public String getUrl() {
 		if (_url == null) {
@@ -405,7 +396,6 @@ public class GadgetModelImpl extends BaseModelImpl<Gadget>
 		return GetterUtil.getString(_originalUrl);
 	}
 
-	@JSON
 	@Override
 	public String getPortletCategoryNames() {
 		if (_portletCategoryNames == null) {
@@ -421,7 +411,6 @@ public class GadgetModelImpl extends BaseModelImpl<Gadget>
 		_portletCategoryNames = portletCategoryNames;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

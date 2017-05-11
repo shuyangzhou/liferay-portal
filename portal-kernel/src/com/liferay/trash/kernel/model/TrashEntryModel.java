@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.portlet.trash.model.impl.TrashEntryModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface TrashEntryModel extends AttachedModel, BaseModel<TrashEntry>,
 	ShardedModel {
@@ -70,6 +72,7 @@ public interface TrashEntryModel extends AttachedModel, BaseModel<TrashEntry>,
 	 *
 	 * @return the entry ID of this trash entry
 	 */
+	@JSON
 	public long getEntryId();
 
 	/**
@@ -84,6 +87,7 @@ public interface TrashEntryModel extends AttachedModel, BaseModel<TrashEntry>,
 	 *
 	 * @return the group ID of this trash entry
 	 */
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -99,6 +103,7 @@ public interface TrashEntryModel extends AttachedModel, BaseModel<TrashEntry>,
 	 * @return the company ID of this trash entry
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -114,6 +119,7 @@ public interface TrashEntryModel extends AttachedModel, BaseModel<TrashEntry>,
 	 *
 	 * @return the user ID of this trash entry
 	 */
+	@JSON
 	public long getUserId();
 
 	/**
@@ -143,6 +149,7 @@ public interface TrashEntryModel extends AttachedModel, BaseModel<TrashEntry>,
 	 * @return the user name of this trash entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getUserName();
 
 	/**
@@ -157,6 +164,7 @@ public interface TrashEntryModel extends AttachedModel, BaseModel<TrashEntry>,
 	 *
 	 * @return the create date of this trash entry
 	 */
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -182,6 +190,7 @@ public interface TrashEntryModel extends AttachedModel, BaseModel<TrashEntry>,
 	 * @return the class name ID of this trash entry
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -198,6 +207,7 @@ public interface TrashEntryModel extends AttachedModel, BaseModel<TrashEntry>,
 	 * @return the class pk of this trash entry
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -213,6 +223,7 @@ public interface TrashEntryModel extends AttachedModel, BaseModel<TrashEntry>,
 	 *
 	 * @return the system event set key of this trash entry
 	 */
+	@JSON
 	public long getSystemEventSetKey();
 
 	/**
@@ -228,6 +239,7 @@ public interface TrashEntryModel extends AttachedModel, BaseModel<TrashEntry>,
 	 * @return the type settings of this trash entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getTypeSettings();
 
 	/**
@@ -242,6 +254,7 @@ public interface TrashEntryModel extends AttachedModel, BaseModel<TrashEntry>,
 	 *
 	 * @return the status of this trash entry
 	 */
+	@JSON
 	public int getStatus();
 
 	/**

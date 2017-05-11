@@ -20,7 +20,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.model.PortletPreferencesModel;
@@ -54,7 +53,6 @@ import java.util.Map;
  * @see PortletPreferencesModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreferences>
 	implements PortletPreferencesModel {
@@ -261,7 +259,6 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 		}
 	}
 
-	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -272,7 +269,6 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 		_mvccVersion = mvccVersion;
 	}
 
-	@JSON
 	@Override
 	public long getPortletPreferencesId() {
 		return _portletPreferencesId;
@@ -283,7 +279,6 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 		_portletPreferencesId = portletPreferencesId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -294,7 +289,6 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getOwnerId() {
 		return _ownerId;
@@ -317,7 +311,6 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 		return _originalOwnerId;
 	}
 
-	@JSON
 	@Override
 	public int getOwnerType() {
 		return _ownerType;
@@ -340,7 +333,6 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 		return _originalOwnerType;
 	}
 
-	@JSON
 	@Override
 	public long getPlid() {
 		return _plid;
@@ -363,7 +355,6 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 		return _originalPlid;
 	}
 
-	@JSON
 	@Override
 	public String getPortletId() {
 		if (_portletId == null) {
@@ -389,7 +380,6 @@ public class PortletPreferencesModelImpl extends BaseModelImpl<PortletPreference
 		return GetterUtil.getString(_originalPortletId);
 	}
 
-	@JSON
 	@Override
 	public String getPreferences() {
 		if (_preferences == null) {

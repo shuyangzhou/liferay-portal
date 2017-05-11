@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
@@ -47,6 +48,7 @@ import java.util.Date;
  * @see com.liferay.wiki.model.impl.WikiPageModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	ResourcedModel, ShardedModel, StagedGroupedModel, TrashedModel,
@@ -78,6 +80,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -93,6 +96,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 *
 	 * @return the page ID of this wiki page
 	 */
+	@JSON
 	public long getPageId();
 
 	/**
@@ -108,6 +112,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 * @return the resource prim key of this wiki page
 	 */
 	@Override
+	@JSON
 	public long getResourcePrimKey();
 
 	/**
@@ -127,6 +132,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 * @return the group ID of this wiki page
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -143,6 +149,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 * @return the company ID of this wiki page
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -159,6 +166,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 * @return the user ID of this wiki page
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -192,6 +200,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -208,6 +217,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 * @return the create date of this wiki page
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -224,6 +234,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 * @return the modified date of this wiki page
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -239,6 +250,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 *
 	 * @return the node ID of this wiki page
 	 */
+	@JSON
 	public long getNodeId();
 
 	/**
@@ -254,6 +266,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 * @return the title of this wiki page
 	 */
 	@AutoEscape
+	@JSON
 	public String getTitle();
 
 	/**
@@ -268,6 +281,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 *
 	 * @return the version of this wiki page
 	 */
+	@JSON
 	public double getVersion();
 
 	/**
@@ -282,6 +296,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 *
 	 * @return the minor edit of this wiki page
 	 */
+	@JSON
 	public boolean getMinorEdit();
 
 	/**
@@ -289,6 +304,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 *
 	 * @return <code>true</code> if this wiki page is minor edit; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isMinorEdit();
 
 	/**
@@ -304,6 +320,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 * @return the content of this wiki page
 	 */
 	@AutoEscape
+	@JSON
 	public String getContent();
 
 	/**
@@ -319,6 +336,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 * @return the summary of this wiki page
 	 */
 	@AutoEscape
+	@JSON
 	public String getSummary();
 
 	/**
@@ -334,6 +352,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 * @return the format of this wiki page
 	 */
 	@AutoEscape
+	@JSON
 	public String getFormat();
 
 	/**
@@ -348,6 +367,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 *
 	 * @return the head of this wiki page
 	 */
+	@JSON
 	public boolean getHead();
 
 	/**
@@ -355,6 +375,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 *
 	 * @return <code>true</code> if this wiki page is head; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isHead();
 
 	/**
@@ -370,6 +391,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 * @return the parent title of this wiki page
 	 */
 	@AutoEscape
+	@JSON
 	public String getParentTitle();
 
 	/**
@@ -385,6 +407,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 * @return the redirect title of this wiki page
 	 */
 	@AutoEscape
+	@JSON
 	public String getRedirectTitle();
 
 	/**
@@ -400,6 +423,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 * @return the last publish date of this wiki page
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**
@@ -416,6 +440,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 * @return the status of this wiki page
 	 */
 	@Override
+	@JSON
 	public int getStatus();
 
 	/**
@@ -432,6 +457,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 * @return the status by user ID of this wiki page
 	 */
 	@Override
+	@JSON
 	public long getStatusByUserId();
 
 	/**
@@ -465,6 +491,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getStatusByUserName();
 
 	/**
@@ -481,6 +508,7 @@ public interface WikiPageModel extends BaseModel<WikiPage>, ContainerModel,
 	 * @return the status date of this wiki page
 	 */
 	@Override
+	@JSON
 	public Date getStatusDate();
 
 	/**

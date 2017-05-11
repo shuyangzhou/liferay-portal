@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.GroupedModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.contacts.model.impl.EntryModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface EntryModel extends BaseModel<Entry>, GroupedModel, ShardedModel {
 	/*
@@ -69,6 +71,7 @@ public interface EntryModel extends BaseModel<Entry>, GroupedModel, ShardedModel
 	 *
 	 * @return the entry ID of this entry
 	 */
+	@JSON
 	public long getEntryId();
 
 	/**
@@ -84,6 +87,7 @@ public interface EntryModel extends BaseModel<Entry>, GroupedModel, ShardedModel
 	 * @return the group ID of this entry
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -100,6 +104,7 @@ public interface EntryModel extends BaseModel<Entry>, GroupedModel, ShardedModel
 	 * @return the company ID of this entry
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -116,6 +121,7 @@ public interface EntryModel extends BaseModel<Entry>, GroupedModel, ShardedModel
 	 * @return the user ID of this entry
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -149,6 +155,7 @@ public interface EntryModel extends BaseModel<Entry>, GroupedModel, ShardedModel
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -165,6 +172,7 @@ public interface EntryModel extends BaseModel<Entry>, GroupedModel, ShardedModel
 	 * @return the create date of this entry
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -181,6 +189,7 @@ public interface EntryModel extends BaseModel<Entry>, GroupedModel, ShardedModel
 	 * @return the modified date of this entry
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -197,6 +206,7 @@ public interface EntryModel extends BaseModel<Entry>, GroupedModel, ShardedModel
 	 * @return the full name of this entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getFullName();
 
 	/**
@@ -212,6 +222,7 @@ public interface EntryModel extends BaseModel<Entry>, GroupedModel, ShardedModel
 	 * @return the email address of this entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getEmailAddress();
 
 	/**
@@ -227,6 +238,7 @@ public interface EntryModel extends BaseModel<Entry>, GroupedModel, ShardedModel
 	 * @return the comments of this entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getComments();
 
 	/**

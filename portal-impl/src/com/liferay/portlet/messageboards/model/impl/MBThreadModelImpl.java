@@ -28,7 +28,6 @@ import com.liferay.message.boards.kernel.model.MBThreadSoap;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.TrashedModel;
@@ -68,7 +67,6 @@ import java.util.Map;
  * @see MBThreadModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 	implements MBThreadModel {
@@ -417,7 +415,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -441,7 +438,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getThreadId() {
 		return _threadId;
@@ -452,7 +448,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		_threadId = threadId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -475,7 +470,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -498,7 +492,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -525,7 +518,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -541,7 +533,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -552,7 +543,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -569,7 +559,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getCategoryId() {
 		return _categoryId;
@@ -592,7 +581,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		return _originalCategoryId;
 	}
 
-	@JSON
 	@Override
 	public long getRootMessageId() {
 		return _rootMessageId;
@@ -615,7 +603,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		return _originalRootMessageId;
 	}
 
-	@JSON
 	@Override
 	public long getRootMessageUserId() {
 		return _rootMessageUserId;
@@ -642,7 +629,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 	public void setRootMessageUserUuid(String rootMessageUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public int getMessageCount() {
 		return _messageCount;
@@ -653,7 +639,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		_messageCount = messageCount;
 	}
 
-	@JSON
 	@Override
 	public int getViewCount() {
 		return _viewCount;
@@ -664,7 +649,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		_viewCount = viewCount;
 	}
 
-	@JSON
 	@Override
 	public long getLastPostByUserId() {
 		return _lastPostByUserId;
@@ -691,7 +675,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 	public void setLastPostByUserUuid(String lastPostByUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public Date getLastPostDate() {
 		return _lastPostDate;
@@ -712,7 +695,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		return _originalLastPostDate;
 	}
 
-	@JSON
 	@Override
 	public double getPriority() {
 		return _priority;
@@ -735,13 +717,11 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		return _originalPriority;
 	}
 
-	@JSON
 	@Override
 	public boolean getQuestion() {
 		return _question;
 	}
 
-	@JSON
 	@Override
 	public boolean isQuestion() {
 		return _question;
@@ -752,7 +732,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		_question = question;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;
@@ -763,7 +742,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		_lastPublishDate = lastPublishDate;
 	}
 
-	@JSON
 	@Override
 	public int getStatus() {
 		return _status;
@@ -786,7 +764,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		return _originalStatus;
 	}
 
-	@JSON
 	@Override
 	public long getStatusByUserId() {
 		return _statusByUserId;
@@ -813,7 +790,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 	public void setStatusByUserUuid(String statusByUserUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
@@ -829,7 +805,6 @@ public class MBThreadModelImpl extends BaseModelImpl<MBThread>
 		_statusByUserName = statusByUserName;
 	}
 
-	@JSON
 	@Override
 	public Date getStatusDate() {
 		return _statusDate;

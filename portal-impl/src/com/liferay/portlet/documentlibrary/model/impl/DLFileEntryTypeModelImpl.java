@@ -28,7 +28,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -69,7 +68,6 @@ import java.util.TreeSet;
  * @see DLFileEntryTypeModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 	implements DLFileEntryTypeModel {
@@ -328,7 +326,6 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -352,7 +349,6 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getFileEntryTypeId() {
 		return _fileEntryTypeId;
@@ -363,7 +359,6 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 		_fileEntryTypeId = fileEntryTypeId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -386,7 +381,6 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -409,7 +403,6 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -436,7 +429,6 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -452,7 +444,6 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -463,7 +454,6 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -480,7 +470,6 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public String getFileEntryTypeKey() {
 		if (_fileEntryTypeKey == null) {
@@ -506,7 +495,6 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 		return GetterUtil.getString(_originalFileEntryTypeKey);
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -547,7 +535,6 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 		return _nameCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getNameCurrentValue() {
 		Locale locale = getLocale(_nameCurrentLanguageId);
@@ -605,7 +592,6 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -646,7 +632,6 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 		return _descriptionCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getDescriptionCurrentValue() {
 		Locale locale = getLocale(_descriptionCurrentLanguageId);
@@ -708,7 +693,6 @@ public class DLFileEntryTypeModelImpl extends BaseModelImpl<DLFileEntryType>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

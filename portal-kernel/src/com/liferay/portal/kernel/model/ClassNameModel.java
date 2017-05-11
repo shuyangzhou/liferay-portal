@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -36,6 +37,7 @@ import java.io.Serializable;
  * @see com.liferay.portal.model.impl.ClassNameModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface ClassNameModel extends BaseModel<ClassName>, MVCCModel,
 	TypedModel {
@@ -65,6 +67,7 @@ public interface ClassNameModel extends BaseModel<ClassName>, MVCCModel,
 	 * @return the mvcc version of this class name
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -91,6 +94,7 @@ public interface ClassNameModel extends BaseModel<ClassName>, MVCCModel,
 	 * @return the class name ID of this class name
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -107,6 +111,7 @@ public interface ClassNameModel extends BaseModel<ClassName>, MVCCModel,
 	 * @return the value of this class name
 	 */
 	@AutoEscape
+	@JSON
 	public String getValue();
 
 	/**

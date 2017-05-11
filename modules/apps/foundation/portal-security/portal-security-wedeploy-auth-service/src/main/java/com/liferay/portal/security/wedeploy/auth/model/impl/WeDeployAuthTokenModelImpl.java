@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -58,7 +57,6 @@ import java.util.Map;
  * @see WeDeployAuthTokenModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class WeDeployAuthTokenModelImpl extends BaseModelImpl<WeDeployAuthToken>
 	implements WeDeployAuthTokenModel {
@@ -274,7 +272,6 @@ public class WeDeployAuthTokenModelImpl extends BaseModelImpl<WeDeployAuthToken>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getWeDeployAuthTokenId() {
 		return _weDeployAuthTokenId;
@@ -285,7 +282,6 @@ public class WeDeployAuthTokenModelImpl extends BaseModelImpl<WeDeployAuthToken>
 		_weDeployAuthTokenId = weDeployAuthTokenId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -296,7 +292,6 @@ public class WeDeployAuthTokenModelImpl extends BaseModelImpl<WeDeployAuthToken>
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -323,7 +318,6 @@ public class WeDeployAuthTokenModelImpl extends BaseModelImpl<WeDeployAuthToken>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -339,7 +333,6 @@ public class WeDeployAuthTokenModelImpl extends BaseModelImpl<WeDeployAuthToken>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -350,7 +343,6 @@ public class WeDeployAuthTokenModelImpl extends BaseModelImpl<WeDeployAuthToken>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -367,7 +359,6 @@ public class WeDeployAuthTokenModelImpl extends BaseModelImpl<WeDeployAuthToken>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public String getClientId() {
 		if (_clientId == null) {
@@ -393,7 +384,6 @@ public class WeDeployAuthTokenModelImpl extends BaseModelImpl<WeDeployAuthToken>
 		return GetterUtil.getString(_originalClientId);
 	}
 
-	@JSON
 	@Override
 	public String getToken() {
 		if (_token == null) {
@@ -419,7 +409,6 @@ public class WeDeployAuthTokenModelImpl extends BaseModelImpl<WeDeployAuthToken>
 		return GetterUtil.getString(_originalToken);
 	}
 
-	@JSON
 	@Override
 	public int getType() {
 		return _type;

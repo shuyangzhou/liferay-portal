@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.LocalizedModel;
@@ -46,6 +47,7 @@ import java.util.Map;
  * @see com.liferay.dynamic.data.lists.model.impl.DDLRecordSetModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	LocalizedModel, ShardedModel, StagedGroupedModel {
@@ -76,6 +78,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -91,6 +94,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 *
 	 * @return the record set ID of this ddl record set
 	 */
+	@JSON
 	public long getRecordSetId();
 
 	/**
@@ -106,6 +110,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 * @return the group ID of this ddl record set
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -122,6 +127,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 * @return the company ID of this ddl record set
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -138,6 +144,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 * @return the user ID of this ddl record set
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -171,6 +178,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -186,6 +194,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 *
 	 * @return the version user ID of this ddl record set
 	 */
+	@JSON
 	public long getVersionUserId();
 
 	/**
@@ -215,6 +224,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 * @return the version user name of this ddl record set
 	 */
 	@AutoEscape
+	@JSON
 	public String getVersionUserName();
 
 	/**
@@ -230,6 +240,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 * @return the create date of this ddl record set
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -246,6 +257,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 * @return the modified date of this ddl record set
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -261,6 +273,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 *
 	 * @return the ddm structure ID of this ddl record set
 	 */
+	@JSON
 	public long getDDMStructureId();
 
 	/**
@@ -275,6 +288,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 *
 	 * @return the record set key of this ddl record set
 	 */
+	@JSON
 	public String getRecordSetKey();
 
 	/**
@@ -290,6 +304,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 * @return the version of this ddl record set
 	 */
 	@AutoEscape
+	@JSON
 	public String getVersion();
 
 	/**
@@ -304,6 +319,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 *
 	 * @return the name of this ddl record set
 	 */
+	@JSON
 	public String getName();
 
 	/**
@@ -348,6 +364,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	public String getNameCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getNameCurrentValue();
 
 	/**
@@ -403,6 +420,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 *
 	 * @return the description of this ddl record set
 	 */
+	@JSON
 	public String getDescription();
 
 	/**
@@ -447,6 +465,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	public String getDescriptionCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getDescriptionCurrentValue();
 
 	/**
@@ -504,6 +523,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 *
 	 * @return the min display rows of this ddl record set
 	 */
+	@JSON
 	public int getMinDisplayRows();
 
 	/**
@@ -518,6 +538,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 *
 	 * @return the scope of this ddl record set
 	 */
+	@JSON
 	public int getScope();
 
 	/**
@@ -533,6 +554,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 * @return the settings of this ddl record set
 	 */
 	@AutoEscape
+	@JSON
 	public String getSettings();
 
 	/**
@@ -548,6 +570,7 @@ public interface DDLRecordSetModel extends BaseModel<DDLRecordSet>,
 	 * @return the last publish date of this ddl record set
 	 */
 	@Override
+	@JSON
 	public Date getLastPublishDate();
 
 	/**

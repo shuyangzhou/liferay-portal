@@ -17,6 +17,7 @@ package com.liferay.expando.kernel.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -38,6 +39,7 @@ import java.io.Serializable;
  * @see com.liferay.portlet.expando.model.impl.ExpandoTableModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface ExpandoTableModel extends BaseModel<ExpandoTable>, ShardedModel,
 	TypedModel {
@@ -66,6 +68,7 @@ public interface ExpandoTableModel extends BaseModel<ExpandoTable>, ShardedModel
 	 *
 	 * @return the table ID of this expando table
 	 */
+	@JSON
 	public long getTableId();
 
 	/**
@@ -81,6 +84,7 @@ public interface ExpandoTableModel extends BaseModel<ExpandoTable>, ShardedModel
 	 * @return the company ID of this expando table
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -107,6 +111,7 @@ public interface ExpandoTableModel extends BaseModel<ExpandoTable>, ShardedModel
 	 * @return the class name ID of this expando table
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -123,6 +128,7 @@ public interface ExpandoTableModel extends BaseModel<ExpandoTable>, ShardedModel
 	 * @return the name of this expando table
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**

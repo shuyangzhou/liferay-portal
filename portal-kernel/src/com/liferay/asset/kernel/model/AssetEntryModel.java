@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -47,6 +48,7 @@ import java.util.Map;
  * @see com.liferay.portlet.asset.model.impl.AssetEntryModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	GroupedModel, LocalizedModel, ShardedModel {
@@ -75,6 +77,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return the entry ID of this asset entry
 	 */
+	@JSON
 	public long getEntryId();
 
 	/**
@@ -90,6 +93,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 * @return the group ID of this asset entry
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -106,6 +110,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 * @return the company ID of this asset entry
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -122,6 +127,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 * @return the user ID of this asset entry
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -155,6 +161,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -171,6 +178,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 * @return the create date of this asset entry
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -187,6 +195,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 * @return the modified date of this asset entry
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -213,6 +222,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 * @return the class name ID of this asset entry
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -229,6 +239,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 * @return the class pk of this asset entry
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -245,6 +256,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 * @return the class uuid of this asset entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getClassUuid();
 
 	/**
@@ -259,6 +271,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return the class type ID of this asset entry
 	 */
+	@JSON
 	public long getClassTypeId();
 
 	/**
@@ -273,6 +286,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return the listable of this asset entry
 	 */
+	@JSON
 	public boolean getListable();
 
 	/**
@@ -280,6 +294,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return <code>true</code> if this asset entry is listable; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isListable();
 
 	/**
@@ -294,6 +309,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return the visible of this asset entry
 	 */
+	@JSON
 	public boolean getVisible();
 
 	/**
@@ -301,6 +317,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return <code>true</code> if this asset entry is visible; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isVisible();
 
 	/**
@@ -315,6 +332,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return the start date of this asset entry
 	 */
+	@JSON
 	public Date getStartDate();
 
 	/**
@@ -329,6 +347,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return the end date of this asset entry
 	 */
+	@JSON
 	public Date getEndDate();
 
 	/**
@@ -343,6 +362,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return the publish date of this asset entry
 	 */
+	@JSON
 	public Date getPublishDate();
 
 	/**
@@ -357,6 +377,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return the expiration date of this asset entry
 	 */
+	@JSON
 	public Date getExpirationDate();
 
 	/**
@@ -372,6 +393,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 * @return the mime type of this asset entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getMimeType();
 
 	/**
@@ -386,6 +408,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return the title of this asset entry
 	 */
+	@JSON
 	public String getTitle();
 
 	/**
@@ -430,6 +453,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	public String getTitleCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getTitleCurrentValue();
 
 	/**
@@ -485,6 +509,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return the description of this asset entry
 	 */
+	@JSON
 	public String getDescription();
 
 	/**
@@ -529,6 +554,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	public String getDescriptionCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getDescriptionCurrentValue();
 
 	/**
@@ -586,6 +612,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return the summary of this asset entry
 	 */
+	@JSON
 	public String getSummary();
 
 	/**
@@ -630,6 +657,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	public String getSummaryCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getSummaryCurrentValue();
 
 	/**
@@ -687,6 +715,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 * @return the url of this asset entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getUrl();
 
 	/**
@@ -702,6 +731,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 * @return the layout uuid of this asset entry
 	 */
 	@AutoEscape
+	@JSON
 	public String getLayoutUuid();
 
 	/**
@@ -716,6 +746,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return the height of this asset entry
 	 */
+	@JSON
 	public int getHeight();
 
 	/**
@@ -730,6 +761,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return the width of this asset entry
 	 */
+	@JSON
 	public int getWidth();
 
 	/**
@@ -744,6 +776,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return the priority of this asset entry
 	 */
+	@JSON
 	public double getPriority();
 
 	/**
@@ -758,6 +791,7 @@ public interface AssetEntryModel extends AttachedModel, BaseModel<AssetEntry>,
 	 *
 	 * @return the view count of this asset entry
 	 */
+	@JSON
 	public int getViewCount();
 
 	/**

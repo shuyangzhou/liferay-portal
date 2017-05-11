@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.model.ExpandoValueModel;
 import com.liferay.expando.kernel.model.ExpandoValueSoap;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -53,7 +52,6 @@ import java.util.Map;
  * @see ExpandoValueModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 	implements ExpandoValueModel {
@@ -260,7 +258,6 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getValueId() {
 		return _valueId;
@@ -271,7 +268,6 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 		_valueId = valueId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -282,7 +278,6 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 		_companyId = companyId;
 	}
 
-	@JSON
 	@Override
 	public long getTableId() {
 		return _tableId;
@@ -305,7 +300,6 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 		return _originalTableId;
 	}
 
-	@JSON
 	@Override
 	public long getColumnId() {
 		return _columnId;
@@ -328,7 +322,6 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 		return _originalColumnId;
 	}
 
-	@JSON
 	@Override
 	public long getRowId() {
 		return _rowId;
@@ -371,7 +364,6 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 		setClassNameId(classNameId);
 	}
 
-	@JSON
 	@Override
 	public long getClassNameId() {
 		return _classNameId;
@@ -394,7 +386,6 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 		return _originalClassNameId;
 	}
 
-	@JSON
 	@Override
 	public long getClassPK() {
 		return _classPK;
@@ -417,7 +408,6 @@ public class ExpandoValueModelImpl extends BaseModelImpl<ExpandoValue>
 		return _originalClassPK;
 	}
 
-	@JSON
 	@Override
 	public String getData() {
 		if (_data == null) {

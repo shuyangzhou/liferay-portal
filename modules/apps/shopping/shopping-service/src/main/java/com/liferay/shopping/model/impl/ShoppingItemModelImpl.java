@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -59,7 +58,6 @@ import java.util.Map;
  * @see ShoppingItemModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 	implements ShoppingItemModel {
@@ -529,7 +527,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		}
 	}
 
-	@JSON
 	@Override
 	public long getItemId() {
 		return _itemId;
@@ -542,7 +539,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_itemId = itemId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -565,7 +561,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -588,7 +583,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -615,7 +609,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -631,7 +624,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -642,7 +634,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -659,7 +650,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getCategoryId() {
 		return _categoryId;
@@ -682,7 +672,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		return _originalCategoryId;
 	}
 
-	@JSON
 	@Override
 	public String getSku() {
 		if (_sku == null) {
@@ -708,7 +697,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		return GetterUtil.getString(_originalSku);
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -724,7 +712,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_name = name;
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -740,7 +727,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_description = description;
 	}
 
-	@JSON
 	@Override
 	public String getProperties() {
 		if (_properties == null) {
@@ -756,13 +742,11 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_properties = properties;
 	}
 
-	@JSON
 	@Override
 	public boolean getFields() {
 		return _fields;
 	}
 
-	@JSON
 	@Override
 	public boolean isFields() {
 		return _fields;
@@ -773,7 +757,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_fields = fields;
 	}
 
-	@JSON
 	@Override
 	public String getFieldsQuantities() {
 		if (_fieldsQuantities == null) {
@@ -789,7 +772,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_fieldsQuantities = fieldsQuantities;
 	}
 
-	@JSON
 	@Override
 	public int getMinQuantity() {
 		return _minQuantity;
@@ -800,7 +782,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_minQuantity = minQuantity;
 	}
 
-	@JSON
 	@Override
 	public int getMaxQuantity() {
 		return _maxQuantity;
@@ -811,7 +792,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_maxQuantity = maxQuantity;
 	}
 
-	@JSON
 	@Override
 	public double getPrice() {
 		return _price;
@@ -822,7 +802,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_price = price;
 	}
 
-	@JSON
 	@Override
 	public double getDiscount() {
 		return _discount;
@@ -833,13 +812,11 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_discount = discount;
 	}
 
-	@JSON
 	@Override
 	public boolean getTaxable() {
 		return _taxable;
 	}
 
-	@JSON
 	@Override
 	public boolean isTaxable() {
 		return _taxable;
@@ -850,7 +827,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_taxable = taxable;
 	}
 
-	@JSON
 	@Override
 	public double getShipping() {
 		return _shipping;
@@ -861,13 +837,11 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_shipping = shipping;
 	}
 
-	@JSON
 	@Override
 	public boolean getUseShippingFormula() {
 		return _useShippingFormula;
 	}
 
-	@JSON
 	@Override
 	public boolean isUseShippingFormula() {
 		return _useShippingFormula;
@@ -878,13 +852,11 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_useShippingFormula = useShippingFormula;
 	}
 
-	@JSON
 	@Override
 	public boolean getRequiresShipping() {
 		return _requiresShipping;
 	}
 
-	@JSON
 	@Override
 	public boolean isRequiresShipping() {
 		return _requiresShipping;
@@ -895,7 +867,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_requiresShipping = requiresShipping;
 	}
 
-	@JSON
 	@Override
 	public int getStockQuantity() {
 		return _stockQuantity;
@@ -906,13 +877,11 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_stockQuantity = stockQuantity;
 	}
 
-	@JSON
 	@Override
 	public boolean getFeatured() {
 		return _featured;
 	}
 
-	@JSON
 	@Override
 	public boolean isFeatured() {
 		return _featured;
@@ -923,13 +892,11 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_featured = featured;
 	}
 
-	@JSON
 	@Override
 	public boolean getSale() {
 		return _sale;
 	}
 
-	@JSON
 	@Override
 	public boolean isSale() {
 		return _sale;
@@ -940,13 +907,11 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_sale = sale;
 	}
 
-	@JSON
 	@Override
 	public boolean getSmallImage() {
 		return _smallImage;
 	}
 
-	@JSON
 	@Override
 	public boolean isSmallImage() {
 		return _smallImage;
@@ -957,7 +922,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_smallImage = smallImage;
 	}
 
-	@JSON
 	@Override
 	public long getSmallImageId() {
 		return _smallImageId;
@@ -980,7 +944,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		return _originalSmallImageId;
 	}
 
-	@JSON
 	@Override
 	public String getSmallImageURL() {
 		if (_smallImageURL == null) {
@@ -996,13 +959,11 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_smallImageURL = smallImageURL;
 	}
 
-	@JSON
 	@Override
 	public boolean getMediumImage() {
 		return _mediumImage;
 	}
 
-	@JSON
 	@Override
 	public boolean isMediumImage() {
 		return _mediumImage;
@@ -1013,7 +974,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_mediumImage = mediumImage;
 	}
 
-	@JSON
 	@Override
 	public long getMediumImageId() {
 		return _mediumImageId;
@@ -1036,7 +996,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		return _originalMediumImageId;
 	}
 
-	@JSON
 	@Override
 	public String getMediumImageURL() {
 		if (_mediumImageURL == null) {
@@ -1052,13 +1011,11 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_mediumImageURL = mediumImageURL;
 	}
 
-	@JSON
 	@Override
 	public boolean getLargeImage() {
 		return _largeImage;
 	}
 
-	@JSON
 	@Override
 	public boolean isLargeImage() {
 		return _largeImage;
@@ -1069,7 +1026,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		_largeImage = largeImage;
 	}
 
-	@JSON
 	@Override
 	public long getLargeImageId() {
 		return _largeImageId;
@@ -1092,7 +1048,6 @@ public class ShoppingItemModelImpl extends BaseModelImpl<ShoppingItem>
 		return _originalLargeImageId;
 	}
 
-	@JSON
 	@Override
 	public String getLargeImageURL() {
 		if (_largeImageURL == null) {

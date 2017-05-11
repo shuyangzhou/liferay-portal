@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -38,6 +39,7 @@ import java.util.Date;
  * @see com.liferay.portal.model.impl.PhoneModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	ShardedModel, StagedAuditedModel {
@@ -67,6 +69,7 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	 * @return the mvcc version of this phone
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -84,6 +87,7 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -99,6 +103,7 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	 *
 	 * @return the phone ID of this phone
 	 */
+	@JSON
 	public long getPhoneId();
 
 	/**
@@ -114,6 +119,7 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	 * @return the company ID of this phone
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -130,6 +136,7 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	 * @return the user ID of this phone
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -163,6 +170,7 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -179,6 +187,7 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	 * @return the create date of this phone
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -195,6 +204,7 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	 * @return the modified date of this phone
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -221,6 +231,7 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	 * @return the class name ID of this phone
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -237,6 +248,7 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	 * @return the class pk of this phone
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -253,6 +265,7 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	 * @return the number of this phone
 	 */
 	@AutoEscape
+	@JSON
 	public String getNumber();
 
 	/**
@@ -268,6 +281,7 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	 * @return the extension of this phone
 	 */
 	@AutoEscape
+	@JSON
 	public String getExtension();
 
 	/**
@@ -282,6 +296,7 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	 *
 	 * @return the type ID of this phone
 	 */
+	@JSON
 	public long getTypeId();
 
 	/**
@@ -296,6 +311,7 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	 *
 	 * @return the primary of this phone
 	 */
+	@JSON
 	public boolean getPrimary();
 
 	/**
@@ -303,6 +319,7 @@ public interface PhoneModel extends AttachedModel, BaseModel<Phone>, MVCCModel,
 	 *
 	 * @return <code>true</code> if this phone is primary; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isPrimary();
 
 	/**

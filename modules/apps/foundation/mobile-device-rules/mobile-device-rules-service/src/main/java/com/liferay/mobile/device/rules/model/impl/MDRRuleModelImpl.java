@@ -28,7 +28,6 @@ import com.liferay.mobile.device.rules.model.MDRRuleSoap;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -70,7 +69,6 @@ import java.util.TreeSet;
  * @see MDRRuleModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 	implements MDRRuleModel {
@@ -336,7 +334,6 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -360,7 +357,6 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getRuleId() {
 		return _ruleId;
@@ -371,7 +367,6 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 		_ruleId = ruleId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -394,7 +389,6 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 		return _originalGroupId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -417,7 +411,6 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -444,7 +437,6 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -460,7 +452,6 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -473,7 +464,6 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -490,7 +480,6 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public long getRuleGroupId() {
 		return _ruleGroupId;
@@ -513,7 +502,6 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 		return _originalRuleGroupId;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -554,7 +542,6 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 		return _nameCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getNameCurrentValue() {
 		Locale locale = getLocale(_nameCurrentLanguageId);
@@ -612,7 +599,6 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getDescription() {
 		if (_description == null) {
@@ -653,7 +639,6 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 		return _descriptionCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getDescriptionCurrentValue() {
 		Locale locale = getLocale(_descriptionCurrentLanguageId);
@@ -715,7 +700,6 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
-	@JSON
 	@Override
 	public String getType() {
 		if (_type == null) {
@@ -731,7 +715,6 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 		_type = type;
 	}
 
-	@JSON
 	@Override
 	public String getTypeSettings() {
 		if (_typeSettings == null) {
@@ -747,7 +730,6 @@ public class MDRRuleModelImpl extends BaseModelImpl<MDRRule>
 		_typeSettings = typeSettings;
 	}
 
-	@JSON
 	@Override
 	public Date getLastPublishDate() {
 		return _lastPublishDate;

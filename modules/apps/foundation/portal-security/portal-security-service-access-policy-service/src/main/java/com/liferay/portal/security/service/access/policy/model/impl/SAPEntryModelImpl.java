@@ -24,7 +24,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -68,7 +67,6 @@ import java.util.TreeSet;
  * @see SAPEntryModel
  * @generated
  */
-@JSON(strict = true)
 @ProviderType
 public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 	implements SAPEntryModel {
@@ -315,7 +313,6 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		}
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -339,7 +336,6 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		return GetterUtil.getString(_originalUuid);
 	}
 
-	@JSON
 	@Override
 	public long getSapEntryId() {
 		return _sapEntryId;
@@ -350,7 +346,6 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		_sapEntryId = sapEntryId;
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -373,7 +368,6 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		return _originalCompanyId;
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -400,7 +394,6 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -416,7 +409,6 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -427,7 +419,6 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -444,7 +435,6 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public String getAllowedServiceSignatures() {
 		if (_allowedServiceSignatures == null) {
@@ -460,13 +450,11 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		_allowedServiceSignatures = allowedServiceSignatures;
 	}
 
-	@JSON
 	@Override
 	public boolean getDefaultSAPEntry() {
 		return _defaultSAPEntry;
 	}
 
-	@JSON
 	@Override
 	public boolean isDefaultSAPEntry() {
 		return _defaultSAPEntry;
@@ -489,13 +477,11 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		return _originalDefaultSAPEntry;
 	}
 
-	@JSON
 	@Override
 	public boolean getEnabled() {
 		return _enabled;
 	}
 
-	@JSON
 	@Override
 	public boolean isEnabled() {
 		return _enabled;
@@ -506,7 +492,6 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		_enabled = enabled;
 	}
 
-	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -532,7 +517,6 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		return GetterUtil.getString(_originalName);
 	}
 
-	@JSON
 	@Override
 	public String getTitle() {
 		if (_title == null) {
@@ -573,7 +557,6 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		return _titleCurrentLanguageId;
 	}
 
-	@JSON
 	@Override
 	public String getTitleCurrentValue() {
 		Locale locale = getLocale(_titleCurrentLanguageId);

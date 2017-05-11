@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -39,6 +40,7 @@ import java.io.Serializable;
  * @see com.liferay.portlet.social.model.impl.SocialActivityModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface SocialActivityModel extends AttachedModel,
 	BaseModel<SocialActivity>, ShardedModel {
@@ -67,6 +69,7 @@ public interface SocialActivityModel extends AttachedModel,
 	 *
 	 * @return the activity ID of this social activity
 	 */
+	@JSON
 	public long getActivityId();
 
 	/**
@@ -81,6 +84,7 @@ public interface SocialActivityModel extends AttachedModel,
 	 *
 	 * @return the group ID of this social activity
 	 */
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -96,6 +100,7 @@ public interface SocialActivityModel extends AttachedModel,
 	 * @return the company ID of this social activity
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -111,6 +116,7 @@ public interface SocialActivityModel extends AttachedModel,
 	 *
 	 * @return the user ID of this social activity
 	 */
+	@JSON
 	public long getUserId();
 
 	/**
@@ -139,6 +145,7 @@ public interface SocialActivityModel extends AttachedModel,
 	 *
 	 * @return the create date of this social activity
 	 */
+	@JSON
 	public long getCreateDate();
 
 	/**
@@ -153,6 +160,7 @@ public interface SocialActivityModel extends AttachedModel,
 	 *
 	 * @return the activity set ID of this social activity
 	 */
+	@JSON
 	public long getActivitySetId();
 
 	/**
@@ -167,6 +175,7 @@ public interface SocialActivityModel extends AttachedModel,
 	 *
 	 * @return the mirror activity ID of this social activity
 	 */
+	@JSON
 	public long getMirrorActivityId();
 
 	/**
@@ -192,6 +201,7 @@ public interface SocialActivityModel extends AttachedModel,
 	 * @return the class name ID of this social activity
 	 */
 	@Override
+	@JSON
 	public long getClassNameId();
 
 	/**
@@ -208,6 +218,7 @@ public interface SocialActivityModel extends AttachedModel,
 	 * @return the class pk of this social activity
 	 */
 	@Override
+	@JSON
 	public long getClassPK();
 
 	/**
@@ -223,6 +234,7 @@ public interface SocialActivityModel extends AttachedModel,
 	 *
 	 * @return the parent class name ID of this social activity
 	 */
+	@JSON
 	public long getParentClassNameId();
 
 	/**
@@ -237,6 +249,7 @@ public interface SocialActivityModel extends AttachedModel,
 	 *
 	 * @return the parent class pk of this social activity
 	 */
+	@JSON
 	public long getParentClassPK();
 
 	/**
@@ -251,6 +264,7 @@ public interface SocialActivityModel extends AttachedModel,
 	 *
 	 * @return the type of this social activity
 	 */
+	@JSON
 	public int getType();
 
 	/**
@@ -265,6 +279,7 @@ public interface SocialActivityModel extends AttachedModel,
 	 *
 	 * @return the extra data of this social activity
 	 */
+	@JSON
 	public String getExtraData();
 
 	/**
@@ -279,6 +294,7 @@ public interface SocialActivityModel extends AttachedModel,
 	 *
 	 * @return the receiver user ID of this social activity
 	 */
+	@JSON
 	public long getReceiverUserId();
 
 	/**

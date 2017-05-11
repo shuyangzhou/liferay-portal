@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.GroupedModel;
@@ -42,6 +43,7 @@ import java.util.Date;
  * @see com.liferay.shopping.model.impl.ShoppingItemModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel,
 	ShardedModel {
@@ -70,6 +72,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the item ID of this shopping item
 	 */
+	@JSON
 	public long getItemId();
 
 	/**
@@ -85,6 +88,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 * @return the group ID of this shopping item
 	 */
 	@Override
+	@JSON
 	public long getGroupId();
 
 	/**
@@ -101,6 +105,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 * @return the company ID of this shopping item
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -117,6 +122,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 * @return the user ID of this shopping item
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -150,6 +156,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -166,6 +173,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 * @return the create date of this shopping item
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -182,6 +190,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 * @return the modified date of this shopping item
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -197,6 +206,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the category ID of this shopping item
 	 */
+	@JSON
 	public long getCategoryId();
 
 	/**
@@ -212,6 +222,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 * @return the sku of this shopping item
 	 */
 	@AutoEscape
+	@JSON
 	public String getSku();
 
 	/**
@@ -227,6 +238,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 * @return the name of this shopping item
 	 */
 	@AutoEscape
+	@JSON
 	public String getName();
 
 	/**
@@ -242,6 +254,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 * @return the description of this shopping item
 	 */
 	@AutoEscape
+	@JSON
 	public String getDescription();
 
 	/**
@@ -257,6 +270,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 * @return the properties of this shopping item
 	 */
 	@AutoEscape
+	@JSON
 	public String getProperties();
 
 	/**
@@ -271,6 +285,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the fields of this shopping item
 	 */
+	@JSON
 	public boolean getFields();
 
 	/**
@@ -278,6 +293,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return <code>true</code> if this shopping item is fields; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isFields();
 
 	/**
@@ -293,6 +309,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 * @return the fields quantities of this shopping item
 	 */
 	@AutoEscape
+	@JSON
 	public String getFieldsQuantities();
 
 	/**
@@ -307,6 +324,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the min quantity of this shopping item
 	 */
+	@JSON
 	public int getMinQuantity();
 
 	/**
@@ -321,6 +339,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the max quantity of this shopping item
 	 */
+	@JSON
 	public int getMaxQuantity();
 
 	/**
@@ -335,6 +354,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the price of this shopping item
 	 */
+	@JSON
 	public double getPrice();
 
 	/**
@@ -349,6 +369,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the discount of this shopping item
 	 */
+	@JSON
 	public double getDiscount();
 
 	/**
@@ -363,6 +384,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the taxable of this shopping item
 	 */
+	@JSON
 	public boolean getTaxable();
 
 	/**
@@ -370,6 +392,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return <code>true</code> if this shopping item is taxable; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isTaxable();
 
 	/**
@@ -384,6 +407,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the shipping of this shopping item
 	 */
+	@JSON
 	public double getShipping();
 
 	/**
@@ -398,6 +422,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the use shipping formula of this shopping item
 	 */
+	@JSON
 	public boolean getUseShippingFormula();
 
 	/**
@@ -405,6 +430,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return <code>true</code> if this shopping item is use shipping formula; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isUseShippingFormula();
 
 	/**
@@ -419,6 +445,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the requires shipping of this shopping item
 	 */
+	@JSON
 	public boolean getRequiresShipping();
 
 	/**
@@ -426,6 +453,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return <code>true</code> if this shopping item is requires shipping; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isRequiresShipping();
 
 	/**
@@ -440,6 +468,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the stock quantity of this shopping item
 	 */
+	@JSON
 	public int getStockQuantity();
 
 	/**
@@ -454,6 +483,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the featured of this shopping item
 	 */
+	@JSON
 	public boolean getFeatured();
 
 	/**
@@ -461,6 +491,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return <code>true</code> if this shopping item is featured; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isFeatured();
 
 	/**
@@ -475,6 +506,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the sale of this shopping item
 	 */
+	@JSON
 	public boolean getSale();
 
 	/**
@@ -482,6 +514,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return <code>true</code> if this shopping item is sale; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isSale();
 
 	/**
@@ -496,6 +529,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the small image of this shopping item
 	 */
+	@JSON
 	public boolean getSmallImage();
 
 	/**
@@ -503,6 +537,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return <code>true</code> if this shopping item is small image; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isSmallImage();
 
 	/**
@@ -517,6 +552,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the small image ID of this shopping item
 	 */
+	@JSON
 	public long getSmallImageId();
 
 	/**
@@ -532,6 +568,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 * @return the small image url of this shopping item
 	 */
 	@AutoEscape
+	@JSON
 	public String getSmallImageURL();
 
 	/**
@@ -546,6 +583,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the medium image of this shopping item
 	 */
+	@JSON
 	public boolean getMediumImage();
 
 	/**
@@ -553,6 +591,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return <code>true</code> if this shopping item is medium image; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isMediumImage();
 
 	/**
@@ -567,6 +606,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the medium image ID of this shopping item
 	 */
+	@JSON
 	public long getMediumImageId();
 
 	/**
@@ -582,6 +622,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 * @return the medium image url of this shopping item
 	 */
 	@AutoEscape
+	@JSON
 	public String getMediumImageURL();
 
 	/**
@@ -596,6 +637,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the large image of this shopping item
 	 */
+	@JSON
 	public boolean getLargeImage();
 
 	/**
@@ -603,6 +645,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return <code>true</code> if this shopping item is large image; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isLargeImage();
 
 	/**
@@ -617,6 +660,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 *
 	 * @return the large image ID of this shopping item
 	 */
+	@JSON
 	public long getLargeImageId();
 
 	/**
@@ -632,6 +676,7 @@ public interface ShoppingItemModel extends BaseModel<ShoppingItem>, GroupedModel
 	 * @return the large image url of this shopping item
 	 */
 	@AutoEscape
+	@JSON
 	public String getLargeImageURL();
 
 	/**

@@ -20,6 +20,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -41,6 +42,7 @@ import java.util.Map;
  * @see com.liferay.portal.model.impl.LayoutPrototypeModelImpl
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 	LocalizedModel, MVCCModel, ShardedModel, StagedAuditedModel {
@@ -70,6 +72,7 @@ public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 	 * @return the mvcc version of this layout prototype
 	 */
 	@Override
+	@JSON
 	public long getMvccVersion();
 
 	/**
@@ -87,6 +90,7 @@ public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUuid();
 
 	/**
@@ -102,6 +106,7 @@ public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 	 *
 	 * @return the layout prototype ID of this layout prototype
 	 */
+	@JSON
 	public long getLayoutPrototypeId();
 
 	/**
@@ -117,6 +122,7 @@ public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 	 * @return the company ID of this layout prototype
 	 */
 	@Override
+	@JSON
 	public long getCompanyId();
 
 	/**
@@ -133,6 +139,7 @@ public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 	 * @return the user ID of this layout prototype
 	 */
 	@Override
+	@JSON
 	public long getUserId();
 
 	/**
@@ -166,6 +173,7 @@ public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 	 */
 	@AutoEscape
 	@Override
+	@JSON
 	public String getUserName();
 
 	/**
@@ -182,6 +190,7 @@ public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 	 * @return the create date of this layout prototype
 	 */
 	@Override
+	@JSON
 	public Date getCreateDate();
 
 	/**
@@ -198,6 +207,7 @@ public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 	 * @return the modified date of this layout prototype
 	 */
 	@Override
+	@JSON
 	public Date getModifiedDate();
 
 	/**
@@ -213,6 +223,7 @@ public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 	 *
 	 * @return the name of this layout prototype
 	 */
+	@JSON
 	public String getName();
 
 	/**
@@ -257,6 +268,7 @@ public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 	public String getNameCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getNameCurrentValue();
 
 	/**
@@ -312,6 +324,7 @@ public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 	 *
 	 * @return the description of this layout prototype
 	 */
+	@JSON
 	public String getDescription();
 
 	/**
@@ -356,6 +369,7 @@ public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 	public String getDescriptionCurrentLanguageId();
 
 	@AutoEscape
+	@JSON
 	public String getDescriptionCurrentValue();
 
 	/**
@@ -414,6 +428,7 @@ public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 	 * @return the settings of this layout prototype
 	 */
 	@AutoEscape
+	@JSON
 	public String getSettings();
 
 	/**
@@ -428,6 +443,7 @@ public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 	 *
 	 * @return the active of this layout prototype
 	 */
+	@JSON
 	public boolean getActive();
 
 	/**
@@ -435,6 +451,7 @@ public interface LayoutPrototypeModel extends BaseModel<LayoutPrototype>,
 	 *
 	 * @return <code>true</code> if this layout prototype is active; <code>false</code> otherwise
 	 */
+	@JSON
 	public boolean isActive();
 
 	/**
