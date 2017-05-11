@@ -566,18 +566,7 @@ public class DLFileEntryServiceImpl extends DLFileEntryServiceBaseImpl {
 		DLFileEntry dlFileEntry = dlFileEntryLocalService.getFileEntry(
 			fileEntryId);
 
-		long folderId = dlFileEntry.getFolderId();
-
-		boolean hasLock = LockManagerUtil.hasLock(
-			getUserId(), DLFileEntry.class.getName(), fileEntryId);
-
-		if (!hasLock &&
-			(folderId != DLFolderConstants.DEFAULT_PARENT_FOLDER_ID)) {
-
-			hasLock = dlFolderLocalService.hasInheritableLock(folderId);
-		}
-
-		return hasLock;
+		return dlFileEntry.hasLock();
 	}
 
 	@Override

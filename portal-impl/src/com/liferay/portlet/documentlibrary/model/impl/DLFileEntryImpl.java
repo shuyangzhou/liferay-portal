@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.lock.LockManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Repository;
+import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.RepositoryLocalServiceUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -293,7 +294,19 @@ public class DLFileEntryImpl extends DLFileEntryBaseImpl {
 	@Override
 	public boolean hasLock() {
 		try {
-			return DLFileEntryServiceUtil.hasFileEntryLock(getFileEntryId());
+			long folderId = getFolderId();
+
+			boolean hasLock = LockManagerUtil.hasLock(
+				PrincipalThreadLocal.getUserId(), DLFileEntry.class.getName(),
+				getFileEntryId());
+
+			if (!hasLock &&
+				(folderId != DLFolderConstants.DEFAULT_PARENT_FOLDER_ID)) {
+
+				hasLock = DLFolderLocalServiceUtil.hasInheritableLock(folderId);
+			}
+
+			return hasLock;
 		}
 		catch (Exception e) {
 			if (_log.isWarnEnabled()) {
