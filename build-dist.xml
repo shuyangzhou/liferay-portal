@@ -1890,6 +1890,22 @@ wrapper.java.additional.11="-Dfile.encoding=UTF-8"]]></replacevalue>
 			</then>
 		</if>
 
+		<copy
+			file="tools/servers/tomcat/bin/setenv.bat"
+			overwrite="true"
+			tofile="${app.server.tomcat.bin.dir}/setenv.bat"
+		>
+			<filterset>
+				<filter token="java.version" value="${jdk.windows.version}" />
+			</filterset>
+		</copy>
+
+		<copy
+			file="tools/servers/tomcat/bin/setenv.sh"
+			overwrite="true"
+			tofile="${app.server.tomcat.bin.dir}/setenv.sh"
+		/>
+
 		<chmod perm="a+x">
 			<fileset dir="${app.server.tomcat.bin.dir}">
 				<include name="*.sh" />
@@ -2942,11 +2958,10 @@ this task.
 
 	<target name="update-java-security-tomcat">
 		<if>
-			<equals arg1="${java.security.manager.option}" arg2="" />
+			<not>
+				<equals arg1="${java.security.manager.option}" arg2="" />
+			</not>
 			<then>
-				<var name="java.security.config" value="" />
-			</then>
-			<else>
 				<if>
 					<os family="windows" />
 					<then>
@@ -2956,35 +2971,34 @@ this task.
 						<var name="java.security.config" value="${java.security.manager.option} -Djava.security.policy==$CATALINA_BASE/conf/catalina.policy" />
 					</else>
 				</if>
-			</else>
+
+				<if>
+					<not>
+						<resourcecontains resource="${app.server.tomcat.bin.dir}/setenv.bat" substring="${java.security.config}" />
+					</not>
+					<then>
+						<echo append="true" file="${app.server.tomcat.bin.dir}/setenv.bat">
+							<![CDATA[
+								set "CATALINA_OPTS=%CATALINA_OPTS% ${java.security.config}"
+							]]>
+						</echo>
+					</then>
+				</if>
+
+				<if>
+					<not>
+						<resourcecontains resource="${app.server.tomcat.bin.dir}/setenv.sh" substring="${java.security.config}" />
+					</not>
+					<then>
+						<echo append="true" file="${app.server.tomcat.bin.dir}/setenv.sh">
+							<![CDATA[
+								CATALINA_OPTS="${CATALINA_OPTS} ${java.security.config}"
+							]]>
+						</echo>
+					</then>
+				</if>
+			</then>
 		</if>
-
-		<copy
-			file="tools/servers/tomcat/bin/setenv.bat"
-			overwrite="true"
-			tofile="${app.server.tomcat.bin.dir}/setenv.bat"
-		>
-			<filterset>
-				<filter token="java.security.config" value="${java.security.config}" />
-				<filter token="java.version" value="${jdk.windows.version}" />
-			</filterset>
-		</copy>
-
-		<copy
-			file="tools/servers/tomcat/bin/setenv.sh"
-			overwrite="true"
-			tofile="${app.server.tomcat.bin.dir}/setenv.sh"
-		>
-			<filterset>
-				<filter token="java.security.config" value="${java.security.config}" />
-			</filterset>
-		</copy>
-
-		<chmod perm="a+x">
-			<fileset dir="${app.server.tomcat.bin.dir}">
-				<include name="*.sh" />
-			</fileset>
-		</chmod>
 	</target>
 
 	<target name="update-plugins-includes">
