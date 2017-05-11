@@ -525,6 +525,36 @@ public class StringUtilTest {
 	}
 
 	@Test
+	public void testShortenStringWithHTML() {
+		Assert.assertEquals(
+			new String("12345..."), StringUtil.shortenWithHtml("12345678", 5));
+
+		String stringWithClosedTags = "<p>12345678</p>";
+		String stringWithUnclosedTags = "<p>12345678";
+		String stringWithManyTags = "<p>123<div>456<a>789";
+
+		Assert.assertEquals(
+			stringWithClosedTags,
+			StringUtil.shortenWithHtml(stringWithClosedTags, 15));
+
+		Assert.assertEquals(
+			stringWithClosedTags + "...",
+			StringUtil.shortenWithHtml(stringWithClosedTags, 11));
+
+		Assert.assertEquals(
+			stringWithClosedTags,
+			StringUtil.shortenWithHtml(stringWithUnclosedTags, 11));
+
+		String manyTagsClosed = StringUtil.shortenWithHtml(
+			stringWithManyTags, 18);
+
+		Assert.assertTrue(manyTagsClosed.contains("</p>"));
+		Assert.assertTrue(manyTagsClosed.contains("</div>"));
+		Assert.assertTrue(manyTagsClosed.contains("</a>"));
+		Assert.assertFalse(manyTagsClosed.contains("9"));
+	}
+
+	@Test
 	public void testSplit() {
 		Assert.assertArrayEquals(
 			new String[] {"Alice", "Bob", "Charlie"},
