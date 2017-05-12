@@ -370,6 +370,9 @@ public class PingbackMethodImplTest extends PowerMockito {
 			pingbackMethodImpl, "_commentManager", _commentManager);
 
 		ReflectionTestUtil.setFieldValue(
+			pingbackMethodImpl, "_http", HttpUtil.getHttp());
+
+		ReflectionTestUtil.setFieldValue(
 			pingbackMethodImpl, "_portal", PortalUtil.getPortal());
 
 		pingbackMethodImpl.setBlogsEntryLocalService(_blogsEntryLocalService);

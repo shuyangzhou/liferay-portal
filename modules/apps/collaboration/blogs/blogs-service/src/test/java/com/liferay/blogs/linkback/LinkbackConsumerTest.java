@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.security.pacl.permission.PortalSocketPermission
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.registry.BasicRegistryImpl;
 import com.liferay.registry.RegistryUtil;
 
@@ -33,7 +32,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.internal.stubbing.answers.DoesNothing;
 
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -53,12 +51,13 @@ public class LinkbackConsumerTest extends PowerMockito {
 		RegistryUtil.setRegistry(new BasicRegistryImpl());
 
 		setUpBlogsUtil();
-		setUpHttpUtil();
 
 		_linkbackConsumer = new LinkbackConsumer();
 
 		ReflectionTestUtil.setFieldValue(
 			_linkbackConsumer, "_commentManager", _commentManager);
+
+		ReflectionTestUtil.setFieldValue(_linkbackConsumer, "_http", _http);
 	}
 
 	@Test
@@ -153,14 +152,6 @@ public class LinkbackConsumerTest extends PowerMockito {
 
 	protected void setUpBlogsUtil() {
 		mockStatic(BlogsUtil.class, Mockito.RETURNS_SMART_NULLS);
-	}
-
-	protected void setUpHttpUtil() {
-		mockStatic(PortalSocketPermission.class, new DoesNothing());
-
-		HttpUtil httpUtil = new HttpUtil();
-
-		httpUtil.setHttp(_http);
 	}
 
 	@Mock
