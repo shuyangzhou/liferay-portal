@@ -8340,9 +8340,14 @@ public class PortalImpl implements Portal {
 								virtualHostname, _LOCALHOST) &&
 							!_isSameHostName(virtualHostname, portalDomain)) {
 
-							portalURL = getPortalURL(
-								virtualHostname, themeDisplay.getServerPort(),
-								themeDisplay.isSecure());
+							if (themeDisplay.isSecure()) {
+								portalURL = getPortalURL(
+									virtualHostname, Http.HTTPS_PORT, true);
+							}
+							else {
+								portalURL = getPortalURL(
+									virtualHostname, Http.HTTP_PORT, false);
+							}
 						}
 
 						return portalURL.concat(_pathContext).concat(path);
