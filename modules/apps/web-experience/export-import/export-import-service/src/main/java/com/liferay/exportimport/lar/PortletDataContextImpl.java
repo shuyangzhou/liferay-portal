@@ -2642,19 +2642,23 @@ public class PortletDataContextImpl implements PortletDataContext {
 		Set<XStreamConfigurator> xStreamConfigurators =
 			XStreamConfiguratorRegistryUtil.getXStreamConfigurators();
 
+		ClassLoader classLoader =
+			XStreamConfiguratorRegistryUtil.getConfiguratorsClassLoader(
+				XStream.class.getClassLoader());
+
 		if ((_xStream != null) &&
-			xStreamConfigurators.equals(_xStreamConfigurators)) {
+			xStreamConfigurators.equals(_xStreamConfigurators) &&
+			classLoader.equals(_classloader)) {
 
 			return;
 		}
 
 		_xStreamConfigurators = xStreamConfigurators;
 
+		_classloader = classLoader;
+
 		_xStream = new XStream(
-			null, new XppDriver(),
-			new ClassLoaderReference(
-				XStreamConfiguratorRegistryUtil.getConfiguratorsClassLoader(
-					XStream.class.getClassLoader())));
+			null, new XppDriver(), new ClassLoaderReference(classLoader));
 
 		_xStream.omitField(HashMap.class, "cache_bitmask");
 
@@ -2760,6 +2764,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletDataContextImpl.class);
 
+	private static ClassLoader _classloader;
 	private static transient XStream _xStream;
 	private static Set<XStreamConfigurator> _xStreamConfigurators;
 
