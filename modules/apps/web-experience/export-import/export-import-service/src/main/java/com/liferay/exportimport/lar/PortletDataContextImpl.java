@@ -2771,8 +2771,6 @@ public class PortletDataContextImpl implements PortletDataContext {
 	private final Map<String, long[]> _assetCategoryIdsMap = new HashMap<>();
 	private final Set<Long> _assetLinkIds = new HashSet<>();
 	private final Map<String, String[]> _assetTagNamesMap = new HashMap<>();
-	private final Map<String, Set<Serializable>> _classedModelPrimaryKeyMap =
-		new HashMap<>();
 	private long _companyGroupId;
 	private long _companyId;
 	private String _dataStrategy;
