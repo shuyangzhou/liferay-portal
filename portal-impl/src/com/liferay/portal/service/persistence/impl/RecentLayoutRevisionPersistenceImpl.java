@@ -2685,8 +2685,8 @@ public class RecentLayoutRevisionPersistenceImpl extends BasePersistenceImpl<Rec
 	private static final String _SQL_SELECT_RECENTLAYOUTREVISION = "SELECT recentLayoutRevision FROM RecentLayoutRevision recentLayoutRevision";
 	private static final String _SQL_SELECT_RECENTLAYOUTREVISION_WHERE_PKS_IN = "SELECT recentLayoutRevision FROM RecentLayoutRevision recentLayoutRevision WHERE recentLayoutRevisionId IN (";
 	private static final String _SQL_SELECT_RECENTLAYOUTREVISION_WHERE = "SELECT recentLayoutRevision FROM RecentLayoutRevision recentLayoutRevision WHERE ";
-	private static final String _SQL_COUNT_RECENTLAYOUTREVISION = "SELECT COUNT(recentLayoutRevision) FROM RecentLayoutRevision recentLayoutRevision";
-	private static final String _SQL_COUNT_RECENTLAYOUTREVISION_WHERE = "SELECT COUNT(recentLayoutRevision) FROM RecentLayoutRevision recentLayoutRevision WHERE ";
+	private static final String _SQL_COUNT_RECENTLAYOUTREVISION = "SELECT COUNT(*) FROM RecentLayoutRevision recentLayoutRevision";
+	private static final String _SQL_COUNT_RECENTLAYOUTREVISION_WHERE = "SELECT COUNT(*) FROM RecentLayoutRevision recentLayoutRevision WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "recentLayoutRevision.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No RecentLayoutRevision exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No RecentLayoutRevision exists with the key {";

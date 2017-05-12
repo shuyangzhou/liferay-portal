@@ -2671,8 +2671,8 @@ public class RecentLayoutBranchPersistenceImpl extends BasePersistenceImpl<Recen
 	private static final String _SQL_SELECT_RECENTLAYOUTBRANCH = "SELECT recentLayoutBranch FROM RecentLayoutBranch recentLayoutBranch";
 	private static final String _SQL_SELECT_RECENTLAYOUTBRANCH_WHERE_PKS_IN = "SELECT recentLayoutBranch FROM RecentLayoutBranch recentLayoutBranch WHERE recentLayoutBranchId IN (";
 	private static final String _SQL_SELECT_RECENTLAYOUTBRANCH_WHERE = "SELECT recentLayoutBranch FROM RecentLayoutBranch recentLayoutBranch WHERE ";
-	private static final String _SQL_COUNT_RECENTLAYOUTBRANCH = "SELECT COUNT(recentLayoutBranch) FROM RecentLayoutBranch recentLayoutBranch";
-	private static final String _SQL_COUNT_RECENTLAYOUTBRANCH_WHERE = "SELECT COUNT(recentLayoutBranch) FROM RecentLayoutBranch recentLayoutBranch WHERE ";
+	private static final String _SQL_COUNT_RECENTLAYOUTBRANCH = "SELECT COUNT(*) FROM RecentLayoutBranch recentLayoutBranch";
+	private static final String _SQL_COUNT_RECENTLAYOUTBRANCH_WHERE = "SELECT COUNT(*) FROM RecentLayoutBranch recentLayoutBranch WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "recentLayoutBranch.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No RecentLayoutBranch exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No RecentLayoutBranch exists with the key {";

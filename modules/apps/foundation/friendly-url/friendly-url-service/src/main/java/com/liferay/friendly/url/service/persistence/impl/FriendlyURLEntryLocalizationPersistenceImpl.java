@@ -2079,8 +2079,8 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 	private static final String _SQL_SELECT_FRIENDLYURLENTRYLOCALIZATION_WHERE_PKS_IN =
 		"SELECT friendlyURLEntryLocalization FROM FriendlyURLEntryLocalization friendlyURLEntryLocalization WHERE friendlyURLEntryLocalizationId IN (";
 	private static final String _SQL_SELECT_FRIENDLYURLENTRYLOCALIZATION_WHERE = "SELECT friendlyURLEntryLocalization FROM FriendlyURLEntryLocalization friendlyURLEntryLocalization WHERE ";
-	private static final String _SQL_COUNT_FRIENDLYURLENTRYLOCALIZATION = "SELECT COUNT(friendlyURLEntryLocalization) FROM FriendlyURLEntryLocalization friendlyURLEntryLocalization";
-	private static final String _SQL_COUNT_FRIENDLYURLENTRYLOCALIZATION_WHERE = "SELECT COUNT(friendlyURLEntryLocalization) FROM FriendlyURLEntryLocalization friendlyURLEntryLocalization WHERE ";
+	private static final String _SQL_COUNT_FRIENDLYURLENTRYLOCALIZATION = "SELECT COUNT(*) FROM FriendlyURLEntryLocalization friendlyURLEntryLocalization";
+	private static final String _SQL_COUNT_FRIENDLYURLENTRYLOCALIZATION_WHERE = "SELECT COUNT(*) FROM FriendlyURLEntryLocalization friendlyURLEntryLocalization WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "friendlyURLEntryLocalization.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No FriendlyURLEntryLocalization exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No FriendlyURLEntryLocalization exists with the key {";

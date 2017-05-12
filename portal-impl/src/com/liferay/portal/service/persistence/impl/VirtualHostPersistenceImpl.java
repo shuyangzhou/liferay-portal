@@ -1277,8 +1277,8 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	private static final String _SQL_SELECT_VIRTUALHOST = "SELECT virtualHost FROM VirtualHost virtualHost";
 	private static final String _SQL_SELECT_VIRTUALHOST_WHERE_PKS_IN = "SELECT virtualHost FROM VirtualHost virtualHost WHERE virtualHostId IN (";
 	private static final String _SQL_SELECT_VIRTUALHOST_WHERE = "SELECT virtualHost FROM VirtualHost virtualHost WHERE ";
-	private static final String _SQL_COUNT_VIRTUALHOST = "SELECT COUNT(virtualHost) FROM VirtualHost virtualHost";
-	private static final String _SQL_COUNT_VIRTUALHOST_WHERE = "SELECT COUNT(virtualHost) FROM VirtualHost virtualHost WHERE ";
+	private static final String _SQL_COUNT_VIRTUALHOST = "SELECT COUNT(*) FROM VirtualHost virtualHost";
+	private static final String _SQL_COUNT_VIRTUALHOST_WHERE = "SELECT COUNT(*) FROM VirtualHost virtualHost WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "virtualHost.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No VirtualHost exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No VirtualHost exists with the key {";

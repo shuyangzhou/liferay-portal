@@ -1909,8 +1909,8 @@ public class OAuthTokenPersistenceImpl extends BasePersistenceImpl<OAuthToken>
 	private static final String _SQL_SELECT_OAUTHTOKEN = "SELECT oAuthToken FROM OAuthToken oAuthToken";
 	private static final String _SQL_SELECT_OAUTHTOKEN_WHERE_PKS_IN = "SELECT oAuthToken FROM OAuthToken oAuthToken WHERE oAuthTokenId IN (";
 	private static final String _SQL_SELECT_OAUTHTOKEN_WHERE = "SELECT oAuthToken FROM OAuthToken oAuthToken WHERE ";
-	private static final String _SQL_COUNT_OAUTHTOKEN = "SELECT COUNT(oAuthToken) FROM OAuthToken oAuthToken";
-	private static final String _SQL_COUNT_OAUTHTOKEN_WHERE = "SELECT COUNT(oAuthToken) FROM OAuthToken oAuthToken WHERE ";
+	private static final String _SQL_COUNT_OAUTHTOKEN = "SELECT COUNT(*) FROM OAuthToken oAuthToken";
+	private static final String _SQL_COUNT_OAUTHTOKEN_WHERE = "SELECT COUNT(*) FROM OAuthToken oAuthToken WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "oAuthToken.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No OAuthToken exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No OAuthToken exists with the key {";

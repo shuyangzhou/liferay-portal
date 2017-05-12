@@ -725,7 +725,7 @@ public class CounterPersistenceImpl extends BasePersistenceImpl<Counter>
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
 	private static final String _SQL_SELECT_COUNTER = "SELECT counter FROM Counter counter";
 	private static final String _SQL_SELECT_COUNTER_WHERE_PKS_IN = "SELECT counter FROM Counter counter WHERE name IN (";
-	private static final String _SQL_COUNT_COUNTER = "SELECT COUNT(counter) FROM Counter counter";
+	private static final String _SQL_COUNT_COUNTER = "SELECT COUNT(*) FROM Counter counter";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "counter.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Counter exists with the primary key ";
 	private static final Log _log = LogFactoryUtil.getLog(CounterPersistenceImpl.class);

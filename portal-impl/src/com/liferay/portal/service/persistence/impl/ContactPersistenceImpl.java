@@ -2406,8 +2406,8 @@ public class ContactPersistenceImpl extends BasePersistenceImpl<Contact>
 	private static final String _SQL_SELECT_CONTACT = "SELECT contact FROM Contact contact";
 	private static final String _SQL_SELECT_CONTACT_WHERE_PKS_IN = "SELECT contact FROM Contact contact WHERE contactId IN (";
 	private static final String _SQL_SELECT_CONTACT_WHERE = "SELECT contact FROM Contact contact WHERE ";
-	private static final String _SQL_COUNT_CONTACT = "SELECT COUNT(contact) FROM Contact contact";
-	private static final String _SQL_COUNT_CONTACT_WHERE = "SELECT COUNT(contact) FROM Contact contact WHERE ";
+	private static final String _SQL_COUNT_CONTACT = "SELECT COUNT(*) FROM Contact contact";
+	private static final String _SQL_COUNT_CONTACT_WHERE = "SELECT COUNT(*) FROM Contact contact WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "contact.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Contact exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Contact exists with the key {";

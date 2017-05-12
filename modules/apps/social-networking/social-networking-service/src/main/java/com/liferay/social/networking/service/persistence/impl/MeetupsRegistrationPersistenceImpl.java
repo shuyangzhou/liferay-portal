@@ -2205,8 +2205,8 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 	private static final String _SQL_SELECT_MEETUPSREGISTRATION = "SELECT meetupsRegistration FROM MeetupsRegistration meetupsRegistration";
 	private static final String _SQL_SELECT_MEETUPSREGISTRATION_WHERE_PKS_IN = "SELECT meetupsRegistration FROM MeetupsRegistration meetupsRegistration WHERE meetupsRegistrationId IN (";
 	private static final String _SQL_SELECT_MEETUPSREGISTRATION_WHERE = "SELECT meetupsRegistration FROM MeetupsRegistration meetupsRegistration WHERE ";
-	private static final String _SQL_COUNT_MEETUPSREGISTRATION = "SELECT COUNT(meetupsRegistration) FROM MeetupsRegistration meetupsRegistration";
-	private static final String _SQL_COUNT_MEETUPSREGISTRATION_WHERE = "SELECT COUNT(meetupsRegistration) FROM MeetupsRegistration meetupsRegistration WHERE ";
+	private static final String _SQL_COUNT_MEETUPSREGISTRATION = "SELECT COUNT(*) FROM MeetupsRegistration meetupsRegistration";
+	private static final String _SQL_COUNT_MEETUPSREGISTRATION_WHERE = "SELECT COUNT(*) FROM MeetupsRegistration meetupsRegistration WHERE ";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "meetupsRegistration.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No MeetupsRegistration exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No MeetupsRegistration exists with the key {";
