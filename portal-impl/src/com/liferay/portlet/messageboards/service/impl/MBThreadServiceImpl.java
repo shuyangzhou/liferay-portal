@@ -79,6 +79,17 @@ public class MBThreadServiceImpl extends MBThreadServiceBaseImpl {
 		throws PortalException {
 
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			if (userId <= 0) {
+				if (start == WorkflowConstants.STATUS_ANY) {
+					return mbThreadPersistence.findByG_L(
+						groupId, modifiedDate, start, end);
+				}
+				else {
+					return mbThreadPersistence.findByG_L_S(
+						groupId, modifiedDate, status, start, end);
+				}
+			}
+
 			QueryDefinition<MBThread> queryDefinition = new QueryDefinition<>(
 				status, start, end, null);
 
@@ -91,6 +102,17 @@ public class MBThreadServiceImpl extends MBThreadServiceBaseImpl {
 
 		if (categoryIds.length == 0) {
 			return Collections.emptyList();
+		}
+
+		if (userId <= 0) {
+			if (status == WorkflowConstants.STATUS_ANY) {
+				return mbThreadPersistence.filterFindByG_L(
+					groupId, modifiedDate, start, end);
+			}
+			else {
+				return mbThreadPersistence.filterFindByG_L_S(
+					groupId, modifiedDate, status, start, end);
+			}
 		}
 
 		List<Long> threadIds = mbMessageFinder.filterFindByG_U_MD_C_S(
@@ -187,6 +209,17 @@ public class MBThreadServiceImpl extends MBThreadServiceBaseImpl {
 		long groupId, long userId, Date modifiedDate, int status) {
 
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
+			if (userId <= 0) {
+				if (status == WorkflowConstants.STATUS_ANY) {
+					return mbThreadPersistence.countByG_L(
+						groupId, modifiedDate);
+				}
+				else {
+					return mbThreadPersistence.countByG_L_S(
+						groupId, modifiedDate, status);
+				}
+			}
+
 			QueryDefinition<MBThread> queryDefinition = new QueryDefinition<>(
 				status);
 
@@ -199,6 +232,17 @@ public class MBThreadServiceImpl extends MBThreadServiceBaseImpl {
 
 		if (categoryIds.length == 0) {
 			return 0;
+		}
+
+		if (userId <= 0) {
+			if (status == WorkflowConstants.STATUS_ANY) {
+				return mbThreadPersistence.countByG_C_L(
+					groupId, categoryIds, modifiedDate);
+			}
+			else {
+				return mbThreadPersistence.countByG_C_L_S(
+					groupId, categoryIds, modifiedDate, status);
+			}
 		}
 
 		return mbMessageFinder.filterCountByG_U_MD_C_S(
