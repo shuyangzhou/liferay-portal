@@ -83,7 +83,7 @@ import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -382,7 +382,7 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 						redirect, themeDisplay.getI18nPath(), i18nPath);
 				}
 
-				redirect = HttpUtil.setParameter(
+				redirect = http.setParameter(
 					redirect, actionResponse.getNamespace() + "p_u_i_d",
 					user.getUserId());
 			}
@@ -393,8 +393,8 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 				(userLocalService.fetchUserById(scopeGroup.getClassPK()) ==
 					null)) {
 
-				redirect = HttpUtil.setParameter(redirect, "doAsGroupId", 0);
-				redirect = HttpUtil.setParameter(redirect, "refererPlid", 0);
+				redirect = http.setParameter(redirect, "doAsGroupId", 0);
+				redirect = http.setParameter(redirect, "refererPlid", 0);
 			}
 
 			sendRedirect(actionRequest, actionResponse, redirect);
@@ -467,7 +467,7 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 					if (submittedPassword) {
 						User user = portal.getSelectedUser(actionRequest);
 
-						redirect = HttpUtil.setParameter(
+						redirect = http.setParameter(
 							redirect, actionResponse.getNamespace() + "p_u_i_d",
 							user.getUserId());
 					}
@@ -819,6 +819,9 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 
 		return new Object[] {user, oldScreenName, updateLanguageId};
 	}
+
+	@Reference
+	protected Http http;
 
 	@Reference
 	protected Portal portal;
