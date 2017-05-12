@@ -533,9 +533,17 @@ public class ConfigurationImpl
 
 	private static final String[] _emptyArray = new String[0];
 	private static final Object _nullValue = new Object();
+
 	private static final Function<String, String>
-		_prependLiferayPrefixFunction =
-			(String envVarKey) -> "LIFERAY_" + envVarKey;
+		_prependLiferayPrefixFunction = (String envVarKey) -> {
+			String upperCasedEnvVarKey = StringUtil.toUpperCase(envVarKey);
+
+			if (upperCasedEnvVarKey.startsWith("LIFERAY")) {
+				return envVarKey;
+			}
+
+			return "LIFERAY_" + envVarKey;
+		};
 
 	private static final Function<String, String> _replaceInvalidCharsFunction =
 		(String propsKey) -> {

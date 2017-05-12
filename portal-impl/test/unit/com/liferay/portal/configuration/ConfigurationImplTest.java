@@ -88,6 +88,27 @@ public class ConfigurationImplTest {
 	}
 
 	@Test
+	public void testGetEnvironmentVariableNameDoesNotPrependLiferayPrefix()
+		throws Exception {
+
+		TestResourceClassLoader testResourceClassLoader =
+			new TestResourceClassLoader();
+
+		testResourceClassLoader.addPropertiesResource(
+			ConfigurationImplTest.class.getName(), StringPool.BLANK);
+
+		ConfigurationImpl configurationImpl = new ConfigurationImpl(
+			testResourceClassLoader, ConfigurationImplTest.class.getName(),
+			CompanyConstants.SYSTEM, null);
+
+		Assert.assertEquals(
+			"LIFERAY", configurationImpl.getEnvironmentVariableName("liferay"));
+		Assert.assertEquals(
+			"LIFERAY_HOME",
+			configurationImpl.getEnvironmentVariableName("liferay.home"));
+	}
+
+	@Test
 	public void testGetEnvironmentVariableNamePrependsLiferayPrefix()
 		throws Exception {
 
