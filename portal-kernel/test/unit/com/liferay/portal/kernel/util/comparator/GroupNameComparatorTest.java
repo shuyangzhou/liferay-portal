@@ -14,27 +14,18 @@
 
 package com.liferay.portal.kernel.util.comparator;
 
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.GroupWrapper;
 import com.liferay.portal.kernel.util.LocaleUtil;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import org.mockito.Mock;
-
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
  * @author Eduardo Garcia
  */
-@PrepareForTest(LanguageUtil.class)
-@RunWith(PowerMockRunner.class)
-public class GroupNameComparatorTest extends PowerMockito {
+public class GroupNameComparatorTest {
 
 	@Before
 	public void setUp() {
@@ -52,27 +43,30 @@ public class GroupNameComparatorTest extends PowerMockito {
 	}
 
 	protected void setUpGroups() {
-		_group1 = mock(Group.class);
+		_group1 = new GroupWrapper(null) {
 
-		when(
-			_group1.getName(LocaleUtil.SPAIN)
-		).thenReturn(
-			"Área"
-		);
+			@Override
+			public String getName(String languageId) {
+				Assert.assertEquals("es_ES", languageId);
 
-		_group2 = mock(Group.class);
+				return "Área";
+			}
 
-		when(
-			_group2.getName(LocaleUtil.SPAIN)
-		).thenReturn(
-			"Zona"
-		);
+		};
+
+		_group2 = new GroupWrapper(null) {
+
+			@Override
+			public String getName(String languageId) {
+				Assert.assertEquals("es_ES", languageId);
+
+				return "Zona";
+			}
+
+		};
 	}
 
-	@Mock
 	private Group _group1;
-
-	@Mock
 	private Group _group2;
 
 }
