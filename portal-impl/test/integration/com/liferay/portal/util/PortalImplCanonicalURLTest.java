@@ -26,6 +26,8 @@ import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -346,7 +348,9 @@ public class PortalImplCanonicalURLTest {
 		return sb.toString();
 	}
 
-	protected ThemeDisplay getThemeDisplay(Group group) throws Exception {
+	protected ThemeDisplay getThemeDisplay(Group group, String portalDomain)
+		throws Exception {
+
 		ThemeDisplay themeDisplay = new ThemeDisplay();
 
 		Company company = CompanyLocalServiceUtil.getCompany(
@@ -355,7 +359,17 @@ public class PortalImplCanonicalURLTest {
 		themeDisplay.setCompany(company);
 
 		themeDisplay.setLayoutSet(group.getPublicLayoutSet());
-		themeDisplay.setServerPort(80);
+
+		int pos = portalDomain.indexOf(CharPool.COLON);
+
+		if (pos == -1) {
+			themeDisplay.setServerPort(80);
+		}
+		else {
+			themeDisplay.setServerPort(
+				GetterUtil.getIntegerStrict(portalDomain.substring(pos + 1)));
+		}
+
 		themeDisplay.setSiteGroupId(group.getGroupId());
 
 		return themeDisplay;
@@ -393,10 +407,10 @@ public class PortalImplCanonicalURLTest {
 
 		setVirtualHost(layout.getCompanyId(), virtualHostname);
 
-		ThemeDisplay themeDisplay = getThemeDisplay(group);
+		ThemeDisplay themeDisplay = getThemeDisplay(group, portalDomain);
 
-		themeDisplay.setPortalDomain(portalDomain + ":8080");
-		themeDisplay.setPortalURL("http://" + portalDomain + ":8080/");
+		themeDisplay.setPortalDomain(portalDomain);
+		themeDisplay.setPortalURL("http://" + portalDomain);
 
 		String actualCanonicalURL = PortalUtil.getCanonicalURL(
 			completeURL, themeDisplay, layout, forceLayoutFriendlyURL);
