@@ -171,6 +171,8 @@ public class ConfigurationImpl
 				value = _nullValue;
 			}
 
+			value = checkEnvironmentVariable(key, value);
+
 			_configurationCache.put(key, value);
 		}
 
@@ -193,6 +195,8 @@ public class ConfigurationImpl
 			if (value == null) {
 				value = _nullValue;
 			}
+
+			value = checkEnvironmentVariable(key, value);
 
 			_configurationCache.put(key, value);
 		}
@@ -228,6 +232,8 @@ public class ConfigurationImpl
 					value = _nullValue;
 				}
 
+				value = checkEnvironmentVariable(key, value);
+
 				_configurationFilterCache.put(filterCacheKey, value);
 			}
 		}
@@ -249,6 +255,8 @@ public class ConfigurationImpl
 			String[] array = componentProperties.getStringArray(key);
 
 			value = _fixArrayValue(array);
+
+			value = checkArrayEnvironmentVariable(key, value);
 
 			_configurationArrayCache.put(key, value);
 		}
@@ -277,6 +285,9 @@ public class ConfigurationImpl
 				key, getEasyConfFilter(filter));
 
 			value = _fixArrayValue(array);
+
+			value = checkArrayEnvironmentVariable(
+				filterCacheKey.toString(), value);
 
 			if (filterCacheKey != null) {
 				_configurationFilterArrayCache.put(filterCacheKey, value);
@@ -312,7 +323,11 @@ public class ConfigurationImpl
 			componentProperties.getProperties();
 
 		for (String key : componentPropertiesProperties.stringPropertyNames()) {
-			properties.setProperty(key, componentProperties.getString(key));
+			String value = componentProperties.getString(key);
+
+			value = (String)checkEnvironmentVariable(key, value);
+
+			properties.setProperty(key, value);
 		}
 
 		_properties = properties;
@@ -384,6 +399,30 @@ public class ConfigurationImpl
 		componentProperties.setProperty(key, value);
 
 		clearCache();
+	}
+
+	protected Object checkArrayEnvironmentVariable(
+		String key, Object propertyValue) {
+
+		String value = _getEnvironmentVariableValue(key);
+
+		if (value != null) {
+			return value.split(",");
+		}
+
+		return propertyValue;
+	}
+
+	protected Object checkEnvironmentVariable(
+		String key, Object propertyValue) {
+
+		String value = _getEnvironmentVariableValue(key);
+
+		if (value != null) {
+			return value;
+		}
+
+		return propertyValue;
 	}
 
 	protected ComponentProperties getComponentProperties() {
@@ -479,6 +518,12 @@ public class ConfigurationImpl
 		}
 
 		return value;
+	}
+
+	private String _getEnvironmentVariableValue(String key) {
+		Map<String, String> env = System.getenv();
+
+		return env.get(getEnvironmentVariableName(key));
 	}
 
 	private static final boolean _PRINT_DUPLICATE_CALLS_TO_GET = false;
