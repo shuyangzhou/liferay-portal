@@ -280,6 +280,14 @@ public class MBThreadPersistenceTest {
 	}
 
 	@Test
+	public void testCountByG_L() throws Exception {
+		_persistence.countByG_L(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextDate());
+
+		_persistence.countByG_L(0L, RandomTestUtil.nextDate());
+	}
+
+	@Test
 	public void testCountByG_S() throws Exception {
 		_persistence.countByG_S(RandomTestUtil.nextLong(),
 			RandomTestUtil.nextInt());
@@ -309,6 +317,13 @@ public class MBThreadPersistenceTest {
 			RandomTestUtil.nextLong(), RandomTestUtil.nextDate());
 
 		_persistence.countByG_C_L(0L, 0L, RandomTestUtil.nextDate());
+	}
+
+	@Test
+	public void testCountByG_C_LArrayable() throws Exception {
+		_persistence.countByG_C_L(RandomTestUtil.nextLong(),
+			new long[] { RandomTestUtil.nextLong(), 0L },
+			RandomTestUtil.nextDate());
 	}
 
 	@Test
@@ -355,6 +370,30 @@ public class MBThreadPersistenceTest {
 			RandomTestUtil.nextLong(), RandomTestUtil.nextInt());
 
 		_persistence.countByG_NotC_NotS(0L, 0L, 0);
+	}
+
+	@Test
+	public void testCountByG_L_S() throws Exception {
+		_persistence.countByG_L_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextDate(), RandomTestUtil.nextInt());
+
+		_persistence.countByG_L_S(0L, RandomTestUtil.nextDate(), 0);
+	}
+
+	@Test
+	public void testCountByG_C_L_S() throws Exception {
+		_persistence.countByG_C_L_S(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong(), RandomTestUtil.nextDate(),
+			RandomTestUtil.nextInt());
+
+		_persistence.countByG_C_L_S(0L, 0L, RandomTestUtil.nextDate(), 0);
+	}
+
+	@Test
+	public void testCountByG_C_L_SArrayable() throws Exception {
+		_persistence.countByG_C_L_S(RandomTestUtil.nextLong(),
+			new long[] { RandomTestUtil.nextLong(), 0L },
+			RandomTestUtil.nextDate(), RandomTestUtil.nextInt());
 	}
 
 	@Test

@@ -283,8 +283,9 @@ create unique index IX_9168E2C9 on MBStatsUser (groupId, userId);
 create index IX_847F92B5 on MBStatsUser (userId);
 
 create index IX_41F6DC8A on MBThread (categoryId, priority);
-create index IX_50F1904A on MBThread (groupId, categoryId, lastPostDate);
+create index IX_B267E530 on MBThread (groupId, categoryId, lastPostDate, status);
 create index IX_485F7E98 on MBThread (groupId, categoryId, status);
+create index IX_E184BD83 on MBThread (groupId, lastPostDate, status);
 create index IX_E1E7142B on MBThread (groupId, status);
 create index IX_AEDD9CB5 on MBThread (lastPostDate, priority);
 create index IX_CC993ECB on MBThread (rootMessageId);
