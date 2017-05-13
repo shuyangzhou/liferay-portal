@@ -404,7 +404,8 @@ public class ConfigurationImpl
 	protected Object checkArrayEnvironmentVariable(
 		String key, Object propertyValue) {
 
-		String value = _getEnvironmentVariableValue(key);
+		String value = _configurationEnvironmentCache.get(
+			getEnvironmentVariableName(key));
 
 		if (value != null) {
 			return value.split(",");
@@ -416,7 +417,8 @@ public class ConfigurationImpl
 	protected Object checkEnvironmentVariable(
 		String key, Object propertyValue) {
 
-		String value = _getEnvironmentVariableValue(key);
+		String value = _configurationEnvironmentCache.get(
+			getEnvironmentVariableName(key));
 
 		if (value != null) {
 			return value;
@@ -520,17 +522,13 @@ public class ConfigurationImpl
 		return value;
 	}
 
-	private String _getEnvironmentVariableValue(String key) {
-		Map<String, String> env = System.getenv();
-
-		return env.get(getEnvironmentVariableName(key));
-	}
-
 	private static final boolean _PRINT_DUPLICATE_CALLS_TO_GET = false;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ConfigurationImpl.class);
 
+	private static final Map<String, String> _configurationEnvironmentCache =
+		System.getenv();
 	private static final String[] _emptyArray = new String[0];
 	private static final Object _nullValue = new Object();
 
