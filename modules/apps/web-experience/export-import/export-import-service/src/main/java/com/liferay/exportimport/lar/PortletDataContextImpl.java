@@ -142,7 +142,15 @@ import jodd.bean.BeanUtil;
 public class PortletDataContextImpl implements PortletDataContext {
 
 	public PortletDataContextImpl(LockManager lockManager) {
-		initXStream();
+		this(lockManager, true);
+	}
+
+	public PortletDataContextImpl(
+		LockManager lockManager, boolean createXstream) {
+
+		if (createXstream) {
+			initXStream();
+		}
 
 		_lockManager = lockManager;
 	}
