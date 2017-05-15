@@ -37,6 +37,10 @@ public interface LockManager {
 
 	public Lock getLock(String className, String key) throws PortalException;
 
+	public Lock fetchLock(String className, long key);
+
+	public Lock fetchLock(String className, String key);
+
 	public Lock getLockByUuidAndCompanyId(String uuid, long companyId)
 		throws PortalException;
 
