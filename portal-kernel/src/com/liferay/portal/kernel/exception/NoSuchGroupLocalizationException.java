@@ -11,18 +11,31 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+package com.liferay.portal.kernel.exception;
 
-package com.liferay.portal.tools.service.builder;
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 
 /**
- * @author Preston Crary
+ * @author Brian Wing Shun Chan
  */
-public class LocalizationColumn extends EntityColumn {
+@ProviderType
+public class NoSuchGroupLocalizationException extends NoSuchModelException {
 
-	public LocalizationColumn(String name, String dbName) {
-		super(
-			name, dbName, "String", false, false, false, null, null, null, null,
-			true, false, false, false, false, false);
+	public NoSuchGroupLocalizationException() {
+	}
+
+	public NoSuchGroupLocalizationException(String msg) {
+		super(msg);
+	}
+
+	public NoSuchGroupLocalizationException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+
+	public NoSuchGroupLocalizationException(Throwable cause) {
+		super(cause);
 	}
 
 }

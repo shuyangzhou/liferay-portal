@@ -137,6 +137,7 @@
 	<bean class="com.liferay.portal.service.impl.GroupServiceImpl" id="com.liferay.portal.kernel.service.GroupService" />
 	<bean class="com.liferay.portal.service.persistence.impl.GroupPersistenceImpl" id="com.liferay.portal.kernel.service.persistence.GroupPersistence" parent="basePersistence" />
 	<bean class="com.liferay.portal.service.persistence.impl.GroupFinderImpl" id="com.liferay.portal.kernel.service.persistence.GroupFinder" parent="basePersistence" />
+	<bean class="com.liferay.portal.service.persistence.impl.GroupLocalizationPersistenceImpl" id="com.liferay.portal.kernel.service.persistence.GroupLocalizationPersistence" parent="basePersistence" />
 	<bean class="com.liferay.portal.service.impl.ImageLocalServiceImpl" id="com.liferay.portal.kernel.service.ImageLocalService" />
 	<bean class="com.liferay.portal.service.impl.ImageServiceImpl" id="com.liferay.portal.kernel.service.ImageService" />
 	<bean class="com.liferay.portal.service.persistence.impl.ImagePersistenceImpl" id="com.liferay.portal.kernel.service.persistence.ImagePersistence" parent="basePersistence" />

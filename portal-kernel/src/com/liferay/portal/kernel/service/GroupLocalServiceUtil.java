@@ -642,6 +642,17 @@ public class GroupLocalServiceUtil {
 		return getService().updateSite(groupId, site);
 	}
 
+	public static com.liferay.portal.kernel.model.GroupLocalization fetchGroupLocalization(
+		long groupId, java.lang.String languageId) {
+		return getService().fetchGroupLocalization(groupId, languageId);
+	}
+
+	public static com.liferay.portal.kernel.model.GroupLocalization getGroupLocalization(
+		long groupId, java.lang.String languageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getGroupLocalization(groupId, languageId);
+	}
+
 	/**
 	* @throws PortalException
 	*/
@@ -1069,6 +1080,11 @@ public class GroupLocalServiceUtil {
 	public static java.util.List<com.liferay.portal.kernel.model.Group> getCompanyGroups(
 		long companyId, int start, int end) {
 		return getService().getCompanyGroups(companyId, start, end);
+	}
+
+	public static java.util.List<com.liferay.portal.kernel.model.GroupLocalization> getGroupLocalizations(
+		long groupId) {
+		return getService().getGroupLocalizations(groupId);
 	}
 
 	/**

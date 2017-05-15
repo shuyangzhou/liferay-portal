@@ -20,19 +20,19 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.GroupLocalization;
 import com.liferay.portal.kernel.model.GroupModel;
 import com.liferay.portal.kernel.model.GroupSoap;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -47,10 +47,8 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the Group service. Represents a row in the &quot;Group_&quot; database table, with each column mapped to a property of this class.
@@ -86,8 +84,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 			{ "liveGroupId", Types.BIGINT },
 			{ "treePath", Types.VARCHAR },
 			{ "groupKey", Types.VARCHAR },
-			{ "name", Types.VARCHAR },
-			{ "description", Types.VARCHAR },
 			{ "type_", Types.INTEGER },
 			{ "typeSettings", Types.CLOB },
 			{ "manualMembership", Types.BOOLEAN },
@@ -96,7 +92,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 			{ "site", Types.BOOLEAN },
 			{ "remoteStagingGroupCount", Types.INTEGER },
 			{ "inheritContent", Types.BOOLEAN },
-			{ "active_", Types.BOOLEAN }
+			{ "active_", Types.BOOLEAN },
+			{ "defaultLanguageId", Types.VARCHAR }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
@@ -112,8 +109,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		TABLE_COLUMNS_MAP.put("liveGroupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("treePath", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("groupKey", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("type_", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("typeSettings", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("manualMembership", Types.BOOLEAN);
@@ -123,12 +118,13 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		TABLE_COLUMNS_MAP.put("remoteStagingGroupCount", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("inheritContent", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("active_", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("defaultLanguageId", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table Group_ (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,groupId LONG not null primary key,companyId LONG,creatorUserId LONG,classNameId LONG,classPK LONG,parentGroupId LONG,liveGroupId LONG,treePath STRING null,groupKey VARCHAR(150) null,name STRING null,description STRING null,type_ INTEGER,typeSettings TEXT null,manualMembership BOOLEAN,membershipRestriction INTEGER,friendlyURL VARCHAR(255) null,site BOOLEAN,remoteStagingGroupCount INTEGER,inheritContent BOOLEAN,active_ BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table Group_ (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,groupId LONG not null primary key,companyId LONG,creatorUserId LONG,classNameId LONG,classPK LONG,parentGroupId LONG,liveGroupId LONG,treePath STRING null,groupKey VARCHAR(150) null,type_ INTEGER,typeSettings TEXT null,manualMembership BOOLEAN,membershipRestriction INTEGER,friendlyURL VARCHAR(255) null,site BOOLEAN,remoteStagingGroupCount INTEGER,inheritContent BOOLEAN,active_ BOOLEAN,defaultLanguageId VARCHAR(75) null)";
 	public static final String TABLE_SQL_DROP = "drop table Group_";
-	public static final String ORDER_BY_JPQL = " ORDER BY group_.name ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY Group_.name ASC";
+	public static final String ORDER_BY_JPQL = " ORDER BY group_.groupId ASC";
+	public static final String ORDER_BY_SQL = " ORDER BY Group_.groupId ASC";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
@@ -154,7 +150,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 	public static final long SITE_COLUMN_BITMASK = 1024L;
 	public static final long TYPE_COLUMN_BITMASK = 2048L;
 	public static final long UUID_COLUMN_BITMASK = 4096L;
-	public static final long NAME_COLUMN_BITMASK = 8192L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -180,8 +175,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		model.setLiveGroupId(soapModel.getLiveGroupId());
 		model.setTreePath(soapModel.getTreePath());
 		model.setGroupKey(soapModel.getGroupKey());
-		model.setName(soapModel.getName());
-		model.setDescription(soapModel.getDescription());
 		model.setType(soapModel.getType());
 		model.setTypeSettings(soapModel.getTypeSettings());
 		model.setManualMembership(soapModel.getManualMembership());
@@ -191,6 +184,7 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		model.setRemoteStagingGroupCount(soapModel.getRemoteStagingGroupCount());
 		model.setInheritContent(soapModel.getInheritContent());
 		model.setActive(soapModel.getActive());
+		model.setDefaultLanguageId(soapModel.getDefaultLanguageId());
 
 		return model;
 	}
@@ -302,8 +296,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		attributes.put("liveGroupId", getLiveGroupId());
 		attributes.put("treePath", getTreePath());
 		attributes.put("groupKey", getGroupKey());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
 		attributes.put("type", getType());
 		attributes.put("typeSettings", getTypeSettings());
 		attributes.put("manualMembership", getManualMembership());
@@ -313,6 +305,7 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		attributes.put("remoteStagingGroupCount", getRemoteStagingGroupCount());
 		attributes.put("inheritContent", getInheritContent());
 		attributes.put("active", getActive());
+		attributes.put("defaultLanguageId", getDefaultLanguageId());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -388,18 +381,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 			setGroupKey(groupKey);
 		}
 
-		String name = (String)attributes.get("name");
-
-		if (name != null) {
-			setName(name);
-		}
-
-		String description = (String)attributes.get("description");
-
-		if (description != null) {
-			setDescription(description);
-		}
-
 		Integer type = (Integer)attributes.get("type");
 
 		if (type != null) {
@@ -455,6 +436,137 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		if (active != null) {
 			setActive(active);
 		}
+
+		String defaultLanguageId = (String)attributes.get("defaultLanguageId");
+
+		if (defaultLanguageId != null) {
+			setDefaultLanguageId(defaultLanguageId);
+		}
+	}
+
+	@Override
+	public String[] getAvailableLanguageIds() {
+		List<GroupLocalization> groupLocalizations = GroupLocalServiceUtil.getGroupLocalizations(getPrimaryKey());
+
+		String[] availableLanguageIds = new String[groupLocalizations.size()];
+
+		for (int i = 0; i < availableLanguageIds.length; i++) {
+			GroupLocalization groupLocalization = groupLocalizations.get(i);
+
+			availableLanguageIds[i] = groupLocalization.getLanguageId();
+		}
+
+		return availableLanguageIds;
+	}
+
+	@Override
+	public String getName() {
+		return getName(getDefaultLanguageId(), false);
+	}
+
+	@Override
+	public String getName(String languageId) {
+		return getName(languageId, true);
+	}
+
+	@Override
+	public String getName(String languageId, boolean useDefault) {
+		if (useDefault) {
+			return LocalizationUtil.getLocalization(new Function<String, String>() {
+					@Override
+					public String apply(String languageId) {
+						return _getName(languageId);
+					}
+				}, languageId, getDefaultLanguageId());
+		}
+
+		return _getName(languageId);
+	}
+
+	@Override
+	public String getNameMapAsXML() {
+		return LocalizationUtil.getXml(getLanguageIdToNameMap(),
+			getDefaultLanguageId(), "Name");
+	}
+
+	@Override
+	public Map<String, String> getLanguageIdToNameMap() {
+		Map<String, String> languageIdToNameMap = new HashMap<String, String>();
+
+		List<GroupLocalization> groupLocalizations = GroupLocalServiceUtil.getGroupLocalizations(getPrimaryKey());
+
+		for (GroupLocalization groupLocalization : groupLocalizations) {
+			languageIdToNameMap.put(groupLocalization.getLanguageId(),
+				groupLocalization.getName());
+		}
+
+		return languageIdToNameMap;
+	}
+
+	private String _getName(String languageId) {
+		GroupLocalization groupLocalization = GroupLocalServiceUtil.fetchGroupLocalization(getPrimaryKey(),
+				languageId);
+
+		if (groupLocalization == null) {
+			return StringPool.BLANK;
+		}
+
+		return groupLocalization.getName();
+	}
+
+	@Override
+	public String getDescription() {
+		return getDescription(getDefaultLanguageId(), false);
+	}
+
+	@Override
+	public String getDescription(String languageId) {
+		return getDescription(languageId, true);
+	}
+
+	@Override
+	public String getDescription(String languageId, boolean useDefault) {
+		if (useDefault) {
+			return LocalizationUtil.getLocalization(new Function<String, String>() {
+					@Override
+					public String apply(String languageId) {
+						return _getDescription(languageId);
+					}
+				}, languageId, getDefaultLanguageId());
+		}
+
+		return _getDescription(languageId);
+	}
+
+	@Override
+	public String getDescriptionMapAsXML() {
+		return LocalizationUtil.getXml(getLanguageIdToDescriptionMap(),
+			getDefaultLanguageId(), "Description");
+	}
+
+	@Override
+	public Map<String, String> getLanguageIdToDescriptionMap() {
+		Map<String, String> languageIdToDescriptionMap = new HashMap<String, String>();
+
+		List<GroupLocalization> groupLocalizations = GroupLocalServiceUtil.getGroupLocalizations(getPrimaryKey());
+
+		for (GroupLocalization groupLocalization : groupLocalizations) {
+			languageIdToDescriptionMap.put(groupLocalization.getLanguageId(),
+				groupLocalization.getDescription());
+		}
+
+		return languageIdToDescriptionMap;
+	}
+
+	private String _getDescription(String languageId) {
+		GroupLocalization groupLocalization = GroupLocalServiceUtil.fetchGroupLocalization(getPrimaryKey(),
+				languageId);
+
+		if (groupLocalization == null) {
+			return StringPool.BLANK;
+		}
+
+		return groupLocalization.getDescription();
 	}
 
 	@JSON
@@ -721,210 +833,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@JSON
 	@Override
-	public String getName() {
-		if (_name == null) {
-			return StringPool.BLANK;
-		}
-		else {
-			return _name;
-		}
-	}
-
-	@Override
-	public String getName(Locale locale) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-
-		return getName(languageId);
-	}
-
-	@Override
-	public String getName(Locale locale, boolean useDefault) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-
-		return getName(languageId, useDefault);
-	}
-
-	@Override
-	public String getName(String languageId) {
-		return LocalizationUtil.getLocalization(getName(), languageId);
-	}
-
-	@Override
-	public String getName(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getName(), languageId,
-			useDefault);
-	}
-
-	@Override
-	public String getNameCurrentLanguageId() {
-		return _nameCurrentLanguageId;
-	}
-
-	@JSON
-	@Override
-	public String getNameCurrentValue() {
-		Locale locale = getLocale(_nameCurrentLanguageId);
-
-		return getName(locale);
-	}
-
-	@Override
-	public Map<Locale, String> getNameMap() {
-		return LocalizationUtil.getLocalizationMap(getName());
-	}
-
-	@Override
-	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		_name = name;
-	}
-
-	@Override
-	public void setName(String name, Locale locale) {
-		setName(name, locale, LocaleUtil.getDefault());
-	}
-
-	@Override
-	public void setName(String name, Locale locale, Locale defaultLocale) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
-
-		if (Validator.isNotNull(name)) {
-			setName(LocalizationUtil.updateLocalization(getName(), "Name",
-					name, languageId, defaultLanguageId));
-		}
-		else {
-			setName(LocalizationUtil.removeLocalization(getName(), "Name",
-					languageId));
-		}
-	}
-
-	@Override
-	public void setNameCurrentLanguageId(String languageId) {
-		_nameCurrentLanguageId = languageId;
-	}
-
-	@Override
-	public void setNameMap(Map<Locale, String> nameMap) {
-		setNameMap(nameMap, LocaleUtil.getDefault());
-	}
-
-	@Override
-	public void setNameMap(Map<Locale, String> nameMap, Locale defaultLocale) {
-		if (nameMap == null) {
-			return;
-		}
-
-		setName(LocalizationUtil.updateLocalization(nameMap, getName(), "Name",
-				LocaleUtil.toLanguageId(defaultLocale)));
-	}
-
-	@JSON
-	@Override
-	public String getDescription() {
-		if (_description == null) {
-			return StringPool.BLANK;
-		}
-		else {
-			return _description;
-		}
-	}
-
-	@Override
-	public String getDescription(Locale locale) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-
-		return getDescription(languageId);
-	}
-
-	@Override
-	public String getDescription(Locale locale, boolean useDefault) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-
-		return getDescription(languageId, useDefault);
-	}
-
-	@Override
-	public String getDescription(String languageId) {
-		return LocalizationUtil.getLocalization(getDescription(), languageId);
-	}
-
-	@Override
-	public String getDescription(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getDescription(), languageId,
-			useDefault);
-	}
-
-	@Override
-	public String getDescriptionCurrentLanguageId() {
-		return _descriptionCurrentLanguageId;
-	}
-
-	@JSON
-	@Override
-	public String getDescriptionCurrentValue() {
-		Locale locale = getLocale(_descriptionCurrentLanguageId);
-
-		return getDescription(locale);
-	}
-
-	@Override
-	public Map<Locale, String> getDescriptionMap() {
-		return LocalizationUtil.getLocalizationMap(getDescription());
-	}
-
-	@Override
-	public void setDescription(String description) {
-		_description = description;
-	}
-
-	@Override
-	public void setDescription(String description, Locale locale) {
-		setDescription(description, locale, LocaleUtil.getDefault());
-	}
-
-	@Override
-	public void setDescription(String description, Locale locale,
-		Locale defaultLocale) {
-		String languageId = LocaleUtil.toLanguageId(locale);
-		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
-
-		if (Validator.isNotNull(description)) {
-			setDescription(LocalizationUtil.updateLocalization(
-					getDescription(), "Description", description, languageId,
-					defaultLanguageId));
-		}
-		else {
-			setDescription(LocalizationUtil.removeLocalization(
-					getDescription(), "Description", languageId));
-		}
-	}
-
-	@Override
-	public void setDescriptionCurrentLanguageId(String languageId) {
-		_descriptionCurrentLanguageId = languageId;
-	}
-
-	@Override
-	public void setDescriptionMap(Map<Locale, String> descriptionMap) {
-		setDescriptionMap(descriptionMap, LocaleUtil.getDefault());
-	}
-
-	@Override
-	public void setDescriptionMap(Map<Locale, String> descriptionMap,
-		Locale defaultLocale) {
-		if (descriptionMap == null) {
-			return;
-		}
-
-		setDescription(LocalizationUtil.updateLocalization(descriptionMap,
-				getDescription(), "Description",
-				LocaleUtil.toLanguageId(defaultLocale)));
-	}
-
-	@JSON
-	@Override
 	public int getType() {
 		return _type;
 	}
@@ -1114,6 +1022,22 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		return _originalActive;
 	}
 
+	@JSON
+	@Override
+	public String getDefaultLanguageId() {
+		if (_defaultLanguageId == null) {
+			return StringPool.BLANK;
+		}
+		else {
+			return _defaultLanguageId;
+		}
+	}
+
+	@Override
+	public void setDefaultLanguageId(String defaultLanguageId) {
+		_defaultLanguageId = defaultLanguageId;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -1129,88 +1053,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		ExpandoBridge expandoBridge = getExpandoBridge();
 
 		expandoBridge.setAttributes(serviceContext);
-	}
-
-	@Override
-	public String[] getAvailableLanguageIds() {
-		Set<String> availableLanguageIds = new TreeSet<String>();
-
-		Map<Locale, String> nameMap = getNameMap();
-
-		for (Map.Entry<Locale, String> entry : nameMap.entrySet()) {
-			Locale locale = entry.getKey();
-			String value = entry.getValue();
-
-			if (Validator.isNotNull(value)) {
-				availableLanguageIds.add(LocaleUtil.toLanguageId(locale));
-			}
-		}
-
-		Map<Locale, String> descriptionMap = getDescriptionMap();
-
-		for (Map.Entry<Locale, String> entry : descriptionMap.entrySet()) {
-			Locale locale = entry.getKey();
-			String value = entry.getValue();
-
-			if (Validator.isNotNull(value)) {
-				availableLanguageIds.add(LocaleUtil.toLanguageId(locale));
-			}
-		}
-
-		return availableLanguageIds.toArray(new String[availableLanguageIds.size()]);
-	}
-
-	@Override
-	public String getDefaultLanguageId() {
-		String xml = getName();
-
-		if (xml == null) {
-			return StringPool.BLANK;
-		}
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
-	}
-
-	@Override
-	public void prepareLocalizedFieldsForImport() throws LocaleException {
-		Locale defaultLocale = LocaleUtil.fromLanguageId(getDefaultLanguageId());
-
-		Locale[] availableLocales = LocaleUtil.fromLanguageIds(getAvailableLanguageIds());
-
-		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(Group.class.getName(),
-				getPrimaryKey(), defaultLocale, availableLocales);
-
-		prepareLocalizedFieldsForImport(defaultImportLocale);
-	}
-
-	@Override
-	@SuppressWarnings("unused")
-	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
-		throws LocaleException {
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String modelDefaultLanguageId = getDefaultLanguageId();
-
-		String name = getName(defaultLocale);
-
-		if (Validator.isNull(name)) {
-			setName(getName(modelDefaultLanguageId), defaultLocale);
-		}
-		else {
-			setName(getName(defaultLocale), defaultLocale, defaultLocale);
-		}
-
-		String description = getDescription(defaultLocale);
-
-		if (Validator.isNull(description)) {
-			setDescription(getDescription(modelDefaultLanguageId), defaultLocale);
-		}
-		else {
-			setDescription(getDescription(defaultLocale), defaultLocale,
-				defaultLocale);
-		}
 	}
 
 	@Override
@@ -1238,8 +1080,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		groupImpl.setLiveGroupId(getLiveGroupId());
 		groupImpl.setTreePath(getTreePath());
 		groupImpl.setGroupKey(getGroupKey());
-		groupImpl.setName(getName());
-		groupImpl.setDescription(getDescription());
 		groupImpl.setType(getType());
 		groupImpl.setTypeSettings(getTypeSettings());
 		groupImpl.setManualMembership(getManualMembership());
@@ -1249,6 +1089,7 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		groupImpl.setRemoteStagingGroupCount(getRemoteStagingGroupCount());
 		groupImpl.setInheritContent(getInheritContent());
 		groupImpl.setActive(getActive());
+		groupImpl.setDefaultLanguageId(getDefaultLanguageId());
 
 		groupImpl.resetOriginalValues();
 
@@ -1257,15 +1098,17 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public int compareTo(Group group) {
-		int value = 0;
+		long primaryKey = group.getPrimaryKey();
 
-		value = getName().compareToIgnoreCase(group.getName());
-
-		if (value != 0) {
-			return value;
+		if (getPrimaryKey() < primaryKey) {
+			return -1;
 		}
-
-		return 0;
+		else if (getPrimaryKey() > primaryKey) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 
 	@Override
@@ -1402,22 +1245,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 			groupCacheModel.groupKey = null;
 		}
 
-		groupCacheModel.name = getName();
-
-		String name = groupCacheModel.name;
-
-		if ((name != null) && (name.length() == 0)) {
-			groupCacheModel.name = null;
-		}
-
-		groupCacheModel.description = getDescription();
-
-		String description = groupCacheModel.description;
-
-		if ((description != null) && (description.length() == 0)) {
-			groupCacheModel.description = null;
-		}
-
 		groupCacheModel.type = getType();
 
 		groupCacheModel.typeSettings = getTypeSettings();
@@ -1448,12 +1275,20 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 		groupCacheModel.active = getActive();
 
+		groupCacheModel.defaultLanguageId = getDefaultLanguageId();
+
+		String defaultLanguageId = groupCacheModel.defaultLanguageId;
+
+		if ((defaultLanguageId != null) && (defaultLanguageId.length() == 0)) {
+			groupCacheModel.defaultLanguageId = null;
+		}
+
 		return groupCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(45);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("{mvccVersion=");
 		sb.append(getMvccVersion());
@@ -1477,10 +1312,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		sb.append(getTreePath());
 		sb.append(", groupKey=");
 		sb.append(getGroupKey());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", description=");
-		sb.append(getDescription());
 		sb.append(", type=");
 		sb.append(getType());
 		sb.append(", typeSettings=");
@@ -1499,6 +1330,8 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		sb.append(getInheritContent());
 		sb.append(", active=");
 		sb.append(getActive());
+		sb.append(", defaultLanguageId=");
+		sb.append(getDefaultLanguageId());
 		sb.append("}");
 
 		return sb.toString();
@@ -1506,7 +1339,7 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(70);
+		StringBundler sb = new StringBundler(67);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.portal.kernel.model.Group");
@@ -1557,14 +1390,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		sb.append(getGroupKey());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
 			"<column><column-name>type</column-name><column-value><![CDATA[");
 		sb.append(getType());
 		sb.append("]]></column-value></column>");
@@ -1599,6 +1424,10 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 		sb.append(
 			"<column><column-name>active</column-name><column-value><![CDATA[");
 		sb.append(getActive());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>defaultLanguageId</column-name><column-value><![CDATA[");
+		sb.append(getDefaultLanguageId());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -1635,10 +1464,6 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 	private String _treePath;
 	private String _groupKey;
 	private String _originalGroupKey;
-	private String _name;
-	private String _nameCurrentLanguageId;
-	private String _description;
-	private String _descriptionCurrentLanguageId;
 	private int _type;
 	private int _originalType;
 	private boolean _setOriginalType;
@@ -1657,6 +1482,7 @@ public class GroupModelImpl extends BaseModelImpl<Group> implements GroupModel {
 	private boolean _active;
 	private boolean _originalActive;
 	private boolean _setOriginalActive;
+	private String _defaultLanguageId;
 	private long _columnBitmask;
 	private Group _escapedModel;
 }

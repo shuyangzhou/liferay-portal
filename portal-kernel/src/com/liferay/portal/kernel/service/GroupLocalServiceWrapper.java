@@ -675,6 +675,19 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 		return _groupLocalService.updateSite(groupId, site);
 	}
 
+	@Override
+	public com.liferay.portal.kernel.model.GroupLocalization fetchGroupLocalization(
+		long groupId, java.lang.String languageId) {
+		return _groupLocalService.fetchGroupLocalization(groupId, languageId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.GroupLocalization getGroupLocalization(
+		long groupId, java.lang.String languageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _groupLocalService.getGroupLocalization(groupId, languageId);
+	}
+
 	/**
 	* @throws PortalException
 	*/
@@ -1125,6 +1138,12 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 	public java.util.List<com.liferay.portal.kernel.model.Group> getCompanyGroups(
 		long companyId, int start, int end) {
 		return _groupLocalService.getCompanyGroups(companyId, start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.GroupLocalization> getGroupLocalizations(
+		long groupId) {
+		return _groupLocalService.getGroupLocalizations(groupId);
 	}
 
 	/**

@@ -45,6 +45,7 @@
 	<import class="com.liferay.portal.kernel.model.Country" />
 	<import class="com.liferay.portal.kernel.model.EmailAddress" />
 	<import class="com.liferay.portal.kernel.model.Group" />
+	<import class="com.liferay.portal.kernel.model.GroupLocalization" />
 	<import class="com.liferay.portal.kernel.model.Image" />
 	<import class="com.liferay.portal.kernel.model.Layout" />
 	<import class="com.liferay.portal.kernel.model.LayoutBranch" />
@@ -280,8 +281,6 @@
 		<property name="liveGroupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="treePath" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="groupKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="typeSettings" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
 		<property name="manualMembership" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
@@ -291,6 +290,18 @@
 		<property name="remoteStagingGroupCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="inheritContent" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property column="active_" name="active" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="defaultLanguageId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class dynamic-update="true" name="com.liferay.portal.model.impl.GroupLocalizationImpl" table="GroupLocalization">
+		<id name="groupLocalizationId" type="long">
+			<generator class="assigned" />
+		</id>
+		<version access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" name="mvccVersion" type="long" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="languageId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class dynamic-update="true" name="com.liferay.portal.model.impl.ImageImpl" table="Image">
 		<id name="imageId" type="long">

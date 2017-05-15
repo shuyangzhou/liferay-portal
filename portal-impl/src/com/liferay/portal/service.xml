@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.1.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_1_0.dtd">
 
 <service-builder api-package-path="com.liferay.portal.kernel" auto-import-default-references="false" mvcc-enabled="true" package-path="com.liferay.portal">
 	<namespace>Portal</namespace>
@@ -379,8 +379,6 @@
 		<column name="liveGroupId" type="long" />
 		<column name="treePath" type="String" />
 		<column name="groupKey" type="String" />
-		<column localized="true" name="name" type="String" />
-		<column localized="true" name="description" type="String" />
 		<column name="type" type="int" />
 		<column name="typeSettings" type="String" />
 		<column name="manualMembership" type="boolean" />
@@ -391,18 +389,22 @@
 		<column name="inheritContent" type="boolean" />
 		<column name="active" type="boolean" />
 
+		<!-- Localized Entity -->
+
+		<localized-entity>
+			<localized-column name="name" />
+			<localized-column name="description" />
+			<order>
+				<order-column name="name" />
+			</order>
+		</localized-entity>
+
 		<!-- Relationships -->
 
 		<column entity="Organization" mapping-table="Groups_Orgs" name="orgs" type="Collection" />
 		<column entity="Role" mapping-table="Groups_Roles" name="roles" type="Collection" />
 		<column entity="UserGroup" mapping-table="Groups_UserGroups" name="userGroups" type="Collection" />
 		<column entity="User" mapping-table="Users_Groups" name="users" type="Collection" />
-
-		<!-- Order -->
-
-		<order by="asc">
-			<order-column case-sensitive="false" name="name" />
-		</order>
 
 		<!-- Finder methods -->
 

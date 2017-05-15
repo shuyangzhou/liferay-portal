@@ -137,10 +137,6 @@ public class GroupPersistenceTest {
 
 		newGroup.setGroupKey(RandomTestUtil.randomString());
 
-		newGroup.setName(RandomTestUtil.randomString());
-
-		newGroup.setDescription(RandomTestUtil.randomString());
-
 		newGroup.setType(RandomTestUtil.nextInt());
 
 		newGroup.setTypeSettings(RandomTestUtil.randomString());
@@ -158,6 +154,8 @@ public class GroupPersistenceTest {
 		newGroup.setInheritContent(RandomTestUtil.randomBoolean());
 
 		newGroup.setActive(RandomTestUtil.randomBoolean());
+
+		newGroup.setDefaultLanguageId(RandomTestUtil.randomString());
 
 		_groups.add(_persistence.update(newGroup));
 
@@ -180,9 +178,6 @@ public class GroupPersistenceTest {
 			newGroup.getLiveGroupId());
 		Assert.assertEquals(existingGroup.getTreePath(), newGroup.getTreePath());
 		Assert.assertEquals(existingGroup.getGroupKey(), newGroup.getGroupKey());
-		Assert.assertEquals(existingGroup.getName(), newGroup.getName());
-		Assert.assertEquals(existingGroup.getDescription(),
-			newGroup.getDescription());
 		Assert.assertEquals(existingGroup.getType(), newGroup.getType());
 		Assert.assertEquals(existingGroup.getTypeSettings(),
 			newGroup.getTypeSettings());
@@ -198,6 +193,8 @@ public class GroupPersistenceTest {
 		Assert.assertEquals(existingGroup.getInheritContent(),
 			newGroup.getInheritContent());
 		Assert.assertEquals(existingGroup.getActive(), newGroup.getActive());
+		Assert.assertEquals(existingGroup.getDefaultLanguageId(),
+			newGroup.getDefaultLanguageId());
 	}
 
 	@Test
@@ -406,10 +403,10 @@ public class GroupPersistenceTest {
 			true, "uuid", true, "groupId", true, "companyId", true,
 			"creatorUserId", true, "classNameId", true, "classPK", true,
 			"parentGroupId", true, "liveGroupId", true, "treePath", true,
-			"groupKey", true, "name", true, "description", true, "type", true,
-			"manualMembership", true, "membershipRestriction", true,
-			"friendlyURL", true, "site", true, "remoteStagingGroupCount", true,
-			"inheritContent", true, "active", true);
+			"groupKey", true, "type", true, "manualMembership", true,
+			"membershipRestriction", true, "friendlyURL", true, "site", true,
+			"remoteStagingGroupCount", true, "inheritContent", true, "active",
+			true, "defaultLanguageId", true);
 	}
 
 	@Test
@@ -692,10 +689,6 @@ public class GroupPersistenceTest {
 
 		group.setGroupKey(RandomTestUtil.randomString());
 
-		group.setName(RandomTestUtil.randomString());
-
-		group.setDescription(RandomTestUtil.randomString());
-
 		group.setType(RandomTestUtil.nextInt());
 
 		group.setTypeSettings(RandomTestUtil.randomString());
@@ -713,6 +706,8 @@ public class GroupPersistenceTest {
 		group.setInheritContent(RandomTestUtil.randomBoolean());
 
 		group.setActive(RandomTestUtil.randomBoolean());
+
+		group.setDefaultLanguageId(RandomTestUtil.randomString());
 
 		_groups.add(_persistence.update(group));
 

@@ -534,6 +534,16 @@ create table ExportImportConfiguration (
 	statusDate DATE null
 );
 
+create table GroupLocalization (
+	mvccVersion LONG default 0 not null,
+	groupLocalizationId LONG not null primary key,
+	companyId LONG,
+	groupId LONG,
+	languageId VARCHAR(75) null,
+	name VARCHAR(75) null,
+	description VARCHAR(75) null
+);
+
 create table Group_ (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
@@ -546,8 +556,6 @@ create table Group_ (
 	liveGroupId LONG,
 	treePath STRING null,
 	groupKey VARCHAR(150) null,
-	name STRING null,
-	description STRING null,
 	type_ INTEGER,
 	typeSettings TEXT null,
 	manualMembership BOOLEAN,
@@ -556,7 +564,8 @@ create table Group_ (
 	site BOOLEAN,
 	remoteStagingGroupCount INTEGER,
 	inheritContent BOOLEAN,
-	active_ BOOLEAN
+	active_ BOOLEAN,
+	defaultLanguageId VARCHAR(75) null
 );
 
 create table Groups_Orgs (
