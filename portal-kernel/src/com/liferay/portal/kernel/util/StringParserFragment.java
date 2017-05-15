@@ -261,9 +261,6 @@ public class StringParserFragment {
 
 		public boolean matches(String s);
 
-		@Override
-		public String toString();
-
 	}
 
 }
