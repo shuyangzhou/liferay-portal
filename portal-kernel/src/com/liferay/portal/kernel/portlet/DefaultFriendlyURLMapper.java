@@ -17,10 +17,15 @@ package com.liferay.portal.kernel.portlet;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.PortletConstants;
-import com.liferay.portal.kernel.model.PortletInstance;
+import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+
+import java.security.InvalidParameterException;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -266,16 +271,16 @@ public class DefaultFriendlyURLMapper extends BaseFriendlyURLMapper {
 		if (Validator.isNotNull(portletInstanceKey)) {
 			routeParameters.put("p_p_id", portletInstanceKey);
 
-			PortletInstance portletInstance =
-				PortletInstance.fromPortletInstanceKey(portletInstanceKey);
+			long userId = PortletConstants.getUserId(portletInstanceKey);
+			String instanceId = PortletConstants.getInstanceId(
+				portletInstanceKey);
 
 			routeParameters.put(
 				"userIdAndInstanceId",
-				portletInstance.getUserIdAndInstanceId());
+				_assembleUserIdAndInstanceId(userId, instanceId));
 
-			if (portletInstance.hasInstanceId()) {
-				routeParameters.put(
-					"instanceId", portletInstance.getInstanceId());
+			if (Validator.isNotNull(instanceId)) {
+				routeParameters.put("instanceId", instanceId);
 			}
 		}
 
@@ -327,11 +332,46 @@ public class DefaultFriendlyURLMapper extends BaseFriendlyURLMapper {
 		}
 
 		if (Validator.isNotNull(userIdAndInstanceId)) {
-			PortletInstance portletInstance =
-				PortletInstance.fromPortletNameAndUserIdAndInstanceId(
-					getPortletId(), userIdAndInstanceId);
+			int slashCount = StringUtil.count(
+				userIdAndInstanceId, CharPool.SLASH);
 
-			return portletInstance.getPortletInstanceKey();
+			if (slashCount > 0) {
+				throw new InvalidParameterException(
+					"User ID and instance ID contain slashes");
+			}
+
+			int underlineCount = StringUtil.count(
+				userIdAndInstanceId, CharPool.UNDERLINE);
+
+			if (underlineCount > 1) {
+				throw new InvalidParameterException(
+					"User ID and instance ID has more than one underscore");
+			}
+
+			long userId = 0;
+			String instanceId = userIdAndInstanceId;
+
+			if (underlineCount == 1) {
+				int index = userIdAndInstanceId.indexOf(CharPool.UNDERLINE);
+
+				userId = GetterUtil.getLong(
+					userIdAndInstanceId.substring(0, index), -1);
+
+				if (userId == -1) {
+					throw new InvalidParameterException(
+						"User ID is not a number");
+				}
+
+				if (index < (userIdAndInstanceId.length() - 1)) {
+					instanceId = userIdAndInstanceId.substring(index + 1);
+				}
+				else {
+					instanceId = null;
+				}
+			}
+
+			return PortletConstants.assemblePortletId(
+				getPortletId(), userId, instanceId);
 		}
 
 		String instanceId = routeParameters.remove("instanceId");
@@ -406,6 +446,27 @@ public class DefaultFriendlyURLMapper extends BaseFriendlyURLMapper {
 
 	protected Set<String> defaultIgnoredParameters;
 	protected Map<String, String> defaultReservedParameters;
+
+	private String _assembleUserIdAndInstanceId(
+		long userId, String instanceId) {
+
+		if ((userId <= 0) && Validator.isBlank(instanceId)) {
+			return null;
+		}
+
+		StringBundler sb = new StringBundler(3);
+
+		if (userId > 0) {
+			sb.append(userId);
+			sb.append(StringPool.UNDERLINE);
+		}
+
+		if (instanceId != null) {
+			sb.append(instanceId);
+		}
+
+		return sb.toString();
+	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultFriendlyURLMapper.class);

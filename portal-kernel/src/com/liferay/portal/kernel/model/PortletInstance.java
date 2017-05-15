@@ -26,13 +26,25 @@ import java.security.InvalidParameterException;
 /**
  * @author Brian Wing Shun Chan
  * @author Jorge Ferrer
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class PortletInstance {
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *				com.liferay.portal.kernel.util.PortalUtil#
+	 *					getMaxPortletIdLength()}
+	 */
+	@Deprecated
 	public static final int PORTLET_INSTANCE_KEY_MAX_LENGTH =
 		255 - PortletInstance._INSTANCE_SEPARATOR.length() +
 			PortletInstance._USER_SEPARATOR.length() + 39;
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static PortletInstance fromPortletInstanceKey(
 		String portletInstanceKey) {
 
@@ -41,6 +53,10 @@ public class PortletInstance {
 			_getInstanceId(portletInstanceKey));
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static PortletInstance fromPortletNameAndUserIdAndInstanceId(
 		String portletName, String userIdAndInstanceId) {
 
@@ -52,14 +68,26 @@ public class PortletInstance {
 			userIdAndInstanceIdEncoder.getInstanceId());
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public PortletInstance(String portletName) {
 		this(portletName, StringUtil.randomString(12));
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public PortletInstance(String portletName, long userId) {
 		this(portletName, userId, null);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public PortletInstance(String portletName, long userId, String instanceId) {
 		_validatePortletName(portletName);
 
@@ -68,40 +96,56 @@ public class PortletInstance {
 		_instanceId = instanceId;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public PortletInstance(String portletName, String instanceId) {
 		this(portletName, 0, instanceId);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *				PortletConstants#getInstanceId(java.lang.String)}
+	 */
+	@Deprecated
 	public String getInstanceId() {
 		return _instanceId;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *				PortletConstants#assemblePortletId(
+	 *					java.lang.String, long, java.lang.String)}
+	 */
+	@Deprecated
 	public String getPortletInstanceKey() {
-		StringBundler sb = new StringBundler(5);
-
-		sb.append(_portletName);
-
-		if (_userId > 0) {
-			sb.append(_USER_SEPARATOR);
-			sb.append(_userId);
-		}
-
-		if (Validator.isNotNull(_instanceId)) {
-			sb.append(_INSTANCE_SEPARATOR);
-			sb.append(_instanceId);
-		}
-
-		return sb.toString();
+		return PortletConstants.assemblePortletId(
+			_portletName, _userId, _instanceId);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *				PortletConstants#getPortletName(java.lang.String)}
+	 */
+	@Deprecated
 	public String getPortletName() {
 		return _portletName;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *				PortletConstants#getUserId(java.lang.String)}
+	 */
+	@Deprecated
 	public long getUserId() {
 		return _userId;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public String getUserIdAndInstanceId() {
 		UserIdAndInstanceIdEncoder userIdAndInstanceIdEncoder =
 			new UserIdAndInstanceIdEncoder(_userId, _instanceId);
@@ -109,18 +153,40 @@ public class PortletInstance {
 		return userIdAndInstanceIdEncoder.encode();
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *				PortletConstants#hasIdenticalRootPortletId(
+	 *					java.lang.String, java.lang.String)}
+	 */
+	@Deprecated
 	public boolean hasIdenticalPortletName(PortletInstance portletInstance) {
 		return hasIdenticalPortletName(portletInstance.getPortletName());
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *				PortletConstants#hasIdenticalRootPortletId(
+	 *					java.lang.String, java.lang.String)}
+	 */
+	@Deprecated
 	public boolean hasIdenticalPortletName(String portletName) {
 		return _portletName.equals(portletName);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *				PortletConstants#hasInstanceId(java.lang.String)}
+	 */
+	@Deprecated
 	public boolean hasInstanceId() {
 		return Validator.isNotNull(_instanceId);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *				PortletConstants#hasUserId(java.lang.String)}
+	 */
+	@Deprecated
 	public boolean hasUserId() {
 		if (_userId > 0) {
 			return true;
@@ -184,45 +250,15 @@ public class PortletInstance {
 	}
 
 	private static String _getInstanceId(String portletInstanceKey) {
-		int index = portletInstanceKey.indexOf(_INSTANCE_SEPARATOR);
-
-		if (index == -1) {
-			return null;
-		}
-
-		return portletInstanceKey.substring(
-			index + _INSTANCE_SEPARATOR.length());
+		return PortletConstants.getInstanceId(portletInstanceKey);
 	}
 
 	private static String _getPortletName(String portletInstanceKey) {
-		int x = portletInstanceKey.indexOf(_USER_SEPARATOR);
-		int y = portletInstanceKey.indexOf(_INSTANCE_SEPARATOR);
-
-		if ((x == -1) && (y == -1)) {
-			return portletInstanceKey;
-		}
-		else if (x != -1) {
-			return portletInstanceKey.substring(0, x);
-		}
-
-		return portletInstanceKey.substring(0, y);
+		return PortletConstants.getRootPortletId(portletInstanceKey);
 	}
 
 	private static long _getUserId(String portletInstanceKey) {
-		int x = portletInstanceKey.indexOf(_USER_SEPARATOR);
-		int y = portletInstanceKey.indexOf(_INSTANCE_SEPARATOR);
-
-		if (x == -1) {
-			return 0;
-		}
-
-		if (y != -1) {
-			return GetterUtil.getLong(
-				portletInstanceKey.substring(x + _USER_SEPARATOR.length(), y));
-		}
-
-		return GetterUtil.getLong(
-			portletInstanceKey.substring(x + _USER_SEPARATOR.length()));
+		return PortletConstants.getUserId(portletInstanceKey);
 	}
 
 	private void _validatePortletName(String portletName) {

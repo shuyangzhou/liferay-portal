@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.PortletInstance;
+import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.portlet.PortletLayoutListener;
 import com.liferay.portal.kernel.portlet.PortletLayoutListenerException;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
@@ -189,10 +189,7 @@ public class JournalContentPortletLayoutListener
 		String portletName = rootElement.attributeValue("name");
 		String instanceId = rootElement.attributeValue("instance");
 
-		PortletInstance portletInstance = new PortletInstance(
-			portletName, instanceId);
-
-		return portletInstance.getPortletInstanceKey();
+		return PortletConstants.assemblePortletId(portletName, instanceId);
 	}
 
 	protected String[] getRuntimePortletIds(
