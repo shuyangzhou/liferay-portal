@@ -381,33 +381,6 @@ public class PortalImplCanonicalURLTest {
 		return sb.toString();
 	}
 
-	protected ThemeDisplay getThemeDisplay(Group group, String portalDomain)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = new ThemeDisplay();
-
-		Company company = CompanyLocalServiceUtil.getCompany(
-			TestPropsValues.getCompanyId());
-
-		themeDisplay.setCompany(company);
-
-		themeDisplay.setLayoutSet(group.getPublicLayoutSet());
-
-		int pos = portalDomain.indexOf(CharPool.COLON);
-
-		if (pos == -1) {
-			themeDisplay.setServerPort(80);
-		}
-		else {
-			themeDisplay.setServerPort(
-				GetterUtil.getIntegerStrict(portalDomain.substring(pos + 1)));
-		}
-
-		themeDisplay.setSiteGroupId(group.getGroupId());
-
-		return themeDisplay;
-	}
-
 	protected void setVirtualHost(long companyId, String virtualHostname)
 		throws Exception {
 
@@ -439,8 +412,12 @@ public class PortalImplCanonicalURLTest {
 
 		int index = portalDomain.indexOf(CharPool.COLON);
 
+		int serverPort = Http.HTTP_PORT;
+
 		if (index != -1) {
 			port = portalDomain.substring(index + 1);
+
+			serverPort = GetterUtil.getIntegerStrict(port);
 		}
 
 		String completeURL = generateURL(
@@ -449,10 +426,14 @@ public class PortalImplCanonicalURLTest {
 
 		setVirtualHost(layout.getCompanyId(), virtualHostname);
 
-		ThemeDisplay themeDisplay = getThemeDisplay(group, portalDomain);
+		Company company = CompanyLocalServiceUtil.getCompany(
+			TestPropsValues.getCompanyId());
 
+		ThemeDisplay themeDisplay = new ThemeDisplay();
+
+		themeDisplay.setCompany(company);
+		themeDisplay.setLayoutSet(group.getPublicLayoutSet());
 		themeDisplay.setPortalDomain(portalDomain);
-		themeDisplay.setSecure(secure);
 
 		if (secure) {
 			themeDisplay.setPortalURL(Http.HTTPS_WITH_SLASH + portalDomain);
@@ -460,6 +441,10 @@ public class PortalImplCanonicalURLTest {
 		else {
 			themeDisplay.setPortalURL(Http.HTTP_WITH_SLASH + portalDomain);
 		}
+
+		themeDisplay.setSecure(secure);
+		themeDisplay.setServerPort(serverPort);
+		themeDisplay.setSiteGroupId(group.getGroupId());
 
 		String actualCanonicalURL = PortalUtil.getCanonicalURL(
 			completeURL, themeDisplay, layout, forceLayoutFriendlyURL);
