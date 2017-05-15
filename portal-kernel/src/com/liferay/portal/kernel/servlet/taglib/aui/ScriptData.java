@@ -16,7 +16,6 @@ package com.liferay.portal.kernel.servlet.taglib.aui;
 
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Mergeable;
-import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -26,10 +25,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -60,9 +57,7 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 
 	public void mark() {
 		for (PortletData portletData : _portletDataMap.values()) {
-			_addToSBIndexList(portletData._auiCallbackSB);
-			_addToSBIndexList(portletData._es6CallbackSB);
-			_addToSBIndexList(portletData._rawSB);
+			portletData.mark();
 		}
 	}
 
@@ -76,10 +71,8 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 	}
 
 	public void reset() {
-		for (ObjectValuePair<StringBundler, Integer> ovp : _sbIndexList) {
-			StringBundler sb = ovp.getKey();
-
-			sb.setIndex(ovp.getValue());
+		for (PortletData portletData : _portletDataMap.values()) {
+			portletData.reset();
 		}
 	}
 
@@ -180,22 +173,6 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 
 	}
 
-	private void _addToSBIndexList(StringBundler sb) {
-		ObjectValuePair<StringBundler, Integer> ovp = new ObjectValuePair<>(
-			sb, sb.index());
-
-		int index = _sbIndexList.indexOf(ovp);
-
-		if (index == -1) {
-			_sbIndexList.add(ovp);
-		}
-		else {
-			ovp = _sbIndexList.get(index);
-
-			ovp.setValue(sb.index());
-		}
-	}
-
 	private String _generateVariable(String name, Set<String> names) {
 		StringBuilder sb = new StringBuilder(name.length());
 
@@ -290,8 +267,6 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 
 	private final ConcurrentMap<String, PortletData> _portletDataMap =
 		new ConcurrentHashMap<>();
-	private final List<ObjectValuePair<StringBundler, Integer>> _sbIndexList =
-		new ArrayList<>();
 
 	private static class PortletData implements Serializable {
 
@@ -355,13 +330,36 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 			}
 		}
 
+		public void mark() {
+			_auiCallbackSBIndex = _auiCallbackSB.index();
+			_es6CallbackSBIndex = _es6CallbackSB.index();
+			_rawSBIndex = _rawSB.index();
+		}
+
+		public void reset() {
+			if (_auiCallbackSBIndex >= 0) {
+				_auiCallbackSB.setIndex(_auiCallbackSBIndex);
+			}
+
+			if (_es6CallbackSBIndex >= 0) {
+				_es6CallbackSB.setIndex(_es6CallbackSBIndex);
+			}
+
+			if (_rawSBIndex >= 0) {
+				_rawSB.setIndex(_rawSBIndex);
+			}
+		}
+
 		private static final long serialVersionUID = 1L;
 
 		private final StringBundler _auiCallbackSB = new StringBundler();
+		private int _auiCallbackSBIndex = -1;
 		private final Set<String> _auiModulesSet = new HashSet<>();
 		private final StringBundler _es6CallbackSB = new StringBundler();
+		private int _es6CallbackSBIndex = -1;
 		private final Set<String> _es6ModulesSet = new HashSet<>();
 		private final StringBundler _rawSB = new StringBundler();
+		private int _rawSBIndex = -1;
 
 	}
 
