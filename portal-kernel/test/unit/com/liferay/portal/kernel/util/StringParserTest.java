@@ -37,6 +37,20 @@ public class StringParserTest {
 
 		Assert.assertEquals("/123/abc/", stringParser.build(params));
 
+		params = new HashMap<>();
+
+		params.put("nodeId", "1a3");
+		params.put("title", "abc");
+
+		Assert.assertNull(stringParser.build(params));
+
+		params = new HashMap<>();
+
+		params.put("nodeId", "123");
+		params.put("title", "ab/c");
+
+		Assert.assertNull(stringParser.build(params));
+
 		stringParser = StringParser.create("{mvcPathName}");
 
 		params = new HashMap<>();
@@ -68,6 +82,15 @@ public class StringParserTest {
 		params = new HashMap<>();
 
 		params.put("type", "abc");
+		params.put("urlTitle", "id/xyz");
+		params.put("userIdAndInstanceId", "123");
+
+		Assert.assertNull(stringParser.build(params));
+
+		params = new HashMap<>();
+
+		params.put("type", "abc");
+		params.put("urlTitle", "xy/z");
 		params.put("userIdAndInstanceId", "123");
 
 		Assert.assertNull(stringParser.build(params));
