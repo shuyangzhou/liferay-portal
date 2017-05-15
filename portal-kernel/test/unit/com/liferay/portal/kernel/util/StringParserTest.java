@@ -140,7 +140,7 @@ public class StringParserTest {
 
 		stringParser.parse("/maximized", params);
 
-		Assert.assertEquals(params.toString(), 0, params.size());
+		Assert.assertTrue(params.toString(), params.isEmpty());
 
 		stringParser = StringParser.create(
 			"/{userIdAndInstanceId}/{type}/{urlTitle:(?!id/)[^/]+}");
@@ -161,7 +161,7 @@ public class StringParserTest {
 
 		stringParser.parse("/123/abc/id/", params);
 
-		Assert.assertEquals(params.toString(), 0, params.size());
+		Assert.assertTrue(params.toString(), params.isEmpty());
 
 		stringParser = StringParser.create("/{test}");
 
@@ -169,7 +169,7 @@ public class StringParserTest {
 
 		stringParser.parse("/a.", params);
 
-		Assert.assertEquals(params.toString(), 0, params.size());
+		Assert.assertTrue(params.toString(), params.isEmpty());
 
 		stringParser = StringParser.create("/{test:\\d+}");
 
@@ -177,7 +177,7 @@ public class StringParserTest {
 
 		stringParser.parse("/1a", params);
 
-		Assert.assertEquals(params.toString(), 0, params.size());
+		Assert.assertTrue(params.toString(), params.isEmpty());
 	}
 
 }
