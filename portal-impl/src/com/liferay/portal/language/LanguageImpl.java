@@ -468,44 +468,8 @@ public class LanguageImpl implements Language, Serializable {
 			resourceBundle = portletConfig.getResourceBundle(locale);
 		}
 
-		String value = null;
-
-		try {
-			pattern = _get(locale, resourceBundle, pattern, pattern);
-
-			if (ArrayUtil.isEmpty(arguments)) {
-				return pattern;
-			}
-
-			if (translateArguments) {
-				for (int i = 0; i < arguments.length; i++) {
-					String argument = arguments[i].toString();
-
-					arguments[i] = _get(
-						locale, resourceBundle, argument, argument);
-				}
-			}
-
-			value = _getFastFormattedMessage(locale, pattern, arguments);
-
-			if (value == null) {
-				value = pattern;
-
-				pattern = _escapePattern(pattern);
-
-				MessageFormat messageFormat = decorateMessageFormat(
-					locale, pattern, arguments);
-
-				value = messageFormat.format(arguments);
-			}
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(e, e);
-			}
-		}
-
-		return value;
+		return _format(
+			locale, resourceBundle, pattern, arguments, translateArguments);
 	}
 
 	/**
@@ -660,41 +624,7 @@ public class LanguageImpl implements Language, Serializable {
 			return pattern;
 		}
 
-		String value = null;
-
-		try {
-			pattern = get(locale, pattern);
-
-			if (ArrayUtil.isEmpty(arguments)) {
-				return pattern;
-			}
-
-			if (translateArguments) {
-				for (int i = 0; i < arguments.length; i++) {
-					arguments[i] = get(locale, arguments[i].toString());
-				}
-			}
-
-			value = _getFastFormattedMessage(locale, pattern, arguments);
-
-			if (value == null) {
-				value = pattern;
-
-				pattern = _escapePattern(pattern);
-
-				MessageFormat messageFormat = decorateMessageFormat(
-					locale, pattern, arguments);
-
-				value = messageFormat.format(arguments);
-			}
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(e, e);
-			}
-		}
-
-		return value;
+		return _format(locale, null, pattern, arguments, translateArguments);
 	}
 
 	/**
@@ -804,46 +734,13 @@ public class LanguageImpl implements Language, Serializable {
 		ResourceBundle resourceBundle, String pattern, Object[] arguments,
 		boolean translateArguments) {
 
-		if (PropsValues.TRANSLATIONS_DISABLED) {
+		if (PropsValues.TRANSLATIONS_DISABLED || (resourceBundle == null)) {
 			return pattern;
 		}
 
-		String value = null;
-
-		try {
-			pattern = get(resourceBundle, pattern);
-
-			if (ArrayUtil.isEmpty(arguments)) {
-				return pattern;
-			}
-
-			if (translateArguments) {
-				for (int i = 0; i < arguments.length; i++) {
-					arguments[i] = get(resourceBundle, arguments[i].toString());
-				}
-			}
-
-			value = _getFastFormattedMessage(
-				resourceBundle.getLocale(), pattern, arguments);
-
-			if (value == null) {
-				value = pattern;
-
-				pattern = _escapePattern(pattern);
-
-				MessageFormat messageFormat = decorateMessageFormat(
-					resourceBundle.getLocale(), pattern, arguments);
-
-				value = messageFormat.format(arguments);
-			}
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(e, e);
-			}
-		}
-
-		return value;
+		return _format(
+			resourceBundle.getLocale(), resourceBundle, pattern, arguments,
+			translateArguments);
 	}
 
 	/**
@@ -1734,6 +1631,50 @@ public class LanguageImpl implements Language, Serializable {
 	private String _escapePattern(String pattern) {
 		return StringUtil.replace(
 			pattern, CharPool.APOSTROPHE, StringPool.DOUBLE_APOSTROPHE);
+	}
+
+	private String _format(
+		Locale locale, ResourceBundle resourceBundle, String pattern,
+		Object[] arguments, boolean translateArguments) {
+
+		String value = null;
+
+		try {
+			pattern = _get(locale, resourceBundle, pattern, pattern);
+
+			if (ArrayUtil.isEmpty(arguments)) {
+				return pattern;
+			}
+
+			if (translateArguments) {
+				for (int i = 0; i < arguments.length; i++) {
+					String argument = arguments[i].toString();
+
+					arguments[i] = _get(
+						locale, resourceBundle, argument, argument);
+				}
+			}
+
+			value = _getFastFormattedMessage(locale, pattern, arguments);
+
+			if (value == null) {
+				value = pattern;
+
+				pattern = _escapePattern(pattern);
+
+				MessageFormat messageFormat = decorateMessageFormat(
+					locale, pattern, arguments);
+
+				value = messageFormat.format(arguments);
+			}
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(e, e);
+			}
+		}
+
+		return value;
 	}
 
 	private String _get(
