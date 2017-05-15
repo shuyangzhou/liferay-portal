@@ -4848,15 +4848,7 @@ public class PortalImpl implements Portal {
 				PropsKeys.
 					SITES_CONTENT_SHARING_THROUGH_ADMINISTRATORS_ENABLED)) {
 
-			LinkedHashMap<String, Object> groupParams = new LinkedHashMap<>();
-
-			groupParams.put("site", Boolean.TRUE);
-			groupParams.put("usersGroups", userId);
-
-			groups.addAll(
-				GroupLocalServiceUtil.search(
-					companyId, null, null, groupParams, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null));
+			groups.addAll(GroupLocalServiceUtil.getUserSitesGroups(userId));
 		}
 
 		// Ancestor sites and global site
