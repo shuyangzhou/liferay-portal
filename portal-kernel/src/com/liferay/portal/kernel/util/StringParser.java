@@ -34,12 +34,12 @@ import java.util.regex.Pattern;
 public class StringParser {
 
 	public static StringParser create(String chunk) {
-		StringParser stringParser = _stringParserFragmentsCache.get(chunk);
+		StringParser stringParser = _stringParserCache.get(chunk);
 
 		if (stringParser == null) {
 			stringParser = new StringParser(chunk);
 
-			_stringParserFragmentsCache.put(chunk, stringParser);
+			_stringParserCache.put(chunk, stringParser);
 		}
 
 		return stringParser;
@@ -84,7 +84,7 @@ public class StringParser {
 	 *         appropriate
 	 */
 	public String build(Map<String, String> parameters) {
-		String s = _builder;
+		Builder builder = null;
 
 		for (StringParserFragment stringParserFragment :
 				_stringParserFragments) {
@@ -103,7 +103,11 @@ public class StringParser {
 				return null;
 			}
 
-			s = StringUtil.replace(s, stringParserFragment.getToken(), value);
+			if (builder == null) {
+				builder = _builderFactory.create();
+			}
+
+			builder.setTokenValue(value);
 		}
 
 		for (StringParserFragment stringParserFragment :
@@ -112,7 +116,11 @@ public class StringParser {
 			parameters.remove(stringParserFragment.getName());
 		}
 
-		return s;
+		if (builder == null) {
+			return _builderFactory._pattern;
+		}
+
+		return builder.toString();
 	}
 
 	/**
@@ -266,7 +274,7 @@ public class StringParser {
 						StringPool.CLOSE_PARENTHESIS)));
 		}
 
-		_builder = pattern;
+		_builderFactory = new BuilderFactory(pattern);
 
 		_pattern = Pattern.compile(regex);
 	}
@@ -275,13 +283,98 @@ public class StringParser {
 		"[\\{\\}\\(\\)\\[\\]\\*\\+\\?\\$\\^\\.\\#\\\\]");
 	private static final Pattern _fragmentPattern = Pattern.compile(
 		"\\{.+?\\}");
-	private static final Map<String, StringParser> _stringParserFragmentsCache =
+	private static final Map<String, StringParser> _stringParserCache =
 		new ConcurrentReferenceValueHashMap<>(
 			FinalizeManager.SOFT_REFERENCE_FACTORY);
 
-	private final String _builder;
+	private final BuilderFactory _builderFactory;
 	private final Pattern _pattern;
 	private StringEncoder _stringEncoder;
 	private final List<StringParserFragment> _stringParserFragments;
+
+	private static class Builder {
+
+		public void setTokenValue(String value) {
+			if (_parts[_index] == null) {
+				_parts[_index++] = value;
+			}
+			else {
+				_index++;
+
+				_parts[_index++] = value;
+			}
+		}
+
+		@Override
+		public String toString() {
+			StringBundler sb = new StringBundler(_parts);
+
+			return sb.toString();
+		}
+
+		private Builder(String[] parts) {
+			_parts = parts;
+		}
+
+		private int _index;
+		private final String[] _parts;
+
+	}
+
+	private static class BuilderFactory {
+
+		public Builder create() {
+			return new Builder(_parts.clone());
+		}
+
+		private BuilderFactory(String pattern) {
+			_pattern = pattern;
+
+			int tokenStart = pattern.indexOf(CharPool.OPEN_CURLY_BRACE);
+
+			if (tokenStart == -1) {
+				_parts = null;
+			}
+			else {
+				List<String> parts = new ArrayList<>();
+
+				int pos = 0;
+
+				while (true) {
+					int tokenEnd = pattern.indexOf(
+						CharPool.CLOSE_CURLY_BRACE, tokenStart + 1);
+
+					if ((tokenStart == -1) || (tokenEnd == -1)) {
+						String part = pattern.substring(pos);
+
+						if (!part.isEmpty()) {
+							parts.add(part);
+						}
+
+						break;
+					}
+
+					String part = pattern.substring(pos, tokenStart);
+
+					if (!part.isEmpty()) {
+						parts.add(part);
+					}
+
+					parts.add(null);
+
+					pos = tokenEnd + 1;
+
+					tokenStart = pattern.indexOf(
+						CharPool.OPEN_CURLY_BRACE, pos);
+				}
+
+				_parts = parts.toArray(new String[parts.size()]);
+			}
+		}
+
+		private final String[] _parts;
+		private final String _pattern;
+
+	}
 
 }
