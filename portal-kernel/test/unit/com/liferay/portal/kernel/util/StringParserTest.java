@@ -65,9 +65,6 @@ public class StringParserTest {
 
 		Assert.assertEquals("/123/abc/xyz", stringParser.build(params));
 
-		stringParser = StringParser.create(
-			"/{userIdAndInstanceId}/{type}/{urlTitle:(?!id/)[^/]+}");
-
 		params = new HashMap<>();
 
 		params.put("type", "abc");
