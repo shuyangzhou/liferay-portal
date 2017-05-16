@@ -456,8 +456,7 @@ public class ConfigurationImpl
 	}
 
 	private Object _getArrayConfigurationValue(String key) {
-		Object value = _configurationEnvironmentCache.get(
-			getEnvironmentVariableName(key));
+		Object value = _systemEnvironment.get(getEnvironmentVariableName(key));
 
 		if (value != null) {
 			return value;
@@ -479,8 +478,7 @@ public class ConfigurationImpl
 	private Object _getArrayConfigurationValue(
 		String key, Filter filter, FilterCacheKey filterCacheKey) {
 
-		Object value = _configurationEnvironmentCache.get(
-			getEnvironmentVariableName(key));
+		Object value = _systemEnvironment.get(getEnvironmentVariableName(key));
 
 		if (value != null) {
 			return value;
@@ -503,7 +501,7 @@ public class ConfigurationImpl
 	}
 
 	private Object _getConfigurationValue(String key) {
-		Object value = _configurationEnvironmentCache.get(key);
+		Object value = _systemEnvironment.get(key);
 
 		if (value != null) {
 			return value;
@@ -523,7 +521,7 @@ public class ConfigurationImpl
 	private Object _getConfigurationValue(
 		String key, Filter filter, FilterCacheKey filterCacheKey) {
 
-		Object value = _configurationEnvironmentCache.get(key);
+		Object value = _systemEnvironment.get(key);
 
 		if (value != null) {
 			return value;
@@ -547,8 +545,6 @@ public class ConfigurationImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		ConfigurationImpl.class);
 
-	private static final Map<String, String> _configurationEnvironmentCache =
-		System.getenv();
 	private static final String[] _emptyArray = new String[0];
 	private static final Object _nullValue = new Object();
 
@@ -581,6 +577,8 @@ public class ConfigurationImpl
 			return replacedKey;
 		};
 
+	private static final Map<String, String> _systemEnvironment =
+		System.getenv();
 	private static final Function<String, String> _toUpperCaseFunction =
 		(String propsKey) -> StringUtil.toUpperCase(propsKey);
 	private static final Function<String, String>[] _transformationFunctions;
