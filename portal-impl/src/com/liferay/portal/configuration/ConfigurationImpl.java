@@ -461,13 +461,7 @@ public class ConfigurationImpl
 	private Object _getArrayConfigurationValue(
 		String key, Filter filter, FilterCacheKey filterCacheKey) {
 
-		Object value = _configurationModifiedCache.get(key);
-
-		if (value != null) {
-			return value;
-		}
-
-		value = _configurationEnvironmentCache.get(
+		Object value = _configurationEnvironmentCache.get(
 			getEnvironmentVariableName(key));
 
 		if (value != null) {
@@ -517,13 +511,7 @@ public class ConfigurationImpl
 	private Object _getConfigurationValue(
 		String key, Filter filter, FilterCacheKey filterCacheKey) {
 
-		Object value = _configurationModifiedCache.get(key);
-
-		if (value != null) {
-			return value;
-		}
-
-		value = _configurationEnvironmentCache.get(key);
+		Object value = _configurationEnvironmentCache.get(key);
 
 		if (value != null) {
 			return value;
