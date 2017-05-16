@@ -357,8 +357,6 @@ public class ConfigurationImpl
 
 		componentProperties.setProperty(key, value);
 
-		_configurationModifiedCache.put(key, value);
-
 		clearCache();
 	}
 
@@ -458,13 +456,7 @@ public class ConfigurationImpl
 	}
 
 	private Object _getArrayConfigurationValue(String key) {
-		Object value = _configurationModifiedCache.get(key);
-
-		if (value != null) {
-			return ((String)value).split(",");
-		}
-
-		value = _configurationEnvironmentCache.get(
+		Object value = _configurationEnvironmentCache.get(
 			getEnvironmentVariableName(key));
 
 		if (value != null) {
@@ -511,13 +503,7 @@ public class ConfigurationImpl
 	}
 
 	private Object _getConfigurationValue(String key) {
-		Object value = _configurationModifiedCache.get(key);
-
-		if (value != null) {
-			return value;
-		}
-
-		value = _configurationEnvironmentCache.get(key);
+		Object value = _configurationEnvironmentCache.get(key);
 
 		if (value != null) {
 			return value;
@@ -614,8 +600,6 @@ public class ConfigurationImpl
 	private final Map<FilterCacheKey, Object> _configurationFilterArrayCache =
 		new ConcurrentHashMap<>();
 	private final Map<FilterCacheKey, Object> _configurationFilterCache =
-		new ConcurrentHashMap<>();
-	private final Map<String, Object> _configurationModifiedCache =
 		new ConcurrentHashMap<>();
 	private final Set<String> _printedSources = new HashSet<>();
 	private Properties _properties;
