@@ -163,15 +163,7 @@ public class ConfigurationImpl
 		Object value = _configurationCache.get(key);
 
 		if (value == null) {
-			ComponentProperties componentProperties = getComponentProperties();
-
-			value = componentProperties.getProperty(key);
-
-			if (value == null) {
-				value = _nullValue;
-			}
-
-			value = checkEnvironmentVariable(key, value);
+			value = _getConfigurationValue(key);
 
 			_configurationCache.put(key, value);
 		}
@@ -188,15 +180,7 @@ public class ConfigurationImpl
 		Object value = _configurationCache.get(key);
 
 		if (value == null) {
-			ComponentProperties componentProperties = getComponentProperties();
-
-			value = componentProperties.getString(key);
-
-			if (value == null) {
-				value = _nullValue;
-			}
-
-			value = checkEnvironmentVariable(key, value);
+			value = _getConfigurationValue(key);
 
 			_configurationCache.put(key, value);
 		}
@@ -222,19 +206,10 @@ public class ConfigurationImpl
 		}
 
 		if (value == null) {
-			ComponentProperties componentProperties = getComponentProperties();
-
-			value = componentProperties.getString(
-				key, getEasyConfFilter(filter));
+			value = _getConfigurationValue(key, filter, filterCacheKey);
 
 			if (filterCacheKey != null) {
-				if (value == null) {
-					value = _nullValue;
-				}
-
-				value = checkEnvironmentVariable(key, value);
-
-				_configurationFilterCache.put(filterCacheKey, value);
+				_configurationFilterArrayCache.put(filterCacheKey, value);
 			}
 		}
 
@@ -250,13 +225,7 @@ public class ConfigurationImpl
 		Object value = _configurationArrayCache.get(key);
 
 		if (value == null) {
-			ComponentProperties componentProperties = getComponentProperties();
-
-			String[] array = componentProperties.getStringArray(key);
-
-			value = _fixArrayValue(array);
-
-			value = checkArrayEnvironmentVariable(key, value);
+			value = _getArrayConfigurationValue(key);
 
 			_configurationArrayCache.put(key, value);
 		}
@@ -279,15 +248,7 @@ public class ConfigurationImpl
 		}
 
 		if (value == null) {
-			ComponentProperties componentProperties = getComponentProperties();
-
-			String[] array = componentProperties.getStringArray(
-				key, getEasyConfFilter(filter));
-
-			value = _fixArrayValue(array);
-
-			value = checkArrayEnvironmentVariable(
-				filterCacheKey.toString(), value);
+			value = _getArrayConfigurationValue(key, filter, filterCacheKey);
 
 			if (filterCacheKey != null) {
 				_configurationFilterArrayCache.put(filterCacheKey, value);
@@ -323,9 +284,7 @@ public class ConfigurationImpl
 			componentProperties.getProperties();
 
 		for (String key : componentPropertiesProperties.stringPropertyNames()) {
-			String value = componentProperties.getString(key);
-
-			value = (String)checkEnvironmentVariable(key, value);
+			String value = (String)_getConfigurationValue(key);
 
 			properties.setProperty(key, value);
 		}
@@ -398,33 +357,9 @@ public class ConfigurationImpl
 
 		componentProperties.setProperty(key, value);
 
+		_configurationModifiedCache.put(key, value);
+
 		clearCache();
-	}
-
-	protected Object checkArrayEnvironmentVariable(
-		String key, Object propertyValue) {
-
-		String value = _configurationEnvironmentCache.get(
-			getEnvironmentVariableName(key));
-
-		if (value != null) {
-			return value.split(",");
-		}
-
-		return propertyValue;
-	}
-
-	protected Object checkEnvironmentVariable(
-		String key, Object propertyValue) {
-
-		String value = _configurationEnvironmentCache.get(
-			getEnvironmentVariableName(key));
-
-		if (value != null) {
-			return value;
-		}
-
-		return propertyValue;
 	}
 
 	protected ComponentProperties getComponentProperties() {
@@ -494,6 +429,118 @@ public class ConfigurationImpl
 		}
 
 		return new FilterCacheKey(key, filter);
+	}
+
+	private Object _getArrayConfigurationValue(String key) {
+		Object value = _configurationModifiedCache.get(key);
+
+		if (value != null) {
+			return ((String)value).split(",");
+		}
+
+		value = _configurationEnvironmentCache.get(
+			getEnvironmentVariableName(key));
+
+		if (value != null) {
+			return value;
+		}
+
+		ComponentProperties componentProperties = getComponentProperties();
+
+		String[] array = componentProperties.getStringArray(key);
+
+		value = _fixArrayValue(array);
+
+		if (value != null) {
+			return value;
+		}
+
+		return _nullValue;
+	}
+
+	private Object _getArrayConfigurationValue(
+		String key, Filter filter, FilterCacheKey filterCacheKey) {
+
+		Object value = _configurationModifiedCache.get(key);
+
+		if (value != null) {
+			return value;
+		}
+
+		value = _configurationEnvironmentCache.get(
+			getEnvironmentVariableName(key));
+
+		if (value != null) {
+			return value;
+		}
+
+		ComponentProperties componentProperties = getComponentProperties();
+
+		String[] array = componentProperties.getStringArray(
+			key, getEasyConfFilter(filter));
+
+		value = _fixArrayValue(array);
+
+		if (filterCacheKey != null) {
+			if (value != null) {
+				return value;
+			}
+		}
+
+		return _nullValue;
+	}
+
+	private Object _getConfigurationValue(String key) {
+		Object value = _configurationModifiedCache.get(key);
+
+		if (value != null) {
+			return value;
+		}
+
+		value = _configurationEnvironmentCache.get(key);
+
+		if (value != null) {
+			return value;
+		}
+
+		ComponentProperties componentProperties = getComponentProperties();
+
+		value = componentProperties.getString(key);
+
+		if (value != null) {
+			return value;
+		}
+
+		return _nullValue;
+	}
+
+	private Object _getConfigurationValue(
+		String key, Filter filter, FilterCacheKey filterCacheKey) {
+
+		Object value = _configurationModifiedCache.get(key);
+
+		if (value != null) {
+			return value;
+		}
+
+		value = _configurationEnvironmentCache.get(key);
+
+		if (value != null) {
+			return value;
+		}
+
+		ComponentProperties componentProperties = getComponentProperties();
+
+		value = componentProperties.getString(
+			key, getEasyConfFilter(filter));
+
+		if (filterCacheKey != null) {
+			if (value != null) {
+				return value;
+			}
+		}
+
+		return _nullValue;
 	}
 
 	private Object _fixArrayValue(String[] array) {
@@ -580,6 +627,8 @@ public class ConfigurationImpl
 	private final Map<FilterCacheKey, Object> _configurationFilterArrayCache =
 		new ConcurrentHashMap<>();
 	private final Map<FilterCacheKey, Object> _configurationFilterCache =
+		new ConcurrentHashMap<>();
+	private final Map<String, Object> _configurationModifiedCache =
 		new ConcurrentHashMap<>();
 	private final Set<String> _printedSources = new HashSet<>();
 	private Properties _properties;
