@@ -267,6 +267,12 @@ public class RatingsStatsLocalServiceWrapper implements RatingsStatsLocalService
 		return _ratingsStatsLocalService.getStats(className, classPKs);
 	}
 
+	@Override
+	public java.util.Map<java.lang.Long, com.liferay.ratings.kernel.model.RatingsStats> getStats(
+		java.lang.String className, long[] classPKs) {
+		return _ratingsStatsLocalService.getStats(className, classPKs);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*

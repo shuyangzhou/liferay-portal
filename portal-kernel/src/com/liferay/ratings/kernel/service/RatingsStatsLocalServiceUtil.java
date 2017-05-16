@@ -252,6 +252,11 @@ public class RatingsStatsLocalServiceUtil {
 		return getService().getStats(className, classPKs);
 	}
 
+	public static java.util.Map<java.lang.Long, com.liferay.ratings.kernel.model.RatingsStats> getStats(
+		java.lang.String className, long[] classPKs) {
+		return getService().getStats(className, classPKs);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*

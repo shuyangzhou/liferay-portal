@@ -321,6 +321,12 @@ public class RatingsEntryLocalServiceWrapper implements RatingsEntryLocalService
 		return _ratingsEntryLocalService.getRatingsEntries(start, end);
 	}
 
+	@Override
+	public java.util.Map<java.lang.Long, com.liferay.ratings.kernel.model.RatingsEntry> getEntries(
+		long userId, java.lang.String className, long[] classPKs) {
+		return _ratingsEntryLocalService.getEntries(userId, className, classPKs);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
