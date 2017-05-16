@@ -431,6 +431,32 @@ public class ConfigurationImpl
 		return new FilterCacheKey(key, filter);
 	}
 
+	private Object _fixArrayValue(String[] array) {
+		Object value = _nullValue;
+
+		if (ArrayUtil.isNotEmpty(array)) {
+
+			// Commons Configuration parses an empty property into a String
+			// array with one String containing one space. It also leaves a
+			// trailing array member if you set a property in more than one
+			// line.
+
+			if (Validator.isNull(array[array.length - 1])) {
+				String[] subarray = new String[array.length - 1];
+
+				System.arraycopy(array, 0, subarray, 0, subarray.length);
+
+				array = subarray;
+			}
+
+			if (array.length > 0) {
+				value = array;
+			}
+		}
+
+		return value;
+	}
+
 	private Object _getArrayConfigurationValue(String key) {
 		Object value = _configurationModifiedCache.get(key);
 
@@ -519,8 +545,7 @@ public class ConfigurationImpl
 
 		ComponentProperties componentProperties = getComponentProperties();
 
-		value = componentProperties.getString(
-			key, getEasyConfFilter(filter));
+		value = componentProperties.getString(key, getEasyConfFilter(filter));
 
 		if (filterCacheKey != null) {
 			if (value != null) {
@@ -529,32 +554,6 @@ public class ConfigurationImpl
 		}
 
 		return _nullValue;
-	}
-
-	private Object _fixArrayValue(String[] array) {
-		Object value = _nullValue;
-
-		if (ArrayUtil.isNotEmpty(array)) {
-
-			// Commons Configuration parses an empty property into a String
-			// array with one String containing one space. It also leaves a
-			// trailing array member if you set a property in more than one
-			// line.
-
-			if (Validator.isNull(array[array.length - 1])) {
-				String[] subarray = new String[array.length - 1];
-
-				System.arraycopy(array, 0, subarray, 0, subarray.length);
-
-				array = subarray;
-			}
-
-			if (array.length > 0) {
-				value = array;
-			}
-		}
-
-		return value;
 	}
 
 	private static final boolean _PRINT_DUPLICATE_CALLS_TO_GET = false;
