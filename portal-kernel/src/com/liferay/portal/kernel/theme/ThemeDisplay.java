@@ -108,6 +108,20 @@ public class ThemeDisplay
 		_portletDisplay.setThemeDisplay(this);
 	}
 
+	public void clearLayoutFriendlyURL(Layout layout) {
+		if (_layoutFriendlyURLs == null) {
+			return;
+		}
+
+		if (layout instanceof VirtualLayout) {
+			VirtualLayout virtualLayout = (VirtualLayout)layout;
+
+			layout = virtualLayout.getSourceLayout();
+		}
+
+		_layoutFriendlyURLs.remove(layout.getPlid());
+	}
+
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		ThemeDisplay themeDisplay = (ThemeDisplay)super.clone();

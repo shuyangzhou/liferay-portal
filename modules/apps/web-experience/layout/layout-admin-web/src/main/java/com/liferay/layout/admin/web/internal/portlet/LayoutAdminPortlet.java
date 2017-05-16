@@ -477,6 +477,8 @@ public class LayoutAdminPortlet extends MVCPortlet {
 			nameMap, titleMap, descriptionMap, keywordsMap, robotsMap, type,
 			hidden, friendlyURLMap, !deleteLogo, iconBytes, serviceContext);
 
+		themeDisplay.clearLayoutFriendlyURL(layout);
+
 		UnicodeProperties layoutTypeSettingsProperties =
 			layout.getTypeSettingsProperties();
 
