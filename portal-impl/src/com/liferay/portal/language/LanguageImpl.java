@@ -258,10 +258,21 @@ public class LanguageImpl implements Language, Serializable {
 			return pattern;
 		}
 
+		Locale locale = _getLocale(request);
+
+		ResourceBundle resourceBundle = null;
+
+		PortletConfig portletConfig = (PortletConfig)request.getAttribute(
+			JavaConstants.JAVAX_PORTLET_CONFIG);
+
+		if (portletConfig != null) {
+			resourceBundle = portletConfig.getResourceBundle(locale);
+		}
+
 		String value = null;
 
 		try {
-			pattern = get(request, pattern);
+			pattern = _get(locale, resourceBundle, pattern, pattern);
 
 			if (ArrayUtil.isNotEmpty(arguments)) {
 				pattern = _escapePattern(pattern);
@@ -269,21 +280,23 @@ public class LanguageImpl implements Language, Serializable {
 				Object[] formattedArguments = new Object[arguments.length];
 
 				for (int i = 0; i < arguments.length; i++) {
+					String text = arguments[i].getText();
+
 					if (translateArguments) {
 						formattedArguments[i] =
 							arguments[i].getBefore() +
-								get(request, arguments[i].getText()) +
+								_get(locale, resourceBundle, text, text) +
 									arguments[i].getAfter();
 					}
 					else {
 						formattedArguments[i] =
-							arguments[i].getBefore() + arguments[i].getText() +
+							arguments[i].getBefore() + text +
 								arguments[i].getAfter();
 					}
 				}
 
 				MessageFormat messageFormat = decorateMessageFormat(
-					request, pattern, formattedArguments);
+					locale, pattern, formattedArguments);
 
 				value = messageFormat.format(formattedArguments);
 			}
@@ -433,22 +446,36 @@ public class LanguageImpl implements Language, Serializable {
 			return pattern;
 		}
 
+		Locale locale = _getLocale(request);
+
+		ResourceBundle resourceBundle = null;
+
+		PortletConfig portletConfig = (PortletConfig)request.getAttribute(
+			JavaConstants.JAVAX_PORTLET_CONFIG);
+
+		if (portletConfig != null) {
+			resourceBundle = portletConfig.getResourceBundle(locale);
+		}
+
 		String value = null;
 
 		try {
-			pattern = get(request, pattern);
+			pattern = _get(locale, resourceBundle, pattern, pattern);
 
 			if (ArrayUtil.isNotEmpty(arguments)) {
 				pattern = _escapePattern(pattern);
 
 				for (int i = 0; i < arguments.length; i++) {
 					if (translateArguments) {
-						arguments[i] = get(request, arguments[i].toString());
+						String argument = arguments[i].toString();
+
+						arguments[i] = _get(
+							locale, resourceBundle, argument, argument);
 					}
 				}
 
 				MessageFormat messageFormat = decorateMessageFormat(
-					request, pattern, arguments);
+					locale, pattern, arguments);
 
 				value = messageFormat.format(arguments);
 			}
@@ -855,13 +882,20 @@ public class LanguageImpl implements Language, Serializable {
 
 		Locale locale = _getLocale(request);
 
-		if (portletConfig == null) {
-			return get(locale, key, defaultValue);
+		ResourceBundle resourceBundle = null;
+
+		if (portletConfig != null) {
+			resourceBundle = portletConfig.getResourceBundle(locale);
 		}
 
-		ResourceBundle resourceBundle = portletConfig.getResourceBundle(locale);
+		return _get(locale, resourceBundle, key, defaultValue);
+	}
 
-		if (resourceBundle.containsKey(key)) {
+	private String _get(
+		Locale locale, ResourceBundle resourceBundle, String key,
+		String defaultValue) {
+
+		if ((resourceBundle != null) && resourceBundle.containsKey(key)) {
 			return _get(resourceBundle, key);
 		}
 
