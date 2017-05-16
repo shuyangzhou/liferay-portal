@@ -456,13 +456,15 @@ public class ConfigurationImpl
 	}
 
 	private Object _getArrayConfigurationValue(String key) {
+		ComponentProperties componentProperties = getComponentProperties();
+
 		Object value = _systemEnvironment.get(getEnvironmentVariableName(key));
 
 		if (value != null) {
+			componentProperties.setProperty(key, value);
+
 			return value;
 		}
-
-		ComponentProperties componentProperties = getComponentProperties();
 
 		String[] array = componentProperties.getStringArray(key);
 
@@ -478,13 +480,15 @@ public class ConfigurationImpl
 	private Object _getArrayConfigurationValue(
 		String key, Filter filter, FilterCacheKey filterCacheKey) {
 
+		ComponentProperties componentProperties = getComponentProperties();
+
 		Object value = _systemEnvironment.get(getEnvironmentVariableName(key));
 
 		if (value != null) {
+			componentProperties.setProperty(key, value);
+
 			return value;
 		}
-
-		ComponentProperties componentProperties = getComponentProperties();
 
 		String[] array = componentProperties.getStringArray(
 			key, getEasyConfFilter(filter));
@@ -501,13 +505,15 @@ public class ConfigurationImpl
 	}
 
 	private Object _getConfigurationValue(String key) {
+		ComponentProperties componentProperties = getComponentProperties();
+
 		Object value = _systemEnvironment.get(key);
 
 		if (value != null) {
+			componentProperties.setProperty(key, value);
+
 			return value;
 		}
-
-		ComponentProperties componentProperties = getComponentProperties();
 
 		value = componentProperties.getString(key);
 
@@ -521,13 +527,15 @@ public class ConfigurationImpl
 	private Object _getConfigurationValue(
 		String key, Filter filter, FilterCacheKey filterCacheKey) {
 
+		ComponentProperties componentProperties = getComponentProperties();
+
 		Object value = _systemEnvironment.get(key);
 
 		if (value != null) {
+			componentProperties.setProperty(key, value);
+
 			return value;
 		}
-
-		ComponentProperties componentProperties = getComponentProperties();
 
 		value = componentProperties.getString(key, getEasyConfFilter(filter));
 
