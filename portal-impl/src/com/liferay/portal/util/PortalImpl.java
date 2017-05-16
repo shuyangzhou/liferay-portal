@@ -8320,15 +8320,9 @@ public class PortalImpl implements Portal {
 				(canonicalURL ||
 				 !StringUtil.equalsIgnoreCase(virtualHostname, _LOCALHOST))) {
 
-				String canonicalDomain = getCanonicalDomain(
-					virtualHostname, portalDomain);
+				String portalHostName = _getHostName(portalDomain);
 
-				virtualHostname = getPortalURL(
-					canonicalDomain, themeDisplay.getServerPort(),
-					themeDisplay.isSecure());
-
-				if ((canonicalURL ||
-					 canonicalDomain.startsWith(portalDomain)) &&
+				if ((canonicalURL || virtualHostname.equals(portalHostName)) &&
 					!controlPanel) {
 
 					String path = StringPool.BLANK;
@@ -8341,7 +8335,7 @@ public class PortalImpl implements Portal {
 						path = themeDisplay.getI18nPath();
 					}
 
-					return virtualHostname.concat(_pathContext).concat(path);
+					return portalURL.concat(_pathContext).concat(path);
 				}
 			}
 			else {
@@ -8423,6 +8417,16 @@ public class PortalImpl implements Portal {
 		sb.append(group.getFriendlyURL());
 
 		return sb.toString();
+	}
+
+	private String _getHostName(String portalDomain) {
+		int pos = portalDomain.indexOf(CharPool.COLON);
+
+		if (pos > 0) {
+			return portalDomain.substring(0, pos);
+		}
+
+		return portalDomain;
 	}
 
 	private String _getPortalURL(
