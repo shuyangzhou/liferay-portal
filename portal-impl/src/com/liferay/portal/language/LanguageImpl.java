@@ -1636,26 +1636,25 @@ public class LanguageImpl implements Language, Serializable {
 		try {
 			pattern = _get(locale, resourceBundle, pattern, pattern);
 
-			if (ArrayUtil.isNotEmpty(arguments)) {
-				pattern = _escapePattern(pattern);
+			if (ArrayUtil.isEmpty(arguments)) {
+				return pattern;
+			}
 
+			if (translateArguments) {
 				for (int i = 0; i < arguments.length; i++) {
-					if (translateArguments) {
-						String argument = arguments[i].toString();
+					String argument = arguments[i].toString();
 
-						arguments[i] = _get(
-							locale, resourceBundle, argument, argument);
-					}
+					arguments[i] = _get(
+						locale, resourceBundle, argument, argument);
 				}
-
-				MessageFormat messageFormat = decorateMessageFormat(
-					locale, pattern, arguments);
-
-				value = messageFormat.format(arguments);
 			}
-			else {
-				value = pattern;
-			}
+
+			pattern = _escapePattern(pattern);
+
+			MessageFormat messageFormat = decorateMessageFormat(
+				locale, pattern, arguments);
+
+			value = messageFormat.format(arguments);
 		}
 		catch (Exception e) {
 			if (_log.isWarnEnabled()) {
