@@ -269,48 +269,25 @@ public class LanguageImpl implements Language, Serializable {
 			resourceBundle = portletConfig.getResourceBundle(locale);
 		}
 
-		String value = null;
+		Object[] formattedArguments = new Object[arguments.length];
 
-		try {
-			pattern = _get(locale, resourceBundle, pattern, pattern);
+		for (int i = 0; i < arguments.length; i++) {
+			String text = arguments[i].getText();
 
-			if (ArrayUtil.isNotEmpty(arguments)) {
-				pattern = _escapePattern(pattern);
-
-				Object[] formattedArguments = new Object[arguments.length];
-
-				for (int i = 0; i < arguments.length; i++) {
-					String text = arguments[i].getText();
-
-					if (translateArguments) {
-						formattedArguments[i] =
-							arguments[i].getBefore() +
-								_get(locale, resourceBundle, text, text) +
-									arguments[i].getAfter();
-					}
-					else {
-						formattedArguments[i] =
-							arguments[i].getBefore() + text +
-								arguments[i].getAfter();
-					}
-				}
-
-				MessageFormat messageFormat = decorateMessageFormat(
-					locale, pattern, formattedArguments);
-
-				value = messageFormat.format(formattedArguments);
+			if (translateArguments) {
+				formattedArguments[i] =
+					arguments[i].getBefore() +
+						_get(locale, resourceBundle, text, text) +
+							arguments[i].getAfter();
 			}
 			else {
-				value = pattern;
-			}
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(e, e);
+				formattedArguments[i] =
+					arguments[i].getBefore() + text + arguments[i].getAfter();
 			}
 		}
 
-		return value;
+		return _format(
+			locale, resourceBundle, pattern, formattedArguments, false);
 	}
 
 	/**
@@ -456,6 +433,14 @@ public class LanguageImpl implements Language, Serializable {
 		if (portletConfig != null) {
 			resourceBundle = portletConfig.getResourceBundle(locale);
 		}
+
+		return _format(
+			locale, resourceBundle, pattern, arguments, translateArguments);
+	}
+
+	private String _format(
+		Locale locale, ResourceBundle resourceBundle, String pattern,
+		Object[] arguments, boolean translateArguments) {
 
 		String value = null;
 
@@ -644,36 +629,7 @@ public class LanguageImpl implements Language, Serializable {
 			return pattern;
 		}
 
-		String value = null;
-
-		try {
-			pattern = get(locale, pattern);
-
-			if (ArrayUtil.isNotEmpty(arguments)) {
-				pattern = _escapePattern(pattern);
-
-				for (int i = 0; i < arguments.length; i++) {
-					if (translateArguments) {
-						arguments[i] = get(locale, arguments[i].toString());
-					}
-				}
-
-				MessageFormat messageFormat = decorateMessageFormat(
-					locale, pattern, arguments);
-
-				value = messageFormat.format(arguments);
-			}
-			else {
-				value = pattern;
-			}
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(e, e);
-			}
-		}
-
-		return value;
+		return _format(locale, null, pattern, arguments, translateArguments);
 	}
 
 	/**
