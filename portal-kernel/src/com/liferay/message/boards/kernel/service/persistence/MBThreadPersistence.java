@@ -1159,6 +1159,217 @@ public interface MBThreadPersistence extends BasePersistence<MBThread> {
 	public int filterCountByG_NotC(long groupId, long categoryId);
 
 	/**
+	* Returns all the message boards threads where groupId = &#63; and lastPostDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @return the matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_L(long groupId, Date lastPostDate);
+
+	/**
+	* Returns a range of all the message boards threads where groupId = &#63; and lastPostDate = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @return the range of matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_L(long groupId, Date lastPostDate,
+		int start, int end);
+
+	/**
+	* Returns an ordered range of all the message boards threads where groupId = &#63; and lastPostDate = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_L(long groupId, Date lastPostDate,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the message boards threads where groupId = &#63; and lastPostDate = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_L(long groupId, Date lastPostDate,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns the first message boards thread in the ordered set where groupId = &#63; and lastPostDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching message boards thread
+	* @throws NoSuchThreadException if a matching message boards thread could not be found
+	*/
+	public MBThread findByG_L_First(long groupId, Date lastPostDate,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator)
+		throws NoSuchThreadException;
+
+	/**
+	* Returns the first message boards thread in the ordered set where groupId = &#63; and lastPostDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching message boards thread, or <code>null</code> if a matching message boards thread could not be found
+	*/
+	public MBThread fetchByG_L_First(long groupId, Date lastPostDate,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator);
+
+	/**
+	* Returns the last message boards thread in the ordered set where groupId = &#63; and lastPostDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching message boards thread
+	* @throws NoSuchThreadException if a matching message boards thread could not be found
+	*/
+	public MBThread findByG_L_Last(long groupId, Date lastPostDate,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator)
+		throws NoSuchThreadException;
+
+	/**
+	* Returns the last message boards thread in the ordered set where groupId = &#63; and lastPostDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching message boards thread, or <code>null</code> if a matching message boards thread could not be found
+	*/
+	public MBThread fetchByG_L_Last(long groupId, Date lastPostDate,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator);
+
+	/**
+	* Returns the message boards threads before and after the current message boards thread in the ordered set where groupId = &#63; and lastPostDate = &#63;.
+	*
+	* @param threadId the primary key of the current message boards thread
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next message boards thread
+	* @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	*/
+	public MBThread[] findByG_L_PrevAndNext(long threadId, long groupId,
+		Date lastPostDate,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator)
+		throws NoSuchThreadException;
+
+	/**
+	* Returns all the message boards threads that the user has permission to view where groupId = &#63; and lastPostDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @return the matching message boards threads that the user has permission to view
+	*/
+	public java.util.List<MBThread> filterFindByG_L(long groupId,
+		Date lastPostDate);
+
+	/**
+	* Returns a range of all the message boards threads that the user has permission to view where groupId = &#63; and lastPostDate = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @return the range of matching message boards threads that the user has permission to view
+	*/
+	public java.util.List<MBThread> filterFindByG_L(long groupId,
+		Date lastPostDate, int start, int end);
+
+	/**
+	* Returns an ordered range of all the message boards threads that the user has permissions to view where groupId = &#63; and lastPostDate = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching message boards threads that the user has permission to view
+	*/
+	public java.util.List<MBThread> filterFindByG_L(long groupId,
+		Date lastPostDate, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator);
+
+	/**
+	* Returns the message boards threads before and after the current message boards thread in the ordered set of message boards threads that the user has permission to view where groupId = &#63; and lastPostDate = &#63;.
+	*
+	* @param threadId the primary key of the current message boards thread
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next message boards thread
+	* @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	*/
+	public MBThread[] filterFindByG_L_PrevAndNext(long threadId, long groupId,
+		Date lastPostDate,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator)
+		throws NoSuchThreadException;
+
+	/**
+	* Removes all the message boards threads where groupId = &#63; and lastPostDate = &#63; from the database.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	*/
+	public void removeByG_L(long groupId, Date lastPostDate);
+
+	/**
+	* Returns the number of message boards threads where groupId = &#63; and lastPostDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @return the number of matching message boards threads
+	*/
+	public int countByG_L(long groupId, Date lastPostDate);
+
+	/**
+	* Returns the number of message boards threads that the user has permission to view where groupId = &#63; and lastPostDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @return the number of matching message boards threads that the user has permission to view
+	*/
+	public int filterCountByG_L(long groupId, Date lastPostDate);
+
+	/**
 	* Returns all the message boards threads where groupId = &#63; and status = &#63;.
 	*
 	* @param groupId the group ID
@@ -1858,6 +2069,125 @@ public interface MBThreadPersistence extends BasePersistence<MBThread> {
 		throws NoSuchThreadException;
 
 	/**
+	* Returns all the message boards threads that the user has permission to view where groupId = &#63; and categoryId = any &#63; and lastPostDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param categoryIds the category IDs
+	* @param lastPostDate the last post date
+	* @return the matching message boards threads that the user has permission to view
+	*/
+	public java.util.List<MBThread> filterFindByG_C_L(long groupId,
+		long[] categoryIds, Date lastPostDate);
+
+	/**
+	* Returns a range of all the message boards threads that the user has permission to view where groupId = &#63; and categoryId = any &#63; and lastPostDate = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryIds the category IDs
+	* @param lastPostDate the last post date
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @return the range of matching message boards threads that the user has permission to view
+	*/
+	public java.util.List<MBThread> filterFindByG_C_L(long groupId,
+		long[] categoryIds, Date lastPostDate, int start, int end);
+
+	/**
+	* Returns an ordered range of all the message boards threads that the user has permission to view where groupId = &#63; and categoryId = any &#63; and lastPostDate = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryIds the category IDs
+	* @param lastPostDate the last post date
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching message boards threads that the user has permission to view
+	*/
+	public java.util.List<MBThread> filterFindByG_C_L(long groupId,
+		long[] categoryIds, Date lastPostDate, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator);
+
+	/**
+	* Returns all the message boards threads where groupId = &#63; and categoryId = any &#63; and lastPostDate = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryIds the category IDs
+	* @param lastPostDate the last post date
+	* @return the matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_C_L(long groupId,
+		long[] categoryIds, Date lastPostDate);
+
+	/**
+	* Returns a range of all the message boards threads where groupId = &#63; and categoryId = any &#63; and lastPostDate = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryIds the category IDs
+	* @param lastPostDate the last post date
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @return the range of matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_C_L(long groupId,
+		long[] categoryIds, Date lastPostDate, int start, int end);
+
+	/**
+	* Returns an ordered range of all the message boards threads where groupId = &#63; and categoryId = any &#63; and lastPostDate = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryIds the category IDs
+	* @param lastPostDate the last post date
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_C_L(long groupId,
+		long[] categoryIds, Date lastPostDate, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the message boards threads where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_C_L(long groupId,
+		long[] categoryIds, Date lastPostDate, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator,
+		boolean retrieveFromCache);
+
+	/**
 	* Removes all the message boards threads where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; from the database.
 	*
 	* @param groupId the group ID
@@ -1877,6 +2207,16 @@ public interface MBThreadPersistence extends BasePersistence<MBThread> {
 	public int countByG_C_L(long groupId, long categoryId, Date lastPostDate);
 
 	/**
+	* Returns the number of message boards threads where groupId = &#63; and categoryId = any &#63; and lastPostDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param categoryIds the category IDs
+	* @param lastPostDate the last post date
+	* @return the number of matching message boards threads
+	*/
+	public int countByG_C_L(long groupId, long[] categoryIds, Date lastPostDate);
+
+	/**
 	* Returns the number of message boards threads that the user has permission to view where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63;.
 	*
 	* @param groupId the group ID
@@ -1885,6 +2225,17 @@ public interface MBThreadPersistence extends BasePersistence<MBThread> {
 	* @return the number of matching message boards threads that the user has permission to view
 	*/
 	public int filterCountByG_C_L(long groupId, long categoryId,
+		Date lastPostDate);
+
+	/**
+	* Returns the number of message boards threads that the user has permission to view where groupId = &#63; and categoryId = any &#63; and lastPostDate = &#63;.
+	*
+	* @param groupId the group ID
+	* @param categoryIds the category IDs
+	* @param lastPostDate the last post date
+	* @return the number of matching message boards threads that the user has permission to view
+	*/
+	public int filterCountByG_C_L(long groupId, long[] categoryIds,
 		Date lastPostDate);
 
 	/**
@@ -3093,6 +3444,639 @@ public interface MBThreadPersistence extends BasePersistence<MBThread> {
 	*/
 	public int filterCountByG_NotC_NotS(long groupId, long categoryId,
 		int status);
+
+	/**
+	* Returns all the message boards threads where groupId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @return the matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_L_S(long groupId,
+		Date lastPostDate, int status);
+
+	/**
+	* Returns a range of all the message boards threads where groupId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @return the range of matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_L_S(long groupId,
+		Date lastPostDate, int status, int start, int end);
+
+	/**
+	* Returns an ordered range of all the message boards threads where groupId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_L_S(long groupId,
+		Date lastPostDate, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the message boards threads where groupId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_L_S(long groupId,
+		Date lastPostDate, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns the first message boards thread in the ordered set where groupId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching message boards thread
+	* @throws NoSuchThreadException if a matching message boards thread could not be found
+	*/
+	public MBThread findByG_L_S_First(long groupId, Date lastPostDate,
+		int status,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator)
+		throws NoSuchThreadException;
+
+	/**
+	* Returns the first message boards thread in the ordered set where groupId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching message boards thread, or <code>null</code> if a matching message boards thread could not be found
+	*/
+	public MBThread fetchByG_L_S_First(long groupId, Date lastPostDate,
+		int status,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator);
+
+	/**
+	* Returns the last message boards thread in the ordered set where groupId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching message boards thread
+	* @throws NoSuchThreadException if a matching message boards thread could not be found
+	*/
+	public MBThread findByG_L_S_Last(long groupId, Date lastPostDate,
+		int status,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator)
+		throws NoSuchThreadException;
+
+	/**
+	* Returns the last message boards thread in the ordered set where groupId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching message boards thread, or <code>null</code> if a matching message boards thread could not be found
+	*/
+	public MBThread fetchByG_L_S_Last(long groupId, Date lastPostDate,
+		int status,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator);
+
+	/**
+	* Returns the message boards threads before and after the current message boards thread in the ordered set where groupId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param threadId the primary key of the current message boards thread
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next message boards thread
+	* @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	*/
+	public MBThread[] findByG_L_S_PrevAndNext(long threadId, long groupId,
+		Date lastPostDate, int status,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator)
+		throws NoSuchThreadException;
+
+	/**
+	* Returns all the message boards threads that the user has permission to view where groupId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @return the matching message boards threads that the user has permission to view
+	*/
+	public java.util.List<MBThread> filterFindByG_L_S(long groupId,
+		Date lastPostDate, int status);
+
+	/**
+	* Returns a range of all the message boards threads that the user has permission to view where groupId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @return the range of matching message boards threads that the user has permission to view
+	*/
+	public java.util.List<MBThread> filterFindByG_L_S(long groupId,
+		Date lastPostDate, int status, int start, int end);
+
+	/**
+	* Returns an ordered range of all the message boards threads that the user has permissions to view where groupId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching message boards threads that the user has permission to view
+	*/
+	public java.util.List<MBThread> filterFindByG_L_S(long groupId,
+		Date lastPostDate, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator);
+
+	/**
+	* Returns the message boards threads before and after the current message boards thread in the ordered set of message boards threads that the user has permission to view where groupId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param threadId the primary key of the current message boards thread
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next message boards thread
+	* @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	*/
+	public MBThread[] filterFindByG_L_S_PrevAndNext(long threadId,
+		long groupId, Date lastPostDate, int status,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator)
+		throws NoSuchThreadException;
+
+	/**
+	* Removes all the message boards threads where groupId = &#63; and lastPostDate = &#63; and status = &#63; from the database.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	*/
+	public void removeByG_L_S(long groupId, Date lastPostDate, int status);
+
+	/**
+	* Returns the number of message boards threads where groupId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @return the number of matching message boards threads
+	*/
+	public int countByG_L_S(long groupId, Date lastPostDate, int status);
+
+	/**
+	* Returns the number of message boards threads that the user has permission to view where groupId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @return the number of matching message boards threads that the user has permission to view
+	*/
+	public int filterCountByG_L_S(long groupId, Date lastPostDate, int status);
+
+	/**
+	* Returns all the message boards threads where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @return the matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_C_L_S(long groupId,
+		long categoryId, Date lastPostDate, int status);
+
+	/**
+	* Returns a range of all the message boards threads where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @return the range of matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_C_L_S(long groupId,
+		long categoryId, Date lastPostDate, int status, int start, int end);
+
+	/**
+	* Returns an ordered range of all the message boards threads where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_C_L_S(long groupId,
+		long categoryId, Date lastPostDate, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the message boards threads where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_C_L_S(long groupId,
+		long categoryId, Date lastPostDate, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns the first message boards thread in the ordered set where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching message boards thread
+	* @throws NoSuchThreadException if a matching message boards thread could not be found
+	*/
+	public MBThread findByG_C_L_S_First(long groupId, long categoryId,
+		Date lastPostDate, int status,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator)
+		throws NoSuchThreadException;
+
+	/**
+	* Returns the first message boards thread in the ordered set where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching message boards thread, or <code>null</code> if a matching message boards thread could not be found
+	*/
+	public MBThread fetchByG_C_L_S_First(long groupId, long categoryId,
+		Date lastPostDate, int status,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator);
+
+	/**
+	* Returns the last message boards thread in the ordered set where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching message boards thread
+	* @throws NoSuchThreadException if a matching message boards thread could not be found
+	*/
+	public MBThread findByG_C_L_S_Last(long groupId, long categoryId,
+		Date lastPostDate, int status,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator)
+		throws NoSuchThreadException;
+
+	/**
+	* Returns the last message boards thread in the ordered set where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching message boards thread, or <code>null</code> if a matching message boards thread could not be found
+	*/
+	public MBThread fetchByG_C_L_S_Last(long groupId, long categoryId,
+		Date lastPostDate, int status,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator);
+
+	/**
+	* Returns the message boards threads before and after the current message boards thread in the ordered set where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param threadId the primary key of the current message boards thread
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next message boards thread
+	* @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	*/
+	public MBThread[] findByG_C_L_S_PrevAndNext(long threadId, long groupId,
+		long categoryId, Date lastPostDate, int status,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator)
+		throws NoSuchThreadException;
+
+	/**
+	* Returns all the message boards threads that the user has permission to view where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @return the matching message boards threads that the user has permission to view
+	*/
+	public java.util.List<MBThread> filterFindByG_C_L_S(long groupId,
+		long categoryId, Date lastPostDate, int status);
+
+	/**
+	* Returns a range of all the message boards threads that the user has permission to view where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @return the range of matching message boards threads that the user has permission to view
+	*/
+	public java.util.List<MBThread> filterFindByG_C_L_S(long groupId,
+		long categoryId, Date lastPostDate, int status, int start, int end);
+
+	/**
+	* Returns an ordered range of all the message boards threads that the user has permissions to view where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching message boards threads that the user has permission to view
+	*/
+	public java.util.List<MBThread> filterFindByG_C_L_S(long groupId,
+		long categoryId, Date lastPostDate, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator);
+
+	/**
+	* Returns the message boards threads before and after the current message boards thread in the ordered set of message boards threads that the user has permission to view where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param threadId the primary key of the current message boards thread
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next message boards thread
+	* @throws NoSuchThreadException if a message boards thread with the primary key could not be found
+	*/
+	public MBThread[] filterFindByG_C_L_S_PrevAndNext(long threadId,
+		long groupId, long categoryId, Date lastPostDate, int status,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator)
+		throws NoSuchThreadException;
+
+	/**
+	* Returns all the message boards threads that the user has permission to view where groupId = &#63; and categoryId = any &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param categoryIds the category IDs
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @return the matching message boards threads that the user has permission to view
+	*/
+	public java.util.List<MBThread> filterFindByG_C_L_S(long groupId,
+		long[] categoryIds, Date lastPostDate, int status);
+
+	/**
+	* Returns a range of all the message boards threads that the user has permission to view where groupId = &#63; and categoryId = any &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryIds the category IDs
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @return the range of matching message boards threads that the user has permission to view
+	*/
+	public java.util.List<MBThread> filterFindByG_C_L_S(long groupId,
+		long[] categoryIds, Date lastPostDate, int status, int start, int end);
+
+	/**
+	* Returns an ordered range of all the message boards threads that the user has permission to view where groupId = &#63; and categoryId = any &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryIds the category IDs
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching message boards threads that the user has permission to view
+	*/
+	public java.util.List<MBThread> filterFindByG_C_L_S(long groupId,
+		long[] categoryIds, Date lastPostDate, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator);
+
+	/**
+	* Returns all the message boards threads where groupId = &#63; and categoryId = any &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryIds the category IDs
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @return the matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_C_L_S(long groupId,
+		long[] categoryIds, Date lastPostDate, int status);
+
+	/**
+	* Returns a range of all the message boards threads where groupId = &#63; and categoryId = any &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryIds the category IDs
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @return the range of matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_C_L_S(long groupId,
+		long[] categoryIds, Date lastPostDate, int status, int start, int end);
+
+	/**
+	* Returns an ordered range of all the message boards threads where groupId = &#63; and categoryId = any &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryIds the category IDs
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_C_L_S(long groupId,
+		long[] categoryIds, Date lastPostDate, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the message boards threads where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link MBThreadModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @param start the lower bound of the range of message boards threads
+	* @param end the upper bound of the range of message boards threads (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching message boards threads
+	*/
+	public java.util.List<MBThread> findByG_C_L_S(long groupId,
+		long[] categoryIds, Date lastPostDate, int status, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<MBThread> orderByComparator,
+		boolean retrieveFromCache);
+
+	/**
+	* Removes all the message boards threads where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63; from the database.
+	*
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	*/
+	public void removeByG_C_L_S(long groupId, long categoryId,
+		Date lastPostDate, int status);
+
+	/**
+	* Returns the number of message boards threads where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @return the number of matching message boards threads
+	*/
+	public int countByG_C_L_S(long groupId, long categoryId, Date lastPostDate,
+		int status);
+
+	/**
+	* Returns the number of message boards threads where groupId = &#63; and categoryId = any &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param categoryIds the category IDs
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @return the number of matching message boards threads
+	*/
+	public int countByG_C_L_S(long groupId, long[] categoryIds,
+		Date lastPostDate, int status);
+
+	/**
+	* Returns the number of message boards threads that the user has permission to view where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param categoryId the category ID
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @return the number of matching message boards threads that the user has permission to view
+	*/
+	public int filterCountByG_C_L_S(long groupId, long categoryId,
+		Date lastPostDate, int status);
+
+	/**
+	* Returns the number of message boards threads that the user has permission to view where groupId = &#63; and categoryId = any &#63; and lastPostDate = &#63; and status = &#63;.
+	*
+	* @param groupId the group ID
+	* @param categoryIds the category IDs
+	* @param lastPostDate the last post date
+	* @param status the status
+	* @return the number of matching message boards threads that the user has permission to view
+	*/
+	public int filterCountByG_C_L_S(long groupId, long[] categoryIds,
+		Date lastPostDate, int status);
 
 	/**
 	* Caches the message boards thread in the entity cache if it is enabled.
