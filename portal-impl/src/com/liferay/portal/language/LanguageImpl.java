@@ -278,15 +278,11 @@ public class LanguageImpl implements Language, Serializable {
 			String text = arguments[i].getText();
 
 			if (translateArguments) {
-				formattedArguments[i] =
-					arguments[i].getBefore() +
-						_get(locale, resourceBundle, text, text) +
-							arguments[i].getAfter();
+				text = _get(locale, resourceBundle, text, text);
 			}
-			else {
-				formattedArguments[i] =
-					arguments[i].getBefore() + text + arguments[i].getAfter();
-			}
+
+			formattedArguments[i] =
+				arguments[i].getBefore() + text + arguments[i].getAfter();
 		}
 
 		return _format(
