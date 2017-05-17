@@ -262,8 +262,6 @@ public class LanguageImpl implements Language, Serializable {
 			return pattern;
 		}
 
-		String value = null;
-
 		Locale locale = _getLocale(request);
 
 		ResourceBundle resourceBundle = null;
@@ -275,42 +273,25 @@ public class LanguageImpl implements Language, Serializable {
 			resourceBundle = portletConfig.getResourceBundle(locale);
 		}
 
-		try {
-			pattern = _get(locale, resourceBundle, pattern, pattern);
+		Object[] formattedArguments = null;
 
-			if (ArrayUtil.isNotEmpty(arguments)) {
-				pattern = _escapePattern(pattern);
+		if (ArrayUtil.isNotEmpty(arguments)) {
+			formattedArguments = new Object[arguments.length];
 
-				Object[] formattedArguments = new Object[arguments.length];
+			for (int i = 0; i < arguments.length; i++) {
+				String text = arguments[i].getText();
 
-				for (int i = 0; i < arguments.length; i++) {
-					String text = arguments[i].getText();
-
-					if (translateArguments) {
-						text = _get(locale, resourceBundle, text, text);
-					}
-
-					formattedArguments[i] =
-						arguments[i].getBefore() + text +
-							arguments[i].getAfter();
+				if (translateArguments) {
+					text = _get(locale, resourceBundle, text, text);
 				}
 
-				MessageFormat messageFormat = decorateMessageFormat(
-					request, pattern, formattedArguments);
-
-				value = messageFormat.format(formattedArguments);
-			}
-			else {
-				value = pattern;
-			}
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(e, e);
+				formattedArguments[i] =
+					arguments[i].getBefore() + text + arguments[i].getAfter();
 			}
 		}
 
-		return value;
+		return _format(
+			locale, resourceBundle, pattern, formattedArguments, false);
 	}
 
 	/**
@@ -450,8 +431,6 @@ public class LanguageImpl implements Language, Serializable {
 			return pattern;
 		}
 
-		String value = null;
-
 		Locale locale = _getLocale(request);
 
 		ResourceBundle resourceBundle = null;
@@ -462,6 +441,16 @@ public class LanguageImpl implements Language, Serializable {
 		if (portletConfig != null) {
 			resourceBundle = portletConfig.getResourceBundle(locale);
 		}
+
+		return _format(
+			locale, resourceBundle, pattern, arguments, translateArguments);
+	}
+
+	private String _format(
+		Locale locale, ResourceBundle resourceBundle, String pattern,
+		Object[] arguments, boolean translateArguments) {
+
+		String value = null;
 
 		try {
 			pattern = _get(locale, resourceBundle, pattern, pattern);
@@ -648,38 +637,7 @@ public class LanguageImpl implements Language, Serializable {
 			return pattern;
 		}
 
-		String value = null;
-
-		try {
-			pattern = get(locale, pattern, pattern);
-
-			if (ArrayUtil.isNotEmpty(arguments)) {
-				pattern = _escapePattern(pattern);
-
-				for (int i = 0; i < arguments.length; i++) {
-					if (translateArguments) {
-						String argument = arguments[i].toString();
-
-						arguments[i] = get(locale, argument, argument);
-					}
-				}
-
-				MessageFormat messageFormat = decorateMessageFormat(
-					locale, pattern, arguments);
-
-				value = messageFormat.format(arguments);
-			}
-			else {
-				value = pattern;
-			}
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(e, e);
-			}
-		}
-
-		return value;
+		return _format(locale, null, pattern, arguments, translateArguments);
 	}
 
 	/**
@@ -793,38 +751,14 @@ public class LanguageImpl implements Language, Serializable {
 			return pattern;
 		}
 
-		String value = null;
+		Locale locale = null;
 
-		try {
-			pattern = get(resourceBundle, pattern, pattern);
-
-			if (ArrayUtil.isNotEmpty(arguments)) {
-				pattern = _escapePattern(pattern);
-
-				for (int i = 0; i < arguments.length; i++) {
-					if (translateArguments) {
-						String argument = arguments[i].toString();
-
-						arguments[i] = get(resourceBundle, argument, argument);
-					}
-				}
-
-				MessageFormat messageFormat = decorateMessageFormat(
-					resourceBundle.getLocale(), pattern, arguments);
-
-				value = messageFormat.format(arguments);
-			}
-			else {
-				value = pattern;
-			}
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(e, e);
-			}
+		if (resourceBundle != null) {
+			locale = resourceBundle.getLocale();
 		}
 
-		return value;
+		return _format(
+			locale, resourceBundle, pattern, arguments, translateArguments);
 	}
 
 	/**
