@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.CookieKeys;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
@@ -56,10 +57,12 @@ import com.liferay.portal.util.PropsValues;
 
 import java.io.Serializable;
 
+import java.text.Format;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -258,37 +261,56 @@ public class LanguageImpl implements Language, Serializable {
 			return pattern;
 		}
 
+		PortletConfig portletConfig = (PortletConfig)request.getAttribute(
+			JavaConstants.JAVAX_PORTLET_CONFIG);
+
+		Locale locale = _getLocale(request);
+
+		ResourceBundle resourceBundle = null;
+
+		if (portletConfig != null) {
+			resourceBundle = portletConfig.getResourceBundle(locale);
+		}
+
 		String value = null;
 
 		try {
 			pattern = get(request, pattern);
 
-			if (ArrayUtil.isNotEmpty(arguments)) {
+			if (ArrayUtil.isEmpty(arguments)) {
+				return pattern;
+			}
+
+			Object[] formattedArguments = new Object[arguments.length];
+
+			for (int i = 0; i < arguments.length; i++) {
+				String text = arguments[i].getText();
+
+				if (translateArguments) {
+					formattedArguments[i] =
+						arguments[i].getBefore() +
+							_get(locale, resourceBundle, text, text) +
+								arguments[i].getAfter();
+				}
+				else {
+					formattedArguments[i] =
+						arguments[i].getBefore() + text +
+							arguments[i].getAfter();
+				}
+			}
+
+			value = _getFastFormattedMessage(
+				locale, pattern, formattedArguments);
+
+			if (value == null) {
+				value = pattern;
+
 				pattern = _escapePattern(pattern);
 
-				Object[] formattedArguments = new Object[arguments.length];
-
-				for (int i = 0; i < arguments.length; i++) {
-					if (translateArguments) {
-						formattedArguments[i] =
-							arguments[i].getBefore() +
-								get(request, arguments[i].getText()) +
-									arguments[i].getAfter();
-					}
-					else {
-						formattedArguments[i] =
-							arguments[i].getBefore() + arguments[i].getText() +
-								arguments[i].getAfter();
-					}
-				}
-
 				MessageFormat messageFormat = decorateMessageFormat(
-					request, pattern, formattedArguments);
+					locale, pattern, formattedArguments);
 
 				value = messageFormat.format(formattedArguments);
-			}
-			else {
-				value = pattern;
 			}
 		}
 		catch (Exception e) {
@@ -429,40 +451,25 @@ public class LanguageImpl implements Language, Serializable {
 		HttpServletRequest request, String pattern, Object[] arguments,
 		boolean translateArguments) {
 
-		if (PropsValues.TRANSLATIONS_DISABLED) {
+		if (PropsValues.TRANSLATIONS_DISABLED || (request == null) ||
+			(pattern == null)) {
+
 			return pattern;
 		}
 
-		String value = null;
+		PortletConfig portletConfig = (PortletConfig)request.getAttribute(
+			JavaConstants.JAVAX_PORTLET_CONFIG);
 
-		try {
-			pattern = get(request, pattern);
+		Locale locale = _getLocale(request);
 
-			if (ArrayUtil.isNotEmpty(arguments)) {
-				pattern = _escapePattern(pattern);
+		ResourceBundle resourceBundle = null;
 
-				for (int i = 0; i < arguments.length; i++) {
-					if (translateArguments) {
-						arguments[i] = get(request, arguments[i].toString());
-					}
-				}
-
-				MessageFormat messageFormat = decorateMessageFormat(
-					request, pattern, arguments);
-
-				value = messageFormat.format(arguments);
-			}
-			else {
-				value = pattern;
-			}
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(e, e);
-			}
+		if (portletConfig != null) {
+			resourceBundle = portletConfig.getResourceBundle(locale);
 		}
 
-		return value;
+		return _format(
+			locale, resourceBundle, pattern, arguments, translateArguments);
 	}
 
 	/**
@@ -617,36 +624,7 @@ public class LanguageImpl implements Language, Serializable {
 			return pattern;
 		}
 
-		String value = null;
-
-		try {
-			pattern = get(locale, pattern);
-
-			if (ArrayUtil.isNotEmpty(arguments)) {
-				pattern = _escapePattern(pattern);
-
-				for (int i = 0; i < arguments.length; i++) {
-					if (translateArguments) {
-						arguments[i] = get(locale, arguments[i].toString());
-					}
-				}
-
-				MessageFormat messageFormat = decorateMessageFormat(
-					locale, pattern, arguments);
-
-				value = messageFormat.format(arguments);
-			}
-			else {
-				value = pattern;
-			}
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(e, e);
-			}
-		}
-
-		return value;
+		return _format(locale, null, pattern, arguments, translateArguments);
 	}
 
 	/**
@@ -756,41 +734,13 @@ public class LanguageImpl implements Language, Serializable {
 		ResourceBundle resourceBundle, String pattern, Object[] arguments,
 		boolean translateArguments) {
 
-		if (PropsValues.TRANSLATIONS_DISABLED) {
+		if (PropsValues.TRANSLATIONS_DISABLED || (resourceBundle == null)) {
 			return pattern;
 		}
 
-		String value = null;
-
-		try {
-			pattern = get(resourceBundle, pattern);
-
-			if (ArrayUtil.isNotEmpty(arguments)) {
-				pattern = _escapePattern(pattern);
-
-				for (int i = 0; i < arguments.length; i++) {
-					if (translateArguments) {
-						arguments[i] = get(
-							resourceBundle, arguments[i].toString());
-					}
-				}
-
-				MessageFormat messageFormat = decorateMessageFormat(
-					resourceBundle.getLocale(), pattern, arguments);
-
-				value = messageFormat.format(arguments);
-			}
-			else {
-				value = pattern;
-			}
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(e, e);
-			}
-		}
-
-		return value;
+		return _format(
+			resourceBundle.getLocale(), resourceBundle, pattern, arguments,
+			translateArguments);
 	}
 
 	/**
@@ -855,17 +805,13 @@ public class LanguageImpl implements Language, Serializable {
 
 		Locale locale = _getLocale(request);
 
-		if (portletConfig == null) {
-			return get(locale, key, defaultValue);
+		ResourceBundle resourceBundle = null;
+
+		if (portletConfig != null) {
+			resourceBundle = portletConfig.getResourceBundle(locale);
 		}
 
-		ResourceBundle resourceBundle = portletConfig.getResourceBundle(locale);
-
-		if (resourceBundle.containsKey(key)) {
-			return _get(resourceBundle, key);
-		}
-
-		return get(locale, key, defaultValue);
+		return _get(locale, resourceBundle, key, defaultValue);
 	}
 
 	/**
@@ -1687,6 +1633,61 @@ public class LanguageImpl implements Language, Serializable {
 			pattern, CharPool.APOSTROPHE, StringPool.DOUBLE_APOSTROPHE);
 	}
 
+	private String _format(
+		Locale locale, ResourceBundle resourceBundle, String pattern,
+		Object[] arguments, boolean translateArguments) {
+
+		String value = null;
+
+		try {
+			pattern = _get(locale, resourceBundle, pattern, pattern);
+
+			if (ArrayUtil.isEmpty(arguments)) {
+				return pattern;
+			}
+
+			if (translateArguments) {
+				for (int i = 0; i < arguments.length; i++) {
+					String argument = arguments[i].toString();
+
+					arguments[i] = _get(
+						locale, resourceBundle, argument, argument);
+				}
+			}
+
+			value = _getFastFormattedMessage(locale, pattern, arguments);
+
+			if (value == null) {
+				value = pattern;
+
+				pattern = _escapePattern(pattern);
+
+				MessageFormat messageFormat = decorateMessageFormat(
+					locale, pattern, arguments);
+
+				value = messageFormat.format(arguments);
+			}
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(e, e);
+			}
+		}
+
+		return value;
+	}
+
+	private String _get(
+		Locale locale, ResourceBundle resourceBundle, String key,
+		String defaultValue) {
+
+		if ((resourceBundle == null) || !resourceBundle.containsKey(key)) {
+			return get(locale, key, defaultValue);
+		}
+
+		return _get(resourceBundle, key);
+	}
+
 	private String _get(ResourceBundle resourceBundle, String key) {
 		if (PropsValues.TRANSLATIONS_DISABLED) {
 			return key;
@@ -1715,6 +1716,66 @@ public class LanguageImpl implements Language, Serializable {
 		}
 
 		return null;
+	}
+
+	private String _getFastFormattedMessage(
+		Locale locale, String pattern, Object[] arguments) {
+
+		Format dateFormat = null;
+		Format numberFormat = null;
+		int pos = 0;
+		StringBuilder sb = new StringBuilder(
+			16 * arguments.length + pattern.length());
+
+		int start = pattern.indexOf(CharPool.OPEN_CURLY_BRACE);
+
+		while (start != -1) {
+			int endIndex = start + 2;
+
+			if ((endIndex > pattern.length()) ||
+				(pattern.charAt(endIndex) != CharPool.CLOSE_CURLY_BRACE)) {
+
+				return null;
+			}
+
+			int argumentIndex = pattern.charAt(start + 1) - CharPool.NUMBER_0;
+
+			if ((argumentIndex < 0) || (arguments.length <= argumentIndex)) {
+				return null;
+			}
+
+			sb.append(pattern, pos, start);
+
+			Object argument = arguments[argumentIndex];
+
+			if (argument instanceof Number) {
+				if (numberFormat == null) {
+					numberFormat = NumberFormat.getNumberInstance(locale);
+				}
+
+				sb.append(numberFormat.format(argument));
+			}
+			else if (argument instanceof Date) {
+				if (dateFormat == null) {
+					dateFormat = FastDateFormatFactoryUtil.getDateTime(locale);
+				}
+
+				sb.append(dateFormat.format(argument));
+			}
+			else {
+				sb.append(argument);
+			}
+
+			pos = endIndex + 1;
+
+			start = pattern.indexOf(CharPool.OPEN_CURLY_BRACE, pos);
+		}
+
+		if (pos < pattern.length()) {
+			sb.append(pattern, pos, pattern.length());
+		}
+
+		return sb.toString();
 	}
 
 	private Map<String, Locale> _getGroupLanguageCodeLocalesMap(long groupId) {
