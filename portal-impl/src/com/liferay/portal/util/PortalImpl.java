@@ -3611,6 +3611,11 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
+	public int getMaxPortletIdLength() {
+		return _PORTLET_INSTANCE_KEY_MAX_LENGTH;
+	}
+
+	@Override
 	public String getNetvibesURL(Portlet portlet, ThemeDisplay themeDisplay)
 		throws PortalException {
 
@@ -8610,6 +8615,10 @@ public class PortalImpl implements Portal {
 	private static final String _LOCALHOST = "localhost";
 
 	private static final Locale _NULL_LOCALE;
+
+	private static final int _PORTLET_INSTANCE_KEY_MAX_LENGTH =
+		255 - PortletConstants.INSTANCE_SEPARATOR.length() +
+			PortletConstants.USER_SEPARATOR.length() + 39;
 
 	private static final String _PRIVATE_GROUP_SERVLET_MAPPING =
 		PropsValues.LAYOUT_FRIENDLY_URL_PRIVATE_GROUP_SERVLET_MAPPING;

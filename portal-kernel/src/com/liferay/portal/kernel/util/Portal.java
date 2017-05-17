@@ -846,6 +846,8 @@ public interface Portal {
 
 	public String getMailId(String mx, String popPortletPrefix, Object... ids);
 
+	public int getMaxPortletIdLength();
+
 	public String getNetvibesURL(Portlet portlet, ThemeDisplay themeDisplay)
 		throws PortalException;
 

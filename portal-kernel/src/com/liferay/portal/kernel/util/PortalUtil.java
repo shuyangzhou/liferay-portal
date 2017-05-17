@@ -1281,6 +1281,10 @@ public class PortalUtil {
 		return getPortal().getMailId(mx, popPortletPrefix, ids);
 	}
 
+	public static int getMaxPortletIdLength() {
+		return getPortal().getMaxPortletIdLength();
+	}
+
 	public static String getNetvibesURL(
 			Portlet portlet, ThemeDisplay themeDisplay)
 		throws PortalException {

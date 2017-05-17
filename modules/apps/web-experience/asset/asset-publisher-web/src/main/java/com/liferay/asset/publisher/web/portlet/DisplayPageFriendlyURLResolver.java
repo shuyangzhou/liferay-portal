@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutFriendlyURLComposite;
 import com.liferay.portal.kernel.model.LayoutTypePortletConstants;
-import com.liferay.portal.kernel.model.PortletInstance;
+import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.portlet.FriendlyURLResolver;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.service.LayoutLocalService;
@@ -89,11 +89,9 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 			defaultAssetPublisherPortletId;
 
 		if (Validator.isNull(defaultAssetPublisherPortletId)) {
-			PortletInstance portletInstance = new PortletInstance(
-				AssetPublisherPortletKeys.ASSET_PUBLISHER);
-
-			defaultAssetPublisherPortletId =
-				portletInstance.getPortletInstanceKey();
+			defaultAssetPublisherPortletId = PortletConstants.assemblePortletId(
+				AssetPublisherPortletKeys.ASSET_PUBLISHER,
+				PortletConstants.generateInstanceId());
 		}
 
 		HttpServletRequest request = (HttpServletRequest)requestContext.get(
