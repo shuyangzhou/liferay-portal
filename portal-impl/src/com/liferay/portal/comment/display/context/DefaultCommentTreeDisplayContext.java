@@ -81,9 +81,7 @@ public class DefaultCommentTreeDisplayContext
 			return false;
 		}
 
-		return !TrashUtil.isInTrash(
-			_discussionComment.getModelClassName(),
-			_discussionComment.getCommentId());
+		return !_discussionComment.isInTrash();
 	}
 
 	@Override

@@ -56,4 +56,6 @@ public interface DiscussionComment extends Comment {
 	public DiscussionCommentIterator getThreadDiscussionCommentIterator(
 		int from);
 
+	public boolean isInTrash();
+
 }
