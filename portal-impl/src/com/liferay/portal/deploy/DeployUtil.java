@@ -43,6 +43,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -61,11 +62,17 @@ public class DeployUtil {
 		File targetFile = new File(targetDir, targetFileName);
 
 		if (!targetFile.exists()) {
-			File file = new File(getResourcePath(fileName));
+			Set<Path> tempPaths = new HashSet<>();
+
+			File file = new File(getResourcePath(tempPaths, fileName));
 
 			CopyTask.copyFile(
 				file, new File(targetDir), targetFileName, filterMap, overwrite,
 				true);
+
+			for (Path tempPath : tempPaths) {
+				FileUtil.deltree(tempPath.toFile());
+			}
 		}
 	}
 
