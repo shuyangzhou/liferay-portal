@@ -2,6 +2,17 @@
 	<var name="password" value="test" />
 	<var name="userEmailAddress" value="test@liferay.com" />
 
+	<command name="acceptEndUserLicenseAgreement">
+		<if>
+			<condition function="IsElementPresent" locator1="Button#I_AGREE" value1="I Agree" />
+			<then>
+				<execute function="AssertClick" locator1="Button#I_AGREE" value1="I Agree" />
+
+				<execute function="AssertElementNotPresent" locator1="Button#I_AGREE" value1="I Agree" />
+			</then>
+		</if>
+	</command>
+
 	<command name="activateCP">
 		<execute function="Click" locator1="Dropdown#FILTER" />
 
@@ -766,6 +777,19 @@
 				<execute function="AssertTextEquals" locator1="PortalDirectory#USER_TABLE_LAST_NAME_LINK" value1="${userLastName}" />
 				<execute function="AssertTextEquals" locator1="PortalDirectory#USER_TABLE_SCREEN_NAME_LINK" value1="${userScreenName}" />
 			</else>
+		</if>
+	</command>
+
+	<command name="answerPasswordReminder">
+		<if>
+			<condition function="IsElementPresent" locator1="TextInput#ANSWER" />
+			<then>
+				<execute function="Type" locator1="TextInput#ANSWER" value1="test" />
+
+				<execute macro="Button#clickSave" />
+
+				<execute function="AssertElementNotPresent" locator1="Button#SAVE" value1="Save" />
+			</then>
 		</if>
 	</command>
 
@@ -1665,61 +1689,15 @@
 
 		<execute function="AssertElementNotPresent" locator1="Button#SIGN_IN" value1="Sign In" />
 
-		<if>
-			<condition function="IsElementPresent" locator1="Button#I_AGREE" value1="I Agree" />
-			<then>
-				<execute function="AssertClick" locator1="Button#I_AGREE" value1="I Agree" />
+		<execute macro="User#acceptEndUserLicenseAgreement" />
 
-				<execute function="AssertElementNotPresent" locator1="Button#I_AGREE" value1="I Agree" />
-			</then>
-		</if>
+		<execute macro="User#resetPassword">
+			<var name="resetPassword" value="${resetPassword}" />
+			<var name="setupWizardEnabled" value="${setupWizardEnabled}" />
+			<var name="syntaxCheckingEnabled" value="${syntaxCheckingEnabled}" />
+		</execute>
 
-		<if>
-			<condition function="IsElementPresent#pauseIsElementPresent" locator1="TextInput#PASSWORD" />
-			<then>
-				<if>
-					<and>
-						<isset var="syntaxCheckingEnabled" />
-						<equals arg1="${syntaxCheckingEnabled}" arg2="true" />
-					</and>
-					<then>
-						<execute function="Type" locator1="TextInput#PASSWORD" value1="${resetPassword}" />
-						<execute function="Type" locator1="TextInput#ENTER_AGAIN" value1="${resetPassword}" />
-					</then>
-					<else>
-						<if>
-							<and>
-								<isset var="setupWizardEnabled" />
-								<equals arg1="${setupWizardEnabled}" arg2="true" />
-							</and>
-							<then>
-								<execute function="Type" locator1="TextInput#PASSWORD" value1="test2" />
-								<execute function="Type" locator1="TextInput#ENTER_AGAIN" value1="test2" />
-							</then>
-							<else>
-								<execute function="Type" locator1="TextInput#PASSWORD" value1="test" />
-								<execute function="Type" locator1="TextInput#ENTER_AGAIN" value1="test" />
-							</else>
-						</if>
-					</else>
-				</if>
-
-				<execute macro="Button#clickSave" />
-
-				<execute function="AssertElementNotPresent" locator1="TextInput#ENTER_AGAIN" />
-			</then>
-		</if>
-
-		<if>
-			<condition function="IsElementPresent" locator1="TextInput#ANSWER" />
-			<then>
-				<execute function="Type" locator1="TextInput#ANSWER" value1="test" />
-
-				<execute macro="Button#clickSave" />
-
-				<execute function="AssertElementNotPresent" locator1="Button#SAVE" value1="Save" />
-			</then>
-		</if>
+		<execute macro="User#answerPasswordReminder" />
 
 		<execute function="AssertElementPresent" locator1="UserBar#USER_AVATAR_IMAGE" />
 	</command>
@@ -1992,6 +1970,44 @@
 		<execute macro="UserBar#signOut" />
 	</command>
 
+	<command name="resetPassword">
+		<if>
+			<condition function="IsElementPresent#pauseIsElementPresent" locator1="TextInput#PASSWORD" />
+			<then>
+				<if>
+					<and>
+						<isset var="syntaxCheckingEnabled" />
+						<equals arg1="${syntaxCheckingEnabled}" arg2="true" />
+					</and>
+					<then>
+						<execute function="Type" locator1="TextInput#PASSWORD" value1="${resetPassword}" />
+						<execute function="Type" locator1="TextInput#ENTER_AGAIN" value1="${resetPassword}" />
+					</then>
+					<else>
+						<if>
+							<and>
+								<isset var="setupWizardEnabled" />
+								<equals arg1="${setupWizardEnabled}" arg2="true" />
+							</and>
+							<then>
+								<execute function="Type" locator1="TextInput#PASSWORD" value1="test2" />
+								<execute function="Type" locator1="TextInput#ENTER_AGAIN" value1="test2" />
+							</then>
+							<else>
+								<execute function="Type" locator1="TextInput#PASSWORD" value1="test" />
+								<execute function="Type" locator1="TextInput#ENTER_AGAIN" value1="test" />
+							</else>
+						</if>
+					</else>
+				</if>
+
+				<execute macro="Button#clickSave" />
+
+				<execute function="AssertElementNotPresent" locator1="TextInput#ENTER_AGAIN" />
+			</then>
+		</if>
+	</command>
+
 	<command name="searchCP">
 		<execute function="Pause" locator1="5000" />
 
@@ -2213,6 +2229,8 @@
 	</command>
 
 	<command name="viewLoggedInPG">
+		<execute macro="ProductMenuHelper#expandPanelControlPanel" />
+
 		<if>
 			<equals arg1="${authenticationMethod}" arg2="By Screen Name" />
 			<then>
