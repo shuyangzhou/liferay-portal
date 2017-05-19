@@ -56,6 +56,7 @@ public class PortletApplicationContext extends XmlWebApplicationContext {
 
 	public PortletApplicationContext() {
 		setClassLoader(getBeanClassLoader());
+		setConfigLocations(getPortletConfigLocations());
 	}
 
 	public interface PACL {
@@ -135,7 +136,7 @@ public class PortletApplicationContext extends XmlWebApplicationContext {
 	protected void loadBeanDefinitions(
 		XmlBeanDefinitionReader xmlBeanDefinitionReader) {
 
-		String[] configLocations = getPortletConfigLocations();
+		String[] configLocations = getConfigLocations();
 
 		if (configLocations == null) {
 			return;
