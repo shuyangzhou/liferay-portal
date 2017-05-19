@@ -444,45 +444,6 @@ public class LanguageImpl implements Language, Serializable {
 			locale, resourceBundle, pattern, arguments, translateArguments);
 	}
 
-	private String _format(
-		Locale locale, ResourceBundle resourceBundle, String pattern,
-		Object[] arguments, boolean translateArguments) {
-
-		String value = null;
-
-		try {
-			pattern = _get(locale, resourceBundle, pattern, pattern);
-
-			if (ArrayUtil.isNotEmpty(arguments)) {
-				pattern = _escapePattern(pattern);
-
-				for (int i = 0; i < arguments.length; i++) {
-					if (translateArguments) {
-						String argument = arguments[i].toString();
-
-						arguments[i] = _get(
-							locale, resourceBundle, argument, argument);
-					}
-				}
-
-				MessageFormat messageFormat = decorateMessageFormat(
-					locale, pattern, arguments);
-
-				value = messageFormat.format(arguments);
-			}
-			else {
-				value = pattern;
-			}
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(e, e);
-			}
-		}
-
-		return value;
-	}
-
 	/**
 	 * Returns the translated pattern using the locale or, if the locale is not
 	 * available, the server's default locale.
@@ -828,17 +789,6 @@ public class LanguageImpl implements Language, Serializable {
 		}
 
 		return _get(locale, resourceBundle, key, defaultValue);
-	}
-
-	private String _get(
-		Locale locale, ResourceBundle resourceBundle, String key,
-		String defaultValue) {
-
-		if ((resourceBundle != null) && resourceBundle.containsKey(key)) {
-			return _get(resourceBundle, key);
-		}
-
-		return get(locale, key, defaultValue);
 	}
 
 	/**
@@ -1658,6 +1608,56 @@ public class LanguageImpl implements Language, Serializable {
 	private String _escapePattern(String pattern) {
 		return StringUtil.replace(
 			pattern, CharPool.APOSTROPHE, StringPool.DOUBLE_APOSTROPHE);
+	}
+
+	private String _format(
+		Locale locale, ResourceBundle resourceBundle, String pattern,
+		Object[] arguments, boolean translateArguments) {
+
+		String value = null;
+
+		try {
+			pattern = _get(locale, resourceBundle, pattern, pattern);
+
+			if (ArrayUtil.isNotEmpty(arguments)) {
+				pattern = _escapePattern(pattern);
+
+				for (int i = 0; i < arguments.length; i++) {
+					if (translateArguments) {
+						String argument = arguments[i].toString();
+
+						arguments[i] = _get(
+							locale, resourceBundle, argument, argument);
+					}
+				}
+
+				MessageFormat messageFormat = decorateMessageFormat(
+					locale, pattern, arguments);
+
+				value = messageFormat.format(arguments);
+			}
+			else {
+				value = pattern;
+			}
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(e, e);
+			}
+		}
+
+		return value;
+	}
+
+	private String _get(
+		Locale locale, ResourceBundle resourceBundle, String key,
+		String defaultValue) {
+
+		if ((resourceBundle != null) && resourceBundle.containsKey(key)) {
+			return _get(resourceBundle, key);
+		}
+
+		return get(locale, key, defaultValue);
 	}
 
 	private String _get(ResourceBundle resourceBundle, String key) {
