@@ -850,18 +850,18 @@ public class LanguageImpl implements Language, Serializable {
 			return defaultValue;
 		}
 
+		Locale locale = _getLocale(request);
+
+		ResourceBundle resourceBundle = null;
+
 		PortletConfig portletConfig = (PortletConfig)request.getAttribute(
 			JavaConstants.JAVAX_PORTLET_CONFIG);
 
-		Locale locale = _getLocale(request);
-
-		if (portletConfig == null) {
-			return get(locale, key, defaultValue);
+		if (portletConfig != null) {
+			resourceBundle = portletConfig.getResourceBundle(locale);
 		}
 
-		ResourceBundle resourceBundle = portletConfig.getResourceBundle(locale);
-
-		if (resourceBundle.containsKey(key)) {
+		if ((resourceBundle != null) && resourceBundle.containsKey(key)) {
 			return _get(resourceBundle, key);
 		}
 
