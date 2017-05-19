@@ -261,7 +261,7 @@ public class LanguageImpl implements Language, Serializable {
 		String value = null;
 
 		try {
-			pattern = get(request, pattern);
+			pattern = get(request, pattern, pattern);
 
 			if (ArrayUtil.isNotEmpty(arguments)) {
 				pattern = _escapePattern(pattern);
@@ -272,7 +272,7 @@ public class LanguageImpl implements Language, Serializable {
 					String text = arguments[i].getText();
 
 					if (translateArguments) {
-						text = get(request, text);
+						text = get(request, text, text);
 					}
 
 					formattedArguments[i] =
@@ -434,14 +434,16 @@ public class LanguageImpl implements Language, Serializable {
 		String value = null;
 
 		try {
-			pattern = get(request, pattern);
+			pattern = get(request, pattern, pattern);
 
 			if (ArrayUtil.isNotEmpty(arguments)) {
 				pattern = _escapePattern(pattern);
 
 				for (int i = 0; i < arguments.length; i++) {
 					if (translateArguments) {
-						arguments[i] = get(request, arguments[i].toString());
+						String argument = arguments[i].toString();
+
+						arguments[i] = get(request, argument, argument);
 					}
 				}
 
@@ -618,14 +620,16 @@ public class LanguageImpl implements Language, Serializable {
 		String value = null;
 
 		try {
-			pattern = get(locale, pattern);
+			pattern = get(locale, pattern, pattern);
 
 			if (ArrayUtil.isNotEmpty(arguments)) {
 				pattern = _escapePattern(pattern);
 
 				for (int i = 0; i < arguments.length; i++) {
 					if (translateArguments) {
-						arguments[i] = get(locale, arguments[i].toString());
+						String argument = arguments[i].toString();
+
+						arguments[i] = get(locale, argument, argument);
 					}
 				}
 
@@ -761,15 +765,16 @@ public class LanguageImpl implements Language, Serializable {
 		String value = null;
 
 		try {
-			pattern = get(resourceBundle, pattern);
+			pattern = get(resourceBundle, pattern, pattern);
 
 			if (ArrayUtil.isNotEmpty(arguments)) {
 				pattern = _escapePattern(pattern);
 
 				for (int i = 0; i < arguments.length; i++) {
 					if (translateArguments) {
-						arguments[i] = get(
-							resourceBundle, arguments[i].toString());
+						String argument = arguments[i].toString();
+
+						arguments[i] = get(resourceBundle, argument, argument);
 					}
 				}
 
