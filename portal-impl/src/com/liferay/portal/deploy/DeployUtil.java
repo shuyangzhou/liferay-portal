@@ -108,6 +108,21 @@ public class DeployUtil {
 		return destDir;
 	}
 
+	public static String getResourcePath(Set<String> resources, String resource)
+		throws Exception {
+
+		String tempResource = _instance._getResourcePath(resource);
+
+		resources.add(tempResource);
+
+		return tempResource;
+	}
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #getResourcePath(Set<String>,
+	* String)}
+	*/
+	@Deprecated
 	public static String getResourcePath(String resource) throws Exception {
 		return _instance._getResourcePath(resource);
 	}
