@@ -269,17 +269,15 @@ public class LanguageImpl implements Language, Serializable {
 				Object[] formattedArguments = new Object[arguments.length];
 
 				for (int i = 0; i < arguments.length; i++) {
+					String text = arguments[i].getText();
+
 					if (translateArguments) {
-						formattedArguments[i] =
-							arguments[i].getBefore() +
-								get(request, arguments[i].getText()) +
-									arguments[i].getAfter();
+						text = get(request, text);
 					}
-					else {
-						formattedArguments[i] =
-							arguments[i].getBefore() + arguments[i].getText() +
-								arguments[i].getAfter();
-					}
+
+					formattedArguments[i] =
+						arguments[i].getBefore() + text +
+							arguments[i].getAfter();
 				}
 
 				MessageFormat messageFormat = decorateMessageFormat(
