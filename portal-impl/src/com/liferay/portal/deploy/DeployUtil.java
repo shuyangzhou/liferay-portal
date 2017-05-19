@@ -37,13 +37,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 
@@ -60,7 +61,7 @@ public class DeployUtil {
 		File targetFile = new File(targetDir, targetFileName);
 
 		if (!targetFile.exists()) {
-			File file = new File(getResourcePath(fileName));
+			File file = new File(_instance._getResourcePath(fileName));
 
 			CopyTask.copyFile(
 				file, new File(targetDir), targetFileName, filterMap, overwrite,
