@@ -260,8 +260,22 @@ public class LanguageImpl implements Language, Serializable {
 
 		String value = null;
 
+		Locale locale = null;
+		ResourceBundle resourceBundle = null;
+
+		if ((request != null) && (pattern != null)) {
+			locale = _getLocale(request);
+
+			PortletConfig portletConfig = (PortletConfig)request.getAttribute(
+				JavaConstants.JAVAX_PORTLET_CONFIG);
+
+			if (portletConfig != null) {
+				resourceBundle = portletConfig.getResourceBundle(locale);
+			}
+		}
+
 		try {
-			pattern = get(request, pattern, pattern);
+			pattern = _get(locale, resourceBundle, pattern, pattern);
 
 			if (ArrayUtil.isNotEmpty(arguments)) {
 				pattern = _escapePattern(pattern);
@@ -272,7 +286,7 @@ public class LanguageImpl implements Language, Serializable {
 					String text = arguments[i].getText();
 
 					if (translateArguments) {
-						text = get(request, text, text);
+						text = _get(locale, resourceBundle, text, text);
 					}
 
 					formattedArguments[i] =
@@ -433,8 +447,22 @@ public class LanguageImpl implements Language, Serializable {
 
 		String value = null;
 
+		Locale locale = null;
+		ResourceBundle resourceBundle = null;
+
+		if ((request != null) && (pattern != null)) {
+			locale = _getLocale(request);
+
+			PortletConfig portletConfig = (PortletConfig)request.getAttribute(
+				JavaConstants.JAVAX_PORTLET_CONFIG);
+
+			if (portletConfig != null) {
+				resourceBundle = portletConfig.getResourceBundle(locale);
+			}
+		}
+
 		try {
-			pattern = get(request, pattern, pattern);
+			pattern = _get(locale, resourceBundle, pattern, pattern);
 
 			if (ArrayUtil.isNotEmpty(arguments)) {
 				pattern = _escapePattern(pattern);
@@ -443,12 +471,13 @@ public class LanguageImpl implements Language, Serializable {
 					if (translateArguments) {
 						String argument = arguments[i].toString();
 
-						arguments[i] = get(request, argument, argument);
+						arguments[i] = _get(
+							locale, resourceBundle, argument, argument);
 					}
 				}
 
 				MessageFormat messageFormat = decorateMessageFormat(
-					request, pattern, arguments);
+					locale, pattern, arguments);
 
 				value = messageFormat.format(arguments);
 			}
