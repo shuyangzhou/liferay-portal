@@ -254,6 +254,10 @@ public class LanguageImpl implements Language, Serializable {
 		HttpServletRequest request, String pattern, LanguageWrapper[] arguments,
 		boolean translateArguments) {
 
+		if (request == null) {
+			throw new NullPointerException("Request is null");
+		}
+
 		if (PropsValues.TRANSLATIONS_DISABLED) {
 			return pattern;
 		}
@@ -426,6 +430,10 @@ public class LanguageImpl implements Language, Serializable {
 	public String format(
 		HttpServletRequest request, String pattern, Object[] arguments,
 		boolean translateArguments) {
+
+		if (request == null) {
+			throw new NullPointerException("Request is null");
+		}
 
 		if (PropsValues.TRANSLATIONS_DISABLED) {
 			return pattern;
