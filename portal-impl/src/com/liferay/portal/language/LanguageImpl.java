@@ -861,6 +861,17 @@ public class LanguageImpl implements Language, Serializable {
 			resourceBundle = portletConfig.getResourceBundle(locale);
 		}
 
+		return _get(locale, resourceBundle, key, defaultValue);
+	}
+
+	private String _get(
+		Locale locale, ResourceBundle resourceBundle, String key,
+		String defaultValue) {
+
+		if (key == null) {
+			return defaultValue;
+		}
+
 		if ((resourceBundle != null) && resourceBundle.containsKey(key)) {
 			return _get(resourceBundle, key);
 		}
