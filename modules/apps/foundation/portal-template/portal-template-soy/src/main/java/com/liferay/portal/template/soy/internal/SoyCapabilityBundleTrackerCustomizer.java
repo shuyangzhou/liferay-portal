@@ -48,7 +48,8 @@ import org.osgi.util.tracker.BundleTrackerCustomizer;
  * @author Bruno Basto
  */
 @Component(service = SoyCapabilityBundleTrackerCustomizer.class)
-public class SoyCapabilityBundleTrackerCustomizer {
+public class SoyCapabilityBundleTrackerCustomizer
+	implements BundleTrackerCustomizer<List<BundleCapability>>{
 
 	public List<TemplateResource> getAllTemplateResources() {
 		return _templateResources;
@@ -100,129 +101,123 @@ public class SoyCapabilityBundleTrackerCustomizer {
 	private PortalCache<HashSet<TemplateResource>, SoyTofuCacheBag>
 		_portalCache;
 
-	private static final class SoyCapabilityBundleTrackerCustomizer
-		implements BundleTrackerCustomizer<List<BundleCapability>> {
+	public SoyCapabilityBundleTrackerCustomizer(
+		PortalCache<HashSet<TemplateResource>, SoyTofuCacheBag> portalCache) {
 
-		public SoyCapabilityBundleTrackerCustomizer(
-			PortalCache
-				<HashSet<TemplateResource>, SoyTofuCacheBag> portalCache) {
+		_soyTofuCacheHandler = new SoyTofuCacheHandler(portalCache);
+	}
 
-			_soyTofuCacheHandler = new SoyTofuCacheHandler(portalCache);
-		}
+	@Override
+	public List<BundleCapability> addingBundle(
+		Bundle bundle, BundleEvent bundleEvent) {
 
-		@Override
-		public List<BundleCapability> addingBundle(
-			Bundle bundle, BundleEvent bundleEvent) {
+		BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
 
-			BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
+		List<BundleCapability> bundleCapabilities =
+			bundleWiring.getCapabilities("soy");
 
-			List<BundleCapability> bundleCapabilities =
-				bundleWiring.getCapabilities("soy");
-
-			if (ListUtil.isEmpty(bundleCapabilities)) {
-				return bundleCapabilities;
-			}
-
-			for (BundleWire bundleWire : bundleWiring.getRequiredWires("soy")) {
-				BundleRevision bundleRevision = bundleWire.getProvider();
-
-				Bundle requiredBundle = bundleRevision.getBundle();
-
-				_soyProviderCapabilityBundleRegister.register(requiredBundle);
-
-				_addTemplateResourcesToList(requiredBundle);
-			}
-
-			_soyProviderCapabilityBundleRegister.register(bundle);
-
-			_addTemplateResourcesToList(bundle);
-
+		if (ListUtil.isEmpty(bundleCapabilities)) {
 			return bundleCapabilities;
 		}
 
-		@Override
-		public void modifiedBundle(
-			Bundle bundle, BundleEvent bundleEvent,
-			List<BundleCapability> bundleCapabilities) {
+		for (BundleWire bundleWire : bundleWiring.getRequiredWires("soy")) {
+			BundleRevision bundleRevision = bundleWire.getProvider();
 
-			removedBundle(bundle, bundleEvent, bundleCapabilities);
+			Bundle requiredBundle = bundleRevision.getBundle();
 
-			List<BundleCapability> newBundleCapabilities = addingBundle(
-				bundle, bundleEvent);
+			_soyProviderCapabilityBundleRegister.register(requiredBundle);
 
-			bundleCapabilities.clear();
-
-			bundleCapabilities.addAll(newBundleCapabilities);
+			_addTemplateResourcesToList(requiredBundle);
 		}
 
-		@Override
-		public void removedBundle(
-			Bundle bundle, BundleEvent bundleEvent,
-			List<BundleCapability> bundleCapabilities) {
+		_soyProviderCapabilityBundleRegister.register(bundle);
 
-			List<TemplateResource> removedTemplateResources =
-				_removeBundleTemplateResourcesFromList(bundle);
+		_addTemplateResourcesToList(bundle);
 
-			_soyTofuCacheHandler.removeIfAny(removedTemplateResources);
-
-			_soyProviderCapabilityBundleRegister.unregister(bundle);
-		}
-
-		private void _addTemplateResourcesToList(Bundle bundle) {
-			SoyTemplateResourcesCollector soyTemplateResourceCollector =
-				new SoyTemplateResourcesCollector(bundle, StringPool.SLASH);
-
-			try {
-				List<TemplateResource> templateResources =
-					soyTemplateResourceCollector.getTemplateResources();
-
-				templateResources.stream().forEach(
-					templateResource -> {
-						if ((templateResource != null) &&
-							!_templateResources.contains(templateResource)) {
-
-							_templateResources.add(templateResource);
-						}
-					});
-			}
-			catch (TemplateException te) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Unable to add template resources for bundle " +
-							bundle.getBundleId(),
-						te);
-				}
-			}
-		}
-
-		private List<TemplateResource> _removeBundleTemplateResourcesFromList(
-			Bundle bundle) {
-
-			List<TemplateResource> removedTemplateResources = new ArrayList<>();
-
-			Iterator<TemplateResource> iterator = _templateResources.iterator();
-
-			while (iterator.hasNext()) {
-				TemplateResource templateResource = iterator.next();
-
-				long bundleId = SoyTemplateUtil.getBundleId(
-					templateResource.getTemplateId());
-
-				if (bundle.getBundleId() == bundleId) {
-					removedTemplateResources.add(templateResource);
-				}
-			}
-
-			_templateResources.removeAll(removedTemplateResources);
-
-			return removedTemplateResources;
-		}
-
-		private static final Log _log = LogFactoryUtil.getLog(
-			SoyCapabilityBundleTrackerCustomizer.class);
-
-		private final SoyTofuCacheHandler _soyTofuCacheHandler;
-
+		return bundleCapabilities;
 	}
+
+	@Override
+	public void modifiedBundle(
+		Bundle bundle, BundleEvent bundleEvent,
+		List<BundleCapability> bundleCapabilities) {
+
+		removedBundle(bundle, bundleEvent, bundleCapabilities);
+
+		List<BundleCapability> newBundleCapabilities = addingBundle(
+			bundle, bundleEvent);
+
+		bundleCapabilities.clear();
+
+		bundleCapabilities.addAll(newBundleCapabilities);
+	}
+
+	@Override
+	public void removedBundle(
+		Bundle bundle, BundleEvent bundleEvent,
+		List<BundleCapability> bundleCapabilities) {
+
+		List<TemplateResource> removedTemplateResources =
+			_removeBundleTemplateResourcesFromList(bundle);
+
+		_soyTofuCacheHandler.removeIfAny(removedTemplateResources);
+
+		_soyProviderCapabilityBundleRegister.unregister(bundle);
+	}
+
+	private void _addTemplateResourcesToList(Bundle bundle) {
+		SoyTemplateResourcesCollector soyTemplateResourceCollector =
+			new SoyTemplateResourcesCollector(bundle, StringPool.SLASH);
+
+		try {
+			List<TemplateResource> templateResources =
+				soyTemplateResourceCollector.getTemplateResources();
+
+			templateResources.stream().forEach(
+				templateResource -> {
+					if ((templateResource != null) &&
+						!_templateResources.contains(templateResource)) {
+
+						_templateResources.add(templateResource);
+					}
+				});
+		}
+		catch (TemplateException te) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Unable to add template resources for bundle " +
+						bundle.getBundleId(),
+					te);
+			}
+		}
+	}
+
+	private List<TemplateResource> _removeBundleTemplateResourcesFromList(
+		Bundle bundle) {
+
+		List<TemplateResource> removedTemplateResources = new ArrayList<>();
+
+		Iterator<TemplateResource> iterator = _templateResources.iterator();
+
+		while (iterator.hasNext()) {
+			TemplateResource templateResource = iterator.next();
+
+			long bundleId = SoyTemplateUtil.getBundleId(
+				templateResource.getTemplateId());
+
+			if (bundle.getBundleId() == bundleId) {
+				removedTemplateResources.add(templateResource);
+			}
+		}
+
+		_templateResources.removeAll(removedTemplateResources);
+
+		return removedTemplateResources;
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		SoyCapabilityBundleTrackerCustomizer.class);
+
+	private final SoyTofuCacheHandler _soyTofuCacheHandler;
 
 }
