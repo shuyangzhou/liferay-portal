@@ -282,7 +282,7 @@ public class LanguageImpl implements Language, Serializable {
 					}
 				}
 
-				MessageFormat messageFormat = decorateMessageFormat(
+				MessageFormat messageFormat = _decorateMessageFormat(
 					request, pattern, formattedArguments);
 
 				value = messageFormat.format(formattedArguments);
@@ -447,7 +447,7 @@ public class LanguageImpl implements Language, Serializable {
 					}
 				}
 
-				MessageFormat messageFormat = decorateMessageFormat(
+				MessageFormat messageFormat = _decorateMessageFormat(
 					request, pattern, arguments);
 
 				value = messageFormat.format(arguments);
@@ -631,7 +631,7 @@ public class LanguageImpl implements Language, Serializable {
 					}
 				}
 
-				MessageFormat messageFormat = decorateMessageFormat(
+				MessageFormat messageFormat = _decorateMessageFormat(
 					locale, pattern, arguments);
 
 				value = messageFormat.format(arguments);
@@ -775,7 +775,7 @@ public class LanguageImpl implements Language, Serializable {
 					}
 				}
 
-				MessageFormat messageFormat = decorateMessageFormat(
+				MessageFormat messageFormat = _decorateMessageFormat(
 					resourceBundle.getLocale(), pattern, arguments);
 
 				value = messageFormat.format(arguments);
@@ -1592,16 +1592,16 @@ public class LanguageImpl implements Language, Serializable {
 		CookieKeys.addCookie(request, response, languageIdCookie);
 	}
 
-	protected MessageFormat decorateMessageFormat(
+	private MessageFormat _decorateMessageFormat(
 		HttpServletRequest request, String pattern,
 		Object[] formattedArguments) {
 
 		Locale locale = _getLocale(request);
 
-		return decorateMessageFormat(locale, pattern, formattedArguments);
+		return _decorateMessageFormat(locale, pattern, formattedArguments);
 	}
 
-	protected MessageFormat decorateMessageFormat(
+	private MessageFormat _decorateMessageFormat(
 		Locale locale, String pattern, Object[] formattedArguments) {
 
 		if (locale == null) {
