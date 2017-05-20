@@ -280,10 +280,8 @@ public class LanguageImpl implements Language, Serializable {
 					}
 				}
 
-				MessageFormat messageFormat = _decorateMessageFormat(
+				value = _decorateMessageFormat(
 					request, pattern, formattedArguments);
-
-				value = messageFormat.format(formattedArguments);
 			}
 			else {
 				value = pattern;
@@ -443,10 +441,7 @@ public class LanguageImpl implements Language, Serializable {
 					}
 				}
 
-				MessageFormat messageFormat = _decorateMessageFormat(
-					request, pattern, arguments);
-
-				value = messageFormat.format(arguments);
+				value = _decorateMessageFormat(request, pattern, arguments);
 			}
 			else {
 				value = pattern;
@@ -625,10 +620,7 @@ public class LanguageImpl implements Language, Serializable {
 					}
 				}
 
-				MessageFormat messageFormat = _decorateMessageFormat(
-					locale, pattern, arguments);
-
-				value = messageFormat.format(arguments);
+				value = _decorateMessageFormat(locale, pattern, arguments);
 			}
 			else {
 				value = pattern;
@@ -767,10 +759,8 @@ public class LanguageImpl implements Language, Serializable {
 					}
 				}
 
-				MessageFormat messageFormat = _decorateMessageFormat(
+				value = _decorateMessageFormat(
 					resourceBundle.getLocale(), pattern, arguments);
-
-				value = messageFormat.format(arguments);
 			}
 			else {
 				value = pattern;
@@ -1645,7 +1635,7 @@ public class LanguageImpl implements Language, Serializable {
 			groupLanguageCodeLocalesMap, groupLanguageIdLocalesMap);
 	}
 
-	private MessageFormat _decorateMessageFormat(
+	private String _decorateMessageFormat(
 		HttpServletRequest request, String pattern,
 		Object[] formattedArguments) {
 
@@ -1654,7 +1644,7 @@ public class LanguageImpl implements Language, Serializable {
 		return _decorateMessageFormat(locale, pattern, formattedArguments);
 	}
 
-	private MessageFormat _decorateMessageFormat(
+	private String _decorateMessageFormat(
 		Locale locale, String pattern, Object[] formattedArguments) {
 
 		if (locale == null) {
@@ -1673,7 +1663,7 @@ public class LanguageImpl implements Language, Serializable {
 			}
 		}
 
-		return messageFormat;
+		return messageFormat.format(formattedArguments);
 	}
 
 	private String _escapePattern(String pattern) {
