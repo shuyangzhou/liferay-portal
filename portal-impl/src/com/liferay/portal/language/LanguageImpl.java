@@ -1592,35 +1592,6 @@ public class LanguageImpl implements Language, Serializable {
 		CookieKeys.addCookie(request, response, languageIdCookie);
 	}
 
-	private MessageFormat _decorateMessageFormat(
-		HttpServletRequest request, String pattern,
-		Object[] formattedArguments) {
-
-		Locale locale = _getLocale(request);
-
-		return _decorateMessageFormat(locale, pattern, formattedArguments);
-	}
-
-	private MessageFormat _decorateMessageFormat(
-		Locale locale, String pattern, Object[] formattedArguments) {
-
-		if (locale == null) {
-			locale = LocaleUtil.getDefault();
-		}
-
-		MessageFormat messageFormat = new MessageFormat(pattern, locale);
-
-		for (int i = 0; i < formattedArguments.length; i++) {
-			Object formattedArgument = formattedArguments[i];
-
-			if (formattedArgument instanceof Number) {
-				messageFormat.setFormat(i, NumberFormat.getInstance(locale));
-			}
-		}
-
-		return messageFormat;
-	}
-
 	private static CompanyLocalesBag _getCompanyLocalesBag() {
 		Long companyId = CompanyThreadLocal.getCompanyId();
 
@@ -1680,6 +1651,35 @@ public class LanguageImpl implements Language, Serializable {
 
 		return new ObjectValuePair<>(
 			groupLanguageCodeLocalesMap, groupLanguageIdLocalesMap);
+	}
+
+	private MessageFormat _decorateMessageFormat(
+		HttpServletRequest request, String pattern,
+		Object[] formattedArguments) {
+
+		Locale locale = _getLocale(request);
+
+		return _decorateMessageFormat(locale, pattern, formattedArguments);
+	}
+
+	private MessageFormat _decorateMessageFormat(
+		Locale locale, String pattern, Object[] formattedArguments) {
+
+		if (locale == null) {
+			locale = LocaleUtil.getDefault();
+		}
+
+		MessageFormat messageFormat = new MessageFormat(pattern, locale);
+
+		for (int i = 0; i < formattedArguments.length; i++) {
+			Object formattedArgument = formattedArguments[i];
+
+			if (formattedArgument instanceof Number) {
+				messageFormat.setFormat(i, NumberFormat.getInstance(locale));
+			}
+		}
+
+		return messageFormat;
 	}
 
 	private String _escapePattern(String pattern) {
