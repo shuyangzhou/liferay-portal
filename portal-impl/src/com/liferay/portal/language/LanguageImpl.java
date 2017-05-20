@@ -264,8 +264,6 @@ public class LanguageImpl implements Language, Serializable {
 			pattern = get(request, pattern);
 
 			if (ArrayUtil.isNotEmpty(arguments)) {
-				pattern = _escapePattern(pattern);
-
 				Object[] formattedArguments = new Object[arguments.length];
 
 				for (int i = 0; i < arguments.length; i++) {
@@ -439,8 +437,6 @@ public class LanguageImpl implements Language, Serializable {
 			pattern = get(request, pattern);
 
 			if (ArrayUtil.isNotEmpty(arguments)) {
-				pattern = _escapePattern(pattern);
-
 				for (int i = 0; i < arguments.length; i++) {
 					if (translateArguments) {
 						arguments[i] = get(request, arguments[i].toString());
@@ -623,8 +619,6 @@ public class LanguageImpl implements Language, Serializable {
 			pattern = get(locale, pattern);
 
 			if (ArrayUtil.isNotEmpty(arguments)) {
-				pattern = _escapePattern(pattern);
-
 				for (int i = 0; i < arguments.length; i++) {
 					if (translateArguments) {
 						arguments[i] = get(locale, arguments[i].toString());
@@ -766,8 +760,6 @@ public class LanguageImpl implements Language, Serializable {
 			pattern = get(resourceBundle, pattern);
 
 			if (ArrayUtil.isNotEmpty(arguments)) {
-				pattern = _escapePattern(pattern);
-
 				for (int i = 0; i < arguments.length; i++) {
 					if (translateArguments) {
 						arguments[i] = get(
@@ -1668,6 +1660,8 @@ public class LanguageImpl implements Language, Serializable {
 		if (locale == null) {
 			locale = LocaleUtil.getDefault();
 		}
+
+		pattern = _escapePattern(pattern);
 
 		MessageFormat messageFormat = new MessageFormat(pattern, locale);
 
