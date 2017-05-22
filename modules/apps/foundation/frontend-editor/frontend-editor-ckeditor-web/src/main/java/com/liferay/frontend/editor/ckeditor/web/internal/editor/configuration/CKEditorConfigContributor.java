@@ -433,8 +433,6 @@ public class CKEditorConfigContributor extends BaseCKEditorConfigContributor {
 			CKEditorConfigContributor.class.getClassLoader();
 
 		_resourceBundleLoader = new AggregateResourceBundleLoader(
-			ResourceBundleUtil.getResourceBundleLoader(
-				"content.Language", classLoader),
 			resourceBundleLoader,
 			ResourceBundleLoaderUtil.getPortalResourceBundleLoader());
 	}

@@ -295,8 +295,6 @@ public class AlloyEditorConfigContributor
 			AlloyEditorConfigContributor.class.getClassLoader();
 
 		_resourceBundleLoader = new AggregateResourceBundleLoader(
-			ResourceBundleUtil.getResourceBundleLoader(
-				"content.Language", classLoader),
 			resourceBundleLoader,
 			ResourceBundleLoaderUtil.getPortalResourceBundleLoader());
 	}
