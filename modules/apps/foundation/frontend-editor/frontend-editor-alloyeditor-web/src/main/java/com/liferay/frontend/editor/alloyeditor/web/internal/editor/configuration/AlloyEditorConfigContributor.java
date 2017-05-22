@@ -291,12 +291,7 @@ public class AlloyEditorConfigContributor
 	protected void setResourceBundleLoader(
 		ResourceBundleLoader resourceBundleLoader) {
 
-		ClassLoader classLoader =
-			AlloyEditorConfigContributor.class.getClassLoader();
-
 		_resourceBundleLoader = new AggregateResourceBundleLoader(
-			ResourceBundleUtil.getResourceBundleLoader(
-				"content.Language", classLoader),
 			resourceBundleLoader,
 			ResourceBundleLoaderUtil.getPortalResourceBundleLoader());
 	}
