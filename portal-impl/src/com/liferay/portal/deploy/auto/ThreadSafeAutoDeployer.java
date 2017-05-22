@@ -31,14 +31,21 @@ public class ThreadSafeAutoDeployer implements AutoDeployer {
 	public int autoDeploy(AutoDeploymentContext autoDeploymentContext)
 		throws AutoDeployException {
 
-		AutoDeployer cloneAutoDeployer = _autoDeployer.cloneAutoDeployer();
+		try (AutoDeployer cloneAutoDeployer =
+				_autoDeployer.cloneAutoDeployer()) {
 
-		return cloneAutoDeployer.autoDeploy(autoDeploymentContext);
+			return cloneAutoDeployer.autoDeploy(autoDeploymentContext);
+		}
 	}
 
 	@Override
 	public AutoDeployer cloneAutoDeployer() {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void close() {
+		_autoDeployer.close();
 	}
 
 	private final AutoDeployer _autoDeployer;
