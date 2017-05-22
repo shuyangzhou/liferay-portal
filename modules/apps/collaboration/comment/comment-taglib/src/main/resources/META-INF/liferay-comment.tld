@@ -29,6 +29,11 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
+			<name>discussion</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
 			<name>formAction</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>

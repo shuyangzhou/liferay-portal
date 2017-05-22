@@ -183,6 +183,7 @@ if (portletTitleBasedNavigation) {
 					<liferay-comment:discussion
 						className="<%= BlogsEntry.class.getName() %>"
 						classPK="<%= entry.getEntryId() %>"
+						discussion="<%= discussion %>"
 						formName="fm2"
 						ratingsEnabled="<%= blogsPortletInstanceConfiguration.enableCommentRatings() %>"
 						redirect="<%= currentURL %>"
