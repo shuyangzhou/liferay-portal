@@ -28,6 +28,13 @@ public class AggregateResourceBundleLoader implements ResourceBundleLoader {
 	public AggregateResourceBundleLoader(
 		ResourceBundleLoader... resourceBundleLoaders) {
 
+		for (int i = 0; i < resourceBundleLoaders.length; i++) {
+			if (resourceBundleLoaders[i] == null) {
+				throw new NullPointerException(
+					"Null resource bundle loader at index " + i);
+			}
+		}
+
 		_resourceBundleLoaders = resourceBundleLoaders;
 	}
 
