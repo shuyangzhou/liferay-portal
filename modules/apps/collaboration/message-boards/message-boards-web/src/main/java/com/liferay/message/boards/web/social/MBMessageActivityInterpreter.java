@@ -14,6 +14,8 @@
 
 package com.liferay.message.boards.web.social;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.message.boards.kernel.model.MBCategory;
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.service.MBMessageLocalService;
@@ -45,6 +47,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = {"javax.portlet.name=" + MBPortletKeys.MESSAGE_BOARDS},
 	service = SocialActivityInterpreter.class
 )
+@ProviderType
 public class MBMessageActivityInterpreter
 	extends BaseSocialActivityInterpreter {
 

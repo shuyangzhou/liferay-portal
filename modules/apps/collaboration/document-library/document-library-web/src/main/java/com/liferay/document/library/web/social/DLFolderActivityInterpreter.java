@@ -14,6 +14,8 @@
 
 package com.liferay.document.library.web.social;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.web.constants.DLPortletKeys;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -39,6 +41,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = {"javax.portlet.name=" + DLPortletKeys.DOCUMENT_LIBRARY},
 	service = SocialActivityInterpreter.class
 )
+@ProviderType
 public class DLFolderActivityInterpreter extends BaseSocialActivityInterpreter {
 
 	@Override
