@@ -66,6 +66,8 @@ public class DeployUtil {
 			CopyTask.copyFile(
 				file, new File(targetDir), targetFileName, filterMap, overwrite,
 				true);
+
+			file.delete();
 		}
 	}
 
