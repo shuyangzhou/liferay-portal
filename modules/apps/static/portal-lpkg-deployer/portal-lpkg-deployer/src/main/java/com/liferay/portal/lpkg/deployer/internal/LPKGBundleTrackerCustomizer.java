@@ -35,8 +35,11 @@ import java.io.InputStream;
 
 import java.net.URL;
 
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import java.util.ArrayList;
@@ -88,13 +91,59 @@ public class LPKGBundleTrackerCustomizer
 
 	@Override
 	public List<Bundle> addingBundle(Bundle bundle, BundleEvent bundleEvent) {
-		URL url = bundle.getEntry("liferay-marketplace.properties");
+		URL url = bundle.getEntry(_MARKER_FILE);
+
+		if (url != null) {
+			try {
+				bundle.uninstall();
+			}
+			catch (BundleException be) {
+				_log.error("Unable to uninstall outdated bundle " + bundle, be);
+			}
+
+			return null;
+		}
+
+		url = bundle.getEntry("liferay-marketplace.properties");
 
 		if (url == null) {
 			return null;
 		}
 
 		String symbolicName = bundle.getSymbolicName();
+
+		Version version = bundle.getVersion();
+
+		for (Bundle installedBundle : _bundleContext.getBundles()) {
+			if (symbolicName.equals(installedBundle.getSymbolicName())) {
+				try {
+					if (version.compareTo(installedBundle.getVersion()) == 0) {
+						continue;
+					}
+					else if (version.compareTo(installedBundle.getVersion()) >
+								0) {
+
+						_processOutdatedBundle(installedBundle);
+					}
+					else {
+						_processOutdatedBundle(bundle);
+					}
+				}
+				catch (Exception e) {
+					StringBundler sb = new StringBundler(5);
+
+					sb.append("Unable to process the outdated bundle. ");
+					sb.append("Attempting to install: ");
+					sb.append(bundle);
+					sb.append(" with installed bundle: ");
+					sb.append(installedBundle);
+
+					_log.error(sb.toString(), e);
+				}
+
+				return null;
+			}
+		}
 
 		if (symbolicName.equals(
 				StaticLPKGResolver.getStaticLPKGBundleSymbolicName())) {
@@ -333,6 +382,16 @@ public class LPKGBundleTrackerCustomizer
 		return false;
 	}
 
+	private void _processOutdatedBundle(Bundle bundle) throws Exception {
+		Path path = Paths.get(bundle.getLocation());
+
+		try (FileSystem fileSystem = FileSystems.newFileSystem(path, null)) {
+			Files.createFile(fileSystem.getPath(_MARKER_FILE));
+		}
+
+		bundle.uninstall();
+	}
+
 	private String _readServletContextName(URL url) throws IOException {
 		String pathString = url.getPath();
 
@@ -524,6 +583,8 @@ public class LPKGBundleTrackerCustomizer
 
 		jarOutputStream.closeEntry();
 	}
+
+	private static final String _MARKER_FILE = ".lfr-outdated";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LPKGBundleTrackerCustomizer.class);
