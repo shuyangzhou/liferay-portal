@@ -24,12 +24,19 @@ import com.liferay.portal.template.BaseMultiTemplateManager;
 import com.liferay.portal.template.RestrictedTemplate;
 import com.liferay.portal.template.TemplateContextHelper;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.wiring.BundleCapability;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.util.tracker.BundleTracker;
 
 /**
  * @author Bruno Basto
@@ -37,7 +44,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {"language.type=" + TemplateConstants.LANG_TYPE_SOY},
-	service = TemplateManager.class
+	service = {TemplateManager.class, SoyManager.class}
 )
 public class SoyManager extends BaseMultiTemplateManager {
 
@@ -53,6 +60,16 @@ public class SoyManager extends BaseMultiTemplateManager {
 		templateContextHelper.removeHelperUtilities(classLoader);
 	}
 
+	public List<TemplateResource> getAllTemplateResources() {
+		if (_soyCapabilityBundleTrackerCustomizer != null) {
+			return _soyCapabilityBundleTrackerCustomizer.
+				getAllTemplateResources();
+		}
+		else {
+			return Collections.<TemplateResource>emptyList();
+		}
+	}
+
 	@Override
 	public String getName() {
 		return TemplateConstants.LANG_TYPE_SOY;
@@ -60,6 +77,16 @@ public class SoyManager extends BaseMultiTemplateManager {
 
 	@Override
 	public void init() {
+		int stateMask = Bundle.ACTIVE | Bundle.RESOLVED;
+
+		_soyCapabilityBundleTrackerCustomizer =
+			new SoyCapabilityBundleTrackerCustomizer(
+				_portalCache, _soyProviderCapabilityBundleRegister);
+
+		_bundleTracker = new BundleTracker<>(
+			_bundleContext, stateMask, _soyCapabilityBundleTrackerCustomizer);
+
+		_bundleTracker.open();
 	}
 
 	@Reference(unbind = "-")
@@ -75,6 +102,18 @@ public class SoyManager extends BaseMultiTemplateManager {
 		TemplateContextHelper templateContextHelper) {
 
 		super.setTemplateContextHelper(templateContextHelper);
+	}
+
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		if (_bundleTracker != null) {
+			_bundleTracker.close();
+		}
 	}
 
 	@Override
@@ -96,7 +135,27 @@ public class SoyManager extends BaseMultiTemplateManager {
 		return template;
 	}
 
+	@Reference(unbind = "-")
+	protected void setSoyProviderCapabilityBundleRegister(
+		SoyProviderCapabilityBundleRegister
+			soyProviderCapabilityBundleRegister) {
+
+		_soyProviderCapabilityBundleRegister =
+			soyProviderCapabilityBundleRegister;
+	}
+
+	@Reference(unbind = "-")
+	protected void setSoyTemplateBundleResourceParser(
+		SoyTemplateBundleResourceParser soyTemplateBundleResourceParser) {
+	}
+
+	private BundleContext _bundleContext;
+	private BundleTracker<List<BundleCapability>> _bundleTracker;
 	private PortalCache<HashSet<TemplateResource>, SoyTofuCacheBag>
 		_portalCache;
+	private SoyCapabilityBundleTrackerCustomizer
+		_soyCapabilityBundleTrackerCustomizer;
+	private SoyProviderCapabilityBundleRegister
+		_soyProviderCapabilityBundleRegister;
 
 }
