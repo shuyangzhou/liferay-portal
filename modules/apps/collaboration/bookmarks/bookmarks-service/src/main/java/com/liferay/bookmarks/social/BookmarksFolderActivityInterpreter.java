@@ -17,6 +17,7 @@ package com.liferay.bookmarks.social;
 import com.liferay.bookmarks.constants.BookmarksPortletKeys;
 import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.service.permission.BookmarksFolderPermissionChecker;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
@@ -95,6 +96,11 @@ public class BookmarksFolderActivityInterpreter
 		return BookmarksFolderPermissionChecker.contains(
 			permissionChecker, activity.getGroupId(), activity.getClassPK(),
 			actionId);
+	}
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference(

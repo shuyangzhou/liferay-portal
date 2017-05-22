@@ -16,6 +16,7 @@ package com.liferay.document.library.web.social;
 
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.web.constants.DLPortletKeys;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
@@ -95,6 +96,11 @@ public class DLFolderActivityInterpreter extends BaseSocialActivityInterpreter {
 		return DLFolderPermission.contains(
 			permissionChecker, activity.getGroupId(), activity.getClassPK(),
 			actionId);
+	}
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference(
