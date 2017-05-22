@@ -14,6 +14,7 @@
 
 package com.liferay.portal.osgi.web.wab.extender.internal.adapter;
 
+import com.liferay.portal.kernel.servlet.PortletSessionListenerManager;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 
 import java.lang.reflect.InvocationHandler;
@@ -30,8 +31,12 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.descriptor.JspConfigDescriptor;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
 
 import org.eclipse.equinox.http.servlet.HttpServiceServlet;
+import org.eclipse.equinox.http.servlet.HttpSessionTrackerUtil;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -118,6 +123,24 @@ public class HttpAdapter {
 				HttpServiceServlet.class.getName(), HttpServlet.class.getName()
 			},
 			_httpServiceServlet, properties);
+
+		PortletSessionListenerManager.addHttpSessionListener(
+			new HttpSessionListener() {
+
+				@Override
+				public void sessionCreated(HttpSessionEvent httpSessionEvent) {
+				}
+
+				@Override
+				public void sessionDestroyed(
+					HttpSessionEvent httpSessionEvent) {
+
+					HttpSession httpSession = httpSessionEvent.getSession();
+
+					HttpSessionTrackerUtil.invalidate(httpSession.getId());
+				}
+
+			});
 	}
 
 	@Deactivate
