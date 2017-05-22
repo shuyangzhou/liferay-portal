@@ -14,6 +14,8 @@
 
 package com.liferay.bookmarks.social;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.bookmarks.constants.BookmarksPortletKeys;
 import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.service.permission.BookmarksFolderPermissionChecker;
@@ -39,6 +41,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = {"javax.portlet.name=" + BookmarksPortletKeys.BOOKMARKS},
 	service = SocialActivityInterpreter.class
 )
+@ProviderType
 public class BookmarksFolderActivityInterpreter
 	extends BaseSocialActivityInterpreter {
 
