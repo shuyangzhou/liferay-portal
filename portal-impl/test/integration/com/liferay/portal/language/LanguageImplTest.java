@@ -55,6 +55,22 @@ public class LanguageImplTest {
 		}
 
 		@Test
+		public void testFormatWithApostrophe() {
+			String value = _languageImpl.format(
+				LocaleUtil.US, _LANG_KEY_WITH_APOSTROPHE, "User");
+
+			Assert.assertEquals("User's Personal Site", value);
+		}
+
+		@Test
+		public void testFormatWithApostrophes() {
+			String value = _languageImpl.format(
+				LocaleUtil.US, _LANG_KEY_WITH_APOSTROPHES, "Test");
+
+			Assert.assertEquals("Create Page 'Test'", value);
+		}
+
+		@Test
 		public void testFormatWithKeyNull() {
 			Assert.assertEquals(
 				null,
@@ -149,6 +165,30 @@ public class LanguageImplTest {
 		public void setUp() {
 			_languageImpl = (LanguageImpl)PortalBeanLocatorUtil.locate(
 				"com.liferay.portal.language.LanguageImpl");
+		}
+
+		@Test
+		public void testFormatWithApostrophe() {
+			MockLanguageServletRequest mockLanguageServletRequest =
+				new MockLanguageServletRequest(LocaleUtil.US);
+
+			String value = _languageImpl.format(
+				mockLanguageServletRequest.getRequest(),
+				_LANG_KEY_WITH_APOSTROPHE, "User");
+
+			Assert.assertEquals("User's Personal Site", value);
+		}
+
+		@Test
+		public void testFormatWithApostrophes() {
+			MockLanguageServletRequest mockLanguageServletRequest =
+				new MockLanguageServletRequest(LocaleUtil.US);
+
+			String value = _languageImpl.format(
+				mockLanguageServletRequest.getRequest(),
+				_LANG_KEY_WITH_APOSTROPHES, "Test");
+
+			Assert.assertEquals("Create Page 'Test'", value);
 		}
 
 		@Test
@@ -259,6 +299,10 @@ public class LanguageImplTest {
 	private static final Float _BIG_FLOAT = 1234567.85F;
 
 	private static final Integer _BIG_INTEGER = 1234567890;
+
+	private static final String _LANG_KEY_WITH_APOSTROPHE = "x-personal-site";
+
+	private static final String _LANG_KEY_WITH_APOSTROPHES = "create-page-x";
 
 	private static final String _LANG_KEY_WITH_ARGUMENT = "x-hours";
 
