@@ -37,6 +37,7 @@ import com.liferay.ratings.kernel.model.RatingsStats;
 import java.io.Serializable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the local service interface for RatingsStats. Methods of this
@@ -221,6 +222,10 @@ public interface RatingsStatsLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<RatingsStats> getStats(java.lang.String className,
 		List<java.lang.Long> classPKs);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Map<java.lang.Long, RatingsStats> getStats(
+		java.lang.String className, long[] classPKs);
 
 	/**
 	* Returns the number of rows matching the dynamic query.

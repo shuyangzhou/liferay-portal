@@ -298,6 +298,11 @@ public class RatingsEntryLocalServiceUtil {
 		return getService().getRatingsEntries(start, end);
 	}
 
+	public static java.util.Map<java.lang.Long, com.liferay.ratings.kernel.model.RatingsEntry> getEntries(
+		long userId, java.lang.String className, long[] classPKs) {
+		return getService().getEntries(userId, className, classPKs);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*

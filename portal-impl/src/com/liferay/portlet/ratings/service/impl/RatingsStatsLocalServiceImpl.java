@@ -22,7 +22,9 @@ import com.liferay.portlet.ratings.service.base.RatingsStatsLocalServiceBaseImpl
 import com.liferay.ratings.kernel.exception.NoSuchStatsException;
 import com.liferay.ratings.kernel.model.RatingsStats;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Brian Wing Shun Chan
@@ -113,6 +115,34 @@ public class RatingsStatsLocalServiceImpl
 		}
 
 		return stats;
+	}
+
+	@Override
+	public Map<Long, RatingsStats> getStats(String className, long[] classPKs) {
+		long classNameId = classNameLocalService.getClassNameId(className);
+
+		List<RatingsStats> stats = ratingsStatsPersistence.findByC_C(
+			classNameId, classPKs);
+
+		Map<Long, RatingsStats> map = new HashMap<>();
+
+		iterate:
+		for (long classPK : classPKs) {
+			for (RatingsStats ratingsStats : stats) {
+				if (ratingsStats.getClassPK() == classPK) {
+					map.put(classPK, ratingsStats);
+
+					continue iterate;
+				}
+			}
+
+			RatingsStats ratingsStats = ratingsStatsLocalService.addStats(
+				classNameId, classPK);
+
+			map.put(classPK, ratingsStats);
+		}
+
+		return map;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
