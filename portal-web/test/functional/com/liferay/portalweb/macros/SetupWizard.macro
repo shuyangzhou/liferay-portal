@@ -95,8 +95,14 @@
 			<var name="databaseType" value="${databaseType}" />
 		</execute>
 
-		<execute macro="User#firstLoginPG">
-			<var name="setupWizardEnabled" value="true" />
+		<execute macro="User#AcceptEndUserLicenseAgreement" />
+
+		<execute macro="User#AnswerPasswordReminder" />
+
+		<execute function="AssertElementPresent" locator1="UserBar#USER_AVATAR_IMAGE" />
+
+		<execute macro="User#viewLoggedInPG">
+			<var name="userFirstName" value="Test" />
 		</execute>
 	</command>
 
