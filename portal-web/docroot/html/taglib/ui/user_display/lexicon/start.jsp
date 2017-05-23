@@ -19,7 +19,7 @@
 <liferay-util:buffer var="html">
 	<liferay-ui:user-portrait
 		imageCssClass="<%= imageCssClass %>"
-		userId="<%= (userDisplay != null) ? userDisplay.getUserId() : 0 %>"
+		user="<%= userDisplay %>"
 		userName="<%= (userDisplay != null) ? userDisplay.getFullName() : userName %>"
 	/>
 </liferay-util:buffer>

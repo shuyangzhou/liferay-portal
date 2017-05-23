@@ -169,7 +169,7 @@ summary.setQueryTerms(queryTerms);
 				<aui:a class="lfr-discussion-details" href="<%= url %>">
 					<div class="image">
 						<liferay-ui:user-portrait
-							userId="<%= userDisplay.getUserId() %>"
+							user="<%= userDisplay %>"
 						/>
 					</div>
 

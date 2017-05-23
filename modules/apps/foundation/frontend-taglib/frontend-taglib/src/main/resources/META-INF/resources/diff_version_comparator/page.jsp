@@ -198,7 +198,7 @@ if (Validator.isNotNull(languageId)) {
 									<div class="list-group-item-field">
 										<liferay-ui:user-portrait
 											cssClass="user-icon-lg"
-											userId="<%= userDisplay.getUserId() %>"
+											user="<%= userDisplay %>"
 										/>
 									</div>
 

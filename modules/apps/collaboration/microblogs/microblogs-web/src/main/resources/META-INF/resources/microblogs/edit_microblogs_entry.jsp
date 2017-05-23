@@ -154,7 +154,7 @@ if (comment) {
 			<span class="thumbnail">
 				<liferay-ui:user-portrait
 					cssClass="user-icon-xs"
-					userId="<%= user.getUserId() %>"
+					user="<%= user %>"
 				/>
 			</span>
 		</c:if>

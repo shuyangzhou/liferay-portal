@@ -116,7 +116,7 @@ SearchContainer userSearchContainer = new UserSearch(renderRequest, portletURL);
 					<liferay-ui:search-container-column-text>
 						<liferay-ui:user-portrait
 							cssClass="user-icon-lg"
-							userId="<%= user2.getUserId() %>"
+							user="<%= user2 %>"
 						/>
 					</liferay-ui:search-container-column-text>
 

@@ -100,7 +100,7 @@ else if (metadataField.equals("view-count")) {
 		<div class="metadata-author">
 			<div class="asset-avatar">
 				<liferay-ui:user-portrait
-					userId="<%= assetRendererUser.getUserId() %>"
+					user="<%= assetRendererUser %>"
 				/>
 			</div>
 

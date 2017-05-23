@@ -28,7 +28,7 @@ User user2 = UserLocalServiceUtil.fetchUser(userId);
 <div class="user-info">
 	<liferay-ui:user-portrait
 		cssClass="<%= cssClass %>"
-		userId="<%= (user2 != null) ? user2.getUserId() : 0 %>"
+		user="<%= user2 %>"
 	/>
 
 	<c:if test="<%= showDetails %>">
