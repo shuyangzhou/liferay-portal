@@ -77,6 +77,7 @@ import java.nio.file.Paths;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -170,7 +171,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			String extResource =
 				"ext-" + servletContextName + resource.substring(3);
 
-			String path = DeployUtil.getResourcePath(extResource);
+			String path = DeployUtil.getResourcePath(tempPaths, extResource);
 
 			if (_log.isDebugEnabled()) {
 				if (path == null) {
@@ -192,7 +193,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 	public void addRequiredJar(List<String> jars, String resource)
 		throws Exception {
 
-		String path = DeployUtil.getResourcePath(resource);
+		String path = DeployUtil.getResourcePath(tempPaths, resource);
 
 		if (path == null) {
 			throw new RuntimeException(
@@ -270,32 +271,55 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 	@Override
 	public AutoDeployer cloneAutoDeployer() throws AutoDeployException {
 		try {
-			Class<?> clazz = getClass();
+			Class<? extends BaseDeployer> clazz = getClass();
 
-			Deployer deployer = (Deployer)clazz.newInstance();
+			BaseDeployer baseDeployer = (BaseDeployer)clazz.newInstance();
 
-			deployer.setAppServerType(appServerType);
-			deployer.setAuiTaglibDTD(auiTaglibDTD);
-			deployer.setBaseDir(baseDir);
-			deployer.setDestDir(destDir);
-			deployer.setFilePattern(filePattern);
-			deployer.setJars(jars);
-			deployer.setJbossPrefix(jbossPrefix);
-			deployer.setPortletExtTaglibDTD(portletExtTaglibDTD);
-			deployer.setPortletTaglibDTD(portletTaglibDTD);
-			deployer.setSecurityTaglibDTD(securityTaglibDTD);
-			deployer.setThemeTaglibDTD(themeTaglibDTD);
-			deployer.setTomcatLibDir(tomcatLibDir);
-			deployer.setUiTaglibDTD(uiTaglibDTD);
-			deployer.setUnpackWar(unpackWar);
-			deployer.setUtilTaglibDTD(utilTaglibDTD);
-			deployer.setWars(wars);
-			deployer.setWildflyPrefix(wildflyPrefix);
+			baseDeployer.setAppServerType(appServerType);
+			baseDeployer.setAuiTaglibDTD(auiTaglibDTD);
+			baseDeployer.setBaseDir(baseDir);
+			baseDeployer.setDestDir(destDir);
+			baseDeployer.setFilePattern(filePattern);
+			baseDeployer.setJars(jars);
+			baseDeployer.setJbossPrefix(jbossPrefix);
+			baseDeployer.setPortletExtTaglibDTD(portletExtTaglibDTD);
+			baseDeployer.setPortletTaglibDTD(portletTaglibDTD);
+			baseDeployer.setSecurityTaglibDTD(securityTaglibDTD);
+			baseDeployer.setThemeTaglibDTD(themeTaglibDTD);
+			baseDeployer.setTomcatLibDir(tomcatLibDir);
+			baseDeployer.setUiTaglibDTD(uiTaglibDTD);
+			baseDeployer.setUnpackWar(unpackWar);
+			baseDeployer.setUtilTaglibDTD(utilTaglibDTD);
+			baseDeployer.setWars(wars);
+			baseDeployer.setWildflyPrefix(wildflyPrefix);
 
-			return (AutoDeployer)deployer;
+			return (AutoDeployer)baseDeployer;
 		}
 		catch (Exception e) {
 			throw new AutoDeployException(e);
+		}
+	}
+
+	@Override
+	public void close() throws IOException {
+		IOException ioe1 = null;
+
+		for (Path tempPath : tempPaths) {
+			try {
+				DeployUtil.deleteTemporaryPath(tempPath);
+			}
+			catch (IOException ioe) {
+				if (ioe1 == null) {
+					ioe1 = ioe;
+				}
+				else {
+					ioe1.addSuppressed(ioe);
+				}
+			}
+		}
+
+		if (ioe1 != null) {
+			throw ioe1;
 		}
 	}
 
@@ -335,7 +359,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 				jarFullName.lastIndexOf("/") + 1);
 
 			if (!FileUtil.exists(jarFullName)) {
-				DeployUtil.getResourcePath(jarName);
+				DeployUtil.getResourcePath(tempPaths, jarName);
 			}
 
 			FileUtil.copyFile(
@@ -392,7 +416,8 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			}
 
 			try {
-				String portalTldPath = DeployUtil.getResourcePath(portalTld);
+				String portalTldPath = DeployUtil.getResourcePath(
+					tempPaths, portalTld);
 
 				FileUtil.copyFile(
 					portalTldPath, srcFile + "/WEB-INF/tld/" + portalTld, true);
@@ -540,7 +565,8 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			return;
 		}
 
-		String contextPath = DeployUtil.getResourcePath("context.xml");
+		String contextPath = DeployUtil.getResourcePath(
+			tempPaths, "context.xml");
 
 		String content = FileUtil.read(contextPath);
 
@@ -1285,7 +1311,8 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 
 		if (ignoreFiltersEnabled) {
 			String ignoreFiltersContent = FileUtil.read(
-				DeployUtil.getResourcePath("ignore-filters-web.xml"));
+				DeployUtil.getResourcePath(
+					tempPaths, "ignore-filters-web.xml"));
 
 			return ignoreFiltersContent;
 		}
@@ -1539,12 +1566,12 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 
 		return FileUtil.read(
 			DeployUtil.getResourcePath(
-				"servlet-context-include-filters-web.xml"));
+				tempPaths, "servlet-context-include-filters-web.xml"));
 	}
 
 	public String getSessionFiltersContent() throws Exception {
 		String sessionFiltersContent = FileUtil.read(
-			DeployUtil.getResourcePath("session-filters-web.xml"));
+			DeployUtil.getResourcePath(tempPaths, "session-filters-web.xml"));
 
 		return sessionFiltersContent;
 	}
@@ -1561,7 +1588,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 
 		if (speedFiltersEnabled) {
 			String speedFiltersContent = FileUtil.read(
-				DeployUtil.getResourcePath("speed-filters-web.xml"));
+				DeployUtil.getResourcePath(tempPaths, "speed-filters-web.xml"));
 
 			return speedFiltersContent;
 		}
@@ -2052,7 +2079,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 				getExtraFiltersContent(webXmlVersion, srcFile);
 
 		String liferayWebXmlContent = FileUtil.read(
-			DeployUtil.getResourcePath("web.xml"));
+			DeployUtil.getResourcePath(tempPaths, "web.xml"));
 
 		int z = liferayWebXmlContent.indexOf("</web-app>");
 
@@ -2206,6 +2233,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 	protected String portletExtTaglibDTD;
 	protected String portletTaglibDTD;
 	protected String securityTaglibDTD;
+	protected final Set<Path> tempPaths = new HashSet<>();
 	protected String themeTaglibDTD;
 	protected String tomcatLibDir;
 	protected String uiTaglibDTD;
