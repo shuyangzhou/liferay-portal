@@ -25,7 +25,12 @@ DiscussionRequestHelper discussionRequestHelper = new DiscussionRequestHelper(re
 DiscussionTaglibHelper discussionTaglibHelper = new DiscussionTaglibHelper(request);
 
 DiscussionPermission discussionPermission = CommentManagerUtil.getDiscussionPermission(discussionRequestHelper.getPermissionChecker());
-Discussion discussion = CommentManagerUtil.getDiscussion(discussionTaglibHelper.getUserId(), discussionRequestHelper.getScopeGroupId(), discussionTaglibHelper.getClassName(), discussionTaglibHelper.getClassPK(), new ServiceContextFunction(renderRequest));
+
+Discussion discussion = (Discussion)request.getAttribute("liferay-comment:discussion:discussion");
+
+if (discussion == null) {
+	discussion = CommentManagerUtil.getDiscussion(discussionTaglibHelper.getUserId(), discussionRequestHelper.getScopeGroupId(), discussionTaglibHelper.getClassName(), discussionTaglibHelper.getClassPK(), new ServiceContextFunction(renderRequest));
+}
 
 DiscussionComment rootDiscussionComment = (discussion == null) ? null : discussion.getRootDiscussionComment();
 
