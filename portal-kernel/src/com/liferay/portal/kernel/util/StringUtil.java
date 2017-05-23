@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.Stack;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -3547,6 +3549,84 @@ public class StringUtil {
 	}
 
 	/**
+	 * Returns a string representing the original string appended with suffix
+	 * "..." and then shortened to the specified length. All unclosed HTML tags
+	 * in the shortened string will be closed.
+	 *
+	 * <p>
+	 * The suffix is only added if the original string exceeds the specified
+	 * length. If the original string exceeds the specified length and it
+	 * contains whitespace, the string is shortened at the first whitespace
+	 * character.
+	 * </p>
+	 *
+	 * <p>
+	 * Examples:
+	 * </p>
+	 *
+	 * <p>
+	 * <pre>
+	 * <code>
+	 * shorten("123456789", 8) returns "12345..."
+	 * shorten("1 3456789", 8) returns "1..."
+	 * shorten(" 23456789", 8) returns "..."
+	 * shorten("12345678", 8) returns "12345678"
+	 * shorten(" 1234567", 8) returns " 1234567"
+	 * </code>
+	 * </pre>
+	 * </p>
+	 *
+	 * @param  s the original string
+	 * @param  length the number of characters to limit from the original string
+	 * @return a string representing the original string shortened to the
+	 *         specified length, with suffix "..." appended to it
+	 */
+	public static String shortenWithHtml(String s, int length) {
+		String shortString = shorten(s, length, "");
+
+		Stack<String> tags = new Stack<>();
+
+		Matcher matcher = _TAGS_PATTERN.matcher(shortString);
+
+		while (matcher.find()) {
+			String tag = matcher.group(1);
+
+			if (tag.charAt(0) == CharPool.SLASH) {
+				tags.pop();
+
+				continue;
+			}
+
+			if (!tag.endsWith(StringPool.SLASH)) {
+				tags.push(tag);
+			}
+		}
+
+		StringBundler sb = new StringBundler(tags.size() * 4 + 2);
+
+		sb.append(shortString);
+
+		if (tags.empty() && (shortString.length() < s.length())) {
+			sb.append(StringPool.TRIPLE_PERIOD);
+		}
+
+		while (!tags.empty()) {
+			String tag = tags.pop();
+
+			if (tags.empty()) {
+				sb.append(StringPool.TRIPLE_PERIOD);
+			}
+
+			sb.append(CharPool.LESS_THAN);
+			sb.append(CharPool.SLASH);
+			sb.append(tag);
+			sb.append(CharPool.GREATER_THAN);
+		}
+
+		return sb.toString();
+	}
+
+	/**
 	 * Splits string <code>s</code> around comma characters.
 	 *
 	 * <p>
@@ -5297,6 +5377,9 @@ public class StringUtil {
 		'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
 		'u', 'v', 'w', 'x', 'y', 'z'
 	};
+
+	private static final Pattern _TAGS_PATTERN = Pattern.compile(
+		"<(\\/?[^\\s].*?)>");
 
 	private static final Log _log = LogFactoryUtil.getLog(StringUtil.class);
 
