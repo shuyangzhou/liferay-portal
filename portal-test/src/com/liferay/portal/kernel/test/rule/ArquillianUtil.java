@@ -27,7 +27,13 @@ public class ArquillianUtil {
 		RunWith runWith = description.getAnnotation(RunWith.class);
 
 		if (runWith == null) {
-			return false;
+			Class<?> testClass = description.getTestClass();
+
+			runWith = testClass.getAnnotation(RunWith.class);
+
+			if (runWith == null) {
+				return false;
+			}
 		}
 
 		Class<? extends Runner> runnerClass = runWith.value();
