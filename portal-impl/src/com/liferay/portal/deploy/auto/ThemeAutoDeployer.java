@@ -45,8 +45,10 @@ public class ThemeAutoDeployer extends ThemeDeployer implements AutoDeployer {
 				PropsValues.AUTO_DEPLOY_DEPLOY_DIR);
 			destDir = DeployUtil.getAutoDeployDestDir();
 			appServerType = ServerDetector.getServerId();
-			themeTaglibDTD = DeployUtil.getResourcePath("liferay-theme.tld");
-			utilTaglibDTD = DeployUtil.getResourcePath("liferay-util.tld");
+			themeTaglibDTD = DeployUtil.getResourcePath(
+				tempResources, "liferay-theme.tld");
+			utilTaglibDTD = DeployUtil.getResourcePath(
+				tempResources, "liferay-util.tld");
 			unpackWar = PrefsPropsUtil.getBoolean(
 				PropsKeys.AUTO_DEPLOY_UNPACK_WAR,
 				PropsValues.AUTO_DEPLOY_UNPACK_WAR);

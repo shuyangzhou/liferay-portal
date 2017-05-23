@@ -44,6 +44,7 @@ import java.nio.file.Paths;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 
@@ -57,13 +58,16 @@ public class DeployUtil {
 			Map<String, String> filterMap, boolean overwrite)
 		throws Exception {
 
-		File file = new File(getResourcePath(fileName));
 		File targetFile = new File(targetDir, targetFileName);
 
 		if (!targetFile.exists()) {
+			File file = new File(_instance._getResourcePath(fileName));
+
 			CopyTask.copyFile(
 				file, new File(targetDir), targetFileName, filterMap, overwrite,
 				true);
+
+			file.delete();
 		}
 	}
 
@@ -107,6 +111,21 @@ public class DeployUtil {
 		return destDir;
 	}
 
+	public static String getResourcePath(Set<String> resources, String resource)
+		throws Exception {
+
+		String tempResource = _instance._getResourcePath(resource);
+
+		resources.add(tempResource);
+
+		return tempResource;
+	}
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #getResourcePath(Set<String>,
+	* String)}
+	*/
+	@Deprecated
 	public static String getResourcePath(String resource) throws Exception {
 		return _instance._getResourcePath(resource);
 	}
