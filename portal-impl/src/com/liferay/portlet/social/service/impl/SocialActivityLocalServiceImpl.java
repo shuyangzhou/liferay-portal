@@ -204,30 +204,8 @@ public class SocialActivityLocalServiceImpl
 			String extraData, long receiverUserId)
 		throws PortalException {
 
-		if (ExportImportThreadLocal.isImportInProcess()) {
-			return;
-		}
-
-		Date createDate = new Date();
-
-		long classNameId = classNameLocalService.getClassNameId(className);
-
-		while (true) {
-			SocialActivity socialActivity =
-				socialActivityPersistence.fetchByG_U_CD_C_C_T_R(
-					groupId, userId, createDate.getTime(), classNameId, classPK,
-					type, receiverUserId);
-
-			if (socialActivity != null) {
-				createDate = new Date(createDate.getTime() + 1);
-			}
-			else {
-				break;
-			}
-		}
-
 		addActivity(
-			userId, groupId, createDate, className, classPK, type, extraData,
+			userId, groupId, new Date(), className, classPK, type, extraData,
 			receiverUserId);
 	}
 
