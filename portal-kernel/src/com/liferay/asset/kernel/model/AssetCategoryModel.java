@@ -228,6 +228,21 @@ public interface AssetCategoryModel extends BaseModel<AssetCategory>,
 	public void setParentCategoryId(long parentCategoryId);
 
 	/**
+	 * Returns the tree path of this asset category.
+	 *
+	 * @return the tree path of this asset category
+	 */
+	@AutoEscape
+	public String getTreePath();
+
+	/**
+	 * Sets the tree path of this asset category.
+	 *
+	 * @param treePath the tree path of this asset category
+	 */
+	public void setTreePath(String treePath);
+
+	/**
 	 * Returns the left category ID of this asset category.
 	 *
 	 * @return the left category ID of this asset category

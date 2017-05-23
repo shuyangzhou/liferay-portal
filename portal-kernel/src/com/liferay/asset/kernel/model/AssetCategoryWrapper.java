@@ -69,6 +69,7 @@ public class AssetCategoryWrapper implements AssetCategory,
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("parentCategoryId", getParentCategoryId());
+		attributes.put("treePath", getTreePath());
 		attributes.put("leftCategoryId", getLeftCategoryId());
 		attributes.put("rightCategoryId", getRightCategoryId());
 		attributes.put("name", getName());
@@ -134,6 +135,12 @@ public class AssetCategoryWrapper implements AssetCategory,
 
 		if (parentCategoryId != null) {
 			setParentCategoryId(parentCategoryId);
+		}
+
+		String treePath = (String)attributes.get("treePath");
+
+		if (treePath != null) {
+			setTreePath(treePath);
 		}
 
 		Long leftCategoryId = (Long)attributes.get("leftCategoryId");
@@ -242,6 +249,12 @@ public class AssetCategoryWrapper implements AssetCategory,
 	@Override
 	public java.lang.Object clone() {
 		return new AssetCategoryWrapper((AssetCategory)_assetCategory.clone());
+	}
+
+	@Override
+	public java.lang.String buildTreePath()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _assetCategory.buildTreePath();
 	}
 
 	@Override
@@ -398,6 +411,16 @@ public class AssetCategoryWrapper implements AssetCategory,
 	@Override
 	public java.lang.String getTitleCurrentValue() {
 		return _assetCategory.getTitleCurrentValue();
+	}
+
+	/**
+	* Returns the tree path of this asset category.
+	*
+	* @return the tree path of this asset category
+	*/
+	@Override
+	public java.lang.String getTreePath() {
+		return _assetCategory.getTreePath();
 	}
 
 	/**
@@ -876,6 +899,16 @@ public class AssetCategoryWrapper implements AssetCategory,
 	}
 
 	/**
+	* Sets the tree path of this asset category.
+	*
+	* @param treePath the tree path of this asset category
+	*/
+	@Override
+	public void setTreePath(java.lang.String treePath) {
+		_assetCategory.setTreePath(treePath);
+	}
+
+	/**
 	* Sets the user ID of this asset category.
 	*
 	* @param userId the user ID of this asset category
@@ -923,6 +956,11 @@ public class AssetCategoryWrapper implements AssetCategory,
 	@Override
 	public void setVocabularyId(long vocabularyId) {
 		_assetCategory.setVocabularyId(vocabularyId);
+	}
+
+	@Override
+	public void updateTreePath(java.lang.String treePath) {
+		_assetCategory.updateTreePath(treePath);
 	}
 
 	@Override

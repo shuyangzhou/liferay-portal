@@ -19,6 +19,13 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The extended model base implementation for the AssetCategory service. Represents a row in the &quot;AssetCategory&quot; database table, with each column mapped to a property of this class.
  *
@@ -47,5 +54,41 @@ public abstract class AssetCategoryBaseImpl extends AssetCategoryModelImpl
 		else {
 			AssetCategoryLocalServiceUtil.updateAssetCategory(this);
 		}
+	}
+
+	@Override
+	@SuppressWarnings("unused")
+	public String buildTreePath() throws PortalException {
+		List<AssetCategory> assetCategories = new ArrayList<AssetCategory>();
+
+		AssetCategory assetCategory = this;
+
+		while (assetCategory != null) {
+			assetCategories.add(assetCategory);
+
+			assetCategory = AssetCategoryLocalServiceUtil.fetchAssetCategory(assetCategory.getParentCategoryId());
+		}
+
+		StringBundler sb = new StringBundler((assetCategories.size() * 2) + 1);
+
+		sb.append(StringPool.SLASH);
+
+		for (int i = assetCategories.size() - 1; i >= 0; i--) {
+			assetCategory = assetCategories.get(i);
+
+			sb.append(assetCategory.getCategoryId());
+			sb.append(StringPool.SLASH);
+		}
+
+		return sb.toString();
+	}
+
+	@Override
+	public void updateTreePath(String treePath) {
+		AssetCategory assetCategory = this;
+
+		assetCategory.setTreePath(treePath);
+
+		AssetCategoryLocalServiceUtil.updateAssetCategory(assetCategory);
 	}
 }

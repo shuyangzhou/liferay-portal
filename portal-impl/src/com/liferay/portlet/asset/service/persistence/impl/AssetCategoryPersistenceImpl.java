@@ -11377,6 +11377,7 @@ public class AssetCategoryPersistenceImpl extends BasePersistenceImpl<AssetCateg
 		assetCategoryImpl.setCreateDate(assetCategory.getCreateDate());
 		assetCategoryImpl.setModifiedDate(assetCategory.getModifiedDate());
 		assetCategoryImpl.setParentCategoryId(assetCategory.getParentCategoryId());
+		assetCategoryImpl.setTreePath(assetCategory.getTreePath());
 		assetCategoryImpl.setLeftCategoryId(assetCategory.getLeftCategoryId());
 		assetCategoryImpl.setRightCategoryId(assetCategory.getRightCategoryId());
 		assetCategoryImpl.setName(assetCategory.getName());

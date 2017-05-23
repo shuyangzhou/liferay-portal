@@ -80,6 +80,7 @@
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
 		<field name="parentCategoryId" type="long" />
+		<field name="treePath" type="String" />
 		<field name="leftCategoryId" type="long" />
 		<field name="rightCategoryId" type="long" />
 		<field name="name" type="String" />

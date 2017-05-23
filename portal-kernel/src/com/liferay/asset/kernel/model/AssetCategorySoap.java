@@ -43,6 +43,7 @@ public class AssetCategorySoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setParentCategoryId(model.getParentCategoryId());
+		soapModel.setTreePath(model.getTreePath());
 		soapModel.setLeftCategoryId(model.getLeftCategoryId());
 		soapModel.setRightCategoryId(model.getRightCategoryId());
 		soapModel.setName(model.getName());
@@ -174,6 +175,14 @@ public class AssetCategorySoap implements Serializable {
 		_parentCategoryId = parentCategoryId;
 	}
 
+	public String getTreePath() {
+		return _treePath;
+	}
+
+	public void setTreePath(String treePath) {
+		_treePath = treePath;
+	}
+
 	public long getLeftCategoryId() {
 		return _leftCategoryId;
 	}
@@ -239,6 +248,7 @@ public class AssetCategorySoap implements Serializable {
 	private Date _createDate;
 	private Date _modifiedDate;
 	private long _parentCategoryId;
+	private String _treePath;
 	private long _leftCategoryId;
 	private long _rightCategoryId;
 	private String _name;

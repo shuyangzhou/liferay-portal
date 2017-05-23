@@ -133,6 +133,8 @@ public class AssetCategoryPersistenceTest {
 
 		newAssetCategory.setModifiedDate(RandomTestUtil.nextDate());
 
+		newAssetCategory.setTreePath(RandomTestUtil.randomString());
+
 		newAssetCategory.setLeftCategoryId(RandomTestUtil.nextLong());
 
 		newAssetCategory.setRightCategoryId(RandomTestUtil.nextLong());
@@ -171,6 +173,8 @@ public class AssetCategoryPersistenceTest {
 			Time.getShortTimestamp(newAssetCategory.getModifiedDate()));
 		Assert.assertEquals(existingAssetCategory.getParentCategoryId(),
 			newAssetCategory.getParentCategoryId());
+		Assert.assertEquals(existingAssetCategory.getTreePath(),
+			newAssetCategory.getTreePath());
 		Assert.assertEquals(existingAssetCategory.getLeftCategoryId(),
 			newAssetCategory.getLeftCategoryId());
 		Assert.assertEquals(existingAssetCategory.getRightCategoryId(),
@@ -354,9 +358,10 @@ public class AssetCategoryPersistenceTest {
 		return OrderByComparatorFactoryUtil.create("AssetCategory", "uuid",
 			true, "categoryId", true, "groupId", true, "companyId", true,
 			"userId", true, "userName", true, "createDate", true,
-			"modifiedDate", true, "parentCategoryId", true, "leftCategoryId",
-			true, "rightCategoryId", true, "name", true, "title", true,
-			"description", true, "vocabularyId", true, "lastPublishDate", true);
+			"modifiedDate", true, "parentCategoryId", true, "treePath", true,
+			"leftCategoryId", true, "rightCategoryId", true, "name", true,
+			"title", true, "description", true, "vocabularyId", true,
+			"lastPublishDate", true);
 	}
 
 	@Test
@@ -597,6 +602,8 @@ public class AssetCategoryPersistenceTest {
 		assetCategory.setCreateDate(RandomTestUtil.nextDate());
 
 		assetCategory.setModifiedDate(RandomTestUtil.nextDate());
+
+		assetCategory.setTreePath(RandomTestUtil.randomString());
 
 		assetCategory.setLeftCategoryId(RandomTestUtil.nextLong());
 
@@ -847,6 +854,8 @@ public class AssetCategoryPersistenceTest {
 		assetCategory.setCreateDate(RandomTestUtil.nextDate());
 
 		assetCategory.setModifiedDate(RandomTestUtil.nextDate());
+
+		assetCategory.setTreePath(RandomTestUtil.randomString());
 
 		assetCategory.setLeftCategoryId(RandomTestUtil.nextLong());
 

@@ -90,6 +90,7 @@ create table AssetCategory (
 	createDate DATE null,
 	modifiedDate DATE null,
 	parentCategoryId LONG,
+	treePath VARCHAR(75) null,
 	leftCategoryId LONG,
 	rightCategoryId LONG,
 	name VARCHAR(75) null,

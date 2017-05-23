@@ -89,6 +89,7 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 			{ "createDate", Types.TIMESTAMP },
 			{ "modifiedDate", Types.TIMESTAMP },
 			{ "parentCategoryId", Types.BIGINT },
+			{ "treePath", Types.VARCHAR },
 			{ "leftCategoryId", Types.BIGINT },
 			{ "rightCategoryId", Types.BIGINT },
 			{ "name", Types.VARCHAR },
@@ -109,6 +110,7 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("parentCategoryId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("treePath", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("leftCategoryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("rightCategoryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
@@ -118,7 +120,7 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		TABLE_COLUMNS_MAP.put("lastPublishDate", Types.TIMESTAMP);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table AssetCategory (uuid_ VARCHAR(75) null,categoryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentCategoryId LONG,leftCategoryId LONG,rightCategoryId LONG,name VARCHAR(75) null,title STRING null,description STRING null,vocabularyId LONG,lastPublishDate DATE null)";
+	public static final String TABLE_SQL_CREATE = "create table AssetCategory (uuid_ VARCHAR(75) null,categoryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentCategoryId LONG,treePath VARCHAR(75) null,leftCategoryId LONG,rightCategoryId LONG,name VARCHAR(75) null,title STRING null,description STRING null,vocabularyId LONG,lastPublishDate DATE null)";
 	public static final String TABLE_SQL_DROP = "drop table AssetCategory";
 	public static final String ORDER_BY_JPQL = " ORDER BY assetCategory.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY AssetCategory.name ASC";
@@ -163,6 +165,7 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		model.setCreateDate(soapModel.getCreateDate());
 		model.setModifiedDate(soapModel.getModifiedDate());
 		model.setParentCategoryId(soapModel.getParentCategoryId());
+		model.setTreePath(soapModel.getTreePath());
 		model.setLeftCategoryId(soapModel.getLeftCategoryId());
 		model.setRightCategoryId(soapModel.getRightCategoryId());
 		model.setName(soapModel.getName());
@@ -256,6 +259,7 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("parentCategoryId", getParentCategoryId());
+		attributes.put("treePath", getTreePath());
 		attributes.put("leftCategoryId", getLeftCategoryId());
 		attributes.put("rightCategoryId", getRightCategoryId());
 		attributes.put("name", getName());
@@ -324,6 +328,12 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 		if (parentCategoryId != null) {
 			setParentCategoryId(parentCategoryId);
+		}
+
+		String treePath = (String)attributes.get("treePath");
+
+		if (treePath != null) {
+			setTreePath(treePath);
 		}
 
 		Long leftCategoryId = (Long)attributes.get("leftCategoryId");
@@ -542,6 +552,22 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 	public long getOriginalParentCategoryId() {
 		return _originalParentCategoryId;
+	}
+
+	@JSON
+	@Override
+	public String getTreePath() {
+		if (_treePath == null) {
+			return StringPool.BLANK;
+		}
+		else {
+			return _treePath;
+		}
+	}
+
+	@Override
+	public void setTreePath(String treePath) {
+		_treePath = treePath;
 	}
 
 	@JSON
@@ -976,6 +1002,7 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		assetCategoryImpl.setCreateDate(getCreateDate());
 		assetCategoryImpl.setModifiedDate(getModifiedDate());
 		assetCategoryImpl.setParentCategoryId(getParentCategoryId());
+		assetCategoryImpl.setTreePath(getTreePath());
 		assetCategoryImpl.setLeftCategoryId(getLeftCategoryId());
 		assetCategoryImpl.setRightCategoryId(getRightCategoryId());
 		assetCategoryImpl.setName(getName());
@@ -1116,6 +1143,14 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 		assetCategoryCacheModel.parentCategoryId = getParentCategoryId();
 
+		assetCategoryCacheModel.treePath = getTreePath();
+
+		String treePath = assetCategoryCacheModel.treePath;
+
+		if ((treePath != null) && (treePath.length() == 0)) {
+			assetCategoryCacheModel.treePath = null;
+		}
+
 		assetCategoryCacheModel.leftCategoryId = getLeftCategoryId();
 
 		assetCategoryCacheModel.rightCategoryId = getRightCategoryId();
@@ -1160,7 +1195,7 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -1180,6 +1215,8 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		sb.append(getModifiedDate());
 		sb.append(", parentCategoryId=");
 		sb.append(getParentCategoryId());
+		sb.append(", treePath=");
+		sb.append(getTreePath());
 		sb.append(", leftCategoryId=");
 		sb.append(getLeftCategoryId());
 		sb.append(", rightCategoryId=");
@@ -1201,7 +1238,7 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(52);
+		StringBundler sb = new StringBundler(55);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.asset.kernel.model.AssetCategory");
@@ -1242,6 +1279,10 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 		sb.append(
 			"<column><column-name>parentCategoryId</column-name><column-value><![CDATA[");
 		sb.append(getParentCategoryId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>treePath</column-name><column-value><![CDATA[");
+		sb.append(getTreePath());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>leftCategoryId</column-name><column-value><![CDATA[");
@@ -1298,6 +1339,7 @@ public class AssetCategoryModelImpl extends BaseModelImpl<AssetCategory>
 	private long _parentCategoryId;
 	private long _originalParentCategoryId;
 	private boolean _setOriginalParentCategoryId;
+	private String _treePath;
 	private long _leftCategoryId;
 	private long _rightCategoryId;
 	private String _name;

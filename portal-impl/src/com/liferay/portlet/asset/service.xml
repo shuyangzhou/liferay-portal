@@ -24,6 +24,7 @@
 		<!-- Other fields -->
 
 		<column name="parentCategoryId" type="long" />
+		<column name="treePath" type="String" />
 		<column name="leftCategoryId" type="long" />
 		<column name="rightCategoryId" type="long" />
 		<column accessor="true" name="name" type="String" />
