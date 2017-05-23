@@ -43,7 +43,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 
@@ -57,13 +59,20 @@ public class DeployUtil {
 			Map<String, String> filterMap, boolean overwrite)
 		throws Exception {
 
-		File file = new File(getResourcePath(fileName));
 		File targetFile = new File(targetDir, targetFileName);
 
 		if (!targetFile.exists()) {
+			Set<Path> tempPaths = new HashSet<>();
+
+			File file = new File(getResourcePath(tempPaths, fileName));
+
 			CopyTask.copyFile(
 				file, new File(targetDir), targetFileName, filterMap, overwrite,
 				true);
+
+			for (Path tempPath : tempPaths) {
+				FileUtil.deltree(tempPath.toFile());
+			}
 		}
 	}
 
@@ -107,6 +116,17 @@ public class DeployUtil {
 		return destDir;
 	}
 
+	public static String getResourcePath(Set<Path> tempPaths, String resource)
+		throws Exception {
+
+		return _instance._getResourcePath(tempPaths, resource);
+	}
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #getResourcePath(Set<String>,
+	* String)}
+	*/
+	@Deprecated
 	public static String getResourcePath(String resource) throws Exception {
 		return _instance._getResourcePath(resource);
 	}
@@ -256,6 +276,47 @@ public class DeployUtil {
 	private DeployUtil() {
 	}
 
+	private String _getResourcePath(Set<Path> tempPaths, String resource)
+		throws IOException {
+
+		Class<?> clazz = getClass();
+
+		InputStream inputStream = clazz.getResourceAsStream(
+			"dependencies/" + resource);
+
+		if (inputStream == null) {
+			return null;
+		}
+
+		Path tempDirPath = Files.createTempDirectory(
+			Paths.get(SystemProperties.get(SystemProperties.TMP_DIR)), null);
+
+		tempPaths.add(tempDirPath);
+
+		File file = new File(
+			tempDirPath + "/liferay/com/liferay/portal/deploy/dependencies/" +
+				resource);
+
+		//if (!file.exists() || resource.startsWith("ext-")) {
+
+		File parentFile = file.getParentFile();
+
+		if (parentFile != null) {
+			FileUtil.mkdirs(parentFile);
+		}
+
+		StreamUtil.transfer(inputStream, new FileOutputStream(file));
+
+		//}
+
+		return FileUtil.getAbsolutePath(file);
+	}
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #_getResourcePath(Set<Path>,
+	* String)}
+	*/
+	@Deprecated
 	private String _getResourcePath(String resource) throws IOException {
 		Class<?> clazz = getClass();
 
