@@ -1,0 +1,8 @@
+dependencies {
+	compile group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
+	compile project(":portal:portal-configuration-persistence")
+}
+
+liferay {
+	deployDir = file("${liferayHome}/osgi/portal")
+}
