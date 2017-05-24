@@ -14,6 +14,7 @@
 
 package com.liferay.frontend.editor.lang;
 
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -22,6 +23,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Carlos Sierra Andrés
@@ -50,6 +52,11 @@ public class FrontendEditorLangResourceBundleLoader
 	@Override
 	public ResourceBundle loadResourceBundle(String languageId) {
 		return loadResourceBundle(LocaleUtil.fromLanguageId(languageId));
+	}
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 }
