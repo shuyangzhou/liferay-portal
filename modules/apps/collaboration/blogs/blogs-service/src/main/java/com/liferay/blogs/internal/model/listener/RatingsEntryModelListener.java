@@ -12,47 +12,55 @@
  * details.
  */
 
-package com.liferay.blogs.internal.service;
+package com.liferay.blogs.internal.model.listener;
 
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.model.BlogsStatsUser;
 import com.liferay.blogs.service.BlogsEntryLocalService;
 import com.liferay.blogs.service.BlogsStatsUserLocalService;
+import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.model.BaseModelListener;
+import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.ratings.kernel.model.RatingsEntry;
-import com.liferay.ratings.kernel.service.RatingsEntryLocalService;
-import com.liferay.ratings.kernel.service.RatingsEntryLocalServiceWrapper;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Sergio González
+ * @author Preston Crary
  */
-@Component(immediate = true, service = ServiceWrapper.class)
-public class BlogsRatingsEntryLocalServiceWrapper
-	extends RatingsEntryLocalServiceWrapper {
+@Component(immediate = true, service = ModelListener.class)
+public class RatingsEntryModelListener extends BaseModelListener<RatingsEntry> {
 
-	public BlogsRatingsEntryLocalServiceWrapper() {
-		super(null);
-	}
+	@Override
+	public void onBeforeCreate(RatingsEntry ratingsEntry)
+		throws ModelListenerException {
 
-	public BlogsRatingsEntryLocalServiceWrapper(
-		RatingsEntryLocalService ratingsEntryLocalService) {
-
-		super(ratingsEntryLocalService);
+		_updateBlogsStatsUser(ratingsEntry);
 	}
 
 	@Override
-	public RatingsEntry updateEntry(
-			long userId, String className, long classPK, double score,
-			ServiceContext serviceContext)
-		throws PortalException {
+	public void onBeforeUpdate(RatingsEntry ratingsEntry)
+		throws ModelListenerException {
 
-		if (className.equals(BlogsEntry.class.getName())) {
-			BlogsEntry blogsEntry = _blogsEntryLocalService.getEntry(classPK);
+		_updateBlogsStatsUser(ratingsEntry);
+	}
+
+	private void _updateBlogsStatsUser(RatingsEntry ratingsEntry)
+		throws ModelListenerException {
+
+		String className = ratingsEntry.getClassName();
+
+		if (!className.equals(BlogsEntry.class.getName())) {
+			return;
+		}
+
+		double score = ratingsEntry.getScore();
+
+		try {
+			BlogsEntry blogsEntry = _blogsEntryLocalService.getEntry(
+				ratingsEntry.getClassPK());
 
 			BlogsStatsUser blogsStatsUser =
 				_blogsStatsUserLocalService.getStatsUser(
@@ -61,10 +69,9 @@ public class BlogsRatingsEntryLocalServiceWrapper
 			int ratingsTotalEntries = blogsStatsUser.getRatingsTotalEntries();
 			double ratingsTotalScore = blogsStatsUser.getRatingsTotalScore();
 
-			RatingsEntry ratingsEntry = _ratingsEntryLocalService.fetchEntry(
-				userId, className, classPK);
+			ratingsTotalScore = ratingsTotalScore - ratingsEntry.getScore();
 
-			if (ratingsEntry == null) {
+			if (ratingsEntry.isNew()) {
 				ratingsTotalEntries++;
 				ratingsTotalScore += score;
 			}
@@ -80,34 +87,15 @@ public class BlogsRatingsEntryLocalServiceWrapper
 				blogsEntry.getGroupId(), blogsEntry.getUserId(),
 				ratingsTotalEntries, ratingsTotalScore, ratingsAverageScore);
 		}
-
-		return super.updateEntry(
-			userId, className, classPK, score, serviceContext);
+		catch (PortalException pe) {
+			throw new ModelListenerException(pe);
+		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setBlogsEntryLocalService(
-		BlogsEntryLocalService blogsEntryLocalService) {
-
-		_blogsEntryLocalService = blogsEntryLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setBlogsStatsUserLocalService(
-		BlogsStatsUserLocalService blogsStatsUserLocalService) {
-
-		_blogsStatsUserLocalService = blogsStatsUserLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setRatingsEntryLocalService(
-		RatingsEntryLocalService ratingsEntryLocalService) {
-
-		_ratingsEntryLocalService = ratingsEntryLocalService;
-	}
-
+	@Reference
 	private BlogsEntryLocalService _blogsEntryLocalService;
+
+	@Reference
 	private BlogsStatsUserLocalService _blogsStatsUserLocalService;
-	private RatingsEntryLocalService _ratingsEntryLocalService;
 
 }
