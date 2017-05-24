@@ -49,6 +49,9 @@ public class WorkflowTaskModel {
 
 		_workflowAssigneeModel = workflowAssigneeModel;
 		_workflowAssetModel = workflowAssetModel;
+		_lastActivityTime = lastActivityTime;
+		_state = state;
+		_transitions = transitions;
 
 		_completed = workflowTask.isCompleted();
 
@@ -58,10 +61,7 @@ public class WorkflowTaskModel {
 
 		_description = workflowTask.getDescription();
 		_dueDate = workflowTask.getDueDate();
-		_lastActivityTime = lastActivityTime;
 		_name = workflowTask.getName();
-		_state = state;
-		_transitions = transitions;
 		_workflowTaskId = workflowTask.getWorkflowTaskId();
 	}
 

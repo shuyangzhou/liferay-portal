@@ -616,10 +616,10 @@ AUI.add(
 					instance._updateSecondOperandType(condition.operator, index);
 
 					if (condition.operands[0].type === 'user') {
-						field.setValue(condition.operands[1].value);
+						field.set('value', condition.operands[1].value);
 					}
 					else {
-						field.setValue(condition.operands[1].type);
+						field.set('value', condition.operands[1].type);
 					}
 				}
 			},

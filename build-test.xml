@@ -2707,7 +2707,7 @@ ${tomcat-gc-log}
 									<unzip dest="${tstamp.value}" src="${war.path}">
 										<flattenmapper />
 										<patternset>
-											<include name="WEB-INF/src/dfc.properties" />
+											<include name="WEB-INF/classes/dfc.properties" />
 										</patternset>
 									</unzip>
 
@@ -2716,7 +2716,7 @@ ${tomcat-gc-log}
 									</propertyfile>
 
 									<war destfile="${war.path}" update="true">
-										<zipfileset file="${tstamp.value}/dfc.properties" fullpath="WEB-INF/src/dfc.properties" />
+										<zipfileset file="${tstamp.value}/dfc.properties" fullpath="WEB-INF/classes/dfc.properties" />
 									</war>
 
 									<delete file="${tstamp.value}/dfc.properties" />

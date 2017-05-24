@@ -46,6 +46,9 @@ public class WorkflowAssetModel {
 			WorkflowUserModel workflowUserModel, Locale locale)
 		throws PortalException {
 
+		_type = type;
+		_workflowUserModel = workflowUserModel;
+
 		_className = assetEntry.getClassName();
 		_classPK = assetEntry.getClassPK();
 
@@ -60,8 +63,6 @@ public class WorkflowAssetModel {
 		_summary = assetEntry.getSummary(locale);
 		_title = assetEntry.getTitle(locale);
 		_url = assetEntry.getUrl();
-		_type = type;
-		_workflowUserModel = workflowUserModel;
 	}
 
 	@XmlElement

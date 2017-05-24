@@ -18,6 +18,7 @@
 
 <%
 String tabs1Param = "tabs1";
+String tabs1Value = GetterUtil.getString(SessionClicks.get(request, namespace + id, null));
 
 List<String> filterCategoryKeys = new ArrayList<String>();
 
@@ -40,6 +41,7 @@ for (String categoryKey : categoryKeys) {
 			param="<%= tabs1Param %>"
 			refresh="<%= false %>"
 			type="tabs nav-tabs-default"
+			value="<%= tabs1Value %>"
 		>
 
 			<%
@@ -96,12 +98,16 @@ for (String categoryKey : categoryKeys) {
 		redirectURL.setParameterValue(tabs1Param, event.id);
 
 		redirectField.value = redirectURL.toString();
+
+		Liferay.Store('<portlet:namespace/><%= id %>', event.id);
 	};
 
 	var clearFormNavigatorHandles = function(event) {
 		if (event.portletId === '<%= portletDisplay.getRootPortletId() %>') {
 			Liferay.detach('showTab', updateRedirectField);
 			Liferay.detach('destroyPortlet', clearFormNavigatorHandles);
+
+			Liferay.Store('<portlet:namespace/><%= id %>', null);
 		}
 	};
 

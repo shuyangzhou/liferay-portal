@@ -499,6 +499,10 @@ AUI.add(
 					_handleSaveClick: function() {
 						var instance = this;
 
+						if (!instance._isButtonEnabled()) {
+							return;
+						}
+
 						instance.fire(
 							'saveRule',
 							{
@@ -507,6 +511,16 @@ AUI.add(
 								'logical-operator': instance.get('logicOperator')
 							}
 						);
+					},
+
+					_isButtonEnabled: function() {
+						var instance = this;
+
+						var contentBox = instance.get('contentBox');
+
+						var saveButton = contentBox.one('.form-builder-rule-settings-save');
+
+						return !saveButton.hasAttribute('disabled');
 					},
 
 					_isValidRule: function(rule) {

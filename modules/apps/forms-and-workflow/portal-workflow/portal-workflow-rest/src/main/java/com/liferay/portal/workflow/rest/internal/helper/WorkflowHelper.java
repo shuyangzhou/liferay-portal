@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
@@ -136,15 +137,15 @@ public class WorkflowHelper {
 			long companyId, long workflowTaskId, boolean oldestFirst)
 		throws PortalException {
 
+		WorkflowInstance workflowInstance = getWorkflowInstance(
+			companyId, workflowTaskId);
+
 		List<Integer> logTypes = new ArrayList<>();
 
 		logTypes.add(WorkflowLog.TASK_ASSIGN);
 		logTypes.add(WorkflowLog.TASK_COMPLETION);
 		logTypes.add(WorkflowLog.TASK_UPDATE);
 		logTypes.add(WorkflowLog.TRANSITION);
-
-		WorkflowInstance workflowInstance = getWorkflowInstance(
-			companyId, workflowTaskId);
 
 		return _workflowLogManager.getWorkflowLogsByWorkflowInstance(
 			companyId, workflowInstance.getWorkflowInstanceId(), logTypes,
@@ -164,9 +165,6 @@ public class WorkflowHelper {
 
 		WorkflowAssetModel workflowAssetModel = getWorkflowAssetModel(
 			companyId, workflowTaskId, locale);
-		String state = getState(companyId, workflowTaskId, locale);
-		List<String> transitions = _workflowTaskManager.getNextTransitionNames(
-			companyId, userId, workflowTaskId);
 
 		List<WorkflowLog> workflowLogs = getWorkflowLogs(
 			companyId, workflowTaskId);
@@ -180,6 +178,10 @@ public class WorkflowHelper {
 
 			lastActivityTime = createDate.getTime();
 		}
+
+		String state = getState(companyId, workflowTaskId, locale);
+		List<String> transitions = _workflowTaskManager.getNextTransitionNames(
+			companyId, userId, workflowTaskId);
 
 		return new WorkflowTaskModel(
 			workflowTask, workflowAssigneeModel, workflowAssetModel,
@@ -196,16 +198,12 @@ public class WorkflowHelper {
 
 		String message = "";
 
-		long auditUserId = workflowLog.getAuditUserId();
-		long userId = workflowLog.getUserId();
-		long roleId = workflowLog.getRoleId();
-
 		String auditUserName = getAuditUserName(workflowLog);
 
-		if (userId != 0) {
-			User user = _userLocalService.getUser(userId);
+		if (workflowLog.getUserId() != 0) {
+			User user = _userLocalService.getUser(workflowLog.getUserId());
 
-			if (auditUserId == userId) {
+			if (workflowLog.getAuditUserId() == workflowLog.getUserId()) {
 				if (user.isMale()) {
 					message = LanguageUtil.format(
 						locale, "x-assigned-the-task-to-himself",
@@ -218,8 +216,8 @@ public class WorkflowHelper {
 				}
 			}
 		}
-		else if (roleId != 0) {
-			Role role = _roleLocalService.getRole(roleId);
+		else if (workflowLog.getRoleId() != 0) {
+			Role role = _roleLocalService.getRole(workflowLog.getRoleId());
 
 			message = LanguageUtil.format(
 				locale, "x-assigned-the-task-to-the-x-role",
@@ -246,7 +244,6 @@ public class WorkflowHelper {
 		throws PortalException {
 
 		String userName = getAuditUserName(workflowLog);
-
 		WorkflowTask workflowTask = _workflowTaskManager.getWorkflowTask(
 			companyId, workflowLog.getWorkflowTaskId());
 
@@ -323,33 +320,28 @@ public class WorkflowHelper {
 			String assetType, Locale locale)
 		throws PortalException {
 
-		int type = workflowLog.getType();
+		Date createDate = workflowLog.getCreateDate();
+
 		String message = "";
 		String details = "";
 
 		if (index == 0) {
 			message = getSubmissionForPublicationMessage(
 				workflowLog, assetType, locale);
-
 			details = getSubmissionForPublicationDetails(workflowLog, locale);
 		}
-		else if (type == WorkflowLog.TASK_ASSIGN) {
+		else if (workflowLog.getType() == WorkflowLog.TASK_ASSIGN) {
 			message = getAssignmentMessage(workflowLog, locale);
-
 			details = getAssignmentDetails(workflowLog);
 		}
-		else if (type == WorkflowLog.TASK_COMPLETION) {
+		else if (workflowLog.getType() == WorkflowLog.TASK_COMPLETION) {
 			message = getCompletionMessage(companyId, workflowLog, locale);
-
 			details = getCompletionDetails(workflowLog);
 		}
-		else if (type == WorkflowLog.TASK_UPDATE) {
+		else if (workflowLog.getType() == WorkflowLog.TASK_UPDATE) {
 			message = getUpdateMessage(workflowLog, locale);
-
 			details = getUpdateDetails(workflowLog);
 		}
-
-		Date createDate = workflowLog.getCreateDate();
 
 		return new WorkflowActivityModel(
 			createDate.getTime(), message, details);
@@ -471,10 +463,8 @@ public class WorkflowHelper {
 	}
 
 	protected String quote(String userName) {
-		return _EMPHASIS_TOKEN + userName + _EMPHASIS_TOKEN;
+		return StringUtil.quote(userName, "%~{}~%");
 	}
-
-	private static final String _EMPHASIS_TOKEN = "%~{}~%";
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
