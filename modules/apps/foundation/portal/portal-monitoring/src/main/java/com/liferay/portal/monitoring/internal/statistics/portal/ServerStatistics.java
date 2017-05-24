@@ -97,7 +97,7 @@ public class ServerStatistics
 			}
 			catch (Exception e) {
 				throw new IllegalStateException(
-					"Unable to get company with company id " + companyId);
+					"Unable to get company with company id " + companyId, e);
 			}
 		}
 

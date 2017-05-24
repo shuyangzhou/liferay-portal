@@ -18,4 +18,20 @@ package com.liferay.portal.kernel.exception;
  * @author Connor McKay
  */
 public class ResourceBlocksNotSupportedException extends SystemException {
+
+	public ResourceBlocksNotSupportedException() {
+	}
+
+	public ResourceBlocksNotSupportedException(String msg) {
+		super(msg);
+	}
+
+	public ResourceBlocksNotSupportedException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+
+	public ResourceBlocksNotSupportedException(Throwable cause) {
+		super(cause);
+	}
+
 }

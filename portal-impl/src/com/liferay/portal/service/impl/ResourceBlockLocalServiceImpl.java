@@ -310,7 +310,7 @@ public class ResourceBlockLocalServiceImpl
 			return (PermissionedModel)persistedModel;
 		}
 		catch (ClassCastException cce) {
-			throw new ResourceBlocksNotSupportedException();
+			throw new ResourceBlocksNotSupportedException(cce);
 		}
 	}
 

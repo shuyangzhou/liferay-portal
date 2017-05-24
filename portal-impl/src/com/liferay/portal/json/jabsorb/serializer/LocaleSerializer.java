@@ -143,7 +143,7 @@ public class LocaleSerializer extends AbstractSerializer {
 			language = localeJSONObject.getString("language");
 		}
 		catch (Exception e) {
-			throw new UnmarshallException("language is undefined");
+			throw new UnmarshallException("language is undefined", e);
 		}
 
 		String variant = null;

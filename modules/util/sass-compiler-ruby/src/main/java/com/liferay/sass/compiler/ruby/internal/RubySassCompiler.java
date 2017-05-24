@@ -173,7 +173,7 @@ public class RubySassCompiler implements AutoCloseable, SassCompiler {
 		}
 		catch (Exception e) {
 			throw new RubySassCompilerException(
-				"Unable to parse " + inputFileName);
+				"Unable to parse " + inputFileName, e);
 		}
 	}
 

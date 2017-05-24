@@ -270,7 +270,7 @@ public class FreeMarkerManager extends BaseSingleTemplateManager {
 		}
 		catch (Exception e) {
 			throw new TemplateException(
-				"Unable to Initialize FreeMarker manager");
+				"Unable to Initialize FreeMarker manager", e);
 		}
 
 		_configuration.setDefaultEncoding(StringPool.UTF8);

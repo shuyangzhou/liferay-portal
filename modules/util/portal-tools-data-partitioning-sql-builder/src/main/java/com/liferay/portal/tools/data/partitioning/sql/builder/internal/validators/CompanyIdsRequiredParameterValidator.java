@@ -35,7 +35,8 @@ public class CompanyIdsRequiredParameterValidator
 			catch (NumberFormatException nfe) {
 				throw new ParameterException(
 					"Parameter " + name + " with value " + companyId +
-						" is not a valid number");
+						" is not a valid number",
+					nfe);
 			}
 		}
 	}

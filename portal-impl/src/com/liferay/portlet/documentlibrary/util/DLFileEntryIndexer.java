@@ -390,7 +390,7 @@ public class DLFileEntryIndexer
 					}
 					catch (IOException ioe) {
 						throw new SearchException(
-							"Cannot extract text from file" + dlFileEntry);
+							"Cannot extract text from file" + dlFileEntry, ioe);
 					}
 				}
 				else if (_log.isDebugEnabled()) {

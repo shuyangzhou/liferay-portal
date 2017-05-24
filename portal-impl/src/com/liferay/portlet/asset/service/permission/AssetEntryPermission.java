@@ -78,7 +78,7 @@ public class AssetEntryPermission {
 		}
 		catch (Exception e) {
 			throw new PrincipalException.MustHavePermission(
-				permissionChecker, className, entry.getClassPK(), actionId);
+				permissionChecker, className, entry.getClassPK(), e, actionId);
 		}
 	}
 

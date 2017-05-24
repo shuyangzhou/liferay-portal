@@ -3131,7 +3131,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 				}
 			}
 			catch (NumberFormatException nfe) {
-				throw new SitemapPagePriorityException();
+				throw new SitemapPagePriorityException(nfe);
 			}
 		}
 	}

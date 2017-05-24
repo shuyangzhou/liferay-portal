@@ -48,8 +48,18 @@ public class PrincipalException extends PortalException {
 			this(String.valueOf(userId));
 		}
 
+		public MustBeAuthenticated(long userId, Throwable cause) {
+			this(String.valueOf(userId), cause);
+		}
+
 		public MustBeAuthenticated(String login) {
 			super(String.format("User %s must be authenticated", login));
+
+			this.login = login;
+		}
+
+		public MustBeAuthenticated(String login, Throwable cause) {
+			super(String.format("User %s must be authenticated", login), cause);
 
 			this.login = login;
 		}
@@ -177,6 +187,39 @@ public class PrincipalException extends PortalException {
 		}
 
 		public MustHavePermission(
+			long userId, String resourceName, long resourceId, Throwable cause,
+			String... actionIds) {
+
+			super(
+				String.format(
+					"User %s must have %s permission for %s %s", userId,
+					StringUtil.merge(actionIds, ","), resourceName, resourceId),
+				cause);
+
+			this.userId = userId;
+			this.resourceName = resourceName;
+			this.resourceId = resourceId;
+
+			actionId = actionIds;
+		}
+
+		public MustHavePermission(
+			long userId, Throwable cause, String... actionIds) {
+
+			super(
+				String.format(
+					"User %s must have permission to perform action %s", userId,
+					StringUtil.merge(actionIds, ",")),
+				cause);
+
+			this.userId = userId;
+
+			actionId = actionIds;
+			resourceId = 0;
+			resourceName = null;
+		}
+
+		public MustHavePermission(
 			PermissionChecker permissionChecker, String... actionIds) {
 
 			this(permissionChecker.getUserId(), actionIds);
@@ -189,6 +232,22 @@ public class PrincipalException extends PortalException {
 			this(
 				permissionChecker.getUserId(), resourceName, resourceId,
 				actionIds);
+		}
+
+		public MustHavePermission(
+			PermissionChecker permissionChecker, String resourceName,
+			long resourceId, Throwable cause, String... actionIds) {
+
+			this(
+				permissionChecker.getUserId(), resourceName, resourceId, cause,
+				actionIds);
+		}
+
+		public MustHavePermission(
+			PermissionChecker permissionChecker, Throwable cause,
+			String... actionIds) {
+
+			this(permissionChecker.getUserId(), cause, actionIds);
 		}
 
 		public final String[] actionId;

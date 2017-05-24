@@ -55,7 +55,7 @@ public abstract class ExtRepositoryObjectAdapter<T>
 		}
 		catch (IllegalArgumentException iae) {
 			throw new RepositoryException(
-				"Unexpected permission action " + actionId);
+				"Unexpected permission action " + actionId, iae);
 		}
 	}
 

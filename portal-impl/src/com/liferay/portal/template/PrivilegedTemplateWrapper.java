@@ -109,7 +109,7 @@ public class PrivilegedTemplateWrapper implements Template {
 			throw (TemplateException)pae.getException();
 		}
 		catch (Exception e) {
-			throw new TemplateException();
+			throw new TemplateException(e);
 		}
 	}
 

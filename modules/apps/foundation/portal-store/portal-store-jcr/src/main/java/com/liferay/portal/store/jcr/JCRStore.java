@@ -983,7 +983,7 @@ public class JCRStore extends BaseStore {
 		}
 		catch (PathNotFoundException pnfe) {
 			throw new NoSuchFileException(
-				companyId, repositoryId, fileName, versionLabel);
+				companyId, repositoryId, fileName, versionLabel, pnfe);
 		}
 		catch (RepositoryException re) {
 			throw new SystemException(re);

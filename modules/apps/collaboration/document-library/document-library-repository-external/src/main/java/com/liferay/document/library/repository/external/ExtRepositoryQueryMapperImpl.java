@@ -60,7 +60,8 @@ public class ExtRepositoryQueryMapperImpl implements ExtRepositoryQueryMapper {
 			catch (ParseException pe) {
 				throw new SearchException(
 					"Unable to parse date " + fieldValue + " for field " +
-						fieldName);
+						fieldName,
+					pe);
 			}
 		}
 		else {

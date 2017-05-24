@@ -38,6 +38,12 @@ public class AntivirusScannerException extends PortalException {
 		_type = type;
 	}
 
+	public AntivirusScannerException(int type, Throwable cause) {
+		super(cause);
+
+		_type = type;
+	}
+
 	/**
 	 * @deprecated As of 7.0.0, replaced by {@link
 	 *             #AntivirusScannerException(String, int)}
