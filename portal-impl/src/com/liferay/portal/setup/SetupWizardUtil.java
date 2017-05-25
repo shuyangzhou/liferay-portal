@@ -14,7 +14,6 @@
 
 package com.liferay.portal.setup;
 
-import com.liferay.portal.events.EventsProcessorUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.dao.jdbc.DataSourceFactoryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -299,18 +298,6 @@ public class SetupWizardUtil {
 
 		unicodeProperties.put(
 			PropsKeys.ADMIN_EMAIL_FROM_NAME, user.getFullName());
-
-		HttpSession session = request.getSession();
-
-		session.setAttribute(WebKeys.EMAIL_ADDRESS, emailAddress);
-		session.setAttribute(
-			WebKeys.SETUP_WIZARD_PASSWORD_UPDATED, Boolean.TRUE);
-		session.setAttribute(WebKeys.USER, user);
-		session.setAttribute(WebKeys.USER_ID, user.getUserId());
-
-		EventsProcessorUtil.process(
-			PropsKeys.LOGIN_EVENTS_POST, PropsValues.LOGIN_EVENTS_POST, request,
-			response);
 	}
 
 	private static void _updateCompany(HttpServletRequest request)
