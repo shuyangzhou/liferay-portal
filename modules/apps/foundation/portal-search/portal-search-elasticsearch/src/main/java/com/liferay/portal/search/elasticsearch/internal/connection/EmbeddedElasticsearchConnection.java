@@ -18,6 +18,8 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.SecureRandomUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -31,6 +33,7 @@ import com.liferay.portal.search.elasticsearch.index.IndexFactory;
 import com.liferay.portal.search.elasticsearch.internal.cluster.ClusterSettingsContext;
 import com.liferay.portal.search.elasticsearch.settings.SettingsContributor;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.net.InetAddress;
@@ -99,6 +102,24 @@ public class EmbeddedElasticsearchConnection
 		_node.close();
 
 		_node = null;
+
+		StringBundler jnaDir = new StringBundler(4);
+
+		jnaDir.append(SystemProperties.get(SystemProperties.TMP_DIR));
+		jnaDir.append(File.separator);
+		jnaDir.append("jna-");
+
+		String userName = System.getProperty("user.name");
+
+		jnaDir.append(userName.hashCode());
+
+		File file = new File(jnaDir.toString());
+
+		if (file.exists()) {
+			if (ArrayUtil.isEmpty(file.list())) {
+				FileUtil.delete(file);
+			}
+		}
 	}
 
 	public Node getNode() {
