@@ -14,9 +14,12 @@
 
 package com.liferay.bookmarks.social;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.bookmarks.constants.BookmarksPortletKeys;
 import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.service.permission.BookmarksFolderPermissionChecker;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
@@ -38,6 +41,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = {"javax.portlet.name=" + BookmarksPortletKeys.BOOKMARKS},
 	service = SocialActivityInterpreter.class
 )
+@ProviderType
 public class BookmarksFolderActivityInterpreter
 	extends BaseSocialActivityInterpreter {
 
@@ -95,6 +99,11 @@ public class BookmarksFolderActivityInterpreter
 		return BookmarksFolderPermissionChecker.contains(
 			permissionChecker, activity.getGroupId(), activity.getClassPK(),
 			actionId);
+	}
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference(
