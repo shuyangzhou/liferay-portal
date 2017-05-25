@@ -14,6 +14,8 @@
 
 package com.liferay.document.library.kernel.util;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
@@ -22,11 +24,14 @@ import com.liferay.portal.kernel.xml.Element;
 /**
  * @author Mika Koivisto
  */
+@ProviderType
 public interface DLProcessorRegistry {
 
 	public void cleanUp(FileEntry fileEntry);
 
 	public void cleanUp(FileVersion fileVersion);
+
+	public void destroy();
 
 	public void exportGeneratedFiles(
 			PortletDataContext portletDataContext, FileEntry fileEntry,
