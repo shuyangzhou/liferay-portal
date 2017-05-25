@@ -14,10 +14,13 @@
 
 package com.liferay.message.boards.web.social;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.message.boards.kernel.model.MBCategory;
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.service.MBMessageLocalService;
 import com.liferay.message.boards.web.constants.MBPortletKeys;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
@@ -44,6 +47,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = {"javax.portlet.name=" + MBPortletKeys.MESSAGE_BOARDS},
 	service = SocialActivityInterpreter.class
 )
+@ProviderType
 public class MBMessageActivityInterpreter
 	extends BaseSocialActivityInterpreter {
 
@@ -169,6 +173,11 @@ public class MBMessageActivityInterpreter
 		MBMessageLocalService mbMessageLocalService) {
 
 		_mbMessageLocalService = mbMessageLocalService;
+	}
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference(

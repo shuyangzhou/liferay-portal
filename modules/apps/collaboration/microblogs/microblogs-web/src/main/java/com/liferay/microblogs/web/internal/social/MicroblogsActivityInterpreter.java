@@ -19,6 +19,7 @@ import com.liferay.microblogs.model.MicroblogsEntry;
 import com.liferay.microblogs.model.MicroblogsEntryConstants;
 import com.liferay.microblogs.service.MicroblogsEntryLocalService;
 import com.liferay.microblogs.service.permission.MicroblogsEntryPermission;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -126,6 +127,11 @@ public class MicroblogsActivityInterpreter
 		MicroblogsEntryLocalService microblogsEntryLocalService) {
 
 		_microblogsEntryLocalService = microblogsEntryLocalService;
+	}
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference(
