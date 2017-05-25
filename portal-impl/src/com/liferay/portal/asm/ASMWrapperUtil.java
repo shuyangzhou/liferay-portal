@@ -45,12 +45,13 @@ public class ASMWrapperUtil {
 
 		Package pkg = clazz.getPackage();
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler sb = new StringBundler(5);
 
 		sb.append(pkg.getName());
 		sb.append(StringPool.PERIOD);
 		sb.append(interfaceClass.getSimpleName());
 		sb.append("ASMWrapper");
+		sb.append(clazz.getSimpleName());
 
 		String asmWrapperClassName = sb.toString();
 
