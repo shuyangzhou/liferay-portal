@@ -309,8 +309,6 @@ public class PortalHibernateConfiguration extends LocalSessionFactoryBean {
 		SessionFactoryImplementor sessionFactoryImplementor,
 		Map<String, String> imports) {
 
-		imports = new HashMap<>(imports);
-
 		Object sessionFactoryDelegate = null;
 
 		if (_importedClassNamePattern == null) {
@@ -389,7 +387,7 @@ public class PortalHibernateConfiguration extends LocalSessionFactoryBean {
 
 		@Override
 		public String getImportedClassName(String className) {
-			String importedClassName = getImportedClassName(className);
+			String importedClassName = super.getImportedClassName(className);
 
 			if (importedClassName != null) {
 				return importedClassName;
