@@ -14,6 +14,8 @@
 
 package com.liferay.document.library.web.social;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
@@ -48,6 +50,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = {"javax.portlet.name=" + DLPortletKeys.DOCUMENT_LIBRARY},
 	service = SocialActivityInterpreter.class
 )
+@ProviderType
 public class DLFileEntryActivityInterpreter
 	extends BaseSocialActivityInterpreter {
 
