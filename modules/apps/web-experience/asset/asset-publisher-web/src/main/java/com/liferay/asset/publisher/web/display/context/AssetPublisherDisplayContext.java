@@ -103,8 +103,13 @@ public class AssetPublisherDisplayContext {
 		throws ConfigurationException {
 
 		_assetPublisherCustomizer = assetPublisherCustomizer;
-		_portletRequest = portletRequest;
-		_portletResponse = portletResponse;
+
+		_liferayPortletRequest = PortalUtil.getLiferayPortletRequest(
+			portletRequest);
+
+		_liferayPortletResponse = PortalUtil.getLiferayPortletResponse(
+			portletResponse);
+
 		_portletPreferences = portletPreferences;
 
 		_assetPublisherPortletInstanceConfiguration =
@@ -626,20 +631,14 @@ public class AssetPublisherDisplayContext {
 
 		Map<Long, Map<String, PortletURL>> scopeAddPortletURLs = new HashMap();
 
-		LiferayPortletResponse liferayPortletResponse =
-			(LiferayPortletResponse)_portletResponse;
-
-		PortletURL redirectURL = liferayPortletResponse.createRenderURL();
+		PortletURL redirectURL = _liferayPortletResponse.createRenderURL();
 
 		redirectURL.setParameter(
 			"hideDefaultSuccessMessage", Boolean.TRUE.toString());
 		redirectURL.setParameter("mvcPath", "/add_asset_redirect.jsp");
 
-		LiferayPortletRequest liferayPortletRequest =
-			(LiferayPortletRequest)_portletRequest;
-
 		PortletURL currentURLObj = PortletURLUtil.getCurrent(
-			liferayPortletRequest, liferayPortletResponse);
+			_liferayPortletRequest, _liferayPortletResponse);
 
 		redirectURL.setParameter("redirect", currentURLObj.toString());
 
@@ -650,7 +649,7 @@ public class AssetPublisherDisplayContext {
 		for (long groupId : groupIds) {
 			Map<String, PortletURL> addPortletURLs =
 				AssetUtil.getAddPortletURLs(
-					liferayPortletRequest, liferayPortletResponse, groupId,
+					_liferayPortletRequest, _liferayPortletResponse, groupId,
 					getClassNameIds(), getClassTypeIds(),
 					getAllAssetCategoryIds(), getAllAssetTagNames(), redirect);
 
@@ -1263,6 +1262,8 @@ public class AssetPublisherDisplayContext {
 	private String[] _extensions;
 	private long[] _groupIds;
 	private Layout _layout;
+	private final LiferayPortletRequest _liferayPortletRequest;
+	private final LiferayPortletResponse _liferayPortletResponse;
 	private Locale _locale;
 	private Boolean _mergeURLTags;
 	private String[] _metadataFields;
@@ -1272,9 +1273,7 @@ public class AssetPublisherDisplayContext {
 	private String _orderByType2;
 	private String _paginationType;
 	private final PortletPreferences _portletPreferences;
-	private final PortletRequest _portletRequest;
 	private String _portletResource;
-	private final PortletResponse _portletResponse;
 	private long[] _referencedModelsGroupIds;
 	private final HttpServletRequest _request;
 	private String _rootPortletId;
