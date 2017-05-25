@@ -20,14 +20,21 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
+import com.liferay.portal.kernel.model.LayoutType;
+import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.PortletApp;
+import com.liferay.portal.kernel.model.PublicRenderParameter;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.PortletContainerUtil;
+import com.liferay.portal.kernel.portlet.PortletQName;
+import com.liferay.portal.kernel.portlet.PortletQNameUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.MetaInfoCacheServletResponse;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -36,11 +43,15 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.security.sso.SSOUtil;
 import com.liferay.portal.struts.ActionConstants;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.PortletRequestImpl;
+import com.liferay.portlet.PublicRenderParametersPool;
 import com.liferay.portlet.RenderParametersPool;
+
+import java.util.Map;
 
 import javax.portlet.PortletMode;
 import javax.portlet.PortletRequest;
@@ -336,6 +347,20 @@ public class LayoutAction extends Action {
 				// Include layout content before the page loads because portlets
 				// on the page can set the page title and page subtitle
 
+				LayoutType layoutType = layout.getLayoutType();
+				LayoutTypePortlet layoutTypePortlet = null;
+
+				if (layoutType instanceof LayoutTypePortlet) {
+					layoutTypePortlet = (LayoutTypePortlet)layoutType;
+
+					for (Portlet layoutPortlet :
+							layoutTypePortlet.getPortlets()) {
+
+						_processPublicRenderParameters(
+							request, layout, layoutPortlet);
+					}
+				}
+
 				if (layout.includeLayoutContent(request, response)) {
 					return null;
 				}
@@ -361,6 +386,68 @@ public class LayoutAction extends Action {
 
 					portletRequestImpl.cleanUp();
 				}
+			}
+		}
+	}
+
+	private void _processPublicRenderParameters(
+		HttpServletRequest request, Layout layout, Portlet portlet) {
+
+		PortletApp portletApp = portlet.getPortletApp();
+		PortletQName portletQName = PortletQNameUtil.getPortletQName();
+		Map<String, String[]> publicRenderParameters = null;
+		ThemeDisplay themeDisplay = null;
+
+		Map<String, String[]> parameters = request.getParameterMap();
+
+		for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
+			String name = entry.getKey();
+
+			QName qName = portletQName.getQName(name);
+
+			if (qName == null) {
+				continue;
+			}
+
+			PublicRenderParameter publicRenderParameter =
+				portlet.getPublicRenderParameter(
+					qName.getNamespaceURI(), qName.getLocalPart());
+
+			if (publicRenderParameter == null) {
+				continue;
+			}
+
+			if (publicRenderParameters == null) {
+				publicRenderParameters = PublicRenderParametersPool.get(
+					request, layout.getPlid(), portletApp.isWARFile());
+			}
+
+			String publicRenderParameterName =
+				portletQName.getPublicRenderParameterName(qName);
+
+			if (name.startsWith(
+					PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE)) {
+
+				if (themeDisplay == null) {
+					themeDisplay = (ThemeDisplay)request.getAttribute(
+						WebKeys.THEME_DISPLAY);
+				}
+
+				String[] values = entry.getValue();
+
+				if (themeDisplay.isLifecycleAction()) {
+					String[] oldValues = publicRenderParameters.get(
+						publicRenderParameterName);
+
+					if ((oldValues != null) && (oldValues.length != 0)) {
+						values = ArrayUtil.append(values, oldValues);
+					}
+				}
+
+				publicRenderParameters.put(publicRenderParameterName, values);
+			}
+			else {
+				publicRenderParameters.remove(publicRenderParameterName);
 			}
 		}
 	}
