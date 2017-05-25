@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PredicateFilter;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.test.aspects.ReflectionUtilAdvice;
 import com.liferay.portal.test.rule.AdviseWith;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
@@ -117,11 +118,15 @@ public class ASMWrapperUtilTest {
 
 		Package pkg = TestDelegate.class.getPackage();
 
-		Assert.assertEquals(
-			pkg.getName() + "." + TestInterface.class.getSimpleName() +
-				"ASMWrapper",
-			asmWrapperClass.getName());
+		StringBundler sb = new StringBundler(5);
 
+		sb.append(pkg.getName());
+		sb.append(".");
+		sb.append(TestInterface.class.getSimpleName());
+		sb.append("ASMWrapper");
+		sb.append(TestDelegate.class.getSimpleName());
+
+		Assert.assertEquals(sb.toString(), asmWrapperClass.getName());
 		Assert.assertSame(Object.class, asmWrapperClass.getSuperclass());
 
 		Method[] expectedMethods = _getDeclaredMethods(TestInterface.class);
