@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.model.PortletPreferencesIds;
 import com.liferay.portal.kernel.model.PublicRenderParameter;
 import com.liferay.portal.kernel.model.User;
@@ -200,7 +199,6 @@ public class PortletContainerImpl implements PortletContainer {
 	protected void processPublicRenderParameters(
 		HttpServletRequest request, Layout layout, Portlet portlet) {
 
-		PortletApp portletApp = portlet.getPortletApp();
 		PortletQName portletQName = PortletQNameUtil.getPortletQName();
 		Map<String, String[]> publicRenderParameters = null;
 		ThemeDisplay themeDisplay = null;
@@ -226,7 +224,7 @@ public class PortletContainerImpl implements PortletContainer {
 
 			if (publicRenderParameters == null) {
 				publicRenderParameters = PublicRenderParametersPool.get(
-					request, layout.getPlid(), portletApp.isWARFile());
+					request, layout.getPlid());
 			}
 
 			String publicRenderParameterName =

@@ -427,6 +427,10 @@ public interface WebKeys {
 
 	public static final String PORTLET_QUICK_ACCESS_ENTRIES = "LIFERAY_SHARED_PORTLET_QUICK_ACCESS_ENTRIES";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String PORTLET_RENDER_PARAMETERS = "PORTLET_RENDER_PARAMETERS_";
 
 	public static final String PORTLET_RESOURCE_STATIC_URLS = "PORTLET_RESOURCE_STATIC_URLS";
@@ -456,6 +460,10 @@ public interface WebKeys {
 
 	public static final String PUBLIC_RENDER_PARAMETERS = "PUBLIC_RENDER_PARAMETERS";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String PUBLIC_RENDER_PARAMETERS_POOL = "PUBLIC_RENDER_PARAMETERS_POOL_";
 
 	public static final String REDIRECT = "REDIRECT";

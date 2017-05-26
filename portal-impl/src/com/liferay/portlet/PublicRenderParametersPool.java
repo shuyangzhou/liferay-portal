@@ -19,8 +19,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
-import com.liferay.portal.kernel.util.AutoResetThreadLocal;
-import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.servlet.PortletSessionListenerManager;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.HashMap;
@@ -29,26 +28,23 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
 
 /**
  * @author Michael Young
  */
 public class PublicRenderParametersPool {
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #get(HttpServletRequest, long)}
+	 */
+	@Deprecated
 	public static Map<String, String[]> get(
 		HttpServletRequest request, long plid, boolean warFile) {
 
-		Map<String, String[]> map1 = get(request, plid);
-
-		if (warFile) {
-			Map<String, String[]> map2 = _publicRenderParametersMap.get();
-
-			map1.putAll(map2);
-
-			return new PublicRenderParameters(map1, map2);
-		}
-
-		return map1;
+		return get(request, plid);
 	}
 
 	protected static Map<String, String[]> get(
@@ -62,33 +58,16 @@ public class PublicRenderParametersPool {
 		HttpSession session = request.getSession();
 
 		Map<Long, Map<String, String[]>> publicRenderParametersPool =
-			(Map<Long, Map<String, String[]>>)session.getAttribute(
-				WebKeys.PUBLIC_RENDER_PARAMETERS_POOL);
-
-		if (publicRenderParametersPool == null) {
-			publicRenderParametersPool = new ConcurrentHashMap<>();
-
-			session.setAttribute(
-				WebKeys.PUBLIC_RENDER_PARAMETERS_POOL,
-				publicRenderParametersPool);
-		}
+			_publicRenderParametersPoolMap.computeIfAbsent(
+				session.getId(), id -> new ConcurrentHashMap<>());
 
 		try {
 			Layout layout = LayoutLocalServiceUtil.getLayout(plid);
 
 			LayoutSet layoutSet = layout.getLayoutSet();
 
-			Map<String, String[]> publicRenderParameters =
-				publicRenderParametersPool.get(layoutSet.getLayoutSetId());
-
-			if (publicRenderParameters == null) {
-				publicRenderParameters = new HashMap<>();
-
-				publicRenderParametersPool.put(
-					layoutSet.getLayoutSetId(), publicRenderParameters);
-			}
-
-			return publicRenderParameters;
+			return publicRenderParametersPool.computeIfAbsent(
+				layoutSet.getLayoutSetId(), key -> new HashMap<>());
 		}
 		catch (Exception e) {
 			if (_log.isWarnEnabled()) {
@@ -105,10 +84,27 @@ public class PublicRenderParametersPool {
 	private static final Log _log = LogFactoryUtil.getLog(
 		PublicRenderParametersPool.class);
 
-	private static final ThreadLocal<Map<String, String[]>>
-		_publicRenderParametersMap = new AutoResetThreadLocal<>(
-			PublicRenderParametersPool.class +
-				"._publicRenderParametersMap",
-			HashMap::new);
+	private static final Map<String, Map<Long, Map<String, String[]>>>
+		_publicRenderParametersPoolMap = new ConcurrentHashMap<>();
+
+	static {
+		PortletSessionListenerManager.addHttpSessionListener(
+			new HttpSessionListener() {
+
+				@Override
+				public void sessionCreated(HttpSessionEvent httpSessionEvent) {
+				}
+
+				@Override
+				public void sessionDestroyed(
+					HttpSessionEvent httpSessionEvent) {
+
+					HttpSession session = httpSessionEvent.getSession();
+
+					_publicRenderParametersPoolMap.remove(session.getId());
+				}
+
+			});
+	}
 
 }

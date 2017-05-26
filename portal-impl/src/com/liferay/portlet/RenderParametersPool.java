@@ -14,7 +14,7 @@
 
 package com.liferay.portlet;
 
-import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.servlet.PortletSessionListenerManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +22,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
 
 /**
  * @author Brian Wing Shun Chan
@@ -31,15 +33,14 @@ public class RenderParametersPool {
 	public static Map<String, Map<String, String[]>> clear(
 		HttpServletRequest request, long plid) {
 
-		HttpSession session = request.getSession();
-
 		if (plid <= 0) {
 			return null;
 		}
 
+		HttpSession session = request.getSession();
+
 		Map<Long, Map<String, Map<String, String[]>>> pool =
-			(Map<Long, Map<String, Map<String, String[]>>>)session.getAttribute(
-				WebKeys.PORTLET_RENDER_PARAMETERS);
+			_renderParametersPoolMap.get(session.getId());
 
 		if (pool == null) {
 			return null;
@@ -63,15 +64,14 @@ public class RenderParametersPool {
 	public static Map<String, Map<String, String[]>> get(
 		HttpServletRequest request, long plid) {
 
-		HttpSession session = request.getSession();
-
 		if (plid <= 0) {
 			return null;
 		}
 
+		HttpSession session = request.getSession();
+
 		Map<Long, Map<String, Map<String, String[]>>> pool =
-			(Map<Long, Map<String, Map<String, String[]>>>)session.getAttribute(
-				WebKeys.PORTLET_RENDER_PARAMETERS);
+			_renderParametersPoolMap.get(session.getId());
 
 		if (pool == null) {
 			return null;
@@ -95,24 +95,17 @@ public class RenderParametersPool {
 	public static Map<String, Map<String, String[]>> getOrCreate(
 		HttpServletRequest request, long plid) {
 
-		HttpSession session = request.getSession();
-
 		if (plid <= 0) {
 			return new ConcurrentHashMap<>();
 		}
 
+		HttpSession session = request.getSession();
+
 		Map<Long, Map<String, Map<String, String[]>>> pool =
-			_getOrCreateRenderParametersPool(session);
+			_renderParametersPoolMap.computeIfAbsent(
+				session.getId(), key -> new ConcurrentHashMap<>());
 
-		Map<String, Map<String, String[]>> plidPool = pool.get(plid);
-
-		if (plidPool == null) {
-			plidPool = new ConcurrentHashMap<>();
-
-			pool.put(plid, plidPool);
-		}
-
-		return plidPool;
+		return pool.computeIfAbsent(plid, key -> new ConcurrentHashMap<>());
 	}
 
 	public static Map<String, String[]> getOrCreate(
@@ -121,15 +114,7 @@ public class RenderParametersPool {
 		Map<String, Map<String, String[]>> plidPool = getOrCreate(
 			request, plid);
 
-		Map<String, String[]> params = plidPool.get(portletId);
-
-		if (params == null) {
-			params = new HashMap<>();
-
-			plidPool.put(portletId, params);
-		}
-
-		return params;
+		return plidPool.computeIfAbsent(portletId, key -> new HashMap<>());
 	}
 
 	public static void put(
@@ -146,21 +131,28 @@ public class RenderParametersPool {
 		plidPool.put(portletId, params);
 	}
 
-	private static Map<Long, Map<String, Map<String, String[]>>>
-		_getOrCreateRenderParametersPool(HttpSession session) {
+	private static final
+		Map<String, Map<Long, Map<String, Map<String, String[]>>>>
+			_renderParametersPoolMap = new ConcurrentHashMap<>();
 
-		Map<Long, Map<String, Map<String, String[]>>> renderParametersPool =
-			(Map<Long, Map<String, Map<String, String[]>>>)session.getAttribute(
-				WebKeys.PORTLET_RENDER_PARAMETERS);
+	static {
+		PortletSessionListenerManager.addHttpSessionListener(
+			new HttpSessionListener() {
 
-		if (renderParametersPool == null) {
-			renderParametersPool = new ConcurrentHashMap<>();
+				@Override
+				public void sessionCreated(HttpSessionEvent httpSessionEvent) {
+				}
 
-			session.setAttribute(
-				WebKeys.PORTLET_RENDER_PARAMETERS, renderParametersPool);
-		}
+				@Override
+				public void sessionDestroyed(
+					HttpSessionEvent httpSessionEvent) {
 
-		return renderParametersPool;
+					HttpSession session = httpSessionEvent.getSession();
+
+					_renderParametersPoolMap.remove(session.getId());
+				}
+
+			});
 	}
 
 }
