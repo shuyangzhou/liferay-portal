@@ -18,6 +18,7 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.SecureRandomUtil;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -30,6 +31,7 @@ import com.liferay.portal.search.elasticsearch.connection.OperationMode;
 import com.liferay.portal.search.elasticsearch.index.IndexFactory;
 import com.liferay.portal.search.elasticsearch.internal.cluster.ClusterSettingsContext;
 import com.liferay.portal.search.elasticsearch.settings.SettingsContributor;
+import com.liferay.portal.util.FileImpl;
 
 import java.io.IOException;
 
@@ -99,6 +101,8 @@ public class EmbeddedElasticsearchConnection
 		_node.close();
 
 		_node = null;
+
+		FileUtil.deltree(_jnaTmpDir);
 	}
 
 	public Node getNode() {
@@ -310,6 +314,12 @@ public class EmbeddedElasticsearchConnection
 
 		thread.setContextClassLoader(clazz.getClassLoader());
 
+		String jnaTmpdir = "jna.tmpdir";
+
+		String originalJnaTmpdir = System.getProperty(jnaTmpdir);
+
+		System.setProperty(jnaTmpdir, _jnaTmpDir);
+
 		try {
 			NodeBuilder nodeBuilder = new NodeBuilder();
 
@@ -331,6 +341,13 @@ public class EmbeddedElasticsearchConnection
 		}
 		finally {
 			thread.setContextClassLoader(contextClassLoader);
+
+			if (originalJnaTmpdir == null) {
+				System.clearProperty(jnaTmpdir);
+			}
+			else {
+				System.setProperty(jnaTmpdir, originalJnaTmpdir);
+			}
 		}
 	}
 
@@ -379,6 +396,12 @@ public class EmbeddedElasticsearchConnection
 		super.removeSettingsContributor(settingsContributor);
 	}
 
+	protected void setFileUtil() {
+		FileUtil fileUtil = new FileUtil();
+
+		fileUtil.setFile(new FileImpl());
+	}
+
 	@Reference
 	protected ClusterSettingsContext clusterSettingsContext;
 
@@ -412,6 +435,10 @@ public class EmbeddedElasticsearchConnection
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		EmbeddedElasticsearchConnection.class);
+
+	private static final String _jnaTmpDir =
+		SystemProperties.get(SystemProperties.TMP_DIR) +
+			"/elasticSearch-tmpDir";
 
 	private Node _node;
 
