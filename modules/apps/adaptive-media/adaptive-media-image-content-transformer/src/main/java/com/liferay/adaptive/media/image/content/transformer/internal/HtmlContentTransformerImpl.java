@@ -44,7 +44,7 @@ public class HtmlContentTransformerImpl implements ContentTransformer<String> {
 
 	@Override
 	public String transform(String html) throws PortalException {
-		if (html == null) {
+		if ((html == null) || !html.contains("<img ")) {
 			return null;
 		}
 
