@@ -26,8 +26,11 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.lang.reflect.Field;
@@ -41,6 +44,9 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.Configuration;
@@ -95,6 +101,14 @@ public class ConfigurationImpl
 
 		_componentConfiguration = new ClassLoaderComponentConfiguration(
 			classLoader, webId, name);
+
+		ComponentProperties componentProperties = getComponentProperties();
+
+		for (Map.Entry<String, String> entry :
+				_liferaySystemEnvironment.entrySet()) {
+
+			componentProperties.setProperty(entry.getKey(), entry.getValue());
+		}
 
 		printSources(companyId, webId);
 	}
@@ -159,13 +173,7 @@ public class ConfigurationImpl
 		Object value = _configurationCache.get(key);
 
 		if (value == null) {
-			ComponentProperties componentProperties = getComponentProperties();
-
-			value = componentProperties.getProperty(key);
-
-			if (value == null) {
-				value = _nullValue;
-			}
+			value = _getConfigurationValue(key);
 
 			_configurationCache.put(key, value);
 		}
@@ -182,13 +190,7 @@ public class ConfigurationImpl
 		Object value = _configurationCache.get(key);
 
 		if (value == null) {
-			ComponentProperties componentProperties = getComponentProperties();
-
-			value = componentProperties.getString(key);
-
-			if (value == null) {
-				value = _nullValue;
-			}
+			value = _getConfigurationValue(key);
 
 			_configurationCache.put(key, value);
 		}
@@ -214,16 +216,9 @@ public class ConfigurationImpl
 		}
 
 		if (value == null) {
-			ComponentProperties componentProperties = getComponentProperties();
-
-			value = componentProperties.getString(
-				key, getEasyConfFilter(filter));
+			value = _getConfigurationValue(key, filter, filterCacheKey);
 
 			if (filterCacheKey != null) {
-				if (value == null) {
-					value = _nullValue;
-				}
-
 				_configurationFilterCache.put(filterCacheKey, value);
 			}
 		}
@@ -240,11 +235,7 @@ public class ConfigurationImpl
 		Object value = _configurationArrayCache.get(key);
 
 		if (value == null) {
-			ComponentProperties componentProperties = getComponentProperties();
-
-			String[] array = componentProperties.getStringArray(key);
-
-			value = _fixArrayValue(array);
+			value = _getArrayConfigurationValue(key);
 
 			_configurationArrayCache.put(key, value);
 		}
@@ -267,12 +258,7 @@ public class ConfigurationImpl
 		}
 
 		if (value == null) {
-			ComponentProperties componentProperties = getComponentProperties();
-
-			String[] array = componentProperties.getStringArray(
-				key, getEasyConfFilter(filter));
-
-			value = _fixArrayValue(array);
+			value = _getArrayConfigurationValue(key, filter, filterCacheKey);
 
 			if (filterCacheKey != null) {
 				_configurationFilterArrayCache.put(filterCacheKey, value);
@@ -308,7 +294,9 @@ public class ConfigurationImpl
 			componentProperties.getProperties();
 
 		for (String key : componentPropertiesProperties.stringPropertyNames()) {
-			properties.setProperty(key, componentProperties.getString(key));
+			String value = (String)_getConfigurationValue(key);
+
+			properties.setProperty(key, value);
 		}
 
 		_properties = properties;
@@ -397,6 +385,16 @@ public class ConfigurationImpl
 		return easyConfFilter;
 	}
 
+	protected String getEnvironmentVariableName(final String key) {
+		String environmentVariableName = key;
+
+		for (Function<String, String> function : _transformationFunctions) {
+			environmentVariableName = function.apply(environmentVariableName);
+		}
+
+		return environmentVariableName;
+	}
+
 	protected void printSources(long companyId, String webId) {
 		ComponentProperties componentProperties = getComponentProperties();
 
@@ -467,13 +465,125 @@ public class ConfigurationImpl
 		return value;
 	}
 
+	private Object _getArrayConfigurationValue(String key) {
+		ComponentProperties componentProperties = getComponentProperties();
+
+		String[] array = componentProperties.getStringArray(key);
+
+		Object value = _fixArrayValue(array);
+
+		if (value != null) {
+			return value;
+		}
+
+		return _nullValue;
+	}
+
+	private Object _getArrayConfigurationValue(
+		String key, Filter filter, FilterCacheKey filterCacheKey) {
+
+		ComponentProperties componentProperties = getComponentProperties();
+
+		String[] array = componentProperties.getStringArray(
+			key, getEasyConfFilter(filter));
+
+		Object value = _fixArrayValue(array);
+
+		if (filterCacheKey != null) {
+			if (value != null) {
+				return value;
+			}
+		}
+
+		return _nullValue;
+	}
+
+	private Object _getConfigurationValue(String key) {
+		ComponentProperties componentProperties = getComponentProperties();
+
+		Object value = componentProperties.getString(key);
+
+		if (value != null) {
+			return value;
+		}
+
+		return _nullValue;
+	}
+
+	private Object _getConfigurationValue(
+		String key, Filter filter, FilterCacheKey filterCacheKey) {
+
+		ComponentProperties componentProperties = getComponentProperties();
+
+		Object value = componentProperties.getString(
+			key, getEasyConfFilter(filter));
+
+		if (filterCacheKey != null) {
+			if (value != null) {
+				return value;
+			}
+		}
+
+		return _nullValue;
+	}
+
 	private static final boolean _PRINT_DUPLICATE_CALLS_TO_GET = false;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ConfigurationImpl.class);
 
 	private static final String[] _emptyArray = new String[0];
+	private static final Map<String, String> _liferaySystemEnvironment;
 	private static final Object _nullValue = new Object();
+	private static final Function<String, String>
+		_prependLiferayPrefixFunction =
+			(String envVarKey) -> "LIFERAY_" + envVarKey;
+
+	private static final Function<String, String> _replaceInvalidCharsFunction =
+		(String propsKey) -> {
+			char[] chars = {
+				CharPool.DASH, CharPool.OPEN_BRACKET, CharPool.PERIOD,
+				CharPool.SLASH
+			};
+
+			String replacedKey = StringUtil.replace(
+				propsKey, CharPool.CLOSE_BRACKET, StringPool.BLANK);
+
+			for (char c : chars) {
+				replacedKey = StringUtil.replace(
+					replacedKey, c, CharPool.UNDERLINE);
+			}
+
+			return replacedKey;
+		};
+
+	private static final Function<String, String> _toUpperCaseFunction =
+		(String propsKey) -> StringUtil.toUpperCase(propsKey);
+	private static final Function<String, String>[] _transformationFunctions;
+
+	static {
+		_transformationFunctions = new Function[] {
+			_toUpperCaseFunction, _replaceInvalidCharsFunction,
+			_prependLiferayPrefixFunction
+		};
+
+		Map<String, String> systemEnvironment = System.getenv();
+
+		Set<Map.Entry<String, String>> entries = systemEnvironment.entrySet();
+
+		Stream<Map.Entry<String, String>> stream = entries.stream();
+
+		_liferaySystemEnvironment = stream.filter(
+			map -> {
+				String key = map.getKey();
+
+				return key.startsWith("LIFERAY_");
+			}
+		).collect(
+			Collectors.toMap(
+				entry -> entry.getKey(), entry -> entry.getValue())
+		);
+	}
 
 	private final ComponentConfiguration _componentConfiguration;
 	private final Map<String, Object> _configurationArrayCache =
@@ -511,6 +621,21 @@ public class ConfigurationImpl
 			}
 
 			return hashCode;
+		}
+
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append(_key);
+
+			for (String selector : _selectors) {
+				sb.append(CharPool.OPEN_BRACKET);
+				sb.append(selector);
+				sb.append(CharPool.CLOSE_BRACKET);
+			}
+
+			return sb.toString();
 		}
 
 		private FilterCacheKey(String key, Filter filter) {
