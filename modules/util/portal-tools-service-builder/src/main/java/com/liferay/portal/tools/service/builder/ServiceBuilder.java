@@ -5228,6 +5228,25 @@ public class ServiceBuilder {
 			}
 		}
 
+		if (uuid && pkList.isEmpty()) {
+			throw new ServiceBuilderException(
+				"Cannot create entity \"" + ejbName +
+					"\" with a uuid without a primary key.");
+		}
+
+		if (hasLocalizationTable) {
+			int index = columnList.indexOf(
+				new EntityColumn("defaultLanguageId"));
+
+			if (index < 0) {
+				LocalizationColumn localizationColumn = new LocalizationColumn(
+					"defaultLanguageId", "defaultLanguageId");
+
+				regularColList.add(localizationColumn);
+				columnList.add(localizationColumn);
+			}
+		}
+
 		EntityOrder order = null;
 
 		Element orderElement = entityElement.element("order");
