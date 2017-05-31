@@ -363,15 +363,22 @@ public class LibraryReferenceTest {
 		Document document = documentBuilder.parse(
 			new File(_NETBEANS_FILE_NAME));
 
-		NodeList nodelist = document.getElementsByTagName("classpath");
+		Properties properties = new Properties();
 
-		for (int i = 0; i < nodelist.getLength(); i++) {
-			Node node = nodelist.item(i);
+		try (InputStream in = Files.newInputStream(
+				Paths.get("nbproject/project.properties"))) {
 
-			_netBeansJars.add(node.getTextContent());
+			properties.load(in);
 		}
 
-		nodelist = document.getElementsByTagName("source-folder");
+		for (String jar :
+				StringUtil.split(
+					properties.getProperty("javac.classpath"), ':')) {
+
+			_netBeansJars.add(jar);
+		}
+
+		NodeList nodelist = document.getElementsByTagName("source-folder");
 
 		for (int i = 0; i < nodelist.getLength(); i++) {
 			Element element = (Element)nodelist.item(i);

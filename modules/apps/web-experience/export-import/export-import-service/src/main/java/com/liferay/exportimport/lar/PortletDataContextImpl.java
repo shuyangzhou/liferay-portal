@@ -1595,7 +1595,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 		Map<Long, Set<String>> existingRoleIdsToActionIds =
 			ExportImportPermissionUtil.getRoleIdsToActionIds(
-				_companyId, resourceName, resourcePK);
+				_companyId, resourceName, newResourcePK);
 
 		Map<Long, String[]> importedRoleIdsToActionIds = new HashMap<>();
 

@@ -5228,6 +5228,12 @@ public class ServiceBuilder {
 			}
 		}
 
+		if (uuid && pkList.isEmpty()) {
+			throw new ServiceBuilderException(
+				"Unable to create entity \"" + ejbName +
+					"\" with a UUID without a primary key");
+		}
+
 		EntityOrder order = null;
 
 		Element orderElement = entityElement.element("order");
@@ -5522,7 +5528,7 @@ public class ServiceBuilder {
 		for (EntityColumn entityColumn : entity.getColumnList()) {
 			if (entityColumn.isLocalized()) {
 				throw new IllegalArgumentException(
-					"Cannot use localized entity with localized column " +
+					"Unable to use localized entity with localized column " +
 						entityColumn.getName() + " in " + entity.getName());
 			}
 		}
@@ -5583,7 +5589,7 @@ public class ServiceBuilder {
 
 		if (pkList.size() > 1) {
 			throw new IllegalArgumentException(
-				"Cannot use localized entity with compound primary key");
+				"Unable to use localized entity with compound primary key");
 		}
 
 		EntityColumn pkColumn = pkList.get(0);
@@ -5607,7 +5613,8 @@ public class ServiceBuilder {
 
 		if (localizedColumnElements.isEmpty()) {
 			throw new IllegalArgumentException(
-				"Cannot use localized entity table without localized columns");
+				"Unable to use localized entity table without localized " +
+					"columns");
 		}
 
 		List<EntityColumn> localizedColumns = new ArrayList<>(
@@ -5687,8 +5694,8 @@ public class ServiceBuilder {
 
 			if (localized != null) {
 				throw new IllegalArgumentException(
-					"Cannot have localized columns in localized table for " +
-						"entity " + entity.getName());
+					"Unable to have localized columns in localized table " +
+						"for entity " + entity.getName());
 			}
 
 			Element newColumnElement = newLocalizedEntityElement.addElement(

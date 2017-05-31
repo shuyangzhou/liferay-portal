@@ -255,11 +255,13 @@ AUI.add(
 							function(currentField) {
 								var currentFieldName = currentField.get('context.fieldName');
 
-								if (currentFieldName === fieldName) {
-									field = currentField;
-								}
-								else if (ignoreCase && currentFieldName.toLowerCase() === fieldName.toLowerCase()) {
-									field = currentField;
+								if (currentFieldName) {
+									if (currentFieldName === fieldName) {
+										field = currentField;
+									}
+									else if (ignoreCase && currentFieldName.toLowerCase() === fieldName.toLowerCase()) {
+										field = currentField;
+									}
 								}
 							}
 						);

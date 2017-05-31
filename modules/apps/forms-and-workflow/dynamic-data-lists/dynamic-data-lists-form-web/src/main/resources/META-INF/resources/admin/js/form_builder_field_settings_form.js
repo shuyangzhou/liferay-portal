@@ -312,14 +312,6 @@ AUI.add(
 						instance._saveSettings();
 					},
 
-					_onNameChange: function(event) {
-						var instance = this;
-
-						var labelField = instance.getField('label');
-
-						labelField.set('key', event.newVal);
-					},
-
 					_onSubmitForm: function(event) {
 						var instance = this;
 
@@ -380,7 +372,17 @@ AUI.add(
 						var labelField = instance.getField('label');
 						var nameField = instance.getField('name');
 
-						labelField.set('key', nameField.getValue());
+						var name = nameField.getValue();
+
+						if (!name) {
+							var formBuilderField = instance.get('field');
+
+							labelField.set('key', formBuilderField.generateFieldName(''));
+						}
+						else {
+							labelField.set('key', nameField.getValue());
+						}
+
 						labelField.set('keyInputEnabled', !editMode);
 						labelField.set('generationLocked', editMode);
 					},

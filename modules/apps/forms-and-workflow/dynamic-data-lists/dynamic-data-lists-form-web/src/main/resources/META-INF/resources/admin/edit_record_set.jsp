@@ -43,13 +43,6 @@ renderResponse.setTitle((recordSet == null) ? LanguageUtil.get(request, "new-for
 </portlet:actionURL>
 
 <div class="hide portlet-forms" id="<portlet:namespace />formContainer">
-	<aui:translation-manager
-		availableLocales="<%= availableLocales %>"
-		changeableDefaultLanguage="<%= false %>"
-		defaultLanguageId="<%= defaultLanguageId %>"
-		id="translationManager"
-	/>
-
 	<aui:nav-bar cssClass="collapse-basic-search" id="toolbar" markupView="lexicon">
 		<aui:nav cssClass="navbar-nav">
 			<aui:nav-item id="showForm" label="Builder" selected="<%= true %>" />
@@ -76,6 +69,15 @@ renderResponse.setTitle((recordSet == null) ? LanguageUtil.get(request, "new-for
 				</div>
 			</div>
 		</div>
+	</div>
+
+	<div class="container-fluid-1280">
+		<aui:translation-manager
+			availableLocales="<%= availableLocales %>"
+			changeableDefaultLanguage="<%= false %>"
+			defaultLanguageId="<%= defaultLanguageId %>"
+			id="translationManager"
+		/>
 	</div>
 
 	<aui:form action="<%= saveRecordSetURL %>" cssClass="ddl-form-builder-form" enctype="multipart/form-data" method="post" name="editForm">
