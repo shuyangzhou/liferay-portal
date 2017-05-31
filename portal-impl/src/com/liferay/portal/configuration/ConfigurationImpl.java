@@ -26,8 +26,11 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.lang.reflect.Field;
@@ -41,6 +44,7 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.Configuration;
@@ -167,6 +171,8 @@ public class ConfigurationImpl
 				value = _nullValue;
 			}
 
+			value = checkEnvironmentVariable(key, value);
+
 			_configurationCache.put(key, value);
 		}
 
@@ -189,6 +195,8 @@ public class ConfigurationImpl
 			if (value == null) {
 				value = _nullValue;
 			}
+
+			value = checkEnvironmentVariable(key, value);
 
 			_configurationCache.put(key, value);
 		}
@@ -224,6 +232,8 @@ public class ConfigurationImpl
 					value = _nullValue;
 				}
 
+				value = checkEnvironmentVariable(key, value);
+
 				_configurationFilterCache.put(filterCacheKey, value);
 			}
 		}
@@ -245,6 +255,8 @@ public class ConfigurationImpl
 			String[] array = componentProperties.getStringArray(key);
 
 			value = _fixArrayValue(array);
+
+			value = checkArrayEnvironmentVariable(key, value);
 
 			_configurationArrayCache.put(key, value);
 		}
@@ -273,6 +285,9 @@ public class ConfigurationImpl
 				key, getEasyConfFilter(filter));
 
 			value = _fixArrayValue(array);
+
+			value = checkArrayEnvironmentVariable(
+				filterCacheKey.toString(), value);
 
 			if (filterCacheKey != null) {
 				_configurationFilterArrayCache.put(filterCacheKey, value);
@@ -308,7 +323,11 @@ public class ConfigurationImpl
 			componentProperties.getProperties();
 
 		for (String key : componentPropertiesProperties.stringPropertyNames()) {
-			properties.setProperty(key, componentProperties.getString(key));
+			String value = componentProperties.getString(key);
+
+			value = (String)checkEnvironmentVariable(key, value);
+
+			properties.setProperty(key, value);
 		}
 
 		_properties = properties;
@@ -382,6 +401,30 @@ public class ConfigurationImpl
 		clearCache();
 	}
 
+	protected Object checkArrayEnvironmentVariable(
+		String key, Object propertyValue) {
+
+		String value = _getEnvironmentVariableValue(key);
+
+		if (value != null) {
+			return value.split(",");
+		}
+
+		return propertyValue;
+	}
+
+	protected Object checkEnvironmentVariable(
+		String key, Object propertyValue) {
+
+		String value = _getEnvironmentVariableValue(key);
+
+		if (value != null) {
+			return value;
+		}
+
+		return propertyValue;
+	}
+
 	protected ComponentProperties getComponentProperties() {
 		return _componentConfiguration.getProperties();
 	}
@@ -395,6 +438,16 @@ public class ConfigurationImpl
 		}
 
 		return easyConfFilter;
+	}
+
+	protected String getEnvironmentVariableName(final String key) {
+		String environmentVariableName = key;
+
+		for (Function<String, String> function : _transformationFunctions) {
+			environmentVariableName = function.apply(environmentVariableName);
+		}
+
+		return environmentVariableName;
 	}
 
 	protected void printSources(long companyId, String webId) {
@@ -467,6 +520,12 @@ public class ConfigurationImpl
 		return value;
 	}
 
+	private String _getEnvironmentVariableValue(String key) {
+		Map<String, String> env = System.getenv();
+
+		return env.get(getEnvironmentVariableName(key));
+	}
+
 	private static final boolean _PRINT_DUPLICATE_CALLS_TO_GET = false;
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -474,6 +533,46 @@ public class ConfigurationImpl
 
 	private static final String[] _emptyArray = new String[0];
 	private static final Object _nullValue = new Object();
+
+	private static final Function<String, String>
+		_prependLiferayPrefixFunction = (String envVarKey) -> {
+			String upperCasedEnvVarKey = StringUtil.toUpperCase(envVarKey);
+
+			if (upperCasedEnvVarKey.startsWith("LIFERAY")) {
+				return envVarKey;
+			}
+
+			return "LIFERAY_" + envVarKey;
+		};
+
+	private static final Function<String, String> _replaceInvalidCharsFunction =
+		(String propsKey) -> {
+			char[] chars = {
+				CharPool.DASH, CharPool.OPEN_BRACKET, CharPool.PERIOD,
+				CharPool.SLASH
+			};
+
+			String replacedKey = StringUtil.replace(
+				propsKey, CharPool.CLOSE_BRACKET, StringPool.BLANK);
+
+			for (char c : chars) {
+				replacedKey = StringUtil.replace(
+					replacedKey, c, CharPool.UNDERLINE);
+			}
+
+			return replacedKey;
+		};
+
+	private static final Function<String, String> _toUpperCaseFunction =
+		(String propsKey) -> StringUtil.toUpperCase(propsKey);
+	private static final Function<String, String>[] _transformationFunctions;
+
+	static {
+		_transformationFunctions = new Function[] {
+			_toUpperCaseFunction, _replaceInvalidCharsFunction,
+			_prependLiferayPrefixFunction
+		};
+	}
 
 	private final ComponentConfiguration _componentConfiguration;
 	private final Map<String, Object> _configurationArrayCache =
@@ -511,6 +610,21 @@ public class ConfigurationImpl
 			}
 
 			return hashCode;
+		}
+
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append(_key);
+
+			for (String selector : _selectors) {
+				sb.append(CharPool.OPEN_BRACKET);
+				sb.append(selector);
+				sb.append(CharPool.CLOSE_BRACKET);
+			}
+
+			return sb.toString();
 		}
 
 		private FilterCacheKey(String key, Filter filter) {
