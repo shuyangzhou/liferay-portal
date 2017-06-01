@@ -33,6 +33,16 @@ public class RuntimeClassPathResolver implements ClassPathResolver {
 	public URL[] getClassPathURLs() throws Exception {
 		File coreDir = new File(PropsValues.MODULE_FRAMEWORK_BASE_DIR, "core");
 
+		File canonicalCoreDir = coreDir.getCanonicalFile();
+
+		String canoncialCoreDirString = canonicalCoreDir.toString();
+
+		if (!canoncialCoreDirString.equals(coreDir.toString())) {
+			throw new IllegalArgumentException(
+				coreDir + " is not in canonical form: " +
+					canoncialCoreDirString);
+		}
+
 		File[] files = coreDir.listFiles();
 
 		if (files == null) {
