@@ -136,7 +136,7 @@ public class MBCommentImpl implements WorkflowableComment {
 		return message.isRoot();
 	}
 
-	protected MBMessage getMessage() {
+	public MBMessage getMessage() {
 		return _message;
 	}
 
