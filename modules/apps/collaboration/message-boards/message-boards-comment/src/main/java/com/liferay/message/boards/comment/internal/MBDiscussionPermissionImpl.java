@@ -14,7 +14,9 @@
 
 package com.liferay.message.boards.comment.internal;
 
+import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.portal.kernel.comment.BaseDiscussionPermission;
+import com.liferay.portal.kernel.comment.Comment;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -45,6 +47,23 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 
 		return MBDiscussionPermission.contains(
 			_permissionChecker, commentId, actionId);
+	}
+
+	@Override
+	public boolean hasPermission(Comment comment, String actionId)
+		throws PortalException {
+
+		if (comment instanceof MBCommentImpl) {
+			MBCommentImpl mbCommentImpl = (MBCommentImpl)comment;
+
+			MBMessage mbMessage = mbCommentImpl.getMessage();
+
+			return MBDiscussionPermission.contains(
+				_permissionChecker, mbMessage, actionId);
+		}
+
+		return MBDiscussionPermission.contains(
+			_permissionChecker, comment.getCommentId(), actionId);
 	}
 
 	@Override
