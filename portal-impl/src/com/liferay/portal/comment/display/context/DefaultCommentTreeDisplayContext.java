@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.comment.display.context.CommentTreeDisplayConte
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -89,8 +90,8 @@ public class DefaultCommentTreeDisplayContext
 			return false;
 		}
 
-		return _discussionPermission.hasDeletePermission(
-			_discussionComment.getCommentId());
+		return _discussionPermission.hasPermission(
+			_discussionComment.getCommentId(), ActionKeys.DELETE_DISCUSSION);
 	}
 
 	@Override
@@ -108,8 +109,8 @@ public class DefaultCommentTreeDisplayContext
 			return false;
 		}
 
-		return _discussionPermission.hasUpdatePermission(
-			_discussionComment.getCommentId());
+		return _discussionPermission.hasPermission(
+			_discussionComment.getCommentId(), ActionKeys.UPDATE_DISCUSSION);
 	}
 
 	@Override
@@ -170,8 +171,8 @@ public class DefaultCommentTreeDisplayContext
 			return false;
 		}
 
-		return _discussionPermission.hasUpdatePermission(
-			_discussionComment.getCommentId());
+		return _discussionPermission.hasPermission(
+			_discussionComment.getCommentId(), ActionKeys.UPDATE_DISCUSSION);
 	}
 
 	protected boolean hasViewPermission() throws PortalException {
