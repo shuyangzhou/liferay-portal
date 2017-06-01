@@ -25,6 +25,10 @@ import com.liferay.portal.util.PropsValues;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.zip.GZIPOutputStream;
 
 import javax.servlet.ServletOutputStream;
@@ -123,11 +127,84 @@ public class GZipResponse extends HttpServletResponseWrapper {
 		super.setHeader(name, value);
 	}
 
+	@Override
+	@SuppressWarnings("deprecation")
+	public void setStatus(int sc, String sm) {
+		super.setStatus(sc, sm);
+
+		if (super.getStatus() != SC_OK) {
+			_disableGZip();
+		}
+	}
+
+	@Override
+	public void setStatus(int sc) {
+		setStatus(sc, null);
+	}
+
+	@Override
+	public void sendRedirect(String location) throws IOException {
+		_disableGZip();
+
+		super.sendRedirect(location);
+	}
+
+	@Override
+	public void sendError(int sc) throws IOException {
+		_disableGZip();
+
+		super.sendError(sc);
+	}
+
+	@Override
+	public void sendError(int sc, String msg) throws IOException {
+		_disableGZip();
+
+		super.sendError(sc, msg);
+	}
+
+	private void _disableGZip() {
+		Map<String, Collection<String>> headerMap = new HashMap<>();
+
+		for (String headerName : super.getHeaderNames()) {
+			Collection<String> headerValues = super.getHeaders(headerName);
+
+			if (headerName.equals(HttpHeaders.CONTENT_ENCODING)) {
+				headerValues.remove(_GZIP);
+
+				if (headerValues.isEmpty()) {
+					continue;
+				}
+			}
+
+			headerMap.put(headerName, headerValues);
+		}
+
+		int statusCode = super.getStatus();
+
+		super.reset();
+
+		super.setStatus(statusCode);
+
+		for (Entry<String, Collection<String>> entry : headerMap.entrySet()) {
+			String headerName = entry.getKey();
+
+			for (String headerValue : entry.getValue()) {
+				super.addHeader(headerName, headerValue);
+			}
+		}
+
+		_servletOutputStream = null;
+		_disabled = true;
+	}
+
+	private boolean _disabled;
+
 	private ServletOutputStream _createGZipServletOutputStream(
 			ServletOutputStream servletOutputStream)
 		throws IOException {
 
-		if (_isGZipContentType()) {
+		if (_isGZipContentType() || _disabled) {
 			return servletOutputStream;
 		}
 
