@@ -422,8 +422,6 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 				AggregateFilter.class.getName(), request,
 				bufferCacheServletResponse, filterChain);
 
-			bufferCacheServletResponse.finishResponse(false);
-
 			content = bufferCacheServletResponse.getString();
 
 			if (minifierType.equals("css")) {
