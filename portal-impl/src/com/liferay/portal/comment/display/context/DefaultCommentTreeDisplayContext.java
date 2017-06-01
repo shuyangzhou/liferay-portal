@@ -91,7 +91,7 @@ public class DefaultCommentTreeDisplayContext
 		}
 
 		return _discussionPermission.hasPermission(
-			_discussionComment.getCommentId(), ActionKeys.DELETE_DISCUSSION);
+			_discussionComment, ActionKeys.DELETE_DISCUSSION);
 	}
 
 	@Override
@@ -168,8 +168,7 @@ public class DefaultCommentTreeDisplayContext
 
 		if (_hasUpdatePermission == null) {
 			_hasUpdatePermission = _discussionPermission.hasPermission(
-				_discussionComment.getCommentId(),
-				ActionKeys.UPDATE_DISCUSSION);
+				_discussionComment, ActionKeys.UPDATE_DISCUSSION);
 		}
 
 		return _hasUpdatePermission;
