@@ -371,6 +371,14 @@ public class MBMessagePersistenceTest {
 	}
 
 	@Test
+	public void testCountByT_notS() throws Exception {
+		_persistence.countByT_notS(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextInt());
+
+		_persistence.countByT_notS(0L, 0);
+	}
+
+	@Test
 	public void testCountByTR_S() throws Exception {
 		_persistence.countByTR_S(RandomTestUtil.nextLong(),
 			RandomTestUtil.nextInt());
