@@ -372,10 +372,12 @@ public class WikiPageServiceImpl extends WikiPageServiceBaseImpl {
 
 	@Override
 	public WikiPage getPage(long pageId) throws PortalException {
-		WikiPagePermissionChecker.check(
-			getPermissionChecker(), pageId, ActionKeys.VIEW);
+		WikiPage page = wikiPageLocalService.getPage(pageId);
 
-		return wikiPageLocalService.getPage(pageId);
+		WikiPagePermissionChecker.check(
+			getPermissionChecker(), page, ActionKeys.VIEW);
+
+		return page;
 	}
 
 	@Override
@@ -403,30 +405,36 @@ public class WikiPageServiceImpl extends WikiPageServiceBaseImpl {
 
 	@Override
 	public WikiPage getPage(long nodeId, String title) throws PortalException {
-		WikiPagePermissionChecker.check(
-			getPermissionChecker(), nodeId, title, ActionKeys.VIEW);
+		WikiPage page = wikiPageLocalService.getPage(nodeId, title);
 
-		return wikiPageLocalService.getPage(nodeId, title);
+		WikiPagePermissionChecker.check(
+			getPermissionChecker(), page, ActionKeys.VIEW);
+
+		return page;
 	}
 
 	@Override
 	public WikiPage getPage(long nodeId, String title, Boolean head)
 		throws PortalException {
 
-		WikiPagePermissionChecker.check(
-			getPermissionChecker(), nodeId, title, ActionKeys.VIEW);
+		WikiPage page = wikiPageLocalService.getPage(nodeId, title, head);
 
-		return wikiPageLocalService.getPage(nodeId, title, head);
+		WikiPagePermissionChecker.check(
+			getPermissionChecker(), page, ActionKeys.VIEW);
+
+		return page;
 	}
 
 	@Override
 	public WikiPage getPage(long nodeId, String title, double version)
 		throws PortalException {
 
-		WikiPagePermissionChecker.check(
-			getPermissionChecker(), nodeId, title, version, ActionKeys.VIEW);
+		WikiPage page = wikiPageLocalService.getPage(nodeId, title, version);
 
-		return wikiPageLocalService.getPage(nodeId, title, version);
+		WikiPagePermissionChecker.check(
+			getPermissionChecker(), page, ActionKeys.VIEW);
+
+		return page;
 	}
 
 	@Override
