@@ -44,14 +44,14 @@ public interface DiscussionPermission {
 
 	public boolean hasDeletePermission(long commentId) throws PortalException;
 
-	public boolean hasPermission(long commentId, String actionId)
-		throws PortalException;
-
 	public default boolean hasPermission(Comment comment, String actionId)
 		throws PortalException {
 
 		return hasPermission(comment.getCommentId(), actionId);
 	}
+
+	public boolean hasPermission(long commentId, String actionId)
+		throws PortalException;
 
 	public boolean hasSubscribePermission(
 			long companyId, long groupId, String className, long classPK)

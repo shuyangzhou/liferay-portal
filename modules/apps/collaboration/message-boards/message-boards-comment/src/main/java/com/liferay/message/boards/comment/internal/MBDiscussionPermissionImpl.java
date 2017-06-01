@@ -42,14 +42,6 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 	}
 
 	@Override
-	public boolean hasPermission(long commentId, String actionId)
-		throws PortalException {
-
-		return MBDiscussionPermission.contains(
-			_permissionChecker, commentId, actionId);
-	}
-
-	@Override
 	public boolean hasPermission(Comment comment, String actionId)
 		throws PortalException {
 
@@ -64,6 +56,14 @@ public class MBDiscussionPermissionImpl extends BaseDiscussionPermission {
 
 		return MBDiscussionPermission.contains(
 			_permissionChecker, comment.getCommentId(), actionId);
+	}
+
+	@Override
+	public boolean hasPermission(long commentId, String actionId)
+		throws PortalException {
+
+		return MBDiscussionPermission.contains(
+			_permissionChecker, commentId, actionId);
 	}
 
 	@Override
