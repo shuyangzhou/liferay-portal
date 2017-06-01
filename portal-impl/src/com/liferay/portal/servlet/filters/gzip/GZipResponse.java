@@ -25,6 +25,11 @@ import com.liferay.portal.util.PropsValues;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.zip.GZIPOutputStream;
 
 import javax.servlet.ServletOutputStream;
@@ -123,11 +128,109 @@ public class GZipResponse extends HttpServletResponseWrapper {
 		super.setHeader(name, value);
 	}
 
+	@Override
+	@SuppressWarnings("deprecation")
+	public void setStatus(int sc, String sm) {
+		super.setStatus(sc, sm);
+
+		if (super.getStatus() != SC_OK) {
+			_disableGZip();
+		}
+	}
+
+	@Override
+	public void setStatus(int sc) {
+		setStatus(sc, null);
+	}
+
+	@Override
+	public void sendRedirect(String location) throws IOException {
+		_disableGZip();
+
+		super.sendRedirect(location);
+	}
+
+	@Override
+	public void sendError(int sc) throws IOException {
+		sendError(sc, null);
+	}
+
+	@Override
+	public void sendError(int sc, String msg) throws IOException {
+		_disableGZip();
+
+		super.sendError(sc, msg);
+	}
+
+	private void _disableGZip() {
+		if ((_servletOutputStream != null) || isCommitted()) {
+			return;
+		}
+
+		HttpServletResponse rootHttpServletResponse =
+			(HttpServletResponse)getResponse();
+
+		while (rootHttpServletResponse instanceof HttpServletResponseWrapper) {
+			HttpServletResponseWrapper httpServletResponseWrapper =
+				(HttpServletResponseWrapper)rootHttpServletResponse;
+
+			rootHttpServletResponse =
+				(HttpServletResponse)httpServletResponseWrapper.getResponse();
+		}
+
+		Map<String, Collection<String>> headerMap = new HashMap<>();
+
+		for (String headerName : rootHttpServletResponse.getHeaderNames()) {
+			Collection<String> headerValues = new ArrayList<>(
+				rootHttpServletResponse.getHeaders(headerName));
+
+			if (headerName.equals(HttpHeaders.CONTENT_ENCODING)) {
+				headerValues.remove(_GZIP);
+
+				if (headerValues.isEmpty()) {
+					continue;
+				}
+			}
+
+			headerMap.put(headerName, headerValues);
+		}
+
+		int statusCode = rootHttpServletResponse.getStatus();
+
+		super.reset();
+
+		rootHttpServletResponse.setStatus(statusCode);
+
+		for (Entry<String, Collection<String>> entry : headerMap.entrySet()) {
+			String headerName = entry.getKey();
+
+			for (String headerValue : entry.getValue()) {
+				rootHttpServletResponse.addHeader(headerName, headerValue);
+			}
+		}
+
+		Collection<String> headerValues = rootHttpServletResponse.getHeaders(
+			HttpHeaders.CONTENT_ENCODING);
+
+		if (headerValues.contains(_GZIP)) {
+
+			// Reponse is not committed, but we failed to remove the gzip
+			// header, that could only mean we are in include mode which we
+			// could not disable gzip.
+
+			return;
+		}
+
+		_disabled = true;
+	}
+
+	private boolean _disabled;
+
 	private ServletOutputStream _createGZipServletOutputStream(
 			ServletOutputStream servletOutputStream)
 		throws IOException {
 
-		if (_isGZipContentType()) {
+		if (_isGZipContentType() || _disabled) {
 			return servletOutputStream;
 		}
 
