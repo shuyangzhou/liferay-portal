@@ -105,12 +105,7 @@ public class DefaultCommentTreeDisplayContext
 
 	@Override
 	public boolean isEditActionControlVisible() throws PortalException {
-		if (_discussionPermission == null) {
-			return false;
-		}
-
-		return _discussionPermission.hasPermission(
-			_discussionComment.getCommentId(), ActionKeys.UPDATE_DISCUSSION);
+		return hasUpdatePermission();
 	}
 
 	@Override
@@ -171,8 +166,13 @@ public class DefaultCommentTreeDisplayContext
 			return false;
 		}
 
-		return _discussionPermission.hasPermission(
-			_discussionComment.getCommentId(), ActionKeys.UPDATE_DISCUSSION);
+		if (_hasUpdatePermission == null) {
+			_hasUpdatePermission = _discussionPermission.hasPermission(
+				_discussionComment.getCommentId(),
+				ActionKeys.UPDATE_DISCUSSION);
+		}
+
+		return _hasUpdatePermission;
 	}
 
 	protected boolean hasViewPermission() throws PortalException {
@@ -252,5 +252,6 @@ public class DefaultCommentTreeDisplayContext
 	private final DiscussionPermission _discussionPermission;
 	private final DiscussionRequestHelper _discussionRequestHelper;
 	private final DiscussionTaglibHelper _discussionTaglibHelper;
+	private Boolean _hasUpdatePermission;
 
 }
