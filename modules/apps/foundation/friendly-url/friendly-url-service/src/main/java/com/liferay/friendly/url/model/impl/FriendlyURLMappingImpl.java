@@ -27,11 +27,13 @@ import aQute.bnd.annotation.ProviderType;
  */
 @ProviderType
 public class FriendlyURLMappingImpl extends FriendlyURLMappingBaseImpl {
-	/*
+
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. All methods that expect a friendly url mapping model instance should use the {@link com.liferay.friendly.url.model.FriendlyURLMapping} interface instead.
 	 */
 	public FriendlyURLMappingImpl() {
 	}
+
 }
