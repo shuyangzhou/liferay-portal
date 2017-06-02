@@ -411,6 +411,14 @@ public class FriendlyURLEntryLocalServiceImpl
 	}
 
 	@Override
+	public FriendlyURLEntryLocalization updateFriendlyURLLocalization(
+		FriendlyURLEntryLocalization friendlyURLEntryLocalization) {
+
+		return friendlyURLEntryLocalizationPersistence.update(
+			friendlyURLEntryLocalization);
+	}
+
+	@Override
 	public void validate(
 			long groupId, long companyId, long classNameId, long classPK,
 			Map<String, String> urlTitleMap)
