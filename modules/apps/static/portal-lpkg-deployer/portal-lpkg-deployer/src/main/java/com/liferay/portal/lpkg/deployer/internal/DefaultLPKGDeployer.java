@@ -101,6 +101,8 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 	public List<Bundle> deploy(BundleContext bundleContext, File lpkgFile)
 		throws IOException {
 
+		lpkgFile = lpkgFile.getCanonicalFile();
+
 		Path lpkgFilePath = lpkgFile.toPath();
 
 		if (!lpkgFilePath.startsWith(_deploymentDirPath)) {
