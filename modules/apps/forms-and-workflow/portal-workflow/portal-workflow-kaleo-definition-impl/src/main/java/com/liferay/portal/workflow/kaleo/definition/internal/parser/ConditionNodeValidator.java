@@ -14,9 +14,9 @@
 
 package com.liferay.portal.workflow.kaleo.definition.internal.parser;
 
-import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.workflow.kaleo.definition.Condition;
 import com.liferay.portal.workflow.kaleo.definition.Definition;
+import com.liferay.portal.workflow.kaleo.definition.exception.KaleoDefinitionValidationException;
 import com.liferay.portal.workflow.kaleo.definition.parser.NodeValidator;
 
 import org.osgi.service.component.annotations.Component;
@@ -33,18 +33,16 @@ public class ConditionNodeValidator extends BaseNodeValidator<Condition> {
 
 	@Override
 	protected void doValidate(Definition definition, Condition condition)
-		throws WorkflowException {
+		throws KaleoDefinitionValidationException {
 
 		if (condition.getIncomingTransitionsCount() == 0) {
-			throw new WorkflowException(
-				"No incoming transition found for condition " +
-					condition.getName());
+			throw new KaleoDefinitionValidationException.
+				MustSetIncomingTransition(condition.getName());
 		}
 
 		if (condition.getOutgoingTransitionsCount() < 2) {
-			throw new WorkflowException(
-				"Less than 2 outgoing transitions found for condition " +
-					condition.getName());
+			throw new KaleoDefinitionValidationException.
+				MustSetMultipleOutgoingTransition(condition.getName());
 		}
 	}
 
