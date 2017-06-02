@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.servlet.MetaInfoCacheServletResponse;
 import com.liferay.portal.kernel.servlet.ServletOutputStreamAdapter;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.UnsyncPrintWriterPool;
@@ -30,18 +29,23 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.zip.GZIPOutputStream;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 
 /**
  * @author Jayson Falkner
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
  */
-public class GZipResponse extends MetaInfoCacheServletResponse {
+public class GZipResponse extends HttpServletResponseWrapper {
 
 	public GZipResponse(
 		HttpServletRequest request, HttpServletResponse response) {
@@ -63,8 +67,7 @@ public class GZipResponse extends MetaInfoCacheServletResponse {
 		_firefox = BrowserSnifferUtil.isFirefox(request);
 	}
 
-	@Override
-	public void finishResponse(boolean reapplyMetaData) throws IOException {
+	public void finishResponse() throws IOException {
 
 		// Is the response committed?
 
@@ -77,13 +80,43 @@ public class GZipResponse extends MetaInfoCacheServletResponse {
 				 (_unsyncByteArrayOutputStream != null) &&
 				 (_unsyncByteArrayOutputStream.size() == 0))) {
 
-				// Reset the wrapped response to clear out the GZip header
+				Map<String, Collection<String>> headerMap = new HashMap<>();
+
+				for (String headerName : _response.getHeaderNames()) {
+					Collection<String> headerValues = _response.getHeaders(
+						headerName);
+
+					if (headerName.equals(HttpHeaders.CONTENT_ENCODING)) {
+						headerValues.remove(_GZIP);
+
+						if (headerValues.isEmpty()) {
+							continue;
+						}
+					}
+
+					headerMap.put(headerName, headerValues);
+				}
 
 				_response.reset();
 
-				// Reapply meta data
+				for (Entry<String, Collection<String>> entry :
+						headerMap.entrySet()) {
 
-				super.finishResponse(reapplyMetaData);
+					String headerName = entry.getKey();
+
+					boolean first = true;
+
+					for (String headerValue : entry.getValue()) {
+						if (first) {
+							_response.setHeader(headerName, headerValue);
+
+							first = false;
+						}
+						else {
+							_response.addHeader(headerName, headerValue);
+						}
+					}
+				}
 			}
 		}
 
