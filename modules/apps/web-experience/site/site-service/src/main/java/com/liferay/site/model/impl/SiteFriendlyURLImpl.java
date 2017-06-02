@@ -26,7 +26,7 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  */
 @ProviderType
-public class SiteFriendlyURLImpl extends SiteFriendlyURLBaseImpl {
+public class FriendlyURLMappingImpl extends FriendlyURLMappingBaseImpl {
 
 	/**
 	 * NOTE FOR DEVELOPERS:
