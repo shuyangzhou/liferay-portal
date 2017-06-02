@@ -14,9 +14,9 @@
 
 package com.liferay.portal.workflow.kaleo.definition.internal.parser;
 
-import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.workflow.kaleo.definition.Definition;
 import com.liferay.portal.workflow.kaleo.definition.Join;
+import com.liferay.portal.workflow.kaleo.definition.exception.KaleoDefinitionValidationException;
 import com.liferay.portal.workflow.kaleo.definition.parser.NodeValidator;
 
 import org.osgi.service.component.annotations.Component;
@@ -33,16 +33,16 @@ public class JoinNodeValidator extends BaseNodeValidator<Join> {
 
 	@Override
 	protected void doValidate(Definition definition, Join join)
-		throws WorkflowException {
+		throws KaleoDefinitionValidationException {
 
 		if (join.getIncomingTransitionsCount() == 0) {
-			throw new WorkflowException(
-				"No incoming transition found for join " + join.getName());
+			throw new KaleoDefinitionValidationException.
+				MustSetIncomingTransition(join.getName());
 		}
 
 		if (join.getOutgoingTransitionsCount() == 0) {
-			throw new WorkflowException(
-				"No outgoing transition found for join " + join.getName());
+			throw new KaleoDefinitionValidationException.
+				MustSetOutgoingTransition(join.getName());
 		}
 	}
 

@@ -62,15 +62,15 @@ public class JournalArticleDemoDataCreatorImpl
 	public JournalArticle create(long userId, long groupId)
 		throws IOException, PortalException {
 
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setScopeGroupId(groupId);
-
 		int index = _getNextIndex();
 
 		Map<Locale, String> titleMap = _getTitleMap(index);
 		Map<Locale, String> descriptionMap = _getDescriptionMap(index);
 		String content = _getContent(index);
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setScopeGroupId(groupId);
 
 		JournalArticle journalArticle = _journalArticleLocalService.addArticle(
 			userId, groupId, 0, titleMap, descriptionMap, content,
@@ -89,7 +89,7 @@ public class JournalArticleDemoDataCreatorImpl
 			}
 			catch (NoSuchArticleException nsae) {
 				if (_log.isWarnEnabled()) {
-					_log.warn(nsae);
+					_log.warn(nsae, nsae);
 				}
 			}
 

@@ -17,7 +17,6 @@ package com.liferay.portal.workflow.kaleo.definition.internal.deployment;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
-import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.workflow.kaleo.KaleoWorkflowModelConverter;
 import com.liferay.portal.workflow.kaleo.definition.Condition;
 import com.liferay.portal.workflow.kaleo.definition.Definition;
@@ -27,6 +26,7 @@ import com.liferay.portal.workflow.kaleo.definition.State;
 import com.liferay.portal.workflow.kaleo.definition.Task;
 import com.liferay.portal.workflow.kaleo.definition.Transition;
 import com.liferay.portal.workflow.kaleo.definition.deployment.WorkflowDeployer;
+import com.liferay.portal.workflow.kaleo.definition.exception.KaleoDefinitionValidationException;
 import com.liferay.portal.workflow.kaleo.model.KaleoDefinition;
 import com.liferay.portal.workflow.kaleo.model.KaleoNode;
 import com.liferay.portal.workflow.kaleo.service.KaleoConditionLocalService;
@@ -107,18 +107,16 @@ public class DefaultWorkflowDeployer implements WorkflowDeployer {
 					transition.getSourceNode().getName());
 
 				if (sourceKaleoNode == null) {
-					throw new WorkflowException(
-						"Unable to find source node " +
-							transition.getSourceNode());
+					throw new KaleoDefinitionValidationException.
+						MustSetSourceNode(transition.getSourceNode().getName());
 				}
 
 				KaleoNode targetKaleoNode = kaleoNodesMap.get(
 					transition.getTargetNode().getName());
 
 				if (targetKaleoNode == null) {
-					throw new WorkflowException(
-						"Unable to find target node " +
-							transition.getTargetNode());
+					throw new KaleoDefinitionValidationException.
+						MustSetTargetNode(transition.getTargetNode().getName());
 				}
 
 				_kaleoTransitionLocalService.addKaleoTransition(
@@ -131,7 +129,8 @@ public class DefaultWorkflowDeployer implements WorkflowDeployer {
 		State initialState = definition.getInitialState();
 
 		if (initialState == null) {
-			throw new WorkflowException("No initial state found in definition");
+			throw new KaleoDefinitionValidationException.
+				MustSetInitialStateNode();
 		}
 
 		String startKaleoNodeName = initialState.getName();

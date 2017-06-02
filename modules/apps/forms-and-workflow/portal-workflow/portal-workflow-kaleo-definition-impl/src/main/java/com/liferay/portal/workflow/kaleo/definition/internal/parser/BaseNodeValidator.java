@@ -14,10 +14,10 @@
 
 package com.liferay.portal.workflow.kaleo.definition.internal.parser;
 
-import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.workflow.kaleo.definition.Definition;
 import com.liferay.portal.workflow.kaleo.definition.Node;
 import com.liferay.portal.workflow.kaleo.definition.Transition;
+import com.liferay.portal.workflow.kaleo.definition.exception.KaleoDefinitionValidationException;
 import com.liferay.portal.workflow.kaleo.definition.parser.NodeValidator;
 
 import java.util.Map;
@@ -30,7 +30,7 @@ public abstract class BaseNodeValidator<T extends Node>
 
 	@Override
 	public void validate(Definition definition, T node)
-		throws WorkflowException {
+		throws KaleoDefinitionValidationException {
 
 		doValidate(definition, node);
 
@@ -38,20 +38,19 @@ public abstract class BaseNodeValidator<T extends Node>
 	}
 
 	protected abstract void doValidate(Definition definition, T node)
-		throws WorkflowException;
+		throws KaleoDefinitionValidationException;
 
 	protected void validateTransition(Transition transition)
-		throws WorkflowException {
+		throws KaleoDefinitionValidationException {
 
 		if (transition.getTargetNode() == null) {
-			throw new WorkflowException(
-				"Unable to find target node for transition " +
-					transition.getName());
+			throw new KaleoDefinitionValidationException.MustSetTargetNode(
+				transition.getName());
 		}
 	}
 
 	protected void validateTransitions(Map<String, Transition> transitions)
-		throws WorkflowException {
+		throws KaleoDefinitionValidationException {
 
 		for (Transition transition : transitions.values()) {
 			validateTransition(transition);

@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.workflow.kaleo.definition.Definition;
 import com.liferay.portal.workflow.kaleo.definition.Node;
 import com.liferay.portal.workflow.kaleo.definition.State;
+import com.liferay.portal.workflow.kaleo.definition.exception.KaleoDefinitionValidationException;
 import com.liferay.portal.workflow.kaleo.definition.parser.NodeValidator;
 import com.liferay.portal.workflow.kaleo.definition.parser.WorkflowValidator;
 
@@ -39,18 +40,20 @@ public class DefaultWorkflowValidator implements WorkflowValidator {
 		State initialState = definition.getInitialState();
 
 		if (initialState == null) {
-			throw new WorkflowException("No initial state defined");
+			throw new KaleoDefinitionValidationException.
+				MustSetInitialStateNode();
 		}
 
 		List<State> terminalStates = definition.getTerminalStates();
 
 		if (terminalStates.isEmpty()) {
-			throw new WorkflowException("No terminal states defined");
+			throw new KaleoDefinitionValidationException.
+				MustSetTerminalStateNode();
 		}
 
 		if (definition.getForksCount() != definition.getJoinsCount()) {
-			throw new WorkflowException(
-				"There are unbalanced fork and join nodes");
+			throw new KaleoDefinitionValidationException.
+				UnbalancedForkAndJoinNodes();
 		}
 
 		Collection<Node> nodes = definition.getNodes();

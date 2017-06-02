@@ -183,7 +183,7 @@ public class UpgradeWorkflowContext extends UpgradeProcess {
 					"companyId");
 			}
 			catch (Exception e) {
-				throw new UnmarshallException("companyId is undefined");
+				throw new UnmarshallException("companyId is undefined", e);
 			}
 
 			long ownerId = 0;
@@ -192,7 +192,7 @@ public class UpgradeWorkflowContext extends UpgradeProcess {
 				ownerId = portletPreferencesIdsJSONObject.getLong("ownerId");
 			}
 			catch (Exception e) {
-				throw new UnmarshallException("ownerId is undefined");
+				throw new UnmarshallException("ownerId is undefined", e);
 			}
 
 			int ownerType = 0;
@@ -201,7 +201,7 @@ public class UpgradeWorkflowContext extends UpgradeProcess {
 				ownerType = portletPreferencesIdsJSONObject.getInt("ownerType");
 			}
 			catch (Exception e) {
-				throw new UnmarshallException("ownerType is undefined");
+				throw new UnmarshallException("ownerType is undefined", e);
 			}
 
 			long plid = 0;
@@ -210,7 +210,7 @@ public class UpgradeWorkflowContext extends UpgradeProcess {
 				plid = portletPreferencesIdsJSONObject.getLong("plid");
 			}
 			catch (Exception e) {
-				throw new UnmarshallException("plid is undefined");
+				throw new UnmarshallException("plid is undefined", e);
 			}
 
 			String portletId = null;
@@ -220,7 +220,7 @@ public class UpgradeWorkflowContext extends UpgradeProcess {
 					"portletId");
 			}
 			catch (Exception e) {
-				throw new UnmarshallException("portletId is undefined");
+				throw new UnmarshallException("portletId is undefined", e);
 			}
 
 			PortletPreferencesIds portletPreferencesIds =
