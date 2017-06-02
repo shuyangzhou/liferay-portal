@@ -295,11 +295,14 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 	private Path _getDeploymentDirPath(BundleContext bundleContext)
 		throws IOException {
 
-		String deploymentDir = GetterUtil.getString(
-			bundleContext.getProperty("lpkg.deployer.dir"),
-			PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR);
+		File deploymentDir = new File(
+			GetterUtil.getString(
+				bundleContext.getProperty("lpkg.deployer.dir"),
+				PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR));
 
-		Path deploymentDirPath = Paths.get(deploymentDir);
+		deploymentDir = deploymentDir.getCanonicalFile();
+
+		Path deploymentDirPath = deploymentDir.toPath();
 
 		Files.createDirectories(deploymentDirPath);
 
