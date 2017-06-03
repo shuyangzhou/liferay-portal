@@ -61,6 +61,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -98,6 +99,7 @@ public class DDMDataProviderPaginatorServletTest {
 		PrincipalThreadLocal.setName(_originalName);
 	}
 
+	@Ignore
 	@Test
 	public void testPagination() throws Exception {
 		try (CaptureAppender captureAppender =
@@ -120,6 +122,7 @@ public class DDMDataProviderPaginatorServletTest {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testPaginationToDifferentPagesShouldBeDifferent()
 		throws Exception {
@@ -151,6 +154,7 @@ public class DDMDataProviderPaginatorServletTest {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testPaginationToSamePageShouldBeEquals() throws Exception {
 		DDMDataProviderInstance ddmDataProviderInstance =

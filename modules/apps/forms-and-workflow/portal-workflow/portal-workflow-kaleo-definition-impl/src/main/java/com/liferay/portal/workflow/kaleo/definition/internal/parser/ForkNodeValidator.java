@@ -15,13 +15,13 @@
 package com.liferay.portal.workflow.kaleo.definition.internal.parser;
 
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.workflow.kaleo.definition.Definition;
 import com.liferay.portal.workflow.kaleo.definition.Fork;
 import com.liferay.portal.workflow.kaleo.definition.Join;
 import com.liferay.portal.workflow.kaleo.definition.Node;
 import com.liferay.portal.workflow.kaleo.definition.NodeType;
 import com.liferay.portal.workflow.kaleo.definition.Transition;
+import com.liferay.portal.workflow.kaleo.definition.exception.KaleoDefinitionValidationException;
 import com.liferay.portal.workflow.kaleo.definition.parser.NodeValidator;
 
 import java.util.ArrayList;
@@ -46,17 +46,16 @@ public class ForkNodeValidator extends BaseNodeValidator<Fork> {
 
 	@Override
 	protected void doValidate(Definition definition, Fork fork)
-		throws WorkflowException {
+		throws KaleoDefinitionValidationException {
 
 		if (fork.getIncomingTransitionsCount() == 0) {
-			throw new WorkflowException(
-				"No incoming transition found for fork " + fork.getName());
+			throw new KaleoDefinitionValidationException.
+				MustSetIncomingTransition(fork.getName());
 		}
 
 		if (fork.getOutgoingTransitionsCount() < 2) {
-			throw new WorkflowException(
-				"Less than 2 outgoing transitions found for fork " +
-					fork.getName());
+			throw new KaleoDefinitionValidationException.
+				MustSetMultipleOutgoingTransition(fork.getName());
 		}
 
 		traverse(fork);
@@ -85,7 +84,7 @@ public class ForkNodeValidator extends BaseNodeValidator<Fork> {
 	protected void reverseTraverse(
 			Fork fork, Join join, List<Node> targetNodes,
 			Map<Join, Fork> joinForkMap)
-		throws WorkflowException {
+		throws KaleoDefinitionValidationException {
 
 		List<Node> sourceNodes = new ArrayList<>();
 
@@ -108,7 +107,7 @@ public class ForkNodeValidator extends BaseNodeValidator<Fork> {
 			else if (nodeType.equals(NodeType.JOIN) ||
 					 nodeType.equals(NodeType.JOIN_XOR)) {
 
-				sourceNode = joinForkMap.get((Join)sourceNode);
+				sourceNode = joinForkMap.get(sourceNode);
 
 				sourceNodes.set(i, sourceNode);
 			}
@@ -122,13 +121,14 @@ public class ForkNodeValidator extends BaseNodeValidator<Fork> {
 		if ((sourceNodes.size() != targetNodes.size()) ||
 			!sourceNodes.containsAll(targetNodes)) {
 
-			throw new WorkflowException(
-				"There are errors between fork " + fork.getName() +
-					" and join " + join.getName());
+			throw new KaleoDefinitionValidationException.
+				UnbalancedForkAndJoinNode(fork.getName(), join.getName());
 		}
 	}
 
-	protected Join traverse(Fork fork) throws WorkflowException {
+	protected Join traverse(Fork fork)
+		throws KaleoDefinitionValidationException {
+
 		Join join = null;
 
 		List<Node> targetNodes = new ArrayList<>();
@@ -163,9 +163,9 @@ public class ForkNodeValidator extends BaseNodeValidator<Fork> {
 					join = (Join)targetNode;
 				}
 				else if (!Objects.equals(join, targetNode)) {
-					throw new WorkflowException(
-						"Fork " + fork.getName() + " and join " +
-							targetNode.getName() + " are not paired");
+					throw new KaleoDefinitionValidationException.
+						MustPairedForkAndJoinNodes(
+							fork.getName(), targetNode.getName());
 				}
 			}
 			else {
@@ -177,8 +177,8 @@ public class ForkNodeValidator extends BaseNodeValidator<Fork> {
 		}
 
 		if (join == null) {
-			throw new WorkflowException(
-				"No matching join found for fork " + fork.getName());
+			throw new KaleoDefinitionValidationException.MustSetJoinNode(
+				fork.getName());
 		}
 
 		reverseTraverse(fork, join, targetNodes, joinForkMap);

@@ -430,161 +430,167 @@ public class MainServlet extends ActionServlet {
 			HttpServletRequest request, HttpServletResponse response)
 		throws IOException, ServletException {
 
-		if (_log.isDebugEnabled()) {
-			_log.debug("Process service request");
-		}
+		response.setContentLength(0);
 
-		if (processShutdownRequest(request, response)) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Processed shutdown request");
-			}
+		response.getWriter().write("This is a result");
 
-			return;
-		}
+		return;
 
-		if (processMaintenanceRequest(request, response)) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Processed maintenance request");
-			}
-
-			return;
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Get company id");
-		}
-
-		long companyId = getCompanyId(request);
-
-		if (processCompanyInactiveRequest(request, response, companyId)) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Processed company inactive request");
-			}
-
-			return;
-		}
-
-		try {
-			if (processGroupInactiveRequest(request, response)) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Processed site inactive request");
-				}
-
-				return;
-			}
-		}
-		catch (Exception e) {
-			if (e instanceof NoSuchLayoutException) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(e, e);
-				}
-			}
-			else {
-				_log.error(e, e);
-			}
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Set portal port");
-		}
-
-		setPortalInetSocketAddresses(request);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Check variables");
-		}
-
-		checkServletContext(request);
-		checkPortletRequestProcessor(request);
-		checkTilesDefinitionsFactory();
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Handle non-serializable request");
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Encrypt request");
-		}
-
-		request = encryptRequest(request, companyId);
-
-		long userId = getUserId(request);
-
-		String remoteUser = getRemoteUser(request, userId);
-
-		try {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Authenticate user id " + userId + " and remote user " +
-						remoteUser);
-			}
-
-			userId = loginUser(
-				request, response, companyId, userId, remoteUser);
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Authenticated user id " + userId);
-			}
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Set session thread local");
-		}
-
-		PortalSessionThreadLocal.setHttpSession(request.getSession());
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Process service pre events");
-		}
-
-		if (processServicePre(request, response, userId)) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Processing service pre events has errors");
-			}
-
-			return;
-		}
-
-		if (hasAbsoluteRedirect(request)) {
-			if (_log.isDebugEnabled()) {
-				String currentURL = PortalUtil.getCurrentURL(request);
-
-				_log.debug(
-					"Current URL " + currentURL + " has absolute redirect");
-			}
-
-			return;
-		}
-
-		if (!hasThemeDisplay(request)) {
-			if (_log.isDebugEnabled()) {
-				String currentURL = PortalUtil.getCurrentURL(request);
-
-				_log.debug(
-					"Current URL " + currentURL +
-						" does not have a theme display");
-			}
-
-			return;
-		}
-
-		try {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Call parent service");
-			}
-
-			callParentService(request, response);
-		}
-		finally {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Process service post events");
-			}
-
-			processServicePost(request, response);
-		}
+//		if (_log.isDebugEnabled()) {
+//			_log.debug("Process service request");
+//		}
+//
+//		if (processShutdownRequest(request, response)) {
+//			if (_log.isDebugEnabled()) {
+//				_log.debug("Processed shutdown request");
+//			}
+//
+//			return;
+//		}
+//
+//		if (processMaintenanceRequest(request, response)) {
+//			if (_log.isDebugEnabled()) {
+//				_log.debug("Processed maintenance request");
+//			}
+//
+//			return;
+//		}
+//
+//		if (_log.isDebugEnabled()) {
+//			_log.debug("Get company id");
+//		}
+//
+//		long companyId = getCompanyId(request);
+//
+//		if (processCompanyInactiveRequest(request, response, companyId)) {
+//			if (_log.isDebugEnabled()) {
+//				_log.debug("Processed company inactive request");
+//			}
+//
+//			return;
+//		}
+//
+//		try {
+//			if (processGroupInactiveRequest(request, response)) {
+//				if (_log.isDebugEnabled()) {
+//					_log.debug("Processed site inactive request");
+//				}
+//
+//				return;
+//			}
+//		}
+//		catch (Exception e) {
+//			if (e instanceof NoSuchLayoutException) {
+//				if (_log.isDebugEnabled()) {
+//					_log.debug(e, e);
+//				}
+//			}
+//			else {
+//				_log.error(e, e);
+//			}
+//		}
+//
+//		if (_log.isDebugEnabled()) {
+//			_log.debug("Set portal port");
+//		}
+//
+//		setPortalInetSocketAddresses(request);
+//
+//		if (_log.isDebugEnabled()) {
+//			_log.debug("Check variables");
+//		}
+//
+//		checkServletContext(request);
+//		checkPortletRequestProcessor(request);
+//		checkTilesDefinitionsFactory();
+//
+//		if (_log.isDebugEnabled()) {
+//			_log.debug("Handle non-serializable request");
+//		}
+//
+//		if (_log.isDebugEnabled()) {
+//			_log.debug("Encrypt request");
+//		}
+//
+//		request = encryptRequest(request, companyId);
+//
+//		long userId = getUserId(request);
+//
+//		String remoteUser = getRemoteUser(request, userId);
+//
+//		try {
+//			if (_log.isDebugEnabled()) {
+//				_log.debug(
+//					"Authenticate user id " + userId + " and remote user " +
+//						remoteUser);
+//			}
+//
+//			userId = loginUser(
+//				request, response, companyId, userId, remoteUser);
+//
+//			if (_log.isDebugEnabled()) {
+//				_log.debug("Authenticated user id " + userId);
+//			}
+//		}
+//		catch (Exception e) {
+//			_log.error(e, e);
+//		}
+//
+//		if (_log.isDebugEnabled()) {
+//			_log.debug("Set session thread local");
+//		}
+//
+//		PortalSessionThreadLocal.setHttpSession(request.getSession());
+//
+//		if (_log.isDebugEnabled()) {
+//			_log.debug("Process service pre events");
+//		}
+//
+//		if (processServicePre(request, response, userId)) {
+//			if (_log.isDebugEnabled()) {
+//				_log.debug("Processing service pre events has errors");
+//			}
+//
+//			return;
+//		}
+//
+//		if (hasAbsoluteRedirect(request)) {
+//			if (_log.isDebugEnabled()) {
+//				String currentURL = PortalUtil.getCurrentURL(request);
+//
+//				_log.debug(
+//					"Current URL " + currentURL + " has absolute redirect");
+//			}
+//
+//			return;
+//		}
+//
+//		if (!hasThemeDisplay(request)) {
+//			if (_log.isDebugEnabled()) {
+//				String currentURL = PortalUtil.getCurrentURL(request);
+//
+//				_log.debug(
+//					"Current URL " + currentURL +
+//						" does not have a theme display");
+//			}
+//
+//			return;
+//		}
+//
+//		try {
+//			if (_log.isDebugEnabled()) {
+//				_log.debug("Call parent service");
+//			}
+//
+//			callParentService(request, response);
+//		}
+//		finally {
+//			if (_log.isDebugEnabled()) {
+//				_log.debug("Process service post events");
+//			}
+//
+//			processServicePost(request, response);
+//		}
 	}
 
 	protected void callParentDestroy() {

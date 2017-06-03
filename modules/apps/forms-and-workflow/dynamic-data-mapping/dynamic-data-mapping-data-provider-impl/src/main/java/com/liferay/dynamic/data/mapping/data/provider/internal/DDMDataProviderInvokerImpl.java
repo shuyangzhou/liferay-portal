@@ -170,12 +170,12 @@ public class DDMDataProviderInvokerImpl implements DDMDataProviderInvoker {
 		DDMDataProvider ddmDataProvider,
 		DDMDataProviderRequest ddmDataProviderRequest) {
 
-		DDMDataProviderInvokeCommand invokeCommand =
+		DDMDataProviderInvokeCommand ddmDataProviderInvokeCommand =
 			new DDMDataProviderInvokeCommand(
 				ddmDataProviderInstance.getNameCurrentValue(), ddmDataProvider,
 				ddmDataProviderRequest);
 
-		return invokeCommand.execute();
+		return ddmDataProviderInvokeCommand.execute();
 	}
 
 	protected Optional<DDMDataProviderInstance> fetchDDMDataProviderInstance(
