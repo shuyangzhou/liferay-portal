@@ -39,13 +39,12 @@ public class EditorOptionsProvider
 
 		EditorOptions editorOptions = new EditorOptions();
 
-		for (EditorOptionsContributor editorOptionsContributor :
-				getContributors(portletName, editorConfigKey, editorName)) {
-
-			editorOptionsContributor.populateEditorOptions(
-				editorOptions, inputEditorTaglibAttributes, themeDisplay,
-				requestBackedPortletURLFactory);
-		}
+		visitEditorContributors(
+			editorOptionsContributor ->
+				editorOptionsContributor.populateEditorOptions(
+					editorOptions, inputEditorTaglibAttributes, themeDisplay,
+					requestBackedPortletURLFactory),
+			portletName, editorConfigKey, editorName);
 
 		return editorOptions;
 	}
