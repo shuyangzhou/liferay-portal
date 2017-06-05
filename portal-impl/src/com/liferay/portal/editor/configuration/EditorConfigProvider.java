@@ -40,13 +40,12 @@ public class EditorConfigProvider
 
 		JSONObject configJSONObject = JSONFactoryUtil.createJSONObject();
 
-		for (EditorConfigContributor editorConfigContributor :
-				getContributors(portletName, editorConfigKey, editorName)) {
-
-			editorConfigContributor.populateConfigJSONObject(
-				configJSONObject, inputEditorTaglibAttributes, themeDisplay,
-				requestBackedPortletURLFactory);
-		}
+		visitEditorContributors(
+			editorConfigContributor ->
+				editorConfigContributor.populateConfigJSONObject(
+					configJSONObject, inputEditorTaglibAttributes, themeDisplay,
+					requestBackedPortletURLFactory),
+			portletName, editorConfigKey, editorName);
 
 		return configJSONObject;
 	}
