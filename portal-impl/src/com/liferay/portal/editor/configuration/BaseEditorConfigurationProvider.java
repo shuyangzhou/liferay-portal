@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 /**
  * @author Sergio González
@@ -44,10 +45,9 @@ public abstract class BaseEditorConfigurationProvider<T> {
 		_serviceTracker.open();
 	}
 
-	protected List<T> getContributors(
-		String portletName, String editorConfigKey, String editorName) {
-
-		List<T> contributors = new ArrayList<>();
+	protected void visitEditorContributors(
+		Consumer<T> consumer, String portletName, String editorConfigKey,
+		String editorName) {
 
 		List<EditorContributorProvider<T>> editorContributorProviders =
 			_editorContributorsProviders.get();
@@ -58,11 +58,9 @@ public abstract class BaseEditorConfigurationProvider<T> {
 			if (editorContributorProvider.matches(
 					portletName, editorConfigKey, editorName)) {
 
-				contributors.add(editorContributorProvider._editorContributor);
+				consumer.accept(editorContributorProvider.get());
 			}
 		}
-
-		return contributors;
 	}
 
 	private volatile AtomicReference<List<EditorContributorProvider<T>>>
