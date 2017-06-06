@@ -14,11 +14,8 @@
 
 package com.liferay.portal.kernel.settings;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
-import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 
 /**
@@ -47,19 +44,18 @@ public class PortletInstanceSettingsLocator implements SettingsLocator {
 
 	@Override
 	public Settings getSettings() throws SettingsException {
-		long companyId = getCompanyId(_layout.getGroupId());
-
 		Settings configurationBeanSettings =
 			_settingsLocatorHelper.getConfigurationBeanSettings(
 				_configurationPid);
 
 		Settings portalPreferencesSettings =
 			_settingsLocatorHelper.getPortalPreferencesSettings(
-				companyId, configurationBeanSettings);
+				_layout.getCompanyId(), configurationBeanSettings);
 
 		Settings companyPortletPreferencesSettings =
 			_settingsLocatorHelper.getCompanyPortletPreferencesSettings(
-				companyId, _portletInstanceKey, portalPreferencesSettings);
+				_layout.getCompanyId(), _portletInstanceKey,
+				portalPreferencesSettings);
 
 		Settings groupPortletPreferencesSettings =
 			_settingsLocatorHelper.getGroupPortletPreferencesSettings(
@@ -78,15 +74,12 @@ public class PortletInstanceSettingsLocator implements SettingsLocator {
 		return _portletInstanceKey;
 	}
 
-	protected long getCompanyId(long groupId) throws SettingsException {
-		try {
-			Group group = GroupLocalServiceUtil.getGroup(groupId);
-
-			return group.getCompanyId();
-		}
-		catch (PortalException pe) {
-			throw new SettingsException(pe);
-		}
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
+	protected long getCompanyId(long groupId) {
+		return _layout.getCompanyId();
 	}
 
 	protected long getOwnerId() {
