@@ -31,7 +31,10 @@ import org.osgi.service.component.annotations.Component;
  * @author Antonio Pol
  */
 @Component(
-	property = {"editor.name=alloyeditor", "service.ranking:Integer=1000"},
+	property = {
+		"editor.name=alloyeditor", "order.group=100",
+		"service.ranking:Integer=1000"
+	},
 	service = EditorConfigContributor.class
 )
 public class AlloyEditorAccessibilityConfigContributor

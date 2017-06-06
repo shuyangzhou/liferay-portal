@@ -46,7 +46,8 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	property = {
 		"editor.name=alloyeditor", "editor.name=alloyeditor_bbcode",
-		"editor.name=alloyeditor_creole", "service.ranking:Integer=1000"
+		"editor.name=alloyeditor_creole", "order.group=50",
+		"service.ranking:Integer=1000"
 	},
 	service = EditorConfigContributor.class
 )
