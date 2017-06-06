@@ -9,6 +9,8 @@
 
 	${dataFactory.toInsertSQL(dataFactory.newFriendlyURLEntryLocalizationModel(friendlyURLEntryModel, blogsEntryModel))}
 
+	${dataFactory.toInsertSQL(dataFactory.newFriendlyURLMapping(friendlyURLEntryModel))}
+
 	<@insertAssetEntry
 		_entry = blogsEntryModel
 		_categoryAndTag = true
