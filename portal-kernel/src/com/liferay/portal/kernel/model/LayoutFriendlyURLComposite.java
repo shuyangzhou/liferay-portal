@@ -14,14 +14,24 @@
 
 package com.liferay.portal.kernel.model;
 
+import com.liferay.portal.kernel.util.Portal;
+
 /**
  * @author Sergio González
+ * @author Marco Leo
  */
 public class LayoutFriendlyURLComposite {
 
 	public LayoutFriendlyURLComposite(Layout layout, String friendlyURL) {
+		this(layout, friendlyURL, Portal.FRIENDLY_URL_SEPARATOR);
+	}
+
+	public LayoutFriendlyURLComposite(
+		Layout layout, String friendlyURL, String urlSeparator) {
+
 		_layout = layout;
 		_friendlyURL = friendlyURL;
+		_urlSeparator = urlSeparator;
 	}
 
 	public String getFriendlyURL() {
@@ -32,6 +42,10 @@ public class LayoutFriendlyURLComposite {
 		return _layout;
 	}
 
+	public String getURLSeparator() {
+		return _urlSeparator;
+	}
+
 	public void setFriendlyURL(String friendlyURL) {
 		_friendlyURL = friendlyURL;
 	}
@@ -40,7 +54,12 @@ public class LayoutFriendlyURLComposite {
 		_layout = layout;
 	}
 
+	public void setURLSeparator(String urlSeparator) {
+		_urlSeparator = urlSeparator;
+	};
+
 	private String _friendlyURL;
 	private Layout _layout;
+	private String _urlSeparator;
 
 }
