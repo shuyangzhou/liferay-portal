@@ -46,7 +46,8 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"editor.config.key=contentEditor", "editor.name=alloyeditor",
+		"editor.config.key=contentEditor",
+		"editor.config.key.blacklist=commentEditor", "editor.name=alloyeditor",
 		"editor.name=ckeditor", "javax.portlet.name=" + BlogsPortletKeys.BLOGS,
 		"javax.portlet.name=" + BlogsPortletKeys.BLOGS_ADMIN,
 		"service.ranking:Integer=100"
