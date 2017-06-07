@@ -18,41 +18,46 @@ import com.liferay.mentions.matcher.MentionsMatcher;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.ReflectionUtil;
+
+import java.lang.reflect.Field;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import org.mockito.MockitoAnnotations;
-
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
  * @author Adolfo Pérez
  */
-@PrepareForTest
-@RunWith(PowerMockRunner.class)
-public class DefaultMentionsMatcherTest extends PowerMockito {
+public class DefaultMentionsMatcherTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		Field field = ReflectionUtil.getDeclaredField(
+			PropsUtil.class, "_props");
 
-		Props props = mock(Props.class);
+		field.set(
+			null,
+			ProxyUtil.newProxyInstance(
+				ClassLoader.getSystemClassLoader(),
+				new Class<?>[] {Props.class}, (proxy, method, args) -> {
+					if (method.equals(
+							Props.class.getMethod("get", String.class)) &&
+						PropsKeys.USERS_SCREEN_NAME_SPECIAL_CHARACTERS.equals(
+							args[0])) {
 
-		when(
-			props.get(PropsKeys.USERS_SCREEN_NAME_SPECIAL_CHARACTERS)
-		).thenReturn(
-			_SCREEN_NAME_SPECIAL_CHARS
-		);
+						return _SCREEN_NAME_SPECIAL_CHARS;
+					}
 
-		PropsUtil.setProps(props);
+					return null;
+				}));
+
+		_mentionsMatcher = new DefaultMentionsMatcher();
 	}
 
 	@Test
@@ -166,7 +171,7 @@ public class DefaultMentionsMatcherTest extends PowerMockito {
 	}
 
 	protected <T> void assertEquals(T value, Iterable<T> iterable) {
-		assertEquals(Arrays.asList(value), iterable);
+		assertEquals(Collections.singletonList(value), iterable);
 	}
 
 	private static final String _SCREEN_NAME_SPECIAL_CHARS = "-._";
@@ -174,7 +179,6 @@ public class DefaultMentionsMatcherTest extends PowerMockito {
 	private static final String _SCREEN_NAME_WITH_SPECIAL_CHARS =
 		"user" + _SCREEN_NAME_SPECIAL_CHARS;
 
-	private final MentionsMatcher _mentionsMatcher =
-		new DefaultMentionsMatcher();
+	private MentionsMatcher _mentionsMatcher;
 
 }
