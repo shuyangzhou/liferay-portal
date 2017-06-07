@@ -70,6 +70,7 @@ import java.text.DateFormat;
 import java.text.Format;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -461,8 +462,7 @@ public class LayoutTypePortletImpl
 
 			String columnValue = getColumnValue(columnId);
 
-			portletIds.addAll(
-				ListUtil.fromArray(StringUtil.split(columnValue)));
+			Collections.addAll(portletIds, StringUtil.split(columnValue));
 		}
 
 		return portletIds;
