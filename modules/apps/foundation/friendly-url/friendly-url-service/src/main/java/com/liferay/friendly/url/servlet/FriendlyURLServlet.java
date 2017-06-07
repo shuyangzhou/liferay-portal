@@ -73,6 +73,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Brian Wing Shun Chan
  * @author Jorge Ferrer
  * @author Shuyang Zhou
+ * @author Marco Leo
  */
 public class FriendlyURLServlet extends HttpServlet {
 
@@ -220,7 +221,7 @@ public class FriendlyURLServlet extends HttpServlet {
 			}
 
 			pos = layoutFriendlyURLCompositeFriendlyURL.indexOf(
-				Portal.FRIENDLY_URL_SEPARATOR);
+				layoutFriendlyURLComposite.getURLSeparator());
 
 			if (pos != 0) {
 				if (pos != -1) {
