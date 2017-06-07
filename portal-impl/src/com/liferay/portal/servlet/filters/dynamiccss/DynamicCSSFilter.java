@@ -190,8 +190,6 @@ public class DynamicCSSFilter extends IgnoreModuleRequestFilter {
 					DynamicCSSFilter.class.getName(), request,
 					bufferCacheServletResponse, filterChain);
 
-				bufferCacheServletResponse.finishResponse(false);
-
 				content = bufferCacheServletResponse.getString();
 
 				dynamicContent = DynamicCSSUtil.replaceToken(
