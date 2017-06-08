@@ -37,7 +37,12 @@ import org.osgi.service.component.annotations.Reference;
  * @author Sergio González
  */
 @Component(
-	property = "editor.config.key.blacklist=commentEditor",
+	property = {
+		"editor.config.key.blacklist=commentEditor",
+		"editor.config.key.blacklist=descriptionEditor",
+		"editor.config.key.blacklist=subtitleEditor",
+		"editor.config.key.blacklist=titleEditor"
+	},
 	service = EditorConfigContributor.class
 )
 public class ImageEditorConfigContributor extends BaseEditorConfigContributor {
