@@ -31,12 +31,14 @@ import com.liferay.portal.search.elasticsearch.index.IndexFactory;
 import com.liferay.portal.search.elasticsearch.internal.cluster.ClusterSettingsContext;
 import com.liferay.portal.search.elasticsearch.settings.SettingsContributor;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.net.InetAddress;
 
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.time.StopWatch;
 
 import org.elasticsearch.client.Client;
@@ -99,6 +101,15 @@ public class EmbeddedElasticsearchConnection
 		_node.close();
 
 		_node = null;
+
+		try {
+			FileUtils.deleteDirectory(new File(_jnaTmpDir));
+		}
+		catch (IOException ioe) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Cannot delete temp directory: " + _jnaTmpDir, ioe);
+			}
+		}
 	}
 
 	public Node getNode() {
@@ -310,6 +321,12 @@ public class EmbeddedElasticsearchConnection
 
 		thread.setContextClassLoader(clazz.getClassLoader());
 
+		String jnaTmpdir = "jna.tmpdir";
+
+		String originalJnaTmpdir = System.getProperty(jnaTmpdir);
+
+		System.setProperty(jnaTmpdir, _jnaTmpDir);
+
 		try {
 			NodeBuilder nodeBuilder = new NodeBuilder();
 
@@ -331,6 +348,13 @@ public class EmbeddedElasticsearchConnection
 		}
 		finally {
 			thread.setContextClassLoader(contextClassLoader);
+
+			if (originalJnaTmpdir == null) {
+				System.clearProperty(jnaTmpdir);
+			}
+			else {
+				System.setProperty(jnaTmpdir, originalJnaTmpdir);
+			}
 		}
 	}
 
@@ -412,6 +436,10 @@ public class EmbeddedElasticsearchConnection
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		EmbeddedElasticsearchConnection.class);
+
+	private static final String _jnaTmpDir =
+		SystemProperties.get(SystemProperties.TMP_DIR) +
+			"/elasticSearch-tmpDir";
 
 	private Node _node;
 
