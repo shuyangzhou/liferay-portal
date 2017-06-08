@@ -252,6 +252,8 @@ public class ElasticsearchFixture implements IndicesAdminClientSupplier {
 
 		embeddedElasticsearchConnection.props = props;
 
+		embeddedElasticsearchConnection.setFileUtil();
+
 		embeddedElasticsearchConnection.activate(
 			_elasticsearchConfigurationProperties);
 
