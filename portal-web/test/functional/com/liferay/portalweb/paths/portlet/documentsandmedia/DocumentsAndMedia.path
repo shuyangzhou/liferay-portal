@@ -95,11 +95,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>ICON_DOCUMENT_ACTIONS</td>
-	<td>//div[contains(@class,'document-container')]//li[contains(.,'${key_dmDocumentTitle}')]//span/*[name()='svg'][contains(@class,'icon-ellipsis-v')]</td>
-	<td></td>
-</tr>
-<tr>
 	<td>ICON_DOCUMENT_SHORTCUT_ACTIONS</td>
 	<td>//div[contains(.,'${key_dmDocumentTitle}') and a/div/img[@class='shortcut-icon']]//span/div/a</td>
 	<td></td>
@@ -116,7 +111,7 @@
 </tr>
 <tr>
 	<td>ICON_DOCUMENT_VERTICAL_ELLIPSIS</td>
-	<td>//ul[contains(@class,'display-style')]/li[contains(@data-title,'${key_dmDocumentTitle}')]//span/*[name()='svg'][contains(@class,'icon-ellipsis')]</td>
+	<td>//div[contains(@class,'document-container')]//li[contains(.,'${key_dmDocumentTitle}')]//span/*[name()='svg'][contains(@class,'icon-ellipsis-v')] | //ul[contains(@class,'display-style')]/li[contains(@data-title,'${key_dmDocumentTitle}')]//span/*[name()='svg'][contains(@class,'icon-ellipsis')]</td>
 	<td></td>
 </tr>
 <tr>

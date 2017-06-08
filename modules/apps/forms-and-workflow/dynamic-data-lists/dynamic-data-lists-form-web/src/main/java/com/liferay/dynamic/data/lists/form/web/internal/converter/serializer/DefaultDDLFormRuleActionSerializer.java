@@ -32,7 +32,9 @@ public class DefaultDDLFormRuleActionSerializer
 	}
 
 	@Override
-	public String serialize() {
+	public String serialize(
+		DDLFormRuleSerializerContext ddlFormRuleSerializerContext) {
+
 		String functionName = _actionBooleanFunctionNameMap.get(
 			_defaultDefaultDDLFormRuleAction.getAction());
 

@@ -16,7 +16,6 @@ package com.liferay.adaptive.media.image.internal.test;
 
 import com.liferay.adaptive.media.image.configuration.AdaptiveMediaImageConfigurationEntry;
 import com.liferay.adaptive.media.image.configuration.AdaptiveMediaImageConfigurationHelper;
-import com.liferay.adaptive.media.image.internal.test.util.DestinationReplacer;
 import com.liferay.adaptive.media.image.messaging.AdaptiveMediaImageDestinationNames;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.messaging.Message;
@@ -127,26 +126,22 @@ public abstract class BaseAdaptiveMediaImageConfigurationTestCase {
 			AdaptiveMediaImageDestinationNames.
 				ADAPTIVE_MEDIA_IMAGE_CONFIGURATION;
 
-		try (DestinationReplacer destinationReplacer = new DestinationReplacer(
-				destinationName)) {
+		List<Message> messages = new ArrayList<>();
 
-			List<Message> messages = new ArrayList<>();
+		MessageListener messageListener = messages::add;
 
-			MessageListener messageListener = messages::add;
+		MessageBusUtil.registerMessageListener(
+			destinationName, messageListener);
 
-			MessageBusUtil.registerMessageListener(
-				destinationName, messageListener);
-
-			try {
-				runnable.run();
-			}
-			finally {
-				MessageBusUtil.unregisterMessageListener(
-					destinationName, messageListener);
-			}
-
-			return messages;
+		try {
+			runnable.run();
 		}
+		finally {
+			MessageBusUtil.unregisterMessageListener(
+				destinationName, messageListener);
+		}
+
+		return messages;
 	}
 
 	protected static ServiceTracker

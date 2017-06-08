@@ -50,10 +50,14 @@ public class JumpToPageDDLFormRuleActionSerializerTest extends PowerMockito {
 				new JumpToPageDDLFormRuleActionSerializer(
 					_jumpToPageDDLFormRuleAction);
 
-		String result = jumpToPageDDLFormRuleActionSerializer.serialize();
+		String result = jumpToPageDDLFormRuleActionSerializer.serialize(
+			_ddlFormRuleSerializerContext);
 
 		Assert.assertEquals("jumpPage(1, 3)", result);
 	}
+
+	@Mock
+	private DDLFormRuleSerializerContext _ddlFormRuleSerializerContext;
 
 	@Mock
 	private JumpToPageDDLFormRuleAction _jumpToPageDDLFormRuleAction;

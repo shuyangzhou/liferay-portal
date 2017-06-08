@@ -17,8 +17,6 @@ package com.liferay.dynamic.data.lists.form.web.internal.converter.serializer;
 import com.liferay.dynamic.data.lists.form.web.internal.converter.model.action.CalculateDDLFormRuleAction;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -40,11 +38,10 @@ public class CalculateDDLFormRuleActionSerializer
 	}
 
 	@Override
-	public String serialize() {
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
+	public String serialize(
+		DDLFormRuleSerializerContext ddlFormRuleSerializerContext) {
 
-		DDMForm ddmForm = (DDMForm)serviceContext.getAttribute("form");
+		DDMForm ddmForm = ddlFormRuleSerializerContext.getAttribute("form");
 
 		Map<String, DDMFormField> ddmFormFieldMap = ddmForm.getDDMFormFieldsMap(
 			true);

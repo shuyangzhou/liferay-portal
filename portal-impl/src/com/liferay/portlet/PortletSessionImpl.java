@@ -14,9 +14,15 @@
 
 package com.liferay.portlet;
 
+import com.liferay.portal.kernel.io.SerializableObjectWrapper;
 import com.liferay.portal.kernel.portlet.LiferayPortletSession;
+import com.liferay.portal.kernel.servlet.HttpSessionWrapper;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.util.PropsValues;
+
+import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +45,8 @@ public class PortletSessionImpl implements LiferayPortletSession {
 		HttpSession session, PortletContext portletContext, String portletName,
 		long plid) {
 
-		this.session = session;
+		_setHttpSession(session);
+
 		this.portletContext = portletContext;
 
 		StringBundler sb = new StringBundler(5);
@@ -190,7 +197,7 @@ public class PortletSessionImpl implements LiferayPortletSession {
 
 	@Override
 	public void setHttpSession(HttpSession session) {
-		this.session = session;
+		_setHttpSession(session);
 	}
 
 	@Override
@@ -201,5 +208,48 @@ public class PortletSessionImpl implements LiferayPortletSession {
 	protected final PortletContext portletContext;
 	protected final String scopePrefix;
 	protected HttpSession session;
+
+	private void _setHttpSession(HttpSession session) {
+		if (PropsValues.PORTLET_SESSION_REPLICATE_ENABLED &&
+			!(session instanceof SerializableHttpSessionWrapper)) {
+
+			this.session = new SerializableHttpSessionWrapper(session);
+
+			return;
+		}
+
+		this.session = session;
+	}
+
+	private static class SerializableHttpSessionWrapper
+		extends HttpSessionWrapper {
+
+		public SerializableHttpSessionWrapper(HttpSession session) {
+			super(session);
+		}
+
+		@Override
+		public Object getAttribute(String name) {
+			Object value = super.getAttribute(name);
+
+			return SerializableObjectWrapper.unwrap(value);
+		}
+
+		@Override
+		public void setAttribute(String name, Object value) {
+			Class<?> clazz = value.getClass();
+
+			if (PortalClassLoaderUtil.isPortalClassLoader(
+					clazz.getClassLoader())) {
+
+				super.setAttribute(name, value);
+			}
+			else {
+				super.setAttribute(
+					name, new SerializableObjectWrapper((Serializable)value));
+			}
+		}
+
+	}
 
 }

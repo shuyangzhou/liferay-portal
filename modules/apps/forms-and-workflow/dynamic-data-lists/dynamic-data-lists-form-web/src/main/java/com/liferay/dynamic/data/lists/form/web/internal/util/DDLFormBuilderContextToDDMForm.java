@@ -17,6 +17,7 @@ package com.liferay.dynamic.data.lists.form.web.internal.util;
 import com.liferay.dynamic.data.lists.form.web.internal.converter.DDLFormRuleDeserializer;
 import com.liferay.dynamic.data.lists.form.web.internal.converter.DDLFormRuleToDDMFormRuleConverter;
 import com.liferay.dynamic.data.lists.form.web.internal.converter.model.DDLFormRule;
+import com.liferay.dynamic.data.lists.form.web.internal.converter.serializer.DDLFormRuleSerializerContext;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
@@ -64,6 +65,7 @@ public class DDLFormBuilderContextToDDMForm {
 			jsonObject.getString("defaultLanguageId"), ddmForm);
 		setDDMFormFields(jsonObject.getJSONArray("pages"), ddmForm);
 		setDDMFormRules(jsonObject.getJSONArray("rules"), ddmForm);
+
 		setDDMFormSuccessPageSettings(
 			jsonObject.getJSONObject("successPageSettings"), ddmForm);
 
@@ -186,7 +188,9 @@ public class DDLFormBuilderContextToDDMForm {
 		return ddmFormFieldValidation;
 	}
 
-	protected List<DDMFormRule> getDDMFormRules(JSONArray jsonArray)
+	protected List<DDMFormRule> getDDMFormRules(
+			DDLFormRuleSerializerContext ddlFormRuleSerializerContext,
+			JSONArray jsonArray)
 		throws PortalException {
 
 		if ((jsonArray == null) || (jsonArray.length() == 0)) {
@@ -196,7 +200,8 @@ public class DDLFormBuilderContextToDDMForm {
 		List<DDLFormRule> ddlFormRules = ddlFormRuleDeserializer.deserialize(
 			jsonArray.toString());
 
-		return ddlFormRulesToDDMFormRulesConverter.convert(ddlFormRules);
+		return ddlFormRulesToDDMFormRulesConverter.convert(
+			ddlFormRules, ddlFormRuleSerializerContext);
 	}
 
 	protected LocalizedValue getLocalizedValue(
@@ -321,7 +326,13 @@ public class DDLFormBuilderContextToDDMForm {
 	protected void setDDMFormRules(JSONArray jsonArray, DDMForm ddmForm)
 		throws PortalException {
 
-		List<DDMFormRule> ddmFormRules = getDDMFormRules(jsonArray);
+		DDLFormRuleSerializerContext ddlFormRuleSerializerContext =
+			new DDLFormRuleSerializerContext();
+
+		ddlFormRuleSerializerContext.addAttribute("form", ddmForm);
+
+		List<DDMFormRule> ddmFormRules = getDDMFormRules(
+			ddlFormRuleSerializerContext, jsonArray);
 
 		ddmForm.setDDMFormRules(ddmFormRules);
 	}

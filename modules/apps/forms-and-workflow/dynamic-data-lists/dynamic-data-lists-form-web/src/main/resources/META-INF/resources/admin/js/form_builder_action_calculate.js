@@ -124,7 +124,6 @@ AUI.add(
 
 						instance._expressionField = instance.createTextField(
 							{
-								bubbleTargets: [instance],
 								displayStyle: 'multiline',
 								fieldName: instance.get('index') + '-action',
 								placeholder: Liferay.Language.get('the-expression-will-be-displayed-here'),
@@ -150,7 +149,6 @@ AUI.add(
 
 						instance._targetField = instance.createSelectField(
 							{
-								bubbleTargets: [instance],
 								fieldName: instance.get('index') + '-action',
 								label: Liferay.Language.get('choose-a-field-to-show-the-result'),
 								options: instance.get('options'),

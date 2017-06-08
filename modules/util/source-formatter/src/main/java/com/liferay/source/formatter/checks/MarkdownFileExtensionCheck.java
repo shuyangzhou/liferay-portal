@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,6 +11,23 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ include file="/init.jsp" %>
+package com.liferay.source.formatter.checks;
+
+/**
+ * @author Hugo Huijser
+ */
+public class MarkdownFileExtensionCheck extends BaseFileCheck {
+
+	@Override
+	protected String doProcess(
+		String fileName, String absolutePath, String content) {
+
+		if (fileName.endsWith(".md")) {
+			addMessage(fileName, "Use extension 'markdown' instead of 'md'");
+		}
+
+		return content;
+	}
+
+}

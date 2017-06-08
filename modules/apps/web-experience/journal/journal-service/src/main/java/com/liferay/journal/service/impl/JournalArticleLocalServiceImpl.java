@@ -6302,11 +6302,11 @@ public class JournalArticleLocalServiceImpl
 				Folder folder = article.addImagesFolder();
 
 				String fileEntryName = DLUtil.getUniqueFileName(
-					fileEntry.getGroupId(), folder.getFolderId(),
+					folder.getGroupId(), folder.getFolderId(),
 					fileEntry.getFileName());
 
 				fileEntry = PortletFileRepositoryUtil.addPortletFileEntry(
-					groupId, fileEntry.getUserId(),
+					folder.getGroupId(), fileEntry.getUserId(),
 					JournalArticle.class.getName(),
 					article.getResourcePrimKey(), JournalConstants.SERVICE_NAME,
 					folder.getFolderId(), fileEntry.getContentStream(),
