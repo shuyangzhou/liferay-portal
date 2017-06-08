@@ -51,6 +51,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,7 +75,8 @@ public class WorkflowTaskManagerImplTest
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
-			SynchronousDestinationTestRule.INSTANCE);
+			SynchronousDestinationTestRule.INSTANCE,
+			PermissionCheckerTestRule.INSTANCE);
 
 	@Test
 	public void testApproveDLFileEntryInDLFolderWhenHomeDLFolderHasWorkflow()
