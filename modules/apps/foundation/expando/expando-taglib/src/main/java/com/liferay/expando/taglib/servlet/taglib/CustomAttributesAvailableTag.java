@@ -22,10 +22,10 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ServerDetector;
-import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -70,9 +70,14 @@ public class CustomAttributesAvailableTag extends TagSupport {
 					companyId, _className, _classPK);
 			}
 
-			List<String> attributeNames = ListUtil.remove(
-				Collections.list(expandoBridge.getAttributeNames()),
-				ListUtil.fromString(_ignoreAttributeNames, StringPool.COMMA));
+			List<String> attributeNames = Collections.list(
+				expandoBridge.getAttributeNames());
+
+			for (String ignoreAttributeName :
+					StringUtil.split(_ignoreAttributeNames, CharPool.COMMA)) {
+
+				attributeNames.remove(ignoreAttributeName);
+			}
 
 			if (attributeNames.isEmpty()) {
 				return SKIP_BODY;
