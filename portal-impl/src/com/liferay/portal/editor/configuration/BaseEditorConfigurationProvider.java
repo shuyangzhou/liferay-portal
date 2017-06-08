@@ -14,6 +14,7 @@
 
 package com.liferay.portal.editor.configuration;
 
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 import com.liferay.registry.ServiceReference;
@@ -74,6 +75,14 @@ public abstract class BaseEditorConfigurationProvider<T> {
 		public int compareTo(
 			EditorContributorProvider<T> editorContributorProvider) {
 
+			if (_orderGroup > editorContributorProvider._orderGroup) {
+				return 1;
+			}
+
+			if (_orderGroup < editorContributorProvider._orderGroup) {
+				return -1;
+			}
+
 			return editorContributorProvider._priority - _priority;
 		}
 
@@ -100,7 +109,7 @@ public abstract class BaseEditorConfigurationProvider<T> {
 			T editorContributor, List<String> portletNames,
 			List<String> portletNamesBlacklist, List<String> editorConfigKeys,
 			List<String> editorConfigKeysBlacklist, List<String> editorNames,
-			List<String> editorNamesBlacklist) {
+			List<String> editorNamesBlacklist, int orderGroup) {
 
 			_editorContributor = editorContributor;
 
@@ -110,6 +119,8 @@ public abstract class BaseEditorConfigurationProvider<T> {
 			_editorConfigKeysBlacklist = _nullOrSet(editorConfigKeysBlacklist);
 			_editorNames = _nullOrSet(editorNames);
 			_editorNamesBlacklist = _nullOrSet(editorNamesBlacklist);
+
+			_orderGroup = orderGroup;
 
 			_priority = _getPriority();
 		}
@@ -180,6 +191,7 @@ public abstract class BaseEditorConfigurationProvider<T> {
 		private final T _editorContributor;
 		private final Set<String> _editorNames;
 		private final Set<String> _editorNamesBlacklist;
+		private final int _orderGroup;
 		private final Set<String> _portletNames;
 		private final Set<String> _portletNamesBlacklist;
 		private final int _priority;
@@ -210,12 +222,15 @@ public abstract class BaseEditorConfigurationProvider<T> {
 			List<String> editorNamesBlacklist = StringPlus.asList(
 				serviceReference.getProperty("editor.name.blacklist"));
 
+			int orderGroup = GetterUtil.getInteger(
+				serviceReference.getProperty("order.group"));
+
 			EditorContributorProvider<T> editorContributorProvider =
 				new EditorContributorProvider<>(
 					editorOptionsContributor, portletNames,
 					portletNamesBlacklist, editorConfigKeys,
 					editorConfigKeysBlacklist, editorNames,
-					editorNamesBlacklist);
+					editorNamesBlacklist, orderGroup);
 
 			while (true) {
 				List<EditorContributorProvider<T>> editorContributorProviders =
