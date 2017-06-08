@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.elasticsearch.internal.connection;
 
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration;
@@ -21,6 +22,7 @@ import com.liferay.portal.search.elasticsearch.internal.cluster.ClusterSettingsC
 import com.liferay.portal.search.elasticsearch.internal.cluster.UnicastSettingsContributor;
 import com.liferay.portal.search.elasticsearch.settings.BaseSettingsContributor;
 import com.liferay.portal.search.elasticsearch.settings.ClientSettingsHelper;
+import com.liferay.portal.util.FileImpl;
 
 import java.io.File;
 
@@ -152,6 +154,10 @@ public class ElasticsearchFixture implements IndicesAdminClientSupplier {
 
 	public void setUp() throws Exception {
 		createNode();
+
+		FileUtil fileUtil = new FileUtil();
+
+		fileUtil.setFile(new FileImpl());
 	}
 
 	public void tearDown() throws Exception {

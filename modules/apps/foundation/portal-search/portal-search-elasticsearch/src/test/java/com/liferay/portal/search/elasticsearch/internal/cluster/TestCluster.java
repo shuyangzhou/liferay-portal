@@ -14,8 +14,10 @@
 
 package com.liferay.portal.search.elasticsearch.internal.cluster;
 
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.search.elasticsearch.internal.connection.ElasticsearchFixture;
+import com.liferay.portal.util.FileImpl;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -80,6 +82,8 @@ public class TestCluster {
 
 	public void setUp() throws Exception {
 		createNodes();
+
+		setFileUtil();
 	}
 
 	public void tearDown() throws Exception {
@@ -112,6 +116,12 @@ public class TestCluster {
 		Class<?> clazz = object.getClass();
 
 		return clazz.getSimpleName();
+	}
+
+	protected void setFileUtil() {
+		FileUtil fileUtil = new FileUtil();
+
+		fileUtil.setFile(new FileImpl());
 	}
 
 	private final HashMap<String, Object> _elasticsearchConfigurationProperties;

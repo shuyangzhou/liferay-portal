@@ -39,7 +39,7 @@ public class ElasticsearchConfigurationTest {
 			clazz.getSimpleName(), configurationProperties);
 
 		try {
-			elasticsearchFixture.createNode();
+			elasticsearchFixture.setUp();
 		}
 		finally {
 			elasticsearchFixture.destroyNode();

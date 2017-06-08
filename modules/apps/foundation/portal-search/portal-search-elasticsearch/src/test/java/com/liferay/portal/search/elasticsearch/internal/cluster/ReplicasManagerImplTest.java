@@ -45,6 +45,8 @@ public class ReplicasManagerImplTest {
 		MockitoAnnotations.initMocks(this);
 
 		_replicasClusterContext = createReplicasClusterContext();
+
+		_testCluster.setFileUtil();
 	}
 
 	@After
