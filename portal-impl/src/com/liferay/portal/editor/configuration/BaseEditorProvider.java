@@ -35,9 +35,9 @@ import java.util.function.Consumer;
  * @author Sergio González
  * @author Preston Crary
  */
-public abstract class BaseEditorConfigurationProvider<T> {
+public abstract class BaseEditorProvider<T> {
 
-	public BaseEditorConfigurationProvider(Class<T> editorContributorClass) {
+	public BaseEditorProvider(Class<T> editorContributorClass) {
 		Registry registry = RegistryUtil.getRegistry();
 
 		_serviceTracker = registry.trackServices(

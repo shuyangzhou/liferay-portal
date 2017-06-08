@@ -25,7 +25,7 @@ import java.util.Map;
  * @author Sergio González
  */
 public class EditorOptionsProvider
-	extends BaseEditorConfigurationProvider<EditorOptionsContributor> {
+	extends BaseEditorProvider<EditorOptionsContributor> {
 
 	public EditorOptionsProvider() {
 		super(EditorOptionsContributor.class);
