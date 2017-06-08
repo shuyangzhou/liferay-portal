@@ -24,7 +24,10 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = {
-		"editor.config.key=contentEditor", "editor.name=alloyeditor",
+		"editor.config.key=contentEditor",
+		"editor.config.key.blacklist=descriptionEditor",
+		"editor.config.key.blacklist=subtitleEditor",
+		"editor.config.key.blacklist=titleEditor", "editor.name=alloyeditor",
 		"editor.name=ckeditor", "javax.portlet.name=" + BlogsPortletKeys.BLOGS,
 		"javax.portlet.name=" + BlogsPortletKeys.BLOGS_ADMIN,
 		"service.ranking:Integer=10"
