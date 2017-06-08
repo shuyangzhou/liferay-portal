@@ -17,6 +17,7 @@ package com.liferay.dynamic.data.lists.form.web.internal.converter;
 import com.liferay.dynamic.data.lists.form.web.internal.converter.model.DDLFormRule;
 import com.liferay.dynamic.data.lists.form.web.internal.converter.model.DDLFormRuleAction;
 import com.liferay.dynamic.data.lists.form.web.internal.converter.model.DDLFormRuleCondition;
+import com.liferay.dynamic.data.lists.form.web.internal.converter.serializer.DDLFormRuleSerializerContext;
 import com.liferay.dynamic.data.mapping.model.DDMFormRule;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -42,11 +43,15 @@ import org.osgi.service.component.annotations.Component;
 @Component(immediate = true, service = DDLFormRuleToDDMFormRuleConverter.class)
 public class DDLFormRuleToDDMFormRuleConverter {
 
-	public List<DDMFormRule> convert(List<DDLFormRule> ddlFormRules) {
+	public List<DDMFormRule> convert(
+		List<DDLFormRule> ddlFormRules,
+		DDLFormRuleSerializerContext ddlFormRuleSerializerContext) {
+
 		List<DDMFormRule> ddmFormRules = new ArrayList<>();
 
 		for (DDLFormRule ddlFormRule : ddlFormRules) {
-			ddmFormRules.add(convertRule(ddlFormRule));
+			ddmFormRules.add(
+				convertRule(ddlFormRule, ddlFormRuleSerializerContext));
 		}
 
 		return ddmFormRules;
@@ -143,7 +148,10 @@ public class DDLFormRuleToDDMFormRuleConverter {
 		return sb.toString();
 	}
 
-	protected DDMFormRule convertRule(DDLFormRule ddlFormRule) {
+	protected DDMFormRule convertRule(
+		DDLFormRule ddlFormRule,
+		DDLFormRuleSerializerContext ddlFormRuleSerializerContext) {
+
 		String condition = convertConditions(
 			ddlFormRule.getLogicalOperator(),
 			ddlFormRule.getDDLFormRuleConditions());
@@ -153,7 +161,8 @@ public class DDLFormRuleToDDMFormRuleConverter {
 		for (DDLFormRuleAction ddlFormRuleAction :
 				ddlFormRule.getDDLFormRuleActions()) {
 
-			actions.add(ddlFormRuleAction.serialize());
+			actions.add(
+				ddlFormRuleAction.serialize(ddlFormRuleSerializerContext));
 		}
 
 		return new DDMFormRule(condition, actions);

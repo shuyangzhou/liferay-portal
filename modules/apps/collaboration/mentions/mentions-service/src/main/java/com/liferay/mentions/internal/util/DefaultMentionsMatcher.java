@@ -35,12 +35,18 @@ public class DefaultMentionsMatcher
 
 	@Override
 	protected String getRegularExpression() {
-		return String.format(
-			_MENTIONS_REGULAR_EXPRESSION_TEMPLATE,
-			MentionsMatcherUtil.getScreenNameRegularExpression());
+		return _REGULAR_EXPRESSION;
 	}
 
 	private static final String _MENTIONS_REGULAR_EXPRESSION_TEMPLATE =
 		"(?:\\s|^|\\]|>)(?:@|&#64;)(%s)(?=[<\\[\\s]|$)";
+
+	private static final String _REGULAR_EXPRESSION;
+
+	static {
+		_REGULAR_EXPRESSION = String.format(
+			_MENTIONS_REGULAR_EXPRESSION_TEMPLATE,
+			MentionsMatcherUtil.getScreenNameRegularExpression());
+	}
 
 }

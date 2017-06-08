@@ -30,7 +30,6 @@ String redirect = ParamUtil.getString(request, "redirect");
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
 	<aui:input name="redirect" type="hidden" value="<%= configurationRenderURL %>" />
 	<aui:input name="preferences--assetEntryId--" type="hidden" value="<%= journalContentDisplayContext.getAssetEntryId() %>" />
-	<aui:input name="preferences--ddmTemplateKey--" type="hidden" value="<%= journalContentDisplayContext.getDDMTemplateKey() %>" />
 
 	<div class="portlet-configuration-body-content">
 		<div class="container-fluid-1280">

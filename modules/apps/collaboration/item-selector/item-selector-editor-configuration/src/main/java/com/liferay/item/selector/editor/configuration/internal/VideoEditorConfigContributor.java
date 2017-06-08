@@ -36,7 +36,15 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Carlos Lancha
  */
-@Component(service = EditorConfigContributor.class)
+@Component(
+	property = {
+		"editor.config.key.blacklist=commentEditor",
+		"editor.config.key.blacklist=descriptionEditor",
+		"editor.config.key.blacklist=subtitleEditor",
+		"editor.config.key.blacklist=titleEditor"
+	},
+	service = EditorConfigContributor.class
+)
 public class VideoEditorConfigContributor extends BaseEditorConfigContributor {
 
 	@Override

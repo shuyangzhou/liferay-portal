@@ -21,6 +21,7 @@ import com.liferay.adaptive.media.image.html.AdaptiveMediaImageHTMLTagFactory;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,6 +47,12 @@ public class HtmlContentTransformerImpl implements ContentTransformer<String> {
 	public String transform(String html) throws PortalException {
 		if (html == null) {
 			return null;
+		}
+
+		String lowerCaseHtml = StringUtil.toLowerCase(html);
+
+		if (!lowerCaseHtml.contains("data-fileentryid")) {
+			return html;
 		}
 
 		StringBuffer sb = new StringBuffer(html.length());

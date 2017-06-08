@@ -34,7 +34,7 @@ import org.osgi.service.component.annotations.Component;
 		"editor.config.key=descriptionEditor",
 		"editor.config.key=subtitleEditor", "editor.config.key=titleEditor",
 		"javax.portlet.name=" + BlogsPortletKeys.BLOGS,
-		"javax.portlet.name=" + BlogsPortletKeys.BLOGS_ADMIN
+		"javax.portlet.name=" + BlogsPortletKeys.BLOGS_ADMIN, "order.group=2000"
 	},
 	service = EditorConfigContributor.class
 )

@@ -374,7 +374,7 @@ public class AdaptiveMediaImageConfigurationHelperImpl
 	protected void activate() {
 		DestinationConfiguration destinationConfiguration =
 			new DestinationConfiguration(
-				DestinationConfiguration.DESTINATION_TYPE_SERIAL,
+				DestinationConfiguration.DESTINATION_TYPE_SYNCHRONOUS,
 				AdaptiveMediaImageDestinationNames.
 					ADAPTIVE_MEDIA_IMAGE_CONFIGURATION);
 

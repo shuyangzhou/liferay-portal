@@ -14,9 +14,9 @@
 
 package com.liferay.mentions.matcher;
 
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 /**
@@ -25,19 +25,24 @@ import com.liferay.portal.kernel.util.StringUtil;
 public class MentionsMatcherUtil {
 
 	public static String getScreenNameRegularExpression() {
+		return _screenNameRegularExpression;
+	}
+
+	private static final String _screenNameRegularExpression;
+
+	static {
 		String specialCharacters = PropsUtil.get(
 			PropsKeys.USERS_SCREEN_NAME_SPECIAL_CHARACTERS);
 
 		String quotedSpecialCharacters = StringUtil.replace(
 			specialCharacters,
-			new String[] {
-				StringPool.AMPERSAND, StringPool.CARET,
-				StringPool.CLOSE_BRACKET, StringPool.DASH,
-				StringPool.OPEN_BRACKET
+			new char[] {
+				CharPool.AMPERSAND, CharPool.CARET, CharPool.CLOSE_BRACKET,
+				CharPool.DASH, CharPool.OPEN_BRACKET
 			},
 			new String[] {"\\&", "\\^", "\\]", "\\-", "\\["});
 
-		return String.format(
+		_screenNameRegularExpression = String.format(
 			"(?:\\w|[%s])(?:\\w|\\d|[%s])*", quotedSpecialCharacters,
 			quotedSpecialCharacters);
 	}

@@ -274,6 +274,14 @@ public class PasswordPolicyLocalServiceImpl
 			return null;
 		}
 
+		long count = passwordPolicyPersistence.countByCompanyId(
+			user.getCompanyId());
+
+		if (count == 1) {
+			return passwordPolicyPersistence.findByC_DP(
+				user.getCompanyId(), true);
+		}
+
 		long classNameId = classNameLocalService.getClassNameId(
 			User.class.getName());
 

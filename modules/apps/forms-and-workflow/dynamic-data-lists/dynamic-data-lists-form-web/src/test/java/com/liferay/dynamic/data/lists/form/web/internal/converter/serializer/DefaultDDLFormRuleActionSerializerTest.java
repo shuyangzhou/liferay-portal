@@ -19,6 +19,8 @@ import com.liferay.dynamic.data.lists.form.web.internal.converter.model.action.D
 import org.junit.Assert;
 import org.junit.Test;
 
+import org.mockito.Mock;
+
 /**
  * @author Leonardo Barros
  */
@@ -32,7 +34,8 @@ public class DefaultDDLFormRuleActionSerializerTest {
 		DefaultDDLFormRuleActionSerializer defaultDDLFormRuleActionSerializer =
 			new DefaultDDLFormRuleActionSerializer(defaultDDLFormRuleAction);
 
-		String result = defaultDDLFormRuleActionSerializer.serialize();
+		String result = defaultDDLFormRuleActionSerializer.serialize(
+			_ddlFormRuleSerializerContext);
 
 		Assert.assertEquals("setEnabled('field0', true)", result);
 	}
@@ -45,7 +48,8 @@ public class DefaultDDLFormRuleActionSerializerTest {
 		DefaultDDLFormRuleActionSerializer defaultDDLFormRuleActionSerializer =
 			new DefaultDDLFormRuleActionSerializer(defaultDDLFormRuleAction);
 
-		String result = defaultDDLFormRuleActionSerializer.serialize();
+		String result = defaultDDLFormRuleActionSerializer.serialize(
+			_ddlFormRuleSerializerContext);
 
 		Assert.assertEquals("setInvalid('field0', true)", result);
 	}
@@ -58,7 +62,8 @@ public class DefaultDDLFormRuleActionSerializerTest {
 		DefaultDDLFormRuleActionSerializer defaultDDLFormRuleActionSerializer =
 			new DefaultDDLFormRuleActionSerializer(defaultDDLFormRuleAction);
 
-		String result = defaultDDLFormRuleActionSerializer.serialize();
+		String result = defaultDDLFormRuleActionSerializer.serialize(
+			_ddlFormRuleSerializerContext);
 
 		Assert.assertEquals("setRequired('field0', true)", result);
 	}
@@ -71,9 +76,13 @@ public class DefaultDDLFormRuleActionSerializerTest {
 		DefaultDDLFormRuleActionSerializer defaultDDLFormRuleActionSerializer =
 			new DefaultDDLFormRuleActionSerializer(defaultDDLFormRuleAction);
 
-		String result = defaultDDLFormRuleActionSerializer.serialize();
+		String result = defaultDDLFormRuleActionSerializer.serialize(
+			_ddlFormRuleSerializerContext);
 
 		Assert.assertEquals("setVisible('field0', true)", result);
 	}
+
+	@Mock
+	private DDLFormRuleSerializerContext _ddlFormRuleSerializerContext;
 
 }
