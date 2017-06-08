@@ -61,7 +61,6 @@ import com.liferay.portal.kernel.model.UserNotificationEvent;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.repository.model.Folder;
-import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
@@ -92,7 +91,6 @@ import com.liferay.portal.kernel.workflow.WorkflowInstance;
 import com.liferay.portal.kernel.workflow.WorkflowInstanceManagerUtil;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
 import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
-import com.liferay.portal.security.permission.SimplePermissionChecker;
 import com.liferay.portal.test.log.CaptureAppender;
 import com.liferay.portal.test.log.Log4JLoggerTestUtil;
 import com.liferay.portal.test.randomizerbumpers.TikaSafeRandomizerBumper;
@@ -107,7 +105,6 @@ import java.util.Objects;
 
 import org.apache.log4j.Level;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 
@@ -123,17 +120,8 @@ public abstract class BaseWorkflowTaskManagerTestCase {
 		serviceContext = ServiceContextTestUtil.getServiceContext(
 			group.getGroupId());
 
-		setUpPermissionThreadLocal();
-		setUpPrincipalThreadLocal();
 		setUpUsers();
 		setUpWorkflow();
-	}
-
-	@After
-	public void tearDown() throws PortalException {
-		PermissionThreadLocal.setPermissionChecker(_permissionChecker);
-
-		PrincipalThreadLocal.setName(_name);
 	}
 
 	protected void activateSingleApproverWorkflow(
@@ -681,32 +669,6 @@ public abstract class BaseWorkflowTaskManagerTestCase {
 			false, true);
 	}
 
-	protected void setUpPermissionThreadLocal() throws Exception {
-		_permissionChecker = PermissionThreadLocal.getPermissionChecker();
-
-		PermissionThreadLocal.setPermissionChecker(
-			new SimplePermissionChecker() {
-				{
-					init(TestPropsValues.getUser());
-				}
-
-				@Override
-				public boolean hasOwnerPermission(
-					long companyId, String name, String primKey, long ownerId,
-					String actionId) {
-
-					return true;
-				}
-
-			});
-	}
-
-	protected void setUpPrincipalThreadLocal() throws Exception {
-		_name = PrincipalThreadLocal.getName();
-
-		PrincipalThreadLocal.setName(TestPropsValues.getUserId());
-	}
-
 	protected void setUpUsers() throws Exception {
 		adminUser = createUser(RoleConstants.ADMINISTRATOR);
 
@@ -802,12 +764,8 @@ public abstract class BaseWorkflowTaskManagerTestCase {
 	@DeleteAfterTestRun
 	private final List<DLFolder> _dlFolders = new ArrayList<>();
 
-	private String _name;
-
 	@DeleteAfterTestRun
 	private final List<Organization> _organizations = new ArrayList<>();
-
-	private PermissionChecker _permissionChecker;
 
 	@DeleteAfterTestRun
 	private final List<User> _users = new ArrayList<>();

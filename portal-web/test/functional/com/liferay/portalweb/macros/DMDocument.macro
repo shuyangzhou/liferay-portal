@@ -874,7 +874,7 @@
 	<command name="deleteCP">
 		<var name="key_dmDocumentTitle" value="${dmDocumentTitle}" />
 
-		<execute function="Click" locator1="DocumentsAndMedia#ICON_DOCUMENT_ACTIONS" />
+		<execute function="Click" locator1="DocumentsAndMedia#ICON_DOCUMENT_VERTICAL_ELLIPSIS" />
 
 		<if>
 			<isset var="recycleBinDisabled" />
@@ -956,9 +956,9 @@
 
 		<execute function="MouseOver" locator1="DocumentsAndMedia#ICON_DOCUMENT" />
 
-		<execute function="AssertElementPresent" locator1="DocumentsAndMedia#ICON_DOCUMENT_ACTIONS" />
+		<execute function="AssertElementPresent" locator1="DocumentsAndMedia#ICON_DOCUMENT_VERTICAL_ELLIPSIS" />
 
-		<execute function="Click" locator1="DocumentsAndMedia#ICON_DOCUMENT_ACTIONS" />
+		<execute function="Click" locator1="DocumentsAndMedia#ICON_DOCUMENT_VERTICAL_ELLIPSIS" />
 
 		<execute function="AssertClick" locator1="MenuItem#DOWNLOAD" value1="Download (${dmDocumentSize})" />
 	</command>

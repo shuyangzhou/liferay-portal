@@ -144,7 +144,7 @@ String backURL = PortalUtil.getCurrentURL(request);
 
 					var hiddenItems = [];
 
-					if (instance.calendarResourceId !== '<%= groupCalendarResource.getCalendarResourceId() %>') {
+					if (!(instance.calendarResourceId === '<%= groupCalendarResource.getCalendarResourceId() %>') || !<%= CalendarPortletPermission.contains(permissionChecker, scopeGroupId, ActionKeys.PERMISSIONS) %>) {
 						hiddenItems.push('permissions');
 					}
 

@@ -52,9 +52,6 @@ import org.osgi.service.component.annotations.Reference;
 public class JournalItemSelectorView
 	implements ItemSelectorView<JournalItemSelectorCriterion> {
 
-	public static final String JOURNAL_ITEM_SELECTOR_VIEW_DISPLAY_CONTEXT =
-		"JOURNAL_ITEM_SELECTOR_VIEW_DISPLAY_CONTEXT";
-
 	@Override
 	public Class<JournalItemSelectorCriterion> getItemSelectorCriterionClass() {
 		return JournalItemSelectorCriterion.class;
@@ -99,7 +96,8 @@ public class JournalItemSelectorView
 					itemSelectedEventName, search, portletURL);
 
 		request.setAttribute(
-			JOURNAL_ITEM_SELECTOR_VIEW_DISPLAY_CONTEXT,
+			JournalItemSelectorWebKeys.
+				JOURNAL_ITEM_SELECTOR_VIEW_DISPLAY_CONTEXT,
 			journalItemSelectorViewDisplayContext);
 
 		ServletContext servletContext = getServletContext();

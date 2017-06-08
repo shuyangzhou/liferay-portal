@@ -18,7 +18,6 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.List;
 
@@ -36,8 +35,12 @@ public class ContentTransformerHandler {
 	public <T> T transform(
 		ContentTransformerContentType<T> contentType, T originalContent) {
 
-		List<ContentTransformer> contentTransformers = ListUtil.fromCollection(
-			_serviceTrackerMap.getService(contentType));
+		List<ContentTransformer> contentTransformers =
+			_serviceTrackerMap.getService(contentType);
+
+		if (contentTransformers == null) {
+			return originalContent;
+		}
 
 		T transformedContent = originalContent;
 

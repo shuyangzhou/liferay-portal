@@ -17,6 +17,7 @@ package com.liferay.dynamic.data.lists.form.web.internal.converter.model.action;
 import com.liferay.dynamic.data.lists.form.web.internal.converter.model.DDLFormRuleAction;
 import com.liferay.dynamic.data.lists.form.web.internal.converter.serializer.AutoFillDDLFormRuleActionSerializer;
 import com.liferay.dynamic.data.lists.form.web.internal.converter.serializer.DDLFormRuleActionSerializer;
+import com.liferay.dynamic.data.lists.form.web.internal.converter.serializer.DDLFormRuleSerializerContext;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.HashUtil;
 
@@ -98,11 +99,14 @@ public class AutoFillDDLFormRuleAction implements DDLFormRuleAction {
 	}
 
 	@Override
-	public String serialize() {
+	public String serialize(
+		DDLFormRuleSerializerContext ddlFormRuleSerializerContext) {
+
 		DDLFormRuleActionSerializer ddlFormRuleActionSerializer =
 			new AutoFillDDLFormRuleActionSerializer(this);
 
-		return ddlFormRuleActionSerializer.serialize();
+		return ddlFormRuleActionSerializer.serialize(
+			ddlFormRuleSerializerContext);
 	}
 
 	public void setDDMDataProviderInstanceUUID(

@@ -17,7 +17,6 @@ package com.liferay.dynamic.data.lists.form.web.internal.portlet.action;
 import com.liferay.dynamic.data.lists.exception.RecordSetSettingsRedirectURLException;
 import com.liferay.dynamic.data.lists.form.web.internal.converter.DDLFormRuleDeserializer;
 import com.liferay.dynamic.data.lists.form.web.internal.converter.DDLFormRuleToDDMFormRuleConverter;
-import com.liferay.dynamic.data.lists.form.web.internal.converter.model.DDLFormRule;
 import com.liferay.dynamic.data.lists.form.web.internal.util.DDLFormBuilderContextToDDMForm;
 import com.liferay.dynamic.data.lists.form.web.internal.util.DDLFormBuilderContextToDDMFormLayout;
 import com.liferay.dynamic.data.lists.form.web.internal.util.DDMFormTemplateContextToDDMFormValues;
@@ -32,7 +31,6 @@ import com.liferay.dynamic.data.mapping.form.values.query.DDMFormValuesQueryFact
 import com.liferay.dynamic.data.mapping.io.DDMFormValuesJSONDeserializer;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
-import com.liferay.dynamic.data.mapping.model.DDMFormRule;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureConstants;
 import com.liferay.dynamic.data.mapping.model.Value;
@@ -57,12 +55,10 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.portlet.PortletRequest;
@@ -208,21 +204,6 @@ public class SaveRecordSetMVCCommandHelper {
 		catch (PortalException pe) {
 			throw new StructureLayoutException(pe);
 		}
-	}
-
-	protected List<DDMFormRule> getDDMFormRules(PortletRequest portletRequest)
-		throws PortalException {
-
-		String rules = ParamUtil.getString(portletRequest, "rules");
-
-		if (Validator.isNull(rules) || Objects.equals("[]", rules)) {
-			return Collections.emptyList();
-		}
-
-		List<DDLFormRule> ddlFormRules = ddlFormRuleDeserializer.deserialize(
-			rules);
-
-		return ddlFormRulesToDDMFormRulesConverter.convert(ddlFormRules);
 	}
 
 	protected Map<Locale, String> getLocalizedMap(

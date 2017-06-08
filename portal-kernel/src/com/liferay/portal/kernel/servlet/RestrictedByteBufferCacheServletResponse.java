@@ -180,7 +180,7 @@ public class RestrictedByteBufferCacheServletResponse
 
 		@Override
 		public void beforeFlush() throws IOException {
-			finishResponse(false);
+			flushBuffer();
 		}
 
 	}
