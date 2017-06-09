@@ -35,6 +35,9 @@ import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.ExceptionRetryAcceptor;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.settings.PortletInstanceSettingsLocator;
+import com.liferay.portal.kernel.settings.PortletPreferencesSettings;
+import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.spring.aop.Property;
 import com.liferay.portal.kernel.spring.aop.Retry;
 import com.liferay.portal.kernel.spring.aop.Skip;
@@ -211,6 +214,41 @@ public class PortletPreferencesLocalServiceImpl
 
 		return PortletPreferencesFactoryUtil.fromDefaultXML(
 			portlet.getDefaultPreferences());
+	}
+
+	@Override
+	public Settings getPortletInstanceSettings(
+		long companyId, long groupId, String portletId,
+		PortletInstanceSettingsLocator portletInstanceSettingsLocator,
+		Settings portalPreferencesSettings) {
+
+		Settings companyPortletPreferencesSettings =
+			new PortletPreferencesSettings(
+				getStrictPreferences(
+					companyId, companyId, PortletKeys.PREFS_OWNER_TYPE_COMPANY,
+					PortletKeys.PREFS_PLID_SHARED, portletId),
+				portalPreferencesSettings);
+
+		Settings groupPortletPreferencesSettings =
+			new PortletPreferencesSettings(
+				getStrictPreferences(
+					companyId, groupId, PortletKeys.PREFS_OWNER_TYPE_GROUP,
+					PortletKeys.PREFS_PLID_SHARED, portletId),
+				companyPortletPreferencesSettings);
+
+		long ownerId = portletInstanceSettingsLocator.getOwnerId();
+		int ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
+
+		if (PortletConstants.hasUserId(portletId)) {
+			ownerId = PortletConstants.getUserId(portletId);
+			ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
+		}
+
+		return new PortletPreferencesSettings(
+			getStrictPreferences(
+				companyId, ownerId, ownerType,
+				portletInstanceSettingsLocator.getPlid(), portletId),
+			groupPortletPreferencesSettings);
 	}
 
 	@Override

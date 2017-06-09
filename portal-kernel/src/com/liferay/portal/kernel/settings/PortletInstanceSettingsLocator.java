@@ -70,35 +70,9 @@ public class PortletInstanceSettingsLocator implements SettingsLocator {
 			PrefsPropsUtil.getPreferences(_layout.getCompanyId()),
 			configurationBeanSettings);
 
-		Settings companyPortletPreferencesSettings =
-			new PortletPreferencesSettings(
-				PortletPreferencesLocalServiceUtil.getStrictPreferences(
-					_layout.getCompanyId(), _layout.getCompanyId(),
-					PortletKeys.PREFS_OWNER_TYPE_COMPANY,
-					PortletKeys.PREFS_PLID_SHARED, _portletInstanceKey),
-				portalPreferencesSettings);
-
-		Settings groupPortletPreferencesSettings =
-			new PortletPreferencesSettings(
-				PortletPreferencesLocalServiceUtil.getStrictPreferences(
-					_layout.getCompanyId(), _layout.getGroupId(),
-					PortletKeys.PREFS_OWNER_TYPE_GROUP,
-					PortletKeys.PREFS_PLID_SHARED, _portletInstanceKey),
-				companyPortletPreferencesSettings);
-
-		long ownerId = getOwnerId();
-		int ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
-
-		if (PortletConstants.hasUserId(_portletInstanceKey)) {
-			ownerId = PortletConstants.getUserId(_portletInstanceKey);
-			ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
-		}
-
-		return new PortletPreferencesSettings(
-			PortletPreferencesLocalServiceUtil.getStrictPreferences(
-				_layout.getCompanyId(), ownerId, ownerType, getPlid(),
-				_portletInstanceKey),
-			groupPortletPreferencesSettings);
+		return PortletPreferencesLocalServiceUtil.getPortletInstanceSettings(
+			_layout.getCompanyId(), _layout.getGroupId(), _portletInstanceKey,
+			this, portalPreferencesSettings);
 	}
 
 	@Override
