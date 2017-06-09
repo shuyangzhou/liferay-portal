@@ -98,7 +98,7 @@ public class PortletInstanceSettingsLocator implements SettingsLocator {
 		return _layout.getCompanyId();
 	}
 
-	protected long getOwnerId() {
+	public long getOwnerId() {
 		if (isEmbeddedPortlet()) {
 			return _layout.getGroupId();
 		}
@@ -106,7 +106,7 @@ public class PortletInstanceSettingsLocator implements SettingsLocator {
 		return PortletKeys.PREFS_OWNER_ID_DEFAULT;
 	}
 
-	protected long getPlid() {
+	public long getPlid() {
 		if (isEmbeddedPortlet()) {
 			return PortletKeys.PREFS_PLID_SHARED;
 		}
