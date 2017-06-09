@@ -44,6 +44,22 @@ public class PortletInstanceSettingsLocator implements SettingsLocator {
 		_configurationPid = configurationPid;
 	}
 
+	public long getOwnerId() {
+		if (isEmbeddedPortlet()) {
+			return _layout.getGroupId();
+		}
+
+		return PortletKeys.PREFS_OWNER_ID_DEFAULT;
+	}
+
+	public long getPlid() {
+		if (isEmbeddedPortlet()) {
+			return PortletKeys.PREFS_PLID_SHARED;
+		}
+
+		return _layout.getPlid();
+	}
+
 	@Override
 	public Settings getSettings() throws SettingsException {
 		Settings configurationBeanSettings =
@@ -96,22 +112,6 @@ public class PortletInstanceSettingsLocator implements SettingsLocator {
 	@Deprecated
 	protected long getCompanyId(long groupId) {
 		return _layout.getCompanyId();
-	}
-
-	public long getOwnerId() {
-		if (isEmbeddedPortlet()) {
-			return _layout.getGroupId();
-		}
-
-		return PortletKeys.PREFS_OWNER_ID_DEFAULT;
-	}
-
-	public long getPlid() {
-		if (isEmbeddedPortlet()) {
-			return PortletKeys.PREFS_PLID_SHARED;
-		}
-
-		return _layout.getPlid();
 	}
 
 	protected boolean isEmbeddedPortlet() {
