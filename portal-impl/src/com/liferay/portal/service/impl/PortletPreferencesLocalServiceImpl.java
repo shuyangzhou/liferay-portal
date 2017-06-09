@@ -239,8 +239,11 @@ public class PortletPreferencesLocalServiceImpl
 		long ownerId = portletInstanceSettingsLocator.getOwnerId();
 		int ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
 
-		if (PortletConstants.hasUserId(portletId)) {
-			ownerId = PortletConstants.getUserId(portletId);
+		PortletInstance portletInstance =
+			PortletInstance.fromPortletInstanceKey(portletId);
+
+		if (portletInstance.hasUserId()) {
+			ownerId = portletInstance.getUserId();
 			ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
 		}
 
