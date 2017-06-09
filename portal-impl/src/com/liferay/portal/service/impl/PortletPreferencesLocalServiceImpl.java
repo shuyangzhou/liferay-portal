@@ -218,35 +218,49 @@ public class PortletPreferencesLocalServiceImpl
 		PortletInstanceSettingsLocator portletInstanceSettingsLocator,
 		Settings portalPreferencesSettings) {
 
+		String defaultPreferences = PortletConstants.DEFAULT_PREFERENCES;
+
+		PortletInstance portletInstance =
+			PortletInstance.fromPortletInstanceKey(portletId);
+
+		Portlet portlet = portletLocalService.fetchPortletById(
+			companyId, portletInstance.getPortletName());
+
+		if (portlet != null) {
+			defaultPreferences = portlet.getDefaultPreferences();
+		}
+
 		Settings companyPortletPreferencesSettings =
 			new PortletPreferencesSettings(
-				getStrictPreferences(
+				_getStrictPreferences(
 					companyId, companyId, PortletKeys.PREFS_OWNER_TYPE_COMPANY,
-					PortletKeys.PREFS_PLID_SHARED, portletId),
+					PortletKeys.PREFS_PLID_SHARED, portletId,
+					defaultPreferences),
 				portalPreferencesSettings);
 
 		Settings groupPortletPreferencesSettings =
 			new PortletPreferencesSettings(
-				getStrictPreferences(
+				_getStrictPreferences(
 					companyId, groupId, PortletKeys.PREFS_OWNER_TYPE_GROUP,
-					PortletKeys.PREFS_PLID_SHARED, portletId),
+					PortletKeys.PREFS_PLID_SHARED, portletId,
+					defaultPreferences),
 				companyPortletPreferencesSettings);
 
 		long ownerId = portletInstanceSettingsLocator.getOwnerId();
 		int ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
-
-		PortletInstance portletInstance =
-			PortletInstance.fromPortletInstanceKey(portletId);
 
 		if (portletInstance.hasUserId()) {
 			ownerId = portletInstance.getUserId();
 			ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
 		}
 
+		long plid = _swapPlidForPortletPreferences(
+			portletInstanceSettingsLocator.getPlid());
+
 		return new PortletPreferencesSettings(
-			getStrictPreferences(
-				companyId, ownerId, ownerType,
-				portletInstanceSettingsLocator.getPlid(), portletId),
+			_getStrictPreferences(
+				companyId, ownerId, ownerType, plid, portletId,
+				defaultPreferences),
 			groupPortletPreferencesSettings);
 	}
 
@@ -591,6 +605,25 @@ public class PortletPreferencesLocalServiceImpl
 		}
 
 		return null;
+	}
+
+	private javax.portlet.PortletPreferences _getStrictPreferences(
+		long companyId, long ownerId, int ownerType, long plid,
+		String portletId, String defaultPreferences) {
+
+		PortletPreferences portletPreferences =
+			portletPreferencesPersistence.fetchByO_O_P_P(
+				ownerId, ownerType, plid, portletId);
+
+		if (portletPreferences == null) {
+			return PortletPreferencesFactoryUtil.strictFromXML(
+				companyId, ownerId, ownerType, plid, portletId,
+				defaultPreferences);
+		}
+
+		return PortletPreferencesFactoryUtil.fromXML(
+			companyId, ownerId, ownerType, plid, portletId,
+			portletPreferences.getPreferences());
 	}
 
 	private long _swapPlidForPortletPreferences(long plid) {
