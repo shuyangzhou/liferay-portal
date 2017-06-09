@@ -14,6 +14,10 @@
 
 package com.liferay.message.boards.kernel.model;
 
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.portal.kernel.model.User;
+
 import java.io.Serializable;
 
 import java.util.List;
@@ -21,6 +25,7 @@ import java.util.List;
 /**
  * @author Brian Wing Shun Chan
  */
+@ProviderType
 public interface MBTreeWalker extends Serializable {
 
 	public List<MBMessage> getChildren(MBMessage message);
@@ -30,6 +35,8 @@ public interface MBTreeWalker extends Serializable {
 	public List<MBMessage> getMessages();
 
 	public MBMessage getRoot();
+
+	public User getUser(long userId);
 
 	public boolean isLeaf(MBMessage message);
 

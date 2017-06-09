@@ -2341,6 +2341,11 @@ public class UserLocalServiceUtil {
 			keywords, start, end);
 	}
 
+	public static java.util.Map<java.lang.Long, com.liferay.portal.kernel.model.User> fetchUserByIds(
+		java.util.Set<java.lang.Long> userIds) {
+		return getService().fetchUserByIds(userIds);
+	}
+
 	public static java.util.Map<java.lang.Long, java.lang.Integer> searchCounts(
 		long companyId, int status, long[] groupIds) {
 		return getService().searchCounts(companyId, status, groupIds);

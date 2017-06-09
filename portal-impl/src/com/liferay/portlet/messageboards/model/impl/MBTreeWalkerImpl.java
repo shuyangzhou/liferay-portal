@@ -21,12 +21,18 @@ import com.liferay.message.boards.kernel.util.comparator.MessageThreadComparator
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
@@ -35,20 +41,24 @@ public class MBTreeWalkerImpl implements MBTreeWalker {
 
 	public MBTreeWalkerImpl(
 		long threadId, int status, MBMessageLocalService messageLocalService,
-		Comparator<MBMessage> comparator) {
+		UserLocalService userLocalService, Comparator<MBMessage> comparator) {
 
-		this(0, threadId, status, messageLocalService, comparator);
+		this(
+			0, threadId, status, messageLocalService, userLocalService,
+			comparator);
 	}
 
 	public MBTreeWalkerImpl(
 		long userId, long threadId, int status,
 		MBMessageLocalService messageLocalService,
-		Comparator<MBMessage> comparator) {
+		UserLocalService userLocalService, Comparator<MBMessage> comparator) {
 
 		_messageIdsMap = new HashMap<>();
 
 		List<MBMessage> messages = null;
 		MBMessage rootMessage = null;
+
+		Map<Long, User> users = Collections.emptyMap();
 
 		try {
 			if (userId > 0) {
@@ -61,11 +71,16 @@ public class MBTreeWalkerImpl implements MBTreeWalker {
 					threadId, status, comparator);
 			}
 
+			Set<Long> userIds = new HashSet<>();
+
 			for (int i = 0; i < messages.size(); i++) {
 				MBMessage curMessage = messages.get(i);
 
 				if (curMessage.isRoot()) {
 					rootMessage = curMessage;
+				}
+				else {
+					userIds.add(curMessage.getUserId());
 				}
 
 				long parentMessageId = curMessage.getParentMessageId();
@@ -76,6 +91,8 @@ public class MBTreeWalkerImpl implements MBTreeWalker {
 					_messageIdsMap.put(parentMessageId, i);
 				}
 			}
+
+			users = userLocalService.fetchUserByIds(userIds);
 		}
 		catch (Exception e) {
 			_log.error("Unable to initialize tree walker", e);
@@ -83,6 +100,7 @@ public class MBTreeWalkerImpl implements MBTreeWalker {
 
 		_messages = messages;
 		_rootMessage = rootMessage;
+		_users = users;
 	}
 
 	/**
@@ -96,7 +114,7 @@ public class MBTreeWalkerImpl implements MBTreeWalker {
 
 		this(
 			message.getThreadId(), status, messageLocalService,
-			new MessageThreadComparator());
+			UserLocalServiceUtil.getService(), new MessageThreadComparator());
 	}
 
 	@Override
@@ -151,6 +169,11 @@ public class MBTreeWalkerImpl implements MBTreeWalker {
 	}
 
 	@Override
+	public User getUser(long userId) {
+		return _users.get(userId);
+	}
+
+	@Override
 	public boolean isLeaf(MBMessage message) {
 		Long messageIdObj = Long.valueOf(message.getMessageId());
 
@@ -176,5 +199,6 @@ public class MBTreeWalkerImpl implements MBTreeWalker {
 	private final List<MBMessage> _messages;
 	private boolean _odd;
 	private final MBMessage _rootMessage;
+	private final Map<Long, User> _users;
 
 }

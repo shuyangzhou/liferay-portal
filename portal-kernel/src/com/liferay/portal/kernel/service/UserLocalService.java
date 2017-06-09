@@ -47,6 +47,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Provides the local service interface for User. Methods of this
@@ -1953,6 +1954,9 @@ public interface UserLocalService extends BaseLocalService,
 	public List<User> searchSocial(long[] groupIds, long userId,
 		int[] socialRelationTypes, java.lang.String keywords, int start, int end)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Map<java.lang.Long, User> fetchUserByIds(Set<java.lang.Long> userIds);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Map<java.lang.Long, java.lang.Integer> searchCounts(long companyId,

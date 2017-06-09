@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.comment.DiscussionComment;
 import com.liferay.portal.kernel.comment.DiscussionCommentIterator;
 import com.liferay.portal.kernel.comment.WorkflowableComment;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.ratings.kernel.model.RatingsEntry;
 import com.liferay.ratings.kernel.model.RatingsStats;
 
@@ -132,6 +133,11 @@ public class MBDiscussionCommentImpl
 
 		return new MBDiscussionCommentIterator(
 			messages, from + 1, range[1], _treeWalker);
+	}
+
+	@Override
+	public User getUser() {
+		return _treeWalker.getUser(getUserId());
 	}
 
 	@Override

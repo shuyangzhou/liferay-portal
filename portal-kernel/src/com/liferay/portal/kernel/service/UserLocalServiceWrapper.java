@@ -2452,6 +2452,12 @@ public class UserLocalServiceWrapper implements UserLocalService,
 	}
 
 	@Override
+	public java.util.Map<java.lang.Long, com.liferay.portal.kernel.model.User> fetchUserByIds(
+		java.util.Set<java.lang.Long> userIds) {
+		return _userLocalService.fetchUserByIds(userIds);
+	}
+
+	@Override
 	public java.util.Map<java.lang.Long, java.lang.Integer> searchCounts(
 		long companyId, int status, long[] groupIds) {
 		return _userLocalService.searchCounts(companyId, status, groupIds);
