@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.settings;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.util.PrefsPropsUtil;
 
 /**
  * @author Ivan Zaera
@@ -48,9 +49,9 @@ public class PortletInstanceSettingsLocator implements SettingsLocator {
 			_settingsLocatorHelper.getConfigurationBeanSettings(
 				_configurationPid);
 
-		Settings portalPreferencesSettings =
-			_settingsLocatorHelper.getPortalPreferencesSettings(
-				_layout.getCompanyId(), configurationBeanSettings);
+		Settings portalPreferencesSettings = new PortletPreferencesSettings(
+			PrefsPropsUtil.getPreferences(_layout.getCompanyId()),
+			configurationBeanSettings);
 
 		Settings companyPortletPreferencesSettings =
 			_settingsLocatorHelper.getCompanyPortletPreferencesSettings(
