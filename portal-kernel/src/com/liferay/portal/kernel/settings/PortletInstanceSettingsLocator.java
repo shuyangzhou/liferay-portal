@@ -70,11 +70,19 @@ public class PortletInstanceSettingsLocator implements SettingsLocator {
 					PortletKeys.PREFS_PLID_SHARED, _portletInstanceKey),
 				companyPortletPreferencesSettings);
 
-		return
-			_settingsLocatorHelper.getPortletInstancePortletPreferencesSettings(
-				_layout.getCompanyId(), getOwnerId(),
-				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, getPlid(),
-				_portletInstanceKey, groupPortletPreferencesSettings);
+		long ownerId = getOwnerId();
+		int ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
+
+		if (PortletConstants.hasUserId(_portletInstanceKey)) {
+			ownerId = PortletConstants.getUserId(_portletInstanceKey);
+			ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
+		}
+
+		return new PortletPreferencesSettings(
+			PortletPreferencesLocalServiceUtil.getStrictPreferences(
+				_layout.getCompanyId(), ownerId, ownerType, getPlid(),
+				_portletInstanceKey),
+			groupPortletPreferencesSettings);
 	}
 
 	@Override
