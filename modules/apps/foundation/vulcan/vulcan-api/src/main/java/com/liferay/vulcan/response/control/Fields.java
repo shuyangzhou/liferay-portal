@@ -12,14 +12,18 @@
  * details.
  */
 
-package com.liferay.vulcan.jaxrs.writer.json.internal;
+package com.liferay.vulcan.response.control;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * @author Alejandro Hernández
+ * @author Carlos Sierra Andrés
+ * @author Jorge Ferrer
  */
-@FunctionalInterface
-public interface TetraConsumer<T, U, V, W> {
+public interface Fields {
 
-	public void accept(T t, U u, V v, W w);
+	public Predicate<String> getFieldIncludedPredicate(List<String> types);
 
 }

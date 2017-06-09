@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.vulcan.provider.internal.pagination;
+package com.liferay.vulcan.response.control.internal;
 
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.MapUtil;

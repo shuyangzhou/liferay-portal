@@ -16,6 +16,8 @@ package com.liferay.vulcan.jaxrs.writer.json.internal;
 
 import com.liferay.vulcan.error.VulcanDeveloperError;
 import com.liferay.vulcan.list.FunctionalList;
+import com.liferay.vulcan.response.control.Embedded;
+import com.liferay.vulcan.response.control.Fields;
 import com.liferay.vulcan.wiring.osgi.RelatedModel;
 import com.liferay.vulcan.wiring.osgi.RepresentorManager;
 import com.liferay.vulcan.wiring.osgi.URIResolver;
@@ -28,6 +30,9 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
@@ -56,42 +61,76 @@ public class WriterHelper {
 	}
 
 	public <T> void writeFields(
-		T model, Class<T> modelClass, BiConsumer<String, Object> biConsumer) {
+		T model, Class<T> modelClass, Fields fields,
+		BiConsumer<String, Object> biConsumer) {
 
 		Map<String, Function<T, Object>> fieldFunctions =
 			_representorManager.getFieldFunctions(modelClass);
 
-		for (String fieldName : fieldFunctions.keySet()) {
-			Function<T, Object> fieldFunction = fieldFunctions.get(fieldName);
+		Predicate<String> isFieldIncludedPredicate = _getFieldIncludedPredicate(
+			modelClass, fields);
 
-			Object data = fieldFunction.apply(model);
+		for (String field : fieldFunctions.keySet()) {
+			if (isFieldIncludedPredicate.test(field)) {
+				Object data = fieldFunctions.get(field).apply(model);
 
-			if (data != null) {
-				biConsumer.accept(fieldName, data);
+				if (data != null) {
+					biConsumer.accept(field, data);
+				}
 			}
 		}
 	}
 
+	public <T, U> void writeLinkedRelatedModel(
+		RelatedModel<T, U> relatedModel, T parentModel,
+		Class<T> parentModelClass,
+		FunctionalList<String> parentEmbeddedPathElements, UriInfo uriInfo,
+		Fields fields, Embedded embedded,
+		BiConsumer<String, FunctionalList<String>> biConsumer) {
+
+		writeRelatedModel(
+			relatedModel, parentModel, parentModelClass,
+			parentEmbeddedPathElements, uriInfo, fields, embedded,
+			(model, modelClass, embeddedPathElements) -> {
+			},
+			biConsumer);
+	}
+
 	public <T> void writeLinks(
-		Class<T> modelClass, BiConsumer<String, String> biConsumer) {
+		Class<T> modelClass, Fields fields,
+		BiConsumer<String, String> biConsumer) {
 
 		Map<String, String> links = _representorManager.getLinks(modelClass);
 
+		Predicate<String> isFieldIncludedPredicate = _getFieldIncludedPredicate(
+			modelClass, fields);
+
 		for (String key : links.keySet()) {
-			biConsumer.accept(key, links.get(key));
+			if (isFieldIncludedPredicate.test(key)) {
+				biConsumer.accept(key, links.get(key));
+			}
 		}
 	}
 
 	public <T, U> void writeRelatedModel(
 		RelatedModel<T, U> relatedModel, T parentModel,
+		Class<T> parentModelClass,
 		FunctionalList<String> parentEmbeddedPathElements, UriInfo uriInfo,
-		TetraConsumer<U, Class<U>, String, FunctionalList<String>>
-			tetraConsumer) {
+		Fields fields, Embedded embedded,
+		TriConsumer<U, Class<U>, FunctionalList<String>> triConsumer,
+		BiConsumer<String, FunctionalList<String>> biConsumer) {
 
-		Function<T, Optional<U>> modelFunction =
-			relatedModel.getModelFunction();
+		Predicate<String> isFieldIncludedPredicate = _getFieldIncludedPredicate(
+			parentModelClass, fields);
 
-		Optional<U> modelOptional = modelFunction.apply(parentModel);
+		String key = relatedModel.getKey();
+
+		if (!isFieldIncludedPredicate.test(key)) {
+			return;
+		}
+
+		Optional<U> modelOptional =
+			relatedModel.getModelFunction().apply(parentModel);
 
 		if (!modelOptional.isPresent()) {
 			return;
@@ -108,13 +147,21 @@ public class WriterHelper {
 			uri -> {
 				String url = getAbsoluteURL(uriInfo, uri);
 
-				String key = relatedModel.getKey();
-
 				FunctionalList<String> embeddedPathElements =
 					new StringFunctionalList(parentEmbeddedPathElements, key);
 
-				tetraConsumer.accept(
-					model, modelClass, url, embeddedPathElements);
+				biConsumer.accept(url, embeddedPathElements);
+
+				Stream<String> stream = Stream.concat(
+					Stream.of(embeddedPathElements.head()),
+					embeddedPathElements.tail());
+
+				String embeddedPath = String.join(
+					".", stream.collect(Collectors.toList()));
+
+				if (embedded.getEmbeddedPredicate().test(embeddedPath)) {
+					triConsumer.accept(model, modelClass, embeddedPathElements);
+				}
 			});
 	}
 
@@ -139,6 +186,14 @@ public class WriterHelper {
 		List<String> types = _representorManager.getTypes(modelClass);
 
 		consumer.accept(types);
+	}
+
+	private <T> Predicate<String> _getFieldIncludedPredicate(
+		Class<T> modelClass, Fields fields) {
+
+		List<String> types = _representorManager.getTypes(modelClass);
+
+		return fields.getFieldIncludedPredicate(types);
 	}
 
 	@Reference

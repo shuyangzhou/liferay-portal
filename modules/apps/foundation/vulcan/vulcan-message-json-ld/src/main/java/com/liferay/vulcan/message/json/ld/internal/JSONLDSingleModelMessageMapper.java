@@ -146,24 +146,22 @@ public class JSONLDSingleModelMessageMapper<T>
 			url
 		);
 
-		if (tail.length == 0) {
-			jsonObjectBuilder.nestedField(
-				"@context", embeddedPathElements.last(), "@type"
-			).value(
-				"@id"
-			);
-		}
-		else {
-			Stream<String> middleStream = embeddedPathElements.middle();
+		Stream<String> middleStream = embeddedPathElements.middle();
 
-			jsonObjectBuilder.nestedField(
-				embeddedPathElements.head(), middleStream.toArray(String[]::new)
-			).nestedField(
-				"@context", embeddedPathElements.last(), "@type"
-			).value(
-				"@id"
-			);
-		}
+		String[] middle = middleStream.toArray(String[]::new);
+
+		jsonObjectBuilder.ifElseCondition(
+			tail.length == 0, builder -> builder.field("@context"),
+			builder -> builder.nestedField(
+				embeddedPathElements.head(), middle
+			).field(
+				"@context"
+			)
+		).nestedField(
+			embeddedPathElements.last(), "@type"
+		).value(
+			"@id"
+		);
 	}
 
 	@Override
