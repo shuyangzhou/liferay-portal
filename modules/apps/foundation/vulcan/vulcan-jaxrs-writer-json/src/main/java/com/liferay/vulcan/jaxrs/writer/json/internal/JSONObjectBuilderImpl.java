@@ -21,6 +21,7 @@ import com.liferay.vulcan.message.json.JSONObjectBuilder;
 
 import java.util.Collection;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * @author Alejandro Hernández
@@ -40,11 +41,50 @@ public class JSONObjectBuilderImpl implements JSONObjectBuilder {
 	}
 
 	@Override
+	public FieldStep ifElseCondition(
+		boolean condition, Function<JSONObjectBuilder, FieldStep> ifFunction,
+		Function<JSONObjectBuilder, FieldStep> elseFunction) {
+
+		if (condition) {
+			return ifFunction.apply(this);
+		}
+		else {
+			return elseFunction.apply(this);
+		}
+	}
+
+	@Override
 	public FieldStep nestedField(String parentName, String... nestedNames) {
 		FieldStep fieldStep = field(parentName);
 
 		for (String nestedName : nestedNames) {
 			fieldStep = fieldStep.field(nestedName);
+		}
+
+		return fieldStep;
+	}
+
+	@Override
+	public FieldStep nestedPrefixedField(
+		String prefix, String parentName, String... nestedNames) {
+
+		FieldStep fieldStep = nestedField(prefix, parentName);
+
+		for (String nestedName : nestedNames) {
+			fieldStep = fieldStep.nestedField(prefix, nestedName);
+		}
+
+		return fieldStep;
+	}
+
+	@Override
+	public FieldStep nestedSuffixedField(
+		String suffix, String parentName, String... nestedNames) {
+
+		FieldStep fieldStep = nestedField(parentName, suffix);
+
+		for (String nestedName : nestedNames) {
+			fieldStep = fieldStep.nestedField(nestedName, suffix);
 		}
 
 		return fieldStep;
@@ -125,11 +165,62 @@ public class JSONObjectBuilderImpl implements JSONObjectBuilder {
 		}
 
 		@Override
+		public FieldStep ifCondition(
+			boolean condition, Function<FieldStep, FieldStep> ifFunction) {
+
+			if (condition) {
+				return ifFunction.apply(this);
+			}
+			else {
+				return this;
+			}
+		}
+
+		@Override
+		public FieldStep ifElseCondition(
+			boolean condition, Function<FieldStep, FieldStep> ifFunction,
+			Function<FieldStep, FieldStep> elseFunction) {
+
+			if (condition) {
+				return ifFunction.apply(this);
+			}
+			else {
+				return elseFunction.apply(this);
+			}
+		}
+
+		@Override
 		public FieldStep nestedField(String parentName, String... nestedNames) {
 			FieldStep fieldStep = field(parentName);
 
 			for (String nestedName : nestedNames) {
 				fieldStep = fieldStep.field(nestedName);
+			}
+
+			return fieldStep;
+		}
+
+		@Override
+		public FieldStep nestedPrefixedField(
+			String prefix, String parentName, String... nestedNames) {
+
+			FieldStep fieldStep = nestedField(prefix, parentName);
+
+			for (String nestedName : nestedNames) {
+				fieldStep = fieldStep.nestedField(prefix, nestedName);
+			}
+
+			return fieldStep;
+		}
+
+		@Override
+		public FieldStep nestedSuffixedField(
+			String suffix, String parentName, String... nestedNames) {
+
+			FieldStep fieldStep = nestedField(parentName, suffix);
+
+			for (String nestedName : nestedNames) {
+				fieldStep = fieldStep.nestedField(nestedName, suffix);
 			}
 
 			return fieldStep;

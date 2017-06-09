@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 
 import java.util.Collection;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * @author Alejandro Hernández
@@ -33,7 +34,17 @@ public interface JSONObjectBuilder {
 
 	public FieldStep field(String name);
 
+	public FieldStep ifElseCondition(
+		boolean condition, Function<JSONObjectBuilder, FieldStep> ifFunction,
+		Function<JSONObjectBuilder, FieldStep> elseFunction);
+
 	public FieldStep nestedField(String parentName, String... nestedNames);
+
+	public FieldStep nestedPrefixedField(
+		String prefix, String parentName, String... nestedNames);
+
+	public FieldStep nestedSuffixedField(
+		String suffix, String parentName, String... nestedNames);
 
 	public interface ArrayValueStep {
 
@@ -53,7 +64,20 @@ public interface JSONObjectBuilder {
 
 		public FieldStep field(String name);
 
+		public FieldStep ifCondition(
+			boolean condition, Function<FieldStep, FieldStep> ifFunction);
+
+		public FieldStep ifElseCondition(
+			boolean condition, Function<FieldStep, FieldStep> ifFunction,
+			Function<FieldStep, FieldStep> elseFunction);
+
 		public FieldStep nestedField(String parentName, String... nestedNames);
+
+		public FieldStep nestedPrefixedField(
+			String prefix, String parentName, String... nestedNames);
+
+		public FieldStep nestedSuffixedField(
+			String suffix, String parentName, String... nestedNames);
 
 		public void value(Object value);
 
