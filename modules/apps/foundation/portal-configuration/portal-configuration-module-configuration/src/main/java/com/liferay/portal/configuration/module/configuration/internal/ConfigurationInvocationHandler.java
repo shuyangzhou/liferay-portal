@@ -50,8 +50,8 @@ public class ConfigurationInvocationHandler<S> implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] args)
 		throws InvocationTargetException {
 
-		if (_configurationOverrideInstance != null) {
-			try {
+		try {
+			if (_configurationOverrideInstance != null) {
 				Object result = _configurationOverrideInstance.invoke(
 					method, args);
 
@@ -59,24 +59,19 @@ public class ConfigurationInvocationHandler<S> implements InvocationHandler {
 					return result;
 				}
 			}
-			catch (InvocationTargetException ite) {
-				throw ite;
-			}
-			catch (Exception e) {
-			}
-		}
 
-		try {
 			return _invokeTypedSettings(method);
 		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
+		catch (InvocationTargetException ite) {
+			throw ite;
+		}
+		catch (ReflectiveOperationException roe) {
+			throw new RuntimeException(roe);
 		}
 	}
 
 	private Object _getValue(Class<?> returnType, String key)
-		throws IllegalAccessException, InstantiationException,
-			   InvocationTargetException, NoSuchMethodException {
+		throws ReflectiveOperationException {
 
 		if (returnType.equals(boolean.class) ||
 			returnType.equals(double.class) || returnType.equals(float.class) ||
@@ -138,8 +133,7 @@ public class ConfigurationInvocationHandler<S> implements InvocationHandler {
 	}
 
 	private Object _invokeTypedSettings(Method method)
-		throws IllegalAccessException, InstantiationException,
-			   InvocationTargetException, NoSuchMethodException {
+		throws ReflectiveOperationException {
 
 		Class<?> returnType = method.getReturnType();
 
