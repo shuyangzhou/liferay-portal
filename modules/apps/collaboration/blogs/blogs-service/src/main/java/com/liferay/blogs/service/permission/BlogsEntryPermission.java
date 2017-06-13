@@ -24,7 +24,11 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.workflow.permission.WorkflowPermissionUtil;
+
+import java.util.Map;
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -62,6 +66,64 @@ public class BlogsEntryPermission implements BaseModelPermissionChecker {
 	}
 
 	public static boolean contains(
+		PermissionChecker permissionChecker, BlogsEntry entry,
+		String actionId) {
+
+		Map<Object, Object> permissionChecksMap =
+			permissionChecker.getPermissionChecksMap();
+
+		CacheKey cacheKey = new CacheKey(entry.getEntryId(), actionId);
+
+		Boolean contains = (Boolean)permissionChecksMap.get(cacheKey);
+
+		if (contains == null) {
+			contains = _contains(permissionChecker, entry, actionId);
+
+			permissionChecksMap.put(cacheKey, contains);
+		}
+
+		return contains;
+	}
+
+	public static boolean contains(
+			PermissionChecker permissionChecker, long entryId, String actionId)
+		throws PortalException {
+
+		Map<Object, Object> permissionChecksMap =
+			permissionChecker.getPermissionChecksMap();
+
+		CacheKey cacheKey = new CacheKey(entryId, actionId);
+
+		Boolean contains = (Boolean)permissionChecksMap.get(cacheKey);
+
+		if (contains == null) {
+			BlogsEntry entry = _blogsEntryLocalService.getEntry(entryId);
+
+			contains = _contains(permissionChecker, entry, actionId);
+
+			permissionChecksMap.put(cacheKey, contains);
+		}
+
+		return contains;
+	}
+
+	@Override
+	public void checkBaseModel(
+			PermissionChecker permissionChecker, long groupId, long primaryKey,
+			String actionId)
+		throws PortalException {
+
+		check(permissionChecker, primaryKey, actionId);
+	}
+
+	@Reference(unbind = "-")
+	protected void setBlogsEntryLocalService(
+		BlogsEntryLocalService blogsEntryLocalService) {
+
+		_blogsEntryLocalService = blogsEntryLocalService;
+	}
+
+	private static boolean _contains(
 		PermissionChecker permissionChecker, BlogsEntry entry,
 		String actionId) {
 
@@ -105,31 +167,46 @@ public class BlogsEntryPermission implements BaseModelPermissionChecker {
 			actionId);
 	}
 
-	public static boolean contains(
-			PermissionChecker permissionChecker, long entryId, String actionId)
-		throws PortalException {
-
-		BlogsEntry entry = _blogsEntryLocalService.getEntry(entryId);
-
-		return contains(permissionChecker, entry, actionId);
-	}
-
-	@Override
-	public void checkBaseModel(
-			PermissionChecker permissionChecker, long groupId, long primaryKey,
-			String actionId)
-		throws PortalException {
-
-		check(permissionChecker, primaryKey, actionId);
-	}
-
-	@Reference(unbind = "-")
-	protected void setBlogsEntryLocalService(
-		BlogsEntryLocalService blogsEntryLocalService) {
-
-		_blogsEntryLocalService = blogsEntryLocalService;
-	}
-
 	private static BlogsEntryLocalService _blogsEntryLocalService;
+
+	private static class CacheKey {
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof CacheKey)) {
+				return false;
+			}
+
+			CacheKey cacheKey = (CacheKey)obj;
+
+			if ((_entryId == cacheKey._entryId) &&
+				Objects.equals(_actionId, cacheKey._actionId)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			int hash = HashUtil.hash(0, _entryId);
+
+			return HashUtil.hash(hash, _actionId);
+		}
+
+		private CacheKey(long entryId, String actionId) {
+			_entryId = entryId;
+			_actionId = actionId;
+		}
+
+		private final String _actionId;
+		private final long _entryId;
+
+	}
 
 }
