@@ -20,7 +20,9 @@ import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.friendly.url.model.FriendlyURLEntry;
+import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.xml.Element;
 
@@ -75,6 +77,11 @@ public class FriendlyURLEntryStagedModelDataHandler
 		friendlyURLEntryElement.addAttribute(
 			"resource-class-name", friendlyURLEntry.getClassName());
 
+		if (friendlyURLEntry.isMain()) {
+			friendlyURLEntryElement.addAttribute(
+				"mainEntry", Boolean.TRUE.toString());
+		}
+
 		portletDataContext.addClassedModel(
 			friendlyURLEntryElement,
 			ExportImportPathUtil.getModelPath(friendlyURLEntry),
@@ -93,6 +100,8 @@ public class FriendlyURLEntryStagedModelDataHandler
 
 		String className = friendlyURLEntryElement.attributeValue(
 			"resource-class-name");
+		boolean mainEntry = GetterUtil.get(
+			friendlyURLEntryElement.attributeValue("mainEntry"), false);
 
 		long classNameId = _classNameLocalService.getClassNameId(className);
 
@@ -123,10 +132,13 @@ public class FriendlyURLEntryStagedModelDataHandler
 				portletDataContext, importedFriendlyURLEntry);
 		}
 		else {
-			existingFriendlyURLEntry.setMain(friendlyURLEntry.isMain());
-
 			_stagedModelRepository.updateStagedModel(
 				portletDataContext, existingFriendlyURLEntry);
+
+			if (mainEntry) {
+				_friendlyURLEntryLocalService.setMainFriendlyURLEntry(
+					friendlyURLEntry);
+			}
 		}
 	}
 
@@ -144,7 +156,15 @@ public class FriendlyURLEntryStagedModelDataHandler
 		_classNameLocalService = classNameLocalService;
 	}
 
+	@Reference(unbind = "-")
+	protected void setFriendlyURLEntryLocalService(
+		FriendlyURLEntryLocalService friendlyURLEntryLocalService) {
+
+		_friendlyURLEntryLocalService = friendlyURLEntryLocalService;
+	}
+
 	private ClassNameLocalService _classNameLocalService;
+	private FriendlyURLEntryLocalService _friendlyURLEntryLocalService;
 	private StagedModelRepository<FriendlyURLEntry> _stagedModelRepository;
 
 }
