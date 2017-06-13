@@ -25,12 +25,5 @@ String target = GetterUtil.getString((String)request.getAttribute("liferay-ui:so
 
 String displayStyle = GetterUtil.getString((String)request.getAttribute("liferay-ui:social-bookmarks:displayStyle"));
 
-String[] typesArray = null;
-
-if (Validator.isNotNull(types)) {
-	typesArray = StringUtil.split(types);
-}
-else {
-	typesArray = PropsUtil.getArray(PropsKeys.SOCIAL_BOOKMARK_TYPES);
-}
+String[] typesArray = StringUtil.split(types);
 %>
