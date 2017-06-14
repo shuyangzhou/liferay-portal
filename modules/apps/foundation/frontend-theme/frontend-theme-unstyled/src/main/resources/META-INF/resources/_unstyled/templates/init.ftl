@@ -4,6 +4,8 @@
 	theme_display = themeDisplay
 	portlet_display = portletDisplay
 
+	layoutSet = layout.getLayoutSet()
+
 	theme_timestamp = themeDisplay.getTheme().getTimestamp()
 	theme_settings = themeDisplay.getThemeSettings()
 
@@ -275,7 +277,7 @@
 
 <#assign
 	logo_css_class = "logo"
-	use_company_logo = !layout.layoutSet.isLogo()
+	use_company_logo = !layoutSet.isLogo()
 	site_logo_height = company_logo_height
 	site_logo_width = company_logo_width
 />
@@ -299,7 +301,7 @@
 </#if>
 
 <#assign
-	show_site_name = getterUtil.getBoolean(layout.layoutSet.getSettingsProperty("showSiteName"), show_site_name_default)
+	show_site_name = getterUtil.getBoolean(layoutSet.getSettingsProperty("showSiteName"), show_site_name_default)
 
 	site_logo = company_logo
 
