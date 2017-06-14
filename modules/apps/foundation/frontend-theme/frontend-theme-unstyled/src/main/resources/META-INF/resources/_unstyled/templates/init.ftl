@@ -13,9 +13,9 @@
 	css_class = htmlUtil.escape(bodyCssClass!)
 
 	css_class = css_class + " " + htmlUtil.escape(theme_display.getColorScheme().getCssClass()) + " yui3-skin-sam"
-/>
 
-<#assign page_group = layout.getGroup() />
+	page_group = layout.getGroup()
+/>
 
 <#if layoutTypePortlet.hasStateMax()>
 	<#assign css_class = css_class + " page-maximized" />
@@ -146,9 +146,7 @@
 	page_javascript_1 = ""
 	page_javascript_2 = ""
 	page_javascript_3 = ""
-/>
 
-<#assign
 	page = layout
 
 	is_first_child = page.isFirstChild()
