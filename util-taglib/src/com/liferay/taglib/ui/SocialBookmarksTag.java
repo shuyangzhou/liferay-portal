@@ -14,15 +14,41 @@
 
 package com.liferay.taglib.ui;
 
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.taglib.util.IncludeTag;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspException;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Jorge Ferrer
  */
 public class SocialBookmarksTag extends IncludeTag {
+
+	@Override
+	public int doEndTag() throws JspException {
+		if (Validator.isNull(_SOCIAL_BOOKMARK_TYPES) &&
+			Validator.isNull(_types)) {
+
+			return EVAL_PAGE;
+		}
+
+		return super.doEndTag();
+	}
+
+	@Override
+	public int doStartTag() throws JspException {
+		if (Validator.isNull(_SOCIAL_BOOKMARK_TYPES) &&
+			Validator.isNull(_types)) {
+
+			return SKIP_BODY;
+		}
+
+		return super.doStartTag();
+	}
 
 	public void setContentId(String contentId) {
 		_contentId = contentId;
@@ -69,7 +95,15 @@ public class SocialBookmarksTag extends IncludeTag {
 			"liferay-ui:social-bookmark:contentId", _contentId);
 		request.setAttribute("liferay-ui:social-bookmark:target", _target);
 		request.setAttribute("liferay-ui:social-bookmark:title", _title);
-		request.setAttribute("liferay-ui:social-bookmark:types", _types);
+
+		if (Validator.isNull(_types)) {
+			request.setAttribute(
+				"liferay-ui:social-bookmark:types", _SOCIAL_BOOKMARK_TYPES);
+		}
+		else {
+			request.setAttribute("liferay-ui:social-bookmark:types", _types);
+		}
+
 		request.setAttribute("liferay-ui:social-bookmark:url", _url);
 
 		request.setAttribute(
@@ -78,6 +112,9 @@ public class SocialBookmarksTag extends IncludeTag {
 
 	private static final String _PAGE =
 		"/html/taglib/ui/social_bookmarks/page.jsp";
+
+	private static final String _SOCIAL_BOOKMARK_TYPES = PropsUtil.get(
+		PropsKeys.SOCIAL_BOOKMARK_TYPES);
 
 	private String _contentId;
 	private String _displayStyle;
