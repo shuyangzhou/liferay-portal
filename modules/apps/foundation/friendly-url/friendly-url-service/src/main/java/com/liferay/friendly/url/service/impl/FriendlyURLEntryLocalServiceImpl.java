@@ -396,6 +396,14 @@ public class FriendlyURLEntryLocalServiceImpl
 
 	@Override
 	public FriendlyURLEntryLocalization updateFriendlyURLLocalization(
+		FriendlyURLEntryLocalization friendlyURLEntryLocalization) {
+
+		return friendlyURLEntryLocalizationPersistence.update(
+			friendlyURLEntryLocalization);
+	}
+
+	@Override
+	public FriendlyURLEntryLocalization updateFriendlyURLLocalization(
 			long friendlyURLLocalizationId, String urlTitle)
 		throws PortalException {
 
@@ -411,14 +419,6 @@ public class FriendlyURLEntryLocalServiceImpl
 		}
 
 		return null;
-	}
-
-	@Override
-	public FriendlyURLEntryLocalization updateFriendlyURLLocalization(
-		FriendlyURLEntryLocalization friendlyURLEntryLocalization) {
-
-		return friendlyURLEntryLocalizationPersistence.update(
-			friendlyURLEntryLocalization);
 	}
 
 	@Override
