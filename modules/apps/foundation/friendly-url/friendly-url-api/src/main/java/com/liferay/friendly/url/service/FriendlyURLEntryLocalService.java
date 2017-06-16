@@ -87,8 +87,8 @@ public interface FriendlyURLEntryLocalService extends BaseLocalService,
 
 	public FriendlyURLEntry addFriendlyURLEntry(long groupId, long companyId,
 		long classNameId, long classPK,
-		Map<java.lang.String, java.lang.String> urlTitleMap)
-		throws PortalException;
+		Map<java.lang.String, java.lang.String> urlTitleMap,
+		ServiceContext serviceContext) throws PortalException;
 
 	/**
 	* Creates a new friendly url entry with the primary key. Does not add the friendly url entry to the database.
