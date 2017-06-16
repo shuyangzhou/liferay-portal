@@ -200,8 +200,8 @@ public class PortletIdCodec {
 
 		if (keyword != null) {
 			throw new InvalidParameterException(
-				"The portlet name '" + portletName +
-					"' must not contain the keyword " + keyword);
+				"The portlet name \"" + portletName +
+					"\" must not contain the keyword " + keyword);
 		}
 	}
 

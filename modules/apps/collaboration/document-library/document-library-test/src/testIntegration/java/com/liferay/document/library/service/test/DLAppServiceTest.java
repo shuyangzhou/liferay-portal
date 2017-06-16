@@ -26,6 +26,7 @@ import com.liferay.document.library.kernel.model.DLFileEntryConstants;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.model.DLSyncConstants;
 import com.liferay.document.library.kernel.service.DLAppServiceUtil;
+import com.liferay.document.library.kernel.service.DLFolderLocalServiceUtil;
 import com.liferay.document.library.kernel.service.DLTrashServiceUtil;
 import com.liferay.document.library.workflow.WorkflowHandlerInvocationCounter;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
@@ -379,6 +380,13 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 
 			ServiceContext serviceContext =
 				ServiceContextTestUtil.getServiceContext(group.getGroupId());
+
+			System.out.println("Trying to use parentFolder : " + parentFolder);
+
+			System.out.println(
+				"Refetched parent folder in test : " +
+					DLFolderLocalServiceUtil.fetchDLFolder(
+						parentFolder.getFolderId()));
 
 			DLAppServiceUtil.addFileEntry(
 				group.getGroupId(), parentFolder.getFolderId(), fileName,

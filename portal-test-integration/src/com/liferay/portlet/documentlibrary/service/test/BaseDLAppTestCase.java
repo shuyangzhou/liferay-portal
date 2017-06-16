@@ -17,6 +17,7 @@ package com.liferay.portlet.documentlibrary.service.test;
 import com.liferay.document.library.kernel.exception.NoSuchFolderException;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppServiceUtil;
+import com.liferay.document.library.kernel.service.DLFolderLocalServiceUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -76,6 +77,13 @@ public abstract class BaseDLAppTestCase {
 		parentFolder = DLAppServiceUtil.addFolder(
 			group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			"Test Folder", RandomTestUtil.randomString(), serviceContext);
+
+		System.out.println("Created parent folder : " + parentFolder);
+
+		System.out.println(
+			"Refetched parent folder : " +
+				DLFolderLocalServiceUtil.fetchDLFolder(
+					parentFolder.getFolderId()));
 
 		RoleTestUtil.addResourcePermission(
 			RoleConstants.GUEST, DLPermission.RESOURCE_NAME,
