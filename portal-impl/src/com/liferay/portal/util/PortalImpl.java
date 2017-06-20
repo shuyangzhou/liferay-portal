@@ -8392,8 +8392,9 @@ public class PortalImpl implements Portal {
 					}
 
 					if (_isSameHostName(virtualHostname, portalDomain) &&
-						virtualHostname.equals(
-							layoutSet.getVirtualHostname())) {
+						(virtualHostname.equals(
+							layoutSet.getVirtualHostname()) ||
+						 _isVirtualHostsDefaultSite(group))) {
 
 						String path = StringPool.BLANK;
 
@@ -8649,6 +8650,12 @@ public class PortalImpl implements Portal {
 		}
 
 		return virtualHostName.equals(portalDomain);
+	}
+
+	private boolean _isVirtualHostsDefaultSite(Group group) {
+		String groupKey = group.getGroupKey();
+
+		return groupKey.equals(PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME);
 	}
 
 	private static final Log _logWebServerServlet = LogFactoryUtil.getLog(
