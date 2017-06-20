@@ -1,0 +1,9 @@
+Bundle-Name: Liferay Portal Kernel Trash Compat
+Bundle-SymbolicName: com.liferay.portal.kernel.trash.compat
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.trash.kernel.exception,\
+	com.liferay.trash.kernel.model,\
+	com.liferay.trash.kernel.service,\
+	com.liferay.trash.kernel.service.persistence,\
+	com.liferay.trash.kernel.util.comparator

@@ -3,3 +3,9 @@ com.liferay.blogs.kernel.model
 com.liferay.blogs.kernel.service
 com.liferay.blogs.kernel.service.persistence
 com.liferay.blogs.kernel.util.comparator
+com.liferay.trash.kernel.exception
+com.liferay.trash.kernel.model
+com.liferay.trash.kernel.service
+com.liferay.trash.kernel.service.persistence
+com.liferay.trash.kernel.util
+com.liferay.trash.kernel.util.comparator

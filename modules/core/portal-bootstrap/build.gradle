@@ -92,7 +92,9 @@ dependencies {
 if (buildProfile != "slim") {
 	dependencies {
 		provided project(":core:portal-compat:blogs:portal-impl-blogs-compat")
+		provided project(":core:portal-compat:trash:portal-impl-trash-compat")
 		provided project(":core:portal-compat:blogs:portal-kernel-blogs-compat")
+		provided project(":core:portal-compat:trash:portal-kernel-trash-compat")
 	}
 }
 
