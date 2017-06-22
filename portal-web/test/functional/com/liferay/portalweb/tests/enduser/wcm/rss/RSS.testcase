@@ -63,7 +63,8 @@
 		<execute macro="RSS#addFeed">
 			<var name="feedRowIndexNumber" value="0" />
 			<var name="feedTitle" value="Technology" />
-			<var name="feedUrlLink" value="http://rss.nytimes.com/services/xml/rss/nyt/Technology.xml" />
+			<var name="feedUrlLink" value="Technology.xml" />
+			<var name="feedType" value="file" />
 		</execute>
 
 		<execute macro="PortletEntry#save" />
@@ -82,7 +83,8 @@
 			<var name="buttonRowIndexNumber" value="1" />
 			<var name="feedRowIndexNumber" value="2" />
 			<var name="feedTitle" value="Latimes > Technology News" />
-			<var name="feedUrlLink" value="http://www.latimes.com/business/technology/rss2.0.xml" />
+			<var name="feedUrlLink" value="rss2.0.xml" />
+			<var name="feedType" value="file" />
 		</execute>
 
 		<execute macro="PortletEntry#save" />
@@ -101,7 +103,8 @@
 			<var name="buttonRowIndexNumber" value="1" />
 			<var name="feedRowIndexNumber" value="3" />
 			<var name="feedTitle" value="Reuters > Sports News" />
-			<var name="feedUrlLink" value="http://feeds.reuters.com/reuters/sportsNews" />
+			<var name="feedUrlLink" value="reuters_sports_news.xml" />
+			<var name="feedType" value="file" />
 		</execute>
 
 		<execute macro="PortletEntry#save" />
@@ -162,7 +165,8 @@
 		<execute macro="RSS#addFeed">
 			<var name="feedRowIndexNumber" value="0" />
 			<var name="feedTitle" value="General Announcement" />
-			<var name="feedUrlLink" value="http://www.theverge.com/rss/index.xml" />
+			<var name="feedUrlLink" value="theverge.xml" />
+			<var name="feedType" value="file" />
 		</execute>
 
 		<execute macro="PortletEntry#save" />
@@ -200,7 +204,8 @@
 		<execute macro="RSS#addFeed">
 			<var name="feedRowIndexNumber" value="0" />
 			<var name="feedTitle" value="Latimes > Technology News" />
-			<var name="feedUrlLink" value="http://www.latimes.com/business/technology/rss2.0.xml" />
+			<var name="feedUrlLink" value="rss2.0.xml" />
+			<var name="feedType" value="file" />
 		</execute>
 
 		<execute macro="PortletEntry#save" />
@@ -315,7 +320,8 @@
 		<execute macro="RSS#addFeed">
 			<var name="feedRowIndexNumber" value="0" />
 			<var name="feedTitle" value="Technology" />
-			<var name="feedUrlLink" value="http://rss.nytimes.com/services/xml/rss/nyt/Technology.xml" />
+			<var name="feedUrlLink" value="Technology.xml" />
+			<var name="feedType" value="file" />
 		</execute>
 
 		<execute macro="PortletEntry#save" />
@@ -366,7 +372,8 @@
 		<execute macro="RSS#addFeed">
 			<var name="feedRowIndexNumber" value="0" />
 			<var name="feedTitle" value="Technology" />
-			<var name="feedUrlLink" value="http://rss.nytimes.com/services/xml/rss/nyt/Technology.xml" />
+			<var name="feedUrlLink" value="Technology.xml" />
+			<var name="feedType" value="file" />
 		</execute>
 
 		<execute macro="PortletEntry#save" />
@@ -385,7 +392,8 @@
 			<var name="buttonRowIndexNumber" value="1" />
 			<var name="feedRowIndexNumber" value="2" />
 			<var name="feedTitle" value="NBA" />
-			<var name="feedUrlLink" value="http://sports.espn.go.com/espn/rss/nba/news" />
+			<var name="feedUrlLink" value="nba.xml" />
+			<var name="feedType" value="file" />
 		</execute>
 
 		<execute macro="PortletEntry#save" />
@@ -466,7 +474,8 @@
 		<execute macro="RSS#addFeed">
 			<var name="feedRowIndexNumber" value="0" />
 			<var name="feedTitle" value="Latimes > Technology News" />
-			<var name="feedUrlLink" value="http://www.latimes.com/business/technology/rss2.0.xml" />
+			<var name="feedUrlLink" value="rss2.0.xml" />
+			<var name="feedType" value="file" />
 		</execute>
 
 		<execute macro="PortletEntry#save" />
@@ -523,7 +532,8 @@
 		<execute macro="RSS#addFeed">
 			<var name="feedRowIndexNumber" value="0" />
 			<var name="feedTitle" value="Technology" />
-			<var name="feedUrlLink" value="http://rss.nytimes.com/services/xml/rss/nyt/Technology.xml" />
+			<var name="feedUrlLink" value="Technology.xml" />
+			<var name="feedType" value="file" />
 		</execute>
 
 		<execute macro="PortletEntry#save" />
