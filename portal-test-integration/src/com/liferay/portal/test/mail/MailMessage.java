@@ -12,16 +12,25 @@
  * details.
  */
 
-package com.liferay.portal.servlet.filters.util;
+package com.liferay.portal.test.mail;
 
-import com.liferay.portal.kernel.util.Function;
-import com.liferay.portal.kernel.util.KeyValuePair;
+import aQute.bnd.annotation.ProviderType;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Set;
 
 /**
- * @author Carlos Sierra Andrés
+ * @author Adam Brandizzi
  */
-public interface CacheFileNameContributor
-	extends Function<HttpServletRequest, KeyValuePair> {
+@ProviderType
+public interface MailMessage {
+
+	public String getBody();
+
+	public String getFirstHeaderValue(String headerName);
+
+	public Set<String> getHeaderNames();
+
+	public List<String> getHeaderValues(String headerName);
+
 }

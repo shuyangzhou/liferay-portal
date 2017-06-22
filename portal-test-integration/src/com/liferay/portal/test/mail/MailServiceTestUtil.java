@@ -12,18 +12,20 @@
  * details.
  */
 
-package com.liferay.portal.util.test;
+package com.liferay.portal.test.mail;
 
-import com.dumbster.smtp.MailMessage;
 import com.dumbster.smtp.SmtpServer;
 import com.dumbster.smtp.SmtpServerFactory;
 import com.dumbster.smtp.mailstores.RollingMailStore;
 
 import com.liferay.mail.kernel.service.MailServiceUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.SocketUtil;
 import com.liferay.portal.kernel.util.SocketUtil.ServerSocketConfigurator;
+import com.liferay.portal.test.mail.impl.MailMessageImpl;
+import com.liferay.portal.util.test.PrefsPropsTemporarySwapper;
 
 import java.io.IOException;
 
@@ -34,15 +36,15 @@ import java.net.SocketException;
 import java.nio.channels.ServerSocketChannel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
- * @author Manuel de la Peña
- * @author José Manuel Navarro
- * @deprecated As of 2.1.0, replaced by {@link
- *             com.liferay.portal.test.mail.MailServiceTestUtil}
+ * @author Adam Brandizzi
  */
-@Deprecated
 public class MailServiceTestUtil {
 
 	public static void clearMessages() {
@@ -54,10 +56,11 @@ public class MailServiceTestUtil {
 	}
 
 	public static MailMessage getLastMailMessage() {
-		MailMessage[] mailMessages = _smtpServer.getMessages();
+		com.dumbster.smtp.MailMessage[] mailMessages =
+			_smtpServer.getMessages();
 
 		if (mailMessages.length > 0) {
-			return mailMessages[mailMessages.length - 1];
+			return _wrapMailMessage(mailMessages[mailMessages.length - 1]);
 		}
 
 		throw new IndexOutOfBoundsException(
@@ -67,9 +70,11 @@ public class MailServiceTestUtil {
 	public static List<MailMessage> getMailMessages(
 		String headerName, String headerValue) {
 
-		List<MailMessage> mailMessages = new ArrayList<>();
+		List<com.dumbster.smtp.MailMessage> mailMessages = new ArrayList<>();
 
-		for (MailMessage mailMessage : _smtpServer.getMessages()) {
+		for (com.dumbster.smtp.MailMessage mailMessage :
+				_smtpServer.getMessages()) {
+
 			if (headerName.equals("Body")) {
 				String body = mailMessage.getBody();
 
@@ -87,7 +92,7 @@ public class MailServiceTestUtil {
 			}
 		}
 
-		return mailMessages;
+		return _wrapMailMessages(mailMessages);
 	}
 
 	public static boolean lastMailMessageContains(String text) {
@@ -115,9 +120,9 @@ public class MailServiceTestUtil {
 			new RollingMailStore() {
 
 				@Override
-				public void addMessage(MailMessage message) {
+				public void addMessage(com.dumbster.smtp.MailMessage message) {
 					try {
-						List<MailMessage> receivedMail =
+						List<com.dumbster.smtp.MailMessage> receivedMail =
 							ReflectionTestUtil.getFieldValue(
 								this, "receivedMail");
 
@@ -177,6 +182,45 @@ public class MailServiceTestUtil {
 
 			return serverSocket.getLocalPort();
 		}
+	}
+
+	private static Map<String, List<String>> _getHeadersMap(
+		com.dumbster.smtp.MailMessage mailMessage) {
+
+		Map<String, List<String>> headers = new HashMap<>();
+
+		Iterator<String> headerNames = mailMessage.getHeaderNames();
+
+		while (headerNames.hasNext()) {
+			String headerName = headerNames.next();
+
+			List<String> headerValues = ListUtil.fromArray(
+				mailMessage.getHeaderValues(headerName));
+
+			headers.put(headerName, Collections.unmodifiableList(headerValues));
+		}
+
+		return headers;
+	}
+
+	private static MailMessage _wrapMailMessage(
+		com.dumbster.smtp.MailMessage mailMessage) {
+
+		Map<String, List<String>> headers = _getHeadersMap(mailMessage);
+
+		return new MailMessageImpl(mailMessage.getBody(), headers);
+	}
+
+	private static List<MailMessage> _wrapMailMessages(
+		List<com.dumbster.smtp.MailMessage> mailMessages) {
+
+		List<MailMessage> wrappedMailMessages = new ArrayList<>();
+
+		for (com.dumbster.smtp.MailMessage mailMessage : mailMessages) {
+			wrappedMailMessages.add(_wrapMailMessage(mailMessage));
+		}
+
+		return wrappedMailMessages;
 	}
 
 	private static final int _START_PORT = 3241;
