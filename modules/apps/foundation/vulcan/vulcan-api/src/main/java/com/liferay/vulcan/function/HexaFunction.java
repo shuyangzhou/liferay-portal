@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.vulcan.functions;
+package com.liferay.vulcan.function;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -21,16 +21,17 @@ import java.util.function.Function;
  * @author Alejandro Hernández
  */
 @FunctionalInterface
-public interface HeptaFunction<A, B, C, D, E, F, G, R> {
+public interface HexaFunction<A, B, C, D, E, F, R> {
 
-	public default <V> HeptaFunction<A, B, C, D, E, F, G, V> andThen(
-		Function<? super R, ? extends V> after) {
+	public default <V> HexaFunction<A, B, C, D, E, F, V> andThen(
+		Function<? super R, ? extends V> afterFunction) {
 
-		Objects.requireNonNull(after);
-		return (A a, B b, C c, D d, E e, F f, G g) -> after.apply(
-			apply(a, b, c, d, e, f, g));
+		Objects.requireNonNull(afterFunction);
+
+		return (A a, B b, C c, D d, E e, F f) -> afterFunction.apply(
+			apply(a, b, c, d, e, f));
 	}
 
-	public R apply(A a, B b, C c, D d, E e, F f, G g);
+	public R apply(A a, B b, C c, D d, E e, F f);
 
 }

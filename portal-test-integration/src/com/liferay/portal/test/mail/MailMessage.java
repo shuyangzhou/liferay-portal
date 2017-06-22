@@ -12,25 +12,25 @@
  * details.
  */
 
-package com.liferay.vulcan.functions;
+package com.liferay.portal.test.mail;
 
-import java.util.Objects;
-import java.util.function.Function;
+import aQute.bnd.annotation.ProviderType;
+
+import java.util.List;
+import java.util.Set;
 
 /**
- * @author Alejandro Hernández
+ * @author Adam Brandizzi
  */
-@FunctionalInterface
-public interface EnneaFunction<A, B, C, D, E, F, G, H, I, R> {
+@ProviderType
+public interface MailMessage {
 
-	public default <V> EnneaFunction<A, B, C, D, E, F, G, H, I, V> andThen(
-		Function<? super R, ? extends V> after) {
+	public String getBody();
 
-		Objects.requireNonNull(after);
-		return (A a, B b, C c, D d, E e, F f, G g, H h, I i) -> after.apply(
-			apply(a, b, c, d, e, f, g, h, i));
-	}
+	public String getFirstHeaderValue(String headerName);
 
-	public R apply(A a, B b, C c, D d, E e, F f, G g, H h, I i);
+	public Set<String> getHeaderNames();
+
+	public List<String> getHeaderValues(String headerName);
 
 }
