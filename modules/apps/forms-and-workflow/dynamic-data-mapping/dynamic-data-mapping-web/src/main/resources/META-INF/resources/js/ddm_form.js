@@ -2970,7 +2970,10 @@ AUI.add(
 							repeatableInstance.add(field.get('container'));
 						}
 
-						A.DD.DDM.getDrag(field.get('container')).addInvalid('.alloy-editor');
+						var drag = A.DD.DDM.getDrag(field.get('container'));
+
+						drag.addInvalid('.alloy-editor');
+						drag.addInvalid('.lfr-source-editor');
 					},
 
 					toJSON: function() {

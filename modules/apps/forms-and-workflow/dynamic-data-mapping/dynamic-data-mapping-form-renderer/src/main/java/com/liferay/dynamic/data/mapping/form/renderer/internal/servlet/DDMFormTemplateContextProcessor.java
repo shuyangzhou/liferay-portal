@@ -70,6 +70,10 @@ public class DDMFormTemplateContextProcessor {
 		return _ddmFormValues;
 	}
 
+	public long getGroupId() {
+		return _groupId;
+	}
+
 	protected void addDDMFormDDMFormField(JSONObject jsonObject) {
 		Map<String, DDMFormField> ddmFormFields = _ddmForm.getDDMFormFieldsMap(
 			true);
@@ -195,6 +199,8 @@ public class DDMFormTemplateContextProcessor {
 
 		setDDMFormValuesDefaultLocale();
 		setDDMFormValuesAvailableLocales();
+
+		setGroupId();
 	}
 
 	protected void process() {
@@ -333,6 +339,10 @@ public class DDMFormTemplateContextProcessor {
 		_ddmFormValues.setDefaultLocale(_locale);
 	}
 
+	protected void setGroupId() {
+		_groupId = _jsonObject.getLong("groupId", 0);
+	}
+
 	protected void traverseColumns(
 		JSONArray jsonArray, DDMFormLayoutRow ddmFormLayoutRow) {
 
@@ -397,6 +407,7 @@ public class DDMFormTemplateContextProcessor {
 	private final DDMForm _ddmForm;
 	private final DDMFormLayout _ddmFormLayout;
 	private final DDMFormValues _ddmFormValues;
+	private long _groupId;
 	private final JSONObject _jsonObject;
 	private final Locale _locale;
 

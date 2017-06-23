@@ -135,6 +135,8 @@ public class DDMFormTemplateContextFactoryImpl
 			"fieldTypes",
 			_ddmFormFieldTypesJSONSerializer.serialize(ddmFormFieldTypes));
 
+		templateContext.put("groupId", ddmFormRenderingContext.getGroupId());
+
 		List<Object> pages = getPages(
 			ddmForm, ddmFormLayout, ddmFormRenderingContext);
 

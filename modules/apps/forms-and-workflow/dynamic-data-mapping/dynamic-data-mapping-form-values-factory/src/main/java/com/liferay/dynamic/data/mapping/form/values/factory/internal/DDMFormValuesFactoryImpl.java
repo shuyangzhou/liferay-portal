@@ -27,7 +27,6 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-import com.liferay.portal.kernel.servlet.DynamicServletRequest;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -37,7 +36,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.servlet.SharedSessionServletRequest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +49,6 @@ import java.util.TreeSet;
 
 import javax.portlet.PortletRequest;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.framework.BundleContext;
@@ -69,18 +66,6 @@ public class DDMFormValuesFactoryImpl implements DDMFormValuesFactory {
 	@Override
 	public DDMFormValues create(
 		HttpServletRequest httpServletRequest, DDMForm ddmForm) {
-
-		HttpServletRequest httpServletRequestWrapped =
-			getHttpServletRequestWrapped(httpServletRequest);
-
-		boolean addPortletNamespace = false;
-
-		if (httpServletRequestWrapped != null) {
-			httpServletRequest = httpServletRequestWrapped;
-			addPortletNamespace = true;
-		}
-
-		setDDMFormFieldPrefix(httpServletRequest, addPortletNamespace);
 
 		DDMFormValues ddmFormValues = new DDMFormValues(ddmForm);
 
@@ -277,7 +262,8 @@ public class DDMFormValuesFactoryImpl implements DDMFormValuesFactory {
 
 	protected String extractPrefix(String ddmFormFieldParameterName) {
 		return StringUtil.extractLast(
-			ddmFormFieldParameterName, getDDMFormFieldPrefix());
+			ddmFormFieldParameterName,
+			DDMFormRendererConstants.DDM_FORM_FIELD_NAME_PREFIX);
 	}
 
 	protected String extractSuffix(String ddmFormFieldParameterName) {
@@ -404,7 +390,7 @@ public class DDMFormValuesFactoryImpl implements DDMFormValuesFactory {
 
 		StringBundler sb = new StringBundler(4);
 
-		sb.append(getDDMFormFieldPrefix());
+		sb.append(DDMFormRendererConstants.DDM_FORM_FIELD_NAME_PREFIX);
 		sb.append(ddmFormFieldParameterName);
 		sb.append(
 			DDMFormRendererConstants.DDM_FORM_FIELD_LANGUAGE_ID_SEPARATOR);
@@ -417,10 +403,6 @@ public class DDMFormValuesFactoryImpl implements DDMFormValuesFactory {
 		return ddmFormFieldValueRequestParameterRetriever.get(
 			httpServletRequest, sb.toString(),
 			GetterUtil.getString(defaultDDMFormFieldParameterValue));
-	}
-
-	protected String getDDMFormFieldPrefix() {
-		return _ddmFormFieldPrefix;
 	}
 
 	protected int getDDMFormFieldValueIndex(String ddmFormFieldParameterName) {
@@ -549,28 +531,6 @@ public class DDMFormValuesFactoryImpl implements DDMFormValuesFactory {
 		return ddmFormFieldParameterNameParts[_DDM_FORM_FIELD_NAME_INDEX];
 	}
 
-	protected HttpServletRequest getHttpServletRequestWrapped(
-		HttpServletRequest httpServletRequest) {
-
-		if (httpServletRequest instanceof DynamicServletRequest) {
-			DynamicServletRequest dynamicServletRequest =
-				(DynamicServletRequest)httpServletRequest;
-
-			ServletRequest wrappedServletRequest =
-				dynamicServletRequest.getRequest();
-
-			if (wrappedServletRequest instanceof SharedSessionServletRequest) {
-				SharedSessionServletRequest sharedSessionServletRequest =
-					(SharedSessionServletRequest)wrappedServletRequest;
-
-				return (HttpServletRequest)
-					sharedSessionServletRequest.getRequest();
-			}
-		}
-
-		return null;
-	}
-
 	protected String getLastDDMFormFieldParameterName(
 		String ddmFormFieldParameterName) {
 
@@ -594,20 +554,10 @@ public class DDMFormValuesFactoryImpl implements DDMFormValuesFactory {
 		return getDDMFormFieldParameterNameParts(lastDDMFormFieldParameterName);
 	}
 
-	protected String getPortletNamespace(
-		HttpServletRequest httpServletRequest) {
-
-		String portletId = _portal.getPortletId(httpServletRequest);
-
-		if (Validator.isNotNull(portletId)) {
-			return _portal.getPortletNamespace(portletId);
-		}
-
-		return StringPool.BLANK;
-	}
-
 	protected boolean isDDMFormFieldParameter(String parameterName) {
-		if (parameterName.startsWith(getDDMFormFieldPrefix())) {
+		if (parameterName.startsWith(
+				DDMFormRendererConstants.DDM_FORM_FIELD_NAME_PREFIX)) {
+
 			return true;
 		}
 
@@ -631,22 +581,6 @@ public class DDMFormValuesFactoryImpl implements DDMFormValuesFactory {
 				ddmFormField.getNestedDDMFormFields(),
 				defaultDDMFormFieldParameterName,
 				defaultDDMFormFieldParameterNames);
-		}
-	}
-
-	protected void setDDMFormFieldPrefix(
-		HttpServletRequest httpServletRequest, boolean addPortletNamespace) {
-
-		if (addPortletNamespace) {
-			String portletNamespace = getPortletNamespace(httpServletRequest);
-
-			_ddmFormFieldPrefix =
-				portletNamespace +
-					DDMFormRendererConstants.DDM_FORM_FIELD_NAME_PREFIX;
-		}
-		else {
-			_ddmFormFieldPrefix =
-				DDMFormRendererConstants.DDM_FORM_FIELD_NAME_PREFIX;
 		}
 	}
 
@@ -767,7 +701,6 @@ public class DDMFormValuesFactoryImpl implements DDMFormValuesFactory {
 
 	private static final int _DDM_FORM_FIELD_NAME_INDEX = 0;
 
-	private String _ddmFormFieldPrefix;
 	private final DDMFormFieldValueRequestParameterRetriever
 		_defaultDDMFormFieldValueRequestParameterRetriever =
 			new DefaultDDMFormFieldValueRequestParameterRetriever();
