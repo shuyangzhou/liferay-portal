@@ -36,6 +36,8 @@ import java.io.IOException;
 
 import java.net.InetAddress;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.time.StopWatch;
@@ -50,6 +52,7 @@ import org.elasticsearch.search.SearchService;
 import org.elasticsearch.search.action.SearchServiceTransportAction;
 import org.elasticsearch.search.internal.ShardSearchTransportRequest;
 import org.elasticsearch.threadpool.ThreadPool;
+import org.elasticsearch.threadpool.ThreadPool.ThreadPoolType;
 import org.elasticsearch.transport.TransportChannel;
 import org.elasticsearch.transport.TransportRequestHandler;
 import org.elasticsearch.transport.TransportService;
@@ -323,6 +326,18 @@ public class EmbeddedElasticsearchConnection
 		String jnaTmpDir = System.getProperty("jna.tmpdir");
 
 		System.setProperty("jna.tmpdir", _jnaTmpDirName);
+
+		if (elasticsearchConfiguration.syncSearch()) {
+			Map<String, ThreadPoolType> threadPoolTypes = new HashMap<>(
+				ThreadPool.THREAD_POOL_TYPES);
+
+			threadPoolTypes.put(ThreadPool.Names.BULK, ThreadPoolType.DIRECT);
+			threadPoolTypes.put(
+				ThreadPool.Names.REFRESH, ThreadPoolType.DIRECT);
+
+			ThreadPool.THREAD_POOL_TYPES = Collections.unmodifiableMap(
+				threadPoolTypes);
+		}
 
 		try {
 			NodeBuilder nodeBuilder = new NodeBuilder();
