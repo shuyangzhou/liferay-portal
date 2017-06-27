@@ -35,7 +35,9 @@ public class DestinationAwaitTestCallback
 	extends BaseTestCallback<Set<CountDownLatch>, Void> {
 
 	public static final DestinationAwaitTestCallback INSTANCE =
-		new DestinationAwaitTestCallback(DestinationNames.HOT_DEPLOY);
+		new DestinationAwaitTestCallback(
+			DestinationNames.DOCUMENT_LIBRARY_SYNC_EVENT_PROCESSOR,
+			DestinationNames.HOT_DEPLOY);
 
 	public DestinationAwaitTestCallback(String... destinationNames) {
 		_destinationNames = destinationNames;
