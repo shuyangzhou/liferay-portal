@@ -14,6 +14,10 @@ module.exports = function(config) {
 	config.files.push(
 		{
 			included: true,
+			pattern: 'node_modules/lodash/dist/*.js'
+		},
+		{
+			included: true,
 			pattern: 'node_modules/soyutils-nogoog/index.js'
 		},
 		{

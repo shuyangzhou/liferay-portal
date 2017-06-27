@@ -201,6 +201,7 @@ public class SynchronousDestinationTestCallback
 			replaceDestination(DestinationNames.MAIL);
 			replaceDestination(DestinationNames.SCHEDULER_ENGINE);
 			replaceDestination(DestinationNames.SUBSCRIPTION_SENDER);
+			replaceDestination("liferay/adaptive_media_processor");
 
 			if (schedulerEnabled) {
 				replaceDestination("liferay/kaleo_graph_walker");

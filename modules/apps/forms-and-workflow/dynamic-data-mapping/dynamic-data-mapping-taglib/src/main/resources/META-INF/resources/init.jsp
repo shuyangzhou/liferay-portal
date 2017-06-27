@@ -32,7 +32,9 @@ page import="java.util.Map" %>
 private static Object _deserialize(Object obj) {
 	if (obj != null) {
 		String json = JSONFactoryUtil.looseSerialize(obj);
+
 		json = StringUtil.unquote(json);
+
 		return JSONFactoryUtil.looseDeserialize(json);
 	}
 
