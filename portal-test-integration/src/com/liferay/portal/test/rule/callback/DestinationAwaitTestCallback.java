@@ -22,6 +22,8 @@ import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.test.rule.callback.BaseTestCallback;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
 import org.junit.runner.Description;
@@ -29,59 +31,71 @@ import org.junit.runner.Description;
 /**
  * @author Shuyang Zhou
  */
-public class HotDeployAwaitTestCallback
-	extends BaseTestCallback<CountDownLatch, Void> {
+public class DestinationAwaitTestCallback
+	extends BaseTestCallback<Set<CountDownLatch>, Void> {
 
-	public static final HotDeployAwaitTestCallback INSTANCE =
-		new HotDeployAwaitTestCallback();
+	public static final DestinationAwaitTestCallback INSTANCE =
+		new DestinationAwaitTestCallback(DestinationNames.HOT_DEPLOY);
+
+	public DestinationAwaitTestCallback(String... destinationNames) {
+		_destinationNames = destinationNames;
+	}
 
 	@Override
 	public void afterClass(
-			Description description, CountDownLatch endCountDownLatch)
+			Description description, Set<CountDownLatch> endCountDownLatches)
 		throws Throwable {
 
-		endCountDownLatch.countDown();
+		endCountDownLatches.forEach(CountDownLatch::countDown);
 	}
 
 	@Override
-	public CountDownLatch beforeClass(Description description)
+	public Set<CountDownLatch> beforeClass(Description description)
 		throws InterruptedException {
 
-		Destination destination = MessageBusUtil.getDestination(
-			DestinationNames.HOT_DEPLOY);
+		Set<CountDownLatch> endCountdownLatches = new HashSet<>();
 
-		final CountDownLatch startCountDownLatch = new CountDownLatch(1);
+		for (String destinationName : _destinationNames) {
+			Destination destination = MessageBusUtil.getDestination(
+				destinationName);
 
-		final CountDownLatch endCountDownLatch = new CountDownLatch(1);
+			final CountDownLatch startCountDownLatch = new CountDownLatch(1);
 
-		final Message countDownMessage = new Message();
+			final CountDownLatch endCountDownLatch = new CountDownLatch(1);
 
-		destination.register(
-			new MessageListener() {
+			final Message countDownMessage = new Message();
 
-				@Override
-				public void receive(Message message) {
-					if (countDownMessage == message) {
-						startCountDownLatch.countDown();
+			destination.register(
+				new MessageListener() {
 
-						try {
-							endCountDownLatch.await();
+					@Override
+					public void receive(Message message) {
+						if (countDownMessage == message) {
+							startCountDownLatch.countDown();
 
-							destination.unregister(this);
-						}
-						catch (InterruptedException ie) {
-							ReflectionUtil.throwException(ie);
+							try {
+								endCountDownLatch.await();
+
+								destination.unregister(this);
+							}
+							catch (InterruptedException ie) {
+								ReflectionUtil.throwException(ie);
+							}
 						}
 					}
-				}
 
-			});
+				});
 
-		destination.send(countDownMessage);
+			destination.send(countDownMessage);
 
-		startCountDownLatch.await();
+			startCountDownLatch.await();
 
-		return endCountDownLatch;
+			endCountdownLatches.add(endCountDownLatch);
+		}
+
+		return endCountdownLatches;
 	}
+
+	private final String[] _destinationNames;
 
 }
