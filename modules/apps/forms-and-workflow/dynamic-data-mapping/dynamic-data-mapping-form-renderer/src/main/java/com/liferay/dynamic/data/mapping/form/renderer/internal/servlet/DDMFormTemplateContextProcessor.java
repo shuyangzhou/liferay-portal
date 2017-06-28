@@ -110,6 +110,8 @@ public class DDMFormTemplateContextProcessor {
 			jsonObject.getBoolean("localizable", false), ddmFormField);
 		setDDMFormFieldOptions(
 			jsonObject.getJSONArray("options"), ddmFormField);
+		setDDMFormFieldOptionsProperty(jsonObject, ddmFormField, "columns");
+		setDDMFormFieldOptionsProperty(jsonObject, ddmFormField, "rows");
 		setDDMFormFieldRepeatable(
 			jsonObject.getBoolean("repeatable", false), ddmFormField);
 		setDDMFormFieldRequired(
@@ -255,6 +257,21 @@ public class DDMFormTemplateContextProcessor {
 			jsonArray);
 
 		ddmFormField.setDDMFormFieldOptions(ddmFormFieldOptions);
+	}
+
+	protected void setDDMFormFieldOptionsProperty(
+		JSONObject jsonObject, DDMFormField ddmFormField, String property) {
+
+		JSONArray jsonArray = jsonObject.getJSONArray(property);
+
+		if (jsonArray == null) {
+			return;
+		}
+
+		DDMFormFieldOptions ddmFormFieldOptions = getDDMFormFieldOptions(
+			jsonArray);
+
+		ddmFormField.setProperty(property, ddmFormFieldOptions);
 	}
 
 	protected void setDDMFormFieldRepeatable(

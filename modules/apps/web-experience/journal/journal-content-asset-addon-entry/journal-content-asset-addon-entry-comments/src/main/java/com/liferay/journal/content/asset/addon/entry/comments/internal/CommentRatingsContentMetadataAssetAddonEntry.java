@@ -28,8 +28,8 @@ import org.osgi.service.component.annotations.Component;
 @Component(
 	immediate = true,
 	service = {
-		ContentMetadataAssetAddonEntry.class,
-		CommentRatingsContentMetadataAssetAddonEntry.class
+		CommentRatingsContentMetadataAssetAddonEntry.class,
+		ContentMetadataAssetAddonEntry.class
 	}
 )
 public class CommentRatingsContentMetadataAssetAddonEntry

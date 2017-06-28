@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.time.StopWatch;
 
@@ -95,6 +96,23 @@ public class EmbeddedElasticsearchConnection
 						" to prevent Netty shutdown concurrent class loading " +
 							"interruption issue",
 					cnfe);
+			}
+		}
+
+		Injector injector = _node.injector();
+
+		ThreadPool threadPool = injector.getInstance(ThreadPool.class);
+
+		threadPool.shutdownNow();
+
+		try {
+			threadPool.awaitTermination(
+				elasticsearchConfiguration.shutdownWaitTime(),
+				TimeUnit.MILLISECONDS);
+		}
+		catch (InterruptedException ie) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Thread pool shutdown wait was interrupted", ie);
 			}
 		}
 
@@ -241,10 +259,7 @@ public class EmbeddedElasticsearchConnection
 
 	protected void configurePlugin(String name, Settings settings) {
 		EmbeddedElasticsearchPluginManager embeddedElasticsearchPluginManager =
-			new EmbeddedElasticsearchPluginManager(
-				name, settings.get("path.plugins"),
-				new PluginManagerFactoryImpl(settings),
-				new PluginZipFactoryImpl());
+			createEmbeddedElasticsearchPluginManager(name, settings);
 
 		try {
 			embeddedElasticsearchPluginManager.install();
@@ -262,6 +277,10 @@ public class EmbeddedElasticsearchConnection
 			"analysis-icu", "analysis-kuromoji", "analysis-smartcn",
 			"analysis-stempel"
 		};
+
+		for (String plugin : plugins) {
+			removeObsoletePlugin(plugin, settings);
+		}
 
 		for (String plugin : plugins) {
 			configurePlugin(plugin, settings);
@@ -309,6 +328,15 @@ public class EmbeddedElasticsearchConnection
 		}
 
 		return client;
+	}
+
+	protected EmbeddedElasticsearchPluginManager
+		createEmbeddedElasticsearchPluginManager(
+			String name, Settings settings) {
+
+		return new EmbeddedElasticsearchPluginManager(
+			name, settings.get("path.plugins"),
+			new PluginManagerFactoryImpl(settings), new PluginZipFactoryImpl());
 	}
 
 	protected Node createNode(Settings settings) {
@@ -390,6 +418,19 @@ public class EmbeddedElasticsearchConnection
 			settingsBuilder.put("index.refresh_interval", "1ms");
 			settingsBuilder.put("index.translog.flush_threshold_ops", "1");
 			settingsBuilder.put("index.translog.interval", "1ms");
+		}
+	}
+
+	protected void removeObsoletePlugin(String name, Settings settings) {
+		EmbeddedElasticsearchPluginManager embeddedElasticsearchPluginManager =
+			createEmbeddedElasticsearchPluginManager(name, settings);
+
+		try {
+			embeddedElasticsearchPluginManager.removeObsoletePlugin();
+		}
+		catch (IOException ioe) {
+			throw new RuntimeException(
+				"Unable to remove " + name + " plugin", ioe);
 		}
 	}
 
