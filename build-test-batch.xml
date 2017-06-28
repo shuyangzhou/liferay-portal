@@ -840,6 +840,7 @@ app.server.type=@{app.server.type}]]></echo>
 
 							<ant dir="portal-impl" inheritAll="false" target="test-class-group">
 								<property name="database.type" value="@{database.type}" />
+								<property name="jacoco.code.coverage" value="${jacoco.code.coverage.enabled}" />
 								<property name="test.class.group.index" value="${axis.variable}" />
 								<property name="test.type" value="integration" />
 							</ant>
@@ -1316,6 +1317,8 @@ app.server.type=@{app.server.type}]]></echo>
 							<gradle-execute dir="modules" task="testIntegration">
 								<arg value="-Ddatabase.type=@{database.type}" />
 								<arg value="-Dbuild.exclude.ant.plugin=true" />
+								<arg value="-Djacoco.code.coverage=${jacoco.code.coverage.enabled}" />
+								<arg value="-Djacoco.dump.file=${jacoco.dump.file}" />
 								<arg value="-Dtest.class.group.index=${axis.variable}" />
 							</gradle-execute>
 
@@ -2104,6 +2107,8 @@ app.server.type=@{app.server.type}]]></echo>
 			<test-action>
 				<gradle-execute dir="modules" task="test">
 					<arg value="-Dbuild.exclude.ant.plugin=true" />
+					<arg value="-Djacoco.code.coverage=${jacoco.code.coverage.enabled}" />
+					<arg value="-Djacoco.dump.file=${jacoco.dump.file}" />
 					<arg value="-Dtest.class.group.index=${axis.variable}" />
 				</gradle-execute>
 			</test-action>
@@ -2925,15 +2930,18 @@ ${output.content}</echo>
 		<run-batch-test>
 			<test-action>
 				<ant dir="portal-kernel" inheritAll="false" target="test-class-group">
+					<property name="jacoco.code.coverage" value="${jacoco.code.coverage.enabled}" />
 					<property name="test.class.group.index" value="${axis.variable}" />
 				</ant>
 
 				<ant dir="portal-impl" inheritAll="false" target="test-class-group">
+					<property name="jacoco.code.coverage" value="${jacoco.code.coverage.enabled}" />
 					<property name="test.class.group.index" value="${axis.variable}" />
 					<property name="test.type" value="unit" />
 				</ant>
 
 				<ant dir="util-java" inheritAll="false" target="test-class-group">
+					<property name="jacoco.code.coverage" value="${jacoco.code.coverage.enabled}" />
 					<property name="test.class.group.index" value="${axis.variable}" />
 				</ant>
 			</test-action>
