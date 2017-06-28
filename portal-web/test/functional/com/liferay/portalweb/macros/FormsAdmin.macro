@@ -30,10 +30,23 @@
 			<var name="fieldValue" value="${username}" />
 		</execute>
 
-		<execute macro="FormFields#editText">
-			<var name="fieldName" value="$password" />
-			<var name="fieldValue" value="${password}" />
-		</execute>
+		<var name="key_fieldName" value="$password" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="FormFields#PASSWORD_FIELD" />
+			<then>
+				<execute macro="FormFields#editPassword">
+					<var name="fieldName" value="$password" />
+					<var name="fieldValue" value="${password}" />
+				</execute>
+			</then>
+			<else>
+				<execute macro="FormFields#editText">
+					<var name="fieldName" value="$password" />
+					<var name="fieldValue" value="${password}" />
+				</execute>
+			</else>
+		</if>
 
 		<execute macro="FormsAdmin#editDataProviderOutputParameter">
 			<var name="outputParameterLabel" value="${outputParameterLabel}" />
@@ -78,33 +91,6 @@
 		<execute macro="Button#clickSave" />
 
 		<execute macro="Alert#viewSuccessMessage" />
-	</command>
-
-	<command name="searchFormEntries">
-		<for list="${fieldValueList}" param="fieldValue">
-			<execute macro="FormsAdmin#searchFormEntry">
-				<var name="searchTerm" value="${fieldValue}" />
-			</execute>
-
-			<execute macro="FormsAdmin#viewFormTableEntry">
-				<var name="fieldLabel" value="${fieldLabel}" />
-				<var name="fieldValue" value="${fieldValue}" />
-			</execute>
-
-			<for list="${fieldValueList}" param="fieldValueNotVisible">
-				<if>
-					<not>
-						<equals arg1="${fieldValueNotVisible}" arg2="${fieldValue}" />
-					</not>
-					<then>
-						<execute macro="FormsAdmin#viewTableEntryNotPresent">
-							<var name="fieldLabel" value="${fieldLabel}" />
-							<var name="fieldValue" value="${fieldValueNotVisible}" />
-						</execute>
-					</then>
-				</if>
-			</for>
-		</for>
 	</command>
 
 	<command name="searchFormEntry">
@@ -159,20 +145,6 @@
 			<var name="fieldName" value="${fieldName}" />
 			<var name="fieldValue" value="${fieldValue}" />
 		</execute>
-	</command>
-
-	<command name="viewFieldValueNotPresent">
-		<if>
-			<not>
-				<equals arg1="${fieldValueNotVisible}" arg2="${fieldValue}" />
-			</not>
-			<then>
-				<execute macro="FormsAdmin#viewTableEntryNotPresent">
-					<var name="fieldLabel" value="Text Field" />
-					<var name="fieldValue" value="${fieldValueNotVisible}" />
-				</execute>
-			</then>
-		</if>
 	</command>
 
 	<command name="viewForm">

@@ -14,8 +14,25 @@
 
 package com.liferay.poshi.runner.util;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+
+import java.net.URI;
+import java.net.URL;
+
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
@@ -48,6 +65,73 @@ public class FileUtil {
 		return exists(file);
 	}
 
+	public static List<URL> getIncludedResourceURLs(
+			FileSystem fileSystem, String[] includes, String... baseDirNames)
+		throws IOException {
+
+		final List<PathMatcher> pathMatchers = new ArrayList<>();
+
+		for (String include : includes) {
+			if (OSDetector.isWindows()) {
+				include = include.replace("/", "\\");
+			}
+
+			pathMatchers.add(fileSystem.getPathMatcher("glob:" + include));
+		}
+
+		final List<URL> filePaths = new ArrayList<>();
+
+		for (String baseDirName : baseDirNames) {
+			if (Validator.isNull(baseDirName)) {
+				continue;
+			}
+
+			Path path = fileSystem.getPath(baseDirName);
+
+			if (!Files.exists(path)) {
+				System.out.println(
+					"Directory " + baseDirName + " does not exist.");
+
+				continue;
+			}
+
+			Files.walkFileTree(
+				path,
+				new SimpleFileVisitor<Path>() {
+
+					@Override
+					public FileVisitResult visitFile(
+							Path filePath,
+							BasicFileAttributes basicFileAttributes)
+						throws IOException {
+
+						for (PathMatcher pathMatcher : pathMatchers) {
+							URI uri = filePath.toUri();
+
+							if (pathMatcher.matches(filePath)) {
+								filePaths.add(uri.toURL());
+
+								break;
+							}
+						}
+
+						return FileVisitResult.CONTINUE;
+					}
+
+				});
+		}
+
+		return filePaths;
+	}
+
+	public static List<URL> getIncludedResourceURLs(
+			String[] includes, String... baseDirNames)
+		throws IOException {
+
+		return getIncludedResourceURLs(
+			FileSystems.getDefault(), includes, baseDirNames);
+	}
+
 	public static String getSeparator() {
 		return File.separator;
 	}
@@ -60,6 +144,22 @@ public class FileUtil {
 		File file = new File(fileName);
 
 		return read(file);
+	}
+
+	public static String read(URL url) throws IOException {
+		StringBuilder sb = new StringBuilder();
+
+		BufferedReader bufferedReader = new BufferedReader(
+			new InputStreamReader(url.openStream()));
+
+		String line = null;
+
+		while ((line = bufferedReader.readLine()) != null) {
+			sb.append(line);
+			sb.append("\n");
+		}
+
+		return sb.toString();
 	}
 
 	public static void write(File file, byte[] bytes) throws IOException {

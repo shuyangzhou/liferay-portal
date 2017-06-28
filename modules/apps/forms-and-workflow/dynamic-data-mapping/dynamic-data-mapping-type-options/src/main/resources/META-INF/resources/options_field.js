@@ -215,7 +215,9 @@ AUI.add(
 
 						value.splice(newIndex, 0, value.splice(oldIndex, 1)[0]);
 
-						instance.setValue(value);
+						instance._setValue(value);
+
+						instance._renderOptions();
 					},
 
 					processEvaluationContext: function(context) {
@@ -242,7 +244,7 @@ AUI.add(
 
 						value.splice(index, 1);
 
-						instance.setValue(value);
+						instance._setValue(value);
 
 						if (index > 0 && value.length > 0) {
 							options[index - 1].focus();
@@ -250,6 +252,8 @@ AUI.add(
 						else {
 							instance.getLastOption().focus();
 						}
+
+						instance._renderOptions();
 					},
 
 					render: function() {

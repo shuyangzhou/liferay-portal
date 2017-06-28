@@ -108,6 +108,8 @@ AUI.add(
 						var formattedDate = instance.formatDate(isoDate);
 
 						instance.getTriggerNode().val(formattedDate);
+
+						instance.set('value', isoDate);
 					},
 
 					showErrorMessage: function() {

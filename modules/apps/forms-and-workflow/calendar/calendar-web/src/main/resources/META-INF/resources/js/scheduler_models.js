@@ -265,6 +265,27 @@ AUI.add(
 						);
 					},
 
+					_isPastEvent: function() {
+						var instance = this;
+
+						var endDate = instance.get('endDate');
+
+						var result;
+
+						var scheduler = instance.get('scheduler');
+
+						if (scheduler) {
+							var currentTime = scheduler.get('currentTime');
+
+							result = endDate.getTime() < currentTime.getTime();
+						}
+						else {
+							result = false;
+						}
+
+						return result;
+					},
+
 					_onLoadingChange: function(event) {
 						var instance = this;
 
@@ -315,6 +336,7 @@ AUI.add(
 						var node = instance.get('node');
 
 						node.toggleClass('calendar-portlet-event-approved', val === CalendarWorkflow.STATUS_APPROVED);
+						node.toggleClass('calendar-portlet-event-denied', val === CalendarWorkflow.STATUS_DENIED);
 						node.toggleClass('calendar-portlet-event-draft', val === CalendarWorkflow.STATUS_DRAFT);
 						node.toggleClass('calendar-portlet-event-maybe', val === CalendarWorkflow.STATUS_MAYBE);
 						node.toggleClass('calendar-portlet-event-pending', val === CalendarWorkflow.STATUS_PENDING);
@@ -516,7 +538,7 @@ AUI.add(
 						instance.getEventsPerPage(activeView, eventsPerPage),
 						instance.getLoadStartDate(activeView),
 						instance.getLoadEndDate(activeView, maxDaysDisplayed),
-						[CalendarWorkflow.STATUS_APPROVED, CalendarWorkflow.STATUS_DRAFT, CalendarWorkflow.STATUS_MAYBE, CalendarWorkflow.STATUS_PENDING],
+						[CalendarWorkflow.STATUS_APPROVED, CalendarWorkflow.STATUS_DENIED, CalendarWorkflow.STATUS_DRAFT, CalendarWorkflow.STATUS_MAYBE, CalendarWorkflow.STATUS_PENDING],
 						function(calendarBookings) {
 							if (filterCalendarBookings) {
 								calendarBookings = calendarBookings.filter(filterCalendarBookings);
