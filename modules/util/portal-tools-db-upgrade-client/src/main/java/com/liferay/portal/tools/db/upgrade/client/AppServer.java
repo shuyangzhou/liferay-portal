@@ -160,7 +160,7 @@ public class AppServer {
 	public void setExtraLibDirNames(String extraLibDirNames) {
 		if (extraLibDirNames != null) {
 			for (String extraLibDirName : extraLibDirNames.split(",")) {
-				_extraLibDirs.add(new File(extraLibDirNames, extraLibDirName));
+				_extraLibDirs.add(new File(_dir, extraLibDirName));
 			}
 		}
 	}
