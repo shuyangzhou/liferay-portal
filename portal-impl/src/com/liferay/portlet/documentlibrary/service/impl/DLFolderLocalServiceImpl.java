@@ -29,8 +29,10 @@ import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.document.library.kernel.util.DLValidatorUtil;
 import com.liferay.document.library.kernel.util.comparator.FolderIdComparator;
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
+import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.increment.BufferedIncrement;
 import com.liferay.portal.kernel.increment.DateOverrideIncrement;
@@ -68,6 +70,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFolder;
 import com.liferay.portal.util.RepositoryUtil;
 import com.liferay.portlet.documentlibrary.model.impl.DLFolderImpl;
+import com.liferay.portlet.documentlibrary.model.impl.DLFolderModelImpl;
 import com.liferay.portlet.documentlibrary.service.base.DLFolderLocalServiceBaseImpl;
 
 import java.io.Serializable;
@@ -1088,7 +1091,31 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 			return;
 		}
 
-		DLFolder dlFolder = dlFolderPersistence.findByPrimaryKey(folderId);
+		DLFolder dlFolder = null;
+
+		try {
+			dlFolder = dlFolderPersistence.findByPrimaryKey(folderId);
+		}
+		catch (NoSuchFolderException nsfe) {
+			System.out.println(
+				"##########Direct from cache : " +
+					EntityCacheUtil.getResult(
+						DLFolderModelImpl.ENTITY_CACHE_ENABLED,
+						DLFolderImpl.class, folderId));
+
+			Session session = dlFolderPersistence.openSession();
+
+			try {
+				System.out.println(
+					"##########Directly from hibernate : " +
+						session.get(DLFolderImpl.class, folderId));
+			}
+			finally {
+				dlFolderPersistence.closeSession(session);
+			}
+
+			throw nsfe;
+		}
 
 		if (lastPostDate.before(dlFolder.getLastPostDate())) {
 			return;
