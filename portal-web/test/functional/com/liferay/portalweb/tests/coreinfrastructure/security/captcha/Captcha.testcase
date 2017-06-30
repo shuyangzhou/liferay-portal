@@ -2,6 +2,7 @@
 	<property name="osgi.module.configuration.file.names" value="com.liferay.captcha.configuration.CaptchaConfiguration.config" />
 	<property name="osgi.module.configurations" value="maxChallenges=&quot;0&quot;" />
 	<property name="portal.upstream" value="true" />
+	<property name="test.assert.warning.exceptions" value="true" />
 	<property name="testray.main.component.name" value="Security" />
 
 	<set-up>
@@ -35,8 +36,8 @@
 	<command name="ViewRecaptchaEnabled" priority="4">
 		<property name="test.name.skip.portal.instance" value="Captcha#ViewRecaptchaEnabled" />
 
-		<var name="recaptchaPrivateKey" property-value="recaptcha.private.key" />
-		<var name="recaptchaPublicKey" property-value="recaptcha.public.key" />
+		<var method="TestPropsUtil#get('recaptcha.private.key')" name="recaptchaPrivateKey" />
+		<var method="TestPropsUtil#get('recaptcha.public.key')" name="recaptchaPublicKey" />
 
 		<execute macro="User#firstLoginPG" />
 

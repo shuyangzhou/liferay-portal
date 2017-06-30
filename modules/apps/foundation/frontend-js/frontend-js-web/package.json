@@ -1,6 +1,6 @@
 {
 	"dependencies": {
-		"liferay-amd-loader": "2.0.0",
+		"liferay-amd-loader": "2.1.0",
 		"svg4everybody": "^2.1.8"
 	},
 	"devDependencies": {
@@ -18,5 +18,5 @@
 		"metal-karma-config": "^2.1.1"
 	},
 	"name": "frontend-js-web",
-	"version": "1.0.44"
+	"version": "1.0.45"
 }

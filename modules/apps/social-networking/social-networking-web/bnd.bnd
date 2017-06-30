@@ -1,5 +1,5 @@
 Bundle-Name: Liferay Social Networking Web
 Bundle-SymbolicName: com.liferay.social.networking.web
-Bundle-Version: 1.0.15
+Bundle-Version: 1.0.16
 Web-ContextPath: /social-networking-web
 -dsannotations-options: inherit

@@ -19,7 +19,6 @@ AUI.add(
 			{
 				ATTRS: {
 					alert: {
-						valueFn: '_valueAlert'
 					},
 
 					context: {
@@ -154,7 +153,6 @@ AUI.add(
 
 						clearInterval(instance._intervalId);
 
-						instance.get('alert').destroy();
 						instance.get('formBuilder').destroy();
 						instance.get('ruleBuilder').destroy();
 
@@ -564,9 +562,11 @@ AUI.add(
 
 						var publishMessage = Liferay.Language.get('the-form-was-published-successfully-access-it-with-this-url-x');
 
-						var formUrl = '<span style="font-weight: 500">' + instance._createFormURL() + '</span>';
+						var formUrl = instance._createFormURL();
 
-						publishMessage = publishMessage.replace(/\{0\}/gim, formUrl);
+						var span = '<span style="font-weight: 500"><a href=' + formUrl + ' target="_blank">' + formUrl + '</a></span>';
+
+						publishMessage = publishMessage.replace(/\{0\}/gim, span);
 
 						instance._showAlert(publishMessage, 'success');
 
@@ -787,14 +787,23 @@ AUI.add(
 
 						var alert = instance.get('alert');
 
+						if (alert) {
+							alert.destroy();
+						}
+
 						var icon = 'exclamation-full';
 
 						if (type === 'success') {
 							icon = 'check';
 						}
 
-						alert.setAttrs(
+						alert = new Liferay.Alert(
 							{
+								closeable: true,
+								delay: {
+									hide: 3000,
+									show: 0
+								},
 								icon: icon,
 								message: message,
 								type: type
@@ -806,6 +815,8 @@ AUI.add(
 						}
 
 						alert.show();
+
+						instance.set('alert', alert);
 					},
 
 					_syncDescription: function() {
@@ -836,16 +847,6 @@ AUI.add(
 						localizedName[editingLanguageId] = name;
 
 						instance._setName(name);
-					},
-
-					_valueAlert: function() {
-						var instance = this;
-
-						return new Liferay.Alert(
-							{
-								closeable: true
-							}
-						);
 					},
 
 					_valueFormBuilder: function() {
