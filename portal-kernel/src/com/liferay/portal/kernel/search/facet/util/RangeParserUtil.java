@@ -33,10 +33,14 @@ public class RangeParserUtil {
 		int y = range.indexOf(" TO ");
 		int z = range.indexOf(StringPool.CLOSE_BRACKET);
 
-		String lower = range.substring(x + 1, y).trim();
-		String upper = range.substring(y + 4, z).trim();
+		if ((x < 0) || (y < 0) || (z < 0)) {
+			return new String[] {null, null};
+		}
 
-		return new String[] {lower, upper};
+		String lower = range.substring(x + 1, y);
+		String upper = range.substring(y + 4, z);
+
+		return new String[] {lower.trim(), upper.trim()};
 	}
 
 }

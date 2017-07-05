@@ -146,6 +146,10 @@ public class JournalContentDisplayContext {
 		long articleResourcePrimKey = ParamUtil.getLong(
 			_portletRequest, "articleResourcePrimKey");
 
+		if (articleResourcePrimKey == -1) {
+			return _article;
+		}
+
 		if (articleResourcePrimKey > 0) {
 			_article = JournalArticleLocalServiceUtil.fetchLatestArticle(
 				articleResourcePrimKey, WorkflowConstants.STATUS_ANY, true);

@@ -16,8 +16,11 @@ package com.liferay.portal.osgi.web.wab.extender.internal.adapter;
 
 import java.io.IOException;
 
+import java.util.Enumeration;
+
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -27,8 +30,11 @@ import javax.servlet.ServletResponse;
  */
 public class ServletExceptionAdapter implements Servlet {
 
-	public ServletExceptionAdapter(Servlet servlet) {
+	public ServletExceptionAdapter(
+		Servlet servlet, ModifiableServletContext modifiableServletContext) {
+
 		_servlet = servlet;
+		_modifiableServletContext = modifiableServletContext;
 	}
 
 	@Override
@@ -53,7 +59,9 @@ public class ServletExceptionAdapter implements Servlet {
 	@Override
 	public void init(final ServletConfig servletConfig) {
 		try {
-			_servlet.init(servletConfig);
+			_servlet.init(
+				new ServletConfigWrapper(
+					servletConfig, _modifiableServletContext));
 		}
 		catch (Exception e) {
 			_exception = e;
@@ -69,6 +77,38 @@ public class ServletExceptionAdapter implements Servlet {
 	}
 
 	private Exception _exception;
+	private ModifiableServletContext _modifiableServletContext;
 	private final Servlet _servlet;
+
+	private static class ServletConfigWrapper implements ServletConfig {
+
+		public ServletConfigWrapper(
+			ServletConfig wrappedServletConfig,
+			ModifiableServletContext modifiableServletContext) {
+
+			_wrappedServletConfig = wrappedServletConfig;
+			_modifiableServletContext = modifiableServletContext;
+		}
+
+		public String getInitParameter(String name) {
+			return _wrappedServletConfig.getInitParameter(name);
+		}
+
+		public Enumeration getInitParameterNames() {
+			return _wrappedServletConfig.getInitParameterNames();
+		}
+
+		public ServletContext getServletContext() {
+			return (ServletContext)_modifiableServletContext;
+		}
+
+		public String getServletName() {
+			return _wrappedServletConfig.getServletName();
+		}
+
+		private ModifiableServletContext _modifiableServletContext;
+		private final ServletConfig _wrappedServletConfig;
+
+	}
 
 }

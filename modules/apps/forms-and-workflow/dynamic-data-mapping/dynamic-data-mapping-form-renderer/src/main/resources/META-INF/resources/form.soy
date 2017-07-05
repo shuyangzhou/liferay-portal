@@ -138,7 +138,7 @@
 		<div class="lfr-ddm-form-content">
 			{if length($pages) > 1}
 				<div class="lfr-ddm-form-wizard">
-					<ul class="multi-step-progress-bar">
+					<ul class="multi-step-progress-bar multi-step-progress-bar-collapse">
 						{foreach $page in $pages}
 							<li {if isFirst($page)}class="active"{/if}>
 								<div class="progress-bar-title">{$page.title|noAutoescape}</div>

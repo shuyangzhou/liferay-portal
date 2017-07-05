@@ -1638,13 +1638,23 @@ Maven repository.
 artifact in a Maven repository.
 - [LPS-73141]: Configure the `installCache` task to install the project's
 artifact in the `.m2-tmp` directory by default.
-- [LPS-73352]: Add Jacoco Java Agent to the `test` and `testIntegration` tasks,
+- [LPS-73352]: Add JaCoCo Java Agent to the `test` and `testIntegration` tasks,
 if the system property `jacoco.code.coverage` is set to `true`.
 
 ## 3.8.1 - 2017-06-30
 
 ### Changed
 - [LPS-65930]: Update the [Liferay Gradle Plugins] dependency to version 3.3.34.
+
+## 3.8.2 - 2017-07-03
+
+### Changed
+- [LPS-73352]: Rename classes and configuration names from `Jacoco` to `JaCoCo`.
+
+## 3.8.3 - 2017-07-04
+
+### Changed
+- [LPS-73383]: Update the [Liferay Gradle Plugins] dependency to version 3.3.35.
 
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Liferay CDN]: https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public
@@ -1823,6 +1833,7 @@ if the system property `jacoco.code.coverage` is set to `true`.
 [LPS-73289]: https://issues.liferay.com/browse/LPS-73289
 [LPS-73327]: https://issues.liferay.com/browse/LPS-73327
 [LPS-73352]: https://issues.liferay.com/browse/LPS-73352
+[LPS-73383]: https://issues.liferay.com/browse/LPS-73383
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981

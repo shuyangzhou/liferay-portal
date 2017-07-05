@@ -246,14 +246,16 @@ AUI.add(
 
 						instance._setValue(value);
 
+						instance.fire('removeOption');
+
+						instance.render();
+
 						if (index > 0 && value.length > 0) {
 							options[index - 1].focus();
 						}
 						else {
 							instance.getLastOption().focus();
 						}
-
-						instance._renderOptions();
 					},
 
 					render: function() {

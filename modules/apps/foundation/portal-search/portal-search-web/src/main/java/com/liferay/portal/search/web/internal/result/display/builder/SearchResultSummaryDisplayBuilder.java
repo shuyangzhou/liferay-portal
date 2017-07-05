@@ -215,6 +215,9 @@ public class SearchResultSummaryDisplayBuilder {
 		SearchResultSummaryDisplayContext searchResultSummaryDisplayContext =
 			new SearchResultSummaryDisplayContext();
 
+		searchResultSummaryDisplayContext.setClassName(className);
+		searchResultSummaryDisplayContext.setClassPK(classPK);
+
 		if (Validator.isNotNull(summary.getContent())) {
 			searchResultSummaryDisplayContext.setContent(
 				summary.getHighlightedContent());
@@ -223,6 +226,8 @@ public class SearchResultSummaryDisplayBuilder {
 
 		searchResultSummaryDisplayContext.setHighlightedTitle(
 			summary.getHighlightedTitle());
+		searchResultSummaryDisplayContext.setPortletURL(
+			_portletURLFactory.getPortletURL());
 
 		if (_abridged) {
 			return searchResultSummaryDisplayContext;
@@ -257,14 +262,10 @@ public class SearchResultSummaryDisplayBuilder {
 		if (hasAssetCategoriesOrTags(assetEntry)) {
 			searchResultSummaryDisplayContext.setAssetCategoriesOrTagsVisible(
 				true);
-			searchResultSummaryDisplayContext.setClassName(className);
-			searchResultSummaryDisplayContext.setClassPK(classPK);
 			searchResultSummaryDisplayContext.setFieldAssetCategoryIds(
 				Field.ASSET_CATEGORY_IDS);
 			searchResultSummaryDisplayContext.setFieldAssetTagNames(
 				Field.ASSET_TAG_NAMES);
-			searchResultSummaryDisplayContext.setPortletURL(
-				_portletURLFactory.getPortletURL());
 		}
 	}
 

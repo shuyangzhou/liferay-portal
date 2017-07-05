@@ -1,7 +1,7 @@
 Bundle-Description: Creates a Liferay form field module project using the Soy templating language.
 Bundle-Name: Liferay Project Templates Form Field
 Bundle-SymbolicName: com.liferay.project.templates.form.field
-Bundle-Version: 1.0.1
+Bundle-Version: 1.0.2
 -removeheaders:\
 	Import-Package,\
 	Private-Package,\

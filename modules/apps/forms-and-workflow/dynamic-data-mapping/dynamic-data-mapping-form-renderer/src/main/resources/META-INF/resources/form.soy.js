@@ -93,7 +93,7 @@ if (goog.DEBUG) {
 ddm.wizard_form = function(opt_data, opt_ignored) {
   var output = '<div class="lfr-ddm-form-container" id="' + soy.$$escapeHtmlAttribute(opt_data.containerId) + '"><div class="lfr-ddm-form-content">';
   if (opt_data.pages.length > 1) {
-    output += '<div class="lfr-ddm-form-wizard"><ul class="multi-step-progress-bar">';
+    output += '<div class="lfr-ddm-form-wizard"><ul class="multi-step-progress-bar multi-step-progress-bar-collapse">';
     var pageList75 = opt_data.pages;
     var pageListLen75 = pageList75.length;
     for (var pageIndex75 = 0; pageIndex75 < pageListLen75; pageIndex75++) {
