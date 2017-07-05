@@ -21,7 +21,15 @@ import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermissio
  */
 public class PortalClassLoaderUtil {
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #getPortalClassLoader()}
+	 */
+	@Deprecated
 	public static ClassLoader getClassLoader() {
+		return getPortalClassLoader();
+	}
+
+	public static ClassLoader getPortalClassLoader() {
 		PortalRuntimePermission.checkGetClassLoader("portal");
 
 		return _classLoader;
