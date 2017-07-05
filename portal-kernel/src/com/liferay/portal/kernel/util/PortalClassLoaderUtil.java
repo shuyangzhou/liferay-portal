@@ -43,7 +43,15 @@ public class PortalClassLoaderUtil {
 		return false;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #setPortalClassLoader(ClassLoader)}
+	 */
+	@Deprecated
 	public static void setClassLoader(ClassLoader classLoader) {
+		setPortalClassLoader(classLoader);
+	}
+
+	public static void setPortalClassLoader(ClassLoader classLoader) {
 		PortalRuntimePermission.checkSetBeanProperty(
 			PortalClassLoaderUtil.class);
 
