@@ -66,7 +66,7 @@ public class IntrabandRPCUtilTest {
 	public void testExecuteFail() throws Exception {
 		Class<?> clazz = getClass();
 
-		PortalClassLoaderUtil.setClassLoader(clazz.getClassLoader());
+		PortalClassLoaderUtil.setPortalClassLoader(clazz.getClassLoader());
 
 		final Exception exception = new Exception("Execution error");
 
@@ -111,7 +111,7 @@ public class IntrabandRPCUtilTest {
 	public void testExecuteSuccess() throws Exception {
 		Class<?> clazz = getClass();
 
-		PortalClassLoaderUtil.setClassLoader(clazz.getClassLoader());
+		PortalClassLoaderUtil.setPortalClassLoader(clazz.getClassLoader());
 
 		MockIntraband mockIntraband = new MockIntraband() {
 

@@ -54,7 +54,7 @@ public class IntrabandBridgeMessageListenerTest {
 
 	@Test
 	public void testReceive() throws ClassNotFoundException {
-		PortalClassLoaderUtil.setClassLoader(
+		PortalClassLoaderUtil.setPortalClassLoader(
 			IntrabandBridgeMessageListenerTest.class.getClassLoader());
 
 		IntrabandBridgeMessageListener intrabandBridgeMessageListener =

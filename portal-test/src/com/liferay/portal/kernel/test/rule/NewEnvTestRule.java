@@ -270,7 +270,7 @@ public class NewEnvTestRule implements TestRule {
 
 		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
 
-		PortalClassLoaderUtil.setClassLoader(contextClassLoader);
+		PortalClassLoaderUtil.setPortalClassLoader(contextClassLoader);
 	}
 
 	private static class TestProcessCallable

@@ -189,7 +189,8 @@ public class GetDataProviderParametersSettingsMVCResourceCommandTest {
 	}
 
 	protected void setUpPortalClassLoaderUtil() {
-		PortalClassLoaderUtil.setClassLoader(PortalImpl.class.getClassLoader());
+		PortalClassLoaderUtil.setPortalClassLoader(
+			PortalImpl.class.getClassLoader());
 	}
 
 	protected void setUpResourceBundleUtil() {

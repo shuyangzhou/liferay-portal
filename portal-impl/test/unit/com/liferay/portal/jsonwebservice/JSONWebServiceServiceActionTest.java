@@ -64,7 +64,7 @@ public class JSONWebServiceServiceActionTest
 
 		Class<?> clazz = JSONWebServiceServiceAction.class;
 
-		PortalClassLoaderUtil.setClassLoader(clazz.getClassLoader());
+		PortalClassLoaderUtil.setPortalClassLoader(clazz.getClassLoader());
 
 		PortalUtil portalUtil = new PortalUtil();
 
@@ -77,7 +77,7 @@ public class JSONWebServiceServiceActionTest
 
 	@AfterClass
 	public static void tearDownClass() throws Exception {
-		PortalClassLoaderUtil.setClassLoader(null);
+		PortalClassLoaderUtil.setPortalClassLoader(null);
 	}
 
 	@Before

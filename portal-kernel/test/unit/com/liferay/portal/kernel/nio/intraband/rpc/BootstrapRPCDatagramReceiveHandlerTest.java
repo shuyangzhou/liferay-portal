@@ -51,7 +51,7 @@ public class BootstrapRPCDatagramReceiveHandlerTest {
 	public void testReceive() throws Exception {
 		Class<?> clazz = getClass();
 
-		PortalClassLoaderUtil.setClassLoader(clazz.getClassLoader());
+		PortalClassLoaderUtil.setPortalClassLoader(clazz.getClassLoader());
 
 		BootstrapRPCDatagramReceiveHandler bootstrapRPCDatagramReceiveHandler =
 			new BootstrapRPCDatagramReceiveHandler();

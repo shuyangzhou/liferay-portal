@@ -62,7 +62,7 @@ public class DeserializerTest {
 	public void setUp() {
 		Class<?> clazz = getClass();
 
-		PortalClassLoaderUtil.setClassLoader(clazz.getClassLoader());
+		PortalClassLoaderUtil.setPortalClassLoader(clazz.getClassLoader());
 	}
 
 	@Test

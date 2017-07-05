@@ -70,7 +70,7 @@ public class RPCDatagramReceiveHandlerTest {
 	public void testDoReceive() throws Exception {
 		Class<?> clazz = getClass();
 
-		PortalClassLoaderUtil.setClassLoader(clazz.getClassLoader());
+		PortalClassLoaderUtil.setPortalClassLoader(clazz.getClassLoader());
 
 		RPCDatagramReceiveHandler rpcDatagramReceiveHandler =
 			new RPCDatagramReceiveHandler();
