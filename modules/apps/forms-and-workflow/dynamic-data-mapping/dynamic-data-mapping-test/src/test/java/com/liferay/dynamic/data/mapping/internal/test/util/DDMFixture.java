@@ -97,7 +97,7 @@ public class DDMFixture {
 	}
 
 	protected void setUpPortalClassLoaderUtil(ClassLoader classLoader) {
-		_classLoader = PortalClassLoaderUtil.getClassLoader();
+		_classLoader = PortalClassLoaderUtil.getPortalClassLoader();
 
 		PortalClassLoaderUtil.setClassLoader(classLoader);
 	}

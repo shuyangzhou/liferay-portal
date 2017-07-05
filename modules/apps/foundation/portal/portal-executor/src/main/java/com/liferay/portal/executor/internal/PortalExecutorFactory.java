@@ -95,7 +95,7 @@ public class PortalExecutorFactory {
 			DEFAULT_CONFIG_NAME, 0, 10, 60, TimeUnit.SECONDS, true,
 			Integer.MAX_VALUE, new AbortPolicy(),
 			new ClearThreadLocalThreadPoolHandler(), Thread.NORM_PRIORITY,
-			PortalClassLoaderUtil.getClassLoader());
+			PortalClassLoaderUtil.getPortalClassLoader());
 	private final ConcurrentMap<String, PortalExecutorConfig>
 		_portalExecutorConfigs = new ConcurrentHashMap<>();
 

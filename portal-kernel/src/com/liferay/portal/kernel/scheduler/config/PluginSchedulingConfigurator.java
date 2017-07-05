@@ -47,7 +47,7 @@ public class PluginSchedulingConfigurator {
 
 		try {
 			ClassLoader portalClassLoader =
-				PortalClassLoaderUtil.getClassLoader();
+				PortalClassLoaderUtil.getPortalClassLoader();
 
 			currentThread.setContextClassLoader(portalClassLoader);
 

@@ -42,7 +42,8 @@ public class InstancePool {
 			return instance;
 		}
 
-		ClassLoader portalClassLoader = PortalClassLoaderUtil.getClassLoader();
+		ClassLoader portalClassLoader =
+			PortalClassLoaderUtil.getPortalClassLoader();
 
 		try {
 			Class<?> clazz = portalClassLoader.loadClass(className);

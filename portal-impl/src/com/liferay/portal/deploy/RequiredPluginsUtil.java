@@ -105,7 +105,7 @@ public class RequiredPluginsUtil {
 				}
 
 				ClassLoader classLoader =
-					PortalClassLoaderUtil.getClassLoader();
+					PortalClassLoaderUtil.getPortalClassLoader();
 
 				InputStream inputStream = classLoader.getResourceAsStream(
 					"com/liferay/portal/deploy/dependencies/plugins" + (i + 1) +

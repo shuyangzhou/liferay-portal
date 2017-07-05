@@ -126,7 +126,7 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 			return;
 		}
 
-		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
+		ClassLoader classLoader = PortalClassLoaderUtil.getPortalClassLoader();
 
 		if (_rejectedExecutionHandler == null) {
 			_rejectedExecutionHandler = createRejectionExecutionHandler();

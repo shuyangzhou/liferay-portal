@@ -128,7 +128,7 @@ public class ProcessUtil {
 					Integer.MAX_VALUE, new AbortPolicy(),
 					new NamedThreadFactory(
 						ProcessUtil.class.getName(), Thread.MIN_PRIORITY,
-						PortalClassLoaderUtil.getClassLoader()),
+						PortalClassLoaderUtil.getPortalClassLoader()),
 					new ThreadPoolHandlerAdapter());
 			}
 		}

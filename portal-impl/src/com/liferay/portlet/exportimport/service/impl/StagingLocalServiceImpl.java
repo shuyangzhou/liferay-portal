@@ -865,7 +865,7 @@ public class StagingLocalServiceImpl extends StagingLocalServiceBaseImpl {
 
 		try {
 			currentThread.setContextClassLoader(
-				PortalClassLoaderUtil.getClassLoader());
+				PortalClassLoaderUtil.getPortalClassLoader());
 
 			return GroupServiceHttp.getGroup(httpPrincipal, groupId);
 		}

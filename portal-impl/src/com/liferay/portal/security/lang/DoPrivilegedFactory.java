@@ -126,7 +126,7 @@ public class DoPrivilegedFactory
 		throws BeansException {
 
 		_classLoader = AggregateClassLoader.getAggregateClassLoader(
-			PortalClassLoaderUtil.getClassLoader(),
+			PortalClassLoaderUtil.getPortalClassLoader(),
 			applicationContext.getClassLoader());
 	}
 

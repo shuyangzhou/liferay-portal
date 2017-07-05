@@ -56,7 +56,7 @@ public class PortalClassLoaderFilter
 
 		try {
 			currentThread.setContextClassLoader(
-				PortalClassLoaderUtil.getClassLoader());
+				PortalClassLoaderUtil.getPortalClassLoader());
 
 			FilterChain contextClassLoaderFilterChain =
 				(FilterChain)ProxyUtil.newProxyInstance(
@@ -120,7 +120,7 @@ public class PortalClassLoaderFilter
 
 		try {
 			currentThread.setContextClassLoader(
-				PortalClassLoaderUtil.getClassLoader());
+				PortalClassLoaderUtil.getPortalClassLoader());
 
 			_filter.destroy();
 		}
@@ -131,7 +131,7 @@ public class PortalClassLoaderFilter
 
 	@Override
 	protected void doPortalInit() throws Exception {
-		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
+		ClassLoader classLoader = PortalClassLoaderUtil.getPortalClassLoader();
 
 		String filterClass = _filterConfig.getInitParameter("filter-class");
 

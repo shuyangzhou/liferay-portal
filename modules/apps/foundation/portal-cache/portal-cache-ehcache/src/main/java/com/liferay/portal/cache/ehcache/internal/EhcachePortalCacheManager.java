@@ -208,7 +208,8 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 				_configFile);
 
 		if (configFileURL == null) {
-			ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
+			ClassLoader classLoader =
+				PortalClassLoaderUtil.getPortalClassLoader();
 
 			configFileURL = classLoader.getResource(_configFile);
 		}
@@ -324,7 +325,7 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 
 		currentThread.setContextClassLoader(
 			AggregateClassLoader.getAggregateClassLoader(
-				PortalClassLoaderUtil.getClassLoader(),
+				PortalClassLoaderUtil.getPortalClassLoader(),
 				portalCacheConfiguratorSettings.getClassLoader()));
 
 		try {

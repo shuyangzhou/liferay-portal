@@ -56,7 +56,7 @@ public class CustomizationSettingsProcessor implements ColumnProcessor {
 
 		try {
 			ClassLoaderUtil.setContextClassLoader(
-				PortalClassLoaderUtil.getClassLoader());
+				PortalClassLoaderUtil.getPortalClassLoader());
 
 			_pageContext = jspFactory.getPageContext(
 				new JSPSupportServlet(request.getServletContext()), request,

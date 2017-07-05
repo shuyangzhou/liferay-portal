@@ -137,7 +137,7 @@ public class LayoutStagingHandler implements InvocationHandler, Serializable {
 
 	private Object _clone() {
 		return ProxyUtil.newProxyInstance(
-			PortalClassLoaderUtil.getClassLoader(),
+			PortalClassLoaderUtil.getPortalClassLoader(),
 			new Class<?>[] {Layout.class},
 			new LayoutStagingHandler(_layout, _layoutRevision));
 	}
@@ -249,7 +249,7 @@ public class LayoutStagingHandler implements InvocationHandler, Serializable {
 	private LayoutType _getLayoutType() {
 		return LayoutTypePortletFactoryUtil.create(
 			(Layout)ProxyUtil.newProxyInstance(
-				PortalClassLoaderUtil.getClassLoader(),
+				PortalClassLoaderUtil.getPortalClassLoader(),
 				new Class<?>[] {Layout.class},
 				new LayoutStagingHandler(_layout, _layoutRevision)));
 	}
@@ -270,7 +270,7 @@ public class LayoutStagingHandler implements InvocationHandler, Serializable {
 
 	private Object _toEscapedModel() {
 		return ProxyUtil.newProxyInstance(
-			PortalClassLoaderUtil.getClassLoader(),
+			PortalClassLoaderUtil.getPortalClassLoader(),
 			new Class<?>[] {Layout.class},
 			new LayoutStagingHandler(
 				_layout.toEscapedModel(), _layoutRevision.toEscapedModel()));

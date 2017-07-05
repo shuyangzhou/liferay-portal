@@ -31,7 +31,8 @@ public class PortalLoginModule implements LoginModule {
 	public PortalLoginModule() {
 		try {
 			Class<?> clazz = Class.forName(
-				_CLASS_NAME, true, PortalClassLoaderUtil.getClassLoader());
+				_CLASS_NAME, true,
+				PortalClassLoaderUtil.getPortalClassLoader());
 
 			_loginModule = (LoginModule)clazz.newInstance();
 		}

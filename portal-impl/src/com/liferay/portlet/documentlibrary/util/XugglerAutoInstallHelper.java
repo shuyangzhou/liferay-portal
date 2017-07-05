@@ -75,7 +75,7 @@ public class XugglerAutoInstallHelper {
 			return;
 		}
 
-		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
+		ClassLoader classLoader = PortalClassLoaderUtil.getPortalClassLoader();
 
 		PortalClassLoaderUtil.setClassLoader(
 			ClassLoader.getSystemClassLoader());

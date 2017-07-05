@@ -54,7 +54,8 @@ public class ClassResolverUtil {
 	}
 
 	public static Class<?> resolveByPortalClassLoader(String className) {
-		ClassLoader portalClassLoader = PortalClassLoaderUtil.getClassLoader();
+		ClassLoader portalClassLoader =
+			PortalClassLoaderUtil.getPortalClassLoader();
 
 		try {
 			return Class.forName(className, false, portalClassLoader);

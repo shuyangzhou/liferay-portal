@@ -66,7 +66,8 @@ public class PortalClassLoaderServlet
 
 		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
 
-		ClassLoader portalClassLoader = PortalClassLoaderUtil.getClassLoader();
+		ClassLoader portalClassLoader =
+			PortalClassLoaderUtil.getPortalClassLoader();
 
 		try {
 			currentThread.setContextClassLoader(portalClassLoader);
@@ -98,7 +99,7 @@ public class PortalClassLoaderServlet
 
 		try {
 			currentThread.setContextClassLoader(
-				PortalClassLoaderUtil.getClassLoader());
+				PortalClassLoaderUtil.getPortalClassLoader());
 
 			_servlet.service(request, response);
 		}
@@ -114,7 +115,7 @@ public class PortalClassLoaderServlet
 
 		try {
 			currentThread.setContextClassLoader(
-				PortalClassLoaderUtil.getClassLoader());
+				PortalClassLoaderUtil.getPortalClassLoader());
 
 			if (_servlet != null) {
 				_servlet.destroy();

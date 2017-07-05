@@ -798,7 +798,7 @@ public abstract class BaseDDMTestCase extends PowerMockito {
 		mockStatic(PortalClassLoaderUtil.class);
 
 		when(
-			PortalClassLoaderUtil.getClassLoader()
+			PortalClassLoaderUtil.getPortalClassLoader()
 		).thenReturn(
 			_classLoader
 		);

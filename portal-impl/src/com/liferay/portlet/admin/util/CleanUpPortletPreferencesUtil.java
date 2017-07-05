@@ -131,7 +131,7 @@ public class CleanUpPortletPreferencesUtil {
 					layoutStagingHandler.setLayoutRevision(layoutRevision);
 
 					Layout proxiedLayout = (Layout)ProxyUtil.newProxyInstance(
-						PortalClassLoaderUtil.getClassLoader(),
+						PortalClassLoaderUtil.getPortalClassLoader(),
 						new Class<?>[] {Layout.class}, layoutStagingHandler);
 
 					if (containsPortlet(

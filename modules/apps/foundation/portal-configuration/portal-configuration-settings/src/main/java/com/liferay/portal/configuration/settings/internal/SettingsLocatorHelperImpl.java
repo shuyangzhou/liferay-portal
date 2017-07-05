@@ -249,7 +249,7 @@ public class SettingsLocatorHelperImpl implements SettingsLocatorHelper {
 		_portalPropertiesSettings = new PropertiesSettings(
 			new LocationVariableResolver(
 				new ClassLoaderResourceManager(
-					PortalClassLoaderUtil.getClassLoader()),
+					PortalClassLoaderUtil.getPortalClassLoader()),
 				this),
 			props.getProperties());
 	}

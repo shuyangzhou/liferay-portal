@@ -145,7 +145,8 @@ public class CounterLocalServiceTest {
 
 		builder.setArguments(arguments);
 		builder.setBootstrapClassPath(classPath);
-		builder.setReactClassLoader(PortalClassLoaderUtil.getClassLoader());
+		builder.setReactClassLoader(
+			PortalClassLoaderUtil.getPortalClassLoader());
 		builder.setRuntimeClassPath(classPath);
 
 		ProcessConfig processConfig = builder.build();
