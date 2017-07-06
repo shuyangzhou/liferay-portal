@@ -223,7 +223,7 @@ public class Log4JUtil {
 	}
 
 	private static Map<String, String> _getCustomLogSettings() {
-		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
+		ClassLoader classLoader = PortalClassLoaderUtil.getPortalClassLoader();
 
 		if (Log4JUtil.class.getClassLoader() == classLoader) {
 			return _customLogSettings;

@@ -44,7 +44,8 @@ public class PortletClassInvoker {
 
 		portletId = _getRootPortletId(portletId);
 
-		ClassLoader portletClassLoader = PortalClassLoaderUtil.getClassLoader();
+		ClassLoader portletClassLoader =
+			PortalClassLoaderUtil.getPortalClassLoader();
 
 		PortletBag portletBag = PortletBagPool.get(portletId);
 

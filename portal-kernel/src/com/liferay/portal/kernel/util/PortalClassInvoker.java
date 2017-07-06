@@ -45,7 +45,7 @@ public class PortalClassInvoker {
 
 		try {
 			currentThread.setContextClassLoader(
-				PortalClassLoaderUtil.getClassLoader());
+				PortalClassLoaderUtil.getPortalClassLoader());
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, arguments);

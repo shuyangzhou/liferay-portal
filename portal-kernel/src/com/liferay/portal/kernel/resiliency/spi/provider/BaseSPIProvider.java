@@ -51,7 +51,8 @@ public abstract class BaseSPIProvider implements SPIProvider {
 		builder.setArguments(spiConfiguration.getJVMArguments());
 		builder.setBootstrapClassPath(getClassPath());
 		builder.setJavaExecutable(spiConfiguration.getJavaExecutable());
-		builder.setReactClassLoader(PortalClassLoaderUtil.getClassLoader());
+		builder.setReactClassLoader(
+			PortalClassLoaderUtil.getPortalClassLoader());
 		builder.setRuntimeClassPath(getClassPath());
 
 		RemoteSPI remoteSPI = createRemoteSPI(spiConfiguration);

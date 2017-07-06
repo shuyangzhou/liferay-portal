@@ -68,7 +68,7 @@ public abstract class BaseDDMFormFieldTypeSettingsTestCase
 		mockStatic(PortalClassLoaderUtil.class);
 
 		when(
-			PortalClassLoaderUtil.getClassLoader()
+			PortalClassLoaderUtil.getPortalClassLoader()
 		).thenReturn(
 			_classLoader
 		);

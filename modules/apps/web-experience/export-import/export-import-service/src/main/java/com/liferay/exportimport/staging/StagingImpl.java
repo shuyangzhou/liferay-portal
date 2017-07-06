@@ -3164,7 +3164,7 @@ public class StagingImpl implements Staging {
 
 		try {
 			currentThread.setContextClassLoader(
-				PortalClassLoaderUtil.getClassLoader());
+				PortalClassLoaderUtil.getPortalClassLoader());
 
 			// Ping the remote host and verify that the remote group exists in
 			// the same company as the remote user

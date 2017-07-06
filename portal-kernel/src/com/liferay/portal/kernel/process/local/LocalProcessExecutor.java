@@ -244,7 +244,7 @@ public class LocalProcessExecutor implements ProcessExecutor {
 					new NamedThreadFactory(
 						LocalProcessExecutor.class.getName(),
 						Thread.MIN_PRIORITY,
-						PortalClassLoaderUtil.getClassLoader()),
+						PortalClassLoaderUtil.getPortalClassLoader()),
 					new ThreadPoolHandlerAdapter());
 			}
 		}

@@ -113,7 +113,7 @@ public class InitUtil {
 		// Shared class loader
 
 		try {
-			PortalClassLoaderUtil.setClassLoader(
+			PortalClassLoaderUtil.setPortalClassLoader(
 				ClassLoaderUtil.getContextClassLoader());
 		}
 		catch (Exception e) {

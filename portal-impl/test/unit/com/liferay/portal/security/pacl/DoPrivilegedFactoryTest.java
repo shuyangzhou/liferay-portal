@@ -31,7 +31,8 @@ public class DoPrivilegedFactoryTest {
 
 	@Before
 	public void setUp() {
-		PortalClassLoaderUtil.setClassLoader(UserImpl.class.getClassLoader());
+		PortalClassLoaderUtil.setPortalClassLoader(
+			UserImpl.class.getClassLoader());
 	}
 
 	@Test

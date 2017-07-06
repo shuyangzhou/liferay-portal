@@ -136,7 +136,7 @@ public class ClassLoaderTest {
 	@Test
 	public void testGet9() throws Exception {
 		try {
-			PortalClassLoaderUtil.getClassLoader();
+			PortalClassLoaderUtil.getPortalClassLoader();
 
 			Assert.fail();
 		}

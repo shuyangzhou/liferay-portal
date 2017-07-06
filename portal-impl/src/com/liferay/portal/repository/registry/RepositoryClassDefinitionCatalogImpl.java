@@ -93,7 +93,7 @@ public class RepositoryClassDefinitionCatalogImpl
 			registerRepositoryDefiner(repositoryDefiner);
 		}
 
-		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
+		ClassLoader classLoader = PortalClassLoaderUtil.getPortalClassLoader();
 
 		for (String className : PropsValues.DL_REPOSITORY_IMPL) {
 			ExternalRepositoryFactory externalRepositoryFactory =

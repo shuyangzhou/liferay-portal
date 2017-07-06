@@ -244,7 +244,7 @@ public class IndexerRegistryImpl implements IndexerRegistry {
 				indexer.getClassName(), bufferedIndexerInvocationHandler);
 
 			proxiedIndexer = (Indexer<?>)ProxyUtil.newProxyInstance(
-				PortalClassLoaderUtil.getClassLoader(),
+				PortalClassLoaderUtil.getPortalClassLoader(),
 				interfaces.toArray(new Class<?>[interfaces.size()]),
 				bufferedIndexerInvocationHandler);
 

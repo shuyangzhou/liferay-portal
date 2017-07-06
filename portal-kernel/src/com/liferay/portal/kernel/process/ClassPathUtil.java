@@ -132,7 +132,7 @@ public class ClassPathUtil {
 	}
 
 	public static void initializeClassPaths(ServletContext servletContext) {
-		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
+		ClassLoader classLoader = PortalClassLoaderUtil.getPortalClassLoader();
 
 		if (classLoader == null) {
 			classLoader = ClassLoaderUtil.getContextClassLoader();

@@ -101,7 +101,7 @@ public class QuartzSchedulerEngineTest {
 
 		ClassLoader currentClassLoader = currentThread.getContextClassLoader();
 
-		PortalClassLoaderUtil.setClassLoader(currentClassLoader);
+		PortalClassLoaderUtil.setPortalClassLoader(currentClassLoader);
 
 		setUpPortalUUIDUtil();
 

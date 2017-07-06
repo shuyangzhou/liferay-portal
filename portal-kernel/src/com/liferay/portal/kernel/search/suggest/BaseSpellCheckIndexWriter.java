@@ -174,7 +174,7 @@ public abstract class BaseSpellCheckIndexWriter
 
 		if (url == null) {
 			ClassLoader portalClassLoader =
-				PortalClassLoaderUtil.getClassLoader();
+				PortalClassLoaderUtil.getPortalClassLoader();
 
 			url = portalClassLoader.getResource(name);
 		}

@@ -97,7 +97,7 @@ public class ClassLoaderUtil {
 
 		@Override
 		public ClassLoader getPortalClassLoader() {
-			return PortalClassLoaderUtil.getClassLoader();
+			return PortalClassLoaderUtil.getPortalClassLoader();
 		}
 
 		@Override

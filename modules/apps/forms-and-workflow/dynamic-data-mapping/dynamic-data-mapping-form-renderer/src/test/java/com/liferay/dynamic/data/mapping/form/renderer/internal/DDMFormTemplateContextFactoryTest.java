@@ -518,7 +518,8 @@ public class DDMFormTemplateContextFactoryTest extends PowerMockito {
 	}
 
 	protected void setUpPortalClassLoaderUtil() {
-		PortalClassLoaderUtil.setClassLoader(PortalImpl.class.getClassLoader());
+		PortalClassLoaderUtil.setPortalClassLoader(
+			PortalImpl.class.getClassLoader());
 	}
 
 	private DDMFormTemplateContextFactoryImpl _ddmFormTemplateContextFactory;

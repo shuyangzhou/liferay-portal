@@ -183,7 +183,7 @@ public class SPIClassPathContextListenerTest {
 
 				}));
 
-		PortalClassLoaderUtil.setClassLoader(
+		PortalClassLoaderUtil.setPortalClassLoader(
 			new ClassLoader() {
 
 				@Override

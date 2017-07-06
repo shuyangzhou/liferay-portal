@@ -40,7 +40,7 @@ public class ClassLoaderPoolTest {
 	public void setUp() {
 		Class<?> clazz = getClass();
 
-		PortalClassLoaderUtil.setClassLoader(clazz.getClassLoader());
+		PortalClassLoaderUtil.setPortalClassLoader(clazz.getClassLoader());
 
 		_classLoaders = ReflectionTestUtil.getFieldValue(
 			ClassLoaderPool.class, "_classLoaders");

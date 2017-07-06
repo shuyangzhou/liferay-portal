@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 public class PortalClassLoaderFactory {
 
 	public static ClassLoader getClassLoader() {
-		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
+		ClassLoader classLoader = PortalClassLoaderUtil.getPortalClassLoader();
 
 		if (classLoader == null) {
 			_log.error(

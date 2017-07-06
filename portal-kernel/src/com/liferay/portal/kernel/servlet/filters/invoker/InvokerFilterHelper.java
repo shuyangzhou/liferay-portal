@@ -287,7 +287,8 @@ public class InvokerFilterHelper {
 			pluginClassLoader = contextClassLoader;
 		}
 
-		ClassLoader portalClassLoader = PortalClassLoaderUtil.getClassLoader();
+		ClassLoader portalClassLoader =
+			PortalClassLoaderUtil.getPortalClassLoader();
 
 		if (portalClassLoader != pluginClassLoader) {
 			pluginClassLoader = AggregateClassLoader.getAggregateClassLoader(

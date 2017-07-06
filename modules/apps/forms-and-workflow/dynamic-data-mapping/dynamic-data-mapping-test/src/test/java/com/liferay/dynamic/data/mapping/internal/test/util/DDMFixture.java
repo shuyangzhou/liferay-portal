@@ -97,9 +97,9 @@ public class DDMFixture {
 	}
 
 	protected void setUpPortalClassLoaderUtil(ClassLoader classLoader) {
-		_classLoader = PortalClassLoaderUtil.getClassLoader();
+		_classLoader = PortalClassLoaderUtil.getPortalClassLoader();
 
-		PortalClassLoaderUtil.setClassLoader(classLoader);
+		PortalClassLoaderUtil.setPortalClassLoader(classLoader);
 	}
 
 	protected void setUpResourceBundleUtil(ClassLoader classLoader) {
@@ -135,7 +135,7 @@ public class DDMFixture {
 	}
 
 	protected void tearDownPortalClassLoaderUtil() {
-		PortalClassLoaderUtil.setClassLoader(_classLoader);
+		PortalClassLoaderUtil.setPortalClassLoader(_classLoader);
 	}
 
 	private BeanProperties _beanProperties;

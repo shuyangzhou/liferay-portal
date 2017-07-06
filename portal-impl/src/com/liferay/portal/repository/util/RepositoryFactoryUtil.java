@@ -70,7 +70,7 @@ public class RepositoryFactoryUtil {
 		_repositoryFactories = new ConcurrentHashMap<>();
 
 	static {
-		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
+		ClassLoader classLoader = PortalClassLoaderUtil.getPortalClassLoader();
 
 		for (String className : PropsValues.DL_REPOSITORY_IMPL) {
 			RepositoryFactory repositoryFactory = new RepositoryFactoryImpl(

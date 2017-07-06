@@ -16,50 +16,46 @@ package com.liferay.portal.kernel.util;
 
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
 
-import java.net.URL;
-import java.net.URLClassLoader;
-
 /**
  * @author Brian Wing Shun Chan
  */
 public class PortalClassLoaderUtil {
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #getPortalClassLoader()}
+	 */
+	@Deprecated
 	public static ClassLoader getClassLoader() {
+		return getPortalClassLoader();
+	}
+
+	public static ClassLoader getPortalClassLoader() {
 		PortalRuntimePermission.checkGetClassLoader("portal");
 
 		return _classLoader;
 	}
 
 	public static boolean isPortalClassLoader(ClassLoader classLoader) {
-		if ((classLoader == _classLoader) ||
-			(classLoader == _classLoader.getParent())) {
-
+		if (classLoader == _classLoader) {
 			return true;
 		}
 
 		return false;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #setPortalClassLoader(ClassLoader)}
+	 */
+	@Deprecated
 	public static void setClassLoader(ClassLoader classLoader) {
+		setPortalClassLoader(classLoader);
+	}
+
+	public static void setPortalClassLoader(ClassLoader classLoader) {
 		PortalRuntimePermission.checkSetBeanProperty(
 			PortalClassLoaderUtil.class);
 
-		if (classLoader == null) {
-			_classLoader = null;
-
-			return;
-		}
-
-		Class<?> clazz = classLoader.getClass();
-
-		try {
-			clazz.getMethod("destroy");
-
-			_classLoader = new URLClassLoader(new URL[0], classLoader);
-		}
-		catch (NoSuchMethodException nsme) {
-			_classLoader = classLoader;
-		}
+		_classLoader = classLoader;
 	}
 
 	private static ClassLoader _classLoader;

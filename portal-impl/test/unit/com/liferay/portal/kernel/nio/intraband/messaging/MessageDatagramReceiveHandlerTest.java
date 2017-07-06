@@ -73,7 +73,7 @@ public class MessageDatagramReceiveHandlerTest {
 
 		// No such destination, not synchronized
 
-		PortalClassLoaderUtil.setClassLoader(
+		PortalClassLoaderUtil.setPortalClassLoader(
 			MessageDatagramReceiveHandlerTest.class.getClassLoader());
 
 		MessageBus messageBus = Mockito.mock(MessageBus.class);

@@ -358,7 +358,8 @@ public class DDMFormFieldFactoryHelper {
 		List<ResourceBundle> resourceBundles = new ArrayList<>();
 
 		ResourceBundle portalResourceBundle = ResourceBundleUtil.getBundle(
-			"content.Language", locale, PortalClassLoaderUtil.getClassLoader());
+			"content.Language", locale,
+			PortalClassLoaderUtil.getPortalClassLoader());
 
 		resourceBundles.add(portalResourceBundle);
 

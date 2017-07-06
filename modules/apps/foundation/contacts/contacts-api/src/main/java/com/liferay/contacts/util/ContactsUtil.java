@@ -78,7 +78,7 @@ public class ContactsUtil {
 	public static String[] getPortalPropsValue(String key) {
 		try {
 			ClassLoader portalClassLoader =
-				PortalClassLoaderUtil.getClassLoader();
+				PortalClassLoaderUtil.getPortalClassLoader();
 
 			Class<?> targetClass = portalClassLoader.loadClass(
 				"com.liferay.portal.util.PropsValues");

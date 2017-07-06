@@ -77,13 +77,13 @@ public class SPIClassPathContextListener implements ServletContextListener {
 		// Load portal-kernel.jar from MPI
 
 		addJarFiles(
-			jarFiles, PortalClassLoaderUtil.getClassLoader(),
+			jarFiles, PortalClassLoaderUtil.getPortalClassLoader(),
 			PortalException.class.getName());
 
 		// Load JDBC driver jars from MPI
 
 		addJarFiles(
-			jarFiles, PortalClassLoaderUtil.getClassLoader(),
+			jarFiles, PortalClassLoaderUtil.getPortalClassLoader(),
 			PropsUtil.get(PropsKeys.JDBC_DEFAULT_DRIVER_CLASS_NAME));
 
 		// Load ext jars
