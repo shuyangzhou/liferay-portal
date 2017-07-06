@@ -800,6 +800,16 @@ app.server.type=@{app.server.type}]]></echo>
 						</then>
 					</if>
 
+					<if>
+						<and>
+							<equals arg1="${app.server.type}" arg2="tomcat" />
+						</and>
+						<then>
+							<antcall if:true="${jacoco.code.coverage.enabled}" target="enable-jacoco-tomcat" />
+							<antcall target="enable-aspectj-tomcat" />
+						</then>
+					</if>
+
 					<echo if:set="env.JENKINS_HOME">ANT_OPTS=${env.ANT_OPTS}</echo>
 				</test-set-up>
 
@@ -830,6 +840,7 @@ app.server.type=@{app.server.type}]]></echo>
 
 							<ant dir="portal-impl" inheritAll="false" target="test-class-group">
 								<property name="database.type" value="@{database.type}" />
+								<property name="jacoco.code.coverage" value="${jacoco.code.coverage.enabled}" />
 								<property name="test.class.group.index" value="${axis.variable}" />
 								<property name="test.type" value="integration" />
 							</ant>
@@ -1306,6 +1317,8 @@ app.server.type=@{app.server.type}]]></echo>
 							<gradle-execute dir="modules" task="testIntegration">
 								<arg value="-Ddatabase.type=@{database.type}" />
 								<arg value="-Dbuild.exclude.ant.plugin=true" />
+								<arg value="-Djacoco.code.coverage=${jacoco.code.coverage.enabled}" />
+								<arg value="-Djacoco.dump.file=${jacoco.dump.file}" />
 								<arg value="-Dtest.class.group.index=${axis.variable}" />
 							</gradle-execute>
 
@@ -1522,6 +1535,53 @@ app.server.type=@{app.server.type}]]></echo>
 
 	<target name="empty-temp-dir-jdk8">
 		<run-empty-temp-dir-test />
+	</target>
+
+	<target name="enable-aspectj-tomcat">
+		<if>
+			<not>
+				<resourcecontains resource="${app.server.tomcat.dir}/bin/setenv.sh" substring="${aspectj.agent}" />
+			</not>
+			<then>
+				<echo append="true" file="${app.server.tomcat.dir}/bin/setenv.sh">
+					<![CDATA[
+						CATALINA_OPTS="${CATALINA_OPTS} ${aspectj.agent} -Dorg.aspectj.weaver.loadtime.configuration=${aspectj.configuration}"
+					]]>
+				</echo>
+			</then>
+		</if>
+	</target>
+
+	<target name="enable-jacoco-tomcat">
+		<if>
+			<not>
+				<resourcecontains resource="${app.server.tomcat.dir}/bin/setenv.bat" substring="${jacoco.agent}" />
+			</not>
+			<then>
+                <echo append="true" file="${app.server.tomcat.dir}/bin/setenv.bat">
+					<![CDATA[
+						set "JACOCO_OPTS=${jacoco.agent}"
+
+						set "CATALINA_OPTS=%CATALINA_OPTS% %JACOCO_OPTS%"
+					]]>
+				</echo>
+			</then>
+		</if>
+
+		<if>
+			<not>
+				<resourcecontains resource="${app.server.tomcat.dir}/bin/setenv.sh" substring="${jacoco.agent}" />
+			</not>
+			<then>
+				<echo append="true" file="${app.server.tomcat.dir}/bin/setenv.sh">
+					<![CDATA[
+						JACOCO_OPTS="${jacoco.agent}"
+
+						CATALINA_OPTS="${CATALINA_OPTS} ${JACOCO_OPTS}"
+					]]>
+				</echo>
+			</then>
+		</if>
 	</target>
 
 	<target name="functional-bundle-jboss-db2105-jdk8">
@@ -2047,6 +2107,8 @@ app.server.type=@{app.server.type}]]></echo>
 			<test-action>
 				<gradle-execute dir="modules" task="test">
 					<arg value="-Dbuild.exclude.ant.plugin=true" />
+					<arg value="-Djacoco.code.coverage=${jacoco.code.coverage.enabled}" />
+					<arg value="-Djacoco.dump.file=${jacoco.dump.file}" />
 					<arg value="-Dtest.class.group.index=${axis.variable}" />
 				</gradle-execute>
 			</test-action>
@@ -2938,15 +3000,18 @@ ${output.content}</echo>
 		<run-batch-test>
 			<test-action>
 				<ant dir="portal-kernel" inheritAll="false" target="test-class-group">
+					<property name="jacoco.code.coverage" value="${jacoco.code.coverage.enabled}" />
 					<property name="test.class.group.index" value="${axis.variable}" />
 				</ant>
 
 				<ant dir="portal-impl" inheritAll="false" target="test-class-group">
+					<property name="jacoco.code.coverage" value="${jacoco.code.coverage.enabled}" />
 					<property name="test.class.group.index" value="${axis.variable}" />
 					<property name="test.type" value="unit" />
 				</ant>
 
 				<ant dir="util-java" inheritAll="false" target="test-class-group">
+					<property name="jacoco.code.coverage" value="${jacoco.code.coverage.enabled}" />
 					<property name="test.class.group.index" value="${axis.variable}" />
 				</ant>
 			</test-action>
