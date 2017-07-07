@@ -165,7 +165,7 @@ public class AppServer {
 	}
 
 	private void _setExtraLibDirNames(String extraLibDirNames) {
-		if (extraLibDirNames != null) {
+		if ((extraLibDirNames != null) && !extraLibDirNames.isEmpty()) {
 			for (String extraLibDirName : extraLibDirNames.split(",")) {
 				_extraLibDirs.add(new File(_dir, extraLibDirName));
 			}
