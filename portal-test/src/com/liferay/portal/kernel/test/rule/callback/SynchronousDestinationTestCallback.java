@@ -203,6 +203,10 @@ public class SynchronousDestinationTestCallback
 			replaceDestination(DestinationNames.SUBSCRIPTION_SENDER);
 			replaceDestination("liferay/adaptive_media_processor");
 
+			for (String name : _destinationNames) {
+				replaceDestination(name);
+			}
+
 			if (schedulerEnabled) {
 				replaceDestination("liferay/kaleo_graph_walker");
 			}
@@ -293,11 +297,14 @@ public class SynchronousDestinationTestCallback
 		syncHandler.setForceSync(ProxyModeThreadLocal.isForceSync());
 		syncHandler.setSync(sync);
 
+		_destinationNames = sync.destinationNames();
+
 		syncHandler.enableSync();
 
 		return syncHandler;
 	}
 
+	private static String[] _destinationNames;
 	private static final TransactionConfig _transactionConfig;
 
 	static {
