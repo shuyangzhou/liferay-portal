@@ -50,7 +50,6 @@ import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
 import org.gradle.api.file.CopySpec;
-import org.gradle.api.logging.Logger;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.util.VersionNumber;
@@ -105,6 +104,10 @@ public class SetUpTestableTomcatTask
 		};
 	}
 
+	/**
+	 * @deprecated As of 1.2.0, with no direct replacement
+	 */
+	@Deprecated
 	public SetUpTestableTomcatTask catalinaOptsReplacement(
 		String oldSub, Object newSub) {
 
@@ -113,6 +116,10 @@ public class SetUpTestableTomcatTask
 		return this;
 	}
 
+	/**
+	 * @deprecated As of 1.2.0, with no direct replacement
+	 */
+	@Deprecated
 	public SetUpTestableTomcatTask catalinaOptsReplacements(
 		Map<String, ?> catalinaOptsReplacements) {
 
@@ -125,6 +132,10 @@ public class SetUpTestableTomcatTask
 		return new File(getDir(), "bin");
 	}
 
+	/**
+	 * @deprecated As of 1.2.0, with no direct replacement
+	 */
+	@Deprecated
 	@Input
 	public Map<String, Object> getCatalinaOptsReplacements() {
 		return _catalinaOptsReplacements;
@@ -184,6 +195,18 @@ public class SetUpTestableTomcatTask
 		return _overwriteTestModules;
 	}
 
+	public void setAspectJAgent(String aspectJAgent) {
+		_aspectJAgent = aspectJAgent;
+	}
+
+	public void setAspectJConfiguration(String aspectJConfiguration) {
+		_aspectJConfiguration = aspectJConfiguration;
+	}
+
+	/**
+	 * @deprecated As of 1.2.0, with no direct replacement
+	 */
+	@Deprecated
 	public void setCatalinaOptsReplacements(
 		Map<String, ?> catalinaOptsReplacements) {
 
@@ -234,11 +257,10 @@ public class SetUpTestableTomcatTask
 
 	@TaskAction
 	public void setUpTestableTomcat() throws Exception {
-		_setUpCatalinaOpts();
-		_setUpJmx();
 		_setUpLogging();
 		_setUpManager();
 		_setUpOsgiModules();
+		_setUpSetEnv();
 	}
 
 	public void setZipUrl(Object zipUrl) {
@@ -282,42 +304,27 @@ public class SetUpTestableTomcatTask
 		return sb.toString();
 	}
 
-	private void _replace(String fileName, Map<String, Object> replacements)
-		throws IOException {
+	private void _setUpAspectJ() throws IOException {
+		if ((_aspectJAgent != null) &&
+			!_contains("bin/setenv.sh", _aspectJAgent)) {
 
-		Logger logger = getLogger();
+			try (PrintWriter printWriter = _getAppendPrintWriter(
+					"bin/setenv.sh")) {
 
-		File dir = getDir();
+				printWriter.println();
 
-		Path dirPath = dir.toPath();
+				printWriter.print("CATALINA_OPTS=\"${CATALINA_OPTS} ");
+				printWriter.print(_aspectJAgent);
+				printWriter.print(
+					" -Dorg.aspectj.weaver.loadtime.configuration=");
 
-		Path path = dirPath.resolve(fileName);
+				if (_aspectJConfiguration != null) {
+					printWriter.print(_aspectJConfiguration);
+				}
 
-		String content = new String(Files.readAllBytes(path));
-
-		for (Map.Entry<String, Object> entry : replacements.entrySet()) {
-			String oldSub = entry.getKey();
-			String newSub = GradleUtil.toString(entry.getValue());
-
-			if (logger.isWarnEnabled() && !content.contains(oldSub)) {
-				logger.warn("Unable to find \"{}\" in {}", oldSub, path);
+				printWriter.println("\"");
 			}
-
-			content = content.replace(oldSub, newSub);
 		}
-
-		Files.write(path, content.getBytes());
-	}
-
-	private void _setUpCatalinaOpts() throws IOException {
-		Map<String, Object> replacements = getCatalinaOptsReplacements();
-
-		if (replacements.isEmpty()) {
-			return;
-		}
-
-		_replace("bin/setenv.bat", replacements);
-		_replace("bin/setenv.sh", replacements);
 	}
 
 	private void _setUpJmx() throws IOException {
@@ -354,6 +361,18 @@ public class SetUpTestableTomcatTask
 
 				printWriter.println(
 					"CATALINA_OPTS=\"${CATALINA_OPTS} ${JMX_OPTS}\"");
+			}
+		}
+	}
+
+	private void _setUpJpda() throws IOException {
+		if (!_contains("bin/setenv.sh", "JPDA_ADDRESS")) {
+			try (PrintWriter printWriter = _getAppendPrintWriter(
+					"bin/setenv.sh")) {
+
+				printWriter.println();
+
+				printWriter.println("JPDA_ADDRESS=\"8000\"");
 			}
 		}
 	}
@@ -517,11 +536,19 @@ public class SetUpTestableTomcatTask
 			});
 	}
 
+	private void _setUpSetEnv() throws IOException {
+		_setUpAspectJ();
+		_setUpJmx();
+		_setUpJpda();
+	}
+
 	private static final String[] _TOMCAT_USERS_ROLE_NAMES = {
 		"manager-gui", "manager-jmx", "manager-script", "manager-status",
 		"tomcat"
 	};
 
+	private String _aspectJAgent;
+	private String _aspectJConfiguration;
 	private final Map<String, Object> _catalinaOptsReplacements =
 		new LinkedHashMap<>();
 	private boolean _debugLogging;
