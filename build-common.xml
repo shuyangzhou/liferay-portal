@@ -709,6 +709,7 @@ information.
 				<sysproperty key="catalina.base" value="." />
 				<sysproperty file="woven-classes" key="junit.aspectj.dump" />
 				<sysproperty key="junit.code.coverage" value="${junit.code.coverage}" />
+				<sysproperty key="junit.jacoco.code.coverage" value="${junit.jacoco.code.coverage}" />
 				<sysproperty if:true="${jvm.debug}" key="jvm.debug" value="true" />
 				<sysproperty key="liferay.lib.portal.dir" value="${app.server.tomcat.lib.portal.dir}" />
 				<sysproperty key="liferay.temp.dir" value="${app.server.tomcat.temp.dir}" />
@@ -716,7 +717,7 @@ information.
 				<sysproperty key="whip.agent" value="${whip.agent}" />
 				<sysproperty file="test-coverage/@{test.type}/whip.dat" key="whip.datafile" />
 				<sysproperty key="whip.instrument.dump" value="${whip.instrument.dump}" />
-				<jvmarg line="${jacoco.agent}" />
+				<jvmarg if:true="${junit.jacoco.code.coverage}" line="${jacoco.agent}" />
 				<jvmarg if:true="${aspectj.weaver.enabled}" line="${aspectj.agent}" />
 				<jvmarg if:true="${jvm.debug}" line="${jpda.settings}" />
 				<jvmarg line="${junit.java.gc}" />
@@ -1316,6 +1317,7 @@ rerun your task.
 					<propertyref name="jacoco.agent" />
 					<propertyref name="jsp.precompile.enabled" />
 					<propertyref name="jsp.precompile.from.source" />
+					<propertyref name="junit.jacoco.code.coverage" />
 					<propertyref name="junit.java.integration.gc" />
 					<propertyref name="junit.java.unit.gc" />
 					<propertyref name="liferay.home" />
