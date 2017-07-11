@@ -238,7 +238,7 @@ public class LPKGDeployerTest {
 					sb.append(lpkgBundle.getVersion());
 					sb.append(StringPool.SLASH);
 					sb.append(contextName);
-					sb.append(".war?Bundle-Version=");
+					sb.append(".war$Bundle-Version=");
 					sb.append(bundle.getVersion());
 					sb.append("&Web-ContextPath=/");
 					sb.append(contextName);
