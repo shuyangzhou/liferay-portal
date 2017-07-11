@@ -1312,6 +1312,7 @@ rerun your task.
 					<propertyref name="baseline.jar.report.level" />
 					<propertyref name="baseline.jar.report.only.dirty.packages" />
 					<propertyref name="git.working.branch.name" />
+					<propertyref name="jacoco.agent" />
 					<propertyref name="jsp.precompile.enabled" />
 					<propertyref name="jsp.precompile.from.source" />
 					<propertyref name="junit.java.integration.gc" />
