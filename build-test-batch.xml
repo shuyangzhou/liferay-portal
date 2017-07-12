@@ -637,12 +637,26 @@ app.server.type=@{app.server.type}]]></echo>
 
 							<trycatch>
 								<try>
-									<ant antfile="build-test-${app.server.type}.xml" inheritAll="false" target="run-selenium-${app.server.type}">
-										<property name="database.type" value="@{database.type}" />
-										<property name="liferay.portal.bundle" value="@{test.portal.bundle.version}" />
-										<property name="test.build.plugins.war.zip.url" value="@{test.plugins.war.zip.url}" />
-										<property name="test.class" value="${test.class}" />
-									</ant>
+									<if>
+										<equals arg1="${app.server.type}" arg2="tomcat" />
+										<then>
+											<ant antfile="build-test-tomcat.xml" inheritAll="false" target="run-selenium-tomcat">
+												<property name="database.type" value="@{database.type}" />
+												<property name="liferay.portal.bundle" value="@{test.portal.bundle.version}" />
+												<property name="test.build.plugins.war.zip.url" value="@{test.plugins.war.zip.url}" />
+												<property name="test.class" value="${test.class}" />
+												<property if:true="${test.batch.jacoco.code.coverage}" name="app.server.start.executable.arg.line" value="jacoco ${app.server.tomcat.start.executable.arg.line}" />
+											</ant>
+										</then>
+										<else>
+											<ant antfile="build-test-${app.server.type}.xml" inheritAll="false" target="run-selenium-${app.server.type}">
+												<property name="database.type" value="@{database.type}" />
+												<property name="liferay.portal.bundle" value="@{test.portal.bundle.version}" />
+												<property name="test.build.plugins.war.zip.url" value="@{test.plugins.war.zip.url}" />
+												<property name="test.class" value="${test.class}" />
+											</ant>
+										</else>
+									</if>
 
 									<if>
 										<equals arg1="@{test.legacy.database.dump}" arg2="true" />
@@ -838,6 +852,7 @@ app.server.type=@{app.server.type}]]></echo>
 								<property name="database.type" value="@{database.type}" />
 								<property name="test.class.group.index" value="${axis.variable}" />
 								<property name="test.type" value="integration" />
+								<property if:true="${test.batch.jacoco.code.coverage}" name="junit.jacoco.code.coverage" value="true" />
 							</ant>
 						</test-action>
 					</database-test-run-test>
@@ -1309,11 +1324,24 @@ app.server.type=@{app.server.type}]]></echo>
 
 							<print-test-class-group test.class.group.index="${axis.variable}" />
 
-							<gradle-execute dir="modules" task="testIntegration">
-								<arg value="-Ddatabase.type=@{database.type}" />
-								<arg value="-Dbuild.exclude.ant.plugin=true" />
-								<arg value="-Dtest.class.group.index=${axis.variable}" />
-							</gradle-execute>
+							<if>
+								<equals arg1="${app.server.type}" arg2="tomcat" />
+								<then>
+									<gradle-execute dir="modules" task="testIntegration">
+										<arg value="-Ddatabase.type=@{database.type}" />
+										<arg value="-Dbuild.exclude.ant.plugin=true" />
+										<arg value="-Dtest.class.group.index=${axis.variable}" />
+										<arg if:true="${test.batch.jacoco.code.coverage}" value="-Dapp.server.start.executable.arg.line=jacoco ${app.server.tomcat.start.executable.arg.line}" />
+									</gradle-execute>
+								</then>
+								<else>
+									<gradle-execute dir="modules" task="testIntegration">
+										<arg value="-Ddatabase.type=@{database.type}" />
+										<arg value="-Dbuild.exclude.ant.plugin=true" />
+										<arg value="-Dtest.class.group.index=${axis.variable}" />
+									</gradle-execute>
+								</else>
+							</if>
 
 							<if>
 								<and>
@@ -2203,6 +2231,7 @@ app.server.type=@{app.server.type}]]></echo>
 				<gradle-execute dir="modules" task="test">
 					<arg value="-Dbuild.exclude.ant.plugin=true" />
 					<arg value="-Dtest.class.group.index=${axis.variable}" />
+					<arg if:true="${test.batch.jacoco.code.coverage}" value="-Djunit.jacoco.code.coverage=true" />
 				</gradle-execute>
 			</test-action>
 
@@ -3094,15 +3123,18 @@ ${output.content}</echo>
 			<test-action>
 				<ant dir="portal-kernel" inheritAll="false" target="test-class-group">
 					<property name="test.class.group.index" value="${axis.variable}" />
+					<property if:true="${test.batch.jacoco.code.coverage}" name="junit.jacoco.code.coverage" value="true" />
 				</ant>
 
 				<ant dir="portal-impl" inheritAll="false" target="test-class-group">
 					<property name="test.class.group.index" value="${axis.variable}" />
 					<property name="test.type" value="unit" />
+					<property if:true="${test.batch.jacoco.code.coverage}" name="junit.jacoco.code.coverage" value="true" />
 				</ant>
 
 				<ant dir="util-java" inheritAll="false" target="test-class-group">
 					<property name="test.class.group.index" value="${axis.variable}" />
+					<property if:true="${test.batch.jacoco.code.coverage}" name="junit.jacoco.code.coverage" value="true" />
 				</ant>
 			</test-action>
 
