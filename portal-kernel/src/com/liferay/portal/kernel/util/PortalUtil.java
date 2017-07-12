@@ -1758,6 +1758,15 @@ public class PortalUtil {
 		return getPortal().getSiteAdminURL(company, group, ppid, params);
 	}
 
+	public static String getSiteAdminURL(
+			Company company, Group group, String portalDomain, String ppid,
+			Map<String, String[]> params)
+		throws PortalException {
+
+		return getPortal().getSiteAdminURL(
+			company, group, portalDomain, ppid, params);
+	}
+
 	/**
 	 * @deprecated As of 7.0.0, replaced by {@link
 	 *             #getSiteAdminURL(Company, Group, String, Map)}
