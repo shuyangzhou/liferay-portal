@@ -113,4 +113,8 @@ public class ClassLoaderPool {
 	private static final Map<ClassLoader, String> _contextNames =
 		new ConcurrentHashMap<>();
 
+	static {
+		register("SystemClassLoader", ClassLoaderPool.class.getClassLoader());
+	}
+
 }
