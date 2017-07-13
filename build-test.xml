@@ -3927,7 +3927,9 @@ war.path=${app.server.weblogic.portal.dir}/</echo>
 
 								DirectoryScanner directoryScanner = new DirectoryScanner();
 
-								directoryScanner.setIncludes(new String[] {project.getProperty("test.app.server.dir") + "/logs/catalina.*.log"});
+								File logsDir = new File(project.getProperty("test.app.server.dir") + "/logs");
+
+								directoryScanner.setIncludes(new String[] {logsDir.getCanonicalPath() + "/catalina.*.log"});
 
 								directoryScanner.scan();
 
