@@ -240,12 +240,12 @@ public class DefaultActionableDynamicQuery implements ActionableDynamicQuery {
 	}
 
 	protected void addOrderCriteria(DynamicQuery dynamicQuery) {
-		if (_addOrderCriteriaMethod != null) {
-			_addOrderCriteriaMethod.addOrderCriteria(dynamicQuery);
-		}
-		else {
+		if (_addOrderCriteriaMethod == null) {
 			dynamicQuery.addOrder(
 				OrderFactoryUtil.asc(_primaryKeyPropertyName));
+		}
+		else {
+			_addOrderCriteriaMethod.addOrderCriteria(dynamicQuery);
 		}
 	}
 
