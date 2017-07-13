@@ -105,6 +105,7 @@
 	<property name="aspectj.configuration" value="com/liferay/aspectj/aop.xml" />
 	<property name="definitions.dir" value="${project.dir}/definitions" />
 	<property name="doc.dir" value="${project.dir}/api" />
+	<property name="jacoco.agent" value="-javaagent:${jacoco.agent.jar}=destfile=${jacoco.dump.file},excludes=${jacoco.excludes},includes=${jacoco.includes},output=file,append=true" />
 
 	<tempfile deleteonexit="true" destdir="${project.dir}" property="app.server.tmp.properties" suffix=".properties" />
 
@@ -708,6 +709,7 @@ information.
 				<sysproperty key="catalina.base" value="." />
 				<sysproperty file="woven-classes" key="junit.aspectj.dump" />
 				<sysproperty key="junit.code.coverage" value="${junit.code.coverage}" />
+				<sysproperty key="junit.jacoco.code.coverage" value="${junit.jacoco.code.coverage}" />
 				<sysproperty if:true="${jvm.debug}" key="jvm.debug" value="true" />
 				<sysproperty key="liferay.lib.portal.dir" value="${app.server.tomcat.lib.portal.dir}" />
 				<sysproperty key="liferay.temp.dir" value="${app.server.tomcat.temp.dir}" />
@@ -715,8 +717,9 @@ information.
 				<sysproperty key="whip.agent" value="${whip.agent}" />
 				<sysproperty file="test-coverage/@{test.type}/whip.dat" key="whip.datafile" />
 				<sysproperty key="whip.instrument.dump" value="${whip.instrument.dump}" />
-				<jvmarg if:true="${aspectj.weaver.enabled}" line="${aspectj.agent}" />
 				<jvmarg if:true="${jvm.debug}" line="${jpda.settings}" />
+				<jvmarg if:true="${junit.jacoco.code.coverage}" line="${jacoco.agent}" />
+				<jvmarg if:true="${aspectj.weaver.enabled}" line="${aspectj.agent}" />
 				<jvmarg line="${junit.java.gc}" />
 				<jvmarg line="${whip.agent}" />
 				<jvmarg value="-Xss2m" />
@@ -1311,8 +1314,10 @@ rerun your task.
 					<propertyref name="baseline.jar.report.level" />
 					<propertyref name="baseline.jar.report.only.dirty.packages" />
 					<propertyref name="git.working.branch.name" />
+					<propertyref name="jacoco.agent" />
 					<propertyref name="jsp.precompile.enabled" />
 					<propertyref name="jsp.precompile.from.source" />
+					<propertyref name="junit.jacoco.code.coverage" />
 					<propertyref name="junit.java.integration.gc" />
 					<propertyref name="junit.java.unit.gc" />
 					<propertyref name="liferay.home" />
