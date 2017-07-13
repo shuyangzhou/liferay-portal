@@ -37,6 +37,11 @@
 	<fail message="Please set the property ${maven.home}." unless="maven.home" />
 	<fail message="Please set the property ${tck.home}." unless="tck.home" />
 
+	<path id="maven.classpath">
+		<fileset dir="${maven.home}/boot" includes="*.jar" />
+		<fileset dir="${maven.home}/lib" includes="*.jar" />
+	</path>
+
 	<macrodef name="maven">
 
 		<attribute name="options" default="" />
@@ -49,14 +54,7 @@
 				  dir="@{basedir}" resultproperty="@{resultproperty}">
 				<jvmarg value="-Xmx512m"/>
 				<jvmarg value="-Dmaven.multiModuleProjectDirectory=@{basedir}"/>
-				<classpath>
-					<fileset dir="${maven.home}/boot">
-						<include name="*.jar" />
-					</fileset>
-					<fileset dir="${maven.home}/lib">
-						<include name="*.jar" />
-					</fileset>
-				</classpath>
+				<classpath refid="maven.classpath" />
 				<sysproperty key="classworlds.conf" value="${maven.home}/bin/m2.conf" />
 				<sysproperty key="maven.home" value="${maven.home}" />
 				<arg line="--batch-mode @{options} @{goal}" />
