@@ -35,6 +35,7 @@
 	</if>
 
 	<fail message="Please set the property ${maven.home}." unless="maven.home" />
+	<fail message="Please set the property ${tck.home}." unless="tck.home" />
 
 	<macrodef name="maven">
 
