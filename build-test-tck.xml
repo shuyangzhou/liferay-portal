@@ -21,6 +21,21 @@
 
 	<import file="build-test.xml" />
 
+	<if>
+		<isset property="env.M2_HOME" />
+		<then>
+			<property name="maven.home" value="${env.M2_HOME}" />
+		</then>
+		<elseif>
+			<isset property="env.MAVEN_HOME" />
+			<then>
+				<property name="maven.home" value="${env.MAVEN_HOME}" />
+			</then>
+		</elseif>
+	</if>
+
+	<fail message="Please set the property ${maven.home}." unless="maven.home" />
+
 	<macrodef name="maven">
 
 		<attribute name="options" default="" />
@@ -316,9 +331,6 @@ ${logfile.content}
 		</if>
 
 		<echo>run-tck-tomcat: Done waiting for tck wars and the portlet-tck-bridge module to deploy.</echo>
-
-		<property name="maven.home" value="${env.M2_HOME}"/>
-		<echo>run-tck-tomcat: maven.home = ${maven.home}</echo>
 
 		<if>
 			<not>
