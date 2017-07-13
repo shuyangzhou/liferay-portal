@@ -24,9 +24,11 @@ import com.liferay.gradle.plugins.test.integration.TestIntegrationTomcatExtensio
 import com.liferay.gradle.plugins.test.integration.tasks.SetUpTestableTomcatTask;
 import com.liferay.gradle.plugins.test.integration.tasks.StartTestableTomcatTask;
 import com.liferay.gradle.plugins.test.integration.tasks.StopAppServerTask;
+import com.liferay.gradle.util.Validator;
 
 import java.io.File;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -93,6 +95,9 @@ public class TestIntegrationDefaultsPlugin
 			GradleUtil.getProperty(
 				project, "aspectj.configuration", (String)null));
 
+		setUpTestableTomcatTask.setJaCoCoAgent(
+			GradleUtil.getProperty(project, "jacoco.agent", (String)null));
+
 		setUpTestableTomcatTask.setZipUrl(
 			new Callable<String>() {
 
@@ -134,6 +139,13 @@ public class TestIntegrationDefaultsPlugin
 
 				@Override
 				public List<String> call() throws Exception {
+					String startExecutableArgs = System.getProperty(
+						"app.server.start.executable.arg.line");
+
+					if (Validator.isNotNull(startExecutableArgs)) {
+						return Arrays.asList(startExecutableArgs.split(" "));
+					}
+
 					return tomcatAppServer.getStartExecutableArgs();
 				}
 
