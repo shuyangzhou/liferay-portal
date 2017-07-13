@@ -190,6 +190,10 @@ public class SetUpTestableTomcatTask
 		_dir = dir;
 	}
 
+	public void setJaCoCoAgent(String jaCoCoAgent) {
+		_jaCoCoAgent = jaCoCoAgent;
+	}
+
 	public void setJmxRemoteAuthenticate(boolean jmxRemoteAuthenticate) {
 		_jmxRemoteAuthenticate = jmxRemoteAuthenticate;
 	}
@@ -294,6 +298,27 @@ public class SetUpTestableTomcatTask
 				}
 
 				printWriter.println("\"");
+			}
+		}
+	}
+
+	private void _setUpJaCoCo() throws IOException {
+		if ((_jaCoCoAgent != null) &&
+			!_contains("bin/setenv.sh", _jaCoCoAgent)) {
+
+			try (PrintWriter printWriter = _getAppendPrintWriter(
+					"bin/setenv.sh")) {
+
+				printWriter.println();
+
+				printWriter.println("if [ \"$1\" = \"jacoco\" ] ; then");
+				printWriter.print("    JACOCO_OPTS=\"");
+				printWriter.print(_jaCoCoAgent);
+				printWriter.println("\"");
+				printWriter.println(
+					"    CATALINA_OPTS=\"${CATALINA_OPTS} ${JACOCO_OPTS}\"");
+				printWriter.println("    shift");
+				printWriter.println("fi");
 			}
 		}
 	}
@@ -508,6 +533,7 @@ public class SetUpTestableTomcatTask
 	}
 
 	private void _setUpSetEnv() throws IOException {
+		_setUpJaCoCo();
 		_setUpAspectJ();
 		_setUpJmx();
 		_setUpJpda();
@@ -522,6 +548,7 @@ public class SetUpTestableTomcatTask
 	private Object _aspectJConfiguration;
 	private boolean _debugLogging;
 	private Object _dir;
+	private String _jaCoCoAgent;
 	private boolean _jmxRemoteAuthenticate;
 	private Object _jmxRemotePort;
 	private boolean _jmxRemoteSsl;
