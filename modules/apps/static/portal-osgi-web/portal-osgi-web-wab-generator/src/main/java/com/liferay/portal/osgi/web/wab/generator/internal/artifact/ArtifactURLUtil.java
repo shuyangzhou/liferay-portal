@@ -70,7 +70,7 @@ public class ArtifactURLUtil {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(artifact.getPath());
-		sb.append("?");
+		sb.append("$");
 		sb.append(Constants.BUNDLE_SYMBOLICNAME);
 		sb.append("=");
 		sb.append(symbolicName);

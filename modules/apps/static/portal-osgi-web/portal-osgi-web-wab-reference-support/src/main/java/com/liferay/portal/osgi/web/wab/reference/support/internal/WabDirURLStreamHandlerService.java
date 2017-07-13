@@ -67,48 +67,55 @@ public class WabDirURLStreamHandlerService
 	@Override
 	public URLConnection openConnection(URL url) {
 		try {
-			Map<String, String[]> parameters = new HashMap<>();
+			String path = url.getPath();
 
-			URI uri = new URI(url.getPath());
+			int index = path.indexOf('$');
+
+			Map<String, String[]> parameters = null;
+
+			if (index >= 0) {
+				path = path.substring(0, index);
+
+				String queryString = path.substring(index + 1);
+
+				parameters = _http.getParameterMap(queryString);
+			}
+			else {
+				parameters = new HashMap<>();
+			}
+
+			URI uri = new URI(path);
 
 			File warDir = new File(uri);
 
-			String bundleSymbolicName = _http.getParameter(
-				url.toExternalForm(), Constants.BUNDLE_SYMBOLICNAME);
+			if (parameters.isEmpty()) {
+				String bundleSymbolicName = _getNameFromDirectory(warDir);
 
-			if (bundleSymbolicName.equals(StringPool.BLANK)) {
-				bundleSymbolicName = _getNameFromDirectory(warDir);
+				if (bundleSymbolicName.equals(StringPool.BLANK)) {
+					bundleSymbolicName = _getNameFromXMLFile(warDir);
+				}
+
+				parameters.put(
+					Constants.BUNDLE_SYMBOLICNAME,
+					new String[] {bundleSymbolicName});
+
+				String contextName = _getNameFromDirectory(warDir);
+
+				if (contextName.equals(StringPool.BLANK)) {
+					contextName = _getNameFromXMLFile(warDir);
+				}
+
+				if (contextName.equals(StringPool.BLANK)) {
+					throw new IllegalArgumentException(
+						"Unable to determine context name from " + url);
+				}
+
+				if (!contextName.startsWith(StringPool.SLASH)) {
+					contextName = StringPool.SLASH.concat(contextName);
+				}
+
+				parameters.put("Web-ContextPath", new String[] {contextName});
 			}
-
-			if (bundleSymbolicName.equals(StringPool.BLANK)) {
-				bundleSymbolicName = _getNameFromXMLFile(warDir);
-			}
-
-			parameters.put(
-				Constants.BUNDLE_SYMBOLICNAME,
-				new String[] {bundleSymbolicName});
-
-			String contextName = _http.getParameter(
-				url.toExternalForm(), "Web-ContextPath");
-
-			if (contextName.equals(StringPool.BLANK)) {
-				contextName = _getNameFromDirectory(warDir);
-			}
-
-			if (contextName.equals(StringPool.BLANK)) {
-				contextName = _getNameFromXMLFile(warDir);
-			}
-
-			if (contextName.equals(StringPool.BLANK)) {
-				throw new IllegalArgumentException(
-					"Unable to determine context name from " + url);
-			}
-
-			if (!contextName.startsWith(StringPool.SLASH)) {
-				contextName = StringPool.SLASH.concat(contextName);
-			}
-
-			parameters.put("Web-ContextPath", new String[] {contextName});
 
 			File generatedJarFile = _wabGenerator.generate(
 				_classLoader, warDir, parameters);

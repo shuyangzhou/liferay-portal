@@ -61,17 +61,28 @@ public class WabURLConnection extends URLConnection {
 	public InputStream getInputStream() throws IOException {
 		URL url = getURL();
 
-		String query = url.getQuery();
+		String path = url.getPath();
 
-		Map<String, String[]> parameters = HttpUtil.getParameterMap(query);
+		int index = path.indexOf('$');
+
+		String queryString = path;
+
+		if (index >= 0) {
+			path = path.substring(0, index);
+
+			queryString = queryString.substring(index + 1);
+		}
+
+		Map<String, String[]> parameters = HttpUtil.getParameterMap(
+			queryString);
 
 		if (!parameters.containsKey("Web-ContextPath")) {
 			throw new IllegalArgumentException(
 				"The parameter map does not contain the required parameter " +
-					"Web-ContextPath");
+					"Web-ContextPath with path " + path);
 		}
 
-		final File file = transferToTempFile(new URL(url.getPath()));
+		final File file = transferToTempFile(new URL(path));
 
 		File processedFile = _wabGenerator.generate(
 			_classLoader, file, parameters);
