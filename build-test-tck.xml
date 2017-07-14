@@ -280,11 +280,17 @@ tckDeployFiles=${tck.deploy.files}</echo>
 			options="-Prun-tck -Djava.awt.headless=true ${test.props} ${test.module.option}"
 		/>
 
-		<echo>run-tck-tomcat: a result of 0 is success.</echo>
-
-		<echo>run-tck-tomcat: maven.result = ${maven.result}</echo>
-
 		<antcall target="clean-up-tck-dependencies" />
+
+		<if>
+			<equals arg1="${maven.result}" arg2="0" />
+			<then>
+				<echo message="PASSED: maven.result = ${maven.result}" />
+			</then>
+			<else>
+				<fail message="FAILED: maven.result = ${maven.result}" />
+			</else>
+		</if>
 	</target>
 
 	<target name="undeploy-chat-portlet">
