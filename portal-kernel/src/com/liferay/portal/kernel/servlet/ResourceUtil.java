@@ -180,6 +180,4 @@ public class ResourceUtil {
 		return requestPath;
 	}
 
-	private static final String _CSS_EXTENSION = ".css";
-
 }
