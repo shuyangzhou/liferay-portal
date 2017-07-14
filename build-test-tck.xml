@@ -67,42 +67,11 @@
 		<delete file="${liferay.home}/.continue" />
 		<delete file=".testable.portal.started" />
 
-		<echo>clean-up-tck-dependencies: deleting portlet.tck.bridge.jar ...</echo>
-		<delete file="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.jar" />
+		<antcall target="undeploy-portlet-tck-bridge" />
 
-		<echo>clean-up-tck-dependencies: waiting for handshake port to disappear ...</echo>
-		<waitfor checkevery="100" checkeveryunit="millisecond" maxwait="1" maxwaitunit="minute" timeoutproperty="portlet.tck.bridge.undeployment.timeout">
-			<not>
-				<socket port="${portlet.tck.bridge.handshake.port}" server="localhost" />
-			</not>
-		</waitfor>
+		<antcall target="undeploy-portlet-tck-theme" />
 
-		<if>
-			<isset property="portlet.tck.bridge.undeployment.timeout" />
-			<then>
-				<fail message="Timeout while waiting for portlet-tck-bridge to undeploy." />
-			</then>
-			<else>
-				<echo>portlet-tck-bridge appears to have been undeployed.</echo>
-			</else>
-		</if>
-
-		<if>
-			<isset property="clean.up" />
-			<then>
-				<echo>clean-up-tck-dependencies: clean.up = ${clean.wars}</echo>
-				<delete includeemptydirs="true">
-					<fileset
-						dir="${app.server.tomcat.dir}/../osgi/war"
-						includes="tck-*/**"
-					/>
-				</delete>
-			</then>
-			<else>
-				<echo>No clean up.</echo>
-			</else>
-		</if>
-
+		<antcall target="undeploy-tck-wars" />
 	</target>
 
 	<target name="prepare-tck-portal-ext-properties">
@@ -123,6 +92,45 @@ users.reminder.queries.enabled=false
 
 	</target>
 
+	<target name="deploy-portlet-tck-bridge">
+		<gradle-execute dir="modules/test/portlet-tck-bridge" task="deploy" />
+
+		<if>
+			<available file=".testable.portal.started" />
+			<then>
+				<waitfor checkevery="100" checkeveryunit="millisecond" maxwait="9" maxwaitunit="minute" timeoutproperty="portlet.tck.bridge.deployment.timeout">
+					<socket port="${portlet.tck.bridge.handshake.port}" server="localhost" />
+				</waitfor>
+
+				<if>
+					<isset property="portlet.tck.bridge.deployment.timeout" />
+					<then>
+						<for param="logfile">
+							<path>
+								<fileset dir="${liferay.home}/logs" includes="*.log" />
+							</path>
+							<sequential>
+								<local name="logfile.content" />
+
+								<loadfile property="logfile.content" srcFile="@{logfile}" />
+
+								<echo>File content for ${liferay.home}/logs/@{logfile}:
+${logfile.content}
+								</echo>
+							</sequential>
+						</for>
+
+						<fail message="Timeout while waiting for portlet-tck-bridge to deploy." />
+					</then>
+				</if>
+			</then>
+		</if>
+	</target>
+
+	<target name="deploy-portlet-tck-theme">
+		<gradle-execute dir="modules/test/portlet-tck-theme" task="deploy" />
+	</target>
+
 	<target name="prepare-portlet-tck">
 
 		<if>
@@ -134,34 +142,15 @@ users.reminder.queries.enabled=false
 			</then>
 		</if>
 
-		<!-- ensure that any modules which interfere with tests have been removed -->
-		<delete file="${liferay.home}/osgi/modules/com.liferay.chat.api.jar" />
-		<delete file="${liferay.home}/osgi/modules/com.liferay.chat.service.jar" />
-		<delete file="${liferay.home}/osgi/modules/com.liferay.chat.web.jar" />
+		<antcall target="undeploy-chat-portlet" />
 
-		<!-- ensure that the portlet-tck-bridge is either:
-			1. undeployed now if the portal is currently running
-					or
-			2. not deployed and started when the portal is first started
-		-->
-		<delete file="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.jar" />
+		<antcall target="undeploy-portlet-tck-bridge" />
+
+		<antcall target="undeploy-portlet-tck-theme" />
 
 		<antcall target="prepare-tck-portal-ext-properties" />
 
-		<property name="portlet.tck.theme.file.name" value="portlet-tck-theme.war" />
-		<if>
-			<or>
-				<available file="${liferay.home}/osgi/war/${portlet.tck.theme.file.name}" />
-				<available file="${liferay.home}/deploy/${portlet.tck.theme.file.name}" />
-			</or>
-			<then>
-				<echo>${portlet.tck.theme.file.name} is already available ...</echo>
-			</then>
-			<else>
-				<!-- deploy the portlet-tck-theme -->
-				<gradle-execute dir="modules/test/portlet-tck-theme" task="deploy" />
-			</else>
-		</if>
+		<antcall target="deploy-portlet-tck-theme" />
 
 		<var name="tck.servlet.context.names" value="" />
 		<var name="exclude.war.names" value="" />
@@ -297,39 +286,7 @@ excludeWarNames=${exclude.war.names}</echo>
 			<param name="testable.portal.started.marker.file" value=".testable.portal.started" />
 		</antcall>
 
-		<echo>run-tck-tomcat: app server is apparently running ...</echo>
-
-		<gradle-execute dir="modules/test/portlet-tck-bridge" task="deploy" />
-
-		<!-- check that the portlet-tck-bridge module has been deployed and has started listening on the handshake port -->
-		<waitfor checkevery="100" checkeveryunit="millisecond" maxwait="9" maxwaitunit="minute" timeoutproperty="portlet.tck.bridge.deployment.timeout">
-			<socket port="${portlet.tck.bridge.handshake.port}" server="localhost" />
-		</waitfor>
-
-		<if>
-			<isset property="portlet.tck.bridge.deployment.timeout" />
-			<then>
-				<for param="logfile">
-					<path>
-						<fileset dir="${liferay.home}/logs" includes="*.log" />
-					</path>
-					<sequential>
-						<local name="logfile.content" />
-
-						<loadfile property="logfile.content" srcFile="@{logfile}" />
-
-						<echo>File content for ${liferay.home}/logs/
-@{logfile}:
-${logfile.content}
-						</echo>
-					</sequential>
-				</for>
-
-				<fail message="Timeout while waiting for portlet-tck-bridge to deploy." />
-			</then>
-		</if>
-
-		<echo>run-tck-tomcat: Done waiting for tck wars and the portlet-tck-bridge module to deploy.</echo>
+		<antcall target="deploy-portlet-tck-bridge" />
 
 		<if>
 			<not>
@@ -409,4 +366,40 @@ ${logfile.content}
 		<antcall target="clean-up-tck-dependencies" />
 	</target>
 
+	<target name="undeploy-chat-portlet">
+		<delete file="${liferay.home}/osgi/modules/com.liferay.chat.api.jar" />
+		<delete file="${liferay.home}/osgi/modules/com.liferay.chat.service.jar" />
+		<delete file="${liferay.home}/osgi/modules/com.liferay.chat.web.jar" />
+	</target>
+
+	<target name="undeploy-portlet-tck-bridge">
+		<delete file="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.jar" />
+
+		<waitfor checkevery="100" checkeveryunit="millisecond" maxwait="1" maxwaitunit="minute" timeoutproperty="portlet.tck.bridge.undeployment.timeout">
+			<not>
+				<socket port="${portlet.tck.bridge.handshake.port}" server="localhost" />
+			</not>
+		</waitfor>
+
+		<if>
+			<isset property="portlet.tck.bridge.undeployment.timeout" />
+			<then>
+				<fail message="Timeout while waiting for portlet-tck-bridge to undeploy." />
+			</then>
+		</if>
+	</target>
+
+	<target name="undeploy-portlet-tck-theme">
+		<delete file="${liferay.home}/osgi/war/portlet-tck-theme.war" />
+		<delete file="${liferay.home}/deploy/portlet-tck-theme.war" />
+	</target>
+
+	<target name="undeploy-tck-wars">
+		<delete includeemptydirs="true">
+			<fileset
+				dir="${app.server.tomcat.dir}/../osgi/war"
+				includes="tck-*/**"
+			/>
+		</delete>
+	</target>
 </project>
