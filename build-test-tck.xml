@@ -155,7 +155,6 @@ users.reminder.queries.enabled=false
 		<antcall target="deploy-portlet-tck-theme" />
 
 		<var name="tck.servlet.context.names" value="" />
-		<var name="exclude.war.names" value="" />
 
 		<for param="tck.war">
 			<path>
@@ -166,43 +165,37 @@ users.reminder.queries.enabled=false
 				/>
 			</path>
 			<sequential>
-				<local name="tck.servlet.context.name" />
-
-				<echo>tck.war=@{tck.war}</echo>
-
-				<var name="tck.war.basename" unset="true" />
+				<local name="tck.war.basename" />
 
 				<basename file="@{tck.war}" property="tck.war.basename" suffix=".war" />
 
-				<echo>tck.war.basename=${tck.war.basename}</echo>
-
-				<var name="tck.no.version" unset="true" />
+				<local name="tck.servlet.context.name" />
 
 				<propertyregex
 					global="true"
 					input="${tck.war.basename}"
-					property="tck.no.version"
+					property="tck.servlet.context.name"
 					regexp="-\d..*"
 					replace=""
 				/>
 
-				<echo>tck.no.version=${tck.no.version}</echo>
-
 				<if>
 					<equals arg1="${tck.servlet.context.names}" arg2="" />
 					<then>
-						<var name="tck.servlet.context.names" value="${tck.no.version}" />
+						<var name="tck.servlet.context.names" value="${tck.servlet.context.name}" />
 					</then>
 					<else>
-						<var name="tck.servlet.context.names" value="${tck.servlet.context.names}|${tck.no.version}" />
+						<var name="tck.servlet.context.names" value="${tck.servlet.context.names}|${tck.servlet.context.name}" />
 					</else>
 				</if>
 
-				<echo>cp @{tck.war} ${liferay.home}/deploy/${tck.no.version}.war</echo>
+				<echo>Copying '@{tck.war}' to '${liferay.home}/deploy/${tck.servlet.context.name}.war'</echo>
 
-				<copy file="@{tck.war}" tofile="${liferay.home}/deploy/${tck.no.version}.war" />
+				<copy file="@{tck.war}" tofile="${liferay.home}/deploy/${tck.servlet.context.name}.war" />
 			</sequential>
 		</for>
+
+		<var name="exclude.war.names" value="" />
 
 		<for param="tck.war">
 			<path>
@@ -213,47 +206,36 @@ users.reminder.queries.enabled=false
 				/>
 			</path>
 			<sequential>
-				<local name="bad.war.name" />
-
-				<echo>tck.war=@{tck.war}</echo>
-
-				<var name="tck.war.basename" unset="true" />
+				<local name="tck.war.basename" />
 
 				<basename file="@{tck.war}" property="tck.war.basename" suffix=".war" />
 
-				<echo>tck.war.basename=${tck.war.basename}</echo>
-
-				<var name="bad.no.version" unset="true" />
+				<local name="exclude.war.name" />
 
 				<propertyregex
 					global="true"
 					input="${tck.war.basename}"
-					property="bad.no.version"
+					property="exclude.war.name"
 					regexp="-\d..*"
 					replace=""
 				/>
 
-				<echo>bad.no.version=${bad.no.version}</echo>
-
-				<var name="bad.no.tckDash" unset="true" />
-
 				<propertyregex
 					global="true"
-					input="${bad.no.version}"
-					property="bad.no.tckDash"
+					input="${exclude.war.name}"
+					override="true"
+					property="exclude.war.name"
 					regexp="tck-"
 					replace=""
 				/>
 
-				<echo>bad.no.version=${bad.no.tckDash}</echo>
-
 				<if>
 					<equals arg1="${exclude.war.names}" arg2="" />
 					<then>
-						<var name="exclude.war.names" value="${bad.no.tckDash}" />
+						<var name="exclude.war.names" value="${exclude.war.name}" />
 					</then>
 					<else>
-						<var name="exclude.war.names" value="${exclude.war.names}|${bad.no.tckDash}" />
+						<var name="exclude.war.names" value="${exclude.war.names}|${exclude.war.name}" />
 					</else>
 				</if>
 			</sequential>
