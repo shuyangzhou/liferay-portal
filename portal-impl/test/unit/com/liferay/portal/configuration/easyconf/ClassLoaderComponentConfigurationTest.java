@@ -76,21 +76,21 @@ public class ClassLoaderComponentConfigurationTest {
 
 			Assert.assertEquals(
 				"Unable to decode part \"xyz\" from \"" + s +
-					"\", preserve it literally.",
+					"\", preserve it literally",
 				logRecord.getMessage());
 
 			logRecord = logRecords.get(1);
 
 			Assert.assertEquals(
 				"Unable to decode part \"-1\" from \"" + s +
-					"\", preserve it literally.",
+					"\", preserve it literally",
 				logRecord.getMessage());
 
 			logRecord = logRecords.get(2);
 
 			Assert.assertEquals(
 				"Unable to decode part \"DEF\" from \"" + s +
-					"\", preserve it literally.",
+					"\", preserve it literally",
 				logRecord.getMessage());
 		}
 	}
