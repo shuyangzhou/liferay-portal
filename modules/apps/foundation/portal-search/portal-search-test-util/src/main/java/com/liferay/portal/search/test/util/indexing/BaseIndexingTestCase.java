@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.test.util.indexing;
 
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
@@ -83,6 +84,8 @@ public abstract class BaseIndexingTestCase {
 
 		searchContext.setQueryConfig(queryConfig);
 
+		searchContext.setStart(QueryUtil.ALL_POS);
+
 		return searchContext;
 	}
 
@@ -101,10 +104,6 @@ public abstract class BaseIndexingTestCase {
 
 	protected Query getDefaultQuery() {
 		return new TermQueryImpl(Field.ENTRY_CLASS_NAME, _entryClassName);
-	}
-
-	protected IndexSearcher getIndexSearcher() {
-		return _indexSearcher;
 	}
 
 	protected Hits search(SearchContext searchContext) throws Exception {
