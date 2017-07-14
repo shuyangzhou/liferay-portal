@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.PortalWebResourceConstants;
 import com.liferay.portal.kernel.servlet.PortalWebResourcesUtil;
+import com.liferay.portal.kernel.servlet.ResourceUtil;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
@@ -355,15 +356,11 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 					resourcePath.substring(pos);
 		}
 
-		URL resourceURL = _servletContext.getResource(resourcePath);
+		ServletContext servletContext = ResourceUtil.getPathServletContext(
+			resourcePath, requestURI, _servletContext);
 
-		if (resourceURL == null) {
-			resourceURL = PortalWebResourcesUtil.getResource(resourcePath);
-
-			if (resourceURL == null) {
-				return null;
-			}
-		}
+		URL resourceURL = ResourceUtil.getResource(
+			resourcePath, requestURI, _servletContext);
 
 		String cacheCommonFileName = getCacheFileName(request);
 
@@ -393,7 +390,7 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 			}
 
 			content = getCssContent(
-				request, response, resourceURL, resourcePath);
+				request, response, servletContext, resourceURL, resourcePath);
 
 			response.setContentType(ContentTypes.TEXT_CSS);
 
@@ -446,25 +443,34 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 	}
 
 	protected String getCssContent(
+			HttpServletRequest request, HttpServletResponse response,
+			ServletContext servletContext, URL resourceURL, String resourcePath)
+		throws IOException {
+
+		String resourcePathRoot = ServletPaths.getParentPath(resourcePath);
+
+		URLConnection urlConnection = resourceURL.openConnection();
+
+		String content = StringUtil.read(urlConnection.getInputStream());
+
+		content = aggregateCss(
+			new ServletPaths(servletContext, resourcePathRoot), content);
+
+		return getCssContent(request, response, resourcePath, content);
+	}
+
+	protected String getCssContent(
 		HttpServletRequest request, HttpServletResponse response,
 		String resourcePath, String content) {
 
 		try {
-			ServletContext cssServletContext = null;
-
 			String requestURI = request.getRequestURI();
 
-			if (PortalWebResourcesUtil.hasContextPath(requestURI)) {
-				cssServletContext =
-					PortalWebResourcesUtil.getPathServletContext(requestURI);
-			}
-
-			if (cssServletContext == null) {
-				cssServletContext = _servletContext;
-			}
+			ServletContext servletContext = ResourceUtil.getPathServletContext(
+				resourcePath, requestURI, _servletContext);
 
 			content = DynamicCSSUtil.replaceToken(
-				cssServletContext, request, content);
+				servletContext, request, content);
 		}
 		catch (Exception e) {
 			_log.error("Unable to replace tokens in CSS " + resourcePath, e);
@@ -494,30 +500,8 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 			URL resourceURL, String resourcePath)
 		throws IOException {
 
-		ServletContext cssServletContext = null;
-		String resourcePathRoot = null;
-
-		String requestURI = request.getRequestURI();
-
-		if (PortalWebResourcesUtil.hasContextPath(requestURI)) {
-			cssServletContext = PortalWebResourcesUtil.getPathServletContext(
-				requestURI);
-			resourcePathRoot = "/";
-		}
-
-		if (cssServletContext == null) {
-			cssServletContext = _servletContext;
-			resourcePathRoot = ServletPaths.getParentPath(resourcePath);
-		}
-
-		URLConnection urlConnection = resourceURL.openConnection();
-
-		String content = StringUtil.read(urlConnection.getInputStream());
-
-		content = aggregateCss(
-			new ServletPaths(cssServletContext, resourcePathRoot), content);
-
-		return getCssContent(request, response, resourcePath, content);
+		return getCssContent(
+			request, response, _servletContext, resourceURL, resourcePath);
 	}
 
 	protected String getJavaScriptContent(URL resourceURL) throws IOException {
