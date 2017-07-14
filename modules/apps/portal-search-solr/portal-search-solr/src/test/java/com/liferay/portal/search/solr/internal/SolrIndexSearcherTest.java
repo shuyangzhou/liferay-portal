@@ -12,16 +12,15 @@
  * details.
  */
 
-package com.liferay.portal.search.solr.internal.pagination;
+package com.liferay.portal.search.solr.internal;
 
-import com.liferay.portal.search.solr.internal.SolrIndexingFixture;
+import com.liferay.portal.search.test.util.indexing.BaseIndexSearcherTestCase;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
-import com.liferay.portal.search.test.util.pagination.BasePaginationTestCase;
 
 /**
  * @author Preston Crary
  */
-public class PaginationTest extends BasePaginationTestCase {
+public class SolrIndexSearcherTest extends BaseIndexSearcherTestCase {
 
 	@Override
 	protected IndexingFixture createIndexingFixture() {

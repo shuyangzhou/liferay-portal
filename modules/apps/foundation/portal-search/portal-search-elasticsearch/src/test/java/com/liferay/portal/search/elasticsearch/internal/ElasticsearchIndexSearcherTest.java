@@ -12,25 +12,28 @@
  * details.
  */
 
-package com.liferay.portal.search.elasticsearch.internal.pagination;
+package com.liferay.portal.search.elasticsearch.internal;
 
-import com.liferay.portal.search.elasticsearch.internal.ElasticsearchIndexingFixture;
 import com.liferay.portal.search.elasticsearch.internal.connection.ElasticsearchFixture;
-import com.liferay.portal.search.elasticsearch.internal.groupby.GroupByTest;
+import com.liferay.portal.search.elasticsearch.internal.connection.LiferayIndexCreator;
+import com.liferay.portal.search.elasticsearch.internal.mappings.DescriptionFieldQueryBuilderTest;
+import com.liferay.portal.search.test.util.indexing.BaseIndexSearcherTestCase;
 import com.liferay.portal.search.test.util.indexing.BaseIndexingTestCase;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
-import com.liferay.portal.search.test.util.pagination.BasePaginationTestCase;
 
 /**
  * @author Preston Crary
  */
-public class PaginationTest extends BasePaginationTestCase {
+public class ElasticsearchIndexSearcherTest extends BaseIndexSearcherTestCase {
 
 	@Override
 	protected IndexingFixture createIndexingFixture() {
+		ElasticsearchFixture elasticsearchFixture = new ElasticsearchFixture(
+			DescriptionFieldQueryBuilderTest.class.getSimpleName());
+
 		return new ElasticsearchIndexingFixture(
-			new ElasticsearchFixture(GroupByTest.class.getSimpleName()),
-			BaseIndexingTestCase.COMPANY_ID);
+			elasticsearchFixture, BaseIndexingTestCase.COMPANY_ID,
+			new LiferayIndexCreator(elasticsearchFixture));
 	}
 
 }
