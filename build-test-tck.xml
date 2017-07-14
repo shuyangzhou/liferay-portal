@@ -98,6 +98,8 @@ theme.portlet.decorate.default=false
 
 users.reminder.queries.enabled=false
 		</echo>
+
+		<print-file file.name="${liferay.home}/portal-ext.properties" />
 	</target>
 
 	<target name="deploy-portlet-tck-bridge">
@@ -118,13 +120,7 @@ users.reminder.queries.enabled=false
 								<fileset dir="${liferay.home}/logs" includes="*.log" />
 							</path>
 							<sequential>
-								<local name="logfile.content" />
-
-								<loadfile property="logfile.content" srcFile="@{logfile}" />
-
-								<echo>File content for ${liferay.home}/logs/@{logfile}:
-${logfile.content}
-								</echo>
+								<print-file file.name="@{logfile}" />
 							</sequential>
 						</for>
 
@@ -284,6 +280,8 @@ servletContextNames=${tck.servlet.context.names}
 testContext=${test.context}
 
 tckDeployFiles=${tck.deploy.files}</echo>
+
+		<print-file file.name="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration.cfg" />
 	</target>
 
 	<target depends="prepare-portlet-tck" name="run-tck-tomcat">
