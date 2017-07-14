@@ -1,24 +1,6 @@
 <?xml version="1.0"?>
 
 <project basedir="." default="test" name="portal-test-tck" xmlns:antelope="antlib:ise.antelope.tasks">
-
-	<!-- deploy all wars and run all tests -->
-	<!-- ant -Dtck.home=/path/to/portlet-tck_3.0 -f build-test-tck.xml run-tck-tomcat -->
-
-	<!-- deploy one war called tck-V2PortletTagLibraryTests-3.0.1-SNAPSHOT.war, and run all its tests  -->
-	<!-- ant -Dtck.home=/path/to/portlet-tck_3.0 -Dtest.context=tck-V2PortletTagLibraryTests -Dstarts.with=_ -f build-test-tck.xml run-tck-tomcat -->
-
-	<!-- deploy one war called tck-V2PortletTagLibraryTests-3.0.1-SNAPSHOT.war, and run tests for specifications starting with _SPEC2_26_IncludeJSPGeneral -->
-	<!-- ant -Dtck.home=/path/to/portlet-tck_3.0 -Dtest.context=tck-V2PortletTagLibraryTests -Dstarts.with=_SPEC2_26_IncludeJSPGeneral -f build-test-tck.xml run-tck-tomcat -->
-	<!-- currently ... Tests run: 5, Failures: 2, Errors: 0, Skipped: 0 -->
-	<!-- causing both server log errors and test failures -->
-
-	<!-- deploy one war called tck-V2SigTestsFilter-3.0.1-SNAPSHOT.war, and run all its test (which will start with an _) -->
-	<!-- ant -Dtck.home=/path/to/portlet-tck_3.0 -Dtest.context=tck-V2SigTestsFilter -Dstarts.with=_ -f build-test-tck.xml run-tck-tomcat -->
-	<!-- this will start Liferay, deploy the necessary war, add all its portlets to the appropriate page, and run the following mvn command -->
-	<!-- mvn -Prun-tck -Djava.awt.headless=true -Dtest.module=V2SigTestsFilter_ test -->
-	<!-- currently ... Tests run: 32, Failures: 0, Errors: 0, Skipped: 0 -->
-
 	<import file="build-test.xml" />
 
 	<if>
@@ -275,13 +257,7 @@ tckDeployFiles=${tck.deploy.files}</echo>
 			replace=""
 		/>
 
-		<echo>module.no.version=${module.no.tck.dash}</echo>
-
-		<!-- defaults in portlet-tck_3.0/pom.xml-->
-
-		<property name="test.props" value="-Dtest.context.base=group/portlet-tck/ -Dtest.server.login.url=http://localhost:8080/group/portlet-tck -Dtest.server.username.id=_com_liferay_login_web_portlet_LoginPortlet_login -Dtest.server.username=test -Dtest.server.password.id=_com_liferay_login_web_portlet_LoginPortlet_password -Dtest.server.password=test -Dtest.browser.webDriver=/usr/local/bin/chromedriver -Dbrowser.binary=/Users/apple/Downloads/chrome-mac/Chromium.app/Contents/MacOS/Chromium -Dtest.timeout=1" />
-
-		<echo>props=${test.props}</echo>
+		<property name="test.props" value="-Dtest.browser.webDriver=/usr/local/bin/chromedriver -Dbrowser.binary=/Users/apple/Downloads/chrome-mac/Chromium.app/Contents/MacOS/Chromium -Dtest.timeout=1" />
 
 		<condition else="-Dtest.module=${module.no.tck.dash}${starts.with}" property="test.module.option" value="${test.module.option}">
 			<isset property="test.module.option" />
@@ -290,22 +266,18 @@ tckDeployFiles=${tck.deploy.files}</echo>
 		<if>
 			<isset property="wait.for.continue" />
 			<then>
-				<echo>Waiting for file ${liferay.home}/.continue ...</echo>
-
 				<waitfor maxwait="30" maxwaitunit="minute">
 					<available file="${liferay.home}/.continue" />
 				</waitfor>
-
-				<echo>either timed out, or found ${liferay.home}/.continue ... continuing ...</echo>
 			</then>
 		</if>
 
-		<echo>COMMAND: mvn -Prun-tck -Djava.awt.headless=true ${test.props} ${test.module.option} test</echo>
+		<echo>mvn -Prun-tck -Djava.awt.headless=true ${test.props} ${test.module.option} test</echo>
 
 		<maven
 			basedir="${tck.home}"
-			options=" -Prun-tck -Djava.awt.headless=true ${test.props} ${test.module.option}"
 			goal="test"
+			options="-Prun-tck -Djava.awt.headless=true ${test.props} ${test.module.option}"
 		/>
 
 		<echo>run-tck-tomcat: a result of 0 is success.</echo>
