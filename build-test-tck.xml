@@ -37,6 +37,10 @@
 	<fail message="Please set the property ${maven.home}." unless="maven.home" />
 	<fail message="Please set the property ${tck.home}." unless="tck.home" />
 
+	<condition else="tck-V2*" property="test.context" value="${test.context}">
+		<isset property="test.context" />
+	</condition>
+
 	<path id="maven.classpath">
 		<fileset dir="${maven.home}/boot" includes="*.jar" />
 		<fileset dir="${maven.home}/lib" includes="*.jar" />
@@ -136,14 +140,9 @@ users.reminder.queries.enabled=false
 	</target>
 
 	<target name="prepare-portlet-tck">
-		<if>
-			<not>
-				<isset property="tck.deploy.files" />
-			</not>
-			<then>
-				<property name="tck.deploy.files" value="${tck.home}/deploy/target/deploy-files" />
-			</then>
-		</if>
+		<condition else="${tck.home}/deploy/target/deploy-files" property="tck.deploy.files" value="${tck.deploy.files}">
+			<isset property="tck.deploy.files" />
+		</condition>
 
 		<antcall target="undeploy-chat-portlet" />
 
@@ -157,17 +156,6 @@ users.reminder.queries.enabled=false
 
 		<var name="tck.servlet.context.names" value="" />
 		<var name="exclude.war.names" value="" />
-
-		<!-- TODO improve tck- war magic below ... choke included tck wars to V2* only for now -->
-
-		<if>
-			<not>
-				<isset property="test.context" />
-			</not>
-			<then>
-				<property name="test.context" value="tck-V2*" />
-			</then>
-		</if>
 
 		<for param="tck.war">
 			<path>
@@ -291,24 +279,13 @@ tckDeployFiles=${tck.deploy.files}</echo>
 
 		<antcall target="deploy-portlet-tck-bridge" />
 
-		<if>
-			<not>
-				<isset property="starts.with" />
-			</not>
-			<then>
-				<property name="starts.with" value="" />
-			</then>
-		</if>
+		<condition else="" property="starts.with" value="${starts.with}">
+			<isset property="starts.with" />
+		</condition>
 
-		<if>
+		<condition else="${test.context}" property="test.module.context" value="tck-V2">
 			<equals arg1="${test.context}" arg2="tck-V2*" />
-			<then>
-				<property name="test.module.context" value="tck-V2" />
-			</then>
-			<else>
-				<property name="test.module.context" value="${test.context}" />
-			</else>
-		</if>
+		</condition>
 
 		<propertyregex
 			global="true"
@@ -326,14 +303,9 @@ tckDeployFiles=${tck.deploy.files}</echo>
 
 		<echo>props=${test.props}</echo>
 
-		<if>
-			<not>
-				<isset property="test.module.option" />
-			</not>
-			<then>
-				<property name="test.module.option" value="-Dtest.module=${module.no.tckDash}${starts.with}" />
-			</then>
-		</if>
+		<condition else="-Dtest.module=${module.no.tck.dash}${starts.with}" property="test.module.option" value="${test.module.option}">
+			<isset property="test.module.option" />
+		</condition>
 
 		<if>
 			<isset property="wait.for.continue" />
