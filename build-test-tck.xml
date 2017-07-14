@@ -43,17 +43,21 @@
 	</path>
 
 	<macrodef name="maven">
-
-		<attribute name="options" default="" />
-		<attribute name="goal" />
 		<attribute name="basedir" />
-		<attribute name="resultproperty" default="maven.result" />
-		<element name="args" implicit="true" optional="true" />
+		<attribute name="goal" />
+		<attribute default=""  name="options" />
+		<attribute default="maven.result" name="resultproperty" />
+		<element implicit="true" name="args" optional="true" />
+
 		<sequential>
-			<java classname="org.codehaus.classworlds.Launcher" fork="true"
-				  dir="@{basedir}" resultproperty="@{resultproperty}">
-				<jvmarg value="-Xmx512m"/>
-				<jvmarg value="-Dmaven.multiModuleProjectDirectory=@{basedir}"/>
+			<java
+				dir="@{basedir}"
+				classname="org.codehaus.classworlds.Launcher"
+				fork="true"
+				resultproperty="@{resultproperty}"
+			>
+				<jvmarg value="-Xmx512m" />
+				<jvmarg value="-Dmaven.multiModuleProjectDirectory=@{basedir}" />
 				<classpath refid="maven.classpath" />
 				<sysproperty key="classworlds.conf" value="${maven.home}/bin/m2.conf" />
 				<sysproperty key="maven.home" value="${maven.home}" />
@@ -63,7 +67,6 @@
 	</macrodef>
 
 	<target name="clean-up-tck-dependencies">
-
 		<delete file="${liferay.home}/.continue" />
 		<delete file=".testable.portal.started" />
 
@@ -75,21 +78,26 @@
 	</target>
 
 	<target name="prepare-tck-portal-ext-properties">
-
 		<delete file="${liferay.home}/portal-ext.properties" />
 
-		<echo append="true" file="${liferay.home}/portal-ext.properties">
-# written by build-test-tck.xml
+		<echo append="true" file="${liferay.home}/portal-ext.properties"># written by build-test-tck.xml
+
 browser.launcher.url=
+
 javascript.single.page.application.enabled=false
+
 module.framework.auto.deploy.interval=2000
+
 module.framework.web.generator.generated.wabs.store=true
+
 setup.wizard.enabled=false
+
 terms.of.use.required=false
+
 theme.portlet.decorate.default=false
+
 users.reminder.queries.enabled=false
 		</echo>
-
 	</target>
 
 	<target name="deploy-portlet-tck-bridge">
@@ -132,7 +140,6 @@ ${logfile.content}
 	</target>
 
 	<target name="prepare-portlet-tck">
-
 		<if>
 			<not>
 				<isset property="tck.deploy.files" />
@@ -156,6 +163,7 @@ ${logfile.content}
 		<var name="exclude.war.names" value="" />
 
 		<!-- TODO improve tck- war magic below ... choke included tck wars to V2* only for now -->
+
 		<if>
 			<not>
 				<isset property="test.context" />
@@ -167,29 +175,33 @@ ${logfile.content}
 
 		<for param="tck.war">
 			<path>
-				<fileset dir="${tck.deploy.files}" includes="**/${test.context}-*.war" >
-					<exclude name="**/tck-WarThatYouWouldLikeToExclude-*.war" />
-					<!--
-						NOTE: if you exclude a war here, then you probably also
-						want to add the entries for that war in the ignore file:
-						portlet-tck_3.0/driver/src/main/resources/xml-resources/ignoredTestCases.xml
-					-->
-				</fileset>
+				<fileset
+					dir="${tck.deploy.files}"
+					excludes="**/tck-WarThatYouWouldLikeToExclude-*.war"
+					includes="**/${test.context}-*.war"
+				/>
 			</path>
 			<sequential>
 				<local name="tck.servlet.context.name" />
 
 				<echo>tck.war=@{tck.war}</echo>
 
-				<var name="tck.war.basename" unset="true"/>
+				<var name="tck.war.basename" unset="true" />
+
 				<basename file="@{tck.war}" property="tck.war.basename" suffix=".war" />
+
 				<echo>tck.war.basename=${tck.war.basename}</echo>
 
-				<var name="tck.no.version" unset="true"/>
-				<propertyregex global="true" input="${tck.war.basename}" property="tck.no.version"
+				<var name="tck.no.version" unset="true" />
+
+				<propertyregex
+					global="true"
+					input="${tck.war.basename}"
+					property="tck.no.version"
 					regexp="-\d..*"
 					replace=""
 				/>
+
 				<echo>tck.no.version=${tck.no.version}</echo>
 
 				<if>
@@ -203,10 +215,8 @@ ${logfile.content}
 				</if>
 
 				<echo>cp @{tck.war} ${liferay.home}/deploy/${tck.no.version}.war</echo>
-				<copy
-					file="@{tck.war}"
-					tofile="${liferay.home}/deploy/${tck.no.version}.war"
-				/>
+
+				<copy file="@{tck.war}" tofile="${liferay.home}/deploy/${tck.no.version}.war" />
 			</sequential>
 		</for>
 
@@ -223,22 +233,34 @@ ${logfile.content}
 
 				<echo>tck.war=@{tck.war}</echo>
 
-				<var name="tck.war.basename" unset="true"/>
+				<var name="tck.war.basename" unset="true" />
+
 				<basename file="@{tck.war}" property="tck.war.basename" suffix=".war" />
+
 				<echo>tck.war.basename=${tck.war.basename}</echo>
 
-				<var name="bad.no.version" unset="true"/>
-				<propertyregex global="true" input="${tck.war.basename}" property="bad.no.version"
+				<var name="bad.no.version" unset="true" />
+
+				<propertyregex
+					global="true"
+					input="${tck.war.basename}"
+					property="bad.no.version"
 					regexp="-\d..*"
 					replace=""
 				/>
+
 				<echo>bad.no.version=${bad.no.version}</echo>
 
-				<var name="bad.no.tckDash" unset="true"/>
-				<propertyregex global="true" input="${bad.no.version}" property="bad.no.tckDash"
+				<var name="bad.no.tckDash" unset="true" />
+
+				<propertyregex
+					global="true"
+					input="${bad.no.version}"
+					property="bad.no.tckDash"
 					regexp="tck-"
 					replace=""
 				/>
+
 				<echo>bad.no.version=${bad.no.tckDash}</echo>
 
 				<if>
@@ -250,38 +272,21 @@ ${logfile.content}
 						<var name="exclude.war.names" value="${exclude.war.names}|${bad.no.tckDash}" />
 					</else>
 				</if>
-
 			</sequential>
 		</for>
 
-		<echo file="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration.cfg">handshakeServerPort=${portlet.tck.bridge.handshake.port}
-tckDeployFiles=${tck.deploy.files}
-testContext=${test.context}
-servletContextNames=${tck.servlet.context.names}
-excludeWarNames=${exclude.war.names}</echo>
+		<echo file="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration.cfg">excludeWarNames=${exclude.war.names}
 
+handshakeServerPort=${portlet.tck.bridge.handshake.port}
+
+servletContextNames=${tck.servlet.context.names}
+
+testContext=${test.context}
+
+tckDeployFiles=${tck.deploy.files}</echo>
 	</target>
 
 	<target depends="prepare-portlet-tck" name="run-tck-tomcat">
-
-		<!--
-		<if>
-			<not>
-				<isset property="test.context" />
-			</not>
-			<then>
-				<antcall inheritAll="false" target="clean-up-java-processes" />
-
-				<echo>run-tck-tomcat: prepare-tck-portal-ext-properties ...</echo>
-				<antcall target="prepare-tck-portal-ext-properties" />
-
-				<antcall target="prepare-system-ext-properties" />
-
-				<antcall inheritAll="false" target="rebuild-database" />
-			</then>
-		</if>
-		-->
-
 		<antcall target="start-app-server">
 			<param name="testable.portal.started.marker.file" value=".testable.portal.started" />
 		</antcall>
@@ -307,14 +312,20 @@ excludeWarNames=${exclude.war.names}</echo>
 			</else>
 		</if>
 
-		<propertyregex global="true" input="${test.module.context}" property="module.no.tckDash"
+		<propertyregex
+			global="true"
+			input="${test.module.context}"
+			property="module.no.tckDash"
 			regexp="tck-"
 			replace=""
 		/>
+
 		<echo>module.no.version=${module.no.tckDash}</echo>
 
 		<!-- defaults in portlet-tck_3.0/pom.xml-->
+
 		<property name="test.props" value="-Dtest.context.base=group/portlet-tck/ -Dtest.server.login.url=http://localhost:8080/group/portlet-tck -Dtest.server.username.id=_com_liferay_login_web_portlet_LoginPortlet_login -Dtest.server.username=test -Dtest.server.password.id=_com_liferay_login_web_portlet_LoginPortlet_password -Dtest.server.password=test -Dtest.browser.webDriver=/usr/local/bin/chromedriver -Dbrowser.binary=/Users/apple/Downloads/chrome-mac/Chromium.app/Contents/MacOS/Chromium -Dtest.timeout=1" />
+
 		<echo>props=${test.props}</echo>
 
 		<if>
@@ -330,38 +341,26 @@ excludeWarNames=${exclude.war.names}</echo>
 			<isset property="wait.for.continue" />
 			<then>
 				<echo>Waiting for file ${liferay.home}/.continue ...</echo>
+
 				<waitfor maxwait="30" maxwaitunit="minute">
-					<available file="${liferay.home}/.continue"/>
+					<available file="${liferay.home}/.continue" />
 				</waitfor>
+
 				<echo>either timed out, or found ${liferay.home}/.continue ... continuing ...</echo>
 			</then>
 		</if>
 
-		<if>
-			<isset property="maven.home" />
-			<then>
-				<echo>COMMAND: mvn -Prun-tck -Djava.awt.headless=true ${test.props} ${test.module.option} test</echo>
-				<maven basedir="${tck.home}"
-					options=" -Prun-tck -Djava.awt.headless=true ${test.props} ${test.module.option}"
-					goal="test" />
+		<echo>COMMAND: mvn -Prun-tck -Djava.awt.headless=true ${test.props} ${test.module.option} test</echo>
 
-				<echo>run-tck-tomcat: a result of 0 is success.</echo>
-				<echo>run-tck-tomcat: maven.result = ${maven.result}</echo>
+		<maven
+			basedir="${tck.home}"
+			options=" -Prun-tck -Djava.awt.headless=true ${test.props} ${test.module.option}"
+			goal="test"
+		/>
 
-				<!--
-					<exec dir="${tck.deploy.files}/../../.." executable="${maven.home}/bin/mvn">
-						<arg value="-Prun-tck" />
-						<arg value="-Djava.awt.headless=true" />
-						<arg value="-Dmaven.multiModuleProjectDirectory=${tck.deploy.files}/../../.." />
-						<arg value="${test.module.option}" />
-						<arg value="test" />
-					</exec>
-				-->
-			</then>
-			<else>
-				<echo>run-tck-tomcat: maven.home is not set.</echo>
-			</else>
-		</if>
+		<echo>run-tck-tomcat: a result of 0 is success.</echo>
+
+		<echo>run-tck-tomcat: maven.result = ${maven.result}</echo>
 
 		<antcall target="clean-up-tck-dependencies" />
 	</target>
@@ -390,8 +389,8 @@ excludeWarNames=${exclude.war.names}</echo>
 	</target>
 
 	<target name="undeploy-portlet-tck-theme">
-		<delete file="${liferay.home}/osgi/war/portlet-tck-theme.war" />
 		<delete file="${liferay.home}/deploy/portlet-tck-theme.war" />
+		<delete file="${liferay.home}/osgi/war/portlet-tck-theme.war" />
 	</target>
 
 	<target name="undeploy-tck-wars">
