@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.definition.web.internal.util.comparator;
 
+import com.liferay.portal.kernel.util.CollatorUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
@@ -42,7 +43,7 @@ public class WorkflowDefinitionTitleComparator
 		_ascending = ascending;
 		_locale = locale;
 
-		_collator = Collator.getInstance(_locale);
+		_collator = CollatorUtil.getInstance(_locale);
 
 		_languageId = LocaleUtil.toLanguageId(locale);
 	}
