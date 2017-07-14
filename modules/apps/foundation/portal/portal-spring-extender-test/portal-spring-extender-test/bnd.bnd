@@ -1,0 +1,8 @@
+Bundle-Name: Liferay Portal Spring Extender Test
+Bundle-SymbolicName: com.liferay.portal.spring.extender.test
+Bundle-Version: 1.0.0
+Include-Resource:\
+	lib/com.liferay.portal.spring.extender.test.api.jar,\
+	lib/com.liferay.portal.spring.extender.test.service.jar,\
+	test-classes/integration,\
+	@lib/com.liferay.portal.spring.extender.test.api.jar!/com/liferay/portal/spring/extender/test/reference/SpringExtenderTestComponentReference.class
