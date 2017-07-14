@@ -257,7 +257,17 @@ tckDeployFiles=${tck.deploy.files}</echo>
 			replace=""
 		/>
 
-		<property name="test.props" value="-Dtest.browser.webDriver=/usr/local/bin/chromedriver -Dbrowser.binary=/Users/apple/Downloads/chrome-mac/Chromium.app/Contents/MacOS/Chromium -Dtest.timeout=1" />
+		<if>
+			<isset property="browser.${browser.type}.bin.file[${browser.version}]" />
+			<then>
+				<propertycopy from="browser.${browser.type}.bin.file[${browser.version}]" name="browser.binary" silent="true" />
+
+				<property name="test.props" value="-Dbrowser.binary=${browser.binary} -Dtest.browser=${browser.type} -Dtest.timeout=1" />
+			</then>
+			<else>
+				<property name="test.props" value="-Dtest.browser=${browser.type} -Dtest.timeout=1" />
+			</else>
+		</if>
 
 		<condition else="-Dtest.module=${module.no.tck.dash}${starts.with}" property="test.module.option" value="${test.module.option}">
 			<isset property="test.module.option" />
