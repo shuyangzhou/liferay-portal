@@ -146,13 +146,9 @@ users.reminder.queries.enabled=false
 
 		<antcall target="undeploy-chat-portlet" />
 
-		<antcall target="undeploy-portlet-tck-bridge" />
-
-		<antcall target="undeploy-portlet-tck-theme" />
+		<antcall target="clean-up-tck-dependencies" />
 
 		<antcall target="prepare-tck-portal-ext-properties" />
-
-		<antcall target="deploy-portlet-tck-theme" />
 
 		<var name="tck.servlet.context.names" value="" />
 
@@ -259,6 +255,8 @@ tckDeployFiles=${tck.deploy.files}</echo>
 			<param name="testable.portal.started.marker.file" value=".testable.portal.started" />
 		</antcall>
 
+		<antcall target="deploy-portlet-tck-theme" />
+
 		<antcall target="deploy-portlet-tck-bridge" />
 
 		<condition else="" property="starts.with" value="${starts.with}">
@@ -272,12 +270,12 @@ tckDeployFiles=${tck.deploy.files}</echo>
 		<propertyregex
 			global="true"
 			input="${test.module.context}"
-			property="module.no.tckDash"
+			property="module.no.tck.dash"
 			regexp="tck-"
 			replace=""
 		/>
 
-		<echo>module.no.version=${module.no.tckDash}</echo>
+		<echo>module.no.version=${module.no.tck.dash}</echo>
 
 		<!-- defaults in portlet-tck_3.0/pom.xml-->
 
