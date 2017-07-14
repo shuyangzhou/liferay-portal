@@ -177,16 +177,10 @@ public class IndexerRegistryImpl implements IndexerRegistry {
 			else {
 				synchronized (_queuedIndexerPostProcessors) {
 					List<IndexerPostProcessor> indexerPostProcessors =
-						_queuedIndexerPostProcessors.get(indexerClassName);
-
-					if (indexerPostProcessors == null) {
-						indexerPostProcessors = new ArrayList<>();
-					}
+						_queuedIndexerPostProcessors.computeIfAbsent(
+							indexerClassName, (key) -> new ArrayList<>());
 
 					indexerPostProcessors.add(indexerPostProcessor);
-
-					_queuedIndexerPostProcessors.put(
-						indexerClassName, indexerPostProcessors);
 
 					if (_log.isDebugEnabled()) {
 						StringBundler sb = new StringBundler(5);
@@ -268,11 +262,10 @@ public class IndexerRegistryImpl implements IndexerRegistry {
 				if (_log.isDebugEnabled()) {
 					_log.debug("No indexer exists for " + indexerClassName);
 				}
-
-				continue;
 			}
-
-			indexer.unregisterIndexerPostProcessor(indexerPostProcessor);
+			else {
+				indexer.unregisterIndexerPostProcessor(indexerPostProcessor);
+			}
 
 			synchronized (_queuedIndexerPostProcessors) {
 				_queuedIndexerPostProcessors.remove(indexerClassName);
