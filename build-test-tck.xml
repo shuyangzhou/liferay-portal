@@ -257,16 +257,59 @@ tckDeployFiles=${tck.deploy.files}</echo>
 			replace=""
 		/>
 
+		<var name="test.arguments" value="" />
+
 		<if>
 			<isset property="browser.${browser.type}.bin.file[${browser.version}]" />
 			<then>
-				<propertycopy from="browser.${browser.type}.bin.file[${browser.version}]" name="browser.binary" silent="true" />
+				<propertycopy from="browser.${browser.type}.bin.file[${browser.version}]" name="test.browser.binary" silent="true" />
 
-				<property name="test.props" value="-Dbrowser.binary=${browser.binary} -Dtest.browser=${browser.type} -Dtest.timeout=1" />
+				<var name="test.arguments" value="-Dtest.browser.binary=${test.browser.binary} -Dtest.browser=${browser.type}" />
 			</then>
 			<else>
-				<property name="test.props" value="-Dtest.browser=${browser.type} -Dtest.timeout=1" />
+
+				<if>
+					<isset property="browser.type" />
+					<then>
+						<var name="test.arguments" value="${test.arguments} -Dtest.browser=${browser.type}" />
+					</then>
+				</if>
+
+				<if>
+					<isset property="test.browser.webDriver" />
+					<then>
+						<var name="test.arguments" value="${test.arguments} -Dtest.browser.webDriver='${test.browser.webDriver}'" />
+					</then>
+				</if>
+
+				<if>
+					<equals arg1="${browser.type}" arg2="phantomjs" />
+					<then>
+						<fail message="Please set the property ${test.browser.binary}." unless="test.browser.binary" />
+					</then>
+				</if>
+
+				<if>
+					<isset property="test.browser.binary" />
+					<then>
+						<var name="test.arguments" value="${test.arguments} -Dtest.browser.binary='${test.browser.binary}'" />
+					</then>
+				</if>
+
+				<if>
+					<isset property="test.browser.headless" />
+					<then>
+						<var name="test.arguments" value="${test.arguments} -Dtest.browser.headless=${test.browser.headless}" />
+					</then>
+				</if>
 			</else>
+		</if>
+
+		<if>
+			<isset property="test.timeout" />
+			<then>
+				<var name="test.arguments" value="${test.arguments} -Dtest.timeout=${test.timeout}" />
+			</then>
 		</if>
 
 		<condition else="-Dtest.module=${module.no.tck.dash}${starts.with}" property="test.module.option" value="${test.module.option}">
@@ -282,12 +325,12 @@ tckDeployFiles=${tck.deploy.files}</echo>
 			</then>
 		</if>
 
-		<echo>mvn -Prun-tck -Djava.awt.headless=true ${test.props} ${test.module.option} test</echo>
+		<echo>mvn -Prun-tck -Djava.awt.headless=true ${test.arguments} ${test.module.option} test</echo>
 
 		<maven
 			basedir="${tck.home}"
 			goal="test"
-			options="-Prun-tck -Djava.awt.headless=true ${test.props} ${test.module.option}"
+			options="-Prun-tck -Djava.awt.headless=true ${test.arguments} ${test.module.option}"
 		/>
 
 		<antcall target="clean-up-tck-dependencies" />
