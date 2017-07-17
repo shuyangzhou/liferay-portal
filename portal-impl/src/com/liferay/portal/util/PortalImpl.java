@@ -4980,7 +4980,11 @@ public class PortalImpl implements Portal {
 			Map<String, String[]> params)
 		throws PortalException {
 
-		return _getSiteAdminURL(company, group, null, ppid, params);
+		return _getSiteAdminURL(
+			getPortalURL(
+				company.getVirtualHostname(), getPortalServerPort(false),
+				false),
+			group, ppid, params);
 	}
 
 	/**
@@ -4996,7 +5000,11 @@ public class PortalImpl implements Portal {
 		Company company = CompanyLocalServiceUtil.getCompany(
 			group.getCompanyId());
 
-		return getSiteAdminURL(company, group, ppid, params);
+		return _getSiteAdminURL(
+			getPortalURL(
+				company.getVirtualHostname(), getPortalServerPort(false),
+				false),
+			group, ppid, params);
 	}
 
 	public String getSiteAdminURL(
@@ -5005,8 +5013,8 @@ public class PortalImpl implements Portal {
 		throws PortalException {
 
 		return _getSiteAdminURL(
-			themeDisplay.getCompany(), themeDisplay.getScopeGroup(),
-			themeDisplay.getPortalDomain(), ppid, params);
+			themeDisplay.getPortalURL(), themeDisplay.getScopeGroup(), ppid,
+			params);
 	}
 
 	/**
@@ -8604,19 +8612,13 @@ public class PortalImpl implements Portal {
 	}
 
 	private String _getSiteAdminURL(
-			Company company, Group group, String portalDomain, String ppid,
+			String portalURL, Group group, String ppid,
 			Map<String, String[]> params)
 		throws PortalException {
 
 		StringBundler sb = new StringBundler(7);
 
-		if (portalDomain == null) {
-			portalDomain = company.getVirtualHostname();
-		}
-
-		sb.append(
-			getPortalURL(portalDomain, getPortalServerPort(false), false));
-
+		sb.append(portalURL);
 		sb.append(getPathFriendlyURLPrivateGroup());
 
 		if ((group != null) && !group.isControlPanel()) {
