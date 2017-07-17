@@ -4975,10 +4975,20 @@ public class PortalImpl implements Portal {
 			Map<String, String[]> params)
 		throws PortalException {
 
-		return getSiteAdminURL(company, group, null, ppid, params);
+		return _getSiteAdminURL(company, group, null, ppid, params);
 	}
 
 	public String getSiteAdminURL(
+			ThemeDisplay themeDisplay, String ppid,
+			Map<String, String[]> params)
+		throws PortalException {
+
+		return _getSiteAdminURL(
+			themeDisplay.getCompany(), themeDisplay.getScopeGroup(),
+			themeDisplay.getPortalDomain(), ppid, params);
+	}
+
+	private String _getSiteAdminURL(
 			Company company, Group group, String portalDomain, String ppid,
 			Map<String, String[]> params)
 		throws PortalException {

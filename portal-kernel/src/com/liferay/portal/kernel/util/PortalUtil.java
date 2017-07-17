@@ -1759,12 +1759,11 @@ public class PortalUtil {
 	}
 
 	public static String getSiteAdminURL(
-			Company company, Group group, String portalDomain, String ppid,
+			ThemeDisplay themeDisplay, String ppid,
 			Map<String, String[]> params)
 		throws PortalException {
 
-		return getPortal().getSiteAdminURL(
-			company, group, portalDomain, ppid, params);
+		return getPortal().getSiteAdminURL(themeDisplay, ppid, params);
 	}
 
 	/**

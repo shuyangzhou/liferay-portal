@@ -1088,7 +1088,7 @@ public interface Portal {
 		throws PortalException;
 
 	public String getSiteAdminURL(
-			Company company, Group group, String portalURL, String ppid,
+			ThemeDisplay themeDisplay, String ppid,
 			Map<String, String[]> params)
 		throws PortalException;
 
