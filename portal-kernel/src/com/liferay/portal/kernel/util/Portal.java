@@ -1087,11 +1087,6 @@ public interface Portal {
 			Map<String, String[]> params)
 		throws PortalException;
 
-	public String getSiteAdminURL(
-			ThemeDisplay themeDisplay, String ppid,
-			Map<String, String[]> params)
-		throws PortalException;
-
 	/**
 	 * @deprecated As of 7.0.0, replaced by {@link
 	 *             #getSiteAdminURL(Company, Group, String, Map)}
@@ -1099,6 +1094,11 @@ public interface Portal {
 	@Deprecated
 	public String getSiteAdminURL(
 			Group group, String ppid, Map<String, String[]> params)
+		throws PortalException;
+
+	public String getSiteAdminURL(
+			ThemeDisplay themeDisplay, String ppid,
+			Map<String, String[]> params)
 		throws PortalException;
 
 	/**

@@ -4978,61 +4978,6 @@ public class PortalImpl implements Portal {
 		return _getSiteAdminURL(company, group, null, ppid, params);
 	}
 
-	public String getSiteAdminURL(
-			ThemeDisplay themeDisplay, String ppid,
-			Map<String, String[]> params)
-		throws PortalException {
-
-		return _getSiteAdminURL(
-			themeDisplay.getCompany(), themeDisplay.getScopeGroup(),
-			themeDisplay.getPortalDomain(), ppid, params);
-	}
-
-	private String _getSiteAdminURL(
-			Company company, Group group, String portalDomain, String ppid,
-			Map<String, String[]> params)
-		throws PortalException {
-
-		StringBundler sb = new StringBundler(7);
-
-		if (portalDomain == null) {
-			portalDomain = company.getVirtualHostname();
-		}
-
-		sb.append(
-			getPortalURL(portalDomain, getPortalServerPort(false), false));
-
-		sb.append(getPathFriendlyURLPrivateGroup());
-
-		if ((group != null) && !group.isControlPanel()) {
-			sb.append(group.getFriendlyURL());
-			sb.append(VirtualLayoutConstants.CANONICAL_URL_SEPARATOR);
-		}
-
-		sb.append(GroupConstants.CONTROL_PANEL_FRIENDLY_URL);
-		sb.append(PropsValues.CONTROL_PANEL_LAYOUT_FRIENDLY_URL);
-
-		if (params != null) {
-			params = new LinkedHashMap<>(params);
-		}
-		else {
-			params = new LinkedHashMap<>();
-		}
-
-		if (Validator.isNotNull(ppid)) {
-			params.put("p_p_id", new String[] {ppid});
-		}
-
-		params.put("p_p_lifecycle", new String[] {"0"});
-		params.put(
-			"p_p_state", new String[] {WindowState.MAXIMIZED.toString()});
-		params.put("p_p_mode", new String[] {PortletMode.VIEW.toString()});
-
-		sb.append(HttpUtil.parameterMapToString(params, true));
-
-		return sb.toString();
-	}
-
 	/**
 	 * @deprecated As of 7.0.0, replaced by {@link #getSiteAdminURL(Company,
 	 *             Group, String, Map)}
@@ -5047,6 +4992,16 @@ public class PortalImpl implements Portal {
 			group.getCompanyId());
 
 		return getSiteAdminURL(company, group, ppid, params);
+	}
+
+	public String getSiteAdminURL(
+			ThemeDisplay themeDisplay, String ppid,
+			Map<String, String[]> params)
+		throws PortalException {
+
+		return _getSiteAdminURL(
+			themeDisplay.getCompany(), themeDisplay.getScopeGroup(),
+			themeDisplay.getPortalDomain(), ppid, params);
 	}
 
 	/**
@@ -8641,6 +8596,51 @@ public class PortalImpl implements Portal {
 		catch (Exception e) {
 			return layout.getGroupId();
 		}
+	}
+
+	private String _getSiteAdminURL(
+			Company company, Group group, String portalDomain, String ppid,
+			Map<String, String[]> params)
+		throws PortalException {
+
+		StringBundler sb = new StringBundler(7);
+
+		if (portalDomain == null) {
+			portalDomain = company.getVirtualHostname();
+		}
+
+		sb.append(
+			getPortalURL(portalDomain, getPortalServerPort(false), false));
+
+		sb.append(getPathFriendlyURLPrivateGroup());
+
+		if ((group != null) && !group.isControlPanel()) {
+			sb.append(group.getFriendlyURL());
+			sb.append(VirtualLayoutConstants.CANONICAL_URL_SEPARATOR);
+		}
+
+		sb.append(GroupConstants.CONTROL_PANEL_FRIENDLY_URL);
+		sb.append(PropsValues.CONTROL_PANEL_LAYOUT_FRIENDLY_URL);
+
+		if (params != null) {
+			params = new LinkedHashMap<>(params);
+		}
+		else {
+			params = new LinkedHashMap<>();
+		}
+
+		if (Validator.isNotNull(ppid)) {
+			params.put("p_p_id", new String[] {ppid});
+		}
+
+		params.put("p_p_lifecycle", new String[] {"0"});
+		params.put(
+			"p_p_state", new String[] {WindowState.MAXIMIZED.toString()});
+		params.put("p_p_mode", new String[] {PortletMode.VIEW.toString()});
+
+		sb.append(HttpUtil.parameterMapToString(params, true));
+
+		return sb.toString();
 	}
 
 	private Group _getSiteGroup(long groupId) {
