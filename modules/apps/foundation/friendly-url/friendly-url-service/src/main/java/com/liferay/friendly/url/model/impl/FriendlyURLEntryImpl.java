@@ -30,7 +30,7 @@ public class FriendlyURLEntryImpl extends FriendlyURLEntryBaseImpl {
 	public boolean isMain() throws PortalException {
 		FriendlyURLEntry friendlyURLEntry =
 			FriendlyURLEntryLocalServiceUtil.getMainFriendlyURLEntry(
-				getGroupId(), getCompanyId(), getClassNameId(), getClassPK());
+				getGroupId(), getClassNameId(), getClassPK());
 
 		if (friendlyURLEntry.getPrimaryKey() == getPrimaryKey()) {
 			return true;
