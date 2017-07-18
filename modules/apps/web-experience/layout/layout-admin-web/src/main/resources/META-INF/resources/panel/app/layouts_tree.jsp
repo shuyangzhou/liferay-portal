@@ -227,7 +227,7 @@ LayoutsTreeDisplayContext layoutsTreeDisplayContext = new LayoutsTreeDisplayCont
 
 									<li class="<%= layoutsTreeDisplayContext.getLayoutSetBranchCssClass(curLayoutSetBranch) %>">
 										<a class="truncate-text" href="<%= layoutsTreeDisplayContext.getLayoutSetBranchURL(curLayoutSetBranch) %>">
-											<liferay-ui:message key="<%= HtmlUtil.escape(curLayoutSetBranch.getName()) %>" />
+											<liferay-ui:message key="<%= HtmlUtil.escape(curLayoutSetBranch.getName()) %>" localizeKey="<%= LayoutSetBranchConstants.MASTER_BRANCH_NAME.equals(curLayoutSetBranch.getName()) %>" />
 										</a>
 									</li>
 

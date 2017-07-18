@@ -613,6 +613,34 @@
 		</execute>
 	</command>
 
+	<command name="ViewDroolsAppManager">
+		<execute macro="ProductMenu#gotoControlPanelApps">
+			<var name="portlet" value="App Manager" />
+		</execute>
+
+		<execute macro="Search#searchCP">
+			<var name="searchTerm" value="Drools" />
+		</execute>
+
+		<execute macro="AppManager#viewAppCP">
+			<var name="appName" value="Liferay Drools" />
+		</execute>
+
+		<execute macro="AppManager#viewAppCP">
+			<var name="appName" value="Liferay Portal Rules Engine Drools" />
+		</execute>
+
+		<execute macro="AppManager#viewStatus">
+			<var name="appName" value="Liferay Drools" />
+			<var name="appStatus" value="Active" />
+		</execute>
+
+		<execute macro="AppManager#viewStatus">
+			<var name="appName" value="Liferay Portal Rules Engine Drools" />
+			<var name="appStatus" value="Active" />
+		</execute>
+	</command>
+
 	<command name="viewMessageBoards">
 		<execute macro="Navigator#gotoPage">
 			<var name="pageName" value="Message Boards" />
@@ -628,11 +656,11 @@
 			<var name="pageName" value="Nested Portlets" />
 		</execute>
 
-		<var name="key_portletName" value="Nested Portlets" />
+		<var name="key_portletName" value="Nested Applications" />
 
-		<execute function="AssertTextEquals" locator1="Portlet#TITLE" value1="Nested Portlets" />
+		<execute function="AssertTextEquals" locator1="Portlet#TITLE" value1="Nested Applications" />
 
-		<execute function="AssertTextNotEquals" locator1="Message#INFO" value1="Drag portlets below to nest them." />
+		<execute function="AssertTextNotEquals" locator1="Message#INFO" value1="Drag applications below to nest them." />
 
 		<execute macro="NestedPortlets#viewPG">
 			<var name="portletColumnNumberTo" value="1" />

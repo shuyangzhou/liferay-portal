@@ -656,7 +656,14 @@ public class StripFilter extends BasePortalFilter {
 
 					continue;
 				}
-				else if (hasMarker(charBuffer, _MARKER_STYLE_OPEN)) {
+				else if (hasMarker(charBuffer, _MARKER_STYLE_OPEN) ||
+						 hasMarker(
+							 charBuffer,
+							 _MARKER_STYLE_DATA_SENNA_TRACK_PERMANENT) ||
+						 hasMarker(
+							 charBuffer,
+							 _MARKER_STYLE_DATA_SENNA_TRACK_TEMPORARY)) {
+
 					processCSS(request, response, charBuffer, writer);
 
 					continue;
@@ -704,6 +711,12 @@ public class StripFilter extends BasePortalFilter {
 
 	private static final int[] _MARKER_STYLE_CLOSE_NEXTS =
 		KMPSearch.generateNexts(_MARKER_STYLE_CLOSE);
+
+	private static final char[] _MARKER_STYLE_DATA_SENNA_TRACK_PERMANENT =
+		"style data-senna-track=\"permanent\" type=\"text/css\">".toCharArray();
+
+	private static final char[] _MARKER_STYLE_DATA_SENNA_TRACK_TEMPORARY =
+		"style data-senna-track=\"temporary\" type=\"text/css\">".toCharArray();
 
 	private static final char[] _MARKER_STYLE_OPEN =
 		"style type=\"text/css\">".toCharArray();
