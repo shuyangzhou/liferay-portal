@@ -3063,7 +3063,7 @@ go</echo>
 				</then>
 			</if>
 
-			<var name="jacoco.agent" value="-javaagent:${app.server.tomcat.dir}/bin/jacocoagent.jar${jacoco.agent.configuration}"/>
+			<var name="jacoco.agent" value="-javaagent:${app.server.tomcat.dir}/bin/jacocoagent.jar${jacoco.agent.configuration}" />
 
 			<if>
 				<not>
