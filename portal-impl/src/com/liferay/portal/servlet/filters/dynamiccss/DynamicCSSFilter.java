@@ -17,10 +17,9 @@ package com.liferay.portal.servlet.filters.dynamiccss;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
-import com.liferay.portal.kernel.servlet.DynamicResourceIncludeUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.PortalWebResourcesUtil;
-import com.liferay.portal.kernel.servlet.PortletResourcesUtil;
+import com.liferay.portal.kernel.servlet.ResourceUtil;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -84,62 +83,12 @@ public class DynamicCSSFilter extends IgnoreModuleRequestFilter {
 			FilterChain filterChain)
 		throws Exception {
 
-		ServletContext servletContext = _servletContext;
-
-		String requestPath = getRequestPath(request);
-
-		if (requestPath.endsWith(_CSS_EXTENSION) &&
-			PortalUtil.isRightToLeft(request)) {
-
-			int pos = requestPath.lastIndexOf(StringPool.PERIOD);
-
-			requestPath =
-				requestPath.substring(0, pos) + "_rtl" +
-					requestPath.substring(pos);
-		}
-
-		URL resourceURL = _servletContext.getResource(requestPath);
-
 		String originalRequestPath = request.getRequestURI();
 
-		if (resourceURL == null) {
-			ServletContext resourceServletContext =
-				PortalWebResourcesUtil.getPathServletContext(
-					originalRequestPath);
+		ServletContext servletContext = ResourceUtil.getPathServletContext(
+			request, _servletContext);
 
-			if (resourceServletContext != null) {
-				resourceURL = PortalWebResourcesUtil.getResource(
-					resourceServletContext, originalRequestPath);
-			}
-
-			if (resourceURL == null) {
-				resourceServletContext =
-					PortletResourcesUtil.getPathServletContext(
-						originalRequestPath);
-
-				if (resourceServletContext != null) {
-					resourceURL = PortletResourcesUtil.getResource(
-						resourceServletContext, originalRequestPath);
-				}
-			}
-
-			if (resourceURL == null) {
-				resourceServletContext =
-					DynamicResourceIncludeUtil.getPathServletContext(
-						originalRequestPath);
-
-				if (resourceServletContext != null) {
-					resourceURL = DynamicResourceIncludeUtil.getResource(
-						resourceServletContext, originalRequestPath);
-				}
-			}
-
-			if (resourceURL == null) {
-				return null;
-			}
-
-			servletContext = resourceServletContext;
-		}
+		URL resourceURL = ResourceUtil.getResource(request, _servletContext);
 
 		String cacheCommonFileName = getCacheFileName(request);
 
