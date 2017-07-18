@@ -474,6 +474,8 @@ public class DLFileEntryTrashHandlerTest
 			1,
 			getActiveDLFileRanksCount(
 				group.getGroupId(), (Long)baseModel.getPrimaryKeyObj()));
+
+		trashHandler.deleteTrashEntry(getTrashEntryClassPK(baseModel));
 	}
 
 	private static final String _FILE_ENTRY_TITLE = RandomTestUtil.randomString(
