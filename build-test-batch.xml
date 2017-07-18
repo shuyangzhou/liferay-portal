@@ -7,6 +7,19 @@
 		<isset property="env.AXIS_VARIABLE" />
 	</condition>
 
+	<if>
+		<and>
+			<equals arg1="${app.server.type}" arg2="tomcat" />
+			<equals arg1="${test.batch.code.coverage}" arg2="true" />
+		</and>
+		<then>
+			<var name="test.batch.app.server.start.executable.arg.line" value="jacoco ${app.server.start.executable.arg.line}" />
+		</then>
+		<else>
+			<var name="test.batch.app.server.start.executable.arg.line" value="${app.server.start.executable.arg.line}" />
+		</else>
+	</if>
+
 	<macrodef name="check-jenkins-console">
 		<sequential>
 			<if>
@@ -394,7 +407,6 @@ app.server.type=@{app.server.type}]]></echo>
 /release.*.properties
 /sql/sql.*.properties
 /test.*.properties
-/tools/cobertura-agent/classes
 /tools/maven/*.asc
 /tools/node*
 /tools/selenium/*.exe
@@ -639,6 +651,7 @@ app.server.type=@{app.server.type}]]></echo>
 							<trycatch>
 								<try>
 									<ant antfile="build-test-${app.server.type}.xml" inheritAll="false" target="run-selenium-${app.server.type}">
+										<property name="app.server.start.executable.arg.line" value="${test.batch.app.server.start.executable.arg.line}" />
 										<property name="database.type" value="@{database.type}" />
 										<property name="liferay.portal.bundle" value="@{test.portal.bundle.version}" />
 										<property name="test.build.plugins.war.zip.url" value="@{test.plugins.war.zip.url}" />
@@ -837,6 +850,7 @@ app.server.type=@{app.server.type}]]></echo>
 
 							<ant dir="portal-impl" inheritAll="false" target="test-class-group">
 								<property name="database.type" value="@{database.type}" />
+								<property name="junit.code.coverage" value="${test.batch.code.coverage}" />
 								<property name="test.class.group.index" value="${axis.variable}" />
 								<property name="test.type" value="integration" />
 							</ant>
@@ -1311,6 +1325,7 @@ app.server.type=@{app.server.type}]]></echo>
 							<print-test-class-group test.class.group.index="${axis.variable}" />
 
 							<gradle-execute dir="modules" task="testIntegration">
+								<arg value="-Dapp.server.start.executable.arg.line=${test.batch.app.server.start.executable.arg.line}" />
 								<arg value="-Ddatabase.type=@{database.type}" />
 								<arg value="-Dbuild.exclude.ant.plugin=true" />
 								<arg value="-Dtest.class.group.index=${axis.variable}" />
@@ -2216,6 +2231,7 @@ app.server.type=@{app.server.type}]]></echo>
 			<test-action>
 				<gradle-execute dir="modules" task="test">
 					<arg value="-Dbuild.exclude.ant.plugin=true" />
+					<arg value="-Djunit.code.coverage=${test.batch.code.coverage}" />
 					<arg value="-Dtest.class.group.index=${axis.variable}" />
 				</gradle-execute>
 			</test-action>
@@ -3107,15 +3123,18 @@ ${output.content}</echo>
 		<run-batch-test>
 			<test-action>
 				<ant dir="portal-kernel" inheritAll="false" target="test-class-group">
+					<property name="junit.code.coverage" value="${test.batch.code.coverage}" />
 					<property name="test.class.group.index" value="${axis.variable}" />
 				</ant>
 
 				<ant dir="portal-impl" inheritAll="false" target="test-class-group">
+					<property name="junit.code.coverage" value="${test.batch.code.coverage}" />
 					<property name="test.class.group.index" value="${axis.variable}" />
 					<property name="test.type" value="unit" />
 				</ant>
 
 				<ant dir="util-java" inheritAll="false" target="test-class-group">
+					<property name="junit.code.coverage" value="${test.batch.code.coverage}" />
 					<property name="test.class.group.index" value="${axis.variable}" />
 				</ant>
 			</test-action>
