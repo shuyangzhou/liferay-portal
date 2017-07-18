@@ -1031,6 +1031,8 @@ public abstract class BaseTrashHandlerTestCase {
 			getAssetClassPK(baseModel));
 
 		Assert.assertFalse(restorable);
+
+		trashHandler.deleteTrashEntry(getTrashEntryClassPK(baseModel));
 	}
 
 	@Test
@@ -1385,6 +1387,8 @@ public abstract class BaseTrashHandlerTestCase {
 			getAssetClassPK(baseModel));
 
 		Assert.assertFalse(restorable);
+
+		trashHandler.deleteTrashEntry(getTrashEntryClassPK(baseModel));
 	}
 
 	@Test
