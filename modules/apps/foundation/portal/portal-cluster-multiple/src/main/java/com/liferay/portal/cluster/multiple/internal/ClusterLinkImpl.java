@@ -101,6 +101,10 @@ public class ClusterLinkImpl implements ClusterLink {
 
 	@Deactivate
 	protected void deactivate() {
+		if (!_enabled) {
+			return;
+		}
+
 		if (_clusterChannels != null) {
 			for (ClusterChannel clusterChannel : _clusterChannels) {
 				clusterChannel.close();

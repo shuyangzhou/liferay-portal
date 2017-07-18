@@ -231,12 +231,16 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 
 	@Activate
 	protected void activate(ComponentContext componentContext) {
+		_enabled = GetterUtil.getBoolean(
+			_props.get(PropsKeys.CLUSTER_LINK_ENABLED));
+
+		if (!_enabled) {
+			return;
+		}
+
 		clusterExecutorConfiguration = ConfigurableUtil.createConfigurable(
 			ClusterExecutorConfiguration.class,
 			componentContext.getProperties());
-
-		_enabled = GetterUtil.getBoolean(
-			_props.get(PropsKeys.CLUSTER_LINK_ENABLED));
 
 		String channelPropertiesString = getChannelPropertiesString(
 			componentContext.getProperties());
@@ -274,6 +278,10 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 
 	@Deactivate
 	protected void deactivate() {
+		if (!_enabled) {
+			return;
+		}
+
 		if (_clusterChannel != null) {
 			_clusterChannel.close();
 		}

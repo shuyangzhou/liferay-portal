@@ -68,6 +68,12 @@ public class JGroupsClusterChannelFactory implements ClusterChannelFactory {
 	@Activate
 	@Modified
 	protected synchronized void activate(Map<String, Object> properties) {
+		if (!GetterUtil.getBoolean(
+				_props.get(PropsKeys.CLUSTER_LINK_ENABLED))) {
+
+			return;
+		}
+
 		String[] channelSystemPropertiesArray = null;
 
 		String channelSystemProperties = GetterUtil.getString(
