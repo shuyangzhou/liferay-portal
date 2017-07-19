@@ -14,14 +14,29 @@
 
 package com.liferay.portal.tools;
 
+import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProvider;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.security.xml.SecureXMLFactoryProviderImpl;
 
+import java.io.File;
 import java.io.FileOutputStream;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * @author Brian Wing Shun Chan
@@ -48,12 +63,52 @@ public class XSLTBuilder {
 				new StreamSource(xsl));
 
 			transformer.transform(
-				new StreamSource(xml),
-				new StreamResult(new FileOutputStream(html)));
+				_sortXML(xml), new StreamResult(new FileOutputStream(html)));
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private Source _sortXML(String xml) throws Exception {
+		SecureXMLFactoryProvider secureXMLFactoryProvider =
+			new SecureXMLFactoryProviderImpl();
+
+		DocumentBuilderFactory documentBuilderFactory =
+			secureXMLFactoryProvider.newDocumentBuilderFactory();
+
+		DocumentBuilder documentBuilder =
+			documentBuilderFactory.newDocumentBuilder();
+
+		Document document = documentBuilder.parse(new File(xml));
+
+		NodeList nodeList = document.getElementsByTagName("file-name");
+
+		Map<String, Node> nodeMap = new TreeMap<>();
+
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			Node node = nodeList.item(i);
+
+			nodeMap.put(node.getTextContent(), node.getParentNode());
+		}
+
+		nodeList = document.getElementsByTagName("version");
+
+		Element versionElement = (Element)nodeList.item(0);
+
+		while (versionElement.hasChildNodes()) {
+			versionElement.removeChild(versionElement.getFirstChild());
+		}
+
+		Element librariesElement = document.createElement("libraries");
+
+		versionElement.appendChild(librariesElement);
+
+		for (Node node : nodeMap.values()) {
+			librariesElement.appendChild(node);
+		}
+
+		return new DOMSource(document);
 	}
 
 }
