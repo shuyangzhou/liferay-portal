@@ -24,6 +24,9 @@ import com.liferay.portal.kernel.backgroundtask.BackgroundTaskStatus;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskStatusRegistry;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskThreadLocalManager;
 import com.liferay.portal.kernel.cluster.Clusterable;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.Property;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -36,7 +39,10 @@ import com.liferay.portal.kernel.model.UserConstants;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.transaction.Isolation;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -169,8 +175,8 @@ public class BackgroundTaskLocalServiceImpl
 		long backgroundTaskId, Map<String, Serializable> taskContextMap,
 		int status, String statusMessage, ServiceContext serviceContext) {
 
-		BackgroundTask backgroundTask =
-			backgroundTaskPersistence.fetchByPrimaryKey(backgroundTaskId);
+		BackgroundTask backgroundTask = fetchBackgroundTaskWithoutCaching(
+			backgroundTaskId);
 
 		if (backgroundTask == null) {
 			return null;
@@ -333,6 +339,30 @@ public class BackgroundTaskLocalServiceImpl
 	@Override
 	public BackgroundTask fetchBackgroundTask(long backgroundTaskId) {
 		return backgroundTaskPersistence.fetchByPrimaryKey(backgroundTaskId);
+	}
+
+	@Override
+	@Transactional(
+		isolation = Isolation.READ_COMMITTED,
+		propagation = Propagation.REQUIRES_NEW
+	)
+	public BackgroundTask fetchBackgroundTaskWithoutCaching(
+		long backgroundTaskId) {
+
+		DynamicQuery dynamicQuery = dynamicQuery();
+
+		Property property = PropertyFactoryUtil.forName("backgroundTaskId");
+
+		dynamicQuery.add(property.eq(backgroundTaskId));
+
+		List<BackgroundTask> backgroundTasks =
+			backgroundTaskPersistence.findWithDynamicQuery(dynamicQuery);
+
+		if (!backgroundTasks.isEmpty()) {
+			return backgroundTasks.get(0);
+		}
+
+		return null;
 	}
 
 	@Override
@@ -584,6 +614,25 @@ public class BackgroundTaskLocalServiceImpl
 		}
 
 		return StringPool.BLANK;
+	}
+
+	@Clusterable(onMaster = true)
+	@Override
+	public void interruptBackgroundTask(long backgroundTaskId)
+		throws PortalException {
+
+		BackgroundTask backgroundTask = fetchBackgroundTaskWithoutCaching(
+			backgroundTaskId);
+
+		if ((backgroundTask == null) || backgroundTask.isCompleted() ||
+			backgroundTask.isInterrupted()) {
+
+			return;
+		}
+
+		backgroundTask.setStatus(BackgroundTaskConstants.STATUS_INTERRUPTED);
+
+		backgroundTaskPersistence.update(backgroundTask);
 	}
 
 	@Clusterable(onMaster = true)

@@ -90,4 +90,7 @@
 
 		<reference entity="User" package-path="com.liferay.portal" />
 	</entity>
+	<exceptions>
+		<exception>BackgroundTaskInterrupted</exception>
+	</exceptions>
 </service-builder>

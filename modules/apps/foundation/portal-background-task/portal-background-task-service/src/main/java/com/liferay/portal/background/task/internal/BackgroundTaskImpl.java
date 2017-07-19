@@ -171,6 +171,11 @@ public class BackgroundTaskImpl implements BackgroundTask {
 	}
 
 	@Override
+	public boolean isInterrupted() {
+		return _backgroundTask.isInterrupted();
+	}
+
+	@Override
 	public void setTaskContextMap(Map<String, Serializable> taskContextMap) {
 		_backgroundTask.setTaskContextMap(taskContextMap);
 	}

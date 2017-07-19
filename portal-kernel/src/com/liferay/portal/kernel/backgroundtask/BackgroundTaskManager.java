@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.backgroundtask;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -28,6 +30,7 @@ import java.util.Map;
 /**
  * @author Michael C. Han
  */
+@ProviderType
 public interface BackgroundTaskManager {
 
 	public BackgroundTask addBackgroundTask(
@@ -185,6 +188,11 @@ public interface BackgroundTaskManager {
 		boolean completed);
 
 	public String getBackgroundTaskStatusJSON(long backgroundTaskId);
+
+	public void interruptBackgroundTask(long backgroundTaskId)
+		throws PortalException;
+
+	public void interruptCurrentBackgroundTask();
 
 	public void resumeBackgroundTask(long backgroundTaskId);
 
