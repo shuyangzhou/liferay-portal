@@ -154,6 +154,14 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 	</target>
 
 	<target name="build-lib-versions">
+		<xmltask source="${project.dir}/lib/versions-ext.xml">
+			<copy buffer="versions-ext-buffer" path="/versions/version/libraries" />
+		</xmltask>
+
+		<xmltask dest="${project.dir}/lib/combined.xml" source="${project.dir}/lib/versions.xml">
+			<insert buffer="versions-ext-buffer" path="/versions/version/libraries" position="after" />
+		</xmltask>
+
 		<java
 			classname="com.liferay.portal.tools.XSLTBuilder"
 			classpathref="project.classpath"
@@ -161,10 +169,12 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 			newenvironment="true"
 		>
 			<jvmarg value="-Dexternal-properties=com/liferay/portal/tools/dependencies/portal-tools.properties" />
-			<arg value="${project.dir}/lib/versions.xml" />
+			<arg value="${project.dir}/lib/combined.xml" />
 			<arg value="${project.dir}/lib/versions.xsl" />
 			<arg value="${project.dir}/lib/versions.html" />
 		</java>
+
+		<delete file="${project.dir}/lib/combined.xml" />
 	</target>
 
 	<target if="release.info" name="build-releaseinfo">
