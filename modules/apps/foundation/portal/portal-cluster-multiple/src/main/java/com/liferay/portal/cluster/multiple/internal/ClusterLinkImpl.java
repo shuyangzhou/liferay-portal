@@ -49,7 +49,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 /**
  * @author Shuyang Zhou
  */
-@Component(enabled = false, immediate = true, service = ClusterLink.class)
+@Component(immediate = true, service = ClusterLink.class)
 public class ClusterLinkImpl implements ClusterLink {
 
 	@Override
