@@ -855,7 +855,7 @@
 				(companyId = ?) AND
 				(ownerId = ?) AND
 				(ownerType = ?) AND
-				(portletId [$PORTLET_ID_COMPARATOR$] ?)
+				(portletId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.PortletPreferencesFinder.findByC_G_O_O_P_P">

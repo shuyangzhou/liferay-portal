@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.dao.orm.WildcardMode;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.LayoutTemplateConstants;
 import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
@@ -262,16 +263,14 @@ public class PortletPreferencesFinderImpl
 
 			String sql = CustomSQLUtil.get(FIND_BY_C_O_O_P);
 
-			if (StringUtil.endsWith(portletId, "_INSTANCE_")) {
+			if (portletId.endsWith(
+					LayoutTemplateConstants.INSTANCE_SEPARATOR)) {
+
 				sql = StringUtil.replace(
-					sql, "[$PORTLET_ID_COMPARATOR$]", StringPool.LIKE);
+					sql, "(portletId = ?)", "(portletId like ?)");
 
 				portletId = CustomSQLUtil.keywords(
 					portletId, WildcardMode.TRAILING)[0];
-			}
-			else {
-				sql = StringUtil.replace(
-					sql, "[$PORTLET_ID_COMPARATOR$]", StringPool.EQUAL);
 			}
 
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
