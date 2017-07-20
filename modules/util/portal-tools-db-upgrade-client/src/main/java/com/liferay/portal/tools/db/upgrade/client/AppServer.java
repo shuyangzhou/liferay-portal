@@ -60,8 +60,8 @@ public class AppServer {
 
 	public static AppServer getTCServerAppServer() {
 		return new AppServer(
-			"../../tc-server-2.9.11", "", "/liferay/lib",
-			"/liferay/webapps/ROOT", "tomcat");
+			"../../tc-server-2.9.11", "/tomcat-7.0.64.B.RELEASE/lib",
+			"/liferay/lib", "/liferay/webapps/ROOT", "tomcat");
 	}
 
 	public static AppServer getTomcatAppServer() {
@@ -77,7 +77,7 @@ public class AppServer {
 
 	public static AppServer getWebSphereAppServer() {
 		return new AppServer(
-			"../../websphere-8.5.5.0", "", "/lib/ext",
+			"../../websphere-8.5.5.0", "", "/lib",
 			"/profiles/liferay/installedApps/liferay-cell/liferay-portal.ear" +
 				"/liferay-portal.war",
 			"websphere");
