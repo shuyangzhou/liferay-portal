@@ -241,7 +241,7 @@ tckDeployFiles=${tck.deploy.files}</echo>
 
 		<antcall target="deploy-portlet-tck-bridge" />
 
-		<condition else="" property="starts.with" value="${starts.with}">
+		<condition else="_" property="starts.with" value="${starts.with}">
 			<isset property="starts.with" />
 		</condition>
 
