@@ -452,7 +452,7 @@ tckDeployFiles=${tck.deploy.files}</echo>
 				<echo message="PASSED: maven.result = ${maven.result}" />
 			</then>
 			<else>
-				<fail message="FAILED: maven.result = ${maven.result}" />
+				<echo message="FAILED: maven.result = ${maven.result}" />
 			</else>
 		</if>
 
@@ -465,6 +465,31 @@ tckDeployFiles=${tck.deploy.files}</echo>
 					file="${tck.home}/driver/target/surefire-reports/TEST-javax.portlet.tck.driver.TCKSimpleTestDriver.xml"
 					tofile="${project.dir}/tck/test-results/TEST-javax.portlet.tck.driver.TCKSimpleTestDriver-${test.context}.xml"
 				/>
+			</then>
+		</if>
+	</target>
+
+	<target name="test-class-group">
+		<fail message="Please set the property ${test.class.group.index}." unless="test.class.group.index" />
+
+		<property file="${project.dir}/test.tck.class.groups.properties" />
+
+		<propertycopy from="TEST_CLASS_GROUP_${test.class.group.index}" name="test.class.group" />
+
+		<if>
+			<not>
+				<equals arg1="${test.class.group}" arg2="" />
+			</not>
+			<then>
+				<for list="${test.class.group}" param="test.class">
+					<sequential>
+						<local name="test.context" />
+
+						<antcall target="run-tck-tomcat">
+							<param name="test.context" value="@{test.class}" />
+						</antcall>
+					</sequential>
+				</for>
 			</then>
 		</if>
 	</target>
