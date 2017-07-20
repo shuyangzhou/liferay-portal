@@ -27,22 +27,8 @@ import java.util.List;
 public class AppServer {
 
 	public static AppServer getJBossEAPAppServer() {
-		StringBuilder sb = new StringBuilder();
-
-		String extraLibDirPrefix = "/modules/system/layers/base/";
-
-		sb.append(extraLibDirPrefix);
-
-		sb.append("javax/mail,");
-		sb.append(extraLibDirPrefix);
-		sb.append("javax/persistence,");
-		sb.append(extraLibDirPrefix);
-		sb.append("javax/servlet,");
-		sb.append(extraLibDirPrefix);
-		sb.append("javax/transaction");
-
 		return new AppServer(
-			"../../jboss-eap-6.4.0", sb.toString(),
+			"../../jboss-eap-6.4.0", _getJBossAndWildflyExtraLibDirs(),
 			"/modules/com/liferay/portal/main",
 			"/standalone/deployments/ROOT.war", "jboss");
 	}
@@ -84,22 +70,8 @@ public class AppServer {
 	}
 
 	public static AppServer getWildFlyAppServer() {
-		StringBuilder sb = new StringBuilder();
-
-		String extraLibDirPrefix = "/modules/system/layers/base/";
-
-		sb.append(extraLibDirPrefix);
-
-		sb.append("javax/mail,");
-		sb.append(extraLibDirPrefix);
-		sb.append("javax/persistence,");
-		sb.append(extraLibDirPrefix);
-		sb.append("javax/servlet,");
-		sb.append(extraLibDirPrefix);
-		sb.append("javax/transaction");
-
 		return new AppServer(
-			"../../wildfly-10.0.0", sb.toString(),
+			"../../wildfly-10.0.0", _getJBossAndWildflyExtraLibDirs(),
 			"/modules/com/liferay/portal/main",
 			"/standalone/deployments/ROOT.war", "wildfly");
 	}
@@ -162,6 +134,24 @@ public class AppServer {
 
 	public void setPortalDirName(String portalDirName) {
 		_portalDir = new File(_dir, portalDirName);
+	}
+
+	private static String _getJBossAndWildflyExtraLibDirs() {
+		StringBuilder sb = new StringBuilder();
+
+		String extraLibDirPrefix = "/modules/system/layers/base/";
+
+		sb.append(extraLibDirPrefix);
+
+		sb.append("javax/mail,");
+		sb.append(extraLibDirPrefix);
+		sb.append("javax/persistence,");
+		sb.append(extraLibDirPrefix);
+		sb.append("javax/servlet,");
+		sb.append(extraLibDirPrefix);
+		sb.append("javax/transaction");
+
+		return sb.toString();
 	}
 
 	private void _setExtraLibDirNames(String extraLibDirNames) {
