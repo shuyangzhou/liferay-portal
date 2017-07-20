@@ -344,6 +344,18 @@ tckDeployFiles=${tck.deploy.files}</echo>
 				<fail message="FAILED: maven.result = ${maven.result}" />
 			</else>
 		</if>
+
+		<if>
+			<available file="${tck.home}/driver/target/surefire-reports/TEST-javax.portlet.tck.driver.TCKSimpleTestDriver.xml" />
+			<then>
+				<mkdir dir="${project.dir}/tck/test-results" />
+
+				<copy
+					file="${tck.home}/driver/target/surefire-reports/TEST-javax.portlet.tck.driver.TCKSimpleTestDriver.xml"
+					tofile="${project.dir}/tck/test-results/TEST-javax.portlet.tck.driver.TCKSimpleTestDriver-${test.context}.xml"
+				/>
+			</then>
+		</if>
 	</target>
 
 	<target name="undeploy-chat-portlet">
