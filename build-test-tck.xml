@@ -371,55 +371,55 @@ tckDeployFiles=${tck.deploy.files}</echo>
 		<var name="test.arguments" value="" />
 
 		<if>
-			<isset property="browser.${browser.type}.bin.file[${browser.version}]" />
+			<not>
+				<isset property="test.browser" />
+			</not>
 			<then>
-				<propertycopy from="browser.${browser.type}.bin.file[${browser.version}]" name="test.browser.binary" silent="true" />
+				<property name="test.browser" value="${browser.type}" />
 
-				<var name="test.arguments" value="-Dtest.browser.binary=${test.browser.binary} -Dtest.browser=${browser.type}" />
+				<if>
+					<isset property="browser.${browser.type}.bin.file[${browser.version}]" />
+					<then>
+						<propertycopy from="browser.${browser.type}.bin.file[${browser.version}]" name="test.browser.binary" silent="true" />
+					</then>
+				</if>
 			</then>
-			<else>
+		</if>
 
-				<if>
-					<isset property="browser.type" />
-					<then>
-						<var name="test.arguments" value="${test.arguments} -Dtest.browser=${browser.type}" />
-					</then>
-				</if>
+		<if>
+			<equals arg1="${test.browser}" arg2="phantomjs" />
+			<then>
+				<fail message="Please set the property ${test.browser.binary}." unless="test.browser.binary" />
+			</then>
+		</if>
 
-				<if>
-					<isset property="test.browser.webDriver" />
-					<then>
-						<var name="test.arguments" value="${test.arguments} -Dtest.browser.webDriver='${test.browser.webDriver}'" />
-					</then>
-				</if>
+		<var name="test.arguments" value="${test.arguments} -Dtest.browser='${test.browser}'" />
 
-				<if>
-					<equals arg1="${browser.type}" arg2="phantomjs" />
-					<then>
-						<fail message="Please set the property ${test.browser.binary}." unless="test.browser.binary" />
-					</then>
-				</if>
+		<if>
+			<isset property="test.browser.binary" />
+			<then>
+				<var name="test.arguments" value="${test.arguments} -Dtest.browser.binary='${test.browser.binary}'" />
+			</then>
+		</if>
 
-				<if>
-					<isset property="test.browser.binary" />
-					<then>
-						<var name="test.arguments" value="${test.arguments} -Dtest.browser.binary='${test.browser.binary}'" />
-					</then>
-				</if>
+		<if>
+			<isset property="test.browser.headless" />
+			<then>
+				<var name="test.arguments" value="${test.arguments} -Dtest.browser.headless='${test.browser.headless}'" />
+			</then>
+		</if>
 
-				<if>
-					<isset property="test.browser.headless" />
-					<then>
-						<var name="test.arguments" value="${test.arguments} -Dtest.browser.headless=${test.browser.headless}" />
-					</then>
-				</if>
-			</else>
+		<if>
+			<isset property="test.browser.webDriver" />
+			<then>
+				<var name="test.arguments" value="${test.arguments} -Dtest.browser.webDriver='${test.browser.webDriver}'" />
+			</then>
 		</if>
 
 		<if>
 			<isset property="test.timeout" />
 			<then>
-				<var name="test.arguments" value="${test.arguments} -Dtest.timeout=${test.timeout}" />
+				<var name="test.arguments" value="${test.arguments} -Dtest.timeout='${test.timeout}'" />
 			</then>
 		</if>
 
