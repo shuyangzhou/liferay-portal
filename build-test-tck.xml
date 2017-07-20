@@ -23,6 +23,10 @@
 		<isset property="test.context" />
 	</condition>
 
+	<condition else="${tck.home}/.." property="portals.pluto.dir" value="${portals.pluto.dir}">
+		<isset property="portals.pluto.dir" />
+	</condition>
+
 	<path id="maven.classpath">
 		<fileset dir="${maven.home}/boot" includes="*.jar" />
 		<fileset dir="${maven.home}/lib" includes="*.jar" />
@@ -230,6 +234,16 @@ testContext=${test.context}
 tckDeployFiles=${tck.deploy.files}</echo>
 
 		<print-file file.name="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration.cfg" />
+	</target>
+
+	<target name="prepare-tck">
+		<echo>mvn -P liferay clean install</echo>
+
+		<maven
+			basedir="${portals.pluto.dir}"
+			goal="clean install"
+			options="-P liferay"
+		/>
 	</target>
 
 	<target depends="prepare-portlet-tck" name="run-tck-tomcat">
