@@ -20,7 +20,9 @@ import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.Type;
+import com.liferay.portal.kernel.dao.orm.WildcardMode;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.LayoutTemplateConstants;
 import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
@@ -57,6 +59,9 @@ public class PortletPreferencesFinderImpl
 
 	public static final String FIND_BY_PORTLET_ID =
 		PortletPreferencesFinder.class.getName() + ".findByPortletId";
+
+	public static final String FIND_BY_C_O_O_P =
+		PortletPreferencesFinder.class.getName() + ".findByC_O_O_P";
 
 	public static final String FIND_BY_C_G_O_O_P_P =
 		PortletPreferencesFinder.class.getName() + ".findByC_G_O_O_P_P";
@@ -235,6 +240,48 @@ public class PortletPreferencesFinderImpl
 
 			QueryPos qPos = QueryPos.getInstance(q);
 
+			qPos.add(portletId);
+
+			return q.list(true);
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	@Override
+	public List<PortletPreferences> findByC_O_O_P(
+		long companyId, long ownerId, int ownerType, String portletId) {
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			String sql = CustomSQLUtil.get(FIND_BY_C_O_O_P);
+
+			if (portletId.endsWith(
+					LayoutTemplateConstants.INSTANCE_SEPARATOR)) {
+
+				sql = StringUtil.replace(
+					sql, "(portletId = ?)", "(portletId like ?)");
+
+				portletId = CustomSQLUtil.keywords(
+					portletId, WildcardMode.TRAILING)[0];
+			}
+
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
+
+			q.addEntity("PortletPreferences", PortletPreferencesImpl.class);
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			qPos.add(companyId);
+			qPos.add(ownerId);
+			qPos.add(ownerType);
 			qPos.add(portletId);
 
 			return q.list(true);

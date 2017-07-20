@@ -34,6 +34,9 @@ public interface PortletPreferencesFinder {
 	public java.util.List<com.liferay.portal.kernel.model.PortletPreferences> findByPortletId(
 		java.lang.String portletId);
 
+	public java.util.List<com.liferay.portal.kernel.model.PortletPreferences> findByC_O_O_P(
+		long companyId, long ownerId, int ownerType, java.lang.String portletId);
+
 	public java.util.List<com.liferay.portal.kernel.model.PortletPreferences> findByC_G_O_O_P_P(
 		long companyId, long groupId, long ownerId, int ownerType,
 		java.lang.String portletId, boolean privateLayout);
