@@ -19,12 +19,16 @@
 	<fail message="Please set the property ${maven.home}." unless="maven.home" />
 	<fail message="Please set the property ${tck.home}." unless="tck.home" />
 
-	<condition else="tck-V2*" property="test.context" value="${test.context}">
-		<isset property="test.context" />
-	</condition>
-
 	<condition else="${tck.home}/.." property="portals.pluto.dir" value="${portals.pluto.dir}">
 		<isset property="portals.pluto.dir" />
+	</condition>
+
+	<condition else="${tck.home}/deploy/target/deploy-files" property="tck.deploy.files" value="${tck.deploy.files}">
+		<isset property="tck.deploy.files" />
+	</condition>
+
+	<condition else="tck-V2*" property="test.context" value="${test.context}">
+		<isset property="test.context" />
 	</condition>
 
 	<path id="maven.classpath">
@@ -126,10 +130,6 @@ users.reminder.queries.enabled=false
 	</target>
 
 	<target name="prepare-portlet-tck">
-		<condition else="${tck.home}/deploy/target/deploy-files" property="tck.deploy.files" value="${tck.deploy.files}">
-			<isset property="tck.deploy.files" />
-		</condition>
-
 		<antcall target="undeploy-chat-portlet" />
 
 		<antcall target="clean-up-tck-dependencies" />
@@ -244,6 +244,103 @@ tckDeployFiles=${tck.deploy.files}</echo>
 			goal="clean install"
 			options="-P liferay"
 		/>
+	</target>
+
+	<target name="record-test-tck-class-groups">
+		<fail message="Please set the property ${test.class.groups.size}." unless="test.class.groups.size" />
+
+		<beanshell>
+			<![CDATA[
+				import org.apache.tools.ant.DirectoryScanner;
+
+				List getTestClassGroups(int groupsSize) {
+					List tckWarFileNames = getTCKWarFileNames();
+
+					List testClassGroups = new ArrayList(groupsSize);
+
+					for (int i = 0; i < groupsSize; i++) {
+						testClassGroups.add(new ArrayList());
+					}
+
+					for (int i = 0; i < tckWarFileNames.size(); i++) {
+						List testClassGroup = testClassGroups.get(i % groupsSize);
+
+						testClassGroup.add(tckWarFileNames.get(i));
+					}
+
+					return testClassGroups;
+				}
+
+				List getTCKWarFileNames() {
+					DirectoryScanner directoryScanner = new DirectoryScanner();
+
+					directoryScanner.setBasedir(new File(project.getProperty("tck.deploy.files")));
+					directoryScanner.setIncludes(new String[] {"tck-V2*.war"});
+
+					directoryScanner.scan();
+
+					String[] fileNames = directoryScanner.getIncludedFiles();
+
+					Arrays.sort(fileNames);
+
+					List tckWarFileNames = new ArrayList();
+
+					for (String fileName : fileNames) {
+						int x = fileName.lastIndexOf(File.separator) + 1;
+
+						fileName = fileName.substring(x);
+
+						fileName = fileName.replaceAll("-[\\d\\.]+-\\w+.war", "");
+
+						tckWarFileNames.add(fileName);
+					}
+
+					return tckWarFileNames;
+				}
+
+				int testClassGroupsSize = Integer.parseInt(project.getProperty("test.class.groups.size"));
+
+				List testClassGroups = getTestClassGroups(testClassGroupsSize);
+
+				StringBuilder sb = new StringBuilder();
+
+				for (int i = 0; i < testClassGroupsSize; i++) {
+					List testClassGroup = testClassGroups.get(i);
+
+					sb.append("TEST_CLASS_GROUP_");
+					sb.append(i);
+					sb.append("=");
+
+					for (String testClass : testClassGroup) {
+						sb.append(testClass);
+						sb.append(",");
+					}
+
+					if (!testClassGroup.isEmpty()) {
+						sb.setLength(sb.length() - 1);
+					}
+
+					sb.append("\n\n");
+				}
+
+				sb.append("TEST_CLASS_GROUPS=");
+
+				for (int i = 0; i < testClassGroupsSize; i++) {
+					sb.append(i);
+					sb.append(" ");
+				}
+
+				if (testClassGroupsSize > 0) {
+					sb.setLength(sb.length() - 1);
+				}
+
+				project.setProperty("test.tck.class.groups", sb.toString());
+			]]>
+		</beanshell>
+
+		<echo file="test.tck.class.groups.properties">${test.tck.class.groups}</echo>
+
+		<print-file file.name="test.tck.class.groups.properties" />
 	</target>
 
 	<target depends="prepare-portlet-tck" name="run-tck-tomcat">
