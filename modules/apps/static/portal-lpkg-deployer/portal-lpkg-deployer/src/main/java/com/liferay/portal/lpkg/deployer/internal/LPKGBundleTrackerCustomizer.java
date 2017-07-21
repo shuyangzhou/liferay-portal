@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -263,6 +264,18 @@ public class LPKGBundleTrackerCustomizer
 	@Override
 	public void modifiedBundle(
 		Bundle bundle, BundleEvent bundleEvent, List<Bundle> bundles) {
+
+		bundles.addAll(addingBundle(bundle, bundleEvent));
+
+		Iterator<Bundle> iterator = bundles.iterator();
+
+		while (iterator.hasNext()) {
+			Bundle installedBundle = iterator.next();
+
+			if (installedBundle.getState() == Bundle.UNINSTALLED) {
+				iterator.remove();
+			}
+		}
 	}
 
 	@Override
@@ -361,6 +374,14 @@ public class LPKGBundleTrackerCustomizer
 	private boolean _isBundleInstalled(Bundle bundle, URL url)
 		throws IOException {
 
+		String location = url.getPath();
+
+		Bundle locationBundle = _bundleContext.getBundle(location);
+
+		if (locationBundle != null) {
+			return true;
+		}
+
 		try (InputStream inputStream = url.openStream();
 			JarInputStream jarInputStream = new JarInputStream(inputStream)) {
 
@@ -374,12 +395,9 @@ public class LPKGBundleTrackerCustomizer
 			Version version = new Version(
 				attributes.getValue(Constants.BUNDLE_VERSION));
 
-			String location = url.getPath();
-
 			for (Bundle installedBundle : _bundleContext.getBundles()) {
 				if (symbolicName.equals(installedBundle.getSymbolicName()) &&
-					version.equals(installedBundle.getVersion()) &&
-					!location.equals(installedBundle.getLocation())) {
+					version.equals(installedBundle.getVersion())) {
 
 					if (_log.isInfoEnabled()) {
 						StringBundler sb = new StringBundler();
