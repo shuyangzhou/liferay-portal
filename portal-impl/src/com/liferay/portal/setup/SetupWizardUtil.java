@@ -293,6 +293,10 @@ public class SetupWizardUtil {
 			PropsKeys.DEFAULT_ADMIN_EMAIL_ADDRESS_PREFIX,
 			emailAddress.substring(0, index));
 
+		unicodeProperties.put(
+			PropsKeys.COMPANY_DEFAULT_WEB_ID,
+			emailAddress.substring(index + 1));
+
 		String firstName = ParamUtil.getString(
 			request, "adminFirstName", PropsValues.DEFAULT_ADMIN_FIRST_NAME);
 		String lastName = ParamUtil.getString(
