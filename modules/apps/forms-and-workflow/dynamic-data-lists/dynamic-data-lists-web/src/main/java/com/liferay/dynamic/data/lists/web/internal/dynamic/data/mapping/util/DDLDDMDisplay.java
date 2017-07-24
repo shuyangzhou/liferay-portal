@@ -68,6 +68,13 @@ public class DDLDDMDisplay extends BaseDDMDisplay {
 	}
 
 	@Override
+	public String getTitle(Locale locale) {
+		ResourceBundle resourceBundle = getResourceBundle(locale);
+
+		return LanguageUtil.get(resourceBundle, "data-definitions");
+	}
+
+	@Override
 	public boolean isShowBackURLInTitleBar() {
 		return true;
 	}
