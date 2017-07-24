@@ -63,12 +63,6 @@
 	<target name="clean-up-tck-dependencies">
 		<delete file="${liferay.home}/.continue" />
 		<delete file=".testable.portal.started" />
-
-		<antcall target="undeploy-portlet-tck-bridge" />
-
-		<antcall target="undeploy-portlet-tck-theme" />
-
-		<antcall target="undeploy-tck-wars" />
 	</target>
 
 	<target name="prepare-tck-portal-ext-properties">
@@ -498,36 +492,5 @@ tckDeployFiles=${tck.deploy.files}</echo>
 		<delete file="${liferay.home}/osgi/modules/com.liferay.chat.api.jar" />
 		<delete file="${liferay.home}/osgi/modules/com.liferay.chat.service.jar" />
 		<delete file="${liferay.home}/osgi/modules/com.liferay.chat.web.jar" />
-	</target>
-
-	<target name="undeploy-portlet-tck-bridge">
-		<delete file="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.jar" />
-
-		<waitfor checkevery="100" checkeveryunit="millisecond" maxwait="1" maxwaitunit="minute" timeoutproperty="portlet.tck.bridge.undeployment.timeout">
-			<not>
-				<socket port="${portlet.tck.bridge.handshake.port}" server="localhost" />
-			</not>
-		</waitfor>
-
-		<if>
-			<isset property="portlet.tck.bridge.undeployment.timeout" />
-			<then>
-				<fail message="Timeout while waiting for portlet-tck-bridge to undeploy." />
-			</then>
-		</if>
-	</target>
-
-	<target name="undeploy-portlet-tck-theme">
-		<delete file="${liferay.home}/deploy/portlet-tck-theme.war" />
-		<delete file="${liferay.home}/osgi/war/portlet-tck-theme.war" />
-	</target>
-
-	<target name="undeploy-tck-wars">
-		<delete includeemptydirs="true">
-			<fileset
-				dir="${app.server.tomcat.dir}/../osgi/war"
-				includes="tck-*/**"
-			/>
-		</delete>
 	</target>
 </project>
