@@ -44,6 +44,7 @@ import java.nio.file.StandardCopyOption;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
@@ -192,6 +193,14 @@ public class LPKGBundleTrackerCustomizer
 						PropsValues.
 							MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
 
+					Dictionary<String, String> headers = newBundle.getHeaders();
+
+					String fragmentHost = headers.get(Constants.FRAGMENT_HOST);
+
+					if (fragmentHost == null) {
+						newBundle.start();
+					}
+
 					bundles.add(newBundle);
 				}
 			}
@@ -233,6 +242,8 @@ public class LPKGBundleTrackerCustomizer
 
 				bundleStartLevel.setStartLevel(
 					PropsValues.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
+
+				newBundle.start();
 
 				bundles.add(newBundle);
 			}
