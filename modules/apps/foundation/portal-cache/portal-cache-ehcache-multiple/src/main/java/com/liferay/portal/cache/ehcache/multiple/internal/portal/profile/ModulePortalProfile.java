@@ -12,10 +12,10 @@
  * details.
  */
 
-package com.liferay.portal.cache.single.internal.portal.profile;
+package com.liferay.portal.cache.ehcache.multiple.internal.portal.profile;
 
-import com.liferay.portal.cache.single.internal.bootstrap.SinglePortalCacheBootstrapLoaderFactory;
-import com.liferay.portal.cache.single.internal.distribution.SinglePortalCacheReplicatorFactory;
+import com.liferay.portal.cache.ehcache.multiple.internal.bootstrap.EhcachePortalCacheBootstrapLoaderFactory;
+import com.liferay.portal.cache.ehcache.multiple.internal.distribution.EhcachePortalCacheReplicatorFactory;
 import com.liferay.portal.profile.BaseDSModulePortalProfile;
 import com.liferay.portal.profile.PortalProfile;
 
@@ -36,8 +36,8 @@ public class ModulePortalProfile extends BaseDSModulePortalProfile {
 		init(
 			componentContext,
 			Collections.singleton(PortalProfile.PORTAL_PROFILE_NAME_CE),
-			SinglePortalCacheBootstrapLoaderFactory.class.getName(),
-			SinglePortalCacheReplicatorFactory.class.getName());
+			EhcachePortalCacheBootstrapLoaderFactory.class.getName(),
+			EhcachePortalCacheReplicatorFactory.class.getName());
 	}
 
 }
