@@ -401,8 +401,10 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 			try {
 				List<Bundle> bundles = deploy(bundleContext, lpkgFile);
 
-				for (Bundle bundle : bundles) {
-					_startBundle(bundle);
+				if (!bundles.isEmpty()) {
+					Bundle lpkgBundle = bundles.get(0);
+
+					lpkgBundle.start();
 				}
 			}
 			catch (Exception e) {
