@@ -81,4 +81,6 @@ public interface BackgroundTask extends BackgroundTaskModel, PersistedModel {
 	public java.lang.String getStatusLabel();
 
 	public boolean isInProgress();
+
+	public boolean isInterrupted();
 }

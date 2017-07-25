@@ -226,6 +226,11 @@ public class BackgroundTaskWrapper implements BackgroundTask,
 	}
 
 	@Override
+	public boolean isInterrupted() {
+		return _backgroundTask.isInterrupted();
+	}
+
+	@Override
 	public boolean isNew() {
 		return _backgroundTask.isNew();
 	}

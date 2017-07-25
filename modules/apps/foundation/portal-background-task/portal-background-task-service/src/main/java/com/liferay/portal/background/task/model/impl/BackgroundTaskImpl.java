@@ -177,6 +177,15 @@ public class BackgroundTaskImpl extends BackgroundTaskBaseImpl {
 		return false;
 	}
 
+	@Override
+	public boolean isInterrupted() {
+		if (getStatus() == BackgroundTaskConstants.STATUS_INTERRUPTED) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		BackgroundTaskImpl.class);
 
