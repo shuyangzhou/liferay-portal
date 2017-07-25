@@ -15,26 +15,27 @@ package com.liferay.friendly.url.exception;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 
 /**
  * @author Brian Wing Shun Chan
  */
 @ProviderType
-public class DuplicateFriendlyURLEntryException extends PortalException {
+public class NoSuchFriendlyURLEntryMappingException
+	extends NoSuchModelException {
 
-	public DuplicateFriendlyURLEntryException() {
+	public NoSuchFriendlyURLEntryMappingException() {
 	}
 
-	public DuplicateFriendlyURLEntryException(String msg) {
+	public NoSuchFriendlyURLEntryMappingException(String msg) {
 		super(msg);
 	}
 
-	public DuplicateFriendlyURLEntryException(String msg, Throwable cause) {
+	public NoSuchFriendlyURLEntryMappingException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public DuplicateFriendlyURLEntryException(Throwable cause) {
+	public NoSuchFriendlyURLEntryMappingException(Throwable cause) {
 		super(cause);
 	}
 
