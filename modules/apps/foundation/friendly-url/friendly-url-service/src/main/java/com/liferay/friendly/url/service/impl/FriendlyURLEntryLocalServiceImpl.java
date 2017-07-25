@@ -96,12 +96,9 @@ public class FriendlyURLEntryLocalServiceImpl
 								getFriendlyURLEntryId());
 				}
 
-				if (oldFriendlyURLEntry != null) {
-					friendlyURLEntryMapping.setFriendlyURLEntryId(
-						oldFriendlyURLEntry.getFriendlyURLEntryId());
-
-					friendlyURLEntryMappingPersistence.update(
-						friendlyURLEntryMapping);
+				if ((oldFriendlyURLEntry != null) &&
+					(friendlyURLEntryMapping.getFriendlyURLEntryId() ==
+						oldFriendlyURLEntry.getFriendlyURLEntryId())) {
 
 					updateFriendlyURLEntryLocalizations(
 						oldFriendlyURLEntry.getFriendlyURLEntryId(),
