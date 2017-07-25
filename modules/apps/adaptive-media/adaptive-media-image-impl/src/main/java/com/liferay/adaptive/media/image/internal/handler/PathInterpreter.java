@@ -76,7 +76,7 @@ public class PathInterpreter {
 
 					AdaptiveMediaAttribute<?, String>
 						configurationUuidAdaptiveMediaAttribute =
-							AdaptiveMediaAttribute.configurationUuid();
+							AdaptiveMediaAttribute.getConfigurationUuid();
 
 					curProperties.put(
 						configurationUuidAdaptiveMediaAttribute.getName(),

@@ -42,10 +42,10 @@ public class AdaptiveMediaAttributeComparatorTest {
 					attributes = new HashMap<>();
 
 		attributes.put(
-			AdaptiveMediaAttribute.contentLength(),
+			AdaptiveMediaAttribute.getContentLength(),
 			AdaptiveMediaImageQueryBuilder.SortOrder.ASC);
 		attributes.put(
-			AdaptiveMediaAttribute.fileName(),
+			AdaptiveMediaAttribute.getFileName(),
 			AdaptiveMediaImageQueryBuilder.SortOrder.DESC);
 
 		_multiAttributeComparator = new AdaptiveMediaAttributeComparator(
@@ -56,12 +56,12 @@ public class AdaptiveMediaAttributeComparatorTest {
 	public void testSortDifferentMediaByMultipleAttributes() {
 		AdaptiveMedia<AdaptiveMediaImageProcessor> adaptiveMedia1 =
 			_createMedia(
-				AdaptiveMediaAttribute.contentLength(), 10,
-				AdaptiveMediaAttribute.fileName(), "zzz");
+				AdaptiveMediaAttribute.getContentLength(), 10,
+				AdaptiveMediaAttribute.getFileName(), "zzz");
 		AdaptiveMedia<AdaptiveMediaImageProcessor> adaptiveMedia2 =
 			_createMedia(
-				AdaptiveMediaAttribute.contentLength(), 10,
-				AdaptiveMediaAttribute.fileName(), "aaa");
+				AdaptiveMediaAttribute.getContentLength(), 10,
+				AdaptiveMediaAttribute.getFileName(), "aaa");
 
 		int result = _multiAttributeComparator.compare(
 			adaptiveMedia1, adaptiveMedia2);
@@ -73,12 +73,12 @@ public class AdaptiveMediaAttributeComparatorTest {
 	public void testSortDifferentMediaByMultipleAttributesInverse() {
 		AdaptiveMedia<AdaptiveMediaImageProcessor> adaptiveMedia1 =
 			_createMedia(
-				AdaptiveMediaAttribute.contentLength(), 10,
-				AdaptiveMediaAttribute.fileName(), "zzz");
+				AdaptiveMediaAttribute.getContentLength(), 10,
+				AdaptiveMediaAttribute.getFileName(), "zzz");
 		AdaptiveMedia<AdaptiveMediaImageProcessor> adaptiveMedia2 =
 			_createMedia(
-				AdaptiveMediaAttribute.contentLength(), 10,
-				AdaptiveMediaAttribute.fileName(), "aaa");
+				AdaptiveMediaAttribute.getContentLength(), 10,
+				AdaptiveMediaAttribute.getFileName(), "aaa");
 
 		int result = _multiAttributeComparator.compare(
 			adaptiveMedia2, adaptiveMedia1);
@@ -89,9 +89,9 @@ public class AdaptiveMediaAttributeComparatorTest {
 	@Test
 	public void testSortDifferentMediaByOneAttribute() {
 		AdaptiveMedia<AdaptiveMediaImageProcessor> adaptiveMedia1 =
-			_createMedia(AdaptiveMediaAttribute.contentLength(), 10);
+			_createMedia(AdaptiveMediaAttribute.getContentLength(), 10);
 		AdaptiveMedia<AdaptiveMediaImageProcessor> adaptiveMedia2 =
-			_createMedia(AdaptiveMediaAttribute.contentLength(), 20);
+			_createMedia(AdaptiveMediaAttribute.getContentLength(), 20);
 
 		int result = _singleAttributeComparator.compare(
 			adaptiveMedia1, adaptiveMedia2);
@@ -102,9 +102,9 @@ public class AdaptiveMediaAttributeComparatorTest {
 	@Test
 	public void testSortDifferentMediaByOneAttributeInverse() {
 		AdaptiveMedia<AdaptiveMediaImageProcessor> adaptiveMedia1 =
-			_createMedia(AdaptiveMediaAttribute.contentLength(), 10);
+			_createMedia(AdaptiveMediaAttribute.getContentLength(), 10);
 		AdaptiveMedia<AdaptiveMediaImageProcessor> adaptiveMedia2 =
-			_createMedia(AdaptiveMediaAttribute.contentLength(), 20);
+			_createMedia(AdaptiveMediaAttribute.getContentLength(), 20);
 
 		int result = _singleAttributeComparator.compare(
 			adaptiveMedia2, adaptiveMedia1);
@@ -116,12 +116,12 @@ public class AdaptiveMediaAttributeComparatorTest {
 	public void testSortEqualMediaByMultipleAttributes() {
 		AdaptiveMedia<AdaptiveMediaImageProcessor> adaptiveMedia1 =
 			_createMedia(
-				AdaptiveMediaAttribute.contentLength(), 10,
-				AdaptiveMediaAttribute.fileName(), "aaa");
+				AdaptiveMediaAttribute.getContentLength(), 10,
+				AdaptiveMediaAttribute.getFileName(), "aaa");
 		AdaptiveMedia<AdaptiveMediaImageProcessor> adaptiveMedia2 =
 			_createMedia(
-				AdaptiveMediaAttribute.contentLength(), 10,
-				AdaptiveMediaAttribute.fileName(), "aaa");
+				AdaptiveMediaAttribute.getContentLength(), 10,
+				AdaptiveMediaAttribute.getFileName(), "aaa");
 
 		int result = _singleAttributeComparator.compare(
 			adaptiveMedia1, adaptiveMedia2);
@@ -132,9 +132,9 @@ public class AdaptiveMediaAttributeComparatorTest {
 	@Test
 	public void testSortEqualMediaByOneAttribute() {
 		AdaptiveMedia<AdaptiveMediaImageProcessor> adaptiveMedia1 =
-			_createMedia(AdaptiveMediaAttribute.contentLength(), 10);
+			_createMedia(AdaptiveMediaAttribute.getContentLength(), 10);
 		AdaptiveMedia<AdaptiveMediaImageProcessor> adaptiveMedia2 =
-			_createMedia(AdaptiveMediaAttribute.contentLength(), 10);
+			_createMedia(AdaptiveMediaAttribute.getContentLength(), 10);
 
 		int result = _singleAttributeComparator.compare(
 			adaptiveMedia1, adaptiveMedia2);
@@ -179,6 +179,6 @@ public class AdaptiveMediaAttributeComparatorTest {
 	private AdaptiveMediaAttributeComparator _multiAttributeComparator;
 	private final AdaptiveMediaAttributeComparator _singleAttributeComparator =
 		new AdaptiveMediaAttributeComparator(
-			AdaptiveMediaAttribute.contentLength());
+			AdaptiveMediaAttribute.getContentLength());
 
 }

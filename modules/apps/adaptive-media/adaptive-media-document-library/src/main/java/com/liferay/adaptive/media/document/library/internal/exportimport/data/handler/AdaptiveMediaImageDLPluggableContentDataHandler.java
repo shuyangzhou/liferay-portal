@@ -138,7 +138,7 @@ public class AdaptiveMediaImageDLPluggableContentDataHandler
 
 		Optional<String> configurationUuidOptional =
 			adaptiveMedia.getValueOptional(
-				AdaptiveMediaAttribute.configurationUuid());
+				AdaptiveMediaAttribute.getConfigurationUuid());
 
 		if (!configurationUuidOptional.isPresent()) {
 			return;
@@ -225,7 +225,7 @@ public class AdaptiveMediaImageDLPluggableContentDataHandler
 
 			Optional<Integer> contentLengthOptional =
 				adaptiveMedia.getValueOptional(
-					AdaptiveMediaAttribute.contentLength());
+					AdaptiveMediaAttribute.getContentLength());
 
 			Optional<Integer> widthOptional = adaptiveMedia.getValueOptional(
 				AdaptiveMediaImageAttribute.IMAGE_WIDTH);

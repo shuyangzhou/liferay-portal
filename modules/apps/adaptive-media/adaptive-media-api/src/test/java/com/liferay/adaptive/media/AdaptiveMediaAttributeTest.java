@@ -34,14 +34,14 @@ public class AdaptiveMediaAttributeTest {
 	public void testAllPublicAttributesAreSupported() {
 		Collection<AdaptiveMediaAttribute<?, ?>> adaptiveMediaAttributes =
 			Arrays.asList(
-				AdaptiveMediaAttribute.configurationUuid(),
-				AdaptiveMediaAttribute.contentLength(),
-				AdaptiveMediaAttribute.contentType(),
-				AdaptiveMediaAttribute.fileName());
+				AdaptiveMediaAttribute.getConfigurationUuid(),
+				AdaptiveMediaAttribute.getContentLength(),
+				AdaptiveMediaAttribute.getContentType(),
+				AdaptiveMediaAttribute.getFileName());
 
 		Map<String, AdaptiveMediaAttribute<?, ?>>
 			allowedAdaptiveMediaAttributesMap =
-				AdaptiveMediaAttribute.allowedAttributes();
+				AdaptiveMediaAttribute.getAllowedAttributes();
 
 		Collection<AdaptiveMediaAttribute<?, ?>>
 			allowedAdaptiveMediaAttributes =
@@ -55,7 +55,7 @@ public class AdaptiveMediaAttributeTest {
 	@Test
 	public void testConfigurationUuidRecognizesAnyString() {
 		AdaptiveMediaAttribute<?, String> configurationUuid =
-			AdaptiveMediaAttribute.configurationUuid();
+			AdaptiveMediaAttribute.getConfigurationUuid();
 
 		String value = StringUtil.randomString();
 
@@ -67,7 +67,7 @@ public class AdaptiveMediaAttributeTest {
 	)
 	public void testContentLengthFailsForNonIntegers() {
 		AdaptiveMediaAttribute<?, Integer> contentLength =
-			AdaptiveMediaAttribute.contentLength();
+			AdaptiveMediaAttribute.getContentLength();
 
 		contentLength.convert(StringUtil.randomString());
 	}
@@ -75,7 +75,7 @@ public class AdaptiveMediaAttributeTest {
 	@Test
 	public void testContentLengthRecognizesIntegers() {
 		AdaptiveMediaAttribute<?, Integer> contentLength =
-			AdaptiveMediaAttribute.contentLength();
+			AdaptiveMediaAttribute.getContentLength();
 
 		Integer value = RandomUtil.nextInt(Integer.MAX_VALUE);
 
@@ -86,7 +86,7 @@ public class AdaptiveMediaAttributeTest {
 	@Test
 	public void testContentTypeRecognizesAnyString() {
 		AdaptiveMediaAttribute<?, String> contentType =
-			AdaptiveMediaAttribute.contentType();
+			AdaptiveMediaAttribute.getContentType();
 
 		String value = StringUtil.randomString();
 
@@ -96,7 +96,7 @@ public class AdaptiveMediaAttributeTest {
 	@Test
 	public void testFileNameRecognizesAnyString() {
 		AdaptiveMediaAttribute<?, String> fileName =
-			AdaptiveMediaAttribute.fileName();
+			AdaptiveMediaAttribute.getFileName();
 
 		String value = StringUtil.randomString();
 

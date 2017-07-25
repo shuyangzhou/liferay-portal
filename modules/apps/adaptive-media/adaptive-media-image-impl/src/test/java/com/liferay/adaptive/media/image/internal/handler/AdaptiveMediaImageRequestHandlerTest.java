@@ -263,15 +263,16 @@ public class AdaptiveMediaImageRequestHandlerTest {
 
 		Assert.assertEquals(
 			Optional.of(_fileVersion.getFileName()),
-			adaptiveMedia.getValueOptional(AdaptiveMediaAttribute.fileName()));
+			adaptiveMedia.getValueOptional(
+				AdaptiveMediaAttribute.getFileName()));
 
 		Assert.assertEquals(
 			Optional.of(_fileVersion.getMimeType()),
 			adaptiveMedia.getValueOptional(
-				AdaptiveMediaAttribute.contentType()));
+				AdaptiveMediaAttribute.getContentType()));
 
 		Optional<Integer> contentLength = adaptiveMedia.getValueOptional(
-			AdaptiveMediaAttribute.contentLength());
+			AdaptiveMediaAttribute.getContentLength());
 
 		Assert.assertEquals(_fileVersion.getSize(), (long)contentLength.get());
 
@@ -290,23 +291,23 @@ public class AdaptiveMediaImageRequestHandlerTest {
 		Map<String, String> properties = new HashMap<>();
 
 		AdaptiveMediaAttribute<Object, String> configurationUuid =
-			AdaptiveMediaAttribute.configurationUuid();
+			AdaptiveMediaAttribute.getConfigurationUuid();
 
 		properties.put(
 			configurationUuid.getName(), configurationEntry.getUUID());
 
 		AdaptiveMediaAttribute<Object, String> fileName =
-			AdaptiveMediaAttribute.fileName();
+			AdaptiveMediaAttribute.getFileName();
 
 		properties.put(fileName.getName(), fileVersion.getFileName());
 
 		AdaptiveMediaAttribute<Object, String> contentType =
-			AdaptiveMediaAttribute.contentType();
+			AdaptiveMediaAttribute.getContentType();
 
 		properties.put(contentType.getName(), fileVersion.getMimeType());
 
 		AdaptiveMediaAttribute<Object, Integer> contentLength =
-			AdaptiveMediaAttribute.contentLength();
+			AdaptiveMediaAttribute.getContentLength();
 
 		properties.put(
 			contentLength.getName(), String.valueOf(fileVersion.getSize()));

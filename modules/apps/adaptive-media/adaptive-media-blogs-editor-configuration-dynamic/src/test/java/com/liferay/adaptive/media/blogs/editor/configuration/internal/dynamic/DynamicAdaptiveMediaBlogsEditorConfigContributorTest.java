@@ -235,7 +235,8 @@ public class DynamicAdaptiveMediaBlogsEditorConfigContributorTest
 
 		JSONObject expectedJSONObject = JSONFactoryUtil.createJSONObject();
 
-		expectedJSONObject.put("allowedContent", "a[*](*); div(*); img[*](*);");
+		expectedJSONObject.put(
+			"allowedContent", "a[*](*); div(*); img[*](*){*};");
 
 		JSONAssert.assertEquals(
 			expectedJSONObject.toJSONString(), jsonObject.toJSONString(), true);
@@ -258,8 +259,6 @@ public class DynamicAdaptiveMediaBlogsEditorConfigContributorTest
 				_requestBackedPortletURLFactory);
 
 		JSONObject expectedJSONObject = JSONFactoryUtil.createJSONObject();
-
-		expectedJSONObject.put("allowedContent", "img[*](*);");
 
 		JSONAssert.assertEquals(
 			expectedJSONObject.toJSONString(), jsonObject.toJSONString(), true);
@@ -298,8 +297,6 @@ public class DynamicAdaptiveMediaBlogsEditorConfigContributorTest
 
 		JSONObject expectedJSONObject = JSONFactoryUtil.createJSONObject(
 			originalJSONObject.toJSONString());
-
-		expectedJSONObject.put("allowedContent", "img[*](*);");
 
 		JSONAssert.assertEquals(
 			expectedJSONObject.toJSONString(), jsonObject.toJSONString(), true);
@@ -346,8 +343,6 @@ public class DynamicAdaptiveMediaBlogsEditorConfigContributorTest
 
 		JSONObject expectedJSONObject = JSONFactoryUtil.createJSONObject(
 			originalJSONObject.toJSONString());
-
-		expectedJSONObject.put("allowedContent", "img[*](*);");
 
 		JSONAssert.assertEquals(
 			expectedJSONObject.toJSONString(), jsonObject.toJSONString(), true);

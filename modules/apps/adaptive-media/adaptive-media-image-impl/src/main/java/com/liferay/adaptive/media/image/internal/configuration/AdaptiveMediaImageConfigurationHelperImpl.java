@@ -19,7 +19,7 @@ import com.liferay.adaptive.media.exception.AdaptiveMediaImageConfigurationExcep
 import com.liferay.adaptive.media.exception.AdaptiveMediaRuntimeException;
 import com.liferay.adaptive.media.image.configuration.AdaptiveMediaImageConfigurationEntry;
 import com.liferay.adaptive.media.image.configuration.AdaptiveMediaImageConfigurationHelper;
-import com.liferay.adaptive.media.image.messaging.AdaptiveMediaImageDestinationNames;
+import com.liferay.adaptive.media.image.constants.AdaptiveMediaImageDestinationNames;
 import com.liferay.adaptive.media.image.service.AdaptiveMediaImageEntryLocalService;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;

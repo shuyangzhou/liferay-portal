@@ -112,17 +112,17 @@ public class AdaptiveMediaImageRequestHandler
 		Map<String, String> properties = new HashMap<>();
 
 		AdaptiveMediaAttribute<Object, String> fileName =
-			AdaptiveMediaAttribute.fileName();
+			AdaptiveMediaAttribute.getFileName();
 
 		properties.put(fileName.getName(), fileVersion.getFileName());
 
 		AdaptiveMediaAttribute<Object, String> contentType =
-			AdaptiveMediaAttribute.contentType();
+			AdaptiveMediaAttribute.getContentType();
 
 		properties.put(contentType.getName(), fileVersion.getMimeType());
 
 		AdaptiveMediaAttribute<Object, Integer> contentLength =
-			AdaptiveMediaAttribute.contentLength();
+			AdaptiveMediaAttribute.getContentLength();
 
 		properties.put(
 			contentLength.getName(), String.valueOf(fileVersion.getSize()));
@@ -148,7 +148,7 @@ public class AdaptiveMediaImageRequestHandler
 		try {
 			Optional<AdaptiveMediaImageConfigurationEntry>
 				configurationEntryOptional = attributeMapping.getValueOptional(
-					AdaptiveMediaAttribute.configurationUuid()
+					AdaptiveMediaAttribute.getConfigurationUuid()
 				).flatMap(
 					configurationUuid ->
 						_configurationHelper.
@@ -274,20 +274,20 @@ public class AdaptiveMediaImageRequestHandler
 			Map<String, String> properties = fileVersionMapTuple.second;
 
 			AdaptiveMediaAttribute<Object, Integer> contentLengthAttribute =
-				AdaptiveMediaAttribute.contentLength();
+				AdaptiveMediaAttribute.getContentLength();
 
 			properties.put(
 				contentLengthAttribute.getName(),
 				String.valueOf(fileVersion.getSize()));
 
 			AdaptiveMediaAttribute<Object, String> contentTypeAttribute =
-				AdaptiveMediaAttribute.contentType();
+				AdaptiveMediaAttribute.getContentType();
 
 			properties.put(
 				contentTypeAttribute.getName(), fileVersion.getMimeType());
 
 			AdaptiveMediaAttribute<Object, String> fileNameAttribute =
-				AdaptiveMediaAttribute.fileName();
+				AdaptiveMediaAttribute.getFileName();
 
 			properties.put(
 				fileNameAttribute.getName(), fileVersion.getFileName());
@@ -311,11 +311,11 @@ public class AdaptiveMediaImageRequestHandler
 
 		Optional<String> adaptiveMediaConfigurationUuidOptional =
 			adaptiveMedia.getValueOptional(
-				AdaptiveMediaAttribute.configurationUuid());
+				AdaptiveMediaAttribute.getConfigurationUuid());
 
 		Optional<String> attributeMappingConfigurationUuidOptional =
 			attributeMapping.getValueOptional(
-				AdaptiveMediaAttribute.configurationUuid());
+				AdaptiveMediaAttribute.getConfigurationUuid());
 
 		if (adaptiveMediaConfigurationUuidOptional.equals(
 				attributeMappingConfigurationUuidOptional)) {

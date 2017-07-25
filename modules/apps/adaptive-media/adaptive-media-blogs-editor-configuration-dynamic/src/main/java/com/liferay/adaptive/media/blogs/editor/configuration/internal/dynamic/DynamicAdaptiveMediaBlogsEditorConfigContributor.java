@@ -63,14 +63,13 @@ public class DynamicAdaptiveMediaBlogsEditorConfigContributor
 
 		String allowedContent = jsonObject.getString("allowedContent");
 
-		if (Validator.isNotNull(allowedContent)) {
-			allowedContent += StringPool.SPACE + _IMG_TAG_RULE;
-		}
-		else {
-			allowedContent = _IMG_TAG_RULE;
-		}
+		if (Validator.isNotNull(allowedContent) &&
+			!allowedContent.equals(Boolean.TRUE.toString())) {
 
-		jsonObject.put("allowedContent", allowedContent);
+			allowedContent += StringPool.SPACE + _IMG_TAG_RULE;
+
+			jsonObject.put("allowedContent", allowedContent);
+		}
 
 		String itemSelectorURL = jsonObject.getString(
 			"filebrowserImageBrowseLinkUrl");
@@ -148,7 +147,7 @@ public class DynamicAdaptiveMediaBlogsEditorConfigContributor
 			desiredItemSelectorReturnTypes);
 	}
 
-	private static final String _IMG_TAG_RULE = "img[*](*);";
+	private static final String _IMG_TAG_RULE = "img[*](*){*};";
 
 	private ItemSelector _itemSelector;
 

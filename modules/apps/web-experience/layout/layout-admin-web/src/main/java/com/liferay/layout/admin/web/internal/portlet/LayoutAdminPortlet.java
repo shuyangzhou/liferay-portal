@@ -313,14 +313,18 @@ public class LayoutAdminPortlet extends MVCPortlet {
 			stagingGroupId, privateLayout, layout.getLayoutId(),
 			layout.getTypeSettingsProperties());
 
+		String portletResource = ParamUtil.getString(
+			uploadPortletRequest, "portletResource");
+
+		MultiSessionMessages.add(
+			actionRequest, portletResource + "layoutAdded", layout);
+
 		String redirect = portal.getLayoutFullURL(layout, themeDisplay);
 
 		if (layout.isTypeURL()) {
 			redirect = portal.getGroupFriendlyURL(
 				layout.getLayoutSet(), themeDisplay);
 		}
-
-		MultiSessionMessages.add(actionRequest, "layoutAdded", layout);
 
 		actionRequest.setAttribute(WebKeys.REDIRECT, redirect);
 	}

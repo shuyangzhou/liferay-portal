@@ -14,7 +14,7 @@
 
 package com.liferay.adaptive.media.journal.web.internal.messaging;
 
-import com.liferay.adaptive.media.image.messaging.AdaptiveMediaImageDestinationNames;
+import com.liferay.adaptive.media.image.constants.AdaptiveMediaImageDestinationNames;
 import com.liferay.journal.util.JournalContent;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;

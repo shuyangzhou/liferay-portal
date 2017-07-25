@@ -44,7 +44,7 @@ public final class AdaptiveMediaImageAttribute {
 	 * @return the list of available attributes
 	 */
 	public static Map<String, AdaptiveMediaAttribute<?, ?>>
-		allowedAttributes() {
+		getAllowedAttributes() {
 
 		return _allowedAttributes;
 	}
@@ -67,7 +67,8 @@ public final class AdaptiveMediaImageAttribute {
 			AdaptiveMediaImageAttribute.IMAGE_WIDTH.getName(),
 			AdaptiveMediaImageAttribute.IMAGE_WIDTH);
 
-		_allowedAttributes.putAll(AdaptiveMediaAttribute.allowedAttributes());
+		_allowedAttributes.putAll(
+			AdaptiveMediaAttribute.getAllowedAttributes());
 	}
 
 }

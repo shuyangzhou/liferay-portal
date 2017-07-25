@@ -34,15 +34,15 @@ public class AdaptiveMediaImageAttributeTest {
 	public void testAllPublicAttributesAreSupported() {
 		Collection<AdaptiveMediaAttribute<?, ?>> publicAttributes =
 			Arrays.asList(
-				AdaptiveMediaAttribute.configurationUuid(),
-				AdaptiveMediaAttribute.contentLength(),
-				AdaptiveMediaAttribute.contentType(),
-				AdaptiveMediaAttribute.fileName(),
+				AdaptiveMediaAttribute.getConfigurationUuid(),
+				AdaptiveMediaAttribute.getContentLength(),
+				AdaptiveMediaAttribute.getContentType(),
+				AdaptiveMediaAttribute.getFileName(),
 				AdaptiveMediaImageAttribute.IMAGE_HEIGHT,
 				AdaptiveMediaImageAttribute.IMAGE_WIDTH);
 
 		Map<String, AdaptiveMediaAttribute<?, ?>> allowedAttributesMap =
-			AdaptiveMediaImageAttribute.allowedAttributes();
+			AdaptiveMediaImageAttribute.getAllowedAttributes();
 
 		Collection<AdaptiveMediaAttribute<?, ?>> allowedAttributes =
 			allowedAttributesMap.values();

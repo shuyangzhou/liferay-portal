@@ -14,6 +14,7 @@
 
 package com.liferay.adaptive.media.internal.messaging;
 
+import com.liferay.adaptive.media.internal.constants.AdaptiveMediaDestinationNames;
 import com.liferay.adaptive.media.processor.AdaptiveMediaAsyncProcessor;
 import com.liferay.adaptive.media.processor.AdaptiveMediaAsyncProcessorLocator;
 import com.liferay.adaptive.media.processor.AdaptiveMediaProcessor;

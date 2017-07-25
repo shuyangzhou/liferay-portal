@@ -1029,7 +1029,7 @@ public class AdaptiveMediaImageFinderImplTest {
 
 		Optional<String> adaptiveMedia0Optional =
 			adaptiveMedia0.getValueOptional(
-				AdaptiveMediaAttribute.configurationUuid());
+				AdaptiveMediaAttribute.getConfigurationUuid());
 
 		Assert.assertEquals("small", adaptiveMedia0Optional.get());
 	}
@@ -1138,7 +1138,7 @@ public class AdaptiveMediaImageFinderImplTest {
 
 		Optional<String> adaptiveMedia0Optional =
 			adaptiveMedia0.getValueOptional(
-				AdaptiveMediaAttribute.configurationUuid());
+				AdaptiveMediaAttribute.getConfigurationUuid());
 
 		Assert.assertEquals("small", adaptiveMedia0Optional.get());
 
@@ -1159,7 +1159,7 @@ public class AdaptiveMediaImageFinderImplTest {
 		adaptiveMedia0 = adaptiveMediaList.get(0);
 
 		adaptiveMedia0Optional = adaptiveMedia0.getValueOptional(
-			AdaptiveMediaAttribute.configurationUuid());
+			AdaptiveMediaAttribute.getConfigurationUuid());
 
 		Assert.assertEquals("small", adaptiveMedia0Optional.get());
 
@@ -1287,7 +1287,7 @@ public class AdaptiveMediaImageFinderImplTest {
 
 		Optional<String> adaptiveMedia0ConfigurationUuidOptional =
 			adaptiveMedia0.getValueOptional(
-				AdaptiveMediaAttribute.configurationUuid());
+				AdaptiveMediaAttribute.getConfigurationUuid());
 
 		Assert.assertEquals("1", adaptiveMedia0ConfigurationUuidOptional.get());
 
@@ -1306,7 +1306,7 @@ public class AdaptiveMediaImageFinderImplTest {
 
 		adaptiveMedia0ConfigurationUuidOptional =
 			adaptiveMedia0.getValueOptional(
-				AdaptiveMediaAttribute.configurationUuid());
+				AdaptiveMediaAttribute.getConfigurationUuid());
 
 		Assert.assertEquals("2", adaptiveMedia0ConfigurationUuidOptional.get());
 
@@ -1325,7 +1325,7 @@ public class AdaptiveMediaImageFinderImplTest {
 
 		adaptiveMedia0ConfigurationUuidOptional =
 			adaptiveMedia0.getValueOptional(
-				AdaptiveMediaAttribute.configurationUuid());
+				AdaptiveMediaAttribute.getConfigurationUuid());
 
 		Assert.assertEquals("1", adaptiveMedia0ConfigurationUuidOptional.get());
 
@@ -1334,7 +1334,7 @@ public class AdaptiveMediaImageFinderImplTest {
 
 		Optional<String> adaptiveMedia1ConfigurationUuidOptional =
 			adaptiveMedia1.getValueOptional(
-				AdaptiveMediaAttribute.configurationUuid());
+				AdaptiveMediaAttribute.getConfigurationUuid());
 
 		Assert.assertEquals("2", adaptiveMedia1ConfigurationUuidOptional.get());
 	}

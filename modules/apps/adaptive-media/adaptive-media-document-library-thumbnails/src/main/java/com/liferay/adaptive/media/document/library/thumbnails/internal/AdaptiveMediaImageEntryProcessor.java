@@ -134,7 +134,7 @@ public class AdaptiveMediaImageEntryProcessor
 
 		return adaptiveMediaOptional.flatMap(
 			mediaMedia -> mediaMedia.getValueOptional(
-				AdaptiveMediaAttribute.contentLength())
+				AdaptiveMediaAttribute.getContentLength())
 		).orElse(
 			0
 		);

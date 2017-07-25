@@ -44,7 +44,7 @@ public final class AdaptiveMediaAttribute<T, V> {
 	 * @return the list of available attributes
 	 */
 	public static Map<String, AdaptiveMediaAttribute<?, ?>>
-		allowedAttributes() {
+		getAllowedAttributes() {
 
 		return _allowedAttributes;
 	}
@@ -57,7 +57,7 @@ public final class AdaptiveMediaAttribute<T, V> {
 	 * @return the configuration UUID
 	 */
 	public static final <S> AdaptiveMediaAttribute<S, String>
-		configurationUuid() {
+		getConfigurationUuid() {
 
 		return (AdaptiveMediaAttribute<S, String>)_CONFIGURATION_UUID;
 	}
@@ -68,7 +68,9 @@ public final class AdaptiveMediaAttribute<T, V> {
 	 *
 	 * @return the content length attribute
 	 */
-	public static final <S> AdaptiveMediaAttribute<S, Integer> contentLength() {
+	public static final <S>
+		AdaptiveMediaAttribute<S, Integer> getContentLength() {
+
 		return (AdaptiveMediaAttribute<S, Integer>)_CONTENT_LENGTH;
 	}
 
@@ -78,7 +80,7 @@ public final class AdaptiveMediaAttribute<T, V> {
 	 *
 	 * @return the content type attribute
 	 */
-	public static final <S> AdaptiveMediaAttribute<S, String> contentType() {
+	public static final <S> AdaptiveMediaAttribute<S, String> getContentType() {
 		return (AdaptiveMediaAttribute<S, String>)_CONTENT_TYPE;
 	}
 
@@ -88,7 +90,7 @@ public final class AdaptiveMediaAttribute<T, V> {
 	 *
 	 * @return the file name attribute
 	 */
-	public static final <S> AdaptiveMediaAttribute<S, String> fileName() {
+	public static final <S> AdaptiveMediaAttribute<S, String> getFileName() {
 		return (AdaptiveMediaAttribute<S, String>)_FILE_NAME;
 	}
 

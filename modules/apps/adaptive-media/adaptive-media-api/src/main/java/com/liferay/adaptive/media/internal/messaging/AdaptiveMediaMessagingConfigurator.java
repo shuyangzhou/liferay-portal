@@ -14,6 +14,7 @@
 
 package com.liferay.adaptive.media.internal.messaging;
 
+import com.liferay.adaptive.media.internal.constants.AdaptiveMediaDestinationNames;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationFactory;

@@ -242,7 +242,8 @@ public class DynamicAdaptiveMediaJournalEditorConfigContributorTest
 
 		JSONObject expectedJSONObject = JSONFactoryUtil.createJSONObject();
 
-		expectedJSONObject.put("allowedContent", "a[*](*); div(*); img[*](*);");
+		expectedJSONObject.put(
+			"allowedContent", "a[*](*); div(*); img[*](*){*};");
 
 		JSONAssert.assertEquals(
 			expectedJSONObject.toJSONString(), jsonObject.toJSONString(), true);

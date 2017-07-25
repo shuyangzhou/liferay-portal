@@ -15,7 +15,6 @@ Did you find a bug? Please file an issue for it at [https://issues.liferay.com](
 
 If you'd like to suggest a new feature for Liferay, visit the [Ideas Dashboard](https://dev.liferay.com/participate/ideas) to submit and track the progress of your idea!
 
-
 ## License
 This library is free software ("Licensed Software"); you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version.
 

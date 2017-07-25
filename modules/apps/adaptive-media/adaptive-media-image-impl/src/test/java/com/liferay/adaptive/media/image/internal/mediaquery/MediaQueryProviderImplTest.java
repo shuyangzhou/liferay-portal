@@ -630,7 +630,7 @@ public class MediaQueryProviderImplTest {
 						adaptiveMedia : adaptiveMedias) {
 
 					String configurationUuid = adaptiveMedia.getValueOptional(
-						AdaptiveMediaAttribute.configurationUuid()).get();
+						AdaptiveMediaAttribute.getConfigurationUuid()).get();
 
 					if (fileEntry.getFileVersion().equals(
 							queryBuilder.getFileVersion()) &&
@@ -707,7 +707,7 @@ public class MediaQueryProviderImplTest {
 			String.valueOf(width));
 
 		properties.put(
-			AdaptiveMediaAttribute.configurationUuid().getName(),
+			AdaptiveMediaAttribute.getConfigurationUuid().getName(),
 			adaptiveMediaImageConfigurationEntryUuid);
 
 		return new AdaptiveMediaImage(

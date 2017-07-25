@@ -88,19 +88,19 @@ public class AdaptiveMediaServlet extends HttpServlet {
 
 			Optional<Integer> contentLengthOptional =
 				adaptiveMedia.getValueOptional(
-					AdaptiveMediaAttribute.contentLength());
+					AdaptiveMediaAttribute.getContentLength());
 
 			Integer contentLength = contentLengthOptional.orElse(0);
 
 			Optional<String> contentTypeOptional =
 				adaptiveMedia.getValueOptional(
-					AdaptiveMediaAttribute.contentType());
+					AdaptiveMediaAttribute.getContentType());
 
 			String contentType = contentTypeOptional.orElse(
 				ContentTypes.APPLICATION_OCTET_STREAM);
 
 			Optional<String> fileNameOptional = adaptiveMedia.getValueOptional(
-				AdaptiveMediaAttribute.fileName());
+				AdaptiveMediaAttribute.getFileName());
 
 			String fileName = fileNameOptional.orElse(null);
 

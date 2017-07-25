@@ -57,7 +57,7 @@ public class AdaptiveMediaImageSerializerImpl
 				"attributes");
 
 			Map<String, AdaptiveMediaAttribute<?, ?>> allowedAttributes =
-				AdaptiveMediaImageAttribute.allowedAttributes();
+				AdaptiveMediaImageAttribute.getAllowedAttributes();
 
 			allowedAttributes.forEach(
 				(name, attribute) -> {
@@ -88,7 +88,7 @@ public class AdaptiveMediaImageSerializerImpl
 		JSONObject attributesJSONObject = JSONFactoryUtil.createJSONObject();
 
 		Map<String, AdaptiveMediaAttribute<?, ?>> allowedAttributes =
-			AdaptiveMediaImageAttribute.allowedAttributes();
+			AdaptiveMediaImageAttribute.getAllowedAttributes();
 
 		allowedAttributes.forEach(
 			(name, attribute) -> {
