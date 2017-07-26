@@ -22,7 +22,10 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ThrowableCollector;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.lpkg.deployer.LPKGDeployer;
 import com.liferay.portal.lpkg.deployer.LPKGVerifier;
@@ -48,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -67,10 +71,13 @@ import java.util.zip.ZipFile;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleException;
+import org.osgi.framework.BundleListener;
 import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.FrameworkListener;
+import org.osgi.framework.SynchronousBundleListener;
 import org.osgi.framework.startlevel.BundleStartLevel;
 import org.osgi.framework.wiring.FrameworkWiring;
 import org.osgi.service.component.annotations.Activate;
@@ -233,8 +240,10 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 	}
 
 	@Deactivate
-	protected void deactivate() {
+	protected void deactivate(BundleContext bundleContext) {
 		_lpkgBundleTracker.close();
+
+		bundleContext.removeBundleListener(_warWrapperBundleListener);
 	}
 
 	private void _activate(final BundleContext bundleContext) throws Exception {
@@ -246,6 +255,76 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 		bundleContext.registerService(
 			URLStreamHandlerService.class.getName(),
 			new LPKGURLStreamHandlerService(_urls), properties);
+
+		_warWrapperBundleListener = new SynchronousBundleListener() {
+
+			@Override
+			public void bundleChanged(BundleEvent event) {
+				Bundle bundle = event.getBundle();
+
+				String symbolicName = bundle.getSymbolicName();
+
+				if (!symbolicName.endsWith("-wrapper")) {
+					return;
+				}
+
+				int state = bundle.getState();
+
+				String location = _warLocations.get(bundle);
+
+				Bundle warBundle = bundleContext.getBundle(location);
+
+				try {
+					if (state == Bundle.ACTIVE) {
+						if (warBundle == null) {
+							Dictionary<String, String> headers =
+								bundle.getHeaders();
+
+							StringBundler sb = new StringBundler(9);
+
+							sb.append("webbundle:");
+
+							URL lpkgURL = new URL(
+								headers.get("Liferay-WAB-LPKG-URL"));
+
+							sb.append(lpkgURL.getPath());
+
+							sb.append(StringPool.QUESTION);
+							sb.append(Constants.BUNDLE_VERSION);
+							sb.append(StringPool.EQUAL);
+							sb.append(bundle.getVersion());
+							sb.append("&Web-ContextPath=/");
+							sb.append(headers.get("Liferay-WAB-Context-Name"));
+							sb.append("&protocol=lpkg");
+
+							_warLocations.put(bundle, sb.toString());
+						}
+						else {
+							warBundle.start();
+						}
+					}
+					else {
+						if ((warBundle == null) ||
+							(warBundle.getState() == Bundle.UNINSTALLED)) {
+
+							return;
+						}
+
+						if (state == Bundle.UNINSTALLED) {
+							warBundle.uninstall();
+						}
+					}
+				}
+				catch (Exception e) {
+					ReflectionUtil.throwException(e);
+				}
+			}
+
+			private final Map<Bundle, String> _warLocations = new HashMap<>();
+
+		};
+
+		bundleContext.addBundleListener(_warWrapperBundleListener);
 
 		_deploymentDirPath = _getDeploymentDirPath(bundleContext);
 
@@ -688,5 +767,6 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 	private ThrowableCollector _throwableCollector;
 
 	private final Map<String, URL> _urls = new ConcurrentHashMap<>();
+	private BundleListener _warWrapperBundleListener;
 
 }
