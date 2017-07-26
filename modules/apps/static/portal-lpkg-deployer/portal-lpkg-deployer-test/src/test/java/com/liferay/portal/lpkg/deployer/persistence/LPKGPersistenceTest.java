@@ -131,6 +131,6 @@ public class LPKGPersistenceTest {
 		}
 	}
 
-	private static final String _SYMBOLIC_NAME = "LPKG Persistence Test";
+	private static final String _SYMBOLIC_NAME = "lpkg.persistence.test";
 
 }
