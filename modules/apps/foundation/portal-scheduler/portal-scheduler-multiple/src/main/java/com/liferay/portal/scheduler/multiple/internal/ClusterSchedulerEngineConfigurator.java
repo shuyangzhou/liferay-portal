@@ -21,12 +21,10 @@ import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSender
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.scheduler.SchedulerEngine;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
-import com.liferay.portal.kernel.util.ClassLoaderPool;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.scheduler.BaseSchedulerEngineConfigurator;
 
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
@@ -46,15 +44,6 @@ public class ClusterSchedulerEngineConfigurator
 		SchedulerEngine schedulerEngine = createSchedulerEngineProxy();
 
 		if (_clusterLink.isEnabled()) {
-			Bundle bundle = bundleContext.getBundle();
-
-			Class<?> currentClass = getClass();
-
-			_contextName = bundle.getSymbolicName();
-
-			ClassLoaderPool.register(
-				_contextName, currentClass.getClassLoader());
-
 			ClusterSchedulerEngine clusterSchedulerEngine =
 				new ClusterSchedulerEngine(schedulerEngine, _triggerFactory);
 
@@ -83,10 +72,6 @@ public class ClusterSchedulerEngineConfigurator
 
 		if (_schedulerEngineServiceRegistration != null) {
 			_schedulerEngineServiceRegistration.unregister();
-		}
-
-		if (_contextName != null) {
-			ClassLoaderPool.unregister(_contextName);
 		}
 	}
 
@@ -126,7 +111,6 @@ public class ClusterSchedulerEngineConfigurator
 	private ClusterExecutor _clusterExecutor;
 	private ClusterLink _clusterLink;
 	private ClusterMasterExecutor _clusterMasterExecutor;
-	private String _contextName;
 	private Props _props;
 	private volatile ServiceRegistration<SchedulerEngine>
 		_schedulerEngineServiceRegistration;
