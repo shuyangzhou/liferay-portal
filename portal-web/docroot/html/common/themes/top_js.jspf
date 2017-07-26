@@ -449,6 +449,14 @@
 					Liferay.Portlet.list = ['<%= sb.toString() %>'];
 				</c:when>
 			</c:choose>
+
+			if (Liferay.Portlet.list) {
+				Liferay.Portlet.list = Liferay.Portlet.list.filter(
+					function(element, index, array) {
+						return array.indexOf(element) === index;
+					}
+				);
+			}
 		</c:if>
 
 		<%
