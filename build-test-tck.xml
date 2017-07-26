@@ -63,31 +63,8 @@
 	<target name="clean-up-tck-dependencies">
 		<delete file="${liferay.home}/.continue" />
 		<delete file=".testable.portal.started" />
-	</target>
 
-	<target name="prepare-tck-portal-ext-properties">
-		<delete file="${liferay.home}/portal-ext.properties" />
-
-		<echo append="true" file="${liferay.home}/portal-ext.properties"># written by build-test-tck.xml
-
-browser.launcher.url=
-
-javascript.single.page.application.enabled=false
-
-module.framework.auto.deploy.interval=2000
-
-module.framework.web.generator.generated.wabs.store=true
-
-setup.wizard.enabled=false
-
-terms.of.use.required=false
-
-theme.portlet.decorate.default=false
-
-users.reminder.queries.enabled=false
-		</echo>
-
-		<print-file file.name="${liferay.home}/portal-ext.properties" />
+		<antcall target="undeploy-portlet-tck-bridge" />
 	</target>
 
 	<target name="deploy-portlet-tck-bridge">
@@ -238,6 +215,31 @@ tckDeployFiles=${tck.deploy.files}</echo>
 			goal="clean install"
 			options="-P liferay"
 		/>
+	</target>
+
+	<target name="prepare-tck-portal-ext-properties">
+		<delete file="${liferay.home}/portal-ext.properties" />
+
+		<echo append="true" file="${liferay.home}/portal-ext.properties"># written by build-test-tck.xml
+
+browser.launcher.url=
+
+javascript.single.page.application.enabled=false
+
+module.framework.auto.deploy.interval=2000
+
+module.framework.web.generator.generated.wabs.store=true
+
+setup.wizard.enabled=false
+
+terms.of.use.required=false
+
+theme.portlet.decorate.default=false
+
+users.reminder.queries.enabled=false
+		</echo>
+
+		<print-file file.name="${liferay.home}/portal-ext.properties" />
 	</target>
 
 	<target name="record-test-tck-class-groups">
@@ -492,5 +494,22 @@ tckDeployFiles=${tck.deploy.files}</echo>
 		<delete file="${liferay.home}/osgi/modules/com.liferay.chat.api.jar" />
 		<delete file="${liferay.home}/osgi/modules/com.liferay.chat.service.jar" />
 		<delete file="${liferay.home}/osgi/modules/com.liferay.chat.web.jar" />
+	</target>
+
+	<target name="undeploy-portlet-tck-bridge">
+		<delete file="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.jar" />
+
+		<waitfor checkevery="100" checkeveryunit="millisecond" maxwait="1" maxwaitunit="minute" timeoutproperty="portlet.tck.bridge.undeployment.timeout">
+			<not>
+				<socket port="${portlet.tck.bridge.handshake.port}" server="localhost" />
+			</not>
+		</waitfor>
+
+		<if>
+			<isset property="portlet.tck.bridge.undeployment.timeout" />
+			<then>
+				<fail message="Timeout while waiting for portlet-tck-bridge to undeploy." />
+			</then>
+		</if>
 	</target>
 </project>
