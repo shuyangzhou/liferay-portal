@@ -107,4 +107,32 @@ public class SerializableObjectWrapper implements Externalizable {
 
 	private Serializable _serializable;
 
+	private static class LazySerializable implements Serializable {
+
+		public byte[] getData() {
+			return _data;
+		}
+
+		public Serializable getSerializable() {
+			Deserializer deserializer = new Deserializer(
+				ByteBuffer.wrap(_data));
+
+			try {
+				return deserializer.readObject();
+			}
+			catch (ClassNotFoundException cnfe) {
+				_log.error("Unable to deserialize object", cnfe);
+
+				return null;
+			}
+		}
+
+		private LazySerializable(byte[] data) {
+			_data = data;
+		}
+
+		private final byte[] _data;
+
+	}
+
 }
