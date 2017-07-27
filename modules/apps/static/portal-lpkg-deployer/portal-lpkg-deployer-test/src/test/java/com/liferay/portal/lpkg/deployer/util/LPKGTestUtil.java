@@ -74,7 +74,7 @@ public class LPKGTestUtil {
 	}
 
 	public static void createLPKG(
-			Path path, String symbolicName)
+			Path path, String symbolicName, boolean createWar)
 		throws IOException {
 
 		try (ZipOutputStream zipOutputStream = new ZipOutputStream(
@@ -114,6 +114,58 @@ public class LPKGTestUtil {
 			}
 
 			zipOutputStream.closeEntry();
+
+			if (createWar) {
+				zipOutputStream.putNextEntry(
+					new ZipEntry(symbolicName.concat("-war-1.0.0.war")));
+
+				try (InputStream inputStream = createWAR(symbolicName);
+					OutputStream outputStream = StreamUtil.uncloseable(
+						zipOutputStream)) {
+
+					StreamUtil.transfer(inputStream, outputStream);
+				}
+			}
+		}
+	}
+
+	public static InputStream createWAR(String symbolicName)
+		throws IOException {
+
+		try (UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+				new UnsyncByteArrayOutputStream()) {
+
+			try (JarOutputStream jarOutputStream = new JarOutputStream(
+					unsyncByteArrayOutputStream)) {
+
+				jarOutputStream.putNextEntry(
+					new ZipEntry("WEB-INF/liferay-plugin-package.properties"));
+
+				StringBundler sb = new StringBundler(12);
+
+				sb.append("author=Liferay, Inc.\n");
+				sb.append("change-log=\n");
+				sb.append("licenses=LGPL\n");
+				sb.append("liferay-versions=7.0.1+\n");
+				sb.append("long-description=\n");
+				sb.append("module-group-id=liferay\n");
+				sb.append("module-incremental-version=1\n");
+				sb.append("page-url=http://www.liferay.com\n");
+				sb.append("module-version=1.0.20\n");
+				sb.append("name=");
+				sb.append(symbolicName);
+				sb.append("-war");
+
+				String properties = sb.toString();
+
+				jarOutputStream.write(properties.getBytes());
+
+				jarOutputStream.closeEntry();
+			}
+
+			return new UnsyncByteArrayInputStream(
+				unsyncByteArrayOutputStream.unsafeGetByteArray(), 0,
+				unsyncByteArrayOutputStream.size());
 		}
 	}
 

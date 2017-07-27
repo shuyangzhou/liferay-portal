@@ -39,7 +39,7 @@ public class LPKGPersistenceTest {
 
 		Files.createFile(path);
 
-		LPKGTestUtil.createLPKG(path, _SYMBOLIC_NAME);
+		LPKGTestUtil.createLPKG(path, _SYMBOLIC_NAME, false);
 	}
 
 	private static final String _SYMBOLIC_NAME = "lpkg.persistence.test";
