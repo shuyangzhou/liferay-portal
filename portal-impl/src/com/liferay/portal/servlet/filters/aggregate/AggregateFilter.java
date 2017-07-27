@@ -527,7 +527,8 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 		content = aggregateCss(
 			new ServletPaths(cssServletContext, resourcePathRoot), content);
 
-		return getCssContent(request, response, resourcePath, content);
+		return getCssContent(
+			request, response, cssServletContext, resourcePath, content);
 	}
 
 	protected String getJavaScriptContent(URL resourceURL) throws IOException {
