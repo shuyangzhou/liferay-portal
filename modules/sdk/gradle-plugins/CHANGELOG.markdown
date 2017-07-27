@@ -1928,6 +1928,10 @@ projects. By default, the language directory is set to
 `src/WEB-INF/src/content`.
 
 ### Changed
+- [LPS-73408]: Update the [Liferay Gradle Plugins Service Builder] dependency
+to version 1.0.43.
+- [LPS-73408]: Update the [Liferay Portal Tools Service Builder] dependency to
+version 1.0.159.
 - [LPS-73472]: Update the [Liferay Gradle Plugins Gulp] dependency to version
 2.0.17.
 - [LPS-73472]: Update the [Liferay Gradle Plugins JS Module Config Generator]
@@ -1995,6 +1999,27 @@ to version 2.0.41.
 ### Changed
 - [LPS-73353]: Update the [Liferay Gradle Plugins Test Integration] dependency
 to version 2.1.0.
+
+## 3.4.14 - 2017-07-25
+
+### Changed
+- [LPS-72347]: Update the [Liferay Gradle Plugins Service Builder] dependency
+to version 1.0.44.
+- [LPS-72347]: Update the [Liferay Portal Tools Service Builder] dependency to
+version 1.0.160.
+
+## 3.4.15 - 2017-07-26
+
+### Added
+- [LPS-73818]: Automatically configure the `cleanServiceBuilder` task to read
+the `portal.properties` file contained in `portal-impl.jar`, if no other portal
+properties can be found.
+
+### Changed
+- [LPS-72705]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.0.42.
+- [LPS-72705]: Update the [Liferay Source Formatter] dependency to version
+1.0.431.
 
 [Gradle Bundle Plugin]: https://github.com/TomDmitriev/gradle-bundle-plugin
 [Liferay Alloy Taglib]: https://github.com/liferay/alloy-taglibs
@@ -2144,6 +2169,7 @@ to version 2.1.0.
 [LPS-72252]: https://issues.liferay.com/browse/LPS-72252
 [LPS-72326]: https://issues.liferay.com/browse/LPS-72326
 [LPS-72340]: https://issues.liferay.com/browse/LPS-72340
+[LPS-72347]: https://issues.liferay.com/browse/LPS-72347
 [LPS-72365]: https://issues.liferay.com/browse/LPS-72365
 [LPS-72514]: https://issues.liferay.com/browse/LPS-72514
 [LPS-72572]: https://issues.liferay.com/browse/LPS-72572
@@ -2164,6 +2190,7 @@ to version 2.1.0.
 [LPS-73261]: https://issues.liferay.com/browse/LPS-73261
 [LPS-73353]: https://issues.liferay.com/browse/LPS-73353
 [LPS-73383]: https://issues.liferay.com/browse/LPS-73383
+[LPS-73408]: https://issues.liferay.com/browse/LPS-73408
 [LPS-73470]: https://issues.liferay.com/browse/LPS-73470
 [LPS-73472]: https://issues.liferay.com/browse/LPS-73472
 [LPS-73489]: https://issues.liferay.com/browse/LPS-73489
@@ -2172,4 +2199,5 @@ to version 2.1.0.
 [LPS-73584]: https://issues.liferay.com/browse/LPS-73584
 [LPS-73600]: https://issues.liferay.com/browse/LPS-73600
 [LPS-73642]: https://issues.liferay.com/browse/LPS-73642
+[LPS-73818]: https://issues.liferay.com/browse/LPS-73818
 [LRDOCS-3023]: https://issues.liferay.com/browse/LRDOCS-3023
