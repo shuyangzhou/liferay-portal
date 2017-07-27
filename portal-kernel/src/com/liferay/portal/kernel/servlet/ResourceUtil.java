@@ -28,6 +28,56 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class ResourceUtil {
 
+	public static ServletContext getPathServletContext(
+			String requestPath, String requestURI,
+			ServletContext defaultServletContext)
+		throws IOException {
+
+		URL resourceURL = defaultServletContext.getResource(requestPath);
+
+		if (resourceURL != null) {
+			return defaultServletContext;
+		}
+
+		ServletContext resourceServletContext =
+			PortalWebResourcesUtil.getPathServletContext(requestURI);
+
+		if (resourceServletContext != null) {
+			resourceURL = PortalWebResourcesUtil.getResource(
+				resourceServletContext, requestURI);
+
+			if (resourceURL != null) {
+				return resourceServletContext;
+			}
+		}
+
+		resourceServletContext = PortletResourcesUtil.getPathServletContext(
+			requestURI);
+
+		if (resourceServletContext != null) {
+			resourceURL = PortletResourcesUtil.getResource(
+				resourceServletContext, requestURI);
+
+			if (resourceURL != null) {
+				return resourceServletContext;
+			}
+		}
+
+		resourceServletContext =
+			DynamicResourceIncludeUtil.getPathServletContext(requestURI);
+
+		if (resourceServletContext != null) {
+			resourceURL = DynamicResourceIncludeUtil.getResource(
+				resourceServletContext, requestURI);
+
+			if (resourceURL != null) {
+				return resourceServletContext;
+			}
+		}
+
+		return defaultServletContext;
+	}
+
 	public static String getRequestPath(HttpServletRequest request) {
 		String requestPath = request.getRequestURI();
 
