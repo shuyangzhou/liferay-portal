@@ -19,6 +19,7 @@ import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldValueValidat
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
 import com.liferay.dynamic.data.mapping.model.Value;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Locale;
 import java.util.Map;
@@ -60,7 +61,9 @@ public class RadioDDMFormFieldValueValidator
 		Map<Locale, String> selectedValues = value.getValues();
 
 		for (String selectedValue : selectedValues.values()) {
-			if (!optionValues.contains(selectedValue)) {
+			if (Validator.isNotNull(selectedValue) &&
+				!optionValues.contains(selectedValue)) {
+
 				throw new DDMFormFieldValueValidationException(
 					String.format(
 						"The selected option \"%s\" is not a valid alternative",
