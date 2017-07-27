@@ -266,12 +266,6 @@ public class LPKGBundleTrackerCustomizer
 					}
 
 				});
-
-			FrameworkEvent frameworkEvent = defaultNoticeableFuture.get();
-
-			if (frameworkEvent.getType() != FrameworkEvent.PACKAGES_REFRESHED) {
-				throw frameworkEvent.getThrowable();
-			}
 		}
 		catch (Throwable t) {
 			_log.error("Rollback bundle installation for " + bundles, t);
