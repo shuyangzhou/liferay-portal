@@ -309,6 +309,8 @@ public class UpgradeClient {
 	private void _createBootstrapJar() throws IOException {
 		File bootstrapJarFile = new File(_BOOTSTRAP_JAR_NAME);
 
+		bootstrapJarFile.deleteOnExit();
+
 		Manifest manifest = new Manifest();
 
 		Attributes attributes = manifest.getMainAttributes();
