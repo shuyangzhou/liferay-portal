@@ -1220,10 +1220,6 @@ public class HttpImpl implements Http {
 
 	@Override
 	public String shortenURL(String url, int count) {
-		if (count == 0) {
-			return null;
-		}
-
 		StringBundler sb = new StringBundler();
 
 		String[] parts = StringUtil.split(url, CharPool.QUESTION);
@@ -1243,6 +1239,10 @@ public class HttpImpl implements Http {
 			if (param.contains("_backURL=") || param.contains("_redirect=") ||
 				param.contains("_returnToFullPageURL=") ||
 				param.startsWith("redirect")) {
+
+				if (count == 0) {
+					continue;
+				}
 
 				int pos = param.indexOf(CharPool.EQUAL);
 
