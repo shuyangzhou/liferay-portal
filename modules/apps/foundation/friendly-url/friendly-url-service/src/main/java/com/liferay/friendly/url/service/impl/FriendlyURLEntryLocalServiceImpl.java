@@ -40,6 +40,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Adolfo Pérez
@@ -65,14 +66,14 @@ public class FriendlyURLEntryLocalServiceImpl
 			Map<String, String> urlTitleMap, ServiceContext serviceContext)
 		throws PortalException {
 
-		validate(groupId, classNameId, classPK, urlTitleMap);
-
 		FriendlyURLEntryMappingPK friendlyURLEntryMappingPK =
 			new FriendlyURLEntryMappingPK(classNameId, classPK);
 
 		FriendlyURLEntryMapping friendlyURLEntryMapping =
 			friendlyURLEntryMappingPersistence.fetchByPrimaryKey(
 				friendlyURLEntryMappingPK);
+
+		FriendlyURLEntry oldFriendlyURLEntry = null;
 
 		if (friendlyURLEntryMapping == null) {
 			friendlyURLEntryMapping = friendlyURLEntryMappingPersistence.create(
@@ -87,8 +88,6 @@ public class FriendlyURLEntryLocalServiceImpl
 					friendlyURLEntryLocalizationPersistence.fetchByG_C_U(
 						groupId, classNameId, normalizedUrlTitle);
 
-				FriendlyURLEntry oldFriendlyURLEntry = null;
-
 				if (oldFriendlyURLEntryLocalization != null) {
 					oldFriendlyURLEntry =
 						friendlyURLEntryPersistence.fetchByPrimaryKey(
@@ -96,23 +95,26 @@ public class FriendlyURLEntryLocalServiceImpl
 								getFriendlyURLEntryId());
 				}
 
-				if (oldFriendlyURLEntry != null) {
-					friendlyURLEntryMapping.setFriendlyURLEntryId(
-						oldFriendlyURLEntry.getFriendlyURLEntryId());
+				if ((oldFriendlyURLEntry != null) &&
+					(oldFriendlyURLEntry.getFriendlyURLEntryId() !=
+						friendlyURLEntryMapping.getFriendlyURLEntryId())) {
 
-					friendlyURLEntryMappingPersistence.update(
-						friendlyURLEntryMapping);
+					oldFriendlyURLEntry = null;
 
-					updateFriendlyURLEntryLocalizations(
-						oldFriendlyURLEntry.getFriendlyURLEntryId(),
-						oldFriendlyURLEntry.getCompanyId(),
-						oldFriendlyURLEntry.getGroupId(),
-						oldFriendlyURLEntry.getClassNameId(),
-						oldFriendlyURLEntry.getClassPK(), urlTitleMap);
-
-					return oldFriendlyURLEntry;
+					break;
 				}
 			}
+		}
+
+		if (oldFriendlyURLEntry != null) {
+			updateFriendlyURLEntryLocalizations(
+				oldFriendlyURLEntry.getFriendlyURLEntryId(),
+				oldFriendlyURLEntry.getCompanyId(),
+				oldFriendlyURLEntry.getGroupId(),
+				oldFriendlyURLEntry.getClassNameId(),
+				oldFriendlyURLEntry.getClassPK(), urlTitleMap);
+
+			return oldFriendlyURLEntry;
 		}
 
 		long friendlyURLEntryId = counterLocalService.increment();
@@ -480,14 +482,20 @@ public class FriendlyURLEntryLocalServiceImpl
 					fetchByFriendlyURLEntryId_LanguageId(
 						friendlyURLEntryId, languageId);
 
+			normalizedUrlTitle = getUniqueUrlTitle(
+				groupId, classNameId, classPK, urlTitle);
+
 			if (friendlyURLEntryLocalization != null) {
-				normalizedUrlTitle = getUniqueUrlTitle(
-					groupId, classNameId, classPK, urlTitle);
+				if (!Objects.equals(
+						normalizedUrlTitle,
+						friendlyURLEntryLocalization.getUrlTitle())) {
 
-				friendlyURLEntryLocalization.setUrlTitle(normalizedUrlTitle);
+					friendlyURLEntryLocalization.setUrlTitle(
+						normalizedUrlTitle);
 
-				friendlyURLEntryLocalizationPersistence.updateImpl(
-					friendlyURLEntryLocalization);
+					friendlyURLEntryLocalizationPersistence.updateImpl(
+						friendlyURLEntryLocalization);
+				}
 
 				continue;
 			}
