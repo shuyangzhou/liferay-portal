@@ -26,7 +26,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import java.net.URI;
+import java.net.URL;
+
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -273,8 +277,8 @@ public class UpgradeClient {
 				String fileName = file.getName();
 
 				if (file.isFile() && fileName.endsWith("jar")) {
-					sb.append(file.getCanonicalPath());
-					sb.append(File.pathSeparator);
+					sb.append(_getURLString(file.toPath()));
+					sb.append(' ');
 				}
 				else if (file.isDirectory()) {
 					_appendClassPath(sb, file);
@@ -301,8 +305,8 @@ public class UpgradeClient {
 		String liferayClassPath = System.getenv("LIFERAY_CLASSPATH");
 
 		if ((liferayClassPath != null) && !liferayClassPath.isEmpty()) {
-			sb.append(liferayClassPath);
-			sb.append(File.pathSeparator);
+			sb.append(_getURLString(Paths.get(liferayClassPath)));
+			sb.append(' ');
 		}
 
 		_appendClassPath(sb, new File("lib"));
@@ -312,9 +316,9 @@ public class UpgradeClient {
 
 		File portalClassesDir = _appServer.getPortalClassesDir();
 
-		sb.append(portalClassesDir.getCanonicalPath());
+		sb.append(portalClassesDir.toPath());
 
-		sb.append(File.pathSeparator);
+		sb.append(' ');
 
 		_appendClassPath(sb, _appServer.getPortalLibDir());
 
@@ -342,6 +346,16 @@ public class UpgradeClient {
 		}
 
 		return relativeFileNames;
+	}
+
+	private String _getURLString(Path path) throws IOException {
+		path = path.toAbsolutePath();
+
+		URI uri = path.toUri();
+
+		URL url = new URL(uri.toASCIIString());
+
+		return url.toExternalForm();
 	}
 
 	private boolean _isFinished(GogoTelnetClient gogoTelnetClient)
