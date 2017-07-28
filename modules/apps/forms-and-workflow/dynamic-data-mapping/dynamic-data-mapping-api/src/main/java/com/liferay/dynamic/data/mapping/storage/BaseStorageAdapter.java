@@ -17,6 +17,7 @@ package com.liferay.dynamic.data.mapping.storage;
 import com.liferay.dynamic.data.mapping.exception.StorageException;
 import com.liferay.dynamic.data.mapping.util.DDMFormValuesTransformer;
 import com.liferay.dynamic.data.mapping.util.DocumentLibraryDDMFormFieldValueTransformer;
+import com.liferay.dynamic.data.mapping.util.FormsDocumentLibraryDDMFormFieldValueTransformer;
 import com.liferay.dynamic.data.mapping.util.HTMLSanitizerDDMFormFieldValueTransformer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -137,6 +138,9 @@ public abstract class BaseStorageAdapter implements StorageAdapter {
 
 		ddmFormValuesTransformer.addTransformer(
 			new DocumentLibraryDDMFormFieldValueTransformer());
+
+		ddmFormValuesTransformer.addTransformer(
+			new FormsDocumentLibraryDDMFormFieldValueTransformer());
 
 		ddmFormValuesTransformer.addTransformer(
 			new HTMLSanitizerDDMFormFieldValueTransformer(
