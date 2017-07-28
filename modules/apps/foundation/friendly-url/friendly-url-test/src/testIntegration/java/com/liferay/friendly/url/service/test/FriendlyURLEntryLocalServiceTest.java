@@ -18,6 +18,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.friendly.url.exception.DuplicateFriendlyURLEntryException;
 import com.liferay.friendly.url.exception.FriendlyURLLengthException;
 import com.liferay.friendly.url.model.FriendlyURLEntry;
+import com.liferay.friendly.url.model.FriendlyURLEntryLocalization;
 import com.liferay.friendly.url.service.FriendlyURLEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
@@ -30,7 +31,12 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -100,7 +106,7 @@ public class FriendlyURLEntryLocalServiceTest {
 		long classNameId = ClassNameLocalServiceUtil.getClassNameId(User.class);
 
 		int maxLength = ModelHintsUtil.getMaxLength(
-			FriendlyURLEntry.class.getName(), "urlTitle");
+			FriendlyURLEntryLocalization.class.getName(), "urlTitle");
 
 		String urlTitle = StringUtil.randomString(maxLength + 1);
 
@@ -112,12 +118,72 @@ public class FriendlyURLEntryLocalServiceTest {
 		Assert.assertEquals(maxLength, uniqueUrlTitle.length());
 	}
 
+	@Test
+	public void testUpdateFriendlyURLLocalization() throws Exception {
+		long classNameId = ClassNameLocalServiceUtil.getClassNameId(User.class);
+
+		String defaultUrlTitle = "new-user-url-title";
+		String chineseUrlTitle = "new-user-url-title-cn";
+
+		Map<String, String> urlTitles = new HashMap<>();
+
+		String defaultLanguageId = LocaleUtil.toLanguageId(Locale.ENGLISH);
+
+		urlTitles.put(defaultLanguageId, defaultUrlTitle);
+
+		String chineseLanguageId = LocaleUtil.toLanguageId(Locale.CHINESE);
+
+		Map<String, String> chineseUrlTitles = new HashMap<>();
+
+		chineseUrlTitles.put(chineseLanguageId, chineseUrlTitle);
+
+		// Friendly URL in english for default class PK
+
+		FriendlyURLEntry defaultFriendlyURLEntry =
+			FriendlyURLEntryLocalServiceUtil.addFriendlyURLEntry(
+				_group.getGroupId(), classNameId, TestPropsValues.getUserId(),
+				urlTitles, _getServiceContext());
+
+		// Friendly URL in chinese for another class PK
+
+		FriendlyURLEntry chineseFriendlyURLEntry =
+			FriendlyURLEntryLocalServiceUtil.addFriendlyURLEntry(
+				_group.getGroupId(), classNameId,
+				TestPropsValues.getUserId() + 1, chineseUrlTitles,
+				_getServiceContext());
+
+		// Trying to create new friendly URL for existing class PK and title
+
+		FriendlyURLEntry newFriendlyURLEntry =
+			FriendlyURLEntryLocalServiceUtil.addFriendlyURLEntry(
+				_group.getGroupId(), classNameId, TestPropsValues.getUserId(),
+				urlTitles, _getServiceContext());
+
+		Assert.assertEquals(
+			defaultFriendlyURLEntry.getFriendlyURLEntryId(),
+			newFriendlyURLEntry.getFriendlyURLEntryId());
+
+		urlTitles.put(chineseLanguageId, chineseUrlTitle);
+
+		// Add new friendly URL with mixed titles from the previous ones
+
+		newFriendlyURLEntry =
+			FriendlyURLEntryLocalServiceUtil.addFriendlyURLEntry(
+				_group.getGroupId(), classNameId,
+				TestPropsValues.getUserId() + 2, urlTitles,
+				_getServiceContext());
+
+		Assert.assertNotEquals(
+			defaultFriendlyURLEntry.getFriendlyURLEntryId(),
+			newFriendlyURLEntry.getFriendlyURLEntryId());
+	}
+
 	@Test(expected = DuplicateFriendlyURLEntryException.class)
 	public void testValidateDuplicateUrlTitle() throws Exception {
 		long classNameId = ClassNameLocalServiceUtil.getClassNameId(User.class);
 
 		int maxLength = ModelHintsUtil.getMaxLength(
-			FriendlyURLEntry.class.getName(), "urlTitle");
+			FriendlyURLEntryLocalization.class.getName(), "urlTitle");
 
 		String urlTitle = StringUtil.randomString(maxLength);
 
@@ -134,7 +200,7 @@ public class FriendlyURLEntryLocalServiceTest {
 		long classNameId = ClassNameLocalServiceUtil.getClassNameId(User.class);
 
 		int maxLength = ModelHintsUtil.getMaxLength(
-			FriendlyURLEntry.class.getName(), "urlTitle");
+			FriendlyURLEntryLocalization.class.getName(), "urlTitle");
 
 		String urlTitle = StringUtil.randomString(maxLength);
 
@@ -151,7 +217,7 @@ public class FriendlyURLEntryLocalServiceTest {
 		long classNameId = ClassNameLocalServiceUtil.getClassNameId(User.class);
 
 		int maxLength = ModelHintsUtil.getMaxLength(
-			FriendlyURLEntry.class.getName(), "urlTitle");
+			FriendlyURLEntryLocalization.class.getName(), "urlTitle");
 
 		String urlTitle = StringUtil.randomString(maxLength);
 
@@ -169,7 +235,7 @@ public class FriendlyURLEntryLocalServiceTest {
 		long classNameId = ClassNameLocalServiceUtil.getClassNameId(User.class);
 
 		int maxLength = ModelHintsUtil.getMaxLength(
-			FriendlyURLEntry.class.getName(), "urlTitle");
+			FriendlyURLEntryLocalization.class.getName(), "urlTitle");
 
 		String urlTitle = StringUtil.randomString(maxLength + 1);
 
@@ -182,7 +248,7 @@ public class FriendlyURLEntryLocalServiceTest {
 		long classNameId = ClassNameLocalServiceUtil.getClassNameId(User.class);
 
 		int maxLength = ModelHintsUtil.getMaxLength(
-			FriendlyURLEntry.class.getName(), "urlTitle");
+			FriendlyURLEntryLocalization.class.getName(), "urlTitle");
 
 		String urlTitle = StringUtil.randomString(maxLength);
 

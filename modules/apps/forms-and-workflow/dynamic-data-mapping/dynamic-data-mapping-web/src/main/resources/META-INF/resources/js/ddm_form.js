@@ -958,9 +958,9 @@ AUI.add(
 
 						var container = instance.get('container');
 
+						var colorPicker = instance.get('colorPicker');
 						var selectorInput = container.one('.selector-input');
 						var valueField = container.one('.color-value');
-						var colorPicker = instance.get('colorPicker');
 
 						if (!colorPicker) {
 							return;
@@ -2942,28 +2942,42 @@ AUI.add(
 						var repeatableInstance = instance.repeatableInstances[fieldName];
 
 						if (!repeatableInstance) {
-							repeatableInstance = new A.SortableList(
+							var ddPlugins = [];
+
+							if (Liferay.Util.getTop() === A.config.win) {
+								ddPlugins.push(
+									{
+										fn: A.Plugin.DDWinScroll
+									}
+								);
+							}
+							else {
+								ddPlugins.push(
+									{
+										cfg: {
+											constrain: '.lfr-form-content'
+										},
+										fn: A.Plugin.DDConstrained
+									},
+									{
+										cfg: {
+											horizontal: false,
+											node: '.lfr-form-content'
+										},
+										fn: A.Plugin.DDNodeScroll
+									}
+								);
+							}
+
+							repeatableInstance = new Liferay.DDM.RepeatableSortableList(
 								{
 									dd: {
-										plugins: [
-											{
-												cfg: {
-													constrain: '#main-content'
-												},
-												fn: A.Plugin.DDConstrained
-											},
-											{
-												cfg: {
-													horizontal: false,
-													node: '.lfr-form-content'
-												},
-												fn: A.Plugin.DDNodeScroll
-											}
-										]
+										plugins: ddPlugins
 									},
-									dropOn: '#' + parentNode.attr("id"),
+									dropOn: '#' + parentNode.attr('id'),
 									helper: A.Node.create(TPL_REPEATABLE_HELPER),
 									nodes: '[data-fieldName=' + fieldName + ']',
+									placeholder: A.Node.create('<div class="form-builder-placeholder"></div>'),
 									sortCondition: function(event) {
 										var dropNode = event.drop.get('node');
 
@@ -2971,6 +2985,8 @@ AUI.add(
 									}
 								}
 							);
+
+							repeatableInstance.after('drag:align', A.bind(instance._afterRepeatableDragAlign, instance));
 
 							repeatableInstance.after('drag:end', A.rbind(instance._afterRepeatableDragEnd, instance, field.get('parent')));
 
@@ -3030,6 +3046,13 @@ AUI.add(
 						if (field.get('repeatable')) {
 							instance.registerRepeatable(field);
 						}
+					},
+
+					_afterRepeatableDragAlign: function() {
+						var DDM = A.DD.DDM;
+
+						DDM.syncActiveShims();
+						DDM._dropMove();
 					},
 
 					_afterRepeatableDragEnd: function(event, parentField) {
@@ -3153,6 +3176,39 @@ AUI.add(
 						translationManager.addTarget(instance);
 
 						return translationManager;
+					}
+				}
+			}
+		);
+
+		Liferay.DDM.RepeatableSortableList = A.Component.create(
+			{
+				EXTENDS: A.SortableList,
+
+				prototype: {
+					_createDrag: function(node) {
+						var instance = this;
+
+						var helper = instance.get('helper');
+
+						if (!A.DD.DDM.getDrag(node)) {
+							var dragOptions = {
+								bubbleTargets: instance,
+								node: node,
+								target: true
+							};
+
+							var proxyOptions = instance.get('proxy');
+
+							if (helper) {
+								proxyOptions.borderStyle = null;
+							}
+
+							new A.DD.Drag(
+								A.mix(dragOptions, instance.get('dd'))
+							)
+							.plug(A.Plugin.DDProxy, proxyOptions);
+						}
 					}
 				}
 			}
