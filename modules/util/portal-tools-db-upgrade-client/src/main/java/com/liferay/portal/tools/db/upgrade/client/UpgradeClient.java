@@ -37,6 +37,11 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.Attributes;
+import java.util.jar.Attributes.Name;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
 
 import jline.console.ConsoleReader;
 
@@ -152,6 +157,8 @@ public class UpgradeClient {
 		System.setOut(
 			new TeePrintStream(new FileOutputStream(_logFile), System.out));
 
+		_createBootstrapJar();
+
 		ProcessBuilder processBuilder = new ProcessBuilder();
 
 		List<String> commands = new ArrayList<>();
@@ -164,7 +171,7 @@ public class UpgradeClient {
 		}
 
 		commands.add("-cp");
-		commands.add(_getClassPath());
+		commands.add(_BOOTSTRAP_JAR_NAME);
 
 		Collections.addAll(commands, _jvmOpts.split(" "));
 
@@ -297,6 +304,32 @@ public class UpgradeClient {
 
 	private void _close(Closeable closeable) throws IOException {
 		closeable.close();
+	}
+
+	private void _createBootstrapJar() throws IOException {
+		File bootstrapJarFile = new File(_BOOTSTRAP_JAR_NAME);
+
+		Manifest manifest = new Manifest();
+
+		Attributes attributes = manifest.getMainAttributes();
+
+		Name manifestVersionName = Name.MANIFEST_VERSION;
+
+		attributes.putValue(manifestVersionName.toString(), "1.0");
+
+		Name classpathName = Name.CLASS_PATH;
+
+		attributes.putValue(classpathName.toString(), _getClassPath());
+
+		try (JarOutputStream jarOutputStream = new JarOutputStream(
+				new FileOutputStream(bootstrapJarFile))) {
+
+			jarOutputStream.setLevel(JarOutputStream.STORED);
+
+			jarOutputStream.putNextEntry(new JarEntry("META-INF/MANIFEST.MF"));
+
+			manifest.write(jarOutputStream);
+		}
 	}
 
 	private String _getClassPath() throws IOException {
@@ -664,6 +697,8 @@ public class UpgradeClient {
 				"liferay.home", liferayHome.getCanonicalPath());
 		}
 	}
+
+	private static final String _BOOTSTRAP_JAR_NAME = "bootstrap.jar";
 
 	private static final String _JAVA_HOME = System.getenv("JAVA_HOME");
 
