@@ -32,7 +32,9 @@ import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
 import java.util.EnumMap;
+import java.util.LinkedHashSet;
 import java.util.ServiceLoader;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -115,6 +117,11 @@ public class DBManagerImpl implements DBManager {
 		}
 
 		return dbCreator.create(dbMajorVersion, dbMinorVersion);
+	}
+
+	@Override
+	public Set<DBType> getDBFactoryTypes() {
+		return new LinkedHashSet<>(_dbFactories.keySet());
 	}
 
 	@Override
