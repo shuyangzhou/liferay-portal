@@ -23,9 +23,9 @@ boolean anonymous = jsonObject.getBoolean("anonymous");
 
 long userNotificationEventUserId = jsonObject.getLong("userId");
 
-boolean unread = !userNotificationEvent.isArchived();
+boolean notificationUnread = !actionRequired && !userNotificationEvent.isArchived();
 
-if (unread) {
+if (notificationUnread) {
 	row.setCssClass("unread");
 }
 %>
@@ -51,19 +51,19 @@ if (unread) {
 		</liferay-ui:search-container-column-text>
 	</c:when>
 	<c:otherwise>
-		<portlet:actionURL name="markAsRead" var="markAsReadURL">
+		<portlet:actionURL name="markNotificationAsRead" var="markNotificationAsReadURL">
 			<portlet:param name="userNotificationEventId" value="<%= String.valueOf(userNotificationEvent.getUserNotificationEventId()) %>" />
 			<portlet:param name="redirect" value="<%= userNotificationFeedEntry.getLink() %>" />
 		</portlet:actionURL>
 
 		<liferay-ui:search-container-column-text colspan="<%= 2 %>">
-			<c:if test="<%= unread %>">
+			<c:if test="<%= notificationUnread %>">
 				<h4>
 			</c:if>
-				<a href="<%= markAsReadURL.toString() %>">
+				<a href="<%= markNotificationAsReadURL.toString() %>">
 					<%= userNotificationFeedEntry.getBody() %>
 				</a>
-			<c:if test="<%= unread %>">
+			<c:if test="<%= notificationUnread %>">
 				</h4>
 			</c:if>
 
