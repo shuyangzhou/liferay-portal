@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.SynchronousDestination;
 import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil;
@@ -41,7 +40,6 @@ import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
@@ -84,53 +82,6 @@ public class ServiceTestUtil {
 	public static final int RETRY_COUNT = 10;
 
 	public static final int THREAD_COUNT = 10;
-
-	/**
-	 * @deprecated As of 7.0.0
-	 */
-	@Deprecated
-	public static void addResourcePermission(
-			Role role, String resourceName, int scope, String primKey,
-			String actionId)
-		throws Exception {
-
-		RoleTestUtil.addResourcePermission(
-			role, resourceName, scope, primKey, actionId);
-	}
-
-	/**
-	 * @deprecated As of 7.0.0
-	 */
-	@Deprecated
-	public static void addResourcePermission(
-			String roleName, String resourceName, int scope, String primKey,
-			String actionId)
-		throws Exception {
-
-		RoleTestUtil.addResourcePermission(
-			roleName, resourceName, scope, primKey, actionId);
-	}
-
-	/**
-	 * @deprecated As of 7.0.0
-	 */
-	@Deprecated
-	public static Role addRole(String roleName, int roleType) throws Exception {
-		return RoleTestUtil.addRole(roleName, roleType);
-	}
-
-	/**
-	 * @deprecated As of 7.0.0
-	 */
-	@Deprecated
-	public static Role addRole(
-			String roleName, int roleType, String resourceName, int scope,
-			String primKey, String actionId)
-		throws Exception {
-
-		return RoleTestUtil.addRole(
-			roleName, roleType, resourceName, scope, primKey, actionId);
-	}
 
 	public static void initMainServletServices() {
 

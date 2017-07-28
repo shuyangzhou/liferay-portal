@@ -18,6 +18,7 @@ import com.liferay.asset.publisher.web.configuration.AssetPublisherPortletInstan
 import com.liferay.asset.publisher.web.configuration.AssetPublisherWebConfiguration;
 import com.liferay.asset.publisher.web.constants.AssetPublisherPortletKeys;
 import com.liferay.asset.publisher.web.constants.AssetPublisherWebKeys;
+import com.liferay.asset.publisher.web.internal.action.AssetEntryActionRegistry;
 import com.liferay.asset.publisher.web.util.AssetPublisherCustomizer;
 import com.liferay.asset.publisher.web.util.AssetPublisherCustomizerRegistry;
 import com.liferay.asset.publisher.web.util.AssetPublisherUtil;
@@ -300,6 +301,10 @@ public class AssetPublisherPortlet extends MVCPortlet {
 		throws IOException, PortletException {
 
 		try {
+			renderRequest.setAttribute(
+				AssetPublisherWebKeys.ASSET_ENTRY_ACTION_REGISTRY,
+				assetEntryActionRegistry);
+
 			String rootPortletId = PortletIdCodec.decodePortletName(
 				portal.getPortletId(renderRequest));
 
@@ -359,6 +364,9 @@ public class AssetPublisherPortlet extends MVCPortlet {
 
 		return false;
 	}
+
+	@Reference
+	protected AssetEntryActionRegistry assetEntryActionRegistry;
 
 	@Reference
 	protected AssetPublisherCustomizerRegistry assetPublisherCustomizerRegistry;
