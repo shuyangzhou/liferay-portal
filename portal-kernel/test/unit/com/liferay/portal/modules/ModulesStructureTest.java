@@ -476,11 +476,9 @@ public class ModulesStructureTest {
 					BasicFileAttributes basicFileAttributes) {
 
 					if (Files.exists(pluginDirPath.resolve("build.xml")) &&
-						(Files.exists(pluginDirPath.resolve("ivy.xml")) ||
-						 Files.exists(
-							 pluginDirPath.resolve(
-								 "docroot/WEB-INF/service.xml"))) &&
-						Files.isDirectory(pluginDirPath.resolve("docroot"))) {
+						Files.exists(
+							pluginDirPath.resolve(
+								"docroot/WEB-INF/service.xml"))) {
 
 						String pluginDirName = String.valueOf(
 							dirPath.relativize(pluginDirPath));
@@ -505,7 +503,7 @@ public class ModulesStructureTest {
 			return gitIgnore;
 		}
 
-		StringBundler sb = new StringBundler(pluginDirNames.size() * 4 + 2);
+		StringBundler sb = new StringBundler(pluginDirNames.size() * 6 + 2);
 
 		if (Validator.isNotNull(gitIgnore)) {
 			sb.append(gitIgnore);
@@ -524,7 +522,9 @@ public class ModulesStructureTest {
 
 			sb.append("!/");
 			sb.append(pluginDirName);
-			sb.append("/docroot/WEB-INF/lib");
+			sb.append("/docroot/WEB-INF/lib/");
+			sb.append(pluginDirName);
+			sb.append("-service.jar");
 		}
 
 		return sb.toString();
@@ -626,6 +626,20 @@ public class ModulesStructureTest {
 		return projectPathPrefix;
 	}
 
+	private boolean _isEmptyGitRepo(Path dirPath) {
+		File dir = dirPath.toFile();
+
+		String[] fileNames = dir.list();
+
+		if ((fileNames.length == 1) &&
+			_GIT_REPO_FILE_NAME.equals(fileNames[0])) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	private boolean _isInGitRepoReadOnly(Path dirPath) throws IOException {
 		Path gitRepoPath = _getGitRepoPath(dirPath);
 
@@ -653,6 +667,10 @@ public class ModulesStructureTest {
 	}
 
 	private void _testAntPluginIgnoreFiles(Path dirPath) throws IOException {
+		if (_isInPrivateModulesDir(dirPath)) {
+			return;
+		}
+
 		_testEquals(
 			dirPath.resolve("docroot/WEB-INF/lib/.gitignore"),
 			_getAntPluginLibGitIgnore(dirPath));
@@ -721,13 +739,17 @@ public class ModulesStructureTest {
 			String settingsGradleTemplate)
 		throws IOException {
 
+		if (_isEmptyGitRepo(dirPath)) {
+			return;
+		}
+
 		boolean privateRepo = _isInPrivateModulesDir(dirPath);
 
 		Path buildGradlePath = dirPath.resolve("build.gradle");
 		Path gradlePropertiesPath = dirPath.resolve("gradle.properties");
 		Path settingsGradlePath = dirPath.resolve("settings.gradle");
 
-		if (!_isInGitRepoReadOnly(dirPath) && !privateRepo) {
+		if (!_isInGitRepoReadOnly(dirPath)) {
 			String buildGradle = ModulesStructureTestUtil.read(buildGradlePath);
 
 			Assert.assertEquals(
@@ -903,7 +925,11 @@ public class ModulesStructureTest {
 	private void _testGitRepoIgnoreFiles(Path dirPath, String gitIgnoreTemplate)
 		throws IOException {
 
-		if (_isInGitRepoReadOnly(dirPath)) {
+		if (_isEmptyGitRepo(dirPath)) {
+			return;
+		}
+
+		if (_isInGitRepoReadOnly(dirPath) || _isInPrivateModulesDir(dirPath)) {
 			return;
 		}
 

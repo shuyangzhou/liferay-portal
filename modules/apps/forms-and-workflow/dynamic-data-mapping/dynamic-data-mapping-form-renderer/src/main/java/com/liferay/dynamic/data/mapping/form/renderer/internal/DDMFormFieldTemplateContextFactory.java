@@ -326,6 +326,9 @@ public class DDMFormFieldTemplateContextFactory {
 		DDMFormFieldRenderingContext ddmFormFieldRenderingContext =
 			createDDDMFormFieldRenderingContext(ddmFormFieldTemplateContext);
 
+		ddmFormFieldRenderingContext.setProperty(
+			"groupId", _ddmFormRenderingContext.getGroupId());
+
 		Map<String, Object> contributedParameters =
 			ddmFormFieldTemplateContextContributor.getParameters(
 				ddmFormField, ddmFormFieldRenderingContext);

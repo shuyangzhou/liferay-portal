@@ -247,7 +247,7 @@ public class DDMTemplateStagedModelDataHandler
 					portletDataContext, template, template.getScript(),
 					portletDataContext.getBooleanParameter(
 						DDMPortletDataHandler.NAMESPACE, "referenced-content"),
-					true);
+					false);
 
 		template.setScript(script);
 

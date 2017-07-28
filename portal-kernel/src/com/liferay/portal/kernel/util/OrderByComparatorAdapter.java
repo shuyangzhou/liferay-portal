@@ -31,6 +31,20 @@ public abstract class OrderByComparatorAdapter<T, V>
 		return _orderByComparator.compare(adapt(o1), adapt(o2));
 	}
 
+	@Override
+	public boolean equals(Object object) {
+		if (object instanceof OrderByComparatorAdapter) {
+			OrderByComparatorAdapter orderByComparatorAdapter =
+				(OrderByComparatorAdapter)object;
+
+			if (orderByComparatorAdapter == _orderByComparator) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public OrderByComparator<V> getAdaptedOrderByComparator() {
 		return _orderByComparator;
 	}
@@ -53,6 +67,11 @@ public abstract class OrderByComparatorAdapter<T, V>
 	@Override
 	public String[] getOrderByFields() {
 		return _orderByComparator.getOrderByFields();
+	}
+
+	@Override
+	public int hashCode() {
+		return System.identityHashCode(_orderByComparator);
 	}
 
 	@Override

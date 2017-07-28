@@ -26,10 +26,6 @@ import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
-import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -42,6 +38,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.test.log.CaptureAppender;
 import com.liferay.portal.test.log.Log4JLoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 
@@ -57,7 +54,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Level;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -80,7 +76,9 @@ public class DDMDataProviderPaginatorServletTest {
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
-		new LiferayIntegrationTestRule();
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(),
+			PermissionCheckerTestRule.INSTANCE);
 
 	@Before
 	public void setUp() throws Exception {
@@ -88,15 +86,6 @@ public class DDMDataProviderPaginatorServletTest {
 
 		setUpDDMDataProvider();
 		setUpDDMDataProviderPaginatorServlet();
-		setUpPermissionThreadLocal();
-		setUpPrincipalThreadLocal();
-	}
-
-	@After
-	public void tearDown() {
-		PermissionThreadLocal.setPermissionChecker(_originalPermissionChecker);
-
-		PrincipalThreadLocal.setName(_originalName);
 	}
 
 	@Ignore
@@ -423,20 +412,6 @@ public class DDMDataProviderPaginatorServletTest {
 		_ddmDataProviderPaginatorServlet = servlets[0];
 	}
 
-	protected void setUpPermissionThreadLocal() throws Exception {
-		_originalPermissionChecker =
-			PermissionThreadLocal.getPermissionChecker();
-
-		PermissionThreadLocal.setPermissionChecker(
-			PermissionCheckerFactoryUtil.create(TestPropsValues.getUser()));
-	}
-
-	protected void setUpPrincipalThreadLocal() throws Exception {
-		_originalName = PrincipalThreadLocal.getName();
-
-		PrincipalThreadLocal.setName(TestPropsValues.getUserId());
-	}
-
 	@DeleteAfterTestRun
 	protected Group group;
 
@@ -444,8 +419,6 @@ public class DDMDataProviderPaginatorServletTest {
 		"com.netflix.config.sources.URLConfigurationSource";
 
 	private Servlet _ddmDataProviderPaginatorServlet;
-	private String _originalName;
-	private PermissionChecker _originalPermissionChecker;
 	private DDMDataProvider _restDDMDataProvider;
 
 }
