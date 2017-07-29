@@ -63,50 +63,12 @@
 	<target name="clean-up-tck-dependencies">
 		<delete file="${liferay.home}/.continue" />
 		<delete file=".testable.portal.started" />
+		<delete file="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration.cfg" />
 
 		<antcall target="undeploy-portlet-tck-bridge" />
 	</target>
 
 	<target name="deploy-portlet-tck-bridge">
-		<gradle-execute dir="modules/test/portlet-tck-bridge" task="deploy" />
-
-		<if>
-			<available file=".testable.portal.started" />
-			<then>
-				<waitfor checkevery="100" checkeveryunit="millisecond" maxwait="9" maxwaitunit="minute" timeoutproperty="portlet.tck.bridge.deployment.timeout">
-					<socket port="${portlet.tck.bridge.handshake.port}" server="localhost" />
-				</waitfor>
-
-				<if>
-					<isset property="portlet.tck.bridge.deployment.timeout" />
-					<then>
-						<for param="logfile">
-							<path>
-								<fileset dir="${liferay.home}/logs" includes="*.log" />
-							</path>
-							<sequential>
-								<print-file file.name="@{logfile}" />
-							</sequential>
-						</for>
-
-						<fail message="Timeout while waiting for portlet-tck-bridge to deploy." />
-					</then>
-				</if>
-			</then>
-		</if>
-	</target>
-
-	<target name="deploy-portlet-tck-theme">
-		<gradle-execute dir="modules/test/portlet-tck-theme" task="deploy" />
-	</target>
-
-	<target name="prepare-portlet-tck">
-		<antcall target="undeploy-chat-portlet" />
-
-		<antcall target="clean-up-tck-dependencies" />
-
-		<antcall target="prepare-tck-portal-ext-properties" />
-
 		<var name="tck.servlet.context.names" value="" />
 
 		<for param="tck.war">
@@ -205,6 +167,45 @@ testContext=${test.context}
 tckDeployFiles=${tck.deploy.files}</echo>
 
 		<print-file file.name="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration.cfg" />
+
+		<gradle-execute dir="modules/test/portlet-tck-bridge" task="deploy" />
+
+		<if>
+			<available file=".testable.portal.started" />
+			<then>
+				<waitfor checkevery="100" checkeveryunit="millisecond" maxwait="9" maxwaitunit="minute" timeoutproperty="portlet.tck.bridge.deployment.timeout">
+					<socket port="${portlet.tck.bridge.handshake.port}" server="localhost" />
+				</waitfor>
+
+				<if>
+					<isset property="portlet.tck.bridge.deployment.timeout" />
+					<then>
+						<for param="logfile">
+							<path>
+								<fileset dir="${liferay.home}/logs" includes="*.log" />
+							</path>
+							<sequential>
+								<print-file file.name="@{logfile}" />
+							</sequential>
+						</for>
+
+						<fail message="Timeout while waiting for portlet-tck-bridge to deploy." />
+					</then>
+				</if>
+			</then>
+		</if>
+	</target>
+
+	<target name="deploy-portlet-tck-theme">
+		<gradle-execute dir="modules/test/portlet-tck-theme" task="deploy" />
+	</target>
+
+	<target name="prepare-portlet-tck">
+		<antcall target="undeploy-chat-portlet" />
+
+		<antcall target="clean-up-tck-dependencies" />
+
+		<antcall target="prepare-tck-portal-ext-properties" />
 	</target>
 
 	<target name="prepare-tck">
@@ -346,6 +347,12 @@ users.reminder.queries.enabled=false
 
 		<antcall target="deploy-portlet-tck-theme" />
 
+		<antcall target="test-class" />
+
+		<antcall target="clean-up-tck-dependencies" />
+	</target>
+
+	<target name="test-class">
 		<antcall target="deploy-portlet-tck-bridge" />
 
 		<condition else="_" property="starts.with" value="${starts.with}">
@@ -440,8 +447,6 @@ users.reminder.queries.enabled=false
 			options="-Prun-tck -Djava.awt.headless=true ${test.arguments} ${test.module.option}"
 		/>
 
-		<antcall target="clean-up-tck-dependencies" />
-
 		<if>
 			<equals arg1="${maven.result}" arg2="0" />
 			<then>
@@ -463,9 +468,11 @@ users.reminder.queries.enabled=false
 				/>
 			</then>
 		</if>
+
+		<antcall target="undeploy-portlet-tck-bridge" />
 	</target>
 
-	<target name="test-class-group">
+	<target depends="prepare-portlet-tck" name="test-class-group">
 		<fail message="Please set the property ${test.class.group.index}." unless="test.class.group.index" />
 
 		<property file="${project.dir}/test.tck.class.groups.properties" />
@@ -477,15 +484,23 @@ users.reminder.queries.enabled=false
 				<equals arg1="${test.class.group}" arg2="" />
 			</not>
 			<then>
+				<antcall target="start-app-server">
+					<param name="testable.portal.started.marker.file" value=".testable.portal.started" />
+				</antcall>
+
+				<antcall target="deploy-portlet-tck-theme" />
+
 				<for list="${test.class.group}" param="test.class">
 					<sequential>
 						<local name="test.context" />
 
-						<antcall target="run-tck-tomcat">
+						<antcall target="test-class">
 							<param name="test.context" value="@{test.class}" />
 						</antcall>
 					</sequential>
 				</for>
+
+				<antcall target="clean-up-tck-dependencies" />
 			</then>
 		</if>
 	</target>
