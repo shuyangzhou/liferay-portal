@@ -44,4 +44,14 @@ renderResponse.setTitle(assetRenderer.getTitle(locale));
 		assetRenderer="<%= assetRenderer %>"
 		assetRendererFactory="<%= assetRendererFactory %>"
 	/>
+
+	<%
+	String viewInContextURL = assetRenderer.getURLViewInContext(liferayPortletRequest, liferayPortletResponse, null);
+	%>
+
+	<c:if test="<%= viewInContextURL != null %>">
+		<div class="asset-more">
+			<aui:a href="<%= viewInContextURL %>"><liferay-ui:message key="view-in-context" /> &raquo;</aui:a>
+		</div>
+	</c:if>
 </c:if>

@@ -26,13 +26,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import java.net.URI;
+import java.net.URL;
+
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.Attributes;
+import java.util.jar.Attributes.Name;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
 
 import jline.console.ConsoleReader;
 
@@ -148,6 +157,8 @@ public class UpgradeClient {
 		System.setOut(
 			new TeePrintStream(new FileOutputStream(_logFile), System.out));
 
+		_createBootstrapJar();
+
 		ProcessBuilder processBuilder = new ProcessBuilder();
 
 		List<String> commands = new ArrayList<>();
@@ -160,7 +171,7 @@ public class UpgradeClient {
 		}
 
 		commands.add("-cp");
-		commands.add(_getClassPath());
+		commands.add(_BOOTSTRAP_JAR_NAME);
 
 		Collections.addAll(commands, _jvmOpts.split(" "));
 
@@ -273,8 +284,8 @@ public class UpgradeClient {
 				String fileName = file.getName();
 
 				if (file.isFile() && fileName.endsWith("jar")) {
-					sb.append(file.getCanonicalPath());
-					sb.append(File.pathSeparator);
+					sb.append(_getURLString(file.toPath()));
+					sb.append(' ');
 				}
 				else if (file.isDirectory()) {
 					_appendClassPath(sb, file);
@@ -295,14 +306,37 @@ public class UpgradeClient {
 		closeable.close();
 	}
 
+	private void _createBootstrapJar() throws IOException {
+		File bootstrapJarFile = new File(_BOOTSTRAP_JAR_NAME);
+
+		bootstrapJarFile.deleteOnExit();
+
+		Manifest manifest = new Manifest();
+
+		Attributes attributes = manifest.getMainAttributes();
+
+		attributes.put(Name.MANIFEST_VERSION, "1.0");
+		attributes.put(Name.CLASS_PATH, _getClassPath());
+
+		try (JarOutputStream jarOutputStream = new JarOutputStream(
+				new FileOutputStream(bootstrapJarFile))) {
+
+			jarOutputStream.setLevel(JarOutputStream.STORED);
+
+			jarOutputStream.putNextEntry(new JarEntry("META-INF/MANIFEST.MF"));
+
+			manifest.write(jarOutputStream);
+		}
+	}
+
 	private String _getClassPath() throws IOException {
 		StringBuilder sb = new StringBuilder();
 
 		String liferayClassPath = System.getenv("LIFERAY_CLASSPATH");
 
 		if ((liferayClassPath != null) && !liferayClassPath.isEmpty()) {
-			sb.append(liferayClassPath);
-			sb.append(File.pathSeparator);
+			sb.append(_getURLString(Paths.get(liferayClassPath)));
+			sb.append(' ');
 		}
 
 		_appendClassPath(sb, new File("lib"));
@@ -312,9 +346,9 @@ public class UpgradeClient {
 
 		File portalClassesDir = _appServer.getPortalClassesDir();
 
-		sb.append(portalClassesDir.getCanonicalPath());
+		sb.append(portalClassesDir.toPath());
 
-		sb.append(File.pathSeparator);
+		sb.append(' ');
 
 		_appendClassPath(sb, _appServer.getPortalLibDir());
 
@@ -342,6 +376,16 @@ public class UpgradeClient {
 		}
 
 		return relativeFileNames;
+	}
+
+	private String _getURLString(Path path) throws IOException {
+		path = path.toAbsolutePath();
+
+		URI uri = path.toUri();
+
+		URL url = new URL(uri.toASCIIString());
+
+		return url.toExternalForm();
 	}
 
 	private boolean _isFinished(GogoTelnetClient gogoTelnetClient)
@@ -650,6 +694,8 @@ public class UpgradeClient {
 				"liferay.home", liferayHome.getCanonicalPath());
 		}
 	}
+
+	private static final String _BOOTSTRAP_JAR_NAME = "bootstrap.jar";
 
 	private static final String _JAVA_HOME = System.getenv("JAVA_HOME");
 
