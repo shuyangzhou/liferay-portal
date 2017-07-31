@@ -315,13 +315,8 @@ public class UpgradeClient {
 
 		Attributes attributes = manifest.getMainAttributes();
 
-		Name manifestVersionName = Name.MANIFEST_VERSION;
-
-		attributes.putValue(manifestVersionName.toString(), "1.0");
-
-		Name classpathName = Name.CLASS_PATH;
-
-		attributes.putValue(classpathName.toString(), _getClassPath());
+		attributes.put(Name.MANIFEST_VERSION, "1.0");
+		attributes.put(Name.CLASS_PATH, _getClassPath());
 
 		try (JarOutputStream jarOutputStream = new JarOutputStream(
 				new FileOutputStream(bootstrapJarFile))) {
