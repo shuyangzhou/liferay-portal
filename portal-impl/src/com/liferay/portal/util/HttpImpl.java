@@ -1221,11 +1221,16 @@ public class HttpImpl implements Http {
 
 	@Override
 	public String shortenURL(String url, int count) {
-		if (count == 0) {
-			return null;
-		}
-
 		StringBundler sb = new StringBundler();
+
+		String[] parts = StringUtil.split(url, CharPool.QUESTION);
+
+		if (parts.length == 2) {
+			sb.append(parts[0]);
+			sb.append(CharPool.QUESTION);
+
+			url = parts[1];
+		}
 
 		String[] params = StringUtil.split(url, CharPool.AMPERSAND);
 
@@ -1235,6 +1240,10 @@ public class HttpImpl implements Http {
 			if (param.contains("_backURL=") || param.contains("_redirect=") ||
 				param.contains("_returnToFullPageURL=") ||
 				param.startsWith("redirect")) {
+
+				if (count == 0) {
+					continue;
+				}
 
 				int pos = param.indexOf(CharPool.EQUAL);
 
@@ -1262,20 +1271,16 @@ public class HttpImpl implements Http {
 					sb.append(qName);
 					sb.append(StringPool.EQUAL);
 					sb.append(newURL);
-
-					if (i < (params.length - 1)) {
-						sb.append(StringPool.AMPERSAND);
-					}
+					sb.append(CharPool.AMPERSAND);
 				}
 			}
 			else {
 				sb.append(param);
-
-				if (i < (params.length - 1)) {
-					sb.append(StringPool.AMPERSAND);
-				}
+				sb.append(CharPool.AMPERSAND);
 			}
 		}
+
+		sb.setIndex(sb.index() - 1);
 
 		return sb.toString();
 	}
