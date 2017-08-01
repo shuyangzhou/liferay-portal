@@ -1055,6 +1055,7 @@ app.server.type=@{app.server.type}]]></echo>
 										<arg value="*.LPKGOverrideVerifyCleanStartupTest" />
 									</gradle-execute>
 								</try>
+
 								<finally>
 									<ant dir="portal-kernel" inheritAll="false" target="test-class">
 										<property name="test.class" value="PortalLogAssertorTest" />
