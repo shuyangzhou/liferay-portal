@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 
 import java.nio.file.Path;
 
@@ -160,7 +161,7 @@ public class UpgradeClient {
 		}
 
 		commands.add("-cp");
-		commands.add(_getClassPath());
+		commands.add(_getBootstrapClassPath());
 
 		Collections.addAll(commands, _jvmOpts.split(" "));
 
@@ -168,7 +169,7 @@ public class UpgradeClient {
 		commands.add(
 			"-Dserver.detector.server.id=" +
 				_appServer.getServerDetectorServerId());
-		commands.add("com.liferay.portal.tools.DBUpgrader");
+		commands.add(DBUpgraderLauncher.class.getName());
 
 		processBuilder.command(commands);
 
@@ -176,10 +177,16 @@ public class UpgradeClient {
 
 		Process process = processBuilder.start();
 
-		try (InputStreamReader inputStreamReader = new InputStreamReader(
+		try (ObjectOutputStream bootstrapObjectOutputStream =
+				new ObjectOutputStream(process.getOutputStream());
+			InputStreamReader inputStreamReader = new InputStreamReader(
 				process.getInputStream());
 			BufferedReader bufferedReader = new BufferedReader(
 				inputStreamReader)) {
+
+			bootstrapObjectOutputStream.writeObject(_getClassPath());
+
+			bootstrapObjectOutputStream.flush();
 
 			String line = null;
 
@@ -293,6 +300,14 @@ public class UpgradeClient {
 
 	private void _close(Closeable closeable) throws IOException {
 		closeable.close();
+	}
+
+	private String _getBootstrapClassPath() throws IOException {
+		StringBuilder sb = new StringBuilder();
+
+		_appendClassPath(sb, new File("."));
+
+		return sb.toString();
 	}
 
 	private String _getClassPath() throws IOException {
