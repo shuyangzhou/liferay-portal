@@ -172,8 +172,18 @@ public class LPKGBundleTrackerCustomizer
 						continue;
 					}
 
-					Bundle newBundle = _bundleContext.installBundle(
-						url.getPath(), url.openStream());
+					String location = url.getPath();
+
+					Bundle newBundle = _bundleContext.getBundle(location);
+
+					if (newBundle != null) {
+						bundles.add(newBundle);
+
+						continue;
+					}
+
+					newBundle = _bundleContext.installBundle(
+						location, url.openStream());
 
 					BundleStartLevel bundleStartLevel = newBundle.adapt(
 						BundleStartLevel.class);
@@ -199,13 +209,23 @@ public class LPKGBundleTrackerCustomizer
 					continue;
 				}
 
+				String location = url.getPath();
+
+				Bundle newBundle = _bundleContext.getBundle(location);
+
+				if (newBundle != null) {
+					bundles.add(newBundle);
+
+					continue;
+				}
+
 				// Install a wrapper bundle for this WAR bundle. The wrapper
 				// bundle defers the WAR bundle installation until the WAB
 				// protocol handler is ready. The installed WAR bundle is always
 				// tied its wrapper bundle. When the wrapper bundle is
 				// uninstalled, its wrapped WAR bundle will also be unintalled.
 
-				Bundle newBundle = _bundleContext.installBundle(
+				newBundle = _bundleContext.installBundle(
 					url.getPath(), _toWARWrapperBundle(bundle, url));
 
 				BundleStartLevel bundleStartLevel = newBundle.adapt(
@@ -263,6 +283,56 @@ public class LPKGBundleTrackerCustomizer
 	@Override
 	public void modifiedBundle(
 		Bundle bundle, BundleEvent bundleEvent, List<Bundle> bundles) {
+
+		if ((bundle.getState() != Bundle.RESOLVED) ||
+			(bundleEvent.getType() != BundleEvent.RESOLVED)) {
+
+			return;
+		}
+
+		try {
+			List<Bundle> newBundles = addingBundle(bundle, bundleEvent);
+
+			if (newBundles != null) {
+				bundles.removeAll(newBundles);
+			}
+
+			for (Bundle installedBundle : bundles) {
+				if (installedBundle.getState() != Bundle.UNINSTALLED) {
+					installedBundle.uninstall();
+
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							"Uninstalled " + installedBundle + "because " +
+								bundle + " was updated");
+					}
+				}
+			}
+
+			bundles.clear();
+
+			if (newBundles != null) {
+				bundles.addAll(newBundles);
+			}
+
+			for (Bundle installedBundle : bundles) {
+				if (installedBundle.getState() == Bundle.RESOLVED) {
+					installedBundle.start();
+				}
+			}
+		}
+		catch (Exception e) {
+			_log.error("Rollback bundle refresh for " + bundles, e);
+
+			for (Bundle newBundle : bundles) {
+				try {
+					newBundle.uninstall();
+				}
+				catch (BundleException be) {
+					_log.error("Unable to uninstall bundle " + newBundle, be);
+				}
+			}
+		}
 	}
 
 	@Override
