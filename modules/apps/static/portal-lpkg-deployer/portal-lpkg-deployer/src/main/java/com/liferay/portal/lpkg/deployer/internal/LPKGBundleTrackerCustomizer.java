@@ -44,8 +44,10 @@ import java.nio.file.StandardCopyOption;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -172,8 +174,18 @@ public class LPKGBundleTrackerCustomizer
 						continue;
 					}
 
-					Bundle newBundle = _bundleContext.installBundle(
-						url.getPath(), url.openStream());
+					String location = url.getPath();
+
+					Bundle newBundle = _bundleContext.getBundle(location);
+
+					if (newBundle != null) {
+						bundles.add(newBundle);
+
+						continue;
+					}
+
+					newBundle = _bundleContext.installBundle(
+						location, url.openStream());
 
 					BundleStartLevel bundleStartLevel = newBundle.adapt(
 						BundleStartLevel.class);
@@ -181,6 +193,14 @@ public class LPKGBundleTrackerCustomizer
 					bundleStartLevel.setStartLevel(
 						PropsValues.
 							MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
+
+					Dictionary<String, String> headers = newBundle.getHeaders();
+
+					String fragmentHost = headers.get(Constants.FRAGMENT_HOST);
+
+					if (fragmentHost == null) {
+						newBundle.start();
+					}
 
 					bundles.add(newBundle);
 				}
@@ -199,13 +219,23 @@ public class LPKGBundleTrackerCustomizer
 					continue;
 				}
 
+				String location = url.getPath();
+
+				Bundle newBundle = _bundleContext.getBundle(location);
+
+				if (newBundle != null) {
+					bundles.add(newBundle);
+
+					continue;
+				}
+
 				// Install a wrapper bundle for this WAR bundle. The wrapper
 				// bundle defers the WAR bundle installation until the WAB
 				// protocol handler is ready. The installed WAR bundle is always
 				// tied its wrapper bundle. When the wrapper bundle is
 				// uninstalled, its wrapped WAR bundle will also be unintalled.
 
-				Bundle newBundle = _bundleContext.installBundle(
+				newBundle = _bundleContext.installBundle(
 					url.getPath(), _toWARWrapperBundle(bundle, url));
 
 				BundleStartLevel bundleStartLevel = newBundle.adapt(
@@ -213,6 +243,8 @@ public class LPKGBundleTrackerCustomizer
 
 				bundleStartLevel.setStartLevel(
 					PropsValues.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
+
+				newBundle.start();
 
 				bundles.add(newBundle);
 			}
@@ -235,12 +267,6 @@ public class LPKGBundleTrackerCustomizer
 					}
 
 				});
-
-			FrameworkEvent frameworkEvent = defaultNoticeableFuture.get();
-
-			if (frameworkEvent.getType() != FrameworkEvent.PACKAGES_REFRESHED) {
-				throw frameworkEvent.getThrowable();
-			}
 		}
 		catch (Throwable t) {
 			_log.error("Rollback bundle installation for " + bundles, t);
@@ -263,6 +289,45 @@ public class LPKGBundleTrackerCustomizer
 	@Override
 	public void modifiedBundle(
 		Bundle bundle, BundleEvent bundleEvent, List<Bundle> bundles) {
+
+		if (bundleEvent.getType() != BundleEvent.UNRESOLVED) {
+			return;
+		}
+
+		List<Bundle> newBundles = addingBundle(bundle, bundleEvent);
+
+		bundles.removeAll(newBundles);
+
+		for (Bundle installedBundle : bundles) {
+			try {
+				installedBundle.uninstall();
+
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Uninstalled " + installedBundle + "because " + bundle +
+							" was updated");
+				}
+			}
+			catch (BundleException be) {
+				_log.error("Unable to uninstall " + installedBundle, be);
+			}
+		}
+
+		bundles.clear();
+
+		if (newBundles != null) {
+			bundles.addAll(newBundles);
+		}
+
+		Iterator<Bundle> iterator = bundles.iterator();
+
+		while (iterator.hasNext()) {
+			Bundle installedBundle = iterator.next();
+
+			if (installedBundle.getState() == Bundle.UNINSTALLED) {
+				iterator.remove();
+			}
+		}
 	}
 
 	@Override
