@@ -43,6 +43,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NoHttpResponseException;
 import org.apache.http.StatusLine;
+import org.apache.http.TruncatedChunkException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.conn.ConnectTimeoutException;
@@ -113,6 +114,7 @@ public class BaseHandler implements Handler<Void> {
 			e instanceof NoHttpResponseException ||
 			e instanceof SocketException ||
 			e instanceof SocketTimeoutException || e instanceof SSLException ||
+			e instanceof TruncatedChunkException ||
 			e instanceof UnknownHostException) {
 
 			retryServerConnection(SyncAccount.UI_EVENT_CONNECTION_EXCEPTION);

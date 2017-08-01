@@ -12,32 +12,32 @@
  * details.
  */
 
-package com.liferay.util;
+package com.liferay.portal.kernel.util;
 
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * @author     Brian Wing Shun Chan
- * @deprecated As of 7.0.0, moved to {@link
- *             com.liferay.portal.kernel.util.Autocomplete}
+ * @author Brian Wing Shun Chan
  */
-@Deprecated
 public class Autocomplete {
 
-	public static JSONArray arrayToJson(String[] array, int max) {
-		return arrayToJson(_singleToPairArray(array), max);
+	public static JSONArray arrayToJSONArray(
+		List<?> list, String textParam, String valueParam) {
+
+		return arrayToJSONArray(listToArray(list, textParam, valueParam), -1);
 	}
 
-	public static JSONArray arrayToJson(String[][] array, int max) {
+	public static JSONArray arrayToJSONArray(String[] array, int max) {
+		return arrayToJSONArray(_singleToPairArray(array), max);
+	}
+
+	public static JSONArray arrayToJSONArray(String[][] array, int max) {
 		if (max <= 0) {
 			max = array.length;
 		}
@@ -118,12 +118,6 @@ public class Autocomplete {
 		}
 
 		return array;
-	}
-
-	public static JSONArray listToJson(
-		List<?> list, String textParam, String valueParam) {
-
-		return arrayToJson(listToArray(list, textParam, valueParam), -1);
 	}
 
 	public static String listToXml(

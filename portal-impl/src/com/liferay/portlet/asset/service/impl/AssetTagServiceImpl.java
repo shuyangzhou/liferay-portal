@@ -21,13 +21,13 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.Autocomplete;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portlet.asset.service.base.AssetTagServiceBaseImpl;
 import com.liferay.portlet.asset.service.permission.AssetTagPermission;
 import com.liferay.portlet.asset.service.permission.AssetTagsPermission;
 import com.liferay.portlet.asset.util.comparator.AssetTagNameComparator;
-import com.liferay.util.Autocomplete;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.ArrayList;
@@ -238,7 +238,7 @@ public class AssetTagServiceImpl extends AssetTagServiceBaseImpl {
 	public JSONArray search(long[] groupIds, String name, int start, int end) {
 		List<AssetTag> tags = getTags(groupIds, name, start, end);
 
-		return Autocomplete.listToJson(tags, "name", "name");
+		return Autocomplete.arrayToJSONArray(tags, "name", "name");
 	}
 
 	@Override
