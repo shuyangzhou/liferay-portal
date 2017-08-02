@@ -233,8 +233,10 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 	}
 
 	@Deactivate
-	protected void deactivate() {
+	protected void deactivate(BundleContext bundleContext) {
 		_lpkgBundleTracker.close();
+
+		_wabBundleTracker.close();
 	}
 
 	private void _activate(final BundleContext bundleContext) throws Exception {
@@ -246,6 +248,12 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 		bundleContext.registerService(
 			URLStreamHandlerService.class.getName(),
 			new LPKGURLStreamHandlerService(_urls), properties);
+
+		_wabBundleTracker = new BundleTracker<>(
+			bundleContext, ~Bundle.UNINSTALLED,
+			new WABWrapperBundleTrackerCustomizer(bundleContext));
+
+		_wabBundleTracker.open();
 
 		_deploymentDirPath = _getDeploymentDirPath(bundleContext);
 
@@ -688,5 +696,6 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 	private ThrowableCollector _throwableCollector;
 
 	private final Map<String, URL> _urls = new ConcurrentHashMap<>();
+	private BundleTracker<Bundle> _wabBundleTracker;
 
 }
