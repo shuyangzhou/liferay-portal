@@ -592,7 +592,8 @@ public class LPKGBundleTrackerCustomizer
 					jarOutputStream);
 
 				_writeClasses(
-					jarOutputStream, WARBundleWrapperBundleActivator.class,
+					jarOutputStream, WABWrapperUtil.class,
+					WARBundleWrapperBundleActivator.class,
 					URLStreamHandlerServiceServiceTrackerCustomizer.class);
 			}
 
@@ -674,7 +675,8 @@ public class LPKGBundleTrackerCustomizer
 			Constants.IMPORT_PACKAGE,
 			_buildImportPackageString(
 				BundleActivator.class, BundleStartLevel.class,
-				ServiceTrackerCustomizer.class, URLConstants.class));
+				ServiceTrackerCustomizer.class, StringBundler.class,
+				URLConstants.class));
 		attributes.putValue("Liferay-WAB-Context-Name", contextName);
 		attributes.putValue("Liferay-WAB-LPKG-URL", lpkgURL);
 		attributes.putValue(
