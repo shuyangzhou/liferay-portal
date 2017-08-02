@@ -247,31 +247,6 @@ public class LPKGBundleTrackerCustomizer
 
 				bundles.add(newBundle);
 			}
-
-			Bundle systemBundle = _bundleContext.getBundle(0);
-
-			FrameworkWiring frameworkWiring = systemBundle.adapt(
-				FrameworkWiring.class);
-
-			final DefaultNoticeableFuture<FrameworkEvent>
-				defaultNoticeableFuture = new DefaultNoticeableFuture<>();
-
-			frameworkWiring.refreshBundles(
-				null,
-				new FrameworkListener() {
-
-					@Override
-					public void frameworkEvent(FrameworkEvent frameworkEvent) {
-						defaultNoticeableFuture.set(frameworkEvent);
-					}
-
-				});
-
-			FrameworkEvent frameworkEvent = defaultNoticeableFuture.get();
-
-			if (frameworkEvent.getType() != FrameworkEvent.PACKAGES_REFRESHED) {
-				throw frameworkEvent.getThrowable();
-			}
 		}
 		catch (Throwable t) {
 			_log.error("Rollback bundle installation for " + bundles, t);
@@ -362,11 +337,11 @@ public class LPKGBundleTrackerCustomizer
 			try {
 				_uninstallBundle(prefix, newBundle);
 			}
-			catch (BundleException be) {
+			catch (Throwable t) {
 				_log.error(
 					"Unable to uninstall " + newBundle +
 						" in response to uninstallation of " + bundle,
-					be);
+					t);
 			}
 		}
 	}
@@ -410,7 +385,7 @@ public class LPKGBundleTrackerCustomizer
 	}
 
 	private boolean _checkOverridden(String symbolicName, URL url)
-		throws BundleException {
+		throws Throwable {
 
 		String path = url.getPath();
 
@@ -604,9 +579,11 @@ public class LPKGBundleTrackerCustomizer
 	}
 
 	private void _uninstallBundle(String prefix, Bundle bundle)
-		throws BundleException {
+		throws Throwable {
 
 		String symbolicName = bundle.getSymbolicName();
+
+		Set<Bundle> uninstalledBundles = new HashSet<>();
 
 		if (symbolicName.startsWith(prefix) &&
 			symbolicName.endsWith("-wrapper")) {
@@ -622,11 +599,40 @@ public class LPKGBundleTrackerCustomizer
 					version.equals(curBundle.getVersion())) {
 
 					curBundle.uninstall();
+
+					uninstalledBundles.add(curBundle);
 				}
 			}
 		}
 
 		bundle.uninstall();
+
+		uninstalledBundles.add(bundle);
+
+		Bundle systemBundle = _bundleContext.getBundle(0);
+
+		FrameworkWiring frameworkWiring = systemBundle.adapt(
+			FrameworkWiring.class);
+
+		final DefaultNoticeableFuture<FrameworkEvent> defaultNoticeableFuture =
+			new DefaultNoticeableFuture<>();
+
+		frameworkWiring.refreshBundles(
+			uninstalledBundles,
+			new FrameworkListener() {
+
+				@Override
+				public void frameworkEvent(FrameworkEvent frameworkEvent) {
+					defaultNoticeableFuture.set(frameworkEvent);
+				}
+
+			});
+
+		FrameworkEvent frameworkEvent = defaultNoticeableFuture.get();
+
+		if (frameworkEvent.getType() != FrameworkEvent.PACKAGES_REFRESHED) {
+			throw frameworkEvent.getThrowable();
+		}
 	}
 
 	private void _writeClasses(
