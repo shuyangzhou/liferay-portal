@@ -585,8 +585,10 @@ public class LPKGBundleTrackerCustomizer
 
 		Set<Bundle> uninstalledBundles = new HashSet<>();
 
+		Dictionary<String, String> headers = bundle.getHeaders();
+
 		if (symbolicName.startsWith(prefix) &&
-			symbolicName.endsWith("-wrapper")) {
+			Boolean.valueOf(headers.get("Wrapper-Bundle"))) {
 
 			String wrappedBundleSymbolicName = symbolicName.substring(
 				prefix.length(), symbolicName.length() - 8);
@@ -690,6 +692,7 @@ public class LPKGBundleTrackerCustomizer
 			String.valueOf(
 				PropsValues.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL));
 		attributes.putValue("Manifest-Version", "2");
+		attributes.putValue("Wrapper-Bundle", "true");
 
 		jarOutputStream.putNextEntry(new ZipEntry(JarFile.MANIFEST_NAME));
 
