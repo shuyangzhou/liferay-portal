@@ -14,6 +14,7 @@
 
 package com.liferay.portal.dao.jdbc;
 
+import com.liferay.portal.dao.jdbc.functions.IsPresentPropertyFunction;
 import com.liferay.portal.dao.jdbc.pool.metrics.C3P0ConnectionPoolMetrics;
 import com.liferay.portal.dao.jdbc.pool.metrics.DBCPConnectionPoolMetrics;
 import com.liferay.portal.dao.jdbc.pool.metrics.HikariConnectionPoolMetrics;
@@ -382,78 +383,64 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 	}
 
 	protected boolean isPropertyC3PO(String key) {
-		if (StringUtil.equalsIgnoreCase(key, "acquireIncrement") ||
-			StringUtil.equalsIgnoreCase(key, "acquireRetryAttempts") ||
-			StringUtil.equalsIgnoreCase(key, "acquireRetryDelay") ||
-			StringUtil.equalsIgnoreCase(key, "connectionCustomizerClassName") ||
-			StringUtil.equalsIgnoreCase(key, "idleConnectionTestPeriod") ||
-			StringUtil.equalsIgnoreCase(key, "initialPoolSize") ||
-			StringUtil.equalsIgnoreCase(key, "maxIdleTime") ||
-			StringUtil.equalsIgnoreCase(key, "maxPoolSize") ||
-			StringUtil.equalsIgnoreCase(key, "minPoolSize") ||
-			StringUtil.equalsIgnoreCase(key, "numHelperThreads") ||
-			StringUtil.equalsIgnoreCase(key, "preferredTestQuery")) {
+		String[] keys = {
+			"acquireIncrement", "acquireRetryAttempts", "acquireRetryDelay",
+			"connectionCustomizerClassName", "idleConnectionTestPeriod",
+			"initialPoolSize", "maxIdleTime", "maxPoolSize", "minPoolSize",
+			"numHelperThreads", "preferredTestQuery"
+		};
 
-			return true;
-		}
+		IsPresentPropertyFunction isPresentPropertyFunction =
+			new IsPresentPropertyFunction(key);
 
-		return false;
+		return isPresentPropertyFunction.apply(keys);
 	}
 
 	protected boolean isPropertyDBCP(String key) {
-		if (StringUtil.equalsIgnoreCase(key, "defaultTransactionIsolation") ||
-			StringUtil.equalsIgnoreCase(key, "maxActive") ||
-			StringUtil.equalsIgnoreCase(key, "minIdle") ||
-			StringUtil.equalsIgnoreCase(key, "removeAbandonedTimeout")) {
+		String[] keys = {
+			"defaultTransactionIsolation", "maxActive", "minIdle",
+			"removeAbandonedTimeout"
+		};
 
-			return true;
-		}
+		IsPresentPropertyFunction isPresentPropertyFunction =
+			new IsPresentPropertyFunction(key);
 
-		return false;
+		return isPresentPropertyFunction.apply(keys);
 	}
 
 	protected boolean isPropertyHikariCP(String key) {
-		if (StringUtil.equalsIgnoreCase(key, "autoCommit") ||
-			StringUtil.equalsIgnoreCase(key, "connectionTestQuery") ||
-			StringUtil.equalsIgnoreCase(key, "connectionTimeout") ||
-			StringUtil.equalsIgnoreCase(key, "idleTimeout") ||
-			StringUtil.equalsIgnoreCase(key, "initializationFailFast") ||
-			StringUtil.equalsIgnoreCase(key, "maximumPoolSize") ||
-			StringUtil.equalsIgnoreCase(key, "maxLifetime") ||
-			StringUtil.equalsIgnoreCase(key, "minimumIdle") ||
-			StringUtil.equalsIgnoreCase(key, "registerMbeans")) {
+		String[] keys = {
+			"autoCommit", "connectionTestQuery", "connectionTimeout",
+			"idleTimeout", "initializationFailFast", "maximumPoolSize",
+			"maxLifetime", "minimumIdle", "registerMbeans"
+		};
 
-			return true;
-		}
+		IsPresentPropertyFunction isPresentPropertyFunction =
+			new IsPresentPropertyFunction(key);
 
-		return false;
+		return isPresentPropertyFunction.apply(keys);
 	}
 
 	protected boolean isPropertyLiferay(String key) {
-		if (StringUtil.equalsIgnoreCase(key, "jndi.name") ||
-			StringUtil.equalsIgnoreCase(key, "liferay.pool.provider")) {
+		String[] keys = {"jndi.name", "liferay.pool.provider"};
 
-			return true;
-		}
+		IsPresentPropertyFunction isPresentPropertyFunction =
+			new IsPresentPropertyFunction(key);
 
-		return false;
+		return isPresentPropertyFunction.apply(keys);
 	}
 
 	protected boolean isPropertyTomcat(String key) {
-		if (StringUtil.equalsIgnoreCase(key, "fairQueue") ||
-			StringUtil.equalsIgnoreCase(key, "initialSize") ||
-			StringUtil.equalsIgnoreCase(key, "jdbcInterceptors") ||
-			StringUtil.equalsIgnoreCase(key, "jmxEnabled") ||
-			StringUtil.equalsIgnoreCase(key, "maxIdle") ||
-			StringUtil.equalsIgnoreCase(key, "testWhileIdle") ||
-			StringUtil.equalsIgnoreCase(key, "timeBetweenEvictionRunsMillis") ||
-			StringUtil.equalsIgnoreCase(key, "useEquals") ||
-			StringUtil.equalsIgnoreCase(key, "validationQuery")) {
+		String[] keys = {
+			"fairQueue", "initialSize", "jdbcInterceptors", "jmxEnabled",
+			"maxIdle", "testWhileIdle", "timeBetweenEvictionRunsMillis",
+			"useEquals", "validationQuery"
+		};
 
-			return true;
-		}
+		IsPresentPropertyFunction isPresentPropertyFunction =
+			new IsPresentPropertyFunction(key);
 
-		return false;
+		return isPresentPropertyFunction.apply(keys);
 	}
 
 	protected void registerConnectionPoolMetrics(
