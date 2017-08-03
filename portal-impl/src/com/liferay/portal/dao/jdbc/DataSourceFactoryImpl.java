@@ -14,10 +14,8 @@
 
 package com.liferay.portal.dao.jdbc;
 
-import com.liferay.portal.dao.jdbc.datasource.providers.C3P0DataSourceInitializer;
-import com.liferay.portal.dao.jdbc.datasource.providers.DBCPDataSourceInitializer;
 import com.liferay.portal.dao.jdbc.datasource.providers.DataSourceInitializer;
-import com.liferay.portal.dao.jdbc.datasource.providers.HikariCPDataSourceInitializer;
+import com.liferay.portal.dao.jdbc.datasource.providers.DataSourceInitializerFactory;
 import com.liferay.portal.dao.jdbc.datasource.providers.TomcatDataSourceInitializer;
 import com.liferay.portal.dao.jdbc.functions.RetryDataSourceFunction;
 import com.liferay.portal.dao.jdbc.util.DataSourceWrapper;
@@ -35,7 +33,6 @@ import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.SortedProperties;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.hibernate.DialectDetector;
 import com.liferay.portal.util.JarUtil;
@@ -198,50 +195,22 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 		testDatabaseClass(properties);
 
-		DataSource dataSource = null;
-
 		String liferayPoolProvider =
 			PropsValues.JDBC_DEFAULT_LIFERAY_POOL_PROVIDER;
 
-		if (StringUtil.equalsIgnoreCase(liferayPoolProvider, "c3p0") ||
-			StringUtil.equalsIgnoreCase(liferayPoolProvider, "c3po")) {
+		DataSourceInitializer dataSourceInitializer =
+			DataSourceInitializerFactory.getDataSourceInitializer(
+				liferayPoolProvider);
 
-			if (_log.isDebugEnabled()) {
-				_log.debug("Initializing C3P0 data source");
-			}
-
-			DataSourceInitializer c3P0DataSourceInitializer =
-				new C3P0DataSourceInitializer();
-
-			dataSource = c3P0DataSourceInitializer.init(properties);
-		}
-		else if (StringUtil.equalsIgnoreCase(liferayPoolProvider, "dbcp")) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Initializing DBCP data source");
-			}
-
-			DataSourceInitializer dbcpDataSourceInitializer =
-				new DBCPDataSourceInitializer();
-
-			dataSource = dbcpDataSourceInitializer.init(properties);
-		}
-		else if (StringUtil.equalsIgnoreCase(liferayPoolProvider, "hikaricp")) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Initializing HikariCP data source");
-			}
-
-			DataSourceInitializer hikariCPDataSourceInitializer =
-				new HikariCPDataSourceInitializer();
-
-			dataSource = hikariCPDataSourceInitializer.init(properties);
-		}
-		else {
+		if (dataSourceInitializer == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug("Initializing Tomcat data source");
 			}
 
-			dataSource = _tomcatDataSourceInitializer.init(properties);
+			dataSourceInitializer = _tomcatDataSourceInitializer;
 		}
+
+		DataSource dataSource = dataSourceInitializer.init(properties);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Created data source " + dataSource.getClass());
