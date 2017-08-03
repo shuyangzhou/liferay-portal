@@ -15,9 +15,9 @@
 package com.liferay.portal.dao.jdbc;
 
 import com.liferay.portal.dao.jdbc.datasource.providers.C3P0DataSourceInitializer;
+import com.liferay.portal.dao.jdbc.datasource.providers.DBCPDataSourceInitializer;
 import com.liferay.portal.dao.jdbc.datasource.providers.DataSourceInitializer;
 import com.liferay.portal.dao.jdbc.functions.IsPresentPropertyFunction;
-import com.liferay.portal.dao.jdbc.pool.metrics.DBCPConnectionPoolMetrics;
 import com.liferay.portal.dao.jdbc.pool.metrics.HikariConnectionPoolMetrics;
 import com.liferay.portal.dao.jdbc.pool.metrics.TomcatConnectionPoolMetrics;
 import com.liferay.portal.dao.jdbc.util.DataSourceWrapper;
@@ -70,8 +70,6 @@ import javax.sql.DataSource;
 
 import jodd.bean.BeanUtil;
 
-import org.apache.commons.dbcp.BasicDataSource;
-import org.apache.commons.dbcp.BasicDataSourceFactory;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.apache.tomcat.jdbc.pool.jmx.ConnectionPool;
 
@@ -139,18 +137,6 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 		public DataSource getDataSource(DataSource dataSource);
 
-	}
-
-	protected DataSource initDataSourceDBCP(Properties properties)
-		throws Exception {
-
-		DataSource dataSource = BasicDataSourceFactory.createDataSource(
-			properties);
-
-		registerConnectionPoolMetrics(
-			new DBCPConnectionPoolMetrics((BasicDataSource)dataSource));
-
-		return dataSource;
 	}
 
 	protected DataSource initDataSourceHikariCP(Properties properties)
@@ -443,7 +429,10 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 				_log.debug("Initializing DBCP data source");
 			}
 
-			dataSource = initDataSourceDBCP(properties);
+			DataSourceInitializer dbcpDataSourceInitializer =
+				new DBCPDataSourceInitializer();
+
+			dataSource = dbcpDataSourceInitializer.init(properties);
 		}
 		else if (StringUtil.equalsIgnoreCase(liferayPoolProvider, "hikaricp")) {
 			if (_log.isDebugEnabled()) {
