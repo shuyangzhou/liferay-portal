@@ -58,6 +58,7 @@ import javax.sql.DataSource;
 /**
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
+ * @author Manuel de la Peña
  */
 @DoPrivileged
 public class DataSourceFactoryImpl implements DataSourceFactory {
