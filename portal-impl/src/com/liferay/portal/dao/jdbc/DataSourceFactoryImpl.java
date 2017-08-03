@@ -14,8 +14,9 @@
 
 package com.liferay.portal.dao.jdbc;
 
+import com.liferay.portal.dao.jdbc.datasource.providers.C3P0DataSourceInitializer;
+import com.liferay.portal.dao.jdbc.datasource.providers.DataSourceInitializer;
 import com.liferay.portal.dao.jdbc.functions.IsPresentPropertyFunction;
-import com.liferay.portal.dao.jdbc.pool.metrics.C3P0ConnectionPoolMetrics;
 import com.liferay.portal.dao.jdbc.pool.metrics.DBCPConnectionPoolMetrics;
 import com.liferay.portal.dao.jdbc.pool.metrics.HikariConnectionPoolMetrics;
 import com.liferay.portal.dao.jdbc.pool.metrics.TomcatConnectionPoolMetrics;
@@ -54,7 +55,6 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
 import java.util.function.Function;
@@ -139,94 +139,6 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 		public DataSource getDataSource(DataSource dataSource);
 
-	}
-
-	protected DataSource initDataSourceC3PO(Properties properties)
-		throws Exception {
-
-		ComboPooledDataSource comboPooledDataSource =
-			new ComboPooledDataSource();
-
-		String identityToken = StringUtil.randomString();
-
-		comboPooledDataSource.setIdentityToken(identityToken);
-
-		String connectionPropertiesString = (String)properties.remove(
-			"connectionProperties");
-
-		if (connectionPropertiesString != null) {
-			Properties connectionProperties = PropertiesUtil.load(
-				StringUtil.replace(
-					connectionPropertiesString, CharPool.SEMICOLON,
-					CharPool.NEW_LINE));
-
-			comboPooledDataSource.setProperties(connectionProperties);
-		}
-
-		Enumeration<String> enu =
-			(Enumeration<String>)properties.propertyNames();
-
-		while (enu.hasMoreElements()) {
-			String key = enu.nextElement();
-
-			String value = properties.getProperty(key);
-
-			// Map org.apache.commons.dbcp.BasicDataSource to C3PO
-
-			if (StringUtil.equalsIgnoreCase(key, "driverClassName")) {
-				key = "driverClass";
-			}
-			else if (StringUtil.equalsIgnoreCase(key, "url")) {
-				key = "jdbcUrl";
-			}
-			else if (StringUtil.equalsIgnoreCase(key, "username")) {
-				key = "user";
-			}
-
-			IsPresentPropertyFunction isPresentPropertyFunction =
-				new IsPresentPropertyFunction(key);
-
-			// Ignore Liferay property
-
-			if (isPresentPropertyFunction.apply(_LIFERAY_PROPERTIES)) {
-				continue;
-			}
-
-			// Ignore DBCP property
-
-			if (isPresentPropertyFunction.apply(_DBCP_PROPERTIES)) {
-				continue;
-			}
-
-			// Ignore HikariCP property
-
-			if (isPresentPropertyFunction.apply(_HIKARICP_PROPERTIES)) {
-				continue;
-			}
-
-			// Ignore Tomcat JDBC property
-
-			if (isPresentPropertyFunction.apply(_TOMCAT_PROPERTIES)) {
-				continue;
-			}
-
-			// Set C3PO property
-
-			try {
-				BeanUtil.setProperty(comboPooledDataSource, key, value);
-			}
-			catch (Exception e) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Property " + key + " is an invalid C3PO property");
-				}
-			}
-		}
-
-		registerConnectionPoolMetrics(
-			new C3P0ConnectionPoolMetrics(comboPooledDataSource));
-
-		return comboPooledDataSource;
 	}
 
 	protected DataSource initDataSourceDBCP(Properties properties)
@@ -521,7 +433,10 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 				_log.debug("Initializing C3P0 data source");
 			}
 
-			dataSource = initDataSourceC3PO(properties);
+			DataSourceInitializer c3P0DataSourceInitializer =
+				new C3P0DataSourceInitializer();
+
+			dataSource = c3P0DataSourceInitializer.init(properties);
 		}
 		else if (StringUtil.equalsIgnoreCase(liferayPoolProvider, "dbcp")) {
 			if (_log.isDebugEnabled()) {
