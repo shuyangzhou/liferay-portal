@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.jdbc.DataSourceFactory;
-import com.liferay.portal.kernel.dao.jdbc.pool.metrics.ConnectionPoolMetrics;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jndi.JNDIUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -41,8 +40,6 @@ import com.liferay.portal.spring.hibernate.DialectDetector;
 import com.liferay.portal.util.JarUtil;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
 import com.liferay.registry.ServiceTracker;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -127,15 +124,6 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 		public DataSource getDataSource(DataSource dataSource);
 
-	}
-
-	protected void registerConnectionPoolMetrics(
-		ConnectionPoolMetrics connectionPoolMetrics) {
-
-		Registry registry = RegistryUtil.getRegistry();
-
-		registry.registerService(
-			ConnectionPoolMetrics.class, connectionPoolMetrics);
 	}
 
 	protected void testDatabaseClass(Properties properties) throws Exception {
