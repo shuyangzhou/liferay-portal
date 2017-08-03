@@ -291,6 +291,25 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 
 		_uninstallOrphanOverridingWars(bundleContext, warFiles);
 
+		if (_log.isInfoEnabled()) {
+			_log.info("Start refreshing uninstalled orphan bundles");
+		}
+
+		FrameworkEvent frameworkEvent = _refreshRemovalPendingBundles(
+			bundleContext);
+
+		if (frameworkEvent.getType() == FrameworkEvent.PACKAGES_REFRESHED) {
+			if (_log.isInfoEnabled()) {
+				_log.info("Finished refreshing uninstalled orphan bundles");
+			}
+		}
+		else {
+			throw new Exception(
+				"Unable to refresh uninstalled orphan bundles because of " +
+					"framework event " + frameworkEvent,
+				frameworkEvent.getThrowable());
+		}
+
 		_lpkgBundleTracker = new BundleTracker<>(
 			bundleContext, ~Bundle.UNINSTALLED,
 			new LPKGBundleTrackerCustomizer(
