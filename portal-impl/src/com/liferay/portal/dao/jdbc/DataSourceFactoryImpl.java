@@ -109,7 +109,10 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 	@Override
 	public DataSource initDataSource(Properties properties) throws Exception {
-		return _getDataSourceFunction.apply(properties);
+		RetryDataSourceFunction retryDataSourceFunction =
+			new RetryDataSourceFunction(properties);
+
+		return retryDataSourceFunction.apply(_getDataSourceFunction);
 	}
 
 	@Override
