@@ -18,8 +18,7 @@ import com.liferay.portal.dao.jdbc.datasource.providers.C3P0DataSourceInitialize
 import com.liferay.portal.dao.jdbc.datasource.providers.DBCPDataSourceInitializer;
 import com.liferay.portal.dao.jdbc.datasource.providers.DataSourceInitializer;
 import com.liferay.portal.dao.jdbc.datasource.providers.HikariCPDataSourceInitializer;
-import com.liferay.portal.dao.jdbc.functions.IsPresentPropertyFunction;
-import com.liferay.portal.dao.jdbc.pool.metrics.TomcatConnectionPoolMetrics;
+import com.liferay.portal.dao.jdbc.datasource.providers.TomcatDataSourceInitializer;
 import com.liferay.portal.dao.jdbc.util.DataSourceWrapper;
 import com.liferay.portal.dao.jdbc.util.RetryDataSourceWrapper;
 import com.liferay.portal.kernel.configuration.Filter;
@@ -44,32 +43,22 @@ import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
-import com.liferay.registry.ServiceReference;
 import com.liferay.registry.ServiceTracker;
-import com.liferay.registry.ServiceTrackerCustomizer;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import java.util.Map;
 import java.util.Properties;
 import java.util.function.Function;
 
 import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
 import javax.sql.DataSource;
-
-import jodd.bean.BeanUtil;
-
-import org.apache.tomcat.jdbc.pool.PoolProperties;
-import org.apache.tomcat.jdbc.pool.jmx.ConnectionPool;
 
 /**
  * @author Brian Wing Shun Chan
@@ -96,8 +85,11 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			org.apache.tomcat.jdbc.pool.DataSource tomcatDataSource =
 				(org.apache.tomcat.jdbc.pool.DataSource)dataSource;
 
-			if (_serviceTracker != null) {
-				_serviceTracker.close();
+			ServiceTracker<MBeanServer, MBeanServer> serviceTracker =
+				_tomcatDataSourceInitializer.getServiceTracker();
+
+			if (serviceTracker != null) {
+				serviceTracker.close();
 			}
 
 			tomcatDataSource.close();
@@ -135,73 +127,6 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 		public DataSource getDataSource(DataSource dataSource);
 
-	}
-
-	protected DataSource initDataSourceTomcat(Properties properties)
-		throws Exception {
-
-		PoolProperties poolProperties = new PoolProperties();
-
-		for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-			String key = (String)entry.getKey();
-			String value = (String)entry.getValue();
-
-			IsPresentPropertyFunction isPresentPropertyFunction =
-				new IsPresentPropertyFunction(key);
-
-			// Ignore Liferay property
-
-			if (isPresentPropertyFunction.apply(_LIFERAY_PROPERTIES)) {
-				continue;
-			}
-
-			// Ignore C3P0 property
-
-			if (isPresentPropertyFunction.apply(_C3P0_PROPERTIES)) {
-				continue;
-			}
-
-			// Ignore HikariCP property
-
-			if (isPresentPropertyFunction.apply(_HIKARICP_PROPERTIES)) {
-				continue;
-			}
-
-			// Set Tomcat JDBC property
-
-			try {
-				BeanUtil.setProperty(poolProperties, key, value);
-			}
-			catch (Exception e) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Property " + key + " is an invalid Tomcat JDBC " +
-							"property");
-				}
-			}
-		}
-
-		String poolName = StringUtil.randomString();
-
-		poolProperties.setName(poolName);
-
-		org.apache.tomcat.jdbc.pool.DataSource dataSource =
-			new org.apache.tomcat.jdbc.pool.DataSource(poolProperties);
-
-		if (poolProperties.isJmxEnabled()) {
-			Registry registry = RegistryUtil.getRegistry();
-
-			_serviceTracker = registry.trackServices(
-				MBeanServer.class,
-				new MBeanServerServiceTrackerCustomizer(dataSource, poolName));
-
-			_serviceTracker.open();
-		}
-
-		registerConnectionPoolMetrics(
-			new TomcatConnectionPoolMetrics(dataSource));
-
-		return dataSource;
 	}
 
 	protected void registerConnectionPoolMetrics(
@@ -326,7 +251,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 				_log.debug("Initializing Tomcat data source");
 			}
 
-			dataSource = initDataSourceTomcat(properties);
+			dataSource = _tomcatDataSourceInitializer.init(properties);
 		}
 
 		if (_log.isDebugEnabled()) {
@@ -345,43 +270,12 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 		return _pacl.getDataSource(dataSource);
 	}
 
-	private static final String[] _C3P0_PROPERTIES = new String[] {
-		"acquireIncrement", "acquireRetryAttempts", "acquireRetryDelay",
-		"connectionCustomizerClassName", "idleConnectionTestPeriod",
-		"initialPoolSize", "maxIdleTime", "maxPoolSize", "minPoolSize",
-		"numHelperThreads", "preferredTestQuery"
-	};
-
-	private static final String[] _DBCP_PROPERTIES = {
-		"defaultTransactionIsolation", "maxActive", "minIdle",
-		"removeAbandonedTimeout"
-	};
-
-	private static final String _HIKARICP_DATASOURCE_CLASS_NAME =
-		"com.zaxxer.hikari.HikariDataSource";
-
-	private static final String[] _HIKARICP_PROPERTIES = {
-		"autoCommit", "connectionTestQuery", "connectionTimeout", "idleTimeout",
-		"initializationFailFast", "maximumPoolSize", "maxLifetime",
-		"minimumIdle", "registerMbeans"
-	};
-
-	private static final String[] _LIFERAY_PROPERTIES =
-		new String[] {"jndi.name", "liferay.pool.provider"};
-
-	private static final String _TOMCAT_JDBC_POOL_OBJECT_NAME_PREFIX =
-		"TomcatJDBCPool:type=ConnectionPool,name=";
-
-	private static final String[] _TOMCAT_PROPERTIES = {
-		"fairQueue", "initialSize", "jdbcInterceptors", "jmxEnabled", "maxIdle",
-		"testWhileIdle", "timeBetweenEvictionRunsMillis", "useEquals",
-		"validationQuery"
-	};
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		DataSourceFactoryImpl.class);
 
 	private static final PACL _pacl = new NoPACL();
+	private static final TomcatDataSourceInitializer
+		_tomcatDataSourceInitializer = new TomcatDataSourceInitializer();
 
 	private final Function<Properties, DataSource> _getDataSourceFunction =
 		(Properties properties) -> {
@@ -392,72 +286,6 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 				throw new RuntimeException("No dialect found", e);
 			}
 		};
-	private ServiceTracker<MBeanServer, MBeanServer> _serviceTracker;
-
-	private static class MBeanServerServiceTrackerCustomizer
-		implements ServiceTrackerCustomizer<MBeanServer, MBeanServer> {
-
-		public MBeanServerServiceTrackerCustomizer(
-				org.apache.tomcat.jdbc.pool.DataSource dataSource,
-				String poolName)
-			throws MalformedObjectNameException {
-
-			_dataSource = dataSource;
-			_objectName = new ObjectName(
-				_TOMCAT_JDBC_POOL_OBJECT_NAME_PREFIX + poolName);
-		}
-
-		@Override
-		public MBeanServer addingService(
-			ServiceReference<MBeanServer> serviceReference) {
-
-			Registry registry = RegistryUtil.getRegistry();
-
-			MBeanServer mBeanServer = registry.getService(serviceReference);
-
-			try {
-				org.apache.tomcat.jdbc.pool.ConnectionPool jdbcConnectionPool =
-					_dataSource.createPool();
-
-				ConnectionPool jmxConnectionPool =
-					jdbcConnectionPool.getJmxPool();
-
-				mBeanServer.registerMBean(jmxConnectionPool, _objectName);
-			}
-			catch (Exception e) {
-				_log.error(e, e);
-			}
-
-			return mBeanServer;
-		}
-
-		@Override
-		public void modifiedService(
-			ServiceReference<MBeanServer> serviceReference,
-			MBeanServer mBeanServer) {
-		}
-
-		@Override
-		public void removedService(
-			ServiceReference<MBeanServer> serviceReference,
-			MBeanServer mBeanServer) {
-
-			Registry registry = RegistryUtil.getRegistry();
-
-			registry.ungetService(serviceReference);
-
-			try {
-				mBeanServer.unregisterMBean(_objectName);
-			}
-			catch (Exception e) {
-				_log.error(e, e);
-			}
-		}
-
-		private final org.apache.tomcat.jdbc.pool.DataSource _dataSource;
-		private final ObjectName _objectName;
-
-	}
 
 	private static class NoPACL implements PACL {
 
