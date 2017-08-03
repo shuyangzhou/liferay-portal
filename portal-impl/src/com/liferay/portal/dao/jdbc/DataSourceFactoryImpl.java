@@ -110,7 +110,9 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 	@Override
 	public DataSource initDataSource(Properties properties) throws Exception {
 		RetryDataSourceFunction retryDataSourceFunction =
-			new RetryDataSourceFunction(properties);
+			new RetryDataSourceFunction(
+				properties, PropsValues.RETRY_DATA_SOURCE_DELAY_SECONDS,
+				PropsValues.RETRY_DATA_SOURCE_MAX_RETRIES);
 
 		return retryDataSourceFunction.apply(_getDataSourceFunction);
 	}
