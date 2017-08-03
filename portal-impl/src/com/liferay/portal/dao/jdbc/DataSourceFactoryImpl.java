@@ -19,6 +19,7 @@ import com.liferay.portal.dao.jdbc.datasource.providers.DBCPDataSourceInitialize
 import com.liferay.portal.dao.jdbc.datasource.providers.DataSourceInitializer;
 import com.liferay.portal.dao.jdbc.datasource.providers.HikariCPDataSourceInitializer;
 import com.liferay.portal.dao.jdbc.datasource.providers.TomcatDataSourceInitializer;
+import com.liferay.portal.dao.jdbc.functions.RetryDataSourceFunction;
 import com.liferay.portal.dao.jdbc.util.DataSourceWrapper;
 import com.liferay.portal.dao.jdbc.util.RetryDataSourceWrapper;
 import com.liferay.portal.kernel.configuration.Filter;

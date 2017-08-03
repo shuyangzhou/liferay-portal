@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.dao.jdbc;
+package com.liferay.portal.dao.jdbc.functions;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
