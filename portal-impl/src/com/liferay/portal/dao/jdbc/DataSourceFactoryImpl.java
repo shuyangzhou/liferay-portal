@@ -17,8 +17,8 @@ package com.liferay.portal.dao.jdbc;
 import com.liferay.portal.dao.jdbc.datasource.providers.C3P0DataSourceInitializer;
 import com.liferay.portal.dao.jdbc.datasource.providers.DBCPDataSourceInitializer;
 import com.liferay.portal.dao.jdbc.datasource.providers.DataSourceInitializer;
+import com.liferay.portal.dao.jdbc.datasource.providers.HikariCPDataSourceInitializer;
 import com.liferay.portal.dao.jdbc.functions.IsPresentPropertyFunction;
-import com.liferay.portal.dao.jdbc.pool.metrics.HikariConnectionPoolMetrics;
 import com.liferay.portal.dao.jdbc.pool.metrics.TomcatConnectionPoolMetrics;
 import com.liferay.portal.dao.jdbc.util.DataSourceWrapper;
 import com.liferay.portal.dao.jdbc.util.RetryDataSourceWrapper;
@@ -32,8 +32,6 @@ import com.liferay.portal.kernel.jndi.JNDIUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.pacl.DoPrivileged;
-import com.liferay.portal.kernel.util.CharPool;
-import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ServerDetector;
@@ -137,89 +135,6 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 		public DataSource getDataSource(DataSource dataSource);
 
-	}
-
-	protected DataSource initDataSourceHikariCP(Properties properties)
-		throws Exception {
-
-		testLiferayPoolProviderClass(_HIKARICP_DATASOURCE_CLASS_NAME);
-
-		Thread currentThread = Thread.currentThread();
-
-		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-
-		Class<?> hikariDataSourceClazz = contextClassLoader.loadClass(
-			_HIKARICP_DATASOURCE_CLASS_NAME);
-
-		Object hikariDataSource = hikariDataSourceClazz.newInstance();
-
-		String connectionPropertiesString = (String)properties.remove(
-			"connectionProperties");
-
-		if (connectionPropertiesString != null) {
-			Properties connectionProperties = PropertiesUtil.load(
-				StringUtil.replace(
-					connectionPropertiesString, CharPool.SEMICOLON,
-					CharPool.NEW_LINE));
-
-			BeanUtil.setProperty(
-				hikariDataSource, "dataSourceProperties", connectionProperties);
-		}
-
-		for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-			String key = (String)entry.getKey();
-			String value = (String)entry.getValue();
-
-			// Map org.apache.commons.dbcp.BasicDataSource to Hikari CP
-
-			if (StringUtil.equalsIgnoreCase(key, "url")) {
-				key = "jdbcUrl";
-			}
-
-			IsPresentPropertyFunction isPresentPropertyFunction =
-				new IsPresentPropertyFunction(key);
-
-			// Ignore Liferay property
-
-			if (isPresentPropertyFunction.apply(_LIFERAY_PROPERTIES)) {
-				continue;
-			}
-
-			// Ignore C3P0 property
-
-			if (isPresentPropertyFunction.apply(_C3P0_PROPERTIES)) {
-				continue;
-			}
-
-			// Ignore DBCP property
-
-			if (isPresentPropertyFunction.apply(_DBCP_PROPERTIES)) {
-				continue;
-			}
-
-			// Ignore Tomcat JDBC property
-
-			if (isPresentPropertyFunction.apply(_TOMCAT_PROPERTIES)) {
-				continue;
-			}
-
-			// Set HikariCP property
-
-			try {
-				BeanUtil.setProperty(hikariDataSource, key, value);
-			}
-			catch (Exception e) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Property " + key + " is an invalid HikariCP property");
-				}
-			}
-		}
-
-		registerConnectionPoolMetrics(
-			new HikariConnectionPoolMetrics(hikariDataSource));
-
-		return (DataSource)hikariDataSource;
 	}
 
 	protected DataSource initDataSourceTomcat(Properties properties)
@@ -334,44 +249,6 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 		}
 	}
 
-	protected void testLiferayPoolProviderClass(String className)
-		throws Exception {
-
-		try {
-			Class.forName(className);
-		}
-		catch (ClassNotFoundException cnfe) {
-			if (!ServerDetector.isJetty() && !ServerDetector.isTomcat()) {
-				throw cnfe;
-			}
-
-			String url = PropsUtil.get(
-				PropsKeys.SETUP_LIFERAY_POOL_PROVIDER_JAR_URL,
-				new Filter(PropsValues.JDBC_DEFAULT_LIFERAY_POOL_PROVIDER));
-			String name = PropsUtil.get(
-				PropsKeys.SETUP_LIFERAY_POOL_PROVIDER_JAR_NAME,
-				new Filter(PropsValues.JDBC_DEFAULT_LIFERAY_POOL_PROVIDER));
-
-			if (Validator.isNull(url) || Validator.isNull(name)) {
-				throw cnfe;
-			}
-
-			ClassLoader classLoader = ClassLoaderUtil.getPortalClassLoader();
-
-			if (!(classLoader instanceof URLClassLoader)) {
-				_log.error(
-					"Unable to install JAR because the portal class loader " +
-						"is not an instance of URLClassLoader");
-
-				return;
-			}
-
-			JarUtil.downloadAndInstallJar(
-				new URL(url), PropsValues.LIFERAY_LIB_PORTAL_DIR, name,
-				(URLClassLoader)classLoader);
-		}
-	}
-
 	private DataSource _initDataSource(Properties properties) throws Exception {
 		Properties defaultProperties = PropsUtil.getProperties(
 			"jdbc.default.", true);
@@ -439,7 +316,10 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 				_log.debug("Initializing HikariCP data source");
 			}
 
-			dataSource = initDataSourceHikariCP(properties);
+			DataSourceInitializer hikariCPDataSourceInitializer =
+				new HikariCPDataSourceInitializer();
+
+			dataSource = hikariCPDataSourceInitializer.init(properties);
 		}
 		else {
 			if (_log.isDebugEnabled()) {
