@@ -12,28 +12,16 @@
  * details.
  */
 
-package com.liferay.portal.verify;
-
-import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.verify.test.BaseVerifyProcessTestCase;
-
-import org.junit.ClassRule;
-import org.junit.Rule;
+package com.liferay.portal.search.sort;
 
 /**
- * @author Manuel de la Peña
+ * @author Michael C. Han
  */
-public class VerifyMessageBoardsTest extends BaseVerifyProcessTestCase {
+public interface SortFieldBuilder {
 
-	@ClassRule
-	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new LiferayIntegrationTestRule();
+	public String getSortField(String entityClassName, String orderByCol);
 
-	@Override
-	protected VerifyProcess getVerifyProcess() {
-		return new VerifyMessageBoards();
-	}
+	public String getSortField(
+		String entityClassName, String orderByCol, int sortType);
 
 }

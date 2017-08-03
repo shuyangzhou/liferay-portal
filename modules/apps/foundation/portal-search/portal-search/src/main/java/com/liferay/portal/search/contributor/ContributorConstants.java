@@ -12,28 +12,14 @@
  * details.
  */
 
-package com.liferay.portal.verify;
-
-import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.verify.test.BaseVerifyProcessTestCase;
-
-import org.junit.ClassRule;
-import org.junit.Rule;
+package com.liferay.portal.search.contributor;
 
 /**
- * @author Manuel de la Peña
+ * @author Michael C. Han
  */
-public class VerifyOrganizationTest extends BaseVerifyProcessTestCase {
+public class ContributorConstants {
 
-	@ClassRule
-	@Rule
-	public static final AggregateTestRule aggregateTestRule =
-		new LiferayIntegrationTestRule();
-
-	@Override
-	protected VerifyProcess getVerifyProcess() {
-		return new VerifyOrganization();
-	}
+	public static final String ENTRY_CLASS_NAME_PROPERTY_KEY =
+		"entry.class.name";
 
 }

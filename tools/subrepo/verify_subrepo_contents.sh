@@ -217,7 +217,7 @@ do
 		)
 	fi
 
-	SUBREPO_COMMIT="$(git -C "${CENTRAL_PATH}" grep 'commit = ' "${CENTRAL_BRANCH}" -- "${GITREPO_PATH}" | sed 's/.* //')"
+	SUBREPO_COMMIT="$(git -C "${CENTRAL_PATH}" grep 'commit = ' "refs/remotes/upstream/${CENTRAL_BRANCH}" -- "${GITREPO_PATH}" | sed 's/.* //')"
 
 	if [[ -z "${SUBREPO_COMMIT}" ]]
 	then
@@ -226,7 +226,7 @@ do
 		continue
 	fi
 
-	CENTRAL_TREE=$(git -C "${CENTRAL_PATH}" ls-tree --full-tree -r "${CENTRAL_BRANCH}" "${GITREPO_PATH%/.gitrepo}" | sed "s@${GITREPO_PATH%/.gitrepo}/@@" | grep -v '.gitrepo' | sort -k 4)
+	CENTRAL_TREE=$(git -C "${CENTRAL_PATH}" ls-tree --full-tree -r "refs/remotes/upstream/${CENTRAL_BRANCH}" "${GITREPO_PATH%/.gitrepo}" | sed "s@${GITREPO_PATH%/.gitrepo}/@@" | grep -v '.gitrepo' | sort -k 4)
 
 	if [[ -z $(git -C "${SUBREPO_PATH}" show "${SUBREPO_COMMIT}" 2>/dev/null) ]]
 	then
