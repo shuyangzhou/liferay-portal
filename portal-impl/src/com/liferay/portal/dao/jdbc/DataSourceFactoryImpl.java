@@ -183,27 +183,30 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 				key = "user";
 			}
 
+			IsPresentPropertyFunction isPresentPropertyFunction =
+				new IsPresentPropertyFunction(key);
+
 			// Ignore Liferay property
 
-			if (isPropertyLiferay(key)) {
+			if (isPresentPropertyFunction.apply(_LIFERAY_PROPERTIES)) {
 				continue;
 			}
 
 			// Ignore DBCP property
 
-			if (isPropertyDBCP(key)) {
+			if (isPresentPropertyFunction.apply(_DBCP_PROPERTIES)) {
 				continue;
 			}
 
 			// Ignore HikariCP property
 
-			if (isPropertyHikariCP(key)) {
+			if (isPresentPropertyFunction.apply(_HIKARICP_PROPERTIES)) {
 				continue;
 			}
 
 			// Ignore Tomcat JDBC property
 
-			if (isPropertyTomcat(key)) {
+			if (isPresentPropertyFunction.apply(_TOMCAT_PROPERTIES)) {
 				continue;
 			}
 
@@ -275,27 +278,30 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 				key = "jdbcUrl";
 			}
 
+			IsPresentPropertyFunction isPresentPropertyFunction =
+				new IsPresentPropertyFunction(key);
+
 			// Ignore Liferay property
 
-			if (isPropertyLiferay(key)) {
+			if (isPresentPropertyFunction.apply(_LIFERAY_PROPERTIES)) {
 				continue;
 			}
 
 			// Ignore C3P0 property
 
-			if (isPropertyC3PO(key)) {
+			if (isPresentPropertyFunction.apply(_C3P0_PROPERTIES)) {
 				continue;
 			}
 
 			// Ignore DBCP property
 
-			if (isPropertyDBCP(key)) {
+			if (isPresentPropertyFunction.apply(_DBCP_PROPERTIES)) {
 				continue;
 			}
 
 			// Ignore Tomcat JDBC property
 
-			if (isPropertyTomcat(key)) {
+			if (isPresentPropertyFunction.apply(_TOMCAT_PROPERTIES)) {
 				continue;
 			}
 
@@ -327,21 +333,24 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			String key = (String)entry.getKey();
 			String value = (String)entry.getValue();
 
+			IsPresentPropertyFunction isPresentPropertyFunction =
+				new IsPresentPropertyFunction(key);
+
 			// Ignore Liferay property
 
-			if (isPropertyLiferay(key)) {
+			if (isPresentPropertyFunction.apply(_LIFERAY_PROPERTIES)) {
 				continue;
 			}
 
 			// Ignore C3P0 property
 
-			if (isPropertyC3PO(key)) {
+			if (isPresentPropertyFunction.apply(_C3P0_PROPERTIES)) {
 				continue;
 			}
 
 			// Ignore HikariCP property
 
-			if (isPropertyHikariCP(key)) {
+			if (isPresentPropertyFunction.apply(_HIKARICP_PROPERTIES)) {
 				continue;
 			}
 
@@ -380,67 +389,6 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			new TomcatConnectionPoolMetrics(dataSource));
 
 		return dataSource;
-	}
-
-	protected boolean isPropertyC3PO(String key) {
-		String[] keys = {
-			"acquireIncrement", "acquireRetryAttempts", "acquireRetryDelay",
-			"connectionCustomizerClassName", "idleConnectionTestPeriod",
-			"initialPoolSize", "maxIdleTime", "maxPoolSize", "minPoolSize",
-			"numHelperThreads", "preferredTestQuery"
-		};
-
-		IsPresentPropertyFunction isPresentPropertyFunction =
-			new IsPresentPropertyFunction(key);
-
-		return isPresentPropertyFunction.apply(keys);
-	}
-
-	protected boolean isPropertyDBCP(String key) {
-		String[] keys = {
-			"defaultTransactionIsolation", "maxActive", "minIdle",
-			"removeAbandonedTimeout"
-		};
-
-		IsPresentPropertyFunction isPresentPropertyFunction =
-			new IsPresentPropertyFunction(key);
-
-		return isPresentPropertyFunction.apply(keys);
-	}
-
-	protected boolean isPropertyHikariCP(String key) {
-		String[] keys = {
-			"autoCommit", "connectionTestQuery", "connectionTimeout",
-			"idleTimeout", "initializationFailFast", "maximumPoolSize",
-			"maxLifetime", "minimumIdle", "registerMbeans"
-		};
-
-		IsPresentPropertyFunction isPresentPropertyFunction =
-			new IsPresentPropertyFunction(key);
-
-		return isPresentPropertyFunction.apply(keys);
-	}
-
-	protected boolean isPropertyLiferay(String key) {
-		String[] keys = {"jndi.name", "liferay.pool.provider"};
-
-		IsPresentPropertyFunction isPresentPropertyFunction =
-			new IsPresentPropertyFunction(key);
-
-		return isPresentPropertyFunction.apply(keys);
-	}
-
-	protected boolean isPropertyTomcat(String key) {
-		String[] keys = {
-			"fairQueue", "initialSize", "jdbcInterceptors", "jmxEnabled",
-			"maxIdle", "testWhileIdle", "timeBetweenEvictionRunsMillis",
-			"useEquals", "validationQuery"
-		};
-
-		IsPresentPropertyFunction isPresentPropertyFunction =
-			new IsPresentPropertyFunction(key);
-
-		return isPresentPropertyFunction.apply(keys);
 	}
 
 	protected void registerConnectionPoolMetrics(
@@ -613,11 +561,38 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 		return _pacl.getDataSource(dataSource);
 	}
 
+	private static final String[] _C3P0_PROPERTIES = new String[] {
+		"acquireIncrement", "acquireRetryAttempts", "acquireRetryDelay",
+		"connectionCustomizerClassName", "idleConnectionTestPeriod",
+		"initialPoolSize", "maxIdleTime", "maxPoolSize", "minPoolSize",
+		"numHelperThreads", "preferredTestQuery"
+	};
+
+	private static final String[] _DBCP_PROPERTIES = {
+		"defaultTransactionIsolation", "maxActive", "minIdle",
+		"removeAbandonedTimeout"
+	};
+
 	private static final String _HIKARICP_DATASOURCE_CLASS_NAME =
 		"com.zaxxer.hikari.HikariDataSource";
 
+	private static final String[] _HIKARICP_PROPERTIES = {
+		"autoCommit", "connectionTestQuery", "connectionTimeout", "idleTimeout",
+		"initializationFailFast", "maximumPoolSize", "maxLifetime",
+		"minimumIdle", "registerMbeans"
+	};
+
+	private static final String[] _LIFERAY_PROPERTIES =
+		new String[] {"jndi.name", "liferay.pool.provider"};
+
 	private static final String _TOMCAT_JDBC_POOL_OBJECT_NAME_PREFIX =
 		"TomcatJDBCPool:type=ConnectionPool,name=";
+
+	private static final String[] _TOMCAT_PROPERTIES = {
+		"fairQueue", "initialSize", "jdbcInterceptors", "jmxEnabled", "maxIdle",
+		"testWhileIdle", "timeBetweenEvictionRunsMillis", "useEquals",
+		"validationQuery"
+	};
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DataSourceFactoryImpl.class);
