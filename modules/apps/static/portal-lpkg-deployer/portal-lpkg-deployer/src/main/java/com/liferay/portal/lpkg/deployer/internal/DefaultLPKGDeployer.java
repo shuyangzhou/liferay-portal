@@ -184,7 +184,31 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 			}
 
 			if (!oldBundles.isEmpty()) {
-				_refreshRemovalPendingBundles(bundleContext, lpkgBundle);
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Start refreshing references to point to the new " +
+							"bundle " + lpkgBundle);
+				}
+
+				FrameworkEvent frameworkEvent = _refreshRemovalPendingBundles(
+					bundleContext);
+
+				if (frameworkEvent.getType() ==
+						FrameworkEvent.PACKAGES_REFRESHED) {
+
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							"Finished refreshing references to point to the " +
+								"new bundle " + lpkgBundle);
+					}
+				}
+				else {
+					throw new Exception(
+						"Unable to refresh references to the new bundle " +
+							lpkgBundle + " because of framework event " +
+								frameworkEvent,
+						frameworkEvent.getThrowable());
+				}
 			}
 
 			return bundles;
@@ -447,8 +471,8 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 	/**
 	 * @see FrameworkWiring#getRemovalPendingBundles
 	 */
-	private void _refreshRemovalPendingBundles(
-			BundleContext bundleContext, Bundle bundle)
+	private FrameworkEvent _refreshRemovalPendingBundles(
+			BundleContext bundleContext)
 		throws Exception {
 
 		Bundle systemBundle = bundleContext.getBundle(0);
@@ -458,12 +482,6 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 
 		final DefaultNoticeableFuture<FrameworkEvent> defaultNoticeableFuture =
 			new DefaultNoticeableFuture<>();
-
-		if (_log.isInfoEnabled()) {
-			_log.info(
-				"Start refreshing references to point to the new bundle " +
-					bundle);
-		}
 
 		frameworkWiring.refreshBundles(
 			null,
@@ -476,21 +494,7 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 
 			});
 
-		FrameworkEvent frameworkEvent = defaultNoticeableFuture.get();
-
-		if (frameworkEvent.getType() == FrameworkEvent.PACKAGES_REFRESHED) {
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					"Finished refreshing references to point to the new " +
-						"bundle " + bundle);
-			}
-		}
-		else {
-			throw new Exception(
-				"Unable to refresh references to the new bundle " + bundle +
-					" because of framework event " + frameworkEvent,
-				frameworkEvent.getThrowable());
-		}
+		return defaultNoticeableFuture.get();
 	}
 
 	private void _saveOverrideWarsProperties(
