@@ -33,24 +33,31 @@ import java.util.Set;
 public class DBUpgraderLauncher {
 
 	public static void main(String[] args) throws Exception {
-		ObjectInputStream bootstrapObjectInputStream = new ObjectInputStream(
-			System.in);
-
-		String classPath = (String)bootstrapObjectInputStream.readObject();
-
-		ClassLoader classLoader = new URLClassLoader(
-			_getClassPathURLs(classPath));
-
 		Thread currentThread = Thread.currentThread();
 
-		currentThread.setContextClassLoader(classLoader);
+		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
 
-		Class<?> clazz = classLoader.loadClass(
-			"com.liferay.portal.tools.DBUpgrader");
+		try {
+			ObjectInputStream bootstrapObjectInputStream =
+				new ObjectInputStream(System.in);
 
-		Method method = clazz.getMethod("main", String[].class);
+			String classPath = (String)bootstrapObjectInputStream.readObject();
 
-		method.invoke(null, new Object[] {args});
+			ClassLoader classLoader = new URLClassLoader(
+				_getClassPathURLs(classPath));
+
+			currentThread.setContextClassLoader(classLoader);
+
+			Class<?> clazz = classLoader.loadClass(
+				"com.liferay.portal.tools.DBUpgrader");
+
+			Method method = clazz.getMethod("main", String[].class);
+
+			method.invoke(null, new Object[] {args});
+		}
+		finally {
+			currentThread.setContextClassLoader(contextClassLoader);
+		}
 	}
 
 	private static URL[] _getClassPathURLs(String classPath)
