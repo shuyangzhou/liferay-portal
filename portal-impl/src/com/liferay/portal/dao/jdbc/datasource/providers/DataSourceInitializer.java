@@ -25,7 +25,7 @@ public interface DataSourceInitializer {
 
 	public DataSource init(Properties properties) throws Exception;
 
-	public String[] C3P0_PROPERTIES = new String[] {
+	public String[] C3P0_PROPERTIES = {
 		"acquireIncrement", "acquireRetryAttempts", "acquireRetryDelay",
 		"connectionCustomizerClassName", "idleConnectionTestPeriod",
 		"initialPoolSize", "maxIdleTime", "maxPoolSize", "minPoolSize",
@@ -43,8 +43,7 @@ public interface DataSourceInitializer {
 		"minimumIdle", "registerMbeans"
 	};
 
-	public String[] LIFERAY_PROPERTIES =
-		new String[] {"jndi.name", "liferay.pool.provider"};
+	public String[] LIFERAY_PROPERTIES = {"jndi.name", "liferay.pool.provider"};
 
 	public String[] TOMCAT_PROPERTIES = {
 		"fairQueue", "initialSize", "jdbcInterceptors", "jmxEnabled", "maxIdle",
