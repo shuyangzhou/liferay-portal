@@ -44,7 +44,7 @@
 />
 
 <#if !request.isRequestedSessionIdFromCookie()>
-	<#assign company_url = portalUtil.getURLWithSessionId(company_url, request.getSession().getId()) />
+	<#assign company_url = portalUtil.getURLWithSessionId(company_url, request.getSession()) />
 </#if>
 
 <#assign
@@ -103,7 +103,7 @@
 	/>
 
 	<#if !request.isRequestedSessionIdFromCookie()>
-		<#assign home_url = htmlUtil.escape(portalUtil.getURLWithSessionId(home_url, request.getSession().getId())) />
+		<#assign home_url = htmlUtil.escape(portalUtil.getURLWithSessionId(home_url, request.getSession())) />
 	</#if>
 </#if>
 

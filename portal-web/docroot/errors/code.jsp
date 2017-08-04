@@ -73,7 +73,7 @@ String xRequestWith = request.getHeader(HttpHeaders.X_REQUESTED_WITH);
 			}
 
 			if (!request.isRequestedSessionIdFromCookie()) {
-				redirect = PortalUtil.getURLWithSessionId(redirect, session.getId());
+				redirect = PortalUtil.getURLWithSessionId(redirect, session);
 			}
 			%>
 

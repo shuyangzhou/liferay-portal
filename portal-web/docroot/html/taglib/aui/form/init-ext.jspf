@@ -17,9 +17,7 @@
 <%@ page import="com.liferay.portal.kernel.servlet.taglib.aui.ValidatorTag" %>
 
 <%
-if (themeDisplay.isAddSessionIdToURL()) {
-	action = PortalUtil.getURLWithSessionId(action, themeDisplay.getSessionId());
-}
+action = PortalUtil.getURLWithSessionId(action, themeDisplay);
 
 List<String> checkboxNames = (List<String>)request.getAttribute("LIFERAY_SHARED_aui:form:checkboxNames");
 Map<String, List<ValidatorTag>> validatorTagsMap = (Map<String, List<ValidatorTag>>)request.getAttribute("aui:form:validatorTagsMap");

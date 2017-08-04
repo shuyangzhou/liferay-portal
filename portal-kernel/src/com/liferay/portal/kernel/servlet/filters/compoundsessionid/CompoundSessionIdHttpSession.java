@@ -23,8 +23,12 @@ import javax.servlet.http.HttpSession;
  */
 public class CompoundSessionIdHttpSession extends HttpSessionWrapper {
 
+	public static final String ORIGINAL_SESSIONID = "ORIGINAL_SESSIONID";
+
 	public CompoundSessionIdHttpSession(HttpSession session) {
 		super(session);
+
+		setAttribute(ORIGINAL_SESSIONID, super.getId());
 	}
 
 	@Override

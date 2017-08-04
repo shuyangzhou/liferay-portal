@@ -480,10 +480,7 @@ public class HttpImpl implements Http {
 		if (request.isRequestedSessionIdFromURL()) {
 			HttpSession session = request.getSession();
 
-			String sessionId = session.getId();
-
-			completeURL = PortalUtil.getURLWithSessionId(
-				completeURL, sessionId);
+			completeURL = PortalUtil.getURLWithSessionId(completeURL, session);
 		}
 
 		if (_log.isWarnEnabled()) {

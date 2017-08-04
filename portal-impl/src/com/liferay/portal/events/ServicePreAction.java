@@ -72,6 +72,7 @@ import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.PortalWebResourceConstants;
 import com.liferay.portal.kernel.servlet.PortalWebResourcesUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.filters.compoundsessionid.CompoundSessionIdHttpSession;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ColorSchemeFactoryUtil;
 import com.liferay.portal.kernel.util.CookieKeys;
@@ -861,8 +862,15 @@ public class ServicePreAction extends Action {
 		if (PropsValues.SESSION_ENABLE_URL_WITH_SESSION_ID &&
 			!CookieKeys.hasSessionId(request)) {
 
+			String sessionId = (String)session.getAttribute(
+				CompoundSessionIdHttpSession.ORIGINAL_SESSIONID);
+
+			if (sessionId == null) {
+				sessionId = session.getId();
+			}
+
 			themeDisplay.setAddSessionIdToURL(true);
-			themeDisplay.setSessionId(session.getId());
+			themeDisplay.setSessionId(sessionId);
 		}
 
 		// URLs
@@ -903,7 +911,7 @@ public class ServicePreAction extends Action {
 
 		if (themeDisplay.isAddSessionIdToURL()) {
 			urlControlPanel = PortalUtil.getURLWithSessionId(
-				urlControlPanel, session.getId());
+				urlControlPanel, session);
 		}
 
 		themeDisplay.setURLControlPanel(urlControlPanel);

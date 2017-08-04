@@ -49,6 +49,6 @@ else {
 }
 
 if ((session != null) && !CookieKeys.hasSessionId(request) && Validator.isNotNull(referer)) {
-	referer = PortalUtil.getURLWithSessionId(referer, session.getId());
+	referer = PortalUtil.getURLWithSessionId(referer, session);
 }
 %>

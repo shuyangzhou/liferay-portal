@@ -604,12 +604,8 @@ public class PortletFileRepositoryImpl implements PortletFileRepository {
 
 		String portletFileEntryURL = sb.toString();
 
-		if ((themeDisplay != null) && themeDisplay.isAddSessionIdToURL()) {
-			return PortalUtil.getURLWithSessionId(
-				portletFileEntryURL, themeDisplay.getSessionId());
-		}
-
-		return portletFileEntryURL;
+		return PortalUtil.getURLWithSessionId(
+			portletFileEntryURL, themeDisplay);
 	}
 
 	@Override

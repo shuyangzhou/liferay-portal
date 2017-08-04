@@ -38,7 +38,7 @@
 #set ($company_url = $theme_display.getURLHome())
 
 #if (!$request.isRequestedSessionIdFromCookie())
-	#set ($company_url = $portalUtil.getURLWithSessionId($company_url, $request.getSession().getId()))
+	#set ($company_url = $portalUtil.getURLWithSessionId($company_url, $request.getSession()))
 #end
 
 ## ---------- LPS-66428 ---------- ##
@@ -90,7 +90,7 @@
 	#set ($home_url = $htmlUtil.escape($theme_display.getURLHome()))
 
 	#if (!$request.isRequestedSessionIdFromCookie())
-		#set ($home_url = $htmlUtil.escape($portalUtil.getURLWithSessionId($home_url, $request.getSession().getId())))
+		#set ($home_url = $htmlUtil.escape($portalUtil.getURLWithSessionId($home_url, $request.getSession())))
 	#end
 #end
 

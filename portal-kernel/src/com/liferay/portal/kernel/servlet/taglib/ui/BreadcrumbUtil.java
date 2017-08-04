@@ -133,10 +133,8 @@ public class BreadcrumbUtil {
 		String layoutSetFriendlyURL = PortalUtil.getLayoutSetFriendlyURL(
 			layoutSet, themeDisplay);
 
-		if (themeDisplay.isAddSessionIdToURL()) {
-			layoutSetFriendlyURL = PortalUtil.getURLWithSessionId(
-				layoutSetFriendlyURL, themeDisplay.getSessionId());
-		}
+		layoutSetFriendlyURL = PortalUtil.getURLWithSessionId(
+			layoutSetFriendlyURL, themeDisplay);
 
 		breadcrumbEntry.setURL(layoutSetFriendlyURL);
 
@@ -224,7 +222,7 @@ public class BreadcrumbUtil {
 				HttpSession session = request.getSession();
 
 				portletBreadcrumbEntry.setURL(
-					PortalUtil.getURLWithSessionId(url, session.getId()));
+					PortalUtil.getURLWithSessionId(url, session));
 			}
 		}
 
@@ -282,10 +280,8 @@ public class BreadcrumbUtil {
 			String layoutSetFriendlyURL = PortalUtil.getLayoutSetFriendlyURL(
 				layoutSet, themeDisplay);
 
-			if (themeDisplay.isAddSessionIdToURL()) {
-				layoutSetFriendlyURL = PortalUtil.getURLWithSessionId(
-					layoutSetFriendlyURL, themeDisplay.getSessionId());
-			}
+			layoutSetFriendlyURL = PortalUtil.getURLWithSessionId(
+				layoutSetFriendlyURL, themeDisplay);
 
 			BreadcrumbEntry breadcrumbEntry = new BreadcrumbEntry();
 
@@ -335,10 +331,7 @@ public class BreadcrumbUtil {
 
 		String layoutURL = PortalUtil.getLayoutFullURL(layout, themeDisplay);
 
-		if (themeDisplay.isAddSessionIdToURL()) {
-			layoutURL = PortalUtil.getURLWithSessionId(
-				layoutURL, themeDisplay.getSessionId());
-		}
+		layoutURL = PortalUtil.getURLWithSessionId(layoutURL, themeDisplay);
 
 		breadcrumbEntry.setURL(layoutURL);
 

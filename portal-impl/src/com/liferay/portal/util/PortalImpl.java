@@ -149,6 +149,7 @@ import com.liferay.portal.kernel.servlet.PortalWebResourcesUtil;
 import com.liferay.portal.kernel.servlet.PortletServlet;
 import com.liferay.portal.kernel.servlet.ServletContextUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.filters.compoundsessionid.CompoundSessionIdHttpSession;
 import com.liferay.portal.kernel.servlet.taglib.ui.BreadcrumbEntry;
 import com.liferay.portal.kernel.servlet.taglib.ui.BreadcrumbUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
@@ -1034,7 +1035,7 @@ public class PortalImpl implements Portal {
 		}
 
 		if (!CookieKeys.hasSessionId(request) && url.startsWith(portalURL)) {
-			url = getURLWithSessionId(url, request.getSession().getId());
+			url = getURLWithSessionId(url, request.getSession());
 		}
 
 		return url;
@@ -5488,6 +5489,24 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
+	public String getURLWithSessionId(String url, HttpSession session) {
+		String sessionId = (String)session.getAttribute(
+			CompoundSessionIdHttpSession.ORIGINAL_SESSIONID);
+
+		if (sessionId == null) {
+			sessionId = session.getId();
+		}
+
+		return getURLWithSessionId(url, sessionId);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #getURLWithSessionId(String,
+	 *             HttpSession)} and {@link #getURLWithSessionId(String,
+	 *             ThemeDisplay)}
+	 */
+	@Deprecated
+	@Override
 	public String getURLWithSessionId(String url, String sessionId) {
 		if (!PropsValues.SESSION_ENABLE_URL_WITH_SESSION_ID) {
 			return url;
@@ -5539,6 +5558,15 @@ public class PortalImpl implements Portal {
 		sb.append(sessionId);
 
 		return sb.toString();
+	}
+
+	@Override
+	public String getURLWithSessionId(String url, ThemeDisplay themeDisplay) {
+		if ((themeDisplay == null) || !themeDisplay.isAddSessionIdToURL()) {
+			return url;
+		}
+
+		return getURLWithSessionId(url, themeDisplay.getSessionId());
 	}
 
 	@Override

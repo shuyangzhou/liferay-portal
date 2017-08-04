@@ -59,7 +59,7 @@ else {
 }
 
 if (!request.isRequestedSessionIdFromCookie()) {
-	redirect = PortalUtil.getURLWithSessionId(redirect, session.getId());
+	redirect = PortalUtil.getURLWithSessionId(redirect, session);
 }
 
 response.setHeader(HttpHeaders.LOCATION, redirect);

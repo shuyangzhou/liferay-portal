@@ -1895,8 +1895,24 @@ public class PortalUtil {
 		return getPortal().getUptime();
 	}
 
+	public static String getURLWithSessionId(String url, HttpSession session) {
+		return getPortal().getURLWithSessionId(url, session);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #getURLWithSessionId(String,
+	 *             HttpSession)} and {@link #getURLWithSessionId(String,
+	 *             ThemeDisplay)}
+	 */
+	@Deprecated
 	public static String getURLWithSessionId(String url, String sessionId) {
 		return getPortal().getURLWithSessionId(url, sessionId);
+	}
+
+	public static String getURLWithSessionId(
+		String url, ThemeDisplay themeDisplay) {
+
+		return getPortal().getURLWithSessionId(url, themeDisplay);
 	}
 
 	public static User getUser(HttpServletRequest request)

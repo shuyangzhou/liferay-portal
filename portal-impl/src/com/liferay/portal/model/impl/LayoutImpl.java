@@ -1495,7 +1495,7 @@ public class LayoutImpl extends LayoutBaseImpl {
 			if (url.startsWith(portalURL) || url.startsWith(StringPool.SLASH)) {
 				HttpSession session = request.getSession();
 
-				url = PortalUtil.getURLWithSessionId(url, session.getId());
+				url = PortalUtil.getURLWithSessionId(url, session);
 			}
 		}
 

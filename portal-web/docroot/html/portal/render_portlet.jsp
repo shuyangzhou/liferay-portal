@@ -461,9 +461,7 @@ sb.append("&refresh=1");
 
 String urlClose = sb.toString();
 
-if (themeDisplay.isAddSessionIdToURL()) {
-	urlClose = PortalUtil.getURLWithSessionId(urlClose, themeDisplay.getSessionId());
-}
+urlClose = PortalUtil.getURLWithSessionId(urlClose, themeDisplay);
 
 portletDisplay.setURLClose(urlClose);
 

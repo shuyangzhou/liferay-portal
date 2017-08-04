@@ -128,8 +128,7 @@ public class LayoutRevisionImpl extends LayoutRevisionBaseImpl {
 		if (!CookieKeys.hasSessionId(request) &&
 			(url.startsWith(portalURL) || url.startsWith(StringPool.SLASH))) {
 
-			url = PortalUtil.getURLWithSessionId(
-				url, request.getSession().getId());
+			url = PortalUtil.getURLWithSessionId(url, request.getSession());
 		}
 
 		return url;

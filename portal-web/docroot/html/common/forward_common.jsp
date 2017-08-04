@@ -40,6 +40,6 @@ else {
 }
 
 if (!CookieKeys.hasSessionId(request) && Validator.isNotNull(forwardURL)) {
-	forwardURL = PortalUtil.getURLWithSessionId(forwardURL, session.getId());
+	forwardURL = PortalUtil.getURLWithSessionId(forwardURL, session);
 }
 %>
