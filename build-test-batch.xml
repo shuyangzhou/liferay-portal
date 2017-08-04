@@ -2128,6 +2128,10 @@ app.server.type=@{app.server.type}]]></echo>
 		<run-integration-test database.type="hypersonic" />
 	</target>
 
+	<target name="integration-mariadb100-jdk8">
+		<run-integration-test database.type="mariadb" />
+	</target>
+
 	<target name="integration-mysql56-jdk8">
 		<run-integration-test database.type="mysql" />
 	</target>
@@ -2248,6 +2252,10 @@ app.server.type=@{app.server.type}]]></echo>
 
 	<target name="modules-integration-hypersonic20-jdk8">
 		<run-modules-integration-test database.type="hypersonic" />
+	</target>
+
+	<target name="modules-integration-mariadb100-jdk8">
+		<run-modules-integration-test database.type="mariadb" />
 	</target>
 
 	<target name="modules-integration-mysql56-jdk8">
