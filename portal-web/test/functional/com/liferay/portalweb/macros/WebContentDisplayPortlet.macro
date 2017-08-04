@@ -85,7 +85,9 @@
 				</execute>
 			</then>
 			<else>
-				<execute macro="WebContentNavigator#gotoEditPGViaWCD" />
+				<execute macro="WebContentNavigator#gotoEditPGViaWCD">
+					<var name="webContentTitle" value="${webContentTitle}" />
+				</execute>
 
 				<execute macro="Panel#expandPanel">
 					<var name="panelHeading" value="Structure and Template" />
@@ -149,6 +151,19 @@
 				<execute function="AssertTextEquals" locator1="WCD#WEB_CONTENT_CONTENT" value1="${webContentContent}" />
 			</else>
 		</if>
+	</command>
+
+	<command name="removeWebContent">
+		<execute macro="Portlet#gotoPortletOptions">
+			<var name="portletName" value="${portletName}" />
+			<var name="portletOption" value="Configuration" />
+		</execute>
+
+		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
+
+		<execute macro="Button#clickRemove" />
+
+		<execute macro="PortletEntry#save" />
 	</command>
 
 	<command name="saveConfiguration">
@@ -310,6 +325,10 @@
 		<execute macro="WebContentDisplayPortlet#configureScopePG">
 			<var name="scopeSelection" value="Liferay" />
 		</execute>
+	</command>
+
+	<command name="undoMoveToRecycleBin">
+		<execute function="AssertClick" locator1="Link#UNDO" value1="Undo" />
 	</command>
 
 	<command name="viewAllSettingsEnabledPG">

@@ -15,7 +15,6 @@
     build.namespace=${portletShortName}
     build.number=${buildNumber?c}
     build.date=${currentTimeMillis?c}
-    build.auto.upgrade=true<#if !osgiModule>
 
 ##
 ## Spring
