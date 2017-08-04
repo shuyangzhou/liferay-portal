@@ -739,6 +739,13 @@ public class ClusterSchedulerEngine
 
 			_writeLock.lock();
 
+			if (_memoryClusteredJobs.size() == 0) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"No MEMORY_CLUSTERED jobs are going to be scheduled");
+				}
+			}
+
 			try {
 				for (ObjectValuePair<SchedulerResponse, TriggerState>
 						memoryClusteredJob : _memoryClusteredJobs.values()) {

@@ -444,6 +444,10 @@
 		<priority value="ERROR" />
 	</category>
 
+	<category name="com.liferay.portal.scheduler">
+		<priority value="INFO" />
+	</category>
+
 	<category name="com.liferay.portal.search.lucene">
 		<priority value="ERROR" />
 	</category>
