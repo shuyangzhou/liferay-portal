@@ -14,8 +14,15 @@
 
 package com.liferay.mobile.device.rules.internal.upgrade;
 
+import com.liferay.mobile.device.rules.rule.group.action.LayoutTemplateModificationActionHandler;
+import com.liferay.mobile.device.rules.rule.group.action.SimpleRedirectActionHandler;
+import com.liferay.mobile.device.rules.rule.group.action.SiteRedirectActionHandler;
+import com.liferay.mobile.device.rules.rule.group.action.ThemeModificationActionHandler;
 import com.liferay.mobile.device.rules.rule.group.rule.SimpleRuleHandler;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Tom Wang
@@ -28,6 +35,28 @@ public class MDRRuleUpgrade extends UpgradeProcess {
 			"update MDRRule set type_ = '" + SimpleRuleHandler.class.getName() +
 				"' where type_ = 'com.liferay.portal.mobile.device.rulegroup." +
 					"rule.impl.SimpleRuleHandler'");
+
+		Map<String, String> actionNameMap = new HashMap<>();
+
+		actionNameMap.put(
+			"LayoutTemplateModificationActionHandler",
+			LayoutTemplateModificationActionHandler.class.getName());
+		actionNameMap.put(
+			"SimpleRedirectActionHandler",
+			SimpleRedirectActionHandler.class.getName());
+		actionNameMap.put(
+			"SiteRedirectActionHandler",
+			SiteRedirectActionHandler.class.getName());
+		actionNameMap.put(
+			"ThemeModificationActionHandler",
+			ThemeModificationActionHandler.class.getName());
+
+		for (String name : actionNameMap.keySet()) {
+			runSQL(
+				"update MDRAction set type_ = '" + actionNameMap.get(name) +
+					"' where type_ = 'com.liferay.portal.mobile.device." +
+						"rulegroup.action.impl." + name + "'");
+		}
 	}
 
 }
