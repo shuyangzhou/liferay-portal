@@ -12,30 +12,25 @@
  * details.
  */
 
-package com.liferay.portal.kernel.dao.db;
+package com.liferay.portal.dao.db;
+
+import com.liferay.portal.kernel.dao.db.BaseDBFactory;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBType;
 
 /**
- * @author Shuyang Zhou
+ * @author Preston Crary
  */
-public enum DBType {
+public class MariaDBDBFactory extends BaseDBFactory {
 
-	DB2("db2"), HYPERSONIC("hypersonic"), MARIADB("mariadb"), MYSQL("mysql"),
-	ORACLE("oracle"), POSTGRESQL("postgresql"), SQLSERVER("sqlserver"),
-	SYBASE("sybase");
-
-	public String getName() {
-		return _name;
+	@Override
+	public DB doCreate(int dbMajorVersion, int dbMinorVersion) {
+		return new MariaDBDB(dbMajorVersion, dbMinorVersion);
 	}
 
 	@Override
-	public String toString() {
-		return _name;
+	public DBType getDBType() {
+		return DBType.MARIADB;
 	}
-
-	private DBType(String name) {
-		_name = name;
-	}
-
-	private final String _name;
 
 }

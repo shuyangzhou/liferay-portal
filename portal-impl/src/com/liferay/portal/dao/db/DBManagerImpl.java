@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.ReflectionUtil;
+import com.liferay.portal.spring.hibernate.dialect.MariaDBDialect;
 import com.liferay.portal.util.PropsValues;
 
 import java.sql.Connection;
@@ -138,6 +139,10 @@ public class DBManagerImpl implements DBManager {
 
 		if (dialect instanceof HSQLDialect) {
 			return DBType.HYPERSONIC;
+		}
+
+		if (dialect instanceof MariaDBDialect) {
+			return DBType.MARIADB;
 		}
 
 		if (dialect instanceof MySQLDialect) {
