@@ -520,6 +520,8 @@ public class ClusterSchedulerEngine
 				_props.get(PropsKeys.CLUSTERABLE_ADVICE_CALL_MASTER_TIMEOUT)),
 			TimeUnit.SECONDS);
 
+		_memoryClusteredJobs.clear();
+
 		for (SchedulerResponse schedulerResponse : schedulerResponses) {
 			addMemoryClusteredJob(schedulerResponse);
 		}
@@ -769,8 +771,6 @@ public class ClusterSchedulerEngine
 					}
 				}
 
-				_memoryClusteredJobs.clear();
-
 				if (_log.isInfoEnabled()) {
 					_log.info("MEMORY_CLUSTERED jobs are running on this node");
 				}
@@ -797,6 +797,8 @@ public class ClusterSchedulerEngine
 							schedulerResponse.getJobName(),
 							schedulerResponse.getGroupName(),
 							schedulerResponse.getStorageType());
+
+						addMemoryClusteredJob(schedulerResponse);
 					}
 				}
 

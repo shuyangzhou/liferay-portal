@@ -407,6 +407,70 @@ public class ClusterSchedulerEngineTest {
 		}
 	}
 
+	@Test
+	public void testMasterToSlaveToMasterAgainFailingInBetween()
+		throws SchedulerException {
+
+		// Test 1, from master to slave failing retrieving jobs from new master
+
+		_mockClusterMasterExecutor.reset(true, 0, 0);
+
+		_mockClusterMasterExecutor.setException(true);
+
+		_mockSchedulerEngine.resetJobs(4, 2);
+
+		_clusterSchedulerEngine.start();
+
+		Assert.assertTrue(_mockClusterMasterExecutor.isMaster());
+
+		List<SchedulerResponse> schedulerResponses =
+			_clusterSchedulerEngine.getScheduledJobs(
+				StorageType.MEMORY_CLUSTERED);
+
+		Assert.assertEquals(
+			schedulerResponses.toString(), 4, schedulerResponses.size());
+
+		Assert.assertTrue(_memoryClusteredJobs.isEmpty());
+
+		_mockClusterMasterExecutor.reset(false, 4, 2);
+
+		ClusterMasterTokenTransitionListener
+			clusterMasterTokenTransitionListener =
+				_mockClusterMasterExecutor.
+					getClusterMasterTokenTransitionListener();
+
+		clusterMasterTokenTransitionListener.masterTokenReleased();
+
+		Assert.assertFalse(_mockClusterMasterExecutor.isMaster());
+
+		schedulerResponses = _clusterSchedulerEngine.getScheduledJobs(
+			StorageType.MEMORY_CLUSTERED);
+
+		Assert.assertTrue(schedulerResponses.isEmpty());
+
+		Assert.assertEquals(
+			_memoryClusteredJobs.toString(), 4, _memoryClusteredJobs.size());
+
+		// Test 2, from slave to master
+
+		_mockClusterMasterExecutor.setException(false);
+
+		_mockClusterMasterExecutor.reset(true, 0, 0);
+
+		clusterMasterTokenTransitionListener.masterTokenAcquired();
+
+		Assert.assertTrue(_mockClusterMasterExecutor.isMaster());
+
+		schedulerResponses = _clusterSchedulerEngine.getScheduledJobs(
+			StorageType.MEMORY_CLUSTERED);
+
+		Assert.assertEquals(
+			schedulerResponses.toString(), 4, schedulerResponses.size());
+
+		Assert.assertEquals(
+			_memoryClusteredJobs.toString(), 4, _memoryClusteredJobs.size());
+	}
+
 	@AdviseWith(adviceClasses = {ClusterableContextThreadLocalAdvice.class})
 	@Test
 	public void testPauseAndResumeOnMaster() throws SchedulerException {
@@ -996,7 +1060,9 @@ public class ClusterSchedulerEngineTest {
 
 			assertTriggerState(schedulerResponse, TriggerState.PAUSED);
 
-			Assert.assertTrue(_memoryClusteredJobs.isEmpty());
+			Assert.assertEquals(
+				_memoryClusteredJobs.toString(), 4,
+				_memoryClusteredJobs.size());
 
 			// Test 2, with log enabled
 
@@ -1043,7 +1109,9 @@ public class ClusterSchedulerEngineTest {
 			Assert.assertEquals(
 				schedulerResponses.toString(), 4, schedulerResponses.size());
 
-			Assert.assertTrue(_memoryClusteredJobs.isEmpty());
+			Assert.assertEquals(
+				_memoryClusteredJobs.toString(), 4,
+				_memoryClusteredJobs.size());
 		}
 	}
 
