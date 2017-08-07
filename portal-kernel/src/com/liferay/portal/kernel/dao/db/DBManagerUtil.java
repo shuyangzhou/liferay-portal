@@ -16,6 +16,8 @@ package com.liferay.portal.kernel.dao.db;
 
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
 
+import java.util.Set;
+
 import javax.sql.DataSource;
 
 /**
@@ -35,6 +37,10 @@ public class DBManagerUtil {
 		DBManager dbManager = getDBManager();
 
 		return dbManager.getDB(dbManager.getDBType(dialect), dataSource);
+	}
+
+	public static Set<DBType> getDBFactoryTypes() {
+		return getDBManager().getDBFactoryTypes();
 	}
 
 	public static DBManager getDBManager() {
