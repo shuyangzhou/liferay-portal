@@ -12,27 +12,27 @@
  * details.
  */
 
-package com.liferay.portal.dao.jdbc;
+package com.liferay.portal.dao.jdbc.functions;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import java.sql.Connection;
+
 import java.util.Properties;
 import java.util.function.Function;
-
-import javax.sql.DataSource;
 
 /**
  * @author Manuel de la Peña
  */
-public class RetryDataSourceFunction
-	implements Function<Function<Properties, DataSource>, DataSource> {
+public class RetryJDBCConnectionFunction
+	implements Function<Function<Properties, Connection>, Connection> {
 
-	public RetryDataSourceFunction(Properties properties) {
+	public RetryJDBCConnectionFunction(Properties properties) {
 		this(properties, 0, 0);
 	}
 
-	public RetryDataSourceFunction(
+	public RetryJDBCConnectionFunction(
 		Properties properties, int delaySeconds, int times) {
 
 		_properties = properties;
@@ -41,7 +41,7 @@ public class RetryDataSourceFunction
 	}
 
 	@Override
-	public DataSource apply(Function<Properties, DataSource> function) {
+	public Connection apply(Function<Properties, Connection> function) {
 		int retryCount = _times;
 
 		while (retryCount-- > 0) {
@@ -51,13 +51,13 @@ public class RetryDataSourceFunction
 			catch (RuntimeException re) {
 				String message = re.getMessage();
 
-				if (message.equals("No dialect found")) {
+				if (message.equals("No JDBC connection found")) {
 					try {
 						if (_log.isWarnEnabled()) {
 							int current = _times - retryCount;
 
 							_log.warn(
-								"Retrying dataSource in " + _delaySeconds +
+								"Retrying JDBC connection in " + _delaySeconds +
 									" seconds. (Currently " + current + ")");
 						}
 
@@ -69,7 +69,7 @@ public class RetryDataSourceFunction
 					}
 					catch (InterruptedException ie) {
 						throw new RuntimeException(
-							"DataSource could not be retried", ie);
+							"JDBC connection could not be retried", ie);
 					}
 				}
 			}
@@ -79,7 +79,7 @@ public class RetryDataSourceFunction
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RetryDataSourceFunction.class);
+		RetryJDBCConnectionFunction.class);
 
 	private final int _delaySeconds;
 	private final Properties _properties;
