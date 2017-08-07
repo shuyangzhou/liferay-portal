@@ -14,6 +14,7 @@
 
 package com.liferay.portal.dao.jdbc;
 
+import com.liferay.portal.dao.jdbc.functions.RetryJDBCConnectionFunction;
 import com.liferay.portal.dao.jdbc.pool.metrics.C3P0ConnectionPoolMetrics;
 import com.liferay.portal.dao.jdbc.pool.metrics.DBCPConnectionPoolMetrics;
 import com.liferay.portal.dao.jdbc.pool.metrics.HikariConnectionPoolMetrics;
@@ -53,9 +54,13 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
+import java.util.function.Function;
 
 import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
@@ -108,90 +113,28 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 	@Override
 	public DataSource initDataSource(Properties properties) throws Exception {
-		Properties defaultProperties = PropsUtil.getProperties(
-			"jdbc.default.", true);
+		RetryJDBCConnectionFunction retryJDBCConnectionFunction =
+			new RetryJDBCConnectionFunction(
+				properties, PropsValues.RETRY_DATA_SOURCE_DELAY_SECONDS,
+				PropsValues.RETRY_DATA_SOURCE_MAX_RETRIES);
 
-		PropertiesUtil.merge(defaultProperties, properties);
+		try (Connection jdbcConnection = retryJDBCConnectionFunction.apply(
+				_getJDBCConnectionFunction)) {
 
-		properties = defaultProperties;
-
-		String jndiName = properties.getProperty("jndi.name");
-
-		if (Validator.isNotNull(jndiName)) {
-			try {
-				Properties jndiEnvironmentProperties = PropsUtil.getProperties(
-					PropsKeys.JNDI_ENVIRONMENT, true);
-
-				Context context = new InitialContext(jndiEnvironmentProperties);
-
-				return (DataSource)JNDIUtil.lookup(context, jndiName);
+			if (jdbcConnection != null) {
+				if (_log.isInfoEnabled()) {
+					_log.info("JDBC connection successfully retried.");
+				}
 			}
-			catch (Exception e) {
-				_log.error("Unable to lookup " + jndiName, e);
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"JDBC connection could not be retried. Trying datasource.");
 			}
 		}
 
-		if (_log.isDebugEnabled()) {
-			_log.debug("Data source properties:\n");
-
-			SortedProperties sortedProperties = new SortedProperties(
-				properties);
-
-			_log.debug(PropertiesUtil.toString(sortedProperties));
-		}
-
-		testDatabaseClass(properties);
-
-		DataSource dataSource = null;
-
-		String liferayPoolProvider =
-			PropsValues.JDBC_DEFAULT_LIFERAY_POOL_PROVIDER;
-
-		if (StringUtil.equalsIgnoreCase(liferayPoolProvider, "c3p0") ||
-			StringUtil.equalsIgnoreCase(liferayPoolProvider, "c3po")) {
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Initializing C3P0 data source");
-			}
-
-			dataSource = initDataSourceC3PO(properties);
-		}
-		else if (StringUtil.equalsIgnoreCase(liferayPoolProvider, "dbcp")) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Initializing DBCP data source");
-			}
-
-			dataSource = initDataSourceDBCP(properties);
-		}
-		else if (StringUtil.equalsIgnoreCase(liferayPoolProvider, "hikaricp")) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Initializing HikariCP data source");
-			}
-
-			dataSource = initDataSourceHikariCP(properties);
-		}
-		else {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Initializing Tomcat data source");
-			}
-
-			dataSource = initDataSourceTomcat(properties);
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Created data source " + dataSource.getClass());
-		}
-
-		if (PropsValues.RETRY_DATA_SOURCE_MAX_RETRIES > 0) {
-			DBType dbType = DBManagerUtil.getDBType(
-				DialectDetector.getDialect(dataSource));
-
-			if (dbType == DBType.SYBASE) {
-				dataSource = new RetryDataSourceWrapper(dataSource);
-			}
-		}
-
-		return _pacl.getDataSource(dataSource);
+		return _getDataSourceFunction.apply(properties);
 	}
 
 	@Override
@@ -616,6 +559,108 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 		}
 	}
 
+	private Connection _getJDBCConnection(Properties properties)
+		throws Exception {
+
+		testDatabaseClass(properties);
+
+		String databaseURL = properties.getProperty("url");
+		String user = properties.getProperty("username");
+		String password = properties.getProperty("password");
+
+		Connection connection = DriverManager.getConnection(
+			databaseURL, user, password);
+
+		return connection;
+	}
+
+	private DataSource _initDataSource(Properties properties) throws Exception {
+		Properties defaultProperties = PropsUtil.getProperties(
+			"jdbc.default.", true);
+
+		PropertiesUtil.merge(defaultProperties, properties);
+
+		properties = defaultProperties;
+
+		String jndiName = properties.getProperty("jndi.name");
+
+		if (Validator.isNotNull(jndiName)) {
+			try {
+				Properties jndiEnvironmentProperties = PropsUtil.getProperties(
+					PropsKeys.JNDI_ENVIRONMENT, true);
+
+				Context context = new InitialContext(jndiEnvironmentProperties);
+
+				return (DataSource)JNDIUtil.lookup(context, jndiName);
+			}
+			catch (Exception e) {
+				_log.error("Unable to lookup " + jndiName, e);
+			}
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Data source properties:\n");
+
+			SortedProperties sortedProperties = new SortedProperties(
+				properties);
+
+			_log.debug(PropertiesUtil.toString(sortedProperties));
+		}
+
+		testDatabaseClass(properties);
+
+		DataSource dataSource = null;
+
+		String liferayPoolProvider =
+			PropsValues.JDBC_DEFAULT_LIFERAY_POOL_PROVIDER;
+
+		if (StringUtil.equalsIgnoreCase(liferayPoolProvider, "c3p0") ||
+			StringUtil.equalsIgnoreCase(liferayPoolProvider, "c3po")) {
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Initializing C3P0 data source");
+			}
+
+			dataSource = initDataSourceC3PO(properties);
+		}
+		else if (StringUtil.equalsIgnoreCase(liferayPoolProvider, "dbcp")) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Initializing DBCP data source");
+			}
+
+			dataSource = initDataSourceDBCP(properties);
+		}
+		else if (StringUtil.equalsIgnoreCase(liferayPoolProvider, "hikaricp")) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Initializing HikariCP data source");
+			}
+
+			dataSource = initDataSourceHikariCP(properties);
+		}
+		else {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Initializing Tomcat data source");
+			}
+
+			dataSource = initDataSourceTomcat(properties);
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Created data source " + dataSource.getClass());
+		}
+
+		if (PropsValues.RETRY_DATA_SOURCE_MAX_RETRIES > 0) {
+			DBType dbType = DBManagerUtil.getDBType(
+				DialectDetector.getDialect(dataSource));
+
+			if (dbType == DBType.SYBASE) {
+				dataSource = new RetryDataSourceWrapper(dataSource);
+			}
+		}
+
+		return _pacl.getDataSource(dataSource);
+	}
+
 	private static final String _HIKARICP_DATASOURCE_CLASS_NAME =
 		"com.zaxxer.hikari.HikariDataSource";
 
@@ -627,6 +672,24 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 	private static final PACL _pacl = new NoPACL();
 
+	private final Function<Properties, DataSource> _getDataSourceFunction =
+		(Properties properties) -> {
+			try {
+				return _initDataSource(properties);
+			}
+			catch (Exception e) {
+				throw new RuntimeException("No dialect found", e);
+			}
+		};
+	private final Function<Properties, Connection> _getJDBCConnectionFunction =
+		(Properties properties) -> {
+			try {
+				return _getJDBCConnection(properties);
+			}
+			catch (Exception e) {
+				throw new RuntimeException("No JDBC connection found", e);
+			}
+		};
 	private ServiceTracker<MBeanServer, MBeanServer> _serviceTracker;
 
 	private static class MBeanServerServiceTrackerCustomizer
