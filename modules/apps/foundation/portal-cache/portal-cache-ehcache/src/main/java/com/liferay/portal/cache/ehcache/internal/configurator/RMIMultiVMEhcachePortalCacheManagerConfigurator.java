@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import net.sf.ehcache.config.Configuration;
 import net.sf.ehcache.config.FactoryConfiguration;
 
+import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
@@ -28,6 +29,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Tina Tian
  */
 @Component(
+	configurationPid = "com.liferay.portal.cache.ehcache.configuration.PortalCacheEhcacheConfiguration",
 	enabled = false, immediate = true,
 	service = MultiVMEhcachePortalCacheManagerConfigurator.class
 )
@@ -36,8 +38,8 @@ public class RMIMultiVMEhcachePortalCacheManagerConfigurator
 
 	@Activate
 	@Override
-	protected void activate() {
-		super.activate();
+	protected void activate(ComponentContext componentContext) {
+		super.activate(componentContext);
 
 		if (!clusterEnabled) {
 			return;
@@ -59,12 +61,12 @@ public class RMIMultiVMEhcachePortalCacheManagerConfigurator
 		Configuration configuration,
 		PortalCacheManagerConfiguration portalCacheManagerConfiguration) {
 
+		super.manageConfiguration(
+			configuration, portalCacheManagerConfiguration);
+
 		if (!clusterEnabled) {
 			return;
 		}
-
-		super.manageConfiguration(
-			configuration, portalCacheManagerConfiguration);
 
 		FactoryConfiguration peerProviderFactoryConfiguration =
 			new FactoryConfiguration();

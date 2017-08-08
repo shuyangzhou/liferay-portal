@@ -43,7 +43,8 @@ public class EhcachePortalCache<K extends Serializable, V>
 	extends BasePortalCache<K, V> implements EhcacheWrapper {
 
 	public EhcachePortalCache(
-		PortalCacheManager<K, V> portalCacheManager, Ehcache ehcache) {
+		PortalCacheManager<K, V> portalCacheManager, Ehcache ehcache,
+		boolean debugEnabled) {
 
 		super(portalCacheManager);
 
@@ -52,10 +53,11 @@ public class EhcachePortalCache<K extends Serializable, V>
 		RegisteredEventListeners registeredEventListeners =
 			ehcache.getCacheEventNotificationService();
 
+		_portalCacheCacheEventListener = new PortalCacheCacheEventListener<>(
+			aggregatedPortalCacheListener, this, debugEnabled);
+
 		registeredEventListeners.registerListener(
-			new PortalCacheCacheEventListener<>(
-				aggregatedPortalCacheListener, this),
-			NotificationScope.ALL);
+			_portalCacheCacheEventListener, NotificationScope.ALL);
 	}
 
 	@Override
@@ -167,13 +169,15 @@ public class EhcachePortalCache<K extends Serializable, V>
 	}
 
 	protected void reconfigEhcache(Ehcache ehcache) {
+		_portalCacheCacheEventListener = new PortalCacheCacheEventListener<>(
+			aggregatedPortalCacheListener, this,
+			_portalCacheCacheEventListener.isDebugEnabled());
+
 		RegisteredEventListeners registeredEventListeners =
 			ehcache.getCacheEventNotificationService();
 
 		registeredEventListeners.registerListener(
-			new PortalCacheCacheEventListener<>(
-				aggregatedPortalCacheListener, this),
-			NotificationScope.ALL);
+			_portalCacheCacheEventListener, NotificationScope.ALL);
 
 		Ehcache oldEhcache = this.ehcache;
 
@@ -191,5 +195,8 @@ public class EhcachePortalCache<K extends Serializable, V>
 	}
 
 	protected volatile Ehcache ehcache;
+
+	private volatile PortalCacheCacheEventListener<K, V>
+		_portalCacheCacheEventListener;
 
 }

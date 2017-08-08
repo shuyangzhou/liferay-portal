@@ -14,7 +14,7 @@
 
 package com.liferay.mobile.device.rules.internal.verify.model;
 
-import com.liferay.mobile.device.rules.kernel.MDRRuleGroupInstance;
+import com.liferay.mobile.device.rules.model.MDRRuleGroupInstance;
 import com.liferay.mobile.device.rules.model.impl.MDRRuleGroupInstanceModelImpl;
 import com.liferay.portal.kernel.verify.model.VerifiableResourcedModel;
 
