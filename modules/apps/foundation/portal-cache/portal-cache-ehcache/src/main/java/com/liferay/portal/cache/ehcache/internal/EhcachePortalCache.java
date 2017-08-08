@@ -43,7 +43,8 @@ public class EhcachePortalCache<K extends Serializable, V>
 	extends BasePortalCache<K, V> implements EhcacheWrapper {
 
 	public EhcachePortalCache(
-		PortalCacheManager<K, V> portalCacheManager, Ehcache ehcache) {
+		PortalCacheManager<K, V> portalCacheManager, Ehcache ehcache,
+		boolean debugEnabled) {
 
 		super(portalCacheManager);
 
@@ -56,6 +57,8 @@ public class EhcachePortalCache<K extends Serializable, V>
 			new PortalCacheCacheEventListener<>(
 				aggregatedPortalCacheListener, this),
 			NotificationScope.ALL);
+
+		_debugEnabled = debugEnabled;
 	}
 
 	@Override
@@ -191,5 +194,7 @@ public class EhcachePortalCache<K extends Serializable, V>
 	}
 
 	protected volatile Ehcache ehcache;
+
+	private final boolean _debugEnabled;
 
 }

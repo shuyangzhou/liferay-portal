@@ -81,7 +81,7 @@ public class EhcachePortalCacheTest {
 				_PORTAL_CACHE_NAME);
 
 		_ehcachePortalCache = new EhcachePortalCache<>(
-			portalCacheManager, _ehcache);
+			portalCacheManager, _ehcache, false);
 
 		_ehcachePortalCache.put(_KEY_1, _VALUE_1);
 

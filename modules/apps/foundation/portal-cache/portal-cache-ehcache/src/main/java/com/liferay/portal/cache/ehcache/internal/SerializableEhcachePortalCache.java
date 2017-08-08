@@ -33,9 +33,10 @@ public class SerializableEhcachePortalCache<K extends Serializable, V>
 	extends EhcachePortalCache<K, V> {
 
 	public SerializableEhcachePortalCache(
-		PortalCacheManager<K, V> portalCacheManager, Ehcache ehcache) {
+		PortalCacheManager<K, V> portalCacheManager, Ehcache ehcache,
+		boolean debugEnabled) {
 
-		super(portalCacheManager, ehcache);
+		super(portalCacheManager, ehcache, debugEnabled);
 	}
 
 	@Override
