@@ -61,12 +61,12 @@ public class RMIMultiVMEhcachePortalCacheManagerConfigurator
 		Configuration configuration,
 		PortalCacheManagerConfiguration portalCacheManagerConfiguration) {
 
+		super.manageConfiguration(
+			configuration, portalCacheManagerConfiguration);
+
 		if (!clusterEnabled) {
 			return;
 		}
-
-		super.manageConfiguration(
-			configuration, portalCacheManagerConfiguration);
 
 		FactoryConfiguration peerProviderFactoryConfiguration =
 			new FactoryConfiguration();

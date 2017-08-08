@@ -124,6 +124,16 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 		}
 	}
 
+	protected boolean isDebugEnabled(CacheConfiguration cacheConfiguration) {
+		if (debugEnabledPortalCacheNames.contains(
+				cacheConfiguration.getName())) {
+
+			return true;
+		}
+
+		return defaultDebugEnabled;
+	}
+
 	@SuppressWarnings("deprecation")
 	protected boolean isRequireSerialization(
 		CacheConfiguration cacheConfiguration) {
@@ -153,6 +163,27 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 	protected void manageConfiguration(
 		Configuration configuration,
 		PortalCacheManagerConfiguration portalCacheManagerConfiguration) {
+
+		if (debugEnabledPortalCacheNames.isEmpty()) {
+			return;
+		}
+
+		EhcachePortalCacheConfiguration defaultEhcachePortalCacheConfiguration =
+			(EhcachePortalCacheConfiguration)portalCacheManagerConfiguration.
+				getDefaultPortalCacheConfiguration();
+
+		for (String portalCacheName : debugEnabledPortalCacheNames) {
+			if (portalCacheManagerConfiguration.getPortalCacheConfiguration(
+					portalCacheName) != null) {
+
+				continue;
+			}
+
+			portalCacheManagerConfiguration.putPortalCacheConfiguration(
+				portalCacheName,
+				defaultEhcachePortalCacheConfiguration.
+					newPortalCacheConfiguration(portalCacheName, true));
+		}
 	}
 
 	protected Set<Properties> parseCacheEventListenerConfigurations(
@@ -212,7 +243,7 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 
 		return new EhcachePortalCacheConfiguration(
 			cacheConfiguration.getName(), portalCacheListenerPropertiesSet,
-			null, requireSerialization);
+			null, requireSerialization, isDebugEnabled(cacheConfiguration));
 	}
 
 	protected Set<Properties> parseCacheManagerEventListenerConfigurations(

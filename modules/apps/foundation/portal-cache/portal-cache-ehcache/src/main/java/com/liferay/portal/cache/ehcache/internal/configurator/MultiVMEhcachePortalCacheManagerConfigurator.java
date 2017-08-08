@@ -126,6 +126,9 @@ public class MultiVMEhcachePortalCacheManagerConfigurator
 		Configuration configuration,
 		PortalCacheManagerConfiguration portalCacheManagerConfiguration) {
 
+		super.manageConfiguration(
+			configuration, portalCacheManagerConfiguration);
+
 		if (!clusterEnabled) {
 			return;
 		}
