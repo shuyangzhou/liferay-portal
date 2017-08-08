@@ -14,14 +14,16 @@
 
 package com.liferay.portal.lpkg.deployer.internal.wrapper.bundle;
 
+import com.liferay.portal.lpkg.deployer.internal.WABWrapperUtil;
+
 import java.net.URL;
 import java.net.URLConnection;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.startlevel.BundleStartLevel;
+import org.osgi.framework.startlevel.FrameworkStartLevel;
 import org.osgi.service.url.AbstractURLStreamHandlerService;
 import org.osgi.service.url.URLStreamHandlerService;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
@@ -66,11 +68,8 @@ public class URLStreamHandlerServiceServiceTrackerCustomizer
 
 			Bundle bundle = _bundleContext.getBundle();
 
-			URL wabURL = new URL(
-				"webbundle", null, -1,
-				_lpkgURL.getPath() + "?" + Constants.BUNDLE_VERSION + "=" +
-					bundle.getVersion() + "&Web-ContextPath=/" + _contextName +
-						"&protocol=lpkg",
+			URL wabURL = WABWrapperUtil.generateWABLocationURL(
+				_lpkgURL, bundle.getVersion(), _contextName,
 				abstractURLStreamHandlerService);
 
 			URLConnection urlConnection =
@@ -84,12 +83,26 @@ public class URLStreamHandlerServiceServiceTrackerCustomizer
 				newBundle = _bundleContext.installBundle(
 					location, urlConnection.getInputStream());
 
+				Bundle systemBundle = _bundleContext.getBundle(0);
+
+				FrameworkStartLevel frameworkStartLevel = systemBundle.adapt(
+					FrameworkStartLevel.class);
+
+				int frameStartLevel = frameworkStartLevel.getStartLevel();
+
 				BundleStartLevel bundleStartLevel = newBundle.adapt(
 					BundleStartLevel.class);
 
-				bundleStartLevel.setStartLevel(_startLevel);
+				if (frameStartLevel >= _startLevel) {
+					newBundle.start();
 
-				newBundle.start();
+					bundleStartLevel.setStartLevel(_startLevel);
+				}
+				else {
+					bundleStartLevel.setStartLevel(_startLevel);
+
+					newBundle.start();
+				}
 			}
 
 			return newBundle;
