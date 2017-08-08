@@ -5,4 +5,8 @@
 	<category name="com.liferay.portal.cache.ehcache.internal.EhcachePortalCacheManager">
 		<priority value="ERROR" />
 	</category>
+
+	<category name="com.liferay.portal.cache.ehcache.internal.event.PortalCacheCacheEventListener">
+		<priority value="INFO" />
+	</category>
 </log4j:configuration>
