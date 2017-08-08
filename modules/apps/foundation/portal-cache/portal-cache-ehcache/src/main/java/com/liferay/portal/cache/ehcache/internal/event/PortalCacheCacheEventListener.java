@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.cache.PortalCacheListener;
 import com.liferay.portal.kernel.io.SerializableObjectWrapper;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -50,6 +51,10 @@ public class PortalCacheCacheEventListener<K extends Serializable, V>
 		}
 
 		_requireSerialization = requireSerialization;
+
+		_log = LogFactoryUtil.getLog(
+			PortalCacheCacheEventListener.class.getName() + StringPool.PERIOD +
+				portalCache.getPortalCacheName());
 	}
 
 	@Override
@@ -200,11 +205,9 @@ public class PortalCacheCacheEventListener<K extends Serializable, V>
 		return (V)element.getObjectValue();
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		PortalCacheCacheEventListener.class);
-
 	private final AggregatedPortalCacheListener<K, V>
 		_aggregatedPortalCacheListener;
+	private final Log _log;
 	private final PortalCache<K, V> _portalCache;
 	private final boolean _requireSerialization;
 
