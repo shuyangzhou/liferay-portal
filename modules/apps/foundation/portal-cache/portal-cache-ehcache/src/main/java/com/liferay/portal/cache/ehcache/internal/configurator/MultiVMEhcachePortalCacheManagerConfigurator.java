@@ -17,12 +17,16 @@ package com.liferay.portal.cache.ehcache.internal.configurator;
 import com.liferay.portal.cache.PortalCacheReplicator;
 import com.liferay.portal.cache.configuration.PortalCacheConfiguration;
 import com.liferay.portal.cache.configuration.PortalCacheManagerConfiguration;
+import com.liferay.portal.cache.ehcache.configuration.PortalCacheEhcacheConfiguration;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
@@ -34,6 +38,7 @@ import java.util.Set;
 import net.sf.ehcache.config.CacheConfiguration;
 import net.sf.ehcache.config.Configuration;
 
+import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -42,6 +47,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Dante Wang
  */
 @Component(
+	configurationPid = "com.liferay.portal.cache.ehcache.configuration.PortalCacheEhcacheConfiguration",
 	enabled = false, immediate = true,
 	service = MultiVMEhcachePortalCacheManagerConfigurator.class
 )
@@ -49,7 +55,7 @@ public class MultiVMEhcachePortalCacheManagerConfigurator
 	extends BaseEhcachePortalCacheManagerConfigurator {
 
 	@Activate
-	protected void activate() {
+	protected void activate(ComponentContext componentContext) {
 		_bootstrapLoaderEnabled = GetterUtil.getBoolean(
 			props.get(PropsKeys.EHCACHE_BOOTSTRAP_CACHE_LOADER_ENABLED));
 		_bootstrapLoaderProperties = props.getProperties(
@@ -66,6 +72,19 @@ public class MultiVMEhcachePortalCacheManagerConfigurator
 			PropsKeys.EHCACHE_REPLICATOR_PROPERTIES +
 				StringPool.PERIOD,
 			true);
+
+		PortalCacheEhcacheConfiguration portalCacheEhcacheConfiguration =
+			ConfigurableUtil.createConfigurable(
+				PortalCacheEhcacheConfiguration.class,
+				componentContext.getProperties());
+
+		defaultDebugEnabled =
+			portalCacheEhcacheConfiguration.defaultDebugEnabled();
+
+		debugEnabledPortalCacheNames = SetUtil.fromArray(
+			StringUtil.split(
+				portalCacheEhcacheConfiguration.debugEnabledPortalCacheNames(),
+				StringPool.COMMA));
 	}
 
 	protected String getPortalPropertiesString(String portalPropertyKey) {

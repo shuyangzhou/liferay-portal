@@ -14,8 +14,15 @@
 
 package com.liferay.portal.cache.ehcache.internal.configurator;
 
+import com.liferay.portal.cache.ehcache.configuration.PortalCacheEhcacheConfiguration;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.util.Props;
+import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 
+import org.osgi.service.component.ComponentContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -23,11 +30,28 @@ import org.osgi.service.component.annotations.Reference;
  * @author Dante Wang
  */
 @Component(
+	configurationPid = "com.liferay.portal.cache.ehcache.configuration.PortalCacheEhcacheConfiguration",
 	immediate = true,
 	service = SingleVMEhcachePortalCacheManagerConfigurator.class
 )
 public class SingleVMEhcachePortalCacheManagerConfigurator
 	extends BaseEhcachePortalCacheManagerConfigurator {
+
+	@Activate
+	protected void activate(ComponentContext componentContext) {
+		PortalCacheEhcacheConfiguration portalCacheEhcacheConfiguration =
+			ConfigurableUtil.createConfigurable(
+				PortalCacheEhcacheConfiguration.class,
+				componentContext.getProperties());
+
+		defaultDebugEnabled =
+			portalCacheEhcacheConfiguration.defaultDebugEnabled();
+
+		debugEnabledPortalCacheNames = SetUtil.fromArray(
+			StringUtil.split(
+				portalCacheEhcacheConfiguration.debugEnabledPortalCacheNames(),
+				StringPool.COMMA));
+	}
 
 	@Reference(unbind = "-")
 	protected void setProps(Props props) {

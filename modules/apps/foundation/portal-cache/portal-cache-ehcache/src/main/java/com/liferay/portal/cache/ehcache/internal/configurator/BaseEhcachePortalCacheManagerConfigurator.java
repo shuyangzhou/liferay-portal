@@ -299,6 +299,8 @@ public abstract class BaseEhcachePortalCacheManagerConfigurator {
 		return properties;
 	}
 
+	protected Set<String> debugEnabledPortalCacheNames;
+	protected boolean defaultDebugEnabled;
 	protected Props props;
 
 	private static final Log _log = LogFactoryUtil.getLog(
