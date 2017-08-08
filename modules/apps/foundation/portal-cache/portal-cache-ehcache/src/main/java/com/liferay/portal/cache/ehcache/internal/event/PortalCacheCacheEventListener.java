@@ -82,111 +82,116 @@ public class PortalCacheCacheEventListener<K extends Serializable, V>
 
 	@Override
 	public void notifyElementEvicted(Ehcache ehcache, Element element) {
+		K key = getKey(element);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Evicted " + key + " from " + ehcache.getName());
+		}
+
 		if (_aggregatedPortalCacheListener.isEmpty()) {
 			return;
 		}
 
-		K key = getKey(element);
 		V value = getValue(element);
 		int timeToLive = element.getTimeToLive();
 
 		_aggregatedPortalCacheListener.notifyEntryEvicted(
 			_portalCache, key, value, timeToLive);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Evicted " + key + " from " + ehcache.getName());
-		}
 	}
 
 	@Override
 	public void notifyElementExpired(Ehcache ehcache, Element element) {
+		K key = getKey(element);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Expired " + key + " from " + ehcache.getName());
+		}
+
 		if (_aggregatedPortalCacheListener.isEmpty()) {
 			return;
 		}
 
-		K key = getKey(element);
 		V value = getValue(element);
 		int timeToLive = element.getTimeToLive();
 
 		_aggregatedPortalCacheListener.notifyEntryExpired(
 			_portalCache, key, value, timeToLive);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Expired " + key + " from " + ehcache.getName());
-		}
 	}
 
 	@Override
 	public void notifyElementPut(Ehcache ehcache, Element element)
 		throws CacheException {
 
+		K key = getKey(element);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Inserted " + key + " into " + ehcache.getName());
+		}
+
 		if (_aggregatedPortalCacheListener.isEmpty()) {
 			return;
 		}
 
-		K key = getKey(element);
 		V value = getValue(element);
 		int timeToLive = element.getTimeToLive();
 
 		_aggregatedPortalCacheListener.notifyEntryPut(
 			_portalCache, key, value, timeToLive);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Inserted " + key + " into " + ehcache.getName());
-		}
 	}
 
 	@Override
 	public void notifyElementRemoved(Ehcache ehcache, Element element)
 		throws CacheException {
 
+		K key = getKey(element);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Removed " + key + " from " + ehcache.getName());
+		}
+
 		if (_aggregatedPortalCacheListener.isEmpty()) {
 			return;
 		}
 
-		K key = getKey(element);
 		V value = getValue(element);
 		int timeToLive = element.getTimeToLive();
 
 		_aggregatedPortalCacheListener.notifyEntryRemoved(
 			_portalCache, key, value, timeToLive);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Removed " + key + " from " + ehcache.getName());
-		}
 	}
 
 	@Override
 	public void notifyElementUpdated(Ehcache ehcache, Element element)
 		throws CacheException {
 
+		K key = getKey(element);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Updated " + key + " in " + ehcache.getName());
+		}
+
 		if (_aggregatedPortalCacheListener.isEmpty()) {
 			return;
 		}
 
-		K key = getKey(element);
 		V value = getValue(element);
 		int timeToLive = element.getTimeToLive();
 
 		_aggregatedPortalCacheListener.notifyEntryUpdated(
 			_portalCache, key, value, timeToLive);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Updated " + key + " in " + ehcache.getName());
-		}
 	}
 
 	@Override
 	public void notifyRemoveAll(Ehcache ehcache) {
+		if (_log.isDebugEnabled()) {
+			_log.debug("Cleared " + ehcache.getName());
+		}
+
 		if (_aggregatedPortalCacheListener.isEmpty()) {
 			return;
 		}
 
 		_aggregatedPortalCacheListener.notifyRemoveAll(_portalCache);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Cleared " + ehcache.getName());
-		}
 	}
 
 	protected K getKey(Element element) {
