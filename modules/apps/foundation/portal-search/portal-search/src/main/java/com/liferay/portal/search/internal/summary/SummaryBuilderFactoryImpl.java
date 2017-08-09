@@ -12,19 +12,22 @@
  * details.
  */
 
-package com.liferay.portal.search.solr.internal;
+package com.liferay.portal.search.internal.summary;
 
-import com.liferay.portal.search.test.util.indexing.BaseIndexSearcherTestCase;
-import com.liferay.portal.search.test.util.indexing.IndexingFixture;
+import com.liferay.portal.search.summary.SummaryBuilder;
+import com.liferay.portal.search.summary.SummaryBuilderFactory;
+
+import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Preston Crary
+ * @author Bryan Engler
  */
-public class SolrIndexSearcherTest extends BaseIndexSearcherTestCase {
+@Component(immediate = true, service = SummaryBuilderFactory.class)
+public class SummaryBuilderFactoryImpl implements SummaryBuilderFactory {
 
 	@Override
-	protected IndexingFixture createIndexingFixture() {
-		return new SolrIndexingFixture();
+	public SummaryBuilder newInstance() {
+		return new SummaryBuilderImpl();
 	}
 
 }
