@@ -15,6 +15,7 @@
 package com.liferay.portal.dao.db;
 
 import com.liferay.portal.dao.orm.hibernate.DialectImpl;
+import com.liferay.portal.dao.orm.hibernate.MariaDBDialect;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBFactory;
 import com.liferay.portal.kernel.dao.db.DBManager;
@@ -32,7 +33,9 @@ import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
 import java.util.EnumMap;
+import java.util.LinkedHashSet;
 import java.util.ServiceLoader;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -133,6 +136,10 @@ public class DBManagerImpl implements DBManager {
 			return DBType.HYPERSONIC;
 		}
 
+		if (dialect instanceof MariaDBDialect) {
+			return DBType.MARIADB;
+		}
+
 		if (dialect instanceof MySQLDialect) {
 			return DBType.MYSQL;
 		}
@@ -160,6 +167,11 @@ public class DBManagerImpl implements DBManager {
 		}
 
 		throw new IllegalArgumentException("Unknown dialect type " + dialect);
+	}
+
+	@Override
+	public Set<DBType> getDBTypes() {
+		return new LinkedHashSet<>(_dbFactories.keySet());
 	}
 
 	@Override

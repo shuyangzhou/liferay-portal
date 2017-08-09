@@ -14,11 +14,16 @@
 
 package com.liferay.portal.kernel.dao.db;
 
+import aQute.bnd.annotation.ProviderType;
+
+import java.util.Set;
+
 import javax.sql.DataSource;
 
 /**
  * @author Brian Wing Shun Chan
  */
+@ProviderType
 public interface DBManager {
 
 	public DB getDB();
@@ -26,6 +31,8 @@ public interface DBManager {
 	public DB getDB(DBType dbType, DataSource dataSource);
 
 	public DBType getDBType(Object dialect);
+
+	public Set<DBType> getDBTypes();
 
 	public void setDB(DB db);
 

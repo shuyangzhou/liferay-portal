@@ -16,6 +16,7 @@ package com.liferay.portal.spring.hibernate;
 
 import com.liferay.portal.dao.orm.hibernate.DB2Dialect;
 import com.liferay.portal.dao.orm.hibernate.HSQLDialect;
+import com.liferay.portal.dao.orm.hibernate.MariaDBDialect;
 import com.liferay.portal.dao.orm.hibernate.SQLServer2005Dialect;
 import com.liferay.portal.dao.orm.hibernate.SQLServer2008Dialect;
 import com.liferay.portal.dao.orm.hibernate.SybaseASE157Dialect;
@@ -52,6 +53,7 @@ public class DialectDetector {
 			DatabaseMetaData databaseMetaData = connection.getMetaData();
 
 			String dbName = databaseMetaData.getDatabaseProductName();
+			String driverName = databaseMetaData.getDriverName();
 			int dbMajorVersion = databaseMetaData.getDatabaseMajorVersion();
 			int dbMinorVersion = databaseMetaData.getDatabaseMinorVersion();
 
@@ -105,6 +107,9 @@ public class DialectDetector {
 			}
 			else if (dbName.startsWith("DB2") && (dbMajorVersion >= 9)) {
 				dialect = new DB2Dialect();
+			}
+			else if (driverName.startsWith("mariadb")) {
+				dialect = new MariaDBDialect();
 			}
 			else if (dbName.startsWith("Microsoft") && (dbMajorVersion == 9)) {
 				dialect = new SQLServer2005Dialect();

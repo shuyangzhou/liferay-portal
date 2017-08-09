@@ -12,19 +12,25 @@
  * details.
  */
 
-package com.liferay.portal.search.solr.internal;
+package com.liferay.portal.model.impl;
 
-import com.liferay.portal.search.test.util.indexing.BaseIndexSearcherTestCase;
-import com.liferay.portal.search.test.util.indexing.IndexingFixture;
+import java.sql.Types;
 
 /**
  * @author Preston Crary
  */
-public class SolrIndexSearcherTest extends BaseIndexSearcherTestCase {
+public class BuildAutoUpgradeTestEntityModelImpl {
 
-	@Override
-	protected IndexingFixture createIndexingFixture() {
-		return new SolrIndexingFixture();
-	}
+	public static final String DATA_SOURCE = "liferayDataSource";
+
+	public static final Object[][] TABLE_COLUMNS = {
+		{"id_", Types.BIGINT}, {"data_", Types.VARCHAR}
+	};
+
+	public static final String TABLE_NAME = "BuildAutoUpgradeTestEntity";
+
+	public static final String TABLE_SQL_CREATE =
+		"create table BuildAutoUpgradeTestEntity (id_ LONG not null primary " +
+			"key, data_ VARCHAR(75) null);";
 
 }

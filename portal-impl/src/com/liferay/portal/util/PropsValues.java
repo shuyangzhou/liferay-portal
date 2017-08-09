@@ -1462,6 +1462,8 @@ public class PropsValues {
 
 	public static final boolean SCHEDULER_ENABLED = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.SCHEDULER_ENABLED));
 
+	public static boolean SCHEMA_MODULE_BUILD_AUTO_UPGRADE = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.SCHEMA_MODULE_BUILD_AUTO_UPGRADE));
+
 	public static final String SCRIPTING_JRUBY_COMPILE_MODE = PropsUtil.get(PropsKeys.SCRIPTING_JRUBY_COMPILE_MODE);
 
 	public static final int SCRIPTING_JRUBY_COMPILE_THRESHOLD = GetterUtil.getInteger(PropsUtil.get(PropsKeys.SCRIPTING_JRUBY_COMPILE_THRESHOLD), 50);
@@ -1530,6 +1532,10 @@ public class PropsValues {
 
 	public static final boolean SESSION_VERIFY_SERIALIZABLE_ATTRIBUTE = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.SESSION_VERIFY_SERIALIZABLE_ATTRIBUTE));
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String[] SETUP_DATABASE_TYPES = PropsUtil.getArray(PropsKeys.SETUP_DATABASE_TYPES);
 
 	public static final boolean SETUP_WIZARD_ADD_SAMPLE_DATA = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.SETUP_WIZARD_ADD_SAMPLE_DATA));
