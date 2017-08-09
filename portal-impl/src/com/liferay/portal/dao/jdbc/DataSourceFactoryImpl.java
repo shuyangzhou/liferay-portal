@@ -672,6 +672,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 				throw new RuntimeException("No JDBC connection found", e);
 			}
 		};
+
 	private ServiceTracker<MBeanServer, MBeanServer> _serviceTracker;
 
 	private static class MBeanServerServiceTrackerCustomizer
