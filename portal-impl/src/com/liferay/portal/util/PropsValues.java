@@ -1436,6 +1436,8 @@ public class PropsValues {
 
 	public static final int RETRY_ADVICE_MAX_RETRIES = GetterUtil.getInteger(PropsUtil.get(PropsKeys.RETRY_ADVICE_MAX_RETRIES));
 
+	public static final int RETRY_DATA_SOURCE_DELAY_SECONDS = GetterUtil.getInteger(PropsUtil.get(PropsKeys.RETRY_DATA_SOURCE_DELAY_SECONDS));
+
 	public static final int RETRY_DATA_SOURCE_MAX_RETRIES = GetterUtil.getInteger(PropsUtil.get(PropsKeys.RETRY_DATA_SOURCE_MAX_RETRIES));
 
 	public static final String ROBOTS_TXT_WITH_SITEMAP = PropsUtil.get(PropsKeys.ROBOTS_TXT_WITH_SITEMAP);
