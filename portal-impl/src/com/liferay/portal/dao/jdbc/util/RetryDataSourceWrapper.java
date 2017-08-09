@@ -32,7 +32,7 @@ public class RetryDataSourceWrapper extends DataSourceWrapper {
 
 	@Override
 	public Connection getConnection() throws SQLException {
-		int retries = PropsValues.RETRY_DATA_SOURCE_MAX_RETRIES;
+		int retries = PropsValues.RETRY_JDBC_MAX_RETRIES;
 
 		SQLException sqlException = null;
 
@@ -54,7 +54,7 @@ public class RetryDataSourceWrapper extends DataSourceWrapper {
 	public Connection getConnection(String username, String password)
 		throws SQLException {
 
-		int retries = PropsValues.RETRY_DATA_SOURCE_MAX_RETRIES;
+		int retries = PropsValues.RETRY_JDBC_MAX_RETRIES;
 
 		SQLException sqlException = null;
 

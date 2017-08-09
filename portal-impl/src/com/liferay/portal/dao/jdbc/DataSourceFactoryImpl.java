@@ -14,6 +14,7 @@
 
 package com.liferay.portal.dao.jdbc;
 
+import com.liferay.portal.dao.jdbc.functions.RetryJDBCConnectionFunction;
 import com.liferay.portal.dao.jdbc.pool.metrics.C3P0ConnectionPoolMetrics;
 import com.liferay.portal.dao.jdbc.pool.metrics.DBCPConnectionPoolMetrics;
 import com.liferay.portal.dao.jdbc.pool.metrics.HikariConnectionPoolMetrics;
@@ -53,9 +54,13 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
+import java.util.function.Function;
 
 import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
@@ -108,6 +113,8 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 	@Override
 	public DataSource initDataSource(Properties properties) throws Exception {
+		_retryJDBCConnection(properties);
+
 		Properties defaultProperties = PropsUtil.getProperties(
 			"jdbc.default.", true);
 
@@ -182,7 +189,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			_log.debug("Created data source " + dataSource.getClass());
 		}
 
-		if (PropsValues.RETRY_DATA_SOURCE_MAX_RETRIES > 0) {
+		if (PropsValues.RETRY_JDBC_MAX_RETRIES > 0) {
 			DBType dbType = DBManagerUtil.getDBType(
 				DialectDetector.getDialect(dataSource));
 
@@ -616,6 +623,29 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 		}
 	}
 
+	private void _retryJDBCConnection(Properties properties) {
+		RetryJDBCConnectionFunction retryJDBCConnectionFunction =
+			new RetryJDBCConnectionFunction(
+				properties, PropsValues.RETRY_JDBC_DELAY_SECONDS,
+				PropsValues.RETRY_JDBC_MAX_RETRIES);
+
+		try (Connection jdbcConnection = retryJDBCConnectionFunction.apply(
+				_getJDBCConnectionFunction)) {
+
+			if (jdbcConnection != null) {
+				if (_log.isInfoEnabled()) {
+					_log.info("JDBC connection successfully retried.");
+				}
+			}
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"JDBC connection could not be retried. Trying datasource.");
+			}
+		}
+	}
+
 	private static final String _HIKARICP_DATASOURCE_CLASS_NAME =
 		"com.zaxxer.hikari.HikariDataSource";
 
@@ -626,6 +656,22 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 		DataSourceFactoryImpl.class);
 
 	private static final PACL _pacl = new NoPACL();
+
+	private final Function<Properties, Connection> _getJDBCConnectionFunction =
+		(Properties properties) -> {
+			try {
+				testDatabaseClass(properties);
+
+				String databaseURL = properties.getProperty("url");
+				String user = properties.getProperty("username");
+				String password = properties.getProperty("password");
+
+				return DriverManager.getConnection(databaseURL, user, password);
+			}
+			catch (Exception e) {
+				throw new RuntimeException("No JDBC connection found", e);
+			}
+		};
 
 	private ServiceTracker<MBeanServer, MBeanServer> _serviceTracker;
 

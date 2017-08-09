@@ -1970,7 +1970,9 @@ public interface PropsKeys {
 
 	public static final String RETRY_ADVICE_MAX_RETRIES = "retry.advice.max.retries";
 
-	public static final String RETRY_DATA_SOURCE_MAX_RETRIES = "retry.data.source.max.retries";
+	public static final String RETRY_JDBC_DELAY_SECONDS = "retry.jdbc.delay.seconds";
+
+	public static final String RETRY_JDBC_MAX_RETRIES = "retry.jdbc.max.retries";
 
 	public static final String ROBOTS_TXT_WITH_SITEMAP = "robots.txt.with.sitemap";
 
