@@ -17,6 +17,7 @@ package com.liferay.portal.service.impl;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.CurrentConnectionUtil;
+import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.ORMException;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -55,6 +56,8 @@ import com.liferay.portal.security.permission.PermissionCacheUtil;
 import com.liferay.portal.service.base.ResourceBlockLocalServiceBaseImpl;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.util.dao.orm.CustomSQLUtil;
+
+import java.lang.reflect.Method;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -1093,9 +1096,88 @@ public class ResourceBlockLocalServiceImpl
 		String permissionsHash =
 			resourceBlockPermissionsContainer.getPermissionsHash();
 
-		resourceBlock.setPermissionsHash(permissionsHash);
+		ResourceBlock existingResourceBlock =
+			resourceBlockPersistence.fetchByC_G_N_P(
+				resourceBlock.getCompanyId(), resourceBlock.getGroupId(),
+				resourceBlock.getName(), permissionsHash);
 
-		updateResourceBlock(resourceBlock);
+		if (existingResourceBlock == null) {
+			resourceBlock.setPermissionsHash(permissionsHash);
+
+			updateResourceBlock(resourceBlock);
+
+			return;
+		}
+
+		if (existingResourceBlock.equals(resourceBlock)) {
+			return;
+		}
+
+		try {
+			_updatePermissionedModels(
+				resourceBlock.getName(), resourceBlock.getResourceBlockId(),
+				existingResourceBlock.getResourceBlockId());
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to update resource block IDs for resource " +
+					resourceBlock.getName(),
+				e);
+
+			return;
+		}
+
+		existingResourceBlock.setReferenceCount(
+			existingResourceBlock.getReferenceCount() +
+				resourceBlock.getReferenceCount());
+
+		resourceBlockPersistence.update(existingResourceBlock);
+
+		deleteResourceBlock(resourceBlock);
+	}
+
+	private void _updatePermissionedModels(
+			String name, long oldResourceBlockId, long newResourceBlockId)
+		throws Exception {
+
+		PersistedModelLocalService persistedModelLocalService =
+			PersistedModelLocalServiceRegistryUtil.
+				getPersistedModelLocalService(name);
+
+		if (persistedModelLocalService == null) {
+			throw new ResourceBlocksNotSupportedException();
+		}
+
+		Class<?> clazz = persistedModelLocalService.getClass();
+
+		Method getActionableDynamicQueryMethod = clazz.getMethod(
+			"getActionableDynamicQuery");
+
+		ActionableDynamicQuery actionableDynamicQuery =
+			(ActionableDynamicQuery)getActionableDynamicQueryMethod.invoke(
+				persistedModelLocalService);
+
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.
+				PerformActionMethod<PermissionedModel>() {
+
+				@Override
+				public void performAction(PermissionedModel permissionedModel)
+					throws PortalException {
+
+					if (permissionedModel.getResourceBlockId() ==
+							oldResourceBlockId) {
+
+						permissionedModel.setResourceBlockId(
+							newResourceBlockId);
+
+						permissionedModel.persist();
+					}
+				}
+
+			});
+
+		actionableDynamicQuery.performActions();
 	}
 
 	private static final String _DELETE_RESOURCE_BLOCK =
