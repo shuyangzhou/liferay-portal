@@ -36,6 +36,7 @@ import org.powermock.api.mockito.PowerMockito;
 
 /**
  * @author Miguel Pastor
+ * @author Christopher Kian
  */
 public class HttpImplTest extends PowerMockito {
 
@@ -52,6 +53,35 @@ public class HttpImplTest extends PowerMockito {
 				}
 
 			});
+
+		StringBundler sb1 = new StringBundler(5);
+
+		sb1.append("www.google.com?redirect=www.yahoo.com%3Fredirect%3D");
+		sb1.append("www.bing.com%253Fredirect%253Dwww.liferay.com%2526");
+		sb1.append("parameter%253Dfoofoobar%26parameter%3Dfoobar&");
+		sb1.append("_backURL=www.ask.com%3Fredirect%3Dwww.zombo.com%26");
+		sb1.append("parameter%3Dbar&parameter=foo");
+
+		_url = sb1.toString();
+
+		StringBundler sb2 = new StringBundler(4);
+
+		sb2.append("www.google.com?redirect=www.yahoo.com%3Fredirect%3D");
+		sb2.append("www.bing.com%253Fparameter%253Dfoofoobar");
+		sb2.append("%26parameter%3Dfoobar&_backURL=www.ask.com%3Fredirect");
+		sb2.append("%3Dwww.zombo.com%26parameter%3Dbar&parameter=foo");
+
+		_urlCountTwo = sb2.toString();
+
+		StringBundler sb3 = new StringBundler(3);
+
+		sb3.append("www.google.com?redirect=www.yahoo.com%3F");
+		sb3.append("parameter%3Dfoobar&_backURL=www.ask.com%3F");
+		sb3.append("parameter%3Dbar&parameter=foo");
+
+		_urlCountOne = sb3.toString();
+
+		_urlCountZero = "www.google.com?parameter=foo";
 	}
 
 	@Test
@@ -137,6 +167,28 @@ public class HttpImplTest extends PowerMockito {
 	public void testEncodeSingleCharacterEncodedPath() {
 		Assert.assertEquals(
 			"http%3A//foo%23anchor", _httpImpl.encodePath("http://foo#anchor"));
+	}
+
+	@Test
+	public void testGetMaxURLDepth() {
+		Assert.assertEquals(3, _httpImpl.getMaxURLDepth(_url, 1000));
+		Assert.assertEquals(3, _httpImpl.getMaxURLDepth(_url, _url.length()));
+		Assert.assertEquals(_url, _httpImpl.shortenURL(_url, 3));
+		Assert.assertEquals(
+			2, _httpImpl.getMaxURLDepth(_url, _url.length() - 1));
+		Assert.assertEquals(
+			2, _httpImpl.getMaxURLDepth(_url, _urlCountTwo.length()));
+		Assert.assertEquals(_urlCountTwo, _httpImpl.shortenURL(_url, 2));
+		Assert.assertEquals(
+			1, _httpImpl.getMaxURLDepth(_url, _urlCountTwo.length() - 1));
+		Assert.assertEquals(
+			1, _httpImpl.getMaxURLDepth(_url, _urlCountOne.length()));
+		Assert.assertEquals(_urlCountOne, _httpImpl.shortenURL(_url, 1));
+		Assert.assertEquals(
+			0, _httpImpl.getMaxURLDepth(_url, _urlCountOne.length() - 1));
+		Assert.assertEquals(
+			0, _httpImpl.getMaxURLDepth(_url, _urlCountZero.length()));
+		Assert.assertEquals(_urlCountZero, _httpImpl.shortenURL(_url, 0));
 	}
 
 	@Test
@@ -500,6 +552,11 @@ public class HttpImplTest extends PowerMockito {
 			Assert.assertTrue(message.contains(expectedMessage));
 		}
 	}
+
+	private static String _url;
+	private static String _urlCountOne;
+	private static String _urlCountTwo;
+	private static String _urlCountZero;
 
 	private final HttpImpl _httpImpl = new HttpImpl();
 
