@@ -259,13 +259,7 @@ public class HttpImpl implements Http {
 		sb.append(URLCodec.encodeURL(value));
 		sb.append(anchor);
 
-		String result = sb.toString();
-
-		if (result.length() > URL_MAXIMUM_LENGTH) {
-			result = shortenURL(result, 2);
-		}
-
-		return result;
+		return shortenURL(sb.toString());
 	}
 
 	@Override
