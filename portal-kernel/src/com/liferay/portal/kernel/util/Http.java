@@ -181,6 +181,8 @@ public interface Http {
 
 	public String setParameter(String url, String name, String value);
 
+	public String shortenURL(String url);
+
 	public String shortenURL(String url, int count);
 
 	public byte[] URLtoByteArray(Http.Options options) throws IOException;
