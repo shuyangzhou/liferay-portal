@@ -26,16 +26,16 @@ import java.net.URL;
 public class ResourceUtil {
 
 	public static ObjectValuePair<ServletContext, URL> getObjectValuePair(
-			String originalRequestPath, String requestPath,
-			ServletContext _servletContext)
+			String requestPath, String requestURI,
+			ServletContext defaultServletContext)
 		throws IOException {
 
 		ObjectValuePair<ServletContext, URL> ovp = null;
 
 		if (ovp == null) {
-			ServletContext servletContext = _servletContext;
+			ServletContext servletContext = defaultServletContext;
 
-			URL resourceURL = servletContext.getResource(requestPath);
+			URL resourceURL = servletContext.getResource(requestURI);
 
 			if (resourceURL != null) {
 				ovp = new ObjectValuePair<>(servletContext, resourceURL);
@@ -45,10 +45,10 @@ public class ResourceUtil {
 		if (ovp == null) {
 			ServletContext servletContext =
 				PortalWebResourcesUtil.getPathServletContext(
-					originalRequestPath);
+					requestPath);
 
 			URL resourceURL = PortalWebResourcesUtil.getResource(
-				servletContext, originalRequestPath);
+				servletContext, requestPath);
 
 			if (resourceURL != null) {
 				ovp = new ObjectValuePair<>(servletContext, resourceURL);
@@ -58,10 +58,10 @@ public class ResourceUtil {
 		if (ovp == null) {
 			ServletContext servletContext =
 				PortletResourcesUtil.getPathServletContext(
-					originalRequestPath);
+					requestPath);
 
 			URL resourceURL = PortletResourcesUtil.getResource(
-				servletContext, originalRequestPath);
+				servletContext, requestPath);
 
 			if (resourceURL != null) {
 				ovp = new ObjectValuePair<>(servletContext, resourceURL);
@@ -71,10 +71,10 @@ public class ResourceUtil {
 		if (ovp == null) {
 			ServletContext servletContext =
 				DynamicResourceIncludeUtil.getPathServletContext(
-					originalRequestPath);
+					requestPath);
 
 			URL resourceURL = DynamicResourceIncludeUtil.getResource(
-				servletContext, originalRequestPath);
+				servletContext, requestPath);
 
 			if (resourceURL != null) {
 				ovp = new ObjectValuePair<>(servletContext, resourceURL);
