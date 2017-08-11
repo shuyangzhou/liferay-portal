@@ -84,11 +84,7 @@ public class DynamicCSSFilter extends IgnoreModuleRequestFilter {
 			FilterChain filterChain)
 		throws Exception {
 
-		ServletContext servletContext = _servletContext;
-
 		String requestPath = getRequestPath(request);
-
-		URL resourceURL = _servletContext.getResource(requestPath);
 
 		String originalRequestPath = request.getRequestURI();
 
@@ -102,43 +98,43 @@ public class DynamicCSSFilter extends IgnoreModuleRequestFilter {
 					originalRequestPath.substring(pos);
 		}
 
-		if (resourceURL == null) {
-			ServletContext resourceServletContext =
-				PortalWebResourcesUtil.getPathServletContext(
-					originalRequestPath);
+		ServletContext servletContext = _servletContext;
 
-			if (resourceServletContext != null) {
+		URL resourceURL = servletContext.getResource(requestPath);
+
+		if (resourceURL == null) {
+			servletContext = PortalWebResourcesUtil.getPathServletContext(
+				originalRequestPath);
+
+			if (servletContext != null) {
 				resourceURL = PortalWebResourcesUtil.getResource(
-					resourceServletContext, originalRequestPath);
+					servletContext, originalRequestPath);
 			}
 
 			if (resourceURL == null) {
-				resourceServletContext =
-					PortletResourcesUtil.getPathServletContext(
-						originalRequestPath);
+				servletContext = PortletResourcesUtil.getPathServletContext(
+					originalRequestPath);
 
-				if (resourceServletContext != null) {
+				if (servletContext != null) {
 					resourceURL = PortletResourcesUtil.getResource(
-						resourceServletContext, originalRequestPath);
+						servletContext, originalRequestPath);
 				}
 			}
 
 			if (resourceURL == null) {
-				resourceServletContext =
+				servletContext =
 					DynamicResourceIncludeUtil.getPathServletContext(
 						originalRequestPath);
 
-				if (resourceServletContext != null) {
+				if (servletContext != null) {
 					resourceURL = DynamicResourceIncludeUtil.getResource(
-						resourceServletContext, originalRequestPath);
+						servletContext, originalRequestPath);
 				}
 			}
 
 			if (resourceURL == null) {
 				return null;
 			}
-
-			servletContext = resourceServletContext;
 		}
 
 		String cacheCommonFileName = getCacheFileName(request);
