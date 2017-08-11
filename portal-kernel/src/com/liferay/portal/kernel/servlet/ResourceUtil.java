@@ -16,9 +16,11 @@ package com.liferay.portal.kernel.servlet;
 
 import com.liferay.portal.kernel.util.ObjectValuePair;
 
-import javax.servlet.ServletContext;
 import java.io.IOException;
+
 import java.net.URL;
+
+import javax.servlet.ServletContext;
 
 /**
  * @author Minhchau Dang
@@ -69,6 +71,36 @@ public class ResourceUtil {
 		}
 
 		return null;
+	}
+
+	public static ServletContext getPathServletContext(
+			String requestPath, String requestURI,
+			ServletContext defaultServletContext)
+		throws IOException {
+
+		ObjectValuePair<ServletContext, URL> ovp = getObjectValuePair(
+			requestPath, requestURI, defaultServletContext);
+
+		if (ovp == null) {
+			return null;
+		}
+
+		return ovp.getKey();
+	}
+
+	public static URL getResource(
+			String requestPath, String requestURI,
+			ServletContext defaultServletContext)
+		throws IOException {
+
+		ObjectValuePair<ServletContext, URL> ovp = getObjectValuePair(
+			requestPath, requestURI, defaultServletContext);
+
+		if (ovp == null) {
+			return null;
+		}
+
+		return ovp.getValue();
 	}
 
 }
