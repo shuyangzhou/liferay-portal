@@ -30,58 +30,45 @@ public class ResourceUtil {
 			ServletContext defaultServletContext)
 		throws IOException {
 
-		ObjectValuePair<ServletContext, URL> ovp = null;
+		ServletContext servletContext = defaultServletContext;
 
-		if (ovp == null) {
-			ServletContext servletContext = defaultServletContext;
+		URL resourceURL = servletContext.getResource(requestURI);
 
-			URL resourceURL = servletContext.getResource(requestURI);
-
-			if (resourceURL != null) {
-				ovp = new ObjectValuePair<>(servletContext, resourceURL);
-			}
+		if (resourceURL != null) {
+			return new ObjectValuePair<>(servletContext, resourceURL);
 		}
 
-		if (ovp == null) {
-			ServletContext servletContext =
-				PortalWebResourcesUtil.getPathServletContext(
-					requestPath);
+		servletContext = PortalWebResourcesUtil.getPathServletContext(
+			requestPath);
 
-			URL resourceURL = PortalWebResourcesUtil.getResource(
-				servletContext, requestPath);
+		resourceURL = PortalWebResourcesUtil.getResource(
+			servletContext, requestPath);
 
-			if (resourceURL != null) {
-				ovp = new ObjectValuePair<>(servletContext, resourceURL);
-			}
+		if (resourceURL != null) {
+			return new ObjectValuePair<>(servletContext, resourceURL);
 		}
 
-		if (ovp == null) {
-			ServletContext servletContext =
-				PortletResourcesUtil.getPathServletContext(
-					requestPath);
+		servletContext = PortletResourcesUtil.getPathServletContext(
+			requestPath);
 
-			URL resourceURL = PortletResourcesUtil.getResource(
-				servletContext, requestPath);
+		resourceURL = PortletResourcesUtil.getResource(
+			servletContext, requestPath);
 
-			if (resourceURL != null) {
-				ovp = new ObjectValuePair<>(servletContext, resourceURL);
-			}
+		if (resourceURL != null) {
+			return new ObjectValuePair<>(servletContext, resourceURL);
 		}
 
-		if (ovp == null) {
-			ServletContext servletContext =
-				DynamicResourceIncludeUtil.getPathServletContext(
-					requestPath);
+		servletContext = DynamicResourceIncludeUtil.getPathServletContext(
+			requestPath);
 
-			URL resourceURL = DynamicResourceIncludeUtil.getResource(
-				servletContext, requestPath);
+		resourceURL = DynamicResourceIncludeUtil.getResource(
+			servletContext, requestPath);
 
-			if (resourceURL != null) {
-				ovp = new ObjectValuePair<>(servletContext, resourceURL);
-			}
+		if (resourceURL != null) {
+			return new ObjectValuePair<>(servletContext, resourceURL);
 		}
 
-		return ovp;
+		return null;
 	}
 
 }
