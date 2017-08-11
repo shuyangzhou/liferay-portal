@@ -20,9 +20,11 @@ import com.liferay.portal.kernel.security.pacl.DoPrivileged;
 import com.liferay.portal.kernel.servlet.DirectServletRegistry;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.URLUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
+import java.io.IOException;
 
 import java.lang.reflect.Method;
 
@@ -105,15 +107,21 @@ public class DirectServletRegistryImpl implements DirectServletRegistry {
 
 		ServletContext servletContext = servletConfig.getServletContext();
 
-		String rootPath = servletContext.getRealPath(StringPool.BLANK);
-
-		File file = new File(rootPath, path);
-
-		if (file.exists()) {
-			return file.lastModified();
+		try {
+			return URLUtil.getLastModifiedTime(
+				servletContext.getResource(StringPool.SLASH));
 		}
+		catch (IOException ioe) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Unable to detect last modified time for " +
+						servletContext.getServletContextName() + " at " +
+							servletContext.getContextPath(),
+					ioe);
+			}
 
-		return -1;
+			return -1;
+		}
 	}
 
 	protected Servlet reloadDependants(
