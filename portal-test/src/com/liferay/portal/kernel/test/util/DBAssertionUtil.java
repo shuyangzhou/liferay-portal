@@ -36,6 +36,10 @@ public class DBAssertionUtil {
 	public static void assertColumns(String tableName, String... columnNames)
 		throws SQLException {
 
+		for (int i = 0; i < columnNames.length; i++) {
+			columnNames[i] = StringUtil.toLowerCase(columnNames[i]);
+		}
+
 		Set<String> names = SetUtil.fromArray(columnNames);
 
 		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
@@ -52,8 +56,7 @@ public class DBAssertionUtil {
 						rs.getString("COLUMN_NAME"));
 
 					Assert.assertTrue(
-						columnName + " should not exist",
-						names.remove(columnName));
+						columnName + " should exist", names.remove(columnName));
 				}
 			}
 		}
