@@ -17,10 +17,9 @@ package com.liferay.portal.servlet.filters.dynamiccss;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
-import com.liferay.portal.kernel.servlet.DynamicResourceIncludeUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.PortalWebResourcesUtil;
-import com.liferay.portal.kernel.servlet.PortletResourcesUtil;
+import com.liferay.portal.kernel.servlet.ResourceUtil;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -99,56 +98,9 @@ public class DynamicCSSFilter extends IgnoreModuleRequestFilter {
 					originalRequestPath.substring(pos);
 		}
 
-		ObjectValuePair<ServletContext, URL> ovp = null;
-
-		if (ovp == null) {
-			ServletContext servletContext = _servletContext;
-
-			URL resourceURL = servletContext.getResource(requestPath);
-
-			if (resourceURL != null) {
-				ovp = new ObjectValuePair<>(servletContext, resourceURL);
-			}
-		}
-
-		if (ovp == null) {
-			ServletContext servletContext =
-				PortalWebResourcesUtil.getPathServletContext(
-					originalRequestPath);
-
-			URL resourceURL = PortalWebResourcesUtil.getResource(
-				servletContext, originalRequestPath);
-
-			if (resourceURL != null) {
-				ovp = new ObjectValuePair<>(servletContext, resourceURL);
-			}
-		}
-
-		if (ovp == null) {
-			ServletContext servletContext =
-				PortletResourcesUtil.getPathServletContext(
-					originalRequestPath);
-
-			URL resourceURL = PortletResourcesUtil.getResource(
-				servletContext, originalRequestPath);
-
-			if (resourceURL != null) {
-				ovp = new ObjectValuePair<>(servletContext, resourceURL);
-			}
-		}
-
-		if (ovp == null) {
-			ServletContext servletContext =
-				DynamicResourceIncludeUtil.getPathServletContext(
-					originalRequestPath);
-
-			URL resourceURL = DynamicResourceIncludeUtil.getResource(
-				servletContext, originalRequestPath);
-
-			if (resourceURL != null) {
-				ovp = new ObjectValuePair<>(servletContext, resourceURL);
-			}
-		}
+		ObjectValuePair<ServletContext, URL> ovp =
+			ResourceUtil.getObjectValuePair(
+				originalRequestPath, requestPath, _servletContext);
 
 		if (ovp == null) {
 			return null;
