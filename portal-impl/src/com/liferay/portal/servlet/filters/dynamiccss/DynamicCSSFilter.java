@@ -110,31 +110,31 @@ public class DynamicCSSFilter extends IgnoreModuleRequestFilter {
 				resourceURL = PortalWebResourcesUtil.getResource(
 					servletContext, originalRequestPath);
 			}
+		}
 
-			if (resourceURL == null) {
-				servletContext = PortletResourcesUtil.getPathServletContext(
+		if (resourceURL == null) {
+			servletContext = PortletResourcesUtil.getPathServletContext(
+				originalRequestPath);
+
+			if (servletContext != null) {
+				resourceURL = PortletResourcesUtil.getResource(
+					servletContext, originalRequestPath);
+			}
+		}
+
+		if (resourceURL == null) {
+			servletContext =
+				DynamicResourceIncludeUtil.getPathServletContext(
 					originalRequestPath);
 
-				if (servletContext != null) {
-					resourceURL = PortletResourcesUtil.getResource(
-						servletContext, originalRequestPath);
-				}
+			if (servletContext != null) {
+				resourceURL = DynamicResourceIncludeUtil.getResource(
+					servletContext, originalRequestPath);
 			}
+		}
 
-			if (resourceURL == null) {
-				servletContext =
-					DynamicResourceIncludeUtil.getPathServletContext(
-						originalRequestPath);
-
-				if (servletContext != null) {
-					resourceURL = DynamicResourceIncludeUtil.getResource(
-						servletContext, originalRequestPath);
-				}
-			}
-
-			if (resourceURL == null) {
-				return null;
-			}
+		if (resourceURL == null) {
+			return null;
 		}
 
 		String cacheCommonFileName = getCacheFileName(request);
