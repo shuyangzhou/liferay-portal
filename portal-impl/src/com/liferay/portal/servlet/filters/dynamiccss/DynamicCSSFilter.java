@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
@@ -98,38 +99,64 @@ public class DynamicCSSFilter extends IgnoreModuleRequestFilter {
 					originalRequestPath.substring(pos);
 		}
 
-		ServletContext servletContext = _servletContext;
+		ObjectValuePair<ServletContext, URL> ovp = null;
 
-		URL resourceURL = servletContext.getResource(requestPath);
+		if (ovp == null) {
+			ServletContext servletContext = _servletContext;
 
-		if (resourceURL == null) {
-			servletContext = PortalWebResourcesUtil.getPathServletContext(
-				originalRequestPath);
+			URL resourceURL = servletContext.getResource(requestPath);
 
-			resourceURL = PortalWebResourcesUtil.getResource(
-				servletContext, originalRequestPath);
+			if (resourceURL != null) {
+				ovp = new ObjectValuePair<>(servletContext, resourceURL);
+			}
 		}
 
-		if (resourceURL == null) {
-			servletContext = PortletResourcesUtil.getPathServletContext(
-				originalRequestPath);
+		if (ovp == null) {
+			ServletContext servletContext =
+				PortalWebResourcesUtil.getPathServletContext(
+					originalRequestPath);
 
-			resourceURL = PortletResourcesUtil.getResource(
+			URL resourceURL = PortalWebResourcesUtil.getResource(
 				servletContext, originalRequestPath);
+
+			if (resourceURL != null) {
+				ovp = new ObjectValuePair<>(servletContext, resourceURL);
+			}
 		}
 
-		if (resourceURL == null) {
-			servletContext =
+		if (ovp == null) {
+			ServletContext servletContext =
+				PortletResourcesUtil.getPathServletContext(
+					originalRequestPath);
+
+			URL resourceURL = PortletResourcesUtil.getResource(
+				servletContext, originalRequestPath);
+
+			if (resourceURL != null) {
+				ovp = new ObjectValuePair<>(servletContext, resourceURL);
+			}
+		}
+
+		if (ovp == null) {
+			ServletContext servletContext =
 				DynamicResourceIncludeUtil.getPathServletContext(
 					originalRequestPath);
 
-			resourceURL = DynamicResourceIncludeUtil.getResource(
+			URL resourceURL = DynamicResourceIncludeUtil.getResource(
 				servletContext, originalRequestPath);
+
+			if (resourceURL != null) {
+				ovp = new ObjectValuePair<>(servletContext, resourceURL);
+			}
 		}
 
-		if (resourceURL == null) {
+		if (ovp == null) {
 			return null;
 		}
+
+		ServletContext servletContext = ovp.getKey();
+
+		URL resourceURL = ovp.getValue();
 
 		String cacheCommonFileName = getCacheFileName(request);
 
