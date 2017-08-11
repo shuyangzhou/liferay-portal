@@ -28,11 +28,13 @@ import com.liferay.message.boards.kernel.service.MBThreadLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Repository;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.parsers.bbcode.BBCodeTranslatorUtil;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.ArrayList;
@@ -228,6 +230,15 @@ public class MBMessageImpl extends MBMessageBaseImpl {
 	}
 
 	@Override
+	public User getUser() throws PortalException {
+		if (_user == null) {
+			_user = UserLocalServiceUtil.getUser(getUserId());
+		}
+
+		return _user;
+	}
+
+	@Override
 	public String getWorkflowClassName() {
 		if (isDiscussion()) {
 			return MBDiscussion.class.getName();
@@ -281,6 +292,12 @@ public class MBMessageImpl extends MBMessageBaseImpl {
 		_attachmentsFolderId = attachmentsFolderId;
 	}
 
+	@Override
+	public void setUser(User user) {
+		_user = user;
+	}
+
 	private long _attachmentsFolderId;
+	private User _user;
 
 }

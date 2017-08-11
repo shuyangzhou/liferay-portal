@@ -67,7 +67,7 @@ Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(locale, timeZo
 						<div class="lfr-discussion-details">
 							<liferay-ui:user-portrait
 								cssClass="user-icon-lg"
-								userId="<%= discussionComment.getUserId() %>"
+								user="<%= discussionComment.getUser() %>"
 								userName="<%= discussionComment.getUserName() %>"
 							/>
 						</div>

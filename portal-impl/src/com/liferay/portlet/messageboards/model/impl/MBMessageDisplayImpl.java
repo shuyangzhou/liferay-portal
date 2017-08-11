@@ -21,6 +21,8 @@ import com.liferay.message.boards.kernel.model.MBThread;
 import com.liferay.message.boards.kernel.model.MBThreadConstants;
 import com.liferay.message.boards.kernel.model.MBTreeWalker;
 import com.liferay.message.boards.kernel.service.MBMessageLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.util.PropsValues;
 
@@ -36,7 +38,7 @@ public class MBMessageDisplayImpl implements MBMessageDisplay {
 		long userId, MBMessage message, MBMessage parentMessage,
 		MBCategory category, MBThread thread, int status,
 		MBMessageLocalService messageLocalService,
-		Comparator<MBMessage> comparator) {
+		UserLocalService userLocalService, Comparator<MBMessage> comparator) {
 
 		_message = message;
 		_parentMessage = parentMessage;
@@ -45,7 +47,7 @@ public class MBMessageDisplayImpl implements MBMessageDisplay {
 
 		_treeWalker = new MBTreeWalkerImpl(
 			userId, message.getThreadId(), status, messageLocalService,
-			comparator);
+			userLocalService, comparator);
 
 		_previousThread = null;
 		_nextThread = null;
@@ -78,7 +80,7 @@ public class MBMessageDisplayImpl implements MBMessageDisplay {
 
 		this(
 			0, message, parentMessage, category, thread, status,
-			messageLocalService, comparator);
+			messageLocalService, UserLocalServiceUtil.getService(), comparator);
 	}
 
 	/**
@@ -101,7 +103,8 @@ public class MBMessageDisplayImpl implements MBMessageDisplay {
 
 		if (!threadView.equals(MBThreadConstants.THREAD_VIEW_FLAT)) {
 			_treeWalker = new MBTreeWalkerImpl(
-				message.getThreadId(), status, messageLocalService, comparator);
+				message.getThreadId(), status, messageLocalService,
+				UserLocalServiceUtil.getService(), comparator);
 		}
 		else {
 			_treeWalker = null;

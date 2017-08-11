@@ -21,6 +21,9 @@ import com.liferay.message.boards.kernel.util.comparator.MessageThreadComparator
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -35,15 +38,17 @@ public class MBTreeWalkerImpl implements MBTreeWalker {
 
 	public MBTreeWalkerImpl(
 		long threadId, int status, MBMessageLocalService messageLocalService,
-		Comparator<MBMessage> comparator) {
+		UserLocalService userLocalService, Comparator<MBMessage> comparator) {
 
-		this(0, threadId, status, messageLocalService, comparator);
+		this(
+			0, threadId, status, messageLocalService, userLocalService,
+			comparator);
 	}
 
 	public MBTreeWalkerImpl(
 		long userId, long threadId, int status,
 		MBMessageLocalService messageLocalService,
-		Comparator<MBMessage> comparator) {
+		UserLocalService userLocalService, Comparator<MBMessage> comparator) {
 
 		_messageIdsMap = new HashMap<>();
 
@@ -61,11 +66,16 @@ public class MBTreeWalkerImpl implements MBTreeWalker {
 					threadId, status, comparator);
 			}
 
+			Map<Long, MBMessage> userMessages = new HashMap<>();
+
 			for (int i = 0; i < messages.size(); i++) {
 				MBMessage curMessage = messages.get(i);
 
 				if (curMessage.isRoot()) {
 					rootMessage = curMessage;
+				}
+				else {
+					userMessages.put(curMessage.getUserId(), curMessage);
 				}
 
 				long parentMessageId = curMessage.getParentMessageId();
@@ -75,6 +85,13 @@ public class MBTreeWalkerImpl implements MBTreeWalker {
 
 					_messageIdsMap.put(parentMessageId, i);
 				}
+			}
+
+			Map<Long, User> users = userLocalService.fetchUserByIds(
+				userMessages.keySet());
+
+			for (MBMessage message : messages) {
+				message.setUser(users.get(message.getUserId()));
 			}
 		}
 		catch (Exception e) {
@@ -96,7 +113,7 @@ public class MBTreeWalkerImpl implements MBTreeWalker {
 
 		this(
 			message.getThreadId(), status, messageLocalService,
-			new MessageThreadComparator());
+			UserLocalServiceUtil.getService(), new MessageThreadComparator());
 	}
 
 	@Override

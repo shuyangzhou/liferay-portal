@@ -93,6 +93,9 @@ public interface MBMessage extends MBMessageModel, PersistedModel {
 	public long getThreadAttachmentsFolderId()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	public com.liferay.portal.kernel.model.User getUser()
+		throws com.liferay.portal.kernel.exception.PortalException;
+
 	public java.lang.String getWorkflowClassName();
 
 	public boolean isDiscussion();
@@ -104,4 +107,6 @@ public interface MBMessage extends MBMessageModel, PersistedModel {
 	public boolean isRoot();
 
 	public void setAttachmentsFolderId(long attachmentsFolderId);
+
+	public void setUser(com.liferay.portal.kernel.model.User user);
 }

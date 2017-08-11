@@ -486,6 +486,12 @@ public class MBMessageWrapper implements MBMessage, ModelWrapper<MBMessage> {
 	}
 
 	@Override
+	public com.liferay.portal.kernel.model.User getUser()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _mbMessage.getUser();
+	}
+
+	@Override
 	public com.liferay.portal.kernel.repository.model.Folder addAttachmentsFolder()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _mbMessage.addAttachmentsFolder();
@@ -1183,6 +1189,11 @@ public class MBMessageWrapper implements MBMessage, ModelWrapper<MBMessage> {
 	@Override
 	public void setThreadId(long threadId) {
 		_mbMessage.setThreadId(threadId);
+	}
+
+	@Override
+	public void setUser(com.liferay.portal.kernel.model.User user) {
+		_mbMessage.setUser(user);
 	}
 
 	/**

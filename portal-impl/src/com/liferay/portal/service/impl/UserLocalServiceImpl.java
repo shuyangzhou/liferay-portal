@@ -2093,6 +2093,12 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		return userPersistence.fetchByPrimaryKey(userId);
 	}
 
+	@Override
+	public Map<Long, User> fetchUserByIds(Set<Long> userIds) {
+		return (Map<Long, User>)(Map<?, ?>)userPersistence.fetchByPrimaryKeys(
+			(Set<Serializable>)(Set<?>)userIds);
+	}
+
 	/**
 	 * Returns the user with the OpenID.
 	 *
