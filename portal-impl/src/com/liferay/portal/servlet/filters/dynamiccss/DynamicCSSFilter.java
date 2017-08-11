@@ -106,20 +106,16 @@ public class DynamicCSSFilter extends IgnoreModuleRequestFilter {
 			servletContext = PortalWebResourcesUtil.getPathServletContext(
 				originalRequestPath);
 
-			if (servletContext != null) {
-				resourceURL = PortalWebResourcesUtil.getResource(
-					servletContext, originalRequestPath);
-			}
+			resourceURL = PortalWebResourcesUtil.getResource(
+				servletContext, originalRequestPath);
 		}
 
 		if (resourceURL == null) {
 			servletContext = PortletResourcesUtil.getPathServletContext(
 				originalRequestPath);
 
-			if (servletContext != null) {
-				resourceURL = PortletResourcesUtil.getResource(
-					servletContext, originalRequestPath);
-			}
+			resourceURL = PortletResourcesUtil.getResource(
+				servletContext, originalRequestPath);
 		}
 
 		if (resourceURL == null) {
@@ -127,10 +123,8 @@ public class DynamicCSSFilter extends IgnoreModuleRequestFilter {
 				DynamicResourceIncludeUtil.getPathServletContext(
 					originalRequestPath);
 
-			if (servletContext != null) {
-				resourceURL = DynamicResourceIncludeUtil.getResource(
-					servletContext, originalRequestPath);
-			}
+			resourceURL = DynamicResourceIncludeUtil.getResource(
+				servletContext, originalRequestPath);
 		}
 
 		if (resourceURL == null) {
