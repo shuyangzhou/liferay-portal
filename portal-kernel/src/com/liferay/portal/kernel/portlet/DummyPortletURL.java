@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import javax.portlet.PortletMode;
+import javax.portlet.PortletSecurityException;
 import javax.portlet.PortletURL;
 import javax.portlet.WindowState;
 
@@ -78,7 +79,7 @@ public class DummyPortletURL implements PortletURL {
 	}
 
 	@Override
-	public void setSecure(boolean secure) {
+	public void setSecure(boolean secure) throws PortletSecurityException {
 	}
 
 	@Override
