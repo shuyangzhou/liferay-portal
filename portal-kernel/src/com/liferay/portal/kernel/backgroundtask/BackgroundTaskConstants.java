@@ -14,12 +14,15 @@
 
 package com.liferay.portal.kernel.backgroundtask;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.util.StringPool;
 
 /**
  * @author Daniel Kocsis
  * @author Eduardo Garcia
  */
+@ProviderType
 public class BackgroundTaskConstants {
 
 	public static final String BACKGROUND_TASK_ID = "backgroundTaskId";
@@ -42,6 +45,8 @@ public class BackgroundTaskConstants {
 
 	public static final String LABEL_IN_PROGRESS = "in-progress";
 
+	public static final String LABEL_INTERRUPTED = "interrupted";
+
 	public static final String LABEL_NEW = "new";
 
 	public static final String LABEL_QUEUED = "queued";
@@ -53,6 +58,8 @@ public class BackgroundTaskConstants {
 	public static final int STATUS_FAILED = 2;
 
 	public static final int STATUS_IN_PROGRESS = 1;
+
+	public static final int STATUS_INTERRUPTED = 5;
 
 	public static final int STATUS_NEW = 0;
 
@@ -69,6 +76,9 @@ public class BackgroundTaskConstants {
 		}
 		else if (status == STATUS_IN_PROGRESS) {
 			return "text-warning";
+		}
+		else if (status == STATUS_INTERRUPTED) {
+			return "text-info";
 		}
 		else if ((status == BackgroundTaskConstants.STATUS_NEW) ||
 				 (status == BackgroundTaskConstants.STATUS_QUEUED)) {
@@ -91,6 +101,9 @@ public class BackgroundTaskConstants {
 		}
 		else if (status == STATUS_IN_PROGRESS) {
 			return LABEL_IN_PROGRESS;
+		}
+		else if (status == STATUS_INTERRUPTED) {
+			return LABEL_INTERRUPTED;
 		}
 		else if (status == STATUS_NEW) {
 			return LABEL_NEW;

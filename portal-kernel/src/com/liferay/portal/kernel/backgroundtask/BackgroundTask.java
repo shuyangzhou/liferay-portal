@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.backgroundtask;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -30,6 +32,7 @@ import java.util.Map;
 /**
  * @author Michael C. Han
  */
+@ProviderType
 public interface BackgroundTask {
 
 	public void addAttachment(long userId, String fileName, File file)
@@ -78,6 +81,8 @@ public interface BackgroundTask {
 	public boolean isCompleted();
 
 	public boolean isInProgress();
+
+	public boolean isInterrupted();
 
 	public void setTaskContextMap(Map<String, Serializable> taskContextMap);
 
