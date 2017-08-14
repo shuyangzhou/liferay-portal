@@ -189,6 +189,10 @@ public class LPKGBundleTrackerCustomizer
 					newBundle = _bundleContext.installBundle(
 						location, url.openStream());
 
+					if (newBundle.getState() == Bundle.UNINSTALLED) {
+						continue;
+					}
+
 					BundleStartLevelUtil.setStartLevelAndStart(
 						newBundle,
 						PropsValues.
@@ -230,6 +234,10 @@ public class LPKGBundleTrackerCustomizer
 
 				newBundle = _bundleContext.installBundle(
 					location, _toWARWrapperBundle(bundle, url));
+
+				if (newBundle.getState() == Bundle.UNINSTALLED) {
+					continue;
+				}
 
 				BundleStartLevelUtil.setStartLevelAndStart(
 					newBundle,
@@ -608,6 +616,10 @@ public class LPKGBundleTrackerCustomizer
 
 	private void _uninstallBundle(String prefix, Bundle bundle)
 		throws Throwable {
+
+		if (bundle.getState() == Bundle.UNINSTALLED) {
+			return;
+		}
 
 		String symbolicName = bundle.getSymbolicName();
 
