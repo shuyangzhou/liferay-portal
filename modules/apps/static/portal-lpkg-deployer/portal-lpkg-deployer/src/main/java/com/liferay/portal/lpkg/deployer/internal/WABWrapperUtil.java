@@ -51,7 +51,7 @@ public class WABWrapperUtil {
 	private static String _generateFileWithQueryString(
 		URL lpkgURL, Version version, String contextName) {
 
-		StringBundler sb = new StringBundler(8);
+		StringBundler sb = new StringBundler(10);
 
 		sb.append(lpkgURL.getPath());
 		sb.append(StringPool.QUESTION);
