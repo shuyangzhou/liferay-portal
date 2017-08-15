@@ -16,6 +16,7 @@ package com.liferay.portal.lpkg.deployer.internal;
 
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -60,8 +61,13 @@ public class WABWrapperUtil {
 		sb.append("&Web-ContextPath=/");
 		sb.append(contextName);
 		sb.append("&protocol=lpkg");
-		sb.append(StringPool.AMPERSAND);
-		sb.append(lpkgURL.getQuery());
+
+		String query = lpkgURL.getQuery();
+
+		if (Validator.isNotNull(query)) {
+			sb.append(StringPool.AMPERSAND);
+			sb.append(query);
+		}
 
 		return sb.toString();
 	}
