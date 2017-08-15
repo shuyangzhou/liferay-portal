@@ -288,6 +288,10 @@ public class HttpUtil {
 		return getHttp().setParameter(url, name, value);
 	}
 
+	public static String shortenURL(String url) {
+		return getHttp().shortenURL(url);
+	}
+
 	public static String shortenURL(String url, int count) {
 		return getHttp().shortenURL(url, count);
 	}

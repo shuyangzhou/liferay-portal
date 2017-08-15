@@ -1030,11 +1030,7 @@ public class PortletURLImpl
 			result = HtmlUtil.escape(result);
 		}
 
-		if (result.length() > Http.URL_MAXIMUM_LENGTH) {
-			result = HttpUtil.shortenURL(result, 2);
-		}
-
-		return result;
+		return HttpUtil.shortenURL(result);
 	}
 
 	protected String generateWSRPToString() {

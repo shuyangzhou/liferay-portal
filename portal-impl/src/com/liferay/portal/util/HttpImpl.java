@@ -259,13 +259,7 @@ public class HttpImpl implements Http {
 		sb.append(URLCodec.encodeURL(value));
 		sb.append(anchor);
 
-		String result = sb.toString();
-
-		if (result.length() > URL_MAXIMUM_LENGTH) {
-			result = shortenURL(result, 2);
-		}
-
-		return result;
+		return shortenURL(sb.toString());
 	}
 
 	@Override
@@ -1220,12 +1214,27 @@ public class HttpImpl implements Http {
 	}
 
 	@Override
-	public String shortenURL(String url, int count) {
-		if (count == 0) {
-			return null;
+	public String shortenURL(String url) {
+		if (url.length() > URL_MAXIMUM_LENGTH) {
+			url = shortenURL(
+				url, getMaxURLDepth(url, 0, URL_MAXIMUM_LENGTH, 0));
 		}
 
+		return url;
+	}
+
+	@Override
+	public String shortenURL(String url, int count) {
 		StringBundler sb = new StringBundler();
+
+		int index = url.indexOf(CharPool.QUESTION);
+
+		if (index > 0) {
+			sb.append(url.substring(0, index));
+			sb.append(CharPool.QUESTION);
+
+			url = url.substring(index + 1);
+		}
 
 		String[] params = StringUtil.split(url, CharPool.AMPERSAND);
 
@@ -1236,6 +1245,10 @@ public class HttpImpl implements Http {
 				param.contains("_returnToFullPageURL=") ||
 				param.startsWith("redirect")) {
 
+				if (count == 0) {
+					continue;
+				}
+
 				int pos = param.indexOf(CharPool.EQUAL);
 
 				String qName = param.substring(0, pos);
@@ -1243,7 +1256,7 @@ public class HttpImpl implements Http {
 				String redirect = param.substring(pos + 1);
 
 				try {
-					redirect = decodeURL(redirect);
+					redirect = URLCodec.decodeURL(redirect, StringPool.UTF8);
 				}
 				catch (IllegalArgumentException iae) {
 					if (_log.isDebugEnabled()) {
@@ -1254,27 +1267,19 @@ public class HttpImpl implements Http {
 					continue;
 				}
 
-				String newURL = shortenURL(redirect, count - 1);
-
-				if (newURL != null) {
-					newURL = URLCodec.encodeURL(newURL);
-
-					sb.append(qName);
-					sb.append(StringPool.EQUAL);
-					sb.append(newURL);
-
-					if (i < (params.length - 1)) {
-						sb.append(StringPool.AMPERSAND);
-					}
-				}
+				sb.append(qName);
+				sb.append(StringPool.EQUAL);
+				sb.append(URLCodec.encodeURL(shortenURL(redirect, count - 1)));
+				sb.append(CharPool.AMPERSAND);
 			}
 			else {
 				sb.append(param);
-
-				if (i < (params.length - 1)) {
-					sb.append(StringPool.AMPERSAND);
-				}
+				sb.append(CharPool.AMPERSAND);
 			}
+		}
+
+		if (sb.index() > 0) {
+			sb.setIndex(sb.index() - 1);
 		}
 
 		return sb.toString();
@@ -1442,6 +1447,69 @@ public class HttpImpl implements Http {
 		}
 
 		return _closeableHttpClient;
+	}
+
+	protected int getMaxURLDepth(
+		String url, int curLength, int maxLength, int count) {
+
+		String ampersand = StringPool.AMPERSAND;
+		String equal = StringPool.EQUAL;
+		String question = StringPool.QUESTION;
+
+		for (int i = 0; i < count; i++) {
+			ampersand = URLCodec.encodeURL(ampersand);
+			equal = URLCodec.encodeURL(equal);
+			question = URLCodec.encodeURL(question);
+		}
+
+		url = StringUtil.replace(url, question, ampersand);
+
+		List<String> redirectParams = new ArrayList<>();
+
+		String[] params = StringUtil.split(url, ampersand);
+
+		for (int i = 0; i < params.length; i++) {
+			if (params[i].contains("_backURL" + equal) ||
+				params[i].contains("_redirect" + equal) ||
+				params[i].contains("_returnToFullPageURL" + equal) ||
+				params[i].startsWith("redirect")) {
+
+				redirectParams.add(params[i]);
+			}
+			else {
+				curLength += params[i].length();
+
+				if (params[i].contains(equal)) {
+					curLength += ampersand.length();
+				}
+			}
+		}
+
+		if (curLength > maxLength) {
+			return count - 1;
+		}
+
+		StringBundler sb = new StringBundler();
+
+		for (String redirectParam : redirectParams) {
+			int pos = redirectParam.indexOf(equal) + equal.length();
+
+			curLength += pos;
+
+			curLength += ampersand.length();
+
+			sb.append(redirectParam.substring(pos));
+			sb.append(URLCodec.encodeURL(ampersand));
+		}
+
+		if ((sb.index() <= 0) || (curLength > maxLength)) {
+			return count;
+		}
+		else {
+			sb.setIndex(sb.index() - 1);
+		}
+
+		return getMaxURLDepth(sb.toString(), curLength, maxLength, count + 1);
 	}
 
 	protected RequestConfig.Builder getRequestConfigBuilder(
