@@ -59,6 +59,8 @@
 	<source-processor name="GradleSourceProcessor">
 		<check name="GradleDependenciesCheck" />
 		<check name="GradleImportsCheck" />
+		<check name="GradleIndentationCheck" />
+		<check name="GradlePropertiesCheck" />
 		<check name="GradleVersionCheck" />
 		<check name="WhitespaceCheck" />
 	</source-processor>
@@ -244,6 +246,7 @@
 		<check name="PropertiesPortalFileCheck" />
 		<check name="PropertiesPortletFileCheck" />
 		<check name="PropertiesServiceKeysCheck" />
+		<check name="PropertiesSourceFormatterContentCheck" />
 		<check name="PropertiesSourceFormatterFileCheck" />
 		<check name="PropertiesWhitespaceCheck">
 			<property name="allowLeadingSpaces" value="true" />
