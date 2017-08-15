@@ -371,6 +371,9 @@ do
 		fi
 	done
 
+	GRADLE_WRAPPER_JAR_REMOTE_SHA=
+	GRADLE_WRAPPER_PROPERTIES_REMOTE_SHA=
+
 	if [[ $(echo "${GRADLE_WRAPPER_JSON}" | grep '\"sha\"') ]]
 	then
 		GRADLE_WRAPPER_JAR_REMOTE_SHA="$(echo "${GRADLE_WRAPPER_JSON}" | grep '"gradle-wrapper.jar"' | sed 's/",/&\'$'\n/g' | grep '"sha"' | sed 's/"[^"]*$//' | sed 's/.*"//')"

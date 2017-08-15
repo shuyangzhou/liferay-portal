@@ -223,6 +223,8 @@ do
 	then
 		warn "Skipping ${SUBREPO_NAME}:${SUBREPO_BRANCH}, failed to retrieve subrepo.commit sha at ${GITREPO_PATH}."
 
+		let BRANCH_COUNTER++
+
 		continue
 	fi
 
@@ -235,6 +237,8 @@ do
 		if [[ -z $(git -C "${SUBREPO_PATH}" show "${SUBREPO_COMMIT}" 2>/dev/null) ]]
 		then
 			warn "Skipping ${SUBREPO_NAME}:${SUBREPO_BRANCH}, failed to fetch sha subrepo sha ${SUBREPO_COMMIT}"
+
+			let BRANCH_COUNTER++
 
 			continue
 		fi
