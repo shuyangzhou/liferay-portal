@@ -180,7 +180,7 @@ public class LPKGBundleTrackerCustomizer
 					}
 
 					String location = LPKGUtil.generateBundleLocation(
-						bundle, "jar", url, _lpkgDeployerDir);
+						bundle, "jar", url.getPath(), _lpkgDeployerDir);
 
 					Bundle newBundle = _bundleContext.getBundle(location);
 
@@ -221,7 +221,7 @@ public class LPKGBundleTrackerCustomizer
 				}
 
 				String location = LPKGUtil.generateBundleLocation(
-					bundle, "war", url, _lpkgDeployerDir);
+					bundle, "war", url.getPath(), _lpkgDeployerDir);
 
 				Bundle newBundle = _bundleContext.getBundle(location);
 
@@ -435,7 +435,7 @@ public class LPKGBundleTrackerCustomizer
 				attributes.getValue(Constants.BUNDLE_VERSION));
 
 			String location = LPKGUtil.generateBundleLocation(
-				bundle, "jar", url, _lpkgDeployerDir);
+				bundle, "jar", url.getPath(), _lpkgDeployerDir);
 
 			for (Bundle installedBundle : _bundleContext.getBundles()) {
 				if (symbolicName.equals(installedBundle.getSymbolicName()) &&
