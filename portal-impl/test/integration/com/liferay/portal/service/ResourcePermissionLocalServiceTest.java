@@ -61,17 +61,15 @@ public class ResourcePermissionLocalServiceTest {
 		public void shouldFailIfFirstResourceIsNotIndividual()
 			throws Exception {
 
-			List<Resource> resources = new ArrayList<>();
+			List<Resource> resources = new ArrayList<>(2);
 
-			Resource firstResource = new ResourceImpl();
-
-			firstResource.setScope(ResourceConstants.SCOPE_GROUP);
+			Resource firstResource = new ResourceImpl(
+				0, null, ResourceConstants.SCOPE_GROUP, null);
 
 			resources.add(firstResource);
 
-			Resource lastResource = new ResourceImpl();
-
-			lastResource.setScope(ResourceConstants.SCOPE_COMPANY);
+			Resource lastResource = new ResourceImpl(
+				0, null, ResourceConstants.SCOPE_COMPANY, null);
 
 			resources.add(lastResource);
 
@@ -95,17 +93,15 @@ public class ResourcePermissionLocalServiceTest {
 
 		@Test
 		public void shouldFailIfLastResourceIsNotCompany() throws Exception {
-			List<Resource> resources = new ArrayList<>();
+			List<Resource> resources = new ArrayList<>(2);
 
-			Resource firstResource = new ResourceImpl();
-
-			firstResource.setScope(ResourceConstants.SCOPE_INDIVIDUAL);
+			Resource firstResource = new ResourceImpl(
+				0, null, ResourceConstants.SCOPE_INDIVIDUAL, null);
 
 			resources.add(firstResource);
 
-			Resource lastResource = new ResourceImpl();
-
-			lastResource.setScope(ResourceConstants.SCOPE_GROUP);
+			Resource lastResource = new ResourceImpl(
+				0, null, ResourceConstants.SCOPE_GROUP, null);
 
 			resources.add(lastResource);
 
@@ -129,9 +125,9 @@ public class ResourcePermissionLocalServiceTest {
 
 		@Test
 		public void shouldFailIfResourcesIsLessThanTwo() throws Exception {
-			List<Resource> resources = new ArrayList<>();
+			List<Resource> resources = new ArrayList<>(1);
 
-			resources.add(new ResourceImpl());
+			resources.add(new ResourceImpl(0, null, 0, null));
 
 			long[] roleIds = new long[1];
 

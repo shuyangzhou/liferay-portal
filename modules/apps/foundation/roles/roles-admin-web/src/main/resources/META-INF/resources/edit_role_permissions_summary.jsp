@@ -53,12 +53,7 @@ List<PermissionDisplay> permissionDisplays = new ArrayList<PermissionDisplay>(pe
 for (int i = 0; i < permissions.size(); i++) {
 	Permission permission = permissions.get(i);
 
-	Resource resource = new ResourceImpl();
-
-	resource.setCompanyId(themeDisplay.getCompanyId());
-	resource.setName(permission.getName());
-	resource.setScope(permission.getScope());
-	resource.setPrimKey(permission.getPrimKey());
+	Resource resource = new ResourceImpl(themeDisplay.getCompanyId(), permission.getName(), permission.getScope(), permission.getPrimKey());
 
 	String curPortletName = null;
 	String curPortletLabel = null;

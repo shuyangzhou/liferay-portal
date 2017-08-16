@@ -48,6 +48,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.impl.ResourceImpl;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.configuration.web.internal.constants.PortletConfigurationPortletKeys;
 import com.liferay.portlet.rolesadmin.search.RoleSearch;
@@ -279,7 +280,7 @@ public class PortletConfigurationPermissionsDisplayContext {
 				getResourcePrimKey(), portletActions, true, true);
 		}
 
-		_resource = ResourceLocalServiceUtil.getResource(
+		_resource = new ResourceImpl(
 			themeDisplay.getCompanyId(), getSelResource(),
 			ResourceConstants.SCOPE_INDIVIDUAL, getResourcePrimKey());
 

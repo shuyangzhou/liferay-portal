@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil;
-import com.liferay.portal.kernel.service.ResourceLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
@@ -42,6 +41,7 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.portal.model.impl.ResourceImpl;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.ResourcePermissionUtil;
@@ -211,7 +211,7 @@ public class PermissionExportImportTest {
 		List<String> actions = ResourceActionsUtil.getResourceActions(
 			_PORTLET_ID, null);
 
-		Resource resource = ResourceLocalServiceUtil.getResource(
+		Resource resource = new ResourceImpl(
 			TestPropsValues.getCompanyId(), _PORTLET_ID,
 			ResourceConstants.SCOPE_INDIVIDUAL, importResourcePrimKey);
 

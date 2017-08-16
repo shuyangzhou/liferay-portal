@@ -408,14 +408,7 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 	public Resource getResource(
 		long companyId, String name, int scope, String primKey) {
 
-		Resource resource = new ResourceImpl();
-
-		resource.setCompanyId(companyId);
-		resource.setName(name);
-		resource.setScope(scope);
-		resource.setPrimKey(primKey);
-
-		return resource;
+		return new ResourceImpl(companyId, name, scope, primKey);
 	}
 
 	/**
@@ -725,7 +718,7 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 
 		// Individual
 
-		Resource resource = getResource(
+		Resource resource = new ResourceImpl(
 			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
 
 		// Permissions
@@ -813,7 +806,7 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 
 		// Individual
 
-		Resource resource = getResource(
+		Resource resource = new ResourceImpl(
 			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
 
 		// Permissions
@@ -1012,7 +1005,7 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 			PermissionedModel permissionedModel)
 		throws PortalException {
 
-		Resource resource = getResource(
+		Resource resource = new ResourceImpl(
 			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
 
 		updateResourcePermissions(groupId, resource, modelPermissions);
@@ -1024,7 +1017,7 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 			PermissionedModel permissionedModel)
 		throws PortalException {
 
-		Resource resource = getResource(
+		Resource resource = new ResourceImpl(
 			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
 
 		if (groupPermissions == null) {

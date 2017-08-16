@@ -22,9 +22,26 @@ import com.liferay.portal.kernel.util.StringBundler;
  */
 public class ResourceImpl implements Resource {
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public ResourceImpl() {
 	}
 
+	public ResourceImpl(
+		long companyId, String name, int scope, String primKey) {
+
+		_companyId = companyId;
+		_name = name;
+		_scope = scope;
+		_primKey = primKey;
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public long getCodeId() {
 		return _codeId;
@@ -55,31 +72,55 @@ public class ResourceImpl implements Resource {
 		return _scope;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public void setCodeId(long codeId) {
 		_codeId = codeId;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public void setCompanyId(long companyId) {
 		_companyId = companyId;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public void setName(String name) {
 		_name = name;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public void setPrimKey(String primKey) {
 		_primKey = primKey;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public void setResourceId(long resourceId) {
 		_resourceId = resourceId;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public void setScope(int scope) {
 		_scope = scope;
