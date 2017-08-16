@@ -201,7 +201,7 @@ public class HttpImplTest extends PowerMockito {
 
 	@Test
 	public void testParameterMapFromString() {
-		Map<String, String[]> expectedParameterMap = new HashMap();
+		Map<String, String[]> expectedParameterMap = new HashMap<>();
 
 		expectedParameterMap.put("key1", new String[] {"value1", "value2"});
 		expectedParameterMap.put("key2", new String[] {"value3"});
