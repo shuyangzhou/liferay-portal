@@ -360,7 +360,7 @@
 
 		<property name="dist.dir" value="${releng.app.dir}/dist" />
 
-		<pathconvert pathsep="," property="app.module.dirs.excludes">
+		<pathconvert pathsep="," property="app.module.dirs.excludes.private">
 			<chainedmapper>
 				<globmapper from="${modules.dir}${file.separator}*" to="*" />
 
@@ -375,9 +375,21 @@
 				</filtermapper>
 			</chainedmapper>
 			<path>
-				<dirset dir="${modules.dir}" excludes="**/*-test*" includes="apps/${app.name}/**">
+				<dirset dir="${modules.dir}" excludes="**/*-test*" includes="apps/${app.name}/**,private/apps/${app.name}/**">
 					<present targetdir="${modules.dir}">
-						<mapper from="*" to="*/.lfrbuild-portal" type="glob" />
+						<mapper from="*" to="*/.lfrbuild-portal-private" type="glob" />
+					</present>
+				</dirset>
+			</path>
+		</pathconvert>
+
+		<pathconvert pathsep="," property="app.module.dirs.excludes.public">
+			<globmapper from="${modules.dir}${file.separator}*" to="*" />
+
+			<path>
+				<dirset dir="${modules.dir}" excludes="**/*-test*" includes="apps/${app.name}/**,private/apps/${app.name}/**">
+					<present targetdir="${modules.dir}">
+						<mapper from="*" to="*/.lfrbuild-portal-private" type="glob" />
 					</present>
 				</dirset>
 				<dirset dir="${modules.dir}" excludes="**/*-test*" includes="private/apps/${app.name}/**">
@@ -387,6 +399,14 @@
 				</dirset>
 			</path>
 		</pathconvert>
+
+		<condition
+			else="${app.module.dirs.excludes.public}"
+			property="app.module.dirs.excludes"
+			value="${app.module.dirs.excludes.private}"
+		>
+			<istrue value="${current.branch.private}" />
+		</condition>
 
 		<pathconvert pathsep="," property="app.module.dirs.private">
 			<globmapper from="${modules.dir}${file.separator}*" to="*" />
