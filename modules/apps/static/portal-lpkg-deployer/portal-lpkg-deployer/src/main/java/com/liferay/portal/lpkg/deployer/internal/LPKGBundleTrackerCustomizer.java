@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.lpkg.StaticLPKGResolver;
 import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -174,7 +175,8 @@ public class LPKGBundleTrackerCustomizer
 						continue;
 					}
 
-					String location = url.getPath();
+					String location = _generateBundleLocation(
+						bundle, "jar", url);
 
 					Bundle newBundle = _bundleContext.getBundle(location);
 
@@ -186,6 +188,10 @@ public class LPKGBundleTrackerCustomizer
 
 					newBundle = _bundleContext.installBundle(
 						location, url.openStream());
+
+					if (newBundle.getState() == Bundle.UNINSTALLED) {
+						continue;
+					}
 
 					BundleStartLevelUtil.setStartLevelAndStart(
 						newBundle,
@@ -210,7 +216,7 @@ public class LPKGBundleTrackerCustomizer
 					continue;
 				}
 
-				String location = url.getPath();
+				String location = _generateBundleLocation(bundle, "war", url);
 
 				Bundle newBundle = _bundleContext.getBundle(location);
 
@@ -227,7 +233,11 @@ public class LPKGBundleTrackerCustomizer
 				// uninstalled, its wrapped WAR bundle will also be unintalled.
 
 				newBundle = _bundleContext.installBundle(
-					url.getPath(), _toWARWrapperBundle(bundle, url));
+					location, _toWARWrapperBundle(bundle, url));
+
+				if (newBundle.getState() == Bundle.UNINSTALLED) {
+					continue;
+				}
 
 				BundleStartLevelUtil.setStartLevelAndStart(
 					newBundle,
@@ -403,6 +413,25 @@ public class LPKGBundleTrackerCustomizer
 		return false;
 	}
 
+	private String _generateBundleLocation(
+		Bundle bundle, String fileType, URL url) {
+
+		StringBundler sb = new StringBundler(7);
+
+		sb.append(fileType);
+		sb.append(":file:");
+		sb.append(
+			GetterUtil.getString(
+				_bundleContext.getProperty("lpkg.deployer.dir"),
+				PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR));
+		sb.append(StringPool.SLASH);
+		sb.append(bundle.getSymbolicName());
+		sb.append(".lpkg!");
+		sb.append(url.getPath());
+
+		return sb.toString();
+	}
+
 	private boolean _isBundleInstalled(Bundle bundle, URL url)
 		throws IOException {
 
@@ -419,7 +448,7 @@ public class LPKGBundleTrackerCustomizer
 			Version version = new Version(
 				attributes.getValue(Constants.BUNDLE_VERSION));
 
-			String location = url.getPath();
+			String location = _generateBundleLocation(bundle, "jar", url);
 
 			for (Bundle installedBundle : _bundleContext.getBundles()) {
 				if (symbolicName.equals(installedBundle.getSymbolicName()) &&
@@ -587,6 +616,10 @@ public class LPKGBundleTrackerCustomizer
 
 	private void _uninstallBundle(String prefix, Bundle bundle)
 		throws Throwable {
+
+		if (bundle.getState() == Bundle.UNINSTALLED) {
+			return;
+		}
 
 		String symbolicName = bundle.getSymbolicName();
 
