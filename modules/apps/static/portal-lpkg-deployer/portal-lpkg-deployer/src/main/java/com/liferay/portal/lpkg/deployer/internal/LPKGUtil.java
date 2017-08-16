@@ -17,8 +17,6 @@ package com.liferay.portal.lpkg.deployer.internal;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
-import java.net.URL;
-
 import org.osgi.framework.Bundle;
 
 /**
@@ -27,7 +25,8 @@ import org.osgi.framework.Bundle;
 public class LPKGUtil {
 
 	public static String generateBundleLocation(
-		Bundle bundle, String fileType, URL url, String lpkgDeployerDir) {
+		Bundle bundle, String fileType, String innerBundle,
+		String lpkgDeployerDir) {
 
 		StringBundler sb = new StringBundler(7);
 
@@ -37,7 +36,7 @@ public class LPKGUtil {
 		sb.append(StringPool.SLASH);
 		sb.append(bundle.getSymbolicName());
 		sb.append(".lpkg!");
-		sb.append(url.getPath());
+		sb.append(innerBundle);
 
 		return sb.toString();
 	}
