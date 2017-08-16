@@ -91,6 +91,10 @@ public class LPKGBundleTrackerCustomizer
 		_bundleContext = bundleContext;
 		_urls = urls;
 		_overrideFileNames = overrideFileNames;
+
+		_lpkgDeployerDir = GetterUtil.getString(
+			_bundleContext.getProperty("lpkg.deployer.dir"),
+			PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR);
 	}
 
 	@Override
@@ -420,10 +424,7 @@ public class LPKGBundleTrackerCustomizer
 
 		sb.append(fileType);
 		sb.append(":file:");
-		sb.append(
-			GetterUtil.getString(
-				_bundleContext.getProperty("lpkg.deployer.dir"),
-				PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR));
+		sb.append(_lpkgDeployerDir);
 		sb.append(StringPool.SLASH);
 		sb.append(bundle.getSymbolicName());
 		sb.append(".lpkg!");
@@ -750,6 +751,7 @@ public class LPKGBundleTrackerCustomizer
 		"/(.*?)(-\\d+\\.\\d+\\.\\d+)(\\..+)?(\\.[jw]ar)");
 
 	private final BundleContext _bundleContext;
+	private final String _lpkgDeployerDir;
 	private final Set<String> _outdatedRemoteAppIds = new HashSet<>();
 	private final Set<String> _overrideFileNames;
 	private final Map<String, URL> _urls;
