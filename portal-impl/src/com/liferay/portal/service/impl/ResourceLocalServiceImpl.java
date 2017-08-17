@@ -469,7 +469,7 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 			auditedModel.getCompanyId(), getGroupId(auditedModel),
 			auditedModel.getModelClassName(),
 			String.valueOf(auditedModel.getPrimaryKeyObj()),
-			serviceContext.getModelPermissions(), null);
+			serviceContext.getModelPermissions());
 	}
 
 	/**
@@ -490,8 +490,8 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 		throws PortalException {
 
 		updateResources(
-			companyId, groupId, name, String.valueOf(primKey), modelPermissions,
-			null);
+			companyId, groupId, name, String.valueOf(primKey),
+			modelPermissions);
 	}
 
 	/**
@@ -546,8 +546,17 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 			ModelPermissions modelPermissions)
 		throws PortalException {
 
-		updateResources(
-			companyId, groupId, name, primKey, modelPermissions, null);
+		for (String roleName : modelPermissions.getRoleNames()) {
+			Role role = getRole(companyId, groupId, roleName);
+
+			List<String> actionIds = modelPermissions.getActionIdsList(
+				roleName);
+
+			resourcePermissionLocalService.setResourcePermissions(
+				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey,
+				role.getRoleId(),
+				actionIds.toArray(new String[actionIds.size()]));
+		}
 	}
 
 	/**
@@ -571,8 +580,7 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 		ModelPermissions modelPermissions = ModelPermissionsFactory.create(
 			groupPermissions, guestPermissions);
 
-		updateResources(
-			companyId, groupId, name, primKey, modelPermissions, null);
+		updateResources(companyId, groupId, name, primKey, modelPermissions);
 	}
 
 	/**
@@ -873,25 +881,6 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 		}
 
 		return roleLocalService.getRole(companyId, roleName);
-	}
-
-	protected void updateResources(
-			long companyId, long groupId, String name, String primKey,
-			ModelPermissions modelPermissions,
-			PermissionedModel permissionedModel)
-		throws PortalException {
-
-		for (String roleName : modelPermissions.getRoleNames()) {
-			Role role = getRole(companyId, groupId, roleName);
-
-			List<String> actionIds = modelPermissions.getActionIdsList(
-				roleName);
-
-			resourcePermissionLocalService.setResourcePermissions(
-				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey,
-				role.getRoleId(),
-				actionIds.toArray(new String[actionIds.size()]));
-		}
 	}
 
 	protected void validate(String name, boolean portletActions)
