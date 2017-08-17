@@ -220,7 +220,7 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 
 		addModelResources(
 			companyId, groupId, userId, name, String.valueOf(primKey),
-			groupPermissions, guestPermissions, null);
+			groupPermissions, guestPermissions);
 	}
 
 	@Override
@@ -255,9 +255,11 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 			String[] guestPermissions)
 		throws PortalException {
 
+		ModelPermissions modelPermissions = ModelPermissionsFactory.create(
+			groupPermissions, guestPermissions);
+
 		addModelResources(
-			companyId, groupId, userId, name, primKey, groupPermissions,
-			guestPermissions, null);
+			companyId, groupId, userId, name, primKey, modelPermissions, null);
 	}
 
 	/**
@@ -751,20 +753,6 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 
 			IndexWriterHelperUtil.updatePermissionFields(name, primKey);
 		}
-	}
-
-	protected void addModelResources(
-			long companyId, long groupId, long userId, String name,
-			String primKey, String[] groupPermissions,
-			String[] guestPermissions, PermissionedModel permissionedModel)
-		throws PortalException {
-
-		ModelPermissions modelPermissions = ModelPermissionsFactory.create(
-			groupPermissions, guestPermissions);
-
-		addModelResources(
-			companyId, groupId, userId, name, primKey, modelPermissions,
-			permissionedModel);
 	}
 
 	protected void addResources(
