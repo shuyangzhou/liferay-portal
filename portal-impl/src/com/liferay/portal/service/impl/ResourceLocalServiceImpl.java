@@ -158,7 +158,7 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 				auditedModel.getCompanyId(), getGroupId(auditedModel),
 				auditedModel.getUserId(), auditedModel.getModelClassName(),
 				String.valueOf(auditedModel.getPrimaryKeyObj()),
-				modelPermissions, getPermissionedModel(auditedModel));
+				modelPermissions, null);
 		}
 		else if (serviceContext.isAddGroupPermissions() ||
 				 serviceContext.isAddGuestPermissions()) {
@@ -168,8 +168,7 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 				auditedModel.getUserId(), auditedModel.getModelClassName(),
 				String.valueOf(auditedModel.getPrimaryKeyObj()), false,
 				serviceContext.isAddGroupPermissions(),
-				serviceContext.isAddGuestPermissions(),
-				getPermissionedModel(auditedModel));
+				serviceContext.isAddGuestPermissions(), null);
 		}
 		else {
 			if (serviceContext.isDeriveDefaultPermissions()) {
@@ -181,8 +180,7 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 				auditedModel.getCompanyId(), getGroupId(auditedModel),
 				auditedModel.getUserId(), auditedModel.getModelClassName(),
 				String.valueOf(auditedModel.getPrimaryKeyObj()),
-				serviceContext.getModelPermissions(),
-				getPermissionedModel(auditedModel));
+				serviceContext.getModelPermissions(), null);
 		}
 	}
 
@@ -471,8 +469,7 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 			auditedModel.getCompanyId(), getGroupId(auditedModel),
 			auditedModel.getModelClassName(),
 			String.valueOf(auditedModel.getPrimaryKeyObj()),
-			serviceContext.getModelPermissions(),
-			getPermissionedModel(auditedModel));
+			serviceContext.getModelPermissions(), null);
 	}
 
 	/**
@@ -878,18 +875,6 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 		}
 
 		return groupId;
-	}
-
-	protected PermissionedModel getPermissionedModel(
-		AuditedModel auditedModel) {
-
-		PermissionedModel permissionedModel = null;
-
-		if (auditedModel instanceof PermissionedModel) {
-			permissionedModel = (PermissionedModel)auditedModel;
-		}
-
-		return permissionedModel;
 	}
 
 	protected Role getRole(long companyId, long groupId, String roleName)
