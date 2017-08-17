@@ -675,8 +675,6 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 		List<String> ownerActionIds =
 			ResourceActionsUtil.getModelResourceActions(resource.getName());
 
-		ownerActionIds = ListUtil.copy(ownerActionIds);
-
 		filterOwnerActions(resource.getName(), ownerActionIds);
 
 		String[] ownerPermissions = ownerActionIds.toArray(
@@ -773,8 +771,6 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 		else {
 			actionIds = ResourceActionsUtil.getModelResourceActions(
 				resource.getName());
-
-			actionIds = ListUtil.copy(actionIds);
 
 			filterOwnerActions(resource.getName(), actionIds);
 		}
