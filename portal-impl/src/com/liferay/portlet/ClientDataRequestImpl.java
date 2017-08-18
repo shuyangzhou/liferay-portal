@@ -16,6 +16,7 @@ package com.liferay.portlet;
 
 import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -80,17 +81,12 @@ public abstract class ClientDataRequestImpl
 	}
 
 	private void _checkContentType() {
-		String method = getMethod();
+		if (StringUtil.equals(getMethod(), HttpMethods.POST) &&
+			StringUtil.equals(
+				getContentType(),
+				ContentTypes.APPLICATION_X_WWW_FORM_URLENCODED)) {
 
-		if (method.equals(HttpMethods.POST)) {
-			String contentType = getContentType();
-
-			if ((contentType != null) &&
-				contentType.equals(
-					ContentTypes.APPLICATION_X_WWW_FORM_URLENCODED)) {
-
-				throw new IllegalStateException();
-			}
+			throw new IllegalStateException();
 		}
 	}
 
