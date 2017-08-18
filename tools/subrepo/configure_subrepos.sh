@@ -116,7 +116,7 @@ fi
 
 SUBREPO_SEARCH_PARAMETERS=(
 	"7.0.x:../..:modules/apps"
-	"ee-7.0.x:../../../liferay-portal-ee:modules/private/apps"
+	"7.0.x-private:../../../liferay-portal-ee:modules/private/apps"
 	"master-private:../../../liferay-portal-ee:modules/private/apps"
 	"master:../..:modules/apps"
 )
