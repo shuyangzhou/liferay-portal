@@ -69,7 +69,7 @@ public class SourceFormatter {
 			new ExcludeSyntaxPattern(ExcludeSyntax.GLOB, "**/tmp/**"),
 			new ExcludeSyntaxPattern(
 				ExcludeSyntax.REGEX,
-				"^((?![\\/\\\\]frontend-js-node-shims[\\/\\\\]src[\\/\\\\]).)*[\\/\\\\]node_modules[\\/\\\\].*")
+				"^((?!/frontend-js-node-shims/src/).)*/node_modules/.*")
 	};
 
 	public static void main(String[] args) throws Exception {
@@ -398,7 +398,7 @@ public class SourceFormatter {
 			SourceFormatterUtil.filterFileNames(
 				_allFileNames, new String[0],
 				new String[] {"**/" + _PROPERTIES_FILE_NAME},
-				_sourceFormatterExcludes);
+				_sourceFormatterExcludes, true);
 
 		for (String modulePropertiesFileName : modulePropertiesFileNames) {
 			_readProperties(new File(modulePropertiesFileName));
