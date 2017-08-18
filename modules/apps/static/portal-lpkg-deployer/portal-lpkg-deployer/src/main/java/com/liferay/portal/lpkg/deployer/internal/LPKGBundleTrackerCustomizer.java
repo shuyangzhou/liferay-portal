@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.lpkg.StaticLPKGResolver;
 import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -90,6 +91,10 @@ public class LPKGBundleTrackerCustomizer
 		_bundleContext = bundleContext;
 		_urls = urls;
 		_overrideFileNames = overrideFileNames;
+
+		_lpkgDeployerDir = GetterUtil.getString(
+			_bundleContext.getProperty("lpkg.deployer.dir"),
+			PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR);
 	}
 
 	@Override
@@ -166,15 +171,16 @@ public class LPKGBundleTrackerCustomizer
 				while (enumeration.hasMoreElements()) {
 					URL url = enumeration.nextElement();
 
-					if (_checkOverridden(symbolicName, url)) {
+					String location = LPKGUtil.generateBundleLocation(
+						bundle, "jar", url.getPath(), _lpkgDeployerDir);
+
+					if (_checkOverridden(symbolicName, url, location)) {
 						continue;
 					}
 
 					if (_isBundleInstalled(bundle, url)) {
 						continue;
 					}
-
-					String location = url.getPath();
 
 					Bundle newBundle = _bundleContext.getBundle(location);
 
@@ -186,6 +192,10 @@ public class LPKGBundleTrackerCustomizer
 
 					newBundle = _bundleContext.installBundle(
 						location, url.openStream());
+
+					if (newBundle.getState() == Bundle.UNINSTALLED) {
+						continue;
+					}
 
 					BundleStartLevelUtil.setStartLevelAndStart(
 						newBundle,
@@ -206,11 +216,12 @@ public class LPKGBundleTrackerCustomizer
 			while (enumeration.hasMoreElements()) {
 				URL url = enumeration.nextElement();
 
-				if (_checkOverridden(symbolicName, url)) {
+				String location = LPKGUtil.generateBundleLocation(
+					bundle, "war", url.getPath(), _lpkgDeployerDir);
+
+				if (_checkOverridden(symbolicName, url, location)) {
 					continue;
 				}
-
-				String location = url.getPath();
 
 				Bundle newBundle = _bundleContext.getBundle(location);
 
@@ -227,7 +238,11 @@ public class LPKGBundleTrackerCustomizer
 				// uninstalled, its wrapped WAR bundle will also be unintalled.
 
 				newBundle = _bundleContext.installBundle(
-					url.getPath(), _toWARWrapperBundle(bundle, url));
+					location, _toWARWrapperBundle(bundle, url));
+
+				if (newBundle.getState() == Bundle.UNINSTALLED) {
+					continue;
+				}
 
 				BundleStartLevelUtil.setStartLevelAndStart(
 					newBundle,
@@ -373,7 +388,8 @@ public class LPKGBundleTrackerCustomizer
 		return sb.toString();
 	}
 
-	private boolean _checkOverridden(String symbolicName, URL url)
+	private boolean _checkOverridden(
+			String symbolicName, URL url, String location)
 		throws Throwable {
 
 		String path = url.getPath();
@@ -387,7 +403,7 @@ public class LPKGBundleTrackerCustomizer
 		path = StringUtil.toLowerCase(path);
 
 		if (_overrideFileNames.contains(path)) {
-			Bundle bundle = _bundleContext.getBundle(url.getPath());
+			Bundle bundle = _bundleContext.getBundle(location);
 
 			if (bundle != null) {
 				_uninstallBundle(symbolicName.concat(StringPool.DASH), bundle);
@@ -419,7 +435,8 @@ public class LPKGBundleTrackerCustomizer
 			Version version = new Version(
 				attributes.getValue(Constants.BUNDLE_VERSION));
 
-			String location = url.getPath();
+			String location = LPKGUtil.generateBundleLocation(
+				bundle, "jar", url.getPath(), _lpkgDeployerDir);
 
 			for (Bundle installedBundle : _bundleContext.getBundles()) {
 				if (symbolicName.equals(installedBundle.getSymbolicName()) &&
@@ -588,6 +605,10 @@ public class LPKGBundleTrackerCustomizer
 	private void _uninstallBundle(String prefix, Bundle bundle)
 		throws Throwable {
 
+		if (bundle.getState() == Bundle.UNINSTALLED) {
+			return;
+		}
+
 		String symbolicName = bundle.getSymbolicName();
 
 		Set<Bundle> uninstalledBundles = new HashSet<>();
@@ -717,6 +738,7 @@ public class LPKGBundleTrackerCustomizer
 		"/(.*?)(-\\d+\\.\\d+\\.\\d+)(\\..+)?(\\.[jw]ar)");
 
 	private final BundleContext _bundleContext;
+	private final String _lpkgDeployerDir;
 	private final Set<String> _outdatedRemoteAppIds = new HashSet<>();
 	private final Set<String> _overrideFileNames;
 	private final Map<String, URL> _urls;
