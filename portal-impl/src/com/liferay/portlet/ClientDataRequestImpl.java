@@ -81,8 +81,8 @@ public abstract class ClientDataRequestImpl
 	}
 
 	private void _checkContentType() {
-		if (StringUtil.equals(getMethod(), HttpMethods.POST) &&
-			StringUtil.equals(
+		if (StringUtil.equalsIgnoreCase(getMethod(), HttpMethods.POST) &&
+			StringUtil.equalsIgnoreCase(
 				getContentType(),
 				ContentTypes.APPLICATION_X_WWW_FORM_URLENCODED)) {
 
