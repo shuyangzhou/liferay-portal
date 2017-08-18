@@ -393,21 +393,22 @@ public class VerifyPermission extends VerifyProcess {
 			long userClassNameId, long userGroupClassNameId, long[] companyIds)
 		throws Exception {
 
+		runSQL(
+			"create index tmp_res_primKeyId on ResourcePermission(primKeyId)");
+
 		for (long companyId : companyIds) {
 			Role powerUserRole = RoleLocalServiceUtil.getRole(
 				companyId, RoleConstants.POWER_USER);
 			Role userRole = RoleLocalServiceUtil.getRole(
 				companyId, RoleConstants.USER);
 
-			StringBundler sb = new StringBundler(19);
+			StringBundler sb = new StringBundler(18);
 
 			sb.append("update ignore ResourcePermission inner join Layout on ");
 			sb.append("ResourcePermission.companyId = Layout.companyId and ");
-			sb.append("ResourcePermission.primKey like ");
-			sb.append("replace('[$PLID$]_LAYOUT_%', '[$PLID$]', ");
-			sb.append("cast_text(Layout.plid)) inner join Group_ on ");
-			sb.append("Layout.groupId = Group_.groupId set ");
-			sb.append("ResourcePermission.roleId = ");
+			sb.append("ResourcePermission.primKey like '%_LAYOUT_%' ");
+			sb.append("inner join Group_ on Layout.groupId = Group_.groupId ");
+			sb.append("set ResourcePermission.roleId = ");
 			sb.append(userRole.getRoleId());
 			sb.append(" where ResourcePermission.scope = ");
 			sb.append(ResourceConstants.SCOPE_INDIVIDUAL);
@@ -423,6 +424,8 @@ public class VerifyPermission extends VerifyProcess {
 
 			runSQL(sb.toString());
 		}
+
+		runSQL("drop index tmp_res_primKeyId on ResourcePermission");
 	}
 
 	protected void fixUserDefaultRolePermissionsOracle(
