@@ -16,6 +16,7 @@ package com.liferay.portal.util;
 
 import com.liferay.portal.kernel.test.CaptureHandler;
 import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -173,22 +174,38 @@ public class HttpImplTest extends PowerMockito {
 	public void testGetMaxURLDepth() {
 		Assert.assertEquals(3, _httpImpl.getMaxURLDepth(_url, 1000));
 		Assert.assertEquals(3, _httpImpl.getMaxURLDepth(_url, _url.length()));
-		Assert.assertEquals(_url, _httpImpl.shortenURL(_url, 3));
+		Assert.assertEquals(
+			_url,
+			ReflectionTestUtil.invoke(
+				_httpImpl, "_shortenURL",
+				new Class<?>[] {String.class, int.class}, _url, 3));
 		Assert.assertEquals(
 			2, _httpImpl.getMaxURLDepth(_url, _url.length() - 1));
 		Assert.assertEquals(
 			2, _httpImpl.getMaxURLDepth(_url, _urlCountTwo.length()));
-		Assert.assertEquals(_urlCountTwo, _httpImpl.shortenURL(_url, 2));
+		Assert.assertEquals(
+			_urlCountTwo,
+			ReflectionTestUtil.invoke(
+				_httpImpl, "_shortenURL",
+				new Class<?>[] {String.class, int.class}, _url, 2));
 		Assert.assertEquals(
 			1, _httpImpl.getMaxURLDepth(_url, _urlCountTwo.length() - 1));
 		Assert.assertEquals(
 			1, _httpImpl.getMaxURLDepth(_url, _urlCountOne.length()));
-		Assert.assertEquals(_urlCountOne, _httpImpl.shortenURL(_url, 1));
+		Assert.assertEquals(
+			_urlCountOne,
+			ReflectionTestUtil.invoke(
+				_httpImpl, "_shortenURL",
+				new Class<?>[] {String.class, int.class}, _url, 1));
 		Assert.assertEquals(
 			0, _httpImpl.getMaxURLDepth(_url, _urlCountOne.length() - 1));
 		Assert.assertEquals(
 			0, _httpImpl.getMaxURLDepth(_url, _urlCountZero.length()));
-		Assert.assertEquals(_urlCountZero, _httpImpl.shortenURL(_url, 0));
+		Assert.assertEquals(
+			_urlCountZero,
+			ReflectionTestUtil.invoke(
+				_httpImpl, "_shortenURL",
+				new Class<?>[] {String.class, int.class}, _url, 0));
 	}
 
 	@Test
@@ -394,53 +411,84 @@ public class HttpImplTest extends PowerMockito {
 	@Test
 	public void testShortenURL() {
 		Assert.assertEquals(
-			"www.google.com", _httpImpl.shortenURL("www.google.com", 0));
+			"www.google.com",
+			ReflectionTestUtil.invoke(
+				_httpImpl, "_shortenURL",
+				new Class<?>[] {String.class, int.class}, "www.google.com", 0));
 		Assert.assertEquals(
-			"www.google.com", _httpImpl.shortenURL("www.google.com?", 0));
+			"www.google.com",
+			ReflectionTestUtil.invoke(
+				_httpImpl, "_shortenURL",
+				new Class<?>[] {String.class, int.class}, "www.google.com?",
+				0));
 		Assert.assertEquals(
 			"www.google.com?first=foo&second=bar",
-			_httpImpl.shortenURL("www.google.com?first=foo&second=bar", 0));
+			ReflectionTestUtil.invoke(
+				_httpImpl, "_shortenURL",
+				new Class<?>[] {String.class, int.class},
+				"www.google.com?first=foo&second=bar", 0));
 		Assert.assertEquals(
 			"www.google.com",
-			_httpImpl.shortenURL("www.google.com?_backURL=www.yahoo.com", 0));
+			ReflectionTestUtil.invoke(
+				_httpImpl, "_shortenURL",
+				new Class<?>[] {String.class, int.class},
+				"www.google.com?_backURL=www.yahoo.com", 0));
 		Assert.assertEquals(
 			"www.google.com",
-			_httpImpl.shortenURL("www.google.com?_redirect=www.yahoo.com", 0));
+			ReflectionTestUtil.invoke(
+				_httpImpl, "_shortenURL",
+				new Class<?>[] {String.class, int.class},
+				"www.google.com?_redirect=www.yahoo.com", 0));
 		Assert.assertEquals(
 			"www.google.com",
-			_httpImpl.shortenURL(
+			ReflectionTestUtil.invoke(
+				_httpImpl, "_shortenURL",
+				new Class<?>[] {String.class, int.class},
 				"www.google.com?_returnToFullPageURL=www.yahoo.com", 0));
 		Assert.assertEquals(
 			"www.google.com",
-			_httpImpl.shortenURL("www.google.com?redirect=www.yahoo.com", 0));
+			ReflectionTestUtil.invoke(
+				_httpImpl, "_shortenURL",
+				new Class<?>[] {String.class, int.class},
+				"www.google.com?redirect=www.yahoo.com", 0));
 		Assert.assertEquals(
 			"www.google.com?parameter=foo",
-			_httpImpl.shortenURL(
+			ReflectionTestUtil.invoke(
+				_httpImpl, "_shortenURL",
+				new Class<?>[] {String.class, int.class},
 				"www.google.com?redirect=www.yahoo.com&parameter=foo", 0));
 		Assert.assertEquals(
 			"www.google.com?redirect=www.yahoo.com%3Fredirect%3D" +
 				"www.bing.com%26parameter%3Dbar&parameter=foo",
-			_httpImpl.shortenURL(
+			ReflectionTestUtil.invoke(
+				_httpImpl, "_shortenURL",
+				new Class<?>[] {String.class, int.class},
 				"www.google.com?redirect=www.yahoo.com%3Fredirect%3D" +
 					"www.bing.com%26parameter%3Dbar&parameter=foo",
 				3));
 		Assert.assertEquals(
 			"www.google.com?redirect=www.yahoo.com%3Fredirect%3D" +
 				"www.bing.com%26parameter%3Dbar&parameter=foo",
-			_httpImpl.shortenURL(
+			ReflectionTestUtil.invoke(
+				_httpImpl, "_shortenURL",
+				new Class<?>[] {String.class, int.class},
 				"www.google.com?redirect=www.yahoo.com%3Fredirect%3D" +
 					"www.bing.com%26parameter%3Dbar&parameter=foo",
 				2));
 		Assert.assertEquals(
 			"www.google.com?redirect=www.yahoo.com%3Fparameter%3Dbar&" +
 				"parameter=foo",
-			_httpImpl.shortenURL(
+			ReflectionTestUtil.invoke(
+				_httpImpl, "_shortenURL",
+				new Class<?>[] {String.class, int.class},
 				"www.google.com?redirect=www.yahoo.com%3Fredirect%3D" +
 					"www.bing.com%26parameter%3Dbar&parameter=foo",
 				1));
 		Assert.assertEquals(
 			"www.google.com?parameter=foo",
-			_httpImpl.shortenURL(
+			ReflectionTestUtil.invoke(
+				_httpImpl, "_shortenURL",
+				new Class<?>[] {String.class, int.class},
 				"www.google.com?redirect=www.yahoo.com%3Fredirect%3D" +
 					"www.bing.com%26parameter%3Dbar&parameter=foo",
 				0));
