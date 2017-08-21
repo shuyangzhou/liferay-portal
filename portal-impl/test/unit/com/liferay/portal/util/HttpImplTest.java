@@ -54,35 +54,6 @@ public class HttpImplTest extends PowerMockito {
 				}
 
 			});
-
-		StringBundler sb1 = new StringBundler(5);
-
-		sb1.append("www.google.com?redirect=www.yahoo.com%3Fredirect%3D");
-		sb1.append("www.bing.com%253Fredirect%253Dwww.liferay.com%2526");
-		sb1.append("parameter%253Dfoofoobar%26parameter%3Dfoobar&");
-		sb1.append("_backURL=www.ask.com%3Fredirect%3Dwww.zombo.com%26");
-		sb1.append("parameter%3Dbar&parameter=foo");
-
-		_url = sb1.toString();
-
-		StringBundler sb2 = new StringBundler(4);
-
-		sb2.append("www.google.com?redirect=www.yahoo.com%3Fredirect%3D");
-		sb2.append("www.bing.com%253Fparameter%253Dfoofoobar");
-		sb2.append("%26parameter%3Dfoobar&_backURL=www.ask.com%3Fredirect");
-		sb2.append("%3Dwww.zombo.com%26parameter%3Dbar&parameter=foo");
-
-		_urlCountTwo = sb2.toString();
-
-		StringBundler sb3 = new StringBundler(3);
-
-		sb3.append("www.google.com?redirect=www.yahoo.com%3F");
-		sb3.append("parameter%3Dfoobar&_backURL=www.ask.com%3F");
-		sb3.append("parameter%3Dbar&parameter=foo");
-
-		_urlCountOne = sb3.toString();
-
-		_urlCountZero = "www.google.com?parameter=foo";
 	}
 
 	@Test
@@ -172,40 +143,40 @@ public class HttpImplTest extends PowerMockito {
 
 	@Test
 	public void testGetMaxURLDepth() {
-		Assert.assertEquals(3, _httpImpl.getMaxURLDepth(_url, 1000));
-		Assert.assertEquals(3, _httpImpl.getMaxURLDepth(_url, _url.length()));
+		Assert.assertEquals(3, _httpImpl.getMaxURLDepth(_URL, 1000));
+		Assert.assertEquals(3, _httpImpl.getMaxURLDepth(_URL, _URL.length()));
 		Assert.assertEquals(
-			_url,
+			_URL,
 			ReflectionTestUtil.invoke(
 				_httpImpl, "_shortenURL",
-				new Class<?>[] {String.class, int.class}, _url, 3));
+				new Class<?>[] {String.class, int.class}, _URL, 3));
 		Assert.assertEquals(
-			2, _httpImpl.getMaxURLDepth(_url, _url.length() - 1));
+			2, _httpImpl.getMaxURLDepth(_URL, _URL.length() - 1));
 		Assert.assertEquals(
-			2, _httpImpl.getMaxURLDepth(_url, _urlCountTwo.length()));
+			2, _httpImpl.getMaxURLDepth(_URL, _URL_COUNT_TWO.length()));
 		Assert.assertEquals(
-			_urlCountTwo,
+			_URL_COUNT_TWO,
 			ReflectionTestUtil.invoke(
 				_httpImpl, "_shortenURL",
-				new Class<?>[] {String.class, int.class}, _url, 2));
+				new Class<?>[] {String.class, int.class}, _URL, 2));
 		Assert.assertEquals(
-			1, _httpImpl.getMaxURLDepth(_url, _urlCountTwo.length() - 1));
+			1, _httpImpl.getMaxURLDepth(_URL, _URL_COUNT_TWO.length() - 1));
 		Assert.assertEquals(
-			1, _httpImpl.getMaxURLDepth(_url, _urlCountOne.length()));
+			1, _httpImpl.getMaxURLDepth(_URL, _URL_COUNT_ONE.length()));
 		Assert.assertEquals(
-			_urlCountOne,
+			_URL_COUNT_ONE,
 			ReflectionTestUtil.invoke(
 				_httpImpl, "_shortenURL",
-				new Class<?>[] {String.class, int.class}, _url, 1));
+				new Class<?>[] {String.class, int.class}, _URL, 1));
 		Assert.assertEquals(
-			0, _httpImpl.getMaxURLDepth(_url, _urlCountOne.length() - 1));
+			0, _httpImpl.getMaxURLDepth(_URL, _URL_COUNT_ONE.length() - 1));
 		Assert.assertEquals(
-			0, _httpImpl.getMaxURLDepth(_url, _urlCountZero.length()));
+			0, _httpImpl.getMaxURLDepth(_URL, _URL_COUNT_ZERO.length()));
 		Assert.assertEquals(
-			_urlCountZero,
+			_URL_COUNT_ZERO,
 			ReflectionTestUtil.invoke(
 				_httpImpl, "_shortenURL",
-				new Class<?>[] {String.class, int.class}, _url, 0));
+				new Class<?>[] {String.class, int.class}, _URL, 0));
 	}
 
 	@Test
@@ -601,10 +572,43 @@ public class HttpImplTest extends PowerMockito {
 		}
 	}
 
-	private static String _url;
-	private static String _urlCountOne;
-	private static String _urlCountTwo;
-	private static String _urlCountZero;
+	private static final String _URL;
+
+	private static final String _URL_COUNT_ONE;
+
+	private static final String _URL_COUNT_TWO;
+
+	private static final String _URL_COUNT_ZERO =
+		"www.google.com?parameter=foo";
+
+	static {
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("www.google.com?redirect=www.yahoo.com%3Fredirect%3D");
+		sb.append("www.bing.com%253Fredirect%253Dwww.liferay.com%2526");
+		sb.append("parameter%253Dfoofoobar%26parameter%3Dfoobar&");
+		sb.append("_backURL=www.ask.com%3Fredirect%3Dwww.zombo.com%26");
+		sb.append("parameter%3Dbar&parameter=foo");
+
+		_URL = sb.toString();
+
+		sb.setIndex(0);
+
+		sb.append("www.google.com?redirect=www.yahoo.com%3Fredirect%3D");
+		sb.append("www.bing.com%253Fparameter%253Dfoofoobar");
+		sb.append("%26parameter%3Dfoobar&_backURL=www.ask.com%3Fredirect");
+		sb.append("%3Dwww.zombo.com%26parameter%3Dbar&parameter=foo");
+
+		_URL_COUNT_TWO = sb.toString();
+
+		sb.setIndex(0);
+
+		sb.append("www.google.com?redirect=www.yahoo.com%3F");
+		sb.append("parameter%3Dfoobar&_backURL=www.ask.com%3F");
+		sb.append("parameter%3Dbar&parameter=foo");
+
+		_URL_COUNT_ONE = sb.toString();
+	}
 
 	private final HttpImpl _httpImpl = new HttpImpl();
 
