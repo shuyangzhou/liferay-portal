@@ -183,6 +183,10 @@ public interface Http {
 
 	public String shortenURL(String url);
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #shortenURL(String)}
+	 */
+	@Deprecated
 	public String shortenURL(String url, int count);
 
 	public byte[] URLtoByteArray(Http.Options options) throws IOException;

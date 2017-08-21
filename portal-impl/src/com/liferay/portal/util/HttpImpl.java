@@ -1221,66 +1221,13 @@ public class HttpImpl implements Http {
 		return url;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #shortenURL(String)}
+	 */
+	@Deprecated
 	@Override
 	public String shortenURL(String url, int count) {
-		StringBundler sb = new StringBundler();
-
-		int index = url.indexOf(CharPool.QUESTION);
-
-		if (index > 0) {
-			sb.append(url.substring(0, index));
-			sb.append(CharPool.QUESTION);
-
-			url = url.substring(index + 1);
-		}
-
-		String[] params = StringUtil.split(url, CharPool.AMPERSAND);
-
-		for (int i = 0; i < params.length; i++) {
-			String param = params[i];
-
-			if (param.contains("_backURL=") || param.contains("_redirect=") ||
-				param.contains("_returnToFullPageURL=") ||
-				param.startsWith("redirect")) {
-
-				if (count == 0) {
-					continue;
-				}
-
-				int pos = param.indexOf(CharPool.EQUAL);
-
-				String qName = param.substring(0, pos);
-
-				String redirect = param.substring(pos + 1);
-
-				try {
-					redirect = URLCodec.decodeURL(redirect, StringPool.UTF8);
-				}
-				catch (IllegalArgumentException iae) {
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							"Skipping undecodable parameter " + param, iae);
-					}
-
-					continue;
-				}
-
-				sb.append(qName);
-				sb.append(StringPool.EQUAL);
-				sb.append(URLCodec.encodeURL(shortenURL(redirect, count - 1)));
-				sb.append(CharPool.AMPERSAND);
-			}
-			else {
-				sb.append(param);
-				sb.append(CharPool.AMPERSAND);
-			}
-		}
-
-		if (sb.index() > 0) {
-			sb.setIndex(sb.index() - 1);
-		}
-
-		return sb.toString();
+		return _shortenURL(url, count);
 	}
 
 	@Override
@@ -2138,6 +2085,67 @@ public class HttpImpl implements Http {
 		}
 
 		return false;
+	}
+
+	private String _shortenURL(String url, int count) {
+		StringBundler sb = new StringBundler();
+
+		int index = url.indexOf(CharPool.QUESTION);
+
+		if (index > 0) {
+			sb.append(url.substring(0, index));
+			sb.append(CharPool.QUESTION);
+
+			url = url.substring(index + 1);
+		}
+
+		String[] params = StringUtil.split(url, CharPool.AMPERSAND);
+
+		for (int i = 0; i < params.length; i++) {
+			String param = params[i];
+
+			if (param.contains("_backURL=") || param.contains("_redirect=") ||
+				param.contains("_returnToFullPageURL=") ||
+				param.startsWith("redirect")) {
+
+				if (count == 0) {
+					continue;
+				}
+
+				int pos = param.indexOf(CharPool.EQUAL);
+
+				String qName = param.substring(0, pos);
+
+				String redirect = param.substring(pos + 1);
+
+				try {
+					redirect = URLCodec.decodeURL(redirect, StringPool.UTF8);
+				}
+				catch (IllegalArgumentException iae) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							"Skipping undecodable parameter " + param, iae);
+					}
+
+					continue;
+				}
+
+				sb.append(qName);
+				sb.append(StringPool.EQUAL);
+				sb.append(URLCodec.encodeURL(_shortenURL(redirect, count - 1)));
+				sb.append(CharPool.AMPERSAND);
+			}
+			else {
+				sb.append(param);
+				sb.append(CharPool.AMPERSAND);
+			}
+		}
+
+		if (sb.index() > 0) {
+			sb.setIndex(sb.index() - 1);
+		}
+
+		return sb.toString();
 	}
 
 	private static final String _DEFAULT_USER_AGENT =
