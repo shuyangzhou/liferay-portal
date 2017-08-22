@@ -32,12 +32,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.test.rule.Inject;
+import com.liferay.portal.test.rule.InjectTestRule;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -52,14 +51,8 @@ public class DDLTest {
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
-		new LiferayIntegrationTestRule();
-
-	@Before
-	public void setUp() {
-		Registry registry = RegistryUtil.getRegistry();
-
-		_ddl = registry.getService(DDL.class);
-	}
+		new AggregateTestRule(
+			InjectTestRule.INSTANCE, new LiferayIntegrationTestRule());
 
 	@Test
 	public void testGetDDLRecordAsJSONObject() throws Exception {
@@ -139,6 +132,7 @@ public class DDLTest {
 		Assert.assertEquals("Text0, Text1", jsonObject.getString("TextField1"));
 	}
 
-	private DDL _ddl;
+	@Inject
+	private static DDL _ddl;
 
 }
