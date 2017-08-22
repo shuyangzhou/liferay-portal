@@ -62,16 +62,15 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.search.test.util.BaseSearchTestCase;
+import com.liferay.portal.test.rule.Inject;
+import com.liferay.portal.test.rule.InjectTestRule;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 import com.liferay.portlet.documentlibrary.util.test.DLAppTestUtil;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
 
 import java.io.File;
 import java.io.InputStream;
 
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -89,17 +88,9 @@ public class DLFileEntrySearchTest extends BaseSearchTestCase {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			new LiferayIntegrationTestRule(),
+			InjectTestRule.INSTANCE, new LiferayIntegrationTestRule(),
 			PermissionCheckerTestRule.INSTANCE,
 			SynchronousDestinationTestRule.INSTANCE);
-
-	@Before
-	@Override
-	public void setUp() throws Exception {
-		super.setUp();
-
-		setUpDDMIndexer();
-	}
 
 	@Ignore
 	@Override
@@ -453,12 +444,6 @@ public class DLFileEntrySearchTest extends BaseSearchTestCase {
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
-	protected void setUpDDMIndexer() {
-		Registry registry = RegistryUtil.getRegistry();
-
-		_ddmIndexer = registry.getService(DDMIndexer.class);
-	}
-
 	@Override
 	protected BaseModel<?> updateBaseModel(
 			BaseModel<?> baseModel, String keywords,
@@ -553,7 +538,9 @@ public class DLFileEntrySearchTest extends BaseSearchTestCase {
 
 	private static final int _FOLDER_NAME_MAX_LENGTH = 100;
 
-	private DDMIndexer _ddmIndexer;
+	@Inject
+	private static DDMIndexer _ddmIndexer;
+
 	private DDMStructure _ddmStructure;
 
 }
