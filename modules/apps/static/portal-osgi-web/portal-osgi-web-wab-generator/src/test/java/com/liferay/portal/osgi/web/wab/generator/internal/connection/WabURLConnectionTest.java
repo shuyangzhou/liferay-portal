@@ -27,12 +27,14 @@ import com.liferay.portal.xml.SAXReaderImpl;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
 import java.net.UnknownServiceException;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -76,7 +78,7 @@ public class WabURLConnectionTest {
 		SAXReaderImpl unsecureSAXReader = new SAXReaderImpl();
 
 		unsecureSAXReaderUtil.setSAXReader(unsecureSAXReader);
-		
+
 		URL.setURLStreamHandlerFactory(new TestURLStreamHandlerFactory());
 	}
 
@@ -133,9 +135,11 @@ public class WabURLConnectionTest {
 		@Override
 		protected URLConnection openConnection(URL url) throws IOException {
 			return new URLConnection(url) {
+
 				@Override
 				public void connect() throws IOException {
 				}
+
 			};
 		}
 
