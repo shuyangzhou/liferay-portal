@@ -31,9 +31,9 @@ import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.test.rule.Inject;
+import com.liferay.portal.test.rule.InjectTestRule;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,20 +57,12 @@ public class OrganizationIndexerTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			new LiferayIntegrationTestRule(),
+			InjectTestRule.INSTANCE, new LiferayIntegrationTestRule(),
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Before
 	public void setUp() throws Exception {
-		Registry registry = RegistryUtil.getRegistry();
-
-		_organizationLocalService = registry.getService(
-			OrganizationLocalService.class);
-
-		IndexerRegistry indexerRegistry = registry.getService(
-			IndexerRegistry.class);
-
-		_indexer = indexerRegistry.getIndexer(Organization.class);
+		_indexer = _indexerRegistry.getIndexer(Organization.class);
 	}
 
 	@Test
@@ -201,8 +193,13 @@ public class OrganizationIndexerTest {
 		return list.toString();
 	}
 
+	@Inject
+	private static IndexerRegistry _indexerRegistry;
+
+	@Inject
+	private static OrganizationLocalService _organizationLocalService;
+
 	private Indexer<Organization> _indexer;
-	private OrganizationLocalService _organizationLocalService;
 
 	@DeleteAfterTestRun
 	private final List<Organization> _organizations = new ArrayList<>();
