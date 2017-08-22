@@ -35,10 +35,10 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
+import com.liferay.portal.test.rule.Inject;
+import com.liferay.portal.test.rule.InjectTestRule;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -56,7 +56,8 @@ public class UpgradeDDLRecordSetSettingsTest {
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
-		new LiferayIntegrationTestRule();
+		new AggregateTestRule(
+			InjectTestRule.INSTANCE, new LiferayIntegrationTestRule());
 
 	@Before
 	public void setUp() throws Exception {
@@ -220,13 +221,7 @@ public class UpgradeDDLRecordSetSettingsTest {
 	}
 
 	protected void setUpUpgradeDDLRecordSetSettings() {
-		Registry registry = RegistryUtil.getRegistry();
-
-		UpgradeStepRegistrator upgradeStepRegistror = registry.getService(
-			"com.liferay.dynamic.data.lists.internal.upgrade." +
-				"DDLServiceUpgrade");
-
-		upgradeStepRegistror.register(
+		_upgradeStepRegistrator.register(
 			new UpgradeStepRegistrator.Registry() {
 
 				@Override
@@ -252,6 +247,11 @@ public class UpgradeDDLRecordSetSettingsTest {
 	private static final String _CLASS_NAME =
 		"com.liferay.dynamic.data.lists.internal.upgrade.v1_0_2." +
 			"UpgradeDDLRecordSetSettings";
+
+	@Inject(
+		filter = "(&(objectClass=com.liferay.dynamic.data.lists.internal.upgrade.DDLServiceUpgrade))"
+	)
+	private static UpgradeStepRegistrator _upgradeStepRegistrator;
 
 	private DDLRecordSetTestHelper _ddlRecordSetTestHelper;
 
