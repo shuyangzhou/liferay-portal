@@ -284,6 +284,8 @@ public class ModuleApplicationContextExtender extends AbstractExtender {
 			_unavailableComponentScanningThread.interrupt();
 
 			_unavailableComponentScanningThread.join();
+
+			_unavailableComponentScanningThread = null;
 		}
 	}
 
