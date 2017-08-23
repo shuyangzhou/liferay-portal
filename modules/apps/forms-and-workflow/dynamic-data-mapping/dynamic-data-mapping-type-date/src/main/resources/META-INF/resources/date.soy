@@ -1,27 +1,26 @@
-{namespace ddm}
+{namespace DDMDate}
 
 /**
  * Defines the delegated template for the date field.
  */
-{deltemplate ddm.field autoescape="deprecated-contextual" variant="'date'"}
-	{call .date data="all" /}
+{deltemplate ddm.field variant="'date'"}
+	{call .render data="all" /}
 {/deltemplate}
 
 /**
  * Prints the DDM form date field.
- *
- * @param? childElementsHTML
- * @param displayValue
- * @param label
- * @param name
- * @param readOnly
- * @param required
- * @param showLabel
- * @param tip
- * @param value
- * @param visible
  */
-{template .date autoescape="deprecated-contextual"}
+{template .render}
+	{@param displayValue: string}
+	{@param label: string}
+	{@param name: string}
+	{@param readOnly: bool}
+	{@param? required: bool}
+	{@param showLabel: bool}
+	{@param? tip: string}
+	{@param value: string}
+	{@param visible: bool}
+
 	<div class="form-group{$visible ? '' : ' hide'} liferay-ddm-form-field-date" data-fieldname="{$name}">
 		{if $showLabel}
 			<label class="control-label" for="{$name}">
@@ -44,9 +43,5 @@
 
 			<span class="input-group-addon"><span class="icon-calendar"></span></span>
 		</div>
-
-		{if $childElementsHTML}
-			{$childElementsHTML|noAutoescape}
-		{/if}
 	</div>
 {/template}

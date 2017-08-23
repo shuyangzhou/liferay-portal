@@ -45,7 +45,7 @@ public class DateDDMFormFieldRenderer extends BaseDDMFormFieldRenderer {
 
 	@Override
 	public String getTemplateNamespace() {
-		return "ddm.date";
+		return "DDMDate.render";
 	}
 
 	@Override

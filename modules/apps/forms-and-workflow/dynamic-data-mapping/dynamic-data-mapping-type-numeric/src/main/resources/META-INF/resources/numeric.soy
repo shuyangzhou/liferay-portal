@@ -1,30 +1,29 @@
-{namespace ddm}
+{namespace DDMNumeric}
 
 /**
  * Defines the delegated template for the numeric field.
  */
-{deltemplate ddm.field autoescape="deprecated-contextual" variant="'numeric'"}
-	{call .numeric data="all" /}
+{deltemplate ddm.field variant="'numeric'"}
+	{call .render data="all" /}
 {/deltemplate}
 
 /**
  * Prints the DDM form numeric field.
- *
- * @param? childElementsHTML
- * @param dir
- * @param? label
- * @param name
- * @param placeholder
- * @param predefinedValue
- * @param readOnly
- * @param required
- * @param showLabel
- * @param tip
- * @param tooltip
- * @param value
- * @param visible
  */
-{template .numeric autoescape="deprecated-contextual"}
+{template .render}
+	{@param? dir: string}
+	{@param? label: string}
+	{@param name: string}
+	{@param placeholder: string}
+	{@param? predefinedValue: string}
+	{@param readOnly: bool}
+	{@param? required: bool}
+	{@param showLabel: bool}
+	{@param? tip: string}
+	{@param? tooltip: string}
+	{@param value: string}
+	{@param visible: bool}
+
 	{let $displayValue: $value ? $value : $predefinedValue ? $predefinedValue : '' /}
 
 	<div class="form-group{$visible ? '' : ' hide'} liferay-ddm-form-field-numeric {$tip ? 'liferay-ddm-form-field-has-tip' : ''}" data-fieldname="{$name}">
@@ -43,7 +42,7 @@
 		{/if}
 
 		<div class="input-group-container {if $tooltip}input-group-default{/if}">
-			<input class="field form-control" dir="{$dir}" id="{$name}" name="{$name}" placeholder="{$placeholder}" {if $readOnly}readonly{/if} type="text" value="{$displayValue}">
+			<input class="field form-control" {if $dir}dir="{$dir}"{/if} id="{$name}" name="{$name}" placeholder="{$placeholder}" {if $readOnly}readonly{/if} type="text" value="{$displayValue}">
 
 			{if $tooltip}
 				<span class="input-group-addon">
@@ -53,9 +52,5 @@
 				</span>
 			{/if}
 		</div>
-
-		{if $childElementsHTML}
-			{$childElementsHTML|noAutoescape}
-		{/if}
 	</div>
 {/template}

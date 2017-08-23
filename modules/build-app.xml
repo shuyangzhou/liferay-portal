@@ -86,23 +86,15 @@
 	</target>
 
 	<target name="check-current-branch">
-		<exec dir="${modules.dir}" executable="git" outputproperty="liferay.releng.branch">
-			<arg value="rev-parse" />
-			<arg value="--abbrev-ref" />
-			<arg value="HEAD" />
-		</exec>
-
-		<echo message="Current branch: ${liferay.releng.branch}" />
-
 		<condition property="current.branch.private">
-			<contains string="${liferay.releng.branch}" substring="-private" />
+			<or>
+				<istrue value="${ee.override}" />
+				<resourcecontains resource="${modules.dir}/../portal-kernel/src/com/liferay/portal/kernel/util/ReleaseInfo.java" substring=" DXP " />
+			</or>
 		</condition>
 
 		<condition else="Liferay CE" property="liferay.releng.app.title.prefix" value="Liferay">
-			<or>
-				<istrue value="${ee.override}" />
-				<istrue value="${current.branch.private}" />
-			</or>
+			<istrue value="${current.branch.private}" />
 		</condition>
 	</target>
 

@@ -1,13 +1,6 @@
 apply plugin: "com.liferay.gulp"
 apply plugin: "com.liferay.lang.merger"
 
-task testJS
-
-configJSModules {
-	dependsOn = []
-	enabled = false
-}
-
 dependencies {
 	provided group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "2.0.0"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
@@ -23,19 +16,4 @@ mergeLang {
 		"../dynamic-data-mapping-lang/src/main/resources/content",
 		"src/main/resources/content"
 	]
-}
-
-testJS {
-	dependsOn gulpTest
-}
-
-transpileJS {
-	soySrcIncludes = ""
-	srcIncludes = "**/*.es.js"
-}
-
-wrapSoyAlloyTemplate {
-	enabled = true
-	moduleName = "liferay-ddm-form-field-radio-template"
-	namespace = "ddm"
 }

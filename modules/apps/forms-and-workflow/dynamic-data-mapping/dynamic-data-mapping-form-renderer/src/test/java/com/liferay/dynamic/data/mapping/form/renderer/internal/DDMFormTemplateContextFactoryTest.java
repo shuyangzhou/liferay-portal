@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.template.soy.utils.SoyHTMLContextValue;
 import com.liferay.portal.util.PortalImpl;
 
 import java.lang.reflect.Field;
@@ -203,7 +204,8 @@ public class DDMFormTemplateContextFactoryTest extends PowerMockito {
 
 		Assert.assertEquals(
 			expectedRequiredFieldsWarningHTML,
-			templateContext.get("requiredFieldsWarningMessageHTML"));
+			((SoyHTMLContextValue)templateContext.get(
+				"requiredFieldsWarningMessageHTML")).toString());
 	}
 
 	@Test

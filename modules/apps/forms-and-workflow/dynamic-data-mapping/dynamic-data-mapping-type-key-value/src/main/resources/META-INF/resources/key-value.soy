@@ -1,0 +1,56 @@
+{namespace DDMKeyValue}
+
+/**
+ * Defines the delegated template for the key/value field.
+ */
+{deltemplate ddm.field variant="'key_value'"}
+	{call .render data="all" /}
+{/deltemplate}
+
+/**
+ * Prints the DDM form key/value field.
+ */
+{template .render}
+	{@param? dir: string}
+	{@param? key: string}
+	{@param? keyInputEnabled: bool}
+	{@param? keyInputSize: int}
+	{@param? label: string}
+	{@param name: string}
+	{@param placeholder: string}
+	{@param? required: bool}
+	{@param showLabel: bool}
+	{@param strings: [keyLabel: string]}
+	{@param? tooltip: string}
+	{@param value: string}
+	{@param visible: bool}
+
+	<div class="form-group{$visible ? '' : ' hide'} liferay-ddm-form-field-key-value liferay-ddm-form-field-text" data-fieldname="{$name}">
+		{if $showLabel}
+			<label class="control-label" for="{$name}">
+				{$label}
+
+				{if $required}
+					<span class="icon-asterisk text-warning"></span>
+				{/if}
+			</label>
+		{/if}
+
+		<div class="input-group-container {if $tooltip}input-group-default{/if}">
+			<input class="field form-control" {if $dir}dir="{$dir}"{/if} id="{$name}" name="{$name}" placeholder="{$placeholder}" type="text" value="{$value}" />
+
+			{if $tooltip}
+				<span class="input-group-addon">
+					<span class="input-group-addon-content">
+						<a class="help-icon help-icon-default icon-monospaced icon-question" data-original-title="{$tooltip}" data-toggle="popover" href="javascript:;" title="{$tooltip}"></a>
+					</span>
+				</span>
+			{/if}
+		</div>
+
+		<div class="active key-value-editor">
+			<label class="control-label key-value-label">{$strings.keyLabel}:</label>
+			<input class="key-value-input" {if not $keyInputEnabled}readonly{/if} size="{$keyInputSize}" tabindex="-1" type="text" value="{$key}" />
+		</div>
+	</div>
+{/template}

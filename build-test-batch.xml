@@ -450,6 +450,8 @@ app.server.type=@{app.server.type}]]></echo>
 /tools/tck
 /tools/zip_tmpl/license</echo>
 
+			<delete file="${project.dir}/lib/.gitignore" />
+
 			<echo file="${project.dir}/modules/.gitignore">tmp
 /*/*/ivy.xml.MD5
 /*/*/javadoc

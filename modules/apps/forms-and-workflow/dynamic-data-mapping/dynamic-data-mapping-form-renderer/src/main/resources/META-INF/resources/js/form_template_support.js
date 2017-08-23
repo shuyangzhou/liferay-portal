@@ -18,7 +18,11 @@ AUI.add(
 
 				var renderer = instance.getTemplateRenderer();
 
-				return renderer(instance.getTemplateContext());
+				var container = document.createDocumentFragment();
+
+				new renderer(instance.getTemplateContext(), container);
+
+				return container.firstChild.outerHTML;
 			},
 
 			getTemplateContext: function() {

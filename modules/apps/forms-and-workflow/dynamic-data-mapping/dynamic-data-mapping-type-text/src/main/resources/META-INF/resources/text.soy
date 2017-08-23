@@ -1,31 +1,30 @@
-{namespace ddm}
+{namespace DDMText}
 
 /**
  * Defines the delegated template for the text field.
  */
-{deltemplate ddm.field autoescape="deprecated-contextual" variant="'text'"}
-	{call .text data="all" /}
+{deltemplate ddm.field variant="'text'"}
+	{call .render data="all" /}
 {/deltemplate}
 
 /**
  * Prints the DDM form text field.
- *
- * @param? childElementsHTML
- * @param dir
- * @param displayStyle
- * @param? label
- * @param name
- * @param placeholder
- * @param predefinedValue
- * @param readOnly
- * @param required
- * @param showLabel
- * @param tip
- * @param tooltip
- * @param value
- * @param visible
  */
-{template .text autoescape="deprecated-contextual"}
+{template .render}
+	{@param? dir: string}
+	{@param? displayStyle: string}
+	{@param? label: string}
+	{@param name: string}
+	{@param placeholder: string}
+	{@param? predefinedValue: string}
+	{@param? readOnly: bool}
+	{@param? required: bool}
+	{@param? showLabel: bool}
+	{@param? tip: string}
+	{@param? tooltip: string}
+	{@param value: ?}
+	{@param visible: bool}
+
 	{let $displayValue: $value ? $value : $predefinedValue ? $predefinedValue : '' /}
 
 	<div class="form-group{$visible ? '' : ' hide'} liferay-ddm-form-field-text {$tip ? 'liferay-ddm-form-field-has-tip' : ''}" data-fieldname="{$name}">
@@ -45,11 +44,11 @@
 
 		<div class="input-group-container {if $tooltip}input-group-default{/if}">
 			{if $displayStyle == 'multiline'}
-				<textarea class="field form-control" dir="{$dir}" id="{$name}" name="{$name}" placeholder="{$placeholder}" {if $readOnly}readonly{/if} >
+				<textarea class="field form-control" {if $dir}dir="{$dir}"{/if} id="{$name}" name="{$name}" placeholder="{$placeholder}" {if $readOnly}readonly{/if} >
 					{$displayValue}
 				</textarea>
 			{else}
-				<input class="field form-control" dir="{$dir}" id="{$name}" name="{$name}" placeholder="{$placeholder}" {if $readOnly}readonly{/if} type="text" value="{$displayValue}">
+				<input class="field form-control" {if $dir}dir="{$dir}"{/if} id="{$name}" name="{$name}" placeholder="{$placeholder}" {if $readOnly}readonly{/if} type="text" value="{$displayValue}">
 			{/if}
 
 			{if $tooltip}
@@ -60,9 +59,5 @@
 				</span>
 			{/if}
 		</div>
-
-		{if $childElementsHTML}
-			{$childElementsHTML|noAutoescape}
-		{/if}
 	</div>
 {/template}

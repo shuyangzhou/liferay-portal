@@ -1,13 +1,6 @@
 apply plugin: "com.liferay.gulp"
 apply plugin: "com.liferay.lang.merger"
 
-task testJS
-
-configJSModules {
-	dependsOn = []
-	enabled = false
-}
-
 dependencies {
 	provided group: "com.liferay", name: "com.liferay.dynamic.data.mapping.io", version: "2.0.0"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
@@ -18,19 +11,4 @@ dependencies {
 	provided project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-form-field-type")
 
 	testCompile group: "com.liferay", name: "com.liferay.dynamic.data.mapping.test.util", version: "2.0.0"
-}
-
-testJS {
-	dependsOn gulpTest
-}
-
-transpileJS {
-	soySrcIncludes = ""
-	srcIncludes = "**/*.es.js"
-}
-
-wrapSoyAlloyTemplate {
-	enabled = true
-	moduleName = "liferay-ddm-form-field-fieldset-template"
-	namespace = "ddm"
 }

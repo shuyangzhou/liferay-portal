@@ -885,7 +885,7 @@ public class UpgradeDynamicDataMappingTest {
 
 		String actualDefinition = getTemplateScript(_templateId);
 
-		String[] dateFieldNames = new String[] {"date1", "date2"};
+		String[] dateFieldNames = {"date1", "date2"};
 
 		StringBundler sb = null;
 
@@ -1053,7 +1053,7 @@ public class UpgradeDynamicDataMappingTest {
 
 		String actualDefinition = getTemplateScript(_templateId);
 
-		String[] dateFieldNames = new String[] {"$date1", "$date2"};
+		String[] dateFieldNames = {"$date1", "$date2"};
 
 		StringBundler sb = null;
 

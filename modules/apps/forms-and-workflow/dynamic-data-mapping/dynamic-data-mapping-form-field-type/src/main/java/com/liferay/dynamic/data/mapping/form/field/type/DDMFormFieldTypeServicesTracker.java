@@ -39,6 +39,9 @@ public interface DDMFormFieldTypeServicesTracker {
 
 	public List<DDMFormFieldType> getDDMFormFieldTypes();
 
+	public List<DDMFormFieldType> getDDMFormFieldTypesByDataDomain(
+		String dataDomain);
+
 	public <T> DDMFormFieldValueAccessor<T> getDDMFormFieldValueAccessor(
 		String name);
 

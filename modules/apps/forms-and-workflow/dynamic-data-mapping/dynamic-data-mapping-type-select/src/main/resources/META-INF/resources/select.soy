@@ -1,51 +1,50 @@
-{namespace ddm}
+{namespace DDMSelect}
 
 /**
  * Defines the delegated template for the select field.
  */
-{deltemplate ddm.field autoescape="deprecated-contextual" variant="'select'"}
-	{call .select data="all" /}
+{deltemplate ddm.field variant="'select'"}
+	{call .render data="all" /}
 {/deltemplate}
 
 /**
  * Prints the DDM form select field.
- *
- * @param? badgeCloseIcon
- * @param? childElementsHTML
- * @param dir
- * @param label
- * @param multiple
- * @param name
- * @param open
- * @param options
- * @param readOnly
- * @param required
- * @param? selectCaretDoubleIcon
- * @param? selectSearchIcon
- * @param showLabel
- * @param strings
- * @param tip
- * @param value
- * @param visible
  */
-{template .select autoescape="deprecated-contextual"}
+{template .render}
+	{@param? badgeCloseIcon: html}
+	{@param? dir: string}
+	{@param? label: string}
+	{@param? multiple: ?}
+	{@param name: string}
+	{@param? open: bool}
+	{@param options: list<[label: string, value: string]>}
+	{@param? readOnly: bool}
+	{@param? required: bool}
+	{@param? selectCaretDoubleIcon: html}
+	{@param? selectSearchIcon: html}
+	{@param? showLabel: bool}
+	{@param strings: [chooseAnOption: string, chooseOptions: string, search: string, emptyList: string]}
+	{@param? tip: string}
+	{@param value: list<?>}
+	{@param visible: bool}
+
 	<div class="form-group{$visible ? '' : ' hide'}" data-fieldname="{$name}">
 		<div class="input-select-wrapper">
 
 			{if $showLabel}
-				{call ddm.select_label data="all" /}
+				{call .select_label data="all" /}
 			{/if}
 
 			<div class="form-builder-select-field input-group-container">
 
 				{if not $readOnly}
-					{call ddm.hidden_select data="all"/}
+					{call .hidden_select data="all"/}
 				{/if}
 
-				<div class="form-control select-field-trigger" dir="{$dir}" id="{$name}" name="{$name}">
+				<div class="form-control select-field-trigger" {if $dir}dir="{$dir}"{/if} id="{$name}" name="{$name}">
 					<a class="select-arrow-down-container" href="javascript:;">
 						{if $selectCaretDoubleIcon}
-							{$selectCaretDoubleIcon|noAutoescape}
+							{$selectCaretDoubleIcon}
 						{/if}
 					</a>
 
@@ -55,7 +54,7 @@
 						{else}
 							<ul class="multiple-badge-list">
 								{foreach $currentValue in $value}
-									{call ddm.badge_item}
+									{call .badge_item}
 										{param badgeCloseIcon: $badgeCloseIcon /}
 										{param value: $currentValue.value /}
 										{param label: $currentValue.label /}
@@ -82,49 +81,46 @@
 						<div class="search-chosen">
 							<div class="select-search-container">
 								{if $selectSearchIcon}
-									<a class="" href="javascript:;">{$selectSearchIcon|noAutoescape}</a>
+									<a class="" href="javascript:;">{$selectSearchIcon}</a>
 								{/if}
 							</div>
 							<input autocomplete="off" class="drop-chosen-search" placeholder="{$strings.search}" type="text">
 						</div>
 						<ul class="results-chosen">
-							{call ddm.select_options data="all" /}
+							{call .select_options data="all" /}
 						</ul>
 					</div>
 				{/if}
 			</div>
-
-			{if $childElementsHTML}
-				{$childElementsHTML|noAutoescape}
-			{/if}
 		</div>
 	</div>
 {/template}
 
 /**
  * Prints the badge item.
- *
- * @param badgeCloseIcon
- * @param label
- * @param value
  */
-{template .badge_item autoescape="deprecated-contextual"}
+{template .badge_item}
+	{@param? badgeCloseIcon: html}
+	{@param? label: string}
+	{@param value: string}
+
 	<li>
 		<span class="badge badge-default badge-sm multiple-badge" data-original-title="{$label}" title="{$label}">
 			{$label}
-			<a class="trigger-badge-item-close" data-badge-value="{$value}" href="javascript:void(0)">{$badgeCloseIcon|noAutoescape}</a>
+			<a class="trigger-badge-item-close" data-badge-value="{$value}" href="javascript:void(0)">{$badgeCloseIcon}</a>
 		</span>
 	</li>
 {/template}
 
 /**
  * Prints the select label.
- * @param label
- * @param name
- * @param required
- * @param tip
  */
-{template .select_label autoescape="deprecated-contextual"}
+{template .select_label}
+	{@param? label: string}
+	{@param name: string}
+	{@param? required: bool}
+	{@param? tip: string}
+
 	<label class="control-label" for="{$name}">
 		{$label}
 
@@ -140,24 +136,25 @@
 
 /**
  * Prints hidden select tag.
- * @param dir
- * @param multiple
- * @param name
- * @param options
- * @param readOnly
- * @param strings
- * @param value
  */
-{template .hidden_select autoescape="deprecated-contextual"}
-	<select class="form-control hide" dir="{$dir}" id="{$name}" name="{$name}" {if $multiple}multiple size="{length($options)}"{/if}>
+{template .hidden_select}
+	{@param? dir: string}
+	{@param? multiple: ?}
+	{@param name: string}
+	{@param options: list<[label: string, value: string]>}
+	{@param? readOnly: bool}
+	{@param strings: [chooseAnOption: string, chooseOptions: string, search: string, emptyList: string]}
+	{@param value: list<?>}
+
+	<select class="form-control hide" {if $dir}dir="{$dir}"{/if} id="{$name}" name="{$name}" {if $multiple}multiple size="{length($options)}"{/if}>
 		{if not $readOnly}
-			<option dir="{$dir}" disabled {if length($value) == 0}selected{/if} value="">
+			<option {if $dir}dir="{$dir}"{/if} disabled {if length($value) == 0}selected{/if} value="">
 				{$strings.chooseAnOption}
 			</option>
 		{/if}
 
 		{foreach $option in $options}
-			{call ddm.select_hidden_options}
+			{call .select_hidden_options}
 				{param dir: $dir /}
 				{param option: $option /}
 				{param values: $value /}
@@ -168,13 +165,13 @@
 
 /**
  * Prints the DDM form hidden select options.
- *
- * @param dir
- * @param option
- * @param values
  */
-{template .select_hidden_options autoescape="deprecated-contextual"}
-	{let $selected}
+{template .select_hidden_options}
+	{@param? dir: string}
+	{@param option: [label: string, value: string]}
+	{@param values: list<?>}
+
+	{let $selected kind="attributes"}
 		{if $values}
 			{foreach $currentValue in $values}
 				{if $currentValue.value == $option.value}
@@ -184,21 +181,21 @@
 		{/if}
 	{/let}
 
-	<option dir="{$dir}" {$selected} value="{$option.value}">{$option.label}</option>
+	<option {if $dir}dir="{$dir}"{/if} {$selected} value="{$option.value}">{$option.label}</option>
 {/template}
 
 /**
  * Prints the DDM form select field UI itens.
- *
- * @param multiple
- * @param options
- * @param strings
- * @param value
  */
-{template .select_options autoescape="deprecated-contextual"}
+{template .select_options}
+	{@param? multiple: ?}
+	{@param options: list<[label: string, value: string]>}
+	{@param strings: [chooseAnOption: string, chooseOptions: string, search: string, emptyList: string]}
+	{@param value: list<?>}
+
 	{if length($options) > 0}
 		{foreach $option in $options}
-			{let $selected}
+			{let $selected kind="attributes"}
 				{if $value}
 					{foreach $currentValue in $value}
 						{if $currentValue.value == $option.value}
