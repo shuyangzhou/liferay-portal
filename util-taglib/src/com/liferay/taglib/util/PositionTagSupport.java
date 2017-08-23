@@ -14,11 +14,16 @@
 
 package com.liferay.taglib.util;
 
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.BaseBodyTagSupport;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.tagext.BodyTag;
@@ -83,6 +88,27 @@ public class PositionTagSupport extends BaseBodyTagSupport implements BodyTag {
 			}
 			else {
 				position = _POSITION_AUTO;
+			}
+
+			Layout layout = themeDisplay.getLayout();
+
+			List<Portlet> embeddedPortlets = layout.getEmbeddedPortlets();
+
+			PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
+
+			String instanceId = portletDisplay.getInstanceId();
+
+			if (Validator.isNotNull(instanceId)) {
+				for (Portlet embeddedPortlet : embeddedPortlets) {
+					String embeddedPortletInstanceId =
+						embeddedPortlet.getInstanceId();
+
+					if (Validator.isNotNull(embeddedPortletInstanceId) &&
+						embeddedPortletInstanceId.equals(instanceId)) {
+
+						position = _POSITION_INLINE;
+					}
+				}
 			}
 		}
 
