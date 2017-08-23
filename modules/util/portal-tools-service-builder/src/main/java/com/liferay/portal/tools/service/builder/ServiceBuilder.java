@@ -2906,6 +2906,10 @@ public class ServiceBuilder {
 	}
 
 	private void _createPersistenceTest(Entity entity) throws Exception {
+		if (entity.isDeprecated()) {
+			return;
+		}
+
 		Map<String, Object> context = _getContext();
 
 		context.put("entity", entity);
@@ -5248,6 +5252,13 @@ public class ServiceBuilder {
 
 			if (columnName.equals("resourceBlockId") &&
 				!ejbName.equals("ResourceBlock")) {
+
+				if (!ejbName.equals("ResourceBlockPermission")) {
+					throw new IllegalArgumentException(
+						"ResourceBlock is deprecated, implement " +
+							"BaseUpgradeResourceBlock to migrate to " +
+								"ResourcePermission");
+				}
 
 				permissionedModel = true;
 			}
