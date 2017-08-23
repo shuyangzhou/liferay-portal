@@ -1,0 +1,15 @@
+diff --git a/org/apache/felix/fileinstall/internal/DirectoryWatcher.java b/org/apache/felix/fileinstall/internal/DirectoryWatcher.java
+index e7c411a..083b7e1 100644
+--- a/org/apache/felix/fileinstall/internal/DirectoryWatcher.java
++++ b/org/apache/felix/fileinstall/internal/DirectoryWatcher.java
+@@ -1037,6 +1037,10 @@ public class DirectoryWatcher extends Thread implements BundleListener
+         Util.storeChecksum(b, checksum, context);
+         modified.set(true);
+ 
++		if (b.getState() == Bundle.UNINSTALLED) {
++			return b;
++		}
++
+         // Set default start level at install time, the user can override it if he wants
+         if (startLevel != 0)
+         {

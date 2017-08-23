@@ -1037,6 +1037,10 @@ public class DirectoryWatcher extends Thread implements BundleListener
         Util.storeChecksum(b, checksum, context);
         modified.set(true);
 
+		if (b.getState() == Bundle.UNINSTALLED) {
+			return b;
+		}
+
         // Set default start level at install time, the user can override it if he wants
         if (startLevel != 0)
         {
@@ -1489,4 +1493,4 @@ public class DirectoryWatcher extends Thread implements BundleListener
     }
 
 }
-
+/* @generated */
