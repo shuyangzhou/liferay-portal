@@ -67,6 +67,7 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -116,6 +117,16 @@ public class ModuleApplicationContextExtender extends AbstractExtender {
 	@Override
 	protected void error(String s, Throwable throwable) {
 		_log.error(s, throwable);
+	}
+
+	@Modified
+	protected void modified(
+			BundleContext bundleContext, Map<String, Object> properties)
+		throws Exception {
+
+		_stopUnavailableComponentScanningThread();
+
+		_startUnavailableComponentScanningThread(properties);
 	}
 
 	@Reference(
