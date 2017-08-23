@@ -45,7 +45,7 @@ public class CheckboxDDMFormFieldRenderer extends BaseDDMFormFieldRenderer {
 
 	@Override
 	public String getTemplateNamespace() {
-		return "ddm.checkbox";
+		return "DDMCheckbox.render";
 	}
 
 	@Override

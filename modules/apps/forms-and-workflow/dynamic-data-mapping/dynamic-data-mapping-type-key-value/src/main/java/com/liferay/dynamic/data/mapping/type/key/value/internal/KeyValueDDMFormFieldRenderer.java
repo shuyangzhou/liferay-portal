@@ -45,7 +45,7 @@ public class KeyValueDDMFormFieldRenderer extends BaseDDMFormFieldRenderer {
 
 	@Override
 	public String getTemplateNamespace() {
-		return "ddm.key_value";
+		return "DDMKeyValue.render";
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class KeyValueDDMFormFieldRenderer extends BaseDDMFormFieldRenderer {
 	@Activate
 	protected void activate(Map<String, Object> properties) {
 		_templateResource = getTemplateResource(
-			"/META-INF/resources/key_value.soy");
+			"/META-INF/resources/key-value.soy");
 	}
 
 	@Deactivate

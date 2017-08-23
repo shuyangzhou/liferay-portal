@@ -30,14 +30,14 @@ public class UpgradeKernelPackage
 		return _RESOURCE_NAMES;
 	}
 
-	private static final String[][] _CLASS_NAMES = new String[][] {
+	private static final String[][] _CLASS_NAMES = {
 		{
 			"com.liferay.portlet.dynamicdatamapping.model.",
 			"com.liferay.dynamic.data.mapping.model."
 		}
 	};
 
-	private static final String[][] _RESOURCE_NAMES = new String[][] {
+	private static final String[][] _RESOURCE_NAMES = {
 		{
 			"com.liferay.portlet.dynamicdatamapping",
 			"com.liferay.dynamic.data.mapping"

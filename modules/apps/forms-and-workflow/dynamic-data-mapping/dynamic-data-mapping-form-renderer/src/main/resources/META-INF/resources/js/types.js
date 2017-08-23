@@ -26,6 +26,10 @@ AUI.add(
 			register: function(fieldTypes) {
 				var instance = this;
 
+				if (A.Lang.isString(fieldTypes)) {
+					fieldTypes = JSON.parse(fieldTypes);
+				}
+
 				_fieldTypes = AArray(fieldTypes).map(instance._getFieldType);
 			},
 

@@ -1,26 +1,26 @@
-{namespace ddm}
+{namespace DDMParagraph}
 
 /**
  * Defines the delegated template for the paragraph field.
  */
-{deltemplate ddm.field autoescape="deprecated-contextual" variant="'paragraph'"}
-	{call .paragraph data="all" /}
+{deltemplate ddm.field variant="'paragraph'"}
+	{call .render data="all" /}
 {/deltemplate}
 
 /**
  * Prints the DDM form paragraph field.
- *
- * @param label
- * @param name
- * @param text
- * @param visible
  */
-{template .paragraph autoescape="deprecated-contextual"}
+{template .render}
+	{@param label: string}
+	{@param name: string}
+	{@param text: string}
+	{@param visible: bool}
+
 	<div class="form-group{$visible ? '' : ' hide'} liferay-ddm-form-field-paragraph" data-fieldname="{$name}">
 		{if $label}
 			<label class="control-label" for="{$name}">{$label}</label>
 		{/if}
 
-		<div>{$text|noAutoescape}</div>
+		<div>{$text}</div>
 	</div>
 {/template}

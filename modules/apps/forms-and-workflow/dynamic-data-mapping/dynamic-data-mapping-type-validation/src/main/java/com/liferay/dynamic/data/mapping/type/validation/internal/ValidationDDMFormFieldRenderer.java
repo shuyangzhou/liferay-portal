@@ -40,7 +40,7 @@ public class ValidationDDMFormFieldRenderer extends BaseDDMFormFieldRenderer {
 
 	@Override
 	public String getTemplateNamespace() {
-		return "ddm.validation";
+		return "DDMValidation.render";
 	}
 
 	@Override

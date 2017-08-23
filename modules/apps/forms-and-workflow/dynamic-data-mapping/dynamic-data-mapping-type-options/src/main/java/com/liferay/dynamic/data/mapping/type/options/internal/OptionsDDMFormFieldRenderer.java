@@ -44,7 +44,7 @@ public class OptionsDDMFormFieldRenderer extends BaseDDMFormFieldRenderer {
 
 	@Override
 	public String getTemplateNamespace() {
-		return "ddm.options";
+		return "DDMOptions.render";
 	}
 
 	@Override

@@ -71,6 +71,7 @@ if (fieldsJSONArray != null) {
 	fieldsJSONArrayString = fieldsJSONArray.toString();
 }
 
+boolean saveAndContinue = ParamUtil.getBoolean(request, "saveAndContinue");
 boolean showBackURL = ParamUtil.getBoolean(request, "showBackURL", true);
 %>
 
@@ -100,7 +101,7 @@ if (Validator.isNotNull(requestUpdateStructureURL)) {
 		<aui:input name="scopeClassNameId" type="hidden" value="<%= scopeClassNameId %>" />
 		<aui:input name="definition" type="hidden" />
 		<aui:input name="status" type="hidden" />
-		<aui:input name="saveAndContinue" type="hidden" value="<%= false %>" />
+		<aui:input name="saveAndContinue" type="hidden" value="<%= saveAndContinue %>" />
 
 		<liferay-ui:error exception="<%= DDMFormLayoutValidationException.class %>" message="please-enter-a-valid-form-layout" />
 

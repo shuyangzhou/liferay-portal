@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.template.soy.utils.SoyHTMLContextValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -156,7 +157,8 @@ public class DDMFormTemplateContextFactoryImpl
 
 		templateContext.put(
 			"requiredFieldsWarningMessageHTML",
-			getRequiredFieldsWarningMessageHTML(resourceBundle));
+			new SoyHTMLContextValue(
+				getRequiredFieldsWarningMessageHTML(resourceBundle)));
 
 		templateContext.put("rules", ddmForm.getDDMFormRules());
 		templateContext.put(

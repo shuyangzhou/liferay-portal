@@ -1,19 +1,13 @@
 apply plugin: "com.liferay.gulp"
 apply plugin: "com.liferay.lang.merger"
 
-task testJS
-
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
-
-configJSModules {
-	dependsOn = []
-	enabled = false
-}
 
 dependencies {
 	provided group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
 	provided group: "com.liferay", name: "com.liferay.dynamic.data.mapping.io", version: "2.0.0"
+	provided group: "com.liferay", name: "com.liferay.portal.template.soy", version: "3.0.0-20170421.101618-5"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "2.0.0"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.27.0-20170422.064536-3"
 	provided group: "javax.portlet", name: "portlet-api", version: "2.0"
@@ -35,19 +29,4 @@ dependencies {
 	testCompile project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-expression")
 	testCompile project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-form-evaluator-impl")
 	testCompile project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-service")
-}
-
-testJS {
-	dependsOn gulpTest
-}
-
-transpileJS {
-	soySrcIncludes = ""
-	srcIncludes = "**/*.es.js"
-}
-
-wrapSoyAlloyTemplate {
-	enabled = true
-	moduleName = "liferay-ddm-form-soy"
-	namespace = "ddm"
 }

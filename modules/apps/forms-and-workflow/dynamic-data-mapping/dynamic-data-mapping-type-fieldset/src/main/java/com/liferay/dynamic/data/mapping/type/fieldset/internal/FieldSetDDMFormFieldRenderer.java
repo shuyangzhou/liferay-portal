@@ -45,7 +45,7 @@ public class FieldSetDDMFormFieldRenderer extends BaseDDMFormFieldRenderer {
 
 	@Override
 	public String getTemplateNamespace() {
-		return "ddm.fieldset";
+		return "DDMFieldset.render";
 	}
 
 	@Override

@@ -45,7 +45,7 @@ public class TextDDMFormFieldRenderer extends BaseDDMFormFieldRenderer {
 
 	@Override
 	public String getTemplateNamespace() {
-		return "ddm.text";
+		return "DDMText.render";
 	}
 
 	@Override

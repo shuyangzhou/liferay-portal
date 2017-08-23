@@ -45,7 +45,7 @@ public class CaptchaDDMFormFieldRenderer extends BaseDDMFormFieldRenderer {
 
 	@Override
 	public String getTemplateNamespace() {
-		return "ddm.captcha";
+		return "DDMCaptcha.render";
 	}
 
 	@Override
