@@ -259,13 +259,7 @@ public class HttpImpl implements Http {
 		sb.append(URLCodec.encodeURL(value));
 		sb.append(anchor);
 
-		String result = sb.toString();
-
-		if (result.length() > URL_MAXIMUM_LENGTH) {
-			result = shortenURL(result, 2);
-		}
-
-		return result;
+		return shortenURL(sb.toString());
 	}
 
 	@Override
@@ -1219,64 +1213,21 @@ public class HttpImpl implements Http {
 	}
 
 	@Override
+	public String shortenURL(String url) {
+		if (url.length() > URL_MAXIMUM_LENGTH) {
+			url = _shortenURL(url, getMaxURLDepth(url, URL_MAXIMUM_LENGTH));
+		}
+
+		return url;
+	}
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #shortenURL(String)}
+	 */
+	@Deprecated
+	@Override
 	public String shortenURL(String url, int count) {
-		if (count == 0) {
-			return null;
-		}
-
-		StringBundler sb = new StringBundler();
-
-		String[] params = StringUtil.split(url, CharPool.AMPERSAND);
-
-		for (int i = 0; i < params.length; i++) {
-			String param = params[i];
-
-			if (param.contains("_backURL=") || param.contains("_redirect=") ||
-				param.contains("_returnToFullPageURL=") ||
-				param.startsWith("redirect")) {
-
-				int pos = param.indexOf(CharPool.EQUAL);
-
-				String qName = param.substring(0, pos);
-
-				String redirect = param.substring(pos + 1);
-
-				try {
-					redirect = decodeURL(redirect);
-				}
-				catch (IllegalArgumentException iae) {
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							"Skipping undecodable parameter " + param, iae);
-					}
-
-					continue;
-				}
-
-				String newURL = shortenURL(redirect, count - 1);
-
-				if (newURL != null) {
-					newURL = URLCodec.encodeURL(newURL);
-
-					sb.append(qName);
-					sb.append(StringPool.EQUAL);
-					sb.append(newURL);
-
-					if (i < (params.length - 1)) {
-						sb.append(StringPool.AMPERSAND);
-					}
-				}
-			}
-			else {
-				sb.append(param);
-
-				if (i < (params.length - 1)) {
-					sb.append(StringPool.AMPERSAND);
-				}
-			}
-		}
-
-		return sb.toString();
+		return _shortenURL(url, count);
 	}
 
 	@Override
@@ -1441,6 +1392,12 @@ public class HttpImpl implements Http {
 		}
 
 		return _closeableHttpClient;
+	}
+
+	protected int getMaxURLDepth(String url, int maxLength) {
+		return _getMaxURLDepth(
+			url, StringPool.AMPERSAND, StringPool.EQUAL, StringPool.QUESTION, 0,
+			0, maxLength);
 	}
 
 	protected RequestConfig.Builder getRequestConfigBuilder(
@@ -2061,6 +2018,64 @@ public class HttpImpl implements Http {
 		}
 	}
 
+	private int _getMaxURLDepth(
+		String url, String ampersand, String equal, String question, int count,
+		int length, int maxLength) {
+
+		url = StringUtil.replace(url, question, ampersand);
+
+		List<String> redirectParams = new ArrayList<>();
+
+		String[] params = StringUtil.split(url, ampersand);
+
+		for (String param : params) {
+			if (param.contains("_backURL" + equal) ||
+				param.contains("_redirect" + equal) ||
+				param.contains("_returnToFullPageURL" + equal) ||
+				param.startsWith("redirect")) {
+
+				redirectParams.add(param);
+			}
+			else {
+				length += param.length();
+
+				if (param.contains(equal)) {
+					length += ampersand.length();
+				}
+			}
+		}
+
+		if (length > maxLength) {
+			return count - 1;
+		}
+
+		if (redirectParams.isEmpty()) {
+			return count;
+		}
+
+		StringBundler sb = new StringBundler(2 * redirectParams.size());
+
+		for (String redirectParam : redirectParams) {
+			int pos = redirectParam.indexOf(equal) + equal.length();
+
+			length += pos + ampersand.length();
+
+			if (length > maxLength) {
+				return count;
+			}
+
+			sb.append(redirectParam.substring(pos));
+			sb.append(URLCodec.encodeURL(ampersand));
+		}
+
+		sb.setIndex(sb.index() - 1);
+
+		return _getMaxURLDepth(
+			sb.toString(), URLCodec.encodeURL(ampersand),
+			URLCodec.encodeURL(equal), URLCodec.encodeURL(question), ++count,
+			length, maxLength);
+	}
+
 	private boolean _isLetterOrNumber(char c) {
 		if (((CharPool.NUMBER_0 <= c) && (c <= CharPool.NUMBER_9)) ||
 			((CharPool.UPPER_CASE_A <= c) && (c <= CharPool.UPPER_CASE_Z)) ||
@@ -2070,6 +2085,67 @@ public class HttpImpl implements Http {
 		}
 
 		return false;
+	}
+
+	private String _shortenURL(String url, int count) {
+		StringBundler sb = new StringBundler();
+
+		int index = url.indexOf(CharPool.QUESTION);
+
+		if (index > 0) {
+			sb.append(url.substring(0, index));
+			sb.append(CharPool.QUESTION);
+
+			url = url.substring(index + 1);
+		}
+
+		String[] params = StringUtil.split(url, CharPool.AMPERSAND);
+
+		for (int i = 0; i < params.length; i++) {
+			String param = params[i];
+
+			if (param.contains("_backURL=") || param.contains("_redirect=") ||
+				param.contains("_returnToFullPageURL=") ||
+				param.startsWith("redirect")) {
+
+				if (count == 0) {
+					continue;
+				}
+
+				int pos = param.indexOf(CharPool.EQUAL);
+
+				String qName = param.substring(0, pos);
+
+				String redirect = param.substring(pos + 1);
+
+				try {
+					redirect = URLCodec.decodeURL(redirect, StringPool.UTF8);
+				}
+				catch (IllegalArgumentException iae) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							"Skipping undecodable parameter " + param, iae);
+					}
+
+					continue;
+				}
+
+				sb.append(qName);
+				sb.append(StringPool.EQUAL);
+				sb.append(URLCodec.encodeURL(_shortenURL(redirect, count - 1)));
+				sb.append(CharPool.AMPERSAND);
+			}
+			else {
+				sb.append(param);
+				sb.append(CharPool.AMPERSAND);
+			}
+		}
+
+		if (sb.index() > 0) {
+			sb.setIndex(sb.index() - 1);
+		}
+
+		return sb.toString();
 	}
 
 	private static final String _DEFAULT_USER_AGENT =
