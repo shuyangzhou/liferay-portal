@@ -54,6 +54,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -684,8 +685,7 @@ public class ClusterSchedulerEngine
 		String jobName = schedulerResponse.getJobName();
 		String groupName = schedulerResponse.getGroupName();
 
-		java.util.concurrent.locks.Lock writeLock =
-			clusterSchedulerEngine._writeLock;
+		Lock writeLock = clusterSchedulerEngine._writeLock;
 
 		writeLock.lock();
 
@@ -729,8 +729,7 @@ public class ClusterSchedulerEngine
 			return;
 		}
 
-		java.util.concurrent.locks.Lock writeLock =
-			clusterSchedulerEngine._writeLock;
+		Lock writeLock = clusterSchedulerEngine._writeLock;
 
 		writeLock.lock();
 
@@ -789,12 +788,12 @@ public class ClusterSchedulerEngine
 		_memoryClusteredJobs = new ConcurrentHashMap<>();
 	private boolean _portalReady;
 	private Props _props;
-	private final java.util.concurrent.locks.Lock _readLock;
+	private final Lock _readLock;
 	private ClusterMasterTokenTransitionListener
 		_schedulerClusterMasterTokenTransitionListener;
 	private final SchedulerEngine _schedulerEngine;
 	private final TriggerFactory _triggerFactory;
-	private final java.util.concurrent.locks.Lock _writeLock;
+	private final Lock _writeLock;
 
 	private class SchedulerClusterMasterTokenTransitionListener
 		extends BaseClusterMasterTokenTransitionListener {
