@@ -12,22 +12,14 @@
  * details.
  */
 
-package com.liferay.calendar.upgrade.v2_0_0;
-
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.kernel.util.StringUtil;
+package com.liferay.asset.display.template.constants;
 
 /**
- * @author Adam Brandizzi
+ * @author Pavel Savinov
  */
-public class UpgradeSchema extends UpgradeProcess {
+public class AssetDisplayTemplateActionKeys {
 
-	@Override
-	protected void doUpgrade() throws Exception {
-		String template = StringUtil.read(
-			UpgradeSchema.class.getResourceAsStream("dependencies/update.sql"));
-
-		runSQLTemplateString(template, false, false);
-	}
+	public static final String ADD_ASSET_DISPLAY_TEMPLATE =
+		"ADD_ASSET_DISPLAY_TEMPLATE";
 
 }
