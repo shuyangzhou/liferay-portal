@@ -516,9 +516,7 @@ public class ClusterSchedulerEngine
 			_clusterMasterExecutor.executeOnMaster(methodHandler);
 
 		List<SchedulerResponse> schedulerResponses = future.get(
-			GetterUtil.getLong(
-				_props.get(PropsKeys.CLUSTERABLE_ADVICE_CALL_MASTER_TIMEOUT)),
-			TimeUnit.SECONDS);
+			_callMasterTimeout, TimeUnit.SECONDS);
 
 		for (SchedulerResponse schedulerResponse : schedulerResponses) {
 			addMemoryClusteredJob(schedulerResponse);
@@ -592,6 +590,9 @@ public class ClusterSchedulerEngine
 
 	protected void setProps(Props props) {
 		_props = props;
+
+		_callMasterTimeout = GetterUtil.getLong(
+			_props.get(PropsKeys.CLUSTERABLE_ADVICE_CALL_MASTER_TIMEOUT));
 	}
 
 	protected void updateMemoryClusteredJob(
@@ -715,6 +716,7 @@ public class ClusterSchedulerEngine
 	private static final MethodKey _getScheduledJobsMethodKey = new MethodKey(
 		SchedulerEngineHelperUtil.class, "getScheduledJobs", StorageType.class);
 
+	private long _callMasterTimeout;
 	private ClusterExecutor _clusterExecutor;
 	private ClusterMasterExecutor _clusterMasterExecutor;
 	private final Map<String, ObjectValuePair<SchedulerResponse, TriggerState>>
