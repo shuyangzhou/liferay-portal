@@ -1177,10 +1177,9 @@ public class ResourceBlockLocalServiceImpl
 				PerformActionMethod<PermissionedModel>() {
 
 				@Override
-				public void performAction(PermissionedModel permissionedModel)
-					throws PortalException {
-
+				public void performAction(PermissionedModel permissionedModel) {
 					permissionedModel.setResourceBlockId(newResourceBlockId);
+
 					permissionedModel.persist();
 				}
 
