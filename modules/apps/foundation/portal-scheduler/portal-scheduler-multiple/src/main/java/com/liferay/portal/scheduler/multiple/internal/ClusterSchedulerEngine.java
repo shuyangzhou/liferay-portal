@@ -715,6 +715,44 @@ public class ClusterSchedulerEngine
 		}
 	}
 
+	private static void _reloadMemoryClusteredJobs(String osgiServiceIdentifier)
+		throws Exception {
+
+		ClusterSchedulerEngine clusterSchedulerEngine =
+			(ClusterSchedulerEngine)
+				IdentifiableOSGiServiceUtil.getIdentifiableOSGiService(
+					osgiServiceIdentifier);
+
+		if (!clusterSchedulerEngine._portalReady) {
+			return;
+		}
+
+		ClusterMasterExecutor clusterMasterExecutor =
+			clusterSchedulerEngine._clusterMasterExecutor;
+
+		if (clusterMasterExecutor.isMaster()) {
+			return;
+		}
+
+		java.util.concurrent.locks.Lock writeLock =
+			clusterSchedulerEngine._writeLock;
+
+		writeLock.lock();
+
+		try {
+			clusterSchedulerEngine.initMemoryClusteredJobs();
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					"Receive notification from master, reload memory " +
+						"clustered jobs");
+			}
+		}
+		finally {
+			writeLock.unlock();
+		}
+	}
+
 	private void _notifySlave(MethodKey methodKey, Object... arguments) {
 		try {
 			MethodHandler methodHandler = new MethodHandler(
@@ -744,6 +782,10 @@ public class ClusterSchedulerEngine
 		String.class, StorageType.class);
 	private static final MethodKey _getScheduledJobsMethodKey = new MethodKey(
 		SchedulerEngineHelperUtil.class, "getScheduledJobs", StorageType.class);
+	private static final MethodKey _reloadMemoryClusteredJobsMethodKey =
+		new MethodKey(
+			ClusterSchedulerEngine.class, "_reloadMemoryClusteredJobs",
+			String.class);
 
 	private long _callMasterTimeout;
 	private ClusterExecutor _clusterExecutor;
@@ -808,6 +850,10 @@ public class ClusterSchedulerEngine
 				}
 
 				_memoryClusteredJobs.clear();
+
+				_notifySlave(
+					_reloadMemoryClusteredJobsMethodKey,
+					getOSGiServiceIdentifier());
 			}
 			finally {
 				ProxyModeThreadLocal.setForceSync(forceSync);
@@ -856,6 +902,10 @@ public class ClusterSchedulerEngine
 						count + " MEMORY_CLUSTERED jobs stopped running on " +
 							"this node");
 				}
+
+				_notifySlave(
+					_reloadMemoryClusteredJobsMethodKey,
+					getOSGiServiceIdentifier());
 			}
 			finally {
 				_writeLock.unlock();
