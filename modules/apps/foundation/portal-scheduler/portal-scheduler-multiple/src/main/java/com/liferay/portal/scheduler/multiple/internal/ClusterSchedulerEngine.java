@@ -829,6 +829,19 @@ public class ClusterSchedulerEngine
 			int count = 0;
 
 			try {
+				initMemoryClusteredJobs();
+
+				if (_clusterMasterExecutor.isMaster()) {
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							"Current node is elected as master again, stop " +
+								"transferring it to slave, all jobs running " +
+									"on current node will keep running");
+					}
+
+					return;
+				}
+
 				for (SchedulerResponse schedulerResponse :
 						_schedulerEngine.getScheduledJobs()) {
 
@@ -843,8 +856,6 @@ public class ClusterSchedulerEngine
 						count++;
 					}
 				}
-
-				initMemoryClusteredJobs();
 
 				if (_log.isInfoEnabled()) {
 					_log.info(
