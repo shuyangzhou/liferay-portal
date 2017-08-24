@@ -861,8 +861,6 @@ public class ClusterSchedulerEngine
 		protected void doMasterTokenReleased() throws Exception {
 			_writeLock.lock();
 
-			int count = 0;
-
 			try {
 				initMemoryClusteredJobs();
 
@@ -877,25 +875,22 @@ public class ClusterSchedulerEngine
 					return;
 				}
 
-				for (SchedulerResponse schedulerResponse :
-						_schedulerEngine.getScheduledJobs()) {
+				List<SchedulerResponse> schedulerResponses =
+					_schedulerEngine.getScheduledJobs(
+						StorageType.MEMORY_CLUSTERED);
 
-					if (StorageType.MEMORY_CLUSTERED ==
-							schedulerResponse.getStorageType()) {
-
-						_schedulerEngine.delete(
-							schedulerResponse.getJobName(),
-							schedulerResponse.getGroupName(),
-							schedulerResponse.getStorageType());
-
-						count++;
-					}
+				for (SchedulerResponse schedulerResponse : schedulerResponses) {
+					_schedulerEngine.delete(
+						schedulerResponse.getJobName(),
+						schedulerResponse.getGroupName(),
+						schedulerResponse.getStorageType());
 				}
 
 				if (_log.isInfoEnabled()) {
 					_log.info(
-						count + " MEMORY_CLUSTERED jobs stopped running on " +
-							"this node");
+						schedulerResponses.size() +
+							" MEMORY_CLUSTERED jobs stopped running on this " +
+								"node");
 				}
 
 				_notifySlave(
