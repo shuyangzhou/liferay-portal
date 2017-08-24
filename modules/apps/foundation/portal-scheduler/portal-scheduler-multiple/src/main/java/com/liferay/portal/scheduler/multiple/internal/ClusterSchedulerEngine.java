@@ -642,10 +642,10 @@ public class ClusterSchedulerEngine
 		String jobName = schedulerResponse.getJobName();
 		String groupName = schedulerResponse.getGroupName();
 
-		java.util.concurrent.locks.Lock readLock =
-			clusterSchedulerEngine._readLock;
+		java.util.concurrent.locks.Lock writeLock =
+			clusterSchedulerEngine._writeLock;
 
-		readLock.lock();
+		writeLock.lock();
 
 		try {
 			Map<String, ObjectValuePair<SchedulerResponse, TriggerState>>
@@ -664,7 +664,7 @@ public class ClusterSchedulerEngine
 			}
 		}
 		finally {
-			readLock.unlock();
+			writeLock.unlock();
 		}
 	}
 
