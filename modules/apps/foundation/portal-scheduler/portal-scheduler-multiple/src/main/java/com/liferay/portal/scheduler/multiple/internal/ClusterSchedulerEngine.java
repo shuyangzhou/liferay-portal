@@ -356,20 +356,15 @@ public class ClusterSchedulerEngine
 
 	@Override
 	public void start() throws SchedulerException {
-		try {
-			if (!_clusterMasterExecutor.isMaster()) {
-				initMemoryClusteredJobs();
-			}
-
-			_schedulerClusterMasterTokenTransitionListener =
-				new SchedulerClusterMasterTokenTransitionListener();
-
-			_clusterMasterExecutor.addClusterMasterTokenTransitionListener(
-				_schedulerClusterMasterTokenTransitionListener);
+		if (!_clusterMasterExecutor.isMaster()) {
+			initMemoryClusteredJobs();
 		}
-		catch (Exception e) {
-			throw new SchedulerException("Unable to initialize scheduler", e);
-		}
+
+		_schedulerClusterMasterTokenTransitionListener =
+			new SchedulerClusterMasterTokenTransitionListener();
+
+		_clusterMasterExecutor.addClusterMasterTokenTransitionListener(
+			_schedulerClusterMasterTokenTransitionListener);
 
 		_schedulerEngine.start();
 
@@ -520,7 +515,7 @@ public class ClusterSchedulerEngine
 		return groupName.concat(StringPool.PERIOD).concat(jobName);
 	}
 
-	protected void initMemoryClusteredJobs() throws Exception {
+	protected void initMemoryClusteredJobs() {
 		MethodHandler methodHandler = new MethodHandler(
 			_getScheduledJobsMethodKey, StorageType.MEMORY_CLUSTERED);
 
