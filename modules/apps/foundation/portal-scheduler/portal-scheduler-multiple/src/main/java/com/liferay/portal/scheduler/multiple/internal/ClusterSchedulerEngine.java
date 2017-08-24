@@ -314,9 +314,20 @@ public class ClusterSchedulerEngine
 						storageType);
 
 					if (_portalReady) {
+						SchedulerResponse schedulerResponse =
+							new SchedulerResponse();
+
+						schedulerResponse.setDescription(description);
+						schedulerResponse.setDestinationName(destinationName);
+						schedulerResponse.setGroupName(trigger.getGroupName());
+						schedulerResponse.setJobName(trigger.getJobName());
+						schedulerResponse.setTrigger(trigger);
+						schedulerResponse.setMessage(message);
+						schedulerResponse.setStorageType(storageType);
+
 						_notifySlave(
-							trigger, description, destinationName, message,
-							storageType);
+							_addMemoryClusteredJobMethodKey, schedulerResponse,
+							getOSGiServiceIdentifier());
 					}
 				}
 			}
@@ -704,27 +715,10 @@ public class ClusterSchedulerEngine
 		}
 	}
 
-	private void _notifySlave(
-		Trigger trigger, String description, String destinationName,
-		Message message, StorageType storageType) {
-
-		String groupName = trigger.getGroupName();
-		String jobName = trigger.getJobName();
-
-		SchedulerResponse schedulerResponse = new SchedulerResponse();
-
-		schedulerResponse.setDescription(description);
-		schedulerResponse.setDestinationName(destinationName);
-		schedulerResponse.setGroupName(groupName);
-		schedulerResponse.setJobName(jobName);
-		schedulerResponse.setTrigger(trigger);
-		schedulerResponse.setMessage(message);
-		schedulerResponse.setStorageType(storageType);
-
+	private void _notifySlave(MethodKey methodKey, Object... arguments) {
 		try {
 			MethodHandler methodHandler = new MethodHandler(
-				_addMemoryClusteredJobMethodKey, schedulerResponse,
-				getOSGiServiceIdentifier());
+				methodKey, arguments);
 
 			ClusterRequest clusterRequest =
 				ClusterRequest.createMulticastRequest(methodHandler, true);
