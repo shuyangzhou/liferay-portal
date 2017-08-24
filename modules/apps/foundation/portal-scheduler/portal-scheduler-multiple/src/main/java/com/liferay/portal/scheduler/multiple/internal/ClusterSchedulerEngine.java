@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.scheduler.SchedulerClusterInvokingThreadLocal;
 
@@ -512,14 +513,48 @@ public class ClusterSchedulerEngine
 		MethodHandler methodHandler = new MethodHandler(
 			_getScheduledJobsMethodKey, StorageType.MEMORY_CLUSTERED);
 
-		Future<List<SchedulerResponse>> future =
-			_clusterMasterExecutor.executeOnMaster(methodHandler);
+		while (!_clusterMasterExecutor.isMaster()) {
+			try {
+				Future<List<SchedulerResponse>> future =
+					_clusterMasterExecutor.executeOnMaster(methodHandler);
 
-		List<SchedulerResponse> schedulerResponses = future.get(
-			_callMasterTimeout, TimeUnit.SECONDS);
+				List<SchedulerResponse> schedulerResponses = future.get(
+					_callMasterTimeout, TimeUnit.SECONDS);
 
-		for (SchedulerResponse schedulerResponse : schedulerResponses) {
-			addMemoryClusteredJob(schedulerResponse);
+				_memoryClusteredJobs.clear();
+
+				for (SchedulerResponse schedulerResponse : schedulerResponses) {
+					addMemoryClusteredJob(schedulerResponse);
+				}
+
+				if (_log.isInfoEnabled()) {
+					_log.info(
+						"Load " + schedulerResponses.size() +
+							" memory clustered jobs from master");
+				}
+
+				return;
+			}
+			catch (Exception e) {
+				StringBundler sb = new StringBundler(7);
+
+				sb.append(
+					"Unable to load memory clustered jobs from master in ");
+				sb.append(_callMasterTimeout);
+				sb.append(" seconds, you might need to increase value set to ");
+				sb.append("\"clusterable.advice.call.master.timeout\", ");
+				sb.append("will retry in ");
+				sb.append(_callMasterTimeout);
+				sb.append(" seconds");
+
+				_log.error(sb.toString(), e);
+			}
+
+			try {
+				Thread.sleep(_callMasterTimeout);
+			}
+			catch (Exception e) {
+			}
 		}
 	}
 
