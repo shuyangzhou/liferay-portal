@@ -178,12 +178,10 @@ public class SummaryBuilderImplTest {
 			summary.getTitle());
 	}
 
-	protected String concat(String s1, String s2, String... stringArray) {
-		StringBundler sb = new StringBundler(2 + stringArray.length);
+	protected String concat(String... strings) {
+		StringBundler sb = new StringBundler(strings.length);
 
-		sb.append(s1);
-		sb.append(s2);
-		sb.append(stringArray);
+		sb.append(strings);
 
 		return sb.toString();
 	}
