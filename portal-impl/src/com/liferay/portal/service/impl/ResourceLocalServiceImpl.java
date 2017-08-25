@@ -41,7 +41,6 @@ import com.liferay.portal.security.permission.PermissionCacheUtil;
 import com.liferay.portal.service.base.ResourceLocalServiceBaseImpl;
 import com.liferay.portal.util.ResourcePermissionsThreadLocal;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.time.StopWatch;
@@ -799,18 +798,8 @@ public class ResourceLocalServiceImpl extends ResourceLocalServiceBaseImpl {
 		List<String> defaultOwnerActions =
 			ResourceActionsUtil.getModelResourceOwnerDefaultActions(name);
 
-		if (defaultOwnerActions.isEmpty()) {
-			return;
-		}
-
-		Iterator<String> itr = actionIds.iterator();
-
-		while (itr.hasNext()) {
-			String actionId = itr.next();
-
-			if (!defaultOwnerActions.contains(actionId)) {
-				itr.remove();
-			}
+		if (!defaultOwnerActions.isEmpty()) {
+			actionIds.retainAll(defaultOwnerActions);
 		}
 	}
 
