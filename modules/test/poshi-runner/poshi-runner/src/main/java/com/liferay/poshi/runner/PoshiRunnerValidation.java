@@ -1216,19 +1216,27 @@ public class PoshiRunnerValidation {
 
 				String locatorKey = locatorKeyElement.getText();
 
-				if (Validator.isNull(locator) && Validator.isNull(locatorKey)) {
-					continue;
-				}
-				else if (Validator.isNotNull(locator) &&
-						 Validator.isNotNull(locatorKey)) {
-
-					continue;
+				if (Validator.isNull(locator) != Validator.isNull(locatorKey)) {
+					_exceptions.add(
+						new Exception(
+							"Missing locator\n" + filePath + ":" +
+								trElement.attributeValue("line-number")));
 				}
 
-				_exceptions.add(
-					new Exception(
-						"Missing locator\n" + filePath + ":" +
-							trElement.attributeValue("line-number")));
+				if (locatorKey.equals("EXTEND_ACTION_PATH")) {
+					Element pathRootElement =
+						PoshiRunnerContext.getPathRootElement(locator);
+
+					if (pathRootElement == null) {
+						String lineNumber = trElement.attributeValue(
+							"line-number");
+
+						_exceptions.add(
+							new Exception(
+								"Nonexistent parent path file\n" + filePath +
+									":" + lineNumber));
+					}
+				}
 			}
 		}
 
