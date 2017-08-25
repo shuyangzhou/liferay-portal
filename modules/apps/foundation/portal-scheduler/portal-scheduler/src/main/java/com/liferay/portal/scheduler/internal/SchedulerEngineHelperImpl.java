@@ -570,6 +570,30 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 		MessageListener messageListener, SchedulerEntry schedulerEntry,
 		String destinationName) {
 
+		Dictionary<String, Object> properties = new HashMapDictionary<>();
+
+		properties.put("destination.name", destinationName);
+
+		Class<?> messageListenerClass = messageListener.getClass();
+
+		ServiceRegistration<SchedulerEventMessageListener> serviceRegistration =
+			_serviceRegistrations.get(messageListenerClass.getName());
+
+		if (serviceRegistration != null) {
+			SchedulerEventMessageListenerWrapper
+				schedulerEventMessageListenerWrapper =
+					(SchedulerEventMessageListenerWrapper)
+						_bundleContext.getService(
+							serviceRegistration.getReference());
+
+			schedulerEventMessageListenerWrapper.setSchedulerEntry(
+				schedulerEntry);
+
+			serviceRegistration.setProperties(properties);
+
+			return;
+		}
+
 		SchedulerEventMessageListenerWrapper
 			schedulerEventMessageListenerWrapper =
 				new SchedulerEventMessageListenerWrapper();
@@ -579,16 +603,9 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 
 		schedulerEventMessageListenerWrapper.setSchedulerEntry(schedulerEntry);
 
-		Dictionary<String, Object> properties = new HashMapDictionary<>();
-
-		properties.put("destination.name", destinationName);
-
-		ServiceRegistration<SchedulerEventMessageListener> serviceRegistration =
-			_bundleContext.registerService(
-				SchedulerEventMessageListener.class,
-				schedulerEventMessageListenerWrapper, properties);
-
-		Class<?> messageListenerClass = messageListener.getClass();
+		serviceRegistration = _bundleContext.registerService(
+			SchedulerEventMessageListener.class,
+			schedulerEventMessageListenerWrapper, properties);
 
 		_serviceRegistrations.put(
 			messageListenerClass.getName(), serviceRegistration);
@@ -1011,6 +1028,36 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 		public void modifiedService(
 			ServiceReference<SchedulerEventMessageListener> serviceReference,
 			SchedulerEventMessageListener schedulerEventMessageListener) {
+
+			SchedulerEntry schedulerEntry =
+				schedulerEventMessageListener.getSchedulerEntry();
+
+			if ((schedulerEntry == null) ||
+				(schedulerEntry.getTrigger() == null)) {
+
+				return;
+			}
+
+			StorageType storageType = StorageType.MEMORY_CLUSTERED;
+
+			if (schedulerEntry instanceof StorageTypeAware) {
+				StorageTypeAware storageTypeAware =
+					(StorageTypeAware)schedulerEntry;
+
+				storageType = storageTypeAware.getStorageType();
+			}
+
+			SchedulerClusterInvokingThreadLocal.setEnabled(false);
+
+			try {
+				update(schedulerEntry.getTrigger(), storageType);
+			}
+			catch (SchedulerException se) {
+				_log.error(se, se);
+			}
+			finally {
+				SchedulerClusterInvokingThreadLocal.setEnabled(true);
+			}
 		}
 
 		@Override
