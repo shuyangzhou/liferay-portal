@@ -1962,6 +1962,30 @@ of the `JavaCompile` task to configure).
 ### Changed
 - [LPS-74269]: Update the [Liferay Gradle Plugins] dependency to version 3.4.35.
 
+## 5.0.23 - 2017-08-23
+
+### Changed
+- [LPS-74278]: Update the [Liferay Gradle Plugins] dependency to version 3.4.36.
+
+## 5.0.24 - 2017-08-24
+
+### Changed
+- [LPS-74314]: Update the [Liferay Gradle Plugins] dependency to version 3.4.37.
+
+## 5.0.25 - 2017-08-24
+
+### Changed
+- [LPS-74343]: Update the [Liferay Gradle Plugins] dependency to version 3.4.38.
+
+## 5.0.26 - 2017-08-24
+
+### Changed
+- [LPS-74345]: Update the [Liferay Gradle Plugins] dependency to version 3.4.39.
+
+### Removed
+- [LPS-74345]: The [`Eclipse`](https://docs.gradle.org/current/userguide/eclipse_plugin.html)
+plugin is not applied to OSGi projects anymore.
+
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle License Report]: https://github.com/jk1/Gradle-License-Report
 [Liferay CDN]: https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public
@@ -2174,6 +2198,10 @@ of the `JavaCompile` task to configure).
 [LPS-74222]: https://issues.liferay.com/browse/LPS-74222
 [LPS-74250]: https://issues.liferay.com/browse/LPS-74250
 [LPS-74269]: https://issues.liferay.com/browse/LPS-74269
+[LPS-74278]: https://issues.liferay.com/browse/LPS-74278
+[LPS-74314]: https://issues.liferay.com/browse/LPS-74314
+[LPS-74343]: https://issues.liferay.com/browse/LPS-74343
+[LPS-74345]: https://issues.liferay.com/browse/LPS-74345
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981
