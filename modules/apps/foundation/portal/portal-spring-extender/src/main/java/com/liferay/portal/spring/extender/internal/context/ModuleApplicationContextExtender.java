@@ -67,6 +67,7 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -85,29 +86,12 @@ public class ModuleApplicationContextExtender extends AbstractExtender {
 
 		start(bundleContext);
 
-		SpringExtenderConfiguration springExtenderConfiguration =
-			ConfigurableUtil.createConfigurable(
-				SpringExtenderConfiguration.class, properties);
-
-		long scanningInterval =
-			springExtenderConfiguration.unavailableComponentScanningInterval();
-
-		if (scanningInterval > 0) {
-			_unavailableComponentScanningThread =
-				new UnavailableComponentScanningThread(
-					scanningInterval * Time.SECOND);
-
-			_unavailableComponentScanningThread.start();
-		}
+		_startUnavailableComponentScanningThread(properties);
 	}
 
 	@Deactivate
 	protected void deactivate(BundleContext bundleContext) throws Exception {
-		if (_unavailableComponentScanningThread != null) {
-			_unavailableComponentScanningThread.interrupt();
-
-			_unavailableComponentScanningThread.join();
-		}
+		_stopUnavailableComponentScanningThread();
 
 		stop(bundleContext);
 	}
@@ -133,6 +117,16 @@ public class ModuleApplicationContextExtender extends AbstractExtender {
 	@Override
 	protected void error(String s, Throwable throwable) {
 		_log.error(s, throwable);
+	}
+
+	@Modified
+	protected void modified(
+			BundleContext bundleContext, Map<String, Object> properties)
+		throws Exception {
+
+		_stopUnavailableComponentScanningThread();
+
+		_startUnavailableComponentScanningThread(properties);
 	}
 
 	@Reference(
@@ -261,6 +255,37 @@ public class ModuleApplicationContextExtender extends AbstractExtender {
 			if (_log.isWarnEnabled()) {
 				_log.warn(sb.toString());
 			}
+		}
+	}
+
+	private void _startUnavailableComponentScanningThread(
+		Map<String, Object> properties) {
+
+		SpringExtenderConfiguration springExtenderConfiguration =
+			ConfigurableUtil.createConfigurable(
+				SpringExtenderConfiguration.class, properties);
+
+		long scanningInterval =
+			springExtenderConfiguration.unavailableComponentScanningInterval();
+
+		if (scanningInterval > 0) {
+			_unavailableComponentScanningThread =
+				new UnavailableComponentScanningThread(
+					scanningInterval * Time.SECOND);
+
+			_unavailableComponentScanningThread.start();
+		}
+	}
+
+	private void _stopUnavailableComponentScanningThread()
+		throws InterruptedException {
+
+		if (_unavailableComponentScanningThread != null) {
+			_unavailableComponentScanningThread.interrupt();
+
+			_unavailableComponentScanningThread.join();
+
+			_unavailableComponentScanningThread = null;
 		}
 	}
 
