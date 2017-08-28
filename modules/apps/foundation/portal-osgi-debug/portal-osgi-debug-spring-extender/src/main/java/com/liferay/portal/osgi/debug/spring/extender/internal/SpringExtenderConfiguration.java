@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.spring.extender.internal.configuration;
+package com.liferay.portal.osgi.debug.spring.extender.internal;
 
 import aQute.bnd.annotation.metatype.Meta;
 
