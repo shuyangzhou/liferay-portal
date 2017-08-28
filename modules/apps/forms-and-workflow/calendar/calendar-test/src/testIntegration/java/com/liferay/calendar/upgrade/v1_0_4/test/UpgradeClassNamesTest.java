@@ -61,7 +61,7 @@ public class UpgradeClassNamesTest {
 		_oldResourcePermission = addResourcePermission(
 			companyId, "com.liferay.portlet.calendar", primKey, roleId, scope);
 
-		_upgradeClassNames.upgrade();
+		_upgradeProcess.upgrade();
 
 		assertNewResourcePermissionExists();
 
@@ -83,7 +83,7 @@ public class UpgradeClassNamesTest {
 			RandomTestUtil.randomLong(), "com.liferay.portlet.calendar",
 			primKey, roleId, scope);
 
-		_upgradeClassNames.upgrade();
+		_upgradeProcess.upgrade();
 
 		assertNewResourcePermissionExists();
 
@@ -105,7 +105,7 @@ public class UpgradeClassNamesTest {
 			companyId, "com.liferay.portlet.calendar",
 			RandomTestUtil.randomString(), roleId, scope);
 
-		_upgradeClassNames.upgrade();
+		_upgradeProcess.upgrade();
 
 		assertNewResourcePermissionExists();
 
@@ -127,7 +127,7 @@ public class UpgradeClassNamesTest {
 			companyId, "com.liferay.portlet.calendar", primKey,
 			RandomTestUtil.randomLong(), scope);
 
-		_upgradeClassNames.upgrade();
+		_upgradeProcess.upgrade();
 
 		assertNewResourcePermissionExists();
 
@@ -149,7 +149,7 @@ public class UpgradeClassNamesTest {
 			companyId, "com.liferay.portlet.calendar", primKey, roleId,
 			RandomTestUtil.nextInt());
 
-		_upgradeClassNames.upgrade();
+		_upgradeProcess.upgrade();
 
 		assertNewResourcePermissionExists();
 
@@ -195,7 +195,7 @@ public class UpgradeClassNamesTest {
 	}
 
 	protected void setUpUpgradeCalendarResource() {
-		_upgradeClassNames = CalendarUpgradeTestUtil.getUpgradeStep(
+		_upgradeProcess = CalendarUpgradeTestUtil.getUpgradeStep(
 			"v1_0_4.UpgradeClassNames");
 	}
 
@@ -205,6 +205,6 @@ public class UpgradeClassNamesTest {
 	@DeleteAfterTestRun
 	private ResourcePermission _oldResourcePermission;
 
-	private UpgradeProcess _upgradeClassNames;
+	private UpgradeProcess _upgradeProcess;
 
 }
