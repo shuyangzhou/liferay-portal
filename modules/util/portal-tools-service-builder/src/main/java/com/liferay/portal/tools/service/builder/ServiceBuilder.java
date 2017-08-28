@@ -46,17 +46,20 @@ import com.liferay.portal.xml.SAXReaderFactory;
 import com.liferay.util.xml.Dom4jUtil;
 import com.liferay.util.xml.XMLSafeReader;
 
-import com.thoughtworks.qdox.JavaDocBuilder;
-import com.thoughtworks.qdox.model.AbstractBaseJavaEntity;
-import com.thoughtworks.qdox.model.Annotation;
-import com.thoughtworks.qdox.model.ClassLibrary;
+import com.thoughtworks.qdox.JavaProjectBuilder;
+import com.thoughtworks.qdox.library.ClassLibraryBuilder;
+import com.thoughtworks.qdox.library.SortedClassLibraryBuilder;
 import com.thoughtworks.qdox.model.DocletTag;
+import com.thoughtworks.qdox.model.JavaAnnotation;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaField;
 import com.thoughtworks.qdox.model.JavaMethod;
 import com.thoughtworks.qdox.model.JavaParameter;
 import com.thoughtworks.qdox.model.JavaSource;
-import com.thoughtworks.qdox.model.Type;
+import com.thoughtworks.qdox.model.JavaType;
+import com.thoughtworks.qdox.model.impl.AbstractBaseJavaEntity;
+import com.thoughtworks.qdox.model.impl.DefaultJavaMethod;
+import com.thoughtworks.qdox.model.impl.DefaultJavaParameterizedType;
 
 import freemarker.ext.beans.BeansWrapper;
 
@@ -139,16 +142,15 @@ public class ServiceBuilder {
 	public static boolean hasAnnotation(
 		AbstractBaseJavaEntity abstractBaseJavaEntity, String annotationName) {
 
-		Annotation[] annotations = abstractBaseJavaEntity.getAnnotations();
+		List<JavaAnnotation> javaAnnotations =
+			abstractBaseJavaEntity.getAnnotations();
 
-		if (annotations == null) {
+		if (javaAnnotations == null) {
 			return false;
 		}
 
-		for (int i = 0; i < annotations.length; i++) {
-			Type type = annotations[i].getType();
-
-			JavaClass javaClass = type.getJavaClass();
+		for (int i = 0; i < javaAnnotations.size(); i++) {
+			JavaClass javaClass = javaAnnotations.get(i).getType();
 
 			if (annotationName.equals(javaClass.getName())) {
 				return true;
@@ -920,78 +922,18 @@ public class ServiceBuilder {
 			true);
 	}
 
-	public String annotationToString(Annotation annotation) {
-		StringBundler sb = new StringBundler();
-
-		sb.append(StringPool.AT);
-
-		Type type = annotation.getType();
-
-		sb.append(type.getValue());
-
-		Map<String, Object> namedParameters = annotation.getNamedParameterMap();
-
-		if (namedParameters.isEmpty()) {
-			return sb.toString();
-		}
-
-		sb.append(StringPool.OPEN_PARENTHESIS);
-
-		for (Map.Entry<String, Object> entry : namedParameters.entrySet()) {
-			sb.append(entry.getKey());
-
-			sb.append(StringPool.EQUAL);
-
-			Object value = entry.getValue();
-
-			if (value instanceof List) {
-				List<?> values = (List<?>)value;
-
-				sb.append(StringPool.OPEN_CURLY_BRACE);
-
-				for (Object object : values) {
-					if (object instanceof Annotation) {
-						sb.append(annotationToString((Annotation)object));
-					}
-					else {
-						sb.append(object);
-					}
-
-					sb.append(StringPool.COMMA_AND_SPACE);
-				}
-
-				if (!values.isEmpty()) {
-					sb.setIndex(sb.index() - 1);
-				}
-
-				sb.append(StringPool.CLOSE_CURLY_BRACE);
-			}
-			else {
-				sb.append(value);
-			}
-
-			sb.append(StringPool.COMMA_AND_SPACE);
-		}
-
-		sb.setIndex(sb.index() - 1);
-
-		sb.append(StringPool.CLOSE_PARENTHESIS);
-
-		return sb.toString();
-	}
-
 	public String getCacheFieldMethodName(JavaField javaField) {
-		Annotation[] annotations = javaField.getAnnotations();
+		List<JavaAnnotation> javaAnnotations = javaField.getAnnotations();
 
-		for (Annotation annotation : annotations) {
-			Type type = annotation.getType();
+		for (JavaAnnotation javaAnnotation : javaAnnotations) {
+			JavaClass type = javaAnnotation.getType();
 
 			String className = type.getFullyQualifiedName();
 
 			if (className.equals(CacheField.class.getName())) {
 				String methodName = null;
 
-				Object namedParameter = annotation.getNamedParameter(
+				Object namedParameter = javaAnnotation.getNamedParameter(
 					"methodName");
 
 				if (namedParameter != null) {
@@ -1011,9 +953,11 @@ public class ServiceBuilder {
 		throw new IllegalArgumentException(javaField + " is not a cache field");
 	}
 
-	public String getClassName(Type type) {
-		int dimensions = type.getDimensions();
-		String name = type.getValue();
+	public String getClassName(
+		DefaultJavaParameterizedType defaultJavaParameterizedType) {
+
+		int dimensions = defaultJavaParameterizedType.getDimensions();
+		String name = defaultJavaParameterizedType.getFullyQualifiedName();
 
 		if (dimensions == 0) {
 			return name;
@@ -1256,6 +1200,10 @@ public class ServiceBuilder {
 		return idType;
 	}
 
+	public String getGenericValue(JavaClass javaClass) {
+		return StringUtil.replace(javaClass.getFullyQualifiedName(), '$', '.');
+	}
+
 	public String getJavadocComment(JavaClass javaClass) {
 		return _formatComment(
 			javaClass.getComment(), javaClass.getTags(), StringPool.BLANK);
@@ -1266,26 +1214,30 @@ public class ServiceBuilder {
 			javaMethod.getComment(), javaMethod.getTags(), StringPool.TAB);
 	}
 
-	public String getListActualTypeArguments(Type type) {
-		if (type.getValue().equals("java.util.List")) {
-			Type[] types = type.getActualTypeArguments();
+	public String getListActualTypeArguments(
+		DefaultJavaParameterizedType defaultJavaParameterizedType) {
+
+		String typeName = defaultJavaParameterizedType.getFullyQualifiedName();
+
+		if (typeName.equals("java.util.List")) {
+			List<JavaType> types =
+				defaultJavaParameterizedType.getActualTypeArguments();
 
 			if (types != null) {
-				return getTypeGenericsName(types[0]);
+				return getTypeGenericsName(types.get(0));
 			}
 		}
 
-		return getTypeGenericsName(type);
+		return getTypeGenericsName(defaultJavaParameterizedType);
 	}
 
-	public String getLiteralClass(Type type) {
-		StringBundler sb = new StringBundler(type.getDimensions() + 2);
+	public String getLiteralClass(
+		DefaultJavaParameterizedType defaultJavaParameterizedType) {
 
-		sb.append(type.getValue());
+		StringBundler sb = new StringBundler(
+			defaultJavaParameterizedType.getDimensions() + 2);
 
-		for (int i = 0; i < type.getDimensions(); i++) {
-			sb.append("[]");
-		}
+		sb.append(defaultJavaParameterizedType.getFullyQualifiedName());
 
 		sb.append(".class");
 
@@ -1346,7 +1298,7 @@ public class ServiceBuilder {
 	}
 
 	public String getParameterType(JavaParameter parameter) {
-		Type returnType = parameter.getType();
+		JavaType returnType = parameter.getType();
 
 		return getTypeGenericsName(returnType);
 	}
@@ -1423,7 +1375,7 @@ public class ServiceBuilder {
 	}
 
 	public String getReturnType(JavaMethod method) {
-		Type returnType = method.getReturnType();
+		JavaType returnType = method.getReturnType();
 
 		return getTypeGenericsName(returnType);
 	}
@@ -1435,22 +1387,23 @@ public class ServiceBuilder {
 		boolean foundMethod = false;
 
 		for (JavaMethod method : methods) {
-			JavaParameter[] parameters = method.getParameters();
+			List<JavaParameter> parameters = method.getParameters();
 
 			if (method.getName().equals(methodName) &&
-				(parameters.length == args.size())) {
+				(parameters.size() == args.size())) {
 
-				for (int i = 0; i < parameters.length; i++) {
-					JavaParameter parameter = parameters[i];
+				for (int i = 0; i < parameters.size(); i++) {
+					JavaParameter parameter = parameters.get(i);
 
 					String arg = args.get(i);
 
 					if (getParameterType(parameter).equals(arg)) {
 						exceptions = ListUtil.copy(exceptions);
 
-						Type[] methodExceptions = method.getExceptions();
+						List<JavaClass> methodExceptions =
+							method.getExceptions();
 
-						for (Type methodException : methodExceptions) {
+						for (JavaClass methodException : methodExceptions) {
 							String exception = methodException.getValue();
 
 							if (exception.equals(
@@ -1564,20 +1517,28 @@ public class ServiceBuilder {
 		}
 	}
 
-	public String getTypeGenericsName(Type type) {
+	public String getTypeGenericsName(JavaType javaType) {
 		StringBundler sb = new StringBundler();
 
-		Type[] actualTypeArguments = type.getActualTypeArguments();
-
-		if (actualTypeArguments == null) {
-			return type.getGenericValue();
+		if (!(javaType instanceof DefaultJavaParameterizedType)) {
+			return javaType.getFullyQualifiedName();
 		}
 
-		sb.append(type.getValue());
+		DefaultJavaParameterizedType defaultJavaParameterizedType =
+			(DefaultJavaParameterizedType)javaType;
+
+		List<JavaType> actualTypeArguments =
+			defaultJavaParameterizedType.getActualTypeArguments();
+
+		if (ListUtil.isEmpty(actualTypeArguments)) {
+			return javaType.getFullyQualifiedName();
+		}
+
+		sb.append(javaType.getFullyQualifiedName());
 
 		sb.append(StringPool.LESS_THAN);
 
-		for (Type actualTypeArgument : actualTypeArguments) {
+		for (JavaType actualTypeArgument : actualTypeArguments) {
 			sb.append(getTypeGenericsName(actualTypeArgument));
 
 			sb.append(StringPool.COMMA_AND_SPACE);
@@ -1587,7 +1548,7 @@ public class ServiceBuilder {
 
 		sb.append(StringPool.GREATER_THAN);
 
-		sb.append(getDimensions(type.getDimensions()));
+		sb.append(getDimensions(defaultJavaParameterizedType.getDimensions()));
 
 		return sb.toString();
 	}
@@ -1648,18 +1609,20 @@ public class ServiceBuilder {
 				 methodName.equals("fetchByPrimaryKey") ||
 				 methodName.equals("remove")) {
 
-			JavaParameter[] parameters = method.getParameters();
+			List<JavaParameter> parameters = method.getParameters();
 
-			if ((parameters.length == 1) &&
-				parameters[0].getName().equals("primaryKey")) {
+			if (parameters.size() == 1) {
+				JavaParameter parameter = parameters.get(0);
 
-				return true;
+				if (parameter.getName().equals("primaryKey")) {
+					return true;
+				}
 			}
 
 			if (methodName.equals("remove")) {
-				Type[] methodExceptions = method.getExceptions();
+				List<JavaClass> methodExceptions = method.getExceptions();
 
-				for (Type methodException : methodExceptions) {
+				for (JavaClass methodException : methodExceptions) {
 					String exception = methodException.getValue();
 
 					if (exception.contains("NoSuch")) {
@@ -1692,18 +1655,17 @@ public class ServiceBuilder {
 		else if (methodName.equals("getPermissionChecker")) {
 			return false;
 		}
-		else if (methodName.equals("getUser") &&
-				 (method.getParameters().length == 0)) {
+		else if (methodName.equals("getUser") ||
+				 methodName.equals("getUserId")) {
 
-			return false;
+			List<JavaParameter> parameters = method.getParameters();
+
+			if (parameters.isEmpty()) {
+				return false;
+			}
 		}
-		else if (methodName.equals("getUserId") &&
-				 (method.getParameters().length == 0)) {
 
-			return false;
-		}
-
-		JavaClass javaClass = method.getParentClass();
+		JavaClass javaClass = method.getDeclaringClass();
 
 		String packageName = javaClass.getPackageName();
 
@@ -1718,27 +1680,27 @@ public class ServiceBuilder {
 			return true;
 		}
 
-		Type type = null;
+		JavaType javaType = null;
 
-		Type[] parameterTypes = method.getParameterTypes(true);
-		Type returnType = method.getReturnType(true);
+		List<JavaType> parameterTypes = method.getParameterTypes(true);
+		JavaType returnType = method.getReturnType(true);
 
 		if (methodName.startsWith("get")) {
-			if (ArrayUtil.isEmpty(parameterTypes)) {
-				type = returnType;
+			if (ListUtil.isEmpty(parameterTypes)) {
+				javaType = returnType;
 			}
 		}
 		else if (methodName.startsWith("set")) {
-			if ((parameterTypes != null) && (parameterTypes.length == 1)) {
-				type = parameterTypes[0];
+			if ((parameterTypes != null) && (parameterTypes.size() == 1)) {
+				javaType = parameterTypes.get(0);
 			}
 		}
 
-		if (type == null) {
+		if (javaType == null) {
 			return true;
 		}
 
-		String typeClassName = type.getFullyQualifiedName();
+		String typeClassName = javaType.getFullyQualifiedName();
 
 		int index = typeClassName.lastIndexOf(CharPool.PERIOD);
 
@@ -1780,11 +1742,11 @@ public class ServiceBuilder {
 	public boolean isReadOnlyMethod(
 		JavaMethod method, List<String> txRequiredList, String[] prefixes) {
 
-		Annotation[] annotations = method.getAnnotations();
+		List<JavaAnnotation> javaAnnotations = method.getAnnotations();
 
-		if (annotations != null) {
-			for (Annotation annotation : annotations) {
-				Type type = annotation.getType();
+		if (javaAnnotations != null) {
+			for (JavaAnnotation javaAnnotation : javaAnnotations) {
+				JavaClass type = javaAnnotation.getType();
 
 				String className = type.getFullyQualifiedName();
 
@@ -1816,10 +1778,10 @@ public class ServiceBuilder {
 	}
 
 	public boolean isSoapMethod(JavaMethod method) {
-		Type returnType = method.getReturnType();
+		JavaType returnType = method.getReturnType();
 
 		String returnTypeGenericsName = getTypeGenericsName(returnType);
-		String returnValueName = returnType.getValue();
+		String returnValueName = returnType.getFullyQualifiedName();
 
 		if (returnTypeGenericsName.contains(
 				"com.liferay.portal.kernel.search.") ||
@@ -1851,12 +1813,12 @@ public class ServiceBuilder {
 			return false;
 		}
 
-		JavaParameter[] parameters = method.getParameters();
+		List<JavaParameter> parameters = method.getParameters();
 
 		for (JavaParameter javaParameter : parameters) {
-			Type type = javaParameter.getType();
+			JavaType type = javaParameter.getType();
 
-			String parameterTypeName = type.getValue() + _getDimensions(type);
+			String parameterTypeName = type.getFullyQualifiedName();
 
 			if (parameterTypeName.equals(
 					"com.liferay.portal.kernel.util.UnicodeProperties") ||
@@ -1894,6 +1856,68 @@ public class ServiceBuilder {
 		}
 
 		return false;
+	}
+
+	public String javaAnnotationToString(JavaAnnotation javaAnnotation) {
+		StringBundler sb = new StringBundler();
+
+		sb.append(StringPool.AT);
+
+		JavaClass type = javaAnnotation.getType();
+
+		sb.append(type.getFullyQualifiedName());
+
+		Map<String, Object> namedParameters =
+			javaAnnotation.getNamedParameterMap();
+
+		if (namedParameters.isEmpty()) {
+			return sb.toString();
+		}
+
+		sb.append(StringPool.OPEN_PARENTHESIS);
+
+		for (Map.Entry<String, Object> entry : namedParameters.entrySet()) {
+			sb.append(entry.getKey());
+
+			sb.append(StringPool.EQUAL);
+
+			Object value = entry.getValue();
+
+			if (value instanceof List) {
+				List<?> values = (List<?>)value;
+
+				sb.append(StringPool.OPEN_CURLY_BRACE);
+
+				for (Object object : values) {
+					if (object instanceof JavaAnnotation) {
+						sb.append(
+							javaAnnotationToString((JavaAnnotation)object));
+					}
+					else {
+						sb.append(object);
+					}
+
+					sb.append(StringPool.COMMA_AND_SPACE);
+				}
+
+				if (!values.isEmpty()) {
+					sb.setIndex(sb.index() - 1);
+				}
+
+				sb.append(StringPool.CLOSE_CURLY_BRACE);
+			}
+			else {
+				sb.append(value);
+			}
+
+			sb.append(StringPool.COMMA_AND_SPACE);
+		}
+
+		sb.setIndex(sb.index() - 1);
+
+		sb.append(StringPool.CLOSE_PARENTHESIS);
+
+		return sb.toString();
 	}
 
 	private static SAXReader _getSAXReader() {
@@ -2121,7 +2145,8 @@ public class ServiceBuilder {
 						"package " + _apiPackagePath + ".exception;",
 						"package " + _apiPackagePath + ".exception;",
 						"package " + _apiPackagePath + ".exception;",
-						"com.liferay.portal.kernel.exception.NoSuchModelException"
+						"com.liferay.portal.kernel.exception." +
+							"NoSuchModelException"
 					});
 
 				_write(exceptionFile, content);
@@ -2179,8 +2204,7 @@ public class ServiceBuilder {
 		Map<String, JavaMethod> methods = new LinkedHashMap<>();
 
 		for (JavaMethod method : _getMethods(modelImplJavaClass)) {
-			String methodSignature = _getMethodSignature(
-				method, modelImplJavaClass.getPackageName(), true);
+			String methodSignature = _getMethodSignature(method, false);
 
 			methods.put(methodSignature, method);
 		}
@@ -2205,8 +2229,7 @@ public class ServiceBuilder {
 			_serviceOutputPath + "/model/" + entity.getName() + "Model.java");
 
 		for (JavaMethod method : _getMethods(modelJavaClass)) {
-			String methodSignature = _getMethodSignature(
-				method, modelJavaClass.getPackageName(), true);
+			String methodSignature = _getMethodSignature(method, false);
 
 			methods.remove(methodSignature);
 		}
@@ -2647,7 +2670,7 @@ public class ServiceBuilder {
 			methods.put(method.getDeclarationSignature(false), method);
 		}
 
-		Type superClass = modelImplJavaClass.getSuperClass();
+		JavaType superClass = modelImplJavaClass.getSuperClass();
 
 		String superClassValue = superClass.getValue();
 
@@ -2810,7 +2833,7 @@ public class ServiceBuilder {
 		JavaClass modelJavaClass = _getJavaClass(
 			_serviceOutputPath + "/model/" + entity.getName() + "Model.java");
 
-		JavaMethod[] methods = _getMethods(modelJavaClass);
+		List<JavaMethod> methods = _getMethods(modelJavaClass);
 
 		JavaClass extendedModelBaseImplJavaClass = _getJavaClass(
 			_outputPath + "/model/impl/" + entity.getName() + "BaseImpl.java");
@@ -3042,11 +3065,11 @@ public class ServiceBuilder {
 
 		JavaSource javaSource = javaClass.getSource();
 
-		Collections.addAll(imports, javaSource.getImports());
+		imports.addAll(javaSource.getImports());
 
-		JavaMethod[] methods = _getMethods(javaClass);
+		List<JavaMethod> methods = _getMethods(javaClass);
 
-		Type superClass = javaClass.getSuperClass();
+		JavaType superClass = javaClass.getSuperClass();
 
 		String superClassValue = superClass.getValue();
 
@@ -3060,7 +3083,7 @@ public class ServiceBuilder {
 
 			JavaSource parentJavaSource = parentJavaClass.getSource();
 
-			Collections.addAll(imports, parentJavaSource.getImports());
+			imports.addAll(parentJavaSource.getImports());
 
 			methods = _mergeMethods(
 				methods, parentJavaClass.getMethods(), true);
@@ -3097,7 +3120,7 @@ public class ServiceBuilder {
 				(sessionType != _SESSION_TYPE_REMOTE ? "Local" : "") +
 					"ServiceImpl.java");
 
-		JavaMethod[] methods = _getMethods(javaClass);
+		List<JavaMethod> methods = _getMethods(javaClass);
 
 		Map<String, Object> context = _getContext();
 
@@ -3166,9 +3189,9 @@ public class ServiceBuilder {
 			_outputPath + "/service/impl/" + entity.getName() +
 				_getSessionTypeName(sessionType) + "ServiceImpl.java");
 
-		JavaMethod[] methods = _getMethods(javaClass);
+		List<JavaMethod> methods = _getMethods(javaClass);
 
-		Type superClass = javaClass.getSuperClass();
+		JavaType superClass = javaClass.getSuperClass();
 
 		String superClassValue = superClass.getValue();
 
@@ -3180,7 +3203,7 @@ public class ServiceBuilder {
 				_outputPath + "/service/base/" + entity.getName() +
 					_getSessionTypeName(sessionType) + "ServiceBaseImpl.java");
 
-			methods = ArrayUtil.append(parentJavaClass.getMethods(), methods);
+			methods.addAll(0, parentJavaClass.getMethods());
 		}
 
 		Map<String, Object> context = _getContext();
@@ -4014,11 +4037,11 @@ public class ServiceBuilder {
 	}
 
 	private String _formatComment(
-		String comment, DocletTag[] tags, String indentation) {
+		String comment, List<DocletTag> tags, String indentation) {
 
 		StringBundler sb = new StringBundler();
 
-		if (Validator.isNull(comment) && (tags.length <= 0)) {
+		if (Validator.isNull(comment) && tags.isEmpty()) {
 			return sb.toString();
 		}
 
@@ -4032,7 +4055,7 @@ public class ServiceBuilder {
 
 			sb.append("\n");
 
-			if (tags.length > 0) {
+			if (!tags.isEmpty()) {
 				sb.append(indentation);
 				sb.append(" *\n");
 			}
@@ -4122,12 +4145,12 @@ public class ServiceBuilder {
 		List<JavaField> javaFields = new ArrayList<>();
 
 		for (JavaField javaField : javaClass.getFields()) {
-			Annotation[] annotations = javaField.getAnnotations();
+			List<JavaAnnotation> javaAnnotations = javaField.getAnnotations();
 
-			for (Annotation annotation : annotations) {
-				Type type = annotation.getType();
+			for (JavaAnnotation javaAnnotation : javaAnnotations) {
+				JavaClass javaAnnotationClass = javaAnnotation.getType();
 
-				String className = type.getFullyQualifiedName();
+				String className = javaAnnotationClass.getFullyQualifiedName();
 
 				if (className.equals(CacheField.class.getName())) {
 					javaFields.add(javaField);
@@ -4508,10 +4531,12 @@ public class ServiceBuilder {
 		return sb.toString();
 	}
 
-	private String _getDimensions(Type type) {
+	private String _getDimensions(
+		DefaultJavaParameterizedType defaultJavaParameterizedType) {
+
 		String dimensions = "";
 
-		for (int i = 0; i < type.getDimensions(); i++) {
+		for (int i = 0; i < defaultJavaParameterizedType.getDimensions(); i++) {
 			dimensions += "[]";
 		}
 
@@ -4564,13 +4589,15 @@ public class ServiceBuilder {
 		JavaClass javaClass = _javaClasses.get(fullyQualifiedClassName);
 
 		if (javaClass == null) {
-			ClassLibrary classLibrary = new ClassLibrary();
+			ClassLibraryBuilder classLibraryBuilder =
+				new SortedClassLibraryBuilder();
 
 			Class<?> clazz = getClass();
 
-			classLibrary.addClassLoader(clazz.getClassLoader());
+			classLibraryBuilder.appendClassLoader(clazz.getClassLoader());
 
-			JavaDocBuilder builder = new JavaDocBuilder(classLibrary);
+			JavaProjectBuilder builder = new JavaProjectBuilder(
+				classLibraryBuilder);
 
 			File file = new File(fileName);
 
@@ -4591,23 +4618,20 @@ public class ServiceBuilder {
 	private String _getMethodKey(JavaMethod javaMethod) {
 		StringBundler sb = new StringBundler();
 
-		if (!javaMethod.isConstructor()) {
-			sb.append(getTypeGenericsName(javaMethod.getReturnType()));
-			sb.append(StringPool.SPACE);
-		}
-
+		sb.append(getTypeGenericsName(javaMethod.getReturnType()));
+		sb.append(StringPool.SPACE);
 		sb.append(javaMethod.getName());
 		sb.append(StringPool.OPEN_PARENTHESIS);
 
-		JavaParameter[] javaParameters = javaMethod.getParameters();
+		List<JavaParameter> javaParameters = javaMethod.getParameters();
 
 		for (JavaParameter javaParameter : javaParameters) {
-			sb.append(getTypeGenericsName(javaParameter.getType()));
+			sb.append(javaParameter.getType().getGenericValue());
 
 			sb.append(StringPool.COMMA);
 		}
 
-		if (javaParameters.length > 0) {
+		if (!javaParameters.isEmpty()) {
 			sb.setIndex(sb.index() - 1);
 		}
 
@@ -4616,33 +4640,34 @@ public class ServiceBuilder {
 		return sb.toString();
 	}
 
-	private JavaMethod[] _getMethods(JavaClass javaClass) {
+	private List<JavaMethod> _getMethods(JavaClass javaClass) {
 		return _getMethods(javaClass, false);
 	}
 
-	private JavaMethod[] _getMethods(
+	private List<JavaMethod> _getMethods(
 		JavaClass javaClass, boolean superclasses) {
 
 		List<String> cacheFieldMethods = new ArrayList<>();
 
 		for (JavaField javaField : javaClass.getFields()) {
-			Annotation[] annotations = javaField.getAnnotations();
+			List<JavaAnnotation> javaAnnotations = javaField.getAnnotations();
 
-			for (Annotation annotation : annotations) {
-				Type type = annotation.getType();
+			for (JavaAnnotation javaAnnotation : javaAnnotations) {
+				JavaClass javaAnnotationClass = javaAnnotation.getType();
 
-				String className = type.getFullyQualifiedName();
+				String className = javaAnnotationClass.getFullyQualifiedName();
 
 				if (!className.equals(CacheField.class.getName())) {
 					continue;
 				}
 
 				if (!GetterUtil.getBoolean(
-						annotation.getNamedParameter("propagateToInterface"))) {
+						javaAnnotation.getNamedParameter(
+							"propagateToInterface"))) {
 
 					String methodName = null;
 
-					Object namedParameter = annotation.getNamedParameter(
+					Object namedParameter = javaAnnotation.getNamedParameter(
 						"methodName");
 
 					if (namedParameter != null) {
@@ -4671,11 +4696,11 @@ public class ServiceBuilder {
 			}
 		}
 
-		return methods.toArray(new JavaMethod[methods.size()]);
+		return methods;
 	}
 
 	private String _getMethodSignature(
-		JavaMethod method, String packagePath, boolean includePackagePath) {
+		JavaMethod method, boolean useFullyQualifiedNames) {
 
 		StringBundler sb = new StringBundler();
 
@@ -4683,17 +4708,11 @@ public class ServiceBuilder {
 		sb.append(StringPool.OPEN_PARENTHESIS);
 
 		for (JavaParameter parameter : method.getParameters()) {
-			String parameterValue =
-				parameter.getResolvedValue() +
-					_getDimensions(parameter.getType());
+			JavaType type = parameter.getType();
 
-			if (includePackagePath) {
-				if (parameterValue.matches("[A-Z]\\w+")) {
-					parameterValue =
-						packagePath + StringPool.PERIOD + parameterValue;
-				}
-			}
-			else {
+			String parameterValue = type.getFullyQualifiedName();
+
+			if (!useFullyQualifiedNames) {
 				int pos = parameterValue.lastIndexOf(CharPool.PERIOD);
 
 				if (pos != -1) {
@@ -4910,12 +4929,8 @@ public class ServiceBuilder {
 	}
 
 	private boolean _hasHttpMethods(JavaClass javaClass) {
-		JavaMethod[] methods = _getMethods(javaClass);
-
-		for (JavaMethod javaMethod : methods) {
-			if (!javaMethod.isConstructor() && javaMethod.isPublic() &&
-				isCustomMethod(javaMethod)) {
-
+		for (JavaMethod javaMethod : _getMethods(javaClass)) {
+			if (javaMethod.isPublic() && isCustomMethod(javaMethod)) {
 				return true;
 			}
 		}
@@ -4924,16 +4939,24 @@ public class ServiceBuilder {
 	}
 
 	private boolean _isStringLocaleMap(JavaParameter javaParameter) {
-		Type type = javaParameter.getType();
+		JavaType type = javaParameter.getType();
 
-		Type[] actualArgumentTypes = type.getActualTypeArguments();
-
-		if (actualArgumentTypes.length != 2) {
+		if (!(type instanceof DefaultJavaParameterizedType)) {
 			return false;
 		}
 
-		if (!_isTypeValue(actualArgumentTypes[0], Locale.class.getName()) ||
-			!_isTypeValue(actualArgumentTypes[1], String.class.getName())) {
+		DefaultJavaParameterizedType defaultJavaParameterizedType =
+			(DefaultJavaParameterizedType)type;
+
+		List<JavaType> actualArgumentTypes =
+			defaultJavaParameterizedType.getActualTypeArguments();
+
+		if (actualArgumentTypes.size() != 2) {
+			return false;
+		}
+
+		if (!_isTypeValue(actualArgumentTypes.get(0), Locale.class.getName()) ||
+			!_isTypeValue(actualArgumentTypes.get(1), String.class.getName())) {
 
 			return false;
 		}
@@ -4949,44 +4972,51 @@ public class ServiceBuilder {
 		return _targetEntityName.equals(entity.getName());
 	}
 
-	private boolean _isTypeValue(Type type, String value) {
-		return value.equals(type.getValue());
+	private boolean _isTypeValue(JavaType type, String value) {
+		return value.equals(type.getFullyQualifiedName());
 	}
 
-	private Annotation[] _mergeAnnotations(
-		Annotation[] annotations1, Annotation[] annotations2) {
+	private List<JavaAnnotation> _mergeAnnotations(
+		List<JavaAnnotation> javaAnnotations1,
+		List<JavaAnnotation> javaAnnotations2) {
 
-		Map<Type, Annotation> annotationsMap = new HashMap<>();
+		Map<JavaType, JavaAnnotation> javaAnnotationsMap = new HashMap<>();
 
-		for (Annotation annotation : annotations2) {
-			annotationsMap.put(annotation.getType(), annotation);
+		for (JavaAnnotation javaAnnotation : javaAnnotations2) {
+			javaAnnotationsMap.put(javaAnnotation.getType(), javaAnnotation);
 		}
 
-		for (Annotation annotation : annotations1) {
-			annotationsMap.put(annotation.getType(), annotation);
+		for (JavaAnnotation javaAnnotation : javaAnnotations1) {
+			javaAnnotationsMap.put(javaAnnotation.getType(), javaAnnotation);
 		}
 
-		List<Annotation> annotations = new ArrayList<>(annotationsMap.values());
+		List<JavaAnnotation> javaAnnotations = new ArrayList<>(
+			javaAnnotationsMap.values());
 
-		Comparator<Annotation> comparator = new Comparator<Annotation>() {
+		Comparator<JavaAnnotation> comparator =
+			new Comparator<JavaAnnotation>() {
 
-			@Override
-			public int compare(Annotation annotation1, Annotation annotation2) {
-				String annotationString1 = annotation1.toString();
-				String annotationString2 = annotation2.toString();
+				@Override
+				public int compare(
+					JavaAnnotation javaAnnotation1,
+					JavaAnnotation javaAnnotation2) {
 
-				return annotationString1.compareTo(annotationString2);
-			}
+					String javaAnnotationString1 = javaAnnotation1.toString();
+					String javaAnnotationString2 = javaAnnotation2.toString();
 
-		};
+					return javaAnnotationString1.compareTo(
+						javaAnnotationString2);
+				}
 
-		Collections.sort(annotations, comparator);
+			};
 
-		return annotations.toArray(new Annotation[annotations.size()]);
+		Collections.sort(javaAnnotations, comparator);
+
+		return javaAnnotations;
 	}
 
-	private JavaMethod[] _mergeMethods(
-		JavaMethod[] javaMethods1, JavaMethod[] javaMethods2,
+	private List<JavaMethod> _mergeMethods(
+		List<JavaMethod> javaMethods1, List<JavaMethod> javaMethods2,
 		boolean mergeAnnotations) {
 
 		Map<String, JavaMethod> javaMethodMap = new HashMap<>();
@@ -5003,12 +5033,19 @@ public class ServiceBuilder {
 			if (existingJavaMethod == null) {
 				javaMethodMap.put(javaMethodKey, javaMethod);
 			}
-			else if (mergeAnnotations) {
-				Annotation[] annotations = _mergeAnnotations(
+			else if (mergeAnnotations &&
+					 (existingJavaMethod instanceof DefaultJavaMethod)) {
+
+				DefaultJavaMethod newJavaMethod =
+					(DefaultJavaMethod)existingJavaMethod;
+
+				List<JavaAnnotation> javaAnnotations = _mergeAnnotations(
 					javaMethod.getAnnotations(),
 					existingJavaMethod.getAnnotations());
 
-				existingJavaMethod.setAnnotations(annotations);
+				newJavaMethod.setAnnotations(javaAnnotations);
+
+				javaMethodMap.put(javaMethodKey, newJavaMethod);
 			}
 		}
 
@@ -5018,19 +5055,14 @@ public class ServiceBuilder {
 
 			@Override
 			public int compare(JavaMethod javaMethod1, JavaMethod javaMethod2) {
-				JavaClass parentClass1 = javaMethod1.getParentClass();
-				JavaClass parentClass2 = javaMethod2.getParentClass();
-
 				String methodSignature1 = _getMethodSignature(
-					javaMethod1, parentClass1.getPackageName(), false);
+					javaMethod1, false);
 				String methodSignature2 = _getMethodSignature(
-					javaMethod2, parentClass2.getPackageName(), false);
+					javaMethod2, false);
 
 				if (methodSignature1.equals(methodSignature2)) {
-					methodSignature1 = _getMethodSignature(
-						javaMethod1, parentClass1.getPackageName(), true);
-					methodSignature2 = _getMethodSignature(
-						javaMethod2, parentClass2.getPackageName(), true);
+					methodSignature1 = _getMethodSignature(javaMethod1, true);
+					methodSignature2 = _getMethodSignature(javaMethod2, true);
 				}
 
 				return methodSignature1.compareToIgnoreCase(methodSignature2);
@@ -5040,7 +5072,7 @@ public class ServiceBuilder {
 
 		Collections.sort(javaMethods, comparator);
 
-		return javaMethods.toArray(new JavaMethod[javaMethods.size()]);
+		return javaMethods;
 	}
 
 	private List<Entity> _mergeReferenceList(Entity entity) {

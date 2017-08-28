@@ -59,6 +59,10 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 
 	@Override
 	protected void postFormat() throws Exception {
+		addProgressStatusUpdate(
+			new ProgressStatusUpdate(
+				ProgressStatus.CHECK_STYLE_STARTING, _ungeneratedFiles.size()));
+
 		_processCheckStyle();
 	}
 
@@ -112,6 +116,12 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 		String[] excludes = _getPluginExcludes(StringPool.BLANK);
 
 		fileNames.addAll(getFileNames(excludes, includes));
+
+		System.out.println("pluginJavaFiles.size(): " + fileNames.size());
+
+		for (String fn : fileNames) {
+			System.out.println("pluginJavaFileName: " + fn);
+		}
 
 		return fileNames;
 	}
@@ -168,6 +178,12 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 
 		fileNames.addAll(getFileNames(excludes, includes));
 
+		System.out.println("portalJavaFiles.size(): " + fileNames.size());
+
+		for (String fn : fileNames) {
+			System.out.println("portalJavaFileName: " + fn);
+		}
+
 		return fileNames;
 	}
 
@@ -191,7 +207,7 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 			CheckStyleUtil.process(
 				_ungeneratedFiles,
 				getSuppressionsFiles("checkstyle-suppressions.xml"),
-				sourceFormatterArgs.getBaseDirName());
+				sourceFormatterArgs.getBaseDirName(), getProgressStatusQueue());
 
 		for (SourceFormatterMessage sourceFormatterMessage :
 				sourceFormatterMessages) {
