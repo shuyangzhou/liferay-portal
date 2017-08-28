@@ -42,7 +42,7 @@ import org.osgi.service.component.annotations.Deactivate;
  * @author Matthew Tambara
  */
 @Component(
-	configurationPid = "com.liferay.portal.spring.extender.internal.configuration.SpringExtenderConfiguration",
+	configurationPid = "com.liferay.portal.osgi.debug.spring.extender.internal.UnavailableComponentScannerConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true
 )
 public class UnavailableComponentScanner {
@@ -52,9 +52,9 @@ public class UnavailableComponentScanner {
 			BundleContext bundleContext, Map<String, Object> properties)
 		throws Exception {
 
-		SpringExtenderConfiguration springExtenderConfiguration =
+		UnavailableComponentScannerConfiguration springExtenderConfiguration =
 			ConfigurableUtil.createConfigurable(
-				SpringExtenderConfiguration.class, properties);
+				UnavailableComponentScannerConfiguration.class, properties);
 
 		long scanningInterval =
 			springExtenderConfiguration.unavailableComponentScanningInterval();

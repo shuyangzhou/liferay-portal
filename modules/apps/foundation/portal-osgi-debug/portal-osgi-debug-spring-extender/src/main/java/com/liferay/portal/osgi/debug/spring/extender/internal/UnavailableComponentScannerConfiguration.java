@@ -23,11 +23,11 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
  */
 @ExtendedObjectClassDefinition(category = "foundation")
 @Meta.OCD(
-	id = "com.liferay.portal.spring.extender.internal.configuration.SpringExtenderConfiguration",
+	id = "com.liferay.portal.osgi.debug.spring.extender.internal.UnavailableComponentScannerConfiguration",
 	localization = "content/Language",
-	name = "spring-extender-configuration-name"
+	name = "unavailable-component-scanner-configuration-name"
 )
-public interface SpringExtenderConfiguration {
+public interface UnavailableComponentScannerConfiguration {
 
 	@Meta.AD(
 		deflt = "-1",
