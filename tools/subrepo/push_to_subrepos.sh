@@ -151,6 +151,14 @@ SUBREPO_SEARCH_PARAMETERS=(
 	"master:../..:modules/apps"
 )
 
+for SUBREPO_SEARCH_PARAMETER in "${SUBREPO_SEARCH_PARAMETERS[@]}"
+do
+	BRANCH_NAME="${SUBREPO_SEARCH_PARAMETER%%:*}"
+	REPO_PATH="$(echo "${SUBREPO_SEARCH_PARAMETER}" | sed 's/:[^:]*$//' | sed 's/.*://')"
+
+	git -C "${REPO_PATH}" fetch -fq upstream "${BRANCH_NAME}:refs/remotes/upstream/${BRANCH_NAME}"
+done
+
 if [[ "${SUBREPO_NAME}" ]]
 then
 	if [[ "${OPTION_FORCE}" ]]
@@ -204,16 +212,16 @@ master
 			REPO_PATH="$(echo "${SUBREPO_SEARCH_PARAMETER}" | sed 's/:[^:]*$//' | sed 's/.*://')"
 			SUBREPOS_PATH="${SUBREPO_SEARCH_PARAMETER##*:}"
 
-			GITREPO_PATH="$(git -C "${REPO_PATH}" grep -l "/${SUBREPO_NAME}.git" "${BRANCH_NAME}" -- '*.gitrepo' | grep ":${SUBREPOS_PATH}/" | sed 's/.*://')"
+			GITREPO_PATH="$(git -C "${REPO_PATH}" grep -l "/${SUBREPO_NAME}.git" "refs/remotes/upstream/${BRANCH_NAME}" -- '*.gitrepo' | grep ":${SUBREPOS_PATH}/" | sed 's/.*://')"
 
 			if [[ -z "${GITREPO_PATH}" ]]
 			then
 				continue
 			fi
 
-			if [[ "$(git -C "${REPO_PATH}" grep 'mode.*=.*pull' "${BRANCH_NAME}" -- "${GITREPO_PATH##*:}")" ]]
+			if [[ "$(git -C "${REPO_PATH}" grep 'mode.*=.*pull' "refs/remotes/upstream/${BRANCH_NAME}" -- "${GITREPO_PATH##*:}")" ]]
 			then
-				SUBREPO_BRANCHES=("${SUBREPO_BRANCHES[@]}" "$(git -C "${REPO_PATH}" grep 'git@github.com'  "${BRANCH_NAME}" -- "${GITREPO_PATH##*:}" | sed 's@:.*/@:@' | sed 's/\.git//')")
+				SUBREPO_BRANCHES=("${SUBREPO_BRANCHES[@]}" "$(git -C "${REPO_PATH}" grep 'git@github.com'  "refs/remotes/upstream/${BRANCH_NAME}" -- "${GITREPO_PATH##*:}" | sed 's@:.*/@:@' | sed 's/\.git//' | sed 's@refs/remotes/upstream/@@')")
 			fi
 		done
 
@@ -231,7 +239,7 @@ else
 		REPO_PATH="$(echo "${SUBREPO_SEARCH_PARAMETER}" | sed 's/:[^:]*$//' | sed 's/.*://')"
 		SUBREPOS_PATH="${SUBREPO_SEARCH_PARAMETER##*:}"
 
-		SUBREPO_SEARCH=($(git -C "${REPO_PATH}" grep -l 'mode.*=.*pull' "${BRANCH_NAME}" -- '*.gitrepo' | grep ":${SUBREPOS_PATH}/" | sed 's/.*://' | xargs git -C "${REPO_PATH}" grep 'git@github.com' "${BRANCH_NAME}" -- | sed 's@:.*/@:@' | sed 's/\.git//'))
+		SUBREPO_SEARCH=($(git -C "${REPO_PATH}" grep -l 'mode.*=.*pull' "refs/remotes/upstream/${BRANCH_NAME}" -- '*.gitrepo' | grep ":${SUBREPOS_PATH}/" | sed 's/.*://' | xargs git -C "${REPO_PATH}" grep 'git@github.com' "refs/remotes/upstream/${BRANCH_NAME}" -- | sed 's@:.*/@:@' | sed 's/\.git//' | sed 's@refs/remotes/upstream/@@'))
 
 		ALL_SUBREPOS=("${ALL_SUBREPOS[@]}" "${SUBREPO_SEARCH[@]}")
 	done
