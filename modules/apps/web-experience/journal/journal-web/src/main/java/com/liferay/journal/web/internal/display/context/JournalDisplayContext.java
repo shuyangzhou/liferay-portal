@@ -173,9 +173,15 @@ public class JournalDisplayContext {
 		double version = ParamUtil.getDouble(_request, "version");
 		int page = ParamUtil.getInteger(_request, "page");
 
+		JournalArticle article = JournalArticleLocalServiceUtil.fetchArticle(
+			groupId, articleId, version);
+
+		if (article == null) {
+			return _articleDisplay;
+		}
+
 		_articleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(
-			groupId, articleId, version, null, null,
-			themeDisplay.getLanguageId(), page,
+			article, null, null, themeDisplay.getLanguageId(), page,
 			new PortletRequestModel(
 				_liferayPortletRequest, _liferayPortletResponse),
 			themeDisplay);
@@ -1283,12 +1289,10 @@ public class JournalDisplayContext {
 		searchContext.setFolderIds(folderIds);
 		searchContext.setStart(start);
 
-		QueryConfig queryConfig = new QueryConfig();
+		QueryConfig queryConfig = searchContext.getQueryConfig();
 
 		queryConfig.setHighlightEnabled(false);
 		queryConfig.setScoreEnabled(false);
-
-		searchContext.setQueryConfig(queryConfig);
 
 		if (sort != null) {
 			searchContext.setSorts(sort);
