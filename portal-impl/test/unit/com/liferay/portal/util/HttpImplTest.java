@@ -16,10 +16,14 @@ package com.liferay.portal.util;
 
 import com.liferay.portal.kernel.test.CaptureHandler;
 import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
+import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.URLCodec;
 
 import java.util.HashMap;
 import java.util.List;
@@ -341,118 +345,87 @@ public class HttpImplTest extends PowerMockito {
 
 	@Test
 	public void testShortenURL() {
+
+		// No change
+
+		Assert.assertSame(
+			"www.liferay.com", _httpImpl.shortenURL("www.liferay.com"));
+		Assert.assertSame(
+			"www.liferay.com?", _httpImpl.shortenURL("www.liferay.com?"));
+		Assert.assertSame(
+			"www.liferay.com?key1=value1",
+			_httpImpl.shortenURL("www.liferay.com?key1=value1"));
+		Assert.assertSame(
+			"www.liferay.com?key1=value1&redirect=test",
+			_httpImpl.shortenURL("www.liferay.com?key1=value1&redirect=test"));
+
+		String paramValue = RandomTestUtil.randomString(
+			Http.URL_MAXIMUM_LENGTH, NumericStringRandomizerBumper.INSTANCE);
+
+		// Cannot safely remove anything
+
+		Assert.assertSame(paramValue, _httpImpl.shortenURL(paramValue));
+
+		// Remove redirect one deep
+
 		Assert.assertEquals(
-			"www.google.com", _httpImpl.shortenURL("www.google.com", 0));
+			"www.liferay.com",
+			_httpImpl.shortenURL("www.liferay.com?redirect=" + paramValue));
 		Assert.assertEquals(
-			"www.google.com", _httpImpl.shortenURL("www.google.com?", 0));
-		Assert.assertEquals(
-			"www.google.com?first=foo&second=bar",
-			_httpImpl.shortenURL("www.google.com?first=foo&second=bar", 0));
-		Assert.assertEquals(
-			"www.google.com",
-			_httpImpl.shortenURL("www.google.com?_backURL=www.yahoo.com", 0));
-		Assert.assertEquals(
-			"www.google.com",
-			_httpImpl.shortenURL("www.google.com?_redirect=www.yahoo.com", 0));
-		Assert.assertEquals(
-			"www.google.com",
+			"www.liferay.com?key1=value1",
 			_httpImpl.shortenURL(
-				"www.google.com?_returnToFullPageURL=www.yahoo.com", 0));
+				"www.liferay.com?key1=value1&redirect=" + paramValue));
 		Assert.assertEquals(
-			"www.google.com",
-			_httpImpl.shortenURL("www.google.com?redirect=www.yahoo.com", 0));
-		Assert.assertEquals(
-			"www.google.com?parameter=foo",
+			"www.liferay.com?key1=value1",
 			_httpImpl.shortenURL(
-				"www.google.com?redirect=www.yahoo.com&parameter=foo", 0));
+				"www.liferay.com?redirect=" + paramValue + "&key1=value1"));
+
+		// Remove redirect and keep _returnToFullPageURL
+
 		Assert.assertEquals(
-			"www.google.com?redirect=www.yahoo.com%3Fredirect%3D" +
-				"www.bing.com%26parameter%3Dbar&parameter=foo",
+			"www.liferay.com?key1=value1&_returnToFullPageURL=test",
 			_httpImpl.shortenURL(
-				"www.google.com?redirect=www.yahoo.com%3Fredirect%3D" +
-					"www.bing.com%26parameter%3Dbar&parameter=foo",
-				3));
+				"www.liferay.com?_returnToFullPageURL=test&redirect=" +
+					paramValue + "&key1=value1"));
+
+		// Remove redirect two deep
+
+		String encodedURL = URLCodec.encodeURL(
+			"www.liferay.com?key1=value1&redirect=" + paramValue);
+
 		Assert.assertEquals(
-			"www.google.com?redirect=www.yahoo.com%3Fredirect%3D" +
-				"www.bing.com%26parameter%3Dbar&parameter=foo",
+			"www.liferay.com?key1=value1&redirect=" +
+				URLCodec.encodeURL("www.liferay.com?key1=value1"),
 			_httpImpl.shortenURL(
-				"www.google.com?redirect=www.yahoo.com%3Fredirect%3D" +
-					"www.bing.com%26parameter%3Dbar&parameter=foo",
-				2));
+				"www.liferay.com?key1=value1&redirect=" + encodedURL));
+
+		// Remove redirect three deep
+
+		String encodedURL2 = URLCodec.encodeURL(
+			"www.liferay.com?key1=value1&redirect=" + encodedURL);
+
 		Assert.assertEquals(
-			"www.google.com?redirect=www.yahoo.com%3Fparameter%3Dbar&" +
-				"parameter=foo",
+			"www.liferay.com?key1=value1&redirect=" +
+				URLCodec.encodeURL(
+					"www.liferay.com?key1=value1&redirect=" +
+						URLCodec.encodeURL("www.liferay.com?key1=value1")),
 			_httpImpl.shortenURL(
-				"www.google.com?redirect=www.yahoo.com%3Fredirect%3D" +
-					"www.bing.com%26parameter%3Dbar&parameter=foo",
-				1));
+				"www.liferay.com?redirect=" + encodedURL2 + "&key1=value1"));
+
+		// Remove redirect three deep and keep _returnToFullPageURL two deep
+
+		String encodedURL3 = URLCodec.encodeURL(
+			"www.liferay.com?_returnToFullPageURL=test&key1=value1&redirect=" +
+				encodedURL);
+
 		Assert.assertEquals(
-			"www.google.com?parameter=foo",
+			"www.liferay.com?key1=value1&redirect=" +
+				URLCodec.encodeURL(
+					"www.liferay.com?key1=value1&_returnToFullPageURL=test" +
+						"&redirect=" +
+							URLCodec.encodeURL("www.liferay.com?key1=value1")),
 			_httpImpl.shortenURL(
-				"www.google.com?redirect=www.yahoo.com%3Fredirect%3D" +
-					"www.bing.com%26parameter%3Dbar&parameter=foo",
-				0));
-
-		try (CaptureHandler captureHandler =
-				JDKLoggerTestUtil.configureJDKLogger(
-					HttpImpl.class.getName(), Level.FINE)) {
-
-			Assert.assertEquals("", _httpImpl.shortenURL("redirect=%xy", 1));
-
-			List<LogRecord> logRecords = captureHandler.getLogRecords();
-
-			Assert.assertEquals(logRecords.toString(), 1, logRecords.size());
-
-			LogRecord logRecord = logRecords.get(0);
-
-			Assert.assertEquals(
-				"Skipping undecodable parameter redirect=%xy",
-				logRecord.getMessage());
-
-			Throwable throwable = logRecord.getThrown();
-
-			Assert.assertSame(
-				IllegalArgumentException.class, throwable.getClass());
-			Assert.assertEquals("x is not a hex char", throwable.getMessage());
-		}
-
-		try (CaptureHandler captureHandler =
-				JDKLoggerTestUtil.configureJDKLogger(
-					HttpImpl.class.getName(), Level.FINE)) {
-
-			Assert.assertEquals(
-				"www.google.com",
-				_httpImpl.shortenURL("www.google.com?redirect=%xy", 1));
-
-			List<LogRecord> logRecords = captureHandler.getLogRecords();
-
-			Assert.assertEquals(logRecords.toString(), 1, logRecords.size());
-
-			LogRecord logRecord = logRecords.get(0);
-
-			Assert.assertEquals(
-				"Skipping undecodable parameter redirect=%xy",
-				logRecord.getMessage());
-
-			Throwable throwable = logRecord.getThrown();
-
-			Assert.assertSame(
-				IllegalArgumentException.class, throwable.getClass());
-			Assert.assertEquals("x is not a hex char", throwable.getMessage());
-		}
-
-		try (CaptureHandler captureHandler =
-				JDKLoggerTestUtil.configureJDKLogger(
-					HttpImpl.class.getName(), Level.OFF)) {
-
-			Assert.assertEquals(
-				"www.google.com",
-				_httpImpl.shortenURL("www.google.com?redirect=%xy", 1));
-
-			List<LogRecord> logRecords = captureHandler.getLogRecords();
-
-			Assert.assertTrue(logRecords.toString(), logRecords.isEmpty());
-		}
+				"www.liferay.com?redirect=" + encodedURL3 + "&key1=value1"));
 	}
 
 	protected void testDecodeURLWithInvalidURLEncoding(String url) {
