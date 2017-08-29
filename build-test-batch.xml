@@ -1816,6 +1816,42 @@ app.server.type=@{app.server.type}]]></echo>
 		<run-bundle-blacklist-restart-test />
 	</target>
 
+	<target name="bundle-blacklist-restart-2-jdk8">
+		<run-bundle-blacklist-restart-test />
+	</target>
+
+	<target name="bundle-blacklist-restart-3-jdk8">
+		<run-bundle-blacklist-restart-test />
+	</target>
+
+	<target name="bundle-blacklist-restart-4-jdk8">
+		<run-bundle-blacklist-restart-test />
+	</target>
+
+	<target name="bundle-blacklist-restart-5-jdk8">
+		<run-bundle-blacklist-restart-test />
+	</target>
+
+	<target name="bundle-blacklist-restart-6-jdk8">
+		<run-bundle-blacklist-restart-test />
+	</target>
+
+	<target name="bundle-blacklist-restart-7-jdk8">
+		<run-bundle-blacklist-restart-test />
+	</target>
+
+	<target name="bundle-blacklist-restart-8-jdk8">
+		<run-bundle-blacklist-restart-test />
+	</target>
+
+	<target name="bundle-blacklist-restart-9-jdk8">
+		<run-bundle-blacklist-restart-test />
+	</target>
+
+	<target name="bundle-blacklist-restart-10-jdk8">
+		<run-bundle-blacklist-restart-test />
+	</target>
+
 	<target name="central-requirements-jdk8">
 		<fail message="Please set the property ${central.requirements.tests}." unless="central.requirements.tests" />
 
