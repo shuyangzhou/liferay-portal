@@ -73,7 +73,7 @@ public class UpgradeCalendarResourceTest {
 
 		assertUserIsDefault(userId);
 
-		_upgradeCalendarResource.upgrade();
+		_upgradeProcess.upgrade();
 
 		userId = getCalendarResourceUserId(calendarResource);
 
@@ -90,7 +90,7 @@ public class UpgradeCalendarResourceTest {
 
 		assertUserIsDefault(userId);
 
-		_upgradeCalendarResource.upgrade();
+		_upgradeProcess.upgrade();
 
 		userId = getCalendarUserId(calendar);
 
@@ -175,13 +175,13 @@ public class UpgradeCalendarResourceTest {
 	}
 
 	protected void setUpUpgradeCalendarResource() {
-		_upgradeCalendarResource = CalendarUpgradeTestUtil.getUpgradeStep(
+		_upgradeProcess = CalendarUpgradeTestUtil.getUpgradeStep(
 			"v1_0_5.UpgradeCalendarResource");
 	}
 
 	@DeleteAfterTestRun
 	private Group _group;
 
-	private UpgradeProcess _upgradeCalendarResource;
+	private UpgradeProcess _upgradeProcess;
 
 }
