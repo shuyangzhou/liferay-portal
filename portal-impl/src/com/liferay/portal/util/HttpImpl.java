@@ -1212,15 +1212,6 @@ public class HttpImpl implements Http {
 		return addParameter(url, name, value);
 	}
 
-	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #shortenURL(String)}
-	 */
-	@Deprecated
-	@Override
-	public String shortenURL(String url, int count) {
-		return shortenURL(url);
-	}
-
 	@Override
 	public String shortenURL(String url) {
 		if (url.length() <= URL_MAXIMUM_LENGTH) {
@@ -1230,84 +1221,13 @@ public class HttpImpl implements Http {
 		return _shortenURL(url, 0);
 	}
 
-	private String _shortenURL(String url, int currentLength) {
-		StringBundler sb = new StringBundler();
-
-		int index = url.indexOf(CharPool.QUESTION);
-
-		if (index != -1) {
-			sb.append(url.substring(0, index));
-			sb.append(StringPool.QUESTION);
-
-			url = url.substring(index + 1);
-		}
-
-		String[] params = StringUtil.split(url, CharPool.AMPERSAND);
-
-		List<String> redirectParams = new ArrayList<>();
-
-		for (String param : params) {
-			if (param.contains("_backURL=") || param.contains("_redirect=") ||
-				param.contains("_returnToFullPageURL=") ||
-				param.startsWith("redirect")) {
-
-				redirectParams.add(param);
-			}
-			else {
-				sb.append(param);
-				sb.append(StringPool.AMPERSAND);
-			}
-		}
-
-		if ((currentLength + sb.length()) > URL_MAXIMUM_LENGTH) {
-			sb.setIndex(sb.index() - 1);
-
-			return sb.toString();
-		}
-
-		for (String redirectParam : redirectParams) {
-			int pos = redirectParam.indexOf(CharPool.EQUAL);
-
-			String key = redirectParam.substring(0, pos);
-
-			String redirect = redirectParam.substring(pos + 1);
-
-			try {
-				redirect = URLCodec.decodeURL(redirect, StringPool.UTF8);
-			}
-			catch (IllegalArgumentException iae) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Skipping undecodable parameter " + redirectParam, iae);
-				}
-
-				continue;
-			}
-
-			sb.append(key);
-			sb.append(StringPool.EQUAL);
-
-			int newLength = sb.length();
-
-			redirect = URLCodec.encodeURL(
-				_shortenURL(redirect, currentLength + newLength));
-
-			newLength += redirect.length();
-
-			if ((currentLength + newLength) > URL_MAXIMUM_LENGTH) {
-				sb.setIndex(sb.index() - 2);
-			}
-			else {
-				sb.append(redirect);
-				sb.append(StringPool.AMPERSAND);
-			}
-		}
-
-		if (sb.index() > 0) {
-			sb.setIndex(sb.index() - 1);
-		}
-
-		return sb.toString();
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #shortenURL(String)}
+	 */
+	@Deprecated
+	@Override
+	public String shortenURL(String url, int count) {
+		return shortenURL(url);
 	}
 
 	@Override
@@ -2101,6 +2021,86 @@ public class HttpImpl implements Http {
 		}
 
 		return false;
+	}
+
+	private String _shortenURL(String url, int currentLength) {
+		StringBundler sb = new StringBundler();
+
+		int index = url.indexOf(CharPool.QUESTION);
+
+		if (index != -1) {
+			sb.append(url.substring(0, index));
+			sb.append(StringPool.QUESTION);
+
+			url = url.substring(index + 1);
+		}
+
+		String[] params = StringUtil.split(url, CharPool.AMPERSAND);
+
+		List<String> redirectParams = new ArrayList<>();
+
+		for (String param : params) {
+			if (param.contains("_backURL=") || param.contains("_redirect=") ||
+				param.contains("_returnToFullPageURL=") ||
+				param.startsWith("redirect")) {
+
+				redirectParams.add(param);
+			}
+			else {
+				sb.append(param);
+				sb.append(StringPool.AMPERSAND);
+			}
+		}
+
+		if ((currentLength + sb.length()) > URL_MAXIMUM_LENGTH) {
+			sb.setIndex(sb.index() - 1);
+
+			return sb.toString();
+		}
+
+		for (String redirectParam : redirectParams) {
+			int pos = redirectParam.indexOf(CharPool.EQUAL);
+
+			String key = redirectParam.substring(0, pos);
+
+			String redirect = redirectParam.substring(pos + 1);
+
+			try {
+				redirect = URLCodec.decodeURL(redirect, StringPool.UTF8);
+			}
+			catch (IllegalArgumentException iae) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Skipping undecodable parameter " + redirectParam, iae);
+				}
+
+				continue;
+			}
+
+			sb.append(key);
+			sb.append(StringPool.EQUAL);
+
+			int newLength = sb.length();
+
+			redirect = URLCodec.encodeURL(
+				_shortenURL(redirect, currentLength + newLength));
+
+			newLength += redirect.length();
+
+			if ((currentLength + newLength) > URL_MAXIMUM_LENGTH) {
+				sb.setIndex(sb.index() - 2);
+			}
+			else {
+				sb.append(redirect);
+				sb.append(StringPool.AMPERSAND);
+			}
+		}
+
+		if (sb.index() > 0) {
+			sb.setIndex(sb.index() - 1);
+		}
+
+		return sb.toString();
 	}
 
 	private static final String _DEFAULT_USER_AGENT =
