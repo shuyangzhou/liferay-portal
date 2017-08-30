@@ -288,3 +288,19 @@ private boolean _hasTestClasses(Project project, String testClassesDirName) {
 
 	return true
 }
+
+gradle.beforeProject {
+	Project project ->
+
+	configure(project) {
+		pluginManager.withPlugin('com.liferay.node') {
+			node {
+				nodeDir = ['/Users/thecleydyr', '.liferay', 'node', 'node-v6.0.0'].join(File.separator)
+			}
+
+			cleanDownloadNode.enabled = false
+			npmInstall.enabled = false
+		}
+	}
+}
+
