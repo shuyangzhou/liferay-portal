@@ -229,6 +229,10 @@ public class SourceFormatter {
 
 		_printProgressStatusMessage("Initializing checks...");
 
+		_progressStatusThread.setDaemon(true);
+		_progressStatusThread.setName(
+			"Source Formatter Progress Status Thread");
+
 		_progressStatusThread.start();
 
 		_sourceProcessors.add(new BNDSourceProcessor());
