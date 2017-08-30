@@ -414,6 +414,18 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 	public Enumeration<String> getProperties(String name) {
 		List<String> values = new ArrayList<>();
 
+		Enumeration<String> headersEnumeration = _request.getHeaders(name);
+
+		if (headersEnumeration != null) {
+			while (headersEnumeration.hasMoreElements()) {
+				String header = headersEnumeration.nextElement();
+
+				if (header != null) {
+					values.add(header);
+				}
+			}
+		}
+
 		String value = _portalContext.getProperty(name);
 
 		if (value != null) {
