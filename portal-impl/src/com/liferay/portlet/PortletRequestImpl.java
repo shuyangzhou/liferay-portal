@@ -425,7 +425,13 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 
 	@Override
 	public String getProperty(String name) {
-		return _portalContext.getProperty(name);
+		String property = _request.getHeader(name);
+
+		if (property == null) {
+			property = _portalContext.getProperty(name);
+		}
+
+		return property;
 	}
 
 	@Override
