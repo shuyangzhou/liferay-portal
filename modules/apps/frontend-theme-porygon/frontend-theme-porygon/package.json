@@ -21,12 +21,14 @@
 	"liferayTheme": {
 		"baseTheme": "styled",
 		"distName": "porygon-theme",
-		"hookModules": ["liferay-theme-es2015-hook"],
+		"hookModules": [
+			"liferay-theme-es2015-hook"
+		],
 		"rubySass": false,
 		"version": "7.0"
 	},
 	"main": "package.json",
 	"name": "liferay-porygon-theme",
 	"repository": "liferay/liferay-portal",
-	"version": "1.0.24"
+	"version": "1.0.25"
 }
