@@ -64,6 +64,10 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class BundleBlacklist {
 
+	public List<String> getBlacklistBundleSymbolicNames() {
+		return new ArrayList<>(_uninstalledBundles.keySet());
+	}
+
 	@Activate
 	@Modified
 	protected void activate(
