@@ -124,7 +124,8 @@ public class BndDeploymentScenarioGenerator
 
 			analyzer.setProperties(analyzerProperties);
 
-			boolean testable = _isTestable(testClass);
+			boolean testable = !testClass.isAnnotationPresent(
+				RunAsClient.class);
 
 			if (testable) {
 				javaArchive.addClass(testClass.getJavaClass());
@@ -194,10 +195,6 @@ public class BndDeploymentScenarioGenerator
 
 	@Inject
 	protected Instance<Injector> injector;
-
-	private boolean _isTestable(TestClass testClass) {
-		return !testClass.isAnnotationPresent(RunAsClient.class);
-	}
 
 	private void _replaceManifest(
 		Archive<?> archive, ByteArrayAsset byteArrayAsset) {
