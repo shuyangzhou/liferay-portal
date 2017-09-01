@@ -17,11 +17,11 @@ package com.liferay.portal.module.framework;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 
+import java.net.URI;
 import java.net.URL;
 
 /**
@@ -56,8 +56,9 @@ public class RuntimeClassPathResolver implements ClassPathResolver {
 				path = StringPool.SLASH + path;
 			}
 
-			urls[i] = new URL(
-				"file", null, URLCodec.encodeURL(path, StringPool.UTF8, true));
+			URI uri = files[i].toURI();
+
+			urls[i] = uri.toURL();
 		}
 
 		return urls;

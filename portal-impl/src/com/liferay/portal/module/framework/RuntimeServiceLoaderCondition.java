@@ -18,9 +18,12 @@ import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ServiceLoaderCondition;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.util.PropsValues;
 
+import java.io.File;
+
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 /**
@@ -42,8 +45,18 @@ public class RuntimeServiceLoaderCondition implements ServiceLoaderCondition {
 			PropsValues.MODULE_FRAMEWORK_BASE_DIR.replace(
 				StringPool.DOUBLE_SLASH, StringPool.SLASH);
 
-		moduleFrameworkBaseDirName = URLCodec.encodeURL(
-			moduleFrameworkBaseDirName, StringPool.UTF8, true);
+		File moduleFrameworkBaseDirFile = new File(moduleFrameworkBaseDirName);
+
+		URI moduleFrameworkBaseDirURI = moduleFrameworkBaseDirFile.toURI();
+
+		try {
+			URL moduleFrameworkBaseDirURL = moduleFrameworkBaseDirURI.toURL();
+
+			moduleFrameworkBaseDirName = moduleFrameworkBaseDirURL.getPath();
+		}
+		catch (MalformedURLException murle) {
+			return false;
+		}
 
 		return path.contains(moduleFrameworkBaseDirName);
 	}
