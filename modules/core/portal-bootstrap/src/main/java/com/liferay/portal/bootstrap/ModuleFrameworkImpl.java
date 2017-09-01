@@ -56,6 +56,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import java.nio.file.DirectoryStream;
@@ -643,7 +645,9 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		}
 	}
 
-	private Map<String, String> _buildFrameworkProperties(Class<?> clazz) {
+	private Map<String, String> _buildFrameworkProperties(Class<?> clazz)
+		throws URISyntaxException {
+
 		if (_log.isDebugEnabled()) {
 			_log.debug("Building OSGi framework properties");
 		}
@@ -696,7 +700,11 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		properties.put(
 			FrameworkPropsKeys.OSGI_FRAMEWORK, codeSourceURL.toExternalForm());
 
-		File frameworkFile = new File(codeSourceURL.getFile());
+		URI codeSourceURI = codeSourceURL.toURI();
+
+		Path codeSourcePath = Paths.get(codeSourceURI);
+
+		File frameworkFile = codeSourcePath.toFile();
 
 		properties.put(
 			FrameworkPropsKeys.OSGI_INSTALL_AREA, frameworkFile.getParent());
