@@ -1,11 +1,13 @@
 dependencies {
 	compile group: "com.liferay", name: "aQute.bnd", version: "2.3.0"
+	compile group: "com.liferay", name: "com.liferay.shrinkwrap.osgi", version: "1.0.0"
 	compile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
 	compile group: "junit", name: "junit", version: "4.12"
 	compile group: "org.jboss.arquillian.junit", name: "arquillian-junit-container", version: "1.1.10.Final"
 	compile group: "org.jboss.osgi.metadata", name: "jbosgi-metadata", version: "4.0.0.CR1"
+	compile group: "org.jboss.shrinkwrap", name: "shrinkwrap-depchain", version: "1.2.2"
+	compile group: "org.jboss.shrinkwrap.resolver", name: "shrinkwrap-resolver-depchain", version: "2.2.0-beta-2"
 	compile group: "org.osgi", name: "org.osgi.enterprise", version: "5.0.0"
 
 	runtime group: "com.liferay.arquillian", name: "com.liferay.arquillian.arquillian-container-liferay", version: "1.0.4"
-	runtime group: "com.liferay.arquillian", name: "com.liferay.arquillian.arquillian-deployment-generator-bnd", version: "1.0.4"
 }
