@@ -1724,6 +1724,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 			serviceContext.setAttribute("passwordUnencrypted", password);
 
+			PasswordModificationThreadLocal.setPasswordModified(true);
+			PasswordModificationThreadLocal.setPasswordUnencrypted(password);
+
 			user.setPassword(PasswordEncryptorUtil.encrypt(password));
 			user.setPasswordUnencrypted(password);
 			user.setPasswordEncrypted(true);

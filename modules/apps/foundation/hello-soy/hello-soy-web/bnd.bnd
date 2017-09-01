@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Hello Soy Web
 Bundle-SymbolicName: com.liferay.hello.soy.web
-Bundle-Version: 1.0.11
+Bundle-Version: 1.0.12
 Provide-Capability:\
 	soy;\
 		type="hello-soy";\
