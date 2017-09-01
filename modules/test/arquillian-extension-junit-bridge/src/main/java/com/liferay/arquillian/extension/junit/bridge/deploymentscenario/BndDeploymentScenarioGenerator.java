@@ -65,7 +65,10 @@ public class BndDeploymentScenarioGenerator
 		List<DeploymentDescription> deployments = new ArrayList<>();
 
 		DeploymentScenarioGenerator defaultDeploymentScenarioGenerator =
-			getDefaultDeploymentScenarioGenerator();
+			new AnnotationDeploymentScenarioGenerator();
+
+		defaultDeploymentScenarioGenerator = injector.get().inject(
+			defaultDeploymentScenarioGenerator);
 
 		if (defaultDeploymentScenarioGenerator != null) {
 			List<DeploymentDescription> annotationDeployments =
@@ -176,22 +179,6 @@ public class BndDeploymentScenarioGenerator
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	protected DeploymentScenarioGenerator
-		getDefaultDeploymentScenarioGenerator() {
-
-		//FIXME: is there a way to request a specific service,
-
-		// not an interface?
-
-		AnnotationDeploymentScenarioGenerator
-			annotationDeploymentScenarioGenerator =
-				new AnnotationDeploymentScenarioGenerator();
-		annotationDeploymentScenarioGenerator =
-			injector.get().inject(annotationDeploymentScenarioGenerator);
-
-		return annotationDeploymentScenarioGenerator;
 	}
 
 	@Inject
