@@ -142,12 +142,17 @@ is no longer available.
 ### Added
 - [LPS-73070]: Add the ability to run `ExecuteNpmTask` instances concurrently
 even when pointing to a shared NPM's cache directory, if supported.
-- [LPS-73070]: By default, use the current user NPM's cache directory
-concurrently if running on NPM 5.
+- [LPS-73070]: By default, use the current user's NPM cache directory
+concurrently if running on NPM 5. Prior versions of NPM do not allow for
+concurrent access to the cache directory; only one NPM invocation at a time.
 - [LPS-73070]: Delete the `package-lock.json` file when running the `cleanNPM`
 task, if present.
 - [LPS-73070]: Use the `package-lock.json` file to calculate the `node_modules`
 cache digest.
+
+### Fixed
+- [LPS-73472]: Remove spurious files before recreating symbolic links in the
+`.bin` directories of `node_modules`.
 
 [LPS-66906]: https://issues.liferay.com/browse/LPS-66906
 [LPS-67023]: https://issues.liferay.com/browse/LPS-67023

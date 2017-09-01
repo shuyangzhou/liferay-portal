@@ -609,14 +609,20 @@ public final class XMLLoggerHandler {
 			String classCommandName)
 		throws Exception {
 
-		Element commandElement = PoshiRunnerContext.getMacroCommandElement(
+		String simpleClassCommandName =
+			PoshiRunnerGetterUtil.getSimpleClassCommandName(classCommandName);
+		String namespace = PoshiRunnerStackTraceUtil.getCurrentNamespace(
 			classCommandName);
+
+		Element commandElement = PoshiRunnerContext.getMacroCommandElement(
+			simpleClassCommandName, namespace);
 
 		String className =
 			PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
-				classCommandName);
+				simpleClassCommandName);
 
-		Element rootElement = PoshiRunnerContext.getMacroRootElement(className);
+		Element rootElement = PoshiRunnerContext.getMacroRootElement(
+			className, namespace);
 
 		return _getChildContainerLoggerElement(commandElement, rootElement);
 	}

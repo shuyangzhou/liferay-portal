@@ -2004,10 +2004,44 @@ plugin is no longer applied to OSGi projects.
 ## 5.0.30 - 2017-08-29
 
 ### Added
-- [LPS-73070]: Check and keep version in the `package-lock.json` file in sync.
+- [LPS-73070]: Check the module's version in the `package-lock.json` file and
+ensure it matches the project version.
 
 ### Changed
-- [LPS-73070]: Update the [Liferay Gradle Plugins] dependency to version 3.4.44.
+- [LPS-73472]: Update the [Liferay Gradle Plugins] dependency to version 3.4.44.
+
+## 5.0.31 - 2017-08-29
+
+### Changed
+- [LPS-73124]: Update the [Liferay Gradle Plugins] dependency to version 3.4.45.
+
+## 5.0.32 - 2017-08-29
+
+### Changed
+- [LPS-74433]: Update the [Liferay Gradle Plugins] dependency to version 3.4.46.
+
+## 5.0.33 - 2017-08-31
+
+### Changed
+- [LPS-72705]: Update the [Liferay Gradle Plugins] dependency to version 3.4.47.
+
+## 5.0.34 - 2017-08-31
+
+### Added
+- [LPS-74469]: Fail the build if the `soyCompile` configuration contains project
+dependencies that belong to a different sub-repository.
+
+### Changed
+
+- [LPS-74469]: Allow publishing modules whose `soyCompile` configuration
+contains project dependencies.
+
+## 5.0.35 - 2017-08-31
+
+### Changed
+- [LPS-74469]: Look for `.gitrepo` files instead of `settings.gradle` when
+checking if the `soyCompile` configuration contains project dependencies that
+belong to a different sub-repository.
 
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle License Report]: https://github.com/jk1/Gradle-License-Report
@@ -2183,6 +2217,7 @@ plugin is no longer applied to OSGi projects.
 [LPS-72989]: https://issues.liferay.com/browse/LPS-72989
 [LPS-73058]: https://issues.liferay.com/browse/LPS-73058
 [LPS-73070]: https://issues.liferay.com/browse/LPS-73070
+[LPS-73124]: https://issues.liferay.com/browse/LPS-73124
 [LPS-73128]: https://issues.liferay.com/browse/LPS-73128
 [LPS-73141]: https://issues.liferay.com/browse/LPS-73141
 [LPS-73148]: https://issues.liferay.com/browse/LPS-73148
@@ -2195,6 +2230,7 @@ plugin is no longer applied to OSGi projects.
 [LPS-73353]: https://issues.liferay.com/browse/LPS-73353
 [LPS-73383]: https://issues.liferay.com/browse/LPS-73383
 [LPS-73470]: https://issues.liferay.com/browse/LPS-73470
+[LPS-73472]: https://issues.liferay.com/browse/LPS-73472
 [LPS-73489]: https://issues.liferay.com/browse/LPS-73489
 [LPS-73495]: https://issues.liferay.com/browse/LPS-73495
 [LPS-73525]: https://issues.liferay.com/browse/LPS-73525
@@ -2227,6 +2263,8 @@ plugin is no longer applied to OSGi projects.
 [LPS-74343]: https://issues.liferay.com/browse/LPS-74343
 [LPS-74345]: https://issues.liferay.com/browse/LPS-74345
 [LPS-74368]: https://issues.liferay.com/browse/LPS-74368
+[LPS-74433]: https://issues.liferay.com/browse/LPS-74433
+[LPS-74469]: https://issues.liferay.com/browse/LPS-74469
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981
