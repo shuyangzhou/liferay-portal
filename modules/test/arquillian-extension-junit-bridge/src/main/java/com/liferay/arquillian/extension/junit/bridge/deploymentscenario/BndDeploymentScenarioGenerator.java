@@ -17,7 +17,6 @@ package com.liferay.arquillian.extension.junit.bridge.deploymentscenario;
 import aQute.bnd.osgi.Analyzer;
 import aQute.bnd.osgi.Jar;
 
-import com.liferay.arquillian.extension.junit.bridge.deploymentscenario.annotations.BndFile;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.shrinkwrap.osgi.api.BndProjectBuilder;
 
@@ -116,8 +115,6 @@ public class BndDeploymentScenarioGenerator
 
 			JavaArchive javaArchive = bndProjectBuilder.as(JavaArchive.class);
 
-			javaArchive.addClass(BndFile.class);
-
 			Properties analyzerProperties = new Properties();
 
 			if (_commonBndFile != null) {
@@ -182,12 +179,6 @@ public class BndDeploymentScenarioGenerator
 	}
 
 	public File getBndFile(TestClass testClass) {
-		if (testClass.isAnnotationPresent(BndFile.class)) {
-			BndFile annotation = testClass.getAnnotation(BndFile.class);
-
-			return new File(annotation.value());
-		}
-
 		return _bndFile;
 	}
 
