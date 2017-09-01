@@ -80,8 +80,6 @@ public class BndDeploymentScenarioGenerator
 		}
 
 		try (Analyzer analyzer = new Analyzer()) {
-			_bndFile = getBndFile(testClass);
-
 			BndProjectBuilder bndProjectBuilder = ShrinkWrap.create(
 				BndProjectBuilder.class);
 
@@ -176,18 +174,6 @@ public class BndDeploymentScenarioGenerator
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public File getBndFile(TestClass testClass) {
-		return _bndFile;
-	}
-
-	public void setBndFile(File bndFile) {
-		_bndFile = bndFile;
-	}
-
-	public void setCommonBndFile(File commonBndFile) {
-		_commonBndFile = commonBndFile;
 	}
 
 	protected DeploymentScenarioGenerator
