@@ -135,8 +135,8 @@ public class BndDeploymentScenarioGenerator
 			DeploymentDescription deploymentDescription =
 				new DeploymentDescription(javaArchive.getName(), javaArchive);
 
-			deploymentDescription.shouldBeTestable(true).shouldBeManaged(
-				true);
+			deploymentDescription.shouldBeTestable(true);
+			deploymentDescription.shouldBeManaged(true);
 
 			Asset asset = javaArchive.get(_MANIFEST_PATH).getAsset();
 
@@ -146,8 +146,9 @@ public class BndDeploymentScenarioGenerator
 				firstPassManifest = new Manifest(inputStream);
 			}
 
-			firstPassManifest.getMainAttributes().remove(
-				new Attributes.Name("Import-Package"));
+			Attributes mainAttributes = firstPassManifest.getMainAttributes();
+
+			mainAttributes.remove(new Attributes.Name("Import-Package"));
 
 			analyzer.mergeManifest(firstPassManifest);
 
