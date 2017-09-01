@@ -31,7 +31,6 @@ import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
 import org.jboss.arquillian.container.spi.client.deployment.DeploymentDescription;
-import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.container.test.impl.client.deployment.AnnotationDeploymentScenarioGenerator;
 import org.jboss.arquillian.container.test.spi.client.deployment.DeploymentScenarioGenerator;
 import org.jboss.arquillian.core.api.Injector;
@@ -124,12 +123,7 @@ public class BndDeploymentScenarioGenerator
 
 			analyzer.setProperties(analyzerProperties);
 
-			boolean testable = !testClass.isAnnotationPresent(
-				RunAsClient.class);
-
-			if (testable) {
-				javaArchive.addClass(testClass.getJavaClass());
-			}
+			javaArchive.addClass(testClass.getJavaClass());
 
 			ZipExporter zipExporter = javaArchive.as(ZipExporter.class);
 
@@ -141,7 +135,7 @@ public class BndDeploymentScenarioGenerator
 			DeploymentDescription deploymentDescription =
 				new DeploymentDescription(javaArchive.getName(), javaArchive);
 
-			deploymentDescription.shouldBeTestable(testable).shouldBeManaged(
+			deploymentDescription.shouldBeTestable(true).shouldBeManaged(
 				true);
 
 			Asset asset = javaArchive.get(_MANIFEST_PATH).getAsset();
