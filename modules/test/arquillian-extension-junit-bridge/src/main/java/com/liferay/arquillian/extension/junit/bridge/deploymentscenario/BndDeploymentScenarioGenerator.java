@@ -24,7 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.jar.Attributes;
@@ -60,8 +60,6 @@ public class BndDeploymentScenarioGenerator
 
 	@Override
 	public List<DeploymentDescription> generate(TestClass testClass) {
-		List<DeploymentDescription> deployments = new ArrayList<>();
-
 		DeploymentScenarioGenerator defaultDeploymentScenarioGenerator =
 			new AnnotationDeploymentScenarioGenerator();
 
@@ -146,8 +144,6 @@ public class BndDeploymentScenarioGenerator
 			deploymentDescription.shouldBeTestable(testable).shouldBeManaged(
 				true);
 
-			deployments.add(deploymentDescription);
-
 			Asset asset = javaArchive.get(_MANIFEST_PATH).getAsset();
 
 			Manifest firstPassManifest = null;
@@ -174,7 +170,7 @@ public class BndDeploymentScenarioGenerator
 
 			javaArchive.add(byteArrayAsset, _MANIFEST_PATH);
 
-			return deployments;
+			return Collections.singletonList(deploymentDescription);
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
