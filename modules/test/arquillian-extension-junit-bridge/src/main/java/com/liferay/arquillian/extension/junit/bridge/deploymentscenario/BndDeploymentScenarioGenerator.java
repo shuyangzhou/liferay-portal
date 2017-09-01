@@ -74,7 +74,9 @@ public class BndDeploymentScenarioGenerator
 			BndProjectBuilder bndProjectBuilder = ShrinkWrap.create(
 				BndProjectBuilder.class);
 
-			bndProjectBuilder.setBndFile(_bndFile);
+			File bndFile = new File("bnd.bnd");
+
+			bndProjectBuilder.setBndFile(bndFile);
 
 			bndProjectBuilder.generateManifest(true);
 
@@ -102,7 +104,7 @@ public class BndDeploymentScenarioGenerator
 
 			Properties analyzerProperties = new Properties();
 
-			analyzerProperties.putAll(analyzer.loadProperties(_bndFile));
+			analyzerProperties.putAll(analyzer.loadProperties(bndFile));
 
 			analyzer.setProperties(analyzerProperties);
 
@@ -159,7 +161,5 @@ public class BndDeploymentScenarioGenerator
 	protected Instance<Injector> injectorInstance;
 
 	private static final String _MANIFEST_PATH = "META-INF/MANIFEST.MF";
-
-	private File _bndFile = new File("bnd.bnd");
 
 }
