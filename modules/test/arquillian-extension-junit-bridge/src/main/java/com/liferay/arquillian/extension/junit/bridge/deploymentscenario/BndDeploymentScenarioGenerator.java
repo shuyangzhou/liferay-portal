@@ -38,7 +38,6 @@ import org.jboss.arquillian.core.api.Injector;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.test.spi.TestClass;
-import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.Asset;
 import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
@@ -168,7 +167,9 @@ public class BndDeploymentScenarioGenerator
 			ByteArrayAsset byteArrayAsset = new ByteArrayAsset(
 				baos.toByteArray());
 
-			_replaceManifest(javaArchive, byteArrayAsset);
+			javaArchive.delete(MANIFEST_PATH);
+
+			javaArchive.add(byteArrayAsset, MANIFEST_PATH);
 
 			return deployments;
 		}
@@ -195,14 +196,6 @@ public class BndDeploymentScenarioGenerator
 
 	@Inject
 	protected Instance<Injector> injector;
-
-	private void _replaceManifest(
-		Archive<?> archive, ByteArrayAsset byteArrayAsset) {
-
-		archive.delete(MANIFEST_PATH);
-
-		archive.add(byteArrayAsset, MANIFEST_PATH);
-	}
 
 	private File _bndFile = new File("bnd.bnd");
 	private File _commonBndFile;
