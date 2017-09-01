@@ -50,8 +50,6 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 public class BndDeploymentScenarioGenerator
 	implements DeploymentScenarioGenerator {
 
-	public static final String MANIFEST_PATH = "META-INF/MANIFEST.MF";
-
 	public BndDeploymentScenarioGenerator() {
 		String sdkDir = System.getProperty("sdk.dir");
 
@@ -150,7 +148,7 @@ public class BndDeploymentScenarioGenerator
 
 			deployments.add(deploymentDescription);
 
-			Asset asset = javaArchive.get(MANIFEST_PATH).getAsset();
+			Asset asset = javaArchive.get(_MANIFEST_PATH).getAsset();
 
 			Manifest firstPassManifest = null;
 
@@ -172,9 +170,9 @@ public class BndDeploymentScenarioGenerator
 			ByteArrayAsset byteArrayAsset = new ByteArrayAsset(
 				baos.toByteArray());
 
-			javaArchive.delete(MANIFEST_PATH);
+			javaArchive.delete(_MANIFEST_PATH);
 
-			javaArchive.add(byteArrayAsset, MANIFEST_PATH);
+			javaArchive.add(byteArrayAsset, _MANIFEST_PATH);
 
 			return deployments;
 		}
@@ -185,6 +183,8 @@ public class BndDeploymentScenarioGenerator
 
 	@Inject
 	protected Instance<Injector> injectorInstance;
+
+	private static final String _MANIFEST_PATH = "META-INF/MANIFEST.MF";
 
 	private File _bndFile = new File("bnd.bnd");
 	private File _commonBndFile;
