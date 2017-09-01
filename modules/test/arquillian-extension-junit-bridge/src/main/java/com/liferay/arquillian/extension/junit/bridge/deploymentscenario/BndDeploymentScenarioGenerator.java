@@ -67,7 +67,9 @@ public class BndDeploymentScenarioGenerator
 		DeploymentScenarioGenerator defaultDeploymentScenarioGenerator =
 			new AnnotationDeploymentScenarioGenerator();
 
-		defaultDeploymentScenarioGenerator = injector.get().inject(
+		Injector injector = injectorInstance.get();
+
+		defaultDeploymentScenarioGenerator = injector.inject(
 			defaultDeploymentScenarioGenerator);
 
 		if (defaultDeploymentScenarioGenerator != null) {
@@ -182,7 +184,7 @@ public class BndDeploymentScenarioGenerator
 	}
 
 	@Inject
-	protected Instance<Injector> injector;
+	protected Instance<Injector> injectorInstance;
 
 	private File _bndFile = new File("bnd.bnd");
 	private File _commonBndFile;
