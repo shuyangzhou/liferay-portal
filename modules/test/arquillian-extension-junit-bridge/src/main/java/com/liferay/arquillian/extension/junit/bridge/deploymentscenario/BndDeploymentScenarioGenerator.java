@@ -127,7 +127,7 @@ public class BndDeploymentScenarioGenerator
 			boolean testable = _isTestable(testClass);
 
 			if (testable) {
-				_addTestClass(testClass, javaArchive);
+				javaArchive.addClass(testClass.getJavaClass());
 			}
 
 			ZipExporter zipExporter = javaArchive.as(ZipExporter.class);
@@ -194,10 +194,6 @@ public class BndDeploymentScenarioGenerator
 
 	@Inject
 	protected Instance<Injector> injector;
-
-	private void _addTestClass(TestClass testClass, JavaArchive javaArchive) {
-		javaArchive.addClass(testClass.getJavaClass());
-	}
 
 	private boolean _isTestable(TestClass testClass) {
 		return !testClass.isAnnotationPresent(RunAsClient.class);
