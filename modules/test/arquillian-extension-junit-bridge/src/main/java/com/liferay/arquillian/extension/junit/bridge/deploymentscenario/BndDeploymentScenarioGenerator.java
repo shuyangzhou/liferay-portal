@@ -49,14 +49,6 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 public class BndDeploymentScenarioGenerator
 	implements DeploymentScenarioGenerator {
 
-	public BndDeploymentScenarioGenerator() {
-		String sdkDir = System.getProperty("sdk.dir");
-
-		if ((sdkDir != null) && !sdkDir.isEmpty()) {
-			_commonBndFile = new File(sdkDir, "common.bnd");
-		}
-	}
-
 	@Override
 	public List<DeploymentDescription> generate(TestClass testClass) {
 		DeploymentScenarioGenerator defaultDeploymentScenarioGenerator =
@@ -86,10 +78,6 @@ public class BndDeploymentScenarioGenerator
 
 			bndProjectBuilder.generateManifest(true);
 
-			if (_commonBndFile != null) {
-				bndProjectBuilder.addProjectPropertiesFile(_commonBndFile);
-			}
-
 			String javaClassPathString = System.getProperty("java.class.path");
 
 			String[] javaClassPaths = javaClassPathString.split(
@@ -113,11 +101,6 @@ public class BndDeploymentScenarioGenerator
 			JavaArchive javaArchive = bndProjectBuilder.as(JavaArchive.class);
 
 			Properties analyzerProperties = new Properties();
-
-			if (_commonBndFile != null) {
-				analyzerProperties.putAll(
-					analyzer.loadProperties(_commonBndFile));
-			}
 
 			analyzerProperties.putAll(analyzer.loadProperties(_bndFile));
 
@@ -178,6 +161,5 @@ public class BndDeploymentScenarioGenerator
 	private static final String _MANIFEST_PATH = "META-INF/MANIFEST.MF";
 
 	private File _bndFile = new File("bnd.bnd");
-	private File _commonBndFile;
 
 }
