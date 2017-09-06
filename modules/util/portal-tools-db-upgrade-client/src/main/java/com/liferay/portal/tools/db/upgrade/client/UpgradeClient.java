@@ -433,8 +433,8 @@ public class UpgradeClient {
 			File dir = _appServer.getDir();
 
 			System.out.println(
-				"Please enter your application server directory (" + dir +
-					"): ");
+				"Please enter your application server directory (the path " +
+					"should be absolute and default value is " + dir + "): ");
 
 			response = _consoleReader.readLine();
 
@@ -626,8 +626,9 @@ public class UpgradeClient {
 			File defaultLiferayHomeDir = new File(_jarDir, "../../");
 
 			System.out.println(
-				"Please enter your Liferay home (" +
-					defaultLiferayHomeDir.getCanonicalPath() + "): ");
+				"Please enter your Liferay home (the path should be absolute " +
+					"and default value is " +
+						defaultLiferayHomeDir.getCanonicalPath() + "): ");
 
 			value = _consoleReader.readLine();
 
