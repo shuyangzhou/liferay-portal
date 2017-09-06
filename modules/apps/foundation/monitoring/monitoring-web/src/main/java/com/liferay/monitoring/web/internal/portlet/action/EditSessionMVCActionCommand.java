@@ -16,6 +16,7 @@ package com.liferay.monitoring.web.internal.portlet.action;
 
 import com.liferay.monitoring.web.internal.constants.MonitoringPortletKeys;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
+import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -128,7 +129,16 @@ public class EditSessionMVCActionCommand extends BaseMVCActionCommand {
 		HttpSession userSession = PortalSessionContext.get(sessionId);
 
 		if (userSession != null) {
-			userSession.invalidate();
+			boolean eanbled = ClusterInvokeThreadLocal.isEnabled();
+
+			ClusterInvokeThreadLocal.setEnabled(true);
+
+			try {
+				userSession.invalidate();
+			}
+			finally {
+				ClusterInvokeThreadLocal.setEnabled(eanbled);
+			}
 		}
 	}
 
