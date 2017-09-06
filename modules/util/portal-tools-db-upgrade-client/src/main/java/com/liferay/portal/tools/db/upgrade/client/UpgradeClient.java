@@ -433,8 +433,8 @@ public class UpgradeClient {
 			File dir = _appServer.getDir();
 
 			System.out.println(
-				"Please enter your application server directory (" + dir +
-					"): ");
+				"Please enter your application server directory (the path " +
+					"should be absolute and default value is " + dir + "): ");
 
 			response = _consoleReader.readLine();
 
@@ -486,15 +486,20 @@ public class UpgradeClient {
 				_appServer.getServerDetectorServerId());
 		}
 		else {
+			File dir = new File(_appServerProperties.getProperty("dir"));
+
+			if (!dir.isAbsolute()) {
+				dir = new File(
+					_jarDir, _appServerProperties.getProperty("dir"));
+			}
+
+			_appServerProperties.setProperty("dir", dir.getCanonicalPath());
+
 			_appServer = new AppServer(
 				_appServerProperties.getProperty("dir"),
 				_appServerProperties.getProperty("extra.lib.dirs"),
 				_appServerProperties.getProperty("global.lib.dir"),
 				_appServerProperties.getProperty("portal.dir"), value);
-
-			File dir = _appServer.getDir();
-
-			_appServerProperties.setProperty("dir", dir.getCanonicalPath());
 		}
 	}
 
@@ -621,8 +626,9 @@ public class UpgradeClient {
 			File defaultLiferayHomeDir = new File(_jarDir, "../../");
 
 			System.out.println(
-				"Please enter your Liferay home (" +
-					defaultLiferayHomeDir.getCanonicalPath() + "): ");
+				"Please enter your Liferay home (the path should be absolute " +
+					"and default value is " +
+						defaultLiferayHomeDir.getCanonicalPath() + "): ");
 
 			value = _consoleReader.readLine();
 
@@ -632,6 +638,10 @@ public class UpgradeClient {
 		}
 
 		File liferayHome = new File(value);
+
+		if (!liferayHome.isAbsolute()) {
+			liferayHome = new File(_jarDir, value);
+		}
 
 		_portalUpgradeExtProperties.setProperty(
 			"liferay.home", liferayHome.getCanonicalPath());
