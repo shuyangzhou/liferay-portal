@@ -1630,6 +1630,11 @@ public class DDMStructureLocalServiceImpl
 
 		// Structure layout
 
+		// Explicitly pop uuid from service context to ensure no lingering
+		// values remain there from other components eg.: Journal
+
+		serviceContext.getUuid();
+
 		ddmStructureLayoutLocalService.addStructureLayout(
 			structureVersion.getUserId(), structureVersion.getGroupId(),
 			structureVersion.getStructureVersionId(), ddmFormLayout,

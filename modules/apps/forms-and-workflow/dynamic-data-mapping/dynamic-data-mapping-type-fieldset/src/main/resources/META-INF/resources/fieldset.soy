@@ -56,9 +56,7 @@
 	<div class="form-group{$visible ? '' : ' hide'} liferay-ddm-form-field-fieldset
 		{$showBorderTop ? ' border-top' : ''} {$showBorderBottom ? ' border-bottom' : ''}" data-fieldname="{$name}">
 
-		{if $tip}
-			<p class="liferay-ddm-form-field-tip">{$tip}</p>
-		{/if}
+		<p class="liferay-ddm-form-field-tip">{$tip ? $tip: ''}</p>
 
 		<fieldset>
 			{if $showLabel}

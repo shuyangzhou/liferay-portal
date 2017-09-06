@@ -86,9 +86,7 @@
 							</div>
 							<input autocomplete="off" class="drop-chosen-search" placeholder="{$strings.search}" type="text">
 						</div>
-						<ul class="results-chosen">
-							{call .select_options data="all" /}
-						</ul>
+						{call .select_options data="all" /}
 					</div>
 				{/if}
 			</div>
@@ -129,9 +127,7 @@
 		{/if}
 	</label>
 
-	{if $tip}
-		<p class="liferay-ddm-form-field-tip">{$tip}</p>
-	{/if}
+	<p class="liferay-ddm-form-field-tip">{$tip ? $tip: ''}</p>
 {/template}
 
 /**
@@ -193,32 +189,34 @@
 	{@param strings: [chooseAnOption: string, chooseOptions: string, search: string, emptyList: string]}
 	{@param value: list<?>}
 
-	{if length($options) > 0}
-		{foreach $option in $options}
-			{let $selected kind="attributes"}
-				{if $value}
-					{foreach $currentValue in $value}
-						{if $currentValue.value == $option.value}
-							selected
-						{/if}
-					{/foreach}
-				{/if}
-			{/let}
+	<ul class="results-chosen">
+		{if length($options) > 0}
+			{foreach $option in $options}
+				{let $selected kind="attributes"}
+					{if $value}
+						{foreach $currentValue in $value}
+							{if $currentValue.value == $option.value}
+								selected
+							{/if}
+						{/foreach}
+					{/if}
+				{/let}
 
-			<li class="select-option-item {if $selected}option-selected{/if}" data-option-index="{index($option)}" data-option-selected="{if $selected}true{/if}" data-option-value="{$option.value}">
-				{if $multiple}
-					<input type="checkbox" value="" {if $selected}checked{/if}>
-				{/if}
+				<li class="select-option-item {if $selected}option-selected{/if}" data-option-index="{index($option)}" data-option-selected="{if $selected}true{/if}" data-option-value="{$option.value}">
+					{if $multiple}
+						<input type="checkbox" value="" {if $selected}checked{/if}>
+					{/if}
+					<span>
+						{$option.label}
+					</span>
+				</li>
+			{/foreach}
+		{else}
+			<li class="no-results-list">
 				<span>
-					{$option.label}
+					{$strings.emptyList}
 				</span>
 			</li>
-		{/foreach}
-	{else}
-		<li class="no-results-list">
-			<span>
-				{$strings.emptyList}
-			</span>
-		</li>
-	{/if}
+		{/if}
+	</ul>
 {/template}

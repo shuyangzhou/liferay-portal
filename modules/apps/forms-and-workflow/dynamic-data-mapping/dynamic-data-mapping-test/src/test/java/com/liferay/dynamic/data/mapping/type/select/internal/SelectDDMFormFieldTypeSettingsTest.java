@@ -16,11 +16,14 @@ package com.liferay.dynamic.data.mapping.type.select.internal;
 
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
+import com.liferay.dynamic.data.mapping.model.DDMFormRule;
 import com.liferay.dynamic.data.mapping.type.BaseDDMFormFieldTypeSettingsTestCase;
 import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -61,9 +64,6 @@ public class SelectDDMFormFieldTypeSettingsTest
 		Assert.assertNotNull(ddmDataProviderInstanceIdDDMFormField.getLabel());
 		Assert.assertEquals(
 			"select", ddmDataProviderInstanceIdDDMFormField.getType());
-		Assert.assertEquals(
-			"equals(dataSourceType, \"data-provider\")",
-			ddmDataProviderInstanceIdDDMFormField.getVisibilityExpression());
 
 		DDMFormField ddmDataProviderInstanceOutputDDMFormField =
 			ddmFormFieldsMap.get("ddmDataProviderInstanceOutput");
@@ -87,18 +87,70 @@ public class SelectDDMFormFieldTypeSettingsTest
 		Assert.assertNotNull(optionsDDMFormField.getLabel());
 		Assert.assertEquals(
 			"false", optionsDDMFormField.getProperty("showLabel"));
-		Assert.assertTrue(optionsDDMFormField.isRequired());
 		Assert.assertEquals("options", optionsDDMFormField.getType());
-		Assert.assertEquals(
-			"equals(dataSourceType, \"manual\")",
-			optionsDDMFormField.getVisibilityExpression());
 
-		DDMFormField validationDDMFormField = ddmFormFieldsMap.get(
-			"validation");
+		List<DDMFormRule> ddmFormRules = ddmForm.getDDMFormRules();
 
-		Assert.assertNotNull(validationDDMFormField);
+		Assert.assertEquals(ddmFormRules.toString(), 2, ddmFormRules.size());
+
+		DDMFormRule ddmFormRule0 = ddmFormRules.get(0);
+
 		Assert.assertEquals(
-			"FALSE", validationDDMFormField.getVisibilityExpression());
+			"not(equals(getValue('ddmDataProviderInstanceId'), ''))",
+			ddmFormRule0.getCondition());
+
+		List<String> actions = ddmFormRule0.getActions();
+
+		Assert.assertEquals(actions.toString(), 1, actions.size());
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append("call('getDataProviderInstanceOutputParameters', concat('");
+		sb.append("dataProviderInstanceId=', getValue('ddmDataProvider");
+		sb.append("InstanceId')), 'ddmDataProviderInstanceOutput=output");
+		sb.append("ParameterNames')");
+
+		Assert.assertEquals(sb.toString(), actions.get(0));
+
+		DDMFormRule ddmFormRule1 = ddmFormRules.get(1);
+
+		Assert.assertEquals("TRUE", ddmFormRule1.getCondition());
+
+		actions = ddmFormRule1.getActions();
+
+		Assert.assertEquals(actions.toString(), 7, actions.size());
+
+		Assert.assertTrue(
+			actions.contains(
+				"setRequired('ddmDataProviderInstanceId', equals(getValue(" +
+					"'dataSourceType'), \"data-provider\"))"));
+
+		Assert.assertTrue(
+			actions.contains(
+				"setRequired('ddmDataProviderInstanceOutput', equals(" +
+					"getValue('dataSourceType'), \"data-provider\"))"));
+
+		Assert.assertTrue(
+			actions.contains(
+				"setRequired('options', equals(getValue('dataSourceType'), " +
+					"\"manual\"))"));
+
+		Assert.assertTrue(
+			actions.contains(
+				"setVisible('ddmDataProviderInstanceId', equals(getValue(" +
+					"'dataSourceType'), \"data-provider\"))"));
+
+		Assert.assertTrue(
+			actions.contains(
+				"setVisible('ddmDataProviderInstanceOutput', equals(getValue(" +
+					"'dataSourceType'), \"data-provider\"))"));
+
+		Assert.assertTrue(
+			actions.contains(
+				"setVisible('options', equals(getValue('dataSourceType'), " +
+					"\"manual\"))"));
+
+		Assert.assertTrue(actions.contains("setVisible('validation', false)"));
 	}
 
 }

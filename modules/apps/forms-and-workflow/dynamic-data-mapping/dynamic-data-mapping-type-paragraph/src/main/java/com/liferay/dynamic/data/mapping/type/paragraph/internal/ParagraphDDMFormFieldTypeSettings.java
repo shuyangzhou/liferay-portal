@@ -20,6 +20,7 @@ import com.liferay.dynamic.data.mapping.annotations.DDMFormLayout;
 import com.liferay.dynamic.data.mapping.annotations.DDMFormLayoutColumn;
 import com.liferay.dynamic.data.mapping.annotations.DDMFormLayoutPage;
 import com.liferay.dynamic.data.mapping.annotations.DDMFormLayoutRow;
+import com.liferay.dynamic.data.mapping.annotations.DDMFormRule;
 import com.liferay.dynamic.data.mapping.form.field.type.DefaultDDMFormFieldTypeSettings;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldValidation;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
@@ -27,7 +28,21 @@ import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 /**
  * @author Bruno Basto
  */
-@DDMForm
+@DDMForm(
+	rules = {
+		@DDMFormRule(
+			actions = {
+				"setRequired('text', true)", "setVisible('dataType', false)",
+				"setVisible('predefinedValue', false)",
+				"setVisible('repeatable', false)",
+				"setVisible('required', false)",
+				"setVisible('showLabel', false)", "setVisible('tip', false)",
+				"setVisible('validation', false)"
+			},
+			condition = "TRUE"
+		)
+	}
+)
 @DDMFormLayout(
 	paginationMode = com.liferay.dynamic.data.mapping.model.DDMFormLayout.TABBED_MODE,
 	value = {
@@ -67,9 +82,7 @@ import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 public interface ParagraphDDMFormFieldTypeSettings
 	extends DefaultDDMFormFieldTypeSettings {
 
-	@DDMFormField(
-		predefinedValue = "", required = true, visibilityExpression = "FALSE"
-	)
+	@DDMFormField(predefinedValue = "", required = true)
 	public String dataType();
 
 	@DDMFormField(
@@ -79,36 +92,13 @@ public interface ParagraphDDMFormFieldTypeSettings
 	@Override
 	public LocalizedValue label();
 
-	@DDMFormField(visibilityExpression = "FALSE")
-	@Override
-	public LocalizedValue predefinedValue();
-
-	@DDMFormField(visibilityExpression = "FALSE")
-	@Override
-	public boolean repeatable();
-
-	@DDMFormField(visibilityExpression = "FALSE")
-	@Override
-	public boolean required();
-
-	@DDMFormField(visibilityExpression = "FALSE")
-	@Override
-	public boolean showLabel();
-
 	@DDMFormField(
 		dataType = "string", label = "%body-text",
-		properties = {"placeholder=%enter-body-text"}, required = true,
-		type = "editor"
+		properties = {"placeholder=%enter-body-text"}, type = "editor"
 	)
 	public String text();
 
-	@DDMFormField(visibilityExpression = "FALSE")
-	@Override
-	public LocalizedValue tip();
-
-	@DDMFormField(
-		dataType = "string", type = "validation", visibilityExpression = "FALSE"
-	)
+	@DDMFormField(dataType = "string", type = "validation")
 	@Override
 	public DDMFormFieldValidation validation();
 

@@ -53,9 +53,7 @@
 				</span>
 			</label>
 
-			{if $tip}
-				<p class="liferay-ddm-form-field-tip">{$tip}</p>
-			{/if}
+			<p class="liferay-ddm-form-field-tip">{$tip ? $tip: ''}</p>
 		{else}
 			<div class="checkbox">
 				{if $showLabel}
@@ -73,9 +71,7 @@
 			</div>
 
 			{if $showLabel}
-				{if $tip}
-					<p class="liferay-ddm-form-field-tip">{$tip}</p>
-				{/if}
+				<p class="liferay-ddm-form-field-tip">{$tip ? $tip: ''}</p>
 			{/if}
 		{/if}
 	</div>
