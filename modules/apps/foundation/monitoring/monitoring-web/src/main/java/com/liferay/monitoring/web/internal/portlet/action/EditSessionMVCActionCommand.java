@@ -79,22 +79,21 @@ public class EditSessionMVCActionCommand extends BaseMVCActionCommand {
 
 		String sessionId = ParamUtil.getString(actionRequest, "sessionId");
 
-		HttpSession userSession = PortalSessionContext.get(sessionId);
+		try {
+			PortletSession portletSession = actionRequest.getPortletSession();
 
-		if (userSession != null) {
-			try {
-				PortletSession portletSession =
-					actionRequest.getPortletSession();
+			String portletSessionId = portletSession.getId();
 
-				String portletSessionId = portletSession.getId();
+			if (!portletSessionId.equals(sessionId)) {
+				HttpSession userSession = PortalSessionContext.get(sessionId);
 
-				if (!portletSessionId.equals(sessionId)) {
+				if (userSession != null) {
 					userSession.invalidate();
 				}
 			}
-			catch (Exception e) {
-				_log.error("Unable to invalidate session", e);
-			}
+		}
+		catch (Exception e) {
+			_log.error("Unable to invalidate session", e);
 		}
 	}
 
