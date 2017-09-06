@@ -486,15 +486,20 @@ public class UpgradeClient {
 				_appServer.getServerDetectorServerId());
 		}
 		else {
+			File dir = new File(_appServerProperties.getProperty("dir"));
+
+			if (!dir.isAbsolute()) {
+				dir = new File(
+					_jarDir, _appServerProperties.getProperty("dir"));
+			}
+
+			_appServerProperties.setProperty("dir", dir.getCanonicalPath());
+
 			_appServer = new AppServer(
 				_appServerProperties.getProperty("dir"),
 				_appServerProperties.getProperty("extra.lib.dirs"),
 				_appServerProperties.getProperty("global.lib.dir"),
 				_appServerProperties.getProperty("portal.dir"), value);
-
-			File dir = _appServer.getDir();
-
-			_appServerProperties.setProperty("dir", dir.getCanonicalPath());
 		}
 	}
 
@@ -632,6 +637,10 @@ public class UpgradeClient {
 		}
 
 		File liferayHome = new File(value);
+
+		if (!liferayHome.isAbsolute()) {
+			liferayHome = new File(_jarDir, value);
+		}
 
 		_portalUpgradeExtProperties.setProperty(
 			"liferay.home", liferayHome.getCanonicalPath());
