@@ -15,6 +15,8 @@
 package com.liferay.monitoring.web.internal.portlet.action;
 
 import com.liferay.monitoring.web.internal.constants.MonitoringPortletKeys;
+import com.liferay.portal.kernel.cluster.ClusterExecutor;
+import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
@@ -24,6 +26,8 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.servlet.PortalSessionContext;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -34,6 +38,7 @@ import javax.portlet.PortletSession;
 import javax.servlet.http.HttpSession;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -89,6 +94,28 @@ public class EditSessionMVCActionCommand extends BaseMVCActionCommand {
 
 				if (userSession != null) {
 					userSession.invalidate();
+
+					return;
+				}
+
+				if (!_clusterExecutor.isEnabled()) {
+					return;
+				}
+
+				try {
+					MethodHandler methodHandler = new MethodHandler(
+						_invalidateSessionMethodKey, sessionId);
+
+					ClusterRequest clusterRequest =
+						ClusterRequest.createMulticastRequest(
+							methodHandler, true);
+
+					clusterRequest.setFireAndForget(true);
+
+					_clusterExecutor.execute(clusterRequest);
+				}
+				catch (Throwable t) {
+					_log.error("Unable to notify cluster ", t);
 				}
 			}
 		}
@@ -97,7 +124,21 @@ public class EditSessionMVCActionCommand extends BaseMVCActionCommand {
 		}
 	}
 
+	private static void _invalidateSession(String sessionId) {
+		HttpSession userSession = PortalSessionContext.get(sessionId);
+
+		if (userSession != null) {
+			userSession.invalidate();
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		EditSessionMVCActionCommand.class);
+
+	private static final MethodKey _invalidateSessionMethodKey = new MethodKey(
+		EditSessionMVCActionCommand.class, "_invalidateSession", String.class);
+
+	@Reference
+	private ClusterExecutor _clusterExecutor;
 
 }
