@@ -38,6 +38,10 @@ public class UnsatisfiedComponentUtil {
 			_listUnsatisfiedComponents(serviceComponentRuntime, bundle, sb);
 		}
 
+		if (sb.index() == 0) {
+			return "All Declarative Service components are satisfied";
+		}
+
 		return sb.toString();
 	}
 
