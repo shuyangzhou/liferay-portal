@@ -12,34 +12,32 @@
  * details.
  */
 
-package com.liferay.mail.reader.web.portlet.action;
+package com.liferay.portal.workflow.kaleo.runtime.scripting.internal.component.enabler;
 
 import com.liferay.osgi.util.ComponentUtil;
-import com.liferay.portal.kernel.messaging.DestinationNames;
-import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.portal.rules.engine.RulesEngine;
+import com.liferay.portal.workflow.kaleo.runtime.scripting.internal.action.DRLActionExecutor;
+import com.liferay.portal.workflow.kaleo.runtime.scripting.internal.assignment.DRLScriptingTaskAssignmentSelector;
+import com.liferay.portal.workflow.kaleo.runtime.scripting.internal.condition.DRLConditionEvaluator;
+import com.liferay.portal.workflow.kaleo.runtime.scripting.internal.notification.recipient.script.DRLNotificationRecipientEvaluator;
 
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 
 /**
- * @author Shuyang Zhou
+ * @author Tina Tian
  */
 @Component(immediate = true)
-public class LoginPostActionEnabler {
+public class ComponentEnabler {
 
 	@Activate
-	public void activate(ComponentContext componentContext) {
+	protected void activate(ComponentContext componentContext) {
 		ComponentUtil.tryEnableComponents(
-			MessageListener.class,
-			"(destination.name=" + DestinationNames.MAIL_SYNCHRONIZER + ")",
-			componentContext, LoginPostAction.class);
-	}
-
-	@Deactivate
-	public void deactivate(ComponentContext componentContext) {
-		componentContext.disableComponent(LoginPostAction.class.getName());
+			RulesEngine.class, null, componentContext, DRLActionExecutor.class,
+			DRLConditionEvaluator.class,
+			DRLNotificationRecipientEvaluator.class,
+			DRLScriptingTaskAssignmentSelector.class);
 	}
 
 }
