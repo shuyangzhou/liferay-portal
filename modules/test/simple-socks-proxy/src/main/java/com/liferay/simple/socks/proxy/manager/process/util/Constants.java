@@ -29,6 +29,8 @@ public class Constants {
 
 	public static final byte CMD_CONNECT = 0x01;
 
+	public static final int DEFAULT_BUFFER_SIZE = 4096;
+
 	public static final int[] HEADER_SEPARATOR_NEXTS;
 
 	public static final byte[] HEADER_SEPARATOR_PATTERN = "\r\n\r\n".getBytes();

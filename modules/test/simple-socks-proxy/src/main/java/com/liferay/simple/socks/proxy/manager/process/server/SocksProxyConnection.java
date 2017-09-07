@@ -65,13 +65,14 @@ public class SocksProxyConnection implements Runnable {
 					public void run() {
 						_relayData(
 							internalInputStream, externalOutputStream,
-							externalSocket);
+							externalSocket, Constants.DEFAULT_BUFFER_SIZE);
 					}
 
 				});
 
 			_relayData(
-				externalInputStream, internalOutputStream, _internalSocket);
+				externalInputStream, internalOutputStream, _internalSocket,
+				Constants.DEFAULT_BUFFER_SIZE);
 
 			future.get();
 		}
@@ -222,13 +223,14 @@ public class SocksProxyConnection implements Runnable {
 	}
 
 	private void _relayData(
-		InputStream inputStream, OutputStream outputStream, Socket socket) {
+		InputStream inputStream, OutputStream outputStream, Socket socket,
+		int bufferSize) {
 
 		UnsyncByteArrayOutputStream ubaos = new UnsyncByteArrayOutputStream();
 
 		int length = 0;
 
-		byte[] buffer = new byte[4096];
+		byte[] buffer = new byte[bufferSize];
 
 		try {
 			while ((length = inputStream.read(buffer)) != -1) {
