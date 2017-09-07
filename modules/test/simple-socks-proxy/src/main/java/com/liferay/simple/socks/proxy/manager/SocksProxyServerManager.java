@@ -27,7 +27,6 @@ import com.liferay.simple.socks.proxy.manager.process.SocksProxyServerProcessCal
 import java.io.Serializable;
 
 import java.util.List;
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -69,11 +68,7 @@ public class SocksProxyServerManager {
 				future.get(_shutdownWaitTime, TimeUnit.MILLISECONDS);
 			}
 			finally {
-				try {
-					future.cancel(true);
-				}
-				catch (CancellationException ce) {
-				}
+				future.cancel(true);
 			}
 		}
 	}
