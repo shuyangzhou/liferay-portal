@@ -34,13 +34,6 @@ public class DDMStructureLayoutLocalServiceWrapper
 		_ddmStructureLayoutLocalService = ddmStructureLayoutLocalService;
 	}
 
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMFormLayout getStructureLayoutDDMFormLayout(
-		com.liferay.dynamic.data.mapping.model.DDMStructureLayout structureLayout)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ddmStructureLayoutLocalService.getStructureLayoutDDMFormLayout(structureLayout);
-	}
-
 	/**
 	* Adds the ddm structure layout to the database. Also notifies the appropriate model listeners.
 	*
@@ -101,113 +94,6 @@ public class DDMStructureLayoutLocalServiceWrapper
 		return _ddmStructureLayoutLocalService.deleteDDMStructureLayout(structureLayoutId);
 	}
 
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMStructureLayout fetchDDMStructureLayout(
-		long structureLayoutId) {
-		return _ddmStructureLayoutLocalService.fetchDDMStructureLayout(structureLayoutId);
-	}
-
-	/**
-	* Returns the ddm structure layout matching the UUID and group.
-	*
-	* @param uuid the ddm structure layout's UUID
-	* @param groupId the primary key of the group
-	* @return the matching ddm structure layout, or <code>null</code> if a matching ddm structure layout could not be found
-	*/
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMStructureLayout fetchDDMStructureLayoutByUuidAndGroupId(
-		java.lang.String uuid, long groupId) {
-		return _ddmStructureLayoutLocalService.fetchDDMStructureLayoutByUuidAndGroupId(uuid,
-			groupId);
-	}
-
-	/**
-	* Returns the ddm structure layout with the primary key.
-	*
-	* @param structureLayoutId the primary key of the ddm structure layout
-	* @return the ddm structure layout
-	* @throws PortalException if a ddm structure layout with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMStructureLayout getDDMStructureLayout(
-		long structureLayoutId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ddmStructureLayoutLocalService.getDDMStructureLayout(structureLayoutId);
-	}
-
-	/**
-	* Returns the ddm structure layout matching the UUID and group.
-	*
-	* @param uuid the ddm structure layout's UUID
-	* @param groupId the primary key of the group
-	* @return the matching ddm structure layout
-	* @throws PortalException if a matching ddm structure layout could not be found
-	*/
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMStructureLayout getDDMStructureLayoutByUuidAndGroupId(
-		java.lang.String uuid, long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ddmStructureLayoutLocalService.getDDMStructureLayoutByUuidAndGroupId(uuid,
-			groupId);
-	}
-
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMStructureLayout getStructureLayout(
-		long structureLayoutId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ddmStructureLayoutLocalService.getStructureLayout(structureLayoutId);
-	}
-
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMStructureLayout getStructureLayoutByStructureVersionId(
-		long structureVersionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ddmStructureLayoutLocalService.getStructureLayoutByStructureVersionId(structureVersionId);
-	}
-
-	/**
-	* Updates the ddm structure layout in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param ddmStructureLayout the ddm structure layout
-	* @return the ddm structure layout that was updated
-	*/
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMStructureLayout updateDDMStructureLayout(
-		com.liferay.dynamic.data.mapping.model.DDMStructureLayout ddmStructureLayout) {
-		return _ddmStructureLayoutLocalService.updateDDMStructureLayout(ddmStructureLayout);
-	}
-
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMStructureLayout updateStructureLayout(
-		long structureLayoutId,
-		com.liferay.dynamic.data.mapping.model.DDMFormLayout ddmFormLayout,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ddmStructureLayoutLocalService.updateStructureLayout(structureLayoutId,
-			ddmFormLayout, serviceContext);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _ddmStructureLayoutLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _ddmStructureLayoutLocalService.dynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
-		return _ddmStructureLayoutLocalService.getExportActionableDynamicQuery(portletDataContext);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _ddmStructureLayoutLocalService.getIndexableActionableDynamicQuery();
-	}
-
 	/**
 	* @throws PortalException
 	*/
@@ -219,30 +105,20 @@ public class DDMStructureLayoutLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
+	public void deleteStructureLayout(
+		com.liferay.dynamic.data.mapping.model.DDMStructureLayout structureLayout) {
+		_ddmStructureLayoutLocalService.deleteStructureLayout(structureLayout);
+	}
+
+	@Override
+	public void deleteStructureLayout(long structureLayoutId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ddmStructureLayoutLocalService.getPersistedModel(primaryKeyObj);
+		_ddmStructureLayoutLocalService.deleteStructureLayout(structureLayoutId);
 	}
 
-	/**
-	* Returns the number of ddm structure layouts.
-	*
-	* @return the number of ddm structure layouts
-	*/
 	@Override
-	public int getDDMStructureLayoutsCount() {
-		return _ddmStructureLayoutLocalService.getDDMStructureLayoutsCount();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _ddmStructureLayoutLocalService.getOSGiServiceIdentifier();
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _ddmStructureLayoutLocalService.dynamicQuery();
 	}
 
 	/**
@@ -300,6 +176,88 @@ public class DDMStructureLayoutLocalServiceWrapper
 	}
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return _ddmStructureLayoutLocalService.dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return _ddmStructureLayoutLocalService.dynamicQueryCount(dynamicQuery,
+			projection);
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStructureLayout fetchDDMStructureLayout(
+		long structureLayoutId) {
+		return _ddmStructureLayoutLocalService.fetchDDMStructureLayout(structureLayoutId);
+	}
+
+	/**
+	* Returns the ddm structure layout matching the UUID and group.
+	*
+	* @param uuid the ddm structure layout's UUID
+	* @param groupId the primary key of the group
+	* @return the matching ddm structure layout, or <code>null</code> if a matching ddm structure layout could not be found
+	*/
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStructureLayout fetchDDMStructureLayoutByUuidAndGroupId(
+		java.lang.String uuid, long groupId) {
+		return _ddmStructureLayoutLocalService.fetchDDMStructureLayoutByUuidAndGroupId(uuid,
+			groupId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _ddmStructureLayoutLocalService.getActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the ddm structure layout with the primary key.
+	*
+	* @param structureLayoutId the primary key of the ddm structure layout
+	* @return the ddm structure layout
+	* @throws PortalException if a ddm structure layout with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStructureLayout getDDMStructureLayout(
+		long structureLayoutId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ddmStructureLayoutLocalService.getDDMStructureLayout(structureLayoutId);
+	}
+
+	/**
+	* Returns the ddm structure layout matching the UUID and group.
+	*
+	* @param uuid the ddm structure layout's UUID
+	* @param groupId the primary key of the group
+	* @return the matching ddm structure layout
+	* @throws PortalException if a matching ddm structure layout could not be found
+	*/
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStructureLayout getDDMStructureLayoutByUuidAndGroupId(
+		java.lang.String uuid, long groupId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ddmStructureLayoutLocalService.getDDMStructureLayoutByUuidAndGroupId(uuid,
+			groupId);
+	}
+
+	/**
 	* Returns a range of all the ddm structure layouts.
 	*
 	* <p>
@@ -349,42 +307,84 @@ public class DDMStructureLayoutLocalServiceWrapper
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of ddm structure layouts.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of ddm structure layouts
 	*/
 	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return _ddmStructureLayoutLocalService.dynamicQueryCount(dynamicQuery);
+	public int getDDMStructureLayoutsCount() {
+		return _ddmStructureLayoutLocalService.getDDMStructureLayoutsCount();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
+		return _ddmStructureLayoutLocalService.getExportActionableDynamicQuery(portletDataContext);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _ddmStructureLayoutLocalService.getIndexableActionableDynamicQuery();
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the OSGi service identifier.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @return the OSGi service identifier
 	*/
 	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return _ddmStructureLayoutLocalService.dynamicQueryCount(dynamicQuery,
-			projection);
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _ddmStructureLayoutLocalService.getOSGiServiceIdentifier();
 	}
 
 	@Override
-	public void deleteStructureLayout(
-		com.liferay.dynamic.data.mapping.model.DDMStructureLayout structureLayout) {
-		_ddmStructureLayoutLocalService.deleteStructureLayout(structureLayout);
-	}
-
-	@Override
-	public void deleteStructureLayout(long structureLayoutId)
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		_ddmStructureLayoutLocalService.deleteStructureLayout(structureLayoutId);
+		return _ddmStructureLayoutLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStructureLayout getStructureLayout(
+		long structureLayoutId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ddmStructureLayoutLocalService.getStructureLayout(structureLayoutId);
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStructureLayout getStructureLayoutByStructureVersionId(
+		long structureVersionId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ddmStructureLayoutLocalService.getStructureLayoutByStructureVersionId(structureVersionId);
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMFormLayout getStructureLayoutDDMFormLayout(
+		com.liferay.dynamic.data.mapping.model.DDMStructureLayout structureLayout)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ddmStructureLayoutLocalService.getStructureLayoutDDMFormLayout(structureLayout);
+	}
+
+	/**
+	* Updates the ddm structure layout in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param ddmStructureLayout the ddm structure layout
+	* @return the ddm structure layout that was updated
+	*/
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStructureLayout updateDDMStructureLayout(
+		com.liferay.dynamic.data.mapping.model.DDMStructureLayout ddmStructureLayout) {
+		return _ddmStructureLayoutLocalService.updateDDMStructureLayout(ddmStructureLayout);
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStructureLayout updateStructureLayout(
+		long structureLayoutId,
+		com.liferay.dynamic.data.mapping.model.DDMFormLayout ddmFormLayout,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ddmStructureLayoutLocalService.updateStructureLayout(structureLayoutId,
+			ddmFormLayout, serviceContext);
 	}
 
 	@Override

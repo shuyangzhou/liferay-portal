@@ -33,9 +33,7 @@
 				{/if}
 			</label>
 
-			{if $tip}
-				<p class="liferay-ddm-form-field-tip">{$tip}</p>
-			{/if}
+			<p class="liferay-ddm-form-field-tip">{$tip ? $tip: ''}</p>
 		{/if}
 
 		<div class="clearfix checkbox-multiple-options">
@@ -84,8 +82,8 @@
 			{/foreach}
 		</div>
 
-		{if $tip and length($options) == 1}
-			<p class="liferay-ddm-form-field-tip">{$tip}</p>
+		{if length($options) == 1}
+			<p class="liferay-ddm-form-field-tip">{$tip ? $tip: ''}</p>
 		{/if}
 	</div>
 {/template}

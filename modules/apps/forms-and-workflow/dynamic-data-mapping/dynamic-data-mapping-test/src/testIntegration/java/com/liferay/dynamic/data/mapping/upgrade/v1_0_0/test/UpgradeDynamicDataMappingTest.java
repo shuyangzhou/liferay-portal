@@ -71,6 +71,7 @@ import java.sql.Timestamp;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -1727,9 +1728,7 @@ public class UpgradeDynamicDataMappingTest {
 					for (UpgradeStep upgradeStep : upgradeSteps) {
 						Class<?> clazz = upgradeStep.getClass();
 
-						String className = clazz.getName();
-
-						if (className.contains("UpgradeDynamicDataMapping")) {
+						if (Objects.equals(clazz.getName(), _CLASS_NAME)) {
 							_upgradeDynamicDataMapping =
 								(UpgradeProcess)upgradeStep;
 						}
@@ -1738,6 +1737,10 @@ public class UpgradeDynamicDataMappingTest {
 
 			});
 	}
+
+	private static final String _CLASS_NAME =
+		"com.liferay.dynamic.data.mapping.internal.upgrade.v1_0_0." +
+			"UpgradeDynamicDataMapping";
 
 	private long _classNameIdDDLRecordSet;
 	private long _classNameIdDDMContent;

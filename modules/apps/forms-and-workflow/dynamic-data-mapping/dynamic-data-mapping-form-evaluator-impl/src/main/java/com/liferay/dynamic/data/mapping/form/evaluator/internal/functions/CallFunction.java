@@ -112,13 +112,13 @@ public class CallFunction extends BaseDDMFormRuleFunction {
 
 		String[] tokens = StringUtil.split(expression, CharPool.EQUAL);
 
+		String parameterName = tokens[0];
+
 		String parameterValue = StringPool.BLANK;
 
 		if (tokens.length == 2) {
 			parameterValue = tokens[1];
 		}
-
-		String parameterName = tokens[0];
 
 		if (_ddmFormFieldEvaluationResults.containsKey(parameterValue)) {
 			String ddmFormFieldValue = getDDMFormFieldValue(parameterValue);

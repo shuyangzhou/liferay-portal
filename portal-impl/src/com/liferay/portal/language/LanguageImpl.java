@@ -965,7 +965,12 @@ public class LanguageImpl implements Language, Serializable {
 
 		try {
 			if (isInheritLocales(groupId)) {
-				return getAvailableLocales();
+				Group group = GroupLocalServiceUtil.getGroup(groupId);
+
+				CompanyLocalesBag companyLocalesBag = _getCompanyLocalesBag(
+					group.getCompanyId());
+
+				return companyLocalesBag.getAvailableLocales();
 			}
 		}
 		catch (Exception e) {
@@ -1580,6 +1585,10 @@ public class LanguageImpl implements Language, Serializable {
 	private static CompanyLocalesBag _getCompanyLocalesBag() {
 		Long companyId = CompanyThreadLocal.getCompanyId();
 
+		return _getCompanyLocalesBag(companyId);
+	}
+
+	private static CompanyLocalesBag _getCompanyLocalesBag(long companyId) {
 		CompanyLocalesBag companyLocalesBag = _companyLocalesBags.get(
 			companyId);
 

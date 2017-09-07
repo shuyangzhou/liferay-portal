@@ -201,6 +201,10 @@ public class DDMFormEvaluatorHelper {
 		List<DDMFormFieldValue> ddmFormFieldValues = _ddmFormFieldValuesMap.get(
 			ddmFormField.getName());
 
+		if (ddmFormFieldValues == null) {
+			return;
+		}
+
 		for (DDMFormFieldValue ddmFormFieldValue : ddmFormFieldValues) {
 			DDMFormFieldEvaluationResult ddmFormFieldEvaluationResult =
 				createDDMFormFieldEvaluationResult(

@@ -14,6 +14,8 @@
 
 package com.liferay.portal.tools;
 
+import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
+import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -171,6 +173,12 @@ public class ToolsUtil {
 	}
 
 	public static boolean isInsideQuotes(String s, int pos) {
+		return isInsideQuotes(s, pos, true);
+	}
+
+	public static boolean isInsideQuotes(
+		String s, int pos, boolean allowEscapedQuotes) {
+
 		int start = s.lastIndexOf(CharPool.NEW_LINE, pos);
 
 		if (start == -1) {
@@ -195,21 +203,26 @@ public class ToolsUtil {
 
 			if (insideQuotes) {
 				if (c == delimeter) {
-					int precedingBackSlashCount = 0;
-
-					for (int j = i - 1; j >= 0; j--) {
-						if (line.charAt(j) == CharPool.BACK_SLASH) {
-							precedingBackSlashCount += 1;
-						}
-						else {
-							break;
-						}
-					}
-
-					if ((precedingBackSlashCount == 0) ||
-						((precedingBackSlashCount % 2) == 0)) {
-
+					if (!allowEscapedQuotes) {
 						insideQuotes = false;
+					}
+					else {
+						int precedingBackSlashCount = 0;
+
+						for (int j = i - 1; j >= 0; j--) {
+							if (line.charAt(j) == CharPool.BACK_SLASH) {
+								precedingBackSlashCount += 1;
+							}
+							else {
+								break;
+							}
+						}
+
+						if ((precedingBackSlashCount == 0) ||
+							((precedingBackSlashCount % 2) == 0)) {
+
+							insideQuotes = false;
+						}
 					}
 				}
 			}
@@ -293,57 +306,63 @@ public class ToolsUtil {
 			break;
 		}
 
-		for (String line : StringUtil.splitLines(imports)) {
-			int x = line.indexOf("import ");
+		try (UnsyncBufferedReader unsyncBufferedReader =
+				new UnsyncBufferedReader(new UnsyncStringReader(imports))) {
 
-			if (x == -1) {
-				continue;
-			}
+			String line = null;
 
-			String importPackageAndClassName = line.substring(
-				x + 7, line.lastIndexOf(StringPool.SEMICOLON));
+			while ((line = unsyncBufferedReader.readLine()) != null) {
+				int x = line.indexOf("import ");
 
-			if (importPackageAndClassName.contains(StringPool.STAR)) {
-				continue;
-			}
-
-			String s = StringUtil.replace(
-				importPackageAndClassName, ".", "\\.");
-
-			Pattern pattern3 = Pattern.compile("\n(.*)(" + s + ")\\W");
-
-			outerLoop:
-			while (true) {
-				Matcher matcher3 = pattern3.matcher(content);
-
-				while (matcher3.find()) {
-					String lineStart = StringUtil.trimLeading(
-						matcher3.group(1));
-
-					if (lineStart.startsWith("import ") ||
-						lineStart.contains("//") ||
-						isInsideQuotes(content, matcher3.start(2))) {
-
-						continue;
-					}
-
-					String importClassName =
-						importPackageAndClassName.substring(
-							importPackageAndClassName.lastIndexOf(
-								StringPool.PERIOD) + 1);
-
-					content = StringUtil.replaceFirst(
-						content, importPackageAndClassName, importClassName,
-						matcher3.start());
-
-					continue outerLoop;
+				if (x == -1) {
+					continue;
 				}
 
-				break;
-			}
-		}
+				String importPackageAndClassName = line.substring(
+					x + 7, line.lastIndexOf(StringPool.SEMICOLON));
 
-		return content;
+				if (importPackageAndClassName.contains(StringPool.STAR)) {
+					continue;
+				}
+
+				String s = StringUtil.replace(
+					importPackageAndClassName, ".", "\\.");
+
+				Pattern pattern3 = Pattern.compile("\n(.*)(" + s + ")\\W");
+
+				outerLoop:
+				while (true) {
+					Matcher matcher3 = pattern3.matcher(content);
+
+					while (matcher3.find()) {
+						String lineStart = StringUtil.trimLeading(
+							matcher3.group(1));
+
+						if (lineStart.startsWith("import ") ||
+							lineStart.contains("//") ||
+							isInsideQuotes(content, matcher3.start(2))) {
+
+							continue;
+						}
+
+						String importClassName =
+							importPackageAndClassName.substring(
+								importPackageAndClassName.lastIndexOf(
+									StringPool.PERIOD) + 1);
+
+						content = StringUtil.replaceFirst(
+							content, importPackageAndClassName, importClassName,
+							matcher3.start());
+
+						continue outerLoop;
+					}
+
+					break;
+				}
+			}
+
+			return content;
+		}
 	}
 
 	public static void writeFile(

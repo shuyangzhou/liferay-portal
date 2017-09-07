@@ -69,7 +69,7 @@ public class DDMFormFieldOptionsFactoryImpl
 			(List<Map<String, String>>)
 				ddmFormFieldRenderingContext.getProperty("options");
 
-		if (options.isEmpty()) {
+		if (options == null) {
 			return ddmFormField.getDDMFormFieldOptions();
 		}
 

@@ -67,9 +67,6 @@ public interface DDMStructureLayoutLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link DDMStructureLayoutLocalServiceUtil} to access the ddm structure layout local service. Add custom service methods to {@link com.liferay.dynamic.data.mapping.service.impl.DDMStructureLayoutLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DDMFormLayout getStructureLayoutDDMFormLayout(
-		DDMStructureLayout structureLayout) throws PortalException;
 
 	/**
 	* Adds the ddm structure layout to the database. Also notifies the appropriate model listeners.
@@ -114,77 +111,6 @@ public interface DDMStructureLayoutLocalService extends BaseLocalService,
 	public DDMStructureLayout deleteDDMStructureLayout(long structureLayoutId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DDMStructureLayout fetchDDMStructureLayout(long structureLayoutId);
-
-	/**
-	* Returns the ddm structure layout matching the UUID and group.
-	*
-	* @param uuid the ddm structure layout's UUID
-	* @param groupId the primary key of the group
-	* @return the matching ddm structure layout, or <code>null</code> if a matching ddm structure layout could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DDMStructureLayout fetchDDMStructureLayoutByUuidAndGroupId(
-		java.lang.String uuid, long groupId);
-
-	/**
-	* Returns the ddm structure layout with the primary key.
-	*
-	* @param structureLayoutId the primary key of the ddm structure layout
-	* @return the ddm structure layout
-	* @throws PortalException if a ddm structure layout with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DDMStructureLayout getDDMStructureLayout(long structureLayoutId)
-		throws PortalException;
-
-	/**
-	* Returns the ddm structure layout matching the UUID and group.
-	*
-	* @param uuid the ddm structure layout's UUID
-	* @param groupId the primary key of the group
-	* @return the matching ddm structure layout
-	* @throws PortalException if a matching ddm structure layout could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DDMStructureLayout getDDMStructureLayoutByUuidAndGroupId(
-		java.lang.String uuid, long groupId) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DDMStructureLayout getStructureLayout(long structureLayoutId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DDMStructureLayout getStructureLayoutByStructureVersionId(
-		long structureVersionId) throws PortalException;
-
-	/**
-	* Updates the ddm structure layout in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param ddmStructureLayout the ddm structure layout
-	* @return the ddm structure layout that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public DDMStructureLayout updateDDMStructureLayout(
-		DDMStructureLayout ddmStructureLayout);
-
-	public DDMStructureLayout updateStructureLayout(long structureLayoutId,
-		DDMFormLayout ddmFormLayout, ServiceContext serviceContext)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		PortletDataContext portletDataContext);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
 	/**
 	* @throws PortalException
 	*/
@@ -192,25 +118,13 @@ public interface DDMStructureLayoutLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
+	public void deleteStructureLayout(DDMStructureLayout structureLayout);
+
+	public void deleteStructureLayout(long structureLayoutId)
 		throws PortalException;
 
-	/**
-	* Returns the number of ddm structure layouts.
-	*
-	* @return the number of ddm structure layouts
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getDDMStructureLayoutsCount();
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -250,6 +164,64 @@ public interface DDMStructureLayoutLocalService extends BaseLocalService,
 	*/
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DDMStructureLayout fetchDDMStructureLayout(long structureLayoutId);
+
+	/**
+	* Returns the ddm structure layout matching the UUID and group.
+	*
+	* @param uuid the ddm structure layout's UUID
+	* @param groupId the primary key of the group
+	* @return the matching ddm structure layout, or <code>null</code> if a matching ddm structure layout could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DDMStructureLayout fetchDDMStructureLayoutByUuidAndGroupId(
+		java.lang.String uuid, long groupId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	/**
+	* Returns the ddm structure layout with the primary key.
+	*
+	* @param structureLayoutId the primary key of the ddm structure layout
+	* @return the ddm structure layout
+	* @throws PortalException if a ddm structure layout with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DDMStructureLayout getDDMStructureLayout(long structureLayoutId)
+		throws PortalException;
+
+	/**
+	* Returns the ddm structure layout matching the UUID and group.
+	*
+	* @param uuid the ddm structure layout's UUID
+	* @param groupId the primary key of the group
+	* @return the matching ddm structure layout
+	* @throws PortalException if a matching ddm structure layout could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DDMStructureLayout getDDMStructureLayoutByUuidAndGroupId(
+		java.lang.String uuid, long groupId) throws PortalException;
 
 	/**
 	* Returns a range of all the ddm structure layouts.
@@ -292,26 +264,55 @@ public interface DDMStructureLayoutLocalService extends BaseLocalService,
 		OrderByComparator<DDMStructureLayout> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of ddm structure layouts.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of ddm structure layouts
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getDDMStructureLayoutsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		PortletDataContext portletDataContext);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the OSGi service identifier.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @return the OSGi service identifier
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	public java.lang.String getOSGiServiceIdentifier();
 
-	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
-	public void deleteStructureLayout(DDMStructureLayout structureLayout);
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
 
-	public void deleteStructureLayout(long structureLayoutId)
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DDMStructureLayout getStructureLayout(long structureLayoutId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DDMStructureLayout getStructureLayoutByStructureVersionId(
+		long structureVersionId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DDMFormLayout getStructureLayoutDDMFormLayout(
+		DDMStructureLayout structureLayout) throws PortalException;
+
+	/**
+	* Updates the ddm structure layout in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param ddmStructureLayout the ddm structure layout
+	* @return the ddm structure layout that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public DDMStructureLayout updateDDMStructureLayout(
+		DDMStructureLayout ddmStructureLayout);
+
+	public DDMStructureLayout updateStructureLayout(long structureLayoutId,
+		DDMFormLayout ddmFormLayout, ServiceContext serviceContext)
 		throws PortalException;
 }

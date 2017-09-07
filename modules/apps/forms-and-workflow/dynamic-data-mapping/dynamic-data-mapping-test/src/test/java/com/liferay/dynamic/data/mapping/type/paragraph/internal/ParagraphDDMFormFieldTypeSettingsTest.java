@@ -16,11 +16,13 @@ package com.liferay.dynamic.data.mapping.type.paragraph.internal;
 
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
+import com.liferay.dynamic.data.mapping.model.DDMFormRule;
 import com.liferay.dynamic.data.mapping.type.BaseDDMFormFieldTypeSettingsTestCase;
 import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -56,32 +58,6 @@ public class ParagraphDDMFormFieldTypeSettingsTest
 
 		Assert.assertTrue(properties.containsKey("placeholder"));
 
-		DDMFormField predefinedValueDDMFormField = ddmFormFieldsMap.get(
-			"predefinedValue");
-
-		Assert.assertNotNull(predefinedValueDDMFormField);
-		Assert.assertEquals(
-			"FALSE", predefinedValueDDMFormField.getVisibilityExpression());
-
-		DDMFormField repeatableDDMFormField = ddmFormFieldsMap.get(
-			"repeatable");
-
-		Assert.assertNotNull(repeatableDDMFormField);
-		Assert.assertEquals(
-			"FALSE", repeatableDDMFormField.getVisibilityExpression());
-
-		DDMFormField requiredDDMFormField = ddmFormFieldsMap.get("required");
-
-		Assert.assertNotNull(requiredDDMFormField);
-		Assert.assertEquals(
-			"FALSE", requiredDDMFormField.getVisibilityExpression());
-
-		DDMFormField showLabelDDMFormField = ddmFormFieldsMap.get("showLabel");
-
-		Assert.assertNotNull(showLabelDDMFormField);
-		Assert.assertEquals(
-			"FALSE", showLabelDDMFormField.getVisibilityExpression());
-
 		DDMFormField textDDMFormField = ddmFormFieldsMap.get("text");
 
 		Assert.assertNotNull(textDDMFormField);
@@ -92,13 +68,7 @@ public class ParagraphDDMFormFieldTypeSettingsTest
 
 		Assert.assertTrue(properties.containsKey("placeholder"));
 
-		Assert.assertTrue(textDDMFormField.isRequired());
 		Assert.assertEquals("editor", textDDMFormField.getType());
-
-		DDMFormField tipDDMFormField = ddmFormFieldsMap.get("tip");
-
-		Assert.assertNotNull(tipDDMFormField);
-		Assert.assertEquals("FALSE", tipDDMFormField.getVisibilityExpression());
 
 		DDMFormField validationDDMFormField = ddmFormFieldsMap.get(
 			"validation");
@@ -106,8 +76,28 @@ public class ParagraphDDMFormFieldTypeSettingsTest
 		Assert.assertNotNull(validationDDMFormField);
 		Assert.assertEquals("string", validationDDMFormField.getDataType());
 		Assert.assertEquals("validation", validationDDMFormField.getType());
-		Assert.assertEquals(
-			"FALSE", validationDDMFormField.getVisibilityExpression());
+
+		List<DDMFormRule> ddmFormRules = ddmForm.getDDMFormRules();
+
+		Assert.assertEquals(ddmFormRules.toString(), 1, ddmFormRules.size());
+
+		DDMFormRule ddmFormRule = ddmFormRules.get(0);
+
+		Assert.assertEquals("TRUE", ddmFormRule.getCondition());
+
+		List<String> actions = ddmFormRule.getActions();
+
+		Assert.assertEquals(actions.toString(), 8, actions.size());
+
+		Assert.assertTrue(actions.contains("setRequired('text', true)"));
+		Assert.assertTrue(actions.contains("setVisible('dataType', false)"));
+		Assert.assertTrue(
+			actions.contains("setVisible('predefinedValue', false)"));
+		Assert.assertTrue(actions.contains("setVisible('repeatable', false)"));
+		Assert.assertTrue(actions.contains("setVisible('required', false)"));
+		Assert.assertTrue(actions.contains("setVisible('showLabel', false)"));
+		Assert.assertTrue(actions.contains("setVisible('tip', false)"));
+		Assert.assertTrue(actions.contains("setVisible('validation', false)"));
 	}
 
 }
