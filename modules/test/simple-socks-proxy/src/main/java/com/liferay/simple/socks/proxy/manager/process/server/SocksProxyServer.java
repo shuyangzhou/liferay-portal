@@ -45,8 +45,10 @@ public class SocksProxyServer extends Thread {
 	}
 
 	public void close() throws Exception {
-		if (_serverSocket != null) {
-			_serverSocket.close();
+		ServerSocket serverSocket = _serverSocket;
+
+		if (serverSocket != null) {
+			serverSocket.close();
 		}
 	}
 
@@ -59,7 +61,7 @@ public class SocksProxyServer extends Thread {
 			_serverSocket = serverSocket;
 
 			try {
-				_serverSocket.setSoTimeout(0);
+				serverSocket.setSoTimeout(0);
 			}
 			catch (SocketException se) {
 				if (_log.isWarnEnabled()) {
@@ -71,7 +73,7 @@ public class SocksProxyServer extends Thread {
 				Socket socket = null;
 
 				try {
-					socket = _serverSocket.accept();
+					socket = serverSocket.accept();
 				}
 				catch (SocketException se) {
 					if (_log.isInfoEnabled()) {
@@ -124,7 +126,7 @@ public class SocksProxyServer extends Thread {
 		SocksProxyServer.class);
 
 	private final List<String> _allowedIPAddresses;
-	private ServerSocket _serverSocket;
+	private volatile ServerSocket _serverSocket;
 	private final int _serverSocketPort;
 	private final long _shutdownWaitTime;
 
