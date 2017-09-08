@@ -528,7 +528,11 @@ AUI.add(
 					},
 
 					_setDatePicker: function(datePicker) {
-						datePicker.get('popover').zIndex = 30000;
+						var popover = datePicker.get('popover');
+
+						if (popover) {
+							popover.zIndex = Liferay.zIndex.POPOVER;
+						}
 
 						return datePicker;
 					},
