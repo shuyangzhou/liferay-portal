@@ -102,6 +102,10 @@ public class StringUtil_IW {
 		return StringUtil.equalsIgnoreBreakLine(s1, s2);
 	}
 
+	public boolean equalsIgnoreCase(char c1, char c2) {
+		return StringUtil.equalsIgnoreCase(c1, c2);
+	}
+
 	public boolean equalsIgnoreCase(java.lang.String s1, java.lang.String s2) {
 		return StringUtil.equalsIgnoreCase(s1, s2);
 	}
@@ -347,6 +351,10 @@ public class StringUtil_IW {
 
 	public java.lang.String randomString(int length) {
 		return StringUtil.randomString(length);
+	}
+
+	public java.lang.String read(java.lang.Class<?> clazz, java.lang.String name) {
+		return StringUtil.read(clazz, name);
 	}
 
 	public java.lang.String read(java.lang.ClassLoader classLoader,
@@ -606,6 +614,14 @@ public class StringUtil_IW {
 		return StringUtil.split(s, delimiter, x);
 	}
 
+	public java.lang.String[] splitByLines(java.lang.String s) {
+		return StringUtil.splitByLines(s);
+	}
+
+	/**
+	 * @deprecated
+	 */
+	@Deprecated
 	public java.lang.String[] splitLines(java.lang.String s) {
 		return StringUtil.splitLines(s);
 	}

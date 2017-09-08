@@ -14,8 +14,6 @@
 
 package com.liferay.portal.tools;
 
-import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
-import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -306,63 +304,57 @@ public class ToolsUtil {
 			break;
 		}
 
-		try (UnsyncBufferedReader unsyncBufferedReader =
-				new UnsyncBufferedReader(new UnsyncStringReader(imports))) {
+		for (String line : StringUtil.splitByLines(imports)) {
+			int x = line.indexOf("import ");
 
-			String line = null;
-
-			while ((line = unsyncBufferedReader.readLine()) != null) {
-				int x = line.indexOf("import ");
-
-				if (x == -1) {
-					continue;
-				}
-
-				String importPackageAndClassName = line.substring(
-					x + 7, line.lastIndexOf(StringPool.SEMICOLON));
-
-				if (importPackageAndClassName.contains(StringPool.STAR)) {
-					continue;
-				}
-
-				String s = StringUtil.replace(
-					importPackageAndClassName, ".", "\\.");
-
-				Pattern pattern3 = Pattern.compile("\n(.*)(" + s + ")\\W");
-
-				outerLoop:
-				while (true) {
-					Matcher matcher3 = pattern3.matcher(content);
-
-					while (matcher3.find()) {
-						String lineStart = StringUtil.trimLeading(
-							matcher3.group(1));
-
-						if (lineStart.startsWith("import ") ||
-							lineStart.contains("//") ||
-							isInsideQuotes(content, matcher3.start(2))) {
-
-							continue;
-						}
-
-						String importClassName =
-							importPackageAndClassName.substring(
-								importPackageAndClassName.lastIndexOf(
-									StringPool.PERIOD) + 1);
-
-						content = StringUtil.replaceFirst(
-							content, importPackageAndClassName, importClassName,
-							matcher3.start());
-
-						continue outerLoop;
-					}
-
-					break;
-				}
+			if (x == -1) {
+				continue;
 			}
 
-			return content;
+			String importPackageAndClassName = line.substring(
+				x + 7, line.lastIndexOf(StringPool.SEMICOLON));
+
+			if (importPackageAndClassName.contains(StringPool.STAR)) {
+				continue;
+			}
+
+			String s = StringUtil.replace(
+				importPackageAndClassName, ".", "\\.");
+
+			Pattern pattern3 = Pattern.compile("\n(.*)(" + s + ")\\W");
+
+			outerLoop:
+			while (true) {
+				Matcher matcher3 = pattern3.matcher(content);
+
+				while (matcher3.find()) {
+					String lineStart = StringUtil.trimLeading(
+						matcher3.group(1));
+
+					if (lineStart.startsWith("import ") ||
+						lineStart.contains("//") ||
+						isInsideQuotes(content, matcher3.start(2))) {
+
+						continue;
+					}
+
+					String importClassName =
+						importPackageAndClassName.substring(
+							importPackageAndClassName.lastIndexOf(
+								StringPool.PERIOD) + 1);
+
+					content = StringUtil.replaceFirst(
+						content, importPackageAndClassName, importClassName,
+						matcher3.start());
+
+					continue outerLoop;
+				}
+
+				break;
+			}
 		}
+
+		return content;
 	}
 
 	public static void writeFile(
