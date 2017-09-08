@@ -570,6 +570,7 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 			fork="true"
 			newenvironment="true"
 		>
+			<jvmarg value="-agentpath:/home/yourkit-2017.02/bin/linux-x86-64/libyjpagent.so=sessionname=SourceFormatter" />
 			<jvmarg if:true="${jvm.debug}" value="${jpda.settings}" />
 			<jvmarg value="-Xmx512m" />
 			<jvmarg value="-Xss2048k" />
