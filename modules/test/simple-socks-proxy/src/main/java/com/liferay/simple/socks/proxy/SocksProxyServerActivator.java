@@ -53,7 +53,7 @@ public class SocksProxyServerActivator {
 			properties.get("allowedHostnames"), "");
 
 		long shutdownWaitTime = GetterUtil.getLong(
-			properties.get("shutdownWaitTime"), 10 * Time.MINUTE);
+			properties.get("shutdownWaitTime"), 1 * Time.MINUTE);
 
 		int serverSocketPort = GetterUtil.getInteger(
 			properties.get("serverSocketPort"), 8888);
