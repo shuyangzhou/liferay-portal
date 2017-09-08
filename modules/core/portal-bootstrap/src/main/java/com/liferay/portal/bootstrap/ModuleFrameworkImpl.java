@@ -1562,6 +1562,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private void _validateModuleFrameworkBaseDirForEquinox()
 		throws MalformedURLException {
 
