@@ -235,26 +235,7 @@ public class SourceFormatter {
 
 		_progressStatusThread.start();
 
-		_sourceProcessors.add(new BNDSourceProcessor());
-		_sourceProcessors.add(new CodeownersSourceProcessor());
-		_sourceProcessors.add(new CQLSourceProcessor());
-		_sourceProcessors.add(new CSSSourceProcessor());
-		_sourceProcessors.add(new DockerfileSourceProcessor());
-		_sourceProcessors.add(new FTLSourceProcessor());
-		_sourceProcessors.add(new GradleSourceProcessor());
-		_sourceProcessors.add(new GroovySourceProcessor());
 		_sourceProcessors.add(new JavaSourceProcessor());
-		_sourceProcessors.add(new JSONSourceProcessor());
-		_sourceProcessors.add(new JSPSourceProcessor());
-		_sourceProcessors.add(new JSSourceProcessor());
-		_sourceProcessors.add(new MarkdownSourceProcessor());
-		_sourceProcessors.add(new PropertiesSourceProcessor());
-		_sourceProcessors.add(new SHSourceProcessor());
-		_sourceProcessors.add(new SoySourceProcessor());
-		_sourceProcessors.add(new SQLSourceProcessor());
-		_sourceProcessors.add(new TLDSourceProcessor());
-		_sourceProcessors.add(new XMLSourceProcessor());
-		_sourceProcessors.add(new YMLSourceProcessor());
 
 		ExecutorService executorService = Executors.newFixedThreadPool(
 			_sourceProcessors.size());
