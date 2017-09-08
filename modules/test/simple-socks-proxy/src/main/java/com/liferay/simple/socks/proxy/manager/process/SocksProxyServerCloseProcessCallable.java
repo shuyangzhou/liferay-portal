@@ -34,7 +34,7 @@ public class SocksProxyServerCloseProcessCallable
 		ConcurrentMap<String, Object> attributes =
 			ProcessContext.getAttributes();
 
-		SocksProxyServer socksProxyServer = (SocksProxyServer)attributes.get(
+		SocksProxyServer socksProxyServer = (SocksProxyServer)attributes.remove(
 			SocksProxyServer.class.getName());
 
 		if (socksProxyServer != null) {
