@@ -256,7 +256,26 @@ public class HtmlImpl implements Html {
 							continue;
 						}
 					}
-
+					else if (mode == ESCAPE_MODE_JS) {
+						if (c == CharPool.APOSTROPHE) {
+							replacement = "\\'";
+						}
+						else if (c == CharPool.BACK_SLASH) {
+							replacement = StringPool.DOUBLE_BACK_SLASH;
+						}
+						else if (c == CharPool.NEW_LINE) {
+							replacement = "\\n";
+						}
+						else if (c == CharPool.QUOTE) {
+							replacement = "\\\"";
+						}
+						else if (c == CharPool.RETURN) {
+							replacement = "\\r";
+						}
+						else if (!Character.isISOControl(c)) {
+							continue;
+						}
+					}
 
 					if (sb == null) {
 						sb = new StringBuilder(text.length() + 64);
