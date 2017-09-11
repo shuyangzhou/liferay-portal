@@ -16,9 +16,6 @@ package com.liferay.petra.concurrent;
 
 import java.util.Objects;
 
-import com.liferay.portal.kernel.concurrent.ReadWriteLockKey;
-import com.liferay.portal.kernel.concurrent.ReadWriteLockRegistry;
-
 /**
  * <p>
  * Represents a key that is used by ReadWriteLockRegistry. T must also be

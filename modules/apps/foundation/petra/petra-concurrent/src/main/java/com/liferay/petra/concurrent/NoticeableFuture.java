@@ -16,8 +16,6 @@ package com.liferay.petra.concurrent;
 
 import java.util.concurrent.Future;
 
-import com.liferay.portal.kernel.concurrent.FutureListener;
-
 /**
  * @author Shuyang Zhou
  */

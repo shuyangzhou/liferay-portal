@@ -20,8 +20,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.liferay.portal.kernel.concurrent.Node;
-
 /**
  * @author Shuyang Zhou
  */

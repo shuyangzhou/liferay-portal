@@ -14,9 +14,6 @@
 
 package com.liferay.petra.concurrent;
 
-import com.liferay.portal.kernel.concurrent.ThrowableAwareRunnable;
-import com.liferay.portal.kernel.exception.BulkException;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

@@ -16,9 +16,6 @@ package com.liferay.petra.concurrent;
 
 import java.util.concurrent.RejectedExecutionException;
 
-import com.liferay.portal.kernel.concurrent.RejectedExecutionHandler;
-import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
-
 /**
  * Implements the same behavior as {@link
  * java.util.concurrent.ThreadPoolExecutor.AbortPolicy}.

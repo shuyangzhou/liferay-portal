@@ -14,10 +14,6 @@
 
 package com.liferay.petra.concurrent;
 
-import com.liferay.portal.kernel.concurrent.RejectedExecutionHandler;
-import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
-import com.liferay.portal.kernel.concurrent.ThreadPoolHandler;
-
 /**
  * Implements the same behavior as {@link
  * java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy}.

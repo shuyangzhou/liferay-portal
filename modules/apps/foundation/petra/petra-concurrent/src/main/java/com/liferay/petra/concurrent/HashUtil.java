@@ -15,21 +15,24 @@
 package com.liferay.petra.concurrent;
 
 /**
- * Implements the same behavior as {@link
- * java.util.concurrent.ThreadPoolExecutor.DiscardPolicy}.
- *
  * @author Shuyang Zhou
- * @see    java.util.concurrent.ThreadPoolExecutor.DiscardPolicy
  */
-public class DiscardPolicy implements RejectedExecutionHandler {
+public class HashUtil {
 
-	/**
-	 * @see java.util.concurrent.ThreadPoolExecutor.DiscardPolicy#rejectedExecution(
-	 *      Runnable, java.util.concurrent.ThreadPoolExecutor)
-	 */
-	@Override
-	public void rejectedExecution(
-		Runnable runnable, ThreadPoolExecutor threadPoolExecutor) {
+	public static int hash(int seed, boolean value) {
+		return seed * 11 + (value ? 1 : 0);
+	}
+
+	public static int hash(int seed, int value) {
+		return seed * 11 + value;
+	}
+
+	public static int hash(int seed, long value) {
+		return (int)(seed * 11 + value);
+	}
+
+	public static int hash(int seed, Object value) {
+		return seed * 11 + (value == null ? 0 : value.hashCode());
 	}
 
 }

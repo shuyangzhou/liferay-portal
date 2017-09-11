@@ -14,10 +14,6 @@
 
 package com.liferay.petra.concurrent;
 
-import com.liferay.portal.kernel.concurrent.EntryComparator;
-import com.liferay.portal.kernel.concurrent.ValueWrapper;
-import com.liferay.portal.kernel.util.StringBundler;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -150,7 +146,7 @@ public class ConcurrentLFUCache<K, V> {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBuilder sb = new StringBuilder();
 
 		sb.append("{evictCount=");
 		sb.append(_evictCount.get());

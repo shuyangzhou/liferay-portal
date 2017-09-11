@@ -17,8 +17,6 @@ package com.liferay.petra.concurrent;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 
-import com.liferay.portal.kernel.concurrent.Sync;
-
 /**
  * A synchronizer based on the JDK's AQS framework to simulate a single winner
  * competition. This synchronizer supports cyclical competition. In this

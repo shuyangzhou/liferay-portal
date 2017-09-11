@@ -18,9 +18,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.liferay.portal.kernel.concurrent.ConcurrentMapperHashMap;
-import com.liferay.portal.kernel.concurrent.IdentityKey;
-
 /**
  * @author Shuyang Zhou
  */

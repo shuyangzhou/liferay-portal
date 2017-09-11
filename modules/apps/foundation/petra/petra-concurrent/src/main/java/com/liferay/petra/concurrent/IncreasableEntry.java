@@ -14,10 +14,6 @@
 
 package com.liferay.petra.concurrent;
 
-import com.liferay.portal.kernel.concurrent.IncreasableEntry;
-import com.liferay.portal.kernel.util.HashUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-
 import java.util.Objects;
 
 /**
@@ -70,7 +66,7 @@ public abstract class IncreasableEntry<K, V> {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(5);
+		StringBuilder sb = new StringBuilder();
 
 		sb.append("{key=");
 		sb.append(key);

@@ -14,8 +14,6 @@
 
 package com.liferay.petra.concurrent;
 
-import com.liferay.portal.kernel.util.MapBackedSet;
-
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 

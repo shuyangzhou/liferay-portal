@@ -16,8 +16,6 @@ package com.liferay.petra.concurrent;
 
 import java.io.Serializable;
 
-import com.liferay.portal.kernel.concurrent.IdentityKey;
-
 /**
  * @author Shuyang Zhou
  */

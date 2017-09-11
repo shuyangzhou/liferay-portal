@@ -14,8 +14,6 @@
 
 package com.liferay.petra.concurrent;
 
-import com.liferay.portal.kernel.concurrent.ThreadPoolHandler;
-
 /**
  * @author Shuyang Zhou
  */

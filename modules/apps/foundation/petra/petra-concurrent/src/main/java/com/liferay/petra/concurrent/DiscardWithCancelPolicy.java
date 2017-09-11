@@ -16,12 +16,6 @@ package com.liferay.petra.concurrent;
 
 import java.util.concurrent.Future;
 
-import com.liferay.portal.kernel.concurrent.CallerRunsPolicy;
-import com.liferay.portal.kernel.concurrent.DiscardOldestPolicy;
-import com.liferay.portal.kernel.concurrent.DiscardPolicy;
-import com.liferay.portal.kernel.concurrent.RejectedExecutionHandler;
-import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
-
 /**
  * Handles rejected tasks by canceling them immediately.
  *

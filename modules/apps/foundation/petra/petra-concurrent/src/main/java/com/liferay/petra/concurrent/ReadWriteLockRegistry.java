@@ -20,8 +20,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import com.liferay.portal.kernel.concurrent.ReadWriteLockKey;
-
 /**
  * <p>
  * Registry for {@link ReadWriteLock} objects with {@link ReadWriteLockKey} as

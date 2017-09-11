@@ -14,10 +14,8 @@
 
 package com.liferay.petra.concurrent;
 
-import com.liferay.portal.kernel.concurrent.ThrowableAwareRunnable;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.LoggingTimer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Michael C. Han
@@ -38,7 +36,7 @@ public abstract class ThrowableAwareRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		try (LoggingTimer loggingTimer = new LoggingTimer()) {
+		try {
 			doRun();
 		}
 		catch (Exception e) {
@@ -50,7 +48,7 @@ public abstract class ThrowableAwareRunnable implements Runnable {
 
 	protected abstract void doRun() throws Exception;
 
-	private static final Log _log = LogFactoryUtil.getLog(
+	private static final Logger _log = LoggerFactory.getLogger(
 		ThrowableAwareRunnable.class);
 
 	private Throwable _throwable;

@@ -14,8 +14,6 @@
 
 package com.liferay.petra.concurrent;
 
-import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
-
 /**
  * Provides the same interface as {@link
  * java.util.concurrent.RejectedExecutionHandler}.
