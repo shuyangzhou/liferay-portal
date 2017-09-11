@@ -135,6 +135,40 @@ public class ClusterLinkImpl implements ClusterLink {
 		return _clusterChannels.get(channelIndex);
 	}
 
+	protected Map<String, String> getChannelLogicNames(
+		Map<String, Object> properties) {
+
+		Map<String, String> channelLogicNames = new HashMap<>();
+
+		int prefixLength =
+			ClusterPropsKeys.CHANNEL_LOGIC_NAME_TRANSPORT_PREFIX.length();
+
+		for (Entry<String, Object> entry : properties.entrySet()) {
+			String key = entry.getKey();
+
+			if (key.startsWith(
+					ClusterPropsKeys.CHANNEL_LOGIC_NAME_TRANSPORT_PREFIX)) {
+
+				channelLogicNames.put(
+					key.substring(prefixLength + 1), (String)entry.getValue());
+			}
+		}
+
+		if (channelLogicNames.isEmpty()) {
+			Properties channelLogicNameProperties = _props.getProperties(
+				PropsKeys.CLUSTER_LINK_CHANNEL_LOGIC_NAME_TRANSPORT, true);
+
+			for (Map.Entry<Object, Object> entry :
+					channelLogicNameProperties.entrySet()) {
+
+				channelLogicNames.put(
+					(String)entry.getKey(), (String)entry.getValue());
+			}
+		}
+
+		return channelLogicNames;
+	}
+
 	protected Map<String, String> getChannelNames(
 		Map<String, Object> properties) {
 

@@ -360,6 +360,20 @@ public class ClusterExecutorImpl implements ClusterExecutor {
 		return uuid.toString();
 	}
 
+	protected String getChannelLogicName(
+		Dictionary<String, Object> properties) {
+
+		String channelLogicName = GetterUtil.getString(
+			properties.get(ClusterPropsKeys.CHANNEL_LOGIC_NAME_CONTROL));
+
+		if (Validator.isNull(channelLogicName)) {
+			channelLogicName = _props.get(
+				PropsKeys.CLUSTER_LINK_CHANNEL_LOGIC_NAME_CONTROL);
+		}
+
+		return channelLogicName;
+	}
+
 	protected String getChannelName(Dictionary<String, Object> properties) {
 		String channelName = GetterUtil.getString(
 			properties.get(ClusterPropsKeys.CHANNEL_NAME_CONTROL));
