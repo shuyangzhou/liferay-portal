@@ -12,27 +12,17 @@
  * details.
  */
 
-package com.liferay.portal.upgrade.v7_0_4;
+package com.liferay.portal.upgrade.v7_0_3;
 
 /**
- * @author Shuyang Zhou
+ * @author Adolfo Pérez
  */
-public class UpgradeModules
-	extends com.liferay.portal.upgrade.v7_0_0.UpgradeModules {
+public class UpgradeMVCCVersion
+	extends com.liferay.portal.kernel.upgrade.UpgradeMVCCVersion {
 
 	@Override
-	public String[] getBundleSymbolicNames() {
-		return _BUNDLE_SYMBOLIC_NAMES;
+	protected String[] getModuleTableNames() {
+		return new String[] {"Subscription"};
 	}
-
-	@Override
-	public String[][] getConvertedLegacyModules() {
-		return _CONVERTED_LEGACY_MODULES;
-	}
-
-	private static final String[] _BUNDLE_SYMBOLIC_NAMES =
-		{"com.liferay.blogs.service"};
-
-	private static final String[][] _CONVERTED_LEGACY_MODULES = {};
 
 }

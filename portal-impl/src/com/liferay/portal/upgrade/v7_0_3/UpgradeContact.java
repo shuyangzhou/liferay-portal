@@ -12,22 +12,21 @@
  * details.
  */
 
-package com.liferay.portal.upgrade.v7_0_4;
+package com.liferay.portal.upgrade.v7_0_3;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.upgrade.v7_0_4.util.MBMailingListTable;
+import com.liferay.portal.upgrade.v7_0_3.util.ContactTable;
 
 /**
  * @author Ugurcan Cetin
  */
-public class UpgradeMBMailingList extends UpgradeProcess {
+public class UpgradeContact extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 		alter(
-			MBMailingListTable.class,
-			new AlterColumnType("emailAddress", "VARCHAR(254) null"),
-			new AlterColumnType("outEmailAddress", "VARCHAR(254) null"));
+			ContactTable.class,
+			new AlterColumnType("emailAddress", "VARCHAR(254) null"));
 	}
 
 }
