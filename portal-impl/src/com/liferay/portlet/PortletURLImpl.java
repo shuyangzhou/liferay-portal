@@ -950,8 +950,6 @@ public class PortletURLImpl
 			renderParams = _mergeWithRenderParameters(renderParams);
 		}
 
-		int previousSbIndex = sb.index();
-
 		for (Map.Entry<String, String[]> entry : renderParams.entrySet()) {
 			String name = entry.getKey();
 			String[] values = entry.getValue();
