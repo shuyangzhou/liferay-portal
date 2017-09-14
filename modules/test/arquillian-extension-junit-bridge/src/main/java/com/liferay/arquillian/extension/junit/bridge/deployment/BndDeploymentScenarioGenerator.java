@@ -50,16 +50,9 @@ public class BndDeploymentScenarioGenerator
 
 			Project project = new Project(workspace, _buildDir);
 
-			ProjectBuilder projectBuilder = new ProjectBuilder(project);
+			ProjectBuilder projectBuilder = _createProjectBuilder(project);
 
-			projectBuilder.addClasspath(_getClassPathFiles());
-
-			Jar jar = projectBuilder.build();
-
-			analyzer.setProperties(project.getProperties());
-			analyzer.setJar(jar);
-
-			jar.setManifest(analyzer.calcManifest());
+			Jar jar = _createJar(project, projectBuilder, analyzer);
 
 			ByteArrayOutputStream byteArrayOutputStream =
 				new ByteArrayOutputStream();
@@ -79,6 +72,30 @@ public class BndDeploymentScenarioGenerator
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private Jar _createJar(
+			Project project, ProjectBuilder projectBuilder, Analyzer analyzer)
+		throws Exception {
+
+		Jar jar = projectBuilder.build();
+
+		analyzer.setProperties(project.getProperties());
+		analyzer.setJar(jar);
+
+		jar.setManifest(analyzer.calcManifest());
+
+		return jar;
+	}
+
+	private ProjectBuilder _createProjectBuilder(Project project)
+		throws IOException {
+
+		ProjectBuilder projectBuilder = _createProjectBuilder(project);
+
+		projectBuilder.addClasspath(_getClassPathFiles());
+
+		return projectBuilder;
 	}
 
 	private List<File> _getClassPathFiles() {
