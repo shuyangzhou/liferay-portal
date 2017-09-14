@@ -3,4 +3,3 @@ Bundle-SymbolicName: com.liferay.polls.test
 Bundle-Version: 1.0.0
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Polls
--includeresource: test-classes/integration

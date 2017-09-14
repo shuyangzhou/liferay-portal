@@ -3,4 +3,3 @@ Bundle-SymbolicName: com.liferay.message.boards.test
 Bundle-Version: 1.0.0
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Message Boards
--includeresource: test-classes/integration

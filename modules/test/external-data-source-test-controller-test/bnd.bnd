@@ -5,5 +5,4 @@ Include-Resource:\
 	lib/com.liferay.external.data.source.test.api.jar,\
 	lib/com.liferay.external.data.source.test.jar,\
 	lib/com.liferay.external.data.source.test.service.jar,\
-	test-classes/integration,\
 	@lib/hsqldb.jar
