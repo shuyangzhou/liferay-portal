@@ -30,13 +30,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.jar.Manifest;
 
 import org.jboss.arquillian.container.spi.client.deployment.DeploymentDescription;
 import org.jboss.arquillian.container.test.spi.client.deployment.DeploymentScenarioGenerator;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
 import org.jboss.shrinkwrap.api.importer.ZipImporter;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
@@ -57,6 +55,11 @@ public class BndDeploymentScenarioGenerator
 
 			Jar jar = projectBuilder.build();
 
+			analyzer.setProperties(project.getProperties());
+			analyzer.setJar(jar);
+
+			jar.setManifest(analyzer.calcManifest());
+
 			ByteArrayOutputStream byteArrayOutputStream =
 				new ByteArrayOutputStream();
 
@@ -68,22 +71,6 @@ public class BndDeploymentScenarioGenerator
 				new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
 
 			JavaArchive javaArchive = zipImporter.as(JavaArchive.class);
-
-			analyzer.setProperties(project.getProperties());
-			analyzer.setJar(jar);
-
-			Manifest manifest = analyzer.calcManifest();
-
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-			manifest.write(baos);
-
-			ByteArrayAsset byteArrayAsset = new ByteArrayAsset(
-				baos.toByteArray());
-
-			javaArchive.delete(_MANIFEST_PATH);
-
-			javaArchive.add(byteArrayAsset, _MANIFEST_PATH);
 
 			return Collections.singletonList(
 				new DeploymentDescription(javaArchive.getName(), javaArchive));
@@ -133,8 +120,6 @@ public class BndDeploymentScenarioGenerator
 
 		return files;
 	}
-
-	private static final String _MANIFEST_PATH = "META-INF/MANIFEST.MF";
 
 	private static final File _buildDir = new File(
 		System.getProperty("user.dir"));
