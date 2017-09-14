@@ -50,12 +50,7 @@ public class BndDeploymentScenarioGenerator
 			Project project = new Project(workspace, _buildDir);
 			ProjectBuilder projectBuilder = _createProjectBuilder(project);
 			Analyzer analyzer = new Analyzer();
-			Jar jar = projectBuilder.build()) {
-
-			analyzer.setProperties(project.getProperties());
-			analyzer.setJar(jar);
-
-			jar.setManifest(analyzer.calcManifest());
+			Jar jar = _createJar(project, projectBuilder, analyzer)) {
 
 			ByteArrayOutputStream byteArrayOutputStream =
 				new ByteArrayOutputStream();
@@ -75,6 +70,20 @@ public class BndDeploymentScenarioGenerator
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private Jar _createJar(
+			Project project, ProjectBuilder projectBuilder, Analyzer analyzer)
+		throws Exception {
+
+		Jar jar = projectBuilder.build();
+
+		analyzer.setProperties(project.getProperties());
+		analyzer.setJar(jar);
+
+		jar.setManifest(analyzer.calcManifest());
+
+		return jar;
 	}
 
 	private ProjectBuilder _createProjectBuilder(Project project)
