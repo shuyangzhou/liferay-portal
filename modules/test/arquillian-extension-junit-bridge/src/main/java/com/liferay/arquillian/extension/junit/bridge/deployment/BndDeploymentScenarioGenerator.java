@@ -46,14 +46,11 @@ public class BndDeploymentScenarioGenerator
 
 	@Override
 	public List<DeploymentDescription> generate(TestClass testClass) {
-		try (Analyzer analyzer = new Analyzer()) {
-			Workspace workspace = new Workspace(_buildDir);
-
+		try (Workspace workspace = new Workspace(_buildDir);
 			Project project = new Project(workspace, _buildDir);
-
 			ProjectBuilder projectBuilder = _createProjectBuilder(project);
-
-			Jar jar = projectBuilder.build();
+			Analyzer analyzer = new Analyzer();
+			Jar jar = projectBuilder.build()) {
 
 			analyzer.setProperties(project.getProperties());
 			analyzer.setJar(jar);
