@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +40,6 @@ import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.Asset;
 import org.jboss.shrinkwrap.api.asset.ByteArrayAsset;
-import org.jboss.shrinkwrap.api.exporter.ZipExporter;
 import org.jboss.shrinkwrap.api.importer.ZipImporter;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
@@ -56,9 +56,7 @@ public class BndDeploymentScenarioGenerator
 
 			Project project = new Project(workspace, _buildDir);
 
-			ProjectBuilder projectBuilder = new ProjectBuilder(project);
-
-			projectBuilder.addClasspath(_getClassPathFiles());
+			ProjectBuilder projectBuilder = _createProjectBuilder(project);
 
 			Jar jar = projectBuilder.build();
 
@@ -75,14 +73,6 @@ public class BndDeploymentScenarioGenerator
 			JavaArchive javaArchive = zipImporter.as(JavaArchive.class);
 
 			analyzer.setProperties(project.getProperties());
-
-			javaArchive.addClass(testClass.getJavaClass());
-
-			ZipExporter zipExporter = javaArchive.as(ZipExporter.class);
-
-			jar = new Jar(
-				javaArchive.getName(), zipExporter.exportAsInputStream());
-
 			analyzer.setJar(jar);
 
 			Asset asset = javaArchive.get(_MANIFEST_PATH).getAsset();
@@ -114,6 +104,28 @@ public class BndDeploymentScenarioGenerator
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private ProjectBuilder _createProjectBuilder(Project project)
+		throws IOException {
+
+		ProjectBuilder projectBuilder = new ProjectBuilder(project);
+
+		projectBuilder.addClasspath(_getClassPathFiles());
+
+		String includeResource = projectBuilder.getProperty("-includeresource");
+
+		if (includeResource == null) {
+			projectBuilder.setProperty(
+				"-includeresource", "test-classes/integration");
+		}
+		else if (!includeResource.contains("test-classes/integration")) {
+			includeResource += ",test-classes/integration";
+
+			projectBuilder.setProperty("-includeresource", includeResource);
+		}
+
+		return projectBuilder;
 	}
 
 	private List<File> _getClassPathFiles() {
