@@ -8,6 +8,4 @@ Import-Package:\
 	*
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Dynamic Data Lists
--includeresource:\
-	test-classes/integration,\
-	@lib/poi.jar
+-includeresource: @lib/poi.jar
