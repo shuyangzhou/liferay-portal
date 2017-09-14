@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,14 +46,11 @@ public class BndDeploymentScenarioGenerator
 
 	@Override
 	public List<DeploymentDescription> generate(TestClass testClass) {
-		try (Analyzer analyzer = new Analyzer()) {
-			Workspace workspace = new Workspace(_buildDir);
-
+		try (Workspace workspace = new Workspace(_buildDir);
 			Project project = new Project(workspace, _buildDir);
-
 			ProjectBuilder projectBuilder = _createProjectBuilder(project);
-
-			Jar jar = _createJar(project, projectBuilder, analyzer);
+			Analyzer analyzer = new Analyzer();
+			Jar jar = _createJar(project, projectBuilder, analyzer)) {
 
 			ByteArrayOutputStream byteArrayOutputStream =
 				new ByteArrayOutputStream();
