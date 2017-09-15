@@ -364,6 +364,10 @@ public class LibraryReferenceTest {
 						Path sourceDirPath = dirPath.resolve(
 							_SRC_JAVA_DIR_NAME);
 
+						if (Files.notExists(sourceDirPath)) {
+							return FileVisitResult.SKIP_SUBTREE;
+						}
+
 						String sourceDir = String.valueOf(
 							_portalPath.relativize(sourceDirPath));
 
