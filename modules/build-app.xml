@@ -76,9 +76,17 @@
 
 		<for list="${app.names}" param="app.name">
 			<sequential>
-				<antcall inheritall="false" target="build-app-lpkg">
-					<param name="app.name" value="@{app.name}" />
-				</antcall>
+				<if>
+					<or>
+						<available file="${modules.dir}${file.separator}apps${file.separator}@{app.name}${file.separator}app.bnd" />
+						<available file="${modules.dir}${file.separator}private${file.separator}apps${file.separator}@{app.name}${file.separator}app.bnd" />
+					</or>
+					<then>
+						<antcall inheritall="false" target="build-app-lpkg">
+							<param name="app.name" value="@{app.name}" />
+						</antcall>
+					</then>
+				</if>
 			</sequential>
 		</for>
 
