@@ -96,6 +96,8 @@ if (buildProfile != "slim") {
 		provided project(":core:portal-compat:blogs:portal-impl-blogs-compat")
 		provided project(":core:portal-compat:trash:portal-impl-trash-compat")
 		provided project(":core:portal-compat:blogs:portal-kernel-blogs-compat")
+		provided project(":core:portal-compat:petra:portal-kernel-concurrent-compat")
+		provided project(":core:portal-compat:petra:portal-kernel-memory-compat")
 	}
 }
 

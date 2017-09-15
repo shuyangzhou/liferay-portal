@@ -279,6 +279,8 @@ Import-Package: !*
 	-@lib/com.liferay.portal.impl.blogs.compat.jar,\
 	-@lib/com.liferay.portal.impl.trash.compat.jar,\
 	-@lib/com.liferay.portal.kernel.blogs.compat.jar,\
+	-@lib/com.liferay.portal.kernel.concurrent.compat.jar,\
+	-@lib/com.liferay.portal.kernel.memory.compat.jar,\
 	@../../../lib/development/jms.jar,\
 	@../../../lib/development/mail.jar,\
 	@../../../lib/development/persistence.jar,\
