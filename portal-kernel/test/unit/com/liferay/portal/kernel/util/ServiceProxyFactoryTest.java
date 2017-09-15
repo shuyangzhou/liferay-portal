@@ -14,8 +14,8 @@
 
 package com.liferay.portal.kernel.util;
 
-import com.liferay.portal.kernel.memory.FinalizeAction;
-import com.liferay.portal.kernel.memory.FinalizeManager;
+import com.liferay.petra.memory.FinalizeAction;
+import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.portal.kernel.test.GCUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
@@ -83,14 +83,15 @@ public class ServiceProxyFactoryTest {
 
 		FinalizeAction finalizeAction = null;
 
-		Map<Reference<?>, FinalizeAction> finalizeActions =
+		Map<Object, FinalizeAction> finalizeActions =
 			ReflectionTestUtil.getFieldValue(
 				FinalizeManager.class, "_finalizeActions");
 
-		for (Map.Entry<Reference<?>, FinalizeAction> entry :
+		for (Map.Entry<Object, FinalizeAction> entry :
 				finalizeActions.entrySet()) {
 
-			Reference<?> reference = entry.getKey();
+			Reference<?> reference = ReflectionTestUtil.getFieldValue(
+				entry.getKey(), "_reference");
 
 			if (!(reference instanceof PhantomReference<?>)) {
 				continue;
