@@ -14,7 +14,6 @@
 
 package com.liferay.source.formatter.checkstyle.checks;
 
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -22,7 +21,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 /**
  * @author Hugo Huijser
  */
-public class TransactionalTestRuleCheck extends AbstractCheck {
+public class TransactionalTestRuleCheck extends BaseCheck {
 
 	@Override
 	public int[] getDefaultTokens() {
@@ -30,7 +29,7 @@ public class TransactionalTestRuleCheck extends AbstractCheck {
 	}
 
 	@Override
-	public void visitToken(DetailAST detailAST) {
+	protected void doVisitToken(DetailAST detailAST) {
 		String line = getLine(detailAST.getLineNo());
 
 		if (!line.contains(

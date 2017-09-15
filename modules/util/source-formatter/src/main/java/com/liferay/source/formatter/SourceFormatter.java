@@ -26,7 +26,13 @@ import com.liferay.portal.tools.ArgumentsUtil;
 import com.liferay.portal.tools.GitException;
 import com.liferay.portal.tools.GitUtil;
 import com.liferay.portal.tools.ToolsUtil;
+import com.liferay.source.formatter.checks.configuration.ConfigurationLoader;
+import com.liferay.source.formatter.checks.configuration.SourceCheckConfiguration;
+import com.liferay.source.formatter.checks.configuration.SourceChecksSuppressions;
+import com.liferay.source.formatter.checks.configuration.SourceFormatterConfiguration;
+import com.liferay.source.formatter.checks.configuration.SuppressionsLoader;
 import com.liferay.source.formatter.checks.util.SourceUtil;
+import com.liferay.source.formatter.util.CheckType;
 import com.liferay.source.formatter.util.DebugUtil;
 import com.liferay.source.formatter.util.FileUtil;
 import com.liferay.source.formatter.util.SourceFormatterUtil;
@@ -354,6 +360,23 @@ public class SourceFormatter {
 		return _firstSourceMismatchException;
 	}
 
+	private List<String> _getCheckNames() {
+		List<String> checkNames = new ArrayList<>();
+
+		for (String sourceProcessorName :
+				_sourceFormatterConfiguration.getSourceProcessorNames()) {
+
+			for (SourceCheckConfiguration sourceCheckConfiguration :
+					_sourceFormatterConfiguration.getSourceCheckConfigurations(
+						sourceProcessorName)) {
+
+				checkNames.add(sourceCheckConfiguration.getName());
+			}
+		}
+
+		return checkNames;
+	}
+
 	private List<ExcludeSyntaxPattern> _getExcludeSyntaxPatterns(
 		String sourceFormatterExcludes) {
 
@@ -394,6 +417,41 @@ public class SourceFormatter {
 		return ToolsUtil.PLUGINS_MAX_DIR_LEVEL;
 	}
 
+	private List<String> _getPluginsInsideModulesDirectoryNames()
+		throws Exception {
+
+		List<String> pluginsInsideModulesDirectoryNames = new ArrayList<>();
+
+		List<String> pluginBuildFileNames = SourceFormatterUtil.filterFileNames(
+			_allFileNames, new String[0],
+			new String[] {
+				"**/modules/apps/**/build.xml",
+				"**/modules/private/apps/**/build.xml"
+			},
+			_sourceFormatterExcludes, true);
+
+		for (String pluginBuildFileName : pluginBuildFileNames) {
+			pluginBuildFileName = StringUtil.replace(
+				pluginBuildFileName, CharPool.BACK_SLASH, CharPool.SLASH);
+
+			String absolutePath = SourceUtil.getAbsolutePath(
+				pluginBuildFileName);
+
+			int x = absolutePath.indexOf("/modules/apps/");
+
+			if (x == -1) {
+				x = absolutePath.indexOf("/modules/private/apps/");
+			}
+
+			int y = absolutePath.lastIndexOf(StringPool.SLASH);
+
+			pluginsInsideModulesDirectoryNames.add(
+				absolutePath.substring(x, y + 1));
+		}
+
+		return pluginsInsideModulesDirectoryNames;
+	}
+
 	private Properties _getProperties(File file) throws Exception {
 		Properties properties = new Properties();
 
@@ -402,6 +460,17 @@ public class SourceFormatter {
 		}
 
 		return properties;
+	}
+
+	private SourceChecksSuppressions _getSourceChecksSuppressions()
+		throws Exception {
+
+		List<File> suppressionsFiles = SourceFormatterUtil.getSuppressionsFiles(
+			_sourceFormatterArgs.getBaseDirName(),
+			"sourcechecks-suppressions.xml", _allFileNames,
+			_sourceFormatterExcludes, _portalSource, _subrepository);
+
+		return SuppressionsLoader.loadSuppressions(suppressionsFiles);
 	}
 
 	private void _init() throws Exception {
@@ -435,6 +504,56 @@ public class SourceFormatter {
 		for (String modulePropertiesFileName : modulePropertiesFileNames) {
 			_readProperties(new File(modulePropertiesFileName));
 		}
+
+		_pluginsInsideModulesDirectoryNames =
+			_getPluginsInsideModulesDirectoryNames();
+
+		_portalSource = _isPortalSource();
+		_subrepository = _isSubrepository();
+
+		_sourceChecksSuppressions = _getSourceChecksSuppressions();
+
+		_sourceFormatterConfiguration = ConfigurationLoader.loadConfiguration(
+			"sourcechecks.xml");
+
+		if (_sourceFormatterArgs.isShowDebugInformation()) {
+			DebugUtil.addCheckNames(CheckType.SOURCECHECK, _getCheckNames());
+		}
+	}
+
+	private boolean _isPortalSource() {
+		File portalImplDir = SourceFormatterUtil.getFile(
+			_sourceFormatterArgs.getBaseDirName(), "portal-impl",
+			ToolsUtil.PORTAL_MAX_DIR_LEVEL);
+
+		if (portalImplDir != null) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isSubrepository() {
+		String baseDirAbsolutePath = SourceUtil.getAbsolutePath(
+			_sourceFormatterArgs.getBaseDirName());
+
+		int x = baseDirAbsolutePath.length();
+
+		for (int i = 0; i < _SUBREPOSITORY_MAX_DIR_LEVEL; i++) {
+			x = baseDirAbsolutePath.lastIndexOf(CharPool.FORWARD_SLASH, x - 1);
+
+			if (x == -1) {
+				return false;
+			}
+
+			String dirName = baseDirAbsolutePath.substring(x + 1);
+
+			if (dirName.startsWith("com-liferay-")) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private void _printProgressStatusMessage(String message) {
@@ -489,10 +608,17 @@ public class SourceFormatter {
 		throws Exception {
 
 		sourceProcessor.setAllFileNames(_allFileNames);
+		sourceProcessor.setPluginsInsideModulesDirectoryNames(
+			_pluginsInsideModulesDirectoryNames);
+		sourceProcessor.setPortalSource(_portalSource);
 		sourceProcessor.setProgressStatusQueue(_progressStatusQueue);
 		sourceProcessor.setPropertiesMap(_propertiesMap);
+		sourceProcessor.setSourceChecksSuppressions(_sourceChecksSuppressions);
 		sourceProcessor.setSourceFormatterArgs(_sourceFormatterArgs);
+		sourceProcessor.setSourceFormatterConfiguration(
+			_sourceFormatterConfiguration);
 		sourceProcessor.setSourceFormatterExcludes(_sourceFormatterExcludes);
+		sourceProcessor.setSubrepository(_subrepository);
 
 		sourceProcessor.format();
 
@@ -509,11 +635,15 @@ public class SourceFormatter {
 	private static final String _PROPERTIES_FILE_NAME =
 		"source-formatter.properties";
 
+	private static final int _SUBREPOSITORY_MAX_DIR_LEVEL = 3;
+
 	private List<String> _allFileNames;
 	private volatile SourceMismatchException _firstSourceMismatchException;
 	private int _maxStatusMessageLength = -1;
 	private final List<String> _modifiedFileNames =
 		new CopyOnWriteArrayList<>();
+	private List<String> _pluginsInsideModulesDirectoryNames;
+	private boolean _portalSource;
 	private final BlockingQueue<ProgressStatusUpdate> _progressStatusQueue =
 		new LinkedBlockingQueue<>();
 
@@ -671,10 +801,13 @@ public class SourceFormatter {
 	};
 
 	private Map<String, Properties> _propertiesMap = new HashMap<>();
+	private SourceChecksSuppressions _sourceChecksSuppressions;
 	private final SourceFormatterArgs _sourceFormatterArgs;
+	private SourceFormatterConfiguration _sourceFormatterConfiguration;
 	private SourceFormatterExcludes _sourceFormatterExcludes;
 	private final Set<SourceFormatterMessage> _sourceFormatterMessages =
 		new ConcurrentSkipListSet<>();
 	private List<SourceProcessor> _sourceProcessors = new ArrayList<>();
+	private boolean _subrepository;
 
 }

@@ -17,6 +17,7 @@ package com.liferay.source.formatter;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.source.formatter.checkstyle.util.CheckStyleUtil;
+import com.liferay.source.formatter.util.SourceFormatterUtil;
 
 import java.io.File;
 
@@ -191,11 +192,15 @@ public class JavaSourceProcessor extends BaseSourceProcessor {
 			return;
 		}
 
+		List<File> suppressionsFiles = SourceFormatterUtil.getSuppressionsFiles(
+			sourceFormatterArgs.getBaseDirName(), "checkstyle-suppressions.xml",
+			getAllFileNames(), getSourceFormatterExcludes(), portalSource,
+			subrepository);
+
 		Set<SourceFormatterMessage> sourceFormatterMessages =
 			CheckStyleUtil.process(
-				_ungeneratedFiles,
-				getSuppressionsFiles("checkstyle-suppressions.xml"),
-				sourceFormatterArgs.getBaseDirName(), getProgressStatusQueue());
+				_ungeneratedFiles, suppressionsFiles, sourceFormatterArgs,
+				getProgressStatusQueue());
 
 		for (SourceFormatterMessage sourceFormatterMessage :
 				sourceFormatterMessages) {
