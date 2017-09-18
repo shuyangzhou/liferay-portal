@@ -373,34 +373,21 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
 			runSQL("alter table DLFileVersion add fileName VARCHAR(255) null");
 
-			try (PreparedStatement ps1 = connection.prepareStatement(
-					"select fileVersionId, extension, title from " +
-						"DLFileVersion");
-				PreparedStatement ps2 =
-					AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-						connection,
-						"update DLFileVersion set fileName = ? where " +
-							"fileVersionId = ?");
-				ResultSet rs = ps1.executeQuery()) {
+			runSQL(
+				"update DLFileVersion set fileName = title where title like " +
+					"CONCAT('%.', extension) or extension = '' or extension " +
+						"is null");
 
-				while (rs.next()) {
-					long fileVersionId = rs.getLong("fileVersionId");
-					String extension = GetterUtil.getString(
-						rs.getString("extension"));
-					String title = GetterUtil.getString(rs.getString("title"));
+			StringBundler sb = new StringBundler(4);
 
-					String fileName = DLUtil.getSanitizedFileName(
-						title, extension);
+			sb.append("update DLFileVersion set fileName = CONCAT(title, ");
+			sb.append("CONCAT('.', extension)) where (fileName is null or ");
+			sb.append("fileName = '') and LENGTH(title) + LENGTH(extension) ");
+			sb.append("< 255");
 
-					ps2.setString(1, fileName);
+			runSQL(sb.toString());
 
-					ps2.setLong(2, fileVersionId);
-
-					ps2.addBatch();
-				}
-
-				ps2.executeBatch();
-			}
+			_updateLongFileVersionFileNames();
 		}
 	}
 
@@ -567,6 +554,38 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 				connection.prepareStatement(
 					"update DLFileEntry set fileName = ? where fileEntryId = " +
 						"?"));
+			ResultSet rs = ps1.executeQuery()) {
+
+			while (rs.next()) {
+				long fileEntryId = rs.getLong("fileEntryId");
+				String extension = rs.getString("extension");
+				String title = rs.getString("title");
+
+				int availableLength = 254 - extension.length();
+
+				String fileName =
+					title.substring(0, availableLength) + StringPool.PERIOD +
+						extension;
+
+				ps2.setString(1, fileName);
+
+				ps2.setLong(2, fileEntryId);
+
+				ps2.addBatch();
+			}
+
+			ps2.executeBatch();
+		}
+	}
+
+	private void _updateLongFileVersionFileNames() throws Exception {
+		try (PreparedStatement ps1 = connection.prepareStatement(
+				"select fileEntryId, title, extension from DLFileVersion " +
+					"where fileName = '' or fileName is null");
+			PreparedStatement ps2 = AutoBatchPreparedStatementUtil.autoBatch(
+				connection.prepareStatement(
+					"update DLFileVersion set fileName = ? where fileEntryId " +
+						"= ?"));
 			ResultSet rs = ps1.executeQuery()) {
 
 			while (rs.next()) {
