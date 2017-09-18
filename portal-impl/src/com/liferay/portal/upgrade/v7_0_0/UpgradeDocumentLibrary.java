@@ -556,26 +556,32 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 						"?"));
 			ResultSet rs = ps1.executeQuery()) {
 
-			while (rs.next()) {
-				long fileEntryId = rs.getLong("fileEntryId");
-				String extension = rs.getString("extension");
-				String title = rs.getString("title");
-
-				int availableLength = 254 - extension.length();
-
-				String fileName =
-					title.substring(0, availableLength) + StringPool.PERIOD +
-						extension;
-
-				ps2.setString(1, fileName);
-
-				ps2.setLong(2, fileEntryId);
-
-				ps2.addBatch();
-			}
-
-			ps2.executeBatch();
+			_updateLongFileNames(ps2, rs);
 		}
+	}
+
+	private void _updateLongFileNames(PreparedStatement ps, ResultSet rs)
+		throws Exception {
+
+		while (rs.next()) {
+			long fileEntryId = rs.getLong("fileEntryId");
+			String extension = rs.getString("extension");
+			String title = rs.getString("title");
+
+			int availableLength = 254 - extension.length();
+
+			String fileName =
+				title.substring(0, availableLength) + StringPool.PERIOD +
+					extension;
+
+			ps.setString(1, fileName);
+
+			ps.setLong(2, fileEntryId);
+
+			ps.addBatch();
+		}
+
+		ps.executeBatch();
 	}
 
 	private void _updateLongFileVersionFileNames() throws Exception {
@@ -588,25 +594,7 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 						"= ?"));
 			ResultSet rs = ps1.executeQuery()) {
 
-			while (rs.next()) {
-				long fileEntryId = rs.getLong("fileEntryId");
-				String extension = rs.getString("extension");
-				String title = rs.getString("title");
-
-				int availableLength = 254 - extension.length();
-
-				String fileName =
-					title.substring(0, availableLength) + StringPool.PERIOD +
-						extension;
-
-				ps2.setString(1, fileName);
-
-				ps2.setLong(2, fileEntryId);
-
-				ps2.addBatch();
-			}
-
-			ps2.executeBatch();
+			_updateLongFileNames(ps2, rs);
 		}
 	}
 
