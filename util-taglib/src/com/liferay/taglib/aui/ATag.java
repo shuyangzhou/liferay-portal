@@ -63,9 +63,17 @@ public class ATag extends BaseATag {
 				jspWriter.write(themeDisplay.getPathThemeImages());
 				jspWriter.write("/lexicon/icons.svg#shortcut\" /><span ");
 				jspWriter.write("class=\"sr-only\">");
-				jspWriter.write(
-					LanguageUtil.get(resourceBundle, "opens-new-window"));
-				jspWriter.write("</span></svg>");
+
+				String opensNewWindowLabel = LanguageUtil.get(
+					resourceBundle, "opens-new-window");
+
+				jspWriter.write(opensNewWindowLabel);
+
+				jspWriter.write("</span>");
+				jspWriter.write("<title>");
+				jspWriter.write(opensNewWindowLabel);
+				jspWriter.write("</title>");
+				jspWriter.write("</svg>");
 			}
 
 			jspWriter.write("</a>");

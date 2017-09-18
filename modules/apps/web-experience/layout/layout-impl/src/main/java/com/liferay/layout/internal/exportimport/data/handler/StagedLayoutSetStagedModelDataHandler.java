@@ -246,6 +246,8 @@ public class StagedLayoutSetStagedModelDataHandler
 				portletDataContext.getScopeGroupId(),
 				stagedLayoutSet.isPrivateLayout());
 
+		stagedLayoutSet.setPrivateLayout(portletDataContext.isPrivateLayout());
+
 		StagedLayoutSet importedStagedLayoutSet =
 			(StagedLayoutSet)stagedLayoutSet.clone();
 
@@ -478,10 +480,6 @@ public class StagedLayoutSetStagedModelDataHandler
 		Element headerElement = rootElement.element("header");
 
 		String logoPath = headerElement.attributeValue("logo-path");
-
-		if (Validator.isNull(logoPath)) {
-			return;
-		}
 
 		byte[] iconBytes = portletDataContext.getZipEntryAsByteArray(logoPath);
 

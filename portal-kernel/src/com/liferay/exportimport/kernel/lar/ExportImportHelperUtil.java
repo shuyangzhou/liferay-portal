@@ -317,6 +317,14 @@ public class ExportImportHelperUtil {
 		return _exportImportHelper.getUserIdStrategy(userId, userIdStrategy);
 	}
 
+	public static boolean isAlwaysIncludeReference(
+		PortletDataContext portletDataContext,
+		StagedModel referenceStagedModel) {
+
+		return _exportImportHelper.isAlwaysIncludeReference(
+			portletDataContext, referenceStagedModel);
+	}
+
 	public static boolean isReferenceWithinExportScope(
 		PortletDataContext portletDataContext, StagedModel stagedModel) {
 

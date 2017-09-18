@@ -150,15 +150,21 @@ public class IconTag extends BaseIconTag {
 						WebKeys.THEME_DISPLAY);
 
 				String label = getLabel();
+				String title = GetterUtil.getString(getImage());
 
 				if (label != null) {
 					ResourceBundle resourceBundle =
 						TagResourceBundleUtil.getResourceBundle(
 							request, themeDisplay.getLocale());
 
-					jspWriter.write(
-						HtmlUtil.escapeAttribute(
-							LanguageUtil.get(resourceBundle, label)));
+					title = HtmlUtil.escapeAttribute(
+						LanguageUtil.get(resourceBundle, label));
+
+					jspWriter.write(title);
+				}
+
+				if (title == null) {
+					title = "Icon";
 				}
 
 				jspWriter.write("\" ");
@@ -178,7 +184,11 @@ public class IconTag extends BaseIconTag {
 				jspWriter.write(src);
 				jspWriter.write(StringPool.POUND);
 				jspWriter.write(GetterUtil.getString(getImage()));
-				jspWriter.write("\" /></svg>");
+				jspWriter.write("\" />");
+				jspWriter.write("<title>");
+				jspWriter.write(title);
+				jspWriter.write("</title>");
+				jspWriter.write("</svg>");
 			}
 			else {
 				jspWriter.write("<i class=\"icon-");

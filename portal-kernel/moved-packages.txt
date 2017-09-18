@@ -3,3 +3,4 @@ com.liferay.blogs.kernel.model
 com.liferay.blogs.kernel.service
 com.liferay.blogs.kernel.service.persistence
 com.liferay.blogs.kernel.util.comparator
+com.liferay.portal.kernel.memory
