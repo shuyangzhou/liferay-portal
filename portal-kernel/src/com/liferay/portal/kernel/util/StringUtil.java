@@ -5168,52 +5168,6 @@ public class StringUtil {
 	 *         limit, or <code>null</code> if the text is <code>null</code>
 	 */
 	public static String wrap(String text, int width, String lineSeparator) {
-		return _wrap(text, width, lineSeparator);
-	}
-
-	protected static final char[] HEX_DIGITS = {
-		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd',
-		'e', 'f'
-	};
-
-	/**
-	 * Returns <code>false</code> if the character is not whitespace or is equal
-	 * to any of the exception characters.
-	 *
-	 * @param  c the character whose trim-ability is to be determined
-	 * @param  exceptions the whitespace characters to exclude from trimming
-	 * @return <code>false</code> if the character is not whitespace or is equal
-	 *         to any of the exception characters; <code>true</code> otherwise
-	 */
-	private static boolean _isTrimable(char c, char[] exceptions) {
-		for (char exception : exceptions) {
-			if (c == exception) {
-				return false;
-			}
-		}
-
-		return Character.isWhitespace(c);
-	}
-
-	private static void _split(
-		List<String> values, String s, int offset, char delimiter) {
-
-		int pos = s.indexOf(delimiter, offset);
-
-		while (pos != -1) {
-			values.add(s.substring(offset, pos));
-
-			offset = pos + 1;
-
-			pos = s.indexOf(delimiter, offset);
-		}
-
-		if (offset < s.length()) {
-			values.add(s.substring(offset));
-		}
-	}
-
-	private static String _wrap(String text, int width, String lineSeparator) {
 		if (text == null) {
 			return null;
 		}
@@ -5277,6 +5231,48 @@ public class StringUtil {
 		}
 
 		return sb.toString();
+	}
+
+	protected static final char[] HEX_DIGITS = {
+		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd',
+		'e', 'f'
+	};
+
+	/**
+	 * Returns <code>false</code> if the character is not whitespace or is equal
+	 * to any of the exception characters.
+	 *
+	 * @param  c the character whose trim-ability is to be determined
+	 * @param  exceptions the whitespace characters to exclude from trimming
+	 * @return <code>false</code> if the character is not whitespace or is equal
+	 *         to any of the exception characters; <code>true</code> otherwise
+	 */
+	private static boolean _isTrimable(char c, char[] exceptions) {
+		for (char exception : exceptions) {
+			if (c == exception) {
+				return false;
+			}
+		}
+
+		return Character.isWhitespace(c);
+	}
+
+	private static void _split(
+		List<String> values, String s, int offset, char delimiter) {
+
+		int pos = s.indexOf(delimiter, offset);
+
+		while (pos != -1) {
+			values.add(s.substring(offset, pos));
+
+			offset = pos + 1;
+
+			pos = s.indexOf(delimiter, offset);
+		}
+
+		if (offset < s.length()) {
+			values.add(s.substring(offset));
+		}
 	}
 
 	private static final char[] _RANDOM_STRING_CHAR_TABLE = {
