@@ -14,8 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.definition;
 
-import com.liferay.portal.kernel.util.HashCode;
-import com.liferay.portal.kernel.util.HashCodeFactoryUtil;
+import com.liferay.portal.kernel.util.HashUtil;
 
 import java.util.Objects;
 
@@ -74,13 +73,11 @@ public class RoleAssignment extends Assignment {
 
 	@Override
 	public int hashCode() {
-		HashCode hashCode = HashCodeFactoryUtil.getHashCode();
+		int hashCode = HashUtil.hash(0, _roleId);
 
-		hashCode.append(_roleId);
-		hashCode.append(_roleName);
-		hashCode.append(_roleType);
+		hashCode = HashUtil.hash(hashCode, _roleName);
 
-		return hashCode.toHashCode();
+		return HashUtil.hash(hashCode, _roleType);
 	}
 
 	public boolean isAutoCreate() {
