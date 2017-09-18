@@ -15,7 +15,6 @@
 package com.liferay.portal.kernel.util;
 
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
-import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.highlight.HighlightUtil;
@@ -5169,14 +5168,7 @@ public class StringUtil {
 	 *         limit, or <code>null</code> if the text is <code>null</code>
 	 */
 	public static String wrap(String text, int width, String lineSeparator) {
-		try {
-			return _wrap(text, width, lineSeparator);
-		}
-		catch (IOException ioe) {
-			_log.error(ioe.getMessage());
-
-			return text;
-		}
+		return _wrap(text, width, lineSeparator);
 	}
 
 	protected static final char[] HEX_DIGITS = {
@@ -5221,55 +5213,40 @@ public class StringUtil {
 		}
 	}
 
-	private static String _wrap(String text, int width, String lineSeparator)
-		throws IOException {
-
+	private static String _wrap(String text, int width, String lineSeparator) {
 		if (text == null) {
 			return null;
 		}
 
 		StringBundler sb = new StringBundler();
 
-		try (UnsyncBufferedReader unsyncBufferedReader =
-				new UnsyncBufferedReader(new UnsyncStringReader(text))) {
+		for (String line : splitLines(text)) {
+			if (line.isEmpty()) {
+				sb.append(lineSeparator);
 
-			String s = StringPool.BLANK;
+				continue;
+			}
 
-			while ((s = unsyncBufferedReader.readLine()) != null) {
-				if (s.length() == 0) {
-					sb.append(lineSeparator);
+			int lineLength = 0;
 
-					continue;
-				}
+			for (String token : split(line, CharPool.SPACE)) {
+				if ((lineLength + token.length() + 1) > width) {
+					if (lineLength > 0) {
+						sb.append(lineSeparator);
+					}
 
-				int lineLength = 0;
+					if (token.length() > width) {
+						int pos = token.indexOf(CharPool.OPEN_PARENTHESIS);
 
-				String[] tokens = s.split(StringPool.SPACE);
-
-				for (String token : tokens) {
-					if ((lineLength + token.length() + 1) > width) {
-						if (lineLength > 0) {
+						if (pos != -1) {
+							sb.append(token.substring(0, pos + 1));
 							sb.append(lineSeparator);
-						}
 
-						if (token.length() > width) {
-							int pos = token.indexOf(CharPool.OPEN_PARENTHESIS);
+							token = token.substring(pos + 1);
 
-							if (pos != -1) {
-								sb.append(token.substring(0, pos + 1));
-								sb.append(lineSeparator);
+							sb.append(token);
 
-								token = token.substring(pos + 1);
-
-								sb.append(token);
-
-								lineLength = token.length();
-							}
-							else {
-								sb.append(token);
-
-								lineLength = token.length();
-							}
+							lineLength = token.length();
 						}
 						else {
 							sb.append(token);
@@ -5278,20 +5255,25 @@ public class StringUtil {
 						}
 					}
 					else {
-						if (lineLength > 0) {
-							sb.append(StringPool.SPACE);
-
-							lineLength++;
-						}
-
 						sb.append(token);
 
-						lineLength += token.length();
+						lineLength = token.length();
 					}
 				}
+				else {
+					if (lineLength > 0) {
+						sb.append(StringPool.SPACE);
 
-				sb.append(lineSeparator);
+						lineLength++;
+					}
+
+					sb.append(token);
+
+					lineLength += token.length();
+				}
 			}
+
+			sb.append(lineSeparator);
 		}
 
 		return sb.toString();
