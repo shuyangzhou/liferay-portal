@@ -14,8 +14,12 @@
 
 package com.liferay.portal.kernel.util;
 
+import java.io.ByteArrayInputStream;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -268,6 +272,55 @@ public class StringUtilTest {
 		Assert.assertEquals("%PATH%", StringUtil.quote("PATH", '%'));
 		Assert.assertEquals(
 			"Hello World Hello", StringUtil.quote(" World ", "Hello"));
+	}
+
+	@Test
+	public void testRead() throws Exception {
+		String s = StringUtil.read(
+			new ByteArrayInputStream(StringPool.BLANK.getBytes()));
+
+		Assert.assertEquals(StringPool.BLANK, s);
+
+		s = StringUtil.read(
+			new ByteArrayInputStream(StringPool.SPACE.getBytes()));
+
+		Assert.assertEquals(StringPool.BLANK, s);
+
+		s = StringUtil.read(new ByteArrayInputStream("A\rB".getBytes()));
+
+		Assert.assertEquals("A\nB", s);
+
+		s = StringUtil.read(new ByteArrayInputStream(" Test ".getBytes()));
+
+		Assert.assertEquals("Test", s);
+	}
+
+	@Test
+	public void testReadLines() throws Exception {
+		List<String> lines = new ArrayList<>();
+
+		StringUtil.readLines(
+			new ByteArrayInputStream(StringPool.BLANK.getBytes()), lines);
+
+		Assert.assertEquals(lines.toString(), 0, lines.size());
+
+		StringUtil.readLines(
+			new ByteArrayInputStream(StringPool.SPACE.getBytes()), lines);
+
+		Assert.assertEquals(lines.toString(), 1, lines.size());
+		Assert.assertEquals(StringPool.SPACE, lines.get(0));
+
+		StringUtil.readLines(
+			new ByteArrayInputStream(StringPool.RETURN.getBytes()), lines);
+
+		Assert.assertEquals(lines.toString(), 2, lines.size());
+		Assert.assertEquals(StringPool.BLANK, lines.get(1));
+
+		StringUtil.readLines(
+			new ByteArrayInputStream(" Test ".getBytes()), lines);
+
+		Assert.assertEquals(lines.toString(), 3, lines.size());
+		Assert.assertEquals(" Test ", lines.get(2));
 	}
 
 	@Test
