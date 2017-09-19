@@ -15,7 +15,6 @@
 package com.liferay.portal.verify;
 
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-import com.liferay.portal.kernel.concurrent.ThrowableAwareRunnable;
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
@@ -33,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 /**
  * @author Shinn Lok
@@ -50,7 +50,7 @@ public class VerifyGroupedModel extends VerifyProcess {
 			unverifiedTableNames.add(verifiableGroupedModel.getTableName());
 		}
 
-		List<VerifiableGroupedModelRunnable> verifiableGroupedModelRunnables =
+		List<VerifiableGroupedModelCallable> verifiableGroupedModelCallables =
 			new ArrayList<>(unverifiedTableNames.size());
 
 		while (!unverifiedTableNames.isEmpty()) {
@@ -67,10 +67,11 @@ public class VerifyGroupedModel extends VerifyProcess {
 					continue;
 				}
 
-				VerifiableGroupedModelRunnable verifyAuditedModelRunnable =
-					new VerifiableGroupedModelRunnable(verifiableGroupedModel);
+				VerifiableGroupedModelCallable verifiableGroupedModelCallable =
+					new VerifiableGroupedModelCallable(verifiableGroupedModel);
 
-				verifiableGroupedModelRunnables.add(verifyAuditedModelRunnable);
+				verifiableGroupedModelCallables.add(
+					verifiableGroupedModelCallable);
 
 				unverifiedTableNames.remove(
 					verifiableGroupedModel.getTableName());
@@ -82,7 +83,7 @@ public class VerifyGroupedModel extends VerifyProcess {
 			}
 		}
 
-		doVerify(verifiableGroupedModelRunnables);
+		doVerify(verifiableGroupedModelCallables);
 	}
 
 	@Override
@@ -125,7 +126,7 @@ public class VerifyGroupedModel extends VerifyProcess {
 
 	@Override
 	protected boolean isForceConcurrent(
-		Collection<? extends ThrowableAwareRunnable> throwableAwareRunnables) {
+		Collection<? extends Callable<Void>> callables) {
 
 		return true;
 	}
@@ -195,18 +196,19 @@ public class VerifyGroupedModel extends VerifyProcess {
 	private static final Log _log = LogFactoryUtil.getLog(
 		VerifyGroupedModel.class);
 
-	private class VerifiableGroupedModelRunnable
-		extends ThrowableAwareRunnable {
+	private class VerifiableGroupedModelCallable implements Callable<Void> {
 
-		public VerifiableGroupedModelRunnable(
+		@Override
+		public Void call() throws Exception {
+			verifyGroupedModel(_verifiableGroupedModel);
+
+			return null;
+		}
+
+		private VerifiableGroupedModelCallable(
 			VerifiableGroupedModel verifiableGroupedModel) {
 
 			_verifiableGroupedModel = verifiableGroupedModel;
-		}
-
-		@Override
-		protected void doRun() throws Exception {
-			verifyGroupedModel(_verifiableGroupedModel);
 		}
 
 		private final VerifiableGroupedModel _verifiableGroupedModel;
