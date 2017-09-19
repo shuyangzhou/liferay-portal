@@ -15,7 +15,6 @@
 package com.liferay.portal.kernel.util;
 
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
-import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.highlight.HighlightUtil;
@@ -5152,10 +5151,12 @@ public class StringUtil {
 	 * Wraps the text when it exceeds the <code>80</code> column width limit,
 	 * using a {@link StringPool#NEW_LINE} to break each wrapped line.
 	 *
+	 * @deprecated As of 7.0.0, with no direct replacement
 	 * @param  text the text to wrap
 	 * @return the wrapped text following the column width limit, or
 	 *         <code>null</code> if the text is <code>null</code>
 	 */
+	@Deprecated
 	public static String wrap(String text) {
 		return wrap(text, 80, StringPool.NEW_LINE);
 	}
@@ -5164,21 +5165,78 @@ public class StringUtil {
 	 * Wraps the text when it exceeds the column width limit, using the line
 	 * separator to break each wrapped line.
 	 *
+	 * @deprecated As of 7.0.0, with no direct replacement
 	 * @param  text the text to wrap
 	 * @param  width the column width limit for the text
 	 * @param  lineSeparator the string to use in breaking each wrapped line
 	 * @return the wrapped text and line separators, following the column width
 	 *         limit, or <code>null</code> if the text is <code>null</code>
 	 */
+	@Deprecated
 	public static String wrap(String text, int width, String lineSeparator) {
-		try {
-			return _wrap(text, width, lineSeparator);
+		if (text == null) {
+			return null;
 		}
-		catch (IOException ioe) {
-			_log.error(ioe.getMessage());
 
-			return text;
+		StringBundler sb = new StringBundler();
+
+		for (String line : splitLines(text)) {
+			if (line.isEmpty()) {
+				sb.append(lineSeparator);
+
+				continue;
+			}
+
+			int lineLength = 0;
+
+			for (String token : split(line, CharPool.SPACE)) {
+				if ((lineLength + token.length() + 1) > width) {
+					if (lineLength > 0) {
+						sb.append(lineSeparator);
+					}
+
+					if (token.length() > width) {
+						int pos = token.indexOf(CharPool.OPEN_PARENTHESIS);
+
+						if (pos != -1) {
+							sb.append(token.substring(0, pos + 1));
+							sb.append(lineSeparator);
+
+							token = token.substring(pos + 1);
+
+							sb.append(token);
+
+							lineLength = token.length();
+						}
+						else {
+							sb.append(token);
+
+							lineLength = token.length();
+						}
+					}
+					else {
+						sb.append(token);
+
+						lineLength = token.length();
+					}
+				}
+				else {
+					if (lineLength > 0) {
+						sb.append(StringPool.SPACE);
+
+						lineLength++;
+					}
+
+					sb.append(token);
+
+					lineLength += token.length();
+				}
+			}
+
+			sb.append(lineSeparator);
 		}
+
+		return sb.toString();
 	}
 
 	protected static final char[] HEX_DIGITS = {
@@ -5221,82 +5279,6 @@ public class StringUtil {
 		if (offset < s.length()) {
 			values.add(s.substring(offset));
 		}
-	}
-
-	private static String _wrap(String text, int width, String lineSeparator)
-		throws IOException {
-
-		if (text == null) {
-			return null;
-		}
-
-		StringBundler sb = new StringBundler();
-
-		try (UnsyncBufferedReader unsyncBufferedReader =
-				new UnsyncBufferedReader(new UnsyncStringReader(text))) {
-
-			String s = StringPool.BLANK;
-
-			while ((s = unsyncBufferedReader.readLine()) != null) {
-				if (s.length() == 0) {
-					sb.append(lineSeparator);
-
-					continue;
-				}
-
-				int lineLength = 0;
-
-				String[] tokens = s.split(StringPool.SPACE);
-
-				for (String token : tokens) {
-					if ((lineLength + token.length() + 1) > width) {
-						if (lineLength > 0) {
-							sb.append(lineSeparator);
-						}
-
-						if (token.length() > width) {
-							int pos = token.indexOf(CharPool.OPEN_PARENTHESIS);
-
-							if (pos != -1) {
-								sb.append(token.substring(0, pos + 1));
-								sb.append(lineSeparator);
-
-								token = token.substring(pos + 1);
-
-								sb.append(token);
-
-								lineLength = token.length();
-							}
-							else {
-								sb.append(token);
-
-								lineLength = token.length();
-							}
-						}
-						else {
-							sb.append(token);
-
-							lineLength = token.length();
-						}
-					}
-					else {
-						if (lineLength > 0) {
-							sb.append(StringPool.SPACE);
-
-							lineLength++;
-						}
-
-						sb.append(token);
-
-						lineLength += token.length();
-					}
-				}
-
-				sb.append(lineSeparator);
-			}
-		}
-
-		return sb.toString();
 	}
 
 	private static final char[] _RANDOM_STRING_CHAR_TABLE = {
