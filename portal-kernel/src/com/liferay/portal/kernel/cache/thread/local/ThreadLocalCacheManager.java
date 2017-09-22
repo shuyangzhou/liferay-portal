@@ -148,32 +148,16 @@ public class ThreadLocalCacheManager {
 
 	private static final EmptyThreadLocalCahce<?> _emptyThreadLocalCache =
 		new EmptyThreadLocalCahce<>();
-
 	private static final ThreadLocal<ThreadLocalCaches>
 		_eternalThreadLocalCaches =
-			new CentralizedThreadLocal<ThreadLocalCaches>(
+			new CentralizedThreadLocal<>(
 				ThreadLocalCacheManager.class + "._eternalThreadLocalCaches",
-				() -> null, false) {
-
-				@Override
-				protected ThreadLocalCaches initialValue() {
-					return new ThreadLocalCaches();
-				}
-
-			};
-
+				ThreadLocalCaches::new, false);
 	private static final ThreadLocal<ThreadLocalCaches>
 		_requestThreadLocalCaches =
-			new CentralizedThreadLocal<ThreadLocalCaches>(
+			new CentralizedThreadLocal<>(
 				ThreadLocalCacheManager.class + "._requestThreadLocalCaches",
-				() -> null, false) {
-
-				@Override
-				protected ThreadLocalCaches initialValue() {
-					return new ThreadLocalCaches();
-				}
-
-			};
+				ThreadLocalCaches::new, false);
 
 	private static class EmptyThreadLocalCahce<T> extends ThreadLocalCache<T> {
 
