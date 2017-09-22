@@ -14,21 +14,22 @@
 
 package com.liferay.portal.security.pacl;
 
+import com.liferay.petra.concurrent.ConcurrentIdentityHashMap;
+import com.liferay.petra.concurrent.ConcurrentReferenceKeyHashMap;
+import com.liferay.petra.concurrent.ConcurrentReferenceValueHashMap;
+import com.liferay.petra.lang.CentralizedThreadLocal;
+import com.liferay.petra.memory.EqualityWeakReference;
+import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.portal.bean.BeanLocatorImpl;
 import com.liferay.portal.dao.jdbc.DataSourceFactoryImpl;
 import com.liferay.portal.dao.orm.hibernate.DynamicQueryFactoryImpl;
 import com.liferay.portal.deploy.hot.HotDeployImpl;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-import com.liferay.portal.kernel.concurrent.ConcurrentIdentityHashMap;
-import com.liferay.portal.kernel.concurrent.ConcurrentReferenceKeyHashMap;
-import com.liferay.portal.kernel.concurrent.ConcurrentReferenceValueHashMap;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.jndi.JNDIUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.memory.EqualityWeakReference;
-import com.liferay.portal.kernel.memory.FinalizeManager;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.kernel.security.pacl.PACLConstants;
 import com.liferay.portal.kernel.security.pacl.permission.PortalFilePermission;
@@ -38,8 +39,6 @@ import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermissio
 import com.liferay.portal.kernel.security.pacl.permission.PortalServicePermission;
 import com.liferay.portal.kernel.security.pacl.permission.PortalSocketPermission;
 import com.liferay.portal.kernel.url.URLContainer;
-import com.liferay.portal.kernel.util.AutoResetThreadLocal;
-import com.liferay.portal.kernel.util.CentralizedThreadLocal;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.JavaDetector;
@@ -415,7 +414,7 @@ public class PortalSecurityManagerImpl
 
 		initClass(ActivePACLPolicy.class);
 		initClass(BaseTemplateManager.class);
-		initClass(CentralizedThreadLocal.class);
+		initClass(com.liferay.portal.kernel.util.CentralizedThreadLocal.class);
 		initClass(ConcurrentIdentityHashMap.class);
 		initClass(ConcurrentReferenceKeyHashMap.class);
 		initClass(ConcurrentReferenceValueHashMap.class);
@@ -566,7 +565,7 @@ public class PortalSecurityManagerImpl
 		PortalSecurityManagerImpl.class.getName());
 
 	private static final ThreadLocal<ClassLoader>
-		_checkMemberAccessClassLoader = new AutoResetThreadLocal<>(
+		_checkMemberAccessClassLoader = new CentralizedThreadLocal<>(
 			PortalSecurityManagerImpl.class +
 				"._checkMembersAccessClassLoader");
 	private static final RuntimePermission _checkMemberAccessPermission =
