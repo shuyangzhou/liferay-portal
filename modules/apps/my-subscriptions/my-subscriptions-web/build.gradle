@@ -18,5 +18,6 @@ dependencies {
 	provided project(":apps:collaboration:bookmarks:bookmarks-api")
 	provided project(":apps:collaboration:subscription:subscription-api")
 	provided project(":apps:foundation:frontend-taglib:frontend-taglib")
+	provided project(":apps:foundation:petra:petra-lang")
 	provided project(":apps:web-experience:journal:journal-api")
 }
