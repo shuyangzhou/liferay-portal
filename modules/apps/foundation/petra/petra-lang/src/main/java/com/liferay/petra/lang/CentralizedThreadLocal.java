@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -82,6 +83,13 @@ public class CentralizedThreadLocal<T> extends ThreadLocal<T> {
 	public CentralizedThreadLocal(
 		String name, Supplier<T> supplier, boolean shortLived) {
 
+		this(name, supplier, null, shortLived);
+	}
+
+	public CentralizedThreadLocal(
+		String name, Supplier<T> supplier, Function<T, T> copyFunction,
+		boolean shortLived) {
+
 		if (shortLived) {
 			_hashCode = _shortLivedNextHasCode.getAndAdd(_HASH_INCREMENT);
 		}
@@ -102,6 +110,22 @@ public class CentralizedThreadLocal<T> extends ThreadLocal<T> {
 		else {
 			_supplier = supplier;
 		}
+
+		if (copyFunction == null) {
+			copyFunction = (value) -> {
+				if (value != null) {
+					Class<?> clazz = value.getClass();
+
+					if (_immutableTypes.contains(clazz)) {
+						return value;
+					}
+				}
+
+				return null;
+			};
+		}
+
+		_copyFunction = copyFunction;
 
 		_shortLived = shortLived;
 	}
@@ -157,15 +181,7 @@ public class CentralizedThreadLocal<T> extends ThreadLocal<T> {
 	}
 
 	protected T copy(T value) {
-		if (value != null) {
-			Class<?> clazz = value.getClass();
-
-			if (_immutableTypes.contains(clazz)) {
-				return value;
-			}
-		}
-
-		return null;
+		return _copyFunction.apply(value);
 	}
 
 	@Override
@@ -230,6 +246,7 @@ public class CentralizedThreadLocal<T> extends ThreadLocal<T> {
 		_immutableTypes.add(String.class);
 	}
 
+	private final Function<T, T> _copyFunction;
 	private final int _hashCode;
 	private final String _name;
 	private final boolean _shortLived;
