@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.model.LayoutSetBranch;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.AutoResetThreadLocal;
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -716,7 +716,7 @@ public class LayoutRevisionLocalServiceImpl
 		LayoutRevisionLocalServiceImpl.class);
 
 	private static final ThreadLocal<Long> _layoutRevisionId =
-		new AutoResetThreadLocal<>(
+		new CentralizedThreadLocal<>(
 			LayoutRevisionLocalServiceImpl.class + "._layoutRevisionId",
 			() -> 0L);
 

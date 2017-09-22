@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
-import com.liferay.portal.kernel.util.AutoResetThreadLocal;
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -255,7 +255,7 @@ public class FinderCacheImpl
 		if (localCacheMaxSize > 0) {
 			_localCacheAvailable = true;
 
-			_localCache = new AutoResetThreadLocal<>(
+			_localCache = new CentralizedThreadLocal<>(
 				FinderCacheImpl.class + "._localCache",
 				() -> new LRUMap(localCacheMaxSize));
 		}

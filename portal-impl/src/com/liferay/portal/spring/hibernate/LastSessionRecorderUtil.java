@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.transaction.NewTransactionLifecycleListener;
 import com.liferay.portal.kernel.transaction.TransactionAttribute;
 import com.liferay.portal.kernel.transaction.TransactionLifecycleListener;
 import com.liferay.portal.kernel.transaction.TransactionStatus;
-import com.liferay.portal.kernel.util.AutoResetThreadLocal;
+import com.liferay.petra.lang.CentralizedThreadLocal;
 
 import org.hibernate.Session;
 
@@ -60,7 +60,7 @@ public class LastSessionRecorderUtil {
 	}
 
 	private static final ThreadLocal<Session> _lastSessionThreadLocal =
-		new AutoResetThreadLocal<>(
+		new CentralizedThreadLocal<>(
 			LastSessionRecorderUtil.class.getName() +
 				"._lastSessionThreadLocal");
 

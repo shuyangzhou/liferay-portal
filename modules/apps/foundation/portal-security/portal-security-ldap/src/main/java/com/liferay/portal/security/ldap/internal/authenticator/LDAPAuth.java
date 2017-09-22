@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.security.auth.Authenticator;
 import com.liferay.portal.kernel.security.ldap.LDAPSettings;
 import com.liferay.portal.kernel.security.pwd.PasswordEncryptor;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.AutoResetThreadLocal;
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Props;
@@ -768,7 +768,7 @@ public class LDAPAuth implements Authenticator {
 
 	private boolean _authPipelineEnableLiferayCheck;
 	private final ThreadLocal<Map<String, LDAPAuthResult>>
-		_failedLDAPAuthResults = new AutoResetThreadLocal<>(
+		_failedLDAPAuthResults = new CentralizedThreadLocal<>(
 			LDAPAuth.class + "._failedLDAPAuthResultCache", HashMap::new);
 	private ConfigurationProvider<LDAPAuthConfiguration>
 		_ldapAuthConfigurationProvider;
