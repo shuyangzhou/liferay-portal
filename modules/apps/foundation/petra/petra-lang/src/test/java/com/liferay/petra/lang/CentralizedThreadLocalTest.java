@@ -24,6 +24,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -67,14 +68,8 @@ public class CentralizedThreadLocalTest {
 
 		// Explicit copy
 
-		centralizedThreadLocal = new CentralizedThreadLocal<Object>(false) {
-
-			@Override
-			protected Object copy(Object value) {
-				return value;
-			}
-
-		};
+		centralizedThreadLocal = new CentralizedThreadLocal<>(
+			null, null, Function.identity(), false);
 
 		centralizedThreadLocal.set(obj);
 

@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.util;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Function;
 
 /**
  * @author Shuyang Zhou
@@ -59,7 +60,7 @@ public class CentralizedThreadLocal<T> extends ThreadLocal<T> {
 	}
 
 	public CentralizedThreadLocal(boolean shortLived) {
-		boolean hasLocalCopyMethod = false;
+		Function<T, T> copyFunction = null;
 
 		Class<?> clazz = getClass();
 
@@ -67,7 +68,7 @@ public class CentralizedThreadLocal<T> extends ThreadLocal<T> {
 			try {
 				clazz.getDeclaredMethod("copy", Object.class);
 
-				hasLocalCopyMethod = true;
+				copyFunction = CentralizedThreadLocal.this::copy;
 
 				break;
 			}
@@ -76,22 +77,10 @@ public class CentralizedThreadLocal<T> extends ThreadLocal<T> {
 			}
 		}
 
-		boolean callLocalCopyMethod = hasLocalCopyMethod;
-
 		_centralizedThreadLocal =
-			new com.liferay.petra.lang.CentralizedThreadLocal<T>(
-				null, CentralizedThreadLocal.this::initialValue, shortLived) {
-
-				@Override
-				protected T copy(T value) {
-					if (callLocalCopyMethod) {
-						return CentralizedThreadLocal.this.copy(value);
-					}
-
-					return super.copy(value);
-				}
-
-			};
+			new com.liferay.petra.lang.CentralizedThreadLocal<>(
+				null, CentralizedThreadLocal.this::initialValue, copyFunction,
+				shortLived);
 	}
 
 	@Override
