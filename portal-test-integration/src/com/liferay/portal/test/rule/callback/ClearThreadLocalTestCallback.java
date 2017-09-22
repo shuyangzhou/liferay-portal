@@ -14,8 +14,8 @@
 
 package com.liferay.portal.test.rule.callback;
 
-import com.liferay.portal.kernel.test.rule.callback.BaseTestCallback;
 import com.liferay.petra.lang.CentralizedThreadLocal;
+import com.liferay.portal.kernel.test.rule.callback.BaseTestCallback;
 
 import org.junit.runner.Description;
 

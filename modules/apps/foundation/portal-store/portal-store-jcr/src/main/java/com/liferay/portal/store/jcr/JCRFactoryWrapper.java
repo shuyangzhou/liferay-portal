@@ -14,8 +14,8 @@
 
 package com.liferay.portal.store.jcr;
 
-import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.petra.lang.CentralizedThreadLocal;
+import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.store.jcr.configuration.JCRStoreConfiguration;

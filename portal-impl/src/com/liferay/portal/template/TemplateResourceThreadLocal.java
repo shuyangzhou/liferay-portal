@@ -14,8 +14,8 @@
 
 package com.liferay.portal.template;
 
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.template.TemplateResource;
-import import com.liferay.petra.lang.CentralizedThreadLocal;;
 
 import java.util.HashMap;
 import java.util.Map;

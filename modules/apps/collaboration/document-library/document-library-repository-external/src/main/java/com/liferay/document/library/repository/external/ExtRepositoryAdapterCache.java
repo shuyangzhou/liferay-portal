@@ -15,9 +15,9 @@
 package com.liferay.document.library.repository.external;
 
 import com.liferay.document.library.repository.external.model.ExtRepositoryModelAdapter;
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.petra.lang.CentralizedThreadLocal;
 
 import java.util.HashMap;
 import java.util.Map;

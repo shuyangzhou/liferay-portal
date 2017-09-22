@@ -14,8 +14,8 @@
 
 package com.liferay.portal.lpkg.deployer.internal;
 
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.petra.lang.CentralizedThreadLocal;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 
 /**
  * @author Shuyang Zhou

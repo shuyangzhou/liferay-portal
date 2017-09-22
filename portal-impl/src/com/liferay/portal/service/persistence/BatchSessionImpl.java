@@ -14,11 +14,11 @@
 
 package com.liferay.portal.service.persistence;
 
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.dao.orm.ORMException;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.service.persistence.BatchSession;
-import com.liferay.petra.lang.CentralizedThreadLocal;
 
 /**
  * @author     Raymond Augé

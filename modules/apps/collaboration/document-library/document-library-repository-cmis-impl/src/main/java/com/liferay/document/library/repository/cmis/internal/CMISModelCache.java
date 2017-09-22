@@ -14,9 +14,9 @@
 
 package com.liferay.document.library.repository.cmis.internal;
 
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
-import com.liferay.petra.lang.CentralizedThreadLocal;
 
 import java.util.HashMap;
 import java.util.List;

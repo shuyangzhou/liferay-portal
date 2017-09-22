@@ -14,10 +14,10 @@
 
 package com.liferay.portal.spring.transaction;
 
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.transaction.TransactionAttribute;
 import com.liferay.portal.kernel.transaction.TransactionLifecycleListener;
 import com.liferay.portal.kernel.transaction.TransactionStatus;
-import com.liferay.petra.lang.CentralizedThreadLocal;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

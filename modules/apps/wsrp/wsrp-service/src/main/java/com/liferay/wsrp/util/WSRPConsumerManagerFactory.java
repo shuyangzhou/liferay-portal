@@ -14,9 +14,9 @@
 
 package com.liferay.wsrp.util;
 
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.util.TransientValue;
 import com.liferay.wsrp.model.WSRPConsumer;
 
