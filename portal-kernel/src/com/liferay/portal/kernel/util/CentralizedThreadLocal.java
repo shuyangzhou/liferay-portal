@@ -79,7 +79,8 @@ public class CentralizedThreadLocal<T> extends ThreadLocal<T> {
 		boolean callLocalCopyMethod = hasLocalCopyMethod;
 
 		_centralizedThreadLocal =
-			new com.liferay.petra.lang.CentralizedThreadLocal<T>(shortLived) {
+			new com.liferay.petra.lang.CentralizedThreadLocal<T>(
+				null, CentralizedThreadLocal.this::initialValue, shortLived) {
 
 				@Override
 				protected T copy(T value) {
@@ -88,11 +89,6 @@ public class CentralizedThreadLocal<T> extends ThreadLocal<T> {
 					}
 
 					return super.copy(value);
-				}
-
-				@Override
-				protected T initialValue() {
-					return CentralizedThreadLocal.this.initialValue();
 				}
 
 			};

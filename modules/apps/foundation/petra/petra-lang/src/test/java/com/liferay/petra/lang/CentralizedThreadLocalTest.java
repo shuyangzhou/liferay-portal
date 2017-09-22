@@ -207,14 +207,7 @@ public class CentralizedThreadLocalTest {
 		Object obj = new Object();
 
 		CentralizedThreadLocal<?> centralizedThreadLocal =
-			new CentralizedThreadLocal<Object>(false) {
-
-				@Override
-				protected Object initialValue() {
-					return obj;
-				}
-
-			};
+			new CentralizedThreadLocal<>(null, () -> obj, false);
 
 		Assert.assertSame(obj, centralizedThreadLocal.get());
 
