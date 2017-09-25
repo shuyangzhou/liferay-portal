@@ -15,7 +15,7 @@
 package com.liferay.portal.messaging.proxy;
 
 import com.liferay.portal.kernel.util.CharPool;
-import com.liferay.portal.kernel.util.ClassResolverUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.aop.BeanMatcher;
 
@@ -38,8 +38,14 @@ public class MessagingProxyBeanMatcher implements BeanMatcher {
 	}
 
 	public void setBeanClass(String beanClassName) {
-		_beanClass = ClassResolverUtil.resolveByPortalClassLoader(
-			beanClassName);
+		ClassLoader portalClassLoader = PortalClassLoaderUtil.getClassLoader();
+
+		try {
+			_beanClass = Class.forName(beanClassName, false, portalClassLoader);
+		}
+		catch (ClassNotFoundException cnfe) {
+			throw new RuntimeException(cnfe);
+		}
 	}
 
 	public void setBeanNamePattern(String beanNamePattern) {
