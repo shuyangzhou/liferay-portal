@@ -29,9 +29,11 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * </p>
  *
  * @author Shuyang Zhou
+ * @deprecated As of 7.0.0, with no direct replacement
  * @see    ReadWriteLock
  * @see    ReadWriteLockKey
  */
+@Deprecated
 public class ReadWriteLockRegistry {
 
 	public Lock acquireLock(ReadWriteLockKey<?> readWriteLockKey) {

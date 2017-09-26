@@ -23,8 +23,10 @@ import java.util.Objects;
  * </p>
  *
  * @author Shuyang Zhou
+ * @deprecated As of 7.0.0, with no direct replacement
  * @see    ReadWriteLockRegistry
  */
+@Deprecated
 public class ReadWriteLockKey<T> {
 
 	public ReadWriteLockKey(T key, boolean writeLock) {
