@@ -35,6 +35,7 @@ import javax.ws.rs.core.HttpHeaders;
  *
  * @author Alejandro Hernández
  */
+@SuppressWarnings("unused")
 public interface ErrorMessageMapper {
 
 	/**

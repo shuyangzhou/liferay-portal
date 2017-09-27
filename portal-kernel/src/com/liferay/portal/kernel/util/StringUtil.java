@@ -3313,10 +3313,12 @@ public class StringUtil {
 	/**
 	 * Reverses the order of the characters of the string.
 	 *
+	 * @deprecated As of 7.0.0, with no direct replacement
 	 * @param  s the original string
 	 * @return a string representing the original string with characters in
 	 *         reverse order
 	 */
+	@Deprecated
 	public static String reverse(String s) {
 		if (s == null) {
 			return null;
@@ -4919,10 +4921,12 @@ public class StringUtil {
 	/**
 	 * Returns the string value of the object.
 	 *
+	 * @deprecated As of 7.0.0, with no direct replacement
 	 * @param  obj the object whose string value is to be returned
 	 * @return the string value of the object
 	 * @see    String#valueOf(Object obj)
 	 */
+	@Deprecated
 	public static String valueOf(Object obj) {
 		return String.valueOf(obj);
 	}

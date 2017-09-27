@@ -47,11 +47,15 @@ AUI.add(
 					initializer: function() {
 						var instance = this;
 
+						instance._createTooltip();
+
 						instance._bindUI();
 					},
 
 					destructor: function() {
 						var instance = this;
+
+						instance._tooltip.destroy();
 
 						(new A.EventHandle(instance._eventHandles)).detach();
 					},
@@ -81,6 +85,18 @@ AUI.add(
 						}
 
 						instance._eventHandles = eventHandles;
+					},
+
+					_createTooltip: function() {
+						var instance = this;
+
+						instance._tooltip = new A.Tooltip(
+							{
+								trigger: instance.one('#basicPreviewButton'),
+								visible: false,
+								zIndex: Liferay.zIndex.TOOLTIP
+							}
+						).render();
 					},
 
 					_displayTemplateMessage: function() {
@@ -279,6 +295,6 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['aui-base', 'aui-dialog-iframe-deprecated', 'liferay-portlet-base', 'liferay-util-window']
+		requires: ['aui-base', 'aui-dialog-iframe-deprecated', 'aui-tooltip', 'liferay-portlet-base', 'liferay-util-window']
 	}
 );

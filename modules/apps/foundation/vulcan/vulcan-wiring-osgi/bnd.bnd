@@ -3,5 +3,4 @@ Bundle-SymbolicName: com.liferay.vulcan.wiring.osgi
 Bundle-Version: 1.0.0
 Export-Package:\
 	com.liferay.vulcan.wiring.osgi.manager,\
-	com.liferay.vulcan.wiring.osgi.model,\
 	com.liferay.vulcan.wiring.osgi.util

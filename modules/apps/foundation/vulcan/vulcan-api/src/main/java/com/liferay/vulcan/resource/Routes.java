@@ -14,21 +14,23 @@
 
 package com.liferay.vulcan.resource;
 
-import com.liferay.vulcan.binary.BinaryFunction;
-import com.liferay.vulcan.identifier.Identifier;
 import com.liferay.vulcan.pagination.Page;
 import com.liferay.vulcan.pagination.SingleModel;
+import com.liferay.vulcan.resource.identifier.Identifier;
+import com.liferay.vulcan.uri.Path;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
  * Instances of this interface will hold information about the routes supported
- * for a certain {@link Resource}.
+ * for a certain {@link CollectionResource}.
  *
  * <p>
  * All of the methods in this interface returns functions to get the different
- * endpoints of the {@link Resource}.
+ * endpoints of the {@link CollectionResource}.
  * </p>
  *
  * <p>
@@ -42,38 +44,62 @@ import java.util.function.Function;
 public interface Routes<T> {
 
 	/**
-	 * Returns the function used to create a binary resource of a {@link
-	 * Resource}. Returns <code>Optional#empty()</code> if no binary resource
-	 * has been added through {@link
-	 * com.liferay.vulcan.resource.builder.RepresentorBuilder.FirstStep#addBinary(
-	 * String, BinaryFunction)}.
+	 * Returns the function used to remove a single model of a {@link
+	 * CollectionResource}. Returns <code>Optional#empty()</code> if the
+	 * endpoint wasn't added through the {@link
+	 * com.liferay.vulcan.resource.builder.RoutesBuilder}.
 	 *
-	 * @return the function used to create the binary resource, if present;
+	 * @return the function used to remove a single model, if present;
 	 *         <code>Optional#empty()</code> otherwise.
 	 */
-	public Optional<Function<String, BinaryFunction<T>>>
-		getBinaryFunctionOptional();
+	public Optional<Consumer<Path>> getDeleteSingleModelConsumerOptional();
 
 	/**
-	 * Returns the supplier used to create the page of a {@link Resource}.
-	 * Returns <code>Optional#empty()</code> if the endpoint wasn't added
-	 * through the {@link com.liferay.vulcan.resource.builder.RoutesBuilder}.
+	 * Returns the function used to create the page of a {@link
+	 * CollectionResource}. Returns <code>Optional#empty()</code> if the
+	 * endpoint wasn't added through the {@link
+	 * com.liferay.vulcan.resource.builder.RoutesBuilder}.
 	 *
 	 * @return the supplier used to create the page, if present;
 	 *         <code>Optional#empty()</code> otherwise.
 	 */
-	public Optional<Function<Identifier, Page<T>>> getPageFunctionOptional();
+	public Optional<Function<Path, Function<Identifier, Page<T>>>>
+		getPageFunctionOptional();
 
 	/**
 	 * Returns the function used to create the single model of a {@link
-	 * Resource}. Returns <code>Optional#empty()</code> if the endpoint wasn't
-	 * added through the {@link
+	 * CollectionResource}. Returns <code>Optional#empty()</code> if the
+	 * endpoint wasn't added through the {@link
 	 * com.liferay.vulcan.resource.builder.RoutesBuilder}.
 	 *
 	 * @return the function used to create the single model, if present;
 	 *         <code>Optional#empty()</code> otherwise.
 	 */
-	public Optional<Function<Identifier, SingleModel<T>>>
+	public Optional<Function<Identifier, Function<Map<String, Object>,
+		SingleModel<T>>>> getPostSingleModelFunctionOptional();
+
+	/**
+	 * Returns the function used to create the single model of a {@link
+	 * CollectionResource}. Returns <code>Optional#empty()</code> if the
+	 * endpoint wasn't added through the {@link
+	 * com.liferay.vulcan.resource.builder.RoutesBuilder}.
+	 *
+	 * @return the function used to create the single model, if present;
+	 *         <code>Optional#empty()</code> otherwise.
+	 */
+	public Optional<Function<Path, SingleModel<T>>>
 		getSingleModelFunctionOptional();
+
+	/**
+	 * Returns the function used to update a single model of a {@link
+	 * CollectionResource}. Returns <code>Optional#empty()</code> if the
+	 * endpoint wasn't added through the {@link
+	 * com.liferay.vulcan.resource.builder.RoutesBuilder}.
+	 *
+	 * @return the function used to update a single model, if present;
+	 *         <code>Optional#empty()</code> otherwise.
+	 */
+	public Optional<Function<Path, Function<Map<String, Object>,
+		SingleModel<T>>>> getUpdateSingleModelFunctionOptional();
 
 }

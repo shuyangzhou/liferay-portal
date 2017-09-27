@@ -47,12 +47,18 @@ public abstract class BaseManager<T> {
 	 *
 	 * @param  serviceReference a service reference.
 	 * @param  clazz class of the service reference service.
-	 * @return the generic inner class of the service reference service.
+	 * @return the generic inner class of the service reference service, if a
+	 *         valid service can be obtained; {@code Optional#empty()}
+	 *         otherwise.
 	 */
-	protected <U> Class<U> addService(
+	protected <U> Optional<Class<U>> addService(
 		ServiceReference<T> serviceReference, Class<T> clazz) {
 
 		T service = _bundleContext.getService(serviceReference);
+
+		if (service == null) {
+			return Optional.empty();
+		}
 
 		Class<U> genericClass = _getGenericClass(service, clazz);
 
@@ -67,7 +73,7 @@ public abstract class BaseManager<T> {
 
 		serviceReferenceServiceTuples.add(serviceReferenceServiceTuple);
 
-		return genericClass;
+		return Optional.of(genericClass);
 	}
 
 	/**
@@ -109,9 +115,11 @@ public abstract class BaseManager<T> {
 	 *
 	 * @param  serviceReference a service reference.
 	 * @param  clazz class of the service reference service.
-	 * @return the generic inner class of the service reference service.
+	 * @return the generic inner class of the service reference service, if a
+	 *         valid service can be obtained; {@code Optional#empty()}
+	 *         otherwise.
 	 */
-	protected <U> Class<U> removeService(
+	protected <U> Optional<Class<U>> removeService(
 		ServiceReference<T> serviceReference, Class<T> clazz) {
 
 		Consumer<T> identityConsumer = t -> {
@@ -127,13 +135,19 @@ public abstract class BaseManager<T> {
 	 * @param  clazz class of the service reference service.
 	 * @param  beforeRemovingConsumer consumer that will be called before
 	 *         removing the service.
-	 * @return the generic inner class of the service reference service.
+	 * @return the generic inner class of the service reference service, if a
+	 *         valid service can be obtained; {@code Optional#empty()}
+	 *         otherwise.
 	 */
-	protected <U> Class<U> removeService(
+	protected <U> Optional<Class<U>> removeService(
 		ServiceReference<T> serviceReference, Class<T> clazz,
 		Consumer<T> beforeRemovingConsumer) {
 
 		T service = _bundleContext.getService(serviceReference);
+
+		if (service == null) {
+			return Optional.empty();
+		}
 
 		Class<U> genericClass = _getGenericClass(service, clazz);
 
@@ -153,7 +167,7 @@ public abstract class BaseManager<T> {
 				});
 		}
 
-		return genericClass;
+		return Optional.of(genericClass);
 	}
 
 	private <U> Class<U> _getGenericClass(T service, Class<T> interfaceClass) {

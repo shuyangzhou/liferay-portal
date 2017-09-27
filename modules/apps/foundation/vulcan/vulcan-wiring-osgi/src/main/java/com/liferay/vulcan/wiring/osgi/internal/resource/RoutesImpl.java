@@ -14,13 +14,15 @@
 
 package com.liferay.vulcan.wiring.osgi.internal.resource;
 
-import com.liferay.vulcan.binary.BinaryFunction;
-import com.liferay.vulcan.identifier.Identifier;
 import com.liferay.vulcan.pagination.Page;
 import com.liferay.vulcan.pagination.SingleModel;
 import com.liferay.vulcan.resource.Routes;
+import com.liferay.vulcan.resource.identifier.Identifier;
+import com.liferay.vulcan.uri.Path;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -29,42 +31,76 @@ import java.util.function.Function;
 public class RoutesImpl<T> implements Routes<T> {
 
 	@Override
-	public Optional<Function<String, BinaryFunction<T>>>
-		getBinaryFunctionOptional() {
-
-		return Optional.ofNullable(_binaryFunction);
+	public Optional<Consumer<Path>> getDeleteSingleModelConsumerOptional() {
+		return Optional.ofNullable(_deleteSingleModelConsumer);
 	}
 
 	@Override
-	public Optional<Function<Identifier, Page<T>>> getPageFunctionOptional() {
+	public Optional<Function<Path, Function<Identifier, Page<T>>>>
+		getPageFunctionOptional() {
+
 		return Optional.ofNullable(_pageFunction);
 	}
 
 	@Override
-	public Optional<Function<Identifier, SingleModel<T>>>
+	public Optional<Function<Identifier, Function<Map<String, Object>,
+		SingleModel<T>>>> getPostSingleModelFunctionOptional() {
+
+		return Optional.ofNullable(_postSingleModelFunction);
+	}
+
+	@Override
+	public Optional<Function<Path, SingleModel<T>>>
 		getSingleModelFunctionOptional() {
 
 		return Optional.ofNullable(_singleModelFunction);
 	}
 
-	public void setBinaryFunction(
-		Function<String, BinaryFunction<T>> binaryFunction) {
+	@Override
+	public Optional<Function<Path, Function<Map<String, Object>,
+		SingleModel<T>>>> getUpdateSingleModelFunctionOptional() {
 
-		_binaryFunction = binaryFunction;
+		return Optional.ofNullable(_putSingleModelFunction);
 	}
 
-	public void setPageFunction(Function<Identifier, Page<T>> pageFunction) {
+	public void setDeleteSingleModelConsumer(
+		Consumer<Path> deleteSingleModelConsumer) {
+
+		_deleteSingleModelConsumer = deleteSingleModelConsumer;
+	}
+
+	public void setPageFunction(
+		Function<Path, Function<Identifier, Page<T>>> pageFunction) {
+
 		_pageFunction = pageFunction;
 	}
 
+	public void setPostSingleModelFunction(
+		Function<Identifier, Function<Map<String, Object>, SingleModel<T>>>
+			postSingleModelFunction) {
+
+		_postSingleModelFunction = postSingleModelFunction;
+	}
+
+	public void setPutSingleModelFunction(
+		Function<Path, Function<Map<String, Object>, SingleModel<T>>>
+			putSingleModelFunction) {
+
+		_putSingleModelFunction = putSingleModelFunction;
+	}
+
 	public void setSingleModelFunction(
-		Function<Identifier, SingleModel<T>> singleModelFunction) {
+		Function<Path, SingleModel<T>> singleModelFunction) {
 
 		_singleModelFunction = singleModelFunction;
 	}
 
-	private Function<String, BinaryFunction<T>> _binaryFunction;
-	private Function<Identifier, Page<T>> _pageFunction;
-	private Function<Identifier, SingleModel<T>> _singleModelFunction;
+	private Consumer<Path> _deleteSingleModelConsumer;
+	private Function<Path, Function<Identifier, Page<T>>> _pageFunction;
+	private Function<Identifier, Function<Map<String, Object>, SingleModel<T>>>
+		_postSingleModelFunction;
+	private Function<Path, Function<Map<String, Object>, SingleModel<T>>>
+		_putSingleModelFunction;
+	private Function<Path, SingleModel<T>> _singleModelFunction;
 
 }

@@ -14,8 +14,9 @@
 
 package com.liferay.vulcan.resource.builder;
 
-import com.liferay.vulcan.binary.BinaryFunction;
-import com.liferay.vulcan.identifier.Identifier;
+import com.liferay.vulcan.alias.BinaryFunction;
+import com.liferay.vulcan.resource.Representor;
+import com.liferay.vulcan.resource.identifier.Identifier;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -34,34 +35,31 @@ public interface RepresentorBuilder<T, U extends Identifier> {
 	 * Provide a lambda function that can be used to obtain the {@link
 	 * Identifier} used for a model.
 	 *
-	 * <p>
-	 * This identifier will be the same obtained in the {@link
-	 * com.liferay.vulcan.endpoint.RootEndpoint#getCollectionItemSingleModelTry(
-	 * String, String)}} method of a {@link
-	 * com.liferay.vulcan.endpoint.RootEndpoint} instance.
-	 * </p>
-	 *
 	 * @param  identifierFunction function used to obtain a model's identifier.
 	 * @return builder's next step.
 	 */
-	public FirstStep<T> identifier(Function<T, U> identifierFunction);
+	public FirstStep<T, U> identifier(Function<T, U> identifierFunction);
 
-	public interface FirstStep<T> {
+	public interface FirstStep<T, U extends Identifier> {
 
 		/**
 		 * Use this method to provide information of a bidirectional relation of
 		 * a linked model in the actual resource and a related collection of
-		 * items of this Resource in the related resource.
+		 * items of this {@link com.liferay.vulcan.resource.CollectionResource}
+		 * in the related resource.
 		 *
 		 * @param key name of the relation in this resource.
 		 * @param relatedKey name of the relation in the related resource.
 		 * @param modelClass class of the related model.
 		 * @param modelFunction function used to obtain the related model.
+		 * @param identifierFunction function used to obtain the identifier for
+		 *                           the collection.
 		 * @return builder's actual step.
 		 */
-		public <S> FirstStep<T> addBidirectionalModel(
+		public <S> FirstStep<T, U> addBidirectionalModel(
 			String key, String relatedKey, Class<S> modelClass,
-			Function<T, Optional<S>> modelFunction);
+			Function<T, Optional<S>> modelFunction,
+			Function<S, Identifier> identifierFunction);
 
 		/**
 		 * @param key     		 name of the binary resource
@@ -70,7 +68,7 @@ public interface RepresentorBuilder<T, U extends Identifier> {
 		 *
 		 * @review
 		 */
-		public <S> FirstStep<T> addBinary(
+		public FirstStep<T, U> addBinary(
 			String key, BinaryFunction<T> binaryFunction);
 
 		/**
@@ -82,7 +80,7 @@ public interface RepresentorBuilder<T, U extends Identifier> {
 		 * @param modelFunction function used to obtain the related model.
 		 * @return builder's actual step.
 		 */
-		public <S> FirstStep<T> addEmbeddedModel(
+		public <S> FirstStep<T, U> addEmbeddedModel(
 			String key, Class<S> modelClass,
 			Function<T, Optional<S>> modelFunction);
 
@@ -93,7 +91,7 @@ public interface RepresentorBuilder<T, U extends Identifier> {
 		 * @param fieldFunction function used to obtain the field value.
 		 * @return builder's actual step.
 		 */
-		public FirstStep<T> addField(
+		public FirstStep<T, U> addField(
 			String key, Function<T, Object> fieldFunction);
 
 		/**
@@ -103,7 +101,7 @@ public interface RepresentorBuilder<T, U extends Identifier> {
 		 * @param url url link's url.
 		 * @return builder's actual step.
 		 */
-		public FirstStep<T> addLink(String key, String url);
+		public FirstStep<T, U> addLink(String key, String url);
 
 		/**
 		 * Use this method to provide information of a non embeddable related
@@ -114,7 +112,7 @@ public interface RepresentorBuilder<T, U extends Identifier> {
 		 * @param modelFunction function used to obtain the related model.
 		 * @return builder's actual step.
 		 */
-		public <S> FirstStep<T> addLinkedModel(
+		public <S> FirstStep<T, U> addLinkedModel(
 			String key, Class<S> modelClass,
 			Function<T, Optional<S>> modelFunction);
 
@@ -123,10 +121,13 @@ public interface RepresentorBuilder<T, U extends Identifier> {
 		 *
 		 * @param key name of the relation.
 		 * @param modelClass class of the collection's related models.
+		 * @param identifierFunction function used to obtain the identifier for
+		 *                           the collection.
 		 * @return builder's actual step.
 		 */
-		public <S> FirstStep<T> addRelatedCollection(
-			String key, Class<S> modelClass);
+		public <S> FirstStep<T, U> addRelatedCollection(
+			String key, Class<S> modelClass,
+			Function<T, Identifier> identifierFunction);
 
 		/**
 		 * Use this method to provide a type for this model. Multiple types are
@@ -135,7 +136,15 @@ public interface RepresentorBuilder<T, U extends Identifier> {
 		 * @param type type name.
 		 * @return builder's actual step.
 		 */
-		public FirstStep<T> addType(String type);
+		public FirstStep<T, U> addType(String type);
+
+		/**
+		 * Constructs the <code>Representor</code> instance with the information
+		 * provided to the builder.
+		 *
+		 * @return the <code>Representor</code> instance.
+		 */
+		public Representor<T, U> build();
 
 	}
 

@@ -32,8 +32,8 @@ import javax.ws.rs.core.HttpHeaders;
  * methods a {@link JSONObjectBuilder} is received.
  *
  * All methods are called in a not predefined order, except
- * {@link #onStart(JSONObjectBuilder, Page, Class, HttpHeaders)},
- * {@link #onFinish(JSONObjectBuilder, Page, Class, HttpHeaders)} (called when
+ * {@link #onStart(JSONObjectBuilder, Page, HttpHeaders)},
+ * {@link #onFinish(JSONObjectBuilder, Page, HttpHeaders)} (called when
  * the writer starts and finishes the page) and
  * {@link #onStartItem(JSONObjectBuilder, JSONObjectBuilder, Object, Class,
  * HttpHeaders)},
@@ -44,6 +44,7 @@ import javax.ws.rs.core.HttpHeaders;
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
  */
+@SuppressWarnings("unused")
 public interface PageMessageMapper<T> {
 
 	/**

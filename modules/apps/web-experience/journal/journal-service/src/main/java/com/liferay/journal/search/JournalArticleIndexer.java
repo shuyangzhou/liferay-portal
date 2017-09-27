@@ -765,17 +765,7 @@ public class JournalArticleIndexer
 				LocaleUtil.toLanguageId(snippetLocale), 1, portletRequestModel,
 				themeDisplay);
 
-			String description = document.get(
-				snippetLocale,
-				Field.SNIPPET + StringPool.UNDERLINE + Field.DESCRIPTION,
-				Field.DESCRIPTION);
-
-			if (Validator.isNull(description)) {
-				content = HtmlUtil.stripHtml(articleDisplay.getDescription());
-			}
-			else {
-				content = _stripAndHighlight(description);
-			}
+			content = HtmlUtil.stripHtml(articleDisplay.getDescription());
 
 			content = HtmlUtil.replaceNewLine(content);
 
@@ -960,24 +950,6 @@ public class JournalArticleIndexer
 	protected void setJournalConverter(JournalConverter journalConverter) {
 		_journalConverter = journalConverter;
 	}
-
-	private String _stripAndHighlight(String text) {
-		text = StringUtil.replace(
-			text, _HIGHLIGHT_TAGS, _ESCAPE_SAFE_HIGHLIGHTS);
-
-		text = HtmlUtil.stripHtml(text);
-
-		text = StringUtil.replace(
-			text, _ESCAPE_SAFE_HIGHLIGHTS, _HIGHLIGHT_TAGS);
-
-		return text;
-	}
-
-	private static final String[] _ESCAPE_SAFE_HIGHLIGHTS =
-		{"[@HIGHLIGHT1@]", "[@HIGHLIGHT2@]"};
-
-	private static final String[] _HIGHLIGHT_TAGS =
-		{HighlightUtil.HIGHLIGHT_TAG_OPEN, HighlightUtil.HIGHLIGHT_TAG_CLOSE};
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalArticleIndexer.class);

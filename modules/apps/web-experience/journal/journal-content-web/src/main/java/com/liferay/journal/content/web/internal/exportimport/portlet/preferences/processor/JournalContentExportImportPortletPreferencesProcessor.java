@@ -157,7 +157,7 @@ public class JournalContentExportImportPortletPreferencesProcessor
 				articleGroupId, articleId);
 
 		if (journalArticleResource != null) {
-			int[] statuses = {
+			int[] statuses = new int[] {
 				WorkflowConstants.STATUS_APPROVED,
 				WorkflowConstants.STATUS_EXPIRED,
 				WorkflowConstants.STATUS_SCHEDULED

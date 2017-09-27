@@ -61,6 +61,7 @@ public class ExceptionConverterManager extends BaseManager<ExceptionConverter> {
 		addService(serviceReference, ExceptionConverter.class);
 	}
 
+	@SuppressWarnings("unused")
 	protected void unsetServiceReference(
 		ServiceReference<ExceptionConverter> serviceReference) {
 

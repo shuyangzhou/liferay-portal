@@ -28,6 +28,7 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 
 import org.osgi.framework.ServiceReference;
@@ -51,6 +52,8 @@ public class VulcanApplication extends Application {
 		Set<Object> singletons = new HashSet<>();
 
 		singletons.add(_rootEndpoint);
+
+		singletons.addAll(_messageBodyReaders);
 
 		singletons.addAll(_messageBodyWriters);
 
@@ -85,6 +88,17 @@ public class VulcanApplication extends Application {
 
 	@Reference(
 		cardinality = MULTIPLE, policyOption = GREEDY,
+		target = "(liferay.vulcan.message.body.reader=true)"
+	)
+	public <T> void setMessageBodyReader(
+		ServiceReference<MessageBodyReader<T>> serviceReference,
+		MessageBodyReader<T> messageBodyReader) {
+
+		_messageBodyReaders.add(messageBodyReader);
+	}
+
+	@Reference(
+		cardinality = MULTIPLE, policyOption = GREEDY,
 		target = "(liferay.vulcan.message.body.writer=true)"
 	)
 	public <T> void setMessageBodyWriter(
@@ -111,6 +125,14 @@ public class VulcanApplication extends Application {
 	}
 
 	@SuppressWarnings("unused")
+	public <T> void unsetMessageBodyReader(
+		ServiceReference<MessageBodyReader<T>> serviceReference,
+		MessageBodyReader<T> messageBodyReader) {
+
+		_messageBodyReaders.remove(messageBodyReader);
+	}
+
+	@SuppressWarnings("unused")
 	public <T> void unsetMessageBodyWriter(
 		ServiceReference<MessageBodyWriter<T>> serviceReference,
 		MessageBodyWriter<T> messageBodyWriter) {
@@ -121,6 +143,8 @@ public class VulcanApplication extends Application {
 	private final List<ContainerResponseFilter> _containerResponseFilters =
 		new ArrayList<>();
 	private final List<ExceptionMapper> _exceptionMappers = new ArrayList<>();
+	private final List<MessageBodyReader> _messageBodyReaders =
+		new ArrayList<>();
 	private final List<MessageBodyWriter> _messageBodyWriters =
 		new ArrayList<>();
 

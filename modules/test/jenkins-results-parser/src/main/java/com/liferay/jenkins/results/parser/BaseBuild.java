@@ -555,6 +555,35 @@ public abstract class BaseBuild implements Build {
 	}
 
 	@Override
+	public int getJobVariantsDownstreamBuildCount(List<String> jobVariants) {
+		List<Build> jobVariantsDownstreamBuilds =
+			getJobVariantsDownstreamBuilds(jobVariants);
+
+		return jobVariantsDownstreamBuilds.size();
+	}
+
+	@Override
+	public List<Build> getJobVariantsDownstreamBuilds(
+		List<String> jobVariants) {
+
+		List<Build> jobVariantsDownstreamBuilds = new ArrayList<>();
+
+		for (Build downstreamBuild : downstreamBuilds) {
+			String downstreamBuildJobVariant = downstreamBuild.getJobVariant();
+
+			for (String jobVariant : jobVariants) {
+				if (downstreamBuildJobVariant.contains(jobVariant)) {
+					jobVariantsDownstreamBuilds.add(downstreamBuild);
+
+					break;
+				}
+			}
+		}
+
+		return jobVariantsDownstreamBuilds;
+	}
+
+	@Override
 	public Long getLatestStartTimestamp() {
 		Long latestStartTimestamp = getStartTimestamp();
 
