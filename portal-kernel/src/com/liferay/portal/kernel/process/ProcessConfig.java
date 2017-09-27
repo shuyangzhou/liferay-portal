@@ -35,8 +35,7 @@ public class ProcessConfig implements Serializable {
 	}
 
 	public String getBootstrapClassPath() {
-		return StringUtil.merge(
-			getBootstrapClassPathElements(), File.pathSeparator);
+		return _bootstrapClassPath;
 	}
 
 	/**
@@ -64,8 +63,7 @@ public class ProcessConfig implements Serializable {
 	}
 
 	public String getRuntimeClassPath() {
-		return StringUtil.merge(
-			getRuntimeClassPathElements(), File.pathSeparator);
+		return _runtimeClassPath;
 	}
 
 	/**
@@ -135,13 +133,14 @@ public class ProcessConfig implements Serializable {
 
 	private ProcessConfig(Builder builder) {
 		_arguments = builder._arguments;
-		_bootstrapClassPathHolders = _toPathHolders(
-			builder._bootstrapClassPath);
+		_bootstrapClassPath = builder._bootstrapClassPath;
 		_environment = builder._environment;
 		_javaExecutable = builder._javaExecutable;
 		_reactClassLoader = builder._reactClassLoader;
+		_runtimeClassPath = builder._runtimeClassPath;
 
-		_runtimeClassPathHolders = _toPathHolders(builder._runtimeClassPath);
+		_bootstrapClassPathHolders = _toPathHolders(_bootstrapClassPath);
+		_runtimeClassPathHolders = _toPathHolders(_runtimeClassPath);
 	}
 
 	private PathHolder[] _toPathHolders(String classPath) {
@@ -161,10 +160,12 @@ public class ProcessConfig implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final List<String> _arguments;
+	private final String _bootstrapClassPath;
 	private final PathHolder[] _bootstrapClassPathHolders;
 	private final Map<String, String> _environment;
 	private final String _javaExecutable;
 	private final transient ClassLoader _reactClassLoader;
+	private final String _runtimeClassPath;
 	private final PathHolder[] _runtimeClassPathHolders;
 
 }
