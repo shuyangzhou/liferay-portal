@@ -67,6 +67,7 @@ public class ProviderManager extends BaseManager<Provider> {
 		addService(serviceReference, Provider.class);
 	}
 
+	@SuppressWarnings("unused")
 	protected void unsetServiceReference(
 		ServiceReference<Provider> serviceReference) {
 

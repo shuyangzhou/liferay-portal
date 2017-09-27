@@ -16,7 +16,7 @@ package com.liferay.vulcan.pagination;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.vulcan.identifier.Identifier;
+import com.liferay.vulcan.uri.Path;
 
 import java.util.Collection;
 
@@ -30,13 +30,6 @@ import java.util.Collection;
  */
 @ProviderType
 public interface Page<T> {
-
-	/**
-	 * Returns the identifier.
-	 *
-	 * @return the identifier.
-	 */
-	public Identifier getIdentifier();
 
 	/**
 	 * Returns the items of the page.
@@ -72,6 +65,13 @@ public interface Page<T> {
 	 * @return the page number in the collection.
 	 */
 	public int getPageNumber();
+
+	/**
+	 * Returns the identifier.
+	 *
+	 * @return the identifier.
+	 */
+	public Path getPath();
 
 	/**
 	 * Returns the total number of elements in the collection.

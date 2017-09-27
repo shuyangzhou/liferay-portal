@@ -1119,7 +1119,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			_resourcePermissionLocalService.getResourcePermissions(
 				companyId, DDMStructure.class.getName(),
 				ResourceConstants.SCOPE_INDIVIDUAL,
-				StringUtil.valueOf(structureId));
+				String.valueOf(structureId));
 
 		for (ResourcePermission resourcePermission : resourcePermissions) {
 			Long classNameId = _structureClassNameIds.get(
@@ -1288,8 +1288,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 		List<ResourcePermission> resourcePermissions =
 			_resourcePermissionLocalService.getResourcePermissions(
 				companyId, DDMTemplate.class.getName(),
-				ResourceConstants.SCOPE_INDIVIDUAL,
-				StringUtil.valueOf(templateId));
+				ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(templateId));
 
 		for (ResourcePermission resourcePermission : resourcePermissions) {
 			Long classNameId = _templateResourceClassNameIds.get(

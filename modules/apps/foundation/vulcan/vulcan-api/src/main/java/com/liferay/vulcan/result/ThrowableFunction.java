@@ -23,6 +23,7 @@ import java.util.Objects;
  * @author Alejandro Hernández
  */
 @FunctionalInterface
+@SuppressWarnings("unused")
 public interface ThrowableFunction<T, R> {
 
 	/**

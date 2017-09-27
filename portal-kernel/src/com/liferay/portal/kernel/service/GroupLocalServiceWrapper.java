@@ -584,6 +584,11 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 		return _groupLocalService.getActionableDynamicQuery();
 	}
 
+	@Override
+	public java.util.List<java.lang.Long> getActiveGroupIds(long userId) {
+		return _groupLocalService.getActiveGroupIds(userId);
+	}
+
 	/**
 	* Returns all the active or inactive groups associated with the company.
 	*
@@ -765,6 +770,12 @@ public class GroupLocalServiceWrapper implements GroupLocalService,
 		long companyId, long parentGroupId, boolean site, boolean inheritContent) {
 		return _groupLocalService.getGroups(companyId, parentGroupId, site,
 			inheritContent);
+	}
+
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.Group> getGroups(
+		long companyId, java.lang.String treePath, boolean site) {
+		return _groupLocalService.getGroups(companyId, treePath, site);
 	}
 
 	/**

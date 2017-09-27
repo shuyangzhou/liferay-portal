@@ -80,6 +80,10 @@ public interface Build {
 
 	public String getJobVariant();
 
+	public int getJobVariantsDownstreamBuildCount(List<String> jobVariants);
+
+	public List<Build> getJobVariantsDownstreamBuilds(List<String> jobVariants);
+
 	public Long getLatestStartTimestamp();
 
 	public String getMaster();

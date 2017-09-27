@@ -43,6 +43,7 @@ import javax.ws.rs.core.HttpHeaders;
  * @author Jorge Ferrer
  */
 @ConsumerType
+@SuppressWarnings("unused")
 public interface SingleModelMessageMapper<T> {
 
 	/**

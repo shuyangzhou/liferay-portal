@@ -395,6 +395,9 @@ public interface GroupLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<java.lang.Long> getActiveGroupIds(long userId);
+
 	/**
 	* Returns all the active or inactive groups associated with the company.
 	*
@@ -542,6 +545,10 @@ public interface GroupLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Group> getGroups(long companyId, long parentGroupId,
 		boolean site, boolean inheritContent);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Group> getGroups(long companyId, java.lang.String treePath,
+		boolean site);
 
 	/**
 	* Returns all the groups that are direct children of the parent group with

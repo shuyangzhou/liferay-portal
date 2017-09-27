@@ -14,8 +14,6 @@
 
 package com.liferay.vulcan.pagination;
 
-import com.liferay.vulcan.identifier.Identifier;
-
 /**
  * Provides a wrapper over a model for skipping problems related to the Java
  * generics system.
@@ -24,19 +22,9 @@ import com.liferay.vulcan.identifier.Identifier;
  */
 public class SingleModel<T> {
 
-	public SingleModel(T model, Class<T> modelClass, Identifier identifier) {
+	public SingleModel(T model, Class<T> modelClass) {
 		_model = model;
 		_modelClass = modelClass;
-		_identifier = identifier;
-	}
-
-	/**
-	 * Returns the identifier.
-	 *
-	 * @return the identifier.
-	 */
-	public Identifier getIdentifier() {
-		return _identifier;
 	}
 
 	/**
@@ -57,7 +45,6 @@ public class SingleModel<T> {
 		return _modelClass;
 	}
 
-	private final Identifier _identifier;
 	private final T _model;
 	private final Class<T> _modelClass;
 

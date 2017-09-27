@@ -37,6 +37,11 @@ public interface CurrentUser {
 	 */
 	public User getUser();
 
+	/**
+	 * Returns the current user's ID.
+	 *
+	 * @return current user's ID.
+	 */
 	public default long getUserId() {
 		User user = getUser();
 

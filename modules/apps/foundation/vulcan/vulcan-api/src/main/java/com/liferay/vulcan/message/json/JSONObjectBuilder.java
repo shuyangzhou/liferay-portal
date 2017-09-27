@@ -66,6 +66,7 @@ import java.util.function.Function;
  * @author Jorge Ferrer
  */
 @ProviderType
+@SuppressWarnings("unused")
 public interface JSONObjectBuilder {
 
 	/**

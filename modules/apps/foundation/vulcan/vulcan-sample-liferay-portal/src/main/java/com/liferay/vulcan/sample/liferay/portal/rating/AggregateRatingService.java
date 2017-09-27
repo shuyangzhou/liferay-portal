@@ -14,7 +14,7 @@
 
 package com.liferay.vulcan.sample.liferay.portal.rating;
 
-import com.liferay.vulcan.liferay.portal.identifier.ClassNameClassPKIdentifier;
+import com.liferay.vulcan.sample.liferay.portal.resource.identifier.AggregateRatingIdentifier;
 
 /**
  * Instances of this service can be used to get the related {@link
@@ -27,10 +27,10 @@ public interface AggregateRatingService {
 	/**
 	 * Returns the {@link AggregateRating} for a className/classPK combination.
 	 *
-	 * @param  classNameClassPKIdentifier the className/classPK identifier.
+	 * @param  aggregateRatingIdentifier the rating identifier.
 	 * @return the aggregate rating.
 	 */
 	public AggregateRating getAggregateRating(
-		ClassNameClassPKIdentifier classNameClassPKIdentifier);
+		AggregateRatingIdentifier aggregateRatingIdentifier);
 
 }

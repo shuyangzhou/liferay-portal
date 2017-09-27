@@ -19,12 +19,10 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.vulcan.logger.VulcanLogger;
 import com.liferay.vulcan.result.APIError;
-import com.liferay.vulcan.wiring.osgi.manager.ExceptionConverterManager;
 
 import java.util.Optional;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alejandro Hernández
@@ -61,8 +59,5 @@ public class VulcanLoggerImpl implements VulcanLogger {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		VulcanLoggerImpl.class);
-
-	@Reference
-	private ExceptionConverterManager _exceptionConverterManager;
 
 }
