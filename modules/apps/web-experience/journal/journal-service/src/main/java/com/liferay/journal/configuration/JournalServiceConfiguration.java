@@ -29,7 +29,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 @Meta.OCD(
 	id = "com.liferay.journal.configuration.JournalServiceConfiguration",
 	localization = "content/Language",
-	name = "journal-service-configuration-name"
+	name = "journal.service.configuration.name"
 )
 @ProviderType
 public interface JournalServiceConfiguration {

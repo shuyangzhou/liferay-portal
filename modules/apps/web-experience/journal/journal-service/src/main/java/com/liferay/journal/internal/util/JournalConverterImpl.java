@@ -824,7 +824,7 @@ public class JournalConverterImpl implements JournalConverter {
 
 		// Removable attributes
 
-		String[] removableAttributeNames = {
+		String[] removableAttributeNames = new String[] {
 			"dataType", "fieldNamespace", "multiple", "readOnly", "required",
 			"showLabel", "width"
 		};
