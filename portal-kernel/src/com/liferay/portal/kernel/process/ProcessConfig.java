@@ -35,12 +35,19 @@ public class ProcessConfig implements Serializable {
 	}
 
 	public String getBootstrapClassPath() {
-		return StringUtil.merge(
-			getBootstrapClassPathElements(), File.pathSeparator);
+		return _bootstrapClassPath;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public String[] getBootstrapClassPathElements() {
 		return ArrayUtil.toStringArray(_bootstrapClassPathHolders);
+	}
+
+	public PathHolder[] getBootstrapClassPathHolders() {
+		return _bootstrapClassPathHolders;
 	}
 
 	public Map<String, String> getEnvironment() {
@@ -56,12 +63,19 @@ public class ProcessConfig implements Serializable {
 	}
 
 	public String getRuntimeClassPath() {
-		return StringUtil.merge(
-			getRuntimeClassPathElements(), File.pathSeparator);
+		return _runtimeClassPath;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public String[] getRuntimeClassPathElements() {
 		return ArrayUtil.toStringArray(_runtimeClassPathHolders);
+	}
+
+	public PathHolder[] getRuntimeClassPathHolders() {
+		return _runtimeClassPathHolders;
 	}
 
 	public static class Builder {
@@ -119,13 +133,14 @@ public class ProcessConfig implements Serializable {
 
 	private ProcessConfig(Builder builder) {
 		_arguments = builder._arguments;
-		_bootstrapClassPathHolders = _toPathHolders(
-			builder._bootstrapClassPath);
+		_bootstrapClassPath = builder._bootstrapClassPath;
 		_environment = builder._environment;
 		_javaExecutable = builder._javaExecutable;
 		_reactClassLoader = builder._reactClassLoader;
+		_runtimeClassPath = builder._runtimeClassPath;
 
-		_runtimeClassPathHolders = _toPathHolders(builder._runtimeClassPath);
+		_bootstrapClassPathHolders = _toPathHolders(_bootstrapClassPath);
+		_runtimeClassPathHolders = _toPathHolders(_runtimeClassPath);
 	}
 
 	private PathHolder[] _toPathHolders(String classPath) {
@@ -145,10 +160,12 @@ public class ProcessConfig implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final List<String> _arguments;
+	private final String _bootstrapClassPath;
 	private final PathHolder[] _bootstrapClassPathHolders;
 	private final Map<String, String> _environment;
 	private final String _javaExecutable;
 	private final transient ClassLoader _reactClassLoader;
+	private final String _runtimeClassPath;
 	private final PathHolder[] _runtimeClassPathHolders;
 
 }
