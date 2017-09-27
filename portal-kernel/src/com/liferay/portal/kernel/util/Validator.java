@@ -917,7 +917,6 @@ public class Validator {
 		}
 
 		int sum = 0;
-
 		int length = number.length();
 
 		for (int i = 0; i < length; i++) {
