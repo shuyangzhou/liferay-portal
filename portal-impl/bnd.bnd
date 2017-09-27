@@ -78,8 +78,13 @@ Export-Package:\
 Import-Package: *
 Include-Resource:\
 	classes,\
+	@../tmp/lib-pre/com.liferay.petra.content.jar,\
+	@../tmp/lib-pre/com.liferay.petra.encryptor.jar,\
+	@../tmp/lib-pre/com.liferay.petra.log4j.jar,\
+	@../tmp/lib-pre/com.liferay.petra.mail.jar,\
 	@../tmp/lib-pre/com.liferay.portal.impl.blogs.compat.jar,\
 	@../tmp/lib-pre/com.liferay.portal.impl.trash.compat.jar
+
 Private-Package: com.liferay.*.dependencies
 -baseline: *;file=${project.dir}/.bnd/ant-baseline-cache/com.liferay.portal.impl-2.21.0.jar
 -donotcopy: (log4j\.properties|logging\.properties|portal-.*\.properties|system-.*\.properties|\.touch)
