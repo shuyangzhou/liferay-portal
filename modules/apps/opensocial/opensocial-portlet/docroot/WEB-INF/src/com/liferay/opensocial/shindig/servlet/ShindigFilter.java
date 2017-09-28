@@ -29,14 +29,22 @@ import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUti
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.CookieKeys;
+import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.Encryptor;
-import com.liferay.util.EncryptorException;
 
 import java.io.IOException;
+
+import java.security.Key;
+import java.security.Provider;
+import java.security.Security;
+
+import javax.crypto.Cipher;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -133,11 +141,13 @@ public class ShindigFilter extends InjectedFilter {
 				return false;
 			}
 
-			userUUID = GetterUtil.getString(
-				Encryptor.decrypt(company.getKeyObj(), userUUIDString));
-		}
-		catch (EncryptorException ee) {
-			return false;
+			try {
+				userUUID = GetterUtil.getString(
+					_decrypt(company.getKeyObj(), userUUIDString));
+			}
+			catch (Exception e) {
+				return false;
+			}
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -173,6 +183,60 @@ public class ShindigFilter extends InjectedFilter {
 		return true;
 	}
 
+	private String _decrypt(Key key, String encryptedString) throws Exception {
+		byte[] encryptedBytes = Base64.decode(encryptedString);
+
+		String algorithm = key.getAlgorithm();
+
+		Security.addProvider(_getProvider());
+
+		Cipher cipher = Cipher.getInstance(algorithm);
+
+		cipher.init(Cipher.DECRYPT_MODE, key);
+
+		return new String(cipher.doFinal(encryptedBytes), Digester.ENCODING);
+	}
+
+	private Provider _getProvider()
+		throws ClassNotFoundException, IllegalAccessException,
+			   InstantiationException {
+
+		Class<?> providerClass = null;
+
+		try {
+			providerClass = Class.forName(_PROVIDER_CLASS);
+		}
+		catch (ClassNotFoundException cnfe) {
+			if (ServerDetector.isWebSphere() &&
+				_PROVIDER_CLASS.equals(_SUN_PROVIDER_CLASS)) {
+
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"WebSphere does not have " + _SUN_PROVIDER_CLASS +
+							", using " + _IBM_PROVIDER_CLASS + " instead");
+				}
+
+				providerClass = Class.forName(_IBM_PROVIDER_CLASS);
+			}
+			else if (System.getProperty("java.vm.vendor").equals(
+						"IBM Corporation")) {
+
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"IBM JVM does not have " + _SUN_PROVIDER_CLASS +
+							", using " + _IBM_PROVIDER_CLASS + " instead");
+				}
+
+				providerClass = Class.forName(_IBM_PROVIDER_CLASS);
+			}
+			else {
+				throw cnfe;
+			}
+		}
+
+		return (Provider)providerClass.newInstance();
+	}
+
 	private void _init(ServletContext servletContext) throws ServletException {
 		injector = (Injector)servletContext.getAttribute(
 			GuiceServletContextListener.INJECTOR_ATTRIBUTE);
@@ -190,6 +254,16 @@ public class ShindigFilter extends InjectedFilter {
 
 		injector.injectMembers(this);
 	}
+
+	private static final String _IBM_PROVIDER_CLASS =
+		"com.ibm.crypto.provider.IBMJCE";
+
+	private static final String _PROVIDER_CLASS = GetterUtil.getString(
+		SystemProperties.get(ShindigFilter.class.getName() + ".provider.class"),
+		"com.sun.crypto.provider.SunJCE");
+
+	private static final String _SUN_PROVIDER_CLASS =
+		"com.sun.crypto.provider.SunJCE";
 
 	private static final Log _log = LogFactoryUtil.getLog(ShindigFilter.class);
 

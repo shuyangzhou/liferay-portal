@@ -174,8 +174,24 @@
 						<location>modules/apps/foundation/petra/petra-concurrent/src</location>
 					</source-folder>
 					<source-folder style="packages">
+						<label>modules\apps\foundation\petra\petra-content\src</label>
+						<location>modules/apps/foundation/petra/petra-content/src</location>
+					</source-folder>
+					<source-folder style="packages">
+						<label>modules\apps\foundation\petra\petra-encryptor\src</label>
+						<location>modules/apps/foundation/petra/petra-encryptor/src</location>
+					</source-folder>
+					<source-folder style="packages">
 						<label>modules\apps\foundation\petra\petra-lang\src</label>
 						<location>modules/apps/foundation/petra/petra-lang/src</location>
+					</source-folder>
+					<source-folder style="packages">
+						<label>modules\apps\foundation\petra\petra-log4j\src</label>
+						<location>modules/apps/foundation/petra/petra-log4j/src</location>
+					</source-folder>
+					<source-folder style="packages">
+						<label>modules\apps\foundation\petra\petra-mail\src</label>
+						<location>modules/apps/foundation/petra/petra-mail/src</location>
 					</source-folder>
 					<source-folder style="packages">
 						<label>modules\apps\foundation\petra\petra-memory\src</label>
