@@ -1008,7 +1008,7 @@ public class StringUtil {
 		int index = 8;
 
 		do {
-			buffer[--index] = HEX_DIGITS[i & 15];
+			buffer[--index] = _HEX_DIGITS[i & 15];
 
 			i >>>= 4;
 		}
@@ -1043,7 +1043,7 @@ public class StringUtil {
 		int index = 16;
 
 		do {
-			buffer[--index] = HEX_DIGITS[(int)(l & 15)];
+			buffer[--index] = _HEX_DIGITS[(int)(l & 15)];
 
 			l >>>= 4;
 		}
@@ -1073,11 +1073,6 @@ public class StringUtil {
 		}
 	}
 
-	protected static final char[] HEX_DIGITS = {
-		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd',
-		'e', 'f'
-	};
-
 	private static void _split(
 		Collection<String> values, String s, int offset, char delimiter) {
 
@@ -1095,6 +1090,11 @@ public class StringUtil {
 			values.add(s.substring(offset));
 		}
 	}
+
+	private static final char[] _HEX_DIGITS = {
+		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd',
+		'e', 'f'
+	};
 
 	private static final String[] _emptyStringArray = new String[0];
 
