@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.kernel.io;
+package com.liferay.portal.kernel.dao.jdbc.internal;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
