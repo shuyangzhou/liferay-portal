@@ -12,10 +12,11 @@
  * details.
  */
 
-package com.liferay.portal.kernel.io;
+package com.liferay.portal.kernel.servlet.internal;
 
-import com.liferay.portal.kernel.io.RestrictedByteArrayCacheOutputStream.FlushPreAction;
+import com.liferay.portal.kernel.io.DummyOutputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
+import com.liferay.portal.kernel.servlet.internal.RestrictedByteArrayCacheOutputStream.FlushPreAction;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
