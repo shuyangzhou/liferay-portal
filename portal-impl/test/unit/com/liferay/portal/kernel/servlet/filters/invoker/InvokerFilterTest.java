@@ -33,11 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -46,9 +41,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 /**
  * @author Mika Koivisto
  */
-@PowerMockIgnore("javax.net.ssl.*")
-@RunWith(PowerMockRunner.class)
-public class InvokerFilterTest extends PowerMockito {
+public class InvokerFilterTest {
 
 	@Before
 	public void setUp() {
