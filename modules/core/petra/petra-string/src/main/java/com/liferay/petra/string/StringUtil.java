@@ -815,8 +815,9 @@ public class StringUtil {
 	public static StringBundler replaceToStringBundler(
 		String s, String begin, String end, Map<String, String> values) {
 
-		if (Validator.isBlank(s) || Validator.isBlank(begin) ||
-			Validator.isBlank(end) || MapUtil.isEmpty(values)) {
+		if ((s == null) || s.isEmpty() || (begin == null) || begin.isEmpty() ||
+			(end == null) || end.isEmpty() || (values == null) ||
+			values.isEmpty()) {
 
 			return new StringBundler(s);
 		}
@@ -903,7 +904,7 @@ public class StringUtil {
 	 *         <code>s</code> is empty
 	 */
 	public static String[] split(String s, char delimiter) {
-		if (Validator.isNull(s)) {
+		if ((s == null) || s.isEmpty()) {
 			return _emptyStringArray;
 		}
 
@@ -943,8 +944,8 @@ public class StringUtil {
 	 *         delimiter
 	 */
 	public static String[] split(String s, String delimiter) {
-		if (Validator.isNull(s) || (delimiter == null) ||
-			delimiter.equals(StringPool.BLANK)) {
+		if ((s == null) || s.isEmpty() || (delimiter == null) ||
+			delimiter.isEmpty()) {
 
 			return _emptyStringArray;
 		}
