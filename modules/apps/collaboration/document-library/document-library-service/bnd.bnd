@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Document Library Service
 Bundle-SymbolicName: com.liferay.document.library.service
-Bundle-Version: 1.1.28
+Bundle-Version: 1.1.29
 Export-Package:\
 	com.liferay.document.library.ddm,\
 	com.liferay.document.library.lar.xstream,\

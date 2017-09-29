@@ -48,15 +48,13 @@ PortletURL portletURL = renderResponse.createRenderURL();
 	for (int i = 0; i < vocabularies.size(); i++) {
 		AssetVocabulary vocabulary = vocabularies.get(i);
 
-		vocabulary = vocabulary.toEscapedModel();
-
 		String vocabularyNavigation = _buildVocabularyNavigation(vocabulary, categoryId, portletURL, themeDisplay);
 
 		if (Validator.isNotNull(vocabularyNavigation)) {
 			hidePortletWhenEmpty = false;
 	%>
 
-			<liferay-ui:panel collapsible="<%= false %>" extended="<%= true %>" markupView="lexicon" persistState="<%= true %>" title="<%= vocabulary.getUnambiguousTitle(vocabularies, themeDisplay.getSiteGroupId(), themeDisplay.getLocale()) %>">
+			<liferay-ui:panel collapsible="<%= false %>" extended="<%= true %>" markupView="lexicon" persistState="<%= true %>" title="<%= HtmlUtil.escape(vocabulary.getUnambiguousTitle(vocabularies, themeDisplay.getSiteGroupId(), themeDisplay.getLocale())) %>">
 				<%= vocabularyNavigation %>
 			</liferay-ui:panel>
 
@@ -80,7 +78,7 @@ if (hidePortletWhenEmpty) {
 }
 
 if (categoryId > 0) {
-	AssetUtil.addPortletBreadcrumbEntries(categoryId, request, portletURL, false);
+	AssetCategoryUtil.addPortletBreadcrumbEntries(categoryId, request, portletURL, false);
 }
 %>
 
@@ -125,10 +123,6 @@ private void _buildCategoriesNavigation(List<AssetCategory> categories, long cat
 	String originalPortletURLString = portletURL.toString();
 
 	for (AssetCategory category : categories) {
-		category = category.toEscapedModel();
-
-		String title = category.getTitle(themeDisplay.getLocale());
-
 		List<AssetCategory> categoriesChildren = AssetCategoryServiceUtil.getChildCategories(category.getCategoryId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
 		sb.append("<li class=\"tree-node\"><span>");
@@ -145,7 +139,7 @@ private void _buildCategoriesNavigation(List<AssetCategory> categories, long cat
 		}
 
 		sb.append("\">");
-		sb.append(title);
+		sb.append(HtmlUtil.escape(category.getTitle(themeDisplay.getLocale())));
 		sb.append("</a>");
 		sb.append("</span>");
 

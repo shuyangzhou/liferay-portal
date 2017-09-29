@@ -1,6 +1,6 @@
 Bundle-Name: ${manifest.bundle.name}
 Bundle-SymbolicName: ${manifest.bundle.symbolic.name}
-Bundle-Version: 2.50.0
+Bundle-Version: 2.51.0
 Export-Package:\
 	!com.liferay.portal.kernel.test.*,\
 	\
@@ -11,4 +11,4 @@ Include-Resource:\
 	@../tmp/lib-pre/com.liferay.portal.kernel.blogs.compat.jar,\
 	@../tmp/lib-pre/com.liferay.portal.kernel.concurrent.compat.jar,\
 	@../tmp/lib-pre/com.liferay.portal.kernel.memory.compat.jar
--baseline: *;file=${project.dir}/.bnd/ant-baseline-cache/com.liferay.portal.kernel-2.49.0.jar
+-baseline: *;file=${project.dir}/.bnd/ant-baseline-cache/com.liferay.portal.kernel-2.50.0.jar
