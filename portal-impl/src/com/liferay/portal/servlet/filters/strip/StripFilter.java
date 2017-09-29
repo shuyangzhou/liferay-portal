@@ -276,7 +276,10 @@ public class StripFilter extends BasePortalFilter {
 
 		String minifiedContent = content;
 
-		if (_minifierCache != null) {
+		if (_minifierCache == null) {
+			minifiedContent = MinifierUtil.minifyCss(content);
+		}
+		else {
 			CacheKeyGenerator cacheKeyGenerator =
 				CacheKeyGeneratorUtil.getCacheKeyGenerator(
 					StripFilter.class.getName());
@@ -496,7 +499,11 @@ public class StripFilter extends BasePortalFilter {
 
 		String minifiedContent = content;
 
-		if (_minifierCache != null) {
+		if (_minifierCache == null) {
+			minifiedContent = MinifierUtil.minifyJavaScript(
+				resourceName, content);
+		}
+		else {
 			CacheKeyGenerator cacheKeyGenerator =
 				CacheKeyGeneratorUtil.getCacheKeyGenerator(
 					StripFilter.class.getName());
