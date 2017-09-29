@@ -33,15 +33,11 @@ String assetVocabularyTitle = null;
 if (assetCategoryId != 0) {
 	AssetCategory assetCategory = AssetCategoryLocalServiceUtil.getAssetCategory(assetCategoryId);
 
-	assetCategory = assetCategory.toEscapedModel();
-
-	assetCategoryTitle = assetCategory.getTitle(locale);
+	assetCategoryTitle = HtmlUtil.escape(assetCategory.getTitle(locale));
 
 	AssetVocabulary assetVocabulary = AssetVocabularyLocalServiceUtil.getAssetVocabulary(assetCategory.getVocabularyId());
 
-	assetVocabulary = assetVocabulary.toEscapedModel();
-
-	assetVocabularyTitle = assetVocabulary.getTitle(locale);
+	assetVocabularyTitle = HtmlUtil.escape(assetVocabulary.getTitle(locale));
 }
 %>
 
@@ -81,7 +77,7 @@ if (assetCategoryId != 0) {
 	<c:when test="<%= (assetCategoryId != 0) && Validator.isNotNull(assetTagName) %>">
 
 		<%
-		AssetUtil.addPortletBreadcrumbEntries(assetCategoryId, request, portletURL);
+		AssetCategoryUtil.addPortletBreadcrumbEntries(assetCategoryId, request, portletURL);
 
 		PortalUtil.addPortletBreadcrumbEntry(request, assetTagName, currentURL);
 
@@ -96,7 +92,7 @@ if (assetCategoryId != 0) {
 	<c:when test="<%= assetCategoryId != 0 %>">
 
 		<%
-		AssetUtil.addPortletBreadcrumbEntries(assetCategoryId, request, portletURL);
+		AssetCategoryUtil.addPortletBreadcrumbEntries(assetCategoryId, request, portletURL);
 
 		PortalUtil.addPageKeywords(assetCategoryTitle, request);
 		%>
