@@ -168,7 +168,8 @@ public class SpringExtenderDependencyManagerTest {
 
 			StringBundler sb = new StringBundler(4);
 
-			sb.append("is unavailable due to missing required dependencies: ");
+			sb.append(
+				"is unavailable due to missing required dependencies:_\t\t");
 			sb.append("ServiceDependency[interface ");
 			sb.append(_SPRING_EXTENDER_TEST_COMPONENT_REFERENCE_CLASS_NAME);
 			sb.append(" null]");
