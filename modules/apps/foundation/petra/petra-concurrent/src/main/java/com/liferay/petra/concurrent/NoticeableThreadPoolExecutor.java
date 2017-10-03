@@ -226,11 +226,11 @@ public class NoticeableThreadPoolExecutor
 					}
 				}
 				finally {
-					_semaphore.acquireUninterruptibly();
-
 					if (currentRunnable != _runnable) {
 						_completedWaitingTasks.increment();
 					}
+
+					_semaphore.acquireUninterruptibly();
 
 					WorkerRunnable workerRunnable =
 						_waitingRunnableReference.getAndSet(null);
@@ -239,12 +239,9 @@ public class NoticeableThreadPoolExecutor
 						currentRunnable = null;
 					}
 					else {
+						workerRunnable._waitingSemaphore.release();
+
 						currentRunnable = workerRunnable._runnable;
-
-						Semaphore waitingSemaphore =
-							workerRunnable._waitingSemaphore;
-
-						waitingSemaphore.release();
 					}
 				}
 			}
