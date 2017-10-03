@@ -202,8 +202,19 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 
 		Portlet portlet = ActionUtil.getPortlet(actionRequest);
 
-		PortletPreferences portletPreferences =
-			ActionUtil.getLayoutPortletSetup(actionRequest, portlet);
+		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		String settingsScope = ParamUtil.getString(
+			actionRequest, "settingsScope");
+
+		PortletPreferences portletPreferences = getPortletPreferences(
+			themeDisplay, portlet.getPortletId(), settingsScope);
+
+		if (portletPreferences == null) {
+			portletPreferences = ActionUtil.getLayoutPortletSetup(
+				actionRequest, portlet);
+		}
 
 		actionRequest = ActionUtil.getWrappedActionRequest(
 			actionRequest, portletPreferences);
@@ -630,32 +641,22 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 
 			Portlet portlet = ActionUtil.getPortlet(renderRequest);
 
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
+
+			String settingsScope = renderRequest.getParameter("settingsScope");
+
+			PortletPreferences portletPreferences = getPortletPreferences(
+				themeDisplay, portlet.getPortletId(), settingsScope);
+
+			renderRequest = ActionUtil.getWrappedRenderRequest(
+				renderRequest, portletPreferences);
+
 			if (mvcPath.endsWith("edit_configuration.jsp")) {
-				ThemeDisplay themeDisplay =
-					(ThemeDisplay)renderRequest.getAttribute(
-						WebKeys.THEME_DISPLAY);
-
-				String settingsScope = renderRequest.getParameter(
-					"settingsScope");
-
-				PortletPreferences portletPreferences = getPortletPreferences(
-					themeDisplay, portlet.getPortletId(), settingsScope);
-
-				renderRequest = ActionUtil.getWrappedRenderRequest(
-					renderRequest, portletPreferences);
-
 				renderEditConfiguration(renderRequest, portlet);
 			}
-			else {
-				PortletPreferences portletPreferences =
-					ActionUtil.getLayoutPortletSetup(renderRequest, portlet);
-
-				renderRequest = ActionUtil.getWrappedRenderRequest(
-					renderRequest, portletPreferences);
-
-				if (mvcPath.endsWith("edit_public_render_parameters.jsp")) {
-					renderEditPublicParameters(renderRequest, portlet);
-				}
+			else if (mvcPath.endsWith("edit_public_render_parameters.jsp")) {
+				renderEditPublicParameters(renderRequest, portlet);
 			}
 
 			renderResponse.setTitle(
