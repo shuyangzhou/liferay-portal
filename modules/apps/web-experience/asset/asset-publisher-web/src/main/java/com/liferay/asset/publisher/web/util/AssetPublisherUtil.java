@@ -49,10 +49,12 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.PortletPreferencesIds;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactory;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -1154,6 +1156,25 @@ public class AssetPublisherUtil {
 			long ownerId, int ownerType, long plid, String portletId)
 		throws PortalException {
 
+		Layout layout = _layoutLocalService.fetchLayout(plid);
+
+		if (layout != null) {
+			long userId = 0;
+
+			if (PortletIdCodec.hasUserId(portletId)) {
+				userId = PortletIdCodec.decodeUserId(portletId);
+			}
+
+			PortletPreferencesIds portletPreferencesIds =
+				_portletPreferencesFactory.getPortletPreferencesIds(
+					layout.getGroupId(), userId, layout, portletId, false);
+
+			ownerId = portletPreferencesIds.getOwnerId();
+			ownerType = portletPreferencesIds.getOwnerType();
+			plid = portletPreferencesIds.getPlid();
+			portletId = portletPreferencesIds.getPortletId();
+		}
+
 		if (PortletIdCodec.hasUserId(portletId)) {
 			ownerId = PortletIdCodec.decodeUserId(portletId);
 			ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
@@ -1654,6 +1675,13 @@ public class AssetPublisherUtil {
 	}
 
 	@Reference(unbind = "-")
+	protected void setPortletPreferencesFactory(
+		PortletPreferencesFactory portletPreferencesFactory) {
+
+		_portletPreferencesFactory = portletPreferencesFactory;
+	}
+
+	@Reference(unbind = "-")
 	protected void setPortletPreferencesLocalService(
 		PortletPreferencesLocalService portletPreferencesLocalService) {
 
@@ -1795,6 +1823,7 @@ public class AssetPublisherUtil {
 	private static DDMIndexer _ddmIndexer;
 	private static GroupLocalService _groupLocalService;
 	private static LayoutLocalService _layoutLocalService;
+	private static PortletPreferencesFactory _portletPreferencesFactory;
 	private static PortletPreferencesLocalService
 		_portletPreferencesLocalService;
 	private static SubscriptionLocalService _subscriptionLocalService;
