@@ -28,7 +28,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Shuyang Zhou
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class CharPipe {
 
 	public CharPipe() {

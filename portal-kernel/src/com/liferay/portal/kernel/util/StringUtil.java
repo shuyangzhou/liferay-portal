@@ -593,12 +593,14 @@ public class StringUtil {
 	 * that is found in the character array <code>chars</code>. The substring of
 	 * characters returned maintain their original order.
 	 *
+	 * @deprecated As of 7.0.0, with no direct replacement
 	 * @param  s the string from which to extract characters
 	 * @param  chars the characters to extract from the string
 	 * @return the substring of each character instance in string <code>s</code>
 	 *         that is found in the character array <code>chars</code>, or an
 	 *         empty string if the given string is <code>null</code>
 	 */
+	@Deprecated
 	public static String extract(String s, char[] chars) {
 		if (s == null) {
 			return StringPool.BLANK;
@@ -3350,10 +3352,12 @@ public class StringUtil {
 	 * </pre>
 	 * </p>
 	 *
+	 * @deprecated As of 7.0.0, with no direct replacement
 	 * @param  path the original string
 	 * @return a string representing the original string with all double slashes
 	 *         replaced with single slashes
 	 */
+	@Deprecated
 	public static String safePath(String path) {
 		return replace(path, StringPool.DOUBLE_SLASH, StringPool.SLASH);
 	}
@@ -4063,38 +4067,16 @@ public class StringUtil {
 	 * </pre>
 	 * </p>
 	 *
+	 * @deprecated As of 7.0.0, replaced by {@link #removeChar(String, char)}
 	 * @param  s the string from which to strip all occurrences of the character
 	 * @param  remove the character to strip from the string
 	 * @return a string representing the string <code>s</code> with all
 	 *         occurrences of the specified character removed, or
 	 *         <code>null</code> if <code>s</code> is <code>null</code>
 	 */
+	@Deprecated
 	public static String strip(String s, char remove) {
-		if (s == null) {
-			return null;
-		}
-
-		int x = s.indexOf(remove);
-
-		if (x < 0) {
-			return s;
-		}
-
-		int y = 0;
-
-		StringBundler sb = new StringBundler(s.length());
-
-		while (x >= 0) {
-			sb.append(s.subSequence(y, x));
-
-			y = x + 1;
-
-			x = s.indexOf(remove, y);
-		}
-
-		sb.append(s.substring(y));
-
-		return sb.toString();
+		return removeChar(s, remove);
 	}
 
 	/**
@@ -4113,18 +4095,17 @@ public class StringUtil {
 	 * </pre>
 	 * </p>
 	 *
+	 * @deprecated As of 7.0.0, replaced by {@link #removeChars(
+	 *             String, char...)}
 	 * @param  s the string from which to strip all occurrences the characters
 	 * @param  remove the characters to strip from the string
 	 * @return a string representing the string <code>s</code> with all
 	 *         occurrences of the specified characters removed, or
 	 *         <code>null</code> if <code>s</code> is <code>null</code>
 	 */
+	@Deprecated
 	public static String strip(String s, char[] remove) {
-		for (char c : remove) {
-			s = strip(s, c);
-		}
-
-		return s;
+		return removeChars(s, remove);
 	}
 
 	/**
