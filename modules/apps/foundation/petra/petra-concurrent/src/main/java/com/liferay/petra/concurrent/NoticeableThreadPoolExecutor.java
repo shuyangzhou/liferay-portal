@@ -117,9 +117,8 @@ public class NoticeableThreadPoolExecutor
 		}
 
 		_dispatcherThreadPoolExecutor.execute(
-			() -> {
-				_workerThreadPoolExecutor.execute(new WorkerRunnable(runnable));
-			});
+			() -> _workerThreadPoolExecutor.execute(
+				new WorkerRunnable(runnable)));
 	}
 
 	public int getActiveCount() {
