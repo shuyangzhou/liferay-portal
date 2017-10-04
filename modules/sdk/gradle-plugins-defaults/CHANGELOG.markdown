@@ -2181,7 +2181,7 @@ running the `uploadArchives` task with `-Psnapshot`.
 ### Changed
 - [LPS-75009]: Update the [Liferay Gradle Plugins] dependency to version 3.4.74.
 
-## 5.1.4 - 2017-10-02
+## 5.1.4 - 2017-10-02 [YANKED]
 
 ### Changed
 - [LPS-74110]: Update the [Liferay Gradle Plugins Baseline] dependency to
@@ -2195,6 +2195,11 @@ in the `modules` directory.
 ### Fixed
 - [LPS-63943]: Always print the status message after executing the
 `mergeArtifactsPublishCommands` task.
+
+## 5.1.5 - 2017-10-03
+
+### Changed
+- [LPS-73070]: Update the [Liferay Gradle Plugins] dependency to version 3.4.76.
 
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle License Report]: https://github.com/jk1/Gradle-License-Report
