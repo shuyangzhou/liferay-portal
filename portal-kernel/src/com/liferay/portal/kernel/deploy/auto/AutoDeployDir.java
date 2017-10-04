@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Ivica Cardic
@@ -103,6 +105,12 @@ public class AutoDeployDir {
 
 					break;
 				}
+			}
+
+			Matcher matcher = _versionPattern.matcher(fileName);
+
+			if (matcher.find()) {
+				fileName = matcher.replaceFirst(".war");
 			}
 		}
 		else {
@@ -326,6 +334,8 @@ public class AutoDeployDir {
 	private static AutoDeployScanner _autoDeployScanner;
 	private static final ServiceTracker<AutoDeployListener, AutoDeployListener>
 		_serviceTracker;
+	private static final Pattern _versionPattern = Pattern.compile(
+		"-[\\d]+((\\.[\\d]+)+(-SNAPSHOT)?)\\.war$");
 
 	static {
 		Registry registry = RegistryUtil.getRegistry();
