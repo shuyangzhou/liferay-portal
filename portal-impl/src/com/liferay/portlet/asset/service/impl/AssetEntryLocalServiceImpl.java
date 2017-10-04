@@ -28,10 +28,6 @@ import com.liferay.asset.kernel.validator.AssetEntryValidator;
 import com.liferay.asset.kernel.validator.AssetEntryValidatorExclusionRule;
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.Property;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -383,7 +379,7 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 	public void incrementViewCounter(long userId, AssetEntry assetEntry)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		assetEntryLocalService.incrementViewCounter(
 			user.getUserId(), assetEntry.getClassName(),
@@ -402,7 +398,7 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 			long userId, String className, long classPK)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		assetEntryLocalService.incrementViewCounter(
 			user.getUserId(), className, classPK, 1);
@@ -704,7 +700,7 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 
 			entry.setUserId(userId);
 
-			User user = userPersistence.fetchByPrimaryKey(userId);
+			User user = userLocalService.getUser(userId);
 
 			if (user != null) {
 				entry.setUserName(user.getFullName());
@@ -1269,23 +1265,7 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 			return assetTagLocalService.getTagIds(groupIds, tagName);
 		}
 
-		List<Long> tagIds = new ArrayList<>();
-
-		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
-			AssetTag.class);
-
-		Property property = PropertyFactoryUtil.forName("name");
-
-		dynamicQuery.add(property.eq(tagName));
-
-		List<AssetTag> assetTags = assetTagPersistence.findWithDynamicQuery(
-			dynamicQuery);
-
-		for (AssetTag assetTag : assetTags) {
-			tagIds.add(assetTag.getTagId());
-		}
-
-		return ArrayUtil.toLongArray(tagIds);
+		return assetTagLocalService.getTagIds(tagName);
 	}
 
 	protected void reindex(AssetEntry entry) throws PortalException {

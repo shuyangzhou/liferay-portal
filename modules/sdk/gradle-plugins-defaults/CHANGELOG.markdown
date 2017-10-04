@@ -2176,6 +2176,26 @@ running the `uploadArchives` task with `-Psnapshot`.
 ### Changed
 - [LPS-74933]: Update the [Liferay Gradle Plugins] dependency to version 3.4.73.
 
+## 5.1.3 - 2017-10-02
+
+### Changed
+- [LPS-75009]: Update the [Liferay Gradle Plugins] dependency to version 3.4.74.
+
+## 5.1.4 - 2017-10-02
+
+### Changed
+- [LPS-74110]: Update the [Liferay Gradle Plugins Baseline] dependency to
+version 1.1.8.
+- [LPS-74110]: Update the [Liferay Gradle Plugins] dependency to version 3.4.75.
+- [LPS-75039]: Make the `updateFileVersions` task exclude build and temporary
+directories.
+- [LPS-75039]: Make the `updateFileVersions` task update only the Gradle files
+in the `modules` directory.
+
+### Fixed
+- [LPS-63943]: Always print the status message after executing the
+`mergeArtifactsPublishCommands` task.
+
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle License Report]: https://github.com/jk1/Gradle-License-Report
 [Liferay CDN]: https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public
@@ -2386,6 +2406,7 @@ running the `uploadArchives` task with `-Psnapshot`.
 [LPS-74088]: https://issues.liferay.com/browse/LPS-74088
 [LPS-74092]: https://issues.liferay.com/browse/LPS-74092
 [LPS-74104]: https://issues.liferay.com/browse/LPS-74104
+[LPS-74110]: https://issues.liferay.com/browse/LPS-74110
 [LPS-74126]: https://issues.liferay.com/browse/LPS-74126
 [LPS-74155]: https://issues.liferay.com/browse/LPS-74155
 [LPS-74207]: https://issues.liferay.com/browse/LPS-74207
@@ -2417,6 +2438,8 @@ running the `uploadArchives` task with `-Psnapshot`.
 [LPS-74884]: https://issues.liferay.com/browse/LPS-74884
 [LPS-74892]: https://issues.liferay.com/browse/LPS-74892
 [LPS-74933]: https://issues.liferay.com/browse/LPS-74933
+[LPS-75009]: https://issues.liferay.com/browse/LPS-75009
+[LPS-75039]: https://issues.liferay.com/browse/LPS-75039
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981
