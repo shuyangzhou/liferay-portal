@@ -31,6 +31,11 @@ public class PortalExecutorConfig implements Serializable {
 		RejectedExecutionHandler rejectedExecutionHandler,
 		ThreadFactory threadFactory) {
 
+		if (corePoolSize < 1) {
+			throw new IllegalArgumentException(
+				"To ensure FIFO, core pool size must be 1 or greater.");
+		}
+
 		_name = name;
 		_corePoolSize = corePoolSize;
 		_maxPoolSize = maxPoolSize;
