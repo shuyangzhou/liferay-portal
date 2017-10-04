@@ -22,9 +22,13 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * @author Shuyang Zhou
@@ -48,7 +52,7 @@ public class ModelAdapterUtil {
 
 		Class<?> delegateClass = delegateObject.getClass();
 
-		return (T)ProxyUtil.newProxyInstance(
+		T proxyObject = (T)ProxyUtil.newProxyInstance(
 			clazz.getClassLoader(), new Class<?>[] {clazz},
 			new InvocationHandler() {
 
@@ -59,10 +63,21 @@ public class ModelAdapterUtil {
 					method = delegateClass.getMethod(
 						method.getName(), method.getParameterTypes());
 
+					if (_isEquals(method)) {
+						args = new Object[] {
+							_delegateObjects.computeIfAbsent(
+								args[0], Function.identity())
+						};
+					}
+
 					return method.invoke(delegateObject, args);
 				}
 
 			});
+
+		_delegateObjects.put(proxyObject, delegateObject);
+
+		return proxyObject;
 	}
 
 	public static <T> T[] adapt(Class<T> clazz, Object[] delegateObjects) {
@@ -110,5 +125,22 @@ public class ModelAdapterUtil {
 
 		return adaptedQueryDefinition;
 	}
+
+	private static boolean _isEquals(Method method) {
+		Parameter[] parameters = method.getParameters();
+		Class<?> returnType = method.getReturnType();
+
+		if (method.getName().equals("equals") && returnType.isPrimitive() &&
+			returnType.getName().equals("boolean") &&
+			(parameters.length == 1) &&
+			Object.class.equals(parameters[0].getType())) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private static final Map<Object, Object> _delegateObjects = new HashMap<>();
 
 }
