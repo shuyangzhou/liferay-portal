@@ -501,6 +501,19 @@ public class ServicePreAction extends Action {
 		layouts = mergeAdditionalLayouts(
 			request, user, permissionChecker, layout, layouts, doAsGroupId);
 
+		if (layouts.isEmpty() && (layout != null)) {
+			layouts = new ArrayList<>(1);
+
+			if (layout instanceof VirtualLayout) {
+				VirtualLayout virtualLayout = (VirtualLayout)layout;
+
+				layouts.add(virtualLayout.getSourceLayout());
+			}
+			else {
+				layouts.add(layout);
+			}
+		}
+
 		LayoutSet layoutSet = null;
 
 		boolean hasCustomizeLayoutPermission = false;
