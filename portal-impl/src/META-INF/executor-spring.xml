@@ -118,9 +118,6 @@
 				<constructor-arg name="contextClassLoader" value="#{T(com.liferay.portal.kernel.util.PortalClassLoaderUtil).classLoader}" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg name="threadPoolHandler">
-			<bean class="com.liferay.portal.kernel.concurrent.ClearThreadLocalThreadPoolHandler" />
-		</constructor-arg>
 	</bean>
 
 	<!-- Process executor -->
