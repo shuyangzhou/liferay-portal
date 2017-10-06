@@ -15,6 +15,7 @@
 package com.liferay.portal.search.facet.faceted.searcher.test;
 
 import com.liferay.asset.kernel.model.AssetTag;
+import com.liferay.journal.model.JournalArticle;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Document;
@@ -28,10 +29,10 @@ import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
 import com.liferay.portal.search.test.internal.util.UserSearchFixture;
+import com.liferay.portal.search.test.journal.util.JournalArticleSearchFixture;
 import com.liferay.portal.search.test.util.AssertUtils;
 import com.liferay.portal.search.test.util.TermCollectorUtil;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
+import com.liferay.portal.test.rule.Inject;
 
 import java.util.List;
 import java.util.Map;
@@ -53,12 +54,13 @@ public abstract class BaseFacetedSearcherTestCase {
 	public void setUp() throws Exception {
 		WorkflowThreadLocal.setEnabled(false);
 
-		setUpFacetedSearcherManager();
+		setUpJournalArticleSearchFixture();
 		setUpUserSearchFixture();
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		journalArticleSearchFixture.tearDown();
 		userSearchFixture.tearDown();
 	}
 
@@ -134,11 +136,10 @@ public abstract class BaseFacetedSearcherTestCase {
 		return facetedSearcher.search(searchContext);
 	}
 
-	protected void setUpFacetedSearcherManager() {
-		Registry registry = RegistryUtil.getRegistry();
+	protected void setUpJournalArticleSearchFixture() throws Exception {
+		journalArticleSearchFixture.setUp();
 
-		_facetedSearcherManager = registry.getService(
-			FacetedSearcherManager.class);
+		_journalArticles = journalArticleSearchFixture.getJournalArticles();
 	}
 
 	protected void setUpUserSearchFixture() throws Exception {
@@ -153,16 +154,22 @@ public abstract class BaseFacetedSearcherTestCase {
 		return userSearchFixture.toMap(user, tags);
 	}
 
+	protected final JournalArticleSearchFixture journalArticleSearchFixture =
+		new JournalArticleSearchFixture();
 	protected final UserSearchFixture userSearchFixture =
 		new UserSearchFixture();
+
+	@Inject
+	private static FacetedSearcherManager _facetedSearcherManager;
 
 	@DeleteAfterTestRun
 	private List<AssetTag> _assetTags;
 
-	private FacetedSearcherManager _facetedSearcherManager;
-
 	@DeleteAfterTestRun
 	private List<Group> _groups;
+
+	@DeleteAfterTestRun
+	private List<JournalArticle> _journalArticles;
 
 	@DeleteAfterTestRun
 	private List<User> _users;

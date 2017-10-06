@@ -14,11 +14,14 @@
 
 package com.liferay.portal.kernel.search;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 
 /**
  * @author Michael C. Han
  */
+@ProviderType
 public interface RelatedEntryIndexer {
 
 	public void addRelatedClassNames(
@@ -26,6 +29,9 @@ public interface RelatedEntryIndexer {
 		throws Exception;
 
 	public void addRelatedEntryFields(Document document, Object obj)
+		throws Exception;
+
+	public boolean isVisibleRelatedEntry(long classPK, int status)
 		throws Exception;
 
 	public void updateFullQuery(SearchContext searchContext);

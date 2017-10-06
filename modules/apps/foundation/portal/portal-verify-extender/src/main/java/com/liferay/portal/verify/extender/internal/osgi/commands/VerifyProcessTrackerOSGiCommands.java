@@ -24,6 +24,7 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
+import com.liferay.portal.kernel.model.ReleaseConstants;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.util.HashMapDictionary;
@@ -49,6 +50,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.felix.service.command.Descriptor;
+
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
@@ -66,49 +69,96 @@ import org.osgi.service.component.annotations.Reference;
 	configurationPid = "com.liferay.portal.verify.extender.internal.configuration.VerifyProcessTrackerConfiguration",
 	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
 	property = {
+		"osgi.command.function=check", "osgi.command.function=checkAll",
 		"osgi.command.function=execute", "osgi.command.function=executeAll",
-		"osgi.command.function=list", "osgi.command.function=show",
-		"osgi.command.function=showReports", "osgi.command.scope=verify"
+		"osgi.command.function=help", "osgi.command.function=list",
+		"osgi.command.function=show", "osgi.command.function=showReports",
+		"osgi.command.scope=verify"
 	},
 	service = {VerifyProcessTrackerOSGiCommands.class}
 )
 public class VerifyProcessTrackerOSGiCommands {
 
-	public void execute(final String verifyProcessName) {
-		executeVerifyProcesses(
-			verifyProcessName, null, "verify-" + verifyProcessName);
+	@Descriptor("List latest execution result for a specific verify process")
+	public void check(final String verifyProcessName) {
+		try {
+			getVerifyProcesses(verifyProcessName);
+		}
+		catch (IllegalArgumentException iae) {
+			System.out.println(
+				"No verify process with name " + verifyProcessName);
+
+			return;
+		}
+
+		Release release = releaseLocalService.fetchRelease(verifyProcessName);
+
+		if ((release == null) ||
+			(!release.isVerified() &&
+			 (release.getState() == ReleaseConstants.STATE_GOOD))) {
+
+			System.out.println(
+				verifyProcessName + " verify process has not executed");
+		}
+		else {
+			if (release.isVerified()) {
+				System.out.println(
+					verifyProcessName + " verify process succeeded");
+			}
+			else if (release.getState() ==
+						ReleaseConstants.STATE_VERIFY_FAILURE) {
+
+				System.out.println(
+					verifyProcessName + " verify process failed");
+			}
+		}
 	}
 
+	@Descriptor("List latest execution result for all verify processes")
+	public void checkAll() {
+		for (String verifyProcessName : _verifyProcesses.keySet()) {
+			check(verifyProcessName);
+		}
+	}
+
+	@Descriptor("Execute a specific verify process")
+	public void execute(final String verifyProcessName) {
+		_execute(verifyProcessName, null, true);
+	}
+
+	@Descriptor("Execute a specific verify process with a specific output")
 	public void execute(
 		String verifyProcessName, String outputStreamContainerFactoryName) {
 
-		executeVerifyProcesses(
-			verifyProcessName, outputStreamContainerFactoryName,
-			"verify-" + verifyProcessName);
+		_execute(verifyProcessName, outputStreamContainerFactoryName, true);
 	}
 
+	@Descriptor("Execute all verify processes")
 	public void executeAll() {
 		OutputStreamContainerFactory outputStreamContainerFactory =
 			outputStreamContainerFactoryTracker.
 				getOutputStreamContainerFactory();
 
-		_runAllVerifiersWithFactory(outputStreamContainerFactory);
+		_runAllVerifiersWithFactory(outputStreamContainerFactory, true);
 	}
 
+	@Descriptor("Execute all verify processes with a specific output")
 	public void executeAll(String outputStreamContainerFactoryName) {
 		OutputStreamContainerFactory outputStreamContainerFactory =
 			outputStreamContainerFactoryTracker.getOutputStreamContainerFactory(
 				outputStreamContainerFactoryName);
 
-		_runAllVerifiersWithFactory(outputStreamContainerFactory);
+		_runAllVerifiersWithFactory(outputStreamContainerFactory, true);
 	}
 
+	@Descriptor("Execute all registered verify processes")
 	public void list() {
 		for (String verifyProcessName : _verifyProcesses.keySet()) {
 			show(verifyProcessName);
 		}
 	}
 
+	@Descriptor("Show all registered verify processes")
 	public void show(String verifyProcessName) {
 		try {
 			getVerifyProcesses(verifyProcessName);
@@ -123,6 +173,7 @@ public class VerifyProcessTrackerOSGiCommands {
 		System.out.println("Registered verify process " + verifyProcessName);
 	}
 
+	@Descriptor("Show all available outputs")
 	public void showReports() {
 		Set<String> outputStreamContainerFactoryNames =
 			outputStreamContainerFactoryTracker.
@@ -193,7 +244,7 @@ public class VerifyProcessTrackerOSGiCommands {
 	}
 
 	protected void executeVerifyProcesses(
-		String verifyProcessName, OutputStream outputStream) {
+		String verifyProcessName, OutputStream outputStream, boolean force) {
 
 		PrintWriter printWriter = new PrintWriter(outputStream, true);
 
@@ -213,7 +264,7 @@ public class VerifyProcessTrackerOSGiCommands {
 			Release release = releaseLocalService.fetchRelease(
 				verifyProcessName);
 
-			if ((release != null) && release.isVerified()) {
+			if ((release != null) && !force && release.isVerified()) {
 				if (!_serviceRegistrations.containsKey(verifyProcessName)) {
 					_registerVerifyProcessCompletionMarker(verifyProcessName);
 				}
@@ -250,11 +301,18 @@ public class VerifyProcessTrackerOSGiCommands {
 			}
 
 			if (verifyException == null) {
+				release.setState(ReleaseConstants.STATE_GOOD);
 				release.setVerified(true);
 
 				releaseLocalService.updateRelease(release);
 
 				_registerVerifyProcessCompletionMarker(verifyProcessName);
+			}
+			else {
+				release.setState(ReleaseConstants.STATE_VERIFY_FAILURE);
+				release.setVerified(false);
+
+				releaseLocalService.updateRelease(release);
 			}
 		}
 		finally {
@@ -267,7 +325,7 @@ public class VerifyProcessTrackerOSGiCommands {
 
 	protected void executeVerifyProcesses(
 		final String verifyProcessName, String outputStreamContainerFactoryName,
-		String outputStreamName) {
+		String outputStreamName, final boolean force) {
 
 		OutputStreamContainerFactory outputStreamContainerFactory;
 
@@ -294,7 +352,8 @@ public class VerifyProcessTrackerOSGiCommands {
 
 				@Override
 				public void run() {
-					executeVerifyProcesses(verifyProcessName, outputStream);
+					executeVerifyProcesses(
+						verifyProcessName, outputStream, force);
 				}
 
 			},
@@ -333,6 +392,15 @@ public class VerifyProcessTrackerOSGiCommands {
 	@Reference
 	protected ReleaseLocalService releaseLocalService;
 
+	private void _execute(
+		final String verifyProcessName, String outputStreamContainerFactoryName,
+		final boolean force) {
+
+		executeVerifyProcesses(
+			verifyProcessName, outputStreamContainerFactoryName,
+			"verify-" + verifyProcessName, force);
+	}
+
 	private void _registerVerifyProcessCompletionMarker(
 		String verifyProcessName) {
 
@@ -349,7 +417,8 @@ public class VerifyProcessTrackerOSGiCommands {
 	}
 
 	private void _runAllVerifiersWithFactory(
-		OutputStreamContainerFactory outputStreamContainerFactory) {
+		OutputStreamContainerFactory outputStreamContainerFactory,
+		boolean force) {
 
 		OutputStreamContainer outputStreamContainer =
 			outputStreamContainerFactory.create("all-verifiers");
@@ -358,7 +427,7 @@ public class VerifyProcessTrackerOSGiCommands {
 			outputStreamContainer.getOutputStream();
 
 		outputStreamContainerFactoryTracker.runWithSwappedLog(
-			new AllVerifiersRunnable(outputStream),
+			new AllVerifiersRunnable(outputStream, force),
 			outputStreamContainer.getDescription(), outputStream);
 	}
 
@@ -374,8 +443,9 @@ public class VerifyProcessTrackerOSGiCommands {
 
 	private class AllVerifiersRunnable implements Runnable {
 
-		public AllVerifiersRunnable(OutputStream outputStream) {
+		public AllVerifiersRunnable(OutputStream outputStream, boolean force) {
 			_outputStream = outputStream;
+			_force = force;
 		}
 
 		@Override
@@ -383,10 +453,12 @@ public class VerifyProcessTrackerOSGiCommands {
 			Set<String> verifyProcessNames = _verifyProcesses.keySet();
 
 			for (String verifyProcessName : verifyProcessNames) {
-				executeVerifyProcesses(verifyProcessName, _outputStream);
+				executeVerifyProcesses(
+					verifyProcessName, _outputStream, _force);
 			}
 		}
 
+		private final boolean _force;
 		private final OutputStream _outputStream;
 
 	}
@@ -402,7 +474,7 @@ public class VerifyProcessTrackerOSGiCommands {
 			String key, VerifyProcess serviceVerifyProcess,
 			List<VerifyProcess> contentVerifyProcesses) {
 
-			execute(key);
+			_execute(key, null, false);
 		}
 
 		@Override

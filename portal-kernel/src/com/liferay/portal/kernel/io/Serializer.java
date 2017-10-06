@@ -14,14 +14,16 @@
 
 package com.liferay.portal.kernel.io;
 
-import com.liferay.portal.kernel.memory.SoftReferenceThreadLocal;
+import com.liferay.portal.kernel.util.CentralizedThreadLocal;
 import com.liferay.portal.kernel.util.ClassLoaderPool;
-import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+
+import java.lang.ref.Reference;
+import java.lang.ref.SoftReference;
 
 import java.nio.ByteBuffer;
 
@@ -95,7 +97,7 @@ import java.util.Arrays;
 public class Serializer {
 
 	public Serializer() {
-		BufferQueue bufferQueue = bufferQueueThreadLocal.get();
+		BufferQueue bufferQueue = _getBufferQueue();
 
 		buffer = bufferQueue.dequeue();
 	}
@@ -104,7 +106,7 @@ public class Serializer {
 		ByteBuffer byteBuffer = ByteBuffer.wrap(Arrays.copyOf(buffer, index));
 
 		if (buffer.length <= THREADLOCAL_BUFFER_SIZE_LIMIT) {
-			BufferQueue bufferQueue = bufferQueueThreadLocal.get();
+			BufferQueue bufferQueue = _getBufferQueue();
 
 			bufferQueue.enqueue(buffer);
 		}
@@ -305,7 +307,7 @@ public class Serializer {
 		outputStream.write(buffer, 0, index);
 
 		if (buffer.length <= THREADLOCAL_BUFFER_SIZE_LIMIT) {
-			BufferQueue bufferQueue = bufferQueueThreadLocal.get();
+			BufferQueue bufferQueue = _getBufferQueue();
 
 			bufferQueue.enqueue(buffer);
 		}
@@ -364,7 +366,7 @@ public class Serializer {
 	 * Technically, we should soften each pooled buffer individually to achieve
 	 * the best garbage collection (GC) interaction. However, that increases
 	 * complexity of pooled buffer access and also burdens the GC's {@link
-	 * java.lang.ref.SoftReference} process, hurting performance.
+	 * SoftReference} process, hurting performance.
 	 * </p>
 	 *
 	 * <p>
@@ -374,21 +376,12 @@ public class Serializer {
 	 * likely be released by GC.
 	 * </p>
 	 */
-	protected static final ThreadLocal<BufferQueue> bufferQueueThreadLocal =
-		new SoftReferenceThreadLocal<BufferQueue>() {
-
-			@Override
-			protected BufferQueue initialValue() {
-				return new BufferQueue();
-			}
-
-		};
+	protected static final ThreadLocal<Reference<BufferQueue>>
+		bufferQueueThreadLocal = new CentralizedThreadLocal<>(false);
 
 	static {
-		int threadLocalBufferCountLimit = GetterUtil.getInteger(
-			System.getProperty(
-				Serializer.class.getName() +
-					".thread.local.buffer.count.limit"));
+		int threadLocalBufferCountLimit = Integer.getInteger(
+			Serializer.class.getName() + ".thread.local.buffer.count.limit", 0);
 
 		if (threadLocalBufferCountLimit < THREADLOCAL_BUFFER_COUNT_MIN) {
 			threadLocalBufferCountLimit = THREADLOCAL_BUFFER_COUNT_MIN;
@@ -396,10 +389,8 @@ public class Serializer {
 
 		THREADLOCAL_BUFFER_COUNT_LIMIT = threadLocalBufferCountLimit;
 
-		int threadLocalBufferSizeLimit = GetterUtil.getInteger(
-			System.getProperty(
-				Serializer.class.getName() +
-					".thread.local.buffer.size.limit"));
+		int threadLocalBufferSizeLimit = Integer.getInteger(
+			Serializer.class.getName() + ".thread.local.buffer.size.limit", 0);
 
 		if (threadLocalBufferSizeLimit < THREADLOCAL_BUFFER_SIZE_MIN) {
 			threadLocalBufferSizeLimit = THREADLOCAL_BUFFER_SIZE_MIN;
@@ -429,7 +420,7 @@ public class Serializer {
 	 * <p>
 	 * The queue is small enough to simply use a linear scan search for
 	 * maintaining its order. The entire queue data is held by a {@link
-	 * java.lang.ref.SoftReference}, so when necessary, GC can release the whole
+	 * SoftReference}, so when necessary, GC can release the whole
 	 * buffer cache.
 	 * </p>
 	 */
@@ -534,6 +525,24 @@ public class Serializer {
 			getBuffer(1)[index++] = (byte)b;
 		}
 
+	}
+
+	private BufferQueue _getBufferQueue() {
+		Reference<BufferQueue> reference = bufferQueueThreadLocal.get();
+
+		BufferQueue bufferQueue = null;
+
+		if (reference != null) {
+			bufferQueue = reference.get();
+		}
+
+		if (bufferQueue == null) {
+			bufferQueue = new BufferQueue();
+
+			bufferQueueThreadLocal.set(new SoftReference<>(bufferQueue));
+		}
+
+		return bufferQueue;
 	}
 
 }

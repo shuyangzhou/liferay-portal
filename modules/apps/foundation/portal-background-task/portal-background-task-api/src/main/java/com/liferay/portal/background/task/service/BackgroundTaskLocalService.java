@@ -85,6 +85,13 @@ public interface BackgroundTaskLocalService extends BaseLocalService,
 		Map<java.lang.String, Serializable> taskContextMap,
 		ServiceContext serviceContext) throws PortalException;
 
+	public void addBackgroundTaskAttachment(long userId, long backgroundTaskId,
+		java.lang.String fileName, File file) throws PortalException;
+
+	public void addBackgroundTaskAttachment(long userId, long backgroundTaskId,
+		java.lang.String fileName, InputStream inputStream)
+		throws PortalException;
+
 	public BackgroundTask amendBackgroundTask(long backgroundTaskId,
 		Map<java.lang.String, Serializable> taskContextMap, int status,
 		ServiceContext serviceContext);
@@ -92,6 +99,12 @@ public interface BackgroundTaskLocalService extends BaseLocalService,
 	public BackgroundTask amendBackgroundTask(long backgroundTaskId,
 		Map<java.lang.String, Serializable> taskContextMap, int status,
 		java.lang.String statusMessage, ServiceContext serviceContext);
+
+	@Clusterable(onMaster = true)
+	public void cleanUpBackgroundTask(long backgroundTaskId, int status);
+
+	@Clusterable(onMaster = true)
+	public void cleanUpBackgroundTasks();
 
 	/**
 	* Creates a new background task with the primary key. Does not add the background task to the database.
@@ -123,50 +136,14 @@ public interface BackgroundTaskLocalService extends BaseLocalService,
 	public BackgroundTask deleteBackgroundTask(long backgroundTaskId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public BackgroundTask fetchBackgroundTask(long backgroundTaskId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public BackgroundTask fetchFirstBackgroundTask(
-		java.lang.String taskExecutorClassName, int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public BackgroundTask fetchFirstBackgroundTask(
-		java.lang.String taskExecutorClassName, int status,
-		OrderByComparator<BackgroundTask> orderByComparator);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public BackgroundTask fetchFirstBackgroundTask(long groupId,
-		java.lang.String taskExecutorClassName, boolean completed,
-		OrderByComparator<BackgroundTask> orderByComparator);
-
-	/**
-	* Returns the background task with the primary key.
-	*
-	* @param backgroundTaskId the primary key of the background task
-	* @return the background task
-	* @throws PortalException if a background task with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public BackgroundTask getBackgroundTask(long backgroundTaskId)
+	public void deleteCompanyBackgroundTasks(long companyId)
 		throws PortalException;
 
-	/**
-	* Updates the background task in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param backgroundTask the background task
-	* @return the background task that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public BackgroundTask updateBackgroundTask(BackgroundTask backgroundTask);
+	public void deleteGroupBackgroundTasks(long groupId)
+		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+	public void deleteGroupBackgroundTasks(long groupId, java.lang.String name,
+		java.lang.String taskExecutorClassName) throws PortalException;
 
 	/**
 	* @throws PortalException
@@ -175,61 +152,7 @@ public interface BackgroundTaskLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the number of background tasks.
-	*
-	* @return the number of background tasks
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getBackgroundTasksCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getBackgroundTasksCount(long groupId, java.lang.String name,
-		java.lang.String taskExecutorClassName);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getBackgroundTasksCount(long groupId, java.lang.String name,
-		java.lang.String taskExecutorClassName, boolean completed);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getBackgroundTasksCount(long groupId,
-		java.lang.String taskExecutorClassName);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getBackgroundTasksCount(long groupId,
-		java.lang.String taskExecutorClassName, boolean completed);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getBackgroundTasksCount(long[] groupIds, java.lang.String name,
-		java.lang.String taskExecutorClassName);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getBackgroundTasksCount(long[] groupIds, java.lang.String name,
-		java.lang.String taskExecutorClassName, boolean completed);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getBackgroundTasksCount(long[] groupIds,
-		java.lang.String[] taskExecutorClassNames);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getBackgroundTasksCount(long[] groupIds,
-		java.lang.String[] taskExecutorClassNames, boolean completed);
-
-	@Clusterable(onMaster = true)
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String getBackgroundTaskStatusJSON(long backgroundTaskId);
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -271,6 +194,55 @@ public interface BackgroundTaskLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public BackgroundTask fetchBackgroundTask(long backgroundTaskId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public BackgroundTask fetchFirstBackgroundTask(long groupId,
+		java.lang.String taskExecutorClassName, boolean completed,
+		OrderByComparator<BackgroundTask> orderByComparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public BackgroundTask fetchFirstBackgroundTask(
+		java.lang.String taskExecutorClassName, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public BackgroundTask fetchFirstBackgroundTask(
+		java.lang.String taskExecutorClassName, int status,
+		OrderByComparator<BackgroundTask> orderByComparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	/**
+	* Returns the background task with the primary key.
+	*
+	* @param backgroundTaskId the primary key of the background task
+	* @return the background task
+	* @throws PortalException if a background task with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public BackgroundTask getBackgroundTask(long backgroundTaskId)
+		throws PortalException;
+
+	/**
 	* Returns a range of all the background tasks.
 	*
 	* <p>
@@ -285,30 +257,7 @@ public interface BackgroundTaskLocalService extends BaseLocalService,
 	public List<BackgroundTask> getBackgroundTasks(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<BackgroundTask> getBackgroundTasks(
-		java.lang.String taskExecutorClassName, int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<BackgroundTask> getBackgroundTasks(
-		java.lang.String taskExecutorClassName, int status, int start, int end,
-		OrderByComparator<BackgroundTask> orderByComparator);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<BackgroundTask> getBackgroundTasks(
-		java.lang.String[] taskExecutorClassNames, int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<BackgroundTask> getBackgroundTasks(
-		java.lang.String[] taskExecutorClassNames, int status, int start,
-		int end, OrderByComparator<BackgroundTask> orderByComparator);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<BackgroundTask> getBackgroundTasks(long groupId, int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<BackgroundTask> getBackgroundTasks(long groupId,
-		java.lang.String name, java.lang.String taskExecutorClassName,
-		int start, int end, OrderByComparator<BackgroundTask> orderByComparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<BackgroundTask> getBackgroundTasks(long groupId,
@@ -321,12 +270,17 @@ public interface BackgroundTaskLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<BackgroundTask> getBackgroundTasks(long groupId,
+		java.lang.String taskExecutorClassName, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BackgroundTask> getBackgroundTasks(long groupId,
 		java.lang.String taskExecutorClassName, int start, int end,
 		OrderByComparator<BackgroundTask> orderByComparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<BackgroundTask> getBackgroundTasks(long groupId,
-		java.lang.String taskExecutorClassName, int status);
+		java.lang.String name, java.lang.String taskExecutorClassName,
+		int start, int end, OrderByComparator<BackgroundTask> orderByComparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<BackgroundTask> getBackgroundTasks(long groupId,
@@ -355,49 +309,95 @@ public interface BackgroundTaskLocalService extends BaseLocalService,
 		java.lang.String[] taskExecutorClassNames, int start, int end,
 		OrderByComparator<BackgroundTask> orderByComparator);
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BackgroundTask> getBackgroundTasks(
+		java.lang.String taskExecutorClassName, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BackgroundTask> getBackgroundTasks(
+		java.lang.String taskExecutorClassName, int status, int start, int end,
+		OrderByComparator<BackgroundTask> orderByComparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BackgroundTask> getBackgroundTasks(
+		java.lang.String[] taskExecutorClassNames, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<BackgroundTask> getBackgroundTasks(
+		java.lang.String[] taskExecutorClassNames, int status, int start,
+		int end, OrderByComparator<BackgroundTask> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of background tasks.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @return the number of background tasks
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getBackgroundTasksCount();
 
-	public void addBackgroundTaskAttachment(long userId, long backgroundTaskId,
-		java.lang.String fileName, File file) throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getBackgroundTasksCount(long groupId,
+		java.lang.String taskExecutorClassName);
 
-	public void addBackgroundTaskAttachment(long userId, long backgroundTaskId,
-		java.lang.String fileName, InputStream inputStream)
-		throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getBackgroundTasksCount(long groupId,
+		java.lang.String taskExecutorClassName, boolean completed);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getBackgroundTasksCount(long groupId, java.lang.String name,
+		java.lang.String taskExecutorClassName);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getBackgroundTasksCount(long groupId, java.lang.String name,
+		java.lang.String taskExecutorClassName, boolean completed);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getBackgroundTasksCount(long[] groupIds, java.lang.String name,
+		java.lang.String taskExecutorClassName);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getBackgroundTasksCount(long[] groupIds, java.lang.String name,
+		java.lang.String taskExecutorClassName, boolean completed);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getBackgroundTasksCount(long[] groupIds,
+		java.lang.String[] taskExecutorClassNames);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getBackgroundTasksCount(long[] groupIds,
+		java.lang.String[] taskExecutorClassNames, boolean completed);
 
 	@Clusterable(onMaster = true)
-	public void cleanUpBackgroundTask(long backgroundTaskId, int status);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.lang.String getBackgroundTaskStatusJSON(long backgroundTaskId);
 
-	@Clusterable(onMaster = true)
-	public void cleanUpBackgroundTasks();
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
-	public void deleteCompanyBackgroundTasks(long companyId)
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
-
-	public void deleteGroupBackgroundTasks(long groupId)
-		throws PortalException;
-
-	public void deleteGroupBackgroundTasks(long groupId, java.lang.String name,
-		java.lang.String taskExecutorClassName) throws PortalException;
 
 	@Clusterable(onMaster = true)
 	public void resumeBackgroundTask(long backgroundTaskId);
 
 	@Clusterable(onMaster = true)
 	public void triggerBackgroundTask(long backgroundTaskId);
+
+	/**
+	* Updates the background task in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param backgroundTask the background task
+	* @return the background task that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public BackgroundTask updateBackgroundTask(BackgroundTask backgroundTask);
 }

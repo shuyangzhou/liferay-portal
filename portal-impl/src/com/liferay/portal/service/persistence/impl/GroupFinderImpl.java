@@ -70,6 +70,9 @@ public class GroupFinderImpl
 	public static final String COUNT_BY_C_PG_N_D =
 		GroupFinder.class.getName() + ".countByC_PG_N_D";
 
+	public static final String FIND_BY_ACTIVE_GROUPS =
+		GroupFinder.class.getName() + ".findByActiveGroups";
+
 	public static final String FIND_BY_COMPANY_ID =
 		GroupFinder.class.getName() + ".findByCompanyId";
 
@@ -312,6 +315,33 @@ public class GroupFinderImpl
 			}
 
 			return groupIds.size();
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	@Override
+	public List<Long> findByActiveGroupIds(long userId) {
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			String sql = CustomSQLUtil.get(FIND_BY_ACTIVE_GROUPS);
+
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
+
+			q.addScalar("groupId", Type.LONG);
+
+			QueryPos qPos = QueryPos.getInstance(q);
+
+			qPos.add(userId);
+
+			return q.list(true);
 		}
 		catch (Exception e) {
 			throw new SystemException(e);

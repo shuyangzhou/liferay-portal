@@ -16,9 +16,12 @@ package com.liferay.portal.kernel.workflow;
 
 import com.liferay.portal.kernel.messaging.proxy.MessagingProxy;
 import com.liferay.portal.kernel.messaging.proxy.ProxyMode;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Micha Kiener
@@ -53,6 +56,38 @@ public interface WorkflowDefinitionManager {
 	public WorkflowDefinition getLatestKaleoDefinition(
 			long companyId, String name)
 		throws WorkflowException;
+
+	public default List<WorkflowDefinition> getLatestWorkflowDefinitions(
+			long companyId, int start, int end,
+			OrderByComparator<WorkflowDefinition> orderByComparator)
+		throws WorkflowException {
+
+		Map<String, WorkflowDefinition> latestWorkflowDefinitions =
+			new HashMap<>();
+
+		List<WorkflowDefinition> workflowDefinitions = getWorkflowDefinitions(
+			companyId, start, end, orderByComparator);
+
+		for (WorkflowDefinition workflowDefinition : workflowDefinitions) {
+			String name = workflowDefinition.getName();
+
+			WorkflowDefinition latestWorkflowDefinition =
+				latestWorkflowDefinitions.get(name);
+
+			if (latestWorkflowDefinition != null) {
+				if (workflowDefinition.getVersion() >
+						latestWorkflowDefinition.getVersion()) {
+
+					latestWorkflowDefinitions.put(name, workflowDefinition);
+				}
+			}
+			else {
+				latestWorkflowDefinitions.put(name, workflowDefinition);
+			}
+		}
+
+		return ListUtil.fromMapValues(latestWorkflowDefinitions);
+	}
 
 	public WorkflowDefinition getWorkflowDefinition(
 			long companyId, String name, int version)

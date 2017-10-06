@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd">
+	<tlib-version>1.0</tlib-version>
+	<short-name>liferay-form</short-name>
+	<uri>http://liferay.com/tld/form</uri>
+	<tag>
+		<name>ddm-form-builder</name>
+		<tag-class>com.liferay.dynamic.data.mapping.form.taglib.servlet.taglib.DDMFormBuilderTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>ddmStructureId</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Long</type>
+		</attribute>
+		<attribute>
+			<name>defaultLanguageId</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>editingLanguageId</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>refererPortletNamespace</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>showPagination</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<dynamic-attributes>true</dynamic-attributes>
+	</tag>
+</taglib>

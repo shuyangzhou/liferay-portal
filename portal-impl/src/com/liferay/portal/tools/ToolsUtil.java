@@ -173,6 +173,12 @@ public class ToolsUtil {
 	}
 
 	public static boolean isInsideQuotes(String s, int pos) {
+		return isInsideQuotes(s, pos, true);
+	}
+
+	public static boolean isInsideQuotes(
+		String s, int pos, boolean allowEscapedQuotes) {
+
 		int start = s.lastIndexOf(CharPool.NEW_LINE, pos);
 
 		if (start == -1) {
@@ -197,21 +203,26 @@ public class ToolsUtil {
 
 			if (insideQuotes) {
 				if (c == delimeter) {
-					int precedingBackSlashCount = 0;
-
-					for (int j = i - 1; j >= 0; j--) {
-						if (line.charAt(j) == CharPool.BACK_SLASH) {
-							precedingBackSlashCount += 1;
-						}
-						else {
-							break;
-						}
-					}
-
-					if ((precedingBackSlashCount == 0) ||
-						((precedingBackSlashCount % 2) == 0)) {
-
+					if (!allowEscapedQuotes) {
 						insideQuotes = false;
+					}
+					else {
+						int precedingBackSlashCount = 0;
+
+						for (int j = i - 1; j >= 0; j--) {
+							if (line.charAt(j) == CharPool.BACK_SLASH) {
+								precedingBackSlashCount += 1;
+							}
+							else {
+								break;
+							}
+						}
+
+						if ((precedingBackSlashCount == 0) ||
+							((precedingBackSlashCount % 2) == 0)) {
+
+							insideQuotes = false;
+						}
 					}
 				}
 			}
@@ -256,20 +267,32 @@ public class ToolsUtil {
 			return content;
 		}
 
+		String afterImportsContent = null;
+
+		int pos = content.indexOf(imports);
+
+		if (pos == -1) {
+			afterImportsContent = content;
+		}
+		else {
+			pos += imports.length();
+
+			afterImportsContent = content.substring(pos);
+		}
+
 		Pattern pattern1 = Pattern.compile(
 			"\n(.*)" + StringUtil.replace(packagePath, CharPool.PERIOD, "\\.") +
 				"\\.([A-Z]\\w+)\\W");
 
 		outerLoop:
 		while (true) {
-			Matcher matcher1 = pattern1.matcher(content);
+			Matcher matcher1 = pattern1.matcher(afterImportsContent);
 
 			while (matcher1.find()) {
 				String lineStart = StringUtil.trimLeading(matcher1.group(1));
 
-				if (lineStart.startsWith("import ") ||
-					lineStart.contains("//") ||
-					isInsideQuotes(content, matcher1.start(2))) {
+				if (lineStart.contains("//") ||
+					isInsideQuotes(afterImportsContent, matcher1.start(2))) {
 
 					continue;
 				}
@@ -285,8 +308,8 @@ public class ToolsUtil {
 					continue;
 				}
 
-				content = StringUtil.replaceFirst(
-					content, packagePath + ".", StringPool.BLANK,
+				afterImportsContent = StringUtil.replaceFirst(
+					afterImportsContent, packagePath + ".", StringPool.BLANK,
 					matcher1.start());
 
 				continue outerLoop;
@@ -295,42 +318,52 @@ public class ToolsUtil {
 			break;
 		}
 
-		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
-			new UnsyncStringReader(imports));
+		try (UnsyncBufferedReader unsyncBufferedReader =
+				new UnsyncBufferedReader(new UnsyncStringReader(imports))) {
 
-		String line = null;
+			String line = null;
 
-		while ((line = unsyncBufferedReader.readLine()) != null) {
-			int x = line.indexOf("import ");
+			while ((line = unsyncBufferedReader.readLine()) != null) {
+				int x = line.indexOf("import ");
 
-			if (x == -1) {
-				continue;
-			}
+				if (x == -1) {
+					continue;
+				}
 
-			String importPackageAndClassName = line.substring(
-				x + 7, line.lastIndexOf(StringPool.SEMICOLON));
+				String importPackageAndClassName = line.substring(
+					x + 7, line.lastIndexOf(StringPool.SEMICOLON));
 
-			if (importPackageAndClassName.contains(StringPool.STAR)) {
-				continue;
-			}
+				if (importPackageAndClassName.contains(StringPool.STAR)) {
+					continue;
+				}
 
-			Pattern pattern3 = Pattern.compile(
-				"\n(.*)(" +
-					StringUtil.replace(importPackageAndClassName, ".", "\\.") +
-						")\\W");
+				while (true) {
+					x = afterImportsContent.indexOf(
+						importPackageAndClassName, x + 1);
 
-			outerLoop:
-			while (true) {
-				Matcher matcher3 = pattern3.matcher(content);
+					if (x == -1) {
+						break;
+					}
 
-				while (matcher3.find()) {
-					String lineStart = StringUtil.trimLeading(
-						matcher3.group(1));
+					char nextChar = afterImportsContent.charAt(
+						x + importPackageAndClassName.length());
 
-					if (lineStart.startsWith("import ") ||
-						lineStart.contains("//") ||
-						isInsideQuotes(content, matcher3.start(2))) {
+					if (Character.isLetterOrDigit(nextChar)) {
+						continue;
+					}
 
+					int y = afterImportsContent.lastIndexOf(
+						CharPool.NEW_LINE, x);
+
+					String s = afterImportsContent.substring(y, x + 1);
+
+					if (isInsideQuotes(s, x - y)) {
+						continue;
+					}
+
+					s = StringUtil.trim(s);
+
+					if (s.startsWith("//")) {
 						continue;
 					}
 
@@ -339,18 +372,18 @@ public class ToolsUtil {
 							importPackageAndClassName.lastIndexOf(
 								StringPool.PERIOD) + 1);
 
-					content = StringUtil.replaceFirst(
-						content, importPackageAndClassName, importClassName,
-						matcher3.start());
-
-					continue outerLoop;
+					afterImportsContent = StringUtil.replaceFirst(
+						afterImportsContent, importPackageAndClassName,
+						importClassName, x);
 				}
-
-				break;
 			}
-		}
 
-		return content;
+			if (pos == -1) {
+				return afterImportsContent;
+			}
+
+			return content.substring(0, pos) + afterImportsContent;
+		}
 	}
 
 	public static void writeFile(
@@ -365,7 +398,19 @@ public class ToolsUtil {
 			Map<String, Object> jalopySettings, Set<String> modifiedFileNames)
 		throws IOException {
 
-		String packagePath = getPackagePath(file);
+		writeFile(
+			file, content, author, jalopySettings, modifiedFileNames, null);
+	}
+
+	public static void writeFile(
+			File file, String content, String author,
+			Map<String, Object> jalopySettings, Set<String> modifiedFileNames,
+			String packagePath)
+		throws IOException {
+
+		if (Validator.isNull(packagePath)) {
+			packagePath = getPackagePath(file);
+		}
 
 		String className = file.getName();
 

@@ -8,9 +8,9 @@
  * @param? image
  * @param? imageEditorCapabilities
  * @param? imageEditorReady
+ * @param? pathThemeImages
  * @param? selectedControl
  * @param? selectedTool
- * @param? pathThemeImages
  * @param? strings
  *
  * Function References
@@ -28,7 +28,7 @@
 				<canvas class="fade {$imageEditorReady ? 'in' : ''} image-preview"></canvas>
 
 				{call ImageEditorLoading.render data="all"}
-					{param key: 'loading' /}
+					{param ref: 'loading' /}
 				{/call}
 			</div>
 
@@ -180,13 +180,14 @@
  * custom UI for the selected control
  *
  * @param control
+ * @param? pathThemeImages
  * @param selectedControl
  * @param strings
  */
 {template .tool_control}
 	<div class="controls-container {$selectedControl and $selectedControl.label == $control.label ? 'open' : ''}">
 		<div class="btn-space col-md-2 col-sm-2 col-xs-2">
-			<button class="btn btn-link" data-onclick="accept">{$strings['apply']}</a>
+			<button class="btn btn-link" data-onclick="accept">{$strings['apply']}</button>
 		</div>
 		<div class="col-md-8 col-sm-8 col-xs-8 tool-controls">
 			{if $selectedControl and $selectedControl.label == $control.label}
@@ -197,7 +198,7 @@
 			{/if}
 		</div>
 		<div class="btn-space col-md-2 col-sm-2 col-xs-2">
-			<button class="btn btn-link" data-onclick="discard">{$strings['cancel']}</a>
+			<button class="btn btn-link" data-onclick="discard">{$strings['cancel']}</button>
 		</div>
 	</div>
 {/template}
@@ -212,7 +213,7 @@
  */
 {template .active_controls}
 	{delcall ImageEditor.Controls allowemptydefault="true" variant="$variant" data="all" }
-		{param key: $id + '_selected_control_' + $variant /}
+		{param ref: $id + '_selected_control_' + $variant /}
 	{/delcall}
 {/template}
 

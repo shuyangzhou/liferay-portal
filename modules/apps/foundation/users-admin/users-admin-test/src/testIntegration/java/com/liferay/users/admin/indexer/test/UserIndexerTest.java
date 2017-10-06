@@ -21,7 +21,11 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistry;
+import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.SearchException;
+import com.liferay.portal.kernel.search.Summary;
+import com.liferay.portal.kernel.search.highlight.HighlightUtil;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -31,16 +35,18 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -65,14 +71,7 @@ public class UserIndexerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		Registry registry = RegistryUtil.getRegistry();
-
-		_userLocalService = registry.getService(UserLocalService.class);
-
-		IndexerRegistry indexerRegistry = registry.getService(
-			IndexerRegistry.class);
-
-		_indexer = indexerRegistry.getIndexer(User.class);
+		_indexer = _indexerRegistry.getIndexer(User.class);
 	}
 
 	@Test
@@ -307,6 +306,41 @@ public class UserIndexerTest {
 		Assert.assertEquals("open4life", actualUser.getScreenName());
 	}
 
+	@Test
+	public void testSummaryHighlight() throws Exception {
+		_expectedUser = UserTestUtil.addUser();
+
+		String firstName = "First";
+
+		_expectedUser.setFirstName(firstName);
+
+		String lastName = "Last";
+
+		_expectedUser.setLastName(lastName);
+
+		_expectedUser = _userLocalService.updateUser(_expectedUser);
+
+		assertSummary(
+			firstName,
+			StringBundler.concat(
+				HighlightUtil.HIGHLIGHT_TAG_OPEN, firstName,
+				HighlightUtil.HIGHLIGHT_TAG_CLOSE, StringPool.SPACE, lastName));
+		assertSummary(
+			StringUtil.toLowerCase(firstName + " " + lastName),
+			StringBundler.concat(
+				HighlightUtil.HIGHLIGHT_TAG_OPEN, firstName,
+				HighlightUtil.HIGHLIGHT_TAG_CLOSE, StringPool.SPACE,
+				HighlightUtil.HIGHLIGHT_TAG_OPEN, lastName,
+				HighlightUtil.HIGHLIGHT_TAG_CLOSE));
+		assertSummary(
+			lastName + " " + firstName,
+			StringBundler.concat(
+				HighlightUtil.HIGHLIGHT_TAG_OPEN, firstName,
+				HighlightUtil.HIGHLIGHT_TAG_CLOSE, StringPool.SPACE,
+				HighlightUtil.HIGHLIGHT_TAG_OPEN, lastName,
+				HighlightUtil.HIGHLIGHT_TAG_CLOSE));
+	}
+
 	protected void assertLength(Hits hits, int length) {
 		Assert.assertEquals(hits.toString(), length, hits.getLength());
 	}
@@ -356,7 +390,7 @@ public class UserIndexerTest {
 
 		List<User> actualUsers = assertSearch(hits, user);
 
-		return findByUserId(actualUsers, user.getUserId());
+		return getUser(actualUsers, user.getUserId());
 	}
 
 	protected User assertSearchOneUser(String keywords, User user)
@@ -364,17 +398,41 @@ public class UserIndexerTest {
 
 		List<User> actualUsers = assertSearch(keywords, user);
 
-		return findByUserId(actualUsers, user.getUserId());
+		return getUser(actualUsers, user.getUserId());
 	}
 
-	protected User findByUserId(List<User> users, long userId) {
-		for (User user : users) {
-			if (user.getUserId() == userId) {
-				return user;
-			}
-		}
+	protected void assertSummary(String keywords, String title)
+		throws Exception, SearchException {
 
-		return null;
+		SearchContext searchContext = getSearchContext();
+
+		QueryConfig queryConfig = searchContext.getQueryConfig();
+
+		queryConfig.setHighlightEnabled(true);
+
+		searchContext.setKeywords(keywords);
+
+		Hits hits = search(searchContext);
+
+		Document document = getDocument(
+			hits.getDocs(), _expectedUser.getUserId());
+
+		Summary summary = _indexer.getSummary(document, null, null, null);
+
+		Assert.assertEquals(StringPool.BLANK, summary.getContent());
+		Assert.assertEquals(title, summary.getTitle());
+	}
+
+	protected Document getDocument(Document[] documents, long userId) {
+		String userIdString = String.valueOf(userId);
+
+		Stream<Document> stream = Stream.of(documents);
+
+		Optional<Document> optional = stream.filter(
+			document -> userIdString.equals(document.get("userId"))
+		).findAny();
+
+		return optional.get();
 	}
 
 	protected List<String> getScreenNames(List<User> users) {
@@ -400,6 +458,16 @@ public class UserIndexerTest {
 		long userId = GetterUtil.getLong(document.get(Field.USER_ID));
 
 		return _userLocalService.getUser(userId);
+	}
+
+	protected User getUser(List<User> users, long userId) {
+		for (User user : users) {
+			if (user.getUserId() == userId) {
+				return user;
+			}
+		}
+
+		return null;
 	}
 
 	protected List<User> getUsers(Hits hits) throws Exception {
@@ -467,10 +535,15 @@ public class UserIndexerTest {
 		return strings.toString();
 	}
 
+	@Inject
+	private static IndexerRegistry _indexerRegistry;
+
+	@Inject
+	private static UserLocalService _userLocalService;
+
 	@DeleteAfterTestRun
 	private User _expectedUser;
 
 	private Indexer<User> _indexer;
-	private UserLocalService _userLocalService;
 
 }

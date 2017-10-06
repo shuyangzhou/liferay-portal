@@ -73,6 +73,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
 import com.liferay.portal.repository.portletrepository.PortletRepository;
+import com.liferay.portal.util.RepositoryUtil;
 import com.liferay.portal.verify.extender.marker.VerifyProcessCompletionMarker;
 import com.liferay.portlet.documentlibrary.lar.FileEntryUtil;
 import com.liferay.trash.TrashHelper;
@@ -252,6 +253,12 @@ public class FileEntryStagedModelDataHandler
 				PortletDataContext.REFERENCE_TYPE_PARENT);
 		}
 
+		FileVersion fileVersion = fileEntry.getFileVersion();
+
+		fileEntryElement.addAttribute("fileVersionUuid", fileVersion.getUuid());
+
+		fileEntryElement.addAttribute("version", fileEntry.getVersion());
+
 		LiferayFileEntry liferayFileEntry = (LiferayFileEntry)fileEntry;
 
 		liferayFileEntry.setCachedFileVersion(fileEntry.getFileVersion());
@@ -337,12 +344,20 @@ public class FileEntryStagedModelDataHandler
 
 		long userId = portletDataContext.getUserId(fileEntry.getUserUuid());
 
-		if (!fileEntry.isDefaultRepository()) {
+		if (RepositoryUtil.isExternalRepository(fileEntry.getRepositoryId())) {
 
 			// References has been automatically imported, nothing to do here
 
 			return;
 		}
+
+		Map<Long, Long> repositoryIds =
+			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
+				Repository.class);
+
+		long repositoryId = MapUtil.getLong(
+			repositoryIds, fileEntry.getRepositoryId(),
+			portletDataContext.getScopeGroupId());
 
 		Map<Long, Long> folderIds =
 			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
@@ -367,6 +382,9 @@ public class FileEntryStagedModelDataHandler
 			fileEntry);
 
 		String binPath = fileEntryElement.attributeValue("bin-path");
+		String fileVersionUuid = fileEntryElement.attributeValue(
+			"fileVersionUuid");
+		String version = fileEntryElement.attributeValue("version");
 
 		InputStream is = null;
 
@@ -412,22 +430,19 @@ public class FileEntryStagedModelDataHandler
 				FileEntry existingFileEntry = fetchStagedModelByUuidAndGroupId(
 					fileEntry.getUuid(), portletDataContext.getScopeGroupId());
 
-				FileVersion fileVersion = fileEntry.getFileVersion();
-
 				if (existingFileEntry == null) {
 					if (portletDataContext.
 							isDataStrategyMirrorWithOverwriting()) {
 
 						FileEntry existingTitleFileEntry =
 							FileEntryUtil.fetchByR_F_T(
-								portletDataContext.getScopeGroupId(), folderId,
-								fileEntry.getTitle());
+								repositoryId, folderId, fileEntry.getTitle());
 
 						if (existingTitleFileEntry == null) {
 							existingTitleFileEntry =
 								FileEntryUtil.fetchByR_F_FN(
-									portletDataContext.getScopeGroupId(),
-									folderId, fileEntry.getFileName());
+									repositoryId, folderId,
+									fileEntry.getFileName());
 						}
 
 						if (existingTitleFileEntry != null) {
@@ -437,7 +452,7 @@ public class FileEntryStagedModelDataHandler
 					}
 
 					serviceContext.setAttribute(
-						"fileVersionUuid", fileVersion.getUuid());
+						"fileVersionUuid", fileVersionUuid);
 					serviceContext.setUuid(fileEntry.getUuid());
 
 					String fileEntryTitle =
@@ -446,9 +461,9 @@ public class FileEntryStagedModelDataHandler
 							fileEntry.getTitle(), fileEntry.getExtension());
 
 					importedFileEntry = _dlAppLocalService.addFileEntry(
-						userId, portletDataContext.getScopeGroupId(), folderId,
-						fileEntry.getFileName(), fileEntry.getMimeType(),
-						fileEntryTitle, fileEntry.getDescription(), null, is,
+						userId, repositoryId, folderId, fileEntry.getFileName(),
+						fileEntry.getMimeType(), fileEntryTitle,
+						fileEntry.getDescription(), null, is,
 						fileEntry.getSize(), serviceContext);
 
 					if (fileEntry.isInTrash()) {
@@ -467,7 +482,7 @@ public class FileEntryStagedModelDataHandler
 					boolean updateFileEntry = false;
 
 					if (!Objects.equals(
-							fileVersion.getUuid(),
+							fileVersionUuid,
 							latestExistingFileVersion.getUuid())) {
 
 						deleteFileEntry = true;
@@ -504,7 +519,7 @@ public class FileEntryStagedModelDataHandler
 							DLFileVersion alreadyExistingFileVersion =
 								_dlFileVersionLocalService.
 									getFileVersionByUuidAndGroupId(
-										fileVersion.getUuid(),
+										fileVersionUuid,
 										existingFileEntry.getGroupId());
 
 							if (alreadyExistingFileVersion != null) {
@@ -514,7 +529,7 @@ public class FileEntryStagedModelDataHandler
 										getFileVersionId());
 							}
 
-							serviceContext.setUuid(fileVersion.getUuid());
+							serviceContext.setUuid(fileVersionUuid);
 
 							String fileEntryTitle =
 								_dlFileEntryLocalService.getUniqueTitle(
@@ -581,8 +596,7 @@ public class FileEntryStagedModelDataHandler
 				}
 
 				if (ExportImportThreadLocal.isStagingInProcess()) {
-					_overrideFileVersion(
-						importedFileEntry, fileVersion.getVersion());
+					_overrideFileVersion(importedFileEntry, version);
 				}
 			}
 			else {
@@ -591,10 +605,10 @@ public class FileEntryStagedModelDataHandler
 					fileEntry.getTitle(), fileEntry.getExtension());
 
 				importedFileEntry = _dlAppLocalService.addFileEntry(
-					userId, portletDataContext.getScopeGroupId(), folderId,
-					fileEntry.getFileName(), fileEntry.getMimeType(),
-					fileEntryTitle, fileEntry.getDescription(), null, is,
-					fileEntry.getSize(), serviceContext);
+					userId, repositoryId, folderId, fileEntry.getFileName(),
+					fileEntry.getMimeType(), fileEntryTitle,
+					fileEntry.getDescription(), null, is, fileEntry.getSize(),
+					serviceContext);
 			}
 
 			for (DLPluggableContentDataHandler dlPluggableContentDataHandler :

@@ -118,7 +118,7 @@ public class DDMTemplateFinderImpl
 	public int countByG_SC_S(
 		long groupId, long structureClassNameId, int status) {
 
-		long[] groupIds = new long[] {groupId};
+		long[] groupIds = {groupId};
 		long classNameId = PortalUtil.getClassNameId(DDMStructure.class);
 
 		return doCountByG_C_SC_S(
@@ -130,8 +130,8 @@ public class DDMTemplateFinderImpl
 		long companyId, long[] groupIds, long classNameId, long classPK,
 		long resourceClassNameId, String type, String mode, int status) {
 
-		long[] classNameIds = new long[] {classNameId};
-		long[] classPKs = new long[] {classPK};
+		long[] classNameIds = {classNameId};
+		long[] classPKs = {classPK};
 		String[] types = CustomSQLUtil.keywords(type, false);
 		String[] modes = CustomSQLUtil.keywords(mode, false);
 
@@ -164,9 +164,9 @@ public class DDMTemplateFinderImpl
 		String[] types, String[] modes, String[] languages, int status,
 		boolean andOperator) {
 
-		long[] groupIds = new long[] {groupId};
-		long[] classNameIds = new long[] {classNameId};
-		long[] classPKs = new long[] {classPK};
+		long[] groupIds = {groupId};
+		long[] classNameIds = {classNameId};
+		long[] classPKs = {classPK};
 
 		return doCountByC_G_C_C_R_N_D_T_M_L_S(
 			companyId, groupIds, classNameIds, classPKs, resourceClassNameId,
@@ -262,7 +262,7 @@ public class DDMTemplateFinderImpl
 	public int filterCountByG_SC_S(
 		long groupId, long structureClassNameId, int status) {
 
-		long[] groupIds = new long[] {groupId};
+		long[] groupIds = {groupId};
 		long classNameId = PortalUtil.getClassNameId(DDMStructure.class);
 
 		return doCountByG_C_SC_S(
@@ -284,8 +284,8 @@ public class DDMTemplateFinderImpl
 		long companyId, long[] groupIds, long classNameId, long classPK,
 		long resourceClassNameId, String type, String mode, int status) {
 
-		long[] classNameIds = new long[] {classNameId};
-		long[] classPKs = new long[] {classPK};
+		long[] classNameIds = {classNameId};
+		long[] classPKs = {classPK};
 		String[] types = CustomSQLUtil.keywords(type, false);
 		String[] modes = CustomSQLUtil.keywords(mode, false);
 
@@ -318,9 +318,9 @@ public class DDMTemplateFinderImpl
 		String[] types, String[] modes, String[] languages, int status,
 		boolean andOperator) {
 
-		long[] groupIds = new long[] {groupId};
-		long[] classNameIds = new long[] {classNameId};
-		long[] classPKs = new long[] {classPK};
+		long[] groupIds = {groupId};
+		long[] classNameIds = {classNameId};
+		long[] classPKs = {classPK};
 
 		return filterCountByC_G_C_C_R_N_D_T_M_L_S(
 			companyId, groupIds, classNameIds, classPKs, resourceClassNameId,
@@ -420,7 +420,7 @@ public class DDMTemplateFinderImpl
 		long groupId, long structureClassNameId, int status, int start, int end,
 		OrderByComparator<DDMTemplate> orderByComparator) {
 
-		long[] groupIds = new long[] {groupId};
+		long[] groupIds = {groupId};
 		long classNameId = PortalUtil.getClassNameId(DDMStructure.class);
 
 		return doFindByG_C_SC_S(
@@ -446,8 +446,8 @@ public class DDMTemplateFinderImpl
 		long resourceClassNameId, String type, String mode, int status,
 		int start, int end, OrderByComparator<DDMTemplate> orderByComparator) {
 
-		long[] classNameIds = new long[] {classNameId};
-		long[] classPKs = new long[] {classPK};
+		long[] classNameIds = {classNameId};
+		long[] classPKs = {classPK};
 		String[] types = CustomSQLUtil.keywords(type, false);
 		String[] modes = CustomSQLUtil.keywords(mode, false);
 
@@ -484,9 +484,9 @@ public class DDMTemplateFinderImpl
 		boolean andOperator, int start, int end,
 		OrderByComparator<DDMTemplate> orderByComparator) {
 
-		long[] groupIds = new long[] {groupId};
-		long[] classNameIds = new long[] {classNameId};
-		long[] classPKs = new long[] {classPK};
+		long[] groupIds = {groupId};
+		long[] classNameIds = {classNameId};
+		long[] classPKs = {classPK};
 
 		return filterFindByC_G_C_C_R_N_D_T_M_L_S(
 			companyId, groupIds, classNameIds, classPKs, resourceClassNameId,
@@ -590,7 +590,7 @@ public class DDMTemplateFinderImpl
 		long groupId, long structureClassNameId, int status, int start, int end,
 		OrderByComparator<DDMTemplate> orderByComparator) {
 
-		long[] groupIds = new long[] {groupId};
+		long[] groupIds = {groupId};
 		long classNameId = PortalUtil.getClassNameId(DDMStructure.class);
 
 		return doFindByG_C_SC_S(
@@ -616,8 +616,8 @@ public class DDMTemplateFinderImpl
 		long resourceClassNameId, String type, String mode, int status,
 		int start, int end, OrderByComparator<DDMTemplate> orderByComparator) {
 
-		long[] classNameIds = new long[] {classNameId};
-		long[] classPKs = new long[] {classPK};
+		long[] classNameIds = {classNameId};
+		long[] classPKs = {classPK};
 		String[] types = CustomSQLUtil.keywords(type, false);
 		String[] modes = CustomSQLUtil.keywords(mode, false);
 
@@ -654,9 +654,9 @@ public class DDMTemplateFinderImpl
 		boolean andOperator, int start, int end,
 		OrderByComparator<DDMTemplate> orderByComparator) {
 
-		long[] groupIds = new long[] {groupId};
-		long[] classNameIds = new long[] {classNameId};
-		long[] classPKs = new long[] {classPK};
+		long[] groupIds = {groupId};
+		long[] classNameIds = {classNameId};
+		long[] classPKs = {classPK};
 
 		return doFindByC_G_C_C_R_N_D_T_M_L_S(
 			companyId, groupIds, classNameIds, classPKs, resourceClassNameId,

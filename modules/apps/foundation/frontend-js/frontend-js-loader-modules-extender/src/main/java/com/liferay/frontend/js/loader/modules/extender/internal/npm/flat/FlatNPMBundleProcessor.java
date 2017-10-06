@@ -18,7 +18,7 @@ import com.liferay.frontend.js.loader.modules.extender.npm.JSBundle;
 import com.liferay.frontend.js.loader.modules.extender.npm.JSBundleProcessor;
 import com.liferay.frontend.js.loader.modules.extender.npm.JSPackageDependency;
 import com.liferay.frontend.js.loader.modules.extender.npm.ModuleNameUtil;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -40,6 +40,7 @@ import java.util.regex.Pattern;
 
 import org.osgi.framework.Bundle;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * Provides an implementation of {@link JSBundleProcessor} that assumes the
@@ -100,6 +101,26 @@ public class FlatNPMBundleProcessor implements JSBundleProcessor {
 		}
 	}
 
+	private String _normalizeModuleContent(String moduleContent) {
+		moduleContent = moduleContent.replaceAll("\n", " ");
+
+		int index = moduleContent.indexOf("Liferay.Loader.define(");
+
+		if (index == -1) {
+			return StringPool.BLANK;
+		}
+
+		moduleContent = moduleContent.substring(index);
+
+		index = moduleContent.indexOf("function");
+
+		if (index == -1) {
+			return StringPool.BLANK;
+		}
+
+		return moduleContent.substring(0, index);
+	}
+
 	/**
 	 * Returns the dependencies of a module given its URL. The dependencies are
 	 * parsed by reading the module's JavaScript code.
@@ -110,7 +131,8 @@ public class FlatNPMBundleProcessor implements JSBundleProcessor {
 	private Collection<String> _parseModuleDependencies(URL url)
 		throws IOException {
 
-		String urlContent = StringUtil.read(url.openStream());
+		String urlContent = _normalizeModuleContent(
+			StringUtil.read(url.openStream()));
 
 		Matcher matcher = _moduleDefinitionPattern.matcher(urlContent);
 
@@ -258,7 +280,7 @@ public class FlatNPMBundleProcessor implements JSBundleProcessor {
 		JSONObject jsonObject = null;
 
 		try {
-			jsonObject = JSONFactoryUtil.createJSONObject(
+			jsonObject = _jsonFactory.createJSONObject(
 				_getResourceContent(flatJSBundle, location + "/package.json"));
 		}
 		catch (Exception e) {
@@ -320,6 +342,9 @@ public class FlatNPMBundleProcessor implements JSBundleProcessor {
 		FlatNPMBundleProcessor.class);
 
 	private static final Pattern _moduleDefinitionPattern = Pattern.compile(
-		"Liferay\\.Loader\\.define.*\\[(.*)\\].*function", Pattern.MULTILINE);
+		"Liferay\\.Loader\\.define.*\\[(.*)\\].*");
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

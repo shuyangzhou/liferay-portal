@@ -74,6 +74,8 @@ gradle.beforeProject {
 	configure(project) {
 		apply plugin: "com.liferay.defaults.plugin"
 
+		task printProjectPath
+
 		afterEvaluate {
 			String forcedUpdateVersion = GradleUtil.getProperty(project, "forced.update.version", (String)null)
 
@@ -81,6 +83,12 @@ gradle.beforeProject {
 				updateVersion {
 					replacement = forcedUpdateVersion
 				}
+			}
+		}
+
+		printProjectPath {
+			doLast {
+				println project.path
 			}
 		}
 
@@ -113,6 +121,12 @@ gradle.beforeProject {
 
 			if (ant.properties["app.server.type"] == "tomcat") {
 				task compileJSP(dependsOn: "compile-jsp")
+			}
+		}
+
+		pluginManager.withPlugin("com.liferay.node") {
+			node {
+				npmArgs "--no-package-lock"
 			}
 		}
 

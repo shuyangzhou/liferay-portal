@@ -130,16 +130,14 @@ public class DocumentImpl implements Document {
 			return;
 		}
 
-		if (_dateFormat == null) {
-			_dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-				_INDEX_DATE_FORMAT_PATTERN);
-		}
-
 		String[] datesString = new String[values.length];
 		Long[] datesTime = new Long[values.length];
 
 		for (int i = 0; i < values.length; i++) {
-			datesString[i] = _dateFormat.format(values[i]);
+			Format dateFormat = _getDateFormat();
+
+			datesString[i] = dateFormat.format(values[i]);
+
 			datesTime[i] = values[i].getTime();
 		}
 
@@ -169,7 +167,10 @@ public class DocumentImpl implements Document {
 		Long[] datesTime = new Long[values.length];
 
 		for (int i = 0; i < values.length; i++) {
-			datesString[i] = _dateFormat.format(values[i]);
+			Format dateFormat = _getDateFormat();
+
+			datesString[i] = dateFormat.format(values[i]);
+
 			datesTime[i] = values[i].getTime();
 		}
 
@@ -415,7 +416,7 @@ public class DocumentImpl implements Document {
 
 		createKeywordField(name, valueString, false);
 
-		createSortableTextField(name, valueString);
+		_createSortableTextField(name, true, valueString);
 	}
 
 	@Override
@@ -428,21 +429,21 @@ public class DocumentImpl implements Document {
 
 		createField(name, valuesString);
 
-		createSortableTextField(name, valuesString);
+		_createSortableTextField(name, true, valuesString);
 	}
 
 	@Override
 	public void addKeywordSortable(String name, String value) {
 		createKeywordField(name, value, false);
 
-		createSortableTextField(name, value);
+		_createSortableTextField(name, true, value);
 	}
 
 	@Override
 	public void addKeywordSortable(String name, String[] values) {
 		createField(name, values);
 
-		createSortableTextField(name, values);
+		_createSortableTextField(name, true, values);
 	}
 
 	@Override
@@ -722,7 +723,7 @@ public class DocumentImpl implements Document {
 
 		field.setTokenized(true);
 
-		createSortableTextField(name, value);
+		_createSortableTextField(name, true, value);
 	}
 
 	@Override
@@ -735,7 +736,7 @@ public class DocumentImpl implements Document {
 
 		field.setTokenized(true);
 
-		createSortableTextField(name, values);
+		_createSortableTextField(name, true, values);
 	}
 
 	@Override
@@ -780,19 +781,7 @@ public class DocumentImpl implements Document {
 		String portletId, String field1, String field2, String field3,
 		String field4) {
 
-		String uid = portletId + _UID_PORTLET + field1;
-
-		if (field2 != null) {
-			uid += _UID_FIELD + field2;
-		}
-
-		if (field3 != null) {
-			uid += _UID_FIELD + field3;
-		}
-
-		if (field4 != null) {
-			uid += _UID_FIELD + field4;
-		}
+		String uid = Field.getUID(portletId, field1, field2, field3, field4);
 
 		addKeyword(Field.UID, uid);
 	}
@@ -1054,13 +1043,13 @@ public class DocumentImpl implements Document {
 
 	protected void createSortableKeywordField(String name, String value) {
 		if (isDocumentSortableTextField(name)) {
-			createSortableTextField(name, value);
+			_createSortableTextField(name, false, value);
 		}
 	}
 
 	protected void createSortableKeywordField(String name, String[] values) {
 		if (isDocumentSortableTextField(name)) {
-			createSortableTextField(name, values);
+			_createSortableTextField(name, false, values);
 		}
 	}
 
@@ -1092,24 +1081,11 @@ public class DocumentImpl implements Document {
 	}
 
 	protected void createSortableTextField(String name, String value) {
-		String truncatedValue = value;
-
-		if (value.length() > _SORTABLE_TEXT_FIELDS_TRUNCATED_LENGTH) {
-			truncatedValue = value.substring(
-				0, _SORTABLE_TEXT_FIELDS_TRUNCATED_LENGTH);
-		}
-
-		createKeywordField(
-			Field.getSortableFieldName(name), truncatedValue, true);
+		_createSortableTextField(name, false, value);
 	}
 
 	protected void createSortableTextField(String name, String[] values) {
-		if (values.length == 0) {
-			return;
-		}
-
-		createSortableTextField(
-			name, Collections.min(Arrays.<String>asList(values)));
+		_createSortableTextField(name, false, values);
 	}
 
 	protected Field doGetField(String name, boolean createIfNew) {
@@ -1156,6 +1132,44 @@ public class DocumentImpl implements Document {
 		}
 
 		sb.append(StringPool.CLOSE_CURLY_BRACE);
+	}
+
+	private void _createSortableTextField(
+		String name, boolean typify, String value) {
+
+		if (typify) {
+			name = name.concat(StringPool.UNDERLINE).concat("String");
+		}
+
+		String truncatedValue = value;
+
+		if (value.length() > _SORTABLE_TEXT_FIELDS_TRUNCATED_LENGTH) {
+			truncatedValue = value.substring(
+				0, _SORTABLE_TEXT_FIELDS_TRUNCATED_LENGTH);
+		}
+
+		createKeywordField(
+			Field.getSortableFieldName(name), truncatedValue, true);
+	}
+
+	private void _createSortableTextField(
+		String name, boolean typify, String[] values) {
+
+		if (values.length == 0) {
+			return;
+		}
+
+		_createSortableTextField(
+			name, typify, Collections.min(Arrays.<String>asList(values)));
+	}
+
+	private Format _getDateFormat() {
+		if (_dateFormat == null) {
+			_dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+				_INDEX_DATE_FORMAT_PATTERN);
+		}
+
+		return _dateFormat;
 	}
 
 	private static final String _INDEX_DATE_FORMAT_PATTERN = PropsUtil.get(

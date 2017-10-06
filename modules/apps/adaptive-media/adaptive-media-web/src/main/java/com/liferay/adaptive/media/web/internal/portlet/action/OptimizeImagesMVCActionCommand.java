@@ -14,8 +14,8 @@
 
 package com.liferay.adaptive.media.web.internal.portlet.action;
 
-import com.liferay.adaptive.media.web.constants.AdaptiveMediaPortletKeys;
-import com.liferay.adaptive.media.web.constants.OptimizeImagesBackgroundTaskConstants;
+import com.liferay.adaptive.media.web.constants.AMOptimizeImagesBackgroundTaskConstants;
+import com.liferay.adaptive.media.web.constants.AMPortletKeys;
 import com.liferay.adaptive.media.web.internal.background.task.OptimizeImagesAllConfigurationsBackgroundTaskExecutor;
 import com.liferay.adaptive.media.web.internal.background.task.OptimizeImagesSingleConfigurationBackgroundTaskExecutor;
 import com.liferay.portal.background.task.constants.BackgroundTaskContextMapConstants;
@@ -49,7 +49,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"javax.portlet.name=" + AdaptiveMediaPortletKeys.ADAPTIVE_MEDIA,
+		"javax.portlet.name=" + AMPortletKeys.ADAPTIVE_MEDIA,
 		"mvc.command.name=/adaptive_media/optimize_images"
 	},
 	service = MVCActionCommand.class
@@ -88,7 +88,7 @@ public class OptimizeImagesMVCActionCommand extends BaseMVCActionCommand {
 		Map<String, Serializable> taskContextMap = new HashMap<>();
 
 		taskContextMap.put(
-			OptimizeImagesBackgroundTaskConstants.COMPANY_ID, companyId);
+			AMOptimizeImagesBackgroundTaskConstants.COMPANY_ID, companyId);
 		taskContextMap.put(
 			BackgroundTaskContextMapConstants.DELETE_ON_SUCCESS, true);
 
@@ -113,10 +113,10 @@ public class OptimizeImagesMVCActionCommand extends BaseMVCActionCommand {
 		Map<String, Serializable> taskContextMap = new HashMap<>();
 
 		taskContextMap.put(
-			OptimizeImagesBackgroundTaskConstants.CONFIGURATION_ENTRY_UUID,
+			AMOptimizeImagesBackgroundTaskConstants.CONFIGURATION_ENTRY_UUID,
 			configurationEntryUuid);
 		taskContextMap.put(
-			OptimizeImagesBackgroundTaskConstants.COMPANY_ID, companyId);
+			AMOptimizeImagesBackgroundTaskConstants.COMPANY_ID, companyId);
 		taskContextMap.put(
 			BackgroundTaskContextMapConstants.DELETE_ON_SUCCESS, true);
 

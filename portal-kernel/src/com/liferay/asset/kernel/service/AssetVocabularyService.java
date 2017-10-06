@@ -58,67 +58,22 @@ public interface AssetVocabularyService extends BaseService {
 	 * Never modify or reference this interface directly. Always use {@link AssetVocabularyServiceUtil} to access the asset vocabulary remote service. Add custom service methods to {@link com.liferay.portlet.asset.service.impl.AssetVocabularyServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public AssetVocabulary addVocabulary(long groupId, java.lang.String title,
-		ServiceContext serviceContext) throws PortalException;
-
-	public AssetVocabulary addVocabulary(long groupId, java.lang.String title,
 		Map<Locale, java.lang.String> titleMap,
 		Map<Locale, java.lang.String> descriptionMap,
 		java.lang.String settings, ServiceContext serviceContext)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetVocabulary fetchVocabulary(long vocabularyId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetVocabulary getVocabulary(long vocabularyId)
-		throws PortalException;
-
-	public AssetVocabulary updateVocabulary(long vocabularyId,
-		java.lang.String title, Map<Locale, java.lang.String> titleMap,
-		Map<Locale, java.lang.String> descriptionMap,
-		java.lang.String settings, ServiceContext serviceContext)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetVocabularyDisplay getGroupVocabulariesDisplay(long groupId,
-		java.lang.String name, int start, int end,
-		boolean addDefaultVocabulary, OrderByComparator<AssetVocabulary> obc)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetVocabularyDisplay getGroupVocabulariesDisplay(long groupId,
-		java.lang.String name, int start, int end,
-		OrderByComparator<AssetVocabulary> obc) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetVocabularyDisplay searchVocabulariesDisplay(long groupId,
-		java.lang.String title, boolean addDefaultVocabulary, int start, int end)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetVocabularyDisplay searchVocabulariesDisplay(long groupId,
-		java.lang.String title, boolean addDefaultVocabulary, int start,
-		int end, Sort sort) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getGroupVocabulariesCount(long groupId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getGroupVocabulariesCount(long groupId, java.lang.String name);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getGroupVocabulariesCount(long[] groupIds);
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public AssetVocabulary addVocabulary(long groupId, java.lang.String title,
+		ServiceContext serviceContext) throws PortalException;
 
 	public List<AssetVocabulary> deleteVocabularies(long[] vocabularyIds,
 		ServiceContext serviceContext) throws PortalException;
+
+	public void deleteVocabulary(long vocabularyId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AssetVocabulary fetchVocabulary(long vocabularyId)
+		throws PortalException;
 
 	/**
 	* @deprecated As of 7.0.0, with no direct replacement
@@ -127,6 +82,17 @@ public interface AssetVocabularyService extends BaseService {
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AssetVocabulary> getCompanyVocabularies(long companyId)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetVocabulary> getGroupsVocabularies(long[] groupIds);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetVocabulary> getGroupsVocabularies(long[] groupIds,
+		java.lang.String className);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetVocabulary> getGroupsVocabularies(long[] groupIds,
+		java.lang.String className, long classTypePK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AssetVocabulary> getGroupVocabularies(long groupId)
@@ -154,15 +120,31 @@ public interface AssetVocabularyService extends BaseService {
 	public List<AssetVocabulary> getGroupVocabularies(long[] groupIds);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetVocabulary> getGroupsVocabularies(long[] groupIds);
+	public int getGroupVocabulariesCount(long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetVocabulary> getGroupsVocabularies(long[] groupIds,
-		java.lang.String className);
+	public int getGroupVocabulariesCount(long groupId, java.lang.String name);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetVocabulary> getGroupsVocabularies(long[] groupIds,
-		java.lang.String className, long classTypePK);
+	public int getGroupVocabulariesCount(long[] groupIds);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AssetVocabularyDisplay getGroupVocabulariesDisplay(long groupId,
+		java.lang.String name, int start, int end,
+		boolean addDefaultVocabulary, OrderByComparator<AssetVocabulary> obc)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AssetVocabularyDisplay getGroupVocabulariesDisplay(long groupId,
+		java.lang.String name, int start, int end,
+		OrderByComparator<AssetVocabulary> obc) throws PortalException;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link
@@ -173,5 +155,23 @@ public interface AssetVocabularyService extends BaseService {
 	public List<AssetVocabulary> getVocabularies(long[] vocabularyIds)
 		throws PortalException;
 
-	public void deleteVocabulary(long vocabularyId) throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AssetVocabulary getVocabulary(long vocabularyId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AssetVocabularyDisplay searchVocabulariesDisplay(long groupId,
+		java.lang.String title, boolean addDefaultVocabulary, int start, int end)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AssetVocabularyDisplay searchVocabulariesDisplay(long groupId,
+		java.lang.String title, boolean addDefaultVocabulary, int start,
+		int end, Sort sort) throws PortalException;
+
+	public AssetVocabulary updateVocabulary(long vocabularyId,
+		java.lang.String title, Map<Locale, java.lang.String> titleMap,
+		Map<Locale, java.lang.String> descriptionMap,
+		java.lang.String settings, ServiceContext serviceContext)
+		throws PortalException;
 }

@@ -192,6 +192,41 @@ public class DDMStructureVersionWrapper implements DDMStructureVersion,
 	}
 
 	@Override
+	public java.lang.Object clone() {
+		return new DDMStructureVersionWrapper((DDMStructureVersion)_ddmStructureVersion.clone());
+	}
+
+	@Override
+	public int compareTo(DDMStructureVersion ddmStructureVersion) {
+		return _ddmStructureVersion.compareTo(ddmStructureVersion);
+	}
+
+	@Override
+	public java.lang.String[] getAvailableLanguageIds() {
+		return _ddmStructureVersion.getAvailableLanguageIds();
+	}
+
+	/**
+	* Returns the company ID of this ddm structure version.
+	*
+	* @return the company ID of this ddm structure version
+	*/
+	@Override
+	public long getCompanyId() {
+		return _ddmStructureVersion.getCompanyId();
+	}
+
+	/**
+	* Returns the create date of this ddm structure version.
+	*
+	* @return the create date of this ddm structure version
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _ddmStructureVersion.getCreateDate();
+	}
+
+	@Override
 	public DDMForm getDDMForm() {
 		return _ddmStructureVersion.getDDMForm();
 	}
@@ -203,19 +238,354 @@ public class DDMStructureVersionWrapper implements DDMStructureVersion,
 	}
 
 	@Override
+	public java.lang.String getDefaultLanguageId() {
+		return _ddmStructureVersion.getDefaultLanguageId();
+	}
+
+	/**
+	* Returns the definition of this ddm structure version.
+	*
+	* @return the definition of this ddm structure version
+	*/
+	@Override
+	public java.lang.String getDefinition() {
+		return _ddmStructureVersion.getDefinition();
+	}
+
+	/**
+	* Returns the description of this ddm structure version.
+	*
+	* @return the description of this ddm structure version
+	*/
+	@Override
+	public java.lang.String getDescription() {
+		return _ddmStructureVersion.getDescription();
+	}
+
+	/**
+	* Returns the localized description of this ddm structure version in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param locale the locale of the language
+	* @return the localized description of this ddm structure version
+	*/
+	@Override
+	public java.lang.String getDescription(java.util.Locale locale) {
+		return _ddmStructureVersion.getDescription(locale);
+	}
+
+	/**
+	* Returns the localized description of this ddm structure version in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param locale the local of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized description of this ddm structure version. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	*/
+	@Override
+	public java.lang.String getDescription(java.util.Locale locale,
+		boolean useDefault) {
+		return _ddmStructureVersion.getDescription(locale, useDefault);
+	}
+
+	/**
+	* Returns the localized description of this ddm structure version in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @return the localized description of this ddm structure version
+	*/
+	@Override
+	public java.lang.String getDescription(java.lang.String languageId) {
+		return _ddmStructureVersion.getDescription(languageId);
+	}
+
+	/**
+	* Returns the localized description of this ddm structure version in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized description of this ddm structure version
+	*/
+	@Override
+	public java.lang.String getDescription(java.lang.String languageId,
+		boolean useDefault) {
+		return _ddmStructureVersion.getDescription(languageId, useDefault);
+	}
+
+	@Override
+	public java.lang.String getDescriptionCurrentLanguageId() {
+		return _ddmStructureVersion.getDescriptionCurrentLanguageId();
+	}
+
+	@Override
+	public java.lang.String getDescriptionCurrentValue() {
+		return _ddmStructureVersion.getDescriptionCurrentValue();
+	}
+
+	/**
+	* Returns a map of the locales and localized descriptions of this ddm structure version.
+	*
+	* @return the locales and localized descriptions of this ddm structure version
+	*/
+	@Override
+	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
+		return _ddmStructureVersion.getDescriptionMap();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _ddmStructureVersion.getExpandoBridge();
+	}
+
+	/**
+	* Returns the group ID of this ddm structure version.
+	*
+	* @return the group ID of this ddm structure version
+	*/
+	@Override
+	public long getGroupId() {
+		return _ddmStructureVersion.getGroupId();
+	}
+
+	/**
+	* Returns the name of this ddm structure version.
+	*
+	* @return the name of this ddm structure version
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _ddmStructureVersion.getName();
+	}
+
+	/**
+	* Returns the localized name of this ddm structure version in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param locale the locale of the language
+	* @return the localized name of this ddm structure version
+	*/
+	@Override
+	public java.lang.String getName(java.util.Locale locale) {
+		return _ddmStructureVersion.getName(locale);
+	}
+
+	/**
+	* Returns the localized name of this ddm structure version in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param locale the local of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized name of this ddm structure version. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	*/
+	@Override
+	public java.lang.String getName(java.util.Locale locale, boolean useDefault) {
+		return _ddmStructureVersion.getName(locale, useDefault);
+	}
+
+	/**
+	* Returns the localized name of this ddm structure version in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @return the localized name of this ddm structure version
+	*/
+	@Override
+	public java.lang.String getName(java.lang.String languageId) {
+		return _ddmStructureVersion.getName(languageId);
+	}
+
+	/**
+	* Returns the localized name of this ddm structure version in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized name of this ddm structure version
+	*/
+	@Override
+	public java.lang.String getName(java.lang.String languageId,
+		boolean useDefault) {
+		return _ddmStructureVersion.getName(languageId, useDefault);
+	}
+
+	@Override
+	public java.lang.String getNameCurrentLanguageId() {
+		return _ddmStructureVersion.getNameCurrentLanguageId();
+	}
+
+	@Override
+	public java.lang.String getNameCurrentValue() {
+		return _ddmStructureVersion.getNameCurrentValue();
+	}
+
+	/**
+	* Returns a map of the locales and localized names of this ddm structure version.
+	*
+	* @return the locales and localized names of this ddm structure version
+	*/
+	@Override
+	public Map<java.util.Locale, java.lang.String> getNameMap() {
+		return _ddmStructureVersion.getNameMap();
+	}
+
+	/**
+	* Returns the parent structure ID of this ddm structure version.
+	*
+	* @return the parent structure ID of this ddm structure version
+	*/
+	@Override
+	public long getParentStructureId() {
+		return _ddmStructureVersion.getParentStructureId();
+	}
+
+	/**
+	* Returns the primary key of this ddm structure version.
+	*
+	* @return the primary key of this ddm structure version
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _ddmStructureVersion.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _ddmStructureVersion.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the status of this ddm structure version.
+	*
+	* @return the status of this ddm structure version
+	*/
+	@Override
+	public int getStatus() {
+		return _ddmStructureVersion.getStatus();
+	}
+
+	/**
+	* Returns the status by user ID of this ddm structure version.
+	*
+	* @return the status by user ID of this ddm structure version
+	*/
+	@Override
+	public long getStatusByUserId() {
+		return _ddmStructureVersion.getStatusByUserId();
+	}
+
+	/**
+	* Returns the status by user name of this ddm structure version.
+	*
+	* @return the status by user name of this ddm structure version
+	*/
+	@Override
+	public java.lang.String getStatusByUserName() {
+		return _ddmStructureVersion.getStatusByUserName();
+	}
+
+	/**
+	* Returns the status by user uuid of this ddm structure version.
+	*
+	* @return the status by user uuid of this ddm structure version
+	*/
+	@Override
+	public java.lang.String getStatusByUserUuid() {
+		return _ddmStructureVersion.getStatusByUserUuid();
+	}
+
+	/**
+	* Returns the status date of this ddm structure version.
+	*
+	* @return the status date of this ddm structure version
+	*/
+	@Override
+	public Date getStatusDate() {
+		return _ddmStructureVersion.getStatusDate();
+	}
+
+	/**
+	* Returns the storage type of this ddm structure version.
+	*
+	* @return the storage type of this ddm structure version
+	*/
+	@Override
+	public java.lang.String getStorageType() {
+		return _ddmStructureVersion.getStorageType();
+	}
+
+	@Override
 	public DDMStructure getStructure()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ddmStructureVersion.getStructure();
 	}
 
+	/**
+	* Returns the structure ID of this ddm structure version.
+	*
+	* @return the structure ID of this ddm structure version
+	*/
 	@Override
-	public DDMStructureVersion toEscapedModel() {
-		return new DDMStructureVersionWrapper(_ddmStructureVersion.toEscapedModel());
+	public long getStructureId() {
+		return _ddmStructureVersion.getStructureId();
+	}
+
+	/**
+	* Returns the structure version ID of this ddm structure version.
+	*
+	* @return the structure version ID of this ddm structure version
+	*/
+	@Override
+	public long getStructureVersionId() {
+		return _ddmStructureVersion.getStructureVersionId();
+	}
+
+	/**
+	* Returns the type of this ddm structure version.
+	*
+	* @return the type of this ddm structure version
+	*/
+	@Override
+	public int getType() {
+		return _ddmStructureVersion.getType();
+	}
+
+	/**
+	* Returns the user ID of this ddm structure version.
+	*
+	* @return the user ID of this ddm structure version
+	*/
+	@Override
+	public long getUserId() {
+		return _ddmStructureVersion.getUserId();
+	}
+
+	/**
+	* Returns the user name of this ddm structure version.
+	*
+	* @return the user name of this ddm structure version
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _ddmStructureVersion.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this ddm structure version.
+	*
+	* @return the user uuid of this ddm structure version
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _ddmStructureVersion.getUserUuid();
+	}
+
+	/**
+	* Returns the version of this ddm structure version.
+	*
+	* @return the version of this ddm structure version
+	*/
+	@Override
+	public java.lang.String getVersion() {
+		return _ddmStructureVersion.getVersion();
 	}
 
 	@Override
-	public DDMStructureVersion toUnescapedModel() {
-		return new DDMStructureVersionWrapper(_ddmStructureVersion.toUnescapedModel());
+	public int hashCode() {
+		return _ddmStructureVersion.hashCode();
 	}
 
 	/**
@@ -311,401 +681,6 @@ public class DDMStructureVersionWrapper implements DDMStructureVersion,
 	@Override
 	public boolean isScheduled() {
 		return _ddmStructureVersion.isScheduled();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _ddmStructureVersion.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<DDMStructureVersion> toCacheModel() {
-		return _ddmStructureVersion.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(DDMStructureVersion ddmStructureVersion) {
-		return _ddmStructureVersion.compareTo(ddmStructureVersion);
-	}
-
-	/**
-	* Returns the status of this ddm structure version.
-	*
-	* @return the status of this ddm structure version
-	*/
-	@Override
-	public int getStatus() {
-		return _ddmStructureVersion.getStatus();
-	}
-
-	/**
-	* Returns the type of this ddm structure version.
-	*
-	* @return the type of this ddm structure version
-	*/
-	@Override
-	public int getType() {
-		return _ddmStructureVersion.getType();
-	}
-
-	@Override
-	public int hashCode() {
-		return _ddmStructureVersion.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _ddmStructureVersion.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new DDMStructureVersionWrapper((DDMStructureVersion)_ddmStructureVersion.clone());
-	}
-
-	@Override
-	public java.lang.String getDefaultLanguageId() {
-		return _ddmStructureVersion.getDefaultLanguageId();
-	}
-
-	/**
-	* Returns the definition of this ddm structure version.
-	*
-	* @return the definition of this ddm structure version
-	*/
-	@Override
-	public java.lang.String getDefinition() {
-		return _ddmStructureVersion.getDefinition();
-	}
-
-	/**
-	* Returns the description of this ddm structure version.
-	*
-	* @return the description of this ddm structure version
-	*/
-	@Override
-	public java.lang.String getDescription() {
-		return _ddmStructureVersion.getDescription();
-	}
-
-	/**
-	* Returns the localized description of this ddm structure version in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized description of this ddm structure version
-	*/
-	@Override
-	public java.lang.String getDescription(java.lang.String languageId) {
-		return _ddmStructureVersion.getDescription(languageId);
-	}
-
-	/**
-	* Returns the localized description of this ddm structure version in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized description of this ddm structure version
-	*/
-	@Override
-	public java.lang.String getDescription(java.lang.String languageId,
-		boolean useDefault) {
-		return _ddmStructureVersion.getDescription(languageId, useDefault);
-	}
-
-	/**
-	* Returns the localized description of this ddm structure version in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized description of this ddm structure version
-	*/
-	@Override
-	public java.lang.String getDescription(java.util.Locale locale) {
-		return _ddmStructureVersion.getDescription(locale);
-	}
-
-	/**
-	* Returns the localized description of this ddm structure version in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized description of this ddm structure version. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
-	@Override
-	public java.lang.String getDescription(java.util.Locale locale,
-		boolean useDefault) {
-		return _ddmStructureVersion.getDescription(locale, useDefault);
-	}
-
-	@Override
-	public java.lang.String getDescriptionCurrentLanguageId() {
-		return _ddmStructureVersion.getDescriptionCurrentLanguageId();
-	}
-
-	@Override
-	public java.lang.String getDescriptionCurrentValue() {
-		return _ddmStructureVersion.getDescriptionCurrentValue();
-	}
-
-	/**
-	* Returns the name of this ddm structure version.
-	*
-	* @return the name of this ddm structure version
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _ddmStructureVersion.getName();
-	}
-
-	/**
-	* Returns the localized name of this ddm structure version in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized name of this ddm structure version
-	*/
-	@Override
-	public java.lang.String getName(java.lang.String languageId) {
-		return _ddmStructureVersion.getName(languageId);
-	}
-
-	/**
-	* Returns the localized name of this ddm structure version in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized name of this ddm structure version
-	*/
-	@Override
-	public java.lang.String getName(java.lang.String languageId,
-		boolean useDefault) {
-		return _ddmStructureVersion.getName(languageId, useDefault);
-	}
-
-	/**
-	* Returns the localized name of this ddm structure version in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized name of this ddm structure version
-	*/
-	@Override
-	public java.lang.String getName(java.util.Locale locale) {
-		return _ddmStructureVersion.getName(locale);
-	}
-
-	/**
-	* Returns the localized name of this ddm structure version in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized name of this ddm structure version. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
-	@Override
-	public java.lang.String getName(java.util.Locale locale, boolean useDefault) {
-		return _ddmStructureVersion.getName(locale, useDefault);
-	}
-
-	@Override
-	public java.lang.String getNameCurrentLanguageId() {
-		return _ddmStructureVersion.getNameCurrentLanguageId();
-	}
-
-	@Override
-	public java.lang.String getNameCurrentValue() {
-		return _ddmStructureVersion.getNameCurrentValue();
-	}
-
-	/**
-	* Returns the status by user name of this ddm structure version.
-	*
-	* @return the status by user name of this ddm structure version
-	*/
-	@Override
-	public java.lang.String getStatusByUserName() {
-		return _ddmStructureVersion.getStatusByUserName();
-	}
-
-	/**
-	* Returns the status by user uuid of this ddm structure version.
-	*
-	* @return the status by user uuid of this ddm structure version
-	*/
-	@Override
-	public java.lang.String getStatusByUserUuid() {
-		return _ddmStructureVersion.getStatusByUserUuid();
-	}
-
-	/**
-	* Returns the storage type of this ddm structure version.
-	*
-	* @return the storage type of this ddm structure version
-	*/
-	@Override
-	public java.lang.String getStorageType() {
-		return _ddmStructureVersion.getStorageType();
-	}
-
-	/**
-	* Returns the user name of this ddm structure version.
-	*
-	* @return the user name of this ddm structure version
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _ddmStructureVersion.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this ddm structure version.
-	*
-	* @return the user uuid of this ddm structure version
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _ddmStructureVersion.getUserUuid();
-	}
-
-	/**
-	* Returns the version of this ddm structure version.
-	*
-	* @return the version of this ddm structure version
-	*/
-	@Override
-	public java.lang.String getVersion() {
-		return _ddmStructureVersion.getVersion();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _ddmStructureVersion.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _ddmStructureVersion.toXmlString();
-	}
-
-	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
-		return _ddmStructureVersion.getAvailableLanguageIds();
-	}
-
-	/**
-	* Returns the create date of this ddm structure version.
-	*
-	* @return the create date of this ddm structure version
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _ddmStructureVersion.getCreateDate();
-	}
-
-	/**
-	* Returns the status date of this ddm structure version.
-	*
-	* @return the status date of this ddm structure version
-	*/
-	@Override
-	public Date getStatusDate() {
-		return _ddmStructureVersion.getStatusDate();
-	}
-
-	/**
-	* Returns a map of the locales and localized descriptions of this ddm structure version.
-	*
-	* @return the locales and localized descriptions of this ddm structure version
-	*/
-	@Override
-	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
-		return _ddmStructureVersion.getDescriptionMap();
-	}
-
-	/**
-	* Returns a map of the locales and localized names of this ddm structure version.
-	*
-	* @return the locales and localized names of this ddm structure version
-	*/
-	@Override
-	public Map<java.util.Locale, java.lang.String> getNameMap() {
-		return _ddmStructureVersion.getNameMap();
-	}
-
-	/**
-	* Returns the company ID of this ddm structure version.
-	*
-	* @return the company ID of this ddm structure version
-	*/
-	@Override
-	public long getCompanyId() {
-		return _ddmStructureVersion.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this ddm structure version.
-	*
-	* @return the group ID of this ddm structure version
-	*/
-	@Override
-	public long getGroupId() {
-		return _ddmStructureVersion.getGroupId();
-	}
-
-	/**
-	* Returns the parent structure ID of this ddm structure version.
-	*
-	* @return the parent structure ID of this ddm structure version
-	*/
-	@Override
-	public long getParentStructureId() {
-		return _ddmStructureVersion.getParentStructureId();
-	}
-
-	/**
-	* Returns the primary key of this ddm structure version.
-	*
-	* @return the primary key of this ddm structure version
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _ddmStructureVersion.getPrimaryKey();
-	}
-
-	/**
-	* Returns the status by user ID of this ddm structure version.
-	*
-	* @return the status by user ID of this ddm structure version
-	*/
-	@Override
-	public long getStatusByUserId() {
-		return _ddmStructureVersion.getStatusByUserId();
-	}
-
-	/**
-	* Returns the structure ID of this ddm structure version.
-	*
-	* @return the structure ID of this ddm structure version
-	*/
-	@Override
-	public long getStructureId() {
-		return _ddmStructureVersion.getStructureId();
-	}
-
-	/**
-	* Returns the structure version ID of this ddm structure version.
-	*
-	* @return the structure version ID of this ddm structure version
-	*/
-	@Override
-	public long getStructureVersionId() {
-		return _ddmStructureVersion.getStructureVersionId();
-	}
-
-	/**
-	* Returns the user ID of this ddm structure version.
-	*
-	* @return the user ID of this ddm structure version
-	*/
-	@Override
-	public long getUserId() {
-		return _ddmStructureVersion.getUserId();
 	}
 
 	@Override
@@ -831,14 +806,14 @@ public class DDMStructureVersionWrapper implements DDMStructureVersion,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_ddmStructureVersion.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_ddmStructureVersion.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_ddmStructureVersion.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -1075,6 +1050,31 @@ public class DDMStructureVersionWrapper implements DDMStructureVersion,
 	@Override
 	public void setVersion(java.lang.String version) {
 		_ddmStructureVersion.setVersion(version);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<DDMStructureVersion> toCacheModel() {
+		return _ddmStructureVersion.toCacheModel();
+	}
+
+	@Override
+	public DDMStructureVersion toEscapedModel() {
+		return new DDMStructureVersionWrapper(_ddmStructureVersion.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _ddmStructureVersion.toString();
+	}
+
+	@Override
+	public DDMStructureVersion toUnescapedModel() {
+		return new DDMStructureVersionWrapper(_ddmStructureVersion.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _ddmStructureVersion.toXmlString();
 	}
 
 	@Override

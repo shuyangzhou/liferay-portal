@@ -1,0 +1,7 @@
+dependencies {
+	provided group: "com.liferay", name: "com.liferay.petra.memory", version: "1.0.0"
+}
+
+liferay {
+	deployDir = appServerLibGlobalDir
+}

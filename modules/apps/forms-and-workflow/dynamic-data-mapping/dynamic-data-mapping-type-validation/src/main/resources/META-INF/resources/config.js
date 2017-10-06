@@ -22,10 +22,7 @@
 							condition: {
 								trigger: 'liferay-ddm-form-renderer'
 							},
-							path: 'validation.soy.js',
-							requires: [
-								'soyutils'
-							]
+							path: 'validation.js'
 						}
 					},
 					root: MODULE_PATH + '/'

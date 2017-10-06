@@ -44,7 +44,7 @@ public class GridDDMFormFieldRenderer extends BaseDDMFormFieldRenderer {
 
 	@Override
 	public String getTemplateNamespace() {
-		return "ddm.grid";
+		return "DDMGrid.render";
 	}
 
 	@Override

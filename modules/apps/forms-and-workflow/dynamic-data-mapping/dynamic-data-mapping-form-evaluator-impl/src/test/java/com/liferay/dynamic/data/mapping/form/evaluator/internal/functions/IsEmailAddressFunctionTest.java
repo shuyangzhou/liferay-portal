@@ -23,12 +23,42 @@ import org.junit.Test;
 public class IsEmailAddressFunctionTest {
 
 	@Test
-	public void testEvaluateFalse() throws Exception {
+	public void testEvaluateFalse1() throws Exception {
 		IsEmailAddressFunction isEmailAddressFunction =
 			new IsEmailAddressFunction();
 
 		Assert.assertFalse(
 			(Boolean)isEmailAddressFunction.evaluate("simple text"));
+	}
+
+	@Test
+	public void testEvaluateFalse2() throws Exception {
+		IsEmailAddressFunction isEmailAddressFunction =
+			new IsEmailAddressFunction();
+
+		Assert.assertFalse(
+			(Boolean)isEmailAddressFunction.evaluate(
+				"simple text1, simple text 2"));
+	}
+
+	@Test
+	public void testEvaluateFalse3() throws Exception {
+		IsEmailAddressFunction isEmailAddressFunction =
+			new IsEmailAddressFunction();
+
+		Assert.assertFalse(
+			(Boolean)isEmailAddressFunction.evaluate(
+				"simple text1, test@liferay.com"));
+	}
+
+	@Test
+	public void testEvaluateFalse4() throws Exception {
+		IsEmailAddressFunction isEmailAddressFunction =
+			new IsEmailAddressFunction();
+
+		Assert.assertFalse(
+			(Boolean)isEmailAddressFunction.evaluate(
+				"test@liferay.com, simple text1"));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -40,12 +70,22 @@ public class IsEmailAddressFunctionTest {
 	}
 
 	@Test
-	public void testEvaluateTrue() throws Exception {
+	public void testEvaluateTrue1() throws Exception {
 		IsEmailAddressFunction isEmailAddressFunction =
 			new IsEmailAddressFunction();
 
 		Assert.assertTrue(
 			(Boolean)isEmailAddressFunction.evaluate("test@liferay.com"));
+	}
+
+	@Test
+	public void testEvaluateTrue2() throws Exception {
+		IsEmailAddressFunction isEmailAddressFunction =
+			new IsEmailAddressFunction();
+
+		Assert.assertTrue(
+			(Boolean)isEmailAddressFunction.evaluate(
+				"test@liferay.com, test@liferay.com"));
 	}
 
 }

@@ -20,7 +20,6 @@ import com.liferay.source.formatter.SourceFormatterMessage;
 import com.liferay.source.formatter.checks.FileCheck;
 import com.liferay.source.formatter.checks.JavaTermCheck;
 import com.liferay.source.formatter.checks.SourceCheck;
-import com.liferay.source.formatter.checks.configuration.ConfigurationLoader;
 import com.liferay.source.formatter.checks.configuration.SourceCheckConfiguration;
 import com.liferay.source.formatter.checks.configuration.SourceChecksResult;
 import com.liferay.source.formatter.checks.configuration.SourceChecksSuppressions;
@@ -28,6 +27,7 @@ import com.liferay.source.formatter.checks.configuration.SourceFormatterConfigur
 import com.liferay.source.formatter.parser.JavaClass;
 import com.liferay.source.formatter.parser.JavaClassParser;
 import com.liferay.source.formatter.parser.ParseException;
+import com.liferay.source.formatter.util.DebugUtil;
 import com.liferay.source.formatter.util.SourceFormatterUtil;
 
 import java.io.File;
@@ -45,12 +45,10 @@ import org.apache.commons.beanutils.BeanUtils;
 public class SourceChecksUtil {
 
 	public static List<SourceCheck> getSourceChecks(
+			SourceFormatterConfiguration sourceFormatterConfiguration,
 			String sourceProcessorName, boolean portalSource,
 			boolean subrepository, boolean includeModuleChecks)
 		throws Exception {
-
-		SourceFormatterConfiguration sourceFormatterConfiguration =
-			ConfigurationLoader.loadConfiguration("sourcechecks.xml");
 
 		List<SourceCheck> sourceChecks = _getSourceChecks(
 			sourceFormatterConfiguration, sourceProcessorName, portalSource,
@@ -67,7 +65,8 @@ public class SourceChecksUtil {
 	public static SourceChecksResult processSourceChecks(
 			File file, String fileName, String absolutePath, String content,
 			boolean modulesFile, List<SourceCheck> sourceChecks,
-			SourceChecksSuppressions sourceChecksSuppressions)
+			SourceChecksSuppressions sourceChecksSuppressions,
+			boolean showDebugInformation)
 		throws Exception {
 
 		SourceChecksResult sourceChecksResult = new SourceChecksResult(content);
@@ -91,6 +90,8 @@ public class SourceChecksUtil {
 
 				continue;
 			}
+
+			long startTime = System.currentTimeMillis();
 
 			if (sourceCheck instanceof FileCheck) {
 				sourceChecksResult = _processFileCheck(
@@ -120,7 +121,20 @@ public class SourceChecksUtil {
 					anonymousClasses, fileName, absolutePath);
 			}
 
+			if (showDebugInformation) {
+				long endTime = System.currentTimeMillis();
+
+				DebugUtil.increaseProcessingTime(
+					clazz.getSimpleName(), endTime - startTime);
+			}
+
 			if (!content.equals(sourceChecksResult.getContent())) {
+				if (showDebugInformation) {
+					DebugUtil.printContentModifications(
+						clazz.getSimpleName(), fileName, content,
+						sourceChecksResult.getContent());
+				}
+
 				return sourceChecksResult;
 			}
 		}

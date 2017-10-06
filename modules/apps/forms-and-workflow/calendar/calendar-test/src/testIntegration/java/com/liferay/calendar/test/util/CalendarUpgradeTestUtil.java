@@ -14,29 +14,39 @@
 
 package com.liferay.calendar.test.util;
 
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 
+import java.sql.SQLException;
+
 /**
  * @author Adam Brandizzi
  */
 public class CalendarUpgradeTestUtil {
 
+	public static UpgradeDatabaseTestHelper getUpgradeDatabaseTestHelper()
+		throws SQLException {
+
+		return new UpgradeDatabaseTestHelperImpl(DataAccess.getConnection());
+	}
+
 	public static UpgradeProcess getUpgradeStep(String upgradeStepClassName) {
 		Registry registry = RegistryUtil.getRegistry();
 
-		UpgradeStepRegistrator upgradeStepRegistror = registry.getService(
-			_UPGRADE_SERVICE_CLASS_NAME);
+		return registry.callService(
+			_UPGRADE_SERVICE_CLASS_NAME,
+			(UpgradeStepRegistrator upgradeStepRegistror) -> {
+				SearchRegistry searchRegistry = new SearchRegistry(
+					upgradeStepClassName);
 
-		SearchRegistry searchRegistry = new SearchRegistry(
-			upgradeStepClassName);
+				upgradeStepRegistror.register(searchRegistry);
 
-		upgradeStepRegistror.register(searchRegistry);
-
-		return searchRegistry.getUpgradeStep();
+				return searchRegistry.getUpgradeStep();
+			});
 	}
 
 	private static final String _UPGRADE_SERVICE_CLASS_NAME =

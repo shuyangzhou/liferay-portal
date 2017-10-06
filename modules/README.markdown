@@ -16,6 +16,19 @@ sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 ```
 
+### Enable Java Compiler Warnings
+
+In order to enable Java [compiler warnings](http://docs.oracle.com/javase/8/docs/technotes/tools/windows/javac.html#BHCJCABJ)
+when building an OSGi module with Gradle, please set the `-D[task name].lint`
+system property (where `[task name]` is the name of the [`JavaCompile`](https://docs.gradle.org/current/dsl/org.gradle.api.tasks.compile.JavaCompile.html)
+task to configure) to a comma-separated list of warnings. For example:
+
+```bash
+./gradlew compileJava -DcompileJava.lint=deprecation,unchecked
+./gradlew compileTestJava -DcompileJava.lint=deprecation,unchecked
+./gradlew compileTestIntegrationJava -DcompileJava.lint=deprecation,unchecked
+```
+
 ### Deploy Directory
 
 The module's deploy directory is the `deploy.destinationDir` property (the
@@ -25,15 +38,21 @@ by default.
 
 The logic that chooses the default deploy directory is as follows:
 
-1. If the project directory contains a `.lfrbuild-app-server-lib` marker file,
-the module is deployed to `${app.server.portal.dir}/WEB-INF/lib`.
-2. If the project directory contains a `.lfrbuild-tool` marker file, the module
-is deployed to `${liferay.home}/tools/${module.dir.name}`.
-3. If the project directory contains a `.lfrbuild-static` marker file, the
-module is deployed to `${liferay home}/osgi/static`.
-4. If the module symbolic name starts with `com.liferay.portal.`, the module is
-deployed to `${liferay home}/osgi/portal`.
-5. Otherwise, the module is deployed to `${liferay home}/osgi/modules`.
+- For OSGi modules:
+	1. If the project directory contains a `.lfrbuild-app-server-lib` marker
+	file, the module is deployed to `${app.server.portal.dir}/WEB-INF/lib`.
+	2. If the project directory contains a `.lfrbuild-tool` marker file, the
+	module is deployed to `${liferay.home}/tools/${module.dir.name}`.
+	3. If the project directory contains a `.lfrbuild-static` marker file, the
+	module is deployed to `${liferay home}/osgi/static`.
+	4. If the module symbolic name starts with `com.liferay.portal.`, the module
+	is deployed to `${liferay home}/osgi/portal`.
+	5. Otherwise, the module is deployed to `${liferay home}/osgi/modules`.
+- For themes:
+	1. If the `required-for-startup` property in the
+  `src/WEB-INF/liferay-plugin-package.properties` file is `true`, the theme is
+	deployed to `${liferay home}/osgi/war`.
+	2. Otherwise, the theme is deployed to `${liferay home}/deploy`.
 
 If possible, you should always use these marker files to specify the deploy
 directory of your modules. If none of these cases apply to you, then add
@@ -88,12 +107,19 @@ File Name | Description
 `.lfrbuild-faro-connector` | Deploys the module to the Faro client portal directory.
 `.lfrbuild-faro-site` | Deploys the module to the Faro site portal directory.
 
+### LCS
+
+File Name | Description
+--------- | -----------
+`.lfrbuild-spark-job` | Configures the module as an Apache Spark job.
+`.lfrbuild-spring-boot` | Configures the module as a Spring Boot application.
+
 ### Release
 
 File Name | Description
 --------- | -----------
+`.lfrbuild-release-src` | Includes the app's source code in the DXP release, when added to the root of an app.
 `.lfrbuild-releng-ignore` | Ignores checking the module for staleness, so the module is never publishable. A *stale* module has code that is different from the latest published release.
-`.lfrrelease-src` | Includes the app's source code in the DXP release, when added to the root of an app.
 
 ### Themes
 

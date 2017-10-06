@@ -19,10 +19,7 @@
 							condition: {
 								trigger: 'liferay-ddm-form-renderer'
 							},
-							path: 'captcha.soy.js',
-							requires: [
-								'soyutils'
-							]
+							path: 'captcha.js'
 						}
 					},
 					root: MODULE_PATH + '/'

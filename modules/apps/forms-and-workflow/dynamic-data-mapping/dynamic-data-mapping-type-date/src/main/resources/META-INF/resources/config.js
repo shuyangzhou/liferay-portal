@@ -20,10 +20,7 @@
 							condition: {
 								trigger: 'liferay-ddm-form-renderer'
 							},
-							path: 'date.soy.js',
-							requires: [
-								'soyutils'
-							]
+							path: 'date.js'
 						}
 					},
 					root: MODULE_PATH + '/'

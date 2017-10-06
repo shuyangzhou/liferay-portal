@@ -6,6 +6,10 @@ AUI.add(
 		var CaptchaField = A.Component.create(
 			{
 				ATTRS: {
+					context: {
+						getter: '_getContext'
+					},
+
 					html: {
 						value: ''
 					},
@@ -51,6 +55,25 @@ AUI.add(
 					},
 
 					showErrorMessage: Lang.emptyFn,
+
+					_getContext: function(context) {
+						var instance = this;
+
+						if (!context) {
+							return {};
+						}
+						else if(context.html) {
+							return A.merge(
+								context,
+								{
+									html: window.DDMCaptcha.render.Soy.toIncDom(context.html.content)
+								}
+							);
+						}
+						else {
+							return context;
+						}
+					},
 
 					_onClickRefresh: function() {
 						var instance = this;

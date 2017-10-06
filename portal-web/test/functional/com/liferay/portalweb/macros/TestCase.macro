@@ -1,4 +1,16 @@
 <definition>
+	<command name="getFileContent" returns="fileContent">
+		<var method="TestPropsUtil#get('test.base.dir.name')" name="baseDir" />
+		<var method="TestPropsUtil#get('test.dependencies.dir.name')" name="dependenciesDir" />
+
+		<execute class="com.liferay.poshi.runner.util.FileUtil" method="read">
+			<arg value="${baseDir}${dependenciesDir}/${fileName}" />
+			<return name="fileContent" />
+		</execute>
+
+		<return name="fileContent" value="${fileContent}" />
+	</command>
+
 	<command name="getSiteName" returns="siteName">
 		<var method="TestPropsUtil#get('test.name.skip.portal.instance')" name="testNameSkipPortalInstance" />
 		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
@@ -27,10 +39,10 @@
 						<return name="siteName" value="${portalURL}" />
 					</then>
 					<else>
-						<var method="TestPropsUtil#get('liferay.portal.branch')" name="testPortalBranch" />
+						<var method="TestPropsUtil#get('test.run.environment')" name="testRunEnvironment" />
 
 						<if>
-							<equals arg1="${testPortalBranch}" arg2="ee-7.0.x" />
+							<equals arg1="${testRunEnvironment}" arg2="EE" />
 							<then>
 								<return name="siteName" value="Liferay DXP" />
 							</then>

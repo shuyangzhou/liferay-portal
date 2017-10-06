@@ -19,11 +19,13 @@ import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
 import com.liferay.document.library.kernel.util.DLUtil;
+import com.liferay.exportimport.configuration.ExportImportServiceConfiguration;
 import com.liferay.exportimport.content.processor.ExportImportContentProcessor;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -69,13 +71,16 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Daniel Kocsis
  */
 @Component(
+	configurationPid = "com.liferay.exportimport.configuration.ExportImportServiceConfiguration",
 	immediate = true, property = {"model.class.name=java.lang.String"},
 	service = ExportImportContentProcessor.class
 )
@@ -128,6 +133,13 @@ public class DefaultTextExportImportContentProcessor
 		validateDLReferences(groupId, content);
 		validateLayoutReferences(groupId, content);
 		validateLinksToLayoutsReferences(content);
+	}
+
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		_exportImportServiceConfiguration = ConfigurableUtil.createConfigurable(
+			ExportImportServiceConfiguration.class, properties);
 	}
 
 	protected void deleteTimestampParameters(StringBuilder sb, int beginPos) {
@@ -186,17 +198,25 @@ public class DefaultTextExportImportContentProcessor
 				return map;
 			}
 
-			map.put("groupId", new String[] {pathArray[2]});
-
-			if (pathArray.length == 4) {
-				map.put("uuid", new String[] {pathArray[3]});
-			}
-			else if (pathArray.length == 5) {
-				map.put("folderId", new String[] {pathArray[3]});
+			if ("portlet_file_entry".equals(pathArray[2])) {
+				map.put("groupId", new String[] {pathArray[3]});
 				map.put("title", new String[] {_http.decodeURL(pathArray[4])});
-			}
-			else if (pathArray.length > 5) {
 				map.put("uuid", new String[] {pathArray[5]});
+			}
+			else {
+				map.put("groupId", new String[] {pathArray[2]});
+
+				if (pathArray.length == 4) {
+					map.put("uuid", new String[] {pathArray[3]});
+				}
+				else if (pathArray.length == 5) {
+					map.put("folderId", new String[] {pathArray[3]});
+					map.put(
+						"title", new String[] {_http.decodeURL(pathArray[4])});
+				}
+				else if (pathArray.length > 5) {
+					map.put("uuid", new String[] {pathArray[5]});
+				}
 			}
 		}
 		else {
@@ -704,6 +724,25 @@ public class DefaultTextExportImportContentProcessor
 
 				urlSB.append(_DATA_HANDLER_GROUP_FRIENDLY_URL);
 
+				// Append the UUID. This information will be used during the
+				// import process when looking up the proper group for the link.
+
+				urlSB.append(StringPool.AT);
+
+				if (urlGroup.isStagedRemotely()) {
+					String remoteGroupUuid = urlGroup.getTypeSettingsProperty(
+						"remoteGroupUUID");
+
+					if (Validator.isNotNull(remoteGroupUuid)) {
+						urlSB.append(remoteGroupUuid);
+					}
+				}
+				else {
+					urlSB.append(urlGroup.getUuid());
+				}
+
+				urlSB.append(StringPool.AT);
+
 				String siteAdminURL =
 					GroupConstants.CONTROL_PANEL_FRIENDLY_URL +
 						PropsValues.CONTROL_PANEL_LAYOUT_FRIENDLY_URL;
@@ -735,6 +774,13 @@ public class DefaultTextExportImportContentProcessor
 					PortletDataContext.REFERENCE_TYPE_DEPENDENCY, true);
 			}
 			catch (Exception e) {
+				if (e instanceof NoSuchLayoutException &&
+					!_exportImportServiceConfiguration.
+						validateLayoutReferences()) {
+
+					continue;
+				}
+
 				if (_log.isDebugEnabled()) {
 					_log.debug(e, e);
 				}
@@ -1001,8 +1047,50 @@ public class DefaultTextExportImportContentProcessor
 			content, _DATA_HANDLER_COMPANY_SECURE_URL, companySecurePortalURL);
 		content = StringUtil.replace(
 			content, _DATA_HANDLER_COMPANY_URL, companyPortalURL);
-		content = StringUtil.replace(
-			content, _DATA_HANDLER_GROUP_FRIENDLY_URL, group.getFriendlyURL());
+
+		// Group friendly URLs
+
+		while (true) {
+			int groupFriendlyUrlPos = content.indexOf(
+				_DATA_HANDLER_GROUP_FRIENDLY_URL);
+
+			if (groupFriendlyUrlPos == -1) {
+				break;
+			}
+
+			int groupUuidPos =
+				groupFriendlyUrlPos + _DATA_HANDLER_GROUP_FRIENDLY_URL.length();
+
+			String groupUuid = content.substring(
+				groupUuidPos + 1,
+				content.indexOf(StringPool.AT, groupUuidPos + 1));
+
+			Group groupFriendlyUrlGroup =
+				_groupLocalService.fetchGroupByUuidAndCompanyId(
+					groupUuid, portletDataContext.getCompanyId());
+
+			if (groupFriendlyUrlGroup == null) {
+
+				// Fall back to the current group if the group is not found
+
+				content = StringUtil.replaceFirst(
+					content, _DATA_HANDLER_GROUP_FRIENDLY_URL,
+					group.getFriendlyURL(), groupFriendlyUrlPos);
+				content = StringUtil.replaceFirst(
+					content, StringPool.AT + groupUuid + StringPool.AT,
+					StringPool.BLANK, content.indexOf(group.getFriendlyURL()));
+
+				continue;
+			}
+
+			content = StringUtil.replaceFirst(
+				content, _DATA_HANDLER_GROUP_FRIENDLY_URL, StringPool.BLANK,
+				groupFriendlyUrlPos);
+			content = StringUtil.replaceFirst(
+				content, StringPool.AT + groupUuid + StringPool.AT,
+				groupFriendlyUrlGroup.getFriendlyURL(), groupFriendlyUrlPos);
+		}
+
 		content = StringUtil.replace(
 			content, _DATA_HANDLER_PATH_CONTEXT, _portal.getPathContext());
 		content = StringUtil.replace(
@@ -1185,6 +1273,10 @@ public class DefaultTextExportImportContentProcessor
 
 	protected void validateLayoutReferences(long groupId, String content)
 		throws PortalException {
+
+		if (!_exportImportServiceConfiguration.validateLayoutReferences()) {
+			return;
+		}
 
 		Group group = _groupLocalService.getGroup(groupId);
 
@@ -1500,6 +1592,8 @@ public class DefaultTextExportImportContentProcessor
 
 	@Reference
 	private DLFileEntryLocalService _dlFileEntryLocalService;
+
+	private ExportImportServiceConfiguration _exportImportServiceConfiguration;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

@@ -55,7 +55,7 @@ JournalArticle article = journalContentDisplayContext.getArticle();
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<aui:fieldset>
 				<aui:field-wrapper label="user-tools">
-					<liferay-ui:asset-addon-entry-selector
+					<liferay-asset:asset-addon-entry-selector
 						assetAddonEntries="<%= (List<AssetAddonEntry>)(List<?>)journalContentDisplayContext.getEnabledUserToolAssetAddonEntries() %>"
 						hiddenInput="preferences--userToolAssetAddonEntryKeys--"
 						id="userToolsAssetAddonEntriesSelector"
@@ -65,7 +65,7 @@ JournalArticle article = journalContentDisplayContext.getArticle();
 				</aui:field-wrapper>
 
 				<aui:field-wrapper label="content-metadata">
-					<liferay-ui:asset-addon-entry-selector
+					<liferay-asset:asset-addon-entry-selector
 						assetAddonEntries="<%= (List<AssetAddonEntry>)(List<?>)journalContentDisplayContext.getEnabledContentMetadataAssetAddonEntries() %>"
 						hiddenInput="preferences--contentMetadataAssetAddonEntryKeys--"
 						id="contentMetadataAssetAddonEntriesSelector"

@@ -1,33 +1,37 @@
-{namespace ddm}
+{namespace DDMCheckbox}
 
 /**
  * Defines the delegated template for the checkbox field.
  */
-{deltemplate ddm.field autoescape="deprecated-contextual" variant="'checkbox'"}
-	{call .checkbox data="all" /}
+{deltemplate ddm.field variant="'checkbox'"}
+	{call .render data="all" /}
 {/deltemplate}
 
 /**
  * Prints the DDM form checkbox field.
- *
- * @param? childElementsHTML
- * @param label
- * @param name
- * @param readOnly
- * @param required
- * @param showAsSwitcher
- * @param showLabel
- * @param tip
- * @param visible
- * @param value
  */
-{template .checkbox autoescape="deprecated-contextual"}
-	{let $status: $value ? 'checked' : '' /}
+{template .render}
+	{@param label: string}
+	{@param name: string}
+	{@param readOnly: bool}
+	{@param required: bool}
+	{@param showAsSwitcher: bool}
+	{@param showLabel: bool}
+	{@param? tip: string}
+	{@param visible: bool}
+	{@param value: ?}
 
 	<div class="form-group{$visible ? '' : ' hide'} liferay-ddm-form-field-checkbox" data-fieldname="{$name}">
 		{if $showAsSwitcher}
-			<label aria-checked="{($status) ? true : false}" for="{$name}" role="checkbox">
-				<input class="toggle-switch" {if $readOnly}disabled{/if} id="{$name}" name="{$name}" type="checkbox" {$status} value="true" />
+			<label aria-checked="{$value ? 'true' : 'false'}" for="{$name}" role="checkbox">
+				<input class="toggle-switch"
+					{if $value}checked{/if}
+					{if $readOnly}disabled{/if}
+					id="{$name}"
+					name="{$name}"
+					type="checkbox"
+					value="true"
+				/>
 
 				<span aria-hidden="true" class="toggle-switch-bar">
 					<span class="toggle-switch-handle"></span>
@@ -44,16 +48,22 @@
 				</span>
 			</label>
 
-			{if $tip}
-				<p class="liferay-ddm-form-field-tip">{$tip}</p>
-			{/if}
+			<p class="liferay-ddm-form-field-tip">{$tip ? $tip: ''}</p>
 		{else}
 			<div class="checkbox">
 				{if $showLabel}
 					<label for="{$name}">
 				{/if}
 
-				<input {if $readOnly}disabled{/if} id="{$name}" name="{$name}" type="checkbox" {$status} value="true" />{if $showLabel} {$label}{/if}
+				<input {if $value}checked{/if}
+					{if $readOnly}disabled{/if}
+					id="{$name}"
+					name="{$name}"
+					type="checkbox"
+					value="true"
+				/>
+
+				{if $showLabel} {$label} {/if}
 
 				{if $showLabel}
 						{if $required}
@@ -64,14 +74,8 @@
 			</div>
 
 			{if $showLabel}
-				{if $tip}
-					<p class="liferay-ddm-form-field-tip">{$tip}</p>
-				{/if}
+				<p class="liferay-ddm-form-field-tip">{$tip ? $tip: ''}</p>
 			{/if}
-		{/if}
-
-		{if $childElementsHTML}
-			{$childElementsHTML|noAutoescape}
 		{/if}
 	</div>
 {/template}

@@ -42,71 +42,6 @@ public class SocialRelationLocalServiceUtil {
 	 */
 
 	/**
-	* Returns <code>true</code> if a relation of the given type exists where
-	* the user with primary key <code>userId1</code> is User1 of the relation
-	* and the user with the primary key <code>userId2</code> is User2 of the
-	* relation.
-	*
-	* @param userId1 the user that is the subject of the relation
-	* @param userId2 the user at the other end of the relation
-	* @param type the relation's type
-	* @return <code>true</code> if the relation exists; <code>false</code>
-	otherwise
-	*/
-	public static boolean hasRelation(long userId1, long userId2, int type) {
-		return getService().hasRelation(userId1, userId2, type);
-	}
-
-	/**
-	* Returns <code>true</code> if the users can be in a relation of the given
-	* type where the user with primary key <code>userId1</code> is User1 of the
-	* relation and the user with the primary key <code>userId2</code> is User2
-	* of the relation.
-	*
-	* <p>
-	* This method returns <code>false</code> if User1 and User2 are the same,
-	* if either user is the default user, or if a matching relation already
-	* exists.
-	* </p>
-	*
-	* @param userId1 the user that is the subject of the relation
-	* @param userId2 the user at the other end of the relation
-	* @param type the relation's type
-	* @return <code>true</code> if the two users can be in a new relation of
-	the given type; <code>false</code> otherwise
-	*/
-	public static boolean isRelatable(long userId1, long userId2, int type) {
-		return getService().isRelatable(userId1, userId2, type);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return getService().dynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
 	* Adds a social relation between the two users to the database.
 	*
 	* @param userId1 the user that is the subject of the relation
@@ -143,14 +78,68 @@ public class SocialRelationLocalServiceUtil {
 	}
 
 	/**
-	* Deletes the social relation from the database. Also notifies the appropriate model listeners.
-	*
-	* @param socialRelation the social relation
-	* @return the social relation that was removed
+	* @throws PortalException
 	*/
-	public static com.liferay.social.kernel.model.SocialRelation deleteSocialRelation(
-		com.liferay.social.kernel.model.SocialRelation socialRelation) {
-		return getService().deleteSocialRelation(socialRelation);
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
+	}
+
+	/**
+	* Removes the relation (and its inverse in case of a bidirectional
+	* relation) from the database.
+	*
+	* @param relationId the primary key of the relation
+	*/
+	public static void deleteRelation(long relationId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteRelation(relationId);
+	}
+
+	/**
+	* Removes the matching relation (and its inverse in case of a bidirectional
+	* relation) from the database.
+	*
+	* @param userId1 the user that is the subject of the relation
+	* @param userId2 the user at the other end of the relation
+	* @param type the relation's type
+	*/
+	public static void deleteRelation(long userId1, long userId2, int type)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteRelation(userId1, userId2, type);
+	}
+
+	/**
+	* Removes the relation (and its inverse in case of a bidirectional
+	* relation) from the database.
+	*
+	* @param relation the relation to be removed
+	*/
+	public static void deleteRelation(
+		com.liferay.social.kernel.model.SocialRelation relation)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteRelation(relation);
+	}
+
+	/**
+	* Removes all relations involving the user from the database.
+	*
+	* @param userId the primary key of the user
+	*/
+	public static void deleteRelations(long userId) {
+		getService().deleteRelations(userId);
+	}
+
+	/**
+	* Removes all relations between User1 and User2.
+	*
+	* @param userId1 the user that is the subject of the relation
+	* @param userId2 the user at the other end of the relation
+	*/
+	public static void deleteRelations(long userId1, long userId2)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteRelations(userId1, userId2);
 	}
 
 	/**
@@ -166,139 +155,19 @@ public class SocialRelationLocalServiceUtil {
 		return getService().deleteSocialRelation(relationId);
 	}
 
-	public static com.liferay.social.kernel.model.SocialRelation fetchSocialRelation(
-		long relationId) {
-		return getService().fetchSocialRelation(relationId);
-	}
-
 	/**
-	* Returns the social relation with the matching UUID and company.
-	*
-	* @param uuid the social relation's UUID
-	* @param companyId the primary key of the company
-	* @return the matching social relation, or <code>null</code> if a matching social relation could not be found
-	*/
-	public static com.liferay.social.kernel.model.SocialRelation fetchSocialRelationByUuidAndCompanyId(
-		java.lang.String uuid, long companyId) {
-		return getService()
-				   .fetchSocialRelationByUuidAndCompanyId(uuid, companyId);
-	}
-
-	/**
-	* Returns the relation identified by its primary key.
-	*
-	* @param relationId the primary key of the relation
-	* @return Returns the relation
-	*/
-	public static com.liferay.social.kernel.model.SocialRelation getRelation(
-		long relationId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getRelation(relationId);
-	}
-
-	/**
-	* Returns the relation of the given type between User1 and User2.
-	*
-	* @param userId1 the user that is the subject of the relation
-	* @param userId2 the user at the other end of the relation
-	* @param type the relation's type
-	* @return Returns the relation
-	*/
-	public static com.liferay.social.kernel.model.SocialRelation getRelation(
-		long userId1, long userId2, int type)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getRelation(userId1, userId2, type);
-	}
-
-	/**
-	* Returns the social relation with the primary key.
-	*
-	* @param relationId the primary key of the social relation
-	* @return the social relation
-	* @throws PortalException if a social relation with the primary key could not be found
-	*/
-	public static com.liferay.social.kernel.model.SocialRelation getSocialRelation(
-		long relationId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getSocialRelation(relationId);
-	}
-
-	/**
-	* Returns the social relation with the matching UUID and company.
-	*
-	* @param uuid the social relation's UUID
-	* @param companyId the primary key of the company
-	* @return the matching social relation
-	* @throws PortalException if a matching social relation could not be found
-	*/
-	public static com.liferay.social.kernel.model.SocialRelation getSocialRelationByUuidAndCompanyId(
-		java.lang.String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getSocialRelationByUuidAndCompanyId(uuid, companyId);
-	}
-
-	/**
-	* Updates the social relation in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the social relation from the database. Also notifies the appropriate model listeners.
 	*
 	* @param socialRelation the social relation
-	* @return the social relation that was updated
+	* @return the social relation that was removed
 	*/
-	public static com.liferay.social.kernel.model.SocialRelation updateSocialRelation(
+	public static com.liferay.social.kernel.model.SocialRelation deleteSocialRelation(
 		com.liferay.social.kernel.model.SocialRelation socialRelation) {
-		return getService().updateSocialRelation(socialRelation);
+		return getService().deleteSocialRelation(socialRelation);
 	}
 
-	/**
-	* Returns the number of inverse relations of the given type for which the
-	* user is User2 of the relation.
-	*
-	* @param userId the primary key of the user
-	* @param type the relation's type
-	* @return the number of matching relations
-	*/
-	public static int getInverseRelationsCount(long userId, int type) {
-		return getService().getInverseRelationsCount(userId, type);
-	}
-
-	/**
-	* Returns the number of relations of the given type where the user is the
-	* subject of the relation.
-	*
-	* @param userId the primary key of the user
-	* @param type the relation's type
-	* @return the number of relations
-	*/
-	public static int getRelationsCount(long userId, int type) {
-		return getService().getRelationsCount(userId, type);
-	}
-
-	/**
-	* Returns the number of relations between User1 and User2.
-	*
-	* @param userId1 the user that is the subject of the relation
-	* @param userId2 the user at the other end of the relation
-	* @return the number of relations
-	*/
-	public static int getRelationsCount(long userId1, long userId2) {
-		return getService().getRelationsCount(userId1, userId2);
-	}
-
-	/**
-	* Returns the number of social relations.
-	*
-	* @return the number of social relations
-	*/
-	public static int getSocialRelationsCount() {
-		return getService().getSocialRelationsCount();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
 	}
 
 	/**
@@ -352,6 +221,56 @@ public class SocialRelationLocalServiceUtil {
 	}
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return getService().dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static com.liferay.social.kernel.model.SocialRelation fetchSocialRelation(
+		long relationId) {
+		return getService().fetchSocialRelation(relationId);
+	}
+
+	/**
+	* Returns the social relation with the matching UUID and company.
+	*
+	* @param uuid the social relation's UUID
+	* @param companyId the primary key of the company
+	* @return the matching social relation, or <code>null</code> if a matching social relation could not be found
+	*/
+	public static com.liferay.social.kernel.model.SocialRelation fetchSocialRelationByUuidAndCompanyId(
+		java.lang.String uuid, long companyId) {
+		return getService()
+				   .fetchSocialRelationByUuidAndCompanyId(uuid, companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
 	* Returns a range of all the inverse relations of the given type for which
 	* the user is User2 of the relation.
 	*
@@ -374,6 +293,59 @@ public class SocialRelationLocalServiceUtil {
 	public static java.util.List<com.liferay.social.kernel.model.SocialRelation> getInverseRelations(
 		long userId, int type, int start, int end) {
 		return getService().getInverseRelations(userId, type, start, end);
+	}
+
+	/**
+	* Returns the number of inverse relations of the given type for which the
+	* user is User2 of the relation.
+	*
+	* @param userId the primary key of the user
+	* @param type the relation's type
+	* @return the number of matching relations
+	*/
+	public static int getInverseRelationsCount(long userId, int type) {
+		return getService().getInverseRelationsCount(userId, type);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the relation identified by its primary key.
+	*
+	* @param relationId the primary key of the relation
+	* @return Returns the relation
+	*/
+	public static com.liferay.social.kernel.model.SocialRelation getRelation(
+		long relationId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getRelation(relationId);
+	}
+
+	/**
+	* Returns the relation of the given type between User1 and User2.
+	*
+	* @param userId1 the user that is the subject of the relation
+	* @param userId2 the user at the other end of the relation
+	* @param type the relation's type
+	* @return Returns the relation
+	*/
+	public static com.liferay.social.kernel.model.SocialRelation getRelation(
+		long userId1, long userId2, int type)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getRelation(userId1, userId2, type);
 	}
 
 	/**
@@ -426,6 +398,56 @@ public class SocialRelationLocalServiceUtil {
 	}
 
 	/**
+	* Returns the number of relations of the given type where the user is the
+	* subject of the relation.
+	*
+	* @param userId the primary key of the user
+	* @param type the relation's type
+	* @return the number of relations
+	*/
+	public static int getRelationsCount(long userId, int type) {
+		return getService().getRelationsCount(userId, type);
+	}
+
+	/**
+	* Returns the number of relations between User1 and User2.
+	*
+	* @param userId1 the user that is the subject of the relation
+	* @param userId2 the user at the other end of the relation
+	* @return the number of relations
+	*/
+	public static int getRelationsCount(long userId1, long userId2) {
+		return getService().getRelationsCount(userId1, userId2);
+	}
+
+	/**
+	* Returns the social relation with the primary key.
+	*
+	* @param relationId the primary key of the social relation
+	* @return the social relation
+	* @throws PortalException if a social relation with the primary key could not be found
+	*/
+	public static com.liferay.social.kernel.model.SocialRelation getSocialRelation(
+		long relationId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getSocialRelation(relationId);
+	}
+
+	/**
+	* Returns the social relation with the matching UUID and company.
+	*
+	* @param uuid the social relation's UUID
+	* @param companyId the primary key of the company
+	* @return the matching social relation
+	* @throws PortalException if a matching social relation could not be found
+	*/
+	public static com.liferay.social.kernel.model.SocialRelation getSocialRelationByUuidAndCompanyId(
+		java.lang.String uuid, long companyId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getSocialRelationByUuidAndCompanyId(uuid, companyId);
+	}
+
+	/**
 	* Returns a range of all the social relations.
 	*
 	* <p>
@@ -442,83 +464,61 @@ public class SocialRelationLocalServiceUtil {
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of social relations.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of social relations
 	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return getService().dynamicQueryCount(dynamicQuery);
+	public static int getSocialRelationsCount() {
+		return getService().getSocialRelationsCount();
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return getService().dynamicQueryCount(dynamicQuery, projection);
-	}
-
-	/**
-	* Removes the relation (and its inverse in case of a bidirectional
-	* relation) from the database.
-	*
-	* @param relation the relation to be removed
-	*/
-	public static void deleteRelation(
-		com.liferay.social.kernel.model.SocialRelation relation)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteRelation(relation);
-	}
-
-	/**
-	* Removes the relation (and its inverse in case of a bidirectional
-	* relation) from the database.
-	*
-	* @param relationId the primary key of the relation
-	*/
-	public static void deleteRelation(long relationId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteRelation(relationId);
-	}
-
-	/**
-	* Removes the matching relation (and its inverse in case of a bidirectional
-	* relation) from the database.
+	* Returns <code>true</code> if a relation of the given type exists where
+	* the user with primary key <code>userId1</code> is User1 of the relation
+	* and the user with the primary key <code>userId2</code> is User2 of the
+	* relation.
 	*
 	* @param userId1 the user that is the subject of the relation
 	* @param userId2 the user at the other end of the relation
 	* @param type the relation's type
+	* @return <code>true</code> if the relation exists; <code>false</code>
+	otherwise
 	*/
-	public static void deleteRelation(long userId1, long userId2, int type)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteRelation(userId1, userId2, type);
+	public static boolean hasRelation(long userId1, long userId2, int type) {
+		return getService().hasRelation(userId1, userId2, type);
 	}
 
 	/**
-	* Removes all relations involving the user from the database.
+	* Returns <code>true</code> if the users can be in a relation of the given
+	* type where the user with primary key <code>userId1</code> is User1 of the
+	* relation and the user with the primary key <code>userId2</code> is User2
+	* of the relation.
 	*
-	* @param userId the primary key of the user
-	*/
-	public static void deleteRelations(long userId) {
-		getService().deleteRelations(userId);
-	}
-
-	/**
-	* Removes all relations between User1 and User2.
+	* <p>
+	* This method returns <code>false</code> if User1 and User2 are the same,
+	* if either user is the default user, or if a matching relation already
+	* exists.
+	* </p>
 	*
 	* @param userId1 the user that is the subject of the relation
 	* @param userId2 the user at the other end of the relation
+	* @param type the relation's type
+	* @return <code>true</code> if the two users can be in a new relation of
+	the given type; <code>false</code> otherwise
 	*/
-	public static void deleteRelations(long userId1, long userId2)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteRelations(userId1, userId2);
+	public static boolean isRelatable(long userId1, long userId2, int type) {
+		return getService().isRelatable(userId1, userId2, type);
+	}
+
+	/**
+	* Updates the social relation in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param socialRelation the social relation
+	* @return the social relation that was updated
+	*/
+	public static com.liferay.social.kernel.model.SocialRelation updateSocialRelation(
+		com.liferay.social.kernel.model.SocialRelation socialRelation) {
+		return getService().updateSocialRelation(socialRelation);
 	}
 
 	public static SocialRelationLocalService getService() {

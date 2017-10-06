@@ -104,50 +104,6 @@ public interface DDMStructureLinkLocalService extends BaseLocalService,
 	public DDMStructureLink deleteDDMStructureLink(long structureLinkId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DDMStructureLink fetchDDMStructureLink(long structureLinkId);
-
-	/**
-	* Returns the ddm structure link with the primary key.
-	*
-	* @param structureLinkId the primary key of the ddm structure link
-	* @return the ddm structure link
-	* @throws PortalException if a ddm structure link with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DDMStructureLink getDDMStructureLink(long structureLinkId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DDMStructureLink getStructureLink(long structureLinkId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DDMStructureLink getUniqueStructureLink(long classNameId,
-		long classPK) throws PortalException;
-
-	/**
-	* Updates the ddm structure link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param ddmStructureLink the ddm structure link
-	* @return the ddm structure link that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public DDMStructureLink updateDDMStructureLink(
-		DDMStructureLink ddmStructureLink);
-
-	public DDMStructureLink updateStructureLink(long structureLinkId,
-		long classNameId, long classPK, long structureId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
 	/**
 	* @throws PortalException
 	*/
@@ -155,32 +111,19 @@ public interface DDMStructureLinkLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+	public void deleteStructureLink(DDMStructureLink structureLink);
+
+	public void deleteStructureLink(long structureLinkId)
 		throws PortalException;
 
-	/**
-	* Returns the number of ddm structure links.
-	*
-	* @return the number of ddm structure links
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getDDMStructureLinksCount();
+	public void deleteStructureLink(long classNameId, long classPK,
+		long structureId) throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getStructureLinkStructuresCount(long classNameId, long classPK,
-		java.lang.String keywords);
+	public void deleteStructureLinks(long classNameId, long classPK);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getStructureLinksCount(long classNameId, long classPK);
+	public void deleteStructureStructureLinks(long structureId);
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -221,8 +164,43 @@ public interface DDMStructureLinkLocalService extends BaseLocalService,
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
 
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DDMStructureLink fetchDDMStructureLink(long structureLinkId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DDMStructureLink> getClassNameStructureLinks(long classNameId);
+
+	/**
+	* Returns the ddm structure link with the primary key.
+	*
+	* @param structureLinkId the primary key of the ddm structure link
+	* @return the ddm structure link
+	* @throws PortalException if a ddm structure link with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DDMStructureLink getDDMStructureLink(long structureLinkId)
+		throws PortalException;
 
 	/**
 	* Returns a range of all the ddm structure links.
@@ -237,6 +215,51 @@ public interface DDMStructureLinkLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DDMStructureLink> getDDMStructureLinks(int start, int end);
+
+	/**
+	* Returns the number of ddm structure links.
+	*
+	* @return the number of ddm structure links
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getDDMStructureLinksCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DDMStructureLink getStructureLink(long structureLinkId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DDMStructureLink> getStructureLinks(long structureId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DDMStructureLink> getStructureLinks(long structureId,
+		int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DDMStructureLink> getStructureLinks(long classNameId,
+		long classPK);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DDMStructureLink> getStructureLinks(long classNameId,
+		long classPK, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getStructureLinksCount(long classNameId, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DDMStructure> getStructureLinkStructures(long classNameId,
@@ -262,47 +285,24 @@ public interface DDMStructureLinkLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<DDMStructureLink> getStructureLinks(long classNameId,
-		long classPK);
+	public int getStructureLinkStructuresCount(long classNameId, long classPK,
+		java.lang.String keywords);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<DDMStructureLink> getStructureLinks(long classNameId,
-		long classPK, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<DDMStructureLink> getStructureLinks(long structureId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<DDMStructureLink> getStructureLinks(long structureId,
-		int start, int end);
+	public DDMStructureLink getUniqueStructureLink(long classNameId,
+		long classPK) throws PortalException;
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Updates the ddm structure link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @param ddmStructureLink the ddm structure link
+	* @return the ddm structure link that was updated
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Indexable(type = IndexableType.REINDEX)
+	public DDMStructureLink updateDDMStructureLink(
+		DDMStructureLink ddmStructureLink);
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	public void deleteStructureLink(DDMStructureLink structureLink);
-
-	public void deleteStructureLink(long classNameId, long classPK,
-		long structureId) throws PortalException;
-
-	public void deleteStructureLink(long structureLinkId)
+	public DDMStructureLink updateStructureLink(long structureLinkId,
+		long classNameId, long classPK, long structureId)
 		throws PortalException;
-
-	public void deleteStructureLinks(long classNameId, long classPK);
-
-	public void deleteStructureStructureLinks(long structureId);
 }

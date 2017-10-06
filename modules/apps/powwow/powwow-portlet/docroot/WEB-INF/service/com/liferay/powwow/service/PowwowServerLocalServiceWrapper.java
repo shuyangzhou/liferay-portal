@@ -34,35 +34,13 @@ public class PowwowServerLocalServiceWrapper implements PowwowServerLocalService
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _powwowServerLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _powwowServerLocalService.dynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _powwowServerLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+	public com.liferay.powwow.model.PowwowServer addPowwowServer(long userId,
+		java.lang.String name, java.lang.String providerType,
+		java.lang.String url, java.lang.String apiKey, java.lang.String secret,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _powwowServerLocalService.deletePersistedModel(persistedModel);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _powwowServerLocalService.getPersistedModel(primaryKeyObj);
+		return _powwowServerLocalService.addPowwowServer(userId, name,
+			providerType, url, apiKey, secret, serviceContext);
 	}
 
 	/**
@@ -78,13 +56,8 @@ public class PowwowServerLocalServiceWrapper implements PowwowServerLocalService
 	}
 
 	@Override
-	public com.liferay.powwow.model.PowwowServer addPowwowServer(long userId,
-		java.lang.String name, java.lang.String providerType,
-		java.lang.String url, java.lang.String apiKey, java.lang.String secret,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _powwowServerLocalService.addPowwowServer(userId, name,
-			providerType, url, apiKey, secret, serviceContext);
+	public void checkPowwowServers() {
+		_powwowServerLocalService.checkPowwowServers();
 	}
 
 	/**
@@ -100,15 +73,13 @@ public class PowwowServerLocalServiceWrapper implements PowwowServerLocalService
 	}
 
 	/**
-	* Deletes the powwow server from the database. Also notifies the appropriate model listeners.
-	*
-	* @param powwowServer the powwow server
-	* @return the powwow server that was removed
+	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.powwow.model.PowwowServer deletePowwowServer(
-		com.liferay.powwow.model.PowwowServer powwowServer) {
-		return _powwowServerLocalService.deletePowwowServer(powwowServer);
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _powwowServerLocalService.deletePersistedModel(persistedModel);
 	}
 
 	/**
@@ -125,82 +96,21 @@ public class PowwowServerLocalServiceWrapper implements PowwowServerLocalService
 		return _powwowServerLocalService.deletePowwowServer(powwowServerId);
 	}
 
-	@Override
-	public com.liferay.powwow.model.PowwowServer fetchPowwowServer(
-		long powwowServerId) {
-		return _powwowServerLocalService.fetchPowwowServer(powwowServerId);
-	}
-
 	/**
-	* Returns the powwow server with the primary key.
-	*
-	* @param powwowServerId the primary key of the powwow server
-	* @return the powwow server
-	* @throws PortalException if a powwow server with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.powwow.model.PowwowServer getPowwowServer(
-		long powwowServerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _powwowServerLocalService.getPowwowServer(powwowServerId);
-	}
-
-	/**
-	* Updates the powwow server in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the powwow server from the database. Also notifies the appropriate model listeners.
 	*
 	* @param powwowServer the powwow server
-	* @return the powwow server that was updated
+	* @return the powwow server that was removed
 	*/
 	@Override
-	public com.liferay.powwow.model.PowwowServer updatePowwowServer(
+	public com.liferay.powwow.model.PowwowServer deletePowwowServer(
 		com.liferay.powwow.model.PowwowServer powwowServer) {
-		return _powwowServerLocalService.updatePowwowServer(powwowServer);
+		return _powwowServerLocalService.deletePowwowServer(powwowServer);
 	}
 
 	@Override
-	public com.liferay.powwow.model.PowwowServer updatePowwowServer(
-		long powwowServerId, java.lang.String name,
-		java.lang.String providerType, java.lang.String url,
-		java.lang.String apiKey, java.lang.String secret,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _powwowServerLocalService.updatePowwowServer(powwowServerId,
-			name, providerType, url, apiKey, secret, serviceContext);
-	}
-
-	/**
-	* Returns the number of powwow servers.
-	*
-	* @return the number of powwow servers
-	*/
-	@Override
-	public int getPowwowServersCount() {
-		return _powwowServerLocalService.getPowwowServersCount();
-	}
-
-	@Override
-	public int getPowwowServersCount(java.lang.String providerType,
-		boolean active) {
-		return _powwowServerLocalService.getPowwowServersCount(providerType,
-			active);
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _powwowServerLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _powwowServerLocalService.getOSGiServiceIdentifier();
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _powwowServerLocalService.dynamicQuery();
 	}
 
 	/**
@@ -257,6 +167,80 @@ public class PowwowServerLocalServiceWrapper implements PowwowServerLocalService
 	}
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return _powwowServerLocalService.dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return _powwowServerLocalService.dynamicQueryCount(dynamicQuery,
+			projection);
+	}
+
+	@Override
+	public com.liferay.powwow.model.PowwowServer fetchPowwowServer(
+		long powwowServerId) {
+		return _powwowServerLocalService.fetchPowwowServer(powwowServerId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _powwowServerLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _powwowServerLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _powwowServerLocalService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _powwowServerLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the powwow server with the primary key.
+	*
+	* @param powwowServerId the primary key of the powwow server
+	* @return the powwow server
+	* @throws PortalException if a powwow server with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.powwow.model.PowwowServer getPowwowServer(
+		long powwowServerId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _powwowServerLocalService.getPowwowServer(powwowServerId);
+	}
+
+	/**
 	* Returns a range of all the powwow servers.
 	*
 	* <p>
@@ -286,35 +270,51 @@ public class PowwowServerLocalServiceWrapper implements PowwowServerLocalService
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of powwow servers.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of powwow servers
 	*/
 	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return _powwowServerLocalService.dynamicQueryCount(dynamicQuery);
+	public int getPowwowServersCount() {
+		return _powwowServerLocalService.getPowwowServersCount();
+	}
+
+	@Override
+	public int getPowwowServersCount(java.lang.String providerType,
+		boolean active) {
+		return _powwowServerLocalService.getPowwowServersCount(providerType,
+			active);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _powwowServerLocalService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	@Override
+	public com.liferay.powwow.model.PowwowServer updatePowwowServer(
+		long powwowServerId, java.lang.String name,
+		java.lang.String providerType, java.lang.String url,
+		java.lang.String apiKey, java.lang.String secret,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _powwowServerLocalService.updatePowwowServer(powwowServerId,
+			name, providerType, url, apiKey, secret, serviceContext);
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Updates the powwow server in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @param powwowServer the powwow server
+	* @return the powwow server that was updated
 	*/
 	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return _powwowServerLocalService.dynamicQueryCount(dynamicQuery,
-			projection);
-	}
-
-	@Override
-	public void checkPowwowServers() {
-		_powwowServerLocalService.checkPowwowServers();
+	public com.liferay.powwow.model.PowwowServer updatePowwowServer(
+		com.liferay.powwow.model.PowwowServer powwowServer) {
+		return _powwowServerLocalService.updatePowwowServer(powwowServer);
 	}
 
 	@Override

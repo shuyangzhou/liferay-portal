@@ -76,7 +76,9 @@ public class ValidationDDMFormFieldTemplateContextContributor
 					"expression", valueJSONObject.getString("expression"));
 			}
 			catch (JSONException jsone) {
-				_log.error(jsone, jsone);
+				if (_log.isWarnEnabled()) {
+					_log.warn(jsone, jsone);
+				}
 			}
 		}
 		else {

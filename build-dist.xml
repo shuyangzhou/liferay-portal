@@ -424,10 +424,10 @@
 		<echo file="${tstamp.value}/META-INF/context.xml"><![CDATA[<?xml version="1.0"?>
 			<Context crossContext="true" path="">
 				<Realm
-					className="org.apache.catalina.realm.JAASRealm"
 					appName="PortalRealm"
-					userClassNames="com.liferay.portal.kernel.security.jaas.PortalPrincipal"
+					className="org.apache.catalina.realm.JAASRealm"
 					roleClassNames="com.liferay.portal.kernel.security.jaas.PortalRole"
+					userClassNames="com.liferay.portal.kernel.security.jaas.PortalPrincipal"
 				/>
 			</Context>]]>
 		</echo>
@@ -1074,16 +1074,16 @@ release was successful.</echo>
 		</if>
 
 		<unzip
-			 dest="${app.server.parent.dir}"
-			 src="${app.server.parent.dir}/${app.server.glassfish.zip.name}"
+			dest="${app.server.parent.dir}"
+			src="${app.server.parent.dir}/${app.server.glassfish.zip.name}"
 		>
 			<patternset
 				includes="glassfish3/glassfish/**,glassfishv3/glassfish/**"
 			/>
 			<mapper
-				type="regexp"
 				from="glassfishv?3/glassfish/(.*)"
 				to="${app.server.glassfish.dir}/\1"
+				type="regexp"
 			/>
 		</unzip>
 
@@ -1192,7 +1192,7 @@ this task.
 				from="(jboss-eap-)\d\.\d[\.]?[\d]?(/.*)"
 				to="\1${app.server.jboss.version}\2"
 				type="regexp"
-			 />
+			/>
 		</unzip>
 
 		<property name="app.server.jboss.module.file" value="${app.server.jboss.dir}/modules/system/layers/base/sun/jdk/main/module.xml" />
@@ -1250,12 +1250,10 @@ this task.
 
 		<replace file="${app.server.jboss.dir}/standalone/configuration/standalone.xml">
 			<replacetoken><![CDATA[<formatter>
-                    <named-formatter name="COLOR-PATTERN" />
-                </formatter>]]></replacetoken>
+                    <named-formatter name="COLOR-PATTERN"]]></replacetoken>
 			<replacevalue><![CDATA[<filter-spec value="not(any(match(&quot;WFLYSRV0059&quot;),match(&quot;WFLYEE0007&quot;)))" />
                 <formatter>
-                    <named-formatter name="COLOR-PATTERN" />
-                </formatter>]]></replacevalue>
+                    <named-formatter name="COLOR-PATTERN"]]></replacevalue>
 		</replace>
 
 		<echo file="${app.server.jboss.bin.dir}/server.policy">
@@ -1365,9 +1363,9 @@ this task.
 					jetty-distribution-${app.server.jetty.version}.v${app.server.jetty.version.date}/webapps/**"
 			/>
 			<mapper
-				type="glob"
 				from="jetty-distribution-${app.server.jetty.version}.v${app.server.jetty.version.date}/*"
 				to="jetty-${app.server.jetty.version}/*"
+				type="glob"
 			/>
 		</unzip>
 
@@ -1474,9 +1472,9 @@ this task.
 				excludes="jonas-full-${app.server.jonas.version}/examples/**,jonas-full-${app.server.jonas.version}/tutorial/**"
 			/>
 			<mapper
-				type="glob"
 				from="jonas-full-${app.server.jonas.version}/*"
 				to="jonas-${app.server.jonas.version}/*"
+				type="glob"
 			/>
 		</unzip>
 
@@ -1677,7 +1675,7 @@ this task.
 						<tree-loader path="cloud:/resin-inf" />
 					</class-loader>
 				 ]]>
-				</replacevalue>
+			</replacevalue>
 		</replace>
 
 		<copy
@@ -1751,13 +1749,13 @@ this task.
 			<then>
 				<replace file="${app.server.tcserver.bin.dir}/setenv.bat">
 					<replacetoken><![CDATA[set JVM_OPTS=-Xmx512M -Xss256K]]></replacetoken>
-					<replacevalue><![CDATA[set JVM_OPTS=-Dfile.encoding=UTF-8 -Xmx1024M -Xss512K -XX:MaxMetaspaceSize=512m]]></replacevalue>
+					<replacevalue><![CDATA[set JVM_OPTS=-Dfile.encoding=UTF-8 -Duser.timezone=GMT -Xmx1024M -Xss512K -XX:MaxMetaspaceSize=512m]]></replacevalue>
 				</replace>
 			</then>
 			<else>
 				<replace file="${app.server.tcserver.bin.dir}/setenv.sh">
 					<replacetoken><![CDATA[JVM_OPTS="-Xmx512M -Xss256K"]]></replacetoken>
-					<replacevalue><![CDATA[JVM_OPTS="-Dfile.encoding=UTF-8 -Xmx1024M -Xss512K -XX:MaxPermSize=512m"]]></replacevalue>
+					<replacevalue><![CDATA[JVM_OPTS="-Dfile.encoding=UTF-8 -Duser.timezone=GMT -Xmx1024M -Xss512K -XX:MaxPermSize=512m"]]></replacevalue>
 				</replace>
 			</else>
 		</if>
@@ -1835,9 +1833,9 @@ wrapper.java.additional.11="-Dfile.encoding=UTF-8"]]></replacevalue>
 				excludes="apache-tomcat-${app.server.tomcat.version}/temp/**,apache-tomcat-${app.server.tomcat.version}/webapps/**"
 			/>
 			<mapper
-				type="glob"
 				from="apache-tomcat-${app.server.tomcat.version}/*"
 				to="${app.server.tomcat.dir.name}/*"
+				type="glob"
 			/>
 		</unzip>
 
@@ -2532,23 +2530,23 @@ and put it in ${app.server.parent.dir}. Then rerun this task.
 
 		<echoxml file="${tstamp.value}/was/liferay-responseFile.xml">
 			<agent-input clean="true" temporary="false">
+				<install modify="false">
+					<offering
+						id="com.ibm.websphere.DEVELOPERSILAN.v85"
+						profile="IBM Websphere 8.5.5.0"
+					>
+					</offering>
+				</install>
 
-			<install modify="false">
-			 	<offering
-			  		id='com.ibm.websphere.DEVELOPERSILAN.v85'
-			  		profile='IBM Websphere 8.5.5.0'>
-			  	</offering>
-			</install>
+				<profile
+					id="IBM Websphere 8.5.5.0"
+					installLocation="${app.server.websphere.dir}"
+				>
+				</profile>
 
-			<profile
-				id='IBM Websphere 8.5.5.0'
-				installLocation='${app.server.websphere.dir}'>
-			</profile>
-
-			<server>
-				<repository location="${project.dir}/${tstamp.value}/was/repository.config" />
-			</server>
-
+				<server>
+					<repository location="${project.dir}/${tstamp.value}/was/repository.config" />
+				</server>
 			</agent-input>
 		</echoxml>
 
@@ -2657,29 +2655,30 @@ and put it in ${app.server.parent.dir}. Then rerun this task.
 
 		<echoxml file="${tstamp.value}/was_fixpack/liferay-responseFile.xml">
 			<agent-input clean="true" temporary="false">
+				<install modify="false">
+					<offering
+						id="com.ibm.websphere.DEVELOPERSILAN.v85"
+						profile="IBM Websphere 8.5.5.0"
+					>
+					</offering>
 
-			<install modify="false">
-			 	<offering
-			  		id='com.ibm.websphere.DEVELOPERSILAN.v85'
-			  		profile='IBM Websphere 8.5.5.0'>
-			  	</offering>
+					<offering
+						id="com.ibm.websphere.IBMJAVA.v80"
+						profile="IBM Websphere 8.5.5.0"
+					>
+					</offering>
+				</install>
 
-			 	<offering
-			  		id='com.ibm.websphere.IBMJAVA.v80'
-			  		profile='IBM Websphere 8.5.5.0'>
-			  	</offering>
-			</install>
+				<profile
+					id="IBM Websphere 8.5.5.0"
+					installLocation="${app.server.websphere.dir}"
+				>
+				</profile>
 
-			<profile
-				id='IBM Websphere 8.5.5.0'
-				installLocation='${app.server.websphere.dir}'>
-			</profile>
-
-			<server>
-				<repository location="${project.dir}/${tstamp.value}/was_fixpack/repository.config" />
-				<repository location="${project.dir}/${tstamp.value}/was_fixpack_jdk/repository.config" />
-			</server>
-
+				<server>
+					<repository location="${project.dir}/${tstamp.value}/was_fixpack/repository.config" />
+					<repository location="${project.dir}/${tstamp.value}/was_fixpack_jdk/repository.config" />
+				</server>
 			</agent-input>
 		</echoxml>
 
@@ -2813,9 +2812,9 @@ this task.
 			src="${app.server.parent.dir}/${app.server.wildfly.zip.name}"
 		>
 			<mapper
-				type="glob"
 				from="wildfly-${app.server.wildfly.version}.Final/*"
 				to="wildfly-${app.server.wildfly.version}/*"
+				type="glob"
 			/>
 		</unzip>
 
@@ -2895,12 +2894,10 @@ this task.
 
 		<replace file="${app.server.wildfly.dir}/standalone/configuration/standalone.xml">
 			<replacetoken><![CDATA[<formatter>
-                    <named-formatter name="COLOR-PATTERN" />
-                </formatter>]]></replacetoken>
+                    <named-formatter name="COLOR-PATTERN"]]></replacetoken>
 			<replacevalue><![CDATA[<filter-spec value="not(any(match(&quot;WFLYSRV0059&quot;),match(&quot;WFLYEE0007&quot;)))" />
                 <formatter>
-                    <named-formatter name="COLOR-PATTERN" />
-                </formatter>]]></replacevalue>
+                    <named-formatter name="COLOR-PATTERN"]]></replacevalue>
 		</replace>
 
 		<echo file="${app.server.wildfly.bin.dir}/server.policy">
@@ -3393,8 +3390,8 @@ plugins.includes=</echo>
 
 		<copy
 			file="dist/liferay-portal-${lp.version}.war"
-			tofile="dist/liferay-portal-${lp.version}-servlet23.war"
 			overwrite="true"
+			tofile="dist/liferay-portal-${lp.version}-servlet23.war"
 		/>
 
 		<zip
@@ -3422,8 +3419,8 @@ plugins.includes=</echo>
 
 		<copy
 			file="dist/liferay-portal-${lp.version}-servlet23.war"
-			tofile="dist/liferay-portal-${lp.version}-servlet23-with-dependencies.war"
 			overwrite="true"
+			tofile="dist/liferay-portal-${lp.version}-servlet23-with-dependencies.war"
 		/>
 
 		<zip
@@ -3483,8 +3480,8 @@ plugins.includes=</echo>
 
 		<copy
 			file="dist/liferay-portal-${lp.version}.war"
-			tofile="dist/liferay-portal-${lp.version}-with-dependencies.war"
 			overwrite="true"
+			tofile="dist/liferay-portal-${lp.version}-with-dependencies.war"
 		/>
 
 		<zip

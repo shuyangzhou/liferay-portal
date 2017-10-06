@@ -14,11 +14,11 @@
 
 package com.liferay.portal.kernel.concurrent;
 
+import com.liferay.petra.concurrent.ConcurrentReferenceValueHashMap;
+import com.liferay.petra.memory.FinalizeAction;
+import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.memory.FinalizeAction;
-import com.liferay.portal.kernel.memory.FinalizeManager;
-import com.liferay.portal.kernel.util.ReflectionUtil;
 
 import java.lang.ref.Reference;
 import java.lang.reflect.Field;
@@ -120,8 +120,9 @@ public class AsyncBroker<K, V> {
 		Field referentField = null;
 
 		try {
-			referentField = ReflectionUtil.getDeclaredField(
-				Reference.class, "referent");
+			referentField = Reference.class.getDeclaredField("referent");
+
+			referentField.setAccessible(true);
 		}
 		catch (Throwable t) {
 			if (_log.isWarnEnabled()) {

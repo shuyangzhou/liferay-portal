@@ -14,7 +14,7 @@
 
 package com.liferay.adaptive.media.web.internal.background.task;
 
-import com.liferay.adaptive.media.web.constants.OptimizeImagesBackgroundTaskConstants;
+import com.liferay.adaptive.media.web.constants.AMOptimizeImagesBackgroundTaskConstants;
 import com.liferay.adaptive.media.web.internal.background.task.display.OptimizeImagesBackgroundTaskDisplay;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskConstants;
@@ -47,10 +47,10 @@ public abstract class OptimizeImagesBackgroundTaskExecutor
 			backgroundTask.getTaskContextMap();
 
 		String configurationEntryUuid = (String)taskContextMap.get(
-			OptimizeImagesBackgroundTaskConstants.CONFIGURATION_ENTRY_UUID);
+			AMOptimizeImagesBackgroundTaskConstants.CONFIGURATION_ENTRY_UUID);
 		long companyId = GetterUtil.getLong(
 			taskContextMap.get(
-				OptimizeImagesBackgroundTaskConstants.COMPANY_ID));
+				AMOptimizeImagesBackgroundTaskConstants.COMPANY_ID));
 
 		optimizeImages(configurationEntryUuid, companyId);
 

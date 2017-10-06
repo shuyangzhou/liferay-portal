@@ -15,19 +15,16 @@
 package com.liferay.portal.verify;
 
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-import com.liferay.portal.kernel.concurrent.ThrowableAwareRunnable;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Contact;
-import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ContactLocalServiceUtil;
-import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
@@ -45,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 /**
  * @author Raymond Augé
@@ -61,22 +59,20 @@ public class VerifyResourcePermissions extends VerifyProcess {
 			Role role = RoleLocalServiceUtil.getRole(
 				companyId, RoleConstants.OWNER);
 
-			List<VerifyResourcedModelRunnable> verifyResourcedModelRunnables =
+			List<VerifyResourcedModelCallable> verifyResourcedModelCallables =
 				new ArrayList<>(verifiableResourcedModels.length);
 
 			for (VerifiableResourcedModel verifiableResourcedModel :
 					verifiableResourcedModels) {
 
-				VerifyResourcedModelRunnable verifyResourcedModelRunnable =
-					new VerifyResourcedModelRunnable(
+				VerifyResourcedModelCallable verifyResourcedModelCallable =
+					new VerifyResourcedModelCallable(
 						role, verifiableResourcedModel);
 
-				verifyResourcedModelRunnables.add(verifyResourcedModelRunnable);
+				verifyResourcedModelCallables.add(verifyResourcedModelCallable);
 			}
 
-			doVerify(verifyResourcedModelRunnables);
-
-			verifyLayout(role);
+			doVerify(verifyResourcedModelCallables);
 		}
 	}
 
@@ -92,23 +88,6 @@ public class VerifyResourcePermissions extends VerifyProcess {
 			verifiableResourcedModels.toArray(
 				new VerifiableResourcedModel[
 					verifiableResourcedModels.size()]));
-	}
-
-	protected void verifyLayout(Role role) throws Exception {
-		try (LoggingTimer loggingTimer = new LoggingTimer()) {
-			List<Layout> layouts =
-				LayoutLocalServiceUtil.getNoPermissionLayouts(role.getRoleId());
-
-			int total = layouts.size();
-
-			for (int i = 0; i < total; i++) {
-				Layout layout = layouts.get(i);
-
-				verifyResourcedModel(
-					role.getCompanyId(), Layout.class.getName(),
-					layout.getPlid(), role, 0, i, total);
-			}
-		}
 	}
 
 	protected void verifyResourcedModel(
@@ -228,18 +207,20 @@ public class VerifyResourcePermissions extends VerifyProcess {
 	private static final Log _log = LogFactoryUtil.getLog(
 		VerifyResourcePermissions.class);
 
-	private class VerifyResourcedModelRunnable extends ThrowableAwareRunnable {
+	private class VerifyResourcedModelCallable implements Callable<Void> {
 
-		public VerifyResourcedModelRunnable(
+		@Override
+		public Void call() throws Exception {
+			verifyResourcedModel(_role, _verifiableResourcedModel);
+
+			return null;
+		}
+
+		private VerifyResourcedModelCallable(
 			Role role, VerifiableResourcedModel verifiableResourcedModel) {
 
 			_role = role;
 			_verifiableResourcedModel = verifiableResourcedModel;
-		}
-
-		@Override
-		protected void doRun() throws Exception {
-			verifyResourcedModel(_role, _verifiableResourcedModel);
 		}
 
 		private final Role _role;

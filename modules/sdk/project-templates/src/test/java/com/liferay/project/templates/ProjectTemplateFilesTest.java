@@ -238,10 +238,32 @@ public class ProjectTemplateFilesTest {
 
 		requiredPropertyNames.addAll(_archetypeMetadataXmlDefaultPropertyNames);
 
+		Set<String> declaredVariables = new HashSet<>();
+
+		Path definitionsVmPath = projectTemplateDirPath.resolve(
+			"src/main/resources/definitions.vm");
+
+		String messageSuffix = archetypeMetadataXmlPath.toString();
+
+		if (Files.exists(definitionsVmPath)) {
+			String definitionsVm = FileUtil.read(definitionsVmPath);
+
+			matcher = _velocitySetDirectivePattern.matcher(definitionsVm);
+
+			while (matcher.find()) {
+				declaredVariables.add(matcher.group(1));
+			}
+
+			messageSuffix += " or " + definitionsVmPath;
+		}
+
+		messageSuffix += ".";
+
 		for (String name : archetypeResourcePropertyNames) {
 			Assert.assertTrue(
-				"Undeclared \"" + name + "\" required property in " +
-					archetypeMetadataXmlPath,
+				"Undeclared \"" + name + "\" property. Please add it to " +
+					messageSuffix,
+				declaredVariables.contains(name) ||
 				requiredPropertyNames.contains(name));
 		}
 	}
@@ -446,7 +468,8 @@ public class ProjectTemplateFilesTest {
 		_testPropertyValue(path, properties, "author", "${author}");
 		_testPropertyValue(path, properties, "change-log", "");
 		_testPropertyValue(path, properties, "licenses", "LGPL");
-		_testPropertyValue(path, properties, "liferay-versions", "7.0.0+");
+		_testPropertyValue(
+			path, properties, "liferay-versions", "7.0.0+,7.1.0+");
 		_testPropertyValue(path, properties, "long-description", "");
 		_testPropertyValue(path, properties, "module-group-id", "liferay");
 		_testPropertyValue(path, properties, "module-incremental-version", "1");
@@ -845,6 +868,8 @@ public class ProjectTemplateFilesTest {
 			"bnd", "gradle", "java", "jsp", "jspf", "properties", "xml"));
 	private static final Pattern _velocityDirectivePattern = Pattern.compile(
 		"#(if|set)\\s*\\(\\s*(.+)\\s*\\)");
+	private static final Pattern _velocitySetDirectivePattern = Pattern.compile(
+		"#set\\s*\\(\\s*\\$(\\S+)\\s*=");
 	private static final Map<String, String> _xmlDeclarations = new HashMap<>();
 
 	static {
@@ -852,6 +877,8 @@ public class ProjectTemplateFilesTest {
 			_addXmlDeclaration(null, "xml_declaration.tmpl");
 			_addXmlDeclaration(
 				"liferay-display.xml", "liferay_display_xml_declaration.tmpl");
+			_addXmlDeclaration(
+				"liferay-hook.xml", "liferay_hook_xml_declaration.tmpl");
 			_addXmlDeclaration(
 				"liferay-layout-templates.xml",
 				"liferay_layout_templates_xml_declaration.tmpl");

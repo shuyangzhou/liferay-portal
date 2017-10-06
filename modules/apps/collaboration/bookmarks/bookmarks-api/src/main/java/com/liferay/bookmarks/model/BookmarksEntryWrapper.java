@@ -68,7 +68,6 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("resourceBlockId", getResourceBlockId());
 		attributes.put("folderId", getFolderId());
 		attributes.put("treePath", getTreePath());
 		attributes.put("name", getName());
@@ -133,12 +132,6 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 
 		if (modifiedDate != null) {
 			setModifiedDate(modifiedDate);
-		}
-
-		Long resourceBlockId = (Long)attributes.get("resourceBlockId");
-
-		if (resourceBlockId != null) {
-			setResourceBlockId(resourceBlockId);
 		}
 
 		Long folderId = (Long)attributes.get("folderId");
@@ -215,19 +208,303 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 	}
 
 	@Override
-	public BookmarksEntry toEscapedModel() {
-		return new BookmarksEntryWrapper(_bookmarksEntry.toEscapedModel());
+	public java.lang.String buildTreePath()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _bookmarksEntry.buildTreePath();
 	}
 
 	@Override
-	public BookmarksEntry toUnescapedModel() {
-		return new BookmarksEntryWrapper(_bookmarksEntry.toUnescapedModel());
+	public java.lang.Object clone() {
+		return new BookmarksEntryWrapper((BookmarksEntry)_bookmarksEntry.clone());
+	}
+
+	@Override
+	public int compareTo(BookmarksEntry bookmarksEntry) {
+		return _bookmarksEntry.compareTo(bookmarksEntry);
+	}
+
+	/**
+	* Returns the company ID of this bookmarks entry.
+	*
+	* @return the company ID of this bookmarks entry
+	*/
+	@Override
+	public long getCompanyId() {
+		return _bookmarksEntry.getCompanyId();
+	}
+
+	/**
+	* Returns the create date of this bookmarks entry.
+	*
+	* @return the create date of this bookmarks entry
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _bookmarksEntry.getCreateDate();
+	}
+
+	/**
+	* Returns the description of this bookmarks entry.
+	*
+	* @return the description of this bookmarks entry
+	*/
+	@Override
+	public java.lang.String getDescription() {
+		return _bookmarksEntry.getDescription();
+	}
+
+	/**
+	* Returns the entry ID of this bookmarks entry.
+	*
+	* @return the entry ID of this bookmarks entry
+	*/
+	@Override
+	public long getEntryId() {
+		return _bookmarksEntry.getEntryId();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _bookmarksEntry.getExpandoBridge();
 	}
 
 	@Override
 	public BookmarksFolder getFolder()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _bookmarksEntry.getFolder();
+	}
+
+	/**
+	* Returns the folder ID of this bookmarks entry.
+	*
+	* @return the folder ID of this bookmarks entry
+	*/
+	@Override
+	public long getFolderId() {
+		return _bookmarksEntry.getFolderId();
+	}
+
+	/**
+	* Returns the group ID of this bookmarks entry.
+	*
+	* @return the group ID of this bookmarks entry
+	*/
+	@Override
+	public long getGroupId() {
+		return _bookmarksEntry.getGroupId();
+	}
+
+	/**
+	* Returns the last publish date of this bookmarks entry.
+	*
+	* @return the last publish date of this bookmarks entry
+	*/
+	@Override
+	public Date getLastPublishDate() {
+		return _bookmarksEntry.getLastPublishDate();
+	}
+
+	/**
+	* Returns the modified date of this bookmarks entry.
+	*
+	* @return the modified date of this bookmarks entry
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _bookmarksEntry.getModifiedDate();
+	}
+
+	/**
+	* Returns the name of this bookmarks entry.
+	*
+	* @return the name of this bookmarks entry
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _bookmarksEntry.getName();
+	}
+
+	/**
+	* Returns the primary key of this bookmarks entry.
+	*
+	* @return the primary key of this bookmarks entry
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _bookmarksEntry.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _bookmarksEntry.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the priority of this bookmarks entry.
+	*
+	* @return the priority of this bookmarks entry
+	*/
+	@Override
+	public int getPriority() {
+		return _bookmarksEntry.getPriority();
+	}
+
+	/**
+	* Returns the status of this bookmarks entry.
+	*
+	* @return the status of this bookmarks entry
+	*/
+	@Override
+	public int getStatus() {
+		return _bookmarksEntry.getStatus();
+	}
+
+	/**
+	* Returns the status by user ID of this bookmarks entry.
+	*
+	* @return the status by user ID of this bookmarks entry
+	*/
+	@Override
+	public long getStatusByUserId() {
+		return _bookmarksEntry.getStatusByUserId();
+	}
+
+	/**
+	* Returns the status by user name of this bookmarks entry.
+	*
+	* @return the status by user name of this bookmarks entry
+	*/
+	@Override
+	public java.lang.String getStatusByUserName() {
+		return _bookmarksEntry.getStatusByUserName();
+	}
+
+	/**
+	* Returns the status by user uuid of this bookmarks entry.
+	*
+	* @return the status by user uuid of this bookmarks entry
+	*/
+	@Override
+	public java.lang.String getStatusByUserUuid() {
+		return _bookmarksEntry.getStatusByUserUuid();
+	}
+
+	/**
+	* Returns the status date of this bookmarks entry.
+	*
+	* @return the status date of this bookmarks entry
+	*/
+	@Override
+	public Date getStatusDate() {
+		return _bookmarksEntry.getStatusDate();
+	}
+
+	/**
+	* Returns the trash entry created when this bookmarks entry was moved to the Recycle Bin. The trash entry may belong to one of the ancestors of this bookmarks entry.
+	*
+	* @return the trash entry created when this bookmarks entry was moved to the Recycle Bin
+	*/
+	@Override
+	public com.liferay.trash.kernel.model.TrashEntry getTrashEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _bookmarksEntry.getTrashEntry();
+	}
+
+	/**
+	* Returns the class primary key of the trash entry for this bookmarks entry.
+	*
+	* @return the class primary key of the trash entry for this bookmarks entry
+	*/
+	@Override
+	public long getTrashEntryClassPK() {
+		return _bookmarksEntry.getTrashEntryClassPK();
+	}
+
+	/**
+	* Returns the trash handler for this bookmarks entry.
+	*
+	* @return the trash handler for this bookmarks entry
+	* @deprecated As of 7.0.0, with no direct replacement
+	*/
+	@Deprecated
+	@Override
+	public com.liferay.portal.kernel.trash.TrashHandler getTrashHandler() {
+		return _bookmarksEntry.getTrashHandler();
+	}
+
+	/**
+	* Returns the tree path of this bookmarks entry.
+	*
+	* @return the tree path of this bookmarks entry
+	*/
+	@Override
+	public java.lang.String getTreePath() {
+		return _bookmarksEntry.getTreePath();
+	}
+
+	/**
+	* Returns the url of this bookmarks entry.
+	*
+	* @return the url of this bookmarks entry
+	*/
+	@Override
+	public java.lang.String getUrl() {
+		return _bookmarksEntry.getUrl();
+	}
+
+	/**
+	* Returns the user ID of this bookmarks entry.
+	*
+	* @return the user ID of this bookmarks entry
+	*/
+	@Override
+	public long getUserId() {
+		return _bookmarksEntry.getUserId();
+	}
+
+	/**
+	* Returns the user name of this bookmarks entry.
+	*
+	* @return the user name of this bookmarks entry
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _bookmarksEntry.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this bookmarks entry.
+	*
+	* @return the user uuid of this bookmarks entry
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _bookmarksEntry.getUserUuid();
+	}
+
+	/**
+	* Returns the uuid of this bookmarks entry.
+	*
+	* @return the uuid of this bookmarks entry
+	*/
+	@Override
+	public java.lang.String getUuid() {
+		return _bookmarksEntry.getUuid();
+	}
+
+	/**
+	* Returns the visits of this bookmarks entry.
+	*
+	* @return the visits of this bookmarks entry
+	*/
+	@Override
+	public int getVisits() {
+		return _bookmarksEntry.getVisits();
+	}
+
+	@Override
+	public int hashCode() {
+		return _bookmarksEntry.hashCode();
 	}
 
 	/**
@@ -281,6 +558,26 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 	}
 
 	/**
+	* Returns <code>true</code> if this bookmarks entry is inactive.
+	*
+	* @return <code>true</code> if this bookmarks entry is inactive; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isInactive() {
+		return _bookmarksEntry.isInactive();
+	}
+
+	/**
+	* Returns <code>true</code> if this bookmarks entry is incomplete.
+	*
+	* @return <code>true</code> if this bookmarks entry is incomplete; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isIncomplete() {
+		return _bookmarksEntry.isIncomplete();
+	}
+
+	/**
 	* Returns <code>true</code> if this bookmarks entry is in the Recycle Bin.
 	*
 	* @return <code>true</code> if this bookmarks entry is in the Recycle Bin; <code>false</code> otherwise
@@ -310,26 +607,6 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 		return _bookmarksEntry.isInTrashImplicitly();
 	}
 
-	/**
-	* Returns <code>true</code> if this bookmarks entry is inactive.
-	*
-	* @return <code>true</code> if this bookmarks entry is inactive; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isInactive() {
-		return _bookmarksEntry.isInactive();
-	}
-
-	/**
-	* Returns <code>true</code> if this bookmarks entry is incomplete.
-	*
-	* @return <code>true</code> if this bookmarks entry is incomplete; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isIncomplete() {
-		return _bookmarksEntry.isIncomplete();
-	}
-
 	@Override
 	public boolean isNew() {
 		return _bookmarksEntry.isNew();
@@ -353,325 +630,6 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 	@Override
 	public boolean isScheduled() {
 		return _bookmarksEntry.isScheduled();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _bookmarksEntry.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<BookmarksEntry> toCacheModel() {
-		return _bookmarksEntry.toCacheModel();
-	}
-
-	/**
-	* Returns the trash handler for this bookmarks entry.
-	*
-	* @return the trash handler for this bookmarks entry
-	* @deprecated As of 7.0.0, with no direct replacement
-	*/
-	@Deprecated
-	@Override
-	public com.liferay.portal.kernel.trash.TrashHandler getTrashHandler() {
-		return _bookmarksEntry.getTrashHandler();
-	}
-
-	/**
-	* Returns the trash entry created when this bookmarks entry was moved to the Recycle Bin. The trash entry may belong to one of the ancestors of this bookmarks entry.
-	*
-	* @return the trash entry created when this bookmarks entry was moved to the Recycle Bin
-	*/
-	@Override
-	public com.liferay.trash.kernel.model.TrashEntry getTrashEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _bookmarksEntry.getTrashEntry();
-	}
-
-	@Override
-	public int compareTo(BookmarksEntry bookmarksEntry) {
-		return _bookmarksEntry.compareTo(bookmarksEntry);
-	}
-
-	/**
-	* Returns the priority of this bookmarks entry.
-	*
-	* @return the priority of this bookmarks entry
-	*/
-	@Override
-	public int getPriority() {
-		return _bookmarksEntry.getPriority();
-	}
-
-	/**
-	* Returns the status of this bookmarks entry.
-	*
-	* @return the status of this bookmarks entry
-	*/
-	@Override
-	public int getStatus() {
-		return _bookmarksEntry.getStatus();
-	}
-
-	/**
-	* Returns the visits of this bookmarks entry.
-	*
-	* @return the visits of this bookmarks entry
-	*/
-	@Override
-	public int getVisits() {
-		return _bookmarksEntry.getVisits();
-	}
-
-	@Override
-	public int hashCode() {
-		return _bookmarksEntry.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _bookmarksEntry.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new BookmarksEntryWrapper((BookmarksEntry)_bookmarksEntry.clone());
-	}
-
-	@Override
-	public java.lang.String buildTreePath()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _bookmarksEntry.buildTreePath();
-	}
-
-	/**
-	* Returns the description of this bookmarks entry.
-	*
-	* @return the description of this bookmarks entry
-	*/
-	@Override
-	public java.lang.String getDescription() {
-		return _bookmarksEntry.getDescription();
-	}
-
-	/**
-	* Returns the name of this bookmarks entry.
-	*
-	* @return the name of this bookmarks entry
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _bookmarksEntry.getName();
-	}
-
-	/**
-	* Returns the status by user name of this bookmarks entry.
-	*
-	* @return the status by user name of this bookmarks entry
-	*/
-	@Override
-	public java.lang.String getStatusByUserName() {
-		return _bookmarksEntry.getStatusByUserName();
-	}
-
-	/**
-	* Returns the status by user uuid of this bookmarks entry.
-	*
-	* @return the status by user uuid of this bookmarks entry
-	*/
-	@Override
-	public java.lang.String getStatusByUserUuid() {
-		return _bookmarksEntry.getStatusByUserUuid();
-	}
-
-	/**
-	* Returns the tree path of this bookmarks entry.
-	*
-	* @return the tree path of this bookmarks entry
-	*/
-	@Override
-	public java.lang.String getTreePath() {
-		return _bookmarksEntry.getTreePath();
-	}
-
-	/**
-	* Returns the url of this bookmarks entry.
-	*
-	* @return the url of this bookmarks entry
-	*/
-	@Override
-	public java.lang.String getUrl() {
-		return _bookmarksEntry.getUrl();
-	}
-
-	/**
-	* Returns the user name of this bookmarks entry.
-	*
-	* @return the user name of this bookmarks entry
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _bookmarksEntry.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this bookmarks entry.
-	*
-	* @return the user uuid of this bookmarks entry
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _bookmarksEntry.getUserUuid();
-	}
-
-	/**
-	* Returns the uuid of this bookmarks entry.
-	*
-	* @return the uuid of this bookmarks entry
-	*/
-	@Override
-	public java.lang.String getUuid() {
-		return _bookmarksEntry.getUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _bookmarksEntry.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _bookmarksEntry.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this bookmarks entry.
-	*
-	* @return the create date of this bookmarks entry
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _bookmarksEntry.getCreateDate();
-	}
-
-	/**
-	* Returns the last publish date of this bookmarks entry.
-	*
-	* @return the last publish date of this bookmarks entry
-	*/
-	@Override
-	public Date getLastPublishDate() {
-		return _bookmarksEntry.getLastPublishDate();
-	}
-
-	/**
-	* Returns the modified date of this bookmarks entry.
-	*
-	* @return the modified date of this bookmarks entry
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _bookmarksEntry.getModifiedDate();
-	}
-
-	/**
-	* Returns the status date of this bookmarks entry.
-	*
-	* @return the status date of this bookmarks entry
-	*/
-	@Override
-	public Date getStatusDate() {
-		return _bookmarksEntry.getStatusDate();
-	}
-
-	/**
-	* Returns the company ID of this bookmarks entry.
-	*
-	* @return the company ID of this bookmarks entry
-	*/
-	@Override
-	public long getCompanyId() {
-		return _bookmarksEntry.getCompanyId();
-	}
-
-	/**
-	* Returns the entry ID of this bookmarks entry.
-	*
-	* @return the entry ID of this bookmarks entry
-	*/
-	@Override
-	public long getEntryId() {
-		return _bookmarksEntry.getEntryId();
-	}
-
-	/**
-	* Returns the folder ID of this bookmarks entry.
-	*
-	* @return the folder ID of this bookmarks entry
-	*/
-	@Override
-	public long getFolderId() {
-		return _bookmarksEntry.getFolderId();
-	}
-
-	/**
-	* Returns the group ID of this bookmarks entry.
-	*
-	* @return the group ID of this bookmarks entry
-	*/
-	@Override
-	public long getGroupId() {
-		return _bookmarksEntry.getGroupId();
-	}
-
-	/**
-	* Returns the primary key of this bookmarks entry.
-	*
-	* @return the primary key of this bookmarks entry
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _bookmarksEntry.getPrimaryKey();
-	}
-
-	/**
-	* Returns the resource block ID of this bookmarks entry.
-	*
-	* @return the resource block ID of this bookmarks entry
-	*/
-	@Override
-	public long getResourceBlockId() {
-		return _bookmarksEntry.getResourceBlockId();
-	}
-
-	/**
-	* Returns the status by user ID of this bookmarks entry.
-	*
-	* @return the status by user ID of this bookmarks entry
-	*/
-	@Override
-	public long getStatusByUserId() {
-		return _bookmarksEntry.getStatusByUserId();
-	}
-
-	/**
-	* Returns the class primary key of the trash entry for this bookmarks entry.
-	*
-	* @return the class primary key of the trash entry for this bookmarks entry
-	*/
-	@Override
-	public long getTrashEntryClassPK() {
-		return _bookmarksEntry.getTrashEntryClassPK();
-	}
-
-	/**
-	* Returns the user ID of this bookmarks entry.
-	*
-	* @return the user ID of this bookmarks entry
-	*/
-	@Override
-	public long getUserId() {
-		return _bookmarksEntry.getUserId();
 	}
 
 	@Override
@@ -725,14 +683,14 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_bookmarksEntry.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_bookmarksEntry.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_bookmarksEntry.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -818,16 +776,6 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 	@Override
 	public void setPriority(int priority) {
 		_bookmarksEntry.setPriority(priority);
-	}
-
-	/**
-	* Sets the resource block ID of this bookmarks entry.
-	*
-	* @param resourceBlockId the resource block ID of this bookmarks entry
-	*/
-	@Override
-	public void setResourceBlockId(long resourceBlockId) {
-		_bookmarksEntry.setResourceBlockId(resourceBlockId);
 	}
 
 	/**
@@ -948,6 +896,31 @@ public class BookmarksEntryWrapper implements BookmarksEntry,
 	@Override
 	public void setVisits(int visits) {
 		_bookmarksEntry.setVisits(visits);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<BookmarksEntry> toCacheModel() {
+		return _bookmarksEntry.toCacheModel();
+	}
+
+	@Override
+	public BookmarksEntry toEscapedModel() {
+		return new BookmarksEntryWrapper(_bookmarksEntry.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _bookmarksEntry.toString();
+	}
+
+	@Override
+	public BookmarksEntry toUnescapedModel() {
+		return new BookmarksEntryWrapper(_bookmarksEntry.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _bookmarksEntry.toXmlString();
 	}
 
 	@Override

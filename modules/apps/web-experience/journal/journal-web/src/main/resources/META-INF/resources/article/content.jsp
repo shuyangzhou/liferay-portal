@@ -96,7 +96,7 @@ if (!searchRestriction) {
 <liferay-ui:error exception="<%= StorageFieldRequiredException.class %>" message="please-fill-out-all-required-fields" />
 
 <aui:fieldset>
-	<aui:input autoFocus="<%= true %>" ignoreRequestValue="<%= changeStructure %>" label="title" localized="<%= true %>" name="titleMapAsXML" type="text" wrapperCssClass="article-content-title">
+	<aui:input autoFocus="<%= true %>" label="title" localized="<%= true %>" name="titleMapAsXML" type="text" wrapperCssClass="article-content-title">
 		<c:if test="<%= classNameId == JournalArticleConstants.CLASSNAME_ID_DEFAULT %>">
 			<aui:validator name="required" />
 		</c:if>
@@ -118,6 +118,7 @@ if (!searchRestriction) {
 
 	<div class="article-content-description">
 		<liferay-ui:input-localized
+			cssClass="form-control"
 			editorName="alloyeditor"
 			formName="fm"
 			ignoreRequestValue="<%= changeStructure %>"

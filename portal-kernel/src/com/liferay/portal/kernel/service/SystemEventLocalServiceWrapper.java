@@ -32,41 +32,23 @@ public class SystemEventLocalServiceWrapper implements SystemEventLocalService,
 	}
 
 	@Override
-	public boolean validateGroup(long groupId)
+	public com.liferay.portal.kernel.model.SystemEvent addSystemEvent(
+		long userId, long groupId, java.lang.String className, long classPK,
+		java.lang.String classUuid, java.lang.String referrerClassName,
+		int type, java.lang.String extraData)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _systemEventLocalService.validateGroup(groupId);
+		return _systemEventLocalService.addSystemEvent(userId, groupId,
+			className, classPK, classUuid, referrerClassName, type, extraData);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _systemEventLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _systemEventLocalService.dynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _systemEventLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+	public com.liferay.portal.kernel.model.SystemEvent addSystemEvent(
+		long companyId, java.lang.String className, long classPK,
+		java.lang.String classUuid, java.lang.String referrerClassName,
+		int type, java.lang.String extraData)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _systemEventLocalService.deletePersistedModel(persistedModel);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _systemEventLocalService.getPersistedModel(primaryKeyObj);
+		return _systemEventLocalService.addSystemEvent(companyId, className,
+			classPK, classUuid, referrerClassName, type, extraData);
 	}
 
 	/**
@@ -82,23 +64,9 @@ public class SystemEventLocalServiceWrapper implements SystemEventLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.SystemEvent addSystemEvent(
-		long companyId, java.lang.String className, long classPK,
-		java.lang.String classUuid, java.lang.String referrerClassName,
-		int type, java.lang.String extraData)
+	public void checkSystemEvents()
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _systemEventLocalService.addSystemEvent(companyId, className,
-			classPK, classUuid, referrerClassName, type, extraData);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.SystemEvent addSystemEvent(
-		long userId, long groupId, java.lang.String className, long classPK,
-		java.lang.String classUuid, java.lang.String referrerClassName,
-		int type, java.lang.String extraData)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _systemEventLocalService.addSystemEvent(userId, groupId,
-			className, classPK, classUuid, referrerClassName, type, extraData);
+		_systemEventLocalService.checkSystemEvents();
 	}
 
 	/**
@@ -114,15 +82,13 @@ public class SystemEventLocalServiceWrapper implements SystemEventLocalService,
 	}
 
 	/**
-	* Deletes the system event from the database. Also notifies the appropriate model listeners.
-	*
-	* @param systemEvent the system event
-	* @return the system event that was removed
+	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.SystemEvent deleteSystemEvent(
-		com.liferay.portal.kernel.model.SystemEvent systemEvent) {
-		return _systemEventLocalService.deleteSystemEvent(systemEvent);
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _systemEventLocalService.deletePersistedModel(persistedModel);
 	}
 
 	/**
@@ -139,63 +105,31 @@ public class SystemEventLocalServiceWrapper implements SystemEventLocalService,
 		return _systemEventLocalService.deleteSystemEvent(systemEventId);
 	}
 
-	@Override
-	public com.liferay.portal.kernel.model.SystemEvent fetchSystemEvent(
-		long groupId, long classNameId, long classPK, int type) {
-		return _systemEventLocalService.fetchSystemEvent(groupId, classNameId,
-			classPK, type);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.SystemEvent fetchSystemEvent(
-		long systemEventId) {
-		return _systemEventLocalService.fetchSystemEvent(systemEventId);
-	}
-
 	/**
-	* Returns the system event with the primary key.
-	*
-	* @param systemEventId the primary key of the system event
-	* @return the system event
-	* @throws PortalException if a system event with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.portal.kernel.model.SystemEvent getSystemEvent(
-		long systemEventId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _systemEventLocalService.getSystemEvent(systemEventId);
-	}
-
-	/**
-	* Updates the system event in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the system event from the database. Also notifies the appropriate model listeners.
 	*
 	* @param systemEvent the system event
-	* @return the system event that was updated
+	* @return the system event that was removed
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.SystemEvent updateSystemEvent(
+	public com.liferay.portal.kernel.model.SystemEvent deleteSystemEvent(
 		com.liferay.portal.kernel.model.SystemEvent systemEvent) {
-		return _systemEventLocalService.updateSystemEvent(systemEvent);
+		return _systemEventLocalService.deleteSystemEvent(systemEvent);
 	}
 
-	/**
-	* Returns the number of system events.
-	*
-	* @return the number of system events
-	*/
 	@Override
-	public int getSystemEventsCount() {
-		return _systemEventLocalService.getSystemEventsCount();
+	public void deleteSystemEvents(long groupId) {
+		_systemEventLocalService.deleteSystemEvents(groupId);
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _systemEventLocalService.getOSGiServiceIdentifier();
+	public void deleteSystemEvents(long groupId, long systemEventSetKey) {
+		_systemEventLocalService.deleteSystemEvents(groupId, systemEventSetKey);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _systemEventLocalService.dynamicQuery();
 	}
 
 	/**
@@ -252,6 +186,87 @@ public class SystemEventLocalServiceWrapper implements SystemEventLocalService,
 	}
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return _systemEventLocalService.dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return _systemEventLocalService.dynamicQueryCount(dynamicQuery,
+			projection);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.SystemEvent fetchSystemEvent(
+		long systemEventId) {
+		return _systemEventLocalService.fetchSystemEvent(systemEventId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.SystemEvent fetchSystemEvent(
+		long groupId, long classNameId, long classPK, int type) {
+		return _systemEventLocalService.fetchSystemEvent(groupId, classNameId,
+			classPK, type);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _systemEventLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _systemEventLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _systemEventLocalService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _systemEventLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the system event with the primary key.
+	*
+	* @param systemEventId the primary key of the system event
+	* @return the system event
+	* @throws PortalException if a system event with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.portal.kernel.model.SystemEvent getSystemEvent(
+		long systemEventId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _systemEventLocalService.getSystemEvent(systemEventId);
+	}
+
+	/**
 	* Returns a range of all the system events.
 	*
 	* <p>
@@ -283,46 +298,31 @@ public class SystemEventLocalServiceWrapper implements SystemEventLocalService,
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of system events.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of system events
 	*/
 	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return _systemEventLocalService.dynamicQueryCount(dynamicQuery);
+	public int getSystemEventsCount() {
+		return _systemEventLocalService.getSystemEventsCount();
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Updates the system event in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @param systemEvent the system event
+	* @return the system event that was updated
 	*/
 	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return _systemEventLocalService.dynamicQueryCount(dynamicQuery,
-			projection);
+	public com.liferay.portal.kernel.model.SystemEvent updateSystemEvent(
+		com.liferay.portal.kernel.model.SystemEvent systemEvent) {
+		return _systemEventLocalService.updateSystemEvent(systemEvent);
 	}
 
 	@Override
-	public void checkSystemEvents()
+	public boolean validateGroup(long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		_systemEventLocalService.checkSystemEvents();
-	}
-
-	@Override
-	public void deleteSystemEvents(long groupId) {
-		_systemEventLocalService.deleteSystemEvents(groupId);
-	}
-
-	@Override
-	public void deleteSystemEvents(long groupId, long systemEventSetKey) {
-		_systemEventLocalService.deleteSystemEvents(groupId, systemEventSetKey);
+		return _systemEventLocalService.validateGroup(groupId);
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 Bundle-SymbolicName: com.microsoft.schemas.sharepoint
-Bundle-Version: 1.0.2
+Bundle-Version: 1.0.3
 Export-Package:\
 	Search.Microsoft,\
 	\
@@ -7,6 +7,7 @@ Export-Package:\
 	com.microsoft.schemas.sharepoint.soap.holders,\
 	com.microsoft.webservices.SharePoint.QueryService
 -includeresource:\
+	wsdl=wsdl,\
 	@lib/copy-ws.jar,\
 	@lib/lists-ws.jar,\
 	@lib/search-ws.jar,\

@@ -172,7 +172,7 @@ if (ListUtil.isEmpty(folders) && ListUtil.isEmpty(articles)) {
 			</c:if>
 
 			<div class="lfr-asset-tags">
-				<liferay-ui:asset-tags-summary
+				<liferay-asset:asset-tags-summary
 					className="<%= JournalArticle.class.getName() %>"
 					classPK="<%= classPK %>"
 					message="tags"

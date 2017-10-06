@@ -14,12 +14,18 @@
 
 package com.liferay.users.admin.demo.internal;
 
+import com.liferay.journal.constants.JournalPortletKeys;
+import com.liferay.journal.content.web.constants.JournalContentPortletKeys;
 import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.RoleConstants;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.roles.admin.demo.data.creator.RoleDemoDataCreator;
 import com.liferay.site.demo.data.creator.SiteDemoDataCreator;
@@ -81,6 +87,18 @@ public class UsersDemo extends BasePortalInstanceLifecycleListener {
 		_siteMemberUserDemoDataCreator.create(
 			petLoversGroup.getGroupId(), "maria@liferay.com",
 			new long[] {forumModeratorRole.getRoleId()});
+
+		// Portal Content Reviewer role
+
+		Role portalContentReviewerRole = _roleLocalService.getRole(
+			company.getCompanyId(), RoleConstants.PORTAL_CONTENT_REVIEWER);
+
+		User portalContentReviewerUser = _basicUserDemoDataCreator.create(
+			company.getCompanyId(), "reviewersn", "reviewerea@liferay.com",
+			"reviewerfn", "reviewerln");
+
+		_roleLocalService.addUserRole(
+			portalContentReviewerUser.getUserId(), portalContentReviewerRole);
 	}
 
 	@Deactivate
@@ -94,11 +112,28 @@ public class UsersDemo extends BasePortalInstanceLifecycleListener {
 		_siteRoleDemoDataCreator.delete();
 	}
 
+	@Reference(
+		target = "(javax.portlet.name=" + JournalContentPortletKeys.JOURNAL_CONTENT + ")",
+		unbind = "-"
+	)
+	protected void setJournalContentPortlet(Portlet portlet) {
+	}
+
+	@Reference(
+		target = "(javax.portlet.name=" + JournalPortletKeys.JOURNAL + ")",
+		unbind = "-"
+	)
+	protected void setJournalPortlet(Portlet portlet) {
+	}
+
 	@Reference
 	private BasicUserDemoDataCreator _basicUserDemoDataCreator;
 
 	@Reference
 	private CompanyAdminUserDemoDataCreator _companyAdminUserDemoDataCreator;
+
+	@Reference
+	private RoleLocalService _roleLocalService;
 
 	@Reference
 	private SiteAdminUserDemoDataCreator _siteAdminUserDemoDataCreator;

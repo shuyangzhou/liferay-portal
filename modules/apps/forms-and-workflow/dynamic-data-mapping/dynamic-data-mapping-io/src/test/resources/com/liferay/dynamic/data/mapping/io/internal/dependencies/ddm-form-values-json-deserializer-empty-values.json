@@ -1,0 +1,18 @@
+{
+	"availableLanguageIds": ["en_US"],
+	"defaultLanguageId": "en_US",
+	"fieldValues": [
+		{
+			"instanceId": "baht",
+			"name": "Text1",
+			"value": ""
+		},
+		{
+			"instanceId": "yhar",
+			"name": "Select1",
+			"value": {
+				"en_US": "[]"
+			}
+		}
+	]
+}

@@ -18,7 +18,6 @@ import com.liferay.portal.freemarker.FreeMarkerUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
-import com.liferay.portal.kernel.io.CharPipe;
 import com.liferay.portal.kernel.io.OutputStreamWriter;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedWriter;
@@ -208,7 +207,7 @@ public class SampleSQLBuilder {
 	protected void compressSQL(Reader reader, File dir) throws Exception {
 		DB db = DBManagerUtil.getDB(_dbType, null);
 
-		if (_dbType == DBType.MYSQL) {
+		if ((_dbType == DBType.MARIADB) || (_dbType == DBType.MYSQL)) {
 			db = new SampleMySQLDB(db.getMajorVersion(), db.getMinorVersion());
 		}
 

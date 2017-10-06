@@ -14,6 +14,8 @@
 
 package com.liferay.dynamic.data.mapping.form.renderer.internal;
 
+import com.google.template.soy.data.SanitizedContent;
+
 import com.liferay.dynamic.data.mapping.form.evaluator.DDMFormEvaluationResult;
 import com.liferay.dynamic.data.mapping.form.evaluator.DDMFormEvaluator;
 import com.liferay.dynamic.data.mapping.form.evaluator.DDMFormEvaluatorContext;
@@ -201,9 +203,12 @@ public class DDMFormTemplateContextFactoryTest extends PowerMockito {
 			"<label class=\"required-warning\">All fields marked with '*' " +
 				"are required.</label>";
 
+		SanitizedContent sanitizedContent =
+			(SanitizedContent)templateContext.get(
+				"requiredFieldsWarningMessageHTML");
+
 		Assert.assertEquals(
-			expectedRequiredFieldsWarningHTML,
-			templateContext.get("requiredFieldsWarningMessageHTML"));
+			expectedRequiredFieldsWarningHTML, sanitizedContent.getContent());
 	}
 
 	@Test

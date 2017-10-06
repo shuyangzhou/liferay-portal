@@ -14,21 +14,16 @@
 
 package com.liferay.portal.security.ldap.internal.model.listener;
 
+import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.security.ldap.LDAPSettings;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.security.exportimport.UserExporter;
 import com.liferay.portal.security.ldap.internal.UserImportTransactionThreadLocal;
-
-import java.io.Serializable;
-
-import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -40,15 +35,15 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
  * @author Raymond Augé
  */
 @Component(immediate = true, service = ModelListener.class)
-public class ContactModelListener extends BaseModelListener<Contact> {
+public class ContactModelListener extends BaseLDAPExportModelListener<Contact> {
 
 	@Override
-	public void onAfterCreate(Contact contact) {
+	public void onAfterCreate(Contact contact) throws ModelListenerException {
 		try {
 			exportToLDAP(contact);
 		}
 		catch (Exception e) {
-			_log.error(
+			throw new ModelListenerException(
 				"Unable to export contact with user ID " + contact.getUserId() +
 					" to LDAP on after create",
 				e);
@@ -56,12 +51,12 @@ public class ContactModelListener extends BaseModelListener<Contact> {
 	}
 
 	@Override
-	public void onAfterUpdate(Contact contact) {
+	public void onAfterUpdate(Contact contact) throws ModelListenerException {
 		try {
 			exportToLDAP(contact);
 		}
 		catch (Exception e) {
-			_log.error(
+			throw new ModelListenerException(
 				"Unable to export contact with user ID " + contact.getUserId() +
 					" to LDAP on after update",
 				e);
@@ -75,25 +70,14 @@ public class ContactModelListener extends BaseModelListener<Contact> {
 
 		User user = _userLocalService.fetchUser(contact.getUserId());
 
-		if ((user == null) || user.isDefaultUser()) {
-			return;
-		}
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		Map<String, Serializable> expandoBridgeAttributes = null;
-
-		if (serviceContext != null) {
-			expandoBridgeAttributes =
-				serviceContext.getExpandoBridgeAttributes();
-		}
-
-		_userExporter.exportUser(contact, expandoBridgeAttributes);
+		exportToLDAP(user, _userExporter, _ldapSettings);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ContactModelListener.class);
+
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private LDAPSettings _ldapSettings;
 
 	@Reference(policyOption = ReferencePolicyOption.GREEDY)
 	private UserExporter _userExporter;

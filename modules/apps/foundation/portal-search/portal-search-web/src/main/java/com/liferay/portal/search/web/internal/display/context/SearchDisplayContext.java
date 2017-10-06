@@ -37,9 +37,11 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PredicateFilter;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.search.summary.SummaryBuilderFactory;
 import com.liferay.portal.search.web.constants.SearchPortletParameterNames;
 import com.liferay.portal.search.web.facet.SearchFacet;
 import com.liferay.portal.search.web.facet.util.SearchFacetTracker;
+import com.liferay.portal.search.web.internal.facet.AssetEntriesSearchFacet;
 import com.liferay.portal.search.web.internal.portlet.SearchPortletSearchResultPreferences;
 import com.liferay.portal.search.web.internal.search.request.SearchRequestImpl;
 import com.liferay.portal.search.web.internal.search.request.SearchResponseImpl;
@@ -67,13 +69,15 @@ public class SearchDisplayContext {
 			Portal portal, Html html, Language language,
 			FacetedSearcherManager facetedSearcherManager,
 			IndexSearchPropsValues indexSearchPropsValues,
-			PortletURLFactory portletURLFactory)
+			PortletURLFactory portletURLFactory,
+			SummaryBuilderFactory summaryBuilderFactory)
 		throws PortletException {
 
 		_renderRequest = renderRequest;
 		_portletPreferences = portletPreferences;
 		_indexSearchPropsValues = indexSearchPropsValues;
 		_portletURLFactory = portletURLFactory;
+		_summaryBuilderFactory = summaryBuilderFactory;
 
 		ThemeDisplaySupplier themeDisplaySupplier =
 			new PortletRequestThemeDisplaySupplier(renderRequest);
@@ -123,6 +127,10 @@ public class SearchDisplayContext {
 		}
 
 		searchContext.setKeywords(_keywords.getKeywords());
+
+		searchContext.setEntryClassNames(
+			AssetEntriesSearchFacet.getEntryClassNames(
+				getSearchConfiguration()));
 
 		SearchRequestImpl searchRequestImpl = new SearchRequestImpl(
 			() -> searchContext, searchContainerOptions -> searchContainer,
@@ -334,6 +342,10 @@ public class SearchDisplayContext {
 		return _searchScopePreferenceString;
 	}
 
+	public SummaryBuilderFactory getSummaryBuilderFactory() {
+		return _summaryBuilderFactory;
+	}
+
 	public boolean isCollatedSpellCheckResultEnabled() {
 		if (_collatedSpellCheckResultEnabled != null) {
 			return _collatedSpellCheckResultEnabled;
@@ -540,7 +552,7 @@ public class SearchDisplayContext {
 		groupIdOptional.ifPresent(
 			groupId -> {
 				searchSettings.addCondition(
-					new BooleanClauseImpl(
+					new BooleanClauseImpl<>(
 						new TermQueryImpl(
 							Field.GROUP_ID, String.valueOf(groupId)),
 						BooleanClauseOccur.MUST));
@@ -613,6 +625,7 @@ public class SearchDisplayContext {
 	private final SearchContext _searchContext;
 	private final SearchResultPreferences _searchResultPreferences;
 	private String _searchScopePreferenceString;
+	private final SummaryBuilderFactory _summaryBuilderFactory;
 	private final ThemeDisplaySupplier _themeDisplaySupplier;
 	private Boolean _useAdvancedSearchSyntax;
 

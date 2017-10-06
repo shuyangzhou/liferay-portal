@@ -191,6 +191,10 @@ public class JournalContentDisplayContext {
 				(JournalContent)_portletRequest.getAttribute(
 					JournalWebKeys.JOURNAL_CONTENT);
 
+			if (journalContent == null) {
+				return null;
+			}
+
 			_articleDisplay = journalContent.getDisplay(
 				article.getGroupId(), article.getArticleId(),
 				article.getVersion(), null, null, themeDisplay.getLanguageId(),

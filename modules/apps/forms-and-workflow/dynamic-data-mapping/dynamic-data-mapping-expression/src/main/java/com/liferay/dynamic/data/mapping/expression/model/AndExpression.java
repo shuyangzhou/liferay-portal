@@ -29,8 +29,8 @@ public class AndExpression extends BinaryExpression {
 	}
 
 	@Override
-	public <T> T accept(ExpressionVisitor<T> visitor) {
-		return visitor.visit(this);
+	public <T> T accept(ExpressionVisitor<T> expressionVisitor) {
+		return expressionVisitor.visit(this);
 	}
 
 }

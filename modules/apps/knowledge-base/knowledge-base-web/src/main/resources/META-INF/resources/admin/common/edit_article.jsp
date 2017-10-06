@@ -122,9 +122,9 @@ if (portletTitleBasedNavigation) {
 				<liferay-ui:message arguments="<%= TextFormatter.formatStorageSize(UploadServletRequestConfigurationHelperUtil.getMaxSize(), locale) %>" key="request-is-larger-than-x-and-could-not-be-processed" translateArguments="<%= false %>" />
 			</liferay-ui:error>
 
-			<liferay-ui:asset-categories-error />
+			<liferay-asset:asset-categories-error />
 
-			<liferay-ui:asset-tags-error />
+			<liferay-asset:asset-tags-error />
 
 			<c:choose>
 				<c:when test="<%= (kbArticle != null) && kbArticle.isApproved() %>">
@@ -189,7 +189,7 @@ if (portletTitleBasedNavigation) {
 				</aui:fieldset>
 
 				<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="related-assets">
-					<liferay-ui:input-asset-links
+					<liferay-asset:input-asset-links
 						className="<%= KBArticle.class.getName() %>"
 						classPK="<%= (kbArticle == null) ? KBArticleConstants.DEFAULT_PARENT_RESOURCE_PRIM_KEY : kbArticle.getClassPK() %>"
 					/>
@@ -312,6 +312,14 @@ if (portletTitleBasedNavigation) {
 			if (workflowActionInput) {
 				workflowActionInput.val('<%= WorkflowConstants.ACTION_PUBLISH %>');
 			}
+
+			<c:if test="<%= kbArticle == null %>">
+				var customUrl = urlTitleInput.getAttribute('data-customUrl');
+
+				if (customUrl === 'false') {
+					urlTitleInput.val('');
+				}
+			</c:if>
 		}
 	);
 

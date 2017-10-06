@@ -21,6 +21,8 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapListener;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
+import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBContext;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -28,6 +30,7 @@ import com.liferay.portal.kernel.dao.db.DBProcessContext;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.output.stream.container.OutputStreamContainer;
@@ -45,8 +48,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
+import org.apache.felix.service.command.Descriptor;
 import org.apache.felix.utils.log.Logger;
 
 import org.osgi.framework.BundleContext;
@@ -74,6 +79,7 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 )
 public class ReleaseManagerOSGiCommands {
 
+	@Descriptor("List pending or running upgrades")
 	public void check() {
 		Set<String> bundleSymbolicNames = _serviceTrackerMap.keySet();
 
@@ -118,10 +124,12 @@ public class ReleaseManagerOSGiCommands {
 		}
 	}
 
+	@Descriptor("Execute upgrade for a specific module")
 	public void execute(String bundleSymbolicName) {
 		doExecute(bundleSymbolicName, _serviceTrackerMap);
 	}
 
+	@Descriptor("Execute upgrade for a specific module and final version")
 	public void execute(String bundleSymbolicName, String toVersionString) {
 		String schemaVersionString = getSchemaVersionString(bundleSymbolicName);
 
@@ -134,6 +142,7 @@ public class ReleaseManagerOSGiCommands {
 				schemaVersionString, toVersionString));
 	}
 
+	@Descriptor("Execute all pending upgrades")
 	public void executeAll() {
 		Set<String> upgradeThrewExceptionBundleSymbolicNames = new HashSet<>();
 
@@ -164,12 +173,14 @@ public class ReleaseManagerOSGiCommands {
 		System.out.println(sb.toString());
 	}
 
+	@Descriptor("List registered upgrade processes for all modules")
 	public void list() {
 		for (String bundleSymbolicName : _serviceTrackerMap.keySet()) {
 			list(bundleSymbolicName);
 		}
 	}
 
+	@Descriptor("List registered upgrade processes for a specific module")
 	public void list(String bundleSymbolicName) {
 		List<UpgradeInfo> upgradeProcesses = _serviceTrackerMap.getService(
 			bundleSymbolicName);
@@ -406,8 +417,30 @@ public class ReleaseManagerOSGiCommands {
 				return null;
 			}
 
+			int buildNumber = 0;
+
+			try {
+				Class<? extends UpgradeStep> clazz = upgradeStep.getClass();
+
+				Configuration configuration =
+					ConfigurationFactoryUtil.getConfiguration(
+						clazz.getClassLoader(), "service");
+
+				Properties properties = configuration.getProperties();
+
+				buildNumber = GetterUtil.getInteger(
+					properties.getProperty("build.number"));
+			}
+			catch (Exception e) {
+				_logger.log(
+					Logger.LOG_DEBUG,
+					"Unable to read service.properties for " +
+						serviceReference);
+			}
+
 			return new UpgradeInfo(
-				fromSchemaVersionString, toSchemaVersionString, upgradeStep);
+				fromSchemaVersionString, toSchemaVersionString, buildNumber,
+				upgradeStep);
 		}
 
 		@Override
@@ -486,6 +519,17 @@ public class ReleaseManagerOSGiCommands {
 						_bundleSymbolicName,
 						upgradeInfo.getToSchemaVersionString(),
 						upgradeInfo.getFromSchemaVersionString());
+
+					int buildNumber = upgradeInfo.getBuildNumber();
+
+					if (buildNumber > 0) {
+						Release release = _releaseLocalService.fetchRelease(
+							_bundleSymbolicName);
+
+						release.setBuildNumber(buildNumber);
+
+						_releaseLocalService.updateRelease(release);
+					}
 				}
 				catch (Exception e) {
 					throw new RuntimeException(e);

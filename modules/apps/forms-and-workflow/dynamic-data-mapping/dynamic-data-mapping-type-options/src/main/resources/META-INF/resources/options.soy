@@ -1,22 +1,22 @@
-{namespace ddm}
+{namespace DDMOptions}
 
 /**
  * Defines the delegated template for the options field.
  */
-{deltemplate ddm.field autoescape="deprecated-contextual" variant="'options'"}
-	{call .options data="all" /}
+{deltemplate ddm.field variant="'options'"}
+	{call .render data="all" /}
 {/deltemplate}
 
 /**
  * Prints the DDM form options field.
- *
- * @param label
- * @param name
- * @param required
- * @param showLabel
- * @param visible
  */
-{template .options}
+{template .render}
+	{@param? label: string}
+	{@param name: string}
+	{@param required: bool}
+	{@param showLabel: bool}
+	{@param visible: bool}
+
 	<div class="form-group{$visible ? '' : ' hide'} liferay-ddm-form-field-options" data-fieldname="{$name}">
 		{if $showLabel}
 			<label class="control-label">
@@ -28,7 +28,10 @@
 			</label>
 		{/if}
 
-		<input name="{$name}" type="hidden" />
+		<input
+			name="{$name}"
+			type="hidden"
+		/>
 
 		<div class="options"></div>
 	</div>

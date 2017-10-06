@@ -14,6 +14,9 @@
 
 package com.liferay.vulcan.uri;
 
+import com.liferay.vulcan.pagination.Page;
+import com.liferay.vulcan.pagination.SingleModel;
+
 /**
  * Writers may use an instance of this interface to customize the URIs of a
  * resource that follows the collection pattern.
@@ -30,23 +33,33 @@ package com.liferay.vulcan.uri;
 public interface CollectionResourceURITransformer {
 
 	/**
+	 * Returns the transformed URI of a binary endpoint.
+	 *
+	 * @param  uri the binary URI.
+	 * @param  singleModel the single model.
+	 * @param  binaryId the binary ID.
+	 * @return the transformed URI.
+	 */
+	public <T> String transformBinaryURI(
+		String uri, SingleModel<T> singleModel, String binaryId);
+
+	/**
 	 * Returns the transformed URI of a collection item endpoint.
 	 *
 	 * @param  uri the collection item URI.
-	 * @param  modelClass the model class.
-	 * @param  model the model instance.
+	 * @param  singleModel the single model.
 	 * @return the transformed URI.
 	 */
 	public <T> String transformCollectionItemSingleResourceURI(
-		String uri, Class<T> modelClass, T model);
+		String uri, SingleModel<T> singleModel);
 
 	/**
 	 * Returns the transformed URI of a page endpoint.
 	 *
 	 * @param  uri the page URI.
-	 * @param  modelClass the model class.
+	 * @param  page the page.
 	 * @return the transformed URI.
 	 */
-	public <T> String transformPageURI(String uri, Class<T> modelClass);
+	public <T> String transformPageURI(String uri, Page<T> page);
 
 }

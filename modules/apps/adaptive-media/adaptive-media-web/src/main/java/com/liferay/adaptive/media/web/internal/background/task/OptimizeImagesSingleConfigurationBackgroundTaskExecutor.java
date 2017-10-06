@@ -14,8 +14,8 @@
 
 package com.liferay.adaptive.media.web.internal.background.task;
 
-import com.liferay.adaptive.media.image.optimizer.AdaptiveMediaImageOptimizerUtil;
-import com.liferay.adaptive.media.web.constants.OptimizeImagesBackgroundTaskConstants;
+import com.liferay.adaptive.media.image.optimizer.AMImageOptimizerUtil;
+import com.liferay.adaptive.media.web.constants.AMOptimizeImagesBackgroundTaskConstants;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
 
 /**
@@ -34,14 +34,13 @@ public class OptimizeImagesSingleConfigurationBackgroundTaskExecutor
 		throws Exception {
 
 		OptimizeImagesStatusMessageSenderUtil.sendStatusMessage(
-			OptimizeImagesBackgroundTaskConstants.SINGLE_START, companyId,
+			AMOptimizeImagesBackgroundTaskConstants.SINGLE_START, companyId,
 			configurationEntryUuid);
 
-		AdaptiveMediaImageOptimizerUtil.optimize(
-			companyId, configurationEntryUuid);
+		AMImageOptimizerUtil.optimize(companyId, configurationEntryUuid);
 
 		OptimizeImagesStatusMessageSenderUtil.sendStatusMessage(
-			OptimizeImagesBackgroundTaskConstants.SINGLE_END, companyId,
+			AMOptimizeImagesBackgroundTaskConstants.SINGLE_END, companyId,
 			configurationEntryUuid);
 	}
 

@@ -17,13 +17,14 @@ package com.liferay.portal.kernel.dao.orm;
 import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.executor.PortalExecutorManagerUtil;
+import com.liferay.portal.kernel.executor.PortalExecutorManager;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -395,7 +396,6 @@ public class DefaultActionableDynamicQuery implements ActionableDynamicQuery {
 		return _transactionConfig;
 	}
 
-	@SuppressWarnings("unused")
 	protected void intervalCompleted(long startPrimaryKey, long endPrimaryKey)
 		throws PortalException {
 	}
@@ -405,6 +405,11 @@ public class DefaultActionableDynamicQuery implements ActionableDynamicQuery {
 			_performActionMethod.performAction(object);
 		}
 	}
+
+	private static volatile PortalExecutorManager _portalExecutorManager =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			PortalExecutorManager.class, DefaultActionableDynamicQuery.class,
+			"_portalExecutorManager", true);
 
 	private AddCriteriaMethod _addCriteriaMethod;
 	private AddOrderCriteriaMethod _addOrderCriteriaMethod;
@@ -426,7 +431,7 @@ public class DefaultActionableDynamicQuery implements ActionableDynamicQuery {
 	private PerformCountMethod _performCountMethod;
 	private String _primaryKeyPropertyName;
 	private final ThreadPoolExecutor _threadPoolExecutor =
-		PortalExecutorManagerUtil.getPortalExecutor(
+		_portalExecutorManager.getPortalExecutor(
 			DefaultActionableDynamicQuery.class.getName());
 	private TransactionConfig _transactionConfig;
 

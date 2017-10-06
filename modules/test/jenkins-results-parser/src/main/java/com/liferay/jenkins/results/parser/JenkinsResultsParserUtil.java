@@ -50,6 +50,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -219,7 +220,7 @@ public class JenkinsResultsParserUtil {
 	public static Process executeBashCommands(
 			boolean exitOnFirstFail, File basedir, long timeout,
 			String... commands)
-		throws InterruptedException, IOException {
+		throws InterruptedException, IOException, TimeoutException {
 
 		System.out.print("Executing commands: ");
 
@@ -254,40 +255,37 @@ public class JenkinsResultsParserUtil {
 
 		processBuilder.directory(basedir.getAbsoluteFile());
 
-		Process process = processBuilder.start();
+		Process process = new BufferedProcess(1000000, processBuilder.start());
 
 		long duration = 0;
 		long start = System.currentTimeMillis();
 		int returnCode = -1;
 
-		sleep(25);
-
-		while ((returnCode == -1) && (duration < timeout)) {
-			duration = System.currentTimeMillis() - start;
-
+		while (true) {
 			try {
 				returnCode = process.exitValue();
+
+				break;
 			}
 			catch (IllegalThreadStateException itse) {
+				duration = System.currentTimeMillis() - start;
+
+				if (duration >= timeout) {
+					throw new TimeoutException(
+						"Timeout occurred while executing Bash commands: " +
+							Arrays.toString(commands));
+				}
+
 				returnCode = -1;
+
+				sleep(100);
 			}
-
-			sleep(100);
-		}
-
-		if (returnCode == -1) {
-			process.destroy();
-
-			throw new RuntimeException(
-				combine(
-					"Timeout occurred while executing bash commands: ",
-					bashCommands[2]));
 		}
 
 		if (debug) {
 			InputStream inputStream = process.getInputStream();
 
-			inputStream.mark(inputStream.available());
+			inputStream.mark(Integer.MAX_VALUE);
 
 			System.out.println(
 				"Output stream: " + readInputStream(inputStream));
@@ -298,7 +296,7 @@ public class JenkinsResultsParserUtil {
 		if (debug && (returnCode != 0)) {
 			InputStream inputStream = process.getErrorStream();
 
-			inputStream.mark(inputStream.available());
+			inputStream.mark(Integer.MAX_VALUE);
 
 			System.out.println("Error stream: " + readInputStream(inputStream));
 
@@ -310,7 +308,7 @@ public class JenkinsResultsParserUtil {
 
 	public static Process executeBashCommands(
 			boolean exitOnFirstFail, String... commands)
-		throws InterruptedException, IOException {
+		throws InterruptedException, IOException, TimeoutException {
 
 		return executeBashCommands(
 			exitOnFirstFail, new File("."), _BASH_COMMAND_TIMEOUT_DEFAULT,
@@ -318,7 +316,7 @@ public class JenkinsResultsParserUtil {
 	}
 
 	public static Process executeBashCommands(String... commands)
-		throws InterruptedException, IOException {
+		throws InterruptedException, IOException, TimeoutException {
 
 		return executeBashCommands(
 			true, new File("."), _BASH_COMMAND_TIMEOUT_DEFAULT, commands);
@@ -863,7 +861,7 @@ public class JenkinsResultsParserUtil {
 
 	public static void sendEmail(
 			String body, String from, String subject, String to)
-		throws InterruptedException, IOException {
+		throws InterruptedException, IOException, TimeoutException {
 
 		File file = new File("/tmp/" + body.hashCode() + ".txt");
 
@@ -909,6 +907,18 @@ public class JenkinsResultsParserUtil {
 		catch (InterruptedException ie) {
 			throw new RuntimeException(ie);
 		}
+	}
+
+	public static void takeSlavesOffline(
+		String jenkinsMasterName, String offlineReason, String... slaveNames) {
+
+		_setSlaveStatus(jenkinsMasterName, offlineReason, true, slaveNames);
+	}
+
+	public static void takeSlavesOnline(
+		String jenkinsMasterName, String offlineReason, String... slaveNames) {
+
+		_setSlaveStatus(jenkinsMasterName, offlineReason, false, slaveNames);
 	}
 
 	public static String toDurationString(long duration) {
@@ -1202,18 +1212,6 @@ public class JenkinsResultsParserUtil {
 			_RETRY_PERIOD_DEFAULT, _TIMEOUT_DEFAULT);
 	}
 
-	public static void turnSlavesOff(
-		String jenkinsMasterName, String... slaveNames) {
-
-		_setSlaveStatus(jenkinsMasterName, true, slaveNames);
-	}
-
-	public static void turnSlavesOn(
-		String jenkinsMasterName, String... slaveNames) {
-
-		_setSlaveStatus(jenkinsMasterName, false, slaveNames);
-	}
-
 	public static void write(File file, String content) throws IOException {
 		if (debug) {
 			System.out.println(
@@ -1338,7 +1336,8 @@ public class JenkinsResultsParserUtil {
 	}
 
 	private static void _setSlaveStatus(
-		String jenkinsMasterName, boolean offlineStatus, String... slaveNames) {
+		String jenkinsMasterName, String offlineReason, boolean offlineStatus,
+		String... slaveNames) {
 
 		try {
 			String script = "script=";
@@ -1350,6 +1349,9 @@ public class JenkinsResultsParserUtil {
 					"dependencies/set-slave-status.groovy"));
 
 			script = script.replace("${slaves}", merge(slaveNames));
+			script = script.replace(
+				"${offline.reason}",
+				offlineReason.replaceAll("\n", "<br />\\\\n"));
 			script = script.replace(
 				"${offline.status}", String.valueOf(offlineStatus));
 

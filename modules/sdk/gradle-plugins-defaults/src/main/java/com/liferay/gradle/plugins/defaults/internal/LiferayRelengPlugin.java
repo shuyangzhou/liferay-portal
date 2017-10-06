@@ -27,11 +27,14 @@ import com.liferay.gradle.plugins.defaults.LiferayOSGiDefaultsPlugin;
 import com.liferay.gradle.plugins.defaults.LiferayThemeDefaultsPlugin;
 import com.liferay.gradle.plugins.defaults.internal.util.FileUtil;
 import com.liferay.gradle.plugins.defaults.internal.util.GitUtil;
+import com.liferay.gradle.plugins.defaults.internal.util.GradlePluginsDefaultsUtil;
 import com.liferay.gradle.plugins.defaults.internal.util.GradleUtil;
 import com.liferay.gradle.plugins.defaults.tasks.MergeFilesTask;
 import com.liferay.gradle.plugins.defaults.tasks.ReplaceRegexTask;
 import com.liferay.gradle.plugins.defaults.tasks.WriteArtifactPublishCommandsTask;
 import com.liferay.gradle.plugins.defaults.tasks.WritePropertiesTask;
+import com.liferay.gradle.plugins.js.transpiler.JSTranspilerPlugin;
+import com.liferay.gradle.util.StringUtil;
 import com.liferay.gradle.util.Validator;
 
 import groovy.lang.Closure;
@@ -229,6 +232,10 @@ public class LiferayRelengPlugin implements Plugin<Project> {
 			CollectionUtils.first(
 				cleanArtifactsPublishCommandsTask.getDelete()));
 
+		mergeFilesTask.dependsOn(
+			BasePlugin.CLEAN_TASK_NAME +
+				StringUtil.capitalize(mergeFilesTask.getName()));
+
 		mergeFilesTask.doLast(
 			new Action<Task>() {
 
@@ -306,7 +313,7 @@ public class LiferayRelengPlugin implements Plugin<Project> {
 				public boolean isSatisfiedBy(Task task) {
 					Project project = task.getProject();
 
-					if (!GradleUtil.isTestProject(project) &&
+					if (!GradlePluginsDefaultsUtil.isTestProject(project) &&
 						_hasProjectDependencies(project)) {
 
 						return true;
@@ -647,7 +654,7 @@ public class LiferayRelengPlugin implements Plugin<Project> {
 
 					if (GradleUtil.hasStartParameterTask(
 							project, task.getName()) ||
-						!GradleUtil.isSnapshot(project)) {
+						!GradlePluginsDefaultsUtil.isSnapshot(project)) {
 
 						return true;
 					}
@@ -709,7 +716,7 @@ public class LiferayRelengPlugin implements Plugin<Project> {
 	}
 
 	private void _configureTaskPrintStaleArtifactForOSGi(Task task) {
-		if (GradleUtil.isTestProject(task.getProject())) {
+		if (GradlePluginsDefaultsUtil.isTestProject(task.getProject())) {
 			task.setEnabled(false);
 		}
 	}
@@ -755,7 +762,7 @@ public class LiferayRelengPlugin implements Plugin<Project> {
 
 		Project project = writeArtifactPublishCommandsTask.getProject();
 
-		if (GradleUtil.isTestProject(project)) {
+		if (GradlePluginsDefaultsUtil.isTestProject(project)) {
 			writeArtifactPublishCommandsTask.setEnabled(false);
 		}
 
@@ -840,7 +847,10 @@ public class LiferayRelengPlugin implements Plugin<Project> {
 		for (Configuration configuration : project.getConfigurations()) {
 			String name = configuration.getName();
 
-			if (name.startsWith("test")) {
+			if (name.equals(
+					JSTranspilerPlugin.SOY_COMPILE_CONFIGURATION_NAME) ||
+				name.startsWith("test")) {
+
 				continue;
 			}
 

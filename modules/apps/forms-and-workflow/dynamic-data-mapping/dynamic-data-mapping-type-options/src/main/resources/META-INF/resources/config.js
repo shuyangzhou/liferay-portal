@@ -24,10 +24,7 @@
 							condition: {
 								trigger: 'liferay-ddm-form-renderer'
 							},
-							path: 'options.soy.js',
-							requires: [
-								'soyutils'
-							]
+							path: 'options.js'
 						}
 					},
 					root: MODULE_PATH + '/'

@@ -1,19 +1,19 @@
-{namespace ddm}
+{namespace DDMFieldset}
 
 /**
  * Defines the delegated template for the fieldset field.
  */
-{deltemplate ddm.field autoescape="deprecated-contextual" variant="'fieldset'"}
-	{call .fieldset data="all" /}
+{deltemplate ddm.field variant="'fieldset'"}
+	{call .render data="all" /}
 {/deltemplate}
 
 /**
  * Prints a column.
- *
- * @param columnSize
- * @param field
  */
-{template .fieldset_column autoescape="deprecated-contextual"}
+{template .fieldset_column}
+	{@param columnSize: int}
+	{@param field: ?}
+
 	<div class="col-md-{$columnSize}">
 		<div class="clearfix {if not $field.visible}hide{/if} lfr-ddm-form-field-container">
 			{let $variant: $field.type /}
@@ -25,14 +25,14 @@
 
 /**
  * Prints all columns.
- *
- * @param columnSize
- * @param fields
  */
-{template .fieldset_columns autoescape="deprecated-contextual"}
+{template .fieldset_columns}
+	{@param columnSize: int}
+	{@param fields: list<?>}
+
 	{foreach $field in $fields}
 
-		{call ddm.fieldset_column data="all"}
+		{call .fieldset_column data="all"}
 			{param columnSize: $columnSize /}
 			{param field: $field /}
 		{/call}
@@ -41,31 +41,29 @@
 
 /**
  * Prints the DDM form fieldset field.
- *
- * @param columnSize
- * @param? label
- * @param name
- * @param nestedFields
- * @param? showBorderBottom
- * @param? showBorderTop
- * @param? showLabel
- * @param tip
- * @param visible
  */
-{template .fieldset autoescape="deprecated-contextual"}
+{template .render}
+	{@param columnSize: int}
+	{@param? label: string}
+	{@param name: string}
+	{@param nestedFields: list<?>}
+	{@param? showBorderBottom: bool}
+	{@param? showBorderTop: bool}
+	{@param? showLabel: bool}
+	{@param? tip: string}
+	{@param visible: bool}
+
 	<div class="form-group{$visible ? '' : ' hide'} liferay-ddm-form-field-fieldset
 		{$showBorderTop ? ' border-top' : ''} {$showBorderBottom ? ' border-bottom' : ''}" data-fieldname="{$name}">
 
-		{if $tip}
-			<p class="liferay-ddm-form-field-tip">{$tip}</p>
-		{/if}
+		<p class="liferay-ddm-form-field-tip">{$tip ? $tip: ''}</p>
 
 		<fieldset>
 			{if $showLabel}
 				<legend>{$label}</legend>
 			{/if}
 
-			{call ddm.fieldset_columns data="all"}
+			{call .fieldset_columns data="all"}
 				{param columnSize: $columnSize /}
 				{param fields: $nestedFields /}
 			{/call}

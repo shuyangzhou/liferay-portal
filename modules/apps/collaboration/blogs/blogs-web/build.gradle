@@ -32,10 +32,9 @@ dependencies {
 	provided project(":apps:collaboration:subscription:subscription-api")
 	provided project(":apps:foundation:friendly-url:friendly-url-api")
 	provided project(":apps:foundation:frontend-taglib:frontend-taglib")
+	provided project(":apps:web-experience:asset:asset-service")
 	provided project(":apps:web-experience:asset:asset-taglib")
 	provided project(":apps:web-experience:export-import:export-import-api")
 	provided project(":apps:web-experience:trash:trash-api")
 	provided project(":apps:web-experience:trash:trash-taglib")
-	provided project(":core:portal-compat:blogs:portal-impl-blogs-compat")
-	provided project(":core:portal-compat:blogs:portal-kernel-blogs-compat")
 }

@@ -59,6 +59,8 @@
 	<source-processor name="GradleSourceProcessor">
 		<check name="GradleDependenciesCheck" />
 		<check name="GradleImportsCheck" />
+		<check name="GradleIndentationCheck" />
+		<check name="GradlePropertiesCheck" />
 		<check name="GradleVersionCheck" />
 		<check name="WhitespaceCheck" />
 	</source-processor>
@@ -154,7 +156,9 @@
 		<check name="JavaTestMethodAnnotationsCheck" />
 		<check name="JavaUnsafeCastingCheck" />
 		<check name="JavaUpgradeClassCheck" />
-		<check name="JavaVariableTypeCheck" />
+		<check name="JavaVariableTypeCheck">
+			<property name="immutableFieldTypes" value="boolean,byte,char,double,float,int,long,short,Boolean,Byte,Character,Class,Double,Float,Int,Long,Number,Short,String" />
+		</check>
 		<check name="JavaVerifyUpgradeConnectionCheck" />
 		<check name="JavaXMLSecurityCheck" />
 		<check name="LanguageKeysCheck" />
@@ -241,6 +245,8 @@
 		<check name="PropertiesLongLinesCheck" />
 		<check name="PropertiesPortalFileCheck" />
 		<check name="PropertiesPortletFileCheck" />
+		<check name="PropertiesServiceKeysCheck" />
+		<check name="PropertiesSourceFormatterContentCheck" />
 		<check name="PropertiesSourceFormatterFileCheck" />
 		<check name="PropertiesWhitespaceCheck">
 			<property name="allowLeadingSpaces" value="true" />
@@ -266,6 +272,8 @@
 		<check name="XMLFriendlyURLRoutesFileCheck" />
 		<check name="XMLFSBExcludeFileCheck" />
 		<check name="XMLHBMFileCheck" />
+		<check name="XMLIndentationCheck" />
+		<check name="XMLIvyFileCheck" />
 		<check name="XMLLog4jFileCheck" />
 		<check name="XMLLookAndFeelFileCheck" />
 		<check name="XMLModelHintsFileCheck" />

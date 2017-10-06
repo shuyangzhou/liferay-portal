@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.increment.BufferedIncrement;
+import com.liferay.portal.kernel.increment.DateOverrideIncrement;
 import com.liferay.portal.kernel.lock.Lock;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.SystemEventConstants;
@@ -71,21 +72,16 @@ public interface DLFolderLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link DLFolderLocalServiceUtil} to access the document library folder local service. Add custom service methods to {@link com.liferay.portlet.documentlibrary.service.impl.DLFolderLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasDLFileEntryTypeDLFolder(long fileEntryTypeId,
-		long folderId);
+	public void addDLFileEntryTypeDLFolder(long fileEntryTypeId,
+		DLFolder dlFolder);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasDLFileEntryTypeDLFolders(long fileEntryTypeId);
+	public void addDLFileEntryTypeDLFolder(long fileEntryTypeId, long folderId);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasFolderLock(long userId, long folderId);
+	public void addDLFileEntryTypeDLFolders(long fileEntryTypeId,
+		List<DLFolder> dlFolders);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasInheritableLock(long folderId);
-
-	public boolean verifyInheritableLock(long folderId,
-		java.lang.String lockUuid) throws PortalException;
+	public void addDLFileEntryTypeDLFolders(long fileEntryTypeId,
+		long[] folderIds);
 
 	/**
 	* Adds the document library folder to the database. Also notifies the appropriate model listeners.
@@ -101,6 +97,8 @@ public interface DLFolderLocalService extends BaseLocalService,
 		java.lang.String description, boolean hidden,
 		ServiceContext serviceContext) throws PortalException;
 
+	public void clearDLFileEntryTypeDLFolders(long fileEntryTypeId);
+
 	/**
 	* Creates a new document library folder with the primary key. Does not add the document library folder to the database.
 	*
@@ -108,6 +106,29 @@ public interface DLFolderLocalService extends BaseLocalService,
 	* @return the new document library folder
 	*/
 	public DLFolder createDLFolder(long folderId);
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #deleteAllByGroup(long)}
+	*/
+	@java.lang.Deprecated
+	public void deleteAll(long groupId) throws PortalException;
+
+	public void deleteAllByGroup(long groupId) throws PortalException;
+
+	public void deleteAllByRepository(long repositoryId)
+		throws PortalException;
+
+	public void deleteDLFileEntryTypeDLFolder(long fileEntryTypeId,
+		DLFolder dlFolder);
+
+	public void deleteDLFileEntryTypeDLFolder(long fileEntryTypeId,
+		long folderId);
+
+	public void deleteDLFileEntryTypeDLFolders(long fileEntryTypeId,
+		List<DLFolder> dlFolders);
+
+	public void deleteDLFileEntryTypeDLFolders(long fileEntryTypeId,
+		long[] folderIds);
 
 	/**
 	* Deletes the document library folder from the database. Also notifies the appropriate model listeners.
@@ -148,149 +169,6 @@ public interface DLFolderLocalService extends BaseLocalService,
 	public DLFolder deleteFolder(long userId, long folderId,
 		boolean includeTrashedEntries) throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFolder fetchDLFolder(long folderId);
-
-	/**
-	* Returns the document library folder matching the UUID and group.
-	*
-	* @param uuid the document library folder's UUID
-	* @param groupId the primary key of the group
-	* @return the matching document library folder, or <code>null</code> if a matching document library folder could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFolder fetchDLFolderByUuidAndGroupId(java.lang.String uuid,
-		long groupId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFolder fetchFolder(java.lang.String uuid, long groupId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFolder fetchFolder(long folderId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFolder fetchFolder(long groupId, long parentFolderId,
-		java.lang.String name);
-
-	/**
-	* Returns the document library folder with the primary key.
-	*
-	* @param folderId the primary key of the document library folder
-	* @return the document library folder
-	* @throws PortalException if a document library folder with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFolder getDLFolder(long folderId) throws PortalException;
-
-	/**
-	* Returns the document library folder matching the UUID and group.
-	*
-	* @param uuid the document library folder's UUID
-	* @param groupId the primary key of the group
-	* @return the matching document library folder
-	* @throws PortalException if a matching document library folder could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFolder getDLFolderByUuidAndGroupId(java.lang.String uuid,
-		long groupId) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFolder getFolder(long folderId) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFolder getFolder(long groupId, long parentFolderId,
-		java.lang.String name) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFolder getMountFolder(long repositoryId) throws PortalException;
-
-	@Indexable(type = IndexableType.REINDEX)
-	public DLFolder moveFolder(long userId, long folderId, long parentFolderId,
-		ServiceContext serviceContext) throws PortalException;
-
-	/**
-	* Updates the document library folder in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param dlFolder the document library folder
-	* @return the document library folder that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public DLFolder updateDLFolder(DLFolder dlFolder);
-
-	/**
-	* @deprecated As of 7.0.0, replaced {@link #updateFolder(long, long,
-	String, String, long, List, int, ServiceContext)}
-	*/
-	@java.lang.Deprecated
-	public DLFolder updateFolder(long folderId, java.lang.String name,
-		java.lang.String description, long defaultFileEntryTypeId,
-		List<java.lang.Long> fileEntryTypeIds, boolean overrideFileEntryTypes,
-		ServiceContext serviceContext) throws PortalException;
-
-	@Indexable(type = IndexableType.REINDEX)
-	public DLFolder updateFolder(long folderId, java.lang.String name,
-		java.lang.String description, long defaultFileEntryTypeId,
-		List<java.lang.Long> fileEntryTypeIds, int restrictionType,
-		ServiceContext serviceContext) throws PortalException;
-
-	/**
-	* @deprecated As of 7.0.0, replaced by {@link #updateFolder(long, long,
-	String, String, long, List, int, ServiceContext)}
-	*/
-	@java.lang.Deprecated
-	public DLFolder updateFolder(long folderId, long parentFolderId,
-		java.lang.String name, java.lang.String description,
-		long defaultFileEntryTypeId, List<java.lang.Long> fileEntryTypeIds,
-		boolean overrideFileEntryTypes, ServiceContext serviceContext)
-		throws PortalException;
-
-	@Indexable(type = IndexableType.REINDEX)
-	public DLFolder updateFolder(long folderId, long parentFolderId,
-		java.lang.String name, java.lang.String description,
-		long defaultFileEntryTypeId, List<java.lang.Long> fileEntryTypeIds,
-		int restrictionType, ServiceContext serviceContext)
-		throws PortalException;
-
-	/**
-	* @deprecated As of 7.0.0, replaced by {@link #
-	updateFolderAndFileEntryTypes(long, long, long, String,
-	String, long, List, int, ServiceContext)}
-	*/
-	@java.lang.Deprecated
-	public DLFolder updateFolderAndFileEntryTypes(long userId, long folderId,
-		long parentFolderId, java.lang.String name,
-		java.lang.String description, long defaultFileEntryTypeId,
-		List<java.lang.Long> fileEntryTypeIds, boolean overrideFileEntryTypes,
-		ServiceContext serviceContext) throws PortalException;
-
-	public DLFolder updateFolderAndFileEntryTypes(long userId, long folderId,
-		long parentFolderId, java.lang.String name,
-		java.lang.String description, long defaultFileEntryTypeId,
-		List<java.lang.Long> fileEntryTypeIds, int restrictionType,
-		ServiceContext serviceContext) throws PortalException;
-
-	public DLFolder updateStatus(long userId, long folderId, int status,
-		Map<java.lang.String, Serializable> workflowContext,
-		ServiceContext serviceContext) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		PortletDataContext portletDataContext);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	public Lock lockFolder(long userId, long folderId)
-		throws PortalException;
-
-	public Lock lockFolder(long userId, long folderId, java.lang.String owner,
-		boolean inheritable, long expirationTime) throws PortalException;
-
 	/**
 	* @throws PortalException
 	*/
@@ -298,57 +176,7 @@ public interface DLFolderLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getCompanyFoldersCount(long companyId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getDLFileEntryTypeDLFoldersCount(long fileEntryTypeId);
-
-	/**
-	* Returns the number of document library folders.
-	*
-	* @return the number of document library folders
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getDLFoldersCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getFileEntriesAndFileShortcutsCount(long groupId, long folderId,
-		QueryDefinition<?> queryDefinition);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getFoldersAndFileEntriesAndFileShortcutsCount(long groupId,
-		long folderId, java.lang.String[] mimeTypes,
-		boolean includeMountFolders, QueryDefinition<?> queryDefinition);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getFoldersCount(long groupId, long parentFolderId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getFoldersCount(long groupId, long parentFolderId,
-		boolean includeMountfolders);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getFoldersCount(long groupId, long parentFolderId, int status,
-		boolean includeMountfolders);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getMountFoldersCount(long groupId, long parentFolderId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getRepositoryFoldersCount(long repositoryId);
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -389,8 +217,56 @@ public interface DLFolderLocalService extends BaseLocalService,
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
 
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DLFolder fetchDLFolder(long folderId);
+
+	/**
+	* Returns the document library folder matching the UUID and group.
+	*
+	* @param uuid the document library folder's UUID
+	* @param groupId the primary key of the group
+	* @return the matching document library folder, or <code>null</code> if a matching document library folder could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DLFolder fetchDLFolderByUuidAndGroupId(java.lang.String uuid,
+		long groupId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DLFolder fetchFolder(long folderId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DLFolder fetchFolder(long groupId, long parentFolderId,
+		java.lang.String name);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DLFolder fetchFolder(java.lang.String uuid, long groupId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DLFolder> getCompanyFolders(long companyId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getCompanyFoldersCount(long companyId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DLFolder> getDLFileEntryTypeDLFolders(long fileEntryTypeId);
@@ -402,6 +278,40 @@ public interface DLFolderLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DLFolder> getDLFileEntryTypeDLFolders(long fileEntryTypeId,
 		int start, int end, OrderByComparator<DLFolder> orderByComparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getDLFileEntryTypeDLFoldersCount(long fileEntryTypeId);
+
+	/**
+	* Returns the fileEntryTypeIds of the document library file entry types associated with the document library folder.
+	*
+	* @param folderId the folderId of the document library folder
+	* @return long[] the fileEntryTypeIds of document library file entry types associated with the document library folder
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long[] getDLFileEntryTypePrimaryKeys(long folderId);
+
+	/**
+	* Returns the document library folder with the primary key.
+	*
+	* @param folderId the primary key of the document library folder
+	* @return the document library folder
+	* @throws PortalException if a document library folder with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DLFolder getDLFolder(long folderId) throws PortalException;
+
+	/**
+	* Returns the document library folder matching the UUID and group.
+	*
+	* @param uuid the document library folder's UUID
+	* @param groupId the primary key of the group
+	* @return the matching document library folder
+	* @throws PortalException if a matching document library folder could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DLFolder getDLFolderByUuidAndGroupId(java.lang.String uuid,
+		long groupId) throws PortalException;
 
 	/**
 	* Returns a range of all the document library folders.
@@ -443,9 +353,35 @@ public interface DLFolderLocalService extends BaseLocalService,
 		java.lang.String uuid, long companyId, int start, int end,
 		OrderByComparator<DLFolder> orderByComparator);
 
+	/**
+	* Returns the number of document library folders.
+	*
+	* @return the number of document library folders
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getDLFoldersCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		PortletDataContext portletDataContext);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<java.lang.Object> getFileEntriesAndFileShortcuts(long groupId,
 		long folderId, QueryDefinition<?> queryDefinition);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getFileEntriesAndFileShortcutsCount(long groupId, long folderId,
+		QueryDefinition<?> queryDefinition);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DLFolder getFolder(long folderId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DLFolder getFolder(long groupId, long parentFolderId,
+		java.lang.String name) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long getFolderId(long companyId, long folderId);
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link #getGroupFolderIds(long,
@@ -469,12 +405,12 @@ public interface DLFolderLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DLFolder> getFolders(long groupId, long parentFolderId,
-		int start, int end, OrderByComparator<DLFolder> obc);
+		int status, boolean includeMountfolders, int start, int end,
+		OrderByComparator<DLFolder> obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DLFolder> getFolders(long groupId, long parentFolderId,
-		int status, boolean includeMountfolders, int start, int end,
-		OrderByComparator<DLFolder> obc);
+		int start, int end, OrderByComparator<DLFolder> obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<java.lang.Object> getFoldersAndFileEntriesAndFileShortcuts(
@@ -482,15 +418,56 @@ public interface DLFolderLocalService extends BaseLocalService,
 		boolean includeMountFolders, QueryDefinition<?> queryDefinition);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getFoldersAndFileEntriesAndFileShortcutsCount(long groupId,
+		long folderId, java.lang.String[] mimeTypes,
+		boolean includeMountFolders, QueryDefinition<?> queryDefinition);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getFoldersCount(long groupId, long parentFolderId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getFoldersCount(long groupId, long parentFolderId,
+		boolean includeMountfolders);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getFoldersCount(long groupId, long parentFolderId, int status,
+		boolean includeMountfolders);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<java.lang.Long> getGroupFolderIds(long groupId,
 		long parentFolderId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public void getGroupSubfolderIds(List<java.lang.Long> folderIds,
+		long groupId, long folderId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DLFolder getMountFolder(long repositoryId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DLFolder> getMountFolders(long groupId, long parentFolderId,
 		int start, int end, OrderByComparator<DLFolder> obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getMountFoldersCount(long groupId, long parentFolderId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DLFolder> getNoAssetFolders();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<java.lang.Long> getRepositoryFolderIds(long repositoryId,
@@ -500,75 +477,8 @@ public interface DLFolderLocalService extends BaseLocalService,
 	public List<DLFolder> getRepositoryFolders(long repositoryId, int start,
 		int end);
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long getFolderId(long companyId, long folderId);
-
-	/**
-	* Returns the fileEntryTypeIds of the document library file entry types associated with the document library folder.
-	*
-	* @param folderId the folderId of the document library folder
-	* @return long[] the fileEntryTypeIds of document library file entry types associated with the document library folder
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getDLFileEntryTypePrimaryKeys(long folderId);
-
-	public void addDLFileEntryTypeDLFolder(long fileEntryTypeId,
-		DLFolder dlFolder);
-
-	public void addDLFileEntryTypeDLFolder(long fileEntryTypeId, long folderId);
-
-	public void addDLFileEntryTypeDLFolders(long fileEntryTypeId,
-		List<DLFolder> dlFolders);
-
-	public void addDLFileEntryTypeDLFolders(long fileEntryTypeId,
-		long[] folderIds);
-
-	public void clearDLFileEntryTypeDLFolders(long fileEntryTypeId);
-
-	/**
-	* @deprecated As of 7.0.0, replaced by {@link #deleteAllByGroup(long)}
-	*/
-	@java.lang.Deprecated
-	public void deleteAll(long groupId) throws PortalException;
-
-	public void deleteAllByGroup(long groupId) throws PortalException;
-
-	public void deleteAllByRepository(long repositoryId)
-		throws PortalException;
-
-	public void deleteDLFileEntryTypeDLFolder(long fileEntryTypeId,
-		DLFolder dlFolder);
-
-	public void deleteDLFileEntryTypeDLFolder(long fileEntryTypeId,
-		long folderId);
-
-	public void deleteDLFileEntryTypeDLFolders(long fileEntryTypeId,
-		List<DLFolder> dlFolders);
-
-	public void deleteDLFileEntryTypeDLFolders(long fileEntryTypeId,
-		long[] folderIds);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public void getGroupSubfolderIds(List<java.lang.Long> folderIds,
-		long groupId, long folderId);
+	public int getRepositoryFoldersCount(long repositoryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public void getRepositorySubfolderIds(List<java.lang.Long> folderIds,
@@ -583,6 +493,29 @@ public interface DLFolderLocalService extends BaseLocalService,
 	public void getSubfolderIds(List<java.lang.Long> folderIds, long groupId,
 		long folderId);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasDLFileEntryTypeDLFolder(long fileEntryTypeId,
+		long folderId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasDLFileEntryTypeDLFolders(long fileEntryTypeId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasFolderLock(long userId, long folderId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasInheritableLock(long folderId);
+
+	public Lock lockFolder(long userId, long folderId)
+		throws PortalException;
+
+	public Lock lockFolder(long userId, long folderId, java.lang.String owner,
+		boolean inheritable, long expirationTime) throws PortalException;
+
+	@Indexable(type = IndexableType.REINDEX)
+	public DLFolder moveFolder(long userId, long folderId, long parentFolderId,
+		ServiceContext serviceContext) throws PortalException;
+
 	public void rebuildTree(long companyId) throws PortalException;
 
 	public void rebuildTree(long companyId, long parentFolderId,
@@ -592,14 +525,82 @@ public interface DLFolderLocalService extends BaseLocalService,
 	public void setDLFileEntryTypeDLFolders(long fileEntryTypeId,
 		long[] folderIds);
 
-	public void unlockFolder(long folderId, java.lang.String lockUuid)
-		throws PortalException;
-
 	public void unlockFolder(long groupId, long parentFolderId,
 		java.lang.String name, java.lang.String lockUuid)
 		throws PortalException;
 
-	@BufferedIncrement(configuration = "DLFolderEntry", incrementClass = com.liferay.portal.kernel.increment.DateOverrideIncrement.class)
+	public void unlockFolder(long folderId, java.lang.String lockUuid)
+		throws PortalException;
+
+	/**
+	* Updates the document library folder in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param dlFolder the document library folder
+	* @return the document library folder that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public DLFolder updateDLFolder(DLFolder dlFolder);
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #updateFolder(long, long,
+	String, String, long, List, int, ServiceContext)}
+	*/
+	@java.lang.Deprecated
+	public DLFolder updateFolder(long folderId, long parentFolderId,
+		java.lang.String name, java.lang.String description,
+		long defaultFileEntryTypeId, List<java.lang.Long> fileEntryTypeIds,
+		boolean overrideFileEntryTypes, ServiceContext serviceContext)
+		throws PortalException;
+
+	@Indexable(type = IndexableType.REINDEX)
+	public DLFolder updateFolder(long folderId, long parentFolderId,
+		java.lang.String name, java.lang.String description,
+		long defaultFileEntryTypeId, List<java.lang.Long> fileEntryTypeIds,
+		int restrictionType, ServiceContext serviceContext)
+		throws PortalException;
+
+	/**
+	* @deprecated As of 7.0.0, replaced {@link #updateFolder(long, long,
+	String, String, long, List, int, ServiceContext)}
+	*/
+	@java.lang.Deprecated
+	public DLFolder updateFolder(long folderId, java.lang.String name,
+		java.lang.String description, long defaultFileEntryTypeId,
+		List<java.lang.Long> fileEntryTypeIds, boolean overrideFileEntryTypes,
+		ServiceContext serviceContext) throws PortalException;
+
+	@Indexable(type = IndexableType.REINDEX)
+	public DLFolder updateFolder(long folderId, java.lang.String name,
+		java.lang.String description, long defaultFileEntryTypeId,
+		List<java.lang.Long> fileEntryTypeIds, int restrictionType,
+		ServiceContext serviceContext) throws PortalException;
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #
+	updateFolderAndFileEntryTypes(long, long, long, String,
+	String, long, List, int, ServiceContext)}
+	*/
+	@java.lang.Deprecated
+	public DLFolder updateFolderAndFileEntryTypes(long userId, long folderId,
+		long parentFolderId, java.lang.String name,
+		java.lang.String description, long defaultFileEntryTypeId,
+		List<java.lang.Long> fileEntryTypeIds, boolean overrideFileEntryTypes,
+		ServiceContext serviceContext) throws PortalException;
+
+	public DLFolder updateFolderAndFileEntryTypes(long userId, long folderId,
+		long parentFolderId, java.lang.String name,
+		java.lang.String description, long defaultFileEntryTypeId,
+		List<java.lang.Long> fileEntryTypeIds, int restrictionType,
+		ServiceContext serviceContext) throws PortalException;
+
+	@BufferedIncrement(configuration = "DLFolderEntry", incrementClass = DateOverrideIncrement.class)
 	public void updateLastPostDate(long folderId, Date lastPostDate)
 		throws PortalException;
+
+	public DLFolder updateStatus(long userId, long folderId, int status,
+		Map<java.lang.String, Serializable> workflowContext,
+		ServiceContext serviceContext) throws PortalException;
+
+	public boolean verifyInheritableLock(long folderId,
+		java.lang.String lockUuid) throws PortalException;
 }

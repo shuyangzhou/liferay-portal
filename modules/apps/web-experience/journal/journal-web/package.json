@@ -8,7 +8,7 @@
 	},
 	"devDependencies": {
 		"liferay-module-config-generator": "^1.2.1",
-		"metal-cli": "^4.0.1"
+		"metal-cli": "^4.2.0"
 	},
 	"name": "journal-web",
 	"version": "2.0.0"

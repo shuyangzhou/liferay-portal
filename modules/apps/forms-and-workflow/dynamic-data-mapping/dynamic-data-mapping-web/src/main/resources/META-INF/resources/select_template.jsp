@@ -37,8 +37,6 @@ if ((classPK > 0) && (structureClassNameId == classNameId)) {
 	structure = DDMStructureLocalServiceUtil.getStructure(classPK);
 }
 
-String title = ddmDisplay.getViewTemplatesTitle(structure, locale);
-
 PortletURL portletURL = renderResponse.createRenderURL();
 
 SearchContainer templateSearch = new TemplateSearch(renderRequest, portletURL, WorkflowConstants.STATUS_APPROVED);

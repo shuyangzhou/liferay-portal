@@ -19,10 +19,7 @@
 							condition: {
 								trigger: 'liferay-ddm-form-renderer'
 							},
-							path: 'checkbox.soy.js',
-							requires: [
-								'soyutils'
-							]
+							path: 'checkbox.js'
 						}
 					},
 					root: MODULE_PATH + '/'

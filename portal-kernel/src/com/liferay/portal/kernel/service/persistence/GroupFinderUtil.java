@@ -44,6 +44,11 @@ public class GroupFinderUtil {
 			names, descriptions, params, andOperator);
 	}
 
+	public static java.util.List<java.lang.Long> findByActiveGroupIds(
+		long userId) {
+		return getFinder().findByActiveGroupIds(userId);
+	}
+
 	public static java.util.List<com.liferay.portal.kernel.model.Group> findByCompanyId(
 		long companyId,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,

@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.language.LanguageConstants;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -450,7 +449,7 @@ public class DDMFormFieldTemplateContextFactory {
 		List<KeyValuePair> keyValuePairs =
 			ddmFormFieldEvaluationResult.getProperty("options");
 
-		if (ListUtil.isNotEmpty(keyValuePairs)) {
+		if (keyValuePairs != null) {
 			ddmFormFieldTemplateContext.put(
 				"options", createOptions(keyValuePairs));
 		}

@@ -41,6 +41,7 @@ AUI.add(
 						var instance = this;
 
 						instance.bindInputEvent('keypress', A.bind('_onNumericFieldKeyPress', instance));
+						instance.bindInputEvent('keyup', A.bind('_onNumericFieldKeyUp', instance));
 
 						instance.evaluate = A.debounce(
 							function() {
@@ -52,6 +53,27 @@ AUI.add(
 
 					getChangeEventName: function() {
 						return 'input';
+					},
+
+					getValue: function() {
+						var instance = this;
+
+						var inputNode = instance.getInputNode();
+
+						var value = inputNode.val();
+
+						if (value === '') {
+							return value;
+						}
+
+						var dataType = instance.get('dataType');
+
+						if (dataType === 'integer') {
+							return parseInt(value, 10);
+						}
+						else {
+							return parseFloat(value);
+						}
 					},
 
 					showErrorMessage: function() {
@@ -67,13 +89,27 @@ AUI.add(
 					},
 
 					_onNumericFieldKeyPress: function(event) {
-						if ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 46) {
+						event = event || window.event;
+
+						var charCode = (typeof event.which == "number") ? event.which : event.keyCode;
+
+						if ((charCode >= 48 && charCode <= 57) || charCode === 46) {
 							return true;
 						}
 
 						event.preventDefault();
 
 						return false;
+					},
+
+					_onNumericFieldKeyUp: function() {
+						var instance = this;
+
+						var value = String(instance.get('value'));
+
+						var inputNode = instance.getInputNode();
+
+						inputNode.val(value.replace(/[^0-9.]/g, ""));
 					}
 				}
 			}

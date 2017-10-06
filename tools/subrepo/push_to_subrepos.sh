@@ -27,7 +27,6 @@ error() {
 help() {
 	info "Usage: ./push_to_subrepos.sh [-a] [-d] [-f] [-p PATTERN] [-v] [SUBREPO_NAME]"
 	info " -a: All subrepos. Must omit -p and SUBREPO_NAME."
-	info " -d: Debug mode. More verbose console logging."
 	info " -f: Force update a subrepo that is either lacking gitrepo information or is not configured for pushing."
 	info " -p: Update subrepos matching a regex pattern. Must omit -a and SUBREPO_NAME."
 	info " -v: Verify only. Lists all subrepos/branches/files out of date."
@@ -46,7 +45,6 @@ warn() {
 }
 
 OPTION_ALL=
-OPTION_DEBUG=
 OPTION_FORCE=
 OPTION_VERIFY=
 PATTERN=
@@ -56,9 +54,6 @@ do
 	case ${OPT} in
 	a)
 		OPTION_ALL=true
-		;;
-	d)
-		OPTION_DEBUG=true
 		;;
 	f)
 		OPTION_FORCE=true
@@ -151,10 +146,18 @@ fi
 
 SUBREPO_SEARCH_PARAMETERS=(
 	"7.0.x:../..:modules/apps"
-	"ee-7.0.x:../../../liferay-portal-ee:modules/private/apps"
+	"7.0.x-private:../../../liferay-portal-ee:modules/private/apps"
 	"master-private:../../../liferay-portal-ee:modules/private/apps"
 	"master:../..:modules/apps"
 )
+
+for SUBREPO_SEARCH_PARAMETER in "${SUBREPO_SEARCH_PARAMETERS[@]}"
+do
+	BRANCH_NAME="${SUBREPO_SEARCH_PARAMETER%%:*}"
+	REPO_PATH="$(echo "${SUBREPO_SEARCH_PARAMETER}" | sed 's/:[^:]*$//' | sed 's/.*://')"
+
+	git -C "${REPO_PATH}" fetch -fq upstream "${BRANCH_NAME}:refs/remotes/upstream/${BRANCH_NAME}"
+done
 
 if [[ "${SUBREPO_NAME}" ]]
 then
@@ -209,16 +212,16 @@ master
 			REPO_PATH="$(echo "${SUBREPO_SEARCH_PARAMETER}" | sed 's/:[^:]*$//' | sed 's/.*://')"
 			SUBREPOS_PATH="${SUBREPO_SEARCH_PARAMETER##*:}"
 
-			GITREPO_PATH="$(git -C "${REPO_PATH}" grep -l "/${SUBREPO_NAME}.git" "${BRANCH_NAME}" -- '*.gitrepo' | grep ":${SUBREPOS_PATH}/" | sed 's/.*://')"
+			GITREPO_PATH="$(git -C "${REPO_PATH}" grep -l "/${SUBREPO_NAME}.git" "refs/remotes/upstream/${BRANCH_NAME}" -- '*.gitrepo' | grep ":${SUBREPOS_PATH}/" | sed 's/.*://')"
 
 			if [[ -z "${GITREPO_PATH}" ]]
 			then
 				continue
 			fi
 
-			if [[ "$(git -C "${REPO_PATH}" grep 'mode.*=.*pull' "${BRANCH_NAME}" -- "${GITREPO_PATH##*:}")" ]]
+			if [[ "$(git -C "${REPO_PATH}" grep 'mode.*=.*pull' "refs/remotes/upstream/${BRANCH_NAME}" -- "${GITREPO_PATH##*:}")" ]]
 			then
-				SUBREPO_BRANCHES=("${SUBREPO_BRANCHES[@]}" "$(git -C "${REPO_PATH}" grep 'git@github.com'  "${BRANCH_NAME}" -- "${GITREPO_PATH##*:}" | sed 's@:.*/@:@' | sed 's/\.git//')")
+				SUBREPO_BRANCHES=("${SUBREPO_BRANCHES[@]}" "$(git -C "${REPO_PATH}" grep 'git@github.com'  "refs/remotes/upstream/${BRANCH_NAME}" -- "${GITREPO_PATH##*:}" | sed 's@:.*/@:@' | sed 's/\.git//' | sed 's@refs/remotes/upstream/@@')")
 			fi
 		done
 
@@ -236,16 +239,10 @@ else
 		REPO_PATH="$(echo "${SUBREPO_SEARCH_PARAMETER}" | sed 's/:[^:]*$//' | sed 's/.*://')"
 		SUBREPOS_PATH="${SUBREPO_SEARCH_PARAMETER##*:}"
 
-		SUBREPO_SEARCH=($(git -C "${REPO_PATH}" grep -l 'mode.*=.*pull' "${BRANCH_NAME}" -- '*.gitrepo' | grep ":${SUBREPOS_PATH}/" | sed 's/.*://' | xargs git -C "${REPO_PATH}" grep 'git@github.com' "${BRANCH_NAME}" -- | sed 's@:.*/@:@' | sed 's/\.git//'))
+		SUBREPO_SEARCH=($(git -C "${REPO_PATH}" grep -l 'mode.*=.*pull' "refs/remotes/upstream/${BRANCH_NAME}" -- '*.gitrepo' | grep ":${SUBREPOS_PATH}/" | sed 's/.*://' | xargs git -C "${REPO_PATH}" grep 'git@github.com' "refs/remotes/upstream/${BRANCH_NAME}" -- | sed 's@:.*/@:@' | sed 's/\.git//' | sed 's@refs/remotes/upstream/@@'))
 
 		ALL_SUBREPOS=("${ALL_SUBREPOS[@]}" "${SUBREPO_SEARCH[@]}")
 	done
-
-	#
-	# Fix for ee-7.0.x.
-	#
-
-	ALL_SUBREPOS=($(printf '%s\n' "${ALL_SUBREPOS[@]}" | sed 's/^ee-7.0.x/7.0.x-private/'))
 
 	SUBREPO_BRANCHES=($(printf '%s\n' "${ALL_SUBREPOS[@]}" | grep "^[^:]*:.*${PATTERN}"))
 
@@ -370,6 +367,9 @@ do
 			break;
 		fi
 	done
+
+	GRADLE_WRAPPER_JAR_REMOTE_SHA=
+	GRADLE_WRAPPER_PROPERTIES_REMOTE_SHA=
 
 	if [[ $(echo "${GRADLE_WRAPPER_JSON}" | grep '\"sha\"') ]]
 	then

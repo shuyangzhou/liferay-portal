@@ -22,6 +22,8 @@ import java.io.IOException;
 
 import java.net.URL;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,6 +32,8 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -81,6 +85,39 @@ public class CSSBuilderTest {
 	}
 
 	@Test
+	public void testCssBuilderWithFragmentChange() throws Exception {
+		Path fragmentFileToChange = Paths.get(
+			_docrootDirName, "css", "_import_change.scss");
+
+		_changeContentInPath(fragmentFileToChange, "brown", "khaki");
+
+		try (CSSBuilder cssBuilder = new CSSBuilder(
+				_docrootDirName, false, ".sass-cache/",
+				_PORTAL_COMMON_CSS_DIR_NAME, 6, new String[0], "jni")) {
+
+			cssBuilder.execute(Arrays.asList(new String[] {"/css"}));
+		}
+
+		String outputCssFilePath =
+			_docrootDirName + "/css/.sass-cache/test_import_change.css";
+
+		String outputCssFileContent = _read(outputCssFilePath);
+
+		_changeContentInPath(fragmentFileToChange, "khaki", "brown");
+
+		try (CSSBuilder cssBuilder = new CSSBuilder(
+				_docrootDirName, false, ".sass-cache/",
+				_PORTAL_COMMON_CSS_DIR_NAME, 6, new String[0], "jni")) {
+
+			cssBuilder.execute(Arrays.asList(new String[] {"/css"}));
+		}
+
+		outputCssFileContent = _read(outputCssFilePath);
+
+		Assert.assertTrue(outputCssFileContent.contains("brown"));
+	}
+
+	@Test
 	public void testCssBuilderWithJni() throws Exception {
 		_testCssBuilder("jni", _PORTAL_COMMON_CSS_DIR_NAME);
 	}
@@ -97,7 +134,34 @@ public class CSSBuilderTest {
 
 	@Test
 	public void testCssBuilderWithRubyAndPortalCommonJar() throws Exception {
-		_testCssBuilder("ruby", _PORTAL_COMMON_CSS_JAR_FILE_NAME);
+		_testCssBuilder("ruby", _PORTAL_COMMON_CSS_DIR_NAME);
+	}
+
+	private static void _changeContentInPath(
+			Path path, String s, String replacement)
+		throws Exception {
+
+		Charset charset = StandardCharsets.UTF_8;
+
+		String content = new String(Files.readAllBytes(path), charset);
+
+		content = content.replace(s, replacement);
+
+		Files.write(path, content.getBytes(charset));
+	}
+
+	private void _assertMatchesCount(
+		Pattern pattern, String s, int expectedCount) {
+
+		int count = 0;
+
+		Matcher matcher = pattern.matcher(s);
+
+		while (matcher.find()) {
+			count++;
+		}
+
+		Assert.assertEquals(expectedCount, count);
 	}
 
 	private String _read(String fileName) throws Exception {
@@ -124,6 +188,19 @@ public class CSSBuilderTest {
 
 		String actualTestContent = _read(
 			_docrootDirName + "/css/.sass-cache/test.css");
+
+		Assert.assertEquals(expectedTestContent, actualTestContent);
+
+		String actualTestCssImportContent = _read(
+			_docrootDirName + "/css/.sass-cache/test_css_import.css");
+
+		_assertMatchesCount(_cssImportPattern, actualTestCssImportContent, 3);
+
+		String actualTestCssImportRtlContent = _read(
+			_docrootDirName + "/css/.sass-cache/test_css_import_rtl.css");
+
+		_assertMatchesCount(
+			_cssImportPattern, actualTestCssImportRtlContent, 3);
 
 		Assert.assertEquals(expectedTestContent, actualTestContent);
 
@@ -166,6 +243,8 @@ public class CSSBuilderTest {
 	private static final String _PORTAL_COMMON_CSS_JAR_FILE_NAME =
 		"build/portal-common-css-jar/com.liferay.frontend.css.common.jar";
 
+	private static final Pattern _cssImportPattern = Pattern.compile(
+		"@import\\s+url\\s*\\(\\s*['\"]?(.+\\.css\\?t=\\d+)['\"]?\\s*\\)\\s*;");
 	private static String _docrootDirName;
 
 }

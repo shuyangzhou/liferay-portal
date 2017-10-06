@@ -71,19 +71,18 @@ public class MBMessageLocalServiceUtil {
 		return getService().addMBMessage(mbMessage);
 	}
 
-	/**
-	* @deprecated As of 7.0.0, replaced by {@link #addMessage(long, String,
-	long, long, String, String, ServiceContext)}
-	*/
-	@Deprecated
 	public static com.liferay.message.boards.kernel.model.MBMessage addMessage(
-		long userId, java.lang.String userName, long categoryId,
-		java.lang.String subject, java.lang.String body,
+		long userId, java.lang.String userName, long groupId, long categoryId,
+		long threadId, long parentMessageId, java.lang.String subject,
+		java.lang.String body, java.lang.String format,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.InputStream>> inputStreamOVPs,
+		boolean anonymous, double priority, boolean allowPingbacks,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .addMessage(userId, userName, categoryId, subject, body,
-			serviceContext);
+				   .addMessage(userId, userName, groupId, categoryId, threadId,
+			parentMessageId, subject, body, format, inputStreamOVPs, anonymous,
+			priority, allowPingbacks, serviceContext);
 	}
 
 	public static com.liferay.message.boards.kernel.model.MBMessage addMessage(
@@ -94,20 +93,6 @@ public class MBMessageLocalServiceUtil {
 		return getService()
 				   .addMessage(userId, userName, groupId, categoryId, subject,
 			body, serviceContext);
-	}
-
-	public static com.liferay.message.boards.kernel.model.MBMessage addMessage(
-		long userId, java.lang.String userName, long groupId, long categoryId,
-		java.lang.String subject, java.lang.String body,
-		java.lang.String format, java.lang.String fileName, java.io.File file,
-		boolean anonymous, double priority, boolean allowPingbacks,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			java.io.FileNotFoundException {
-		return getService()
-				   .addMessage(userId, userName, groupId, categoryId, subject,
-			body, format, fileName, file, anonymous, priority, allowPingbacks,
-			serviceContext);
 	}
 
 	public static com.liferay.message.boards.kernel.model.MBMessage addMessage(
@@ -126,16 +111,68 @@ public class MBMessageLocalServiceUtil {
 
 	public static com.liferay.message.boards.kernel.model.MBMessage addMessage(
 		long userId, java.lang.String userName, long groupId, long categoryId,
-		long threadId, long parentMessageId, java.lang.String subject,
-		java.lang.String body, java.lang.String format,
-		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.InputStream>> inputStreamOVPs,
+		java.lang.String subject, java.lang.String body,
+		java.lang.String format, java.lang.String fileName, java.io.File file,
 		boolean anonymous, double priority, boolean allowPingbacks,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws java.io.FileNotFoundException,
+			com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addMessage(userId, userName, groupId, categoryId, subject,
+			body, format, fileName, file, anonymous, priority, allowPingbacks,
+			serviceContext);
+	}
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #addMessage(long, String,
+	long, long, String, String, ServiceContext)}
+	*/
+	@Deprecated
+	public static com.liferay.message.boards.kernel.model.MBMessage addMessage(
+		long userId, java.lang.String userName, long categoryId,
+		java.lang.String subject, java.lang.String body,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .addMessage(userId, userName, groupId, categoryId, threadId,
-			parentMessageId, subject, body, format, inputStreamOVPs, anonymous,
-			priority, allowPingbacks, serviceContext);
+				   .addMessage(userId, userName, categoryId, subject, body,
+			serviceContext);
+	}
+
+	public static void addMessageAttachment(long userId, long messageId,
+		java.lang.String fileName, java.io.File file, java.lang.String mimeType)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService()
+			.addMessageAttachment(userId, messageId, fileName, file, mimeType);
+	}
+
+	public static void addMessageResources(long messageId,
+		boolean addGroupPermissions, boolean addGuestPermissions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService()
+			.addMessageResources(messageId, addGroupPermissions,
+			addGuestPermissions);
+	}
+
+	public static void addMessageResources(long messageId,
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().addMessageResources(messageId, modelPermissions);
+	}
+
+	public static void addMessageResources(
+		com.liferay.message.boards.kernel.model.MBMessage message,
+		boolean addGroupPermissions, boolean addGuestPermissions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService()
+			.addMessageResources(message, addGroupPermissions,
+			addGuestPermissions);
+	}
+
+	public static void addMessageResources(
+		com.liferay.message.boards.kernel.model.MBMessage message,
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().addMessageResources(message, modelPermissions);
 	}
 
 	/**
@@ -155,15 +192,10 @@ public class MBMessageLocalServiceUtil {
 		return getService().deleteDiscussionMessage(messageId);
 	}
 
-	/**
-	* Deletes the message-boards message from the database. Also notifies the appropriate model listeners.
-	*
-	* @param mbMessage the message-boards message
-	* @return the message-boards message that was removed
-	*/
-	public static com.liferay.message.boards.kernel.model.MBMessage deleteMBMessage(
-		com.liferay.message.boards.kernel.model.MBMessage mbMessage) {
-		return getService().deleteMBMessage(mbMessage);
+	public static void deleteDiscussionMessages(java.lang.String className,
+		long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteDiscussionMessages(className, classPK);
 	}
 
 	/**
@@ -179,10 +211,15 @@ public class MBMessageLocalServiceUtil {
 		return getService().deleteMBMessage(messageId);
 	}
 
-	public static com.liferay.message.boards.kernel.model.MBMessage deleteMessage(
-		com.liferay.message.boards.kernel.model.MBMessage message)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deleteMessage(message);
+	/**
+	* Deletes the message-boards message from the database. Also notifies the appropriate model listeners.
+	*
+	* @param mbMessage the message-boards message
+	* @return the message-boards message that was removed
+	*/
+	public static com.liferay.message.boards.kernel.model.MBMessage deleteMBMessage(
+		com.liferay.message.boards.kernel.model.MBMessage mbMessage) {
+		return getService().deleteMBMessage(mbMessage);
 	}
 
 	public static com.liferay.message.boards.kernel.model.MBMessage deleteMessage(
@@ -191,243 +228,21 @@ public class MBMessageLocalServiceUtil {
 		return getService().deleteMessage(messageId);
 	}
 
-	public static com.liferay.message.boards.kernel.model.MBMessage fetchMBMessage(
-		long messageId) {
-		return getService().fetchMBMessage(messageId);
-	}
-
-	/**
-	* Returns the message-boards message matching the UUID and group.
-	*
-	* @param uuid the message-boards message's UUID
-	* @param groupId the primary key of the group
-	* @return the matching message-boards message, or <code>null</code> if a matching message-boards message could not be found
-	*/
-	public static com.liferay.message.boards.kernel.model.MBMessage fetchMBMessageByUuidAndGroupId(
-		java.lang.String uuid, long groupId) {
-		return getService().fetchMBMessageByUuidAndGroupId(uuid, groupId);
-	}
-
-	/**
-	* Returns the message-boards message with the primary key.
-	*
-	* @param messageId the primary key of the message-boards message
-	* @return the message-boards message
-	* @throws PortalException if a message-boards message with the primary key could not be found
-	*/
-	public static com.liferay.message.boards.kernel.model.MBMessage getMBMessage(
-		long messageId)
+	public static com.liferay.message.boards.kernel.model.MBMessage deleteMessage(
+		com.liferay.message.boards.kernel.model.MBMessage message)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getMBMessage(messageId);
+		return getService().deleteMessage(message);
 	}
 
-	/**
-	* Returns the message-boards message matching the UUID and group.
-	*
-	* @param uuid the message-boards message's UUID
-	* @param groupId the primary key of the group
-	* @return the matching message-boards message
-	* @throws PortalException if a matching message-boards message could not be found
-	*/
-	public static com.liferay.message.boards.kernel.model.MBMessage getMBMessageByUuidAndGroupId(
-		java.lang.String uuid, long groupId)
+	public static void deleteMessageAttachment(long messageId,
+		java.lang.String fileName)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getMBMessageByUuidAndGroupId(uuid, groupId);
+		getService().deleteMessageAttachment(messageId, fileName);
 	}
 
-	public static com.liferay.message.boards.kernel.model.MBMessage getMessage(
-		long messageId)
+	public static void deleteMessageAttachments(long messageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getMessage(messageId);
-	}
-
-	public static com.liferay.message.boards.kernel.model.MBMessage updateDiscussionMessage(
-		long userId, long messageId, java.lang.String className, long classPK,
-		java.lang.String subject, java.lang.String body,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateDiscussionMessage(userId, messageId, className,
-			classPK, subject, body, serviceContext);
-	}
-
-	/**
-	* Updates the message-boards message in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param mbMessage the message-boards message
-	* @return the message-boards message that was updated
-	*/
-	public static com.liferay.message.boards.kernel.model.MBMessage updateMBMessage(
-		com.liferay.message.boards.kernel.model.MBMessage mbMessage) {
-		return getService().updateMBMessage(mbMessage);
-	}
-
-	/**
-	* @deprecated As of 7.0.0, with no direct replacement
-	*/
-	@Deprecated
-	public static com.liferay.message.boards.kernel.model.MBMessage updateMessage(
-		long messageId, java.lang.String body)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().updateMessage(messageId, body);
-	}
-
-	public static com.liferay.message.boards.kernel.model.MBMessage updateMessage(
-		long userId, long messageId, java.lang.String body,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateMessage(userId, messageId, body, serviceContext);
-	}
-
-	public static com.liferay.message.boards.kernel.model.MBMessage updateMessage(
-		long userId, long messageId, java.lang.String subject,
-		java.lang.String body,
-		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.InputStream>> inputStreamOVPs,
-		java.util.List<java.lang.String> existingFiles, double priority,
-		boolean allowPingbacks,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateMessage(userId, messageId, subject, body,
-			inputStreamOVPs, existingFiles, priority, allowPingbacks,
-			serviceContext);
-	}
-
-	/**
-	* @deprecated As of 7.0.0, replaced by {@link #updateStatus(long, long,
-	int, ServiceContext, Map)}
-	*/
-	@Deprecated
-	public static com.liferay.message.boards.kernel.model.MBMessage updateStatus(
-		long userId, long messageId, int status,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateStatus(userId, messageId, status, serviceContext);
-	}
-
-	public static com.liferay.message.boards.kernel.model.MBMessage updateStatus(
-		long userId, long messageId, int status,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext,
-		java.util.Map<java.lang.String, java.io.Serializable> workflowContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateStatus(userId, messageId, status, serviceContext,
-			workflowContext);
-	}
-
-	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getDiscussionMessageDisplay(
-		long userId, long groupId, java.lang.String className, long classPK,
-		int status) throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .getDiscussionMessageDisplay(userId, groupId, className,
-			classPK, status);
-	}
-
-	/**
-	* @deprecated As of 7.0.0, replaced by {@link
-	#getDiscussionMessageDisplay(long, long, String, long, int)}
-	*/
-	@Deprecated
-	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getDiscussionMessageDisplay(
-		long userId, long groupId, java.lang.String className, long classPK,
-		int status, java.lang.String threadView)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .getDiscussionMessageDisplay(userId, groupId, className,
-			classPK, status, threadView);
-	}
-
-	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getDiscussionMessageDisplay(
-		long userId, long groupId, java.lang.String className, long classPK,
-		int status,
-		java.util.Comparator<com.liferay.message.boards.kernel.model.MBMessage> comparator)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .getDiscussionMessageDisplay(userId, groupId, className,
-			classPK, status, comparator);
-	}
-
-	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getMessageDisplay(
-		long userId, com.liferay.message.boards.kernel.model.MBMessage message,
-		int status) throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getMessageDisplay(userId, message, status);
-	}
-
-	/**
-	* @deprecated As of 7.0.0, replaced by {@link #getMessageDisplay(long,
-	MBMessage, int)}
-	*/
-	@Deprecated
-	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getMessageDisplay(
-		long userId, com.liferay.message.boards.kernel.model.MBMessage message,
-		int status, java.lang.String threadView, boolean includePrevAndNext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .getMessageDisplay(userId, message, status, threadView,
-			includePrevAndNext);
-	}
-
-	/**
-	* @deprecated As of 7.0.0, replaced by {@link #getMessageDisplay(long,
-	MBMessage, int, Comparator)} (
-	*/
-	@Deprecated
-	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getMessageDisplay(
-		long userId, com.liferay.message.boards.kernel.model.MBMessage message,
-		int status, java.lang.String threadView, boolean includePrevAndNext,
-		java.util.Comparator<com.liferay.message.boards.kernel.model.MBMessage> comparator)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .getMessageDisplay(userId, message, status, threadView,
-			includePrevAndNext, comparator);
-	}
-
-	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getMessageDisplay(
-		long userId, com.liferay.message.boards.kernel.model.MBMessage message,
-		int status,
-		java.util.Comparator<com.liferay.message.boards.kernel.model.MBMessage> comparator)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .getMessageDisplay(userId, message, status, comparator);
-	}
-
-	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getMessageDisplay(
-		long userId, long messageId, int status)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getMessageDisplay(userId, messageId, status);
-	}
-
-	/**
-	* @deprecated As of 7.0.0, replaced by {@link #getMessageDisplay(long,
-	long, int)}
-	*/
-	@Deprecated
-	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getMessageDisplay(
-		long userId, long messageId, int status, java.lang.String threadView,
-		boolean includePrevAndNext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .getMessageDisplay(userId, messageId, status, threadView,
-			includePrevAndNext);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return getService().dynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
-		return getService().getExportActionableDynamicQuery(portletDataContext);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
+		getService().deleteMessageAttachments(messageId);
 	}
 
 	/**
@@ -439,87 +254,8 @@ public class MBMessageLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	public static int getCategoryMessagesCount(long groupId, long categoryId,
-		int status) {
-		return getService().getCategoryMessagesCount(groupId, categoryId, status);
-	}
-
-	public static int getCompanyMessagesCount(long companyId, int status) {
-		return getService().getCompanyMessagesCount(companyId, status);
-	}
-
-	public static int getDiscussionMessagesCount(java.lang.String className,
-		long classPK, int status) {
-		return getService()
-				   .getDiscussionMessagesCount(className, classPK, status);
-	}
-
-	public static int getDiscussionMessagesCount(long classNameId,
-		long classPK, int status) {
-		return getService()
-				   .getDiscussionMessagesCount(classNameId, classPK, status);
-	}
-
-	public static int getGroupMessagesCount(long groupId, int status) {
-		return getService().getGroupMessagesCount(groupId, status);
-	}
-
-	public static int getGroupMessagesCount(long groupId, long userId,
-		int status) {
-		return getService().getGroupMessagesCount(groupId, userId, status);
-	}
-
-	/**
-	* Returns the number of message-boards messages.
-	*
-	* @return the number of message-boards messages
-	*/
-	public static int getMBMessagesCount() {
-		return getService().getMBMessagesCount();
-	}
-
-	public static int getPositionInThread(long messageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPositionInThread(messageId);
-	}
-
-	public static int getThreadMessagesCount(long threadId, int status) {
-		return getService().getThreadMessagesCount(threadId, status);
-	}
-
-	public static int getUserDiscussionMessagesCount(long userId,
-		java.lang.String className, long classPK, int status) {
-		return getService()
-				   .getUserDiscussionMessagesCount(userId, className, classPK,
-			status);
-	}
-
-	public static int getUserDiscussionMessagesCount(long userId,
-		long classNameId, long classPK, int status) {
-		return getService()
-				   .getUserDiscussionMessagesCount(userId, classNameId,
-			classPK, status);
-	}
-
-	public static int getUserDiscussionMessagesCount(long userId,
-		long[] classNameIds, int status) {
-		return getService()
-				   .getUserDiscussionMessagesCount(userId, classNameIds, status);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
 	}
 
 	/**
@@ -572,6 +308,56 @@ public class MBMessageLocalServiceUtil {
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
 
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return getService().dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void emptyMessageAttachments(long messageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().emptyMessageAttachments(messageId);
+	}
+
+	public static com.liferay.message.boards.kernel.model.MBMessage fetchMBMessage(
+		long messageId) {
+		return getService().fetchMBMessage(messageId);
+	}
+
+	/**
+	* Returns the message-boards message matching the UUID and group.
+	*
+	* @param uuid the message-boards message's UUID
+	* @param groupId the primary key of the group
+	* @return the matching message-boards message, or <code>null</code> if a matching message-boards message could not be found
+	*/
+	public static com.liferay.message.boards.kernel.model.MBMessage fetchMBMessageByUuidAndGroupId(
+		java.lang.String uuid, long groupId) {
+		return getService().fetchMBMessageByUuidAndGroupId(uuid, groupId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
 	public static java.util.List<com.liferay.message.boards.kernel.model.MBMessage> getCategoryMessages(
 		long groupId, long categoryId, int status, int start, int end) {
 		return getService()
@@ -586,6 +372,11 @@ public class MBMessageLocalServiceUtil {
 			end, obc);
 	}
 
+	public static int getCategoryMessagesCount(long groupId, long categoryId,
+		int status) {
+		return getService().getCategoryMessagesCount(groupId, categoryId, status);
+	}
+
 	public static java.util.List<com.liferay.message.boards.kernel.model.MBMessage> getCompanyMessages(
 		long companyId, int status, int start, int end) {
 		return getService().getCompanyMessages(companyId, status, start, end);
@@ -598,9 +389,62 @@ public class MBMessageLocalServiceUtil {
 				   .getCompanyMessages(companyId, status, start, end, obc);
 	}
 
+	public static int getCompanyMessagesCount(long companyId, int status) {
+		return getService().getCompanyMessagesCount(companyId, status);
+	}
+
+	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getDiscussionMessageDisplay(
+		long userId, long groupId, java.lang.String className, long classPK,
+		int status) throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .getDiscussionMessageDisplay(userId, groupId, className,
+			classPK, status);
+	}
+
+	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getDiscussionMessageDisplay(
+		long userId, long groupId, java.lang.String className, long classPK,
+		int status,
+		java.util.Comparator<com.liferay.message.boards.kernel.model.MBMessage> comparator)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .getDiscussionMessageDisplay(userId, groupId, className,
+			classPK, status, comparator);
+	}
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link
+	#getDiscussionMessageDisplay(long, long, String, long, int)}
+	*/
+	@Deprecated
+	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getDiscussionMessageDisplay(
+		long userId, long groupId, java.lang.String className, long classPK,
+		int status, java.lang.String threadView)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .getDiscussionMessageDisplay(userId, groupId, className,
+			classPK, status, threadView);
+	}
+
+	public static int getDiscussionMessagesCount(long classNameId,
+		long classPK, int status) {
+		return getService()
+				   .getDiscussionMessagesCount(classNameId, classPK, status);
+	}
+
+	public static int getDiscussionMessagesCount(java.lang.String className,
+		long classPK, int status) {
+		return getService()
+				   .getDiscussionMessagesCount(className, classPK, status);
+	}
+
 	public static java.util.List<com.liferay.message.boards.kernel.model.MBDiscussion> getDiscussions(
 		java.lang.String className) {
 		return getService().getDiscussions(className);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
+		return getService().getExportActionableDynamicQuery(portletDataContext);
 	}
 
 	public static java.util.List<com.liferay.message.boards.kernel.model.MBMessage> getGroupMessages(
@@ -624,6 +468,46 @@ public class MBMessageLocalServiceUtil {
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.message.boards.kernel.model.MBMessage> obc) {
 		return getService()
 				   .getGroupMessages(groupId, userId, status, start, end, obc);
+	}
+
+	public static int getGroupMessagesCount(long groupId, int status) {
+		return getService().getGroupMessagesCount(groupId, status);
+	}
+
+	public static int getGroupMessagesCount(long groupId, long userId,
+		int status) {
+		return getService().getGroupMessagesCount(groupId, userId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the message-boards message with the primary key.
+	*
+	* @param messageId the primary key of the message-boards message
+	* @return the message-boards message
+	* @throws PortalException if a message-boards message with the primary key could not be found
+	*/
+	public static com.liferay.message.boards.kernel.model.MBMessage getMBMessage(
+		long messageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getMBMessage(messageId);
+	}
+
+	/**
+	* Returns the message-boards message matching the UUID and group.
+	*
+	* @param uuid the message-boards message's UUID
+	* @param groupId the primary key of the group
+	* @return the matching message-boards message
+	* @throws PortalException if a matching message-boards message could not be found
+	*/
+	public static com.liferay.message.boards.kernel.model.MBMessage getMBMessageByUuidAndGroupId(
+		java.lang.String uuid, long groupId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getMBMessageByUuidAndGroupId(uuid, groupId);
 	}
 
 	/**
@@ -672,6 +556,85 @@ public class MBMessageLocalServiceUtil {
 			end, orderByComparator);
 	}
 
+	/**
+	* Returns the number of message-boards messages.
+	*
+	* @return the number of message-boards messages
+	*/
+	public static int getMBMessagesCount() {
+		return getService().getMBMessagesCount();
+	}
+
+	public static com.liferay.message.boards.kernel.model.MBMessage getMessage(
+		long messageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getMessage(messageId);
+	}
+
+	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getMessageDisplay(
+		long userId, long messageId, int status)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getMessageDisplay(userId, messageId, status);
+	}
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #getMessageDisplay(long,
+	long, int)}
+	*/
+	@Deprecated
+	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getMessageDisplay(
+		long userId, long messageId, int status, java.lang.String threadView,
+		boolean includePrevAndNext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .getMessageDisplay(userId, messageId, status, threadView,
+			includePrevAndNext);
+	}
+
+	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getMessageDisplay(
+		long userId, com.liferay.message.boards.kernel.model.MBMessage message,
+		int status) throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getMessageDisplay(userId, message, status);
+	}
+
+	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getMessageDisplay(
+		long userId, com.liferay.message.boards.kernel.model.MBMessage message,
+		int status,
+		java.util.Comparator<com.liferay.message.boards.kernel.model.MBMessage> comparator)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .getMessageDisplay(userId, message, status, comparator);
+	}
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #getMessageDisplay(long,
+	MBMessage, int)}
+	*/
+	@Deprecated
+	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getMessageDisplay(
+		long userId, com.liferay.message.boards.kernel.model.MBMessage message,
+		int status, java.lang.String threadView, boolean includePrevAndNext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .getMessageDisplay(userId, message, status, threadView,
+			includePrevAndNext);
+	}
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #getMessageDisplay(long,
+	MBMessage, int, Comparator)} (
+	*/
+	@Deprecated
+	public static com.liferay.message.boards.kernel.model.MBMessageDisplay getMessageDisplay(
+		long userId, com.liferay.message.boards.kernel.model.MBMessage message,
+		int status, java.lang.String threadView, boolean includePrevAndNext,
+		java.util.Comparator<com.liferay.message.boards.kernel.model.MBMessage> comparator)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .getMessageDisplay(userId, message, status, threadView,
+			includePrevAndNext, comparator);
+	}
+
 	public static java.util.List<com.liferay.message.boards.kernel.model.MBMessage> getMessages(
 		java.lang.String className, long classPK, int status) {
 		return getService().getMessages(className, classPK, status);
@@ -681,20 +644,40 @@ public class MBMessageLocalServiceUtil {
 		return getService().getNoAssetMessages();
 	}
 
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	public static int getPositionInThread(long messageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPositionInThread(messageId);
+	}
+
 	public static java.util.List<com.liferay.message.boards.kernel.model.MBMessage> getThreadMessages(
 		long threadId, int status) {
 		return getService().getThreadMessages(threadId, status);
 	}
 
 	public static java.util.List<com.liferay.message.boards.kernel.model.MBMessage> getThreadMessages(
-		long threadId, int status, int start, int end) {
-		return getService().getThreadMessages(threadId, status, start, end);
-	}
-
-	public static java.util.List<com.liferay.message.boards.kernel.model.MBMessage> getThreadMessages(
 		long threadId, int status,
 		java.util.Comparator<com.liferay.message.boards.kernel.model.MBMessage> comparator) {
 		return getService().getThreadMessages(threadId, status, comparator);
+	}
+
+	public static java.util.List<com.liferay.message.boards.kernel.model.MBMessage> getThreadMessages(
+		long threadId, int status, int start, int end) {
+		return getService().getThreadMessages(threadId, status, start, end);
 	}
 
 	public static java.util.List<com.liferay.message.boards.kernel.model.MBMessage> getThreadMessages(
@@ -705,19 +688,14 @@ public class MBMessageLocalServiceUtil {
 			comparator);
 	}
 
+	public static int getThreadMessagesCount(long threadId, int status) {
+		return getService().getThreadMessagesCount(threadId, status);
+	}
+
 	public static java.util.List<com.liferay.message.boards.kernel.model.MBMessage> getThreadRepliesMessages(
 		long threadId, int status, int start, int end) {
 		return getService()
 				   .getThreadRepliesMessages(threadId, status, start, end);
-	}
-
-	public static java.util.List<com.liferay.message.boards.kernel.model.MBMessage> getUserDiscussionMessages(
-		long userId, java.lang.String className, long classPK, int status,
-		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.message.boards.kernel.model.MBMessage> obc) {
-		return getService()
-				   .getUserDiscussionMessages(userId, className, classPK,
-			status, start, end, obc);
 	}
 
 	public static java.util.List<com.liferay.message.boards.kernel.model.MBMessage> getUserDiscussionMessages(
@@ -737,28 +715,33 @@ public class MBMessageLocalServiceUtil {
 			start, end, obc);
 	}
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return getService().dynamicQueryCount(dynamicQuery);
+	public static java.util.List<com.liferay.message.boards.kernel.model.MBMessage> getUserDiscussionMessages(
+		long userId, java.lang.String className, long classPK, int status,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.message.boards.kernel.model.MBMessage> obc) {
+		return getService()
+				   .getUserDiscussionMessages(userId, className, classPK,
+			status, start, end, obc);
 	}
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return getService().dynamicQueryCount(dynamicQuery, projection);
+	public static int getUserDiscussionMessagesCount(long userId,
+		long classNameId, long classPK, int status) {
+		return getService()
+				   .getUserDiscussionMessagesCount(userId, classNameId,
+			classPK, status);
+	}
+
+	public static int getUserDiscussionMessagesCount(long userId,
+		long[] classNameIds, int status) {
+		return getService()
+				   .getUserDiscussionMessagesCount(userId, classNameIds, status);
+	}
+
+	public static int getUserDiscussionMessagesCount(long userId,
+		java.lang.String className, long classPK, int status) {
+		return getService()
+				   .getUserDiscussionMessagesCount(userId, className, classPK,
+			status);
 	}
 
 	public static long moveMessageAttachmentToTrash(long userId,
@@ -766,65 +749,6 @@ public class MBMessageLocalServiceUtil {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .moveMessageAttachmentToTrash(userId, messageId, fileName);
-	}
-
-	public static void addMessageAttachment(long userId, long messageId,
-		java.lang.String fileName, java.io.File file, java.lang.String mimeType)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.addMessageAttachment(userId, messageId, fileName, file, mimeType);
-	}
-
-	public static void addMessageResources(
-		com.liferay.message.boards.kernel.model.MBMessage message,
-		boolean addGroupPermissions, boolean addGuestPermissions)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.addMessageResources(message, addGroupPermissions,
-			addGuestPermissions);
-	}
-
-	public static void addMessageResources(
-		com.liferay.message.boards.kernel.model.MBMessage message,
-		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().addMessageResources(message, modelPermissions);
-	}
-
-	public static void addMessageResources(long messageId,
-		boolean addGroupPermissions, boolean addGuestPermissions)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.addMessageResources(messageId, addGroupPermissions,
-			addGuestPermissions);
-	}
-
-	public static void addMessageResources(long messageId,
-		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().addMessageResources(messageId, modelPermissions);
-	}
-
-	public static void deleteDiscussionMessages(java.lang.String className,
-		long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteDiscussionMessages(className, classPK);
-	}
-
-	public static void deleteMessageAttachment(long messageId,
-		java.lang.String fileName)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteMessageAttachment(messageId, fileName);
-	}
-
-	public static void deleteMessageAttachments(long messageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteMessageAttachments(messageId);
-	}
-
-	public static void emptyMessageAttachments(long messageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().emptyMessageAttachments(messageId);
 	}
 
 	public static void restoreMessageAttachmentFromTrash(long userId,
@@ -845,17 +769,17 @@ public class MBMessageLocalServiceUtil {
 		getService().unsubscribeMessage(userId, messageId);
 	}
 
+	public static void updateAnswer(long messageId, boolean answer,
+		boolean cascade)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().updateAnswer(messageId, answer, cascade);
+	}
+
 	public static void updateAnswer(
 		com.liferay.message.boards.kernel.model.MBMessage message,
 		boolean answer, boolean cascade)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().updateAnswer(message, answer, cascade);
-	}
-
-	public static void updateAnswer(long messageId, boolean answer,
-		boolean cascade)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().updateAnswer(messageId, answer, cascade);
 	}
 
 	public static void updateAsset(long userId,
@@ -866,6 +790,82 @@ public class MBMessageLocalServiceUtil {
 		getService()
 			.updateAsset(userId, message, assetCategoryIds, assetTagNames,
 			assetLinkEntryIds);
+	}
+
+	public static com.liferay.message.boards.kernel.model.MBMessage updateDiscussionMessage(
+		long userId, long messageId, java.lang.String className, long classPK,
+		java.lang.String subject, java.lang.String body,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateDiscussionMessage(userId, messageId, className,
+			classPK, subject, body, serviceContext);
+	}
+
+	/**
+	* Updates the message-boards message in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param mbMessage the message-boards message
+	* @return the message-boards message that was updated
+	*/
+	public static com.liferay.message.boards.kernel.model.MBMessage updateMBMessage(
+		com.liferay.message.boards.kernel.model.MBMessage mbMessage) {
+		return getService().updateMBMessage(mbMessage);
+	}
+
+	public static com.liferay.message.boards.kernel.model.MBMessage updateMessage(
+		long userId, long messageId, java.lang.String body,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateMessage(userId, messageId, body, serviceContext);
+	}
+
+	public static com.liferay.message.boards.kernel.model.MBMessage updateMessage(
+		long userId, long messageId, java.lang.String subject,
+		java.lang.String body,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.InputStream>> inputStreamOVPs,
+		java.util.List<java.lang.String> existingFiles, double priority,
+		boolean allowPingbacks,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateMessage(userId, messageId, subject, body,
+			inputStreamOVPs, existingFiles, priority, allowPingbacks,
+			serviceContext);
+	}
+
+	/**
+	* @deprecated As of 7.0.0, with no direct replacement
+	*/
+	@Deprecated
+	public static com.liferay.message.boards.kernel.model.MBMessage updateMessage(
+		long messageId, java.lang.String body)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().updateMessage(messageId, body);
+	}
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #updateStatus(long, long,
+	int, ServiceContext, Map)}
+	*/
+	@Deprecated
+	public static com.liferay.message.boards.kernel.model.MBMessage updateStatus(
+		long userId, long messageId, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateStatus(userId, messageId, status, serviceContext);
+	}
+
+	public static com.liferay.message.boards.kernel.model.MBMessage updateStatus(
+		long userId, long messageId, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext,
+		java.util.Map<java.lang.String, java.io.Serializable> workflowContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateStatus(userId, messageId, status, serviceContext,
+			workflowContext);
 	}
 
 	public static void updateUserName(long userId, java.lang.String userName) {

@@ -135,8 +135,22 @@ public class FormatSourceMojo extends AbstractMojo {
 	/**
 	 * @parameter
 	 */
+	public void setShowDebugInformation(boolean showDebugInformation) {
+		_sourceFormatterArgs.setShowDebugInformation(showDebugInformation);
+	}
+
+	/**
+	 * @parameter
+	 */
 	public void setShowDocumentation(boolean showDocumentation) {
 		_sourceFormatterArgs.setShowDocumentation(showDocumentation);
+	}
+
+	/**
+	 * @parameter
+	 */
+	public void setShowStatusUpdates(boolean showStatusUpdates) {
+		_sourceFormatterArgs.setShowStatusUpdates(showStatusUpdates);
 	}
 
 	/**

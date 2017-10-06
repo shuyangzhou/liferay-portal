@@ -14,6 +14,8 @@
 
 package com.liferay.vulcan.wiring.osgi.manager;
 
+import com.liferay.vulcan.error.VulcanDeveloperError;
+import com.liferay.vulcan.result.Try;
 import com.liferay.vulcan.wiring.osgi.util.GenericUtil;
 
 import java.util.Map;
@@ -45,14 +47,20 @@ public abstract class BaseManager<T> {
 	 *
 	 * @param  serviceReference a service reference.
 	 * @param  clazz class of the service reference service.
-	 * @return the generic inner class of the service reference service.
+	 * @return the generic inner class of the service reference service, if a
+	 *         valid service can be obtained; {@code Optional#empty()}
+	 *         otherwise.
 	 */
-	protected <U> Class<U> addService(
+	protected <U> Optional<Class<U>> addService(
 		ServiceReference<T> serviceReference, Class<T> clazz) {
 
 		T service = _bundleContext.getService(serviceReference);
 
-		Class<U> genericClass = GenericUtil.getGenericClass(service, clazz);
+		if (service == null) {
+			return Optional.empty();
+		}
+
+		Class<U> genericClass = _getGenericClass(service, clazz);
 
 		_services.computeIfAbsent(
 			genericClass.getName(), name -> new TreeSet<>());
@@ -65,7 +73,7 @@ public abstract class BaseManager<T> {
 
 		serviceReferenceServiceTuples.add(serviceReferenceServiceTuple);
 
-		return genericClass;
+		return Optional.of(genericClass);
 	}
 
 	/**
@@ -107,9 +115,11 @@ public abstract class BaseManager<T> {
 	 *
 	 * @param  serviceReference a service reference.
 	 * @param  clazz class of the service reference service.
-	 * @return the generic inner class of the service reference service.
+	 * @return the generic inner class of the service reference service, if a
+	 *         valid service can be obtained; {@code Optional#empty()}
+	 *         otherwise.
 	 */
-	protected <U> Class<U> removeService(
+	protected <U> Optional<Class<U>> removeService(
 		ServiceReference<T> serviceReference, Class<T> clazz) {
 
 		Consumer<T> identityConsumer = t -> {
@@ -125,31 +135,50 @@ public abstract class BaseManager<T> {
 	 * @param  clazz class of the service reference service.
 	 * @param  beforeRemovingConsumer consumer that will be called before
 	 *         removing the service.
-	 * @return the generic inner class of the service reference service.
+	 * @return the generic inner class of the service reference service, if a
+	 *         valid service can be obtained; {@code Optional#empty()}
+	 *         otherwise.
 	 */
-	protected <U> Class<U> removeService(
+	protected <U> Optional<Class<U>> removeService(
 		ServiceReference<T> serviceReference, Class<T> clazz,
 		Consumer<T> beforeRemovingConsumer) {
 
 		T service = _bundleContext.getService(serviceReference);
 
-		Class<U> genericClass = GenericUtil.getGenericClass(service, clazz);
+		if (service == null) {
+			return Optional.empty();
+		}
+
+		Class<U> genericClass = _getGenericClass(service, clazz);
 
 		TreeSet<ServiceReferenceServiceTuple<T>> serviceReferenceServiceTuples =
 			_services.get(genericClass.getName());
 
 		beforeRemovingConsumer.accept(service);
 
-		serviceReferenceServiceTuples.removeIf(
-			serviceReferenceServiceTuple -> {
-				if (serviceReferenceServiceTuple.getService() == service) {
-					return true;
-				}
+		if (serviceReferenceServiceTuples != null) {
+			serviceReferenceServiceTuples.removeIf(
+				serviceReferenceServiceTuple -> {
+					if (serviceReferenceServiceTuple.getService() == service) {
+						return true;
+					}
 
-				return false;
-			});
+					return false;
+				});
+		}
 
-		return genericClass;
+		return Optional.of(genericClass);
+	}
+
+	private <U> Class<U> _getGenericClass(T service, Class<T> interfaceClass) {
+		Class<?> serviceClass = service.getClass();
+
+		Try<Class<U>> classTry = GenericUtil.getGenericClassTry(
+			serviceClass, interfaceClass);
+
+		return classTry.orElseThrow(
+			() -> new VulcanDeveloperError.MustHaveValidGenericType(
+				serviceClass));
 	}
 
 	private final BundleContext _bundleContext;

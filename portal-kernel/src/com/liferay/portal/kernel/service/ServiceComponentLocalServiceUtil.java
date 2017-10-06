@@ -40,32 +40,6 @@ public class ServiceComponentLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.ServiceComponentLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return getService().dynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
 
 	/**
 	* Adds the service component to the database. Also notifies the appropriate model listeners.
@@ -90,14 +64,12 @@ public class ServiceComponentLocalServiceUtil {
 	}
 
 	/**
-	* Deletes the service component from the database. Also notifies the appropriate model listeners.
-	*
-	* @param serviceComponent the service component
-	* @return the service component that was removed
+	* @throws PortalException
 	*/
-	public static com.liferay.portal.kernel.model.ServiceComponent deleteServiceComponent(
-		com.liferay.portal.kernel.model.ServiceComponent serviceComponent) {
-		return getService().deleteServiceComponent(serviceComponent);
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
 	}
 
 	/**
@@ -113,62 +85,26 @@ public class ServiceComponentLocalServiceUtil {
 		return getService().deleteServiceComponent(serviceComponentId);
 	}
 
-	public static com.liferay.portal.kernel.model.ServiceComponent fetchServiceComponent(
-		long serviceComponentId) {
-		return getService().fetchServiceComponent(serviceComponentId);
-	}
-
 	/**
-	* Returns the service component with the primary key.
-	*
-	* @param serviceComponentId the primary key of the service component
-	* @return the service component
-	* @throws PortalException if a service component with the primary key could not be found
-	*/
-	public static com.liferay.portal.kernel.model.ServiceComponent getServiceComponent(
-		long serviceComponentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getServiceComponent(serviceComponentId);
-	}
-
-	public static com.liferay.portal.kernel.model.ServiceComponent initServiceComponent(
-		com.liferay.portal.kernel.service.configuration.ServiceComponentConfiguration serviceComponentConfiguration,
-		java.lang.ClassLoader classLoader, java.lang.String buildNamespace,
-		long buildNumber, long buildDate, boolean buildAutoUpgrade)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .initServiceComponent(serviceComponentConfiguration,
-			classLoader, buildNamespace, buildNumber, buildDate,
-			buildAutoUpgrade);
-	}
-
-	/**
-	* Updates the service component in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the service component from the database. Also notifies the appropriate model listeners.
 	*
 	* @param serviceComponent the service component
-	* @return the service component that was updated
+	* @return the service component that was removed
 	*/
-	public static com.liferay.portal.kernel.model.ServiceComponent updateServiceComponent(
+	public static com.liferay.portal.kernel.model.ServiceComponent deleteServiceComponent(
 		com.liferay.portal.kernel.model.ServiceComponent serviceComponent) {
-		return getService().updateServiceComponent(serviceComponent);
+		return getService().deleteServiceComponent(serviceComponent);
 	}
 
-	/**
-	* Returns the number of service components.
-	*
-	* @return the number of service components
-	*/
-	public static int getServiceComponentsCount() {
-		return getService().getServiceComponentsCount();
+	public static void destroyServiceComponent(
+		com.liferay.portal.kernel.service.configuration.ServiceComponentConfiguration serviceComponentConfiguration,
+		java.lang.ClassLoader classLoader) {
+		getService()
+			.destroyServiceComponent(serviceComponentConfiguration, classLoader);
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
 	}
 
 	/**
@@ -221,26 +157,6 @@ public class ServiceComponentLocalServiceUtil {
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.ServiceComponent> getLatestServiceComponents() {
-		return getService().getLatestServiceComponents();
-	}
-
-	/**
-	* Returns a range of all the service components.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.ServiceComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of service components
-	* @param end the upper bound of the range of service components (not inclusive)
-	* @return the range of service components
-	*/
-	public static java.util.List<com.liferay.portal.kernel.model.ServiceComponent> getServiceComponents(
-		int start, int end) {
-		return getService().getServiceComponents(start, end);
-	}
-
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -265,13 +181,119 @@ public class ServiceComponentLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static void destroyServiceComponent(
-		com.liferay.portal.kernel.service.configuration.ServiceComponentConfiguration serviceComponentConfiguration,
-		java.lang.ClassLoader classLoader) {
-		getService()
-			.destroyServiceComponent(serviceComponentConfiguration, classLoader);
+	public static com.liferay.portal.kernel.model.ServiceComponent fetchServiceComponent(
+		long serviceComponentId) {
+		return getService().fetchServiceComponent(serviceComponentId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	public static java.util.List<com.liferay.portal.kernel.model.ServiceComponent> getLatestServiceComponents() {
+		return getService().getLatestServiceComponents();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the service component with the primary key.
+	*
+	* @param serviceComponentId the primary key of the service component
+	* @return the service component
+	* @throws PortalException if a service component with the primary key could not be found
+	*/
+	public static com.liferay.portal.kernel.model.ServiceComponent getServiceComponent(
+		long serviceComponentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getServiceComponent(serviceComponentId);
+	}
+
+	/**
+	* Returns a range of all the service components.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.ServiceComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of service components
+	* @param end the upper bound of the range of service components (not inclusive)
+	* @return the range of service components
+	*/
+	public static java.util.List<com.liferay.portal.kernel.model.ServiceComponent> getServiceComponents(
+		int start, int end) {
+		return getService().getServiceComponents(start, end);
+	}
+
+	/**
+	* Returns the number of service components.
+	*
+	* @return the number of service components
+	*/
+	public static int getServiceComponentsCount() {
+		return getService().getServiceComponentsCount();
+	}
+
+	public static com.liferay.portal.kernel.model.ServiceComponent initServiceComponent(
+		com.liferay.portal.kernel.service.configuration.ServiceComponentConfiguration serviceComponentConfiguration,
+		java.lang.ClassLoader classLoader, java.lang.String buildNamespace,
+		long buildNumber, long buildDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .initServiceComponent(serviceComponentConfiguration,
+			classLoader, buildNamespace, buildNumber, buildDate);
+	}
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #initServiceComponent(
+	ServiceComponentConfiguration, ClassLoader, String, long,
+	long)}
+	*/
+	@Deprecated
+	public static com.liferay.portal.kernel.model.ServiceComponent initServiceComponent(
+		com.liferay.portal.kernel.service.configuration.ServiceComponentConfiguration serviceComponentConfiguration,
+		java.lang.ClassLoader classLoader, java.lang.String buildNamespace,
+		long buildNumber, long buildDate, boolean buildAutoUpgrade)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .initServiceComponent(serviceComponentConfiguration,
+			classLoader, buildNamespace, buildNumber, buildDate,
+			buildAutoUpgrade);
+	}
+
+	/**
+	* Updates the service component in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param serviceComponent the service component
+	* @return the service component that was updated
+	*/
+	public static com.liferay.portal.kernel.model.ServiceComponent updateServiceComponent(
+		com.liferay.portal.kernel.model.ServiceComponent serviceComponent) {
+		return getService().updateServiceComponent(serviceComponent);
+	}
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #upgradeDB(ClassLoader,
+	String, long, ServiceComponent, String, String, String)}
+	*/
+	@Deprecated
 	public static void upgradeDB(java.lang.ClassLoader classLoader,
 		java.lang.String buildNamespace, long buildNumber,
 		boolean buildAutoUpgrade,
@@ -282,6 +304,16 @@ public class ServiceComponentLocalServiceUtil {
 			.upgradeDB(classLoader, buildNamespace, buildNumber,
 			buildAutoUpgrade, previousServiceComponent, tablesSQL,
 			sequencesSQL, indexesSQL);
+	}
+
+	public static void upgradeDB(java.lang.ClassLoader classLoader,
+		java.lang.String buildNamespace, long buildNumber,
+		com.liferay.portal.kernel.model.ServiceComponent previousServiceComponent,
+		java.lang.String tablesSQL, java.lang.String sequencesSQL,
+		java.lang.String indexesSQL) throws java.lang.Exception {
+		getService()
+			.upgradeDB(classLoader, buildNamespace, buildNumber,
+			previousServiceComponent, tablesSQL, sequencesSQL, indexesSQL);
 	}
 
 	public static void verifyDB() {

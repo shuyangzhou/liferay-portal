@@ -18,7 +18,8 @@
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
-<%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
+<%@ taglib uri="http://liferay.com/tld/asset" prefix="liferay-asset" %><%@
+taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
 taglib uri="http://liferay.com/tld/comment" prefix="liferay-comment" %><%@
 taglib uri="http://liferay.com/tld/ddm" prefix="liferay-ddm" %><%@
 taglib uri="http://liferay.com/tld/flags" prefix="liferay-flags" %><%@
@@ -43,8 +44,6 @@ page import="com.liferay.asset.kernel.model.ClassTypeField" %><%@
 page import="com.liferay.asset.kernel.model.ClassTypeReader" %><%@
 page import="com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil" %><%@
 page import="com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil" %><%@
-page import="com.liferay.asset.kernel.util.AssetEntryQueryProcessor" %><%@
-page import="com.liferay.asset.kernel.util.comparator.AssetRendererFactoryTypeNameComparator" %><%@
 page import="com.liferay.asset.publisher.web.configuration.AssetPublisherPortletInstanceConfiguration" %><%@
 page import="com.liferay.asset.publisher.web.configuration.AssetPublisherWebConfiguration" %><%@
 page import="com.liferay.asset.publisher.web.constants.AssetPublisherConstants" %><%@
@@ -53,9 +52,13 @@ page import="com.liferay.asset.publisher.web.constants.AssetPublisherWebKeys" %>
 page import="com.liferay.asset.publisher.web.display.context.AssetEntryResult" %><%@
 page import="com.liferay.asset.publisher.web.display.context.AssetPublisherDisplayContext" %><%@
 page import="com.liferay.asset.publisher.web.display.context.ItemSelectorViewDisplayContext" %><%@
+page import="com.liferay.asset.publisher.web.internal.util.AssetPublisherWebUtil" %><%@
 page import="com.liferay.asset.publisher.web.util.AssetPublisherCustomizer" %><%@
 page import="com.liferay.asset.publisher.web.util.AssetPublisherHelper" %><%@
 page import="com.liferay.asset.publisher.web.util.AssetPublisherUtil" %><%@
+page import="com.liferay.asset.util.comparator.AssetRendererFactoryTypeNameComparator" %><%@
+page import="com.liferay.asset.util.impl.AssetPublisherAddItemHolder" %><%@
+page import="com.liferay.asset.util.impl.AssetUtil" %><%@
 page import="com.liferay.document.library.kernel.document.conversion.DocumentConversionUtil" %><%@
 page import="com.liferay.document.library.kernel.util.DLUtil" %><%@
 page import="com.liferay.dynamic.data.mapping.model.DDMStructure" %><%@
@@ -109,12 +112,9 @@ page import="com.liferay.portal.kernel.util.TextFormatter" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %><%@
-page import="com.liferay.portlet.asset.util.AssetPublisherAddItemHolder" %><%@
-page import="com.liferay.portlet.asset.util.AssetUtil" %><%@
 page import="com.liferay.portlet.usersadmin.search.GroupSearch" %><%@
 page import="com.liferay.site.item.selector.criteria.SiteItemSelectorReturnType" %><%@
-page import="com.liferay.site.item.selector.criterion.SiteItemSelectorCriterion" %><%@
-page import="com.liferay.taglib.servlet.PipingServletResponse" %>
+page import="com.liferay.site.item.selector.criterion.SiteItemSelectorCriterion" %>
 
 <%@ page import="java.io.Serializable" %>
 

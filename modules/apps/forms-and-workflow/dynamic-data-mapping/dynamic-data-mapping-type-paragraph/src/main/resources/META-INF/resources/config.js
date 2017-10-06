@@ -19,10 +19,7 @@
 							condition: {
 								trigger: 'liferay-ddm-form-renderer'
 							},
-							path: 'paragraph.soy.js',
-							requires: [
-								'soyutils'
-							]
+							path: 'paragraph.js'
 						}
 					},
 					root: MODULE_PATH + '/'

@@ -145,38 +145,8 @@ public class MDRRuleGroupWrapper implements MDRRuleGroup,
 	}
 
 	@Override
-	public MDRRuleGroup toEscapedModel() {
-		return new MDRRuleGroupWrapper(_mdrRuleGroup.toEscapedModel());
-	}
-
-	@Override
-	public MDRRuleGroup toUnescapedModel() {
-		return new MDRRuleGroupWrapper(_mdrRuleGroup.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _mdrRuleGroup.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _mdrRuleGroup.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _mdrRuleGroup.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _mdrRuleGroup.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<MDRRuleGroup> toCacheModel() {
-		return _mdrRuleGroup.toCacheModel();
+	public java.lang.Object clone() {
+		return new MDRRuleGroupWrapper((MDRRuleGroup)_mdrRuleGroup.clone());
 	}
 
 	@Override
@@ -185,18 +155,28 @@ public class MDRRuleGroupWrapper implements MDRRuleGroup,
 	}
 
 	@Override
-	public int hashCode() {
-		return _mdrRuleGroup.hashCode();
+	public java.lang.String[] getAvailableLanguageIds() {
+		return _mdrRuleGroup.getAvailableLanguageIds();
 	}
 
+	/**
+	* Returns the company ID of this mdr rule group.
+	*
+	* @return the company ID of this mdr rule group
+	*/
 	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _mdrRuleGroup.getPrimaryKeyObj();
+	public long getCompanyId() {
+		return _mdrRuleGroup.getCompanyId();
 	}
 
+	/**
+	* Returns the create date of this mdr rule group.
+	*
+	* @return the create date of this mdr rule group
+	*/
 	@Override
-	public java.lang.Object clone() {
-		return new MDRRuleGroupWrapper((MDRRuleGroup)_mdrRuleGroup.clone());
+	public Date getCreateDate() {
+		return _mdrRuleGroup.getCreateDate();
 	}
 
 	@Override
@@ -212,30 +192,6 @@ public class MDRRuleGroupWrapper implements MDRRuleGroup,
 	@Override
 	public java.lang.String getDescription() {
 		return _mdrRuleGroup.getDescription();
-	}
-
-	/**
-	* Returns the localized description of this mdr rule group in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized description of this mdr rule group
-	*/
-	@Override
-	public java.lang.String getDescription(java.lang.String languageId) {
-		return _mdrRuleGroup.getDescription(languageId);
-	}
-
-	/**
-	* Returns the localized description of this mdr rule group in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized description of this mdr rule group
-	*/
-	@Override
-	public java.lang.String getDescription(java.lang.String languageId,
-		boolean useDefault) {
-		return _mdrRuleGroup.getDescription(languageId, useDefault);
 	}
 
 	/**
@@ -262,6 +218,30 @@ public class MDRRuleGroupWrapper implements MDRRuleGroup,
 		return _mdrRuleGroup.getDescription(locale, useDefault);
 	}
 
+	/**
+	* Returns the localized description of this mdr rule group in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @return the localized description of this mdr rule group
+	*/
+	@Override
+	public java.lang.String getDescription(java.lang.String languageId) {
+		return _mdrRuleGroup.getDescription(languageId);
+	}
+
+	/**
+	* Returns the localized description of this mdr rule group in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized description of this mdr rule group
+	*/
+	@Override
+	public java.lang.String getDescription(java.lang.String languageId,
+		boolean useDefault) {
+		return _mdrRuleGroup.getDescription(languageId, useDefault);
+	}
+
 	@Override
 	public java.lang.String getDescriptionCurrentLanguageId() {
 		return _mdrRuleGroup.getDescriptionCurrentLanguageId();
@@ -273,6 +253,51 @@ public class MDRRuleGroupWrapper implements MDRRuleGroup,
 	}
 
 	/**
+	* Returns a map of the locales and localized descriptions of this mdr rule group.
+	*
+	* @return the locales and localized descriptions of this mdr rule group
+	*/
+	@Override
+	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
+		return _mdrRuleGroup.getDescriptionMap();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _mdrRuleGroup.getExpandoBridge();
+	}
+
+	/**
+	* Returns the group ID of this mdr rule group.
+	*
+	* @return the group ID of this mdr rule group
+	*/
+	@Override
+	public long getGroupId() {
+		return _mdrRuleGroup.getGroupId();
+	}
+
+	/**
+	* Returns the last publish date of this mdr rule group.
+	*
+	* @return the last publish date of this mdr rule group
+	*/
+	@Override
+	public Date getLastPublishDate() {
+		return _mdrRuleGroup.getLastPublishDate();
+	}
+
+	/**
+	* Returns the modified date of this mdr rule group.
+	*
+	* @return the modified date of this mdr rule group
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _mdrRuleGroup.getModifiedDate();
+	}
+
+	/**
 	* Returns the name of this mdr rule group.
 	*
 	* @return the name of this mdr rule group
@@ -280,6 +305,29 @@ public class MDRRuleGroupWrapper implements MDRRuleGroup,
 	@Override
 	public java.lang.String getName() {
 		return _mdrRuleGroup.getName();
+	}
+
+	/**
+	* Returns the localized name of this mdr rule group in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param locale the locale of the language
+	* @return the localized name of this mdr rule group
+	*/
+	@Override
+	public java.lang.String getName(java.util.Locale locale) {
+		return _mdrRuleGroup.getName(locale);
+	}
+
+	/**
+	* Returns the localized name of this mdr rule group in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param locale the local of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized name of this mdr rule group. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	*/
+	@Override
+	public java.lang.String getName(java.util.Locale locale, boolean useDefault) {
+		return _mdrRuleGroup.getName(locale, useDefault);
 	}
 
 	/**
@@ -306,29 +354,6 @@ public class MDRRuleGroupWrapper implements MDRRuleGroup,
 		return _mdrRuleGroup.getName(languageId, useDefault);
 	}
 
-	/**
-	* Returns the localized name of this mdr rule group in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized name of this mdr rule group
-	*/
-	@Override
-	public java.lang.String getName(java.util.Locale locale) {
-		return _mdrRuleGroup.getName(locale);
-	}
-
-	/**
-	* Returns the localized name of this mdr rule group in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized name of this mdr rule group. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
-	@Override
-	public java.lang.String getName(java.util.Locale locale, boolean useDefault) {
-		return _mdrRuleGroup.getName(locale, useDefault);
-	}
-
 	@Override
 	public java.lang.String getNameCurrentLanguageId() {
 		return _mdrRuleGroup.getNameCurrentLanguageId();
@@ -337,6 +362,56 @@ public class MDRRuleGroupWrapper implements MDRRuleGroup,
 	@Override
 	public java.lang.String getNameCurrentValue() {
 		return _mdrRuleGroup.getNameCurrentValue();
+	}
+
+	/**
+	* Returns a map of the locales and localized names of this mdr rule group.
+	*
+	* @return the locales and localized names of this mdr rule group
+	*/
+	@Override
+	public Map<java.util.Locale, java.lang.String> getNameMap() {
+		return _mdrRuleGroup.getNameMap();
+	}
+
+	/**
+	* Returns the primary key of this mdr rule group.
+	*
+	* @return the primary key of this mdr rule group
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _mdrRuleGroup.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _mdrRuleGroup.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the rule group ID of this mdr rule group.
+	*
+	* @return the rule group ID of this mdr rule group
+	*/
+	@Override
+	public long getRuleGroupId() {
+		return _mdrRuleGroup.getRuleGroupId();
+	}
+
+	@Override
+	public java.util.List<MDRRule> getRules() {
+		return _mdrRuleGroup.getRules();
+	}
+
+	/**
+	* Returns the user ID of this mdr rule group.
+	*
+	* @return the user ID of this mdr rule group
+	*/
+	@Override
+	public long getUserId() {
+		return _mdrRuleGroup.getUserId();
 	}
 
 	/**
@@ -370,123 +445,23 @@ public class MDRRuleGroupWrapper implements MDRRuleGroup,
 	}
 
 	@Override
-	public java.lang.String toString() {
-		return _mdrRuleGroup.toString();
+	public int hashCode() {
+		return _mdrRuleGroup.hashCode();
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
-		return _mdrRuleGroup.toXmlString();
+	public boolean isCachedModel() {
+		return _mdrRuleGroup.isCachedModel();
 	}
 
 	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
-		return _mdrRuleGroup.getAvailableLanguageIds();
-	}
-
-	/**
-	* Returns the create date of this mdr rule group.
-	*
-	* @return the create date of this mdr rule group
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _mdrRuleGroup.getCreateDate();
-	}
-
-	/**
-	* Returns the last publish date of this mdr rule group.
-	*
-	* @return the last publish date of this mdr rule group
-	*/
-	@Override
-	public Date getLastPublishDate() {
-		return _mdrRuleGroup.getLastPublishDate();
-	}
-
-	/**
-	* Returns the modified date of this mdr rule group.
-	*
-	* @return the modified date of this mdr rule group
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _mdrRuleGroup.getModifiedDate();
+	public boolean isEscapedModel() {
+		return _mdrRuleGroup.isEscapedModel();
 	}
 
 	@Override
-	public java.util.List<MDRRule> getRules() {
-		return _mdrRuleGroup.getRules();
-	}
-
-	/**
-	* Returns a map of the locales and localized descriptions of this mdr rule group.
-	*
-	* @return the locales and localized descriptions of this mdr rule group
-	*/
-	@Override
-	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
-		return _mdrRuleGroup.getDescriptionMap();
-	}
-
-	/**
-	* Returns a map of the locales and localized names of this mdr rule group.
-	*
-	* @return the locales and localized names of this mdr rule group
-	*/
-	@Override
-	public Map<java.util.Locale, java.lang.String> getNameMap() {
-		return _mdrRuleGroup.getNameMap();
-	}
-
-	/**
-	* Returns the company ID of this mdr rule group.
-	*
-	* @return the company ID of this mdr rule group
-	*/
-	@Override
-	public long getCompanyId() {
-		return _mdrRuleGroup.getCompanyId();
-	}
-
-	/**
-	* Returns the group ID of this mdr rule group.
-	*
-	* @return the group ID of this mdr rule group
-	*/
-	@Override
-	public long getGroupId() {
-		return _mdrRuleGroup.getGroupId();
-	}
-
-	/**
-	* Returns the primary key of this mdr rule group.
-	*
-	* @return the primary key of this mdr rule group
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _mdrRuleGroup.getPrimaryKey();
-	}
-
-	/**
-	* Returns the rule group ID of this mdr rule group.
-	*
-	* @return the rule group ID of this mdr rule group
-	*/
-	@Override
-	public long getRuleGroupId() {
-		return _mdrRuleGroup.getRuleGroupId();
-	}
-
-	/**
-	* Returns the user ID of this mdr rule group.
-	*
-	* @return the user ID of this mdr rule group
-	*/
-	@Override
-	public long getUserId() {
-		return _mdrRuleGroup.getUserId();
+	public boolean isNew() {
+		return _mdrRuleGroup.isNew();
 	}
 
 	@Override
@@ -597,14 +572,14 @@ public class MDRRuleGroupWrapper implements MDRRuleGroup,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_mdrRuleGroup.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_mdrRuleGroup.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_mdrRuleGroup.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -771,6 +746,31 @@ public class MDRRuleGroupWrapper implements MDRRuleGroup,
 	@Override
 	public void setUuid(java.lang.String uuid) {
 		_mdrRuleGroup.setUuid(uuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<MDRRuleGroup> toCacheModel() {
+		return _mdrRuleGroup.toCacheModel();
+	}
+
+	@Override
+	public MDRRuleGroup toEscapedModel() {
+		return new MDRRuleGroupWrapper(_mdrRuleGroup.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _mdrRuleGroup.toString();
+	}
+
+	@Override
+	public MDRRuleGroup toUnescapedModel() {
+		return new MDRRuleGroupWrapper(_mdrRuleGroup.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _mdrRuleGroup.toXmlString();
 	}
 
 	@Override

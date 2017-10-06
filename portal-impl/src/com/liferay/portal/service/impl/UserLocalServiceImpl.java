@@ -24,7 +24,6 @@ import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheMapSynchronizeUtil;
-import com.liferay.portal.kernel.cache.PortalCacheMapSynchronizeUtil.Synchronizer;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.WildcardMode;
@@ -1724,6 +1723,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			}
 
 			serviceContext.setAttribute("passwordUnencrypted", password);
+
+			PasswordModificationThreadLocal.setPasswordModified(true);
+			PasswordModificationThreadLocal.setPasswordUnencrypted(password);
 
 			user.setPassword(PasswordEncryptorUtil.encrypt(password));
 			user.setPasswordUnencrypted(password);
@@ -3668,10 +3670,10 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 				companyPortletPreferences, "adminEmailVerificationBody",
 				PropsKeys.ADMIN_EMAIL_VERIFICATION_BODY);
 
-		String subject = MapUtil.getWithFallbackKey(
+		String subject = _getLocalizedValue(
 			localizedSubjectMap, user.getLocale(), LocaleUtil.getDefault());
 
-		String body = MapUtil.getWithFallbackKey(
+		String body = _getLocalizedValue(
 			localizedBodyMap, user.getLocale(), LocaleUtil.getDefault());
 
 		Company company = companyLocalService.getCompany(user.getCompanyId());
@@ -6230,10 +6232,10 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 				PropsKeys.ADMIN_EMAIL_USER_ADDED_NO_PASSWORD_BODY);
 		}
 
-		String subject = MapUtil.getWithFallbackKey(
+		String subject = _getLocalizedValue(
 			localizedSubjectMap, user.getLocale(), LocaleUtil.getDefault());
 
-		String body = MapUtil.getWithFallbackKey(
+		String body = _getLocalizedValue(
 			localizedBodyMap, user.getLocale(), LocaleUtil.getDefault());
 
 		String portalURL = null;
@@ -6397,7 +6399,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 				LocalizationUtil.getLocalizationMap(
 					companyPortletPreferences, prefix + "Body", bodyProperty);
 
-			localizedBody = MapUtil.getWithFallbackKey(
+			localizedBody = _getLocalizedValue(
 				localizedBodyMap, user.getLocale(), LocaleUtil.getDefault());
 		}
 
@@ -6409,7 +6411,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 					companyPortletPreferences, prefix + "Subject",
 					subjectProperty);
 
-			localizedSubject = MapUtil.getWithFallbackKey(
+			localizedSubject = _getLocalizedValue(
 				localizedSubjectMap, user.getLocale(), LocaleUtil.getDefault());
 		}
 
@@ -6988,6 +6990,23 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		return user;
 	}
 
+	private String _getLocalizedValue(
+		Map<Locale, String> localizedValueMap, Locale locale,
+		Locale fallbackLocale) {
+
+		if (localizedValueMap == null) {
+			return null;
+		}
+
+		String localizedValue = localizedValueMap.get(locale);
+
+		if (Validator.isNotNull(localizedValue)) {
+			return localizedValue;
+		}
+
+		return localizedValueMap.get(fallbackLocale);
+	}
+
 	private void _sendNotificationEmail(
 			String fromAddress, String fromName, String toAddress, User toUser,
 			String subject, String body,
@@ -7041,35 +7060,16 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			public void dependenciesFulfilled() {
 				Registry registry = RegistryUtil.getRegistry();
 
-				EntityCache entityCache = registry.getService(
-					EntityCache.class);
+				registry.callService(
+					EntityCache.class,
+					entityCache -> {
+						PortalCache<Serializable, Serializable> portalCache =
+							entityCache.getPortalCache(UserImpl.class);
 
-				PortalCache<Serializable, Serializable> portalCache =
-					entityCache.getPortalCache(UserImpl.class);
+						PortalCacheMapSynchronizeUtil.synchronize(
+							portalCache, _defaultUsers, _synchronizer);
 
-				PortalCacheMapSynchronizeUtil.synchronize(
-					portalCache, _defaultUsers,
-					new Synchronizer<Serializable, Serializable>() {
-
-						@Override
-						public void onSynchronize(
-							Map<? extends Serializable, ? extends Serializable>
-								map,
-							Serializable key, Serializable value,
-							int timeToLive) {
-
-							if (!(value instanceof UserCacheModel)) {
-								return;
-							}
-
-							UserCacheModel userCacheModel =
-								(UserCacheModel)value;
-
-							if (userCacheModel.defaultUser) {
-								_defaultUsers.remove(userCacheModel.companyId);
-							}
-						}
-
+						return null;
 					});
 			}
 
@@ -7078,5 +7078,28 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			}
 
 		};
+
+	private final PortalCacheMapSynchronizeUtil.Synchronizer
+		<Serializable, Serializable> _synchronizer =
+			new PortalCacheMapSynchronizeUtil.Synchronizer
+				<Serializable, Serializable>() {
+
+				@Override
+				public void onSynchronize(
+					Map<? extends Serializable, ? extends Serializable> map,
+					Serializable key, Serializable value, int timeToLive) {
+
+					if (!(value instanceof UserCacheModel)) {
+						return;
+					}
+
+					UserCacheModel userCacheModel = (UserCacheModel)value;
+
+					if (userCacheModel.defaultUser) {
+						_defaultUsers.remove(userCacheModel.companyId);
+					}
+				}
+
+			};
 
 }

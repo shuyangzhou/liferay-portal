@@ -55,6 +55,7 @@ import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.RelatedEntryIndexer;
+import com.liferay.portal.kernel.search.RelatedEntryIndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Summary;
@@ -98,7 +99,11 @@ import javax.portlet.PortletResponse;
  * @author Raymond Augé
  * @author Alexander Chow
  */
-@OSGiBeanProperties
+@OSGiBeanProperties(
+	property = {
+		"related.entry.indexer.class.name=com.liferay.document.library.kernel.model.DLFileEntry"
+	}
+)
 public class DLFileEntryIndexer
 	extends BaseIndexer<DLFileEntry> implements RelatedEntryIndexer {
 
@@ -177,17 +182,26 @@ public class DLFileEntryIndexer
 	public boolean isVisibleRelatedEntry(long classPK, int status)
 		throws Exception {
 
-		FileEntry fileEntry = DLAppLocalServiceUtil.getFileEntry(classPK);
+		try {
+			FileEntry fileEntry = DLAppLocalServiceUtil.getFileEntry(classPK);
 
-		if (fileEntry instanceof LiferayFileEntry) {
-			DLFileEntry dlFileEntry = (DLFileEntry)fileEntry.getModel();
+			if (fileEntry instanceof LiferayFileEntry) {
+				DLFileEntry dlFileEntry = (DLFileEntry)fileEntry.getModel();
 
-			if (dlFileEntry.isInHiddenFolder()) {
-				Indexer<?> indexer = IndexerRegistryUtil.getIndexer(
-					dlFileEntry.getClassName());
+				if (dlFileEntry.isInHiddenFolder()) {
+					Indexer<?> indexer = IndexerRegistryUtil.getIndexer(
+						dlFileEntry.getClassName());
 
-				return indexer.isVisible(dlFileEntry.getClassPK(), status);
+					return indexer.isVisible(dlFileEntry.getClassPK(), status);
+				}
 			}
+		}
+		catch (Exception e) {
+			if (_log.isInfoEnabled()) {
+				_log.info("Unble to get file entry", e);
+			}
+
+			return false;
 		}
 
 		return true;
@@ -343,6 +357,19 @@ public class DLFileEntryIndexer
 		}
 	}
 
+	protected Summary createSummary(
+		Locale locale, Document document, String titleField,
+		String contentField) {
+
+		String prefix = Field.SNIPPET + StringPool.UNDERLINE;
+
+		String title = document.get(prefix + titleField, titleField);
+		String content = document.get(
+			locale, prefix + contentField, contentField);
+
+		return new Summary(title, content);
+	}
+
 	@Override
 	protected void doDelete(DLFileEntry dlFileEntry) throws Exception {
 		deleteDocument(
@@ -459,26 +486,27 @@ public class DLFileEntryIndexer
 			addFileEntryTypeAttributes(document, dlFileVersion);
 
 			if (dlFileEntry.isInHiddenFolder()) {
-				Indexer<?> indexer = IndexerRegistryUtil.getIndexer(
-					dlFileEntry.getClassName());
+				List<RelatedEntryIndexer> relatedEntryIndexers =
+					RelatedEntryIndexerRegistryUtil.getRelatedEntryIndexers(
+						dlFileEntry.getClassName());
 
-				if ((indexer != null) &&
-					(indexer instanceof RelatedEntryIndexer)) {
+				if (relatedEntryIndexers != null) {
+					for (RelatedEntryIndexer relatedEntryIndexer :
+							relatedEntryIndexers) {
 
-					RelatedEntryIndexer relatedEntryIndexer =
-						(RelatedEntryIndexer)indexer;
+						relatedEntryIndexer.addRelatedEntryFields(
+							document, new LiferayFileEntry(dlFileEntry));
 
-					relatedEntryIndexer.addRelatedEntryFields(
-						document, new LiferayFileEntry(dlFileEntry));
+						DocumentHelper documentHelper = new DocumentHelper(
+							document);
 
-					DocumentHelper documentHelper = new DocumentHelper(
-						document);
+						documentHelper.setAttachmentOwnerKey(
+							PortalUtil.getClassNameId(
+								dlFileEntry.getClassName()),
+							dlFileEntry.getClassPK());
 
-					documentHelper.setAttachmentOwnerKey(
-						PortalUtil.getClassNameId(dlFileEntry.getClassName()),
-						dlFileEntry.getClassPK());
-
-					document.addKeyword(Field.RELATED_ENTRY, true);
+						document.addKeyword(Field.RELATED_ENTRY, true);
+					}
 				}
 			}
 
@@ -504,7 +532,8 @@ public class DLFileEntryIndexer
 		Document document, Locale locale, String snippet,
 		PortletRequest portletRequest, PortletResponse portletResponse) {
 
-		Summary summary = createSummary(document, Field.TITLE, Field.CONTENT);
+		Summary summary = createSummary(
+			locale, document, Field.TITLE, Field.CONTENT);
 
 		if (Validator.isNull(summary.getContent())) {
 			summary = createSummary(document, Field.TITLE, Field.DESCRIPTION);

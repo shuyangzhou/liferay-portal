@@ -20,10 +20,7 @@
 							condition: {
 								trigger: 'liferay-ddm-form-renderer'
 							},
-							path: 'fieldset.soy.js',
-							requires: [
-								'soyutils'
-							]
+							path: 'fieldset.js'
 						},
 						'liferay-ddm-form-field-fieldset-util': {
 							path: 'fieldset_field_util.js',

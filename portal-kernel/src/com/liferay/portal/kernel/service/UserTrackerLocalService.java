@@ -59,25 +59,10 @@ public interface UserTrackerLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link UserTrackerLocalServiceUtil} to access the user tracker local service. Add custom service methods to {@link com.liferay.portal.service.impl.UserTrackerLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
+	public UserTracker addUserTracker(long companyId, long userId,
+		Date modifiedDate, java.lang.String sessionId,
+		java.lang.String remoteAddr, java.lang.String remoteHost,
+		java.lang.String userAgent, List<UserTrackerPath> userTrackerPaths);
 
 	/**
 	* Adds the user tracker to the database. Also notifies the appropriate model listeners.
@@ -88,11 +73,6 @@ public interface UserTrackerLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public UserTracker addUserTracker(UserTracker userTracker);
 
-	public UserTracker addUserTracker(long companyId, long userId,
-		Date modifiedDate, java.lang.String sessionId,
-		java.lang.String remoteAddr, java.lang.String remoteHost,
-		java.lang.String userAgent, List<UserTrackerPath> userTrackerPaths);
-
 	/**
 	* Creates a new user tracker with the primary key. Does not add the user tracker to the database.
 	*
@@ -102,13 +82,11 @@ public interface UserTrackerLocalService extends BaseLocalService,
 	public UserTracker createUserTracker(long userTrackerId);
 
 	/**
-	* Deletes the user tracker from the database. Also notifies the appropriate model listeners.
-	*
-	* @param userTracker the user tracker
-	* @return the user tracker that was removed
+	* @throws PortalException
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public UserTracker deleteUserTracker(UserTracker userTracker);
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
 
 	/**
 	* Deletes the user tracker with the primary key from the database. Also notifies the appropriate model listeners.
@@ -121,43 +99,16 @@ public interface UserTrackerLocalService extends BaseLocalService,
 	public UserTracker deleteUserTracker(long userTrackerId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public UserTracker fetchUserTracker(long userTrackerId);
-
 	/**
-	* Returns the user tracker with the primary key.
-	*
-	* @param userTrackerId the primary key of the user tracker
-	* @return the user tracker
-	* @throws PortalException if a user tracker with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public UserTracker getUserTracker(long userTrackerId)
-		throws PortalException;
-
-	/**
-	* Updates the user tracker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the user tracker from the database. Also notifies the appropriate model listeners.
 	*
 	* @param userTracker the user tracker
-	* @return the user tracker that was updated
+	* @return the user tracker that was removed
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public UserTracker updateUserTracker(UserTracker userTracker);
+	@Indexable(type = IndexableType.DELETE)
+	public UserTracker deleteUserTracker(UserTracker userTracker);
 
-	/**
-	* Returns the number of user trackers.
-	*
-	* @return the number of user trackers
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getUserTrackersCount();
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -199,6 +150,56 @@ public interface UserTrackerLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public UserTracker fetchUserTracker(long userTrackerId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the user tracker with the primary key.
+	*
+	* @param userTrackerId the primary key of the user tracker
+	* @return the user tracker
+	* @throws PortalException if a user tracker with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public UserTracker getUserTracker(long userTrackerId)
+		throws PortalException;
+
+	/**
 	* Returns a range of all the user trackers.
 	*
 	* <p>
@@ -216,20 +217,19 @@ public interface UserTrackerLocalService extends BaseLocalService,
 	public List<UserTracker> getUserTrackers(long companyId, int start, int end);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of user trackers.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of user trackers
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getUserTrackersCount();
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Updates the user tracker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @param userTracker the user tracker
+	* @return the user tracker that was updated
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	@Indexable(type = IndexableType.REINDEX)
+	public UserTracker updateUserTracker(UserTracker userTracker);
 }

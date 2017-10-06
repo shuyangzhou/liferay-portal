@@ -19,7 +19,6 @@ import com.google.template.soy.SoyFileSet;
 import com.google.template.soy.SoyFileSet.Builder;
 import com.google.template.soy.data.SanitizedContent;
 import com.google.template.soy.data.SoyMapData;
-import com.google.template.soy.data.UnsafeSanitizedContentOrdainer;
 import com.google.template.soy.msgs.SoyMsgBundle;
 import com.google.template.soy.tofu.SoyTofu;
 import com.google.template.soy.tofu.SoyTofu.Renderer;
@@ -44,6 +43,7 @@ import com.liferay.portal.template.AbstractMultiResourceTemplate;
 import com.liferay.portal.template.TemplateContextHelper;
 import com.liferay.portal.template.soy.constants.SoyTemplateConstants;
 import com.liferay.portal.template.soy.utils.SoyHTMLContextValue;
+import com.liferay.portal.template.soy.utils.SoyRawData;
 import com.liferay.portal.template.soy.utils.SoyTemplateResourcesProvider;
 
 import java.io.Reader;
@@ -218,8 +218,12 @@ public class SoyTemplate extends AbstractMultiResourceTemplate {
 		else if (value instanceof SoyHTMLContextValue) {
 			SoyHTMLContextValue htmlValue = (SoyHTMLContextValue)value;
 
-			soyMapValue = UnsafeSanitizedContentOrdainer.ordainAsSafe(
-				htmlValue.toString(), SanitizedContent.ContentKind.HTML);
+			soyMapValue = htmlValue.getValue();
+		}
+		else if (value instanceof SoyRawData) {
+			SoyRawData soyRawData = (SoyRawData)value;
+
+			soyMapValue = soyRawData.getValue();
 		}
 		else {
 			soyMapValue = _templateContextHelper.deserializeValue(value);

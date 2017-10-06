@@ -37,6 +37,18 @@ public class MDRActionServiceWrapper implements MDRActionService,
 		long ruleGroupInstanceId,
 		java.util.Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+		java.lang.String type, java.lang.String typeSettings,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _mdrActionService.addAction(ruleGroupInstanceId, nameMap,
+			descriptionMap, type, typeSettings, serviceContext);
+	}
+
+	@Override
+	public com.liferay.mobile.device.rules.model.MDRAction addAction(
+		long ruleGroupInstanceId,
+		java.util.Map<java.util.Locale, java.lang.String> nameMap,
+		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
 		java.lang.String type,
 		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -46,15 +58,9 @@ public class MDRActionServiceWrapper implements MDRActionService,
 	}
 
 	@Override
-	public com.liferay.mobile.device.rules.model.MDRAction addAction(
-		long ruleGroupInstanceId,
-		java.util.Map<java.util.Locale, java.lang.String> nameMap,
-		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
-		java.lang.String type, java.lang.String typeSettings,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public void deleteAction(long actionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _mdrActionService.addAction(ruleGroupInstanceId, nameMap,
-			descriptionMap, type, typeSettings, serviceContext);
+		_mdrActionService.deleteAction(actionId);
 	}
 
 	@Override
@@ -71,17 +77,14 @@ public class MDRActionServiceWrapper implements MDRActionService,
 		return _mdrActionService.getAction(actionId);
 	}
 
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
 	@Override
-	public com.liferay.mobile.device.rules.model.MDRAction updateAction(
-		long actionId,
-		java.util.Map<java.util.Locale, java.lang.String> nameMap,
-		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
-		java.lang.String type,
-		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _mdrActionService.updateAction(actionId, nameMap,
-			descriptionMap, type, typeSettingsProperties, serviceContext);
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _mdrActionService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -96,20 +99,17 @@ public class MDRActionServiceWrapper implements MDRActionService,
 			descriptionMap, type, typeSettings, serviceContext);
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _mdrActionService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public void deleteAction(long actionId)
+	public com.liferay.mobile.device.rules.model.MDRAction updateAction(
+		long actionId,
+		java.util.Map<java.util.Locale, java.lang.String> nameMap,
+		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+		java.lang.String type,
+		com.liferay.portal.kernel.util.UnicodeProperties typeSettingsProperties,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		_mdrActionService.deleteAction(actionId);
+		return _mdrActionService.updateAction(actionId, nameMap,
+			descriptionMap, type, typeSettingsProperties, serviceContext);
 	}
 
 	@Override

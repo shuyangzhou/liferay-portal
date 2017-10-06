@@ -173,7 +173,8 @@ public class LiferayThemeDefaultsPlugin implements Plugin<Project> {
 						writeDigestTask.setEnabled(false);
 					}
 
-					GradleUtil.setProjectSnapshotVersion(project);
+					GradlePluginsDefaultsUtil.setProjectSnapshotVersion(
+						project);
 
 					// setProjectSnapshotVersion must be called before
 					// configureTaskUploadArchives, because the latter one needs
@@ -280,17 +281,9 @@ public class LiferayThemeDefaultsPlugin implements Plugin<Project> {
 	private PublishNodeModuleTask _addTaskPublishNodeModule(
 		Task zipResourcesImporterArchivesTask) {
 
-		Project project = zipResourcesImporterArchivesTask.getProject();
-
-		String projectPath = project.getPath();
-
-		if (projectPath.startsWith(":private:")) {
-			return null;
-		}
-
 		PublishNodeModuleTask publishNodeModuleTask = GradleUtil.addTask(
-			project, PUBLISH_NODE_MODULE_TASK_NAME,
-			PublishNodeModuleTask.class);
+			zipResourcesImporterArchivesTask.getProject(),
+			PUBLISH_NODE_MODULE_TASK_NAME, PublishNodeModuleTask.class);
 
 		publishNodeModuleTask.dependsOn(zipResourcesImporterArchivesTask);
 		publishNodeModuleTask.setDescription(
@@ -410,16 +403,20 @@ public class LiferayThemeDefaultsPlugin implements Plugin<Project> {
 
 		replaceRegexTask.finalizedBy(writeParentThemesDigestTask);
 
-		File npmShrinkwrapJsonFile = project.file("npm-shrinkwrap.json");
+		for (String fileName :
+				GradlePluginsDefaultsUtil.JSON_VERSION_FILE_NAMES) {
 
-		if (npmShrinkwrapJsonFile.exists()) {
-			replaceRegexTask.match(_JSON_VERSION_REGEX, npmShrinkwrapJsonFile);
+			File file = project.file(fileName);
+
+			if (file.exists()) {
+				replaceRegexTask.match(
+					GradlePluginsDefaultsUtil.jsonVersionPattern.pattern(),
+					file);
+			}
 		}
 
-		replaceRegexTask.match(_JSON_VERSION_REGEX, "package.json");
-
 		replaceRegexTask.setDescription(
-			"Updates the project version in the package.json file.");
+			"Updates the project version in the NPM files.");
 		replaceRegexTask.setReplacement(
 			IncrementVersionClosure.MICRO_INCREMENT);
 
@@ -700,18 +697,13 @@ public class LiferayThemeDefaultsPlugin implements Plugin<Project> {
 
 			};
 
-			if (publishNodeModuleTask != null) {
-				publishNodeModuleTask.doFirst(action);
-			}
-
+			publishNodeModuleTask.doFirst(action);
 			uploadArchivesTask.doFirst(action);
 		}
 
-		if (!GradleUtil.isSnapshot(project)) {
-			if (publishNodeModuleTask != null) {
-				uploadArchivesTask.dependsOn(publishNodeModuleTask);
-			}
+		uploadArchivesTask.dependsOn(publishNodeModuleTask);
 
+		if (!GradlePluginsDefaultsUtil.isSnapshot(project)) {
 			uploadArchivesTask.finalizedBy(updateVersionTask);
 		}
 	}
@@ -746,8 +738,5 @@ public class LiferayThemeDefaultsPlugin implements Plugin<Project> {
 		"com.liferay.frontend.css.common";
 
 	private static final String _GROUP = "com.liferay.plugins";
-
-	private static final String _JSON_VERSION_REGEX =
-		"\\n\\t\"version\": \"(.+)\"";
 
 }

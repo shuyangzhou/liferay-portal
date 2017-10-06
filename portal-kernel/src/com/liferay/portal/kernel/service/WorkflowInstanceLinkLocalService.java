@@ -58,33 +58,9 @@ public interface WorkflowInstanceLinkLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WorkflowInstanceLinkLocalServiceUtil} to access the workflow instance link local service. Add custom service methods to {@link com.liferay.portal.service.impl.WorkflowInstanceLinkLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasWorkflowInstanceLink(long companyId, long groupId,
-		java.lang.String className, long classPK);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean isEnded(long companyId, long groupId,
-		java.lang.String className, long classPK) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
+	public WorkflowInstanceLink addWorkflowInstanceLink(long userId,
+		long companyId, long groupId, java.lang.String className, long classPK,
+		long workflowInstanceId) throws PortalException;
 
 	/**
 	* Adds the workflow instance link to the database. Also notifies the appropriate model listeners.
@@ -96,10 +72,6 @@ public interface WorkflowInstanceLinkLocalService extends BaseLocalService,
 	public WorkflowInstanceLink addWorkflowInstanceLink(
 		WorkflowInstanceLink workflowInstanceLink);
 
-	public WorkflowInstanceLink addWorkflowInstanceLink(long userId,
-		long companyId, long groupId, java.lang.String className, long classPK,
-		long workflowInstanceId) throws PortalException;
-
 	/**
 	* Creates a new workflow instance link with the primary key. Does not add the workflow instance link to the database.
 	*
@@ -110,18 +82,10 @@ public interface WorkflowInstanceLinkLocalService extends BaseLocalService,
 		long workflowInstanceLinkId);
 
 	/**
-	* Deletes the workflow instance link from the database. Also notifies the appropriate model listeners.
-	*
-	* @param workflowInstanceLink the workflow instance link
-	* @return the workflow instance link that was removed
 	* @throws PortalException
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public WorkflowInstanceLink deleteWorkflowInstanceLink(
-		WorkflowInstanceLink workflowInstanceLink) throws PortalException;
-
-	public WorkflowInstanceLink deleteWorkflowInstanceLink(long companyId,
-		long groupId, java.lang.String className, long classPK)
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
 	/**
@@ -135,58 +99,25 @@ public interface WorkflowInstanceLinkLocalService extends BaseLocalService,
 	public WorkflowInstanceLink deleteWorkflowInstanceLink(
 		long workflowInstanceLinkId) throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public WorkflowInstanceLink fetchWorkflowInstanceLink(long companyId,
-		long groupId, java.lang.String className, long classPK);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public WorkflowInstanceLink fetchWorkflowInstanceLink(
-		long workflowInstanceLinkId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public WorkflowInstanceLink getWorkflowInstanceLink(long companyId,
+	public WorkflowInstanceLink deleteWorkflowInstanceLink(long companyId,
 		long groupId, java.lang.String className, long classPK)
 		throws PortalException;
 
 	/**
-	* Returns the workflow instance link with the primary key.
-	*
-	* @param workflowInstanceLinkId the primary key of the workflow instance link
-	* @return the workflow instance link
-	* @throws PortalException if a workflow instance link with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public WorkflowInstanceLink getWorkflowInstanceLink(
-		long workflowInstanceLinkId) throws PortalException;
-
-	/**
-	* Updates the workflow instance link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the workflow instance link from the database. Also notifies the appropriate model listeners.
 	*
 	* @param workflowInstanceLink the workflow instance link
-	* @return the workflow instance link that was updated
+	* @return the workflow instance link that was removed
+	* @throws PortalException
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public WorkflowInstanceLink updateWorkflowInstanceLink(
-		WorkflowInstanceLink workflowInstanceLink);
+	@Indexable(type = IndexableType.DELETE)
+	public WorkflowInstanceLink deleteWorkflowInstanceLink(
+		WorkflowInstanceLink workflowInstanceLink) throws PortalException;
 
-	/**
-	* Returns the number of workflow instance links.
-	*
-	* @return the number of workflow instance links
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getWorkflowInstanceLinksCount();
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String getState(long companyId, long groupId,
+	public void deleteWorkflowInstanceLinks(long companyId, long groupId,
 		java.lang.String className, long classPK) throws PortalException;
+
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -228,6 +159,70 @@ public interface WorkflowInstanceLinkLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public WorkflowInstanceLink fetchWorkflowInstanceLink(
+		long workflowInstanceLinkId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public WorkflowInstanceLink fetchWorkflowInstanceLink(long companyId,
+		long groupId, java.lang.String className, long classPK);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.lang.String getState(long companyId, long groupId,
+		java.lang.String className, long classPK) throws PortalException;
+
+	/**
+	* Returns the workflow instance link with the primary key.
+	*
+	* @param workflowInstanceLinkId the primary key of the workflow instance link
+	* @return the workflow instance link
+	* @throws PortalException if a workflow instance link with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public WorkflowInstanceLink getWorkflowInstanceLink(
+		long workflowInstanceLinkId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public WorkflowInstanceLink getWorkflowInstanceLink(long companyId,
+		long groupId, java.lang.String className, long classPK)
+		throws PortalException;
+
+	/**
 	* Returns a range of all the workflow instance links.
 	*
 	* <p>
@@ -247,24 +242,19 @@ public interface WorkflowInstanceLinkLocalService extends BaseLocalService,
 		long groupId, java.lang.String className, long classPK);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of workflow instance links.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of workflow instance links
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getWorkflowInstanceLinksCount();
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasWorkflowInstanceLink(long companyId, long groupId,
+		java.lang.String className, long classPK);
 
-	public void deleteWorkflowInstanceLinks(long companyId, long groupId,
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean isEnded(long companyId, long groupId,
 		java.lang.String className, long classPK) throws PortalException;
 
 	public void startWorkflowInstance(long companyId, long groupId,
@@ -275,4 +265,14 @@ public interface WorkflowInstanceLinkLocalService extends BaseLocalService,
 	public void updateClassPK(long companyId, long groupId,
 		java.lang.String className, long oldClassPK, long newClassPK)
 		throws PortalException;
+
+	/**
+	* Updates the workflow instance link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param workflowInstanceLink the workflow instance link
+	* @return the workflow instance link that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public WorkflowInstanceLink updateWorkflowInstanceLink(
+		WorkflowInstanceLink workflowInstanceLink);
 }

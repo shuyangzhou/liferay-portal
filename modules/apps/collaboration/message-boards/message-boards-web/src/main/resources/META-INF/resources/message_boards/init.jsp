@@ -18,7 +18,8 @@
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
-<%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
+<%@ taglib uri="http://liferay.com/tld/asset" prefix="liferay-asset" %><%@
+taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
 taglib uri="http://liferay.com/tld/captcha" prefix="liferay-captcha" %><%@
 taglib uri="http://liferay.com/tld/expando" prefix="liferay-expando" %><%@
 taglib uri="http://liferay.com/tld/flags" prefix="liferay-flags" %><%@
@@ -39,6 +40,7 @@ page import="com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil" %><%@
 page import="com.liferay.asset.kernel.service.AssetEntryServiceUtil" %><%@
 page import="com.liferay.asset.kernel.service.AssetTagLocalServiceUtil" %><%@
 page import="com.liferay.asset.kernel.service.persistence.AssetEntryQuery" %><%@
+page import="com.liferay.asset.util.impl.AssetUtil" %><%@
 page import="com.liferay.captcha.configuration.CaptchaConfiguration" %><%@
 page import="com.liferay.document.library.kernel.antivirus.AntivirusScannerException" %><%@
 page import="com.liferay.document.library.kernel.exception.DuplicateFileEntryException" %><%@
@@ -153,7 +155,6 @@ page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %><%@
 page import="com.liferay.portal.upload.LiferayFileItem" %><%@
 page import="com.liferay.portal.util.PropsValues" %><%@
-page import="com.liferay.portlet.asset.util.AssetUtil" %><%@
 page import="com.liferay.portlet.messageboards.MBGroupServiceSettings" %><%@
 page import="com.liferay.portlet.messageboards.model.impl.MBCategoryDisplayImpl" %><%@
 page import="com.liferay.portlet.messageboards.model.impl.MBMessageImpl" %><%@

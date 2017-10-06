@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Chat Service
 Bundle-SymbolicName: com.liferay.chat.service
-Bundle-Version: 1.0.19
+Bundle-Version: 1.0.20
 Export-Package:\
 	com.liferay.chat.configuration,\
 	com.liferay.chat.jabber,\

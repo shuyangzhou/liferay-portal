@@ -45,7 +45,7 @@ public class PasswordDDMFormFieldRenderer extends BaseDDMFormFieldRenderer {
 
 	@Override
 	public String getTemplateNamespace() {
-		return "ddm.password";
+		return "DDMPassword.render";
 	}
 
 	@Override

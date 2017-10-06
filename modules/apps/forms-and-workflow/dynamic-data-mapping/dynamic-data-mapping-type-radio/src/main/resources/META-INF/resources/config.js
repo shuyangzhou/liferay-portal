@@ -19,10 +19,7 @@
 							condition: {
 								trigger: 'liferay-ddm-form-renderer'
 							},
-							path: 'radio.soy.js',
-							requires: [
-								'soyutils'
-							]
+							path: 'radio.js'
 						}
 					},
 					root: MODULE_PATH + '/'

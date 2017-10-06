@@ -45,6 +45,10 @@ public class PortalWebResourcesUtil {
 		PortalWebResources portalWebResources = _portalWebResourcesMap.get(
 			resourceType);
 
+		if (portalWebResources == null) {
+			return -1;
+		}
+
 		return portalWebResources.getLastModified();
 	}
 
@@ -109,6 +113,10 @@ public class PortalWebResourcesUtil {
 	}
 
 	public static URL getResource(ServletContext servletContext, String path) {
+		if (servletContext == null) {
+			return null;
+		}
+
 		path = stripContextPath(servletContext, path);
 
 		try {

@@ -91,76 +91,6 @@ public class DDMStructureLinkLocalServiceWrapper
 		return _ddmStructureLinkLocalService.deleteDDMStructureLink(structureLinkId);
 	}
 
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMStructureLink fetchDDMStructureLink(
-		long structureLinkId) {
-		return _ddmStructureLinkLocalService.fetchDDMStructureLink(structureLinkId);
-	}
-
-	/**
-	* Returns the ddm structure link with the primary key.
-	*
-	* @param structureLinkId the primary key of the ddm structure link
-	* @return the ddm structure link
-	* @throws PortalException if a ddm structure link with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMStructureLink getDDMStructureLink(
-		long structureLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ddmStructureLinkLocalService.getDDMStructureLink(structureLinkId);
-	}
-
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMStructureLink getStructureLink(
-		long structureLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ddmStructureLinkLocalService.getStructureLink(structureLinkId);
-	}
-
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMStructureLink getUniqueStructureLink(
-		long classNameId, long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ddmStructureLinkLocalService.getUniqueStructureLink(classNameId,
-			classPK);
-	}
-
-	/**
-	* Updates the ddm structure link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param ddmStructureLink the ddm structure link
-	* @return the ddm structure link that was updated
-	*/
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMStructureLink updateDDMStructureLink(
-		com.liferay.dynamic.data.mapping.model.DDMStructureLink ddmStructureLink) {
-		return _ddmStructureLinkLocalService.updateDDMStructureLink(ddmStructureLink);
-	}
-
-	@Override
-	public com.liferay.dynamic.data.mapping.model.DDMStructureLink updateStructureLink(
-		long structureLinkId, long classNameId, long classPK, long structureId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ddmStructureLinkLocalService.updateStructureLink(structureLinkId,
-			classNameId, classPK, structureId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _ddmStructureLinkLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _ddmStructureLinkLocalService.dynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _ddmStructureLinkLocalService.getIndexableActionableDynamicQuery();
-	}
-
 	/**
 	* @throws PortalException
 	*/
@@ -172,43 +102,38 @@ public class DDMStructureLinkLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
+	public void deleteStructureLink(
+		com.liferay.dynamic.data.mapping.model.DDMStructureLink structureLink) {
+		_ddmStructureLinkLocalService.deleteStructureLink(structureLink);
+	}
+
+	@Override
+	public void deleteStructureLink(long structureLinkId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ddmStructureLinkLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the number of ddm structure links.
-	*
-	* @return the number of ddm structure links
-	*/
-	@Override
-	public int getDDMStructureLinksCount() {
-		return _ddmStructureLinkLocalService.getDDMStructureLinksCount();
+		_ddmStructureLinkLocalService.deleteStructureLink(structureLinkId);
 	}
 
 	@Override
-	public int getStructureLinkStructuresCount(long classNameId, long classPK,
-		java.lang.String keywords) {
-		return _ddmStructureLinkLocalService.getStructureLinkStructuresCount(classNameId,
-			classPK, keywords);
+	public void deleteStructureLink(long classNameId, long classPK,
+		long structureId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_ddmStructureLinkLocalService.deleteStructureLink(classNameId, classPK,
+			structureId);
 	}
 
 	@Override
-	public int getStructureLinksCount(long classNameId, long classPK) {
-		return _ddmStructureLinkLocalService.getStructureLinksCount(classNameId,
-			classPK);
+	public void deleteStructureLinks(long classNameId, long classPK) {
+		_ddmStructureLinkLocalService.deleteStructureLinks(classNameId, classPK);
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _ddmStructureLinkLocalService.getOSGiServiceIdentifier();
+	public void deleteStructureStructureLinks(long structureId) {
+		_ddmStructureLinkLocalService.deleteStructureStructureLinks(structureId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _ddmStructureLinkLocalService.dynamicQuery();
 	}
 
 	/**
@@ -265,10 +190,62 @@ public class DDMStructureLinkLocalServiceWrapper
 			end, orderByComparator);
 	}
 
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return _ddmStructureLinkLocalService.dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return _ddmStructureLinkLocalService.dynamicQueryCount(dynamicQuery,
+			projection);
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStructureLink fetchDDMStructureLink(
+		long structureLinkId) {
+		return _ddmStructureLinkLocalService.fetchDDMStructureLink(structureLinkId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _ddmStructureLinkLocalService.getActionableDynamicQuery();
+	}
+
 	@Override
 	public java.util.List<com.liferay.dynamic.data.mapping.model.DDMStructureLink> getClassNameStructureLinks(
 		long classNameId) {
 		return _ddmStructureLinkLocalService.getClassNameStructureLinks(classNameId);
+	}
+
+	/**
+	* Returns the ddm structure link with the primary key.
+	*
+	* @param structureLinkId the primary key of the ddm structure link
+	* @return the ddm structure link
+	* @throws PortalException if a ddm structure link with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStructureLink getDDMStructureLink(
+		long structureLinkId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ddmStructureLinkLocalService.getDDMStructureLink(structureLinkId);
 	}
 
 	/**
@@ -286,6 +263,78 @@ public class DDMStructureLinkLocalServiceWrapper
 	public java.util.List<com.liferay.dynamic.data.mapping.model.DDMStructureLink> getDDMStructureLinks(
 		int start, int end) {
 		return _ddmStructureLinkLocalService.getDDMStructureLinks(start, end);
+	}
+
+	/**
+	* Returns the number of ddm structure links.
+	*
+	* @return the number of ddm structure links
+	*/
+	@Override
+	public int getDDMStructureLinksCount() {
+		return _ddmStructureLinkLocalService.getDDMStructureLinksCount();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _ddmStructureLinkLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _ddmStructureLinkLocalService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ddmStructureLinkLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStructureLink getStructureLink(
+		long structureLinkId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ddmStructureLinkLocalService.getStructureLink(structureLinkId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.dynamic.data.mapping.model.DDMStructureLink> getStructureLinks(
+		long structureId) {
+		return _ddmStructureLinkLocalService.getStructureLinks(structureId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.dynamic.data.mapping.model.DDMStructureLink> getStructureLinks(
+		long structureId, int start, int end) {
+		return _ddmStructureLinkLocalService.getStructureLinks(structureId,
+			start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.dynamic.data.mapping.model.DDMStructureLink> getStructureLinks(
+		long classNameId, long classPK) {
+		return _ddmStructureLinkLocalService.getStructureLinks(classNameId,
+			classPK);
+	}
+
+	@Override
+	public java.util.List<com.liferay.dynamic.data.mapping.model.DDMStructureLink> getStructureLinks(
+		long classNameId, long classPK, int start, int end) {
+		return _ddmStructureLinkLocalService.getStructureLinks(classNameId,
+			classPK, start, end);
+	}
+
+	@Override
+	public int getStructureLinksCount(long classNameId, long classPK) {
+		return _ddmStructureLinkLocalService.getStructureLinksCount(classNameId,
+			classPK);
 	}
 
 	@Override
@@ -331,87 +380,38 @@ public class DDMStructureLinkLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.dynamic.data.mapping.model.DDMStructureLink> getStructureLinks(
-		long classNameId, long classPK) {
-		return _ddmStructureLinkLocalService.getStructureLinks(classNameId,
+	public int getStructureLinkStructuresCount(long classNameId, long classPK,
+		java.lang.String keywords) {
+		return _ddmStructureLinkLocalService.getStructureLinkStructuresCount(classNameId,
+			classPK, keywords);
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStructureLink getUniqueStructureLink(
+		long classNameId, long classPK)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ddmStructureLinkLocalService.getUniqueStructureLink(classNameId,
 			classPK);
 	}
 
-	@Override
-	public java.util.List<com.liferay.dynamic.data.mapping.model.DDMStructureLink> getStructureLinks(
-		long classNameId, long classPK, int start, int end) {
-		return _ddmStructureLinkLocalService.getStructureLinks(classNameId,
-			classPK, start, end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.dynamic.data.mapping.model.DDMStructureLink> getStructureLinks(
-		long structureId) {
-		return _ddmStructureLinkLocalService.getStructureLinks(structureId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.dynamic.data.mapping.model.DDMStructureLink> getStructureLinks(
-		long structureId, int start, int end) {
-		return _ddmStructureLinkLocalService.getStructureLinks(structureId,
-			start, end);
-	}
-
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Updates the ddm structure link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @param ddmStructureLink the ddm structure link
+	* @return the ddm structure link that was updated
 	*/
 	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return _ddmStructureLinkLocalService.dynamicQueryCount(dynamicQuery);
-	}
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return _ddmStructureLinkLocalService.dynamicQueryCount(dynamicQuery,
-			projection);
+	public com.liferay.dynamic.data.mapping.model.DDMStructureLink updateDDMStructureLink(
+		com.liferay.dynamic.data.mapping.model.DDMStructureLink ddmStructureLink) {
+		return _ddmStructureLinkLocalService.updateDDMStructureLink(ddmStructureLink);
 	}
 
 	@Override
-	public void deleteStructureLink(
-		com.liferay.dynamic.data.mapping.model.DDMStructureLink structureLink) {
-		_ddmStructureLinkLocalService.deleteStructureLink(structureLink);
-	}
-
-	@Override
-	public void deleteStructureLink(long classNameId, long classPK,
-		long structureId)
+	public com.liferay.dynamic.data.mapping.model.DDMStructureLink updateStructureLink(
+		long structureLinkId, long classNameId, long classPK, long structureId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		_ddmStructureLinkLocalService.deleteStructureLink(classNameId, classPK,
-			structureId);
-	}
-
-	@Override
-	public void deleteStructureLink(long structureLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_ddmStructureLinkLocalService.deleteStructureLink(structureLinkId);
-	}
-
-	@Override
-	public void deleteStructureLinks(long classNameId, long classPK) {
-		_ddmStructureLinkLocalService.deleteStructureLinks(classNameId, classPK);
-	}
-
-	@Override
-	public void deleteStructureStructureLinks(long structureId) {
-		_ddmStructureLinkLocalService.deleteStructureStructureLinks(structureId);
+		return _ddmStructureLinkLocalService.updateStructureLink(structureLinkId,
+			classNameId, classPK, structureId);
 	}
 
 	@Override

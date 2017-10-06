@@ -14,7 +14,9 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoControlPanelConfiguration">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
 			<var name="portlet" value="Kaleo Designer" />
 		</execute>
 
@@ -49,7 +51,9 @@
 
 		<execute macro="KaleoDesigner#publishWorkflowDefinitionViaKDCP" />
 
-		<execute macro="ProductMenu#gotoControlPanelConfiguration">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
 			<var name="portlet" value="Kaleo Designer" />
 		</execute>
 
@@ -96,7 +100,7 @@
 			<var name="nodeNotificationsDescription" value="Review Notification Description" />
 			<var name="nodeNotificationsName" value="Review Notification" />
 			<var name="nodeNotificationsRecipientType" value="Role Type" />
-			<var name="roleName" value="Administrator" />
+			<var name="roleTitle" value="Administrator" />
 			<var name="roleType" value="Regular" />
 		</execute>
 
@@ -110,7 +114,7 @@
 		<execute macro="KaleoDesigner#viewNodeNotifications">
 			<var name="nodeNotificationsName" value="Review Notification" />
 			<var name="nodeNotificationsRecipientType" value="Role Type" />
-			<var name="roleName" value="Administrator" />
+			<var name="roleTitle" value="Administrator" />
 			<var name="roleType" value="Regular" />
 		</execute>
 	</command>

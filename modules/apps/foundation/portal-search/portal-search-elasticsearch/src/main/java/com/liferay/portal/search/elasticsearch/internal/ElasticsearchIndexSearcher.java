@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BaseIndexSearcher;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.DocumentImpl;
+import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.GeoDistanceSort;
 import com.liferay.portal.kernel.search.GroupBy;
 import com.liferay.portal.kernel.search.Hits;
@@ -279,7 +280,8 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 	}
 
 	protected void addHighlights(
-		SearchRequestBuilder searchRequestBuilder, QueryConfig queryConfig) {
+		SearchRequestBuilder searchRequestBuilder, SearchContext searchContext,
+		QueryConfig queryConfig) {
 
 		if (!queryConfig.isHighlightEnabled()) {
 			return;
@@ -294,8 +296,19 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 			HighlightUtil.HIGHLIGHT_TAG_CLOSE);
 		searchRequestBuilder.setHighlighterPreTags(
 			HighlightUtil.HIGHLIGHT_TAG_OPEN);
+
+		boolean highlighterRequireFieldMatch =
+			queryConfig.isHighlightRequireFieldMatch();
+
+		boolean luceneSyntax = GetterUtil.getBoolean(
+			searchContext.getAttribute("luceneSyntax"));
+
+		if (luceneSyntax) {
+			highlighterRequireFieldMatch = false;
+		}
+
 		searchRequestBuilder.setHighlighterRequireFieldMatch(
-			queryConfig.isHighlightRequireFieldMatch());
+			highlighterRequireFieldMatch);
 	}
 
 	protected void addPagination(
@@ -325,13 +338,10 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 
 		String snippet = StringPool.BLANK;
 
-		String localizedContentName = DocumentImpl.getLocalizedName(
+		String snippetFieldName = DocumentImpl.getLocalizedName(
 			locale, fieldName);
 
-		String snippetFieldName = localizedContentName;
-
-		HighlightField highlightField = highlightFields.get(
-			localizedContentName);
+		HighlightField highlightField = highlightFields.get(snippetFieldName);
 
 		if (highlightField == null) {
 			highlightField = highlightFields.get(fieldName);
@@ -354,8 +364,9 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 			snippet = sb.toString();
 		}
 
-		HighlightUtil.addSnippet(
-			document, queryTerms, snippet, snippetFieldName);
+		document.addText(
+			Field.SNIPPET.concat(StringPool.UNDERLINE).concat(snippetFieldName),
+			snippet);
 	}
 
 	protected void addSnippets(
@@ -479,7 +490,7 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 		if (!count) {
 			addFacets(searchRequestBuilder, searchContext);
 			addGroupBy(searchRequestBuilder, searchContext, start, end);
-			addHighlights(searchRequestBuilder, queryConfig);
+			addHighlights(searchRequestBuilder, searchContext, queryConfig);
 			addPagination(searchRequestBuilder, start, end);
 			addSelectedFields(searchRequestBuilder, queryConfig);
 			addSort(searchRequestBuilder, searchContext.getSorts());

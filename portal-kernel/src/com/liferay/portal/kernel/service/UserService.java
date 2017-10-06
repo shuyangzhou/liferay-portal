@@ -59,110 +59,52 @@ public interface UserService extends BaseService {
 	 */
 
 	/**
-	* Returns <code>true</code> if the user is a member of the group.
+	* Adds the users to the group.
 	*
 	* @param groupId the primary key of the group
-	* @param userId the primary key of the user
-	* @return <code>true</code> if the user is a member of the group;
-	<code>false</code> otherwise
+	* @param userIds the primary keys of the users
+	* @param serviceContext the service context to be applied (optionally
+	<code>null</code>)
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasGroupUser(long groupId, long userId)
+	public void addGroupUsers(long groupId, long[] userIds,
+		ServiceContext serviceContext) throws PortalException;
+
+	/**
+	* Adds the users to the organization.
+	*
+	* @param organizationId the primary key of the organization
+	* @param userIds the primary keys of the users
+	*/
+	public void addOrganizationUsers(long organizationId, long[] userIds)
 		throws PortalException;
 
 	/**
-	* Returns <code>true</code> if the user has the role with the name,
-	* optionally through inheritance.
+	* Assigns the password policy to the users, removing any other currently
+	* assigned password policies.
 	*
-	* @param companyId the primary key of the role's company
-	* @param name the name of the role (must be a regular role, not an
-	organization, site or provider role)
-	* @param userId the primary key of the user
-	* @param inherited whether to include roles inherited from organizations,
-	sites, etc.
-	* @return <code>true</code> if the user has the role; <code>false</code>
-	otherwise
+	* @param passwordPolicyId the primary key of the password policy
+	* @param userIds the primary keys of the users
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasRoleUser(long companyId, java.lang.String name,
-		long userId, boolean inherited) throws PortalException;
+	public void addPasswordPolicyUsers(long passwordPolicyId, long[] userIds)
+		throws PortalException;
 
 	/**
-	* Returns <code>true</code> if the user is a member of the role.
+	* Adds the users to the role.
 	*
 	* @param roleId the primary key of the role
-	* @param userId the primary key of the user
-	* @return <code>true</code> if the user is a member of the role;
-	<code>false</code> otherwise
+	* @param userIds the primary keys of the users
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasRoleUser(long roleId, long userId)
+	public void addRoleUsers(long roleId, long[] userIds)
 		throws PortalException;
 
 	/**
-	* Sends a password notification email to the user matching the email
-	* address. The portal's settings determine whether a password is sent
-	* explicitly or whether a link for resetting the user's password is sent.
-	* The method sends the email asynchronously and returns before the email is
-	* sent.
+	* Adds the users to the team.
 	*
-	* <p>
-	* The content of the notification email is specified with the
-	* <code>admin.email.password</code> portal property keys. They can be
-	* overridden via a <code>portal-ext.properties</code> file or modified
-	* through the Portal Settings UI.
-	* </p>
-	*
-	* @param companyId the primary key of the user's company
-	* @param emailAddress the user's email address
-	* @return <code>true</code> if the notification email includes a new
-	password; <code>false</code> if the notification email only
-	contains a reset link
+	* @param teamId the primary key of the team
+	* @param userIds the primary keys of the users
 	*/
-	public boolean sendPasswordByEmailAddress(long companyId,
-		java.lang.String emailAddress) throws PortalException;
-
-	/**
-	* Sends a password notification email to the user matching the screen name.
-	* The portal's settings determine whether a password is sent explicitly or
-	* whether a link for resetting the user's password is sent. The method
-	* sends the email asynchronously and returns before the email is sent.
-	*
-	* <p>
-	* The content of the notification email is specified with the
-	* <code>admin.email.password</code> portal property keys. They can be
-	* overridden via a <code>portal-ext.properties</code> file or modified
-	* through the Portal Settings UI.
-	* </p>
-	*
-	* @param companyId the primary key of the user's company
-	* @param screenName the user's screen name
-	* @return <code>true</code> if the notification email includes a new
-	password; <code>false</code> if the notification email only
-	contains a reset link
-	*/
-	public boolean sendPasswordByScreenName(long companyId,
-		java.lang.String screenName) throws PortalException;
-
-	/**
-	* Sends a password notification email to the user matching the ID. The
-	* portal's settings determine whether a password is sent explicitly or
-	* whether a link for resetting the user's password is sent. The method
-	* sends the email asynchronously and returns before the email is sent.
-	*
-	* <p>
-	* The content of the notification email is specified with the
-	* <code>admin.email.password</code> portal property keys. They can be
-	* overridden via a <code>portal-ext.properties</code> file or modified
-	* through the Portal Settings UI.
-	* </p>
-	*
-	* @param userId the user's primary key
-	* @return <code>true</code> if the notification email includes a new
-	password; <code>false</code> if the notification email only
-	contains a reset link
-	*/
-	public boolean sendPasswordByUserId(long userId) throws PortalException;
+	public void addTeamUsers(long teamId, long[] userIds)
+		throws PortalException;
 
 	/**
 	* Adds a user.
@@ -286,6 +228,15 @@ public interface UserService extends BaseService {
 		ServiceContext serviceContext) throws PortalException;
 
 	/**
+	* Adds the users to the user group.
+	*
+	* @param userGroupId the primary key of the user group
+	* @param userIds the primary keys of the users
+	*/
+	public void addUserGroupUsers(long userGroupId, long[] userIds)
+		throws PortalException;
+
+	/**
 	* Adds a user with workflow.
 	*
 	* <p>
@@ -406,8 +357,92 @@ public interface UserService extends BaseService {
 		List<AnnouncementsDelivery> announcementsDelivers, boolean sendEmail,
 		ServiceContext serviceContext) throws PortalException;
 
+	/**
+	* Deletes the user's portrait image.
+	*
+	* @param userId the primary key of the user
+	*/
+	public void deletePortrait(long userId) throws PortalException;
+
+	/**
+	* Removes the user from the role.
+	*
+	* @param roleId the primary key of the role
+	* @param userId the primary key of the user
+	*/
+	public void deleteRoleUser(long roleId, long userId)
+		throws PortalException;
+
+	/**
+	* Deletes the user.
+	*
+	* @param userId the primary key of the user
+	*/
+	public void deleteUser(long userId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<User> getCompanyUsers(long companyId, int start, int end)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getCompanyUsersCount(long companyId) throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public User getCurrentUser() throws PortalException;
+
+	/**
+	* Returns the primary keys of all the users belonging to the group.
+	*
+	* @param groupId the primary key of the group
+	* @return the primary keys of the users belonging to the group
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long[] getGroupUserIds(long groupId) throws PortalException;
+
+	/**
+	* Returns all the users belonging to the group.
+	*
+	* @param groupId the primary key of the group
+	* @return the users belonging to the group
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<User> getGroupUsers(long groupId) throws PortalException;
+
+	/**
+	* Returns the primary keys of all the users belonging to the organization.
+	*
+	* @param organizationId the primary key of the organization
+	* @return the primary keys of the users belonging to the organization
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long[] getOrganizationUserIds(long organizationId)
+		throws PortalException;
+
+	/**
+	* Returns all the users belonging to the organization.
+	*
+	* @param organizationId the primary key of the organization
+	* @return users belonging to the organization
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<User> getOrganizationUsers(long organizationId)
+		throws PortalException;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	/**
+	* Returns the primary keys of all the users belonging to the role.
+	*
+	* @param roleId the primary key of the role
+	* @return the primary keys of the users belonging to the role
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long[] getRoleUserIds(long roleId) throws PortalException;
 
 	/**
 	* Returns the user with the email address.
@@ -438,6 +473,223 @@ public interface UserService extends BaseService {
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public User getUserByScreenName(long companyId, java.lang.String screenName)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<User> getUserGroupUsers(long userGroupId)
+		throws PortalException;
+
+	/**
+	* Returns the primary key of the user with the email address.
+	*
+	* @param companyId the primary key of the user's company
+	* @param emailAddress the user's email address
+	* @return the primary key of the user with the email address
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long getUserIdByEmailAddress(long companyId,
+		java.lang.String emailAddress) throws PortalException;
+
+	/**
+	* Returns the primary key of the user with the screen name.
+	*
+	* @param companyId the primary key of the user's company
+	* @param screenName the user's screen name
+	* @return the primary key of the user with the screen name
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long getUserIdByScreenName(long companyId,
+		java.lang.String screenName) throws PortalException;
+
+	/**
+	* Returns <code>true</code> if the user is a member of the group.
+	*
+	* @param groupId the primary key of the group
+	* @param userId the primary key of the user
+	* @return <code>true</code> if the user is a member of the group;
+	<code>false</code> otherwise
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasGroupUser(long groupId, long userId)
+		throws PortalException;
+
+	/**
+	* Returns <code>true</code> if the user is a member of the role.
+	*
+	* @param roleId the primary key of the role
+	* @param userId the primary key of the user
+	* @return <code>true</code> if the user is a member of the role;
+	<code>false</code> otherwise
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasRoleUser(long roleId, long userId)
+		throws PortalException;
+
+	/**
+	* Returns <code>true</code> if the user has the role with the name,
+	* optionally through inheritance.
+	*
+	* @param companyId the primary key of the role's company
+	* @param name the name of the role (must be a regular role, not an
+	organization, site or provider role)
+	* @param userId the primary key of the user
+	* @param inherited whether to include roles inherited from organizations,
+	sites, etc.
+	* @return <code>true</code> if the user has the role; <code>false</code>
+	otherwise
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasRoleUser(long companyId, java.lang.String name,
+		long userId, boolean inherited) throws PortalException;
+
+	/**
+	* Sends a password notification email to the user matching the email
+	* address. The portal's settings determine whether a password is sent
+	* explicitly or whether a link for resetting the user's password is sent.
+	* The method sends the email asynchronously and returns before the email is
+	* sent.
+	*
+	* <p>
+	* The content of the notification email is specified with the
+	* <code>admin.email.password</code> portal property keys. They can be
+	* overridden via a <code>portal-ext.properties</code> file or modified
+	* through the Portal Settings UI.
+	* </p>
+	*
+	* @param companyId the primary key of the user's company
+	* @param emailAddress the user's email address
+	* @return <code>true</code> if the notification email includes a new
+	password; <code>false</code> if the notification email only
+	contains a reset link
+	*/
+	public boolean sendPasswordByEmailAddress(long companyId,
+		java.lang.String emailAddress) throws PortalException;
+
+	/**
+	* Sends a password notification email to the user matching the screen name.
+	* The portal's settings determine whether a password is sent explicitly or
+	* whether a link for resetting the user's password is sent. The method
+	* sends the email asynchronously and returns before the email is sent.
+	*
+	* <p>
+	* The content of the notification email is specified with the
+	* <code>admin.email.password</code> portal property keys. They can be
+	* overridden via a <code>portal-ext.properties</code> file or modified
+	* through the Portal Settings UI.
+	* </p>
+	*
+	* @param companyId the primary key of the user's company
+	* @param screenName the user's screen name
+	* @return <code>true</code> if the notification email includes a new
+	password; <code>false</code> if the notification email only
+	contains a reset link
+	*/
+	public boolean sendPasswordByScreenName(long companyId,
+		java.lang.String screenName) throws PortalException;
+
+	/**
+	* Sends a password notification email to the user matching the ID. The
+	* portal's settings determine whether a password is sent explicitly or
+	* whether a link for resetting the user's password is sent. The method
+	* sends the email asynchronously and returns before the email is sent.
+	*
+	* <p>
+	* The content of the notification email is specified with the
+	* <code>admin.email.password</code> portal property keys. They can be
+	* overridden via a <code>portal-ext.properties</code> file or modified
+	* through the Portal Settings UI.
+	* </p>
+	*
+	* @param userId the user's primary key
+	* @return <code>true</code> if the notification email includes a new
+	password; <code>false</code> if the notification email only
+	contains a reset link
+	*/
+	public boolean sendPasswordByUserId(long userId) throws PortalException;
+
+	/**
+	* Sets the users in the role, removing and adding users to the role as
+	* necessary.
+	*
+	* @param roleId the primary key of the role
+	* @param userIds the primary keys of the users
+	*/
+	public void setRoleUsers(long roleId, long[] userIds)
+		throws PortalException;
+
+	/**
+	* Sets the users in the user group, removing and adding users to the user
+	* group as necessary.
+	*
+	* @param userGroupId the primary key of the user group
+	* @param userIds the primary keys of the users
+	*/
+	public void setUserGroupUsers(long userGroupId, long[] userIds)
+		throws PortalException;
+
+	/**
+	* Removes the users from the teams of a group.
+	*
+	* @param groupId the primary key of the group
+	* @param userIds the primary keys of the users
+	*/
+	public void unsetGroupTeamsUsers(long groupId, long[] userIds)
+		throws PortalException;
+
+	/**
+	* Removes the users from the group.
+	*
+	* @param groupId the primary key of the group
+	* @param userIds the primary keys of the users
+	* @param serviceContext the service context to be applied (optionally
+	<code>null</code>)
+	*/
+	public void unsetGroupUsers(long groupId, long[] userIds,
+		ServiceContext serviceContext) throws PortalException;
+
+	/**
+	* Removes the users from the organization.
+	*
+	* @param organizationId the primary key of the organization
+	* @param userIds the primary keys of the users
+	*/
+	public void unsetOrganizationUsers(long organizationId, long[] userIds)
+		throws PortalException;
+
+	/**
+	* Removes the users from the password policy.
+	*
+	* @param passwordPolicyId the primary key of the password policy
+	* @param userIds the primary keys of the users
+	*/
+	public void unsetPasswordPolicyUsers(long passwordPolicyId, long[] userIds)
+		throws PortalException;
+
+	/**
+	* Removes the users from the role.
+	*
+	* @param roleId the primary key of the role
+	* @param userIds the primary keys of the users
+	*/
+	public void unsetRoleUsers(long roleId, long[] userIds)
+		throws PortalException;
+
+	/**
+	* Removes the users from the team.
+	*
+	* @param teamId the primary key of the team
+	* @param userIds the primary keys of the users
+	*/
+	public void unsetTeamUsers(long teamId, long[] userIds)
+		throws PortalException;
+
+	/**
+	* Removes the users from the user group.
+	*
+	* @param userGroupId the primary key of the user group
+	* @param userIds the primary keys of the users
+	*/
+	public void unsetUserGroupUsers(long userGroupId, long[] userIds)
 		throws PortalException;
 
 	/**
@@ -532,6 +784,18 @@ public interface UserService extends BaseService {
 	*/
 	public User updateOpenId(long userId, java.lang.String openId)
 		throws PortalException;
+
+	/**
+	* Sets the organizations that the user is in, removing and adding
+	* organizations as necessary.
+	*
+	* @param userId the primary key of the user
+	* @param organizationIds the primary keys of the organizations
+	* @param serviceContext the service context to be applied. Must set whether
+	user indexing is enabled.
+	*/
+	public void updateOrganizations(long userId, long[] organizationIds,
+		ServiceContext serviceContext) throws PortalException;
 
 	/**
 	* Updates the user's password without tracking or validation of the change.
@@ -680,71 +944,6 @@ public interface UserService extends BaseService {
 		ServiceContext serviceContext) throws PortalException;
 
 	/**
-	* Updates the user.
-	*
-	* @param userId the primary key of the user
-	* @param oldPassword the user's old password
-	* @param newPassword1 the user's new password (optionally
-	<code>null</code>)
-	* @param newPassword2 the user's new password confirmation (optionally
-	<code>null</code>)
-	* @param passwordReset whether the user should be asked to reset their
-	password the next time they login
-	* @param reminderQueryQuestion the user's new password reset question
-	* @param reminderQueryAnswer the user's new password reset answer
-	* @param screenName the user's new screen name
-	* @param emailAddress the user's new email address
-	* @param facebookId the user's new Facebook ID
-	* @param openId the user's new OpenID
-	* @param languageId the user's new language ID
-	* @param timeZoneId the user's new time zone ID
-	* @param greeting the user's new greeting
-	* @param comments the user's new comments
-	* @param firstName the user's new first name
-	* @param middleName the user's new middle name
-	* @param lastName the user's new last name
-	* @param prefixId the user's new name prefix ID
-	* @param suffixId the user's new name suffix ID
-	* @param male whether user is male
-	* @param birthdayMonth the user's new birthday month (0-based, meaning 0
-	for January)
-	* @param birthdayDay the user's new birthday day
-	* @param birthdayYear the user's birthday year
-	* @param smsSn the user's new SMS screen name
-	* @param facebookSn the user's new Facebook screen name
-	* @param jabberSn the user's new Jabber screen name
-	* @param skypeSn the user's new Skype screen name
-	* @param twitterSn the user's new Twitter screen name
-	* @param jobTitle the user's new job title
-	* @param groupIds the primary keys of the user's groups
-	* @param organizationIds the primary keys of the user's organizations
-	* @param roleIds the primary keys of the user's roles
-	* @param userGroupRoles the user user's group roles
-	* @param userGroupIds the primary keys of the user's user groups
-	* @param serviceContext the service context to be applied (optionally
-	<code>null</code>). Can set the UUID (with the <code>uuid</code>
-	attribute), asset category IDs, asset tag names, and expando
-	bridge attributes for the user.
-	* @return the user
-	*/
-	public User updateUser(long userId, java.lang.String oldPassword,
-		java.lang.String newPassword1, java.lang.String newPassword2,
-		boolean passwordReset, java.lang.String reminderQueryQuestion,
-		java.lang.String reminderQueryAnswer, java.lang.String screenName,
-		java.lang.String emailAddress, long facebookId,
-		java.lang.String openId, java.lang.String languageId,
-		java.lang.String timeZoneId, java.lang.String greeting,
-		java.lang.String comments, java.lang.String firstName,
-		java.lang.String middleName, java.lang.String lastName, long prefixId,
-		long suffixId, boolean male, int birthdayMonth, int birthdayDay,
-		int birthdayYear, java.lang.String smsSn, java.lang.String facebookSn,
-		java.lang.String jabberSn, java.lang.String skypeSn,
-		java.lang.String twitterSn, java.lang.String jobTitle, long[] groupIds,
-		long[] organizationIds, long[] roleIds,
-		List<UserGroupRole> userGroupRoles, long[] userGroupIds,
-		ServiceContext serviceContext) throws PortalException;
-
-	/**
 	* Updates the user with additional parameters.
 	*
 	* @param userId the primary key of the user
@@ -825,267 +1024,68 @@ public interface UserService extends BaseService {
 		List<AnnouncementsDelivery> announcementsDelivers,
 		ServiceContext serviceContext) throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getCompanyUsersCount(long companyId) throws PortalException;
-
 	/**
-	* Returns the OSGi service identifier.
+	* Updates the user.
 	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<User> getCompanyUsers(long companyId, int start, int end)
-		throws PortalException;
-
-	/**
-	* Returns all the users belonging to the group.
-	*
-	* @param groupId the primary key of the group
-	* @return the users belonging to the group
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<User> getGroupUsers(long groupId) throws PortalException;
-
-	/**
-	* Returns all the users belonging to the organization.
-	*
-	* @param organizationId the primary key of the organization
-	* @return users belonging to the organization
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<User> getOrganizationUsers(long organizationId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<User> getUserGroupUsers(long userGroupId)
-		throws PortalException;
-
-	/**
-	* Returns the primary key of the user with the email address.
-	*
-	* @param companyId the primary key of the user's company
-	* @param emailAddress the user's email address
-	* @return the primary key of the user with the email address
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long getUserIdByEmailAddress(long companyId,
-		java.lang.String emailAddress) throws PortalException;
-
-	/**
-	* Returns the primary key of the user with the screen name.
-	*
-	* @param companyId the primary key of the user's company
-	* @param screenName the user's screen name
-	* @return the primary key of the user with the screen name
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long getUserIdByScreenName(long companyId,
-		java.lang.String screenName) throws PortalException;
-
-	/**
-	* Returns the primary keys of all the users belonging to the group.
-	*
-	* @param groupId the primary key of the group
-	* @return the primary keys of the users belonging to the group
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getGroupUserIds(long groupId) throws PortalException;
-
-	/**
-	* Returns the primary keys of all the users belonging to the organization.
-	*
-	* @param organizationId the primary key of the organization
-	* @return the primary keys of the users belonging to the organization
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getOrganizationUserIds(long organizationId)
-		throws PortalException;
-
-	/**
-	* Returns the primary keys of all the users belonging to the role.
-	*
-	* @param roleId the primary key of the role
-	* @return the primary keys of the users belonging to the role
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getRoleUserIds(long roleId) throws PortalException;
-
-	/**
-	* Adds the users to the group.
-	*
-	* @param groupId the primary key of the group
-	* @param userIds the primary keys of the users
-	* @param serviceContext the service context to be applied (optionally
+	* @param userId the primary key of the user
+	* @param oldPassword the user's old password
+	* @param newPassword1 the user's new password (optionally
 	<code>null</code>)
-	*/
-	public void addGroupUsers(long groupId, long[] userIds,
-		ServiceContext serviceContext) throws PortalException;
-
-	/**
-	* Adds the users to the organization.
-	*
-	* @param organizationId the primary key of the organization
-	* @param userIds the primary keys of the users
-	*/
-	public void addOrganizationUsers(long organizationId, long[] userIds)
-		throws PortalException;
-
-	/**
-	* Assigns the password policy to the users, removing any other currently
-	* assigned password policies.
-	*
-	* @param passwordPolicyId the primary key of the password policy
-	* @param userIds the primary keys of the users
-	*/
-	public void addPasswordPolicyUsers(long passwordPolicyId, long[] userIds)
-		throws PortalException;
-
-	/**
-	* Adds the users to the role.
-	*
-	* @param roleId the primary key of the role
-	* @param userIds the primary keys of the users
-	*/
-	public void addRoleUsers(long roleId, long[] userIds)
-		throws PortalException;
-
-	/**
-	* Adds the users to the team.
-	*
-	* @param teamId the primary key of the team
-	* @param userIds the primary keys of the users
-	*/
-	public void addTeamUsers(long teamId, long[] userIds)
-		throws PortalException;
-
-	/**
-	* Adds the users to the user group.
-	*
-	* @param userGroupId the primary key of the user group
-	* @param userIds the primary keys of the users
-	*/
-	public void addUserGroupUsers(long userGroupId, long[] userIds)
-		throws PortalException;
-
-	/**
-	* Deletes the user's portrait image.
-	*
-	* @param userId the primary key of the user
-	*/
-	public void deletePortrait(long userId) throws PortalException;
-
-	/**
-	* Removes the user from the role.
-	*
-	* @param roleId the primary key of the role
-	* @param userId the primary key of the user
-	*/
-	public void deleteRoleUser(long roleId, long userId)
-		throws PortalException;
-
-	/**
-	* Deletes the user.
-	*
-	* @param userId the primary key of the user
-	*/
-	public void deleteUser(long userId) throws PortalException;
-
-	/**
-	* Sets the users in the role, removing and adding users to the role as
-	* necessary.
-	*
-	* @param roleId the primary key of the role
-	* @param userIds the primary keys of the users
-	*/
-	public void setRoleUsers(long roleId, long[] userIds)
-		throws PortalException;
-
-	/**
-	* Sets the users in the user group, removing and adding users to the user
-	* group as necessary.
-	*
-	* @param userGroupId the primary key of the user group
-	* @param userIds the primary keys of the users
-	*/
-	public void setUserGroupUsers(long userGroupId, long[] userIds)
-		throws PortalException;
-
-	/**
-	* Removes the users from the teams of a group.
-	*
-	* @param groupId the primary key of the group
-	* @param userIds the primary keys of the users
-	*/
-	public void unsetGroupTeamsUsers(long groupId, long[] userIds)
-		throws PortalException;
-
-	/**
-	* Removes the users from the group.
-	*
-	* @param groupId the primary key of the group
-	* @param userIds the primary keys of the users
-	* @param serviceContext the service context to be applied (optionally
+	* @param newPassword2 the user's new password confirmation (optionally
 	<code>null</code>)
+	* @param passwordReset whether the user should be asked to reset their
+	password the next time they login
+	* @param reminderQueryQuestion the user's new password reset question
+	* @param reminderQueryAnswer the user's new password reset answer
+	* @param screenName the user's new screen name
+	* @param emailAddress the user's new email address
+	* @param facebookId the user's new Facebook ID
+	* @param openId the user's new OpenID
+	* @param languageId the user's new language ID
+	* @param timeZoneId the user's new time zone ID
+	* @param greeting the user's new greeting
+	* @param comments the user's new comments
+	* @param firstName the user's new first name
+	* @param middleName the user's new middle name
+	* @param lastName the user's new last name
+	* @param prefixId the user's new name prefix ID
+	* @param suffixId the user's new name suffix ID
+	* @param male whether user is male
+	* @param birthdayMonth the user's new birthday month (0-based, meaning 0
+	for January)
+	* @param birthdayDay the user's new birthday day
+	* @param birthdayYear the user's birthday year
+	* @param smsSn the user's new SMS screen name
+	* @param facebookSn the user's new Facebook screen name
+	* @param jabberSn the user's new Jabber screen name
+	* @param skypeSn the user's new Skype screen name
+	* @param twitterSn the user's new Twitter screen name
+	* @param jobTitle the user's new job title
+	* @param groupIds the primary keys of the user's groups
+	* @param organizationIds the primary keys of the user's organizations
+	* @param roleIds the primary keys of the user's roles
+	* @param userGroupRoles the user user's group roles
+	* @param userGroupIds the primary keys of the user's user groups
+	* @param serviceContext the service context to be applied (optionally
+	<code>null</code>). Can set the UUID (with the <code>uuid</code>
+	attribute), asset category IDs, asset tag names, and expando
+	bridge attributes for the user.
+	* @return the user
 	*/
-	public void unsetGroupUsers(long groupId, long[] userIds,
-		ServiceContext serviceContext) throws PortalException;
-
-	/**
-	* Removes the users from the organization.
-	*
-	* @param organizationId the primary key of the organization
-	* @param userIds the primary keys of the users
-	*/
-	public void unsetOrganizationUsers(long organizationId, long[] userIds)
-		throws PortalException;
-
-	/**
-	* Removes the users from the password policy.
-	*
-	* @param passwordPolicyId the primary key of the password policy
-	* @param userIds the primary keys of the users
-	*/
-	public void unsetPasswordPolicyUsers(long passwordPolicyId, long[] userIds)
-		throws PortalException;
-
-	/**
-	* Removes the users from the role.
-	*
-	* @param roleId the primary key of the role
-	* @param userIds the primary keys of the users
-	*/
-	public void unsetRoleUsers(long roleId, long[] userIds)
-		throws PortalException;
-
-	/**
-	* Removes the users from the team.
-	*
-	* @param teamId the primary key of the team
-	* @param userIds the primary keys of the users
-	*/
-	public void unsetTeamUsers(long teamId, long[] userIds)
-		throws PortalException;
-
-	/**
-	* Removes the users from the user group.
-	*
-	* @param userGroupId the primary key of the user group
-	* @param userIds the primary keys of the users
-	*/
-	public void unsetUserGroupUsers(long userGroupId, long[] userIds)
-		throws PortalException;
-
-	/**
-	* Sets the organizations that the user is in, removing and adding
-	* organizations as necessary.
-	*
-	* @param userId the primary key of the user
-	* @param organizationIds the primary keys of the organizations
-	* @param serviceContext the service context to be applied. Must set whether
-	user indexing is enabled.
-	*/
-	public void updateOrganizations(long userId, long[] organizationIds,
+	public User updateUser(long userId, java.lang.String oldPassword,
+		java.lang.String newPassword1, java.lang.String newPassword2,
+		boolean passwordReset, java.lang.String reminderQueryQuestion,
+		java.lang.String reminderQueryAnswer, java.lang.String screenName,
+		java.lang.String emailAddress, long facebookId,
+		java.lang.String openId, java.lang.String languageId,
+		java.lang.String timeZoneId, java.lang.String greeting,
+		java.lang.String comments, java.lang.String firstName,
+		java.lang.String middleName, java.lang.String lastName, long prefixId,
+		long suffixId, boolean male, int birthdayMonth, int birthdayDay,
+		int birthdayYear, java.lang.String smsSn, java.lang.String facebookSn,
+		java.lang.String jabberSn, java.lang.String skypeSn,
+		java.lang.String twitterSn, java.lang.String jobTitle, long[] groupIds,
+		long[] organizationIds, long[] roleIds,
+		List<UserGroupRole> userGroupRoles, long[] userGroupIds,
 		ServiceContext serviceContext) throws PortalException;
 }

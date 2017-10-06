@@ -62,25 +62,10 @@ public interface PowwowParticipantLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link PowwowParticipantLocalServiceUtil} to access the powwow participant local service. Add custom service methods to {@link com.liferay.powwow.service.impl.PowwowParticipantLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
+	public PowwowParticipant addPowwowParticipant(long userId, long groupId,
+		long powwowMeetingId, java.lang.String name, long participantUserId,
+		java.lang.String emailAddress, int type, int status,
+		ServiceContext serviceContext) throws PortalException;
 
 	/**
 	* Adds the powwow participant to the database. Also notifies the appropriate model listeners.
@@ -92,11 +77,6 @@ public interface PowwowParticipantLocalService extends BaseLocalService,
 	public PowwowParticipant addPowwowParticipant(
 		PowwowParticipant powwowParticipant);
 
-	public PowwowParticipant addPowwowParticipant(long userId, long groupId,
-		long powwowMeetingId, java.lang.String name, long participantUserId,
-		java.lang.String emailAddress, int type, int status,
-		ServiceContext serviceContext) throws PortalException;
-
 	/**
 	* Creates a new powwow participant with the primary key. Does not add the powwow participant to the database.
 	*
@@ -106,14 +86,11 @@ public interface PowwowParticipantLocalService extends BaseLocalService,
 	public PowwowParticipant createPowwowParticipant(long powwowParticipantId);
 
 	/**
-	* Deletes the powwow participant from the database. Also notifies the appropriate model listeners.
-	*
-	* @param powwowParticipant the powwow participant
-	* @return the powwow participant that was removed
+	* @throws PortalException
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public PowwowParticipant deletePowwowParticipant(
-		PowwowParticipant powwowParticipant);
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
 
 	/**
 	* Deletes the powwow participant with the primary key from the database. Also notifies the appropriate model listeners.
@@ -126,71 +103,17 @@ public interface PowwowParticipantLocalService extends BaseLocalService,
 	public PowwowParticipant deletePowwowParticipant(long powwowParticipantId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PowwowParticipant fetchPowwowParticipant(long powwowMeetingId,
-		java.lang.String emailAddress);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PowwowParticipant fetchPowwowParticipant(long powwowMeetingId,
-		long participantUserId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PowwowParticipant fetchPowwowParticipant(long powwowParticipantId);
-
 	/**
-	* Returns the powwow participant with the primary key.
-	*
-	* @param powwowParticipantId the primary key of the powwow participant
-	* @return the powwow participant
-	* @throws PortalException if a powwow participant with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PowwowParticipant getPowwowParticipant(long powwowParticipantId)
-		throws PortalException;
-
-	/**
-	* Updates the powwow participant in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the powwow participant from the database. Also notifies the appropriate model listeners.
 	*
 	* @param powwowParticipant the powwow participant
-	* @return the powwow participant that was updated
+	* @return the powwow participant that was removed
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public PowwowParticipant updatePowwowParticipant(
+	@Indexable(type = IndexableType.DELETE)
+	public PowwowParticipant deletePowwowParticipant(
 		PowwowParticipant powwowParticipant);
 
-	public PowwowParticipant updatePowwowParticipant(long powwowParticipantId,
-		long powwowMeetingId, java.lang.String name, long participantUserId,
-		java.lang.String emailAddress, int type, int status,
-		ServiceContext serviceContext) throws PortalException;
-
-	public PowwowParticipant updateStatus(long powwowParticipantId, int status)
-		throws PortalException;
-
-	/**
-	* Returns the number of powwow participants.
-	*
-	* @return the number of powwow participants
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getPowwowParticipantsCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getPowwowParticipantsCount(long powwowMeetingId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getPowwowParticipantsCount(long powwowMeetingId, int type);
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -232,6 +155,64 @@ public interface PowwowParticipantLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PowwowParticipant fetchPowwowParticipant(long powwowParticipantId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PowwowParticipant fetchPowwowParticipant(long powwowMeetingId,
+		long participantUserId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PowwowParticipant fetchPowwowParticipant(long powwowMeetingId,
+		java.lang.String emailAddress);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the powwow participant with the primary key.
+	*
+	* @param powwowParticipantId the primary key of the powwow participant
+	* @return the powwow participant
+	* @throws PortalException if a powwow participant with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PowwowParticipant getPowwowParticipant(long powwowParticipantId)
+		throws PortalException;
+
+	/**
 	* Returns a range of all the powwow participants.
 	*
 	* <p>
@@ -253,20 +234,39 @@ public interface PowwowParticipantLocalService extends BaseLocalService,
 		int type);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of powwow participants.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of powwow participants
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getPowwowParticipantsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getPowwowParticipantsCount(long powwowMeetingId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getPowwowParticipantsCount(long powwowMeetingId, int type);
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	public PowwowParticipant updatePowwowParticipant(long powwowParticipantId,
+		long powwowMeetingId, java.lang.String name, long participantUserId,
+		java.lang.String emailAddress, int type, int status,
+		ServiceContext serviceContext) throws PortalException;
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Updates the powwow participant in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @param powwowParticipant the powwow participant
+	* @return the powwow participant that was updated
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	@Indexable(type = IndexableType.REINDEX)
+	public PowwowParticipant updatePowwowParticipant(
+		PowwowParticipant powwowParticipant);
+
+	public PowwowParticipant updateStatus(long powwowParticipantId, int status)
+		throws PortalException;
 }

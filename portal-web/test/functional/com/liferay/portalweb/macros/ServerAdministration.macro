@@ -68,11 +68,9 @@
 	</command>
 
 	<command name="configureFileUploadOverallMaximumFileSize">
-		<execute function="AssertClick" locator1="NavBar#FILE_UPLOADS" value1="File Uploads" />
-
 		<execute function="Type" locator1="ServerAdministrationFileUploads#GENERAL_OVERALL_MAX_FILE_SIZE_FIELD" value1="${maxFileSize}" />
 
-		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
+		<execute function="AssertClick" locator1="Button#UPDATE" value1="Update" />
 
 		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
 	</command>
@@ -191,7 +189,9 @@
 	</command>
 
 	<command name="tearDownDMFileUploadSettings">
-		<execute macro="ProductMenu#gotoControlPanelConfiguration">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
 			<var name="portlet" value="Server Administration" />
 		</execute>
 
@@ -203,7 +203,9 @@
 	</command>
 
 	<command name="tearDownMailServerSettings">
-		<execute macro="ProductMenu#gotoControlPanelConfiguration">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Control Panel" />
 			<var name="portlet" value="Server Administration" />
 		</execute>
 

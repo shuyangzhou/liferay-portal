@@ -33,8 +33,19 @@ public interface CurrentUser {
 	/**
 	 * Returns the current {@link User}.
 	 *
-	 * @return current group.
+	 * @return current user.
 	 */
 	public User getUser();
+
+	/**
+	 * Returns the current user's ID.
+	 *
+	 * @return current user's ID.
+	 */
+	public default long getUserId() {
+		User user = getUser();
+
+		return user.getUserId();
+	}
 
 }

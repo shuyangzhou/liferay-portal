@@ -52,16 +52,14 @@ public class RepositoryServiceUtil {
 			description, portletId, typeSettingsProperties, serviceContext);
 	}
 
-	public static com.liferay.portal.kernel.model.Repository getRepository(
-		long repositoryId)
+	public static void checkRepository(long repositoryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getRepository(repositoryId);
+		getService().checkRepository(repositoryId);
 	}
 
-	public static com.liferay.portal.kernel.util.UnicodeProperties getTypeSettingsProperties(
-		long repositoryId)
+	public static void deleteRepository(long repositoryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getTypeSettingsProperties(repositoryId);
+		getService().deleteRepository(repositoryId);
 	}
 
 	/**
@@ -71,6 +69,12 @@ public class RepositoryServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.model.Repository getRepository(
+		long repositoryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getRepository(repositoryId);
 	}
 
 	/**
@@ -86,28 +90,24 @@ public class RepositoryServiceUtil {
 	* @deprecated As of 7.0.0, with no direct replacement
 	*/
 	@Deprecated
-	public static java.lang.String[] getSupportedParameters(
-		java.lang.String className, java.lang.String configuration) {
-		return getService().getSupportedParameters(className, configuration);
+	public static java.lang.String[] getSupportedParameters(long classNameId,
+		java.lang.String configuration) {
+		return getService().getSupportedParameters(classNameId, configuration);
 	}
 
 	/**
 	* @deprecated As of 7.0.0, with no direct replacement
 	*/
 	@Deprecated
-	public static java.lang.String[] getSupportedParameters(long classNameId,
-		java.lang.String configuration) {
-		return getService().getSupportedParameters(classNameId, configuration);
+	public static java.lang.String[] getSupportedParameters(
+		java.lang.String className, java.lang.String configuration) {
+		return getService().getSupportedParameters(className, configuration);
 	}
 
-	public static void checkRepository(long repositoryId)
+	public static com.liferay.portal.kernel.util.UnicodeProperties getTypeSettingsProperties(
+		long repositoryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().checkRepository(repositoryId);
-	}
-
-	public static void deleteRepository(long repositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteRepository(repositoryId);
+		return getService().getTypeSettingsProperties(repositoryId);
 	}
 
 	public static void updateRepository(long repositoryId,

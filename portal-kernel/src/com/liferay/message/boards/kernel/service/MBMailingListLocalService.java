@@ -64,16 +64,6 @@ public interface MBMailingListLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link MBMailingListLocalServiceUtil} to access the message boards mailing list local service. Add custom service methods to {@link com.liferay.portlet.messageboards.service.impl.MBMailingListLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-
-	/**
-	* Adds the message boards mailing list to the database. Also notifies the appropriate model listeners.
-	*
-	* @param mbMailingList the message boards mailing list
-	* @return the message boards mailing list that was added
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public MBMailingList addMBMailingList(MBMailingList mbMailingList);
-
 	public MBMailingList addMailingList(long userId, long groupId,
 		long categoryId, java.lang.String emailAddress,
 		java.lang.String inProtocol, java.lang.String inServerName,
@@ -86,6 +76,15 @@ public interface MBMailingListLocalService extends BaseLocalService,
 		throws PortalException;
 
 	/**
+	* Adds the message boards mailing list to the database. Also notifies the appropriate model listeners.
+	*
+	* @param mbMailingList the message boards mailing list
+	* @return the message boards mailing list that was added
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public MBMailingList addMBMailingList(MBMailingList mbMailingList);
+
+	/**
 	* Creates a new message boards mailing list with the primary key. Does not add the message boards mailing list to the database.
 	*
 	* @param mailingListId the primary key for the new message boards mailing list
@@ -93,14 +92,13 @@ public interface MBMailingListLocalService extends BaseLocalService,
 	*/
 	public MBMailingList createMBMailingList(long mailingListId);
 
-	/**
-	* Deletes the message boards mailing list from the database. Also notifies the appropriate model listeners.
-	*
-	* @param mbMailingList the message boards mailing list
-	* @return the message boards mailing list that was removed
-	*/
-	@Indexable(type = IndexableType.DELETE)
-	public MBMailingList deleteMBMailingList(MBMailingList mbMailingList);
+	public void deleteCategoryMailingList(long groupId, long categoryId)
+		throws PortalException;
+
+	public void deleteMailingList(long mailingListId) throws PortalException;
+
+	public void deleteMailingList(MBMailingList mailingList)
+		throws PortalException;
 
 	/**
 	* Deletes the message boards mailing list with the primary key from the database. Also notifies the appropriate model listeners.
@@ -113,80 +111,14 @@ public interface MBMailingListLocalService extends BaseLocalService,
 	public MBMailingList deleteMBMailingList(long mailingListId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public MBMailingList fetchCategoryMailingList(long groupId, long categoryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public MBMailingList fetchMBMailingList(long mailingListId);
-
 	/**
-	* Returns the message boards mailing list matching the UUID and group.
-	*
-	* @param uuid the message boards mailing list's UUID
-	* @param groupId the primary key of the group
-	* @return the matching message boards mailing list, or <code>null</code> if a matching message boards mailing list could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public MBMailingList fetchMBMailingListByUuidAndGroupId(
-		java.lang.String uuid, long groupId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public MBMailingList getCategoryMailingList(long groupId, long categoryId)
-		throws PortalException;
-
-	/**
-	* Returns the message boards mailing list with the primary key.
-	*
-	* @param mailingListId the primary key of the message boards mailing list
-	* @return the message boards mailing list
-	* @throws PortalException if a message boards mailing list with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public MBMailingList getMBMailingList(long mailingListId)
-		throws PortalException;
-
-	/**
-	* Returns the message boards mailing list matching the UUID and group.
-	*
-	* @param uuid the message boards mailing list's UUID
-	* @param groupId the primary key of the group
-	* @return the matching message boards mailing list
-	* @throws PortalException if a matching message boards mailing list could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public MBMailingList getMBMailingListByUuidAndGroupId(
-		java.lang.String uuid, long groupId) throws PortalException;
-
-	/**
-	* Updates the message boards mailing list in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the message boards mailing list from the database. Also notifies the appropriate model listeners.
 	*
 	* @param mbMailingList the message boards mailing list
-	* @return the message boards mailing list that was updated
+	* @return the message boards mailing list that was removed
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public MBMailingList updateMBMailingList(MBMailingList mbMailingList);
-
-	public MBMailingList updateMailingList(long mailingListId,
-		java.lang.String emailAddress, java.lang.String inProtocol,
-		java.lang.String inServerName, int inServerPort, boolean inUseSSL,
-		java.lang.String inUserName, java.lang.String inPassword,
-		int inReadInterval, java.lang.String outEmailAddress,
-		boolean outCustom, java.lang.String outServerName, int outServerPort,
-		boolean outUseSSL, java.lang.String outUserName,
-		java.lang.String outPassword, boolean allowAnonymous, boolean active,
-		ServiceContext serviceContext) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		PortletDataContext portletDataContext);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+	@Indexable(type = IndexableType.DELETE)
+	public MBMailingList deleteMBMailingList(MBMailingList mbMailingList);
 
 	/**
 	* @throws PortalException
@@ -195,25 +127,7 @@ public interface MBMailingListLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the number of message boards mailing lists.
-	*
-	* @return the number of message boards mailing lists
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getMBMailingListsCount();
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -253,6 +167,78 @@ public interface MBMailingListLocalService extends BaseLocalService,
 	*/
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public MBMailingList fetchCategoryMailingList(long groupId, long categoryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public MBMailingList fetchMBMailingList(long mailingListId);
+
+	/**
+	* Returns the message boards mailing list matching the UUID and group.
+	*
+	* @param uuid the message boards mailing list's UUID
+	* @param groupId the primary key of the group
+	* @return the matching message boards mailing list, or <code>null</code> if a matching message boards mailing list could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public MBMailingList fetchMBMailingListByUuidAndGroupId(
+		java.lang.String uuid, long groupId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public MBMailingList getCategoryMailingList(long groupId, long categoryId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		PortletDataContext portletDataContext);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the message boards mailing list with the primary key.
+	*
+	* @param mailingListId the primary key of the message boards mailing list
+	* @return the message boards mailing list
+	* @throws PortalException if a message boards mailing list with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public MBMailingList getMBMailingList(long mailingListId)
+		throws PortalException;
+
+	/**
+	* Returns the message boards mailing list matching the UUID and group.
+	*
+	* @param uuid the message boards mailing list's UUID
+	* @param groupId the primary key of the group
+	* @return the matching message boards mailing list
+	* @throws PortalException if a matching message boards mailing list could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public MBMailingList getMBMailingListByUuidAndGroupId(
+		java.lang.String uuid, long groupId) throws PortalException;
 
 	/**
 	* Returns a range of all the message boards mailing lists.
@@ -295,28 +281,41 @@ public interface MBMailingListLocalService extends BaseLocalService,
 		OrderByComparator<MBMailingList> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of message boards mailing lists.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of message boards mailing lists
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getMBMailingListsCount();
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the OSGi service identifier.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @return the OSGi service identifier
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	public java.lang.String getOSGiServiceIdentifier();
 
-	public void deleteCategoryMailingList(long groupId, long categoryId)
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
-	public void deleteMailingList(MBMailingList mailingList)
-		throws PortalException;
+	public MBMailingList updateMailingList(long mailingListId,
+		java.lang.String emailAddress, java.lang.String inProtocol,
+		java.lang.String inServerName, int inServerPort, boolean inUseSSL,
+		java.lang.String inUserName, java.lang.String inPassword,
+		int inReadInterval, java.lang.String outEmailAddress,
+		boolean outCustom, java.lang.String outServerName, int outServerPort,
+		boolean outUseSSL, java.lang.String outUserName,
+		java.lang.String outPassword, boolean allowAnonymous, boolean active,
+		ServiceContext serviceContext) throws PortalException;
 
-	public void deleteMailingList(long mailingListId) throws PortalException;
+	/**
+	* Updates the message boards mailing list in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param mbMailingList the message boards mailing list
+	* @return the message boards mailing list that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public MBMailingList updateMBMailingList(MBMailingList mbMailingList);
 }

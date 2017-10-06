@@ -31,23 +31,13 @@ public class PortalServiceWrapper implements PortalService,
 	}
 
 	@Override
-	public boolean testHasClassName() {
-		return _portalService.testHasClassName();
+	public java.lang.String getAutoDeployDirectory() {
+		return _portalService.getAutoDeployDirectory();
 	}
 
 	@Override
 	public int getBuildNumber() {
 		return _portalService.getBuildNumber();
-	}
-
-	@Override
-	public int testGetBuildNumber() {
-		return _portalService.testGetBuildNumber();
-	}
-
-	@Override
-	public java.lang.String getAutoDeployDirectory() {
-		return _portalService.getAutoDeployDirectory();
 	}
 
 	/**
@@ -63,6 +53,16 @@ public class PortalServiceWrapper implements PortalService,
 	@Override
 	public java.lang.String getVersion() {
 		return _portalService.getVersion();
+	}
+
+	@Override
+	public void testAddClassName_Rollback(java.lang.String classNameValue) {
+		_portalService.testAddClassName_Rollback(classNameValue);
+	}
+
+	@Override
+	public void testAddClassName_Success(java.lang.String classNameValue) {
+		_portalService.testAddClassName_Success(classNameValue);
 	}
 
 	@Override
@@ -84,16 +84,6 @@ public class PortalServiceWrapper implements PortalService,
 	}
 
 	@Override
-	public void testAddClassName_Rollback(java.lang.String classNameValue) {
-		_portalService.testAddClassName_Rollback(classNameValue);
-	}
-
-	@Override
-	public void testAddClassName_Success(java.lang.String classNameValue) {
-		_portalService.testAddClassName_Success(classNameValue);
-	}
-
-	@Override
 	public void testAutoSyncHibernateSessionStateOnTxCreation() {
 		_portalService.testAutoSyncHibernateSessionStateOnTxCreation();
 	}
@@ -105,8 +95,18 @@ public class PortalServiceWrapper implements PortalService,
 	}
 
 	@Override
+	public int testGetBuildNumber() {
+		return _portalService.testGetBuildNumber();
+	}
+
+	@Override
 	public void testGetUserId() {
 		_portalService.testGetUserId();
+	}
+
+	@Override
+	public boolean testHasClassName() {
+		return _portalService.testHasClassName();
 	}
 
 	@Override

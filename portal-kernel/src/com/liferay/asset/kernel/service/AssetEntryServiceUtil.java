@@ -46,41 +46,52 @@ public class AssetEntryServiceUtil {
 		return getService().fetchEntry(entryId);
 	}
 
+	public static java.util.List<com.liferay.asset.kernel.model.AssetEntry> getCompanyEntries(
+		long companyId, int start, int end) {
+		return getService().getCompanyEntries(companyId, start, end);
+	}
+
+	public static int getCompanyEntriesCount(long companyId) {
+		return getService().getCompanyEntriesCount(companyId);
+	}
+
+	public static java.util.List<com.liferay.asset.kernel.model.AssetEntry> getEntries(
+		com.liferay.asset.kernel.service.persistence.AssetEntryQuery entryQuery)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getEntries(entryQuery);
+	}
+
+	public static int getEntriesCount(
+		com.liferay.asset.kernel.service.persistence.AssetEntryQuery entryQuery)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getEntriesCount(entryQuery);
+	}
+
 	public static com.liferay.asset.kernel.model.AssetEntry getEntry(
 		long entryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getEntry(entryId);
 	}
 
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static void incrementViewCounter(
+		com.liferay.asset.kernel.model.AssetEntry assetEntry)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().incrementViewCounter(assetEntry);
+	}
+
 	public static com.liferay.asset.kernel.model.AssetEntry incrementViewCounter(
 		java.lang.String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().incrementViewCounter(className, classPK);
-	}
-
-	/**
-	* @deprecated As of 7.0.0, replaced by {@link #updateEntry(long, Date,
-	Date, String, long, String, long, long[], String[], boolean,
-	boolean, Date, Date, Date, Date, String, String, String,
-	String, String, String, int, int, Double)}
-	*/
-	@Deprecated
-	public static com.liferay.asset.kernel.model.AssetEntry updateEntry(
-		long groupId, java.util.Date createDate, java.util.Date modifiedDate,
-		java.lang.String className, long classPK, java.lang.String classUuid,
-		long classTypeId, long[] categoryIds, java.lang.String[] tagNames,
-		boolean listable, boolean visible, java.util.Date startDate,
-		java.util.Date endDate, java.util.Date expirationDate,
-		java.lang.String mimeType, java.lang.String title,
-		java.lang.String description, java.lang.String summary,
-		java.lang.String url, java.lang.String layoutUuid, int height,
-		int width, java.lang.Double priority)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateEntry(groupId, createDate, modifiedDate, className,
-			classPK, classUuid, classTypeId, categoryIds, tagNames, listable,
-			visible, startDate, endDate, expirationDate, mimeType, title,
-			description, summary, url, layoutUuid, height, width, priority);
 	}
 
 	public static com.liferay.asset.kernel.model.AssetEntry updateEntry(
@@ -114,6 +125,31 @@ public class AssetEntryServiceUtil {
 		long groupId, java.util.Date createDate, java.util.Date modifiedDate,
 		java.lang.String className, long classPK, java.lang.String classUuid,
 		long classTypeId, long[] categoryIds, java.lang.String[] tagNames,
+		boolean listable, boolean visible, java.util.Date startDate,
+		java.util.Date endDate, java.util.Date expirationDate,
+		java.lang.String mimeType, java.lang.String title,
+		java.lang.String description, java.lang.String summary,
+		java.lang.String url, java.lang.String layoutUuid, int height,
+		int width, java.lang.Double priority)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateEntry(groupId, createDate, modifiedDate, className,
+			classPK, classUuid, classTypeId, categoryIds, tagNames, listable,
+			visible, startDate, endDate, expirationDate, mimeType, title,
+			description, summary, url, layoutUuid, height, width, priority);
+	}
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #updateEntry(long, Date,
+	Date, String, long, String, long, long[], String[], boolean,
+	boolean, Date, Date, Date, Date, String, String, String,
+	String, String, String, int, int, Double)}
+	*/
+	@Deprecated
+	public static com.liferay.asset.kernel.model.AssetEntry updateEntry(
+		long groupId, java.util.Date createDate, java.util.Date modifiedDate,
+		java.lang.String className, long classPK, java.lang.String classUuid,
+		long classTypeId, long[] categoryIds, java.lang.String[] tagNames,
 		boolean visible, java.util.Date startDate, java.util.Date endDate,
 		java.util.Date expirationDate, java.lang.String mimeType,
 		java.lang.String title, java.lang.String description,
@@ -126,42 +162,6 @@ public class AssetEntryServiceUtil {
 			classPK, classUuid, classTypeId, categoryIds, tagNames, visible,
 			startDate, endDate, expirationDate, mimeType, title, description,
 			summary, url, layoutUuid, height, width, priority, sync);
-	}
-
-	public static int getCompanyEntriesCount(long companyId) {
-		return getService().getCompanyEntriesCount(companyId);
-	}
-
-	public static int getEntriesCount(
-		com.liferay.asset.kernel.service.persistence.AssetEntryQuery entryQuery)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getEntriesCount(entryQuery);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static java.util.List<com.liferay.asset.kernel.model.AssetEntry> getCompanyEntries(
-		long companyId, int start, int end) {
-		return getService().getCompanyEntries(companyId, start, end);
-	}
-
-	public static java.util.List<com.liferay.asset.kernel.model.AssetEntry> getEntries(
-		com.liferay.asset.kernel.service.persistence.AssetEntryQuery entryQuery)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getEntries(entryQuery);
-	}
-
-	public static void incrementViewCounter(
-		com.liferay.asset.kernel.model.AssetEntry assetEntry)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().incrementViewCounter(assetEntry);
 	}
 
 	public static AssetEntryService getService() {

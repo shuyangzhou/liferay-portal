@@ -23,6 +23,6 @@ import aQute.bnd.annotation.ProviderType;
 @ProviderType
 public abstract class Expression {
 
-	public abstract <T> T accept(ExpressionVisitor<T> visitor);
+	public abstract <T> T accept(ExpressionVisitor<T> expressionVisitor);
 
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<taglibs osgi-module="true" short-name="liferay-form" tlib-version="1.0" uri="http://liferay.com/tld/form">
+	<authors>
+		<author>Rafael Praxedes</author>
+	</authors>
+	<component bodyContent="true" name="DDMFormBuilder" writeJSP="true">
+		<attributes>
+			<attribute>
+				<name>ddmStructureId</name>
+				<inputType>java.lang.Long</inputType>
+				<outputType>java.lang.Long</outputType>
+				<required>false</required>
+			</attribute>
+			<attribute>
+				<name>defaultLanguageId</name>
+				<inputType>java.lang.String</inputType>
+				<outputType>java.lang.String</outputType>
+				<required>true</required>
+			</attribute>
+			<attribute>
+				<name>editingLanguageId</name>
+				<inputType>java.lang.String</inputType>
+				<outputType>java.lang.String</outputType>
+				<required>true</required>
+			</attribute>
+			<attribute>
+				<name>refererPortletNamespace</name>
+				<inputType>java.lang.String</inputType>
+				<outputType>java.lang.String</outputType>
+				<required>true</required>
+			</attribute>
+			<attribute>
+				<name>showPagination</name>
+				<inputType>boolean</inputType>
+				<outputType>boolean</outputType>
+				<defaultValue>true</defaultValue>
+				<required>false</required>
+			</attribute>
+		</attributes>
+	</component>
+</taglibs>

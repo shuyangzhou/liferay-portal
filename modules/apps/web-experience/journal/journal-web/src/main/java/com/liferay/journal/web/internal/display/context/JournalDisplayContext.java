@@ -173,9 +173,15 @@ public class JournalDisplayContext {
 		double version = ParamUtil.getDouble(_request, "version");
 		int page = ParamUtil.getInteger(_request, "page");
 
+		JournalArticle article = JournalArticleLocalServiceUtil.fetchArticle(
+			groupId, articleId, version);
+
+		if (article == null) {
+			return _articleDisplay;
+		}
+
 		_articleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(
-			groupId, articleId, version, null, null,
-			themeDisplay.getLanguageId(), page,
+			article, null, null, themeDisplay.getLanguageId(), page,
 			new PortletRequestModel(
 				_liferayPortletRequest, _liferayPortletResponse),
 			themeDisplay);
@@ -637,8 +643,7 @@ public class JournalDisplayContext {
 			(JournalWebConfiguration)_request.getAttribute(
 				JournalWebConfiguration.class.getName());
 
-		String[] orderColumns =
-			new String[] {"display-date", "modified-date", "title"};
+		String[] orderColumns = {"display-date", "modified-date", "title"};
 
 		if (!journalWebConfiguration.journalArticleForceAutogenerateId()) {
 			orderColumns = ArrayUtil.append(orderColumns, "id");
@@ -1278,17 +1283,21 @@ public class JournalDisplayContext {
 		}
 
 		searchContext.setAttribute("head", !showVersions);
+		searchContext.setAttribute("latest", !showVersions);
 		searchContext.setAttribute("params", params);
+
+		if (!showVersions) {
+			searchContext.setAttribute("showNonindexable", Boolean.TRUE);
+		}
+
 		searchContext.setEnd(end);
 		searchContext.setFolderIds(folderIds);
 		searchContext.setStart(start);
 
-		QueryConfig queryConfig = new QueryConfig();
+		QueryConfig queryConfig = searchContext.getQueryConfig();
 
 		queryConfig.setHighlightEnabled(false);
 		queryConfig.setScoreEnabled(false);
-
-		searchContext.setQueryConfig(queryConfig);
 
 		if (sort != null) {
 			searchContext.setSorts(sort);

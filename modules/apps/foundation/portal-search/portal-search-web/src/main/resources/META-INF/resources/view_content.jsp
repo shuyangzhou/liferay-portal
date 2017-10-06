@@ -27,7 +27,7 @@ AssetEntry assetEntry = assetRendererFactory.getAssetEntry(assetEntryId);
 AssetRenderer<?> assetRenderer = assetEntry.getAssetRenderer();
 %>
 
-<c:if test="<%= (assetEntry != null) && assetEntry.isVisible() %>">
+<c:if test="<%= (assetEntry != null) && assetEntry.isVisible() && assetRenderer.hasViewPermission(permissionChecker) %>">
 	<liferay-ui:header
 		localizeTitle="<%= false %>"
 		title="<%= assetRenderer.getTitle(locale) %>"
@@ -64,7 +64,7 @@ AssetRenderer<?> assetRenderer = assetEntry.getAssetRenderer();
 		</div>
 	</c:if>
 
-	<liferay-ui:asset-display
+	<liferay-asset:asset-display
 		assetEntry="<%= assetEntry %>"
 		assetRenderer="<%= assetRenderer %>"
 		assetRendererFactory="<%= assetRendererFactory %>"

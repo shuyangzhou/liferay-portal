@@ -77,6 +77,8 @@ public class ExportPageMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
+		hideDefaultSuccessMessage(actionRequest);
+
 		PortletConfig portletConfig = getPortletConfig(actionRequest);
 
 		try {
