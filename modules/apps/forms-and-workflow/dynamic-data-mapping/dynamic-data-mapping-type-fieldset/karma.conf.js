@@ -33,38 +33,4 @@ module.exports = function(config) {
 		'src/test/testJS/**/*.js'
 	);
 
-	config.preprocessors[resourcesPath + '/**/*.soy.js'] = ['replacer'];
-	config.preprocessors['../dynamic-data-mapping-form-renderer/' + resourcesPath + '/**/*.soy.js'] = ['replacer'];
-
-	config.replacerPreprocessor = {
-		replacer: function(file, content) {
-			var filePath = file.path.split(path.sep);
-
-			var fileName = filePath.pop();
-
-			if (fileName === 'fieldset.soy.js') {
-				content = [
-					'AUI.add(\'liferay-ddm-form-field-fieldset-template\', function(A) {',
-					content.replace(
-						'(typeof ddm == \'undefined\') { var ddm = {}; }',
-						'(typeof ddm == \'undefined\') { window.ddm = {}; }'
-					),
-					'}, \'\', {requires: [\'liferay-ddm-form-soy\']});'
-				].join('');
-			}
-
-			if (fileName === 'form.soy.js') {
-				content = [
-					'AUI.add(\'liferay-ddm-form-soy\', function(A) {',
-					content.replace(
-						'(typeof ddm == \'undefined\') { var ddm = {}; }',
-						'(typeof ddm == \'undefined\') { window.ddm = {}; }'
-					),
-					'}, \'\', {requires: []});'
-				].join('');
-			}
-
-			return content;
-		}
-	};
 };

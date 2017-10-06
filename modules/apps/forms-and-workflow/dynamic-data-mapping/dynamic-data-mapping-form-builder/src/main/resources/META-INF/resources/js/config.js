@@ -33,22 +33,20 @@
 						},
 						'liferay-ddm-form-builder-action': {
 							path: 'form_builder_action.js',
-							requires: ['liferay-ddm-form-builder-action-template', 'liferay-ddm-form-renderer-field']
+							requires: ['liferay-ddm-form-renderer-field']
 						},
 						'liferay-ddm-form-builder-action-autofill': {
 							path: 'form_builder_action_autofill.js',
 							requires: [
 								'aui-component',
 								'aui-io-request',
-								'liferay-ddm-form-builder-action',
-								'liferay-ddm-form-builder-data-provider-parameter-template'
+								'liferay-ddm-form-builder-action'
 							]
 						},
 						'liferay-ddm-form-builder-action-calculate': {
 							path: 'form_builder_action_calculate.js',
 							requires: [
 								'liferay-ddm-form-builder-action',
-								'liferay-ddm-form-builder-calculate-template',
 								'liferay-ddm-form-builder-calculator'
 							]
 						},
@@ -69,35 +67,15 @@
 							path: 'form_builder_action_property.js',
 							requires: ['liferay-ddm-form-builder-action']
 						},
-						'liferay-ddm-form-builder-autocomplete-template': {
-							path: '../templates/autocomplete.js'
-						},
-						'liferay-ddm-form-builder-calculate-template': {
-							path: '../templates/calculate.js'
-						},
 						'liferay-ddm-form-builder-calculator': {
 							path: 'form_builder_calculator.js',
 							requires: [
-								'liferay-ddm-form-builder-calculator-template',
 								'liferay-ddm-form-field-select'
 							]
-						},
-						'liferay-ddm-form-builder-calculator-template': {
-							path: '../templates/calculator.js'
 						},
 						'liferay-ddm-form-builder-confirmation-dialog': {
 							path: 'form_builder_confirmation_dialog.js',
 							requires: []
-						},
-						'liferay-ddm-form-builder-data-provider-parameter-template': {
-							path: '../templates/data-provider-parameter.js'
-						},
-						'liferay-ddm-form-builder-definition-serializer': {
-							path: 'form_definition_serializer.js',
-							requires: [
-								'json',
-								'liferay-ddm-form-builder-layout-visitor'
-							]
 						},
 						'liferay-ddm-form-builder-field-list': {
 							path: 'form_builder_field_list.js',
@@ -106,16 +84,11 @@
 							]
 						},
 						'liferay-ddm-form-builder-field-options-toolbar': {
-							path: 'form_builder_field_options_toolbar.js',
-							requires: ['liferay-ddm-form-builder-field-options-toolbar-template']
-						},
-						'liferay-ddm-form-builder-field-options-toolbar-template': {
-							path: '../templates/field-options-toolbar.js'
+							path: 'form_builder_field_options_toolbar.js'
 						},
 						'liferay-ddm-form-builder-field-settings-form': {
 							path: 'form_builder_field_settings_form.js',
 							requires: [
-								'liferay-ddm-form-builder-autocomplete-template',
 								'liferay-ddm-form-renderer',
 								'liferay-ddm-soy-template-util',
 								'liferay-form'
@@ -188,7 +161,7 @@
 						},
 						'liferay-ddm-form-builder-render-rule': {
 							path: 'form_builder_render_rule.js',
-							requires: ['liferay-ddm-form-builder-action-factory', 'liferay-ddm-form-builder-rule-template', 'liferay-ddm-form-builder-rule-validator', 'liferay-ddm-form-renderer-field']
+							requires: ['liferay-ddm-form-builder-action-factory', 'liferay-ddm-form-builder-rule-validator', 'liferay-ddm-form-renderer-field']
 						},
 						'liferay-ddm-form-builder-render-rule-condition': {
 							path: 'form_builder_render_rule_condition.js',
@@ -200,15 +173,8 @@
 							path: 'form_builder_rule_builder.js',
 							requires: [
 								'liferay-ddm-form-builder-render-rule',
-								'liferay-ddm-form-builder-render-rule-condition',
-								'liferay-ddm-form-builder-rule-builder-template'
+								'liferay-ddm-form-builder-render-rule-condition'
 							]
-						},
-						'liferay-ddm-form-builder-rule-builder-template': {
-							path: '../templates/rule-builder.js'
-						},
-						'liferay-ddm-form-builder-rule-template': {
-							path: '../templates/rule.js'
 						},
 						'liferay-ddm-form-builder-rule-validator': {
 							path: 'form_builder_rule_validator.js',
@@ -222,10 +188,7 @@
 						},
 						'liferay-ddm-form-builder-sidebar': {
 							path: 'form_builder_sidebar.js',
-							requires: ['aui-tabview', 'liferay-ddm-form-builder-field-options-toolbar', 'liferay-ddm-form-builder-sidebar-template']
-						},
-						'liferay-ddm-form-builder-sidebar-template': {
-							path: '../templates/sidebar.js'
+							requires: ['aui-tabview', 'liferay-ddm-form-builder-field-options-toolbar']
 						},
 						'liferay-ddm-form-builder-util': {
 							path: 'form_builder_util.js',
@@ -240,7 +203,7 @@
 							requires: [
 								'liferay-ddm-form-renderer-wizard'
 							]
-						},
+						}
 					},
 					root: MODULE_PATH + '/js/'
 				}

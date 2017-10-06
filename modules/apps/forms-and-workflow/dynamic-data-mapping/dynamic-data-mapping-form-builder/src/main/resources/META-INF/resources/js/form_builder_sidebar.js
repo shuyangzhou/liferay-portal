@@ -235,6 +235,6 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['aui-tabview', 'liferay-ddm-form-builder-field-options-toolbar', 'liferay-ddm-form-builder-sidebar-template']
+		requires: ['aui-tabview', 'liferay-ddm-form-builder-field-options-toolbar']
 	}
 );

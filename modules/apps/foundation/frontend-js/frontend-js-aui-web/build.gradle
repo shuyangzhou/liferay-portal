@@ -7,7 +7,7 @@ configurations {
 
 task buildAlloyUI(type: Copy)
 
-String alloyUIVersion = "3.1.0-deprecated.23"
+String alloyUIVersion = "3.1.0-deprecated.25"
 
 File jsDestinationDir = file("tmp/META-INF/resources")
 
@@ -58,6 +58,7 @@ clean {
 dependencies {
 	alloyUI group: "com.liferay.webjars", name: "com.liferay.webjars.alloy-ui", transitive: false, version: alloyUIVersion
 
+	provided group: "com.liferay", name: "com.liferay.petra.lang", version: "1.0.0"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "2.11.0"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.20.0"
 	provided group: "com.liferay.portal", name: "com.liferay.util.taglib", version: "2.6.0"

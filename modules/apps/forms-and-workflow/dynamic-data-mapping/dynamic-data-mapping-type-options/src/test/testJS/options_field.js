@@ -51,7 +51,6 @@ describe(
 		before(
 			function(done) {
 				AUI().use(
-					'liferay-ddm-form-field-options-template',
 					'liferay-ddm-form-field-options',
 					function(A) {
 						Liferay.DDM.Renderer.FieldTypes.register(

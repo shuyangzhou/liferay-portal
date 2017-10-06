@@ -1,10 +1,6 @@
 AUI.add(
 	'liferay-ddm-form-renderer-util',
 	function(A) {
-		var AObject = A.Object;
-
-		var Lang = A.Lang;
-
 		var VALIDATIONS = {
 			number: [
 				{

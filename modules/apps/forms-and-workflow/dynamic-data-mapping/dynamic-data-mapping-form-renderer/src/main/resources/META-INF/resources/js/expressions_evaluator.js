@@ -128,7 +128,8 @@ AUI.add(
 						instance._request = A.io.request(
 							instance.get('evaluatorURL'),
 							{
-								data: A.merge(form.getEvaluationPayload(),
+								data: A.merge(
+									form.getEvaluationPayload(),
 									{
 										trigger: event.trigger ? event.trigger.get('fieldName') || '' : ''
 									}

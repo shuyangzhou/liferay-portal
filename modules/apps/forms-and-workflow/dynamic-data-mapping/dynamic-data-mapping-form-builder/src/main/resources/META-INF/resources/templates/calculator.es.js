@@ -11,4 +11,12 @@ class Calculator extends Component {}
 // Register component
 Soy.register(Calculator, templates, 'render');
 
+if (!window.DDMCalculator) {
+	window.DDMCalculator = {
+
+	};
+}
+
+window.DDMCalculator.render = Calculator;
+
 export default Calculator;

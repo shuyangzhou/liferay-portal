@@ -11,4 +11,12 @@ class Paragraph extends Component {}
 // Register component
 Soy.register(Paragraph, templates, 'render');
 
+if (!window.DDMParagraph) {
+	window.DDMParagraph = {
+
+	};
+}
+
+window.DDMParagraph.render = Paragraph;
+
 export default Paragraph;

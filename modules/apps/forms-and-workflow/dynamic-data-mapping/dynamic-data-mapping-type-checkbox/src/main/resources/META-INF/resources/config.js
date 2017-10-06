@@ -14,12 +14,6 @@
 							requires: [
 								'liferay-ddm-form-renderer-field'
 							]
-						},
-						'liferay-ddm-form-field-checkbox-template': {
-							condition: {
-								trigger: 'liferay-ddm-form-renderer'
-							},
-							path: 'checkbox.js'
 						}
 					},
 					root: MODULE_PATH + '/'

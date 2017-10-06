@@ -20,12 +20,6 @@
 								'autocomplete-highlighters-accentfold',
 								'liferay-ddm-form-renderer-field'
 							]
-						},
-						'liferay-ddm-form-field-text-template': {
-							condition: {
-								trigger: 'liferay-ddm-form-renderer'
-							},
-							path: 'text.js'
 						}
 					},
 					root: MODULE_PATH + '/'

@@ -222,6 +222,7 @@ public class DDMFormTemplateContextFactoryImpl
 			_ddmFormEvaluator);
 		ddmFormPagesTemplateContextFactory.setDDMFormFieldTypeServicesTracker(
 			_ddmFormFieldTypeServicesTracker);
+		ddmFormPagesTemplateContextFactory.setJSONFactory(_jsonFactory);
 
 		return ddmFormPagesTemplateContextFactory.create();
 	}

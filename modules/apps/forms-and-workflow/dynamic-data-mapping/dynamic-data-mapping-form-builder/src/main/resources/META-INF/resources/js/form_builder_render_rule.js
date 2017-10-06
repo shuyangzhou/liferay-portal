@@ -584,6 +584,6 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['liferay-ddm-form-builder-render-rule-condition', 'liferay-ddm-form-builder-rule-template', 'liferay-ddm-form-renderer-field']
+		requires: ['liferay-ddm-form-builder-render-rule-condition', 'liferay-ddm-form-renderer-field']
 	}
 );

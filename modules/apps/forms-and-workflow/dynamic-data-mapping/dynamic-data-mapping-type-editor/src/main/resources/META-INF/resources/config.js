@@ -14,12 +14,6 @@
 								'liferay-ddm-form-field-text',
 								'liferay-ddm-form-renderer-field'
 							]
-						},
-						'liferay-ddm-form-field-editor-template': {
-							condition: {
-								trigger: 'liferay-ddm-form-renderer'
-							},
-							path: 'editor.js'
 						}
 					},
 					root: MODULE_PATH + '/'

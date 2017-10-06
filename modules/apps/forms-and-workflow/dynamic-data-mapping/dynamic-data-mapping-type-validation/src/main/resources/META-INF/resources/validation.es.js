@@ -11,4 +11,12 @@ class Validation extends Component {}
 // Register component
 Soy.register(Validation, templates, 'render');
 
+if (!window.DDMValidation) {
+	window.DDMValidation = {
+
+	};
+}
+
+window.DDMValidation.render = Validation;
+
 export default Validation;

@@ -7,7 +7,6 @@ describe(
 			function(done) {
 				AUI().use(
 					'liferay-ddm-form-field-radio',
-					'liferay-ddm-form-field-radio-template',
 					function(A) {
 						Liferay.DDM.Renderer.FieldTypes.register(
 							{

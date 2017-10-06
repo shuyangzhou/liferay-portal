@@ -35,7 +35,7 @@ AUI.add(
 				'<a title="{label}">{label}</a>' +
 			'</li>';
 
-		var TPL_PAGES_CONTAINER = '<ul class="lfr-ddm-pages-container nav"></ul>';
+		var TPL_PAGES_CONTAINER = '<ul class="lfr-ddm-pages-container nav vertical-scrolling"></ul>';
 
 		var TPL_REPEATABLE_ADD = '<a class="icon-plus-sign lfr-ddm-repeatable-add-button" href="javascript:;"></a>';
 
@@ -741,7 +741,7 @@ AUI.add(
 							if (Lang.isObject(tipsMap)) {
 								var tip = tipsMap[instance.get('displayLocale')] || tipsMap[defaultLocale];
 
-								tipNode.attr('title', A.Escape.html(tip));
+								tipNode.attr('title', tip);
 							}
 
 							labelNode.append(tipNode);

@@ -5,15 +5,24 @@ import templates from './select.soy';
 
 let SelectTemplates = [];
 
+if (!window.DDMSelect) {
+	window.DDMSelect = {
+
+	};
+}
+
 for (let template in templates) {
 	if (template !== 'templates') {
 		class C extends Component {};
 		Soy.register(C, templates, template);
 		C.Soy = Soy;
-		SelectTemplates.push({
-			key: template,
-			component: C
-		});
+		SelectTemplates.push(
+			{
+				key: template,
+				component: C
+			}
+		);
+		window.DDMSelect[template] = C;
 	}
 }
 

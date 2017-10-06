@@ -41,7 +41,7 @@ AUI.add(
 
 								items.push(
 									{
-										state: state,
+										state: state
 									}
 								);
 							}
@@ -152,7 +152,7 @@ AUI.add(
 											TPL_PAGINATION_ITEM,
 											{
 												number: index + 1,
-												state: item.state,
+												state: item.state
 											}
 										)
 									);

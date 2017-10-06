@@ -43,6 +43,7 @@ AUI.add(
 									var payload = {
 										bcp47LanguageId: themeDisplay.getBCP47LanguageId(),
 										portletNamespace: Settings.portletNamespace,
+										scopeGroupId: themeDisplay.getScopeGroupId(),
 										type: type
 									};
 

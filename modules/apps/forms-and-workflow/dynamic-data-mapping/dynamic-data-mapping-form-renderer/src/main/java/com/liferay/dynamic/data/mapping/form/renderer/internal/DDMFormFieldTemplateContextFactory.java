@@ -27,6 +27,8 @@ import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.model.Value;
 import com.liferay.dynamic.data.mapping.render.DDMFormFieldRenderingContext;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
+import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageConstants;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -52,13 +54,15 @@ public class DDMFormFieldTemplateContextFactory {
 		Map<String, DDMFormField> ddmFormFieldsMap,
 		DDMFormEvaluationResult ddmFormEvaluationResult,
 		List<DDMFormFieldValue> ddmFormFieldValues,
-		DDMFormRenderingContext ddmFormRenderingContext, boolean pageEnabled) {
+		DDMFormRenderingContext ddmFormRenderingContext,
+		JSONFactory jsonFactory, boolean pageEnabled) {
 
 		_ddmFormFieldsMap = ddmFormFieldsMap;
 
 		_ddmFormEvaluationResult = ddmFormEvaluationResult;
 		_ddmFormFieldValues = ddmFormFieldValues;
 		_ddmFormRenderingContext = ddmFormRenderingContext;
+		_jsonFactory = jsonFactory;
 		_pageEnabled = pageEnabled;
 
 		_locale = ddmFormRenderingContext.getLocale();
@@ -537,7 +541,16 @@ public class DDMFormFieldTemplateContextFactory {
 			Object evaluationResultValue =
 				ddmFormFieldEvaluationResult.getValue();
 
-			ddmFormFieldTemplateContext.put("value", evaluationResultValue);
+			if (evaluationResultValue instanceof JSONObject) {
+				JSONObject jsonObject = (JSONObject)evaluationResultValue;
+
+				ddmFormFieldTemplateContext.put(
+					"value",
+					_jsonFactory.looseDeserialize(jsonObject.toJSONString()));
+			}
+			else {
+				ddmFormFieldTemplateContext.put("value", evaluationResultValue);
+			}
 		}
 		else if (value != null) {
 			ddmFormFieldTemplateContext.put("value", value.getString(_locale));
@@ -596,6 +609,7 @@ public class DDMFormFieldTemplateContextFactory {
 	private DDMFormFieldTypeServicesTracker _ddmFormFieldTypeServicesTracker;
 	private final List<DDMFormFieldValue> _ddmFormFieldValues;
 	private final DDMFormRenderingContext _ddmFormRenderingContext;
+	private final JSONFactory _jsonFactory;
 	private final Locale _locale;
 	private final boolean _pageEnabled;
 

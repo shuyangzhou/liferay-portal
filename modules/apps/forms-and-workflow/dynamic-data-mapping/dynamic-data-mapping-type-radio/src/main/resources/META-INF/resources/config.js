@@ -14,12 +14,6 @@
 							requires: [
 								'liferay-ddm-form-renderer-field'
 							]
-						},
-						'liferay-ddm-form-field-radio-template': {
-							condition: {
-								trigger: 'liferay-ddm-form-renderer'
-							},
-							path: 'radio.js'
 						}
 					},
 					root: MODULE_PATH + '/'

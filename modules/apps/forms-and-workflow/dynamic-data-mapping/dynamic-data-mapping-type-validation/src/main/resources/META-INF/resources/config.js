@@ -17,12 +17,6 @@
 							requires: [
 								'liferay-ddm-form-renderer-field'
 							]
-						},
-						'liferay-ddm-form-field-validation-template': {
-							condition: {
-								trigger: 'liferay-ddm-form-renderer'
-							},
-							path: 'validation.js'
 						}
 					},
 					root: MODULE_PATH + '/'

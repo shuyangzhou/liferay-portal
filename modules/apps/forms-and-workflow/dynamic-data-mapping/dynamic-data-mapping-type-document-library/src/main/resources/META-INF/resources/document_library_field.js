@@ -3,200 +3,201 @@ AUI.add(
 	function(A) {
 		var Lang = A.Lang;
 
-		var DocumentLibraryField = A.Component.create({
+		var DocumentLibraryField = A.Component.create(
+			{
+				ATTRS: {
+					clearButtonVisible: {
+						value: false
+					},
 
-			ATTRS: {
-				clearButtonVisible: {
-					value: false
-				},
+					fileEntryTitle: {
+						value: ''
+					},
 
-				fileEntryTitle: {
-					value: ''
-				},
+					groupId: {
+						value: 0
+					},
 
-				groupId: {
-					value: 0
-				},
+					strings: {
+						value: {
+							select: Liferay.Language.get('select')
+						}
+					},
 
-				strings: {
+					type: {
+						value: 'document_library'
+					},
+
 					value: {
-						select: Liferay.Language.get('select')
+						value: ''
 					}
 				},
 
-				type: {
-					value: 'document_library'
-				},
+				EXTENDS: Liferay.DDM.Renderer.Field,
 
-				value: {
-					value: ''
-				}
-			},
+				NAME: 'liferay-ddm-form-field-document-library',
 
-			EXTENDS: Liferay.DDM.Renderer.Field,
+				prototype: {
+					initializer: function() {
+						var instance = this;
 
-			NAME: 'liferay-ddm-form-field-document-library',
+						instance._eventHandlers.push(
+							instance.bindContainerEvent('click', instance._handleButtonsClick, '> .form-group .btn')
+						);
+					},
 
-			prototype: {
-				initializer: function() {
-					var instance = this;
+					getDocumentLibrarySelectorURL: function() {
+						var instance = this;
 
-					instance._eventHandlers.push(
-						instance.bindContainerEvent('click', instance._handleButtonsClick, '> .form-group .btn')
-					);
-				},
+						var portletNamespace = instance.get('portletNamespace');
 
-				getDocumentLibrarySelectorURL: function() {
-					var instance = this;
+						var portletURL = Liferay.PortletURL.createURL(themeDisplay.getLayoutRelativeControlPanelURL());
 
-					var portletNamespace = instance.get('portletNamespace');
+						portletURL.setParameter('criteria', 'com.liferay.item.selector.criteria.file.criterion.FileItemSelectorCriterion');
+						portletURL.setParameter('doAsGroupId', instance.get('groupId'));
+						portletURL.setParameter('itemSelectedEventName', portletNamespace + 'selectDocumentLibrary');
 
-					var portletURL = Liferay.PortletURL.createURL(themeDisplay.getLayoutRelativeControlPanelURL());
+						var criterionJSON = {
+							desiredItemSelectorReturnTypes: 'com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType,com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType'
+						};
 
-					portletURL.setParameter('criteria', 'com.liferay.item.selector.criteria.file.criterion.FileItemSelectorCriterion');
-					portletURL.setParameter('doAsGroupId', instance.get('groupId'));
-					portletURL.setParameter('itemSelectedEventName', portletNamespace + 'selectDocumentLibrary');
+						portletURL.setParameter('0_json', JSON.stringify(criterionJSON));
+						portletURL.setParameter('1_json', JSON.stringify(criterionJSON));
 
-					var criterionJSON = {
-						desiredItemSelectorReturnTypes: 'com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType,com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType'
-					};
+						var uploadCriterionJSON = {
+							desiredItemSelectorReturnTypes: 'com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType,com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType',
+							URL: instance.getUploadURL()
+						};
 
-					portletURL.setParameter('0_json', JSON.stringify(criterionJSON));
-					portletURL.setParameter('1_json', JSON.stringify(criterionJSON));
+						portletURL.setParameter('2_json', JSON.stringify(uploadCriterionJSON));
 
-					var uploadCriterionJSON = {
-						desiredItemSelectorReturnTypes: 'com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType,com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType',
-						URL: instance.getUploadURL()
-					};
+						portletURL.setPortletId(Liferay.PortletKeys.ITEM_SELECTOR);
+						portletURL.setPortletMode('view');
+						portletURL.setWindowState('pop_up');
 
-					portletURL.setParameter('2_json', JSON.stringify(uploadCriterionJSON));
+						return portletURL.toString();
+					},
 
-					portletURL.setPortletId(Liferay.PortletKeys.ITEM_SELECTOR);
-					portletURL.setPortletMode('view');
-					portletURL.setWindowState('pop_up');
+					getStringValue: function() {
+						var instance = this;
 
-					return portletURL.toString();
-				},
+						var value = instance.get('value');
 
-				getStringValue: function() {
-					var instance = this;
-
-					var value = instance.get('value');
-
-					if (Lang.isString(value)) {
-						return value;
-					}
-
-					return JSON.stringify(value);
-				},
-
-				getTemplateContext: function() {
-					var instance = this;
-
-					return A.merge(
-						DocumentLibraryField.superclass.getTemplateContext.apply(instance, arguments),
-						{
-							clearButtonVisible: instance.get('clearButtonVisible'),
-							fileEntryTitle: instance.get('fileEntryTitle'),
-							strings: instance.get('strings'),
-							value: instance.getStringValue()
+						if (Lang.isString(value)) {
+							return value;
 						}
-					);
-				},
 
-				getUploadURL: function() {
-					var instance = this;
+						return JSON.stringify(value);
+					},
 
-					var portletURL = Liferay.PortletURL.createURL(themeDisplay.getLayoutRelativeURL());
+					getTemplateContext: function() {
+						var instance = this;
 
-					portletURL.setLifecycle(Liferay.PortletURL.ACTION_PHASE);
-					portletURL.setParameter('cmd', 'add_temp');
-					portletURL.setParameter('javax.portlet.action', '/document_library/upload_file_entry');
-					portletURL.setParameter('p_auth', Liferay.authToken);
-					portletURL.setPortletId(Liferay.PortletKeys.DOCUMENT_LIBRARY);
+						return A.merge(
+							DocumentLibraryField.superclass.getTemplateContext.apply(instance, arguments),
+							{
+								clearButtonVisible: instance.get('clearButtonVisible'),
+								fileEntryTitle: instance.get('fileEntryTitle'),
+								strings: instance.get('strings'),
+								value: instance.getStringValue()
+							}
+						);
+					},
 
-					return portletURL.toString();
-				},
+					getUploadURL: function() {
+						var instance = this;
 
-				getValue: function() {
-					var instance = this;
+						var portletURL = Liferay.PortletURL.createURL(themeDisplay.getLayoutRelativeURL());
 
-					return instance.get('value');
-				},
+						portletURL.setLifecycle(Liferay.PortletURL.ACTION_PHASE);
+						portletURL.setParameter('cmd', 'add_temp');
+						portletURL.setParameter('javax.portlet.action', '/document_library/upload_file_entry');
+						portletURL.setParameter('p_auth', Liferay.authToken);
+						portletURL.setPortletId(Liferay.PortletKeys.DOCUMENT_LIBRARY);
 
-				setValue: function(value) {
-					var instance = this;
+						return portletURL.toString();
+					},
 
-					if (value.title && value.uuid) {
-						instance.set('fileEntryTitle', value.title);
-						instance.set('clearButtonVisible', true);
-					}
-					else {
-						instance.set('fileEntryTitle', '');
-						instance.set('clearButtonVisible', false);
-					}
+					getValue: function() {
+						var instance = this;
 
-					instance.set('value', value);
+						return instance.get('value');
+					},
 
-					instance.render();
-				},
+					setValue: function(value) {
+						var instance = this;
 
-				showErrorMessage: function() {
-					var instance = this;
-
-					var container = instance.get('container');
-
-					DocumentLibraryField.superclass.showErrorMessage.apply(instance, arguments);
-
-					container.all('.help-block').appendTo(container.one('.form-group'));
-				},
-
-				_handleButtonsClick: function(event) {
-					var instance = this;
-
-					if (!instance.get('readOnly')) {
-						var currentTarget = event.currentTarget;
-
-						if (currentTarget.test('.select-button')) {
-							instance._handleSelectButtonClick(event);
+						if (value.title && value.uuid) {
+							instance.set('fileEntryTitle', value.title);
+							instance.set('clearButtonVisible', true);
 						}
-						else if (currentTarget.test('.clear-button')) {
-							instance._handleClearButtonClick(event);
+						else {
+							instance.set('fileEntryTitle', '');
+							instance.set('clearButtonVisible', false);
 						}
-					}
-				},
 
-				_handleClearButtonClick: function(event) {
-					var instance = this;
+						instance.set('value', value);
 
-					instance.setValue({});
-				},
+						instance.render();
+					},
 
-				_handleSelectButtonClick: function(event) {
-					var instance = this;
+					showErrorMessage: function() {
+						var instance = this;
 
-					var portletNamespace = instance.get('portletNamespace');
+						var container = instance.get('container');
 
-					var itemSelectorDialog = new A.LiferayItemSelectorDialog(
-						{
-							eventName: portletNamespace + 'selectDocumentLibrary',
-							on: {
-								selectedItemChange: function(event) {
-									var selectedItem = event.newVal;
+						DocumentLibraryField.superclass.showErrorMessage.apply(instance, arguments);
 
-									if (selectedItem) {
-										instance.setValue(JSON.parse(selectedItem.value));
+						container.all('.help-block').appendTo(container.one('.form-group'));
+					},
+
+					_handleButtonsClick: function(event) {
+						var instance = this;
+
+						if (!instance.get('readOnly')) {
+							var currentTarget = event.currentTarget;
+
+							if (currentTarget.test('.select-button')) {
+								instance._handleSelectButtonClick(event);
+							}
+							else if (currentTarget.test('.clear-button')) {
+								instance._handleClearButtonClick(event);
+							}
+						}
+					},
+
+					_handleClearButtonClick: function(event) {
+						var instance = this;
+
+						instance.setValue({});
+					},
+
+					_handleSelectButtonClick: function(event) {
+						var instance = this;
+
+						var portletNamespace = instance.get('portletNamespace');
+
+						var itemSelectorDialog = new A.LiferayItemSelectorDialog(
+							{
+								eventName: portletNamespace + 'selectDocumentLibrary',
+								on: {
+									selectedItemChange: function(event) {
+										var selectedItem = event.newVal;
+
+										if (selectedItem) {
+											instance.setValue(JSON.parse(selectedItem.value));
+										}
 									}
-								}
-							},
-							url: instance.getDocumentLibrarySelectorURL()
-						}
-					);
+								},
+								url: instance.getDocumentLibrarySelectorURL()
+							}
+						);
 
-					itemSelectorDialog.open();
+						itemSelectorDialog.open();
+					}
 				}
 			}
-		});
+		);
 
 		Liferay.namespace('DDM.Field').DocumentLibrary = DocumentLibraryField;
 	},

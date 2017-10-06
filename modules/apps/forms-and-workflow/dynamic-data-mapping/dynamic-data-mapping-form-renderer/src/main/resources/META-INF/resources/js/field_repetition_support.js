@@ -90,8 +90,8 @@ AUI.add(
 					}
 				);
 
-				var oldInstanceId = config.instanceId;
 				var newInstanceId = Util.generateInstanceId(8);
+				var oldInstanceId = config.instanceId;
 
 				instance._updateInstanceIdConfiguration(config, newInstanceId);
 				instance._updateNameConfiguration(config, oldInstanceId, newInstanceId);

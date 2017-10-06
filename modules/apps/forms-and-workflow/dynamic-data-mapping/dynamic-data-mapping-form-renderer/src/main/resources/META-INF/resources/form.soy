@@ -36,20 +36,17 @@
 		AUI().use(
 			'liferay-ddm-form-renderer',
 			'liferay-ddm-form-renderer-field',
+			'liferay-ddm-soy-template-util',
 			function(A) {lb}
-				Liferay.DDM.Renderer.FieldTypes.register({$fieldTypes});
+				var SoyTemplateUtil = Liferay.DDM.SoyTemplateUtil;
 
-				if (window.ddm) {lb}
-					{call .render_form data="all" /}
-				{rb}
-				else {lb}
-					Liferay.after(
-						'DDMFormLoaded',
-						function() {lb}
-							{call .render_form data="all" /}
-						{rb}
-					);
-				{rb}
+				SoyTemplateUtil.loadModules(
+					function() {lb}
+						Liferay.DDM.Renderer.FieldTypes.register({$fieldTypes});
+
+						{call .render_form data="all" /}
+					{rb}
+				);
 
 				var destroyFormHandle = function(event) {lb}
 					var form = Liferay.component('{$containerId}DDMForm');

@@ -11,4 +11,12 @@ class Fieldset extends Component {}
 // Register component
 Soy.register(Fieldset, templates, 'render');
 
+if (!window.DDMFieldset) {
+	window.DDMFieldset = {
+
+	};
+}
+
+window.DDMFieldset.render = Fieldset;
+
 export default Fieldset;

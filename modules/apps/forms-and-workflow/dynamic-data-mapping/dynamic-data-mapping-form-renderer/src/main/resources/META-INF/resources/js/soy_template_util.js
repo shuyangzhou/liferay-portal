@@ -14,6 +14,21 @@ AUI.add(
 				}
 
 				return renderer;
+			},
+
+			loadModules: function(callback) {
+				var modules = AObject.keys(Liferay.MODULES);
+
+				var dependencies = modules.filter(
+					function(item) {
+						return /dynamic-data-.*\.es/.test(item);
+					}
+				);
+
+				Liferay.Loader.require.apply(
+					Liferay.Loader,
+					dependencies.concat(callback)
+				);
 			}
 		};
 

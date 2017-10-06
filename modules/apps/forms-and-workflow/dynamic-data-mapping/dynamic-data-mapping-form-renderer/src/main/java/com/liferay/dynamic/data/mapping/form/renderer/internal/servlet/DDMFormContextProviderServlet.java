@@ -97,6 +97,7 @@ public class DDMFormContextProviderServlet extends HttpServlet {
 			ddmFormPagesTemplateContextFactory.
 				setDDMFormFieldTypeServicesTracker(
 					_ddmFormFieldTypeServicesTracker);
+			ddmFormPagesTemplateContextFactory.setJSONFactory(_jsonFactory);
 
 			return ddmFormPagesTemplateContextFactory.create();
 		}

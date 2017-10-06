@@ -34,7 +34,6 @@ describe(
 			function(done) {
 				A.use(
 					'liferay-ddm-form-field-key-value',
-					'liferay-ddm-form-field-key-value-template',
 					function(A) {
 						Liferay.DDM.Renderer.FieldTypes.register(
 							{

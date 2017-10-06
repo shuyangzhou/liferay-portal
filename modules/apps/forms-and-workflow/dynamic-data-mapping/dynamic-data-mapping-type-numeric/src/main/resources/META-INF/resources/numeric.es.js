@@ -11,4 +11,12 @@ class Numeric extends Component {}
 // Register component
 Soy.register(Numeric, templates, 'render');
 
+if (!window.DDMNumeric) {
+	window.DDMNumeric = {
+
+	};
+}
+
+window.DDMNumeric.render = Numeric;
+
 export default Numeric;

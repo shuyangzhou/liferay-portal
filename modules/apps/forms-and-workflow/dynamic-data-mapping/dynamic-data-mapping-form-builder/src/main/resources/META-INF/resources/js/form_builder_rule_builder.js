@@ -279,15 +279,13 @@ AUI.add(
 						var actionKey = MAP_ACTION_DESCRIPTIONS[type];
 
 						if (actionKey) {
-							var data;
-
 							if (type === 'jump-to-page') {
 								var pages = instance.getPages();
 
 								return {
-									type: 'jumptopage',
-									param0: pages[action.target].label
-								}
+									param0: pages[action.target].label,
+									type: 'jumptopage'
+								};
 							}
 							else if (type === 'auto-fill') {
 								var fieldListDescription = [];
@@ -297,25 +295,23 @@ AUI.add(
 								}
 
 								return {
-									type: 'autofill',
 									param0: fieldListDescription,
-									param1: instance._getDataProviderLabel(action.ddmDataProviderInstanceUUID)
-								}
+									param1: instance._getDataProviderLabel(action.ddmDataProviderInstanceUUID),
+									type: 'autofill'
+								};
 							}
 							else if (type === 'calculate') {
 
 								return {
-									type: type,
 									param0: action.expression.replace(/\[|\]/g, ''),
-									param1: instance._getFieldLabel(action.target)
-								}
+									param1: instance._getFieldLabel(action.target),
+									type: type
+								};
 							}
-							else {
-								return {
-									type: type,
-									param0: action.label
-								}
-							}
+							return {
+								param0: action.label,
+								type: type
+							};
 						}
 
 						return {};

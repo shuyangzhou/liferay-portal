@@ -28,12 +28,6 @@
 							requires: [
 								'liferay-ddm-form-renderer-field'
 							]
-						},
-						'liferay-ddm-form-field-checkbox-multiple-template': {
-							condition: {
-								trigger: 'liferay-ddm-form-renderer'
-							},
-							path: 'checkbox-multiple.js'
 						}
 					},
 					root: MODULE_PATH + '/'

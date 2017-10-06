@@ -62,7 +62,7 @@ AUI.add(
 						if (!context) {
 							return {};
 						}
-						else if(context.html) {
+						else if (context.html) {
 							return A.merge(
 								context,
 								{
@@ -70,9 +70,7 @@ AUI.add(
 								}
 							);
 						}
-						else {
-							return context;
-						}
+						return context;
 					},
 
 					_onClickRefresh: function() {

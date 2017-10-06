@@ -24,7 +24,6 @@ describe(
 		before(
 			function(done) {
 				AUI().use(
-					'liferay-ddm-form-field-select-template',
 					'liferay-ddm-form-field-select',
 					function(A) {
 						Liferay.DDM.Renderer.FieldTypes.register(

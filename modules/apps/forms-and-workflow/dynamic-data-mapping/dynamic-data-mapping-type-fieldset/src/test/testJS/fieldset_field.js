@@ -7,7 +7,6 @@ describe(
 			function(done) {
 				AUI().use(
 					'liferay-ddm-form-field-fieldset',
-					'liferay-ddm-form-field-fieldset-template',
 					'liferay-ddm-form-soy',
 					function(A) {
 						Liferay.DDM.Renderer.FieldTypes.register(

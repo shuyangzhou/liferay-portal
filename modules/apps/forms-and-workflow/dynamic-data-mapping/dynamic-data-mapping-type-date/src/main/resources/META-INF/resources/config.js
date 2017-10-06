@@ -15,12 +15,6 @@
 								'aui-datepicker',
 								'liferay-ddm-form-renderer-field'
 							]
-						},
-						'liferay-ddm-form-field-date-template': {
-							condition: {
-								trigger: 'liferay-ddm-form-renderer'
-							},
-							path: 'date.js'
 						}
 					},
 					root: MODULE_PATH + '/'

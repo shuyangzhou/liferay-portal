@@ -29,8 +29,8 @@ AUI.add(
 						value: {
 							next: Liferay.Language.get('next'),
 							previous: Liferay.Language.get('previous'),
-							requiredFields: Liferay.Language.get('all-fields-marked-with-x-are-required'),
-							requestErrorMessage: Liferay.Language.get('there-was-an-error-when-trying-to-validate-your-form')
+							requestErrorMessage: Liferay.Language.get('there-was-an-error-when-trying-to-validate-your-form'),
+							requiredFields: Liferay.Language.get('all-fields-marked-with-x-are-required')
 						}
 					}
 				},
@@ -163,7 +163,8 @@ AUI.add(
 
 						var container = instance.get('container');
 
-						Liferay.fire(Liferay.namespace('DDM').Form + ':render',
+						Liferay.fire(
+							Liferay.namespace('DDM').Form + ':render',
 							{
 								containerId: container.get('id')
 							}
@@ -207,6 +208,6 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['aui-component', 'liferay-ddm-form-renderer-context', 'liferay-ddm-form-renderer-evaluation', 'liferay-ddm-form-renderer-feedback', 'liferay-ddm-form-renderer-nested-fields', 'liferay-ddm-form-renderer-pagination', 'liferay-ddm-form-renderer-tabs', 'liferay-ddm-form-renderer-template', 'liferay-ddm-form-renderer-validation', 'liferay-ddm-form-soy']
+		requires: ['aui-component', 'liferay-ddm-form-renderer-context', 'liferay-ddm-form-renderer-evaluation', 'liferay-ddm-form-renderer-feedback', 'liferay-ddm-form-renderer-nested-fields', 'liferay-ddm-form-renderer-pagination', 'liferay-ddm-form-renderer-tabs', 'liferay-ddm-form-renderer-template', 'liferay-ddm-form-renderer-validation', 'liferay-ddm-soy-template-util']
 	}
 );

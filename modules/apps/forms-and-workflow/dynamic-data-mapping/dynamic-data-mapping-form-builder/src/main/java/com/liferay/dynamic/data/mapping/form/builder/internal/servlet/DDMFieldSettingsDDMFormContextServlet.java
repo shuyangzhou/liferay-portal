@@ -22,6 +22,8 @@ import com.liferay.dynamic.data.mapping.form.values.factory.DDMFormValuesFactory
 import com.liferay.dynamic.data.mapping.io.DDMFormJSONDeserializer;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
+import com.liferay.dynamic.data.mapping.model.UnlocalizedValue;
+import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
 import com.liferay.dynamic.data.mapping.util.DDMFormLayoutFactory;
@@ -38,6 +40,7 @@ import com.liferay.portal.kernel.util.Portal;
 
 import java.io.IOException;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -94,6 +97,8 @@ public class DDMFieldSettingsDDMFormContextServlet extends HttpServlet {
 			DDMFormValues ddmFormValues = _ddmFormValuesFactory.create(
 				request, ddmFormFieldTypeSettingsDDMForm);
 
+			setTypeDDMFormFieldValue(ddmFormValues, type);
+
 			ddmFormRenderingContext.setDDMFormValues(ddmFormValues);
 
 			ddmFormRenderingContext.setHttpServletRequest(request);
@@ -143,6 +148,20 @@ public class DDMFieldSettingsDDMFormContextServlet extends HttpServlet {
 			_ddmFormFieldTypeServicesTracker.getDDMFormFieldType(type);
 
 		return ddmFormFieldType.getDDMFormFieldTypeSettings();
+	}
+
+	protected void setTypeDDMFormFieldValue(
+		DDMFormValues ddmFormValues, String type) {
+
+		Map<String, List<DDMFormFieldValue>> ddmFormFieldValuesMap =
+			ddmFormValues.getDDMFormFieldValuesMap();
+
+		List<DDMFormFieldValue> ddmFormFieldValues = ddmFormFieldValuesMap.get(
+			"type");
+
+		DDMFormFieldValue ddmFormFieldValue = ddmFormFieldValues.get(0);
+
+		ddmFormFieldValue.setValue(new UnlocalizedValue(type));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

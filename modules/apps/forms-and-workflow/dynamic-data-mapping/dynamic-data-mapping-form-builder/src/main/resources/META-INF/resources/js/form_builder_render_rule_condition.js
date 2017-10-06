@@ -563,8 +563,8 @@ AUI.add(
 			_renderSecondOperandSelectOptions: function(index, condition, container) {
 				var instance = this;
 
-				var value = [];
 				var options = [];
+				var value = [];
 
 				var visible = instance._isConstant(instance._getSecondOperandTypeValue(index)) &&
 					instance._isFieldList(instance._getFirstOperand(index));

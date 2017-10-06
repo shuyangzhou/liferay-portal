@@ -15,12 +15,6 @@
 							requires: [
 								'liferay-ddm-form-renderer-field'
 							]
-						},
-						'liferay-ddm-form-field-password-template': {
-							condition: {
-								trigger: 'liferay-ddm-form-renderer'
-							},
-							path: 'password.js'
 						}
 					},
 					root: MODULE_PATH + '/'

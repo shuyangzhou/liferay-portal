@@ -7,7 +7,6 @@ describe(
 			function(done) {
 				AUI().use(
 					'liferay-ddm-form-field-text',
-					'liferay-ddm-form-field-text-template',
 					function(A) {
 						Liferay.DDM.Renderer.FieldTypes.register(
 							{

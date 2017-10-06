@@ -1,8 +1,6 @@
 AUI.add(
 	'liferay-ddm-form-builder-action-factory',
 	function(A) {
-		var Settings = Liferay.DDM.Settings;
-
 		var FormBuilderActionFactory = A.Component.create(
 			{
 				ATTRS: {
@@ -99,6 +97,6 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['liferay-ddm-form-builder-render-template', 'liferay-ddm-form-renderer-field']
+		requires: ['liferay-ddm-form-renderer-field']
 	}
 );

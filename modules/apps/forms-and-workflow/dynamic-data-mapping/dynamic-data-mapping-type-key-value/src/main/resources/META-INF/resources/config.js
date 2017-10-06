@@ -19,12 +19,6 @@
 								'liferay-ddm-form-field-text',
 								'liferay-ddm-form-renderer-field'
 							]
-						},
-						'liferay-ddm-form-field-key-value-template': {
-							condition: {
-								trigger: 'liferay-ddm-form-renderer'
-							},
-							path: 'key-value.js'
 						}
 					},
 					root: MODULE_PATH + '/'

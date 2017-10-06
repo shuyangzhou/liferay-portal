@@ -27,6 +27,8 @@ import com.liferay.dynamic.data.mapping.render.DDMFormFieldRenderingContext;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
+import com.liferay.portal.json.JSONFactoryImpl;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageConstants;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -285,7 +287,8 @@ public class DDMFormFieldTemplateContextFactoryTest {
 		DDMFormFieldTemplateContextFactory ddmFormFieldTemplateContextFactory =
 			new DDMFormFieldTemplateContextFactory(
 				ddmForm.getDDMFormFieldsMap(true), ddmFormEvaluationResult,
-				ddmFormFieldValues, ddmFormRenderingContext, true);
+				ddmFormFieldValues, ddmFormRenderingContext, _jsonFactory,
+				true);
 
 		DDMFormFieldTypeServicesTracker ddmFormFieldTypeServicesTracker =
 			mockDDMFormFieldTypeServicesTracker(
@@ -405,5 +408,7 @@ public class DDMFormFieldTemplateContextFactoryTest {
 	private static final Locale _LOCALE = LocaleUtil.US;
 
 	private static final String _PORTLET_NAMESPACE = "_PORTLET_NAMESPACE_";
+
+	private final JSONFactory _jsonFactory = new JSONFactoryImpl();
 
 }

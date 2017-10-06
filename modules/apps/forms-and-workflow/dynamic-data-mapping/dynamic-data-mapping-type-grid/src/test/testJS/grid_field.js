@@ -70,7 +70,6 @@ describe(
 		before(
 			function(done) {
 				AUI().use(
-					'liferay-ddm-form-field-grid-template',
 					'liferay-ddm-form-field-grid',
 					function(A) {
 						Liferay.DDM.Renderer.FieldTypes.register(

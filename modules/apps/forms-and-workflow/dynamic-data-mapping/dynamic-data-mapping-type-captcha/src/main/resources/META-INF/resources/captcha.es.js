@@ -20,4 +20,12 @@ Soy.register(Captcha, templates, 'render');
 
 Captcha.Soy = Soy;
 
+if (!window.DDMCaptcha) {
+	window.DDMCaptcha = {
+
+	};
+}
+
+window.DDMCaptcha.render = Captcha;
+
 export default Captcha;

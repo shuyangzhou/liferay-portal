@@ -11,4 +11,12 @@ class Options extends Component {}
 // Register component
 Soy.register(Options, templates, 'render');
 
+if (!window.DDMOptions) {
+	window.DDMOptions = {
+
+	};
+}
+
+window.DDMOptions.render = Options;
+
 export default Options;

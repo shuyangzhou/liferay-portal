@@ -127,6 +127,6 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['highlight', 'liferay-ddm-form-field-select-template', 'liferay-ddm-soy-template-util']
+		requires: ['highlight', 'liferay-ddm-soy-template-util']
 	}
 );

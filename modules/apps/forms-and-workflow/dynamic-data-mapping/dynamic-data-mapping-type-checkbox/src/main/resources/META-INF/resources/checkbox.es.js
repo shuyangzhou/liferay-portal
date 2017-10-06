@@ -11,4 +11,12 @@ class Checkbox extends Component {}
 // Register component
 Soy.register(Checkbox, templates, 'render');
 
+if (!window.DDMCheckbox) {
+	window.DDMCheckbox = {
+
+	};
+}
+
+window.DDMCheckbox.render = Checkbox;
+
 export default Checkbox;

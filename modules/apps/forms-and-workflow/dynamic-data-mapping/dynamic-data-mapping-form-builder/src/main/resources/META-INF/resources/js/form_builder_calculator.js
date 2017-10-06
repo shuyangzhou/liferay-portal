@@ -98,7 +98,7 @@ AUI.add(
 									valueChange: A.bind(instance._afterSelectValueChange, instance)
 								},
 								context: {
-									options: instance.get('advancedOperators')
+									options: instance.get('functions')
 								},
 								triggers: [instance.get('boundingBox').one('.' + CSS_CALCULATOR_ADD_OPERATOR)]
 							}

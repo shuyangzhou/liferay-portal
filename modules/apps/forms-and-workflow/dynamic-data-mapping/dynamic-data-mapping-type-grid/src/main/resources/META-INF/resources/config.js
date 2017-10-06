@@ -15,15 +15,8 @@
 							},
 							path: 'grid_field.js',
 							requires: [
-								'liferay-ddm-form-field-grid-template',
 								'liferay-ddm-form-renderer-field'
 							]
-						},
-						'liferay-ddm-form-field-grid-template': {
-							condition: {
-								trigger: 'liferay-ddm-form-renderer'
-							},
-							path: 'grid.js'
 						}
 					},
 					root: MODULE_PATH + '/'

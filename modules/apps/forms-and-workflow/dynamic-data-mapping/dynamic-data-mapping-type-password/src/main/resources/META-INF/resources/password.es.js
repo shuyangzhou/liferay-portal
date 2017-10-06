@@ -11,4 +11,12 @@ class Password extends Component {}
 // Register component
 Soy.register(Password, templates, 'render');
 
+if (!window.DDMPassword) {
+	window.DDMPassword = {
+
+	};
+}
+
+window.DDMPassword.render = Password;
+
 export default Password;
