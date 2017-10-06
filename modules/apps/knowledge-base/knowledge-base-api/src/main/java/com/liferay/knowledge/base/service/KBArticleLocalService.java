@@ -71,6 +71,9 @@ public interface KBArticleLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link KBArticleLocalServiceUtil} to access the kb article local service. Add custom service methods to {@link com.liferay.knowledge.base.service.impl.KBArticleLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public FileEntry addAttachment(long userId, long resourcePrimKey,
+		java.lang.String fileName, InputStream inputStream,
+		java.lang.String mimeType) throws PortalException;
 
 	/**
 	* Adds the kb article to the database. Also notifies the appropriate model listeners.
@@ -88,6 +91,32 @@ public interface KBArticleLocalService extends BaseLocalService,
 		java.lang.String[] sections, java.lang.String[] selectedFileNames,
 		ServiceContext serviceContext) throws PortalException;
 
+	public void addKBArticleResources(KBArticle kbArticle,
+		boolean addGroupPermissions, boolean addGuestPermissions)
+		throws PortalException;
+
+	public void addKBArticleResources(KBArticle kbArticle,
+		java.lang.String[] groupPermissions, java.lang.String[] guestPermissions)
+		throws PortalException;
+
+	public void addKBArticleResources(long kbArticleId,
+		boolean addGroupPermissions, boolean addGuestPermissions)
+		throws PortalException;
+
+	public void addKBArticleResources(long kbArticleId,
+		java.lang.String[] groupPermissions, java.lang.String[] guestPermissions)
+		throws PortalException;
+
+	public int addKBArticlesMarkdown(long userId, long groupId,
+		long parentKbFolderId, java.lang.String fileName,
+		boolean prioritizeByNumericalPrefix, InputStream inputStream,
+		ServiceContext serviceContext) throws PortalException;
+
+	public void addTempAttachment(long groupId, long userId,
+		java.lang.String fileName, java.lang.String tempFolderName,
+		InputStream inputStream, java.lang.String mimeType)
+		throws PortalException;
+
 	/**
 	* Creates a new kb article with the primary key. Does not add the kb article to the database.
 	*
@@ -95,6 +124,8 @@ public interface KBArticleLocalService extends BaseLocalService,
 	* @return the new kb article
 	*/
 	public KBArticle createKBArticle(long kbArticleId);
+
+	public void deleteGroupKBArticles(long groupId) throws PortalException;
 
 	/**
 	* Deletes the kb article from the database. Also notifies the appropriate model listeners.
@@ -119,128 +150,11 @@ public interface KBArticleLocalService extends BaseLocalService,
 	public KBArticle deleteKBArticle(long kbArticleId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle fetchFirstChildKBArticle(long groupId,
-		long parentResourcePrimKey);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle fetchKBArticle(long kbArticleId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle fetchKBArticle(long resourcePrimKey, long groupId,
-		int version);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle fetchKBArticleByUrlTitle(long groupId,
-		java.lang.String kbFolderUrlTitle, java.lang.String urlTitle)
+	public void deleteKBArticles(long groupId, long parentResourcePrimKey)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle fetchKBArticleByUrlTitle(long groupId, long kbFolderId,
-		java.lang.String urlTitle);
-
-	/**
-	* Returns the kb article matching the UUID and group.
-	*
-	* @param uuid the kb article's UUID
-	* @param groupId the primary key of the group
-	* @return the matching kb article, or <code>null</code> if a matching kb article could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle fetchKBArticleByUuidAndGroupId(java.lang.String uuid,
-		long groupId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle fetchLatestKBArticle(long resourcePrimKey, int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle fetchLatestKBArticle(long resourcePrimKey, long groupId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle fetchLatestKBArticleByUrlTitle(long groupId,
-		long kbFolderId, java.lang.String urlTitle, int status);
-
-	/**
-	* Returns the kb article with the primary key.
-	*
-	* @param kbArticleId the primary key of the kb article
-	* @return the kb article
-	* @throws PortalException if a kb article with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle getKBArticle(long kbArticleId) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle getKBArticle(long resourcePrimKey, int version)
+	public void deleteKBArticles(long[] resourcePrimKeys)
 		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle getKBArticleByUrlTitle(long groupId,
-		java.lang.String kbFolderUrlTitle, java.lang.String urlTitle)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle getKBArticleByUrlTitle(long groupId, long kbFolderId,
-		java.lang.String urlTitle) throws PortalException;
-
-	/**
-	* Returns the kb article matching the UUID and group.
-	*
-	* @param uuid the kb article's UUID
-	* @param groupId the primary key of the group
-	* @return the matching kb article
-	* @throws PortalException if a matching kb article could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle getKBArticleByUuidAndGroupId(java.lang.String uuid,
-		long groupId) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle getLatestKBArticle(long resourcePrimKey, int status)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle getLatestKBArticleByUrlTitle(long groupId,
-		long kbFolderId, java.lang.String urlTitle, int status)
-		throws PortalException;
-
-	public KBArticle revertKBArticle(long userId, long resourcePrimKey,
-		int version, ServiceContext serviceContext) throws PortalException;
-
-	/**
-	* Updates the kb article in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param kbArticle the kb article
-	* @return the kb article that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public KBArticle updateKBArticle(KBArticle kbArticle);
-
-	public KBArticle updateKBArticle(long userId, long resourcePrimKey,
-		java.lang.String title, java.lang.String content,
-		java.lang.String description, java.lang.String sourceURL,
-		java.lang.String[] sections, java.lang.String[] selectedFileNames,
-		long[] removeFileEntryIds, ServiceContext serviceContext)
-		throws PortalException;
-
-	public KBArticle updateStatus(long userId, long resourcePrimKey,
-		int status, ServiceContext serviceContext) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KBArticle[] getPreviousAndNextKBArticles(long kbArticleId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		PortletDataContext portletDataContext);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
 	* @throws PortalException
@@ -249,68 +163,11 @@ public interface KBArticleLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+	public void deleteTempAttachment(long groupId, long userId,
+		java.lang.String fileName, java.lang.String tempFolderName)
 		throws PortalException;
 
-	public FileEntry addAttachment(long userId, long resourcePrimKey,
-		java.lang.String fileName, InputStream inputStream,
-		java.lang.String mimeType) throws PortalException;
-
-	public int addKBArticlesMarkdown(long userId, long groupId,
-		long parentKbFolderId, java.lang.String fileName,
-		boolean prioritizeByNumericalPrefix, InputStream inputStream,
-		ServiceContext serviceContext) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getCompanyKBArticlesCount(long companyId, int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getGroupKBArticlesCount(long groupId, int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getKBArticleVersionsCount(long resourcePrimKey, int status);
-
-	/**
-	* Returns the number of kb articles.
-	*
-	* @return the number of kb articles
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getKBArticlesCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getKBArticlesCount(long groupId, long parentResourcePrimKey,
-		int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getKBFolderKBArticlesCount(long groupId, long kbFolderId,
-		int status);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getSectionsKBArticlesCount(long groupId,
-		java.lang.String[] sections, int status);
-
-	/**
-	* @deprecated As of 1.1.0, replaced by {@link #getKBArticlesCount(long,
-	long, int)}
-	*/
-	@java.lang.Deprecated
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getSiblingKBArticlesCount(long groupId,
-		long parentResourcePrimKey, int status);
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String[] getTempAttachmentNames(long groupId, long userId,
-		java.lang.String tempFolderName) throws PortalException;
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -351,6 +208,68 @@ public interface KBArticleLocalService extends BaseLocalService,
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
 
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KBArticle fetchFirstChildKBArticle(long groupId,
+		long parentResourcePrimKey);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KBArticle fetchKBArticle(long kbArticleId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KBArticle fetchKBArticle(long resourcePrimKey, long groupId,
+		int version);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KBArticle fetchKBArticleByUrlTitle(long groupId, long kbFolderId,
+		java.lang.String urlTitle);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KBArticle fetchKBArticleByUrlTitle(long groupId,
+		java.lang.String kbFolderUrlTitle, java.lang.String urlTitle)
+		throws PortalException;
+
+	/**
+	* Returns the kb article matching the UUID and group.
+	*
+	* @param uuid the kb article's UUID
+	* @param groupId the primary key of the group
+	* @return the matching kb article, or <code>null</code> if a matching kb article could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KBArticle fetchKBArticleByUuidAndGroupId(java.lang.String uuid,
+		long groupId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KBArticle fetchLatestKBArticle(long resourcePrimKey, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KBArticle fetchLatestKBArticle(long resourcePrimKey, long groupId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KBArticle fetchLatestKBArticleByUrlTitle(long groupId,
+		long kbFolderId, java.lang.String urlTitle, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KBArticle> getAllDescendantKBArticles(long resourcePrimKey,
 		int status, OrderByComparator<KBArticle> orderByComparator);
@@ -360,8 +279,35 @@ public interface KBArticleLocalService extends BaseLocalService,
 		int start, int end, OrderByComparator<KBArticle> orderByComparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getCompanyKBArticlesCount(long companyId, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		PortletDataContext portletDataContext);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KBArticle> getGroupKBArticles(long groupId, int status,
 		int start, int end, OrderByComparator<KBArticle> orderByComparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getGroupKBArticlesCount(long groupId, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the kb article with the primary key.
+	*
+	* @param kbArticleId the primary key of the kb article
+	* @return the kb article
+	* @throws PortalException if a kb article with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KBArticle getKBArticle(long kbArticleId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KBArticle getKBArticle(long resourcePrimKey, int version)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KBArticle> getKBArticleAndAllDescendantKBArticles(
@@ -379,9 +325,25 @@ public interface KBArticleLocalService extends BaseLocalService,
 		int status, OrderByComparator<KBArticle> orderByComparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<KBArticle> getKBArticleVersions(long resourcePrimKey,
-		int status, int start, int end,
-		OrderByComparator<KBArticle> orderByComparator);
+	public KBArticle getKBArticleByUrlTitle(long groupId, long kbFolderId,
+		java.lang.String urlTitle) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KBArticle getKBArticleByUrlTitle(long groupId,
+		java.lang.String kbFolderUrlTitle, java.lang.String urlTitle)
+		throws PortalException;
+
+	/**
+	* Returns the kb article matching the UUID and group.
+	*
+	* @param uuid the kb article's UUID
+	* @param groupId the primary key of the group
+	* @return the matching kb article
+	* @throws PortalException if a matching kb article could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KBArticle getKBArticleByUuidAndGroupId(java.lang.String uuid,
+		long groupId) throws PortalException;
 
 	/**
 	* Returns a range of all the kb articles.
@@ -432,18 +394,71 @@ public interface KBArticleLocalService extends BaseLocalService,
 		java.lang.String uuid, long companyId, int start, int end,
 		OrderByComparator<KBArticle> orderByComparator);
 
+	/**
+	* Returns the number of kb articles.
+	*
+	* @return the number of kb articles
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getKBArticlesCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getKBArticlesCount(long groupId, long parentResourcePrimKey,
+		int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<KBArticle> getKBArticleVersions(long resourcePrimKey,
+		int status, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getKBArticleVersionsCount(long resourcePrimKey, int status);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KBArticle> getKBFolderKBArticles(long groupId, long kbFolderId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getKBFolderKBArticlesCount(long groupId, long kbFolderId,
+		int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KBArticle getLatestKBArticle(long resourcePrimKey, int status)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KBArticle getLatestKBArticleByUrlTitle(long groupId,
+		long kbFolderId, java.lang.String urlTitle, int status)
+		throws PortalException;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<?extends PersistedModel> getPersistedModel(long resourcePrimKey)
 		throws PortalException;
 
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KBArticle[] getPreviousAndNextKBArticles(long kbArticleId)
+		throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KBArticle> getSectionsKBArticles(long groupId,
 		java.lang.String[] sections, int status, int start, int end,
 		OrderByComparator<KBArticle> orderByComparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getSectionsKBArticlesCount(long groupId,
+		java.lang.String[] sections, int status);
 
 	/**
 	* @deprecated As of 1.1.0, replaced by {@link #getKBArticles(long, long,
@@ -455,66 +470,31 @@ public interface KBArticleLocalService extends BaseLocalService,
 		long parentResourcePrimKey, int status, int start, int end,
 		OrderByComparator<KBArticle> orderByComparator);
 
+	/**
+	* @deprecated As of 1.1.0, replaced by {@link #getKBArticlesCount(long,
+	long, int)}
+	*/
+	@java.lang.Deprecated
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getSiblingKBArticlesCount(long groupId,
+		long parentResourcePrimKey, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.lang.String[] getTempAttachmentNames(long groupId, long userId,
+		java.lang.String tempFolderName) throws PortalException;
+
+	public void moveKBArticle(long userId, long resourcePrimKey,
+		long parentResourceClassNameId, long parentResourcePrimKey,
+		double priority) throws PortalException;
+
+	public KBArticle revertKBArticle(long userId, long resourcePrimKey,
+		int version, ServiceContext serviceContext) throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KBArticle> search(long groupId, java.lang.String title,
 		java.lang.String content, int status, Date startDate, Date endDate,
 		boolean andOperator, int start, int end,
 		OrderByComparator<KBArticle> orderByComparator);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	public void addKBArticleResources(KBArticle kbArticle,
-		boolean addGroupPermissions, boolean addGuestPermissions)
-		throws PortalException;
-
-	public void addKBArticleResources(KBArticle kbArticle,
-		java.lang.String[] groupPermissions, java.lang.String[] guestPermissions)
-		throws PortalException;
-
-	public void addKBArticleResources(long kbArticleId,
-		boolean addGroupPermissions, boolean addGuestPermissions)
-		throws PortalException;
-
-	public void addKBArticleResources(long kbArticleId,
-		java.lang.String[] groupPermissions, java.lang.String[] guestPermissions)
-		throws PortalException;
-
-	public void addTempAttachment(long groupId, long userId,
-		java.lang.String fileName, java.lang.String tempFolderName,
-		InputStream inputStream, java.lang.String mimeType)
-		throws PortalException;
-
-	public void deleteGroupKBArticles(long groupId) throws PortalException;
-
-	public void deleteKBArticles(long groupId, long parentResourcePrimKey)
-		throws PortalException;
-
-	public void deleteKBArticles(long[] resourcePrimKeys)
-		throws PortalException;
-
-	public void deleteTempAttachment(long groupId, long userId,
-		java.lang.String fileName, java.lang.String tempFolderName)
-		throws PortalException;
-
-	public void moveKBArticle(long userId, long resourcePrimKey,
-		long parentResourceClassNameId, long parentResourcePrimKey,
-		double priority) throws PortalException;
 
 	public void subscribeGroupKBArticles(long userId, long groupId)
 		throws PortalException;
@@ -526,6 +506,22 @@ public interface KBArticleLocalService extends BaseLocalService,
 		throws PortalException;
 
 	public void unsubscribeKBArticle(long userId, long resourcePrimKey)
+		throws PortalException;
+
+	/**
+	* Updates the kb article in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param kbArticle the kb article
+	* @return the kb article that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public KBArticle updateKBArticle(KBArticle kbArticle);
+
+	public KBArticle updateKBArticle(long userId, long resourcePrimKey,
+		java.lang.String title, java.lang.String content,
+		java.lang.String description, java.lang.String sourceURL,
+		java.lang.String[] sections, java.lang.String[] selectedFileNames,
+		long[] removeFileEntryIds, ServiceContext serviceContext)
 		throws PortalException;
 
 	public void updateKBArticleAsset(long userId, KBArticle kbArticle,
@@ -541,6 +537,9 @@ public interface KBArticleLocalService extends BaseLocalService,
 		throws PortalException;
 
 	public void updatePriority(long resourcePrimKey, double priority);
+
+	public KBArticle updateStatus(long userId, long resourcePrimKey,
+		int status, ServiceContext serviceContext) throws PortalException;
 
 	public void updateViewCount(long userId, long resourcePrimKey, int viewCount)
 		throws PortalException;

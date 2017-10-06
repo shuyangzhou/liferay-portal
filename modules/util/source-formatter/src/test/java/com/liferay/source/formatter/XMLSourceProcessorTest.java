@@ -48,9 +48,6 @@ public class XMLSourceProcessorTest extends BaseSourceProcessorTestCase {
 		test(
 			"CharactersBeforeDefinitionTag3.testmacro",
 			"Characters found before definition element");
-		test(
-			"CharactersBeforeDefinitionTag4.testmacro",
-			"Characters found before definition element");
 	}
 
 	@Test

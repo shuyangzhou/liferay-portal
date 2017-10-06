@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ServerDetector;
+import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -77,6 +78,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -115,7 +117,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			}
 		}
 
-		new BaseDeployer(wars, jars);
+		StreamUtil.cleanUp(new BaseDeployer(wars, jars));
 	}
 
 	public BaseDeployer() {
@@ -567,11 +569,15 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			File srcFile, String displayName, PluginPackage pluginPackage)
 		throws Exception {
 
-		if (appServerType.equals(ServerDetector.JBOSS_ID)) {
+		if (appServerType.equals(ServerDetector.JBOSS_ID) ||
+			appServerType.equals(ServerDetector.WILDFLY_ID)) {
+
+			File file = new File(PropsValues.LIFERAY_WEB_PORTAL_DIR);
+
 			copyDependencyXml(
-				"jboss-deployment-structure.xml", srcFile + "/WEB-INF");
-		}
-		else if (appServerType.equals(ServerDetector.WILDFLY_ID)) {
+				"jboss-all.xml", srcFile + "/WEB-INF",
+				Collections.singletonMap("root_war", file.getName()), true);
+
 			copyDependencyXml(
 				"jboss-deployment-structure.xml", srcFile + "/WEB-INF");
 		}

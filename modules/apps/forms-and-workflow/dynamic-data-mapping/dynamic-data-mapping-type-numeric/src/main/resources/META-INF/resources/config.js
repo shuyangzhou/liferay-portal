@@ -22,10 +22,7 @@
 							condition: {
 								trigger: 'liferay-ddm-form-renderer'
 							},
-							path: 'numeric.soy.js',
-							requires: [
-								'soyutils'
-							]
+							path: 'numeric.js'
 						}
 					},
 					root: MODULE_PATH + '/'

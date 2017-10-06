@@ -22,9 +22,7 @@ long assetCategoryId = ParamUtil.getLong(request, "categoryId");
 if (assetCategoryId > 0) {
 	AssetCategory assetCategory = AssetCategoryLocalServiceUtil.getCategory(assetCategoryId);
 
-	assetCategory = assetCategory.toEscapedModel();
-
-	PortalUtil.setPageKeywords(assetCategory.getTitle(locale), request);
+	PortalUtil.setPageKeywords(HtmlUtil.escape(assetCategory.getTitle(locale)), request);
 }
 
 String assetTagName = ParamUtil.getString(request, "tag");
@@ -93,7 +91,7 @@ if (!assetPublisherDisplayContext.isPaginationTypeNone()) {
 %>
 
 <c:if test="<%= assetPublisherDisplayContext.isShowMetadataDescriptions() %>">
-	<liferay-ui:categorization-filter
+	<liferay-asset:categorization-filter
 		assetType="content"
 		portletURL="<%= portletURL %>"
 	/>

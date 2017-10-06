@@ -105,6 +105,10 @@ public class DDMFormValuesJSONDeserializerImpl
 	protected Set<Locale> getAvailableLocales(JSONArray jsonArray) {
 		Set<Locale> availableLocales = new HashSet<>();
 
+		if (jsonArray == null) {
+			return availableLocales;
+		}
+
 		for (int i = 0; i < jsonArray.length(); i++) {
 			Locale availableLocale = LocaleUtil.fromLanguageId(
 				jsonArray.getString(i));

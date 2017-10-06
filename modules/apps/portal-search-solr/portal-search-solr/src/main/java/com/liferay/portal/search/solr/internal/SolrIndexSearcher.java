@@ -278,7 +278,10 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 		solrQuery.addHighlightField(localizedFieldName);
 	}
 
-	protected void addHighlights(SolrQuery solrQuery, QueryConfig queryConfig) {
+	protected void addHighlights(
+		SolrQuery solrQuery, SearchContext searchContext,
+		QueryConfig queryConfig) {
+
 		if (!queryConfig.isHighlightEnabled()) {
 			return;
 		}
@@ -293,8 +296,13 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 			addHighlightedField(solrQuery, queryConfig, highlightFieldName);
 		}
 
-		solrQuery.setHighlightRequireFieldMatch(
-			queryConfig.isHighlightRequireFieldMatch());
+		boolean luceneSyntax = GetterUtil.getBoolean(
+			searchContext.getAttribute("luceneSyntax"));
+
+		if (!luceneSyntax) {
+			solrQuery.setHighlightRequireFieldMatch(
+				queryConfig.isHighlightRequireFieldMatch());
+		}
 	}
 
 	protected void addPagination(
@@ -359,12 +367,10 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 
 		Map<String, List<String>> uidHighlights = highlights.get(key);
 
-		String localizedFieldName = DocumentImpl.getLocalizedName(
+		String snippetFieldName = DocumentImpl.getLocalizedName(
 			locale, fieldName);
 
-		String snippetFieldName = localizedFieldName;
-
-		List<String> snippets = uidHighlights.get(localizedFieldName);
+		List<String> snippets = uidHighlights.get(snippetFieldName);
 
 		if (snippets == null) {
 			snippets = uidHighlights.get(fieldName);
@@ -382,8 +388,9 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 			}
 		}
 
-		HighlightUtil.addSnippet(
-			document, queryTerms, snippet, snippetFieldName);
+		document.addText(
+			Field.SNIPPET.concat(StringPool.UNDERLINE).concat(snippetFieldName),
+			snippet);
 	}
 
 	protected void addSort(SolrQuery solrQuery, Sort[] sorts) {
@@ -438,7 +445,7 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 		if (!count) {
 			addFacets(solrQuery, searchContext);
 			addGroupBy(solrQuery, searchContext, start, end);
-			addHighlights(solrQuery, queryConfig);
+			addHighlights(solrQuery, searchContext, queryConfig);
 			addPagination(solrQuery, searchContext, start, end);
 			addSelectedFields(solrQuery, queryConfig);
 			addSort(solrQuery, searchContext.getSorts());
@@ -472,6 +479,10 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 		if (!filterQueries.isEmpty()) {
 			solrQuery.setFilterQueries(
 				filterQueries.toArray(new String[filterQueries.size()]));
+
+			if (Validator.isBlank(solrQuery.getQuery())) {
+				solrQuery.setQuery("*:*");
+			}
 		}
 
 		String solrQueryString = solrQuery.toString();

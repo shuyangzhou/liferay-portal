@@ -19,13 +19,13 @@ import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.nio.charset.Charset;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -112,7 +112,7 @@ public class LibraryReferenceTest {
 
 	@Test
 	public void testLibJarsInNetBeans() {
-		testMissingJarReferences(_netBeansJars, _NETBEANS_FILE_NAME);
+		testMissingJarReferences(_netBeansJars, _NETBEANS_PROPERTIES_FILE_NAME);
 	}
 
 	@Test
@@ -129,23 +129,28 @@ public class LibraryReferenceTest {
 	@Test
 	public void testModulesSourceDirsInNetBeans() {
 		testMissingModuleSourceDirReferences(
-			_netBeansModuleSourceDirs, _NETBEANS_FILE_NAME);
+			_netBeansModuleSourceDirs, _NETBEANS_XML_FILE_NAME);
 	}
 
 	@Test
 	public void testNetBeansJarsInLib() {
-		testNonexistentJarReferences(_netBeansJars, _NETBEANS_FILE_NAME);
+		testNonexistentJarReferences(
+			_netBeansJars, _NETBEANS_PROPERTIES_FILE_NAME);
 	}
 
 	@Test
 	public void testNetBeansSourceDirsInModules() {
 		testNonexistentModuleSourceDirReferences(
-			_netBeansModuleSourceDirs, _NETBEANS_FILE_NAME);
+			_netBeansModuleSourceDirs, _NETBEANS_XML_FILE_NAME);
 	}
 
 	@Test
 	public void testVersionsExtJarsInLib() {
 		for (String jar : _versionsExtJars) {
+			if (jar.indexOf(CharPool.EXCLAMATION) != -1) {
+				continue;
+			}
+
 			Assert.assertTrue(
 				_VERSIONS_EXT_FILE_NAME + " has a nonexistent reference to " +
 					jar,
@@ -176,7 +181,7 @@ public class LibraryReferenceTest {
 			String referenceJar = jar;
 
 			if (fileName.equals(_GIT_IGNORE_FILE_NAME)) {
-				referenceJar = CharPool.SLASH + referenceJar;
+				referenceJar = referenceJar.substring(LIB_DIR_NAME.length());
 			}
 
 			Assert.assertTrue(
@@ -221,6 +226,8 @@ public class LibraryReferenceTest {
 		}
 	}
 
+	protected static final String LIB_DIR_NAME = "lib";
+
 	private static void _initEclipse(DocumentBuilder documentBuilder)
 		throws Exception {
 
@@ -239,7 +246,7 @@ public class LibraryReferenceTest {
 			String kind = kindNode.getNodeValue();
 			String path = pathNode.getNodeValue();
 
-			if (kind.equals(_LIB_DIR_NAME)) {
+			if (kind.equals(LIB_DIR_NAME)) {
 				_eclipseJars.add(path);
 			}
 			else if (kind.equals("src")) {
@@ -258,29 +265,15 @@ public class LibraryReferenceTest {
 			String line = null;
 
 			while ((line = unsyncBufferedReader.readLine()) != null) {
-				if (line.startsWith(
-						CharPool.SLASH + _LIB_DIR_NAME + CharPool.SLASH)) {
-
-					_gitIgnoreJars.add(line.substring(1));
-				}
+				_gitIgnoreJars.add(LIB_DIR_NAME + line);
 			}
 		}
 	}
 
 	private static void _initLibJars() throws IOException {
-		Path libDirPath = Paths.get(_LIB_DIR_NAME);
+		Path libDirPath = Paths.get(LIB_DIR_NAME);
 
-		for (String line :
-				Files.readAllLines(
-					libDirPath.resolve("versions-ignore.txt"),
-					Charset.forName("UTF-8"))) {
-
-			line = line.trim();
-
-			if (!line.isEmpty()) {
-				_excludeJars.add(line);
-			}
-		}
+		_readLines(_excludeJars, libDirPath.resolve("versions-ignore.txt"));
 
 		Files.walkFileTree(
 			libDirPath,
@@ -355,7 +348,7 @@ public class LibraryReferenceTest {
 
 					String dirName = String.valueOf(dirPath.getFileName());
 
-					if (!dirName.equals("util-taglib-compat") &&
+					if (!dirName.endsWith("-compat") &&
 						Files.exists(dirPath.resolve(".lfrbuild-portal-pre"))) {
 
 						Path sourceDirPath = dirPath.resolve(
@@ -384,12 +377,12 @@ public class LibraryReferenceTest {
 		throws Exception {
 
 		Document document = documentBuilder.parse(
-			new File(_NETBEANS_FILE_NAME));
+			new File(_NETBEANS_XML_FILE_NAME));
 
 		Properties properties = new Properties();
 
 		try (InputStream in = Files.newInputStream(
-				Paths.get("nbproject/project.properties"))) {
+				Paths.get(_NETBEANS_PROPERTIES_FILE_NAME))) {
 
 			properties.load(in);
 		}
@@ -433,23 +426,46 @@ public class LibraryReferenceTest {
 		}
 	}
 
+	private static void _readLines(Set<String> lines, Path path)
+		throws IOException {
+
+		if (Files.notExists(path)) {
+			return;
+		}
+
+		try (UnsyncBufferedReader unsyncBufferedReader =
+				new UnsyncBufferedReader(new FileReader(path.toFile()))) {
+
+			String line = null;
+
+			while ((line = unsyncBufferedReader.readLine()) != null) {
+				if (Validator.isNotNull(line)) {
+					lines.add(line);
+				}
+			}
+		}
+	}
+
 	private static final String _ECLIPSE_FILE_NAME = ".classpath";
 
-	private static final String _GIT_IGNORE_FILE_NAME = ".gitignore";
-
-	private static final String _LIB_DIR_NAME = "lib";
+	private static final String _GIT_IGNORE_FILE_NAME =
+		LIB_DIR_NAME + "/.gitignore";
 
 	private static final String _MODULES_DIR_NAME = "modules";
 
-	private static final String _NETBEANS_FILE_NAME = "nbproject/project.xml";
+	private static final String _NETBEANS_PROPERTIES_FILE_NAME =
+		"nbproject/project.properties";
+
+	private static final String _NETBEANS_XML_FILE_NAME =
+		"nbproject/project.xml";
 
 	private static final String _SRC_JAVA_DIR_NAME = "src/main/java";
 
 	private static final String _VERSIONS_EXT_FILE_NAME =
-		_LIB_DIR_NAME + "/versions-ext.xml";
+		LIB_DIR_NAME + "/versions-ext.xml";
 
 	private static final String _VERSIONS_FILE_NAME =
-		_LIB_DIR_NAME + "/versions.xml";
+		LIB_DIR_NAME + "/versions.xml";
 
 	private static final Set<String> _eclipseJars = new HashSet<>();
 	private static final Set<String> _eclipseModuleSourceDirs = new HashSet<>();

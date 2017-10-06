@@ -14,6 +14,7 @@
 
 package com.liferay.asset.publisher.web;
 
+import com.liferay.asset.publisher.web.internal.util.AssetPublisherWebUtil;
 import com.liferay.asset.publisher.web.util.AssetPublisherUtil;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.portal.kernel.model.Layout;
@@ -27,7 +28,6 @@ import com.liferay.portal.kernel.service.SubscriptionLocalService;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portlet.asset.util.AssetUtil;
 
 /**
  * Provides the implementation of <code>PortletLayoutListener</code> (in
@@ -57,7 +57,7 @@ public class AssetPublisherPortletLayoutListener
 		try {
 			Layout layout = _layoutLocalService.getLayout(plid);
 
-			if (AssetUtil.isDefaultAssetPublisher(
+			if (AssetPublisherWebUtil.isDefaultAssetPublisher(
 					layout, portletId, StringPool.BLANK)) {
 
 				_journalArticleLocalService.deleteLayoutArticleReferences(

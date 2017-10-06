@@ -84,17 +84,17 @@
 
 		<execute function="AssertClick" locator1="AssetRelatedAssets#RELATED_ASSETS_SELECT" value1="Select" />
 
-		<var name="key_assetType" value="${assetType}" />
-
-		<execute function="AssertClick" locator1="AssetRelatedAssets#RELATED_ASSETS_SELECT_MENULIST_ASSET" value1="${assetType}" />
+		<execute function="AssertClick" locator1="AssetRelatedAssets#RELATED_ASSETS_SELECT_MENULIST_ASSET" value1="${assetType}">
+			<var name="key_assetType" value="${assetType}" />
+		</execute>
 
 		<execute function="SelectFrame" locator1="AssetRelatedAssets#SELECT_ASSET_IFRAME" />
-
-		<var name="key_assetTitle" value="${assetTitle}" />
 
 		<execute function="Type" locator1="Search#SEARCH_FIELD" value1="${assetTitle}" />
 
 		<execute function="Click" locator1="Icon#BASIC_SEARCH" />
+
+		<var name="key_assetTitle" value="${assetTitle}" />
 
 		<execute function="AssertClick" locator1="AssetRelatedAssets#ASSET_TABLE_CHOOSE" value1="${assetTitle}" />
 
@@ -301,12 +301,12 @@
 			<var name="title" value="${webContentTitle}" />
 		</execute>
 
-		<var name="key_fieldName" value="${structureFieldName}" />
-
 		<if>
 			<isset var="webContentText" />
 			<then>
-				<execute function="Type" locator1="DDMField#TEXT" value1="${webContentText}" />
+				<execute function="Type" locator1="DDMField#TEXT" value1="${webContentText}">
+					<var name="key_fieldName" value="${structureFieldName}" />
+				</execute>
 			</then>
 		</if>
 
@@ -320,13 +320,13 @@
 			<var name="panelHeading" value="Metadata" />
 		</execute>
 
-		<var name="key_tagName" value="${tagName}" />
-
 		<execute function="Type" locator1="AssetCategorization#TAGS_FIELD" value1="${tagName}" />
 
 		<execute function="AssertClick" locator1="AssetCategorization#TAGS_ADD_BUTTON" value1="Add" />
 
-		<execute function="AssertTextEquals" locator1="AssetCategorization#TAG" value1="${tagName}" />
+		<execute function="AssertTextEquals" locator1="AssetCategorization#TAG" value1="${tagName}">
+			<var name="key_tagName" value="${tagName}" />
+		</execute>
 
 		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
 
@@ -363,11 +363,7 @@
 			<var name="webContentTitle" value="${webContentTitle}" />
 		</execute>
 
-		<execute function="Click" locator1="AlloyEditor#CONTENT_FIELD" />
-
-		<execute function="Click" locator1="AlloyEditor#CONTENT_ADD_BUTTON" />
-
-		<execute function="Click" locator1="AlloyEditor#CONTENT_ADD_MENUBAR_IMAGE" />
+		<execute macro="ItemSelector#gotoItemSelectorViaAlloyEditor" />
 
 		<execute function="SelectFrame" locator1="IFrame#METADATA_SETS_IFRAME" />
 
@@ -403,9 +399,9 @@
 
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
 
-		<var name="key_ddlDataDefinitionName" value="${structureName}" />
-
-		<execute function="AssertClickNoError" locator1="DDMSelectStructure#DDM_STRUCTURE_TABLE_NAME_LINK" value1="${structureName}" />
+		<execute function="AssertClickNoError" locator1="DDMSelectStructure#DDM_STRUCTURE_TABLE_NAME_LINK" value1="${structureName}">
+			<var name="key_ddlDataDefinitionName" value="${structureName}" />
+		</execute>
 
 		<execute function="Confirm#assertConfirmationNoWait" value1="Selecting a new structure deletes all unsaved content. Do you want to proceed?" />
 
@@ -424,9 +420,9 @@
 			<var name="title" value="${webContentTitle}" />
 		</execute>
 
-		<var name="key_fieldName" value="${fieldName}" />
-
-		<execute function="Type" locator1="DDMField#TEXT" value1="${webContentContent}" />
+		<execute function="Type" locator1="DDMField#TEXT" value1="${webContentContent}">
+			<var name="key_fieldName" value="${fieldName}" />
+		</execute>
 
 		<execute function="Click" locator1="Button#PUBLISH" />
 
@@ -469,9 +465,9 @@
 		<if>
 			<isset var="webContentText" />
 			<then>
-				<var name="key_fieldName" value="Text" />
-
-				<execute function="Type" locator1="DDMField#TEXT" value1="${webContentText}" />
+				<execute function="Type" locator1="DDMField#TEXT" value1="${webContentText}">
+					<var name="key_fieldName" value="Text" />
+				</execute>
 			</then>
 		</if>
 
@@ -495,6 +491,19 @@
 		</if>
 
 		<if>
+			<isset var="webContentColor" />
+			<then>
+				<execute function="Click" locator1="DDMField#TEXT">
+					<var name="key_fieldName" value="Color" />
+				</execute>
+
+				<execute function="Click" locator1="DDMField#COLOR_PICKER_COLOR">
+					<var name="key_colorCode" value="${webContentColor}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
 			<isset var="webContentDate" />
 			<then>
 				<execute function="Type" locator1="DDMField#DATE" value1="${webContentDate}" />
@@ -504,9 +513,9 @@
 		<if>
 			<isset var="webContentDecimal" />
 			<then>
-				<var name="key_fieldName" value="Decimal" />
-
-				<execute function="Type" locator1="DDMField#DECIMAL" value1="${webContentDecimal}" />
+				<execute function="Type" locator1="DDMField#DECIMAL" value1="${webContentDecimal}">
+					<var name="key_fieldName" value="Decimal" />
+				</execute>
 			</then>
 		</if>
 
@@ -520,9 +529,9 @@
 		<if>
 			<isset var="webContentHTML" />
 			<then>
-				<var name="key_fieldName" value="HTML" />
-
-				<execute function="Type#typeEditor" locator1="DDMField#HTML" value1="${webContentHTML}" />
+				<execute function="Type#typeEditor" locator1="DDMField#HTML" value1="${webContentHTML}">
+					<var name="key_fieldName" value="HTML" />
+				</execute>
 			</then>
 		</if>
 
@@ -541,20 +550,20 @@
 		<if>
 			<isset var="webContentInteger" />
 			<then>
-				<var name="key_fieldName" value="Integer" />
-
-				<execute function="Type" locator1="DDMField#INTEGER" value1="${webContentInteger}" />
+				<execute function="Type" locator1="DDMField#INTEGER" value1="${webContentInteger}">
+					<var name="key_fieldName" value="Integer" />
+				</execute>
 			</then>
 		</if>
 
 		<if>
 			<isset var="linkedPageName" />
 			<then>
-				<var name="key_pageName" value="${linkedPageName}" />
-
 				<execute function="Click" locator1="WC#LINK_TO_PAGE_SELECT_PAGE_BUTTON" />
 
-				<execute function="Click" locator1="WC#LINK_TO_PAGE_SELECT_PAGE_RADIO" />
+				<execute function="Click" locator1="WC#LINK_TO_PAGE_SELECT_PAGE_RADIO">
+					<var name="key_pageName" value="${linkedPageName}" />
+				</execute>
 
 				<execute function="ClickNoError" locator1="Button#SELECT" />
 			</then>
@@ -563,9 +572,9 @@
 		<if>
 			<isset var="webContentNumber" />
 			<then>
-				<var name="key_fieldName" value="Number" />
-
-				<execute function="Type" locator1="DDMField#NUMBER" value1="${webContentNumber}" />
+				<execute function="Type" locator1="DDMField#NUMBER" value1="${webContentNumber}">
+					<var name="key_fieldName" value="Number" />
+				</execute>
 			</then>
 		</if>
 
@@ -586,14 +595,15 @@
 		<if>
 			<isset var="WebContentSelectWCFile" />
 			<then>
-				<var name="key_fieldName" value="${fieldName}" />
-				<var name="key_webContentTitle" value="${WebContentSelectWCFile}" />
-
-				<execute function="AssertClick" locator1="DDLEditRecord#WEB_CONTENT_CHOOSE_FROM_WEB_CONTENT_LIBRARY_BUTTON" value1="Select" />
+				<execute function="AssertClick" locator1="DDLEditRecord#WEB_CONTENT_CHOOSE_FROM_WEB_CONTENT_LIBRARY_BUTTON" value1="Select">
+					<var name="key_fieldName" value="${fieldName}" />
+				</execute>
 
 				<execute function="SelectFrame" locator1="IFrame#DIALOG" />
 
-				<execute function="AssertClick" locator1="Link#WEB_CONTENT_ARTICLE" value1="${WebContentSelectWCFile}" />
+				<execute function="AssertClick" locator1="Link#WEB_CONTENT_ARTICLE" value1="${WebContentSelectWCFile}">
+					<var name="key_webContentTitle" value="${WebContentSelectWCFile}" />
+				</execute>
 
 				<execute function="SelectFrame" value1="relative=top" />
 			</then>
@@ -602,25 +612,61 @@
 		<if>
 			<isset var="webContentText" />
 			<then>
-				<var name="key_fieldName" value="Text" />
-
-				<execute function="Type" locator1="DDMField#TEXT" value1="${webContentText}" />
+				<execute function="Type" locator1="DDMField#TEXT" value1="${webContentText}">
+					<var name="key_fieldName" value="Text" />
+				</execute>
 			</then>
 		</if>
 
 		<if>
 			<isset var="webContentTextBox" />
 			<then>
-				<var name="key_fieldName" value="TextBox" />
-
-				<execute function="Type" locator1="DDMField#TEXT_BOX" value1="${webContentTextBox}" />
+				<if>
+					<isset var="fieldName" />
+					<then>
+						<execute function="Type" locator1="DDMField#TEXT_BOX" value1="${webContentTextBox}">
+							<var name="key_fieldName" value="${fieldName}" />
+						</execute>
+					</then>
+					<else>
+						<execute function="Type" locator1="DDMField#TEXT_BOX" value1="${webContentTextBox}">
+							<var name="key_fieldName" value="TextBox" />
+						</execute>
+					</else>
+				</if>
 			</then>
 		</if>
 
 		<if>
-			<isset var="abstractSummary" />
+			<isset var="webContentTextBox2" />
 			<then>
-				<execute function="Type" locator1="TextArea#SUMMARY" value1="${abstractSummary}" />
+				<execute function="Type" locator1="DDMField#TEXT_BOX" value1="${webContentTextBox2}" >
+					<var name="key_fieldName" value="${fieldName2}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<isset var="webContentTextBoxList" />
+			<then>
+				<var name="count" value="1" />
+
+				<for list="${webContentTextBoxList}" param="webContentTextBox">
+					<execute function="Type" locator1="DDMField#TEXT_BOX" value1="${webContentTextBox}">
+						<var name="key_fieldName" value="heading${count}" />
+					</execute>
+
+					<var method="MathUtil#sum('${count}', '1')" name="count" />
+				</for>
+			</then>
+		</if>
+
+		<if>
+			<isset var="description" />
+			<then>
+				<execute macro="AlloyEditor#addDescription">
+					<var name="description" value="${description}" />
+				</execute>
 			</then>
 		</if>
 
@@ -763,7 +809,9 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesContent">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Recycle Bin" />
 		</execute>
 
@@ -771,7 +819,9 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesContent">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Web Content" />
 		</execute>
 
@@ -779,9 +829,9 @@
 	</command>
 
 	<command name="deleteWithDisabledRB">
-		<var name="key_rowEntry" value="${entryTitle}" />
-
-		<execute function="Click#waitForMenuToggleJSClick" locator1="Icon#ROW_VERTICAL_ELLIPSIS" />
+		<execute function="Click#waitForMenuToggleJSClick" locator1="Icon#ROW_VERTICAL_ELLIPSIS">
+			<var name="key_rowEntry" value="${entryTitle}" />
+		</execute>
 
 		<execute function="ClickNoError" locator1="MenuItem#ANY_MENU_ITEM" value1="Delete">
 			<var name="key_menuItem" value="Delete" />
@@ -818,11 +868,11 @@
 			<else>
 				<execute macro="PortletEntry#publish" />
 
-				<var name="key_webContentTitle" value="${webContentTitleEdit}" />
-
 				<execute macro="Portlet#changeDisplayStyle">
 					<var name="displayStyle" value="Descriptive" />
 				</execute>
+
+				<var name="key_webContentTitle" value="${webContentTitleEdit}" />
 
 				<execute function="AssertElementPresent#pauseAssertVisible" locator1="WC#ENTRY_DESCRIPTIVE_THUMBNAIL" />
 				<execute function="AssertTextEquals#assertPartialText" locator1="WC#ENTRY_DESCRIPTIVE_TITLE" value1="${webContentTitleEdit}" />
@@ -868,13 +918,9 @@
 	</command>
 
 	<command name="editDisplayPagePGViaAP">
-		<var name="key_assetTitle" value="${assetTitle}" />
-
-		<execute function="MouseOver" locator1="AP#BODY" />
-
-		<execute function="Click#mouseOverClick" locator1="Icon#EDIT" />
-
-		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
+		<execute macro="AssetPublisherPortlet#gotoEditAssetPG">
+			<var name="assetTitle" value="${assetTitle}" />
+		</execute>
 
 		<execute macro="WebContent#editDisplayPage">
 			<var name="pageName" value="${displayPageName}" />
@@ -907,11 +953,11 @@
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
 
 		<execute macro="Button#clickSave" />
+
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="editNullCP">
-		<var name="key_webContentTitle" value="${webContentTitle}" />
-
 		<execute macro="PortletEntry#inputTitle">
 			<var name="title" value="" />
 		</execute>
@@ -938,9 +984,9 @@
 		<if>
 			<isset var="webContentText" />
 			<then>
-				<var name="key_fieldName" value="Text" />
-
-				<execute function="Type" locator1="DDMField#TEXT" value1="${webContentText}" />
+				<execute function="Type" locator1="DDMField#TEXT" value1="${webContentText}">
+					<var name="key_fieldName" value="Text" />
+				</execute>
 			</then>
 			<else>
 				<execute macro="AlloyEditor#addContent">
@@ -987,15 +1033,15 @@
 			<isset var="webContentList" />
 			<then>
 				<for list="${webContentList}" param="webContentTitle">
-					<var name="key_webContentTitle" value="${webContentTitle}" />
-
-					<execute function="Check" locator1="WCEditWebContent#VIEW_HISTORY_VERSION_CHECKBOX" />
+					<execute function="Check" locator1="WCEditWebContent#VIEW_HISTORY_VERSION_CHECKBOX">
+						<var name="key_webContentTitle" value="${webContentTitle}" />
+					</execute>
 				</for>
 			</then>
 			<else>
-				<var name="key_webContentTitle" value="${webContentTitle}" />
-
-				<execute function="Check" locator1="WCEditWebContent#VIEW_HISTORY_VERSION_CHECKBOX" />
+				<execute function="Check" locator1="WCEditWebContent#VIEW_HISTORY_VERSION_CHECKBOX">
+					<var name="key_webContentTitle" value="${webContentTitle}" />
+				</execute>
 			</else>
 		</if>
 
@@ -1024,6 +1070,36 @@
 		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="View History">
 			<var name="key_menuItem" value="View History" />
 		</execute>
+	</command>
+
+	<command name="moveArticlesToFolderCP">
+		<for list="${webContentArticlesList}" param="webContentTitle">
+			<execute function="Check" locator1="WC#ENTRY_DESCRIPTIVE_CHECKBOX">
+				<var name="key_webContentTitle" value="${webContentTitle}" />
+			</execute>
+		</for>
+
+		<execute function="Click" locator1="Icon#MOVE" />
+
+		<execute function="AssertTextEquals" locator1="Portlet#HEADER" value1="Move Web Content" />
+
+		<execute function="Click" locator1="Button#PARENT_FOLDER_SELECT" />
+
+		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
+
+		<execute macro="Portlet#expandTree" />
+
+		<execute macro="Portlet#selectTreeNode">
+			<var name="nodeName" value="${folderName}" />
+		</execute>
+
+		<execute function="SelectFrameTop" />
+
+		<execute macro="Button#clickDone" />
+
+		<execute function="AssertClick" locator1="Button#MOVE" value1="Move" />
+
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="moveMultipleToFolderCP">
@@ -1092,8 +1168,6 @@
 	</command>
 
 	<command name="moveToRecycleBinCP">
-		<var name="key_assetType" value="${assetType}" />
-
 		<execute macro="WebContent#viewTitle">
 			<var name="webContentTitle" value="${webContentTitle}" />
 			<var name="webContentTitleEscapeCharacter" value="${webContentTitleEscapeCharacter}" />
@@ -1143,15 +1217,13 @@
 
 		<execute function="AssertClick" locator1="AssetRelatedAssets#RELATED_ASSETS_SELECT" value1="Select" />
 
-		<var name="key_assetType" value="${assetType}" />
-
-		<execute function="AssertClick" locator1="AssetRelatedAssets#RELATED_ASSETS_SELECT_MENULIST_ASSET" value1="${assetType}" />
+		<execute function="AssertClick" locator1="AssetRelatedAssets#RELATED_ASSETS_SELECT_MENULIST_ASSET" value1="${assetType}">
+			<var name="key_assetType" value="${assetType}" />
+		</execute>
 
 		<execute function="SelectFrame" locator1="AssetRelatedAssets#SELECT_ASSET_IFRAME" />
 
 		<execute function="AssertClick#assertPartialTextClickAt" locator1="Pagination#ITEMS_PER_PAGE_SELECT" value1="20 Entries" />
-
-		<var name="key_itemsPerPage" value="${itemsPerPage}" />
 
 		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="${itemsPerPage}">
 			<var name="key_menuItem" value="${itemsPerPage}" />
@@ -1159,8 +1231,6 @@
 	</command>
 
 	<command name="preview">
-		<var name="key_iframeTitle" value="${webContentTitle}" />
-
 		<execute function="AssertTextEquals" locator1="WCPreview#PREVIEW_TITLE" value1="${webContentTitle}" />
 
 		<execute function="SelectFrame" locator1="WCPreview#PREVIEW_IFRAME" />
@@ -1196,32 +1266,32 @@
 	</command>
 
 	<command name="searchCP">
-		<var name="key_webContentFolder" value="${webContentFolder}" />
-		<var name="key_webContentTitle" value="${webContentTitle}" />
-
 		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${webContentTitle}" />
 
 		<execute function="Click" locator1="Icon#BASIC_SEARCH" />
 
-		<execute function="AssertTextEquals" locator1="WC#SEARCH_TITLE" value1="${webContentTitle}" />
+		<execute function="AssertTextEquals" locator1="WC#SEARCH_TITLE" value1="${webContentTitle}">
+			<var name="key_webContentTitle" value="${webContentTitle}" />
+		</execute>
 	</command>
 
 	<command name="searchNoResultsCP">
-		<var name="key_webContentFolder" value="${webContentFolder}" />
-		<var name="key_webContentTitle" value="${webContentTitle}" />
-
 		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${searchQuery}" />
 
 		<execute function="Click" locator1="Icon#BASIC_SEARCH" />
 
 		<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="No web content was found." />
-		<execute function="AssertTextNotPresent" locator1="WC#SEARCH_TITLE" value1="${webContentTitle}" />
+		<execute function="AssertTextNotPresent" locator1="WC#SEARCH_TITLE" value1="${webContentTitle}">
+			<var name="key_webContentTitle" value="${webContentTitle}" />
+		</execute>
 
 		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="" />
 
 		<execute function="Click" locator1="Icon#BASIC_SEARCH" />
 
-		<execute function="AssertTextPresent" locator1="WC#SEARCH_TITLE" value1="${webContentTitle}" />
+		<execute function="AssertTextPresent" locator1="WC#SEARCH_TITLE" value1="${webContentTitle}">
+			<var name="key_webContentTitle" value="${webContentTitle}" />
+		</execute>
 	</command>
 
 	<command name="selectCategory">
@@ -1232,24 +1302,26 @@
 		<if>
 			<isset var="userSegmentDetailTitle" />
 			<then>
-				<var name="key_userSegmentDetailTitle" value="${userSegmentDetailTitle}" />
-
-				<execute function="AssertTextEquals" locator1="WCEditWebContent#USER_SEGMENT_DETAIL_TITLE" value1="${userSegmentDetailTitle}" />
+				<execute function="AssertTextEquals" locator1="WCEditWebContent#USER_SEGMENT_DETAIL_TITLE" value1="${userSegmentDetailTitle}">
+					<var name="key_userSegmentDetailTitle" value="${userSegmentDetailTitle}" />
+				</execute>
 			</then>
 		</if>
 
 		<if>
 			<equals arg1="${userSegmentSelectChildSite}" arg2="true" />
 			<then>
-				<var name="key_vocabularyName" value="${vocabularyName}" />
+				<execute function="AssertClick" locator1="AssetCategorization#CATEGORY_SELECT_CHILD_SITE" value1="Select">
+					<var name="key_vocabularyName" value="${vocabularyName}" />
+				</execute>
 
-				<execute function="AssertClick" locator1="AssetCategorization#CATEGORY_SELECT_CHILD_SITE" value1="Select" />
+				<execute function="Click" locator1="AssetCategorization#CATEGORIES_CATEGORY_CHECKBOX">
+					<var name="key_categoryName" value="${categoryName}" />
+				</execute>
 
-				<var name="key_categoryName" value="${categoryName}" />
-
-				<execute function="Click" locator1="AssetCategorization#CATEGORIES_CATEGORY_CHECKBOX" />
-
-				<execute function="AssertVisible" locator1="AssetCategorization#CATEGORIES_CATEGORY_CHECKBOX_CHECKED" />
+				<execute function="AssertVisible" locator1="AssetCategorization#CATEGORIES_CATEGORY_CHECKBOX_CHECKED">
+					<var name="key_categoryName" value="${categoryName}" />
+				</execute>
 
 				<execute function="Click" locator1="Icon#CLOSE" />
 			</then>
@@ -1283,9 +1355,9 @@
 
 		<execute function="SelectFrame" locator1="IFrame#TEMPLATES" />
 
-		<var name="key_rowEntry" value="${templateName}" />
-
-		<execute function="AssertClickNoError" locator1="ContentRow#ENTRY_CONTENT_ENTRY_NAME_LINK" value1="${templateName}" />
+		<execute function="AssertClickNoError" locator1="ContentRow#ENTRY_CONTENT_ENTRY_NAME_LINK" value1="${templateName}">
+			<var name="key_rowEntry" value="${templateName}" />
+		</execute>
 
 		<execute function="Confirm#assertConfirmationNoWait" value1="Selecting a new template deletes all unsaved content. Do you want to proceed?" />
 
@@ -1330,7 +1402,9 @@
 	<command name="tearDownCP">
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesContent">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Web Content" />
 		</execute>
 
@@ -1351,7 +1425,9 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesContent">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Recycle Bin" />
 		</execute>
 
@@ -1403,13 +1479,9 @@
 	<command name="viewAvailableLanguagesPGViaWCD">
 		<execute function="Click" locator1="Translation#ADD" />
 
-		<var name="key_localizedLanguage" value="${webContentTranslationLanguage1}" />
-
 		<execute function="AssertTextEquals" locator1="MenuItem#ANY_MENU_ITEM" value1="${webContentTranslationLanguage1}">
 			<var name="key_menuItem" value="${webContentTranslationLanguage1}" />
 		</execute>
-
-		<var name="key_localizedLanguage" value="${webContentTranslationLanguage2}" />
 
 		<execute function="AssertTextNotPresent" locator1="MenuItem#ANY_MENU_ITEM" value1="${webContentTranslationLanguage2}">
 			<var name="key_menuItem" value="${webContentTranslationLanguage2}" />
@@ -1446,7 +1518,6 @@
 		<var name="count" value="1" />
 
 		<for list="${vocabularyNameList}" param="vocabularyName">
-
 			<execute function="AssertTextEquals" locator1="AssetCategorization#VOCABULARY_LIST_ITEM" value1="${vocabularyName}">
 				<var name="key_count" value="${count}" />
 			</execute>
@@ -1456,18 +1527,18 @@
 	</command>
 
 	<command name="viewCategoryDescriptiveCP">
-		<var name="key_webContentTitle" value="${webContentTitle}" />
-
 		<execute macro="Portlet#changeDisplayStyle">
 			<var name="displayStyle" value="Descriptive" />
 		</execute>
 
-		<execute function="AssertElementPresent#pauseAssertVisible" locator1="WC#ENTRY_DESCRIPTIVE_THUMBNAIL" />
+		<execute function="AssertElementPresent#pauseAssertVisible" locator1="WC#ENTRY_DESCRIPTIVE_THUMBNAIL">
+			<var name="key_webContentTitle" value="${webContentTitle}" />
+		</execute>
 
 		<for list="${categoryNameList}" param="categoryName">
-			<var name="key_categoryName" value="${categoryName}" />
-
-			<execute function="AssertTextEquals#assertPartialText" locator1="WC#ENTRY_DESCRIPTIVE_CATEGORY" value1="${categoryName}" />
+			<execute function="AssertTextEquals#assertPartialText" locator1="WC#ENTRY_DESCRIPTIVE_CATEGORY" value1="${categoryName}">
+				<var name="key_categoryName" value="${categoryName}" />
+			</execute>
 		</for>
 	</command>
 
@@ -1484,11 +1555,8 @@
 	</command>
 
 	<command name="viewConversionLinksPGViaAP">
-		<var name="key_assetTitle" value="${webContentTitle}" />
-
 		<execute macro="WebContent#viewPGViaAP">
 			<var name="author" value="${author}" />
-			<var name="key_assetTitle" value="${webContentTitle}" />
 			<var name="webContentContent" value="${webContentContent}" />
 			<var name="webContentTitle" value="${webContentTitle}" />
 		</execute>
@@ -1520,9 +1588,9 @@
 		<if>
 			<isset var="webContentText" />
 			<then>
-				<var name="key_fieldName" value="Text" />
-
-				<execute function="AssertTextEquals" locator1="DDMField#TEXT" value1="${webContentText}" />
+				<execute function="AssertTextEquals" locator1="DDMField#TEXT" value1="${webContentText}">
+					<var name="key_fieldName" value="Text" />
+				</execute>
 			</then>
 			<else>
 				<execute function="AssertTextEquals" locator1="AlloyEditor#CONTENT_FIELD" value1="${webContentContent}" />
@@ -1550,10 +1618,10 @@
 		<if>
 			<equals arg1="${field}" arg2="Geolocation" />
 			<then>
-				<var name="key_fieldFieldLabel" value="${fieldFieldLabel}" />
-				<var name="key_fieldName" value="${fieldName}" />
-
-				<execute function="AssertTextEquals" locator1="DDMField#GEOLOCATION" value1="${fieldFieldLabel}" />
+				<execute function="AssertTextEquals" locator1="DDMField#GEOLOCATION" value1="${fieldFieldLabel}">
+					<var name="key_fieldFieldLabel" value="${fieldFieldLabel}" />
+					<var name="key_fieldName" value="${fieldName}" />
+				</execute>
 			</then>
 		</if>
 
@@ -1566,13 +1634,14 @@
 	</command>
 
 	<command name="viewDefaultCP">
-		<var name="key_webContentTitle" value="${webContentTitle}" />
-
 		<execute macro="Portlet#changeDisplayStyle">
 			<var name="displayStyle" value="Descriptive" />
 		</execute>
 
 		<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="No web content was found." />
+
+		<var name="key_webContentTitle" value="${webContentTitle}" />
+
 		<execute function="AssertElementNotPresent" locator1="WC#ENTRY_DESCRIPTIVE_THUMBNAIL" />
 		<execute function="AssertElementNotPresent" locator1="WC#ENTRY_DESCRIPTIVE_TITLE" />
 	</command>
@@ -1593,11 +1662,11 @@
 	</command>
 
 	<command name="viewDisplayPagePGViaAP">
-		<var name="key_assetTitle" value="${assetTitle}" />
-
 		<execute function="MouseOver" locator1="AP#BODY" />
 
-		<execute function="Click#mouseOverClick" locator1="Icon#EDIT" />
+		<execute function="Click#mouseOverClick" locator1="Icon#EDIT">
+			<var name="key_assetTitle" value="${assetTitle}" />
+		</execute>
 
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
 
@@ -1611,33 +1680,37 @@
 	</command>
 
 	<command name="viewDisplayStyleCP">
-		<var name="key_webContentTitle" value="${webContentTitle}" />
-
 		<execute macro="Portlet#changeDisplayStyle">
 			<var name="displayStyle" value="Icon" />
 		</execute>
 
-		<execute function="AssertElementPresent#pauseAssertVisible" locator1="WC#ENTRY_ICON_THUMBNAIL" />
+		<execute function="AssertElementPresent#pauseAssertVisible" locator1="WC#ENTRY_ICON_THUMBNAIL">
+			<var name="key_webContentTitle" value="${webContentTitle}" />
+		</execute>
 
 		<execute macro="Portlet#changeDisplayStyle">
 			<var name="displayStyle" value="Descriptive" />
 		</execute>
 
-		<execute function="AssertElementPresent#pauseAssertVisible" locator1="WC#ENTRY_DESCRIPTIVE_THUMBNAIL" />
+		<execute function="AssertElementPresent#pauseAssertVisible" locator1="WC#ENTRY_DESCRIPTIVE_THUMBNAIL">
+			<var name="key_webContentTitle" value="${webContentTitle}" />
+		</execute>
 
 		<execute macro="Portlet#changeDisplayStyle">
 			<var name="displayStyle" value="List" />
 		</execute>
 
-		<execute function="AssertElementPresent" locator1="WC#ENTRY_LIST_TITLE" />
+		<execute function="AssertElementPresent" locator1="WC#ENTRY_LIST_TITLE">
+			<var name="key_webContentTitle" value="${webContentTitle}" />
+		</execute>
 	</command>
 
 	<command name="viewEditWCViaWCD">
 		<execute function="AssertElementPresent" locator1="WCD#WEB_CONTENT_CONTENT" value1="${webContentContent}" />
 
-		<var name="key_portletName" value="Web Content Display" />
-
-		<execute function="Click#makeVisibleClickAt" locator1="Portlet#SPECIFIC_BORDERLESS_ELLIPSIS_ICON" />
+		<execute macro="WebContentNavigator#gotoArticleMenuPGViaWCD">
+			<var name="webContentTitle" value="${webContentTitle}" />
+		</execute>
 
 		<execute function="AssertTextEquals" locator1="MenuItem#ANY_MENU_ITEM" value1="Edit Web Content">
 			<var name="key_menuItem" value="Edit Web Content" />
@@ -1672,9 +1745,9 @@
 			<var name="portletTitle" value="${webContentTitle}" />
 		</execute>
 
-		<var name="key_webContentContent" value="${webContentContent}" />
-
-		<execute function="AssertTextEquals" locator1="WCD#WEB_CONTENT_CONTENT" value1="${webContentContent}" />
+		<execute function="AssertTextEquals" locator1="WCD#WEB_CONTENT_CONTENT" value1="${webContentContent}">
+			<var name="key_webContentContent" value="${webContentContent}" />
+		</execute>
 	</command>
 
 	<command name="viewExpirationDateCP">
@@ -1687,13 +1760,14 @@
 	</command>
 
 	<command name="viewLinkedAssetPGViaAP">
-		<var name="key_assetContent" value="${webContentContent}" />
-		<var name="key_assetTitle" value="${webContentTitle}" />
-
-		<execute function="AssertClick#assertPartialTextClickAt" locator1="AP#ASSET_ABSTRACT_VIEW" value1="${webContentTitle}" />
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="AP#ASSET_ABSTRACT_VIEW" value1="${webContentTitle}">
+			<var name="key_assetTitle" value="${webContentTitle}" />
+		</execute>
 
 		<execute function="AssertTextEquals" locator1="APAsset#ASSET_TITLE_HEADER" value1="${webContentTitle}" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="APAsset#ASSET_CONTENT" value1="${webContentContent}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="APAsset#ASSET_CONTENT" value1="${webContentContent}">
+			<var name="key_assetContent" value="${webContentContent}" />
+		</execute>
 	</command>
 
 	<command name="viewLinkToPagePGViaWCD">
@@ -1707,25 +1781,22 @@
 	</command>
 
 	<command name="viewNestedField">
-		<var name="key_fieldName" value="${fieldName}" />
-		<var name="key_nestedFieldName" value="${nestedField}" />
-
-		<execute function="AssertTextEquals" locator1="DDMField#NESTED" value1="${nestedFieldData}" />
+		<execute function="AssertTextEquals" locator1="DDMField#NESTED" value1="${nestedFieldData}">
+			<var name="key_fieldName" value="${fieldName}" />
+			<var name="key_nestedFieldName" value="${nestedField}" />
+		</execute>
 	</command>
 
 	<command name="viewNoContentAsGuestPGViaWCD">
-		<var name="key_portletName" value="Web Content Display" />
-
 		<execute function="AssertTextNotPresent" locator1="Message#ERROR" value1="The selected web content no longer exists." />
-		<execute function="AssertElementNotPresent" locator1="Portlet#BODY" />
+		<execute function="AssertElementNotPresent" locator1="Portlet#BODY">
+			<var name="key_portletName" value="Web Content Display" />
+		</execute>
 	</command>
 
 	<command name="viewNoConversionLinksPGViaAP">
-		<var name="key_assetTitle" value="${webContentTitle}" />
-
 		<execute macro="WebContent#viewPGViaAP">
 			<var name="author" value="${author}" />
-			<var name="key_assetTitle" value="${webContentTitle}" />
 			<var name="webContentContent" value="${webContentContent}" />
 			<var name="webContentTitle" value="${webContentTitle}" />
 		</execute>
@@ -1733,18 +1804,18 @@
 		<for list="${documentTypes}" param="documentType">
 			<var method="StringUtil#upperCase('${documentType}')" name="documentTypeUppercase" />
 
-			<var name="key_documentType" value="${documentTypeUppercase}" />
-
-			<execute function="AssertElementNotPresent" locator1="APAsset#DOCUMENT_CONVERSION_NAME" />
+			<execute function="AssertElementNotPresent" locator1="APAsset#DOCUMENT_CONVERSION_NAME">
+				<var name="key_documentType" value="${documentTypeUppercase}" />
+			</execute>
 		</for>
 	</command>
 
 	<command name="viewNoEditWCViaWCD">
 		<execute function="AssertElementPresent" locator1="WCD#WEB_CONTENT_CONTENT" value1="${webContentContent}" />
 
-		<var name="key_portletName" value="Web Content Display" />
-
-		<execute function="AssertElementNotPresent" locator1="Portlet#SPECIFIC_BORDERLESS_ELLIPSIS_ICON" />
+		<execute function="AssertElementNotPresent" locator1="Portlet#SPECIFIC_BORDERLESS_ELLIPSIS_ICON">
+			<var name="key_portletName" value="Web Content Display" />
+		</execute>
 	</command>
 
 	<command name="viewNoPermissionCP">
@@ -1779,9 +1850,9 @@
 		<if>
 			<isset var="author" />
 			<then>
-				<var name="key_author" value="${author}" />
-
-				<execute function="AssertTextEquals#assertPartialText" locator1="AP#METADATA_AUTHOR" value1="${author}" />
+				<execute function="AssertTextEquals#assertPartialText" locator1="AP#METADATA_AUTHOR" value1="${author}">
+					<var name="key_author" value="${author}" />
+				</execute>
 			</then>
 		</if>
 
@@ -1827,6 +1898,10 @@
 		<execute function="AssertTextEquals" locator1="Relatedassets#ASSET_TITLE_1" value1="${assetTitle}" />
 	</command>
 
+	<command name="viewRTLLayout">
+		<execute function="AssertCssValue" locator1="TextInput#TITLE" locator2="direction" value1="rtl" />
+	</command>
+
 	<command name="viewSelectedTemplateCP">
 		<execute macro="Panel#expandPanel">
 			<var name="panelHeading" value="Structure and Template" />
@@ -1849,9 +1924,9 @@
 
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
 
-		<var name="key_webContentTitle" value="${webContentTitle}" />
-
-		<execute function="AssertElementNotPresent" locator1="WCDConfiguration#WEB_CONTENT_TABLE_TITLE" />
+		<execute function="AssertElementNotPresent" locator1="WCDConfiguration#WEB_CONTENT_TABLE_TITLE">
+			<var name="key_webContentTitle" value="${webContentTitle}" />
+		</execute>
 	</command>
 
 	<command name="viewSpecificVersionHistoryCP">
@@ -1894,8 +1969,6 @@
 	</command>
 
 	<command name="viewStructureViaAddMenuCP">
-		<var name="key_structureName" value="${structureName}" />
-
 		<execute function="Click" locator1="Button#PLUS" />
 
 		<execute function="AssertTextEquals" locator1="MenuItem#ANY_MENU_ITEM" value1="${structureName}">
@@ -1930,14 +2003,12 @@
 	</command>
 
 	<command name="viewTranslation">
-		<var name="key_webContentTitle" value="${webContentTitle}" />
-
 		<execute function="AssertTextEquals" locator1="TextInput#TITLE" value1="${webContentTitle}" />
 		<execute function="AssertTextEquals" locator1="Translation#AVAILABLE_TRANSLATIONS_LABEL" value1="Available Translations:" />
 
-		<var name="key_localizedLanguage" value="${localizedLanguage}" />
-
-		<execute function="AssertClick" locator1="Translation#AVAILABLE_TRANSLATION" value1="${localizedLanguage}" />
+		<execute function="AssertClick" locator1="Translation#AVAILABLE_TRANSLATION" value1="${localizedLanguage}">
+			<var name="key_localizedLanguage" value="${localizedLanguage}" />
+		</execute>
 
 		<execute function="AssertTextEquals" locator1="TextInput#TITLE" value1="${localizedTitle}" />
 		<execute function="AssertTextEquals" locator1="AlloyEditor#CONTENT_FIELD" value1="${localizedContent}" />
@@ -1969,10 +2040,9 @@
 	</command>
 
 	<command name="viewUserEditCP">
-		<var name="key_userFirstLast" value="${userFirstLast}" />
-		<var name="key_webContentTitle" value="${webContentTitle}" />
-
-		<execute function="AssertTextEquals#assertPartialText" locator1="WC#ENTRY_DESCRIPTIVE_LAST_MODIFIED" value1="${userFirstLast}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="WC#ENTRY_DESCRIPTIVE_LAST_MODIFIED" value1="${userFirstLast}">
+			<var name="key_webContentTitle" value="${webContentTitle}" />
+		</execute>
 
 		<execute macro="WebContentNavigator#gotoEditCP">
 			<var name="webContentTitle" value="${webContentTitle}" />
@@ -1998,9 +2068,6 @@
 	</command>
 
 	<command name="viewWithStructureCP">
-		<var name="key_fieldName" value="Text" />
-		<var name="key_webContentTitle" value="${webContentTitle}" />
-
 		<execute macro="Portlet#changeDisplayStyle">
 			<var name="displayStyle" value="Descriptive" />
 		</execute>
@@ -2012,7 +2079,75 @@
 
 		<execute function="AssertTextEquals" locator1="TextInput#TITLE" value1="${webContentTitle}" />
 
-		<execute function="AssertTextEquals" locator1="DDMField#TEXT" value1="${webContentText}" />
+		<if>
+			<isset var="description" />
+			<then>
+				<execute function="AssertTextEquals" locator1="AlloyEditor#DESCRIPTION_FIELD" value1="${description}" />
+			</then>
+		</if>
+
+		<if>
+			<isset var="webContentImage" />
+			<then>
+				<execute function="Click" locator1="Button#PREVIEW" />
+
+				<execute function="SelectFrameTop" value1="relative=top" />
+
+				<execute function="SikuliAssertElementPresent" locator1="DDMField#IMAGE_PREVIEW_PNG" />
+			</then>
+		</if>
+
+		<if>
+			<isset var="webContentText" />
+			<then>
+				<execute function="AssertTextEquals" locator1="DDMField#TEXT" value1="${webContentText}">
+					<var name="key_fieldName" value="Text" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<isset var="webContentTextBox" />
+			<then>
+				<if>
+					<isset var="fieldName" />
+					<then>
+						<execute function="AssertTextEquals" locator1="DDMField#TEXT_BOX" value1="${webContentTextBox}">
+							<var name="key_fieldName" value="${fieldName}" />
+						</execute>
+					</then>
+					<else>
+						<execute function="AssertTextEquals" locator1="DDMField#TEXT_BOX" value1="${webContentTextBox}">
+							<var name="key_fieldName" value="TextBox" />
+						</execute>
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<isset var="webContentTextBox2" />
+			<then>
+				<var name="key_fieldName" value="${fieldName2}" />
+
+				<execute function="AssertTextEquals" locator1="DDMField#TEXT_BOX" value1="${webContentTextBox2}" />
+			</then>
+		</if>
+
+		<if>
+			<isset var="webContentTextBoxList" />
+			<then>
+				<var name="count" value="1" />
+
+				<for list="${webContentTextBoxList}" param="webContentTextBox">
+					<execute function="AssertTextEquals" locator1="DDMField#TEXT_BOX" value1="${webContentTextBox}">
+						<var name="key_fieldName" value="heading${count}" />
+					</execute>
+
+					<var method="MathUtil#sum('${count}', '1')" name="count" />
+				</for>
+			</then>
+		</if>
 	</command>
 
 	<command name="viewWithWorkflowCP">

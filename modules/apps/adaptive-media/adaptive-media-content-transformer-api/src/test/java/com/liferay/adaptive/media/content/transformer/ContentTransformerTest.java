@@ -14,8 +14,9 @@
 
 package com.liferay.adaptive.media.content.transformer;
 
-import com.liferay.adaptive.media.exception.AdaptiveMediaException;
+import com.liferay.adaptive.media.exception.AMException;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +41,7 @@ public class ContentTransformerTest {
 
 	@Before
 	public void setUp() throws BundleException {
-		_contentTransformerHandler.setServiceTrackerMap(_serviceTrackerMap);
+		_contentTransformerHandler.setServiceTrackerMap(_mockServiceTrackerMap);
 	}
 
 	@After
@@ -52,77 +53,83 @@ public class ContentTransformerTest {
 	public void testIgnoresTheContentTransformersForDifferentContentTypes()
 		throws Exception {
 
-		ContentTransformerContentType<String> contentTypeA =
-			new TestContentTransformerContentType<>();
-		TestContentTransformerContentType<String> contentTypeB =
+		ContentTransformerContentType<String> contentTransformerContentTypeA =
 			new TestContentTransformerContentType<>();
 
-		String transformedContentA = "transformedContentA";
-		String transformedContentB = "transformedContentB";
+		String transformedContentA = RandomTestUtil.randomString();
 
 		_registerContentTransformer(
-			contentTypeA, _ORIGINAL_CONTENT, transformedContentA);
+			contentTransformerContentTypeA, _ORIGINAL_CONTENT,
+			transformedContentA);
+
+		ContentTransformerContentType<String> contentTransformerContentTypeB =
+			new TestContentTransformerContentType<>();
+
+		String transformedContentB = RandomTestUtil.randomString();
 
 		_registerContentTransformer(
-			contentTypeB, _ORIGINAL_CONTENT, transformedContentB);
+			contentTransformerContentTypeB, _ORIGINAL_CONTENT,
+			transformedContentB);
 
 		Assert.assertEquals(
 			transformedContentA,
 			_contentTransformerHandler.transform(
-				contentTypeA, _ORIGINAL_CONTENT));
-
+				contentTransformerContentTypeA, _ORIGINAL_CONTENT));
 		Assert.assertEquals(
 			transformedContentB,
 			_contentTransformerHandler.transform(
-				contentTypeB, _ORIGINAL_CONTENT));
+				contentTransformerContentTypeB, _ORIGINAL_CONTENT));
 	}
 
 	@Test
 	public void testReturnsTheContentTransformedByAChainOfContentTransformers()
 		throws Exception {
 
-		String intermediateTransformedContent =
-			"intermediateTransformedContent";
-		String finalTransformedContent = "finalTransformedContent";
+		String intermediateTransformedContent = RandomTestUtil.randomString();
 
 		_registerContentTransformer(
-			_contentType, _ORIGINAL_CONTENT, intermediateTransformedContent);
+			_contentTransfomerContentType, _ORIGINAL_CONTENT,
+			intermediateTransformedContent);
+
+		String finalTransformedContent = RandomTestUtil.randomString();
 
 		_registerContentTransformer(
-			_contentType, intermediateTransformedContent,
+			_contentTransfomerContentType, intermediateTransformedContent,
 			finalTransformedContent);
 
 		Assert.assertEquals(
 			finalTransformedContent,
 			_contentTransformerHandler.transform(
-				_contentType, _ORIGINAL_CONTENT));
+				_contentTransfomerContentType, _ORIGINAL_CONTENT));
 	}
 
 	@Test
-	public void testReturnsTheContentTransformedByATransformerForAContentType()
+	public void testReturnsTheContentTransformedByAContentTransformerForAContentType()
 		throws Exception {
 
-		String transformedContent = "transformedContent";
+		String transformedContent = RandomTestUtil.randomString();
 
 		_registerContentTransformer(
-			_contentType, _ORIGINAL_CONTENT, transformedContent);
+			_contentTransfomerContentType, _ORIGINAL_CONTENT,
+			transformedContent);
 
 		Assert.assertEquals(
 			transformedContent,
 			_contentTransformerHandler.transform(
-				_contentType, _ORIGINAL_CONTENT));
+				_contentTransfomerContentType, _ORIGINAL_CONTENT));
 	}
 
 	@Test
-	public void testReturnsTheSameContentIfATransformerThrowsAnException()
+	public void testReturnsTheSameContentIfAContentTransformerThrowsAnException()
 		throws Exception {
 
-		_registerFailingContentTransformer(_contentType, _ORIGINAL_CONTENT);
+		_registerInvalidContentTransformer(
+			_contentTransfomerContentType, _ORIGINAL_CONTENT);
 
 		Assert.assertSame(
 			_ORIGINAL_CONTENT,
 			_contentTransformerHandler.transform(
-				_contentType, _ORIGINAL_CONTENT));
+				_contentTransfomerContentType, _ORIGINAL_CONTENT));
 	}
 
 	@Test
@@ -130,28 +137,30 @@ public class ContentTransformerTest {
 		Assert.assertSame(
 			_ORIGINAL_CONTENT,
 			_contentTransformerHandler.transform(
-				_contentType, _ORIGINAL_CONTENT));
+				_contentTransfomerContentType, _ORIGINAL_CONTENT));
 	}
 
 	@Test
-	public void testRunsTheOtherTransformersEvenIfOneOfThemFails()
+	public void testRunsTheOtherContentTransformersEvenIfOneOfThemFails()
 		throws Exception {
 
-		String transformedContent = "transformedContent";
+		_registerInvalidContentTransformer(
+			_contentTransfomerContentType, _ORIGINAL_CONTENT);
 
-		_registerFailingContentTransformer(_contentType, _ORIGINAL_CONTENT);
+		String transformedContent = RandomTestUtil.randomString();
 
 		_registerContentTransformer(
-			_contentType, _ORIGINAL_CONTENT, transformedContent);
+			_contentTransfomerContentType, _ORIGINAL_CONTENT,
+			transformedContent);
 
 		Assert.assertEquals(
 			transformedContent,
 			_contentTransformerHandler.transform(
-				_contentType, _ORIGINAL_CONTENT));
+				_contentTransfomerContentType, _ORIGINAL_CONTENT));
 	}
 
 	private ContentTransformer<String> _registerContentTransformer(
-			ContentTransformerContentType<String> contentType,
+			ContentTransformerContentType<String> contentTransformerContentType,
 			String originalContent, String transformedContent)
 		throws Exception {
 
@@ -159,9 +168,9 @@ public class ContentTransformerTest {
 			ContentTransformer.class);
 
 		Mockito.when(
-			contentTransformer.getContentType()
+			contentTransformer.getContentTransformerContentType()
 		).thenReturn(
-			contentType
+			contentTransformerContentType
 		);
 
 		Mockito.when(
@@ -170,34 +179,36 @@ public class ContentTransformerTest {
 			transformedContent
 		);
 
-		_serviceTrackerMap.register(contentTransformer);
+		_mockServiceTrackerMap.register(contentTransformer);
 
 		return contentTransformer;
 	}
 
-	private void _registerFailingContentTransformer(
-			ContentTransformerContentType<String> contentType,
+	private void _registerInvalidContentTransformer(
+			ContentTransformerContentType<String> contentTransformerContentType,
 			String originalContent)
 		throws Exception {
 
-		ContentTransformer<String> failingContentTransformer =
-			_registerContentTransformer(contentType, originalContent, "");
+		ContentTransformer<String> invalidContentTransformer =
+			_registerContentTransformer(
+				contentTransformerContentType, originalContent, "");
 
 		Mockito.when(
-			failingContentTransformer.transform(originalContent)
+			invalidContentTransformer.transform(originalContent)
 		).thenThrow(
-			new AdaptiveMediaException(
-				"Do not worry :), this is an expected exception")
+			new AMException("This is expected")
 		);
 	}
 
-	private static final String _ORIGINAL_CONTENT = "originalContent";
+	private static final String _ORIGINAL_CONTENT =
+		RandomTestUtil.randomString();
 
+	private final ContentTransformerContentType<String>
+		_contentTransfomerContentType =
+			new TestContentTransformerContentType<>();
 	private final ContentTransformerHandler _contentTransformerHandler =
 		new ContentTransformerHandler();
-	private final ContentTransformerContentType<String> _contentType =
-		new TestContentTransformerContentType<>();
-	private final MockServiceTrackerMap _serviceTrackerMap =
+	private final MockServiceTrackerMap _mockServiceTrackerMap =
 		new MockServiceTrackerMap();
 
 	private static class TestContentTransformerContentType<T>
@@ -216,24 +227,27 @@ public class ContentTransformerTest {
 
 		@Override
 		public void close() {
-			_contentTransformerMap.clear();
+			_contentTransformers.clear();
 		}
 
 		@Override
-		public boolean containsKey(ContentTransformerContentType contentType) {
-			return _contentTransformerMap.containsKey(contentType);
+		public boolean containsKey(
+			ContentTransformerContentType contentTransformerContentType) {
+
+			return _contentTransformers.containsKey(
+				contentTransformerContentType);
 		}
 
 		@Override
 		public List<ContentTransformer> getService(
-			ContentTransformerContentType contentType) {
+			ContentTransformerContentType contentTransformerContentType) {
 
-			return _contentTransformerMap.get(contentType);
+			return _contentTransformers.get(contentTransformerContentType);
 		}
 
 		@Override
 		public Set<ContentTransformerContentType> keySet() {
-			return _contentTransformerMap.keySet();
+			return _contentTransformers.keySet();
 		}
 
 		@Override
@@ -241,21 +255,21 @@ public class ContentTransformerTest {
 		}
 
 		public void register(ContentTransformer contentTransformer) {
-			List<ContentTransformer> formNavigatorEntryConfigurationParsers =
-				_contentTransformerMap.computeIfAbsent(
-					contentTransformer.getContentType(),
+			List<ContentTransformer> contentTransformers =
+				_contentTransformers.computeIfAbsent(
+					contentTransformer.getContentTransformerContentType(),
 					key -> new ArrayList<>());
 
-			formNavigatorEntryConfigurationParsers.add(contentTransformer);
+			contentTransformers.add(contentTransformer);
 		}
 
 		@Override
 		public Collection<List<ContentTransformer>> values() {
-			return _contentTransformerMap.values();
+			return _contentTransformers.values();
 		}
 
 		private final Map<ContentTransformerContentType,
-			List<ContentTransformer>> _contentTransformerMap = new HashMap<>();
+			List<ContentTransformer>> _contentTransformers = new HashMap<>();
 
 	}
 

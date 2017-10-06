@@ -14,58 +14,22 @@
  */
 --%>
 
-<%@ include file="/blogs/asset/init.jsp" %>
+<%@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
+
+<%@ page import="com.liferay.adaptive.media.blogs.web.fragment.internal.content.transformer.ContentTransformerUtil" %><%@
+page import="com.liferay.adaptive.media.content.transformer.ContentTransformerHandler" %><%@
+page import="com.liferay.adaptive.media.content.transformer.constants.ContentTransformerContentTypes" %>
+
+<liferay-util:buffer var="html">
+	<liferay-util:include page="/blogs/asset/full_content.portal.jsp" servletContext="<%= application %>" />
+</liferay-util:buffer>
 
 <%
-BlogsEntry entry = (BlogsEntry)request.getAttribute(WebKeys.BLOGS_ENTRY);
+ContentTransformerHandler contentTransformerHandler = ContentTransformerUtil.getContentTransformerHandler();
 
-Portlet portlet = PortletLocalServiceUtil.getPortletById(company.getCompanyId(), portletDisplay.getId());
+if (contentTransformerHandler != null) {
+	html = contentTransformerHandler.transform(ContentTransformerContentTypes.HTML, html);
+}
 %>
 
-<liferay-util:html-top outputKey="blogs_common_main_css">
-	<link href="<%= PortalUtil.getStaticResourceURL(request, application.getContextPath() + "/blogs/css/common_main.css", portlet.getTimestamp()) %>" rel="stylesheet" type="text/css" />
-</liferay-util:html-top>
-
-<div class="portlet-blogs">
-	<div class="entry-body">
-
-		<%
-		String coverImageURL = entry.getCoverImageURL(themeDisplay);
-		%>
-
-		<c:if test="<%= Validator.isNotNull(coverImageURL) %>">
-			<div class="cover-image-container" style="background-image: url(<%= coverImageURL %>)"></div>
-		</c:if>
-
-		<%
-		String subtitle = entry.getSubtitle();
-		%>
-
-		<c:if test="<%= Validator.isNotNull(subtitle) %>">
-			<div class="entry-subtitle">
-				<p><%= HtmlUtil.escape(subtitle) %></p>
-			</div>
-		</c:if>
-
-		<div class="entry-date icon-calendar">
-			<span class="hide-accessible"><liferay-ui:message key="published-date" /></span>
-
-			<%= dateFormatDateTime.format(entry.getDisplayDate()) %>
-		</div>
-
-		<%
-		ContentTransformerHandler contentTransformerHandler = ContentTransformerUtil.getContentTransformerHandler();
-		%>
-
-		<%= (contentTransformerHandler != null) ? contentTransformerHandler.transform(ContentTransformerContentTypes.HTML, entry.getContent()) : entry.getContent() %>
-
-		<liferay-expando:custom-attributes-available className="<%= BlogsEntry.class.getName() %>">
-			<liferay-expando:custom-attribute-list
-				className="<%= BlogsEntry.class.getName() %>"
-				classPK="<%= (entry != null) ? entry.getEntryId() : 0 %>"
-				editable="<%= false %>"
-				label="<%= true %>"
-			/>
-		</liferay-expando:custom-attributes-available>
-	</div>
-</div>
+<%= html %>

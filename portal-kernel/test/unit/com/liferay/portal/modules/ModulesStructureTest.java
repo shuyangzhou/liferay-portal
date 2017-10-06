@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -174,6 +175,19 @@ public class ModulesStructureTest {
 			new SimpleFileVisitor<Path>() {
 
 				@Override
+				public FileVisitResult preVisitDirectory(
+					Path dirPath, BasicFileAttributes basicFileAttributes) {
+
+					String dirName = String.valueOf(dirPath.getFileName());
+
+					if (dirName.equals("node_modules")) {
+						return FileVisitResult.SKIP_SUBTREE;
+					}
+
+					return FileVisitResult.CONTINUE;
+				}
+
+				@Override
 				public FileVisitResult visitFile(
 					Path path, BasicFileAttributes basicFileAttributes) {
 
@@ -217,9 +231,7 @@ public class ModulesStructureTest {
 
 					String fileName = String.valueOf(path.getFileName());
 
-					if (StringUtil.endsWith(fileName, ".gradle") &&
-						!fileName.equals("licenses.gradle")) {
-
+					if (StringUtil.endsWith(fileName, ".gradle")) {
 						_testGradleFile(path);
 					}
 
@@ -336,6 +348,8 @@ public class ModulesStructureTest {
 
 	@Test
 	public void testScanMarkerFiles() throws IOException {
+		final Set<String> fileNames = new HashSet<>();
+
 		Files.walkFileTree(
 			_modulesDirPath,
 			new SimpleFileVisitor<Path>() {
@@ -347,8 +361,8 @@ public class ModulesStructureTest {
 
 					String fileName = String.valueOf(path.getFileName());
 
-					if (StringUtil.startsWith(fileName, ".lfrbuild-") ||
-						StringUtil.startsWith(fileName, ".lfrrelease-")) {
+					if (StringUtil.startsWith(fileName, ".lfrbuild-")) {
+						fileNames.add(fileName);
 
 						Assert.assertEquals(
 							"Marker file " + path + " must be empty", 0,
@@ -359,6 +373,17 @@ public class ModulesStructureTest {
 				}
 
 			});
+
+		Path readmePath = _modulesDirPath.resolve("README.markdown");
+
+		String readme = ModulesStructureTestUtil.read(readmePath);
+
+		for (String fileName : fileNames) {
+			Assert.assertTrue(
+				"Please document the \"" + fileName + "\" marker file in " +
+					readmePath,
+				readme.contains("`" + fileName + "`"));
+		}
 	}
 
 	private void _addGradlePluginNames(
@@ -470,7 +495,7 @@ public class ModulesStructureTest {
 			return gitIgnore;
 		}
 
-		StringBundler sb = new StringBundler(pluginDirNames.size() * 6 + 2);
+		StringBundler sb = new StringBundler(pluginDirNames.size() * 14 + 2);
 
 		if (Validator.isNotNull(gitIgnore)) {
 			sb.append(gitIgnore);
@@ -486,6 +511,18 @@ public class ModulesStructureTest {
 			}
 
 			first = false;
+
+			sb.append("!/");
+			sb.append(pluginDirName);
+			sb.append("/docroot/WEB-INF/lib");
+
+			sb.append(CharPool.NEW_LINE);
+
+			sb.append(CharPool.SLASH);
+			sb.append(pluginDirName);
+			sb.append("/docroot/WEB-INF/lib/*");
+
+			sb.append(CharPool.NEW_LINE);
 
 			sb.append("!/");
 			sb.append(pluginDirName);
@@ -634,6 +671,10 @@ public class ModulesStructureTest {
 	}
 
 	private void _testAntPluginIgnoreFiles(Path dirPath) throws IOException {
+		if (_isInPrivateModulesDir(dirPath)) {
+			return;
+		}
+
 		if (_getGitRepoPath(dirPath) == null) {
 			Path parentDirPath = dirPath.getParent();
 
@@ -898,7 +939,11 @@ public class ModulesStructureTest {
 	private void _testGitRepoIgnoreFiles(Path dirPath, String gitIgnoreTemplate)
 		throws IOException {
 
-		if (_isInGitRepoReadOnly(dirPath)) {
+		if (_isEmptyGitRepo(dirPath)) {
+			return;
+		}
+
+		if (_isInGitRepoReadOnly(dirPath) || _isInPrivateModulesDir(dirPath)) {
 			return;
 		}
 

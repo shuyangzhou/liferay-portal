@@ -1,4 +1,19 @@
 <definition>
+	<command name="_addTag">
+		<execute function="Type" locator1="AssetCategorization#TAGS_FIELD" value1="${tagName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="AssetCategorization#TAG_AUTOCOMPLETE_CONTAINER" />
+			<then>
+				<execute function="Click" locator1="AssetCategorization#TAG_AUTOCOMPLETE_SPECIFIC">
+					<var name="key_tagName" value="${tagName}" />
+				</execute>
+			</then>
+		</if>
+
+		<execute function="AssertClick" locator1="Button#ADD_TAGS" value1="Add" />
+	</command>
+
 	<command name="addCategory">
 		<execute function="AssertClick" locator1="AssetCategorization#CATEGORY_SELECT" value1="Select" >
 			<var name="key_vocabularyName" value="${vocabularyName}" />
@@ -6,7 +21,6 @@
 
 		<execute macro="AssetCategorization#selectCategory">
 			<var name="categoryName" value="${categoryName}" />
-			<var name="vocabularyName" value="${vocabularyName}" />
 		</execute>
 
 		<execute function="AssertTextEquals" locator1="AssetCategorization#CATEGORY" value1="${categoryName}">
@@ -15,16 +29,9 @@
 	</command>
 
 	<command name="addDuplicateTag">
-		<execute function="Type" locator1="AssetCategorization#TAGS_FIELD" value1="${tagName}" />
-
-		<if>
-			<condition function="IsElementPresent" locator1="AssetCategorization#TAG_AUTOCOMPLETE_CONTAINER" />
-			<then>
-				<execute function="Click" locator1="AssetCategorization#TAG_AUTOCOMPLETE" />
-			</then>
-		</if>
-
-		<execute function="AssertClick" locator1="Button#ADD_TAGS" value1="Add" />
+		<execute macro="AssetCategorization#_addTag">
+			<var name="tagName" value="${tagName}" />
+		</execute>
 
 		<execute function="AssertTextEquals" locator1="//div[contains(@class,'help-block')]" value1="Duplicate Tag: ${tagName}" />
 	</command>
@@ -48,20 +55,13 @@
 	</command>
 
 	<command name="addTag">
-		<var name="key_tagName" value="${tagName}" />
+		<execute macro="AssetCategorization#_addTag">
+			<var name="tagName" value="${tagName}" />
+		</execute>
 
-		<execute function="Type" locator1="AssetCategorization#TAGS_FIELD" value1="${tagName}" />
-
-		<if>
-			<condition function="IsElementPresent" locator1="AssetCategorization#TAG_AUTOCOMPLETE_CONTAINER" />
-			<then>
-				<execute function="Click" locator1="AssetCategorization#TAG_AUTOCOMPLETE" />
-			</then>
-		</if>
-
-		<execute function="AssertClick" locator1="Button#ADD_TAGS" value1="Add" />
-
-		<execute function="AssertTextEquals" locator1="AssetCategorization#TAG" value1="${tagName}" />
+		<execute function="AssertTextEquals" locator1="AssetCategorization#TAG" value1="${tagName}">
+			<var name="key_tagName" value="${tagName}" />
+		</execute>
 	</command>
 
 	<command name="gotoSelectCategory">
@@ -105,6 +105,8 @@
 				<execute function="Click" locator1="Icon#CLOSE" />
 			</else>
 		</if>
+
+		<execute function="Pause" locator1="3000" />
 
 		<if>
 			<condition function="IsElementPresent" locator1="IFrame#MODAL_IFRAME" />

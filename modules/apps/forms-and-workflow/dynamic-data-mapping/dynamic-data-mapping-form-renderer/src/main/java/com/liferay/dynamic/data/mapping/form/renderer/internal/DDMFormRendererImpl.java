@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.URLTemplateResource;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.template.soy.utils.SoyRawData;
 
 import java.io.Writer;
 
@@ -131,7 +132,9 @@ public class DDMFormRendererImpl implements DDMFormRenderer {
 		populateCommonContext(
 			template, ddmForm, ddmFormLayout, ddmFormRenderingContext);
 
-		String templateNamespace = (String)template.get("templateNamespace");
+		SoyRawData soyRawData = (SoyRawData)template.get("templateNamespace");
+
+		String templateNamespace = (String)soyRawData.getValue();
 
 		String html = render(template, templateNamespace);
 
@@ -182,7 +185,20 @@ public class DDMFormRendererImpl implements DDMFormRenderer {
 			_ddmFormTemplateContextFactory.create(
 				ddmForm, ddmFormLayout, ddmFormRenderingContext);
 
-		template.putAll(ddmFormTemplateContext);
+		for (Map.Entry<String, Object> entry :
+				ddmFormTemplateContext.entrySet()) {
+
+			SoyRawData soyRawData = new SoyRawData() {
+
+				@Override
+				public Object getValue() {
+					return entry.getValue();
+				}
+
+			};
+
+			template.put(entry.getKey(), soyRawData);
+		}
 
 		ddmFormTemplateContext.remove("fieldTypes");
 

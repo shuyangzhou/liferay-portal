@@ -20,7 +20,7 @@ long searchRestrictionClassPK = ParamUtil.getLong(request, "searchRestrictionCla
 
 StructureSearchTerms searchTerms = (StructureSearchTerms)searchContainer.getSearchTerms();
 
-long[] groupIds = new long[] {groupId};
+long[] groupIds = {groupId};
 
 if (showAncestorScopes) {
 	groupIds = PortalUtil.getCurrentAndAncestorSiteGroupIds(groupId);

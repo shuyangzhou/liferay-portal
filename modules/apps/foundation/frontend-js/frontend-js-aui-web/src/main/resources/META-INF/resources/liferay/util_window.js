@@ -49,7 +49,7 @@ AUI.add(
 									{
 										cssClass: 'close',
 										discardDefaultButtonCssClasses: true,
-										labelHTML: '<svg class="lexicon-icon" focusable="false"><use data-href="' + Liferay.ThemeDisplay.getPathThemeImages() + '/lexicon/icons.svg#times" /></svg>',
+										labelHTML: '<svg class="lexicon-icon" focusable="false"><use data-href="' + Liferay.ThemeDisplay.getPathThemeImages() + '/lexicon/icons.svg#times" /><title>' + Liferay.Language.get('close') + '</title></svg>',
 										on: {
 											click: function(event) {
 												instance.hide();
@@ -291,6 +291,7 @@ AUI.add(
 								},
 
 								iframeId: iframeId,
+								iframeTitle: config.title || '',
 								uri: uri
 							}
 						);
@@ -325,6 +326,7 @@ AUI.add(
 						modal = new LiferayModal(
 							A.merge(
 								{
+									cssClass: 'modal-full-screen',
 									headerContent: titleNode,
 									id: id
 								},

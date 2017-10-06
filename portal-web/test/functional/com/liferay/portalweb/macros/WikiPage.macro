@@ -5,7 +5,9 @@
 		<if>
 			<condition function="IsElementNotPresent" locator1="WikiRSS#FEED_TITLE" />
 			<then>
-				<execute macro="ProductMenu#gotoSitesContent">
+				<execute macro="ProductMenu#gotoPortlet">
+					<var name="category" value="Content" />
+					<var name="panel" value="Site Administration" />
 					<var name="portlet" value="Wiki" />
 				</execute>
 
@@ -277,11 +279,7 @@
 	</command>
 
 	<command name="addInlineImageViaEdit">
-		<execute function="Click" locator1="AlloyEditor#CONTENT_FIELD" />
-
-		<execute function="Click" locator1="AlloyEditor#CONTENT_ADD_BUTTON" />
-
-		<execute function="Click" locator1="AlloyEditor#CONTENT_ADD_MENUBAR_IMAGE" />
+		<execute macro="ItemSelector#gotoItemSelectorViaAlloyEditor" />
 
 		<execute macro="ItemSelector#uploadFile">
 			<var name="navTab" value="${navTab}" />
@@ -691,7 +689,9 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesContent">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Recycle Bin" />
 		</execute>
 
@@ -759,6 +759,10 @@
 		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="Edit">
 			<var name="key_menuItem" value="Edit" />
 		</execute>
+
+		<execute function="Click" locator1="AlloyEditor#CONTENT_FIELD" />
+
+		<execute function="AssertElementPresent" locator1="AlloyEditor#CONTENT_ADD_BUTTON" />
 
 		<execute macro="AlloyEditor#addContent">
 			<var name="content" value="${wikiPageContentEdit}" />
@@ -912,7 +916,7 @@
 
 		<execute function="AssertClick" locator1="Link#EDIT" value1="Edit" />
 
-		<execute function="Click" locator1="AlloyEditor#CONTENT_FIELD" />
+		<execute macro="AlloyEditor#clickContentField" />
 
 		<execute macro="Panel#expandPanel">
 			<var name="panelHeading" value="Configuration" />
@@ -1151,7 +1155,9 @@
 	<command name="tearDownCP">
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesContent">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Wiki" />
 		</execute>
 
@@ -1185,7 +1191,9 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesContent">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Recycle Bin" />
 		</execute>
 

@@ -11,6 +11,7 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+
 package com.liferay.portal.cache.ehcache.multiple.internal.distribution;
 
 import com.liferay.portal.cache.PortalCacheReplicator;
@@ -40,8 +41,8 @@ import org.osgi.service.component.annotations.Modified;
  */
 @Component(
 	configurationPid = "com.liferay.portal.cache.ehcache.multiple.configuration.EhcacheMultipleConfiguration",
-	configurationPolicy = ConfigurationPolicy.OPTIONAL, enabled = false,
-	immediate = true, service = PortalCacheReplicatorFactory.class
+	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
+	service = PortalCacheReplicatorFactory.class
 )
 public class EhcachePortalCacheReplicatorFactory
 	implements PortalCacheReplicatorFactory {

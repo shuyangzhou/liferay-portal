@@ -130,7 +130,7 @@ AssetRendererFactory<JournalArticle> assetRendererFactory = AssetRendererFactory
 					</c:when>
 					<c:when test="<%= articleDisplay != null %>">
 						<div class="text-right user-tool-asset-addon-entries">
-							<liferay-ui:asset-addon-entry-display assetAddonEntries="<%= journalContentDisplayContext.getSelectedUserToolAssetAddonEntries() %>" />
+							<liferay-asset:asset-addon-entry-display assetAddonEntries="<%= journalContentDisplayContext.getSelectedUserToolAssetAddonEntries() %>" />
 						</div>
 
 						<div class="pull-right visible-interaction">
@@ -207,7 +207,7 @@ AssetRendererFactory<JournalArticle> assetRendererFactory = AssetRendererFactory
 
 <c:if test="<%= (articleDisplay != null) && journalContentDisplayContext.hasViewPermission() %>">
 	<div class="content-metadata-asset-addon-entries">
-		<liferay-ui:asset-addon-entry-display assetAddonEntries="<%= journalContentDisplayContext.getSelectedContentMetadataAssetAddonEntries() %>" />
+		<liferay-asset:asset-addon-entry-display assetAddonEntries="<%= journalContentDisplayContext.getSelectedContentMetadataAssetAddonEntries() %>" />
 	</div>
 </c:if>
 

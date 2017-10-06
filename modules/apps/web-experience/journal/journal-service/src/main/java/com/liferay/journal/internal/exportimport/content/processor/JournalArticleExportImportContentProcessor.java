@@ -23,7 +23,6 @@ import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.journal.exception.NoSuchArticleException;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
-import com.liferay.portal.kernel.exception.BulkException;
 import com.liferay.portal.kernel.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -45,7 +44,6 @@ import com.liferay.portal.kernel.xml.Node;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.xml.XPath;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -302,7 +300,7 @@ public class JournalArticleExportImportContentProcessor
 	protected void validateJournalArticleReferences(String content)
 		throws PortalException {
 
-		List<Throwable> throwables = new ArrayList<>();
+		Throwable throwable = null;
 
 		try {
 			Document document = SAXReaderUtil.read(content);
@@ -340,11 +338,17 @@ public class JournalArticleExportImportContentProcessor
 						_journalArticleLocalService.fetchLatestArticle(classPK);
 
 					if (journalArticle == null) {
-						Throwable throwable = new NoSuchArticleException(
-							"No JournalArticle exists with the key " +
-								"{resourcePrimKey=" + classPK + "}");
+						NoSuchArticleException nsae =
+							new NoSuchArticleException(
+								"No JournalArticle exists with the key " +
+									"{resourcePrimKey=" + classPK + "}");
 
-						throwables.add(throwable);
+						if (throwable == null) {
+							throwable = nsae;
+						}
+						else {
+							throwable.addSuppressed(nsae);
+						}
 					}
 				}
 			}
@@ -355,11 +359,9 @@ public class JournalArticleExportImportContentProcessor
 			}
 		}
 
-		if (!throwables.isEmpty()) {
+		if (throwable != null) {
 			throw new PortalException(
-				new BulkException(
-					"Unable to validate journal article references",
-					throwables));
+				"Unable to validate journal article references", throwable);
 		}
 	}
 

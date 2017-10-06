@@ -591,8 +591,6 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 			new MockClusterExecutor(true));
 
 		clusterMasterExecutorImpl.activate();
-
-		clusterMasterExecutorImpl.setRelease(null);
 	}
 
 	@Test
@@ -851,7 +849,8 @@ public class ClusterMasterExecutorImplTest extends BaseClusterTestCase {
 				});
 
 			initialize(
-				"test-channel-properties-mock", "test-channel-name-mock");
+				"test-channel-logic-name-mock", "test-channel-properties-mock",
+				"test-channel-name-mock");
 
 			_clusterNodes = new ConcurrentHashMap<>();
 

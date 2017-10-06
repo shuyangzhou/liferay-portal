@@ -40,36 +40,14 @@ public class PhoneLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.PhoneLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return getService().dynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
-		return getService().getExportActionableDynamicQuery(portletDataContext);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+	public static com.liferay.portal.kernel.model.Phone addPhone(long userId,
+		java.lang.String className, long classPK, java.lang.String number,
+		java.lang.String extension, long typeId, boolean primary,
+		ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
+		return getService()
+				   .addPhone(userId, className, classPK, number, extension,
+			typeId, primary, serviceContext);
 	}
 
 	/**
@@ -81,16 +59,6 @@ public class PhoneLocalServiceUtil {
 	public static com.liferay.portal.kernel.model.Phone addPhone(
 		com.liferay.portal.kernel.model.Phone phone) {
 		return getService().addPhone(phone);
-	}
-
-	public static com.liferay.portal.kernel.model.Phone addPhone(long userId,
-		java.lang.String className, long classPK, java.lang.String number,
-		java.lang.String extension, long typeId, boolean primary,
-		ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addPhone(userId, className, classPK, number, extension,
-			typeId, primary, serviceContext);
 	}
 
 	/**
@@ -105,14 +73,12 @@ public class PhoneLocalServiceUtil {
 	}
 
 	/**
-	* Deletes the phone from the database. Also notifies the appropriate model listeners.
-	*
-	* @param phone the phone
-	* @return the phone that was removed
+	* @throws PortalException
 	*/
-	public static com.liferay.portal.kernel.model.Phone deletePhone(
-		com.liferay.portal.kernel.model.Phone phone) {
-		return getService().deletePhone(phone);
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
 	}
 
 	/**
@@ -128,83 +94,24 @@ public class PhoneLocalServiceUtil {
 		return getService().deletePhone(phoneId);
 	}
 
-	public static com.liferay.portal.kernel.model.Phone fetchPhone(long phoneId) {
-		return getService().fetchPhone(phoneId);
-	}
-
 	/**
-	* Returns the phone with the matching UUID and company.
-	*
-	* @param uuid the phone's UUID
-	* @param companyId the primary key of the company
-	* @return the matching phone, or <code>null</code> if a matching phone could not be found
-	*/
-	public static com.liferay.portal.kernel.model.Phone fetchPhoneByUuidAndCompanyId(
-		java.lang.String uuid, long companyId) {
-		return getService().fetchPhoneByUuidAndCompanyId(uuid, companyId);
-	}
-
-	/**
-	* Returns the phone with the primary key.
-	*
-	* @param phoneId the primary key of the phone
-	* @return the phone
-	* @throws PortalException if a phone with the primary key could not be found
-	*/
-	public static com.liferay.portal.kernel.model.Phone getPhone(long phoneId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPhone(phoneId);
-	}
-
-	/**
-	* Returns the phone with the matching UUID and company.
-	*
-	* @param uuid the phone's UUID
-	* @param companyId the primary key of the company
-	* @return the matching phone
-	* @throws PortalException if a matching phone could not be found
-	*/
-	public static com.liferay.portal.kernel.model.Phone getPhoneByUuidAndCompanyId(
-		java.lang.String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPhoneByUuidAndCompanyId(uuid, companyId);
-	}
-
-	/**
-	* Updates the phone in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the phone from the database. Also notifies the appropriate model listeners.
 	*
 	* @param phone the phone
-	* @return the phone that was updated
+	* @return the phone that was removed
 	*/
-	public static com.liferay.portal.kernel.model.Phone updatePhone(
+	public static com.liferay.portal.kernel.model.Phone deletePhone(
 		com.liferay.portal.kernel.model.Phone phone) {
-		return getService().updatePhone(phone);
+		return getService().deletePhone(phone);
 	}
 
-	public static com.liferay.portal.kernel.model.Phone updatePhone(
-		long phoneId, java.lang.String number, java.lang.String extension,
-		long typeId, boolean primary)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updatePhone(phoneId, number, extension, typeId, primary);
+	public static void deletePhones(long companyId, java.lang.String className,
+		long classPK) {
+		getService().deletePhones(companyId, className, classPK);
 	}
 
-	/**
-	* Returns the number of phones.
-	*
-	* @return the number of phones
-	*/
-	public static int getPhonesCount() {
-		return getService().getPhonesCount();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
 	}
 
 	/**
@@ -257,6 +164,100 @@ public class PhoneLocalServiceUtil {
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
 
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return getService().dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static com.liferay.portal.kernel.model.Phone fetchPhone(long phoneId) {
+		return getService().fetchPhone(phoneId);
+	}
+
+	/**
+	* Returns the phone with the matching UUID and company.
+	*
+	* @param uuid the phone's UUID
+	* @param companyId the primary key of the company
+	* @return the matching phone, or <code>null</code> if a matching phone could not be found
+	*/
+	public static com.liferay.portal.kernel.model.Phone fetchPhoneByUuidAndCompanyId(
+		java.lang.String uuid, long companyId) {
+		return getService().fetchPhoneByUuidAndCompanyId(uuid, companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
+		return getService().getExportActionableDynamicQuery(portletDataContext);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the phone with the primary key.
+	*
+	* @param phoneId the primary key of the phone
+	* @return the phone
+	* @throws PortalException if a phone with the primary key could not be found
+	*/
+	public static com.liferay.portal.kernel.model.Phone getPhone(long phoneId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPhone(phoneId);
+	}
+
+	/**
+	* Returns the phone with the matching UUID and company.
+	*
+	* @param uuid the phone's UUID
+	* @param companyId the primary key of the company
+	* @return the matching phone
+	* @throws PortalException if a matching phone could not be found
+	*/
+	public static com.liferay.portal.kernel.model.Phone getPhoneByUuidAndCompanyId(
+		java.lang.String uuid, long companyId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPhoneByUuidAndCompanyId(uuid, companyId);
+	}
+
 	public static java.util.List<com.liferay.portal.kernel.model.Phone> getPhones() {
 		return getService().getPhones();
 	}
@@ -283,32 +284,31 @@ public class PhoneLocalServiceUtil {
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of phones.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of phones
 	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return getService().dynamicQueryCount(dynamicQuery);
+	public static int getPhonesCount() {
+		return getService().getPhonesCount();
+	}
+
+	public static com.liferay.portal.kernel.model.Phone updatePhone(
+		long phoneId, java.lang.String number, java.lang.String extension,
+		long typeId, boolean primary)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updatePhone(phoneId, number, extension, typeId, primary);
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Updates the phone in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @param phone the phone
+	* @return the phone that was updated
 	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return getService().dynamicQueryCount(dynamicQuery, projection);
-	}
-
-	public static void deletePhones(long companyId, java.lang.String className,
-		long classPK) {
-		getService().deletePhones(companyId, className, classPK);
+	public static com.liferay.portal.kernel.model.Phone updatePhone(
+		com.liferay.portal.kernel.model.Phone phone) {
+		return getService().updatePhone(phone);
 	}
 
 	public static PhoneLocalService getService() {

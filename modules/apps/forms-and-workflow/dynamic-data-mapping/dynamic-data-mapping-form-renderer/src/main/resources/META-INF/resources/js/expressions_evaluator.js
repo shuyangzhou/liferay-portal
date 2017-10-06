@@ -89,7 +89,8 @@ AUI.add(
 										if (callback) {
 											callback.apply(instance, arguments);
 										}
-									}
+									},
+									trigger: trigger
 								}
 							);
 						}
@@ -127,7 +128,11 @@ AUI.add(
 						instance._request = A.io.request(
 							instance.get('evaluatorURL'),
 							{
-								data: form.getEvaluationPayload(),
+								data: A.merge(form.getEvaluationPayload(),
+									{
+										trigger: event.trigger ? event.trigger.get('fieldName') || '' : ''
+									}
+								),
 								method: 'POST',
 								on: {
 									failure: function(event) {

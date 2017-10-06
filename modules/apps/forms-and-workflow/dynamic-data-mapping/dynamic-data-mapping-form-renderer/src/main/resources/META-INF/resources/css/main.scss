@@ -1,7 +1,18 @@
 @import "bourbon";
 @import "field-type-validation";
 
-.ddl-form-builder-app {
+%flex-space-between {
+align-items: center;
+display: flex;
+justify-content: space-between;
+}
+
+%text-ellipsis {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.ddm-form-builder-app {
 	.lfr-ddm-form-page {
 		> .row {
 			margin-left: 18px;
@@ -122,7 +133,8 @@
 	margin-bottom: 2px;
 }
 
-.liferay-ddm-form-field-paragraph, .liferay-ddm-form-field-tip {
+.liferay-ddm-form-field-paragraph,
+.liferay-ddm-form-field-tip {
 	color: #869CAD;
 	line-height: 16px;
 }
@@ -179,20 +191,15 @@
 	}
 }
 
-//┌──────────────┐
-//│ Select Field │
-//└──────────────┘
+//┌──────────────────┐
+//│ DDM Select Field │
+//└──────────────────┘
 
 .form-builder-select-field {
 	position: relative;
 
 	.select-arrow-down-container {
 		color: #869CAD;
-		display: block;
-		margin-top: 8px;
-		position: absolute;
-		right: 0;
-		top: 0;
 	}
 
 	.search-chosen {
@@ -211,7 +218,7 @@
 	}
 
 	&.active .select-field-trigger {
-		border-bottom: 2px solid #65B3F0;
+		border-bottom: 2px solid #65B6F0;
 	}
 
 	.form-control[disabled] + a {
@@ -225,12 +232,15 @@
 	}
 
 	.select-field-trigger {
+		@extend %flex-space-between;
 		border-bottom: 2px solid #869CAD;
 		color: #869CAD;
-		display: block;
-		height: auto;
-		padding: 8px 5px;
-		text-decoration: none;
+		padding: 3px 0 3px 5px;
+
+		.option-selected {
+			@extend %text-ellipsis;
+			overflow: hidden;
+		}
 
 		.option-selected-placeholder {
 			color: rgba(134, 156, 173, 0.4);
@@ -266,6 +276,7 @@
 			padding: 0;
 
 			li {
+				@extend %text-ellipsis;
 				color: #869CAD;
 				cursor: pointer;
 				line-height: 15px;
@@ -273,11 +284,9 @@
 				margin: 0;
 				overflow: hidden;
 				padding: 12px 16px;
-				text-overflow: ellipsis;
-				white-space: nowrap;
 
 				&.option-selected {
-					color: #65B3F0;
+					color: #65B6F0;
 				}
 
 				input[type='checkbox'] {
@@ -321,6 +330,7 @@
 		}
 
 		.multiple-badge {
+			@extend %text-ellipsis;
 			margin-bottom: 0;
 			margin-right: 6px;
 			margin-top: 0;
@@ -328,8 +338,6 @@
 			padding-bottom: 3px;
 			padding-right: 20px;
 			position: relative;
-			text-overflow: ellipsis;
-			white-space: nowrap;
 
 			a {
 				position: absolute;
@@ -346,9 +354,9 @@
 	}
 }
 
-//┌───────────┐
-//│ Field Set │
-//└───────────┘
+//┌───────────────┐
+//│ DDM Field Set │
+//└───────────────┘
 
 .liferay-ddm-form-field-fieldset {
 	margin-bottom: 0 !important;
@@ -378,7 +386,7 @@
 	}
 
 	& > fieldset {
-		border: 1px solid rgba(134, 156, 173, 0.3);
+		border: 1px solid rgba(134, 156, 173, 0.4);
 		border-bottom-width: 0;
 		border-top-width: 0;
 		padding: 10px 10px 0 10px;

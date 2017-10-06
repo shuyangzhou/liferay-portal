@@ -20,6 +20,49 @@
 		</if>
 	</tear-down>
 
+	<command name="RightToLeftSmoke" priority="5">
+		<property name="portal.acceptance" value="quarantine" />
+
+		<execute macro="Page#add">
+			<var name="pageName" value="RTL Test Page" />
+		</execute>
+
+		<execute macro="Portlet#addPG">
+			<var name="portletName" value="Language Selector" />
+		</execute>
+
+		<execute macro="LanguagePortlet#selectLanguagePG">
+			<var name="language" value="Hebrew (Israel)" />
+		</execute>
+
+		<execute macro="ProductMenuHelper#openProductMenu" />
+
+		<execute macro="Page#viewRTLLayout" />
+
+		<execute macro="LanguagePortlet#selectLanguagePG">
+			<var name="language" value="English (United States)" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Web Content" />
+		</execute>
+
+		<execute macro="WebContentNavigator#gotoAddCP" />
+
+		<execute macro="WebContent#addLocale">
+			<var name="language" value="Hebrew (Israel)" />
+			<var name="locale" value="iw-IL" />
+		</execute>
+
+		<execute macro="WebContent#addCP">
+			<var name="webContentTitle" value="WC Title" />
+		</execute>
+
+		<execute macro="WebContent#viewRTLLayout" />
+	</command>
+
 	<command name="Smoke" priority="5">
 		<description message="Ensure that a user can access portlet options and drag and drop portlets." />
 
@@ -78,13 +121,33 @@
 			<var name="columnNumberTo" value="1" />
 			<var name="portletName" value="Hello World" />
 		</execute>
+
+		<task summary="Removes Hello World Portlets on Test Page and Welcome Page">
+			<execute macro="Navigator#gotoPage">
+				<var name="pageName" value="Test Page" />
+			</execute>
+
+			<execute macro="Portlet#deletePG">
+				<var name="portletName" value="Hello World" />
+			</execute>
+
+			<execute macro="Navigator#gotoPage">
+				<var name="pageName" value="Welcome" />
+			</execute>
+
+			<execute macro="Portlet#deletePG">
+				<var name="portletName" value="Hello World" />
+			</execute>
+		</task>
 	</command>
 
 	<command name="ViewNonASCIICharactersWithSPADisabled" priority="4">
 		<description message="This is a use case for LPS-70390." />
 		<property name="custom.properties" value="javascript.single.page.application.enabled=false" />
 
-		<execute macro="ProductMenu#gotoControlPanelUsers">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Users" />
+			<var name="panel" value="Control Panel" />
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
 
@@ -95,7 +158,9 @@
 			<var name="userScreenName" value="uskandi" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoControlPanelUsers">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Users" />
+			<var name="panel" value="Control Panel" />
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
 
@@ -110,7 +175,9 @@
 	<command name="ViewSuccessMessageText" priority="5">
 		<property name="portal.acceptance" value="true" />
 
-		<execute macro="ProductMenu#gotoSitesContent">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Blogs" />
 		</execute>
 

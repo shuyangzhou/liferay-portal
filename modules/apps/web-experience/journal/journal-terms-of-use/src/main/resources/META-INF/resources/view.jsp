@@ -29,7 +29,7 @@ if ((termsOfUseGroupId > 0) && Validator.isNotNull(termsOfUseArticleId)) {
 
 <c:choose>
 	<c:when test="<%= journalArticle != null %>">
-		<liferay-ui:asset-display
+		<liferay-asset:asset-display
 			className="<%= JournalArticle.class.getName() %>"
 			classPK="<%= journalArticle.getResourcePrimKey() %>"
 			template="<%= AssetRenderer.TEMPLATE_FULL_CONTENT %>"

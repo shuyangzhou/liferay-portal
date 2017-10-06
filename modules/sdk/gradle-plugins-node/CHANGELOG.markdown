@@ -137,6 +137,36 @@ when compiling a Java project.
 - [LPS-73472]: The `NpmInstallTask`'s `nodeModulesCacheRemoveBinDirs` property
 is no longer available.
 
+## 3.1.0 - 2017-08-29
+
+### Added
+- [LPS-73070]: Add the ability to run `ExecuteNpmTask` instances concurrently
+even when pointing to a shared NPM's cache directory, if supported.
+- [LPS-73070]: By default, use the current user's NPM cache directory
+concurrently if running on NPM 5. Prior versions of NPM do not allow for
+concurrent access to the cache directory; only one NPM invocation at a time.
+- [LPS-73070]: Delete the `package-lock.json` file when running the `cleanNPM`
+task, if present.
+- [LPS-73070]: Use the `package-lock.json` file to calculate the `node_modules`
+cache digest.
+
+### Fixed
+- [LPS-73472]: Remove spurious files before recreating symbolic links in the
+`.bin` directories of `node_modules`.
+
+## 3.1.1 - 2017-09-18
+
+### Added
+- [LPS-74770]: Run the `"test"` script (if declared in the `package.json` file)
+when executing the `check` task.
+
+## 3.2.0 - 2017-09-28
+
+### Added
+- [LPS-74933]: Add the ability to merge the existing `package.json` of the
+project with the values provided by the task properties of
+`PublishNodeModuleTask` when publishing a package to the NPM registry.
+
 [LPS-66906]: https://issues.liferay.com/browse/LPS-66906
 [LPS-67023]: https://issues.liferay.com/browse/LPS-67023
 [LPS-67573]: https://issues.liferay.com/browse/LPS-67573
@@ -152,4 +182,7 @@ is no longer available.
 [LPS-71826]: https://issues.liferay.com/browse/LPS-71826
 [LPS-72152]: https://issues.liferay.com/browse/LPS-72152
 [LPS-72340]: https://issues.liferay.com/browse/LPS-72340
+[LPS-73070]: https://issues.liferay.com/browse/LPS-73070
 [LPS-73472]: https://issues.liferay.com/browse/LPS-73472
+[LPS-74770]: https://issues.liferay.com/browse/LPS-74770
+[LPS-74933]: https://issues.liferay.com/browse/LPS-74933

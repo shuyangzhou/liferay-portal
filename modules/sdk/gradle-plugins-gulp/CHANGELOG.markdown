@@ -114,6 +114,24 @@
 - [LPS-73472]: Update the [Liferay Gradle Plugins Node] dependency to version
 3.0.0.
 
+## 2.0.18 - 2017-08-29
+
+### Changed
+- [LPS-73472]: Update the [Liferay Gradle Plugins Node] dependency to version
+3.1.0.
+
+## 2.0.19 - 2017-09-18
+
+### Changed
+- [LPS-74770]: Update the [Liferay Gradle Plugins Node] dependency to version
+3.1.1.
+
+## 2.0.20 - 2017-09-28
+
+### Changed
+- [LPS-74933]: Update the [Liferay Gradle Plugins Node] dependency to version
+3.2.0.
+
 [Liferay Gradle Plugins Node]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-node
 [LPS-66906]: https://issues.liferay.com/browse/LPS-66906
 [LPS-67023]: https://issues.liferay.com/browse/LPS-67023
@@ -132,3 +150,5 @@
 [LPS-72152]: https://issues.liferay.com/browse/LPS-72152
 [LPS-72340]: https://issues.liferay.com/browse/LPS-72340
 [LPS-73472]: https://issues.liferay.com/browse/LPS-73472
+[LPS-74770]: https://issues.liferay.com/browse/LPS-74770
+[LPS-74933]: https://issues.liferay.com/browse/LPS-74933

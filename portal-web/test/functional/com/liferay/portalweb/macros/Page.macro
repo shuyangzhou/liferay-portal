@@ -154,8 +154,6 @@
 				</if>
 			</then>
 		</if>
-
-		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="addChild">
@@ -239,7 +237,9 @@
 
 		<execute function="Type" locator1="SitePages#JAVASCRIPT_TEXTAREA" value1="${javaScript}" />
 
-		<execute macro="PortletEntry#save" />
+		<execute function="AssertClickNoError" locator1="Button#SAVE" value1="Save" />
+
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="addPageCategory">
@@ -278,7 +278,7 @@
 		</execute>
 
 		<execute macro="SitePageNavigator#gotoAddPage">
-			<var name="sitePagePrivacy" value="Private" />
+			<var name="siteTemplateName" value="${siteTemplateName}" />
 		</execute>
 
 		<execute macro="Page#addPageTitle">
@@ -487,7 +487,7 @@
 
 		<execute function="MouseOver" locator1="SitePages#NAVIGATION_SPECIFIC_PAGE" />
 
-		<execute function="ClickNoError" locator1="SitePages#NAVIGATION_SPECIFIC_PAGE_X_DELETE" />
+		<execute function="ClickNoError#makeVisibleClick" locator1="SitePages#NAVIGATION_SPECIFIC_PAGE_X_DELETE" />
 
 		<execute function="Confirm#waitForConfirmation" value1="Are you sure you want to delete this page?" />
 	</command>
@@ -526,12 +526,24 @@
 		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
+	<command name="editPageMetadata">
+		<execute function="Type#typeClickAt" locator1="TextInput#SEO_HTML_TITLE" value1="${HTMLTitle}" />
+
+		<execute function="Type#typeClickAt" locator1="TextArea#SEO_META_TAGS_DESCRIPTION" value1="${metaTagsDescription}" />
+
+		<execute function="Type#typeClickAt" locator1="TextArea#SEO_META_TAGS_KEYWORDS" value1="${metaTagsKeywords}" />
+
+		<execute function="AssertClick#pauseAssertTextClickAt" locator1="Button#SAVE" value1="Save" />
+
+		<execute macro="Alert#viewSuccessMessage" />
+	</command>
+
 	<command name="editPageTypeLayout">
 		<var name="key_columnName" value="${columnName}" />
 
 		<execute function="Click" locator1="SitePagesEditPage#LAYOUT_CARD" />
 
-		<execute function="Click" locator1="Button#SAVE" value1="Save" />
+		<execute macro="PortletEntry#save" />
 	</command>
 
 	<command name="editSelectPageType">
@@ -626,7 +638,9 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoUserMyAccount">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="My Account" />
+			<var name="panel" value="User" />
 			<var name="portlet" value="${portletName}" />
 		</execute>
 	</command>
@@ -792,7 +806,9 @@
 	</command>
 
 	<command name="view">
-		<execute macro="ProductMenuHelper#expandPanelSites" />
+		<execute macro="ProductMenuHelper#expandPanel">
+			<var name="panel" value="Site Administration" />
+		</execute>
 
 		<execute macro="ProductMenuHelper#expandCategory">
 			<var name="category" value="Navigation" />
@@ -806,7 +822,9 @@
 	<command name="viewChildPage">
 		<execute macro="ProductMenuHelper#openProductMenu" />
 
-		<execute macro="ProductMenuHelper#expandPanelSites" />
+		<execute macro="ProductMenuHelper#expandPanel">
+			<var name="panel" value="Site Administration" />
+		</execute>
 
 		<execute macro="ProductMenuHelper#expandCategory">
 			<var name="category" value="Navigation" />
@@ -1076,15 +1094,9 @@
 
 		<var name="key_defaultSiteLanguageKey" value="${defaultSiteLanguageKey}" />
 
-		<execute macro="Navigator#gotoNavTab">
-			<var name="navTab" value="SEO" />
-		</execute>
+		<execute macro="Navigator#gotoSEOPanel" />
 
-		<execute macro="Panel#expandPanel">
-			<var name="panelHeading" value="SEO" />
-		</execute>
-
-		<execute function="AssertElementPresent" locator1="SitePagesEditPage#SEO_HTML_TITLE" />
+		<execute function="AssertElementPresent" locator1="TextInput#SEO_HTML_TITLE" />
 		<execute function="AssertElementPresent" locator1="SitePagesEditPage#SEO_HTML_TITLE_META_TAGS" />
 	</command>
 
@@ -1092,6 +1104,14 @@
 		<execute function="Click" locator1="ControlMenu#INFO" />
 
 		<execute function="AssertTextEquals#assertPartialText" locator1="Message#CUSTOMIZED_PAGE_INFO" value1="This page is linked to a site template which does not allow modifications to it." />
+	</command>
+
+	<command name="viewPageMetadata">
+		<execute function="AssertTextEquals" locator1="TextInput#SEO_HTML_TITLE" value1="${HTMLTitle}" />
+
+		<execute function="AssertTextEquals" locator1="TextArea#SEO_META_TAGS_DESCRIPTION" value1="${metaTagsDescription}" />
+
+		<execute function="AssertTextEquals" locator1="TextArea#SEO_META_TAGS_KEYWORDS" value1="${metaTagsKeywords}" />
 	</command>
 
 	<command name="viewPageNoLockCheck">
@@ -1124,7 +1144,9 @@
 
 		<execute function="AssertTextEquals#assertPartialText" locator1="Message#CUSTOMIZED_PAGE_INFO" value1="This page is linked to a page template. Disable the automatic propagation of changes to this page to be able to make modifications." />
 
-		<execute macro="ProductMenuHelper#expandPanelSites" />
+		<execute macro="ProductMenuHelper#expandPanel">
+			<var name="panel" value="Site Administration" />
+		</execute>
 
 		<execute macro="ProductMenuHelper#expandCategory">
 			<var name="category" value="Navigation" />
@@ -1134,7 +1156,7 @@
 			<var name="page" value="${page}" />
 		</execute>
 
-		<execute function="AssertTextEquals" locator1="SitePagesEditPage#PAGE_TYPE_TEMPLATE_AUTOMATICALLY_APPLY_CHANGES_LABEL_GENERIC" value1="Inherit Changes If enabled, this page will inherit changes made to the ${pageTemplateName} page template." />
+		<execute function="AssertTextEquals" locator1="Message#ERROR_3" value1="Some page settings are unavailable because Inherit Changes is enabled. To change these settings, disable Inherit Changes under the General section." />
 		<execute function="AssertChecked#assertCheckedToggleSwitch" locator1="SitePagesEditPage#PAGE_TYPE_TEMPLATE_AUTOMATICALLY_APPLY_CHANGES_CHECKBOX_GENERIC" />
 	</command>
 
@@ -1207,6 +1229,12 @@
 		</for>
 	</command>
 
+	<command name="viewRTLLayout">
+		<execute function="AssertCssValue" locator1="Home#SITE_NAME" locator2="direction" value1="rtl" />
+		<execute function="AssertCssValue" locator1="ProductMenu#TOGGLE" locator2="text-align" value1="right" />
+		<execute function="AssertCssValue" locator1="ProductMenu#PRODUCT_MENU_OPENED" locator2="right" value1="0px" />
+	</command>
+
 	<command name="viewSelectedLayoutColumn">
 		<execute function="AssertElementPresent" locator1="SitePagesEditPage#LAYOUT_CARD_SELECTED">
 			<var name="key_columnName" value="${columnName}" />
@@ -1274,7 +1302,7 @@
 			</else>
 		</if>
 
-		<execute function="AssertClick" locator1="Staging#LIVE_BUTTON" value1="Live" />
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="Staging#LIVE_BUTTON" value1="Live" />
 
 		<var name="key_pageName" value="${pageName}" />
 

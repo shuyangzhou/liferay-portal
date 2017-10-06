@@ -357,7 +357,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			structure.getStructureId(), StringUtil.randomString(),
 			WorkflowConstants.STATUS_ANY);
 
-		long[] groupIds = new long[] {group.getGroupId(), _group.getGroupId()};
+		long[] groupIds = {group.getGroupId(), _group.getGroupId()};
 
 		List<DDMTemplate> ddmTemplates = DDMTemplateServiceUtil.search(
 			TestPropsValues.getCompanyId(), groupIds,
@@ -440,7 +440,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, null, StringUtil.randomString(), description,
 			type, mode, language, script, WorkflowConstants.STATUS_ANY);
 
-		long[] groupIds = new long[] {group.getGroupId(), _group.getGroupId()};
+		long[] groupIds = {group.getGroupId(), _group.getGroupId()};
 
 		List<DDMTemplate> templates = DDMTemplateServiceUtil.search(
 			TestPropsValues.getCompanyId(), groupIds,
@@ -520,7 +520,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, null, StringUtil.randomString(), description,
 			type, mode, language, script, WorkflowConstants.STATUS_ANY);
 
-		long[] groupIds = new long[] {group.getGroupId(), _group.getGroupId()};
+		long[] groupIds = {group.getGroupId(), _group.getGroupId()};
 
 		List<DDMTemplate> templates = DDMTemplateServiceUtil.search(
 			TestPropsValues.getCompanyId(), groupIds,
@@ -598,7 +598,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, null, StringUtil.randomString(), description,
 			type, mode, language, script, WorkflowConstants.STATUS_ANY);
 
-		long[] groupIds = new long[] {group.getGroupId(), _group.getGroupId()};
+		long[] groupIds = {group.getGroupId(), _group.getGroupId()};
 
 		int count = DDMTemplateServiceUtil.searchCount(
 			TestPropsValues.getCompanyId(), groupIds,
@@ -675,7 +675,7 @@ public class DDMTemplateServiceTest extends BaseDDMServiceTestCase {
 			_recordSetClassNameId, null, StringUtil.randomString(), description,
 			type, mode, language, script, WorkflowConstants.STATUS_ANY);
 
-		long[] groupIds = new long[] {group.getGroupId(), _group.getGroupId()};
+		long[] groupIds = {group.getGroupId(), _group.getGroupId()};
 
 		int count = DDMTemplateServiceUtil.searchCount(
 			TestPropsValues.getCompanyId(), groupIds,

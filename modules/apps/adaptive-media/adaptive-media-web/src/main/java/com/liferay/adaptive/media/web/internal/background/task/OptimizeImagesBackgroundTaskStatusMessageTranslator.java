@@ -14,7 +14,7 @@
 
 package com.liferay.adaptive.media.web.internal.background.task;
 
-import com.liferay.adaptive.media.web.constants.OptimizeImagesBackgroundTaskConstants;
+import com.liferay.adaptive.media.web.constants.AMOptimizeImagesBackgroundTaskConstants;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskStatus;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskStatusMessageTranslator;
 import com.liferay.portal.kernel.messaging.Message;
@@ -32,7 +32,7 @@ public class OptimizeImagesBackgroundTaskStatusMessageTranslator
 		BackgroundTaskStatus backgroundTaskStatus, Message message) {
 
 		String phase = message.getString(
-			OptimizeImagesBackgroundTaskConstants.PHASE);
+			AMOptimizeImagesBackgroundTaskConstants.PHASE);
 
 		if (Validator.isNotNull(phase)) {
 			setPhaseAttributes(backgroundTaskStatus, message);
@@ -41,22 +41,22 @@ public class OptimizeImagesBackgroundTaskStatusMessageTranslator
 		}
 
 		String className = message.getString(
-			OptimizeImagesBackgroundTaskConstants.CLASS_NAME);
+			AMOptimizeImagesBackgroundTaskConstants.CLASS_NAME);
 
 		backgroundTaskStatus.setAttribute(
-			OptimizeImagesBackgroundTaskConstants.CLASS_NAME, className);
+			AMOptimizeImagesBackgroundTaskConstants.CLASS_NAME, className);
 
 		long count = message.getLong(
-			OptimizeImagesBackgroundTaskConstants.COUNT);
+			AMOptimizeImagesBackgroundTaskConstants.COUNT);
 
 		backgroundTaskStatus.setAttribute(
-			OptimizeImagesBackgroundTaskConstants.COUNT, count);
+			AMOptimizeImagesBackgroundTaskConstants.COUNT, count);
 
 		long total = message.getLong(
-			OptimizeImagesBackgroundTaskConstants.TOTAL);
+			AMOptimizeImagesBackgroundTaskConstants.TOTAL);
 
 		backgroundTaskStatus.setAttribute(
-			OptimizeImagesBackgroundTaskConstants.TOTAL, total);
+			AMOptimizeImagesBackgroundTaskConstants.TOTAL, total);
 
 		int percentage = 100;
 

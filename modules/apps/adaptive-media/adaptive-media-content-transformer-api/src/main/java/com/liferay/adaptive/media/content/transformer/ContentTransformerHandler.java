@@ -28,11 +28,9 @@ import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * Transforms the content by invoking the {@link ContentTransformer} available
- * for a particular {@link ContentTransformerContentType}. There can be more
- * than one content transformer available for a particular content type, and
- * they will all be executed but the order is not guaranteed.
- *
- * @review
+ * for a specific {@link ContentTransformerContentType}. There can be more than
+ * one content transformer available for a particular content type, and they
+ * will all be executed, but the order is not guaranteed.
  *
  * @author Alejandro Tardín
  */
@@ -40,10 +38,11 @@ import org.osgi.service.component.annotations.Deactivate;
 public class ContentTransformerHandler {
 
 	public <T> T transform(
-		ContentTransformerContentType<T> contentType, T originalContent) {
+		ContentTransformerContentType<T> contentTransformerContentType,
+		T originalContent) {
 
 		List<ContentTransformer> contentTransformers =
-			_serviceTrackerMap.getService(contentType);
+			_serviceTrackerMap.getService(contentTransformerContentType);
 
 		if (contentTransformers == null) {
 			return originalContent;
@@ -57,7 +56,9 @@ public class ContentTransformerHandler {
 					transformedContent);
 			}
 			catch (Exception e) {
-				_log.error(e);
+				if (_log.isDebugEnabled()) {
+					_log.debug(e, e);
+				}
 			}
 		}
 
@@ -72,7 +73,8 @@ public class ContentTransformerHandler {
 				ContentTransformer contentTransformer =
 					bundleContext.getService(serviceReference);
 
-				emitter.emit(contentTransformer.getContentType());
+				emitter.emit(
+					contentTransformer.getContentTransformerContentType());
 
 				bundleContext.ungetService(serviceReference);
 			});

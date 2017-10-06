@@ -14,15 +14,15 @@
 
 package com.liferay.portal.kernel.dao.jdbc;
 
-import com.liferay.portal.kernel.concurrent.ConcurrentHashSet;
 import com.liferay.portal.kernel.concurrent.FutureListener;
 import com.liferay.portal.kernel.concurrent.NoticeableFuture;
 import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
-import com.liferay.portal.kernel.executor.PortalExecutorManagerUtil;
+import com.liferay.portal.kernel.executor.PortalExecutorManager;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -32,8 +32,10 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -87,6 +89,10 @@ public class AutoBatchPreparedStatementUtil {
 	private static final Method _executeBatch;
 	private static final Class<?>[] _interfaces =
 		new Class<?>[] {PreparedStatement.class};
+	private static volatile PortalExecutorManager _portalExecutorManager =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			PortalExecutorManager.class, AutoBatchPreparedStatementUtil.class,
+			"_portalExecutorManager", true);
 
 	static {
 		try {
@@ -249,11 +255,12 @@ public class AutoBatchPreparedStatementUtil {
 
 		private final Connection _connection;
 		private int _count;
-		private final Set<Future<Void>> _futures = new ConcurrentHashSet<>();
+		private final Set<Future<Void>> _futures = Collections.newSetFromMap(
+			new ConcurrentHashMap<>());
 		private PreparedStatement _preparedStatement;
 		private final String _sql;
 		private final ThreadPoolExecutor _threadPoolExecutor =
-			PortalExecutorManagerUtil.getPortalExecutor(
+			_portalExecutorManager.getPortalExecutor(
 				ConcurrentBatchInvocationHandler.class.getName());
 
 	}
@@ -357,11 +364,12 @@ public class AutoBatchPreparedStatementUtil {
 		}
 
 		private final Connection _connection;
-		private final Set<Future<Void>> _futures = new ConcurrentHashSet<>();
+		private final Set<Future<Void>> _futures = Collections.newSetFromMap(
+			new ConcurrentHashMap<>());
 		private PreparedStatement _preparedStatement;
 		private final String _sql;
 		private final ThreadPoolExecutor _threadPoolExecutor =
-			PortalExecutorManagerUtil.getPortalExecutor(
+			_portalExecutorManager.getPortalExecutor(
 				ConcurrentNoBatchInvocationHandler.class.getName());
 
 	}

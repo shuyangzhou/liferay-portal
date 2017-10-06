@@ -36,8 +36,19 @@ property.
 - [LPS-73353]: Add the ability to configure the JaCoCo Java Agent in the
 `setenv.sh` file during the execution of a `SetUpTestableTomcatTask` instance.
 
+## 2.1.1 - 2017-09-20
+
+### Added
+- [LPS-71117]: Add support for Gradle 4.0 and newer.
+
+## 2.1.2 - 2017-09-23
+
+### Fixed
+- [LPS-71117]: Bypass the following Gradle 4.0 [issue](https://github.com/gradle/gradle/issues/2343).
+
 [LPS-67573]: https://issues.liferay.com/browse/LPS-67573
 [LPS-69492]: https://issues.liferay.com/browse/LPS-69492
+[LPS-71117]: https://issues.liferay.com/browse/LPS-71117
 [LPS-72365]: https://issues.liferay.com/browse/LPS-72365
 [LPS-73353]: https://issues.liferay.com/browse/LPS-73353
 [LPS-73525]: https://issues.liferay.com/browse/LPS-73525

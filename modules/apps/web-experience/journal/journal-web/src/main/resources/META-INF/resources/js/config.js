@@ -26,7 +26,6 @@
 							requires: [
 								'aui-base',
 								'aui-dialog-iframe-deprecated',
-								'aui-tooltip',
 								'liferay-portlet-base',
 								'liferay-util-window'
 							]

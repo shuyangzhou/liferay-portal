@@ -21,8 +21,8 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ServerDetector;
+import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
 import com.liferay.portal.tools.ToolDependencies;
-import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -63,7 +62,7 @@ public class PortletDeployer extends BaseDeployer {
 			}
 		}
 
-		new PortletDeployer(wars, jars);
+		StreamUtil.cleanUp(new PortletDeployer(wars, jars));
 	}
 
 	public PortletDeployer() {
@@ -217,19 +216,7 @@ public class PortletDeployer extends BaseDeployer {
 	public void updateDeployDirectory(File srcFile) throws Exception {
 		boolean customPortletXML = false;
 
-		try {
-			customPortletXML = PrefsPropsUtil.getBoolean(
-				PropsKeys.AUTO_DEPLOY_CUSTOM_PORTLET_XML,
-				PropsValues.AUTO_DEPLOY_CUSTOM_PORTLET_XML);
-		}
-		catch (Exception e) {
-
-			// This will only happen when running the deploy tool in Ant in the
-			// classical way where the WAR file is actually massaged and
-			// packaged.
-
-			customPortletXML = PropsValues.AUTO_DEPLOY_CUSTOM_PORTLET_XML;
-		}
+		customPortletXML = PropsValues.AUTO_DEPLOY_CUSTOM_PORTLET_XML;
 
 		customPortletXML = GetterUtil.getBoolean(
 			System.getProperty("deployer.custom.portlet.xml"),

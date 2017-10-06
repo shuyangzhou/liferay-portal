@@ -18,10 +18,7 @@ import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTemplateCont
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
 import com.liferay.dynamic.data.mapping.render.DDMFormFieldRenderingContext;
-import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,18 +53,10 @@ public class GridDDMFormFieldTemplateContextContributor
 		parameters.put(
 			"rows",
 			getOptions("rows", ddmFormField, ddmFormFieldRenderingContext));
-
-		try {
-			parameters.put(
-				"value",
-				jsonFactory.createJSONObject(
-					ddmFormFieldRenderingContext.getValue()));
-		}
-		catch (JSONException jsone) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(jsone, jsone);
-			}
-		}
+		parameters.put(
+			"value",
+			jsonFactory.looseDeserialize(
+				ddmFormFieldRenderingContext.getValue()));
 
 		return parameters;
 	}
@@ -92,8 +81,5 @@ public class GridDDMFormFieldTemplateContextContributor
 
 	@Reference
 	protected JSONFactory jsonFactory;
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		GridDDMFormFieldTemplateContextContributor.class);
 
 }

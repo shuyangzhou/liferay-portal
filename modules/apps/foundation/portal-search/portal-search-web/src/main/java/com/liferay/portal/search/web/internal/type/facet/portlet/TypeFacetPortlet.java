@@ -16,13 +16,13 @@ package com.liferay.portal.search.web.internal.type.facet.portlet;
 
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.search.facet.AssetEntriesFacetFactory;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.search.facet.type.AssetEntriesFacetFactory;
 import com.liferay.portal.search.web.internal.facet.display.builder.AssetEntriesSearchFacetDisplayBuilder;
 import com.liferay.portal.search.web.internal.facet.display.context.AssetEntriesSearchFacetDisplayContext;
 import com.liferay.portal.search.web.internal.type.facet.constants.TypeFacetPortletKeys;
-import com.liferay.portal.search.web.internal.type.facet.constants.TypeFacetWebKeys;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
@@ -32,7 +32,6 @@ import java.io.IOException;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 import javax.portlet.Portlet;
@@ -85,6 +84,15 @@ public class TypeFacetPortlet
 			typeFacetPortletPreferences, portletSharedSearchSettings);
 
 		portletSharedSearchSettings.addFacet(facet);
+
+		ThemeDisplay themeDisplay =
+			portletSharedSearchSettings.getThemeDisplay();
+
+		SearchContext searchContext =
+			portletSharedSearchSettings.getSearchContext();
+
+		searchContext.setEntryClassNames(
+			getAssetTypesClassNames(typeFacetPortletPreferences, themeDisplay));
 	}
 
 	@Override
@@ -100,7 +108,7 @@ public class TypeFacetPortlet
 				portletSharedSearchResponse, renderRequest);
 
 		renderRequest.setAttribute(
-			TypeFacetWebKeys.DISPLAY_CONTEXT,
+			WebKeys.PORTLET_DISPLAY_CONTEXT,
 			assetEntriesSearchFacetDisplayContext);
 
 		super.render(renderRequest, renderResponse);
@@ -125,16 +133,19 @@ public class TypeFacetPortlet
 			assetEntriesSearchFacetDisplayBuilder =
 				new AssetEntriesSearchFacetDisplayBuilder();
 
+		ThemeDisplay themeDisplay = portletSharedSearchResponse.getThemeDisplay(
+			renderRequest);
+
 		assetEntriesSearchFacetDisplayBuilder.setClassNames(
-			getAssetTypesClassNames(
-				assetEntriesFacetConfiguration, typeFacetPortletPreferences));
+			getAssetTypesClassNames(typeFacetPortletPreferences, themeDisplay));
+
 		assetEntriesSearchFacetDisplayBuilder.setFacet(facet);
 		assetEntriesSearchFacetDisplayBuilder.setFrequencyThreshold(
 			assetEntriesFacetConfiguration.getFrequencyThreshold());
 		assetEntriesSearchFacetDisplayBuilder.setFrequenciesVisible(
 			typeFacetPortletPreferences.isFrequenciesVisible());
 		assetEntriesSearchFacetDisplayBuilder.setLocale(
-			getLocale(portletSharedSearchResponse, renderRequest));
+			themeDisplay.getLocale());
 
 		String parameterName = typeFacetPortletPreferences.getParameterName();
 
@@ -156,8 +167,6 @@ public class TypeFacetPortlet
 		AssetEntriesFacetBuilder assetEntriesFacetBuilder =
 			new AssetEntriesFacetBuilder(assetEntriesFacetFactory);
 
-		assetEntriesFacetBuilder.setCompanyId(
-			getCompanyId(portletSharedSearchSettings));
 		assetEntriesFacetBuilder.setFrequencyThreshold(
 			typeFacetPortletPreferences.getFrequencyThreshold());
 		assetEntriesFacetBuilder.setSearchContext(
@@ -174,39 +183,17 @@ public class TypeFacetPortlet
 	}
 
 	protected String[] getAssetTypesClassNames(
-		AssetEntriesFacetConfiguration assetEntriesFacetConfiguration,
-		TypeFacetPortletPreferences typeFacetPortletPreferences) {
+		TypeFacetPortletPreferences typeFacetPortletPreferences,
+		ThemeDisplay themeDisplay) {
 
-		Optional<String[]> assetTypesArray =
-			typeFacetPortletPreferences.getAssetTypesArray();
-
-		return assetTypesArray.orElse(
-			assetEntriesFacetConfiguration.getClassNames());
-	}
-
-	protected long getCompanyId(
-		PortletSharedSearchSettings portletSharedSearchSettings) {
-
-		ThemeDisplay themeDisplay =
-			portletSharedSearchSettings.getThemeDisplay();
-
-		return themeDisplay.getCompanyId();
+		return typeFacetPortletPreferences.getCurrentAssetTypesArray(
+			themeDisplay.getCompanyId());
 	}
 
 	protected String getFieldName() {
 		Facet facet = assetEntriesFacetFactory.newInstance(new SearchContext());
 
 		return facet.getFieldName();
-	}
-
-	protected Locale getLocale(
-		PortletSharedSearchResponse portletSharedSearchResponse,
-		RenderRequest renderRequest) {
-
-		ThemeDisplay themeDisplay = portletSharedSearchResponse.getThemeDisplay(
-			renderRequest);
-
-		return themeDisplay.getLocale();
 	}
 
 	protected Optional<List<String>> getParameterValues(

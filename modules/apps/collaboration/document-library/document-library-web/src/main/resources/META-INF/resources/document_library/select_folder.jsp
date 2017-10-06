@@ -47,6 +47,7 @@ DLVisualizationHelper dlVisualizationHelper = new DLVisualizationHelper(dlReques
 					<portlet:param name="redirect" value="<%= currentURL %>" />
 					<portlet:param name="repositoryId" value="<%= String.valueOf(repositoryId) %>" />
 					<portlet:param name="parentFolderId" value="<%= String.valueOf(folderId) %>" />
+					<portlet:param name="ignoreRootFolder" value="<%= Boolean.TRUE.toString() %>" />
 				</portlet:renderURL>
 
 				<aui:button href="<%= editFolderURL %>" value='<%= (folder == null) ? "add-folder" : "add-subfolder" %>' />
@@ -70,6 +71,7 @@ DLVisualizationHelper dlVisualizationHelper = new DLVisualizationHelper(dlReques
 		portletURL.setParameter("mvcRenderCommandName", "/document_library/select_folder");
 		portletURL.setParameter("folderId", String.valueOf(folderId));
 		portletURL.setParameter("ignoreRootFolder", Boolean.TRUE.toString());
+		portletURL.setParameter("showMountFolder", String.valueOf(dlVisualizationHelper.isMountFolderVisible()));
 		%>
 
 		<liferay-ui:search-container
@@ -90,6 +92,7 @@ DLVisualizationHelper dlVisualizationHelper = new DLVisualizationHelper(dlReques
 					<portlet:param name="mvcRenderCommandName" value="/document_library/select_folder" />
 					<portlet:param name="folderId" value="<%= String.valueOf(curFolder.getFolderId()) %>" />
 					<portlet:param name="ignoreRootFolder" value="<%= Boolean.TRUE.toString() %>" />
+					<portlet:param name="showMountFolder" value="<%= String.valueOf(dlVisualizationHelper.isMountFolderVisible()) %>" />
 				</liferay-portlet:renderURL>
 
 				<%

@@ -44,7 +44,7 @@ public class RadioDDMFormFieldRenderer extends BaseDDMFormFieldRenderer {
 
 	@Override
 	public String getTemplateNamespace() {
-		return "ddm.radio";
+		return "DDMRadio.render";
 	}
 
 	@Override

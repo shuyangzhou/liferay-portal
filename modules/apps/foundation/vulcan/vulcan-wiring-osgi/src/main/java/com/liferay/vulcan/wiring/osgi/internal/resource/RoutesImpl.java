@@ -17,10 +17,13 @@ package com.liferay.vulcan.wiring.osgi.internal.resource;
 import com.liferay.vulcan.pagination.Page;
 import com.liferay.vulcan.pagination.SingleModel;
 import com.liferay.vulcan.resource.Routes;
+import com.liferay.vulcan.resource.identifier.Identifier;
+import com.liferay.vulcan.uri.Path;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * @author Alejandro Hernández
@@ -28,28 +31,76 @@ import java.util.function.Supplier;
 public class RoutesImpl<T> implements Routes<T> {
 
 	@Override
-	public Optional<Supplier<Page<T>>> getPageSupplierOptional() {
-		return Optional.ofNullable(_pageSupplier);
+	public Optional<Consumer<Path>> getDeleteSingleModelConsumerOptional() {
+		return Optional.ofNullable(_deleteSingleModelConsumer);
 	}
 
 	@Override
-	public Optional<Function<String, SingleModel<T>>>
+	public Optional<Function<Path, Function<Identifier, Page<T>>>>
+		getPageFunctionOptional() {
+
+		return Optional.ofNullable(_pageFunction);
+	}
+
+	@Override
+	public Optional<Function<Identifier, Function<Map<String, Object>,
+		SingleModel<T>>>> getPostSingleModelFunctionOptional() {
+
+		return Optional.ofNullable(_postSingleModelFunction);
+	}
+
+	@Override
+	public Optional<Function<Path, SingleModel<T>>>
 		getSingleModelFunctionOptional() {
 
 		return Optional.ofNullable(_singleModelFunction);
 	}
 
-	public void setPageSupplier(Supplier<Page<T>> pageSupplier) {
-		_pageSupplier = pageSupplier;
+	@Override
+	public Optional<Function<Path, Function<Map<String, Object>,
+		SingleModel<T>>>> getUpdateSingleModelFunctionOptional() {
+
+		return Optional.ofNullable(_putSingleModelFunction);
+	}
+
+	public void setDeleteSingleModelConsumer(
+		Consumer<Path> deleteSingleModelConsumer) {
+
+		_deleteSingleModelConsumer = deleteSingleModelConsumer;
+	}
+
+	public void setPageFunction(
+		Function<Path, Function<Identifier, Page<T>>> pageFunction) {
+
+		_pageFunction = pageFunction;
+	}
+
+	public void setPostSingleModelFunction(
+		Function<Identifier, Function<Map<String, Object>, SingleModel<T>>>
+			postSingleModelFunction) {
+
+		_postSingleModelFunction = postSingleModelFunction;
+	}
+
+	public void setPutSingleModelFunction(
+		Function<Path, Function<Map<String, Object>, SingleModel<T>>>
+			putSingleModelFunction) {
+
+		_putSingleModelFunction = putSingleModelFunction;
 	}
 
 	public void setSingleModelFunction(
-		Function<String, SingleModel<T>> singleModelFunction) {
+		Function<Path, SingleModel<T>> singleModelFunction) {
 
 		_singleModelFunction = singleModelFunction;
 	}
 
-	private Supplier<Page<T>> _pageSupplier;
-	private Function<String, SingleModel<T>> _singleModelFunction;
+	private Consumer<Path> _deleteSingleModelConsumer;
+	private Function<Path, Function<Identifier, Page<T>>> _pageFunction;
+	private Function<Identifier, Function<Map<String, Object>, SingleModel<T>>>
+		_postSingleModelFunction;
+	private Function<Path, Function<Map<String, Object>, SingleModel<T>>>
+		_putSingleModelFunction;
+	private Function<Path, SingleModel<T>> _singleModelFunction;
 
 }

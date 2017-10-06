@@ -28,9 +28,9 @@ boolean changeStructure = GetterUtil.getBoolean(request.getAttribute("edit_artic
 
 <aui:model-context bean="<%= article %>" model="<%= JournalArticle.class %>" />
 
-<liferay-ui:asset-categories-error />
+<liferay-asset:asset-categories-error />
 
-<liferay-ui:asset-tags-error />
+<liferay-asset:asset-tags-error />
 
 <%
 long classPK = 0;

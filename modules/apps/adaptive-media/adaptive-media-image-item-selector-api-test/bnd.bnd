@@ -1,6 +1,0 @@
-Bundle-Name: Liferay Adaptive Media Image Item Selector API Test
-Bundle-SymbolicName: com.liferay.adaptive.media.image.item.selector.api.test
-Bundle-Version: 1.0.0
-Liferay-Releng-Module-Group-Description:
-Liferay-Releng-Module-Group-Title: Adaptive Media
--includeresource: test-classes/integration

@@ -29,7 +29,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 @Meta.OCD(
 	id = "com.liferay.journal.configuration.JournalServiceConfiguration",
 	localization = "content/Language",
-	name = "journal.service.configuration.name"
+	name = "journal-service-configuration-name"
 )
 @ProviderType
 public interface JournalServiceConfiguration {
@@ -96,8 +96,12 @@ public interface JournalServiceConfiguration {
 	)
 	public boolean expireAllArticleVersionsEnabled();
 
+	/**
+	 * @deprecated As of 4.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Meta.AD(
-		deflt = "false", description = "journal-article-view-permission-check",
+		deflt = "true", description = "journal-article-view-permission-check",
 		required = false
 	)
 	public boolean articleViewPermissionsCheckEnabled();

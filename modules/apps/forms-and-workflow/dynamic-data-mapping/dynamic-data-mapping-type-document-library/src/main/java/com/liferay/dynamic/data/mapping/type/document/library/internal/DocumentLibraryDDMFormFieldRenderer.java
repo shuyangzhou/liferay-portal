@@ -44,7 +44,7 @@ public class DocumentLibraryDDMFormFieldRenderer
 
 	@Override
 	public String getTemplateNamespace() {
-		return "ddm.document_library";
+		return "DDMDocumentLibrary.render";
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class DocumentLibraryDDMFormFieldRenderer
 	@Activate
 	protected void activate(Map<String, Object> properties) {
 		_templateResource = getTemplateResource(
-			"/META-INF/resources/document_library.soy");
+			"/META-INF/resources/document-library.soy");
 	}
 
 	@Override

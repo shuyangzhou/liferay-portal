@@ -2,6 +2,7 @@ package ${package}.portlet.action;
 
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.template.Template;
+import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.PortletURL;
@@ -35,6 +36,8 @@ public class ${className}NavigationMVCRenderCommand
 		navigationURL.setParameter("mvcRenderCommandName", "View");
 
 		template.put("navigationURL", navigationURL.toString());
+
+		template.put("releaseInfo", ReleaseInfo.getReleaseInfo());
 
 		return "Navigation";
 	}

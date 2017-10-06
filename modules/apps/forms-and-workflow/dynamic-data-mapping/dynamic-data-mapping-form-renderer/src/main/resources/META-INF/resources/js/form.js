@@ -29,6 +29,7 @@ AUI.add(
 						value: {
 							next: Liferay.Language.get('next'),
 							previous: Liferay.Language.get('previous'),
+							requiredFields: Liferay.Language.get('all-fields-marked-with-x-are-required'),
 							requestErrorMessage: Liferay.Language.get('there-was-an-error-when-trying-to-validate-your-form')
 						}
 					}

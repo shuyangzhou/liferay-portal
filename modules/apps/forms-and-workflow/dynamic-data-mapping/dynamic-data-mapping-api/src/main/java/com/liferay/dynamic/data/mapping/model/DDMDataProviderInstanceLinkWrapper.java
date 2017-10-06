@@ -98,69 +98,14 @@ public class DDMDataProviderInstanceLinkWrapper
 	}
 
 	@Override
-	public DDMDataProviderInstanceLink toEscapedModel() {
-		return new DDMDataProviderInstanceLinkWrapper(_ddmDataProviderInstanceLink.toEscapedModel());
-	}
-
-	@Override
-	public DDMDataProviderInstanceLink toUnescapedModel() {
-		return new DDMDataProviderInstanceLinkWrapper(_ddmDataProviderInstanceLink.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _ddmDataProviderInstanceLink.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _ddmDataProviderInstanceLink.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _ddmDataProviderInstanceLink.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _ddmDataProviderInstanceLink.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<DDMDataProviderInstanceLink> toCacheModel() {
-		return _ddmDataProviderInstanceLink.toCacheModel();
+	public java.lang.Object clone() {
+		return new DDMDataProviderInstanceLinkWrapper((DDMDataProviderInstanceLink)_ddmDataProviderInstanceLink.clone());
 	}
 
 	@Override
 	public int compareTo(
 		DDMDataProviderInstanceLink ddmDataProviderInstanceLink) {
 		return _ddmDataProviderInstanceLink.compareTo(ddmDataProviderInstanceLink);
-	}
-
-	@Override
-	public int hashCode() {
-		return _ddmDataProviderInstanceLink.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _ddmDataProviderInstanceLink.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new DDMDataProviderInstanceLinkWrapper((DDMDataProviderInstanceLink)_ddmDataProviderInstanceLink.clone());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _ddmDataProviderInstanceLink.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _ddmDataProviderInstanceLink.toXmlString();
 	}
 
 	/**
@@ -193,6 +138,11 @@ public class DDMDataProviderInstanceLinkWrapper
 		return _ddmDataProviderInstanceLink.getDataProviderInstanceLinkId();
 	}
 
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _ddmDataProviderInstanceLink.getExpandoBridge();
+	}
+
 	/**
 	* Returns the primary key of this ddm data provider instance link.
 	*
@@ -203,6 +153,11 @@ public class DDMDataProviderInstanceLinkWrapper
 		return _ddmDataProviderInstanceLink.getPrimaryKey();
 	}
 
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _ddmDataProviderInstanceLink.getPrimaryKeyObj();
+	}
+
 	/**
 	* Returns the structure ID of this ddm data provider instance link.
 	*
@@ -211,6 +166,26 @@ public class DDMDataProviderInstanceLinkWrapper
 	@Override
 	public long getStructureId() {
 		return _ddmDataProviderInstanceLink.getStructureId();
+	}
+
+	@Override
+	public int hashCode() {
+		return _ddmDataProviderInstanceLink.hashCode();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _ddmDataProviderInstanceLink.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _ddmDataProviderInstanceLink.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _ddmDataProviderInstanceLink.isNew();
 	}
 
 	@Override
@@ -254,14 +229,14 @@ public class DDMDataProviderInstanceLinkWrapper
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_ddmDataProviderInstanceLink.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_ddmDataProviderInstanceLink.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_ddmDataProviderInstanceLink.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -297,6 +272,31 @@ public class DDMDataProviderInstanceLinkWrapper
 	@Override
 	public void setStructureId(long structureId) {
 		_ddmDataProviderInstanceLink.setStructureId(structureId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<DDMDataProviderInstanceLink> toCacheModel() {
+		return _ddmDataProviderInstanceLink.toCacheModel();
+	}
+
+	@Override
+	public DDMDataProviderInstanceLink toEscapedModel() {
+		return new DDMDataProviderInstanceLinkWrapper(_ddmDataProviderInstanceLink.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _ddmDataProviderInstanceLink.toString();
+	}
+
+	@Override
+	public DDMDataProviderInstanceLink toUnescapedModel() {
+		return new DDMDataProviderInstanceLinkWrapper(_ddmDataProviderInstanceLink.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _ddmDataProviderInstanceLink.toXmlString();
 	}
 
 	@Override

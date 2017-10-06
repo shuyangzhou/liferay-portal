@@ -14,7 +14,24 @@
  */
 --%>
 
-<%@ page import="com.liferay.expando.kernel.model.ExpandoBridge" %><%@
+<%@ page import="com.liferay.asset.kernel.model.AssetCategory" %><%@
+page import="com.liferay.asset.kernel.model.AssetEntry" %><%@
+page import="com.liferay.asset.kernel.model.AssetTag" %><%@
+page import="com.liferay.asset.kernel.model.AssetVocabulary" %><%@
+page import="com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil" %><%@
+page import="com.liferay.asset.kernel.service.AssetCategoryServiceUtil" %><%@
+page import="com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil" %><%@
+page import="com.liferay.asset.kernel.service.AssetTagServiceUtil" %><%@
+page import="com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil" %><%@
+page import="com.liferay.asset.kernel.service.AssetVocabularyServiceUtil" %><%@
+page import="com.liferay.expando.kernel.model.ExpandoBridge" %><%@
+page import="com.liferay.portal.kernel.portlet.LiferayPortletRequest" %><%@
+page import="com.liferay.portal.kernel.portlet.LiferayPortletResponse" %><%@
 page import="com.liferay.portal.kernel.webserver.WebServerServletTokenUtil" %><%@
+page import="com.liferay.portlet.asset.util.AssetUtil" %><%@
 page import="com.liferay.portlet.usersadmin.search.GroupSearch" %><%@
-page import="com.liferay.portlet.usersadmin.search.GroupSearchTerms" %>
+page import="com.liferay.portlet.usersadmin.search.GroupSearchTerms" %><%@
+page import="com.liferay.trash.kernel.model.TrashEntry" %><%@
+page import="com.liferay.trash.kernel.util.TrashUtil" %>
+
+<%@ page import="java.util.Iterator" %>

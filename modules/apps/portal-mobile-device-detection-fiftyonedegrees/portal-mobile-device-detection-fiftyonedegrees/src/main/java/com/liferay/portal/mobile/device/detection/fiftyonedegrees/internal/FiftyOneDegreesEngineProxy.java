@@ -23,15 +23,12 @@ import com.liferay.portal.mobile.device.detection.fiftyonedegrees.configuration.
 import com.liferay.portal.mobile.device.detection.fiftyonedegrees.data.DataFileProvider;
 
 import fiftyone.mobile.detection.Dataset;
-import fiftyone.mobile.detection.DatasetBuilder;
 import fiftyone.mobile.detection.Match;
 import fiftyone.mobile.detection.Provider;
+import fiftyone.mobile.detection.factories.StreamFactory;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 import java.util.Map;
 
@@ -87,25 +84,7 @@ public class FiftyOneDegreesEngineProxy {
 		try (InputStream inputStream =
 				_dataFileProvider.getDataFileInputStream()) {
 
-			File tempFile = File.createTempFile(
-				"51degrees", String.valueOf(System.currentTimeMillis()));
-
-			tempFile.deleteOnExit();
-
-			try (OutputStream outputStream = new FileOutputStream(tempFile)) {
-				IOUtils.copy(inputStream, outputStream);
-
-				outputStream.flush();
-			}
-
-			DatasetBuilder.BuildFromFile buildFromFile = DatasetBuilder.file();
-
-			buildFromFile.configureCachesFromCacheSet(
-				DatasetBuilder.CacheTemplate.Default);
-
-			buildFromFile.setTempFile();
-
-			_dataset = buildFromFile.build(tempFile.getAbsolutePath());
+			_dataset = StreamFactory.create(IOUtils.toByteArray(inputStream));
 
 			_provider = new Provider(
 				_dataset, _fiftyOneDegreesConfiguration.cacheSize());

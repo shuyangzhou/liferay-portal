@@ -1221,7 +1221,7 @@ AUI.add(
 												inputFormatter: function(val) {
 													var instance = this;
 
-													var value = STR_BLANK;
+													var value = val;
 
 													if (Array.isArray(val)) {
 														value = instance.formatDate(val[0]);

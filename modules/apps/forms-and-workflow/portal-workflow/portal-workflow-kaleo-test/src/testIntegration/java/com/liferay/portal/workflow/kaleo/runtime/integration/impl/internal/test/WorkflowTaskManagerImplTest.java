@@ -51,7 +51,6 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -177,13 +176,13 @@ public class WorkflowTaskManagerImplTest
 		DLFileEntryType fileEntryType = addFileEntryType();
 
 		dlFileEntryTypeMap.put(
-			StringUtil.valueOf(fileEntryType.getFileEntryTypeId()),
+			String.valueOf(fileEntryType.getFileEntryTypeId()),
 			"Single Approver@1");
 
 		DLFileEntryType basicFileEntryType = getBasicFileEntryType();
 
 		dlFileEntryTypeMap.put(
-			StringUtil.valueOf(basicFileEntryType.getFileEntryTypeId()),
+			String.valueOf(basicFileEntryType.getFileEntryTypeId()),
 			StringPool.BLANK);
 
 		Folder folder = addFolder();
@@ -234,7 +233,7 @@ public class WorkflowTaskManagerImplTest
 		Map<String, String> dlFileEntryTypeMap = new HashMap<>();
 
 		dlFileEntryTypeMap.put(
-			StringUtil.valueOf(DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_ALL),
+			String.valueOf(DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_ALL),
 			"Single Approver@1");
 
 		folder = updateFolder(
@@ -672,7 +671,7 @@ public class WorkflowTaskManagerImplTest
 		Map<String, String> dlFileEntryTypeMap = new HashMap<>();
 
 		dlFileEntryTypeMap.put(
-			StringUtil.valueOf(DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_ALL),
+			String.valueOf(DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_ALL),
 			"Single Approver@1");
 
 		folder = updateFolder(

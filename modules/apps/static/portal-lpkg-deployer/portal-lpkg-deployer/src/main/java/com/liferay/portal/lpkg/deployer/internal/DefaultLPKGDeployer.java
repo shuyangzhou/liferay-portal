@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.lpkg.deployer.LPKGDeployer;
 import com.liferay.portal.lpkg.deployer.LPKGVerifier;
 import com.liferay.portal.lpkg.deployer.LPKGVerifyException;
+import com.liferay.portal.lpkg.deployer.util.BundleStartLevelUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -383,13 +384,10 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 			jarBundle = bundleContext.installBundle(
 				location, new FileInputStream(jarFile));
 
-			BundleStartLevel bundleStartLevel = jarBundle.adapt(
-				BundleStartLevel.class);
-
-			bundleStartLevel.setStartLevel(
-				PropsValues.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
-
-			_startBundle(jarBundle);
+			BundleStartLevelUtil.setStartLevelAndStart(
+				jarBundle,
+				PropsValues.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL,
+				bundleContext);
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Installed override JAR bundle " + location);
@@ -574,23 +572,6 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 		}
 
 		return files;
-	}
-
-	private void _startBundle(Bundle bundle) {
-		Dictionary<String, String> headers = bundle.getHeaders();
-
-		String fragmentHost = headers.get(Constants.FRAGMENT_HOST);
-
-		if (fragmentHost != null) {
-			return;
-		}
-
-		try {
-			bundle.start();
-		}
-		catch (BundleException be) {
-			_log.error("Unable to start " + bundle, be);
-		}
 	}
 
 	private Set<String> _toFileNames(List<File> jarFiles, List<File> warFiles) {

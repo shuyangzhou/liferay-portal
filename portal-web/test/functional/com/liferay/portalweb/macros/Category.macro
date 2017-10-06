@@ -97,6 +97,15 @@
 			</then>
 		</if>
 
+		<if>
+			<isset var="parentCategory" />
+			<then>
+				<execute macro="AssetCategorization#addCategory">
+					<var name="categoryName" value="${parentCategory}" />
+				</execute>
+			</then>
+		</if>
+
 		<execute macro="PortletEntry#save" />
 	</command>
 
@@ -445,7 +454,7 @@
 
 		<execute function="AssertClick" locator1="CategoriesNavigation#CATEGORY_NAME" value1="${categoryName}" />
 
-		<execute function="AssertTextEquals" locator1="AP#CATEGORIES_FILTER_CATEGORY" value1="${categoryName}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="AP#CATEGORIES_FILTER_CATEGORY" value1="${categoryName}" />
 	</command>
 
 	<command name="viewNavigationCP">
@@ -465,6 +474,12 @@
 
 		<execute macro="SiteAdmin#viewPortletTitle">
 			<var name="portletTitle" value="${vocabularyName}" />
+		</execute>
+	</command>
+
+	<command name="viewPath">
+		<execute function="AssertTextEquals" locator1="Categories#CATEGORY_ENTRY_PATH" value1="${path}">
+			<var name="key_categoryName" value="${categoryName}" />
 		</execute>
 	</command>
 

@@ -138,14 +138,16 @@ AUI.add(
 					getTemplateContext: function() {
 						var instance = this;
 
+						var soyIncDom = window.DDMSelect.render.Soy.toIncDom;
+
 						return A.merge(
 							SelectField.superclass.getTemplateContext.apply(instance, arguments),
 							{
-								badgeCloseIcon: Liferay.Util.getLexiconIconTpl('times', 'icon-monospaced'),
+								badgeCloseIcon: soyIncDom(Liferay.Util.getLexiconIconTpl('times', 'icon-monospaced')),
 								open: instance._open,
 								options: instance.get('options'),
-								selectCaretDoubleIcon: Liferay.Util.getLexiconIconTpl('caret-double-l', 'icon-monospaced'),
-								selectSearchIcon: Liferay.Util.getLexiconIconTpl('search', 'icon-monospaced'),
+								selectCaretDoubleIcon: soyIncDom(Liferay.Util.getLexiconIconTpl('caret-double-l', 'icon-monospaced')),
+								selectSearchIcon: soyIncDom(Liferay.Util.getLexiconIconTpl('search', 'icon-monospaced')),
 								strings: instance.get('strings'),
 								value: instance.getValueSelected()
 							}

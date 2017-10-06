@@ -15,8 +15,11 @@
 package com.liferay.source.formatter.checks;
 
 import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.source.formatter.BNDSettings;
+import com.liferay.source.formatter.checks.util.BNDSourceUtil;
 import com.liferay.source.formatter.checks.util.JavaSourceUtil;
 
 /**
@@ -26,38 +29,84 @@ public class JavaPackagePathCheck extends BaseFileCheck {
 
 	@Override
 	protected String doProcess(
-		String fileName, String absolutePath, String content) {
+			String fileName, String absolutePath, String content)
+		throws Exception {
 
-		_checkPackagePath(fileName, content);
+		String packageName = JavaSourceUtil.getPackageName(content);
+
+		if (Validator.isNull(packageName)) {
+			addMessage(fileName, "Missing package");
+
+			return content;
+		}
+
+		_checkPackageName(fileName, packageName);
+
+		if (!absolutePath.contains("/modules/private/apps/") &&
+			isModulesFile(absolutePath)) {
+
+			_checkModulePackageName(fileName, packageName);
+		}
 
 		return content;
 	}
 
-	private void _checkPackagePath(String fileName, String content) {
-		String packagePath = JavaSourceUtil.getPackagePath(content);
+	private void _checkModulePackageName(String fileName, String packageName)
+		throws Exception {
 
-		if (Validator.isNull(packagePath)) {
-			addMessage(fileName, "Missing package");
-
+		if (!packageName.startsWith("com.liferay")) {
 			return;
 		}
 
+		BNDSettings bndSettings = getBNDSettings(fileName);
+
+		if (bndSettings == null) {
+			return;
+		}
+
+		String bundleSymbolicName = BNDSourceUtil.getDefinitionValue(
+			bndSettings.getContent(), "Bundle-SymbolicName");
+
+		if (!bundleSymbolicName.startsWith("com.liferay")) {
+			return;
+		}
+
+		bundleSymbolicName = bundleSymbolicName.replaceAll(
+			"\\.(api|service|test)$", StringPool.BLANK);
+
+		if (packageName.contains(bundleSymbolicName)) {
+			return;
+		}
+
+		bundleSymbolicName = bundleSymbolicName.replaceAll(
+			"\\.impl$", ".internal");
+
+		if (!packageName.contains(bundleSymbolicName)) {
+			addMessage(
+				fileName,
+				"Package should follow Bundle-SymbolicName specified in " +
+					bndSettings.getFileName(),
+				"package.markdown");
+		}
+	}
+
+	private void _checkPackageName(String fileName, String packageName) {
 		int pos = fileName.lastIndexOf(CharPool.SLASH);
 
 		String filePath = StringUtil.replace(
 			fileName.substring(0, pos), CharPool.SLASH, CharPool.PERIOD);
 
-		if (!filePath.endsWith(packagePath)) {
+		if (!filePath.endsWith(packageName)) {
 			addMessage(
 				fileName,
-				"The declared package '" + packagePath +
+				"The declared package '" + packageName +
 					"' does not match the expected package",
 				"package.markdown");
 
 			return;
 		}
 
-		if (packagePath.matches(".*\\.internal\\.([\\w.]+\\.)?impl")) {
+		if (packageName.matches(".*\\.internal\\.([\\w.]+\\.)?impl")) {
 			addMessage(
 				fileName, "Do not use 'impl' inside 'internal', see LPS-70113");
 		}

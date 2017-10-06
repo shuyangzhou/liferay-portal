@@ -97,6 +97,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>HELP_TEXT_INPUT_FIELD</td>
+	<td>//input[@type='text' and contains(@id,'${key_fieldName}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td></td>
 	<td></td>
 	<td></td>
@@ -177,6 +182,11 @@
 <tr>
 	<td>RADIO_OPTION</td>
 	<td>//label[contains(.,'${key_radioOption}')]/input[@type='radio' and contains(@name,'${key_fieldName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>RADIO_OPTION_CHECKED</td>
+	<td>//label[contains(@class,'${key_radioOption}')]/input[@type='radio' and @checked="" and contains(@name,'${key_fieldName}')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -390,6 +400,27 @@
 <tr>
 	<td>AUTOCOMPLETE_PANEL</td>
 	<td>//div[@class='panel-body' and contains(.,'Autocomplete')]</td>
+	<td></td>
+</tr>
+<!--DOCUMENTS_AND_MEDIA-->
+<tr>
+	<td>DOCUMENTS_AND_MEDIA_FIELD</td>
+	<td>//div[contains(@data-fieldname,'${key_fieldName}')]//input[@id='inputFile']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DOCUMENTS_AND_MEDIA_LABEL</td>
+	<td>//div[contains(@data-fieldname,'${key_fieldName}')]//label</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DOCUMENTS_AND_MEDIA_FILE_NAME</td>
+	<td>//div[contains(@data-fieldname,'${key_fieldName}')]//h4[contains(.,'${key_uploadFileName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DOCUMENTS_AND_MEDIA_DOWNLOAD_ICON</td>
+	<td>//div[contains(@data-fieldname,'${key_fieldName}')]//a[@download='${key_uploadFileName}']</td>
 	<td></td>
 </tr>
 </tbody>

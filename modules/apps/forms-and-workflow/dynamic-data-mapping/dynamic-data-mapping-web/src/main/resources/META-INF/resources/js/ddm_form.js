@@ -1462,7 +1462,7 @@ AUI.add(
 						instance.after('selectedLayoutChange', instance._afterSelectedLayoutChange);
 						instance.after('selectedLayoutPathChange', instance._afterSelectedLayoutPathChange);
 
-						container.delegate('click', instance._handleControlButtonsClick, '.btn', instance);
+						container.delegate('click', instance._handleControlButtonsClick, '> .form-group .btn', instance);
 					},
 
 					getParsedValue: function(value) {
@@ -2774,7 +2774,18 @@ AUI.add(
 					getValue: function() {
 						var instance = this;
 
-						return instance.getInputNode().all('option:selected').val();
+						var selectedItems = instance.getInputNode().all('option:selected');
+
+						var value;
+
+						if (selectedItems._nodes && selectedItems._nodes.length > 0) {
+							value = selectedItems.val();
+						}
+						else {
+							value = [];
+						}
+
+						return value;
 					},
 
 					setLabel: function() {
@@ -2999,6 +3010,7 @@ AUI.add(
 						var drag = A.DD.DDM.getDrag(fieldContainer);
 
 						drag.addInvalid('.alloy-editor');
+						drag.addInvalid('.cke');
 						drag.addInvalid('.lfr-source-editor');
 					},
 

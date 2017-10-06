@@ -101,7 +101,9 @@ AUI.add(
 			_afterErrorMessageChange: function(event) {
 				var instance = this;
 
-				instance._errorMessageNode.html(event.newVal);
+				if (event.newVal) {
+					instance._errorMessageNode.html(event.newVal);
+				}
 			},
 
 			_afterVisibleChange: function(event) {

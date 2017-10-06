@@ -45,7 +45,7 @@ public class EditorDDMFormFieldRenderer extends BaseDDMFormFieldRenderer {
 
 	@Override
 	public String getTemplateNamespace() {
-		return "ddm.editor";
+		return "DDMEditor.render";
 	}
 
 	@Override

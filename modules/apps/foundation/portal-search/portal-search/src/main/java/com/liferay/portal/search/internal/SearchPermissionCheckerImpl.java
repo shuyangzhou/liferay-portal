@@ -316,7 +316,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 				if (_log.isDebugEnabled()) {
 					_log.debug(
 						"Skipping presearch permission checking due to too " +
-							"many roles, groups, and groupRoles: " +
+							"many roles, groups, and group roles: " +
 								termsCount + " > " + permissionTermsLimit);
 				}
 
@@ -475,15 +475,13 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 			return booleanFilter;
 		}
 
-		BooleanFilter fullBooleanFilter = new BooleanFilter();
+		if (booleanFilter != null) {
+			booleanFilter.add(permissionBooleanFilter, BooleanClauseOccur.MUST);
 
-		if ((booleanFilter != null) && booleanFilter.hasClauses()) {
-			fullBooleanFilter.add(booleanFilter, BooleanClauseOccur.MUST);
+			return booleanFilter;
 		}
 
-		fullBooleanFilter.add(permissionBooleanFilter, BooleanClauseOccur.MUST);
-
-		return fullBooleanFilter;
+		return permissionBooleanFilter;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

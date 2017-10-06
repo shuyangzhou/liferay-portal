@@ -70,7 +70,11 @@
 		<pathconvert pathsep="," property="app.names">
 			<globmapper from="${modules.dir}${file.separator}apps${file.separator}*" to="*" />
 			<path>
-				<dirset dir="${modules.dir}" includes="apps/*" />
+				<dirset dir="${modules.dir}" includes="apps/*">
+					<present targetdir="${modules.dir}">
+						<mapper from="*" to="*/app.bnd" type="glob" />
+					</present>
+				</dirset>
 			</path>
 		</pathconvert>
 
@@ -86,23 +90,15 @@
 	</target>
 
 	<target name="check-current-branch">
-		<exec dir="${modules.dir}" executable="git" outputproperty="liferay.releng.branch">
-			<arg value="rev-parse" />
-			<arg value="--abbrev-ref" />
-			<arg value="HEAD" />
-		</exec>
-
-		<echo message="Current branch: ${liferay.releng.branch}" />
-
 		<condition property="current.branch.private">
-			<contains string="${liferay.releng.branch}" substring="ee-" />
+			<or>
+				<istrue value="${ee.override}" />
+				<resourcecontains resource="${modules.dir}/../portal-kernel/src/com/liferay/portal/kernel/util/ReleaseInfo.java" substring=" DXP " />
+			</or>
 		</condition>
 
 		<condition else="Liferay CE" property="liferay.releng.app.title.prefix" value="Liferay">
-			<or>
-				<istrue value="${ee.override}" />
-				<istrue value="${current.branch.private}" />
-			</or>
+			<istrue value="${current.branch.private}" />
 		</condition>
 	</target>
 
@@ -302,12 +298,14 @@
 
 		<exec dir="${modules.dir}" executable="git" failonerror="true">
 			<arg value="clean" />
-			<arg value="-df" />
+			<arg value="-dfx" />
+			<arg value=".releng" />
 		</exec>
 
 		<exec dir="${modules.dir}" executable="git" failonerror="true">
 			<arg value="add" />
 			<arg value=".releng" />
+			<arg value="-f" />
 		</exec>
 
 		<exec dir="${modules.dir}" executable="git" failonerror="true">
@@ -360,7 +358,7 @@
 
 		<property name="dist.dir" value="${releng.app.dir}/dist" />
 
-		<pathconvert pathsep="," property="app.module.dirs.excludes">
+		<pathconvert pathsep="," property="app.module.dirs.excludes.private">
 			<chainedmapper>
 				<globmapper from="${modules.dir}${file.separator}*" to="*" />
 
@@ -377,13 +375,54 @@
 			<path>
 				<dirset dir="${modules.dir}" excludes="**/*-test*" includes="apps/${app.name}/**,private/apps/${app.name}/**">
 					<present targetdir="${modules.dir}">
-						<mapper from="*" to="*/.lfrbuild-portal" type="glob" />
+						<mapper from="*" to="*/.lfrbuild-portal-private" type="glob" />
 					</present>
 				</dirset>
 			</path>
 		</pathconvert>
 
-		<pathconvert pathsep="," property="app.module.dirs">
+		<pathconvert pathsep="," property="app.module.dirs.excludes.public">
+			<globmapper from="${modules.dir}${file.separator}*" to="*" />
+
+			<path>
+				<dirset dir="${modules.dir}" excludes="**/*-test*" includes="apps/${app.name}/**,private/apps/${app.name}/**">
+					<present targetdir="${modules.dir}">
+						<mapper from="*" to="*/.lfrbuild-portal-private" type="glob" />
+					</present>
+				</dirset>
+				<dirset dir="${modules.dir}" excludes="**/*-test*" includes="private/apps/${app.name}/**">
+					<present targetdir="${modules.dir}">
+						<mapper from="*" to="*/.lfrbuild-portal-private" type="glob" />
+					</present>
+				</dirset>
+			</path>
+		</pathconvert>
+
+		<condition
+			else="${app.module.dirs.excludes.public}"
+			property="app.module.dirs.excludes"
+			value="${app.module.dirs.excludes.private}"
+		>
+			<istrue value="${current.branch.private}" />
+		</condition>
+
+		<pathconvert pathsep="," property="app.module.dirs.private">
+			<globmapper from="${modules.dir}${file.separator}*" to="*" />
+			<path>
+				<dirset dir="${modules.dir}" excludes="**/*-test*,${app.module.dirs.excludes}" includes="apps/${app.name}/**,private/apps/${app.name}/**">
+					<present targetdir="${modules.dir}">
+						<mapper from="*" to="*/.lfrbuild-portal" type="glob" />
+					</present>
+				</dirset>
+				<dirset dir="${modules.dir}" excludes="${app.module.dirs.excludes}" includes="apps/${app.name}/**,private/apps/${app.name}/**">
+					<present targetdir="${modules.dir}">
+						<mapper from="*" to="*/.lfrbuild-portal-private" type="glob" />
+					</present>
+				</dirset>
+			</path>
+		</pathconvert>
+
+		<pathconvert pathsep="," property="app.module.dirs.public">
 			<globmapper from="${modules.dir}${file.separator}*" to="*" />
 			<path>
 				<dirset dir="${modules.dir}" excludes="**/*-test*,${app.module.dirs.excludes}" includes="apps/${app.name}/**,private/apps/${app.name}/**">
@@ -393,6 +432,14 @@
 				</dirset>
 			</path>
 		</pathconvert>
+
+		<condition
+			else="${app.module.dirs.public}"
+			property="app.module.dirs"
+			value="${app.module.dirs.private}"
+		>
+			<istrue value="${current.branch.private}" />
+		</condition>
 
 		<condition property="module.dirs.null">
 			<or>
@@ -478,11 +525,11 @@
 		<echo message="app.version = ${app.version}" />
 
 		<replaceregexp
+			byline="true"
 			file="${releng.app.dir}/app.properties"
 			flags="m"
 			match="app.marketplace.version=.*$"
 			replace="app.marketplace.version=${app.version}"
-			byline="true"
 		/>
 	</target>
 

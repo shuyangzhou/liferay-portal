@@ -1,6 +1,0 @@
-Bundle-Name: Liferay Adaptive Media Blogs Editor Configuration Static
-Bundle-SymbolicName: com.liferay.adaptive.media.blogs.editor.configuration.static
-Bundle-Version: 1.0.0
-Liferay-Releng-Module-Group-Description:
-Liferay-Releng-Module-Group-Title: Adaptive Media
--dsannotations-options: inherit

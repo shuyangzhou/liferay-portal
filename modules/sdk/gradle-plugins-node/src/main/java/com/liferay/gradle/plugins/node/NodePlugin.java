@@ -43,6 +43,8 @@ import org.gradle.api.plugins.PluginContainer;
 import org.gradle.api.specs.Spec;
 import org.gradle.api.tasks.Delete;
 import org.gradle.api.tasks.TaskContainer;
+import org.gradle.language.base.plugins.LifecycleBasePlugin;
+import org.gradle.util.VersionNumber;
 
 /**
  * @author Andrea Di Giorgi
@@ -93,6 +95,7 @@ public class NodePlugin implements Plugin<Project> {
 
 		_configureTasksExecuteNode(
 			project, nodeExtension, GradleUtil.isRunningInsideDaemon());
+		_configureTasksExecuteNpm(project, nodeExtension);
 
 		_configureTasksPublishNodeModule(project);
 
@@ -103,7 +106,7 @@ public class NodePlugin implements Plugin<Project> {
 				public void execute(Project project) {
 					_configureTaskDownloadNodeGlobal(
 						downloadNodeTask, nodeExtension);
-					_configureTasksExecuteNpm(project, nodeExtension);
+					_configureTasksExecuteNpmArgs(project, nodeExtension);
 				}
 
 			});
@@ -113,7 +116,8 @@ public class NodePlugin implements Plugin<Project> {
 		Delete delete = GradleUtil.addTask(
 			project, CLEAN_NPM_TASK_NAME, Delete.class);
 
-		delete.delete("node_modules", "npm-shrinkwrap.json");
+		delete.delete(
+			"node_modules", "npm-shrinkwrap.json", "package-lock.json");
 		delete.setDescription("Deletes NPM files from this project.");
 
 		return delete;
@@ -227,6 +231,23 @@ public class NodePlugin implements Plugin<Project> {
 					@Override
 					public void execute(JavaPlugin javaPlugin) {
 						_configureTaskNpmRunBuildForJavaPlugin(executeNpmTask);
+					}
+
+				});
+		}
+		else if (taskName.equals(_NPM_RUN_TEST_TASK_NAME)) {
+			PluginContainer pluginContainer = project.getPlugins();
+
+			pluginContainer.withType(
+				LifecycleBasePlugin.class,
+				new Action<LifecycleBasePlugin>() {
+
+					@Override
+					public void execute(
+						LifecycleBasePlugin lifecycleBasePlugin) {
+
+						_configureTaskNpmRunTestForLifecycleBasePlugin(
+							executeNpmTask);
 					}
 
 				});
@@ -392,6 +413,53 @@ public class NodePlugin implements Plugin<Project> {
 	}
 
 	private void _configureTaskExecuteNpm(
+		final ExecuteNpmTask executeNpmTask,
+		final NodeExtension nodeExtension) {
+
+		final Callable<Boolean> useGlobalConcurrentCacheCallable =
+			new Callable<Boolean>() {
+
+				@Override
+				public Boolean call() throws Exception {
+					if ((_node8VersionNumber.compareTo(
+							VersionNumber.parse(
+								nodeExtension.getNodeVersion())) <= 0) ||
+						(_npm5VersionNumber.compareTo(
+							VersionNumber.parse(
+								nodeExtension.getNpmVersion())) <= 0)) {
+
+						return true;
+					}
+
+					return false;
+				}
+
+			};
+
+		executeNpmTask.setCacheConcurrent(useGlobalConcurrentCacheCallable);
+
+		executeNpmTask.setCacheDir(
+			new Callable<File>() {
+
+				@Override
+				public File call() throws Exception {
+					if (useGlobalConcurrentCacheCallable.call()) {
+						return null;
+					}
+
+					File nodeDir = executeNpmTask.getNodeDir();
+
+					if (nodeDir == null) {
+						return null;
+					}
+
+					return new File(nodeDir, ".cache");
+				}
+
+			});
+	}
+
+	private void _configureTaskExecuteNpmArgs(
 		ExecuteNpmTask executeNpmTask, NodeExtension nodeExtension) {
 
 		executeNpmTask.args(nodeExtension.getNpmArgs());
@@ -406,6 +474,15 @@ public class NodePlugin implements Plugin<Project> {
 			executeNpmTask.getProject(), JavaPlugin.CLASSES_TASK_NAME);
 
 		classesTask.dependsOn(executeNpmTask);
+	}
+
+	private void _configureTaskNpmRunTestForLifecycleBasePlugin(
+		ExecuteNpmTask executeNpmTask) {
+
+		Task checkTask = GradleUtil.getTask(
+			executeNpmTask.getProject(), LifecycleBasePlugin.CHECK_TASK_NAME);
+
+		checkTask.dependsOn(executeNpmTask);
 	}
 
 	private void _configureTaskPublishNodeModule(
@@ -512,6 +589,23 @@ public class NodePlugin implements Plugin<Project> {
 			});
 	}
 
+	private void _configureTasksExecuteNpmArgs(
+		Project project, final NodeExtension nodeExtension) {
+
+		TaskContainer taskContainer = project.getTasks();
+
+		taskContainer.withType(
+			ExecuteNpmTask.class,
+			new Action<ExecuteNpmTask>() {
+
+				@Override
+				public void execute(ExecuteNpmTask executeNpmTask) {
+					_configureTaskExecuteNpmArgs(executeNpmTask, nodeExtension);
+				}
+
+			});
+	}
+
 	private void _configureTasksPublishNodeModule(Project project) {
 		TaskContainer taskContainer = project.getTasks();
 
@@ -529,6 +623,12 @@ public class NodePlugin implements Plugin<Project> {
 			});
 	}
 
+	private static final String _NPM_RUN_TEST_TASK_NAME = "npmRunTest";
+
+	private static final VersionNumber _node8VersionNumber =
+		VersionNumber.version(8);
+	private static final VersionNumber _npm5VersionNumber =
+		VersionNumber.version(5);
 	private static final OsgiHelper _osgiHelper = new OsgiHelper();
 
 }

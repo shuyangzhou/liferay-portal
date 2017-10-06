@@ -40,6 +40,10 @@ public class PortletPreferencesServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.PortletPreferencesServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static void deleteArchivedPreferences(long portletItemId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteArchivedPreferences(portletItemId);
+	}
 
 	/**
 	* Returns the OSGi service identifier.
@@ -50,9 +54,14 @@ public class PortletPreferencesServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static void deleteArchivedPreferences(long portletItemId)
+	public static void restoreArchivedPreferences(long groupId,
+		com.liferay.portal.kernel.model.Layout layout,
+		java.lang.String portletId, long portletItemId,
+		javax.portlet.PortletPreferences preferences)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteArchivedPreferences(portletItemId);
+		getService()
+			.restoreArchivedPreferences(groupId, layout, portletId,
+			portletItemId, preferences);
 	}
 
 	public static void restoreArchivedPreferences(long groupId,
@@ -64,16 +73,6 @@ public class PortletPreferencesServiceUtil {
 		getService()
 			.restoreArchivedPreferences(groupId, layout, portletId,
 			portletItem, preferences);
-	}
-
-	public static void restoreArchivedPreferences(long groupId,
-		com.liferay.portal.kernel.model.Layout layout,
-		java.lang.String portletId, long portletItemId,
-		javax.portlet.PortletPreferences preferences)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.restoreArchivedPreferences(groupId, layout, portletId,
-			portletItemId, preferences);
 	}
 
 	public static void restoreArchivedPreferences(long groupId,

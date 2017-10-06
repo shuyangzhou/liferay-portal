@@ -45,7 +45,7 @@ public class ParagraphDDMFormFieldRenderer extends BaseDDMFormFieldRenderer {
 
 	@Override
 	public String getTemplateNamespace() {
-		return "ddm.paragraph";
+		return "DDMParagraph.render";
 	}
 
 	@Override

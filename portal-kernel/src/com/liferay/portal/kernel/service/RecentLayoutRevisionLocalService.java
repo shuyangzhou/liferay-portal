@@ -57,24 +57,8 @@ public interface RecentLayoutRevisionLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link RecentLayoutRevisionLocalServiceUtil} to access the recent layout revision local service. Add custom service methods to {@link com.liferay.portal.service.impl.RecentLayoutRevisionLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+	public RecentLayoutRevision addRecentLayoutRevision(long userId,
+		long layoutRevisionId, long layoutSetBranchId, long plid)
 		throws PortalException;
 
 	/**
@@ -87,10 +71,6 @@ public interface RecentLayoutRevisionLocalService extends BaseLocalService,
 	public RecentLayoutRevision addRecentLayoutRevision(
 		RecentLayoutRevision recentLayoutRevision);
 
-	public RecentLayoutRevision addRecentLayoutRevision(long userId,
-		long layoutRevisionId, long layoutSetBranchId, long plid)
-		throws PortalException;
-
 	/**
 	* Creates a new recent layout revision with the primary key. Does not add the recent layout revision to the database.
 	*
@@ -101,14 +81,11 @@ public interface RecentLayoutRevisionLocalService extends BaseLocalService,
 		long recentLayoutRevisionId);
 
 	/**
-	* Deletes the recent layout revision from the database. Also notifies the appropriate model listeners.
-	*
-	* @param recentLayoutRevision the recent layout revision
-	* @return the recent layout revision that was removed
+	* @throws PortalException
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public RecentLayoutRevision deleteRecentLayoutRevision(
-		RecentLayoutRevision recentLayoutRevision);
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
 
 	/**
 	* Deletes the recent layout revision with the primary key from the database. Also notifies the appropriate model listeners.
@@ -121,49 +98,21 @@ public interface RecentLayoutRevisionLocalService extends BaseLocalService,
 	public RecentLayoutRevision deleteRecentLayoutRevision(
 		long recentLayoutRevisionId) throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public RecentLayoutRevision fetchRecentLayoutRevision(
-		long recentLayoutRevisionId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public RecentLayoutRevision fetchRecentLayoutRevision(long userId,
-		long layoutSetBranchId, long plid);
-
 	/**
-	* Returns the recent layout revision with the primary key.
-	*
-	* @param recentLayoutRevisionId the primary key of the recent layout revision
-	* @return the recent layout revision
-	* @throws PortalException if a recent layout revision with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public RecentLayoutRevision getRecentLayoutRevision(
-		long recentLayoutRevisionId) throws PortalException;
-
-	/**
-	* Updates the recent layout revision in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the recent layout revision from the database. Also notifies the appropriate model listeners.
 	*
 	* @param recentLayoutRevision the recent layout revision
-	* @return the recent layout revision that was updated
+	* @return the recent layout revision that was removed
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public RecentLayoutRevision updateRecentLayoutRevision(
+	@Indexable(type = IndexableType.DELETE)
+	public RecentLayoutRevision deleteRecentLayoutRevision(
 		RecentLayoutRevision recentLayoutRevision);
 
-	/**
-	* Returns the number of recent layout revisions.
-	*
-	* @return the number of recent layout revisions
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getRecentLayoutRevisionsCount();
+	public void deleteRecentLayoutRevisions(long layoutRevisionId);
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public void deleteUserRecentLayoutRevisions(long userId);
+
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -205,21 +154,6 @@ public interface RecentLayoutRevisionLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns a range of all the recent layout revisions.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.RecentLayoutRevisionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of recent layout revisions
-	* @param end the upper bound of the range of recent layout revisions (not inclusive)
-	* @return the range of recent layout revisions
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<RecentLayoutRevision> getRecentLayoutRevisions(int start,
-		int end);
-
-	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -237,7 +171,73 @@ public interface RecentLayoutRevisionLocalService extends BaseLocalService,
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
 
-	public void deleteRecentLayoutRevisions(long layoutRevisionId);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public RecentLayoutRevision fetchRecentLayoutRevision(
+		long recentLayoutRevisionId);
 
-	public void deleteUserRecentLayoutRevisions(long userId);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public RecentLayoutRevision fetchRecentLayoutRevision(long userId,
+		long layoutSetBranchId, long plid);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the recent layout revision with the primary key.
+	*
+	* @param recentLayoutRevisionId the primary key of the recent layout revision
+	* @return the recent layout revision
+	* @throws PortalException if a recent layout revision with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public RecentLayoutRevision getRecentLayoutRevision(
+		long recentLayoutRevisionId) throws PortalException;
+
+	/**
+	* Returns a range of all the recent layout revisions.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.RecentLayoutRevisionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of recent layout revisions
+	* @param end the upper bound of the range of recent layout revisions (not inclusive)
+	* @return the range of recent layout revisions
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<RecentLayoutRevision> getRecentLayoutRevisions(int start,
+		int end);
+
+	/**
+	* Returns the number of recent layout revisions.
+	*
+	* @return the number of recent layout revisions
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getRecentLayoutRevisionsCount();
+
+	/**
+	* Updates the recent layout revision in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param recentLayoutRevision the recent layout revision
+	* @return the recent layout revision that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public RecentLayoutRevision updateRecentLayoutRevision(
+		RecentLayoutRevision recentLayoutRevision);
 }

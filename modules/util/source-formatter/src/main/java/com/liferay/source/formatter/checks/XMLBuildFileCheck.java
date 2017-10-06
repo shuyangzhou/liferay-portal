@@ -96,33 +96,36 @@ public class XMLBuildFileCheck extends BaseFileCheck {
 			addMessage(fileName, "Macrodefs go before targets");
 		}
 
-		_checkImportFiles(fileName, content);
+		if (!absolutePath.contains("/modules/private/apps/")) {
+			_checkImportFiles(fileName, content);
+		}
 
 		_checkTargetNames(fileName, absolutePath, content);
 	}
 
 	private void _checkImportFiles(String fileName, String content) {
+		int pos = fileName.lastIndexOf(StringPool.SLASH);
+
+		if (pos == -1) {
+			return;
+		}
+
+		String dirPath = fileName.substring(0, pos + 1);
+
 		Matcher matcher = _importFilePattern.matcher(content);
 
 		while (matcher.find()) {
-			String importFileName = fileName;
+			String importFileName = matcher.group(1);
 
-			int pos = importFileName.lastIndexOf(StringPool.SLASH);
-
-			if (pos == -1) {
-				return;
+			if (importFileName.contains("${")) {
+				continue;
 			}
 
-			importFileName = importFileName.substring(0, pos + 1);
-
-			importFileName = importFileName + matcher.group(1);
-
-			File file = new File(importFileName);
+			File file = new File(dirPath + importFileName);
 
 			if (!file.exists()) {
 				addMessage(
-					fileName,
-					"Incorrect import file '" + matcher.group(1) + "'");
+					fileName, "Incorrect import file '" + importFileName + "'");
 			}
 		}
 	}

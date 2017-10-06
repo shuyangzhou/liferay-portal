@@ -16,8 +16,6 @@ package com.liferay.poshi.runner;
 
 import java.io.File;
 
-import java.util.List;
-
 import junit.framework.TestCase;
 
 import org.dom4j.Element;
@@ -46,47 +44,6 @@ public class PoshiRunnerContextTest extends TestCase {
 	}
 
 	@Test
-	public void testGetActionCaseElements() {
-		List<Element> elements = PoshiRunnerContext.getActionCaseElements(
-			"Action1#test2");
-
-		for (Element element : elements) {
-			Assert.assertEquals(
-				"getActionCaseElements is failing", "/test2",
-				element.attributeValue("locator1"));
-		}
-	}
-
-	@Test
-	public void testGetActionCommandElement() {
-		Element element = PoshiRunnerContext.getActionCommandElement(
-			"Action1#test1");
-
-		Assert.assertEquals(
-			"getActionCommandElement is failing", "test1",
-			element.attributeValue("name"));
-	}
-
-	@Test
-	public void testGetActionLocatorCount() throws Exception {
-		int locatorCount = PoshiRunnerContext.getActionLocatorCount(
-			"Action1#type");
-
-		Assert.assertEquals(
-			"getActionLocatorCount is failing", 1, locatorCount);
-	}
-
-	@Test
-	public void testGetActionRootElement() {
-		Element rootElement = PoshiRunnerContext.getActionRootElement(
-			"Action1");
-
-		Assert.assertEquals(
-			"getActionRootElement is failing", "definition",
-			rootElement.getName());
-	}
-
-	@Test
 	public void testGetFilePath() throws Exception {
 		String actualFilePath = PoshiRunnerContext.getFilePathFromFileName(
 			"Action2.action");
@@ -105,7 +62,7 @@ public class PoshiRunnerContextTest extends TestCase {
 	@Test
 	public void testGetFunctionCommandElement() throws Exception {
 		Element element = PoshiRunnerContext.getFunctionCommandElement(
-			"Click#clickAt");
+			"Click#clickAt", PoshiRunnerContext.getDefaultNamespace());
 
 		Assert.assertEquals(
 			"getFunctionCommandElement is failing", "clickAt",
@@ -122,7 +79,8 @@ public class PoshiRunnerContextTest extends TestCase {
 
 	@Test
 	public void testGetFunctionRootElement() {
-		Element element = PoshiRunnerContext.getFunctionRootElement("Click");
+		Element element = PoshiRunnerContext.getFunctionRootElement(
+			"Click", PoshiRunnerContext.getDefaultNamespace());
 
 		Assert.assertEquals(
 			"getFunctionRootElement is failing", "definition",
@@ -132,7 +90,7 @@ public class PoshiRunnerContextTest extends TestCase {
 	@Test
 	public void testGetMacroCommandElement() {
 		Element element = PoshiRunnerContext.getMacroCommandElement(
-			"Macro#test");
+			"Macro#test", PoshiRunnerContext.getDefaultNamespace());
 
 		Assert.assertEquals(
 			"getMacroCommandElement is failing", "test",

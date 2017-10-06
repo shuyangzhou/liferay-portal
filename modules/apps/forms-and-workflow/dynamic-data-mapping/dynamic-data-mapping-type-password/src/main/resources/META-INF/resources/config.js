@@ -20,10 +20,7 @@
 							condition: {
 								trigger: 'liferay-ddm-form-renderer'
 							},
-							path: 'password.soy.js',
-							requires: [
-								'soyutils'
-							]
+							path: 'password.js'
 						}
 					},
 					root: MODULE_PATH + '/'

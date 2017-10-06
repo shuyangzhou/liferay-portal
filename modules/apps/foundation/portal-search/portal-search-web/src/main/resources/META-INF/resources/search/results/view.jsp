@@ -14,6 +14,13 @@
  */
 --%>
 
+<%@ page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
+page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
+page import="com.liferay.portal.kernel.util.WebKeys" %><%@
+page import="com.liferay.portal.search.web.internal.result.display.context.SearchResultFieldDisplayContext" %><%@
+page import="com.liferay.portal.search.web.internal.result.display.context.SearchResultSummaryDisplayContext" %><%@
+page import="com.liferay.portal.search.web.internal.search.results.portlet.SearchResultsPortletDisplayContext" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
@@ -21,16 +28,10 @@
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
-page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
-page import="com.liferay.portal.search.web.internal.result.display.context.SearchResultFieldDisplayContext" %><%@
-page import="com.liferay.portal.search.web.internal.result.display.context.SearchResultSummaryDisplayContext" %><%@
-page import="com.liferay.portal.search.web.internal.search.results.portlet.SearchResultsPortletDisplayContext" %>
-
 <portlet:defineObjects />
 
 <%
-SearchResultsPortletDisplayContext searchResultsPortletDisplayContext = (SearchResultsPortletDisplayContext)java.util.Objects.requireNonNull(request.getAttribute(com.liferay.portal.search.web.internal.search.results.constants.SearchResultsWebKeys.DISPLAY_CONTEXT));
+SearchResultsPortletDisplayContext searchResultsPortletDisplayContext = (SearchResultsPortletDisplayContext)java.util.Objects.requireNonNull(request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT));
 
 if (searchResultsPortletDisplayContext.isRenderNothing()) {
 	return;
@@ -98,6 +99,7 @@ com.liferay.portal.kernel.dao.search.SearchContainer<com.liferay.portal.kernel.s
 						<span class="search-asset-type-sticker sticker sticker-default sticker-lg sticker-rounded sticker-static">
 							<svg class="lexicon-icon">
 								<use xlink:href="<%= searchResultSummaryDisplayContext.getPathThemeImages() %>/lexicon/icons.svg#<%= searchResultSummaryDisplayContext.getIconId() %>" />
+								<title><%= searchResultSummaryDisplayContext.getIconId() %></title>
 							</svg>
 						</span>
 					</c:if>
@@ -136,14 +138,14 @@ com.liferay.portal.kernel.dao.search.SearchContainer<com.liferay.portal.kernel.s
 
 					<c:if test="<%= searchResultSummaryDisplayContext.isAssetCategoriesOrTagsVisible() %>">
 						<h6 class="search-document-tags text-default">
-							<liferay-ui:asset-tags-summary
+							<liferay-asset:asset-tags-summary
 								className="<%= searchResultSummaryDisplayContext.getClassName() %>"
 								classPK="<%= searchResultSummaryDisplayContext.getClassPK() %>"
 								paramName="<%= searchResultSummaryDisplayContext.getFieldAssetTagNames() %>"
 								portletURL="<%= searchResultSummaryDisplayContext.getPortletURL() %>"
 							/>
 
-							<liferay-ui:asset-categories-summary
+							<liferay-asset:asset-categories-summary
 								className="<%= searchResultSummaryDisplayContext.getClassName() %>"
 								classPK="<%= searchResultSummaryDisplayContext.getClassPK() %>"
 								paramName="<%= searchResultSummaryDisplayContext.getFieldAssetCategoryIds() %>"

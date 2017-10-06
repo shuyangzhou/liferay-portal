@@ -26,12 +26,26 @@
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
 
+		<echo message="This is a message." />
+
 		<for list="${breadcrumbListVisible}" param="breadcrumbName">
 			<var name="key_breadcrumbName" value="${breadcrumbName}" />
 
 			<var method="StringUtil#upperCase('${breadcrumbName}')" name="breadcrumbNameUppercase" />
 
 			<execute function="AssertTextEquals" locator1="Breadcrumb#BREADCRUMB_ENTRY" value1="${breadcrumbNameUppercase}" />
+
+			<if>
+				<isset var="duplicate" />
+				<then>
+					<execute macro="Alert#viewErrorMessage">
+						<var name="errorMessage" value="A configuration with this ID already exists. Please enter a unique ID." />
+					</execute>
+				</then>
+				<else>
+					<execute macro="Alert#viewSuccessMessage" />
+				</else>
+			</if>
 		</for>
 
 		<execute macro="User#addCP">
@@ -55,9 +69,35 @@
 				<execute macro="Alert#viewErrorMessage">
 					<var name="errorMessage" value="A configuration with this ID already exists. Please enter a unique ID." />
 				</execute>
+
+				<if>
+					<not>
+						<isset var="duplicate" />
+					</not>
+					<then>
+						<execute macro="Alert#viewErrorMessage">
+							<var name="errorMessage" value="A configuration with this ID already exists. Please enter a unique ID." />
+						</execute>
+					</then>
+					<else>
+						<execute macro="Alert#viewSuccessMessage" />
+					</else>
+				</if>
 			</then>
 			<else>
 				<execute macro="Alert#viewSuccessMessage" />
+
+				<if>
+					<isset var="duplicate" />
+					<then>
+						<execute macro="Alert#viewErrorMessage">
+							<var name="errorMessage" value="A configuration with this ID already exists. Please enter a unique ID." />
+						</execute>
+					</then>
+					<else>
+						<execute macro="Alert#viewSuccessMessage" />
+					</else>
+				</if>
 			</else>
 		</if>
 
@@ -75,6 +115,28 @@
 			</then>
 		</if>
 
+		<if>
+			<and>
+				<condition function="IsElementPresent" locator1="Blogs#ADD_BLOGS_ENTRY" />
+				<equals arg1="${check}" arg2="true" />
+				<isset var="duplicate" />
+			</and>
+			<then>
+				<execute macro="Alert#viewSuccessMessage" />
+			</then>
+		</if>
+
+		<if>
+			<or>
+				<condition function="IsElementPresent" locator1="Blogs#ADD_BLOGS_ENTRY" />
+				<equals arg1="${check}" arg2="true" />
+				<isset var="duplicate" />
+			</or>
+			<then>
+				<execute macro="Alert#viewSuccessMessage" />
+			</then>
+		</if>
+
 		<execute macro="TestCase#getSiteName">
 			<return from="siteName" name="siteName" />
 			<var name="siteName" value="${siteName}" />
@@ -87,6 +149,13 @@ document.getElementById('demo').innerHTML = 'FAIL';
 </script>]]></var>
 
 		<execute macro="Smoke#viewWelcomePage" />
+
+		<while>
+			<condition function="IsElementPresent" locator1="AssetCategorization#TAGS_REMOVE_ICON_GENERIC" />
+			<then>
+				<execute function="Click" locator1="AssetCategorization#TAGS_REMOVE_ICON_GENERIC" />
+			</then>
+		</while>
 
 		<execute macro="Smoke#runSmoke" />
 

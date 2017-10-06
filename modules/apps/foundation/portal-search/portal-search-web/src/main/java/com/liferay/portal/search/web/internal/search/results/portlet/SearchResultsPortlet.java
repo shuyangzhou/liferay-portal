@@ -28,6 +28,8 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.search.summary.SummaryBuilderFactory;
 import com.liferay.portal.search.web.internal.display.context.PortletURLFactory;
 import com.liferay.portal.search.web.internal.display.context.PortletURLFactoryImpl;
 import com.liferay.portal.search.web.internal.display.context.SearchResultPreferences;
@@ -39,7 +41,6 @@ import com.liferay.portal.search.web.internal.result.display.builder.AssetRender
 import com.liferay.portal.search.web.internal.result.display.builder.SearchResultSummaryDisplayBuilder;
 import com.liferay.portal.search.web.internal.result.display.context.SearchResultSummaryDisplayContext;
 import com.liferay.portal.search.web.internal.search.results.constants.SearchResultsPortletKeys;
-import com.liferay.portal.search.web.internal.search.results.constants.SearchResultsWebKeys;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
@@ -125,7 +126,7 @@ public class SearchResultsPortlet
 				portletSharedSearchResponse, renderRequest, renderResponse);
 
 		renderRequest.setAttribute(
-			SearchResultsWebKeys.DISPLAY_CONTEXT,
+			WebKeys.PORTLET_DISPLAY_CONTEXT,
 			searchResultsPortletDisplayContext);
 
 		super.render(renderRequest, renderResponse);
@@ -319,8 +320,6 @@ public class SearchResultsPortlet
 		searchResultSummaryDisplayBuilder.setLocale(themeDisplay.getLocale());
 		searchResultSummaryDisplayBuilder.setPortletURLFactory(
 			portletURLFactory);
-		searchResultSummaryDisplayBuilder.setQueryTerms(
-			portletSharedSearchResponse.getHighlights());
 		searchResultSummaryDisplayBuilder.setRenderRequest(renderRequest);
 		searchResultSummaryDisplayBuilder.setRenderResponse(renderResponse);
 		searchResultSummaryDisplayBuilder.setRequest(
@@ -331,6 +330,8 @@ public class SearchResultsPortlet
 				_searchResultImageContributors.stream());
 		searchResultSummaryDisplayBuilder.setSearchResultPreferences(
 			searchResultPreferences);
+		searchResultSummaryDisplayBuilder.setSummaryBuilderFactory(
+			summaryBuilderFactory);
 		searchResultSummaryDisplayBuilder.setThemeDisplay(themeDisplay);
 
 		return searchResultSummaryDisplayBuilder.build();
@@ -460,6 +461,9 @@ public class SearchResultsPortlet
 
 	@Reference
 	protected ResourceActions resourceActions;
+
+	@Reference
+	protected SummaryBuilderFactory summaryBuilderFactory;
 
 	@Reference
 	private Portal _portal;

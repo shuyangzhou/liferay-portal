@@ -33,28 +33,18 @@ public class LayoutTemplateLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.LayoutTemplate getLayoutTemplate(
-		java.lang.String layoutTemplateId, boolean standard,
-		java.lang.String themeId) {
-		return _layoutTemplateLocalService.getLayoutTemplate(layoutTemplateId,
-			standard, themeId);
-	}
-
-	@Override
 	public java.lang.String getContent(java.lang.String layoutTemplateId,
 		boolean standard, java.lang.String themeId) {
 		return _layoutTemplateLocalService.getContent(layoutTemplateId,
 			standard, themeId);
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _layoutTemplateLocalService.getOSGiServiceIdentifier();
+	public com.liferay.portal.kernel.model.LayoutTemplate getLayoutTemplate(
+		java.lang.String layoutTemplateId, boolean standard,
+		java.lang.String themeId) {
+		return _layoutTemplateLocalService.getLayoutTemplate(layoutTemplateId,
+			standard, themeId);
 	}
 
 	@Override
@@ -68,13 +58,14 @@ public class LayoutTemplateLocalServiceWrapper
 		return _layoutTemplateLocalService.getLayoutTemplates(themeId);
 	}
 
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
 	@Override
-	public java.util.List<com.liferay.portal.kernel.model.LayoutTemplate> init(
-		java.lang.String servletContextName,
-		javax.servlet.ServletContext servletContext, java.lang.String[] xmls,
-		com.liferay.portal.kernel.plugin.PluginPackage pluginPackage) {
-		return _layoutTemplateLocalService.init(servletContextName,
-			servletContext, xmls, pluginPackage);
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _layoutTemplateLocalService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -83,6 +74,15 @@ public class LayoutTemplateLocalServiceWrapper
 		com.liferay.portal.kernel.plugin.PluginPackage pluginPackage) {
 		return _layoutTemplateLocalService.init(servletContext, xmls,
 			pluginPackage);
+	}
+
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.LayoutTemplate> init(
+		java.lang.String servletContextName,
+		javax.servlet.ServletContext servletContext, java.lang.String[] xmls,
+		com.liferay.portal.kernel.plugin.PluginPackage pluginPackage) {
+		return _layoutTemplateLocalService.init(servletContextName,
+			servletContext, xmls, pluginPackage);
 	}
 
 	@Override

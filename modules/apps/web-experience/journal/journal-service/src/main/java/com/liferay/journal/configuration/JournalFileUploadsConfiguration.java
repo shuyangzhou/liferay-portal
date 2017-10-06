@@ -25,7 +25,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 @Meta.OCD(
 	id = "com.liferay.journal.configuration.JournalFileUploadsConfiguration",
 	localization = "content/Language",
-	name = "journal.file.uploads.configuration.name"
+	name = "journal-file-uploads-configuration-name"
 )
 public interface JournalFileUploadsConfiguration {
 

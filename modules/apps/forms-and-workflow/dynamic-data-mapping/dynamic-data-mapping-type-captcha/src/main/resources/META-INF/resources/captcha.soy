@@ -1,21 +1,21 @@
-{namespace ddm}
+{namespace DDMCaptcha}
 
 /**
  * Defines the delegated template for the captcha field.
  */
-{deltemplate ddm.field autoescape="deprecated-contextual" variant="'captcha'"}
-	{call .captcha data="all" /}
+{deltemplate ddm.field variant="'captcha'"}
+	{call .render data="all" /}
 {/deltemplate}
 
 /**
  * Prints the DDM form captcha field.
- *
- * @param html
- * @param name
- * @param visible
  */
-{template .captcha autoescape="deprecated-contextual"}
+{template .render}
+	{@param html: html}
+	{@param name: string}
+	{@param visible: bool}
+
 	<div class="form-group{$visible ? '' : ' hide'} liferay-ddm-form-field-captcha" data-fieldname="{$name}">
-		{$html|noAutoescape}
+		{$html}
 	</div>
 {/template}

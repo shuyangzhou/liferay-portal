@@ -46,29 +46,9 @@ public class AssetCategoryPropertyServiceUtil {
 		return getService().addCategoryProperty(entryId, key, value);
 	}
 
-	public static com.liferay.asset.kernel.model.AssetCategoryProperty updateCategoryProperty(
-		long categoryPropertyId, java.lang.String key, java.lang.String value)
+	public static void deleteCategoryProperty(long categoryPropertyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateCategoryProperty(categoryPropertyId, key, value);
-	}
-
-	public static com.liferay.asset.kernel.model.AssetCategoryProperty updateCategoryProperty(
-		long userId, long categoryPropertyId, java.lang.String key,
-		java.lang.String value)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateCategoryProperty(userId, categoryPropertyId, key,
-			value);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
+		getService().deleteCategoryProperty(categoryPropertyId);
 	}
 
 	public static java.util.List<com.liferay.asset.kernel.model.AssetCategoryProperty> getCategoryProperties(
@@ -81,9 +61,29 @@ public class AssetCategoryPropertyServiceUtil {
 		return getService().getCategoryPropertyValues(companyId, key);
 	}
 
-	public static void deleteCategoryProperty(long categoryPropertyId)
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.asset.kernel.model.AssetCategoryProperty updateCategoryProperty(
+		long userId, long categoryPropertyId, java.lang.String key,
+		java.lang.String value)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteCategoryProperty(categoryPropertyId);
+		return getService()
+				   .updateCategoryProperty(userId, categoryPropertyId, key,
+			value);
+	}
+
+	public static com.liferay.asset.kernel.model.AssetCategoryProperty updateCategoryProperty(
+		long categoryPropertyId, java.lang.String key, java.lang.String value)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateCategoryProperty(categoryPropertyId, key, value);
 	}
 
 	public static AssetCategoryPropertyService getService() {

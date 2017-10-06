@@ -403,22 +403,6 @@
 		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
-	<command name="addGoogleDoc">
-		<execute macro="Portlet#clickPortletPlusIconPG">
-			<var name="portletName" value="Documents and Media" />
-		</execute>
-
-		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="Google Docs">
-			<var name="key_menuItem" value="Google Docs" />
-		</execute>
-
-		<execute macro="GoogleDoc#selectDocument">
-			<var name="googleDocName" value="${googleDocName}" />
-		</execute>
-
-		<execute macro="PortletEntry#publish" />
-	</command>
-
 	<command name="addMultiplePG">
 		<execute macro="Portlet#clickPortletPlusIconPG">
 			<var name="portletName" value="Documents and Media" />
@@ -455,9 +439,16 @@
 			</then>
 		</if>
 
+		<if>
+			<isset var="viewableBy" />
+			<then>
+				<execute function="Select" locator1="DocumentsAndMediaEditFolder#PERMISSIONS_SELECT" value1="${viewableBy}" />
+			</then>
+		</if>
+
 		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="DynamicUploader#ALL_FILES_READY_TO_BE_SAVED_DOCUMENT_SUCCESS_MESSAGE" value1="Successfully saved." />
+		<execute function="AssertTextEquals" locator1="Message#SUCCESS" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addPG">
@@ -635,7 +626,8 @@
 		</if>
 
 		<execute macro="Button#clickSave" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="DynamicUploader#ALL_FILES_READY_TO_BE_SAVED_DOCUMENT_SUCCESS_MESSAGE" value1="Successfully saved." />
+
+		<execute function="AssertTextEquals" locator1="Message#SUCCESS" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addPGViaMG">
@@ -1417,11 +1409,7 @@
 	</command>
 
 	<command name="linkImage">
-		<execute function="Click" locator1="AlloyEditor#CONTENT_FIELD" />
-
-		<execute function="Click" locator1="AlloyEditor#CONTENT_ADD_BUTTON" />
-
-		<execute function="Click" locator1="AlloyEditor#CONTENT_ADD_MENUBAR_IMAGE" />
+		<execute macro="ItemSelector#gotoItemSelectorViaAlloyEditor" />
 
 		<execute macro="ItemSelector#addFromURL">
 			<var name="imageSourceURL" value="${dmDocumentURL}" />
@@ -1868,7 +1856,9 @@
 	<command name="tearDownCP">
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesContent">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Documents and Media" />
 		</execute>
 
@@ -1889,7 +1879,9 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesContent">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Recycle Bin" />
 		</execute>
 
@@ -1920,7 +1912,9 @@
 
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="ProductMenu#gotoSitesContent">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Recycle Bin" />
 		</execute>
 
@@ -2604,7 +2598,7 @@
 			<then>
 				<execute function="AssertTextEquals" locator1="DocumentsAndMedia#ICON_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
 
-				<execute function="AssertClick" locator1="Staging#LIVE_BUTTON" value1="Live" />
+				<execute function="AssertClick#assertPartialTextClickAt" locator1="Staging#LIVE_BUTTON" value1="Live" />
 
 				<execute function="AssertTextNotPresent" locator1="DocumentsAndMedia#ICON_DOCUMENT_TITLE" value1="${dmDocumentTitle}" />
 				<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="There are no documents or media files in this folder." />
@@ -2614,7 +2608,7 @@
 				<then>
 					<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="There are no documents or media files in this folder." />
 
-					<execute function="AssertClick" locator1="Staging#LIVE_BUTTON" value1="Live" />
+					<execute function="AssertClick#assertPartialTextClickAt" locator1="Staging#LIVE_BUTTON" value1="Live" />
 
 					<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="There are no documents or media files in this folder." />
 				</then>

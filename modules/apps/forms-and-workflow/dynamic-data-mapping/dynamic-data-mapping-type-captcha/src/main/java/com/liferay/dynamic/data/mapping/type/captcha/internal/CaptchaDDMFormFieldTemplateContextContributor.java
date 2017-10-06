@@ -21,6 +21,7 @@ import com.liferay.dynamic.data.mapping.render.DDMFormFieldRenderingContext;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.template.soy.utils.SoyHTMLContextValue;
 import com.liferay.taglib.servlet.PageContextFactoryUtil;
 import com.liferay.taglib.servlet.PipingServletResponse;
 
@@ -62,7 +63,9 @@ public class CaptchaDDMFormFieldTemplateContextContributor
 			e.printStackTrace();
 		}
 
-		parameters.put("html", html);
+		SoyHTMLContextValue soyHTMLContextValue = new SoyHTMLContextValue(html);
+
+		parameters.put("html", soyHTMLContextValue.getValue());
 
 		return parameters;
 	}

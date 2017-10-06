@@ -284,6 +284,10 @@ public interface ExportImportHelper {
 	public UserIdStrategy getUserIdStrategy(long userId, String userIdStrategy)
 		throws PortalException;
 
+	public boolean isAlwaysIncludeReference(
+		PortletDataContext portletDataContext,
+		StagedModel referenceStagedModel);
+
 	public boolean isReferenceWithinExportScope(
 		PortletDataContext portletDataContext, StagedModel stagedModel);
 

@@ -24,10 +24,7 @@
 							condition: {
 								trigger: 'liferay-ddm-form-renderer'
 							},
-							path: 'key_value.soy.js',
-							requires: [
-								'soyutils'
-							]
+							path: 'key-value.js'
 						}
 					},
 					root: MODULE_PATH + '/'

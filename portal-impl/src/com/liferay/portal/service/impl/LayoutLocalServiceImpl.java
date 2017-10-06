@@ -64,7 +64,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.comparator.LayoutComparator;
@@ -552,7 +551,7 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 				Layout.class.getName(), layout.getPlid())) {
 
 			systemEventHierarchyEntry.setExtraDataValue(
-				"privateLayout", StringUtil.valueOf(layout.isPrivateLayout()));
+				"privateLayout", String.valueOf(layout.isPrivateLayout()));
 		}
 	}
 
@@ -1563,7 +1562,9 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	 *
 	 * @param  roleId the primary key of the role
 	 * @return all the layouts without resource permissions
+	 * @deprecated As of 7.0.0, with no direct replacement
 	 */
+	@Deprecated
 	@Override
 	public List<Layout> getNoPermissionLayouts(long roleId) {
 		return layoutFinder.findByNoPermissions(roleId);

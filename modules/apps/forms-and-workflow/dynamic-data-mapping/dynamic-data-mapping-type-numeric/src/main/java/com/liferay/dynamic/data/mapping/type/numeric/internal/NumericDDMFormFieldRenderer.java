@@ -45,7 +45,7 @@ public class NumericDDMFormFieldRenderer extends BaseDDMFormFieldRenderer {
 
 	@Override
 	public String getTemplateNamespace() {
-		return "ddm.numeric";
+		return "DDMNumeric.render";
 	}
 
 	@Override

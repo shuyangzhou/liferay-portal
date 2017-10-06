@@ -21,7 +21,7 @@ body.open-admin-panel, body.sidenav-transition {
 	}
 }
 
-.lfr-add-panel.open-admin-panel {
+.lfr-add-panel.open-admin-panel.sidenav-menu-slider {
 	visibility: visible;
 	width: $admin-panel-width;
 }
@@ -48,6 +48,7 @@ body.open-admin-panel, body.sidenav-transition {
 		.form-control {
 			display: block;
 			float: none;
+			padding-right: 32px;
 		}
 	}
 
@@ -57,6 +58,7 @@ body.open-admin-panel, body.sidenav-transition {
 		position: absolute;
 		right: 20px;
 		top: 50%;
+		z-index: 4;
 	}
 }
 

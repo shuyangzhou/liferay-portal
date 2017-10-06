@@ -109,7 +109,7 @@
 
 							user = null;
 						]]>
-					</script>
+				</script>
 				<script-language>groovy</script-language>
 			</scripted-assignment>
 		</assignments>

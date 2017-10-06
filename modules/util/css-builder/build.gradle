@@ -5,6 +5,9 @@ apply plugin: "com.liferay.maven.plugin.builder"
 task copyPortalCommonCSSJar(type: Copy)
 task unzipPortalCommonCSS(type: Copy)
 
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
 buildPluginDescriptor {
 	configurationScopeMapping "mavenCompile", Conf2ScopeMappingContainer.COMPILE
 
@@ -42,7 +45,7 @@ dependencies {
 	compile group: "org.slf4j", name: "slf4j-log4j12", version: "1.7.2"
 	compile group: "org.sonatype.plexus", name: "plexus-build-api", transitive: false, version: "0.0.7"
 
-	mavenCompile group: "com.liferay", name: "com.liferay.frontend.css.common", version: "2.0.3"
+	mavenCompile group: "com.liferay", name: "com.liferay.frontend.css.common", version: "2.0.4"
 
 	provided group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "2.0.0"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"

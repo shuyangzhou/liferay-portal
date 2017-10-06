@@ -114,12 +114,17 @@ public class GradleDependenciesCheck extends BaseFileCheck {
 		for (String dependency : uniqueDependencies) {
 			String configuration = _getConfiguration(dependency);
 
-			if (configuration.equals("compile") &&
-				isModulesApp(absolutePath, _projectPathPrefix, false) &&
+			if (isModulesApp(absolutePath, _projectPathPrefix, false) &&
 				_hasBNDFile(absolutePath)) {
 
-				dependency = StringUtil.replaceFirst(
-					dependency, "compile", "provided");
+				if (configuration.equals("compile")) {
+					dependency = StringUtil.replaceFirst(
+						dependency, "compile", "provided");
+				}
+				else if (configuration.equals("provided")) {
+					dependency = StringUtil.removeSubstrings(
+						dependency, "transitive: false, ", "transitive: true,");
+				}
 			}
 
 			if ((previousConfiguration == null) ||
@@ -157,7 +162,8 @@ public class GradleDependenciesCheck extends BaseFileCheck {
 	}
 
 	private final Pattern _dependenciesPattern = Pattern.compile(
-		"^dependencies \\{(.+?\n)\\}", Pattern.DOTALL | Pattern.MULTILINE);
+		"^dependencies \\{(((?![\\{\\}]).)+?\n)\\}",
+		Pattern.DOTALL | Pattern.MULTILINE);
 	private final Pattern _incorrectGroupNameVersionPattern = Pattern.compile(
 		"(^[^\\s]+)\\s+\"([^:]+?):([^:]+?):([^\"]+?)\"(.*?)", Pattern.DOTALL);
 	private final Pattern _incorrectWhitespacePattern = Pattern.compile(

@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletApp;
+import com.liferay.portal.kernel.model.PortletURLListener;
 import com.liferay.portal.kernel.model.PublicRenderParameter;
 import com.liferay.portal.kernel.portlet.FriendlyURLMapper;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
@@ -64,16 +65,20 @@ import java.security.Key;
 import java.security.PrivilegedAction;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
+import javax.portlet.PortletException;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletModeException;
 import javax.portlet.PortletRequest;
+import javax.portlet.PortletSecurityException;
 import javax.portlet.PortletURL;
+import javax.portlet.PortletURLGenerationListener;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceURL;
 import javax.portlet.WindowState;
@@ -401,12 +406,16 @@ public class PortletURLImpl
 			throw new IllegalArgumentException("Cacheability is null");
 		}
 
-		if (!cacheability.equals(FULL) && !cacheability.equals(PORTLET) &&
-			!cacheability.equals(PAGE)) {
+		String mappedCacheability = _cacheabilities.getOrDefault(
+			cacheability, cacheability);
+
+		if (!mappedCacheability.equals(FULL) &&
+			!mappedCacheability.equals(PAGE) &&
+			!mappedCacheability.equals(PORTLET)) {
 
 			throw new IllegalArgumentException(
-				"Cacheability " + cacheability + " is not " + FULL + ", " +
-					PORTLET + ", or " + PAGE);
+				"Cacheability " + cacheability + " is not FULL, " + FULL +
+					", PAGE, " + PAGE + ", or PORTLET, " + PORTLET);
 		}
 
 		if (_portletRequest instanceof ResourceRequest) {
@@ -415,14 +424,14 @@ public class PortletURLImpl
 			String parentCacheability = resourceRequest.getCacheability();
 
 			if (parentCacheability.equals(FULL)) {
-				if (!cacheability.equals(FULL)) {
+				if (!mappedCacheability.equals(FULL)) {
 					throw new IllegalStateException(
 						"Unable to set a weaker cacheability " + cacheability);
 				}
 			}
 			else if (parentCacheability.equals(PORTLET)) {
-				if (!cacheability.equals(FULL) &&
-					!cacheability.equals(PORTLET)) {
+				if (!mappedCacheability.equals(FULL) &&
+					!mappedCacheability.equals(PORTLET)) {
 
 					throw new IllegalStateException(
 						"Unable to set a weaker cacheability " + cacheability);
@@ -430,7 +439,7 @@ public class PortletURLImpl
 			}
 		}
 
-		_cacheability = cacheability;
+		_cacheability = mappedCacheability;
 
 		clearCache();
 	}
@@ -645,7 +654,7 @@ public class PortletURLImpl
 	}
 
 	@Override
-	public void setSecure(boolean secure) {
+	public void setSecure(boolean secure) throws PortletSecurityException {
 		_secure = secure;
 
 		clearCache();
@@ -1314,6 +1323,32 @@ public class PortletURLImpl
 		sb.append(URLCodec.encodeURL(name));
 	}
 
+	private void _callPortletURLGenerationListener() {
+		PortletApp portletApp = _portlet.getPortletApp();
+
+		for (PortletURLListener portletURLListener :
+				portletApp.getPortletURLListeners()) {
+
+			try {
+				PortletURLGenerationListener portletURLGenerationListener =
+					PortletURLListenerFactory.create(portletURLListener);
+
+				if (_lifecycle.equals(PortletRequest.ACTION_PHASE)) {
+					portletURLGenerationListener.filterActionURL(this);
+				}
+				else if (_lifecycle.equals(PortletRequest.RENDER_PHASE)) {
+					portletURLGenerationListener.filterRenderURL(this);
+				}
+				else if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+					portletURLGenerationListener.filterResourceURL(this);
+				}
+			}
+			catch (PortletException pe) {
+				_log.error(pe, pe);
+			}
+		}
+	}
+
 	private Key _getKey() {
 		try {
 			if (_encrypt) {
@@ -1379,6 +1414,14 @@ public class PortletURLImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(PortletURLImpl.class);
 
+	private static final Map<String, String> _cacheabilities = new HashMap<>();
+
+	static {
+		_cacheabilities.put("FULL", ResourceURL.FULL);
+		_cacheabilities.put("PAGE", ResourceURL.PAGE);
+		_cacheabilities.put("PORTLET", ResourceURL.PORTLET);
+	}
+
 	private boolean _anchor = true;
 	private String _cacheability = ResourceURL.PAGE;
 	private boolean _copyCurrentRenderParameters;
@@ -1414,6 +1457,8 @@ public class PortletURLImpl
 
 		@Override
 		public String run() {
+			_callPortletURLGenerationListener();
+
 			if (_wsrp) {
 				return generateWSRPToString();
 			}

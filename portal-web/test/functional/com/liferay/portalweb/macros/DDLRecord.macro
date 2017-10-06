@@ -35,7 +35,7 @@
 	</command>
 
 	<command name="addTranslation">
-		<execute function="AssertClick" locator1="Translation#ADD" value1="Add Translation" />
+		<execute function="Click" locator1="DDLRecord#ADD_TRANSLATION" />
 
 		<var name="key_localizedLanguage" value="${localizedLanguage}" />
 
@@ -122,7 +122,7 @@
 	</command>
 
 	<command name="editTranslation">
-		<execute function="Click" locator1="Translation#ADD" />
+		<execute function="Click" locator1="DDLRecord#ADD_TRANSLATION" />
 
 		<var name="key_localizedLanguage" value="${localizedLanguage}" />
 

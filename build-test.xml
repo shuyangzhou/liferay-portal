@@ -1646,6 +1646,42 @@ sendPasswordCaptchaEnabled=&quot;false&quot;</echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="prepare-custom-properties">
+		<attribute name="custom.properties" />
+		<sequential>
+			<property name="propertyName" value="" />
+
+			<for delimiter="${line.separator}" list="@{custom.properties}" param="property">
+				<sequential>
+					<propertyregex
+						global="true"
+						input="@{property}"
+						override="true"
+						property="propertyName"
+						regexp="=.*"
+						replace=""
+					/>
+
+					<if>
+						<resourcecontains resource="portal-impl/src/portal-ext.properties" substring="${propertyName}" />
+						<then>
+							<replaceregexp file="portal-impl/src/portal-ext.properties"
+								match="${propertyName}=.*"
+								replace="@{property}"
+								byline="true"
+							/>
+						</then>
+						<else>
+							<echo append="true" file="portal-impl/src/portal-ext.properties">
+
+@{property}</echo>
+						</else>
+					</if>
+				</sequential>
+			</for>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="prepare-database-jndi">
 		<sequential>
 			<if>
@@ -3053,14 +3089,42 @@ go</echo>
 				</elseif>
 			</if>
 
+			<var name="app.server.tomcat.dir" value="${app.server.parent.dir}/tomcat-${app.server.tomcat.version}" />
 			<var name="app.server.tomcat.bin.dir" value="${app.server.parent.dir}/tomcat-${app.server.tomcat.version}/bin" />
 			<var name="app.server.tomcat.lib.global.dir" value="${app.server.parent.dir}/tomcat-${app.server.tomcat.version}/lib/ext" />
+			<var name="app.server.tomcat.zip.name" value="apache-tomcat-${app.server.tomcat.version}.zip" />
+			<var name="app.server.tomcat.zip.url" value="http://archive.apache.org/dist/tomcat/tomcat-8/v${app.server.tomcat.version}/bin/${app.server.tomcat.zip.name}" />
 
 			<echo append="true" file="app.server.${user.name}.properties">
+				app.server.tomcat.dir=${app.server.tomcat.dir}
 				app.server.tomcat.bin.dir=${app.server.tomcat.bin.dir}
 				app.server.tomcat.lib.global.dir=${app.server.tomcat.lib.global.dir}
 				app.server.tomcat.version=${app.server.tomcat.version}
+				app.server.tomcat.zip.name=${app.server.tomcat.zip.name}
+				app.server.tomcat.zip.url=${app.server.tomcat.zip.url}
 			</echo>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="setup-testable-jboss">
+		<sequential>
+			<setup-testable-jboss-jsp-configuration />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="setup-testable-jboss-jsp-configuration">
+		<sequential>
+			<if>
+				<not>
+					<resourcecontains resource="${app.server.jboss.instance.dir}/configuration/standalone.xml" substring="source-vm" />
+				</not>
+				<then>
+					<replace file="${app.server.jboss.instance.dir}/configuration/standalone.xml">
+						<replacetoken><![CDATA[jsp-configuration development="true"]]></replacetoken>
+						<replacevalue><![CDATA[jsp-configuration development="true" source-vm="1.8" target-vm="1.8"]]></replacevalue>
+					</replace>
+				</then>
+			</if>
 		</sequential>
 	</macrodef>
 
@@ -5071,6 +5135,69 @@ go]]></replacevalue>
 		<delete dir="/tmp/sprite" />
 	</target>
 
+	<target name="deploy-data-creators">
+		<get-testcase-property property.name="data.creator.includes" />
+
+		<if>
+			<isset property="data.creator.includes" />
+			<then>
+				<var name="modules.apps.dir" value="modules/apps" />
+
+				<for list="${data.creator.includes}" parallel="true" param="data.creator.name">
+					<sequential>
+						<if>
+							<os family="unix" />
+							<then>
+								<exec executable="/bin/bash" outputproperty="@{data.creator.name}.path">
+									<arg value="-c" />
+									<arg value="find ${modules.apps.dir} -name @{data.creator.name}" />
+								</exec>
+							</then>
+							<else>
+								<exec executable="cmd" outputproperty="@{data.creator.name}.path">
+									<arg value="/c" />
+									<arg value="dir /b /s /on /ad @{data.creator.name} 2>nul" />
+								</exec>
+							</else>
+						</if>
+						<echo message="Found: ${@{data.creator.name}.path}" />
+					</sequential>
+				</for>
+
+				<for list="${data.creator.includes}" param="data.creator.name">
+					<sequential>
+						<dirname file="${@{data.creator.name}.path}" property="@{data.creator.name}.gradle.dir" />
+						<if>
+							<available file="${@{data.creator.name}.gradle.dir}/settings.gradle" />
+							<then>
+								<move file="${@{data.creator.name}.gradle.dir}/settings.gradle" tofile="${@{data.creator.name}.gradle.dir}/settings" />
+							</then>
+						</if>
+					</sequential>
+				</for>
+
+				<for list="${data.creator.includes}" parallel="true" param="data.creator.name">
+					<sequential>
+						<gradle-execute dir="${@{data.creator.name}.path}" task="deploy">
+							<arg value="clean" />
+						</gradle-execute>
+					</sequential>
+				</for>
+
+				<for list="${data.creator.includes}" param="data.creator.name">
+					<sequential>
+						<if>
+							<available file="${@{data.creator.name}.gradle.dir}/settings" />
+							<then>
+								<move file="${@{data.creator.name}.gradle.dir}/settings" tofile="${@{data.creator.name}.gradle.dir}/settings.gradle" />
+							</then>
+						</if>
+					</sequential>
+				</for>
+			</then>
+		</if>
+	</target>
+
 	<target name="deploy-extra-apps">
 		<get-testcase-property property.name="extraapps.plugins.includes" />
 
@@ -5330,18 +5457,18 @@ go]]></replacevalue>
 				<if>
 					<available file="${liferay.home}/osgi/configs/${osgi.module.configuration.file.names.index}" />
 					<then>
-							<move
-								file="${liferay.home}/osgi/configs/${osgi.module.configuration.file.names.index}"
-								tofile="${liferay.home}/osgi/configs/@{file.names}"
-							/>
+						<move
+							file="${liferay.home}/osgi/configs/${osgi.module.configuration.file.names.index}"
+							tofile="${liferay.home}/osgi/configs/@{file.names}"
+						/>
 
-							<math
-								datatype="int"
-								operand1="${osgi.module.configuration.file.names.index}"
-								operand2="1"
-								operation="+"
-								result="osgi.module.configuration.file.names.index"
-							/>
+						<math
+							datatype="int"
+							operand1="${osgi.module.configuration.file.names.index}"
+							operand2="1"
+							operation="+"
+							result="osgi.module.configuration.file.names.index"
+						/>
 					</then>
 				</if>
 			</sequential>
@@ -6081,6 +6208,26 @@ go]]></replacevalue>
 		</if>
 	</target>
 
+	<target name="prepare-clustering-ce">
+		<delete>
+			<fileset dir="${liferay.home}/osgi/portal" includes="*.single.jar" />
+		</delete>
+
+		<var name="foundation.modules.dir" value="modules/apps/foundation" />
+
+		<move file="${foundation.modules.dir}/portal/settings.gradle" tofile="${foundation.modules.dir}/portal/settings" />
+
+		<for list="${foundation.modules.dir}/portal/portal-cluster-multiple,${foundation.modules.dir}/portal-cache/portal-cache-ehcache-multiple,${foundation.modules.dir}/portal-scheduler/portal-scheduler-multiple" param="osgi.app.name">
+			<sequential>
+				<gradle-execute dir="@{osgi.app.name}" task="deploy">
+					<arg value="clean" />
+				</gradle-execute>
+			</sequential>
+		</for>
+
+		<move file="${foundation.modules.dir}/portal/settings" tofile="${foundation.modules.dir}/portal/settings.gradle" />
+	</target>
+
 	<target name="prepare-lcs-gateway-bundle">
 		<ant antfile="build-dist.xml" inheritAll="false" target="unzip-tomcat">
 			<property name="app.server.parent.dir" value="${app.server.parent.dir}/gateway" />
@@ -6263,6 +6410,32 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<appender class="org.apache.log4j.ConsoleAppender" name="CONSOLE">
+		<layout class="org.apache.log4j.EnhancedPatternLayout">
+			<param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%t][%c{1}:%L] %m%n" />
+		</layout>
+	</appender>
+
+	<appender class="org.apache.log4j.rolling.RollingFileAppender" name="TEXT_FILE">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="@liferay.home@/logs/liferay@spi.id@.%d{yyyy-MM-dd}.log" />
+		</rollingPolicy>
+
+		<layout class="org.apache.log4j.EnhancedPatternLayout">
+			<param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%t][%c{1}:%L] %m%n" />
+		</layout>
+	</appender>
+
+	<appender class="org.apache.log4j.rolling.RollingFileAppender" name="XML_FILE">
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern" value="@liferay.home@/logs/liferay@spi.id@.%d{yyyy-MM-dd}.xml" />
+		</rollingPolicy>
+
+		<layout class="org.apache.log4j.xml.XMLLayout">
+			<param name="LocationInfo" value="true" />
+		</layout>
+	</appender>
+
 	<category name="com.liferay.frontend.js.spa.web.internal.servlet.taglib">
 		<priority value="DEBUG" />
 	</category>
@@ -6277,6 +6450,26 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 
 	<category name="com.liferay.portal.test.randomizerbumpers.TikaSafeRandomizerBumper">
 		<priority value="INFO" />
+	</category>
+
+	<root>
+		<priority value="INFO" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="TEXT_FILE" />
+		<appender-ref ref="XML_FILE" />
+	</root>
+</log4j:configuration>]]></echo>
+
+		<echo file="${liferay.home}/osgi/log4j/com.liferay.portal.osgi.web.wab.generator-log4j-ext.xml"><![CDATA[<?xml version="1.0"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<category name="com.liferay.portal.osgi.web.wab.generator.internal.WabGenerator">
+		<priority value="ERROR" />
+	</category>
+
+	<category name="com.liferay.portal.osgi.web.wab.generator.internal.processor.WabProcessor">
+		<priority value="WARN" />
 	</category>
 </log4j:configuration>]]></echo>
 
@@ -6382,6 +6575,8 @@ memory.scheduler.org.quartz.threadPool.threadCount=1
 
 persisted.scheduler.org.quartz.threadPool.threadCount=1
 
+virtual.hosts.default.site.name=
+
 axis.servlet.hosts.allowed=
 
 tunnel.servlet.hosts.allowed=</echo>
@@ -6401,25 +6596,11 @@ jdbc.default.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 			<then>
 				<echo append="true" file="portal-impl/src/portal-ext.properties">
 
+cluster.link.autodetect.address=
+
 cluster.link.enabled=true
 
-cluster.link.channel.system.properties=\
-	#
-	# Common
-	#
-	\
-	jgroups.bind_addr:${cluster.link.bind.addr["cluster-link-udp"]},\
-	jgroups.bind_interface:127.0.0.1,\
-	\
-	#
-	# Multicast
-	#
-	\
-	jgroups.mping.mcast_addr:${multicast.group.address["cluster-link-mping"]},\
-	jgroups.mping.mcast_port:${multicast.group.port["cluster-link-mping"]},\
-	jgroups.mping.ip_ttl:8
-
-cluster.link.autodetect.address=
+dl.store.impl=com.liferay.portal.store.db.DBStore
 
 web.server.display.node=true</echo>
 			</then>
@@ -6430,9 +6611,7 @@ web.server.display.node=true</echo>
 		<if>
 			<isset property="custom.properties" />
 			<then>
-				<echo append="true" file="portal-impl/src/portal-ext.properties">
-
-${custom.properties}</echo>
+				<prepare-custom-properties custom.properties="${custom.properties}" />
 			</then>
 		</if>
 
@@ -8382,8 +8561,8 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 							<replacetoken><![CDATA[</Context>]]></replacetoken>
 							<replacevalue><![CDATA[	<Resources>
 		<PreResources
-			className="com.liferay.support.tomcat.webresources.ExtResourceSet"
 			base="${catalina.base}/lib/ext/portal"
+			className="com.liferay.support.tomcat.webresources.ExtResourceSet"
 			webAppMount="/WEB-INF/lib"
 		/>
 	</Resources>
@@ -9395,6 +9574,10 @@ jdbc.default.password=${database.mysql.password}</echo>
 			<then>
 				<delete failonerror="false" file="${app.server.classes.portal.dir}/portal-ext.properties" />
 
+				<echo append="true" file="${app.server.classes.portal.dir}/portal-ext.properties">
+
+module.framework.properties.blacklist.portal.profile.names=${blacklist.portal.profile.names}</echo>
+
 				<delete failonerror="false" file="${app.server.classes.portal.dir}/system-ext.properties" />
 			</then>
 			<else>
@@ -9474,6 +9657,15 @@ jdbc.default.password=${database.mysql.password}</echo>
 		<antcall inheritAll="false" target="copy-optional-jars">
 			<param name="todir" value="${app.server.lib.global.dir}" />
 		</antcall>
+
+		<get-testcase-property property.name="deploy.cluster.ce.plugins" />
+
+		<if>
+			<equals arg1="${deploy.cluster.ce.plugins}" arg2="true" />
+			<then>
+				<antcall target="prepare-clustering-ce" />
+			</then>
+		</if>
 
 		<get-testcase-property property.name="portal.version" />
 
@@ -9677,6 +9869,10 @@ jdbc.default.password=${database.mysql.password}</echo>
 						<move todir="${liferay.home}/tmp">
 							<fileset dir="${liferay.home}/deploy" includes="${theme.file.name}" />
 						</move>
+
+						<move todir="${liferay.home}/tmp">
+							<fileset dir="${liferay.home}/osgi/marketplace" includes="*Theme*.lpkg" />
+						</move>
 					</then>
 				</if>
 
@@ -9721,7 +9917,7 @@ jdbc.default.password=${database.mysql.password}</echo>
 				</if>
 
 				<if>
-					<isset property="theme.file.name" />
+					<available file="${liferay.home}/tmp/${theme.file.name}" />
 					<then>
 						<move todir="${liferay.home}/deploy">
 							<fileset dir="${liferay.home}/tmp" includes="${theme.file.name}" />
@@ -9735,6 +9931,16 @@ jdbc.default.password=${database.mysql.password}</echo>
 
 						<fail if="theme.not.deployed" message="${theme.file.name} has failed to deploy." />
 					</then>
+					<elseif>
+						<available file="${liferay.home}/tmp" type="dir" />
+						<then>
+							<move todir="${liferay.home}/osgi/marketplace">
+								<fileset dir="${liferay.home}/tmp" includes="*Theme*.lpkg" />
+							</move>
+
+							<delete dir="${liferay.home}/tmp" failonerror="false" />
+						</then>
+					</elseif>
 				</if>
 			</then>
 		</if>
@@ -9871,6 +10077,10 @@ jdbc.default.password=${database.mysql.password}</echo>
 
 	<target name="set-portal-impl-portal-test-ext-properties">
 		<set-portal-impl-portal-test-ext-properties />
+	</target>
+
+	<target name="set-tomcat-version-number">
+		<set-tomcat-version-number liferay.portal.bundle="${liferay.portal.bundle}" />
 	</target>
 
 	<target name="setup-testable-tomcat">

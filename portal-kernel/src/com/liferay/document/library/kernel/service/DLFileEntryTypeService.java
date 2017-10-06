@@ -66,23 +66,12 @@ public interface DLFileEntryTypeService extends BaseService {
 		long[] ddmStructureIds, ServiceContext serviceContext)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFileEntryType getFileEntryType(long fileEntryTypeId)
+	public void deleteFileEntryType(long fileEntryTypeId)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getFileEntryTypesCount(long[] groupIds);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(long companyId, long[] groupIds,
-		java.lang.String keywords, boolean includeBasicFileEntryType);
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DLFileEntryType getFileEntryType(long fileEntryTypeId)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DLFileEntryType> getFileEntryTypes(long[] groupIds);
@@ -92,24 +81,35 @@ public interface DLFileEntryTypeService extends BaseService {
 		int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getFileEntryTypesCount(long[] groupIds);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DLFileEntryType> getFolderFileEntryTypes(long[] groupIds,
 		long folderId, boolean inherited) throws PortalException;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DLFileEntryType> search(long companyId, long[] groupIds,
 		java.lang.String keywords, boolean includeBasicFileEntryType,
 		int start, int end, OrderByComparator<DLFileEntryType> orderByComparator);
 
-	public void deleteFileEntryType(long fileEntryTypeId)
-		throws PortalException;
-
-	public void updateFileEntryType(long fileEntryTypeId,
-		java.lang.String name, java.lang.String description,
-		long[] ddmStructureIds, ServiceContext serviceContext)
-		throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(long companyId, long[] groupIds,
+		java.lang.String keywords, boolean includeBasicFileEntryType);
 
 	public void updateFileEntryType(long fileEntryTypeId,
 		Map<Locale, java.lang.String> nameMap,
 		Map<Locale, java.lang.String> descriptionMap, long[] ddmStructureIds,
 		ServiceContext serviceContext) throws PortalException;
+
+	public void updateFileEntryType(long fileEntryTypeId,
+		java.lang.String name, java.lang.String description,
+		long[] ddmStructureIds, ServiceContext serviceContext)
+		throws PortalException;
 }

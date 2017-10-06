@@ -62,64 +62,6 @@ public interface SubscriptionLocalService extends BaseLocalService,
 	 */
 
 	/**
-	* Returns <code>true</code> if the user is subscribed to the entity.
-	*
-	* @param companyId the primary key of the company
-	* @param userId the primary key of the user
-	* @param className the entity's class name
-	* @param classPK the primary key of the entity's instance
-	* @return <code>true</code> if the user is subscribed to the entity;
-	<code>false</code> otherwise
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean isSubscribed(long companyId, long userId,
-		java.lang.String className, long classPK);
-
-	/**
-	* Returns <code>true</code> if the user is subscribed to any of the
-	* entities.
-	*
-	* @param companyId the primary key of the company
-	* @param userId the primary key of the user
-	* @param className the entity's class name
-	* @param classPKs the primary key of the entities
-	* @return <code>true</code> if the user is subscribed to any of the
-	entities; <code>false</code> otherwise
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean isSubscribed(long companyId, long userId,
-		java.lang.String className, long[] classPKs);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Adds the subscription to the database. Also notifies the appropriate model listeners.
-	*
-	* @param subscription the subscription
-	* @return the subscription that was added
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public Subscription addSubscription(Subscription subscription);
-
-	/**
 	* Subscribes the user to the entity, notifying him the instant the entity
 	* is created, deleted, or modified.
 	*
@@ -169,6 +111,15 @@ public interface SubscriptionLocalService extends BaseLocalService,
 		throws PortalException;
 
 	/**
+	* Adds the subscription to the database. Also notifies the appropriate model listeners.
+	*
+	* @param subscription the subscription
+	* @return the subscription that was added
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public Subscription addSubscription(Subscription subscription);
+
+	/**
 	* Creates a new subscription with the primary key. Does not add the subscription to the database.
 	*
 	* @param subscriptionId the primary key for the new subscription
@@ -176,15 +127,13 @@ public interface SubscriptionLocalService extends BaseLocalService,
 	*/
 	public Subscription createSubscription(long subscriptionId);
 
+	public void deleteGroupSubscriptions(long groupId);
+
 	/**
-	* Deletes the subscription from the database. Also notifies the appropriate model listeners.
-	*
-	* @param subscription the subscription
-	* @return the subscription that was removed
 	* @throws PortalException
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public Subscription deleteSubscription(Subscription subscription)
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
 	/**
@@ -198,69 +147,49 @@ public interface SubscriptionLocalService extends BaseLocalService,
 	public Subscription deleteSubscription(long subscriptionId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Subscription fetchSubscription(long companyId, long userId,
-		java.lang.String className, long classPK);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Subscription fetchSubscription(long subscriptionId);
-
 	/**
-	* Returns the subscription of the user to the entity.
+	* Deletes the user's subscription to the entity. A social activity with the
+	* unsubscribe action is created.
 	*
-	* @param companyId the primary key of the company
 	* @param userId the primary key of the user
 	* @param className the entity's class name
 	* @param classPK the primary key of the entity's instance
-	* @return the subscription of the user to the entity
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Subscription getSubscription(long companyId, long userId,
-		java.lang.String className, long classPK) throws PortalException;
+	public void deleteSubscription(long userId, java.lang.String className,
+		long classPK) throws PortalException;
 
 	/**
-	* Returns the subscription with the primary key.
+	* Deletes the subscription from the database. Also notifies the appropriate model listeners.
 	*
-	* @param subscriptionId the primary key of the subscription
-	* @return the subscription
-	* @throws PortalException if a subscription with the primary key could not be found
+	* @param subscription the subscription
+	* @return the subscription that was removed
+	* @throws PortalException
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Subscription getSubscription(long subscriptionId)
+	@Indexable(type = IndexableType.DELETE)
+	public Subscription deleteSubscription(Subscription subscription)
 		throws PortalException;
 
 	/**
-	* Updates the subscription in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param subscription the subscription
-	* @return the subscription that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public Subscription updateSubscription(Subscription subscription);
-
-	/**
-	* Returns the number of subscriptions.
-	*
-	* @return the number of subscriptions
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getSubscriptionsCount();
-
-	/**
-	* Returns the number of subscriptions of the user.
+	* Deletes all the subscriptions of the user.
 	*
 	* @param userId the primary key of the user
-	* @return the number of subscriptions of the user
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getUserSubscriptionsCount(long userId);
+	public void deleteSubscriptions(long userId) throws PortalException;
+
+	public void deleteSubscriptions(long userId, long groupId)
+		throws PortalException;
 
 	/**
-	* Returns the OSGi service identifier.
+	* Deletes all the subscriptions to the entity.
 	*
-	* @return the OSGi service identifier
+	* @param companyId the primary key of the company
+	* @param className the entity's class name
+	* @param classPK the primary key of the entity's instance
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public void deleteSubscriptions(long companyId, java.lang.String className,
+		long classPK) throws PortalException;
+
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -302,6 +231,73 @@ public interface SubscriptionLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Subscription fetchSubscription(long subscriptionId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Subscription fetchSubscription(long companyId, long userId,
+		java.lang.String className, long classPK);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the subscription with the primary key.
+	*
+	* @param subscriptionId the primary key of the subscription
+	* @return the subscription
+	* @throws PortalException if a subscription with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Subscription getSubscription(long subscriptionId)
+		throws PortalException;
+
+	/**
+	* Returns the subscription of the user to the entity.
+	*
+	* @param companyId the primary key of the company
+	* @param userId the primary key of the user
+	* @param className the entity's class name
+	* @param classPK the primary key of the entity's instance
+	* @return the subscription of the user to the entity
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Subscription getSubscription(long companyId, long userId,
+		java.lang.String className, long classPK) throws PortalException;
+
+	/**
 	* Returns a range of all the subscriptions.
 	*
 	* <p>
@@ -316,6 +312,19 @@ public interface SubscriptionLocalService extends BaseLocalService,
 	public List<Subscription> getSubscriptions(int start, int end);
 
 	/**
+	* Returns all the subscriptions of the user to the entities.
+	*
+	* @param companyId the primary key of the company
+	* @param userId the primary key of the user
+	* @param className the entity's class name
+	* @param classPKs the primary key of the entities
+	* @return the subscriptions of the user to the entities
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Subscription> getSubscriptions(long companyId, long userId,
+		java.lang.String className, long[] classPKs);
+
+	/**
 	* Returns all the subscriptions to the entity.
 	*
 	* @param companyId the primary key of the company
@@ -328,17 +337,12 @@ public interface SubscriptionLocalService extends BaseLocalService,
 		java.lang.String className, long classPK);
 
 	/**
-	* Returns all the subscriptions of the user to the entities.
+	* Returns the number of subscriptions.
 	*
-	* @param companyId the primary key of the company
-	* @param userId the primary key of the user
-	* @param className the entity's class name
-	* @param classPKs the primary key of the entities
-	* @return the subscriptions of the user to the entities
+	* @return the number of subscriptions
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Subscription> getSubscriptions(long companyId, long userId,
-		java.lang.String className, long[] classPKs);
+	public int getSubscriptionsCount();
 
 	/**
 	* Returns an ordered range of all the subscriptions of the user.
@@ -366,53 +370,49 @@ public interface SubscriptionLocalService extends BaseLocalService,
 		java.lang.String className);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	public void deleteGroupSubscriptions(long groupId);
-
-	/**
-	* Deletes the user's subscription to the entity. A social activity with the
-	* unsubscribe action is created.
+	* Returns the number of subscriptions of the user.
 	*
 	* @param userId the primary key of the user
-	* @param className the entity's class name
-	* @param classPK the primary key of the entity's instance
+	* @return the number of subscriptions of the user
 	*/
-	public void deleteSubscription(long userId, java.lang.String className,
-		long classPK) throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getUserSubscriptionsCount(long userId);
 
 	/**
-	* Deletes all the subscriptions to the entity.
+	* Returns <code>true</code> if the user is subscribed to the entity.
 	*
 	* @param companyId the primary key of the company
+	* @param userId the primary key of the user
 	* @param className the entity's class name
 	* @param classPK the primary key of the entity's instance
+	* @return <code>true</code> if the user is subscribed to the entity;
+	<code>false</code> otherwise
 	*/
-	public void deleteSubscriptions(long companyId, java.lang.String className,
-		long classPK) throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean isSubscribed(long companyId, long userId,
+		java.lang.String className, long classPK);
 
 	/**
-	* Deletes all the subscriptions of the user.
+	* Returns <code>true</code> if the user is subscribed to any of the
+	* entities.
 	*
+	* @param companyId the primary key of the company
 	* @param userId the primary key of the user
+	* @param className the entity's class name
+	* @param classPKs the primary key of the entities
+	* @return <code>true</code> if the user is subscribed to any of the
+	entities; <code>false</code> otherwise
 	*/
-	public void deleteSubscriptions(long userId) throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean isSubscribed(long companyId, long userId,
+		java.lang.String className, long[] classPKs);
 
-	public void deleteSubscriptions(long userId, long groupId)
-		throws PortalException;
+	/**
+	* Updates the subscription in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param subscription the subscription
+	* @return the subscription that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public Subscription updateSubscription(Subscription subscription);
 }

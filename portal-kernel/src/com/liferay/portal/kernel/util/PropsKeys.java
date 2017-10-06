@@ -435,6 +435,10 @@ public interface PropsKeys {
 
 	public static final String CLUSTER_LINK_AUTODETECT_ADDRESS = "cluster.link.autodetect.address";
 
+	public static final String CLUSTER_LINK_CHANNEL_LOGIC_NAME_CONTROL = "cluster.link.channel.logic.name.control";
+
+	public static final String CLUSTER_LINK_CHANNEL_LOGIC_NAME_TRANSPORT = "cluster.link.channel.logic.name.transport";
+
 	public static final String CLUSTER_LINK_CHANNEL_NAME_CONTROL = "cluster.link.channel.name.control";
 
 	public static final String CLUSTER_LINK_CHANNEL_NAME_TRANSPORT = "cluster.link.channel.name.transport";
@@ -1074,6 +1078,12 @@ public interface PropsKeys {
 
 	public static final String INTRABAND_WELDER_SOCKET_TCP_NO_DELAY = "intraband.welder.socket.tcp.no.delay";
 
+	public static final String INVOKER_FILTER_CHAIN_ENABLED = "invoker.filter.chain.cache.enabled";
+
+	/**
+	 * @deprecated As of 7.0.0, replaced with {@link #INVOKER_FILTER_CHAIN_ENABLED}
+	 */
+	@Deprecated
 	public static final String INVOKER_FILTER_CHAIN_SIZE = "invoker.filter.chain.cache.size";
 
 	public static final String INVOKER_FILTER_URI_MAX_LENGTH = "invoker.filter.uri.max.length";
@@ -1468,6 +1478,12 @@ public interface PropsKeys {
 
 	public static final String MINIFIER_ENABLED = "minifier.enabled";
 
+	public static final String MINIFIER_INLINE_CONTENT_CACHE_ENABLED = "minifier.inline.content.cache.enabled";
+
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #MINIFIER_INLINE_CONTENT_CACHE_ENABLED}
+	 */
+	@Deprecated
 	public static final String MINIFIER_INLINE_CONTENT_CACHE_SIZE = "minifier.inline.content.cache.size";
 
 	public static final String MINIFIER_INLINE_CONTENT_CACHE_SKIP_CSS = "minifier.inline.content.cache.skip.css";
@@ -1972,6 +1988,10 @@ public interface PropsKeys {
 
 	public static final String RETRY_DATA_SOURCE_MAX_RETRIES = "retry.data.source.max.retries";
 
+	public static final String RETRY_JDBC_ON_STARTUP_DELAY = "retry.jdbc.on.startup.delay";
+
+	public static final String RETRY_JDBC_ON_STARTUP_MAX_RETRIES = "retry.jdbc.on.startup.max.retries";
+
 	public static final String ROBOTS_TXT_WITH_SITEMAP = "robots.txt.with.sitemap";
 
 	public static final String ROBOTS_TXT_WITHOUT_SITEMAP = "robots.txt.without.sitemap";
@@ -2007,6 +2027,8 @@ public interface PropsKeys {
 	public static final String SCHEDULER_GROUP_NAME_MAX_LENGTH = "scheduler.group.name.max.length";
 
 	public static final String SCHEDULER_JOB_NAME_MAX_LENGTH = "scheduler.job.name.max.length";
+
+	public static final String SCHEMA_MODULE_BUILD_AUTO_UPGRADE = "schema.module.build.auto.upgrade";
 
 	public static final String SCHEMA_RUN_ENABLED = "schema.run.enabled";
 
@@ -2092,6 +2114,10 @@ public interface PropsKeys {
 
 	public static final String SETUP_DATABASE_JAR_URL = "setup.database.jar.url";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String SETUP_DATABASE_TYPES = "setup.database.types";
 
 	public static final String SETUP_DATABASE_URL = "setup.database.url";

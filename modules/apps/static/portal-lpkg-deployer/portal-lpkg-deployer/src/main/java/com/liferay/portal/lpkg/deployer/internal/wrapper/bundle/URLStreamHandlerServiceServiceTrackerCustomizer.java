@@ -15,6 +15,7 @@
 package com.liferay.portal.lpkg.deployer.internal.wrapper.bundle;
 
 import com.liferay.portal.lpkg.deployer.internal.WABWrapperUtil;
+import com.liferay.portal.lpkg.deployer.util.BundleStartLevelUtil;
 
 import java.net.URL;
 import java.net.URLConnection;
@@ -22,7 +23,6 @@ import java.net.URLConnection;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import org.osgi.framework.startlevel.BundleStartLevel;
 import org.osgi.service.url.AbstractURLStreamHandlerService;
 import org.osgi.service.url.URLStreamHandlerService;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
@@ -82,12 +82,10 @@ public class URLStreamHandlerServiceServiceTrackerCustomizer
 				newBundle = _bundleContext.installBundle(
 					location, urlConnection.getInputStream());
 
-				BundleStartLevel bundleStartLevel = newBundle.adapt(
-					BundleStartLevel.class);
-
-				bundleStartLevel.setStartLevel(_startLevel);
-
-				newBundle.start();
+				if (newBundle.getState() != Bundle.UNINSTALLED) {
+					BundleStartLevelUtil.setStartLevelAndStart(
+						newBundle, _startLevel, _bundleContext);
+				}
 			}
 
 			return newBundle;
