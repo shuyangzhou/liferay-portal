@@ -98,7 +98,7 @@ public class ProcessUtilTest {
 
 		Future<ObjectValuePair<byte[], byte[]>> collectorFuture =
 			ProcessUtil.execute(
-				ProcessUtil.COLLECTOR_OUTPUT_PROCESSOR,
+				CollectorOutputProcessor.INSTANCE,
 				_buildArguments(Echo.class, "2"));
 
 		ObjectValuePair<byte[], byte[]> objectValuePair = collectorFuture.get();
@@ -118,8 +118,7 @@ public class ProcessUtilTest {
 	@Test
 	public void testErrorExit() throws Exception {
 		Future<?> future = ProcessUtil.execute(
-			ProcessUtil.CONSUMER_OUTPUT_PROCESSOR,
-			_buildArguments(ErrorExit.class));
+			ConsumerOutputProcessor.INSTANCE, _buildArguments(ErrorExit.class));
 
 		try {
 			future.get();
@@ -190,7 +189,7 @@ public class ProcessUtilTest {
 		String[] arguments = _buildArguments(Pause.class);
 
 		Future<?> future = ProcessUtil.execute(
-			ProcessUtil.CONSUMER_OUTPUT_PROCESSOR, arguments);
+			ConsumerOutputProcessor.INSTANCE, arguments);
 
 		Assert.assertFalse(future.isCancelled());
 		Assert.assertFalse(future.isDone());
@@ -238,8 +237,7 @@ public class ProcessUtilTest {
 		// Success time out get
 
 		future = ProcessUtil.execute(
-			ProcessUtil.CONSUMER_OUTPUT_PROCESSOR,
-			_buildArguments(Echo.class, "0"));
+			ConsumerOutputProcessor.INSTANCE, _buildArguments(Echo.class, "0"));
 
 		future.get(1, TimeUnit.MINUTES);
 	}
@@ -316,7 +314,7 @@ public class ProcessUtilTest {
 
 		try {
 			ProcessUtil.execute(
-				ProcessUtil.CONSUMER_OUTPUT_PROCESSOR, (List<String>)null);
+				ConsumerOutputProcessor.INSTANCE, (List<String>)null);
 
 			Assert.fail();
 		}
@@ -326,7 +324,7 @@ public class ProcessUtilTest {
 
 		try {
 			ProcessUtil.execute(
-				ProcessUtil.CONSUMER_OUTPUT_PROCESSOR, "commandNotExist");
+				ConsumerOutputProcessor.INSTANCE, "commandNotExist");
 
 			Assert.fail();
 		}
