@@ -76,8 +76,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
+<#if classDeprecated>
+ * @deprecated ${classDeprecatedComment}
+</#if>
  * @generated
  */
+
+<#if classDeprecated>
+	@Deprecated
+</#if>
 
 <#if osgiModule>
 	@RunWith(Arquillian.class)
