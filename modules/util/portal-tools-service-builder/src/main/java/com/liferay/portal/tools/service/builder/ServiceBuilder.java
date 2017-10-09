@@ -661,6 +661,11 @@ public class ServiceBuilder {
 
 			_packagePath = packagePath;
 
+			_classPattern = Pattern.compile(
+				"<class .*name=\"" +
+					_packagePath.replace(StringPool.PERIOD, "\\.") +
+						"\\.model\\.");
+
 			_autoImportDefaultReferences = GetterUtil.getBoolean(
 				rootElement.attributeValue("auto-import-default-references"),
 				_autoImportDefaultReferences);
@@ -2540,53 +2545,9 @@ public class ServiceBuilder {
 					newContent.substring(lastImport);
 		}
 
-		int firstClass = -1;
+		Matcher matcher = _classPattern.matcher(newContent);
 
-		int firstClass1 = newContent.indexOf(
-			"<class dynamic-update=\"true\" name=\"" + _packagePath +
-				".model.");
-		int firstClass2 = newContent.indexOf(
-			"<class name=\"" + _packagePath + ".model.");
-
-		if ((firstClass1 != -1) && (firstClass2 != -1)) {
-			if (firstClass2 < firstClass1) {
-				firstClass = firstClass2;
-			}
-			else {
-				firstClass = firstClass1;
-			}
-		}
-		else if (firstClass1 != -1) {
-			firstClass = firstClass1;
-		}
-		else if (firstClass2 != -1) {
-			firstClass = firstClass2;
-		}
-
-		int lastClass = -1;
-
-		int lastClass1 = newContent.lastIndexOf(
-			"<class dynamic-update=\"true\" name=\"" + _packagePath +
-				".model.");
-		int lastClass2 = newContent.lastIndexOf(
-			"<class name=\"" + _packagePath + ".model.");
-
-		if ((lastClass1 != -1) && (lastClass2 != -1)) {
-			if (lastClass2 > lastClass1) {
-				lastClass = lastClass2;
-			}
-			else {
-				lastClass = lastClass1;
-			}
-		}
-		else if (lastClass1 != -1) {
-			lastClass = lastClass1;
-		}
-		else if (lastClass2 != -1) {
-			lastClass = lastClass2;
-		}
-
-		if (firstClass == -1) {
+		if (!matcher.find()) {
 			int x = newContent.indexOf("</hibernate-mapping>");
 
 			if (x != -1) {
@@ -2596,6 +2557,13 @@ public class ServiceBuilder {
 			}
 		}
 		else {
+			int firstClass = matcher.start();
+			int lastClass = matcher.start();
+
+			while (matcher.find()) {
+				lastClass = matcher.start();
+			}
+
 			firstClass = newContent.lastIndexOf("<class", firstClass) - 1;
 			lastClass = newContent.indexOf("</class>", lastClass) + 9;
 
@@ -2930,10 +2898,6 @@ public class ServiceBuilder {
 	}
 
 	private void _createPersistenceTest(Entity entity) throws Exception {
-		if (entity.isDeprecated()) {
-			return;
-		}
-
 		Map<String, Object> context = _getContext();
 
 		context.put("entity", entity);
@@ -6202,6 +6166,7 @@ public class ServiceBuilder {
 	private boolean _build;
 	private long _buildNumber;
 	private boolean _buildNumberIncrement;
+	private Pattern _classPattern;
 	private String _currentTplName;
 	private List<Entity> _ejbList;
 	private Map<String, EntityMapping> _entityMappings;
