@@ -40,6 +40,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,6 +48,7 @@ import org.junit.runner.RunWith;
 /**
  * @author Roberto Díaz
  */
+@Ignore
 @RunWith(Arquillian.class)
 public class RoleMembershipPolicyRolesTest
 	extends BaseRoleMembershipPolicyTestCase {
