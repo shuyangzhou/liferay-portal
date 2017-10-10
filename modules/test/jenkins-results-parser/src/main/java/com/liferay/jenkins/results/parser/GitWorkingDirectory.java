@@ -83,12 +83,20 @@ public class GitWorkingDirectory {
 
 		_repositoryName = repositoryName;
 
-		if (!_privateOnlyRepositories.contains(_repositoryName)) {
-			if (upstreamBranchName.equals("master")) {
-				setUpstreamRemoteToPublicRepository();
+		if (_publicOnlyRepositoryNames.contains(_repositoryName)) {
+			setUpstreamRemoteToPublicRepository();
+		}
+		else {
+			if (_privateOnlyRepositoryNames.contains(_repositoryName)) {
+				setUpstreamRemoteToPrivateRepository();
 			}
 			else {
-				setUpstreamRemoteToPrivateRepository();
+				if (upstreamBranchName.equals("master")) {
+					setUpstreamRemoteToPublicRepository();
+				}
+				else {
+					setUpstreamRemoteToPrivateRepository();
+				}
 			}
 		}
 
@@ -1290,12 +1298,18 @@ public class GitWorkingDirectory {
 		"gitdir\\: (.*\\.git)");
 	private static final Pattern _gitLsRemotePattern = Pattern.compile(
 		"(?<sha>[^\\s]{40}+)[\\s]+refs/heads/(?<name>[^\\s]+)");
-	private static final List<String> _privateOnlyRepositories = Arrays.asList(
-		new String[] {
-			"liferay-jenkins-ee", "liferay-jenkins-tools-private",
-			"liferay-plugins-ee", "liferay-portal-ee",
-			"liferay-qa-portal-legacy-ee", "liferay-release-tool-ee"
-		});
+	private static final List<String> _privateOnlyRepositoryNames =
+		Arrays.asList(
+			new String[] {
+				"liferay-jenkins-ee", "liferay-jenkins-tools-private",
+				"liferay-plugins-ee", "liferay-portal-ee",
+				"liferay-qa-portal-legacy-ee", "liferay-release-tool-ee"
+			});
+	private static final List<String> _publicOnlyRepositoryNames =
+		Arrays.asList(
+			new String[] {
+				"liferay-blade-samples", "liferay-plugins", "liferay-portal"
+			});
 
 	private File _gitDirectory;
 	private final String _repositoryName;
