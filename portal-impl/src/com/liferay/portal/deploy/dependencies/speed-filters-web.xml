@@ -33,6 +33,10 @@
 		<param-name>pattern</param-name>
 		<param-value>2</param-value>
 	</init-param>
+	<init-param>
+		<param-name>includeUserAgent</param-name>
+		<param-value>true</param-value>
+	</init-param>
 </filter>
 <filter>
 	<filter-name>Cache Filter - Resource JSP</filter-name>
