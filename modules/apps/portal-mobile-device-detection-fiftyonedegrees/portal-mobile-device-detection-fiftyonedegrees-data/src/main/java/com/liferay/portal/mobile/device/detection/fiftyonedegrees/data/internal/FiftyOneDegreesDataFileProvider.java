@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.portal.mobile.device.detection.fiftyonedegrees.internal.data;
+package com.liferay.portal.mobile.device.detection.fiftyonedegrees.data.internal;
 
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.mobile.device.detection.fiftyonedegrees.configuration.FiftyOneDegreesConfiguration;
 import com.liferay.portal.mobile.device.detection.fiftyonedegrees.data.DataFileProvider;
+import com.liferay.portal.mobile.device.detection.fiftyonedegrees.data.configuration.FiftyOneDegreesDataConfiguration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +38,7 @@ import org.osgi.service.component.annotations.Modified;
  * @author Michael C. Han
  */
 @Component(
-	configurationPid = "com.liferay.portal.mobile.device.detection.fiftyonedegrees.configuration.FiftyOneDegreesConfiguration",
+	configurationPid = "com.liferay.portal.mobile.device.detection.fiftyonedegrees.data.configuration.FiftyOneDegreesDataConfiguration",
 	immediate = true, property = {"service.ranking:Integer=1"},
 	service = DataFileProvider.class
 )
@@ -49,7 +49,7 @@ public class FiftyOneDegreesDataFileProvider implements DataFileProvider {
 		Bundle bundle = _bundleContext.getBundle();
 
 		String fiftyOneDegreesDataFileName =
-			_fiftyOneDegreesConfiguration.fiftyOneDegreesDataFileName();
+			_fiftyOneDegreesDataConfiguration.fiftyOneDegreesDataFileName();
 
 		URL url = bundle.getResource(fiftyOneDegreesDataFileName);
 
@@ -75,17 +75,17 @@ public class FiftyOneDegreesDataFileProvider implements DataFileProvider {
 
 		_bundleContext = bundleContext;
 
-		_fiftyOneDegreesConfiguration = ConfigurableUtil.createConfigurable(
-			FiftyOneDegreesConfiguration.class, properties);
+		_fiftyOneDegreesDataConfiguration = ConfigurableUtil.createConfigurable(
+			FiftyOneDegreesDataConfiguration.class, properties);
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_bundleContext = null;
-		_fiftyOneDegreesConfiguration = null;
+		_fiftyOneDegreesDataConfiguration = null;
 	}
 
 	private BundleContext _bundleContext;
-	private volatile FiftyOneDegreesConfiguration _fiftyOneDegreesConfiguration;
+	private volatile FiftyOneDegreesDataConfiguration _fiftyOneDegreesDataConfiguration;
 
 }

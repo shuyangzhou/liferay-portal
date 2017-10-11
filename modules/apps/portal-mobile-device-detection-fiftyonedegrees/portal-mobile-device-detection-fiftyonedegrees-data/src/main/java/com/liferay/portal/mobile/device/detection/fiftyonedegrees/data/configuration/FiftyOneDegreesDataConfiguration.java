@@ -12,25 +12,24 @@
  * details.
  */
 
-package com.liferay.portal.mobile.device.detection.fiftyonedegrees.configuration;
+package com.liferay.portal.mobile.device.detection.fiftyonedegrees.data.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 
 /**
- * @author Brian Greenwald
- * @author Prathima Shreenath
+ * @author Matthew Tambara
  */
 @ExtendedObjectClassDefinition(category = "foundation")
 @Meta.OCD(
-	id = "com.liferay.portal.mobile.device.detection.fiftyonedegrees.configuration.FiftyOneDegreesConfiguration",
+	id = "com.liferay.portal.mobile.device.detection.fiftyonedegrees.configuration.FiftyOneDegreesDataConfiguration",
 	localization = "content/Language",
-	name = "51degrees-device-detection-configuration-name"
+	name = "51degrees-device-detection-data-configuration-name"
 )
-public interface FiftyOneDegreesConfiguration {
+public interface FiftyOneDegreesDataConfiguration {
 
-	@Meta.AD(deflt = "5000", required = false)
-	public int cacheSize();
+	@Meta.AD(deflt = "META-INF/51Degrees-LiteV3.2.dat", required = false)
+	public String fiftyOneDegreesDataFileName();
 
 }
