@@ -113,7 +113,9 @@ public class ServletResponseUtil {
 
 			if (start > end) {
 				throw new IOException(
-					"Range start " + start + " is greater than end " + end);
+					StringBundler.concat(
+						"Range start ", String.valueOf(start),
+						" is greater than end ", String.valueOf(end)));
 			}
 
 			Range range = new Range(start, end, length);
@@ -554,7 +556,16 @@ public class ServletResponseUtil {
 		throws IOException {
 
 		if (response.isCommitted()) {
-			StreamUtil.cleanUp(inputStream);
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				}
+				catch (IOException ioe) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(ioe, ioe);
+					}
+				}
+			}
 
 			return;
 		}
