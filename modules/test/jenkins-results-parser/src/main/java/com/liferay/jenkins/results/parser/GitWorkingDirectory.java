@@ -83,12 +83,20 @@ public class GitWorkingDirectory {
 
 		_repositoryName = repositoryName;
 
-		if (!_privateOnlyRepositories.contains(_repositoryName)) {
-			if (upstreamBranchName.equals("master")) {
-				setUpstreamRemoteToPublicRepository();
+		if (_publicOnlyRepositoryNames.contains(_repositoryName)) {
+			setUpstreamRemoteToPublicRepository();
+		}
+		else {
+			if (_privateOnlyRepositoryNames.contains(_repositoryName)) {
+				setUpstreamRemoteToPrivateRepository();
 			}
 			else {
-				setUpstreamRemoteToPrivateRepository();
+				if (upstreamBranchName.equals("master")) {
+					setUpstreamRemoteToPublicRepository();
+				}
+				else {
+					setUpstreamRemoteToPrivateRepository();
+				}
 			}
 		}
 
@@ -136,25 +144,6 @@ public class GitWorkingDirectory {
 	}
 
 	public void checkoutBranch(Branch branch, String options) {
-		if (!branchExists(branch.getName(), null)) {
-			throw new IllegalArgumentException(
-				JenkinsResultsParserUtil.combine(
-					"The branch ", branch.getName(), " could not be found"));
-		}
-
-		Branch currentBranch = getCurrentBranch();
-
-		if (currentBranch != null) {
-			String currentBranchName = currentBranch.getName();
-
-			if (currentBranchName.equals(branch.getName())) {
-				System.out.println(
-					currentBranchName + " is already checked out");
-
-				return;
-			}
-		}
-
 		waitForIndexLock();
 
 		StringBuilder sb = new StringBuilder();
@@ -214,7 +203,7 @@ public class GitWorkingDirectory {
 			timeout++;
 
 			if (timeout >= 59) {
-				currentBranch = getCurrentBranch();
+				Branch currentBranch = getCurrentBranch();
 
 				if ((currentBranch != null) &&
 					branchName.equals(currentBranch.getName())) {
@@ -1290,12 +1279,19 @@ public class GitWorkingDirectory {
 		"gitdir\\: (.*\\.git)");
 	private static final Pattern _gitLsRemotePattern = Pattern.compile(
 		"(?<sha>[^\\s]{40}+)[\\s]+refs/heads/(?<name>[^\\s]+)");
-	private static final List<String> _privateOnlyRepositories = Arrays.asList(
-		new String[] {
-			"liferay-jenkins-ee", "liferay-jenkins-tools-private",
-			"liferay-plugins-ee", "liferay-portal-ee",
-			"liferay-qa-portal-legacy-ee", "liferay-release-tool-ee"
-		});
+	private static final List<String> _privateOnlyRepositoryNames =
+		Arrays.asList(
+			new String[] {
+				"liferay-jenkins-ee", "liferay-jenkins-tools-private",
+				"liferay-plugins-ee", "liferay-portal-ee",
+				"liferay-qa-portal-legacy-ee", "liferay-release-tool-ee"
+			});
+	private static final List<String> _publicOnlyRepositoryNames =
+		Arrays.asList(
+			new String[] {
+				"liferay-binaries-cache-2017", "liferay-blade-samples",
+				"liferay-plugins", "liferay-portal", "portals-pluto"
+			});
 
 	private File _gitDirectory;
 	private final String _repositoryName;
