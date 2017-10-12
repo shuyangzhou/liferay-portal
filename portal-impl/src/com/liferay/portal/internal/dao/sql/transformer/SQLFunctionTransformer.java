@@ -16,6 +16,7 @@ package com.liferay.portal.internal.dao.sql.transformer;
 
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Michael Bowerman
@@ -35,14 +36,14 @@ public class SQLFunctionTransformer {
 			throw new IllegalArgumentException(replacementSuffix);
 		}
 
-		_functionPrefix = functionPrefix;
+		_functionPrefix = StringUtil.toUpperCase(functionPrefix);
 		_replacementPrefix = replacementPrefix;
 		_replacementDelimiter = replacementDelimiter;
 		_replacementSuffix = replacementSuffix;
 	}
 
 	public String transform(String sql) {
-		int pos = sql.indexOf(_functionPrefix);
+		int pos = _indexOfIgnoreCase(sql, 0);
 
 		if (pos < 0) {
 			return sql;
@@ -96,11 +97,70 @@ public class SQLFunctionTransformer {
 
 			sb.replace(next, next + 1, _replacementSuffix);
 
-			pos = sb.indexOf(
-				_functionPrefix, pos + _replacementPrefix.length());
+			pos = _indexOfIgnoreCase(sb, pos + _replacementPrefix.length());
 		}
 
 		return sb.toString();
+	}
+
+	private int _indexOfIgnoreCase(CharSequence sql, int pos) {
+		char first = _functionPrefix.charAt(0);
+
+		int max = sql.length() - _functionPrefix.length();
+
+		for (int i = pos; i <= max; i++) {
+			char c = sql.charAt(i);
+
+			if ((c >= CharPool.LOWER_CASE_A) && (c <= CharPool.LOWER_CASE_Z)) {
+				c = (char)(c - 32);
+			}
+
+			if (c != first) {
+				while (i <= max) {
+					c = sql.charAt(i);
+
+					if ((c >= CharPool.LOWER_CASE_A) &&
+						(c <= CharPool.LOWER_CASE_Z)) {
+
+						c = (char)(c - 32);
+					}
+
+					if (c == first) {
+						break;
+					}
+
+					i++;
+				}
+			}
+
+			if (i > max) {
+				return -1;
+			}
+
+			int j = i + 1;
+
+			int end = i + _functionPrefix.length();
+
+			for (int k = 1; j < end; j++, k++) {
+				c = sql.charAt(j);
+
+				if ((c >= CharPool.LOWER_CASE_A) &&
+					(c <= CharPool.LOWER_CASE_Z)) {
+
+					c = (char)(c - 32);
+				}
+
+				if (c != _functionPrefix.charAt(k)) {
+					break;
+				}
+			}
+
+			if (j == end) {
+				return i;
+			}
+		}
+
+		return -1;
 	}
 
 	private final String _functionPrefix;

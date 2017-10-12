@@ -23,6 +23,7 @@ import org.junit.Test;
 
 /**
  * @author Michael Bowerman
+ * @author Preston Crary
  */
 public class SQLFunctionTransformerTest {
 
@@ -38,6 +39,17 @@ public class SQLFunctionTransformerTest {
 			new SQLFunctionTransformer("TEST(", "TEST(", ",", ")");
 
 		Assert.assertEquals(sql, sqlFunctionTransformer.transform(sql));
+	}
+
+	@Test
+	public void testIgnoresCase() {
+		String sql = "test(t~, Test(T, TEST()))";
+
+		SQLFunctionTransformer sqlFunctionTransformer =
+			new SQLFunctionTransformer("TEST(", "TEST(", ",", ")");
+
+		Assert.assertEquals(
+			"TEST(t~, TEST(T, TEST()))", sqlFunctionTransformer.transform(sql));
 	}
 
 	@Test
