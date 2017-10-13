@@ -73,7 +73,21 @@ public class CaptureHandler extends Handler implements Closeable {
 
 	@Override
 	public void publish(LogRecord logRecord) {
-		_logRecords.add(logRecord);
+		LogRecordWrapper logWrapper = new LogRecordWrapper(
+			logRecord.getLevel(), logRecord.getMessage());
+
+		logWrapper.setLoggerName(logRecord.getLoggerName());
+		logWrapper.setMillis(logRecord.getMillis());
+		logWrapper.setParameters(logRecord.getParameters());
+		logWrapper.setResourceBundle(logRecord.getResourceBundle());
+		logWrapper.setResourceBundleName(logRecord.getResourceBundleName());
+		logWrapper.setSequenceNumber(logRecord.getSequenceNumber());
+		logWrapper.setSourceClassName(logRecord.getSourceClassName());
+		logWrapper.setSourceMethodName(logRecord.getSourceMethodName());
+		logWrapper.setThreadID(logRecord.getThreadID());
+		logWrapper.setThrown(logRecord.getThrown());
+
+		_logRecords.add(logWrapper);
 	}
 
 	public List<LogRecord> resetLogLevel(Level level) {
@@ -89,5 +103,18 @@ public class CaptureHandler extends Handler implements Closeable {
 	private final Logger _logger;
 	private final List<LogRecord> _logRecords = new CopyOnWriteArrayList<>();
 	private final boolean _useParentHandlers;
+
+	private class LogRecordWrapper extends LogRecord {
+
+		@Override
+		public String toString() {
+			return "{" + getLevel() + ": " + getMessage() + "}";
+		}
+
+		private LogRecordWrapper(Level level, String msg) {
+			super(level, msg);
+		}
+
+	}
 
 }
