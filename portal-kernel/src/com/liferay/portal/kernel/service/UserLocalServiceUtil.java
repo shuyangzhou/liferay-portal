@@ -1944,6 +1944,11 @@ public class UserLocalServiceUtil {
 		return getService().loadGetDefaultUser(companyId);
 	}
 
+	public static void reindex(long companyId, long[] userIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().reindex(companyId, userIds);
+	}
+
 	/**
 	* Returns an ordered range of all the users who match the keywords and
 	* status, without using the indexer. It is preferable to use the indexed

@@ -2091,6 +2091,12 @@ public class UserLocalServiceWrapper implements UserLocalService,
 		return _userLocalService.loadGetDefaultUser(companyId);
 	}
 
+	@Override
+	public void reindex(long companyId, long[] userIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_userLocalService.reindex(companyId, userIds);
+	}
+
 	/**
 	* Returns an ordered range of all the users who match the keywords and
 	* status, without using the indexer. It is preferable to use the indexed
