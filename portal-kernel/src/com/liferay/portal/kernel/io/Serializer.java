@@ -15,7 +15,7 @@
 package com.liferay.portal.kernel.io;
 
 import com.liferay.petra.lang.CentralizedThreadLocal;
-import com.liferay.portal.kernel.util.ClassLoaderPool;
+import com.liferay.petra.lang.ClassLoaderPool;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -420,8 +420,7 @@ public class Serializer {
 	 * <p>
 	 * The queue is small enough to simply use a linear scan search for
 	 * maintaining its order. The entire queue data is held by a {@link
-	 * SoftReference}, so when necessary, GC can release the whole
-	 * buffer cache.
+	 * SoftReference}, so when necessary, GC can release the whole buffer cache.
 	 * </p>
 	 */
 	protected static class BufferQueue {
