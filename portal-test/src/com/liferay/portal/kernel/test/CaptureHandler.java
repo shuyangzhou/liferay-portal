@@ -14,13 +14,14 @@
 
 package com.liferay.portal.kernel.test;
 
+import com.liferay.portal.kernel.util.StringBundler;
+
 import java.io.Closeable;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 /**
@@ -62,21 +63,35 @@ public class CaptureHandler extends Handler implements Closeable {
 		_logRecords.clear();
 	}
 
-	public List<LogRecord> getLogRecords() {
+	public List<java.util.logging.LogRecord> getLogRecords() {
 		return _logRecords;
 	}
 
 	@Override
-	public boolean isLoggable(LogRecord logRecord) {
+	public boolean isLoggable(java.util.logging.LogRecord logRecord) {
 		return false;
 	}
 
 	@Override
-	public void publish(LogRecord logRecord) {
-		_logRecords.add(logRecord);
+	public void publish(java.util.logging.LogRecord logRecord) {
+		LogRecord logWrapper = new LogRecord(
+			logRecord.getLevel(), logRecord.getMessage());
+
+		logWrapper.setLoggerName(logRecord.getLoggerName());
+		logWrapper.setMillis(logRecord.getMillis());
+		logWrapper.setParameters(logRecord.getParameters());
+		logWrapper.setResourceBundle(logRecord.getResourceBundle());
+		logWrapper.setResourceBundleName(logRecord.getResourceBundleName());
+		logWrapper.setSequenceNumber(logRecord.getSequenceNumber());
+		logWrapper.setSourceClassName(logRecord.getSourceClassName());
+		logWrapper.setSourceMethodName(logRecord.getSourceMethodName());
+		logWrapper.setThreadID(logRecord.getThreadID());
+		logWrapper.setThrown(logRecord.getThrown());
+
+		_logRecords.add(logWrapper);
 	}
 
-	public List<LogRecord> resetLogLevel(Level level) {
+	public List<java.util.logging.LogRecord> resetLogLevel(Level level) {
 		_logRecords.clear();
 
 		_logger.setLevel(level);
@@ -87,7 +102,47 @@ public class CaptureHandler extends Handler implements Closeable {
 	private final Handler[] _handlers;
 	private final Level _level;
 	private final Logger _logger;
-	private final List<LogRecord> _logRecords = new CopyOnWriteArrayList<>();
+	private final List<java.util.logging.LogRecord> _logRecords =
+		new CopyOnWriteArrayList<>();
 	private final boolean _useParentHandlers;
+
+	private static class LogRecord extends java.util.logging.LogRecord {
+
+		@Override
+		public String toString() {
+			StringBundler sb = new StringBundler();
+
+			sb.append('{');
+
+			Level level = getLevel();
+
+			if (level == null) {
+				sb.append("No Level Found");
+			}
+			else {
+				sb.append(level.toString());
+			}
+
+			sb.append(": ");
+
+			String message = getMessage();
+
+			if (message == null) {
+				sb.append("No Message Found");
+			}
+			else {
+				sb.append(message);
+			}
+
+			sb.append('}');
+
+			return sb.toString();
+		}
+
+		private LogRecord(Level level, String msg) {
+			super(level, msg);
+		}
+
+	}
 
 }
