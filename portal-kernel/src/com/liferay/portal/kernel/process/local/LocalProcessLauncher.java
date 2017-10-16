@@ -164,7 +164,7 @@ public class LocalProcessLauncher {
 			HeartbeatThread heartbeatThread = new HeartbeatThread(
 				message, interval, shutdownHook);
 
-			boolean value = _heartbeatThreadReference.compareAndSet(
+			boolean value = _heartbeatThreadAtomicReference.compareAndSet(
 				null, heartbeatThread);
 
 			if (value) {
@@ -176,7 +176,7 @@ public class LocalProcessLauncher {
 
 		public static void detach() throws InterruptedException {
 			HeartbeatThread heartbeatThread =
-				_heartbeatThreadReference.getAndSet(null);
+				_heartbeatThreadAtomicReference.getAndSet(null);
 
 			if (heartbeatThread != null) {
 				heartbeatThread.detach();
@@ -193,9 +193,10 @@ public class LocalProcessLauncher {
 		}
 
 		public static boolean isAttached() {
-			HeartbeatThread attachThread = _heartbeatThreadReference.get();
+			HeartbeatThread heartbeatThread =
+				_heartbeatThreadAtomicReference.get();
 
-			if (attachThread != null) {
+			if (heartbeatThread != null) {
 				return true;
 			}
 			else {
@@ -215,7 +216,7 @@ public class LocalProcessLauncher {
 		private static final ConcurrentMap<String, Object> _attributes =
 			new ConcurrentHashMap<>();
 		private static final AtomicReference<HeartbeatThread>
-			_heartbeatThreadReference = new AtomicReference<>();
+			_heartbeatThreadAtomicReference = new AtomicReference<>();
 		private static ProcessOutputStream _processOutputStream;
 
 	}
@@ -315,6 +316,11 @@ public class LocalProcessLauncher {
 						shutdownCode, shutdownThrowable);
 				}
 			}
+
+			AtomicReference<HeartbeatThread> heartBeatThreadReference =
+				ProcessContext._heartbeatThreadAtomicReference;
+
+			heartBeatThreadReference.compareAndSet(this, null);
 		}
 
 		private volatile boolean _detach;

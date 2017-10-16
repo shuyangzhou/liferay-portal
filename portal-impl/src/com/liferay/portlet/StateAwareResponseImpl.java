@@ -146,6 +146,10 @@ public abstract class StateAwareResponseImpl
 			throw new IllegalStateException();
 		}
 
+		if (portletMode == null) {
+			throw new IllegalArgumentException();
+		}
+
 		if (!portletRequestImpl.isPortletModeAllowed(portletMode)) {
 			throw new PortletModeException(portletMode.toString(), portletMode);
 		}
@@ -246,6 +250,10 @@ public abstract class StateAwareResponseImpl
 
 		if (_redirectLocation != null) {
 			throw new IllegalStateException();
+		}
+
+		if (windowState == null) {
+			throw new IllegalArgumentException();
 		}
 
 		if (!portletRequestImpl.isWindowStateAllowed(windowState)) {

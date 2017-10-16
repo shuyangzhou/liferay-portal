@@ -1093,7 +1093,8 @@ public interface PropsKeys {
 	public static final String INVOKER_FILTER_CHAIN_ENABLED = "invoker.filter.chain.cache.enabled";
 
 	/**
-	 * @deprecated As of 7.0.0, replaced with {@link #INVOKER_FILTER_CHAIN_ENABLED}
+	 * @deprecated As of 7.0.0, replaced with {@link
+	 *             #INVOKER_FILTER_CHAIN_ENABLED}
 	 */
 	@Deprecated
 	public static final String INVOKER_FILTER_CHAIN_SIZE = "invoker.filter.chain.cache.size";
@@ -1214,6 +1215,10 @@ public interface PropsKeys {
 
 	public static final String LAYOUT_PARALLEL_RENDER_ENABLE = "layout.parallel.render.enable";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String LAYOUT_PARALLEL_RENDER_THREAD_POOL_ALLOW_CORE_THREAD_TIMEOUT = "layout.parallel.render.thread.pool.allow.core.thread.timeout";
 
 	public static final String LAYOUT_PARALLEL_RENDER_THREAD_POOL_CORE_THREAD_COUNT = "layout.parallel.render.thread.pool.core.thread.count";
@@ -1493,7 +1498,8 @@ public interface PropsKeys {
 	public static final String MINIFIER_INLINE_CONTENT_CACHE_ENABLED = "minifier.inline.content.cache.enabled";
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #MINIFIER_INLINE_CONTENT_CACHE_ENABLED}
+	 * @deprecated As of 7.0.0, replaced by {@link
+	 *             #MINIFIER_INLINE_CONTENT_CACHE_ENABLED}
 	 */
 	@Deprecated
 	public static final String MINIFIER_INLINE_CONTENT_CACHE_SIZE = "minifier.inline.content.cache.size";
@@ -2642,6 +2648,10 @@ public interface PropsKeys {
 	public static final String WEBLOGIC_REQUEST_WRAP_NON_SERIALIZABLE = "weblogic.request.wrap.non.serializable";
 
 	public static final String WIDGET_SERVLET_MAPPING = "widget.servlet.mapping";
+
+	public static final String WORKFLOW_EMAIL_FROM_ADDRESS = "workflow.email.from.address";
+
+	public static final String WORKFLOW_EMAIL_FROM_NAME = "workflow.email.from.name";
 
 	public static final String XML_SECURITY_ENABLED = "xml.security.enabled";
 

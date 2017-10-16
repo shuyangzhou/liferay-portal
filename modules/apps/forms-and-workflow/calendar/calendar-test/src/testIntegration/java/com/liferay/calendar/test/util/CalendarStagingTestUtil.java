@@ -98,14 +98,15 @@ public class CalendarStagingTestUtil {
 		Map<String, String[]> parameters =
 			ExportImportConfigurationParameterMapFactory.buildParameterMap();
 
+		addStagingAttribute(parameters, PortletDataHandlerKeys.DELETIONS, true);
+		addStagingAttribute(
+			parameters, PortletDataHandlerKeys.PORTLET_CONFIGURATION_ALL,
+			false);
 		addStagingAttribute(
 			parameters,
 			PortletDataHandlerKeys.PORTLET_DATA + StringPool.UNDERLINE +
 				CalendarPortletKeys.CALENDAR,
 			enableCalendarStaging);
-		addStagingAttribute(
-			parameters, PortletDataHandlerKeys.PORTLET_CONFIGURATION_ALL,
-			false);
 		addStagingAttribute(
 			parameters, PortletDataHandlerKeys.PORTLET_DATA_ALL, false);
 		addStagingAttribute(
