@@ -100,6 +100,22 @@ public class SerializableObjectWrapper implements Externalizable {
 
 				return true;
 			}
+
+			Serializable serializable1 = lazySerializable1.getSerializable();
+
+			if (serializable1 == null) {
+				return false;
+			}
+
+			_serializable = serializable1;
+
+			Serializable serializable2 = lazySerializable2.getSerializable();
+
+			if (serializable2 == null) {
+				return false;
+			}
+
+			serializableWrapper._serializable = serializable2;
 		}
 
 		if (_serializable instanceof LazySerializable) {
