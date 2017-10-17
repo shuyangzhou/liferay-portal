@@ -17,7 +17,7 @@ package com.liferay.dynamic.data.mapping.form.builder.internal.converter.seriali
 import com.liferay.dynamic.data.mapping.form.builder.internal.converter.model.action.CalculateDDMFormRuleAction;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
-import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Map;
