@@ -15,28 +15,24 @@
 package com.liferay.fragment.web.internal.portlet.action;
 
 import com.liferay.fragment.constants.FragmentPortletKeys;
-import com.liferay.fragment.exception.DuplicateFragmentEntryException;
-import com.liferay.fragment.exception.FragmentEntryNameException;
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.service.FragmentEntryService;
+import com.liferay.fragment.web.internal.handler.FragmentEntryExceptionRequestHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
+import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.ResourceBundleLoader;
-import com.liferay.portal.kernel.util.WebKeys;
-
-import java.util.ResourceBundle;
+import com.liferay.portal.kernel.util.Portal;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletURL;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -79,50 +75,46 @@ public class AddFragmentEntryMVCActionCommand extends BaseMVCActionCommand {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 			jsonObject.put(
-				"fragmentEntryId", fragmentEntry.getFragmentEntryId());
+				"redirectURL", getRedirectURL(actionResponse, fragmentEntry));
 
 			JSONPortletResponseUtil.writeJSON(
 				actionRequest, actionResponse, jsonObject);
 		}
 		catch (PortalException pe) {
-			handlePortalException(actionRequest, actionResponse, pe);
+			hideDefaultSuccessMessage(actionRequest);
+
+			_fragmentEntryExceptionRequestHandler.handlePortalException(
+				actionRequest, actionResponse, pe);
 		}
 	}
 
-	protected void handlePortalException(
-			ActionRequest actionRequest, ActionResponse actionResponse,
-			PortalException pe)
-		throws Exception {
+	protected String getRedirectURL(
+		ActionResponse actionResponse, FragmentEntry fragmentEntry) {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
+		LiferayPortletResponse liferayPortletResponse =
+			_portal.getLiferayPortletResponse(actionResponse);
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		PortletURL portletURL = liferayPortletResponse.createRenderURL();
 
-		String errorMessage = "an-unexpected-error-occurred";
+		portletURL.setParameter("mvcPath", "/edit_fragment_entry.jsp");
+		portletURL.setParameter(
+			"fragmentCollectionId",
+			String.valueOf(fragmentEntry.getFragmentCollectionId()));
+		portletURL.setParameter(
+			"fragmentEntryId",
+			String.valueOf(fragmentEntry.getFragmentEntryId()));
 
-		if (pe instanceof DuplicateFragmentEntryException) {
-			errorMessage = "a-fragment-entry-with-that-name-already-exists";
-		}
-		else if (pe instanceof FragmentEntryNameException) {
-			errorMessage = "this-field-is-required";
-		}
-
-		ResourceBundle resourceBundle =
-			_resourceBundleLoader.loadResourceBundle(themeDisplay.getLocale());
-
-		jsonObject.put("error", LanguageUtil.get(resourceBundle, errorMessage));
-
-		JSONPortletResponseUtil.writeJSON(
-			actionRequest, actionResponse, jsonObject);
+		return portletURL.toString();
 	}
+
+	@Reference
+	private FragmentEntryExceptionRequestHandler
+		_fragmentEntryExceptionRequestHandler;
 
 	@Reference
 	private FragmentEntryService _fragmentEntryService;
 
-	@Reference(
-		target = "(bundle.symbolic.name=com.liferay.fragment.web)", unbind = "-"
-	)
-	private ResourceBundleLoader _resourceBundleLoader;
+	@Reference
+	private Portal _portal;
 
 }
