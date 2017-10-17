@@ -1,0 +1,13 @@
+Bundle-Name: Liferay Captcha Web
+Bundle-SymbolicName: com.liferay.captcha.impl
+Bundle-Version: 1.2.0
+Export-Package:\
+	com.liferay.captcha.configuration,\
+	com.liferay.captcha.recaptcha,\
+	com.liferay.captcha.simplecaptcha,\
+	com.liferay.captcha.util
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title:
+-includeresource:\
+	@../../../../../lib/portal/jhlabs-filters.jar,\
+	@nl.captcha.simplecaptcha-[0-9]*.jar
