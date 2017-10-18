@@ -78,8 +78,6 @@ public class GoogleDocsConfigurator {
 	@Reference(unbind = "-")
 	protected void setDDMStructureVersionLocalService(
 		DDMStructureVersionLocalService ddmStructureVersionLocalService) {
-
-		_ddmStructureVersionLocalService = ddmStructureVersionLocalService;
 	}
 
 	@Reference(
@@ -117,8 +115,6 @@ public class GoogleDocsConfigurator {
 
 	@Reference
 	private DDMStructureLocalService _ddmStructureLocalService;
-
-	private DDMStructureVersionLocalService _ddmStructureVersionLocalService;
 
 	@Reference
 	private DLFileEntryTypeLocalService _dlFileEntryTypeLocalService;
