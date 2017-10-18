@@ -14,8 +14,8 @@
 
 package com.liferay.portal.service.test;
 
+import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
-import com.liferay.portal.kernel.executor.PortalExecutorManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseDestination;
@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.impl.PortletImpl;
 import com.liferay.portal.repository.liferayrepository.LiferayRepository;
 import com.liferay.portal.tools.DBUpgrader;
@@ -65,6 +66,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
@@ -318,8 +320,9 @@ public class ServiceTestUtil {
 		Registry registry = RegistryUtil.getRegistry();
 
 		return registry.getFilter(
-			"(&(destination.name=" + destinationName + ")(objectClass=" +
-				Destination.class.getName() + "))");
+			StringBundler.concat(
+				"(&(destination.name=", destinationName, ")(objectClass=",
+				Destination.class.getName(), "))"));
 	}
 
 	private static void _replaceWithSynchronousDestination(String name) {
@@ -335,19 +338,19 @@ public class ServiceTestUtil {
 
 		Registry registry = RegistryUtil.getRegistry();
 
-		ThreadPoolExecutor threadPoolExecutor = registry.callService(
+		ExecutorService executorService = registry.callService(
 			PortalExecutorManager.class,
 			portalExecutorManager -> portalExecutorManager.getPortalExecutor(
 				oldDestination.getName(), false));
 
-		if (threadPoolExecutor == null) {
+		if (executorService == null) {
 			return;
 		}
 
-		threadPoolExecutor.shutdown();
+		executorService.shutdown();
 
 		try {
-			if (!threadPoolExecutor.awaitTermination(
+			if (!executorService.awaitTermination(
 					TestPropsValues.CI_TEST_TIMEOUT_TIME,
 					TimeUnit.MILLISECONDS)) {
 
@@ -419,7 +422,7 @@ public class ServiceTestUtil {
 
 			Map<String, ThreadPoolExecutor> threadPoolExecutors =
 				ReflectionTestUtil.getFieldValue(
-					_portalExecutorManager, "_threadPoolExecutors");
+					_portalExecutorManager, "_executorServices");
 
 			for (Map.Entry<String, ThreadPoolExecutor> entry :
 					threadPoolExecutors.entrySet()) {
