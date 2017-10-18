@@ -14,7 +14,6 @@
 
 package com.liferay.document.library.google.docs.internal.configuration.configurator;
 
-import com.liferay.document.library.ddm.DLFileEntryMetadataDDMPermissionSupport;
 import com.liferay.document.library.google.docs.internal.util.GoogleDocsDLFileEntryTypeHelper;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService;
 import com.liferay.dynamic.data.mapping.io.DDMFormXSDDeserializer;
@@ -22,6 +21,7 @@ import com.liferay.dynamic.data.mapping.kernel.DDMStructureLinkManager;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureVersionLocalService;
 import com.liferay.dynamic.data.mapping.util.DDM;
+import com.liferay.dynamic.data.mapping.util.DDMStructurePermissionSupport;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
@@ -115,10 +115,12 @@ public class GoogleDocsConfigurator {
 		_ddmStructureVersionLocalService = ddmStructureVersionLocalService;
 	}
 
-	@Reference(unbind = "-")
+	@Reference(
+		target = "(model.class.name=com.liferay.document.library.kernel.model.DLFileEntryMetadata)",
+		unbind = "-"
+	)
 	protected void setDLFileEntryMetadataDDMPermissionSupport(
-		DLFileEntryMetadataDDMPermissionSupport
-			dlFileEntryMetadataDDMPermissionSupport) {
+		DDMStructurePermissionSupport ddmStructurePermissionSupport) {
 	}
 
 	@Reference(unbind = "-")
@@ -131,6 +133,14 @@ public class GoogleDocsConfigurator {
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
+	}
+
+	@Reference(
+		target = "(model.class.name=com.liferay.document.library.kernel.util.RawMetadataProcessor)",
+		unbind = "-"
+	)
+	protected void setRawMetadataProcessorDDMPermissionSupport(
+		DDMStructurePermissionSupport ddmStructurePermissionSupport) {
 	}
 
 	@Reference(unbind = "-")
