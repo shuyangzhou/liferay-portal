@@ -28,9 +28,11 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
+ * @deprecated As of 2.0.0
  * @author Adolfo Pérez
  */
 @Component(immediate = true, service = InviteMembersUserHelper.class)
+@Deprecated
 public class InviteMembersUserHelper {
 
 	public List<User> getAvailableUsers(
