@@ -14,7 +14,7 @@
 
 package com.liferay.portal.osgi.util.test;
 
-import com.liferay.portal.kernel.util.UnsafeFunction;
+import com.liferay.petra.function.UnsafeFunction;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -23,6 +23,22 @@ import org.osgi.framework.ServiceReference;
  * @author Shuyang Zhou
  */
 public class OSGiServiceUtil {
+
+	/**
+	 * @deprecated As of 3.3.0, replaced by {@link #callService(BundleContext,
+	 *             Class, UnsafeFunction)}
+	 */
+	@Deprecated
+	public static <S, R, E extends Throwable> R callService(
+			BundleContext bundleContext, Class<S> serviceClass,
+			com.liferay.portal.kernel.util.UnsafeFunction<S, R, E>
+				unsafeFunction)
+		throws E {
+
+		return callService(
+			bundleContext, serviceClass,
+			(UnsafeFunction<S, R, E>)unsafeFunction::apply);
+	}
 
 	public static <S, R, E extends Throwable> R callService(
 			BundleContext bundleContext, Class<S> serviceClass,
