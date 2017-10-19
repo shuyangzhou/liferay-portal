@@ -160,15 +160,20 @@ public abstract class BasePreferencesImpl implements Serializable {
 		Preference preference = modifiedPreferences.get(key);
 
 		if (preference == null) {
-			preference = new Preference(key, value);
+			if (value != null) {
+				preference = new Preference(key, value);
 
-			modifiedPreferences.put(key, preference);
+				modifiedPreferences.put(key, preference);
+			}
 
 			return;
 		}
 
 		if (preference.isReadOnly()) {
 			throw new ReadOnlyException(key);
+		}
+		else if (value == null) {
+			modifiedPreferences.remove(key);
 		}
 		else {
 			preference = (Preference)preference.clone();
@@ -193,15 +198,20 @@ public abstract class BasePreferencesImpl implements Serializable {
 		Preference preference = modifiedPreferences.get(key);
 
 		if (preference == null) {
-			preference = new Preference(key, values);
+			if (values != null) {
+				preference = new Preference(key, values);
 
-			modifiedPreferences.put(key, preference);
+				modifiedPreferences.put(key, preference);
+			}
 
 			return;
 		}
 
 		if (preference.isReadOnly()) {
 			throw new ReadOnlyException(key);
+		}
+		else if (values == null) {
+			modifiedPreferences.remove(key);
 		}
 		else {
 			preference = (Preference)preference.clone();
@@ -221,7 +231,7 @@ public abstract class BasePreferencesImpl implements Serializable {
 	public abstract void store() throws IOException, ValidatorException;
 
 	protected String getActualValue(String value) {
-		if ((value == null) || value.equals(_NULL_VALUE)) {
+		if (value == null) {
 			return null;
 		}
 		else {
@@ -281,7 +291,7 @@ public abstract class BasePreferencesImpl implements Serializable {
 
 	protected String getXMLSafeValue(String value) {
 		if (value == null) {
-			return _NULL_VALUE;
+			return null;
 		}
 		else {
 			return XMLUtil.toCompactSafe(value);
@@ -290,7 +300,7 @@ public abstract class BasePreferencesImpl implements Serializable {
 
 	protected String[] getXMLSafeValues(String[] values) {
 		if (values == null) {
-			return new String[] {_NULL_VALUE};
+			return null;
 		}
 
 		String[] xmlSafeValues = new String[values.length];
@@ -351,8 +361,6 @@ public abstract class BasePreferencesImpl implements Serializable {
 
 		return portletPreferencesElement.toXMLString();
 	}
-
-	private static final String _NULL_VALUE = "NULL_VALUE";
 
 	private Map<String, Preference> _modifiedPreferences;
 	private Map<String, Preference> _originalPreferences;
