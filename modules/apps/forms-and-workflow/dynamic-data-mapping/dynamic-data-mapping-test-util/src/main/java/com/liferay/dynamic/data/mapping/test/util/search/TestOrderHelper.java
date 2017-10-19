@@ -21,7 +21,7 @@ import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.DDMFormValuesReader;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.asset.test.util.AssetEntryQueryTestUtil;
-import com.liferay.asset.util.impl.AssetUtil;
+import com.liferay.asset.util.AssetHelper;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
@@ -37,6 +37,7 @@ import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMTemplateTestUtil;
 import com.liferay.dynamic.data.mapping.util.DDMBeanTranslatorUtil;
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
+import com.liferay.osgi.util.service.OSGiServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.Group;
@@ -58,6 +59,9 @@ import java.util.Map;
 import org.apache.commons.lang.ArrayUtils;
 
 import org.junit.Assert;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Preston Crary
@@ -219,7 +223,11 @@ public abstract class TestOrderHelper {
 
 		Hits hits = search(assetEntryQuery);
 
-		List<AssetEntry> assetEntries = AssetUtil.getAssetEntries(hits);
+		Bundle bundle = FrameworkUtil.getBundle(TestOrderHelper.class);
+
+		List<AssetEntry> assetEntries = OSGiServiceUtil.callService(
+			bundle.getBundleContext(), AssetHelper.class,
+			assetHelper -> assetHelper.getAssetEntries(hits));
 
 		Assert.assertEquals(
 			ArrayUtils.toString(_sortedValues),
@@ -310,9 +318,13 @@ public abstract class TestOrderHelper {
 
 		searchContext.setGroupIds(assetEntryQuery.getGroupIds());
 
-		return AssetUtil.search(
-			searchContext, assetEntryQuery, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS);
+		Bundle bundle = FrameworkUtil.getBundle(TestOrderHelper.class);
+
+		return OSGiServiceUtil.callService(
+			bundle.getBundleContext(), AssetHelper.class,
+			assetHelper -> assetHelper.search(
+				searchContext, assetEntryQuery, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS));
 	}
 
 	protected void setDDMFormFieldOptions(DDMForm ddmForm) {
