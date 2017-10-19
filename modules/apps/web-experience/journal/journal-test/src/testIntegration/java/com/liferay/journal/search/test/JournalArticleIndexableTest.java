@@ -17,11 +17,12 @@ package com.liferay.journal.search.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.asset.test.util.AssetEntryQueryTestUtil;
-import com.liferay.asset.util.impl.AssetUtil;
+import com.liferay.asset.util.AssetHelper;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFolderConstants;
 import com.liferay.journal.test.util.JournalTestUtil;
+import com.liferay.osgi.util.service.OSGiServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.search.Hits;
@@ -42,10 +43,15 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Carlos Sierra
@@ -60,6 +66,14 @@ public class JournalArticleIndexableTest {
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
 			SynchronousDestinationTestRule.INSTANCE);
+
+	@BeforeClass
+	public static void setUpClass() {
+		Bundle bundle = FrameworkUtil.getBundle(
+			JournalArticleIndexableTest.class);
+
+		_bundleContext = bundle.getBundleContext();
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -124,12 +138,16 @@ public class JournalArticleIndexableTest {
 			SearchContext searchContext)
 		throws Exception {
 
-		Hits hits = AssetUtil.search(
-			searchContext, assetEntryQuery, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS);
+		Hits hits = OSGiServiceUtil.callService(
+			_bundleContext, AssetHelper.class,
+			assetHelper -> assetHelper.search(
+				searchContext, assetEntryQuery, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS));
 
 		Assert.assertEquals(hits.toString(), expectedCount, hits.getLength());
 	}
+
+	private static BundleContext _bundleContext;
 
 	@DeleteAfterTestRun
 	private Group _group;
