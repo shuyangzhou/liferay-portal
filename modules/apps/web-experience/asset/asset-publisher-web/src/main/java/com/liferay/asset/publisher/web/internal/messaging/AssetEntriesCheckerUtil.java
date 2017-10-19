@@ -22,7 +22,7 @@ import com.liferay.asset.publisher.web.configuration.AssetPublisherWebConfigurat
 import com.liferay.asset.publisher.web.constants.AssetPublisherPortletKeys;
 import com.liferay.asset.publisher.web.internal.util.AssetPublisherWebUtil;
 import com.liferay.asset.publisher.web.util.AssetPublisherUtil;
-import com.liferay.asset.util.impl.AssetUtil;
+import com.liferay.asset.util.AssetHelper;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
@@ -70,6 +70,8 @@ import java.util.Map;
 import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -387,8 +389,11 @@ public class AssetEntriesCheckerUtil {
 				LocaleThreadLocal.getSiteDefaultLocale(), layout.getGroupId(),
 				TimeZoneThreadLocal.getDefaultTimeZone(), 0);
 
+			Bundle bundle = FrameworkUtil.getBundle(
+				AssetEntriesCheckerUtil.class);
+
 			BaseModelSearchResult<AssetEntry> baseModelSearchResult =
-				AssetUtil.searchAssetEntries(
+				_assetHelper.searchAssetEntries(
 					searchContext, assetEntryQuery, 0,
 					assetPublisherWebConfiguration.dynamicSubscriptionLimit());
 
@@ -426,6 +431,9 @@ public class AssetEntriesCheckerUtil {
 		};
 
 	private static UserLocalService _userLocalService;
+
+	@Reference
+	private AssetHelper _assetHelper;
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;

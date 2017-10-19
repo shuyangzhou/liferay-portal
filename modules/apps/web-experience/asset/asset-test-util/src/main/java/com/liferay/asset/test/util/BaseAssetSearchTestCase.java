@@ -22,7 +22,8 @@ import com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetTagLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
-import com.liferay.asset.util.impl.AssetUtil;
+import com.liferay.asset.util.AssetHelper;
+import com.liferay.osgi.util.service.OSGiServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.Group;
@@ -68,6 +69,10 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Eudaldo Alonso
@@ -1279,11 +1284,19 @@ public abstract class BaseAssetSearchTestCase {
 			AssetEntryQuery assetEntryQuery, SearchContext searchContext)
 		throws Exception {
 
-		Hits results = AssetUtil.search(
-			searchContext, assetEntryQuery, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS);
+		Bundle bundle = FrameworkUtil.getBundle(BaseAssetSearchTestCase.class);
 
-		return AssetUtil.getAssetEntries(results);
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		Hits results = OSGiServiceUtil.callService(
+			bundleContext, AssetHelper.class,
+			assetHelper -> assetHelper.search(
+				searchContext, assetEntryQuery, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS));
+
+		return OSGiServiceUtil.callService(
+			bundleContext, AssetHelper.class,
+			assetHelper -> assetHelper.getAssetEntries(results));
 	}
 
 	protected int searchCount(
@@ -1291,8 +1304,12 @@ public abstract class BaseAssetSearchTestCase {
 			int start, int end)
 		throws Exception {
 
-		Hits results = AssetUtil.search(
-			searchContext, assetEntryQuery, start, end);
+		Bundle bundle = FrameworkUtil.getBundle(BaseAssetSearchTestCase.class);
+
+		Hits results = OSGiServiceUtil.callService(
+			bundle.getBundleContext(), AssetHelper.class,
+			assetHelper -> assetHelper.search(
+				searchContext, assetEntryQuery, start, end));
 
 		return results.getLength();
 	}

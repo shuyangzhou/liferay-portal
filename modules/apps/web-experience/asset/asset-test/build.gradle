@@ -16,9 +16,11 @@ dependencies {
 	testIntegrationCompile group: "com.liferay", name: "com.liferay.journal.api", version: "2.0.0"
 	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
 	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
+	testIntegrationCompile group: "org.osgi", name: "org.osgi.core", version: "5.0.0"
 	testIntegrationCompile project(":apps:collaboration:blogs:blogs-api")
 	testIntegrationCompile project(":apps:foundation:portal-search:portal-search-test-util")
-	testIntegrationCompile project(":apps:web-experience:asset:asset-service")
+	testIntegrationCompile project(":apps:static:osgi:osgi-util")
+	testIntegrationCompile project(":apps:web-experience:asset:asset-api")
 	testIntegrationCompile project(":apps:web-experience:asset:asset-test-util")
 	testIntegrationCompile project(":apps:web-experience:export-import:export-import-test-util")
 }
