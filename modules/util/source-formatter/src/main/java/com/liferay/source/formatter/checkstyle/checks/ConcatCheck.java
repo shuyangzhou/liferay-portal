@@ -153,7 +153,14 @@ public class ConcatCheck extends BaseCheck {
 		String fileName = StringUtil.replace(
 			fileContents.getFileName(), '\\', '/');
 
-		if (!fileName.contains("/portal-kernel/")) {
+		if (!fileName.contains("/portal-impl/") &&
+			!fileName.contains("/portal-kernel/") &&
+			!fileName.contains("/portal-test/") &&
+			!fileName.contains("/portal-test-integration/") &&
+			!fileName.contains("/util-bridges/") &&
+			!fileName.contains("/util-java/") &&
+			!fileName.contains("/util-taglib/")) {
+
 			return;
 		}
 

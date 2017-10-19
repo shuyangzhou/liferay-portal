@@ -20,6 +20,7 @@ import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.document.library.kernel.util.VideoProcessor;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.petra.log4j.Log4JUtil;
 import com.liferay.portal.fabric.InputResource;
 import com.liferay.portal.fabric.OutputResource;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -51,7 +52,6 @@ import com.liferay.portal.log.Log4jLogFactoryImpl;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileVersion;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.util.log4j.Log4JUtil;
 
 import java.awt.image.RenderedImage;
 
@@ -381,9 +381,10 @@ public class VideoProcessorImpl
 			catch (CancellationException ce) {
 				if (_log.isInfoEnabled()) {
 					_log.info(
-						"Cancellation received for " +
-							fileVersion.getFileVersionId() + " " +
-								fileVersion.getTitle());
+						StringBundler.concat(
+							"Cancellation received for ",
+							String.valueOf(fileVersion.getFileVersionId()), " ",
+							fileVersion.getTitle()));
 				}
 			}
 			catch (Exception e) {
@@ -394,9 +395,10 @@ public class VideoProcessorImpl
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Xuggler generated a thumbnail for " +
-						fileVersion.getTitle() + " in " + stopWatch.getTime() +
-							" ms");
+					StringBundler.concat(
+						"Xuggler generated a thumbnail for ",
+						fileVersion.getTitle(), " in ",
+						String.valueOf(stopWatch.getTime()), " ms"));
 			}
 		}
 		catch (Exception e) {
@@ -565,9 +567,10 @@ public class VideoProcessorImpl
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				"Xuggler generated a " + containerType + " preview video for " +
-					fileVersion.getTitle() + " in " + stopWatch.getTime() +
-						" ms");
+				StringBundler.concat(
+					"Xuggler generated a ", containerType,
+					" preview video for ", fileVersion.getTitle(), " in ",
+					String.valueOf(stopWatch.getTime()), " ms"));
 		}
 	}
 
@@ -584,9 +587,10 @@ public class VideoProcessorImpl
 		catch (CancellationException ce) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Cancellation received for " +
-						fileVersion.getFileVersionId() + " " +
-							fileVersion.getTitle());
+					StringBundler.concat(
+						"Cancellation received for ",
+						String.valueOf(fileVersion.getFileVersionId()), " ",
+						fileVersion.getTitle()));
 			}
 		}
 		catch (Exception e) {

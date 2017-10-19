@@ -6,8 +6,8 @@ apply plugin: "de.undercouch.download"
 apply plugin: "org.ysb33r.gradletest"
 
 task copyDistBundleZipPluginsSdk(type: Copy)
-task downloadPluginsSdk(type: Download)
 task copyGradleTestDependencies(type: Copy)
+task downloadPluginsSdk(type: Download)
 
 String bundleUrl = "https://cdn.lfrs.sl/releases.liferay.com/portal/7.0.3-ga4/liferay-ce-portal-tomcat-7.0-ga4-20170613175008905.zip"
 String pluginsSdkUrl = "https://cdn.lfrs.sl/releases.liferay.com/portal/7.0.3-ga4/com.liferay.portal.plugins.sdk-1.0.11-20170613175008905.zip"
@@ -40,7 +40,7 @@ copyGradleTestDependencies {
 }
 
 dependencies {
-	compile group: "com.liferay", name: "com.liferay.gradle.plugins", version: "3.5.10"
+	compile group: "com.liferay", name: "com.liferay.gradle.plugins", version: "3.5.14"
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.poshi.runner", version: "1.0.12"
 	compile group: "com.liferay", name: "com.liferay.portal.tools.bundle.support", version: "3.2.0"
 	compile group: "de.undercouch", name: "gradle-download-task", version: "3.2.0"

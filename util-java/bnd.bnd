@@ -1,10 +1,10 @@
 Bundle-Name: ${manifest.bundle.name}
 Bundle-SymbolicName: ${manifest.bundle.symbolic.name}
-Bundle-Version: 2.3.0
+Bundle-Version: 2.3.1
 Export-Package: com.liferay.util.*
 Import-Package:\
 	com.liferay.*,\
 	\
 	*;resolution:=optional
 Include-Resource: classes
--baseline: *;file=${project.dir}/.bnd/ant-baseline-cache/com.liferay.util.java-2.2.2.jar
+-baseline: *;file=${project.dir}/.bnd/ant-baseline-cache/com.liferay.util.java-2.3.0.jar

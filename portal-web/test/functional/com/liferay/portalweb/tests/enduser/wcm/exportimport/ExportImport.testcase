@@ -615,7 +615,7 @@
 
 		<execute macro="Page#changeCurrentTheme">
 			<var name="page" value="Public Pages" />
-			<var name="themeName" value="London" />
+			<var name="themeName" value="1975 London" />
 		</execute>
 
 		<execute macro="LAR#configureExportSiteCP">
@@ -660,7 +660,7 @@
 
 		<execute macro="Page#viewCurrentTheme">
 			<var name="page" value="Public Pages" />
-			<var name="themeName" value="London" />
+			<var name="themeName" value="1975 London" />
 		</execute>
 	</command>
 
@@ -708,7 +708,9 @@
 			<var name="entryTitle" value="Blogs Entry Title" />
 		</execute>
 
-		<execute function="Click#pauseClickAt" locator1="AlloyEditor#CONTENT_FIELD" />
+		<execute function="Click#pauseClickAt" locator1="AlloyEditor#EDITOR">
+			<var name="key_editor" value="content" />
+		</execute>
 
 		<execute function="Click" locator1="AlloyEditor#CONTENT_ADD_BUTTON" />
 

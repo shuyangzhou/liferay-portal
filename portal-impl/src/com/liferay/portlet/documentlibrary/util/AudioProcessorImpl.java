@@ -20,6 +20,7 @@ import com.liferay.document.library.kernel.util.AudioProcessor;
 import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.petra.log4j.Log4JUtil;
 import com.liferay.portal.fabric.InputResource;
 import com.liferay.portal.fabric.OutputResource;
 import com.liferay.portal.kernel.log.Log;
@@ -46,7 +47,6 @@ import com.liferay.portal.log.Log4jLogFactoryImpl;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileVersion;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.util.log4j.Log4JUtil;
 
 import java.io.File;
 import java.io.InputStream;
@@ -395,9 +395,10 @@ public class AudioProcessorImpl
 		catch (CancellationException ce) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Cancellation received for " +
-						fileVersion.getFileVersionId() + " " +
-							fileVersion.getTitle());
+					StringBundler.concat(
+						"Cancellation received for ",
+						String.valueOf(fileVersion.getFileVersionId()), " ",
+						fileVersion.getTitle()));
 			}
 		}
 		catch (Exception e) {
@@ -410,9 +411,11 @@ public class AudioProcessorImpl
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				"Xuggler generated a " + containerType + " preview audio for " +
-					fileVersion.getFileVersionId() + " in " +
-						stopWatch.getTime() + "ms");
+				StringBundler.concat(
+					"Xuggler generated a ", containerType,
+					" preview audio for ",
+					String.valueOf(fileVersion.getFileVersionId()), " in ",
+					String.valueOf(stopWatch.getTime()), "ms"));
 		}
 	}
 
