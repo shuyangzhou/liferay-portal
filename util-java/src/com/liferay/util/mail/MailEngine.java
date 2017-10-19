@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -71,7 +72,10 @@ import javax.mail.internet.MimeMultipart;
  * @author Thiago Moreira
  * @author Brett Swaim
  * @see    com.liferay.petra.mail.MailEngine
+ * @deprecated As of 7.0.0, replaced by {@link
+ *             com.liferay.petra.mail.MailEngine}
  */
+@Deprecated
 public class MailEngine {
 
 	public static Session getSession() {
@@ -222,8 +226,10 @@ public class MailEngine {
 					}
 
 					_log.debug(
-						"Attachment " + i + " file " + file.getAbsolutePath() +
-							" and file name " + fileAttachment.getFileName());
+						StringBundler.concat(
+							"Attachment ", String.valueOf(i), " file ",
+							file.getAbsolutePath(), " and file name ",
+							fileAttachment.getFileName()));
 				}
 			}
 		}

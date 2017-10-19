@@ -2643,6 +2643,28 @@ to version 2.3.4.
 - [LPS-75273]: Update the [Liferay Gradle Plugins WSDL Builder] dependency to
 version 2.0.1.
 
+## 3.5.11 - 2017-10-17
+
+### Changed
+- [LPS-75100]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.5.
+- [LPS-75100]: Update the [Liferay Source Formatter] dependency to version
+1.0.476.
+
+## 3.5.12 - 2017-10-17
+
+### Changed
+- [LPS-75100]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.6.
+- [LPS-75100]: Update the [Liferay Source Formatter] dependency to version
+1.0.477.
+
+## 3.5.13 - 2017-10-17
+
+### Changed
+- [LPS-75239]: Update the [Liferay Gradle Plugins Test Integration] dependency
+to version 2.2.0.
+
 [Gradle Bundle Plugin]: https://github.com/TomDmitriev/gradle-bundle-plugin
 [Liferay Alloy Taglib]: https://github.com/liferay/alloy-taglibs
 [Liferay Ant BND]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/ant-bnd
@@ -2877,9 +2899,11 @@ version 2.0.1.
 [LPS-75009]: https://issues.liferay.com/browse/LPS-75009
 [LPS-75047]: https://issues.liferay.com/browse/LPS-75047
 [LPS-75096]: https://issues.liferay.com/browse/LPS-75096
+[LPS-75100]: https://issues.liferay.com/browse/LPS-75100
 [LPS-75164]: https://issues.liferay.com/browse/LPS-75164
 [LPS-75175]: https://issues.liferay.com/browse/LPS-75175
 [LPS-75238]: https://issues.liferay.com/browse/LPS-75238
+[LPS-75239]: https://issues.liferay.com/browse/LPS-75239
 [LPS-75254]: https://issues.liferay.com/browse/LPS-75254
 [LPS-75273]: https://issues.liferay.com/browse/LPS-75273
 [LRDOCS-3023]: https://issues.liferay.com/browse/LRDOCS-3023
