@@ -21,8 +21,9 @@ import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.asset.test.util.AssetTestUtil;
-import com.liferay.asset.util.impl.AssetUtil;
+import com.liferay.asset.util.AssetHelper;
 import com.liferay.blogs.service.BlogsEntryLocalServiceUtil;
+import com.liferay.osgi.util.service.OSGiServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
@@ -53,6 +54,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+
 /**
  * @author Eduardo Garcia
  */
@@ -79,6 +84,10 @@ public class AssetUtilTest {
 			_group.getGroupId(), _assetVocabulary.getVocabularyId());
 
 		_assetTag = AssetTestUtil.addTag(_group.getGroupId());
+
+		Bundle bundle = FrameworkUtil.getBundle(AssetUtilTest.class);
+
+		_bundleContext = bundle.getBundleContext();
 	}
 
 	@Test
@@ -122,10 +131,13 @@ public class AssetUtilTest {
 		throws Exception {
 
 		BaseModelSearchResult<AssetEntry> baseModelSearchResult =
-			AssetUtil.searchAssetEntries(
-				assetEntryQuery, assetCategoryIds, assetTagNames, attributes,
-				companyId, keywords, layout, locale, scopeGroupId, timezone,
-				userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+			OSGiServiceUtil.callService(
+				_bundleContext, AssetHelper.class,
+				assetHelper -> assetHelper.searchAssetEntries(
+					assetEntryQuery, assetCategoryIds, assetTagNames,
+					attributes, companyId, keywords, layout, locale,
+					scopeGroupId, timezone, userId, QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS));
 
 		Assert.assertEquals(
 			baseModelSearchResult.toString(), expectedCount,
@@ -135,6 +147,7 @@ public class AssetUtilTest {
 	private AssetCategory _assetCategory;
 	private AssetTag _assetTag;
 	private AssetVocabulary _assetVocabulary;
+	private BundleContext _bundleContext;
 
 	@DeleteAfterTestRun
 	private Group _group;
