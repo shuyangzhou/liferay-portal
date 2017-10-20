@@ -37,7 +37,8 @@ public class AMException extends PortalException {
 	}
 
 	/**
-	 * This exception is raised when a requested media type or instance is not found.
+	 * This exception is raised when a requested media type or instance is not
+	 * found.
 	 */
 	public static final class AMNotFound extends AMException {
 

@@ -30,10 +30,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 public interface AMImageConfiguration {
 
 	/**
-	 * Set the mime types that will trigger the creation of adaptive media
-	 * images.
-	 *
-	 * @review
+	 * Sets the supported mime types that generate adaptive media images.
 	 */
 	@Meta.AD(
 		deflt = "image/bmp|image/gif|image/jpeg|image/pjpeg|image/png|image/tiff|image/x-citrix-jpeg|image/x-citrix-png|image/x-ms-bmp|image/x-png|image/x-tiff",

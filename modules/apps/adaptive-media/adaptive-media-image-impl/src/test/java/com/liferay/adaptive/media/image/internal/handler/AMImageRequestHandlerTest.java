@@ -63,8 +63,6 @@ public class AMImageRequestHandlerTest {
 
 	@Before
 	public void setUp() throws PortalException {
-		_fileVersion = _getFileVersion();
-
 		Mockito.doReturn(
 			_amAsyncProcessor
 		).when(
@@ -75,10 +73,12 @@ public class AMImageRequestHandlerTest {
 
 		_amImageRequestHandler.setAMAsyncProcessorLocator(
 			_amAsyncProcessorLocator);
-		_amImageRequestHandler.setAMImageFinder(_amImageFinder);
-		_amImageRequestHandler.setPathInterpreter(_pathInterpreter);
 		_amImageRequestHandler.setAMImageConfigurationHelper(
 			_amImageConfigurationHelper);
+		_amImageRequestHandler.setAMImageFinder(_amImageFinder);
+		_amImageRequestHandler.setPathInterpreter(_pathInterpreter);
+
+		_fileVersion = _getFileVersion();
 	}
 
 	@Test(expected = AMRuntimeException.class)
@@ -321,10 +321,10 @@ public class AMImageRequestHandlerTest {
 			amImageConfigurationEntry.getProperties();
 
 		properties.put(
-			AMImageAttribute.IMAGE_WIDTH.getName(),
+			AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH.getName(),
 			configurationEntryProperties.get("max-width"));
 		properties.put(
-			AMImageAttribute.IMAGE_HEIGHT.getName(),
+			AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT.getName(),
 			configurationEntryProperties.get("max-height"));
 
 		return new AMImage(
@@ -450,10 +450,10 @@ public class AMImageRequestHandlerTest {
 						amImageQueryBuilderImpl.getAMAttributes();
 
 				Object queryBuilderWidth = amAttributes.get(
-					AMImageAttribute.IMAGE_WIDTH);
+					AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH);
 
 				Object queryBuilderHeight = amAttributes.get(
-					AMImageAttribute.IMAGE_HEIGHT);
+					AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT);
 
 				Map<String, String> properties =
 					amImageConfigurationEntry.getProperties();

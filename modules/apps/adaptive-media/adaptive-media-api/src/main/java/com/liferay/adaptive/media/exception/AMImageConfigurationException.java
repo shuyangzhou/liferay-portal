@@ -37,7 +37,8 @@ public class AMImageConfigurationException extends PortalException {
 	}
 
 	/**
-	 * This exception is raised when a configuration with the same name already exists.
+	 * This exception is raised when a configuration with the same name already
+	 * exists.
 	 */
 	public static final class DuplicateAMImageConfigurationNameException
 		extends AMImageConfigurationException {
@@ -62,7 +63,8 @@ public class AMImageConfigurationException extends PortalException {
 	}
 
 	/**
-	 * This exception is raised when a configuration with the same uuid already exists.
+	 * This exception is raised when a configuration with the same uuid already
+	 * exists.
 	 */
 	public static final class DuplicateAMImageConfigurationUuidException
 		extends AMImageConfigurationException {

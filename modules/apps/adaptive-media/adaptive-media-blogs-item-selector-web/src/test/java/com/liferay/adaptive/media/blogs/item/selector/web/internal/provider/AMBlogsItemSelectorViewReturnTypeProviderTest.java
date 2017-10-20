@@ -39,12 +39,12 @@ public class AMBlogsItemSelectorViewReturnTypeProviderTest
 	public void testAddAMImageURLItemSelectorReturnTypeWithEmptyList()
 		throws Exception {
 
-		List<ItemSelectorReturnType> supportedItemSelectorReturnTypes =
-			new ArrayList<>();
-
 		ItemSelectorViewReturnTypeProvider
 			amBlogsItemSelectorViewReturnTypeProvider =
 				new AMBlogsItemSelectorViewReturnTypeProvider();
+
+		List<ItemSelectorReturnType> supportedItemSelectorReturnTypes =
+			new ArrayList<>();
 
 		List<ItemSelectorReturnType> itemSelectorReturnTypes =
 			amBlogsItemSelectorViewReturnTypeProvider.
@@ -66,16 +66,16 @@ public class AMBlogsItemSelectorViewReturnTypeProviderTest
 	public void testAddAMImageURLItemSelectorReturnTypeWithNonemptyList()
 		throws Exception {
 
+		ItemSelectorViewReturnTypeProvider
+			amBlogsItemSelectorViewReturnTypeProvider =
+				new AMBlogsItemSelectorViewReturnTypeProvider();
+
 		List<ItemSelectorReturnType> supportedItemSelectorReturnTypes =
 			new ArrayList<>();
 
 		supportedItemSelectorReturnTypes.add(
 			new FileEntryItemSelectorReturnType());
 		supportedItemSelectorReturnTypes.add(new URLItemSelectorReturnType());
-
-		ItemSelectorViewReturnTypeProvider
-			amBlogsItemSelectorViewReturnTypeProvider =
-				new AMBlogsItemSelectorViewReturnTypeProvider();
 
 		List<ItemSelectorReturnType> itemSelectorReturnTypes =
 			amBlogsItemSelectorViewReturnTypeProvider.
