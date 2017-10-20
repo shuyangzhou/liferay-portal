@@ -47,15 +47,15 @@ public class AMImageURLFactoryImplTest {
 		);
 
 		Mockito.when(
-			_fileVersion.getFileVersionId()
-		).thenReturn(
-			2L
-		);
-
-		Mockito.when(
 			_fileVersion.getFileName()
 		).thenReturn(
 			"fileName"
+		);
+
+		Mockito.when(
+			_fileVersion.getFileVersionId()
+		).thenReturn(
+			2L
 		);
 
 		Mockito.when(

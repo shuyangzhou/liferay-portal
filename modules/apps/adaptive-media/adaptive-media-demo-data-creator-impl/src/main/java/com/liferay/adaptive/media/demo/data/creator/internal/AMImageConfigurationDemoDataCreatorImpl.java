@@ -89,8 +89,8 @@ public class AMImageConfigurationDemoDataCreatorImpl
 
 	@Override
 	public void delete() throws IOException {
-		for (Long companyId : _configurationIds.keySet()) {
-			List<String> uuids = _configurationIds.get(companyId);
+		for (Long companyId : _configurationUuids.keySet()) {
+			List<String> uuids = _configurationUuids.get(companyId);
 
 			for (String uuid : uuids) {
 				_amImageConfigurationHelper.
@@ -102,10 +102,10 @@ public class AMImageConfigurationDemoDataCreatorImpl
 	}
 
 	private void _addConfigurationUuid(long companyId, String uuid) {
-		_configurationIds.computeIfAbsent(
+		_configurationUuids.computeIfAbsent(
 			companyId, k -> new CopyOnWriteArrayList<>());
 
-		List<String> uuids = _configurationIds.get(companyId);
+		List<String> uuids = _configurationUuids.get(companyId);
 
 		uuids.add(uuid);
 	}
@@ -116,6 +116,6 @@ public class AMImageConfigurationDemoDataCreatorImpl
 	@Reference
 	private AMImageConfigurationHelper _amImageConfigurationHelper;
 
-	private final Map<Long, List<String>> _configurationIds = new HashMap<>();
+	private final Map<Long, List<String>> _configurationUuids = new HashMap<>();
 
 }

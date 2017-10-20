@@ -15,6 +15,8 @@
 package com.liferay.portal.configuration.upgrade.util.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.osgi.util.service.OSGiServiceUtil;
+import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.portal.configuration.upgrade.util.PrefsPropsToConfigurationUpgradeItem;
 import com.liferay.portal.configuration.upgrade.util.PrefsPropsToConfigurationUpgradeUtil;
 import com.liferay.portal.configuration.upgrade.util.PrefsPropsValueType;
@@ -23,8 +25,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.UnsafeConsumer;
-import com.liferay.portal.osgi.util.test.OSGiServiceUtil;
 
 import java.io.IOException;
 
