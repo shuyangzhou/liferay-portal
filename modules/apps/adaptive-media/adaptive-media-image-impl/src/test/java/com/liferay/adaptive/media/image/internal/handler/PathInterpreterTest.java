@@ -41,9 +41,9 @@ public class PathInterpreterTest {
 
 	@Before
 	public void setUp() {
-		_pathInterpreter.setDLAppService(_dlAppService);
 		_pathInterpreter.setAMImageConfigurationHelper(
 			_amImageConfigurationHelper);
+		_pathInterpreter.setDLAppService(_dlAppService);
 	}
 
 	@Test

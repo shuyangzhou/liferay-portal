@@ -169,6 +169,11 @@
 	<td></td>
 </tr>
 <tr>
+        <td>ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TITLE_DUPLICATE</td>
+        <td>//div[contains(@id,'workflowTasksSearchContainerSearchContainer')]//tr[contains(.,'${key_workflowTask}') and contains(.,'${key_workflowAssetTitle}')][2]/td[1]//a</td>
+        <td></td>
+</tr>
+<tr>
 	<td>ASSIGNED_TO_MY_ROLES_TABLE_ASSET_TYPE</td>
 	<td>//div[contains(@id,'workflowTasksSearchContainerSearchContainer')]//tr[contains(.,'${key_workflowTask}') and contains(.,'${key_workflowAssetTitle}')]/td[2]//a</td>
 	<td></td>

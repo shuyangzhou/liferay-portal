@@ -94,6 +94,9 @@ public class UpgradeDocumentLibraryThumbnailsConfiguration
 			int maxHeight, int maxWidth)
 		throws AMImageConfigurationException, IOException {
 
+		String name = String.format(
+			"%s %dx%d", "Thumbnail", maxWidth, maxHeight);
+
 		Map<String, String> properties = new HashMap<>();
 
 		properties.put("max-height", String.valueOf(maxHeight));
@@ -101,20 +104,13 @@ public class UpgradeDocumentLibraryThumbnailsConfiguration
 
 		List<Company> companies = _companyLocalService.getCompanies();
 
-		String name = String.format(
-			"%s %dx%d", _DEFAULT_NAME, maxWidth, maxHeight);
-
 		for (Company company : companies) {
 			_amImageConfigurationHelper.addAMImageConfigurationEntry(
-				company.getCompanyId(), name, _DEFAULT_DESCRIPTION, name,
+				company.getCompanyId(), name,
+				"This image resolution was automatically added.", name,
 				properties);
 		}
 	}
-
-	private static final String _DEFAULT_DESCRIPTION =
-		"This image resolution has been added automatically.";
-
-	private static final String _DEFAULT_NAME = "Thumbnail";
 
 	private final AMImageConfigurationHelper _amImageConfigurationHelper;
 	private final CompanyLocalService _companyLocalService;

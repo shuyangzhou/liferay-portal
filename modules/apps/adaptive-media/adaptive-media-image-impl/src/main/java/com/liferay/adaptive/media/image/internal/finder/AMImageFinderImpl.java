@@ -66,7 +66,7 @@ public class AMImageFinderImpl implements AMImageFinder {
 
 		if (amImageQueryBuilderFunction == null) {
 			throw new IllegalArgumentException(
-				"amImageQueryBuilder must be non null");
+				"Adaptive media image query builder is null");
 		}
 
 		AMImageQueryBuilderImpl amImageQueryBuilderImpl =
@@ -77,7 +77,7 @@ public class AMImageFinderImpl implements AMImageFinder {
 
 		if (amQuery != AMImageQueryBuilderImpl.AM_QUERY) {
 			throw new IllegalArgumentException(
-				"Only queries built by the provided query builder are valid.");
+				"Only queries built by the provided query builder are valid");
 		}
 
 		FileVersion fileVersion = amImageQueryBuilderImpl.getFileVersion();
@@ -169,14 +169,14 @@ public class AMImageFinderImpl implements AMImageFinder {
 
 		if (amImageEntry != null) {
 			AMAttribute<AMImageProcessor, Integer> imageHeightAMAttribute =
-				AMImageAttribute.IMAGE_HEIGHT;
+				AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT;
 
 			properties.put(
 				imageHeightAMAttribute.getName(),
 				String.valueOf(amImageEntry.getHeight()));
 
 			AMAttribute<AMImageProcessor, Integer> imageWidthAMAttribute =
-				AMImageAttribute.IMAGE_WIDTH;
+				AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH;
 
 			properties.put(
 				imageWidthAMAttribute.getName(),
