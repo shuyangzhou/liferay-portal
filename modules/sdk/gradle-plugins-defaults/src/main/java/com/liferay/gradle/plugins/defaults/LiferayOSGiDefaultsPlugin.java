@@ -2154,6 +2154,33 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 		Configuration configuration = GradleUtil.getConfiguration(
 			project, name);
 
+		DependencySet dependencySet = configuration.getAllDependencies();
+
+		dependencySet.whenObjectAdded(
+			new Action<Dependency>() {
+
+				@Override
+				public void execute(Dependency dependency) {
+					if (!(dependency instanceof ModuleDependency)) {
+						return;
+					}
+
+					ModuleDependency moduleDependency =
+						(ModuleDependency)dependency;
+
+					String group = moduleDependency.getGroup();
+					String name = moduleDependency.getName();
+
+					if (group.equals("easyconf") && name.equals("easyconf")) {
+						moduleDependency.exclude(
+							Collections.singletonMap("group", "xdoclet"));
+						moduleDependency.exclude(
+							Collections.singletonMap("group", "xpp3"));
+					}
+				}
+
+			});
+
 		ResolutionStrategy resolutionStrategy =
 			configuration.getResolutionStrategy();
 
