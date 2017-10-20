@@ -139,7 +139,8 @@ public class PortletContainerImpl implements PortletContainer {
 
 	@Override
 	public void processPublicRenderParameters(
-			HttpServletRequest request, Layout layout) {
+		HttpServletRequest request, Layout layout) {
+
 		processPublicRenderParameters(request, layout, null);
 	}
 
@@ -154,8 +155,8 @@ public class PortletContainerImpl implements PortletContainer {
 		if (layoutType instanceof LayoutTypePortlet) {
 			layoutTypePortlet = (LayoutTypePortlet)layoutType;
 
-			List<Portlet> portlets =
-				ListUtil.copy(layoutTypePortlet.getPortlets());
+			List<Portlet> portlets = ListUtil.copy(
+				layoutTypePortlet.getPortlets());
 
 			if (targetPortlet != null) {
 				portlets.remove(targetPortlet);
@@ -554,6 +555,52 @@ public class PortletContainerImpl implements PortletContainer {
 	}
 
 	private void _processPublicRenderParameters(
+		HttpServletRequest request, Layout layout, List<Portlet> portlets) {
+
+		PortletQName portletQName = PortletQNameUtil.getPortletQName();
+		Map<String, String[]> publicRenderParameters = null;
+		Map<String, String[]> parameters = request.getParameterMap();
+
+		for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
+			String name = entry.getKey();
+
+			QName qName = portletQName.getQName(name);
+
+			if (qName == null) {
+				continue;
+			}
+
+			for (Portlet portlet : portlets) {
+				PublicRenderParameter publicRenderParameter =
+					portlet.getPublicRenderParameter(
+						qName.getNamespaceURI(), qName.getLocalPart());
+
+				if (publicRenderParameter == null) {
+					continue;
+				}
+
+				if (publicRenderParameters == null) {
+					publicRenderParameters = PublicRenderParametersPool.get(
+						request, layout.getPlid());
+				}
+
+				String publicRenderParameterName =
+					portletQName.getPublicRenderParameterName(qName);
+
+				if (name.startsWith(
+						PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE)) {
+
+					publicRenderParameters.put(
+						publicRenderParameterName, entry.getValue());
+				}
+				else {
+					publicRenderParameters.remove(publicRenderParameterName);
+				}
+			}
+		}
+	}
+
+	private void _processPublicRenderParameters(
 		HttpServletRequest request, Layout layout, Portlet portlet,
 		boolean lifecycleAction) {
 
@@ -587,7 +634,7 @@ public class PortletContainerImpl implements PortletContainer {
 				portletQName.getPublicRenderParameterName(qName);
 
 			if (name.startsWith(
-				PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE)) {
+					PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE)) {
 
 				String[] values = entry.getValue();
 
@@ -600,58 +647,10 @@ public class PortletContainerImpl implements PortletContainer {
 					}
 				}
 
-				publicRenderParameters.put(
-					publicRenderParameterName, values);
+				publicRenderParameters.put(publicRenderParameterName, values);
 			}
 			else {
 				publicRenderParameters.remove(publicRenderParameterName);
-			}
-		}
-	}
-
-	private void _processPublicRenderParameters(
-		HttpServletRequest request, Layout layout, List<Portlet> portlets) {
-
-		PortletQName portletQName = PortletQNameUtil.getPortletQName();
-		Map<String, String[]> publicRenderParameters = null;
-		Map<String, String[]> parameters = request.getParameterMap();
-
-		for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
-			String name = entry.getKey();
-
-			QName qName = portletQName.getQName(name);
-
-			if (qName == null) {
-				continue;
-			}
-
-			for (Portlet portlet : portlets) {
-
-				PublicRenderParameter publicRenderParameter =
-					portlet.getPublicRenderParameter(
-						qName.getNamespaceURI(), qName.getLocalPart());
-
-				if (publicRenderParameter == null) {
-					continue;
-				}
-
-				if (publicRenderParameters == null) {
-					publicRenderParameters = PublicRenderParametersPool.get(
-						request, layout.getPlid());
-				}
-
-				String publicRenderParameterName =
-					portletQName.getPublicRenderParameterName(qName);
-
-				if (name.startsWith(
-						PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE)) {
-
-					publicRenderParameters.put(
-						publicRenderParameterName, entry.getValue());
-				}
-				else {
-					publicRenderParameters.remove(publicRenderParameterName);
-				}
 			}
 		}
 	}
