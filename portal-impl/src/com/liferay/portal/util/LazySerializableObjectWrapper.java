@@ -37,12 +37,14 @@ public class LazySerializableObjectWrapper implements Externalizable {
 			return (T)object;
 		}
 
-		LazySerializableObjectWrapper serializableWrapper =
+		LazySerializableObjectWrapper lazySerializableObjectWrapper =
 			(LazySerializableObjectWrapper)object;
 
-		if (serializableWrapper._serializable instanceof LazySerializable) {
+		if (lazySerializableObjectWrapper._serializable instanceof
+				LazySerializable) {
+
 			LazySerializable lazySerializable =
-				(LazySerializable)serializableWrapper._serializable;
+				(LazySerializable)lazySerializableObjectWrapper._serializable;
 
 			Serializable serializable = lazySerializable.getSerializable();
 
@@ -50,10 +52,10 @@ public class LazySerializableObjectWrapper implements Externalizable {
 				return null;
 			}
 
-			serializableWrapper._serializable = serializable;
+			lazySerializableObjectWrapper._serializable = serializable;
 		}
 
-		return (T)serializableWrapper._serializable;
+		return (T)lazySerializableObjectWrapper._serializable;
 	}
 
 	/**
