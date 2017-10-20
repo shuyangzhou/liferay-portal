@@ -36,8 +36,9 @@ public class AMImageAttributeTest {
 			AMAttribute.getConfigurationUuidAMAttribute(),
 			AMAttribute.getContentLengthAMAttribute(),
 			AMAttribute.getContentTypeAMAttribute(),
-			AMAttribute.getFileNameAMAttribute(), AMImageAttribute.IMAGE_HEIGHT,
-			AMImageAttribute.IMAGE_WIDTH);
+			AMAttribute.getFileNameAMAttribute(),
+			AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT,
+			AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH);
 
 		Map<String, AMAttribute<?, ?>> allowedAMAttributesMap =
 			AMImageAttribute.getAllowedAMAttributes();
@@ -49,25 +50,25 @@ public class AMImageAttributeTest {
 	}
 
 	@Test(expected = AMRuntimeException.AMAttributeFormatException.class)
-	public void testImageHeightFailsForNonIntegers() {
-		AMImageAttribute.IMAGE_HEIGHT.convert("xyz");
+	public void testImageHeightFailsForNonintegers() {
+		AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT.convert("xyz");
 	}
 
 	@Test
 	public void testImageHeightRecognizesIntegers() {
-		int result = AMImageAttribute.IMAGE_HEIGHT.convert("42");
+		int result = AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT.convert("42");
 
 		Assert.assertEquals(42, result);
 	}
 
 	@Test(expected = AMRuntimeException.AMAttributeFormatException.class)
-	public void testImageWidthFailsForNonIntegers() {
-		AMImageAttribute.IMAGE_WIDTH.convert("xyz");
+	public void testImageWidthFailsForNonintegers() {
+		AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH.convert("xyz");
 	}
 
 	@Test
 	public void testImageWidthRecognizesIntegers() {
-		int result = AMImageAttribute.IMAGE_WIDTH.convert("42");
+		int result = AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH.convert("42");
 
 		Assert.assertEquals(42, result);
 	}

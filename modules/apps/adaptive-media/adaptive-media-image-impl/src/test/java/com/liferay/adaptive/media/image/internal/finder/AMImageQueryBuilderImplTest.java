@@ -114,14 +114,14 @@ public class AMImageQueryBuilderImplTest {
 		_amImageQueryBuilderImpl.forFileVersion(
 			fileVersion
 		).with(
-			AMImageAttribute.IMAGE_HEIGHT, Optional.of(100)
+			AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT, Optional.of(100)
 		);
 
 		Map<AMAttribute<AMImageProcessor, ?>, Object> amAttributes =
 			_amImageQueryBuilderImpl.getAMAttributes();
 
 		Assert.assertEquals(
-			100, amAttributes.get(AMImageAttribute.IMAGE_HEIGHT));
+			100, amAttributes.get(AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -142,7 +142,7 @@ public class AMImageQueryBuilderImplTest {
 		_amImageQueryBuilderImpl.forFileVersion(
 			fileVersion
 		).with(
-			AMImageAttribute.IMAGE_HEIGHT, (Integer)null
+			AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT, (Integer)null
 		);
 	}
 
@@ -189,7 +189,7 @@ public class AMImageQueryBuilderImplTest {
 		_amImageQueryBuilderImpl.forFileVersion(
 			fileVersion
 		).with(
-			AMImageAttribute.IMAGE_HEIGHT, (Optional<Integer>)null
+			AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT, (Optional<Integer>)null
 		);
 	}
 

@@ -210,6 +210,12 @@ public class SiteNavigationMenuItemLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<com.liferay.site.navigation.model.SiteNavigationMenuItem> getChildSiteNavigationMenuItems(
+		long parentSiteNavigationMenuItemId) {
+		return _siteNavigationMenuItemLocalService.getChildSiteNavigationMenuItems(parentSiteNavigationMenuItemId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
 		return _siteNavigationMenuItemLocalService.getIndexableActionableDynamicQuery();
 	}
