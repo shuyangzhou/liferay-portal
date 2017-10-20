@@ -12,9 +12,10 @@
  * details.
  */
 
-package com.liferay.portal.kernel.io;
+package com.liferay.portal.util;
 
 import com.liferay.petra.lang.ClassLoaderPool;
+import com.liferay.portal.kernel.io.SerializableObjectWrapper;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.test.CaptureHandler;

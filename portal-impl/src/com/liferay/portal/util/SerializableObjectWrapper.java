@@ -12,8 +12,10 @@
  * details.
  */
 
-package com.liferay.portal.kernel.io;
+package com.liferay.portal.util;
 
+import com.liferay.portal.kernel.io.Deserializer;
+import com.liferay.portal.kernel.io.Serializer;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -29,10 +31,7 @@ import java.util.Arrays;
 
 /**
  * @author Tina Tian
- * @deprecated As of 7.0.0, replaced by {@link
- *						com.liferay.portal.util.SerializableObjectWrapper}
  */
-@Deprecated
 public class SerializableObjectWrapper implements Externalizable {
 
 	public static <T> T unwrap(Object object) {
