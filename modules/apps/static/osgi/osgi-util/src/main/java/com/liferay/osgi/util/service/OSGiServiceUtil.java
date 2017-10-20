@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.osgi.util.test;
+package com.liferay.osgi.util.service;
 
 import com.liferay.portal.kernel.util.UnsafeFunction;
 
