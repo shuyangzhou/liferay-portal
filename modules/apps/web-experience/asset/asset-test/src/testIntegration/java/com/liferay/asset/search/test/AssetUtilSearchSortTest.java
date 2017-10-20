@@ -17,7 +17,7 @@ package com.liferay.asset.search.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
-import com.liferay.asset.util.impl.AssetUtil;
+import com.liferay.asset.util.AssetHelper;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -96,7 +96,7 @@ public class AssetUtilSearchSortTest {
 		AssetEntryQuery assetEntryQuery = createAssetEntryQueryOrderBy(
 			Field.PRIORITY);
 
-		Hits hits = AssetUtil.search(
+		Hits hits = _assetHelper.search(
 			searchContext, assetEntryQuery, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS);
 
@@ -152,6 +152,9 @@ public class AssetUtilSearchSortTest {
 
 	@Inject
 	private static JournalArticleLocalService _journalArticleLocalService;
+
+	@Inject
+	private AssetHelper _assetHelper;
 
 	@DeleteAfterTestRun
 	private Group _group;
