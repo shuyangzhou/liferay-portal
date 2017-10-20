@@ -133,7 +133,7 @@ public class AMImageConfigurationEntryParser {
 				"Invalid image adaptive media configuration: " + s);
 		}
 
-		String[] fields = _FIELD_SEPARATOR_PATTERN.split(s);
+		String[] fields = _fieldSeparatorPattern.split(s);
 
 		if ((fields.length != 4) && (fields.length != 5)) {
 			throw new IllegalArgumentException(
@@ -155,13 +155,12 @@ public class AMImageConfigurationEntryParser {
 				"Invalid image adaptive media configuration: " + s);
 		}
 
-		String[] attributes = _ATTRIBUTE_SEPARATOR_PATTERN.split(fields[3]);
+		String[] attributes = _attributeSeparatorPattern.split(fields[3]);
 
 		Map<String, String> properties = new HashMap<>();
 
 		for (String attribute : attributes) {
-			String[] keyValuePair = _KEY_VALUE_SEPARATOR_PATTERN.split(
-				attribute);
+			String[] keyValuePair = _keyValueSeparatorPattern.split(attribute);
 
 			properties.put(keyValuePair[0], keyValuePair[1]);
 		}
@@ -171,7 +170,7 @@ public class AMImageConfigurationEntryParser {
 		if (fields.length == 5) {
 			String disabledAttribute = fields[4];
 
-			Matcher matcher = _DISABLED_SEPARATOR_PATTERN.matcher(
+			Matcher matcher = _disabledSeparatorPattern.matcher(
 				disabledAttribute);
 
 			if (!matcher.matches()) {
@@ -190,16 +189,13 @@ public class AMImageConfigurationEntryParser {
 		_http = http;
 	}
 
-	private static final Pattern _ATTRIBUTE_SEPARATOR_PATTERN = Pattern.compile(
+	private static final Pattern _attributeSeparatorPattern = Pattern.compile(
 		"\\s*;\\s*");
-
-	private static final Pattern _DISABLED_SEPARATOR_PATTERN = Pattern.compile(
+	private static final Pattern _disabledSeparatorPattern = Pattern.compile(
 		"enabled=(true|false)");
-
-	private static final Pattern _FIELD_SEPARATOR_PATTERN = Pattern.compile(
+	private static final Pattern _fieldSeparatorPattern = Pattern.compile(
 		"\\s*:\\s*");
-
-	private static final Pattern _KEY_VALUE_SEPARATOR_PATTERN = Pattern.compile(
+	private static final Pattern _keyValueSeparatorPattern = Pattern.compile(
 		"\\s*=\\s*");
 
 	@Reference
