@@ -42,12 +42,12 @@ public class AMImageTest {
 		AMImage amImage = new AMImage(
 			() -> null, amImageAttributeMapping, URI.create("/"));
 
-		amImage.getValueOptional(AMImageAttribute.IMAGE_HEIGHT);
+		amImage.getValueOptional(AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT);
 
 		Mockito.verify(
 			amImageAttributeMapping
 		).getValueOptional(
-			AMImageAttribute.IMAGE_HEIGHT
+			AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT
 		);
 	}
 

@@ -69,13 +69,13 @@ public class AMImageProcessorTest {
 
 	@Before
 	public void setUp() throws Exception {
-		_group = GroupTestUtil.addGroup();
-
 		_amImageConfigurationHelper = _getService(
 			AMImageConfigurationHelper.class);
-		_dlAppLocalService = _getService(DLAppLocalService.class);
 		_amImageFinder = _getService(AMImageFinder.class);
 		_amImageProcessor = _getService(AMImageProcessor.class);
+		_dlAppLocalService = _getService(DLAppLocalService.class);
+
+		_group = GroupTestUtil.addGroup();
 
 		ServiceTestUtil.setUser(TestPropsValues.getUser());
 
