@@ -30,15 +30,15 @@ import java.nio.ByteBuffer;
 /**
  * @author Tina Tian
  */
-public class SerializableObjectWrapper implements Externalizable {
+public class LazySerializableObjectWrapper implements Externalizable {
 
 	public static <T> T unwrap(Object object) {
-		if (!(object instanceof SerializableObjectWrapper)) {
+		if (!(object instanceof LazySerializableObjectWrapper)) {
 			return (T)object;
 		}
 
-		SerializableObjectWrapper serializableWrapper =
-			(SerializableObjectWrapper)object;
+		LazySerializableObjectWrapper serializableWrapper =
+			(LazySerializableObjectWrapper)object;
 
 		if (serializableWrapper._serializable instanceof LazySerializable) {
 			LazySerializable lazySerializable =
@@ -60,10 +60,10 @@ public class SerializableObjectWrapper implements Externalizable {
 	 * The empty constructor is required by {@link Externalizable}. Do not use
 	 * this for any other purpose.
 	 */
-	public SerializableObjectWrapper() {
+	public LazySerializableObjectWrapper() {
 	}
 
-	public SerializableObjectWrapper(Serializable serializable) {
+	public LazySerializableObjectWrapper(Serializable serializable) {
 		_serializable = serializable;
 	}
 
@@ -102,7 +102,7 @@ public class SerializableObjectWrapper implements Externalizable {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		SerializableObjectWrapper.class);
+		LazySerializableObjectWrapper.class);
 
 	private volatile Serializable _serializable;
 

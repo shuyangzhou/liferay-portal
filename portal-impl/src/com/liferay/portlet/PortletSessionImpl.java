@@ -19,8 +19,8 @@ import com.liferay.portal.kernel.servlet.HttpSessionWrapper;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.util.LazySerializableObjectWrapper;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portal.util.SerializableObjectWrapper;
 
 import java.io.Serializable;
 
@@ -223,7 +223,8 @@ public class PortletSessionImpl implements LiferayPortletSession {
 
 		@Override
 		public Object getAttribute(String name) {
-			return SerializableObjectWrapper.unwrap(super.getAttribute(name));
+			return LazySerializableObjectWrapper.unwrap(
+				super.getAttribute(name));
 		}
 
 		@Override
@@ -239,7 +240,7 @@ public class PortletSessionImpl implements LiferayPortletSession {
 			if (!PortalClassLoaderUtil.isPortalClassLoader(
 					clazz.getClassLoader())) {
 
-				value = new SerializableObjectWrapper((Serializable)value);
+				value = new LazySerializableObjectWrapper((Serializable)value);
 			}
 
 			super.setAttribute(name, value);

@@ -38,7 +38,7 @@ import org.junit.Test;
 /**
  * @author Tina Tian
  */
-public class SerializableObjectWrapperTest {
+public class LazySerializableObjectWrapperTest {
 
 	@ClassRule
 	public static final CodeCoverageAssertor codeCoverageAssertor =

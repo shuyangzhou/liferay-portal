@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.test.rule.AdviseWith;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
-import com.liferay.portal.util.SerializableObjectWrapper;
+import com.liferay.portal.util.LazySerializableObjectWrapper;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -348,7 +348,7 @@ public class PortletSessionImplTest {
 		Assert.assertSame(value, portletSessionImpl.getAttribute(key));
 		Assert.assertTrue(
 			_mockHttpSession.getAttribute(scopePrefix.concat(key)) instanceof
-				SerializableObjectWrapper);
+				LazySerializableObjectWrapper);
 
 		// Set/get non-serializable attribute when value class is not loaded by
 		// PortalClassLoader
