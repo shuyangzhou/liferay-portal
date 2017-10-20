@@ -1,3 +1,4 @@
+<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -11,24 +12,11 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+--%>
 
-package com.liferay.portal.upgrade.v6_0_12_to_6_1_0;
-
-/**
- * @author Alexander Chow
- * @author Connor McKay
- */
-public class UpgradePermission
-	extends com.liferay.portal.upgrade.v6_1_0.UpgradePermission {
-
-	@Override
-	protected void doUpgrade() throws Exception {
-		convertResourcePermissions(
-			"com.liferay.portlet.bookmarks.model.BookmarksEntry",
-			"BookmarksEntry", "entryId");
-		convertResourcePermissions(
-			"com.liferay.portlet.bookmarks.model.BookmarksFolder",
-			"BookmarksFolder", "folderId");
-	}
-
-}
+<div class="pull-right">
+	<liferay-ui:language
+		languageId="<%= themeDisplay.getLanguageId() %>"
+		languageIds="<%= LocaleUtil.toLanguageIds(LanguageUtil.getAvailableLocales(themeDisplay.getSiteGroupId())) %>"
+	/>
+</div>
