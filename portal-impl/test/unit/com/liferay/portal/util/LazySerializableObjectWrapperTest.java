@@ -15,11 +15,11 @@
 package com.liferay.portal.util;
 
 import com.liferay.petra.lang.ClassLoaderPool;
-import com.liferay.portal.kernel.io.SerializableObjectWrapper;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.test.CaptureHandler;
 import com.liferay.portal.kernel.test.JDKLoggerTestUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 
 import java.io.ObjectInputStream;
@@ -27,7 +27,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
@@ -45,129 +44,34 @@ public class LazySerializableObjectWrapperTest {
 		CodeCoverageAssertor.INSTANCE;
 
 	@Test
-	public void testEquals() throws Exception {
-		_testEquals();
-	}
-
-	@Test
-	public void testHashCode() throws Exception {
-		_testHashCode();
-	}
-
-	@Test
-	public void testSpecialEquals() throws Exception {
-		Assert.assertTrue(
-			_SPECIAL_TEST_SERIALIZABLE_1.equals(_SPECIAL_TEST_SERIALIZABLE_2));
-		Assert.assertTrue(
-			_specialTestSerializableWrapper1.equals(
-				_specialTestSerializableWrapper2));
-
-		Assert.assertTrue(
-			_getDeserializedObject(_specialTestSerializableWrapper1).equals(
-				_getDeserializedObject(_specialTestSerializableWrapper1)));
-		Assert.assertTrue(
-			_specialTestSerializableWrapper1.equals(
-				_getDeserializedObject(_specialTestSerializableWrapper1)));
-		Assert.assertTrue(
-			_getDeserializedObject(_specialTestSerializableWrapper1).equals(
-				_specialTestSerializableWrapper1));
-
-		Assert.assertTrue(
-			_specialTestSerializableWrapper1.equals(
-				_getDeserializedObject(_specialTestSerializableWrapper2)));
-		Assert.assertTrue(
-			_getDeserializedObject(_specialTestSerializableWrapper1).equals(
-				_specialTestSerializableWrapper2));
-		Assert.assertTrue(
-			_getDeserializedObject(_specialTestSerializableWrapper1).equals(
-				_getDeserializedObject(_specialTestSerializableWrapper2)));
-	}
-
-	@Test
-	public void testSpecialEqualsWithBrokenClassLoader() throws Exception {
-		ClassLoaderPool.unregister(ClassLoaderPool.class.getClassLoader());
-
-		Thread currentThread = Thread.currentThread();
-
-		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-
-		ClassNotFoundException cnfe = new ClassNotFoundException();
-
-		currentThread.setContextClassLoader(
-			new ClassLoader() {
-
-				@Override
-				public Class<?> loadClass(String name)
-					throws ClassNotFoundException {
-
-					if (name.equals(SpecialTestSerializable.class.getName())) {
-						throw cnfe;
-					}
-
-					return super.loadClass(name);
-				}
-
-			});
-
-		try (CaptureHandler captureHandler =
-				JDKLoggerTestUtil.configureJDKLogger(
-					SerializableObjectWrapper.class.getName(), Level.ALL)) {
-
-			Assert.assertTrue(
-				_getDeserializedObject(_specialTestSerializableWrapper1).equals(
-					_getDeserializedObject(_specialTestSerializableWrapper1)));
-
-			List<LogRecord> logRecords = captureHandler.getLogRecords();
-
-			Assert.assertTrue(
-				_specialTestSerializableWrapper1.equals(
-					_getDeserializedObject(_specialTestSerializableWrapper1)));
-
-			_assertLogAndClear(logRecords, cnfe);
-
-			Assert.assertTrue(
-				_getDeserializedObject(_specialTestSerializableWrapper1).equals(
-					_specialTestSerializableWrapper1));
-
-			_assertLogAndClear(logRecords, cnfe);
-
-			Assert.assertFalse(
-				_specialTestSerializableWrapper1.equals(
-					_getDeserializedObject(_specialTestSerializableWrapper2)));
-
-			_assertLogAndClear(logRecords, cnfe);
-
-			Assert.assertFalse(
-				_getDeserializedObject(_specialTestSerializableWrapper1).equals(
-					_specialTestSerializableWrapper2));
-
-			_assertLogAndClear(logRecords, cnfe);
-
-			Assert.assertFalse(
-				_getDeserializedObject(_specialTestSerializableWrapper1).equals(
-					_getDeserializedObject(_specialTestSerializableWrapper2)));
-
-			_assertLogAndClear(logRecords, cnfe);
-		}
-		finally {
-			currentThread.setContextClassLoader(contextClassLoader);
-		}
+	public void testGetData() throws Exception {
+		Assert.assertArrayEquals(
+			(byte[])ReflectionTestUtil.invoke(
+				_testLazySerializableObjectWrapper, "_getData",
+				new Class<?>[0]),
+			(byte[])ReflectionTestUtil.invoke(
+				_getDeserializedObject(_testLazySerializableObjectWrapper),
+				"_getData", new Class<?>[0]));
 	}
 
 	@Test
 	public void testUnwrap() throws Exception {
+		TestSerializable testSerializable =
+			LazySerializableObjectWrapper.unwrap(
+				_testLazySerializableObjectWrapper);
+
 		Assert.assertEquals(
-			_TEST_SERIALIZABLE,
-			SerializableObjectWrapper.unwrap(_testSerializableObjectWrapper));
+			_TEST_SERIALIZABLE.getName(), testSerializable.getName());
+
+		testSerializable = LazySerializableObjectWrapper.unwrap(
+			_getDeserializedObject(_testLazySerializableObjectWrapper));
+
+		Assert.assertEquals(
+			_TEST_SERIALIZABLE.getName(), testSerializable.getName());
 
 		Assert.assertEquals(
 			_TEST_SERIALIZABLE,
-			SerializableObjectWrapper.unwrap(
-				_getDeserializedObject(_testSerializableObjectWrapper)));
-
-		Assert.assertEquals(
-			_TEST_SERIALIZABLE,
-			SerializableObjectWrapper.unwrap(_TEST_SERIALIZABLE));
+			LazySerializableObjectWrapper.unwrap(_TEST_SERIALIZABLE));
 	}
 
 	@Test
@@ -198,63 +102,37 @@ public class LazySerializableObjectWrapperTest {
 
 		try (CaptureHandler captureHandler =
 				JDKLoggerTestUtil.configureJDKLogger(
-					SerializableObjectWrapper.class.getName(), Level.ALL)) {
-
-			// Test unwrap
+					LazySerializableObjectWrapper.class.getName(), Level.ALL)) {
 
 			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
 			Assert.assertNull(
-				SerializableObjectWrapper.unwrap(
-					_getDeserializedObject(_testSerializableObjectWrapper)));
+				LazySerializableObjectWrapper.unwrap(
+					_getDeserializedObject(
+						_testLazySerializableObjectWrapper)));
 
-			_assertLogAndClear(logRecords, cnfe);
+			Assert.assertEquals(logRecords.toString(), 1, logRecords.size());
 
-			// Test equals
+			LogRecord logRecord = logRecords.get(0);
 
-			_testEquals();
-
-			// Test hash code
-
-			_testHashCode();
+			Assert.assertEquals(
+				"Unable to deserialize object", logRecord.getMessage());
+			Assert.assertSame(cnfe, logRecord.getThrown());
 		}
 		finally {
 			currentThread.setContextClassLoader(contextClassLoader);
 		}
 	}
 
-	@Test
-	public void testWriteExternal() throws Exception {
-		SerializableObjectWrapper deserializedObject = _getDeserializedObject(
-			_testSerializableObjectWrapper);
-
-		Assert.assertEquals(
-			deserializedObject, _getDeserializedObject(deserializedObject));
-	}
-
-	private void _assertLogAndClear(
-		List<LogRecord> logRecords, ClassNotFoundException cnfe) {
-
-		Assert.assertEquals(logRecords.toString(), 1, logRecords.size());
-
-		LogRecord logRecord = logRecords.get(0);
-
-		Assert.assertEquals(
-			"Unable to deserialize object", logRecord.getMessage());
-		Assert.assertSame(cnfe, logRecord.getThrown());
-
-		logRecords.clear();
-	}
-
-	private SerializableObjectWrapper _getDeserializedObject(
-			SerializableObjectWrapper serializableObjectWrapper)
+	private LazySerializableObjectWrapper _getDeserializedObject(
+			LazySerializableObjectWrapper lazySerializableObjectWrapper)
 		throws Exception {
 
 		try (UnsyncByteArrayOutputStream ubaos =
 				new UnsyncByteArrayOutputStream()) {
 
 			try (ObjectOutputStream oos = new ObjectOutputStream(ubaos)) {
-				oos.writeObject(serializableObjectWrapper);
+				oos.writeObject(lazySerializableObjectWrapper);
 			}
 
 			try (UnsyncByteArrayInputStream ubais =
@@ -262,122 +140,22 @@ public class LazySerializableObjectWrapperTest {
 						ubaos.unsafeGetByteArray(), 0, ubaos.size());
 				ObjectInputStream ois = new ObjectInputStream(ubais)) {
 
-				return (SerializableObjectWrapper)ois.readObject();
+				return (LazySerializableObjectWrapper)ois.readObject();
 			}
 		}
 	}
-
-	private void _testEquals() throws Exception {
-		Assert.assertFalse(
-			_testSerializableObjectWrapper.equals(_TEST_SERIALIZABLE));
-		Assert.assertFalse(
-			_testSerializableObjectWrapper.equals(
-				new SerializableObjectWrapper(_ANOTHER_TEST_SERIALIZABLE)));
-
-		Assert.assertTrue(
-			_testSerializableObjectWrapper.equals(
-				_testSerializableObjectWrapper));
-		Assert.assertTrue(
-			_testSerializableObjectWrapper.equals(
-				new SerializableObjectWrapper(_TEST_SERIALIZABLE)));
-		Assert.assertTrue(
-			_testSerializableObjectWrapper.equals(
-				_getDeserializedObject(_testSerializableObjectWrapper)));
-		Assert.assertTrue(
-			_getDeserializedObject(_testSerializableObjectWrapper).equals(
-				_testSerializableObjectWrapper));
-		Assert.assertTrue(
-			_getDeserializedObject(_testSerializableObjectWrapper).equals(
-				_getDeserializedObject(_testSerializableObjectWrapper)));
-	}
-
-	private void _testHashCode() throws Exception {
-		Assert.assertNotEquals(
-			_testSerializableObjectWrapper.hashCode(),
-			new SerializableObjectWrapper(
-				_ANOTHER_TEST_SERIALIZABLE).hashCode());
-
-		Assert.assertEquals(
-			_testSerializableObjectWrapper.hashCode(),
-			new SerializableObjectWrapper(_TEST_SERIALIZABLE).hashCode());
-		Assert.assertEquals(
-			_testSerializableObjectWrapper.hashCode(),
-			_getDeserializedObject(_testSerializableObjectWrapper).hashCode());
-	}
-
-	private static final TestSerializable _ANOTHER_TEST_SERIALIZABLE =
-		new TestSerializable("_ANOTHER_TEST_SERIALIZABLE");
-
-	private static final SpecialTestSerializable _SPECIAL_TEST_SERIALIZABLE_1 =
-		new SpecialTestSerializable("_SPECIAL_TEST_SERIALIZABLE", "");
-
-	private static final SpecialTestSerializable _SPECIAL_TEST_SERIALIZABLE_2 =
-		new SpecialTestSerializable(
-			"_SPECIAL_TEST_SERIALIZABLE", "_SPECIAL_TEST_SERIALIZABLE_VALUE");
 
 	private static final TestSerializable _TEST_SERIALIZABLE =
 		new TestSerializable("_TEST_SERIALIZABLE");
 
-	private final SerializableObjectWrapper _specialTestSerializableWrapper1 =
-		new SerializableObjectWrapper(_SPECIAL_TEST_SERIALIZABLE_1);
-	private final SerializableObjectWrapper _specialTestSerializableWrapper2 =
-		new SerializableObjectWrapper(_SPECIAL_TEST_SERIALIZABLE_2);
-	private final SerializableObjectWrapper _testSerializableObjectWrapper =
-		new SerializableObjectWrapper(_TEST_SERIALIZABLE);
-
-	private static class SpecialTestSerializable implements Serializable {
-
-		@Override
-		public boolean equals(Object object) {
-			if (this == object) {
-				return true;
-			}
-
-			if (!(object instanceof SpecialTestSerializable)) {
-				return false;
-			}
-
-			SpecialTestSerializable specialTestSerializable =
-				(SpecialTestSerializable)object;
-
-			return Objects.equals(_name, specialTestSerializable._name);
-		}
-
-		@Override
-		public int hashCode() {
-			return _name.hashCode();
-		}
-
-		private SpecialTestSerializable(String name, String value) {
-			_name = name;
-			_value = value;
-		}
-
-		private final String _name;
-		private final String _value;
-
-	}
+	private final LazySerializableObjectWrapper
+		_testLazySerializableObjectWrapper = new LazySerializableObjectWrapper(
+			_TEST_SERIALIZABLE);
 
 	private static class TestSerializable implements Serializable {
 
-		@Override
-		public boolean equals(Object object) {
-			if (this == object) {
-				return true;
-			}
-
-			if (!(object instanceof TestSerializable)) {
-				return false;
-			}
-
-			TestSerializable testSerializable = (TestSerializable)object;
-
-			return Objects.equals(_name, testSerializable._name);
-		}
-
-		@Override
-		public int hashCode() {
-			return _name.hashCode();
+		public String getName() {
+			return _name;
 		}
 
 		private TestSerializable(String name) {
