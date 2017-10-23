@@ -36,8 +36,8 @@ public class AMImageOptimizerUtil {
 		if (_serviceTrackerMap == null) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					"Cannot optimize for company id " + companyId +
-						" because the component is not actived");
+					"Unable to optimize for company " + companyId +
+						" because the component is not active");
 			}
 
 			return;
@@ -57,8 +57,8 @@ public class AMImageOptimizerUtil {
 		if (_serviceTrackerMap == null) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					"Cannot optimize for company id " + companyId +
-						" because the component is not actived");
+					"Unable to optimize for company " + companyId +
+						" because the component is not active");
 			}
 
 			return;

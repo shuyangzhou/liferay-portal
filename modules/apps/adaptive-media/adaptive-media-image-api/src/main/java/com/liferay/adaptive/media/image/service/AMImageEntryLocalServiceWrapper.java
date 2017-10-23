@@ -41,8 +41,8 @@ public class AMImageEntryLocalServiceWrapper implements AMImageEntryLocalService
 	adaptive media image
 	* @param fileVersion the file version used to create the adaptive media
 	image
-	* @param width the adaptive media image's width
 	* @param height the adaptive media image's height
+	* @param width the adaptive media image's width
 	* @param inputStream the adaptive media image's input stream to store in
 	the file store
 	* @param size the adaptive media image's size
@@ -54,10 +54,10 @@ public class AMImageEntryLocalServiceWrapper implements AMImageEntryLocalService
 	public com.liferay.adaptive.media.image.model.AMImageEntry addAMImageEntry(
 		com.liferay.adaptive.media.image.configuration.AMImageConfigurationEntry amImageConfigurationEntry,
 		com.liferay.portal.kernel.repository.model.FileVersion fileVersion,
-		int width, int height, java.io.InputStream inputStream, long size)
+		int height, int width, java.io.InputStream inputStream, long size)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _amImageEntryLocalService.addAMImageEntry(amImageConfigurationEntry,
-			fileVersion, width, height, inputStream, size);
+			fileVersion, height, width, inputStream, size);
 	}
 
 	/**
