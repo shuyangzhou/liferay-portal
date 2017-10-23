@@ -37,9 +37,8 @@ public class AMRuntimeException extends SystemException {
 	}
 
 	/**
-	 * This exception is thrown when a value serialized as a
-	 * <code>String</code> cannot be converted by an {@link
-	 * com.liferay.adaptive.media.AMAttribute}.
+	 * This exception is thrown when a value serialized as a <code>String</code>
+	 * cannot be converted by an {@link com.liferay.adaptive.media.AMAttribute}.
 	 */
 	public static final class AMAttributeFormatException
 		extends AMRuntimeException {
@@ -84,9 +83,8 @@ public class AMRuntimeException extends SystemException {
 	}
 
 	/**
-	 * This exception wraps {@link java.io.IOException} instances. Since it
-	 * is a system error, it is reasonable to wrap it inside a runtime
-	 * exception.
+	 * This exception wraps {@link java.io.IOException} instances. Since it is a
+	 * system error, it is reasonable to wrap it inside a runtime exception.
 	 */
 	public static final class IOException extends AMRuntimeException {
 
@@ -109,8 +107,8 @@ public class AMRuntimeException extends SystemException {
 
 	/**
 	 * This exception wraps {@link java.io.UnsupportedEncodingException}
-	 * instances. Since it is a system error, it is reasonable to wrap it
-	 * inside a runtime exception.
+	 * instances. Since it is a system error, it is reasonable to wrap it inside
+	 * a runtime exception.
 	 */
 	public static final class UnsupportedEncodingException
 		extends AMRuntimeException {

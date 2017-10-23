@@ -3692,9 +3692,16 @@ public class JournalArticleLocalServiceImpl
 		List<JournalArticle> articles = journalArticlePersistence.findByG_A(
 			groupId, articleId);
 
+		String treePath = null;
+
 		for (JournalArticle article : articles) {
 			article.setFolderId(newFolderId);
-			article.setTreePath(article.buildTreePath());
+
+			if (treePath == null) {
+				treePath = article.buildTreePath();
+			}
+
+			article.setTreePath(treePath);
 
 			journalArticlePersistence.update(article);
 		}
@@ -8313,21 +8320,23 @@ public class JournalArticleLocalServiceImpl
 			validate(articleId);
 		}
 
-		JournalArticle article = journalArticlePersistence.fetchByG_A_V(
-			groupId, articleId, version);
+		if (!ExportImportThreadLocal.isImportInProcess() || autoArticleId) {
+			List<JournalArticle> articles = journalArticlePersistence.findByG_A(
+				groupId, articleId);
 
-		if (article != null) {
-			StringBundler sb = new StringBundler(7);
+			if (!articles.isEmpty()) {
+				StringBundler sb = new StringBundler(7);
 
-			sb.append("{groupId=");
-			sb.append(groupId);
-			sb.append(", articleId=");
-			sb.append(articleId);
-			sb.append(", version=");
-			sb.append(version);
-			sb.append("}");
+				sb.append("{groupId=");
+				sb.append(groupId);
+				sb.append(", articleId=");
+				sb.append(articleId);
+				sb.append(", version=");
+				sb.append(version);
+				sb.append("}");
 
-			throw new DuplicateArticleIdException(sb.toString());
+				throw new DuplicateArticleIdException(sb.toString());
+			}
 		}
 
 		validate(
