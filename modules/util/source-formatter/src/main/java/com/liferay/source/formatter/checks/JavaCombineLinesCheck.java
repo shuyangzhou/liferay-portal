@@ -14,9 +14,9 @@
 
 package com.liferay.source.formatter.checks;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -184,7 +184,28 @@ public class JavaCombineLinesCheck extends BaseFileCheck {
 
 		matcher = _combinedLinesPattern4.matcher(content);
 
-		return matcher.replaceAll("$1 $3");
+		content = matcher.replaceAll("$1 $3");
+
+		matcher = _combinedLinesPattern5.matcher(content);
+
+		while (matcher.find()) {
+			if (getLevel(matcher.group()) != 0) {
+				continue;
+			}
+
+			String replacement =
+				matcher.group(1) + StringPool.SPACE + matcher.group(4);
+
+			int lineLength = getLineLength(
+				replacement.substring(1, replacement.length() - 1));
+
+			if (lineLength <= getMaxLineLength()) {
+				return StringUtil.replace(
+					content, matcher.group(), replacement);
+			}
+		}
+
+		return content;
 	}
 
 	private String _getCombinedLinesContent(String content, Pattern pattern) {
@@ -889,5 +910,7 @@ public class JavaCombineLinesCheck extends BaseFileCheck {
 		"(\n\t*(private|protected|public) void)\n\t+(\\w+\\(\\)( \\{)?\n)");
 	private final Pattern _combinedLinesPattern4 = Pattern.compile(
 		"(\n\t*(extends|implements))\n\t+([\\w.]+ \\{\n)");
+	private final Pattern _combinedLinesPattern5 = Pattern.compile(
+		"(\n\t*(private|protected|public)( .*[^\\{;\n])?)\n\t*(.+ [\\{;]\n)");
 
 }

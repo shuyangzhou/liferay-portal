@@ -225,11 +225,11 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 			amImageQueryBuilder -> amImageQueryBuilder.forFileVersion(
 				fileVersion
 			).with(
-				AMImageAttribute.IMAGE_WIDTH,
+				AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH,
 				PrefsPropsUtil.getInteger(
 					PropsKeys.DL_FILE_ENTRY_THUMBNAIL_MAX_WIDTH)
 			).with(
-				AMImageAttribute.IMAGE_HEIGHT,
+				AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT,
 				PrefsPropsUtil.getInteger(
 					PropsKeys.DL_FILE_ENTRY_THUMBNAIL_MAX_HEIGHT)
 			).done());

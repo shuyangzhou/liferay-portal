@@ -56,8 +56,7 @@ public class AMImageQueryBuilderImpl
 	@Override
 	public FinalStep forConfiguration(String configurationUuid) {
 		if (Validator.isNull(configurationUuid)) {
-			throw new IllegalArgumentException(
-				"Configuration uuid cannot be null");
+			throw new IllegalArgumentException("Configuration UUID is null");
 		}
 
 		_configurationUuid = configurationUuid;
@@ -68,7 +67,7 @@ public class AMImageQueryBuilderImpl
 	@Override
 	public InitialStep forFileEntry(FileEntry fileEntry) {
 		if (fileEntry == null) {
-			throw new IllegalArgumentException("File entry cannot be null");
+			throw new IllegalArgumentException("File entry is null");
 		}
 
 		_fileEntry = fileEntry;
@@ -79,7 +78,7 @@ public class AMImageQueryBuilderImpl
 	@Override
 	public InitialStep forFileVersion(FileVersion fileVersion) {
 		if (fileVersion == null) {
-			throw new IllegalArgumentException("File version cannot be null");
+			throw new IllegalArgumentException("File version is null");
 		}
 
 		_fileVersion = fileVersion;
@@ -155,7 +154,7 @@ public class AMImageQueryBuilderImpl
 
 		if (amAttribute == null) {
 			throw new IllegalArgumentException(
-				"Adaptive media attribute cannot be null");
+				"Adaptive media attribute is null");
 		}
 
 		_sortCriteria.put(amAttribute, sortOrder);
@@ -170,7 +169,7 @@ public class AMImageQueryBuilderImpl
 
 		if (valueOptional == null) {
 			throw new IllegalArgumentException(
-				"Adaptive media attribute value optional cannot be null");
+				"Adaptive media attribute value optional is null");
 		}
 
 		valueOptional.ifPresent(value -> _amAttributes.put(amAttribute, value));
@@ -184,7 +183,7 @@ public class AMImageQueryBuilderImpl
 
 		if (value == null) {
 			throw new IllegalArgumentException(
-				"Adaptive media attribute value cannot be null");
+				"Adaptive media attribute value is null");
 		}
 
 		_amAttributes.put(amAttribute, value);
@@ -197,8 +196,7 @@ public class AMImageQueryBuilderImpl
 		ConfigurationStatus configurationStatus) {
 
 		if (configurationStatus == null) {
-			throw new IllegalArgumentException(
-				"Configuration status cannot be null");
+			throw new IllegalArgumentException("Configuration status is null");
 		}
 
 		_configurationStatus = configurationStatus;
