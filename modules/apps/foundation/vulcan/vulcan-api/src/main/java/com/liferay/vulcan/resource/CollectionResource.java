@@ -24,18 +24,19 @@ import com.liferay.vulcan.resource.identifier.Identifier;
  * Maps your domain models to resources that Vulcan can understand.
  *
  * <p>
- * Resources behave like an API so you must add the name for the API via the
- * {@link #getName()} method.
+ * Resources behave like an API so you must add the API's name via the {@link
+ * #getName()} method.
  * </p>
  *
  * <p>
- * Representors created by the {@link #buildRepresentor} method hold all the
- * information needed to write your domain models' hypermedia representations.
+ * Representors created by the {@link #buildRepresentor(RepresentorBuilder)}
+ * method hold all the information needed to write your domain models'
+ * hypermedia representations.
  * </p>
  *
  * <p>
- * Finally you can add the different supported routes for the resource via the
- * {@link #routes(RoutesBuilder)} method.
+ * You can add the different supported routes for the resource via the {@link
+ * #routes(RoutesBuilder)} method.
  * </p>
  *
  * @author Alejandro Hernández
@@ -43,47 +44,43 @@ import com.liferay.vulcan.resource.identifier.Identifier;
  * @author Jorge Ferrer
  * @see    RepresentorBuilder
  * @see    RoutesBuilder
- * @review
  */
 @ConsumerType
 public interface CollectionResource<T, U extends Identifier> {
 
 	/**
-	 * Creates a representor for a certain domain model from the provided {@link
-	 * RepresentorBuilder}.
+	 * Creates a {@link Representor} for a certain domain model from the
+	 * provided {@link RepresentorBuilder}.
 	 *
 	 * <p>
-	 * Note that this builder doesn't construct a {@code Representor} object
-	 * (such objects don't actually exist). You need to call the builder methods
-	 * providing as much information as possible.
+	 * To construct a representor, you must call {@link
+	 * RepresentorBuilder.FirstStep#build()} ()}. Before calling this method,
+	 * you must call the other representor builder methods to populate the
+	 * builder with data. This ensures that the resulting representor contains
+	 * the data.
 	 * </p>
 	 *
-	 * @param  representorBuilder the builder used to create the representor.
-	 * @see    RepresentorBuilder
-	 * @review
+	 * @param representorBuilder the representor builder used to create the
+	 *        representor
+	 * @see   RepresentorBuilder
 	 */
 	public Representor<T, U> buildRepresentor(
 		RepresentorBuilder<T, U> representorBuilder);
 
 	/**
-	 * Returns the name for this resource.
+	 * Returns the resource's name.
 	 *
-	 * @return the name for this resource.
-	 * @review
+	 * @return the resource's name
 	 */
 	public String getName();
 
 	/**
-	 * Creates the {@link Routes} supported by the CollectionResource.
+	 * Creates the {@link Routes} supported by the {@code CollectionResource}.
+	 * Use the provided routes builder to create the {@code Routes} instance.
 	 *
-	 * <p>
-	 * To create the instance of {@link Routes} use the provided {@link
-	 * RoutesBuilder}.
-	 * </p>
-	 *
-	 * @param  routesBuilder the builder used to create the routes.
-	 * @see    RoutesBuilder
-	 * @review
+	 * @param routesBuilder the routes builder to use to create the {@code
+	 *        Routes} instance
+	 * @see   RoutesBuilder
 	 */
 	public Routes<T> routes(RoutesBuilder<T, U> routesBuilder);
 

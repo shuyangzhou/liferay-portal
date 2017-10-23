@@ -14,21 +14,10 @@
 
 package com.liferay.adaptive.media.blogs.internal.exportimport.content.processor;
 
-import com.liferay.adaptive.media.image.html.AMImageHTMLTagFactory;
-import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.exportimport.content.processor.ExportImportContentProcessor;
-import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.StagedModel;
-import com.liferay.portal.kernel.repository.model.FileEntry;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -54,13 +43,14 @@ public class AMBlogsEntryExportImportContentProcessor
 		throws Exception {
 
 		String replacedContent =
-			_exportImportContentProcessor.replaceExportContentReferences(
-				portletDataContext, stagedModel, content,
-				exportReferencedContent, escapeContent);
-		AMReferenceExporter amReferenceExporter = new AMReferenceExporter(
-			portletDataContext, stagedModel, exportReferencedContent);
+			_blogsEntryExportImportContentProcessor.
+				replaceExportContentReferences(
+					portletDataContext, stagedModel, content,
+					exportReferencedContent, escapeContent);
 
-		return _replace(replacedContent, amReferenceExporter);
+		return _htmlExportImportContentProcessor.replaceExportContentReferences(
+			portletDataContext, stagedModel, replacedContent,
+			exportReferencedContent, escapeContent);
 	}
 
 	@Override
@@ -70,172 +60,47 @@ public class AMBlogsEntryExportImportContentProcessor
 		throws Exception {
 
 		String replacedContent =
-			_exportImportContentProcessor.replaceImportContentReferences(
-				portletDataContext, stagedModel, content);
-		AMEmbeddedReferenceSet amEmbeddedReferenceSet =
-			_amEmbeddedReferenceSetFactory.create(
-				portletDataContext, stagedModel);
+			_blogsEntryExportImportContentProcessor.
+				replaceImportContentReferences(
+					portletDataContext, stagedModel, content);
 
-		return _replace(replacedContent, amEmbeddedReferenceSet);
-	}
-
-	@Reference(unbind = "-")
-	public void setAMEmbeddedReferenceSetFactory(
-		AMEmbeddedReferenceSetFactory amEmbeddedReferenceSetFactory) {
-
-		_amEmbeddedReferenceSetFactory = amEmbeddedReferenceSetFactory;
-	}
-
-	@Reference(unbind = "-")
-	public void setAMImageHTMLTagFactory(
-		AMImageHTMLTagFactory amImageHTMLTagFactory) {
-
-		_amImageHTMLTagFactory = amImageHTMLTagFactory;
-	}
-
-	@Reference(unbind = "-")
-	public void setDLAppLocalService(DLAppLocalService dlAppLocalService) {
-		_dlAppLocalService = dlAppLocalService;
-	}
-
-	@Reference(
-		target = "(objectClass=com.liferay.blogs.internal.exportimport.content.processor.BlogsEntryExportImportContentProcessor)",
-		unbind = "-"
-	)
-	public void setExportImportContentProcessor(
-		ExportImportContentProcessor<String> exportImportContentProcessor) {
-
-		_exportImportContentProcessor = exportImportContentProcessor;
+		return _htmlExportImportContentProcessor.replaceImportContentReferences(
+			portletDataContext, stagedModel, replacedContent);
 	}
 
 	@Override
 	public void validateContentReferences(long groupId, String content)
 		throws PortalException {
 
-		_exportImportContentProcessor.validateContentReferences(
+		_blogsEntryExportImportContentProcessor.validateContentReferences(
 			groupId, content);
 
-		Document document = _parseDocument(content);
-
-		for (Element element : document.select("[data-fileEntryId]")) {
-			long fileEntryId = Long.valueOf(element.attr("data-fileEntryId"));
-
-			_dlAppLocalService.getFileEntry(fileEntryId);
-		}
+		_htmlExportImportContentProcessor.validateContentReferences(
+			groupId, content);
 	}
 
-	private FileEntry _getFileEntry(long fileEntryId) {
-		try {
-			return _dlAppLocalService.getFileEntry(fileEntryId);
-		}
-		catch (PortalException pe) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(pe, pe);
-			}
+	@Reference(
+		target = "(&(model.class.name=com.liferay.blogs.kernel.model.BlogsEntry)(!(component.name=com.liferay.adaptive.media.blogs.internal.exportimport.content.processor.AMBlogsEntryExportImportContentProcessor)))",
+		unbind = "-"
+	)
+	protected void setBlogsEntryExportImportContentProcessor(
+		ExportImportContentProcessor<String>
+			blogsEntryExportImportContentProcessor) {
 
-			return null;
-		}
+		_blogsEntryExportImportContentProcessor =
+			blogsEntryExportImportContentProcessor;
 	}
 
-	private Document _parseDocument(String html) {
-		Document.OutputSettings outputSettings = new Document.OutputSettings();
+	@Reference(target = "(adaptive.media.format=html)", unbind = "-")
+	protected void setHTMLExportImportContentProcessor(
+		ExportImportContentProcessor<String> htmlExportImportContentProcessor) {
 
-		outputSettings.prettyPrint(false);
-		outputSettings.syntax(Document.OutputSettings.Syntax.xml);
-
-		Document document = Jsoup.parseBodyFragment(html);
-
-		document.outputSettings(outputSettings);
-
-		return document;
+		_htmlExportImportContentProcessor = htmlExportImportContentProcessor;
 	}
 
-	private Element _parseNode(String tag) {
-		Document document = _parseDocument(tag);
-
-		Element bodyElement = document.body();
-
-		return bodyElement.child(0);
-	}
-
-	private String _replace(
-			String content, AMEmbeddedReferenceSet amEmbeddedReferenceSet)
-		throws PortalException {
-
-		Document document = _parseDocument(content);
-
-		Elements elements = document.getElementsByAttribute(
-			_ATTRIBUTE_NAME_EXPORT_IMPORT_PATH);
-
-		for (Element element : elements) {
-			String path = element.attr(_ATTRIBUTE_NAME_EXPORT_IMPORT_PATH);
-
-			if (!amEmbeddedReferenceSet.containsReference(path)) {
-				continue;
-			}
-
-			long fileEntryId = amEmbeddedReferenceSet.importReference(path);
-
-			FileEntry fileEntry = _getFileEntry(fileEntryId);
-
-			if (fileEntry == null) {
-				continue;
-			}
-
-			element.attr("data-fileEntryId", String.valueOf(fileEntryId));
-			element.removeAttr(_ATTRIBUTE_NAME_EXPORT_IMPORT_PATH);
-
-			if ("picture".equals(element.tagName())) {
-				Elements imgElements = element.getElementsByTag("img");
-
-				Element imgElement = imgElements.first();
-
-				Element picture = _parseNode(
-					_amImageHTMLTagFactory.create(
-						imgElement.toString(), fileEntry));
-
-				element.html(picture.html());
-			}
-		}
-
-		Element bodyElement = document.body();
-
-		return bodyElement.html();
-	}
-
-	private String _replace(
-			String content, AMReferenceExporter amReferenceExporter)
-		throws PortalException {
-
-		Document document = _parseDocument(content);
-
-		for (Element element : document.select("[data-fileEntryId]")) {
-			long fileEntryId = Long.valueOf(element.attr("data-fileEntryId"));
-
-			FileEntry fileEntry = _dlAppLocalService.getFileEntry(fileEntryId);
-
-			amReferenceExporter.exportReference(fileEntry);
-
-			element.removeAttr("data-fileEntryId");
-			element.attr(
-				_ATTRIBUTE_NAME_EXPORT_IMPORT_PATH,
-				ExportImportPathUtil.getModelPath(fileEntry));
-		}
-
-		Element bodyElement = document.body();
-
-		return bodyElement.html();
-	}
-
-	private static final String _ATTRIBUTE_NAME_EXPORT_IMPORT_PATH =
-		"export-import-path";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		AMBlogsEntryExportImportContentProcessor.class);
-
-	private AMEmbeddedReferenceSetFactory _amEmbeddedReferenceSetFactory;
-	private AMImageHTMLTagFactory _amImageHTMLTagFactory;
-	private DLAppLocalService _dlAppLocalService;
-	private ExportImportContentProcessor<String> _exportImportContentProcessor;
+	private ExportImportContentProcessor<String>
+		_blogsEntryExportImportContentProcessor;
+	private ExportImportContentProcessor<String>
+		_htmlExportImportContentProcessor;
 
 }

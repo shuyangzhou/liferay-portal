@@ -60,7 +60,7 @@ public class AMImageDemo extends BasePortalInstanceLifecycleListener {
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Non Adaptive Media Image created with file entry id " +
+					"Non adaptive media image created with file entry " +
 						fileEntry.getFileEntryId());
 			}
 		}
@@ -76,7 +76,7 @@ public class AMImageDemo extends BasePortalInstanceLifecycleListener {
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Adaptive Media Image created with file entry id " +
+					"Adaptive media image created with file entry " +
 						fileEntry.getFileEntryId());
 			}
 		}

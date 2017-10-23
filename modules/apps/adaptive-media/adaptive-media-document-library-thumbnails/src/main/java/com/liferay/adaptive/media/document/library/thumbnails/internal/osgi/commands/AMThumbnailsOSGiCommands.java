@@ -321,7 +321,7 @@ public class AMThumbnailsOSGiCommands {
 
 			_amImageEntryLocalService.addAMImageEntry(
 				amImageConfigurationEntry, fileVersion,
-				renderedImage.getWidth(), renderedImage.getHeight(),
+				renderedImage.getHeight(), renderedImage.getWidth(),
 				new UnsyncByteArrayInputStream(bytes), bytes.length);
 		}
 		catch (IOException | PortalException e) {

@@ -69,6 +69,7 @@ import com.liferay.journal.util.JournalConverter;
 import com.liferay.journal.util.comparator.ArticleIDComparator;
 import com.liferay.journal.util.comparator.ArticleVersionComparator;
 import com.liferay.journal.util.impl.JournalUtil;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -131,7 +132,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -3692,9 +3692,16 @@ public class JournalArticleLocalServiceImpl
 		List<JournalArticle> articles = journalArticlePersistence.findByG_A(
 			groupId, articleId);
 
+		String treePath = null;
+
 		for (JournalArticle article : articles) {
 			article.setFolderId(newFolderId);
-			article.setTreePath(article.buildTreePath());
+
+			if (treePath == null) {
+				treePath = article.buildTreePath();
+			}
+
+			article.setTreePath(treePath);
 
 			journalArticlePersistence.update(article);
 		}
@@ -8313,21 +8320,23 @@ public class JournalArticleLocalServiceImpl
 			validate(articleId);
 		}
 
-		JournalArticle article = journalArticlePersistence.fetchByG_A_V(
-			groupId, articleId, version);
+		if (!ExportImportThreadLocal.isImportInProcess() || autoArticleId) {
+			List<JournalArticle> articles = journalArticlePersistence.findByG_A(
+				groupId, articleId);
 
-		if (article != null) {
-			StringBundler sb = new StringBundler(7);
+			if (!articles.isEmpty()) {
+				StringBundler sb = new StringBundler(7);
 
-			sb.append("{groupId=");
-			sb.append(groupId);
-			sb.append(", articleId=");
-			sb.append(articleId);
-			sb.append(", version=");
-			sb.append(version);
-			sb.append("}");
+				sb.append("{groupId=");
+				sb.append(groupId);
+				sb.append(", articleId=");
+				sb.append(articleId);
+				sb.append(", version=");
+				sb.append(version);
+				sb.append("}");
 
-			throw new DuplicateArticleIdException(sb.toString());
+				throw new DuplicateArticleIdException(sb.toString());
+			}
 		}
 
 		validate(

@@ -266,8 +266,7 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 		else if (article.isPending()) {
 			hasPermission = WorkflowPermissionUtil.hasPermission(
 				permissionChecker, article.getGroupId(),
-				JournalArticle.class.getName(), article.getResourcePrimKey(),
-				actionId);
+				JournalArticle.class.getName(), article.getId(), actionId);
 
 			if (hasPermission != null) {
 				return hasPermission.booleanValue();

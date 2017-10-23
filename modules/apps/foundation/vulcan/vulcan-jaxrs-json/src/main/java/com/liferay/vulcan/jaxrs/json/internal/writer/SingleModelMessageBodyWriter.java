@@ -23,6 +23,7 @@ import com.liferay.vulcan.alias.BinaryFunction;
 import com.liferay.vulcan.error.VulcanDeveloperError;
 import com.liferay.vulcan.error.VulcanDeveloperError.MustHaveProvider;
 import com.liferay.vulcan.jaxrs.json.internal.JSONObjectBuilderImpl;
+import com.liferay.vulcan.language.Language;
 import com.liferay.vulcan.list.FunctionalList;
 import com.liferay.vulcan.message.json.JSONObjectBuilder;
 import com.liferay.vulcan.message.json.SingleModelMessageMapper;
@@ -40,10 +41,13 @@ import com.liferay.vulcan.wiring.osgi.util.GenericUtil;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+
+import java.nio.charset.StandardCharsets;
 
 import java.util.List;
 import java.util.Map;
@@ -108,7 +112,10 @@ public class SingleModelMessageBodyWriter<T>
 			OutputStream entityStream)
 		throws IOException, WebApplicationException {
 
-		PrintWriter printWriter = new PrintWriter(entityStream, true);
+		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
+			entityStream, StandardCharsets.UTF_8);
+
+		PrintWriter printWriter = new PrintWriter(outputStreamWriter, true);
 
 		Stream<SingleModelMessageMapper<T>> stream =
 			_singleModelMessageMappers.stream();
@@ -145,9 +152,15 @@ public class SingleModelMessageBodyWriter<T>
 		Embedded embedded = embeddedOptional.orElseThrow(
 			() -> new MustHaveProvider(Embedded.class));
 
+		Optional<Language> optional = _providerManager.provide(
+			Language.class, _httpServletRequest);
+
+		Language language = optional.orElseThrow(
+			() -> new MustHaveProvider(Language.class));
+
 		_writeModel(
 			singleModelMessageMapper, jsonObjectBuilder, singleModel, fields,
-			embedded);
+			embedded, language);
 
 		JsonObject jsonObject = jsonObjectBuilder.build();
 
@@ -161,7 +174,7 @@ public class SingleModelMessageBodyWriter<T>
 		JSONObjectBuilder jsonObjectBuilder, RelatedModel<U, V> relatedModel,
 		SingleModel<U> parentSingleModel,
 		FunctionalList<String> parentEmbeddedPathElements, Fields fields,
-		Embedded embedded) {
+		Embedded embedded, Language language) {
 
 		_writerHelper.writeRelatedModel(
 			relatedModel, parentSingleModel, parentEmbeddedPathElements,
@@ -176,6 +189,13 @@ public class SingleModelMessageBodyWriter<T>
 							mapEmbeddedResourceBooleanField(
 								jsonObjectBuilder, embeddedPathElements,
 								fieldName, value));
+
+				_writerHelper.writeLocalizedStringFields(
+					singleModel.getModel(), modelClass, fields, language,
+					(fieldName, value) ->
+						singleModelMessageMapper.mapEmbeddedResourceStringField(
+							jsonObjectBuilder, embeddedPathElements, fieldName,
+							value));
 
 				_writerHelper.writeNumberFields(
 					singleModel.getModel(), modelClass, fields,
@@ -227,7 +247,8 @@ public class SingleModelMessageBodyWriter<T>
 							embeddedRelatedModel -> _writeEmbeddedRelatedModel(
 								singleModelMessageMapper, jsonObjectBuilder,
 								embeddedRelatedModel, singleModel,
-								embeddedPathElements, fields, embedded));
+								embeddedPathElements, fields, embedded,
+								language));
 
 						List<RelatedModel<V, ?>> linkedRelatedModels =
 							representor.getLinkedRelatedModels();
@@ -278,7 +299,7 @@ public class SingleModelMessageBodyWriter<T>
 	private <U> void _writeModel(
 		SingleModelMessageMapper<U> singleModelMessageMapper,
 		JSONObjectBuilder jsonObjectBuilder, SingleModel<U> singleModel,
-		Fields fields, Embedded embedded) {
+		Fields fields, Embedded embedded, Language language) {
 
 		U model = singleModel.getModel();
 
@@ -290,6 +311,12 @@ public class SingleModelMessageBodyWriter<T>
 		_writerHelper.writeBooleanFields(
 			singleModel.getModel(), singleModel.getModelClass(), fields,
 			(field, value) -> singleModelMessageMapper.mapBooleanField(
+				jsonObjectBuilder, field, value));
+
+		_writerHelper.writeLocalizedStringFields(
+			singleModel.getModel(), singleModel.getModelClass(), fields,
+			language,
+			(field, value) -> singleModelMessageMapper.mapStringField(
 				jsonObjectBuilder, field, value));
 
 		_writerHelper.writeNumberFields(
@@ -340,7 +367,7 @@ public class SingleModelMessageBodyWriter<T>
 					embeddedRelatedModel -> _writeEmbeddedRelatedModel(
 						singleModelMessageMapper, jsonObjectBuilder,
 						embeddedRelatedModel, singleModel, null, fields,
-						embedded));
+						embedded, language));
 
 				List<RelatedModel<U, ?>> linkedRelatedModels =
 					representor.getLinkedRelatedModels();
