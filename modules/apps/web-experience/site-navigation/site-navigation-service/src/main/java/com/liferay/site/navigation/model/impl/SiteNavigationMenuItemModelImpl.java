@@ -19,6 +19,8 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
+import com.liferay.petra.string.StringPool;
+
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -30,7 +32,6 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.site.navigation.model.SiteNavigationMenuItem;
 import com.liferay.site.navigation.model.SiteNavigationMenuItemModel;
@@ -114,8 +115,9 @@ public class SiteNavigationMenuItemModelImpl extends BaseModelImpl<SiteNavigatio
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.site.navigation.service.util.ServiceProps.get(
 				"value.object.column.bitmask.enabled.com.liferay.site.navigation.model.SiteNavigationMenuItem"),
 			true);
-	public static final long SITENAVIGATIONMENUID_COLUMN_BITMASK = 1L;
-	public static final long SITENAVIGATIONMENUITEMID_COLUMN_BITMASK = 2L;
+	public static final long PARENTSITENAVIGATIONMENUITEMID_COLUMN_BITMASK = 1L;
+	public static final long SITENAVIGATIONMENUID_COLUMN_BITMASK = 2L;
+	public static final long SITENAVIGATIONMENUITEMID_COLUMN_BITMASK = 4L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -433,7 +435,19 @@ public class SiteNavigationMenuItemModelImpl extends BaseModelImpl<SiteNavigatio
 	@Override
 	public void setParentSiteNavigationMenuItemId(
 		long parentSiteNavigationMenuItemId) {
+		_columnBitmask |= PARENTSITENAVIGATIONMENUITEMID_COLUMN_BITMASK;
+
+		if (!_setOriginalParentSiteNavigationMenuItemId) {
+			_setOriginalParentSiteNavigationMenuItemId = true;
+
+			_originalParentSiteNavigationMenuItemId = _parentSiteNavigationMenuItemId;
+		}
+
 		_parentSiteNavigationMenuItemId = parentSiteNavigationMenuItemId;
+	}
+
+	public long getOriginalParentSiteNavigationMenuItemId() {
+		return _originalParentSiteNavigationMenuItemId;
 	}
 
 	@JSON
@@ -577,6 +591,10 @@ public class SiteNavigationMenuItemModelImpl extends BaseModelImpl<SiteNavigatio
 		siteNavigationMenuItemModelImpl._originalSiteNavigationMenuId = siteNavigationMenuItemModelImpl._siteNavigationMenuId;
 
 		siteNavigationMenuItemModelImpl._setOriginalSiteNavigationMenuId = false;
+
+		siteNavigationMenuItemModelImpl._originalParentSiteNavigationMenuItemId = siteNavigationMenuItemModelImpl._parentSiteNavigationMenuItemId;
+
+		siteNavigationMenuItemModelImpl._setOriginalParentSiteNavigationMenuItemId = false;
 
 		siteNavigationMenuItemModelImpl._columnBitmask = 0;
 	}
@@ -747,6 +765,8 @@ public class SiteNavigationMenuItemModelImpl extends BaseModelImpl<SiteNavigatio
 	private long _originalSiteNavigationMenuId;
 	private boolean _setOriginalSiteNavigationMenuId;
 	private long _parentSiteNavigationMenuItemId;
+	private long _originalParentSiteNavigationMenuItemId;
+	private boolean _setOriginalParentSiteNavigationMenuItemId;
 	private String _type;
 	private String _typeSettings;
 	private long _columnBitmask;

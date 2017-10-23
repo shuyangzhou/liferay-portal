@@ -17,8 +17,8 @@ package com.liferay.adaptive.media.image.content.transformer.backwards.compatibi
 import com.liferay.adaptive.media.content.transformer.constants.ContentTransformerContentTypes;
 import com.liferay.adaptive.media.image.html.AMImageHTMLTagFactory;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.repository.model.FileEntry;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import org.junit.Assert;
@@ -35,13 +35,6 @@ public class AMBackwardsCompatibilityHtmlContentTransformerTest {
 	@Before
 	public void setUp() throws Exception {
 		Mockito.when(
-			_dlAppLocalService.getFileEntryByUuidAndGroupId(
-				Mockito.anyString(), Mockito.anyLong())
-		).thenReturn(
-			_fileEntry
-		);
-
-		Mockito.when(
 			_amImageHTMLTagFactory.create(
 				Mockito.anyString(), Mockito.any(FileEntry.class))
 		).thenReturn(
@@ -49,6 +42,14 @@ public class AMBackwardsCompatibilityHtmlContentTransformerTest {
 		);
 
 		_contentTransformer.setAMImageHTMLTagFactory(_amImageHTMLTagFactory);
+
+		Mockito.when(
+			_dlAppLocalService.getFileEntryByUuidAndGroupId(
+				Mockito.anyString(), Mockito.anyLong())
+		).thenReturn(
+			_fileEntry
+		);
+
 		_contentTransformer.setDLAppLocalService(_dlAppLocalService);
 	}
 

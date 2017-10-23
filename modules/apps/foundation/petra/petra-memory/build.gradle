@@ -1,3 +1,7 @@
 liferay {
 	deployDir = appServerLibGlobalDir
 }
+
+dependencies {
+	provided group: "com.liferay", name: "com.liferay.petra.string", version: "1.0.0"
+}

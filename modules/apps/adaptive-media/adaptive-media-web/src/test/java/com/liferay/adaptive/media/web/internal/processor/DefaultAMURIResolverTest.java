@@ -16,10 +16,10 @@ package com.liferay.adaptive.media.web.internal.processor;
 
 import com.liferay.adaptive.media.AMURIResolver;
 import com.liferay.adaptive.media.web.internal.constants.AMWebConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.net.URI;

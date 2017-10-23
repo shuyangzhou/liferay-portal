@@ -5,10 +5,10 @@ import ${apiPackagePath}.model.${entity.name};
 <#if entity.hasLocalService() && entity.hasColumns()>
 	import ${apiPackagePath}.service.${entity.name}LocalServiceUtil;
 
+	import com.liferay.petra.string.StringPool;
 	import com.liferay.portal.kernel.exception.PortalException;
 	import com.liferay.portal.kernel.model.TreeModel;
 	import com.liferay.portal.kernel.util.StringBundler;
-	import com.liferay.portal.kernel.util.StringPool;
 
 	import java.util.ArrayList;
 	import java.util.List;

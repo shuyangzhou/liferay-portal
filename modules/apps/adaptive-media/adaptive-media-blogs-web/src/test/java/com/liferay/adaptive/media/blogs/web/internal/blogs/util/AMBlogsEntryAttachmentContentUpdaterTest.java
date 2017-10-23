@@ -14,11 +14,11 @@
 
 package com.liferay.adaptive.media.blogs.web.internal.blogs.util;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepository;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.StringPool;
 
 import org.junit.Assert;
 import org.junit.Before;

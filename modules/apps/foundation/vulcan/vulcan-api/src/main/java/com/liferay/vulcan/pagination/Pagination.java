@@ -18,46 +18,41 @@ import aQute.bnd.annotation.ProviderType;
 
 /**
  * Defines pagination for a collection endpoint. An instance of this interface
- * will be handed to resources that handle pagination params.
+ * is handed to resources that handle pagination parameters.
  *
  * @author Alejandro Hernández
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
  * @see    Page
- * @review
  */
 @ProviderType
 public interface Pagination {
 
 	/**
-	 * Returns the position of the last element for the requested page.
+	 * Returns the position of the requested page's last element.
 	 *
-	 * @return the position of the last element for the requested page.
-	 * @review
+	 * @return the position of the requested page's last element
 	 */
 	public int getEndPosition();
 
 	/**
 	 * Returns the selected number of items per page.
 	 *
-	 * @return the selected number of items per page.
-	 * @review
+	 * @return the selected number of items per page
 	 */
 	public int getItemsPerPage();
 
 	/**
-	 * Returns the number of the requested page.
+	 * Returns the requested page's number.
 	 *
-	 * @return the number of the requested page.
-	 * @review
+	 * @return the requested page's number
 	 */
 	public int getPageNumber();
 
 	/**
-	 * Returns the position of the first element for the requested page.
+	 * Returns the position of the requested page's first element.
 	 *
-	 * @return the position of the first element for the requested page.
-	 * @review
+	 * @return the position of the requested page's first element
 	 */
 	public int getStartPosition();
 

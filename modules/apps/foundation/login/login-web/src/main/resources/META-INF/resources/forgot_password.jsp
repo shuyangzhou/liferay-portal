@@ -53,7 +53,14 @@ if (reminderAttempts == null) {
 		UserLockoutException.PasswordPolicyLockout ule = (UserLockoutException.PasswordPolicyLockout)errorException;
 		%>
 
-		<liferay-ui:message arguments="<%= ule.user.getUnlockDate() %>" key="this-account-is-locked-until-x" translateArguments="<%= false %>" />
+		<c:choose>
+			<c:when test="<%= ule.passwordPolicy.isRequireUnlock() %>">
+				<liferay-ui:message key="this-account-is-locked" />
+			</c:when>
+			<c:otherwise>
+				<liferay-ui:message arguments="<%= ule.user.getUnlockDate() %>" key="this-account-is-locked-until-x" translateArguments="<%= false %>" />
+			</c:otherwise>
+		</c:choose>
 	</liferay-ui:error>
 
 	<liferay-ui:error exception="<%= UserReminderQueryException.class %>" message="your-answer-does-not-match-what-is-in-our-database" />

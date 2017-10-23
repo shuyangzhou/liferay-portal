@@ -21,6 +21,7 @@ import com.liferay.message.boards.kernel.exception.MailingListOutEmailAddressExc
 import com.liferay.message.boards.kernel.exception.MailingListOutServerNameException;
 import com.liferay.message.boards.kernel.exception.MailingListOutUserNameException;
 import com.liferay.message.boards.kernel.model.MBMailingList;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.model.User;
@@ -31,7 +32,6 @@ import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactoryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portlet.messageboards.messaging.MailingListRequest;
 import com.liferay.portlet.messageboards.service.base.MBMailingListLocalServiceBaseImpl;

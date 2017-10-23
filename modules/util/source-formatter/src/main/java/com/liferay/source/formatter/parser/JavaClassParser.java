@@ -14,10 +14,10 @@
 
 package com.liferay.source.formatter.parser;
 
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
-import com.liferay.portal.kernel.util.CharPool;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.tools.JavaImportsFormatter;
@@ -78,6 +78,10 @@ public class JavaClassParser {
 		String className = JavaSourceUtil.getClassName(fileName);
 
 		int x = content.indexOf("\npublic ");
+
+		if (x == -1) {
+			x = content.indexOf("\npublic\n");
+		}
 
 		if (x == -1) {
 			return null;

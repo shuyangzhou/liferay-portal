@@ -20,42 +20,35 @@ import com.liferay.vulcan.resource.identifier.Identifier;
 import com.liferay.vulcan.uri.Path;
 
 /**
- * Instances of this interface will be used to convert from a {@link Path} to
- * its correspondent {@link Identifier} and vice versa.
+ * Converts a {@link Path} to its corresponding {@link Identifier}, and vice
+ * versa.
  *
  * <p>
- * {@link PathIdentifierMapper}s should only be created for {@link Identifier}s
- * used as a single model's identifier.
- * </p>
- *
- * <p>
- * The class of the identifier can then be provided as a parameter in {@link
- * com.liferay.vulcan.resource.builder.RoutesBuilder}{@code
- * #addCollectionPageItemGetter} methods.
+ * Instances of {@code PathIdentifierMapper} should only be created for
+ * identifiers used as a single model's identifier. The identifier's class can
+ * then be provided as a parameter in the {@code addCollectionPageItemGetter}
+ * methods of {@link com.liferay.vulcan.resource.builder.RoutesBuilder}.
  * </p>
  *
  * @author Alejandro Hernández
- * @review
  */
 @ConsumerType
 public interface PathIdentifierMapper<T extends Identifier> {
 
 	/**
-	 * Converts a {@code Path} to its correspondent {@code Identifier}
+	 * Converts a path to its corresponding identifier.
 	 *
-	 * @param  path the path of the resource.
-	 * @return the correspondent {@code Identifier}.
-	 * @review
+	 * @param  path the resource's path
+	 * @return the corresponding identifier
 	 */
 	public T map(Path path);
 
 	/**
-	 * Converts an {@code Identifier} to its correspondent {@code Path}
+	 * Converts an identifier to its corresponding path.
 	 *
-	 * @param  t the identifier.
-	 * @param  modelClass the class of the model identified by the identifier.
-	 * @return the correspondent {@code Path}.
-	 * @review
+	 * @param  t the identifier
+	 * @param  modelClass the class of the model identified by the identifier
+	 * @return the corresponding path
 	 */
 	public <U> Path map(T t, Class<U> modelClass);
 

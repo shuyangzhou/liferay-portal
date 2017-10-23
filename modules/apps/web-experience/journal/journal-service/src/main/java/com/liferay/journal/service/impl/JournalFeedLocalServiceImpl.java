@@ -18,6 +18,8 @@ import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.model.DDMStructureLink;
+import com.liferay.dynamic.data.mapping.service.DDMStructureLinkLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.journal.exception.DuplicateFeedIdException;
 import com.liferay.journal.exception.FeedContentFieldException;
@@ -28,6 +30,8 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFeed;
 import com.liferay.journal.model.JournalFeedConstants;
 import com.liferay.journal.service.base.JournalFeedLocalServiceBaseImpl;
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -36,12 +40,10 @@ import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.RSSUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -114,6 +116,16 @@ public class JournalFeedLocalServiceImpl
 
 		journalFeedPersistence.update(feed);
 
+		// DDM Structure Link
+
+		DDMStructure ddmStructure = ddmStructureLocalService.getStructure(
+			groupId, classNameLocalService.getClassNameId(JournalArticle.class),
+			ddmStructureKey, true);
+
+		ddmStructureLinkLocalService.addStructureLink(
+			classNameLocalService.getClassNameId(JournalFeed.class),
+			feed.getPrimaryKey(), ddmStructure.getStructureId());
+
 		// Resources
 
 		if (serviceContext.isAddGroupPermissions() ||
@@ -184,6 +196,17 @@ public class JournalFeedLocalServiceImpl
 		// Feed
 
 		journalFeedPersistence.remove(feed);
+
+		// DDM Structure Link
+
+		DDMStructure ddmStructure = ddmStructureLocalService.getStructure(
+			feed.getGroupId(),
+			classNameLocalService.getClassNameId(JournalArticle.class),
+			feed.getDDMStructureKey(), true);
+
+		ddmStructureLinkLocalService.deleteStructureLink(
+			classNameLocalService.getClassNameId(JournalFeed.class),
+			feed.getPrimaryKey(), ddmStructure.getStructureId());
 
 		// Resources
 
@@ -325,6 +348,23 @@ public class JournalFeedLocalServiceImpl
 
 		journalFeedPersistence.update(feed);
 
+		//DDM Structure Link
+
+		long classNameId = classNameLocalService.getClassNameId(
+			JournalFeed.class);
+
+		DDMStructureLink ddmStructureLink =
+			ddmStructureLinkLocalService.getUniqueStructureLink(
+				classNameId, feed.getPrimaryKey());
+
+		DDMStructure ddmStructure = ddmStructureLocalService.getStructure(
+			groupId, classNameLocalService.getClassNameId(JournalArticle.class),
+			ddmStructureKey, true);
+
+		ddmStructureLinkLocalService.updateStructureLink(
+			ddmStructureLink.getStructureLinkId(), classNameId,
+			feed.getPrimaryKey(), ddmStructure.getStructureId());
+
 		return feed;
 	}
 
@@ -438,6 +478,9 @@ public class JournalFeedLocalServiceImpl
 				"Invalid content field " + contentField);
 		}
 	}
+
+	@ServiceReference(type = DDMStructureLinkLocalService.class)
+	protected DDMStructureLinkLocalService ddmStructureLinkLocalService;
 
 	@ServiceReference(type = DDMStructureLocalService.class)
 	protected DDMStructureLocalService ddmStructureLocalService;

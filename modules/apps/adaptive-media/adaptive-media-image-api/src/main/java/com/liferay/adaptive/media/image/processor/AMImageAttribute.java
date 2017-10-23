@@ -25,13 +25,13 @@ import java.util.Map;
  */
 public final class AMImageAttribute {
 
-	public static final AMAttribute<AMImageProcessor, Integer> IMAGE_HEIGHT =
-		new AMAttribute<>(
+	public static final AMAttribute<AMImageProcessor, Integer>
+		AM_IMAGE_ATTRIBUTE_HEIGHT = new AMAttribute<>(
 			"height", AMAttributeConverterUtil::parseInt,
 			AMImageAttribute::_intDistance);
 
-	public static final AMAttribute<AMImageProcessor, Integer> IMAGE_WIDTH =
-		new AMAttribute<>(
+	public static final AMAttribute<AMImageProcessor, Integer>
+		AM_IMAGE_ATTRIBUTE_WIDTH = new AMAttribute<>(
 			"width", AMAttributeConverterUtil::parseInt,
 			AMImageAttribute::_intDistance);
 
@@ -57,11 +57,11 @@ public final class AMImageAttribute {
 
 	static {
 		_allowedAMAttributes.put(
-			AMImageAttribute.IMAGE_HEIGHT.getName(),
-			AMImageAttribute.IMAGE_HEIGHT);
+			AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT.getName(),
+			AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT);
 		_allowedAMAttributes.put(
-			AMImageAttribute.IMAGE_WIDTH.getName(),
-			AMImageAttribute.IMAGE_WIDTH);
+			AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH.getName(),
+			AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH);
 
 		_allowedAMAttributes.putAll(AMAttribute.getAllowedAMAttributes());
 	}

@@ -15,9 +15,9 @@
 package com.liferay.journal.internal.upgrade.v1_1_2;
 
 import com.liferay.journal.configuration.JournalServiceConfiguration;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 
 import java.util.Dictionary;
