@@ -116,8 +116,8 @@ public class AMThumbnailsOSGiCommandsTest {
 		registry.ungetService(_amImageConfigurationHelperServiceReference);
 		registry.ungetService(_amImageFinderServiceReference);
 
-		_enableDocumentLibraryAM();
 		_enableAMThumbnails();
+		_enableDocumentLibraryAM();
 	}
 
 	@Before
@@ -240,7 +240,7 @@ public class AMThumbnailsOSGiCommandsTest {
 		ServiceComponentRuntime serviceComponentRuntime = registry.getService(
 			ServiceComponentRuntime.class);
 
-		Object service = registry.getService(_PROCESSOR_CLASS_NAME);
+		Object service = registry.getService(_CLASS_NAME_PROCESSOR);
 
 		if (service == null) {
 			return;
@@ -250,7 +250,7 @@ public class AMThumbnailsOSGiCommandsTest {
 
 		ComponentDescriptionDTO componentDescriptionDTO =
 			serviceComponentRuntime.getComponentDescriptionDTO(
-				bundle, _PROCESSOR_CLASS_NAME);
+				bundle, _CLASS_NAME_PROCESSOR);
 
 		if (componentDescriptionDTO == null) {
 			return;
@@ -285,13 +285,13 @@ public class AMThumbnailsOSGiCommandsTest {
 		ServiceComponentRuntime serviceComponentRuntime = registry.getService(
 			ServiceComponentRuntime.class);
 
-		Object service = registry.getService(_COMMAND_CLASS_NAME);
+		Object service = registry.getService(_CLASS_NAME_OSGI_COMMAND);
 
 		Bundle bundle = FrameworkUtil.getBundle(service.getClass());
 
 		ComponentDescriptionDTO componentDescriptionDTO =
 			serviceComponentRuntime.getComponentDescriptionDTO(
-				bundle, _PROCESSOR_CLASS_NAME);
+				bundle, _CLASS_NAME_PROCESSOR);
 
 		if (componentDescriptionDTO == null) {
 			return;
@@ -385,7 +385,7 @@ public class AMThumbnailsOSGiCommandsTest {
 	private void _run(String functionName) throws Exception {
 		Registry registry = RegistryUtil.getRegistry();
 
-		Object service = registry.getService(_COMMAND_CLASS_NAME);
+		Object service = registry.getService(_CLASS_NAME_OSGI_COMMAND);
 
 		Class<?> clazz = service.getClass();
 
@@ -399,11 +399,11 @@ public class AMThumbnailsOSGiCommandsTest {
 	private static final String _BUNDLE_SYMBOLIC_NAME =
 		"com.liferay.adaptive.media.document.library";
 
-	private static final String _COMMAND_CLASS_NAME =
+	private static final String _CLASS_NAME_OSGI_COMMAND =
 		"com.liferay.adaptive.media.document.library.thumbnails.internal." +
 			"osgi.commands.AMThumbnailsOSGiCommands";
 
-	private static final String _PROCESSOR_CLASS_NAME =
+	private static final String _CLASS_NAME_PROCESSOR =
 		"com.liferay.adaptive.media.document.library.thumbnails.internal." +
 			"processor.AMImageEntryProcessor";
 

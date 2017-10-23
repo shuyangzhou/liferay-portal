@@ -2231,10 +2231,10 @@ version 1.1.7.
 ## 5.1.11 - 2017-10-09
 
 ### Fixed
-- [LPS-63943]: Disable up-to-date check of the `mergeArtifactsPublishCommands`
-task.
-- [LPS-63943]: Fix error when executing the `writeArtifactPublishCommands` task
-from the root project directory.
+- [LPS-63943]: Disable the `mergeArtifactsPublishCommands` task's up-to-date
+check.
+- [LPS-63943]: Fix the error thrown when executing the
+`writeArtifactPublishCommands` task from the root project directory.
 
 ## 5.1.12 - 2017-10-10
 
@@ -2285,6 +2285,26 @@ from the root project directory.
 
 ### Changed
 - [LPS-74849]: Update the [Liferay Gradle Plugins] dependency to version 3.5.15.
+
+## 5.1.22 - 2017-10-19
+
+### Changed
+- [LPS-74348]: Update the [Liferay Gradle Plugins] dependency to version 3.5.16.
+
+## 5.1.23 - 2017-10-20
+
+### Changed
+- [LPS-75254]: Update the [Liferay Gradle Plugins] dependency to version 3.5.17.
+
+## 5.1.24 - 2017-10-22
+
+### Changed
+- [LPS-74457]: Update the [Liferay Gradle Plugins] dependency to version 3.5.18.
+
+## 5.1.25 - 2017-10-23
+
+### Changed
+- [LPS-74544]: Update the [Liferay Gradle Plugins] dependency to version 3.5.19.
 
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle License Report]: https://github.com/jk1/Gradle-License-Report
@@ -2511,11 +2531,13 @@ from the root project directory.
 [LPS-74314]: https://issues.liferay.com/browse/LPS-74314
 [LPS-74343]: https://issues.liferay.com/browse/LPS-74343
 [LPS-74345]: https://issues.liferay.com/browse/LPS-74345
+[LPS-74348]: https://issues.liferay.com/browse/LPS-74348
 [LPS-74368]: https://issues.liferay.com/browse/LPS-74368
 [LPS-74373]: https://issues.liferay.com/browse/LPS-74373
 [LPS-74426]: https://issues.liferay.com/browse/LPS-74426
 [LPS-74433]: https://issues.liferay.com/browse/LPS-74433
 [LPS-74449]: https://issues.liferay.com/browse/LPS-74449
+[LPS-74457]: https://issues.liferay.com/browse/LPS-74457
 [LPS-74469]: https://issues.liferay.com/browse/LPS-74469
 [LPS-74490]: https://issues.liferay.com/browse/LPS-74490
 [LPS-74538]: https://issues.liferay.com/browse/LPS-74538
@@ -2527,9 +2549,9 @@ from the root project directory.
 [LPS-74749]: https://issues.liferay.com/browse/LPS-74749
 [LPS-74752]: https://issues.liferay.com/browse/LPS-74752
 [LPS-74770]: https://issues.liferay.com/browse/LPS-74770
-[LPS-74849]: https://issues.liferay.com/browse/LPS-74849
 [LPS-74789]: https://issues.liferay.com/browse/LPS-74789
 [LPS-74824]: https://issues.liferay.com/browse/LPS-74824
+[LPS-74849]: https://issues.liferay.com/browse/LPS-74849
 [LPS-74867]: https://issues.liferay.com/browse/LPS-74867
 [LPS-74884]: https://issues.liferay.com/browse/LPS-74884
 [LPS-74892]: https://issues.liferay.com/browse/LPS-74892
