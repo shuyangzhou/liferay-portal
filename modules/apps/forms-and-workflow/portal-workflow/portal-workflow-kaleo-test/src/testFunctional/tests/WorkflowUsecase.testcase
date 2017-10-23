@@ -1119,11 +1119,15 @@
 
 		<execute function="Click" locator1="Button#PLUS" />
 
+		<execute macro="PortletEntry#inputTitle">
+			<var name="title" value="Invalid Definition" />
+		</execute>
+
 		<execute function="UploadCommonFile#uploadCommonFileHidden" locator1="WorkflowUpload#FILE_UPLOAD" value1="Document_1.txt" />
 
-		<execute macro="Button#clickSave" />
+		<execute macro="Button#clickPublish" />
 
-		<execute function="AssertTextEquals" locator1="Message#ERROR_1" value1="Please enter a valid definition." />
+		<execute function="AssertTextEquals" locator1="Message#ERROR_1" value1="Please enter a valid definition before publishing." />
 	</command>
 
 	<command name="ViewTaskCount" priority="3">
