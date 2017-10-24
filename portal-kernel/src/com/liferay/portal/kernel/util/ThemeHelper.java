@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.model.Theme;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.template.TemplateConstants;
@@ -34,6 +35,10 @@ public class ThemeHelper {
 
 	public static final String TEMPLATE_EXTENSION_JSP = "jsp";
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static final String TEMPLATE_EXTENSION_VM = "vm";
 
 	public static String getResourcePath(
@@ -93,30 +98,6 @@ public class ThemeHelper {
 
 			return sb.toString();
 		}
-		else if (extension.equals(TEMPLATE_EXTENSION_VM)) {
-			sb.append(theme.getVelocityResourceListener());
-			sb.append(theme.getTemplatesPath());
-
-			if (Validator.isNotNull(servletContextName) &&
-				!path.startsWith(StringPool.SLASH.concat(servletContextName))) {
-
-				sb.append(StringPool.SLASH);
-				sb.append(servletContextName);
-			}
-
-			sb.append(StringPool.SLASH);
-			sb.append(path.substring(start, end));
-			sb.append(StringPool.PERIOD);
-
-			if (Validator.isNotNull(portletId)) {
-				sb.append(portletId);
-				sb.append(StringPool.PERIOD);
-			}
-
-			sb.append(TEMPLATE_EXTENSION_VM);
-
-			return sb.toString();
-		}
 		else {
 			return path;
 		}
@@ -169,10 +150,6 @@ public class ThemeHelper {
 		if (extension.equals(TEMPLATE_EXTENSION_FTL)) {
 			return TemplateResourceLoaderUtil.hasTemplateResource(
 				TemplateConstants.LANG_TYPE_FTL, resourcePath);
-		}
-		else if (extension.equals(TEMPLATE_EXTENSION_VM)) {
-			return TemplateResourceLoaderUtil.hasTemplateResource(
-				TemplateConstants.LANG_TYPE_VM, resourcePath);
 		}
 		else {
 			URL url = null;

@@ -17,44 +17,42 @@ package com.liferay.vulcan.consumer;
 import java.util.Objects;
 
 /**
- * Consumer {@link java.util.function.Consumer} with eight input parameters. As
- * all the consumer interfaces, it receives several arguments and doesn't return
- * anything.
+ * Defines a {@code java.util.function.Consumer} that takes eight input
+ * parameters. This consumer, like all consumers, doesn't return a result.
  *
- * Being a functional interface, it can be implemented with a lambda function
+ * <p>
+ * This interface can be implemented with a lambda function.
+ * </p>
  *
  * @author Alejandro Hernández
- * @see    java.util.function.Consumer
- * @review
  */
 @FunctionalInterface
 public interface OctaConsumer<A, B, C, D, E, F, G, H> {
 
 	/**
-	 * The function to implement (explicitly or with a lambda), that operates
-	 * with eight parameters and returns void
+	 * Operates with eight parameters and returns {@code void}. This function
+	 * can be implemented explicitly or with a lambda.
 	 *
-	 * @param  a the first function argument
-	 * @param  b the second function argument
-	 * @param  c the third function argument
-	 * @param  d the fourth function argument
-	 * @param  e the fifth function argument
-	 * @param  f the sixth function argument
-	 * @param  g the seventh function argument
-	 * @param  h the eighth function argument
-	 * @review
+	 * @param a the first function argument
+	 * @param b the second function argument
+	 * @param c the third function argument
+	 * @param d the fourth function argument
+	 * @param e the fifth function argument
+	 * @param f the sixth function argument
+	 * @param g the seventh function argument
+	 * @param h the eighth function argument
 	 */
 	public void accept(A a, B b, C c, D d, E e, F f, G g, H h);
 
 	/**
-	 * Method that creates a lambda function (also a {@code OctaConsumer}) that
-	 * executes the {@code accept} method of this instance and then the {@code
-	 * accept} method of the {@code after} input parameter when invoked.
+	 * Returns the {@code OctaConsumer} function that first executes the current
+	 * {@code OctaConsumer} instance's {@code accept} method, then executes the
+	 * {@code after} parameter's {@code accept} method.
 	 *
-	 * @param  after the {@code OctaConsumer} to execute after this instance
-	 * @return another {@code OctaConsumer} that executes both inputs (this own
-	 *         instance plus the input parameter) in order
-	 * @review
+	 * @param  after the {@code OctaConsumer} instance to execute after the
+	 *         current instance
+	 * @return the {@code OctaConsumer} that executes the current instance's
+	 *         {@code accept} method, as well as that of {@code after}
 	 */
 	public default OctaConsumer<A, B, C, D, E, F, G, H> andThen(
 		OctaConsumer<? super A, ? super B, ? super C, ? super D, ? super E,

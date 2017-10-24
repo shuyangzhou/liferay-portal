@@ -22,11 +22,15 @@ import java.util.Map;
  */
 public enum DemoAMImageConfigurationVariant {
 
-	XS("Extra small demo size", "", "demo-xsmall", 50, 50),
-	S("Small demo size", "", "demo-small", 100, 100),
-	M("Medium size", "", "demo-medium", 400, 400),
 	L("Large demo size", "", "demo-large", 800, 800),
-	XL("Extra large demo size", "", "demo-xlarge", 1200, 1200);
+
+	M("Medium size", "", "demo-medium", 400, 400),
+
+	S("Small demo size", "", "demo-small", 100, 100),
+
+	XL("Extra large demo size", "", "demo-xlarge", 1200, 1200),
+
+	XS("Extra small demo size", "", "demo-xsmall", 50, 50);
 
 	public String getDescription() {
 		return _description;

@@ -77,19 +77,19 @@ public class AMImageEntryLocalServiceImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		_group = GroupTestUtil.addGroup();
-
 		Registry registry = RegistryUtil.getRegistry();
 
 		_amImageConfigurationHelper = registry.getService(
 			AMImageConfigurationHelper.class);
 
-		deleteAllConfigurationEntries();
+		_group = GroupTestUtil.addGroup();
+
+		deleteAllAMImageConfigurationEntries();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		deleteAllConfigurationEntries();
+		deleteAllAMImageConfigurationEntries();
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class AMImageEntryLocalServiceImplTest {
 
 		AMImageEntry amImageEntry =
 			AMImageEntryLocalServiceUtil.addAMImageEntry(
-				amImageConfigurationEntry, fileVersion, 300, 100,
+				amImageConfigurationEntry, fileVersion, 100, 300,
 				new UnsyncByteArrayInputStream(bytes), 12345);
 
 		Assert.assertEquals(
@@ -139,11 +139,11 @@ public class AMImageEntryLocalServiceImplTest {
 			_addAMImageConfigurationEntry("uuid", 100, 200);
 
 		AMImageEntryLocalServiceUtil.addAMImageEntry(
-			amImageConfigurationEntry, fileEntry.getFileVersion(), 300, 100,
+			amImageConfigurationEntry, fileEntry.getFileVersion(), 100, 300,
 			new UnsyncByteArrayInputStream(bytes), 12345);
 
 		AMImageEntryLocalServiceUtil.addAMImageEntry(
-			amImageConfigurationEntry, fileEntry.getFileVersion(), 300, 100,
+			amImageConfigurationEntry, fileEntry.getFileVersion(), 100, 300,
 			new UnsyncByteArrayInputStream(bytes), 12345);
 	}
 
@@ -164,23 +164,23 @@ public class AMImageEntryLocalServiceImplTest {
 
 		AMImageEntry amImageEntryConfiguration1FileVersion1 =
 			AMImageEntryLocalServiceUtil.addAMImageEntry(
-				amImageConfigurationEntry1, fileEntry1.getFileVersion(), 300,
-				100, new UnsyncByteArrayInputStream(bytes), 12345);
+				amImageConfigurationEntry1, fileEntry1.getFileVersion(), 100,
+				300, new UnsyncByteArrayInputStream(bytes), 12345);
 		AMImageEntry amImageEntryConfiguration2FileVersion1 =
 			AMImageEntryLocalServiceUtil.addAMImageEntry(
-				amImageConfigurationEntry2, fileEntry1.getFileVersion(), 500,
-				300, new UnsyncByteArrayInputStream(bytes), 123456);
+				amImageConfigurationEntry2, fileEntry1.getFileVersion(), 300,
+				500, new UnsyncByteArrayInputStream(bytes), 123456);
 
 		FileEntry fileEntry2 = _addFileEntry(bytes, serviceContext);
 
 		AMImageEntry amImageEntryConfiguration1FileVersion2 =
 			AMImageEntryLocalServiceUtil.addAMImageEntry(
-				amImageConfigurationEntry1, fileEntry2.getFileVersion(), 300,
-				100, new UnsyncByteArrayInputStream(bytes), 12345);
+				amImageConfigurationEntry1, fileEntry2.getFileVersion(), 100,
+				300, new UnsyncByteArrayInputStream(bytes), 12345);
 		AMImageEntry amImageEntryConfiguration2FileVersion2 =
 			AMImageEntryLocalServiceUtil.addAMImageEntry(
-				amImageConfigurationEntry2, fileEntry2.getFileVersion(), 500,
-				300, new UnsyncByteArrayInputStream(bytes), 123456);
+				amImageConfigurationEntry2, fileEntry2.getFileVersion(), 300,
+				500, new UnsyncByteArrayInputStream(bytes), 123456);
 
 		Assert.assertNotNull(
 			AMImageEntryLocalServiceUtil.fetchAMImageEntry(
@@ -229,23 +229,23 @@ public class AMImageEntryLocalServiceImplTest {
 
 		AMImageEntry amImageEntryConfiguration1FileVersion1 =
 			AMImageEntryLocalServiceUtil.addAMImageEntry(
-				amImageConfigurationEntry1, fileEntry1.getFileVersion(), 300,
-				100, new UnsyncByteArrayInputStream(bytes), 12345);
+				amImageConfigurationEntry1, fileEntry1.getFileVersion(), 100,
+				300, new UnsyncByteArrayInputStream(bytes), 12345);
 		AMImageEntry amImageEntryConfiguration2FileVersion1 =
 			AMImageEntryLocalServiceUtil.addAMImageEntry(
-				amImageConfigurationEntry2, fileEntry1.getFileVersion(), 500,
-				300, new UnsyncByteArrayInputStream(bytes), 123456);
+				amImageConfigurationEntry2, fileEntry1.getFileVersion(), 300,
+				500, new UnsyncByteArrayInputStream(bytes), 123456);
 
 		FileEntry fileEntry2 = _addFileEntry(bytes, serviceContext);
 
 		AMImageEntry amImageEntryConfiguration1FileVersion2 =
 			AMImageEntryLocalServiceUtil.addAMImageEntry(
-				amImageConfigurationEntry1, fileEntry2.getFileVersion(), 300,
-				100, new UnsyncByteArrayInputStream(bytes), 12345);
+				amImageConfigurationEntry1, fileEntry2.getFileVersion(), 100,
+				300, new UnsyncByteArrayInputStream(bytes), 12345);
 		AMImageEntry amImageEntryConfiguration2FileVersion2 =
 			AMImageEntryLocalServiceUtil.addAMImageEntry(
-				amImageConfigurationEntry2, fileEntry2.getFileVersion(), 500,
-				300, new UnsyncByteArrayInputStream(bytes), 123456);
+				amImageConfigurationEntry2, fileEntry2.getFileVersion(), 300,
+				500, new UnsyncByteArrayInputStream(bytes), 123456);
 
 		Assert.assertNotNull(
 			AMImageEntryLocalServiceUtil.fetchAMImageEntry(
@@ -310,23 +310,23 @@ public class AMImageEntryLocalServiceImplTest {
 
 		AMImageEntry amImageEntryConfiguration1FileVersion1 =
 			AMImageEntryLocalServiceUtil.addAMImageEntry(
-				amImageConfigurationEntry1, fileEntry1.getFileVersion(), 300,
-				100, new UnsyncByteArrayInputStream(bytes), 12345);
+				amImageConfigurationEntry1, fileEntry1.getFileVersion(), 100,
+				300, new UnsyncByteArrayInputStream(bytes), 12345);
 		AMImageEntry amImageEntryConfiguration2FileVersion1 =
 			AMImageEntryLocalServiceUtil.addAMImageEntry(
-				amImageConfigurationEntry2, fileEntry1.getFileVersion(), 500,
-				300, new UnsyncByteArrayInputStream(bytes), 123456);
+				amImageConfigurationEntry2, fileEntry1.getFileVersion(), 300,
+				500, new UnsyncByteArrayInputStream(bytes), 123456);
 
 		FileEntry fileEntry2 = _addFileEntry(bytes, serviceContext);
 
 		AMImageEntry amImageEntryConfiguration1FileVersion2 =
 			AMImageEntryLocalServiceUtil.addAMImageEntry(
-				amImageConfigurationEntry1, fileEntry2.getFileVersion(), 300,
-				100, new UnsyncByteArrayInputStream(bytes), 12345);
+				amImageConfigurationEntry1, fileEntry2.getFileVersion(), 100,
+				300, new UnsyncByteArrayInputStream(bytes), 12345);
 		AMImageEntry amImageEntryConfiguration2FileVersion2 =
 			AMImageEntryLocalServiceUtil.addAMImageEntry(
-				amImageConfigurationEntry2, fileEntry2.getFileVersion(), 500,
-				300, new UnsyncByteArrayInputStream(bytes), 123456);
+				amImageConfigurationEntry2, fileEntry2.getFileVersion(), 300,
+				500, new UnsyncByteArrayInputStream(bytes), 123456);
 
 		Assert.assertNotNull(
 			AMImageEntryLocalServiceUtil.fetchAMImageEntry(
@@ -377,16 +377,16 @@ public class AMImageEntryLocalServiceImplTest {
 		FileEntry fileEntry1 = _addFileEntry(bytes, serviceContext);
 
 		AMImageEntryLocalServiceUtil.addAMImageEntry(
-			amImageConfigurationEntry1, fileEntry1.getFileVersion(), 300, 100,
+			amImageConfigurationEntry1, fileEntry1.getFileVersion(), 100, 300,
 			new UnsyncByteArrayInputStream(bytes), 12345);
 		AMImageEntryLocalServiceUtil.addAMImageEntry(
-			amImageConfigurationEntry2, fileEntry1.getFileVersion(), 500, 300,
+			amImageConfigurationEntry2, fileEntry1.getFileVersion(), 300, 500,
 			new UnsyncByteArrayInputStream(bytes), 123456);
 
 		FileEntry fileEntry2 = _addFileEntry(bytes, serviceContext);
 
 		AMImageEntryLocalServiceUtil.addAMImageEntry(
-			amImageConfigurationEntry1, fileEntry2.getFileVersion(), 300, 100,
+			amImageConfigurationEntry1, fileEntry2.getFileVersion(), 100, 300,
 			new UnsyncByteArrayInputStream(bytes), 12345);
 
 		Assert.assertEquals(
@@ -401,7 +401,7 @@ public class AMImageEntryLocalServiceImplTest {
 				amImageConfigurationEntry2.getUUID()));
 	}
 
-	protected void deleteAllConfigurationEntries()
+	protected void deleteAllAMImageConfigurationEntries()
 		throws IOException, PortalException {
 
 		Collection<AMImageConfigurationEntry> amImageConfigurationEntries =

@@ -35,26 +35,23 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * Declares the endpoint from which all of your APIs originate.
- *
- * <p>
- * There should only be one RootEndpoint in the application.
- * </p>
+ * Declares the endpoint from which all of your APIs originate. There should
+ * only be one {@code RootEndpoint} in the application.
  *
  * @author Alejandro Hernández
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
- * @review
  */
 @ProviderType
 public interface RootEndpoint {
 
 	/**
-	 * Adds a new {@link SingleModel} by performing a POST request to the given
-	 * name's resource or an exception if an error occurred.
+	 * Adds a new {@link SingleModel} to the resource specified by {@code name}.
+	 * This occurs via a POST request to the resource.
 	 *
-	 * @param  name the name of the desired resource, extracted from the URL.
-	 * @return the created single model, or an exception if there was an error.
+	 * @param  name the resource's name, extracted from the URL
+	 * @param  body the body of the request.
+	 * @return the new {@link SingleModel}, or an exception if an error occurred
 	 * @review
 	 */
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -64,14 +61,14 @@ public interface RootEndpoint {
 		@PathParam("name") String name, Map<String, Object> body);
 
 	/**
-	 * Adds a new {@link SingleModel} by performing a POST request to the given
-	 * name's resource or an exception if an error occurred.
+	 * Adds a new {@link SingleModel} to the specified nested resource. This
+	 * occurs via a POST request to the nested resource.
 	 *
-	 * @param  name the name of the parent resource, extracted from the URL.
-	 * @param  id the ID of the resource.
-	 * @param  nestedName the name of the desired resource, extracted from the
-	 *         URL.
-	 * @return the created single model, or an exception if there was an error.
+	 * @param  name the parent resource's name, extracted from the URL
+	 * @param  id the parent resource's ID
+	 * @param  nestedName the nested resource's name, extracted from the URL.
+	 * @param  body the body of the request.
+	 * @return the new {@link SingleModel}, or an exception if an error occurred
 	 * @review
 	 */
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -82,14 +79,12 @@ public interface RootEndpoint {
 		@PathParam("nestedName") String nestedName, Map<String, Object> body);
 
 	/**
-	 * Deletes a collection item for a given name or an exception if an error
-	 * occurred.
+	 * Deletes the collection item specified by {@code name}.
 	 *
-	 * @param  name the name of the resource to be deleted, extracted from the
-	 *         URL.
-	 * @param  id the ID of the resource.
-	 * @return the response for the operation.
-	 * @review
+	 * @param  name the name of the resource to delete, extracted from the URL
+	 * @param  id the ID of the resource to delete
+	 * @return the operation's {@code javax.ws.rs.core.Response}, or an
+	 *         exception if an error occurred
 	 */
 	@DELETE
 	@Path("/p/{name}/{id}")
@@ -97,15 +92,13 @@ public interface RootEndpoint {
 		@PathParam("name") String name, @PathParam("id") String id);
 
 	/**
-	 * Returns the {@link InputStream} for a given resource identifier or an
-	 * exception if an error occurred.
+	 * Returns the {@code InputStream} for the specified resource.
 	 *
-	 * @param  name the name the resource, extracted from the URL.
-	 * @param  id the ID of the resource.
-	 * @param  binaryId the ID to the binary resource.
-	 * @return the input stream of the binary file, or an exception it there was
-	 *         an error.
-	 * @review
+	 * @param  name the resource's name, extracted from the URL
+	 * @param  id the resource's ID
+	 * @param  binaryId the binary resource's ID
+	 * @return the binary file's {@code java.io.InputStream}, or an exception if
+	 *         an error occurred
 	 */
 	@GET
 	@Path("/b/{name}/{id}/{binaryId}")
@@ -114,14 +107,12 @@ public interface RootEndpoint {
 		@PathParam("binaryId") String binaryId);
 
 	/**
-	 * Returns the {@link SingleModel} for a given name or an exception if an
-	 * error occurred.
+	 * Returns the {@link SingleModel} for the specified resource.
 	 *
-	 * @param  name the name of the desired resource, extracted from the URL.
-	 * @param  id the ID of the resource.
-	 * @return the single model of a resource with this name, or an exception it
-	 *         there was an error.
-	 * @review
+	 * @param  name the resource's name, extracted from the URL
+	 * @param  id the resource's ID
+	 * @return the {@link SingleModel} for the specified resource, or an
+	 *         exception if an error occurred
 	 */
 	@GET
 	@Path("/p/{name}/{id}")
@@ -129,13 +120,11 @@ public interface RootEndpoint {
 		@PathParam("name") String name, @PathParam("id") String id);
 
 	/**
-	 * Returns the collection {@link Page} for a resource with the provided name
-	 * or an exception if an error occurred.
+	 * Returns the collection {@link Page} for the specified resource.
 	 *
-	 * @param  name the name of the desired resource, extracted from the URL.
-	 * @return the collection page of a resource with this name, or an exception
-	 *         if there was an error.
-	 * @review
+	 * @param  name the resource's name, extracted from the URL
+	 * @return the collection {@link Page} for the specified resource, or an
+	 *         exception if an error occurred
 	 */
 	@GET
 	@Path("/p/{name}")
@@ -153,15 +142,13 @@ public interface RootEndpoint {
 	public String getHome();
 
 	/**
-	 * Returns a nested collection {@link Page} for a given set of
-	 * name-id-nestedName or an exception if an error occurred.
+	 * Returns a nested collection {@link Page} for the specified resource.
 	 *
-	 * @param  name the name of the parent resource, extracted from the URL.
-	 * @param  id the ID of the resource.
-	 * @param  nestedName the name of the nested resource.
-	 * @return the collection page of a resource with this combination of
-	 *         name-id-nestedName, or an exception if there was an error.
-	 * @review
+	 * @param  name the parent resource's name, extracted from the URL
+	 * @param  id the parent resource's ID
+	 * @param  nestedName the nested resource's name
+	 * @return the nested collection {@link Page} for the specified resource, or
+	 *         an exception if an error occurred
 	 */
 	@GET
 	@Path("/p/{name}/{id}/{nestedName}")
@@ -170,13 +157,13 @@ public interface RootEndpoint {
 		@PathParam("nestedName") String nestedName);
 
 	/**
-	 * Updates a collection item for a given name or an exception if an error
-	 * occurred.
+	 * Updates the specified collection item.
 	 *
-	 * @param  name the name of the resource to be updated, extracted from the
-	 *         URL.
-	 * @param  id the ID of the resource.
-	 * @return the updated single model, or an exception if there was an error.
+	 * @param  name the resource's name, extracted from the URL
+	 * @param  id the resource's ID
+	 * @param  body the body of the request.
+	 * @return the updated {@link SingleModel}, or an exception if there was an
+	 *         error
 	 * @review
 	 */
 	@Consumes(MediaType.APPLICATION_JSON)
