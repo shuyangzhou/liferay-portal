@@ -17,51 +17,51 @@ package com.liferay.vulcan.resource.builder;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.vulcan.alias.BinaryFunction;
+import com.liferay.vulcan.language.Language;
 import com.liferay.vulcan.resource.Representor;
 import com.liferay.vulcan.resource.identifier.Identifier;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * Use instances of this builder to create generic representations of your
- * domain models that Vulcan Hypermedia Writers will understand.
+ * Creates generic representations of your domain models that Vulcan hypermedia
+ * writers can understand.
  *
  * @author Alejandro Hernández
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
- * @review
  */
 @ProviderType
 public interface RepresentorBuilder<T, U extends Identifier> {
 
 	/**
-	 * Provide a lambda function that can be used to obtain the {@link
-	 * Identifier} used for a model.
+	 * Provides a lambda function that can be used to obtain a model's {@link
+	 * Identifier}.
 	 *
-	 * @param  identifierFunction function used to obtain a model's identifier.
-	 * @return builder's next step.
-	 * @review
+	 * @param  identifierFunction lambda function used to obtain a model's
+	 *         identifier
+	 * @return the builder's next step
 	 */
 	public FirstStep<T, U> identifier(Function<T, U> identifierFunction);
 
 	public interface FirstStep<T, U extends Identifier> {
 
 		/**
-		 * Use this method to provide information of a bidirectional relation of
-		 * a linked model in the actual resource and a related collection of
-		 * items of this {@link com.liferay.vulcan.resource.CollectionResource}
-		 * in the related resource.
+		 * Adds information about the bidirectional relation of a linked model
+		 * in the resource and a collection of {@link
+		 * com.liferay.vulcan.resource.CollectionResource} items in the related
+		 * resource.
 		 *
-		 * @param  key name of the relation in this resource.
-		 * @param  relatedKey name of the relation in the related resource.
-		 * @param  modelClass class of the related model.
-		 * @param  modelFunction function used to obtain the related model.
-		 * @param  identifierFunction function used to obtain the identifier for
-		 *         the collection.
-		 * @return builder's actual step.
-		 * @review
+		 * @param  key the relation's name in the resource
+		 * @param  relatedKey the relation's name in the related resource
+		 * @param  modelClass the related model's class
+		 * @param  modelFunction the function used to get the related model
+		 * @param  identifierFunction the function used to get the collection's
+		 *         identifier
+		 * @return the builder's step
 		 */
 		public <S> FirstStep<T, U> addBidirectionalModel(
 			String key, String relatedKey, Class<S> modelClass,
@@ -69,126 +69,126 @@ public interface RepresentorBuilder<T, U extends Identifier> {
 			Function<S, Identifier> identifierFunction);
 
 		/**
-		 * @param  key name of the binary resource
-		 * @param  binaryFunction function used to obtain the binaries.
-		 * @return builder's actual step.
-		 * @review
+		 * Adds binary files to a resource.
+		 *
+		 * @param  key the binary resource's name
+		 * @param  binaryFunction the function used to get the binaries
+		 * @return the builder's step
 		 */
 		public FirstStep<T, U> addBinary(
 			String key, BinaryFunction<T> binaryFunction);
 
 		/**
-		 * Use this method to provide information of a resource boolean field.
+		 * Adds information about a resource's boolean field.
 		 *
-		 * @param  key name of the field.
-		 * @param  booleanFunction function used to obtain the boolean value.
-		 * @return builder's actual step.
-		 * @review
+		 * @param  key the field's name
+		 * @param  booleanFunction the function used to get the boolean value
+		 * @return the builder's step
 		 */
 		public FirstStep<T, U> addBoolean(
 			String key, Function<T, Boolean> booleanFunction);
 
 		/**
-		 * Use this method to provide information of a resource date field.
+		 * Adds information about a resource's date field.
 		 *
-		 * @param  key name of the field.
-		 * @param  dateFunction function used to obtain the date value.
-		 * @return builder's actual step.
-		 * @review
+		 * @param  key the field's name
+		 * @param  dateFunction the function used to get the date value
+		 * @return the builder's step
 		 */
 		public FirstStep<T, U> addDate(
 			String key, Function<T, Date> dateFunction);
 
 		/**
-		 * Use this method to provide information of an embeddable related
-		 * model.
+		 * Adds information about an embeddable related model.
 		 *
-		 * @param  key name of the relation.
-		 * @param  modelClass class of the related model.
-		 * @param  modelFunction function used to obtain the related model.
-		 * @return builder's actual step.
-		 * @review
+		 * @param  key the relation's name
+		 * @param  modelClass the related model's class
+		 * @param  modelFunction the function used to get the related model
+		 * @return the builder's step
 		 */
 		public <S> FirstStep<T, U> addEmbeddedModel(
 			String key, Class<S> modelClass,
 			Function<T, Optional<S>> modelFunction);
 
 		/**
-		 * Use this method to provide information of a resource link.
+		 * Adds information about a resource link.
 		 *
-		 * @param  key name of the field.
-		 * @param  url url link's url.
-		 * @return builder's actual step.
-		 * @review
+		 * @param  key the field's name
+		 * @param  url the link's URL
+		 * @return the builder's step
 		 */
 		public FirstStep<T, U> addLink(String key, String url);
 
 		/**
-		 * Use this method to provide information of a non embeddable related
-		 * model.
+		 * Adds information about a non-embeddable related model.
 		 *
-		 * @param  key name of the relation.
-		 * @param  modelClass class of the related model.
-		 * @param  modelFunction function used to obtain the related model.
-		 * @return builder's actual step.
-		 * @review
+		 * @param  key the relation's name
+		 * @param  modelClass the related model's class
+		 * @param  modelFunction the function used to get the related model
+		 * @return the builder's step
 		 */
 		public <S> FirstStep<T, U> addLinkedModel(
 			String key, Class<S> modelClass,
 			Function<T, Optional<S>> modelFunction);
 
 		/**
-		 * Use this method to provide information of a resource number field.
-		 *
-		 * @param  key name of the field.
-		 * @param  numberFunction function used to obtain the number value.
-		 * @return builder's actual step.
-		 * @review
-		 */
-		public FirstStep<T, U> addNumber(
-			String key, Function<T, Number> numberFunction);
-
-		/**
-		 * Use this method to provide information of a related collection.
-		 *
-		 * @param  key name of the relation.
-		 * @param  modelClass class of the collection's related models.
-		 * @param  identifierFunction function used to obtain the identifier for
-		 *         the collection.
-		 * @return builder's actual step.
-		 * @review
-		 */
-		public <S> FirstStep<T, U> addRelatedCollection(
-			String key, Class<S> modelClass,
-			Function<T, Identifier> identifierFunction);
-
-		/**
-		 * Use this method to provide information of a resource string field.
+		 * Use this method to provide information of a resource localized string
+		 * field.
 		 *
 		 * @param  key name of the field.
 		 * @param  stringFunction function used to obtain the string value.
 		 * @return builder's actual step.
 		 * @review
 		 */
+		public FirstStep<T, U> addLocalizedString(
+			String key, BiFunction<T, Language, String> stringFunction);
+
+		/**
+		 * Adds information about a resource's number field.
+		 *
+		 * @param  key the field's name
+		 * @param  numberFunction the function used to get the number's value
+		 * @return the builder's step
+		 */
+		public FirstStep<T, U> addNumber(
+			String key, Function<T, Number> numberFunction);
+
+		/**
+		 * Adds information about a related collection.
+		 *
+		 * @param  key the relation's name
+		 * @param  modelClass the class of the collection's related models
+		 * @param  identifierFunction the function used to get the collection's
+		 *         identifier
+		 * @return the builder's step
+		 */
+		public <S> FirstStep<T, U> addRelatedCollection(
+			String key, Class<S> modelClass,
+			Function<T, Identifier> identifierFunction);
+
+		/**
+		 * Adds information about a resource's string field.
+		 *
+		 * @param  key the field's name
+		 * @param  stringFunction the function used to get the string's value
+		 * @return the builder's step
+		 */
 		public FirstStep<T, U> addString(
 			String key, Function<T, String> stringFunction);
 
 		/**
-		 * Use this method to provide a type for this model. Multiple types are
-		 * allowed.
+		 * Adds a type for the model. Multiple types are allowed.
 		 *
-		 * @param  type type name.
-		 * @return builder's actual step.
-		 * @review
+		 * @param  type the type name
+		 * @return the builder's step
 		 */
 		public FirstStep<T, U> addType(String type);
 
 		/**
-		 * Constructs the {@code Representor} instance with the information
-		 * provided to the builder.
+		 * Constructs and returns a {@link Representor} instance with the
+		 * information provided to the builder.
 		 *
-		 * @return the {@code Representor} instance.
-		 * @review
+		 * @return the {@code Representor} instance
 		 */
 		public Representor<T, U> build();
 

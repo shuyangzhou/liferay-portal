@@ -43,18 +43,6 @@ public class ImageStorageTest {
 		FileVersion fileVersion = Mockito.mock(FileVersion.class);
 
 		Mockito.when(
-			fileVersion.getGroupId()
-		).thenReturn(
-			1L
-		);
-
-		Mockito.when(
-			fileVersion.getRepositoryId()
-		).thenReturn(
-			2L
-		);
-
-		Mockito.when(
 			fileVersion.getFileEntryId()
 		).thenReturn(
 			3L
@@ -64,6 +52,18 @@ public class ImageStorageTest {
 			fileVersion.getFileVersionId()
 		).thenReturn(
 			4L
+		);
+
+		Mockito.when(
+			fileVersion.getGroupId()
+		).thenReturn(
+			1L
+		);
+
+		Mockito.when(
+			fileVersion.getRepositoryId()
+		).thenReturn(
+			2L
 		);
 
 		String configurationUuid = StringUtil.randomString();

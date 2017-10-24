@@ -129,20 +129,24 @@ renderResponse.setTitle(fragmentDisplayContext.getFragmentCollectionTitle());
 	</liferay-frontend:add-menu>
 
 	<aui:script require="fragment-web/js/FragmentNameEditor,metal-dom/src/all/dom">
+		var fragmentNameEditor;
+
 		var updateFragmentActionOptionQueryClickHandler = metalDomSrcAllDom.default.delegate(
 			document.body,
 			'click',
-			'.<portlet:namespace />update-fragment-action-option',
+			'.<portlet:namespace />update-fragment-action-option > a',
 			function(event) {
-				var actionElement = event.target;
+				var actionElement = event.delegateTarget;
 
-				var fragmentNameEditor = new fragmentWebJsFragmentNameEditor.default(
+				fragmentNameEditor = new fragmentWebJsFragmentNameEditor.default(
 					{
 						actionURL: actionElement.dataset.updateUrl,
 						editorTitle: '<liferay-ui:message key="rename-fragment" />',
 						events: {
 							hide: function() {
 								fragmentNameEditor.dispose();
+
+								fragmentNameEditor = null;
 							}
 						},
 						fragmentEntryId: actionElement.dataset.fragmentEntryId,
@@ -157,13 +161,15 @@ renderResponse.setTitle(fragmentDisplayContext.getFragmentCollectionTitle());
 		function handleAddFragmentEntryMenuItemClick(event) {
 			event.preventDefault();
 
-			var fragmentNameEditor = new fragmentWebJsFragmentNameEditor.default(
+			fragmentNameEditor = new fragmentWebJsFragmentNameEditor.default(
 				{
 					actionURL: '<%= addFragmentEntryURL.toString() %>',
 					editorTitle: '<liferay-ui:message key="add-fragment" />',
 					events: {
 						hide: function() {
 							fragmentNameEditor.dispose();
+
+							fragmentNameEditor = null;
 						}
 					},
 					namespace: '<portlet:namespace />',
@@ -178,6 +184,10 @@ renderResponse.setTitle(fragmentDisplayContext.getFragmentCollectionTitle());
 
 		function handleDestroyPortlet () {
 			addFragmentEntryMenuItem.removeEventListener('click', handleAddFragmentEntryMenuItemClick);
+
+			if (fragmentNameEditor) {
+				fragmentNameEditor.dispose();
+			}
 
 			updateFragmentActionOptionQueryClickHandler.removeListener();
 

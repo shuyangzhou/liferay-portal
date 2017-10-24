@@ -14,7 +14,6 @@
 
 package com.liferay.portal.cluster.multiple.internal;
 
-import com.liferay.portal.cluster.multiple.internal.constants.ClusterPropsKeys;
 import com.liferay.portal.kernel.cluster.Address;
 import com.liferay.portal.kernel.cluster.Priority;
 import com.liferay.portal.kernel.configuration.Filter;
@@ -284,9 +283,29 @@ public class ClusterLinkImplTest extends BaseClusterTestCase {
 		AspectJNewEnvTestRule.INSTANCE;
 
 	protected ClusterLinkImpl getClusterLinkImpl(
-		final boolean enabled, int channels) {
+		final boolean enabled, final int channels) {
 
 		ClusterLinkImpl clusterLinkImpl = new ClusterLinkImpl();
+
+		Properties channelNameProperties = new Properties();
+		Properties channelPropertiesProperties = new Properties();
+
+		for (int i = 0; i < channels; i++) {
+			channelNameProperties.put(
+				StringPool.PERIOD + i, "test-channel-name-transport-" + i);
+			channelPropertiesProperties.put(
+				StringPool.PERIOD + i,
+				"test-channel-properties-transport-" + i);
+		}
+
+		Map<String, Properties> properties = new HashMap<>();
+
+		properties.put(
+			PropsKeys.CLUSTER_LINK_CHANNEL_NAME_TRANSPORT,
+			channelNameProperties);
+		properties.put(
+			PropsKeys.CLUSTER_LINK_CHANNEL_PROPERTIES_TRANSPORT,
+			channelPropertiesProperties);
 
 		clusterLinkImpl.setProps(
 			new Props() {
@@ -329,31 +348,17 @@ public class ClusterLinkImplTest extends BaseClusterTestCase {
 				public Properties getProperties(
 					String prefix, boolean removePrefix) {
 
-					return new Properties();
+					return properties.getOrDefault(prefix, new Properties());
 				}
 
 			});
 
 		clusterLinkImpl.setClusterChannelFactory(
 			new TestClusterChannelFactory());
-
 		clusterLinkImpl.setPortalExecutorManager(
 			new MockPortalExecutorManager());
 
-		Map<String, Object> properties = new HashMap<>();
-
-		for (int i = 0; i < channels; i++) {
-			properties.put(
-				ClusterPropsKeys.CHANNEL_NAME_TRANSPORT_PREFIX +
-					StringPool.PERIOD + i,
-				"test-channel-name-transport-" + i);
-			properties.put(
-				ClusterPropsKeys.CHANNEL_PROPERTIES_TRANSPORT_PREFIX +
-					StringPool.PERIOD + i,
-				"test-channel-properties-transport-" + i);
-		}
-
-		clusterLinkImpl.activate(properties);
+		clusterLinkImpl.activate();
 
 		return clusterLinkImpl;
 	}

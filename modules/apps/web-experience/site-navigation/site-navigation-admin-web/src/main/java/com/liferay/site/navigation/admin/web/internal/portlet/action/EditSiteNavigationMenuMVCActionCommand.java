@@ -18,9 +18,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.site.navigation.admin.web.internal.constants.SiteNavigationAdminPortletKeys;
 import com.liferay.site.navigation.service.SiteNavigationMenuService;
 
@@ -49,9 +47,6 @@ public class EditSiteNavigationMenuMVCActionCommand
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		long siteNavigationMenuId = ParamUtil.getLong(
 			actionRequest, "siteNavigationMenuId");
 
@@ -60,14 +55,8 @@ public class EditSiteNavigationMenuMVCActionCommand
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			actionRequest);
 
-		if (siteNavigationMenuId > 0) {
-			_siteNavigationMenuService.updateSiteNavigationMenu(
-				siteNavigationMenuId, name, serviceContext);
-		}
-		else {
-			_siteNavigationMenuService.addSiteNavigationMenu(
-				themeDisplay.getScopeGroupId(), name, serviceContext);
-		}
+		_siteNavigationMenuService.updateSiteNavigationMenu(
+			siteNavigationMenuId, name, serviceContext);
 	}
 
 	@Reference
