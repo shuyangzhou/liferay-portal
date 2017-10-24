@@ -52,6 +52,5 @@
 	</entity>
 	<exceptions>
 		<exception>DuplicateAMImageEntry</exception>
-		<exception>NoSuchAMImageEntry</exception>
 	</exceptions>
 </service-builder>

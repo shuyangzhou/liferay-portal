@@ -20,7 +20,7 @@ Here are some of the types of changes documented in this file:
   replaces an old API, in spite of the old API being kept in Liferay Portal for
   backwards compatibility.
 
-*This document has been reviewed through commit `1aa58857f55a`.*
+*This document has been reviewed through commit `f10f11757431`.*
 
 ## Breaking Changes Contribution Guidelines
 
@@ -515,5 +515,40 @@ to fail when using numeric screen names for imported users.
 Since LDAP import is more commonly used than a site using the group ID as its
 friendly URL, the less useful feature was removed to stabilize the more common
 one.
+
+---------------------------------------
+
+### Removed Support for Velocity in Themes
+- **Date:** 2017-Oct-19
+- **JIRA Ticket:** LPS-74379
+
+#### What changed?
+
+- Themes can no longer use Velocity for templates.
+- Some helper methods have been removed from the public APIs
+`com.liferay.portal.kernel.util.ThemeHelper` and
+`com.liferay.taglib.util.ThemeUtil`.
+
+#### Who is affected?
+
+This affects anyone who has themes using Velocity templates or is using the
+removed methods.
+
+#### How should I update my code?
+
+If you have a theme using Velocity, consider migrating it to FreeMarker for
+better maintenance and improved security.
+
+If you are using the removed methods, consider using the
+`com.liferay.portal.kernel.template.Template` functionality directly to process
+templates.
+
+#### Why was this change made?
+
+Velocity was deprecated in Liferay Portal 7.0 and the recommendation was to
+migrate to FreeMarker. Also, Velocity has had no new releases for a long time.
+
+The removal of Velocity support for Liferay Portal 7.1 themes allows for an
+increased focus on existing and new template engines.
 
 ---------------------------------------

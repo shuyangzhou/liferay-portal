@@ -18,31 +18,30 @@ import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * Function {@link Function} with eight input parameters. As all the function
- * interfaces, it receives several arguments and returns one value (of type R)
+ * Defines a {@code Function} that takes eight input parameters. This interface,
+ * like all function interfaces, receives several arguments and returns one
+ * value of type {@code R}.
  *
- * Being a functional interface, it can be implemented with a lambda function
+ * <p>
+ * This interface can be implemented with a lambda function.
+ * </p>
  *
  * @author Alejandro Hernández
  * @author Jorge Ferrer
- * @see    Function
- * @review
  */
 @FunctionalInterface
 public interface OctaFunction<A, B, C, D, E, F, G, H, R> {
 
 	/**
-	 * Method that creates a lambda function (also a {@code OctaFunction}) that
-	 * executes the {@code apply} method of this instance and uses the result as
-	 * the input for the {@code apply} method of the {@code afterFunction} input
-	 * parameter when invoked.
+	 * Returns the {@code OctaFunction} that first executes the current {@code
+	 * OctaFunction} instance's {@code apply} method, then uses the result as
+	 * input for the {@code afterFunction} parameter's {@code apply} method.
 	 *
-	 * @param  afterFunction the {@code OctaFunction} to execute after this
-	 *         instance
-	 * @return another {@code OctaFunction} that executes both inputs (this own
-	 *         instance plus the input parameter) in order using the return
-	 *         value of the first one as the input for the second
-	 * @review
+	 * @param  afterFunction the {@code OctaFunction} to execute after the
+	 *         current instance
+	 * @return the {@code OctaFunction} that executes the current instance's
+	 *         {@code apply} method, then uses the result as input for the
+	 *         {@code afterFunction} parameter's {@code apply} method
 	 */
 	public default <V> OctaFunction<A, B, C, D, E, F, G, H, V> andThen(
 		Function<? super R, ? extends V> afterFunction) {
@@ -54,19 +53,18 @@ public interface OctaFunction<A, B, C, D, E, F, G, H, R> {
 	}
 
 	/**
-	 * The function to implement (explicitly or with a lambda), that operates
-	 * with eight parameters and returns void
+	 * Applies the current {@code OctaFunction} and returns a value of type
+	 * {@code R}. This function can be implemented explicitly or with a lambda.
 	 *
-	 * @param  a the first function argument
-	 * @param  b the second function argument
-	 * @param  c the third function argument
-	 * @param  d the fourth function argument
-	 * @param  e the fifth function argument
-	 * @param  f the sixth function argument
-	 * @param  g the seventh function argument
-	 * @param  h the eighth function argument
-	 * @return the function result
-	 * @review
+	 * @param  a the function's first argument
+	 * @param  b the function's second argument
+	 * @param  c the function's third argument
+	 * @param  d the function's fourth argument
+	 * @param  e the function's fifth argument
+	 * @param  f the function's sixth argument
+	 * @param  g the function's seventh argument
+	 * @param  h the function's eighth argument
+	 * @return the function's result, as a value of type {@code R}
 	 */
 	public R apply(A a, B b, C c, D d, E e, F f, G g, H h);
 

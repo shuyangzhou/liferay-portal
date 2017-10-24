@@ -19,22 +19,21 @@ import aQute.bnd.annotation.ConsumerType;
 import com.liferay.vulcan.result.APIError;
 
 /**
- * Instances of this interface will be used to convert between a Java exception
- * and its {@link APIError} representation. Use the exception message to provide
- * meaningful information about the error.
+ * Defines an interface whose instances are used to convert between a Java
+ * exception and its {@link APIError} representation. Use the exception message
+ * to provide meaningful information about the error.
  *
  * @author Alejandro Hernández
- * @review
  */
 @ConsumerType
 public interface ExceptionConverter<T extends Exception> {
 
 	/**
-	 * Converts an exception to its {@code APIError} representation.
+	 * Converts an exception to its {@link APIError} representation.
 	 *
-	 * @param  exception the exception to be converted.
-	 * @return the {@code APIError} representation for the exception.
-	 * @review
+	 * @param  exception the exception to convert
+	 * @return the exception's {@link com.liferay.vulcan.result.APIError}
+	 *         representation
 	 */
 	public APIError convert(T exception);
 

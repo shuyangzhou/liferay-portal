@@ -70,8 +70,8 @@ public class AMImageEntryLocalServiceImpl
 	 *         adaptive media image
 	 * @param  fileVersion the file version used to create the adaptive media
 	 *         image
-	 * @param  width the adaptive media image's width
 	 * @param  height the adaptive media image's height
+	 * @param  width the adaptive media image's width
 	 * @param  inputStream the adaptive media image's input stream to store in
 	 *         the file store
 	 * @param  size the adaptive media image's size
@@ -82,11 +82,11 @@ public class AMImageEntryLocalServiceImpl
 	@Override
 	public AMImageEntry addAMImageEntry(
 			AMImageConfigurationEntry amImageConfigurationEntry,
-			FileVersion fileVersion, int width, int height,
+			FileVersion fileVersion, int height, int width,
 			InputStream inputStream, long size)
 		throws PortalException {
 
-		_checkDuplicates(
+		_checkDuplicateAMImageEntry(
 			amImageConfigurationEntry.getUUID(),
 			fileVersion.getFileVersionId());
 
@@ -95,15 +95,15 @@ public class AMImageEntryLocalServiceImpl
 		AMImageEntry amImageEntry = amImageEntryPersistence.create(
 			imageEntryId);
 
-		amImageEntry.setCompanyId(fileVersion.getCompanyId());
 		amImageEntry.setGroupId(fileVersion.getGroupId());
+		amImageEntry.setCompanyId(fileVersion.getCompanyId());
 		amImageEntry.setCreateDate(new Date());
+		amImageEntry.setConfigurationUuid(amImageConfigurationEntry.getUUID());
 		amImageEntry.setFileVersionId(fileVersion.getFileVersionId());
 		amImageEntry.setMimeType(fileVersion.getMimeType());
 		amImageEntry.setHeight(height);
 		amImageEntry.setWidth(width);
 		amImageEntry.setSize(size);
-		amImageEntry.setConfigurationUuid(amImageConfigurationEntry.getUUID());
 
 		imageStorage.save(
 			fileVersion, amImageConfigurationEntry.getUUID(), inputStream);
@@ -294,16 +294,18 @@ public class AMImageEntryLocalServiceImpl
 	 */
 	@Override
 	public int getPercentage(long companyId, String configurationUuid) {
-		int expectedEntriesCount = getExpectedAMImageEntriesCount(companyId);
+		int expectedAMImageEntriesCount = getExpectedAMImageEntriesCount(
+			companyId);
 
-		if (expectedEntriesCount == 0) {
+		if (expectedAMImageEntriesCount == 0) {
 			return 0;
 		}
 
-		int actualEntriesCount = getAMImageEntriesCount(
+		int actualAMImageEntriesCount = getAMImageEntriesCount(
 			companyId, configurationUuid);
 
-		int percentage = (actualEntriesCount * 100) / expectedEntriesCount;
+		int percentage =
+			(actualAMImageEntriesCount * 100) / expectedAMImageEntriesCount;
 
 		return Math.min(percentage, 100);
 	}
@@ -314,7 +316,8 @@ public class AMImageEntryLocalServiceImpl
 	@ServiceReference(type = ImageStorage.class)
 	protected ImageStorage imageStorage;
 
-	private void _checkDuplicates(String configurationUuid, long fileVersionId)
+	private void _checkDuplicateAMImageEntry(
+			String configurationUuid, long fileVersionId)
 		throws DuplicateAMImageEntryException {
 
 		AMImageEntry amImageEntry = amImageEntryPersistence.fetchByC_F(
