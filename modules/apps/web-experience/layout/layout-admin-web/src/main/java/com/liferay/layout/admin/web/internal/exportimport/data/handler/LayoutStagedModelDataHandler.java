@@ -24,7 +24,7 @@ import static com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleCon
 import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.exportimport.controller.PortletExportController;
 import com.liferay.exportimport.controller.PortletImportController;
-import com.liferay.exportimport.data.handler.base.BaseStagedModelDataHandler;
+import com.liferay.exportimport.data.handler.BaseStagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.ExportImportHelper;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
 import com.liferay.exportimport.kernel.lar.ExportImportProcessCallbackRegistry;
