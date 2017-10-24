@@ -12,12 +12,11 @@
  * details.
  */
 
-package com.liferay.exportimport.portlet.preferences.processor.base;
+package com.liferay.exportimport.portlet.preferences.processor;
 
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
-import com.liferay.exportimport.portlet.preferences.processor.ExportImportPortletPreferencesProcessor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Portlet;
@@ -32,9 +31,7 @@ import javax.portlet.PortletPreferences;
 
 /**
  * @author Mate Thurzo
- * @deprecated As of 4.0.0
  */
-@Deprecated
 @ProviderType
 public abstract class BaseExportImportPortletPreferencesProcessor
 	implements ExportImportPortletPreferencesProcessor {
