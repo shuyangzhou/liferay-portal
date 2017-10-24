@@ -775,7 +775,7 @@ public class LayoutImportController implements ImportController {
 	 */
 	@Deprecated
 	protected void setPortletImportController(
-		PortletImportController portletImportController) {
+		com.liferay.exportimport.controller.PortletImportController portletImportController) {
 	}
 
 	/**
