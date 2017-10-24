@@ -37,8 +37,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelModifiedDateComparator;
 import com.liferay.exportimport.kernel.lifecycle.ExportImportLifecycleManager;
 import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
 import com.liferay.exportimport.kernel.staging.Staging;
-import com.liferay.exportimport.lar.LayoutCache;
-import com.liferay.exportimport.lar.PermissionImporter;
+import com.liferay.exportimport.lar.permission.PermissionImporter;
 import com.liferay.exportimport.portlet.controller.PortletExportController;
 import com.liferay.exportimport.portlet.controller.PortletImportController;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskThreadLocal;
@@ -1234,7 +1233,7 @@ public class LayoutStagedModelDataHandler
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		LayoutCache layoutCache = new LayoutCache();
+		_permissionImporter.clearCache();
 
 		Element portletsElement = layoutElement.element("portlets");
 
@@ -1342,7 +1341,7 @@ public class LayoutStagedModelDataHandler
 
 			if (permissions) {
 				_permissionImporter.importPortletPermissions(
-					layoutCache, portletDataContext.getCompanyId(),
+					portletDataContext.getCompanyId(),
 					portletDataContext.getGroupId(), serviceContext.getUserId(),
 					layout, portletElement, portletId);
 			}
@@ -1842,8 +1841,9 @@ public class LayoutStagedModelDataHandler
 	private LayoutPrototypeLocalService _layoutPrototypeLocalService;
 	private LayoutSetLocalService _layoutSetLocalService;
 	private LayoutTemplateLocalService _layoutTemplateLocalService;
-	private final PermissionImporter _permissionImporter =
-		PermissionImporter.getInstance();
+
+	@Reference
+	private PermissionImporter _permissionImporter;
 
 	@Reference
 	private PortletDataContextFactory _portletDataContextFactory;
