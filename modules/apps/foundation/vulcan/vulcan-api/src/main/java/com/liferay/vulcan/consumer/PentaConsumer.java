@@ -17,41 +17,39 @@ package com.liferay.vulcan.consumer;
 import java.util.Objects;
 
 /**
- * Consumer {@link java.util.function.Consumer} with five input parameters. As
- * all the consumer interfaces, it receives several arguments and doesn't return
- * anything.
+ * Defines a {@code java.util.function.Consumer} that takes five input
+ * parameters. This consumer, like all consumers, doesn't return a result.
  *
- * Being a functional interface, it can be implemented with a lambda function
+ * <p>
+ * This interface can be implemented with a lambda function.
+ * </p>
  *
  * @author Alejandro Hernández
- * @see    java.util.function.Consumer
- * @review
  */
 @FunctionalInterface
 public interface PentaConsumer<A, B, C, D, E> {
 
 	/**
-	 * The function to implement (explicitly or with a lambda), that operates
-	 * with five parameters and returns void
+	 * Operates with five parameters and returns {@code void}. This function can
+	 * be implemented explicitly or with a lambda.
 	 *
-	 * @param  a the first function argument
-	 * @param  b the second function argument
-	 * @param  c the third function argument
-	 * @param  d the fourth function argument
-	 * @param  e the fifth function argument
-	 * @review
+	 * @param a the first function argument
+	 * @param b the second function argument
+	 * @param c the third function argument
+	 * @param d the fourth function argument
+	 * @param e the fifth function argument
 	 */
 	public void accept(A a, B b, C c, D d, E e);
 
 	/**
-	 * Method that creates a lambda function (also a {@code PentaConsumer}) that
-	 * executes the {@code accept} method of this instance and then the {@code
-	 * accept} method of the {@code after} input parameter when invoked.
+	 * Returns the {@code PentaConsumer} function that first executes the
+	 * current {@code PentaConsumer} instance's {@code accept} method, then
+	 * executes the {@code after} parameter's {@code accept} method.
 	 *
-	 * @param  after the {@code PentaConsumer} to execute after this instance
-	 * @return another {@code PentaConsumer} that executes both inputs (this own
-	 *         instance plus the input parameter) in order
-	 * @review
+	 * @param  after the {@code PentaConsumer} instance to execute after the
+	 *         current instance
+	 * @return the {@code PentaConsumer} that executes the current instance's
+	 *         {@code accept} method, as well as that of {@code after}
 	 */
 	public default PentaConsumer<A, B, C, D, E> andThen(
 		PentaConsumer<? super A, ? super B, ? super C, ? super D, ? super E>

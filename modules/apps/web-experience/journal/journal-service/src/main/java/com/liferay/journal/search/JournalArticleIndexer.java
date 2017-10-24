@@ -32,9 +32,12 @@ import com.liferay.journal.util.JournalConverter;
 import com.liferay.journal.util.impl.JournalUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -281,17 +284,37 @@ public class JournalArticleIndexer
 				_indexerRegistry.nullSafeGetIndexer(JournalArticle.class);
 
 			final ActionableDynamicQuery actionableDynamicQuery =
-				_journalArticleLocalService.getActionableDynamicQuery();
+				_journalArticleResourceLocalService.getActionableDynamicQuery();
 
 			actionableDynamicQuery.setAddCriteriaMethod(
 				new ActionableDynamicQuery.AddCriteriaMethod() {
 
 					@Override
 					public void addCriteria(DynamicQuery dynamicQuery) {
+						Class<?> clazz = getClass();
+
+						DynamicQuery journalArticleDynamicQuery =
+							DynamicQueryFactoryUtil.forClass(
+								JournalArticle.class, "journalArticle",
+								clazz.getClassLoader());
+
+						journalArticleDynamicQuery.setProjection(
+							ProjectionFactoryUtil.property("resourcePrimKey"));
+
+						journalArticleDynamicQuery.add(
+							RestrictionsFactoryUtil.eqProperty(
+								"journalArticle.resourcePrimKey",
+								"this.resourcePrimKey"));
+
+						journalArticleDynamicQuery.add(
+							RestrictionsFactoryUtil.eqProperty(
+								"journalArticle.groupId", "this.groupId"));
+
 						Property ddmStructureKey = PropertyFactoryUtil.forName(
 							"DDMStructureKey");
 
-						dynamicQuery.add(ddmStructureKey.in(ddmStructureKeys));
+						journalArticleDynamicQuery.add(
+							ddmStructureKey.in(ddmStructureKeys));
 
 						if (!isIndexAllArticleVersions()) {
 							Property statusProperty =
@@ -302,17 +325,25 @@ public class JournalArticleIndexer
 								WorkflowConstants.STATUS_IN_TRASH
 							};
 
-							dynamicQuery.add(statusProperty.in(statuses));
+							journalArticleDynamicQuery.add(
+								statusProperty.in(statuses));
 						}
+
+						Property resourcePrimKeyProperty =
+							PropertyFactoryUtil.forName("resourcePrimKey");
+
+						dynamicQuery.add(
+							resourcePrimKeyProperty.in(
+								journalArticleDynamicQuery));
 					}
 
 				});
 			actionableDynamicQuery.setPerformActionMethod(
 				new ActionableDynamicQuery.
-					PerformActionMethod<JournalArticle>() {
+					PerformActionMethod<JournalArticleResource>() {
 
 					@Override
-					public void performAction(JournalArticle article)
+					public void performAction(JournalArticleResource article)
 						throws PortalException {
 
 						try {

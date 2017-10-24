@@ -20,13 +20,12 @@ import java.util.function.Predicate;
 
 /**
  * Defines the embedded context selected by clients. An instance of this
- * interface will be handed to {@link javax.ws.rs.ext.MessageBodyWriter}s so
- * they can decide which resources should be embedded.
+ * interface is handed to {@code javax.ws.rs.ext.MessageBodyWriter} to decide
+ * which resources to embed.
  *
  * @author Alejandro Hernández
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
- * @review
  */
 @ProviderType
 public interface Embedded {
@@ -35,8 +34,8 @@ public interface Embedded {
 	 * Returns the predicate that can be used to test if a relation must be
 	 * embedded.
 	 *
-	 * @return the predicate to test if a relation should be embedded.
-	 * @review
+	 * @return the predicate that can be used to test if a relation must be
+	 *         embedded
 	 */
 	public Predicate<String> getEmbeddedPredicate();
 

@@ -17,6 +17,8 @@ package com.liferay.portal.workflow.web.internal.servlet.taglib;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.taglib.BaseJSPDynamicInclude;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,14 +26,39 @@ import java.util.Map;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
+import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+
+import javax.servlet.ServletContext;
 
 /**
  * @author Adam Brandizzi
  */
 public abstract class BaseWorkflowDynamicInclude
 	extends BaseJSPDynamicInclude implements WorkflowDynamicInclude {
+
+	public PortletURL getSearchURL(
+		RenderRequest renderRequest, RenderResponse renderResponse) {
+
+		PortletURL searchURL = renderResponse.createRenderURL();
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		searchURL.setParameter(
+			"groupId", String.valueOf(themeDisplay.getScopeGroupId()));
+
+		searchURL.setParameter("mvcPath", "/view.jsp");
+		searchURL.setParameter("tab", getTabName());
+
+		return searchURL;
+	}
+
+	@Override
+	public ServletContext getServletContext() {
+		return _servletContext;
+	}
 
 	@Override
 	public void prepareDispatch(
@@ -62,7 +89,15 @@ public abstract class BaseWorkflowDynamicInclude
 		return _logs.get(clazz);
 	}
 
+	@Override
+	protected void setServletContext(ServletContext servletContext) {
+		_servletContext = servletContext;
+		super.setServletContext(servletContext);
+	}
+
 	private static final Map<Class<? extends BaseWorkflowDynamicInclude>, Log>
 		_logs = new HashMap<>();
+
+	private ServletContext _servletContext;
 
 }
