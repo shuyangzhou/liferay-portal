@@ -12,23 +12,15 @@
  * details.
  */
 
-package com.liferay.announcements.web.constants;
+package com.liferay.announcements.constants;
 
 /**
  * @author Adolfo Pérez
- * @deprecated As of 2.0.0, replaced by {@link
- *             com.liferay.announcements.constants.AnnouncementsPortletKeys}
  */
-@Deprecated
-public class AnnouncementsPortletKeys {
+public class AnnouncementsWebKeys {
 
-	public static final String ALERTS =
-		"com_liferay_announcements_web_portlet_AlertsPortlet";
+	public static final String ANNOUNCEMENTS_ENTRY = "ANNOUNCEMENTS_ENTRY";
 
-	public static final String ANNOUNCEMENTS =
-		"com_liferay_announcements_web_portlet_AnnouncementsPortlet";
-
-	public static final String ANNOUNCEMENTS_ADMIN =
-		"com_liferay_announcements_web_portlet_AnnouncementsAdminPortlet";
+	public static final String VIEW_ENTRY_FLAG_VALUE = "VIEW_ENTRY_FLAG_VALUE";
 
 }
