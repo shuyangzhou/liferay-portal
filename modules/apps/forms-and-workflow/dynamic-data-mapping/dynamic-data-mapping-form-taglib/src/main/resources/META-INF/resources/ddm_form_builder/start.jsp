@@ -16,21 +16,21 @@
 
 <%@ include file="/ddm_form_builder/init.jsp" %>
 
-<aui:script>
+<aui:script use="liferay-ddm-form-builder, liferay-ddm-form-builder-fieldset, liferay-ddm-form-builder-rule-builder">
+
 	Liferay.namespace('DDM').Settings = {
 		evaluatorURL: '<%= evaluatorURL %>',
+		fieldSetDefinitionURL: '<%= fieldSetDefinitionURL %>',
 		functionsMetadata: <%= functionsMetadata %>,
 		getDataProviderInstancesURL: '<%= dataProviderInstancesURL %>',
 		getDataProviderParametersSettingsURL: '<%= dataProviderInstanceParameterSettingsURL %>',
 		getFieldTypeSettingFormContextURL: '<%= fieldSettingsDDMFormContextURL %>',
 		getFunctionsURL: '<%= functionsURL %>',
 		getRolesURL: '<%= rolesURL %>',
-		portletNamespace: '<%= refererPortletNamespace %>',
-		showPagination: <%= showPagination %>
-	}
-</aui:script>
+		portletNamespace: '<%= refererPortletNamespace %>'
+	};
 
-<aui:script use="liferay-ddm-form-builder, liferay-ddm-form-builder-rule-builder">
+	Liferay.DDM.FieldSets.register(<%= fieldSets %>);
 
 	Liferay.component(
 		'<%= refererPortletNamespace %>formBuilder',
@@ -39,7 +39,8 @@
 				{
 					context: <%= formBuilderContext %>,
 					defaultLanguageId: '<%= defaultLanguageId %>',
-					editingLanguageId: '<%= editingLanguageId %>'
+					editingLanguageId: '<%= editingLanguageId %>',
+					showPagination: <%= showPagination %>
 				}
 			);
 		}

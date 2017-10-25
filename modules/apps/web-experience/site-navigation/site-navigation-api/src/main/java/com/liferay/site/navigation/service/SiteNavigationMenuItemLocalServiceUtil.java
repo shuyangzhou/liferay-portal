@@ -202,6 +202,12 @@ public class SiteNavigationMenuItemLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
+	public static java.util.List<com.liferay.site.navigation.model.SiteNavigationMenuItem> getChildSiteNavigationMenuItems(
+		long parentSiteNavigationMenuItemId) {
+		return getService()
+				   .getChildSiteNavigationMenuItems(parentSiteNavigationMenuItemId);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
 		return getService().getIndexableActionableDynamicQuery();
 	}

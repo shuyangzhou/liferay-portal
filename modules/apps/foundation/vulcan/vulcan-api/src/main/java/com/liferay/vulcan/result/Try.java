@@ -24,53 +24,44 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
- * Implementation of the monadic "Try" type.
+ * Implements the monadic {@code Try} type. Instances of this class represent
+ * the result of an operation that either succeeds with type {@code T}, or fails
+ * with an exception. Only two descendants of this class are allowed: {@link
+ * Success} for the success case, and {@link Failure} for the failure case.
  *
- * Represents the result of an operation that could have succeeded (with a type
- * T) or failed (with an {@link Exception}).
- *
- * Only two descendants of this class are allowed: {@link Success} for the
- * success case and {@link Failure} for the failure one.
- *
- * Never instantiate this class directly. To create an instance of this class,
- * use {@link
- * #fromFallible(ThrowableSupplier)}
- * if you don't know if the operation is going to fail or not. {@link
- * #fail(Exception)}
- * to directly create a {@link Failure} from an {@link Exception}. Or {@link
- * #success(Object)}
- * to directly create a {@link Success} from a T.
+ * Never instantiate this class directly. If you're unsure whether the operation
+ * will succeed, use {@link #fromFallible(ThrowableSupplier)} to create an
+ * instance of this class. To create a {@code Failure} instance directly
+ * from an exception, use {@link #fail(Exception)}. To create a
+ * {@code Success} instance directly from {@code T}, use
+ * {@link #success(Object)}.
  *
  * @author Alejandro Hernández
- * @review
  */
 @SuppressWarnings("unused")
 public abstract class Try<T> {
 
 	/**
-	 * Creates a new {@code Try} instance from an {@link Exception}. The
-	 * instance will be created as a {@link Failure}.
+	 * Creates a new {@code Try} instance from an exception. This method creates
+	 * the instance as a {@code Failure} object.
 	 *
-	 * @param  exception the exception to include in the {@link Failure}
-	 * @return the {@code Try} instance for the exception.
-	 * @review
+	 * @param  exception the exception to create the {@code Failure} from
+	 * @return the {@code Try} instance created from the exception
 	 */
 	public static <U> Try<U> fail(Exception exception) {
 		return new Failure<>(exception);
 	}
 
 	/**
-	 * Creates a new {@code Try} instance by executing a fallible lambda. If
-	 * executing the lambda throws an exception a {@link Failure} instance will
-	 * be created; otherwise, a {@link Success} instance with the lambda result
-	 * will be created.
+	 * Creates a new {@code Try} instance by executing a fallible lambda in a
+	 * {@link ThrowableSupplier}. If this throws an exception, a {@code Failure}
+	 * instance is created. Otherwise, a {@code Success} instance with the
+	 * lambda's result is created.
 	 *
-	 * @param  throwableSupplier the supplier to be executed in order to obtain
-	 *         the value.
-	 * @return a {@code Try} instance with the value obtained by the supplier:
-	 *         {@link Failure} if the supplier throws an exception; {@link
-	 *         Success} otherwise.
-	 * @review
+	 * @param  throwableSupplier the throwable supplier that contains the
+	 *         fallible lambda
+	 * @return {@code Failure} if the throwable supplier throws an exception;
+	 *         {@code Success} otherwise
 	 */
 	public static <U> Try<U> fromFallible(
 		ThrowableSupplier<U> throwableSupplier) {
@@ -86,28 +77,26 @@ public abstract class Try<T> {
 	}
 
 	/**
-	 * Creates a new {@code Try} instance by executing a fallible lambda with
-	 * resources. If executing the lambda throws an exception a {@link Failure}
-	 * instance will be created; otherwise, a {@link Success} instance with the
-	 * lambda result will be created.
+	 * Creates a new {@code Try} instance by composing two functions: {@code
+	 * throwableSupplier} and {@code throwableFunction}. The result of {@code
+	 * throwableSupplier} is passed as the only parameter to {@code
+	 * throwableFunction}. If either function fails, a {@code Failure} instance
+	 * is returned. Otherwise, a {@code Success} instance with the results of
+	 * {@code throwableFunction} is returned.
 	 *
-	 * @param  closeableSupplier the supplier to be executed in order to obtain
-	 *         the closeable value.
-	 * @param  throwableFunction the function to be executed in order to obtain
-	 *         the value.
-	 * @return a {@code Try} instance with the value obtained by the supplier:
-	 *         {@link Failure} if the supplier throws an exception; {@link
-	 *         Success} otherwise.
-	 * @review
+	 * @param  throwableFunction the function to execute with the results of
+	 *         {@code throwableSupplier}
+	 * @return a {@code Success} instance if the functions succeed; a {@code
+	 *         Failure} instance otherwise
 	 */
 	public static <U, V extends Closeable> Try<U> fromFallibleWithResources(
-		ThrowableSupplier<V> closeableSupplier,
+		ThrowableSupplier<V> throwableSupplier,
 		ThrowableFunction<V, U> throwableFunction) {
 
 		Objects.requireNonNull(throwableFunction);
-		Objects.requireNonNull(closeableSupplier);
+		Objects.requireNonNull(throwableSupplier);
 
-		try (V v = closeableSupplier.get()) {
+		try (V v = throwableSupplier.get()) {
 			return success(throwableFunction.apply(v));
 		}
 		catch (Exception exception) {
@@ -116,206 +105,205 @@ public abstract class Try<T> {
 	}
 
 	/**
-	 * Creates a new {@code Try} instance from a valid object. The instance will
-	 * be created as a {@link Success}.
+	 * Creates a new {@code Try} instance from an object. This method creates
+	 * the instance as a {@code Success} object.
 	 *
-	 * @param  u object to include as value of the {@link Success}.
-	 * @return the {@code Try} instance for the value.
-	 * @review
+	 * @param  u the object to create the {@code Success} object from
+	 * @return the {@code Success} object
 	 */
 	public static <U> Try<U> success(U u) {
 		return new Success<>(u);
 	}
 
 	/**
-	 * If a value is present, and the value matches the given predicate, return
-	 * a {@code Try} with the value, otherwise return a {@code Try} with an
-	 * exception indicating the {@code false} predicate.
+	 * Returns a {@code Try} instance with a value, if that value matches the
+	 * predicate. Otherwise, this method returns a {@code Try} instance with an
+	 * exception that indicates the {@code false}
+	 * predicate.
 	 *
-	 * @param  predicate a predicate to apply to the value, if present
-	 * @return a {@code Try} with the value of this {@code Try} if a value is
-	 *         present and the value matches the given predicate, otherwise a
-	 *         {@code Try} with and exception for a {@code false} predicate.
-	 * @review
+	 * @param  predicate the predicate to apply to a value
+	 * @return a {@code Try} instance with a value, if that value matches the
+	 *         predicate; otherwise a {@code Try} instance with an exception for
+	 *         a {@code {@code false}} predicate
 	 */
 	public abstract Try<T> filter(Predicate<T> predicate);
 
 	/**
-	 * If success case, apply the provided {@code Try}-bearing mapping function
-	 * to it, return that result; otherwise propagate the failure.
+	 * Returns the result of applying the mapping function to the {@code
+	 * Success} instance's value, if the current {@code Try} instance is a
+	 * {@code Success}; otherwise returns the {@code Failure} instance.
 	 *
 	 * <p>
 	 * This method is similar to {@link #map(ThrowableFunction)}, but the
-	 * provided mapper is one whose result is already a {@code Try}, and if
-	 * invoked, {@code flatMap} does not wrap it with an additional {@code Try}.
+	 * mapping function's result is already a {@code Try}, and if invoked,
+	 * {@code flatMap} doesn't wrap it in an additional {@code Try}.
 	 * </p>
 	 *
-	 * @param  function a mapping function to apply to the value, if success.
-	 * @return the result of applying a {@code Try}-bearing mapping function to
-	 *         the value of this {@code Try}, if a success, otherwise propagates
-	 *         the failure.
-	 * @review
+	 * @param  function the mapping function
+	 * @return the result of the mapping function if applied to the {@code
+	 *         Success} instance's value; the {@code Failure} instance otherwise
 	 */
 	public abstract <U> Try<U> flatMap(
 		ThrowableFunction<? super T, Try<U>> function);
 
 	/**
-	 * Returns the value T on success or throws the cause of the failure.
+	 * Returns a {@code Success} instance's value, or a {@code Failure}
+	 * instance's exception. What this method returns therefore depends on
+	 * whether the current {@code Try} instance is a {@code Success} or {@code
+	 * Failure}.
 	 *
-	 * @return T if success case, throws {@code Exception} otherwise.
-	 * @throws Exception if this is a {@code Failure}.
-	 * @review
+	 * @return a {@code Success} instance's value; otherwise the {@code Failure}
+	 *         instance's exception
+	 * @throws Exception if the operation failed
 	 */
 	public abstract T get() throws Exception;
 
 	/**
-	 * Returns the value T on success or throws a {@link RuntimeException} with
-	 * the cause of the failure.
+	 * Returns a {@code Success} instance's value, or a {@code Failure}
+	 * instance's exception wrapped in a {@code RuntimeException}. What this
+	 * method returns therefore depends on whether the current {@code Try}
+	 * instance is a {@code Success} or {@code Failure}.
 	 *
-	 * @return T if success case, throws {@code RuntimeException} otherwise.
-	 * @review
+	 * @return a {@code Success} instance's value; otherwise the {@code Failure}
+	 *         instance's exception wrapped in a {@code RuntimeException}
 	 */
 	public abstract T getUnchecked();
 
 	/**
-	 * Returns {@code true} if this {@code Try} instance is a failure. Returns
-	 * {@code false} otherwise.
+	 * Returns {@code true} if the current {@code Try}
+	 * instance is a {@code Failure}; otherwise returns {@code false}.
 	 *
-	 * @return {@code true} if instance is a failure; {@code false} otherwise.
-	 * @review
+	 * @return {@code true} if the current {@code Try}
+	 *         instance is a {@code Failure}; {@code false} otherwise.
 	 */
 	public abstract boolean isFailure();
 
 	/**
-	 * Returns {@code true} if this {@code Try} instance is a success. Returns
-	 * {@code false} otherwise.
+	 * Returns {@code true} if the current {@code Try}
+	 * instance is a {@code Success}; otherwise returns {@code false}.
 	 *
-	 * @return {@code true} if instance is a success; {@code false} otherwise.
-	 * @review
+	 * @return {@code true} if the current {@code Try}
+	 *         instance is a {@code Success}; {@code false} otherwise.
 	 */
 	public abstract boolean isSuccess();
 
 	/**
-	 * If success, apply the provided mapping function to it, and if the
-	 * function doesn't throw an exception, return it inside a {@code Try}.
-	 * Otherwise return a {@code Failure}.
+	 * Returns the result of applying the mapping function to the {@code
+	 * Success} instance's value, if the current {@code Try} instance is a
+	 * {@code Success}; otherwise returns the {@code Failure} instance.
 	 *
-	 * @param  throwableFunction a mapping function to apply to the value, if
-	 *         success.
-	 * @return a {@code Try} with the result of applying a mapping function to
-	 *         the value inside this {@code Try}, if success case; a {@code
-	 *         Failure} describing the exception otherwise.
-	 * @review
+	 * <p>
+	 * This function is similar to {@link #flatMap(ThrowableFunction)}, but the
+	 * mapping function's result isn't a {@code Try}, and if invoked, {@code
+	 * map} wraps it in {@code Try}.
+	 * </p>
+	 *
+	 * @param  throwableFunction the mapping function
+	 * @return the result of the mapping function if applied to the {@code
+	 *         Success} instance's value; the {@code Failure} instance otherwise
 	 */
 	public abstract <U> Try<U> map(
 		ThrowableFunction<? super T, ? extends U> throwableFunction);
 
 	/**
-	 * If failure, apply the provided mapping function to the exception.
-	 * Otherwise return the {@code Success}.
+	 * Returns a {@code Try} instance that contains the result of applying the
+	 * mapping function to the current {@code Try} instance's exception, if that
+	 * instance is a {@code Failure} object. If the current {@code Try} instance
+	 * is a {@code Success} object, this method returns it unmodified.
 	 *
-	 * @param  function a mapping function to apply to the exception, if
-	 *         failure.
-	 * @return a {@code Try} with the result of applying a mapping function to
-	 *         the exception inside this {@code Try}, if failure case: the same
-	 *         {@code Success}, otherwise.
-	 * @review
+	 * @param  function the mapping function to apply to the {@code Failure}
+	 *         instance's exception
+	 * @return the {@code Try} with the mapping function's result; the {@code
+	 *         Success} object otherwise
 	 */
 	public abstract <X extends Exception> Try<T> mapFail(
 		Function<Exception, X> function);
 
 	/**
-	 * If failure, and the class of the exception match the handed param class,
-	 * replace the actual exception with the one provided by the supplier.
-	 * Otherwise return the {@code Success}.
+	 * Returns a {@code Try} instance that contains the exception provided by
+	 * the {@code Supplier}, if the current {@code Try} instance is a {@code
+	 * Failure} object whose exception class matches that of the {@code
+	 * exceptionClass} parameter. If the current {@code Try} instance is a
+	 * {@code Success} object, this method returns it unmodified.
 	 *
-	 * @param  supplier a supplier for getting the new exception, if failure and
-	 *         exception classes match.
-	 * @return a {@code Try} with the result of the exception supplier, if
-	 *         failure case and exception classes match: the same {@code
-	 *         Success}, otherwise.
-	 * @review
+	 * @param  supplier the supplier
+	 * @return the {@code Try} with the exception from the supplier; the {@code
+	 *         Success} object otherwise
 	 */
 	public abstract <X extends Exception, Y extends Exception> Try<T>
 		mapFailMatching(Class<Y> exceptionClass, Supplier<X> supplier);
 
 	/**
-	 * Return the value if success, otherwise return {@code other}.
+	 * Returns the {@code Success} instance's value, if the current {@code Try}
+	 * instance is a {@code Success} object. If the current {@code Try} instance
+	 * is a {@code Failure} object, this method returns the {@code other}
+	 * parameter.
 	 *
-	 * @param  other the value to be returned if failure.
-	 * @return the value, if success, otherwise {@code other}.
-	 * @review
+	 * @param  other the value to return if current {@code Try} instance is a
+	 *         {@code Failure} object
+	 * @return the {@code Success} instance's value, or {@code other}
 	 */
 	public abstract T orElse(T other);
 
 	/**
-	 * Return the value if success, otherwise invoke {@code supplier} and return
-	 * the result of that invocation.
+	 * Returns the {@code Success} instance's value, if the current {@code Try}
+	 * instance is a {@code Success} object. If the current {@code Try} instance
+	 * is a {@code Failure} object, this method returns the result of invoking
+	 * {@code Supplier#get()}.
 	 *
-	 * @param  supplier a {@code Supplier} whose result is returned if failure.
-	 * @return the value if success otherwise the result of {@code
-	 *         supplier.get()}.
-	 * @review
+	 * @param  supplier the supplier
+	 * @return the {@code Success} instance's value, or the result of the
+	 *         supplier's {@code get} method
 	 */
 	public abstract T orElseGet(Supplier<? extends T> supplier);
 
 	/**
-	 * Return the contained value, if success, otherwise throw an exception to
-	 * be created by the provided supplier.
+	 * Returns the {@code Success} instance's value, if the current {@code Try}
+	 * instance is a {@code Success} object. If the current {@code Try} instance
+	 * is a {@code Failure} object, this method throws the exception that
+	 * results from invoking {@code Supplier#get()}.
 	 *
-	 * @param  supplier The supplier which will return the exception to be
-	 *         thrown
-	 * @return the present value
-	 * @review
+	 * @param  supplier the supplier
+	 * @return the {@code Success} instance's value
+	 * @throws X if the current {@code Try} instance was a {@code Failure}
+	 *         object
 	 */
 	public abstract <X extends Throwable> T orElseThrow(
 			Supplier<? extends X> supplier)
 		throws X;
 
 	/**
-	 * Returns the result extracted from the provided function if this instance
-	 * is a failure case. Returns the inner result in the success case.
+	 * Returns the result of applying the function to the {@code Failure}
+	 * object's exception, if the current {@code Try} instance is a {@code
+	 * Failure} object. If the current {@code Try} instance is a {@code Success}
+	 * object, this method returns that object's value.
 	 *
-	 * <p>
-	 * The lambda passed as parameter gives access to the exception in the case
-	 * of failure.
-	 * </p>
-	 *
-	 * @param  function function to execute on failure result.
-	 * @return the result from the function, if failure; the inner value on
-	 *         success.
-	 * @review
+	 * @param  function the function
+	 * @return the function's result when applied to the {@code Failure}; the
+	 *         {@code Success} object's value otherwise
 	 */
 	public abstract T recover(Function<? super Exception, T> function);
 
 	/**
-	 * Returns a new {@code Try} instance, extracted from the provided function
-	 * if this instance is a failure case. Returns the current success
-	 * otherwise.
+	 * Returns a new {@code Try} instance extracted from the provided function,
+	 * if the current {@code Try} instance is a {@code Failure} object. If the
+	 * current {@code Try} instance is a {@code Success} object, this method
+	 * returns that object.
 	 *
-	 * <p>
-	 * The lambda passed as parameter gives access to the exception in the case
-	 * of failure.
-	 * </p>
-	 *
-	 * @param  throwableFunction function to execute on failure result.
-	 * @return the new {@code Try} result from the function, if failure; the
-	 *         current success, otherwise.
-	 * @review
+	 * @param  throwableFunction the function
+	 * @return the new {@code Try} instance, if the current {@code Try} instance
+	 *         is a {@code Failure} object; the current {@code Success} object
+	 *         otherwise
 	 */
 	public abstract Try<T> recoverWith(
 		ThrowableFunction<? super Exception, Try<T>> throwableFunction);
 
 	/**
-	 * Implementation of the failure case of a {@code Try}.
-	 *
-	 * Don't try to directly instantiate this class. To create an instance of
-	 * this class, use {@link #fromFallible(ThrowableSupplier)} if you don't
-	 * know if the operation is going to fail or not. Or
-	 * {@link #fail(Exception)} to directly create a {@link Failure} from an
-	 * {@code Exception}.
-	 *
-	 * @review
+	 * The implementation of {@code Try}'s failure case. Don't try to
+	 * instantiate this class directly. To instantiate this class when you don't
+	 * know if the operation will fail, use {@link
+	 * #fromFallible(ThrowableSupplier)}. To instantiate this class from an
+	 * exception, use {@link #fail(Exception)}.
 	 */
 	public static class Failure<T> extends Try<T> {
 
@@ -339,10 +327,9 @@ public abstract class Try<T> {
 		}
 
 		/**
-		 * Returns the cause of this failure.
+		 * Returns the current {@code Failure} instance's exception.
 		 *
-		 * @return the cause of this failure.
-		 * @review
+		 * @return the exception
 		 */
 		public Exception getException() {
 			return _exception;
@@ -447,14 +434,11 @@ public abstract class Try<T> {
 	}
 
 	/**
-	 * Implementation of the success case of a {@code Try}.
-	 *
-	 * Don't try to directly instantiate this class. To create an instance of
-	 * this class, use {@link #fromFallible(ThrowableSupplier)} if you don't
-	 * know if the operation is going to fail or not. Or
-	 * {@link #success(Object)} to directly create a {@link Success} from a T.
-	 *
-	 * @review
+	 * The implementation of {@code Try}'s success case. Don't try to
+	 * instantiate this class directly. To instantiate this class when you don't
+	 * know if the operation will fail, use {@link
+	 * #fromFallible(ThrowableSupplier)}. To instantiate this class from a value
+	 * of type {@code T}, use {@link #success(Object)}.
 	 */
 	public static class Success<T> extends Try<T> {
 
@@ -495,10 +479,9 @@ public abstract class Try<T> {
 		}
 
 		/**
-		 * Returns the inner value of this {@code Success}.
+		 * Returns the current {@code Success} instance's value.
 		 *
-		 * @return the inner value of the {@code Success}.
-		 * @review
+		 * @return the current {@code Success} instance's value
 		 */
 		public T getValue() {
 			return _value;

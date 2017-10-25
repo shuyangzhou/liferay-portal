@@ -56,8 +56,7 @@ page import="com.liferay.portal.workflow.web.internal.search.WorkflowDefinitionS
 
 <%@ page import="java.util.ArrayList" %>
 
-<%@ page import="javax.portlet.PortletURL" %><%@
-page import="javax.portlet.WindowState" %>
+<%@ page import="javax.portlet.WindowState" %>
 
 <liferay-frontend:defineObjects />
 

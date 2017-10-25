@@ -16,6 +16,7 @@ package com.liferay.vulcan.wiring.osgi.internal.resource.builder;
 
 import com.liferay.vulcan.alias.BinaryFunction;
 import com.liferay.vulcan.consumer.TriConsumer;
+import com.liferay.vulcan.language.Language;
 import com.liferay.vulcan.resource.RelatedCollection;
 import com.liferay.vulcan.resource.RelatedModel;
 import com.liferay.vulcan.resource.Representor;
@@ -34,6 +35,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.TimeZone;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -104,6 +106,13 @@ public class RepresentorBuilderImpl<T, U extends Identifier>
 		}
 
 		@Override
+		public Map<String, BiFunction<T, Language, String>>
+			getLocalizedStringFunctions() {
+
+			return _localizedStringFunctions;
+		}
+
+		@Override
 		public Map<String, Function<T, Number>> getNumberFunctions() {
 			return _numberFunctions;
 		}
@@ -160,6 +169,12 @@ public class RepresentorBuilderImpl<T, U extends Identifier>
 				new RelatedModel<>(key, modelClass, modelFunction));
 		}
 
+		private void _addLocalizedString(
+			String key, BiFunction<T, Language, String> fieldFunction) {
+
+			_localizedStringFunctions.put(key, fieldFunction);
+		}
+
 		private void _addNumber(String key, Function<T, Number> fieldFunction) {
 			_numberFunctions.put(key, fieldFunction);
 		}
@@ -190,6 +205,8 @@ public class RepresentorBuilderImpl<T, U extends Identifier>
 		private List<RelatedModel<T, ?>> _linkedRelatedModels =
 			new ArrayList<>();
 		private Map<String, String> _links = new HashMap<>();
+		private Map<String, BiFunction<T, Language, String>>
+			_localizedStringFunctions = new HashMap<>();
 		private Map<String, Function<T, Number>> _numberFunctions =
 			new HashMap<>();
 		private List<RelatedCollection<T, ?>> _relatedCollections =
@@ -292,6 +309,15 @@ public class RepresentorBuilderImpl<T, U extends Identifier>
 			Function<T, Optional<S>> modelFunction) {
 
 			_representor._addLinkedModel(key, modelClass, modelFunction);
+
+			return this;
+		}
+
+		@Override
+		public FirstStep<T, U> addLocalizedString(
+			String key, BiFunction<T, Language, String> stringFunction) {
+
+			_representor._addLocalizedString(key, stringFunction);
 
 			return this;
 		}

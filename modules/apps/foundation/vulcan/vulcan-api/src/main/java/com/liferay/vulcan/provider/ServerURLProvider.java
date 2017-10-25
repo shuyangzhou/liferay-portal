@@ -19,22 +19,19 @@ import aQute.bnd.annotation.ConsumerType;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Instances of this interface will be used to provide the final URL based on
- * the HTTP servlet request. The implementation will be dependant on the proxies
- * configuration, SSO...
+ * Provides the final URL based on the HTTP servlet request. The implementation
+ * depends on any proxy configuration, SSO, and so on.
  *
  * @author Javier Gamarra
- * @review
  */
 @ConsumerType
 public interface ServerURLProvider {
 
 	/**
-	 * Returns the original url of the HTTP servlet request
+	 * Returns the HTTP servlet request's original URL.
 	 *
-	 * @param  httpServletRequest the HTTP request
-	 * @return an string URL built based on the HTTP servlet request
-	 * @review
+	 * @param  httpServletRequest the HTTP servlet request
+	 * @return a string URL constructed from the HTTP servlet request
 	 */
 	public String getServerURL(HttpServletRequest httpServletRequest);
 

@@ -3,6 +3,15 @@ AUI.add(
 	function(A) {
 		var FormRendererFieldType = A.Component.create(
 			{
+				ATTRS: {
+					description: {
+						value: ''
+					},
+					group: {
+						value: ''
+					}
+				},
+
 				EXTENDS: A.FormBuilderFieldType,
 
 				NAME: 'liferay-ddm-form-renderer-type',

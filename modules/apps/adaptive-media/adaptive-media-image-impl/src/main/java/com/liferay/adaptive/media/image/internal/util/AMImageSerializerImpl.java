@@ -79,10 +79,8 @@ public class AMImageSerializerImpl implements AMImageSerializer {
 	}
 
 	@Override
-	public String serialize(AdaptiveMedia<AMImageProcessor> media) {
+	public String serialize(AdaptiveMedia<AMImageProcessor> adaptiveMedia) {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put("uri", media.getURI());
 
 		JSONObject attributesJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -91,7 +89,7 @@ public class AMImageSerializerImpl implements AMImageSerializer {
 
 		allowedAMAttributes.forEach(
 			(name, amAttribute) -> {
-				Optional<Object> valueOptional = media.getValueOptional(
+				Optional<Object> valueOptional = adaptiveMedia.getValueOptional(
 					(AMAttribute)amAttribute);
 
 				valueOptional.ifPresent(
@@ -100,6 +98,8 @@ public class AMImageSerializerImpl implements AMImageSerializer {
 			});
 
 		jsonObject.put("attributes", attributesJSONObject);
+
+		jsonObject.put("uri", adaptiveMedia.getURI());
 
 		return jsonObject.toString();
 	}

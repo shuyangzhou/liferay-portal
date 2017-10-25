@@ -31,6 +31,8 @@
 		&.advanced {
 			display: none;
 		}
+
+		margin-top: -56px;
 	}
 
 	.key-value-editor {
@@ -124,6 +126,7 @@
 			position: absolute;
 			right: 8px;
 			top: 8px;
+			z-index: 5;
 		}
 
 		.drag-handle {

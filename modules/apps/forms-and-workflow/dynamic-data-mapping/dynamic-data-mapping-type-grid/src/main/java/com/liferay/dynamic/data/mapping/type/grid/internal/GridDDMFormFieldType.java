@@ -27,8 +27,9 @@ import org.osgi.service.component.annotations.Component;
 	immediate = true,
 	property = {
 		"ddm.form.field.type.data.domain=list",
+		"ddm.form.field.type.description=grid-field-type-description",
 		"ddm.form.field.type.display.order:Integer=7",
-		"ddm.form.field.type.icon=table2",
+		"ddm.form.field.type.group=basic", "ddm.form.field.type.icon=table2",
 		"ddm.form.field.type.js.class.name=Liferay.DDM.Field.Grid",
 		"ddm.form.field.type.js.module=liferay-ddm-form-field-grid",
 		"ddm.form.field.type.label=grid-field-type-label",

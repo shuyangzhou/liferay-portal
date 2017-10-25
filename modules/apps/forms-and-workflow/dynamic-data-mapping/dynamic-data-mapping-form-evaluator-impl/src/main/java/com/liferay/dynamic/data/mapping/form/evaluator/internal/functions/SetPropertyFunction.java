@@ -26,7 +26,8 @@ public class SetPropertyFunction extends BaseDDMFormRuleFunction {
 
 	public SetPropertyFunction(
 		Map<String, List<DDMFormFieldEvaluationResult>>
-			ddmFormFieldEvaluationResultsMap, String propertyName) {
+			ddmFormFieldEvaluationResultsMap,
+		String propertyName) {
 
 		super(ddmFormFieldEvaluationResultsMap);
 

@@ -20,18 +20,14 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
- * Instances of this class behave like a list in pure functional languages.
- * Instead of splitting the list manually, you can use the provided methods to
- * take different elements from the list, like {@code #head()}, {@code #tail()},
- * etc.
- *
- * Instances of {@code FunctionalList} should always have at least one
- * element.
+ * Defines an interface whose implementing classes behave like a list in pure
+ * functional languages. Instead of splitting the list manually, you can use the
+ * methods this interface defines to take different elements from the list.
+ * Instances of {@code FunctionalList} should always have at least one element.
  *
  * @author Alejandro Hernández
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
- * @review
  */
 @ProviderType
 public interface FunctionalList<T> {
@@ -39,43 +35,37 @@ public interface FunctionalList<T> {
 	/**
 	 * Returns the first element of the list.
 	 *
-	 * @return the first element.
-	 * @review
+	 * @return the first element of the list
 	 */
 	public T head();
 
 	/**
-	 * Returns all elements of the list except the last one in a Java stream.
+	 * Returns all but the last element of the list.
 	 *
-	 * @return a stream with all elements except the last one.
-	 * @review
+	 * @return a {@code Stream} that contains all but the last element of the
+	 *         list
 	 */
 	public Stream<T> initStream();
 
 	/**
-	 * Returns the last element of the list if there is one (tail need to have
-	 * at least one element). Otherwise returns {@code Optional.empty()}
+	 * Returns the last element of the list, if it exists.
 	 *
-	 * @return the last element if there is one, otherwise {@code
-	 *         Optional.empty()}
-	 * @review
+	 * @return the last element of the list; {@code Optional.empty()} otherwise
 	 */
 	public Optional<T> lastOptional();
 
 	/**
-	 * Returns all elements of the list except the first and last in a Java
-	 * stream.
+	 * Returns all elements of the list except the first and last.
 	 *
-	 * @return a stream with all elements except the first and last.
-	 * @review
+	 * @return a {@code Stream} that contains all list elements except the first
+	 *         and last
 	 */
 	public Stream<T> middleStream();
 
 	/**
-	 * Returns all elements of the list except the first one in a Java stream.
+	 * Returns all elements of the list except the first.
 	 *
-	 * @return a stream with all elements except the first one.
-	 * @review
+	 * @return a {@code Stream} that contains all list elements except the first
 	 */
 	public Stream<T> tailStream();
 
