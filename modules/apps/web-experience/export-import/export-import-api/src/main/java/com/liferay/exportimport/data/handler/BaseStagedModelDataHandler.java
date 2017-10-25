@@ -22,7 +22,12 @@ import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataException;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.StagedGroupedModel;
 import com.liferay.portal.kernel.model.StagedModel;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -79,7 +84,82 @@ public abstract class BaseStagedModelDataHandler<T extends StagedModel>
 			return super.fetchMissingReference(uuid, groupId);
 		}
 
-		return stagedModelRepository.fetchMissingReference(uuid, groupId);
+		// Try to fetch the existing staged model from the importing group
+
+		T existingStagedModel = fetchStagedModelByUuidAndGroupId(uuid, groupId);
+
+		if ((existingStagedModel != null) &&
+			!isStagedModelInTrash(existingStagedModel)) {
+
+			return existingStagedModel;
+		}
+
+		try {
+
+			// Try to fetch the existing staged model from parent sites
+
+			Group originalGroup = GroupLocalServiceUtil.getGroup(groupId);
+
+			Group group = originalGroup.getParentGroup();
+
+			while (group != null) {
+				existingStagedModel = fetchStagedModelByUuidAndGroupId(
+					uuid, group.getGroupId());
+
+				if (existingStagedModel != null) {
+					break;
+				}
+
+				group = group.getParentGroup();
+			}
+
+			if ((existingStagedModel != null) &&
+				!isStagedModelInTrash(existingStagedModel)) {
+
+				return existingStagedModel;
+			}
+
+			List<T> existingStagedModels = fetchStagedModelsByUuidAndCompanyId(
+				uuid, originalGroup.getCompanyId());
+
+			for (T stagedModel : existingStagedModels) {
+				try {
+					if (stagedModel instanceof StagedGroupedModel) {
+						StagedGroupedModel stagedGroupedModel =
+							(StagedGroupedModel)stagedModel;
+
+						group = GroupLocalServiceUtil.getGroup(
+							stagedGroupedModel.getGroupId());
+
+						if (!group.isStagingGroup() &&
+							!isStagedModelInTrash(stagedModel)) {
+
+							return stagedModel;
+						}
+					}
+					else if (!isStagedModelInTrash(stagedModel)) {
+						return stagedModel;
+					}
+				}
+				catch (PortalException pe) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(pe, pe);
+					}
+				}
+			}
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
+			else if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Unable to fetch missing reference staged model from " +
+						"group " + groupId);
+			}
+		}
+
+		return null;
 	}
 
 	@Override
@@ -141,5 +221,8 @@ public abstract class BaseStagedModelDataHandler<T extends StagedModel>
 	protected StagedModelRepository<T> getStagedModelRepository() {
 		return null;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		BaseStagedModelDataHandler.class);
 
 }
