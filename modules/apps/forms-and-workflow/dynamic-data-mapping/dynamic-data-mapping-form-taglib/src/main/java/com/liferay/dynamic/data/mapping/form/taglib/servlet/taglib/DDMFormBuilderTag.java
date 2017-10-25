@@ -48,7 +48,9 @@ public class DDMFormBuilderTag extends BaseDDMFormBuilderTag {
 
 		return DDMFormTaglibUtil.getDDMFormBuilderSettings(
 			DDMFormBuilderSettingsRequest.with(
-				getDDMForm(), themeDisplay.getLocale()));
+				themeDisplay.getCompanyId(), themeDisplay.getScopeGroupId(),
+				getFieldSetClassNameId(), getDDMForm(),
+				themeDisplay.getLocale()));
 	}
 
 	@Override
@@ -68,6 +70,12 @@ public class DDMFormBuilderTag extends BaseDDMFormBuilderTag {
 		setNamespacedAttribute(
 			request, "evaluatorURL",
 			ddmFormBuilderSettingsResponse.getFormContextProviderURL());
+		setNamespacedAttribute(
+			request, "fieldSets",
+			ddmFormBuilderSettingsResponse.getFieldSets());
+		setNamespacedAttribute(
+			request, "fieldSetDefinitionURL",
+			ddmFormBuilderSettingsResponse.getFieldSetDefinitionURL());
 		setNamespacedAttribute(
 			request, "fieldSettingsDDMFormContextURL",
 			ddmFormBuilderSettingsResponse.getFieldSettingsDDMFormContextURL());

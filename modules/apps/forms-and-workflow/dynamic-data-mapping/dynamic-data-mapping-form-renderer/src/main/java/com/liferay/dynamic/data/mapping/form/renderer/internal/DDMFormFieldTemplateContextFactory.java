@@ -28,7 +28,6 @@ import com.liferay.dynamic.data.mapping.model.Value;
 import com.liferay.dynamic.data.mapping.render.DDMFormFieldRenderingContext;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageConstants;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -541,16 +540,7 @@ public class DDMFormFieldTemplateContextFactory {
 			Object evaluationResultValue =
 				ddmFormFieldEvaluationResult.getValue();
 
-			if (evaluationResultValue instanceof JSONObject) {
-				JSONObject jsonObject = (JSONObject)evaluationResultValue;
-
-				ddmFormFieldTemplateContext.put(
-					"value",
-					_jsonFactory.looseDeserialize(jsonObject.toJSONString()));
-			}
-			else {
-				ddmFormFieldTemplateContext.put("value", evaluationResultValue);
-			}
+			ddmFormFieldTemplateContext.put("value", evaluationResultValue);
 		}
 		else if (value != null) {
 			ddmFormFieldTemplateContext.put("value", value.getString(_locale));

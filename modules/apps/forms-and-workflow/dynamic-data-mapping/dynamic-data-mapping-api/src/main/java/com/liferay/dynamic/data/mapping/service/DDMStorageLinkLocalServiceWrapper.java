@@ -48,10 +48,10 @@ public class DDMStorageLinkLocalServiceWrapper
 
 	@Override
 	public com.liferay.dynamic.data.mapping.model.DDMStorageLink addStorageLink(
-		long classNameId, long classPK, long structureId,
+		long classNameId, long classPK, long structureVersionId,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 		return _ddmStorageLinkLocalService.addStorageLink(classNameId, classPK,
-			structureId, serviceContext);
+			structureVersionId, serviceContext);
 	}
 
 	/**
@@ -335,6 +335,17 @@ public class DDMStorageLinkLocalServiceWrapper
 	@Override
 	public int getStructureStorageLinksCount(long structureId) {
 		return _ddmStorageLinkLocalService.getStructureStorageLinksCount(structureId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.dynamic.data.mapping.model.DDMStorageLink> getStructureVersionStorageLinks(
+		long structureVersionId) {
+		return _ddmStorageLinkLocalService.getStructureVersionStorageLinks(structureVersionId);
+	}
+
+	@Override
+	public int getStructureVersionStorageLinksCount(long structureVersionId) {
+		return _ddmStorageLinkLocalService.getStructureVersionStorageLinksCount(structureVersionId);
 	}
 
 	/**

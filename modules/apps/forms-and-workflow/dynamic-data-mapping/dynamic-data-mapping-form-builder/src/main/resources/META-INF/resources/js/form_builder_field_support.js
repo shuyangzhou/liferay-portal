@@ -5,8 +5,6 @@ AUI.add(
 
 		var FieldTypes = Renderer.FieldTypes;
 
-		var Settings = Liferay.DDM.Settings;
-
 		var FormBuilderUtil = Liferay.DDM.FormBuilderUtil;
 
 		var CSS_FIELD = A.getClassName('form', 'builder', 'field');
@@ -81,7 +79,7 @@ AUI.add(
 					{
 						context: context,
 						editMode: builder.isEditMode() || instance.isPersisted(),
-						evaluatorURL: Settings.evaluatorURL,
+						evaluatorURL: Liferay.DDM.Settings.evaluatorURL,
 						field: instance,
 						templateNamespace: 'ddm.settings_form'
 					}

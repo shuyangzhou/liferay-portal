@@ -19,8 +19,17 @@ import com.liferay.dynamic.data.mapping.form.builder.internal.converter.model.DD
 import com.liferay.dynamic.data.mapping.form.builder.internal.util.DDMExpressionFunctionMetadataHelper;
 import com.liferay.dynamic.data.mapping.form.builder.internal.util.DDMExpressionFunctionMetadataHelper.DDMExpressionFunctionMetadata;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.model.DDMStructureConstants;
+import com.liferay.dynamic.data.mapping.service.DDMStructureService;
+import com.liferay.dynamic.data.mapping.util.comparator.StructureNameComparator;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONSerializer;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.List;
 import java.util.Locale;
@@ -58,6 +67,14 @@ public class DDMFormBuilderSettingsRetrieverHelper {
 			"/dynamic-data-mapping-form-builder-data-provider-instances/");
 	}
 
+	public String getDDMFieldSetDefinitionURL() {
+		String servletContextPath = getServletContextPath(
+			_ddmFieldSetDefinitionServlet);
+
+		return servletContextPath.concat(
+			"/dynamic-data-mapping-form-builder-fieldset-definition/");
+	}
+
 	public String getDDMFieldSettingsDDMFormContextURL() {
 		String servletContextPath = getServletContextPath(
 			_ddmFieldSettingsDDMFormContextServlet);
@@ -80,6 +97,37 @@ public class DDMFormBuilderSettingsRetrieverHelper {
 
 		return servletContextPath.concat(
 			"/dynamic-data-mapping-form-builder-functions/");
+	}
+
+	public JSONArray getFieldSetsMetadata(
+		long companyId, long scopeGroupId, long fieldSetClassNameId,
+		Locale locale) {
+
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
+
+		if (fieldSetClassNameId == 0) {
+			return jsonArray;
+		}
+
+		List<DDMStructure> ddmStructures = _ddmStructureService.search(
+			companyId, new long[] {scopeGroupId}, fieldSetClassNameId,
+			StringPool.BLANK, DDMStructureConstants.TYPE_FRAGMENT,
+			WorkflowConstants.STATUS_ANY, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			new StructureNameComparator(true));
+
+		for (DDMStructure ddmStructure : ddmStructures) {
+			JSONObject jsonObject = _jsonFactory.createJSONObject();
+
+			jsonObject.put(
+				"description", ddmStructure.getDescription(locale, true));
+			jsonObject.put("icon", "forms");
+			jsonObject.put("id", ddmStructure.getStructureId());
+			jsonObject.put("name", ddmStructure.getName(locale, true));
+
+			jsonArray.put(jsonObject);
+		}
+
+		return jsonArray;
 	}
 
 	public String getRolesURL() {
@@ -119,80 +167,51 @@ public class DDMFormBuilderSettingsRetrieverHelper {
 	}
 
 	@Reference(
-		target = "(osgi.http.whiteboard.servlet.name=com.liferay.dynamic.data.mapping.form.builder.internal.servlet.DDMDataProviderInstanceParameterSettingsServlet)",
-		unbind = "-"
+		target = "(osgi.http.whiteboard.servlet.name=com.liferay.dynamic.data.mapping.form.builder.internal.servlet.DDMDataProviderInstanceParameterSettingsServlet)"
 	)
-	protected void setDataProviderInstanceParameterSettingsServlet(
-		Servlet ddmDataProviderInstanceParameterSettingsServlet) {
-
-		_ddmDataProviderInstanceParameterSettingsServlet =
-			ddmDataProviderInstanceParameterSettingsServlet;
-	}
-
-	@Reference(
-		target = "(osgi.http.whiteboard.servlet.name=com.liferay.dynamic.data.mapping.form.builder.internal.servlet.DDMDataProviderInstancesServlet)",
-		unbind = "-"
-	)
-	protected void setDataProviderInstancesServlet(
-		Servlet ddmDataProviderInstancesServlet) {
-
-		_ddmDataProviderInstancesServlet = ddmDataProviderInstancesServlet;
-	}
-
-	@Reference(
-		target = "(osgi.http.whiteboard.servlet.name=com.liferay.dynamic.data.mapping.form.builder.internal.servlet.DDMFieldSettingsDDMFormContextServlet)",
-		unbind = "-"
-	)
-	protected void setDDMFieldSettingsDDMFormContextServlet(
-		Servlet ddmFieldSettingsDDMFormContextServlet) {
-
-		_ddmFieldSettingsDDMFormContextServlet =
-			ddmFieldSettingsDDMFormContextServlet;
-	}
-
-	@Reference(
-		target = "(osgi.http.whiteboard.servlet.name=com.liferay.dynamic.data.mapping.form.renderer.internal.servlet.DDMFormContextProviderServlet)",
-		unbind = "-"
-	)
-	protected void setDDMFormContextProviderServlet(
-		Servlet ddmFormContextProviderServlet) {
-
-		_ddmFormContextProviderServlet = ddmFormContextProviderServlet;
-	}
-
-	@Reference(
-		target = "(osgi.http.whiteboard.servlet.name=com.liferay.dynamic.data.mapping.form.builder.internal.servlet.DDMFormFunctionsServlet)",
-		unbind = "-"
-	)
-	protected void setFormFunctionsServlet(Servlet ddmFormFunctionsServlet) {
-		_ddmFormFunctionsServlet = ddmFormFunctionsServlet;
-	}
-
-	@Reference(
-		target = "(osgi.http.whiteboard.servlet.name=com.liferay.dynamic.data.mapping.form.builder.internal.servlet.RolesServlet)",
-		unbind = "-"
-	)
-	protected void setRolesServlet(Servlet rolesServlet) {
-		_rolesServlet = rolesServlet;
-	}
-
 	private Servlet _ddmDataProviderInstanceParameterSettingsServlet;
+
+	@Reference(
+		target = "(osgi.http.whiteboard.servlet.name=com.liferay.dynamic.data.mapping.form.builder.internal.servlet.DDMDataProviderInstancesServlet)"
+	)
 	private Servlet _ddmDataProviderInstancesServlet;
 
 	@Reference
 	private DDMExpressionFunctionMetadataHelper
 		_ddmExpressionFunctionMetadataHelper;
 
+	@Reference(
+		target = "(osgi.http.whiteboard.servlet.name=com.liferay.dynamic.data.mapping.form.builder.internal.servlet.DDMFieldSetDefinitionServlet)"
+	)
+	private Servlet _ddmFieldSetDefinitionServlet;
+
+	@Reference(
+		target = "(osgi.http.whiteboard.servlet.name=com.liferay.dynamic.data.mapping.form.builder.internal.servlet.DDMFieldSettingsDDMFormContextServlet)"
+	)
 	private Servlet _ddmFieldSettingsDDMFormContextServlet;
+
+	@Reference(
+		target = "(osgi.http.whiteboard.servlet.name=com.liferay.dynamic.data.mapping.form.renderer.internal.servlet.DDMFormContextProviderServlet)"
+	)
 	private Servlet _ddmFormContextProviderServlet;
+
+	@Reference(
+		target = "(osgi.http.whiteboard.servlet.name=com.liferay.dynamic.data.mapping.form.builder.internal.servlet.DDMFormFunctionsServlet)"
+	)
 	private Servlet _ddmFormFunctionsServlet;
 
 	@Reference
 	private DDMFormRuleConverter _ddmFormRuleToDDMFormRuleConverter;
 
 	@Reference
+	private DDMStructureService _ddmStructureService;
+
+	@Reference
 	private JSONFactory _jsonFactory;
 
+	@Reference(
+		target = "(osgi.http.whiteboard.servlet.name=com.liferay.dynamic.data.mapping.form.builder.internal.servlet.RolesServlet)"
+	)
 	private Servlet _rolesServlet;
 
 }

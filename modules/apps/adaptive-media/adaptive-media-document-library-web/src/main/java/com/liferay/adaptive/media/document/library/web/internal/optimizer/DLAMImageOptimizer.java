@@ -168,7 +168,7 @@ public class DLAMImageOptimizer implements AMImageOptimizer {
 					}
 					catch (PortalException pe) {
 						_log.error(
-							"Unable to process file entry id " +
+							"Unable to process file entry " +
 								fileEntry.getFileEntryId(),
 							pe);
 					}

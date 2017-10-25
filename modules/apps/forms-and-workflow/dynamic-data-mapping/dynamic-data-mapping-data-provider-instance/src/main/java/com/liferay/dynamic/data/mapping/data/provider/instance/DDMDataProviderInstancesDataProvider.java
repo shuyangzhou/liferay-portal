@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.util.Portal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -74,15 +73,13 @@ public class DDMDataProviderInstancesDataProvider implements DDMDataProvider {
 				_ddmDataProviderInstanceLocalService.getDataProviderInstances(
 					groupIds);
 
-			Locale locale = LocaleThreadLocal.getThemeDisplayLocale();
-
 			for (DDMDataProviderInstance ddmDataProviderInstance :
 					ddmDataProviderInstances) {
 
 				long value =
 					ddmDataProviderInstance.getDataProviderInstanceId();
-
-				String label = ddmDataProviderInstance.getName(locale);
+				String label = ddmDataProviderInstance.getName(
+					LocaleThreadLocal.getThemeDisplayLocale());
 
 				data.add(new KeyValuePair(String.valueOf(value), label));
 			}

@@ -21167,6 +21167,11 @@ public class BlogsEntryPersistenceImpl extends BasePersistenceImpl<BlogsEntry>
 						groupId, userId, BlogsEntry.class.getName(), entryId,
 						ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL,
 						blogsEntry.getContent(), null));
+
+				blogsEntry.setCoverImageCaption(SanitizerUtil.sanitize(
+						companyId, groupId, userId, BlogsEntry.class.getName(),
+						entryId, ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL,
+						blogsEntry.getCoverImageCaption(), null));
 			}
 			catch (SanitizerException se) {
 				throw new SystemException(se);

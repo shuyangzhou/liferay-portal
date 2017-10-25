@@ -590,7 +590,7 @@ public class DDMFormValuesFactoryImpl implements DDMFormValuesFactory {
 
 		if (ddmFormFieldValues.size() < (index + 1)) {
 			for (int i = ddmFormFieldValues.size(); i <= index; i++) {
-				ddmFormFieldValues.add(null);
+				ddmFormFieldValues.add(new DDMFormFieldValue());
 			}
 		}
 

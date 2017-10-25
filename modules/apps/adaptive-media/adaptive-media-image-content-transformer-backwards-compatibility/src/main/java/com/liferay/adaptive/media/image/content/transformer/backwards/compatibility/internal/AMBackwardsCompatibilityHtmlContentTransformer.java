@@ -66,7 +66,7 @@ public class AMBackwardsCompatibilityHtmlContentTransformer
 
 	@Override
 	protected Pattern getPattern() {
-		return _IMG_PATTERN;
+		return _pattern;
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class AMBackwardsCompatibilityHtmlContentTransformer
 		_dlAppLocalService = dlAppLocalService;
 	}
 
-	private static final Pattern _IMG_PATTERN = Pattern.compile(
+	private static final Pattern _pattern = Pattern.compile(
 		"<img\\s+src=['\"]/documents/(\\d+)/(\\d+)/([^/?]+)" +
 			"(?:/([-0-9a-fA-F]+))?(?:\\?t=\\d+)?['\"]\\s*/>");
 

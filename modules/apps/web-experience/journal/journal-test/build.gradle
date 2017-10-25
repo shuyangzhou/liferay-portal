@@ -7,6 +7,7 @@ copyLibs {
 
 dependencies {
 	provided group: "com.liferay", name: "com.liferay.exportimport.api", version: "2.0.0"
+	provided group: "com.liferay", name: "com.liferay.petra.lang", version: "1.0.0"
 	provided group: "com.liferay", name: "com.liferay.petra.xml", version: "1.0.0"
 	provided group: "com.liferay.portal", name: "com.liferay.util.java", version: "2.0.0"
 

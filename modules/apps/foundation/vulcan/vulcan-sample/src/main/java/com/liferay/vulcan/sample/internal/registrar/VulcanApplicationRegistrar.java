@@ -14,6 +14,7 @@
 
 package com.liferay.vulcan.sample.internal.registrar;
 
+import java.util.Dictionary;
 import java.util.Hashtable;
 
 import javax.ws.rs.core.Application;
@@ -38,9 +39,11 @@ public class VulcanApplicationRegistrar {
 
 	@Activate
 	public void activate(BundleContext bundleContext) {
-		String[] propertyKeys = _serviceReference.getPropertyKeys();
+		Application application = bundleContext.getService(_serviceReference);
 
-		Hashtable<String, Object> properties = new Hashtable<>();
+		Dictionary<String, Object> properties = new Hashtable<>();
+
+		String[] propertyKeys = _serviceReference.getPropertyKeys();
 
 		for (String key : propertyKeys) {
 			Object value = _serviceReference.getProperty(key);
@@ -48,18 +51,17 @@ public class VulcanApplicationRegistrar {
 			properties.put(key, value);
 		}
 
-		properties.put("osgi.jaxrs.name", ".default");
 		properties.put("osgi.jaxrs.application.base", "/");
-
-		Application service = bundleContext.getService(_serviceReference);
+		properties.put("osgi.jaxrs.name", ".default");
 
 		_serviceRegistration = bundleContext.registerService(
-			Application.class, service, properties);
+			Application.class, application, properties);
 	}
 
 	@Deactivate
 	public void deactivate(BundleContext bundleContext) {
 		bundleContext.ungetService(_serviceReference);
+
 		_serviceRegistration.unregister();
 	}
 

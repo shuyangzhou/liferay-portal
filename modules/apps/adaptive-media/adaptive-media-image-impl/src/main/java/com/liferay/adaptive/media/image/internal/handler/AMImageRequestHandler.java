@@ -207,9 +207,11 @@ public class AMImageRequestHandler
 					amImageQueryBuilder -> amImageQueryBuilder.forFileVersion(
 						fileVersion
 					).with(
-						AMImageAttribute.IMAGE_WIDTH, configurationWidth
+						AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH,
+						configurationWidth
 					).with(
-						AMImageAttribute.IMAGE_HEIGHT, configurationHeight
+						AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT,
+						configurationHeight
 					).done());
 
 			return adaptiveMediaStream.sorted(
@@ -246,7 +248,7 @@ public class AMImageRequestHandler
 		int width, AdaptiveMedia<AMImageProcessor> adaptiveMedia) {
 
 		Optional<Integer> imageWidthOptional = adaptiveMedia.getValueOptional(
-			AMImageAttribute.IMAGE_WIDTH);
+			AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH);
 
 		Optional<Integer> distanceOptional = imageWidthOptional.map(
 			imageWidth -> Math.abs(imageWidth - width));
@@ -335,7 +337,7 @@ public class AMImageRequestHandler
 		}
 		catch (PortalException pe) {
 			_log.error(
-				"Unable to create lazy adaptive media for file version id " +
+				"Unable to create lazy adaptive media for file version " +
 					fileVersion.getFileVersionId(),
 				pe);
 		}

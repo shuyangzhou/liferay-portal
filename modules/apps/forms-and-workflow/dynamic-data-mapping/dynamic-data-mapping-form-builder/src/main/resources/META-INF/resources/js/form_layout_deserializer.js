@@ -2,7 +2,6 @@ AUI.add(
 	'liferay-ddm-form-builder-layout-deserializer',
 	function(A) {
 		var FormBuilderUtil = Liferay.DDM.FormBuilderUtil;
-		var Settings = Liferay.DDM.Settings;
 
 		var LayoutDeserializer = A.Component.create(
 			{
@@ -72,7 +71,7 @@ AUI.add(
 
 						var builder = instance.get('builder');
 
-						context.portletNamespace = Settings.portletNamespace;
+						context.portletNamespace = Liferay.DDM.Settings.portletNamespace;
 						context.visible = true;
 						context.value = '';
 

@@ -308,7 +308,8 @@ public class DDMTemplatePermission extends BaseResourcePermissionChecker {
 
 	protected static String getResourceName(
 		ServiceWrapper<DDMTemplatePermissionSupport>
-			templatePermissionSupportServiceWrapper, long classNameId) {
+			templatePermissionSupportServiceWrapper,
+		long classNameId) {
 
 		DDMTemplatePermissionSupport templatePermissionSupport =
 			templatePermissionSupportServiceWrapper.getService();

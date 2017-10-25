@@ -38,6 +38,7 @@ public class DDMStorageLinkSoap implements Serializable {
 		soapModel.setClassNameId(model.getClassNameId());
 		soapModel.setClassPK(model.getClassPK());
 		soapModel.setStructureId(model.getStructureId());
+		soapModel.setStructureVersionId(model.getStructureVersionId());
 
 		return soapModel;
 	}
@@ -138,10 +139,19 @@ public class DDMStorageLinkSoap implements Serializable {
 		_structureId = structureId;
 	}
 
+	public long getStructureVersionId() {
+		return _structureVersionId;
+	}
+
+	public void setStructureVersionId(long structureVersionId) {
+		_structureVersionId = structureVersionId;
+	}
+
 	private String _uuid;
 	private long _storageLinkId;
 	private long _companyId;
 	private long _classNameId;
 	private long _classPK;
 	private long _structureId;
+	private long _structureVersionId;
 }

@@ -72,7 +72,7 @@ public interface DDMStorageLinkLocalService extends BaseLocalService,
 	public DDMStorageLink addDDMStorageLink(DDMStorageLink ddmStorageLink);
 
 	public DDMStorageLink addStorageLink(long classNameId, long classPK,
-		long structureId, ServiceContext serviceContext);
+		long structureVersionId, ServiceContext serviceContext);
 
 	/**
 	* Creates a new ddm storage link with the primary key. Does not add the ddm storage link to the database.
@@ -266,6 +266,13 @@ public interface DDMStorageLinkLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getStructureStorageLinksCount(long structureId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<DDMStorageLink> getStructureVersionStorageLinks(
+		long structureVersionId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getStructureVersionStorageLinksCount(long structureVersionId);
 
 	/**
 	* Updates the ddm storage link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
