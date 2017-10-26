@@ -7,8 +7,6 @@ dependencies {
 	provided group: "com.liferay", name: "com.liferay.application.list.api", version: "2.0.0"
 	provided group: "com.liferay", name: "com.liferay.dynamic.data.mapping.form.values.factory", version: "2.0.0"
 	provided group: "com.liferay", name: "com.liferay.dynamic.data.mapping.service", version: "2.0.0"
-	provided group: "com.liferay", name: "com.liferay.exportimport.api", version: "2.0.0"
-	provided group: "com.liferay", name: "com.liferay.exportimport.service", version: "3.0.0"
 	provided group: "com.liferay", name: "com.liferay.frontend.taglib", version: "2.0.0"
 	provided group: "com.liferay", name: "com.liferay.osgi.service.tracker.collections", version: "2.0.0"
 	provided group: "com.liferay", name: "com.liferay.petra.lang", version: "1.0.0"
@@ -22,4 +20,5 @@ dependencies {
 	provided project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-data-provider")
 	provided project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-form-renderer")
 	provided project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-io")
+	provided project(":apps:web-experience:export-import:export-import-api")
 }
