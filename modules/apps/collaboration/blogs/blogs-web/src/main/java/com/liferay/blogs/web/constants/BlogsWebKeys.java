@@ -16,7 +16,10 @@ package com.liferay.blogs.web.constants;
 
 /**
  * @author Roberto Díaz
+ * @see    com.liferay.blogs.constants.BlogsWebKeys
+ * @deprecated As of 2.0.0
  */
+@Deprecated
 public class BlogsWebKeys {
 
 	public static final String BLOGS_ITEM_SELECTOR_HELPER =
