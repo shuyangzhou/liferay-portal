@@ -136,6 +136,10 @@ public class DataAccess {
 		return dataSource.getConnection();
 	}
 
+	public static DataSource getDataSource() {
+		return _pacl.getDataSource();
+	}
+
 	public static Connection getUpgradeOptimizedConnection()
 		throws SQLException {
 

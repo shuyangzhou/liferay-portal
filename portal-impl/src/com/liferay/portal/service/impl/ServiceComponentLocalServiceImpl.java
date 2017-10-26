@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBContext;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBProcessContext;
+import com.liferay.portal.kernel.dao.jdbc.CurrentConnectionUtil;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.exception.OldServiceComponentException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -59,6 +61,8 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 
 import java.security.PrivilegedExceptionAction;
+
+import java.sql.Connection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -608,6 +612,9 @@ public class ServiceComponentLocalServiceImpl
 			String sequencesSQL, String indexesSQL)
 		throws Exception {
 
+		Connection connection = CurrentConnectionUtil.getConnection(
+			DataAccess.getDataSource());
+
 		DB db = DBManagerUtil.getDB();
 
 		if (previousServiceComponent == null) {
@@ -615,9 +622,9 @@ public class ServiceComponentLocalServiceImpl
 				_log.info("Running " + buildNamespace + " SQL scripts");
 			}
 
-			db.runSQLTemplateString(tablesSQL, true, false);
-			db.runSQLTemplateString(sequencesSQL, true, false);
-			db.runSQLTemplateString(indexesSQL, true, false);
+			db.runSQLTemplateString(connection, tablesSQL, true, false);
+			db.runSQLTemplateString(connection, sequencesSQL, true, false);
+			db.runSQLTemplateString(connection, indexesSQL, true, false);
 		}
 		else if (PropsValues.SCHEMA_MODULE_BUILD_AUTO_UPGRADE) {
 			if (_log.isWarnEnabled()) {
@@ -639,7 +646,7 @@ public class ServiceComponentLocalServiceImpl
 					_log.info("Upgrading database with tables.sql");
 				}
 
-				db.runSQLTemplateString(tablesSQL, true, false);
+				db.runSQLTemplateString(connection, tablesSQL, true, false);
 
 				upgradeModels(classLoader, previousServiceComponent, tablesSQL);
 			}
@@ -651,7 +658,7 @@ public class ServiceComponentLocalServiceImpl
 					_log.info("Upgrading database with sequences.sql");
 				}
 
-				db.runSQLTemplateString(sequencesSQL, true, false);
+				db.runSQLTemplateString(connection, sequencesSQL, true, false);
 			}
 
 			if (!indexesSQL.equals(previousServiceComponent.getIndexesSQL()) ||
@@ -661,7 +668,7 @@ public class ServiceComponentLocalServiceImpl
 					_log.info("Upgrading database with indexes.sql");
 				}
 
-				db.runSQLTemplateString(indexesSQL, true, false);
+				db.runSQLTemplateString(connection, indexesSQL, true, false);
 			}
 		}
 	}

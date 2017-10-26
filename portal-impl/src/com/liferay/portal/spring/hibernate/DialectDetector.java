@@ -73,6 +73,11 @@ public class DialectDetector {
 				return dialect;
 			}
 
+			System.out.println(StringBundler.concat(
+				"Determine dialect for ", dbName, " ",
+				String.valueOf(dbMajorVersion), ".",
+				String.valueOf(dbMinorVersion)));
+
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					StringBundler.concat(
