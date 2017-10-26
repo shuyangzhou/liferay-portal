@@ -44,7 +44,6 @@
 			<property name="allowedExportPackageDirName" value="sync/sync-service" />
 			<property name="allowedExportPackageDirName" value="twitter/twitter-service" />
 			<property name="allowedExportPackageDirName" value="web-experience/asset/asset-display-template-service" />
-			<property name="allowedExportPackageDirName" value="web-experience/asset/asset-service" />
 			<property name="allowedExportPackageDirName" value="web-experience/export-import/export-import-service" />
 			<property name="allowedExportPackageDirName" value="web-experience/fragment/fragment-service" />
 			<property name="allowedExportPackageDirName" value="web-experience/layout/layout-page-template-service" />
