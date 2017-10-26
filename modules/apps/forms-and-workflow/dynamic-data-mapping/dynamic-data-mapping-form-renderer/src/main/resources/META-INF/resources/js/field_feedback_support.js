@@ -3,7 +3,7 @@ AUI.add(
 	function(A) {
 		var Lang = A.Lang;
 
-		var TPL_ERROR_MESSAGE = '<div class="help-block">{errorMessage}</div>';
+		var TPL_ERROR_MESSAGE = '<div class="form-feedback-indicator">{errorMessage}</div>';
 
 		var TPL_FEEDBACK = '<span aria-hidden="true" class="form-control-feedback"><span class="icon-{icon}"></span></span>';
 

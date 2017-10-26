@@ -100,7 +100,7 @@ describe(
 
 						var container = gridField.get('container');
 
-						assert.isNotNull(container.one('.help-block'), 'The selectField has an error');
+						assert.isNotNull(container.one('.form-feedback-indicator'), 'The selectField has an error');
 
 						done();
 					}

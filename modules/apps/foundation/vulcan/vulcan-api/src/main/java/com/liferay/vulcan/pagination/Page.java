@@ -27,83 +27,76 @@ import java.util.Collection;
  * @author Alejandro Hernández
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
- * @review
  */
 @ProviderType
 public interface Page<T> {
 
 	/**
-	 * Returns the items of the page.
+	 * Returns the page's items.
 	 *
-	 * @return the items of the page.
-	 * @review
+	 * @return the page's items
 	 */
 	public Collection<T> getItems();
 
 	/**
-	 * Returns the number of items the user has selected on the page.
+	 * Returns the number of items the user selected on the page.
 	 *
-	 * @return the number of items the user has selected on the page.
-	 * @review
+	 * @return the number of items the user selected on the page
 	 */
 	public int getItemsPerPage();
 
 	/**
-	 * Returns the number of the last page of the collection.
+	 * Returns the number of the collection's last page.
 	 *
-	 * @return the number of the last page of the collection.
-	 * @review
+	 * @return the number of the collection's last page
 	 */
 	public int getLastPageNumber();
 
 	/**
-	 * Returns the model class of the page.
+	 * Returns the page's model class.
 	 *
-	 * @return the model class of the page.
-	 * @review
+	 * @return the page's model class
 	 */
 	public Class<T> getModelClass();
 
 	/**
 	 * Returns the page number in the collection.
 	 *
-	 * @return the page number in the collection.
-	 * @review
+	 * @return the page number in the collection
 	 */
 	public int getPageNumber();
 
 	/**
 	 * Returns the identifier.
 	 *
-	 * @return the identifier.
-	 * @review
+	 * @return the identifier
 	 */
 	public Path getPath();
 
 	/**
 	 * Returns the total number of elements in the collection.
 	 *
-	 * @return the total number of elements in the collection.
-	 * @review
+	 * @return the total number of elements in the collection
 	 */
 	public int getTotalCount();
 
 	/**
-	 * Returns {@code true} if another page follows this page in the collection.
+	 * Returns {@code true} if another page follows this
+	 * page in the collection.
 	 *
-	 * @return {@code true} if another page follows this page in the collection;
-	 *         {@code false} otherwise.
-	 * @review
+	 * @return {@code true} if another page follows this
+	 *         page in the collection; {@code false}
+	 *         otherwise
 	 */
 	public boolean hasNext();
 
 	/**
-	 * Returns {@code true} if another page precedes this page in the
-	 * collection.
+	 * Returns {@code true} if another page precedes this
+	 * page in the collection.
 	 *
-	 * @return {@code true} if another page precedes this page in the
-	 *         collection; {@code false} otherwise.
-	 * @review
+	 * @return {@code true} if another page precedes this
+	 *         page in the collection; {@code false}
+	 *         otherwise
 	 */
 	public boolean hasPrevious();
 

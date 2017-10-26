@@ -26,11 +26,16 @@ import java.util.Map;
 public class DDMFormBuilderSettingsRequest {
 
 	public static DDMFormBuilderSettingsRequest with(
+		long companyId, long scopeGroupId, long fieldSetClassNameId,
 		DDMForm ddmForm, Locale locale) {
 
 		DDMFormBuilderSettingsRequest ddmFormBuilderSettingsRequest =
 			new DDMFormBuilderSettingsRequest();
 
+		ddmFormBuilderSettingsRequest.setCompanyId(companyId);
+		ddmFormBuilderSettingsRequest.setScopeGroupId(scopeGroupId);
+		ddmFormBuilderSettingsRequest.setFieldSetClassNameId(
+			fieldSetClassNameId);
 		ddmFormBuilderSettingsRequest.setDDMForm(ddmForm);
 		ddmFormBuilderSettingsRequest.setLocale(locale);
 
@@ -41,8 +46,16 @@ public class DDMFormBuilderSettingsRequest {
 		_properties.put(key, value);
 	}
 
+	public long getCompanyId() {
+		return getProperty("companyId");
+	}
+
 	public DDMForm getDDMForm() {
 		return getProperty("ddmForm");
+	}
+
+	public long getFieldSetClassNameId() {
+		return getProperty("fieldSetClassNameId");
 	}
 
 	public Locale getLocale() {
@@ -53,12 +66,28 @@ public class DDMFormBuilderSettingsRequest {
 		return (T)_properties.get(name);
 	}
 
+	public long getScopeGroupId() {
+		return getProperty("scopeGroupId");
+	}
+
+	public void setCompanyId(long companyId) {
+		addProperty("companyId", companyId);
+	}
+
 	public void setDDMForm(DDMForm ddmForm) {
 		addProperty("ddmForm", ddmForm);
 	}
 
+	public void setFieldSetClassNameId(long fieldSetClassNameId) {
+		addProperty("fieldSetClassNameId", fieldSetClassNameId);
+	}
+
 	public void setLocale(Locale locale) {
 		addProperty("locale", locale);
+	}
+
+	public void setScopeGroupId(long scopeGroupId) {
+		addProperty("scopeGroupId", scopeGroupId);
 	}
 
 	private DDMFormBuilderSettingsRequest() {

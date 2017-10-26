@@ -14,62 +14,53 @@
 
 package com.liferay.analytics.java.client;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.ws.rs.core.Response;
 
 import org.apache.http.HttpStatus;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * @author Eduardo Garcia
  */
+@Ignore
 public class AnalyticsClientTest {
 
 	@Test
 	public void testAnalyticsEventCreation() {
-		AnalyticsEventsMessage analyticsEventsMessage =
-			new AnalyticsEventsMessage();
+		AnalyticsEventsMessage.Builder analyticsEventsMessageBuilder =
+			AnalyticsEventsMessage.builder();
 
-		analyticsEventsMessage.setApplicationId("AT");
-		analyticsEventsMessage.setChannel("web");
+		analyticsEventsMessageBuilder.analyticsKey("WXYZ");
+		analyticsEventsMessageBuilder.applicationId("AT");
+		analyticsEventsMessageBuilder.channel("web");
+		analyticsEventsMessageBuilder.messageFormat("AT");
 
-		AnalyticsEventsMessage.Context context =
-			new AnalyticsEventsMessage.Context();
+		AnalyticsEventsMessage.Context.Builder contextBuilder =
+			AnalyticsEventsMessage.Context.builder();
 
-		context.setInstanceId(1234);
-		context.setLanguageId("en_US");
-		context.setUrl("http://www.liferay.com");
-		context.setUserId(1234);
+		contextBuilder.instanceId(1234);
+		contextBuilder.languageId("en_US");
+		contextBuilder.url("http://www.liferay.com");
+		contextBuilder.userId(1234);
 
-		analyticsEventsMessage.setContext(context);
+		analyticsEventsMessageBuilder.context(contextBuilder.build());
 
-		AnalyticsEventsMessage.Event event = new AnalyticsEventsMessage.Event();
+		AnalyticsEventsMessage.Event.Builder eventBuilder =
+			AnalyticsEventsMessage.Event.builder();
 
-		event.setEvent("view");
-		event.setTimestamp(new Date());
+		eventBuilder.event("view");
+		eventBuilder.property("elementId", "banner1");
+		eventBuilder.timestamp(new Date());
 
-		AnalyticsEventsMessage.Properties properties =
-			new AnalyticsEventsMessage.Properties();
-
-		properties.setElementId("banner1");
-
-		event.setProperties(properties);
-
-		List<AnalyticsEventsMessage.Event> events = new ArrayList();
-
-		events.add(event);
-
-		analyticsEventsMessage.setEvents(events);
-
-		analyticsEventsMessage.setMessageFormat("AT");
+		analyticsEventsMessageBuilder.event(eventBuilder.build());
 
 		Response response = _analyticsClient.sendAnalytics(
-			analyticsEventsMessage);
+			analyticsEventsMessageBuilder.build());
 
 		Assert.assertEquals(HttpStatus.SC_OK, response.getStatus());
 	}

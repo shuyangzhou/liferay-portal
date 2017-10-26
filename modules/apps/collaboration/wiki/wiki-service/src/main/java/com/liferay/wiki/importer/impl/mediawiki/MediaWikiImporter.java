@@ -16,7 +16,7 @@ package com.liferay.wiki.importer.impl.mediawiki;
 
 import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.asset.kernel.service.AssetTagLocalService;
-import com.liferay.asset.util.impl.AssetUtil;
+import com.liferay.asset.util.AssetHelper;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -446,7 +446,10 @@ public class MediaWikiImporter implements WikiImporter {
 		zipReader.close();
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Imported " + count + " images into " + node.getName());
+			_log.info(
+				StringBundler.concat(
+					"Imported ", String.valueOf(count), " images into ",
+					node.getName()));
 		}
 	}
 
@@ -531,7 +534,10 @@ public class MediaWikiImporter implements WikiImporter {
 		}
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Imported " + count + " pages into " + node.getName());
+			_log.info(
+				StringBundler.concat(
+					"Imported ", String.valueOf(count), " pages into ",
+					node.getName()));
 		}
 	}
 
@@ -736,7 +742,8 @@ public class MediaWikiImporter implements WikiImporter {
 	protected String translateMediaWikiImagePaths(String content) {
 		return content.replaceAll(
 			_imagesPattern.pattern(),
-			"$1$2" + SHARED_IMAGES_TITLE + StringPool.SLASH + "$3$4");
+			StringBundler.concat(
+				"$1$2", SHARED_IMAGES_TITLE, StringPool.SLASH, "$3$4"));
 	}
 
 	protected String translateMediaWikiToCreole(
@@ -757,7 +764,7 @@ public class MediaWikiImporter implements WikiImporter {
 		for (int i = 0; i < textCharArray.length; i++) {
 			char c = textCharArray[i];
 
-			for (char invalidChar : AssetUtil.INVALID_CHARACTERS) {
+			for (char invalidChar : AssetHelper.INVALID_CHARACTERS) {
 				if (c == invalidChar) {
 					textCharArray[i] = CharPool.SPACE;
 

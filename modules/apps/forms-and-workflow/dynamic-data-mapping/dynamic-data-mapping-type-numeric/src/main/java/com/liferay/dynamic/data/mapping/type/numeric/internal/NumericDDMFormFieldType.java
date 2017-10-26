@@ -27,7 +27,9 @@ import org.osgi.service.component.annotations.Component;
 	immediate = true,
 	property = {
 		"ddm.form.field.type.data.domain=number",
+		"ddm.form.field.type.description=numeric-field-type-description",
 		"ddm.form.field.type.display.order:Integer=8",
+		"ddm.form.field.type.group=customized",
 		"ddm.form.field.type.icon=caret-double",
 		"ddm.form.field.type.js.class.name=Liferay.DDM.Field.Numeric",
 		"ddm.form.field.type.js.module=liferay-ddm-form-field-numeric",

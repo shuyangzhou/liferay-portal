@@ -555,7 +555,7 @@ AUI.add(
 						if (labelNode) {
 							var tipNode = labelNode.one('.taglib-icon-help');
 
-							if (Lang.isValue(label) && Lang.isNode(labelNode)) {
+							if (!A.UA.ie && Lang.isValue(label) && Lang.isNode(labelNode)) {
 								labelNode.html(A.Escape.html(label));
 							}
 

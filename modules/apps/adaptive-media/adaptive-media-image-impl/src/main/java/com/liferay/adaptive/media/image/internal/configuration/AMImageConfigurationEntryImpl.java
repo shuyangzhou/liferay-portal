@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Adolfo Pérez
@@ -45,16 +46,23 @@ public class AMImageConfigurationEntryImpl
 
 	@Override
 	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
 		if (!(obj instanceof AMImageConfigurationEntryImpl)) {
 			return false;
 		}
 
-		AMImageConfigurationEntryImpl other =
+		AMImageConfigurationEntryImpl amImageConfigurationEntryImpl =
 			(AMImageConfigurationEntryImpl)obj;
 
-		if (_name.equals(other._name) && _uuid.equals(other._uuid) &&
-			(_enabled == other._enabled) &&
-			_properties.equals(other._properties)) {
+		if (Objects.equals(_enabled, amImageConfigurationEntryImpl._enabled) &&
+			Objects.equals(_name, amImageConfigurationEntryImpl._name) &&
+			Objects.equals(
+				_properties,
+				amImageConfigurationEntryImpl._properties) &&
+			Objects.equals(_uuid, amImageConfigurationEntryImpl._uuid)) {
 
 			return true;
 		}

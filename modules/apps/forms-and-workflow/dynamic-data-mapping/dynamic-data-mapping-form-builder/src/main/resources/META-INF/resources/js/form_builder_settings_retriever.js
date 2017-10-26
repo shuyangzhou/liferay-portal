@@ -3,8 +3,6 @@ AUI.add(
 	function(A) {
 		var CACHE = {};
 
-		var Settings = Liferay.DDM.Settings;
-
 		var FormBuilderSettingsRetriever = A.Component.create(
 			{
 				EXTENDS: A.Base,
@@ -42,13 +40,13 @@ AUI.add(
 								else {
 									var payload = {
 										bcp47LanguageId: themeDisplay.getBCP47LanguageId(),
-										portletNamespace: Settings.portletNamespace,
+										portletNamespace: Liferay.DDM.Settings.portletNamespace,
 										scopeGroupId: themeDisplay.getScopeGroupId(),
 										type: type
 									};
 
 									A.io.request(
-										Settings.getFieldTypeSettingFormContextURL,
+										Liferay.DDM.Settings.getFieldTypeSettingFormContextURL,
 										{
 											data: payload,
 											dataType: 'JSON',
