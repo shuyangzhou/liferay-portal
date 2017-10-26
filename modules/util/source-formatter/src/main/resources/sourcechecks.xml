@@ -24,7 +24,6 @@
 			<property name="allowedExportPackageDirName" value="chat/chat-service" />
 			<property name="allowedExportPackageDirName" value="collaboration/blogs/blogs-service" />
 			<property name="allowedExportPackageDirName" value="collaboration/bookmarks/bookmarks-service" />
-			<property name="allowedExportPackageDirName" value="collaboration/document-library/document-library-service" />
 			<property name="allowedExportPackageDirName" value="collaboration/microblogs/microblogs-service" />
 			<property name="allowedExportPackageDirName" value="collaboration/wiki/wiki-service" />
 			<property name="allowedExportPackageDirName" value="dynamic-data-mapping-service" />
