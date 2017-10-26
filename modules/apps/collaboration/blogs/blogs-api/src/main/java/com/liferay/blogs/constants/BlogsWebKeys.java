@@ -15,20 +15,14 @@
 package com.liferay.blogs.web.constants;
 
 /**
- * @author Sergio González
- * @see    com.liferay.blogs.constants.BlogsPortletKeys
- * @deprecated As of 2.0.0
+ * @author Roberto Díaz
  */
-@Deprecated
-public class BlogsPortletKeys {
+public class BlogsWebKeys {
 
-	public static final String BLOGS =
-		"com_liferay_blogs_web_portlet_BlogsPortlet";
+	public static final String BLOGS_ITEM_SELECTOR_HELPER =
+		"BLOGS_ITEM_SELECTOR_HELPER";
 
-	public static final String BLOGS_ADMIN =
-		"com_liferay_blogs_web_portlet_BlogsAdminPortlet";
-
-	public static final String BLOGS_AGGREGATOR =
-		"com_liferay_blogs_web_portlet_BlogsAgreggatorPortlet";
+	public static final String DL_MIME_TYPE_DISPLAY_CONTEXT =
+		"DL_MIME_TYPE_DISPLAY_CONTEXT";
 
 }

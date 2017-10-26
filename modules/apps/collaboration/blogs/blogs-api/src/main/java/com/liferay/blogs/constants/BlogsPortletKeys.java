@@ -16,10 +16,7 @@ package com.liferay.blogs.web.constants;
 
 /**
  * @author Sergio González
- * @see    com.liferay.blogs.constants.BlogsPortletKeys
- * @deprecated As of 2.0.0
  */
-@Deprecated
 public class BlogsPortletKeys {
 
 	public static final String BLOGS =
