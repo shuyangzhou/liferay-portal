@@ -28,8 +28,10 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * @deprecated As of 4.0.0
  * @author Daniel Kocsis
  */
+@Deprecated
 @ProviderType
 public abstract class BaseStagedModelDataHandler<T extends StagedModel>
 	extends com.liferay.exportimport.kernel.lar.BaseStagedModelDataHandler<T> {

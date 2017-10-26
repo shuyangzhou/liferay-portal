@@ -30,7 +30,9 @@ import com.liferay.portal.kernel.xml.Element;
 
 /**
  * @author Mate Thurzo
+ * @deprecated As of 4.0.0
  */
+@Deprecated
 @ProviderType
 public class ThemeExporter {
 
