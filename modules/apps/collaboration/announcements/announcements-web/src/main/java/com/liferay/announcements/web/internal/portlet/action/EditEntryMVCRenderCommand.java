@@ -14,10 +14,10 @@
 
 package com.liferay.announcements.web.internal.portlet.action;
 
+import com.liferay.announcements.constants.AnnouncementsPortletKeys;
+import com.liferay.announcements.constants.AnnouncementsWebKeys;
 import com.liferay.announcements.kernel.exception.NoSuchEntryException;
 import com.liferay.announcements.kernel.model.AnnouncementsEntry;
-import com.liferay.announcements.web.constants.AnnouncementsPortletKeys;
-import com.liferay.announcements.web.constants.AnnouncementsWebKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
