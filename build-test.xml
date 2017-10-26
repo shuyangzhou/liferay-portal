@@ -6348,13 +6348,6 @@ osb.lcs.portlet.oauth.consumer.secret=${osb.lcs.portlet.oauth.consumer.secret}</
 	<target name="prepare-log4j-ext-xml">
 		<var name="dialect.detector.log.level" value="INFO" />
 
-		<if>
-			<equals arg1="${database.type}" arg2="hypersonic" />
-			<then>
-				<var name="dialect.detector.log.level" value="ERROR" />
-			</then>
-		</if>
-
 		<echo file="${app.server.classes.portal.dir}/META-INF/portal-log4j-ext.xml"><![CDATA[<?xml version="1.0"?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
