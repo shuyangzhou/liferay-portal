@@ -139,12 +139,14 @@ import org.osgi.service.component.annotations.Reference;
  * @author Zsigmond Rab
  * @author Douglas Wong
  * @author Mate Thurzo
+ * @deprecated As of 4.0.0
  */
 @Component(
 	immediate = true,
 	property = {"model.class.name=com.liferay.portal.kernel.model.Portlet"},
 	service = {ExportImportController.class, PortletImportController.class}
 )
+@Deprecated
 @ProviderType
 public class PortletImportController implements ImportController {
 

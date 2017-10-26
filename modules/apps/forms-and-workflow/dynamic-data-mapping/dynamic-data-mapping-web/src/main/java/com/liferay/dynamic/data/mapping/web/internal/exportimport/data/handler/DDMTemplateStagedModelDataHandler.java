@@ -19,14 +19,14 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
-import com.liferay.dynamic.data.mapping.web.internal.exportimport.content.processor.DDMTemplateExportImportContentProcessor;
+import com.liferay.exportimport.content.processor.ExportImportContentProcessor;
+import com.liferay.exportimport.data.handler.BaseStagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataException;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelModifiedDateComparator;
-import com.liferay.exportimport.lar.BaseStagedModelDataHandler;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -197,7 +197,7 @@ public class DDMTemplateStagedModelDataHandler
 		if (template.isSmallImage()) {
 			if (Validator.isNotNull(template.getSmallImageURL())) {
 				String smallImageURL =
-					_ddmTemplateExportImportContentProcessor.
+					_exportImportContentProcessor.
 						replaceExportContentReferences(
 							portletDataContext, template,
 							template.getSmallImageURL() + StringPool.SPACE,
@@ -242,12 +242,11 @@ public class DDMTemplateStagedModelDataHandler
 		}
 
 		String script =
-			_ddmTemplateExportImportContentProcessor.
-				replaceExportContentReferences(
-					portletDataContext, template, template.getScript(),
-					portletDataContext.getBooleanParameter(
-						DDMPortletDataHandler.NAMESPACE, "referenced-content"),
-					false);
+			_exportImportContentProcessor.replaceExportContentReferences(
+				portletDataContext, template, template.getScript(),
+				portletDataContext.getBooleanParameter(
+					DDMPortletDataHandler.NAMESPACE, "referenced-content"),
+				false);
 
 		template.setScript(script);
 
@@ -343,7 +342,7 @@ public class DDMTemplateStagedModelDataHandler
 
 				if (Validator.isNotNull(template.getSmallImageURL())) {
 					String smallImageURL =
-						_ddmTemplateExportImportContentProcessor.
+						_exportImportContentProcessor.
 							replaceImportContentReferences(
 								portletDataContext, template,
 								template.getSmallImageURL());
@@ -364,9 +363,8 @@ public class DDMTemplateStagedModelDataHandler
 			}
 
 			String script =
-				_ddmTemplateExportImportContentProcessor.
-					replaceImportContentReferences(
-						portletDataContext, template, template.getScript());
+				_exportImportContentProcessor.replaceImportContentReferences(
+					portletDataContext, template, template.getScript());
 
 			template.setScript(script);
 
@@ -482,15 +480,6 @@ public class DDMTemplateStagedModelDataHandler
 	}
 
 	@Reference(unbind = "-")
-	protected void setDDMTemplateExportImportContentProcessor(
-		DDMTemplateExportImportContentProcessor
-			ddmTemplateExportImportContentProcessor) {
-
-		_ddmTemplateExportImportContentProcessor =
-			ddmTemplateExportImportContentProcessor;
-	}
-
-	@Reference(unbind = "-")
 	protected void setDDMTemplateLocalService(
 		DDMTemplateLocalService ddmTemplateLocalService) {
 
@@ -511,9 +500,11 @@ public class DDMTemplateStagedModelDataHandler
 		DDMTemplateStagedModelDataHandler.class);
 
 	private DDMStructureLocalService _ddmStructureLocalService;
-	private DDMTemplateExportImportContentProcessor
-		_ddmTemplateExportImportContentProcessor;
 	private DDMTemplateLocalService _ddmTemplateLocalService;
+
+	@Reference(target = "(model.class.name=java.lang.String)")
+	private ExportImportContentProcessor<String> _exportImportContentProcessor;
+
 	private ImageLocalService _imageLocalService;
 
 	@Reference

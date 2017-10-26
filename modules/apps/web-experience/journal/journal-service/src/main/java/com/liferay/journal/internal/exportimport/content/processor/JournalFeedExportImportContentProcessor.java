@@ -33,6 +33,7 @@ import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Daniel Kocsis
+ * @deprecated As of 4.0.0
  */
 @Component(
 	property = {"model.class.name=com.liferay.journal.model.JournalFeed"},
@@ -41,6 +42,7 @@ import org.osgi.service.component.annotations.Reference;
 		JournalFeedExportImportContentProcessor.class
 	}
 )
+@Deprecated
 public class JournalFeedExportImportContentProcessor
 	extends BaseTextExportImportContentProcessor {
 

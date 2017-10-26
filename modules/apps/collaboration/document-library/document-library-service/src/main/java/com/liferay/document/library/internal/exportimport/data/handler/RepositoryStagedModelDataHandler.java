@@ -17,7 +17,7 @@ package com.liferay.document.library.internal.exportimport.data.handler;
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
-import com.liferay.exportimport.data.handler.base.BaseStagedModelDataHandler;
+import com.liferay.exportimport.data.handler.BaseStagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.service.RepositoryEntryLocalService;
 import com.liferay.portal.kernel.service.RepositoryLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.xml.Element;
 
 import java.util.List;
@@ -194,9 +195,11 @@ public class RepositoryStagedModelDataHandler
 		catch (Exception e) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					"Unable to connect to repository {name=" +
-						repository.getName() + ", typeSettings=" +
-							repository.getTypeSettingsProperties() + "}",
+					StringBundler.concat(
+						"Unable to connect to repository {name=",
+						repository.getName(), ", typeSettings=",
+						String.valueOf(repository.getTypeSettingsProperties()),
+						"}"),
 					e);
 			}
 		}

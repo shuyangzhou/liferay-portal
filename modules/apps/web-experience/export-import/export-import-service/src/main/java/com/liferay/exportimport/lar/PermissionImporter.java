@@ -58,7 +58,9 @@ import java.util.Set;
  * @author Wesley Gong
  * @author Zsigmond Rab
  * @author Douglas Wong
+ * @deprecated As of 4.0.0
  */
+@Deprecated
 @ProviderType
 public class PermissionImporter {
 

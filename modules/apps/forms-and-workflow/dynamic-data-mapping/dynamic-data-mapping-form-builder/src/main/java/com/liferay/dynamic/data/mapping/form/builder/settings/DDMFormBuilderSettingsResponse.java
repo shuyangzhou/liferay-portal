@@ -14,6 +14,8 @@
 
 package com.liferay.dynamic.data.mapping.form.builder.settings;
 
+import com.liferay.portal.kernel.json.JSONArray;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +34,14 @@ public class DDMFormBuilderSettingsResponse {
 
 	public String getDataProviderInstancesURL() {
 		return getSetting("dataProviderInstancesURL");
+	}
+
+	public String getFieldSetDefinitionURL() {
+		return getSetting("fieldSetDefinitionURL");
+	}
+
+	public JSONArray getFieldSets() {
+		return getSetting("fieldSets");
 	}
 
 	public String getFieldSettingsDDMFormContextURL() {
@@ -72,6 +82,14 @@ public class DDMFormBuilderSettingsResponse {
 
 	public void setDataProviderInstancesURL(String dataProviderInstancesURL) {
 		addSetting("dataProviderInstancesURL", dataProviderInstancesURL);
+	}
+
+	public void setFieldSetDefinitionURL(String fieldSetDefinitionURL) {
+		addSetting("fieldSetDefinitionURL", fieldSetDefinitionURL);
+	}
+
+	public void setFieldSets(JSONArray fieldSets) {
+		addSetting("fieldSets", fieldSets);
 	}
 
 	public void setFieldSettingsDDMFormContextURL(

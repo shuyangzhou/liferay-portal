@@ -16,9 +16,7 @@ package com.liferay.exportimport.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
-import com.liferay.exportimport.lar.LayoutCache;
-import com.liferay.exportimport.lar.PermissionExporter;
-import com.liferay.exportimport.lar.PermissionImporter;
+import com.liferay.exportimport.lar.permission.PermissionImporter;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
@@ -30,8 +28,6 @@ import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil;
-import com.liferay.portal.kernel.service.ResourceBlockLocalServiceUtil;
-import com.liferay.portal.kernel.service.ResourceBlockServiceUtil;
 import com.liferay.portal.kernel.service.ResourceLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
@@ -40,12 +36,12 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.service.test.ServiceTestUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.ResourcePermissionUtil;
 import com.liferay.portal.util.test.LayoutTestUtil;
@@ -133,21 +129,11 @@ public class PermissionExportImportTest {
 
 		Map<Long, String[]> roleIdsToActionIds = new HashMap<>();
 
-		if (ResourceBlockLocalServiceUtil.isSupported(_PORTLET_ID)) {
-			roleIdsToActionIds.put(role.getRoleId(), _ACTION_IDS);
+		roleIdsToActionIds.put(role.getRoleId(), _ACTION_IDS);
 
-			ResourceBlockServiceUtil.setIndividualScopePermissions(
-				TestPropsValues.getCompanyId(), exportGroup.getGroupId(),
-				_PORTLET_ID, GetterUtil.getLong(exportResourcePrimKey),
-				roleIdsToActionIds);
-		}
-		else {
-			roleIdsToActionIds.put(role.getRoleId(), _ACTION_IDS);
-
-			ResourcePermissionServiceUtil.setIndividualResourcePermissions(
-				exportGroup.getGroupId(), TestPropsValues.getCompanyId(),
-				_PORTLET_ID, exportResourcePrimKey, roleIdsToActionIds);
-		}
+		ResourcePermissionServiceUtil.setIndividualResourcePermissions(
+			exportGroup.getGroupId(), TestPropsValues.getCompanyId(),
+			_PORTLET_ID, exportResourcePrimKey, roleIdsToActionIds);
 	}
 
 	protected Element exportPortletPermissions(
@@ -185,11 +171,15 @@ public class PermissionExportImportTest {
 
 		Element portletElement = SAXReaderUtil.createElement("portlet");
 
-		PermissionExporter permissionExporter =
-			PermissionExporter.getInstance();
+		Class<?> clazz = _permissionImporter.getClass();
+
+		ClassLoader classLoader = clazz.getClassLoader();
+
+		clazz = classLoader.loadClass(
+			"com.liferay.exportimport.lar.PermissionExporter");
 
 		ReflectionTestUtil.invoke(
-			permissionExporter, "exportPortletPermissions",
+			clazz.getField("_instance"), "exportPortletPermissions",
 			new Class<?>[] {
 				PortletDataContext.class, String.class, Layout.class,
 				Element.class
@@ -203,18 +193,15 @@ public class PermissionExportImportTest {
 			Group importGroup, Layout importLayout, Element portletElement)
 		throws Exception {
 
-		PermissionImporter permissionImporter =
-			PermissionImporter.getInstance();
-
 		ReflectionTestUtil.invoke(
-			permissionImporter, "importPortletPermissions",
+			_permissionImporter, "importPortletPermissions",
 			new Class<?>[] {
-				LayoutCache.class, long.class, long.class, long.class,
-				Layout.class, Element.class, String.class
+				long.class, long.class, long.class, Layout.class, Element.class,
+				String.class
 			},
-			new LayoutCache(), TestPropsValues.getCompanyId(),
-			importGroup.getGroupId(), TestPropsValues.getUserId(), importLayout,
-			portletElement, _PORTLET_ID);
+			TestPropsValues.getCompanyId(), importGroup.getGroupId(),
+			TestPropsValues.getUserId(), importLayout, portletElement,
+			_PORTLET_ID);
 	}
 
 	protected void validateImportedPortletPermissions(
@@ -258,5 +245,8 @@ public class PermissionExportImportTest {
 		{ActionKeys.ADD_TO_PAGE, ActionKeys.VIEW};
 
 	private static final String _PORTLET_ID = PortletKeys.EXPORT_IMPORT;
+
+	@Inject
+	private PermissionImporter _permissionImporter;
 
 }

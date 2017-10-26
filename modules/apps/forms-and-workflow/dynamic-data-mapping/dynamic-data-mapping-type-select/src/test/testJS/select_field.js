@@ -68,7 +68,7 @@ describe(
 						var container = selectField.get('container');
 
 						assert.isNotNull(
-							container.one('.help-block'),
+							container.one('.form-feedback-indicator'),
 							'The selectField has an error'
 						);
 

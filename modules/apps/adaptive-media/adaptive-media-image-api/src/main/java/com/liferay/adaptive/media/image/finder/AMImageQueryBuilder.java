@@ -74,7 +74,9 @@ public interface AMImageQueryBuilder
 	public enum ConfigurationStatus {
 
 		ANY(amImageConfigurationEntry -> true),
+
 		ENABLED(AMImageConfigurationEntry::isEnabled),
+
 		DISABLED(
 			amImageConfigurationEntry ->
 				!amImageConfigurationEntry.isEnabled());

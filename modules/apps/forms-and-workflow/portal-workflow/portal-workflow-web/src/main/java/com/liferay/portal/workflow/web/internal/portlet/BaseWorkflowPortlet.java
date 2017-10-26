@@ -74,14 +74,7 @@ public abstract class BaseWorkflowPortlet extends MVCPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
 
-		renderRequest.setAttribute(
-			WorkflowWebKeys.WORKFLOW_TAB_DYNAMIC_INCLUDES, _dynamicIncludes);
-
-		renderRequest.setAttribute(
-			WorkflowWebKeys.WORKFLOW_TAB_NAMES, getWorkflowTabNames());
-
-		renderRequest.setAttribute(
-			WorkflowWebKeys.WORKFLOW_DEFAULT_TAB, getDefaultTab());
+		addRenderRequestAttributes(renderRequest);
 
 		for (String tabName : getWorkflowTabNames()) {
 			WorkflowDynamicInclude dynamicInclude = _dynamicIncludes.get(
@@ -91,6 +84,15 @@ public abstract class BaseWorkflowPortlet extends MVCPortlet {
 		}
 
 		super.render(renderRequest, renderResponse);
+	}
+
+	protected void addRenderRequestAttributes(RenderRequest renderRequest) {
+		renderRequest.setAttribute(
+			WorkflowWebKeys.WORKFLOW_DEFAULT_TAB, getDefaultTab());
+		renderRequest.setAttribute(
+			WorkflowWebKeys.WORKFLOW_TAB_DYNAMIC_INCLUDES, _dynamicIncludes);
+		renderRequest.setAttribute(
+			WorkflowWebKeys.WORKFLOW_TAB_NAMES, getWorkflowTabNames());
 	}
 
 	@Override

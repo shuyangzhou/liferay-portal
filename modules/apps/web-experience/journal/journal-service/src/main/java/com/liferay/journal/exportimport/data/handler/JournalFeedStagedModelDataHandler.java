@@ -18,12 +18,12 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
+import com.liferay.exportimport.data.handler.BaseStagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelModifiedDateComparator;
-import com.liferay.exportimport.lar.BaseStagedModelDataHandler;
 import com.liferay.journal.exception.FeedTargetLayoutFriendlyUrlException;
 import com.liferay.journal.internal.exportimport.content.processor.JournalFeedExportImportContentProcessor;
 import com.liferay.journal.internal.exportimport.creation.strategy.JournalCreationStrategy;
@@ -34,13 +34,20 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.StagedModel;
+import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Element;
+import com.liferay.portal.util.PropsValues;
 
 import java.util.List;
 import java.util.Map;
@@ -159,8 +166,8 @@ public class JournalFeedStagedModelDataHandler
 			}
 		}
 
-		_journalFeedExportImportContentProcessor.replaceExportContentReferences(
-			portletDataContext, feed, StringPool.BLANK, true, true);
+		_replaceExportContentReferences(
+			portletDataContext, feed, StringPool.BLANK);
 
 		portletDataContext.addClassedModel(
 			feedElement, ExportImportPathUtil.getModelPath(feed), feed);
@@ -180,7 +187,7 @@ public class JournalFeedStagedModelDataHandler
 			userId = authorId;
 		}
 
-		_journalFeedExportImportContentProcessor.replaceImportContentReferences(
+		_replaceImportContentReferences(
 			portletDataContext, feed, StringPool.BLANK);
 
 		String feedId = feed.getFeedId();
@@ -329,13 +336,14 @@ public class JournalFeedStagedModelDataHandler
 		_journalCreationStrategy = journalCreationStrategy;
 	}
 
+	/**
+	 * @deprecated As of 4.0.0
+	 */
+	@Deprecated
 	@Reference(unbind = "-")
 	protected void setJournalFeedExportImportContentProcessor(
 		JournalFeedExportImportContentProcessor
 			journalFeedExportImportContentProcessor) {
-
-		_journalFeedExportImportContentProcessor =
-			journalFeedExportImportContentProcessor;
 	}
 
 	@Reference(unbind = "-")
@@ -345,15 +353,108 @@ public class JournalFeedStagedModelDataHandler
 		_journalFeedLocalService = journalFeedLocalService;
 	}
 
+	private String _replaceExportContentReferences(
+			PortletDataContext portletDataContext, StagedModel stagedModel,
+			String content)
+		throws Exception {
+
+		JournalFeed feed = (JournalFeed)stagedModel;
+
+		Group group = _groupLocalService.getGroup(
+			portletDataContext.getScopeGroupId());
+
+		String newGroupFriendlyURL = group.getFriendlyURL();
+
+		newGroupFriendlyURL = newGroupFriendlyURL.substring(1);
+
+		String[] friendlyURLParts = StringUtil.split(
+			feed.getTargetLayoutFriendlyUrl(), StringPool.FORWARD_SLASH);
+
+		String oldGroupFriendlyURL = friendlyURLParts[2];
+
+		if (newGroupFriendlyURL.equals(oldGroupFriendlyURL)) {
+			String targetLayoutFriendlyUrl = StringUtil.replaceFirst(
+				feed.getTargetLayoutFriendlyUrl(),
+				StringPool.SLASH + newGroupFriendlyURL + StringPool.SLASH,
+				StringPool.SLASH + _DATA_HANDLER_GROUP_FRIENDLY_URL +
+					StringPool.SLASH);
+
+			feed.setTargetLayoutFriendlyUrl(targetLayoutFriendlyUrl);
+		}
+
+		Group targetLayoutGroup = _groupLocalService.fetchFriendlyURLGroup(
+			portletDataContext.getCompanyId(),
+			StringPool.SLASH + oldGroupFriendlyURL);
+
+		boolean privateLayout = false;
+
+		if (!PropsValues.LAYOUT_FRIENDLY_URL_PUBLIC_SERVLET_MAPPING.equals(
+				StringPool.SLASH + friendlyURLParts[1])) {
+
+			privateLayout = true;
+		}
+
+		String targetLayoutFriendlyURL = StringPool.SLASH + friendlyURLParts[3];
+
+		Layout targetLayout = _layoutLocalService.fetchLayoutByFriendlyURL(
+			targetLayoutGroup.getGroupId(), privateLayout,
+			targetLayoutFriendlyURL);
+
+		Element feedElement = portletDataContext.getExportDataElement(feed);
+
+		portletDataContext.addReferenceElement(
+			feed, feedElement, targetLayout,
+			PortletDataContext.REFERENCE_TYPE_DEPENDENCY, true);
+
+		return content;
+	}
+
+	private String _replaceImportContentReferences(
+			PortletDataContext portletDataContext, StagedModel stagedModel,
+			String content)
+		throws Exception {
+
+		JournalFeed feed = (JournalFeed)stagedModel;
+
+		Group group = _groupLocalService.getGroup(
+			portletDataContext.getScopeGroupId());
+
+		String newGroupFriendlyURL = group.getFriendlyURL();
+
+		newGroupFriendlyURL = newGroupFriendlyURL.substring(1);
+
+		String[] friendlyURLParts = StringUtil.split(
+			feed.getTargetLayoutFriendlyUrl(), '/');
+
+		String oldGroupFriendlyURL = friendlyURLParts[2];
+
+		if (oldGroupFriendlyURL.equals(_DATA_HANDLER_GROUP_FRIENDLY_URL)) {
+			feed.setTargetLayoutFriendlyUrl(
+				StringUtil.replace(
+					feed.getTargetLayoutFriendlyUrl(),
+					_DATA_HANDLER_GROUP_FRIENDLY_URL, newGroupFriendlyURL));
+		}
+
+		return content;
+	}
+
+	private static final String _DATA_HANDLER_GROUP_FRIENDLY_URL =
+		"@data_handler_group_friendly_url@";
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalFeedStagedModelDataHandler.class);
 
 	private DDMStructureLocalService _ddmStructureLocalService;
 	private DDMTemplateLocalService _ddmTemplateLocalService;
+
+	@Reference
+	private GroupLocalService _groupLocalService;
+
 	private JournalCreationStrategy _journalCreationStrategy;
-	private JournalFeedExportImportContentProcessor
-		_journalFeedExportImportContentProcessor;
 	private JournalFeedLocalService _journalFeedLocalService;
+
+	@Reference
+	private LayoutLocalService _layoutLocalService;
 
 	@Reference
 	private Portal _portal;

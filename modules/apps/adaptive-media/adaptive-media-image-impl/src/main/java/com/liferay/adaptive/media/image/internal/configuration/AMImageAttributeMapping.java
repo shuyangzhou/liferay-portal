@@ -44,36 +44,38 @@ public class AMImageAttributeMapping {
 		Map<String, String> properties) {
 
 		if (properties == null) {
-			throw new IllegalArgumentException("properties map cannot be null");
+			throw new IllegalArgumentException("Properties map is null");
 		}
 
-		Map<AMAttribute<AMImageProcessor, ?>, Optional<?>> amAttributes =
+		Map<AMAttribute<AMImageProcessor, ?>, Optional<?>> optionals =
 			new HashMap<>();
 
-		amAttributes.put(
+		optionals.put(
 			AMAttribute.getConfigurationUuidAMAttribute(),
 			_getValueOptional(
 				properties, AMAttribute.getConfigurationUuidAMAttribute()));
-		amAttributes.put(
+		optionals.put(
 			AMAttribute.getContentLengthAMAttribute(),
 			_getValueOptional(
 				properties, AMAttribute.getContentLengthAMAttribute()));
-		amAttributes.put(
+		optionals.put(
 			AMAttribute.getContentTypeAMAttribute(),
 			_getValueOptional(
 				properties, AMAttribute.getContentTypeAMAttribute()));
-		amAttributes.put(
+		optionals.put(
 			AMAttribute.getFileNameAMAttribute(),
 			_getValueOptional(
 				properties, AMAttribute.getFileNameAMAttribute()));
-		amAttributes.put(
-			AMImageAttribute.IMAGE_HEIGHT,
-			_getValueOptional(properties, AMImageAttribute.IMAGE_HEIGHT));
-		amAttributes.put(
-			AMImageAttribute.IMAGE_WIDTH,
-			_getValueOptional(properties, AMImageAttribute.IMAGE_WIDTH));
+		optionals.put(
+			AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT,
+			_getValueOptional(
+				properties, AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT));
+		optionals.put(
+			AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH,
+			_getValueOptional(
+				properties, AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH));
 
-		return new AMImageAttributeMapping(amAttributes);
+		return new AMImageAttributeMapping(optionals);
 	}
 
 	/**
@@ -88,16 +90,17 @@ public class AMImageAttributeMapping {
 		AMAttribute<AMImageProcessor, V> amAttribute) {
 
 		if (amAttribute == null) {
-			throw new IllegalArgumentException("attribute cannot be null");
+			throw new IllegalArgumentException(
+				"Adaptive media attribute is null");
 		}
 
-		return (Optional<V>)_amAttributes.get(amAttribute);
+		return (Optional<V>)_optionals.get(amAttribute);
 	}
 
 	protected AMImageAttributeMapping(
-		Map<AMAttribute<AMImageProcessor, ?>, Optional<?>> amAttributes) {
+		Map<AMAttribute<AMImageProcessor, ?>, Optional<?>> optionals) {
 
-		_amAttributes = amAttributes;
+		_optionals = optionals;
 	}
 
 	private static <V> Optional<V> _getValueOptional(
@@ -114,6 +117,6 @@ public class AMImageAttributeMapping {
 	}
 
 	private final Map
-		<AMAttribute<AMImageProcessor, ?>, Optional<?>> _amAttributes;
+		<AMAttribute<AMImageProcessor, ?>, Optional<?>> _optionals;
 
 }

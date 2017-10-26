@@ -14,12 +14,16 @@
  */
 --%>
 
+<%@ page import="com.liferay.portal.kernel.json.JSONArray" %>
+
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %>
 
 <%
 String dataProviderInstancesURL = (String)request.getAttribute("liferay-form:ddm-form-builder:dataProviderInstancesURL");
 String dataProviderInstanceParameterSettingsURL = (String)request.getAttribute("liferay-form:ddm-form-builder:dataProviderInstanceParameterSettingsURL");
 String evaluatorURL = (String)request.getAttribute("liferay-form:ddm-form-builder:evaluatorURL");
+String fieldSetDefinitionURL = (String)request.getAttribute("liferay-form:ddm-form-builder:fieldSetDefinitionURL");
+JSONArray fieldSets = (JSONArray)request.getAttribute("liferay-form:ddm-form-builder:fieldSets");
 String fieldSettingsDDMFormContextURL = (String)request.getAttribute("liferay-form:ddm-form-builder:fieldSettingsDDMFormContextURL");
 String formBuilderContext = (String)request.getAttribute("liferay-form:ddm-form-builder:formBuilderContext");
 String functionsMetadata = (String)request.getAttribute("liferay-form:ddm-form-builder:functionsMetadata");

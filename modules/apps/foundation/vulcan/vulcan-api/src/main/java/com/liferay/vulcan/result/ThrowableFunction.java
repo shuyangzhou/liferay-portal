@@ -17,26 +17,23 @@ package com.liferay.vulcan.result;
 import java.util.Objects;
 
 /**
- * A version of the Java {@link java.util.function.Function} that can throw an
- * {@code Exception}.
+ * Defines a {@code java.util.function.Function} that can throw an exception.
  *
  * @author Alejandro Hernández
- * @review
  */
 @FunctionalInterface
 @SuppressWarnings("unused")
 public interface ThrowableFunction<T, R> {
 
 	/**
-	 * Returns a composed function that first applies this function to its
-	 * input, and then applies the {@code after} function to the result.
+	 * Returns a composed function that first applies the current {@code
+	 * ThrowableFunction} instance to its input, and then applies the {@code
+	 * throwableFunction} to the result.
 	 *
-	 * @param  throwableFunction the function to apply after this function is
-	 *         applied
-	 * @return a composed function that first applies this function and then
-	 *         applies the {@code after} function
+	 * @param  throwableFunction the function to apply after applying the
+	 *         current {@code ThrowableFunction} instance
+	 * @return the composed function
 	 * @see    #compose(ThrowableFunction)
-	 * @review
 	 */
 	public default <V> ThrowableFunction<T, V> andThen(
 		ThrowableFunction<? super R, ? extends V> throwableFunction) {
@@ -47,24 +44,24 @@ public interface ThrowableFunction<T, R> {
 	}
 
 	/**
-	 * Applies this function to the given argument.
+	 * Returns the result of applying the current {@code ThrowableFunction}
+	 * instance to the argument.
 	 *
-	 * @param  t the function argument
-	 * @return the function result
-	 * @review
+	 * @param  t the argument
+	 * @return the result of applying the current {@code ThrowableFunction}
+	 *         instance to the argument
 	 */
 	public R apply(T t) throws Exception;
 
 	/**
-	 * Returns a composed function that first applies the {@code before}
-	 * function to its input, and then applies this function to the result.
+	 * Returns a composed function that first applies the {@code
+	 * throwableFunction} to its input, and then applies the current {@code
+	 * ThrowableFunction} instance to the result.
 	 *
-	 * @param  throwableFunction the function to apply before this function is
-	 *         applied
-	 * @return a composed function that first applies the {@code before}
-	 *         function and then applies this function
+	 * @param  throwableFunction the function to apply before applying the
+	 *         current {@code ThrowableFunction}  instance
+	 * @return the composed function
 	 * @see    #andThen(ThrowableFunction)
-	 * @review
 	 */
 	public default <V> ThrowableFunction<V, R> compose(
 		ThrowableFunction<? super V, ? extends T> throwableFunction) {

@@ -40,7 +40,6 @@ import com.liferay.calendar.social.CalendarActivityKeys;
 import com.liferay.calendar.util.JCalendarUtil;
 import com.liferay.calendar.util.RecurrenceUtil;
 import com.liferay.calendar.workflow.CalendarBookingWorkflowConstants;
-import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -316,7 +315,9 @@ public class CalendarBookingLocalServiceImpl
 				Company company = companyLocalService.getCompany(
 					calendarBooking.getCompanyId());
 
-				if (company.isActive()) {
+				if (company.isActive() &&
+					!isStagingCalendarBooking(calendarBooking)) {
+
 					NotificationUtil.notifyCalendarBookingReminders(
 						calendarBooking, now.getTime());
 				}
@@ -1354,10 +1355,8 @@ public class CalendarBookingLocalServiceImpl
 
 		calendarBookingPersistence.update(calendarBooking);
 
-		if (!ExportImportThreadLocal.isImportInProcess()) {
-			addChildCalendarBookings(
-				calendarBooking, childCalendarIds, serviceContext);
-		}
+		addChildCalendarBookings(
+			calendarBooking, childCalendarIds, serviceContext);
 
 		// Asset
 
@@ -2136,16 +2135,9 @@ public class CalendarBookingLocalServiceImpl
 			serviceContext, "sendNotification", true);
 
 		try {
-			CalendarBooking parentCalendarBooking =
-				calendarBooking.getParentCalendarBooking();
+			if (!sendNotification ||
+				isStagingCalendarBooking(calendarBooking)) {
 
-			CalendarResource calendarResource =
-				parentCalendarBooking.getCalendarResource();
-
-			Group group = groupLocalService.getGroup(
-				calendarResource.getGroupId());
-
-			if (!sendNotification || group.isStagingGroup()) {
 				return;
 			}
 

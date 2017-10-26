@@ -33,6 +33,7 @@ import com.liferay.calendar.test.util.RecurrenceTestUtil;
 import com.liferay.calendar.util.JCalendarUtil;
 import com.liferay.calendar.util.RecurrenceUtil;
 import com.liferay.calendar.workflow.CalendarBookingWorkflowConstants;
+import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
@@ -165,7 +166,7 @@ public class CalendarBookingLocalServiceTest {
 		Calendar invitedCalendar = CalendarTestUtil.addCalendar(
 			_user, serviceContext);
 
-		long startTime = System.currentTimeMillis() + Time.MINUTE;
+		long startTime = System.currentTimeMillis() + Time.MINUTE * 2;
 
 		long endTime = startTime + Time.HOUR;
 
@@ -1766,6 +1767,40 @@ public class CalendarBookingLocalServiceTest {
 	}
 
 	@Test
+	public void testStagingCalendarBookingDoesNotSendReminderNotification()
+		throws Exception {
+
+		_liveGroup = GroupTestUtil.addGroup();
+
+		Calendar liveCalendar = CalendarTestUtil.getDefaultCalendar(_liveGroup);
+
+		CalendarStagingTestUtil.enableLocalStaging(_liveGroup, true);
+
+		Calendar stagingCalendar = CalendarStagingTestUtil.getStagingCalendar(
+			_liveGroup, liveCalendar);
+
+		CalendarStagingTestUtil.publishLayouts(_liveGroup, true);
+
+		long startTime = System.currentTimeMillis() + (Time.MINUTE * 2);
+
+		CalendarBooking calendarBooking =
+			CalendarBookingTestUtil.addRegularCalendarBookingWithReminders(
+				stagingCalendar, startTime, startTime + Time.HOUR,
+				(int)Time.MINUTE, 0);
+
+		CalendarStagingTestUtil.publishLayouts(_liveGroup, true);
+
+		CalendarBookingLocalServiceUtil.checkCalendarBookings();
+
+		String mailMessageSubject =
+			"Calendar: Event Reminder for " + StringPool.QUOTE +
+				calendarBooking.getTitle(LocaleUtil.getDefault()) +
+					StringPool.QUOTE;
+
+		assertMailSubjectCount(mailMessageSubject, 1);
+	}
+
+	@Test
 	public void testStagingCalendarResourceShouldNotBeInviteToLiveCalendarBookingAfterPublish()
 		throws Exception {
 
@@ -2807,6 +2842,66 @@ public class CalendarBookingLocalServiceTest {
 			calendarBooking.getSecondReminderType(), serviceContext);
 
 		assertCalendarBookingInstancesCount(calendarBookingId, 1);
+	}
+
+	@Test
+	public void testUpdateStagedSiteCalendarBookingShouldUpdateInviteSiteCalendarBooking()
+		throws Exception {
+
+		_liveGroup = GroupTestUtil.addGroup();
+
+		Calendar liveCalendar = CalendarTestUtil.getDefaultCalendar(_liveGroup);
+
+		CalendarStagingTestUtil.enableLocalStaging(_liveGroup, true);
+
+		Calendar stagingCalendar = CalendarStagingTestUtil.getStagingCalendar(
+			_liveGroup, liveCalendar);
+
+		_group = GroupTestUtil.addGroup();
+
+		Calendar invitedCalendar = CalendarTestUtil.getDefaultCalendar(_group);
+
+		CalendarBooking childCalendarBooking =
+			CalendarBookingTestUtil.addChildCalendarBooking(
+				stagingCalendar, invitedCalendar);
+
+		CalendarStagingTestUtil.publishLayouts(_liveGroup, true);
+
+		List<CalendarBooking> invitedCalendarBookings =
+			CalendarBookingLocalServiceUtil.getCalendarBookings(
+				liveCalendar.getCalendarId());
+
+		Assert.assertEquals(
+			invitedCalendarBookings.toString(), 1,
+			invitedCalendarBookings.size());
+
+		CalendarBooking invitedCalendarBooking = invitedCalendarBookings.get(0);
+
+		ServiceContext serviceContext = createServiceContext();
+
+		invitedCalendarBooking = CalendarBookingLocalServiceUtil.updateStatus(
+			_user.getUserId(), invitedCalendarBooking,
+			CalendarBookingWorkflowConstants.STATUS_APPROVED, serviceContext);
+
+		Map<Locale, String> titleMap = new HashMap<>();
+
+		titleMap.put(LocaleUtil.US, RandomTestUtil.randomString());
+
+		CalendarBookingTestUtil.updateCalendarBooking(
+			childCalendarBooking.getParentCalendarBooking(), titleMap,
+			serviceContext);
+
+		CalendarStagingTestUtil.publishLayouts(_liveGroup, true);
+
+		EntityCacheUtil.clearCache();
+
+		invitedCalendarBooking =
+			CalendarBookingLocalServiceUtil.getCalendarBooking(
+				invitedCalendarBooking.getCalendarBookingId());
+
+		Assert.assertEquals(
+			titleMap.get(LocaleUtil.US),
+			invitedCalendarBooking.getTitle(LocaleUtil.US));
 	}
 
 	protected void assertCalendar(
