@@ -22,7 +22,6 @@ import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.kernel.service.AssetLinkLocalService;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
-import com.liferay.exportimport.staged.model.repository.base.BaseStagedModelRepository;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
@@ -66,7 +65,7 @@ import org.osgi.service.component.annotations.Reference;
 	}
 )
 public class StagedAssetLinkStagedModelRepository
-	extends BaseStagedModelRepository<StagedAssetLink> {
+	implements StagedModelRepository<StagedAssetLink> {
 
 	@Override
 	public StagedAssetLink addStagedModel(
@@ -145,6 +144,13 @@ public class StagedAssetLinkStagedModelRepository
 			return ModelAdapterUtil.adapt(
 				assetLinks.get(0), AssetLink.class, StagedAssetLink.class);
 		}
+
+		return null;
+	}
+
+	@Override
+	public StagedAssetLink fetchStagedModelByUuidAndGroupId(
+		String uuid, long groupId) {
 
 		return null;
 	}
