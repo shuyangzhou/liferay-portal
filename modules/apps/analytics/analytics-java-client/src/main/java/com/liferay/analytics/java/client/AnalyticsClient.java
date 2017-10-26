@@ -17,7 +17,6 @@ package com.liferay.analytics.java.client;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -28,19 +27,17 @@ import javax.ws.rs.core.Response;
 public class AnalyticsClient {
 
 	public Response sendAnalytics(
-		AnalyticsEventsMessage analyticsEventMessage) {
+		AnalyticsEventsMessage analyticsEventsMessage) {
 
 		WebTarget webTarget = _client.target(_ANALYTICS_GATEWAY_URL);
 
-		Invocation.Builder request = webTarget.request(
-			MediaType.APPLICATION_JSON);
-
-		return request.post(
-			Entity.entity(analyticsEventMessage, MediaType.APPLICATION_JSON));
+		return webTarget.request(MediaType.APPLICATION_JSON).post(
+			Entity.entity(analyticsEventsMessage, MediaType.APPLICATION_JSON));
 	}
 
-	private static final String _ANALYTICS_GATEWAY_URL =
-		"http://54.235.215.13:8095/api/analyticsgateway/send-analytics-events";
+	private static final String _ANALYTICS_GATEWAY_URL = System.getProperty(
+		"analytics.gateway.url",
+		"http://54.235.215.13:8095/api/analyticsgateway/send-analytics-events");
 
 	private final Client _client = ClientBuilder.newClient();
 

@@ -85,8 +85,8 @@ public class KBArticlePermission implements BaseModelPermissionChecker {
 			}
 			else {
 				KBArticle parentKBArticle =
-					KBArticleLocalServiceUtil.getKBArticle(
-						parentResourcePrimKey);
+					KBArticleLocalServiceUtil.getLatestKBArticle(
+						parentResourcePrimKey, WorkflowConstants.STATUS_ANY);
 
 				if (!contains(permissionChecker, parentKBArticle, actionId)) {
 					return false;

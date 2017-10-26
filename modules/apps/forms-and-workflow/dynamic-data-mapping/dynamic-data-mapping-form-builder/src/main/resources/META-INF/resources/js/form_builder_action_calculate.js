@@ -7,8 +7,6 @@ AUI.add(
 
 		var OPERATORS_MAP = ['+', '-', '*', '/', '.'];
 
-		var Settings = Liferay.DDM.Settings;
-
 		var FormBuilderActionCalculate = A.Component.create(
 			{
 				ATTRS: {
@@ -74,7 +72,7 @@ AUI.add(
 						};
 
 						A.io.request(
-							Settings.getFunctionsURL,
+							Liferay.DDM.Settings.getFunctionsURL,
 							{
 								data: payload,
 								method: 'GET',

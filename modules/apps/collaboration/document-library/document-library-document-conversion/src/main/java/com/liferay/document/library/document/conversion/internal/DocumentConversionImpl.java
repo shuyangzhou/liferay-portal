@@ -107,14 +107,23 @@ public class DocumentConversionImpl implements DocumentConversion {
 		}
 		else if (outputDocumentFormat == null) {
 			throw new SystemException(
-				"Conversion is not supported from " +
-					inputDocumentFormat.getName() + " to ." + targetExtension);
+				StringBundler.concat(
+					"Conversion is not supported from ",
+					inputDocumentFormat.getName(), " to .", targetExtension));
 		}
 		else if (!inputDocumentFormat.isExportableTo(outputDocumentFormat)) {
 			throw new SystemException(
-				"Conversion is not supported from " +
-					inputDocumentFormat.getName() + " to " +
-						outputDocumentFormat.getName());
+				StringBundler.concat(
+					"Conversion is not supported from ",
+					inputDocumentFormat.getName(), " to ",
+					outputDocumentFormat.getName()));
+		}
+
+		if (sourceExtension.equals("html")) {
+			DocumentHTMLProcessor documentHTMLProcessor =
+				new DocumentHTMLProcessor();
+
+			inputStream = documentHTMLProcessor.process(inputStream);
 		}
 
 		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
@@ -129,6 +138,8 @@ public class DocumentConversionImpl implements DocumentConversion {
 		FileUtil.write(
 			file, unsyncByteArrayOutputStream.unsafeGetByteArray(), 0,
 			unsyncByteArrayOutputStream.size());
+
+		inputStream.close();
 
 		return file;
 	}
@@ -353,8 +364,9 @@ public class DocumentConversionImpl implements DocumentConversion {
 			else {
 				if (_log.isInfoEnabled()) {
 					_log.info(
-						"Conversions supported from " + sourceExtension +
-							" to " + conversions);
+						StringBundler.concat(
+							"Conversions supported from ", sourceExtension,
+							" to ", String.valueOf(conversions)));
 				}
 
 				_conversionsMap.put(

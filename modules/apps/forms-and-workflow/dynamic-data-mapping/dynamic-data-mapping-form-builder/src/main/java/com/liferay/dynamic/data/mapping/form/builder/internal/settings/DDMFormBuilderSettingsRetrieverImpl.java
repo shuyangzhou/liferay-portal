@@ -45,6 +45,9 @@ public class DDMFormBuilderSettingsRetrieverImpl
 		ddmFormBuilderSettings.setDataProviderInstancesURL(
 			_ddmFormBuilderSettingsRetrieverHelper.
 				getDDMDataProviderInstancesURL());
+		ddmFormBuilderSettings.setFieldSetDefinitionURL(
+			_ddmFormBuilderSettingsRetrieverHelper.
+				getDDMFieldSetDefinitionURL());
 		ddmFormBuilderSettings.setFieldSettingsDDMFormContextURL(
 			_ddmFormBuilderSettingsRetrieverHelper.
 				getDDMFieldSettingsDDMFormContextURL());
@@ -56,13 +59,20 @@ public class DDMFormBuilderSettingsRetrieverImpl
 		ddmFormBuilderSettings.setRolesURL(
 			_ddmFormBuilderSettingsRetrieverHelper.getRolesURL());
 
-		Locale locale = ddmFormBuilderSettingsRequest.getProperty("locale");
+		Locale locale = ddmFormBuilderSettingsRequest.getLocale();
 
 		ddmFormBuilderSettings.setFunctionsMetadata(
 			_ddmFormBuilderSettingsRetrieverHelper.
 				getSerializedDDMExpressionFunctionsMetadata(locale));
 
-		DDMForm ddmForm = ddmFormBuilderSettingsRequest.getProperty("ddmForm");
+		ddmFormBuilderSettings.setFieldSets(
+			_ddmFormBuilderSettingsRetrieverHelper.getFieldSetsMetadata(
+				ddmFormBuilderSettingsRequest.getCompanyId(),
+				ddmFormBuilderSettingsRequest.getScopeGroupId(),
+				ddmFormBuilderSettingsRequest.getFieldSetClassNameId(),
+				locale));
+
+		DDMForm ddmForm = ddmFormBuilderSettingsRequest.getDDMForm();
 
 		ddmFormBuilderSettings.setSerializedDDMFormRules(
 			_ddmFormBuilderSettingsRetrieverHelper.getSerializedDDMFormRules(

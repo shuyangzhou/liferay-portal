@@ -23,7 +23,7 @@ import com.liferay.vulcan.resource.builder.RepresentorBuilder;
 import com.liferay.vulcan.resource.builder.RoutesBuilder;
 import com.liferay.vulcan.resource.identifier.LongIdentifier;
 import com.liferay.vulcan.resource.identifier.RootIdentifier;
-import com.liferay.vulcan.sample.internal.model.User;
+import com.liferay.vulcan.sample.internal.model.Person;
 
 import java.time.Instant;
 
@@ -40,37 +40,37 @@ import org.osgi.service.component.annotations.Component;
  * Provides all the necessary information to expose <a
  * href="http://schema.org/Person">Person</a> resources through a web API.
  *
- * The resources are mapped from the internal {@link User} model.
+ * The resources are mapped from the internal {@link Person} model.
  *
  * @author Alejandro Hernández
  * @review
  */
 @Component(immediate = true)
 public class PersonCollectionResource
-	implements CollectionResource<User, LongIdentifier> {
+	implements CollectionResource<Person, LongIdentifier> {
 
 	@Override
-	public Representor<User, LongIdentifier> buildRepresentor(
-		RepresentorBuilder<User, LongIdentifier> representorBuilder) {
+	public Representor<Person, LongIdentifier> buildRepresentor(
+		RepresentorBuilder<Person, LongIdentifier> representorBuilder) {
 
 		return representorBuilder.identifier(
-			blogsEntry -> blogsEntry::getId
+			person -> person::getPersonId
 		).addDate(
-			"birthDate", User::getBirthDate
+			"birthDate", Person::getBirthDate
 		).addString(
-			"image", User::getAvatar
+			"address", Person::getAddress
 		).addString(
-			"address", User::getAddress
+			"email", Person::getEmail
 		).addString(
-			"email", User::getEmail
+			"familyName", Person::getLastName
 		).addString(
-			"familyName", User::getLastName
+			"givenName", Person::getFirstName
 		).addString(
-			"givenName", User::getFirstName
+			"image", Person::getAvatar
 		).addString(
-			"name", User::getFullName
+			"jobTitle", Person::getJobTitle
 		).addString(
-			"jobTitle", User::getJobTitle
+			"name", Person::getFullName
 		).addType(
 			"Person"
 		).build();
@@ -82,82 +82,86 @@ public class PersonCollectionResource
 	}
 
 	@Override
-	public Routes<User> routes(
-		RoutesBuilder<User, LongIdentifier> routesBuilder) {
+	public Routes<Person> routes(
+		RoutesBuilder<Person, LongIdentifier> routesBuilder) {
 
 		return routesBuilder.addCollectionPageGetter(
 			this::_getPageItems, RootIdentifier.class
 		).addCollectionPageItemCreator(
-			this::_addUser, RootIdentifier.class
+			this::_addPerson, RootIdentifier.class
 		).addCollectionPageItemGetter(
-			this::_getUser
+			this::_getPerson
 		).addCollectionPageItemRemover(
-			this::_deleteUser
+			this::_deletePerson
 		).addCollectionPageItemUpdater(
-			this::_updateUser
+			this::_updatePerson
 		).build();
 	}
 
-	private User _addUser(
+	private Person _addPerson(
 		RootIdentifier rootIdentifier, Map<String, Object> body) {
 
-		String firstName = (String)body.get("givenName");
-		String lastName = (String)body.get("familyName");
-		String email = (String)body.get("email");
 		String address = (String)body.get("address");
-		String jobTitle = (String)body.get("jobTitle");
-		String birthDateString = (String)body.get("birthDate");
 		String avatar = (String)body.get("image");
+
+		String birthDateString = (String)body.get("birthDate");
 
 		Date birthDate = Date.from(Instant.parse(birthDateString));
 
-		return User.addUser(
-			firstName, lastName, email, address, jobTitle, birthDate, avatar);
+		String email = (String)body.get("email");
+		String firstName = (String)body.get("givenName");
+		String jobTitle = (String)body.get("jobTitle");
+		String lastName = (String)body.get("familyName");
+
+		return Person.addPerson(
+			address, avatar, birthDate, email, firstName, jobTitle, lastName);
 	}
 
-	private void _deleteUser(LongIdentifier personLongIdentifier) {
-		User.deleteUser(personLongIdentifier.getId());
+	private void _deletePerson(LongIdentifier personLongIdentifier) {
+		Person.deletePerson(personLongIdentifier.getId());
 	}
 
-	private PageItems<User> _getPageItems(
+	private PageItems<Person> _getPageItems(
 		Pagination pagination, RootIdentifier rootIdentifier) {
 
-		List<User> people = User.getUsers(
+		List<Person> persons = Person.getPeople(
 			pagination.getStartPosition(), pagination.getEndPosition());
+		int count = Person.getPeopleCount();
 
-		int count = User.getUsersCount();
-
-		return new PageItems<>(people, count);
+		return new PageItems<>(persons, count);
 	}
 
-	private User _getUser(LongIdentifier personLongIdentifier) {
-		Optional<User> optional = User.getUser(personLongIdentifier.getId());
+	private Person _getPerson(LongIdentifier personLongIdentifier) {
+		Optional<Person> optional = Person.getPerson(
+			personLongIdentifier.getId());
 
 		return optional.orElseThrow(
 			() -> new NotFoundException(
-				"Unable to get User " + personLongIdentifier.getId()));
+				"Unable to get person " + personLongIdentifier.getId()));
 	}
 
-	private User _updateUser(
+	private Person _updatePerson(
 		LongIdentifier personLongIdentifier, Map<String, Object> body) {
 
-		String firstName = (String)body.get("givenName");
-		String lastName = (String)body.get("familyName");
-		String email = (String)body.get("email");
 		String address = (String)body.get("address");
-		String jobTitle = (String)body.get("jobTitle");
-		String birthDateString = (String)body.get("birthDate");
 		String avatar = (String)body.get("image");
+
+		String birthDateString = (String)body.get("birthDate");
 
 		Date birthDate = Date.from(Instant.parse(birthDateString));
 
-		Optional<User> optional = User.updateUser(
-			personLongIdentifier.getId(), firstName, lastName, email, address,
-			jobTitle, birthDate, avatar);
+		String email = (String)body.get("email");
+		String firstName = (String)body.get("givenName");
+		String jobTitle = (String)body.get("jobTitle");
+		String lastName = (String)body.get("familyName");
+
+		Optional<Person> optional = Person.updatePerson(
+			address, avatar, birthDate, email, firstName, jobTitle, lastName,
+			personLongIdentifier.getId());
 
 		return optional.orElseThrow(
 			() -> new NotFoundException(
-				"Unable to get User " + personLongIdentifier.getId()));
+				"Unable to get person " + personLongIdentifier.getId()));
 	}
 
 }

@@ -4,8 +4,8 @@
 [subrepo]
 	autopull = false
 	cmdver = liferay
-	commit = 772fb2e9b0fec32170ed7d97a8d734e981d93518
+	commit = 671ccefbcc9bba6df694ec228c09f3fd9d0dbd9f
 	mergebuttonmergecommits = false
 	mode = push
-	parent = 04af31b70f48809191b5e751da3290a83e61fe69
+	parent = 67b9e2a2aea455c253e40936f346385e08d34524
 	remote = git@github.com:liferay/com-liferay-message-boards.git

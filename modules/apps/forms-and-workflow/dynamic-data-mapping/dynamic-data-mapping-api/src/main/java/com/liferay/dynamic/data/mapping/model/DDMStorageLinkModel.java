@@ -164,6 +164,20 @@ public interface DDMStorageLinkModel extends AttachedModel,
 	 */
 	public void setStructureId(long structureId);
 
+	/**
+	 * Returns the structure version ID of this ddm storage link.
+	 *
+	 * @return the structure version ID of this ddm storage link
+	 */
+	public long getStructureVersionId();
+
+	/**
+	 * Sets the structure version ID of this ddm storage link.
+	 *
+	 * @param structureVersionId the structure version ID of this ddm storage link
+	 */
+	public void setStructureVersionId(long structureVersionId);
+
 	@Override
 	public boolean isNew();
 

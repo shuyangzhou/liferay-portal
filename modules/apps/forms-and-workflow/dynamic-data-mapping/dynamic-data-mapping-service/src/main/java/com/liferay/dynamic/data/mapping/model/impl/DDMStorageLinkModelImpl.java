@@ -68,7 +68,8 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 			{ "companyId", Types.BIGINT },
 			{ "classNameId", Types.BIGINT },
 			{ "classPK", Types.BIGINT },
-			{ "structureId", Types.BIGINT }
+			{ "structureId", Types.BIGINT },
+			{ "structureVersionId", Types.BIGINT }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
@@ -79,9 +80,10 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 		TABLE_COLUMNS_MAP.put("classNameId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("classPK", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("structureId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("structureVersionId", Types.BIGINT);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table DDMStorageLink (uuid_ VARCHAR(75) null,storageLinkId LONG not null primary key,companyId LONG,classNameId LONG,classPK LONG,structureId LONG)";
+	public static final String TABLE_SQL_CREATE = "create table DDMStorageLink (uuid_ VARCHAR(75) null,storageLinkId LONG not null primary key,companyId LONG,classNameId LONG,classPK LONG,structureId LONG,structureVersionId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table DDMStorageLink";
 	public static final String ORDER_BY_JPQL = " ORDER BY ddmStorageLink.storageLinkId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY DDMStorageLink.storageLinkId ASC";
@@ -100,8 +102,9 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 	public static final long CLASSPK_COLUMN_BITMASK = 1L;
 	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 	public static final long STRUCTUREID_COLUMN_BITMASK = 4L;
-	public static final long UUID_COLUMN_BITMASK = 8L;
-	public static final long STORAGELINKID_COLUMN_BITMASK = 16L;
+	public static final long STRUCTUREVERSIONID_COLUMN_BITMASK = 8L;
+	public static final long UUID_COLUMN_BITMASK = 16L;
+	public static final long STORAGELINKID_COLUMN_BITMASK = 32L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.dynamic.data.mapping.service.util.ServiceProps.get(
 				"lock.expiration.time.com.liferay.dynamic.data.mapping.model.DDMStorageLink"));
 
@@ -148,6 +151,7 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 		attributes.put("classNameId", getClassNameId());
 		attributes.put("classPK", getClassPK());
 		attributes.put("structureId", getStructureId());
+		attributes.put("structureVersionId", getStructureVersionId());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -191,6 +195,12 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 
 		if (structureId != null) {
 			setStructureId(structureId);
+		}
+
+		Long structureVersionId = (Long)attributes.get("structureVersionId");
+
+		if (structureVersionId != null) {
+			setStructureVersionId(structureVersionId);
 		}
 	}
 
@@ -323,6 +333,28 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 		return _originalStructureId;
 	}
 
+	@Override
+	public long getStructureVersionId() {
+		return _structureVersionId;
+	}
+
+	@Override
+	public void setStructureVersionId(long structureVersionId) {
+		_columnBitmask |= STRUCTUREVERSIONID_COLUMN_BITMASK;
+
+		if (!_setOriginalStructureVersionId) {
+			_setOriginalStructureVersionId = true;
+
+			_originalStructureVersionId = _structureVersionId;
+		}
+
+		_structureVersionId = structureVersionId;
+	}
+
+	public long getOriginalStructureVersionId() {
+		return _originalStructureVersionId;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -360,6 +392,7 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 		ddmStorageLinkImpl.setClassNameId(getClassNameId());
 		ddmStorageLinkImpl.setClassPK(getClassPK());
 		ddmStorageLinkImpl.setStructureId(getStructureId());
+		ddmStorageLinkImpl.setStructureVersionId(getStructureVersionId());
 
 		ddmStorageLinkImpl.resetOriginalValues();
 
@@ -436,6 +469,10 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 
 		ddmStorageLinkModelImpl._setOriginalStructureId = false;
 
+		ddmStorageLinkModelImpl._originalStructureVersionId = ddmStorageLinkModelImpl._structureVersionId;
+
+		ddmStorageLinkModelImpl._setOriginalStructureVersionId = false;
+
 		ddmStorageLinkModelImpl._columnBitmask = 0;
 	}
 
@@ -461,12 +498,14 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 
 		ddmStorageLinkCacheModel.structureId = getStructureId();
 
+		ddmStorageLinkCacheModel.structureVersionId = getStructureVersionId();
+
 		return ddmStorageLinkCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(15);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -480,6 +519,8 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 		sb.append(getClassPK());
 		sb.append(", structureId=");
 		sb.append(getStructureId());
+		sb.append(", structureVersionId=");
+		sb.append(getStructureVersionId());
 		sb.append("}");
 
 		return sb.toString();
@@ -487,7 +528,7 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(22);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.dynamic.data.mapping.model.DDMStorageLink");
@@ -517,6 +558,10 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 			"<column><column-name>structureId</column-name><column-value><![CDATA[");
 		sb.append(getStructureId());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>structureVersionId</column-name><column-value><![CDATA[");
+		sb.append(getStructureVersionId());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -540,6 +585,9 @@ public class DDMStorageLinkModelImpl extends BaseModelImpl<DDMStorageLink>
 	private long _structureId;
 	private long _originalStructureId;
 	private boolean _setOriginalStructureId;
+	private long _structureVersionId;
+	private long _originalStructureVersionId;
+	private boolean _setOriginalStructureVersionId;
 	private long _columnBitmask;
 	private DDMStorageLink _escapedModel;
 }

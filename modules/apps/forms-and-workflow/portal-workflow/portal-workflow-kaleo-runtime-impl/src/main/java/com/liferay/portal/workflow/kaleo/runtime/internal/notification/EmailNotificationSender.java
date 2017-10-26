@@ -16,10 +16,12 @@ package com.liferay.portal.workflow.kaleo.runtime.internal.notification;
 
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.service.MailService;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.workflow.kaleo.definition.NotificationReceptionType;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
+import com.liferay.portal.workflow.kaleo.runtime.internal.WorkflowGroupServiceSettings;
 import com.liferay.portal.workflow.kaleo.runtime.notification.BaseNotificationSender;
 import com.liferay.portal.workflow.kaleo.runtime.notification.NotificationRecipient;
 import com.liferay.portal.workflow.kaleo.runtime.notification.NotificationSender;
@@ -69,8 +71,18 @@ public class EmailNotificationSender
 		Map<String, Serializable> workflowContext =
 			executionContext.getWorkflowContext();
 
+		long companyId = GetterUtil.getLong(
+			workflowContext.get(WorkflowConstants.CONTEXT_COMPANY_ID));
+
+		WorkflowGroupServiceSettings workflowGroupServiceSettings =
+			WorkflowGroupServiceSettings.getInstance(companyId);
+
 		String fromAddress = (String)workflowContext.get(
 			WorkflowConstants.CONTEXT_NOTIFICATION_SENDER_ADDRESS);
+
+		if (Validator.isNull(fromAddress)) {
+			fromAddress = workflowGroupServiceSettings.getEmailFromAddress();
+		}
 
 		if (Validator.isNull(fromAddress)) {
 			fromAddress = _fromAddress;
@@ -78,6 +90,10 @@ public class EmailNotificationSender
 
 		String fromName = (String)workflowContext.get(
 			WorkflowConstants.CONTEXT_NOTIFICATION_SENDER_NAME);
+
+		if (Validator.isNull(fromName)) {
+			fromName = workflowGroupServiceSettings.getEmailFromName();
+		}
 
 		if (Validator.isNull(fromName)) {
 			fromName = _fromName;

@@ -10,23 +10,26 @@
 	{@param? title: string}
 	{@param toolbarButtonIcon: html}
 	{@param? toolbarTemplateContext: [options: list<[buttonClass: string, handler: string, label: string]>]}
+	{@param? type: string}
 
 	<div>
 		{call .header data="all" /}
-		{call .body}
-			{param bodyContent: $bodyContent /}
-		{/call}
+		{if $type}
+			{delcall DDMSidebar.sidebar_body variant="$type" data="all" /}
+		{else}
+			{delcall DDMSidebar.sidebar_body data="all" /}
+		{/if}
 	</div>
 {/template}
 
 /**
  * Prints the DDM sidebar body.
  */
-{template .body}
+{deltemplate DDMSidebar.sidebar_body}
 	{@param? bodyContent: html}
 
 	<div class="sidebar-body">{$bodyContent}</div>
-{/template}
+{/deltemplate}
 
 /**
  * Prints the field options.
@@ -61,7 +64,12 @@
 			</li>
 		</ul>
 
-		<h4 class="form-builder-sidebar-title truncate-text" title="{$title}">{$title or ''}</h4>
-		<h5 class="form-builder-sidebar-description" title="{$description}">{$description or ''}</h5>
+		{if $title}
+			<h4 class="form-builder-sidebar-title truncate-text" title="{$title}">{$title}</h4>
+		{/if}
+
+		{if $description}
+			<h5 class="form-builder-sidebar-description" title="{$description}">{$description}</h5>
+		{/if}
 	</div>
 {/template}
