@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.kernel.workflow.comparator.WorkflowComparatorFactoryUtil;
 import com.liferay.portal.workflow.web.internal.constants.WorkflowPortletKeys;
+import com.liferay.portal.workflow.web.internal.constants.WorkflowWebKeys;
 import com.liferay.portal.workflow.web.internal.display.context.util.WorkflowDefinitionLinkRequestHelper;
 import com.liferay.portal.workflow.web.internal.search.WorkflowDefinitionLinkSearch;
 import com.liferay.portal.workflow.web.internal.search.WorkflowDefinitionLinkSearchEntry;
@@ -184,7 +185,9 @@ public class WorkflowDefinitionLinkDisplayContext {
 	public PortletURL getPortletURL() {
 		PortletURL portletURL = _liferayPortletResponse.createRenderURL();
 
-		portletURL.setParameter("mvcPath", "/definition_link/view.jsp");
+		portletURL.setParameter("mvcPath", "/view.jsp");
+		portletURL.setParameter(
+			"tab", WorkflowWebKeys.WORKFLOW_TAB_DEFINITION_LINK);
 		portletURL.setParameter("tabs1", "default-configuration");
 
 		String delta = ParamUtil.getString(_request, "delta");
@@ -365,8 +368,8 @@ public class WorkflowDefinitionLinkDisplayContext {
 
 	protected List<WorkflowDefinitionLinkSearchEntry> filter(
 		List<WorkflowDefinitionLinkSearchEntry>
-			workflowDefinitionLinkSearchEntries, String resource,
-		String workflowDefinitionLabel, boolean andOperator) {
+			workflowDefinitionLinkSearchEntries,
+		String resource, String workflowDefinitionLabel, boolean andOperator) {
 
 		if (Validator.isNull(resource) &&
 			Validator.isNull(workflowDefinitionLabel)) {

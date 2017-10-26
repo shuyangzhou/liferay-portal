@@ -5,8 +5,6 @@ AUI.add(
 
 		var Lang = A.Lang;
 
-		var Settings = Liferay.DDM.Settings;
-
 		var TPL_CONTAINER_INPUT_OUTPUT_COMPONENT = '<div class="col-md-9 container-input-field container-input-field-{index}"></div>';
 
 		var TPL_CONTAINER_INPUT_OUTPUT_FIELD = '<div class="col-md-3 container-input-label">{field}{required}</div>';
@@ -115,7 +113,7 @@ AUI.add(
 						boundingBox.one('.additional-info-' + index).empty();
 
 						A.io.request(
-							Settings.getDataProviderParametersSettingsURL,
+							Liferay.DDM.Settings.getDataProviderParametersSettingsURL,
 							{
 								data: instance._getDataProviderPayload(event.newVal[0]),
 								method: 'GET',

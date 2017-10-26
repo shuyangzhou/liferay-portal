@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Portal Tools Service Builder
 Bundle-SymbolicName: com.liferay.portal.tools.service.builder
-Bundle-Version: 1.0.173
+Bundle-Version: 1.0.174
 Import-Package:\
 	!javax.portlet.*,\
 	\
@@ -109,7 +109,6 @@ Main-Class: com.liferay.portal.tools.service.builder.ServiceBuilder
 	@com.liferay.portal.kernel-[0-9]*.jar!/com/liferay/portal/kernel/util/ArrayUtil.class,\
 	@com.liferay.portal.kernel-[0-9]*.jar!/com/liferay/portal/kernel/util/ArrayUtil_IW.class,\
 	@com.liferay.portal.kernel-[0-9]*.jar!/com/liferay/portal/kernel/util/CentralizedThreadLocal.class,\
-	@com.liferay.portal.kernel-[0-9]*.jar!/com/liferay/portal/kernel/util/CharPool.class,\
 	@com.liferay.portal.kernel-[0-9]*.jar!/com/liferay/portal/kernel/util/ClassUtil.class,\
 	@com.liferay.portal.kernel-[0-9]*.jar!/com/liferay/portal/kernel/util/ClearThreadLocalUtil.class,\
 	@com.liferay.portal.kernel-[0-9]*.jar!/com/liferay/portal/kernel/util/GetterUtil.class,\

@@ -1,33 +1,30 @@
 .form-builder-sidebar {
-	$max-width: 500px;
-
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-
 	&.form-builder-sidebar.sidenav-menu-slider {
-		max-width: $max-width;
-		width: 0;
+		max-width: 380px;
+		opacity: 0;
+		transition-timing-function: ease-out;
+		z-index: 10;
+
+		&.closed {
+			z-index: 9;
+		}
 
 		&.open {
+			opacity: 1;
 			width: 100%;
 		}
 	}
 
-	.sidebar-body {
-		height: 100%;
-		max-width: $max-width;
-		padding: 0;
-		width: 100%;
+	.lexicon-icon-angle-right {
+		color: #6B6C7E;
 	}
 
-	.sidebar-content {
-		max-width: $max-width;
-		right: 0;
-		top: 0;
-		width: 100%;
+	.navbar-default {
+		padding-bottom: 1px;
 	}
 
-	.sidebar-header {
-		margin-top: 64px;
+	.navbar-default .navbar-nav > li > a {
+		padding: 10px 16px;
 	}
 
 	.navbar-nav {
@@ -46,9 +43,16 @@
 		}
 	}
 
+	.sidebar-body {
+		padding: 0;
+	}
+
+	.sidebar-header {
+		margin-top: 72px;
+	}
+
 	.tab-pane {
 		bottom: 0;
-		max-width: $max-width;
 		overflow: auto;
 		padding: 24px;
 		position: absolute;

@@ -21,6 +21,7 @@ import com.liferay.message.boards.kernel.model.MBMessageConstants;
 import com.liferay.message.boards.kernel.service.MBCategoryLocalService;
 import com.liferay.message.boards.kernel.service.MBMessageLocalService;
 import com.liferay.message.boards.kernel.service.MBMessageService;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -34,12 +35,12 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.security.permission.PermissionCheckerUtil;
 import com.liferay.portal.util.PropsValues;
@@ -132,7 +133,9 @@ public class MessageListenerImpl implements MessageListener {
 			stopWatch.start();
 
 			if (_log.isDebugEnabled()) {
-				_log.debug("Deliver message from " + from + " to " + recipient);
+				_log.debug(
+					StringBundler.concat(
+						"Deliver message from ", from, " to ", recipient));
 			}
 
 			String messageIdString = getMessageIdString(recipient, message);

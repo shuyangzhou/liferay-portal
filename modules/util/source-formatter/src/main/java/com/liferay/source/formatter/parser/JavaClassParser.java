@@ -14,9 +14,9 @@
 
 package com.liferay.source.formatter.parser;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -77,15 +77,19 @@ public class JavaClassParser {
 
 		String className = JavaSourceUtil.getClassName(fileName);
 
-		int x = content.indexOf("\npublic ");
+		Pattern pattern = Pattern.compile(
+			"\n(public\\s+)?(abstract\\s+)?(final\\s+)?@?" +
+				"(class|enum|interface)\\s+" + className);
 
-		if (x == -1) {
-			return null;
+		Matcher matcher = pattern.matcher(content);
+
+		if (!matcher.find()) {
+			throw new ParseException("Parsing error");
 		}
 
-		int y = content.lastIndexOf("\n\n", x + 1);
+		int x = content.lastIndexOf("\n\n", matcher.start() + 1);
 
-		String classContent = content.substring(y + 2);
+		String classContent = content.substring(x + 2);
 
 		JavaClass javaClass = _parseJavaClass(
 			className, classContent, JavaTerm.ACCESS_MODIFIER_PUBLIC, false);

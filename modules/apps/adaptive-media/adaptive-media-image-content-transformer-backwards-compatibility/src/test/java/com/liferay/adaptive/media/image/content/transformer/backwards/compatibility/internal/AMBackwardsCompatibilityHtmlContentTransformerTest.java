@@ -35,13 +35,6 @@ public class AMBackwardsCompatibilityHtmlContentTransformerTest {
 	@Before
 	public void setUp() throws Exception {
 		Mockito.when(
-			_dlAppLocalService.getFileEntryByUuidAndGroupId(
-				Mockito.anyString(), Mockito.anyLong())
-		).thenReturn(
-			_fileEntry
-		);
-
-		Mockito.when(
 			_amImageHTMLTagFactory.create(
 				Mockito.anyString(), Mockito.any(FileEntry.class))
 		).thenReturn(
@@ -49,6 +42,14 @@ public class AMBackwardsCompatibilityHtmlContentTransformerTest {
 		);
 
 		_contentTransformer.setAMImageHTMLTagFactory(_amImageHTMLTagFactory);
+
+		Mockito.when(
+			_dlAppLocalService.getFileEntryByUuidAndGroupId(
+				Mockito.anyString(), Mockito.anyLong())
+		).thenReturn(
+			_fileEntry
+		);
+
 		_contentTransformer.setDLAppLocalService(_dlAppLocalService);
 	}
 

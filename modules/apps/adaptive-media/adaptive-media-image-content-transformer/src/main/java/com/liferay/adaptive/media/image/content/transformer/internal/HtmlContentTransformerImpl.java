@@ -71,7 +71,7 @@ public class HtmlContentTransformerImpl
 
 	@Override
 	protected Pattern getPattern() {
-		return _IMG_PATTERN;
+		return _pattern;
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class HtmlContentTransformerImpl
 		_dlAppLocalService = dlAppLocalService;
 	}
 
-	private static final Pattern _IMG_PATTERN = Pattern.compile(
+	private static final Pattern _pattern = Pattern.compile(
 		"<img [^>]*?\\s*data-fileEntryId=\"(\\d+)\".*?/>",
 		Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 

@@ -33,6 +33,7 @@ import com.liferay.exportimport.test.util.TestReaderWriter;
 import com.liferay.exportimport.test.util.TestUserIdStrategy;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.test.util.JournalTestUtil;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -56,7 +57,6 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -362,7 +362,10 @@ public class DefaultExportImportContentProcessorTest {
 		Assert.assertFalse(
 			content.contains(
 				PropsValues.LAYOUT_FRIENDLY_URL_PUBLIC_SERVLET_MAPPING));
-		Assert.assertFalse(content.contains(_stagingGroup.getFriendlyURL()));
+		Assert.assertTrue(
+			content.contains(
+				"@data_handler_group_friendly_url@@" +
+					_stagingGroup.getFriendlyURL() + "@"));
 		Assert.assertFalse(content.contains(PortalUtil.getPathContext()));
 		Assert.assertFalse(content.contains("/en/en"));
 
@@ -419,7 +422,10 @@ public class DefaultExportImportContentProcessorTest {
 		Assert.assertFalse(
 			content.contains(
 				PropsValues.LAYOUT_FRIENDLY_URL_PUBLIC_SERVLET_MAPPING));
-		Assert.assertFalse(content.contains(_stagingGroup.getFriendlyURL()));
+		Assert.assertTrue(
+			content.contains(
+				"@data_handler_group_friendly_url@@" +
+					_stagingGroup.getFriendlyURL() + "@"));
 		Assert.assertFalse(content.contains("/en/en"));
 
 		setFinalStaticField(

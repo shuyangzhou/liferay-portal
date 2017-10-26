@@ -133,6 +133,8 @@ public class DDMStorageLinkPersistenceTest {
 
 		newDDMStorageLink.setStructureId(RandomTestUtil.nextLong());
 
+		newDDMStorageLink.setStructureVersionId(RandomTestUtil.nextLong());
+
 		_ddmStorageLinks.add(_persistence.update(newDDMStorageLink));
 
 		DDMStorageLink existingDDMStorageLink = _persistence.findByPrimaryKey(newDDMStorageLink.getPrimaryKey());
@@ -149,6 +151,8 @@ public class DDMStorageLinkPersistenceTest {
 			newDDMStorageLink.getClassPK());
 		Assert.assertEquals(existingDDMStorageLink.getStructureId(),
 			newDDMStorageLink.getStructureId());
+		Assert.assertEquals(existingDDMStorageLink.getStructureVersionId(),
+			newDDMStorageLink.getStructureVersionId());
 	}
 
 	@Test
@@ -184,6 +188,21 @@ public class DDMStorageLinkPersistenceTest {
 	}
 
 	@Test
+	public void testCountByStructureVersionId() throws Exception {
+		_persistence.countByStructureVersionId(RandomTestUtil.nextLong());
+
+		_persistence.countByStructureVersionId(0L);
+	}
+
+	@Test
+	public void testCountByStructureVersionIdArrayable()
+		throws Exception {
+		_persistence.countByStructureVersionId(new long[] {
+				RandomTestUtil.nextLong(), 0L
+			});
+	}
+
+	@Test
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		DDMStorageLink newDDMStorageLink = addDDMStorageLink();
 
@@ -208,7 +227,8 @@ public class DDMStorageLinkPersistenceTest {
 	protected OrderByComparator<DDMStorageLink> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("DDMStorageLink", "uuid",
 			true, "storageLinkId", true, "companyId", true, "classNameId",
-			true, "classPK", true, "structureId", true);
+			true, "classPK", true, "structureId", true, "structureVersionId",
+			true);
 	}
 
 	@Test
@@ -432,6 +452,8 @@ public class DDMStorageLinkPersistenceTest {
 		ddmStorageLink.setClassPK(RandomTestUtil.nextLong());
 
 		ddmStorageLink.setStructureId(RandomTestUtil.nextLong());
+
+		ddmStorageLink.setStructureVersionId(RandomTestUtil.nextLong());
 
 		_ddmStorageLinks.add(_persistence.update(ddmStorageLink));
 

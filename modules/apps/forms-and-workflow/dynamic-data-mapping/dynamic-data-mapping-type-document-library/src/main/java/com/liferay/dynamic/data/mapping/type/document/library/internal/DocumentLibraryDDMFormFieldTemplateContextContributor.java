@@ -132,7 +132,7 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributor
 			JSONObject valueJSONObject = getValueJSONObject(
 				ddmFormFieldRenderingContext.getValue());
 
-			if (valueJSONObject.length() > 0) {
+			if ((valueJSONObject != null) && (valueJSONObject.length() > 0)) {
 				parameters.put("fileEntryTitle", valueJSONObject.get("title"));
 				parameters.put(
 					"fileEntryURL", getFileEntryURL(request, valueJSONObject));
@@ -151,6 +151,10 @@ public class DocumentLibraryDDMFormFieldTemplateContextContributor
 		stringsMap.put("select", LanguageUtil.get(resourceBundle, "select"));
 
 		parameters.put("strings", stringsMap);
+		parameters.put(
+			"value",
+			jsonFactory.looseDeserialize(
+				ddmFormFieldRenderingContext.getValue()));
 
 		return parameters;
 	}

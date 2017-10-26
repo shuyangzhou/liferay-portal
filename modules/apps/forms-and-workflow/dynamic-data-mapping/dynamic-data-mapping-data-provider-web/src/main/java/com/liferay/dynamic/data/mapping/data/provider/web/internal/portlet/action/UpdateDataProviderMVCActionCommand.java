@@ -103,7 +103,7 @@ public class UpdateDataProviderMVCActionCommand
 		Stream<DDMFormFieldValue> storedDDMFormFieldValuesStream =
 			storedDDMFormFieldValues.stream();
 
-		Predicate<DDMFormFieldValue> predicate = (ddmFormFieldValue) ->
+		Predicate<DDMFormFieldValue> predicate = ddmFormFieldValue ->
 			Objects.equals(ddmFormFieldValue.getName(), name) &&
 			Objects.equals(ddmFormFieldValue.getInstanceId(), instanceId);
 

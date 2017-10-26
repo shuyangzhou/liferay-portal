@@ -25,6 +25,12 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
+			<name>fieldSetsClassNameId</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>long</type>
+		</attribute>
+		<attribute>
 			<name>refererPortletNamespace</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>

@@ -18,6 +18,7 @@ import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.asset.kernel.service.AssetTagLocalService;
 import com.liferay.asset.util.impl.AssetUtil;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
@@ -26,7 +27,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
@@ -446,7 +446,10 @@ public class MediaWikiImporter implements WikiImporter {
 		zipReader.close();
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Imported " + count + " images into " + node.getName());
+			_log.info(
+				StringBundler.concat(
+					"Imported ", String.valueOf(count), " images into ",
+					node.getName()));
 		}
 	}
 
@@ -531,7 +534,10 @@ public class MediaWikiImporter implements WikiImporter {
 		}
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Imported " + count + " pages into " + node.getName());
+			_log.info(
+				StringBundler.concat(
+					"Imported ", String.valueOf(count), " pages into ",
+					node.getName()));
 		}
 	}
 
@@ -736,7 +742,8 @@ public class MediaWikiImporter implements WikiImporter {
 	protected String translateMediaWikiImagePaths(String content) {
 		return content.replaceAll(
 			_imagesPattern.pattern(),
-			"$1$2" + SHARED_IMAGES_TITLE + StringPool.SLASH + "$3$4");
+			StringBundler.concat(
+				"$1$2", SHARED_IMAGES_TITLE, StringPool.SLASH, "$3$4"));
 	}
 
 	protected String translateMediaWikiToCreole(

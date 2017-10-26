@@ -59,7 +59,7 @@ AUI.add(
 
 						CheckboxField.superclass.showErrorMessage.apply(instance, arguments);
 
-						container.all('.help-block').appendTo(container);
+						container.all('.form-feedback-indicator').appendTo(container);
 					}
 				}
 			}

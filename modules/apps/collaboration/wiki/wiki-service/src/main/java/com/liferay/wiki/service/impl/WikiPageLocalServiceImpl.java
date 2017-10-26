@@ -22,6 +22,7 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeUtil;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.diff.DiffHtmlUtil;
@@ -50,7 +51,6 @@ import com.liferay.portal.kernel.social.SocialActivityManagerUtil;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -2441,10 +2441,10 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			page.getGroupId(), WikiPortletKeys.WIKI, serviceContext);
 
 		if (Validator.isNotNull(layoutFullURL)) {
-			return layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR + "wiki/" +
-				page.getNodeId() + StringPool.SLASH +
-					URLCodec.encodeURL(
-						WikiEscapeUtil.escapeName(page.getTitle()));
+			return StringBundler.concat(
+				layoutFullURL, Portal.FRIENDLY_URL_SEPARATOR, "wiki/",
+				String.valueOf(page.getNodeId()), StringPool.SLASH,
+				URLCodec.encodeURL(WikiEscapeUtil.escapeName(page.getTitle())));
 		}
 		else {
 			PortletURL portletURL = PortalUtil.getControlPanelPortletURL(

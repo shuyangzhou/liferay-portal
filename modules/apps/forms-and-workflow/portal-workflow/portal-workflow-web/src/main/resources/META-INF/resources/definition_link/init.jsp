@@ -33,8 +33,7 @@ page import="com.liferay.portal.workflow.web.internal.search.WorkflowDefinitionL
 page import="com.liferay.portal.workflow.web.internal.search.WorkflowDefinitionLinkSearch" %><%@
 page import="com.liferay.portal.workflow.web.internal.search.WorkflowDefinitionLinkSearchEntry" %>
 
-<%@ page import="javax.portlet.PortletURL" %><%@
-page import="javax.portlet.WindowState" %>
+<%@ page import="javax.portlet.WindowState" %>
 
 <liferay-frontend:defineObjects />
 
