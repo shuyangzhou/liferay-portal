@@ -25,5 +25,6 @@ dependencies {
 	provided project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-data-provider")
 
 	testCompile group: "com.liferay", name: "com.liferay.dynamic.data.mapping.test.util", version: "2.0.0"
+	testCompile group: "com.liferay", name: "com.liferay.petra.lang", version: "1.0.0"
 	testCompile group: "org.slf4j", name: "slf4j-api", version: "1.7.22"
 }

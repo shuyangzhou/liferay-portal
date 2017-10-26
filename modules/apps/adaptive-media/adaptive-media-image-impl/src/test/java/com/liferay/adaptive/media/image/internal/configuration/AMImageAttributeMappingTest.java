@@ -36,13 +36,13 @@ public class AMImageAttributeMappingTest {
 
 		Optional<Integer> heightOptional =
 			amImageAttributeMapping.getValueOptional(
-				AMImageAttribute.IMAGE_HEIGHT);
+				AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT);
 
 		Assert.assertFalse(heightOptional.isPresent());
 
 		Optional<Integer> widthOptional =
 			amImageAttributeMapping.getValueOptional(
-				AMImageAttribute.IMAGE_WIDTH);
+				AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH);
 
 		Assert.assertFalse(widthOptional.isPresent());
 	}
@@ -57,8 +57,9 @@ public class AMImageAttributeMappingTest {
 		AMImageAttributeMapping amImageAttributeMapping =
 			AMImageAttributeMapping.fromProperties(
 				MapUtil.fromArray(
-					AMImageAttribute.IMAGE_HEIGHT.getName(), "100",
-					AMImageAttribute.IMAGE_WIDTH.getName(), "200"));
+					AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT.getName(), "100",
+					AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH.getName(),
+					"200"));
 
 		amImageAttributeMapping.getValueOptional(null);
 	}
@@ -71,13 +72,13 @@ public class AMImageAttributeMappingTest {
 
 		Optional<Integer> heightOptional =
 			amImageAttributeMapping.getValueOptional(
-				AMImageAttribute.IMAGE_HEIGHT);
+				AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT);
 
 		Assert.assertFalse(heightOptional.isPresent());
 
 		Optional<Integer> widthOptional =
 			amImageAttributeMapping.getValueOptional(
-				AMImageAttribute.IMAGE_WIDTH);
+				AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH);
 
 		Assert.assertFalse(widthOptional.isPresent());
 	}
@@ -87,18 +88,19 @@ public class AMImageAttributeMappingTest {
 		AMImageAttributeMapping amImageAttributeMapping =
 			AMImageAttributeMapping.fromProperties(
 				MapUtil.fromArray(
-					AMImageAttribute.IMAGE_HEIGHT.getName(), "100",
-					AMImageAttribute.IMAGE_WIDTH.getName(), "200"));
+					AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT.getName(), "100",
+					AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH.getName(),
+					"200"));
 
 		Optional<Integer> heightOptional =
 			amImageAttributeMapping.getValueOptional(
-				AMImageAttribute.IMAGE_HEIGHT);
+				AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT);
 
 		Assert.assertEquals(Integer.valueOf(100), heightOptional.get());
 
 		Optional<Integer> widthOptional =
 			amImageAttributeMapping.getValueOptional(
-				AMImageAttribute.IMAGE_WIDTH);
+				AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH);
 
 		Assert.assertEquals(Integer.valueOf(200), widthOptional.get());
 	}
@@ -108,17 +110,18 @@ public class AMImageAttributeMappingTest {
 		AMImageAttributeMapping amImageAttributeMapping =
 			AMImageAttributeMapping.fromProperties(
 				MapUtil.fromArray(
-					AMImageAttribute.IMAGE_HEIGHT.getName(), "100"));
+					AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT.getName(),
+					"100"));
 
 		Optional<Integer> heightOptional =
 			amImageAttributeMapping.getValueOptional(
-				AMImageAttribute.IMAGE_HEIGHT);
+				AMImageAttribute.AM_IMAGE_ATTRIBUTE_HEIGHT);
 
 		Assert.assertEquals(Integer.valueOf(100), heightOptional.get());
 
 		Optional<Integer> widthOptional =
 			amImageAttributeMapping.getValueOptional(
-				AMImageAttribute.IMAGE_WIDTH);
+				AMImageAttribute.AM_IMAGE_ATTRIBUTE_WIDTH);
 
 		Assert.assertFalse(widthOptional.isPresent());
 	}

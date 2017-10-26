@@ -19,58 +19,54 @@ import aQute.bnd.annotation.ProviderType;
 import java.util.Optional;
 
 /**
- * Instances of this interface describe an API error. Thrown {@link
- * javax.ws.rs.WebApplicationException} and descendants will be converted to a
- * special case of {@code APIError} with meaningful information. All other
- * exceptions will be converted to a {@code 500} error with a standard message.
+ * Describes an API error. Instances of {@code
+ * javax.ws.rs.WebApplicationException} and its descendants are converted to
+ * {@code APIError} . All other exceptions are converted to a {@code 500} error
+ * with a standard message.
  *
  * @author Alejandro Hernández
- * @review
  */
 @ProviderType
 public interface APIError {
 
 	/**
-	 * Returns the description of this {@code APIError}, specific to this {@code
-	 * APIError} instance, if present. Returns {@code Optional#empty()}
+	 * Returns the API error's description, if present; {@code Optional#empty()}
 	 * otherwise.
 	 *
-	 * @return the description of this error if present; {@code
-	 *         Optional#empty()} otherwise.
-	 * @review
+	 * @return the API error's description, if present; {@code Optional#empty()}
+	 *         otherwise
 	 */
 	public Optional<String> getDescription();
 
 	/**
-	 * Returns the original exception of this error.
+	 * Returns the API error's original exception.
 	 *
-	 * @return the original exception of this error.
-	 * @review
+	 * @return the API error's original exception
 	 */
 	public Exception getException();
 
 	/**
-	 * Returns the HTTP status code for this {@code APIError}.
+	 * Returns the API error's HTTP status code.
 	 *
-	 * @return the HTTP status code of this error.
-	 * @review
+	 * @return the API error's HTTP status code
 	 */
 	public int getStatusCode();
 
 	/**
-	 * Returns the title of this {@code APIError}. The same for all {@code
-	 * APIErrors} of the same type.
+	 * Returns the API error's title. This value is the same for all API errors
+	 * of the same type.
 	 *
-	 * @return the title of this error.
-	 * @review
+	 * @return the API error's title
 	 */
 	public String getTitle();
 
 	/**
-	 * Returns the type of this error. Identifies errors with the same meaning.
+	 * Returns the API error's type. Note that this is different from the API
+	 * error's exception. For example, if the API error's exception is {@code
+	 * NotAuthorizedException}, an implementation of this method could return
+	 * {@code "not-authorized"}.
 	 *
-	 * @return the type of this error.
-	 * @review
+	 * @return the API error's type
 	 */
 	public String getType();
 

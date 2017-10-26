@@ -40,7 +40,8 @@ create table DDMStorageLink (
 	companyId LONG,
 	classNameId LONG,
 	classPK LONG,
-	structureId LONG
+	structureId LONG,
+	structureVersionId LONG
 );
 
 create table DDMStructure (

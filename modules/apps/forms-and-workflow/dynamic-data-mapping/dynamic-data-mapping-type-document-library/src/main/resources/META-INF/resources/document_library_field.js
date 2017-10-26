@@ -148,7 +148,7 @@ AUI.add(
 
 						DocumentLibraryField.superclass.showErrorMessage.apply(instance, arguments);
 
-						container.all('.help-block').appendTo(container.one('.form-group'));
+						container.all('.form-feedback-indicator').appendTo(container.one('.form-group'));
 					},
 
 					_handleButtonsClick: function(event) {

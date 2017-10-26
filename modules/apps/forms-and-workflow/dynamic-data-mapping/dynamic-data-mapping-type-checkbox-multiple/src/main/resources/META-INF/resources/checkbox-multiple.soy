@@ -11,59 +11,63 @@
  * Prints the DDM form checkbox multiple field.
  */
 {template .render}
-	{@param? dir: string}
 	{@param inline: bool}
 	{@param label: string}
 	{@param name: string}
 	{@param options: list<[label: string, value: ?]>}
 	{@param readOnly: bool}
-	{@param? required: bool}
 	{@param showAsSwitcher: bool}
 	{@param showLabel: bool}
-	{@param? tip: string}
 	{@param value: ?}
+	{@param? dir: string}
+	{@param? required: bool}
+	{@param? tip: string}
 
-	<div class="form-group liferay-ddm-form-field-checkbox-multiple" data-fieldname="{$name}">
+	<div class="form-group liferay-ddm-form-field-checkbox-multiple"
+		data-fieldname="{$name}">
+
 		{if $showLabel}
-			<label for="{$name}">
-				{$label}
+			<div>
+				<label for="{$name}">
+					{$label}
 
-				{if $required and length($options) > 1}
-					<span class="icon-asterisk text-warning"></span>
+					{if $required and length($options) > 1}
+						<span class="icon-asterisk text-warning"></span>
+					{/if}
+				</label>
+
+				{if $tip}
+					<span class="form-text">{$tip}</span>
 				{/if}
-			</label>
-
-			<p class="liferay-ddm-form-field-tip">{$tip ? $tip: ''}</p>
+			</div>
 		{/if}
 
-		<div class="clearfix checkbox-multiple-options">
-			{foreach $option in $options}
-				{if not $inline}
-					<div>
-				{/if}
+		{foreach $option in $options}
+			{let $checked kind="attributes"}
+				{foreach $currentValue in $value}
+					{if $currentValue == $option.value}
+						checked
+					{/if}
+				{/foreach}
+			{/let}
 
-				{let $checked kind="attributes"}
-					{foreach $currentValue in $value}
-						{if $currentValue == $option.value}
-							checked
-						{/if}
-					{/foreach}
-				{/let}
+			{if $showAsSwitcher}
+				<div class="lfr-ddm-form-field-checkbox-switch {$inline ? 'lfr-ddm-form-field-checkbox-switch-inline' : ''}">
+					<label class="toggle-switch toggle-switch-option-{$option.value}"
+						for="{$name}_{$option.value}">
 
-				{if $showAsSwitcher}
-					<label class="checkbox-default{$inline ? ' checkbox-multiple-switcher-inline' : ''} checkbox-option-{$option.value}" for="{$name}_{$option.value}">
 						<input {$checked}
-							class="hide toggle-switch"
 							{if $readOnly}disabled{/if}
+							class="toggle-switch-check"
 							id="{$name}_{$option.value}"
 							name="{$name}"
 							type="checkbox"
-							value="{$option.value}"
-						/>
+							value="{$option.value}" />
 
 						<span aria-hidden="true" class="toggle-switch-bar">
 							<span class="toggle-switch-handle"></span>
 						</span>
+
 						<span class="toggle-switch-text toggle-switch-text-right">
 							{$option.label}
 
@@ -72,34 +76,29 @@
 							{/if}
 						</span>
 					</label>
+				</div>
+			{else}
+				<div class="form-check {$inline ? 'form-check-inline' : ''}">
+					<label class="form-check-label form-check-label-option-{$option.value}"
+						for="{$name}_{$option.value}">
 
-				{else}
-					<label class="checkbox-default{$inline ? ' checkbox-inline' : ''} checkbox-option-{$option.value}" for="{$name}_{$option.value}">
 						<input {$checked}
-							class="field"
 							{if $dir}dir="{$dir}"{/if}
 							{if $readOnly}disabled{/if}
+							class="form-check-input"
 							id="{$name}_{$option.value}"
 							name="{$name}"
 							type="checkbox"
-							value="{$option.value}"
-						/>
-						{$option.label}
+							value="{$option.value}" />
+
+						<span class="form-check-description">{$option.label}</span>
 					</label>
 
 					{if $required and length($options) == 1}
 						<span class="icon-asterisk text-warning"></span>
 					{/if}
-				{/if}
-
-				{if not $inline}
-					</div>
-				{/if}
-			{/foreach}
-		</div>
-
-		{if length($options) == 1}
-			<p class="liferay-ddm-form-field-tip">{$tip ? $tip: ''}</p>
-		{/if}
+				</div>
+			{/if}
+		{/foreach}
 	</div>
 {/template}

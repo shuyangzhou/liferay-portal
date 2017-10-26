@@ -319,7 +319,6 @@ AUI.add(
 
 						options.forEach(
 							function(option) {
-								option.set('keyInputEnabled', editable);
 								option.set('generationLocked', !editable);
 							}
 						);
@@ -445,12 +444,8 @@ AUI.add(
 					_bindOptionUI: function(option) {
 						var instance = this;
 
-						var editable = instance.get('editable');
-
-						if (editable) {
-							option.after(A.rbind('_afterOptionNormalizeKey', instance, option), option, 'normalizeKey');
-							option.bindContainerEvent('click', A.bind('_onOptionClickClose', instance, option), '.close');
-						}
+						option.after(A.rbind('_afterOptionNormalizeKey', instance, option), option, 'normalizeKey');
+						option.bindContainerEvent('click', A.bind('_onOptionClickClose', instance, option), '.close');
 					},
 
 					_canSortNode: function(event) {

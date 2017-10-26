@@ -23,6 +23,7 @@ import com.liferay.vulcan.alias.BinaryFunction;
 import com.liferay.vulcan.consumer.TriConsumer;
 import com.liferay.vulcan.jaxrs.json.internal.JSONObjectBuilderImpl;
 import com.liferay.vulcan.jaxrs.json.internal.StringFunctionalList;
+import com.liferay.vulcan.language.Language;
 import com.liferay.vulcan.list.FunctionalList;
 import com.liferay.vulcan.message.json.ErrorMessageMapper;
 import com.liferay.vulcan.message.json.JSONObjectBuilder;
@@ -46,6 +47,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -294,21 +296,24 @@ public class WriterHelper {
 
 		optional.map(
 			Representor::getBooleanFunctions
+		).map(
+			Map::entrySet
+		).map(
+			Set::stream
 		).ifPresent(
-			fieldFunctions -> {
-				for (String field : fieldFunctions.keySet()) {
-					if (fieldsPredicate.test(field)) {
-						Function<T, Boolean> fieldFunction = fieldFunctions.get(
-							field);
+			stream -> stream.filter(
+				entry -> fieldsPredicate.test(entry.getKey())
+			).forEach(
+				entry -> {
+					Function<T, Boolean> fieldFunction = entry.getValue();
 
-						Boolean data = fieldFunction.apply(model);
+					Boolean data = fieldFunction.apply(model);
 
-						if (data != null) {
-							biConsumer.accept(field, data);
-						}
+					if (data != null) {
+						biConsumer.accept(entry.getKey(), data);
 					}
 				}
-			}
+			)
 		);
 	}
 
@@ -365,14 +370,68 @@ public class WriterHelper {
 
 		optional.map(
 			Representor::getLinks
+		).map(
+			Map::entrySet
+		).map(
+			Set::stream
 		).ifPresent(
-			links -> {
-				for (String key : links.keySet()) {
-					if (fieldsPredicate.test(key)) {
-						biConsumer.accept(key, links.get(key));
+			stream -> stream.filter(
+				entry -> fieldsPredicate.test(entry.getKey())
+			).forEach(
+				entry -> {
+					String link = entry.getValue();
+
+					if (link != null) {
+						biConsumer.accept(entry.getKey(), link);
 					}
 				}
-			}
+			)
+		);
+	}
+
+	/**
+	 * Helper method to write a model localized string fields. It uses a
+	 * consumer so each {@link javax.ws.rs.ext.MessageBodyWriter} can write each
+	 * field differently.
+	 *
+	 * @param  model a model.
+	 * @param  modelClass a model class.
+	 * @param  fields the requested fields.
+	 * @param  language the language requested by the user.
+	 * @param  biConsumer the consumer that will be called to write each field.
+	 * @review
+	 */
+	public <T> void writeLocalizedStringFields(
+		T model, Class<T> modelClass, Fields fields, Language language,
+		BiConsumer<String, String> biConsumer) {
+
+		Predicate<String> fieldsPredicate = _getFieldsPredicate(
+			modelClass, fields);
+
+		Optional<Representor<T, Identifier>> optional =
+			_collectionResourceManager.getRepresentorOptional(modelClass);
+
+		optional.map(
+			Representor::getLocalizedStringFunctions
+		).map(
+			Map::entrySet
+		).map(
+			Set::stream
+		).ifPresent(
+			stream -> stream.filter(
+				entry -> fieldsPredicate.test(entry.getKey())
+			).forEach(
+				entry -> {
+					BiFunction<T, Language, String> fieldFunction =
+						entry.getValue();
+
+					String data = fieldFunction.apply(model, language);
+
+					if ((data != null) && !data.isEmpty()) {
+						biConsumer.accept(entry.getKey(), data);
+					}
+				}
+			)
 		);
 	}
 
@@ -399,21 +458,24 @@ public class WriterHelper {
 
 		optional.map(
 			Representor::getNumberFunctions
+		).map(
+			Map::entrySet
+		).map(
+			Set::stream
 		).ifPresent(
-			fieldFunctions -> {
-				for (String field : fieldFunctions.keySet()) {
-					if (fieldsPredicate.test(field)) {
-						Function<T, Number> fieldFunction = fieldFunctions.get(
-							field);
+			stream -> stream.filter(
+				entry -> fieldsPredicate.test(entry.getKey())
+			).forEach(
+				entry -> {
+					Function<T, Number> fieldFunction = entry.getValue();
 
-						Number data = fieldFunction.apply(model);
+					Number data = fieldFunction.apply(model);
 
-						if (data != null) {
-							biConsumer.accept(field, data);
-						}
+					if (data != null) {
+						biConsumer.accept(entry.getKey(), data);
 					}
 				}
-			}
+			)
 		);
 	}
 
@@ -566,21 +628,24 @@ public class WriterHelper {
 
 		optional.map(
 			Representor::getStringFunctions
+		).map(
+			Map::entrySet
+		).map(
+			Set::stream
 		).ifPresent(
-			fieldFunctions -> {
-				for (String field : fieldFunctions.keySet()) {
-					if (fieldsPredicate.test(field)) {
-						Function<T, String> fieldFunction = fieldFunctions.get(
-							field);
+			stream -> stream.filter(
+				entry -> fieldsPredicate.test(entry.getKey())
+			).forEach(
+				entry -> {
+					Function<T, String> fieldFunction = entry.getValue();
 
-						String data = fieldFunction.apply(model);
+					String data = fieldFunction.apply(model);
 
-						if (data != null) {
-							biConsumer.accept(field, data);
-						}
+					if ((data != null) && !data.isEmpty()) {
+						biConsumer.accept(entry.getKey(), data);
 					}
 				}
-			}
+			)
 		);
 	}
 

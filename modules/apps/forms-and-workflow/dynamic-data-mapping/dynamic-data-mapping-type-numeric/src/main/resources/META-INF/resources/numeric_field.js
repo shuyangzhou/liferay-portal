@@ -80,7 +80,7 @@ AUI.add(
 
 						var inputGroup = container.one('.input-group-container');
 
-						inputGroup.insert(container.one('.help-block'), 'after');
+						inputGroup.insert(container.one('.form-feedback-indicator'), 'after');
 					},
 
 					_onNumericFieldKeyPress: function(event) {

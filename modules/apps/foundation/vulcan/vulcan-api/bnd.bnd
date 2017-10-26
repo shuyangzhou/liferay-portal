@@ -11,6 +11,7 @@ Export-Package:\
 	com.liferay.vulcan.error,\
 	com.liferay.vulcan.exception,\
 	com.liferay.vulcan.function,\
+	com.liferay.vulcan.language,\
 	com.liferay.vulcan.list,\
 	com.liferay.vulcan.logger,\
 	com.liferay.vulcan.message.json,\

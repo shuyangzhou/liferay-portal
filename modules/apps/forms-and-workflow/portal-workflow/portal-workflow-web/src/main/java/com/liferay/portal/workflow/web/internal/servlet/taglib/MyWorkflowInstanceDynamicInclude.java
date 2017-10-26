@@ -29,4 +29,10 @@ import org.osgi.service.component.annotations.Component;
 )
 public class MyWorkflowInstanceDynamicInclude
 	extends WorkflowInstanceDynamicInclude {
+
+	@Override
+	public String getTabName() {
+		return WorkflowWebKeys.WORKFLOW_TAB_MY_SUBMISSIONS;
+	}
+
 }

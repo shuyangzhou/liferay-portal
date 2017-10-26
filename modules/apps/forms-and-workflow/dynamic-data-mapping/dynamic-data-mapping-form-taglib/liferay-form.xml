@@ -25,6 +25,12 @@
 				<required>true</required>
 			</attribute>
 			<attribute>
+				<name>fieldSetClassNameId</name>
+				<inputType>long</inputType>
+				<outputType>long</outputType>
+				<required>false</required>
+			</attribute>
+			<attribute>
 				<name>refererPortletNamespace</name>
 				<inputType>java.lang.String</inputType>
 				<outputType>java.lang.String</outputType>

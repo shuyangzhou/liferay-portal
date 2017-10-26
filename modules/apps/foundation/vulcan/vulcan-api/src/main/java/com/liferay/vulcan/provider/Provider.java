@@ -19,24 +19,20 @@ import aQute.bnd.annotation.ConsumerType;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Instances of this interface will be used to provide instances of different
- * classes that are dependent on the current request.
- *
- * The class of the provider can then be provided as a parameter in {@link
- * com.liferay.vulcan.resource.builder.RoutesBuilder} methods.
+ * Provides instances of {@code T} that are dependent on the current request.
+ * These instances can then be provided as a parameter in the methods of {@link
+ * com.liferay.vulcan.resource.builder.RoutesBuilder}.
  *
  * @author Alejandro Hernández
- * @review
  */
 @ConsumerType
 public interface Provider<T> {
 
 	/**
-	 * Creates an instance of the provided class for the current request.
+	 * Creates an instance of {@code T} for the current request.
 	 *
-	 * @param  httpServletRequest current request.
-	 * @return the instance of the provided class.
-	 * @review
+	 * @param  httpServletRequest the current request
+	 * @return the instance of {@code T}
 	 */
 	public T createContext(HttpServletRequest httpServletRequest);
 

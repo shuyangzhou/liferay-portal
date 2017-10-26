@@ -20,52 +20,44 @@ import com.liferay.vulcan.pagination.Page;
 import com.liferay.vulcan.pagination.SingleModel;
 
 /**
- * Writers may use an instance of this interface to customize the URIs of a
- * resource that follows the collection pattern.
- *
- * <p>
- * For example, an instance of this interface can be used to add a prefix before
- * every URI.
- * </p>
+ * Customizes the URIs of a resource that follows the collection pattern. For
+ * example, an instance of this interface can be used to add a prefix to each
+ * URI.
  *
  * @author Alejandro Hernández
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
- * @review
  */
 @ConsumerType
 public interface CollectionResourceURITransformer {
 
 	/**
-	 * Returns the transformed URI of a binary endpoint.
+	 * Returns the binary endpoint's transformed URI.
 	 *
-	 * @param  uri the binary URI.
-	 * @param  singleModel the single model.
-	 * @param  binaryId the binary ID.
-	 * @return the transformed URI.
-	 * @review
+	 * @param  uri the binary endpoint's URI
+	 * @param  singleModel the single model
+	 * @param  binaryId the binary endpoint's ID
+	 * @return the transformed URI
 	 */
 	public <T> String transformBinaryURI(
 		String uri, SingleModel<T> singleModel, String binaryId);
 
 	/**
-	 * Returns the transformed URI of a collection item endpoint.
+	 * Returns a collection item endpoint's transformed URI.
 	 *
-	 * @param  uri the collection item URI.
-	 * @param  singleModel the single model.
-	 * @return the transformed URI.
-	 * @review
+	 * @param  uri the collection item's URI
+	 * @param  singleModel the single model
+	 * @return the transformed URI
 	 */
 	public <T> String transformCollectionItemSingleResourceURI(
 		String uri, SingleModel<T> singleModel);
 
 	/**
-	 * Returns the transformed URI of a page endpoint.
+	 * Returns the page endpoint's transformed URI.
 	 *
-	 * @param  uri the page URI.
-	 * @param  page the page.
-	 * @return the transformed URI.
-	 * @review
+	 * @param  uri the page's URI
+	 * @param  page the page
+	 * @return the page endpoint's transformed URI
 	 */
 	public <T> String transformPageURI(String uri, Page<T> page);
 

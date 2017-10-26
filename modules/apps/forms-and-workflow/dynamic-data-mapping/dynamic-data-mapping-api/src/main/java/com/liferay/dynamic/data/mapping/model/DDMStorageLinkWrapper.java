@@ -63,6 +63,7 @@ public class DDMStorageLinkWrapper implements DDMStorageLink,
 		attributes.put("classNameId", getClassNameId());
 		attributes.put("classPK", getClassPK());
 		attributes.put("structureId", getStructureId());
+		attributes.put("structureVersionId", getStructureVersionId());
 
 		return attributes;
 	}
@@ -103,6 +104,12 @@ public class DDMStorageLinkWrapper implements DDMStorageLink,
 
 		if (structureId != null) {
 			setStructureId(structureId);
+		}
+
+		Long structureVersionId = (Long)attributes.get("structureVersionId");
+
+		if (structureVersionId != null) {
+			setStructureVersionId(structureVersionId);
 		}
 	}
 
@@ -206,6 +213,16 @@ public class DDMStorageLinkWrapper implements DDMStorageLink,
 	@Override
 	public long getStructureId() {
 		return _ddmStorageLink.getStructureId();
+	}
+
+	/**
+	* Returns the structure version ID of this ddm storage link.
+	*
+	* @return the structure version ID of this ddm storage link
+	*/
+	@Override
+	public long getStructureVersionId() {
+		return _ddmStorageLink.getStructureVersionId();
 	}
 
 	/**
@@ -337,6 +354,16 @@ public class DDMStorageLinkWrapper implements DDMStorageLink,
 	@Override
 	public void setStructureId(long structureId) {
 		_ddmStorageLink.setStructureId(structureId);
+	}
+
+	/**
+	* Sets the structure version ID of this ddm storage link.
+	*
+	* @param structureVersionId the structure version ID of this ddm storage link
+	*/
+	@Override
+	public void setStructureVersionId(long structureVersionId) {
+		_ddmStorageLink.setStructureVersionId(structureVersionId);
 	}
 
 	/**
