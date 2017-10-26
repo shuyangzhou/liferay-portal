@@ -1989,8 +1989,8 @@
 
 		<var name="key_userScreenName" value="usersn2" />
 
-		<execute function="AssertTextNotPresent" locator1="UsersAndOrganizations#USER_TABLE_NAME" value1="userfn2 userln2" />
-		<execute function="AssertTextNotPresent" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" value1="usersn2" />
+		<execute function="AssertElementNotPresent" locator1="UsersAndOrganizations#USER_TABLE_NAME" />
+		<execute function="AssertElementNotPresent" locator1="UsersAndOrganizations#USER_TABLE_SCREEN_NAME" />
 	</command>
 
 	<command name="SearchUsersInOrganization" priority="4">
@@ -2151,9 +2151,11 @@
 
 		<var name="key_orgName" value="Organization Name 1" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="SitesDirectory#SITE_ENTRY" value1="Liferay" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="SitesDirectory#SITE_ENTRY" value1="${siteName}" />
 		<execute function="AssertTextEquals" locator1="SitesDirectory#ORG_SITE_ENTRY" value1="Organization Name 1" />
-		<execute function="AssertTextNotPresent" locator1="SitesDirectory#ORG_SITE_ENTRY" value1="Organization Name 2" />
+		<execute function="AssertElementNotPresent" locator1="SitesDirectory#ORG_SITE_ENTRY">
+			<var name="key_orgName" value="Organization Name 2" />
+		</execute>
 
 		<execute function="AssertClick" locator1="SitesDirectory#ORG_SITE_ENTRY" value1="Organization Name 1" />
 
@@ -2170,7 +2172,7 @@
 		<execute function="AssertClick" locator1="SitesDirectory#ORG_SITE_ENTRY" value1="Organization Name 1" />
 
 		<execute macro="Breadcrumb#viewPG">
-			<var name="breadcrumbListNotVisible" value="Liferay" />
+			<var name="breadcrumbListNotVisible" value="${siteName}" />
 			<var name="breadcrumbListVisible" value="Organization Name 1" />
 			<var name="pathLocator" value="CURRENT_LOCATION" />
 		</execute>

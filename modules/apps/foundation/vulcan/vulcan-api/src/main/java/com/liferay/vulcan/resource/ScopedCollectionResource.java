@@ -23,29 +23,32 @@ import com.liferay.vulcan.resource.identifier.Identifier;
  *
  * <p>
  * {@code ScopedCollectionResources} are a special type of {@code
- * CollectionResource} that are meant to be exposed dependant of another {@code
+ * CollectionResource} that are meant to be exposed dependent of another {@code
  * CollectionResource}.
  * </p>
  *
  * <p>
- * Resources behave like an API so you must add the name for the API via the
- * {@link #getName()} method.
+ * Resources behave like an API so you must add the API's name via the {@link
+ * #getName()} method.
  * </p>
  *
  * <p>
- * Representors created by the {@link #buildRepresentor} method hold all the
+ * Representors created by the method {@link
+ * CollectionResource#buildRepresentor(
+ * com.liferay.vulcan.resource.builder.RepresentorBuilder)} hold all the
  * information needed to write your domain models' hypermedia representations.
  * </p>
  *
  * <p>
- * Finally you can add the different supported routes for the resource via the
- * {@link #routes(RoutesBuilder)} method.
+ * Finally, you can add the different supported routes for the resource via the
+ * method {@link
+ * CollectionResource#routes(
+ * com.liferay.vulcan.resource.builder.RoutesBuilder)}.
  * </p>
  *
  * @author Alejandro Hernández
- * @see    RepresentorBuilder
- * @see    RoutesBuilder
- * @review
+ * @see    com.liferay.vulcan.resource.builder.RepresentorBuilder
+ * @see    com.liferay.vulcan.resource.builder.RoutesBuilder
  */
 @ConsumerType
 public interface ScopedCollectionResource<T, U extends Identifier>

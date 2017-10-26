@@ -34,11 +34,13 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -47,6 +49,7 @@ import java.io.Serializable;
 
 import java.lang.reflect.Field;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1939,6 +1942,799 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 	}
 
 	private static final String _FINDER_COLUMN_STRUCTUREID_STRUCTUREID_2 = "ddmStorageLink.structureId = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_STRUCTUREVERSIONID =
+		new FinderPath(DDMStorageLinkModelImpl.ENTITY_CACHE_ENABLED,
+			DDMStorageLinkModelImpl.FINDER_CACHE_ENABLED,
+			DDMStorageLinkImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findByStructureVersionId",
+			new String[] {
+				Long.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STRUCTUREVERSIONID =
+		new FinderPath(DDMStorageLinkModelImpl.ENTITY_CACHE_ENABLED,
+			DDMStorageLinkModelImpl.FINDER_CACHE_ENABLED,
+			DDMStorageLinkImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findByStructureVersionId", new String[] { Long.class.getName() },
+			DDMStorageLinkModelImpl.STRUCTUREVERSIONID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_STRUCTUREVERSIONID = new FinderPath(DDMStorageLinkModelImpl.ENTITY_CACHE_ENABLED,
+			DDMStorageLinkModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByStructureVersionId", new String[] { Long.class.getName() });
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_COUNT_BY_STRUCTUREVERSIONID =
+		new FinderPath(DDMStorageLinkModelImpl.ENTITY_CACHE_ENABLED,
+			DDMStorageLinkModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"countByStructureVersionId", new String[] { Long.class.getName() });
+
+	/**
+	 * Returns all the ddm storage links where structureVersionId = &#63;.
+	 *
+	 * @param structureVersionId the structure version ID
+	 * @return the matching ddm storage links
+	 */
+	@Override
+	public List<DDMStorageLink> findByStructureVersionId(
+		long structureVersionId) {
+		return findByStructureVersionId(structureVersionId, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the ddm storage links where structureVersionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStorageLinkModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param structureVersionId the structure version ID
+	 * @param start the lower bound of the range of ddm storage links
+	 * @param end the upper bound of the range of ddm storage links (not inclusive)
+	 * @return the range of matching ddm storage links
+	 */
+	@Override
+	public List<DDMStorageLink> findByStructureVersionId(
+		long structureVersionId, int start, int end) {
+		return findByStructureVersionId(structureVersionId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the ddm storage links where structureVersionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStorageLinkModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param structureVersionId the structure version ID
+	 * @param start the lower bound of the range of ddm storage links
+	 * @param end the upper bound of the range of ddm storage links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching ddm storage links
+	 */
+	@Override
+	public List<DDMStorageLink> findByStructureVersionId(
+		long structureVersionId, int start, int end,
+		OrderByComparator<DDMStorageLink> orderByComparator) {
+		return findByStructureVersionId(structureVersionId, start, end,
+			orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the ddm storage links where structureVersionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStorageLinkModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param structureVersionId the structure version ID
+	 * @param start the lower bound of the range of ddm storage links
+	 * @param end the upper bound of the range of ddm storage links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of matching ddm storage links
+	 */
+	@Override
+	public List<DDMStorageLink> findByStructureVersionId(
+		long structureVersionId, int start, int end,
+		OrderByComparator<DDMStorageLink> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STRUCTUREVERSIONID;
+			finderArgs = new Object[] { structureVersionId };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_STRUCTUREVERSIONID;
+			finderArgs = new Object[] {
+					structureVersionId,
+					
+					start, end, orderByComparator
+				};
+		}
+
+		List<DDMStorageLink> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<DDMStorageLink>)finderCache.getResult(finderPath,
+					finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (DDMStorageLink ddmStorageLink : list) {
+					if ((structureVersionId != ddmStorageLink.getStructureVersionId())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				query = new StringBundler(3);
+			}
+
+			query.append(_SQL_SELECT_DDMSTORAGELINK_WHERE);
+
+			query.append(_FINDER_COLUMN_STRUCTUREVERSIONID_STRUCTUREVERSIONID_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(DDMStorageLinkModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(structureVersionId);
+
+				if (!pagination) {
+					list = (List<DDMStorageLink>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<DDMStorageLink>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
+
+				cacheResult(list);
+
+				finderCache.putResult(finderPath, finderArgs, list);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first ddm storage link in the ordered set where structureVersionId = &#63;.
+	 *
+	 * @param structureVersionId the structure version ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching ddm storage link
+	 * @throws NoSuchStorageLinkException if a matching ddm storage link could not be found
+	 */
+	@Override
+	public DDMStorageLink findByStructureVersionId_First(
+		long structureVersionId,
+		OrderByComparator<DDMStorageLink> orderByComparator)
+		throws NoSuchStorageLinkException {
+		DDMStorageLink ddmStorageLink = fetchByStructureVersionId_First(structureVersionId,
+				orderByComparator);
+
+		if (ddmStorageLink != null) {
+			return ddmStorageLink;
+		}
+
+		StringBundler msg = new StringBundler(4);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("structureVersionId=");
+		msg.append(structureVersionId);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchStorageLinkException(msg.toString());
+	}
+
+	/**
+	 * Returns the first ddm storage link in the ordered set where structureVersionId = &#63;.
+	 *
+	 * @param structureVersionId the structure version ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching ddm storage link, or <code>null</code> if a matching ddm storage link could not be found
+	 */
+	@Override
+	public DDMStorageLink fetchByStructureVersionId_First(
+		long structureVersionId,
+		OrderByComparator<DDMStorageLink> orderByComparator) {
+		List<DDMStorageLink> list = findByStructureVersionId(structureVersionId,
+				0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last ddm storage link in the ordered set where structureVersionId = &#63;.
+	 *
+	 * @param structureVersionId the structure version ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching ddm storage link
+	 * @throws NoSuchStorageLinkException if a matching ddm storage link could not be found
+	 */
+	@Override
+	public DDMStorageLink findByStructureVersionId_Last(
+		long structureVersionId,
+		OrderByComparator<DDMStorageLink> orderByComparator)
+		throws NoSuchStorageLinkException {
+		DDMStorageLink ddmStorageLink = fetchByStructureVersionId_Last(structureVersionId,
+				orderByComparator);
+
+		if (ddmStorageLink != null) {
+			return ddmStorageLink;
+		}
+
+		StringBundler msg = new StringBundler(4);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("structureVersionId=");
+		msg.append(structureVersionId);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchStorageLinkException(msg.toString());
+	}
+
+	/**
+	 * Returns the last ddm storage link in the ordered set where structureVersionId = &#63;.
+	 *
+	 * @param structureVersionId the structure version ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching ddm storage link, or <code>null</code> if a matching ddm storage link could not be found
+	 */
+	@Override
+	public DDMStorageLink fetchByStructureVersionId_Last(
+		long structureVersionId,
+		OrderByComparator<DDMStorageLink> orderByComparator) {
+		int count = countByStructureVersionId(structureVersionId);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<DDMStorageLink> list = findByStructureVersionId(structureVersionId,
+				count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the ddm storage links before and after the current ddm storage link in the ordered set where structureVersionId = &#63;.
+	 *
+	 * @param storageLinkId the primary key of the current ddm storage link
+	 * @param structureVersionId the structure version ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next ddm storage link
+	 * @throws NoSuchStorageLinkException if a ddm storage link with the primary key could not be found
+	 */
+	@Override
+	public DDMStorageLink[] findByStructureVersionId_PrevAndNext(
+		long storageLinkId, long structureVersionId,
+		OrderByComparator<DDMStorageLink> orderByComparator)
+		throws NoSuchStorageLinkException {
+		DDMStorageLink ddmStorageLink = findByPrimaryKey(storageLinkId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			DDMStorageLink[] array = new DDMStorageLinkImpl[3];
+
+			array[0] = getByStructureVersionId_PrevAndNext(session,
+					ddmStorageLink, structureVersionId, orderByComparator, true);
+
+			array[1] = ddmStorageLink;
+
+			array[2] = getByStructureVersionId_PrevAndNext(session,
+					ddmStorageLink, structureVersionId, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected DDMStorageLink getByStructureVersionId_PrevAndNext(
+		Session session, DDMStorageLink ddmStorageLink,
+		long structureVersionId,
+		OrderByComparator<DDMStorageLink> orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(4 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			query = new StringBundler(3);
+		}
+
+		query.append(_SQL_SELECT_DDMSTORAGELINK_WHERE);
+
+		query.append(_FINDER_COLUMN_STRUCTUREVERSIONID_STRUCTUREVERSIONID_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			query.append(DDMStorageLinkModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(structureVersionId);
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(ddmStorageLink);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<DDMStorageLink> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns all the ddm storage links where structureVersionId = any &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStorageLinkModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param structureVersionIds the structure version IDs
+	 * @return the matching ddm storage links
+	 */
+	@Override
+	public List<DDMStorageLink> findByStructureVersionId(
+		long[] structureVersionIds) {
+		return findByStructureVersionId(structureVersionIds, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the ddm storage links where structureVersionId = any &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStorageLinkModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param structureVersionIds the structure version IDs
+	 * @param start the lower bound of the range of ddm storage links
+	 * @param end the upper bound of the range of ddm storage links (not inclusive)
+	 * @return the range of matching ddm storage links
+	 */
+	@Override
+	public List<DDMStorageLink> findByStructureVersionId(
+		long[] structureVersionIds, int start, int end) {
+		return findByStructureVersionId(structureVersionIds, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the ddm storage links where structureVersionId = any &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStorageLinkModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param structureVersionIds the structure version IDs
+	 * @param start the lower bound of the range of ddm storage links
+	 * @param end the upper bound of the range of ddm storage links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching ddm storage links
+	 */
+	@Override
+	public List<DDMStorageLink> findByStructureVersionId(
+		long[] structureVersionIds, int start, int end,
+		OrderByComparator<DDMStorageLink> orderByComparator) {
+		return findByStructureVersionId(structureVersionIds, start, end,
+			orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the ddm storage links where structureVersionId = &#63;, optionally using the finder cache.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link DDMStorageLinkModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param structureVersionId the structure version ID
+	 * @param start the lower bound of the range of ddm storage links
+	 * @param end the upper bound of the range of ddm storage links (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of matching ddm storage links
+	 */
+	@Override
+	public List<DDMStorageLink> findByStructureVersionId(
+		long[] structureVersionIds, int start, int end,
+		OrderByComparator<DDMStorageLink> orderByComparator,
+		boolean retrieveFromCache) {
+		if (structureVersionIds == null) {
+			structureVersionIds = new long[0];
+		}
+		else if (structureVersionIds.length > 1) {
+			structureVersionIds = ArrayUtil.unique(structureVersionIds);
+
+			Arrays.sort(structureVersionIds);
+		}
+
+		if (structureVersionIds.length == 1) {
+			return findByStructureVersionId(structureVersionIds[0], start, end,
+				orderByComparator);
+		}
+
+		boolean pagination = true;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderArgs = new Object[] { StringUtil.merge(structureVersionIds) };
+		}
+		else {
+			finderArgs = new Object[] {
+					StringUtil.merge(structureVersionIds),
+					
+					start, end, orderByComparator
+				};
+		}
+
+		List<DDMStorageLink> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<DDMStorageLink>)finderCache.getResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_STRUCTUREVERSIONID,
+					finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (DDMStorageLink ddmStorageLink : list) {
+					if (!ArrayUtil.contains(structureVersionIds,
+								ddmStorageLink.getStructureVersionId())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = new StringBundler();
+
+			query.append(_SQL_SELECT_DDMSTORAGELINK_WHERE);
+
+			if (structureVersionIds.length > 0) {
+				query.append(StringPool.OPEN_PARENTHESIS);
+
+				query.append(_FINDER_COLUMN_STRUCTUREVERSIONID_STRUCTUREVERSIONID_7);
+
+				query.append(StringUtil.merge(structureVersionIds));
+
+				query.append(StringPool.CLOSE_PARENTHESIS);
+
+				query.append(StringPool.CLOSE_PARENTHESIS);
+			}
+
+			query.setStringAt(removeConjunction(query.stringAt(query.index() -
+						1)), query.index() - 1);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(DDMStorageLinkModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				if (!pagination) {
+					list = (List<DDMStorageLink>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<DDMStorageLink>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
+
+				cacheResult(list);
+
+				finderCache.putResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_STRUCTUREVERSIONID,
+					finderArgs, list);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_STRUCTUREVERSIONID,
+					finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Removes all the ddm storage links where structureVersionId = &#63; from the database.
+	 *
+	 * @param structureVersionId the structure version ID
+	 */
+	@Override
+	public void removeByStructureVersionId(long structureVersionId) {
+		for (DDMStorageLink ddmStorageLink : findByStructureVersionId(
+				structureVersionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+			remove(ddmStorageLink);
+		}
+	}
+
+	/**
+	 * Returns the number of ddm storage links where structureVersionId = &#63;.
+	 *
+	 * @param structureVersionId the structure version ID
+	 * @return the number of matching ddm storage links
+	 */
+	@Override
+	public int countByStructureVersionId(long structureVersionId) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_STRUCTUREVERSIONID;
+
+		Object[] finderArgs = new Object[] { structureVersionId };
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_DDMSTORAGELINK_WHERE);
+
+			query.append(_FINDER_COLUMN_STRUCTUREVERSIONID_STRUCTUREVERSIONID_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(structureVersionId);
+
+				count = (Long)q.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	/**
+	 * Returns the number of ddm storage links where structureVersionId = any &#63;.
+	 *
+	 * @param structureVersionIds the structure version IDs
+	 * @return the number of matching ddm storage links
+	 */
+	@Override
+	public int countByStructureVersionId(long[] structureVersionIds) {
+		if (structureVersionIds == null) {
+			structureVersionIds = new long[0];
+		}
+		else if (structureVersionIds.length > 1) {
+			structureVersionIds = ArrayUtil.unique(structureVersionIds);
+
+			Arrays.sort(structureVersionIds);
+		}
+
+		Object[] finderArgs = new Object[] { StringUtil.merge(structureVersionIds) };
+
+		Long count = (Long)finderCache.getResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_STRUCTUREVERSIONID,
+				finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler();
+
+			query.append(_SQL_COUNT_DDMSTORAGELINK_WHERE);
+
+			if (structureVersionIds.length > 0) {
+				query.append(StringPool.OPEN_PARENTHESIS);
+
+				query.append(_FINDER_COLUMN_STRUCTUREVERSIONID_STRUCTUREVERSIONID_7);
+
+				query.append(StringUtil.merge(structureVersionIds));
+
+				query.append(StringPool.CLOSE_PARENTHESIS);
+
+				query.append(StringPool.CLOSE_PARENTHESIS);
+			}
+
+			query.setStringAt(removeConjunction(query.stringAt(query.index() -
+						1)), query.index() - 1);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				count = (Long)q.uniqueResult();
+
+				finderCache.putResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_STRUCTUREVERSIONID,
+					finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_STRUCTUREVERSIONID,
+					finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_STRUCTUREVERSIONID_STRUCTUREVERSIONID_2 =
+		"ddmStorageLink.structureVersionId = ?";
+	private static final String _FINDER_COLUMN_STRUCTUREVERSIONID_STRUCTUREVERSIONID_7 =
+		"ddmStorageLink.structureVersionId IN (";
 
 	public DDMStorageLinkPersistenceImpl() {
 		setModelClass(DDMStorageLink.class);
@@ -2244,6 +3040,13 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STRUCTUREID,
 				args);
 
+			args = new Object[] { ddmStorageLinkModelImpl.getStructureVersionId() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_STRUCTUREVERSIONID,
+				args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STRUCTUREVERSIONID,
+				args);
+
 			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
 				FINDER_ARGS_EMPTY);
@@ -2304,6 +3107,27 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STRUCTUREID,
 					args);
 			}
+
+			if ((ddmStorageLinkModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STRUCTUREVERSIONID.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						ddmStorageLinkModelImpl.getOriginalStructureVersionId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_STRUCTUREVERSIONID,
+					args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STRUCTUREVERSIONID,
+					args);
+
+				args = new Object[] {
+						ddmStorageLinkModelImpl.getStructureVersionId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_STRUCTUREVERSIONID,
+					args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_STRUCTUREVERSIONID,
+					args);
+			}
 		}
 
 		entityCache.putResult(DDMStorageLinkModelImpl.ENTITY_CACHE_ENABLED,
@@ -2334,6 +3158,7 @@ public class DDMStorageLinkPersistenceImpl extends BasePersistenceImpl<DDMStorag
 		ddmStorageLinkImpl.setClassNameId(ddmStorageLink.getClassNameId());
 		ddmStorageLinkImpl.setClassPK(ddmStorageLink.getClassPK());
 		ddmStorageLinkImpl.setStructureId(ddmStorageLink.getStructureId());
+		ddmStorageLinkImpl.setStructureVersionId(ddmStorageLink.getStructureVersionId());
 
 		return ddmStorageLinkImpl;
 	}

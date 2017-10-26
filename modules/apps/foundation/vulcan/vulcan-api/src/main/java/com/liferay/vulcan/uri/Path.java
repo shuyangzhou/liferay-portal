@@ -15,16 +15,11 @@
 package com.liferay.vulcan.uri;
 
 /**
- * Represents a resource path.
- *
- * <p>
- * For example a resource obtained in the URL: {@code /p/customers/2012} will
- * have a path containing {@code 2012} and {@code "customers"} as the ID and
- * name respectively.
- * </p>
+ * Represents a resource path. For example, the ID and name of a resource
+ * obtained from the URL {@code /p/customers/2012} is {@code 2012} and {@code
+ * "customers"}, respectively.
  *
  * @author Alejandro Hernández
- * @review
  */
 public class Path {
 
@@ -39,40 +34,27 @@ public class Path {
 	}
 
 	/**
-	 * Returns this resource's path as an URI.
+	 * Returns the current resource's path as a URI.
 	 *
-	 * @return the chain of identifiers as an URI.
-	 * @review
+	 * @return the current resource's path as a URI
 	 */
 	public String asURI() {
 		return "/" + getName() + "/" + getId();
 	}
 
 	/**
-	 * Returns the ID part of this {@code Path}.
+	 * Returns the current path's ID.
 	 *
-	 * <p>
-	 * For example with a resource obtained in the URI: {@code
-	 * /p/customers/2012} this method will return {@code 2012}.
-	 * </p>
-	 *
-	 * @return the ID part of the {@code Path}.
-	 * @review
+	 * @return the current path's ID
 	 */
 	public String getId() {
 		return _id;
 	}
 
 	/**
-	 * Returns the name part of this {@code Path}
+	 * Returns the current path's name.
 	 *
-	 * <p>
-	 * For example with a resource obtained in the URI: {@code
-	 * /p/customers/2012} this method will return {@code "customer"}.
-	 * </p>
-	 *
-	 * @return the name part of the {@code Path}.
-	 * @review
+	 * @return the current path's name
 	 */
 	public String getName() {
 		return _name;

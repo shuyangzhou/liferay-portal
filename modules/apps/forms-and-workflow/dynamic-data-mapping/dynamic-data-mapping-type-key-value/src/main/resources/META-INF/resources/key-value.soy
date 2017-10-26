@@ -13,7 +13,6 @@
 {template .render}
 	{@param? dir: string}
 	{@param? key: string}
-	{@param? keyInputEnabled: bool}
 	{@param? keyInputSize: int}
 	{@param? label: string}
 	{@param name: string}
@@ -36,7 +35,7 @@
 			</label>
 		{/if}
 
-		<div class="input-group-container {if $tooltip}input-group-default{/if}">
+		<div class="input-group input-group-container {if $tooltip}input-group-transparent{/if}">
 			<input
 				class="field form-control"
 				{if $dir}dir="{$dir}"{/if}
@@ -49,9 +48,7 @@
 
 			{if $tooltip}
 				<span class="input-group-addon">
-					<span class="input-group-addon-content">
-						<a class="help-icon help-icon-default icon-monospaced icon-question" data-original-title="{$tooltip}" data-toggle="popover" href="javascript:;" title="{$tooltip}"></a>
-					</span>
+					<a class="help-icon help-icon-default icon-monospaced icon-question" data-original-title="{$tooltip}" data-toggle="popover" href="javascript:;" title="{$tooltip}"></a>
 				</span>
 			{/if}
 		</div>
@@ -60,7 +57,6 @@
 			<label class="control-label key-value-label">{$strings.keyLabel}:</label>
 			<input
 				class="key-value-input"
-				{if not $keyInputEnabled}readonly{/if}
 				size="{$keyInputSize}"
 				tabindex="-1"
 				type="text"

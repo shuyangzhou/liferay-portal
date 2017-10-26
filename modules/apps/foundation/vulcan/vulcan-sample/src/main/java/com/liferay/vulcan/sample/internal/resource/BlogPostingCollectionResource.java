@@ -23,9 +23,9 @@ import com.liferay.vulcan.resource.builder.RepresentorBuilder;
 import com.liferay.vulcan.resource.builder.RoutesBuilder;
 import com.liferay.vulcan.resource.identifier.LongIdentifier;
 import com.liferay.vulcan.resource.identifier.RootIdentifier;
-import com.liferay.vulcan.sample.internal.model.BlogPost;
-import com.liferay.vulcan.sample.internal.model.BlogPostComment;
-import com.liferay.vulcan.sample.internal.model.User;
+import com.liferay.vulcan.sample.internal.model.BlogPosting;
+import com.liferay.vulcan.sample.internal.model.BlogPostingComment;
+import com.liferay.vulcan.sample.internal.model.Person;
 
 import java.util.List;
 import java.util.Map;
@@ -40,39 +40,39 @@ import org.osgi.service.component.annotations.Component;
  * href="http://schema.org/BlogPosting">BlogPosting</a> resources through a web
  * API.
  *
- * The resources are mapped from the internal {@link BlogPost} model.
+ * The resources are mapped from the internal {@link BlogPosting} model.
  *
  * @author Alejandro Hernández
  * @review
  */
 @Component(immediate = true)
 public class BlogPostingCollectionResource
-	implements CollectionResource<BlogPost, LongIdentifier> {
+	implements CollectionResource<BlogPosting, LongIdentifier> {
 
 	@Override
-	public Representor<BlogPost, LongIdentifier> buildRepresentor(
-		RepresentorBuilder<BlogPost, LongIdentifier> representorBuilder) {
+	public Representor<BlogPosting, LongIdentifier> buildRepresentor(
+		RepresentorBuilder<BlogPosting, LongIdentifier> representorBuilder) {
 
 		return representorBuilder.identifier(
-			blogPost -> blogPost::getId
+			blogPosting -> blogPosting::getBlogPostingId
 		).addDate(
-			"dateCreated", BlogPost::getCreateDate
+			"dateCreated", BlogPosting::getCreateDate
 		).addDate(
-			"dateModified", BlogPost::getModifiedDate
+			"dateModified", BlogPosting::getModifiedDate
 		).addEmbeddedModel(
-			"creator", User.class,
-			blogPost -> User.getUser(blogPost.getCreatorId())
+			"creator", Person.class,
+			blogPosting -> Person.getPerson(blogPosting.getCreatorId())
 		).addRelatedCollection(
-			"comments", BlogPostComment.class,
-			blogPost -> (LongIdentifier)blogPost::getId
+			"comments", BlogPostingComment.class,
+			blogPosting -> (LongIdentifier)blogPosting::getBlogPostingId
 		).addString(
-			"alternativeHeadline", BlogPost::getSubtitle
+			"alternativeHeadline", BlogPosting::getSubtitle
 		).addString(
-			"articleBody", BlogPost::getContent
+			"articleBody", BlogPosting::getContent
 		).addString(
-			"fileFormat", blogPost -> "text/html"
+			"fileFormat", blogPosting -> "text/html"
 		).addString(
-			"headline", BlogPost::getTitle
+			"headline", BlogPosting::getTitle
 		).addType(
 			"BlogPosting"
 		).build();
@@ -84,73 +84,74 @@ public class BlogPostingCollectionResource
 	}
 
 	@Override
-	public Routes<BlogPost> routes(
-		RoutesBuilder<BlogPost, LongIdentifier> routesBuilder) {
+	public Routes<BlogPosting> routes(
+		RoutesBuilder<BlogPosting, LongIdentifier> routesBuilder) {
 
 		return routesBuilder.addCollectionPageGetter(
 			this::_getPageItems, RootIdentifier.class
 		).addCollectionPageItemCreator(
-			this::_addBlogPost, RootIdentifier.class
+			this::_addBlogPosting, RootIdentifier.class
 		).addCollectionPageItemGetter(
-			this::_getBlogPost
+			this::_getBlogPosting
 		).addCollectionPageItemRemover(
-			this::_deleteBlogPost
+			this::_deleteBlogPosting
 		).addCollectionPageItemUpdater(
-			this::_updateBlogPost
+			this::_updateBlogPosting
 		).build();
 	}
 
-	private BlogPost _addBlogPost(
+	private BlogPosting _addBlogPosting(
 		RootIdentifier rootIdentifier, Map<String, Object> body) {
 
-		String title = (String)body.get("headline");
-		String subtitle = (String)body.get("alternativeHeadline");
 		String content = (String)body.get("articleBody");
 		Long creatorId = (Long)body.get("creator");
+		String subtitle = (String)body.get("alternativeHeadline");
+		String title = (String)body.get("headline");
 
-		return BlogPost.addBlogPost(title, subtitle, content, creatorId);
+		return BlogPosting.addBlogPosting(content, creatorId, subtitle, title);
 	}
 
-	private void _deleteBlogPost(LongIdentifier blogPostingLongIdentifier) {
-		BlogPost.deleteBlogPost(blogPostingLongIdentifier.getId());
+	private void _deleteBlogPosting(LongIdentifier blogPostingLongIdentifier) {
+		BlogPosting.deleteBlogPosting(blogPostingLongIdentifier.getId());
 	}
 
-	private BlogPost _getBlogPost(LongIdentifier blogPostingLongIdentifier) {
-		Optional<BlogPost> optional = BlogPost.getBlogPost(
+	private BlogPosting _getBlogPosting(
+		LongIdentifier blogPostingLongIdentifier) {
+
+		Optional<BlogPosting> optional = BlogPosting.getBlogPosting(
 			blogPostingLongIdentifier.getId());
 
 		return optional.orElseThrow(
 			() -> new NotFoundException(
-				"Unable to get Blog Posting " +
+				"Unable to get blog posting " +
 					blogPostingLongIdentifier.getId()));
 	}
 
-	private PageItems<BlogPost> _getPageItems(
+	private PageItems<BlogPosting> _getPageItems(
 		Pagination pagination, RootIdentifier rootIdentifier) {
 
-		List<BlogPost> blogsEntries = BlogPost.getBlogPosts(
+		List<BlogPosting> blogPostings = BlogPosting.getBlogPostings(
 			pagination.getStartPosition(), pagination.getEndPosition());
+		int count = BlogPosting.getBlogPostingCount();
 
-		int count = BlogPost.getBlogPostsCount();
-
-		return new PageItems<>(blogsEntries, count);
+		return new PageItems<>(blogPostings, count);
 	}
 
-	private BlogPost _updateBlogPost(
+	private BlogPosting _updateBlogPosting(
 		LongIdentifier blogPostingLongIdentifier, Map<String, Object> body) {
 
-		String title = (String)body.get("headline");
-		String subtitle = (String)body.get("alternativeHeadline");
 		String content = (String)body.get("articleBody");
 		Long creatorId = (Long)body.get("creator");
+		String subtitle = (String)body.get("alternativeHeadline");
+		String title = (String)body.get("headline");
 
-		Optional<BlogPost> optional = BlogPost.updateBlogPost(
-			blogPostingLongIdentifier.getId(), title, subtitle, content,
-			creatorId);
+		Optional<BlogPosting> optional = BlogPosting.updateBlogPosting(
+			blogPostingLongIdentifier.getId(), content, creatorId, subtitle,
+			title);
 
 		return optional.orElseThrow(
 			() -> new NotFoundException(
-				"Unable to get Blog Posting " +
+				"Unable to get blog posting " +
 					blogPostingLongIdentifier.getId()));
 	}
 

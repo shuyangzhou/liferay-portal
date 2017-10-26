@@ -37,8 +37,6 @@ AUI.add(
 
 		var CSS_PAGE_HEADER_TITLE_HIDE_BORDER = A.getClassName('form', 'builder', 'page', 'header', 'title', 'hide', 'border');
 
-		var Settings = Liferay.DDM.Settings;
-
 		var FormBuilderPagesManager = A.Component.create(
 			{
 				ATTRS: {
@@ -68,6 +66,10 @@ AUI.add(
 					mode: {
 						validator: '_validateMode',
 						value: 'wizard'
+					},
+
+					showPagination: {
+						value: true
 					},
 
 					strings: {
@@ -170,7 +172,7 @@ AUI.add(
 							successPageTitle.after('valueChange', A.bind('_afterSuccessPageTitleChange', instance), instance)
 						];
 
-						if (!Settings.showPagination) {
+						if (!instance.get('showPagination')) {
 							instance._hidePagination();
 						}
 

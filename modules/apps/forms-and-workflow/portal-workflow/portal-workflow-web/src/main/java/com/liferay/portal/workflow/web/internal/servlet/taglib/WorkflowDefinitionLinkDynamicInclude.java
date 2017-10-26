@@ -40,6 +40,16 @@ public class WorkflowDefinitionLinkDynamicInclude
 	extends BaseWorkflowDynamicInclude {
 
 	@Override
+	public String getSearchJspPath() {
+		return "/definition_link/workflow_definition_link_search.jsp";
+	}
+
+	@Override
+	public String getTabName() {
+		return WorkflowWebKeys.WORKFLOW_TAB_DEFINITION_LINK;
+	}
+
+	@Override
 	public void prepareRender(
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortletException {

@@ -49,7 +49,6 @@ AUI.add(
 						var instance = this;
 
 						instance._eventHandlers = [
-							A.getDoc().on('click', A.bind(instance._onClickDocument, instance)),
 							instance.after('open', instance._afterSidebarOpen),
 							instance.after('open:start', instance._afterOpenStart)
 						];
@@ -238,14 +237,6 @@ AUI.add(
 								);
 							}
 						);
-					},
-
-					_onClickDocument: function(event) {
-						var instance = this;
-
-						if (instance.get('open') && !instance.hasFocus(event.target)) {
-							instance.close();
-						}
 					},
 
 					_removeLoading: function() {

@@ -94,11 +94,13 @@ AUI.add(
 					showErrorMessage: function() {
 						var instance = this;
 
-						var container = instance.get('container');
-
 						CheckboxMultipleField.superclass.showErrorMessage.apply(instance, arguments);
 
-						container.all('.help-block').appendTo(container);
+						var container = instance.get('container');
+
+						var formGroup = container.one('.form-group');
+
+						formGroup.insert(container.one('.form-feedback-indicator'), 'after');
 					},
 
 					_getOptions: function(options) {

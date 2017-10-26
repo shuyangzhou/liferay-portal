@@ -10,7 +10,6 @@ sudo: required
 install: true
 
 before_script:
-
     - ./gradlew checkSourceFormatting pmdMain pmdTest pmdTestIntegration test
 
     - ./gradlew buildAppDockerImage

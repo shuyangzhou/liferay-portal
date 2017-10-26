@@ -40,7 +40,7 @@
 			<p class="liferay-ddm-form-field-tip">{$tip ? $tip: ''}</p>
 		{/if}
 
-		<div class="input-group-container {if $tooltip}input-group-default{/if}">
+		<div class="input-group input-group-container {if $tooltip}input-group-transparent{/if}">
 			{if $displayStyle == 'multiline'}
 				<textarea class="field form-control"
 					{if $dir}dir="{$dir}"{/if} id="{$name}"
@@ -63,9 +63,7 @@
 
 			{if $tooltip}
 				<span class="input-group-addon">
-					<span class="input-group-addon-content">
-						<a class="help-icon help-icon-default icon-monospaced icon-question" data-original-title="{$tooltip}" data-toggle="popover" href="javascript:;" title="{$tooltip}"></a>
-					</span>
+					<a class="help-icon help-icon-default icon-monospaced icon-question" data-original-title="{$tooltip}" data-toggle="popover" href="javascript:;" title="{$tooltip}"></a>
 				</span>
 			{/if}
 		</div>
