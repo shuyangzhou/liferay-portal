@@ -21,7 +21,9 @@ import com.google.gson.JsonObject;
 
 import com.liferay.vulcan.alias.BinaryFunction;
 import com.liferay.vulcan.error.VulcanDeveloperError;
+import com.liferay.vulcan.error.VulcanDeveloperError.UnresolvableURI;
 import com.liferay.vulcan.jaxrs.json.internal.JSONObjectBuilderImpl;
+import com.liferay.vulcan.language.Language;
 import com.liferay.vulcan.list.FunctionalList;
 import com.liferay.vulcan.message.json.JSONObjectBuilder;
 import com.liferay.vulcan.message.json.PageMessageMapper;
@@ -40,10 +42,13 @@ import com.liferay.vulcan.wiring.osgi.util.GenericUtil;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+
+import java.nio.charset.StandardCharsets;
 
 import java.util.Collection;
 import java.util.List;
@@ -110,7 +115,10 @@ public class PageMessageBodyWriter<T>
 			OutputStream entityStream)
 		throws IOException, WebApplicationException {
 
-		PrintWriter printWriter = new PrintWriter(entityStream, true);
+		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
+			entityStream, StandardCharsets.UTF_8);
+
+		PrintWriter printWriter = new PrintWriter(outputStreamWriter, true);
 
 		Stream<PageMessageMapper<T>> stream = _pageMessageMappers.stream();
 
@@ -144,8 +152,15 @@ public class PageMessageBodyWriter<T>
 		Embedded embedded = embeddedOptional.orElseThrow(
 			() -> new VulcanDeveloperError.MustHaveProvider(Embedded.class));
 
+		Optional<Language> optional = _providerManager.provide(
+			Language.class, _httpServletRequest);
+
+		Language language = optional.orElseThrow(
+			() -> new VulcanDeveloperError.MustHaveProvider(Language.class));
+
 		_writeItems(
-			pageMessageMapper, jsonObjectBuilder, page, fields, embedded);
+			pageMessageMapper, jsonObjectBuilder, page, fields, embedded,
+			language);
 
 		_writeItemTotalCount(pageMessageMapper, jsonObjectBuilder, page);
 
@@ -168,9 +183,10 @@ public class PageMessageBodyWriter<T>
 		Optional<String> optional = _writerHelper.getCollectionURLOptional(
 			page, _httpServletRequest);
 
+		Class<T> modelClass = page.getModelClass();
+
 		return optional.orElseThrow(
-			() -> new VulcanDeveloperError.UnresolvableURI(
-				page.getModelClass()));
+			() -> new UnresolvableURI(modelClass.getName()));
 	}
 
 	private String _getPageURL(Page<T> page, int pageNumber, int itemsPerPage) {
@@ -194,7 +210,7 @@ public class PageMessageBodyWriter<T>
 		JSONObjectBuilder itemJSONObjectBuilder,
 		RelatedModel<U, V> relatedModel, SingleModel<U> parentSingleModel,
 		FunctionalList<String> parentEmbeddedPathElements, Fields fields,
-		Embedded embedded) {
+		Embedded embedded, Language language) {
 
 		_writerHelper.writeRelatedModel(
 			relatedModel, parentSingleModel, parentEmbeddedPathElements,
@@ -206,6 +222,13 @@ public class PageMessageBodyWriter<T>
 					singleModel.getModel(), modelClass, fields,
 					(fieldName, value) ->
 						pageMessageMapper.mapItemEmbeddedResourceBooleanField(
+							pageJSONObjectBuilder, itemJSONObjectBuilder,
+							embeddedPathElements, fieldName, value));
+
+				_writerHelper.writeLocalizedStringFields(
+					singleModel.getModel(), modelClass, fields, language,
+					(fieldName, value) ->
+						pageMessageMapper.mapItemEmbeddedResourceStringField(
 							pageJSONObjectBuilder, itemJSONObjectBuilder,
 							embeddedPathElements, fieldName, value));
 
@@ -260,7 +283,7 @@ public class PageMessageBodyWriter<T>
 								pageMessageMapper, pageJSONObjectBuilder,
 								itemJSONObjectBuilder, embeddedRelatedModel,
 								singleModel, embeddedPathElements, fields,
-								embedded));
+								embedded, language));
 
 						List<RelatedModel<V, ?>> linkedRelatedModels =
 							representor.getLinkedRelatedModels();
@@ -299,7 +322,7 @@ public class PageMessageBodyWriter<T>
 	private void _writeItems(
 		PageMessageMapper<T> pageMessageMapper,
 		JSONObjectBuilder jsonObjectBuilder, Page<T> page, Fields fields,
-		Embedded embedded) {
+		Embedded embedded, Language language) {
 
 		Collection<T> items = page.getItems();
 
@@ -317,6 +340,12 @@ public class PageMessageBodyWriter<T>
 				_writerHelper.writeBooleanFields(
 					item, modelClass, fields,
 					(field, value) -> pageMessageMapper.mapItemBooleanField(
+						jsonObjectBuilder, itemJSONObjectBuilder, field,
+						value));
+
+				_writerHelper.writeLocalizedStringFields(
+					item, modelClass, fields, language,
+					(field, value) -> pageMessageMapper.mapItemStringField(
 						jsonObjectBuilder, itemJSONObjectBuilder, field,
 						value));
 
@@ -376,7 +405,7 @@ public class PageMessageBodyWriter<T>
 							embeddedRelatedModel -> _writeEmbeddedRelatedModel(
 								pageMessageMapper, jsonObjectBuilder,
 								itemJSONObjectBuilder, embeddedRelatedModel,
-								singleModel, null, fields, embedded));
+								singleModel, null, fields, embedded, language));
 
 						List<RelatedModel<T, ?>> linkedRelatedModels =
 							representor.getLinkedRelatedModels();

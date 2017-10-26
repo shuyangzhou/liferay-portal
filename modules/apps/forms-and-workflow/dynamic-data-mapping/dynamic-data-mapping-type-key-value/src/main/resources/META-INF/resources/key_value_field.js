@@ -12,10 +12,6 @@ AUI.add(
 						valueFn: '_valueKey'
 					},
 
-					keyInputEnabled: {
-						value: true
-					},
-
 					maxKeyInputSize: {
 						value: 50
 					},
@@ -47,7 +43,6 @@ AUI.add(
 
 						instance._eventHandlers.push(
 							instance.after('keyChange', instance._afterKeyChange),
-							instance.after('keyInputEnabledChange', instance._afterKeyInputEnabledChange),
 							instance.after('valueChange', instance._afterValueChangeInput),
 							instance.bindContainerEvent('blur', instance._onBlurKeyInput, '.key-value-input'),
 							instance.bindContainerEvent('keyup', instance._onKeyUpKeyInput, '.key-value-input'),
@@ -64,7 +59,6 @@ AUI.add(
 							KeyValueField.superclass.getTemplateContext.apply(instance, arguments),
 							{
 								key: key,
-								keyInputEnabled: instance.get('keyInputEnabled'),
 								keyInputSize: instance._getKeyInputSize(key),
 								strings: instance.get('strings')
 							}
@@ -133,7 +127,7 @@ AUI.add(
 
 						var editorNode = container.one('.key-value-editor');
 
-						editorNode.insert(container.one('.help-block'), 'after');
+						editorNode.insert(container.one('.form-feedback-indicator'), 'after');
 					},
 
 					_afterKeyChange: function(event) {
@@ -147,12 +141,6 @@ AUI.add(
 						}
 
 						instance._uiSetKey(event.newVal);
-					},
-
-					_afterKeyInputEnabledChange: function() {
-						var instance = this;
-
-						instance._uiSetKey(instance.get('key'));
 					},
 
 					_afterValueChangeInput: function(event) {
@@ -232,13 +220,6 @@ AUI.add(
 						}
 
 						keyInput.attr('size', instance._getKeyInputSize(key));
-
-						if (instance.get('keyInputEnabled')) {
-							keyInput.removeAttribute('readonly');
-						}
-						else {
-							keyInput.attr('readonly', 'true');
-						}
 					},
 
 					_updateInputValue: function(inputNode, newValue) {

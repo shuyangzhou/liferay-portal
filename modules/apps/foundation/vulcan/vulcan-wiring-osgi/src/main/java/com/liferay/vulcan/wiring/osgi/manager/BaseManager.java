@@ -206,8 +206,34 @@ public abstract class BaseManager<T> {
 				serviceReferenceServiceTuple._serviceReference);
 		}
 
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (obj == null) {
+				return false;
+			}
+
+			if (!(obj instanceof ServiceReferenceServiceTuple)) {
+				return false;
+			}
+
+			if (compareTo((ServiceReferenceServiceTuple)obj) == 0) {
+				return true;
+			}
+
+			return false;
+		}
+
 		public T getService() {
 			return _service;
+		}
+
+		@Override
+		public int hashCode() {
+			return System.identityHashCode(_service);
 		}
 
 		private final T _service;

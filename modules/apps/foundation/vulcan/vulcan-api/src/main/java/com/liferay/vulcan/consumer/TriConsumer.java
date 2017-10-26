@@ -17,39 +17,37 @@ package com.liferay.vulcan.consumer;
 import java.util.Objects;
 
 /**
- * Consumer {@link java.util.function.Consumer} with three input parameters. As
- * all the consumer interfaces, it receives several arguments and doesn't return
- * anything.
+ * Defines a {@code java.util.function.Consumer} that takes three input
+ * parameters. This consumer, like all consumers, doesn't return a result.
  *
- * Being a functional interface, it can be implemented with a lambda function
+ * <p>
+ * This interface can be implemented with a lambda function.
+ * </p>
  *
  * @author Alejandro Hernández
- * @see    java.util.function.Consumer
- * @review
  */
 @FunctionalInterface
 public interface TriConsumer<A, B, C> {
 
 	/**
-	 * The function to implement (explicitly or with a lambda), that operates
-	 * with three parameters and returns void
+	 * Operates with three parameters and returns {@code void}. This function
+	 * can be implemented explicitly or with a lambda.
 	 *
-	 * @param  a the first input argument.
-	 * @param  b the second input argument.
-	 * @param  c the third input argument.
-	 * @review
+	 * @param a the first function argument
+	 * @param b the second function argument
+	 * @param c the third function argument
 	 */
 	public void accept(A a, B b, C c);
 
 	/**
-	 * Method that creates a lambda function (also a {@code TriConsumer}) that
-	 * executes the {@code accept} method of this instance and then the {@code
-	 * accept} method of the {@code after} input parameter when invoked.
+	 * Returns the {@code TriConsumer} function that first executes the current
+	 * {@code TriConsumer} instance's {@code accept} method, then executes the
+	 * {@code after} parameter's {@code accept} method.
 	 *
-	 * @param  after the {@code TriConsumer} to execute after this instance
-	 * @return another {@code TriConsumer} that executes both inputs (this own
-	 *         instance plus the input parameter) in order
-	 * @review
+	 * @param  after the {@code TriConsumer} instance to execute after the
+	 *         current instance
+	 * @return the {@code TriConsumer} that executes the current instance's
+	 *         {@code accept} method, as well as that of {@code after}
 	 */
 	public default TriConsumer<A, B, C> andThen(
 		TriConsumer<? super A, ? super B, ? super C> after) {

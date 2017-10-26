@@ -54,6 +54,7 @@ AUI.add(
 						var eventHandlers;
 
 						eventHandlers = [
+							A.getDoc().on('click', A.bind(instance._onClickDocument, instance)),
 							instance.after('descriptionChange', instance._syncHeaderInfo),
 							instance.after('render', instance._afterRender),
 							instance.after('titleChange', instance._syncHeaderInfo)
@@ -120,14 +121,19 @@ AUI.add(
 
 						var toolbar = instance.get('toolbar');
 
-						return {
+						var context = {
 							bodyContent: instance.get('bodyContent'),
 							closeButtonIcon: Liferay.Util.getLexiconIconTpl('angle-right', 'icon-monospaced'),
 							description: instance.get('description'),
 							title: instance.get('title'),
-							toolbarButtonIcon: Liferay.Util.getLexiconIconTpl('ellipsis-v', 'icon-monospaced'),
-							toolbarTemplateContext: toolbar.get('context')
+							toolbarButtonIcon: Liferay.Util.getLexiconIconTpl('ellipsis-v', 'icon-monospaced')
 						};
+
+						if (toolbar) {
+							context.toolbarTemplateContext = toolbar.get('context');
+						}
+
+						return context;
 					},
 
 					getTemplateRenderer: function() {
@@ -174,7 +180,19 @@ AUI.add(
 
 						var boundingBox = instance.get('boundingBox');
 
-						instance.get('toolbar').set('element', boundingBox.one('.dropdown'));
+						var toolbar = instance.get('toolbar');
+
+						if (toolbar) {
+							toolbar.set('element', boundingBox.one('.dropdown'));
+						}
+					},
+
+					_onClickDocument: function(event) {
+						var instance = this;
+
+						if (instance.get('open') && !instance.hasFocus(event.target)) {
+							instance.close();
+						}
 					},
 
 					_onTransitionEnd: function(event) {

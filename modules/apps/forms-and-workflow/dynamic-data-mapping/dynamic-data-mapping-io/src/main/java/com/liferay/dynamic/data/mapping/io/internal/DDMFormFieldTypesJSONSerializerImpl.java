@@ -24,6 +24,8 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -32,6 +34,7 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.osgi.service.component.annotations.Component;
@@ -79,6 +82,10 @@ public class DDMFormFieldTypesJSONSerializerImpl
 				ddmFormFieldType.getName());
 
 		jsonObject.put(
+			"group",
+			MapUtil.getString(
+				ddmFormFieldTypeProperties, "ddm.form.field.type.group"));
+		jsonObject.put(
 			"icon",
 			MapUtil.getString(
 				ddmFormFieldTypeProperties, "ddm.form.field.type.icon",
@@ -94,16 +101,33 @@ public class DDMFormFieldTypesJSONSerializerImpl
 				ddmFormFieldTypeProperties, "ddm.form.field.type.js.module",
 				"liferay-ddm-form-renderer-field"));
 
+		String description = MapUtil.getString(
+			ddmFormFieldTypeProperties, "ddm.form.field.type.description");
+
 		String label = MapUtil.getString(
 			ddmFormFieldTypeProperties, "ddm.form.field.type.label");
 
-		if (Validator.isNotNull(label)) {
-			Locale locale = LocaleThreadLocal.getThemeDisplayLocale();
+		Locale locale = LocaleThreadLocal.getThemeDisplayLocale();
 
+		try {
 			ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 				"content.Language", locale, ddmFormFieldType.getClass());
 
-			jsonObject.put("label", LanguageUtil.get(resourceBundle, label));
+			if (Validator.isNotNull(description)) {
+				jsonObject.put(
+					"description",
+					LanguageUtil.get(resourceBundle, description));
+			}
+
+			if (Validator.isNotNull(label)) {
+				jsonObject.put(
+					"label", LanguageUtil.get(resourceBundle, label));
+			}
+		}
+		catch (MissingResourceException mre) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(mre, mre);
+			}
 		}
 
 		jsonObject.put("name", ddmFormFieldType.getName());
@@ -127,6 +151,9 @@ public class DDMFormFieldTypesJSONSerializerImpl
 
 		return jsonObject;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		DDMFormFieldTypesJSONSerializerImpl.class);
 
 	private DDMFormFieldTypeServicesTracker _ddmFormFieldTypeServicesTracker;
 	private JSONFactory _jsonFactory;

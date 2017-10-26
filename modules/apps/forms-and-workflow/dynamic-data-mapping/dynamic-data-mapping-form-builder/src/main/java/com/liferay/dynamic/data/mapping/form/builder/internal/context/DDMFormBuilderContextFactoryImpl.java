@@ -44,14 +44,15 @@ public class DDMFormBuilderContextFactoryImpl
 		Optional<DDMStructure> ddmStructureOptional =
 			ddmFormBuilderContextRequest.getProperty("ddmStructureOptional");
 
-		HttpServletRequest request = ddmFormBuilderContextRequest.getProperty(
-			"request");
-		HttpServletResponse response = ddmFormBuilderContextRequest.getProperty(
-			"response");
+		HttpServletRequest request =
+			ddmFormBuilderContextRequest.getHttpServletRequest();
 
-		Locale locale = ddmFormBuilderContextRequest.getProperty("locale");
+		HttpServletResponse response =
+			ddmFormBuilderContextRequest.getHttpServletResponse();
 
-		boolean readOnly = ddmFormBuilderContextRequest.getProperty("readOnly");
+		Locale locale = ddmFormBuilderContextRequest.getLocale();
+
+		boolean readOnly = ddmFormBuilderContextRequest.getReadOnly();
 
 		DDMFormBuilderContextFactoryHelper ddmFormBuilderContextFactoryHelper =
 			new DDMFormBuilderContextFactoryHelper(
