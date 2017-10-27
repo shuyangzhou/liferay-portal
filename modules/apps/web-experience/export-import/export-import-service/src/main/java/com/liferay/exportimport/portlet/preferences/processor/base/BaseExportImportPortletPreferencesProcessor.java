@@ -32,7 +32,9 @@ import javax.portlet.PortletPreferences;
 
 /**
  * @author Mate Thurzo
+ * @deprecated As of 4.0.0
  */
+@Deprecated
 @ProviderType
 public abstract class BaseExportImportPortletPreferencesProcessor
 	implements ExportImportPortletPreferencesProcessor {

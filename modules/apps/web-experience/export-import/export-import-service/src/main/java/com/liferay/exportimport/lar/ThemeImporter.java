@@ -32,7 +32,9 @@ import java.util.Map;
 
 /**
  * @author Mate Thurzo
+ * @deprecated As of 4.0.0
  */
+@Deprecated
 @ProviderType
 public class ThemeImporter {
 
