@@ -111,6 +111,8 @@ public class S3FileCacheImpl implements S3FileCache {
 			if (cacheFile.exists() &&
 				(cacheFile.lastModified() >= lastModifiedDate.getTime())) {
 
+				cacheFile.setLastModified(System.currentTimeMillis());
+
 				return cacheFile;
 			}
 
