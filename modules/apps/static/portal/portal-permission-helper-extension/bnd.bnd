@@ -1,0 +1,4 @@
+Bundle-Activator: com.liferay.portal.permission.helper.extension.PermissionHelperExtender
+Bundle-Name: Liferay Portal Permission Helper Extension
+Bundle-SymbolicName: com.liferay.portal.permission.helper.extension
+Bundle-Version: 1.0.0
