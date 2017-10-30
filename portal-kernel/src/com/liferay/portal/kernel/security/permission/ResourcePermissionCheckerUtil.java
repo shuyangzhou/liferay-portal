@@ -41,14 +41,8 @@ public class ResourcePermissionCheckerUtil {
 			return null;
 		}
 
-		Boolean resource = resourcePermissionChecker.checkResource(
+		return resourcePermissionChecker.checkResource(
 			permissionChecker, classPK, actionId);
-
-		if (resource != null) {
-			return resource.booleanValue();
-		}
-
-		return null;
 	}
 
 	private static final ServiceTrackerMap<String, PortletPermissionHelper>
