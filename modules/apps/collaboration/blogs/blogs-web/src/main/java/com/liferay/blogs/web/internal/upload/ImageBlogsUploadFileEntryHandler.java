@@ -19,7 +19,6 @@ import com.liferay.blogs.exception.EntryImageNameException;
 import com.liferay.blogs.exception.EntryImageSizeException;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryLocalService;
-import com.liferay.blogs.service.permission.BlogsPermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -105,11 +104,11 @@ public class ImageBlogsUploadFileEntryHandler
 			themeDisplay.getPermissionChecker();
 
 		if (!ResourcePermissionCheckerUtil.containsResourcePermission(
-				permissionChecker, BlogsPermission.RESOURCE_NAME,
+				permissionChecker, BlogsConstants.RESOURCE_NAME,
 				themeDisplay.getScopeGroupId(), ActionKeys.ADD_ENTRY)) {
 
 			throw new PrincipalException.MustHavePermission(
-				permissionChecker, BlogsPermission.RESOURCE_NAME,
+				permissionChecker, BlogsConstants.RESOURCE_NAME,
 				themeDisplay.getScopeGroupId(), ActionKeys.ADD_ENTRY);
 		}
 	}
