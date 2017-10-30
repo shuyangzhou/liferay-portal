@@ -21,17 +21,12 @@ import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.BaseResourcePermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.security.permission.ResourcePermissionChecker;
-
-import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Jorge Ferrer
+ * @deprecated As of 1.2.0, with no direct replacement
  */
-@Component(
-	property = {"resource.name=" + BlogsPermission.RESOURCE_NAME},
-	service = ResourcePermissionChecker.class
-)
+@Deprecated
 public class BlogsPermission extends BaseResourcePermissionChecker {
 
 	public static final String RESOURCE_NAME = "com.liferay.blogs";
