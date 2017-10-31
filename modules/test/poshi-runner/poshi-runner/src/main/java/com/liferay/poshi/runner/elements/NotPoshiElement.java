@@ -82,14 +82,15 @@ public class NotPoshiElement extends BasePoshiElement {
 	private boolean _isElementType(
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
-		if (!(parentPoshiElement instanceof AndPoshiElement ||
-			parentPoshiElement instanceof IfPoshiElement ||
-			parentPoshiElement instanceof OrPoshiElement)) {
-
+		if (!isConditionValidInParent(parentPoshiElement)) {
 			return false;
 		}
 
 		readableSyntax = readableSyntax.trim();
+
+		if (readableSyntax.startsWith("else if (")) {
+			return false;
+		}
 
 		if (readableSyntax.startsWith("!")) {
 			return true;
