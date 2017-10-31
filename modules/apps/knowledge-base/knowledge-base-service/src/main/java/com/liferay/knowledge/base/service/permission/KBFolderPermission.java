@@ -19,6 +19,8 @@ import com.liferay.knowledge.base.constants.KBFolderConstants;
 import com.liferay.knowledge.base.model.KBFolder;
 import com.liferay.knowledge.base.service.KBFolderLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
@@ -71,18 +73,24 @@ public class KBFolderPermission implements BaseModelPermissionChecker {
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, KBFolder kbFolder,
-			String actionId)
-		throws PortalException {
+		PermissionChecker permissionChecker, KBFolder kbFolder,
+		String actionId) {
 
 		if (actionId.equals(ActionKeys.VIEW) &&
 			PropsValues.PERMISSIONS_VIEW_DYNAMIC_INHERITANCE) {
 
-			if (!contains(
-					permissionChecker, kbFolder.getGroupId(),
-					kbFolder.getParentKBFolderId(), actionId)) {
+			try {
+				if (!contains(
+						permissionChecker, kbFolder.getGroupId(),
+						kbFolder.getParentKBFolderId(), actionId)) {
 
-				return false;
+					return false;
+				}
+			}
+			catch (PortalException pe) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(pe, pe);
+				}
 			}
 		}
 
@@ -135,6 +143,9 @@ public class KBFolderPermission implements BaseModelPermissionChecker {
 
 		_portletPermissionHelper = portletPermissionHelper;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		KBFolderPermission.class);
 
 	private static PortletPermissionHelper _portletPermissionHelper;
 
