@@ -710,6 +710,11 @@
 			<var name="page" value="Staging Test Page" />
 		</execute>
 
+		<execute macro="Navigator#gotoStagedSitePage">
+			<var name="pageName" value="Staging Test Page" />
+			<var name="siteName" value="Site Name" />
+		</execute>
+
 		<execute macro="Staging#gotoPublishToLive" />
 
 		<execute macro="Staging#publishToLive" />
@@ -1001,6 +1006,8 @@
 			<var name="pageName" value="Test Variation Page" />
 			<var name="siteName" value="Site Name" />
 		</execute>
+
+		<execute function="Pause" locator1="5000" />
 
 		<execute macro="Staging#addPageVariationPG">
 			<var name="pageVariationName" value="Test Page Variation" />
