@@ -15,6 +15,7 @@
 package com.liferay.knowledge.base.service.permission;
 
 import com.liferay.knowledge.base.constants.KBActionKeys;
+import com.liferay.knowledge.base.constants.KBConstants;
 import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.knowledge.base.model.KBComment;
 import com.liferay.knowledge.base.model.KBTemplate;
@@ -25,15 +26,18 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PortletPermissionHelper;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Shinn Lok
  * @author Roberto Díaz
  */
 @Component(
+	immediate = true,
 	property = {"model.class.name=com.liferay.knowledge.base.model.KBComment"},
 	service = BaseModelPermissionChecker.class
 )
@@ -69,7 +73,7 @@ public class KBCommentPermission implements BaseModelPermissionChecker {
 		}
 
 		if (actionId.equals(KBActionKeys.VIEW)) {
-			return AdminPermission.contains(
+			return _portletPermissionHelper.contains(
 				permissionChecker, kbComment.getGroupId(),
 				KBActionKeys.VIEW_SUGGESTIONS);
 		}
@@ -121,5 +125,17 @@ public class KBCommentPermission implements BaseModelPermissionChecker {
 
 		check(permissionChecker, primaryKey, actionId);
 	}
+
+	@Reference(
+		target = "(resource.name=" + KBConstants.RESOURCE_NAME_ADMIN + ")",
+		unbind = "-"
+	)
+	protected void setPermissionHelper(
+		PortletPermissionHelper portletPermissionHelper) {
+
+		_portletPermissionHelper = portletPermissionHelper;
+	}
+
+	private static PortletPermissionHelper _portletPermissionHelper;
 
 }

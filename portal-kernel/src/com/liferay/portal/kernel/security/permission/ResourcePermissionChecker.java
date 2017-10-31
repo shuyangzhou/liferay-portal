@@ -16,7 +16,9 @@ package com.liferay.portal.kernel.security.permission;
 
 /**
  * @author Miguel Pastor
+ * @deprecated As of 7.0.0, replaced with {@link PortletPermissionHelper}
  */
+@Deprecated
 public interface ResourcePermissionChecker {
 
 	public Boolean checkResource(

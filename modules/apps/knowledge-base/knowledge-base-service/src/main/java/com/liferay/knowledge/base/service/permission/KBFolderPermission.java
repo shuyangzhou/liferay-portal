@@ -14,23 +14,29 @@
 
 package com.liferay.knowledge.base.service.permission;
 
+import com.liferay.knowledge.base.constants.KBConstants;
 import com.liferay.knowledge.base.constants.KBFolderConstants;
 import com.liferay.knowledge.base.model.KBFolder;
 import com.liferay.knowledge.base.service.KBFolderLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PortletPermissionHelper;
 import com.liferay.portal.util.PropsValues;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Adolfo Pérez
  * @author Roberto Díaz
  */
 @Component(
+	immediate = true,
 	property = {"model.class.name=com.liferay.knowledge.base.model.KBFolder"},
 	service = BaseModelPermissionChecker.class
 )
@@ -67,18 +73,24 @@ public class KBFolderPermission implements BaseModelPermissionChecker {
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, KBFolder kbFolder,
-			String actionId)
-		throws PortalException {
+		PermissionChecker permissionChecker, KBFolder kbFolder,
+		String actionId) {
 
 		if (actionId.equals(ActionKeys.VIEW) &&
 			PropsValues.PERMISSIONS_VIEW_DYNAMIC_INHERITANCE) {
 
-			if (!contains(
-					permissionChecker, kbFolder.getGroupId(),
-					kbFolder.getParentKBFolderId(), actionId)) {
+			try {
+				if (!contains(
+						permissionChecker, kbFolder.getGroupId(),
+						kbFolder.getParentKBFolderId(), actionId)) {
 
-				return false;
+					return false;
+				}
+			}
+			catch (PortalException pe) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(pe, pe);
+				}
 			}
 		}
 
@@ -104,7 +116,7 @@ public class KBFolderPermission implements BaseModelPermissionChecker {
 				return true;
 			}
 
-			return AdminPermission.contains(
+			return _portletPermissionHelper.contains(
 				permissionChecker, groupId, actionId);
 		}
 
@@ -121,5 +133,20 @@ public class KBFolderPermission implements BaseModelPermissionChecker {
 
 		check(permissionChecker, groupId, primaryKey, actionId);
 	}
+
+	@Reference(
+		target = "(resource.name=" + KBConstants.RESOURCE_NAME_ADMIN + ")",
+		unbind = "-"
+	)
+	protected void setPermissionHelper(
+		PortletPermissionHelper portletPermissionHelper) {
+
+		_portletPermissionHelper = portletPermissionHelper;
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		KBFolderPermission.class);
+
+	private static PortletPermissionHelper _portletPermissionHelper;
 
 }

@@ -8,5 +8,6 @@ Export-Package:\
 Liferay-JS-Config: /META-INF/resources/blogs/js/config.js
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Blogs
+Liferay-Web-Portlet-Permissions: com.liferay.blogs-com_liferay_blogs_web_portlet_BlogsPortlet
 Web-ContextPath: /blogs-web
 -dsannotations-options: inherit

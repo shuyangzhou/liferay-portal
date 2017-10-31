@@ -26,25 +26,32 @@ public class ResourcePermissionCheckerUtil {
 		PermissionChecker permissionChecker, String className, long classPK,
 		String actionId) {
 
+		PortletPermissionHelper portletPermissionHelper =
+			_portletPermissionHelpers.getService(className);
+
+		if (portletPermissionHelper != null) {
+			return portletPermissionHelper.contains(
+				permissionChecker, classPK, actionId);
+		}
+
 		ResourcePermissionChecker resourcePermissionChecker =
-			_serviceTrackerMap.getService(className);
+			_resourcePermissionCheckers.getService(className);
 
 		if (resourcePermissionChecker == null) {
 			return null;
 		}
 
-		Boolean resource = resourcePermissionChecker.checkResource(
+		return resourcePermissionChecker.checkResource(
 			permissionChecker, classPK, actionId);
-
-		if (resource != null) {
-			return resource.booleanValue();
-		}
-
-		return null;
 	}
 
+	private static final ServiceTrackerMap<String, PortletPermissionHelper>
+		_portletPermissionHelpers =
+			ServiceTrackerCollections.openSingleValueMap(
+				PortletPermissionHelper.class, "resource.name");
 	private static final ServiceTrackerMap<String, ResourcePermissionChecker>
-		_serviceTrackerMap = ServiceTrackerCollections.openSingleValueMap(
-			ResourcePermissionChecker.class, "resource.name");
+		_resourcePermissionCheckers =
+			ServiceTrackerCollections.openSingleValueMap(
+				ResourcePermissionChecker.class, "resource.name");
 
 }
