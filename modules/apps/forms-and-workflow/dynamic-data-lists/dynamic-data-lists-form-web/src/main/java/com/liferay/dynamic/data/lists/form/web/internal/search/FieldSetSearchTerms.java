@@ -12,20 +12,22 @@
  * details.
  */
 
-package com.liferay.announcements.web.constants;
+package com.liferay.dynamic.data.lists.form.web.internal.search;
+
+import com.liferay.portal.kernel.dao.search.DAOParamUtil;
+
+import javax.portlet.PortletRequest;
 
 /**
- * @author Adolfo Pérez
+ * @author Leonardo Barros
  */
-public class AnnouncementsPortletKeys {
+public class FieldSetSearchTerms extends FieldSetDisplayTerms {
 
-	public static final String ALERTS =
-		"com_liferay_announcements_web_portlet_AlertsPortlet";
+	public FieldSetSearchTerms(PortletRequest portletRequest) {
+		super(portletRequest);
 
-	public static final String ANNOUNCEMENTS =
-		"com_liferay_announcements_web_portlet_AnnouncementsPortlet";
-
-	public static final String ANNOUNCEMENTS_ADMIN =
-		"com_liferay_announcements_web_portlet_AnnouncementsAdminPortlet";
+		description = DAOParamUtil.getString(portletRequest, DESCRIPTION);
+		name = DAOParamUtil.getString(portletRequest, NAME);
+	}
 
 }
