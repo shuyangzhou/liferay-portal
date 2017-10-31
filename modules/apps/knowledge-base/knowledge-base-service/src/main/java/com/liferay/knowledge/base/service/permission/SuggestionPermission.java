@@ -16,15 +16,21 @@ package com.liferay.knowledge.base.service.permission;
 
 import com.liferay.knowledge.base.constants.KBActionKeys;
 import com.liferay.knowledge.base.constants.KBArticleConstants;
+import com.liferay.knowledge.base.constants.KBConstants;
 import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.knowledge.base.service.KBArticleLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PortletPermissionHelper;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Adolfo Pérez
  */
+@Component(immediate = true)
 public class SuggestionPermission {
 
 	public static boolean contains(
@@ -38,7 +44,7 @@ public class SuggestionPermission {
 					KBActionKeys.VIEW_SUGGESTIONS + " permission");
 		}
 
-		if (AdminPermission.contains(
+		if (_portletPermissionHelper.contains(
 				permissionChecker, groupId, KBActionKeys.VIEW_SUGGESTIONS) ||
 			KBArticlePermission.contains(
 				permissionChecker, kbArticle, KBActionKeys.UPDATE)) {
@@ -72,5 +78,17 @@ public class SuggestionPermission {
 
 		return contains(permissionChecker, groupId, kbArticle, actionId);
 	}
+
+	@Reference(
+		target = "(resource.name=" + KBConstants.RESOURCE_NAME_ADMIN + ")",
+		unbind = "-"
+	)
+	protected void setPermissionHelper(
+		PortletPermissionHelper portletPermissionHelper) {
+
+		_portletPermissionHelper = portletPermissionHelper;
+	}
+
+	private static PortletPermissionHelper _portletPermissionHelper;
 
 }

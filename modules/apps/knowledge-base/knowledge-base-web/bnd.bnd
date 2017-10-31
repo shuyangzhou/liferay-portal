@@ -3,5 +3,8 @@ Bundle-SymbolicName: com.liferay.knowledge.base.web
 Bundle-Version: 1.0.47
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Knowledge Base
+Liferay-Web-Portlet-Permissions:\
+	com.liferay.knowledge.base.admin-com_liferay_knowledge_base_web_portlet_AdminPortlet,\
+	com.liferay.knowledge.base.display-com_liferay_knowledge_base_web_portlet_DisplayPortlet
 Web-ContextPath: /knowledge-base-web
 -dsannotations-options: inherit
