@@ -9,4 +9,7 @@ Export-Package:\
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Knowledge Base
 Liferay-Require-SchemaVersion: 2.0.0
+Liferay-Service-Portlet-Permissions:\
+	com.liferay.knowledge.base.admin,\
+	com.liferay.knowledge.base.display
 Liferay-Service: true

@@ -15,14 +15,16 @@
 package com.liferay.knowledge.base.service.impl;
 
 import com.liferay.knowledge.base.constants.KBActionKeys;
+import com.liferay.knowledge.base.constants.KBConstants;
 import com.liferay.knowledge.base.model.KBComment;
 import com.liferay.knowledge.base.service.base.KBCommentServiceBaseImpl;
-import com.liferay.knowledge.base.service.permission.AdminPermission;
 import com.liferay.knowledge.base.service.permission.KBCommentPermission;
 import com.liferay.knowledge.base.service.permission.SuggestionPermission;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.security.permission.PortletPermissionHelper;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Collections;
 import java.util.List;
@@ -63,7 +65,7 @@ public class KBCommentServiceImpl extends KBCommentServiceBaseImpl {
 			long groupId, int status, int start, int end)
 		throws PortalException {
 
-		if (AdminPermission.contains(
+		if (_adminPortletPermissionHelper.contains(
 				getPermissionChecker(), groupId,
 				KBActionKeys.VIEW_SUGGESTIONS)) {
 
@@ -80,7 +82,7 @@ public class KBCommentServiceImpl extends KBCommentServiceBaseImpl {
 			OrderByComparator<KBComment> obc)
 		throws PortalException {
 
-		if (AdminPermission.contains(
+		if (_adminPortletPermissionHelper.contains(
 				getPermissionChecker(), groupId,
 				KBActionKeys.VIEW_SUGGESTIONS)) {
 
@@ -96,7 +98,7 @@ public class KBCommentServiceImpl extends KBCommentServiceBaseImpl {
 			long groupId, int start, int end, OrderByComparator<KBComment> obc)
 		throws PortalException {
 
-		if (AdminPermission.contains(
+		if (_adminPortletPermissionHelper.contains(
 				getPermissionChecker(), groupId,
 				KBActionKeys.VIEW_SUGGESTIONS)) {
 
@@ -160,7 +162,7 @@ public class KBCommentServiceImpl extends KBCommentServiceBaseImpl {
 
 	@Override
 	public int getKBCommentsCount(long groupId) throws PortalException {
-		if (AdminPermission.contains(
+		if (_adminPortletPermissionHelper.contains(
 				getPermissionChecker(), groupId,
 				KBActionKeys.VIEW_SUGGESTIONS)) {
 
@@ -174,7 +176,7 @@ public class KBCommentServiceImpl extends KBCommentServiceBaseImpl {
 	public int getKBCommentsCount(long groupId, int status)
 		throws PortalException {
 
-		if (AdminPermission.contains(
+		if (_adminPortletPermissionHelper.contains(
 				getPermissionChecker(), groupId,
 				KBActionKeys.VIEW_SUGGESTIONS)) {
 
@@ -252,5 +254,11 @@ public class KBCommentServiceImpl extends KBCommentServiceBaseImpl {
 		return kbCommentLocalService.updateStatus(
 			getUserId(), kbCommentId, status, serviceContext);
 	}
+
+	@ServiceReference(
+		filterString = "(resource.name=" + KBConstants.RESOURCE_NAME_ADMIN + ")",
+		type = PortletPermissionHelper.class
+	)
+	private PortletPermissionHelper _adminPortletPermissionHelper;
 
 }
