@@ -15,19 +15,20 @@
 package com.liferay.knowledge.base.service.impl;
 
 import com.liferay.knowledge.base.constants.KBActionKeys;
+import com.liferay.knowledge.base.constants.KBConstants;
 import com.liferay.knowledge.base.constants.KBPortletKeys;
 import com.liferay.knowledge.base.model.KBTemplate;
 import com.liferay.knowledge.base.model.KBTemplateSearchDisplay;
 import com.liferay.knowledge.base.model.impl.KBTemplateSearchDisplayImpl;
 import com.liferay.knowledge.base.service.base.KBTemplateServiceBaseImpl;
-import com.liferay.knowledge.base.service.permission.AdminPermission;
-import com.liferay.knowledge.base.service.permission.DisplayPermission;
 import com.liferay.knowledge.base.service.permission.KBTemplatePermission;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.security.permission.PortletPermissionHelper;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,12 +47,12 @@ public class KBTemplateServiceImpl extends KBTemplateServiceBaseImpl {
 		throws PortalException {
 
 		if (portletId.equals(KBPortletKeys.KNOWLEDGE_BASE_ADMIN)) {
-			AdminPermission.check(
+			_adminPortletPermissionHelper.check(
 				getPermissionChecker(), serviceContext.getScopeGroupId(),
 				KBActionKeys.ADD_KB_TEMPLATE);
 		}
 		else if (portletId.equals(KBPortletKeys.KNOWLEDGE_BASE_DISPLAY)) {
-			DisplayPermission.check(
+			_displayPortletPermissionHelper.check(
 				getPermissionChecker(), serviceContext.getScopeGroupId(),
 				KBActionKeys.ADD_KB_TEMPLATE);
 		}
@@ -74,7 +75,7 @@ public class KBTemplateServiceImpl extends KBTemplateServiceBaseImpl {
 	public void deleteKBTemplates(long groupId, long[] kbTemplateIds)
 		throws PortalException {
 
-		AdminPermission.check(
+		_adminPortletPermissionHelper.check(
 			getPermissionChecker(), groupId, KBActionKeys.DELETE_KB_TEMPLATES);
 
 		kbTemplateLocalService.deleteKBTemplates(kbTemplateIds);
@@ -190,5 +191,17 @@ public class KBTemplateServiceImpl extends KBTemplateServiceBaseImpl {
 	}
 
 	private static final int _INTERVAL = 200;
+
+	@ServiceReference(
+		filterString = "(resource.name=" + KBConstants.RESOURCE_NAME_ADMIN + ")",
+		type = PortletPermissionHelper.class
+	)
+	private PortletPermissionHelper _adminPortletPermissionHelper;
+
+	@ServiceReference(
+		filterString = "(resource.name=" + KBConstants.RESOURCE_NAME_DISPLAY + ")",
+		type = PortletPermissionHelper.class
+	)
+	private PortletPermissionHelper _displayPortletPermissionHelper;
 
 }

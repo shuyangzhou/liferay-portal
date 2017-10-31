@@ -15,12 +15,13 @@
 package com.liferay.knowledge.base.web.internal.portlet.configuration.icon;
 
 import com.liferay.knowledge.base.constants.KBActionKeys;
+import com.liferay.knowledge.base.constants.KBConstants;
 import com.liferay.knowledge.base.constants.KBPortletKeys;
 import com.liferay.knowledge.base.model.KBArticle;
-import com.liferay.knowledge.base.service.permission.AdminPermission;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIcon;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PortletPermissionHelper;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -97,7 +98,7 @@ public class AddChildKBArticlePortletConfigurationIcon
 
 		long scopeGroupId = themeDisplay.getScopeGroupId();
 
-		if (AdminPermission.contains(
+		if (_portletPermissionHelper.contains(
 				permissionChecker, scopeGroupId, KBActionKeys.ADD_KB_ARTICLE)) {
 
 			return true;
@@ -108,5 +109,10 @@ public class AddChildKBArticlePortletConfigurationIcon
 
 	@Reference
 	private Portal _portal;
+
+	@Reference(
+		target = "(resource.name=" + KBConstants.RESOURCE_NAME_ADMIN + ")"
+	)
+	private PortletPermissionHelper _portletPermissionHelper;
 
 }

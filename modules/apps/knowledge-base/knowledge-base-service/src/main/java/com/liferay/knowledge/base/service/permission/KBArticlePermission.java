@@ -18,6 +18,8 @@ import com.liferay.knowledge.base.constants.KBFolderConstants;
 import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.knowledge.base.service.KBArticleLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
@@ -58,9 +60,8 @@ public class KBArticlePermission implements BaseModelPermissionChecker {
 	}
 
 	public static boolean contains(
-			PermissionChecker permissionChecker, KBArticle kbArticle,
-			String actionId)
-		throws PortalException {
+		PermissionChecker permissionChecker, KBArticle kbArticle,
+		String actionId) {
 
 		if (actionId.equals(ActionKeys.VIEW) &&
 			PropsValues.PERMISSIONS_VIEW_DYNAMIC_INHERITANCE) {
@@ -72,24 +73,34 @@ public class KBArticlePermission implements BaseModelPermissionChecker {
 			long kbFolderClassNameId = PortalUtil.getClassNameId(
 				KBFolderConstants.getClassName());
 
-			if ((parentResourcePrimKey ==
-					KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) ||
-				(parentResourceClassNameId == kbFolderClassNameId)) {
+			try {
+				if ((parentResourcePrimKey ==
+						KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) ||
+					(parentResourceClassNameId == kbFolderClassNameId)) {
 
-				if (!KBFolderPermission.contains(
-						permissionChecker, kbArticle.getGroupId(),
-						parentResourcePrimKey, actionId)) {
+					if (!KBFolderPermission.contains(
+							permissionChecker, kbArticle.getGroupId(),
+							parentResourcePrimKey, actionId)) {
 
-					return false;
+						return false;
+					}
+				}
+				else {
+					KBArticle parentKBArticle =
+						KBArticleLocalServiceUtil.getLatestKBArticle(
+							parentResourcePrimKey,
+							WorkflowConstants.STATUS_ANY);
+
+					if (!contains(
+							permissionChecker, parentKBArticle, actionId)) {
+
+						return false;
+					}
 				}
 			}
-			else {
-				KBArticle parentKBArticle =
-					KBArticleLocalServiceUtil.getLatestKBArticle(
-						parentResourcePrimKey, WorkflowConstants.STATUS_ANY);
-
-				if (!contains(permissionChecker, parentKBArticle, actionId)) {
-					return false;
+			catch (PortalException pe) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(pe, pe);
 				}
 			}
 		}
@@ -129,5 +140,8 @@ public class KBArticlePermission implements BaseModelPermissionChecker {
 
 		check(permissionChecker, primaryKey, actionId);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		KBArticlePermission.class);
 
 }
