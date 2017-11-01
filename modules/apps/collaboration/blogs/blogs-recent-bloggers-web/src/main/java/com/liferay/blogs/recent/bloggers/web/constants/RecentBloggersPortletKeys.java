@@ -16,7 +16,10 @@ package com.liferay.blogs.recent.bloggers.web.constants;
 
 /**
  * @author Sergio González
+ * @see    com.liferay.blogs.recent.bloggers.constants.RecentBloggersPortletKeys
+ * @deprecated As of 1.1.0
  */
+@Deprecated
 public class RecentBloggersPortletKeys {
 
 	public static final String RECENT_BLOGGERS =
