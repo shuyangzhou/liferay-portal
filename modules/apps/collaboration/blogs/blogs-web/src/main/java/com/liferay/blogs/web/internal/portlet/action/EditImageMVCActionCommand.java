@@ -14,9 +14,9 @@
 
 package com.liferay.blogs.web.internal.portlet.action;
 
+import com.liferay.blogs.constants.BlogsConstants;
 import com.liferay.blogs.exception.NoSuchEntryException;
 import com.liferay.blogs.service.BlogsEntryLocalService;
-import com.liferay.blogs.service.permission.BlogsPermission;
 import com.liferay.blogs.web.constants.BlogsPortletKeys;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.checker.PortletPermissionChecker;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
@@ -81,7 +82,7 @@ public class EditImageMVCActionCommand extends BaseMVCActionCommand {
 			}
 
 			if ((fileEntry.getUserId() == themeDisplay.getUserId()) ||
-				BlogsPermission.contains(
+				_portletPermissionChecker.contains(
 					themeDisplay.getPermissionChecker(),
 					themeDisplay.getScopeGroupId(), ActionKeys.UPDATE)) {
 
@@ -136,5 +137,8 @@ public class EditImageMVCActionCommand extends BaseMVCActionCommand {
 		EditImageMVCActionCommand.class);
 
 	private BlogsEntryLocalService _blogsEntryLocalService;
+
+	@Reference(target = "(resource.name=" + BlogsConstants.RESOURCE_NAME + ")")
+	private PortletPermissionChecker _portletPermissionChecker;
 
 }

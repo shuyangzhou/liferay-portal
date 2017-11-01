@@ -14,6 +14,10 @@
 
 package com.liferay.portal.kernel.security.permission;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.permission.checker.ModelPermissionChecker;
 import com.liferay.registry.collections.ServiceTrackerCollections;
 import com.liferay.registry.collections.ServiceTrackerMap;
 
@@ -26,8 +30,25 @@ public class BaseModelPermissionCheckerUtil {
 		PermissionChecker permissionChecker, long groupId, String className,
 		long classPK, String actionId) {
 
+		ModelPermissionChecker<?> modelPermissionChecker =
+			_modelPermissionCheckers.getService(className);
+
+		if (modelPermissionChecker != null) {
+			try {
+				return modelPermissionChecker.contains(
+					permissionChecker, classPK, actionId);
+			}
+			catch (PortalException pe) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(pe, pe);
+				}
+
+				return false;
+			}
+		}
+
 		BaseModelPermissionChecker baseModelPermissionChecker =
-			_serviceTrackerMap.getService(className);
+			_baseModelPermissionCheckers.getService(className);
 
 		if (baseModelPermissionChecker == null) {
 			return null;
@@ -44,8 +65,15 @@ public class BaseModelPermissionCheckerUtil {
 		return true;
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		BaseModelPermissionCheckerUtil.class);
+
 	private static final ServiceTrackerMap<String, BaseModelPermissionChecker>
-		_serviceTrackerMap = ServiceTrackerCollections.openSingleValueMap(
-			BaseModelPermissionChecker.class, "model.class.name");
+		_baseModelPermissionCheckers =
+			ServiceTrackerCollections.openSingleValueMap(
+				BaseModelPermissionChecker.class, "model.class.name");
+	private static final ServiceTrackerMap<String, ModelPermissionChecker>
+		_modelPermissionCheckers = ServiceTrackerCollections.openSingleValueMap(
+			ModelPermissionChecker.class, "model.class.name");
 
 }

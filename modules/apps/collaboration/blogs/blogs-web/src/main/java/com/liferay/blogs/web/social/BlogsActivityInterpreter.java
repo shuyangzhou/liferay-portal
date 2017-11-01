@@ -16,10 +16,10 @@ package com.liferay.blogs.web.social;
 
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryLocalService;
-import com.liferay.blogs.service.permission.BlogsEntryPermission;
 import com.liferay.blogs.social.BlogsActivityKeys;
 import com.liferay.blogs.web.constants.BlogsPortletKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.checker.ModelPermissionChecker;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
@@ -174,7 +174,7 @@ public class BlogsActivityInterpreter extends BaseSocialActivityInterpreter {
 			String actionId, ServiceContext serviceContext)
 		throws Exception {
 
-		return BlogsEntryPermission.contains(
+		return _modelPermissionChecker.contains(
 			permissionChecker, activity.getClassPK(), actionId);
 	}
 
@@ -199,6 +199,10 @@ public class BlogsActivityInterpreter extends BaseSocialActivityInterpreter {
 	private static final String[] _CLASS_NAMES = {BlogsEntry.class.getName()};
 
 	private BlogsEntryLocalService _blogsEntryLocalService;
+
+	@Reference(target = "(model.class.name=com.liferay.blogs.model.BlogsEntry)")
+	private ModelPermissionChecker<BlogsEntry> _modelPermissionChecker;
+
 	private ResourceBundleLoader _resourceBundleLoader;
 
 }
