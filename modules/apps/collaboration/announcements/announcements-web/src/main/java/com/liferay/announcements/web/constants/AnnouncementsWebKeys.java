@@ -16,7 +16,10 @@ package com.liferay.announcements.web.constants;
 
 /**
  * @author Adolfo Pérez
+ * @deprecated As of 2.0.0, replaced by {@link
+ *             com.liferay.announcements.constants.AnnouncementsWebKeys}
  */
+@Deprecated
 public class AnnouncementsWebKeys {
 
 	public static final String ANNOUNCEMENTS_ENTRY = "ANNOUNCEMENTS_ENTRY";
