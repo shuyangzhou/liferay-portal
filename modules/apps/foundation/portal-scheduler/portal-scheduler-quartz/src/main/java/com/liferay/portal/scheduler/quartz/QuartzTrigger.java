@@ -22,7 +22,10 @@ import org.quartz.JobKey;
 
 /**
  * @author Tina Tian
+ * @deprecated As of 2.1.0, replaced by {@link
+ *				com.liferay.portal.scheduler.quartz.internal.QuartzTrigger}
  */
+@Deprecated
 public class QuartzTrigger implements Trigger {
 
 	public QuartzTrigger(org.quartz.Trigger trigger) {
