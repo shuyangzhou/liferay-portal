@@ -304,6 +304,8 @@ public class MemberRequestLocalServiceImpl
 			String redirectURL = getRedirectURL(serviceContext);
 
 			redirectURL = addParameterWithPortletNamespace(
+				redirectURL, "actionRequired", StringPool.TRUE);
+			redirectURL = addParameterWithPortletNamespace(
 				redirectURL, "key", memberRequest.getKey());
 
 			createAccountURL = addParameterWithPortletNamespace(
@@ -324,6 +326,8 @@ public class MemberRequestLocalServiceImpl
 
 		String redirectURL = getRedirectURL(serviceContext);
 
+		redirectURL = addParameterWithPortletNamespace(
+			redirectURL, "actionRequired", StringPool.TRUE);
 		redirectURL = addParameterWithPortletNamespace(
 			redirectURL, "key", memberRequest.getKey());
 

@@ -16,7 +16,10 @@ package com.liferay.blogs.item.selector.web.constants;
 
 /**
  * @author Sergio González
+ * @see    com.liferay.blogs.item.selector.constants.BlogsItemSelectorViewConstants
+ * @deprecated As of 1.1.0
  */
+@Deprecated
 public class BlogsItemSelectorViewConstants {
 
 	public static final String ITEM_SELECTOR_VIEW_KEY = "blogs-attachments";
