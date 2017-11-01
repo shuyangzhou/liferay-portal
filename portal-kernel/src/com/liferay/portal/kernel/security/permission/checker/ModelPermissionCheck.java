@@ -12,21 +12,21 @@
  * details.
  */
 
-package com.liferay.portal.kernel.security.permission;
+package com.liferay.portal.kernel.security.permission.checker;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.GroupedModel;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
 /**
- * @author Miguel Pastor
- * @deprecated As of 7.0.0, replaced by {@link
- *             com.liferay.portal.kernel.security.permission.checker.
- *             ModelPermissionChecker}
+ * @author Preston Crary
  */
-@Deprecated
-public interface BaseModelPermissionChecker {
+@FunctionalInterface
+public interface ModelPermissionCheck<T extends GroupedModel> {
 
-	public void checkBaseModel(
-			PermissionChecker permissionChecker, long groupId, long primaryKey,
+	public Boolean contains(
+			ModelPermissionChecker<T> modelPermissionChecker,
+			PermissionChecker permissionChecker, String name, T model,
 			String actionId)
 		throws PortalException;
 

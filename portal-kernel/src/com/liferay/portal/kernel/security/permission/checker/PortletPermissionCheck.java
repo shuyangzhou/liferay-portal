@@ -12,22 +12,18 @@
  * details.
  */
 
-package com.liferay.portal.kernel.security.permission;
+package com.liferay.portal.kernel.security.permission.checker;
 
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
 /**
- * @author Miguel Pastor
- * @deprecated As of 7.0.0, replaced by {@link
- *             com.liferay.portal.kernel.security.permission.checker.
- *             ModelPermissionChecker}
+ * @author Preston Crary
  */
-@Deprecated
-public interface BaseModelPermissionChecker {
+@FunctionalInterface
+public interface PortletPermissionCheck {
 
-	public void checkBaseModel(
-			PermissionChecker permissionChecker, long groupId, long primaryKey,
-			String actionId)
-		throws PortalException;
+	public Boolean contains(
+		PermissionChecker permissionChecker, String name, long classPK,
+		String actionId);
 
 }
