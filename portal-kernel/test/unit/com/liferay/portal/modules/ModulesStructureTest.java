@@ -125,14 +125,22 @@ public class ModulesStructureTest {
 
 						Assert.assertFalse(
 							"Forbidden " + gradlePropertiesPath,
-							Files.exists(gradlePropertiesPath));
+							Files.deleteIfExists(gradlePropertiesPath));
 
-						Path settinsGradlePath = dirPath.resolve(
+						Path settingsGradlePath = dirPath.resolve(
 							"settings.gradle");
 
 						Assert.assertFalse(
-							"Forbidden " + settinsGradlePath,
-							Files.deleteIfExists(settinsGradlePath));
+							"Forbidden " + settingsGradlePath,
+							Files.deleteIfExists(settingsGradlePath));
+
+						Assert.assertFalse(
+							"Forbidden " + buildGradlePath,
+							Files.exists(buildGradlePath) &&
+							ModulesStructureTestUtil.contains(
+								buildGradlePath,
+								"apply plugin: " +
+									"\"com.liferay.defaults.plugin\""));
 					}
 
 					if (Files.exists(dirPath.resolve("bnd.bnd"))) {
@@ -141,11 +149,11 @@ public class ModulesStructureTest {
 							Files.exists(buildGradlePath));
 						Assert.assertFalse(
 							"Forbidden " + buildXMLPath,
-							Files.exists(buildXMLPath));
+							Files.deleteIfExists(buildXMLPath));
 
 						Assert.assertFalse(
 							"Forbidden " + ivyXmlPath,
-							Files.exists(ivyXmlPath));
+							Files.deleteIfExists(ivyXmlPath));
 
 						return FileVisitResult.SKIP_SUBTREE;
 					}
@@ -652,6 +660,7 @@ public class ModulesStructureTest {
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	private boolean _isInGitRepoReadOnly(Path dirPath) throws IOException {
 		Path gitRepoPath = _getGitRepoPath(dirPath);
 
@@ -659,9 +668,7 @@ public class ModulesStructureTest {
 			return false;
 		}
 
-		String gitRepo = ModulesStructureTestUtil.read(gitRepoPath);
-
-		if (gitRepo.contains("mode = pull")) {
+		if (ModulesStructureTestUtil.contains(gitRepoPath, "mode = pull")) {
 			return true;
 		}
 
@@ -946,10 +953,6 @@ public class ModulesStructureTest {
 		throws IOException {
 
 		if (_isEmptyGitRepo(dirPath)) {
-			return;
-		}
-
-		if (_isInGitRepoReadOnly(dirPath)) {
 			return;
 		}
 
