@@ -12,15 +12,23 @@
  * details.
  */
 
-package com.liferay.blogs.constants;
+package com.liferay.blogs.internal.permission;
+
+import com.liferay.blogs.constants.BlogsConstants;
+import com.liferay.portal.kernel.security.permission.checker.PortletPermissionChecker;
+import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 
 /**
- * @author Iván Zaera
+ * @author Preston Crary
  */
-public class BlogsConstants {
+@OSGiBeanProperties(
+	property = {"resource.name=" + BlogsConstants.RESOURCE_NAME},
+	service = PortletPermissionChecker.class
+)
+public class BlogsPortletPermissionChecker extends PortletPermissionChecker {
 
-	public static final String RESOURCE_NAME = "com.liferay.blogs";
-
-	public static final String SERVICE_NAME = "com.liferay.blogs";
+	public BlogsPortletPermissionChecker() {
+		super(BlogsConstants.RESOURCE_NAME);
+	}
 
 }

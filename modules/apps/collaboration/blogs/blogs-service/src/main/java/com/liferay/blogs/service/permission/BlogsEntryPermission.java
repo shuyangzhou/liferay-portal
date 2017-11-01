@@ -30,16 +30,13 @@ import com.liferay.portal.kernel.workflow.permission.WorkflowPermissionUtil;
 import java.util.Map;
 import java.util.Objects;
 
-import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
+ * @deprecated As of 1.2.0, with no direct replacement
  */
-@Component(
-	property = {"model.class.name=com.liferay.blogs.model.BlogsEntry"},
-	service = BaseModelPermissionChecker.class
-)
+@Deprecated
 public class BlogsEntryPermission implements BaseModelPermissionChecker {
 
 	public static void check(

@@ -14,9 +14,9 @@
 
 package com.liferay.blogs.internal.search;
 
+import com.liferay.blogs.internal.permission.BlogsEntryPermissionChecker;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryLocalService;
-import com.liferay.blogs.service.permission.BlogsEntryPermission;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
@@ -79,7 +79,7 @@ public class BlogsEntryIndexer extends BaseIndexer<BlogsEntry> {
 			long entryClassPK, String actionId)
 		throws Exception {
 
-		return BlogsEntryPermission.contains(
+		return _blogsEntryPermissionChecker.contains(
 			permissionChecker, entryClassPK, ActionKeys.VIEW);
 	}
 
@@ -214,5 +214,8 @@ public class BlogsEntryIndexer extends BaseIndexer<BlogsEntry> {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BlogsEntryIndexer.class);
+
+	@Reference
+	private BlogsEntryPermissionChecker _blogsEntryPermissionChecker;
 
 }
