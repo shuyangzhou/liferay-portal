@@ -16,9 +16,8 @@ package com.liferay.blogs.service.impl;
 
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.base.BlogsEntryServiceBaseImpl;
-import com.liferay.blogs.service.permission.BlogsEntryPermission;
-import com.liferay.blogs.service.permission.BlogsPermission;
 import com.liferay.blogs.util.comparator.EntryDisplayDateComparator;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -28,6 +27,8 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.checker.ModelPermission;
+import com.liferay.portal.kernel.security.permission.checker.PortletPermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -88,7 +89,7 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 			InputStream smallImageInputStream, ServiceContext serviceContext)
 		throws PortalException {
 
-		BlogsPermission.check(
+		_portletPermission.check(
 			getPermissionChecker(), serviceContext.getScopeGroupId(),
 			ActionKeys.ADD_ENTRY);
 
@@ -133,7 +134,7 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		BlogsPermission.check(
+		_portletPermission.check(
 			getPermissionChecker(), serviceContext.getScopeGroupId(),
 			ActionKeys.ADD_ENTRY);
 
@@ -157,7 +158,7 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		BlogsPermission.check(
+		_portletPermission.check(
 			getPermissionChecker(), serviceContext.getScopeGroupId(),
 			ActionKeys.ADD_ENTRY);
 
@@ -171,7 +172,7 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 
 	@Override
 	public void deleteEntry(long entryId) throws PortalException {
-		BlogsEntryPermission.check(
+		_modelPermission.check(
 			getPermissionChecker(), entryId, ActionKeys.DELETE);
 
 		blogsEntryLocalService.deleteEntry(entryId);
@@ -209,7 +210,7 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 					break;
 				}
 
-				if (BlogsEntryPermission.contains(
+				if (_modelPermission.contains(
 						getPermissionChecker(), entry, ActionKeys.VIEW)) {
 
 					entries.add(entry);
@@ -243,8 +244,7 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 	public BlogsEntry getEntry(long entryId) throws PortalException {
 		BlogsEntry entry = blogsEntryLocalService.getEntry(entryId);
 
-		BlogsEntryPermission.check(
-			getPermissionChecker(), entry, ActionKeys.VIEW);
+		_modelPermission.check(getPermissionChecker(), entry, ActionKeys.VIEW);
 
 		return entry;
 	}
@@ -255,8 +255,7 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 
 		BlogsEntry entry = blogsEntryLocalService.getEntry(groupId, urlTitle);
 
-		BlogsEntryPermission.check(
-			getPermissionChecker(), entry, ActionKeys.VIEW);
+		_modelPermission.check(getPermissionChecker(), entry, ActionKeys.VIEW);
 
 		return entry;
 	}
@@ -393,7 +392,7 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 					break;
 				}
 
-				if (BlogsEntryPermission.contains(
+				if (_modelPermission.contains(
 						getPermissionChecker(), entry, ActionKeys.VIEW)) {
 
 					entries.add(entry);
@@ -480,7 +479,7 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 					break;
 				}
 
-				if (BlogsEntryPermission.contains(
+				if (_modelPermission.contains(
 						getPermissionChecker(), entry, ActionKeys.VIEW)) {
 
 					entries.add(entry);
@@ -513,7 +512,7 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 
 	@Override
 	public BlogsEntry moveEntryToTrash(long entryId) throws PortalException {
-		BlogsEntryPermission.check(
+		_modelPermission.check(
 			getPermissionChecker(), entryId, ActionKeys.DELETE);
 
 		return blogsEntryLocalService.moveEntryToTrash(getUserId(), entryId);
@@ -521,7 +520,7 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 
 	@Override
 	public void restoreEntryFromTrash(long entryId) throws PortalException {
-		BlogsEntryPermission.check(
+		_modelPermission.check(
 			getPermissionChecker(), entryId, ActionKeys.DELETE);
 
 		blogsEntryLocalService.restoreEntryFromTrash(getUserId(), entryId);
@@ -529,7 +528,7 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 
 	@Override
 	public void subscribe(long groupId) throws PortalException {
-		BlogsPermission.check(
+		_portletPermission.check(
 			getPermissionChecker(), groupId, ActionKeys.SUBSCRIBE);
 
 		blogsEntryLocalService.subscribe(getUserId(), groupId);
@@ -537,7 +536,7 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 
 	@Override
 	public void unsubscribe(long groupId) throws PortalException {
-		BlogsPermission.check(
+		_portletPermission.check(
 			getPermissionChecker(), groupId, ActionKeys.SUBSCRIBE);
 
 		blogsEntryLocalService.unsubscribe(getUserId(), groupId);
@@ -560,7 +559,7 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 			InputStream smallImageInputStream, ServiceContext serviceContext)
 		throws PortalException {
 
-		BlogsPermission.check(
+		_portletPermission.check(
 			getPermissionChecker(), serviceContext.getScopeGroupId(),
 			ActionKeys.UPDATE);
 
@@ -630,7 +629,7 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		BlogsEntryPermission.check(
+		_modelPermission.check(
 			getPermissionChecker(), entryId, ActionKeys.UPDATE);
 
 		return blogsEntryLocalService.updateEntry(
@@ -744,5 +743,15 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BlogsEntryServiceImpl.class);
+
+	@BeanReference(
+		name = "com.liferay.blogs.internal.permission.BlogsEntryPermissionChecker"
+	)
+	private ModelPermission<BlogsEntry> _modelPermission;
+
+	@BeanReference(
+		name = "com.liferay.blogs.internal.permission.BlogsPortletPermissionChecker"
+	)
+	private PortletPermission _portletPermission;
 
 }
