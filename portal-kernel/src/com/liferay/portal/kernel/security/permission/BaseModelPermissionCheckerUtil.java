@@ -14,6 +14,11 @@
 
 package com.liferay.portal.kernel.security.permission;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.permission.checker.ModelPermission;
+import com.liferay.portal.kernel.security.permission.checker.ParentModelPermission;
 import com.liferay.registry.collections.ServiceTrackerCollections;
 import com.liferay.registry.collections.ServiceTrackerMap;
 
@@ -26,8 +31,42 @@ public class BaseModelPermissionCheckerUtil {
 		PermissionChecker permissionChecker, long groupId, String className,
 		long classPK, String actionId) {
 
+		ModelPermission<?> modelPermission = _modelPermissions.getService(
+			className);
+
+		if (modelPermission != null) {
+			try {
+				return modelPermission.contains(
+					permissionChecker, classPK, actionId);
+			}
+			catch (PortalException pe) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(pe, pe);
+				}
+
+				return false;
+			}
+		}
+
+		ParentModelPermission<?> parentModelPermission =
+			_parentModelPermissions.getService(className);
+
+		if (parentModelPermission != null) {
+			try {
+				return parentModelPermission.contains(
+					permissionChecker, groupId, classPK, actionId);
+			}
+			catch (PortalException pe) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(pe, pe);
+				}
+
+				return false;
+			}
+		}
+
 		BaseModelPermissionChecker baseModelPermissionChecker =
-			_serviceTrackerMap.getService(className);
+			_baseModelPermissionCheckers.getService(className);
 
 		if (baseModelPermissionChecker == null) {
 			return null;
@@ -44,8 +83,18 @@ public class BaseModelPermissionCheckerUtil {
 		return true;
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		BaseModelPermissionCheckerUtil.class);
+
 	private static final ServiceTrackerMap<String, BaseModelPermissionChecker>
-		_serviceTrackerMap = ServiceTrackerCollections.openSingleValueMap(
-			BaseModelPermissionChecker.class, "model.class.name");
+		_baseModelPermissionCheckers =
+			ServiceTrackerCollections.openSingleValueMap(
+				BaseModelPermissionChecker.class, "model.class.name");
+	private static final ServiceTrackerMap<String, ModelPermission>
+		_modelPermissions = ServiceTrackerCollections.openSingleValueMap(
+			ModelPermission.class, "model.class.name");
+	private static final ServiceTrackerMap<String, ParentModelPermission>
+		_parentModelPermissions = ServiceTrackerCollections.openSingleValueMap(
+			ParentModelPermission.class, "model.class.name");
 
 }
