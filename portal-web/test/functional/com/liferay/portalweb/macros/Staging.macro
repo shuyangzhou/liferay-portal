@@ -161,6 +161,8 @@
 	</command>
 
 	<command name="addPageVariationPG">
+		<execute function="Pause" locator1="3000" />
+
 		<execute function="Click" locator1="Icon#STAGING_BAR_VERTICAL_ELLIPSIS" />
 
 		<execute function="Click" locator1="Staging#STAGING_MENU_MANAGE_PAGE_VARIATION" />
@@ -358,11 +360,31 @@
 		</if>
 
 		<if>
+			<equals arg1="${contentDateRange}" arg2="Last" />
+			<then>
+				<execute function="Click" locator1="Select#CONTENT_CHOOSE_CONTENT" />
+
+				<execute function="Click" locator1="Radio#CHOOSE_CONTENT_DATE_RANGE_CHANGE" />
+
+				<execute function="Click" locator1="Radio#RANGE_LAST" />
+
+				<execute function="Click" locator1="Link#REFRESH_COUNTS" />
+			</then>
+		</if>
+
+		<if>
 			<equals arg1="${contentDeletion}" arg2="true" />
 			<then>
-				<execute function="Click" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_DELETION_HEADER" />
+				<if>
+					<condition function="IsElementPresent" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_DELETION_HEADER_NOT_EXPANDED" />
+					<then>
+						<execute function="Click" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_DELETION_HEADER" />
+					</then>
+				</if>
 
-				<execute function="Check#checkHiddenToggleSwitch" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_DELETION_CHECKBOX" />
+				<execute function="Pause" locator1="2000" />
+
+				<execute function="Check" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_DELETION_CHECKBOX" />
 			</then>
 		</if>
 
