@@ -19,11 +19,11 @@ import com.liferay.asset.kernel.model.BaseAssetRendererFactory;
 import com.liferay.bookmarks.constants.BookmarksPortletKeys;
 import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.service.BookmarksFolderLocalService;
-import com.liferay.bookmarks.service.permission.BookmarksFolderPermissionChecker;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.checker.ParentModelPermission;
 import com.liferay.trash.TrashHelper;
 
 import javax.portlet.PortletRequest;
@@ -110,7 +110,7 @@ public class BookmarksFolderAssetRendererFactory
 		BookmarksFolder folder = _bookmarksFolderLocalService.getFolder(
 			classPK);
 
-		return BookmarksFolderPermissionChecker.contains(
+		return _parentModelPermission.contains(
 			permissionChecker, folder, actionId);
 	}
 
@@ -130,6 +130,12 @@ public class BookmarksFolderAssetRendererFactory
 	}
 
 	private BookmarksFolderLocalService _bookmarksFolderLocalService;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.bookmarks.model.BookmarksFolder)"
+	)
+	private ParentModelPermission<BookmarksFolder> _parentModelPermission;
+
 	private ServletContext _servletContext;
 
 	@Reference
