@@ -41,8 +41,8 @@ import org.osgi.service.component.annotations.Reference;
 public class ProviderManager extends BaseManager<Provider> {
 
 	/**
-	 * Returns an instance of type T if a valid {@link Provider} can be found.
-	 * Returns {@code Optional#empty()} otherwise.
+	 * Returns an instance of type {@code T} if a valid {@link Provider} can be
+	 * found. Returns {@code Optional#empty()} otherwise.
 	 *
 	 * @param  clazz the type class to be provided.
 	 * @param  httpServletRequest the current request.

@@ -49,24 +49,22 @@ import org.osgi.service.component.annotations.Reference;
 
 /**
  * Provides methods to retrieve information provided by the different {@link
- * CollectionResource} instances, such as field functions, types, identifier
- * functions, and so on.
+ * CollectionResource} instances. This information includes field functions,
+ * types, identifier functions, and more.
  *
  * @author Alejandro Hernández
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
  * @see    CollectionResource
- * @review
  */
 @Component(immediate = true, service = CollectionResourceManager.class)
 public class CollectionResourceManager extends BaseManager<CollectionResource> {
 
 	/**
-	 * Returns the model class of a resource's name.
+	 * Returns the resource name's model class.
 	 *
-	 * @param  name name of the resource for the class.
-	 * @return the class of a resource's name.
-	 * @review
+	 * @param  name the resource name
+	 * @return the resource name's model class
 	 */
 	public <T> Optional<Class<T>> getModelClassOptional(String name) {
 		Optional<? extends Class<?>> optional = Optional.ofNullable(
@@ -76,11 +74,11 @@ public class CollectionResourceManager extends BaseManager<CollectionResource> {
 	}
 
 	/**
-	 * Returns the name of a class names's resource.
+	 * Returns the name of a collection resource that matches the specified
+	 * class name.
 	 *
-	 * @param  className the class name of a {@link CollectionResource}
-	 * @return the name of a class name's resource.
-	 * @review
+	 * @param  className the collection resource's class name
+	 * @return the collection resource's name
 	 */
 	public Optional<String> getNameOptional(String className) {
 		Optional<CollectionResource> optional = _getCollectionResourceOptional(
@@ -90,13 +88,12 @@ public class CollectionResourceManager extends BaseManager<CollectionResource> {
 	}
 
 	/**
-	 * Returns the representor of the model class, if present. Returns {@code
-	 * Optional#empty()} if no representor can be found.
+	 * Returns the representor of the collection resource's model class, if that
+	 * representor exists. Returns {@code Optional#empty()} otherwise.
 	 *
-	 * @param  modelClass the model class of a {@link CollectionResource}.
-	 * @return the representor of the model class, if present; {@code
-	 *         Optional#empty()} otherwise.
-	 * @review
+	 * @param  modelClass the collection resource's model class
+	 * @return the model class's representor, if present; {@code
+	 *         Optional#empty()} otherwise
 	 */
 	public <T, U extends Identifier> Optional<Representor<T, U>>
 		getRepresentorOptional(Class<T> modelClass) {
@@ -108,21 +105,20 @@ public class CollectionResourceManager extends BaseManager<CollectionResource> {
 	}
 
 	/**
-	 * Returns the list of names of the root {@link CollectionResource}.
+	 * Returns the root collection resource's list of names.
 	 *
-	 * @return the list of names of the root {@link CollectionResource}.
+	 * @return the root collection resource's list of names
 	 */
 	public List<String> getRootCollectionResourceNames() {
 		return _rootCollectionResourceNames;
 	}
 
 	/**
-	 * Returns the routes of the model class for a certain name.
+	 * Returns the model class's routes for the collection resource's name.
 	 *
-	 * @param  name the name of a {@link CollectionResource}.
-	 * @param  httpServletRequest the actual request.
-	 * @return the routes of the model class.
-	 * @review
+	 * @param  name the collection resource's name
+	 * @param  httpServletRequest the request
+	 * @return the model class's routes
 	 */
 	public <T> Optional<Routes<T>> getRoutesOptional(
 		String name, HttpServletRequest httpServletRequest) {

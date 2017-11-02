@@ -23,9 +23,8 @@ import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServices
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderer;
 import com.liferay.dynamic.data.mapping.form.values.factory.DDMFormValuesFactory;
 import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesJSONSerializer;
-import com.liferay.dynamic.data.mapping.io.DDMFormJSONSerializer;
-import com.liferay.dynamic.data.mapping.io.DDMFormLayoutJSONSerializer;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
+import com.liferay.dynamic.data.mapping.service.DDMStructureService;
 import com.liferay.dynamic.data.mapping.storage.StorageEngine;
 import com.liferay.dynamic.data.mapping.util.DDMFormValuesMerger;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -70,10 +69,12 @@ import org.powermock.modules.junit4.PowerMockRunner;
 /**
  * @author Adam Brandizzi
  */
-@PrepareForTest( {
-	LocaleUtil.class, ResourceBundleUtil.class, ResourceBundleLoaderUtil.class,
-	ServiceTrackerCollections.class
-})
+@PrepareForTest(
+	{
+		LocaleUtil.class, ResourceBundleUtil.class,
+		ResourceBundleLoaderUtil.class, ServiceTrackerCollections.class
+	}
+)
 @RunWith(PowerMockRunner.class)
 public class DDLFormAdminDisplayContextTest extends PowerMockito {
 
@@ -277,11 +278,10 @@ public class DDLFormAdminDisplayContextTest extends PowerMockito {
 			mock(DDLRecordLocalService.class), mockDDLRecordSetService(),
 			mock(DDMFormFieldTypeServicesTracker.class),
 			mock(DDMFormFieldTypesJSONSerializer.class),
-			mock(DDMFormJSONSerializer.class),
-			mock(DDMFormLayoutJSONSerializer.class),
 			mock(DDMFormRenderer.class), mock(DDMFormValuesFactory.class),
 			mock(DDMFormValuesMerger.class),
-			mock(DDMStructureLocalService.class), mock(JSONFactory.class),
+			mock(DDMStructureLocalService.class),
+			mock(DDMStructureService.class), mock(JSONFactory.class),
 			mock(StorageEngine.class), mock(WorkflowEngineManager.class));
 	}
 

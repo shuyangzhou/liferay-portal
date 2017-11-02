@@ -49,7 +49,6 @@ public class TryTest {
 
 	/**
 	 * Returns a new list of failures to be used in tests using {@code
-	 * @Parameters} annotation.
 	 *
 	 * @return a list of failures to be used in tests.
 	 * @review
@@ -60,7 +59,6 @@ public class TryTest {
 
 	/**
 	 * Returns a new list of successes to be used in tests using {@code
-	 * @Parameters} annotation.
 	 *
 	 * @return a list of successes to be used in tests.
 	 * @review

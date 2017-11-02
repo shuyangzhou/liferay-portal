@@ -65,26 +65,24 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * Provide methods to help {@link javax.ws.rs.ext.MessageBodyWriter} write
- * Hypermedia resources.
+ * Provides methods to help {@code javax.ws.rs.ext.MessageBodyWriter} write
+ * hypermedia resources.
  *
  * @author Alejandro Hernández
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
- * @review
  */
 @Component(immediate = true, service = WriterHelper.class)
 public class WriterHelper {
 
 	/**
-	 * Helper method to write an {@code APIError} into a JSON object.
+	 * Writes an {@link APIError} to a JSON object.
 	 *
-	 * @param  errorMessageMapper the correct {@code ErrorMessageMapper} for
-	 *         this combination of {@code APIError}/{@code HttpHeaders}.
-	 * @param  apiError an instance of the apiError.
-	 * @param  httpHeaders the HTTP headers of the current request.
-	 * @return the apiError written in a JSON string.
-	 * @review
+	 * @param  errorMessageMapper the {@link ErrorMessageMapper} that matches
+	 *         the {@code apiError} and {@code httpHeaders} parameters
+	 * @param  apiError the API error
+	 * @param  httpHeaders the current request's HTTP headers
+	 * @return the API error, as a JSON string
 	 */
 	public static String writeError(
 		ErrorMessageMapper errorMessageMapper, APIError apiError,
@@ -114,10 +112,9 @@ public class WriterHelper {
 	/**
 	 * Returns the absolute URL from a relative URI.
 	 *
-	 * @param  httpServletRequest the actual HTTP servlet request.
-	 * @param  relativeURI a relative URI.
-	 * @return the absolute URL.
-	 * @review
+	 * @param  httpServletRequest the HTTP servlet request
+	 * @param  relativeURI the relative URI
+	 * @return the absolute URL
 	 */
 	public String getAbsoluteURL(
 		HttpServletRequest httpServletRequest, String relativeURI) {
@@ -136,17 +133,14 @@ public class WriterHelper {
 	}
 
 	/**
-	 * Returns the page collection URL. If a {@link
-	 * com.liferay.vulcan.resource.CollectionResource} for that model class
-	 * cannot be found, returns {@code Optional#empty()}.
+	 * Returns the page collection URL, if a {@link
+	 * com.liferay.vulcan.resource.CollectionResource} for the model class
+	 * exists. Otherwise, this method returns {@code Optional#empty()}.
 	 *
-	 * @param  page the page of the {@link
-	 *         com.liferay.vulcan.resource.CollectionResource} collection.
-	 * @param  httpServletRequest the actual HTTP servlet request.
-	 * @return the page collection URL if a {@link
-	 *         com.liferay.vulcan.resource.CollectionResource} for the model
-	 *         class can be found; {@code Optional#empty()} otherwise.
-	 * @review
+	 * @param  page the page of the collection resource's collection
+	 * @param  httpServletRequest the HTTP servlet request
+	 * @return the page collection URL, if a collection resource for the model
+	 *         class exists; {@code Optional#empty()} otherwise
 	 */
 	public <T> Optional<String> getCollectionURLOptional(
 		Page<T> page, HttpServletRequest httpServletRequest) {
@@ -171,15 +165,14 @@ public class WriterHelper {
 	}
 
 	/**
-	 * Returns the URL to the resource of a certain model. If a {@link
-	 * com.liferay.vulcan.resource.CollectionResource} for that model class
-	 * cannot be found, returns {@code Optional#empty()}.
+	 * Returns the model's resource URL, if a @link
+	 * com.liferay.vulcan.resource.CollectionResource} for the model class
+	 * exists. Otherwise, this method returns {@code Optional#empty()}.
 	 *
-	 * @param  singleModel a single model.
-	 * @param  httpServletRequest the actual HTTP servlet request.
-	 * @return the single URL for the {@code CollectionResource} if present;
-	 *         {@code Optional#empty()} otherwise.
-	 * @review
+	 * @param  singleModel the single model
+	 * @param  httpServletRequest the HTTP servlet request
+	 * @return the model's resource URL, if a collection resource for the model
+	 *         class exists; {@code Optional#empty()} otherwise
 	 */
 	public <T> Optional<String> getSingleURLOptional(
 		SingleModel<T> singleModel, HttpServletRequest httpServletRequest) {
@@ -215,15 +208,14 @@ public class WriterHelper {
 	}
 
 	/**
-	 * Helper method to write binary resources. It uses a bi consumer so each
-	 * {@link javax.ws.rs.ext.MessageBodyWriter} can write each binary
+	 * Writes binary resources. This method uses a {@code BiConsumer} so each
+	 * {@code javax.ws.rs.ext.MessageBodyWriter} can write each binary
 	 * differently.
 	 *
-	 * @param  binaryFunctions functions used to obtain the binaries.
-	 * @param  singleModel a single model.
-	 * @param  httpServletRequest the actual HTTP request.
-	 * @param  biConsumer the consumer that will be called to write each binary.
-	 * @review
+	 * @param binaryFunctions the functions that obtain the binaries
+	 * @param singleModel the single model
+	 * @param httpServletRequest the HTTP request
+	 * @param biConsumer the {@code BiConsumer} called to write each binary
 	 */
 	public <T> void writeBinaries(
 		Map<String, BinaryFunction<T>> binaryFunctions,
@@ -274,15 +266,14 @@ public class WriterHelper {
 	}
 
 	/**
-	 * Helper method to write a model number fields. It uses a consumer so each
-	 * {@link javax.ws.rs.ext.MessageBodyWriter} can write each field
+	 * Writes the model's boolean fields. This method uses a {@code BiConsumer}
+	 * so each {@code javax.ws.rs.ext.MessageBodyWriter} can write each field
 	 * differently.
 	 *
-	 * @param  model a model.
-	 * @param  modelClass a model class.
-	 * @param  fields the requested fields.
-	 * @param  biConsumer the consumer that will be called to write each field.
-	 * @review
+	 * @param model the model
+	 * @param modelClass the model class
+	 * @param fields the requested fields
+	 * @param biConsumer the {@code BiConsumer} called to write each field
 	 */
 	public <T> void writeBooleanFields(
 		T model, Class<T> modelClass, Fields fields,
@@ -318,19 +309,17 @@ public class WriterHelper {
 	}
 
 	/**
-	 * Helper method to write a model linked related models. It uses a consumer
-	 * so each {@link javax.ws.rs.ext.MessageBodyWriter} can write the related
-	 * model differently.
+	 * Writes a linked model. This method uses a {@code BiConsumer} so each
+	 * {@code javax.ws.rs.ext.MessageBodyWriter} can write the related model
+	 * differently.
 	 *
-	 * @param  relatedModel the instance of the related model.
-	 * @param  parentSingleModel the parent single model.
-	 * @param  parentEmbeddedPathElements list of embedded path elements.
-	 * @param  httpServletRequest the actual HTTP servlet request.
-	 * @param  fields the requested fields.
-	 * @param  embedded the embedded resources info.
-	 * @param  biConsumer the consumer that will be called to write the related
-	 *         model.
-	 * @review
+	 * @param relatedModel the related model
+	 * @param parentSingleModel the parent model
+	 * @param parentEmbeddedPathElements the list of embedded path elements
+	 * @param httpServletRequest the HTTP servlet request
+	 * @param fields the requested fields
+	 * @param embedded the information about the embedded resources
+	 * @param biConsumer the {@code BiConsumer} called to write each field
 	 */
 	public <T, U> void writeLinkedRelatedModel(
 		RelatedModel<T, U> relatedModel, SingleModel<T> parentSingleModel,
@@ -350,13 +339,13 @@ public class WriterHelper {
 	}
 
 	/**
-	 * Helper method to write a model links. It uses a consumer so each {@link
-	 * javax.ws.rs.ext.MessageBodyWriter} can write each link differently.
+	 * Writes the model's links. This method uses a {@code BiConsumer} so each
+	 * {@code javax.ws.rs.ext.MessageBodyWriter} can write each link
+	 * differently.
 	 *
-	 * @param  modelClass the model class.
-	 * @param  fields the requested fields.
-	 * @param  biConsumer the consumer that will be called to write each link.
-	 * @review
+	 * @param modelClass the model class
+	 * @param fields the requested fields
+	 * @param biConsumer the {@code BiConsumer} called to write each link
 	 */
 	public <T> void writeLinks(
 		Class<T> modelClass, Fields fields,
@@ -390,16 +379,15 @@ public class WriterHelper {
 	}
 
 	/**
-	 * Helper method to write a model localized string fields. It uses a
-	 * consumer so each {@link javax.ws.rs.ext.MessageBodyWriter} can write each
-	 * field differently.
+	 * Writes a model's localized string fields. This method uses a {@code
+	 * BiConsumer} so each {@code javax.ws.rs.ext.MessageBodyWriter} can write
+	 * each field differently.
 	 *
-	 * @param  model a model.
-	 * @param  modelClass a model class.
-	 * @param  fields the requested fields.
-	 * @param  language the language requested by the user.
-	 * @param  biConsumer the consumer that will be called to write each field.
-	 * @review
+	 * @param model the model
+	 * @param modelClass the model class
+	 * @param fields the requested fields
+	 * @param language the language requested by the user
+	 * @param biConsumer the {@code BiConsumer} called to write each field
 	 */
 	public <T> void writeLocalizedStringFields(
 		T model, Class<T> modelClass, Fields fields, Language language,
@@ -436,15 +424,14 @@ public class WriterHelper {
 	}
 
 	/**
-	 * Helper method to write a model number fields. It uses a consumer so each
-	 * {@link javax.ws.rs.ext.MessageBodyWriter} can write each field
+	 * Writes a model's number fields. This method uses a {@code BiConsumer} so
+	 * each {@code javax.ws.rs.ext.MessageBodyWriter} can write each field
 	 * differently.
 	 *
-	 * @param  model a model.
-	 * @param  modelClass a model class.
-	 * @param  fields the requested fields.
-	 * @param  biConsumer the consumer that will be called to write each field.
-	 * @review
+	 * @param model the model
+	 * @param modelClass the model class
+	 * @param fields the requested fields
+	 * @param biConsumer the {@code BiConsumer} called to write each field
 	 */
 	public <T> void writeNumberFields(
 		T model, Class<T> modelClass, Fields fields,
@@ -480,15 +467,15 @@ public class WriterHelper {
 	}
 
 	/**
-	 * Helper method to write a model related collection. It uses a consumer for
-	 * writing the URL.
+	 * Writes the model's related collection URL. This method uses a {@code
+	 * BiConsumer} to write the URL.
 	 *
-	 * @param  relatedCollection the instance of the related collection.
+	 * @param  relatedCollection the related collection
 	 * @param  parentSingleModel the parent single model.
-	 * @param  parentEmbeddedPathElements list of embedded path elements.
-	 * @param  httpServletRequest the actual HTTP servlet request.
-	 * @param  fields the requested fields.
-	 * @param  biConsumer the consumer that will be called to write the related
+	 * @param  parentEmbeddedPathElements the list of embedded path elements
+	 * @param  httpServletRequest the HTTP servlet request
+	 * @param  fields the requested fields
+	 * @param  biConsumer the {@code BiConsumer} called to write the related
 	 *         collection URL.
 	 * @review
 	 */

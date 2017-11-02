@@ -29,11 +29,10 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * Provides all the necessary information to expose {@link AggregateRating}
+ * Provides the information necessary to expose {@link AggregateRating}
  * resources through a web API.
  *
  * @author Alejandro Hernández
- * @review
  */
 @Component(immediate = true, service = CollectionResource.class)
 public class AggregateRatingScopedCollectionResource

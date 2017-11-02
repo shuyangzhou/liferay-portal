@@ -17,34 +17,31 @@ package com.liferay.vulcan.liferay.portal.context;
 import com.liferay.portal.kernel.model.User;
 
 /**
- * Provides the current {@link User}.
+ * Provides the current {@code User}.
  *
  * <p>
- * To use this class, add it as a parameter in {@link
- * com.liferay.vulcan.resource.builder.RoutesBuilder} methods.
+ * To use this class, add it as a parameter to the methods of {@link
+ * com.liferay.vulcan.resource.builder.RoutesBuilder}.
  * </p>
  *
  * @author Alejandro Hernández
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
- * @review
  */
 @FunctionalInterface
 public interface CurrentUser {
 
 	/**
-	 * Returns the current {@link User}.
+	 * Returns the current user.
 	 *
-	 * @return current user.
-	 * @review
+	 * @return the current user
 	 */
 	public User getUser();
 
 	/**
 	 * Returns the current user's ID.
 	 *
-	 * @return current user's ID.
-	 * @review
+	 * @return the current user's ID.
 	 */
 	public default long getUserId() {
 		User user = getUser();

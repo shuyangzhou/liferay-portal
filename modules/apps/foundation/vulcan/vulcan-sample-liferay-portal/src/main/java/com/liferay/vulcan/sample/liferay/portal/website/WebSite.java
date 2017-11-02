@@ -20,42 +20,38 @@ import com.liferay.vulcan.language.Language;
 import com.liferay.vulcan.resource.identifier.LongIdentifier;
 
 /**
- * An instance of this interface represents a website.
+ * Represents a website.
  *
  * <p>
- * Conforms with the <a href="http://schema.org/WebSite">WebSite</a> type from
- * schema.org
+ * Conforms to the <a href="http://schema.org/WebSite">WebSite </a> type from
+ * schema.org.
  * </p>
  *
  * @author Victor Oliveira
  * @author Alejandro Hernández
- * @review
  */
 @ProviderType
 public interface WebSite {
 
 	/**
-	 * Returns the description of the {@code WebSite}.
+	 * Returns the website's description.
 	 *
-	 * @return the description of the {@code WebSite}.
-	 * @review
+	 * @return the website's description
 	 */
 	public String getDescription();
 
 	/**
-	 * Returns the name of the {@code WebSite}.
+	 * Returns the website's name.
 	 *
-	 * @param  language the requested language.
-	 * @return the name of the {@code WebSite}.
-	 * @review
+	 * @param  language the requested language
+	 * @return the website's name
 	 */
 	public String getName(Language language);
 
 	/**
-	 * Returns the identifier of the {@code WebSite}.
+	 * Returns the website's identifier.
 	 *
-	 * @return the identifier of the {@code WebSite}.
-	 * @review
+	 * @return the website's identifier
 	 */
 	public LongIdentifier getWebSiteLongIdentifier();
 

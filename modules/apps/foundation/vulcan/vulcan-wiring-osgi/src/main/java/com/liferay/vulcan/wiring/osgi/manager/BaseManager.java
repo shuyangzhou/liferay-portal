@@ -30,10 +30,9 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 
 /**
- * Use descendants of this class to manage services that have a generic type.
+ * Manages services that have a generic type.
  *
  * @author Alejandro Hernández
- * @review
  */
 public abstract class BaseManager<T> {
 
@@ -44,9 +43,11 @@ public abstract class BaseManager<T> {
 	}
 
 	/**
-	 * Adds a new serviceReference/service tuple to the internal map.
+	 * Adds a new {@code serviceReference/service} tuple to the internal map, if
+	 * a valid service can be obtained. Returns {@code Optional#empty()}
+	 * otherwise.
 	 *
-	 * @param  serviceReference a service reference.
+	 * @param  serviceReference the service reference
 	 * @return the generic inner class of the service reference service, if a
 	 *         valid service can be obtained; {@code Optional#empty()}
 	 *         otherwise.
@@ -78,24 +79,23 @@ public abstract class BaseManager<T> {
 	}
 
 	/**
-	 * Retrieves a service from the inner map based on its generic inner class.
-	 * Returns {@code Optional#empty()} if no service is found.
+	 * Returns a service from the inner map based on the service's generic inner
+	 * class, if the service exists. Returns {@code Optional#empty()} otherwise.
 	 *
-	 * @param  clazz the class.
-	 * @return the service, if present; {@code Optional#empty()} otherwise.
-	 * @review
+	 * @param  clazz the generic inner class
+	 * @return the service, if present; {@code Optional#empty()} otherwise
 	 */
 	protected <U> Optional<T> getServiceOptional(Class<U> clazz) {
 		return getServiceOptional(clazz.getName());
 	}
 
 	/**
-	 * Retrieves a service from the inner map based on its generic inner class
-	 * name. Returns {@code Optional#empty()} if no service is found.
+	 * Returns a service from the inner map based on the service's generic inner
+	 * class name, if the service exists. Returns {@code Optional#empty()}
+	 * otherwise.
 	 *
-	 * @param  className the class name.
-	 * @return the service, if present; {@code Optional#empty()} otherwise.
-	 * @review
+	 * @param  className the generic inner class name
+	 * @return the service, if present; {@code Optional#empty()} otherwise
 	 */
 	protected Optional<T> getServiceOptional(String className) {
 		TreeSet<ServiceReferenceServiceTuple<T>> serviceReferenceServiceTuples =
@@ -114,9 +114,10 @@ public abstract class BaseManager<T> {
 	}
 
 	/**
-	 * Removes a serviceReference/service tuple to the internal map.
+	 * Removes a {@code serviceReference/service} tuple from the internal map,
+	 * if the service exists. Returns {@code Optional#empty()} otherwise.
 	 *
-	 * @param  serviceReference a service reference.
+	 * @param  serviceReference the service reference
 	 * @return the generic inner class of the service reference service, if a
 	 *         valid service can be obtained; {@code Optional#empty()}
 	 *         otherwise.
@@ -132,11 +133,13 @@ public abstract class BaseManager<T> {
 	}
 
 	/**
-	 * Removes a serviceReference/service tuple to the internal map.
+	 * Removes a {@code serviceReference/service} tuple from the internal map,
+	 * after calling a consumer. Returns {@code Optional#empty()} if the service
+	 * doesn't exist.
 	 *
-	 * @param  serviceReference a service reference.
-	 * @param  beforeRemovingConsumer consumer that will be called before
-	 *         removing the service.
+	 * @param  serviceReference the service reference
+	 * @param  beforeRemovingConsumer the consumer called prior to removing the
+	 *         service
 	 * @return the generic inner class of the service reference service, if a
 	 *         valid service can be obtained; {@code Optional#empty()}
 	 *         otherwise.

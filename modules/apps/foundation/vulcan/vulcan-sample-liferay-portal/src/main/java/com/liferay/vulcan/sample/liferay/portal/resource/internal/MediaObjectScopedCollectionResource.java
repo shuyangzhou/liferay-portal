@@ -47,13 +47,11 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * Provides all the necessary information to expose <a
- * href="http://schema.org/MediaObject">MediaObject</a> resource through a web
- * API. <p> The resources are mapped from the internal {@link DLFileEntry}
- * model.
+ * Provides the information necessary to expose <a
+ * href="http://schema.org/MediaObject">MediaObject </a> resources through a web
+ * API. The resources are mapped from the internal model {@code DLFileEntry}.
  *
  * @author Javier Gamarra
- * @review
  */
 @Component(immediate = true, service = CollectionResource.class)
 public class MediaObjectScopedCollectionResource

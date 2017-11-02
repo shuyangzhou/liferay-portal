@@ -20,33 +20,32 @@ import com.liferay.vulcan.pagination.Pagination;
 import java.util.Optional;
 
 /**
- * Instances of this service can be used to get a single {@link WebSite} or a
- * {@link WebSite}'s page based on a pagination params.
+ * Provides the service for getting a {@link WebSite} or a page of a {@code
+ * WebSite}.
  *
  * @author Victor Oliveira
  * @author Alejandro Hernández
- * @review
  */
 public interface WebSiteService {
 
 	/**
-	 * Return the {@code WebSite} {@code PageItems} for a combination of
-	 * pagination and {@link com.liferay.portal.kernel.model.Company} ID.
+	 * Returns the website's {@link com.liferay.vulcan.pagination.PageItems}
+	 * that correspond to the {@link Pagination} and the ID of the {@code
+	 * com.liferay.portal.kernel.model.Company}.
 	 *
-	 * @param  pagination the pagination information.
-	 * @param  companyId the ID of the company.
-	 * @return the {@code WebSite} {@code PageItems}.
+	 * @param  pagination the {@code Pagination} object
+	 * @param  companyId the company ID
+	 * @return the website's page items
 	 */
 	public PageItems<WebSite> getPageItems(
 		Pagination pagination, long companyId);
 
 	/**
-	 * Returns a {@code WebSite} with a certain ID if present. Returns {@code
-	 * Optional#empty()} otherwise.
+	 * Returns the website that matches the specified ID, if it exists. Returns
+	 * {@code Optional#empty()} otherwise.
 	 *
-	 * @param  siteId the ID of the {@code WebSite}.
-	 * @return the {@code WebSite} with that ID, if present; {@code
-	 *         Optional#empty()} otherwise.
+	 * @param  siteId the website's ID
+	 * @return the website, if present; {@code Optional#empty()} otherwise
 	 */
 	public Optional<WebSite> getWebSite(long siteId);
 

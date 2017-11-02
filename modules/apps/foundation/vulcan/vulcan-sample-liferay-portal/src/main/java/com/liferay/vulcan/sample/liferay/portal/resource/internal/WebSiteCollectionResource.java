@@ -35,14 +35,12 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * Provides all the necessary information to expose <a
- * href="http://schema.org/WebSite">WebSite</a> resources through a web API.
- *
- * The resources are mapped from the internal {@link WebSite} model.
+ * Provides the information necessary to expose <a
+ * href="http://schema.org/WebSite">WebSite </a> resources through a web API.
+ * The resources are mapped from the internal model {@link WebSite}.
  *
  * @author Victor Oliveira
  * @author Alejandro Hernández
- * @review
  */
 @Component(immediate = true)
 public class WebSiteCollectionResource

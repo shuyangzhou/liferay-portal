@@ -435,8 +435,16 @@ public abstract class EmptyLinesCheck extends BaseFileCheck {
 					continue;
 				}
 
+				String nextLine = matcher.group(1);
+
+				if (nextLine.startsWith("package ") ||
+					nextLine.startsWith("/*")) {
+
+					continue;
+				}
+
 				content = StringUtil.replaceFirst(
-					content, "\n", StringPool.BLANK, matcher.end() - 1);
+					content, "\n", StringPool.BLANK, matcher.start() + 1);
 
 				continue outerLoop;
 			}
@@ -525,11 +533,11 @@ public abstract class EmptyLinesCheck extends BaseFileCheck {
 		"[\t\n]\\}\n[\t ]*(?!(/\\*|\\}|\\)|//|catch |else |finally |while ))" +
 			"\\S");
 	private final Pattern _missingEmptyLinePattern8 = Pattern.compile(
-		"[^:\\{\n]\n\t*return ");
+		"[^:\\{\\s]\n\t*return ");
 	private final Pattern _redundantEmptyLinePattern1 = Pattern.compile(
 		"\n(.*)\n\npublic ((abstract|static) )*(class|enum|interface) ");
 	private final Pattern _redundantEmptyLinePattern2 = Pattern.compile(
-		" \\* @author .*\n \\*\\/\n\n");
+		"\n\t* \\*/\n\n\t*(.+)\n");
 	private final Pattern _redundantEmptyLinePattern3 = Pattern.compile(
 		"[\n\t](catch |else |finally |for |if |try |while ).*\\{\n\n\t+\\w");
 	private final Pattern _redundantEmptyLinePattern4 = Pattern.compile(

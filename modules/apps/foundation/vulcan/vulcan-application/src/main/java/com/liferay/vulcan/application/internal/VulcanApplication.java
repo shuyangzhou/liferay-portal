@@ -36,13 +36,18 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * The VulcanApplication is the center piece of a Vulcan API. Developers only
- * need to provide a valid {@link RootEndpoint}.
+ * Registers the application's root endpoint, writers, and mappers in JAX-RS.
+ *
+ * <p>
+ * The default {@link RootEndpoint} already deploys
+ * all components that implement the representor. Developers only need to
+ * provide a valid {@code RootEndpoint} via this class if they want to customize
+ * the default behavior.
+ * </p>
  *
  * @author Alejandro Hernández
  * @author Carlos Sierra
  * @author Jorge Ferrer
- * @review
  */
 @ApplicationPath("/")
 @Component(

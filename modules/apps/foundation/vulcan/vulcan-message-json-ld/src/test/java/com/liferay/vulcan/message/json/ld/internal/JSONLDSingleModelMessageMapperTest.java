@@ -24,20 +24,12 @@ import java.util.Arrays;
 import org.apache.poi.ss.formula.functions.T;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
  * @author Javier Gamarra
  */
 public class JSONLDSingleModelMessageMapperTest {
-
-	@Before
-	public void setUp() {
-		_jsonLDSingleModelMessageMapper =
-			new JSONLDSingleModelMessageMapper<>();
-		_jsonObjectBuilder = new JSONObjectBuilderImpl();
-	}
 
 	@Test
 	public void testMapLinkedResourceURL() {
@@ -63,7 +55,10 @@ public class JSONLDSingleModelMessageMapperTest {
 		Assert.assertEquals("{\"@type\":[\"fieldName\"]}", build.toString());
 	}
 
-	private JSONLDSingleModelMessageMapper<T> _jsonLDSingleModelMessageMapper;
-	private JSONObjectBuilderImpl _jsonObjectBuilder;
+	private final JSONLDSingleModelMessageMapper<T>
+		_jsonLDSingleModelMessageMapper =
+			new JSONLDSingleModelMessageMapper<>();
+	private final JSONObjectBuilderImpl _jsonObjectBuilder =
+		new JSONObjectBuilderImpl();
 
 }

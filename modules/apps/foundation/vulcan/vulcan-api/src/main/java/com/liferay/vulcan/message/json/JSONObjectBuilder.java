@@ -81,7 +81,6 @@ import java.util.function.Function;
  * @author Alejandro Hernández
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
- * @review
  */
 @ProviderType
 @SuppressWarnings("unused")
@@ -162,7 +161,6 @@ public interface JSONObjectBuilder {
 	 * @param  parentName the parent field's name
 	 * @param  nestedNames the list of the nested field names
 	 * @return the builder's field step
-	 * @review
 	 */
 	public FieldStep nestedPrefixedField(
 		String prefix, String parentName, String... nestedNames);
@@ -201,7 +199,6 @@ public interface JSONObjectBuilder {
 	 * @param  parentName the parent field's name
 	 * @param  nestedNames the list of the nested field names
 	 * @return the builder's field step
-	 * @review
 	 */
 	public FieldStep nestedSuffixedField(
 		String suffix, String parentName, String... nestedNames);

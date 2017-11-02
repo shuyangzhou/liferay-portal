@@ -31,24 +31,21 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Instances of this class represents a {@link BlogPosting} comment. This is a
- * mock class for sample purposes. It contains methods for
- * retrieving/updating/deleting blog post comments and a in-memory database with
- * fake data.
+ * Represents a comment on a {@link BlogPosting}. This is a mock class for
+ * sample purposes only. It contains methods for creating, retrieving, updating,
+ * and deleting blog post comments in an in-memory database with fake data.
  *
  * @author Alejandro Hernández
- * @review
  */
 public class BlogPostingComment {
 
 	/**
-	 * Adds a new {@code BlogPostingComment} to the database.
+	 * Adds a new blog posting comment.
 	 *
-	 * @param  authorId the ID of the author of the {@link BlogPosting} comment.
-	 * @param  blogPostingId the ID of the {@link BlogPosting} comment.
-	 * @param  content the content of the {@link BlogPosting} comment.
-	 * @return the added {@code BlogPostingComment}.
-	 * @review
+	 * @param  authorId the ID of the blog posting comment's author
+	 * @param  blogPostingId the blog posting comment's ID
+	 * @param  content the the blog posting comment's content
+	 * @return the new blog posting comment
 	 */
 	public static BlogPostingComment addBlogPostingComment(
 		long authorId, long blogPostingId, String content) {
@@ -69,25 +66,21 @@ public class BlogPostingComment {
 	}
 
 	/**
-	 * Deletes a {@code BlogPostingComment} with a certain {@code ID} from the
-	 * database.
+	 * Deletes the blog posting comment that matches the specified ID.
 	 *
-	 * @param  blogPostingCommentId the ID of the {@link BlogPosting} comment to
-	 *         delete.
-	 * @review
+	 * @param blogPostingCommentId the blog posting comment's ID
 	 */
 	public static void deleteBlogPostingComment(long blogPostingCommentId) {
 		_blogPostingComments.remove(blogPostingCommentId);
 	}
 
 	/**
-	 * Returns a {@code BlogPostingComment} with a certain {@code ID} from the
-	 * database if present. Returns {@code Optional#empty()} otherwise.
+	 * Returns the blog posting comment that matches the specified ID, if that
+	 * comment exists. Returns {@code Optional#empty()} otherwise.
 	 *
-	 * @param  blogPostingCommentId the ID of the blog post comment to retrieve.
-	 * @return the {@code BlogPostingComment} for the requested ID if present;
-	 *         {@code Optional#empty()} otherwise.
-	 * @review
+	 * @param  blogPostingCommentId the blog posting comment's ID
+	 * @return the blog posting comment, if present; {@code Optional#empty()}
+	 *         otherwise
 	 */
 	public static Optional<BlogPostingComment> getBlogPostingCommentOptional(
 		long blogPostingCommentId) {
@@ -112,15 +105,13 @@ public class BlogPostingComment {
 	}
 
 	/**
-	 * Returns a page of {@code BlogPostingComment} of {@link BlogPosting} from
-	 * the database.
+	 * Returns the page of blog posting comments for a blog posting, as
+	 * specified by the page's start and end positions.
 	 *
-	 * @param  blogPostingId the ID of the {@link BlogPosting}.
-	 * @param  start the start position.
-	 * @param  end the end position.
-	 * @return the list of blog post comments between {@code start} and {@code
-	 *         end} of a {@link BlogPosting}.
-	 * @review
+	 * @param  blogPostingId the blog posting's ID
+	 * @param  start the page's start position
+	 * @param  end the page's end position
+	 * @return the page of blog posting comments
 	 */
 	public static List<BlogPostingComment> getBlogPostingComments(
 		long blogPostingId, int start, int end) {
@@ -143,13 +134,10 @@ public class BlogPostingComment {
 	}
 
 	/**
-	 * Return the total number of comments for a {@link BlogPosting} in the
-	 * database.
+	 * Returns the total number of blog posting comments for a blog posting.
 	 *
-	 * @param  blogPostingId the ID of the {@link BlogPosting}.
-	 * @return the total number of comments for a {@link BlogPosting} in the
-	 *         database.
-	 * @review
+	 * @param  blogPostingId the blog posting's ID
+	 * @return the total number of blog posting comments for a blog posting
 	 */
 	public static int getBlogPostingCommentsCount(long blogPostingId) {
 		if (_blogPostingComments.containsKey(blogPostingId)) {
@@ -163,15 +151,13 @@ public class BlogPostingComment {
 	}
 
 	/**
-	 * Updates a {@code BlogPostingComment} with a certain {@code ID} in the
-	 * database if present.
+	 * Updates the blog posting comment that matches the specified ID, if that
+	 * blog posting comment exists. Returns {@code Optional#empty()} otherwise.
 	 *
-	 * @param  blogPostingCommentId the ID of the {@link BlogPosting} comment to
-	 *         update.
-	 * @param  content the content of the {@link BlogPosting} comment.
-	 * @return the updated {@code BlogPostingComment} if present; {@code
-	 *         Optional#empty()} otherwise.
-	 * @review
+	 * @param  blogPostingCommentId the blog posting comment's ID
+	 * @param  content the blog posting comment's new content
+	 * @return the updated blog posting comment, if present; {@code
+	 *         Optional#empty()} otherwise
 	 */
 	public static Optional<BlogPostingComment> updateBlogPostingComment(
 		long blogPostingCommentId, String content) {
@@ -204,62 +190,54 @@ public class BlogPostingComment {
 	}
 
 	/**
-	 * The ID of the author of this {@code BlogPostingComment}.
+	 * Returns the ID of the current blog posting comment's author.
 	 *
-	 * @return the ID of the author of the {@link BlogPosting} comment.
-	 * @review
+	 * @return the ID of the current blog posting comment's author
 	 */
 	public long getAuthorId() {
 		return _authorId;
 	}
 
 	/**
-	 * The ID of this {@code BlogPostingComment}.
+	 * Returns the current blog posting comment's ID.
 	 *
-	 * @return the ID of the {@link BlogPosting} comment.
-	 * @review
+	 * @return the current blog posting comment's ID
 	 */
 	public long getBlogPostingCommentId() {
 		return _blogPostingCommentId;
 	}
 
 	/**
-	 * Returns the ID of the {@link BlogPosting} of this {@code
-	 * BlogPostingComment}.
+	 * Returns the ID of the current blog posting comment's blog posting.
 	 *
-	 * @return the ID of the {@link BlogPosting} of the {@link BlogPosting}
-	 *         comment.
-	 * @review
+	 * @return the ID of the current blog posting comment's blog posting
 	 */
 	public long getBlogPostingId() {
 		return _blogPostingId;
 	}
 
 	/**
-	 * Returns the content of this {@code BlogPostingComment}.
+	 * Returns the current blog posting comment's content.
 	 *
-	 * @return the content of the {@link BlogPosting} comment.
-	 * @review
+	 * @return the current blog posting comment's content
 	 */
 	public String getContent() {
 		return _content;
 	}
 
 	/**
-	 * The create date of this {@code BlogPostingComment}.
+	 * Returns the current blog posting comment's creation date.
 	 *
-	 * @return the create date of the {@link BlogPosting} comment.
-	 * @review
+	 * @return the current blog posting comment's creation date
 	 */
 	public Date getCreateDate() {
 		return new Date(_createDate.getTime());
 	}
 
 	/**
-	 * Returns the modified date of this {@code BlogPostingComment}.
+	 * Returns the current blog posting comment's modification date.
 	 *
-	 * @return the modified date of the {@link BlogPosting} comment.
-	 * @review
+	 * @return the current blog posting comment's modification date
 	 */
 	public Date getModifiedDate() {
 		return new Date(_modifiedDate.getTime());

@@ -19,7 +19,6 @@ import com.google.gson.JsonObject;
 import com.liferay.vulcan.jaxrs.json.internal.JSONObjectBuilderImpl;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -27,24 +26,17 @@ import org.junit.Test;
  */
 public class HALPageMessageMapperTest {
 
-	@Before
-	public void setUp() {
-		_jsonObjectBuilder = new JSONObjectBuilderImpl();
-
-		_halPageMessageMapper = new HALPageMessageMapper();
-	}
-
 	@Test
 	public void testMapCollectionURL() {
 		_halPageMessageMapper.mapCollectionURL(
 			_jsonObjectBuilder, "http://localhost:8080");
 
-		JsonObject build = _jsonObjectBuilder.build();
+		JsonObject jsonObject = _jsonObjectBuilder.build();
 
 		Assert.assertEquals(
 			"{\"_links\":{\"collection\":" +
 				"{\"href\":\"http://localhost:8080\"}}}",
-			build.toString());
+			jsonObject.toString());
 	}
 
 	@Test
@@ -52,11 +44,11 @@ public class HALPageMessageMapperTest {
 		_halPageMessageMapper.mapCurrentPageURL(
 			_jsonObjectBuilder, "http://localhost:8080");
 
-		JsonObject build = _jsonObjectBuilder.build();
+		JsonObject jsonObject = _jsonObjectBuilder.build();
 
 		Assert.assertEquals(
 			"{\"_links\":{\"self\":{\"href\":\"http://localhost:8080\"}}}",
-			build.toString());
+			jsonObject.toString());
 	}
 
 	@Test
@@ -64,11 +56,11 @@ public class HALPageMessageMapperTest {
 		_halPageMessageMapper.mapFirstPageURL(
 			_jsonObjectBuilder, "http://localhost:8080");
 
-		JsonObject build = _jsonObjectBuilder.build();
+		JsonObject jsonObject = _jsonObjectBuilder.build();
 
 		Assert.assertEquals(
 			"{\"_links\":{\"first\":{\"href\":\"http://localhost:8080\"}}}",
-			build.toString());
+			jsonObject.toString());
 	}
 
 	@Test
@@ -76,9 +68,9 @@ public class HALPageMessageMapperTest {
 		_halPageMessageMapper.mapItemBooleanField(
 			null, _jsonObjectBuilder, "fieldName", true);
 
-		JsonObject build = _jsonObjectBuilder.build();
+		JsonObject jsonObject = _jsonObjectBuilder.build();
 
-		Assert.assertEquals("{\"fieldName\":true}", build.toString());
+		Assert.assertEquals("{\"fieldName\":true}", jsonObject.toString());
 	}
 
 	@Test
@@ -86,21 +78,23 @@ public class HALPageMessageMapperTest {
 		_halPageMessageMapper.mapItemBooleanField(
 			null, _jsonObjectBuilder, "fieldName", true);
 
-		JsonObject build = _jsonObjectBuilder.build();
+		JsonObject jsonObject = _jsonObjectBuilder.build();
 
-		Assert.assertEquals("{\"fieldName\":true}", build.toString());
+		Assert.assertEquals("{\"fieldName\":true}", jsonObject.toString());
 	}
 
 	@Test
 	public void testMapPageCount() {
 		_halPageMessageMapper.mapPageCount(_jsonObjectBuilder, 1);
 
-		JsonObject build = _jsonObjectBuilder.build();
+		JsonObject jsonObject = _jsonObjectBuilder.build();
 
-		Assert.assertEquals("{\"count\":1}", build.toString());
+		Assert.assertEquals("{\"count\":1}", jsonObject.toString());
 	}
 
-	private HALPageMessageMapper _halPageMessageMapper;
-	private JSONObjectBuilderImpl _jsonObjectBuilder;
+	private final HALPageMessageMapper _halPageMessageMapper =
+		new HALPageMessageMapper();
+	private final JSONObjectBuilderImpl _jsonObjectBuilder =
+		new JSONObjectBuilderImpl();
 
 }

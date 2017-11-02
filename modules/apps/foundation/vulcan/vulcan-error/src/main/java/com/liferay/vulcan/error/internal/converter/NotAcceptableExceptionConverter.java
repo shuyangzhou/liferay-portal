@@ -25,11 +25,10 @@ import javax.ws.rs.core.Response;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * Converts a {@link NotAcceptableException} into its {@link APIError}
+ * Converts a {@code NotAcceptableException} to its {@link APIError}
  * representation.
  *
  * @author Alejandro Hernández
- * @review
  */
 @Component(immediate = true)
 public class NotAcceptableExceptionConverter

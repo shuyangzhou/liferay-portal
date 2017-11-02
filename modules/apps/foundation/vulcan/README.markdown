@@ -21,7 +21,7 @@ Vulcan Architect is a server-side library that facilitates the creation of Vulca
 
 Two key techniques make this possible:
 
-- **Hypermedia**: The same links and forms that we all use every day in a browser can also be applied to APIs to get the same great decoupling and flexibility. 
+- **Hypermedia**: The same links and forms that we all use every day in a browser can also be applied to APIs to get the same great decoupling and flexibility.
 
 - **Shared Vocabularies**: Instead of returning JSON/XML with attributes tied to the names of the internal models, use standard vocabularies that are well thought out by standardization bodies (such as [schema.org](https://schema.org) or [IANA](https://www.iana.org/assignments/link-relations/link-relations.xhtml)). Even if you have to create your own type because a standard doesn't exist, define it explicitly to be decoupled from any changes that you can make to the internal model.
 
@@ -112,15 +112,15 @@ The Vulcan project provides a set of guidelines and software to build evolvable 
 
 ### [Vulcan Guidelines](https://vulcan.wedeploy.io/guidelines/)
 
-An opinionated way to do RESTful APIs for *evolvability* and *discoverability*. Evolvability means that it's easy to add to and modify the API without breaking consumers. 
+An opinionated way to do RESTful APIs for *evolvability* and *discoverability*. Evolvability means that it's easy to add to and modify the API without breaking consumers.
 
-Discoverability is even more exciting--it means that the consumer can "learn" about new functionality added to the provider, from the provider itself. In Vulcan APIs, the provider controls navigation, forms, state changes, and more. The consumer can then leverage additions and modifications to the API. This simplifies consumers and lets them gain new functionality. Although this may seem like magic, it's standard in Vulcan APIs and consumers. 
+Discoverability is even more exciting--it means that the consumer can "learn" about new functionality added to the provider, from the provider itself. In Vulcan APIs, the provider controls navigation, forms, state changes, and more. The consumer can then leverage additions and modifications to the API. This simplifies consumers and lets them gain new functionality. Although this may seem like magic, it's standard in Vulcan APIs and consumers.
 
 ### Vulcan Consumers
 
-The Vulcan project also contains a client-side library to facilitate the development of consumers for Vulcan REST APIs (or any Hypermedia API). It also has "smart" functionality, like the the ability to automatically create a local graph to facilitate the construction of offline support. 
+The Vulcan project also contains a client-side library to facilitate the development of consumers for Vulcan REST APIs (or any Hypermedia API). It also has "smart" functionality, like the the ability to automatically create a local graph to facilitate the construction of offline support.
 
-The consumer can control what the response includes (e.g., fields, embedded resources, etc.), and decide which hypermedia format best fits its needs (e.g., HAL, JSON-LD, etc.). 
+The consumer can control what the response includes (e.g., fields, embedded resources, etc.), and decide which hypermedia format best fits its needs (e.g., HAL, JSON-LD, etc.).
 
 - [Vulcan Consumer for Android](https://github.com/liferay-mobile/vulcan-consumer-android)
 - Vulcan Consumer for iOS (coming soon)

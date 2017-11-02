@@ -28,15 +28,16 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * Adds Vulcan the ability to represent collection pages in JSON-LD + Hydra
- * format.
+ * Represents collection pages in JSON-LD + Hydra format.
+ *
+ * <p>
+ * For more information, see <a href="https://json-ld.org/">JSON-LD </a> and <a
+ * href="https://www.hydra-cg.com/">Hydra </a> .
+ * </p>
  *
  * @author Alejandro Hernández
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
- * @see    <a href="https://json-ld.org/">JSON-LD</a>
- * @see    <a href="https://www.hydra-cg.com/">Hydra</a>
- * @review
  */
 @Component(immediate = true)
 public class JSONLDPageMessageMapper<T> implements PageMessageMapper<T> {

@@ -33,24 +33,25 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * Provides methods to get the corresponding {@link ErrorMessageMapper} for a
- * combination of {@link APIError} an {@link HttpHeaders}.
+ * Provides methods to get the {@link ErrorMessageMapper} that corresponds to
+ * the {@link APIError} and {@code HttpHeaders}.
  *
  * @author Alejandro Hernández
- * @review
  */
 @Component(immediate = true, service = ErrorMessageMapperManager.class)
 public class ErrorMessageMapperManager {
 
 	/**
-	 * Returns the {@code ErrorMessageMapper} for the combination of {@code
+	 * Returns the {@code ErrorMessageMapper} that corresponds to the {@code
 	 * APIError} and {@code HttpHeaders}. If no acceptable media type is found
-	 * on the current request, or no mapper is found for that accept type,
-	 * returns a mapper for the {@code "application/problem+json} media type.
+	 * on the current request, or no mapper is found for that accept type, this
+	 * method returns a mapper for the {@code application/problem+json} media
+	 * type.
 	 *
-	 * @param  apiError the {@code APIError} to be mapped.
-	 * @param  httpHeaders the HTTP headers of the current request.
-	 * @return the mapper for this combination of the error and HTTP headers.
+	 * @param  apiError the {@code APIError}
+	 * @param  httpHeaders the current request's HTTP headers
+	 * @return the {@code ErrorMessageMapper} that corresponds to the {@code
+	 *         APIError} and {@code HttpHeaders}
 	 * @review
 	 */
 	public ErrorMessageMapper getErrorMessageMapper(

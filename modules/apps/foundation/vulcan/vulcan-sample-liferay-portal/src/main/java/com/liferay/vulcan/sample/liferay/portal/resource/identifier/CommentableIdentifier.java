@@ -21,8 +21,7 @@ import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.vulcan.resource.identifier.Identifier;
 
 /**
- * Instances of this identifier represents an identifier of something
- * "commentable".
+ * Represents the identifier of an item that can be commented on.
  *
  * <p>
  * This identifier should only be used to identify comment collections added
@@ -31,25 +30,19 @@ import com.liferay.vulcan.resource.identifier.Identifier;
  * String, Class, java.util.function.Function)}
  * </p>
  *
- * <p>
- * These values can be retrieved using {@link #getClassName()}, {@link
- * #getClassPK()} and {@link #getGroupId()} methods.
- * </p>
- *
  * @author Alejandro Hernández
- * @review
  */
 @ProviderType
 public interface CommentableIdentifier extends Identifier {
 
 	/**
-	 * Returns a new {@code CommentableIdentifier} from a combination of
-	 * className/classPK/groupId.
+	 * Creates and returns a new commentable identifier from a class name, class
+	 * PK, and group ID.
 	 *
-	 * @param  className the className of the identifier.
-	 * @param  classPK the classPK of the identifier.
-	 * @param  groupId the groupId of the identifier.
-	 * @return the {@code CommentableIdentifier}.
+	 * @param  className the identifier's class name
+	 * @param  classPK the identifier's class PK
+	 * @param  groupId the identifier's group ID
+	 * @return the new commentable identifier
 	 * @review
 	 */
 	public static CommentableIdentifier create(
@@ -76,12 +69,11 @@ public interface CommentableIdentifier extends Identifier {
 	}
 
 	/**
-	 * Returns a new {@code CommentableIdentifier} created from a model which
-	 * must be both {@link GroupedModel} and {@link ClassedModel};
+	 * Creates and returns a new commentable identifier created from a model
+	 * that must be both a {@code GroupedModel} and a {@code ClassedModel}.
 	 *
-	 * @param  t a {@link GroupedModel} & {@link ClassedModel} model.
-	 * @return the {@code CommentableIdentifier}.
-	 * @review
+	 * @param  t the {@code GroupedModel} and {@code ClassedModel}
+	 * @return the new commentable identifier
 	 */
 	public static <T extends GroupedModel & ClassedModel> CommentableIdentifier
 		create(T t) {

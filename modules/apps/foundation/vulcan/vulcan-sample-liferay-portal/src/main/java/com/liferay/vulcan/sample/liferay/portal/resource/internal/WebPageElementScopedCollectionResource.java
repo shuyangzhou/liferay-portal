@@ -59,13 +59,12 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * Provides all the necessary information to expose <a
- * href="http://schema.org/WebPageElement">WebPageElement</a> resources through
- * a web API. <p> The resources are mapped from the internal {@link
- * JournalArticle} model.
+ * Provides the information necessary to expose <a
+ * href="http://schema.org/WebPageElement">WebPageElement </a> resources through
+ * a web API. The resources are mapped from the internal model {@code
+ * JournalArticle}.
  *
  * @author Javier Gamarra
- * @review
  */
 @Component(immediate = true, service = CollectionResource.class)
 public class WebPageElementScopedCollectionResource

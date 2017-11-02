@@ -25,11 +25,9 @@ import javax.ws.rs.core.Response;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * Converts a {@link NotFoundException} into its {@link APIError}
- * representation.
+ * Converts a {@code NotFoundException} to its {@link APIError} representation.
  *
  * @author Alejandro Hernández
- * @review
  */
 @Component(immediate = true)
 public class NotFoundExceptionConverter

@@ -1,4 +1,10 @@
 import com.liferay.gradle.plugins.app.docker.AppDockerPlugin
+import com.liferay.gradle.util.OSDetector
+
+import java.nio.file.Files
+import java.nio.file.attribute.FileAttribute
+import java.nio.file.attribute.PosixFilePermission
+import java.nio.file.attribute.PosixFilePermissions
 
 import javax.management.remote.JMXConnectorFactory as JmxFactory
 import javax.management.remote.JMXServiceURL as JmxUrl
@@ -38,16 +44,30 @@ allprojects {
 
 configure(subprojects.findAll {!it.childProjects}) {
 	liferay {
-		deployDir = new File(getClientDeployDir())
+		deployDir = getClientDeployDir()
 	}
 
-	task createClientDeployDir(type: Exec) {
-		commandLine 'mkdir', '-m', '777', '-p', "${getClientDeployDir()}"
+	task createClientDeployDir {
+		doLast {
+			File clientDeployDir = getClientDeployDir()
+
+			FileAttribute[] fileAttributes = []
+
+			if (!OSDetector.windows) {
+				Set<PosixFilePermission> posixFilePermissions = PosixFilePermissions.fromString("rwxrwxrwx")
+
+				fileAttributes = [PosixFilePermissions.asFileAttribute(posixFilePermissions)]
+			}
+
+			Files.createDirectories clientDeployDir.toPath(), fileAttributes
+		}
 	}
 
-	task createJacocoTestIntegrationFile(type: Exec) {
-		doFirst {
-			commandLine 'touch', "${rootDir}/build/jacoco/testIntegration.exec"
+	task createJacocoTestIntegrationFile {
+		doLast {
+			File jaCoCoTestIntegrationFile = new File(rootDir, "build/jacoco/testIntegration.exec")
+
+			jaCoCoTestIntegrationFile.createNewFile()
 		}
 	}
 
@@ -181,7 +201,7 @@ task runDocker(type: Exec) {
 }
 
 def getClientDeployDir() {
-	return "${rootDir}/${project.property('com.liferay.vulcan.deploy.dir')}"
+	return new File(rootDir, project.property("com.liferay.vulcan.deploy.dir"))
 }
 
 def getImageName() {

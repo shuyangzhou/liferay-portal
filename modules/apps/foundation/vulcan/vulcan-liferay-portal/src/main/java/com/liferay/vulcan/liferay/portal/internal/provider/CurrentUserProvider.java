@@ -27,14 +27,13 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * Allows resources to provide the current {@link
- * com.liferay.portal.kernel.model.User} as a parameter in {@link
- * com.liferay.vulcan.resource.builder.RoutesBuilder} methods.
+ * Lets resources provide the current {@code
+ * com.liferay.portal.kernel.model.User} as a parameter in the methods of {@link
+ * com.liferay.vulcan.resource.builder.RoutesBuilder}.
  *
  * @author Alejandro Hernández
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
- * @review
  */
 @Component(immediate = true)
 public class CurrentUserProvider implements Provider<CurrentUser> {

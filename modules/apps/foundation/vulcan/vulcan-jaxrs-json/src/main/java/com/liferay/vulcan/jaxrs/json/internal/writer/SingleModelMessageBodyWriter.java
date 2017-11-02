@@ -68,13 +68,12 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * Gives Vulcan the ability to write single models. For that end it uses the
- * right {@link SingleModelMessageMapper} in accordance with the media type.
+ * Writes single models by using the {@link SingleModelMessageMapper} that
+ * corresponds to the media type.
  *
  * @author Alejandro Hernández
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
- * @review
  */
 @Component(
 	immediate = true, property = "liferay.vulcan.message.body.writer=true"

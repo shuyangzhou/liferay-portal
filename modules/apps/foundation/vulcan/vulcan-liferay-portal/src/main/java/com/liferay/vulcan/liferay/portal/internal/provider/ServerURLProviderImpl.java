@@ -23,22 +23,22 @@ import javax.servlet.http.HttpServletRequest;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * Creates the URL of the server based on the HTTP request and the forwarded
- * header to account for proxies
+ * Creates the server's URL based on the HTTP request and the forwarded header,
+ * to account for proxies.
  *
  * @author Javier Gamarra
- * @review
  */
 @Component(immediate = true)
 public class ServerURLProviderImpl implements ServerURLProvider {
 
 	/**
-	 * Returns the original url of the request without proxy redirection
+	 * Returns the request's original URL without proxy redirection. This method
+	 * does this by inspecting the request's forwarded host header, if it
+	 * exists. Otherwise, this method uses the request's {@code serverName}
+	 * method to return the URL.
 	 *
 	 * @param  httpServletRequest the HTTP request
-	 * @return an URL built based on the forwarded host header if exist or the
-	 *         serverName
-	 * @review
+	 * @return the request's original URL without proxy redirection
 	 */
 	@Override
 	public String getServerURL(HttpServletRequest httpServletRequest) {

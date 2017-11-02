@@ -32,24 +32,22 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Instances of this class represents a blog posting. This is a mock class for
- * sample purposes. It contains methods for retrieving/updating/deleting blog
- * posts and a in-memory database with fake data.
+ * Represents a blog posting. This is a mock class for sample purposes only. It
+ * contains methods for creating, retrieving, updating, and deleting blog posts
+ * in an in-memory database with fake data.
  *
  * @author Alejandro Hernández
- * @review
  */
 public class BlogPosting {
 
 	/**
-	 * Adds a new {@code BlogPosting} to the database.
+	 * Adds a new blog posting to the database.
 	 *
-	 * @param  content the content of the blog posting.
-	 * @param  creatorId the ID of the creator of this blog posting.
-	 * @param  subtitle the subtitle of the blog posting.
-	 * @param  title the title of the blog posting.
-	 * @return the added {@code BlogPosting}.
-	 * @review
+	 * @param  content the blog posting's content
+	 * @param  creatorId the ID of the blog posting's creator
+	 * @param  subtitle the blog posting's subtitle
+	 * @param  title the blog posting's title
+	 * @return the new blog posting
 	 */
 	public static BlogPosting addBlogPosting(
 		String content, long creatorId, String subtitle, String title) {
@@ -66,24 +64,20 @@ public class BlogPosting {
 	}
 
 	/**
-	 * Deletes a {@code BlogPosting} with a certain {@code ID} from the
-	 * database.
+	 * Deletes the blog posting that matches the specified ID.
 	 *
-	 * @param  blogPostingId the ID of the blog posting to delete.
-	 * @review
+	 * @param blogPostingId the blog posting's ID
 	 */
 	public static void deleteBlogPosting(long blogPostingId) {
 		_blogPostings.remove(blogPostingId);
 	}
 
 	/**
-	 * Returns a {@code BlogPosting} with a certain {@code ID} from the database
-	 * if present. Returns {@code Optional#empty()} otherwise.
+	 * Returns the blog posting that matches the specified ID, if that blog
+	 * posting exists. Returns {@code Optional#empty()} otherwise.
 	 *
-	 * @param  blogPostingId the ID of the blog posting to retrieve.
-	 * @return the {@code BlogPosting} for the requested ID if present; {@code
-	 *         Optional#empty()} otherwise.
-	 * @review
+	 * @param  blogPostingId the blog posting's ID
+	 * @return the blog posting, if present; {@code Optional#empty()} otherwise
 	 */
 	public static Optional<BlogPosting> getBlogPosting(long blogPostingId) {
 		BlogPosting blogPosting = _blogPostings.get(blogPostingId);
@@ -92,22 +86,21 @@ public class BlogPosting {
 	}
 
 	/**
-	 * Return the total number of blog postings in the database.
+	 * Returns the total number of blog postings.
 	 *
-	 * @return the total number of blog postings in the database.
-	 * @review
+	 * @return the total number of blog postings
 	 */
 	public static int getBlogPostingCount() {
 		return _blogPostings.size();
 	}
 
 	/**
-	 * Returns a page of {@code BlogPosting} from the database.
+	 * Returns the page of blog postings specified by the page's start and end
+	 * positions.
 	 *
-	 * @param  start the start position.
-	 * @param  end the end position.
-	 * @return the list of blog postings between {@code start} and {@code end}.
-	 * @review
+	 * @param  start the page's start position
+	 * @param  end the page's end position
+	 * @return the page of blog postings
 	 */
 	public static List<BlogPosting> getBlogPostings(int start, int end) {
 		Collection<BlogPosting> blogPostings = _blogPostings.values();
@@ -124,17 +117,16 @@ public class BlogPosting {
 	}
 
 	/**
-	 * Updates a {@code BlogPosting} with a certain {@code ID} in the database,
-	 * if present.
+	 * Updates the blog posting that matches the specified ID, if that blog
+	 * posting exists. Returns {@code Optional#empty()} otherwise.
 	 *
-	 * @param  blogPostingId the ID of the blog posting to update.
-	 * @param  content the new content for the blog posting.
-	 * @param  creatorId the ID of the new creator for the blog posting.
-	 * @param  subtitle the new subtitle for the blog posting.
-	 * @param  title the new title for the blog posting.
-	 * @return the updated {@code BlogPosting} if present; {@code
-	 *         Optional#empty()} otherwise.
-	 * @review
+	 * @param  blogPostingId the blog posting's ID
+	 * @param  content the blog posting's new content
+	 * @param  creatorId the ID of the user updating the blog posting
+	 * @param  subtitle the blog posting's new subtitle
+	 * @param  title the blog posting's new title
+	 * @return the updated blog posting, if present; {@code Optional#empty()}
+	 *         otherwise
 	 */
 	public static Optional<BlogPosting> updateBlogPosting(
 		long blogPostingId, String content, long creatorId, String subtitle,
@@ -158,70 +150,63 @@ public class BlogPosting {
 	}
 
 	/**
-	 * Returns the ID of this {@code BlogPosting}.
+	 * Returns the current blog posting's ID.
 	 *
-	 * @return the ID of the blog posting.
-	 * @review
+	 * @return the current blog posting's ID
 	 */
 	public long getBlogPostingId() {
 		return _blogPostingId;
 	}
 
 	/**
-	 * Returns the content of this {@code BlogPosting}.
+	 * Returns the current blog posting's content.
 	 *
-	 * @return the content of the blog posting.
-	 * @review
+	 * @return the current blog posting's content
 	 */
 	public String getContent() {
 		return _content;
 	}
 
 	/**
-	 * Returns the create date of this {@code BlogPosting}.
+	 * Returns the date that the current blog posting was created.
 	 *
-	 * @return the create date of the blog posting.
-	 * @review
+	 * @return the current blog posting's creation date
 	 */
 	public Date getCreateDate() {
 		return new Date(_createDate.getTime());
 	}
 
 	/**
-	 * Returns the ID of the creator of this {@code BlogPosting}.
+	 * Returns the ID of the current blog posting's creator.
 	 *
-	 * @return the ID of the creator the blog posting.
-	 * @review
+	 * @return the ID of the current blog posting's creator
 	 */
 	public long getCreatorId() {
 		return _creatorId;
 	}
 
 	/**
-	 * Returns the modified date of this {@code BlogPosting}.
+	 * Returns the date that the current blog posting was modified.
 	 *
-	 * @return the modified date of the blog posting.
-	 * @review
+	 * @return the current blog posting's modification date
 	 */
 	public Date getModifiedDate() {
 		return new Date(_modifiedDate.getTime());
 	}
 
 	/**
-	 * Returns the subtitle of this {@code BlogPosting}.
+	 * Returns the current blog posting's subtitle.
 	 *
-	 * @return the subtitle of the blog posting.
-	 * @review
+	 * @return the current blog posting's subtitle
 	 */
 	public String getSubtitle() {
 		return _subtitle;
 	}
 
 	/**
-	 * Returns the title of this {@code BlogPosting}.
+	 * Returns the current blog posting's title.
 	 *
-	 * @return the title of the blog posting.
-	 * @review
+	 * @return the current blog posting's title
 	 */
 	public String getTitle() {
 		return _title;

@@ -35,13 +35,11 @@ import javax.ws.rs.NotFoundException;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * Provides all the necessary information to expose <a
- * href="http://schema.org/Comment">Comment</a> resources through a web API.
- *
+ * Provides all the information necessary to expose <a
+ * href="http://schema.org/Comment">Comment </a> resources through a web API.
  * The resources are mapped from the internal {@link BlogPostingComment} model.
  *
  * @author Alejandro Hernández
- * @review
  */
 @Component(immediate = true, service = CollectionResource.class)
 public class BlogPostingCommentScopedCollectionResource

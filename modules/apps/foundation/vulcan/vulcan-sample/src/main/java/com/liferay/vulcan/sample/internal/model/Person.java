@@ -33,27 +33,25 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Instances of this class represents a person. This is a mock class for sample
- * purposes. It contains methods for retrieving/updating/deleting persons and a
- * in-memory database with fake data.
+ * Represents a person. This is a mock class for sample purposes only. It
+ * contains methods for creating, retrieving, updating, and deleting persons in
+ * an in-memory database with fake data.
  *
  * @author Alejandro Hernández
- * @review
  */
 public class Person {
 
 	/**
-	 * Adds a new {@code Person} to the database.
+	 * Adds a new person.
 	 *
-	 * @param  address the address of the person.
-	 * @param  avatar the avatar of the person.
-	 * @param  birthDate the birth date of the person.
-	 * @param  email the email of the person.
-	 * @param  firstName the first name of the person.
-	 * @param  jobTitle the job title of the person.
-	 * @param  lastName the last name of the person.
-	 * @return the added {@code Person}.
-	 * @review
+	 * @param  address the person's address
+	 * @param  avatar the person's avatar
+	 * @param  birthDate the person's birth date
+	 * @param  email the person's email
+	 * @param  firstName the person's first name
+	 * @param  jobTitle the person's job title
+	 * @param  lastName the person's last name
+	 * @return the new person
 	 */
 	public static Person addPerson(
 		String address, String avatar, Date birthDate, String email,
@@ -71,22 +69,21 @@ public class Person {
 	}
 
 	/**
-	 * Deletes a {@code Person} with a certain {@code ID} from the database.
+	 * Deletes a person that matches the specified ID.
 	 *
-	 * @param  personId the ID of the person to delete.
-	 * @review
+	 * @param personId the person's ID
 	 */
 	public static void deletePerson(long personId) {
 		_persons.remove(personId);
 	}
 
 	/**
-	 * Returns a page of {@code Person} from the database.
+	 * Returns the page of persons, as specified by the page's start and end
+	 * positions.
 	 *
-	 * @param  start the start position.
-	 * @param  end the end position.
-	 * @return the list of persons between {@code start} and {@code end}.
-	 * @review
+	 * @param  start the page's start position
+	 * @param  end the page's end position
+	 * @return the page of persons
 	 */
 	public static List<Person> getPeople(int start, int end) {
 		Collection<Person> persons = _persons.values();
@@ -103,23 +100,20 @@ public class Person {
 	}
 
 	/**
-	 * Return the total number of persons in the database.
+	 * Returns the total number of persons.
 	 *
-	 * @return the total number of persons in the database.
-	 * @review
+	 * @return the total number of persons
 	 */
 	public static int getPeopleCount() {
 		return _persons.size();
 	}
 
 	/**
-	 * Returns a {@code Person} with a certain {@code ID} from the database if
-	 * present. Returns {@code Optional#empty()} otherwise.
+	 * Returns the person that matches the specified ID, if that person exists.
+	 * Returns {@code Optional#empty()} otherwise.
 	 *
-	 * @param  personId the ID of the person to retrieve.
-	 * @return the {@code Person} for the requested ID if present; {@code
-	 *         Optional#empty()} otherwise.
-	 * @review
+	 * @param  personId the person's ID
+	 * @return the person, if present; {@code Optional#empty()} otherwise
 	 */
 	public static Optional<Person> getPerson(long personId) {
 		Person person = _persons.get(personId);
@@ -128,20 +122,19 @@ public class Person {
 	}
 
 	/**
-	 * Updates a {@code Person} with a certain {@code ID} in the database if
-	 * present.
+	 * Updates the person that matches the specified ID, if that person exists.
+	 * Returns {@code Optional#empty()} otherwise.
 	 *
-	 * @param  address the address of the person.
-	 * @param  avatar the avatar of the person.
-	 * @param  birthDate the birth date of the person.
-	 * @param  email the email of the person.
-	 * @param  firstName the first name of the person.
-	 * @param  jobTitle the job title of the person.
-	 * @param  lastName the last name of the person.
-	 * @param  personId the ID of the person to update.
-	 * @return the updated {@code Person} if present; {@code Optional#empty()}
-	 *         otherwise.
-	 * @review
+	 * @param  address the person's address
+	 * @param  avatar the person's avatar
+	 * @param  birthDate the person's birth date
+	 * @param  email the person's email
+	 * @param  firstName the person's first name
+	 * @param  jobTitle the person's job title
+	 * @param  lastName the person's last name
+	 * @param  personId the person's ID
+	 * @return the updated person, if present; {@code Optional#empty()}
+	 *         otherwise
 	 */
 	public static Optional<Person> updatePerson(
 		String address, String avatar, Date birthDate, String email,
@@ -163,90 +156,81 @@ public class Person {
 	}
 
 	/**
-	 * The address of this {@code Person}.
+	 * Returns the person's address.
 	 *
-	 * @return the address of the person.
-	 * @review
+	 * @return the person's address
 	 */
 	public String getAddress() {
 		return _address;
 	}
 
 	/**
-	 * Returns the avatar of this {@code Person}.
+	 * Returns the person's avatar.
 	 *
-	 * @return the avatar of the person.
-	 * @review
+	 * @return the person's avatar
 	 */
 	public String getAvatar() {
 		return _avatar;
 	}
 
 	/**
-	 * The birth date of this {@code Person}.
+	 * Returns the person's birth date.
 	 *
-	 * @return the birth date of the person.
-	 * @review
+	 * @return the person's birth date
 	 */
 	public Date getBirthDate() {
 		return new Date(_birthDate.getTime());
 	}
 
 	/**
-	 * Returns the email of this {@code Person}.
+	 * Returns the person's email.
 	 *
-	 * @return the email of the person.
-	 * @review
+	 * @return the person's email
 	 */
 	public String getEmail() {
 		return _email;
 	}
 
 	/**
-	 * Returns the first name of this {@code Person}.
+	 * Returns the person's first name.
 	 *
-	 * @return the first name of the person.
-	 * @review
+	 * @return the person's first name
 	 */
 	public String getFirstName() {
 		return _firstName;
 	}
 
 	/**
-	 * Returns the full name of this {@code Person}.
+	 * Returns the person's full name.
 	 *
-	 * @return the last name of the person.
-	 * @review
+	 * @return the person's full name
 	 */
 	public String getFullName() {
 		return _firstName + " " + _lastName;
 	}
 
 	/**
-	 * The job title of this {@code Person}.
+	 * Returns the person's job title.
 	 *
-	 * @return the job title of the person.
-	 * @review
+	 * @return the person's job title
 	 */
 	public String getJobTitle() {
 		return _jobTitle;
 	}
 
 	/**
-	 * Returns the last name of this {@code Person}.
+	 * Returns the person's last name.
 	 *
-	 * @return the last name of the person.
-	 * @review
+	 * @return the person's last name
 	 */
 	public String getLastName() {
 		return _lastName;
 	}
 
 	/**
-	 * The ID of this {@code Person}.
+	 * Returns the person's ID.
 	 *
-	 * @return the ID of the person.
-	 * @review
+	 * @return the person's ID
 	 */
 	public long getPersonId() {
 		return _personId;

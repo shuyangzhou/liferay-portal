@@ -132,13 +132,11 @@ public interface RepresentorBuilder<T, U extends Identifier> {
 			Function<T, Optional<S>> modelFunction);
 
 		/**
-		 * Use this method to provide information of a resource localized string
-		 * field.
+		 * Provides information about a resource localized string field.
 		 *
-		 * @param  key name of the field.
-		 * @param  stringFunction function used to obtain the string value.
-		 * @return builder's actual step.
-		 * @review
+		 * @param  key the field's name
+		 * @param  stringFunction the function used to get the string value
+		 * @return builder's step
 		 */
 		public FirstStep<T, U> addLocalizedString(
 			String key, BiFunction<T, Language, String> stringFunction);

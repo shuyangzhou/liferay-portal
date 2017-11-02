@@ -24,12 +24,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * {@link FunctionalList} implementation for Strings.
+ * Implements {@link FunctionalList} for Strings.
  *
  * @author Alejandro Hernández
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
- * @review
  */
 public class StringFunctionalList implements FunctionalList<String> {
 

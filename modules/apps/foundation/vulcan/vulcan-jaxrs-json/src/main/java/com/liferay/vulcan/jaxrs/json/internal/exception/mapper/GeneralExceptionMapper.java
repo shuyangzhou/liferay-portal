@@ -34,11 +34,10 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 
 /**
- * This mapper will be responsible of capturing all exceptions, converting them
- * to its corresponding {@link APIError} and writing the error to the response.
+ * Captures and converts an exception to its corresponding {@link APIError}, and
+ * writes that error to the response.
  *
  * @author Alejandro Hernández
- * @review
  */
 @Component(immediate = true, property = "liferay.vulcan.exception.mapper=true")
 public class GeneralExceptionMapper implements ExceptionMapper<Exception> {

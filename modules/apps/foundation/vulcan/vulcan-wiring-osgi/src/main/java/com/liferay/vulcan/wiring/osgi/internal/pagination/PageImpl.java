@@ -21,7 +21,6 @@ import java.util.Collection;
 
 /**
  * @author Alejandro Hernández
- * @review
  */
 public class PageImpl<T> implements Page<T> {
 

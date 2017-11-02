@@ -50,9 +50,8 @@ public interface RootEndpoint {
 	 * This occurs via a POST request to the resource.
 	 *
 	 * @param  name the resource's name, extracted from the URL
-	 * @param  body the body of the request.
-	 * @return the new {@link SingleModel}, or an exception if an error occurred
-	 * @review
+	 * @param  body the request's body
+	 * @return the new single model, or an exception if an error occurred
 	 */
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/p/{name}")
@@ -61,15 +60,14 @@ public interface RootEndpoint {
 		@PathParam("name") String name, Map<String, Object> body);
 
 	/**
-	 * Adds a new {@link SingleModel} to the specified nested resource. This
+	 * Adds a new {@link SingleModel} to the nested resource specified. This
 	 * occurs via a POST request to the nested resource.
 	 *
 	 * @param  name the parent resource's name, extracted from the URL
 	 * @param  id the parent resource's ID
-	 * @param  nestedName the nested resource's name, extracted from the URL.
-	 * @param  body the body of the request.
-	 * @return the new {@link SingleModel}, or an exception if an error occurred
-	 * @review
+	 * @param  nestedName the nested resource's name, extracted from the URL
+	 * @param  body the request's body
+	 * @return the new single model, or an exception if an error occurred
 	 */
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/p/{name}/{id}/{nestedName}")
@@ -132,10 +130,9 @@ public interface RootEndpoint {
 		@PathParam("name") String name);
 
 	/**
-	 * Returns the representation of the "home" of the application.
+	 * Returns the string representation of the application's home.
 	 *
-	 * @return the representation of the "home" of the application
-	 * @review
+	 * @return the string representation of the application's home
 	 */
 	@GET
 	@Path("/")
@@ -161,10 +158,8 @@ public interface RootEndpoint {
 	 *
 	 * @param  name the resource's name, extracted from the URL
 	 * @param  id the resource's ID
-	 * @param  body the body of the request.
-	 * @return the updated {@link SingleModel}, or an exception if there was an
-	 *         error
-	 * @review
+	 * @param  body the request's body
+	 * @return the updated single model, or an exception if an error occurred
 	 */
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/p/{name}/{id}")

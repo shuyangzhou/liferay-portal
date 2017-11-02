@@ -37,13 +37,11 @@ import javax.ws.rs.NotFoundException;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * Provides all the necessary information to expose <a
- * href="http://schema.org/Person">Person</a> resources through a web API.
- *
- * The resources are mapped from the internal {@link Person} model.
+ * Provides all the information necessary to expose <a
+ * href="http://schema.org/Person">Person </a> resources through a web API. The
+ * resources are mapped from the internal {@link Person} model.
  *
  * @author Alejandro Hernández
- * @review
  */
 @Component(immediate = true)
 public class PersonCollectionResource

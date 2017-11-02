@@ -39,12 +39,10 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 
 /**
- * This filter is responsible of filtering {@link Try.Failure} entities,
- * converting them to its corresponding {@link APIError} and writing the error
- * to the response.
+ * Filters and converts a {@link Try.Failure} entity to its corresponding {@link
+ * APIError}, and writes that error to the response.
  *
  * @author Alejandro Hernández
- * @review
  */
 @Component(
 	immediate = true, property = "liferay.vulcan.container.response.filter=true"
