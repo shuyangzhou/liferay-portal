@@ -19,12 +19,12 @@ import com.liferay.asset.kernel.model.BaseJSPAssetRenderer;
 import com.liferay.bookmarks.constants.BookmarksPortletKeys;
 import com.liferay.bookmarks.constants.BookmarksWebKeys;
 import com.liferay.bookmarks.model.BookmarksEntry;
-import com.liferay.bookmarks.service.permission.BookmarksEntryPermissionChecker;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.checker.ModelPermission;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.trash.TrashRenderer;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -48,8 +48,11 @@ import javax.servlet.http.HttpServletResponse;
 public class BookmarksEntryAssetRenderer
 	extends BaseJSPAssetRenderer<BookmarksEntry> implements TrashRenderer {
 
-	public BookmarksEntryAssetRenderer(BookmarksEntry entry) {
+	public BookmarksEntryAssetRenderer(
+		BookmarksEntry entry, ModelPermission<BookmarksEntry> modelPermission) {
+
 		_entry = entry;
+		_modelPermission = modelPermission;
 	}
 
 	@Override
@@ -182,7 +185,7 @@ public class BookmarksEntryAssetRenderer
 	@Override
 	public boolean hasEditPermission(PermissionChecker permissionChecker) {
 		try {
-			return BookmarksEntryPermissionChecker.contains(
+			return _modelPermission.contains(
 				permissionChecker, _entry, ActionKeys.UPDATE);
 		}
 		catch (Exception e) {
@@ -194,7 +197,7 @@ public class BookmarksEntryAssetRenderer
 	@Override
 	public boolean hasViewPermission(PermissionChecker permissionChecker) {
 		try {
-			return BookmarksEntryPermissionChecker.contains(
+			return _modelPermission.contains(
 				permissionChecker, _entry, ActionKeys.VIEW);
 		}
 		catch (Exception e) {
@@ -220,5 +223,6 @@ public class BookmarksEntryAssetRenderer
 	}
 
 	private final BookmarksEntry _entry;
+	private final ModelPermission<BookmarksEntry> _modelPermission;
 
 }
