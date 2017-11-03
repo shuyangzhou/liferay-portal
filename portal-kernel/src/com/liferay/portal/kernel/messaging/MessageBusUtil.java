@@ -14,7 +14,7 @@
 
 package com.liferay.portal.kernel.messaging;
 
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactoryUtil;
+import com.liferay.portal.kernel.messaging.proxy.BaseMultiDestinationProxyBean;
 import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.security.pacl.permission.PortalMessageBusPermission;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
@@ -100,30 +100,31 @@ public class MessageBusUtil {
 		_messageBus.sendMessage(destinationName, message);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static Object sendSynchronousMessage(
 			String destinationName, Message message)
 		throws MessageBusException {
 
 		PortalMessageBusPermission.checkSend(destinationName);
 
-		SynchronousMessageSender synchronousMessageSender =
-			SingleDestinationMessageSenderFactoryUtil.
-				getSynchronousMessageSender(_synchronousMessageSenderMode);
-
-		return synchronousMessageSender.send(destinationName, message);
+		return _synchronousMessageSender.send(destinationName, message);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static Object sendSynchronousMessage(
 			String destinationName, Message message, long timeout)
 		throws MessageBusException {
 
 		PortalMessageBusPermission.checkSend(destinationName);
 
-		SynchronousMessageSender synchronousMessageSender =
-			SingleDestinationMessageSenderFactoryUtil.
-				getSynchronousMessageSender(_synchronousMessageSenderMode);
-
-		return synchronousMessageSender.send(destinationName, message, timeout);
+		return _synchronousMessageSender.send(
+			destinationName, message, timeout);
 	}
 
 	public static Object sendSynchronousMessage(
@@ -191,15 +192,20 @@ public class MessageBusUtil {
 			destinationName, messageListener);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public void setSynchronousMessageSenderMode(
 		SynchronousMessageSender.Mode synchronousMessageSenderMode) {
-
-		_synchronousMessageSenderMode = synchronousMessageSenderMode;
 	}
 
 	private static volatile MessageBus _messageBus =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			MessageBus.class, MessageBusUtil.class, "_messageBus", true);
-	private static SynchronousMessageSender.Mode _synchronousMessageSenderMode;
 
+	private static volatile SynchronousMessageSender _synchronousMessageSender =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			SynchronousMessageSender.class, BaseMultiDestinationProxyBean.class,
+			"_synchronousMessageSender", true);
 }

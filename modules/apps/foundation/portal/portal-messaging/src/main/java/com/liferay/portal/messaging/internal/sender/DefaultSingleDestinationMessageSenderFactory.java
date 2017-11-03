@@ -133,8 +133,6 @@ public class DefaultSingleDestinationMessageSenderFactory
 		DirectSynchronousMessageSender directSynchronousMessageSender =
 			new DirectSynchronousMessageSender();
 
-		directSynchronousMessageSender.setMessageBus(_messageBus);
-
 		_synchronousMessageSenders.put(
 			SynchronousMessageSender.Mode.DIRECT,
 			directSynchronousMessageSender);

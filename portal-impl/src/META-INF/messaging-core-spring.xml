@@ -11,9 +11,7 @@
 
 	<!-- Message bus -->
 
-	<bean class="com.liferay.portal.kernel.messaging.MessageBusUtil" id="com.liferay.portal.kernel.messaging.MessageBusUtil">
-		<property name="synchronousMessageSenderMode" value="DEFAULT" />
-	</bean>
+	<bean class="com.liferay.portal.kernel.messaging.MessageBusUtil" id="com.liferay.portal.kernel.messaging.MessageBusUtil" />
 	<bean class="com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactoryUtil" id="com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactoryUtil" />
 
 	<!-- Configurator -->

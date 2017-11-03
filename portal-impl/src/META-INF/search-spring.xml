@@ -25,12 +25,8 @@
 
 	<!-- Proxy -->
 
-	<bean class="com.liferay.portal.kernel.search.IndexSearcherProxyBean" id="com.liferay.portal.kernel.search.IndexSearcherProxyBean">
-		<property name="synchronousMessageSenderMode" value="DIRECT" />
-	</bean>
-	<bean class="com.liferay.portal.kernel.search.IndexWriterProxyBean" id="com.liferay.portal.kernel.search.IndexWriterProxyBean">
-		<property name="synchronousMessageSenderMode" value="DIRECT" />
-	</bean>
+	<bean class="com.liferay.portal.kernel.search.IndexSearcherProxyBean" id="com.liferay.portal.kernel.search.IndexSearcherProxyBean" />
+	<bean class="com.liferay.portal.kernel.search.IndexWriterProxyBean" id="com.liferay.portal.kernel.search.IndexWriterProxyBean" />
 
 	<!-- Util -->
 

@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.exception.LoggedExceptionInInitializerError;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageBus;
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactory;
 import com.liferay.portal.kernel.portlet.PortletBagPool;
 import com.liferay.portal.kernel.process.ClassPathUtil;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
@@ -279,8 +278,7 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 
 		serviceDependencyManager.registerDependencies(
 			MessageBus.class, PortalExecutorManager.class,
-			SchedulerEngineHelper.class,
-			SingleDestinationMessageSenderFactory.class);
+			SchedulerEngineHelper.class);
 
 		ClassLoader portalClassLoader = ClassLoaderUtil.getPortalClassLoader();
 

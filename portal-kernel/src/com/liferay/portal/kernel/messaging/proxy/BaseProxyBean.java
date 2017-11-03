@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSender;
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactoryUtil;
 import com.liferay.portal.kernel.messaging.sender.SingleDestinationSynchronousMessageSender;
 import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
@@ -71,10 +70,12 @@ public abstract class BaseProxyBean {
 		_synchronousDestinationName = synchronousDestinationName;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public void setSynchronousMessageSenderMode(
 		SynchronousMessageSender.Mode synchronousMessageSenderMode) {
-
-		_synchronousMessageSenderMode = synchronousMessageSenderMode;
 	}
 
 	public Object synchronousSend(ProxyRequest proxyRequest) throws Exception {
@@ -82,16 +83,9 @@ public abstract class BaseProxyBean {
 			return proxyRequest.execute(this);
 		}
 
-		SingleDestinationSynchronousMessageSender
-			singleDestinationSynchronousMessageSender =
-				SingleDestinationMessageSenderFactoryUtil.
-					createSingleDestinationSynchronousMessageSender(
-						_synchronousDestinationName,
-						_synchronousMessageSenderMode);
-
 		ProxyResponse proxyResponse =
-			(ProxyResponse)singleDestinationSynchronousMessageSender.send(
-				buildMessage(proxyRequest));
+			(ProxyResponse)_synchronousMessageSender.send(
+				_synchronousDestinationName, buildMessage(proxyRequest));
 
 		if (proxyResponse == null) {
 			return proxyRequest.execute(this);
@@ -121,9 +115,12 @@ public abstract class BaseProxyBean {
 	private static volatile MessageBus _messageBus =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			MessageBus.class, BaseProxyBean.class, "_messageBus", true);
+	private static volatile SynchronousMessageSender _synchronousMessageSender =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			SynchronousMessageSender.class, BaseMultiDestinationProxyBean.class,
+			"_synchronousMessageSender", true);
 
 	private String _destinationName;
 	private String _synchronousDestinationName;
-	private SynchronousMessageSender.Mode _synchronousMessageSenderMode;
 
 }
