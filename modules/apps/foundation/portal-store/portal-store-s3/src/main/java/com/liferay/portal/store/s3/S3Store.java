@@ -47,13 +47,13 @@ import com.liferay.document.library.kernel.exception.DuplicateFileException;
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.BaseStore;
 import com.liferay.document.library.kernel.store.Store;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -61,6 +61,8 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.store.s3.configuration.S3StoreConfiguration;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -188,10 +190,14 @@ public class S3Store extends BaseStore {
 			String versionLabel)
 		throws PortalException {
 
-		S3Object s3Object = getS3Object(
-			companyId, repositoryId, fileName, versionLabel);
+		File file = getFile(companyId, repositoryId, fileName, versionLabel);
 
-		return s3Object.getObjectContent();
+		try {
+			return new FileInputStream(file);
+		}
+		catch (FileNotFoundException fnfe) {
+			throw new SystemException(fnfe);
+		}
 	}
 
 	@Override
