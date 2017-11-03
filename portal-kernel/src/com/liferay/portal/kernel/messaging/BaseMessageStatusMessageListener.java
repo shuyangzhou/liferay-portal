@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.messaging;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSender;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
 /**
  * @author Michael C. Han
@@ -43,21 +44,33 @@ public abstract class BaseMessageStatusMessageListener
 		finally {
 			messageStatus.stopTimer();
 
-			_statusSender.send(messageStatus);
+			message = new Message();
+
+			message.setPayload(messageStatus);
+
+			_messageBus.sendMessage(getDestinationName(), message);
 		}
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public void setStatusSender(SingleDestinationMessageSender statusSender) {
-		_statusSender = statusSender;
 	}
 
 	protected abstract void doReceive(
 			Message message, MessageStatus messageStatus)
 		throws Exception;
 
+	protected abstract String getDestinationName();
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseMessageStatusMessageListener.class);
 
-	private SingleDestinationMessageSender _statusSender;
+	private static volatile MessageBus _messageBus =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			MessageBus.class, BaseMessageStatusMessageListener.class,
+			"_messageBus", true);
 
 }
