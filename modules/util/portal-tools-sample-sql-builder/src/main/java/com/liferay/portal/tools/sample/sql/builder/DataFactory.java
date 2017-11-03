@@ -78,7 +78,11 @@ import com.liferay.dynamic.data.mapping.model.impl.DDMStructureVersionModelImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMTemplateLinkModelImpl;
 import com.liferay.dynamic.data.mapping.model.impl.DDMTemplateModelImpl;
 import com.liferay.dynamic.data.mapping.storage.StorageType;
+import com.liferay.friendly.url.model.FriendlyURLEntryLocalizationModel;
+import com.liferay.friendly.url.model.FriendlyURLEntryMappingModel;
 import com.liferay.friendly.url.model.FriendlyURLEntryModel;
+import com.liferay.friendly.url.model.impl.FriendlyURLEntryLocalizationModelImpl;
+import com.liferay.friendly.url.model.impl.FriendlyURLEntryMappingModelImpl;
 import com.liferay.friendly.url.model.impl.FriendlyURLEntryModelImpl;
 import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.journal.model.JournalArticle;
@@ -108,6 +112,7 @@ import com.liferay.message.boards.kernel.model.MBThreadModel;
 import com.liferay.message.boards.model.MBStatsUserModel;
 import com.liferay.message.boards.model.impl.MBStatsUserModelImpl;
 import com.liferay.message.boards.web.constants.MBPortletKeys;
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.io.OutputStreamWriter;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
@@ -149,12 +154,12 @@ import com.liferay.portal.kernel.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.ReflectionUtil;
@@ -1671,6 +1676,8 @@ public class DataFactory {
 			getClassNameId(JournalArticle.class));
 		ddmStorageLinkModel.setClassPK(journalArticleModel.getId());
 		ddmStorageLinkModel.setStructureId(structureId);
+		ddmStorageLinkModel.setStructureVersionId(
+			_defaultJournalDDMStructureVersionModel.getStructureVersionId());
 
 		return ddmStorageLinkModel;
 	}
@@ -1686,6 +1693,8 @@ public class DataFactory {
 		ddmStorageLinkModel.setClassNameId(getClassNameId(DDMContent.class));
 		ddmStorageLinkModel.setClassPK(ddmContentModel.getContentId());
 		ddmStorageLinkModel.setStructureId(structureId);
+		ddmStorageLinkModel.setStructureVersionId(
+			_defaultDLDDMStructureVersionModel.getStructureVersionId());
 
 		return ddmStorageLinkModel;
 	}
@@ -1834,6 +1843,48 @@ public class DataFactory {
 		return dlFolderModels;
 	}
 
+	public FriendlyURLEntryLocalizationModel
+		newFriendlyURLEntryLocalizationModel(
+			FriendlyURLEntryModel friendlyURLEntryModel,
+			BlogsEntryModel blogsEntryModel) {
+
+		FriendlyURLEntryLocalizationModel friendlyURLEntryLocalizationModel =
+			new FriendlyURLEntryLocalizationModelImpl();
+
+		String languageId = LocaleUtil.toLanguageId(
+			LocaleUtil.getSiteDefault());
+
+		friendlyURLEntryLocalizationModel.setFriendlyURLEntryId(
+			friendlyURLEntryModel.getFriendlyURLEntryId());
+		friendlyURLEntryLocalizationModel.setGroupId(
+			friendlyURLEntryModel.getGroupId());
+		friendlyURLEntryLocalizationModel.setCompanyId(
+			friendlyURLEntryModel.getCompanyId());
+		friendlyURLEntryLocalizationModel.setClassNameId(
+			friendlyURLEntryModel.getClassNameId());
+		friendlyURLEntryLocalizationModel.setClassPK(
+			friendlyURLEntryModel.getClassPK());
+		friendlyURLEntryLocalizationModel.setLanguageId(languageId);
+		friendlyURLEntryLocalizationModel.setUrlTitle(
+			blogsEntryModel.getUrlTitle());
+
+		return friendlyURLEntryLocalizationModel;
+	}
+
+	public FriendlyURLEntryMappingModel newFriendlyURLEntryMapping(
+		FriendlyURLEntryModel friendlyURLEntryModel) {
+
+		FriendlyURLEntryMappingModel friendlyURLEntryMappingModel =
+			new FriendlyURLEntryMappingModelImpl();
+
+		friendlyURLEntryMappingModel.setClassNameId(
+			friendlyURLEntryModel.getClassNameId());
+		friendlyURLEntryMappingModel.setClassPK(
+			friendlyURLEntryModel.getClassPK());
+
+		return friendlyURLEntryMappingModel;
+	}
+
 	public FriendlyURLEntryModel newFriendlyURLEntryModel(
 		BlogsEntryModel blogsEntryModel) {
 
@@ -1848,8 +1899,6 @@ public class DataFactory {
 		friendlyURLEntryModel.setModifiedDate(new Date());
 		friendlyURLEntryModel.setClassNameId(getClassNameId(BlogsEntry.class));
 		friendlyURLEntryModel.setClassPK(blogsEntryModel.getEntryId());
-		friendlyURLEntryModel.setUrlTitle(blogsEntryModel.getUrlTitle());
-		friendlyURLEntryModel.setMain(true);
 
 		return friendlyURLEntryModel;
 	}
