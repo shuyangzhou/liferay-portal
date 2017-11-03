@@ -12,13 +12,11 @@
  * details.
  */
 
-package com.liferay.blogs.web.constants;
+package com.liferay.blogs.constants;
 
 /**
  * @author Sergio González
- * @deprecated As of 2.0.0
  */
-@Deprecated
 public class BlogsPortletKeys {
 
 	public static final String BLOGS =
