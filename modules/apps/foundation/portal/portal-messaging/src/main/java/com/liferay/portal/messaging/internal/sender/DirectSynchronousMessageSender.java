@@ -28,9 +28,12 @@ import com.liferay.portal.kernel.nio.intraband.messaging.IntrabandBridgeDestinat
 
 import java.util.Set;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Shuyang Zhou
  */
+@Component(property = "mode=direct")
 public class DirectSynchronousMessageSender
 	implements SynchronousMessageSender {
 

@@ -29,9 +29,12 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.UUID;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Michael C. Han
  */
+@Component(property = "mode=default")
 public class DefaultSynchronousMessageSender
 	implements SynchronousMessageSender {
 
