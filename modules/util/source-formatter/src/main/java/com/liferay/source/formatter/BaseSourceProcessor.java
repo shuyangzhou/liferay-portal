@@ -293,6 +293,8 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		}
 
 		if (!modifiedContents.add(newContent)) {
+			_sourceFormatterMessagesMap.remove(fileName);
+
 			processMessage(fileName, "Infinite loop in SourceFormatter");
 
 			return originalContent;
@@ -302,6 +304,8 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 			count++;
 
 			if (count > 100) {
+				_sourceFormatterMessagesMap.remove(fileName);
+
 				processMessage(fileName, "Infinite loop in SourceFormatter");
 
 				return originalContent;
@@ -466,6 +470,14 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	}
 
 	private boolean _containsModuleFile(List<String> fileNames) {
+		if (subrepository) {
+			return true;
+		}
+
+		if (!portalSource) {
+			return false;
+		}
+
 		for (String fileName : fileNames) {
 			if (!_isMatchPath(fileName)) {
 				continue;
@@ -570,6 +582,10 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 		if (subrepository) {
 			return true;
+		}
+
+		if (!portalSource) {
+			return false;
 		}
 
 		if (includePlugins) {
