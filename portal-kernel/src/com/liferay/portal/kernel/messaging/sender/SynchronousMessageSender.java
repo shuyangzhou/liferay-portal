@@ -25,9 +25,17 @@ public interface SynchronousMessageSender {
 	public Object send(String destinationName, Message message)
 		throws MessageBusException;
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public Object send(String destinationName, Message message, long timeout)
 		throws MessageBusException;
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public enum Mode {
 
 		DEFAULT, DIRECT;

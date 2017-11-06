@@ -15,8 +15,8 @@
 package com.liferay.portal.workflow.kaleo.runtime.internal;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSender;
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactory;
+import com.liferay.portal.kernel.messaging.Destination;
+import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -25,6 +25,7 @@ import com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken;
 import com.liferay.portal.workflow.kaleo.model.KaleoNode;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
 import com.liferay.portal.workflow.kaleo.runtime.KaleoSignaler;
+import com.liferay.portal.workflow.kaleo.runtime.constants.KaleoRuntimeDestinationNames;
 import com.liferay.portal.workflow.kaleo.runtime.graph.PathElement;
 import com.liferay.portal.workflow.kaleo.runtime.internal.node.NodeExecutorFactory;
 import com.liferay.portal.workflow.kaleo.runtime.node.NodeExecutor;
@@ -32,6 +33,8 @@ import com.liferay.portal.workflow.kaleo.runtime.util.ExecutionContextHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
@@ -42,16 +45,6 @@ import java.util.List;
 )
 public class DefaultKaleoSignaler
 	extends BaseKaleoBean implements KaleoSignaler {
-
-	public void afterPropertiesSet() {
-		_singleDestinationMessageSender =
-			_singleDestinationMessageSenderFactory.
-				createSingleDestinationMessageSender(_destinationName);
-	}
-
-	public void setDestinationName(String destinationName) {
-		_destinationName = destinationName;
-	}
 
 	@Override
 	public void signalEntry(
@@ -66,7 +59,11 @@ public class DefaultKaleoSignaler
 		PathElement startPathElement = new PathElement(
 			null, kaleoInstanceToken.getCurrentKaleoNode(), executionContext);
 
-		_singleDestinationMessageSender.send(startPathElement);
+		Message message = new Message();
+
+		message.setPayload(startPathElement);
+
+		_destination.send(message);
 	}
 
 	@Override
@@ -89,7 +86,11 @@ public class DefaultKaleoSignaler
 		_executionContextHelper.checkKaleoInstanceComplete(executionContext);
 
 		for (PathElement remainingPathElement : remainingPathElements) {
-			_singleDestinationMessageSender.send(remainingPathElement);
+			Message message = new Message();
+
+			message.setPayload(remainingPathElement);
+
+			_destination.send(message);
 		}
 	}
 
@@ -108,21 +109,22 @@ public class DefaultKaleoSignaler
 		PathElement pathElement = new PathElement(
 			currentKaleoNode, null, executionContext);
 
-		_singleDestinationMessageSender.send(pathElement);
+		Message message = new Message();
+
+		message.setPayload(pathElement);
+
+		_destination.send(message);
 	}
 
-	private String _destinationName;
+	@Reference(
+		target = "(destination.name=" + KaleoRuntimeDestinationNames.KALEO_GRAPH_WALKER + ")"
+	)
+	private Destination _destination;
 
 	@ServiceReference(type = ExecutionContextHelper.class)
 	private ExecutionContextHelper _executionContextHelper;
 
 	@ServiceReference(type = NodeExecutorFactory.class)
 	private NodeExecutorFactory _nodeExecutorFactory;
-
-	private SingleDestinationMessageSender _singleDestinationMessageSender;
-
-	@ServiceReference(type = SingleDestinationMessageSenderFactory.class)
-	private SingleDestinationMessageSenderFactory
-		_singleDestinationMessageSenderFactory;
 
 }

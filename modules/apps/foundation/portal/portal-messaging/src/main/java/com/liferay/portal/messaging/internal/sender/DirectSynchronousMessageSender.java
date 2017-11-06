@@ -27,10 +27,13 @@ import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.nio.intraband.messaging.IntrabandBridgeDestination;
 
 import java.util.Set;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Shuyang Zhou
  */
+@Component
 public class DirectSynchronousMessageSender
 	implements SynchronousMessageSender {
 
@@ -71,6 +74,10 @@ public class DirectSynchronousMessageSender
 		return message.getResponse();
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public Object send(String destinationName, Message message, long timeout)
 		throws MessageBusException {
@@ -84,13 +91,10 @@ public class DirectSynchronousMessageSender
 		return send(destinationName, message);
 	}
 
-	public void setMessageBus(MessageBus messageBus) {
-		_messageBus = messageBus;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		DirectSynchronousMessageSender.class);
 
+	@Reference
 	private MessageBus _messageBus;
 
 }

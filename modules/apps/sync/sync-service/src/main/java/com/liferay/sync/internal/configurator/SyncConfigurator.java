@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.DestinationNames;
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactory;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.HashMapDictionary;
@@ -155,11 +154,6 @@ public class SyncConfigurator extends BasePortalInstanceLifecycleListener {
 	private DLSyncEventLocalService _dlSyncEventLocalService;
 	private ServiceRegistration<Destination>
 		_dlSyncEventProcessorServiceRegistration;
-
-	@Reference
-	private SingleDestinationMessageSenderFactory
-		_singleDestinationMessageSenderFactory;
-
 	private ServiceRegistration<Destination>
 		_syncMaintenanceProcessorServiceRegistration;
 

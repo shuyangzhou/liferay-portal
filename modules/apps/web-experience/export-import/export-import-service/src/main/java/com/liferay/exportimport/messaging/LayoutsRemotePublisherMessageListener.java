@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageStatus;
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactory;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -62,7 +61,7 @@ public class LayoutsRemotePublisherMessageListener
 
 	@Activate
 	protected void activate(ComponentContext componentContext) {
-		initialize(componentContext, _singleDestinationMessageSenderFactory);
+		initialize(componentContext);
 	}
 
 	@Deactivate
@@ -154,10 +153,6 @@ public class LayoutsRemotePublisherMessageListener
 	@Reference
 	private ExportImportConfigurationLocalService
 		_exportImportConfigurationLocalService;
-
-	@Reference
-	private SingleDestinationMessageSenderFactory
-		_singleDestinationMessageSenderFactory;
 
 	@Reference
 	private Staging _staging;
