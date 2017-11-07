@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.taglib.servlet.PipingServletResponse;
 import com.liferay.wiki.engine.BaseWikiEngine;
-import com.liferay.wiki.engine.input.editor.common.internal.util.WikiEngineInputEditorCommonComponentProvider;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 
@@ -105,16 +104,6 @@ public abstract class BaseInputEditorWikiEngine extends BaseWikiEngine {
 		servletRequest.setAttribute(_BASE_INPUT_EDITOR_WIKI_ENGINE, this);
 
 		super.renderEditPage(servletRequest, servletResponse, node, page);
-	}
-
-	@Override
-	protected ServletContext getEditPageServletContext() {
-		WikiEngineInputEditorCommonComponentProvider
-			wikiEngineInputEditorCommonComponentProvider =
-				WikiEngineInputEditorCommonComponentProvider.
-					getWikiEngineInputEditorCommonComponentProvider();
-
-		return wikiEngineInputEditorCommonComponentProvider.getServletContext();
 	}
 
 	protected String getHelpPageJSP() {
