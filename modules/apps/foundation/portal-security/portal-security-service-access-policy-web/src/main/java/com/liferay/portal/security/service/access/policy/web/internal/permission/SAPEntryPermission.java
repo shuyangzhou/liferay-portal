@@ -12,10 +12,9 @@
  * details.
  */
 
-package com.liferay.portal.security.service.access.policy.service.permission;
+package com.liferay.portal.security.service.access.policy.web.internal.permission;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.checker.ModelPermission;
 import com.liferay.portal.security.service.access.policy.model.SAPEntry;
@@ -25,38 +24,18 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Mika Koivisto
- * @deprecated As of 2.1.0, with no direct replacement
+ * @author Preston Crary
  */
-@Component(
-	property = {
-		"model.class.name=com.liferay.portal.security.service.access.policy.model.SAPEntry"
-	}
-)
-@Deprecated
-public class SAPEntryPermission implements BaseModelPermissionChecker {
+@Component(immediate = true)
+public class SAPEntryPermission {
 
-	public static void check(
+	public static boolean contains(
 			PermissionChecker permissionChecker, long sapEntryId,
 			String actionId)
 		throws PortalException {
 
-		_modelPermission.check(permissionChecker, sapEntryId, actionId);
-	}
-
-	public static void check(
-			PermissionChecker permissionChecker, SAPEntry sapEntry,
-			String actionId)
-		throws PortalException {
-
-		_modelPermission.check(permissionChecker, sapEntry, actionId);
-	}
-
-	public static boolean contains(
-			PermissionChecker permissionChecker, long classPK, String actionId)
-		throws PortalException {
-
-		return _modelPermission.contains(permissionChecker, classPK, actionId);
+		return _modelPermission.contains(
+			permissionChecker, sapEntryId, actionId);
 	}
 
 	public static boolean contains(
@@ -65,15 +44,6 @@ public class SAPEntryPermission implements BaseModelPermissionChecker {
 		throws PortalException {
 
 		return _modelPermission.contains(permissionChecker, sapEntry, actionId);
-	}
-
-	@Override
-	public void checkBaseModel(
-			PermissionChecker permissionChecker, long groupId, long primaryKey,
-			String actionId)
-		throws PortalException {
-
-		_modelPermission.check(permissionChecker, primaryKey, actionId);
 	}
 
 	@Reference(
