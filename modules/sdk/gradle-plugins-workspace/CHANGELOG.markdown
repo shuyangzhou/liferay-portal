@@ -4,7 +4,7 @@
 
 ### Changed
 - [LPS-66853]: Update the [Liferay Gradle Plugins] dependency to version 2.0.41.
-- [LPS-67656]: Use Liferay 7.0.2 GA3 by default.
+- [LPS-67656]: Use Liferay 7.0.2 GA3 as the default bundle in a workspace.
 
 ## 1.1.0 - 2016-09-28
 
@@ -114,7 +114,7 @@ behavior can be enabled by setting the `liferay.workspace.bundle.token.download`
 property to `true` in `gradle.properties`.
 
 ### Changed
-- [LPS-73248]: Use Liferay 7.0.3 GA4 by default.
+- [LPS-73248]: Use Liferay 7.0.3 GA4 as the default bundle in a workspace.
 - [LPS-73383]: Update the [Liferay Gradle Plugins] dependency to version 3.3.35.
 
 ## 1.5.1 - 2017-07-21
@@ -156,7 +156,7 @@ Liferay bundles by setting the `liferay.workspace.bundle.cache.dir` property in
 - [LPS-75323]: Update the [Liferay Gradle Plugins] dependency to version 3.5.23.
 - [LPS-75479]: Update the [Liferay Portal Tools Bundle Support] dependency to
 version 3.2.1.
-- [LPS-75479]: Use Liferay 7.0.4 GA5 by default.
+- [LPS-75479]: Use Liferay 7.0.4 GA5 as the default bundle in a workspace.
 
 [Gradle Download Task]: https://github.com/michel-kraemer/gradle-download-task/
 [Liferay Gradle Plugins]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins

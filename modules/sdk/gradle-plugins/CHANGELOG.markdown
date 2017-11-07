@@ -2716,7 +2716,7 @@ to version 2.3.11.
 ## 3.5.20 - 2017-10-24
 
 ### Added
-- [LPS-75427]: Log destination directory of the `deploy` task after execution.
+- [LPS-75427]: Log the `deploy` task's destination directory after execution.
 
 ### Changed
 - [LPS-75430]: Update the [Liferay Gradle Plugins Source Formatter] dependency
@@ -2795,6 +2795,21 @@ to version 1.0.17.
 to version 2.3.18.
 - [LPS-74544]: Update the [Liferay Source Formatter] dependency to version
 1.0.489.
+
+## 3.5.30 - 2017-11-07
+
+### Changed
+- [LPS-75745]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.19.
+- [LPS-75745]: Update the [Liferay Source Formatter] dependency to version
+1.0.490.
+
+## 3.5.31 - 2017-11-07
+
+### Changed
+- [LPS-75633]: Update the [Liferay CSS Builder] dependency to version 2.0.2.
+- [LPS-75633]: Update the [Liferay Gradle Plugins CSS Builder] dependency to
+version 2.1.7.
 
 [Gradle Bundle Plugin]: https://github.com/TomDmitriev/gradle-bundle-plugin
 [Liferay Alloy Taglib]: https://github.com/liferay/alloy-taglibs
@@ -3049,4 +3064,6 @@ to version 2.3.18.
 [LPS-75589]: https://issues.liferay.com/browse/LPS-75589
 [LPS-75613]: https://issues.liferay.com/browse/LPS-75613
 [LPS-75624]: https://issues.liferay.com/browse/LPS-75624
+[LPS-75633]: https://issues.liferay.com/browse/LPS-75633
+[LPS-75745]: https://issues.liferay.com/browse/LPS-75745
 [LRDOCS-3023]: https://issues.liferay.com/browse/LRDOCS-3023
