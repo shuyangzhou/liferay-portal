@@ -12,9 +12,8 @@
  * details.
  */
 
-package com.liferay.frontend.css.rtl.converter;
+package com.liferay.frontend.css.rtl.servlet.internal.converter;
 
-import com.liferay.frontend.css.rtl.servlet.internal.converter.CSSRTLConverter;
 import com.helger.commons.charset.CCharset;
 import com.helger.css.ECSSVersion;
 import com.helger.css.decl.CascadingStyleSheet;
