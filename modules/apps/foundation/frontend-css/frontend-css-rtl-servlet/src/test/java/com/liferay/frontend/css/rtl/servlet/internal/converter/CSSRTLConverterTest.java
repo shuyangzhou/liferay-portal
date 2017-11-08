@@ -265,8 +265,8 @@ public class CSSRTLConverterTest {
 		Assert.assertEquals(
 			"hello{padding:1px 2px}",
 			cssRTLConverter.process(
-				"hello { padding/*I*//*comment*/: 1px/* every*/ " +
-					"/*single*/2px/*space*/}"));
+				"hello { padding/*I*//*comment*/: 1px/* every*/ /*single*/2px" +
+					"/*space*/}"));
 	}
 
 	@Test
@@ -342,8 +342,8 @@ public class CSSRTLConverterTest {
 		CSSRTLConverter cssRTLConverter = new CSSRTLConverter();
 
 		Assert.assertEquals(
-			"@media (max-width:320px){#myid{margin-left:1px}" +
-				".cls{padding-right:3px}}td{float:right}",
+			"@media (max-width:320px){#myid{margin-left:1px}." +
+				"cls{padding-right:3px}}td{float:right}",
 			cssRTLConverter.process(
 				"@media (max-width: 320px) { #myid { margin-right: 1px; } " +
 					".cls { padding-left: 3px; } } td { float: left; }"));
