@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.frontend.editor.lang;
+package com.liferay.frontend.editor.lang.internal;
 
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
