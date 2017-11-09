@@ -26,7 +26,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 )
 @Meta.OCD(
 	factory = true,
-	id = "com.liferay.portal.remote.soap.extender.configuration.SoapExtenderConfiguration",
+	id = "com.liferay.portal.remote.soap.extender.internal.configuration.SoapExtenderConfiguration",
 	localization = "content/Language", name = "soap-extender-configuration-name"
 )
 public interface SoapExtenderConfiguration {
