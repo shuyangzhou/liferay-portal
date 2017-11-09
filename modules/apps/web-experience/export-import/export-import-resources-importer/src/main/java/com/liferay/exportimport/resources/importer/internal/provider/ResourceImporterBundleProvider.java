@@ -12,24 +12,13 @@
  * details.
  */
 
-package com.liferay.exportimport.resources.importer.portlet.preferences;
+package com.liferay.exportimport.resources.importer.internal.provider;
 
-import com.liferay.portal.kernel.json.JSONObject;
-
-import javax.portlet.PortletException;
-import javax.portlet.PortletPreferences;
+import aQute.bnd.annotation.ProviderType;
 
 /**
  * @author Michael C. Han
- * @deprecated As of 1.2.0, replaced by {@link
- *             com.liferay.exportimport.resources.importer.internal.portlet.preferences.PortletPreferencesTranslator}
  */
-@Deprecated
-public interface PortletPreferencesTranslator {
-
-	public void translate(
-			JSONObject portletPreferencesJSONObject, String key,
-			PortletPreferences portletPreferences)
-		throws PortletException;
-
+@ProviderType
+public interface ResourceImporterBundleProvider {
 }
