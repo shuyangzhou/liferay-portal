@@ -12,26 +12,30 @@
  * details.
  */
 
-package com.liferay.portal.remote.soap.extender.configuration;
+package com.liferay.portal.remote.soap.extender.internal;
 
-import aQute.bnd.annotation.metatype.Meta;
+import java.util.Map;
 
-import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
+import javax.xml.namespace.QName;
 
 /**
  * @author Carlos Sierra Andrés
  */
-@ExtendedObjectClassDefinition(category = "foundation")
-@Meta.OCD(
-	id = "com.liferay.portal.remote.soap.extender.configuration.JaxWsApiConfiguration",
-	localization = "content/Language", name = "jax-ws-api-configuration-name"
-)
-public interface JaxWsApiConfiguration {
+public interface SoapDescriptorBuilder {
 
-	@Meta.AD(required = true)
-	public String contextPath();
+	public SoapDescriptor buildSoapDescriptor(
+		Object service, Map<String, Object> properties);
 
-	@Meta.AD(deflt = "10000", required = true)
-	public long timeout();
+	public interface SoapDescriptor {
+
+		public QName getEndpointName();
+
+		public String getPublicationAddress();
+
+		public Class<?> getServiceClass();
+
+		public String getWsdlLocation();
+
+	}
 
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.portal.remote.soap.extender.internal;
 
-import com.liferay.portal.remote.soap.extender.SoapDescriptorBuilder;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
