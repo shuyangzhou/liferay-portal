@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.remote.soap.extender.configuration;
+package com.liferay.portal.remote.soap.extender.internal.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
