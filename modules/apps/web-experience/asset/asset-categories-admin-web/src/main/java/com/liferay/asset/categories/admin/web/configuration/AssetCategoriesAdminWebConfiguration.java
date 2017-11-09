@@ -16,7 +16,7 @@ package com.liferay.asset.categories.admin.web.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
-import com.liferay.asset.categories.admin.web.constants.AssetCategoriesNavigationDisplayStyleKeys;
+import com.liferay.asset.categories.admin.web.internal.constants.AssetCategoriesNavigationDisplayStyleKeys;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 
 /**
