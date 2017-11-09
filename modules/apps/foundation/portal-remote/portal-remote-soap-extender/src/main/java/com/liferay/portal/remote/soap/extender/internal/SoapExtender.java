@@ -17,7 +17,6 @@ package com.liferay.portal.remote.soap.extender.internal;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.remote.dependency.manager.tccl.TCCLDependencyManager;
-import com.liferay.portal.remote.soap.extender.SoapDescriptorBuilder;
 import com.liferay.portal.remote.soap.extender.configuration.SoapExtenderConfiguration;
 
 import java.util.Map;

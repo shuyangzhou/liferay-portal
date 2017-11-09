@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.remote.soap.extender;
+package com.liferay.portal.remote.soap.extender.internal;
 
 import java.util.Map;
 
