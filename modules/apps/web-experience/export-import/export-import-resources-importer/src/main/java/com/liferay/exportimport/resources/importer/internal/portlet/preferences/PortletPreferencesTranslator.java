@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.exportimport.resources.importer.portlet.preferences;
+package com.liferay.exportimport.resources.importer.internal.portlet.preferences;
 
 import com.liferay.portal.kernel.json.JSONObject;
 

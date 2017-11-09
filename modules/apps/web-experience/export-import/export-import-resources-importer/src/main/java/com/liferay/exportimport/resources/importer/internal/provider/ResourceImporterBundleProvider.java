@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.exportimport.resources.importer.provider;
+package com.liferay.exportimport.resources.importer.internal.provider;
 
 import aQute.bnd.annotation.ProviderType;
 
