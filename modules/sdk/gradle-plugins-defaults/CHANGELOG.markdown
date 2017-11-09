@@ -2367,8 +2367,7 @@ multi-project build.
 
 ### Added
 - [LPS-75359]: Automatically exclude unfetchable [EasyConf](http://easyconf.sourceforge.net/)
-transitive dependencies when added to the `testCompileClasspath` or
-`testRuntime` configuration.
+transitive dependencies.
 - [LPS-75359]: Force specific versions of EasyConf transitive dependencies in
 the `testCompileClasspath` and `testRuntime` configurations:
 	- `commons-configuration:commons-configuration:1.10`
