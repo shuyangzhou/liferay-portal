@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+>
+	<bean class="com.liferay.bookmarks.internal.permission.BookmarksEntryPermissionChecker" id="com.liferay.bookmarks.internal.permission.BookmarksEntryPermissionChecker" />
+	<bean class="com.liferay.bookmarks.internal.permission.BookmarksFolderPermissionChecker" id="com.liferay.bookmarks.internal.permission.BookmarksFolderPermissionChecker" />
+	<bean class="com.liferay.bookmarks.internal.permission.BookmarksPortletPermissionChecker" id="com.liferay.bookmarks.internal.permission.BookmarksPortletPermissionChecker" />
+</beans>

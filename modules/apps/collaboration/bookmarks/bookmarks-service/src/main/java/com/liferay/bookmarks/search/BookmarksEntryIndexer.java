@@ -19,7 +19,6 @@ import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.model.BookmarksFolderConstants;
 import com.liferay.bookmarks.service.BookmarksEntryLocalService;
 import com.liferay.bookmarks.service.BookmarksFolderLocalService;
-import com.liferay.bookmarks.service.permission.BookmarksEntryPermissionChecker;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -40,6 +39,7 @@ import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.checker.ModelPermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -83,7 +83,7 @@ public class BookmarksEntryIndexer extends BaseIndexer<BookmarksEntry> {
 			long entryClassPK, String actionId)
 		throws Exception {
 
-		return BookmarksEntryPermissionChecker.contains(
+		return _modelPermission.contains(
 			permissionChecker, entryClassPK, ActionKeys.VIEW);
 	}
 
@@ -282,5 +282,10 @@ public class BookmarksEntryIndexer extends BaseIndexer<BookmarksEntry> {
 
 	@Reference
 	private IndexWriterHelper _indexWriterHelper;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.bookmarks.model.BookmarksEntry)"
+	)
+	private ModelPermission<BookmarksEntry> _modelPermission;
 
 }
