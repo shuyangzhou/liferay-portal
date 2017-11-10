@@ -952,7 +952,8 @@ public class PortletURLImpl
 			renderParams = _mergeWithRenderParameters(renderParams);
 		}
 
-		boolean resourcePhase = _lifecycle.equals(PortletRequest.RESOURCE_PHASE);
+		boolean resourcePhase = _lifecycle.equals(
+			PortletRequest.RESOURCE_PHASE);
 
 		for (Map.Entry<String, String[]> entry : renderParams.entrySet()) {
 			String name = entry.getKey();
