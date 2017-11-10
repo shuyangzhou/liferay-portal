@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.upgrade.internal.release.osgi.commands;
+package com.liferay.portal.upgrade.impl.internal.release.osgi.commands;
 
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceComparator;
 import com.liferay.osgi.service.tracker.collections.map.PropertyServiceReferenceMapper;
@@ -36,9 +36,9 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.output.stream.container.OutputStreamContainer;
 import com.liferay.portal.output.stream.container.OutputStreamContainerFactory;
 import com.liferay.portal.output.stream.container.OutputStreamContainerFactoryTracker;
-import com.liferay.portal.upgrade.internal.configuration.ReleaseManagerConfiguration;
-import com.liferay.portal.upgrade.internal.graph.ReleaseGraphManager;
-import com.liferay.portal.upgrade.internal.release.ReleasePublisher;
+import com.liferay.portal.upgrade.impl.internal.configuration.ReleaseManagerConfiguration;
+import com.liferay.portal.upgrade.impl.internal.graph.ReleaseGraphManager;
+import com.liferay.portal.upgrade.impl.internal.release.ReleasePublisher;
 import com.liferay.portal.upgrade.registry.UpgradeInfo;
 
 import java.io.IOException;

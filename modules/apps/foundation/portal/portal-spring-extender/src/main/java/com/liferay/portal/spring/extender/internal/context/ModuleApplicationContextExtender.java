@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.spring.extender.internal.classloader.BundleResolverClassLoader;
-import com.liferay.portal.upgrade.registry.UpgradeStepRegistratorTracker;
+import com.liferay.portal.spring.extender.internal.upgrade.UpgradeStepRegistratorTracker;
 
 import java.io.IOException;
 import java.io.InputStream;
