@@ -36,6 +36,7 @@ import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -50,6 +51,7 @@ public class SQLDateTest {
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(), TransactionalTestRule.INSTANCE);
 
+	@Ignore
 	@Test
 	public void testMillisecondsHibernate() {
 		long time = readTimeHibernate() / Time.SECOND * Time.SECOND;
@@ -61,6 +63,7 @@ public class SQLDateTest {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testMillisecondsJDBC() throws SQLException {
 		long time = readTimeJDBC() / Time.SECOND * Time.SECOND;
