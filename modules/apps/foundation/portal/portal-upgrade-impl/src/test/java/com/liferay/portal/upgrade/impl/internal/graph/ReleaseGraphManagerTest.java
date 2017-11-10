@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.upgrade.internal.graph;
+package com.liferay.portal.upgrade.impl.internal.graph;
 
 import com.liferay.portal.kernel.dao.db.DBProcessContext;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;

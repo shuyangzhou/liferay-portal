@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.upgrade.internal.release;
+package com.liferay.portal.upgrade.impl.internal.release;
 
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Release;

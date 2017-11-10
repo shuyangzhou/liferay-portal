@@ -12,24 +12,26 @@
  * details.
  */
 
-package com.liferay.portal.upgrade.internal.configuration;
+package com.liferay.portal.upgrade.impl.internal.graph;
 
-import aQute.bnd.annotation.metatype.Meta;
+import com.liferay.portal.upgrade.registry.UpgradeInfo;
 
-import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
+import org.jgrapht.graph.DefaultEdge;
 
 /**
+ * @author Miguel Pastor
  * @author Carlos Sierra Andrés
  */
-@ExtendedObjectClassDefinition(category = "foundation")
-@Meta.OCD(
-	id = "com.liferay.portal.upgrade.internal.configuration.ReleaseManagerConfiguration",
-	localization = "content/Language",
-	name = "release-manager-configuration-name"
-)
-public interface ReleaseManagerConfiguration {
+public class UpgradeProcessEdge extends DefaultEdge {
 
-	@Meta.AD(deflt = "true", required = false)
-	public boolean autoUpgrade();
+	public UpgradeProcessEdge(UpgradeInfo upgradeInfo) {
+		_upgradeInfo = upgradeInfo;
+	}
+
+	public UpgradeInfo getUpgradeInfo() {
+		return _upgradeInfo;
+	}
+
+	private final UpgradeInfo _upgradeInfo;
 
 }
