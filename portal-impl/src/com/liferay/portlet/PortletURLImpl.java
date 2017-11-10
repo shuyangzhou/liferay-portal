@@ -952,6 +952,9 @@ public class PortletURLImpl
 			renderParams = _mergeWithRenderParameters(renderParams);
 		}
 
+		boolean resourcePhase = _lifecycle.equals(
+			PortletRequest.RESOURCE_PHASE);
+
 		for (Map.Entry<String, String[]> entry : renderParams.entrySet()) {
 			String name = entry.getKey();
 			String[] values = entry.getValue();
@@ -960,11 +963,13 @@ public class PortletURLImpl
 				continue;
 			}
 
-			String publicRenderParameterName = getPublicRenderParameterName(
-				name);
+			if (!resourcePhase) {
+				String publicRenderParameterName = getPublicRenderParameterName(
+					name);
 
-			if (Validator.isNotNull(publicRenderParameterName)) {
-				name = publicRenderParameterName;
+				if (Validator.isNotNull(publicRenderParameterName)) {
+					name = publicRenderParameterName;
+				}
 			}
 
 			for (String value : values) {
