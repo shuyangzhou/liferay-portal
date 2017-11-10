@@ -32,6 +32,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.DirectoryStream.Filter;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.spi.FileSystemProvider;
 
@@ -224,42 +225,23 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 					continue;
 				}
 
-				try (FileSystem fileSystem = FileSystems.newFileSystem(
-						file.toPath(), null)) {
+				try (DirectoryStream<Path> directoryStream =
+						_openDirectoryStream(file, path)) {
 
-					FileSystemProvider fileSystemProvider =
-						fileSystem.provider();
-
-					try (DirectoryStream<Path> directoryStream =
-							fileSystemProvider.newDirectoryStream(
-								fileSystem.getPath(path),
-								new Filter<Path>() {
-
-									@Override
-									public boolean accept(Path entryPath) {
-										String entryPathString =
-											entryPath.toString();
-
-										return entryPathString.endsWith(
-											".class");
-									}
-
-								})) {
-
-						for (Path entryPath : directoryStream) {
-							if (javaFileObjects == null) {
-								javaFileObjects = new ArrayList<>();
-							}
-
-							String entryPathString = entryPath.toString();
-
-							entryPathString = entryPathString.substring(1);
-
-							javaFileObjects.add(
-								new JarJavaFileObject(
-									getClassName(entryPathString), file,
-									entryPathString));
+					for (Path entryPath : directoryStream) {
+						if (javaFileObjects == null) {
+							javaFileObjects = new ArrayList<>();
 						}
+
+						String entryPathString = entryPath.toString();
+
+						entryPathString = entryPathString.substring(1);
+
+						String className = getClassName(entryPathString);
+
+						javaFileObjects.add(
+							new JarJavaFileObject(
+								className, file, entryPathString));
 					}
 				}
 			}
@@ -314,6 +296,31 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 		}
 
 		return javaFileObjects;
+	}
+
+	private DirectoryStream<Path> _openDirectoryStream(File file, String path)
+		throws IOException {
+
+		Path filePath = file.toPath();
+
+		try (FileSystem fileSystem = FileSystems.newFileSystem(
+				filePath, null)) {
+
+			FileSystemProvider fileSystemProvider = fileSystem.provider();
+
+			return fileSystemProvider.newDirectoryStream(
+				fileSystem.getPath(path),
+				new Filter<Path>() {
+
+					@Override
+					public boolean accept(Path entryPath) {
+						String entryPathString = entryPath.toString();
+
+						return entryPathString.endsWith(".class");
+					}
+
+				});
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
