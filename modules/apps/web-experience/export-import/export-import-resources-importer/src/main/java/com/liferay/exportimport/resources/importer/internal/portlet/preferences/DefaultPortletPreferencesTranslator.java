@@ -15,7 +15,6 @@
 package com.liferay.exportimport.resources.importer.internal.portlet.preferences;
 
 import com.liferay.exportimport.resources.importer.internal.constants.ResourcesImporterConstants;
-import com.liferay.exportimport.resources.importer.portlet.preferences.PortletPreferencesTranslator;
 import com.liferay.portal.kernel.json.JSONObject;
 
 import javax.portlet.PortletException;

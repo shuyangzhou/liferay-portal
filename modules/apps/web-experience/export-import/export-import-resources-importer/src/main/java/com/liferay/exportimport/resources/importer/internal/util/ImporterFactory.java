@@ -24,7 +24,7 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
 import com.liferay.dynamic.data.mapping.util.DDMXML;
 import com.liferay.exportimport.resources.importer.internal.constants.ResourcesImporterConstants;
-import com.liferay.exportimport.resources.importer.portlet.preferences.PortletPreferencesTranslator;
+import com.liferay.exportimport.resources.importer.internal.portlet.preferences.PortletPreferencesTranslator;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.service.JournalFolderLocalService;
 import com.liferay.journal.util.JournalConverter;
