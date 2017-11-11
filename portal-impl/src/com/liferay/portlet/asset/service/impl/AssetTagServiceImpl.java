@@ -19,10 +19,15 @@ import com.liferay.asset.kernel.model.AssetTagDisplay;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Autocomplete;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portlet.asset.service.base.AssetTagServiceBaseImpl;
 import com.liferay.portlet.asset.service.permission.AssetTagPermission;
@@ -93,14 +98,15 @@ public class AssetTagServiceImpl extends AssetTagServiceBaseImpl {
 
 	@Override
 	public List<AssetTag> getGroupTags(long groupId) {
-		return assetTagPersistence.findByGroupId(groupId);
+		return sanitize(assetTagPersistence.findByGroupId(groupId));
 	}
 
 	@Override
 	public List<AssetTag> getGroupTags(
 		long groupId, int start, int end, OrderByComparator<AssetTag> obc) {
 
-		return assetTagPersistence.findByGroupId(groupId, start, end, obc);
+		return sanitize(
+			assetTagPersistence.findByGroupId(groupId, start, end, obc));
 	}
 
 	@Override
@@ -131,14 +137,15 @@ public class AssetTagServiceImpl extends AssetTagServiceBaseImpl {
 
 	@Override
 	public AssetTag getTag(long tagId) throws PortalException {
-		return assetTagLocalService.getTag(tagId);
+		return sanitize(assetTagLocalService.getTag(tagId));
 	}
 
 	@Override
 	public List<AssetTag> getTags(long groupId, long classNameId, String name) {
-		return assetTagFinder.findByG_C_N(
-			groupId, classNameId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			null);
+		return sanitize(
+			assetTagFinder.findByG_C_N(
+				groupId, classNameId, name, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, null));
 	}
 
 	@Override
@@ -146,8 +153,9 @@ public class AssetTagServiceImpl extends AssetTagServiceBaseImpl {
 		long groupId, long classNameId, String name, int start, int end,
 		OrderByComparator<AssetTag> obc) {
 
-		return assetTagFinder.findByG_C_N(
-			groupId, classNameId, name, start, end, obc);
+		return sanitize(
+			assetTagFinder.findByG_C_N(
+				groupId, classNameId, name, start, end, obc));
 	}
 
 	@Override
@@ -179,16 +187,17 @@ public class AssetTagServiceImpl extends AssetTagServiceBaseImpl {
 		OrderByComparator<AssetTag> obc) {
 
 		if (Validator.isNull(name)) {
-			return assetTagPersistence.findByGroupId(groupIds, start, end, obc);
+			return sanitize(
+				assetTagPersistence.findByGroupId(groupIds, start, end, obc));
 		}
 
-		return assetTagPersistence.findByG_LikeN(
-			groupIds, name, start, end, obc);
+		return sanitize(
+			assetTagPersistence.findByG_LikeN(groupIds, name, start, end, obc));
 	}
 
 	@Override
 	public List<AssetTag> getTags(String className, long classPK) {
-		return assetTagLocalService.getTags(className, classPK);
+		return sanitize(assetTagLocalService.getTags(className, classPK));
 	}
 
 	@Override
@@ -252,5 +261,41 @@ public class AssetTagServiceImpl extends AssetTagServiceBaseImpl {
 		return assetTagLocalService.updateTag(
 			getUserId(), tagId, name, serviceContext);
 	}
+
+	protected AssetTag sanitize(AssetTag tag) {
+		if (tag == null) {
+			return null;
+		}
+
+		try {
+			PermissionChecker permissionChecker = getPermissionChecker();
+
+			if (permissionChecker.isCompanyAdmin(tag.getCompanyId()) ||
+				(tag.getUserId() == permissionChecker.getUserId())) {
+
+				return tag;
+			}
+		}
+		catch (PrincipalException pe) {
+			_log.error(pe);
+		}
+
+		tag.setUserId(0);
+		tag.setUserName(StringPool.BLANK);
+		tag.setUserUuid(StringPool.BLANK);
+
+		return tag;
+	}
+
+	protected List<AssetTag> sanitize(List<AssetTag> tags) {
+		for (AssetTag tag : tags) {
+			sanitize(tag);
+		}
+
+		return tags;
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AssetTagServiceImpl.class);
 
 }
