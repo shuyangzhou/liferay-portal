@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * @author Brian Wing Shun Chan
@@ -88,6 +89,10 @@ public class ReflectionUtil {
 		return method;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static Type getGenericInterface(
 		Object object, Class<?> interfaceClass) {
 
@@ -114,6 +119,10 @@ public class ReflectionUtil {
 		return null;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static Class<?> getGenericSuperType(Class<?> clazz) {
 		try {
 			ParameterizedType parameterizedType =
@@ -138,16 +147,35 @@ public class ReflectionUtil {
 	public static Class<?>[] getInterfaces(
 		Object object, ClassLoader classLoader) {
 
+		return getInterfaces(
+			object, classLoader,
+			cnfe -> {
+			});
+	}
+
+	public static Class<?>[] getInterfaces(
+		Object object, ClassLoader classLoader,
+		Consumer<ClassNotFoundException> classNotFoundHandler) {
+
 		Set<Class<?>> interfaceClasses = new LinkedHashSet<>();
 
-		Class<?> clazz = object.getClass();
-
-		_getInterfaces(interfaceClasses, clazz, classLoader);
-
-		Class<?> superClass = clazz.getSuperclass();
+		Class<?> superClass = object.getClass();
 
 		while (superClass != null) {
-			_getInterfaces(interfaceClasses, superClass, classLoader);
+			for (Class<?> interfaceClass : superClass.getInterfaces()) {
+				try {
+					if (classLoader == null) {
+						interfaceClasses.add(interfaceClass);
+					}
+					else {
+						interfaceClasses.add(
+							classLoader.loadClass(interfaceClass.getName()));
+					}
+				}
+				catch (ClassNotFoundException cnfe) {
+					classNotFoundHandler.accept(cnfe);
+				}
+			}
 
 			superClass = superClass.getSuperclass();
 		}
@@ -202,6 +230,10 @@ public class ReflectionUtil {
 		return parameterTypes;
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static Set<Method> getVisibleMethods(Class<?> clazz) {
 		Set<Method> visibleMethods = new HashSet<>(
 			Arrays.asList(clazz.getMethods()));
@@ -260,25 +292,6 @@ public class ReflectionUtil {
 		}
 
 		return null;
-	}
-
-	private static void _getInterfaces(
-		Set<Class<?>> interfaceClasses, Class<?> clazz,
-		ClassLoader classLoader) {
-
-		for (Class<?> interfaceClass : clazz.getInterfaces()) {
-			try {
-				if (classLoader != null) {
-					interfaceClasses.add(
-						classLoader.loadClass(interfaceClass.getName()));
-				}
-				else {
-					interfaceClasses.add(interfaceClass);
-				}
-			}
-			catch (ClassNotFoundException cnfe) {
-			}
-		}
 	}
 
 	@SuppressWarnings("unchecked")
