@@ -15,16 +15,17 @@
 package com.liferay.bookmarks.trash;
 
 import com.liferay.bookmarks.model.BookmarksEntry;
+import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.service.BookmarksEntryLocalService;
 import com.liferay.bookmarks.service.BookmarksFolderLocalService;
-import com.liferay.bookmarks.service.permission.BookmarksEntryPermissionChecker;
-import com.liferay.bookmarks.service.permission.BookmarksFolderPermissionChecker;
 import com.liferay.bookmarks.util.BookmarksUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.checker.ModelPermission;
+import com.liferay.portal.kernel.security.permission.checker.ParentModelPermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.trash.TrashActionKeys;
 import com.liferay.trash.kernel.model.TrashEntry;
@@ -39,7 +40,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author     Levente Hudák
  * @author     Zsolt Berentey
  * @deprecated As of 1.1.0, moved to {@link
- *             com.liferay.bookmarks.internal.trash.BookmarksEntryTrashHandler}
+ *             com.liferay.bookmarks.web.internal.trash.
+ *             BookmarksEntryTrashHandler}
  */
 @Deprecated
 public class BookmarksEntryTrashHandler extends BookmarksBaseTrashHandler {
@@ -113,7 +115,7 @@ public class BookmarksEntryTrashHandler extends BookmarksBaseTrashHandler {
 		throws PortalException {
 
 		if (trashActionId.equals(TrashActionKeys.MOVE)) {
-			return BookmarksFolderPermissionChecker.contains(
+			return _parentModelPermission.contains(
 				permissionChecker, groupId, classPK, ActionKeys.ADD_ENTRY);
 		}
 
@@ -189,8 +191,7 @@ public class BookmarksEntryTrashHandler extends BookmarksBaseTrashHandler {
 
 		BookmarksEntry entry = _bookmarksEntryLocalService.getEntry(classPK);
 
-		return BookmarksEntryPermissionChecker.contains(
-			permissionChecker, entry, actionId);
+		return _modelPermission.contains(permissionChecker, entry, actionId);
 	}
 
 	@Reference(unbind = "-")
@@ -209,5 +210,15 @@ public class BookmarksEntryTrashHandler extends BookmarksBaseTrashHandler {
 
 	private BookmarksEntryLocalService _bookmarksEntryLocalService;
 	private BookmarksFolderLocalService _bookmarksFolderLocalService;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.bookmarks.model.BookmarksEntry)"
+	)
+	private ModelPermission<BookmarksEntry> _modelPermission;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.bookmarks.model.BookmarksFolder)"
+	)
+	private ParentModelPermission<BookmarksFolder> _parentModelPermission;
 
 }

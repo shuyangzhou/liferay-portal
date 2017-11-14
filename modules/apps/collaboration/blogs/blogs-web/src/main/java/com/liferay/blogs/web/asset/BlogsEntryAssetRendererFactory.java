@@ -17,18 +17,19 @@ package com.liferay.blogs.web.asset;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.BaseAssetRendererFactory;
+import com.liferay.blogs.constants.BlogsConstants;
 import com.liferay.blogs.constants.BlogsPortletKeys;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryLocalService;
 import com.liferay.blogs.service.BlogsEntryService;
-import com.liferay.blogs.service.permission.BlogsEntryPermission;
-import com.liferay.blogs.service.permission.BlogsPermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.checker.ModelPermission;
+import com.liferay.portal.kernel.security.permission.checker.PortletPermission;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 
@@ -147,7 +148,7 @@ public class BlogsEntryAssetRendererFactory
 			PermissionChecker permissionChecker, long groupId, long classTypeId)
 		throws Exception {
 
-		return BlogsPermission.contains(
+		return _portletPermission.contains(
 			permissionChecker, groupId, ActionKeys.ADD_ENTRY);
 	}
 
@@ -156,8 +157,7 @@ public class BlogsEntryAssetRendererFactory
 			PermissionChecker permissionChecker, long classPK, String actionId)
 		throws Exception {
 
-		return BlogsEntryPermission.contains(
-			permissionChecker, classPK, actionId);
+		return _modelPermission.contains(permissionChecker, classPK, actionId);
 	}
 
 	@Reference(
@@ -191,8 +191,14 @@ public class BlogsEntryAssetRendererFactory
 	private BlogsEntryLocalService _blogsEntryLocalService;
 	private BlogsEntryService _blogsEntryService;
 
+	@Reference(target = "(model.class.name=com.liferay.blogs.model.BlogsEntry)")
+	private ModelPermission<BlogsEntry> _modelPermission;
+
 	@Reference
 	private Portal _portal;
+
+	@Reference(target = "(resource.name=" + BlogsConstants.RESOURCE_NAME + ")")
+	private PortletPermission _portletPermission;
 
 	private ResourceBundleLoader _resourceBundleLoader;
 	private ServletContext _servletContext;
