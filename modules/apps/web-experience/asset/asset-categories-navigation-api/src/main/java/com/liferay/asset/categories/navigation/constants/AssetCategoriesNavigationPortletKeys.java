@@ -12,30 +12,15 @@
  * details.
  */
 
-package com.liferay.util;
+package com.liferay.asset.categories.navigation.constants;
 
 /**
- * @author Brian Wing Shun Chan
- * @see    com.liferay.petra.encryptor.EncryptorException
- * @deprecated As of 7.0.0, replaced by {@link
- *             com.liferay.petra.encryptor.EncryptorException}
+ * @author Eudaldo Alonso
  */
-@Deprecated
-public class EncryptorException extends Exception {
+public class AssetCategoriesNavigationPortletKeys {
 
-	public EncryptorException() {
-	}
-
-	public EncryptorException(String msg) {
-		super(msg);
-	}
-
-	public EncryptorException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-	public EncryptorException(Throwable cause) {
-		super(cause);
-	}
+	public static final String ASSET_CATEGORIES_NAVIGATION =
+		"com_liferay_asset_categories_navigation_web_portlet_" +
+			"AssetCategoriesNavigationPortlet";
 
 }

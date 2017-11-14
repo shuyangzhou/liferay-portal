@@ -16,7 +16,9 @@ package com.liferay.petra.collection.stack;
 
 /**
  * @author Brian Wing Shun Chan
+ * @deprecated As of 1.0.0, with no direct replacement
  */
+@Deprecated
 public class FiniteUniqueStack<E> extends FiniteStack<E> {
 
 	public FiniteUniqueStack(int maxSize) {
