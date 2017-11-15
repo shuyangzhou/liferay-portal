@@ -21,8 +21,8 @@ import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration;
 import com.liferay.portal.search.elasticsearch.internal.cluster.ClusterSettingsContext;
 import com.liferay.portal.search.elasticsearch.internal.cluster.UnicastSettingsContributor;
-import com.liferay.portal.search.elasticsearch.settings.BaseSettingsContributor;
-import com.liferay.portal.search.elasticsearch.settings.ClientSettingsHelper;
+import com.liferay.portal.search.elasticsearch.internal.settings.BaseSettingsContributor;
+import com.liferay.portal.search.elasticsearch.internal.settings.ClientSettingsHelper;
 import com.liferay.portal.util.FileImpl;
 
 import java.io.File;

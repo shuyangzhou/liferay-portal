@@ -21,10 +21,10 @@ import com.liferay.portal.search.elasticsearch.index.IndexNameBuilder;
 import com.liferay.portal.search.elasticsearch.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch.internal.connection.IndexName;
 import com.liferay.portal.search.elasticsearch.internal.document.SingleFieldFixture;
+import com.liferay.portal.search.elasticsearch.internal.settings.BaseIndexSettingsContributor;
+import com.liferay.portal.search.elasticsearch.internal.settings.IndexSettingsHelper;
+import com.liferay.portal.search.elasticsearch.internal.settings.TypeMappingsHelper;
 import com.liferay.portal.search.elasticsearch.internal.util.ResourceUtil;
-import com.liferay.portal.search.elasticsearch.settings.BaseIndexSettingsContributor;
-import com.liferay.portal.search.elasticsearch.settings.IndexSettingsHelper;
-import com.liferay.portal.search.elasticsearch.settings.TypeMappingsHelper;
 
 import java.util.Collections;
 import java.util.HashMap;

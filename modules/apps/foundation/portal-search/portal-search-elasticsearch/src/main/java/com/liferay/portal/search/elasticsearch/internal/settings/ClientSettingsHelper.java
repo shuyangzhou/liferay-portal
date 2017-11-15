@@ -12,13 +12,17 @@
  * details.
  */
 
-package com.liferay.portal.search.elasticsearch.settings;
+package com.liferay.portal.search.elasticsearch.internal.settings;
 
 /**
  * @author André de Oliveira
  */
-public interface IndexSettingsHelper {
+public interface ClientSettingsHelper {
+
+	public void addPlugin(String plugin);
 
 	public void put(String setting, String value);
+
+	public void putArray(String setting, String... values);
 
 }

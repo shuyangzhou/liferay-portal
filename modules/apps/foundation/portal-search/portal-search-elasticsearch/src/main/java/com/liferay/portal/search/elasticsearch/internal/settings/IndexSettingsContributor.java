@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.search.elasticsearch.settings;
+package com.liferay.portal.search.elasticsearch.internal.settings;
 
 import aQute.bnd.annotation.ProviderType;
 
@@ -20,47 +20,21 @@ import aQute.bnd.annotation.ProviderType;
  * @author André de Oliveira
  */
 @ProviderType
-public class BaseIndexSettingsContributor implements IndexSettingsContributor {
+public interface IndexSettingsContributor
+	extends Comparable<IndexSettingsContributor> {
 
-	public BaseIndexSettingsContributor(int priority) {
-		_priority = priority;
-	}
-
-	@Override
-	public int compareTo(IndexSettingsContributor indexSettingsContributor) {
-		if (_priority > indexSettingsContributor.getPriority()) {
-			return 1;
-		}
-		else if (_priority == indexSettingsContributor.getPriority()) {
-			return 0;
-		}
-
-		return -1;
-	}
-
-	@Override
 	public void contribute(
-		String indexName, TypeMappingsHelper typeMappingsHelper) {
-	}
+		String indexName, TypeMappingsHelper typeMappingsHelper);
 
 	/**
 	 * @deprecated As of 2.0.0, replaced by {@link #contribute(String,
 	 *             TypeMappingsHelper)}
 	 */
 	@Deprecated
-	@Override
-	public void contribute(TypeMappingsHelper typeMappingsHelper) {
-	}
+	public void contribute(TypeMappingsHelper typeMappingsHelper);
 
-	@Override
-	public int getPriority() {
-		return _priority;
-	}
+	public int getPriority();
 
-	@Override
-	public void populate(IndexSettingsHelper indexSettingsHelper) {
-	}
-
-	private final int _priority;
+	public void populate(IndexSettingsHelper indexSettingsHelper);
 
 }

@@ -12,34 +12,13 @@
  * details.
  */
 
-package com.liferay.portal.search.elasticsearch.settings;
+package com.liferay.portal.search.elasticsearch.internal.settings;
 
 /**
- * @author Michael C. Han
+ * @author André de Oliveira
  */
-public abstract class BaseSettingsContributor implements SettingsContributor {
+public interface IndexSettingsHelper {
 
-	public BaseSettingsContributor(int priority) {
-		this.priority = priority;
-	}
-
-	@Override
-	public int compareTo(SettingsContributor settingsContributor) {
-		if (priority > settingsContributor.getPriority()) {
-			return 1;
-		}
-		else if (priority == settingsContributor.getPriority()) {
-			return 0;
-		}
-
-		return -1;
-	}
-
-	@Override
-	public int getPriority() {
-		return priority;
-	}
-
-	protected int priority;
+	public void put(String setting, String value);
 
 }

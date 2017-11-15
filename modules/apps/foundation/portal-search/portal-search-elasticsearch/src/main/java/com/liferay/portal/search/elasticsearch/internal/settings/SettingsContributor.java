@@ -12,17 +12,15 @@
  * details.
  */
 
-package com.liferay.portal.search.elasticsearch.settings;
+package com.liferay.portal.search.elasticsearch.internal.settings;
 
 /**
  * @author André de Oliveira
  */
-public interface ClientSettingsHelper {
+public interface SettingsContributor extends Comparable<SettingsContributor> {
 
-	public void addPlugin(String plugin);
+	public int getPriority();
 
-	public void put(String setting, String value);
-
-	public void putArray(String setting, String... values);
+	public void populate(ClientSettingsHelper clientSettingsHelper);
 
 }

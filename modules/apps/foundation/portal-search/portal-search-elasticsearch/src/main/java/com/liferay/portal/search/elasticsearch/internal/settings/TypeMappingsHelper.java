@@ -12,15 +12,13 @@
  * details.
  */
 
-package com.liferay.portal.search.elasticsearch.settings;
+package com.liferay.portal.search.elasticsearch.internal.settings;
 
 /**
  * @author André de Oliveira
  */
-public interface SettingsContributor extends Comparable<SettingsContributor> {
+public interface TypeMappingsHelper {
 
-	public int getPriority();
-
-	public void populate(ClientSettingsHelper clientSettingsHelper);
+	public void addTypeMappings(String indexName, String source);
 
 }

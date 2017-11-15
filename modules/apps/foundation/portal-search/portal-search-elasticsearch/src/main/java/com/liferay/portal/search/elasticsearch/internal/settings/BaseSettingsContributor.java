@@ -12,13 +12,34 @@
  * details.
  */
 
-package com.liferay.portal.search.elasticsearch.settings;
+package com.liferay.portal.search.elasticsearch.internal.settings;
 
 /**
- * @author André de Oliveira
+ * @author Michael C. Han
  */
-public interface TypeMappingsHelper {
+public abstract class BaseSettingsContributor implements SettingsContributor {
 
-	public void addTypeMappings(String indexName, String source);
+	public BaseSettingsContributor(int priority) {
+		this.priority = priority;
+	}
+
+	@Override
+	public int compareTo(SettingsContributor settingsContributor) {
+		if (priority > settingsContributor.getPriority()) {
+			return 1;
+		}
+		else if (priority == settingsContributor.getPriority()) {
+			return 0;
+		}
+
+		return -1;
+	}
+
+	@Override
+	public int getPriority() {
+		return priority;
+	}
+
+	protected int priority;
 
 }
