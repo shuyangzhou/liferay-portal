@@ -148,8 +148,6 @@ public class KaleoDefinitionPersistenceTest {
 
 		newKaleoDefinition.setActive(RandomTestUtil.randomBoolean());
 
-		newKaleoDefinition.setStartKaleoNodeId(RandomTestUtil.nextLong());
-
 		_kaleoDefinitions.add(_persistence.update(newKaleoDefinition));
 
 		KaleoDefinition existingKaleoDefinition = _persistence.findByPrimaryKey(newKaleoDefinition.getPrimaryKey());
@@ -182,8 +180,6 @@ public class KaleoDefinitionPersistenceTest {
 			newKaleoDefinition.getVersion());
 		Assert.assertEquals(existingKaleoDefinition.getActive(),
 			newKaleoDefinition.getActive());
-		Assert.assertEquals(existingKaleoDefinition.getStartKaleoNodeId(),
-			newKaleoDefinition.getStartKaleoNodeId());
 	}
 
 	@Test
@@ -259,7 +255,7 @@ public class KaleoDefinitionPersistenceTest {
 			"kaleoDefinitionId", true, "groupId", true, "companyId", true,
 			"userId", true, "userName", true, "createDate", true,
 			"modifiedDate", true, "name", true, "title", true, "description",
-			true, "version", true, "active", true, "startKaleoNodeId", true);
+			true, "version", true, "active", true);
 	}
 
 	@Test
@@ -470,10 +466,27 @@ public class KaleoDefinitionPersistenceTest {
 		Assert.assertTrue(Objects.equals(existingKaleoDefinition.getName(),
 				ReflectionTestUtil.invoke(existingKaleoDefinition,
 					"getOriginalName", new Class<?>[0])));
+
+		Assert.assertEquals(Long.valueOf(existingKaleoDefinition.getCompanyId()),
+			ReflectionTestUtil.<Long>invoke(existingKaleoDefinition,
+				"getOriginalCompanyId", new Class<?>[0]));
+		Assert.assertTrue(Objects.equals(existingKaleoDefinition.getName(),
+				ReflectionTestUtil.invoke(existingKaleoDefinition,
+					"getOriginalName", new Class<?>[0])));
 		Assert.assertEquals(Integer.valueOf(
 				existingKaleoDefinition.getVersion()),
 			ReflectionTestUtil.<Integer>invoke(existingKaleoDefinition,
 				"getOriginalVersion", new Class<?>[0]));
+
+		Assert.assertEquals(Long.valueOf(existingKaleoDefinition.getCompanyId()),
+			ReflectionTestUtil.<Long>invoke(existingKaleoDefinition,
+				"getOriginalCompanyId", new Class<?>[0]));
+		Assert.assertTrue(Objects.equals(existingKaleoDefinition.getName(),
+				ReflectionTestUtil.invoke(existingKaleoDefinition,
+					"getOriginalName", new Class<?>[0])));
+		Assert.assertEquals(Boolean.valueOf(existingKaleoDefinition.getActive()),
+			ReflectionTestUtil.<Boolean>invoke(existingKaleoDefinition,
+				"getOriginalActive", new Class<?>[0]));
 	}
 
 	protected KaleoDefinition addKaleoDefinition() throws Exception {
@@ -504,8 +517,6 @@ public class KaleoDefinitionPersistenceTest {
 		kaleoDefinition.setVersion(RandomTestUtil.nextInt());
 
 		kaleoDefinition.setActive(RandomTestUtil.randomBoolean());
-
-		kaleoDefinition.setStartKaleoNodeId(RandomTestUtil.nextLong());
 
 		_kaleoDefinitions.add(_persistence.update(kaleoDefinition));
 

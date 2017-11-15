@@ -103,10 +103,10 @@ public class KaleoTaskInstanceTokenLocalServiceUtil {
 		getService().deleteCompanyKaleoTaskInstanceTokens(companyId);
 	}
 
-	public static void deleteKaleoDefinitionKaleoTaskInstanceTokens(
-		long kaleoDefinitionId) {
+	public static void deleteKaleoDefinitionVersionKaleoTaskInstanceTokens(
+		long kaleoDefinitionVersionId) {
 		getService()
-			.deleteKaleoDefinitionKaleoTaskInstanceTokens(kaleoDefinitionId);
+			.deleteKaleoDefinitionVersionKaleoTaskInstanceTokens(kaleoDefinitionVersionId);
 	}
 
 	public static void deleteKaleoInstanceKaleoTaskInstanceTokens(

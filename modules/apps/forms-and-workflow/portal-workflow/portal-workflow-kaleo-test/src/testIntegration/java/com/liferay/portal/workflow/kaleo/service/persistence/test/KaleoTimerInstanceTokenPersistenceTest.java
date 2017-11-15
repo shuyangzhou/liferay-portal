@@ -138,7 +138,7 @@ public class KaleoTimerInstanceTokenPersistenceTest {
 
 		newKaleoTimerInstanceToken.setKaleoClassPK(RandomTestUtil.nextLong());
 
-		newKaleoTimerInstanceToken.setKaleoDefinitionId(RandomTestUtil.nextLong());
+		newKaleoTimerInstanceToken.setKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
 		newKaleoTimerInstanceToken.setKaleoInstanceId(RandomTestUtil.nextLong());
 
@@ -185,8 +185,8 @@ public class KaleoTimerInstanceTokenPersistenceTest {
 			newKaleoTimerInstanceToken.getKaleoClassName());
 		Assert.assertEquals(existingKaleoTimerInstanceToken.getKaleoClassPK(),
 			newKaleoTimerInstanceToken.getKaleoClassPK());
-		Assert.assertEquals(existingKaleoTimerInstanceToken.getKaleoDefinitionId(),
-			newKaleoTimerInstanceToken.getKaleoDefinitionId());
+		Assert.assertEquals(existingKaleoTimerInstanceToken.getKaleoDefinitionVersionId(),
+			newKaleoTimerInstanceToken.getKaleoDefinitionVersionId());
 		Assert.assertEquals(existingKaleoTimerInstanceToken.getKaleoInstanceId(),
 			newKaleoTimerInstanceToken.getKaleoInstanceId());
 		Assert.assertEquals(existingKaleoTimerInstanceToken.getKaleoInstanceTokenId(),
@@ -271,7 +271,7 @@ public class KaleoTimerInstanceTokenPersistenceTest {
 			"kaleoTimerInstanceTokenId", true, "groupId", true, "companyId",
 			true, "userId", true, "userName", true, "createDate", true,
 			"modifiedDate", true, "kaleoClassName", true, "kaleoClassPK", true,
-			"kaleoDefinitionId", true, "kaleoInstanceId", true,
+			"kaleoDefinitionVersionId", true, "kaleoInstanceId", true,
 			"kaleoInstanceTokenId", true, "kaleoTaskInstanceTokenId", true,
 			"kaleoTimerId", true, "kaleoTimerName", true, "blocking", true,
 			"completionUserId", true, "completed", true, "completionDate", true);
@@ -522,7 +522,7 @@ public class KaleoTimerInstanceTokenPersistenceTest {
 
 		kaleoTimerInstanceToken.setKaleoClassPK(RandomTestUtil.nextLong());
 
-		kaleoTimerInstanceToken.setKaleoDefinitionId(RandomTestUtil.nextLong());
+		kaleoTimerInstanceToken.setKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
 		kaleoTimerInstanceToken.setKaleoInstanceId(RandomTestUtil.nextLong());
 

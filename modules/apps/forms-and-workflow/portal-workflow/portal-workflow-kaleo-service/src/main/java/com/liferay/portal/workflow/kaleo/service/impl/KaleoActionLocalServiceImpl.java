@@ -32,8 +32,9 @@ public class KaleoActionLocalServiceImpl
 
 	@Override
 	public KaleoAction addKaleoAction(
-			String kaleoClassName, long kaleoClassPK, long kaleoDefinitionId,
-			String kaleoNodeName, Action action, ServiceContext serviceContext)
+			String kaleoClassName, long kaleoClassPK,
+			long kaleoDefinitionVersionId, String kaleoNodeName, Action action,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		User user = userLocalService.getUser(serviceContext.getGuestOrUserId());
@@ -50,7 +51,7 @@ public class KaleoActionLocalServiceImpl
 		kaleoAction.setModifiedDate(now);
 		kaleoAction.setKaleoClassName(kaleoClassName);
 		kaleoAction.setKaleoClassPK(kaleoClassPK);
-		kaleoAction.setKaleoDefinitionId(kaleoDefinitionId);
+		kaleoAction.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		kaleoAction.setKaleoNodeName(kaleoNodeName);
 		kaleoAction.setName(action.getName());
 		kaleoAction.setDescription(action.getDescription());
@@ -72,8 +73,11 @@ public class KaleoActionLocalServiceImpl
 	}
 
 	@Override
-	public void deleteKaleoDefinitionKaleoActions(long kaleoDefinitionId) {
-		kaleoActionPersistence.removeByKaleoDefinitionId(kaleoDefinitionId);
+	public void deleteKaleoDefinitionVersionKaleoActions(
+		long kaleoDefinitionVersionId) {
+
+		kaleoActionPersistence.removeByKaleoDefinitionVersionId(
+			kaleoDefinitionVersionId);
 	}
 
 	@Override
