@@ -193,18 +193,18 @@ public interface KaleoTaskFormInstanceModel extends BaseModel<KaleoTaskFormInsta
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
-	 * Returns the kaleo definition ID of this kaleo task form instance.
+	 * Returns the kaleo definition version ID of this kaleo task form instance.
 	 *
-	 * @return the kaleo definition ID of this kaleo task form instance
+	 * @return the kaleo definition version ID of this kaleo task form instance
 	 */
-	public long getKaleoDefinitionId();
+	public long getKaleoDefinitionVersionId();
 
 	/**
-	 * Sets the kaleo definition ID of this kaleo task form instance.
+	 * Sets the kaleo definition version ID of this kaleo task form instance.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID of this kaleo task form instance
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID of this kaleo task form instance
 	 */
-	public void setKaleoDefinitionId(long kaleoDefinitionId);
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId);
 
 	/**
 	 * Returns the kaleo instance ID of this kaleo task form instance.

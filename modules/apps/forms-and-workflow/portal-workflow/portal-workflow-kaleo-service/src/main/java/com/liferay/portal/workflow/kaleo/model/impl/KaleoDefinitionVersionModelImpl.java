@@ -88,6 +88,7 @@ public class KaleoDefinitionVersionModelImpl extends BaseModelImpl<KaleoDefiniti
 			{ "description", Types.VARCHAR },
 			{ "content", Types.CLOB },
 			{ "version", Types.VARCHAR },
+			{ "startKaleoNodeId", Types.BIGINT },
 			{ "status", Types.INTEGER }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
@@ -108,10 +109,11 @@ public class KaleoDefinitionVersionModelImpl extends BaseModelImpl<KaleoDefiniti
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("content", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("version", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("startKaleoNodeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table KaleoDefinitionVersion (kaleoDefinitionVersionId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(200) null,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,createDate DATE null,modifiedDate DATE null,name VARCHAR(200) null,title STRING null,description STRING null,content TEXT null,version VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table KaleoDefinitionVersion (kaleoDefinitionVersionId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(200) null,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,createDate DATE null,modifiedDate DATE null,name VARCHAR(200) null,title STRING null,description STRING null,content TEXT null,version VARCHAR(75) null,startKaleoNodeId LONG,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table KaleoDefinitionVersion";
 	public static final String ORDER_BY_JPQL = " ORDER BY kaleoDefinitionVersion.kaleoDefinitionVersionId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY KaleoDefinitionVersion.kaleoDefinitionVersionId ASC";
@@ -186,6 +188,7 @@ public class KaleoDefinitionVersionModelImpl extends BaseModelImpl<KaleoDefiniti
 		attributes.put("description", getDescription());
 		attributes.put("content", getContent());
 		attributes.put("version", getVersion());
+		attributes.put("startKaleoNodeId", getStartKaleoNodeId());
 		attributes.put("status", getStatus());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -285,6 +288,12 @@ public class KaleoDefinitionVersionModelImpl extends BaseModelImpl<KaleoDefiniti
 
 		if (version != null) {
 			setVersion(version);
+		}
+
+		Long startKaleoNodeId = (Long)attributes.get("startKaleoNodeId");
+
+		if (startKaleoNodeId != null) {
+			setStartKaleoNodeId(startKaleoNodeId);
 		}
 
 		Integer status = (Integer)attributes.get("status");
@@ -633,6 +642,16 @@ public class KaleoDefinitionVersionModelImpl extends BaseModelImpl<KaleoDefiniti
 	}
 
 	@Override
+	public long getStartKaleoNodeId() {
+		return _startKaleoNodeId;
+	}
+
+	@Override
+	public void setStartKaleoNodeId(long startKaleoNodeId) {
+		_startKaleoNodeId = startKaleoNodeId;
+	}
+
+	@Override
 	public int getStatus() {
 		return _status;
 	}
@@ -829,6 +848,7 @@ public class KaleoDefinitionVersionModelImpl extends BaseModelImpl<KaleoDefiniti
 		kaleoDefinitionVersionImpl.setDescription(getDescription());
 		kaleoDefinitionVersionImpl.setContent(getContent());
 		kaleoDefinitionVersionImpl.setVersion(getVersion());
+		kaleoDefinitionVersionImpl.setStartKaleoNodeId(getStartKaleoNodeId());
 		kaleoDefinitionVersionImpl.setStatus(getStatus());
 
 		kaleoDefinitionVersionImpl.resetOriginalValues();
@@ -1002,6 +1022,8 @@ public class KaleoDefinitionVersionModelImpl extends BaseModelImpl<KaleoDefiniti
 			kaleoDefinitionVersionCacheModel.version = null;
 		}
 
+		kaleoDefinitionVersionCacheModel.startKaleoNodeId = getStartKaleoNodeId();
+
 		kaleoDefinitionVersionCacheModel.status = getStatus();
 
 		return kaleoDefinitionVersionCacheModel;
@@ -1009,7 +1031,7 @@ public class KaleoDefinitionVersionModelImpl extends BaseModelImpl<KaleoDefiniti
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{kaleoDefinitionVersionId=");
 		sb.append(getKaleoDefinitionVersionId());
@@ -1041,6 +1063,8 @@ public class KaleoDefinitionVersionModelImpl extends BaseModelImpl<KaleoDefiniti
 		sb.append(getContent());
 		sb.append(", version=");
 		sb.append(getVersion());
+		sb.append(", startKaleoNodeId=");
+		sb.append(getStartKaleoNodeId());
 		sb.append(", status=");
 		sb.append(getStatus());
 		sb.append("}");
@@ -1050,7 +1074,7 @@ public class KaleoDefinitionVersionModelImpl extends BaseModelImpl<KaleoDefiniti
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(52);
+		StringBundler sb = new StringBundler(55);
 
 		sb.append("<model><model-name>");
 		sb.append(
@@ -1118,6 +1142,10 @@ public class KaleoDefinitionVersionModelImpl extends BaseModelImpl<KaleoDefiniti
 		sb.append(getVersion());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>startKaleoNodeId</column-name><column-value><![CDATA[");
+		sb.append(getStartKaleoNodeId());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>status</column-name><column-value><![CDATA[");
 		sb.append(getStatus());
 		sb.append("]]></column-value></column>");
@@ -1152,6 +1180,7 @@ public class KaleoDefinitionVersionModelImpl extends BaseModelImpl<KaleoDefiniti
 	private String _content;
 	private String _version;
 	private String _originalVersion;
+	private long _startKaleoNodeId;
 	private int _status;
 	private long _columnBitmask;
 	private KaleoDefinitionVersion _escapedModel;

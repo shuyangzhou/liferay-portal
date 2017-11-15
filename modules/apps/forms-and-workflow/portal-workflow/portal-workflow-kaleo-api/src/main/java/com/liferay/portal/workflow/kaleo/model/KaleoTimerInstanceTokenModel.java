@@ -222,18 +222,18 @@ public interface KaleoTimerInstanceTokenModel extends BaseModel<KaleoTimerInstan
 	public void setKaleoClassPK(long kaleoClassPK);
 
 	/**
-	 * Returns the kaleo definition ID of this kaleo timer instance token.
+	 * Returns the kaleo definition version ID of this kaleo timer instance token.
 	 *
-	 * @return the kaleo definition ID of this kaleo timer instance token
+	 * @return the kaleo definition version ID of this kaleo timer instance token
 	 */
-	public long getKaleoDefinitionId();
+	public long getKaleoDefinitionVersionId();
 
 	/**
-	 * Sets the kaleo definition ID of this kaleo timer instance token.
+	 * Sets the kaleo definition version ID of this kaleo timer instance token.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID of this kaleo timer instance token
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID of this kaleo timer instance token
 	 */
-	public void setKaleoDefinitionId(long kaleoDefinitionId);
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId);
 
 	/**
 	 * Returns the kaleo instance ID of this kaleo timer instance token.

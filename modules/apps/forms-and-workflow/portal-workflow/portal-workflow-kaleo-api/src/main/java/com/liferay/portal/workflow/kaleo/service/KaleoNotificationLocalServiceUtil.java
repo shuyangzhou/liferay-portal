@@ -55,13 +55,14 @@ public class KaleoNotificationLocalServiceUtil {
 
 	public static com.liferay.portal.workflow.kaleo.model.KaleoNotification addKaleoNotification(
 		java.lang.String kaleoClassName, long kaleoClassPK,
-		long kaleoDefinitionId, java.lang.String kaleoNodeName,
+		long kaleoDefinitionVersionId, java.lang.String kaleoNodeName,
 		com.liferay.portal.workflow.kaleo.definition.Notification notification,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addKaleoNotification(kaleoClassName, kaleoClassPK,
-			kaleoDefinitionId, kaleoNodeName, notification, serviceContext);
+			kaleoDefinitionVersionId, kaleoNodeName, notification,
+			serviceContext);
 	}
 
 	/**
@@ -79,9 +80,10 @@ public class KaleoNotificationLocalServiceUtil {
 		getService().deleteCompanyKaleoNotifications(companyId);
 	}
 
-	public static void deleteKaleoDefinitionKaleoNotifications(
-		long kaleoDefinitionId) {
-		getService().deleteKaleoDefinitionKaleoNotifications(kaleoDefinitionId);
+	public static void deleteKaleoDefinitionVersionKaleoNotifications(
+		long kaleoDefinitionVersionId) {
+		getService()
+			.deleteKaleoDefinitionVersionKaleoNotifications(kaleoDefinitionVersionId);
 	}
 
 	/**

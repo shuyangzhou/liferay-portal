@@ -64,7 +64,7 @@ public class KaleoNodeWrapper implements KaleoNode, ModelWrapper<KaleoNode> {
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("kaleoDefinitionId", getKaleoDefinitionId());
+		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
 		attributes.put("name", getName());
 		attributes.put("metadata", getMetadata());
 		attributes.put("description", getDescription());
@@ -119,10 +119,11 @@ public class KaleoNodeWrapper implements KaleoNode, ModelWrapper<KaleoNode> {
 			setModifiedDate(modifiedDate);
 		}
 
-		Long kaleoDefinitionId = (Long)attributes.get("kaleoDefinitionId");
+		Long kaleoDefinitionVersionId = (Long)attributes.get(
+				"kaleoDefinitionVersionId");
 
-		if (kaleoDefinitionId != null) {
-			setKaleoDefinitionId(kaleoDefinitionId);
+		if (kaleoDefinitionVersionId != null) {
+			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		}
 
 		String name = (String)attributes.get("name");
@@ -234,13 +235,13 @@ public class KaleoNodeWrapper implements KaleoNode, ModelWrapper<KaleoNode> {
 	}
 
 	/**
-	* Returns the kaleo definition ID of this kaleo node.
+	* Returns the kaleo definition version ID of this kaleo node.
 	*
-	* @return the kaleo definition ID of this kaleo node
+	* @return the kaleo definition version ID of this kaleo node
 	*/
 	@Override
-	public long getKaleoDefinitionId() {
-		return _kaleoNode.getKaleoDefinitionId();
+	public long getKaleoDefinitionVersionId() {
+		return _kaleoNode.getKaleoDefinitionVersionId();
 	}
 
 	/**
@@ -481,13 +482,13 @@ public class KaleoNodeWrapper implements KaleoNode, ModelWrapper<KaleoNode> {
 	}
 
 	/**
-	* Sets the kaleo definition ID of this kaleo node.
+	* Sets the kaleo definition version ID of this kaleo node.
 	*
-	* @param kaleoDefinitionId the kaleo definition ID of this kaleo node
+	* @param kaleoDefinitionVersionId the kaleo definition version ID of this kaleo node
 	*/
 	@Override
-	public void setKaleoDefinitionId(long kaleoDefinitionId) {
-		_kaleoNode.setKaleoDefinitionId(kaleoDefinitionId);
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		_kaleoNode.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 	}
 
 	/**
