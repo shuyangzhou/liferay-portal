@@ -65,7 +65,7 @@ public class KaleoTaskFormWrapper implements KaleoTaskForm,
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("kaleoDefinitionId", getKaleoDefinitionId());
+		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
 		attributes.put("kaleoNodeId", getKaleoNodeId());
 		attributes.put("kaleoTaskId", getKaleoTaskId());
 		attributes.put("kaleoTaskName", getKaleoTaskName());
@@ -126,10 +126,11 @@ public class KaleoTaskFormWrapper implements KaleoTaskForm,
 			setModifiedDate(modifiedDate);
 		}
 
-		Long kaleoDefinitionId = (Long)attributes.get("kaleoDefinitionId");
+		Long kaleoDefinitionVersionId = (Long)attributes.get(
+				"kaleoDefinitionVersionId");
 
-		if (kaleoDefinitionId != null) {
-			setKaleoDefinitionId(kaleoDefinitionId);
+		if (kaleoDefinitionVersionId != null) {
+			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		}
 
 		Long kaleoNodeId = (Long)attributes.get("kaleoNodeId");
@@ -311,13 +312,13 @@ public class KaleoTaskFormWrapper implements KaleoTaskForm,
 	}
 
 	/**
-	* Returns the kaleo definition ID of this kaleo task form.
+	* Returns the kaleo definition version ID of this kaleo task form.
 	*
-	* @return the kaleo definition ID of this kaleo task form
+	* @return the kaleo definition version ID of this kaleo task form
 	*/
 	@Override
-	public long getKaleoDefinitionId() {
-		return _kaleoTaskForm.getKaleoDefinitionId();
+	public long getKaleoDefinitionVersionId() {
+		return _kaleoTaskForm.getKaleoDefinitionVersionId();
 	}
 
 	/**
@@ -582,13 +583,13 @@ public class KaleoTaskFormWrapper implements KaleoTaskForm,
 	}
 
 	/**
-	* Sets the kaleo definition ID of this kaleo task form.
+	* Sets the kaleo definition version ID of this kaleo task form.
 	*
-	* @param kaleoDefinitionId the kaleo definition ID of this kaleo task form
+	* @param kaleoDefinitionVersionId the kaleo definition version ID of this kaleo task form
 	*/
 	@Override
-	public void setKaleoDefinitionId(long kaleoDefinitionId) {
-		_kaleoTaskForm.setKaleoDefinitionId(kaleoDefinitionId);
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		_kaleoTaskForm.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 	}
 
 	/**

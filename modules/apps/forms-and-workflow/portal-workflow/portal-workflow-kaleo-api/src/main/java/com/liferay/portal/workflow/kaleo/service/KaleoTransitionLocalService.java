@@ -72,7 +72,7 @@ public interface KaleoTransitionLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public KaleoTransition addKaleoTransition(KaleoTransition kaleoTransition);
 
-	public KaleoTransition addKaleoTransition(long kaleoDefinitionId,
+	public KaleoTransition addKaleoTransition(long kaleoDefinitionVersionId,
 		long kaleoNodeId, Transition transition, KaleoNode sourceKaleoNode,
 		KaleoNode targetKaleoNode, ServiceContext serviceContext)
 		throws PortalException;
@@ -87,7 +87,8 @@ public interface KaleoTransitionLocalService extends BaseLocalService,
 
 	public void deleteCompanyKaleoTransitions(long companyId);
 
-	public void deleteKaleoDefinitionKaleoTransitions(long kaleoDefinitionId);
+	public void deleteKaleoDefinitionVersionKaleoTransitions(
+		long kaleoDefinitionVersionId);
 
 	/**
 	* Deletes the kaleo transition from the database. Also notifies the appropriate model listeners.
@@ -190,8 +191,8 @@ public interface KaleoTransitionLocalService extends BaseLocalService,
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<KaleoTransition> getKaleoDefinitionKaleoTransitions(
-		long kaleoDefinitionId);
+	public List<KaleoTransition> getKaleoDefinitionVersionKaleoTransitions(
+		long kaleoDefinitionVersionId);
 
 	/**
 	* Returns the kaleo transition with the primary key.

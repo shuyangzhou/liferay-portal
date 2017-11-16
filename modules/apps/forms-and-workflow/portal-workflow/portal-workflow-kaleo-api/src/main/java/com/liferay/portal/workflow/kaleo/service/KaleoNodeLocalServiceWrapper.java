@@ -47,12 +47,12 @@ public class KaleoNodeLocalServiceWrapper implements KaleoNodeLocalService,
 
 	@Override
 	public com.liferay.portal.workflow.kaleo.model.KaleoNode addKaleoNode(
-		long kaleoDefinitionId,
+		long kaleoDefinitionVersionId,
 		com.liferay.portal.workflow.kaleo.definition.Node node,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _kaleoNodeLocalService.addKaleoNode(kaleoDefinitionId, node,
-			serviceContext);
+		return _kaleoNodeLocalService.addKaleoNode(kaleoDefinitionVersionId,
+			node, serviceContext);
 	}
 
 	/**
@@ -73,8 +73,9 @@ public class KaleoNodeLocalServiceWrapper implements KaleoNodeLocalService,
 	}
 
 	@Override
-	public void deleteKaleoDefinitionKaleoNodes(long kaleoDefinitionId) {
-		_kaleoNodeLocalService.deleteKaleoDefinitionKaleoNodes(kaleoDefinitionId);
+	public void deleteKaleoDefinitionVersionKaleoNodes(
+		long kaleoDefinitionVersionId) {
+		_kaleoNodeLocalService.deleteKaleoDefinitionVersionKaleoNodes(kaleoDefinitionVersionId);
 	}
 
 	/**
@@ -214,9 +215,9 @@ public class KaleoNodeLocalServiceWrapper implements KaleoNodeLocalService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.workflow.kaleo.model.KaleoNode> getKaleoDefinitionKaleoNodes(
-		long kaleoDefinitionId) {
-		return _kaleoNodeLocalService.getKaleoDefinitionKaleoNodes(kaleoDefinitionId);
+	public java.util.List<com.liferay.portal.workflow.kaleo.model.KaleoNode> getKaleoDefinitionVersionKaleoNodes(
+		long kaleoDefinitionVersionId) {
+		return _kaleoNodeLocalService.getKaleoDefinitionVersionKaleoNodes(kaleoDefinitionVersionId);
 	}
 
 	/**

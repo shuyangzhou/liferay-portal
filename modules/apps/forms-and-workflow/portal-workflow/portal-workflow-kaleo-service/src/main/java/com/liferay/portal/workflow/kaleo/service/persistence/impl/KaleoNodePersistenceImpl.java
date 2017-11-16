@@ -593,85 +593,92 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 	}
 
 	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 = "kaleoNode.companyId = ?";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_KALEODEFINITIONID =
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_KALEODEFINITIONVERSIONID =
 		new FinderPath(KaleoNodeModelImpl.ENTITY_CACHE_ENABLED,
 			KaleoNodeModelImpl.FINDER_CACHE_ENABLED, KaleoNodeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByKaleoDefinitionId",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findByKaleoDefinitionVersionId",
 			new String[] {
 				Long.class.getName(),
 				
 			Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID =
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONVERSIONID =
 		new FinderPath(KaleoNodeModelImpl.ENTITY_CACHE_ENABLED,
 			KaleoNodeModelImpl.FINDER_CACHE_ENABLED, KaleoNodeImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByKaleoDefinitionId", new String[] { Long.class.getName() },
-			KaleoNodeModelImpl.KALEODEFINITIONID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_KALEODEFINITIONID = new FinderPath(KaleoNodeModelImpl.ENTITY_CACHE_ENABLED,
+			"findByKaleoDefinitionVersionId",
+			new String[] { Long.class.getName() },
+			KaleoNodeModelImpl.KALEODEFINITIONVERSIONID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_KALEODEFINITIONVERSIONID =
+		new FinderPath(KaleoNodeModelImpl.ENTITY_CACHE_ENABLED,
 			KaleoNodeModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByKaleoDefinitionId", new String[] { Long.class.getName() });
+			"countByKaleoDefinitionVersionId",
+			new String[] { Long.class.getName() });
 
 	/**
-	 * Returns all the kaleo nodes where kaleoDefinitionId = &#63;.
+	 * Returns all the kaleo nodes where kaleoDefinitionVersionId = &#63;.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @return the matching kaleo nodes
 	 */
 	@Override
-	public List<KaleoNode> findByKaleoDefinitionId(long kaleoDefinitionId) {
-		return findByKaleoDefinitionId(kaleoDefinitionId, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
+	public List<KaleoNode> findByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId) {
+		return findByKaleoDefinitionVersionId(kaleoDefinitionVersionId,
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the kaleo nodes where kaleoDefinitionId = &#63;.
+	 * Returns a range of all the kaleo nodes where kaleoDefinitionVersionId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoNodeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param start the lower bound of the range of kaleo nodes
 	 * @param end the upper bound of the range of kaleo nodes (not inclusive)
 	 * @return the range of matching kaleo nodes
 	 */
 	@Override
-	public List<KaleoNode> findByKaleoDefinitionId(long kaleoDefinitionId,
-		int start, int end) {
-		return findByKaleoDefinitionId(kaleoDefinitionId, start, end, null);
+	public List<KaleoNode> findByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId, int start, int end) {
+		return findByKaleoDefinitionVersionId(kaleoDefinitionVersionId, start,
+			end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the kaleo nodes where kaleoDefinitionId = &#63;.
+	 * Returns an ordered range of all the kaleo nodes where kaleoDefinitionVersionId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoNodeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param start the lower bound of the range of kaleo nodes
 	 * @param end the upper bound of the range of kaleo nodes (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching kaleo nodes
 	 */
 	@Override
-	public List<KaleoNode> findByKaleoDefinitionId(long kaleoDefinitionId,
-		int start, int end, OrderByComparator<KaleoNode> orderByComparator) {
-		return findByKaleoDefinitionId(kaleoDefinitionId, start, end,
-			orderByComparator, true);
+	public List<KaleoNode> findByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId, int start, int end,
+		OrderByComparator<KaleoNode> orderByComparator) {
+		return findByKaleoDefinitionVersionId(kaleoDefinitionVersionId, start,
+			end, orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the kaleo nodes where kaleoDefinitionId = &#63;.
+	 * Returns an ordered range of all the kaleo nodes where kaleoDefinitionVersionId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoNodeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param start the lower bound of the range of kaleo nodes
 	 * @param end the upper bound of the range of kaleo nodes (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -679,8 +686,9 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 	 * @return the ordered range of matching kaleo nodes
 	 */
 	@Override
-	public List<KaleoNode> findByKaleoDefinitionId(long kaleoDefinitionId,
-		int start, int end, OrderByComparator<KaleoNode> orderByComparator,
+	public List<KaleoNode> findByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId, int start, int end,
+		OrderByComparator<KaleoNode> orderByComparator,
 		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
@@ -689,13 +697,13 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 				(orderByComparator == null)) {
 			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID;
-			finderArgs = new Object[] { kaleoDefinitionId };
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONVERSIONID;
+			finderArgs = new Object[] { kaleoDefinitionVersionId };
 		}
 		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_KALEODEFINITIONID;
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_KALEODEFINITIONVERSIONID;
 			finderArgs = new Object[] {
-					kaleoDefinitionId,
+					kaleoDefinitionVersionId,
 					
 					start, end, orderByComparator
 				};
@@ -709,7 +717,7 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 			if ((list != null) && !list.isEmpty()) {
 				for (KaleoNode kaleoNode : list) {
-					if ((kaleoDefinitionId != kaleoNode.getKaleoDefinitionId())) {
+					if ((kaleoDefinitionVersionId != kaleoNode.getKaleoDefinitionVersionId())) {
 						list = null;
 
 						break;
@@ -731,7 +739,7 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 			query.append(_SQL_SELECT_KALEONODE_WHERE);
 
-			query.append(_FINDER_COLUMN_KALEODEFINITIONID_KALEODEFINITIONID_2);
+			query.append(_FINDER_COLUMN_KALEODEFINITIONVERSIONID_KALEODEFINITIONVERSIONID_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
@@ -753,7 +761,7 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				qPos.add(kaleoDefinitionId);
+				qPos.add(kaleoDefinitionVersionId);
 
 				if (!pagination) {
 					list = (List<KaleoNode>)QueryUtil.list(q, getDialect(),
@@ -786,18 +794,19 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 	}
 
 	/**
-	 * Returns the first kaleo node in the ordered set where kaleoDefinitionId = &#63;.
+	 * Returns the first kaleo node in the ordered set where kaleoDefinitionVersionId = &#63;.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo node
 	 * @throws NoSuchNodeException if a matching kaleo node could not be found
 	 */
 	@Override
-	public KaleoNode findByKaleoDefinitionId_First(long kaleoDefinitionId,
+	public KaleoNode findByKaleoDefinitionVersionId_First(
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoNode> orderByComparator)
 		throws NoSuchNodeException {
-		KaleoNode kaleoNode = fetchByKaleoDefinitionId_First(kaleoDefinitionId,
+		KaleoNode kaleoNode = fetchByKaleoDefinitionVersionId_First(kaleoDefinitionVersionId,
 				orderByComparator);
 
 		if (kaleoNode != null) {
@@ -808,8 +817,8 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("kaleoDefinitionId=");
-		msg.append(kaleoDefinitionId);
+		msg.append("kaleoDefinitionVersionId=");
+		msg.append(kaleoDefinitionVersionId);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -817,17 +826,18 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 	}
 
 	/**
-	 * Returns the first kaleo node in the ordered set where kaleoDefinitionId = &#63;.
+	 * Returns the first kaleo node in the ordered set where kaleoDefinitionVersionId = &#63;.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo node, or <code>null</code> if a matching kaleo node could not be found
 	 */
 	@Override
-	public KaleoNode fetchByKaleoDefinitionId_First(long kaleoDefinitionId,
+	public KaleoNode fetchByKaleoDefinitionVersionId_First(
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoNode> orderByComparator) {
-		List<KaleoNode> list = findByKaleoDefinitionId(kaleoDefinitionId, 0, 1,
-				orderByComparator);
+		List<KaleoNode> list = findByKaleoDefinitionVersionId(kaleoDefinitionVersionId,
+				0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -837,18 +847,19 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 	}
 
 	/**
-	 * Returns the last kaleo node in the ordered set where kaleoDefinitionId = &#63;.
+	 * Returns the last kaleo node in the ordered set where kaleoDefinitionVersionId = &#63;.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo node
 	 * @throws NoSuchNodeException if a matching kaleo node could not be found
 	 */
 	@Override
-	public KaleoNode findByKaleoDefinitionId_Last(long kaleoDefinitionId,
+	public KaleoNode findByKaleoDefinitionVersionId_Last(
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoNode> orderByComparator)
 		throws NoSuchNodeException {
-		KaleoNode kaleoNode = fetchByKaleoDefinitionId_Last(kaleoDefinitionId,
+		KaleoNode kaleoNode = fetchByKaleoDefinitionVersionId_Last(kaleoDefinitionVersionId,
 				orderByComparator);
 
 		if (kaleoNode != null) {
@@ -859,8 +870,8 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("kaleoDefinitionId=");
-		msg.append(kaleoDefinitionId);
+		msg.append("kaleoDefinitionVersionId=");
+		msg.append(kaleoDefinitionVersionId);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -868,22 +879,23 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 	}
 
 	/**
-	 * Returns the last kaleo node in the ordered set where kaleoDefinitionId = &#63;.
+	 * Returns the last kaleo node in the ordered set where kaleoDefinitionVersionId = &#63;.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo node, or <code>null</code> if a matching kaleo node could not be found
 	 */
 	@Override
-	public KaleoNode fetchByKaleoDefinitionId_Last(long kaleoDefinitionId,
+	public KaleoNode fetchByKaleoDefinitionVersionId_Last(
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoNode> orderByComparator) {
-		int count = countByKaleoDefinitionId(kaleoDefinitionId);
+		int count = countByKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<KaleoNode> list = findByKaleoDefinitionId(kaleoDefinitionId,
+		List<KaleoNode> list = findByKaleoDefinitionVersionId(kaleoDefinitionVersionId,
 				count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -894,17 +906,18 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 	}
 
 	/**
-	 * Returns the kaleo nodes before and after the current kaleo node in the ordered set where kaleoDefinitionId = &#63;.
+	 * Returns the kaleo nodes before and after the current kaleo node in the ordered set where kaleoDefinitionVersionId = &#63;.
 	 *
 	 * @param kaleoNodeId the primary key of the current kaleo node
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo node
 	 * @throws NoSuchNodeException if a kaleo node with the primary key could not be found
 	 */
 	@Override
-	public KaleoNode[] findByKaleoDefinitionId_PrevAndNext(long kaleoNodeId,
-		long kaleoDefinitionId, OrderByComparator<KaleoNode> orderByComparator)
+	public KaleoNode[] findByKaleoDefinitionVersionId_PrevAndNext(
+		long kaleoNodeId, long kaleoDefinitionVersionId,
+		OrderByComparator<KaleoNode> orderByComparator)
 		throws NoSuchNodeException {
 		KaleoNode kaleoNode = findByPrimaryKey(kaleoNodeId);
 
@@ -915,13 +928,14 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 			KaleoNode[] array = new KaleoNodeImpl[3];
 
-			array[0] = getByKaleoDefinitionId_PrevAndNext(session, kaleoNode,
-					kaleoDefinitionId, orderByComparator, true);
+			array[0] = getByKaleoDefinitionVersionId_PrevAndNext(session,
+					kaleoNode, kaleoDefinitionVersionId, orderByComparator, true);
 
 			array[1] = kaleoNode;
 
-			array[2] = getByKaleoDefinitionId_PrevAndNext(session, kaleoNode,
-					kaleoDefinitionId, orderByComparator, false);
+			array[2] = getByKaleoDefinitionVersionId_PrevAndNext(session,
+					kaleoNode, kaleoDefinitionVersionId, orderByComparator,
+					false);
 
 			return array;
 		}
@@ -933,8 +947,8 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 		}
 	}
 
-	protected KaleoNode getByKaleoDefinitionId_PrevAndNext(Session session,
-		KaleoNode kaleoNode, long kaleoDefinitionId,
+	protected KaleoNode getByKaleoDefinitionVersionId_PrevAndNext(
+		Session session, KaleoNode kaleoNode, long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoNode> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
@@ -949,7 +963,7 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 		query.append(_SQL_SELECT_KALEONODE_WHERE);
 
-		query.append(_FINDER_COLUMN_KALEODEFINITIONID_KALEODEFINITIONID_2);
+		query.append(_FINDER_COLUMN_KALEODEFINITIONVERSIONID_KALEODEFINITIONVERSIONID_2);
 
 		if (orderByComparator != null) {
 			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
@@ -1019,7 +1033,7 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		qPos.add(kaleoDefinitionId);
+		qPos.add(kaleoDefinitionVersionId);
 
 		if (orderByComparator != null) {
 			Object[] values = orderByComparator.getOrderByConditionValues(kaleoNode);
@@ -1040,29 +1054,30 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 	}
 
 	/**
-	 * Removes all the kaleo nodes where kaleoDefinitionId = &#63; from the database.
+	 * Removes all the kaleo nodes where kaleoDefinitionVersionId = &#63; from the database.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 */
 	@Override
-	public void removeByKaleoDefinitionId(long kaleoDefinitionId) {
-		for (KaleoNode kaleoNode : findByKaleoDefinitionId(kaleoDefinitionId,
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+	public void removeByKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		for (KaleoNode kaleoNode : findByKaleoDefinitionVersionId(
+				kaleoDefinitionVersionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				null)) {
 			remove(kaleoNode);
 		}
 	}
 
 	/**
-	 * Returns the number of kaleo nodes where kaleoDefinitionId = &#63;.
+	 * Returns the number of kaleo nodes where kaleoDefinitionVersionId = &#63;.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @return the number of matching kaleo nodes
 	 */
 	@Override
-	public int countByKaleoDefinitionId(long kaleoDefinitionId) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_KALEODEFINITIONID;
+	public int countByKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_KALEODEFINITIONVERSIONID;
 
-		Object[] finderArgs = new Object[] { kaleoDefinitionId };
+		Object[] finderArgs = new Object[] { kaleoDefinitionVersionId };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -1071,7 +1086,7 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 			query.append(_SQL_COUNT_KALEONODE_WHERE);
 
-			query.append(_FINDER_COLUMN_KALEODEFINITIONID_KALEODEFINITIONID_2);
+			query.append(_FINDER_COLUMN_KALEODEFINITIONVERSIONID_KALEODEFINITIONVERSIONID_2);
 
 			String sql = query.toString();
 
@@ -1084,7 +1099,7 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				qPos.add(kaleoDefinitionId);
+				qPos.add(kaleoDefinitionVersionId);
 
 				count = (Long)q.uniqueResult();
 
@@ -1103,90 +1118,94 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_KALEODEFINITIONID_KALEODEFINITIONID_2 =
-		"kaleoNode.kaleoDefinitionId = ?";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_C_KDI = new FinderPath(KaleoNodeModelImpl.ENTITY_CACHE_ENABLED,
+	private static final String _FINDER_COLUMN_KALEODEFINITIONVERSIONID_KALEODEFINITIONVERSIONID_2 =
+		"kaleoNode.kaleoDefinitionVersionId = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_C_KDVI = new FinderPath(KaleoNodeModelImpl.ENTITY_CACHE_ENABLED,
 			KaleoNodeModelImpl.FINDER_CACHE_ENABLED, KaleoNodeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_KDI",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_KDVI",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				
 			Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_KDI = new FinderPath(KaleoNodeModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_KDVI =
+		new FinderPath(KaleoNodeModelImpl.ENTITY_CACHE_ENABLED,
 			KaleoNodeModelImpl.FINDER_CACHE_ENABLED, KaleoNodeImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_KDI",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_KDVI",
 			new String[] { Long.class.getName(), Long.class.getName() },
 			KaleoNodeModelImpl.COMPANYID_COLUMN_BITMASK |
-			KaleoNodeModelImpl.KALEODEFINITIONID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_C_KDI = new FinderPath(KaleoNodeModelImpl.ENTITY_CACHE_ENABLED,
+			KaleoNodeModelImpl.KALEODEFINITIONVERSIONID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_C_KDVI = new FinderPath(KaleoNodeModelImpl.ENTITY_CACHE_ENABLED,
 			KaleoNodeModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_KDI",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_KDVI",
 			new String[] { Long.class.getName(), Long.class.getName() });
 
 	/**
-	 * Returns all the kaleo nodes where companyId = &#63; and kaleoDefinitionId = &#63;.
+	 * Returns all the kaleo nodes where companyId = &#63; and kaleoDefinitionVersionId = &#63;.
 	 *
 	 * @param companyId the company ID
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @return the matching kaleo nodes
 	 */
 	@Override
-	public List<KaleoNode> findByC_KDI(long companyId, long kaleoDefinitionId) {
-		return findByC_KDI(companyId, kaleoDefinitionId, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
+	public List<KaleoNode> findByC_KDVI(long companyId,
+		long kaleoDefinitionVersionId) {
+		return findByC_KDVI(companyId, kaleoDefinitionVersionId,
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the kaleo nodes where companyId = &#63; and kaleoDefinitionId = &#63;.
+	 * Returns a range of all the kaleo nodes where companyId = &#63; and kaleoDefinitionVersionId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoNodeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param companyId the company ID
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param start the lower bound of the range of kaleo nodes
 	 * @param end the upper bound of the range of kaleo nodes (not inclusive)
 	 * @return the range of matching kaleo nodes
 	 */
 	@Override
-	public List<KaleoNode> findByC_KDI(long companyId, long kaleoDefinitionId,
-		int start, int end) {
-		return findByC_KDI(companyId, kaleoDefinitionId, start, end, null);
+	public List<KaleoNode> findByC_KDVI(long companyId,
+		long kaleoDefinitionVersionId, int start, int end) {
+		return findByC_KDVI(companyId, kaleoDefinitionVersionId, start, end,
+			null);
 	}
 
 	/**
-	 * Returns an ordered range of all the kaleo nodes where companyId = &#63; and kaleoDefinitionId = &#63;.
+	 * Returns an ordered range of all the kaleo nodes where companyId = &#63; and kaleoDefinitionVersionId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoNodeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param companyId the company ID
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param start the lower bound of the range of kaleo nodes
 	 * @param end the upper bound of the range of kaleo nodes (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching kaleo nodes
 	 */
 	@Override
-	public List<KaleoNode> findByC_KDI(long companyId, long kaleoDefinitionId,
-		int start, int end, OrderByComparator<KaleoNode> orderByComparator) {
-		return findByC_KDI(companyId, kaleoDefinitionId, start, end,
+	public List<KaleoNode> findByC_KDVI(long companyId,
+		long kaleoDefinitionVersionId, int start, int end,
+		OrderByComparator<KaleoNode> orderByComparator) {
+		return findByC_KDVI(companyId, kaleoDefinitionVersionId, start, end,
 			orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the kaleo nodes where companyId = &#63; and kaleoDefinitionId = &#63;.
+	 * Returns an ordered range of all the kaleo nodes where companyId = &#63; and kaleoDefinitionVersionId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoNodeModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param companyId the company ID
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param start the lower bound of the range of kaleo nodes
 	 * @param end the upper bound of the range of kaleo nodes (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -1194,8 +1213,9 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 	 * @return the ordered range of matching kaleo nodes
 	 */
 	@Override
-	public List<KaleoNode> findByC_KDI(long companyId, long kaleoDefinitionId,
-		int start, int end, OrderByComparator<KaleoNode> orderByComparator,
+	public List<KaleoNode> findByC_KDVI(long companyId,
+		long kaleoDefinitionVersionId, int start, int end,
+		OrderByComparator<KaleoNode> orderByComparator,
 		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
@@ -1204,13 +1224,13 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 				(orderByComparator == null)) {
 			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_KDI;
-			finderArgs = new Object[] { companyId, kaleoDefinitionId };
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_KDVI;
+			finderArgs = new Object[] { companyId, kaleoDefinitionVersionId };
 		}
 		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_C_KDI;
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_C_KDVI;
 			finderArgs = new Object[] {
-					companyId, kaleoDefinitionId,
+					companyId, kaleoDefinitionVersionId,
 					
 					start, end, orderByComparator
 				};
@@ -1225,7 +1245,7 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 			if ((list != null) && !list.isEmpty()) {
 				for (KaleoNode kaleoNode : list) {
 					if ((companyId != kaleoNode.getCompanyId()) ||
-							(kaleoDefinitionId != kaleoNode.getKaleoDefinitionId())) {
+							(kaleoDefinitionVersionId != kaleoNode.getKaleoDefinitionVersionId())) {
 						list = null;
 
 						break;
@@ -1247,9 +1267,9 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 			query.append(_SQL_SELECT_KALEONODE_WHERE);
 
-			query.append(_FINDER_COLUMN_C_KDI_COMPANYID_2);
+			query.append(_FINDER_COLUMN_C_KDVI_COMPANYID_2);
 
-			query.append(_FINDER_COLUMN_C_KDI_KALEODEFINITIONID_2);
+			query.append(_FINDER_COLUMN_C_KDVI_KALEODEFINITIONVERSIONID_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
@@ -1273,7 +1293,7 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 				qPos.add(companyId);
 
-				qPos.add(kaleoDefinitionId);
+				qPos.add(kaleoDefinitionVersionId);
 
 				if (!pagination) {
 					list = (List<KaleoNode>)QueryUtil.list(q, getDialect(),
@@ -1306,20 +1326,21 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 	}
 
 	/**
-	 * Returns the first kaleo node in the ordered set where companyId = &#63; and kaleoDefinitionId = &#63;.
+	 * Returns the first kaleo node in the ordered set where companyId = &#63; and kaleoDefinitionVersionId = &#63;.
 	 *
 	 * @param companyId the company ID
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo node
 	 * @throws NoSuchNodeException if a matching kaleo node could not be found
 	 */
 	@Override
-	public KaleoNode findByC_KDI_First(long companyId, long kaleoDefinitionId,
+	public KaleoNode findByC_KDVI_First(long companyId,
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoNode> orderByComparator)
 		throws NoSuchNodeException {
-		KaleoNode kaleoNode = fetchByC_KDI_First(companyId, kaleoDefinitionId,
-				orderByComparator);
+		KaleoNode kaleoNode = fetchByC_KDVI_First(companyId,
+				kaleoDefinitionVersionId, orderByComparator);
 
 		if (kaleoNode != null) {
 			return kaleoNode;
@@ -1332,8 +1353,8 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 		msg.append("companyId=");
 		msg.append(companyId);
 
-		msg.append(", kaleoDefinitionId=");
-		msg.append(kaleoDefinitionId);
+		msg.append(", kaleoDefinitionVersionId=");
+		msg.append(kaleoDefinitionVersionId);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -1341,18 +1362,19 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 	}
 
 	/**
-	 * Returns the first kaleo node in the ordered set where companyId = &#63; and kaleoDefinitionId = &#63;.
+	 * Returns the first kaleo node in the ordered set where companyId = &#63; and kaleoDefinitionVersionId = &#63;.
 	 *
 	 * @param companyId the company ID
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo node, or <code>null</code> if a matching kaleo node could not be found
 	 */
 	@Override
-	public KaleoNode fetchByC_KDI_First(long companyId, long kaleoDefinitionId,
+	public KaleoNode fetchByC_KDVI_First(long companyId,
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoNode> orderByComparator) {
-		List<KaleoNode> list = findByC_KDI(companyId, kaleoDefinitionId, 0, 1,
-				orderByComparator);
+		List<KaleoNode> list = findByC_KDVI(companyId,
+				kaleoDefinitionVersionId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1362,20 +1384,21 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 	}
 
 	/**
-	 * Returns the last kaleo node in the ordered set where companyId = &#63; and kaleoDefinitionId = &#63;.
+	 * Returns the last kaleo node in the ordered set where companyId = &#63; and kaleoDefinitionVersionId = &#63;.
 	 *
 	 * @param companyId the company ID
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo node
 	 * @throws NoSuchNodeException if a matching kaleo node could not be found
 	 */
 	@Override
-	public KaleoNode findByC_KDI_Last(long companyId, long kaleoDefinitionId,
+	public KaleoNode findByC_KDVI_Last(long companyId,
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoNode> orderByComparator)
 		throws NoSuchNodeException {
-		KaleoNode kaleoNode = fetchByC_KDI_Last(companyId, kaleoDefinitionId,
-				orderByComparator);
+		KaleoNode kaleoNode = fetchByC_KDVI_Last(companyId,
+				kaleoDefinitionVersionId, orderByComparator);
 
 		if (kaleoNode != null) {
 			return kaleoNode;
@@ -1388,8 +1411,8 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 		msg.append("companyId=");
 		msg.append(companyId);
 
-		msg.append(", kaleoDefinitionId=");
-		msg.append(kaleoDefinitionId);
+		msg.append(", kaleoDefinitionVersionId=");
+		msg.append(kaleoDefinitionVersionId);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -1397,24 +1420,25 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 	}
 
 	/**
-	 * Returns the last kaleo node in the ordered set where companyId = &#63; and kaleoDefinitionId = &#63;.
+	 * Returns the last kaleo node in the ordered set where companyId = &#63; and kaleoDefinitionVersionId = &#63;.
 	 *
 	 * @param companyId the company ID
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo node, or <code>null</code> if a matching kaleo node could not be found
 	 */
 	@Override
-	public KaleoNode fetchByC_KDI_Last(long companyId, long kaleoDefinitionId,
+	public KaleoNode fetchByC_KDVI_Last(long companyId,
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoNode> orderByComparator) {
-		int count = countByC_KDI(companyId, kaleoDefinitionId);
+		int count = countByC_KDVI(companyId, kaleoDefinitionVersionId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<KaleoNode> list = findByC_KDI(companyId, kaleoDefinitionId,
-				count - 1, count, orderByComparator);
+		List<KaleoNode> list = findByC_KDVI(companyId,
+				kaleoDefinitionVersionId, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1424,18 +1448,18 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 	}
 
 	/**
-	 * Returns the kaleo nodes before and after the current kaleo node in the ordered set where companyId = &#63; and kaleoDefinitionId = &#63;.
+	 * Returns the kaleo nodes before and after the current kaleo node in the ordered set where companyId = &#63; and kaleoDefinitionVersionId = &#63;.
 	 *
 	 * @param kaleoNodeId the primary key of the current kaleo node
 	 * @param companyId the company ID
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo node
 	 * @throws NoSuchNodeException if a kaleo node with the primary key could not be found
 	 */
 	@Override
-	public KaleoNode[] findByC_KDI_PrevAndNext(long kaleoNodeId,
-		long companyId, long kaleoDefinitionId,
+	public KaleoNode[] findByC_KDVI_PrevAndNext(long kaleoNodeId,
+		long companyId, long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoNode> orderByComparator)
 		throws NoSuchNodeException {
 		KaleoNode kaleoNode = findByPrimaryKey(kaleoNodeId);
@@ -1447,13 +1471,13 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 			KaleoNode[] array = new KaleoNodeImpl[3];
 
-			array[0] = getByC_KDI_PrevAndNext(session, kaleoNode, companyId,
-					kaleoDefinitionId, orderByComparator, true);
+			array[0] = getByC_KDVI_PrevAndNext(session, kaleoNode, companyId,
+					kaleoDefinitionVersionId, orderByComparator, true);
 
 			array[1] = kaleoNode;
 
-			array[2] = getByC_KDI_PrevAndNext(session, kaleoNode, companyId,
-					kaleoDefinitionId, orderByComparator, false);
+			array[2] = getByC_KDVI_PrevAndNext(session, kaleoNode, companyId,
+					kaleoDefinitionVersionId, orderByComparator, false);
 
 			return array;
 		}
@@ -1465,8 +1489,8 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 		}
 	}
 
-	protected KaleoNode getByC_KDI_PrevAndNext(Session session,
-		KaleoNode kaleoNode, long companyId, long kaleoDefinitionId,
+	protected KaleoNode getByC_KDVI_PrevAndNext(Session session,
+		KaleoNode kaleoNode, long companyId, long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoNode> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
@@ -1481,9 +1505,9 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 		query.append(_SQL_SELECT_KALEONODE_WHERE);
 
-		query.append(_FINDER_COLUMN_C_KDI_COMPANYID_2);
+		query.append(_FINDER_COLUMN_C_KDVI_COMPANYID_2);
 
-		query.append(_FINDER_COLUMN_C_KDI_KALEODEFINITIONID_2);
+		query.append(_FINDER_COLUMN_C_KDVI_KALEODEFINITIONVERSIONID_2);
 
 		if (orderByComparator != null) {
 			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
@@ -1555,7 +1579,7 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 		qPos.add(companyId);
 
-		qPos.add(kaleoDefinitionId);
+		qPos.add(kaleoDefinitionVersionId);
 
 		if (orderByComparator != null) {
 			Object[] values = orderByComparator.getOrderByConditionValues(kaleoNode);
@@ -1576,31 +1600,32 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 	}
 
 	/**
-	 * Removes all the kaleo nodes where companyId = &#63; and kaleoDefinitionId = &#63; from the database.
+	 * Removes all the kaleo nodes where companyId = &#63; and kaleoDefinitionVersionId = &#63; from the database.
 	 *
 	 * @param companyId the company ID
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 */
 	@Override
-	public void removeByC_KDI(long companyId, long kaleoDefinitionId) {
-		for (KaleoNode kaleoNode : findByC_KDI(companyId, kaleoDefinitionId,
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+	public void removeByC_KDVI(long companyId, long kaleoDefinitionVersionId) {
+		for (KaleoNode kaleoNode : findByC_KDVI(companyId,
+				kaleoDefinitionVersionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				null)) {
 			remove(kaleoNode);
 		}
 	}
 
 	/**
-	 * Returns the number of kaleo nodes where companyId = &#63; and kaleoDefinitionId = &#63;.
+	 * Returns the number of kaleo nodes where companyId = &#63; and kaleoDefinitionVersionId = &#63;.
 	 *
 	 * @param companyId the company ID
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @return the number of matching kaleo nodes
 	 */
 	@Override
-	public int countByC_KDI(long companyId, long kaleoDefinitionId) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_KDI;
+	public int countByC_KDVI(long companyId, long kaleoDefinitionVersionId) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_KDVI;
 
-		Object[] finderArgs = new Object[] { companyId, kaleoDefinitionId };
+		Object[] finderArgs = new Object[] { companyId, kaleoDefinitionVersionId };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -1609,9 +1634,9 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 			query.append(_SQL_COUNT_KALEONODE_WHERE);
 
-			query.append(_FINDER_COLUMN_C_KDI_COMPANYID_2);
+			query.append(_FINDER_COLUMN_C_KDVI_COMPANYID_2);
 
-			query.append(_FINDER_COLUMN_C_KDI_KALEODEFINITIONID_2);
+			query.append(_FINDER_COLUMN_C_KDVI_KALEODEFINITIONVERSIONID_2);
 
 			String sql = query.toString();
 
@@ -1626,7 +1651,7 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 
 				qPos.add(companyId);
 
-				qPos.add(kaleoDefinitionId);
+				qPos.add(kaleoDefinitionVersionId);
 
 				count = (Long)q.uniqueResult();
 
@@ -1645,8 +1670,9 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_C_KDI_COMPANYID_2 = "kaleoNode.companyId = ? AND ";
-	private static final String _FINDER_COLUMN_C_KDI_KALEODEFINITIONID_2 = "kaleoNode.kaleoDefinitionId = ?";
+	private static final String _FINDER_COLUMN_C_KDVI_COMPANYID_2 = "kaleoNode.companyId = ? AND ";
+	private static final String _FINDER_COLUMN_C_KDVI_KALEODEFINITIONVERSIONID_2 =
+		"kaleoNode.kaleoDefinitionVersionId = ?";
 
 	public KaleoNodePersistenceImpl() {
 		setModelClass(KaleoNode.class);
@@ -1908,20 +1934,20 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
 				args);
 
-			args = new Object[] { kaleoNodeModelImpl.getKaleoDefinitionId() };
+			args = new Object[] { kaleoNodeModelImpl.getKaleoDefinitionVersionId() };
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONID,
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONVERSIONID,
 				args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID,
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONVERSIONID,
 				args);
 
 			args = new Object[] {
 					kaleoNodeModelImpl.getCompanyId(),
-					kaleoNodeModelImpl.getKaleoDefinitionId()
+					kaleoNodeModelImpl.getKaleoDefinitionVersionId()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_KDI, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_KDI,
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_KDVI, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_KDVI,
 				args);
 
 			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
@@ -1948,42 +1974,44 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 			}
 
 			if ((kaleoNodeModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID.getColumnBitmask()) != 0) {
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONVERSIONID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						kaleoNodeModelImpl.getOriginalKaleoDefinitionId()
+						kaleoNodeModelImpl.getOriginalKaleoDefinitionVersionId()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONID,
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONVERSIONID,
 					args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID,
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONVERSIONID,
 					args);
 
-				args = new Object[] { kaleoNodeModelImpl.getKaleoDefinitionId() };
+				args = new Object[] {
+						kaleoNodeModelImpl.getKaleoDefinitionVersionId()
+					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONID,
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONVERSIONID,
 					args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID,
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONVERSIONID,
 					args);
 			}
 
 			if ((kaleoNodeModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_KDI.getColumnBitmask()) != 0) {
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_KDVI.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
 						kaleoNodeModelImpl.getOriginalCompanyId(),
-						kaleoNodeModelImpl.getOriginalKaleoDefinitionId()
+						kaleoNodeModelImpl.getOriginalKaleoDefinitionVersionId()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_KDI, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_KDI,
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_KDVI, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_KDVI,
 					args);
 
 				args = new Object[] {
 						kaleoNodeModelImpl.getCompanyId(),
-						kaleoNodeModelImpl.getKaleoDefinitionId()
+						kaleoNodeModelImpl.getKaleoDefinitionVersionId()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_KDI, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_KDI,
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_KDVI, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_KDVI,
 					args);
 			}
 		}
@@ -2013,7 +2041,7 @@ public class KaleoNodePersistenceImpl extends BasePersistenceImpl<KaleoNode>
 		kaleoNodeImpl.setUserName(kaleoNode.getUserName());
 		kaleoNodeImpl.setCreateDate(kaleoNode.getCreateDate());
 		kaleoNodeImpl.setModifiedDate(kaleoNode.getModifiedDate());
-		kaleoNodeImpl.setKaleoDefinitionId(kaleoNode.getKaleoDefinitionId());
+		kaleoNodeImpl.setKaleoDefinitionVersionId(kaleoNode.getKaleoDefinitionVersionId());
 		kaleoNodeImpl.setName(kaleoNode.getName());
 		kaleoNodeImpl.setMetadata(kaleoNode.getMetadata());
 		kaleoNodeImpl.setDescription(kaleoNode.getDescription());

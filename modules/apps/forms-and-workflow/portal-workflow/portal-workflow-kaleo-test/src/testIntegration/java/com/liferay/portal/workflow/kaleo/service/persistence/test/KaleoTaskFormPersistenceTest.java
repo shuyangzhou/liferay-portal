@@ -136,7 +136,7 @@ public class KaleoTaskFormPersistenceTest {
 
 		newKaleoTaskForm.setModifiedDate(RandomTestUtil.nextDate());
 
-		newKaleoTaskForm.setKaleoDefinitionId(RandomTestUtil.nextLong());
+		newKaleoTaskForm.setKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
 		newKaleoTaskForm.setKaleoNodeId(RandomTestUtil.nextLong());
 
@@ -182,8 +182,8 @@ public class KaleoTaskFormPersistenceTest {
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingKaleoTaskForm.getModifiedDate()),
 			Time.getShortTimestamp(newKaleoTaskForm.getModifiedDate()));
-		Assert.assertEquals(existingKaleoTaskForm.getKaleoDefinitionId(),
-			newKaleoTaskForm.getKaleoDefinitionId());
+		Assert.assertEquals(existingKaleoTaskForm.getKaleoDefinitionVersionId(),
+			newKaleoTaskForm.getKaleoDefinitionVersionId());
 		Assert.assertEquals(existingKaleoTaskForm.getKaleoNodeId(),
 			newKaleoTaskForm.getKaleoNodeId());
 		Assert.assertEquals(existingKaleoTaskForm.getKaleoTaskId(),
@@ -218,10 +218,10 @@ public class KaleoTaskFormPersistenceTest {
 	}
 
 	@Test
-	public void testCountByKaleoDefinitionId() throws Exception {
-		_persistence.countByKaleoDefinitionId(RandomTestUtil.nextLong());
+	public void testCountByKaleoDefinitionVersionId() throws Exception {
+		_persistence.countByKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
-		_persistence.countByKaleoDefinitionId(0L);
+		_persistence.countByKaleoDefinitionVersionId(0L);
 	}
 
 	@Test
@@ -274,11 +274,11 @@ public class KaleoTaskFormPersistenceTest {
 		return OrderByComparatorFactoryUtil.create("KaleoTaskForm",
 			"kaleoTaskFormId", true, "groupId", true, "companyId", true,
 			"userId", true, "userName", true, "createDate", true,
-			"modifiedDate", true, "kaleoDefinitionId", true, "kaleoNodeId",
-			true, "kaleoTaskId", true, "kaleoTaskName", true, "name", true,
-			"description", true, "formCompanyId", true, "formDefinition", true,
-			"formGroupId", true, "formId", true, "formUuid", true, "metadata",
-			true, "priority", true);
+			"modifiedDate", true, "kaleoDefinitionVersionId", true,
+			"kaleoNodeId", true, "kaleoTaskId", true, "kaleoTaskName", true,
+			"name", true, "description", true, "formCompanyId", true,
+			"formDefinition", true, "formGroupId", true, "formId", true,
+			"formUuid", true, "metadata", true, "priority", true);
 	}
 
 	@Test
@@ -508,7 +508,7 @@ public class KaleoTaskFormPersistenceTest {
 
 		kaleoTaskForm.setModifiedDate(RandomTestUtil.nextDate());
 
-		kaleoTaskForm.setKaleoDefinitionId(RandomTestUtil.nextLong());
+		kaleoTaskForm.setKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
 		kaleoTaskForm.setKaleoNodeId(RandomTestUtil.nextLong());
 

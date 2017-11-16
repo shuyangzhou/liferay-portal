@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -243,6 +242,8 @@ public class LayoutPageTemplateFragmentModelImpl extends BaseModelImpl<LayoutPag
 	@Override
 	public void setLayoutPageTemplateFragmentId(
 		long layoutPageTemplateFragmentId) {
+		_columnBitmask = -1L;
+
 		_layoutPageTemplateFragmentId = layoutPageTemplateFragmentId;
 	}
 
@@ -296,7 +297,7 @@ public class LayoutPageTemplateFragmentModelImpl extends BaseModelImpl<LayoutPag
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -307,7 +308,7 @@ public class LayoutPageTemplateFragmentModelImpl extends BaseModelImpl<LayoutPag
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -448,17 +449,23 @@ public class LayoutPageTemplateFragmentModelImpl extends BaseModelImpl<LayoutPag
 
 	@Override
 	public int compareTo(LayoutPageTemplateFragment layoutPageTemplateFragment) {
-		long primaryKey = layoutPageTemplateFragment.getPrimaryKey();
+		int value = 0;
 
-		if (getPrimaryKey() < primaryKey) {
-			return -1;
+		if (getLayoutPageTemplateFragmentId() < layoutPageTemplateFragment.getLayoutPageTemplateFragmentId()) {
+			value = -1;
 		}
-		else if (getPrimaryKey() > primaryKey) {
-			return 1;
+		else if (getLayoutPageTemplateFragmentId() > layoutPageTemplateFragment.getLayoutPageTemplateFragmentId()) {
+			value = 1;
 		}
 		else {
-			return 0;
+			value = 0;
 		}
+
+		if (value != 0) {
+			return value;
+		}
+
+		return 0;
 	}
 
 	@Override

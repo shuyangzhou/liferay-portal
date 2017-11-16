@@ -85,8 +85,8 @@ public class KaleoTimerInstanceTokenCacheModel implements CacheModel<KaleoTimerI
 		sb.append(kaleoClassName);
 		sb.append(", kaleoClassPK=");
 		sb.append(kaleoClassPK);
-		sb.append(", kaleoDefinitionId=");
-		sb.append(kaleoDefinitionId);
+		sb.append(", kaleoDefinitionVersionId=");
+		sb.append(kaleoDefinitionVersionId);
 		sb.append(", kaleoInstanceId=");
 		sb.append(kaleoInstanceId);
 		sb.append(", kaleoInstanceTokenId=");
@@ -150,7 +150,7 @@ public class KaleoTimerInstanceTokenCacheModel implements CacheModel<KaleoTimerI
 		}
 
 		kaleoTimerInstanceTokenImpl.setKaleoClassPK(kaleoClassPK);
-		kaleoTimerInstanceTokenImpl.setKaleoDefinitionId(kaleoDefinitionId);
+		kaleoTimerInstanceTokenImpl.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		kaleoTimerInstanceTokenImpl.setKaleoInstanceId(kaleoInstanceId);
 		kaleoTimerInstanceTokenImpl.setKaleoInstanceTokenId(kaleoInstanceTokenId);
 		kaleoTimerInstanceTokenImpl.setKaleoTaskInstanceTokenId(kaleoTaskInstanceTokenId);
@@ -203,7 +203,7 @@ public class KaleoTimerInstanceTokenCacheModel implements CacheModel<KaleoTimerI
 
 		kaleoClassPK = objectInput.readLong();
 
-		kaleoDefinitionId = objectInput.readLong();
+		kaleoDefinitionVersionId = objectInput.readLong();
 
 		kaleoInstanceId = objectInput.readLong();
 
@@ -253,7 +253,7 @@ public class KaleoTimerInstanceTokenCacheModel implements CacheModel<KaleoTimerI
 
 		objectOutput.writeLong(kaleoClassPK);
 
-		objectOutput.writeLong(kaleoDefinitionId);
+		objectOutput.writeLong(kaleoDefinitionVersionId);
 
 		objectOutput.writeLong(kaleoInstanceId);
 
@@ -294,7 +294,7 @@ public class KaleoTimerInstanceTokenCacheModel implements CacheModel<KaleoTimerI
 	public long modifiedDate;
 	public String kaleoClassName;
 	public long kaleoClassPK;
-	public long kaleoDefinitionId;
+	public long kaleoDefinitionVersionId;
 	public long kaleoInstanceId;
 	public long kaleoInstanceTokenId;
 	public long kaleoTaskInstanceTokenId;

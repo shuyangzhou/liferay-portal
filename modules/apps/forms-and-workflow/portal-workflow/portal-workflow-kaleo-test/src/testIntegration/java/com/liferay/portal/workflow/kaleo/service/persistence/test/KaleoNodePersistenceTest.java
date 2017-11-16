@@ -133,7 +133,7 @@ public class KaleoNodePersistenceTest {
 
 		newKaleoNode.setModifiedDate(RandomTestUtil.nextDate());
 
-		newKaleoNode.setKaleoDefinitionId(RandomTestUtil.nextLong());
+		newKaleoNode.setKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
 		newKaleoNode.setName(RandomTestUtil.randomString());
 
@@ -167,8 +167,8 @@ public class KaleoNodePersistenceTest {
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingKaleoNode.getModifiedDate()),
 			Time.getShortTimestamp(newKaleoNode.getModifiedDate()));
-		Assert.assertEquals(existingKaleoNode.getKaleoDefinitionId(),
-			newKaleoNode.getKaleoDefinitionId());
+		Assert.assertEquals(existingKaleoNode.getKaleoDefinitionVersionId(),
+			newKaleoNode.getKaleoDefinitionVersionId());
 		Assert.assertEquals(existingKaleoNode.getName(), newKaleoNode.getName());
 		Assert.assertEquals(existingKaleoNode.getMetadata(),
 			newKaleoNode.getMetadata());
@@ -189,18 +189,18 @@ public class KaleoNodePersistenceTest {
 	}
 
 	@Test
-	public void testCountByKaleoDefinitionId() throws Exception {
-		_persistence.countByKaleoDefinitionId(RandomTestUtil.nextLong());
+	public void testCountByKaleoDefinitionVersionId() throws Exception {
+		_persistence.countByKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
-		_persistence.countByKaleoDefinitionId(0L);
+		_persistence.countByKaleoDefinitionVersionId(0L);
 	}
 
 	@Test
-	public void testCountByC_KDI() throws Exception {
-		_persistence.countByC_KDI(RandomTestUtil.nextLong(),
+	public void testCountByC_KDVI() throws Exception {
+		_persistence.countByC_KDVI(RandomTestUtil.nextLong(),
 			RandomTestUtil.nextLong());
 
-		_persistence.countByC_KDI(0L, 0L);
+		_persistence.countByC_KDVI(0L, 0L);
 	}
 
 	@Test
@@ -229,7 +229,7 @@ public class KaleoNodePersistenceTest {
 		return OrderByComparatorFactoryUtil.create("KaleoNode", "kaleoNodeId",
 			true, "groupId", true, "companyId", true, "userId", true,
 			"userName", true, "createDate", true, "modifiedDate", true,
-			"kaleoDefinitionId", true, "name", true, "metadata", true,
+			"kaleoDefinitionVersionId", true, "name", true, "metadata", true,
 			"description", true, "type", true, "initial", true, "terminal", true);
 	}
 
@@ -442,7 +442,7 @@ public class KaleoNodePersistenceTest {
 
 		kaleoNode.setModifiedDate(RandomTestUtil.nextDate());
 
-		kaleoNode.setKaleoDefinitionId(RandomTestUtil.nextLong());
+		kaleoNode.setKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
 		kaleoNode.setName(RandomTestUtil.randomString());
 

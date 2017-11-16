@@ -133,7 +133,7 @@ public class KaleoNotificationRecipientPersistenceTest {
 
 		newKaleoNotificationRecipient.setModifiedDate(RandomTestUtil.nextDate());
 
-		newKaleoNotificationRecipient.setKaleoDefinitionId(RandomTestUtil.nextLong());
+		newKaleoNotificationRecipient.setKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
 		newKaleoNotificationRecipient.setKaleoNotificationId(RandomTestUtil.nextLong());
 
@@ -177,8 +177,8 @@ public class KaleoNotificationRecipientPersistenceTest {
 				existingKaleoNotificationRecipient.getModifiedDate()),
 			Time.getShortTimestamp(
 				newKaleoNotificationRecipient.getModifiedDate()));
-		Assert.assertEquals(existingKaleoNotificationRecipient.getKaleoDefinitionId(),
-			newKaleoNotificationRecipient.getKaleoDefinitionId());
+		Assert.assertEquals(existingKaleoNotificationRecipient.getKaleoDefinitionVersionId(),
+			newKaleoNotificationRecipient.getKaleoDefinitionVersionId());
 		Assert.assertEquals(existingKaleoNotificationRecipient.getKaleoNotificationId(),
 			newKaleoNotificationRecipient.getKaleoNotificationId());
 		Assert.assertEquals(existingKaleoNotificationRecipient.getRecipientClassName(),
@@ -207,10 +207,10 @@ public class KaleoNotificationRecipientPersistenceTest {
 	}
 
 	@Test
-	public void testCountByKaleoDefinitionId() throws Exception {
-		_persistence.countByKaleoDefinitionId(RandomTestUtil.nextLong());
+	public void testCountByKaleoDefinitionVersionId() throws Exception {
+		_persistence.countByKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
-		_persistence.countByKaleoDefinitionId(0L);
+		_persistence.countByKaleoDefinitionVersionId(0L);
 	}
 
 	@Test
@@ -247,7 +247,7 @@ public class KaleoNotificationRecipientPersistenceTest {
 		return OrderByComparatorFactoryUtil.create("KaleoNotificationRecipient",
 			"kaleoNotificationRecipientId", true, "groupId", true, "companyId",
 			true, "userId", true, "userName", true, "createDate", true,
-			"modifiedDate", true, "kaleoDefinitionId", true,
+			"modifiedDate", true, "kaleoDefinitionVersionId", true,
 			"kaleoNotificationId", true, "recipientClassName", true,
 			"recipientClassPK", true, "recipientRoleType", true,
 			"recipientScriptLanguage", true, "recipientScriptContexts", true,
@@ -482,7 +482,7 @@ public class KaleoNotificationRecipientPersistenceTest {
 
 		kaleoNotificationRecipient.setModifiedDate(RandomTestUtil.nextDate());
 
-		kaleoNotificationRecipient.setKaleoDefinitionId(RandomTestUtil.nextLong());
+		kaleoNotificationRecipient.setKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
 		kaleoNotificationRecipient.setKaleoNotificationId(RandomTestUtil.nextLong());
 

@@ -15,7 +15,7 @@
 			<hint name="max-length">200</hint>
 		</field>
 		<field name="kaleoClassPK" type="long" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="kaleoNodeName" type="String">
 			<hint name="max-length">200</hint>
 		</field>
@@ -47,7 +47,7 @@
 		</field>
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="kaleoNodeId" type="long" />
 		<field name="script" type="String">
 			<hint-collection name="CLOB" />
@@ -81,7 +81,6 @@
 		</field>
 		<field name="version" type="int" />
 		<field name="active" type="boolean" />
-		<field name="startKaleoNodeId" type="long" />
 	</model>
 	<model name="com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion">
 		<field name="kaleoDefinitionVersionId" type="long" />
@@ -109,6 +108,7 @@
 			<hint-collection name="CLOB" />
 		</field>
 		<field name="version" type="String" />
+		<field name="startKaleoNodeId" type="long" />
 		<field name="status" type="int" />
 	</model>
 	<model name="com.liferay.portal.workflow.kaleo.model.KaleoInstance">
@@ -121,7 +121,7 @@
 		</field>
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="kaleoDefinitionName" type="String">
 			<hint name="max-length">200</hint>
 		</field>
@@ -147,7 +147,7 @@
 		</field>
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="kaleoInstanceId" type="long" />
 		<field name="parentKaleoInstanceTokenId" type="long" />
 		<field name="currentKaleoNodeId" type="long" />
@@ -175,7 +175,7 @@
 			<hint name="max-length">200</hint>
 		</field>
 		<field name="kaleoClassPK" type="long" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="kaleoInstanceId" type="long" />
 		<field name="kaleoInstanceTokenId" type="long" />
 		<field name="kaleoTaskInstanceTokenId" type="long" />
@@ -225,7 +225,7 @@
 		</field>
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="name" type="String">
 			<hint name="max-length">200</hint>
 		</field>
@@ -255,7 +255,7 @@
 			<hint name="max-length">200</hint>
 		</field>
 		<field name="kaleoClassPK" type="long" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="kaleoNodeName" type="String">
 			<hint name="max-length">200</hint>
 		</field>
@@ -286,7 +286,7 @@
 		</field>
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="kaleoNotificationId" type="long" />
 		<field name="recipientClassName" type="String">
 			<hint name="max-length">200</hint>
@@ -317,7 +317,7 @@
 		</field>
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="kaleoNodeId" type="long" />
 		<field name="name" type="String">
 			<hint name="max-length">200</hint>
@@ -340,7 +340,7 @@
 			<hint name="max-length">200</hint>
 		</field>
 		<field name="kaleoClassPK" type="long" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="kaleoNodeId" type="long" />
 		<field name="assigneeClassName" type="String">
 			<hint name="max-length">200</hint>
@@ -365,7 +365,7 @@
 		</field>
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="kaleoInstanceId" type="long" />
 		<field name="kaleoInstanceTokenId" type="long" />
 		<field name="kaleoTaskInstanceTokenId" type="long" />
@@ -388,7 +388,7 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="kaleoNodeId" type="long" />
 		<field name="kaleoTaskId" type="long" />
 		<field name="kaleoTaskName" type="String">
@@ -420,7 +420,7 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="kaleoInstanceId" type="long" />
 		<field name="kaleoTaskId" type="long" />
 		<field name="kaleoTaskInstanceTokenId" type="long" />
@@ -445,7 +445,7 @@
 		</field>
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="kaleoInstanceId" type="long" />
 		<field name="kaleoInstanceTokenId" type="long" />
 		<field name="kaleoTaskId" type="long" />
@@ -478,7 +478,7 @@
 			<hint name="max-length">200</hint>
 		</field>
 		<field name="kaleoClassPK" type="long" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="name" type="String" />
 		<field name="blocking" type="boolean" />
 		<field name="description" type="String">
@@ -503,7 +503,7 @@
 			<hint name="max-length">200</hint>
 		</field>
 		<field name="kaleoClassPK" type="long" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="kaleoInstanceId" type="long" />
 		<field name="kaleoInstanceTokenId" type="long" />
 		<field name="kaleoTaskInstanceTokenId" type="long" />
@@ -529,7 +529,7 @@
 		</field>
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="kaleoDefinitionId" type="long" />
+		<field name="kaleoDefinitionVersionId" type="long" />
 		<field name="kaleoNodeId" type="long" />
 		<field name="name" type="String">
 			<hint name="max-length">200</hint>

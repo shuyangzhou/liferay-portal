@@ -40,7 +40,7 @@ public class KaleoTaskFormSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setKaleoDefinitionId(model.getKaleoDefinitionId());
+		soapModel.setKaleoDefinitionVersionId(model.getKaleoDefinitionVersionId());
 		soapModel.setKaleoNodeId(model.getKaleoNodeId());
 		soapModel.setKaleoTaskId(model.getKaleoTaskId());
 		soapModel.setKaleoTaskName(model.getKaleoTaskName());
@@ -161,12 +161,12 @@ public class KaleoTaskFormSoap implements Serializable {
 		_modifiedDate = modifiedDate;
 	}
 
-	public long getKaleoDefinitionId() {
-		return _kaleoDefinitionId;
+	public long getKaleoDefinitionVersionId() {
+		return _kaleoDefinitionVersionId;
 	}
 
-	public void setKaleoDefinitionId(long kaleoDefinitionId) {
-		_kaleoDefinitionId = kaleoDefinitionId;
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		_kaleoDefinitionVersionId = kaleoDefinitionVersionId;
 	}
 
 	public long getKaleoNodeId() {
@@ -272,7 +272,7 @@ public class KaleoTaskFormSoap implements Serializable {
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private long _kaleoDefinitionId;
+	private long _kaleoDefinitionVersionId;
 	private long _kaleoNodeId;
 	private long _kaleoTaskId;
 	private String _kaleoTaskName;

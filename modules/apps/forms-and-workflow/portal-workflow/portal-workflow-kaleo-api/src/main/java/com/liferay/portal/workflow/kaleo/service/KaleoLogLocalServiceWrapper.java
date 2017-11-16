@@ -147,8 +147,9 @@ public class KaleoLogLocalServiceWrapper implements KaleoLogLocalService,
 	}
 
 	@Override
-	public void deleteKaleoDefinitionKaleoLogs(long kaleoDefinitionId) {
-		_kaleoLogLocalService.deleteKaleoDefinitionKaleoLogs(kaleoDefinitionId);
+	public void deleteKaleoDefinitionVersionKaleoLogs(
+		long kaleoDefinitionVersionId) {
+		_kaleoLogLocalService.deleteKaleoDefinitionVersionKaleoLogs(kaleoDefinitionVersionId);
 	}
 
 	@Override

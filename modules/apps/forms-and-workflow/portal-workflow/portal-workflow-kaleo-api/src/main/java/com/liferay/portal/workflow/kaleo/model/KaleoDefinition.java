@@ -55,8 +55,6 @@ public interface KaleoDefinition extends KaleoDefinitionModel, PersistedModel {
 			}
 		};
 
-	public KaleoNode getKaleoStartNode()
+	public java.util.List<KaleoDefinitionVersion> getKaleoDefinitionVersions()
 		throws com.liferay.portal.kernel.exception.PortalException;
-
-	public boolean hasIncompleteKaleoInstances();
 }
