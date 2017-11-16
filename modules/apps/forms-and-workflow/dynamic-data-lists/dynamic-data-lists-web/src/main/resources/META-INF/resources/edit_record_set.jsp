@@ -103,7 +103,11 @@ if (ddlDisplayContext.isAdminPortlet()) {
 				/>
 			</div>
 
-			<c:if test="<%= WorkflowEngineManagerUtil.isDeployed() && (WorkflowHandlerRegistryUtil.getWorkflowHandler(DDLRecord.class.getName()) != null) %>">
+			<%
+			Group scopeGroup = GroupLocalServiceUtil.getGroup(scopeGroupId);
+			%>
+
+			<c:if test="<%= WorkflowEngineManagerUtil.isDeployed() && (WorkflowHandlerRegistryUtil.getWorkflowHandler(DDLRecord.class.getName()) != null) && !scopeGroup.isLayoutSetPrototype() %>">
 				<aui:select label="workflow" name="workflowDefinition">
 
 					<%

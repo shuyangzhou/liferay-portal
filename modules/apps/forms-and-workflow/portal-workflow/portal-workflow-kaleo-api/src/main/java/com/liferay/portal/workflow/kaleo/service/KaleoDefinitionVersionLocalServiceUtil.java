@@ -81,9 +81,11 @@ public class KaleoDefinitionVersionLocalServiceUtil {
 	*
 	* @param kaleoDefinitionVersion the kaleo definition version
 	* @return the kaleo definition version that was removed
+	* @throws PortalException
 	*/
 	public static com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion deleteKaleoDefinitionVersion(
-		com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion kaleoDefinitionVersion) {
+		com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion kaleoDefinitionVersion)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteKaleoDefinitionVersion(kaleoDefinitionVersion);
 	}
 
@@ -101,11 +103,16 @@ public class KaleoDefinitionVersionLocalServiceUtil {
 				   .deleteKaleoDefinitionVersion(kaleoDefinitionVersionId);
 	}
 
-	public static com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion deleteKaleoDefinitionVersion(
-		long companyId, java.lang.String name, java.lang.String version)
+	public static void deleteKaleoDefinitionVersion(long companyId,
+		java.lang.String name, java.lang.String version)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .deleteKaleoDefinitionVersion(companyId, name, version);
+		getService().deleteKaleoDefinitionVersion(companyId, name, version);
+	}
+
+	public static void deleteKaleoDefinitionVersions(
+		java.util.List<com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion> kaleoDefinitionVersions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteKaleoDefinitionVersions(kaleoDefinitionVersions);
 	}
 
 	/**
@@ -346,13 +353,6 @@ public class KaleoDefinitionVersionLocalServiceUtil {
 	public static com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion updateKaleoDefinitionVersion(
 		com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion kaleoDefinitionVersion) {
 		return getService().updateKaleoDefinitionVersion(kaleoDefinitionVersion);
-	}
-
-	public static void updateKaleoDefinitionVersionTitle(long companyId,
-		java.lang.String name, java.lang.String version, java.lang.String title)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.updateKaleoDefinitionVersionTitle(companyId, name, version, title);
 	}
 
 	public static KaleoDefinitionVersionLocalService getService() {

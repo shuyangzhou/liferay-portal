@@ -85,8 +85,8 @@ public class KaleoTaskAssignmentCacheModel implements CacheModel<KaleoTaskAssign
 		sb.append(kaleoClassName);
 		sb.append(", kaleoClassPK=");
 		sb.append(kaleoClassPK);
-		sb.append(", kaleoDefinitionId=");
-		sb.append(kaleoDefinitionId);
+		sb.append(", kaleoDefinitionVersionId=");
+		sb.append(kaleoDefinitionVersionId);
 		sb.append(", kaleoNodeId=");
 		sb.append(kaleoNodeId);
 		sb.append(", assigneeClassName=");
@@ -144,7 +144,7 @@ public class KaleoTaskAssignmentCacheModel implements CacheModel<KaleoTaskAssign
 		}
 
 		kaleoTaskAssignmentImpl.setKaleoClassPK(kaleoClassPK);
-		kaleoTaskAssignmentImpl.setKaleoDefinitionId(kaleoDefinitionId);
+		kaleoTaskAssignmentImpl.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		kaleoTaskAssignmentImpl.setKaleoNodeId(kaleoNodeId);
 
 		if (assigneeClassName == null) {
@@ -205,7 +205,7 @@ public class KaleoTaskAssignmentCacheModel implements CacheModel<KaleoTaskAssign
 
 		kaleoClassPK = objectInput.readLong();
 
-		kaleoDefinitionId = objectInput.readLong();
+		kaleoDefinitionVersionId = objectInput.readLong();
 
 		kaleoNodeId = objectInput.readLong();
 		assigneeClassName = objectInput.readUTF();
@@ -247,7 +247,7 @@ public class KaleoTaskAssignmentCacheModel implements CacheModel<KaleoTaskAssign
 
 		objectOutput.writeLong(kaleoClassPK);
 
-		objectOutput.writeLong(kaleoDefinitionId);
+		objectOutput.writeLong(kaleoDefinitionVersionId);
 
 		objectOutput.writeLong(kaleoNodeId);
 
@@ -298,7 +298,7 @@ public class KaleoTaskAssignmentCacheModel implements CacheModel<KaleoTaskAssign
 	public long modifiedDate;
 	public String kaleoClassName;
 	public long kaleoClassPK;
-	public long kaleoDefinitionId;
+	public long kaleoDefinitionVersionId;
 	public long kaleoNodeId;
 	public String assigneeClassName;
 	public long assigneeClassPK;

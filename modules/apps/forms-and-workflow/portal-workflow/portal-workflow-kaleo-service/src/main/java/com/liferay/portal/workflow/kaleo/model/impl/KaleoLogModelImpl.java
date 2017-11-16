@@ -73,7 +73,7 @@ public class KaleoLogModelImpl extends BaseModelImpl<KaleoLog>
 			{ "modifiedDate", Types.TIMESTAMP },
 			{ "kaleoClassName", Types.VARCHAR },
 			{ "kaleoClassPK", Types.BIGINT },
-			{ "kaleoDefinitionId", Types.BIGINT },
+			{ "kaleoDefinitionVersionId", Types.BIGINT },
 			{ "kaleoInstanceId", Types.BIGINT },
 			{ "kaleoInstanceTokenId", Types.BIGINT },
 			{ "kaleoTaskInstanceTokenId", Types.BIGINT },
@@ -107,7 +107,7 @@ public class KaleoLogModelImpl extends BaseModelImpl<KaleoLog>
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("kaleoClassName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("kaleoClassPK", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("kaleoDefinitionId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("kaleoDefinitionVersionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("kaleoInstanceId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("kaleoInstanceTokenId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("kaleoTaskInstanceTokenId", Types.BIGINT);
@@ -130,7 +130,7 @@ public class KaleoLogModelImpl extends BaseModelImpl<KaleoLog>
 		TABLE_COLUMNS_MAP.put("workflowContext", Types.CLOB);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table KaleoLog (kaleoLogId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(200) null,createDate DATE null,modifiedDate DATE null,kaleoClassName VARCHAR(200) null,kaleoClassPK LONG,kaleoDefinitionId LONG,kaleoInstanceId LONG,kaleoInstanceTokenId LONG,kaleoTaskInstanceTokenId LONG,kaleoNodeName VARCHAR(200) null,terminalKaleoNode BOOLEAN,kaleoActionId LONG,kaleoActionName VARCHAR(200) null,kaleoActionDescription STRING null,previousKaleoNodeId LONG,previousKaleoNodeName VARCHAR(200) null,previousAssigneeClassName VARCHAR(200) null,previousAssigneeClassPK LONG,currentAssigneeClassName VARCHAR(200) null,currentAssigneeClassPK LONG,type_ VARCHAR(50) null,comment_ TEXT null,startDate DATE null,endDate DATE null,duration LONG,workflowContext TEXT null)";
+	public static final String TABLE_SQL_CREATE = "create table KaleoLog (kaleoLogId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(200) null,createDate DATE null,modifiedDate DATE null,kaleoClassName VARCHAR(200) null,kaleoClassPK LONG,kaleoDefinitionVersionId LONG,kaleoInstanceId LONG,kaleoInstanceTokenId LONG,kaleoTaskInstanceTokenId LONG,kaleoNodeName VARCHAR(200) null,terminalKaleoNode BOOLEAN,kaleoActionId LONG,kaleoActionName VARCHAR(200) null,kaleoActionDescription STRING null,previousKaleoNodeId LONG,previousKaleoNodeName VARCHAR(200) null,previousAssigneeClassName VARCHAR(200) null,previousAssigneeClassPK LONG,currentAssigneeClassName VARCHAR(200) null,currentAssigneeClassPK LONG,type_ VARCHAR(50) null,comment_ TEXT null,startDate DATE null,endDate DATE null,duration LONG,workflowContext TEXT null)";
 	public static final String TABLE_SQL_DROP = "drop table KaleoLog";
 	public static final String ORDER_BY_JPQL = " ORDER BY kaleoLog.kaleoLogId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY KaleoLog.kaleoLogId ASC";
@@ -149,7 +149,7 @@ public class KaleoLogModelImpl extends BaseModelImpl<KaleoLog>
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 	public static final long KALEOCLASSNAME_COLUMN_BITMASK = 2L;
 	public static final long KALEOCLASSPK_COLUMN_BITMASK = 4L;
-	public static final long KALEODEFINITIONID_COLUMN_BITMASK = 8L;
+	public static final long KALEODEFINITIONVERSIONID_COLUMN_BITMASK = 8L;
 	public static final long KALEOINSTANCEID_COLUMN_BITMASK = 16L;
 	public static final long KALEOINSTANCETOKENID_COLUMN_BITMASK = 32L;
 	public static final long KALEOTASKINSTANCETOKENID_COLUMN_BITMASK = 64L;
@@ -204,7 +204,7 @@ public class KaleoLogModelImpl extends BaseModelImpl<KaleoLog>
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("kaleoClassName", getKaleoClassName());
 		attributes.put("kaleoClassPK", getKaleoClassPK());
-		attributes.put("kaleoDefinitionId", getKaleoDefinitionId());
+		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
 		attributes.put("kaleoInstanceId", getKaleoInstanceId());
 		attributes.put("kaleoInstanceTokenId", getKaleoInstanceTokenId());
 		attributes.put("kaleoTaskInstanceTokenId", getKaleoTaskInstanceTokenId());
@@ -289,10 +289,11 @@ public class KaleoLogModelImpl extends BaseModelImpl<KaleoLog>
 			setKaleoClassPK(kaleoClassPK);
 		}
 
-		Long kaleoDefinitionId = (Long)attributes.get("kaleoDefinitionId");
+		Long kaleoDefinitionVersionId = (Long)attributes.get(
+				"kaleoDefinitionVersionId");
 
-		if (kaleoDefinitionId != null) {
-			setKaleoDefinitionId(kaleoDefinitionId);
+		if (kaleoDefinitionVersionId != null) {
+			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		}
 
 		Long kaleoInstanceId = (Long)attributes.get("kaleoInstanceId");
@@ -582,25 +583,25 @@ public class KaleoLogModelImpl extends BaseModelImpl<KaleoLog>
 	}
 
 	@Override
-	public long getKaleoDefinitionId() {
-		return _kaleoDefinitionId;
+	public long getKaleoDefinitionVersionId() {
+		return _kaleoDefinitionVersionId;
 	}
 
 	@Override
-	public void setKaleoDefinitionId(long kaleoDefinitionId) {
-		_columnBitmask |= KALEODEFINITIONID_COLUMN_BITMASK;
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		_columnBitmask |= KALEODEFINITIONVERSIONID_COLUMN_BITMASK;
 
-		if (!_setOriginalKaleoDefinitionId) {
-			_setOriginalKaleoDefinitionId = true;
+		if (!_setOriginalKaleoDefinitionVersionId) {
+			_setOriginalKaleoDefinitionVersionId = true;
 
-			_originalKaleoDefinitionId = _kaleoDefinitionId;
+			_originalKaleoDefinitionVersionId = _kaleoDefinitionVersionId;
 		}
 
-		_kaleoDefinitionId = kaleoDefinitionId;
+		_kaleoDefinitionVersionId = kaleoDefinitionVersionId;
 	}
 
-	public long getOriginalKaleoDefinitionId() {
-		return _originalKaleoDefinitionId;
+	public long getOriginalKaleoDefinitionVersionId() {
+		return _originalKaleoDefinitionVersionId;
 	}
 
 	@Override
@@ -939,7 +940,7 @@ public class KaleoLogModelImpl extends BaseModelImpl<KaleoLog>
 		kaleoLogImpl.setModifiedDate(getModifiedDate());
 		kaleoLogImpl.setKaleoClassName(getKaleoClassName());
 		kaleoLogImpl.setKaleoClassPK(getKaleoClassPK());
-		kaleoLogImpl.setKaleoDefinitionId(getKaleoDefinitionId());
+		kaleoLogImpl.setKaleoDefinitionVersionId(getKaleoDefinitionVersionId());
 		kaleoLogImpl.setKaleoInstanceId(getKaleoInstanceId());
 		kaleoLogImpl.setKaleoInstanceTokenId(getKaleoInstanceTokenId());
 		kaleoLogImpl.setKaleoTaskInstanceTokenId(getKaleoTaskInstanceTokenId());
@@ -1040,9 +1041,9 @@ public class KaleoLogModelImpl extends BaseModelImpl<KaleoLog>
 
 		kaleoLogModelImpl._setOriginalKaleoClassPK = false;
 
-		kaleoLogModelImpl._originalKaleoDefinitionId = kaleoLogModelImpl._kaleoDefinitionId;
+		kaleoLogModelImpl._originalKaleoDefinitionVersionId = kaleoLogModelImpl._kaleoDefinitionVersionId;
 
-		kaleoLogModelImpl._setOriginalKaleoDefinitionId = false;
+		kaleoLogModelImpl._setOriginalKaleoDefinitionVersionId = false;
 
 		kaleoLogModelImpl._originalKaleoInstanceId = kaleoLogModelImpl._kaleoInstanceId;
 
@@ -1109,7 +1110,7 @@ public class KaleoLogModelImpl extends BaseModelImpl<KaleoLog>
 
 		kaleoLogCacheModel.kaleoClassPK = getKaleoClassPK();
 
-		kaleoLogCacheModel.kaleoDefinitionId = getKaleoDefinitionId();
+		kaleoLogCacheModel.kaleoDefinitionVersionId = getKaleoDefinitionVersionId();
 
 		kaleoLogCacheModel.kaleoInstanceId = getKaleoInstanceId();
 
@@ -1248,8 +1249,8 @@ public class KaleoLogModelImpl extends BaseModelImpl<KaleoLog>
 		sb.append(getKaleoClassName());
 		sb.append(", kaleoClassPK=");
 		sb.append(getKaleoClassPK());
-		sb.append(", kaleoDefinitionId=");
-		sb.append(getKaleoDefinitionId());
+		sb.append(", kaleoDefinitionVersionId=");
+		sb.append(getKaleoDefinitionVersionId());
 		sb.append(", kaleoInstanceId=");
 		sb.append(getKaleoInstanceId());
 		sb.append(", kaleoInstanceTokenId=");
@@ -1340,8 +1341,8 @@ public class KaleoLogModelImpl extends BaseModelImpl<KaleoLog>
 		sb.append(getKaleoClassPK());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>kaleoDefinitionId</column-name><column-value><![CDATA[");
-		sb.append(getKaleoDefinitionId());
+			"<column><column-name>kaleoDefinitionVersionId</column-name><column-value><![CDATA[");
+		sb.append(getKaleoDefinitionVersionId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>kaleoInstanceId</column-name><column-value><![CDATA[");
@@ -1448,9 +1449,9 @@ public class KaleoLogModelImpl extends BaseModelImpl<KaleoLog>
 	private long _kaleoClassPK;
 	private long _originalKaleoClassPK;
 	private boolean _setOriginalKaleoClassPK;
-	private long _kaleoDefinitionId;
-	private long _originalKaleoDefinitionId;
-	private boolean _setOriginalKaleoDefinitionId;
+	private long _kaleoDefinitionVersionId;
+	private long _originalKaleoDefinitionVersionId;
+	private boolean _setOriginalKaleoDefinitionVersionId;
 	private long _kaleoInstanceId;
 	private long _originalKaleoInstanceId;
 	private boolean _setOriginalKaleoInstanceId;

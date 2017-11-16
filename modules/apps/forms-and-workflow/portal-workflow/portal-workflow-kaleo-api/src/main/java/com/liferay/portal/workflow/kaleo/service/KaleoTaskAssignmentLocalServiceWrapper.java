@@ -49,12 +49,12 @@ public class KaleoTaskAssignmentLocalServiceWrapper
 	@Override
 	public com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignment addKaleoTaskAssignment(
 		java.lang.String kaleoClassName, long kaleoClassPK,
-		long kaleoDefinitionId,
+		long kaleoDefinitionVersionId,
 		com.liferay.portal.workflow.kaleo.definition.Assignment assignment,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _kaleoTaskAssignmentLocalService.addKaleoTaskAssignment(kaleoClassName,
-			kaleoClassPK, kaleoDefinitionId, assignment, serviceContext);
+			kaleoClassPK, kaleoDefinitionVersionId, assignment, serviceContext);
 	}
 
 	/**
@@ -75,9 +75,9 @@ public class KaleoTaskAssignmentLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteKaleoDefinitionKaleoTaskAssignments(
-		long kaleoDefinitionId) {
-		_kaleoTaskAssignmentLocalService.deleteKaleoDefinitionKaleoTaskAssignments(kaleoDefinitionId);
+	public void deleteKaleoDefinitionVersionKaleoTaskAssignments(
+		long kaleoDefinitionVersionId) {
+		_kaleoTaskAssignmentLocalService.deleteKaleoDefinitionVersionKaleoTaskAssignments(kaleoDefinitionVersionId);
 	}
 
 	/**
