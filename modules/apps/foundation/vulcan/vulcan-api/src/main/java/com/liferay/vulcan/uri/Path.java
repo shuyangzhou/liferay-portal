@@ -39,7 +39,7 @@ public class Path {
 	 * @return the current resource's path as a URI
 	 */
 	public String asURI() {
-		return "/" + getName() + "/" + getId();
+		return getName() + "/" + getId();
 	}
 
 	/**

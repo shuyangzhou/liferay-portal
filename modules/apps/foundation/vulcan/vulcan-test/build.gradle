@@ -9,3 +9,7 @@ dependencies {
 	provided project(":apps:foundation:vulcan:vulcan-api")
 	provided project(":apps:foundation:vulcan:vulcan-jaxrs-json")
 }
+
+deploy {
+	enabled = false
+}
