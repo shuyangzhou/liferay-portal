@@ -36,6 +36,25 @@ public class KaleoDefinitionValidationException extends WorkflowException {
 		super(cause);
 	}
 
+	public static class EmptyNotificationTemplate
+		extends KaleoDefinitionValidationException {
+
+		public EmptyNotificationTemplate(String node) {
+			super(
+				String.format(
+					"The %s node has a empty notification template", node));
+
+			_node = node;
+		}
+
+		public String getNode() {
+			return _node;
+		}
+
+		private final String _node;
+
+	}
+
 	public static class MultipleInitialStateNodes
 		extends KaleoDefinitionValidationException {
 

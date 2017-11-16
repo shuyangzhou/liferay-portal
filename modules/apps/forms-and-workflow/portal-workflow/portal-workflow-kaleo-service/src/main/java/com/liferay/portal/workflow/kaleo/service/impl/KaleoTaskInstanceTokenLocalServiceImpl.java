@@ -82,8 +82,8 @@ public class KaleoTaskInstanceTokenLocalServiceImpl
 		kaleoTaskInstanceToken.setCreateDate(now);
 		kaleoTaskInstanceToken.setModifiedDate(now);
 		kaleoTaskInstanceToken.setDueDate(dueDate);
-		kaleoTaskInstanceToken.setKaleoDefinitionId(
-			kaleoInstanceToken.getKaleoDefinitionId());
+		kaleoTaskInstanceToken.setKaleoDefinitionVersionId(
+			kaleoInstanceToken.getKaleoDefinitionVersionId());
 		kaleoTaskInstanceToken.setKaleoInstanceId(
 			kaleoInstanceToken.getKaleoInstanceId());
 		kaleoTaskInstanceToken.setKaleoInstanceTokenId(kaleoInstanceTokenId);
@@ -193,24 +193,25 @@ public class KaleoTaskInstanceTokenLocalServiceImpl
 	}
 
 	@Override
-	public void deleteKaleoDefinitionKaleoTaskInstanceTokens(
-		long kaleoDefinitionId) {
+	public void deleteKaleoDefinitionVersionKaleoTaskInstanceTokens(
+		long kaleoDefinitionVersionId) {
 
 		// Kaleo task instance tokens
 
-		kaleoTaskInstanceTokenPersistence.removeByKaleoDefinitionId(
-			kaleoDefinitionId);
+		kaleoTaskInstanceTokenPersistence.removeByKaleoDefinitionVersionId(
+			kaleoDefinitionVersionId);
 
 		// Kaleo task assignment instances
 
 		kaleoTaskAssignmentInstanceLocalService.
-			deleteKaleoDefinitionKaleoTaskAssignmentInstances(
-				kaleoDefinitionId);
+			deleteKaleoDefinitionVersionKaleoTaskAssignmentInstances(
+				kaleoDefinitionVersionId);
 
 		// Kaleo task form instances
 
 		kaleoTaskFormInstanceLocalService.
-			deleteKaleoDefinitionKaleoTaskFormInstances(kaleoDefinitionId);
+			deleteKaleoDefinitionVersionKaleoTaskFormInstances(
+				kaleoDefinitionVersionId);
 	}
 
 	@Override

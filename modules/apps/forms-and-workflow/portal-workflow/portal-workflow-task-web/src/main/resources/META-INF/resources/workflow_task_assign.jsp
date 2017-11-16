@@ -70,8 +70,8 @@ String redirect = ParamUtil.getString(request, "redirect");
 			A.io.request(
 				'<%= assignURL.toString() %>',
 				{
-					method: 'POST',
 					form: {id: '<portlet:namespace />assignFm'},
+					method: 'POST',
 					on: {
 						success: function() {
 							Liferay.Util.getOpener().<portlet:namespace />refreshPortlet('<%= redirect.toString() %>');

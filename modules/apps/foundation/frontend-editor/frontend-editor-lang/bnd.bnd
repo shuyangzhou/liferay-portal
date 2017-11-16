@@ -1,6 +1,10 @@
 Bundle-Name: Liferay Frontend Editor Lang
 Bundle-SymbolicName: com.liferay.frontend.editor.lang
-Bundle-Version: 1.2.0
+Bundle-Version: 1.2.1
 Export-Package: com.liferay.frontend.editor.lang
+Import-Package:\
+	com.liferay.portal.kernel.util;version="[7.38.0,8)",\
+	\
+	*
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Rich Text Editors

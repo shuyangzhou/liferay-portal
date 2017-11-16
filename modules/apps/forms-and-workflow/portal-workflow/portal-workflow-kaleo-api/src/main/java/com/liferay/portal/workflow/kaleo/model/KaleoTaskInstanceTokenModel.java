@@ -193,18 +193,18 @@ public interface KaleoTaskInstanceTokenModel extends BaseModel<KaleoTaskInstance
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
-	 * Returns the kaleo definition ID of this kaleo task instance token.
+	 * Returns the kaleo definition version ID of this kaleo task instance token.
 	 *
-	 * @return the kaleo definition ID of this kaleo task instance token
+	 * @return the kaleo definition version ID of this kaleo task instance token
 	 */
-	public long getKaleoDefinitionId();
+	public long getKaleoDefinitionVersionId();
 
 	/**
-	 * Sets the kaleo definition ID of this kaleo task instance token.
+	 * Sets the kaleo definition version ID of this kaleo task instance token.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID of this kaleo task instance token
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID of this kaleo task instance token
 	 */
-	public void setKaleoDefinitionId(long kaleoDefinitionId);
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId);
 
 	/**
 	 * Returns the kaleo instance ID of this kaleo task instance token.

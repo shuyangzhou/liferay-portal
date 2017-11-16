@@ -81,8 +81,8 @@ public class KaleoNodeCacheModel implements CacheModel<KaleoNode>,
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
-		sb.append(", kaleoDefinitionId=");
-		sb.append(kaleoDefinitionId);
+		sb.append(", kaleoDefinitionVersionId=");
+		sb.append(kaleoDefinitionVersionId);
 		sb.append(", name=");
 		sb.append(name);
 		sb.append(", metadata=");
@@ -130,7 +130,7 @@ public class KaleoNodeCacheModel implements CacheModel<KaleoNode>,
 			kaleoNodeImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		kaleoNodeImpl.setKaleoDefinitionId(kaleoDefinitionId);
+		kaleoNodeImpl.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 
 		if (name == null) {
 			kaleoNodeImpl.setName(StringPool.BLANK);
@@ -181,7 +181,7 @@ public class KaleoNodeCacheModel implements CacheModel<KaleoNode>,
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 
-		kaleoDefinitionId = objectInput.readLong();
+		kaleoDefinitionVersionId = objectInput.readLong();
 		name = objectInput.readUTF();
 		metadata = objectInput.readUTF();
 		description = objectInput.readUTF();
@@ -213,7 +213,7 @@ public class KaleoNodeCacheModel implements CacheModel<KaleoNode>,
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
-		objectOutput.writeLong(kaleoDefinitionId);
+		objectOutput.writeLong(kaleoDefinitionVersionId);
 
 		if (name == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
@@ -255,7 +255,7 @@ public class KaleoNodeCacheModel implements CacheModel<KaleoNode>,
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
-	public long kaleoDefinitionId;
+	public long kaleoDefinitionVersionId;
 	public String name;
 	public String metadata;
 	public String description;

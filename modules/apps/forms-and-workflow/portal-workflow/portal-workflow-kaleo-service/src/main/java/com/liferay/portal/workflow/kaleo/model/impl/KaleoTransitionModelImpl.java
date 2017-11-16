@@ -71,7 +71,7 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
 			{ "modifiedDate", Types.TIMESTAMP },
-			{ "kaleoDefinitionId", Types.BIGINT },
+			{ "kaleoDefinitionVersionId", Types.BIGINT },
 			{ "kaleoNodeId", Types.BIGINT },
 			{ "name", Types.VARCHAR },
 			{ "description", Types.VARCHAR },
@@ -91,7 +91,7 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("kaleoDefinitionId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("kaleoDefinitionVersionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("kaleoNodeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
@@ -102,7 +102,7 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 		TABLE_COLUMNS_MAP.put("defaultTransition", Types.BOOLEAN);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table KaleoTransition (kaleoTransitionId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(200) null,createDate DATE null,modifiedDate DATE null,kaleoDefinitionId LONG,kaleoNodeId LONG,name VARCHAR(200) null,description STRING null,sourceKaleoNodeId LONG,sourceKaleoNodeName VARCHAR(200) null,targetKaleoNodeId LONG,targetKaleoNodeName VARCHAR(200) null,defaultTransition BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table KaleoTransition (kaleoTransitionId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(200) null,createDate DATE null,modifiedDate DATE null,kaleoDefinitionVersionId LONG,kaleoNodeId LONG,name VARCHAR(200) null,description STRING null,sourceKaleoNodeId LONG,sourceKaleoNodeName VARCHAR(200) null,targetKaleoNodeId LONG,targetKaleoNodeName VARCHAR(200) null,defaultTransition BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table KaleoTransition";
 	public static final String ORDER_BY_JPQL = " ORDER BY kaleoTransition.kaleoTransitionId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY KaleoTransition.kaleoTransitionId ASC";
@@ -120,7 +120,7 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 			true);
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
 	public static final long DEFAULTTRANSITION_COLUMN_BITMASK = 2L;
-	public static final long KALEODEFINITIONID_COLUMN_BITMASK = 4L;
+	public static final long KALEODEFINITIONVERSIONID_COLUMN_BITMASK = 4L;
 	public static final long KALEONODEID_COLUMN_BITMASK = 8L;
 	public static final long NAME_COLUMN_BITMASK = 16L;
 	public static final long KALEOTRANSITIONID_COLUMN_BITMASK = 32L;
@@ -171,7 +171,7 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("kaleoDefinitionId", getKaleoDefinitionId());
+		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
 		attributes.put("kaleoNodeId", getKaleoNodeId());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
@@ -231,10 +231,11 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 			setModifiedDate(modifiedDate);
 		}
 
-		Long kaleoDefinitionId = (Long)attributes.get("kaleoDefinitionId");
+		Long kaleoDefinitionVersionId = (Long)attributes.get(
+				"kaleoDefinitionVersionId");
 
-		if (kaleoDefinitionId != null) {
-			setKaleoDefinitionId(kaleoDefinitionId);
+		if (kaleoDefinitionVersionId != null) {
+			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		}
 
 		Long kaleoNodeId = (Long)attributes.get("kaleoNodeId");
@@ -400,25 +401,25 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 	}
 
 	@Override
-	public long getKaleoDefinitionId() {
-		return _kaleoDefinitionId;
+	public long getKaleoDefinitionVersionId() {
+		return _kaleoDefinitionVersionId;
 	}
 
 	@Override
-	public void setKaleoDefinitionId(long kaleoDefinitionId) {
-		_columnBitmask |= KALEODEFINITIONID_COLUMN_BITMASK;
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		_columnBitmask |= KALEODEFINITIONVERSIONID_COLUMN_BITMASK;
 
-		if (!_setOriginalKaleoDefinitionId) {
-			_setOriginalKaleoDefinitionId = true;
+		if (!_setOriginalKaleoDefinitionVersionId) {
+			_setOriginalKaleoDefinitionVersionId = true;
 
-			_originalKaleoDefinitionId = _kaleoDefinitionId;
+			_originalKaleoDefinitionVersionId = _kaleoDefinitionVersionId;
 		}
 
-		_kaleoDefinitionId = kaleoDefinitionId;
+		_kaleoDefinitionVersionId = kaleoDefinitionVersionId;
 	}
 
-	public long getOriginalKaleoDefinitionId() {
-		return _originalKaleoDefinitionId;
+	public long getOriginalKaleoDefinitionVersionId() {
+		return _originalKaleoDefinitionVersionId;
 	}
 
 	@Override
@@ -598,7 +599,7 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 		kaleoTransitionImpl.setUserName(getUserName());
 		kaleoTransitionImpl.setCreateDate(getCreateDate());
 		kaleoTransitionImpl.setModifiedDate(getModifiedDate());
-		kaleoTransitionImpl.setKaleoDefinitionId(getKaleoDefinitionId());
+		kaleoTransitionImpl.setKaleoDefinitionVersionId(getKaleoDefinitionVersionId());
 		kaleoTransitionImpl.setKaleoNodeId(getKaleoNodeId());
 		kaleoTransitionImpl.setName(getName());
 		kaleoTransitionImpl.setDescription(getDescription());
@@ -681,9 +682,9 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 
 		kaleoTransitionModelImpl._setModifiedDate = false;
 
-		kaleoTransitionModelImpl._originalKaleoDefinitionId = kaleoTransitionModelImpl._kaleoDefinitionId;
+		kaleoTransitionModelImpl._originalKaleoDefinitionVersionId = kaleoTransitionModelImpl._kaleoDefinitionVersionId;
 
-		kaleoTransitionModelImpl._setOriginalKaleoDefinitionId = false;
+		kaleoTransitionModelImpl._setOriginalKaleoDefinitionVersionId = false;
 
 		kaleoTransitionModelImpl._originalKaleoNodeId = kaleoTransitionModelImpl._kaleoNodeId;
 
@@ -736,7 +737,7 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 			kaleoTransitionCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		kaleoTransitionCacheModel.kaleoDefinitionId = getKaleoDefinitionId();
+		kaleoTransitionCacheModel.kaleoDefinitionVersionId = getKaleoDefinitionVersionId();
 
 		kaleoTransitionCacheModel.kaleoNodeId = getKaleoNodeId();
 
@@ -801,8 +802,8 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 		sb.append(getCreateDate());
 		sb.append(", modifiedDate=");
 		sb.append(getModifiedDate());
-		sb.append(", kaleoDefinitionId=");
-		sb.append(getKaleoDefinitionId());
+		sb.append(", kaleoDefinitionVersionId=");
+		sb.append(getKaleoDefinitionVersionId());
 		sb.append(", kaleoNodeId=");
 		sb.append(getKaleoNodeId());
 		sb.append(", name=");
@@ -861,8 +862,8 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 		sb.append(getModifiedDate());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>kaleoDefinitionId</column-name><column-value><![CDATA[");
-		sb.append(getKaleoDefinitionId());
+			"<column><column-name>kaleoDefinitionVersionId</column-name><column-value><![CDATA[");
+		sb.append(getKaleoDefinitionVersionId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>kaleoNodeId</column-name><column-value><![CDATA[");
@@ -916,9 +917,9 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
-	private long _kaleoDefinitionId;
-	private long _originalKaleoDefinitionId;
-	private boolean _setOriginalKaleoDefinitionId;
+	private long _kaleoDefinitionVersionId;
+	private long _originalKaleoDefinitionVersionId;
+	private boolean _setOriginalKaleoDefinitionVersionId;
 	private long _kaleoNodeId;
 	private long _originalKaleoNodeId;
 	private boolean _setOriginalKaleoNodeId;

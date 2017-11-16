@@ -2882,17 +2882,41 @@ to version 2.3.23.
 ## 3.5.41 - 2017-11-13
 
 ### Added
-- [LPS-74526]: Execute the `"checkFormat"` script declared in the `package.json`
-file of the project (if present) before running the task
+- [LPS-74526]: Execute the `"checkFormat"` script declared in the project's
+`package.json` file (if present) before running the task
 `checkSourceFormatting`.
-- [LPS-74526]: Execute the `"format"` script declared in the `package.json` file
-of the project (if present) before running the task `formatSource`.
+- [LPS-74526]: Execute the `"format"` script declared in the project's
+`package.json` file (if present) before running the task `formatSource`.
 - [LPS-75829]: Apply the `com.liferay.js.transpiler.base` plugin to an OSGi
 project if the `package.json` file declares a script named `"build"`.
 
 ### Changed
 - [LPS-75829]: Update the [Liferay Gradle Plugins JS Transpiler] dependency to
 version 2.4.0.
+
+## 3.5.42 - 2017-11-14
+
+### Changed
+- [LPS-74526]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.24.
+- [LPS-74526]: Update the [Liferay Source Formatter] dependency to version
+1.0.495.
+
+## 3.5.43 - 2017-11-14
+
+### Changed
+- [LPS-75798]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.25.
+- [LPS-75798]: Update the [Liferay Source Formatter] dependency to version
+1.0.496.
+
+## 3.5.44 - 2017-11-15
+
+### Changed
+- [LPS-75798]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.26.
+- [LPS-75798]: Update the [Liferay Source Formatter] dependency to version
+1.0.497.
 
 [Gradle Bundle Plugin]: https://github.com/TomDmitriev/gradle-bundle-plugin
 [Liferay Alloy Taglib]: https://github.com/liferay/alloy-taglibs

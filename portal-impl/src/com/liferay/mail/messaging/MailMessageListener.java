@@ -17,6 +17,9 @@ package com.liferay.mail.messaging;
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.util.HookFactory;
 import com.liferay.petra.mail.MailEngine;
+import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
+import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
+import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
@@ -24,6 +27,7 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.security.auth.EmailAddressGenerator;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.security.auth.EmailAddressGeneratorFactory;
 import com.liferay.portal.util.PropsValues;
 
@@ -109,7 +113,11 @@ public class MailMessageListener extends BaseMessageListener {
 			doMailMessage((MailMessage)payload);
 		}
 		else if (payload instanceof MethodHandler) {
+			MethodHandler methodHandler = (MethodHandler)payload;
+
 			doMethodHandler((MethodHandler)payload);
+
+			_sendDoMethodHandlerClusterMessage(methodHandler);
 		}
 	}
 
@@ -149,7 +157,25 @@ public class MailMessageListener extends BaseMessageListener {
 			new InternetAddress[filteredInternetAddresses.size()]);
 	}
 
+	private void _sendDoMethodHandlerClusterMessage(
+		MethodHandler methodHandler) {
+
+		if (!ClusterInvokeThreadLocal.isEnabled()) {
+			return;
+		}
+
+		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
+			new MethodHandler(_doMethodHandlerMethodKey, methodHandler), true);
+
+		clusterRequest.setFireAndForget(true);
+
+		ClusterExecutorUtil.execute(clusterRequest);
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		MailMessageListener.class);
+
+	private static final MethodKey _doMethodHandlerMethodKey = new MethodKey(
+		MailMessageListener.class, "doMethodHandler", MethodHandler.class);
 
 }

@@ -71,7 +71,6 @@ public class KaleoDefinitionWrapper implements KaleoDefinition,
 		attributes.put("content", getContent());
 		attributes.put("version", getVersion());
 		attributes.put("active", getActive());
-		attributes.put("startKaleoNodeId", getStartKaleoNodeId());
 
 		return attributes;
 	}
@@ -154,12 +153,6 @@ public class KaleoDefinitionWrapper implements KaleoDefinition,
 
 		if (active != null) {
 			setActive(active);
-		}
-
-		Long startKaleoNodeId = (Long)attributes.get("startKaleoNodeId");
-
-		if (startKaleoNodeId != null) {
-			setStartKaleoNodeId(startKaleoNodeId);
 		}
 	}
 
@@ -259,9 +252,9 @@ public class KaleoDefinitionWrapper implements KaleoDefinition,
 	}
 
 	@Override
-	public KaleoNode getKaleoStartNode()
+	public java.util.List<KaleoDefinitionVersion> getKaleoDefinitionVersions()
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _kaleoDefinition.getKaleoStartNode();
+		return _kaleoDefinition.getKaleoDefinitionVersions();
 	}
 
 	/**
@@ -297,16 +290,6 @@ public class KaleoDefinitionWrapper implements KaleoDefinition,
 	@Override
 	public Serializable getPrimaryKeyObj() {
 		return _kaleoDefinition.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the start kaleo node ID of this kaleo definition.
-	*
-	* @return the start kaleo node ID of this kaleo definition
-	*/
-	@Override
-	public long getStartKaleoNodeId() {
-		return _kaleoDefinition.getStartKaleoNodeId();
 	}
 
 	/**
@@ -429,11 +412,6 @@ public class KaleoDefinitionWrapper implements KaleoDefinition,
 	@Override
 	public int hashCode() {
 		return _kaleoDefinition.hashCode();
-	}
-
-	@Override
-	public boolean hasIncompleteKaleoInstances() {
-		return _kaleoDefinition.hasIncompleteKaleoInstances();
 	}
 
 	/**
@@ -608,16 +586,6 @@ public class KaleoDefinitionWrapper implements KaleoDefinition,
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_kaleoDefinition.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	/**
-	* Sets the start kaleo node ID of this kaleo definition.
-	*
-	* @param startKaleoNodeId the start kaleo node ID of this kaleo definition
-	*/
-	@Override
-	public void setStartKaleoNodeId(long startKaleoNodeId) {
-		_kaleoDefinition.setStartKaleoNodeId(startKaleoNodeId);
 	}
 
 	/**

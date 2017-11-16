@@ -81,8 +81,8 @@ public class KaleoTransitionCacheModel implements CacheModel<KaleoTransition>,
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
-		sb.append(", kaleoDefinitionId=");
-		sb.append(kaleoDefinitionId);
+		sb.append(", kaleoDefinitionVersionId=");
+		sb.append(kaleoDefinitionVersionId);
 		sb.append(", kaleoNodeId=");
 		sb.append(kaleoNodeId);
 		sb.append(", name=");
@@ -134,7 +134,7 @@ public class KaleoTransitionCacheModel implements CacheModel<KaleoTransition>,
 			kaleoTransitionImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		kaleoTransitionImpl.setKaleoDefinitionId(kaleoDefinitionId);
+		kaleoTransitionImpl.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		kaleoTransitionImpl.setKaleoNodeId(kaleoNodeId);
 
 		if (name == null) {
@@ -189,7 +189,7 @@ public class KaleoTransitionCacheModel implements CacheModel<KaleoTransition>,
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 
-		kaleoDefinitionId = objectInput.readLong();
+		kaleoDefinitionVersionId = objectInput.readLong();
 
 		kaleoNodeId = objectInput.readLong();
 		name = objectInput.readUTF();
@@ -225,7 +225,7 @@ public class KaleoTransitionCacheModel implements CacheModel<KaleoTransition>,
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
-		objectOutput.writeLong(kaleoDefinitionId);
+		objectOutput.writeLong(kaleoDefinitionVersionId);
 
 		objectOutput.writeLong(kaleoNodeId);
 
@@ -271,7 +271,7 @@ public class KaleoTransitionCacheModel implements CacheModel<KaleoTransition>,
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
-	public long kaleoDefinitionId;
+	public long kaleoDefinitionVersionId;
 	public long kaleoNodeId;
 	public String name;
 	public String description;

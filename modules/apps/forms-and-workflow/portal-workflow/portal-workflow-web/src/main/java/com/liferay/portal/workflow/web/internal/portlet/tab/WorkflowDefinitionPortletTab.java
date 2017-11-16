@@ -23,11 +23,11 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
-import com.liferay.portal.workflow.web.constants.WorkflowWebKeys;
+import com.liferay.portal.workflow.constants.WorkflowWebKeys;
+import com.liferay.portal.workflow.portlet.tab.BaseWorkflowPortletTab;
+import com.liferay.portal.workflow.portlet.tab.WorkflowPortletTab;
 import com.liferay.portal.workflow.web.internal.display.context.WorkflowDefinitionDisplayContext;
 import com.liferay.portal.workflow.web.internal.request.prepocessor.WorkflowPreprocessorHelper;
-import com.liferay.portal.workflow.web.portlet.tab.BaseWorkflowPortletTab;
-import com.liferay.portal.workflow.web.portlet.tab.WorkflowPortletTab;
 
 import java.util.Objects;
 

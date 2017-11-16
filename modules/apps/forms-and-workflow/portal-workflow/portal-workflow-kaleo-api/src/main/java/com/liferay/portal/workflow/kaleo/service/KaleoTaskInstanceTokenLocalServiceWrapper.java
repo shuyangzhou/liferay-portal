@@ -98,9 +98,9 @@ public class KaleoTaskInstanceTokenLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteKaleoDefinitionKaleoTaskInstanceTokens(
-		long kaleoDefinitionId) {
-		_kaleoTaskInstanceTokenLocalService.deleteKaleoDefinitionKaleoTaskInstanceTokens(kaleoDefinitionId);
+	public void deleteKaleoDefinitionVersionKaleoTaskInstanceTokens(
+		long kaleoDefinitionVersionId) {
+		_kaleoTaskInstanceTokenLocalService.deleteKaleoDefinitionVersionKaleoTaskInstanceTokens(kaleoDefinitionVersionId);
 	}
 
 	@Override

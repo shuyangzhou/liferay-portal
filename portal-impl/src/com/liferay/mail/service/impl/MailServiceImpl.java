@@ -19,6 +19,9 @@ import com.liferay.mail.kernel.model.Filter;
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.service.MailService;
 import com.liferay.mail.kernel.util.Hook;
+import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
+import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
+import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
@@ -99,6 +102,8 @@ public class MailServiceImpl implements MailService, IdentifiableOSGiService {
 	@Override
 	public void clearSession() {
 		_session = null;
+
+		_sendClearSessionClusterMessage();
 	}
 
 	@Override
@@ -300,6 +305,19 @@ public class MailServiceImpl implements MailService, IdentifiableOSGiService {
 		MessageBusUtil.sendMessage(DestinationNames.MAIL, methodHandler);
 	}
 
+	private void _sendClearSessionClusterMessage() {
+		if (!ClusterInvokeThreadLocal.isEnabled()) {
+			return;
+		}
+
+		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
+			new MethodHandler(_clearSessionMethodKey), true);
+
+		clusterRequest.setFireAndForget(true);
+
+		ClusterExecutorUtil.execute(clusterRequest);
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		MailServiceImpl.class);
 
@@ -312,6 +330,8 @@ public class MailServiceImpl implements MailService, IdentifiableOSGiService {
 	private static final MethodKey _addVacationMessageMethodKey = new MethodKey(
 		Hook.class, "addVacationMessage", long.class, long.class, String.class,
 		String.class);
+	private static final MethodKey _clearSessionMethodKey = new MethodKey(
+		MailServiceImpl.class, "clearSession");
 	private static final MethodKey _deleteEmailAddressMethodKey = new MethodKey(
 		Hook.class, "deleteEmailAddress", long.class, long.class);
 	private static final MethodKey _deleteUserMethodKey = new MethodKey(
