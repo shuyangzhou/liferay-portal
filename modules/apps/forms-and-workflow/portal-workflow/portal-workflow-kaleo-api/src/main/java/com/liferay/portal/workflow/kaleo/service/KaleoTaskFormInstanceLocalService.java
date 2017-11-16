@@ -90,8 +90,8 @@ public interface KaleoTaskFormInstanceLocalService extends BaseLocalService,
 
 	public void deleteCompanyKaleoTaskFormInstances(long companyId);
 
-	public void deleteKaleoDefinitionKaleoTaskFormInstances(
-		long kaleoDefinitionId);
+	public void deleteKaleoDefinitionVersionKaleoTaskFormInstances(
+		long kaleoDefinitionVersionId);
 
 	public void deleteKaleoInstanceKaleoTaskFormInstances(long kaleoInstanceId);
 

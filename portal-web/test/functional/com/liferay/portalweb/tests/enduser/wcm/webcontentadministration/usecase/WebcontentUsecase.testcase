@@ -38,7 +38,6 @@
 	</tear-down>
 
 	<command name="AddAndViewStructureAndTemplateWithPermissions" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Permissions,Roles,Training,Web Content Administration" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -525,7 +524,6 @@
 	</command>
 
 	<command name="AddCreatedStructureForImportedTemplate" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -806,7 +804,6 @@
 	</command>
 
 	<command name="AddExistingPageAsDisplayPageInSiteCP" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training,Web Content Administration" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -899,7 +896,6 @@
 	</command>
 
 	<command name="AddImageToWebContentViaItemSelector" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training,Web Content Administration" />
 
 		<execute macro="Page#add">
@@ -956,7 +952,6 @@
 	</command>
 
 	<command name="AddLocalizedWebContentViaSourceEditor" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training,Web Content Administration" />
 
 		<execute macro="Page#add">
@@ -995,7 +990,10 @@
 			<var name="webContentContent" value="Space Program Academy of Continuing Education Dare to Dream out of this world" />
 		</execute>
 
-		<execute macro="WebContentNavigator#gotoEditPGViaWCD" />
+		<execute macro="WebContentNavigator#gotoEditPGViaWCD">
+			<var name="menuItem" value="Edit Web Content" />
+			<var name="webContentTitle" value="Basic S.P.A.C.E. Banner" />
+		</execute>
 
 		<execute macro="WebContent#addLocale">
 			<var name="language" value="Japanese (Japan)" />
@@ -1006,8 +1004,8 @@
 			<var name="webContentTitle" value="Basic S.P.A.C.E. Banner (Japanese Translation)" />
 		</execute>
 
-		<execute macro="WebContent#addAbstractSummary">
-			<var name="localizedAbstractSummary" value="A Japanese translation of the basic front page banner" />
+		<execute macro="AlloyEditor#addDescription">
+			<var name="description" value="A Japanese translation of the basic front page banner" />
 		</execute>
 
 		<execute macro="AlloyEditor#addSourceContent">
@@ -1147,7 +1145,6 @@
 	</command>
 
 	<command name="AddWebContentFromImportedStructureAndTemplate" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -1796,7 +1793,6 @@
 	</command>
 
 	<command name="EditContentWithTitleAndAllFieldsNull" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training,Web Content Administration" />
 
 		<execute macro="Navigator#openURL" />
@@ -2194,7 +2190,6 @@
 	</command>
 
 	<command name="ImportAndUseGlobalStructureAndTemplate" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -2260,7 +2255,6 @@
 	</command>
 
 	<command name="MoveImportedWebContentArticlesToFolders" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training,Web Content Administration" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -2420,7 +2414,6 @@
 	</command>
 
 	<command name="MoveWebContentToFolder" priority="5">
-		<property name="portal.acceptance" value="true" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="Navigator#openURL" />
@@ -2970,7 +2963,7 @@
 			<var name="templateLanguage" value="ftl" />
 		</execute>
 
-		<execute macro="PortletEntry#save" />
+		<execute macro="WebContentTemplates#save" />
 
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Content" />
@@ -3280,7 +3273,7 @@
 			<var name="templateLanguage" value="ftl" />
 		</execute>
 
-		<execute macro="PortletEntry#save" />
+		<execute macro="WebContentTemplates#save" />
 
 		<execute macro="Navigator#openURL" />
 

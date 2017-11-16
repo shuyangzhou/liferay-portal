@@ -137,11 +137,13 @@ public abstract class KaleoDefinitionVersionLocalServiceBaseImpl
 	 *
 	 * @param kaleoDefinitionVersion the kaleo definition version
 	 * @return the kaleo definition version that was removed
+	 * @throws PortalException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public KaleoDefinitionVersion deleteKaleoDefinitionVersion(
-		KaleoDefinitionVersion kaleoDefinitionVersion) {
+		KaleoDefinitionVersion kaleoDefinitionVersion)
+		throws PortalException {
 		return kaleoDefinitionVersionPersistence.remove(kaleoDefinitionVersion);
 	}
 

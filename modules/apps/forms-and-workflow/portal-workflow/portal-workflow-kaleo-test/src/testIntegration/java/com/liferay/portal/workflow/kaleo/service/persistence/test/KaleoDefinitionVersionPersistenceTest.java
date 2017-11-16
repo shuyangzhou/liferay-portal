@@ -152,6 +152,8 @@ public class KaleoDefinitionVersionPersistenceTest {
 
 		newKaleoDefinitionVersion.setVersion(RandomTestUtil.randomString());
 
+		newKaleoDefinitionVersion.setStartKaleoNodeId(RandomTestUtil.nextLong());
+
 		newKaleoDefinitionVersion.setStatus(RandomTestUtil.nextInt());
 
 		_kaleoDefinitionVersions.add(_persistence.update(
@@ -192,6 +194,8 @@ public class KaleoDefinitionVersionPersistenceTest {
 			newKaleoDefinitionVersion.getContent());
 		Assert.assertEquals(existingKaleoDefinitionVersion.getVersion(),
 			newKaleoDefinitionVersion.getVersion());
+		Assert.assertEquals(existingKaleoDefinitionVersion.getStartKaleoNodeId(),
+			newKaleoDefinitionVersion.getStartKaleoNodeId());
 		Assert.assertEquals(existingKaleoDefinitionVersion.getStatus(),
 			newKaleoDefinitionVersion.getStatus());
 	}
@@ -251,7 +255,7 @@ public class KaleoDefinitionVersionPersistenceTest {
 			true, "userId", true, "userName", true, "statusByUserId", true,
 			"statusByUserName", true, "statusDate", true, "createDate", true,
 			"modifiedDate", true, "name", true, "title", true, "description",
-			true, "version", true, "status", true);
+			true, "version", true, "startKaleoNodeId", true, "status", true);
 	}
 
 	@Test
@@ -514,6 +518,8 @@ public class KaleoDefinitionVersionPersistenceTest {
 		kaleoDefinitionVersion.setContent(RandomTestUtil.randomString());
 
 		kaleoDefinitionVersion.setVersion(RandomTestUtil.randomString());
+
+		kaleoDefinitionVersion.setStartKaleoNodeId(RandomTestUtil.nextLong());
 
 		kaleoDefinitionVersion.setStatus(RandomTestUtil.nextInt());
 

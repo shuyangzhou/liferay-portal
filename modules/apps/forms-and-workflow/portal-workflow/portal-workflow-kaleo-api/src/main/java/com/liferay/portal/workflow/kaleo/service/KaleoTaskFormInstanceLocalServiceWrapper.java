@@ -79,9 +79,9 @@ public class KaleoTaskFormInstanceLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteKaleoDefinitionKaleoTaskFormInstances(
-		long kaleoDefinitionId) {
-		_kaleoTaskFormInstanceLocalService.deleteKaleoDefinitionKaleoTaskFormInstances(kaleoDefinitionId);
+	public void deleteKaleoDefinitionVersionKaleoTaskFormInstances(
+		long kaleoDefinitionVersionId) {
+		_kaleoTaskFormInstanceLocalService.deleteKaleoDefinitionVersionKaleoTaskFormInstances(kaleoDefinitionVersionId);
 	}
 
 	@Override
