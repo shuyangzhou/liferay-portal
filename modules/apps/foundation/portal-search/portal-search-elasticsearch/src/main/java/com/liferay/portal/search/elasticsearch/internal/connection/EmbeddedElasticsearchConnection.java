@@ -30,7 +30,7 @@ import com.liferay.portal.search.elasticsearch.connection.ElasticsearchConnectio
 import com.liferay.portal.search.elasticsearch.connection.OperationMode;
 import com.liferay.portal.search.elasticsearch.index.IndexFactory;
 import com.liferay.portal.search.elasticsearch.internal.cluster.ClusterSettingsContext;
-import com.liferay.portal.search.elasticsearch.settings.SettingsContributor;
+import com.liferay.portal.search.elasticsearch.internal.settings.SettingsContributor;
 
 import java.io.IOException;
 

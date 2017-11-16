@@ -38,6 +38,7 @@ import com.liferay.portal.workflow.web.internal.util.filter.WorkflowDefinitionAc
 import com.liferay.portal.workflow.web.internal.util.filter.WorkflowDefinitionDescriptionPredicateFilter;
 import com.liferay.portal.workflow.web.internal.util.filter.WorkflowDefinitionTitlePredicateFilter;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.portlet.RenderRequest;
@@ -72,6 +73,10 @@ public class WorkflowDefinitionDisplayContext {
 		return HtmlUtil.escape(workflowDefinition.getDescription());
 	}
 
+	public Date getModifiedDate(WorkflowDefinition workflowDefinition) {
+		return workflowDefinition.getModifiedDate();
+	}
+
 	public String getName(WorkflowDefinition workflowDefinition) {
 		return HtmlUtil.escape(workflowDefinition.getName());
 	}
@@ -81,7 +86,7 @@ public class WorkflowDefinitionDisplayContext {
 		throws PortalException {
 
 		List<WorkflowDefinition> workflowDefinitions =
-			WorkflowDefinitionManagerUtil.getWorkflowDefinitions(
+			WorkflowDefinitionManagerUtil.getLatestWorkflowDefinitions(
 				_workflowDefinitionRequestHelper.getCompanyId(),
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 				getWorkflowDefinitionOrderByComparator());
@@ -131,10 +136,6 @@ public class WorkflowDefinitionDisplayContext {
 		}
 
 		return user.getFullName();
-	}
-
-	public String getVersion(WorkflowDefinition workflowDefinition) {
-		return String.valueOf(workflowDefinition.getVersion());
 	}
 
 	public List<WorkflowDefinition> getWorkflowDefinitions(String name)

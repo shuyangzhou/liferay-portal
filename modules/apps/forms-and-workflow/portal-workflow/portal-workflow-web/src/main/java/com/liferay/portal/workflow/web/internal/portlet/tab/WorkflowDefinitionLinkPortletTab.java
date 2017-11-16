@@ -15,10 +15,10 @@
 package com.liferay.portal.workflow.web.internal.portlet.tab;
 
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
-import com.liferay.portal.workflow.web.constants.WorkflowWebKeys;
+import com.liferay.portal.workflow.constants.WorkflowWebKeys;
+import com.liferay.portal.workflow.portlet.tab.BaseWorkflowPortletTab;
+import com.liferay.portal.workflow.portlet.tab.WorkflowPortletTab;
 import com.liferay.portal.workflow.web.internal.display.context.WorkflowDefinitionLinkDisplayContext;
-import com.liferay.portal.workflow.web.portlet.tab.BaseWorkflowPortletTab;
-import com.liferay.portal.workflow.web.portlet.tab.WorkflowPortletTab;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;

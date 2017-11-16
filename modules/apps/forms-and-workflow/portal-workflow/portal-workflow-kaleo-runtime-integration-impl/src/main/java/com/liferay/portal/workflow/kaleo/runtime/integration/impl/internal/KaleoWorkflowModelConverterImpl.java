@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.DefaultWorkflowDefinition;
 import com.liferay.portal.kernel.workflow.DefaultWorkflowInstance;
@@ -32,6 +34,7 @@ import com.liferay.portal.workflow.kaleo.KaleoWorkflowModelConverter;
 import com.liferay.portal.workflow.kaleo.definition.export.DefinitionExporter;
 import com.liferay.portal.workflow.kaleo.definition.util.KaleoLogUtil;
 import com.liferay.portal.workflow.kaleo.model.KaleoDefinition;
+import com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstance;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken;
 import com.liferay.portal.workflow.kaleo.model.KaleoLog;
@@ -106,6 +109,53 @@ public class KaleoWorkflowModelConverterImpl
 		defaultWorkflowDefinition.setTitle(kaleoDefinition.getTitle());
 		defaultWorkflowDefinition.setUserId(kaleoDefinition.getUserId());
 		defaultWorkflowDefinition.setVersion(kaleoDefinition.getVersion());
+
+		return defaultWorkflowDefinition;
+	}
+
+	@Override
+	public WorkflowDefinition toWorkflowDefinition(
+			KaleoDefinitionVersion kaleoDefinitionVersion)
+		throws PortalException {
+
+		DefaultWorkflowDefinition defaultWorkflowDefinition =
+			new DefaultWorkflowDefinition();
+
+		KaleoDefinition kaleoDefinition =
+			kaleoDefinitionVersion.getKaleoDefinition();
+
+		defaultWorkflowDefinition.setActive(kaleoDefinition.getActive());
+
+		String content = kaleoDefinitionVersion.getContent();
+
+		if (Validator.isNull(content)) {
+			try {
+				content = _definitionExporter.export(
+					kaleoDefinitionVersion.getKaleoDefinitionVersionId());
+
+				kaleoDefinitionVersion.setContent(content);
+
+				_kaleoDefinitionVersionLocalService.
+					updateKaleoDefinitionVersion(kaleoDefinitionVersion);
+			}
+			catch (Exception e) {
+				if (_log.isWarnEnabled()) {
+					_log.warn("Unable to export definition to string", e);
+				}
+			}
+		}
+
+		defaultWorkflowDefinition.setContent(content);
+
+		defaultWorkflowDefinition.setDescription(
+			kaleoDefinitionVersion.getDescription());
+		defaultWorkflowDefinition.setModifiedDate(
+			kaleoDefinitionVersion.getModifiedDate());
+		defaultWorkflowDefinition.setName(kaleoDefinitionVersion.getName());
+		defaultWorkflowDefinition.setTitle(kaleoDefinitionVersion.getTitle());
+		defaultWorkflowDefinition.setUserId(kaleoDefinitionVersion.getUserId());
+		defaultWorkflowDefinition.setVersion(
+			getVersion(kaleoDefinitionVersion.getVersion()));
 
 		return defaultWorkflowDefinition;
 	}
@@ -231,7 +281,7 @@ public class KaleoWorkflowModelConverterImpl
 		KaleoInstance kaleoInstance = kaleoInstanceToken.getKaleoInstance();
 
 		defaultWorkflowTask.setWorkflowDefinitionId(
-			kaleoInstance.getKaleoDefinitionId());
+			kaleoInstance.getKaleoDefinitionVersionId());
 		defaultWorkflowTask.setWorkflowDefinitionName(
 			kaleoInstance.getKaleoDefinitionName());
 		defaultWorkflowTask.setWorkflowDefinitionVersion(
@@ -250,6 +300,12 @@ public class KaleoWorkflowModelConverterImpl
 			kaleoTaskInstanceToken.getKaleoTaskInstanceTokenId());
 
 		return defaultWorkflowTask;
+	}
+
+	protected int getVersion(String version) {
+		int[] versionParts = StringUtil.split(version, StringPool.PERIOD, 0);
+
+		return versionParts[0];
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

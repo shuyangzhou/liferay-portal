@@ -22,10 +22,10 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration;
 import com.liferay.portal.search.elasticsearch.index.IndexFactory;
 import com.liferay.portal.search.elasticsearch.index.IndexNameBuilder;
+import com.liferay.portal.search.elasticsearch.internal.settings.IndexSettingsContributor;
+import com.liferay.portal.search.elasticsearch.internal.settings.IndexSettingsHelper;
 import com.liferay.portal.search.elasticsearch.internal.util.LogUtil;
 import com.liferay.portal.search.elasticsearch.internal.util.ResourceUtil;
-import com.liferay.portal.search.elasticsearch.settings.IndexSettingsContributor;
-import com.liferay.portal.search.elasticsearch.settings.IndexSettingsHelper;
 
 import java.util.HashMap;
 import java.util.Map;

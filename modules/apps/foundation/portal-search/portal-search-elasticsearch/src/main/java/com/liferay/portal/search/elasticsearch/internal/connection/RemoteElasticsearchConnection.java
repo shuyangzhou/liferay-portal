@@ -28,7 +28,7 @@ import com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfig
 import com.liferay.portal.search.elasticsearch.connection.ElasticsearchConnection;
 import com.liferay.portal.search.elasticsearch.connection.OperationMode;
 import com.liferay.portal.search.elasticsearch.index.IndexFactory;
-import com.liferay.portal.search.elasticsearch.settings.SettingsContributor;
+import com.liferay.portal.search.elasticsearch.internal.settings.SettingsContributor;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

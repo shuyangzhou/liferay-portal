@@ -67,9 +67,10 @@ public abstract class WebApplicationExceptionConverter {
 	private String _getDescription(String message) {
 		Response.StatusType statusType = getStatusType();
 
-		String defaultMessage =
-			"HTTP " + statusType.getStatusCode() + ' ' +
-				statusType.getReasonPhrase();
+		String statusCode = String.valueOf(statusType.getStatusCode());
+
+		String defaultMessage = String.join(
+			" ", "HTTP", statusCode, statusType.getReasonPhrase());
 
 		if (defaultMessage.equals(message)) {
 			return null;

@@ -24,6 +24,7 @@ WorkflowDefinition workflowDefinition = (WorkflowDefinition)request.getAttribute
 String name = BeanParamUtil.getString(workflowDefinition, request, "name");
 int version = BeanParamUtil.getInteger(workflowDefinition, request, "version");
 String content = BeanParamUtil.getString(workflowDefinition, request, "content");
+boolean active = BeanParamUtil.getBoolean(workflowDefinition, request, "active");
 
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(redirect);
@@ -40,7 +41,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 		<div class="container-fluid-1280">
 			<div class="info-bar-item">
 				<c:choose>
-					<c:when test="<%= workflowDefinition.isActive() %>">
+					<c:when test="<%= active %>">
 						<span class="label label-info"><%= LanguageUtil.get(request, "published") %></span>
 					</c:when>
 					<c:otherwise>
@@ -113,6 +114,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 			<aui:input name="name" type="hidden" value="<%= name %>" />
 			<aui:input name="version" type="hidden" value="<%= version %>" />
 			<aui:input name="content" type="hidden" value="<%= content %>" />
+			<aui:input name="successMessage" type="hidden" value='<%= active ? LanguageUtil.get(request, "workflow-updated-successfully") : LanguageUtil.get(request, "workflow-published-successfully") %>' />
 
 			<div class="card-horizontal main-content-card">
 				<div class="card-row-padded">
@@ -151,7 +153,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 				String taglibOnClick = "Liferay.fire('" + liferayPortletResponse.getNamespace() + "publishDefinition');";
 				%>
 
-				<aui:button cssClass="btn-lg" onClick="<%= taglibOnClick %>" primary="<%= true %>" value='<%= (workflowDefinition == null) ? "publish" : "update" %>' />
+				<aui:button cssClass="btn-lg" onClick="<%= taglibOnClick %>" primary="<%= true %>" value='<%= (workflowDefinition == null || !active) ? "publish" : "update" %>' />
 			</aui:button-row>
 		</aui:form>
 	</div>

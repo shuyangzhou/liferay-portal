@@ -16,10 +16,15 @@ package com.liferay.portal.workflow.kaleo.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.workflow.kaleo.model.KaleoDefinition;
+import com.liferay.portal.workflow.kaleo.model.KaleoNode;
+import com.liferay.portal.workflow.kaleo.service.KaleoDefinitionLocalServiceUtil;
 import com.liferay.portal.workflow.kaleo.service.KaleoInstanceLocalServiceUtil;
+import com.liferay.portal.workflow.kaleo.service.KaleoNodeLocalServiceUtil;
 
 /**
  * @author Brian Wing Shun Chan
@@ -31,13 +36,28 @@ public class KaleoDefinitionVersionImpl extends KaleoDefinitionVersionBaseImpl {
 	}
 
 	@Override
+	public KaleoDefinition getKaleoDefinition() throws PortalException {
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCompanyId(getCompanyId());
+
+		return KaleoDefinitionLocalServiceUtil.getKaleoDefinition(
+			getName(), serviceContext);
+	}
+
+	@Override
+	public KaleoNode getKaleoStartNode() throws PortalException {
+		return KaleoNodeLocalServiceUtil.getKaleoNode(getStartKaleoNodeId());
+	}
+
+	@Override
 	public boolean hasIncompleteKaleoInstances() {
 		ServiceContext serviceContext = new ServiceContext();
 
 		serviceContext.setCompanyId(getCompanyId());
 
 		int count = KaleoInstanceLocalServiceUtil.getKaleoInstancesCount(
-			getName(), getVersion(getVersion()), false, serviceContext);
+			getKaleoDefinitionVersionId(), false);
 
 		if (count > 0) {
 			return true;

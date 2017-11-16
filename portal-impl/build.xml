@@ -548,13 +548,13 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 	</target>
 
 	<target name="format-source">
+		<property location="${project.dir}/modules" name="source.formatter.modules.dir.absolute.path" />
+
 		<if>
 			<not>
 				<isset property="env.JENKINS_HOME" />
 			</not>
 			<then>
-				<property location="${project.dir}/modules" name="source.formatter.modules.dir.absolute.path" />
-
 				<var name="source.formatter.gradle.args" value="" />
 				<var name="source.formatter.gradle.task" value="formatSource" />
 
@@ -660,6 +660,39 @@ Please run the following command from ${source.formatter.modules.dir.absolute.pa
 		</java>
 
 		<delete file="ServiceBuilder.temp" />
+
+		<condition else="npmRunFormat" property="source.formatter.npm.task" value="npmRunCheckFormat">
+			<and>
+				<isset property="source.auto.fix" />
+				<isfalse value="${source.auto.fix}" />
+			</and>
+		</condition>
+
+		<if>
+			<or>
+				<istrue value="${format.current.branch}" />
+				<istrue value="${format.latest.author}" />
+				<istrue value="${format.local.changes}" />
+			</or>
+			<then>
+				<echo>
+This target does not format .es.js files. Please run the following command from ${source.formatter.modules.dir.absolute.path} to do so:
+
+../gradlew ${source.formatter.npm.task}
+				</echo>
+			</then>
+			<elseif>
+				<not>
+					<or>
+						<isset property="source.file.extensions" />
+						<isset property="source.files" />
+					</or>
+				</not>
+				<then>
+					<gradle-execute checktask="true" dir="${project.dir}/modules" task="${source.formatter.npm.task}" />
+				</then>
+			</elseif>
+		</if>
 	</target>
 
 	<target name="format-source-bnd">

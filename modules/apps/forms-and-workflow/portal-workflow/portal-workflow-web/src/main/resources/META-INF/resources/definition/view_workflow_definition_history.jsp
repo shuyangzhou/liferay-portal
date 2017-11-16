@@ -31,9 +31,9 @@ WorkflowDefinition currentWorkflowDefinition = (WorkflowDefinition)request.getAt
 		className="com.liferay.portal.kernel.workflow.WorkflowDefinition"
 		modelVar="workflowDefinition"
 	>
-		<liferay-ui:search-container-column-text
-			name="version"
-			value="<%= workflowDefinitionDisplayContext.getVersion(workflowDefinition) %>"
+		<liferay-ui:search-container-column-date
+			name="last-modified"
+			value="<%= workflowDefinitionDisplayContext.getModifiedDate(workflowDefinition) %>"
 		/>
 
 		<liferay-ui:search-container-column-jsp

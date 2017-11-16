@@ -17,9 +17,9 @@ package com.liferay.portal.search.elasticsearch.internal.index;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.search.elasticsearch.internal.settings.TypeMappingsHelper;
 import com.liferay.portal.search.elasticsearch.internal.util.LogUtil;
 import com.liferay.portal.search.elasticsearch.internal.util.ResourceUtil;
-import com.liferay.portal.search.elasticsearch.settings.TypeMappingsHelper;
 
 import java.io.IOException;
 

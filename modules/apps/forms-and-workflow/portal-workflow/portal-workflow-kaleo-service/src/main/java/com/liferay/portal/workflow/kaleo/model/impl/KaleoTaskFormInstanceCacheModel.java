@@ -81,8 +81,8 @@ public class KaleoTaskFormInstanceCacheModel implements CacheModel<KaleoTaskForm
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
-		sb.append(", kaleoDefinitionId=");
-		sb.append(kaleoDefinitionId);
+		sb.append(", kaleoDefinitionVersionId=");
+		sb.append(kaleoDefinitionVersionId);
 		sb.append(", kaleoInstanceId=");
 		sb.append(kaleoInstanceId);
 		sb.append(", kaleoTaskId=");
@@ -136,7 +136,7 @@ public class KaleoTaskFormInstanceCacheModel implements CacheModel<KaleoTaskForm
 			kaleoTaskFormInstanceImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		kaleoTaskFormInstanceImpl.setKaleoDefinitionId(kaleoDefinitionId);
+		kaleoTaskFormInstanceImpl.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		kaleoTaskFormInstanceImpl.setKaleoInstanceId(kaleoInstanceId);
 		kaleoTaskFormInstanceImpl.setKaleoTaskId(kaleoTaskId);
 		kaleoTaskFormInstanceImpl.setKaleoTaskInstanceTokenId(kaleoTaskInstanceTokenId);
@@ -184,7 +184,7 @@ public class KaleoTaskFormInstanceCacheModel implements CacheModel<KaleoTaskForm
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 
-		kaleoDefinitionId = objectInput.readLong();
+		kaleoDefinitionVersionId = objectInput.readLong();
 
 		kaleoInstanceId = objectInput.readLong();
 
@@ -223,7 +223,7 @@ public class KaleoTaskFormInstanceCacheModel implements CacheModel<KaleoTaskForm
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
-		objectOutput.writeLong(kaleoDefinitionId);
+		objectOutput.writeLong(kaleoDefinitionVersionId);
 
 		objectOutput.writeLong(kaleoInstanceId);
 
@@ -266,7 +266,7 @@ public class KaleoTaskFormInstanceCacheModel implements CacheModel<KaleoTaskForm
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
-	public long kaleoDefinitionId;
+	public long kaleoDefinitionVersionId;
 	public long kaleoInstanceId;
 	public long kaleoTaskId;
 	public long kaleoTaskInstanceTokenId;

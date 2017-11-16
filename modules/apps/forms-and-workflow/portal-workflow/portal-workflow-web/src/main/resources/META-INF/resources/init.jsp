@@ -19,12 +19,13 @@
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
+taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
-page import="com.liferay.portal.workflow.web.constants.WorkflowWebKeys" %><%@
+page import="com.liferay.portal.workflow.constants.WorkflowWebKeys" %><%@
+page import="com.liferay.portal.workflow.portlet.tab.WorkflowPortletTab" %><%@
 page import="com.liferay.portal.workflow.web.internal.constants.WorkflowPortletKeys" %><%@
-page import="com.liferay.portal.workflow.web.portlet.tab.WorkflowPortletTab" %><%@
 page import="com.liferay.taglib.servlet.PipingServletResponse" %>
 
 <%@ page import="java.util.List" %>

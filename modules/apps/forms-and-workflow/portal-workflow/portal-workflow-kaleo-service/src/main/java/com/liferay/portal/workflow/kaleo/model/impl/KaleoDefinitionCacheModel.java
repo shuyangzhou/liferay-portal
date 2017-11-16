@@ -65,7 +65,7 @@ public class KaleoDefinitionCacheModel implements CacheModel<KaleoDefinition>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{kaleoDefinitionId=");
 		sb.append(kaleoDefinitionId);
@@ -93,8 +93,6 @@ public class KaleoDefinitionCacheModel implements CacheModel<KaleoDefinition>,
 		sb.append(version);
 		sb.append(", active=");
 		sb.append(active);
-		sb.append(", startKaleoNodeId=");
-		sb.append(startKaleoNodeId);
 		sb.append("}");
 
 		return sb.toString();
@@ -160,7 +158,6 @@ public class KaleoDefinitionCacheModel implements CacheModel<KaleoDefinition>,
 
 		kaleoDefinitionImpl.setVersion(version);
 		kaleoDefinitionImpl.setActive(active);
-		kaleoDefinitionImpl.setStartKaleoNodeId(startKaleoNodeId);
 
 		kaleoDefinitionImpl.resetOriginalValues();
 
@@ -187,8 +184,6 @@ public class KaleoDefinitionCacheModel implements CacheModel<KaleoDefinition>,
 		version = objectInput.readInt();
 
 		active = objectInput.readBoolean();
-
-		startKaleoNodeId = objectInput.readLong();
 	}
 
 	@Override
@@ -243,8 +238,6 @@ public class KaleoDefinitionCacheModel implements CacheModel<KaleoDefinition>,
 		objectOutput.writeInt(version);
 
 		objectOutput.writeBoolean(active);
-
-		objectOutput.writeLong(startKaleoNodeId);
 	}
 
 	public long kaleoDefinitionId;
@@ -260,5 +253,4 @@ public class KaleoDefinitionCacheModel implements CacheModel<KaleoDefinition>,
 	public String content;
 	public int version;
 	public boolean active;
-	public long startKaleoNodeId;
 }
