@@ -48,13 +48,13 @@ public class KaleoTransitionLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.workflow.kaleo.model.KaleoTransition addKaleoTransition(
-		long kaleoDefinitionId, long kaleoNodeId,
+		long kaleoDefinitionVersionId, long kaleoNodeId,
 		com.liferay.portal.workflow.kaleo.definition.Transition transition,
 		com.liferay.portal.workflow.kaleo.model.KaleoNode sourceKaleoNode,
 		com.liferay.portal.workflow.kaleo.model.KaleoNode targetKaleoNode,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _kaleoTransitionLocalService.addKaleoTransition(kaleoDefinitionId,
+		return _kaleoTransitionLocalService.addKaleoTransition(kaleoDefinitionVersionId,
 			kaleoNodeId, transition, sourceKaleoNode, targetKaleoNode,
 			serviceContext);
 	}
@@ -77,8 +77,9 @@ public class KaleoTransitionLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteKaleoDefinitionKaleoTransitions(long kaleoDefinitionId) {
-		_kaleoTransitionLocalService.deleteKaleoDefinitionKaleoTransitions(kaleoDefinitionId);
+	public void deleteKaleoDefinitionVersionKaleoTransitions(
+		long kaleoDefinitionVersionId) {
+		_kaleoTransitionLocalService.deleteKaleoDefinitionVersionKaleoTransitions(kaleoDefinitionVersionId);
 	}
 
 	/**
@@ -227,9 +228,9 @@ public class KaleoTransitionLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.portal.workflow.kaleo.model.KaleoTransition> getKaleoDefinitionKaleoTransitions(
-		long kaleoDefinitionId) {
-		return _kaleoTransitionLocalService.getKaleoDefinitionKaleoTransitions(kaleoDefinitionId);
+	public java.util.List<com.liferay.portal.workflow.kaleo.model.KaleoTransition> getKaleoDefinitionVersionKaleoTransitions(
+		long kaleoDefinitionVersionId) {
+		return _kaleoTransitionLocalService.getKaleoDefinitionVersionKaleoTransitions(kaleoDefinitionVersionId);
 	}
 
 	/**

@@ -19,6 +19,7 @@ import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
 import com.liferay.journal.content.web.constants.JournalContentPortletKeys;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.test.util.JournalTestUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
@@ -31,7 +32,6 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.util.test.LayoutTestUtil;
@@ -44,6 +44,7 @@ import javax.portlet.PortletPreferences;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -92,6 +93,7 @@ public abstract class BasePrototypePropagationTestCase {
 		doTestLayoutTypePropagation(false);
 	}
 
+	@Ignore
 	@Test
 	public void testLayoutTypePropagationWithLinkEnabled() throws Exception {
 		doTestLayoutTypePropagation(true);
@@ -104,6 +106,7 @@ public abstract class BasePrototypePropagationTestCase {
 		doTestPortletPreferencesPropagation(false);
 	}
 
+	@Ignore
 	@Test
 	public void testPortletPreferencesPropagationWithLinkEnabled()
 		throws Exception {

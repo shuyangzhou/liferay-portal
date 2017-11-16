@@ -21,6 +21,7 @@ import com.liferay.journal.content.web.constants.JournalContentPortletKeys;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.journal.test.util.JournalTestUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.LayoutParentLayoutIdException;
 import com.liferay.portal.kernel.model.Group;
@@ -58,7 +59,6 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.servlet.filters.cache.CacheUtil;
@@ -76,6 +76,7 @@ import javax.portlet.PortletPreferences;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -134,6 +135,7 @@ public class LayoutSetPrototypePropagationTest
 		doTestIsLayoutUpdateable();
 	}
 
+	@Ignore
 	@Test
 	public void testLayoutPermissionPropagationWithLinkEnabled()
 		throws Exception {
@@ -234,6 +236,7 @@ public class LayoutSetPrototypePropagationTest
 		doTestLayoutPropagation(false);
 	}
 
+	@Ignore
 	@Test
 	public void testLayoutPropagationWithLinkEnabled() throws Exception {
 		doTestLayoutPropagation(true);
@@ -256,6 +259,7 @@ public class LayoutSetPrototypePropagationTest
 		doTestPortletPreferencesPropagation(false, true);
 	}
 
+	@Ignore
 	@Test
 	public void testPortletPreferencesPropagationWithGlobalScopeLinkEnabled()
 		throws Exception {

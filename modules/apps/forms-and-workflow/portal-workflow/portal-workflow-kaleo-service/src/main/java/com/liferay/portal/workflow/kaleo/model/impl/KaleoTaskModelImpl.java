@@ -71,7 +71,7 @@ public class KaleoTaskModelImpl extends BaseModelImpl<KaleoTask>
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
 			{ "modifiedDate", Types.TIMESTAMP },
-			{ "kaleoDefinitionId", Types.BIGINT },
+			{ "kaleoDefinitionVersionId", Types.BIGINT },
 			{ "kaleoNodeId", Types.BIGINT },
 			{ "name", Types.VARCHAR },
 			{ "description", Types.VARCHAR }
@@ -86,13 +86,13 @@ public class KaleoTaskModelImpl extends BaseModelImpl<KaleoTask>
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("kaleoDefinitionId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("kaleoDefinitionVersionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("kaleoNodeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table KaleoTask (kaleoTaskId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(200) null,createDate DATE null,modifiedDate DATE null,kaleoDefinitionId LONG,kaleoNodeId LONG,name VARCHAR(200) null,description STRING null)";
+	public static final String TABLE_SQL_CREATE = "create table KaleoTask (kaleoTaskId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(200) null,createDate DATE null,modifiedDate DATE null,kaleoDefinitionVersionId LONG,kaleoNodeId LONG,name VARCHAR(200) null,description STRING null)";
 	public static final String TABLE_SQL_DROP = "drop table KaleoTask";
 	public static final String ORDER_BY_JPQL = " ORDER BY kaleoTask.kaleoTaskId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY KaleoTask.kaleoTaskId ASC";
@@ -109,7 +109,7 @@ public class KaleoTaskModelImpl extends BaseModelImpl<KaleoTask>
 				"value.object.column.bitmask.enabled.com.liferay.portal.workflow.kaleo.model.KaleoTask"),
 			true);
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
-	public static final long KALEODEFINITIONID_COLUMN_BITMASK = 2L;
+	public static final long KALEODEFINITIONVERSIONID_COLUMN_BITMASK = 2L;
 	public static final long KALEONODEID_COLUMN_BITMASK = 4L;
 	public static final long KALEOTASKID_COLUMN_BITMASK = 8L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.workflow.kaleo.service.util.ServiceProps.get(
@@ -159,7 +159,7 @@ public class KaleoTaskModelImpl extends BaseModelImpl<KaleoTask>
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("kaleoDefinitionId", getKaleoDefinitionId());
+		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
 		attributes.put("kaleoNodeId", getKaleoNodeId());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
@@ -214,10 +214,11 @@ public class KaleoTaskModelImpl extends BaseModelImpl<KaleoTask>
 			setModifiedDate(modifiedDate);
 		}
 
-		Long kaleoDefinitionId = (Long)attributes.get("kaleoDefinitionId");
+		Long kaleoDefinitionVersionId = (Long)attributes.get(
+				"kaleoDefinitionVersionId");
 
-		if (kaleoDefinitionId != null) {
-			setKaleoDefinitionId(kaleoDefinitionId);
+		if (kaleoDefinitionVersionId != null) {
+			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		}
 
 		Long kaleoNodeId = (Long)attributes.get("kaleoNodeId");
@@ -351,25 +352,25 @@ public class KaleoTaskModelImpl extends BaseModelImpl<KaleoTask>
 	}
 
 	@Override
-	public long getKaleoDefinitionId() {
-		return _kaleoDefinitionId;
+	public long getKaleoDefinitionVersionId() {
+		return _kaleoDefinitionVersionId;
 	}
 
 	@Override
-	public void setKaleoDefinitionId(long kaleoDefinitionId) {
-		_columnBitmask |= KALEODEFINITIONID_COLUMN_BITMASK;
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		_columnBitmask |= KALEODEFINITIONVERSIONID_COLUMN_BITMASK;
 
-		if (!_setOriginalKaleoDefinitionId) {
-			_setOriginalKaleoDefinitionId = true;
+		if (!_setOriginalKaleoDefinitionVersionId) {
+			_setOriginalKaleoDefinitionVersionId = true;
 
-			_originalKaleoDefinitionId = _kaleoDefinitionId;
+			_originalKaleoDefinitionVersionId = _kaleoDefinitionVersionId;
 		}
 
-		_kaleoDefinitionId = kaleoDefinitionId;
+		_kaleoDefinitionVersionId = kaleoDefinitionVersionId;
 	}
 
-	public long getOriginalKaleoDefinitionId() {
-		return _originalKaleoDefinitionId;
+	public long getOriginalKaleoDefinitionVersionId() {
+		return _originalKaleoDefinitionVersionId;
 	}
 
 	@Override
@@ -462,7 +463,7 @@ public class KaleoTaskModelImpl extends BaseModelImpl<KaleoTask>
 		kaleoTaskImpl.setUserName(getUserName());
 		kaleoTaskImpl.setCreateDate(getCreateDate());
 		kaleoTaskImpl.setModifiedDate(getModifiedDate());
-		kaleoTaskImpl.setKaleoDefinitionId(getKaleoDefinitionId());
+		kaleoTaskImpl.setKaleoDefinitionVersionId(getKaleoDefinitionVersionId());
 		kaleoTaskImpl.setKaleoNodeId(getKaleoNodeId());
 		kaleoTaskImpl.setName(getName());
 		kaleoTaskImpl.setDescription(getDescription());
@@ -540,9 +541,9 @@ public class KaleoTaskModelImpl extends BaseModelImpl<KaleoTask>
 
 		kaleoTaskModelImpl._setModifiedDate = false;
 
-		kaleoTaskModelImpl._originalKaleoDefinitionId = kaleoTaskModelImpl._kaleoDefinitionId;
+		kaleoTaskModelImpl._originalKaleoDefinitionVersionId = kaleoTaskModelImpl._kaleoDefinitionVersionId;
 
-		kaleoTaskModelImpl._setOriginalKaleoDefinitionId = false;
+		kaleoTaskModelImpl._setOriginalKaleoDefinitionVersionId = false;
 
 		kaleoTaskModelImpl._originalKaleoNodeId = kaleoTaskModelImpl._kaleoNodeId;
 
@@ -589,7 +590,7 @@ public class KaleoTaskModelImpl extends BaseModelImpl<KaleoTask>
 			kaleoTaskCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		kaleoTaskCacheModel.kaleoDefinitionId = getKaleoDefinitionId();
+		kaleoTaskCacheModel.kaleoDefinitionVersionId = getKaleoDefinitionVersionId();
 
 		kaleoTaskCacheModel.kaleoNodeId = getKaleoNodeId();
 
@@ -630,8 +631,8 @@ public class KaleoTaskModelImpl extends BaseModelImpl<KaleoTask>
 		sb.append(getCreateDate());
 		sb.append(", modifiedDate=");
 		sb.append(getModifiedDate());
-		sb.append(", kaleoDefinitionId=");
-		sb.append(getKaleoDefinitionId());
+		sb.append(", kaleoDefinitionVersionId=");
+		sb.append(getKaleoDefinitionVersionId());
 		sb.append(", kaleoNodeId=");
 		sb.append(getKaleoNodeId());
 		sb.append(", name=");
@@ -680,8 +681,8 @@ public class KaleoTaskModelImpl extends BaseModelImpl<KaleoTask>
 		sb.append(getModifiedDate());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>kaleoDefinitionId</column-name><column-value><![CDATA[");
-		sb.append(getKaleoDefinitionId());
+			"<column><column-name>kaleoDefinitionVersionId</column-name><column-value><![CDATA[");
+		sb.append(getKaleoDefinitionVersionId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>kaleoNodeId</column-name><column-value><![CDATA[");
@@ -715,9 +716,9 @@ public class KaleoTaskModelImpl extends BaseModelImpl<KaleoTask>
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
-	private long _kaleoDefinitionId;
-	private long _originalKaleoDefinitionId;
-	private boolean _setOriginalKaleoDefinitionId;
+	private long _kaleoDefinitionVersionId;
+	private long _originalKaleoDefinitionVersionId;
+	private boolean _setOriginalKaleoDefinitionVersionId;
 	private long _kaleoNodeId;
 	private long _originalKaleoNodeId;
 	private boolean _setOriginalKaleoNodeId;

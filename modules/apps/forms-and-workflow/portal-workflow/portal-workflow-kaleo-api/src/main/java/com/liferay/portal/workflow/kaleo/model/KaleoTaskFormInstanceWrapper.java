@@ -66,7 +66,7 @@ public class KaleoTaskFormInstanceWrapper implements KaleoTaskFormInstance,
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("kaleoDefinitionId", getKaleoDefinitionId());
+		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
 		attributes.put("kaleoInstanceId", getKaleoInstanceId());
 		attributes.put("kaleoTaskId", getKaleoTaskId());
 		attributes.put("kaleoTaskInstanceTokenId", getKaleoTaskInstanceTokenId());
@@ -125,10 +125,11 @@ public class KaleoTaskFormInstanceWrapper implements KaleoTaskFormInstance,
 			setModifiedDate(modifiedDate);
 		}
 
-		Long kaleoDefinitionId = (Long)attributes.get("kaleoDefinitionId");
+		Long kaleoDefinitionVersionId = (Long)attributes.get(
+				"kaleoDefinitionVersionId");
 
-		if (kaleoDefinitionId != null) {
-			setKaleoDefinitionId(kaleoDefinitionId);
+		if (kaleoDefinitionVersionId != null) {
+			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		}
 
 		Long kaleoInstanceId = (Long)attributes.get("kaleoInstanceId");
@@ -274,13 +275,13 @@ public class KaleoTaskFormInstanceWrapper implements KaleoTaskFormInstance,
 	}
 
 	/**
-	* Returns the kaleo definition ID of this kaleo task form instance.
+	* Returns the kaleo definition version ID of this kaleo task form instance.
 	*
-	* @return the kaleo definition ID of this kaleo task form instance
+	* @return the kaleo definition version ID of this kaleo task form instance
 	*/
 	@Override
-	public long getKaleoDefinitionId() {
-		return _kaleoTaskFormInstance.getKaleoDefinitionId();
+	public long getKaleoDefinitionVersionId() {
+		return _kaleoTaskFormInstance.getKaleoDefinitionVersionId();
 	}
 
 	/**
@@ -515,13 +516,13 @@ public class KaleoTaskFormInstanceWrapper implements KaleoTaskFormInstance,
 	}
 
 	/**
-	* Sets the kaleo definition ID of this kaleo task form instance.
+	* Sets the kaleo definition version ID of this kaleo task form instance.
 	*
-	* @param kaleoDefinitionId the kaleo definition ID of this kaleo task form instance
+	* @param kaleoDefinitionVersionId the kaleo definition version ID of this kaleo task form instance
 	*/
 	@Override
-	public void setKaleoDefinitionId(long kaleoDefinitionId) {
-		_kaleoTaskFormInstance.setKaleoDefinitionId(kaleoDefinitionId);
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		_kaleoTaskFormInstance.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 	}
 
 	/**

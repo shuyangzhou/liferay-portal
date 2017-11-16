@@ -5,6 +5,7 @@ copyLibs {
 dependencies {
 	provided project(":apps:static:portal-lpkg-deployer:portal-lpkg-deployer")
 
+	testCompile group: "com.liferay", name: "com.liferay.petra.string", version: "1.0.0"
 	testCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "2.6.0"
 	testCompile project(":apps:static:portal-lpkg-deployer:portal-lpkg-deployer-test-util")
 

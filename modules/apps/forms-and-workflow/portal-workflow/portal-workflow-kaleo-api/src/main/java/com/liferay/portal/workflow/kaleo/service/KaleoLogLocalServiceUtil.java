@@ -151,8 +151,10 @@ public class KaleoLogLocalServiceUtil {
 		getService().deleteCompanyKaleoLogs(companyId);
 	}
 
-	public static void deleteKaleoDefinitionKaleoLogs(long kaleoDefinitionId) {
-		getService().deleteKaleoDefinitionKaleoLogs(kaleoDefinitionId);
+	public static void deleteKaleoDefinitionVersionKaleoLogs(
+		long kaleoDefinitionVersionId) {
+		getService()
+			.deleteKaleoDefinitionVersionKaleoLogs(kaleoDefinitionVersionId);
 	}
 
 	public static void deleteKaleoInstanceKaleoLogs(long kaleoInstanceId) {

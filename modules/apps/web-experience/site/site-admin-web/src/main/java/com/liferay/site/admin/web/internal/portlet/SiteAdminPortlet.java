@@ -18,6 +18,7 @@ import com.liferay.asset.kernel.exception.AssetCategoryException;
 import com.liferay.asset.kernel.exception.AssetTagException;
 import com.liferay.exportimport.kernel.exception.RemoteExportException;
 import com.liferay.exportimport.kernel.staging.Staging;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskConstants;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -85,7 +86,6 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -230,9 +230,8 @@ public class SiteAdminPortlet extends MVCPortlet {
 				SiteAdminPortletKeys.SITE_SETTINGS + "requestProcessed");
 		}
 
-		PortletURL siteAdministrationURL = portal.getControlPanelPortletURL(
-			actionRequest, group, SiteAdminPortletKeys.SITE_SETTINGS, 0, 0,
-			PortletRequest.RENDER_PHASE);
+		PortletURL siteAdministrationURL = getSiteAdministrationURL(
+			actionRequest, group);
 
 		siteAdministrationURL.setParameter(
 			"historyKey", getHistoryKey(actionRequest, actionResponse));
@@ -425,6 +424,21 @@ public class SiteAdminPortlet extends MVCPortlet {
 		}
 
 		return roles;
+	}
+
+	protected PortletURL getSiteAdministrationURL(
+		ActionRequest actionRequest, Group group) {
+
+		String portletId = SiteAdminPortletKeys.SITE_ADMIN;
+
+		long liveGroupId = ParamUtil.getLong(actionRequest, "liveGroupId");
+
+		if (liveGroupId <= 0) {
+			portletId = SiteAdminPortletKeys.SITE_SETTINGS;
+		}
+
+		return portal.getControlPanelPortletURL(
+			actionRequest, group, portletId, 0, 0, PortletRequest.RENDER_PHASE);
 	}
 
 	protected List<Team> getTeams(PortletRequest portletRequest)
