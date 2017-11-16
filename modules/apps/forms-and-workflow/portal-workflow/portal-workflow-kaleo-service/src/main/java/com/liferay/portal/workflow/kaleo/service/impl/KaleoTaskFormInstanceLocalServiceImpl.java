@@ -60,8 +60,8 @@ public class KaleoTaskFormInstanceLocalServiceImpl
 		kaleoTaskFormInstance.setUserName(user.getFullName());
 		kaleoTaskFormInstance.setCreateDate(now);
 		kaleoTaskFormInstance.setModifiedDate(now);
-		kaleoTaskFormInstance.setKaleoDefinitionId(
-			kaleoTaskInstanceToken.getKaleoDefinitionId());
+		kaleoTaskFormInstance.setKaleoDefinitionVersionId(
+			kaleoTaskInstanceToken.getKaleoDefinitionVersionId());
 		kaleoTaskFormInstance.setKaleoInstanceId(
 			kaleoTaskInstanceToken.getKaleoInstanceId());
 		kaleoTaskFormInstance.setKaleoTaskId(
@@ -111,11 +111,11 @@ public class KaleoTaskFormInstanceLocalServiceImpl
 	}
 
 	@Override
-	public void deleteKaleoDefinitionKaleoTaskFormInstances(
-		long kaleoDefinitionId) {
+	public void deleteKaleoDefinitionVersionKaleoTaskFormInstances(
+		long kaleoDefinitionVersionId) {
 
-		kaleoTaskFormInstancePersistence.removeByKaleoDefinitionId(
-			kaleoDefinitionId);
+		kaleoTaskFormInstancePersistence.removeByKaleoDefinitionVersionId(
+			kaleoDefinitionVersionId);
 	}
 
 	@Override

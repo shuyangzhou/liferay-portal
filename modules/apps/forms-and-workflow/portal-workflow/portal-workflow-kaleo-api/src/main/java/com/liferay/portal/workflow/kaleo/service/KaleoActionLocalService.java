@@ -72,7 +72,7 @@ public interface KaleoActionLocalService extends BaseLocalService,
 	public KaleoAction addKaleoAction(KaleoAction kaleoAction);
 
 	public KaleoAction addKaleoAction(java.lang.String kaleoClassName,
-		long kaleoClassPK, long kaleoDefinitionId,
+		long kaleoClassPK, long kaleoDefinitionVersionId,
 		java.lang.String kaleoNodeName, Action action,
 		ServiceContext serviceContext) throws PortalException;
 
@@ -106,7 +106,8 @@ public interface KaleoActionLocalService extends BaseLocalService,
 	public KaleoAction deleteKaleoAction(long kaleoActionId)
 		throws PortalException;
 
-	public void deleteKaleoDefinitionKaleoActions(long kaleoDefinitionId);
+	public void deleteKaleoDefinitionVersionKaleoActions(
+		long kaleoDefinitionVersionId);
 
 	/**
 	* @throws PortalException

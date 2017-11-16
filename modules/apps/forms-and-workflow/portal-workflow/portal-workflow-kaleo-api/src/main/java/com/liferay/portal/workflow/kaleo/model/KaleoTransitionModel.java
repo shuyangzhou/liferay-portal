@@ -193,18 +193,18 @@ public interface KaleoTransitionModel extends BaseModel<KaleoTransition>,
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
-	 * Returns the kaleo definition ID of this kaleo transition.
+	 * Returns the kaleo definition version ID of this kaleo transition.
 	 *
-	 * @return the kaleo definition ID of this kaleo transition
+	 * @return the kaleo definition version ID of this kaleo transition
 	 */
-	public long getKaleoDefinitionId();
+	public long getKaleoDefinitionVersionId();
 
 	/**
-	 * Sets the kaleo definition ID of this kaleo transition.
+	 * Sets the kaleo definition version ID of this kaleo transition.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID of this kaleo transition
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID of this kaleo transition
 	 */
-	public void setKaleoDefinitionId(long kaleoDefinitionId);
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId);
 
 	/**
 	 * Returns the kaleo node ID of this kaleo transition.

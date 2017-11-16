@@ -62,8 +62,8 @@ public interface KaleoDefinitionLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link KaleoDefinitionLocalServiceUtil} to access the kaleo definition local service. Add custom service methods to {@link com.liferay.portal.workflow.kaleo.service.impl.KaleoDefinitionLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public void activateKaleoDefinition(long kaleoDefinitionId,
-		long startKaleoNodeId, ServiceContext serviceContext)
-		throws PortalException;
+		long kaleoDefinitionVersionId, long startKaleoNodeId,
+		ServiceContext serviceContext) throws PortalException;
 
 	public void activateKaleoDefinition(long kaleoDefinitionId,
 		ServiceContext serviceContext) throws PortalException;
@@ -119,7 +119,7 @@ public interface KaleoDefinitionLocalService extends BaseLocalService,
 	public KaleoDefinition deleteKaleoDefinition(long kaleoDefinitionId)
 		throws PortalException;
 
-	public void deleteKaleoDefinition(java.lang.String name, int version,
+	public void deleteKaleoDefinition(java.lang.String name,
 		ServiceContext serviceContext) throws PortalException;
 
 	/**
@@ -192,7 +192,7 @@ public interface KaleoDefinitionLocalService extends BaseLocalService,
 	public KaleoDefinition fetchKaleoDefinition(long kaleoDefinitionId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KaleoDefinition fetchLatestKaleoDefinition(java.lang.String name,
+	public KaleoDefinition fetchKaleoDefinition(java.lang.String name,
 		ServiceContext serviceContext) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -214,7 +214,7 @@ public interface KaleoDefinitionLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public KaleoDefinition getKaleoDefinition(java.lang.String name,
-		int version, ServiceContext serviceContext) throws PortalException;
+		ServiceContext serviceContext) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KaleoDefinition> getKaleoDefinitions(boolean active, int start,
@@ -237,18 +237,6 @@ public interface KaleoDefinitionLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KaleoDefinition> getKaleoDefinitions(int start, int end,
-		OrderByComparator<KaleoDefinition> orderByComparator,
-		ServiceContext serviceContext);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<KaleoDefinition> getKaleoDefinitions(java.lang.String name,
-		boolean active, int start, int end,
-		OrderByComparator<KaleoDefinition> orderByComparator,
-		ServiceContext serviceContext);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<KaleoDefinition> getKaleoDefinitions(java.lang.String name,
-		int start, int end,
 		OrderByComparator<KaleoDefinition> orderByComparator,
 		ServiceContext serviceContext);
 
@@ -275,10 +263,6 @@ public interface KaleoDefinitionLocalService extends BaseLocalService,
 	public int getKaleoDefinitionsCount(java.lang.String name,
 		ServiceContext serviceContext);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KaleoDefinition getLatestKaleoDefinition(java.lang.String name,
-		ServiceContext serviceContext) throws PortalException;
-
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -295,6 +279,11 @@ public interface KaleoDefinitionLocalService extends BaseLocalService,
 		java.lang.String title, ServiceContext serviceContext)
 		throws PortalException;
 
+	public KaleoDefinition updatedKaleoDefinition(long kaleoDefinitionId,
+		java.lang.String title, java.lang.String description,
+		java.lang.String content, int version, ServiceContext serviceContext)
+		throws PortalException;
+
 	/**
 	* Updates the kaleo definition in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -304,8 +293,4 @@ public interface KaleoDefinitionLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public KaleoDefinition updateKaleoDefinition(
 		KaleoDefinition kaleoDefinition);
-
-	public KaleoDefinition updateTitle(java.lang.String name, int version,
-		java.lang.String title, ServiceContext serviceContext)
-		throws PortalException;
 }

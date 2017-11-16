@@ -138,7 +138,7 @@ public class KaleoActionPersistenceTest {
 
 		newKaleoAction.setKaleoClassPK(RandomTestUtil.nextLong());
 
-		newKaleoAction.setKaleoDefinitionId(RandomTestUtil.nextLong());
+		newKaleoAction.setKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
 		newKaleoAction.setKaleoNodeName(RandomTestUtil.randomString());
 
@@ -180,8 +180,8 @@ public class KaleoActionPersistenceTest {
 			newKaleoAction.getKaleoClassName());
 		Assert.assertEquals(existingKaleoAction.getKaleoClassPK(),
 			newKaleoAction.getKaleoClassPK());
-		Assert.assertEquals(existingKaleoAction.getKaleoDefinitionId(),
-			newKaleoAction.getKaleoDefinitionId());
+		Assert.assertEquals(existingKaleoAction.getKaleoDefinitionVersionId(),
+			newKaleoAction.getKaleoDefinitionVersionId());
 		Assert.assertEquals(existingKaleoAction.getKaleoNodeName(),
 			newKaleoAction.getKaleoNodeName());
 		Assert.assertEquals(existingKaleoAction.getName(),
@@ -208,10 +208,10 @@ public class KaleoActionPersistenceTest {
 	}
 
 	@Test
-	public void testCountByKaleoDefinitionId() throws Exception {
-		_persistence.countByKaleoDefinitionId(RandomTestUtil.nextLong());
+	public void testCountByKaleoDefinitionVersionId() throws Exception {
+		_persistence.countByKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
-		_persistence.countByKaleoDefinitionId(0L);
+		_persistence.countByKaleoDefinitionVersionId(0L);
 	}
 
 	@Test
@@ -260,9 +260,9 @@ public class KaleoActionPersistenceTest {
 			"kaleoActionId", true, "groupId", true, "companyId", true,
 			"userId", true, "userName", true, "createDate", true,
 			"modifiedDate", true, "kaleoClassName", true, "kaleoClassPK", true,
-			"kaleoDefinitionId", true, "kaleoNodeName", true, "name", true,
-			"description", true, "executionType", true, "scriptLanguage", true,
-			"scriptRequiredContexts", true, "priority", true);
+			"kaleoDefinitionVersionId", true, "kaleoNodeName", true, "name",
+			true, "description", true, "executionType", true, "scriptLanguage",
+			true, "scriptRequiredContexts", true, "priority", true);
 	}
 
 	@Test
@@ -480,7 +480,7 @@ public class KaleoActionPersistenceTest {
 
 		kaleoAction.setKaleoClassPK(RandomTestUtil.nextLong());
 
-		kaleoAction.setKaleoDefinitionId(RandomTestUtil.nextLong());
+		kaleoAction.setKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
 		kaleoAction.setKaleoNodeName(RandomTestUtil.randomString());
 
