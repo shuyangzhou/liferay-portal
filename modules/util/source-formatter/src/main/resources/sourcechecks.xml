@@ -44,7 +44,6 @@
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/blogs/blogs-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/blogs/blogs-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/bookmarks/bookmarks-service" />
-			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/comment/comment-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/document-library/document-library-document-conversion" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/document-library/document-library-repository-external" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/document-library/document-library-repository-search" />
@@ -97,12 +96,10 @@
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-cache/portal-cache" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-cache/portal-cache-ehcache" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-cache/portal-cache-ehcache-provider" />
-			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-configuration/portal-configuration-cluster" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-configuration/portal-configuration-extender" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-configuration/portal-configuration-upgrade-util" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-portlet-bridge/portal-portlet-bridge-soy" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-remote/portal-remote-soap-extender" />
-			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-scheduler/portal-scheduler-quartz" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-scripting/portal-scripting-executor" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-search/portal-search" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-search/portal-search-elasticsearch" />
@@ -139,7 +136,6 @@
 			<property name="allowedExportPackageDirName" value="modules/apps/sync/sync-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/twitter/twitter-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/asset/asset-categories-admin-web" />
-			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/asset/asset-categories-navigation-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/asset/asset-display-template-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/asset/asset-publisher-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/asset/asset-service" />
@@ -156,7 +152,6 @@
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/product-navigation/product-navigation-simulation-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/rss/rss-util" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/rss/rss-web" />
-			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/site/site-my-sites-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/site-navigation/site-navigation-breadcrumb-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/site-navigation/site-navigation-language-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/site-navigation/site-navigation-service" />
