@@ -1,7 +1,7 @@
 <toggles>
-	<toggle name="JIRA_TICKET">
-		<date>2017-05-24</date>
-		<description>Toggle Description</description>
-		<owner>Full Name</owner>
+	<toggle name="LPS-75321">
+		<date>2017-11-04</date>
+		<description>Replace Product Menu Tree for a new portlet.</description>
+		<owner>Eudaldo Alonso</owner>
 	</toggle>
 </toggles>

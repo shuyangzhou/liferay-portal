@@ -54,14 +54,14 @@ public class KaleoTaskFormLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.workflow.kaleo.model.KaleoTaskForm addKaleoTaskForm(
-		long kaleoDefinitionId, long kaleoNodeId,
+		long kaleoDefinitionVersionId, long kaleoNodeId,
 		com.liferay.portal.workflow.kaleo.model.KaleoTask kaleoTask,
 		com.liferay.portal.workflow.kaleo.definition.TaskForm taskForm,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .addKaleoTaskForm(kaleoDefinitionId, kaleoNodeId, kaleoTask,
-			taskForm, serviceContext);
+				   .addKaleoTaskForm(kaleoDefinitionVersionId, kaleoNodeId,
+			kaleoTask, taskForm, serviceContext);
 	}
 
 	/**
@@ -79,9 +79,10 @@ public class KaleoTaskFormLocalServiceUtil {
 		getService().deleteCompanyKaleoTaskForms(companyId);
 	}
 
-	public static void deleteKaleoDefinitionKaleoTaskForms(
-		long kaleoDefinitionId) {
-		getService().deleteKaleoDefinitionKaleoTaskForms(kaleoDefinitionId);
+	public static void deleteKaleoDefinitionVersionKaleoTaskForms(
+		long kaleoDefinitionVersionId) {
+		getService()
+			.deleteKaleoDefinitionVersionKaleoTaskForms(kaleoDefinitionVersionId);
 	}
 
 	/**

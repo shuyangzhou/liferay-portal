@@ -422,6 +422,20 @@ public interface KaleoDefinitionVersionModel extends BaseModel<KaleoDefinitionVe
 	public void setVersion(String version);
 
 	/**
+	 * Returns the start kaleo node ID of this kaleo definition version.
+	 *
+	 * @return the start kaleo node ID of this kaleo definition version
+	 */
+	public long getStartKaleoNodeId();
+
+	/**
+	 * Sets the start kaleo node ID of this kaleo definition version.
+	 *
+	 * @param startKaleoNodeId the start kaleo node ID of this kaleo definition version
+	 */
+	public void setStartKaleoNodeId(long startKaleoNodeId);
+
+	/**
 	 * Returns the status of this kaleo definition version.
 	 *
 	 * @return the status of this kaleo definition version

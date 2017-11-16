@@ -66,7 +66,7 @@ public class KaleoTaskInstanceTokenWrapper implements KaleoTaskInstanceToken,
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("kaleoDefinitionId", getKaleoDefinitionId());
+		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
 		attributes.put("kaleoInstanceId", getKaleoInstanceId());
 		attributes.put("kaleoInstanceTokenId", getKaleoInstanceTokenId());
 		attributes.put("kaleoTaskId", getKaleoTaskId());
@@ -127,10 +127,11 @@ public class KaleoTaskInstanceTokenWrapper implements KaleoTaskInstanceToken,
 			setModifiedDate(modifiedDate);
 		}
 
-		Long kaleoDefinitionId = (Long)attributes.get("kaleoDefinitionId");
+		Long kaleoDefinitionVersionId = (Long)attributes.get(
+				"kaleoDefinitionVersionId");
 
-		if (kaleoDefinitionId != null) {
-			setKaleoDefinitionId(kaleoDefinitionId);
+		if (kaleoDefinitionVersionId != null) {
+			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		}
 
 		Long kaleoInstanceId = (Long)attributes.get("kaleoInstanceId");
@@ -321,13 +322,13 @@ public class KaleoTaskInstanceTokenWrapper implements KaleoTaskInstanceToken,
 	}
 
 	/**
-	* Returns the kaleo definition ID of this kaleo task instance token.
+	* Returns the kaleo definition version ID of this kaleo task instance token.
 	*
-	* @return the kaleo definition ID of this kaleo task instance token
+	* @return the kaleo definition version ID of this kaleo task instance token
 	*/
 	@Override
-	public long getKaleoDefinitionId() {
-		return _kaleoTaskInstanceToken.getKaleoDefinitionId();
+	public long getKaleoDefinitionVersionId() {
+		return _kaleoTaskInstanceToken.getKaleoDefinitionVersionId();
 	}
 
 	/**
@@ -619,13 +620,13 @@ public class KaleoTaskInstanceTokenWrapper implements KaleoTaskInstanceToken,
 	}
 
 	/**
-	* Sets the kaleo definition ID of this kaleo task instance token.
+	* Sets the kaleo definition version ID of this kaleo task instance token.
 	*
-	* @param kaleoDefinitionId the kaleo definition ID of this kaleo task instance token
+	* @param kaleoDefinitionVersionId the kaleo definition version ID of this kaleo task instance token
 	*/
 	@Override
-	public void setKaleoDefinitionId(long kaleoDefinitionId) {
-		_kaleoTaskInstanceToken.setKaleoDefinitionId(kaleoDefinitionId);
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		_kaleoTaskInstanceToken.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 	}
 
 	/**

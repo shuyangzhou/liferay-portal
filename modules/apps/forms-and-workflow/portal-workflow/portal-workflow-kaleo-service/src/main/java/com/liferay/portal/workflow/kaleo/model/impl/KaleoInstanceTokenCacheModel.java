@@ -81,8 +81,8 @@ public class KaleoInstanceTokenCacheModel implements CacheModel<KaleoInstanceTok
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
-		sb.append(", kaleoDefinitionId=");
-		sb.append(kaleoDefinitionId);
+		sb.append(", kaleoDefinitionVersionId=");
+		sb.append(kaleoDefinitionVersionId);
 		sb.append(", kaleoInstanceId=");
 		sb.append(kaleoInstanceId);
 		sb.append(", parentKaleoInstanceTokenId=");
@@ -134,7 +134,7 @@ public class KaleoInstanceTokenCacheModel implements CacheModel<KaleoInstanceTok
 			kaleoInstanceTokenImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		kaleoInstanceTokenImpl.setKaleoDefinitionId(kaleoDefinitionId);
+		kaleoInstanceTokenImpl.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		kaleoInstanceTokenImpl.setKaleoInstanceId(kaleoInstanceId);
 		kaleoInstanceTokenImpl.setParentKaleoInstanceTokenId(parentKaleoInstanceTokenId);
 		kaleoInstanceTokenImpl.setCurrentKaleoNodeId(currentKaleoNodeId);
@@ -181,7 +181,7 @@ public class KaleoInstanceTokenCacheModel implements CacheModel<KaleoInstanceTok
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 
-		kaleoDefinitionId = objectInput.readLong();
+		kaleoDefinitionVersionId = objectInput.readLong();
 
 		kaleoInstanceId = objectInput.readLong();
 
@@ -218,7 +218,7 @@ public class KaleoInstanceTokenCacheModel implements CacheModel<KaleoInstanceTok
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
-		objectOutput.writeLong(kaleoDefinitionId);
+		objectOutput.writeLong(kaleoDefinitionVersionId);
 
 		objectOutput.writeLong(kaleoInstanceId);
 
@@ -253,7 +253,7 @@ public class KaleoInstanceTokenCacheModel implements CacheModel<KaleoInstanceTok
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
-	public long kaleoDefinitionId;
+	public long kaleoDefinitionVersionId;
 	public long kaleoInstanceId;
 	public long parentKaleoInstanceTokenId;
 	public long currentKaleoNodeId;

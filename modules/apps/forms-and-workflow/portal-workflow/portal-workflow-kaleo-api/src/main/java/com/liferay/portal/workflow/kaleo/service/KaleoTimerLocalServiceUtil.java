@@ -55,13 +55,13 @@ public class KaleoTimerLocalServiceUtil {
 
 	public static com.liferay.portal.workflow.kaleo.model.KaleoTimer addKaleoTimer(
 		java.lang.String kaleoClassName, long kaleoClassPK,
-		long kaleoDefinitionId,
+		long kaleoDefinitionVersionId,
 		com.liferay.portal.workflow.kaleo.definition.Timer timer,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addKaleoTimer(kaleoClassName, kaleoClassPK,
-			kaleoDefinitionId, timer, serviceContext);
+			kaleoDefinitionVersionId, timer, serviceContext);
 	}
 
 	/**

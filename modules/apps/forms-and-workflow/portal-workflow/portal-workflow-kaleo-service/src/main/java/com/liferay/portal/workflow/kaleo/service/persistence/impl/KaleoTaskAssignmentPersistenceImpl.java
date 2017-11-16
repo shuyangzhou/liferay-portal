@@ -598,89 +598,94 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 	}
 
 	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 = "kaleoTaskAssignment.companyId = ?";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_KALEODEFINITIONID =
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_KALEODEFINITIONVERSIONID =
 		new FinderPath(KaleoTaskAssignmentModelImpl.ENTITY_CACHE_ENABLED,
 			KaleoTaskAssignmentModelImpl.FINDER_CACHE_ENABLED,
 			KaleoTaskAssignmentImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByKaleoDefinitionId",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findByKaleoDefinitionVersionId",
 			new String[] {
 				Long.class.getName(),
 				
 			Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID =
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONVERSIONID =
 		new FinderPath(KaleoTaskAssignmentModelImpl.ENTITY_CACHE_ENABLED,
 			KaleoTaskAssignmentModelImpl.FINDER_CACHE_ENABLED,
 			KaleoTaskAssignmentImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByKaleoDefinitionId", new String[] { Long.class.getName() },
-			KaleoTaskAssignmentModelImpl.KALEODEFINITIONID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_KALEODEFINITIONID = new FinderPath(KaleoTaskAssignmentModelImpl.ENTITY_CACHE_ENABLED,
+			"findByKaleoDefinitionVersionId",
+			new String[] { Long.class.getName() },
+			KaleoTaskAssignmentModelImpl.KALEODEFINITIONVERSIONID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_KALEODEFINITIONVERSIONID =
+		new FinderPath(KaleoTaskAssignmentModelImpl.ENTITY_CACHE_ENABLED,
 			KaleoTaskAssignmentModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByKaleoDefinitionId", new String[] { Long.class.getName() });
+			"countByKaleoDefinitionVersionId",
+			new String[] { Long.class.getName() });
 
 	/**
-	 * Returns all the kaleo task assignments where kaleoDefinitionId = &#63;.
+	 * Returns all the kaleo task assignments where kaleoDefinitionVersionId = &#63;.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @return the matching kaleo task assignments
 	 */
 	@Override
-	public List<KaleoTaskAssignment> findByKaleoDefinitionId(
-		long kaleoDefinitionId) {
-		return findByKaleoDefinitionId(kaleoDefinitionId, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
+	public List<KaleoTaskAssignment> findByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId) {
+		return findByKaleoDefinitionVersionId(kaleoDefinitionVersionId,
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the kaleo task assignments where kaleoDefinitionId = &#63;.
+	 * Returns a range of all the kaleo task assignments where kaleoDefinitionVersionId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoTaskAssignmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param start the lower bound of the range of kaleo task assignments
 	 * @param end the upper bound of the range of kaleo task assignments (not inclusive)
 	 * @return the range of matching kaleo task assignments
 	 */
 	@Override
-	public List<KaleoTaskAssignment> findByKaleoDefinitionId(
-		long kaleoDefinitionId, int start, int end) {
-		return findByKaleoDefinitionId(kaleoDefinitionId, start, end, null);
+	public List<KaleoTaskAssignment> findByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId, int start, int end) {
+		return findByKaleoDefinitionVersionId(kaleoDefinitionVersionId, start,
+			end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the kaleo task assignments where kaleoDefinitionId = &#63;.
+	 * Returns an ordered range of all the kaleo task assignments where kaleoDefinitionVersionId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoTaskAssignmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param start the lower bound of the range of kaleo task assignments
 	 * @param end the upper bound of the range of kaleo task assignments (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching kaleo task assignments
 	 */
 	@Override
-	public List<KaleoTaskAssignment> findByKaleoDefinitionId(
-		long kaleoDefinitionId, int start, int end,
+	public List<KaleoTaskAssignment> findByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId, int start, int end,
 		OrderByComparator<KaleoTaskAssignment> orderByComparator) {
-		return findByKaleoDefinitionId(kaleoDefinitionId, start, end,
-			orderByComparator, true);
+		return findByKaleoDefinitionVersionId(kaleoDefinitionVersionId, start,
+			end, orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the kaleo task assignments where kaleoDefinitionId = &#63;.
+	 * Returns an ordered range of all the kaleo task assignments where kaleoDefinitionVersionId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoTaskAssignmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param start the lower bound of the range of kaleo task assignments
 	 * @param end the upper bound of the range of kaleo task assignments (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -688,8 +693,8 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 	 * @return the ordered range of matching kaleo task assignments
 	 */
 	@Override
-	public List<KaleoTaskAssignment> findByKaleoDefinitionId(
-		long kaleoDefinitionId, int start, int end,
+	public List<KaleoTaskAssignment> findByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId, int start, int end,
 		OrderByComparator<KaleoTaskAssignment> orderByComparator,
 		boolean retrieveFromCache) {
 		boolean pagination = true;
@@ -699,13 +704,13 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 				(orderByComparator == null)) {
 			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID;
-			finderArgs = new Object[] { kaleoDefinitionId };
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONVERSIONID;
+			finderArgs = new Object[] { kaleoDefinitionVersionId };
 		}
 		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_KALEODEFINITIONID;
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_KALEODEFINITIONVERSIONID;
 			finderArgs = new Object[] {
-					kaleoDefinitionId,
+					kaleoDefinitionVersionId,
 					
 					start, end, orderByComparator
 				};
@@ -719,7 +724,7 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 
 			if ((list != null) && !list.isEmpty()) {
 				for (KaleoTaskAssignment kaleoTaskAssignment : list) {
-					if ((kaleoDefinitionId != kaleoTaskAssignment.getKaleoDefinitionId())) {
+					if ((kaleoDefinitionVersionId != kaleoTaskAssignment.getKaleoDefinitionVersionId())) {
 						list = null;
 
 						break;
@@ -741,7 +746,7 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 
 			query.append(_SQL_SELECT_KALEOTASKASSIGNMENT_WHERE);
 
-			query.append(_FINDER_COLUMN_KALEODEFINITIONID_KALEODEFINITIONID_2);
+			query.append(_FINDER_COLUMN_KALEODEFINITIONVERSIONID_KALEODEFINITIONVERSIONID_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
@@ -763,7 +768,7 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				qPos.add(kaleoDefinitionId);
+				qPos.add(kaleoDefinitionVersionId);
 
 				if (!pagination) {
 					list = (List<KaleoTaskAssignment>)QueryUtil.list(q,
@@ -796,19 +801,19 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 	}
 
 	/**
-	 * Returns the first kaleo task assignment in the ordered set where kaleoDefinitionId = &#63;.
+	 * Returns the first kaleo task assignment in the ordered set where kaleoDefinitionVersionId = &#63;.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo task assignment
 	 * @throws NoSuchTaskAssignmentException if a matching kaleo task assignment could not be found
 	 */
 	@Override
-	public KaleoTaskAssignment findByKaleoDefinitionId_First(
-		long kaleoDefinitionId,
+	public KaleoTaskAssignment findByKaleoDefinitionVersionId_First(
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoTaskAssignment> orderByComparator)
 		throws NoSuchTaskAssignmentException {
-		KaleoTaskAssignment kaleoTaskAssignment = fetchByKaleoDefinitionId_First(kaleoDefinitionId,
+		KaleoTaskAssignment kaleoTaskAssignment = fetchByKaleoDefinitionVersionId_First(kaleoDefinitionVersionId,
 				orderByComparator);
 
 		if (kaleoTaskAssignment != null) {
@@ -819,8 +824,8 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 
 		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("kaleoDefinitionId=");
-		msg.append(kaleoDefinitionId);
+		msg.append("kaleoDefinitionVersionId=");
+		msg.append(kaleoDefinitionVersionId);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -828,17 +833,17 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 	}
 
 	/**
-	 * Returns the first kaleo task assignment in the ordered set where kaleoDefinitionId = &#63;.
+	 * Returns the first kaleo task assignment in the ordered set where kaleoDefinitionVersionId = &#63;.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching kaleo task assignment, or <code>null</code> if a matching kaleo task assignment could not be found
 	 */
 	@Override
-	public KaleoTaskAssignment fetchByKaleoDefinitionId_First(
-		long kaleoDefinitionId,
+	public KaleoTaskAssignment fetchByKaleoDefinitionVersionId_First(
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoTaskAssignment> orderByComparator) {
-		List<KaleoTaskAssignment> list = findByKaleoDefinitionId(kaleoDefinitionId,
+		List<KaleoTaskAssignment> list = findByKaleoDefinitionVersionId(kaleoDefinitionVersionId,
 				0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -849,19 +854,19 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 	}
 
 	/**
-	 * Returns the last kaleo task assignment in the ordered set where kaleoDefinitionId = &#63;.
+	 * Returns the last kaleo task assignment in the ordered set where kaleoDefinitionVersionId = &#63;.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo task assignment
 	 * @throws NoSuchTaskAssignmentException if a matching kaleo task assignment could not be found
 	 */
 	@Override
-	public KaleoTaskAssignment findByKaleoDefinitionId_Last(
-		long kaleoDefinitionId,
+	public KaleoTaskAssignment findByKaleoDefinitionVersionId_Last(
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoTaskAssignment> orderByComparator)
 		throws NoSuchTaskAssignmentException {
-		KaleoTaskAssignment kaleoTaskAssignment = fetchByKaleoDefinitionId_Last(kaleoDefinitionId,
+		KaleoTaskAssignment kaleoTaskAssignment = fetchByKaleoDefinitionVersionId_Last(kaleoDefinitionVersionId,
 				orderByComparator);
 
 		if (kaleoTaskAssignment != null) {
@@ -872,8 +877,8 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 
 		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("kaleoDefinitionId=");
-		msg.append(kaleoDefinitionId);
+		msg.append("kaleoDefinitionVersionId=");
+		msg.append(kaleoDefinitionVersionId);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -881,23 +886,23 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 	}
 
 	/**
-	 * Returns the last kaleo task assignment in the ordered set where kaleoDefinitionId = &#63;.
+	 * Returns the last kaleo task assignment in the ordered set where kaleoDefinitionVersionId = &#63;.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching kaleo task assignment, or <code>null</code> if a matching kaleo task assignment could not be found
 	 */
 	@Override
-	public KaleoTaskAssignment fetchByKaleoDefinitionId_Last(
-		long kaleoDefinitionId,
+	public KaleoTaskAssignment fetchByKaleoDefinitionVersionId_Last(
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoTaskAssignment> orderByComparator) {
-		int count = countByKaleoDefinitionId(kaleoDefinitionId);
+		int count = countByKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<KaleoTaskAssignment> list = findByKaleoDefinitionId(kaleoDefinitionId,
+		List<KaleoTaskAssignment> list = findByKaleoDefinitionVersionId(kaleoDefinitionVersionId,
 				count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -908,17 +913,17 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 	}
 
 	/**
-	 * Returns the kaleo task assignments before and after the current kaleo task assignment in the ordered set where kaleoDefinitionId = &#63;.
+	 * Returns the kaleo task assignments before and after the current kaleo task assignment in the ordered set where kaleoDefinitionVersionId = &#63;.
 	 *
 	 * @param kaleoTaskAssignmentId the primary key of the current kaleo task assignment
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next kaleo task assignment
 	 * @throws NoSuchTaskAssignmentException if a kaleo task assignment with the primary key could not be found
 	 */
 	@Override
-	public KaleoTaskAssignment[] findByKaleoDefinitionId_PrevAndNext(
-		long kaleoTaskAssignmentId, long kaleoDefinitionId,
+	public KaleoTaskAssignment[] findByKaleoDefinitionVersionId_PrevAndNext(
+		long kaleoTaskAssignmentId, long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoTaskAssignment> orderByComparator)
 		throws NoSuchTaskAssignmentException {
 		KaleoTaskAssignment kaleoTaskAssignment = findByPrimaryKey(kaleoTaskAssignmentId);
@@ -930,15 +935,15 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 
 			KaleoTaskAssignment[] array = new KaleoTaskAssignmentImpl[3];
 
-			array[0] = getByKaleoDefinitionId_PrevAndNext(session,
-					kaleoTaskAssignment, kaleoDefinitionId, orderByComparator,
-					true);
+			array[0] = getByKaleoDefinitionVersionId_PrevAndNext(session,
+					kaleoTaskAssignment, kaleoDefinitionVersionId,
+					orderByComparator, true);
 
 			array[1] = kaleoTaskAssignment;
 
-			array[2] = getByKaleoDefinitionId_PrevAndNext(session,
-					kaleoTaskAssignment, kaleoDefinitionId, orderByComparator,
-					false);
+			array[2] = getByKaleoDefinitionVersionId_PrevAndNext(session,
+					kaleoTaskAssignment, kaleoDefinitionVersionId,
+					orderByComparator, false);
 
 			return array;
 		}
@@ -950,9 +955,9 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 		}
 	}
 
-	protected KaleoTaskAssignment getByKaleoDefinitionId_PrevAndNext(
+	protected KaleoTaskAssignment getByKaleoDefinitionVersionId_PrevAndNext(
 		Session session, KaleoTaskAssignment kaleoTaskAssignment,
-		long kaleoDefinitionId,
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoTaskAssignment> orderByComparator,
 		boolean previous) {
 		StringBundler query = null;
@@ -968,7 +973,7 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 
 		query.append(_SQL_SELECT_KALEOTASKASSIGNMENT_WHERE);
 
-		query.append(_FINDER_COLUMN_KALEODEFINITIONID_KALEODEFINITIONID_2);
+		query.append(_FINDER_COLUMN_KALEODEFINITIONVERSIONID_KALEODEFINITIONVERSIONID_2);
 
 		if (orderByComparator != null) {
 			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
@@ -1038,7 +1043,7 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		qPos.add(kaleoDefinitionId);
+		qPos.add(kaleoDefinitionVersionId);
 
 		if (orderByComparator != null) {
 			Object[] values = orderByComparator.getOrderByConditionValues(kaleoTaskAssignment);
@@ -1059,29 +1064,30 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 	}
 
 	/**
-	 * Removes all the kaleo task assignments where kaleoDefinitionId = &#63; from the database.
+	 * Removes all the kaleo task assignments where kaleoDefinitionVersionId = &#63; from the database.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 */
 	@Override
-	public void removeByKaleoDefinitionId(long kaleoDefinitionId) {
-		for (KaleoTaskAssignment kaleoTaskAssignment : findByKaleoDefinitionId(
-				kaleoDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+	public void removeByKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		for (KaleoTaskAssignment kaleoTaskAssignment : findByKaleoDefinitionVersionId(
+				kaleoDefinitionVersionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				null)) {
 			remove(kaleoTaskAssignment);
 		}
 	}
 
 	/**
-	 * Returns the number of kaleo task assignments where kaleoDefinitionId = &#63;.
+	 * Returns the number of kaleo task assignments where kaleoDefinitionVersionId = &#63;.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID
 	 * @return the number of matching kaleo task assignments
 	 */
 	@Override
-	public int countByKaleoDefinitionId(long kaleoDefinitionId) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_KALEODEFINITIONID;
+	public int countByKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_KALEODEFINITIONVERSIONID;
 
-		Object[] finderArgs = new Object[] { kaleoDefinitionId };
+		Object[] finderArgs = new Object[] { kaleoDefinitionVersionId };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -1090,7 +1096,7 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 
 			query.append(_SQL_COUNT_KALEOTASKASSIGNMENT_WHERE);
 
-			query.append(_FINDER_COLUMN_KALEODEFINITIONID_KALEODEFINITIONID_2);
+			query.append(_FINDER_COLUMN_KALEODEFINITIONVERSIONID_KALEODEFINITIONVERSIONID_2);
 
 			String sql = query.toString();
 
@@ -1103,7 +1109,7 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				qPos.add(kaleoDefinitionId);
+				qPos.add(kaleoDefinitionVersionId);
 
 				count = (Long)q.uniqueResult();
 
@@ -1122,8 +1128,8 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_KALEODEFINITIONID_KALEODEFINITIONID_2 =
-		"kaleoTaskAssignment.kaleoDefinitionId = ?";
+	private static final String _FINDER_COLUMN_KALEODEFINITIONVERSIONID_KALEODEFINITIONVERSIONID_2 =
+		"kaleoTaskAssignment.kaleoDefinitionVersionId = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_KCN_KCPK = new FinderPath(KaleoTaskAssignmentModelImpl.ENTITY_CACHE_ENABLED,
 			KaleoTaskAssignmentModelImpl.FINDER_CACHE_ENABLED,
 			KaleoTaskAssignmentImpl.class,
@@ -2678,12 +2684,12 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 				args);
 
 			args = new Object[] {
-					kaleoTaskAssignmentModelImpl.getKaleoDefinitionId()
+					kaleoTaskAssignmentModelImpl.getKaleoDefinitionVersionId()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONID,
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONVERSIONID,
 				args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID,
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONVERSIONID,
 				args);
 
 			args = new Object[] {
@@ -2729,23 +2735,23 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 			}
 
 			if ((kaleoTaskAssignmentModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID.getColumnBitmask()) != 0) {
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONVERSIONID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						kaleoTaskAssignmentModelImpl.getOriginalKaleoDefinitionId()
+						kaleoTaskAssignmentModelImpl.getOriginalKaleoDefinitionVersionId()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONID,
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONVERSIONID,
 					args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID,
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONVERSIONID,
 					args);
 
 				args = new Object[] {
-						kaleoTaskAssignmentModelImpl.getKaleoDefinitionId()
+						kaleoTaskAssignmentModelImpl.getKaleoDefinitionVersionId()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONID,
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_KALEODEFINITIONVERSIONID,
 					args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONID,
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_KALEODEFINITIONVERSIONID,
 					args);
 			}
 
@@ -2823,7 +2829,7 @@ public class KaleoTaskAssignmentPersistenceImpl extends BasePersistenceImpl<Kale
 		kaleoTaskAssignmentImpl.setModifiedDate(kaleoTaskAssignment.getModifiedDate());
 		kaleoTaskAssignmentImpl.setKaleoClassName(kaleoTaskAssignment.getKaleoClassName());
 		kaleoTaskAssignmentImpl.setKaleoClassPK(kaleoTaskAssignment.getKaleoClassPK());
-		kaleoTaskAssignmentImpl.setKaleoDefinitionId(kaleoTaskAssignment.getKaleoDefinitionId());
+		kaleoTaskAssignmentImpl.setKaleoDefinitionVersionId(kaleoTaskAssignment.getKaleoDefinitionVersionId());
 		kaleoTaskAssignmentImpl.setKaleoNodeId(kaleoTaskAssignment.getKaleoNodeId());
 		kaleoTaskAssignmentImpl.setAssigneeClassName(kaleoTaskAssignment.getAssigneeClassName());
 		kaleoTaskAssignmentImpl.setAssigneeClassPK(kaleoTaskAssignment.getAssigneeClassPK());
