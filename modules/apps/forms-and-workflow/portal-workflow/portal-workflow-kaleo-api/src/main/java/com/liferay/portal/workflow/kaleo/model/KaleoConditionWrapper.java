@@ -65,7 +65,7 @@ public class KaleoConditionWrapper implements KaleoCondition,
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("kaleoDefinitionId", getKaleoDefinitionId());
+		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
 		attributes.put("kaleoNodeId", getKaleoNodeId());
 		attributes.put("script", getScript());
 		attributes.put("scriptLanguage", getScriptLanguage());
@@ -118,10 +118,11 @@ public class KaleoConditionWrapper implements KaleoCondition,
 			setModifiedDate(modifiedDate);
 		}
 
-		Long kaleoDefinitionId = (Long)attributes.get("kaleoDefinitionId");
+		Long kaleoDefinitionVersionId = (Long)attributes.get(
+				"kaleoDefinitionVersionId");
 
-		if (kaleoDefinitionId != null) {
-			setKaleoDefinitionId(kaleoDefinitionId);
+		if (kaleoDefinitionVersionId != null) {
+			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		}
 
 		Long kaleoNodeId = (Long)attributes.get("kaleoNodeId");
@@ -206,13 +207,13 @@ public class KaleoConditionWrapper implements KaleoCondition,
 	}
 
 	/**
-	* Returns the kaleo definition ID of this kaleo condition.
+	* Returns the kaleo definition version ID of this kaleo condition.
 	*
-	* @return the kaleo definition ID of this kaleo condition
+	* @return the kaleo definition version ID of this kaleo condition
 	*/
 	@Override
-	public long getKaleoDefinitionId() {
-		return _kaleoCondition.getKaleoDefinitionId();
+	public long getKaleoDefinitionVersionId() {
+		return _kaleoCondition.getKaleoDefinitionVersionId();
 	}
 
 	/**
@@ -397,13 +398,13 @@ public class KaleoConditionWrapper implements KaleoCondition,
 	}
 
 	/**
-	* Sets the kaleo definition ID of this kaleo condition.
+	* Sets the kaleo definition version ID of this kaleo condition.
 	*
-	* @param kaleoDefinitionId the kaleo definition ID of this kaleo condition
+	* @param kaleoDefinitionVersionId the kaleo definition version ID of this kaleo condition
 	*/
 	@Override
-	public void setKaleoDefinitionId(long kaleoDefinitionId) {
-		_kaleoCondition.setKaleoDefinitionId(kaleoDefinitionId);
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		_kaleoCondition.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 	}
 
 	/**

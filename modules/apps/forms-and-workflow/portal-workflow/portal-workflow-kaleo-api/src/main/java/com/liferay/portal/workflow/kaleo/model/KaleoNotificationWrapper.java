@@ -67,7 +67,7 @@ public class KaleoNotificationWrapper implements KaleoNotification,
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("kaleoClassName", getKaleoClassName());
 		attributes.put("kaleoClassPK", getKaleoClassPK());
-		attributes.put("kaleoDefinitionId", getKaleoDefinitionId());
+		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
 		attributes.put("kaleoNodeName", getKaleoNodeName());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
@@ -135,10 +135,11 @@ public class KaleoNotificationWrapper implements KaleoNotification,
 			setKaleoClassPK(kaleoClassPK);
 		}
 
-		Long kaleoDefinitionId = (Long)attributes.get("kaleoDefinitionId");
+		Long kaleoDefinitionVersionId = (Long)attributes.get(
+				"kaleoDefinitionVersionId");
 
-		if (kaleoDefinitionId != null) {
-			setKaleoDefinitionId(kaleoDefinitionId);
+		if (kaleoDefinitionVersionId != null) {
+			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		}
 
 		String kaleoNodeName = (String)attributes.get("kaleoNodeName");
@@ -270,13 +271,13 @@ public class KaleoNotificationWrapper implements KaleoNotification,
 	}
 
 	/**
-	* Returns the kaleo definition ID of this kaleo notification.
+	* Returns the kaleo definition version ID of this kaleo notification.
 	*
-	* @return the kaleo definition ID of this kaleo notification
+	* @return the kaleo definition version ID of this kaleo notification
 	*/
 	@Override
-	public long getKaleoDefinitionId() {
-		return _kaleoNotification.getKaleoDefinitionId();
+	public long getKaleoDefinitionVersionId() {
+		return _kaleoNotification.getKaleoDefinitionVersionId();
 	}
 
 	/**
@@ -511,13 +512,13 @@ public class KaleoNotificationWrapper implements KaleoNotification,
 	}
 
 	/**
-	* Sets the kaleo definition ID of this kaleo notification.
+	* Sets the kaleo definition version ID of this kaleo notification.
 	*
-	* @param kaleoDefinitionId the kaleo definition ID of this kaleo notification
+	* @param kaleoDefinitionVersionId the kaleo definition version ID of this kaleo notification
 	*/
 	@Override
-	public void setKaleoDefinitionId(long kaleoDefinitionId) {
-		_kaleoNotification.setKaleoDefinitionId(kaleoDefinitionId);
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		_kaleoNotification.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 	}
 
 	/**

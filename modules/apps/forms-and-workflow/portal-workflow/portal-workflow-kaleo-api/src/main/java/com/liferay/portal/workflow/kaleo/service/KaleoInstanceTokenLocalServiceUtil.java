@@ -84,9 +84,10 @@ public class KaleoInstanceTokenLocalServiceUtil {
 		getService().deleteCompanyKaleoInstanceTokens(companyId);
 	}
 
-	public static void deleteKaleoDefinitionKaleoInstanceTokens(
-		long kaleoDefinitionId) {
-		getService().deleteKaleoDefinitionKaleoInstanceTokens(kaleoDefinitionId);
+	public static void deleteKaleoDefinitionVersionKaleoInstanceTokens(
+		long kaleoDefinitionVersionId) {
+		getService()
+			.deleteKaleoDefinitionVersionKaleoInstanceTokens(kaleoDefinitionVersionId);
 	}
 
 	public static void deleteKaleoInstanceKaleoInstanceTokens(

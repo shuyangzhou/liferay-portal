@@ -1915,6 +1915,7 @@ public class KaleoDefinitionVersionPersistenceImpl extends BasePersistenceImpl<K
 		kaleoDefinitionVersionImpl.setDescription(kaleoDefinitionVersion.getDescription());
 		kaleoDefinitionVersionImpl.setContent(kaleoDefinitionVersion.getContent());
 		kaleoDefinitionVersionImpl.setVersion(kaleoDefinitionVersion.getVersion());
+		kaleoDefinitionVersionImpl.setStartKaleoNodeId(kaleoDefinitionVersion.getStartKaleoNodeId());
 		kaleoDefinitionVersionImpl.setStatus(kaleoDefinitionVersion.getStatus());
 
 		return kaleoDefinitionVersionImpl;

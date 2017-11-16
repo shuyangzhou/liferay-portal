@@ -14,13 +14,16 @@
 
 package com.liferay.portal.workflow.kaleo.definition.internal.parser;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.workflow.kaleo.definition.Definition;
 import com.liferay.portal.workflow.kaleo.definition.Node;
+import com.liferay.portal.workflow.kaleo.definition.Notification;
 import com.liferay.portal.workflow.kaleo.definition.Transition;
 import com.liferay.portal.workflow.kaleo.definition.exception.KaleoDefinitionValidationException;
 import com.liferay.portal.workflow.kaleo.definition.parser.NodeValidator;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Michael C. Han
@@ -35,10 +38,25 @@ public abstract class BaseNodeValidator<T extends Node>
 		doValidate(definition, node);
 
 		validateTransitions(node.getOutgoingTransitions());
+
+		validateNotifications(node);
 	}
 
 	protected abstract void doValidate(Definition definition, T node)
 		throws KaleoDefinitionValidationException;
+
+	protected void validateNotifications(T node)
+		throws KaleoDefinitionValidationException {
+
+		Set<Notification> notifications = node.getNotifications();
+
+		if (notifications.stream().anyMatch(
+				notification -> Validator.isNull(notification.getTemplate()))) {
+
+			throw new KaleoDefinitionValidationException.
+				EmptyNotificationTemplate(node.getName());
+		}
+	}
 
 	protected void validateTransition(Transition transition)
 		throws KaleoDefinitionValidationException {
