@@ -32,6 +32,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.DirectoryStream.Filter;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.spi.FileSystemProvider;
 
@@ -210,6 +211,17 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 			return Collections.emptyList();
 		}
 
+		Filter filter = new Filter<Path>() {
+
+			@Override
+			public boolean accept(Path entryPath) {
+				String entryPathString = entryPath.toString();
+
+				return entryPathString.endsWith(".class");
+			}
+
+		};
+
 		for (URL url : urls) {
 			try {
 				File file = ClassPathUtil.getFile(url);
@@ -224,42 +236,58 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 					continue;
 				}
 
-				try (FileSystem fileSystem = FileSystems.newFileSystem(
-						file.toPath(), null)) {
+				FileSystem fileSystem = null;
+				DirectoryStream<Path> directoryStream = null;
 
-					FileSystemProvider fileSystemProvider =
-						fileSystem.provider();
+				try {
+					Path filePath = file.toPath();
 
-					try (DirectoryStream<Path> directoryStream =
-							fileSystemProvider.newDirectoryStream(
-								fileSystem.getPath(path),
-								new Filter<Path>() {
+					boolean defaultFileSystem = file.isDirectory();
 
-									@Override
-									public boolean accept(Path entryPath) {
-										String entryPathString =
-											entryPath.toString();
+					if (defaultFileSystem) {
+						directoryStream = Files.newDirectoryStream(
+							filePath, filter);
+					}
+					else {
+						fileSystem = FileSystems.newFileSystem(filePath, null);
 
-										return entryPathString.endsWith(
-											".class");
-									}
+						FileSystemProvider fileSystemProvider =
+							fileSystem.provider();
 
-								})) {
+						directoryStream = fileSystemProvider.newDirectoryStream(
+							fileSystem.getPath(path), filter);
+					}
 
-						for (Path entryPath : directoryStream) {
-							if (javaFileObjects == null) {
-								javaFileObjects = new ArrayList<>();
-							}
+					for (Path entryPath : directoryStream) {
+						if (javaFileObjects == null) {
+							javaFileObjects = new ArrayList<>();
+						}
 
-							String entryPathString = entryPath.toString();
+						String entryPathString = entryPath.toString();
 
-							entryPathString = entryPathString.substring(1);
+						entryPathString = entryPathString.substring(1);
 
+						String className = getClassName(entryPathString);
+
+						if (defaultFileSystem) {
+							javaFileObjects.add(
+								new RegularJavaFileObject(
+									className, entryPath));
+						}
+						else {
 							javaFileObjects.add(
 								new JarJavaFileObject(
-									getClassName(entryPathString), file,
-									entryPathString));
+									className, file, entryPathString));
 						}
+					}
+				}
+				finally {
+					if (fileSystem != null) {
+						fileSystem.close();
+					}
+
+					if (directoryStream != null) {
+						directoryStream.close();
 					}
 				}
 			}
