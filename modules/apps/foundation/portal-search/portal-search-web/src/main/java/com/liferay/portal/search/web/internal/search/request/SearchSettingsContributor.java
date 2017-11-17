@@ -12,22 +12,16 @@
  * details.
  */
 
-package com.liferay.portal.search.web.search.request;
+package com.liferay.portal.search.web.internal.search.request;
 
-import aQute.bnd.annotation.ProviderType;
+import aQute.bnd.annotation.ConsumerType;
 
 /**
  * @author André de Oliveira
  */
-@ProviderType
-public interface SearchRequest {
+@ConsumerType
+public interface SearchSettingsContributor {
 
-	public void addSearchSettingsContributor(
-		SearchSettingsContributor searchSettingsContributor);
-
-	public void removeSearchSettingsContributor(
-		SearchSettingsContributor searchSettingsContributor);
-
-	public SearchResponse search();
+	public void contribute(SearchSettings searchSettings);
 
 }

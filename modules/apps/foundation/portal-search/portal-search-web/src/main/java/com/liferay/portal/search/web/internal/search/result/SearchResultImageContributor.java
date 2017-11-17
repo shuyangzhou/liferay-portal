@@ -12,22 +12,16 @@
  * details.
  */
 
-package com.liferay.portal.search.web.search.result;
+package com.liferay.portal.search.web.internal.search.result;
 
-import aQute.bnd.annotation.ProviderType;
+import aQute.bnd.annotation.ConsumerType;
 
 /**
  * @author André de Oliveira
  */
-@ProviderType
-public interface SearchResultImage {
+@ConsumerType
+public interface SearchResultImageContributor {
 
-	public String getClassName();
-
-	public long getClassPK();
-
-	public void setIcon(String iconId);
-
-	public void setThumbnail(String thumbnailURLString);
+	public void contribute(SearchResultImage searchResultImage);
 
 }
