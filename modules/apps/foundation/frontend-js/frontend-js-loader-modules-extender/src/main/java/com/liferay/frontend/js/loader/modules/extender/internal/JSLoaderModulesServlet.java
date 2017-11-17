@@ -18,6 +18,7 @@ import com.liferay.frontend.js.loader.modules.extender.npm.JSModule;
 import com.liferay.frontend.js.loader.modules.extender.npm.JSPackage;
 import com.liferay.frontend.js.loader.modules.extender.npm.JSPackageDependency;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMRegistry;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -69,10 +70,11 @@ public class JSLoaderModulesServlet extends HttpServlet {
 
 	@Activate
 	@Modified
-	protected void activate(ComponentContext componentContext, Details details)
+	protected void activate(ComponentContext componentContext)
 		throws Exception {
 
-		_details = details;
+		_details = ConfigurableUtil.createConfigurable(
+			Details.class, componentContext.getProperties());
 
 		_logger = new Logger(componentContext.getBundleContext());
 
