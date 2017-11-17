@@ -29,10 +29,10 @@ import com.liferay.portal.search.web.internal.category.facet.constants.CategoryF
 import com.liferay.portal.search.web.internal.facet.display.builder.AssetCategoriesSearchFacetDisplayBuilder;
 import com.liferay.portal.search.web.internal.facet.display.builder.AssetCategoryPermissionCheckerImpl;
 import com.liferay.portal.search.web.internal.facet.display.context.AssetCategoriesSearchFacetDisplayContext;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
+import com.liferay.portal.search.web.internal.portlet.shared.search.PortletSharedSearchContributor;
+import com.liferay.portal.search.web.internal.portlet.shared.search.PortletSharedSearchRequest;
+import com.liferay.portal.search.web.internal.portlet.shared.search.PortletSharedSearchResponse;
+import com.liferay.portal.search.web.internal.portlet.shared.search.PortletSharedSearchSettings;
 
 import java.io.IOException;
 

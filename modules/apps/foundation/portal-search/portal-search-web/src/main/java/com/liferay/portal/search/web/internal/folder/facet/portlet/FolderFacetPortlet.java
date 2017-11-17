@@ -26,10 +26,10 @@ import com.liferay.portal.search.web.internal.facet.display.context.FolderSearch
 import com.liferay.portal.search.web.internal.facet.display.context.FolderTitleLookup;
 import com.liferay.portal.search.web.internal.facet.display.context.FolderTitleLookupImpl;
 import com.liferay.portal.search.web.internal.folder.facet.constants.FolderFacetPortletKeys;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
+import com.liferay.portal.search.web.internal.portlet.shared.search.PortletSharedSearchContributor;
+import com.liferay.portal.search.web.internal.portlet.shared.search.PortletSharedSearchRequest;
+import com.liferay.portal.search.web.internal.portlet.shared.search.PortletSharedSearchResponse;
+import com.liferay.portal.search.web.internal.portlet.shared.search.PortletSharedSearchSettings;
 
 import java.io.IOException;
 
