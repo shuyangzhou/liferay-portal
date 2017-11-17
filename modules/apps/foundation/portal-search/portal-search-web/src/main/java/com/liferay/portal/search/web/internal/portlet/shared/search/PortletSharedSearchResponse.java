@@ -12,20 +12,33 @@
  * details.
  */
 
-package com.liferay.portal.search.web.portlet.shared.task;
+package com.liferay.portal.search.web.internal.portlet.shared.search;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.search.web.search.request.SearchResponse;
+
+import java.util.Optional;
+
+import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 
 /**
  * @author André de Oliveira
  */
 @ProviderType
-public interface PortletSharedTaskExecutor {
+public interface PortletSharedSearchResponse extends SearchResponse {
 
-	public <T> T executeOnlyOnce(
-		PortletSharedTask<T> portletSharedTask, String attributeSuffix,
+	public Optional<String> getParameter(
+		String name, RenderRequest renderRequest);
+
+	public Optional<String[]> getParameterValues(
+		String name, RenderRequest renderRequest);
+
+	public Optional<PortletPreferences> getPortletPreferences(
 		RenderRequest renderRequest);
+
+	public ThemeDisplay getThemeDisplay(RenderRequest renderRequest);
 
 }

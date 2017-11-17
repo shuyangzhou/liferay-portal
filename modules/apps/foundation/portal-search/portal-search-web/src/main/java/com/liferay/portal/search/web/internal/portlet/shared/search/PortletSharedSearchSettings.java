@@ -12,18 +12,32 @@
  * details.
  */
 
-package com.liferay.portal.search.web.portlet.shared.search;
+package com.liferay.portal.search.web.internal.portlet.shared.search;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.search.web.search.request.SearchSettings;
+
+import java.util.Optional;
+
+import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 
 /**
  * @author André de Oliveira
  */
 @ProviderType
-public interface PortletSharedSearchRequest {
+public interface PortletSharedSearchSettings extends SearchSettings {
 
-	public PortletSharedSearchResponse search(RenderRequest renderRequest);
+	public Optional<String> getParameter(String name);
+
+	public Optional<String[]> getParameterValues(String name);
+
+	public Optional<PortletPreferences> getPortletPreferences();
+
+	public RenderRequest getRenderRequest();
+
+	public ThemeDisplay getThemeDisplay();
 
 }
