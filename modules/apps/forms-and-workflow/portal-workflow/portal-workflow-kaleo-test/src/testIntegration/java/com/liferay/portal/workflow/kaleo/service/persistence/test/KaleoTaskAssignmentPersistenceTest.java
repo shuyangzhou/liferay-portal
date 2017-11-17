@@ -138,7 +138,7 @@ public class KaleoTaskAssignmentPersistenceTest {
 
 		newKaleoTaskAssignment.setKaleoClassPK(RandomTestUtil.nextLong());
 
-		newKaleoTaskAssignment.setKaleoDefinitionId(RandomTestUtil.nextLong());
+		newKaleoTaskAssignment.setKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
 		newKaleoTaskAssignment.setKaleoNodeId(RandomTestUtil.nextLong());
 
@@ -178,8 +178,8 @@ public class KaleoTaskAssignmentPersistenceTest {
 			newKaleoTaskAssignment.getKaleoClassName());
 		Assert.assertEquals(existingKaleoTaskAssignment.getKaleoClassPK(),
 			newKaleoTaskAssignment.getKaleoClassPK());
-		Assert.assertEquals(existingKaleoTaskAssignment.getKaleoDefinitionId(),
-			newKaleoTaskAssignment.getKaleoDefinitionId());
+		Assert.assertEquals(existingKaleoTaskAssignment.getKaleoDefinitionVersionId(),
+			newKaleoTaskAssignment.getKaleoDefinitionVersionId());
 		Assert.assertEquals(existingKaleoTaskAssignment.getKaleoNodeId(),
 			newKaleoTaskAssignment.getKaleoNodeId());
 		Assert.assertEquals(existingKaleoTaskAssignment.getAssigneeClassName(),
@@ -204,10 +204,10 @@ public class KaleoTaskAssignmentPersistenceTest {
 	}
 
 	@Test
-	public void testCountByKaleoDefinitionId() throws Exception {
-		_persistence.countByKaleoDefinitionId(RandomTestUtil.nextLong());
+	public void testCountByKaleoDefinitionVersionId() throws Exception {
+		_persistence.countByKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
-		_persistence.countByKaleoDefinitionId(0L);
+		_persistence.countByKaleoDefinitionVersionId(0L);
 	}
 
 	@Test
@@ -256,7 +256,7 @@ public class KaleoTaskAssignmentPersistenceTest {
 			"kaleoTaskAssignmentId", true, "groupId", true, "companyId", true,
 			"userId", true, "userName", true, "createDate", true,
 			"modifiedDate", true, "kaleoClassName", true, "kaleoClassPK", true,
-			"kaleoDefinitionId", true, "kaleoNodeId", true,
+			"kaleoDefinitionVersionId", true, "kaleoNodeId", true,
 			"assigneeClassName", true, "assigneeClassPK", true,
 			"assigneeActionId", true, "assigneeScriptLanguage", true,
 			"assigneeScriptRequiredContexts", true);
@@ -480,7 +480,7 @@ public class KaleoTaskAssignmentPersistenceTest {
 
 		kaleoTaskAssignment.setKaleoClassPK(RandomTestUtil.nextLong());
 
-		kaleoTaskAssignment.setKaleoDefinitionId(RandomTestUtil.nextLong());
+		kaleoTaskAssignment.setKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
 		kaleoTaskAssignment.setKaleoNodeId(RandomTestUtil.nextLong());
 

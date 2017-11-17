@@ -181,12 +181,12 @@ page import="com.liferay.users.admin.configuration.UserFileUploadsConfiguration"
 page import="com.liferay.users.admin.constants.UsersAdminPortletKeys" %><%@
 page import="com.liferay.users.admin.kernel.util.UsersAdmin" %><%@
 page import="com.liferay.users.admin.kernel.util.UsersAdminUtil" %><%@
-page import="com.liferay.users.admin.web.constants.UsersAdminWebKeys" %><%@
-page import="com.liferay.users.admin.web.search.AddUserOrganizationChecker" %><%@
-page import="com.liferay.users.admin.web.search.OrganizationChecker" %><%@
-page import="com.liferay.users.admin.web.search.OrganizationResultRowSplitter" %><%@
-page import="com.liferay.users.admin.web.search.OrganizationUserChecker" %><%@
-page import="com.liferay.users.admin.web.util.comparator.OrganizationUserNameComparator" %>
+page import="com.liferay.users.admin.web.internal.constants.UsersAdminWebKeys" %><%@
+page import="com.liferay.users.admin.web.internal.search.AddUserOrganizationChecker" %><%@
+page import="com.liferay.users.admin.web.internal.search.OrganizationChecker" %><%@
+page import="com.liferay.users.admin.web.internal.search.OrganizationResultRowSplitter" %><%@
+page import="com.liferay.users.admin.web.internal.search.OrganizationUserChecker" %><%@
+page import="com.liferay.users.admin.web.internal.util.comparator.OrganizationUserNameComparator" %>
 
 <%@ page import="java.text.Format" %>
 

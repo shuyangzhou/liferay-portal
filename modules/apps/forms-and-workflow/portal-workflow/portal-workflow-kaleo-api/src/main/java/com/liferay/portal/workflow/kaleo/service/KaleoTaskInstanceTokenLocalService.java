@@ -103,8 +103,8 @@ public interface KaleoTaskInstanceTokenLocalService extends BaseLocalService,
 
 	public void deleteCompanyKaleoTaskInstanceTokens(long companyId);
 
-	public void deleteKaleoDefinitionKaleoTaskInstanceTokens(
-		long kaleoDefinitionId);
+	public void deleteKaleoDefinitionVersionKaleoTaskInstanceTokens(
+		long kaleoDefinitionVersionId);
 
 	public void deleteKaleoInstanceKaleoTaskInstanceTokens(long kaleoInstanceId);
 

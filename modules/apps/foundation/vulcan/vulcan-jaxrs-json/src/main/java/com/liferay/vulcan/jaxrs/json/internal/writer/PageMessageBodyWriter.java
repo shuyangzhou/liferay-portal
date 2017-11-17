@@ -64,6 +64,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
@@ -200,7 +201,14 @@ public class PageMessageBodyWriter<T>
 
 		String url = _getCollectionURL(page, serverURL);
 
-		return url + "?page=" + pageNumber + "&per_page=" + itemsPerPage;
+		return UriBuilder.fromUri(
+			url
+		).queryParam(
+			"page", pageNumber
+		).queryParam(
+			"per_page", itemsPerPage
+		).build(
+		).toString();
 	}
 
 	private void _writeCollectionURL(
