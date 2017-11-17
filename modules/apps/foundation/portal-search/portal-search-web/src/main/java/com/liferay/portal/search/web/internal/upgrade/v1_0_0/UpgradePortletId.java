@@ -15,7 +15,7 @@
 package com.liferay.portal.search.web.internal.upgrade.v1_0_0;
 
 import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
-import com.liferay.portal.search.web.constants.SearchPortletKeys;
+import com.liferay.portal.search.web.internal.constants.SearchPortletKeys;
 
 /**
  * @author Julio Camarero

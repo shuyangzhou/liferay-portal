@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.summary.SummaryBuilderFactory;
-import com.liferay.portal.search.web.constants.SearchPortletParameterNames;
+import com.liferay.portal.search.web.internal.constants.SearchPortletParameterNames;
 import com.liferay.portlet.portletconfiguration.util.ConfigurationRenderRequest;
 
 import javax.portlet.PortletPreferences;
