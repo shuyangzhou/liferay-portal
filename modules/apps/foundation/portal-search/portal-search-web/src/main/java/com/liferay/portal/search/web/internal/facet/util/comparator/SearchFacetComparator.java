@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.portal.search.web.facet.util.comparator;
+package com.liferay.portal.search.web.internal.facet.util.comparator;
 
-import com.liferay.portal.search.web.facet.SearchFacet;
+import com.liferay.portal.search.web.internal.facet.SearchFacet;
 
 import java.util.Comparator;
 

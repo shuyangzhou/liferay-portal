@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.search.web.facet;
+package com.liferay.portal.search.web.internal.facet;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.portal.search.web.facet.util;
+package com.liferay.portal.search.web.internal.facet.util;
 
-import com.liferay.portal.search.web.facet.SearchFacet;
+import com.liferay.portal.search.web.internal.facet.SearchFacet;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
