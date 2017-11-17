@@ -222,18 +222,18 @@ public interface KaleoTaskAssignmentModel extends BaseModel<KaleoTaskAssignment>
 	public void setKaleoClassPK(long kaleoClassPK);
 
 	/**
-	 * Returns the kaleo definition ID of this kaleo task assignment.
+	 * Returns the kaleo definition version ID of this kaleo task assignment.
 	 *
-	 * @return the kaleo definition ID of this kaleo task assignment
+	 * @return the kaleo definition version ID of this kaleo task assignment
 	 */
-	public long getKaleoDefinitionId();
+	public long getKaleoDefinitionVersionId();
 
 	/**
-	 * Sets the kaleo definition ID of this kaleo task assignment.
+	 * Sets the kaleo definition version ID of this kaleo task assignment.
 	 *
-	 * @param kaleoDefinitionId the kaleo definition ID of this kaleo task assignment
+	 * @param kaleoDefinitionVersionId the kaleo definition version ID of this kaleo task assignment
 	 */
-	public void setKaleoDefinitionId(long kaleoDefinitionId);
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId);
 
 	/**
 	 * Returns the kaleo node ID of this kaleo task assignment.

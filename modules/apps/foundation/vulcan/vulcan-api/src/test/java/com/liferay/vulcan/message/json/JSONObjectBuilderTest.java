@@ -52,22 +52,8 @@ public class JSONObjectBuilderTest {
 
 		List<Boolean> booleanList = new ArrayList<Boolean>() {
 			{
-				add(true);
 				add(false);
-			}
-		};
-
-		List<Number> numberList = new ArrayList<Number>() {
-			{
-				add(42);
-				add(21);
-			}
-		};
-
-		List<String> stringList = new ArrayList<String>() {
-			{
-				add("vulcan");
-				add("api");
+				add(true);
 			}
 		};
 
@@ -82,19 +68,34 @@ public class JSONObjectBuilderTest {
 			}
 		};
 
+		List<Number> numberList = new ArrayList<Number>() {
+			{
+				add(21);
+				add(42);
+			}
+		};
+
+		List<String> stringList = new ArrayList<String>() {
+			{
+				add("api");
+				add("vulcan");
+			}
+		};
+
 		arrayValueStep.addAllBooleans(booleanList);
+		arrayValueStep.addAllJsonObjects(jsonObjectList);
 		arrayValueStep.addAllNumbers(numberList);
 		arrayValueStep.addAllStrings(stringList);
-		arrayValueStep.addAllJsonObjects(jsonObjectList);
 
 		@SuppressWarnings("unchecked")
 		Matcher<JsonElement> isAJsonArrayWithElements = is(
 			aJsonArrayThat(
 				contains(
-					aJsonBoolean(true), aJsonBoolean(false),
-					aJsonInt(equalTo(42)), aJsonInt(equalTo(21)),
-					aJsonString(equalTo("vulcan")), aJsonString(equalTo("api")),
-					_aJsonObjectWithTheSolution, _aJsonObjectWithTheSolution)));
+					aJsonBoolean(false), aJsonBoolean(true),
+					_aJsonObjectWithTheSolution, _aJsonObjectWithTheSolution,
+					aJsonInt(equalTo(21)), aJsonInt(equalTo(42)),
+					aJsonString(equalTo("api")),
+					aJsonString(equalTo("vulcan")))));
 
 		Matcher<JsonElement> isAJsonObjectWithAnArray = is(
 			aJsonObjectWhere("array", isAJsonArrayWithElements));

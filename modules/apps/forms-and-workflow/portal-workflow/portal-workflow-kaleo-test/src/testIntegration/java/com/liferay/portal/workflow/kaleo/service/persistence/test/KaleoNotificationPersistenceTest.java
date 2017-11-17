@@ -138,7 +138,7 @@ public class KaleoNotificationPersistenceTest {
 
 		newKaleoNotification.setKaleoClassPK(RandomTestUtil.nextLong());
 
-		newKaleoNotification.setKaleoDefinitionId(RandomTestUtil.nextLong());
+		newKaleoNotification.setKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
 		newKaleoNotification.setKaleoNodeName(RandomTestUtil.randomString());
 
@@ -178,8 +178,8 @@ public class KaleoNotificationPersistenceTest {
 			newKaleoNotification.getKaleoClassName());
 		Assert.assertEquals(existingKaleoNotification.getKaleoClassPK(),
 			newKaleoNotification.getKaleoClassPK());
-		Assert.assertEquals(existingKaleoNotification.getKaleoDefinitionId(),
-			newKaleoNotification.getKaleoDefinitionId());
+		Assert.assertEquals(existingKaleoNotification.getKaleoDefinitionVersionId(),
+			newKaleoNotification.getKaleoDefinitionVersionId());
 		Assert.assertEquals(existingKaleoNotification.getKaleoNodeName(),
 			newKaleoNotification.getKaleoNodeName());
 		Assert.assertEquals(existingKaleoNotification.getName(),
@@ -204,10 +204,10 @@ public class KaleoNotificationPersistenceTest {
 	}
 
 	@Test
-	public void testCountByKaleoDefinitionId() throws Exception {
-		_persistence.countByKaleoDefinitionId(RandomTestUtil.nextLong());
+	public void testCountByKaleoDefinitionVersionId() throws Exception {
+		_persistence.countByKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
-		_persistence.countByKaleoDefinitionId(0L);
+		_persistence.countByKaleoDefinitionVersionId(0L);
 	}
 
 	@Test
@@ -256,9 +256,9 @@ public class KaleoNotificationPersistenceTest {
 			"kaleoNotificationId", true, "groupId", true, "companyId", true,
 			"userId", true, "userName", true, "createDate", true,
 			"modifiedDate", true, "kaleoClassName", true, "kaleoClassPK", true,
-			"kaleoDefinitionId", true, "kaleoNodeName", true, "name", true,
-			"description", true, "executionType", true, "templateLanguage",
-			true, "notificationTypes", true);
+			"kaleoDefinitionVersionId", true, "kaleoNodeName", true, "name",
+			true, "description", true, "executionType", true,
+			"templateLanguage", true, "notificationTypes", true);
 	}
 
 	@Test
@@ -477,7 +477,7 @@ public class KaleoNotificationPersistenceTest {
 
 		kaleoNotification.setKaleoClassPK(RandomTestUtil.nextLong());
 
-		kaleoNotification.setKaleoDefinitionId(RandomTestUtil.nextLong());
+		kaleoNotification.setKaleoDefinitionVersionId(RandomTestUtil.nextLong());
 
 		kaleoNotification.setKaleoNodeName(RandomTestUtil.randomString());
 

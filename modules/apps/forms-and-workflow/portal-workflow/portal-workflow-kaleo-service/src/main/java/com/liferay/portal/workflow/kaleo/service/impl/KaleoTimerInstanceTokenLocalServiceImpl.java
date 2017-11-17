@@ -91,8 +91,8 @@ public class KaleoTimerInstanceTokenLocalServiceImpl
 		kaleoTimerInstanceToken.setKaleoClassName(
 			kaleoTimer.getKaleoClassName());
 		kaleoTimerInstanceToken.setKaleoClassPK(kaleoTimer.getKaleoClassPK());
-		kaleoTimerInstanceToken.setKaleoDefinitionId(
-			kaleoInstanceToken.getKaleoDefinitionId());
+		kaleoTimerInstanceToken.setKaleoDefinitionVersionId(
+			kaleoInstanceToken.getKaleoDefinitionVersionId());
 		kaleoTimerInstanceToken.setKaleoInstanceId(
 			kaleoInstanceToken.getKaleoInstanceId());
 		kaleoTimerInstanceToken.setKaleoInstanceTokenId(kaleoInstanceTokenId);

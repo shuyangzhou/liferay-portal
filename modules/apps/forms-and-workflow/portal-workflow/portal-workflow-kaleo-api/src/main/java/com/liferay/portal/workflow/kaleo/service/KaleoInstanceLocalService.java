@@ -71,7 +71,7 @@ public interface KaleoInstanceLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public KaleoInstance addKaleoInstance(KaleoInstance kaleoInstance);
 
-	public KaleoInstance addKaleoInstance(long kaleoDefinitionId,
+	public KaleoInstance addKaleoInstance(long kaleoDefinitionVersionId,
 		java.lang.String kaleoDefinitionName, int kaleoDefinitionVersion,
 		Map<java.lang.String, Serializable> workflowContext,
 		ServiceContext serviceContext) throws PortalException;
@@ -89,7 +89,8 @@ public interface KaleoInstanceLocalService extends BaseLocalService,
 
 	public void deleteCompanyKaleoInstances(long companyId);
 
-	public void deleteKaleoDefinitionKaleoInstances(long kaleoDefinitionId);
+	public void deleteKaleoDefinitionVersionKaleoInstances(
+		long kaleoDefinitionVersionId);
 
 	/**
 	* Deletes the kaleo instance from the database. Also notifies the appropriate model listeners.
@@ -240,7 +241,8 @@ public interface KaleoInstanceLocalService extends BaseLocalService,
 	public int getKaleoInstancesCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getKaleoInstancesCount(long kaleoDefinitionId, boolean completed);
+	public int getKaleoInstancesCount(long kaleoDefinitionVersionId,
+		boolean completed);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getKaleoInstancesCount(java.lang.Long userId,

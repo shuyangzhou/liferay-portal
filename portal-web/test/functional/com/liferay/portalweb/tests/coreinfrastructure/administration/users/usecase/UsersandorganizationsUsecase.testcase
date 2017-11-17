@@ -130,10 +130,15 @@
 
 	<command name="AssignImportedUserGroupToSuborganizationSites" priority="5">
 		<property name="liferay.training.dependency.jars" value="src/01-liferay-fundamentals/02-integrating-identity-management/com.liferay.docs.samplecontent-1.0.0.jar" />
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training" />
 
-		<execute macro="Page#add">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Navigation" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Site Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Mock LDAP Page" />
 		</execute>
 
@@ -480,7 +485,6 @@
 	</command>
 
 	<command name="MultipleUsersandOrganizations" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="test.name.skip.portal.instance" value="UsersandorganizationsUsecase#MultipleUsersandOrganizations" />
 		<property name="testray.component.names" value="Training" />
 
@@ -882,7 +886,6 @@
 	</command>
 
 	<command name="OrganizationAdministratorActivate" priority="5">
-		<property name="portal.acceptance" value="pending" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="ProductMenu#gotoPortlet">

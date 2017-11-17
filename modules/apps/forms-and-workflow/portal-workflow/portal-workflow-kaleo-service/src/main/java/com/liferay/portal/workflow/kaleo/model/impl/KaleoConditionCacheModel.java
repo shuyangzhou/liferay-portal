@@ -81,8 +81,8 @@ public class KaleoConditionCacheModel implements CacheModel<KaleoCondition>,
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
-		sb.append(", kaleoDefinitionId=");
-		sb.append(kaleoDefinitionId);
+		sb.append(", kaleoDefinitionVersionId=");
+		sb.append(kaleoDefinitionVersionId);
 		sb.append(", kaleoNodeId=");
 		sb.append(kaleoNodeId);
 		sb.append(", script=");
@@ -126,7 +126,7 @@ public class KaleoConditionCacheModel implements CacheModel<KaleoCondition>,
 			kaleoConditionImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		kaleoConditionImpl.setKaleoDefinitionId(kaleoDefinitionId);
+		kaleoConditionImpl.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		kaleoConditionImpl.setKaleoNodeId(kaleoNodeId);
 
 		if (script == null) {
@@ -168,7 +168,7 @@ public class KaleoConditionCacheModel implements CacheModel<KaleoCondition>,
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 
-		kaleoDefinitionId = objectInput.readLong();
+		kaleoDefinitionVersionId = objectInput.readLong();
 
 		kaleoNodeId = objectInput.readLong();
 		script = objectInput.readUTF();
@@ -197,7 +197,7 @@ public class KaleoConditionCacheModel implements CacheModel<KaleoCondition>,
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
-		objectOutput.writeLong(kaleoDefinitionId);
+		objectOutput.writeLong(kaleoDefinitionVersionId);
 
 		objectOutput.writeLong(kaleoNodeId);
 
@@ -230,7 +230,7 @@ public class KaleoConditionCacheModel implements CacheModel<KaleoCondition>,
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
-	public long kaleoDefinitionId;
+	public long kaleoDefinitionVersionId;
 	public long kaleoNodeId;
 	public String script;
 	public String scriptLanguage;

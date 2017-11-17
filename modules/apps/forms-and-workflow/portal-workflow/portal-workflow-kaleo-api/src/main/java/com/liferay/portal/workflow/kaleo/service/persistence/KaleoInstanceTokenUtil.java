@@ -276,177 +276,183 @@ public class KaleoInstanceTokenUtil {
 	}
 
 	/**
-	* Returns all the kaleo instance tokens where kaleoDefinitionId = &#63;.
+	* Returns all the kaleo instance tokens where kaleoDefinitionVersionId = &#63;.
 	*
-	* @param kaleoDefinitionId the kaleo definition ID
+	* @param kaleoDefinitionVersionId the kaleo definition version ID
 	* @return the matching kaleo instance tokens
 	*/
-	public static List<KaleoInstanceToken> findByKaleoDefinitionId(
-		long kaleoDefinitionId) {
-		return getPersistence().findByKaleoDefinitionId(kaleoDefinitionId);
+	public static List<KaleoInstanceToken> findByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId) {
+		return getPersistence()
+				   .findByKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 	}
 
 	/**
-	* Returns a range of all the kaleo instance tokens where kaleoDefinitionId = &#63;.
+	* Returns a range of all the kaleo instance tokens where kaleoDefinitionVersionId = &#63;.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoInstanceTokenModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
-	* @param kaleoDefinitionId the kaleo definition ID
+	* @param kaleoDefinitionVersionId the kaleo definition version ID
 	* @param start the lower bound of the range of kaleo instance tokens
 	* @param end the upper bound of the range of kaleo instance tokens (not inclusive)
 	* @return the range of matching kaleo instance tokens
 	*/
-	public static List<KaleoInstanceToken> findByKaleoDefinitionId(
-		long kaleoDefinitionId, int start, int end) {
+	public static List<KaleoInstanceToken> findByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId, int start, int end) {
 		return getPersistence()
-				   .findByKaleoDefinitionId(kaleoDefinitionId, start, end);
+				   .findByKaleoDefinitionVersionId(kaleoDefinitionVersionId,
+			start, end);
 	}
 
 	/**
-	* Returns an ordered range of all the kaleo instance tokens where kaleoDefinitionId = &#63;.
+	* Returns an ordered range of all the kaleo instance tokens where kaleoDefinitionVersionId = &#63;.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoInstanceTokenModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
-	* @param kaleoDefinitionId the kaleo definition ID
+	* @param kaleoDefinitionVersionId the kaleo definition version ID
 	* @param start the lower bound of the range of kaleo instance tokens
 	* @param end the upper bound of the range of kaleo instance tokens (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching kaleo instance tokens
 	*/
-	public static List<KaleoInstanceToken> findByKaleoDefinitionId(
-		long kaleoDefinitionId, int start, int end,
+	public static List<KaleoInstanceToken> findByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId, int start, int end,
 		OrderByComparator<KaleoInstanceToken> orderByComparator) {
 		return getPersistence()
-				   .findByKaleoDefinitionId(kaleoDefinitionId, start, end,
-			orderByComparator);
+				   .findByKaleoDefinitionVersionId(kaleoDefinitionVersionId,
+			start, end, orderByComparator);
 	}
 
 	/**
-	* Returns an ordered range of all the kaleo instance tokens where kaleoDefinitionId = &#63;.
+	* Returns an ordered range of all the kaleo instance tokens where kaleoDefinitionVersionId = &#63;.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link KaleoInstanceTokenModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
-	* @param kaleoDefinitionId the kaleo definition ID
+	* @param kaleoDefinitionVersionId the kaleo definition version ID
 	* @param start the lower bound of the range of kaleo instance tokens
 	* @param end the upper bound of the range of kaleo instance tokens (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @param retrieveFromCache whether to retrieve from the finder cache
 	* @return the ordered range of matching kaleo instance tokens
 	*/
-	public static List<KaleoInstanceToken> findByKaleoDefinitionId(
-		long kaleoDefinitionId, int start, int end,
+	public static List<KaleoInstanceToken> findByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId, int start, int end,
 		OrderByComparator<KaleoInstanceToken> orderByComparator,
 		boolean retrieveFromCache) {
 		return getPersistence()
-				   .findByKaleoDefinitionId(kaleoDefinitionId, start, end,
-			orderByComparator, retrieveFromCache);
+				   .findByKaleoDefinitionVersionId(kaleoDefinitionVersionId,
+			start, end, orderByComparator, retrieveFromCache);
 	}
 
 	/**
-	* Returns the first kaleo instance token in the ordered set where kaleoDefinitionId = &#63;.
+	* Returns the first kaleo instance token in the ordered set where kaleoDefinitionVersionId = &#63;.
 	*
-	* @param kaleoDefinitionId the kaleo definition ID
+	* @param kaleoDefinitionVersionId the kaleo definition version ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching kaleo instance token
 	* @throws NoSuchInstanceTokenException if a matching kaleo instance token could not be found
 	*/
-	public static KaleoInstanceToken findByKaleoDefinitionId_First(
-		long kaleoDefinitionId,
+	public static KaleoInstanceToken findByKaleoDefinitionVersionId_First(
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoInstanceToken> orderByComparator)
 		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceTokenException {
 		return getPersistence()
-				   .findByKaleoDefinitionId_First(kaleoDefinitionId,
+				   .findByKaleoDefinitionVersionId_First(kaleoDefinitionVersionId,
 			orderByComparator);
 	}
 
 	/**
-	* Returns the first kaleo instance token in the ordered set where kaleoDefinitionId = &#63;.
+	* Returns the first kaleo instance token in the ordered set where kaleoDefinitionVersionId = &#63;.
 	*
-	* @param kaleoDefinitionId the kaleo definition ID
+	* @param kaleoDefinitionVersionId the kaleo definition version ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching kaleo instance token, or <code>null</code> if a matching kaleo instance token could not be found
 	*/
-	public static KaleoInstanceToken fetchByKaleoDefinitionId_First(
-		long kaleoDefinitionId,
+	public static KaleoInstanceToken fetchByKaleoDefinitionVersionId_First(
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoInstanceToken> orderByComparator) {
 		return getPersistence()
-				   .fetchByKaleoDefinitionId_First(kaleoDefinitionId,
+				   .fetchByKaleoDefinitionVersionId_First(kaleoDefinitionVersionId,
 			orderByComparator);
 	}
 
 	/**
-	* Returns the last kaleo instance token in the ordered set where kaleoDefinitionId = &#63;.
+	* Returns the last kaleo instance token in the ordered set where kaleoDefinitionVersionId = &#63;.
 	*
-	* @param kaleoDefinitionId the kaleo definition ID
+	* @param kaleoDefinitionVersionId the kaleo definition version ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching kaleo instance token
 	* @throws NoSuchInstanceTokenException if a matching kaleo instance token could not be found
 	*/
-	public static KaleoInstanceToken findByKaleoDefinitionId_Last(
-		long kaleoDefinitionId,
+	public static KaleoInstanceToken findByKaleoDefinitionVersionId_Last(
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoInstanceToken> orderByComparator)
 		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceTokenException {
 		return getPersistence()
-				   .findByKaleoDefinitionId_Last(kaleoDefinitionId,
+				   .findByKaleoDefinitionVersionId_Last(kaleoDefinitionVersionId,
 			orderByComparator);
 	}
 
 	/**
-	* Returns the last kaleo instance token in the ordered set where kaleoDefinitionId = &#63;.
+	* Returns the last kaleo instance token in the ordered set where kaleoDefinitionVersionId = &#63;.
 	*
-	* @param kaleoDefinitionId the kaleo definition ID
+	* @param kaleoDefinitionVersionId the kaleo definition version ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching kaleo instance token, or <code>null</code> if a matching kaleo instance token could not be found
 	*/
-	public static KaleoInstanceToken fetchByKaleoDefinitionId_Last(
-		long kaleoDefinitionId,
+	public static KaleoInstanceToken fetchByKaleoDefinitionVersionId_Last(
+		long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoInstanceToken> orderByComparator) {
 		return getPersistence()
-				   .fetchByKaleoDefinitionId_Last(kaleoDefinitionId,
+				   .fetchByKaleoDefinitionVersionId_Last(kaleoDefinitionVersionId,
 			orderByComparator);
 	}
 
 	/**
-	* Returns the kaleo instance tokens before and after the current kaleo instance token in the ordered set where kaleoDefinitionId = &#63;.
+	* Returns the kaleo instance tokens before and after the current kaleo instance token in the ordered set where kaleoDefinitionVersionId = &#63;.
 	*
 	* @param kaleoInstanceTokenId the primary key of the current kaleo instance token
-	* @param kaleoDefinitionId the kaleo definition ID
+	* @param kaleoDefinitionVersionId the kaleo definition version ID
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next kaleo instance token
 	* @throws NoSuchInstanceTokenException if a kaleo instance token with the primary key could not be found
 	*/
-	public static KaleoInstanceToken[] findByKaleoDefinitionId_PrevAndNext(
-		long kaleoInstanceTokenId, long kaleoDefinitionId,
+	public static KaleoInstanceToken[] findByKaleoDefinitionVersionId_PrevAndNext(
+		long kaleoInstanceTokenId, long kaleoDefinitionVersionId,
 		OrderByComparator<KaleoInstanceToken> orderByComparator)
 		throws com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceTokenException {
 		return getPersistence()
-				   .findByKaleoDefinitionId_PrevAndNext(kaleoInstanceTokenId,
-			kaleoDefinitionId, orderByComparator);
+				   .findByKaleoDefinitionVersionId_PrevAndNext(kaleoInstanceTokenId,
+			kaleoDefinitionVersionId, orderByComparator);
 	}
 
 	/**
-	* Removes all the kaleo instance tokens where kaleoDefinitionId = &#63; from the database.
+	* Removes all the kaleo instance tokens where kaleoDefinitionVersionId = &#63; from the database.
 	*
-	* @param kaleoDefinitionId the kaleo definition ID
+	* @param kaleoDefinitionVersionId the kaleo definition version ID
 	*/
-	public static void removeByKaleoDefinitionId(long kaleoDefinitionId) {
-		getPersistence().removeByKaleoDefinitionId(kaleoDefinitionId);
+	public static void removeByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId) {
+		getPersistence()
+			.removeByKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 	}
 
 	/**
-	* Returns the number of kaleo instance tokens where kaleoDefinitionId = &#63;.
+	* Returns the number of kaleo instance tokens where kaleoDefinitionVersionId = &#63;.
 	*
-	* @param kaleoDefinitionId the kaleo definition ID
+	* @param kaleoDefinitionVersionId the kaleo definition version ID
 	* @return the number of matching kaleo instance tokens
 	*/
-	public static int countByKaleoDefinitionId(long kaleoDefinitionId) {
-		return getPersistence().countByKaleoDefinitionId(kaleoDefinitionId);
+	public static int countByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId) {
+		return getPersistence()
+				   .countByKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 	}
 
 	/**

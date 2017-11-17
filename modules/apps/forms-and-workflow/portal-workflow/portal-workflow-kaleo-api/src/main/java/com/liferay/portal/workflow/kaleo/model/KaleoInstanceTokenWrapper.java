@@ -65,7 +65,7 @@ public class KaleoInstanceTokenWrapper implements KaleoInstanceToken,
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("kaleoDefinitionId", getKaleoDefinitionId());
+		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
 		attributes.put("kaleoInstanceId", getKaleoInstanceId());
 		attributes.put("parentKaleoInstanceTokenId",
 			getParentKaleoInstanceTokenId());
@@ -123,10 +123,11 @@ public class KaleoInstanceTokenWrapper implements KaleoInstanceToken,
 			setModifiedDate(modifiedDate);
 		}
 
-		Long kaleoDefinitionId = (Long)attributes.get("kaleoDefinitionId");
+		Long kaleoDefinitionVersionId = (Long)attributes.get(
+				"kaleoDefinitionVersionId");
 
-		if (kaleoDefinitionId != null) {
-			setKaleoDefinitionId(kaleoDefinitionId);
+		if (kaleoDefinitionVersionId != null) {
+			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		}
 
 		Long kaleoInstanceId = (Long)attributes.get("kaleoInstanceId");
@@ -302,13 +303,13 @@ public class KaleoInstanceTokenWrapper implements KaleoInstanceToken,
 	}
 
 	/**
-	* Returns the kaleo definition ID of this kaleo instance token.
+	* Returns the kaleo definition version ID of this kaleo instance token.
 	*
-	* @return the kaleo definition ID of this kaleo instance token
+	* @return the kaleo definition version ID of this kaleo instance token
 	*/
 	@Override
-	public long getKaleoDefinitionId() {
-		return _kaleoInstanceToken.getKaleoDefinitionId();
+	public long getKaleoDefinitionVersionId() {
+		return _kaleoInstanceToken.getKaleoDefinitionVersionId();
 	}
 
 	@Override
@@ -566,13 +567,13 @@ public class KaleoInstanceTokenWrapper implements KaleoInstanceToken,
 	}
 
 	/**
-	* Sets the kaleo definition ID of this kaleo instance token.
+	* Sets the kaleo definition version ID of this kaleo instance token.
 	*
-	* @param kaleoDefinitionId the kaleo definition ID of this kaleo instance token
+	* @param kaleoDefinitionVersionId the kaleo definition version ID of this kaleo instance token
 	*/
 	@Override
-	public void setKaleoDefinitionId(long kaleoDefinitionId) {
-		_kaleoInstanceToken.setKaleoDefinitionId(kaleoDefinitionId);
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		_kaleoInstanceToken.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 	}
 
 	/**

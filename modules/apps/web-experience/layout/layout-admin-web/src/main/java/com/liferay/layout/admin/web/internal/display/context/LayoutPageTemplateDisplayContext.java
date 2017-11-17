@@ -14,21 +14,31 @@
 
 package com.liferay.layout.admin.web.internal.display.context;
 
+import com.liferay.fragment.model.FragmentCollection;
+import com.liferay.fragment.model.FragmentEntry;
+import com.liferay.fragment.service.FragmentCollectionServiceUtil;
+import com.liferay.fragment.service.FragmentEntryServiceUtil;
 import com.liferay.layout.admin.web.internal.constants.LayoutAdminPortletKeys;
 import com.liferay.layout.admin.web.internal.util.LayoutPageTemplatePortletUtil;
 import com.liferay.layout.page.template.model.LayoutPageTemplateCollection;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
+import com.liferay.layout.page.template.model.LayoutPageTemplateFragment;
 import com.liferay.layout.page.template.service.LayoutPageTemplateCollectionServiceUtil;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalServiceUtil;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryServiceUtil;
+import com.liferay.layout.page.template.service.LayoutPageTemplateFragmentLocalServiceUtil;
 import com.liferay.layout.page.template.service.permission.LayoutPageTemplatePermission;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -87,6 +97,58 @@ public class LayoutPageTemplateDisplayContext {
 		}
 
 		return portletURL.toString();
+	}
+
+	public JSONArray getFragmentCollectionsJSONArray() throws PortalException {
+		JSONArray fragmentCollectionsJSONArray =
+			JSONFactoryUtil.createJSONArray();
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		List<FragmentCollection> fragmentCollections =
+			FragmentCollectionServiceUtil.getFragmentCollections(
+				themeDisplay.getScopeGroupId());
+
+		for (FragmentCollection fragmentCollection : fragmentCollections) {
+			List<FragmentEntry> fragmentEntries =
+				FragmentEntryServiceUtil.fetchFragmentEntries(
+					fragmentCollection.getFragmentCollectionId());
+
+			if (ListUtil.isEmpty(fragmentEntries)) {
+				continue;
+			}
+
+			JSONObject fragmentCollectionJSONObject =
+				JSONFactoryUtil.createJSONObject();
+
+			JSONArray fragmentEntriesJSONArray =
+				JSONFactoryUtil.createJSONArray();
+
+			for (FragmentEntry fragmentEntry : fragmentEntries) {
+				JSONObject fragmentEntryJSONObject =
+					JSONFactoryUtil.createJSONObject();
+
+				fragmentEntryJSONObject.put(
+					"fragmentEntryId", fragmentEntry.getFragmentEntryId());
+				fragmentEntryJSONObject.put("name", fragmentEntry.getName());
+
+				fragmentEntriesJSONArray.put(fragmentEntryJSONObject);
+			}
+
+			fragmentCollectionJSONObject.put(
+				"entries", fragmentEntriesJSONArray);
+
+			fragmentCollectionJSONObject.put(
+				"fragmentCollectionId",
+				fragmentCollection.getFragmentCollectionId());
+			fragmentCollectionJSONObject.put(
+				"name", fragmentCollection.getName());
+
+			fragmentCollectionsJSONArray.put(fragmentCollectionJSONObject);
+		}
+
+		return fragmentCollectionsJSONArray;
 	}
 
 	public String getKeywords() {
@@ -370,6 +432,42 @@ public class LayoutPageTemplateDisplayContext {
 		}
 
 		return layoutPageTemplateEntry.getName();
+	}
+
+	public JSONArray getLayoutPageTemplateFragmentsJSONArray()
+		throws PortalException {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		LayoutPageTemplateEntry layoutPageTemplateEntry =
+			getLayoutPageTemplateEntry();
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		List<LayoutPageTemplateFragment> layoutPageTemplateFragments =
+			LayoutPageTemplateFragmentLocalServiceUtil.
+				getLayoutPageTemplateFragmentsByPageTemplate(
+					themeDisplay.getScopeGroupId(),
+					layoutPageTemplateEntry.getLayoutPageTemplateEntryId());
+
+		for (LayoutPageTemplateFragment layoutPageTemplateFragment :
+				layoutPageTemplateFragments) {
+
+			FragmentEntry fragmentEntry =
+				FragmentEntryServiceUtil.fetchFragmentEntry(
+					layoutPageTemplateFragment.getFragmentEntryId());
+
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put(
+				"fragmentEntryId", fragmentEntry.getFragmentEntryId());
+			jsonObject.put("name", fragmentEntry.getName());
+
+			jsonArray.put(jsonObject);
+		}
+
+		return jsonArray;
 	}
 
 	public String getOrderByCol() {
