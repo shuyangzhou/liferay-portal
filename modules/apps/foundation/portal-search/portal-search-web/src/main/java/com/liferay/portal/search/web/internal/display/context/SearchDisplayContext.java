@@ -38,14 +38,14 @@ import com.liferay.portal.kernel.util.PredicateFilter;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.summary.SummaryBuilderFactory;
-import com.liferay.portal.search.web.constants.SearchPortletParameterNames;
-import com.liferay.portal.search.web.facet.SearchFacet;
-import com.liferay.portal.search.web.facet.util.SearchFacetTracker;
+import com.liferay.portal.search.web.internal.constants.SearchPortletParameterNames;
 import com.liferay.portal.search.web.internal.facet.AssetEntriesSearchFacet;
+import com.liferay.portal.search.web.internal.facet.SearchFacet;
+import com.liferay.portal.search.web.internal.facet.util.SearchFacetTracker;
 import com.liferay.portal.search.web.internal.portlet.SearchPortletSearchResultPreferences;
 import com.liferay.portal.search.web.internal.search.request.SearchRequestImpl;
 import com.liferay.portal.search.web.internal.search.request.SearchResponseImpl;
-import com.liferay.portal.search.web.search.request.SearchSettings;
+import com.liferay.portal.search.web.internal.search.request.SearchSettings;
 
 import java.util.Collection;
 import java.util.List;

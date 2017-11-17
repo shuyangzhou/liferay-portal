@@ -22,11 +22,11 @@ import com.liferay.portal.kernel.search.generic.TermQueryImpl;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.web.internal.display.context.SearchScope;
+import com.liferay.portal.search.web.internal.portlet.shared.search.PortletSharedSearchContributor;
+import com.liferay.portal.search.web.internal.portlet.shared.search.PortletSharedSearchRequest;
+import com.liferay.portal.search.web.internal.portlet.shared.search.PortletSharedSearchResponse;
+import com.liferay.portal.search.web.internal.portlet.shared.search.PortletSharedSearchSettings;
 import com.liferay.portal.search.web.internal.search.bar.constants.SearchBarPortletKeys;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 
 import java.io.IOException;
 

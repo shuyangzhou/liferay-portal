@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.facet.Facet;
-import com.liferay.portal.search.web.search.request.SearchResponse;
 
 import java.util.List;
 import java.util.Optional;

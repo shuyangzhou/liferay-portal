@@ -12,19 +12,17 @@
  * details.
  */
 
-package com.liferay.portal.search.web.internal.upgrade.v1_0_0;
+package com.liferay.portal.search.web.internal.portlet.shared.search;
 
-import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
-import com.liferay.portal.search.web.internal.constants.SearchPortletKeys;
+import aQute.bnd.annotation.ConsumerType;
 
 /**
- * @author Julio Camarero
+ * @author Rodrigo Paulino
  */
-public class UpgradePortletId extends BaseUpgradePortletId {
+@ConsumerType
+public interface PortletSharedSearchContributor {
 
-	@Override
-	protected String[][] getRenamePortletIdsArray() {
-		return new String[][] {new String[] {"3", SearchPortletKeys.SEARCH}};
-	}
+	public void contribute(
+		PortletSharedSearchSettings portletSharedSearchSettings);
 
 }

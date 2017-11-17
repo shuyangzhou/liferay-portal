@@ -12,19 +12,27 @@
  * details.
  */
 
-package com.liferay.portal.search.web.internal.upgrade.v1_0_0;
+package com.liferay.portal.search.web.internal.facet.util.comparator;
 
-import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
-import com.liferay.portal.search.web.internal.constants.SearchPortletKeys;
+import com.liferay.portal.search.web.internal.facet.SearchFacet;
+
+import java.util.Comparator;
 
 /**
- * @author Julio Camarero
+ * @author Shuyang Zhou
  */
-public class UpgradePortletId extends BaseUpgradePortletId {
+public class SearchFacetComparator implements Comparator<SearchFacet> {
+
+	public static final Comparator<SearchFacet> INSTANCE =
+		new SearchFacetComparator();
 
 	@Override
-	protected String[][] getRenamePortletIdsArray() {
-		return new String[][] {new String[] {"3", SearchPortletKeys.SEARCH}};
+	public int compare(SearchFacet searchFacet1, SearchFacet searchFacet2) {
+		return Double.compare(
+			searchFacet2.getWeight(), searchFacet1.getWeight());
+	}
+
+	private SearchFacetComparator() {
 	}
 
 }

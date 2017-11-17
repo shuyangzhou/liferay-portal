@@ -12,19 +12,22 @@
  * details.
  */
 
-package com.liferay.portal.search.web.internal.upgrade.v1_0_0;
+package com.liferay.portal.search.web.internal.search.result;
 
-import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
-import com.liferay.portal.search.web.internal.constants.SearchPortletKeys;
+import aQute.bnd.annotation.ProviderType;
 
 /**
- * @author Julio Camarero
+ * @author André de Oliveira
  */
-public class UpgradePortletId extends BaseUpgradePortletId {
+@ProviderType
+public interface SearchResultImage {
 
-	@Override
-	protected String[][] getRenamePortletIdsArray() {
-		return new String[][] {new String[] {"3", SearchPortletKeys.SEARCH}};
-	}
+	public String getClassName();
+
+	public long getClassPK();
+
+	public void setIcon(String iconId);
+
+	public void setThumbnail(String thumbnailURLString);
 
 }

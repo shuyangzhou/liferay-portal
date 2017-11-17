@@ -14,15 +14,39 @@
 
 package com.liferay.portal.search.web.internal.search.request;
 
-import com.liferay.portal.kernel.dao.search.SearchContainer;
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.search.Document;
+import com.liferay.portal.kernel.search.facet.Facet;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
+ * @author Rodrigo Paulino
  * @author André de Oliveira
  */
-public interface SearchContainerBuilder {
+@ProviderType
+public interface SearchResponse {
 
-	public SearchContainer<Document> getSearchContainer(
-		SearchSettings searchSettings);
+	public List<Document> getDocuments();
+
+	public Facet getFacet(String fieldName);
+
+	/**
+	 * @deprecated As of 1.3.0
+	 */
+	@Deprecated
+	public String[] getHighlights();
+
+	public Optional<String> getKeywords();
+
+	public int getPaginationDelta();
+
+	public int getPaginationStart();
+
+	public String getQueryString();
+
+	public int getTotalHits();
 
 }

@@ -12,19 +12,20 @@
  * details.
  */
 
-package com.liferay.portal.search.web.internal.upgrade.v1_0_0;
+package com.liferay.portal.search.web.internal.portlet.shared.task;
 
-import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
-import com.liferay.portal.search.web.internal.constants.SearchPortletKeys;
+import aQute.bnd.annotation.ProviderType;
+
+import javax.portlet.RenderRequest;
 
 /**
- * @author Julio Camarero
+ * @author André de Oliveira
  */
-public class UpgradePortletId extends BaseUpgradePortletId {
+@ProviderType
+public interface PortletSharedTaskExecutor {
 
-	@Override
-	protected String[][] getRenamePortletIdsArray() {
-		return new String[][] {new String[] {"3", SearchPortletKeys.SEARCH}};
-	}
+	public <T> T executeOnlyOnce(
+		PortletSharedTask<T> portletSharedTask, String attributeSuffix,
+		RenderRequest renderRequest);
 
 }

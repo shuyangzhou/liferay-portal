@@ -12,19 +12,19 @@
  * details.
  */
 
-package com.liferay.portal.search.web.internal.upgrade.v1_0_0;
-
-import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
-import com.liferay.portal.search.web.internal.constants.SearchPortletKeys;
+package com.liferay.portal.search.web.internal.constants;
 
 /**
- * @author Julio Camarero
+ * @author André de Oliveira
  */
-public class UpgradePortletId extends BaseUpgradePortletId {
+public class SearchPortletParameterNames {
 
-	@Override
-	protected String[][] getRenamePortletIdsArray() {
-		return new String[][] {new String[] {"3", SearchPortletKeys.SEARCH}};
-	}
+	public static final String FORMAT = "format";
+
+	public static final String GROUP_ID = "groupId";
+
+	public static final String KEYWORDS = "keywords";
+
+	public static final String SCOPE = "scope";
 
 }

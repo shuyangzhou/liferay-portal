@@ -23,11 +23,11 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.web.internal.facet.display.builder.ScopeSearchFacetDisplayBuilder;
 import com.liferay.portal.search.web.internal.facet.display.context.ScopeSearchFacetDisplayContext;
+import com.liferay.portal.search.web.internal.portlet.shared.search.PortletSharedSearchContributor;
+import com.liferay.portal.search.web.internal.portlet.shared.search.PortletSharedSearchRequest;
+import com.liferay.portal.search.web.internal.portlet.shared.search.PortletSharedSearchResponse;
+import com.liferay.portal.search.web.internal.portlet.shared.search.PortletSharedSearchSettings;
 import com.liferay.portal.search.web.internal.site.facet.constants.SiteFacetPortletKeys;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
-import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 
 import java.io.IOException;
 

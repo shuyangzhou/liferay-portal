@@ -47,9 +47,9 @@ import com.liferay.portal.search.web.internal.display.context.PortletURLFactory;
 import com.liferay.portal.search.web.internal.display.context.SearchResultPreferences;
 import com.liferay.portal.search.web.internal.result.display.context.SearchResultFieldDisplayContext;
 import com.liferay.portal.search.web.internal.result.display.context.SearchResultSummaryDisplayContext;
+import com.liferay.portal.search.web.internal.search.result.SearchResultImage;
+import com.liferay.portal.search.web.internal.search.result.SearchResultImageContributor;
 import com.liferay.portal.search.web.internal.util.SearchUtil;
-import com.liferay.portal.search.web.search.result.SearchResultImage;
-import com.liferay.portal.search.web.search.result.SearchResultImageContributor;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

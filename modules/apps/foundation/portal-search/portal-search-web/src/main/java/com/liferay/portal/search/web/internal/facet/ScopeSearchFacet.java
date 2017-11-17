@@ -22,8 +22,6 @@ import com.liferay.portal.kernel.search.facet.ScopeFacetFactory;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.search.facet.util.FacetFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.search.web.facet.BaseJSPSearchFacet;
-import com.liferay.portal.search.web.facet.SearchFacet;
 
 import javax.portlet.ActionRequest;
 
