@@ -74,8 +74,7 @@ public class RootEndpointImpl implements RootEndpoint {
 			Optional::get
 		).mapFailMatching(
 			NoSuchElementException.class,
-			() -> new NotAllowedException(
-				"POST method is not allowed for path " + name)
+			_getNotAllowedExceptionSupplier("POST", name)
 		).map(
 			function -> function.apply(new RootIdentifier() {})
 		).map(
@@ -101,9 +100,8 @@ public class RootEndpointImpl implements RootEndpoint {
 			function -> function.apply(body)
 		).mapFailMatching(
 			NoSuchElementException.class,
-			() -> new NotAllowedException(
-				"POST method is not allowed for path " + name + "/" + id + "/" +
-					nestedName)
+			_getNotAllowedExceptionSupplier(
+				"POST", String.join("/", name, id, nestedName))
 		);
 	}
 
@@ -117,8 +115,7 @@ public class RootEndpointImpl implements RootEndpoint {
 			Optional::get
 		).mapFailMatching(
 			NoSuchElementException.class,
-			() -> new NotAllowedException(
-				"DELETE method is not allowed for path " + name + "/" + id)
+			_getNotAllowedExceptionSupplier("DELETE", name + "/" + id)
 		).getUnchecked(
 		).accept(
 			new Path(name, id)
@@ -150,7 +147,7 @@ public class RootEndpointImpl implements RootEndpoint {
 
 		return binaryFunctionTry.mapFailMatching(
 			NoSuchElementException.class,
-			_getSupplierNotFoundException(name + "/" + id + "/" + binaryId)
+			_getNotFoundExceptionSupplier(String.join("/", name, id, binaryId))
 		).flatMap(
 			binaryFunction -> _getInputStreamTry(name, id, binaryFunction)
 		);
@@ -168,7 +165,7 @@ public class RootEndpointImpl implements RootEndpoint {
 			Optional::get
 		).mapFailMatching(
 			NoSuchElementException.class,
-			_getSupplierNotFoundException(name + "/" + id)
+			_getNotFoundExceptionSupplier(name + "/" + id)
 		).map(
 			function -> function.apply(new Path(name, id))
 		);
@@ -183,7 +180,7 @@ public class RootEndpointImpl implements RootEndpoint {
 		).map(
 			Optional::get
 		).mapFailMatching(
-			NoSuchElementException.class, _getSupplierNotFoundException(name)
+			NoSuchElementException.class, _getNotFoundExceptionSupplier(name)
 		).map(
 			function -> function.apply(new Path())
 		).map(
@@ -228,9 +225,6 @@ public class RootEndpointImpl implements RootEndpoint {
 
 		Try<Routes<T>> routesTry = _getRoutesTry(nestedName);
 
-		Supplier<NotFoundException> supplierNotFoundException =
-			_getSupplierNotFoundException(name + "/" + id + "/" + nestedName);
-
 		return routesTry.map(
 			Routes::getPageFunctionOptional
 		).map(
@@ -242,7 +236,9 @@ public class RootEndpointImpl implements RootEndpoint {
 		).map(
 			Optional::get
 		).mapFailMatching(
-			NoSuchElementException.class, supplierNotFoundException
+			NoSuchElementException.class,
+			_getNotFoundExceptionSupplier(
+				String.join("/", name, id, nestedName))
 		);
 	}
 
@@ -258,8 +254,7 @@ public class RootEndpointImpl implements RootEndpoint {
 			Optional::get
 		).mapFailMatching(
 			NoSuchElementException.class,
-			() -> new NotAllowedException(
-				"PUT method is not allowed for path " + name + "/" + id)
+			_getNotAllowedExceptionSupplier("PUT", name + "/" + id)
 		).map(
 			function -> function.apply(new Path(name, id))
 		).map(
@@ -358,6 +353,19 @@ public class RootEndpointImpl implements RootEndpoint {
 		};
 	}
 
+	private Supplier<NotAllowedException> _getNotAllowedExceptionSupplier(
+		String method, String path) {
+
+		return () -> new NotAllowedException(
+			method + " method is not allowed for path " + path);
+	}
+
+	private Supplier<NotFoundException> _getNotFoundExceptionSupplier(
+		String name) {
+
+		return () -> new NotFoundException("No endpoint found at path " + name);
+	}
+
 	private <T> Try<Routes<T>> _getRoutesTry(String name) {
 		Try<Optional<Routes<T>>> optionalTry = Try.success(
 			_collectionResourceManager.getRoutesOptional(
@@ -369,12 +377,6 @@ public class RootEndpointImpl implements RootEndpoint {
 			NoSuchElementException.class,
 			() -> new NotFoundException("No resource found for path " + name)
 		);
-	}
-
-	private Supplier<NotFoundException> _getSupplierNotFoundException(
-		String name) {
-
-		return () -> new NotFoundException("No endpoint found at path " + name);
 	}
 
 	@Reference

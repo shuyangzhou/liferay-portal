@@ -16,6 +16,8 @@
 
 <%@ include file="/init.jsp" %>
 
+<liferay-ui:success key='<%= portletName + "requestProcessed" %>' message="your-request-completed-successfully" />
+
 <liferay-util:include page="/navigation.jsp" servletContext="<%= application %>">
 	<liferay-util:param name="searchPage" value="<%= selectedPortletTab.getSearchJspPath() %>" />
 

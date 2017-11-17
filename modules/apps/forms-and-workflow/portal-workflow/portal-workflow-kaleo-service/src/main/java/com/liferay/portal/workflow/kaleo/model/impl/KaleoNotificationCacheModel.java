@@ -85,8 +85,8 @@ public class KaleoNotificationCacheModel implements CacheModel<KaleoNotification
 		sb.append(kaleoClassName);
 		sb.append(", kaleoClassPK=");
 		sb.append(kaleoClassPK);
-		sb.append(", kaleoDefinitionId=");
-		sb.append(kaleoDefinitionId);
+		sb.append(", kaleoDefinitionVersionId=");
+		sb.append(kaleoDefinitionVersionId);
 		sb.append(", kaleoNodeName=");
 		sb.append(kaleoNodeName);
 		sb.append(", name=");
@@ -144,7 +144,7 @@ public class KaleoNotificationCacheModel implements CacheModel<KaleoNotification
 		}
 
 		kaleoNotificationImpl.setKaleoClassPK(kaleoClassPK);
-		kaleoNotificationImpl.setKaleoDefinitionId(kaleoDefinitionId);
+		kaleoNotificationImpl.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 
 		if (kaleoNodeName == null) {
 			kaleoNotificationImpl.setKaleoNodeName(StringPool.BLANK);
@@ -216,7 +216,7 @@ public class KaleoNotificationCacheModel implements CacheModel<KaleoNotification
 
 		kaleoClassPK = objectInput.readLong();
 
-		kaleoDefinitionId = objectInput.readLong();
+		kaleoDefinitionVersionId = objectInput.readLong();
 		kaleoNodeName = objectInput.readUTF();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
@@ -256,7 +256,7 @@ public class KaleoNotificationCacheModel implements CacheModel<KaleoNotification
 
 		objectOutput.writeLong(kaleoClassPK);
 
-		objectOutput.writeLong(kaleoDefinitionId);
+		objectOutput.writeLong(kaleoDefinitionVersionId);
 
 		if (kaleoNodeName == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
@@ -317,7 +317,7 @@ public class KaleoNotificationCacheModel implements CacheModel<KaleoNotification
 	public long modifiedDate;
 	public String kaleoClassName;
 	public long kaleoClassPK;
-	public long kaleoDefinitionId;
+	public long kaleoDefinitionVersionId;
 	public String kaleoNodeName;
 	public String name;
 	public String description;

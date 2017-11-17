@@ -14,8 +14,8 @@
 
 package com.liferay.portal.workflow.web.internal.portlet.tab;
 
-import com.liferay.portal.workflow.web.constants.WorkflowWebKeys;
-import com.liferay.portal.workflow.web.portlet.tab.WorkflowPortletTab;
+import com.liferay.portal.workflow.constants.WorkflowWebKeys;
+import com.liferay.portal.workflow.portlet.tab.WorkflowPortletTab;
 
 import org.osgi.service.component.annotations.Component;
 

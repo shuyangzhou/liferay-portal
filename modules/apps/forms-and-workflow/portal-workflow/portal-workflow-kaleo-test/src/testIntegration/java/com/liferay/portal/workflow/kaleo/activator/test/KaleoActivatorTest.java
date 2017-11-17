@@ -55,7 +55,7 @@ public class KaleoActivatorTest {
 
 			KaleoDefinition kaleoDefinition =
 				KaleoDefinitionLocalServiceUtil.getKaleoDefinition(
-					"Single Approver", 1, serviceContext);
+					"Single Approver", serviceContext);
 
 			Assert.assertNotNull(kaleoDefinition);
 		}

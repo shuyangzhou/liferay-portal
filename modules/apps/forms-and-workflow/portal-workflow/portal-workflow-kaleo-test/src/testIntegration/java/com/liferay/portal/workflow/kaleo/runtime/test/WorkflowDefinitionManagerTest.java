@@ -95,6 +95,19 @@ public class WorkflowDefinitionManagerTest {
 	}
 
 	@Test
+	public void testValidateEmptyNotificationTemplateDefinition()
+		throws Exception {
+
+		InputStream inputStream = getResource(
+			"single-approver-definition-empty-notification-template.xml");
+
+		String error = assertInvalid(inputStream);
+
+		assertEquals(
+			"The review node has a empty notification template", error);
+	}
+
+	@Test
 	public void testValidateIncomingTransitionInitialStateDefinition()
 		throws Exception {
 

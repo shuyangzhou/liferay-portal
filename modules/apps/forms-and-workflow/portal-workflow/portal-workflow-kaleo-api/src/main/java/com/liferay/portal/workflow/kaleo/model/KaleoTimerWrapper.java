@@ -66,7 +66,7 @@ public class KaleoTimerWrapper implements KaleoTimer, ModelWrapper<KaleoTimer> {
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("kaleoClassName", getKaleoClassName());
 		attributes.put("kaleoClassPK", getKaleoClassPK());
-		attributes.put("kaleoDefinitionId", getKaleoDefinitionId());
+		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
 		attributes.put("name", getName());
 		attributes.put("blocking", getBlocking());
 		attributes.put("description", getDescription());
@@ -134,10 +134,11 @@ public class KaleoTimerWrapper implements KaleoTimer, ModelWrapper<KaleoTimer> {
 			setKaleoClassPK(kaleoClassPK);
 		}
 
-		Long kaleoDefinitionId = (Long)attributes.get("kaleoDefinitionId");
+		Long kaleoDefinitionVersionId = (Long)attributes.get(
+				"kaleoDefinitionVersionId");
 
-		if (kaleoDefinitionId != null) {
-			setKaleoDefinitionId(kaleoDefinitionId);
+		if (kaleoDefinitionVersionId != null) {
+			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		}
 
 		String name = (String)attributes.get("name");
@@ -279,13 +280,13 @@ public class KaleoTimerWrapper implements KaleoTimer, ModelWrapper<KaleoTimer> {
 	}
 
 	/**
-	* Returns the kaleo definition ID of this kaleo timer.
+	* Returns the kaleo definition version ID of this kaleo timer.
 	*
-	* @return the kaleo definition ID of this kaleo timer
+	* @return the kaleo definition version ID of this kaleo timer
 	*/
 	@Override
-	public long getKaleoDefinitionId() {
-		return _kaleoTimer.getKaleoDefinitionId();
+	public long getKaleoDefinitionVersionId() {
+		return _kaleoTimer.getKaleoDefinitionVersionId();
 	}
 
 	@Override
@@ -540,13 +541,13 @@ public class KaleoTimerWrapper implements KaleoTimer, ModelWrapper<KaleoTimer> {
 	}
 
 	/**
-	* Sets the kaleo definition ID of this kaleo timer.
+	* Sets the kaleo definition version ID of this kaleo timer.
 	*
-	* @param kaleoDefinitionId the kaleo definition ID of this kaleo timer
+	* @param kaleoDefinitionVersionId the kaleo definition version ID of this kaleo timer
 	*/
 	@Override
-	public void setKaleoDefinitionId(long kaleoDefinitionId) {
-		_kaleoTimer.setKaleoDefinitionId(kaleoDefinitionId);
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		_kaleoTimer.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 	}
 
 	/**

@@ -73,7 +73,7 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 			{ "modifiedDate", Types.TIMESTAMP },
 			{ "kaleoClassName", Types.VARCHAR },
 			{ "kaleoClassPK", Types.BIGINT },
-			{ "kaleoDefinitionId", Types.BIGINT },
+			{ "kaleoDefinitionVersionId", Types.BIGINT },
 			{ "kaleoInstanceId", Types.BIGINT },
 			{ "kaleoInstanceTokenId", Types.BIGINT },
 			{ "kaleoTaskInstanceTokenId", Types.BIGINT },
@@ -97,7 +97,7 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("kaleoClassName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("kaleoClassPK", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("kaleoDefinitionId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("kaleoDefinitionVersionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("kaleoInstanceId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("kaleoInstanceTokenId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("kaleoTaskInstanceTokenId", Types.BIGINT);
@@ -110,7 +110,7 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 		TABLE_COLUMNS_MAP.put("workflowContext", Types.CLOB);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table KaleoTimerInstanceToken (kaleoTimerInstanceTokenId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(200) null,createDate DATE null,modifiedDate DATE null,kaleoClassName VARCHAR(200) null,kaleoClassPK LONG,kaleoDefinitionId LONG,kaleoInstanceId LONG,kaleoInstanceTokenId LONG,kaleoTaskInstanceTokenId LONG,kaleoTimerId LONG,kaleoTimerName VARCHAR(200) null,blocking BOOLEAN,completionUserId LONG,completed BOOLEAN,completionDate DATE null,workflowContext TEXT null)";
+	public static final String TABLE_SQL_CREATE = "create table KaleoTimerInstanceToken (kaleoTimerInstanceTokenId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(200) null,createDate DATE null,modifiedDate DATE null,kaleoClassName VARCHAR(200) null,kaleoClassPK LONG,kaleoDefinitionVersionId LONG,kaleoInstanceId LONG,kaleoInstanceTokenId LONG,kaleoTaskInstanceTokenId LONG,kaleoTimerId LONG,kaleoTimerName VARCHAR(200) null,blocking BOOLEAN,completionUserId LONG,completed BOOLEAN,completionDate DATE null,workflowContext TEXT null)";
 	public static final String TABLE_SQL_DROP = "drop table KaleoTimerInstanceToken";
 	public static final String ORDER_BY_JPQL = " ORDER BY kaleoTimerInstanceToken.kaleoTimerInstanceTokenId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY KaleoTimerInstanceToken.kaleoTimerInstanceTokenId ASC";
@@ -182,7 +182,7 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("kaleoClassName", getKaleoClassName());
 		attributes.put("kaleoClassPK", getKaleoClassPK());
-		attributes.put("kaleoDefinitionId", getKaleoDefinitionId());
+		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
 		attributes.put("kaleoInstanceId", getKaleoInstanceId());
 		attributes.put("kaleoInstanceTokenId", getKaleoInstanceTokenId());
 		attributes.put("kaleoTaskInstanceTokenId", getKaleoTaskInstanceTokenId());
@@ -257,10 +257,11 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 			setKaleoClassPK(kaleoClassPK);
 		}
 
-		Long kaleoDefinitionId = (Long)attributes.get("kaleoDefinitionId");
+		Long kaleoDefinitionVersionId = (Long)attributes.get(
+				"kaleoDefinitionVersionId");
 
-		if (kaleoDefinitionId != null) {
-			setKaleoDefinitionId(kaleoDefinitionId);
+		if (kaleoDefinitionVersionId != null) {
+			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		}
 
 		Long kaleoInstanceId = (Long)attributes.get("kaleoInstanceId");
@@ -450,13 +451,13 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 	}
 
 	@Override
-	public long getKaleoDefinitionId() {
-		return _kaleoDefinitionId;
+	public long getKaleoDefinitionVersionId() {
+		return _kaleoDefinitionVersionId;
 	}
 
 	@Override
-	public void setKaleoDefinitionId(long kaleoDefinitionId) {
-		_kaleoDefinitionId = kaleoDefinitionId;
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		_kaleoDefinitionVersionId = kaleoDefinitionVersionId;
 	}
 
 	@Override
@@ -695,7 +696,7 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 		kaleoTimerInstanceTokenImpl.setModifiedDate(getModifiedDate());
 		kaleoTimerInstanceTokenImpl.setKaleoClassName(getKaleoClassName());
 		kaleoTimerInstanceTokenImpl.setKaleoClassPK(getKaleoClassPK());
-		kaleoTimerInstanceTokenImpl.setKaleoDefinitionId(getKaleoDefinitionId());
+		kaleoTimerInstanceTokenImpl.setKaleoDefinitionVersionId(getKaleoDefinitionVersionId());
 		kaleoTimerInstanceTokenImpl.setKaleoInstanceId(getKaleoInstanceId());
 		kaleoTimerInstanceTokenImpl.setKaleoInstanceTokenId(getKaleoInstanceTokenId());
 		kaleoTimerInstanceTokenImpl.setKaleoTaskInstanceTokenId(getKaleoTaskInstanceTokenId());
@@ -847,7 +848,7 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 
 		kaleoTimerInstanceTokenCacheModel.kaleoClassPK = getKaleoClassPK();
 
-		kaleoTimerInstanceTokenCacheModel.kaleoDefinitionId = getKaleoDefinitionId();
+		kaleoTimerInstanceTokenCacheModel.kaleoDefinitionVersionId = getKaleoDefinitionVersionId();
 
 		kaleoTimerInstanceTokenCacheModel.kaleoInstanceId = getKaleoInstanceId();
 
@@ -913,8 +914,8 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 		sb.append(getKaleoClassName());
 		sb.append(", kaleoClassPK=");
 		sb.append(getKaleoClassPK());
-		sb.append(", kaleoDefinitionId=");
-		sb.append(getKaleoDefinitionId());
+		sb.append(", kaleoDefinitionVersionId=");
+		sb.append(getKaleoDefinitionVersionId());
 		sb.append(", kaleoInstanceId=");
 		sb.append(getKaleoInstanceId());
 		sb.append(", kaleoInstanceTokenId=");
@@ -986,8 +987,8 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 		sb.append(getKaleoClassPK());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>kaleoDefinitionId</column-name><column-value><![CDATA[");
-		sb.append(getKaleoDefinitionId());
+			"<column><column-name>kaleoDefinitionVersionId</column-name><column-value><![CDATA[");
+		sb.append(getKaleoDefinitionVersionId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>kaleoInstanceId</column-name><column-value><![CDATA[");
@@ -1049,7 +1050,7 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 	private boolean _setModifiedDate;
 	private String _kaleoClassName;
 	private long _kaleoClassPK;
-	private long _kaleoDefinitionId;
+	private long _kaleoDefinitionVersionId;
 	private long _kaleoInstanceId;
 	private long _originalKaleoInstanceId;
 	private boolean _setOriginalKaleoInstanceId;

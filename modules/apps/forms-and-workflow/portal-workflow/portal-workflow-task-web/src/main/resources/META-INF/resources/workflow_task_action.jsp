@@ -188,7 +188,6 @@ redirectURL.setParameter("mvcPath", "/view.jsp");
 		function(uri) {
 			location.href = uri;
 		},
-		['aui-dialog','aui-dialog-iframe']
+		['aui-dialog', 'aui-dialog-iframe']
 	);
-
 </aui:script>

@@ -375,20 +375,6 @@ public interface KaleoDefinitionModel extends BaseModel<KaleoDefinition>,
 	 */
 	public void setActive(boolean active);
 
-	/**
-	 * Returns the start kaleo node ID of this kaleo definition.
-	 *
-	 * @return the start kaleo node ID of this kaleo definition
-	 */
-	public long getStartKaleoNodeId();
-
-	/**
-	 * Sets the start kaleo node ID of this kaleo definition.
-	 *
-	 * @param startKaleoNodeId the start kaleo node ID of this kaleo definition
-	 */
-	public void setStartKaleoNodeId(long startKaleoNodeId);
-
 	@Override
 	public boolean isNew();
 
