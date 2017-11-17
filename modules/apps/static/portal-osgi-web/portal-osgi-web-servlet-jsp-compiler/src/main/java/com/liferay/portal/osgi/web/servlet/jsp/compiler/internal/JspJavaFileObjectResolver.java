@@ -239,9 +239,16 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 
 						String className = getClassName(entryPathString);
 
-						javaFileObjects.add(
-							new JarJavaFileObject(
-								className, file, entryPathString));
+						if (file.isDirectory()) {
+							javaFileObjects.add(
+								new RegularJavaFileObject(
+									className, entryPath));
+						}
+						else {
+							javaFileObjects.add(
+								new JarJavaFileObject(
+									className, file, entryPathString));
+						}
 					}
 				}
 			}
@@ -303,23 +310,28 @@ public class JspJavaFileObjectResolver implements JavaFileObjectResolver {
 
 		Path filePath = file.toPath();
 
+		Filter<Path> filter = new Filter<Path>() {
+
+			@Override
+			public boolean accept(Path entryPath) {
+				String entryPathString = entryPath.toString();
+
+				return entryPathString.endsWith(".class");
+			}
+
+		};
+
+		if (file.isDirectory()) {
+			return Files.newDirectoryStream(filePath, filter);
+		}
+
 		try (FileSystem fileSystem = FileSystems.newFileSystem(
 				filePath, null)) {
 
 			FileSystemProvider fileSystemProvider = fileSystem.provider();
 
 			return fileSystemProvider.newDirectoryStream(
-				fileSystem.getPath(path),
-				new Filter<Path>() {
-
-					@Override
-					public boolean accept(Path entryPath) {
-						String entryPathString = entryPath.toString();
-
-						return entryPathString.endsWith(".class");
-					}
-
-				});
+				fileSystem.getPath(path), filter);
 		}
 	}
 
