@@ -32,8 +32,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.facet.type.AssetEntriesFacetFactory;
-import com.liferay.portal.search.web.facet.BaseJSPSearchFacet;
-import com.liferay.portal.search.web.facet.SearchFacet;
 
 import java.util.ArrayList;
 import java.util.List;
