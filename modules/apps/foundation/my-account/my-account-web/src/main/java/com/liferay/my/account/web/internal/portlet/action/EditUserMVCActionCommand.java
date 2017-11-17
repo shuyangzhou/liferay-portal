@@ -19,9 +19,15 @@ import com.liferay.portal.kernel.exception.UserPasswordException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.Authenticator;
+import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.users.admin.constants.UsersAdminPortletKeys;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +36,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -42,8 +49,7 @@ import org.osgi.service.component.annotations.Component;
 	},
 	service = MVCActionCommand.class
 )
-public class EditUserMVCActionCommand
-	extends com.liferay.users.admin.web.portlet.action.EditUserMVCActionCommand {
+public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 
 	@Override
 	protected void doProcessAction(
@@ -54,25 +60,25 @@ public class EditUserMVCActionCommand
 			return;
 		}
 
-		super.doProcessAction(actionRequest, actionResponse);
-	}
+		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
 
-	@Override
-	protected Object[] updateUser(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
+		if (!cmd.equals(Constants.UPDATE)) {
+			_mvcActionCommand.processAction(actionRequest, actionResponse);
+
+			return;
+		}
 
 		String currentPassword = actionRequest.getParameter("password0");
 		String newPassword = actionRequest.getParameter("password1");
 
-		User user = portal.getSelectedUser(actionRequest);
+		User user = _portal.getSelectedUser(actionRequest);
 
 		if (Validator.isNotNull(currentPassword)) {
 			if (Validator.isNull(newPassword)) {
 				throw new UserPasswordException.MustNotBeNull(user.getUserId());
 			}
 
-			Company company = portal.getCompany(actionRequest);
+			Company company = _portal.getCompany(actionRequest);
 
 			String authType = company.getAuthType();
 
@@ -83,17 +89,17 @@ public class EditUserMVCActionCommand
 			int authResult = Authenticator.FAILURE;
 
 			if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
-				authResult = userLocalService.authenticateByEmailAddress(
+				authResult = _userLocalService.authenticateByEmailAddress(
 					company.getCompanyId(), user.getEmailAddress(),
 					currentPassword, headerMap, parameterMap, resultsMap);
 			}
 			else if (authType.equals(CompanyConstants.AUTH_TYPE_ID)) {
-				authResult = userLocalService.authenticateByUserId(
+				authResult = _userLocalService.authenticateByUserId(
 					company.getCompanyId(), user.getUserId(), currentPassword,
 					headerMap, parameterMap, resultsMap);
 			}
 			else if (authType.equals(CompanyConstants.AUTH_TYPE_SN)) {
-				authResult = userLocalService.authenticateByScreenName(
+				authResult = _userLocalService.authenticateByScreenName(
 					company.getCompanyId(), user.getScreenName(),
 					currentPassword, headerMap, parameterMap, resultsMap);
 			}
@@ -107,7 +113,18 @@ public class EditUserMVCActionCommand
 			throw new UserPasswordException.MustNotBeNull(user.getUserId());
 		}
 
-		return super.updateUser(actionRequest, actionResponse);
+		_mvcActionCommand.processAction(actionRequest, actionResponse);
 	}
+
+	@Reference(
+		target = "(&(mvc.command.name=/users_admin/edit_user)(javax.portlet.name=" + UsersAdminPortletKeys.USERS_ADMIN + "))"
+	)
+	private MVCActionCommand _mvcActionCommand;
+
+	@Reference
+	private Portal _portal;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }
