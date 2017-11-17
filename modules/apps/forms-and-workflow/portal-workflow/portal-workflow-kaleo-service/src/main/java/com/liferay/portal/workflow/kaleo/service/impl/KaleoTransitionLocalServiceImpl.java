@@ -34,9 +34,9 @@ public class KaleoTransitionLocalServiceImpl
 
 	@Override
 	public KaleoTransition addKaleoTransition(
-			long kaleoDefinitionId, long kaleoNodeId, Transition transition,
-			KaleoNode sourceKaleoNode, KaleoNode targetKaleoNode,
-			ServiceContext serviceContext)
+			long kaleoDefinitionVersionId, long kaleoNodeId,
+			Transition transition, KaleoNode sourceKaleoNode,
+			KaleoNode targetKaleoNode, ServiceContext serviceContext)
 		throws PortalException {
 
 		// Kaleo transition
@@ -54,7 +54,7 @@ public class KaleoTransitionLocalServiceImpl
 		kaleoTransition.setUserName(user.getFullName());
 		kaleoTransition.setCreateDate(now);
 		kaleoTransition.setModifiedDate(now);
-		kaleoTransition.setKaleoDefinitionId(kaleoDefinitionId);
+		kaleoTransition.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		kaleoTransition.setKaleoNodeId(kaleoNodeId);
 		kaleoTransition.setName(transition.getName());
 		kaleoTransition.setSourceKaleoNodeId(sourceKaleoNode.getKaleoNodeId());
@@ -72,7 +72,7 @@ public class KaleoTransitionLocalServiceImpl
 		if (timer != null) {
 			kaleoTimerLocalService.addKaleoTimer(
 				KaleoTransition.class.getName(), kaleoTransitionId,
-				kaleoDefinitionId, timer, serviceContext);
+				kaleoDefinitionVersionId, timer, serviceContext);
 		}
 
 		return kaleoTransition;
@@ -84,8 +84,11 @@ public class KaleoTransitionLocalServiceImpl
 	}
 
 	@Override
-	public void deleteKaleoDefinitionKaleoTransitions(long kaleoDefinitionId) {
-		kaleoTransitionPersistence.removeByKaleoDefinitionId(kaleoDefinitionId);
+	public void deleteKaleoDefinitionVersionKaleoTransitions(
+		long kaleoDefinitionVersionId) {
+
+		kaleoTransitionPersistence.removeByKaleoDefinitionVersionId(
+			kaleoDefinitionVersionId);
 	}
 
 	@Override
@@ -96,11 +99,11 @@ public class KaleoTransitionLocalServiceImpl
 	}
 
 	@Override
-	public List<KaleoTransition> getKaleoDefinitionKaleoTransitions(
-		long kaleoDefinitionId) {
+	public List<KaleoTransition> getKaleoDefinitionVersionKaleoTransitions(
+		long kaleoDefinitionVersionId) {
 
-		return kaleoTransitionPersistence.findByKaleoDefinitionId(
-			kaleoDefinitionId);
+		return kaleoTransitionPersistence.findByKaleoDefinitionVersionId(
+			kaleoDefinitionVersionId);
 	}
 
 	@Override

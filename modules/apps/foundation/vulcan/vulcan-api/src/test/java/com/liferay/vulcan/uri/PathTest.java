@@ -29,7 +29,7 @@ public class PathTest {
 	public void testInvokingAsURIReturnsPathInURIFormat() {
 		Path path = new Path("name", "id");
 
-		assertThat(path.asURI(), is(equalTo("/name/id")));
+		assertThat(path.asURI(), is(equalTo("name/id")));
 	}
 
 }

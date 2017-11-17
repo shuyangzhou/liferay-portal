@@ -32,8 +32,8 @@ public class KaleoConditionLocalServiceImpl
 
 	@Override
 	public KaleoCondition addKaleoCondition(
-			long kaleoDefinitionId, long kaleoNodeId, Condition condition,
-			ServiceContext serviceContext)
+			long kaleoDefinitionVersionId, long kaleoNodeId,
+			Condition condition, ServiceContext serviceContext)
 		throws PortalException {
 
 		User user = userLocalService.getUser(serviceContext.getGuestOrUserId());
@@ -49,7 +49,7 @@ public class KaleoConditionLocalServiceImpl
 		kaleoCondition.setUserName(user.getFullName());
 		kaleoCondition.setCreateDate(now);
 		kaleoCondition.setModifiedDate(now);
-		kaleoCondition.setKaleoDefinitionId(kaleoDefinitionId);
+		kaleoCondition.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		kaleoCondition.setKaleoNodeId(kaleoNodeId);
 		kaleoCondition.setScript(condition.getScript());
 		kaleoCondition.setScriptLanguage(
@@ -68,8 +68,11 @@ public class KaleoConditionLocalServiceImpl
 	}
 
 	@Override
-	public void deleteKaleoDefinitionKaleoCondition(long kaleoDefinitionId) {
-		kaleoConditionPersistence.removeByKaleoDefinitionId(kaleoDefinitionId);
+	public void deleteKaleoDefinitionVersionKaleoCondition(
+		long kaleoDefinitionVersionId) {
+
+		kaleoConditionPersistence.removeByKaleoDefinitionVersionId(
+			kaleoDefinitionVersionId);
 	}
 
 	@Override

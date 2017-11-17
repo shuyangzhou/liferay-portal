@@ -71,7 +71,7 @@ public class KaleoConditionModelImpl extends BaseModelImpl<KaleoCondition>
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
 			{ "modifiedDate", Types.TIMESTAMP },
-			{ "kaleoDefinitionId", Types.BIGINT },
+			{ "kaleoDefinitionVersionId", Types.BIGINT },
 			{ "kaleoNodeId", Types.BIGINT },
 			{ "script", Types.CLOB },
 			{ "scriptLanguage", Types.VARCHAR },
@@ -87,14 +87,14 @@ public class KaleoConditionModelImpl extends BaseModelImpl<KaleoCondition>
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("kaleoDefinitionId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("kaleoDefinitionVersionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("kaleoNodeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("script", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("scriptLanguage", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("scriptRequiredContexts", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table KaleoCondition (kaleoConditionId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(200) null,createDate DATE null,modifiedDate DATE null,kaleoDefinitionId LONG,kaleoNodeId LONG,script TEXT null,scriptLanguage VARCHAR(75) null,scriptRequiredContexts STRING null)";
+	public static final String TABLE_SQL_CREATE = "create table KaleoCondition (kaleoConditionId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(200) null,createDate DATE null,modifiedDate DATE null,kaleoDefinitionVersionId LONG,kaleoNodeId LONG,script TEXT null,scriptLanguage VARCHAR(75) null,scriptRequiredContexts STRING null)";
 	public static final String TABLE_SQL_DROP = "drop table KaleoCondition";
 	public static final String ORDER_BY_JPQL = " ORDER BY kaleoCondition.kaleoConditionId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY KaleoCondition.kaleoConditionId ASC";
@@ -111,7 +111,7 @@ public class KaleoConditionModelImpl extends BaseModelImpl<KaleoCondition>
 				"value.object.column.bitmask.enabled.com.liferay.portal.workflow.kaleo.model.KaleoCondition"),
 			true);
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
-	public static final long KALEODEFINITIONID_COLUMN_BITMASK = 2L;
+	public static final long KALEODEFINITIONVERSIONID_COLUMN_BITMASK = 2L;
 	public static final long KALEONODEID_COLUMN_BITMASK = 4L;
 	public static final long KALEOCONDITIONID_COLUMN_BITMASK = 8L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.workflow.kaleo.service.util.ServiceProps.get(
@@ -161,7 +161,7 @@ public class KaleoConditionModelImpl extends BaseModelImpl<KaleoCondition>
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("kaleoDefinitionId", getKaleoDefinitionId());
+		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
 		attributes.put("kaleoNodeId", getKaleoNodeId());
 		attributes.put("script", getScript());
 		attributes.put("scriptLanguage", getScriptLanguage());
@@ -217,10 +217,11 @@ public class KaleoConditionModelImpl extends BaseModelImpl<KaleoCondition>
 			setModifiedDate(modifiedDate);
 		}
 
-		Long kaleoDefinitionId = (Long)attributes.get("kaleoDefinitionId");
+		Long kaleoDefinitionVersionId = (Long)attributes.get(
+				"kaleoDefinitionVersionId");
 
-		if (kaleoDefinitionId != null) {
-			setKaleoDefinitionId(kaleoDefinitionId);
+		if (kaleoDefinitionVersionId != null) {
+			setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		}
 
 		Long kaleoNodeId = (Long)attributes.get("kaleoNodeId");
@@ -361,25 +362,25 @@ public class KaleoConditionModelImpl extends BaseModelImpl<KaleoCondition>
 	}
 
 	@Override
-	public long getKaleoDefinitionId() {
-		return _kaleoDefinitionId;
+	public long getKaleoDefinitionVersionId() {
+		return _kaleoDefinitionVersionId;
 	}
 
 	@Override
-	public void setKaleoDefinitionId(long kaleoDefinitionId) {
-		_columnBitmask |= KALEODEFINITIONID_COLUMN_BITMASK;
+	public void setKaleoDefinitionVersionId(long kaleoDefinitionVersionId) {
+		_columnBitmask |= KALEODEFINITIONVERSIONID_COLUMN_BITMASK;
 
-		if (!_setOriginalKaleoDefinitionId) {
-			_setOriginalKaleoDefinitionId = true;
+		if (!_setOriginalKaleoDefinitionVersionId) {
+			_setOriginalKaleoDefinitionVersionId = true;
 
-			_originalKaleoDefinitionId = _kaleoDefinitionId;
+			_originalKaleoDefinitionVersionId = _kaleoDefinitionVersionId;
 		}
 
-		_kaleoDefinitionId = kaleoDefinitionId;
+		_kaleoDefinitionVersionId = kaleoDefinitionVersionId;
 	}
 
-	public long getOriginalKaleoDefinitionId() {
-		return _originalKaleoDefinitionId;
+	public long getOriginalKaleoDefinitionVersionId() {
+		return _originalKaleoDefinitionVersionId;
 	}
 
 	@Override
@@ -487,7 +488,7 @@ public class KaleoConditionModelImpl extends BaseModelImpl<KaleoCondition>
 		kaleoConditionImpl.setUserName(getUserName());
 		kaleoConditionImpl.setCreateDate(getCreateDate());
 		kaleoConditionImpl.setModifiedDate(getModifiedDate());
-		kaleoConditionImpl.setKaleoDefinitionId(getKaleoDefinitionId());
+		kaleoConditionImpl.setKaleoDefinitionVersionId(getKaleoDefinitionVersionId());
 		kaleoConditionImpl.setKaleoNodeId(getKaleoNodeId());
 		kaleoConditionImpl.setScript(getScript());
 		kaleoConditionImpl.setScriptLanguage(getScriptLanguage());
@@ -566,9 +567,9 @@ public class KaleoConditionModelImpl extends BaseModelImpl<KaleoCondition>
 
 		kaleoConditionModelImpl._setModifiedDate = false;
 
-		kaleoConditionModelImpl._originalKaleoDefinitionId = kaleoConditionModelImpl._kaleoDefinitionId;
+		kaleoConditionModelImpl._originalKaleoDefinitionVersionId = kaleoConditionModelImpl._kaleoDefinitionVersionId;
 
-		kaleoConditionModelImpl._setOriginalKaleoDefinitionId = false;
+		kaleoConditionModelImpl._setOriginalKaleoDefinitionVersionId = false;
 
 		kaleoConditionModelImpl._originalKaleoNodeId = kaleoConditionModelImpl._kaleoNodeId;
 
@@ -615,7 +616,7 @@ public class KaleoConditionModelImpl extends BaseModelImpl<KaleoCondition>
 			kaleoConditionCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		kaleoConditionCacheModel.kaleoDefinitionId = getKaleoDefinitionId();
+		kaleoConditionCacheModel.kaleoDefinitionVersionId = getKaleoDefinitionVersionId();
 
 		kaleoConditionCacheModel.kaleoNodeId = getKaleoNodeId();
 
@@ -665,8 +666,8 @@ public class KaleoConditionModelImpl extends BaseModelImpl<KaleoCondition>
 		sb.append(getCreateDate());
 		sb.append(", modifiedDate=");
 		sb.append(getModifiedDate());
-		sb.append(", kaleoDefinitionId=");
-		sb.append(getKaleoDefinitionId());
+		sb.append(", kaleoDefinitionVersionId=");
+		sb.append(getKaleoDefinitionVersionId());
 		sb.append(", kaleoNodeId=");
 		sb.append(getKaleoNodeId());
 		sb.append(", script=");
@@ -717,8 +718,8 @@ public class KaleoConditionModelImpl extends BaseModelImpl<KaleoCondition>
 		sb.append(getModifiedDate());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>kaleoDefinitionId</column-name><column-value><![CDATA[");
-		sb.append(getKaleoDefinitionId());
+			"<column><column-name>kaleoDefinitionVersionId</column-name><column-value><![CDATA[");
+		sb.append(getKaleoDefinitionVersionId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>kaleoNodeId</column-name><column-value><![CDATA[");
@@ -756,9 +757,9 @@ public class KaleoConditionModelImpl extends BaseModelImpl<KaleoCondition>
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
-	private long _kaleoDefinitionId;
-	private long _originalKaleoDefinitionId;
-	private boolean _setOriginalKaleoDefinitionId;
+	private long _kaleoDefinitionVersionId;
+	private long _originalKaleoDefinitionVersionId;
+	private boolean _setOriginalKaleoDefinitionVersionId;
 	private long _kaleoNodeId;
 	private long _originalKaleoNodeId;
 	private boolean _setOriginalKaleoNodeId;

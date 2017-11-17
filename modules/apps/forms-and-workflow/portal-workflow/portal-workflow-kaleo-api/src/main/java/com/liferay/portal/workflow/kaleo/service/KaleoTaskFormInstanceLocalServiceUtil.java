@@ -82,10 +82,10 @@ public class KaleoTaskFormInstanceLocalServiceUtil {
 		getService().deleteCompanyKaleoTaskFormInstances(companyId);
 	}
 
-	public static void deleteKaleoDefinitionKaleoTaskFormInstances(
-		long kaleoDefinitionId) {
+	public static void deleteKaleoDefinitionVersionKaleoTaskFormInstances(
+		long kaleoDefinitionVersionId) {
 		getService()
-			.deleteKaleoDefinitionKaleoTaskFormInstances(kaleoDefinitionId);
+			.deleteKaleoDefinitionVersionKaleoTaskFormInstances(kaleoDefinitionVersionId);
 	}
 
 	public static void deleteKaleoInstanceKaleoTaskFormInstances(

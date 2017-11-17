@@ -39,9 +39,9 @@ public class KaleoNotificationLocalServiceImpl
 
 	@Override
 	public KaleoNotification addKaleoNotification(
-			String kaleoClassName, long kaleoClassPK, long kaleoDefinitionId,
-			String kaleoNodeName, Notification notification,
-			ServiceContext serviceContext)
+			String kaleoClassName, long kaleoClassPK,
+			long kaleoDefinitionVersionId, String kaleoNodeName,
+			Notification notification, ServiceContext serviceContext)
 		throws PortalException {
 
 		// Kaleo notification
@@ -61,7 +61,7 @@ public class KaleoNotificationLocalServiceImpl
 		kaleoNotification.setModifiedDate(now);
 		kaleoNotification.setKaleoClassName(kaleoClassName);
 		kaleoNotification.setKaleoClassPK(kaleoClassPK);
-		kaleoNotification.setKaleoDefinitionId(kaleoDefinitionId);
+		kaleoNotification.setKaleoDefinitionVersionId(kaleoDefinitionVersionId);
 		kaleoNotification.setKaleoNodeName(kaleoNodeName);
 		kaleoNotification.setName(notification.getName());
 		kaleoNotification.setDescription(notification.getDescription());
@@ -98,8 +98,8 @@ public class KaleoNotificationLocalServiceImpl
 			for (Recipient recipient : recipients) {
 				kaleoNotificationRecipientLocalService.
 					addKaleoNotificationRecipient(
-						kaleoDefinitionId, kaleoNotificationId, recipient,
-						serviceContext);
+						kaleoDefinitionVersionId, kaleoNotificationId,
+						recipient, serviceContext);
 			}
 		}
 
@@ -120,18 +120,19 @@ public class KaleoNotificationLocalServiceImpl
 	}
 
 	@Override
-	public void deleteKaleoDefinitionKaleoNotifications(
-		long kaleoDefinitionId) {
+	public void deleteKaleoDefinitionVersionKaleoNotifications(
+		long kaleoDefinitionVersionId) {
 
 		// Kaleo notifications
 
-		kaleoNotificationPersistence.removeByKaleoDefinitionId(
-			kaleoDefinitionId);
+		kaleoNotificationPersistence.removeByKaleoDefinitionVersionId(
+			kaleoDefinitionVersionId);
 
 		// Kaleo notification recipients
 
 		kaleoNotificationRecipientLocalService.
-			deleteKaleoDefinitionKaleoNotificationRecipients(kaleoDefinitionId);
+			deleteKaleoDefinitionVersionKaleoNotificationRecipients(
+				kaleoDefinitionVersionId);
 	}
 
 	@Override

@@ -1238,6 +1238,13 @@ public class LayoutStagedModelDataHandler
 
 		Element portletsElement = layoutElement.element("portlets");
 
+		if (portletsElement == null) {
+
+			// See LPS-75448
+
+			return;
+		}
+
 		for (Element portletElement : portletsElement.elements()) {
 			String portletPath = portletElement.attributeValue("path");
 			String portletId = portletElement.attributeValue("portlet-id");
