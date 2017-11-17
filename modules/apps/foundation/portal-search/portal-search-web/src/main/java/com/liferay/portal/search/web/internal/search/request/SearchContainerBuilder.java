@@ -16,7 +16,6 @@ package com.liferay.portal.search.web.internal.search.request;
 
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.search.Document;
-import com.liferay.portal.search.web.search.request.SearchSettings;
 
 /**
  * @author André de Oliveira

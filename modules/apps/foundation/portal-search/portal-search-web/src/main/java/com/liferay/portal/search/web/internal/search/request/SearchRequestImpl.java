@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.search.facet.ScopeFacet;
 import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcher;
 import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcherManager;
 import com.liferay.portal.search.web.internal.util.SearchStringUtil;
-import com.liferay.portal.search.web.search.request.SearchRequest;
-import com.liferay.portal.search.web.search.request.SearchSettingsContributor;
 
 import java.util.HashSet;
 import java.util.Optional;

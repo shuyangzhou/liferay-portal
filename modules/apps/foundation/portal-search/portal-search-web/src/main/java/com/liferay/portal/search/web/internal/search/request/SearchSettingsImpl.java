@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.search.web.search.request.SearchSettings;
 
 import java.util.Optional;
 

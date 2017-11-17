@@ -44,8 +44,8 @@ import com.liferay.portal.search.web.internal.portlet.shared.task.PortletSharedR
 import com.liferay.portal.search.web.internal.result.display.builder.AssetRendererFactoryLookup;
 import com.liferay.portal.search.web.internal.result.display.builder.SearchResultSummaryDisplayBuilder;
 import com.liferay.portal.search.web.internal.result.display.context.SearchResultSummaryDisplayContext;
+import com.liferay.portal.search.web.internal.search.result.SearchResultImageContributor;
 import com.liferay.portal.search.web.internal.search.results.constants.SearchResultsPortletKeys;
-import com.liferay.portal.search.web.search.result.SearchResultImageContributor;
 
 import java.io.IOException;
 

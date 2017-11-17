@@ -45,7 +45,7 @@ import com.liferay.portal.search.web.internal.facet.util.SearchFacetTracker;
 import com.liferay.portal.search.web.internal.portlet.SearchPortletSearchResultPreferences;
 import com.liferay.portal.search.web.internal.search.request.SearchRequestImpl;
 import com.liferay.portal.search.web.internal.search.request.SearchResponseImpl;
-import com.liferay.portal.search.web.search.request.SearchSettings;
+import com.liferay.portal.search.web.internal.search.request.SearchSettings;
 
 import java.util.Collection;
 import java.util.List;

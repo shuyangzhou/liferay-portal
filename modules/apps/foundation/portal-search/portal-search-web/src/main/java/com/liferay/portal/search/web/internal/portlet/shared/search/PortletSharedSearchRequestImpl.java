@@ -32,11 +32,11 @@ import com.liferay.portal.search.web.internal.portlet.shared.task.PortletSharedR
 import com.liferay.portal.search.web.internal.portlet.shared.task.PortletSharedTaskExecutor;
 import com.liferay.portal.search.web.internal.search.request.SearchContainerBuilder;
 import com.liferay.portal.search.web.internal.search.request.SearchContextBuilder;
+import com.liferay.portal.search.web.internal.search.request.SearchRequest;
 import com.liferay.portal.search.web.internal.search.request.SearchRequestImpl;
-import com.liferay.portal.search.web.search.request.SearchRequest;
-import com.liferay.portal.search.web.search.request.SearchResponse;
-import com.liferay.portal.search.web.search.request.SearchSettings;
-import com.liferay.portal.search.web.search.request.SearchSettingsContributor;
+import com.liferay.portal.search.web.internal.search.request.SearchResponse;
+import com.liferay.portal.search.web.internal.search.request.SearchSettings;
+import com.liferay.portal.search.web.internal.search.request.SearchSettingsContributor;
 
 import java.util.HashMap;
 import java.util.List;

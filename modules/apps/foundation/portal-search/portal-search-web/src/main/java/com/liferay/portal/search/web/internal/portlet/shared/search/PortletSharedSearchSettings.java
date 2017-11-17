@@ -17,7 +17,7 @@ package com.liferay.portal.search.web.internal.portlet.shared.search;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.search.web.search.request.SearchSettings;
+import com.liferay.portal.search.web.internal.search.request.SearchSettings;
 
 import java.util.Optional;
 
