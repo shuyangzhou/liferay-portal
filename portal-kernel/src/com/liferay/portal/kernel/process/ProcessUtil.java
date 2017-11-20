@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.concurrent.NoticeableFuture;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.IOException;
 
@@ -86,7 +87,8 @@ public class ProcessUtil {
 
 			NoticeableFuture<O> stdOutNoticeableFuture = _submit(
 				threadNamePrefix.concat("StdOut"),
-				new ProcessStdOutCallable<>(outputProcessor, process));
+				new ProcessStdOutCallable<>(
+					arguments, outputProcessor, process));
 
 			NoticeableFuture<E> stdErrNoticeableFuture = _submit(
 				threadNamePrefix.concat("StdErr"),
@@ -270,7 +272,14 @@ public class ProcessUtil {
 					int exitCode = _process.waitFor();
 
 					if (exitCode != 0) {
-						throw new TerminationProcessException(exitCode);
+						String message = StringBundler.concat(
+							"Subprocess ",
+							StringUtil.merge(_arguments, StringPool.SPACE),
+							" terminated with exit code ",
+							String.valueOf(exitCode));
+
+						throw new TerminationProcessException(
+							message, exitCode);
 					}
 				}
 				catch (InterruptedException ie) {
@@ -283,12 +292,15 @@ public class ProcessUtil {
 		}
 
 		private ProcessStdOutCallable(
-			OutputProcessor<T, ?> outputProcessor, Process process) {
+			List<String> arguments, OutputProcessor<T, ?> outputProcessor,
+			Process process) {
 
+			_arguments = arguments;
 			_outputProcessor = outputProcessor;
 			_process = process;
 		}
 
+		private final List<String> _arguments;
 		private final OutputProcessor<T, ?> _outputProcessor;
 		private final Process _process;
 
