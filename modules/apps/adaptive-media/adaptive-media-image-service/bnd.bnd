@@ -1,7 +1,6 @@
 Bundle-Name: Liferay Adaptive Media Image Service
 Bundle-SymbolicName: com.liferay.adaptive.media.image.service
 Bundle-Version: 1.0.0
-Export-Package: com.liferay.adaptive.media.image.service.util
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Adaptive Media
 Liferay-Require-SchemaVersion: 1.0.0

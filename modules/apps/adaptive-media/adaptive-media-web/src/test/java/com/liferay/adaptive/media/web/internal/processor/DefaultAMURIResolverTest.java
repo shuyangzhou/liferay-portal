@@ -17,10 +17,10 @@ package com.liferay.adaptive.media.web.internal.processor;
 import com.liferay.adaptive.media.AMURIResolver;
 import com.liferay.adaptive.media.web.internal.constants.AMWebConstants;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import java.net.URI;
 
@@ -46,7 +46,7 @@ public class DefaultAMURIResolverTest {
 
 	@Test
 	public void testMediaURIWhenPathDoesNotEndInSlash() {
-		String pathModule = StringPool.SLASH + StringUtil.randomString();
+		String pathModule = StringPool.SLASH + RandomTestUtil.randomString();
 
 		Mockito.when(
 			_portal.getPathModule()
@@ -54,7 +54,7 @@ public class DefaultAMURIResolverTest {
 			pathModule
 		);
 
-		URI relativeURI = URI.create(StringUtil.randomString());
+		URI relativeURI = URI.create(RandomTestUtil.randomString());
 
 		URI uri = _amURIResolver.resolveURI(relativeURI);
 
@@ -68,7 +68,7 @@ public class DefaultAMURIResolverTest {
 	@Test
 	public void testMediaURIWhenPathEndsInSlash() {
 		String pathModule =
-			StringPool.SLASH + StringUtil.randomString() + StringPool.SLASH;
+			StringPool.SLASH + RandomTestUtil.randomString() + StringPool.SLASH;
 
 		Mockito.when(
 			_portal.getPathModule()
@@ -76,7 +76,7 @@ public class DefaultAMURIResolverTest {
 			pathModule
 		);
 
-		URI relativeURI = URI.create(StringUtil.randomString());
+		URI relativeURI = URI.create(RandomTestUtil.randomString());
 
 		URI uri = _amURIResolver.resolveURI(relativeURI);
 
