@@ -14,8 +14,8 @@
 
 package com.liferay.exportimport.kernel.lar;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.util.StringPool;
 
 import javax.portlet.PortletPreferences;
 
@@ -182,6 +182,18 @@ public interface PortletDataHandler {
 	public String getSchemaVersion();
 
 	public String getServiceName();
+
+	/**
+	 * Returns an array of the controls defined for this data handler. These
+	 * controls enable the developer to create fine grained controls over
+	 * staging publication behavior. The controls are rendered in the publish
+	 * UI.
+	 *
+	 * @return an array of the controls defined for this data handler
+	 */
+	public default PortletDataHandlerControl[] getStagingControls() {
+		return new PortletDataHandlerControl[0];
+	};
 
 	/**
 	 * Handles any special processing of the data when the portlet is imported

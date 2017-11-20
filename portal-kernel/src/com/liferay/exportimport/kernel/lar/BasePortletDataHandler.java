@@ -14,6 +14,7 @@
 
 package com.liferay.exportimport.kernel.lar;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Portlet;
@@ -22,7 +23,6 @@ import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
@@ -348,6 +348,15 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 	@Override
 	public String getServiceName() {
 		return null;
+	}
+
+	@Override
+	public PortletDataHandlerControl[] getStagingControls() {
+		if (ArrayUtil.isNotEmpty(_stagingControls)) {
+			return _stagingControls;
+		}
+
+		return _exportControls;
 	}
 
 	@Override
@@ -828,6 +837,12 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 		_publishToLiveByDefault = publishToLiveByDefault;
 	}
 
+	protected void setStagingControls(
+		PortletDataHandlerControl... stagingControls) {
+
+		_stagingControls = stagingControls;
+	}
+
 	/**
 	 * @deprecated As of 7.0.0
 	 */
@@ -881,5 +896,7 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 	private String _portletId;
 	private boolean _publishToLiveByDefault;
 	private int _rank = 100;
+	private PortletDataHandlerControl[] _stagingControls =
+		new PortletDataHandlerControl[0];
 
 }

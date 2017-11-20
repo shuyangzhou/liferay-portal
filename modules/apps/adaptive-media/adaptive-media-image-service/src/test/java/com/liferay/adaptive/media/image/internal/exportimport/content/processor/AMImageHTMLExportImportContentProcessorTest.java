@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -102,7 +101,7 @@ public class AMImageHTMLExportImportContentProcessorTest {
 		sb.append("&<img data-fileentryid=\"");
 		sb.append(_fileEntryId1);
 		sb.append("\" src=\"");
-		sb.append(StringUtil.randomString());
+		sb.append(RandomTestUtil.randomString());
 		sb.append("\" />&");
 
 		Assert.assertEquals(
@@ -136,12 +135,12 @@ public class AMImageHTMLExportImportContentProcessorTest {
 	public void testExportImportContentWithMultipleReferences()
 		throws Exception {
 
-		String prefix = StringUtil.randomString();
-		String infix = StringUtil.randomString();
-		String suffix = StringUtil.randomString();
+		String prefix = RandomTestUtil.randomString();
+		String infix = RandomTestUtil.randomString();
+		String suffix = RandomTestUtil.randomString();
 
-		String urlFileEntry1 = StringUtil.randomString();
-		String urlFileEntry2 = StringUtil.randomString();
+		String urlFileEntry1 = RandomTestUtil.randomString();
+		String urlFileEntry2 = RandomTestUtil.randomString();
 
 		StringBundler expectedSB = new StringBundler(13);
 
@@ -183,12 +182,12 @@ public class AMImageHTMLExportImportContentProcessorTest {
 	public void testExportImportContentWithMultipleStaticReferences()
 		throws Exception {
 
-		String prefix = StringUtil.randomString();
-		String infix = StringUtil.randomString();
-		String suffix = StringUtil.randomString();
+		String prefix = RandomTestUtil.randomString();
+		String infix = RandomTestUtil.randomString();
+		String suffix = RandomTestUtil.randomString();
 
-		String urlFileEntry1 = StringUtil.randomString();
-		String urlFileEntry2 = StringUtil.randomString();
+		String urlFileEntry1 = RandomTestUtil.randomString();
+		String urlFileEntry2 = RandomTestUtil.randomString();
 
 		StringBundler expectedSB = new StringBundler(13);
 
@@ -228,7 +227,7 @@ public class AMImageHTMLExportImportContentProcessorTest {
 
 	@Test
 	public void testExportImportContentWithNoReferences() throws Exception {
-		String content = StringUtil.randomString();
+		String content = RandomTestUtil.randomString();
 
 		String importedContent = _import(_export(content));
 
@@ -237,12 +236,12 @@ public class AMImageHTMLExportImportContentProcessorTest {
 
 	@Test
 	public void testExportImportContentWithReference() throws Exception {
-		String prefix = StringUtil.randomString();
-		String suffix = StringUtil.randomString();
+		String prefix = RandomTestUtil.randomString();
+		String suffix = RandomTestUtil.randomString();
 
 		StringBundler expectedSB = new StringBundler(7);
 
-		String urlFileEntry1 = StringUtil.randomString();
+		String urlFileEntry1 = RandomTestUtil.randomString();
 
 		expectedSB.append(prefix);
 		expectedSB.append("<img src=\"");
@@ -270,10 +269,10 @@ public class AMImageHTMLExportImportContentProcessorTest {
 	public void testExportImportContentWithReferenceContainingMoreAttributes()
 		throws Exception {
 
-		String prefix = StringUtil.randomString();
-		String suffix = StringUtil.randomString();
+		String prefix = RandomTestUtil.randomString();
+		String suffix = RandomTestUtil.randomString();
 
-		String urlFileEntry1 = StringUtil.randomString();
+		String urlFileEntry1 = RandomTestUtil.randomString();
 
 		StringBundler expectedSB = new StringBundler(7);
 
@@ -301,10 +300,10 @@ public class AMImageHTMLExportImportContentProcessorTest {
 
 	@Test
 	public void testExportImportContentWithStaticReference() throws Exception {
-		String prefix = StringUtil.randomString();
-		String suffix = StringUtil.randomString();
+		String prefix = RandomTestUtil.randomString();
+		String suffix = RandomTestUtil.randomString();
 
-		String urlFileEntry1 = StringUtil.randomString();
+		String urlFileEntry1 = RandomTestUtil.randomString();
 
 		StringBundler expectedSB = new StringBundler(7);
 
@@ -334,7 +333,7 @@ public class AMImageHTMLExportImportContentProcessorTest {
 	public void testExportImportContentWithStaticReferenceContainingImageWithAttributes()
 		throws Exception {
 
-		String urlFileEntry1 = StringUtil.randomString();
+		String urlFileEntry1 = RandomTestUtil.randomString();
 
 		StringBundler expectedSB = new StringBundler(5);
 
