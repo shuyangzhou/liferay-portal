@@ -16,7 +16,7 @@ package com.liferay.adaptive.media.web.internal.portlet.action;
 
 import com.liferay.adaptive.media.image.configuration.AMImageConfigurationEntry;
 import com.liferay.adaptive.media.image.configuration.AMImageConfigurationHelper;
-import com.liferay.adaptive.media.web.constants.AMPortletKeys;
+import com.liferay.adaptive.media.web.internal.constants.AMPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
