@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.process.TerminationProcessException;
 import com.liferay.portal.kernel.util.ClassLoaderObjectInputStream;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -112,7 +113,7 @@ public class LocalProcessExecutor implements ProcessExecutor {
 			AsyncBroker<Long, Serializable> asyncBroker = new AsyncBroker<>();
 
 			SubprocessReactor<T> subprocessReactor = new SubprocessReactor<>(
-				process, processConfig.getProcessLogConsumer(),
+				commands, process, processConfig.getProcessLogConsumer(),
 				processConfig.getReactClassLoader(), asyncBroker);
 
 			NoticeableFuture<T> noticeableFuture = _submit(
@@ -173,10 +174,12 @@ public class LocalProcessExecutor implements ProcessExecutor {
 		implements Callable<T> {
 
 		public SubprocessReactor(
-			Process process, Consumer<ProcessLog> processLogConsumer,
+			List<String> commands, Process process,
+			Consumer<ProcessLog> processLogConsumer,
 			ClassLoader reactClassLoader,
 			AsyncBroker<Long, Serializable> asyncBroker) {
 
+			_commands = commands;
 			_process = process;
 			_processLogConsumer = processLogConsumer;
 			_reactClassLoader = reactClassLoader;
@@ -327,7 +330,14 @@ public class LocalProcessExecutor implements ProcessExecutor {
 					int exitCode = _process.waitFor();
 
 					if (exitCode != 0) {
-						throw new TerminationProcessException(exitCode);
+						String message = StringBundler.concat(
+							"Subprocess ",
+							StringUtil.merge(_commands, StringPool.SPACE),
+							" terminated with exit code ",
+							String.valueOf(exitCode));
+
+						throw new TerminationProcessException(
+							message, exitCode);
 					}
 				}
 				catch (InterruptedException ie) {
@@ -349,6 +359,7 @@ public class LocalProcessExecutor implements ProcessExecutor {
 		}
 
 		private final AsyncBroker<Long, Serializable> _asyncBroker;
+		private final List<String> _commands;
 		private final Process _process;
 		private final Consumer<ProcessLog> _processLogConsumer;
 		private final ClassLoader _reactClassLoader;
