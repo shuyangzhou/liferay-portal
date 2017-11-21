@@ -17,7 +17,7 @@ package com.liferay.adaptive.media.web.internal.servlet;
 import com.liferay.adaptive.media.exception.AMException;
 import com.liferay.adaptive.media.handler.AMRequestHandler;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 
 import java.util.Optional;
 
@@ -45,7 +45,7 @@ public class AMServletTest {
 		Mockito.when(
 			_request.getPathInfo()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -74,7 +74,7 @@ public class AMServletTest {
 		Mockito.when(
 			_request.getPathInfo()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -103,7 +103,7 @@ public class AMServletTest {
 		Mockito.when(
 			_request.getPathInfo()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -132,7 +132,7 @@ public class AMServletTest {
 		Mockito.when(
 			_request.getPathInfo()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
@@ -161,7 +161,7 @@ public class AMServletTest {
 		Mockito.when(
 			_request.getPathInfo()
 		).thenReturn(
-			StringUtil.randomString()
+			RandomTestUtil.randomString()
 		);
 
 		Mockito.when(
