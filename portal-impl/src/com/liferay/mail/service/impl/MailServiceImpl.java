@@ -19,6 +19,9 @@ import com.liferay.mail.kernel.model.Filter;
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.service.MailService;
 import com.liferay.mail.kernel.util.Hook;
+import com.liferay.portal.kernel.cluster.ClusterInvokeAcceptor;
+import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
+import com.liferay.portal.kernel.cluster.ClusterableInvokerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
@@ -35,6 +38,8 @@ import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.IOException;
+
+import java.lang.reflect.Method;
 
 import java.util.List;
 import java.util.Map;
@@ -99,6 +104,17 @@ public class MailServiceImpl implements MailService, IdentifiableOSGiService {
 	@Override
 	public void clearSession() {
 		_session = null;
+
+		if (ClusterInvokeThreadLocal.isEnabled()) {
+			try {
+				ClusterableInvokerUtil.invokeOnCluster(
+					ClusterInvokeAcceptor.class, this, _clearSessionMethod,
+					new Object[0]);
+			}
+			catch (Throwable t) {
+				_log.error("Unable to clear session on other cluster nodes", t);
+			}
+		}
 	}
 
 	@Override
@@ -312,6 +328,7 @@ public class MailServiceImpl implements MailService, IdentifiableOSGiService {
 	private static final MethodKey _addVacationMessageMethodKey = new MethodKey(
 		Hook.class, "addVacationMessage", long.class, long.class, String.class,
 		String.class);
+	private static final Method _clearSessionMethod;
 	private static final MethodKey _deleteEmailAddressMethodKey = new MethodKey(
 		Hook.class, "deleteEmailAddress", long.class, long.class);
 	private static final MethodKey _deleteUserMethodKey = new MethodKey(
@@ -322,6 +339,15 @@ public class MailServiceImpl implements MailService, IdentifiableOSGiService {
 		Hook.class, "updateEmailAddress", long.class, long.class, String.class);
 	private static final MethodKey _updatePasswordMethodKey = new MethodKey(
 		Hook.class, "updatePassword", long.class, long.class, String.class);
+
+	static {
+		try {
+			_clearSessionMethod = MailService.class.getMethod("clearSession");
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new ExceptionInInitializerError(nsme);
+		}
+	}
 
 	private Session _session;
 
