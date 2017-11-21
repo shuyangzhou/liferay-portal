@@ -1,6 +1,8 @@
 <definition>
 	<command name="_gotoAddPGViaWCD">
-		<execute function="Click#makeVisibleClickAt" locator1="WCD#ADD_WEB_CONTENT" />
+		<execute function="MouseOver#mouseOverNotVisible" locator1="WCD#ADD_WEB_CONTENT" />
+
+		<execute function="Click" locator1="WCD#ADD_WEB_CONTENT" />
 
 		<var name="key_structureName" value="Basic Web Content" />
 
@@ -752,7 +754,9 @@
 	</command>
 
 	<command name="addWithWorkflowPGViaAP">
-		<execute function="Click#makeVisibleClickAt" locator1="AP#ADD_ASSET_PLUS_ICON" />
+		<execute function="MouseOver#mouseOverNotVisible" locator1="AP#ADD_ASSET_PLUS_ICON" />
+
+		<execute function="Click" locator1="AP#ADD_ASSET_PLUS_ICON" />
 
 		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="Basic Web Content">
 			<var name="key_menuItem" value="Basic Web Content" />
@@ -869,7 +873,7 @@
 				<execute macro="PortletEntry#publish" />
 
 				<execute macro="Portlet#changeDisplayStyle">
-					<var name="displayStyle" value="Descriptive" />
+					<var name="displayStyle" value="descriptive" />
 				</execute>
 
 				<var name="key_webContentTitle" value="${webContentTitleEdit}" />
@@ -1104,7 +1108,7 @@
 
 	<command name="moveMultipleToFolderCP">
 		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="Descriptive" />
+			<var name="displayStyle" value="descriptive" />
 		</execute>
 
 		<for list="${rowEntryCheckList}" param="rowEntry">
@@ -1196,7 +1200,7 @@
 
 	<command name="moveToRecycleBinViaDeleteIconCP">
 		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="Descriptive" />
+			<var name="displayStyle" value="descriptive" />
 		</execute>
 
 		<execute function="Check#checkAll" locator1="Checkbox#SELECT_ALL" />
@@ -1409,7 +1413,7 @@
 		</execute>
 
 		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="Descriptive" />
+			<var name="displayStyle" value="descriptive" />
 		</execute>
 
 		<if>
@@ -1466,7 +1470,7 @@
 		<var name="key_webContentTitle" value="${webContentTitle}" />
 
 		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="List" />
+			<var name="displayStyle" value="list" />
 		</execute>
 
 		<execute function="AssertTextEquals" locator1="WC#ENTRY_LIST_WORKFLOW_STATUS" value1="Approved" />
@@ -1528,7 +1532,7 @@
 
 	<command name="viewCategoryDescriptiveCP">
 		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="Descriptive" />
+			<var name="displayStyle" value="descriptive" />
 		</execute>
 
 		<execute function="AssertElementPresent#pauseAssertVisible" locator1="WC#ENTRY_DESCRIPTIVE_THUMBNAIL">
@@ -1637,7 +1641,7 @@
 
 	<command name="viewDefaultCP">
 		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="Descriptive" />
+			<var name="displayStyle" value="descriptive" />
 		</execute>
 
 		<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="No web content was found." />
@@ -1683,7 +1687,7 @@
 
 	<command name="viewDisplayStyleCP">
 		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="Icon" />
+			<var name="displayStyle" value="icon" />
 		</execute>
 
 		<execute function="AssertElementPresent#pauseAssertVisible" locator1="WC#ENTRY_ICON_THUMBNAIL">
@@ -1691,7 +1695,7 @@
 		</execute>
 
 		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="Descriptive" />
+			<var name="displayStyle" value="descriptive" />
 		</execute>
 
 		<execute function="AssertElementPresent#pauseAssertVisible" locator1="WC#ENTRY_DESCRIPTIVE_THUMBNAIL">
@@ -1699,7 +1703,7 @@
 		</execute>
 
 		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="List" />
+			<var name="displayStyle" value="list" />
 		</execute>
 
 		<execute function="AssertElementPresent" locator1="WC#ENTRY_LIST_TITLE">
@@ -2083,7 +2087,7 @@
 
 	<command name="viewWithStructureCP">
 		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="Descriptive" />
+			<var name="displayStyle" value="descriptive" />
 		</execute>
 
 		<execute macro="WebContentNavigator#gotoEditCP">
