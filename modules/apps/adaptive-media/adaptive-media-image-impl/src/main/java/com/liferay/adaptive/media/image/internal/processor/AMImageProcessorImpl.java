@@ -17,20 +17,20 @@ package com.liferay.adaptive.media.image.internal.processor;
 import com.liferay.adaptive.media.exception.AMRuntimeException;
 import com.liferay.adaptive.media.image.configuration.AMImageConfigurationEntry;
 import com.liferay.adaptive.media.image.configuration.AMImageConfigurationHelper;
-import com.liferay.adaptive.media.image.internal.util.ImageProcessor;
-import com.liferay.adaptive.media.image.internal.util.RenderedImageUtil;
+import com.liferay.adaptive.media.image.mime.type.AMImageMimeTypeProvider;
 import com.liferay.adaptive.media.image.model.AMImageEntry;
 import com.liferay.adaptive.media.image.processor.AMImageProcessor;
+import com.liferay.adaptive.media.image.scaler.AMImageScaledImage;
+import com.liferay.adaptive.media.image.scaler.AMImageScaler;
+import com.liferay.adaptive.media.image.scaler.AMImageScalerTracker;
 import com.liferay.adaptive.media.image.service.AMImageEntryLocalService;
 import com.liferay.adaptive.media.processor.AMProcessor;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 
-import java.awt.image.RenderedImage;
-
 import java.io.IOException;
+import java.io.InputStream;
 
 import java.util.Optional;
 
@@ -50,7 +50,7 @@ public final class AMImageProcessorImpl implements AMImageProcessor {
 	@Override
 	public void cleanUp(FileVersion fileVersion) {
 		try {
-			if (!_imageProcessor.isMimeTypeSupported(
+			if (!_amImageMimeTypeProvider.isMimeTypeSupported(
 					fileVersion.getMimeType())) {
 
 				return;
@@ -66,7 +66,9 @@ public final class AMImageProcessorImpl implements AMImageProcessor {
 
 	@Override
 	public void process(FileVersion fileVersion) {
-		if (!_imageProcessor.isMimeTypeSupported(fileVersion.getMimeType())) {
+		if (!_amImageMimeTypeProvider.isMimeTypeSupported(
+				fileVersion.getMimeType())) {
+
 			return;
 		}
 
@@ -83,7 +85,9 @@ public final class AMImageProcessorImpl implements AMImageProcessor {
 	public void process(
 		FileVersion fileVersion, String configurationEntryUuid) {
 
-		if (!_imageProcessor.isMimeTypeSupported(fileVersion.getMimeType())) {
+		if (!_amImageMimeTypeProvider.isMimeTypeSupported(
+				fileVersion.getMimeType())) {
+
 			return;
 		}
 
@@ -114,16 +118,26 @@ public final class AMImageProcessorImpl implements AMImageProcessor {
 					amImageEntry.getAmImageEntryId());
 			}
 
-			RenderedImage renderedImage = _imageProcessor.scaleImage(
+			AMImageScaler amImageScaler =
+				_amImageScalerTracker.getAMImageScaler(
+					fileVersion.getMimeType());
+
+			if (amImageScaler == null) {
+				return;
+			}
+
+			AMImageScaledImage amImageScaledImage = amImageScaler.scaleImage(
 				fileVersion, amImageConfigurationEntry);
 
-			byte[] bytes = RenderedImageUtil.getRenderedImageContentStream(
-				renderedImage, fileVersion.getMimeType());
+			try (InputStream inputStream =
+					amImageScaledImage.getInputStream()) {
 
-			_amImageEntryLocalService.addAMImageEntry(
-				amImageConfigurationEntry, fileVersion,
-				renderedImage.getHeight(), renderedImage.getWidth(),
-				new UnsyncByteArrayInputStream(bytes), bytes.length);
+				_amImageEntryLocalService.addAMImageEntry(
+					amImageConfigurationEntry, fileVersion,
+					amImageScaledImage.getHeight(),
+					amImageScaledImage.getWidth(), inputStream,
+					amImageScaledImage.getSize());
+			}
 		}
 		catch (IOException | PortalException e) {
 			throw new AMRuntimeException.IOException(e);
@@ -145,12 +159,22 @@ public final class AMImageProcessorImpl implements AMImageProcessor {
 	}
 
 	@Reference(unbind = "-")
-	public void setImageProcessor(ImageProcessor imageProcessor) {
-		_imageProcessor = imageProcessor;
+	public void setAMImageMimeTypeProvider(
+		AMImageMimeTypeProvider amImageMimeTypeProvider) {
+
+		_amImageMimeTypeProvider = amImageMimeTypeProvider;
+	}
+
+	@Reference(unbind = "-")
+	public void setAMImageScalerTracker(
+		AMImageScalerTracker amImageScalerTracker) {
+
+		_amImageScalerTracker = amImageScalerTracker;
 	}
 
 	private AMImageConfigurationHelper _amImageConfigurationHelper;
 	private AMImageEntryLocalService _amImageEntryLocalService;
-	private ImageProcessor _imageProcessor;
+	private AMImageMimeTypeProvider _amImageMimeTypeProvider;
+	private AMImageScalerTracker _amImageScalerTracker;
 
 }
