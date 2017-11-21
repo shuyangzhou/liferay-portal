@@ -15,8 +15,8 @@
 package com.liferay.adaptive.media.image.internal.configuration;
 
 import com.liferay.adaptive.media.image.processor.AMImageAttribute;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -68,7 +68,7 @@ public class AMImageAttributeMappingTest {
 	public void testIgnoreUnknownAttributes() {
 		AMImageAttributeMapping amImageAttributeMapping =
 			AMImageAttributeMapping.fromProperties(
-				MapUtil.fromArray("foo", StringUtil.randomString()));
+				MapUtil.fromArray("foo", RandomTestUtil.randomString()));
 
 		Optional<Integer> heightOptional =
 			amImageAttributeMapping.getValueOptional(
