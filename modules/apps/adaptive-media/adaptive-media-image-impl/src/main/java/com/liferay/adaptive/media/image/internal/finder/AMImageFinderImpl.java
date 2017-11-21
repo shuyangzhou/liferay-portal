@@ -25,7 +25,7 @@ import com.liferay.adaptive.media.image.finder.AMImageFinder;
 import com.liferay.adaptive.media.image.finder.AMImageQueryBuilder;
 import com.liferay.adaptive.media.image.internal.configuration.AMImageAttributeMapping;
 import com.liferay.adaptive.media.image.internal.processor.AMImage;
-import com.liferay.adaptive.media.image.internal.util.ImageProcessor;
+import com.liferay.adaptive.media.image.mime.type.AMImageMimeTypeProvider;
 import com.liferay.adaptive.media.image.model.AMImageEntry;
 import com.liferay.adaptive.media.image.processor.AMImageAttribute;
 import com.liferay.adaptive.media.image.processor.AMImageProcessor;
@@ -82,7 +82,9 @@ public class AMImageFinderImpl implements AMImageFinder {
 
 		FileVersion fileVersion = amImageQueryBuilderImpl.getFileVersion();
 
-		if (!_imageProcessor.isMimeTypeSupported(fileVersion.getMimeType())) {
+		if (!_amImageMimeTypeProvider.isMimeTypeSupported(
+				fileVersion.getMimeType())) {
+
 			return Stream.empty();
 		}
 
@@ -133,13 +135,15 @@ public class AMImageFinderImpl implements AMImageFinder {
 	}
 
 	@Reference(unbind = "-")
-	public void setAMImageURLFactory(AMImageURLFactory amImageURLFactory) {
-		_amImageURLFactory = amImageURLFactory;
+	public void setAMImageMimeTypeProvider(
+		AMImageMimeTypeProvider amImageMimeTypeProvider) {
+
+		_amImageMimeTypeProvider = amImageMimeTypeProvider;
 	}
 
 	@Reference(unbind = "-")
-	public void setImageProcessor(ImageProcessor imageProcessor) {
-		_imageProcessor = imageProcessor;
+	public void setAMImageURLFactory(AMImageURLFactory amImageURLFactory) {
+		_amImageURLFactory = amImageURLFactory;
 	}
 
 	private AdaptiveMedia<AMImageProcessor> _createMedia(
@@ -233,7 +237,7 @@ public class AMImageFinderImpl implements AMImageFinder {
 
 	private AMImageConfigurationHelper _amImageConfigurationHelper;
 	private AMImageEntryLocalService _amImageEntryLocalService;
+	private AMImageMimeTypeProvider _amImageMimeTypeProvider;
 	private AMImageURLFactory _amImageURLFactory;
-	private ImageProcessor _imageProcessor;
 
 }

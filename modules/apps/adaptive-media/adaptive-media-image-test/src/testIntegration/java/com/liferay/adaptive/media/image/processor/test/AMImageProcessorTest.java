@@ -30,12 +30,12 @@ import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.registry.Registry;
@@ -207,7 +207,7 @@ public class AMImageProcessorTest {
 		return _dlAppLocalService.addFileEntry(
 			TestPropsValues.getUserId(), _group.getGroupId(),
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
-			StringUtil.randomString(), ContentTypes.IMAGE_JPEG,
+			RandomTestUtil.randomString(), ContentTypes.IMAGE_JPEG,
 			_getImageBytes(), serviceContext);
 	}
 
@@ -217,8 +217,9 @@ public class AMImageProcessorTest {
 		return _dlAppLocalService.addFileEntry(
 			TestPropsValues.getUserId(), _group.getGroupId(),
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
-			StringUtil.randomString(), ContentTypes.APPLICATION_OCTET_STREAM,
-			_getNonImageBytes(), serviceContext);
+			RandomTestUtil.randomString(),
+			ContentTypes.APPLICATION_OCTET_STREAM, _getNonImageBytes(),
+			serviceContext);
 	}
 
 	private void _addTestVariant() throws Exception {
@@ -239,7 +240,7 @@ public class AMImageProcessorTest {
 	}
 
 	private byte[] _getNonImageBytes() {
-		String s = StringUtil.randomString();
+		String s = RandomTestUtil.randomString();
 
 		return s.getBytes();
 	}
