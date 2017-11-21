@@ -14,7 +14,7 @@
 
 package com.liferay.adaptive.media.internal.messaging;
 
-import com.liferay.adaptive.media.configuration.AMConfiguration;
+import com.liferay.adaptive.media.internal.configuration.AMConfiguration;
 import com.liferay.adaptive.media.internal.constants.AMDestinationNames;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.messaging.Destination;
@@ -37,7 +37,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Adolfo Pérez
  */
 @Component(
-	configurationPid = "com.liferay.adaptive.media.configuration.AMConfiguration",
+	configurationPid = "com.liferay.adaptive.media.internal.configuration.AMConfiguration",
 	immediate = true
 )
 public class AMMessagingConfigurator {
