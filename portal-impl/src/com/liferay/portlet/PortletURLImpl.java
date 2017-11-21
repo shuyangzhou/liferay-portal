@@ -717,7 +717,9 @@ public class PortletURLImpl
 			biConsumer.accept("p_p_lifecycle", "2");
 		}
 
-		if (_windowStateString != null) {
+		if ((_windowStateString != null) &&
+			!_cacheability.equals(ResourceURL.FULL)) {
+
 			biConsumer.accept("p_p_state", _windowStateString);
 		}
 
@@ -725,7 +727,9 @@ public class PortletURLImpl
 			biConsumer.accept("p_p_state_rcv", "1");
 		}
 
-		if (_portletModeString != null) {
+		if ((_portletModeString != null) &&
+			!_cacheability.equals(ResourceURL.FULL)) {
+
 			biConsumer.accept("p_p_mode", _portletModeString);
 		}
 
@@ -948,7 +952,10 @@ public class PortletURLImpl
 
 		Map<String, String[]> renderParams = _params;
 
-		if (_copyCurrentRenderParameters) {
+		if (_copyCurrentRenderParameters &&
+			!(_lifecycle.equals(PortletRequest.RESOURCE_PHASE) &&
+			 _cacheability.equals(ResourceURL.FULL))) {
+
 			renderParams = _mergeWithRenderParameters(renderParams);
 		}
 
@@ -960,11 +967,13 @@ public class PortletURLImpl
 				continue;
 			}
 
-			String publicRenderParameterName = getPublicRenderParameterName(
-				name);
+			if (!_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+				String publicRenderParameterName = getPublicRenderParameterName(
+					name);
 
-			if (Validator.isNotNull(publicRenderParameterName)) {
-				name = publicRenderParameterName;
+				if (Validator.isNotNull(publicRenderParameterName)) {
+					name = publicRenderParameterName;
+				}
 			}
 
 			for (String value : values) {
@@ -1080,7 +1089,10 @@ public class PortletURLImpl
 
 		Map<String, String[]> renderParams = _params;
 
-		if (_copyCurrentRenderParameters) {
+		if (_copyCurrentRenderParameters &&
+			!(_lifecycle.equals(PortletRequest.RESOURCE_PHASE) &&
+			 _cacheability.equals(ResourceURL.FULL))) {
+
 			renderParams = _mergeWithRenderParameters(renderParams);
 		}
 
@@ -1096,11 +1108,13 @@ public class PortletURLImpl
 				continue;
 			}
 
-			String publicRenderParameterName = getPublicRenderParameterName(
-				name);
+			if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+				String publicRenderParameterName = getPublicRenderParameterName(
+					name);
 
-			if (Validator.isNotNull(publicRenderParameterName)) {
-				name = publicRenderParameterName;
+				if (Validator.isNotNull(publicRenderParameterName)) {
+					name = publicRenderParameterName;
+				}
 			}
 
 			for (String value : values) {
