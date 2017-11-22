@@ -16,7 +16,7 @@ package com.liferay.adaptive.media;
 
 import com.liferay.adaptive.media.exception.AMRuntimeException;
 import com.liferay.portal.kernel.security.RandomUtil;
-import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -35,7 +35,7 @@ public class AMAttributeTest {
 		AMAttribute<?, String> configurationUuidAMAttribute =
 			AMAttribute.getConfigurationUuidAMAttribute();
 
-		String value = StringUtil.randomString();
+		String value = RandomTestUtil.randomString();
 
 		Assert.assertEquals(value, configurationUuidAMAttribute.convert(value));
 	}
@@ -45,7 +45,7 @@ public class AMAttributeTest {
 		AMAttribute<?, Long> contentLengthAMAttribute =
 			AMAttribute.getContentLengthAMAttribute();
 
-		contentLengthAMAttribute.convert(StringUtil.randomString());
+		contentLengthAMAttribute.convert(RandomTestUtil.randomString());
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class AMAttributeTest {
 		AMAttribute<?, String> contentTypeAMAttribute =
 			AMAttribute.getContentTypeAMAttribute();
 
-		String value = StringUtil.randomString();
+		String value = RandomTestUtil.randomString();
 
 		Assert.assertEquals(value, contentTypeAMAttribute.convert(value));
 	}
@@ -75,7 +75,7 @@ public class AMAttributeTest {
 		AMAttribute<?, String> fileNameAMAttribute =
 			AMAttribute.getFileNameAMAttribute();
 
-		String value = StringUtil.randomString();
+		String value = RandomTestUtil.randomString();
 
 		Assert.assertEquals(value, fileNameAMAttribute.convert(value));
 	}

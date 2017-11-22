@@ -606,9 +606,6 @@ public class LocalProcessExecutorTest {
 
 			Assert.assertSame(
 				TerminationProcessException.class, throwable.getClass());
-			Assert.assertEquals(
-				"Subprocess terminated with exit code 1",
-				throwable.getMessage());
 
 			TerminationProcessException terminationProcessException =
 				(TerminationProcessException)throwable;
@@ -1196,7 +1193,8 @@ public class LocalProcessExecutorTest {
 			}
 		}
 
-		Assert.fail(
+		Assert.assertFalse(
+			supplier.get(),
 			StringBundler.concat(
 				"After waited ", String.valueOf(time), " ",
 				String.valueOf(timeUnit), ". ", message));

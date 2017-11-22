@@ -153,9 +153,6 @@ public class ProcessUtilTest {
 
 			Assert.assertSame(
 				TerminationProcessException.class, throwable.getClass());
-			Assert.assertEquals(
-				"Subprocess terminated with exit code " + ErrorExit.EXIT_CODE,
-				throwable.getMessage());
 
 			TerminationProcessException terminationProcessException =
 				(TerminationProcessException)throwable;
