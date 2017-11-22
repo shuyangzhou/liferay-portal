@@ -21,8 +21,8 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.HashMap;
@@ -210,7 +210,7 @@ public class AMImageDisableConfigurationTest
 		AMImageConfigurationHelper amImageConfigurationHelper =
 			serviceTracker.getService();
 
-		String uuid = StringUtil.randomString();
+		String uuid = RandomTestUtil.randomString();
 
 		amImageConfigurationHelper.disableAMImageConfigurationEntry(
 			TestPropsValues.getCompanyId(), uuid);

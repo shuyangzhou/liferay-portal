@@ -169,7 +169,7 @@
 				<var name="portlet" value="Documents and Media" />
 			</execute>
 
-			<execute macro="DMFolder#gotoCP">
+			<execute macro="DMFolder#viewCP">
 				<var name="dmFolderName" value="Financial Reports" />
 			</execute>
 
@@ -278,7 +278,7 @@
 				<var name="portlet" value="Documents and Media" />
 			</execute>
 
-			<execute macro="DMFolder#gotoCP">
+			<execute macro="DMFolder#viewCP">
 				<var name="dmFolderName" value="Financial Reports" />
 			</execute>
 
@@ -394,7 +394,7 @@
 			<var name="portlet" value="Documents and Media" />
 		</execute>
 
-		<execute macro="DMFolder#gotoCP">
+		<execute macro="DMFolder#viewCP">
 			<var name="dmDocumentTitle" value="DM Folder Name" />
 			<var name="dmFolderName" value="DM Folder Name" />
 		</execute>
@@ -440,7 +440,7 @@
 			<var name="portlet" value="Documents and Media" />
 		</execute>
 
-		<execute macro="DMFolder#gotoCP">
+		<execute macro="DMFolder#viewCP">
 			<var name="dmDocumentTitle" value="DM Folder Name" />
 			<var name="dmFolderName" value="DM Folder Name" />
 		</execute>
