@@ -89,6 +89,7 @@ public class LayoutPageTemplateDisplayContext {
 
 		portletURL.setParameter(
 			"mvcPath", "/view_layout_page_template_entries.jsp");
+		portletURL.setParameter("tabs1", "page-templates");
 
 		if (getLayoutPageTemplateCollectionId() > 0) {
 			portletURL.setParameter(
@@ -122,6 +123,10 @@ public class LayoutPageTemplateDisplayContext {
 			JSONObject fragmentCollectionJSONObject =
 				JSONFactoryUtil.createJSONObject();
 
+			fragmentCollectionJSONObject.put(
+				"fragmentCollectionId",
+				fragmentCollection.getFragmentCollectionId());
+
 			JSONArray fragmentEntriesJSONArray =
 				JSONFactoryUtil.createJSONArray();
 
@@ -137,11 +142,8 @@ public class LayoutPageTemplateDisplayContext {
 			}
 
 			fragmentCollectionJSONObject.put(
-				"entries", fragmentEntriesJSONArray);
+				"fragmentEntries", fragmentEntriesJSONArray);
 
-			fragmentCollectionJSONObject.put(
-				"fragmentCollectionId",
-				fragmentCollection.getFragmentCollectionId());
 			fragmentCollectionJSONObject.put(
 				"name", fragmentCollection.getName());
 
@@ -197,6 +199,7 @@ public class LayoutPageTemplateDisplayContext {
 
 			backURL.setParameter(
 				"mvcPath", "/view_layout_page_template_collections.jsp");
+			backURL.setParameter("tabs1", "page-templates");
 
 			redirect = backURL.toString();
 		}

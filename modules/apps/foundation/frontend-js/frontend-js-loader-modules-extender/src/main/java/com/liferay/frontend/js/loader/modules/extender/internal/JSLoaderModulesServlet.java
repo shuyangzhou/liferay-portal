@@ -18,6 +18,7 @@ import com.liferay.frontend.js.loader.modules.extender.npm.JSModule;
 import com.liferay.frontend.js.loader.modules.extender.npm.JSPackage;
 import com.liferay.frontend.js.loader.modules.extender.npm.JSPackageDependency;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMRegistry;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -43,7 +44,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.metatype.annotations.Designate;
 
 /**
  * @author Raymond Augé
@@ -58,7 +58,6 @@ import org.osgi.service.metatype.annotations.Designate;
 	},
 	service = {JSLoaderModulesServlet.class, Servlet.class}
 )
-@Designate(ocd = Details.class)
 public class JSLoaderModulesServlet extends HttpServlet {
 
 	@Override
@@ -71,10 +70,11 @@ public class JSLoaderModulesServlet extends HttpServlet {
 
 	@Activate
 	@Modified
-	protected void activate(ComponentContext componentContext, Details details)
+	protected void activate(ComponentContext componentContext)
 		throws Exception {
 
-		_details = details;
+		_details = ConfigurableUtil.createConfigurable(
+			Details.class, componentContext.getProperties());
 
 		_logger = new Logger(componentContext.getBundleContext());
 
