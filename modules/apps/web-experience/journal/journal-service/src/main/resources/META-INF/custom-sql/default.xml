@@ -26,11 +26,12 @@
 				COUNT(DISTINCT JournalArticle.articleId) AS COUNT_VALUE
 			FROM
 				JournalArticle
-			LEFT JOIN JournalArticle tempJournalArticle ON
-				[$STATUS_JOIN$] AND
-				(JournalArticle.groupId = tempJournalArticle.groupId) AND
-				(JournalArticle.articleId = tempJournalArticle.articleId) AND
-				(JournalArticle.version < tempJournalArticle.version)
+			LEFT JOIN
+				JournalArticle tempJournalArticle ON
+					[$STATUS_JOIN$] AND
+					(JournalArticle.groupId = tempJournalArticle.groupId) AND
+					(JournalArticle.articleId = tempJournalArticle.articleId) AND
+					(JournalArticle.version < tempJournalArticle.version)
 			WHERE
 				(JournalArticle.groupId = ?) AND
 				(JournalArticle.classNameId = ?) AND
@@ -45,11 +46,12 @@
 				COUNT(DISTINCT JournalArticle.articleId) AS COUNT_VALUE
 			FROM
 				JournalArticle
-			LEFT JOIN JournalArticle tempJournalArticle ON
-				[$STATUS_JOIN$] AND
-				(JournalArticle.groupId = tempJournalArticle.groupId) AND
-				(JournalArticle.articleId = tempJournalArticle.articleId) AND
-				(JournalArticle.version < tempJournalArticle.version)
+			LEFT JOIN
+				JournalArticle tempJournalArticle ON
+					[$STATUS_JOIN$] AND
+					(JournalArticle.groupId = tempJournalArticle.groupId) AND
+					(JournalArticle.articleId = tempJournalArticle.articleId) AND
+					(JournalArticle.version < tempJournalArticle.version)
 			WHERE
 				(JournalArticle.groupId = ?) AND
 				(JournalArticle.classNameId = ?) AND
@@ -64,14 +66,16 @@
 				COUNT(DISTINCT JournalArticle.articleId) AS COUNT_VALUE
 			FROM
 				JournalArticle
-			LEFT JOIN JournalArticle tempJournalArticle ON
-				[$STATUS_JOIN$] AND
-				(JournalArticle.groupId = tempJournalArticle.groupId) AND
-				(JournalArticle.articleId = tempJournalArticle.articleId) AND
-				(JournalArticle.version < tempJournalArticle.version)
-			LEFT JOIN JournalArticleLocalization ON
-				(JournalArticle.companyId = JournalArticleLocalization.companyId) AND
-				(JournalArticle.id_ = JournalArticleLocalization.articlePK)
+			LEFT JOIN
+				JournalArticle tempJournalArticle ON
+					[$STATUS_JOIN$] AND
+					(JournalArticle.groupId = tempJournalArticle.groupId) AND
+					(JournalArticle.articleId = tempJournalArticle.articleId) AND
+					(JournalArticle.version < tempJournalArticle.version)
+			LEFT JOIN
+				JournalArticleLocalization ON
+					(JournalArticle.companyId = JournalArticleLocalization.companyId) AND
+					(JournalArticle.id_ = JournalArticleLocalization.articlePK)
 			WHERE
 				(JournalArticle.companyId = ?) AND
 				(JournalArticle.groupId = ?) AND
@@ -174,14 +178,13 @@
 					(JournalArticle.articleId = tempJournalArticle.articleId) AND
 					(JournalArticle.version < tempJournalArticle.version)
 			LEFT JOIN
-				(SELECT
-					JournalArticleLocalization.companyId, JournalArticleLocalization.articlePK,
-					JournalArticleLocalization.title
-				FROM
-					JournalArticleLocalization
-				GROUP BY
-					JournalArticleLocalization.companyId, JournalArticleLocalization.articlePK,
-					JournalArticleLocalization.title
+				(
+					SELECT
+						JournalArticleLocalization.companyId, JournalArticleLocalization.articlePK, JournalArticleLocalization.title
+					FROM
+						JournalArticleLocalization
+					GROUP BY
+						JournalArticleLocalization.companyId, JournalArticleLocalization.articlePK, JournalArticleLocalization.title
 				) JournalArticleLocalization
 				ON
 					(JournalArticle.companyId = JournalArticleLocalization.companyId) AND
@@ -201,20 +204,20 @@
 				JournalArticle.*
 			FROM
 				JournalArticle
-			LEFT JOIN JournalArticle tempJournalArticle ON
-				[$STATUS_JOIN$] AND
-				(JournalArticle.groupId = tempJournalArticle.groupId) AND
-				(JournalArticle.articleId = tempJournalArticle.articleId) AND
-				(JournalArticle.version < tempJournalArticle.version)
 			LEFT JOIN
-				(SELECT
-					JournalArticleLocalization.companyId, JournalArticleLocalization.articlePK,
-					JournalArticleLocalization.title
-				FROM
-					JournalArticleLocalization
-				GROUP BY
-					JournalArticleLocalization.companyId, JournalArticleLocalization.articlePK,
-					JournalArticleLocalization.title
+				JournalArticle tempJournalArticle ON
+					[$STATUS_JOIN$] AND
+					(JournalArticle.groupId = tempJournalArticle.groupId) AND
+					(JournalArticle.articleId = tempJournalArticle.articleId) AND
+					(JournalArticle.version < tempJournalArticle.version)
+			LEFT JOIN
+				(
+					SELECT
+						JournalArticleLocalization.companyId, JournalArticleLocalization.articlePK, JournalArticleLocalization.title
+					FROM
+						JournalArticleLocalization
+					GROUP BY
+						JournalArticleLocalization.companyId, JournalArticleLocalization.articlePK, JournalArticleLocalization.title
 				) JournalArticleLocalization
 				ON
 					(JournalArticle.companyId = JournalArticleLocalization.companyId) AND
@@ -235,20 +238,20 @@
 				JournalArticle.*
 			FROM
 				JournalArticle
-			LEFT JOIN JournalArticle tempJournalArticle ON
-				[$STATUS_JOIN$] AND
-				(JournalArticle.groupId = tempJournalArticle.groupId) AND
-				(JournalArticle.articleId = tempJournalArticle.articleId) AND
-				(JournalArticle.version < tempJournalArticle.version)
 			LEFT JOIN
-				(SELECT
-					JournalArticleLocalization.companyId, JournalArticleLocalization.articlePK,
-					JournalArticleLocalization.title
-				FROM
-					JournalArticleLocalization
-				GROUP BY
-					JournalArticleLocalization.companyId, JournalArticleLocalization.articlePK,
-					JournalArticleLocalization.title
+				JournalArticle tempJournalArticle ON
+					[$STATUS_JOIN$] AND
+					(JournalArticle.groupId = tempJournalArticle.groupId) AND
+					(JournalArticle.articleId = tempJournalArticle.articleId) AND
+					(JournalArticle.version < tempJournalArticle.version)
+			LEFT JOIN
+				(
+					SELECT
+						JournalArticleLocalization.companyId, JournalArticleLocalization.articlePK, JournalArticleLocalization.title
+					FROM
+						JournalArticleLocalization
+					GROUP BY
+						JournalArticleLocalization.companyId, JournalArticleLocalization.articlePK, JournalArticleLocalization.title
 				) JournalArticleLocalization
 				ON
 					(JournalArticle.companyId = JournalArticleLocalization.companyId) AND
@@ -269,23 +272,23 @@
 				JournalArticle.*
 			FROM
 				JournalArticle
-			LEFT JOIN JournalArticle tempJournalArticle ON
-				[$STATUS_JOIN$] AND
-				(JournalArticle.groupId = tempJournalArticle.groupId) AND
-				(JournalArticle.articleId = tempJournalArticle.articleId) AND
-				(JournalArticle.version < tempJournalArticle.version)
 			LEFT JOIN
-				(SELECT
-					JournalArticleLocalization.companyId, JournalArticleLocalization.articlePK,
-					JournalArticleLocalization.title, JournalArticleLocalization.description
-				FROM
-					JournalArticleLocalization
-				WHERE
-					(LOWER(JournalArticleLocalization.title) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(JournalArticleLocalization.description LIKE ? [$AND_OR_NULL_CHECK$])
-				GROUP BY
-					JournalArticleLocalization.companyId, JournalArticleLocalization.articlePK,
-					JournalArticleLocalization.title, JournalArticleLocalization.description
+				JournalArticle tempJournalArticle ON
+					[$STATUS_JOIN$] AND
+					(JournalArticle.groupId = tempJournalArticle.groupId) AND
+					(JournalArticle.articleId = tempJournalArticle.articleId) AND
+					(JournalArticle.version < tempJournalArticle.version)
+			LEFT JOIN
+				(
+					SELECT
+						JournalArticleLocalization.companyId, JournalArticleLocalization.articlePK, JournalArticleLocalization.title, JournalArticleLocalization.description
+					FROM
+						JournalArticleLocalization
+					WHERE
+						(LOWER(JournalArticleLocalization.title) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+						(JournalArticleLocalization.description LIKE ? [$AND_OR_NULL_CHECK$])
+					GROUP BY
+						JournalArticleLocalization.companyId, JournalArticleLocalization.articlePK, JournalArticleLocalization.title, JournalArticleLocalization.description
 				) JournalArticleLocalization
 				ON
 					(JournalArticle.companyId = JournalArticleLocalization.companyId) AND
@@ -434,7 +437,7 @@
 					(AssetEntry.classNameId = ?) AND
 					(AssetEntry.classPK = JournalFolder.folderId)
 			WHERE
-				(AssetEntry.classPK IS NULL)
+				AssetEntry.classPK IS NULL
 		]]>
 	</sql>
 	<sql id="com.liferay.journal.service.persistence.JournalFolderFinder.findF_ByG_F">

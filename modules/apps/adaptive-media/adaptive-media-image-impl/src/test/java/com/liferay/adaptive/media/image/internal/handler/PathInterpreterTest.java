@@ -23,7 +23,7 @@ import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
-import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 
 import java.util.Map;
 import java.util.Optional;
@@ -172,7 +172,7 @@ public class PathInterpreterTest {
 	@Test
 	public void testNonMatchingPathInfo() {
 		Optional<Tuple<FileVersion, Map<String, String>>> resultOptional =
-			_pathInterpreter.interpretPath("/" + StringUtil.randomString());
+			_pathInterpreter.interpretPath("/" + RandomTestUtil.randomString());
 
 		Assert.assertFalse(resultOptional.isPresent());
 	}

@@ -14,7 +14,7 @@
 
 package com.liferay.adaptive.media.web.internal.portlet;
 
-import com.liferay.adaptive.media.web.constants.AMPortletKeys;
+import com.liferay.adaptive.media.web.internal.constants.AMPortletKeys;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.ControlPanelEntry;

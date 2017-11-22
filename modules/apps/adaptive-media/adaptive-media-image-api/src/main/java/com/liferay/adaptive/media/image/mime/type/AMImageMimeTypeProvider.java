@@ -28,4 +28,17 @@ public interface AMImageMimeTypeProvider {
 	 */
 	public String[] getSupportedMimeTypes();
 
+	/**
+	 * Returns whether the provided mime type generates adaptive media images.
+	 *
+	 * @param mimeType the mime type to check wheter it generates adaptive media
+	 *                    images.
+	 *
+	 * @return <code>true</code> if the mime type generates adaptive media
+	 * images; <code>false</code> otherwise
+	 *
+	 * @review
+	 */
+	public boolean isMimeTypeSupported(String mimeType);
+
 }

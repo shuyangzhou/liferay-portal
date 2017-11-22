@@ -41,6 +41,10 @@ AssetRendererFactory<?> assetRendererFactory = assetRenderer.getAssetRendererFac
 
 AssetEntry assetEntry = assetRendererFactory.getAssetEntry(workflowHandler.getClassName(), assetRenderer.getClassPK());
 
+String languageId = LanguageUtil.getLanguageId(request);
+
+String[] availableLanguageIds = assetRenderer.getAvailableLanguageIds();
+
 String headerTitle = workflowTaskDisplayContext.getHeaderTitle(workflowTask);
 
 portletDisplay.setShowBackIcon(true);
@@ -127,12 +131,17 @@ renderResponse.setTitle(headerTitle);
 			<liferay-ui:panel-container cssClass="task-panel-container" extended="<%= false %>">
 				<c:if test="<%= assetRenderer != null %>">
 					<liferay-ui:panel extended="<%= true %>" markupView="lexicon" title="<%= workflowTaskDisplayContext.getPreviewOfTitle(workflowTask) %>">
+						<div class="locale-actions">
+							<liferay-ui:language formAction="<%= currentURL %>" languageId="<%= languageId %>" languageIds="<%= availableLanguageIds %>" />
+						</div>
+
 						<div class="task-content-actions">
 							<liferay-ui:icon-list>
 								<c:if test="<%= assetRenderer.hasViewPermission(permissionChecker) %>">
 									<portlet:renderURL var="viewFullContentURL">
 										<portlet:param name="mvcPath" value="/view_content.jsp" />
 										<portlet:param name="redirect" value="<%= currentURL %>" />
+										<portlet:param name="languageId" value="<%= languageId %>" />
 
 										<c:if test="<%= assetEntry != null %>">
 											<portlet:param name="assetEntryId" value="<%= String.valueOf(assetEntry.getEntryId()) %>" />

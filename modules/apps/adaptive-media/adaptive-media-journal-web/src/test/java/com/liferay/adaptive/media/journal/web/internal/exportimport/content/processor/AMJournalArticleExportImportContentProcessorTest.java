@@ -19,7 +19,6 @@ import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -64,8 +63,8 @@ public class AMJournalArticleExportImportContentProcessorTest {
 	public void testExportCallsBothExportImportContentProcessors()
 		throws Exception {
 
-		String originalContent = StringUtil.randomString();
-		String journalArticleReplacedContent = StringUtil.randomString();
+		String originalContent = RandomTestUtil.randomString();
+		String journalArticleReplacedContent = RandomTestUtil.randomString();
 
 		Mockito.doReturn(
 			journalArticleReplacedContent
@@ -75,7 +74,7 @@ public class AMJournalArticleExportImportContentProcessorTest {
 			_portletDataContext, _journalArticle, originalContent, false, false
 		);
 
-		String adaptiveMediaReplacedContent = StringUtil.randomString();
+		String adaptiveMediaReplacedContent = RandomTestUtil.randomString();
 
 		Mockito.doReturn(
 			adaptiveMediaReplacedContent
@@ -98,8 +97,8 @@ public class AMJournalArticleExportImportContentProcessorTest {
 	public void testImportCallsBothExportImportContentProcessors()
 		throws Exception {
 
-		String originalContent = StringUtil.randomString();
-		String journalArticleReplacedContent = StringUtil.randomString();
+		String originalContent = RandomTestUtil.randomString();
+		String journalArticleReplacedContent = RandomTestUtil.randomString();
 
 		Mockito.doReturn(
 			journalArticleReplacedContent
@@ -109,7 +108,7 @@ public class AMJournalArticleExportImportContentProcessorTest {
 			_portletDataContext, _journalArticle, originalContent
 		);
 
-		String adaptiveMediaReplacedContent = StringUtil.randomString();
+		String adaptiveMediaReplacedContent = RandomTestUtil.randomString();
 
 		Mockito.doReturn(
 			adaptiveMediaReplacedContent
@@ -130,7 +129,7 @@ public class AMJournalArticleExportImportContentProcessorTest {
 	public void testValidateContentFailsWhenHTMLExportImportContentProcessorFails()
 		throws Exception {
 
-		String content = StringUtil.randomString();
+		String content = RandomTestUtil.randomString();
 
 		Mockito.doThrow(
 			PortalException.class
@@ -148,7 +147,7 @@ public class AMJournalArticleExportImportContentProcessorTest {
 	public void testValidateContentFailsWhenJournalArticleExportImportContentProcessorFails()
 		throws Exception {
 
-		String content = StringUtil.randomString();
+		String content = RandomTestUtil.randomString();
 
 		Mockito.doThrow(
 			PortalException.class
@@ -167,7 +166,7 @@ public class AMJournalArticleExportImportContentProcessorTest {
 		throws Exception {
 
 		_amJournalArticleExportImportContentProcessor.validateContentReferences(
-			RandomTestUtil.randomLong(), StringUtil.randomString());
+			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
 	}
 
 	private final AMJournalArticleContentHTMLReplacer

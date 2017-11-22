@@ -14,10 +14,10 @@
 
 package com.liferay.adaptive.media.web.internal.portlet.action;
 
-import com.liferay.adaptive.media.web.constants.AMOptimizeImagesBackgroundTaskConstants;
-import com.liferay.adaptive.media.web.constants.AMPortletKeys;
+import com.liferay.adaptive.media.constants.AMOptimizeImagesBackgroundTaskConstants;
 import com.liferay.adaptive.media.web.internal.background.task.OptimizeImagesAllConfigurationsBackgroundTaskExecutor;
 import com.liferay.adaptive.media.web.internal.background.task.OptimizeImagesSingleConfigurationBackgroundTaskExecutor;
+import com.liferay.adaptive.media.web.internal.constants.AMPortletKeys;
 import com.liferay.portal.background.task.constants.BackgroundTaskContextMapConstants;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;

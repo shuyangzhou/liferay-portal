@@ -158,19 +158,19 @@ if (System.getenv('TRAVIS')) {
 		}
 
 		commandLine 'docker', 'run',
-				'-e', "JACOCO_DIR=${rootDir}/build/jacoco",
-				'-e', "JAVA_OPTS=$javaOpts",
-				'-e', "ROOT_DIR=${rootDir}",
-				'-p', '5005:5005',
-				'-p', '8080:8080',
-				'-p', '8099:8099',
-				'-p', '8778:8778',
-				'-p', '11311:11311',
-				'-v', "${rootDir}/build/jacoco:/jacoco",
-				'-v', "${getClientDeployDir()}:/liferay/deploy",
-				'-d',
-				'--name', "com-liferay-adaptive-media",
-				getImageNameWithUserAndVersion()
+		'-e', "JACOCO_DIR=${rootDir}/build/jacoco",
+		'-e', "JAVA_OPTS=$javaOpts",
+		'-e', "ROOT_DIR=${rootDir}",
+		'-p', '5005:5005',
+		'-p', '8080:8080',
+		'-p', '8099:8099',
+		'-p', '8778:8778',
+		'-p', '11311:11311',
+		'-v', "${rootDir}/build/jacoco:/jacoco",
+		'-v', "${getClientDeployDir()}:/liferay/deploy",
+		'-d',
+		'--name', "com-liferay-adaptive-media",
+		getImageNameWithUserAndVersion()
 
 		finalizedBy checkDocker
 	}
@@ -212,29 +212,29 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
 
 	afterEvaluate {
 		classDirectories = files(classDirectories.files.collect {
-			fileTree(dir: it,
+				fileTree(dir: it,
 					exclude: [
-							'**/*Exception*',
-							'**/model/*Model*',
-							'**/model/*Soap*',
-							'**/model/*Wrapper*',
-							'**/model/impl/*BaseImpl*',
-							'**/model/impl/*CacheModel*',
-							'**/model/impl/*ModelImpl*',
-							'**/service/*ServiceUtil*',
-							'**/service/*ServiceWrapper*',
-							'**/service/base/*',
-							'**/service/http/*',
-							'**/service/persistence/*Util*',
-							'**/service/persistence/impl/*PersistenceImpl*',
-							'**/service/persistence/impl/*FinderBaseImpl*',
-							'**/service/util/*',
-							'**/test/util/*',
-							'adaptive-media-demo/**',
-							'adaptive-media-demo-data-creator-api/**',
-							'adaptive-media-demo-data-creator-impl/**',
+						'**/*Exception*',
+						'**/model/*Model*',
+						'**/model/*Soap*',
+						'**/model/*Wrapper*',
+						'**/model/impl/*BaseImpl*',
+						'**/model/impl/*CacheModel*',
+						'**/model/impl/*ModelImpl*',
+						'**/service/*ServiceUtil*',
+						'**/service/*ServiceWrapper*',
+						'**/service/base/*',
+						'**/service/http/*',
+						'**/service/persistence/*Util*',
+						'**/service/persistence/impl/*PersistenceImpl*',
+						'**/service/persistence/impl/*FinderBaseImpl*',
+						'**/service/util/*',
+						'**/test/util/*',
+						'adaptive-media-demo/**',
+						'adaptive-media-demo-data-creator-api/**',
+						'adaptive-media-demo-data-creator-impl/**',
 					])
-		})
+			})
 	}
 
 	reports {

@@ -14,7 +14,7 @@
 
 package com.liferay.adaptive.media.web.internal.application.list;
 
-import com.liferay.adaptive.media.web.constants.AMPortletKeys;
+import com.liferay.adaptive.media.web.internal.constants.AMPortletKeys;
 import com.liferay.application.list.BasePanelApp;
 import com.liferay.application.list.PanelApp;
 import com.liferay.application.list.constants.PanelCategoryKeys;

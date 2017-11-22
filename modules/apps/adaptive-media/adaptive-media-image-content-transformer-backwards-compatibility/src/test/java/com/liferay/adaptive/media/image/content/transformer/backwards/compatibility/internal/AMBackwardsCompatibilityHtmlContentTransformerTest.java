@@ -18,8 +18,8 @@ import com.liferay.adaptive.media.content.transformer.constants.ContentTransform
 import com.liferay.adaptive.media.image.html.AMImageHTMLTagFactory;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -97,7 +97,7 @@ public class AMBackwardsCompatibilityHtmlContentTransformerTest {
 
 	@Test
 	public void testReturnsTheSameHTMLIfNoImagesArePresent() throws Exception {
-		String content = StringUtil.randomString();
+		String content = RandomTestUtil.randomString();
 
 		Assert.assertEquals(content, _contentTransformer.transform(content));
 	}

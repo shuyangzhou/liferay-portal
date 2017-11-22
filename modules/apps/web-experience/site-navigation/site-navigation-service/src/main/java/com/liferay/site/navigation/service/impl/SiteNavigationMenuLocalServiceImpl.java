@@ -40,12 +40,12 @@ public class SiteNavigationMenuLocalServiceImpl
 
 		// Site navigation menu
 
+		User user = userLocalService.getUser(userId);
+
 		long siteNavigationMenuId = counterLocalService.increment();
 
 		SiteNavigationMenu siteNavigationMenu =
 			siteNavigationMenuPersistence.create(siteNavigationMenuId);
-
-		User user = userLocalService.getUser(userId);
 
 		siteNavigationMenu.setGroupId(groupId);
 		siteNavigationMenu.setCompanyId(user.getCompanyId());
@@ -150,10 +150,10 @@ public class SiteNavigationMenuLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
+		User user = userLocalService.getUser(userId);
+
 		SiteNavigationMenu siteNavigationMenu = getSiteNavigationMenu(
 			siteNavigationMenuId);
-
-		User user = userLocalService.getUser(userId);
 
 		siteNavigationMenu.setModifiedDate(
 			serviceContext.getModifiedDate(new Date()));

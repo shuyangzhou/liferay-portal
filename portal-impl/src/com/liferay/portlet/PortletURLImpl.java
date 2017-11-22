@@ -960,11 +960,13 @@ public class PortletURLImpl
 				continue;
 			}
 
-			String publicRenderParameterName = getPublicRenderParameterName(
-				name);
+			if (!_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+				String publicRenderParameterName = getPublicRenderParameterName(
+					name);
 
-			if (Validator.isNotNull(publicRenderParameterName)) {
-				name = publicRenderParameterName;
+				if (Validator.isNotNull(publicRenderParameterName)) {
+					name = publicRenderParameterName;
+				}
 			}
 
 			for (String value : values) {
@@ -1096,11 +1098,13 @@ public class PortletURLImpl
 				continue;
 			}
 
-			String publicRenderParameterName = getPublicRenderParameterName(
-				name);
+			if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
+				String publicRenderParameterName = getPublicRenderParameterName(
+					name);
 
-			if (Validator.isNotNull(publicRenderParameterName)) {
-				name = publicRenderParameterName;
+				if (Validator.isNotNull(publicRenderParameterName)) {
+					name = publicRenderParameterName;
+				}
 			}
 
 			for (String value : values) {
@@ -1132,8 +1136,7 @@ public class PortletURLImpl
 			}
 		}
 
-		String navigationalState = Base64.toURLSafe(
-			Base64.encode(parameterBytes));
+		String navigationalState = Base64.encodeToURL(parameterBytes);
 
 		sb.append(navigationalState);
 

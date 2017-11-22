@@ -15,10 +15,10 @@
 package com.liferay.site.navigation.menu.item.node.internal.type;
 
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.site.navigation.constants.SiteNavigationWebKeys;
 import com.liferay.site.navigation.menu.item.node.internal.constants.SiteNavigationMenuItemTypeNodeConstants;
 import com.liferay.site.navigation.model.SiteNavigationMenuItem;
 import com.liferay.site.navigation.type.SiteNavigationMenuItemType;
@@ -56,7 +56,7 @@ public class NodeSiteNavigationMenuItemType
 		ResourceBundle resourceBundle =
 			_resourceBundleLoader.loadResourceBundle(locale);
 
-		return LanguageUtil.get(resourceBundle, "page-set");
+		return LanguageUtil.get(resourceBundle, "submenu");
 	}
 
 	@Override
@@ -77,20 +77,26 @@ public class NodeSiteNavigationMenuItemType
 	}
 
 	@Override
-	public JSONObject getViewContext(
-			HttpServletRequest request, HttpServletResponse response,
-			SiteNavigationMenuItem siteNavigationMenuItem)
-		throws Exception {
-
-		return null;
-	}
-
-	@Override
 	public void renderAddPage(
 			HttpServletRequest request, HttpServletResponse response)
 		throws IOException {
 
-		_jspRenderer.renderJSP(_servletContext, request, response, "/node.jsp");
+		_jspRenderer.renderJSP(
+			_servletContext, request, response, "/add_node.jsp");
+	}
+
+	@Override
+	public void renderEditPage(
+			HttpServletRequest request, HttpServletResponse response,
+			SiteNavigationMenuItem siteNavigationMenuItem)
+		throws IOException {
+
+		request.setAttribute(
+			SiteNavigationWebKeys.SITE_NAVIGATION_MENU_ITEM,
+			siteNavigationMenuItem);
+
+		_jspRenderer.renderJSP(
+			_servletContext, request, response, "/edit_node.jsp");
 	}
 
 	@Reference
