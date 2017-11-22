@@ -30,10 +30,13 @@ import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Eudaldo Alonso
+ * @deprecated As of 1.2.0, replaced by {@link
+ *             com.liferay.layout.item.selector.web.internal.PublicLayoutsItemSelectorView}
  */
 @Component(
 	service = {ItemSelectorView.class, PublicLayoutsItemSelectorView.class}
 )
+@Deprecated
 public class PublicLayoutsItemSelectorView extends BaseLayoutsItemSelectorView {
 
 	@Override
