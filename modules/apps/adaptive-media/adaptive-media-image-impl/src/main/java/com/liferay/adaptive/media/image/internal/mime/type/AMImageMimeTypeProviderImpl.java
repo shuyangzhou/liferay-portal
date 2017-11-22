@@ -17,6 +17,7 @@ package com.liferay.adaptive.media.image.internal.mime.type;
 import com.liferay.adaptive.media.image.internal.configuration.AMImageConfiguration;
 import com.liferay.adaptive.media.image.mime.type.AMImageMimeTypeProvider;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.Map;
 
@@ -35,6 +36,11 @@ public class AMImageMimeTypeProviderImpl implements AMImageMimeTypeProvider {
 	@Override
 	public String[] getSupportedMimeTypes() {
 		return _amImageConfiguration.supportedMimeTypes();
+	}
+
+	@Override
+	public boolean isMimeTypeSupported(String mimeType) {
+		return ArrayUtil.contains(getSupportedMimeTypes(), mimeType);
 	}
 
 	@Activate
