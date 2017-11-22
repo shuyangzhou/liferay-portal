@@ -22,7 +22,7 @@ import com.liferay.adaptive.media.image.processor.AMImageAttribute;
 import com.liferay.adaptive.media.image.processor.AMImageProcessor;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
-import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 
 import java.util.Collections;
 import java.util.Map;
@@ -77,8 +77,8 @@ public class AMImageQueryBuilderImplTest {
 
 		AMImageConfigurationEntry amImageConfigurationEntry =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(), "small",
-				Collections.emptyMap(), true);
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+				"small", Collections.emptyMap(), true);
 
 		Predicate<AMImageConfigurationEntry> filter =
 			_amImageQueryBuilderImpl.getConfigurationEntryFilter();
@@ -98,8 +98,8 @@ public class AMImageQueryBuilderImplTest {
 
 		AMImageConfigurationEntry amImageConfigurationEntry =
 			new AMImageConfigurationEntryImpl(
-				StringUtil.randomString(), StringUtil.randomString(),
-				StringUtil.randomString(), Collections.emptyMap(), true);
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+				RandomTestUtil.randomString(), Collections.emptyMap(), true);
 
 		Predicate<AMImageConfigurationEntry> filter =
 			_amImageQueryBuilderImpl.getConfigurationEntryFilter();
