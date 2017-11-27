@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.exportimport.web.trash;
+package com.liferay.exportimport.web.internal.trash;
 
 import aQute.bnd.annotation.ProviderType;
 
@@ -31,10 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Levente Hudák
- * @deprecated As of 1.0.0, replaced by {@link
- *             com.liferay.exportimport.web.internal.trash.ExportImportConfigurationTrashHandler}
  */
-@Deprecated
 @ProviderType
 public class ExportImportConfigurationTrashRenderer
 	extends BaseJSPTrashRenderer {
