@@ -15,16 +15,17 @@
 package com.liferay.bookmarks.web.internal.trash;
 
 import com.liferay.bookmarks.model.BookmarksEntry;
+import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.service.BookmarksEntryLocalService;
 import com.liferay.bookmarks.service.BookmarksFolderLocalService;
-import com.liferay.bookmarks.service.permission.BookmarksEntryPermissionChecker;
-import com.liferay.bookmarks.service.permission.BookmarksFolderPermissionChecker;
 import com.liferay.bookmarks.util.BookmarksUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.checker.ContainerModelPermission;
+import com.liferay.portal.kernel.security.permission.checker.EntryModelPermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.trash.TrashActionKeys;
 import com.liferay.portal.kernel.trash.TrashHandler;
@@ -113,7 +114,7 @@ public class BookmarksEntryTrashHandler extends BookmarksBaseTrashHandler {
 		throws PortalException {
 
 		if (trashActionId.equals(TrashActionKeys.MOVE)) {
-			return BookmarksFolderPermissionChecker.contains(
+			return _containerModelPermission.contains(
 				permissionChecker, groupId, classPK, ActionKeys.ADD_ENTRY);
 		}
 
@@ -175,7 +176,7 @@ public class BookmarksEntryTrashHandler extends BookmarksBaseTrashHandler {
 
 		BookmarksEntry entry = _bookmarksEntryLocalService.getEntry(classPK);
 
-		return BookmarksEntryPermissionChecker.contains(
+		return _entryModelPermission.contains(
 			permissionChecker, entry, actionId);
 	}
 
@@ -195,5 +196,15 @@ public class BookmarksEntryTrashHandler extends BookmarksBaseTrashHandler {
 
 	private BookmarksEntryLocalService _bookmarksEntryLocalService;
 	private BookmarksFolderLocalService _bookmarksFolderLocalService;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.bookmarks.model.BookmarksFolder)"
+	)
+	private ContainerModelPermission<BookmarksFolder> _containerModelPermission;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.bookmarks.model.BookmarksEntry)"
+	)
+	private EntryModelPermission<BookmarksEntry> _entryModelPermission;
 
 }

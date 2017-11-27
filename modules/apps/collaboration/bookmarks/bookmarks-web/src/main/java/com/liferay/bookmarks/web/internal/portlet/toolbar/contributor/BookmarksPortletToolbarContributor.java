@@ -34,8 +34,8 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.toolbar.contributor.BasePortletToolbarContributor;
 import com.liferay.portal.kernel.portlet.toolbar.contributor.PortletToolbarContributor;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.checker.ContainerModelPermission;
 import com.liferay.portal.kernel.servlet.taglib.ui.MenuItem;
 import com.liferay.portal.kernel.servlet.taglib.ui.URLMenuItem;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
@@ -154,7 +154,7 @@ public class BookmarksPortletToolbarContributor
 		String actionId) {
 
 		try {
-			_baseModelPermissionChecker.checkBaseModel(
+			_containerModelPermission.check(
 				permissionChecker, groupId, folderId, actionId);
 		}
 		catch (PortalException pe) {
@@ -199,16 +199,6 @@ public class BookmarksPortletToolbarContributor
 		}
 
 		return menuItems;
-	}
-
-	@Reference(
-		target = "(model.class.name=com.liferay.bookmarks.model.BookmarksFolder)",
-		unbind = "-"
-	)
-	protected void setBaseModelPermissionChecker(
-		BaseModelPermissionChecker baseModelPermissionChecker) {
-
-		_baseModelPermissionChecker = baseModelPermissionChecker;
 	}
 
 	@Reference(unbind = "-")
@@ -280,8 +270,12 @@ public class BookmarksPortletToolbarContributor
 	private static final Log _log = LogFactoryUtil.getLog(
 		BookmarksPortletToolbarContributor.class);
 
-	private BaseModelPermissionChecker _baseModelPermissionChecker;
 	private BookmarksFolderService _bookmarksFolderService;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.bookmarks.model.BookmarksFolder)"
+	)
+	private ContainerModelPermission<BookmarksFolder> _containerModelPermission;
 
 	@Reference
 	private Portal _portal;
