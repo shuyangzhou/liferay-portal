@@ -19,13 +19,13 @@ import com.liferay.asset.kernel.model.BaseJSPAssetRenderer;
 import com.liferay.bookmarks.constants.BookmarksPortletKeys;
 import com.liferay.bookmarks.constants.BookmarksWebKeys;
 import com.liferay.bookmarks.model.BookmarksFolder;
-import com.liferay.bookmarks.service.permission.BookmarksFolderPermissionChecker;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.checker.ContainerModelPermission;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.trash.TrashRenderer;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -51,20 +51,13 @@ public class BookmarksFolderAssetRenderer
 
 	public static final String TYPE = "bookmarks_folder";
 
-	/**
-	 * @deprecated As of 1.1.0, replaced by {@link
-	 *             #BookmarksFolderAssetRenderer(BookmarksFolder, TrashHelper)}
-	 */
-	@Deprecated
-	public BookmarksFolderAssetRenderer(BookmarksFolder folder) {
-		this(folder, null);
-	}
-
 	public BookmarksFolderAssetRenderer(
-		BookmarksFolder folder, TrashHelper trashHelper) {
+		BookmarksFolder folder, TrashHelper trashHelper,
+		ContainerModelPermission<BookmarksFolder> containerModelPermission) {
 
 		_folder = folder;
 		_trashHelper = trashHelper;
+		_containerModelPermission = containerModelPermission;
 	}
 
 	@Override
@@ -211,7 +204,7 @@ public class BookmarksFolderAssetRenderer
 	public boolean hasEditPermission(PermissionChecker permissionChecker)
 		throws PortalException {
 
-		return BookmarksFolderPermissionChecker.contains(
+		return _containerModelPermission.contains(
 			permissionChecker, _folder, ActionKeys.UPDATE);
 	}
 
@@ -219,7 +212,7 @@ public class BookmarksFolderAssetRenderer
 	public boolean hasViewPermission(PermissionChecker permissionChecker)
 		throws PortalException {
 
-		return BookmarksFolderPermissionChecker.contains(
+		return _containerModelPermission.contains(
 			permissionChecker, _folder, ActionKeys.VIEW);
 	}
 
@@ -234,6 +227,8 @@ public class BookmarksFolderAssetRenderer
 		return super.include(request, response, template);
 	}
 
+	private final ContainerModelPermission<BookmarksFolder>
+		_containerModelPermission;
 	private final BookmarksFolder _folder;
 	private final TrashHelper _trashHelper;
 
