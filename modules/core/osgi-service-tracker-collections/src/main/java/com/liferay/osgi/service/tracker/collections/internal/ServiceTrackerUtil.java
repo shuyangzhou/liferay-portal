@@ -29,11 +29,19 @@ public class ServiceTrackerUtil {
 		BundleContext bundleContext, Class<SR> clazz, String filterString,
 		ServiceTrackerCustomizer<SR, TS> serviceTrackerCustomizer) {
 
+		String finalFilterString;
+
 		if (filterString != null) {
+			if (clazz != null) {
+				finalFilterString = String.format(
+					"(&(objectClass=" + clazz.getName() + ")%s)", filterString);
+			}
+			else {
+				finalFilterString = filterString;
+			}
+
 			try {
-				Filter filter = bundleContext.createFilter(
-					"(&(objectClass=" + clazz.getName() + ")" + filterString +
-						")");
+				Filter filter = bundleContext.createFilter(finalFilterString);
 
 				return new ServiceTracker<>(
 					bundleContext, filter, serviceTrackerCustomizer);
@@ -44,10 +52,12 @@ public class ServiceTrackerUtil {
 				return null;
 			}
 		}
-		else {
+		else if (clazz != null) {
 			return new ServiceTracker<>(
 				bundleContext, clazz, serviceTrackerCustomizer);
 		}
+
+		throw new IllegalArgumentException();
 	}
 
 	public static <T> T throwException(Throwable throwable) {
