@@ -16,8 +16,8 @@ package com.liferay.bookmarks.social;
 
 import com.liferay.bookmarks.constants.BookmarksPortletKeys;
 import com.liferay.bookmarks.model.BookmarksFolder;
-import com.liferay.bookmarks.service.permission.BookmarksFolderPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.checker.ContainerModelPermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
@@ -92,7 +92,7 @@ public class BookmarksFolderActivityInterpreter
 			String actionId, ServiceContext serviceContext)
 		throws Exception {
 
-		return BookmarksFolderPermissionChecker.contains(
+		return _containerModelPermission.contains(
 			permissionChecker, activity.getGroupId(), activity.getClassPK(),
 			actionId);
 	}
@@ -111,6 +111,11 @@ public class BookmarksFolderActivityInterpreter
 
 	private static final String[] _CLASS_NAMES =
 		{BookmarksFolder.class.getName()};
+
+	@Reference(
+		target = "(model.class.name=com.liferay.bookmarks.model.BookmarksFolder)"
+	)
+	private ContainerModelPermission<BookmarksFolder> _containerModelPermission;
 
 	private ResourceBundleLoader _resourceBundleLoader;
 
