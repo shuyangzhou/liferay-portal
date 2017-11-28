@@ -14,13 +14,12 @@
 
 package com.liferay.portal.kernel.messaging;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
 import com.liferay.portal.kernel.concurrent.RejectedExecutionHandler;
 import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
 import com.liferay.portal.kernel.concurrent.ThreadPoolHandlerAdapter;
 import com.liferay.portal.kernel.executor.PortalExecutorManager;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
@@ -32,7 +31,6 @@ import com.liferay.portal.kernel.util.GroupThreadLocal;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.NamedThreadFactory;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
@@ -43,6 +41,9 @@ import com.liferay.registry.ServiceTrackerCustomizer;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Michael C. Han
@@ -145,8 +146,8 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 				getName(), threadPoolExecutor);
 
 		if (oldThreadPoolExecutor != null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
+			if (_logger.isWarnEnabled()) {
+				_logger.warn(
 					"Abort creating a new thread pool for destination " +
 						getName() + " and reuse previous one");
 			}
@@ -162,8 +163,9 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 	@Override
 	public void send(Message message) {
 		if (messageListeners.isEmpty()) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("No message listeners for destination " + getName());
+			if (_logger.isDebugEnabled()) {
+				_logger.debug(
+					"No message listeners for destination " + getName());
 			}
 
 			return;
@@ -180,8 +182,8 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 
 		populateMessageFromThreadLocals(message);
 
-		if (_log.isDebugEnabled()) {
-			_log.debug(
+		if (_logger.isDebugEnabled()) {
+			_logger.debug(
 				StringBundler.concat(
 					"Sending message ", String.valueOf(message),
 					" from destination ", getName(), " to message listeners ",
@@ -234,13 +236,13 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 			public void rejectedExecution(
 				Runnable runnable, ThreadPoolExecutor threadPoolExecutor) {
 
-				if (!_log.isWarnEnabled()) {
+				if (!_logger.isWarnEnabled()) {
 					return;
 				}
 
 				MessageRunnable messageRunnable = (MessageRunnable)runnable;
 
-				_log.warn(
+				_logger.warn(
 					StringBundler.concat(
 						"Discarding message ",
 						String.valueOf(messageRunnable.getMessage()),
@@ -383,7 +385,7 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 
 	private static final int _WORKERS_MAX_SIZE = 5;
 
-	private static final Log _log = LogFactoryUtil.getLog(
+	private static final Logger _logger = LoggerFactory.getLogger(
 		BaseAsyncDestination.class);
 
 	private int _maximumQueueSize = Integer.MAX_VALUE;
