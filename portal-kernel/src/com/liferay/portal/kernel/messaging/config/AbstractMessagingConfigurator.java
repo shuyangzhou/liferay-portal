@@ -15,8 +15,6 @@
 package com.liferay.portal.kernel.messaging.config;
 
 import com.liferay.petra.lang.ClassLoaderPool;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationEventListener;
@@ -44,6 +42,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Michael C. Han
@@ -353,8 +354,8 @@ public abstract class AbstractMessagingConfigurator
 					destinationConfiguration.getDestinationName());
 			}
 			catch (SecurityException se) {
-				if (_log.isInfoEnabled()) {
-					_log.info(
+				if (_logger.isInfoEnabled()) {
+					_logger.info(
 						"Rejecting destination " +
 							destinationConfiguration.getDestinationName());
 				}
@@ -383,8 +384,8 @@ public abstract class AbstractMessagingConfigurator
 				PortalMessageBusPermission.checkListen(destinationName);
 			}
 			catch (SecurityException se) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Rejecting destination " + destinationName);
+				if (_logger.isInfoEnabled()) {
+					_logger.info("Rejecting destination " + destinationName);
 				}
 
 				continue;
@@ -417,7 +418,7 @@ public abstract class AbstractMessagingConfigurator
 		}
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
+	private static final Logger _logger = LoggerFactory.getLogger(
 		AbstractMessagingConfigurator.class);
 
 	private final Set<DestinationConfiguration> _destinationConfigurations =
