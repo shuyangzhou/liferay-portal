@@ -12,13 +12,13 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging.proxy;
+package com.liferay.petra.messaging.proxy;
 
-import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.messaging.MessageBus;
-import com.liferay.portal.kernel.messaging.MessageBusUtil;
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactoryUtil;
-import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
+import com.liferay.petra.messaging.Message;
+import com.liferay.petra.messaging.MessageBus;
+import com.liferay.petra.messaging.MessageBusUtil;
+import com.liferay.petra.messaging.sender.SingleDestinationMessageSenderFactoryUtil;
+import com.liferay.petra.messaging.sender.SynchronousMessageSender;
 
 /**
  * @author Michael C. Han

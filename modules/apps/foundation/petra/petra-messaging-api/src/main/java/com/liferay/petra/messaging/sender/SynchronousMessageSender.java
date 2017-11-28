@@ -12,10 +12,10 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging.sender;
+package com.liferay.petra.messaging.sender;
 
-import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.messaging.MessageBusException;
+import com.liferay.petra.messaging.Message;
+import com.liferay.petra.messaging.MessageBusException;
 
 /**
  * @author Michael C. Han

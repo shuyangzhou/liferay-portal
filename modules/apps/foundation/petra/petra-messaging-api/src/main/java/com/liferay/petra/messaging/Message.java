@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging;
+package com.liferay.petra.messaging;
 
 import com.liferay.portal.kernel.io.Deserializer;
 import com.liferay.portal.kernel.io.Serializer;

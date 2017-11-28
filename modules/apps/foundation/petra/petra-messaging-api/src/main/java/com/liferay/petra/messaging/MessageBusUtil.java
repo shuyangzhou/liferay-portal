@@ -12,10 +12,10 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging;
+package com.liferay.petra.messaging;
 
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactoryUtil;
-import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
+import com.liferay.petra.messaging.sender.SingleDestinationMessageSenderFactoryUtil;
+import com.liferay.petra.messaging.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.security.pacl.permission.PortalMessageBusPermission;
 import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;

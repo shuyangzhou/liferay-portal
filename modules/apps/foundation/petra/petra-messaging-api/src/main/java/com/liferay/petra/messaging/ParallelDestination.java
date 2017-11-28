@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging;
+package com.liferay.petra.messaging;
 
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.cache.thread.local.Lifecycle;

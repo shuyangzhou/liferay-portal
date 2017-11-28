@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging.proxy;
+package com.liferay.petra.messaging.proxy;
 
 import java.io.Closeable;
 

@@ -12,10 +12,10 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging.proxy;
+package com.liferay.petra.messaging.proxy;
 
 import com.liferay.petra.lang.CentralizedThreadLocal;
-import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.petra.messaging.Message;
 
 import java.util.HashMap;
 import java.util.Map;

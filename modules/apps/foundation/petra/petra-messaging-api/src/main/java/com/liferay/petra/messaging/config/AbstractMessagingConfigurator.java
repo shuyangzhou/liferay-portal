@@ -12,19 +12,19 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging.config;
+package com.liferay.petra.messaging.config;
 
 import com.liferay.petra.lang.ClassLoaderPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.Destination;
-import com.liferay.portal.kernel.messaging.DestinationConfiguration;
-import com.liferay.portal.kernel.messaging.DestinationEventListener;
-import com.liferay.portal.kernel.messaging.DestinationFactory;
-import com.liferay.portal.kernel.messaging.DestinationFactoryUtil;
-import com.liferay.portal.kernel.messaging.MessageBus;
-import com.liferay.portal.kernel.messaging.MessageBusEventListener;
-import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.petra.messaging.Destination;
+import com.liferay.petra.messaging.DestinationConfiguration;
+import com.liferay.petra.messaging.DestinationEventListener;
+import com.liferay.petra.messaging.DestinationFactory;
+import com.liferay.petra.messaging.DestinationFactoryUtil;
+import com.liferay.petra.messaging.MessageBus;
+import com.liferay.petra.messaging.MessageBusEventListener;
+import com.liferay.petra.messaging.MessageListener;
 import com.liferay.portal.kernel.nio.intraband.RegistrationReference;
 import com.liferay.portal.kernel.nio.intraband.messaging.DestinationConfigurationProcessCallable;
 import com.liferay.portal.kernel.nio.intraband.rpc.IntrabandRPCUtil;

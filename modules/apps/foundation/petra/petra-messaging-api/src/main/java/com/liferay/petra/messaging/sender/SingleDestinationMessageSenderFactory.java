@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging.sender;
+package com.liferay.petra.messaging.sender;
 
 /**
  * @author Michael C. Han

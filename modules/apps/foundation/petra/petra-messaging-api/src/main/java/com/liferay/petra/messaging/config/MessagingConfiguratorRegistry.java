@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging.config;
+package com.liferay.petra.messaging.config;
 
 import java.util.ArrayList;
 import java.util.List;
