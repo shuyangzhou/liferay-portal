@@ -14,11 +14,11 @@
 
 package com.liferay.portal.kernel.messaging.proxy;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.MessageListener;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
 import org.slf4j.Logger;
