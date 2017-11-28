@@ -50,9 +50,7 @@ public class ReflectionUtil {
 
 		Field field = clazz.getDeclaredField(name);
 
-		if (!field.isAccessible()) {
-			field.setAccessible(true);
-		}
+		field.setAccessible(true);
 
 		return unfinalField(field);
 	}
@@ -61,9 +59,7 @@ public class ReflectionUtil {
 		Field[] fields = clazz.getDeclaredFields();
 
 		for (Field field : fields) {
-			if (!field.isAccessible()) {
-				field.setAccessible(true);
-			}
+			field.setAccessible(true);
 
 			unfinalField(field);
 		}
@@ -77,9 +73,7 @@ public class ReflectionUtil {
 
 		Method method = clazz.getDeclaredMethod(name, parameterTypes);
 
-		if (!method.isAccessible()) {
-			method.setAccessible(true);
-		}
+		method.setAccessible(true);
 
 		return method;
 	}
