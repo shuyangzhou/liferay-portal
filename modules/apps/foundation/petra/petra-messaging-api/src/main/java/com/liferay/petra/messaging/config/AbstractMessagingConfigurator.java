@@ -15,8 +15,6 @@
 package com.liferay.petra.messaging.config;
 
 import com.liferay.petra.lang.ClassLoaderPool;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.petra.messaging.Destination;
 import com.liferay.petra.messaging.DestinationConfiguration;
 import com.liferay.petra.messaging.DestinationEventListener;
@@ -31,8 +29,8 @@ import com.liferay.portal.kernel.nio.intraband.rpc.IntrabandRPCUtil;
 import com.liferay.portal.kernel.resiliency.spi.SPI;
 import com.liferay.portal.kernel.resiliency.spi.SPIUtil;
 import com.liferay.portal.kernel.security.pacl.permission.PortalMessageBusPermission;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.registry.Filter;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
@@ -40,6 +38,9 @@ import com.liferay.registry.ServiceReference;
 import com.liferay.registry.ServiceRegistrar;
 import com.liferay.registry.dependency.ServiceDependencyListener;
 import com.liferay.registry.dependency.ServiceDependencyManager;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 
@@ -366,8 +367,8 @@ public abstract class AbstractMessagingConfigurator
 					destinationConfiguration.getDestinationName());
 			}
 			catch (SecurityException se) {
-				if (_log.isInfoEnabled()) {
-					_log.info(
+				if (_logger.isInfoEnabled()) {
+					_logger.info(
 						"Rejecting destination " +
 							destinationConfiguration.getDestinationName());
 				}
@@ -396,8 +397,8 @@ public abstract class AbstractMessagingConfigurator
 				PortalMessageBusPermission.checkListen(destinationName);
 			}
 			catch (SecurityException se) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Rejecting destination " + destinationName);
+				if (_logger.isInfoEnabled()) {
+					_logger.info("Rejecting destination " + destinationName);
 				}
 
 				continue;
@@ -430,7 +431,7 @@ public abstract class AbstractMessagingConfigurator
 		}
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
+	private static final Logger _logger = LoggerFactory.getLogger(
 		AbstractMessagingConfigurator.class);
 
 	private final Set<DestinationConfiguration> _destinationConfigurations =
@@ -487,7 +488,7 @@ public abstract class AbstractMessagingConfigurator
 					sb.append(" on MPI for ");
 					sb.append(_destinationName);
 
-					_log.error(sb.toString(), e);
+					_logger.error(sb.toString(), e);
 				}
 			}
 

@@ -14,8 +14,8 @@
 
 package com.liferay.petra.messaging;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -41,14 +41,14 @@ public class SynchronousDestination extends BaseDestination {
 				messageListener.receive(message);
 			}
 			catch (MessageListenerException mle) {
-				_log.error("Unable to process message " + message, mle);
+				_logger.error("Unable to process message " + message, mle);
 			}
 		}
 
 		_sentMessageCounter.incrementAndGet();
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
+	private static final Logger _logger = LoggerFactory.getLogger(
 		SynchronousDestination.class);
 
 	private final AtomicLong _sentMessageCounter = new AtomicLong();
