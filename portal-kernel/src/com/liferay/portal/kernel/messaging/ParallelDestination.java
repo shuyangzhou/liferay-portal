@@ -19,10 +19,10 @@ import com.liferay.portal.kernel.cache.thread.local.Lifecycle;
 import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCacheManager;
 import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
 
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Set;
 
 /**
  * <p>
@@ -53,7 +53,8 @@ public class ParallelDestination extends BaseAsyncDestination {
 						messageListener.receive(message);
 					}
 					catch (MessageListenerException mle) {
-						_logger.error("Unable to process message " + message, mle);
+						_logger.error(
+							"Unable to process message " + message, mle);
 					}
 					finally {
 						if (Thread.currentThread() != currentThread) {

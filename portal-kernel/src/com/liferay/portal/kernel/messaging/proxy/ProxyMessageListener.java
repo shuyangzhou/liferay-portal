@@ -76,7 +76,9 @@ public class ProxyMessageListener implements MessageListener {
 
 				responseMessage.setPayload(proxyResponse);
 
-				if (_logger.isDebugEnabled() && (proxyResponseException != null)) {
+				if (_logger.isDebugEnabled() &&
+					(proxyResponseException != null)) {
+
 					_logger.debug(proxyResponseException.toString());
 				}
 
