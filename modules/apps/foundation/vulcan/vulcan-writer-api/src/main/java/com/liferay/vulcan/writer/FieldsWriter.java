@@ -186,6 +186,8 @@ public class FieldsWriter<T, U extends Identifier> {
 					return;
 				}
 
+				Predicate<String> embeddedPredicate = getEmbeddedPredicate();
+
 				SingleModel<V> singleModel = singleModelOptional.get();
 
 				Stream<String> stream = Stream.concat(
@@ -195,7 +197,7 @@ public class FieldsWriter<T, U extends Identifier> {
 				String embeddedPath = String.join(
 					".", stream.collect(Collectors.toList()));
 
-				if (getEmbeddedPredicate().test(embeddedPath)) {
+				if (embeddedPredicate.test(embeddedPath)) {
 					embeddedURLBiConsumer.accept(url, embeddedPathElements);
 					modelBiConsumer.accept(singleModel, embeddedPathElements);
 				}
@@ -308,7 +310,11 @@ public class FieldsWriter<T, U extends Identifier> {
 		Stream<Entry<String, V>> stream = entries.stream();
 
 		stream.filter(
-			entry -> getFieldsPredicate().test(entry.getKey())
+			entry -> {
+				Predicate<String> fieldsPredicate = getFieldsPredicate();
+
+				return fieldsPredicate.test(entry.getKey());
+			}
 		).forEach(
 			consumer
 		);
