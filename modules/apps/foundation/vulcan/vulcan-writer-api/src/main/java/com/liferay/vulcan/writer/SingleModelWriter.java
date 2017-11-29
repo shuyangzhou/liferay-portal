@@ -55,13 +55,14 @@ public class SingleModelWriter<T> {
 	}
 
 	public SingleModelWriter(Builder<T> builder) {
-		_singleModelMessageMapper = builder._singleModelMessageMapper;
-		_singleModel = builder._singleModel;
-		_jsonObjectBuilder = new JSONObjectBuilder();
-		_requestInfo = builder._requestInfo;
-		_representorFunction = builder._representorFunction;
 		_pathFunction = builder._pathFunction;
+		_representorFunction = builder._representorFunction;
+		_requestInfo = builder._requestInfo;
 		_resourceNameFunction = builder._resourceNameFunction;
+		_singleModel = builder._singleModel;
+		_singleModelMessageMapper = builder._singleModelMessageMapper;
+
+		_jsonObjectBuilder = new JSONObjectBuilder();
 	}
 
 	/**

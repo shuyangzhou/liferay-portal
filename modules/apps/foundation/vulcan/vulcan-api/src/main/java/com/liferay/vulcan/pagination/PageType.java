@@ -22,7 +22,7 @@ package com.liferay.vulcan.pagination;
  */
 public enum PageType {
 
-	CURRENT, FIRST, PREVIOUS, LAST, NEXT;
+	CURRENT, FIRST, LAST, NEXT, PREVIOUS;
 
 	/**
 	 * Returns the correspondent page number for a certain type.

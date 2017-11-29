@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.reading.time.model.ReadingTimeEntry;
 
@@ -96,7 +95,7 @@ public class ReadingTimeEntryCacheModel implements CacheModel<ReadingTimeEntry>,
 		ReadingTimeEntryImpl readingTimeEntryImpl = new ReadingTimeEntryImpl();
 
 		if (uuid == null) {
-			readingTimeEntryImpl.setUuid(StringPool.BLANK);
+			readingTimeEntryImpl.setUuid("");
 		}
 		else {
 			readingTimeEntryImpl.setUuid(uuid);
@@ -152,7 +151,7 @@ public class ReadingTimeEntryCacheModel implements CacheModel<ReadingTimeEntry>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);

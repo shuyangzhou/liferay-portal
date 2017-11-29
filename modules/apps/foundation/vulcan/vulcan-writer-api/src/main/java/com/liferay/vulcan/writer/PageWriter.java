@@ -65,13 +65,14 @@ public class PageWriter<T> {
 	}
 
 	public PageWriter(Builder<T> builder) {
-		_pageMessageMapper = builder._pageMessageMapper;
 		_page = builder._page;
-		_pageJsonObjectBuilder = new JSONObjectBuilder();
-		_requestInfo = builder._requestInfo;
-		_representorFunction = builder._representorFunction;
+		_pageMessageMapper = builder._pageMessageMapper;
 		_pathFunction = builder._pathFunction;
+		_representorFunction = builder._representorFunction;
+		_requestInfo = builder._requestInfo;
 		_resourceNameFunction = builder._resourceNameFunction;
+
+		_jsonObjectBuilder = new JSONObjectBuilder();
 	}
 
 	/**
@@ -88,14 +89,14 @@ public class PageWriter<T> {
 	 */
 	public String write() {
 		_pageMessageMapper.onStart(
-			_pageJsonObjectBuilder, _page, _requestInfo.getHttpHeaders());
+			_jsonObjectBuilder, _page, _requestInfo.getHttpHeaders());
 
 		_pageMessageMapper.mapItemTotalCount(
-			_pageJsonObjectBuilder, _page.getTotalCount());
+			_jsonObjectBuilder, _page.getTotalCount());
 
 		Collection<T> items = _page.getItems();
 
-		_pageMessageMapper.mapPageCount(_pageJsonObjectBuilder, items.size());
+		_pageMessageMapper.mapPageCount(_jsonObjectBuilder, items.size());
 
 		_writePageURLs();
 
@@ -103,16 +104,16 @@ public class PageWriter<T> {
 
 		optional.ifPresent(
 			url -> _pageMessageMapper.mapCollectionURL(
-				_pageJsonObjectBuilder, url));
+				_jsonObjectBuilder, url));
 
 		items.forEach(
 			model -> _writeItem(
 				new SingleModel<>(model, _page.getModelClass())));
 
 		_pageMessageMapper.onFinish(
-			_pageJsonObjectBuilder, _page, _requestInfo.getHttpHeaders());
+			_jsonObjectBuilder, _page, _requestInfo.getHttpHeaders());
 
-		JsonObject jsonObject = _pageJsonObjectBuilder.build();
+		JsonObject jsonObject = _jsonObjectBuilder.build();
 
 		return jsonObject.toString();
 	}
@@ -289,42 +290,40 @@ public class PageWriter<T> {
 		JSONObjectBuilder itemJsonObjectBuilder = new JSONObjectBuilder();
 
 		_pageMessageMapper.onStartItem(
-			_pageJsonObjectBuilder, itemJsonObjectBuilder,
-			singleModel.getModel(), singleModel.getModelClass(),
-			_requestInfo.getHttpHeaders());
+			_jsonObjectBuilder, itemJsonObjectBuilder, singleModel.getModel(),
+			singleModel.getModelClass(), _requestInfo.getHttpHeaders());
 
 		fieldsWriter.writeBooleanFields(
 			(field, value) -> _pageMessageMapper.mapItemBooleanField(
-				_pageJsonObjectBuilder, itemJsonObjectBuilder, field, value));
+				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
 
 		fieldsWriter.writeLocalizedStringFields(
 			(field, value) -> _pageMessageMapper.mapItemStringField(
-				_pageJsonObjectBuilder, itemJsonObjectBuilder, field, value));
+				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
 
 		fieldsWriter.writeNumberFields(
 			(field, value) -> _pageMessageMapper.mapItemNumberField(
-				_pageJsonObjectBuilder, itemJsonObjectBuilder, field, value));
+				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
 
 		fieldsWriter.writeStringFields(
 			(field, value) -> _pageMessageMapper.mapItemStringField(
-				_pageJsonObjectBuilder, itemJsonObjectBuilder, field, value));
+				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
 
 		fieldsWriter.writeLinks(
 			(fieldName, link) -> _pageMessageMapper.mapItemLink(
-				_pageJsonObjectBuilder, itemJsonObjectBuilder, fieldName,
-				link));
+				_jsonObjectBuilder, itemJsonObjectBuilder, fieldName, link));
 
 		fieldsWriter.writeTypes(
 			types -> _pageMessageMapper.mapItemTypes(
-				_pageJsonObjectBuilder, itemJsonObjectBuilder, types));
+				_jsonObjectBuilder, itemJsonObjectBuilder, types));
 
 		fieldsWriter.writeBinaries(
 			(field, value) -> _pageMessageMapper.mapItemLink(
-				_pageJsonObjectBuilder, itemJsonObjectBuilder, field, value));
+				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
 
 		fieldsWriter.writeSingleURL(
 			url -> _pageMessageMapper.mapItemSelfURL(
-				_pageJsonObjectBuilder, itemJsonObjectBuilder, url));
+				_jsonObjectBuilder, itemJsonObjectBuilder, url));
 
 		fieldsWriter.writeEmbeddedRelatedModels(
 			embeddedSingleModel -> getPathOptional(
@@ -335,11 +334,11 @@ public class PageWriter<T> {
 					itemJsonObjectBuilder),
 			(resourceURL, embeddedPathElements) ->
 				_pageMessageMapper.mapItemLinkedResourceURL(
-					_pageJsonObjectBuilder, itemJsonObjectBuilder,
+					_jsonObjectBuilder, itemJsonObjectBuilder,
 					embeddedPathElements, resourceURL),
 			(resourceURL, embeddedPathElements) ->
 				_pageMessageMapper.mapItemEmbeddedResourceURL(
-					_pageJsonObjectBuilder, itemJsonObjectBuilder,
+					_jsonObjectBuilder, itemJsonObjectBuilder,
 					embeddedPathElements, resourceURL));
 
 		fieldsWriter.writeLinkedRelatedModels(
@@ -347,20 +346,19 @@ public class PageWriter<T> {
 				embeddedSingleModel, _pathFunction, _representorFunction),
 			(url, embeddedPathElements) ->
 				_pageMessageMapper.mapItemLinkedResourceURL(
-					_pageJsonObjectBuilder, itemJsonObjectBuilder,
+					_jsonObjectBuilder, itemJsonObjectBuilder,
 					embeddedPathElements, url));
 
 		fieldsWriter.writeRelatedCollections(
 			_resourceNameFunction,
 			(url, embeddedPathElements) ->
 				_pageMessageMapper.mapItemLinkedResourceURL(
-					_pageJsonObjectBuilder, itemJsonObjectBuilder,
+					_jsonObjectBuilder, itemJsonObjectBuilder,
 					embeddedPathElements, url));
 
 		_pageMessageMapper.onFinishItem(
-			_pageJsonObjectBuilder, itemJsonObjectBuilder,
-			singleModel.getModel(), singleModel.getModelClass(),
-			_requestInfo.getHttpHeaders());
+			_jsonObjectBuilder, itemJsonObjectBuilder, singleModel.getModel(),
+			singleModel.getModelClass(), _requestInfo.getHttpHeaders());
 	}
 
 	private <V> void _writeItemEmbeddedModelFields(
@@ -380,41 +378,41 @@ public class PageWriter<T> {
 		fieldsWriter.writeBooleanFields(
 			(field, value) ->
 				_pageMessageMapper.mapItemEmbeddedResourceBooleanField(
-					_pageJsonObjectBuilder, itemJsonObjectBuilder,
+					_jsonObjectBuilder, itemJsonObjectBuilder,
 					embeddedPathElements, field, value));
 
 		fieldsWriter.writeLocalizedStringFields(
 			(field, value) ->
 				_pageMessageMapper.mapItemEmbeddedResourceStringField(
-					_pageJsonObjectBuilder, itemJsonObjectBuilder,
+					_jsonObjectBuilder, itemJsonObjectBuilder,
 					embeddedPathElements, field, value));
 
 		fieldsWriter.writeNumberFields(
 			(field, value) ->
 				_pageMessageMapper.mapItemEmbeddedResourceNumberField(
-					_pageJsonObjectBuilder, itemJsonObjectBuilder,
+					_jsonObjectBuilder, itemJsonObjectBuilder,
 					embeddedPathElements, field, value));
 
 		fieldsWriter.writeStringFields(
 			(field, value) ->
 				_pageMessageMapper.mapItemEmbeddedResourceStringField(
-					_pageJsonObjectBuilder, itemJsonObjectBuilder,
+					_jsonObjectBuilder, itemJsonObjectBuilder,
 					embeddedPathElements, field, value));
 
 		fieldsWriter.writeLinks(
 			(fieldName, link) -> _pageMessageMapper.mapItemEmbeddedResourceLink(
-				_pageJsonObjectBuilder, itemJsonObjectBuilder,
-				embeddedPathElements, fieldName, link));
+				_jsonObjectBuilder, itemJsonObjectBuilder, embeddedPathElements,
+				fieldName, link));
 
 		fieldsWriter.writeTypes(
 			types -> _pageMessageMapper.mapItemEmbeddedResourceTypes(
-				_pageJsonObjectBuilder, itemJsonObjectBuilder,
-				embeddedPathElements, types));
+				_jsonObjectBuilder, itemJsonObjectBuilder, embeddedPathElements,
+				types));
 
 		fieldsWriter.writeBinaries(
 			(field, value) -> _pageMessageMapper.mapItemEmbeddedResourceLink(
-				_pageJsonObjectBuilder, itemJsonObjectBuilder,
-				embeddedPathElements, field, value));
+				_jsonObjectBuilder, itemJsonObjectBuilder, embeddedPathElements,
+				field, value));
 
 		fieldsWriter.writeEmbeddedRelatedModels(
 			embeddedSingleModel -> getPathOptional(
@@ -425,11 +423,11 @@ public class PageWriter<T> {
 					itemJsonObjectBuilder),
 			(resourceURL, resourceEmbeddedPathElements) ->
 				_pageMessageMapper.mapItemLinkedResourceURL(
-					_pageJsonObjectBuilder, itemJsonObjectBuilder,
+					_jsonObjectBuilder, itemJsonObjectBuilder,
 					resourceEmbeddedPathElements, resourceURL),
 			(resourceURL, resourceEmbeddedPathElements) ->
 				_pageMessageMapper.mapItemEmbeddedResourceURL(
-					_pageJsonObjectBuilder, itemJsonObjectBuilder,
+					_jsonObjectBuilder, itemJsonObjectBuilder,
 					resourceEmbeddedPathElements, resourceURL));
 
 		fieldsWriter.writeLinkedRelatedModels(
@@ -437,14 +435,14 @@ public class PageWriter<T> {
 				embeddedSingleModel, _pathFunction, _representorFunction),
 			(url, resourceEmbeddedPathElements) ->
 				_pageMessageMapper.mapItemLinkedResourceURL(
-					_pageJsonObjectBuilder, itemJsonObjectBuilder,
+					_jsonObjectBuilder, itemJsonObjectBuilder,
 					resourceEmbeddedPathElements, url));
 
 		fieldsWriter.writeRelatedCollections(
 			_resourceNameFunction,
 			(url, resourceEmbeddedPathElements) ->
 				_pageMessageMapper.mapItemLinkedResourceURL(
-					_pageJsonObjectBuilder, itemJsonObjectBuilder,
+					_jsonObjectBuilder, itemJsonObjectBuilder,
 					resourceEmbeddedPathElements, url));
 	}
 
@@ -454,33 +452,33 @@ public class PageWriter<T> {
 		optional.ifPresent(
 			url -> {
 				_pageMessageMapper.mapCurrentPageURL(
-					_pageJsonObjectBuilder,
+					_jsonObjectBuilder,
 					createCollectionPageURL(url, _page, CURRENT));
 
 				_pageMessageMapper.mapFirstPageURL(
-					_pageJsonObjectBuilder,
+					_jsonObjectBuilder,
 					createCollectionPageURL(url, _page, FIRST));
 
 				_pageMessageMapper.mapLastPageURL(
-					_pageJsonObjectBuilder,
+					_jsonObjectBuilder,
 					createCollectionPageURL(url, _page, LAST));
 
 				if (_page.hasNext()) {
 					_pageMessageMapper.mapNextPageURL(
-						_pageJsonObjectBuilder,
+						_jsonObjectBuilder,
 						createCollectionPageURL(url, _page, NEXT));
 				}
 
 				if (_page.hasPrevious()) {
 					_pageMessageMapper.mapPreviousPageURL(
-						_pageJsonObjectBuilder,
+						_jsonObjectBuilder,
 						createCollectionPageURL(url, _page, PREVIOUS));
 				}
 			});
 	}
 
+	private final JSONObjectBuilder _jsonObjectBuilder;
 	private final Page<T> _page;
-	private final JSONObjectBuilder _pageJsonObjectBuilder;
 	private final PageMessageMapper<T> _pageMessageMapper;
 	private final PathFunction _pathFunction;
 	private final RepresentorFunction _representorFunction;
