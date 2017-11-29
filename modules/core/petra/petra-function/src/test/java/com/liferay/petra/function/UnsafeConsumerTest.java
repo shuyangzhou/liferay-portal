@@ -37,6 +37,7 @@ public class UnsafeConsumerTest {
 			@Override
 			public void appendAssertClasses(List<Class<?>> assertClasses) {
 				assertClasses.add(UnsafeFunction.class);
+				assertClasses.add(UnsafeLongFunction.class);
 				assertClasses.add(UnsafeSupplier.class);
 			}
 
