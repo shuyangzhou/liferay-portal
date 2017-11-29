@@ -16,7 +16,6 @@ package com.liferay.bookmarks.search;
 
 import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.service.BookmarksFolderLocalService;
-import com.liferay.bookmarks.service.permission.BookmarksFolderPermissionChecker;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
@@ -34,6 +33,7 @@ import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.checker.ContainerModelPermission;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -81,7 +81,7 @@ public class BookmarksFolderIndexer
 		BookmarksFolder folder = _bookmarksFolderLocalService.getFolder(
 			entryClassPK);
 
-		return BookmarksFolderPermissionChecker.contains(
+		return _containerModelPermission.contains(
 			permissionChecker, folder, ActionKeys.VIEW);
 	}
 
@@ -207,6 +207,11 @@ public class BookmarksFolderIndexer
 		BookmarksFolderIndexer.class);
 
 	private BookmarksFolderLocalService _bookmarksFolderLocalService;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.bookmarks.model.BookmarksFolder)"
+	)
+	private ContainerModelPermission<BookmarksFolder> _containerModelPermission;
 
 	@Reference
 	private IndexWriterHelper _indexWriterHelper;

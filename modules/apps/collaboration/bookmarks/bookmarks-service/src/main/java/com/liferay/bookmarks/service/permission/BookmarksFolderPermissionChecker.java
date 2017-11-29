@@ -14,18 +14,14 @@
 
 package com.liferay.bookmarks.service.permission;
 
-import com.liferay.bookmarks.constants.BookmarksPortletKeys;
-import com.liferay.bookmarks.exception.NoSuchFolderException;
+import com.liferay.bookmarks.constants.BookmarksConstants;
 import com.liferay.bookmarks.model.BookmarksFolder;
-import com.liferay.bookmarks.model.BookmarksFolderConstants;
 import com.liferay.bookmarks.service.BookmarksFolderLocalService;
-import com.liferay.exportimport.kernel.staging.permission.StagingPermissionUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.kernel.security.permission.checker.ContainerModelPermission;
+import com.liferay.portal.kernel.security.permission.checker.PortletPermission;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -33,11 +29,13 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Brian Wing Shun Chan
  * @author Raymond Augé
+ * @deprecated As of 1.2.0, with no direct replacement
  */
 @Component(
 	immediate = true,
 	property = {"model.class.name=com.liferay.bookmarks.model.BookmarksFolder"}
 )
+@Deprecated
 public class BookmarksFolderPermissionChecker
 	implements BaseModelPermissionChecker {
 
@@ -46,11 +44,7 @@ public class BookmarksFolderPermissionChecker
 			String actionId)
 		throws PortalException {
 
-		if (!contains(permissionChecker, folder, actionId)) {
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, BookmarksFolder.class.getName(),
-				folder.getFolderId(), actionId);
-		}
+		_containerModelPermission.check(permissionChecker, folder, actionId);
 	}
 
 	public static void check(
@@ -58,11 +52,8 @@ public class BookmarksFolderPermissionChecker
 			String actionId)
 		throws PortalException {
 
-		if (!contains(permissionChecker, groupId, folderId, actionId)) {
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, BookmarksFolder.class.getName(), folderId,
-				actionId);
-		}
+		_containerModelPermission.check(
+			permissionChecker, groupId, folderId, actionId);
 	}
 
 	public static boolean contains(
@@ -70,48 +61,8 @@ public class BookmarksFolderPermissionChecker
 			String actionId)
 		throws PortalException {
 
-		if (actionId.equals(ActionKeys.ADD_FOLDER)) {
-			actionId = ActionKeys.ADD_SUBFOLDER;
-		}
-
-		Boolean hasPermission = StagingPermissionUtil.hasPermission(
-			permissionChecker, folder.getGroupId(),
-			BookmarksFolder.class.getName(), folder.getFolderId(),
-			BookmarksPortletKeys.BOOKMARKS, actionId);
-
-		if (hasPermission != null) {
-			return hasPermission.booleanValue();
-		}
-
-		if (actionId.equals(ActionKeys.VIEW) &&
-			PropsValues.PERMISSIONS_VIEW_DYNAMIC_INHERITANCE) {
-
-			try {
-				long folderId = folder.getFolderId();
-
-				while (folderId !=
-							BookmarksFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
-
-					folder = _bookmarksFolderLocalService.getFolder(folderId);
-
-					if (!_hasPermission(permissionChecker, folder, actionId)) {
-						return false;
-					}
-
-					folderId = folder.getParentFolderId();
-				}
-			}
-			catch (NoSuchFolderException nsfe) {
-				if (!folder.isInTrash()) {
-					throw nsfe;
-				}
-			}
-
-			return BookmarksResourcePermissionChecker.contains(
-				permissionChecker, folder.getGroupId(), actionId);
-		}
-
-		return _hasPermission(permissionChecker, folder, actionId);
+		return _containerModelPermission.contains(
+			permissionChecker, folder, actionId);
 	}
 
 	public static boolean contains(
@@ -119,16 +70,8 @@ public class BookmarksFolderPermissionChecker
 			String actionId)
 		throws PortalException {
 
-		if (folderId == BookmarksFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
-			return BookmarksResourcePermissionChecker.contains(
-				permissionChecker, groupId, actionId);
-		}
-		else {
-			BookmarksFolder folder =
-				_bookmarksFolderLocalService.getBookmarksFolder(folderId);
-
-			return contains(permissionChecker, folder, actionId);
-		}
+		return _containerModelPermission.contains(
+			permissionChecker, groupId, folderId, actionId);
 	}
 
 	@Override
@@ -137,33 +80,36 @@ public class BookmarksFolderPermissionChecker
 			String actionId)
 		throws PortalException {
 
-		check(permissionChecker, groupId, primaryKey, actionId);
+		_containerModelPermission.check(
+			permissionChecker, groupId, primaryKey, actionId);
 	}
 
-	@Reference(unbind = "-")
 	protected void setBookmarksFolderLocalService(
 		BookmarksFolderLocalService bookmarksFolderLocalService) {
-
-		_bookmarksFolderLocalService = bookmarksFolderLocalService;
 	}
 
-	private static boolean _hasPermission(
-		PermissionChecker permissionChecker, BookmarksFolder folder,
-		String actionId) {
+	@Reference(
+		target = "(model.class.name=com.liferay.bookmarks.model.BookmarksFolder)",
+		unbind = "-"
+	)
+	protected void setContainerModelPermission(
+		ContainerModelPermission<BookmarksFolder> containerModelPermission) {
 
-		if (permissionChecker.hasOwnerPermission(
-				folder.getCompanyId(), BookmarksFolder.class.getName(),
-				folder.getFolderId(), folder.getUserId(), actionId) ||
-			permissionChecker.hasPermission(
-				folder.getGroupId(), BookmarksFolder.class.getName(),
-				folder.getFolderId(), actionId)) {
-
-			return true;
-		}
-
-		return false;
+		_containerModelPermission = containerModelPermission;
 	}
 
-	private static BookmarksFolderLocalService _bookmarksFolderLocalService;
+	@Reference(
+		target = "(resource.name=" + BookmarksConstants.RESOURCE_NAME + ")",
+		unbind = "-"
+	)
+	protected void setPortletPermissionChecker(
+		PortletPermission portletPermission) {
+
+		_portletPermission = portletPermission;
+	}
+
+	private static ContainerModelPermission<BookmarksFolder>
+		_containerModelPermission;
+	private static PortletPermission _portletPermission;
 
 }
