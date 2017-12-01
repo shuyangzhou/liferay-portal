@@ -21,6 +21,9 @@ import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalServiceUtil;
 import com.liferay.exportimport.kernel.service.StagingLocalServiceUtil;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskThreadLocal;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.AccountNameException;
 import com.liferay.portal.kernel.exception.CompanyMxException;
@@ -40,6 +43,8 @@ import com.liferay.portal.kernel.model.PortalPreferences;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
+import com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil;
+import com.liferay.portal.kernel.scheduler.SchedulerException;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.AccountLocalServiceUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
@@ -90,8 +95,10 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -116,6 +123,28 @@ public class CompanyLocalServiceTest {
 			new LiferayIntegrationTestRule(),
 			PermissionCheckerTestRule.INSTANCE,
 			SynchronousDestinationTestRule.INSTANCE);
+
+	@BeforeClass
+	public static void setUpClass() throws SchedulerException {
+		DB db = DBManagerUtil.getDB();
+
+		if (db.getDBType() != DBType.SYBASE) {
+			return;
+		}
+
+		SchedulerEngineHelperUtil.shutdown();
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws SchedulerException {
+		DB db = DBManagerUtil.getDB();
+
+		if (db.getDBType() != DBType.SYBASE) {
+			return;
+		}
+
+		SchedulerEngineHelperUtil.start();
+	}
 
 	public void resetBackgroundTaskThreadLocal() throws Exception {
 		Class<?> backgroundTaskThreadLocalClass =
