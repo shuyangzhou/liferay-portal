@@ -149,6 +149,8 @@ public interface TrashEntryLocalService extends BaseLocalService,
 	*/
 	public TrashEntry deleteEntry(java.lang.String className, long classPK);
 
+	public void deleteEntries(long groupId, boolean deleteTrashedModels);
+
 	/**
 	* Deletes the trash entry with the primary key.
 	*
