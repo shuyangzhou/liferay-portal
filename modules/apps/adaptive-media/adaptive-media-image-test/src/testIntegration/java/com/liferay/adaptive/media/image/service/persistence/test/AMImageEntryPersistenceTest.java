@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -176,27 +175,27 @@ public class AMImageEntryPersistenceTest {
 
 	@Test
 	public void testCountByUuid() throws Exception {
-		_persistence.countByUuid(StringPool.BLANK);
+		_persistence.countByUuid("");
 
-		_persistence.countByUuid(StringPool.NULL);
+		_persistence.countByUuid("null");
 
 		_persistence.countByUuid((String)null);
 	}
 
 	@Test
 	public void testCountByUUID_G() throws Exception {
-		_persistence.countByUUID_G(StringPool.BLANK, RandomTestUtil.nextLong());
+		_persistence.countByUUID_G("", RandomTestUtil.nextLong());
 
-		_persistence.countByUUID_G(StringPool.NULL, 0L);
+		_persistence.countByUUID_G("null", 0L);
 
 		_persistence.countByUUID_G((String)null, 0L);
 	}
 
 	@Test
 	public void testCountByUuid_C() throws Exception {
-		_persistence.countByUuid_C(StringPool.BLANK, RandomTestUtil.nextLong());
+		_persistence.countByUuid_C("", RandomTestUtil.nextLong());
 
-		_persistence.countByUuid_C(StringPool.NULL, 0L);
+		_persistence.countByUuid_C("null", 0L);
 
 		_persistence.countByUuid_C((String)null, 0L);
 	}
@@ -217,9 +216,9 @@ public class AMImageEntryPersistenceTest {
 
 	@Test
 	public void testCountByConfigurationUuid() throws Exception {
-		_persistence.countByConfigurationUuid(StringPool.BLANK);
+		_persistence.countByConfigurationUuid("");
 
-		_persistence.countByConfigurationUuid(StringPool.NULL);
+		_persistence.countByConfigurationUuid("null");
 
 		_persistence.countByConfigurationUuid((String)null);
 	}
@@ -233,18 +232,18 @@ public class AMImageEntryPersistenceTest {
 
 	@Test
 	public void testCountByC_C() throws Exception {
-		_persistence.countByC_C(RandomTestUtil.nextLong(), StringPool.BLANK);
+		_persistence.countByC_C(RandomTestUtil.nextLong(), "");
 
-		_persistence.countByC_C(0L, StringPool.NULL);
+		_persistence.countByC_C(0L, "null");
 
 		_persistence.countByC_C(0L, (String)null);
 	}
 
 	@Test
 	public void testCountByC_F() throws Exception {
-		_persistence.countByC_F(StringPool.BLANK, RandomTestUtil.nextLong());
+		_persistence.countByC_F("", RandomTestUtil.nextLong());
 
-		_persistence.countByC_F(StringPool.NULL, 0L);
+		_persistence.countByC_F("null", 0L);
 
 		_persistence.countByC_F((String)null, 0L);
 	}

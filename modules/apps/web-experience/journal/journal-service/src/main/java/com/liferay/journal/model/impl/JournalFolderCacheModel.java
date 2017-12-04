@@ -21,7 +21,6 @@ import com.liferay.journal.model.JournalFolder;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -114,7 +113,7 @@ public class JournalFolderCacheModel implements CacheModel<JournalFolder>,
 		JournalFolderImpl journalFolderImpl = new JournalFolderImpl();
 
 		if (uuid == null) {
-			journalFolderImpl.setUuid(StringPool.BLANK);
+			journalFolderImpl.setUuid("");
 		}
 		else {
 			journalFolderImpl.setUuid(uuid);
@@ -126,7 +125,7 @@ public class JournalFolderCacheModel implements CacheModel<JournalFolder>,
 		journalFolderImpl.setUserId(userId);
 
 		if (userName == null) {
-			journalFolderImpl.setUserName(StringPool.BLANK);
+			journalFolderImpl.setUserName("");
 		}
 		else {
 			journalFolderImpl.setUserName(userName);
@@ -149,21 +148,21 @@ public class JournalFolderCacheModel implements CacheModel<JournalFolder>,
 		journalFolderImpl.setParentFolderId(parentFolderId);
 
 		if (treePath == null) {
-			journalFolderImpl.setTreePath(StringPool.BLANK);
+			journalFolderImpl.setTreePath("");
 		}
 		else {
 			journalFolderImpl.setTreePath(treePath);
 		}
 
 		if (name == null) {
-			journalFolderImpl.setName(StringPool.BLANK);
+			journalFolderImpl.setName("");
 		}
 		else {
 			journalFolderImpl.setName(name);
 		}
 
 		if (description == null) {
-			journalFolderImpl.setDescription(StringPool.BLANK);
+			journalFolderImpl.setDescription("");
 		}
 		else {
 			journalFolderImpl.setDescription(description);
@@ -182,7 +181,7 @@ public class JournalFolderCacheModel implements CacheModel<JournalFolder>,
 		journalFolderImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			journalFolderImpl.setStatusByUserName(StringPool.BLANK);
+			journalFolderImpl.setStatusByUserName("");
 		}
 		else {
 			journalFolderImpl.setStatusByUserName(statusByUserName);
@@ -234,7 +233,7 @@ public class JournalFolderCacheModel implements CacheModel<JournalFolder>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -249,7 +248,7 @@ public class JournalFolderCacheModel implements CacheModel<JournalFolder>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -261,21 +260,21 @@ public class JournalFolderCacheModel implements CacheModel<JournalFolder>,
 		objectOutput.writeLong(parentFolderId);
 
 		if (treePath == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(treePath);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
@@ -289,7 +288,7 @@ public class JournalFolderCacheModel implements CacheModel<JournalFolder>,
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
