@@ -155,6 +155,10 @@ public class TrashEntryLocalServiceUtil {
 		return getService().deleteEntry(className, classPK);
 	}
 
+	public static void deleteEntries(long groupId, boolean deleteTrashedModels) {
+		getService().deleteEntries(groupId, deleteTrashedModels);
+	}
+
 	/**
 	* Deletes the trash entry with the primary key.
 	*
