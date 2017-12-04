@@ -21,7 +21,6 @@ import com.liferay.journal.model.JournalContentSearch;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -96,14 +95,14 @@ public class JournalContentSearchCacheModel implements CacheModel<JournalContent
 		journalContentSearchImpl.setLayoutId(layoutId);
 
 		if (portletId == null) {
-			journalContentSearchImpl.setPortletId(StringPool.BLANK);
+			journalContentSearchImpl.setPortletId("");
 		}
 		else {
 			journalContentSearchImpl.setPortletId(portletId);
 		}
 
 		if (articleId == null) {
-			journalContentSearchImpl.setArticleId(StringPool.BLANK);
+			journalContentSearchImpl.setArticleId("");
 		}
 		else {
 			journalContentSearchImpl.setArticleId(articleId);
@@ -143,14 +142,14 @@ public class JournalContentSearchCacheModel implements CacheModel<JournalContent
 		objectOutput.writeLong(layoutId);
 
 		if (portletId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(portletId);
 		}
 
 		if (articleId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(articleId);
