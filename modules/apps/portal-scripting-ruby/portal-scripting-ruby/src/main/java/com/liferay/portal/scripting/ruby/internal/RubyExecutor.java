@@ -220,6 +220,11 @@ public class RubyExecutor extends BaseScriptingExecutor {
 			evalCallable);
 
 		Thread oneTimeExecutorThread = _threadFactory.newThread(futureTask);
+		
+		ClassLoader classLoader =
+				Thread.currentThread().getContextClassLoader();
+		
+		oneTimeExecutorThread.setContextClassLoader(classLoader);
 
 		oneTimeExecutorThread.start();
 
