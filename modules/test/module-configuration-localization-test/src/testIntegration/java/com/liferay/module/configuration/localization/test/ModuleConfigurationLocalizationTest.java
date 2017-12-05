@@ -94,7 +94,10 @@ public class ModuleConfigurationLocalizationTest {
 		Collections.addAll(pids, extendedMetaTypeInformation.getFactoryPids());
 		Collections.addAll(pids, extendedMetaTypeInformation.getPids());
 
-		if (pids.isEmpty()) {
+		String lfrModuleStarter = "com.liferay";
+		String bundleName = bundle.getSymbolicName();
+
+		if (pids.isEmpty() || !bundleName.startsWith(lfrModuleStarter)) {
 			return StringPool.BLANK;
 		}
 
