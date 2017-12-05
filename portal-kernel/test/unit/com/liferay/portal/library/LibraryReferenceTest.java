@@ -209,8 +209,13 @@ public class LibraryReferenceTest {
 
 		for (String jar : libJars) {
 			if ((fileName.equals(_ECLIPSE_FILE_NAME) ||
-				 fileName.equals(_NETBEANS_FILE_NAME) ||
-				 fileName.equals(_VERSIONS_FILE_NAME)) &&
+				 fileName.equals(_NETBEANS_PROPERTIES_FILE_NAME)) &&
+				_ideExcludeJars.contains(jar)) {
+
+				continue;
+			}
+
+			if (fileName.equals(_VERSIONS_FILE_NAME) &&
 				(_excludeJars.contains(jar) ||
 				 _libDependencyJars.contains(jar))) {
 
@@ -337,6 +342,7 @@ public class LibraryReferenceTest {
 		Path libDirPath = Paths.get(LIB_DIR_NAME);
 
 		_readLines(_excludeJars, libDirPath.resolve("versions-ignore.txt"));
+		_readLines(_ideExcludeJars, libDirPath.resolve("ide-ignore.txt"));
 
 		Files.walkFileTree(
 			libDirPath,
