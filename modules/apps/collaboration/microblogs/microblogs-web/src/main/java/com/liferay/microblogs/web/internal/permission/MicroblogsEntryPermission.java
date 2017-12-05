@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.microblogs.service.permission;
+package com.liferay.microblogs.web.internal.permission;
 
 import com.liferay.microblogs.model.MicroblogsEntry;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -23,30 +23,10 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Jonathan Lee
- * @deprecated As of 2.1.0, with no direct replacement
+ * @author Preston Crary
  */
 @Component(immediate = true)
-@Deprecated
 public class MicroblogsEntryPermission {
-
-	public static void check(
-			PermissionChecker permissionChecker, long microblogsEntryId,
-			String actionId)
-		throws PortalException {
-
-		_entryModelResourcePermission.check(
-			permissionChecker, microblogsEntryId, actionId);
-	}
-
-	public static void check(
-			PermissionChecker permissionChecker,
-			MicroblogsEntry microblogsEntry, String actionId)
-		throws PortalException {
-
-		_entryModelResourcePermission.check(
-			permissionChecker, microblogsEntry, actionId);
-	}
 
 	public static boolean contains(
 			PermissionChecker permissionChecker, long microblogsEntryId,
