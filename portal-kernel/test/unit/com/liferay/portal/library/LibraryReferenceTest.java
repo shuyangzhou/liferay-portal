@@ -540,6 +540,7 @@ public class LibraryReferenceTest {
 	private static final Set<String> _eclipseModuleSourceDirs = new HashSet<>();
 	private static final Set<String> _excludeJars = new HashSet<>();
 	private static final Set<String> _gitIgnoreJars = new HashSet<>();
+	private static final Set<String> _ideExcludeJars = new HashSet<>();
 	private static final List<String> _intelliJFileNames = Arrays.asList(
 		"portal-impl/portal-impl.iml", "portal-kernel/portal-kernel.iml",
 		"portal-test-integration/portal-test-integration.iml",
