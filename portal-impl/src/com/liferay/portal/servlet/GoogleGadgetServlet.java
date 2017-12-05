@@ -19,8 +19,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
-import com.liferay.portal.kernel.servlet.PortalWebResourceConstants;
-import com.liferay.portal.kernel.servlet.PortalWebResourcesUtil;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -96,21 +94,13 @@ public class GoogleGadgetServlet extends HttpServlet {
 
 		String title = portlet.getDisplayName();
 
-		String portalURL = PortalUtil.getPortalURL(request);
-
-		String widgetJsURL = portalURL;
-
-		widgetJsURL += PortalWebResourcesUtil.getContextPath(
-			PortalWebResourceConstants.RESOURCE_TYPE_JS);
-		widgetJsURL += "/liferay/widget.js";
-
 		String widgetURL = String.valueOf(request.getRequestURL());
 
 		widgetURL = widgetURL.replaceFirst(
 			PropsValues.GOOGLE_GADGET_SERVLET_MAPPING,
 			PropsValues.WIDGET_SERVLET_MAPPING);
 
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(14);
 
 		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		sb.append("<Module>");
@@ -119,15 +109,10 @@ public class GoogleGadgetServlet extends HttpServlet {
 		sb.append("\"/>");
 		sb.append("<Content type=\"html\">");
 		sb.append("<![CDATA[");
-		sb.append("<script src=\"");
-		sb.append(widgetJsURL);
-		sb.append("\" ");
-		sb.append("type=\"text/javascript\"></script>");
-		sb.append("<script type=\"text/javascript\">");
-		sb.append("window.Liferay.Widget({url:'");
+		sb.append("<iframe frameborder=\"0\" height=\"100%\" src=\"");
 		sb.append(widgetURL);
-		sb.append("'});");
-		sb.append("</script>");
+		sb.append("\" width=\"100%\">");
+		sb.append("</iframe>");
 		sb.append("]]>");
 		sb.append("</Content>");
 		sb.append("</Module>");
