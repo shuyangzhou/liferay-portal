@@ -14,13 +14,15 @@
 
 package com.liferay.calendar.service.impl;
 
+import com.liferay.calendar.model.Calendar;
 import com.liferay.calendar.model.CalendarNotificationTemplate;
 import com.liferay.calendar.notification.NotificationTemplateType;
 import com.liferay.calendar.notification.NotificationType;
 import com.liferay.calendar.service.base.CalendarNotificationTemplateServiceBaseImpl;
-import com.liferay.calendar.service.permission.CalendarPermission;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.checker.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 /**
@@ -37,7 +39,7 @@ public class CalendarNotificationTemplateServiceImpl
 			String body, ServiceContext serviceContext)
 		throws PortalException {
 
-		CalendarPermission.check(
+		_calendarModelResourcePermission.check(
 			getPermissionChecker(), calendarId, ActionKeys.UPDATE);
 
 		return calendarNotificationTemplateLocalService.
@@ -58,7 +60,7 @@ public class CalendarNotificationTemplateServiceImpl
 			calendarNotificationTemplatePersistence.findByPrimaryKey(
 				calendarNotificationTemplateId);
 
-		CalendarPermission.check(
+		_calendarModelResourcePermission.check(
 			getPermissionChecker(),
 			calendarNotificationTemplate.getCalendarId(), ActionKeys.UPDATE);
 
@@ -67,5 +69,10 @@ public class CalendarNotificationTemplateServiceImpl
 				calendarNotificationTemplateId, notificationTypeSettings,
 				subject, body, serviceContext);
 	}
+
+	@BeanReference(
+		name = "com.liferay.calendar.internal.permission.CalendarPermissionChecker"
+	)
+	private ModelResourcePermission<Calendar> _calendarModelResourcePermission;
 
 }
