@@ -53,7 +53,8 @@ public class ParallelDestination extends BaseAsyncDestination {
 						messageListener.receive(message);
 					}
 					catch (MessageListenerException mle) {
-						_logger.error("Unable to process message " + message, mle);
+						_logger.error(
+							"Unable to process message " + message, mle);
 					}
 					finally {
 						if (Thread.currentThread() != currentThread) {

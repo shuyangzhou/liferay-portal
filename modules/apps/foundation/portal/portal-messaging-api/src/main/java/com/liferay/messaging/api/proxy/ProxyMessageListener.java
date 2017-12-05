@@ -14,15 +14,15 @@
 
 package com.liferay.messaging.api.proxy;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.util.Validator;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Micha Kiener
@@ -76,7 +76,9 @@ public class ProxyMessageListener implements MessageListener {
 
 				responseMessage.setPayload(proxyResponse);
 
-				if (_logger.isDebugEnabled() && (proxyResponseException != null)) {
+				if (_logger.isDebugEnabled() &&
+					(proxyResponseException != null)) {
+
 					_logger.debug(proxyResponseException.getMessage());
 				}
 
@@ -86,8 +88,7 @@ public class ProxyMessageListener implements MessageListener {
 			else {
 				if (proxyResponseException != null) {
 					if (_logger.isWarnEnabled()) {
-						_logger.warn(
-							proxyResponseException.getMessage());
+						_logger.warn(proxyResponseException.getMessage());
 					}
 				}
 

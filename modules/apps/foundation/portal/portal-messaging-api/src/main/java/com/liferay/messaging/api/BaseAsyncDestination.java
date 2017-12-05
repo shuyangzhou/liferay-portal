@@ -20,8 +20,6 @@ import com.liferay.portal.kernel.concurrent.RejectedExecutionHandler;
 import com.liferay.portal.kernel.concurrent.ThreadPoolExecutor;
 import com.liferay.portal.kernel.concurrent.ThreadPoolHandlerAdapter;
 import com.liferay.portal.kernel.executor.PortalExecutorManager;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
@@ -166,7 +164,8 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 	public void send(Message message) {
 		if (messageListeners.isEmpty()) {
 			if (_logger.isDebugEnabled()) {
-				_logger.debug("No message listeners for destination " + getName());
+				_logger.debug(
+					"No message listeners for destination " + getName());
 			}
 
 			return;
@@ -199,7 +198,7 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 1.0.0, with no direct replacement
 	 */
 	@Deprecated
 	public void setRejectedExecutionHandler(
@@ -227,7 +226,7 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 1.0.0, with no direct replacement
 	 */
 	@Deprecated
 	protected RejectedExecutionHandler createRejectionExecutionHandler() {
@@ -258,7 +257,7 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 		Set<MessageListener> messageListeners, Message message);
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 1.0.0, with no direct replacement
 	 */
 	@Deprecated
 	protected ThreadPoolExecutor getThreadPoolExecutor() {

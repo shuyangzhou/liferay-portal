@@ -14,10 +14,10 @@
 
 package com.liferay.messaging.api;
 
+import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSender;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSender;
 
 /**
  * @author Michael C. Han

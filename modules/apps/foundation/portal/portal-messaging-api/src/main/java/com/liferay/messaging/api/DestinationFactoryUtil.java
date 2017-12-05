@@ -34,7 +34,7 @@ public class DestinationFactoryUtil {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of 1.0.0, with no direct replacement
 	 */
 	@Deprecated
 	protected DestinationFactory getDestinationFactory() {
