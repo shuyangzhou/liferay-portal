@@ -20,9 +20,9 @@ import com.liferay.asset.kernel.model.BaseAssetRendererFactory;
 import com.liferay.microblogs.constants.MicroblogsPortletKeys;
 import com.liferay.microblogs.model.MicroblogsEntry;
 import com.liferay.microblogs.service.MicroblogsEntryLocalService;
-import com.liferay.microblogs.service.permission.MicroblogsEntryPermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.checker.ModelResourcePermission;
 
 import javax.servlet.ServletContext;
 
@@ -59,7 +59,8 @@ public class MicroblogsEntryAssetRendererFactory
 			_microblogsEntryLocalService.getMicroblogsEntry(classPK);
 
 		MicroblogsEntryAssetRenderer microblogsEntryAssetRenderer =
-			new MicroblogsEntryAssetRenderer(microblogsEntry);
+			new MicroblogsEntryAssetRenderer(
+				microblogsEntry, _entryModelResourcePermission);
 
 		microblogsEntryAssetRenderer.setServletContext(_servletContext);
 
@@ -81,7 +82,7 @@ public class MicroblogsEntryAssetRendererFactory
 			PermissionChecker permissionChecker, long classPK, String actionId)
 		throws Exception {
 
-		return MicroblogsEntryPermission.contains(
+		return _entryModelResourcePermission.contains(
 			permissionChecker, classPK, actionId);
 	}
 
@@ -99,6 +100,12 @@ public class MicroblogsEntryAssetRendererFactory
 
 		_microblogsEntryLocalService = microblogsEntryLocalService;
 	}
+
+	@Reference(
+		target = "(model.class.name=com.liferay.microblogs.model.MicroblogsEntry)"
+	)
+	private ModelResourcePermission<MicroblogsEntry>
+		_entryModelResourcePermission;
 
 	private MicroblogsEntryLocalService _microblogsEntryLocalService;
 	private ServletContext _servletContext;
