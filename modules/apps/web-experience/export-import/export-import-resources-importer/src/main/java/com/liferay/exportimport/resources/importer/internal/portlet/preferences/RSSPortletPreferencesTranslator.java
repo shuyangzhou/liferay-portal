@@ -14,7 +14,6 @@
 
 package com.liferay.exportimport.resources.importer.internal.portlet.preferences;
 
-import com.liferay.exportimport.resources.importer.portlet.preferences.PortletPreferencesTranslator;
 import com.liferay.portal.kernel.json.JSONObject;
 
 import java.util.ArrayList;

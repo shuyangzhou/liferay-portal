@@ -14,7 +14,7 @@
 
 package com.liferay.exportimport.resources.importer.internal.extender;
 
-import com.liferay.exportimport.resources.importer.provider.ResourceImporterBundleProvider;
+import com.liferay.exportimport.resources.importer.internal.provider.ResourceImporterBundleProvider;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.log.Log;
