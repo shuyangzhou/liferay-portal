@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+>
+	<bean class="com.liferay.asset.display.template.internal.permission.AssetDisplayPortletPermissionChecker" id="com.liferay.asset.display.template.internal.permission.AssetDisplayPortletPermissionChecker" />
+	<bean class="com.liferay.asset.display.template.internal.permission.AssetDisplayTemplatePermissionCheckerFactory" factory-method="create" id="com.liferay.asset.display.template.internal.permission.AssetDisplayTemplatePermissionChecker">
+		<constructor-arg ref="com.liferay.asset.display.template.service.AssetDisplayTemplateLocalService" />
+		<constructor-arg ref="com.liferay.asset.display.template.internal.permission.AssetDisplayPortletPermissionChecker" />
+	</bean>
+</beans>
