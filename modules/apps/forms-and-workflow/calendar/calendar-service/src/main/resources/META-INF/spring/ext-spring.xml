@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+>
+	<bean class="com.liferay.calendar.internal.permission.CalendarPermissionCheckerFactory" factory-method="create" id="com.liferay.calendar.internal.permission.CalendarPermissionChecker" >
+		<constructor-arg ref="com.liferay.calendar.service.CalendarLocalService" />
+		<constructor-arg ref="com.liferay.calendar.internal.permission.CalendarPortletPermissionChecker" />
+	</bean>
+	<bean class="com.liferay.calendar.internal.permission.CalendarPortletPermissionChecker" id="com.liferay.calendar.internal.permission.CalendarPortletPermissionChecker" />
+	<bean class="com.liferay.calendar.internal.permission.CalendarResourcePermissionCheckerFactory" factory-method="create" id="com.liferay.calendar.internal.permission.CalendarResourcePermissionChecker" >
+		<constructor-arg ref="com.liferay.calendar.service.CalendarResourceLocalService" />
+		<constructor-arg ref="com.liferay.calendar.internal.permission.CalendarPortletPermissionChecker" />
+	</bean>
+</beans>
