@@ -15,10 +15,10 @@
 package com.liferay.messaging.api.proxy;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.messaging.MessageBus;
-import com.liferay.portal.kernel.messaging.MessageBusUtil;
-import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.messaging.api.Message;
+import com.liferay.messaging.api.MessageBus;
+import com.liferay.messaging.api.MessageBusUtil;
+import com.liferay.messaging.api.MessageListener;
 import com.liferay.portal.kernel.util.Validator;
 
 import org.slf4j.Logger;

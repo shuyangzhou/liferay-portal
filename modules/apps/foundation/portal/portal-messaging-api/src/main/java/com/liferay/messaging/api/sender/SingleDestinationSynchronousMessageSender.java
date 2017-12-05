@@ -14,8 +14,8 @@
 
 package com.liferay.messaging.api.sender;
 
-import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.messaging.MessageBusException;
+import com.liferay.messaging.api.Message;
+import com.liferay.messaging.api.MessageBusException;
 
 /**
  * @author Michael C. Han

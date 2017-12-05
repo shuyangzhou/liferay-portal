@@ -14,7 +14,7 @@
 
 package com.liferay.messaging.api;
 
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSender;
+import com.liferay.messaging.api.sender.SingleDestinationMessageSender;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

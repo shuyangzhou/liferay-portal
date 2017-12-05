@@ -14,12 +14,10 @@
 
 package com.liferay.messaging.api;
 
-import com.liferay.portal.kernel.exception.PortalException;
-
 /**
  * @author Brian Wing Shun Chan
  */
-public class MessageListenerException extends PortalException {
+public class MessageListenerException extends RuntimeException {
 
 	public MessageListenerException() {
 	}

@@ -14,11 +14,11 @@
 
 package com.liferay.messaging.api.config;
 
-import com.liferay.portal.kernel.messaging.Destination;
-import com.liferay.portal.kernel.messaging.DestinationConfiguration;
-import com.liferay.portal.kernel.messaging.DestinationEventListener;
-import com.liferay.portal.kernel.messaging.MessageBusEventListener;
-import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.messaging.api.Destination;
+import com.liferay.messaging.api.DestinationConfiguration;
+import com.liferay.messaging.api.DestinationEventListener;
+import com.liferay.messaging.api.MessageBusEventListener;
+import com.liferay.messaging.api.MessageListener;
 
 import java.util.List;
 import java.util.Map;

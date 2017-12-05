@@ -15,7 +15,7 @@
 package com.liferay.messaging.api.proxy;
 
 import com.liferay.petra.lang.CentralizedThreadLocal;
-import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.messaging.api.Message;
 
 import java.util.HashMap;
 import java.util.Map;
