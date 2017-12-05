@@ -49,7 +49,6 @@ import com.liferay.calendar.service.CalendarLocalService;
 import com.liferay.calendar.service.CalendarNotificationTemplateService;
 import com.liferay.calendar.service.CalendarResourceService;
 import com.liferay.calendar.service.CalendarService;
-import com.liferay.calendar.service.permission.CalendarPermission;
 import com.liferay.calendar.util.CalendarResourceUtil;
 import com.liferay.calendar.util.CalendarUtil;
 import com.liferay.calendar.util.JCalendarUtil;
@@ -85,6 +84,7 @@ import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.checker.ModelResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
@@ -671,7 +671,7 @@ public class CalendarPortlet extends MVCPortlet {
 				calendarResource.getCalendarResourceId());
 
 		for (Calendar calendar : calendars) {
-			if (!CalendarPermission.contains(
+			if (!_calendarModelResourcePermission.contains(
 					permissionChecker, calendar, ActionKeys.VIEW)) {
 
 				continue;
@@ -1794,6 +1794,12 @@ public class CalendarPortlet extends MVCPortlet {
 	private CalendarBookingLocalService _calendarBookingLocalService;
 	private CalendarBookingService _calendarBookingService;
 	private CalendarLocalService _calendarLocalService;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.calendar.model.Calendar)"
+	)
+	private ModelResourcePermission<Calendar> _calendarModelResourcePermission;
+
 	private CalendarNotificationTemplateService
 		_calendarNotificationTemplateService;
 	private CalendarResourceService _calendarResourceService;
