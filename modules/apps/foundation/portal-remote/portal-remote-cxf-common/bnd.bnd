@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Portal Remote CXF Common
 Bundle-SymbolicName: com.liferay.portal.remote.cxf.common
-Bundle-Version: 3.0.6
+Bundle-Version: 3.0.7
 Import-Package:\
 	!com.sun.*,\
 	\
