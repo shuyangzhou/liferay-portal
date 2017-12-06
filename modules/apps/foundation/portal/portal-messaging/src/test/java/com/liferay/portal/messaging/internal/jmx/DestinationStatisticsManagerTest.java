@@ -14,7 +14,7 @@
 
 package com.liferay.portal.messaging.internal.jmx;
 
-import com.liferay.portal.kernel.messaging.Destination;
+import com.liferay.messaging.api.Destination;
 
 import java.lang.management.ManagementFactory;
 
