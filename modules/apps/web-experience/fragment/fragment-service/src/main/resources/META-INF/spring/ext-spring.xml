@@ -11,7 +11,7 @@
 		<constructor-arg ref="com.liferay.fragment.service.FragmentCollectionLocalService" />
 		<constructor-arg ref="com.liferay.fragment.service.internal.permission.FragmentPortletPermissionChecker" />
 	</bean>
-	<bean class="com.liferay.fragment.internal.permission.FragmentEntryPermissionCheckerFactory" factory-method="create" id="com.liferay.fragment.internal.permission.FragmentEntryPermissionCheckerFactory" >
+	<bean class="com.liferay.fragment.internal.permission.FragmentEntryPermissionCheckerFactory" factory-method="create" id="com.liferay.fragment.internal.permission.FragmentEntryPermissionChecker" >
 		<constructor-arg ref="com.liferay.fragment.service.FragmentEntryLocalService" />
 		<constructor-arg ref="com.liferay.fragment.service.internal.permission.FragmentPortletPermissionChecker" />
 	</bean>

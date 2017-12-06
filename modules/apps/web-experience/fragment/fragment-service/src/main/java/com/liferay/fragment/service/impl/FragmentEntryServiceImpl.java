@@ -17,12 +17,13 @@ package com.liferay.fragment.service.impl;
 import com.liferay.fragment.constants.FragmentActionKeys;
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.service.base.FragmentEntryServiceBaseImpl;
-import com.liferay.fragment.service.permission.FragmentEntryPermission;
-import com.liferay.fragment.service.permission.FragmentPermission;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.checker.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.checker.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
@@ -40,7 +41,7 @@ public class FragmentEntryServiceImpl extends FragmentEntryServiceBaseImpl {
 			String html, String js, ServiceContext serviceContext)
 		throws PortalException {
 
-		FragmentPermission.check(
+		_portletResourcePermission.check(
 			getPermissionChecker(), groupId,
 			FragmentActionKeys.ADD_FRAGMENT_ENTRY);
 
@@ -57,7 +58,7 @@ public class FragmentEntryServiceImpl extends FragmentEntryServiceBaseImpl {
 
 		for (long fragmentEntryId : fragmentEntriesIds) {
 			try {
-				FragmentEntryPermission.check(
+				_fragmentEntryModelResourcePermission.check(
 					getPermissionChecker(), fragmentEntryId, ActionKeys.DELETE);
 
 				fragmentEntryLocalService.deleteFragmentEntry(fragmentEntryId);
@@ -81,7 +82,7 @@ public class FragmentEntryServiceImpl extends FragmentEntryServiceBaseImpl {
 	public FragmentEntry deleteFragmentEntry(long fragmentEntryId)
 		throws PortalException {
 
-		FragmentEntryPermission.check(
+		_fragmentEntryModelResourcePermission.check(
 			getPermissionChecker(), fragmentEntryId, ActionKeys.DELETE);
 
 		return fragmentEntryLocalService.deleteFragmentEntry(fragmentEntryId);
@@ -103,7 +104,7 @@ public class FragmentEntryServiceImpl extends FragmentEntryServiceBaseImpl {
 			fragmentEntryLocalService.fetchFragmentEntry(fragmentEntryId);
 
 		if (fragmentEntry != null) {
-			FragmentEntryPermission.check(
+			_fragmentEntryModelResourcePermission.check(
 				getPermissionChecker(), fragmentEntry, ActionKeys.VIEW);
 		}
 
@@ -158,7 +159,7 @@ public class FragmentEntryServiceImpl extends FragmentEntryServiceBaseImpl {
 	public FragmentEntry updateFragmentEntry(long fragmentEntryId, String name)
 		throws PortalException {
 
-		FragmentEntryPermission.check(
+		_fragmentEntryModelResourcePermission.check(
 			getPermissionChecker(), fragmentEntryId, ActionKeys.UPDATE);
 
 		return fragmentEntryLocalService.updateFragmentEntry(
@@ -171,7 +172,7 @@ public class FragmentEntryServiceImpl extends FragmentEntryServiceBaseImpl {
 			String js)
 		throws PortalException {
 
-		FragmentEntryPermission.check(
+		_fragmentEntryModelResourcePermission.check(
 			getPermissionChecker(), fragmentEntryId, ActionKeys.UPDATE);
 
 		return fragmentEntryLocalService.updateFragmentEntry(
@@ -180,5 +181,16 @@ public class FragmentEntryServiceImpl extends FragmentEntryServiceBaseImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		FragmentEntryServiceImpl.class);
+
+	@BeanReference(
+		name = "com.liferay.fragment.internal.permission.FragmentEntryPermissionChecker"
+	)
+	private ModelResourcePermission<FragmentEntry>
+		_fragmentEntryModelResourcePermission;
+
+	@BeanReference(
+		name = "com.liferay.fragment.service.internal.permission.FragmentPortletPermissionChecker"
+	)
+	private PortletResourcePermission _portletResourcePermission;
 
 }

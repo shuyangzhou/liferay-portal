@@ -17,12 +17,13 @@ package com.liferay.fragment.service.impl;
 import com.liferay.fragment.constants.FragmentActionKeys;
 import com.liferay.fragment.model.FragmentCollection;
 import com.liferay.fragment.service.base.FragmentCollectionServiceBaseImpl;
-import com.liferay.fragment.service.permission.FragmentCollectionPermission;
-import com.liferay.fragment.service.permission.FragmentPermission;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.checker.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.checker.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
@@ -41,7 +42,7 @@ public class FragmentCollectionServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		FragmentPermission.check(
+		_portletResourcePermission.check(
 			getPermissionChecker(), groupId,
 			FragmentActionKeys.ADD_FRAGMENT_COLLECTION);
 
@@ -54,7 +55,7 @@ public class FragmentCollectionServiceImpl
 			long fragmentCollectionId)
 		throws PortalException {
 
-		FragmentCollectionPermission.check(
+		_fragmentCollectionModelResourcePermission.check(
 			getPermissionChecker(), fragmentCollectionId, ActionKeys.DELETE);
 
 		return fragmentCollectionLocalService.deleteFragmentCollection(
@@ -71,7 +72,7 @@ public class FragmentCollectionServiceImpl
 
 		for (long fragmentCollectionId : fragmentCollectionIds) {
 			try {
-				FragmentCollectionPermission.check(
+				_fragmentCollectionModelResourcePermission.check(
 					getPermissionChecker(), fragmentCollectionId,
 					ActionKeys.DELETE);
 
@@ -103,7 +104,7 @@ public class FragmentCollectionServiceImpl
 				fragmentCollectionId);
 
 		if (fragmentCollection != null) {
-			FragmentCollectionPermission.check(
+			_fragmentCollectionModelResourcePermission.check(
 				getPermissionChecker(), fragmentCollection, ActionKeys.VIEW);
 		}
 
@@ -162,7 +163,7 @@ public class FragmentCollectionServiceImpl
 			long fragmentCollectionId, String name, String description)
 		throws PortalException {
 
-		FragmentCollectionPermission.check(
+		_fragmentCollectionModelResourcePermission.check(
 			getPermissionChecker(), fragmentCollectionId, ActionKeys.UPDATE);
 
 		return fragmentCollectionLocalService.updateFragmentCollection(
@@ -171,5 +172,16 @@ public class FragmentCollectionServiceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		FragmentCollectionServiceImpl.class);
+
+	@BeanReference(
+		name = "com.liferay.fragment.internal.permission.FragmentCollectionPermissionChecker"
+	)
+	private ModelResourcePermission<FragmentCollection>
+		_fragmentCollectionModelResourcePermission;
+
+	@BeanReference(
+		name = "com.liferay.fragment.service.internal.permission.FragmentPortletPermissionChecker"
+	)
+	private PortletResourcePermission _portletResourcePermission;
 
 }
