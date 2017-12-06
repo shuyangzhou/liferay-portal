@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Portal Search Solr
 Bundle-SymbolicName: com.liferay.portal.search.solr
-Bundle-Version: 2.0.26
+Bundle-Version: 2.0.27
 Import-Package:\
 	!com.sun.management.*,\
 	!com.sun.msv.*,\
