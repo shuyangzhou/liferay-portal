@@ -12,26 +12,28 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging;
+package com.liferay.portal.messaging.spi.proxy;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Michael C. Han
  */
-public class MessageBusException extends RuntimeException {
+@Documented
+@Inherited
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD, ElementType.TYPE})
+public @interface MessagingProxy {
 
-	public MessageBusException() {
-	}
+	public static final String LOCAL_MESSAGE = "LOCAL_MESSAGE";
 
-	public MessageBusException(String msg) {
-		super(msg);
-	}
+	public boolean local() default false;
 
-	public MessageBusException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-	public MessageBusException(Throwable cause) {
-		super(cause);
-	}
+	public ProxyMode mode();
 
 }

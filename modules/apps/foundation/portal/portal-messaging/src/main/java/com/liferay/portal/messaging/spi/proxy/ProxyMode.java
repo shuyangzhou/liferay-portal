@@ -12,26 +12,13 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging;
+package com.liferay.portal.messaging.spi.proxy;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Michael C. Han
  */
-public class MessageBusException extends RuntimeException {
+public enum ProxyMode {
 
-	public MessageBusException() {
-	}
-
-	public MessageBusException(String msg) {
-		super(msg);
-	}
-
-	public MessageBusException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-	public MessageBusException(Throwable cause) {
-		super(cause);
-	}
+	ASYNC, SYNC
 
 }

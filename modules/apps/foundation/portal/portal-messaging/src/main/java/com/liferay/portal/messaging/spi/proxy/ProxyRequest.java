@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging.proxy;
+package com.liferay.portal.messaging.spi.proxy;
 
 import com.liferay.petra.reflect.AnnotationLocator;
 import com.liferay.petra.string.StringBundler;

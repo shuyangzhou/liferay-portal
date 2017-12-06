@@ -12,26 +12,20 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging;
+package com.liferay.portal.messaging.spi;
+
+import java.util.Collection;
+
+import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Michael C. Han
  */
-public class MessageBusException extends RuntimeException {
+public interface DestinationFactory {
 
-	public MessageBusException() {
-	}
+	public Destination createDestination(
+		DestinationConfiguration destinationConfiguration);
 
-	public MessageBusException(String msg) {
-		super(msg);
-	}
-
-	public MessageBusException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-	public MessageBusException(Throwable cause) {
-		super(cause);
-	}
+	public Collection<String> getDestinationTypes();
 
 }

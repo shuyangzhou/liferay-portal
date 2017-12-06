@@ -12,26 +12,23 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging;
+package com.liferay.portal.messaging.spi.sender;
+
+import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageBusException;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Michael C. Han
  */
-public class MessageBusException extends RuntimeException {
+public interface SingleDestinationSynchronousMessageSender {
 
-	public MessageBusException() {
-	}
+	public Object send(Message message) throws MessageBusException;
 
-	public MessageBusException(String msg) {
-		super(msg);
-	}
+	public Object send(Message message, long timeout)
+		throws MessageBusException;
 
-	public MessageBusException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
+	public Object send(Object payload) throws MessageBusException;
 
-	public MessageBusException(Throwable cause) {
-		super(cause);
-	}
+	public Object send(Object payload, long timeout) throws MessageBusException;
 
 }

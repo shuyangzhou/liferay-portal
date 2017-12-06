@@ -12,26 +12,23 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging;
+package com.liferay.portal.messaging.spi;
+
+import com.liferay.portal.kernel.messaging.Message;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Shuyang Zhou
  */
-public class MessageBusException extends RuntimeException {
+public abstract class MessageRunnable implements Runnable {
 
-	public MessageBusException() {
+	public MessageRunnable(Message message) {
+		_message = message;
 	}
 
-	public MessageBusException(String msg) {
-		super(msg);
+	public Message getMessage() {
+		return _message;
 	}
 
-	public MessageBusException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-	public MessageBusException(Throwable cause) {
-		super(cause);
-	}
+	private final Message _message;
 
 }

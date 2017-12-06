@@ -12,26 +12,24 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging;
+package com.liferay.portal.messaging.spi.proxy;
+
+import java.io.Closeable;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Michael C. Han
  */
-public class MessageBusException extends RuntimeException {
+public class ProxyModeThreadLocalCloseable implements Closeable {
 
-	public MessageBusException() {
+	public ProxyModeThreadLocalCloseable() {
+		_forceSync = ProxyModeThreadLocal.isForceSync();
 	}
 
-	public MessageBusException(String msg) {
-		super(msg);
+	@Override
+	public void close() {
+		ProxyModeThreadLocal.setForceSync(_forceSync);
 	}
 
-	public MessageBusException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-	public MessageBusException(Throwable cause) {
-		super(cause);
-	}
+	private final boolean _forceSync;
 
 }

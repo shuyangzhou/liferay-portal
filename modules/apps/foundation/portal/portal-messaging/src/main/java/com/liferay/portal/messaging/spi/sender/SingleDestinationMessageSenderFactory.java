@@ -12,26 +12,23 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging;
+package com.liferay.portal.messaging.spi.sender;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Michael C. Han
  */
-public class MessageBusException extends RuntimeException {
+public interface SingleDestinationMessageSenderFactory {
 
-	public MessageBusException() {
-	}
+	public SingleDestinationMessageSender createSingleDestinationMessageSender(
+		String destinationName);
 
-	public MessageBusException(String msg) {
-		super(msg);
-	}
+	public SingleDestinationSynchronousMessageSender
+		createSingleDestinationSynchronousMessageSender(
+			String destinationName, SynchronousMessageSender.Mode mode);
 
-	public MessageBusException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
+	public int getModesCount();
 
-	public MessageBusException(Throwable cause) {
-		super(cause);
-	}
+	public SynchronousMessageSender getSynchronousMessageSender(
+		SynchronousMessageSender.Mode mode);
 
 }

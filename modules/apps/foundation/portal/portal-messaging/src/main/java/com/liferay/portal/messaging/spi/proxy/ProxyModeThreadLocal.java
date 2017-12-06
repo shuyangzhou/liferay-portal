@@ -12,26 +12,25 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging;
+package com.liferay.portal.messaging.spi.proxy;
+
+import com.liferay.petra.lang.CentralizedThreadLocal;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Shuyang Zhou
  */
-public class MessageBusException extends RuntimeException {
+public class ProxyModeThreadLocal {
 
-	public MessageBusException() {
+	public static boolean isForceSync() {
+		return _forceSync.get();
 	}
 
-	public MessageBusException(String msg) {
-		super(msg);
+	public static void setForceSync(boolean forceSync) {
+		_forceSync.set(forceSync);
 	}
 
-	public MessageBusException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-	public MessageBusException(Throwable cause) {
-		super(cause);
-	}
+	private static final ThreadLocal<Boolean> _forceSync =
+		new CentralizedThreadLocal<>(
+			ProxyModeThreadLocal.class + "_forceSync", () -> Boolean.FALSE);
 
 }

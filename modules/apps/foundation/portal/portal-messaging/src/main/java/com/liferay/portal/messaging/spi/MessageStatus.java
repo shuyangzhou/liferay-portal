@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.kernel.messaging;
+package com.liferay.portal.messaging.spi;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.StackTraceUtil;
