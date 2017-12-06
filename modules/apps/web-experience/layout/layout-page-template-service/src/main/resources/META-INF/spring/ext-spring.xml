@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+>
+	<bean class="com.liferay.layout.page.template.internal.permission.LayoutPageTemplateCollectionPermissionCheckerFactory" factory-method="create" id="com.liferay.layout.page.template.internal.permission.LayoutPageTemplateCollectionPermissionChecker" >
+		<constructor-arg ref="com.liferay.layout.page.template.service.LayoutPageTemplateCollectionLocalService" />
+		<constructor-arg ref="com.liferay.layout.page.template.internal.permission.LayoutPageTemplatePortletPermissionChecker" />
+	</bean>
+	<bean class="com.liferay.layout.page.template.internal.permission.LayoutPageTemplateEntryPermissionCheckerFactory" factory-method="create" id="com.liferay.layout.page.template.internal.permission.LayoutPageTemplateEntryPermissionChecker" >
+		<constructor-arg ref="com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService" />
+		<constructor-arg ref="com.liferay.layout.page.template.internal.permission.LayoutPageTemplatePortletPermissionChecker" />
+	</bean>
+	<bean class="com.liferay.layout.page.template.internal.permission.LayoutPageTemplatePortletPermissionChecker" id="com.liferay.layout.page.template.internal.permission.LayoutPageTemplatePortletPermissionChecker" />
+</beans>
