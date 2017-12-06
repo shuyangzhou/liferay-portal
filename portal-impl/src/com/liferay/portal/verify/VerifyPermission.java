@@ -206,43 +206,34 @@ public class VerifyPermission extends VerifyProcess {
 
 		long userRoleId = userRole.getRoleId();
 
-		String userPagePermissionsTableName = "TEMP_TABLE_USER_PAGE_PERMISSION";
-		String userPagePermissionsConflictsTableName =
-			"TEMP_TABLE_USER_PAGE_PERMISSION_CONFLICT";
-
 		try (AutoCloseable dropUserPagePermissionsTable = () -> runSQL(
-				"drop table " + userPagePermissionsTableName);
+				"drop table TEMP_TABLE_USER_PAGE_PERMISSION");
 			AutoCloseable dropUserPagePermissionsConflictsTable = () -> runSQL(
-				"drop table " + userPagePermissionsConflictsTableName)) {
+				"drop table TEMP_TABLE_USER_PAGE_PERMISSION_CONFLICT")) {
 
 			runSQL(
 				StringBundler.concat(
-					"create table ", userPagePermissionsTableName,
-					" (resourcePermissionId LONG not null primary key, ",
-					"primKey VARCHAR(255), plidLength INTEGER, plidString ",
+					"create table TEMP_TABLE_USER_PAGE_PERMISSION ",
+					"(resourcePermissionId LONG not null primary key, primKey ",
+					"VARCHAR(255), plidLength INTEGER, plidString ",
 					"VARCHAR(255), plid LONG, roleId LONG, conflict BOOLEAN)"));
 
 			runSQL(
-				StringBundler.concat(
-					"create index IX_VERIFY_1 on ",
-					userPagePermissionsTableName, " (plid)"));
+				"create index IX_VERIFY_1 on TEMP_TABLE_USER_PAGE_PERMISSION " +
+					"(plid)");
 
 			runSQL(
-				StringBundler.concat(
-					"create index IX_VERIFY_2 on ",
-					userPagePermissionsTableName,
-					" (primKey[$COLUMN_LENGTH:255$])"));
+				"create index IX_VERIFY_2 on TEMP_TABLE_USER_PAGE_PERMISSION " +
+					"(primKey[$COLUMN_LENGTH:255$])");
 
 			runSQL(
-				StringBundler.concat(
-					"create table ", userPagePermissionsConflictsTableName,
-					" (primKey VARCHAR(255) not null)"));
+				"create table TEMP_TABLE_USER_PAGE_PERMISSION_CONFLICT " +
+					"(primKey VARCHAR(255) not null)");
 
 			runSQL(
-				StringBundler.concat(
-					"create index IX_VERIFY_3 on ",
-					userPagePermissionsConflictsTableName,
-					" (primKey[$COLUMN_LENGTH:255$])"));
+				"create index IX_VERIFY_3 on " +
+					"TEMP_TABLE_USER_PAGE_PERMISSION_CONFLICT " +
+						"(primKey[$COLUMN_LENGTH:255$])");
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Populating temporary table of portlet permissions");
@@ -250,10 +241,10 @@ public class VerifyPermission extends VerifyProcess {
 
 			runSQL(
 				StringBundler.concat(
-					"insert into ", userPagePermissionsTableName,
-					" select resourcePermissionId, primKey, 0 as plidLength, ",
-					"NULL as plidString, 0 as plid, roleId, FALSE as conflict ",
-					"from ResourcePermission where companyId = ",
+					"insert into TEMP_TABLE_USER_PAGE_PERMISSION select ",
+					"resourcePermissionId, primKey, 0 as plidLength, NULL as ",
+					"plidString, 0 as plid, roleId, FALSE as conflict from ",
+					"ResourcePermission where companyId = ",
 					String.valueOf(companyId),
 					" and primKey LIKE '%_LAYOUT_%' and scope = ",
 					String.valueOf(ResourceConstants.SCOPE_INDIVIDUAL),
@@ -266,19 +257,17 @@ public class VerifyPermission extends VerifyProcess {
 
 			runSQL(
 				StringBundler.concat(
-					"update ", userPagePermissionsTableName,
-					" set plidLength = INSTR(primKey, '",
-					PortletConstants.LAYOUT_SEPARATOR, "') - 1"));
+					"update TEMP_TABLE_USER_PAGE_PERMISSION set plidLength = ",
+					"INSTR(primKey, '", PortletConstants.LAYOUT_SEPARATOR,
+					"') - 1"));
 
 			runSQL(
-				StringBundler.concat(
-					"update ", userPagePermissionsTableName,
-					" set plidString = SUBSTR(primKey, 1, plidLength)"));
+				"update TEMP_TABLE_USER_PAGE_PERMISSION set plidString = " +
+					"SUBSTR(primKey, 1, plidLength)");
 
 			runSQL(
-				StringBundler.concat(
-					"update ", userPagePermissionsTableName,
-					" set plid = CAST_LONG(plidString)"));
+				"update TEMP_TABLE_USER_PAGE_PERMISSION set plid = " +
+					"CAST_LONG(plidString)");
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Identifying portlets on user personal pages");
@@ -286,61 +275,56 @@ public class VerifyPermission extends VerifyProcess {
 
 			runSQL(
 				StringBundler.concat(
-					"delete from ", userPagePermissionsTableName,
-					" where not exists (select 1 from Layout inner join ",
-					"Group_ on Layout.groupId = Group_.groupId where ",
-					userPagePermissionsTableName,
-					".plid = Layout.plid and Group_.classNameId in (",
-					String.valueOf(userClassNameId), ", ",
-					String.valueOf(userGroupClassNameId),
+					"delete from TEMP_TABLE_USER_PAGE_PERMISSION where not ",
+					"exists (select 1 from Layout inner join Group_ on ",
+					"Layout.groupId = Group_.groupId where ",
+					"TEMP_TABLE_USER_PAGE_PERMISSION.plid = Layout.plid and ",
+					"Group_.classNameId in (", String.valueOf(userClassNameId),
+					", ", String.valueOf(userGroupClassNameId),
 					") and Layout.type_ = '", LayoutConstants.TYPE_PORTLET,
 					"')"));
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					StringBundler.concat(
-						"Identifying portlets that have both user and power ",
-						"user permissions"));
+					"Identifying portlets that have both user and power user " +
+						"permissions");
 			}
 
 			runSQL(
 				StringBundler.concat(
-					"insert into ", userPagePermissionsConflictsTableName,
-					" select primKey from ", userPagePermissionsTableName,
-					" group by primKey having COUNT(*) > 1"));
+					"insert into TEMP_TABLE_USER_PAGE_PERMISSION_CONFLICT ",
+					"select primKey from TEMP_TABLE_USER_PAGE_PERMISSION ",
+					"group by primKey having COUNT(*) > 1"));
+
+			runSQL(
+				"delete from TEMP_TABLE_USER_PAGE_PERMISSION where roleId = " +
+					userRoleId);
 
 			runSQL(
 				StringBundler.concat(
-					"delete from ", userPagePermissionsTableName,
-					" where roleId = ", String.valueOf(userRoleId)));
-
-			runSQL(
-				StringBundler.concat(
-					"update ", userPagePermissionsTableName,
-					" set conflict = TRUE where exists (select 1 from ",
-					userPagePermissionsConflictsTableName, " where ",
-					userPagePermissionsTableName, ".primKey = ",
-					userPagePermissionsConflictsTableName, ".primKey)"));
+					"update TEMP_TABLE_USER_PAGE_PERMISSION set conflict = ",
+					"TRUE where exists (select 1 from ",
+					"TEMP_TABLE_USER_PAGE_PERMISSION_CONFLICT where ",
+					"TEMP_TABLE_USER_PAGE_PERMISSION.primKey = ",
+					"TEMP_TABLE_USER_PAGE_PERMISSION_CONFLICT.primKey)"));
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					StringBundler.concat(
-						"Deleting power user permissions where the portlet ",
-						"has both user and power user permissions"));
+					"Deleting power user permissions where the portlet has " +
+						"both user and power user permissions");
 			}
 
 			runSQL(
 				StringBundler.concat(
 					"delete from ResourcePermission where ",
 					"resourcePermissionId in (select resourcePermissionId ",
-					"from ", userPagePermissionsTableName,
-					" where conflict = TRUE)"));
+					"from TEMP_TABLE_USER_PAGE_PERMISSION where conflict = ",
+					"TRUE)"));
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					StringBundler.concat(
-						"Switching remaining portlet power user permissions ",
-						"to user permissions"));
+					"Switching remaining portlet power user permissions to " +
+						"user permissions");
 			}
 
 			runSQL(
@@ -348,7 +332,7 @@ public class VerifyPermission extends VerifyProcess {
 					"update ResourcePermission set roleId = ",
 					String.valueOf(userRoleId), " where resourcePermissionId ",
 					"in (select resourcePermissionId from ",
-					userPagePermissionsTableName, " where conflict = FALSE)"));
+					"TEMP_TABLE_USER_PAGE_PERMISSION where conflict = FALSE)"));
 		}
 	}
 
