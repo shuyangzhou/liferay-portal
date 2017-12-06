@@ -14,8 +14,8 @@
 
 package com.liferay.portal.messaging.internal.jmx;
 
-import com.liferay.portal.kernel.messaging.Destination;
-import com.liferay.portal.kernel.messaging.DestinationStatistics;
+import com.liferay.messaging.api.Destination;
+import com.liferay.messaging.api.DestinationStatistics;
 
 import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;

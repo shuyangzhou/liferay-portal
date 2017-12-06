@@ -14,9 +14,9 @@
 
 package com.liferay.portal.messaging.spi;
 
-import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.messaging.MessageListener;
-import com.liferay.portal.kernel.messaging.MessageListenerException;
+import com.liferay.messaging.api.Message;
+import com.liferay.messaging.api.MessageListener;
+import com.liferay.messaging.api.MessageListenerException;
 
 /**
  * @author Michael C. Han

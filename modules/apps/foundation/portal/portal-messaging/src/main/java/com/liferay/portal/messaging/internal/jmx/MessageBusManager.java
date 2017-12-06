@@ -14,8 +14,8 @@
 
 package com.liferay.portal.messaging.internal.jmx;
 
-import com.liferay.portal.kernel.messaging.Destination;
-import com.liferay.portal.kernel.messaging.MessageBus;
+import com.liferay.messaging.api.Destination;
+import com.liferay.messaging.api.MessageBus;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 
 import java.util.Collections;

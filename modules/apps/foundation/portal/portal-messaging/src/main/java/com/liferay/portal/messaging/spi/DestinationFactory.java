@@ -14,9 +14,9 @@
 
 package com.liferay.portal.messaging.spi;
 
-import com.liferay.portal.kernel.messaging.DestinationConfiguration;
-
 import java.util.Collection;
+
+import com.liferay.messaging.api.DestinationConfiguration;
 
 /**
  * @author Michael C. Han

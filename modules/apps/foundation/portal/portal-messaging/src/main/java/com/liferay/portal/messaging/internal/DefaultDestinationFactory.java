@@ -14,10 +14,11 @@
 
 package com.liferay.portal.messaging.internal;
 
+import com.liferay.messaging.api.Destination;
+import com.liferay.messaging.api.DestinationConfiguration;
+import com.liferay.messaging.api.DestinationFactory;
 import com.liferay.portal.kernel.executor.PortalExecutorManager;
-import com.liferay.portal.kernel.messaging.Destination;
-import com.liferay.portal.kernel.messaging.DestinationConfiguration;
-import com.liferay.portal.kernel.messaging.DestinationFactory;
+
 import com.liferay.portal.kernel.util.MapUtil;
 
 import java.util.Collection;

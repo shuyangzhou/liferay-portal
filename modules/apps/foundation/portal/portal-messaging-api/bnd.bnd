@@ -1,5 +1,13 @@
-Bundle-Name: Liferay Portal Messaging API
-Bundle-SymbolicName: com.liferay.portal.messaging.api
+Bundle-Name: Liferay Messaging API
+Bundle-SymbolicName: com.liferay.messaging.api
 Bundle-Version: 1.0.0
+
+Export-Package:\
+	com.liferay.messaging.api,\
+	com.liferay.messaging.api.async,\
+	com.liferay.messaging.api.config,\
+	com.liferay.messaging.api.proxy,\
+	com.liferay.messaging.api.sender
+
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:

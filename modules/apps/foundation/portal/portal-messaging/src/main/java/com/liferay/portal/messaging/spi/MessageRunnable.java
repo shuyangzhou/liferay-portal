@@ -14,7 +14,7 @@
 
 package com.liferay.portal.messaging.spi;
 
-import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.messaging.api.Message;
 
 /**
  * @author Shuyang Zhou

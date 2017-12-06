@@ -14,10 +14,10 @@
 
 package com.liferay.portal.messaging.spi;
 
-import com.liferay.portal.kernel.messaging.DestinationEventListener;
-import com.liferay.portal.kernel.messaging.DestinationStatistics;
-import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.messaging.api.DestinationEventListener;
+import com.liferay.messaging.api.DestinationStatistics;
+import com.liferay.messaging.api.Message;
+import com.liferay.messaging.api.MessageListener;
 
 import java.util.Set;
 
