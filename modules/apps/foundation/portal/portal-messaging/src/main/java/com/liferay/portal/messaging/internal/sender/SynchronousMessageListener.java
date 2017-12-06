@@ -17,10 +17,10 @@ package com.liferay.portal.messaging.internal.sender;
 import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCacheManager;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.messaging.MessageBus;
-import com.liferay.portal.kernel.messaging.MessageBusException;
-import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.messaging.api.Message;
+import com.liferay.messaging.api.MessageBus;
+import com.liferay.messaging.api.MessageBusException;
+import com.liferay.messaging.api.MessageListener;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;

@@ -14,9 +14,9 @@
 
 package com.liferay.portal.messaging.internal;
 
-import com.liferay.portal.kernel.messaging.Destination;
-import com.liferay.portal.kernel.messaging.DestinationConfiguration;
-import com.liferay.portal.kernel.messaging.SerialDestination;
+import com.liferay.messaging.api.Destination;
+import com.liferay.messaging.api.DestinationConfiguration;
+import com.liferay.messaging.api.SerialDestination;
 
 /**
  * @author Michael C. Han

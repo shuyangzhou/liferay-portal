@@ -16,11 +16,11 @@ package com.liferay.portal.messaging.internal.sender;
 
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.messaging.MessageBus;
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSender;
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationMessageSenderFactory;
-import com.liferay.portal.kernel.messaging.sender.SingleDestinationSynchronousMessageSender;
-import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
+import com.liferay.messaging.api.MessageBus;
+import com.liferay.messaging.api.sender.SingleDestinationMessageSender;
+import com.liferay.messaging.api.sender.SingleDestinationMessageSenderFactory;
+import com.liferay.messaging.api.sender.SingleDestinationSynchronousMessageSender;
+import com.liferay.messaging.api.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.util.HashMap;
