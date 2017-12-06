@@ -1,7 +1,7 @@
 Bundle-Activator: com.liferay.twitter.internal.activator.TwitterServiceBundlerActivator
 Bundle-Name: Liferay Twitter Service
 Bundle-SymbolicName: com.liferay.twitter.service
-Bundle-Version: 1.0.19
+Bundle-Version: 1.0.20
 Export-Package:\
 	com.liferay.twitter.configuration,\
 	com.liferay.twitter.util

@@ -2474,8 +2474,8 @@ the `npmInstall` task.
 ## 5.2.0 - 2017-11-27
 
 ### Added
-- [LPS-76145]: Add new `com.liferay.osgi.portal.compat.defaults.plugin` Gradle
-plugin to properly configure the portal compatibility OSGi modules.
+- [LPS-76145]: Add the new `com.liferay.osgi.portal.compat.defaults.plugin`
+Gradle plugin to properly configure the portal compatibility OSGi modules.
 
 ### Changed
 - [LPS-75778]: Update the [Liferay Gradle Plugins] dependency to version 3.5.49.
@@ -2488,9 +2488,9 @@ plugin to properly configure the portal compatibility OSGi modules.
 ## 5.2.2 - 2017-11-28
 
 ### Added
-- [LPS-76181]: Add property `exactVersion` to the `updateFileVersions`. If set
-to `true`, the task updates all versions to the current one, even if the "major"
-part has not been increased.
+- [LPS-76181]: Add the property `exactVersion` to the `updateFileVersions` task.
+If set to `true`, the task updates all versions to the current one, even if the
+*major* part has not been increased.
 - [LPS-76182]: Ignore a whole subtree if a `.lfrbuild-releng-ignore` marker file
 is found in a parent directory.
 
@@ -2532,12 +2532,25 @@ version 1.1.9.
 - [LPS-69999]: Prevent the `updateFileVersions` task from changing files in
 read-only sub-repositories.
 
-## 5.2.10 - 2017-12-01
+## 5.2.10 - 2017-12-04
 
 ### Changed
 - [LPS-76221]: Set the `translate` property of all `BuildLangTask` instances to
 `false` by default.
 - [LPS-76221]: Update the [Liferay Gradle Plugins] dependency to version 3.5.57.
+
+## 5.2.11 - 2017-12-05
+
+### Changed
+- [LPS-76221]: Update the [Liferay Gradle Plugins] dependency to version 3.5.58.
+
+### Fixed
+- [LPS-76202]: Fix usages of the `compileJSP.destinationDir` property.
+
+## 5.2.12 - 2017-12-05
+
+### Changed
+- [LPS-76256]: Update the [Liferay Gradle Plugins] dependency to version 3.5.59.
 
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle License Report]: https://github.com/jk1/Gradle-License-Report
@@ -2830,6 +2843,7 @@ read-only sub-repositories.
 [LPS-76202]: https://issues.liferay.com/browse/LPS-76202
 [LPS-76221]: https://issues.liferay.com/browse/LPS-76221
 [LPS-76224]: https://issues.liferay.com/browse/LPS-76224
+[LPS-76256]: https://issues.liferay.com/browse/LPS-76256
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981
