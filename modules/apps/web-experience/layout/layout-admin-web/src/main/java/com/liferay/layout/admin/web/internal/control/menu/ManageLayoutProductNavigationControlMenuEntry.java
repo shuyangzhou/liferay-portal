@@ -14,7 +14,7 @@
 
 package com.liferay.layout.admin.web.internal.control.menu;
 
-import com.liferay.layout.admin.web.internal.constants.LayoutAdminPortletKeys;
+import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Layout;
@@ -98,7 +98,7 @@ public class ManageLayoutProductNavigationControlMenuEntry
 
 		Layout layout = themeDisplay.getLayout();
 
-		editPageURL.setParameter("mvcPath", "/edit_layout.jsp");
+		editPageURL.setParameter("mvcRenderCommandName", "/layout/edit_layout");
 		editPageURL.setParameter("backURL", _portal.getCurrentURL(request));
 		editPageURL.setParameter(
 			"groupId", String.valueOf(layout.getGroupId()));

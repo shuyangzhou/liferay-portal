@@ -17,12 +17,13 @@ package com.liferay.layout.page.template.service.impl;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateActionKeys;
 import com.liferay.layout.page.template.model.LayoutPageTemplateCollection;
 import com.liferay.layout.page.template.service.base.LayoutPageTemplateCollectionServiceBaseImpl;
-import com.liferay.layout.page.template.service.permission.LayoutPageTemplateCollectionPermission;
-import com.liferay.layout.page.template.service.permission.LayoutPageTemplatePermission;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.checker.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.checker.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
@@ -41,7 +42,7 @@ public class LayoutPageTemplateCollectionServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		LayoutPageTemplatePermission.check(
+		_portletResourcePermission.check(
 			getPermissionChecker(), groupId,
 			LayoutPageTemplateActionKeys.ADD_LAYOUT_PAGE_TEMPLATE_COLLECTION);
 
@@ -55,7 +56,7 @@ public class LayoutPageTemplateCollectionServiceImpl
 			long layoutPageTemplateCollectionId)
 		throws PortalException {
 
-		LayoutPageTemplateCollectionPermission.check(
+		_layoutPageTemplateCollectionModelResourcePermission.check(
 			getPermissionChecker(), layoutPageTemplateCollectionId,
 			ActionKeys.DELETE);
 
@@ -76,7 +77,7 @@ public class LayoutPageTemplateCollectionServiceImpl
 				layoutPageTemplateCollectionIds) {
 
 			try {
-				LayoutPageTemplateCollectionPermission.check(
+				_layoutPageTemplateCollectionModelResourcePermission.check(
 					getPermissionChecker(), layoutPageTemplateCollectionId,
 					ActionKeys.DELETE);
 
@@ -112,7 +113,7 @@ public class LayoutPageTemplateCollectionServiceImpl
 					layoutPageTemplateCollectionId);
 
 		if (layoutPageTemplateCollection != null) {
-			LayoutPageTemplateCollectionPermission.check(
+			_layoutPageTemplateCollectionModelResourcePermission.check(
 				getPermissionChecker(), layoutPageTemplateCollection,
 				ActionKeys.VIEW);
 		}
@@ -169,7 +170,7 @@ public class LayoutPageTemplateCollectionServiceImpl
 			String description)
 		throws PortalException {
 
-		LayoutPageTemplateCollectionPermission.check(
+		_layoutPageTemplateCollectionModelResourcePermission.check(
 			getPermissionChecker(), layoutPageTemplateCollectionId,
 			ActionKeys.UPDATE);
 
@@ -180,5 +181,16 @@ public class LayoutPageTemplateCollectionServiceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutPageTemplateCollectionServiceImpl.class);
+
+	@BeanReference(
+		name = "com.liferay.layout.page.template.internal.permission.LayoutPageTemplateCollectionPermissionChecker"
+	)
+	private ModelResourcePermission<LayoutPageTemplateCollection>
+		_layoutPageTemplateCollectionModelResourcePermission;
+
+	@BeanReference(
+		name = "com.liferay.layout.page.template.internal.permission.LayoutPageTemplatePortletPermissionChecker"
+	)
+	private PortletResourcePermission _portletResourcePermission;
 
 }

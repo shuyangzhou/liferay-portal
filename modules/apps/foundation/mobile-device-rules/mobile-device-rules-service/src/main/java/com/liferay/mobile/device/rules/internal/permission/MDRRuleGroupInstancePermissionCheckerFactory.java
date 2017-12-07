@@ -1,0 +1,46 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.mobile.device.rules.internal.permission;
+
+import com.liferay.mobile.device.rules.constants.MDRPortletKeys;
+import com.liferay.mobile.device.rules.model.MDRRuleGroupInstance;
+import com.liferay.mobile.device.rules.service.MDRRuleGroupInstanceLocalService;
+import com.liferay.portal.kernel.security.permission.checker.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.checker.ModelResourcePermissionChecker;
+import com.liferay.portal.kernel.security.permission.checker.PortletResourcePermission;
+import com.liferay.portal.kernel.security.permission.checker.StagedModelPermissionCheck;
+
+/**
+ * @author Preston Crary
+ */
+public class MDRRuleGroupInstancePermissionCheckerFactory {
+
+	public static ModelResourcePermission<MDRRuleGroupInstance> create(
+		MDRRuleGroupInstanceLocalService mdrRuleGroupInstanceLocalService,
+		PortletResourcePermission portletResourcePermission) {
+
+		return ModelResourcePermissionChecker.create(
+			MDRRuleGroupInstance.class.getName(),
+			MDRRuleGroupInstance::getRuleGroupInstanceId,
+			mdrRuleGroupInstanceLocalService::getMDRRuleGroupInstance,
+			portletResourcePermission,
+			(modelResourcePermission, checksCollector) ->
+				checksCollector.accept(
+					new StagedModelPermissionCheck<>(
+						MDRPortletKeys.MOBILE_DEVICE_RULES,
+						MDRRuleGroupInstance::getRuleGroupInstanceId)));
+	}
+
+}
