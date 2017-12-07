@@ -14,9 +14,9 @@
 
 package com.liferay.wiki.engine.text.internal;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.language.LanguageResources;
 import com.liferay.wiki.engine.BaseWikiEngine;
 import com.liferay.wiki.engine.WikiEngine;
@@ -52,8 +52,18 @@ public class TextEngine extends BaseWikiEngine {
 	}
 
 	@Override
+	public String getEditorName() {
+		return null;
+	}
+
+	@Override
 	public String getFormat() {
 		return "plain_text";
+	}
+
+	@Override
+	public String getHelpURL() {
+		return null;
 	}
 
 	@Override
@@ -64,6 +74,11 @@ public class TextEngine extends BaseWikiEngine {
 	@Override
 	protected ServletContext getEditPageServletContext() {
 		return _servletContext;
+	}
+
+	@Override
+	protected ServletContext getHelpPageServletContext() {
+		return null;
 	}
 
 	@Override

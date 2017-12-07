@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
@@ -305,7 +304,7 @@ public class JournalArticleLocalizationPersistenceImpl
 		msg.append("articlePK=");
 		msg.append(articlePK);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchArticleLocalizationException(msg.toString());
 	}
@@ -356,7 +355,7 @@ public class JournalArticleLocalizationPersistenceImpl
 		msg.append("articlePK=");
 		msg.append(articlePK);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchArticleLocalizationException(msg.toString());
 	}
@@ -641,7 +640,7 @@ public class JournalArticleLocalizationPersistenceImpl
 			msg.append(", languageId=");
 			msg.append(languageId);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			msg.append("}");
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(msg.toString());
@@ -708,7 +707,7 @@ public class JournalArticleLocalizationPersistenceImpl
 			if (languageId == null) {
 				query.append(_FINDER_COLUMN_A_L_LANGUAGEID_1);
 			}
-			else if (languageId.equals(StringPool.BLANK)) {
+			else if (languageId.equals("")) {
 				query.append(_FINDER_COLUMN_A_L_LANGUAGEID_3);
 			}
 			else {
@@ -817,7 +816,7 @@ public class JournalArticleLocalizationPersistenceImpl
 			if (languageId == null) {
 				query.append(_FINDER_COLUMN_A_L_LANGUAGEID_1);
 			}
-			else if (languageId.equals(StringPool.BLANK)) {
+			else if (languageId.equals("")) {
 				query.append(_FINDER_COLUMN_A_L_LANGUAGEID_3);
 			}
 			else {
@@ -1365,12 +1364,12 @@ public class JournalArticleLocalizationPersistenceImpl
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			query.append(",");
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		query.append(")");
 
 		String sql = query.toString();
 

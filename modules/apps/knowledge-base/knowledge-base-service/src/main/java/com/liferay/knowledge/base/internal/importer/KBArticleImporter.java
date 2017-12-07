@@ -21,13 +21,13 @@ import com.liferay.knowledge.base.exception.KBArticleImportException;
 import com.liferay.knowledge.base.internal.importer.util.KBArticleMarkdownConverter;
 import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.knowledge.base.service.KBArticleLocalService;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -166,6 +166,10 @@ public class KBArticleImporter {
 		String kbArchiveResourceName = kbArchiveResource.getName();
 
 		int slashIndex = kbArchiveResourceName.lastIndexOf(StringPool.SLASH);
+
+		if (slashIndex == -1) {
+			return KBArticleConstants.DEFAULT_PRIORITY;
+		}
 
 		String shortFileName = StringPool.BLANK;
 
@@ -307,10 +311,15 @@ public class KBArticleImporter {
 					double nonintroFilePriority = getKBArchiveResourcePriority(
 						file);
 
-					_kbArticleLocalService.moveKBArticle(
-						userId, kbArticle.getResourcePrimKey(),
-						sectionResourceClassNameId, sectionResourcePrimaryKey,
-						nonintroFilePriority);
+					int value = Double.compare(
+						nonintroFilePriority, kbArticle.getPriority());
+
+					if (value != 0) {
+						_kbArticleLocalService.moveKBArticle(
+							userId, kbArticle.getResourcePrimKey(),
+							sectionResourceClassNameId,
+							sectionResourcePrimaryKey, nonintroFilePriority);
+					}
 				}
 			}
 		}

@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
@@ -158,18 +157,18 @@ public class JournalContentSearchPersistenceTest {
 
 	@Test
 	public void testCountByPortletId() throws Exception {
-		_persistence.countByPortletId(StringPool.BLANK);
+		_persistence.countByPortletId("");
 
-		_persistence.countByPortletId(StringPool.NULL);
+		_persistence.countByPortletId("null");
 
 		_persistence.countByPortletId((String)null);
 	}
 
 	@Test
 	public void testCountByArticleId() throws Exception {
-		_persistence.countByArticleId(StringPool.BLANK);
+		_persistence.countByArticleId("");
 
-		_persistence.countByArticleId(StringPool.NULL);
+		_persistence.countByArticleId("null");
 
 		_persistence.countByArticleId((String)null);
 	}
@@ -184,9 +183,9 @@ public class JournalContentSearchPersistenceTest {
 
 	@Test
 	public void testCountByG_A() throws Exception {
-		_persistence.countByG_A(RandomTestUtil.nextLong(), StringPool.BLANK);
+		_persistence.countByG_A(RandomTestUtil.nextLong(), "");
 
-		_persistence.countByG_A(0L, StringPool.NULL);
+		_persistence.countByG_A(0L, "null");
 
 		_persistence.countByG_A(0L, (String)null);
 	}
@@ -202,10 +201,9 @@ public class JournalContentSearchPersistenceTest {
 	@Test
 	public void testCountByG_P_A() throws Exception {
 		_persistence.countByG_P_A(RandomTestUtil.nextLong(),
-			RandomTestUtil.randomBoolean(), StringPool.BLANK);
+			RandomTestUtil.randomBoolean(), "");
 
-		_persistence.countByG_P_A(0L, RandomTestUtil.randomBoolean(),
-			StringPool.NULL);
+		_persistence.countByG_P_A(0L, RandomTestUtil.randomBoolean(), "null");
 
 		_persistence.countByG_P_A(0L, RandomTestUtil.randomBoolean(),
 			(String)null);
@@ -214,11 +212,10 @@ public class JournalContentSearchPersistenceTest {
 	@Test
 	public void testCountByG_P_L_P() throws Exception {
 		_persistence.countByG_P_L_P(RandomTestUtil.nextLong(),
-			RandomTestUtil.randomBoolean(), RandomTestUtil.nextLong(),
-			StringPool.BLANK);
+			RandomTestUtil.randomBoolean(), RandomTestUtil.nextLong(), "");
 
 		_persistence.countByG_P_L_P(0L, RandomTestUtil.randomBoolean(), 0L,
-			StringPool.NULL);
+			"null");
 
 		_persistence.countByG_P_L_P(0L, RandomTestUtil.randomBoolean(), 0L,
 			(String)null);
@@ -227,11 +224,10 @@ public class JournalContentSearchPersistenceTest {
 	@Test
 	public void testCountByG_P_L_P_A() throws Exception {
 		_persistence.countByG_P_L_P_A(RandomTestUtil.nextLong(),
-			RandomTestUtil.randomBoolean(), RandomTestUtil.nextLong(),
-			StringPool.BLANK, StringPool.BLANK);
+			RandomTestUtil.randomBoolean(), RandomTestUtil.nextLong(), "", "");
 
 		_persistence.countByG_P_L_P_A(0L, RandomTestUtil.randomBoolean(), 0L,
-			StringPool.NULL, StringPool.NULL);
+			"null", "null");
 
 		_persistence.countByG_P_L_P_A(0L, RandomTestUtil.randomBoolean(), 0L,
 			(String)null, (String)null);

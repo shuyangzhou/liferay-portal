@@ -21,7 +21,6 @@ import com.liferay.journal.model.JournalFeed;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -124,7 +123,7 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 		JournalFeedImpl journalFeedImpl = new JournalFeedImpl();
 
 		if (uuid == null) {
-			journalFeedImpl.setUuid(StringPool.BLANK);
+			journalFeedImpl.setUuid("");
 		}
 		else {
 			journalFeedImpl.setUuid(uuid);
@@ -136,7 +135,7 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 		journalFeedImpl.setUserId(userId);
 
 		if (userName == null) {
-			journalFeedImpl.setUserName(StringPool.BLANK);
+			journalFeedImpl.setUserName("");
 		}
 		else {
 			journalFeedImpl.setUserName(userName);
@@ -157,42 +156,42 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 		}
 
 		if (feedId == null) {
-			journalFeedImpl.setFeedId(StringPool.BLANK);
+			journalFeedImpl.setFeedId("");
 		}
 		else {
 			journalFeedImpl.setFeedId(feedId);
 		}
 
 		if (name == null) {
-			journalFeedImpl.setName(StringPool.BLANK);
+			journalFeedImpl.setName("");
 		}
 		else {
 			journalFeedImpl.setName(name);
 		}
 
 		if (description == null) {
-			journalFeedImpl.setDescription(StringPool.BLANK);
+			journalFeedImpl.setDescription("");
 		}
 		else {
 			journalFeedImpl.setDescription(description);
 		}
 
 		if (DDMStructureKey == null) {
-			journalFeedImpl.setDDMStructureKey(StringPool.BLANK);
+			journalFeedImpl.setDDMStructureKey("");
 		}
 		else {
 			journalFeedImpl.setDDMStructureKey(DDMStructureKey);
 		}
 
 		if (DDMTemplateKey == null) {
-			journalFeedImpl.setDDMTemplateKey(StringPool.BLANK);
+			journalFeedImpl.setDDMTemplateKey("");
 		}
 		else {
 			journalFeedImpl.setDDMTemplateKey(DDMTemplateKey);
 		}
 
 		if (DDMRendererTemplateKey == null) {
-			journalFeedImpl.setDDMRendererTemplateKey(StringPool.BLANK);
+			journalFeedImpl.setDDMRendererTemplateKey("");
 		}
 		else {
 			journalFeedImpl.setDDMRendererTemplateKey(DDMRendererTemplateKey);
@@ -201,42 +200,42 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 		journalFeedImpl.setDelta(delta);
 
 		if (orderByCol == null) {
-			journalFeedImpl.setOrderByCol(StringPool.BLANK);
+			journalFeedImpl.setOrderByCol("");
 		}
 		else {
 			journalFeedImpl.setOrderByCol(orderByCol);
 		}
 
 		if (orderByType == null) {
-			journalFeedImpl.setOrderByType(StringPool.BLANK);
+			journalFeedImpl.setOrderByType("");
 		}
 		else {
 			journalFeedImpl.setOrderByType(orderByType);
 		}
 
 		if (targetLayoutFriendlyUrl == null) {
-			journalFeedImpl.setTargetLayoutFriendlyUrl(StringPool.BLANK);
+			journalFeedImpl.setTargetLayoutFriendlyUrl("");
 		}
 		else {
 			journalFeedImpl.setTargetLayoutFriendlyUrl(targetLayoutFriendlyUrl);
 		}
 
 		if (targetPortletId == null) {
-			journalFeedImpl.setTargetPortletId(StringPool.BLANK);
+			journalFeedImpl.setTargetPortletId("");
 		}
 		else {
 			journalFeedImpl.setTargetPortletId(targetPortletId);
 		}
 
 		if (contentField == null) {
-			journalFeedImpl.setContentField(StringPool.BLANK);
+			journalFeedImpl.setContentField("");
 		}
 		else {
 			journalFeedImpl.setContentField(contentField);
 		}
 
 		if (feedFormat == null) {
-			journalFeedImpl.setFeedFormat(StringPool.BLANK);
+			journalFeedImpl.setFeedFormat("");
 		}
 		else {
 			journalFeedImpl.setFeedFormat(feedFormat);
@@ -293,7 +292,7 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -308,7 +307,7 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -318,42 +317,42 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (feedId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(feedId);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (DDMStructureKey == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(DDMStructureKey);
 		}
 
 		if (DDMTemplateKey == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(DDMTemplateKey);
 		}
 
 		if (DDMRendererTemplateKey == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(DDMRendererTemplateKey);
@@ -362,42 +361,42 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 		objectOutput.writeInt(delta);
 
 		if (orderByCol == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(orderByCol);
 		}
 
 		if (orderByType == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(orderByType);
 		}
 
 		if (targetLayoutFriendlyUrl == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(targetLayoutFriendlyUrl);
 		}
 
 		if (targetPortletId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(targetPortletId);
 		}
 
 		if (contentField == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(contentField);
 		}
 
 		if (feedFormat == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(feedFormat);

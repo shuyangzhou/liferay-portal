@@ -21,6 +21,7 @@ import com.liferay.layout.admin.web.constants.LayoutAdminDisplayStyleKeys;
 import com.liferay.layout.admin.web.internal.constants.LayoutAdminPortletKeys;
 import com.liferay.layout.admin.web.internal.constants.LayoutAdminWebKeys;
 import com.liferay.layout.util.comparator.LayoutCreateDateComparator;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -52,7 +53,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -161,7 +161,8 @@ public class LayoutsAdminDisplayContext {
 		PortletURL configureLayoutURL =
 			_liferayPortletResponse.createRenderURL();
 
-		configureLayoutURL.setParameter("mvcPath", "/edit_layout.jsp");
+		configureLayoutURL.setParameter(
+			"mvcRenderCommandName", "/layout/edit_layout");
 		configureLayoutURL.setParameter(
 			"redirect", _themeDisplay.getURLCurrent());
 		configureLayoutURL.setParameter(

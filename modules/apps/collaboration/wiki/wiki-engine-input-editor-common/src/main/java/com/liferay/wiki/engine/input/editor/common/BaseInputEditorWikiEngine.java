@@ -14,10 +14,10 @@
 
 package com.liferay.wiki.engine.input.editor.common;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.taglib.servlet.PipingServletResponse;
 import com.liferay.wiki.engine.BaseWikiEngine;
@@ -38,7 +38,9 @@ import javax.servlet.jsp.PageContext;
 
 /**
  * @author Iván Zaera
+ * @deprecated As of 2.0.0, replaced by {@link BaseWikiEngine}
  */
+@Deprecated
 public abstract class BaseInputEditorWikiEngine extends BaseWikiEngine {
 
 	public static BaseInputEditorWikiEngine getBaseInputEditorWikiEngine(

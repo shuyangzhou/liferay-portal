@@ -15,7 +15,7 @@
 package com.liferay.source.formatter.checks;
 
 import com.liferay.petra.string.CharPool;
-import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.source.formatter.BNDSettings;
@@ -106,7 +106,8 @@ public class JavaPackagePathCheck extends BaseFileCheck {
 
 		if (packageName.matches(".*\\.internal\\.([\\w.]+\\.)?impl")) {
 			addMessage(
-				fileName, "Do not use 'impl' inside 'internal', see LPS-70113");
+				fileName, "Do not use 'impl' inside 'internal'",
+				"package.markdown");
 		}
 	}
 

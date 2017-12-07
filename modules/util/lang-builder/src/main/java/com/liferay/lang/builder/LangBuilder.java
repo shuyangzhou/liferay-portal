@@ -14,6 +14,7 @@
 
 package com.liferay.lang.builder;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.OutputStreamWriter;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedWriter;
@@ -25,7 +26,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.NaturalOrderStringComparator;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.tools.ArgumentsUtil;
@@ -355,6 +355,7 @@ public class LangBuilder {
 						StringPool.UTF8))) {
 
 			boolean firstLine = true;
+			String previousLine = null;
 			int state = 0;
 
 			String line = null;
@@ -494,9 +495,13 @@ public class LangBuilder {
 							unsyncBufferedWriter.newLine();
 						}
 
-						unsyncBufferedWriter.write(key + "=" + translatedText);
+						line = key + "=" + translatedText;
+
+						unsyncBufferedWriter.write(line);
 
 						unsyncBufferedWriter.flush();
+
+						previousLine = line;
 					}
 				}
 				else {
@@ -569,13 +574,17 @@ public class LangBuilder {
 					if (firstLine) {
 						firstLine = false;
 					}
-					else {
+					else if (Validator.isNotNull(line) ||
+							 Validator.isNotNull(previousLine)) {
+
 						unsyncBufferedWriter.newLine();
 					}
 
 					unsyncBufferedWriter.write(line);
 
 					unsyncBufferedWriter.flush();
+
+					previousLine = line;
 				}
 			}
 		}

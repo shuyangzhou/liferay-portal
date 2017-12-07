@@ -21,7 +21,6 @@ import com.liferay.journal.model.JournalArticleLocalization;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -93,21 +92,21 @@ public class JournalArticleLocalizationCacheModel implements CacheModel<JournalA
 		journalArticleLocalizationImpl.setArticlePK(articlePK);
 
 		if (title == null) {
-			journalArticleLocalizationImpl.setTitle(StringPool.BLANK);
+			journalArticleLocalizationImpl.setTitle("");
 		}
 		else {
 			journalArticleLocalizationImpl.setTitle(title);
 		}
 
 		if (description == null) {
-			journalArticleLocalizationImpl.setDescription(StringPool.BLANK);
+			journalArticleLocalizationImpl.setDescription("");
 		}
 		else {
 			journalArticleLocalizationImpl.setDescription(description);
 		}
 
 		if (languageId == null) {
-			journalArticleLocalizationImpl.setLanguageId(StringPool.BLANK);
+			journalArticleLocalizationImpl.setLanguageId("");
 		}
 		else {
 			journalArticleLocalizationImpl.setLanguageId(languageId);
@@ -140,21 +139,21 @@ public class JournalArticleLocalizationCacheModel implements CacheModel<JournalA
 		objectOutput.writeLong(articlePK);
 
 		if (title == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (languageId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(languageId);

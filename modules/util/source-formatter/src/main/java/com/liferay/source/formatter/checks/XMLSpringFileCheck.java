@@ -14,8 +14,8 @@
 
 package com.liferay.source.formatter.checks;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.NaturalOrderStringComparator;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.tools.ImportPackage;
 import com.liferay.source.formatter.checks.comparator.ElementComparator;
@@ -31,6 +31,11 @@ import org.dom4j.Element;
  * @author Hugo Huijser
  */
 public class XMLSpringFileCheck extends BaseFileCheck {
+
+	@Override
+	public boolean isPortalCheck() {
+		return true;
+	}
 
 	@Override
 	protected String doProcess(

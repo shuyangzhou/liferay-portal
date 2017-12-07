@@ -25,6 +25,7 @@ import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.model.MBThread;
 import com.liferay.petra.encryptor.Encryptor;
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.comment.action.EditDiscussionStrutsAction;
 import com.liferay.portal.comment.action.GetCommentsStrutsAction;
 import com.liferay.portal.dao.orm.common.SQLTransformer;
@@ -190,7 +191,6 @@ import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.SessionClicks;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringComparator;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.URLCodec;
@@ -201,6 +201,7 @@ import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.model.impl.CookieRemotePreference;
 import com.liferay.portal.model.impl.LayoutTypeImpl;
+import com.liferay.portal.model.impl.LayoutTypePortletImpl;
 import com.liferay.portal.plugin.PluginPackageUtil;
 import com.liferay.portal.security.jaas.JAASHelper;
 import com.liferay.portal.security.lang.DoPrivilegedUtil;
@@ -312,6 +313,7 @@ import org.apache.struts.Globals;
  * @author Hugo Huijser
  * @author Juan Fernández
  * @author Marco Leo
+ * @author Neil Griffin
  */
 @DoPrivileged
 public class PortalImpl implements Portal {
@@ -7169,6 +7171,19 @@ public class PortalImpl implements Portal {
 				layoutType.removeModesPortletId(portletId);
 
 				updateLayout = true;
+			}
+			else if (layoutType instanceof LayoutTypePortletImpl) {
+				LayoutTypePortletImpl layoutTypePortletImpl =
+					(LayoutTypePortletImpl)layoutType;
+
+				if (!layoutTypePortletImpl.hasModeCustomPortletId(
+						portletId, portletMode.toString())) {
+
+					layoutTypePortletImpl.addModeCustomPortletId(
+						portletId, portletMode.toString());
+
+					updateLayout = true;
+				}
 			}
 
 			if (updateLayout &&

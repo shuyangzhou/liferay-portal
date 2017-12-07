@@ -18,10 +18,10 @@ import aQute.bnd.header.OSGiHeader;
 import aQute.bnd.header.Parameters;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.module.framework.ModuleFrameworkUtilAdapter;
 
@@ -90,11 +90,12 @@ public class SplitPackagesTest {
 		Map<ExportPackage, Set<String>> allowedSplitPackageNames =
 			new HashMap<>();
 
-		for (String line : StringUtil.splitLines(
-				StringUtil.read(
-					SplitPackagesTest.class.getResourceAsStream(
-						"dependencies/allowed_split_packages.txt")))) {
+		String[] lines = StringUtil.splitLines(
+			StringUtil.read(
+				SplitPackagesTest.class.getResourceAsStream(
+					"dependencies/allowed_split_packages.txt")));
 
+		for (String line : lines) {
 			String[] lineParts = StringUtil.split(line, StringPool.SEMICOLON);
 
 			allowedSplitPackageNames.put(
