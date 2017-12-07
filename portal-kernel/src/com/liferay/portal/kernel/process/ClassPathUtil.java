@@ -188,10 +188,10 @@ public class ClassPathUtil {
 		Set<File> fileSet = new HashSet<>();
 
 		for (String className : classNames) {
-			File[] files = _listClassPathFiles(classloader, className);
+			Set<File> files = _listClassPathFiles(classloader, className);
 
 			if (files != null) {
-				Collections.addAll(fileSet, files);
+				fileSet.addAll(files);
 			}
 		}
 
@@ -211,7 +211,7 @@ public class ClassPathUtil {
 		return sb.toString();
 	}
 
-	private static File[] _listClassPathFiles(
+	private static Set<File> _listClassPathFiles(
 		ClassLoader classloader, String className) {
 
 		String pathOfClass = StringUtil.replace(
@@ -282,6 +282,8 @@ public class ClassPathUtil {
 			path = "file:".concat(path);
 		}
 
+		Set<File> classPathElements = new HashSet<>();
+
 		File dir = null;
 
 		int pos = -1;
@@ -299,13 +301,15 @@ public class ClassPathUtil {
 			String classesDirName = path.substring(
 				0, path.length() - pathOfClass.length());
 
+			classPathElements.add(new File(classesDirName));
+
 			if (!classesDirName.endsWith("/WEB-INF/classes/")) {
 				_log.error(
 					StringBundler.concat(
 						"Class ", className, " is not loaded from a standard ",
 						"location (/WEB-INF/classes)"));
 
-				return null;
+				return classPathElements;
 			}
 
 			String libDirName = classesDirName.substring(
@@ -327,7 +331,7 @@ public class ClassPathUtil {
 			return null;
 		}
 
-		return dir.listFiles(
+		File[] jarClassPathElements = dir.listFiles(
 			new FileFilter() {
 
 				@Override
@@ -346,6 +350,10 @@ public class ClassPathUtil {
 				}
 
 			});
+
+		Collections.addAll(classPathElements, jarClassPathElements);
+
+		return classPathElements;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(ClassPathUtil.class);
