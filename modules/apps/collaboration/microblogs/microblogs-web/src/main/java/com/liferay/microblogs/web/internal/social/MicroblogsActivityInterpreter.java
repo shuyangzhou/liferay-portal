@@ -18,9 +18,9 @@ import com.liferay.microblogs.constants.MicroblogsPortletKeys;
 import com.liferay.microblogs.model.MicroblogsEntry;
 import com.liferay.microblogs.model.MicroblogsEntryConstants;
 import com.liferay.microblogs.service.MicroblogsEntryLocalService;
-import com.liferay.microblogs.service.permission.MicroblogsEntryPermission;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.checker.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -117,7 +117,7 @@ public class MicroblogsActivityInterpreter
 			_microblogsEntryLocalService.getMicroblogsEntry(
 				activity.getClassPK());
 
-		return MicroblogsEntryPermission.contains(
+		return _entryModelResourcePermission.contains(
 			permissionChecker, microblogsEntry, ActionKeys.VIEW);
 	}
 
@@ -142,6 +142,12 @@ public class MicroblogsActivityInterpreter
 
 	private static final String[] _CLASS_NAMES =
 		{MicroblogsEntry.class.getName()};
+
+	@Reference(
+		target = "(model.class.name=com.liferay.microblogs.model.MicroblogsEntry)"
+	)
+	private ModelResourcePermission<MicroblogsEntry>
+		_entryModelResourcePermission;
 
 	private MicroblogsEntryLocalService _microblogsEntryLocalService;
 	private ResourceBundleLoader _resourceBundleLoader;
