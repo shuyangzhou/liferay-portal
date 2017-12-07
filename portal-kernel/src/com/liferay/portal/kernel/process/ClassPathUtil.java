@@ -47,6 +47,8 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.portlet.Portlet;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
@@ -148,7 +150,8 @@ public class ClassPathUtil {
 		sb.append(File.pathSeparator);
 
 		String portalGlobalClassPath = _buildClassPath(
-			classLoader, CentralizedThreadLocal.class.getName(),
+			classLoader, Portlet.class.getName(),
+			CentralizedThreadLocal.class.getName(),
 			PortalException.class.getName());
 
 		sb.append(portalGlobalClassPath);
