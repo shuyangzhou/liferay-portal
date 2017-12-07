@@ -69,6 +69,8 @@
 
 			<execute macro="SitePages#addPublicPage">
 				<var name="pageName" value="${portlet} Full Page Application" />
+				<var name="portlet" value="${portlet}" />
+				<var name="sitePageType" value="Full Page Application" />
 			</execute>
 
 			<execute macro="Navigator#gotoPage">
@@ -812,10 +814,6 @@
 			<var name="pageNameEdit" value="Site Page Edit" />
 		</execute>
 
-		<execute macro="SitePageNavigator#gotoPages" >
-			<var name="page" value="Public Pages" />
-		</execute>
-
 		<execute macro="Page#view">
 			<var name="pageName" value="Site Page Edit" />
 			<var name="privacy" value="Public" />
@@ -924,6 +922,7 @@
 
 		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Site Page" />
+			<var name="pageTemplateName" value="Blog" />
 		</execute>
 
 		<execute macro="Navigator#gotoSitePage">

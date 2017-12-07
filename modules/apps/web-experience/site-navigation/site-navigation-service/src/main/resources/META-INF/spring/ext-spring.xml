@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+>
+	<bean class="com.liferay.site.navigation.internal.permission.SiteNavigationMenuItemPermissionCheckerFactory" factory-method="create" id="com.liferay.site.navigation.internal.permission.SiteNavigationMenuItemPermissionChecker" >
+		<constructor-arg ref="com.liferay.site.navigation.service.SiteNavigationMenuItemLocalService" />
+		<constructor-arg ref="com.liferay.site.navigation.internal.permission.SiteNavigationPortletPermissionChecker" />
+	</bean>
+	<bean class="com.liferay.site.navigation.internal.permission.SiteNavigationMenuPermissionCheckerFactory" factory-method="create" id="com.liferay.site.navigation.internal.permission.SiteNavigationMenuPermissionChecker" >
+		<constructor-arg ref="com.liferay.site.navigation.service.SiteNavigationMenuLocalService" />
+		<constructor-arg ref="com.liferay.site.navigation.internal.permission.SiteNavigationPortletPermissionChecker" />
+	</bean>
+	<bean class="com.liferay.site.navigation.internal.permission.SiteNavigationPortletPermissionChecker" id="com.liferay.site.navigation.internal.permission.SiteNavigationPortletPermissionChecker" />
+</beans>
