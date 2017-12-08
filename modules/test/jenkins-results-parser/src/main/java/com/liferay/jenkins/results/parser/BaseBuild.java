@@ -38,9 +38,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1216,9 +1213,7 @@ public abstract class BaseBuild implements Build {
 							getDownstreamBuildCount("completed")) &&
 						(result != null)) {
 
-						if (_isDifferent(_result, result)) {
-							setResult(result);
-						}
+						setResult(result);
 					}
 
 					findDownstreamBuilds();
@@ -1277,21 +1272,6 @@ public abstract class BaseBuild implements Build {
 			return displayName1.compareTo(displayName2);
 		}
 
-	}
-
-	protected static ThreadPoolExecutor getNewThreadPoolExecutor(
-		int maximumPoolSize) {
-
-		ThreadPoolExecutor threadPoolExecutor =
-			(ThreadPoolExecutor)Executors.newFixedThreadPool(maximumPoolSize);
-
-		threadPoolExecutor.setKeepAliveTime(5, TimeUnit.SECONDS);
-
-		threadPoolExecutor.allowCoreThreadTimeOut(true);
-		threadPoolExecutor.setCorePoolSize(maximumPoolSize);
-		threadPoolExecutor.setMaximumPoolSize(maximumPoolSize);
-
-		return threadPoolExecutor;
 	}
 
 	protected static boolean isHighPriorityBuildFailureElement(
@@ -2211,18 +2191,16 @@ public abstract class BaseBuild implements Build {
 	}
 
 	protected void setResult(String result) {
-		if (_isDifferent(result, _result)) {
-			_result = result;
+		_result = result;
 
-			if ((_result == null) ||
-				(getDownstreamBuildCount("completed") <
-					getDownstreamBuildCount(null))) {
+		if ((_result == null) ||
+			(getDownstreamBuildCount("completed") <
+				getDownstreamBuildCount(null))) {
 
-				setStatus("running");
-			}
-			else {
-				setStatus("completed");
-			}
+			setStatus("running");
+		}
+		else {
+			setStatus("completed");
 		}
 	}
 

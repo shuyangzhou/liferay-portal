@@ -23,6 +23,9 @@
 			<property name="allowedExportPackageDirName" value="adaptive-media-image-service" />
 			<property name="allowedExportPackageDirName" value="adaptive-media-web" />
 			<property name="allowedExportPackageDirName" value="analytics-java-client" />
+			<property name="allowedExportPackageDirName" value="apio-architect-liferay-portal" />
+			<property name="allowedExportPackageDirName" value="apio-architect-sample-liferay-portal" />
+			<property name="allowedExportPackageDirName" value="apio-architect-wiring-osgi" />
 			<property name="allowedExportPackageDirName" value="dynamic-data-mapping-data-provider" />
 			<property name="allowedExportPackageDirName" value="dynamic-data-mapping-expression" />
 			<property name="allowedExportPackageDirName" value="dynamic-data-mapping-form-builder" />
@@ -51,7 +54,6 @@
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/mentions/mentions-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/message-boards/message-boards-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/microblogs/microblogs-service" />
-			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/wiki/wiki-engine-input-editor-common" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/wiki/wiki-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/events-display/events-display-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/forms-and-workflow/calendar/calendar-service" />
@@ -91,7 +93,6 @@
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-cache/portal-cache" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-cache/portal-cache-ehcache" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-cache/portal-cache-ehcache-provider" />
-			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-configuration/portal-configuration-extender" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-configuration/portal-configuration-upgrade-util" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-portlet-bridge/portal-portlet-bridge-soy" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-remote/portal-remote-soap-extender" />
@@ -239,7 +240,6 @@
 		<check name="JavaPackagePathCheck" />
 		<check name="JavaParameterAnnotationsCheck" />
 		<check name="JavaProcessCallableCheck" />
-		<check name="JavaProviderTypeAnnotationCheck" />
 		<check name="JavaRedundantConstructorCheck" />
 		<check name="JavaResultSetCheck" />
 		<check name="JavaReturnStatementCheck" />
@@ -298,6 +298,7 @@
 		<check name="JavaFinderCacheCheck" />
 		<check name="JavaFinderImplCustomSQLCheck" />
 		<check name="JavaMultiPlusConcatCheck" />
+		<check name="JavaProviderTypeAnnotationCheck" />
 		<check name="JavaServiceUtilCheck" />
 		<check name="JavaSystemEventAnnotationCheck" />
 		<check name="JavaTestMethodAnnotationsCheck" />
@@ -338,7 +339,6 @@
 		<check name="JSPLineBreakCheck" />
 		<check name="JSPLogFileNameCheck" />
 		<check name="JSPRedirectBackURLCheck" />
-		<check name="JSPSendRedirectCheck" />
 		<check name="JSPSessionKeysCheck" />
 		<check name="JSPStringBundlerCheck" />
 		<check name="JSPStylingCheck" />
@@ -366,6 +366,7 @@
 		<!-- Portal checks -->
 
 		<check name="JSPLanguageKeysCheck" />
+		<check name="JSPSendRedirectCheck" />
 		<check name="JSPStringMethodsCheck" />
 		<check name="ResourceBundleCheck" />
 	</source-processor>
@@ -384,6 +385,10 @@
 			<property name="allowLeadingSpaces" value="true" />
 		</check>
 	</source-processor>
+	<source-processor name="PackageinfoSourceProcessor">
+		<check name="PackageinfoBNDExportPackageCheck" />
+		<check name="WhitespaceCheck" />
+	</source-processor>
 	<source-processor name="PropertiesSourceProcessor">
 		<check name="PropertiesDefinitionKeysCheck" />
 		<check name="PropertiesDependenciesFileCheck" />
@@ -392,12 +397,15 @@
 		<check name="PropertiesLongLinesCheck" />
 		<check name="PropertiesPortalFileCheck" />
 		<check name="PropertiesPortletFileCheck" />
-		<check name="PropertiesServiceKeysCheck" />
 		<check name="PropertiesSourceFormatterContentCheck" />
 		<check name="PropertiesSourceFormatterFileCheck" />
 		<check name="PropertiesWhitespaceCheck">
 			<property name="allowLeadingSpaces" value="true" />
 		</check>
+
+		<!-- Portal checks -->
+
+		<check name="PropertiesServiceKeysCheck" />
 	</source-processor>
 	<source-processor name="SoySourceProcessor">
 		<check name="WhitespaceCheck" />
@@ -424,7 +432,6 @@
 		<check name="XMLFSBExcludeFileCheck" />
 		<check name="XMLHBMFileCheck" />
 		<check name="XMLIndentationCheck" />
-		<check name="XMLIvyFileCheck" />
 		<check name="XMLLog4jFileCheck" />
 		<check name="XMLLookAndFeelFileCheck" />
 		<check name="XMLModelHintsFileCheck" />
@@ -434,7 +441,6 @@
 		<check name="XMLResourceActionsFileCheck" />
 		<check name="XMLServiceFileCheck" />
 		<check name="XMLSolrSchemaFileCheck" />
-		<check name="XMLSpringFileCheck" />
 		<check name="XMLTagAttributesCheck" />
 		<check name="XMLToggleFileCheck" />
 		<check name="XMLWhitespaceCheck" />
@@ -442,15 +448,17 @@
 		<!-- Portal checks -->
 
 		<check name="XMLEmptyLinesCheck" />
+		<check name="XMLIvyFileCheck" />
+		<check name="XMLSpringFileCheck" />
 		<check name="XMLStrutsConfigFileCheck" />
 		<check name="XMLTestIgnorableErrorLinesFileCheck" />
 		<check name="XMLTilesDefsFileCheck" />
 		<check name="XMLWebFileCheck" />
 	</source-processor>
 	<source-processor name="YMLSourceProcessor">
-		<check name="WhitespaceCheck">
+		<check name="YMLDefintionOrderCheck" />
+		<check name="YMLWhitespaceCheck">
 			<property name="allowLeadingSpaces" value="true" />
 		</check>
-		<check name="YMLDefintionOrderCheck" />
 	</source-processor>
 </source-formatter>
