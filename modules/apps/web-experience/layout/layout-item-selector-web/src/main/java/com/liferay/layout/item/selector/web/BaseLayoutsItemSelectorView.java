@@ -43,7 +43,7 @@ import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Roberto Díaz
- * @deprecated As of 1.2.0, replaced by {@link
+ * @deprecated As of 1.1.0, replaced by {@link
  *             com.liferay.layout.item.selector.web.internal.BaseLayoutsItemSelectorView}
  */
 @Deprecated
