@@ -56,7 +56,8 @@ public class ProcessUtil {
 
 			NoticeableFuture<O> stdOutNoticeableFuture = _submit(
 				threadNamePrefix.concat("StdOut"),
-				new ProcessStdOutCallable<>(outputProcessor, process));
+				new ProcessStdOutCallable<>(
+					outputProcessor, process, processBuilder));
 
 			NoticeableFuture<E> stdErrNoticeableFuture = _submit(
 				threadNamePrefix.concat("StdErr"),
@@ -232,7 +233,8 @@ public class ProcessUtil {
 					int exitCode = _process.waitFor();
 
 					if (exitCode != 0) {
-						throw new TerminationProcessException(exitCode);
+						throw new TerminationProcessException(
+							_processBuilder, exitCode);
 					}
 				}
 				catch (InterruptedException ie) {
@@ -245,14 +247,17 @@ public class ProcessUtil {
 		}
 
 		private ProcessStdOutCallable(
-			OutputProcessor<T, ?> outputProcessor, Process process) {
+			OutputProcessor<T, ?> outputProcessor, Process process,
+			ProcessBuilder processBuilder) {
 
 			_outputProcessor = outputProcessor;
 			_process = process;
+			_processBuilder = processBuilder;
 		}
 
 		private final OutputProcessor<T, ?> _outputProcessor;
 		private final Process _process;
+		private final ProcessBuilder _processBuilder;
 
 	}
 
