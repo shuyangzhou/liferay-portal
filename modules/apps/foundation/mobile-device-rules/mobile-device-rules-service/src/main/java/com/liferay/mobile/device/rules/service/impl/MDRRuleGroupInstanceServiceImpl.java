@@ -16,12 +16,13 @@ package com.liferay.mobile.device.rules.service.impl;
 
 import com.liferay.mobile.device.rules.model.MDRRuleGroupInstance;
 import com.liferay.mobile.device.rules.service.base.MDRRuleGroupInstanceServiceBaseImpl;
-import com.liferay.mobile.device.rules.service.permission.MDRPermission;
-import com.liferay.mobile.device.rules.service.permission.MDRRuleGroupInstancePermission;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.checker.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.checker.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
@@ -39,7 +40,7 @@ public class MDRRuleGroupInstanceServiceImpl
 			int priority, ServiceContext serviceContext)
 		throws PortalException {
 
-		MDRPermission.check(
+		_portletResourcePermission.check(
 			getPermissionChecker(), groupId,
 			ActionKeys.ADD_RULE_GROUP_INSTANCE);
 
@@ -53,7 +54,7 @@ public class MDRRuleGroupInstanceServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		MDRPermission.check(
+		_portletResourcePermission.check(
 			getPermissionChecker(), groupId,
 			ActionKeys.ADD_RULE_GROUP_INSTANCE);
 
@@ -69,7 +70,7 @@ public class MDRRuleGroupInstanceServiceImpl
 			mdrRuleGroupInstancePersistence.findByPrimaryKey(
 				ruleGroupInstanceId);
 
-		MDRRuleGroupInstancePermission.check(
+		_mdrRuleGroupInstanceModelResourcePermission.check(
 			getPermissionChecker(), ruleGroupInstance, ActionKeys.DELETE);
 
 		mdrRuleGroupInstanceLocalService.deleteRuleGroupInstance(
@@ -106,7 +107,7 @@ public class MDRRuleGroupInstanceServiceImpl
 			mdrRuleGroupInstancePersistence.findByPrimaryKey(
 				ruleGroupInstanceId);
 
-		MDRRuleGroupInstancePermission.check(
+		_mdrRuleGroupInstanceModelResourcePermission.check(
 			getPermissionChecker(), ruleGroupInstance.getRuleGroupInstanceId(),
 			ActionKeys.UPDATE);
 
@@ -134,5 +135,16 @@ public class MDRRuleGroupInstanceServiceImpl
 
 		return groupId;
 	}
+
+	@BeanReference(
+		name = "com.liferay.mobile.device.rules.internal.permission.MDRRuleGroupInstancePermissionChecker"
+	)
+	private ModelResourcePermission<MDRRuleGroupInstance>
+		_mdrRuleGroupInstanceModelResourcePermission;
+
+	@BeanReference(
+		name = "com.liferay.mobile.device.rules.internal.permission.MDRPortletPermissionChecker"
+	)
+	private PortletResourcePermission _portletResourcePermission;
 
 }

@@ -19,12 +19,13 @@ import com.liferay.fragment.service.FragmentEntryService;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateActionKeys;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.base.LayoutPageTemplateEntryServiceBaseImpl;
-import com.liferay.layout.page.template.service.permission.LayoutPageTemplateEntryPermission;
-import com.liferay.layout.page.template.service.permission.LayoutPageTemplatePermission;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.checker.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.checker.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -44,7 +45,7 @@ public class LayoutPageTemplateEntryServiceImpl
 			List<FragmentEntry> fragmentEntries, ServiceContext serviceContext)
 		throws PortalException {
 
-		LayoutPageTemplatePermission.check(
+		_portletResourcePermission.check(
 			getPermissionChecker(), groupId,
 			LayoutPageTemplateActionKeys.ADD_LAYOUT_PAGE_TEMPLATE_ENTRY);
 
@@ -63,7 +64,7 @@ public class LayoutPageTemplateEntryServiceImpl
 
 		for (long layoutPageTemplateEntryId : layoutPageTemplateEntryIds) {
 			try {
-				LayoutPageTemplateEntryPermission.check(
+				_layoutPageTemplateEntryModelResourcePermission.check(
 					getPermissionChecker(), layoutPageTemplateEntryId,
 					ActionKeys.DELETE);
 
@@ -92,7 +93,7 @@ public class LayoutPageTemplateEntryServiceImpl
 			long layoutPageTemplateEntryId)
 		throws PortalException {
 
-		LayoutPageTemplateEntryPermission.check(
+		_layoutPageTemplateEntryModelResourcePermission.check(
 			getPermissionChecker(), layoutPageTemplateEntryId,
 			ActionKeys.DELETE);
 
@@ -110,7 +111,7 @@ public class LayoutPageTemplateEntryServiceImpl
 				layoutPageTemplateEntryId);
 
 		if (layoutPageTemplateEntry != null) {
-			LayoutPageTemplateEntryPermission.check(
+			_layoutPageTemplateEntryModelResourcePermission.check(
 				getPermissionChecker(), layoutPageTemplateEntry,
 				ActionKeys.VIEW);
 		}
@@ -214,7 +215,7 @@ public class LayoutPageTemplateEntryServiceImpl
 			List<FragmentEntry> fragmentEntries, ServiceContext serviceContext)
 		throws PortalException {
 
-		LayoutPageTemplateEntryPermission.check(
+		_layoutPageTemplateEntryModelResourcePermission.check(
 			getPermissionChecker(), layoutPageTemplateEntryId,
 			ActionKeys.UPDATE);
 
@@ -229,5 +230,16 @@ public class LayoutPageTemplateEntryServiceImpl
 
 	@ServiceReference(type = FragmentEntryService.class)
 	private FragmentEntryService _fragmentEntryService;
+
+	@BeanReference(
+		name = "com.liferay.layout.page.template.internal.permission.LayoutPageTemplateEntryPermissionChecker"
+	)
+	private ModelResourcePermission<LayoutPageTemplateEntry>
+		_layoutPageTemplateEntryModelResourcePermission;
+
+	@BeanReference(
+		name = "com.liferay.layout.page.template.internal.permission.LayoutPageTemplatePortletPermissionChecker"
+	)
+	private PortletResourcePermission _portletResourcePermission;
 
 }
