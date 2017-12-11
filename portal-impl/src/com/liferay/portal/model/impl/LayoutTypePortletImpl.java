@@ -84,7 +84,6 @@ import java.util.Set;
  * @author Berentey Zsolt
  * @author Jorge Ferrer
  * @author Raymond Augé
- * @author Neil Griffin
  */
 public class LayoutTypePortletImpl
 	extends LayoutTypeImpl implements LayoutTypePortlet {
@@ -106,13 +105,6 @@ public class LayoutTypePortletImpl
 	public void addModeConfigPortletId(String portletId) {
 		removeModesPortletId(portletId);
 		setModeConfig(StringUtil.add(getModeConfig(), portletId));
-	}
-
-	public void addModeCustomPortletId(String portletId, String portletMode) {
-		removeModesPortletId(portletId);
-		setModeCustom(
-			StringUtil.add(getModeCustom(portletMode), portletId), portletMode);
-		_addedCustomPortletMode = portletMode;
 	}
 
 	@Override
@@ -257,10 +249,6 @@ public class LayoutTypePortletImpl
 		}
 
 		return list;
-	}
-
-	public String getAddedCustomPortletMode() {
-		return _addedCustomPortletMode;
 	}
 
 	@Override
@@ -418,10 +406,6 @@ public class LayoutTypePortletImpl
 		return getTypeSettingsProperty(LayoutTypePortletConstants.MODE_CONFIG);
 	}
 
-	public String getModeCustom(String portletMode) {
-		return getTypeSettingsProperty("mode-" + portletMode);
-	}
-
 	@Override
 	public String getModeEdit() {
 		return getTypeSettingsProperty(LayoutTypePortletConstants.MODE_EDIT);
@@ -544,12 +528,6 @@ public class LayoutTypePortletImpl
 	@Override
 	public boolean hasModeConfigPortletId(String portletId) {
 		return StringUtil.contains(getModeConfig(), portletId);
-	}
-
-	public boolean hasModeCustomPortletId(
-		String portletId, String portletMode) {
-
-		return StringUtil.contains(getModeCustom(portletMode), portletId);
 	}
 
 	@Override
@@ -1224,10 +1202,6 @@ public class LayoutTypePortletImpl
 	public void setModeConfig(String modeConfig) {
 		setTypeSettingsProperty(
 			LayoutTypePortletConstants.MODE_CONFIG, modeConfig);
-	}
-
-	public void setModeCustom(String modeCustom, String portletMode) {
-		setTypeSettingsProperty("mode-" + portletMode, modeCustom);
 	}
 
 	@Override
@@ -2039,7 +2013,6 @@ public class LayoutTypePortletImpl
 
 	private static final Layout _nullLayout = new LayoutImpl();
 
-	private String _addedCustomPortletMode;
 	private boolean _customizedView;
 	private final Format _dateFormat =
 		FastDateFormatFactoryUtil.getSimpleDateFormat(
