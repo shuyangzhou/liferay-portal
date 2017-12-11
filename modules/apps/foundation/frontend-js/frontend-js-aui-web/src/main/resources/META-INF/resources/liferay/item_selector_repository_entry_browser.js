@@ -125,14 +125,21 @@ AUI.add(
 							itemViewer.get(STR_LINKS).on('click', A.bind(STR_ITEM_SELECTED, instance, itemViewer)),
 							itemViewer.after('currentIndexChange', A.bind(STR_ITEM_SELECTED, instance, itemViewer)),
 							itemViewer.after(STR_VISIBLE_CHANGE, instance._afterVisibleChange, instance),
-							uploadItemViewer.after(STR_VISIBLE_CHANGE, instance._afterVisibleChange, instance),
-							itemSelectorUploader.after('itemUploadCancel', instance._onItemUploadCancel, instance),
-							itemSelectorUploader.after('itemUploadComplete', instance._onItemUploadComplete, instance),
-							itemSelectorUploader.after('itemUploadError', A.bind(STR_ITEM_UPLOAD_ERROR, instance)),
-							rootNode.on(STR_DRAG_OVER, instance._ddEventHandler, instance),
-							rootNode.on(STR_DRAG_LEAVE, instance._ddEventHandler, instance),
-							rootNode.on(STR_DROP, instance._ddEventHandler, instance)
 						];
+
+						var uploadItemURL = instance.get('uploadItemURL')
+
+						if (uploadItemURL) {
+							instance._eventHandles.push(
+								uploadItemViewer.after(STR_VISIBLE_CHANGE, instance._afterVisibleChange, instance),
+								itemSelectorUploader.after('itemUploadCancel', instance._onItemUploadCancel, instance),
+								itemSelectorUploader.after('itemUploadComplete', instance._onItemUploadComplete, instance),
+								itemSelectorUploader.after('itemUploadError', A.bind(STR_ITEM_UPLOAD_ERROR, instance)),
+								rootNode.on(STR_DRAG_OVER, instance._ddEventHandler, instance),
+								rootNode.on(STR_DRAG_LEAVE, instance._ddEventHandler, instance),
+								rootNode.on(STR_DROP, instance._ddEventHandler, instance)
+							);
+						}
 
 						var inputFileNode = instance.one('input[type="file"]');
 
@@ -188,26 +195,30 @@ AUI.add(
 					_getUploadErrorMessage: function(error) {
 						var instance = this;
 
-						var errorType = error.errorType;
-
 						var message = Liferay.Language.get('an-unexpected-error-occurred-while-uploading-your-file');
 
-						if (errorType === STATUS_CODE.SC_FILE_ANTIVIRUS_EXCEPTION) {
-							message = error.message;
-						}
-						else if (errorType === STATUS_CODE.SC_FILE_EXTENSION_EXCEPTION) {
-							message = Lang.sub(Liferay.Language.get('please-enter-a-file-with-a-valid-extension-x'), [error.message]);
-						}
-						else if (errorType === STATUS_CODE.SC_FILE_NAME_EXCEPTION) {
-							message = Liferay.Language.get('please-enter-a-file-with-a-valid-file-name');
-						}
-						else if (errorType === STATUS_CODE.SC_FILE_SIZE_EXCEPTION || errorType === STATUS_CODE.SC_UPLOAD_REQUEST_CONTENT_LENGTH_EXCEPTION) {
-							message = Lang.sub(Liferay.Language.get('please-enter-a-file-with-a-valid-file-size-no-larger-than-x'), [instance.formatStorage(instance.get('maxFileSize'))]);
-						}
-						else if (errorType === STATUS_CODE.SC_UPLOAD_REQUEST_SIZE_EXCEPTION) {
-							var maxUploadRequestSize = Liferay.PropsValues.UPLOAD_SERVLET_REQUEST_IMPL_MAX_SIZE;
+						if (error && error.errorType) {
+							var errorType = error.errorType;
 
-							message = Lang.sub(Liferay.Language.get('request-is-larger-than-x-and-could-not-be-processed'), [instance.formatStorage(maxUploadRequestSize)]);
+							if (errorType === STATUS_CODE.SC_FILE_ANTIVIRUS_EXCEPTION) {
+								if (error.message) {
+									message = error.message;
+								}
+							}
+							else if (errorType === STATUS_CODE.SC_FILE_EXTENSION_EXCEPTION) {
+								message = Lang.sub(Liferay.Language.get('please-enter-a-file-with-a-valid-extension-x'), [error.message]);
+							}
+							else if (errorType === STATUS_CODE.SC_FILE_NAME_EXCEPTION) {
+								message = Liferay.Language.get('please-enter-a-file-with-a-valid-file-name');
+							}
+							else if (errorType === STATUS_CODE.SC_FILE_SIZE_EXCEPTION || errorType === STATUS_CODE.SC_UPLOAD_REQUEST_CONTENT_LENGTH_EXCEPTION) {
+								message = Lang.sub(Liferay.Language.get('please-enter-a-file-with-a-valid-file-size-no-larger-than-x'), [instance.formatStorage(instance.get('maxFileSize'))]);
+							}
+							else if (errorType === STATUS_CODE.SC_UPLOAD_REQUEST_SIZE_EXCEPTION) {
+								var maxUploadRequestSize = Liferay.PropsValues.UPLOAD_SERVLET_REQUEST_IMPL_MAX_SIZE;
+
+								message = Lang.sub(Liferay.Language.get('request-is-larger-than-x-and-could-not-be-processed'), [instance.formatStorage(maxUploadRequestSize)]);
+							}
 						}
 
 						return message;
