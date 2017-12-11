@@ -2369,6 +2369,9 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		portletModel.setPublicRenderParameters(publicRenderParameters);
 
+		Map<String, String[]> containerRuntimeOptions =
+			portletModel.getContainerRuntimeOptions();
+
 		for (Element containerRuntimeOptionElement :
 				portletElement.elements("container-runtime-option")) {
 
@@ -2382,9 +2385,6 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 				values.add(valueElement.getTextTrim());
 			}
-
-			Map<String, String[]> containerRuntimeOptions =
-				portletModel.getContainerRuntimeOptions();
 
 			containerRuntimeOptions.put(
 				name, values.toArray(new String[values.size()]));
