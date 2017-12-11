@@ -644,7 +644,7 @@ public class BackgroundTaskLocalServiceImpl
 		User user = null;
 
 		if (userId != UserConstants.USER_ID_DEFAULT) {
-			user = userLocalService.getUser(userId);
+			user = userLocalService.fetchUser(userId);
 		}
 
 		final long backgroundTaskId = counterLocalService.increment();
