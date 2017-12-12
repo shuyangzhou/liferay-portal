@@ -54,6 +54,10 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
+import java.util.TimeZone;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -754,6 +758,23 @@ public class JenkinsResultsParserUtil {
 		}
 	}
 
+	public static ThreadPoolExecutor getNewThreadPoolExecutor(
+		int maximumPoolSize, boolean autoShutDown) {
+
+		ThreadPoolExecutor threadPoolExecutor =
+			(ThreadPoolExecutor)Executors.newFixedThreadPool(maximumPoolSize);
+
+		if (autoShutDown) {
+			threadPoolExecutor.setKeepAliveTime(5, TimeUnit.SECONDS);
+
+			threadPoolExecutor.allowCoreThreadTimeOut(true);
+			threadPoolExecutor.setCorePoolSize(maximumPoolSize);
+			threadPoolExecutor.setMaximumPoolSize(maximumPoolSize);
+		}
+
+		return threadPoolExecutor;
+	}
+
 	public static String getNounForm(
 		int count, String plural, String singular) {
 
@@ -993,8 +1014,12 @@ public class JenkinsResultsParserUtil {
 		}
 	}
 
-	public static String toDateString(Date date) {
+	public static String toDateString(Date date, String timeZoneName) {
 		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy h:mm:ss a z");
+
+		if (timeZoneName != null) {
+			sdf.setTimeZone(TimeZone.getTimeZone(timeZoneName));
+		}
 
 		return sdf.format(date);
 	}

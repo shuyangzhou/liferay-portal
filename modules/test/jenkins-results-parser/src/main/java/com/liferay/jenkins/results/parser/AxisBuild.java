@@ -328,6 +328,21 @@ public class AxisBuild extends BaseBuild {
 		return parentBuild.getOperatingSystem();
 	}
 
+	@Override
+	public Long getStartTime() {
+		if (startTime == 0) {
+			String consoleText = getConsoleText();
+
+			Matcher matcher = _axisStartTimestampPattern.matcher(consoleText);
+
+			if (matcher.find()) {
+				startTime = Long.parseLong(matcher.group("startTime"));
+			}
+		}
+
+		return startTime;
+	}
+
 	public String getTestrayLogsURL() {
 		Properties buildProperties = null;
 
@@ -513,6 +528,8 @@ public class AxisBuild extends BaseBuild {
 			new GenericFailureMessageGenerator()
 		};
 
+	private static final Pattern _axisStartTimestampPattern = Pattern.compile(
+		"(?:startTime:)(?<startTime>\\d+)");
 	private static final Pattern _axisVariablePattern = Pattern.compile(
 		"AXIS_VARIABLE=(?<axisNumber>[^,]+),.*");
 

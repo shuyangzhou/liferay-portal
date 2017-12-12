@@ -266,6 +266,18 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 	}
 
 	@Override
+	public double getEntryPriority(long classNameId, long classPK) {
+		return assetEntryFinder.findPriorityByC_C(classNameId, classPK);
+	}
+
+	@Override
+	public double getEntryPriority(String className, long classPK) {
+		long classNameId = classNameLocalService.getClassNameId(className);
+
+		return assetEntryFinder.findPriorityByC_C(classNameId, classPK);
+	}
+
+	@Override
 	public List<AssetEntry> getGroupEntries(long groupId) {
 		return assetEntryPersistence.findByGroupId(groupId);
 	}
