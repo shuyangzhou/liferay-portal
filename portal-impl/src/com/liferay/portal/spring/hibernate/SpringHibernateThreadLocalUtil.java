@@ -15,7 +15,7 @@
 package com.liferay.portal.spring.hibernate;
 
 import com.liferay.petra.lang.CentralizedThreadLocal;
-import com.liferay.portal.kernel.util.ReflectionUtil;
+import com.liferay.petra.reflect.ReflectionUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -104,8 +104,9 @@ public class SpringHibernateThreadLocalUtil {
 
 			ThreadLocal<?> resourcesThreadLocal = null;
 
-			for (Field field : ReflectionUtil.getDeclaredFields(
-					TransactionSynchronizationManager.class)) {
+			for (Field field :
+					ReflectionUtil.getDeclaredFields(
+						TransactionSynchronizationManager.class)) {
 
 				if (Modifier.isStatic(field.getModifiers()) &&
 					ThreadLocal.class.isAssignableFrom(field.getType())) {

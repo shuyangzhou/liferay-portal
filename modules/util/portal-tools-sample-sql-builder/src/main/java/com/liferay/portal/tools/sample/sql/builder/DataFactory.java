@@ -113,6 +113,7 @@ import com.liferay.message.boards.model.MBThreadFlagModel;
 import com.liferay.message.boards.model.impl.MBMailingListModelImpl;
 import com.liferay.message.boards.model.impl.MBStatsUserModelImpl;
 import com.liferay.message.boards.model.impl.MBThreadFlagModelImpl;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.io.OutputStreamWriter;
@@ -163,7 +164,6 @@ import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.PortletKeys;
-import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -1010,9 +1010,10 @@ public class DataFactory {
 
 		outputDir.mkdirs();
 
-		for (String csvFileName : StringUtil.split(
-				properties.getProperty("sample.sql.output.csv.file.names"))) {
+		String[] csvFileNames = StringUtil.split(
+			properties.getProperty("sample.sql.output.csv.file.names"));
 
+		for (String csvFileName : csvFileNames) {
 			_csvWriters.put(
 				csvFileName,
 				new UnsyncBufferedWriter(

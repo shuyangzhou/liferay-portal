@@ -15,13 +15,13 @@
 package com.liferay.layout.admin.web.internal.control.menu;
 
 import com.liferay.layout.admin.web.internal.constants.LayoutAdminPortletKeys;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -98,7 +98,7 @@ public class ManageLayoutProductNavigationControlMenuEntry
 
 		Layout layout = themeDisplay.getLayout();
 
-		editPageURL.setParameter("mvcPath", "/edit_layout.jsp");
+		editPageURL.setParameter("mvcRenderCommandName", "/layout/edit_layout");
 		editPageURL.setParameter("backURL", _portal.getCurrentURL(request));
 		editPageURL.setParameter(
 			"groupId", String.valueOf(layout.getGroupId()));
