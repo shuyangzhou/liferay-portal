@@ -237,7 +237,12 @@ public class PortletDataContextImpl implements PortletDataContext {
 					ExportImportClassedModelUtil.getPrimaryKeyObj(classedModel);
 
 				addAssetLinks(clazz, classPK);
-				addAssetPriority(element, clazz, classPK);
+
+				long classNameId = ExportImportClassedModelUtil.getClassNameId(
+					classedModel);
+
+				_addAssetEntryPriority(
+					element, classNameId, GetterUtil.getLong(classPK));
 
 				addExpando(element, path, classedModel, clazz);
 				addLocks(clazz, String.valueOf(classPK));
@@ -2112,6 +2117,10 @@ public class PortletDataContextImpl implements PortletDataContext {
 		addAssetPriority(element, clazz, (Serializable)classPK);
 	}
 
+	/**
+	 * @deprecated As of 4.0.0
+	 */
+	@Deprecated
 	protected void addAssetPriority(
 		Element element, Class<?> clazz, Serializable classPK) {
 
@@ -2211,7 +2220,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 		if (element != null) {
 			Attribute assetPriorityAttribute = element.attribute(
-				"asset-priority");
+				"asset-entry-priority");
 
 			if (assetPriorityAttribute != null) {
 				double assetPriority = GetterUtil.getDouble(
@@ -2800,6 +2809,16 @@ public class PortletDataContextImpl implements PortletDataContext {
 		if (Validator.isNotNull(attachedClassName)) {
 			element.addAttribute("attached-class-name", attachedClassName);
 		}
+	}
+
+	private void _addAssetEntryPriority(
+		Element element, long classNameId, long classPK) {
+
+		double assetEntryPriority = AssetEntryLocalServiceUtil.getEntryPriority(
+			classNameId, classPK);
+
+		element.addAttribute(
+			"asset-entry-priority", String.valueOf(assetEntryPriority));
 	}
 
 	private static final Class<?>[] _XSTREAM_DEFAULT_ALLOWED_TYPES = {
