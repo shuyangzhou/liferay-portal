@@ -161,7 +161,8 @@ public class LayoutsAdminDisplayContext {
 		PortletURL configureLayoutURL =
 			_liferayPortletResponse.createRenderURL();
 
-		configureLayoutURL.setParameter("mvcPath", "/edit_layout.jsp");
+		configureLayoutURL.setParameter(
+			"mvcRenderCommandName", "/layout/edit_layout");
 		configureLayoutURL.setParameter(
 			"redirect", _themeDisplay.getURLCurrent());
 		configureLayoutURL.setParameter(
@@ -626,6 +627,14 @@ public class LayoutsAdminDisplayContext {
 		}
 
 		return _millerColumnsEnabled;
+	}
+
+	public boolean isPageTemplates() {
+		if (Objects.equals(getTabs1(), "page-templates")) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public boolean isPrivateLayout() {
