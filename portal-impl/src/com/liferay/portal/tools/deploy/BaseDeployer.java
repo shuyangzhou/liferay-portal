@@ -15,6 +15,8 @@
 package com.liferay.portal.tools.deploy;
 
 import com.liferay.petra.function.UnsafeConsumer;
+import com.liferay.petra.xml.DocUtil;
+import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.deploy.DeployUtil;
 import com.liferay.portal.kernel.deploy.Deployer;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployException;
@@ -64,8 +66,6 @@ import com.liferay.util.ant.DeleteTask;
 import com.liferay.util.ant.ExpandTask;
 import com.liferay.util.ant.UpToDateTask;
 import com.liferay.util.ant.WarTask;
-import com.liferay.util.xml.DocUtil;
-import com.liferay.util.xml.XMLUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -126,10 +126,10 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 	}
 
 	public BaseDeployer() {
-		for (DeploymentExtension deploymentExtension : ServiceLoader.load(
-				DeploymentExtension.class,
-				BaseDeployer.class.getClassLoader())) {
+		ServiceLoader<DeploymentExtension> serviceLoader = ServiceLoader.load(
+			DeploymentExtension.class, BaseDeployer.class.getClassLoader());
 
+		for (DeploymentExtension deploymentExtension : serviceLoader) {
 			_deploymentExtensions.add(deploymentExtension);
 		}
 	}
@@ -1323,7 +1323,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 	}
 
 	public String getInvokerFilterContent() {
-		StringBundler sb = new StringBundler(4);
+		StringBundler sb = new StringBundler(5);
 
 		sb.append(getInvokerFilterContent("ASYNC"));
 		sb.append(getInvokerFilterContent("ERROR"));

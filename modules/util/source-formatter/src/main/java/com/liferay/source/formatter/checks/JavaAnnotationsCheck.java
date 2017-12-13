@@ -39,13 +39,7 @@ public class JavaAnnotationsCheck extends BaseFileCheck {
 			String fileName, String absolutePath, String content)
 		throws Exception {
 
-		if (isSubrepository() || isReadOnly(absolutePath)) {
-			return content;
-		}
-
-		content = _formatAnnotations(fileName, content);
-
-		return content;
+		return _formatAnnotations(fileName, content);
 	}
 
 	private void _checkDelimeter(
@@ -73,7 +67,7 @@ public class JavaAnnotationsCheck extends BaseFileCheck {
 		sb.append("' as delimeter");
 
 		addMessage(
-			fileName, sb.toString(),
+			fileName, sb.toString(), "meta_annotations.markdown",
 			getLineCount(content, content.indexOf(matcher.group())));
 	}
 

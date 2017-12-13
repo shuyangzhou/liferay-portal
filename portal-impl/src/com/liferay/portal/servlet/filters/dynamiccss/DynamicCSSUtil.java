@@ -67,9 +67,9 @@ public class DynamicCSSUtil {
 			ThemeDisplay themeDisplay, Theme theme, String parsedContent)
 		throws Exception {
 
-		String portalContextPath = PortalUtil.getPathContext();
+		String proxyPath = PortalUtil.getPathProxy();
 
-		String baseURL = servletContext.getContextPath();
+		String baseURL = proxyPath.concat(servletContext.getContextPath());
 
 		if (baseURL.endsWith(StringPool.SLASH)) {
 			baseURL = baseURL.substring(0, baseURL.length() - 1);
@@ -79,7 +79,7 @@ public class DynamicCSSUtil {
 			parsedContent,
 			new String[] {"@base_url@", "@portal_ctx@", "@theme_image_path@"},
 			new String[] {
-				baseURL, portalContextPath,
+				baseURL, PortalUtil.getPathContext(),
 				_getThemeImagesPath(request, themeDisplay, theme)
 			});
 

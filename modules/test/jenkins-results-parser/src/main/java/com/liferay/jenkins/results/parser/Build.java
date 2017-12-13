@@ -110,7 +110,7 @@ public interface Build {
 
 	public Map<String, String> getStartPropertiesTempMap();
 
-	public Long getStartTimestamp();
+	public Long getStartTime();
 
 	public String getStatus();
 
