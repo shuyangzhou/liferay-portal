@@ -43,7 +43,7 @@ public class ReflectionUtil {
 		}
 
 		try {
-			return _CLONE_METHOD.invoke(array);
+			return _cloneMethod.invoke(array);
 		}
 		catch (Exception e) {
 			return throwException(e);
@@ -55,9 +55,7 @@ public class ReflectionUtil {
 
 		Field field = clazz.getDeclaredField(name);
 
-		if (!field.isAccessible()) {
-			field.setAccessible(true);
-		}
+		field.setAccessible(true);
 
 		return unfinalField(field);
 	}
@@ -66,9 +64,7 @@ public class ReflectionUtil {
 		Field[] fields = clazz.getDeclaredFields();
 
 		for (Field field : fields) {
-			if (!field.isAccessible()) {
-				field.setAccessible(true);
-			}
+			field.setAccessible(true);
 
 			unfinalField(field);
 		}
@@ -82,9 +78,7 @@ public class ReflectionUtil {
 
 		Method method = clazz.getDeclaredMethod(name, parameterTypes);
 
-		if (!method.isAccessible()) {
-			method.setAccessible(true);
-		}
+		method.setAccessible(true);
 
 		return method;
 	}
@@ -263,9 +257,7 @@ public class ReflectionUtil {
 		int modifiers = field.getModifiers();
 
 		if ((modifiers & Modifier.FINAL) == Modifier.FINAL) {
-			Field modifiersField = getDeclaredField(Field.class, "modifiers");
-
-			modifiersField.setInt(field, modifiers & ~Modifier.FINAL);
+			_modifiersField.setInt(field, modifiers & ~Modifier.FINAL);
 		}
 
 		return field;
@@ -302,11 +294,18 @@ public class ReflectionUtil {
 		throw (E)throwable;
 	}
 
-	private static final Method _CLONE_METHOD;
+	private static final Method _cloneMethod;
+	private static final Field _modifiersField;
 
 	static {
 		try {
-			_CLONE_METHOD = getDeclaredMethod(Object.class, "clone");
+			_cloneMethod = Object.class.getDeclaredMethod("clone");
+
+			_cloneMethod.setAccessible(true);
+
+			_modifiersField = Field.class.getDeclaredField("modifiers");
+
+			_modifiersField.setAccessible(true);
 		}
 		catch (Exception e) {
 			throw new ExceptionInInitializerError(e);

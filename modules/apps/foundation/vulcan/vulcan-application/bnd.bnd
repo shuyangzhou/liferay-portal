@@ -1,4 +1,0 @@
-Bundle-Name: Liferay Vulcan Application
-Bundle-SymbolicName: com.liferay.vulcan.application
-Bundle-Version: 1.0.0
-Liferay-Configuration-Path: /configuration

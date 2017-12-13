@@ -359,6 +359,12 @@ public interface AssetEntryLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public double getEntryPriority(long classNameId, long classPK);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public double getEntryPriority(java.lang.String className, long classPK);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AssetEntry> getGroupEntries(long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

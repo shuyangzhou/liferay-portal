@@ -303,6 +303,7 @@ public class PACLAggregateTest extends AutoBalanceTestCase {
 			System.setProperty("catalina.base", ".");
 
 			List<CaptureAppender> captureAppenders = null;
+			IOException ioException = null;
 
 			String originalTempDirName = System.getProperty(
 				SystemProperties.TMP_DIR);
@@ -339,6 +340,8 @@ public class PACLAggregateTest extends AutoBalanceTestCase {
 					_classes.toArray(new Class<?>[_classes.size()]));
 			}
 			catch (IOException ioe) {
+				ioException = ioe;
+
 				throw new ProcessException(ioe);
 			}
 			finally {
@@ -362,7 +365,7 @@ public class PACLAggregateTest extends AutoBalanceTestCase {
 										Path path, IOException ioe)
 									throws IOException {
 
-									Files.delete(path);
+									Files.deleteIfExists(path);
 
 									return FileVisitResult.CONTINUE;
 								}
@@ -373,7 +376,7 @@ public class PACLAggregateTest extends AutoBalanceTestCase {
 										BasicFileAttributes basicFileAttributes)
 									throws IOException {
 
-									Files.delete(path);
+									Files.deleteIfExists(path);
 
 									return FileVisitResult.CONTINUE;
 								}
@@ -381,6 +384,10 @@ public class PACLAggregateTest extends AutoBalanceTestCase {
 							});
 					}
 					catch (IOException ioe) {
+						if (ioException != null) {
+							ioe.addSuppressed(ioException);
+						}
+
 						throw new ProcessException(ioe);
 					}
 

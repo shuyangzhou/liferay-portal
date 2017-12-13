@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+
+<suppressions>
+	<suppress checks="JavaMultiPlusConcatCheck" files="apio-architect-api/src/main/java/com/liferay/apio/architect/error/ApioDeveloperError\.java" />
+</suppressions>

@@ -1306,6 +1306,66 @@ another task with the same name is being executed in a parent project.
 - [LPS-75798]: Update the [Liferay Source Formatter] dependency to version
 1.0.506.
 
+## 2.3.36 - 2017-12-01
+
+### Changed
+- [LPS-74544]: Update the [Liferay Source Formatter] dependency to version
+1.0.507.
+
+## 2.3.37 - 2017-12-01
+
+### Changed
+- [LPS-75798]: Update the [Liferay Source Formatter] dependency to version
+1.0.508.
+
+## 2.3.38 - 2017-12-05
+
+### Changed
+- [LPS-76256]: Update the [Liferay Source Formatter] dependency to version
+1.0.509.
+
+## 2.3.39 - 2017-12-05
+
+### Changed
+- [LPS-76226]: Update the [Liferay Source Formatter] dependency to version
+1.0.510.
+
+## 2.3.40 - 2017-12-06
+
+### Changed
+- [LPS-74544]: Update the [Liferay Source Formatter] dependency to version
+1.0.511.
+
+## 2.3.41 - 2017-12-07
+
+### Changed
+- [LPS-74544]: Update the [Liferay Source Formatter] dependency to version
+1.0.512.
+
+## 2.3.42 - 2017-12-07
+
+### Changed
+- [LPS-74544]: Update the [Liferay Source Formatter] dependency to version
+1.0.513.
+
+## 2.3.43 - 2017-12-10
+
+### Changed
+- [LPS-76326]: Update the [Liferay Source Formatter] dependency to version
+1.0.514.
+
+## 2.3.44 - 2017-12-12
+
+### Changed
+- [LPS-74544]: Update the [Liferay Source Formatter] dependency to version
+1.0.515.
+
+## 2.3.45 - 2017-12-12
+
+### Changed
+- [LPS-76018]: Update the [Liferay Source Formatter] dependency to version
+1.0.516.
+
 [Liferay Source Formatter]: https://github.com/liferay/liferay-portal/tree/master/modules/util/source-formatter
 [LPS-52675]: https://issues.liferay.com/browse/LPS-52675
 [LPS-62970]: https://issues.liferay.com/browse/LPS-62970
@@ -1388,4 +1448,8 @@ another task with the same name is being executed in a parent project.
 [LPS-75901]: https://issues.liferay.com/browse/LPS-75901
 [LPS-75952]: https://issues.liferay.com/browse/LPS-75952
 [LPS-75971]: https://issues.liferay.com/browse/LPS-75971
+[LPS-76018]: https://issues.liferay.com/browse/LPS-76018
 [LPS-76110]: https://issues.liferay.com/browse/LPS-76110
+[LPS-76226]: https://issues.liferay.com/browse/LPS-76226
+[LPS-76256]: https://issues.liferay.com/browse/LPS-76256
+[LPS-76326]: https://issues.liferay.com/browse/LPS-76326

@@ -80,7 +80,7 @@
 </tr>
 <tr>
 	<td>SITES_COMPASS</td>
-	<td>//span/*[name()='svg'][contains(@class,'sites')]</td>
+	<td>//a[span/*[name()='svg'][contains(@class,'sites')]]</td>
 	<td></td>
 </tr>
 <tr>
@@ -130,12 +130,12 @@
 </tr>
 <tr>
 	<td>PAGES_ICON</td>
-	<td>//*[contains(@data-qa-id,'PagesOptions')]//*[name()='svg'][contains(@class,'icon-ellipsis')]</td>
+	<td>//*[contains(@data-qa-id,'PagesOptions')]//a[span/*[name()='svg'][contains(@class,'icon-ellipsis')]]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>ADD_PAGE_ICON</td>
-	<td>//span/*[name()='a' or 'span'][contains(.,'${key_page}')]/..//span/*[name()='svg'][contains(@class,'icon-plus')]</td>
+	<td>//span/*[name()='a' or 'span'][contains(.,'${key_page}')]/..//a[span/*[name()='svg'][contains(@class,'icon-plus')]]</td>
 	<td></td>
 </tr>
 <tr>
