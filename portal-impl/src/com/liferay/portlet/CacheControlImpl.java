@@ -53,7 +53,9 @@ public class CacheControlImpl implements CacheControl {
 	public void setETag(String eTag) {
 		_eTag = eTag;
 
-		_mimeResponseImpl.setProperty(MimeResponse.ETAG, eTag);
+		if (eTag != null) {
+			_mimeResponseImpl.setProperty(MimeResponse.ETAG, eTag);
+		}
 	}
 
 	@Override

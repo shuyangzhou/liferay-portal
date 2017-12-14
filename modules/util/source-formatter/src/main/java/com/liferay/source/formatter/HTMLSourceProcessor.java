@@ -12,21 +12,29 @@
  * details.
  */
 
-package com.liferay.util.log4j;
+package com.liferay.source.formatter;
 
-import org.apache.log4j.Level;
+import java.util.List;
 
 /**
- * @author Brian Wing Shun Chan
- * @see    com.liferay.petra.log4j.Levels
- * @deprecated As of 7.0.0
+ * @author Hugo Huijser
  */
-@Deprecated
-public class Levels {
+public class HTMLSourceProcessor extends BaseSourceProcessor {
 
-	public static final Level[] ALL_LEVELS = {
-		Level.OFF, Level.FATAL, Level.ERROR, Level.WARN, Level.INFO,
-		Level.DEBUG, Level.TRACE, Level.ALL
-	};
+	@Override
+	protected List<String> doGetFileNames() throws Exception {
+		return getFileNames(
+			new String[] {
+				"**/jenkins-results-parser/src/test/resources/dependencies/**"
+			},
+			getIncludes());
+	}
+
+	@Override
+	protected String[] doGetIncludes() {
+		return _INCLUDES;
+	}
+
+	private static final String[] _INCLUDES = {"**/*.html"};
 
 }
