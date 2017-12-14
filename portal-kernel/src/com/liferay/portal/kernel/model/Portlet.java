@@ -230,6 +230,13 @@ public interface Portlet extends PortletModel, PersistedModel {
 	public com.liferay.portal.kernel.portlet.ConfigurationAction getConfigurationActionInstance();
 
 	/**
+	* Returns the container runtime options at the portlet level.
+	*
+	* @return the container runtime options at the portlet level
+	*/
+	public java.util.Map<java.lang.String, java.lang.String[]> getContainerRuntimeOptions();
+
+	/**
 	* Returns the servlet context name of the portlet.
 	*
 	* @return the servlet context name of the portlet

@@ -769,6 +769,16 @@ public class PortletImpl extends PortletBaseImpl {
 	}
 
 	/**
+	 * Returns the container runtime options at the portlet level.
+	 *
+	 * @return the container runtime options at the portlet level
+	 */
+	@Override
+	public Map<String, String[]> getContainerRuntimeOptions() {
+		return _containerRuntimeOptions;
+	}
+
+	/**
 	 * Returns the servlet context name of the portlet.
 	 *
 	 * @return the servlet context name of the portlet
@@ -4201,6 +4211,12 @@ public class PortletImpl extends PortletBaseImpl {
 	 * The configuration action class of the portlet.
 	 */
 	private String _configurationActionClass;
+
+	/**
+	 * Map of the container runtime options at the portlet level.
+	 */
+	private final Map<String, String[]> _containerRuntimeOptions =
+		new HashMap<>();
 
 	/**
 	 * The name of the category of the Control Panel where this portlet will be

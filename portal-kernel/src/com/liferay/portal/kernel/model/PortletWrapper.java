@@ -345,6 +345,16 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	}
 
 	/**
+	* Returns the container runtime options at the portlet level.
+	*
+	* @return the container runtime options at the portlet level
+	*/
+	@Override
+	public Map<java.lang.String, java.lang.String[]> getContainerRuntimeOptions() {
+		return _portlet.getContainerRuntimeOptions();
+	}
+
+	/**
 	* Returns the servlet context name of the portlet.
 	*
 	* @return the servlet context name of the portlet
