@@ -14,8 +14,6 @@
 
 package com.liferay.portlet;
 
-import com.liferay.portal.kernel.util.Validator;
-
 import javax.portlet.CacheControl;
 import javax.portlet.MimeResponse;
 
@@ -55,7 +53,7 @@ public class CacheControlImpl implements CacheControl {
 	public void setETag(String eTag) {
 		_eTag = eTag;
 
-		if (Validator.isNotNull(eTag)) {
+		if (eTag != null) {
 			_mimeResponseImpl.setProperty(MimeResponse.ETAG, eTag);
 		}
 	}
