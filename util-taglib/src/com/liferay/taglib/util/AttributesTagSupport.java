@@ -50,11 +50,17 @@ public class AttributesTagSupport
 	public void release() {
 		super.release();
 
+		new Exception("Release to null").printStackTrace();
+
 		_attributeNamespace = null;
 		_dynamicAttributes = null;
 	}
 
 	public void setAttributeNamespace(String attributeNamespace) {
+		if (attributeNamespace == null) {
+			new Exception("Set to null").printStackTrace();
+		}
+
 		_attributeNamespace = attributeNamespace;
 	}
 
