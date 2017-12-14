@@ -290,7 +290,7 @@ public class AggregateFilter extends IgnoreModuleRequestFilter {
 			long lastModified = PortalWebResourcesUtil.getLastModified(
 				PortalWebResourceConstants.RESOURCE_TYPE_JS);
 
-			if (lastModified == cacheFile.lastModified()) {
+			if ((lastModified / 1000) == (cacheFile.lastModified() / 1000)) {
 				response.setContentType(ContentTypes.TEXT_JAVASCRIPT);
 
 				return cacheFile;
