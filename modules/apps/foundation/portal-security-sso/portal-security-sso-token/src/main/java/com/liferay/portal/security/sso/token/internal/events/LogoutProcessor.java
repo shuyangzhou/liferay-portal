@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.security.sso.token.events;
+package com.liferay.portal.security.sso.token.internal.events;
 
 import java.io.IOException;
 
@@ -30,11 +30,11 @@ import javax.servlet.http.HttpServletResponse;
  * <ul>
  * <li>
  * {@link
- * com.liferay.portal.security.sso.token.internal.events.CookieLogoutProcessor}
+ * CookieLogoutProcessor}
  * </li>
  * <li>
  * {@link
- * com.liferay.portal.security.sso.token.internal.events.RedirectLogoutProcessor
+ * RedirectLogoutProcessor
  * }
  * </li>
  * </ul>

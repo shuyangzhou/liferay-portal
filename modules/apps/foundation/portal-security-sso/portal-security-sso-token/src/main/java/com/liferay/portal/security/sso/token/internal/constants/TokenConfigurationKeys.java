@@ -12,13 +12,19 @@
  * details.
  */
 
-package com.liferay.portal.security.sso.token.events;
+package com.liferay.portal.security.sso.token.internal.constants;
 
 /**
- * @author Michael C. Han
+ * @author Mika Koivisto
  */
-public enum LogoutProcessorType {
+public class TokenConfigurationKeys {
 
-	COOKIE, REDIRECT
+	public static final String AUTH_ENABLED = "enabled";
+
+	public static final String IMPORT_FROM_LDAP = "importFromLDAP";
+
+	public static final String LOGOUT_REDIRECT_URL = "logoutRedirectURL";
+
+	public static final String USER_HEADER = "userTokenName";
 
 }

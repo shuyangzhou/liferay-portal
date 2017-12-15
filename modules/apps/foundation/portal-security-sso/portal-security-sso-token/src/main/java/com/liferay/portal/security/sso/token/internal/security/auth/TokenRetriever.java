@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.security.sso.token.security.auth;
+package com.liferay.portal.security.sso.token.internal.security.auth;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,19 +28,19 @@ import javax.servlet.http.HttpServletRequest;
  * <ul>
  * <li>
  * {@link
- * com.liferay.portal.security.sso.token.internal.security.auth.RequestTokenRetriever}
+ * RequestTokenRetriever}
  * </li>
  * <li>
- * {@link com.liferay.portal.security.sso.token.internal.security.auth.Request
+ * {@link Request
  * HeaderTokenRetriever}
  * </li>
  * <li>
  * {@link
- * com.liferay.portal.security.sso.token.internal.security.auth.CookieTokenRetriever}
+ * CookieTokenRetriever}
  * </li>
  * <li>
  * {@link
- * com.liferay.portal.security.sso.token.internal.security.auth.SessionTokenRetriever}
+ * SessionTokenRetriever}
  * </li>
  * </ul>
  *

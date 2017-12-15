@@ -15,8 +15,6 @@
 package com.liferay.portal.security.sso.token.internal.security.auth;
 
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.security.sso.token.security.auth.TokenLocation;
-import com.liferay.portal.security.sso.token.security.auth.TokenRetriever;
 
 import javax.servlet.http.HttpServletRequest;
 

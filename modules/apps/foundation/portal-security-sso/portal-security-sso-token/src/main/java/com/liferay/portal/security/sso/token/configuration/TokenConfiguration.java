@@ -17,7 +17,7 @@ package com.liferay.portal.security.sso.token.configuration;
 import aQute.bnd.annotation.metatype.Meta;
 
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
-import com.liferay.portal.security.sso.token.security.auth.TokenLocation;
+import com.liferay.portal.security.sso.token.internal.security.auth.TokenLocation;
 
 /**
  * @author Michael C. Han

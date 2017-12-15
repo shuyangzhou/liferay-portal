@@ -14,9 +14,6 @@
 
 package com.liferay.portal.security.sso.token.internal.security.auth;
 
-import com.liferay.portal.security.sso.token.security.auth.TokenLocation;
-import com.liferay.portal.security.sso.token.security.auth.TokenRetriever;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;

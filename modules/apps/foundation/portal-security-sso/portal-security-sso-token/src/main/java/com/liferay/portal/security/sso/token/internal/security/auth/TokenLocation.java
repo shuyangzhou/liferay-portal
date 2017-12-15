@@ -12,14 +12,13 @@
  * details.
  */
 
-package com.liferay.portal.security.sso.token.constants;
+package com.liferay.portal.security.sso.token.internal.security.auth;
 
 /**
  * @author Michael C. Han
  */
-public class TokenConstants {
+public enum TokenLocation {
 
-	public static final String SERVICE_NAME =
-		"com.liferay.portal.security.sso.token";
+	COOKIE, REQUEST, REQUEST_HEADER, SESSION
 
 }
