@@ -14,6 +14,9 @@
 
 package com.liferay.apio.architect.wiring.osgi.internal.manager;
 
+import static com.liferay.apio.architect.wiring.osgi.internal.manager.ManagerUtil.getGenericClassFromPropertyOrElse;
+import static com.liferay.apio.architect.wiring.osgi.internal.manager.ResourceClass.MODEL_CLASS;
+
 import com.liferay.apio.architect.error.ApioDeveloperError;
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.wiring.osgi.util.GenericUtil;
@@ -52,7 +55,7 @@ public abstract class BaseManager<T> {
 	 *         valid service can be obtained; {@code Optional#empty()} otherwise
 	 */
 	protected <U> Optional<Class<U>> addService(
-		ServiceReference<T> serviceReference) {
+		ServiceReference<T> serviceReference, Class<T> managedClass) {
 
 		T service = _bundleContext.getService(serviceReference);
 
@@ -60,7 +63,9 @@ public abstract class BaseManager<T> {
 			return Optional.empty();
 		}
 
-		Class<U> genericClass = _getGenericClass(service);
+		Class<U> genericClass = getGenericClassFromPropertyOrElse(
+			serviceReference, MODEL_CLASS,
+			() -> _getGenericClass(service, managedClass));
 
 		_services.computeIfAbsent(
 			genericClass.getName(), name -> new TreeSet<>());
@@ -120,12 +125,12 @@ public abstract class BaseManager<T> {
 	 *         valid service can be obtained; {@code Optional#empty()} otherwise
 	 */
 	protected <U> Optional<Class<U>> removeService(
-		ServiceReference<T> serviceReference) {
+		ServiceReference<T> serviceReference, Class<?> managedClass) {
 
 		Consumer<T> identityConsumer = t -> {
 		};
 
-		return removeService(serviceReference, identityConsumer);
+		return removeService(serviceReference, managedClass, identityConsumer);
 	}
 
 	/**
@@ -140,7 +145,7 @@ public abstract class BaseManager<T> {
 	 *         valid service can be obtained; {@code Optional#empty()} otherwise
 	 */
 	protected <U> Optional<Class<U>> removeService(
-		ServiceReference<T> serviceReference,
+		ServiceReference<T> serviceReference, Class<?> managedClass,
 		Consumer<T> beforeRemovingConsumer) {
 
 		T service = _bundleContext.getService(serviceReference);
@@ -149,7 +154,7 @@ public abstract class BaseManager<T> {
 			return Optional.empty();
 		}
 
-		Class<U> genericClass = _getGenericClass(service);
+		Class<U> genericClass = _getGenericClass(service, managedClass);
 
 		TreeSet<ServiceReferenceServiceTuple<T>> serviceReferenceServiceTuples =
 			_services.get(genericClass.getName());
@@ -170,11 +175,11 @@ public abstract class BaseManager<T> {
 		return Optional.of(genericClass);
 	}
 
-	private <U> Class<U> _getGenericClass(T service) {
+	private <U> Class<U> _getGenericClass(T service, Class<?> managedClass) {
 		Class<?> serviceClass = service.getClass();
 
 		Try<Class<U>> classTry = GenericUtil.getFirstGenericTypeArgumentTry(
-			serviceClass);
+			serviceClass, managedClass);
 
 		return classTry.orElseThrow(
 			() -> new ApioDeveloperError.MustHaveValidGenericType(
