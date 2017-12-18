@@ -16,8 +16,6 @@ package com.liferay.portal.security.sso.token.internal.events;
 
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.security.sso.token.events.LogoutProcessor;
-import com.liferay.portal.security.sso.token.events.LogoutProcessorType;
 
 import java.io.IOException;
 
