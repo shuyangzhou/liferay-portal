@@ -17,8 +17,7 @@ package com.liferay.apio.architect.resource;
 import aQute.bnd.annotation.ConsumerType;
 
 import com.liferay.apio.architect.identifier.Identifier;
-import com.liferay.apio.architect.representor.Representor;
-import com.liferay.apio.architect.routes.Routes;
+import com.liferay.apio.architect.router.CollectionRouter;
 
 /**
  * Maps your domain models to resources that Apio can understand.
@@ -29,57 +28,32 @@ import com.liferay.apio.architect.routes.Routes;
  * </p>
  *
  * <p>
- * Representors created by the {@link #representor(Representor.Builder)} method
- * hold all the information needed to write your domain models' hypermedia
- * representations.
+ * Representors created by the {@link
+ * #representor(com.liferay.apio.architect.representor.Representor.Builder)}
+ * method hold all the information needed to write your domain models'
+ * hypermedia representations.
  * </p>
  *
  * <p>
- * You can add the different supported routes for the resource via the {@link
- * #routes(Routes.Builder)} method.
+ * You can add the different supported routes for the collection resource via
+ * the {@link
+ * #collectionRoutes(
+ * com.liferay.apio.architect.routes.CollectionRoutes.Builder)} method.
+ * </p>
+ *
+ * <p>
+ * You can add the different supported routes for the single resource via the
+ * {@link #itemRoutes(com.liferay.apio.architect.routes.ItemRoutes.Builder)}
+ * (Routes.Builder)} method.
  * </p>
  *
  * @author Alejandro Hernández
- * @author Carlos Sierra Andrés
- * @author Jorge Ferrer
- * @see    Representor.Builder
- * @see    Routes.Builder
+ * @see    com.liferay.apio.architect.representor.Representor.Builder
+ * @see    com.liferay.apio.architect.routes.ItemRoutes.Builder
+ * @see    com.liferay.apio.architect.routes.CollectionRoutes.Builder
+ * @review
  */
 @ConsumerType
-public interface CollectionResource<T, U extends Identifier> {
-
-	/**
-	 * Returns the resource's name.
-	 *
-	 * @return the resource's name
-	 */
-	public String getName();
-
-	/**
-	 * Creates a {@link Representor} for a certain domain model from the
-	 * provided {@link Representor.Builder}.
-	 *
-	 * <p>
-	 * To construct a representor, you must call {@link
-	 * Representor.Builder.FirstStep#build()} ()}. Before calling this method,
-	 * you must call the other representor builder methods to populate the
-	 * builder with data. This ensures that the resulting representor contains
-	 * the data.
-	 * </p>
-	 *
-	 * @param builder the representor builder used to create the representor
-	 * @see   Representor.Builder
-	 */
-	public Representor<T, U> representor(Representor.Builder<T, U> builder);
-
-	/**
-	 * Creates the {@link Routes} supported by the {@code CollectionResource}.
-	 * Use the provided routes builder to create the {@code Routes} instance.
-	 *
-	 * @param builder the routes builder to use to create the {@code Routes}
-	 *        instance
-	 * @see   Routes.Builder
-	 */
-	public Routes<T> routes(Routes.Builder<T, U> builder);
-
+public interface CollectionResource<T, U extends Identifier>
+	extends ItemResource<T, U>, CollectionRouter<T> {
 }
