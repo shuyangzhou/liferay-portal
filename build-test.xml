@@ -2651,35 +2651,18 @@ ${tomcat-gc-log}
 
 					List testClassGroups = getClassGroups(classFileNames, allTestClassGroupsSize);
 
-					for (i = 0; i < allTestClassGroupsSize; i++) {
-						List testClassGroup = testClassGroups.get(i);
+					for (i = 0; i < 5; i++) {
+					sb.append("TEST_CLASS_GROUP_");
+					sb.append(i);
+					sb.append("=com/liferay/asset/publisher/lar/test/AssetPublisherPortletDataHandlerTest.class,com/liferay/blogs/recent/bloggers/internal/exportimport/portlet/preferences/processor/test/RecentBloggersExportImportPortletPreferencesProcessorTest.class,com/liferay/bookmarks/social/test/BookmarksFolderActivityInterpreterTest.class,com/liferay/company/service/test/CompanyLocalServiceTest.class,com/liferay/document/library/service/test/DLFileEntryExtensionTest.class,com/liferay/dynamic/data/lists/form/web/internal/notification/DDLFormEmailNotificationSenderTest.class,com/liferay/dynamic/data/mapping/form/builder/internal/converter/DDMFormRuleToDDMFormRuleModelConverterTest.class,com/liferay/dynamic/data/mapping/io/internal/DDMFormJSONDeserializerTest.class,com/liferay/dynamic/data/mapping/type/date/internal/DateDDMFormFieldValueRendererTest.class,com/liferay/dynamic/data/mapping/web/internal/exportimport/data/handler/test/DDMTemplateStagedModelDataHandlerTest.class,com/liferay/gradle/plugins/util/PortalToolsTest.class,com/liferay/journal/service/persistence/test/JournalFeedPersistenceTest.class,com/liferay/layout/page/template/service/test/LayoutPageTemplateCollectionServiceTest.class,com/liferay/message/boards/service/persistence/test/MBStatsUserPersistenceTest.class,com/liferay/osgi/util/test/BundleUtilTest.class,com/liferay/petra/io/unsync/UnsyncPrintWriterTest.class,com/liferay/portal/action/JSONServiceActionTest.class,com/liferay/portal/dao/orm/SQLInstrTest.class,com/liferay/portal/fabric/netty/agent/NettyFabricAgentStubTest.class,com/liferay/portal/json/JSONSerializerTest.class,com/liferay/portal/kernel/format/PhoneNumberFormatUtilTest.class,com/liferay/portal/kernel/nio/intraband/blocking/ExecutorIntrabandTest.class,com/liferay/portal/kernel/security/RandomUtilTest.class,com/liferay/portal/kernel/util/CollatorUtilTest.class,com/liferay/portal/kernel/util/ValidatorTest.class,com/liferay/portal/osgi/web/servlet/jsp/compiler/internal/TldURIUtilTest.class,com/liferay/portal/search/elasticsearch/internal/cluster/ClusterSettingsTest.class,com/liferay/portal/search/indexer/test/IndexerPostProcessorRegistryTest.class,com/liferay/portal/security/auth/AuthTokenWhitelistUtilTest.class,com/liferay/portal/security/pacl/test/DoPrivilegedBeanTest.class,com/liferay/portal/security/xml/StripDoctypeXMLReaderTest.class,com/liferay/portal/service/persistence/test/LayoutPersistenceTest.class,com/liferay/portal/service/persistence/test/UserPersistenceTest.class,com/liferay/portal/template/URLResourceParserTest.class,com/liferay/portal/tools/soy/builder/maven/BuildSoyMojoTest.class,com/liferay/portal/util/PortalImplActualURLTest.class,com/liferay/portal/workflow/kaleo/runtime/integration/impl/internal/util/WorkflowTaskAssigneesSupplierTest.class,com/liferay/portlet/PortletPreferencesFactoryImplGetPreferencesIdsTest.class,com/liferay/portlet/messageboards/service/persistence/test/MBMessagePersistenceTest.class,com/liferay/registry/dependency/ClassServiceDependencyVerifierTest.class,com/liferay/site/teams/exportimport/data/handler/test/TeamStagedModelDataHandlerTest.class,com/liferay/text/localizer/address/USAddressTextLocalizerTest.class,com/liferay/vulcan/function/DecaFunctionTest.class,com/liferay/vulcan/test/internal/result/SuccessTryTest.class,com/liferay/wiki/service/persistence/test/WikiPagePersistenceTest.class,com/liferay/portal/security/pacl/PACLAggregateTest.class,com/liferay/pmd/PMDTest.class");
 
-						sb.append("TEST_CLASS_GROUP_");
-						sb.append(i);
-						sb.append("=");
-
-						for (String testClass : testClassGroup) {
-							sb.append(testClass);
-							sb.append(",");
-						}
-
-						for (String testClass : autoBalanceTestClassNames) {
-							if (!testClassGroup.contains(testClass)) {
-								sb.append(testClass);
-								sb.append(",");
-							}
-						}
-
-						if (!testClassGroup.isEmpty() || autoBalanceTestClassNames.length > 0) {
-							sb.setLength(sb.length() - 1);
-						}
 
 						sb.append("\n\n");
 					}
 
 					sb.append("TEST_CLASS_GROUPS=");
 
-					for (int i = 0; i < allTestClassGroupsSize; i++) {
+					for (int i = 0; i < 5; i++) {
 						sb.append(i);
 						sb.append(" ");
 					}
