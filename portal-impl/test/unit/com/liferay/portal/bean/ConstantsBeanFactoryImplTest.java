@@ -15,13 +15,13 @@
 package com.liferay.portal.bean;
 
 import com.liferay.petra.memory.FinalizeManager;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.process.ClassPathUtil;
 import com.liferay.portal.kernel.test.GCUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.test.rule.NewEnv;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.test.aspects.ReflectionUtilAdvice;
 import com.liferay.portal.test.rule.AdviseWith;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
@@ -424,7 +424,7 @@ public class ConstantsBeanFactoryImplTest {
 		ReflectionTestUtil.invoke(
 			FinalizeManager.class, "_pollingCleanup", new Class<?>[0]);
 
-		Assert.assertTrue(constantsBeans.isEmpty());
+		Assert.assertTrue(constantsBeans.toString(), constantsBeans.isEmpty());
 	}
 
 	public static class Constants {

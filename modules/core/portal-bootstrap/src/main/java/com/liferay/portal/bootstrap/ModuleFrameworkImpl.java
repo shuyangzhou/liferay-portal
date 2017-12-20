@@ -19,6 +19,7 @@ import aQute.bnd.header.Parameters;
 import aQute.bnd.version.Version;
 
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.concurrent.DefaultNoticeableFuture;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedInputStream;
@@ -39,7 +40,6 @@ import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.ServiceLoader;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.module.framework.ModuleFramework;
@@ -949,7 +949,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		try {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Adding initial bundle " + location.toString());
+				_log.debug("Adding initial bundle " + location);
 			}
 
 			Bundle bundle = _addBundle(location, inputStream, false);

@@ -18,12 +18,14 @@ import com.liferay.message.boards.kernel.exception.DiscussionMaxCommentsExceptio
 import com.liferay.message.boards.kernel.exception.MessageBodyException;
 import com.liferay.message.boards.kernel.exception.NoSuchMessageException;
 import com.liferay.message.boards.kernel.exception.RequiredMessageException;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.comment.Comment;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
 import com.liferay.portal.kernel.comment.DiscussionPermission;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -39,7 +41,6 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.Function;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -67,6 +68,9 @@ public class EditDiscussionStrutsAction extends BaseStrutsAction {
 	public String execute(
 			HttpServletRequest request, HttpServletResponse response)
 		throws Exception {
+
+		AuthTokenUtil.checkCSRFToken(
+			request, EditDiscussionStrutsAction.class.getName());
 
 		String namespace = ParamUtil.getString(request, "namespace");
 

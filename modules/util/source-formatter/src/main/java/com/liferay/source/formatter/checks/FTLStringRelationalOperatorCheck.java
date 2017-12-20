@@ -14,8 +14,8 @@
 
 package com.liferay.source.formatter.checks;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -67,7 +67,7 @@ public class FTLStringRelationalOperatorCheck extends BaseFileCheck {
 			}
 		}
 		else {
-			StringBundler sb = new StringBundler();
+			StringBundler sb = new StringBundler(6);
 
 			if (operator.equals("!=")) {
 				sb.append(StringPool.EXCLAMATION);

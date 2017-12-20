@@ -20,8 +20,8 @@ import com.liferay.calendar.model.impl.CalendarBookingModelImpl;
 import com.liferay.calendar.recurrence.Recurrence;
 import com.liferay.calendar.recurrence.RecurrenceSerializer;
 import com.liferay.calendar.recurrence.Weekday;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.util.CalendarFactoryImpl;
 
@@ -329,9 +329,12 @@ public class RecurrenceUtilTest {
 
 		List<Weekday> weekdays = recurrence.getWeekdays();
 
-		Assert.assertTrue(weekdays.contains(Weekday.MONDAY));
-		Assert.assertTrue(weekdays.contains(Weekday.WEDNESDAY));
-		Assert.assertTrue(weekdays.contains(Weekday.FRIDAY));
+		Assert.assertTrue(
+			weekdays.toString(), weekdays.contains(Weekday.MONDAY));
+		Assert.assertTrue(
+			weekdays.toString(), weekdays.contains(Weekday.WEDNESDAY));
+		Assert.assertTrue(
+			weekdays.toString(), weekdays.contains(Weekday.FRIDAY));
 
 		Calendar startTimeJCalendar = JCalendarUtil.getJCalendar(
 			2015, Calendar.DECEMBER, 11, 1, 0, 0, 0, _utcTimeZone);
@@ -341,9 +344,12 @@ public class RecurrenceUtilTest {
 
 		weekdays = recurrence.getWeekdays();
 
-		Assert.assertTrue(weekdays.contains(Weekday.SUNDAY));
-		Assert.assertTrue(weekdays.contains(Weekday.TUESDAY));
-		Assert.assertTrue(weekdays.contains(Weekday.THURSDAY));
+		Assert.assertTrue(
+			weekdays.toString(), weekdays.contains(Weekday.SUNDAY));
+		Assert.assertTrue(
+			weekdays.toString(), weekdays.contains(Weekday.TUESDAY));
+		Assert.assertTrue(
+			weekdays.toString(), weekdays.contains(Weekday.THURSDAY));
 	}
 
 	protected void assertSameDay(

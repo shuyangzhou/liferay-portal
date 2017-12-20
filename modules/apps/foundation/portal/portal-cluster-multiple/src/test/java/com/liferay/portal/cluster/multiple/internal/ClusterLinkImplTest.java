@@ -14,6 +14,7 @@
 
 package com.liferay.portal.cluster.multiple.internal;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cluster.Address;
 import com.liferay.portal.kernel.cluster.Priority;
 import com.liferay.portal.kernel.configuration.Filter;
@@ -25,7 +26,6 @@ import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
 
 import java.io.Serializable;
@@ -83,7 +83,8 @@ public class ClusterLinkImplTest extends BaseClusterTestCase {
 		List<TestClusterChannel> clusterChannels =
 			TestClusterChannel.getClusterChannels();
 
-		Assert.assertTrue(clusterChannels.isEmpty());
+		Assert.assertTrue(
+			clusterChannels.toString(), clusterChannels.isEmpty());
 
 		Assert.assertNull(clusterLinkImpl.getExecutorService());
 
@@ -99,15 +100,19 @@ public class ClusterLinkImplTest extends BaseClusterTestCase {
 
 		clusterLinkImpl.sendUnicastMessage(address, message, Priority.LEVEL1);
 
-		Assert.assertTrue(multicastMessages.isEmpty());
-		Assert.assertTrue(unicastMessages.isEmpty());
+		Assert.assertTrue(
+			multicastMessages.toString(), multicastMessages.isEmpty());
+		Assert.assertTrue(
+			unicastMessages.toString(), unicastMessages.isEmpty());
 
 		// Test 3, send multicast message
 
 		clusterLinkImpl.sendMulticastMessage(message, Priority.LEVEL1);
 
-		Assert.assertTrue(multicastMessages.isEmpty());
-		Assert.assertTrue(unicastMessages.isEmpty());
+		Assert.assertTrue(
+			multicastMessages.toString(), multicastMessages.isEmpty());
+		Assert.assertTrue(
+			unicastMessages.toString(), unicastMessages.isEmpty());
 
 		// Test 4, destroy
 
@@ -149,8 +154,12 @@ public class ClusterLinkImplTest extends BaseClusterTestCase {
 			clusterChannels.toString(), 2, clusterChannels.size());
 
 		Assert.assertNotEquals(clusterChannel1, clusterChannel2);
-		Assert.assertTrue(clusterChannels.contains(clusterChannel1));
-		Assert.assertTrue(clusterChannels.contains(clusterChannel2));
+		Assert.assertTrue(
+			clusterChannels.toString(),
+			clusterChannels.contains(clusterChannel1));
+		Assert.assertTrue(
+			clusterChannels.toString(),
+			clusterChannels.contains(clusterChannel2));
 	}
 
 	@Test
@@ -237,8 +246,10 @@ public class ClusterLinkImplTest extends BaseClusterTestCase {
 		List<ObjectValuePair<Serializable, Address>> unicastMessages =
 			TestClusterChannel.getUnicastMessages();
 
-		Assert.assertTrue(multicastMessages.isEmpty());
-		Assert.assertTrue(unicastMessages.isEmpty());
+		Assert.assertTrue(
+			multicastMessages.toString(), multicastMessages.isEmpty());
+		Assert.assertTrue(
+			unicastMessages.toString(), unicastMessages.isEmpty());
 
 		Message message = new Message();
 
@@ -246,8 +257,10 @@ public class ClusterLinkImplTest extends BaseClusterTestCase {
 
 		Assert.assertEquals(
 			multicastMessages.toString(), 1, multicastMessages.size());
-		Assert.assertTrue(multicastMessages.contains(message));
-		Assert.assertTrue(unicastMessages.isEmpty());
+		Assert.assertTrue(
+			multicastMessages.toString(), multicastMessages.contains(message));
+		Assert.assertTrue(
+			unicastMessages.toString(), unicastMessages.isEmpty());
 	}
 
 	@Test
@@ -259,15 +272,18 @@ public class ClusterLinkImplTest extends BaseClusterTestCase {
 		List<ObjectValuePair<Serializable, Address>> unicastMessages =
 			TestClusterChannel.getUnicastMessages();
 
-		Assert.assertTrue(multicastMessages.isEmpty());
-		Assert.assertTrue(unicastMessages.isEmpty());
+		Assert.assertTrue(
+			multicastMessages.toString(), multicastMessages.isEmpty());
+		Assert.assertTrue(
+			unicastMessages.toString(), unicastMessages.isEmpty());
 
 		Message message = new Message();
 		Address address = new TestAddress(-1);
 
 		clusterLinkImpl.sendUnicastMessage(address, message, Priority.LEVEL1);
 
-		Assert.assertTrue(multicastMessages.isEmpty());
+		Assert.assertTrue(
+			multicastMessages.toString(), multicastMessages.isEmpty());
 		Assert.assertEquals(
 			unicastMessages.toString(), 1, unicastMessages.size());
 

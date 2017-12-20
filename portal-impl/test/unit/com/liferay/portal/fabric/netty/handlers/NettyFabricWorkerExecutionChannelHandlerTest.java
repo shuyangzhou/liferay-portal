@@ -14,6 +14,7 @@
 
 package com.liferay.portal.fabric.netty.handlers;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.fabric.FabricPathMappingVisitor;
 import com.liferay.portal.fabric.InputResource;
 import com.liferay.portal.fabric.ReturnProcessCallable;
@@ -54,7 +55,6 @@ import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.util.ObjectGraphUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.test.rule.AdviseWith;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
 
@@ -626,7 +626,8 @@ public class NettyFabricWorkerExecutionChannelHandlerTest {
 
 			Map<Path, Path> loadedInputPaths = loadedPaths.getInputPaths();
 
-			Assert.assertTrue(loadedInputPaths.isEmpty());
+			Assert.assertTrue(
+				loadedInputPaths.toString(), loadedInputPaths.isEmpty());
 
 			ProcessConfig loadedProcessConfig = loadedPaths.toProcessConfig(
 				processConfig);
@@ -656,11 +657,12 @@ public class NettyFabricWorkerExecutionChannelHandlerTest {
 
 			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-			Assert.assertTrue(logRecords.isEmpty());
+			Assert.assertTrue(logRecords.toString(), logRecords.isEmpty());
 
 			Map<Path, Path> loadedInputPaths = loadedPaths.getInputPaths();
 
-			Assert.assertTrue(loadedInputPaths.isEmpty());
+			Assert.assertTrue(
+				loadedInputPaths.toString(), loadedInputPaths.isEmpty());
 
 			ProcessConfig loadedProcessConfig = loadedPaths.toProcessConfig(
 				processConfig);
@@ -830,7 +832,8 @@ public class NettyFabricWorkerExecutionChannelHandlerTest {
 
 			Map<Path, Path> loadedInputPaths = loadedPaths.getInputPaths();
 
-			Assert.assertTrue(loadedInputPaths.isEmpty());
+			Assert.assertTrue(
+				loadedInputPaths.toString(), loadedInputPaths.isEmpty());
 
 			ProcessConfig loadedProcessConfig = loadedPaths.toProcessConfig(
 				processConfig);
@@ -861,11 +864,12 @@ public class NettyFabricWorkerExecutionChannelHandlerTest {
 
 			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
-			Assert.assertTrue(logRecords.isEmpty());
+			Assert.assertTrue(logRecords.toString(), logRecords.isEmpty());
 
 			Map<Path, Path> loadedInputPaths = loadedPaths.getInputPaths();
 
-			Assert.assertTrue(loadedInputPaths.isEmpty());
+			Assert.assertTrue(
+				loadedInputPaths.toString(), loadedInputPaths.isEmpty());
 
 			ProcessConfig loadedProcessConfig = loadedPaths.toProcessConfig(
 				processConfig);

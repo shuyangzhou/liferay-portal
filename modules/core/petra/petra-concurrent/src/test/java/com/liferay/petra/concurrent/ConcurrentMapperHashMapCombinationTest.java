@@ -15,11 +15,11 @@
 package com.liferay.petra.concurrent;
 
 import com.liferay.petra.memory.FinalizeManager;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.GCUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.rule.NewEnvTestRule;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.lang.ref.Reference;
 
@@ -81,7 +81,7 @@ public class ConcurrentMapperHashMapCombinationTest {
 		ReflectionTestUtil.invoke(
 			FinalizeManager.class, "_pollingCleanup", new Class<?>[0]);
 
-		Assert.assertTrue(concurrentMap.isEmpty());
+		Assert.assertTrue(concurrentMap.toString(), concurrentMap.isEmpty());
 	}
 
 	@Test
@@ -147,7 +147,9 @@ public class ConcurrentMapperHashMapCombinationTest {
 		ReflectionTestUtil.invoke(
 			FinalizeManager.class, "_pollingCleanup", new Class<?>[0]);
 
-		Assert.assertTrue(concurrentReferenceMap.isEmpty());
+		Assert.assertTrue(
+			concurrentReferenceMap.toString(),
+			concurrentReferenceMap.isEmpty());
 	}
 
 	@Rule

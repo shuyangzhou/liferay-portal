@@ -44,10 +44,10 @@
 
 package com.liferay.portal.kernel.cal;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
 
 import java.io.Serializable;
@@ -249,14 +249,17 @@ public class Recurrence implements Serializable {
 			case WEEKLY :
 				reduce_constant_length_field(
 					Calendar.DAY_OF_WEEK, dtStart, candidate);
+
 				break;
 
 			case MONTHLY :
 				reduce_day_of_month(dtStart, candidate);
+
 				break;
 
 			case YEARLY :
 				reduce_day_of_year(dtStart, candidate);
+
 				break;
 		}
 

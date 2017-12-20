@@ -14,13 +14,14 @@
 
 package com.liferay.portal.security.antisamy.internal;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.BaseSanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.InputStream;
@@ -56,6 +57,8 @@ public class AntiSamySanitizerImpl extends BaseSanitizer {
 				blacklistItem = blacklistItem.trim();
 
 				if (!blacklistItem.isEmpty()) {
+					blacklistItem = stripTrailingStar(blacklistItem);
+
 					_blacklist.add(blacklistItem);
 				}
 			}
@@ -66,6 +69,8 @@ public class AntiSamySanitizerImpl extends BaseSanitizer {
 				whitelistItem = whitelistItem.trim();
 
 				if (!whitelistItem.isEmpty()) {
+					whitelistItem = stripTrailingStar(whitelistItem);
+
 					_whitelist.add(whitelistItem);
 				}
 			}
@@ -117,18 +122,36 @@ public class AntiSamySanitizerImpl extends BaseSanitizer {
 		String classNameAndClassPK = className + StringPool.POUND + classPK;
 
 		for (String blacklistItem : _blacklist) {
-			if (classNameAndClassPK.startsWith(blacklistItem)) {
+			if (blacklistItem.equals(StringPool.STAR) ||
+				classNameAndClassPK.startsWith(blacklistItem)) {
+
 				return false;
 			}
 		}
 
 		for (String whitelistItem : _whitelist) {
-			if (classNameAndClassPK.startsWith(whitelistItem)) {
+			if (whitelistItem.equals(StringPool.STAR) ||
+				classNameAndClassPK.startsWith(whitelistItem)) {
+
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	protected String stripTrailingStar(String item) {
+		if (item.equals(StringPool.STAR)) {
+			return item;
+		}
+
+		char c = item.charAt(item.length() - 1);
+
+		if (c == CharPool.STAR) {
+			return item.substring(0, item.length() - 1);
+		}
+
+		return item;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

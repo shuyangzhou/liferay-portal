@@ -23,6 +23,7 @@ import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.asset.test.util.AssetTestUtil;
 import com.liferay.asset.util.AssetHelper;
 import com.liferay.blogs.service.BlogsEntryLocalServiceUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
@@ -36,12 +37,9 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.service.test.ServiceTestUtil;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
-import com.liferay.registry.ServiceTracker;
 
 import java.io.Serializable;
 
@@ -49,10 +47,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -72,25 +68,9 @@ public class AssetUtilTest {
 			new LiferayIntegrationTestRule(),
 			SynchronousDestinationTestRule.INSTANCE);
 
-	@BeforeClass
-	public static void setUpClass() {
-		Registry registry = RegistryUtil.getRegistry();
-
-		_serviceTracker = registry.trackServices(AssetHelper.class.getName());
-
-		_serviceTracker.open();
-	}
-
-	@AfterClass
-	public static void tearDownClass() {
-		_serviceTracker.close();
-	}
-
 	@Before
 	public void setUp() throws Exception {
 		ServiceTestUtil.setUser(TestPropsValues.getUser());
-
-		_assetHelper = _serviceTracker.getService();
 
 		_group = GroupTestUtil.addGroup();
 
@@ -153,10 +133,11 @@ public class AssetUtilTest {
 			baseModelSearchResult.getLength());
 	}
 
-	private static ServiceTracker<AssetHelper, AssetHelper> _serviceTracker;
-
 	private AssetCategory _assetCategory;
+
+	@Inject
 	private AssetHelper _assetHelper;
+
 	private AssetTag _assetTag;
 	private AssetVocabulary _assetVocabulary;
 

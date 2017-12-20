@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.sso.token.internal.auto.login;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -28,11 +29,10 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.exportimport.UserImporter;
 import com.liferay.portal.security.sso.token.configuration.TokenConfiguration;
-import com.liferay.portal.security.sso.token.constants.TokenConstants;
+import com.liferay.portal.security.sso.token.internal.constants.TokenConstants;
 import com.liferay.portal.security.sso.token.security.auth.TokenLocation;
 import com.liferay.portal.security.sso.token.security.auth.TokenRetriever;
 import com.liferay.portal.util.PropsValues;

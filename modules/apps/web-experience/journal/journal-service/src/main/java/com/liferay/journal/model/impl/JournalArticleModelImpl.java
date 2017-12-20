@@ -40,7 +40,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
@@ -540,7 +539,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _uuid;
@@ -672,7 +671,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -688,7 +687,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -754,7 +753,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	@Override
 	public String getClassName() {
 		if (getClassNameId() <= 0) {
-			return StringPool.BLANK;
+			return "";
 		}
 
 		return PortalUtil.getClassName(getClassNameId());
@@ -821,7 +820,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	@Override
 	public String getTreePath() {
 		if (_treePath == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _treePath;
@@ -837,7 +836,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	@Override
 	public String getArticleId() {
 		if (_articleId == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _articleId;
@@ -886,7 +885,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	@Override
 	public String getUrlTitle() {
 		if (_urlTitle == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _urlTitle;
@@ -912,7 +911,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	@Override
 	public String getContent() {
 		if (_content == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _content;
@@ -928,7 +927,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	@Override
 	public String getDDMStructureKey() {
 		if (_DDMStructureKey == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _DDMStructureKey;
@@ -954,7 +953,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	@Override
 	public String getDDMTemplateKey() {
 		if (_DDMTemplateKey == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _DDMTemplateKey;
@@ -980,7 +979,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	@Override
 	public String getDefaultLanguageId() {
 		if (_defaultLanguageId == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _defaultLanguageId;
@@ -996,7 +995,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	@Override
 	public String getLayoutUuid() {
 		if (_layoutUuid == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _layoutUuid;
@@ -1134,7 +1133,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	@Override
 	public String getSmallImageURL() {
 		if (_smallImageURL == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _smallImageURL;
@@ -1199,7 +1198,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -1211,7 +1210,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _statusByUserName;

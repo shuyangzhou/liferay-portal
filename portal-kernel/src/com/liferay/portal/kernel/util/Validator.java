@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.util;
 
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -1346,7 +1347,7 @@ public class Validator {
 
 	private static final Pattern _emailAddressPattern = Pattern.compile(
 		"[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@" +
-			"(?:[a-zA-Z0-9](?:-*[a-zA-Z0-9])?\\.*)+");
+			"(?:\\w(?:[\\w-]*\\w)?\\.)*\\w(?:[\\w-]*\\w)?");
 	private static final Pattern _ipv4AddressPattern;
 	private static final Pattern _ipv6AddressPattern;
 	private static final Pattern _variableNamePattern = Pattern.compile(

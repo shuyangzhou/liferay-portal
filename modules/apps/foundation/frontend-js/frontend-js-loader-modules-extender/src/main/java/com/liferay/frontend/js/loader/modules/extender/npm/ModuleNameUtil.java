@@ -15,8 +15,8 @@
 package com.liferay.frontend.js.loader.modules.extender.npm;
 
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 /**
  * Provides utility methods to manipulate module names.
