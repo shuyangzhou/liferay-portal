@@ -1884,7 +1884,9 @@ app.server.type=@{app.server.type}]]></echo>
 			test.plugin.zip.url="${test.plugin.zip.url}"
 			test.plugins.war.zip.url="${test.plugins.war.zip.url}"
 			test.portal.bundle.version="${test.portal.bundle.version}"
-			test.portal.bundle.zip.url="${test.portal.bundle.zip.url}"
+			test.portal.bundle.dependencies.zip.url="${test.portal.bundle.dependencies.zip.url}"
+			test.portal.bundle.osgi.zip.url="${test.portal.bundle.osgi.zip.url}"
+			test.portal.bundle.war.url="${test.portal.bundle.war.url}"
 			test.portal.lpkg.name="${test.portal.lpkg.name}"
 			test.sql.zip.url="${test.sql.zip.url}"
 		/>
@@ -1915,7 +1917,9 @@ app.server.type=@{app.server.type}]]></echo>
 			test.plugin.zip.url="${test.plugin.zip.url}"
 			test.plugins.war.zip.url="${test.plugins.war.zip.url}"
 			test.portal.bundle.version="${test.portal.bundle.version}"
-			test.portal.bundle.zip.url="${test.portal.bundle.zip.url}"
+			test.portal.bundle.dependencies.zip.url="${test.portal.bundle.dependencies.zip.url}"
+			test.portal.bundle.osgi.zip.url="${test.portal.bundle.osgi.zip.url}"
+			test.portal.bundle.war.url="${test.portal.bundle.war.url}"
 			test.portal.lpkg.name="${test.portal.lpkg.name}"
 			test.sql.zip.url="${test.sql.zip.url}"
 		/>
@@ -2097,7 +2101,7 @@ app.server.type=@{app.server.type}]]></echo>
 	</target>
 
 	<target name="functional-smoke-tcserver32-mysql56-jdk8">
-		<run-functional-test app.server.type="tcserver" database.type="mysql" test.portal.log.assert="true" />
+		<run-functional-test app.server.type="tcserver" database.type="mysql" test.portal.log.assert="false" />
 	</target>
 
 	<target name="functional-smoke-tomcat80-db2105-jdk8">
@@ -3279,8 +3283,6 @@ information. Make sure to commit in all build services results.
 
 		<clean-restart-sybase />
 
-		<set-sybase-charset-utf8 />
-
 		<echo file="create-header.sql">use master
 dump transaction master with no_log
 go
@@ -3301,6 +3303,8 @@ go</echo>
 
 		<retry retrycount="10">
 			<sequential>
+				<set-sybase-charset-utf8 />
+
 				<if>
 					<not>
 						<available file="/opt/sybase/charsets" />
