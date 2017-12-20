@@ -16,8 +16,8 @@ package com.liferay.knowledge.base.internal.importer;
 
 import com.liferay.knowledge.base.configuration.KBGroupServiceConfiguration;
 import com.liferay.knowledge.base.exception.KBArticleImportException;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.zip.ZipReader;
 
 import java.util.Arrays;
@@ -73,7 +73,7 @@ public class KBArchiveFactoryTest {
 
 		Collection<KBArchive.Folder> folders = kbArchive.getFolders();
 
-		Assert.assertTrue(folders.isEmpty());
+		Assert.assertTrue(folders.toString(), folders.isEmpty());
 	}
 
 	@Test
@@ -201,7 +201,7 @@ public class KBArchiveFactoryTest {
 
 		Collection<KBArchive.Folder> folders = kbArchive.getFolders();
 
-		Assert.assertTrue(folders.isEmpty());
+		Assert.assertTrue(folders.toString(), folders.isEmpty());
 	}
 
 	private final ConfigurationProvider _configurationProvider = Mockito.mock(

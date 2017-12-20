@@ -14,6 +14,7 @@
 
 package com.liferay.portal.cluster.multiple.internal;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.cluster.multiple.configuration.ClusterExecutorConfiguration;
 import com.liferay.portal.kernel.cluster.Address;
 import com.liferay.portal.kernel.cluster.ClusterEvent;
@@ -32,7 +33,6 @@ import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
 
 import java.io.Serializable;
@@ -172,7 +172,8 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 		List<TestClusterChannel> clusterChannels =
 			TestClusterChannel.getClusterChannels();
 
-		Assert.assertTrue(clusterChannels.isEmpty());
+		Assert.assertTrue(
+			clusterChannels.toString(), clusterChannels.isEmpty());
 
 		Assert.assertNull(clusterExecutorImpl.getExecutorService());
 
@@ -187,16 +188,20 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 			ClusterRequest.createUnicastRequest(
 				StringPool.BLANK, StringPool.BLANK));
 
-		Assert.assertTrue(multicastMessages.isEmpty());
-		Assert.assertTrue(unicastMessages.isEmpty());
+		Assert.assertTrue(
+			multicastMessages.toString(), multicastMessages.isEmpty());
+		Assert.assertTrue(
+			unicastMessages.toString(), unicastMessages.isEmpty());
 
 		// Test 3, send multicast message
 
 		clusterExecutorImpl.execute(
 			ClusterRequest.createMulticastRequest(StringPool.BLANK));
 
-		Assert.assertTrue(multicastMessages.isEmpty());
-		Assert.assertTrue(unicastMessages.isEmpty());
+		Assert.assertTrue(
+			multicastMessages.toString(), multicastMessages.isEmpty());
+		Assert.assertTrue(
+			unicastMessages.toString(), unicastMessages.isEmpty());
 
 		// Test 4, destroy
 
@@ -217,8 +222,10 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 		List<ObjectValuePair<Serializable, Address>> unicastMessages =
 			TestClusterChannel.getUnicastMessages();
 
-		Assert.assertTrue(multicastMessages.isEmpty());
-		Assert.assertTrue(unicastMessages.isEmpty());
+		Assert.assertTrue(
+			multicastMessages.toString(), multicastMessages.isEmpty());
+		Assert.assertTrue(
+			unicastMessages.toString(), unicastMessages.isEmpty());
 
 		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
 			StringPool.BLANK);
@@ -228,8 +235,11 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 
 		Assert.assertEquals(
 			multicastMessages.toString(), 1, multicastMessages.size());
-		Assert.assertTrue(multicastMessages.contains(clusterRequest));
-		Assert.assertTrue(unicastMessages.isEmpty());
+		Assert.assertTrue(
+			multicastMessages.toString(),
+			multicastMessages.contains(clusterRequest));
+		Assert.assertTrue(
+			unicastMessages.toString(), unicastMessages.isEmpty());
 
 		ClusterNodeResponses clusterNodeResponses =
 			futureClusterResponses.get();
@@ -240,8 +250,10 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 
 		TestClusterChannel.clearAllMessages();
 
-		Assert.assertTrue(multicastMessages.isEmpty());
-		Assert.assertTrue(unicastMessages.isEmpty());
+		Assert.assertTrue(
+			multicastMessages.toString(), multicastMessages.isEmpty());
+		Assert.assertTrue(
+			unicastMessages.toString(), unicastMessages.isEmpty());
 
 		clusterRequest = ClusterRequest.createMulticastRequest(
 			StringPool.BLANK, true);
@@ -250,8 +262,11 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 
 		Assert.assertEquals(
 			multicastMessages.toString(), 1, multicastMessages.size());
-		Assert.assertTrue(multicastMessages.contains(clusterRequest));
-		Assert.assertTrue(unicastMessages.isEmpty());
+		Assert.assertTrue(
+			multicastMessages.toString(),
+			multicastMessages.contains(clusterRequest));
+		Assert.assertTrue(
+			unicastMessages.toString(), unicastMessages.isEmpty());
 
 		clusterNodeResponses = futureClusterResponses.get();
 
@@ -261,8 +276,10 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 
 		TestClusterChannel.clearAllMessages();
 
-		Assert.assertTrue(multicastMessages.isEmpty());
-		Assert.assertTrue(unicastMessages.isEmpty());
+		Assert.assertTrue(
+			multicastMessages.toString(), multicastMessages.isEmpty());
+		Assert.assertTrue(
+			unicastMessages.toString(), unicastMessages.isEmpty());
 
 		ClusterNode localClusterNode =
 			clusterExecutorImpl.getLocalClusterNode();
@@ -272,8 +289,10 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 
 		futureClusterResponses = clusterExecutorImpl.execute(clusterRequest);
 
-		Assert.assertTrue(multicastMessages.isEmpty());
-		Assert.assertTrue(unicastMessages.isEmpty());
+		Assert.assertTrue(
+			multicastMessages.toString(), multicastMessages.isEmpty());
+		Assert.assertTrue(
+			unicastMessages.toString(), unicastMessages.isEmpty());
 
 		clusterNodeResponses = futureClusterResponses.get();
 
@@ -283,15 +302,18 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 
 		TestClusterChannel.clearAllMessages();
 
-		Assert.assertTrue(multicastMessages.isEmpty());
-		Assert.assertTrue(unicastMessages.isEmpty());
+		Assert.assertTrue(
+			multicastMessages.toString(), multicastMessages.isEmpty());
+		Assert.assertTrue(
+			unicastMessages.toString(), unicastMessages.isEmpty());
 
 		ClusterExecutorImpl newClusterExecutorImpl = getClusterExecutorImpl(
 			true);
 
 		Assert.assertEquals(
 			multicastMessages.toString(), 1, multicastMessages.size());
-		Assert.assertTrue(unicastMessages.isEmpty());
+		Assert.assertTrue(
+			unicastMessages.toString(), unicastMessages.isEmpty());
 
 		Serializable serializable = multicastMessages.get(0);
 
@@ -308,7 +330,8 @@ public class ClusterExecutorImplTest extends BaseClusterTestCase {
 
 		clusterExecutorImpl.execute(clusterRequest);
 
-		Assert.assertTrue(multicastMessages.isEmpty());
+		Assert.assertTrue(
+			multicastMessages.toString(), multicastMessages.isEmpty());
 		Assert.assertEquals(
 			unicastMessages.toString(), 1, unicastMessages.size());
 

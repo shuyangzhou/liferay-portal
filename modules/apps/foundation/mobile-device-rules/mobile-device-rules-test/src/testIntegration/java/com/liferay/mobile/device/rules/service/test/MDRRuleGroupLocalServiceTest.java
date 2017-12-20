@@ -18,6 +18,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.mobile.device.rules.model.MDRRuleGroup;
 import com.liferay.mobile.device.rules.service.MDRRuleGroupLocalServiceUtil;
 import com.liferay.mobile.device.rules.util.test.MDRTestUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -29,7 +30,6 @@ import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.test.LayoutTestUtil;
 
@@ -96,10 +96,12 @@ public class MDRRuleGroupLocalServiceTest {
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		if (includeGlobalGroup) {
-			Assert.assertTrue(ruleGroups.contains(_ruleGroup));
+			Assert.assertTrue(
+				ruleGroups.toString(), ruleGroups.contains(_ruleGroup));
 		}
 		else {
-			Assert.assertFalse(ruleGroups.contains(_ruleGroup));
+			Assert.assertFalse(
+				ruleGroups.toString(), ruleGroups.contains(_ruleGroup));
 		}
 	}
 

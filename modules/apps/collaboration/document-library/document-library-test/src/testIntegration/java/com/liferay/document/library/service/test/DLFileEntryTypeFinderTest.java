@@ -20,6 +20,7 @@ import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalServiceUtil;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryTypeFinderUtil;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructure;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.RoleConstants;
@@ -34,7 +35,6 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 import com.liferay.portal.test.rule.TransactionalTestRule;
@@ -235,7 +235,8 @@ public class DLFileEntryTypeFinderTest {
 
 		Assert.assertEquals(
 			fileEntryTypes.toString(), 1, fileEntryTypes.size());
-		Assert.assertTrue(fileEntryTypes.contains(fileEntryType));
+		Assert.assertTrue(
+			fileEntryTypes.toString(), fileEntryTypes.contains(fileEntryType));
 	}
 
 	@Test
@@ -265,7 +266,9 @@ public class DLFileEntryTypeFinderTest {
 
 			Assert.assertEquals(
 				fileEntryTypes.toString(), 1, fileEntryTypes.size());
-			Assert.assertTrue(fileEntryTypes.contains(fileEntryType));
+			Assert.assertTrue(
+				fileEntryTypes.toString(),
+				fileEntryTypes.contains(fileEntryType));
 		}
 		finally {
 			PermissionThreadLocal.setPermissionChecker(
@@ -305,7 +308,9 @@ public class DLFileEntryTypeFinderTest {
 
 			Assert.assertEquals(
 				fileEntryTypes.toString(), 0, fileEntryTypes.size());
-			Assert.assertFalse(fileEntryTypes.contains(fileEntryType));
+			Assert.assertFalse(
+				fileEntryTypes.toString(),
+				fileEntryTypes.contains(fileEntryType));
 		}
 		finally {
 			PermissionThreadLocal.setPermissionChecker(
@@ -329,13 +334,16 @@ public class DLFileEntryTypeFinderTest {
 
 		Assert.assertEquals(
 			fileEntryTypes.toString(), 2, fileEntryTypes.size());
-		Assert.assertTrue(fileEntryTypes.contains(fileEntryType));
+		Assert.assertTrue(
+			fileEntryTypes.toString(), fileEntryTypes.contains(fileEntryType));
 
 		DLFileEntryType basicFileEntryType =
 			DLFileEntryTypeLocalServiceUtil.getFileEntryType(
 				0, "BASIC-DOCUMENT");
 
-		Assert.assertTrue(fileEntryTypes.contains(basicFileEntryType));
+		Assert.assertTrue(
+			fileEntryTypes.toString(),
+			fileEntryTypes.contains(basicFileEntryType));
 	}
 
 	@Test
@@ -355,7 +363,9 @@ public class DLFileEntryTypeFinderTest {
 			DLFileEntryTypeLocalServiceUtil.getFileEntryType(
 				0, "BASIC-DOCUMENT");
 
-		Assert.assertTrue(fileEntryTypes.contains(basicFileEntryType));
+		Assert.assertTrue(
+			fileEntryTypes.toString(),
+			fileEntryTypes.contains(basicFileEntryType));
 	}
 
 	@Test
@@ -376,7 +386,8 @@ public class DLFileEntryTypeFinderTest {
 
 		Assert.assertEquals(
 			fileEntryTypes.toString(), 1, fileEntryTypes.size());
-		Assert.assertTrue(fileEntryTypes.contains(fileEntryType));
+		Assert.assertTrue(
+			fileEntryTypes.toString(), fileEntryTypes.contains(fileEntryType));
 	}
 
 	protected DLFileEntryType addFileEntryType(ServiceContext serviceContext)

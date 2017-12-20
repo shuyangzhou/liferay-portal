@@ -15,7 +15,7 @@
 package com.liferay.source.formatter.checks;
 
 import com.liferay.petra.string.CharPool;
-import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.regex.Matcher;
@@ -25,6 +25,11 @@ import java.util.regex.Pattern;
  * @author Hugo Huijser
  */
 public class JavaLogLevelCheck extends BaseFileCheck {
+
+	@Override
+	public boolean isPortalCheck() {
+		return true;
+	}
 
 	@Override
 	protected String doProcess(

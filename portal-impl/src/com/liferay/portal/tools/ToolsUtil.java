@@ -15,11 +15,11 @@
 package com.liferay.portal.tools;
 
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.xml.SAXReaderFactory;
@@ -354,6 +354,10 @@ public class ToolsUtil {
 
 					int y = afterImportsContent.lastIndexOf(
 						CharPool.NEW_LINE, x);
+
+					if (y == -1) {
+						y = 0;
+					}
 
 					String s = afterImportsContent.substring(y, x + 1);
 

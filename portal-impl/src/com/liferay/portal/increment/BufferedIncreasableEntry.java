@@ -14,10 +14,10 @@
 
 package com.liferay.portal.increment;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.concurrent.IncreasableEntry;
 import com.liferay.portal.kernel.increment.Increment;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Arrays;
 
@@ -56,7 +56,7 @@ public class BufferedIncreasableEntry<K, T>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(4);
 
 		sb.append(_methodInvocation.toString());
 		sb.append(StringPool.OPEN_PARENTHESIS);
