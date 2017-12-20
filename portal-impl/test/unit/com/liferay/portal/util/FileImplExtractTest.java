@@ -14,6 +14,7 @@
 
 package com.liferay.portal.util;
 
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.File;
 
 import java.io.IOException;
@@ -21,7 +22,19 @@ import java.io.InputStream;
 
 import java.nio.charset.Charset;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.tika.config.TikaConfig;
+import org.apache.tika.mime.MediaType;
+import org.apache.tika.parser.CompositeParser;
+import org.apache.tika.parser.Parser;
+import org.apache.tika.parser.ocr.TesseractOCRConfig;
+import org.apache.tika.parser.ocr.TesseractOCRParser;
+
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -29,6 +42,41 @@ import org.junit.Test;
  * @see    MimeTypesImplTest
  */
 public class FileImplExtractTest {
+
+	@Before
+	public void setUp() throws Exception {
+		Class<?> clazz = Class.forName(
+			"com.liferay.portal.util.FileImpl$TikaConfigHolder");
+
+		TikaConfig tikaConfig = ReflectionTestUtil.getFieldValue(
+			clazz, "_tikaConfig");
+
+		CompositeParser compositeParser =
+			(CompositeParser)tikaConfig.getParser();
+
+		Map<MediaType, Parser> parsers = compositeParser.getParsers();
+
+		Set<Map.Entry<MediaType, Parser>> set = parsers.entrySet();
+
+		Iterator<Map.Entry<MediaType, Parser>> iterator = set.iterator();
+
+		while (iterator.hasNext()) {
+			Map.Entry<MediaType, Parser> entry = iterator.next();
+
+			Parser parser = entry.getValue();
+
+			if (parser instanceof TesseractOCRParser) {
+				TesseractOCRParser tesseractOCRParser =
+					(TesseractOCRParser)parser;
+
+				if (tesseractOCRParser.hasTesseract(new TesseractOCRConfig())) {
+					iterator.remove();
+				}
+			}
+		}
+
+		compositeParser.setParsers(parsers);
+	}
 
 	@Test
 	public void testDoc() {
@@ -41,11 +89,11 @@ public class FileImplExtractTest {
 	public void testDocx() {
 		String text = extractText("test-2007.docx");
 
-		Assert.assertTrue(text.contains("Extract test."));
+		Assert.assertTrue(text, text.contains("Extract test."));
 
 		text = extractText("test-2010.docx");
 
-		Assert.assertTrue(text.contains("Extract test."));
+		Assert.assertTrue(text, text.contains("Extract test."));
 	}
 
 	@Test
@@ -91,7 +139,7 @@ public class FileImplExtractTest {
 	public void testPptx() {
 		String text = extractText("test-2010.pptx");
 
-		Assert.assertTrue(text.contains("Extract test."));
+		Assert.assertTrue(text, text.contains("Extract test."));
 	}
 
 	@Test
@@ -131,7 +179,7 @@ public class FileImplExtractTest {
 	public void testXlsx() {
 		String text = extractText("test-2010.xlsx");
 
-		Assert.assertTrue(text.contains("Extract test."));
+		Assert.assertTrue(text, text.contains("Extract test."));
 	}
 
 	@Test

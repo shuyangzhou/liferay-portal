@@ -208,7 +208,7 @@ public class HttpClientSPIAgentTest {
 
 				socket.close();
 
-				Assert.assertTrue(logRecords.isEmpty());
+				Assert.assertTrue(logRecords.toString(), logRecords.isEmpty());
 
 				// Clean up when input is shutdown, failed with log
 
@@ -298,7 +298,7 @@ public class HttpClientSPIAgentTest {
 			PropsValues.PORTAL_RESILIENCY_SPI_AGENT_CLIENT_POOL_MAX_SIZE,
 			socketBlockingQueue.remainingCapacity());
 
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(6);
 
 		sb.append("POST ");
 		sb.append(HttpClientSPIAgent.SPI_AGENT_CONTEXT_PATH);
@@ -420,7 +420,7 @@ public class HttpClientSPIAgentTest {
 
 				closePeers(socket, serverSocket);
 
-				Assert.assertTrue(logRecords.isEmpty());
+				Assert.assertTrue(logRecords.toString(), logRecords.isEmpty());
 
 				// Error with log
 
@@ -475,7 +475,7 @@ public class HttpClientSPIAgentTest {
 
 				closePeers(socket, serverSocket);
 
-				Assert.assertTrue(logRecords.isEmpty());
+				Assert.assertTrue(logRecords.toString(), logRecords.isEmpty());
 			}
 		}
 	}
@@ -673,7 +673,7 @@ public class HttpClientSPIAgentTest {
 
 				closePeers(socket, serverSocket);
 
-				Assert.assertTrue(logRecords.isEmpty());
+				Assert.assertTrue(logRecords.toString(), logRecords.isEmpty());
 
 				// Force close, failed with log
 
@@ -862,7 +862,7 @@ public class HttpClientSPIAgentTest {
 				Assert.assertSame(IOException.class, throwable.getClass());
 			}
 
-			Assert.assertTrue(logRecords.isEmpty());
+			Assert.assertTrue(logRecords.toString(), logRecords.isEmpty());
 
 			swapSocketImpl(socket, socketImpl);
 
@@ -1123,7 +1123,7 @@ public class HttpClientSPIAgentTest {
 		Set<String> files = ReflectionTestUtil.getFieldValue(
 			Class.forName("java.io.DeleteOnExitHook"), "files");
 
-		Assert.assertTrue(files.contains(tempFile.getPath()));
+		Assert.assertTrue(files.toString(), files.contains(tempFile.getPath()));
 	}
 
 	protected void closePeers(Socket socket, ServerSocket serverSocket)
