@@ -785,6 +785,18 @@ public class JenkinsResultsParserUtil {
 		return plural;
 	}
 
+	public static String getPathRelativeTo(File file, File relativeToFile) {
+		try {
+			String filePath = file.getCanonicalPath();
+
+			return filePath.replace(
+				relativeToFile.getCanonicalPath() + "/", "");
+		}
+		catch (IOException ioe) {
+			throw new RuntimeException("Unable to get relative path", ioe);
+		}
+	}
+
 	public static List<String> getRandomList(List<String> list, int size) {
 		if (list.size() < size) {
 			throw new IllegalStateException(
@@ -1015,7 +1027,13 @@ public class JenkinsResultsParserUtil {
 	}
 
 	public static String toDateString(Date date, String timeZoneName) {
-		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy h:mm:ss a z");
+		return toDateString(date, "MMM dd, yyyy h:mm:ss a z", timeZoneName);
+	}
+
+	public static String toDateString(
+		Date date, String format, String timeZoneName) {
+
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
 
 		if (timeZoneName != null) {
 			sdf.setTimeZone(TimeZone.getTimeZone(timeZoneName));
