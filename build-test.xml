@@ -1911,6 +1911,62 @@ logExceptionsOnly=B&quot;false&quot;</echo>
 		</sequential>
 	</macrodef>
 
+	<macrodef name="prepare-jboss-module-configuration">
+		<sequential>
+			<local name="module.configuration.path" />
+
+			<if>
+				<not>
+					<available file="${app.server.lib.global.dir}/module.xml" />
+				</not>
+				<then>
+					<property name="module.configuration.path" value="tools/servers/jboss/modules/module.xml" />
+				</then>
+				<else>
+					<property name="module.configuration.path" value="${app.server.lib.global.dir}/module.xml" />
+				</else>
+			</if>
+
+			<local name="module.configuration.content" />
+
+			<loadfile property="module.configuration.content" srcFile="${module.configuration.path}">
+				<filterchain>
+					<filterreader classname="org.apache.tools.ant.filters.LineContains">
+						<param type="contains" value="resource-root" />
+						<param type="contains" value="petra" />
+					</filterreader>
+				</filterchain>
+			</loadfile>
+
+			<local name="petra.jar.files" />
+
+			<antelope:stringutil property="petra.jar.files" string="${module.configuration.content}">
+				<antelope:replace regex="\s*&lt;resource-root path=&quot;" replacement="" />
+			</antelope:stringutil>
+
+			<antelope:stringutil property="petra.jar.files" string="${petra.jar.files}">
+				<antelope:replace regex="&quot;\s/&gt;[\n\r]*" replacement="," />
+			</antelope:stringutil>
+
+			<for list="${petra.jar.files}" param="petra.jar.file">
+				<sequential>
+					<if>
+						<not>
+							<available file="${app.server.portal.dir}/lib/ext/${petra.jar.file}" />
+						</not>
+						<then>
+							<local name="regex" />
+
+							<property name="regex" value="\s*&lt;resource-root path=&quot;@{petra.jar.file}&quot;\s/&gt;[\n\r]" />
+
+							<replaceregexp file="${module.configuration.path}" match="${regex}" replace="" />
+						</then>
+					</if>
+				</sequential>
+			</for>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="prepare-patching-tool" >
 		<attribute default="${app.server.parent.dir}/patching-tool" name="patching.tool.dir" />
 
@@ -8519,12 +8575,11 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 			</then>
 			<else>
 				<if>
-					<and>
-						<equals arg1="${app.server.jboss.version}" arg2="6.1.0" />
-						<equals arg1="${app.server.type}" arg2="jboss" />
-					</and>
+					<equals arg1="${app.server.type}" arg2="jboss" />
 					<then>
 						<ant antfile="build-dist.xml" inheritAll="false" target="unzip-jboss" />
+
+						<ant antfile="build.xml" inheritAll="false" target="deploy-additional-jars" />
 					</then>
 					<elseif>
 						<equals arg1="${app.server.type}" arg2="tcserver" />
@@ -8565,6 +8620,8 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 				/>
 
 				<delete dir="dist" />
+
+				<prepare-jboss-module-configuration />
 
 				<ant antfile="build.xml" inheritAll="false" target="update-app-server-scripts" />
 
