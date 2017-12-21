@@ -39,10 +39,6 @@ public class JavaStringBundlerInitialCapacityCheck extends BaseJavaTermCheck {
 		String fileName, String absolutePath, JavaTerm javaTerm,
 		String fileContent) {
 
-		if (isSubrepository() || isReadOnly(absolutePath)) {
-			return javaTerm.getContent();
-		}
-
 		return _fixInitialCapacity(javaTerm.getContent());
 	}
 
@@ -107,7 +103,7 @@ public class JavaStringBundlerInitialCapacityCheck extends BaseJavaTermCheck {
 				s = s.substring(0, x);
 			}
 
-			if (s.contains("for (") || s.contains("while (") ||
+			if (_hasAppendCallInsideLoop(s, varName) ||
 				s.matches("(?s).*\\W" + varName + "([,)]|\\.index\\().*")) {
 
 				continue;
@@ -119,15 +115,15 @@ public class JavaStringBundlerInitialCapacityCheck extends BaseJavaTermCheck {
 				continue;
 			}
 
-			int sbInitialCapacity = GetterUtil.getInteger(matcher.group(4));
+			int sbInitialCapacity = GetterUtil.getInteger(matcher.group(5));
 
 			if ((sbInitialCapacity > count) ||
 				((sbInitialCapacity != count) &&
 				 !s.contains(varName + ".setIndex"))) {
 
 				return StringUtil.replaceFirst(
-					content, String.valueOf(sbInitialCapacity),
-					String.valueOf(count), matcher.start());
+					content, matcher.group(4), "(" + String.valueOf(count),
+					matcher.start());
 			}
 		}
 
@@ -233,7 +229,40 @@ public class JavaStringBundlerInitialCapacityCheck extends BaseJavaTermCheck {
 		}
 	}
 
+	private boolean _hasAppendCallInsideLoop(String s, String varName) {
+		Matcher matcher = _loopPattern.matcher(s);
+
+		while (matcher.find()) {
+			int x = matcher.start();
+
+			int y = x;
+
+			while (true) {
+				y = s.indexOf("}", y + 1);
+
+				if (y == -1) {
+					return true;
+				}
+
+				String insideLoop = s.substring(x, y + 1);
+
+				if (getLevel(insideLoop, "{", "}") != 0) {
+					continue;
+				}
+
+				if (insideLoop.contains(varName + ".append(")) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	private final Pattern _loopPattern = Pattern.compile(
+		"\t(do \\{|(for|while) \\()");
 	private final Pattern _stringBundlerPattern = Pattern.compile(
-		"\n(\t+)(StringBundler )?(\\w+) = new StringBundler\\(([0-9]+)\\);\n");
+		"\n(\t+)(StringBundler )?(\\w+) = new StringBundler(\\(([0-9]+)?)\\)" +
+			";\n");
 
 }

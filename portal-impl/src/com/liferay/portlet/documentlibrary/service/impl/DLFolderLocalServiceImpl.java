@@ -207,6 +207,11 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 			repositoryEventTrigger.trigger(
 				RepositoryEventType.Delete.class, Folder.class,
 				new LiferayFolder(dlFolder));
+
+			Indexer<DLFolder> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+				DLFolder.class);
+
+			indexer.delete(dlFolder);
 		}
 
 		if (repository != null) {
@@ -1084,9 +1089,11 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 			return;
 		}
 
-		DLFolder dlFolder = dlFolderPersistence.findByPrimaryKey(folderId);
+		DLFolder dlFolder = dlFolderPersistence.fetchByPrimaryKey(folderId);
 
-		if (lastPostDate.before(dlFolder.getLastPostDate())) {
+		if ((dlFolder == null) ||
+			lastPostDate.before(dlFolder.getLastPostDate())) {
+
 			return;
 		}
 
