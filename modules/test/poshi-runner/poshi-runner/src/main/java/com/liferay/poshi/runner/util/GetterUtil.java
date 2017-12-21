@@ -243,7 +243,7 @@ public class GetterUtil {
 			return defaultValue;
 		}
 
-		value = value.toLowerCase();
+		value = StringUtil.toLowerCase(value);
 		value = value.trim();
 
 		if (value.equals(BOOLEANS[0]) || value.equals(BOOLEANS[1]) ||
