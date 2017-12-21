@@ -1853,31 +1853,7 @@ sendPasswordCaptchaEnabled=&quot;false&quot;</echo>
 
 	<macrodef name="prepare-elasticsearch-configuration" >
 		<sequential>
-			<echo file="${liferay.home}/osgi/config/com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration.config">additionalConfigurations=&quot;
-    cluster.routing.allocation.disk.threshold_enabled:\ false
-    cluster.service.slow_task_logging_threshold:\ 1800s
-    index.indexing.slowlog.threshold.index.warn:\ 1800s
-    index.search.slowlog.threshold.fetch.warn:\ 1800s
-    index.search.slowlog.threshold.query.warn:\ 1800s
-    monitor.jvm.gc.old.warn:\ 1800s
-    monitor.jvm.gc.young.warn:\ 1800s
-    threadpool.bulk.size:\ 1
-    threadpool.fetch_shard_started.size:\ 1
-    threadpool.fetch_shard_store.size:\ 1
-    threadpool.flush.size:\ 1
-    threadpool.force_merge.size:\ 1
-    threadpool.generic.size:\ 1
-    threadpool.get.size:\ 1
-    threadpool.index.size:\ 1
-    threadpool.listener.size:\ 1
-    threadpool.management.size:\ 1
-    threadpool.percolate.size:\ 1
-    threadpool.refresh.size:\ 1
-    threadpool.search.size:\ 1
-    threadpool.snapshot.size:\ 1
-    threadpool.suggest.size:\ 1
-    threadpool.warmer.size:\ 1
-    transport.local.workers:\ 1&quot;
+			<echo file="${liferay.home}/osgi/config/com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration.config">additionalConfigurations=&quot;cluster.routing.allocation.disk.threshold_enabled:\ false\ncluster.service.slow_task_logging_threshold:\ 1800s\nindex.indexing.slowlog.threshold.index.warn:\ 1800s\nindex.search.slowlog.threshold.fetch.warn:\ 1800s\nindex.search.slowlog.threshold.query.warn:\ 1800s\nmonitor.jvm.gc.old.warn:\ 1800s\nmonitor.jvm.gc.young.warn:\ 1800s\nthreadpool.bulk.size:\ 1\nthreadpool.fetch_shard_started.size:\ 1\nthreadpool.fetch_shard_store.size:\ 1\nthreadpool.flush.size:\ 1\nthreadpool.force_merge.size:\ 1\nthreadpool.generic.size:\ 1\nthreadpool.get.size:\ 1\nthreadpool.index.size:\ 1\nthreadpool.listener.size:\ 1\nthreadpool.management.size:\ 1\nthreadpool.percolate.size:\ 1\nthreadpool.refresh.size:\ 1\nthreadpool.search.size:\ 1\nthreadpool.snapshot.size:\ 1\nthreadpool.suggest.size:\ 1\nthreadpool.warmer.size:\ 1\ntransport.local.workers:\ 1&quot;
 httpEnabled=B&quot;false&quot;
 logExceptionsOnly=B&quot;false&quot;</echo>
 		</sequential>
@@ -1908,6 +1884,62 @@ logExceptionsOnly=B&quot;false&quot;</echo>
 					</if>
 				</else>
 			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="prepare-jboss-module-configuration">
+		<sequential>
+			<local name="module.configuration.path" />
+
+			<if>
+				<not>
+					<available file="${app.server.lib.global.dir}/module.xml" />
+				</not>
+				<then>
+					<property name="module.configuration.path" value="tools/servers/jboss/modules/module.xml" />
+				</then>
+				<else>
+					<property name="module.configuration.path" value="${app.server.lib.global.dir}/module.xml" />
+				</else>
+			</if>
+
+			<local name="module.configuration.content" />
+
+			<loadfile property="module.configuration.content" srcFile="${module.configuration.path}">
+				<filterchain>
+					<filterreader classname="org.apache.tools.ant.filters.LineContains">
+						<param type="contains" value="resource-root" />
+						<param type="contains" value="petra" />
+					</filterreader>
+				</filterchain>
+			</loadfile>
+
+			<local name="petra.jar.files" />
+
+			<antelope:stringutil property="petra.jar.files" string="${module.configuration.content}">
+				<antelope:replace regex="\s*&lt;resource-root path=&quot;" replacement="" />
+			</antelope:stringutil>
+
+			<antelope:stringutil property="petra.jar.files" string="${petra.jar.files}">
+				<antelope:replace regex="&quot;\s/&gt;[\n\r]*" replacement="," />
+			</antelope:stringutil>
+
+			<for list="${petra.jar.files}" param="petra.jar.file">
+				<sequential>
+					<if>
+						<not>
+							<available file="${app.server.portal.dir}/lib/ext/${petra.jar.file}" />
+						</not>
+						<then>
+							<local name="regex" />
+
+							<property name="regex" value="\s*&lt;resource-root path=&quot;@{petra.jar.file}&quot;\s/&gt;[\n\r]" />
+
+							<replaceregexp file="${module.configuration.path}" match="${regex}" replace="" />
+						</then>
+					</if>
+				</sequential>
+			</for>
 		</sequential>
 	</macrodef>
 
@@ -2271,6 +2303,10 @@ tell application "Safari" to quit
 							<ant dir="util-java" inheritAll="false" target="install-portal-snapshot" />
 
 							<gradle-execute dir="${project.dir}/modules/core" task="deploy">
+								<arg value="-Dportal.build=true" />
+							</gradle-execute>
+
+							<gradle-execute dir="${project.dir}/modules/apps/foundation/petra" task="deploy">
 								<arg value="-Dportal.build=true" />
 							</gradle-execute>
 						</then>
@@ -5168,14 +5204,23 @@ go]]></replacevalue>
 					</then>
 				</if>
 
-				<delete failonerror="false" includeemptydirs="true">
-					<fileset dir="${test.app.server.liferay.home}/data">
-						<exclude name="hypersonic/lportal.properties" if:true="${keep.hypersonicdb}" />
-						<exclude name="hypersonic/lportal.script" if:true="${keep.hypersonicdb}" />
-					</fileset>
-				</delete>
+				<if>
+					<not>
+						<equals arg1="${keep.cached.app.server.data}" arg2="true" />
+					</not>
+					<then>
+						<delete failonerror="false" includeemptydirs="true">
+							<fileset dir="${test.app.server.liferay.home}/data">
+								<exclude name="hypersonic/lportal.properties" if:true="${keep.hypersonicdb}" />
+								<exclude name="hypersonic/lportal.script" if:true="${keep.hypersonicdb}" />
+							</fileset>
+						</delete>
+					</then>
+				</if>
+
 				<delete dir="${test.app.server.liferay.home}/logs" />
 				<delete dir="${test.app.server.liferay.home}/osgi/state" />
+				<delete dir="${test.app.server.liferay.home}/work" />
 
 				<delete file="${test.app.server.liferay.home}/portal-setup-wizard.properties" />
 			</then>
@@ -5219,8 +5264,15 @@ go]]></replacevalue>
 	</target>
 
 	<target name="deploy-latest-marketplace-apps">
+		<get-testcase-property property.name="deploy.latest.marketplace.app.disabled" />
+
 		<if>
-			<available file="${liferay.home}/osgi/marketplace" />
+			<and>
+				<available file="${liferay.home}/osgi/marketplace" />
+				<not>
+					<equals arg1="${deploy.latest.marketplace.app.disabled}" arg2="true" />
+				</not>
+			</and>
 			<then>
 				<for param="app.file.path">
 					<path>
@@ -6949,6 +7001,8 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 	<target name="prepare-poshi-runner-properties">
 		<echo append="true" file="${test.ext.properties.file}">
 			component.names=${component.names}
+			get.location.max.retries=${test.get.location.max.retries}
+			get.location.timeout=${test.get.location.timeout}
 			ignore.errors.file.name=${project.dir}/portal-web/test-ignorable-error-lines.xml
 			output.dir.name=${selenium.output.dir.name}
 			product.names=${product.names}
@@ -8519,12 +8573,11 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 			</then>
 			<else>
 				<if>
-					<and>
-						<equals arg1="${app.server.jboss.version}" arg2="6.1.0" />
-						<equals arg1="${app.server.type}" arg2="jboss" />
-					</and>
+					<equals arg1="${app.server.type}" arg2="jboss" />
 					<then>
 						<ant antfile="build-dist.xml" inheritAll="false" target="unzip-jboss" />
+
+						<ant antfile="build.xml" inheritAll="false" target="deploy-additional-jars" />
 					</then>
 					<elseif>
 						<equals arg1="${app.server.type}" arg2="tcserver" />
@@ -8565,6 +8618,8 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 				/>
 
 				<delete dir="dist" />
+
+				<prepare-jboss-module-configuration />
 
 				<ant antfile="build.xml" inheritAll="false" target="update-app-server-scripts" />
 
@@ -8662,8 +8717,15 @@ ANT_OPTS=${env.ANT_OPTS}</echo>
 					]]>
 				</beanshell>
 
+				<get-testcase-property property.name="test.ignore.tomcat.ext.environment" />
+
 				<if>
-					<equals arg1="${enable.ext.environment}" arg2="true" />
+					<and>
+						<equals arg1="${enable.ext.environment}" arg2="true" />
+						<not>
+							<equals arg1="${test.ignore.tomcat.ext.environment}" arg2="true" />
+						</not>
+					</and>
 					<then>
 						<replace file="${app.server.dir}/conf/Catalina/localhost/ROOT.xml">
 							<replacetoken><![CDATA[</Context>]]></replacetoken>

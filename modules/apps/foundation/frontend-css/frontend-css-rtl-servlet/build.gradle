@@ -1,5 +1,9 @@
 dependencies {
-	provided group: "com.liferay", name: "com.liferay.frontend.css.rtl.converter", version: "1.0.0"
+	compileInclude group: "com.google.code.findbugs", name: "annotations", version: "2.0.3"
+	compileInclude group: "com.helger", name: "ph-commons", version: "6.2.4"
+	compileInclude group: "com.helger", name: "ph-css", version: "4.1.0"
+	compileInclude group: "org.slf4j", name: "slf4j-api", version: "1.7.10"
+
 	provided group: "com.liferay", name: "com.liferay.osgi.felix.util", version: "1.0.0"
 	provided group: "com.liferay", name: "com.liferay.osgi.service.tracker.collections", version: "2.0.0"
 	provided group: "com.liferay", name: "com.liferay.osgi.util", version: "3.0.0"

@@ -82,7 +82,7 @@ public class LocalizationImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(10);
 
 		sb.append("<?xml version=\"1.0\"?>");
 
@@ -235,8 +235,12 @@ public class LocalizationImplTest {
 		List<Locale> modifiedLocales = LocalizationUtil.getModifiedLocales(
 			oldLocalizationMap, newLocalizationMap);
 
-		Assert.assertTrue(modifiedLocales.contains(LocaleUtil.getDefault()));
-		Assert.assertTrue(modifiedLocales.contains(LocaleUtil.GERMANY));
+		Assert.assertTrue(
+			modifiedLocales.toString(),
+			modifiedLocales.contains(LocaleUtil.getDefault()));
+		Assert.assertTrue(
+			modifiedLocales.toString(),
+			modifiedLocales.contains(LocaleUtil.GERMANY));
 	}
 
 	@Test
@@ -391,7 +395,7 @@ public class LocalizationImplTest {
 
 		localizationMap.put(LocaleUtil.US, _ENGLISH_HELLO);
 
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(10);
 
 		sb.append("<?xml version='1.0' encoding='UTF-8'?>");
 		sb.append("<root available-locales=\"en_US,de_DE\" ");
