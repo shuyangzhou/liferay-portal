@@ -115,7 +115,6 @@
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-template/portal-template-soy" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/text-localizer/text-localizer-address" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/users-admin/users-admin-web" />
-			<property name="allowedExportPackageDirName" value="modules/apps/ip-geocoder/ip-geocoder" />
 			<property name="allowedExportPackageDirName" value="modules/apps/knowledge-base/knowledge-base-markdown-converter" />
 			<property name="allowedExportPackageDirName" value="modules/apps/knowledge-base/knowledge-base-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/mail-reader/mail-reader-service" />
@@ -171,6 +170,7 @@
 		<check name="CSSCommentsCheck" />
 		<check name="CSSEmptyLinesCheck" />
 		<check name="CSSHexColorsCheck" />
+		<check name="CSSImportsCheck" />
 		<check name="CSSPropertiesOrderCheck" />
 		<check name="CSSWhitespaceCheck" />
 	</source-processor>
@@ -198,6 +198,9 @@
 		<check name="WhitespaceCheck" />
 	</source-processor>
 	<source-processor name="GroovySourceProcessor">
+		<check name="WhitespaceCheck" />
+	</source-processor>
+	<source-processor name="HTMLSourceProcessor">
 		<check name="WhitespaceCheck" />
 	</source-processor>
 	<source-processor name="JavaSourceProcessor">
@@ -233,8 +236,6 @@
 		<check name="JavaIOExceptionCheck" />
 		<check name="JavaLineBreakCheck" />
 		<check name="JavaLocalSensitiveComparisonCheck" />
-		<check name="JavaLogClassNameCheck" />
-		<check name="JavaLogLevelCheck" />
 		<check name="JavaLongLinesCheck" />
 		<check name="JavaPackagePathCheck" />
 		<check name="JavaParameterAnnotationsCheck" />
@@ -296,6 +297,9 @@
 		<check name="JavaCleanUpMethodVariablesCheck" />
 		<check name="JavaFinderCacheCheck" />
 		<check name="JavaFinderImplCustomSQLCheck" />
+		<check name="JavaLogClassNameCheck" />
+		<check name="JavaLogLevelCheck" />
+		<check name="JavaLogStringBundlerCheck" />
 		<check name="JavaMultiPlusConcatCheck" />
 		<check name="JavaProviderTypeAnnotationCheck" />
 		<check name="JavaServiceUtilCheck" />
