@@ -214,6 +214,9 @@ do
 		let BRANCH_COUNTER++
 
 		continue
+	elif [[ "${SUBREPO_COMMIT}" == "0000000000000000000000000000000000000000" ]]
+	then
+		continue
 	fi
 
 	CENTRAL_TREE=$(git -C "${CENTRAL_PATH}" ls-tree --full-tree -r "refs/remotes/upstream/${SUBREPO_BRANCH}" "${GITREPO_PATH%/.gitrepo}" | sed "s@${GITREPO_PATH%/.gitrepo}/@@" | grep -v '.gitrepo' | sort -k 4)

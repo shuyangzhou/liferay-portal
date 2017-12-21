@@ -103,7 +103,7 @@ public class ErrorWriterTest {
 		assertThat(error, is(aJsonObjectStringWith(conditions)));
 	}
 
-	private class TestErrorMessageMapper implements ErrorMessageMapper {
+	private static class TestErrorMessageMapper implements ErrorMessageMapper {
 
 		@Override
 		public String getMediaType() {

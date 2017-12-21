@@ -14,7 +14,7 @@
 
 package com.liferay.frontend.css.rtl.servlet.internal;
 
-import com.liferay.frontend.css.rtl.converter.CSSRTLConverter;
+import com.liferay.frontend.css.rtl.servlet.internal.converter.CSSRTLConverter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.RequestDispatcherUtil;

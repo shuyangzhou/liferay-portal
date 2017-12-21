@@ -2,19 +2,58 @@ AUI.add(
 	'liferay-workflow-web',
 	function(A) {
 		var WorkflowWeb = {
-			previewBeforeRevert: function(event, renderUrl, namespace, title) {
+			previewBeforeRevert: function(event, renderUrl, actionUrl, title) {
 				var instance = this;
 
-				Liferay.Util.Window.getWindow(
+				var form = A.Node.create('<form />');
+
+				form.setAttribute('action', actionUrl);
+				form.setAttribute('method', 'POST');
+
+				var dialog = Liferay.Util.Window.getWindow(
 					{
 						dialog: {
 							destroyOnHide: true,
-							modal: true
+							modal: true,
+							toolbars: {
+								footer: [
+									{
+										cssClass: 'btn btn-secondary',
+										discardDefaultButtonCssClasses: true,
+										label: Liferay.Language.get('cancel'),
+										on: {
+											click: function() {
+												dialog.destroy();
+											}
+										}
+									},
+									{
+										cssClass: 'btn btn-primary',
+										discardDefaultButtonCssClasses: true,
+										label: Liferay.Language.get('restore'),
+										on: {
+											click: function() {
+												submitForm(form);
+											}
+										}
+									}
+								],
+								header: [
+									{
+										cssClass: 'close',
+										discardDefaultButtonCssClasses: true,
+										labelHTML: '<svg class="lexicon-icon" focusable="false"><use data-href="' + Liferay.ThemeDisplay.getPathThemeImages() + '/lexicon/icons.svg#times" /><title>' + Liferay.Language.get('close') + '</title></svg>',
+										on: {
+											click: function(event) {
+												dialog.destroy();
+
+												event.domEvent.stopPropagation();
+											}
+										}
+									}
+								]
+							}
 						},
-						dialogIframe: {
-							bodyCssClass: 'dialog-with-footer'
-						},
-						id: namespace + 'previewBeforeRevert',
 						title: title,
 						uri: renderUrl
 					}
