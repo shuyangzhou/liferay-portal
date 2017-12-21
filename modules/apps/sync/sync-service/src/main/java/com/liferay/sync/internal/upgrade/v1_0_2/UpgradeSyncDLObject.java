@@ -17,6 +17,7 @@ package com.liferay.sync.internal.upgrade.v1_0_2;
 import com.liferay.document.library.kernel.model.DLFileEntryConstants;
 import com.liferay.document.library.sync.service.DLSyncEventLocalService;
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -38,7 +39,6 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.sync.constants.SyncDLObjectConstants;
 import com.liferay.sync.service.configuration.SyncServiceConfigurationValues;
@@ -117,7 +117,7 @@ public class UpgradeSyncDLObject extends UpgradeProcess {
 	protected void verifyDLFileEntriesAndFolders(long groupId)
 		throws Exception {
 
-		StringBundler sb1 = new StringBundler(51);
+		StringBundler sb1 = new StringBundler(50);
 
 		sb1.append("select DLFolder.companyId, DLFolder.userId, ");
 		sb1.append("DLFolder.userName, DLFolder.createDate, ");

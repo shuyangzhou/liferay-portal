@@ -14,6 +14,7 @@
 
 package com.liferay.portal.util;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -21,7 +22,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.DocumentException;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
@@ -82,7 +82,7 @@ public class LocalizationImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(10);
 
 		sb.append("<?xml version=\"1.0\"?>");
 
@@ -235,8 +235,12 @@ public class LocalizationImplTest {
 		List<Locale> modifiedLocales = LocalizationUtil.getModifiedLocales(
 			oldLocalizationMap, newLocalizationMap);
 
-		Assert.assertTrue(modifiedLocales.contains(LocaleUtil.getDefault()));
-		Assert.assertTrue(modifiedLocales.contains(LocaleUtil.GERMANY));
+		Assert.assertTrue(
+			modifiedLocales.toString(),
+			modifiedLocales.contains(LocaleUtil.getDefault()));
+		Assert.assertTrue(
+			modifiedLocales.toString(),
+			modifiedLocales.contains(LocaleUtil.GERMANY));
 	}
 
 	@Test
@@ -391,7 +395,7 @@ public class LocalizationImplTest {
 
 		localizationMap.put(LocaleUtil.US, _ENGLISH_HELLO);
 
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(10);
 
 		sb.append("<?xml version='1.0' encoding='UTF-8'?>");
 		sb.append("<root available-locales=\"en_US,de_DE\" ");

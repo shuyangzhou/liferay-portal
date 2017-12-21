@@ -14,6 +14,7 @@
 
 package com.liferay.portal.service.persistence;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
@@ -32,7 +33,6 @@ import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserGroupTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.comparator.UserFirstNameComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -235,7 +235,7 @@ public class UserFinderTest {
 			WorkflowConstants.STATUS_APPROVED, params, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 
-		Assert.assertTrue(users.contains(_groupUser));
+		Assert.assertTrue(users.toString(), users.contains(_groupUser));
 	}
 
 	@Test
@@ -249,7 +249,7 @@ public class UserFinderTest {
 			WorkflowConstants.STATUS_APPROVED, params, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 
-		Assert.assertTrue(users.contains(_organizationUser));
+		Assert.assertTrue(users.toString(), users.contains(_organizationUser));
 	}
 
 	@Test
@@ -263,7 +263,7 @@ public class UserFinderTest {
 			WorkflowConstants.STATUS_APPROVED, params, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 
-		Assert.assertTrue(users.contains(_userGroupUser));
+		Assert.assertTrue(users.toString(), users.contains(_userGroupUser));
 	}
 
 	@Test
@@ -273,10 +273,11 @@ public class UserFinderTest {
 			WorkflowConstants.STATUS_APPROVED, _inheritedUserGroupsParams,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
-		Assert.assertTrue(users.contains(_groupUser));
-		Assert.assertTrue(users.contains(_organizationUser));
-		Assert.assertTrue(users.contains(_userGroupUser));
-		Assert.assertTrue(users.contains(TestPropsValues.getUser()));
+		Assert.assertTrue(users.toString(), users.contains(_groupUser));
+		Assert.assertTrue(users.toString(), users.contains(_organizationUser));
+		Assert.assertTrue(users.toString(), users.contains(_userGroupUser));
+		Assert.assertTrue(
+			users.toString(), users.contains(TestPropsValues.getUser()));
 		Assert.assertEquals(
 			users.toString(), _inheritedUserGroupsExpectedCount, users.size());
 	}
@@ -296,10 +297,11 @@ public class UserFinderTest {
 			WorkflowConstants.STATUS_APPROVED, _inheritedUserRolesParams,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
-		Assert.assertTrue(users.contains(_groupUser));
-		Assert.assertTrue(users.contains(_organizationUser));
-		Assert.assertTrue(users.contains(_userGroupUser));
-		Assert.assertTrue(users.contains(TestPropsValues.getUser()));
+		Assert.assertTrue(users.toString(), users.contains(_groupUser));
+		Assert.assertTrue(users.toString(), users.contains(_organizationUser));
+		Assert.assertTrue(users.toString(), users.contains(_userGroupUser));
+		Assert.assertTrue(
+			users.toString(), users.contains(TestPropsValues.getUser()));
 		Assert.assertEquals(
 			users.toString(), expectedUsers.size() + 2, users.size());
 	}
@@ -323,10 +325,11 @@ public class UserFinderTest {
 			WorkflowConstants.STATUS_APPROVED, _inheritedUserRolesParams,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
-		Assert.assertTrue(users.contains(_groupUser));
-		Assert.assertTrue(users.contains(_organizationUser));
-		Assert.assertTrue(users.contains(_userGroupUser));
-		Assert.assertTrue(users.contains(TestPropsValues.getUser()));
+		Assert.assertTrue(users.toString(), users.contains(_groupUser));
+		Assert.assertTrue(users.toString(), users.contains(_organizationUser));
+		Assert.assertTrue(users.toString(), users.contains(_userGroupUser));
+		Assert.assertTrue(
+			users.toString(), users.contains(TestPropsValues.getUser()));
 		Assert.assertEquals(
 			users.toString(), expectedUsers.size() + 2, users.size());
 	}

@@ -14,7 +14,7 @@
 
 package com.liferay.source.formatter.checks;
 
-import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.source.formatter.checks.util.JSPSourceUtil;
 
@@ -30,7 +30,7 @@ public class JSPEmptyLinesCheck extends EmptyLinesCheck {
 	protected String doProcess(
 		String fileName, String absolutePath, String content) {
 
-		content = fixMissingEmptyLines(content);
+		content = fixMissingEmptyLines(absolutePath, content);
 
 		content = fixRedundantEmptyLines(content);
 
