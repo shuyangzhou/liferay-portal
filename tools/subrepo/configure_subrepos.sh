@@ -211,10 +211,15 @@ for GITREPO in "${GITREPOS[@]}"
 do
 	BRANCH_NAME="${GITREPO%%:*}"
 	GITREPO_PATH="${GITREPO##*:}"
+	PRIVATE_MIRROR=false
 	REPO_PATH="$(echo "${GITREPO}" | sed 's/:[^:]*$//' | sed 's/.*://')"
 
-	PRIVATE_CREATE_PARAMETERS=
-	PRIVATE_MIRROR=false
+	if [[ "${BRANCH_NAME}" == *-private ]]
+	then
+		PRIVATE_CREATE_PARAMETERS=",\"private\": \"true\""
+	else
+		PRIVATE_CREATE_PARAMETERS=
+	fi
 
 	if [[ "${GITREPO_PATH}" == */.gitrepo-private ]]
 	then

@@ -15,13 +15,12 @@
 package com.liferay.apio.architect.sample.liferay.portal.internal.resource;
 
 import com.liferay.apio.architect.functional.Try;
-import com.liferay.apio.architect.identifier.LongIdentifier;
-import com.liferay.apio.architect.identifier.RootIdentifier;
 import com.liferay.apio.architect.pagination.PageItems;
 import com.liferay.apio.architect.pagination.Pagination;
 import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.resource.CollectionResource;
-import com.liferay.apio.architect.routes.Routes;
+import com.liferay.apio.architect.routes.CollectionRoutes;
+import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
@@ -62,7 +61,18 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true)
 public class PersonCollectionResource
-	implements CollectionResource<User, LongIdentifier> {
+	implements CollectionResource<User, Long> {
+
+	@Override
+	public CollectionRoutes<User> collectionRoutes(
+		CollectionRoutes.Builder<User> builder) {
+
+		return builder.addGetter(
+			this::_getPageItems, Company.class
+		).addCreator(
+			this::_addUser, Company.class
+		).build();
+	}
 
 	@Override
 	public String getName() {
@@ -70,13 +80,24 @@ public class PersonCollectionResource
 	}
 
 	@Override
-	public Representor<User, LongIdentifier> representor(
-		Representor.Builder<User, LongIdentifier> builder) {
+	public ItemRoutes<User> itemRoutes(ItemRoutes.Builder<User, Long> builder) {
+		return builder.addGetter(
+			this::_getUser
+		).addRemover(
+			this::_deleteUser
+		).addUpdater(
+			this::_updateUser
+		).build();
+	}
+
+	@Override
+	public Representor<User, Long> representor(
+		Representor.Builder<User, Long> builder) {
 
 		return builder.types(
 			"Person"
 		).identifier(
-			user -> user::getUserId
+			User::getUserId
 		).addDate(
 			"birthDate", PersonCollectionResource::_getBirthday
 		).addString(
@@ -98,21 +119,6 @@ public class PersonCollectionResource
 		).build();
 	}
 
-	@Override
-	public Routes<User> routes(Routes.Builder<User, LongIdentifier> builder) {
-		return builder.addCollectionPageGetter(
-			this::_getPageItems, RootIdentifier.class, Company.class
-		).addCollectionPageItemCreator(
-			this::_addUser, RootIdentifier.class, Company.class
-		).addCollectionPageItemGetter(
-			this::_getUser
-		).addCollectionPageItemRemover(
-			this::_deleteUser
-		).addCollectionPageItemUpdater(
-			this::_updateUser
-		).build();
-	}
-
 	private static Date _getBirthday(User user) {
 		Try<Date> dateTry = Try.fromFallible(user::getBirthday);
 
@@ -129,10 +135,7 @@ public class PersonCollectionResource
 		);
 	}
 
-	private User _addUser(
-		RootIdentifier rootIdentifier, Map<String, Object> body,
-		Company company) {
-
+	private User _addUser(Map<String, Object> body, Company company) {
 		String password1 = (String)body.get("password1");
 		String password2 = (String)body.get("password2");
 		String screenName = (String)body.get("alternateName");
@@ -187,9 +190,9 @@ public class PersonCollectionResource
 		return userTry.getUnchecked();
 	}
 
-	private void _deleteUser(LongIdentifier userLongIdentifier) {
+	private void _deleteUser(Long userId) {
 		try {
-			_userLocalService.deleteUser(userLongIdentifier.getId());
+			_userLocalService.deleteUser(userId);
 		}
 		catch (PortalException pe) {
 			throw new ServerErrorException(500, pe);
@@ -197,7 +200,7 @@ public class PersonCollectionResource
 	}
 
 	private PageItems<User> _getPageItems(
-		Pagination pagination, RootIdentifier rootIdentifier, Company company) {
+		Pagination pagination, Company company) {
 
 		List<User> users = _userLocalService.getCompanyUsers(
 			company.getCompanyId(), pagination.getStartPosition(),
@@ -208,23 +211,20 @@ public class PersonCollectionResource
 		return new PageItems<>(users, count);
 	}
 
-	private User _getUser(LongIdentifier userLongIdentifier) {
+	private User _getUser(Long userId) {
 		try {
-			return _userLocalService.getUserById(userLongIdentifier.getId());
+			return _userLocalService.getUserById(userId);
 		}
 		catch (NoSuchUserException | PrincipalException e) {
-			throw new NotFoundException(
-				"Unable to get user " + userLongIdentifier.getId(), e);
+			throw new NotFoundException("Unable to get user " + userId, e);
 		}
 		catch (PortalException pe) {
 			throw new ServerErrorException(500, pe);
 		}
 	}
 
-	private User _updateUser(
-		LongIdentifier userLongIdentifier, Map<String, Object> body) {
-
-		User user = _getUser(userLongIdentifier);
+	private User _updateUser(Long userId, Map<String, Object> body) {
+		User user = _getUser(userId);
 
 		String password = (String)body.get("password");
 		String screenName = (String)body.get("alternateName");
