@@ -16,7 +16,6 @@ package com.liferay.apio.architect.representor;
 
 import com.liferay.apio.architect.alias.BinaryFunction;
 import com.liferay.apio.architect.consumer.TriConsumer;
-import com.liferay.apio.architect.identifier.Identifier;
 import com.liferay.apio.architect.language.Language;
 import com.liferay.apio.architect.related.RelatedCollection;
 import com.liferay.apio.architect.related.RelatedModel;
@@ -40,8 +39,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
- * Holds information about the metadata supported for a {@link
- * com.liferay.apio.architect.resource.CollectionResource}.
+ * Holds information about the metadata supported for a resource.
  *
  * <p>
  * Instances of this interface should always be created by using a {@link
@@ -51,7 +49,7 @@ import java.util.stream.Stream;
  * @author Alejandro Hernández
  * @see    Representor.Builder
  */
-public class Representor<T, U extends Identifier> {
+public class Representor<T, U> {
 
 	public Representor(
 		Class<U> identifierClass,
@@ -178,7 +176,7 @@ public class Representor<T, U extends Identifier> {
 	 * Creates generic representations of your domain models that Apio
 	 * hypermedia writers can understand.
 	 */
-	public static class Builder<T, U extends Identifier> {
+	public static class Builder<T, U> {
 
 		public Builder(Class<U> identifierClass) {
 			Supplier<List<RelatedCollection<T, ?>>> listSupplier =
@@ -190,7 +188,7 @@ public class Representor<T, U extends Identifier> {
 
 		public Builder(
 			Class<U> identifierClass,
-			TriConsumer<String, Class<?>, Function<Object, Identifier>>
+			TriConsumer<String, Class<?>, Function<Object, Object>>
 				addRelatedCollectionTriConsumer,
 			Supplier<List<RelatedCollection<T, ?>>>
 				relatedCollectionsSupplier) {
@@ -218,9 +216,8 @@ public class Representor<T, U extends Identifier> {
 
 			/**
 			 * Adds information about the bidirectional relation of a linked
-			 * model in the resource and a collection of {@link
-			 * com.liferay.apio.architect.resource.CollectionResource} items in
-			 * the related resource.
+			 * model in the resource and a collection of items in the related
+			 * resource.
 			 *
 			 * @param  key the relation's name in the resource
 			 * @param  relatedKey the relation's name in the related resource
@@ -234,14 +231,14 @@ public class Representor<T, U extends Identifier> {
 			public <S> FirstStep addBidirectionalModel(
 				String key, String relatedKey, Class<S> modelClass,
 				Function<T, Optional<S>> modelFunction,
-				Function<S, Identifier> identifierFunction) {
+				Function<S, Object> identifierFunction) {
 
 				_representor._relatedModels.add(
 					new RelatedModel<>(key, modelClass, modelFunction));
 
 				_addRelatedCollectionTriConsumer.accept(
 					relatedKey, modelClass,
-					(Function<Object, Identifier>)identifierFunction);
+					(Function<Object, Object>)identifierFunction);
 
 				return this;
 			}
@@ -381,7 +378,7 @@ public class Representor<T, U extends Identifier> {
 			 */
 			public <S> FirstStep addRelatedCollection(
 				String key, Class<S> modelClass,
-				Function<T, Identifier> identifierFunction) {
+				Function<T, Object> identifierFunction) {
 
 				_representor._relatedCollections.add(
 					new RelatedCollection<>(
@@ -422,7 +419,7 @@ public class Representor<T, U extends Identifier> {
 
 			/**
 			 * Provides a lambda function that can be used to obtain a model's
-			 * {@link Identifier}.
+			 * identifier.
 			 *
 			 * @param  identifierFunction lambda function used to obtain a
 			 *         model's identifier
@@ -437,7 +434,7 @@ public class Representor<T, U extends Identifier> {
 		}
 
 		private final TriConsumer<String, Class<?>,
-			Function<Object, Identifier>> _addRelatedCollectionTriConsumer;
+			Function<Object, Object>> _addRelatedCollectionTriConsumer;
 		private final Representor<T, U> _representor;
 
 	}

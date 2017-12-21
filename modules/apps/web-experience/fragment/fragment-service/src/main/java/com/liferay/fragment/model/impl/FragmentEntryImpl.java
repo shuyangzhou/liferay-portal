@@ -14,32 +14,70 @@
 
 package com.liferay.fragment.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
+import com.liferay.fragment.model.FragmentEntry;
+import com.liferay.html.preview.model.HtmlPreviewEntry;
+import com.liferay.html.preview.service.HtmlPreviewEntryLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.sanitizer.Sanitizer;
+import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+
+import java.util.Optional;
 
 /**
- * The extended model implementation for the FragmentEntry service. Represents a
- * row in the &quot;FragmentEntry&quot; database table, with each column mapped
- * to a property of this class.
- *
- * <p>
- * Helper methods and all application logic should be put in this class.
- * Whenever methods are added, rerun ServiceBuilder to copy their definitions
- * into the {@link com.liferay.fragment.model.FragmentEntry} interface.
- * </p>
- *
- * @author Brian Wing Shun Chan
+ * @author Eudaldo Alonso
  */
-@ProviderType
 public class FragmentEntryImpl extends FragmentEntryBaseImpl {
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. All methods that expect a fragment
-	 * entry model instance should use the {@link
-	 * com.liferay.fragment.model.FragmentEntry} interface instead.
-	 */
-	public FragmentEntryImpl() {
+	@Override
+	public String getContent() throws PortalException {
+		StringBundler sb = new StringBundler(7);
+
+		sb.append("<html><head><style>");
+		sb.append(getCss());
+		sb.append("</style><script>");
+		sb.append(getJs());
+		sb.append("</script></head><body>");
+
+		Optional<ServiceContext> serviceContextOptional = Optional.ofNullable(
+			ServiceContextThreadLocal.getServiceContext());
+
+		ServiceContext serviceContext = serviceContextOptional.orElse(
+			new ServiceContext());
+
+		String html = SanitizerUtil.sanitize(
+			serviceContext.getCompanyId(), serviceContext.getScopeGroupId(),
+			serviceContext.getUserId(), FragmentEntry.class.getName(),
+			getPrimaryKey(), ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL,
+			getHtml(), null);
+
+		sb.append(html);
+
+		sb.append("</body></html>");
+
+		return sb.toString();
+	}
+
+	@Override
+	public String getImagePreviewURL(ThemeDisplay themeDisplay) {
+		if (getHtmlPreviewEntryId() <= 0) {
+			return StringPool.BLANK;
+		}
+
+		HtmlPreviewEntry htmlPreviewEntry =
+			HtmlPreviewEntryLocalServiceUtil.fetchHtmlPreviewEntry(
+				getHtmlPreviewEntryId());
+
+		if (htmlPreviewEntry == null) {
+			return StringPool.BLANK;
+		}
+
+		return htmlPreviewEntry.getImagePreviewURL(themeDisplay);
 	}
 
 }
