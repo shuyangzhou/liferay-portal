@@ -192,7 +192,7 @@ Map<Long, Integer> groupUsersCounts = UserLocalServiceUtil.searchCounts(company.
 						</h6>
 
 						<h6 class="text-default">
-							<strong><liferay-ui:message key="members" /></strong>: <%= String.valueOf(groupUsersCounts.get(group.getGroupId())) %>
+							<strong><liferay-ui:message key="members" /></strong>: <%= GetterUtil.getInteger(groupUsersCounts.get(group.getGroupId())) %>
 						</h6>
 
 						<c:if test='<%= tabs1.equals("my-sites") && PropsValues.LIVE_USERS_ENABLED %>'>

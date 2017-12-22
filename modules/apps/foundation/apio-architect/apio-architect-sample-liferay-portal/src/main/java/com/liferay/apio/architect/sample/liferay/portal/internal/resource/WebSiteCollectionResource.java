@@ -14,13 +14,12 @@
 
 package com.liferay.apio.architect.sample.liferay.portal.internal.resource;
 
-import com.liferay.apio.architect.identifier.LongIdentifier;
-import com.liferay.apio.architect.identifier.RootIdentifier;
 import com.liferay.apio.architect.pagination.PageItems;
 import com.liferay.apio.architect.pagination.Pagination;
 import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.resource.CollectionResource;
-import com.liferay.apio.architect.routes.Routes;
+import com.liferay.apio.architect.routes.CollectionRoutes;
+import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.apio.architect.sample.liferay.portal.website.WebSite;
 import com.liferay.apio.architect.sample.liferay.portal.website.WebSiteService;
 import com.liferay.portal.kernel.model.Company;
@@ -42,7 +41,16 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true)
 public class WebSiteCollectionResource
-	implements CollectionResource<WebSite, LongIdentifier> {
+	implements CollectionResource<WebSite, Long> {
+
+	@Override
+	public CollectionRoutes<WebSite> collectionRoutes(
+		CollectionRoutes.Builder<WebSite> builder) {
+
+		return builder.addGetter(
+			this::_getPageItems, Company.class
+		).build();
+	}
 
 	@Override
 	public String getName() {
@@ -50,13 +58,22 @@ public class WebSiteCollectionResource
 	}
 
 	@Override
-	public Representor<WebSite, LongIdentifier> representor(
-		Representor.Builder<WebSite, LongIdentifier> builder) {
+	public ItemRoutes<WebSite> itemRoutes(
+		ItemRoutes.Builder<WebSite, Long> builder) {
+
+		return builder.addGetter(
+			this::_getWebSite
+		).build();
+	}
+
+	@Override
+	public Representor<WebSite, Long> representor(
+		Representor.Builder<WebSite, Long> builder) {
 
 		return builder.types(
 			"WebSite"
 		).identifier(
-			WebSite::getWebSiteLongIdentifier
+			WebSite::getWebSiteId
 		).addLocalizedString(
 			"name", WebSite::getName
 		).addString(
@@ -64,30 +81,17 @@ public class WebSiteCollectionResource
 		).build();
 	}
 
-	@Override
-	public Routes<WebSite> routes(
-		Routes.Builder<WebSite, LongIdentifier> builder) {
-
-		return builder.addCollectionPageGetter(
-			this::_getPageItems, RootIdentifier.class, Company.class
-		).addCollectionPageItemGetter(
-			this::_getWebSite
-		).build();
-	}
-
 	private PageItems<WebSite> _getPageItems(
-		Pagination pagination, RootIdentifier rootIdentifier, Company company) {
+		Pagination pagination, Company company) {
 
 		return _webSiteService.getPageItems(pagination, company.getCompanyId());
 	}
 
-	private WebSite _getWebSite(LongIdentifier webSiteLongIdentifier) {
-		Optional<WebSite> optional = _webSiteService.getWebSite(
-			webSiteLongIdentifier.getId());
+	private WebSite _getWebSite(Long webSiteId) {
+		Optional<WebSite> optional = _webSiteService.getWebSite(webSiteId);
 
 		return optional.orElseThrow(
-			() -> new NotFoundException(
-				"Unable to get website " + webSiteLongIdentifier.getId()));
+			() -> new NotFoundException("Unable to get website " + webSiteId));
 	}
 
 	@Reference
