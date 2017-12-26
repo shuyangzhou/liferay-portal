@@ -330,6 +330,8 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		_checkValidPortletId(portlet.getPortletId());
 
+		ResourceActionsUtil.check(portlet);
+
 		_portletsMap.put(portlet.getPortletId(), portlet);
 
 		if (eagerDestroy) {
@@ -339,8 +341,6 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		}
 
 		clearCache();
-
-		ResourceActionsUtil.check(portlet.getPortletId());
 
 		PortletCategory portletCategory = (PortletCategory)WebAppPool.get(
 			portlet.getCompanyId(), WebKeys.PORTLET_CATEGORY);
@@ -2368,6 +2368,34 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		}
 
 		portletModel.setPublicRenderParameters(publicRenderParameters);
+
+		Map<String, String[]> containerRuntimeOptions =
+			portletApp.getContainerRuntimeOptions();
+
+		String containerRuntimeOptionPrefix =
+			LiferayPortletConfig.class.getName();
+
+		containerRuntimeOptionPrefix = containerRuntimeOptionPrefix.concat(
+			portletName);
+
+		for (Element containerRuntimeOptionElement :
+				portletElement.elements("container-runtime-option")) {
+
+			String name = GetterUtil.getString(
+				containerRuntimeOptionElement.elementText("name"));
+
+			List<String> values = new ArrayList<>();
+
+			for (Element valueElement :
+					containerRuntimeOptionElement.elements("value")) {
+
+				values.add(valueElement.getTextTrim());
+			}
+
+			containerRuntimeOptions.put(
+				containerRuntimeOptionPrefix.concat(name),
+				values.toArray(new String[values.size()]));
+		}
 
 		portletsMap.put(portletId, portletModel);
 	}

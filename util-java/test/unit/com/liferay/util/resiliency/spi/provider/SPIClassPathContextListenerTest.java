@@ -226,7 +226,7 @@ public class SPIClassPathContextListenerTest {
 			spiClassPathContextListener.contextInitialized(
 				new ServletContextEvent(_mockServletContext));
 
-			StringBundler sb = new StringBundler();
+			StringBundler sb = new StringBundler(14);
 
 			sb.append(_jarFile.getAbsolutePath());
 			sb.append(File.pathSeparator);
@@ -278,7 +278,7 @@ public class SPIClassPathContextListenerTest {
 
 			Assert.assertEquals(
 				spiClassPath, SPIClassPathContextListener.SPI_CLASS_PATH);
-			Assert.assertTrue(logRecords.isEmpty());
+			Assert.assertTrue(logRecords.toString(), logRecords.isEmpty());
 		}
 	}
 
@@ -395,7 +395,7 @@ public class SPIClassPathContextListenerTest {
 
 		spiProviders = MPIHelperUtil.getSPIProviders();
 
-		Assert.assertTrue(spiProviders.isEmpty());
+		Assert.assertTrue(spiProviders.toString(), spiProviders.isEmpty());
 
 		// Duplicate unregister
 
@@ -406,7 +406,7 @@ public class SPIClassPathContextListenerTest {
 
 		spiProviders = MPIHelperUtil.getSPIProviders();
 
-		Assert.assertTrue(spiProviders.isEmpty());
+		Assert.assertTrue(spiProviders.toString(), spiProviders.isEmpty());
 
 		// Register from SPI
 

@@ -1,6 +1,6 @@
 Bundle-Name: Liferay WSRP API
 Bundle-SymbolicName: com.liferay.wsrp.api
-Bundle-Version: 1.0.15
+Bundle-Version: 1.0.16
 Export-Package:\
 	com.liferay.wsrp.configuration,\
 	com.liferay.wsrp.constants,\

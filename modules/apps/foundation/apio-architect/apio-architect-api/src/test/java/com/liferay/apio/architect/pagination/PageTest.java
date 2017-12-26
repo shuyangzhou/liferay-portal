@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.pagination;
 
+import static com.spotify.hamcrest.optional.OptionalMatchers.optionalWithValue;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.hamcrest.core.Is.is;
@@ -22,11 +24,10 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import com.liferay.apio.architect.uri.Path;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import org.mockito.Mockito;
 
 /**
  * @author Alejandro Hernández
@@ -37,23 +38,11 @@ public class PageTest {
 	public void setUp() {
 		_pageItems = new PageItems<>(Collections.singleton("apio"), 10);
 
-		_pagination = Mockito.mock(Pagination.class);
-
-		Mockito.when(
-			_pagination.getItemsPerPage()
-		).thenReturn(
-			1
-		);
-
-		Mockito.when(
-			_pagination.getPageNumber()
-		).thenReturn(
-			4
-		);
+		Pagination pagination = new Pagination(1, 4);
 
 		_path = new Path("name", "id");
 
-		_page = new Page<>(String.class, _pageItems, _pagination, _path);
+		_page = new Page<>(String.class, _pageItems, pagination, _path);
 	}
 
 	@Test
@@ -83,10 +72,15 @@ public class PageTest {
 
 	@Test
 	public void testGetPathReturnsPath() {
-		Path path = _page.getPath();
+		Optional<Path> optional = _page.getPathOptional();
 
-		assertThat(path.getId(), is(equalTo("id")));
-		assertThat(path.getName(), is(equalTo("name")));
+		assertThat(optional, is(optionalWithValue()));
+
+		optional.ifPresent(
+			path -> {
+				assertThat(path.getId(), is(equalTo("id")));
+				assertThat(path.getName(), is(equalTo("name")));
+			});
 	}
 
 	@Test
@@ -96,16 +90,12 @@ public class PageTest {
 
 	@Test
 	public void testHasNextReturnsFalseWhenIsLast() {
-		Mockito.when(
-			_pagination.getPageNumber()
-		).thenReturn(
-			10
-		);
+		Pagination pagination = new Pagination(1, 10);
 
 		_path = new Path("name", "id");
 
 		Page<String> page = new Page<>(
-			String.class, _pageItems, _pagination, _path);
+			String.class, _pageItems, pagination, _path);
 
 		assertThat(page.hasNext(), is(false));
 	}
@@ -115,18 +105,15 @@ public class PageTest {
 		assertThat(_page.hasNext(), is(true));
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	@Test
 	public void testHasPreviousReturnsFalseWhenIsFirst() {
-		Mockito.when(
-			_pagination.getPageNumber()
-		).thenReturn(
-			1
-		);
+		Pagination pagination = new Pagination(1, 1);
 
 		_path = new Path("name", "id");
 
 		Page<String> page = new Page<>(
-			String.class, _pageItems, _pagination, _path);
+			String.class, _pageItems, pagination, _path);
 
 		assertThat(page.hasPrevious(), is(false));
 	}
@@ -138,7 +125,6 @@ public class PageTest {
 
 	private Page<String> _page;
 	private PageItems<String> _pageItems;
-	private Pagination _pagination;
 	private Path _path;
 
 }

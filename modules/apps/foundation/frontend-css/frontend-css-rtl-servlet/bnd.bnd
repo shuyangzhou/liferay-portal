@@ -1,5 +1,13 @@
 Bundle-Name: Liferay Frontend CSS RTL Servlet
 Bundle-SymbolicName: com.liferay.frontend.css.rtl.servlet
-Bundle-Version: 1.0.7
+Bundle-Version: 1.0.8
+Import-Package:\
+	!org.junit,\
+	!org.junit.*,\
+	\
+	!org.slf4j,\
+	!org.slf4j.*,\
+	\
+	*
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:

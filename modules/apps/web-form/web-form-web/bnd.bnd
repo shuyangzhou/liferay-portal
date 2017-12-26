@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Web Form Web
 Bundle-SymbolicName: com.liferay.web.form.web
-Bundle-Version: 1.0.26
+Bundle-Version: 1.0.27
 Import-Package:\
 	!org.apache.xmlbeans.*,\
 	\
