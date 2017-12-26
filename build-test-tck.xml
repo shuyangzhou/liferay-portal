@@ -75,8 +75,7 @@
 			<path>
 				<fileset
 					dir="${tck.deploy.files}"
-					excludes="**/tck-WarThatYouWouldLikeToExclude-*.war"
-					includes="**/${test.context}-*.war"
+					includes="**/tck-V2*.war"
 				/>
 			</path>
 			<sequential>
@@ -110,53 +109,7 @@
 			</sequential>
 		</for>
 
-		<var name="exclude.war.names" value="" />
-
-		<for param="tck.war">
-			<path>
-				<fileset
-					dir="${tck.deploy.files}"
-					excludes="**/${test.context}-*.war"
-					includes="**/${test.context}*.war"
-				/>
-			</path>
-			<sequential>
-				<local name="tck.war.basename" />
-
-				<basename file="@{tck.war}" property="tck.war.basename" suffix=".war" />
-
-				<local name="exclude.war.name" />
-
-				<propertyregex
-					global="true"
-					input="${tck.war.basename}"
-					property="exclude.war.name"
-					regexp="-\d..*"
-					replace=""
-				/>
-
-				<propertyregex
-					global="true"
-					input="${exclude.war.name}"
-					override="true"
-					property="exclude.war.name"
-					regexp="tck-"
-					replace=""
-				/>
-
-				<if>
-					<equals arg1="${exclude.war.names}" arg2="" />
-					<then>
-						<var name="exclude.war.names" value="${exclude.war.name}" />
-					</then>
-					<else>
-						<var name="exclude.war.names" value="${exclude.war.names}|${exclude.war.name}" />
-					</else>
-				</if>
-			</sequential>
-		</for>
-
-		<echo file="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration.cfg">excludeWarNames=${exclude.war.names}
+		<echo file="${liferay.home}/osgi/modules/com.liferay.portlet.tck.bridge.configuration.PortletTCKBridgeConfiguration.cfg">excludeWarNames=
 
 handshakeServerPort=${portlet.tck.bridge.handshake.port}
 
