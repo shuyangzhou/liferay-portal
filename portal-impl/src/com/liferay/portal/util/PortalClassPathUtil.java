@@ -43,6 +43,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.portlet.Portlet;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
@@ -90,7 +92,8 @@ public class PortalClassPathUtil {
 		sb.append(File.pathSeparator);
 
 		String portalGlobalClassPath = _buildClassPath(
-			classLoader, CentralizedThreadLocal.class.getName(),
+			classLoader, Portlet.class.getName(),
+			CentralizedThreadLocal.class.getName(),
 			PortalException.class.getName());
 
 		sb.append(portalGlobalClassPath);
@@ -100,7 +103,8 @@ public class PortalClassPathUtil {
 		sb.append(File.pathSeparator);
 		sb.append(
 			_buildClassPath(
-				classLoader, "com.liferay.portal.servlet.MainServlet"));
+				classLoader, "com.liferay.portal.servlet.MainServlet",
+				"org.apache.struts.action.ActionServlet"));
 
 		if (servletContext != null) {
 			sb.append(File.pathSeparator);
@@ -143,10 +147,10 @@ public class PortalClassPathUtil {
 		Set<File> fileSet = new HashSet<>();
 
 		for (String className : classNames) {
-			File[] files = _listClassPathFiles(classloader, className);
+			Set<File> files = _listClassPathFiles(classloader, className);
 
 			if (files != null) {
-				Collections.addAll(fileSet, files);
+				fileSet.addAll(files);
 			}
 		}
 
@@ -166,7 +170,7 @@ public class PortalClassPathUtil {
 		return sb.toString();
 	}
 
-	private static File[] _listClassPathFiles(
+	private static Set<File> _listClassPathFiles(
 		ClassLoader classloader, String className) {
 
 		String pathOfClass = StringUtil.replace(
@@ -237,6 +241,8 @@ public class PortalClassPathUtil {
 			path = "file:".concat(path);
 		}
 
+		Set<File> classPathElements = new HashSet<>();
+
 		File dir = null;
 
 		int pos = -1;
@@ -254,13 +260,15 @@ public class PortalClassPathUtil {
 			String classesDirName = path.substring(
 				0, path.length() - pathOfClass.length());
 
+			classPathElements.add(new File(classesDirName));
+
 			if (!classesDirName.endsWith("/WEB-INF/classes/")) {
 				_log.error(
 					StringBundler.concat(
-						"Class ", className, " is not loaded from a standard ",
-						"location (/WEB-INF/classes)"));
+						"Class ", className, " is loaded from ", classesDirName,
+						", rather than a standard /WEB-INF/classes location"));
 
-				return null;
+				return classPathElements;
 			}
 
 			String libDirName = classesDirName.substring(
@@ -282,7 +290,7 @@ public class PortalClassPathUtil {
 			return null;
 		}
 
-		return dir.listFiles(
+		File[] jarClassPathElements = dir.listFiles(
 			new FileFilter() {
 
 				@Override
@@ -301,6 +309,10 @@ public class PortalClassPathUtil {
 				}
 
 			});
+
+		Collections.addAll(classPathElements, jarClassPathElements);
+
+		return classPathElements;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

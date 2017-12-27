@@ -102,7 +102,7 @@ public class LocalProcessExecutor implements ProcessExecutor {
 			AsyncBroker<Long, Serializable> asyncBroker = new AsyncBroker<>();
 
 			SubprocessReactor<T> subprocessReactor = new SubprocessReactor<>(
-				process, processConfig.getProcessLogConsumer(),
+				process, processBuilder, processConfig.getProcessLogConsumer(),
 				processConfig.getReactClassLoader(), asyncBroker);
 
 			NoticeableFuture<T> noticeableFuture = _submit(
@@ -306,7 +306,8 @@ public class LocalProcessExecutor implements ProcessExecutor {
 					int exitCode = _process.waitFor();
 
 					if (exitCode != 0) {
-						throw new TerminationProcessException(exitCode);
+						throw new TerminationProcessException(
+							_processBuilder, exitCode);
 					}
 				}
 				catch (InterruptedException ie) {
@@ -328,11 +329,13 @@ public class LocalProcessExecutor implements ProcessExecutor {
 		}
 
 		private SubprocessReactor(
-			Process process, Consumer<ProcessLog> processLogConsumer,
+			Process process, ProcessBuilder processBuilder,
+			Consumer<ProcessLog> processLogConsumer,
 			ClassLoader reactClassLoader,
 			AsyncBroker<Long, Serializable> asyncBroker) {
 
 			_process = process;
+			_processBuilder = processBuilder;
 			_processLogConsumer = processLogConsumer;
 			_reactClassLoader = reactClassLoader;
 			_asyncBroker = asyncBroker;
@@ -340,6 +343,7 @@ public class LocalProcessExecutor implements ProcessExecutor {
 
 		private final AsyncBroker<Long, Serializable> _asyncBroker;
 		private final Process _process;
+		private final ProcessBuilder _processBuilder;
 		private final Consumer<ProcessLog> _processLogConsumer;
 		private final ClassLoader _reactClassLoader;
 
