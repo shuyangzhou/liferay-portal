@@ -20,13 +20,10 @@ import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.resource.CollectionResource;
 import com.liferay.apio.architect.routes.CollectionRoutes;
 import com.liferay.apio.architect.routes.ItemRoutes;
+import com.liferay.apio.architect.sample.internal.form.PersonForm;
 import com.liferay.apio.architect.sample.internal.model.Person;
 
-import java.time.Instant;
-
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import javax.ws.rs.NotFoundException;
@@ -51,7 +48,7 @@ public class PersonCollectionResource
 		return builder.addGetter(
 			this::_getPageItems
 		).addCreator(
-			this::_addPerson
+			this::_addPerson, PersonForm::buildForm
 		).build();
 	}
 
@@ -69,7 +66,7 @@ public class PersonCollectionResource
 		).addRemover(
 			this::_deletePerson
 		).addUpdater(
-			this::_updatePerson
+			this::_updatePerson, PersonForm::buildForm
 		).build();
 	}
 
@@ -100,21 +97,12 @@ public class PersonCollectionResource
 		).build();
 	}
 
-	private Person _addPerson(Map<String, Object> body) {
-		String address = (String)body.get("address");
-		String avatar = (String)body.get("image");
-
-		String birthDateString = (String)body.get("birthDate");
-
-		Date birthDate = Date.from(Instant.parse(birthDateString));
-
-		String email = (String)body.get("email");
-		String firstName = (String)body.get("givenName");
-		String jobTitle = (String)body.get("jobTitle");
-		String lastName = (String)body.get("familyName");
-
+	private Person _addPerson(PersonForm personForm) {
 		return Person.addPerson(
-			address, avatar, birthDate, email, firstName, jobTitle, lastName);
+			personForm.getAddress(), personForm.getImage(),
+			personForm.getBirthDate(), personForm.getEmail(),
+			personForm.getGivenName(), personForm.getJobTitle(),
+			personForm.getFamilyName());
 	}
 
 	private void _deletePerson(Long personId) {
@@ -136,22 +124,12 @@ public class PersonCollectionResource
 			() -> new NotFoundException("Unable to get person " + personId));
 	}
 
-	private Person _updatePerson(Long personId, Map<String, Object> body) {
-		String address = (String)body.get("address");
-		String avatar = (String)body.get("image");
-
-		String birthDateString = (String)body.get("birthDate");
-
-		Date birthDate = Date.from(Instant.parse(birthDateString));
-
-		String email = (String)body.get("email");
-		String firstName = (String)body.get("givenName");
-		String jobTitle = (String)body.get("jobTitle");
-		String lastName = (String)body.get("familyName");
-
+	private Person _updatePerson(Long personId, PersonForm personForm) {
 		Optional<Person> optional = Person.updatePerson(
-			address, avatar, birthDate, email, firstName, jobTitle, lastName,
-			personId);
+			personForm.getAddress(), personForm.getImage(),
+			personForm.getBirthDate(), personForm.getEmail(),
+			personForm.getGivenName(), personForm.getJobTitle(),
+			personForm.getFamilyName(), personId);
 
 		return optional.orElseThrow(
 			() -> new NotFoundException("Unable to get person " + personId));

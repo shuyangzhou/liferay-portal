@@ -93,7 +93,7 @@ public class UpdateWorkflowDefinitionMVCActionCommand
 		ActionRequest actionRequest, ActionResponse actionResponse) {
 
 		ResourceBundle resourceBundle =
-			_resourceBundleLoader.loadResourceBundle(
+			resourceBundleLoader.loadResourceBundle(
 				portal.getLocale(actionRequest));
 
 		String successMessage = getSuccessMessage(resourceBundle);
@@ -199,7 +199,7 @@ public class UpdateWorkflowDefinitionMVCActionCommand
 	protected void setResourceBundleLoader(
 		ResourceBundleLoader resourceBundleLoader) {
 
-		_resourceBundleLoader = resourceBundleLoader;
+		this.resourceBundleLoader = resourceBundleLoader;
 	}
 
 	protected void validateWorkflowDefinition(byte[] bytes)
@@ -219,6 +219,6 @@ public class UpdateWorkflowDefinitionMVCActionCommand
 	@Reference
 	protected WorkflowDefinitionManager workflowDefinitionManager;
 
-	private ResourceBundleLoader _resourceBundleLoader;
+	protected ResourceBundleLoader resourceBundleLoader;
 
 }

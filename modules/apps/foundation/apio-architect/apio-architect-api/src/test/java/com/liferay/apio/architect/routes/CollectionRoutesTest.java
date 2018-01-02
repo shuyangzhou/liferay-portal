@@ -14,6 +14,7 @@
 
 package com.liferay.apio.architect.routes;
 
+import static com.liferay.apio.architect.routes.RoutesTestUtil.FORM_BUILDER_FUNCTION;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.PAGINATION;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.PROVIDE_FUNCTION;
 
@@ -69,7 +70,7 @@ public class CollectionRoutesTest {
 
 		CollectionRoutes<String> collectionRoutes = builder.addCreator(
 			this::_testAndReturnFourParameterCreatorRoute, String.class,
-			Long.class, Boolean.class, Integer.class
+			Long.class, Boolean.class, Integer.class, FORM_BUILDER_FUNCTION
 		).addGetter(
 			this::_testAndReturnFourParameterGetterRoute, String.class,
 			Long.class, Boolean.class, Integer.class
@@ -84,7 +85,7 @@ public class CollectionRoutesTest {
 
 		CollectionRoutes<String> collectionRoutes = builder.addCreator(
 			this::_testAndReturnThreeParameterCreatorRoute, String.class,
-			Long.class, Boolean.class
+			Long.class, Boolean.class, FORM_BUILDER_FUNCTION
 		).addGetter(
 			this::_testAndReturnThreeParameterGetterRoute, String.class,
 			Long.class, Boolean.class
@@ -98,7 +99,7 @@ public class CollectionRoutesTest {
 		Builder<String> builder = new Builder<>(String.class, PROVIDE_FUNCTION);
 
 		CollectionRoutes<String> collectionRoutes = builder.addCreator(
-			this::_testAndReturnNoParameterCreatorRoute
+			this::_testAndReturnNoParameterCreatorRoute, FORM_BUILDER_FUNCTION
 		).addGetter(
 			this::_testAndReturnNoParameterGetterRoute
 		).build();
@@ -112,7 +113,7 @@ public class CollectionRoutesTest {
 
 		CollectionRoutes<String> collectionRoutes = builder.addCreator(
 			this::_testAndReturnTwoParameterCreatorRoute, String.class,
-			Long.class
+			Long.class, FORM_BUILDER_FUNCTION
 		).addGetter(
 			this::_testAndReturnTwoParameterGetterRoute, String.class,
 			Long.class
@@ -126,7 +127,8 @@ public class CollectionRoutesTest {
 		Builder<String> builder = new Builder<>(String.class, PROVIDE_FUNCTION);
 
 		CollectionRoutes<String> collectionRoutes = builder.addCreator(
-			this::_testAndReturnOneParameterCreatorRoute, String.class
+			this::_testAndReturnOneParameterCreatorRoute, String.class,
+			FORM_BUILDER_FUNCTION
 		).addGetter(
 			this::_testAndReturnOneParameterGetterRoute, String.class
 		).build();
