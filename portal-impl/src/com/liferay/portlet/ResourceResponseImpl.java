@@ -159,7 +159,7 @@ public class ResourceResponseImpl
 					portletApp.getServletContextName());
 
 			Map<String, String> localeEncodingMappings =
-				extraPortletAppConfig.getLocaleEncodingMappingList();
+				extraPortletAppConfig.getLocaleEncodingMappings();
 
 			String characterEncoding = localeEncodingMappings.get(
 				locale.toString());

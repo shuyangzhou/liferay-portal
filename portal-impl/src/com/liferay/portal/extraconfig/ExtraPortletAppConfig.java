@@ -22,16 +22,14 @@ import java.util.Map;
  */
 public class ExtraPortletAppConfig {
 
-	public ExtraPortletAppConfig(
-		Map<String, String> localeEncodingMappingList) {
-
-		_localeEncodingMappingList = localeEncodingMappingList;
+	public ExtraPortletAppConfig(Map<String, String> localeEncodingMappings) {
+		_localeEncodingMappings = localeEncodingMappings;
 	}
 
-	public Map<String, String> getLocaleEncodingMappingList() {
-		return Collections.unmodifiableMap(_localeEncodingMappingList);
+	public Map<String, String> getLocaleEncodingMappings() {
+		return Collections.unmodifiableMap(_localeEncodingMappings);
 	}
 
-	private final Map<String, String> _localeEncodingMappingList;
+	private final Map<String, String> _localeEncodingMappings;
 
 }
