@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
@@ -38,7 +37,6 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Inácio Nery
@@ -87,7 +85,7 @@ public class RevertWorkflowDefinitionMVCActionCommand
 		String dateTime = dateTimeFormat.format(workflowDefinitionModifiedDate);
 
 		ResourceBundle resourceBundle =
-			_resourceBundleLoader.loadResourceBundle(locale);
+			resourceBundleLoader.loadResourceBundle(locale);
 
 		SessionMessages.add(
 			actionRequest, "requestProcessed",
@@ -133,11 +131,4 @@ public class RevertWorkflowDefinitionMVCActionCommand
 
 		sendRedirect(actionRequest, actionResponse);
 	}
-
-	@Reference(
-		target = "(bundle.symbolic.name=com.liferay.portal.workflow.web)",
-		unbind = "-"
-	)
-	private ResourceBundleLoader _resourceBundleLoader;
-
 }

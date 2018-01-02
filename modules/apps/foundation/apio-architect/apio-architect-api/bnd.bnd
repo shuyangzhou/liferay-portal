@@ -5,6 +5,7 @@ Export-Package:\
 	com.google.gson.*,\
 	\
 	com.liferay.apio.architect.alias,\
+	com.liferay.apio.architect.alias.form,\
 	com.liferay.apio.architect.alias.routes,\
 	com.liferay.apio.architect.consumer,\
 	com.liferay.apio.architect.converter,\
@@ -12,6 +13,7 @@ Export-Package:\
 	com.liferay.apio.architect.endpoint,\
 	com.liferay.apio.architect.error,\
 	com.liferay.apio.architect.exception,\
+	com.liferay.apio.architect.form,\
 	com.liferay.apio.architect.function,\
 	com.liferay.apio.architect.functional,\
 	com.liferay.apio.architect.language,\

@@ -14,6 +14,7 @@
 
 package com.liferay.apio.architect.routes;
 
+import static com.liferay.apio.architect.routes.RoutesTestUtil.FORM_BUILDER_FUNCTION;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.IDENTIFIER_FUNCTION;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.PROVIDE_FUNCTION;
 
@@ -34,9 +35,6 @@ import com.liferay.apio.architect.uri.Path;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
 
@@ -81,7 +79,7 @@ public class ItemRoutesTest {
 			Boolean.class, Integer.class
 		).addUpdater(
 			this::_testAndReturnFourParameterUpdaterRoute, String.class,
-			Long.class, Boolean.class, Integer.class
+			Long.class, Boolean.class, Integer.class, FORM_BUILDER_FUNCTION
 		).build();
 
 		_testItemRoutes(itemRoutes);
@@ -100,7 +98,7 @@ public class ItemRoutesTest {
 			Boolean.class
 		).addUpdater(
 			this::_testAndReturnThreeParameterUpdaterRoute, String.class,
-			Long.class, Boolean.class
+			Long.class, Boolean.class, FORM_BUILDER_FUNCTION
 		).build();
 
 		_testItemRoutes(itemRoutes);
@@ -116,7 +114,7 @@ public class ItemRoutesTest {
 		).addRemover(
 			this::_testAndReturnNoParameterRemoverRoute
 		).addUpdater(
-			this::_testAndReturnNoParameterUpdaterRoute
+			this::_testAndReturnNoParameterUpdaterRoute, FORM_BUILDER_FUNCTION
 		).build();
 
 		_testItemRoutes(itemRoutes);
@@ -134,7 +132,7 @@ public class ItemRoutesTest {
 			this::_testTwoParameterRemoverRoute, String.class, Long.class
 		).addUpdater(
 			this::_testAndReturnTwoParameterUpdaterRoute, String.class,
-			Long.class
+			Long.class, FORM_BUILDER_FUNCTION
 		).build();
 
 		_testItemRoutes(itemRoutes);
@@ -150,7 +148,8 @@ public class ItemRoutesTest {
 		).addRemover(
 			this::_testOneParameterRemoverRoute, String.class
 		).addUpdater(
-			this::_testAndReturnOneParameterUpdaterRoute, String.class
+			this::_testAndReturnOneParameterUpdaterRoute, String.class,
+			FORM_BUILDER_FUNCTION
 		).build();
 
 		_testItemRoutes(itemRoutes);
@@ -286,9 +285,8 @@ public class ItemRoutesTest {
 		Optional<UpdateItemFunction<String>> updateItemFunctionOptional =
 			itemRoutes.getUpdateItemFunctionOptional();
 
-		Function<HttpServletRequest, Function<Path,
-			Function<Map<String, Object>, SingleModel<String>>>>
-				updateItemFunction = updateItemFunctionOptional.get();
+		UpdateItemFunction<String> updateItemFunction =
+			updateItemFunctionOptional.get();
 
 		SingleModel<String> updatedSingleModel = updateItemFunction.apply(
 			null
