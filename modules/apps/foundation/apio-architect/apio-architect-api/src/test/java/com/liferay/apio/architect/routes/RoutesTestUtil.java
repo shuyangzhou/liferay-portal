@@ -16,8 +16,11 @@ package com.liferay.apio.architect.routes;
 
 import com.liferay.apio.architect.alias.IdentifierFunction;
 import com.liferay.apio.architect.alias.ProvideFunction;
+import com.liferay.apio.architect.alias.form.FormBuilderFunction;
 import com.liferay.apio.architect.pagination.Pagination;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -28,14 +31,31 @@ import java.util.Optional;
 public class RoutesTestUtil {
 
 	/**
-	 * A {@code IdentifierFunction} that returns the {@code Path} ID long's
+	 * A {@code FormBuilderFunction} that creates a {@code Map<String, Object>}
+	 * {@code Form}.
+	 *
+	 * @review
+	 */
+	public static final FormBuilderFunction<Map<String, Object>>
+		FORM_BUILDER_FUNCTION = builder -> builder.constructor(
+			HashMap::new
+		).addRequiredString(
+			"key", (map, value) -> map.put("key", value)
+		).build();
+
+	/**
+	 * An {@code IdentifierFunction} that returns the {@code Path} ID long's
 	 * value.
+	 *
+	 * @review
 	 */
 	public static final IdentifierFunction IDENTIFIER_FUNCTION =
 		path -> Long.valueOf(path.getId());
 
 	/**
 	 * Mocked {@code Pagination}.
+	 *
+	 * @review
 	 */
 	public static final Pagination PAGINATION = new Pagination(4, 2);
 
@@ -43,6 +63,8 @@ public class RoutesTestUtil {
 	 * A {@code ProvideFunction} that is able to provide instances of {@code
 	 * String}, {@code Long}, {@code Integer}, {@code Boolean}, {@code Float}
 	 * and {@code Pagination}.
+	 *
+	 * @review
 	 */
 	public static final ProvideFunction PROVIDE_FUNCTION =
 		httpServletRequest -> aClass -> {

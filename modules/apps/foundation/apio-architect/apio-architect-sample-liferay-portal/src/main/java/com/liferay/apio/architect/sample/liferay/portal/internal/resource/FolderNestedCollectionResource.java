@@ -22,6 +22,7 @@ import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.resource.NestedCollectionResource;
 import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.apio.architect.routes.NestedCollectionRoutes;
+import com.liferay.apio.architect.sample.liferay.portal.internal.form.FolderForm;
 import com.liferay.apio.architect.sample.liferay.portal.website.WebSite;
 import com.liferay.apio.architect.sample.liferay.portal.website.WebSiteService;
 import com.liferay.document.library.kernel.model.DLFolder;
@@ -29,11 +30,9 @@ import com.liferay.document.library.kernel.service.DLFolderService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import javax.ws.rs.BadRequestException;
@@ -60,7 +59,7 @@ public class FolderNestedCollectionResource
 		return builder.addGetter(
 			this::_getPageItems
 		).addCreator(
-			this::_addDLFolder
+			this::_addDLFolder, FolderForm::buildForm
 		).build();
 	}
 
@@ -78,7 +77,7 @@ public class FolderNestedCollectionResource
 		).addRemover(
 			this::_deleteDLFolder
 		).addUpdater(
-			this::_updateDLFolder
+			this::_updateDLFolder, FolderForm::buildForm
 		).build();
 	}
 
@@ -106,33 +105,22 @@ public class FolderNestedCollectionResource
 		).build();
 	}
 
-	private DLFolder _addDLFolder(Long groupId, Map<String, Object> body) {
+	private DLFolder _addDLFolder(Long groupId, FolderForm folderForm) {
 		long parentFolderId = 0;
 
-		String name = (String)body.get("name");
-
-		if (Validator.isNull(name)) {
-			throw new BadRequestException("Invalid body");
-		}
-
 		Try<DLFolder> dlFolderTry = Try.fromFallible(
-			() -> _dlFolderService.getFolder(groupId, parentFolderId, name));
+			() -> _dlFolderService.getFolder(
+				groupId, parentFolderId, folderForm.getName()));
 
 		if (dlFolderTry.isSuccess()) {
 			throw new BadRequestException(
 				"A folder with that name already exists");
 		}
 
-		String description = (String)body.get("description");
-
-		if (Validator.isNull(description)) {
-			throw new BadRequestException("Invalid body");
-		}
-
 		dlFolderTry = Try.fromFallible(
 			() -> _dlFolderService.addFolder(
-				groupId, groupId, false, parentFolderId, name, description,
-				new ServiceContext()));
+				groupId, groupId, false, parentFolderId, folderForm.getName(),
+				folderForm.getDescription(), new ServiceContext()));
 
 		return dlFolderTry.getUnchecked();
 	}
@@ -188,21 +176,13 @@ public class FolderNestedCollectionResource
 		return _webSiteService.getWebSite(dlFolder.getGroupId());
 	}
 
-	private DLFolder _updateDLFolder(
-		Long dlFolderId, Map<String, Object> body) {
-
+	private DLFolder _updateDLFolder(Long dlFolderId, FolderForm folderForm) {
 		DLFolder dlFolder = _getDLFolder(dlFolderId);
-
-		String name = (String)body.get("name");
-		String description = (String)body.get("description");
-
-		if (Validator.isNull(name) || Validator.isNull(description)) {
-			throw new BadRequestException("Invalid body");
-		}
 
 		Try<DLFolder> dlFolderTry = Try.fromFallible(
 			() -> _dlFolderService.updateFolder(
-				dlFolderId, dlFolder.getParentFolderId(), name, description,
+				dlFolderId, dlFolder.getParentFolderId(), folderForm.getName(),
+				folderForm.getDescription(),
 				dlFolder.getDefaultFileEntryTypeId(), new ArrayList<>(),
 				dlFolder.getRestrictionType(), new ServiceContext()));
 
