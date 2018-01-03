@@ -17,9 +17,11 @@ package com.liferay.apio.architect.routes;
 import static com.liferay.apio.architect.routes.RoutesBuilderUtil.provide;
 
 import com.liferay.apio.architect.alias.ProvideFunction;
+import com.liferay.apio.architect.alias.form.FormBuilderFunction;
 import com.liferay.apio.architect.alias.routes.NestedCreateItemFunction;
 import com.liferay.apio.architect.alias.routes.NestedGetPageFunction;
 import com.liferay.apio.architect.error.ApioDeveloperError.MustUseSameIdentifier;
+import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.function.HexaFunction;
 import com.liferay.apio.architect.function.PentaFunction;
 import com.liferay.apio.architect.function.TetraFunction;
@@ -29,7 +31,6 @@ import com.liferay.apio.architect.pagination.PageItems;
 import com.liferay.apio.architect.pagination.Pagination;
 import com.liferay.apio.architect.single.model.SingleModel;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
@@ -107,17 +108,24 @@ public class NestedCollectionRoutes<T> {
 		/**
 		 * Adds a route to a creator function with none extra parameters.
 		 *
-		 * @param  biFunction the creator function that adds the collection item
+		 * @param  biFunction the crea
+		 * @param  formBuilderFunction the function that creates the form for
+		 *         this operation      tor function that adds the collection
+		 *         item
 		 * @return the updated builder
+		 * @review
 		 */
-		public <V> Builder<T, S> addCreator(
-			BiFunction<V, Map<String, Object>, T> biFunction) {
+		public <R, V> Builder<T, S> addCreator(
+			BiFunction<V, R, T> biFunction,
+			FormBuilderFunction<R> formBuilderFunction) {
+
+			Form<R> form = formBuilderFunction.apply(new Form.Builder<>());
 
 			_nestedCreateItemFunction =
 				httpServletRequest -> identifier -> body -> biFunction.andThen(
 					t -> new SingleModel<>(t, _modelClass)
 				).apply(
-					_getIdentifier(identifier), body
+					_getIdentifier(identifier), form.get(body)
 				);
 
 			return this;
@@ -136,12 +144,17 @@ public class NestedCollectionRoutes<T> {
 		 *         fifth parameter
 		 * @param  dClass the class of the collection item creator function's
 		 *         sixth parameter
+		 * @param  formBuilderFunction the function that creates the form for
+		 *         this operation
 		 * @return the updated builder
+		 * @review
 		 */
-		public <A, B, C, D, V> Builder<T, S> addCreator(
-			HexaFunction<V, Map<String, Object>, A, B, C, D, T> hexaFunction,
-			Class<A> aClass, Class<B> bClass, Class<C> cClass,
-			Class<D> dClass) {
+		public <A, B, C, D, R, V> Builder<T, S> addCreator(
+			HexaFunction<V, R, A, B, C, D, T> hexaFunction, Class<A> aClass,
+			Class<B> bClass, Class<C> cClass, Class<D> dClass,
+			FormBuilderFunction<R> formBuilderFunction) {
+
+			Form<R> form = formBuilderFunction.apply(new Form.Builder<>());
 
 			_nestedCreateItemFunction =
 				httpServletRequest -> identifier -> body -> provide(
@@ -150,7 +163,7 @@ public class NestedCollectionRoutes<T> {
 					a -> b -> c -> d -> hexaFunction.andThen(
 						t -> new SingleModel<>(t, _modelClass)
 					).apply(
-						_getIdentifier(identifier), body, a, b, c, d
+						_getIdentifier(identifier), form.get(body), a, b, c, d
 					));
 
 			return this;
@@ -167,11 +180,17 @@ public class NestedCollectionRoutes<T> {
 		 *         fourth parameter
 		 * @param  cClass the class of the collection item creator function's
 		 *         fifth parameter
+		 * @param  formBuilderFunction the function that creates the form for
+		 *         this operation
 		 * @return the updated builder
+		 * @review
 		 */
-		public <A, B, C, V> Builder<T, S> addCreator(
-			PentaFunction<V, Map<String, Object>, A, B, C, T> pentaFunction,
-			Class<A> aClass, Class<B> bClass, Class<C> cClass) {
+		public <A, B, C, R, V> Builder<T, S> addCreator(
+			PentaFunction<V, R, A, B, C, T> pentaFunction, Class<A> aClass,
+			Class<B> bClass, Class<C> cClass,
+			FormBuilderFunction<R> formBuilderFunction) {
+
+			Form<R> form = formBuilderFunction.apply(new Form.Builder<>());
 
 			_nestedCreateItemFunction =
 				httpServletRequest -> identifier -> body -> provide(
@@ -180,7 +199,7 @@ public class NestedCollectionRoutes<T> {
 					a -> b -> c -> pentaFunction.andThen(
 						t -> new SingleModel<>(t, _modelClass)
 					).apply(
-						_getIdentifier(identifier), body, a, b, c
+						_getIdentifier(identifier), form.get(body), a, b, c
 					));
 
 			return this;
@@ -195,11 +214,16 @@ public class NestedCollectionRoutes<T> {
 		 *         third parameter
 		 * @param  bClass the class of the collection item creator function's
 		 *         fourth parameter
+		 * @param  formBuilderFunction the function that creates the form for
+		 *         this operation
 		 * @return the updated builder
+		 * @review
 		 */
-		public <A, B, V> Builder<T, S> addCreator(
-			TetraFunction<V, Map<String, Object>, A, B, T> tetraFunction,
-			Class<A> aClass, Class<B> bClass) {
+		public <A, B, R, V> Builder<T, S> addCreator(
+			TetraFunction<V, R, A, B, T> tetraFunction, Class<A> aClass,
+			Class<B> bClass, FormBuilderFunction<R> formBuilderFunction) {
+
+			Form<R> form = formBuilderFunction.apply(new Form.Builder<>());
 
 			_nestedCreateItemFunction =
 				httpServletRequest -> identifier -> body -> provide(
@@ -207,7 +231,7 @@ public class NestedCollectionRoutes<T> {
 					a -> b -> tetraFunction.andThen(
 						t -> new SingleModel<>(t, _modelClass)
 					).apply(
-						_getIdentifier(identifier), body, a, b
+						_getIdentifier(identifier), form.get(body), a, b
 					));
 
 			return this;
@@ -220,11 +244,16 @@ public class NestedCollectionRoutes<T> {
 		 *         item
 		 * @param  aClass the class of the collection item creator function's
 		 *         third parameter
+		 * @param  formBuilderFunction the function that creates the form for
+		 *         this operation
 		 * @return the updated builder
+		 * @review
 		 */
-		public <A, V> Builder<T, S> addCreator(
-			TriFunction<V, Map<String, Object>, A, T> triFunction,
-			Class<A> aClass) {
+		public <A, R, V> Builder<T, S> addCreator(
+			TriFunction<V, R, A, T> triFunction, Class<A> aClass,
+			FormBuilderFunction<R> formBuilderFunction) {
+
+			Form<R> form = formBuilderFunction.apply(new Form.Builder<>());
 
 			_nestedCreateItemFunction =
 				httpServletRequest -> identifier -> body -> provide(
@@ -232,7 +261,7 @@ public class NestedCollectionRoutes<T> {
 					a -> triFunction.andThen(
 						t -> new SingleModel<>(t, _modelClass)
 					).apply(
-						_getIdentifier(identifier), body, a
+						_getIdentifier(identifier), form.get(body), a
 					));
 
 			return this;
