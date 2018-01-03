@@ -20,12 +20,12 @@ import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.resource.CollectionResource;
 import com.liferay.apio.architect.routes.CollectionRoutes;
 import com.liferay.apio.architect.routes.ItemRoutes;
+import com.liferay.apio.architect.sample.internal.form.BlogPostingForm;
 import com.liferay.apio.architect.sample.internal.model.BlogPosting;
 import com.liferay.apio.architect.sample.internal.model.BlogPostingComment;
 import com.liferay.apio.architect.sample.internal.model.Person;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import javax.ws.rs.NotFoundException;
@@ -50,7 +50,7 @@ public class BlogPostingCollectionResource
 		return builder.addGetter(
 			this::_getPageItems
 		).addCreator(
-			this::_addBlogPosting
+			this::_addBlogPosting, BlogPostingForm::buildForm
 		).build();
 	}
 
@@ -68,7 +68,7 @@ public class BlogPostingCollectionResource
 		).addRemover(
 			this::_deleteBlogPosting
 		).addUpdater(
-			this::_updateBlogPosting
+			this::_updateBlogPosting, BlogPostingForm::buildForm
 		).build();
 	}
 
@@ -100,13 +100,11 @@ public class BlogPostingCollectionResource
 		).build();
 	}
 
-	private BlogPosting _addBlogPosting(Map<String, Object> body) {
-		String content = (String)body.get("articleBody");
-		Long creatorId = (Long)body.get("creator");
-		String subtitle = (String)body.get("alternativeHeadline");
-		String title = (String)body.get("headline");
-
-		return BlogPosting.addBlogPosting(content, creatorId, subtitle, title);
+	private BlogPosting _addBlogPosting(BlogPostingForm blogPostingForm) {
+		return BlogPosting.addBlogPosting(
+			blogPostingForm.getArticleBody(), blogPostingForm.getCreator(),
+			blogPostingForm.getAlternativeHeadline(),
+			blogPostingForm.getHeadline());
 	}
 
 	private void _deleteBlogPosting(Long blogPostingId) {
@@ -131,15 +129,13 @@ public class BlogPostingCollectionResource
 	}
 
 	private BlogPosting _updateBlogPosting(
-		Long blogPostingId, Map<String, Object> body) {
-
-		String content = (String)body.get("articleBody");
-		Long creatorId = (Long)body.get("creator");
-		String subtitle = (String)body.get("alternativeHeadline");
-		String title = (String)body.get("headline");
+		Long blogPostingId, BlogPostingForm blogPostingForm) {
 
 		Optional<BlogPosting> optional = BlogPosting.updateBlogPosting(
-			blogPostingId, content, creatorId, subtitle, title);
+			blogPostingId, blogPostingForm.getArticleBody(),
+			blogPostingForm.getCreator(),
+			blogPostingForm.getAlternativeHeadline(),
+			blogPostingForm.getHeadline());
 
 		return optional.orElseThrow(
 			() -> new NotFoundException(

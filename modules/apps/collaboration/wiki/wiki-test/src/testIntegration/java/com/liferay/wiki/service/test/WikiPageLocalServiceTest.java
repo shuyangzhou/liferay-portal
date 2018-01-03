@@ -32,6 +32,7 @@ import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.kernel.model.ExpandoValue;
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
@@ -49,7 +50,6 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowThreadLocal;
@@ -66,6 +66,7 @@ import com.liferay.wiki.util.test.WikiTestUtil;
 
 import java.io.Serializable;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -623,6 +624,9 @@ public class WikiPageLocalServiceTest {
 		long[] finalAssetCategoryIds =
 			AssetCategoryLocalServiceUtil.getCategoryIds(
 				WikiPage.class.getName(), renamedPage.getResourcePrimKey());
+
+		Arrays.sort(assetCategoryIds);
+		Arrays.sort(finalAssetCategoryIds);
 
 		Assert.assertArrayEquals(assetCategoryIds, finalAssetCategoryIds);
 	}
