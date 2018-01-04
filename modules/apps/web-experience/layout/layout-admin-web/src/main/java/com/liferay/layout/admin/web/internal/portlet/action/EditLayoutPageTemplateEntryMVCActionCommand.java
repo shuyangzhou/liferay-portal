@@ -15,7 +15,7 @@
 package com.liferay.layout.admin.web.internal.portlet.action;
 
 import com.liferay.fragment.model.FragmentEntry;
-import com.liferay.layout.admin.web.internal.constants.LayoutAdminPortletKeys;
+import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -62,7 +62,7 @@ public class EditLayoutPageTemplateEntryMVCActionCommand
 
 		String name = ParamUtil.getString(actionRequest, "name");
 
-		List<FragmentEntry> layoutPageTemplateFragments = new ArrayList<>();
+		List<FragmentEntry> fragmentEntries = new ArrayList<>();
 
 		if (layoutPageTemplateEntryId <= 0) {
 
@@ -70,15 +70,15 @@ public class EditLayoutPageTemplateEntryMVCActionCommand
 
 			_layoutPageTemplateEntryService.addLayoutPageTemplateEntry(
 				serviceContext.getScopeGroupId(),
-				layoutPageTemplateCollectionId, name,
-				layoutPageTemplateFragments, serviceContext);
+				layoutPageTemplateCollectionId, name, fragmentEntries,
+				serviceContext);
 		}
 		else {
 
 			// Update layout page template entry
 
 			_layoutPageTemplateEntryService.updateLayoutPageTemplateEntry(
-				layoutPageTemplateEntryId, name, layoutPageTemplateFragments,
+				layoutPageTemplateEntryId, name, fragmentEntries,
 				serviceContext);
 		}
 	}
