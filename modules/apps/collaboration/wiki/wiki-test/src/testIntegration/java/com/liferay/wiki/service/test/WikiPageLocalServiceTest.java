@@ -666,6 +666,9 @@ public class WikiPageLocalServiceTest {
 		String[] finalAssetTagNames = AssetTagLocalServiceUtil.getTagNames(
 			WikiPage.class.getName(), renamedPage.getResourcePrimKey());
 
+		Arrays.sort(assetTagNames);
+		Arrays.sort(finalAssetTagNames);
+
 		Assert.assertArrayEquals(finalAssetTagNames, assetTagNames);
 	}
 
