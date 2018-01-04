@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.site.navigation.admin.web.internal.constants.SiteNavigationAdminPortletKeys;
+import com.liferay.site.navigation.admin.constants.SiteNavigationAdminPortletKeys;
 import com.liferay.site.navigation.service.SiteNavigationMenuItemService;
 
 import javax.portlet.ActionRequest;
@@ -52,8 +52,6 @@ public class EditSiteNavigationMenuItemMVCActionCommand
 		long siteNavigationMenuId = ParamUtil.getLong(
 			actionRequest, "siteNavigationMenuId");
 
-		long parentSiteNavigationMenuItemId = ParamUtil.getLong(
-			actionRequest, "parentSiteNavigationMenuItemId");
 		UnicodeProperties typeSettingsProperties =
 			PropertiesParamUtil.getProperties(
 				actionRequest, "TypeSettingsProperties--");
@@ -62,8 +60,8 @@ public class EditSiteNavigationMenuItemMVCActionCommand
 			actionRequest);
 
 		_siteNavigationMenuItemService.updateSiteNavigationMenuItem(
-			siteNavigationMenuId, parentSiteNavigationMenuItemId,
-			typeSettingsProperties.toString(), serviceContext);
+			siteNavigationMenuId, typeSettingsProperties.toString(),
+			serviceContext);
 	}
 
 	@Reference

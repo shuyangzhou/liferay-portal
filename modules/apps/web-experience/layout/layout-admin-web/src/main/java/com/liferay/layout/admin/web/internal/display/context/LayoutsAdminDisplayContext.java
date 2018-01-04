@@ -16,9 +16,9 @@ package com.liferay.layout.admin.web.internal.display.context;
 
 import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
 import com.liferay.exportimport.kernel.staging.StagingUtil;
+import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
 import com.liferay.layout.admin.web.configuration.LayoutAdminWebConfiguration;
 import com.liferay.layout.admin.web.constants.LayoutAdminDisplayStyleKeys;
-import com.liferay.layout.admin.web.internal.constants.LayoutAdminPortletKeys;
 import com.liferay.layout.admin.web.internal.constants.LayoutAdminWebKeys;
 import com.liferay.layout.util.comparator.LayoutCreateDateComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -534,6 +534,38 @@ public class LayoutsAdminDisplayContext {
 
 		return liveGroup.getLayoutRootNodeName(
 			privateLayout, _themeDisplay.getLocale());
+	}
+
+	public String getSelectLayoutPageTemplateEntryURL() {
+		return getSelectLayoutPageTemplateEntryURL(0);
+	}
+
+	public String getSelectLayoutPageTemplateEntryURL(
+		long layoutPageTemplateCollectionId) {
+
+		PortletURL selectLayoutPageTemplateEntryURL =
+			_liferayPortletResponse.createRenderURL();
+
+		selectLayoutPageTemplateEntryURL.setParameter(
+			"mvcPath", "/select_layout_page_template_entry.jsp");
+		selectLayoutPageTemplateEntryURL.setParameter(
+			"redirect", _themeDisplay.getURLCurrent());
+		selectLayoutPageTemplateEntryURL.setParameter(
+			"backURL", _themeDisplay.getURLCurrent());
+		selectLayoutPageTemplateEntryURL.setParameter(
+			"groupId", String.valueOf(getSelGroupId()));
+		selectLayoutPageTemplateEntryURL.setParameter(
+			"selPlid", String.valueOf(getSelPlid()));
+		selectLayoutPageTemplateEntryURL.setParameter(
+			"privateLayout", String.valueOf(isPrivatePages()));
+
+		if (layoutPageTemplateCollectionId > 0) {
+			selectLayoutPageTemplateEntryURL.setParameter(
+				"layoutPageTemplateCollectionId",
+				String.valueOf(layoutPageTemplateCollectionId));
+		}
+
+		return selectLayoutPageTemplateEntryURL.toString();
 	}
 
 	public Group getSelGroup() {
