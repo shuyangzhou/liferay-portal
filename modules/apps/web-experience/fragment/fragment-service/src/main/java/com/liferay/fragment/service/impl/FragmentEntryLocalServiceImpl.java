@@ -16,6 +16,7 @@ package com.liferay.fragment.service.impl;
 
 import com.liferay.fragment.exception.DuplicateFragmentEntryException;
 import com.liferay.fragment.exception.FragmentEntryNameException;
+import com.liferay.fragment.exception.RequiredFragmentEntryException;
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.service.base.FragmentEntryLocalServiceBaseImpl;
 import com.liferay.html.preview.model.HtmlPreviewEntry;
@@ -91,6 +92,14 @@ public class FragmentEntryLocalServiceImpl
 		throws PortalException {
 
 		// Fragment entry
+
+		long fragmentEntryInstanceLinkCount =
+			fragmentEntryInstanceLinkPersistence.countByG_F(
+				fragmentEntry.getGroupId(), fragmentEntry.getFragmentEntryId());
+
+		if (fragmentEntryInstanceLinkCount > 0) {
+			throw new RequiredFragmentEntryException();
+		}
 
 		fragmentEntryPersistence.remove(fragmentEntry);
 
