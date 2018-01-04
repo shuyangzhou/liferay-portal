@@ -79,7 +79,8 @@ public class SocksProxyServerManager {
 		Builder builder = new Builder();
 
 		builder.setBootstrapClassPath(
-			ClassPathUtil.buildClassPath(PortalException.class));
+			ClassPathUtil.buildClassPath(
+				PortalException.class,SocksProxyServerManager.class));
 
 		_processConfig = builder.build();
 	}
