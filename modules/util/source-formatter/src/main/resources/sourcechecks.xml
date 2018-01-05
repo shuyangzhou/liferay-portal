@@ -103,7 +103,6 @@
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security-sso/portal-security-sso-ntlm" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security-sso/portal-security-sso-openid" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security-sso/portal-security-sso-openid-connect" />
-			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security-sso/portal-security-sso-opensso" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security-sso/portal-security-sso-token" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-settings/portal-settings-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-template/portal-template-soy" />
@@ -311,6 +310,7 @@
 		<check name="LanguageKeysCheck" />
 		<check name="ResourceBundleCheck" />
 		<check name="StringMethodsCheck" />
+		<check name="SubstringCheck" />
 	</source-processor>
 	<source-processor name="JSONSourceProcessor">
 		<check name="JSONIndentationCheck" />
@@ -368,6 +368,7 @@
 		<check name="JSPSendRedirectCheck" />
 		<check name="JSPStringMethodsCheck" />
 		<check name="ResourceBundleCheck" />
+		<check name="SubstringCheck" />
 	</source-processor>
 	<source-processor name="JSSourceProcessor">
 		<check name="JSStylingCheck" />
