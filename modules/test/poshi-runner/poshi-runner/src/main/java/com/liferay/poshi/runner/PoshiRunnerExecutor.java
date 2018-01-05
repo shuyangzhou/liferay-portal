@@ -714,9 +714,7 @@ public class PoshiRunnerExecutor {
 
 		List<Element> argElements = executeElement.elements("arg");
 
-		for (int i = 0; i < argElements.size(); i++) {
-			Element argElement = argElements.get(i);
-
+		for (Element argElement : argElements) {
 			args.add(argElement.attributeValue("value"));
 		}
 
