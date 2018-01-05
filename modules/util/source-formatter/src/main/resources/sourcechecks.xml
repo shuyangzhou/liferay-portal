@@ -47,7 +47,6 @@
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/bookmarks/bookmarks-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/document-library/document-library-document-conversion" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/document-library/document-library-repository-search" />
-			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/document-library/document-library-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/message-boards/message-boards-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/microblogs/microblogs-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/wiki/wiki-service" />
@@ -311,6 +310,7 @@
 		<check name="LanguageKeysCheck" />
 		<check name="ResourceBundleCheck" />
 		<check name="StringMethodsCheck" />
+		<check name="SubstringCheck" />
 	</source-processor>
 	<source-processor name="JSONSourceProcessor">
 		<check name="JSONIndentationCheck" />
@@ -368,6 +368,7 @@
 		<check name="JSPSendRedirectCheck" />
 		<check name="JSPStringMethodsCheck" />
 		<check name="ResourceBundleCheck" />
+		<check name="SubstringCheck" />
 	</source-processor>
 	<source-processor name="JSSourceProcessor">
 		<check name="JSStylingCheck" />
