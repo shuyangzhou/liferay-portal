@@ -24,9 +24,6 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
  */
 public interface AttachmentElementHandler {
 
-	public String getAttachmentElement(
-		String originalElement, FileEntry fileEntry);
-
 	public String replaceAttachmentElements(
 			String content,
 			UnsafeFunction<FileEntry, FileEntry, PortalException>

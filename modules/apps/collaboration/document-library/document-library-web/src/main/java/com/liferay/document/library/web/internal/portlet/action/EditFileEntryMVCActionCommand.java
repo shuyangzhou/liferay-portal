@@ -30,6 +30,7 @@ import com.liferay.document.library.kernel.exception.InvalidFileEntryTypeExcepti
 import com.liferay.document.library.kernel.exception.InvalidFileVersionException;
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.exception.NoSuchFolderException;
+import com.liferay.document.library.kernel.exception.RequiredFileException;
 import com.liferay.document.library.kernel.exception.SourceFileNameException;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.service.DLAppService;
@@ -39,6 +40,7 @@ import com.liferay.document.library.kernel.util.DLValidator;
 import com.liferay.document.library.web.constants.DLPortletKeys;
 import com.liferay.document.library.web.internal.settings.DLPortletInstanceSettings;
 import com.liferay.dynamic.data.mapping.kernel.StorageFieldRequiredException;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -76,7 +78,6 @@ import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
@@ -480,8 +481,27 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 					 cmd.equals(Constants.UPDATE) ||
 					 cmd.equals(Constants.UPDATE_AND_CHECKIN)) {
 
-				fileEntry = updateFileEntry(
-					portletConfig, actionRequest, actionResponse);
+				UploadPortletRequest uploadPortletRequest =
+					_portal.getUploadPortletRequest(actionRequest);
+
+				String sourceFileName = uploadPortletRequest.getFileName(
+					"file");
+
+				try {
+					fileEntry = updateFileEntry(
+						portletConfig, actionRequest, actionResponse,
+						uploadPortletRequest);
+				}
+				catch (Exception e) {
+					if (!cmd.equals(Constants.ADD_DYNAMIC) &&
+						Validator.isNotNull(sourceFileName)) {
+
+						SessionErrors.add(
+							actionRequest, RequiredFileException.class);
+					}
+
+					throw e;
+				}
 			}
 			else if (cmd.equals(Constants.ADD_MULTIPLE)) {
 				addMultipleFileEntries(
@@ -906,11 +926,9 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 
 	protected FileEntry updateFileEntry(
 			PortletConfig portletConfig, ActionRequest actionRequest,
-			ActionResponse actionResponse)
+			ActionResponse actionResponse,
+			UploadPortletRequest uploadPortletRequest)
 		throws Exception {
-
-		UploadPortletRequest uploadPortletRequest =
-			_portal.getUploadPortletRequest(actionRequest);
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);

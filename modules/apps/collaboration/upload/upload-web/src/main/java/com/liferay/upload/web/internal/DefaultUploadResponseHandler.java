@@ -19,6 +19,7 @@ import com.liferay.document.library.kernel.antivirus.AntivirusScannerException;
 import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.exception.FileNameException;
 import com.liferay.document.library.kernel.exception.FileSizeException;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.editor.EditorConstants;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -31,7 +32,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.upload.UploadRequestSizeException;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.upload.UploadResponseHandler;
@@ -123,6 +123,7 @@ public class DefaultUploadResponseHandler implements UploadResponseHandler {
 			"attributeDataImageId", EditorConstants.ATTRIBUTE_DATA_IMAGE_ID);
 		imageJSONObject.put("fileEntryId", fileEntry.getFileEntryId());
 		imageJSONObject.put("groupId", fileEntry.getGroupId());
+		imageJSONObject.put("mimeType", fileEntry.getMimeType());
 
 		String randomId = ParamUtil.getString(uploadPortletRequest, "randomId");
 
