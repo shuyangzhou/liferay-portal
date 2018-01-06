@@ -61,6 +61,7 @@
 
 	<command name="CampaignAddMultipleWithPrioritiesViaCampaignDisplayPortlet" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#CampaignAddMultipleWithPrioritiesViaCampaignDisplayPortlet" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -292,6 +293,7 @@
 
 	<command name="CampaignAddViaCampaignContentDisplayPortlet" priority="5">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#CampaignAddViaCampaignContentDisplayPortlet" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -422,6 +424,7 @@
 
 	<command name="CampaignDeleteMultiple" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#CampaignDeleteMultiple" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -504,6 +507,7 @@
 
 	<command name="CampaignViewContentViewsReports" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#CampaignViewContentViewsReports" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -686,6 +690,7 @@
 	<!-- LRQA-24692
 	<command name="CampaignViewInSimulatorPG" priority="5">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#CampaignViewInSimulatorPG" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -792,6 +797,7 @@
 
 	<command name="CampaignViewOtherwiseDisplayContentViaCampaignDisplayPortlet" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#CampaignViewOtherwiseDisplayContentViaCampaignDisplayPortlet" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -950,6 +956,7 @@
 
 	<command name="CampaignViewOtherwiseDontDisplayViaCampaignDisplayPortlet" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#CampaignViewOtherwiseDontDisplayViaCampaignDisplayPortlet" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -1080,6 +1087,7 @@
 
 	<command name="CampaignViewStatusCP" priority="3">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#CampaignViewStatusCP" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -1214,6 +1222,7 @@
 
 	<command name="CampaignViewTrackingActionReports" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#CampaignViewTrackingActionReports" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -1505,6 +1514,7 @@
 
 	<command name="CTValidationExportImport" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#CTValidationExportImport" />
 
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Content" />
@@ -1618,6 +1628,7 @@
 
 	<command name="CTValidationStaging" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#CTValidationStaging" />
 
 		<execute macro="Navigator#openSiteURL">
 			<var name="siteName" value="Site Name" />
@@ -1710,6 +1721,7 @@
 
 	<command name="ExportImportDeletions" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#ExportImportDeletions" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -1907,6 +1919,7 @@
 
 	<command name="ExportImportSmoke" priority="5">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#ExportImportSmoke" />
 
 		<execute macro="LAR#setupContentTargeting" />
 
@@ -1986,6 +1999,7 @@
 
 	<command name="ExportImportViewOnlyContentCTWithReferencedWCImported" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#ExportImportViewOnlyContentCTWithReferencedWCImported" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -2195,6 +2209,7 @@
 
 	<command name="StagingContentTargeting" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#StagingContentTargeting" />
 
 		<execute macro="Navigator#openSiteURL">
 			<var name="siteName" value="Site Name" />
@@ -2452,6 +2467,7 @@
 
 	<command name="StagingCTDeletions" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#StagingCTDeletions" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -2534,6 +2550,7 @@
 
 	<command name="StagingCTDisabled" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#StagingCTDisabled" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -2671,6 +2688,7 @@
 
 	<command name="StagingCTEnabled" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#StagingCTEnabled" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -2826,6 +2844,7 @@
 
 	<command name="UserSegmentAddCategorizationToContent" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentAddCategorizationToContent" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -2879,6 +2898,7 @@
 
 	<command name="UserSegmentAddFromGlobalSiteViaCampaign" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentAddFromGlobalSiteViaCampaign" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Global" />
@@ -2945,6 +2965,7 @@
 
 	<command name="UserSegmentAddFromParentSiteViaCampaign" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentAddFromParentSiteViaCampaign" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -3037,6 +3058,7 @@
 
 	<command name="UserSegmentAddGlobalCategorizationToSiteContent" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentAddGlobalCategorizationToSiteContent" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Global" />
@@ -3082,6 +3104,7 @@
 
 	<command name="UserSegmentAddMultipleViaUserContentDisplayPortletPG" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentAddMultipleViaUserContentDisplayPortletPG" />
 
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Sites" />
@@ -3308,6 +3331,7 @@
 
 	<command name="UserSegmentAddParentSiteCategorizationToChildSiteContent" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentAddParentSiteCategorizationToChildSiteContent" />
 
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Sites" />
@@ -3364,6 +3388,7 @@
 
 	<command name="UserSegmentAddWithAllViaUserSegmentContentDisplayPortlet" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentAddWithAllViaUserSegmentContentDisplayPortlet" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -3497,6 +3522,7 @@
 
 	<command name="UserSegmentAddWithAnyViaUserSegmentContentDisplayPortlet" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentAddWithAnyViaUserSegmentContentDisplayPortlet" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -3629,6 +3655,7 @@
 
 	<command name="UserSegmentAddWithBelongsViaUserSegmentContentDisplayPortlet" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentAddWithBelongsViaUserSegmentContentDisplayPortlet" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -3778,6 +3805,7 @@
 
 	<command name="UserSegmentAddWithDoesNotBelongViaUserSegmentContentDisplayPortlet" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentAddWithDoesNotBelongViaUserSegmentContentDisplayPortlet" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -3944,6 +3972,7 @@
 
 	<command name="UserSegmentAddWithOtherwiseDontDisplayAnythingViaUserSegmentContentDisplayPortlet" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentAddWithOtherwiseDontDisplayAnythingViaUserSegmentContentDisplayPortlet" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -4027,6 +4056,7 @@
 
 	<command name="UserSegmentDeleteMultiple" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentDeleteMultiple" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -4093,6 +4123,7 @@
 	</command>
 
 	<command name="UserSegmentDisableAnonymousUserAnalytics" priority="4">
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentDisableAnonymousUserAnalytics" />
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Configuration" />
 			<var name="panel" value="Control Panel" />
@@ -4326,6 +4357,7 @@
 
 	<command name="UserSegmentSimulateRulesViaSimulatorPG" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentSimulateRulesViaSimulatorPG" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -4467,6 +4499,8 @@
 	</command>
 
 	<command name="UserSegmentViewAnonymousUserDefaultBehavior" priority="4">
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentViewAnonymousUserDefaultBehavior" />
+
 		<execute macro="Navigator#openSiteURL">
 			<var name="siteName" value="Site Name" />
 		</execute>
@@ -4634,6 +4668,7 @@
 
 	<command name="UserSegmentViewAnyContentWithCategorizationViaContentListPortlet" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentViewAnyContentWithCategorizationViaContentListPortlet" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -4698,6 +4733,7 @@
 
 	<command name="UserSegmentViewInSimulatorPG" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentViewInSimulatorPG" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -4815,6 +4851,7 @@
 
 	<command name="UserSegmentViewSpecificContentWithCategorizationViaContentListPortlet" priority="4">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingUsecase#UserSegmentViewSpecificContentWithCategorizationViaContentListPortlet" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />

@@ -88,7 +88,7 @@ public class VerifyOrganization extends VerifyProcess {
 
 	protected void updateOrganizationAssetEntries() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
-			StringBundler sb = new StringBundler();
+			StringBundler sb = new StringBundler(6);
 
 			sb.append("select distinct AssetEntry.classPK as classPK, ");
 			sb.append("Organization_.uuid_ as uuid from ");

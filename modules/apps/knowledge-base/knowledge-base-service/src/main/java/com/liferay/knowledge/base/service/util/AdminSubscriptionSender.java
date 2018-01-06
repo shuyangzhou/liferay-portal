@@ -71,7 +71,8 @@ public class AdminSubscriptionSender extends SubscriptionSender {
 			new EscapableLocalizableFunction(
 				locale -> LanguageUtil.format(
 					locale, "version-x",
-					String.valueOf(_kbArticle.getVersion()), false), true));
+					String.valueOf(_kbArticle.getVersion()), false),
+				true));
 		setLocalizedContextAttribute(
 			"[$CATEGORY_TITLE$]",
 			new EscapableLocalizableFunction(

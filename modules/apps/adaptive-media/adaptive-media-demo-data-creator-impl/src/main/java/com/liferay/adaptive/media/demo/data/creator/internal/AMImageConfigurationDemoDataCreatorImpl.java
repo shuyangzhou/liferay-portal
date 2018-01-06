@@ -89,8 +89,11 @@ public class AMImageConfigurationDemoDataCreatorImpl
 
 	@Override
 	public void delete() throws IOException {
-		for (Long companyId : _configurationUuids.keySet()) {
-			List<String> uuids = _configurationUuids.get(companyId);
+		for (Map.Entry<Long, List<String>> entry :
+				_configurationUuids.entrySet()) {
+
+			Long companyId = entry.getKey();
+			List<String> uuids = entry.getValue();
 
 			for (String uuid : uuids) {
 				_amImageConfigurationHelper.

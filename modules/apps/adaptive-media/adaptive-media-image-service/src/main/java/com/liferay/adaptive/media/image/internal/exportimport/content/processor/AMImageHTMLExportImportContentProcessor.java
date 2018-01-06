@@ -113,12 +113,12 @@ public class AMImageHTMLExportImportContentProcessor
 	}
 
 	private Document _parseDocument(String html) {
+		Document document = Jsoup.parseBodyFragment(html);
+
 		Document.OutputSettings outputSettings = new Document.OutputSettings();
 
 		outputSettings.prettyPrint(false);
 		outputSettings.syntax(Document.OutputSettings.Syntax.xml);
-
-		Document document = Jsoup.parseBodyFragment(html);
 
 		document.outputSettings(outputSettings);
 

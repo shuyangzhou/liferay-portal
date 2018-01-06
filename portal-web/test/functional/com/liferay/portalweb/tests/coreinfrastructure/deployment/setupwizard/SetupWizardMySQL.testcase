@@ -5,6 +5,8 @@
 	<property name="testray.main.component.name" value="Setup Wizard" />
 
 	<command name="MySQLtoMySQL" priority="4">
+		<property name="test.name.skip.portal.instance" value="SetupWizardMySQL#MySQLtoMySQL" />
+
 		<execute macro="SetupWizard#configureDefaultPG" />
 
 		<execute macro="Smoke#viewWelcomePage" />

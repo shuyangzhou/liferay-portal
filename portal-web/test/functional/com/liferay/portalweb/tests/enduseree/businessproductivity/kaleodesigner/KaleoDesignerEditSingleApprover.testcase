@@ -74,9 +74,7 @@
 		</execute>
 	</command>
 
-	<command name="ViewInvalidSourceXMLRemainsAfterTabSwitch" priority="4">
-		<description message="This is a use case for LPS-48590." />
-
+	<command name="ViewInvalidSourceXMLNotRemainsAfterTabSwitch" priority="4">
 		<property name="test.name.skip.portal.instance" value="KaleoDesignerEditSingleApprover#ViewInvalidSourceXMLRemainsAfterTabSwitch" />
 
 		<execute macro="KaleoDesigner#editSourceXML">
@@ -85,9 +83,9 @@
 		</execute>
 
 		<execute macro="KaleoDesigner#viewViewTab" />
-		<execute macro="KaleoDesigner#viewSourceXMLTab" />
 
 		<execute macro="KaleoDesigner#viewSourceXMLLine">
+			<var name="invalid" value="true" />
 			<var name="kdSourceXML" value="INVALID" />
 			<var name="line" value="6" />
 		</execute>

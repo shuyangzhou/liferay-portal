@@ -25,6 +25,8 @@
 	</tear-down>
 
 	<command name="ViewSampleExtPluginValidationViaDeploy" priority="5">
+		<property name="test.name.skip.portal.instance" value="ExtPlugins#ViewSampleExtPluginValidationViaDeploy" />
+
 		<execute macro="Portlet#assertServerStartup" />
 
 		<execute macro="Portlet#shutdownServer" />

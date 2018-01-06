@@ -987,7 +987,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 	protected void upgradeExpandoStorageAdapter() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
-			StringBundler sb1 = new StringBundler(6);
+			StringBundler sb1 = new StringBundler(5);
 
 			sb1.append("select DDMStructure.*, DDMStorageLink.* from ");
 			sb1.append("DDMStorageLink inner join DDMStructure on ");
@@ -2455,7 +2455,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			int pos = fileName.lastIndexOf(CharPool.PERIOD);
 
 			if (pos > 0) {
-				extension = fileName.substring(pos + 1, fileName.length());
+				extension = fileName.substring(pos + 1);
 			}
 
 			return StringUtil.toLowerCase(extension);

@@ -2258,7 +2258,6 @@
 		</execute>
 
 		<execute macro="KaleoFormsAdmin#chooseWorkflow">
-			<var name="edit" value="true" />
 			<var name="kfProcessName" value="Kaleo Forms Process" />
 			<var name="workflowDefinitionTitle" value="Edited Workflow Definition" />
 		</execute>

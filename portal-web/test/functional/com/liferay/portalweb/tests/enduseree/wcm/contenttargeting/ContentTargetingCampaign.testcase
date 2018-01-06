@@ -61,6 +61,7 @@
 
 	<command name="AddBlankCP" priority="5">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingCampaign#AddBlankCP" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -122,6 +123,7 @@
 
 	<command name="AddCampaignContentCP" priority="5">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingCampaign#AddCampaignContentCP" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -232,6 +234,7 @@
 
 	<command name="AddCampaignCustomFormCP" priority="5">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingCampaign#AddCampaignCustomFormCP" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -326,6 +329,7 @@
 
 	<command name="AddCampaignDDLFormCP" priority="5">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingCampaign#AddCampaignDDLFormCP" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -436,6 +440,7 @@
 
 	<command name="AddCampaignLinkCP" priority="5">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingCampaign#AddCampaignLinkCP" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -546,6 +551,7 @@
 
 	<command name="AddCampaignPageCP" priority="5">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingCampaign#AddCampaignPageCP" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -639,6 +645,7 @@
 
 	<command name="AddCampaignYouTubeCP" priority="5">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingCampaign#AddCampaignYouTubeCP" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -749,6 +756,7 @@
 
 	<command name="DeleteCampaignCP" priority="5">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingCampaign#DeleteCampaignCP" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -807,6 +815,7 @@
 
 	<command name="EditCampaignCP" priority="5">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingCampaign#EditCampaignCP" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
@@ -996,6 +1005,7 @@
 
 	<command name="ViewInactiveCampaignCP" priority="3">
 		<property name="content.targeting.release" value="true" />
+		<property name="test.name.skip.portal.instance" value="ContentTargetingCampaign#ViewInactiveCampaignCP" />
 
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Name" />
