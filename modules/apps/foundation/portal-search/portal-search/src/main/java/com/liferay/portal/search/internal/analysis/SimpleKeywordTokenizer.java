@@ -15,7 +15,7 @@
 package com.liferay.portal.search.internal.analysis;
 
 import com.liferay.petra.string.CharPool;
-import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.analysis.KeywordTokenizer;
 
@@ -107,7 +107,7 @@ public class SimpleKeywordTokenizer implements KeywordTokenizer {
 			return;
 		}
 
-		keyword = keyword.substring(end + 1, keyword.length());
+		keyword = keyword.substring(end + 1);
 
 		keyword = keyword.trim();
 
