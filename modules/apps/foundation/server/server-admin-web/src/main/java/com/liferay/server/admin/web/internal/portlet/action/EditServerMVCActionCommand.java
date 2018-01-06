@@ -19,6 +19,7 @@ import com.liferay.mail.kernel.model.Account;
 import com.liferay.mail.kernel.service.MailService;
 import com.liferay.petra.log4j.Log4JUtil;
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.convert.ConvertException;
 import com.liferay.portal.convert.ConvertProcess;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
@@ -67,7 +68,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.ThreadUtil;
 import com.liferay.portal.kernel.util.Time;
@@ -526,8 +526,7 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 			String name = enu.nextElement();
 
 			if (name.startsWith("imageMagickLimit")) {
-				String key = StringUtil.toLowerCase(
-					name.substring(16, name.length()));
+				String key = StringUtil.toLowerCase(name.substring(16));
 				String value = ParamUtil.getString(actionRequest, name);
 
 				portletPreferences.setValue(
