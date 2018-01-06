@@ -30,7 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Eudaldo Alonso
+ * @deprecated As of 1.7.0, with no direct replacement
  */
+@Deprecated
 public class WikiNodeTrashRenderer extends BaseTrashRenderer {
 
 	public static final String TYPE = "wiki_node";

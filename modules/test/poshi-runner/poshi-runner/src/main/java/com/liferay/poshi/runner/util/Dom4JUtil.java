@@ -40,9 +40,7 @@ import org.dom4j.tree.DefaultElement;
 public class Dom4JUtil {
 
 	public static void addToElement(Element element, Object... items) {
-		for (int i = 0; i < items.length; i++) {
-			Object item = items[i];
-
+		for (Object item : items) {
 			if (item == null) {
 				continue;
 			}
