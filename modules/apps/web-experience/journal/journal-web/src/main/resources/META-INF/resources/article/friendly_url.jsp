@@ -28,6 +28,6 @@ JournalArticle article = journalDisplayContext.getArticle();
 			<span class="input-group-constrain"><liferay-ui:message key="<%= StringUtil.shorten(themeDisplay.getPortalURL() + JournalArticleConstants.CANONICAL_URL_SEPARATOR, 40) %>" /></span>
 		</span>
 
-		<liferay-ui:input-localized defaultLanguageId="<%= LocaleUtil.toLanguageId(themeDisplay.getSiteDefaultLocale()) %>" name="friendlyURL" xml="<%= HttpUtil.decodeURL(article.getFriendlyURLsXML()) %>" />
+		<liferay-ui:input-localized defaultLanguageId="<%= LocaleUtil.toLanguageId(themeDisplay.getSiteDefaultLocale()) %>" name="friendlyURL" xml="<%= (article != null) ? HttpUtil.decodeURL(article.getFriendlyURLsXML()) : StringPool.BLANK %>" />
 	</div>
 </div>

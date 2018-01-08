@@ -821,9 +821,7 @@ public class JournalArticleFinderImpl
 			qPos.add(groupId);
 			qPos.add(queryDefinition.getStatus());
 
-			for (int i = 0; i < folderIds.size(); i++) {
-				Long folderId = folderIds.get(i);
-
+			for (Long folderId : folderIds) {
 				qPos.add(folderId);
 			}
 
@@ -1179,9 +1177,7 @@ public class JournalArticleFinderImpl
 			qPos.add(groupId);
 			qPos.add(queryDefinition.getStatus());
 
-			for (int i = 0; i < folderIds.size(); i++) {
-				Long folderId = folderIds.get(i);
-
+			for (Long folderId : folderIds) {
 				qPos.add(folderId);
 			}
 

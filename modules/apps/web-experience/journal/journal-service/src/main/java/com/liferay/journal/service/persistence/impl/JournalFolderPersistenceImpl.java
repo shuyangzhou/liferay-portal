@@ -22,8 +22,6 @@ import com.liferay.journal.model.impl.JournalFolderImpl;
 import com.liferay.journal.model.impl.JournalFolderModelImpl;
 import com.liferay.journal.service.persistence.JournalFolderPersistence;
 
-import com.liferay.petra.string.StringPool;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;

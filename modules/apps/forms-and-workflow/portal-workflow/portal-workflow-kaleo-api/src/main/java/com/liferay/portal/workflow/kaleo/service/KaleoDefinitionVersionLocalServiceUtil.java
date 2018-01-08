@@ -220,6 +220,12 @@ public class KaleoDefinitionVersionLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
+	public static com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion getFirstKaleoDefinitionVersion(
+		long companyId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getFirstKaleoDefinitionVersion(companyId, name);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
 		return getService().getIndexableActionableDynamicQuery();
 	}
