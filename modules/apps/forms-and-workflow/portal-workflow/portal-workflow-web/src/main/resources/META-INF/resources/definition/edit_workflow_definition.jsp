@@ -32,6 +32,21 @@ portletDisplay.setURLBack(redirect);
 renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request, "new-workflow") : workflowDefinition.getName());
 %>
 
+<liferay-ui:error exception="<%= RequiredWorkflowDefinitionException.class %>">
+
+	<%
+	RequiredWorkflowDefinitionException requiredWorkflowDefinitionException = (RequiredWorkflowDefinitionException)errorException;
+
+	Object[] messageArguments = workflowDefinitionDisplayContext.getMessageArguments(
+			requiredWorkflowDefinitionException.getWorkflowDefinitionLinks());
+
+	String messageKey = workflowDefinitionDisplayContext.getMessageKey(
+			requiredWorkflowDefinitionException.getWorkflowDefinitionLinks());
+	%>
+
+	<liferay-ui:message arguments="<%= messageArguments %>" key="<%= messageKey %>" translateArguments="<%= false %>" />
+</liferay-ui:error>
+
 <liferay-portlet:actionURL name='<%= (workflowDefinition == null) ? "addWorkflowDefinition" : "updateWorkflowDefinition" %>' var="editWorkflowDefinitionURL">
 	<portlet:param name="mvcPath" value="/definition/edit_workflow_definition.jsp" />
 </liferay-portlet:actionURL>
@@ -42,7 +57,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 			<div class="info-bar-item">
 				<c:choose>
 					<c:when test="<%= active %>">
-						<span class="label label-info label-lg ">
+						<span class="label label-info label-lg">
 							<liferay-ui:message key="published" />
 						</span>
 					</c:when>
@@ -91,7 +106,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 					</h4>
 				</div>
 
-				<liferay-ui:tabs cssClass="navbar-no-collapse panel panel-default" names="details,revision-history" refresh="<%= false %>" type="tabs nav-tabs-default">
+				<liferay-ui:tabs cssClass="navbar-no-collapse panel panel-default" names="details,revision-history" refresh="<%= false %>" type="nav-tabs-default tabs">
 					<liferay-ui:section>
 						<div class="sidebar-list">
 
@@ -159,7 +174,6 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 
 			<div class="card-horizontal main-content-card">
 				<div class="card-row-padded">
-					<liferay-ui:error exception="<%= RequiredWorkflowDefinitionException.class %>" message="you-cannot-deactivate-or-delete-this-definition" />
 					<liferay-ui:error exception="<%= WorkflowDefinitionFileException.class %>" message="please-enter-a-valid-definition-before-publishing" />
 					<liferay-ui:error exception="<%= WorkflowDefinitionTitleException.class %>" message="please-name-your-workflow-before-publishing" />
 
@@ -226,6 +240,8 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 
 	var uploadFile = $('#<portlet:namespace />upload');
 
+	var previousContent = '';
+
 	uploadFile.on(
 		'change',
 		function(evt) {
@@ -235,11 +251,14 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 				var reader = new FileReader();
 
 				reader.onloadend = function(evt) {
-
 					if (evt.target.readyState == FileReader.DONE) {
+						previousContent = contentEditor.get(STR_VALUE);
+
 						contentEditor.set(STR_VALUE, evt.target.result);
 
-						Liferay.WorkflowWeb.showSuccessMessage();
+						uploadFile.val('');
+
+						Liferay.WorkflowWeb.showDefinitionImportSuccessMessage('<portlet:namespace />');
 					}
 				};
 
@@ -254,6 +273,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 		'click',
 		function(event) {
 			event.preventDefault();
+
 			uploadFile.trigger('click');
 		}
 	);
@@ -266,6 +286,17 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 			form.fm('content').val(contentEditor.get(STR_VALUE));
 
 			submitForm(form);
+		}
+	);
+
+	Liferay.on(
+		'<portlet:namespace />undoDefinition',
+		function(event) {
+			if (contentEditor) {
+				contentEditor.set(STR_VALUE, previousContent);
+
+				Liferay.WorkflowWeb.showActionUndoneSuccessMessage();
+			}
 		}
 	);
 </aui:script>

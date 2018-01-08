@@ -3,7 +3,8 @@ AUI.add(
 	function(A) {
 		var WorkflowWeb = {
 
-			openConfirmDeleteDialog : function(title, message, actionUrl) {
+			openConfirmDeleteDialog: function(title, message, actionUrl) {
+				var instance = this;
 
 				var dialog = Liferay.Util.Window.getWindow(
 					{
@@ -20,7 +21,7 @@ AUI.add(
 										label: Liferay.Language.get('delete'),
 										on: {
 											click: function() {
-												 window.location.assign(actionUrl);
+												window.location.assign(actionUrl);
 											}
 										}
 									},
@@ -55,7 +56,6 @@ AUI.add(
 						title: title
 					}
 				);
-
 			},
 
 			previewBeforeRevert: function(event, renderUrl, actionUrl, title) {
@@ -116,10 +116,10 @@ AUI.add(
 				);
 			},
 
-			showSuccessMessage: function() {
+			showActionUndoneSuccessMessage: function(namespace) {
 				var instance = this;
 
-				var successMessage = Liferay.Language.get('definition-imported-sucessfully');
+				var successMessage = Liferay.Language.get('action-undone');
 
 				var alert = instance._alert;
 
@@ -131,10 +131,49 @@ AUI.add(
 					{
 						closeable: true,
 						delay: {
-							hide: 3000,
+							hide: 5000,
 							show: 0
 						},
-						icon: 'check',
+						message: successMessage,
+						type: 'success'
+					}
+				);
+
+				if (!alert.get('rendered')) {
+					alert.render('.portlet-column');
+				}
+
+				alert.show();
+
+				instance._alert = alert;
+			},
+
+			showDefinitionImportSuccessMessage: function(namespace) {
+				var instance = this;
+
+				var undo = Liferay.Language.get('undo');
+
+				var undoEvent = '\'' + namespace + 'undoDefinition\'';
+
+				var undoLink = '<a href="javascript:;" onclick=Liferay.fire(' + undoEvent + '); class="alert-link">' + undo + '</a>';
+
+				var successMessage = Liferay.Language.get('definition-imported-sucessfully');
+
+				successMessage += undoLink;
+
+				var alert = instance._alert;
+
+				if (alert) {
+					alert.destroy();
+				}
+
+				alert = new Liferay.Alert(
+					{
+						closeable: true,
+						delay: {
+							hide: 10000,
+							show: 0
+						},
 						message: successMessage,
 						type: 'success'
 					}

@@ -366,9 +366,7 @@ public class JournalConverterImpl implements JournalConverter {
 
 		int repetitions = 0;
 
-		for (int i = 0; i < fieldsDisplayValues.length; i++) {
-			String fieldDisplayName = fieldsDisplayValues[i];
-
+		for (String fieldDisplayName : fieldsDisplayValues) {
 			if (offset > parentOffset) {
 				break;
 			}

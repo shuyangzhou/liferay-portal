@@ -175,6 +175,15 @@ public class KaleoDefinitionVersionLocalServiceImpl
 	}
 
 	@Override
+	public KaleoDefinitionVersion getFirstKaleoDefinitionVersion(
+			long companyId, String name)
+		throws PortalException {
+
+		return kaleoDefinitionVersionPersistence.findByC_N_First(
+			companyId, name, new KaleoDefinitionVersionIdComparator(true));
+	}
+
+	@Override
 	public KaleoDefinitionVersion getKaleoDefinitionVersion(
 			long companyId, String name, String version)
 		throws PortalException {
@@ -238,8 +247,8 @@ public class KaleoDefinitionVersionLocalServiceImpl
 			long companyId, String name)
 		throws PortalException {
 
-		return kaleoDefinitionVersionPersistence.findByC_N_Last(
-			companyId, name, null);
+		return kaleoDefinitionVersionPersistence.findByC_N_First(
+			companyId, name, new KaleoDefinitionVersionIdComparator(false));
 	}
 
 	@Override

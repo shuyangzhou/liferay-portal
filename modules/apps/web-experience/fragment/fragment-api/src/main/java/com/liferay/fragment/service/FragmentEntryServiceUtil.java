@@ -43,6 +43,15 @@ public class FragmentEntryServiceUtil {
 	 */
 	public static com.liferay.fragment.model.FragmentEntry addFragmentEntry(
 		long groupId, long fragmentCollectionId, java.lang.String name,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addFragmentEntry(groupId, fragmentCollectionId, name,
+			serviceContext);
+	}
+
+	public static com.liferay.fragment.model.FragmentEntry addFragmentEntry(
+		long groupId, long fragmentCollectionId, java.lang.String name,
 		java.lang.String css, java.lang.String html, java.lang.String js,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -51,10 +60,9 @@ public class FragmentEntryServiceUtil {
 			html, js, serviceContext);
 	}
 
-	public static java.util.List<com.liferay.fragment.model.FragmentEntry> deleteFragmentEntries(
-		long[] fragmentEntriesIds)
+	public static void deleteFragmentEntries(long[] fragmentEntriesIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deleteFragmentEntries(fragmentEntriesIds);
+		getService().deleteFragmentEntries(fragmentEntriesIds);
 	}
 
 	public static com.liferay.fragment.model.FragmentEntry deleteFragmentEntry(
