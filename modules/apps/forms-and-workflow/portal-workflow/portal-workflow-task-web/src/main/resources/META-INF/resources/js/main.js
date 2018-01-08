@@ -12,12 +12,12 @@ AUI.add(
 
 				var content = null;
 
-				var height = 310;
+				var height = 400;
 
 				if (li.hasClass('task-due-date-link')) {
 					content = '#' + randomId + 'updateDueDate';
 
-					height = 410;
+					height = 480;
 				}
 
 				var title = icon.text();
@@ -65,10 +65,11 @@ AUI.add(
 							bodyContent: form,
 							destroyOnHide: true,
 							height: height,
+							resizable: false,
 							toolbars: {
 								footer: [
 									{
-										cssClass: 'btn-lg btn-primary',
+										cssClass: 'btn-primary mr-2',
 										label: Liferay.Language.get('done'),
 										on: {
 											click: function() {
@@ -77,7 +78,7 @@ AUI.add(
 										}
 									},
 									{
-										cssClass: 'btn-cancel btn-lg btn-link',
+										cssClass: 'btn-cancel',
 										label: Liferay.Language.get('cancel'),
 										on: {
 											click: function() {
@@ -90,7 +91,7 @@ AUI.add(
 									{
 										cssClass: 'close',
 										discardDefaultButtonCssClasses: true,
-										labelHTML: '<span> \u00D7 </span>',
+										labelHTML: '<span aria-hidden="true">&times;</span>',
 										on: {
 											click: function(event) {
 												dialog.hide();

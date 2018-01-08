@@ -40,7 +40,6 @@
 			<property name="allowedExportPackageDirName" value="journal-content-asset-addon-entry/journal-content-asset-addon-entry-common" />
 			<property name="allowedExportPackageDirName" value="journal-service" />
 			<property name="allowedExportPackageDirName" value="journal-web" />
-			<property name="allowedExportPackageDirName" value="modules/apps/chat/chat-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/blogs/blogs-item-selector-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/blogs/blogs-recent-bloggers-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/blogs/blogs-service" />
@@ -311,6 +310,7 @@
 		<check name="LanguageKeysCheck" />
 		<check name="ResourceBundleCheck" />
 		<check name="StringMethodsCheck" />
+		<check name="SubstringCheck" />
 	</source-processor>
 	<source-processor name="JSONSourceProcessor">
 		<check name="JSONIndentationCheck" />
@@ -368,6 +368,7 @@
 		<check name="JSPSendRedirectCheck" />
 		<check name="JSPStringMethodsCheck" />
 		<check name="ResourceBundleCheck" />
+		<check name="SubstringCheck" />
 	</source-processor>
 	<source-processor name="JSSourceProcessor">
 		<check name="JSStylingCheck" />

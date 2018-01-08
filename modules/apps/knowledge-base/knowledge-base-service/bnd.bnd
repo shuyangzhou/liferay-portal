@@ -1,7 +1,7 @@
 Bundle-Activator: com.liferay.knowledge.base.internal.activator.KnowledgeBaseServiceBundleActivator
 Bundle-Name: Liferay Knowledge Base Service
 Bundle-SymbolicName: com.liferay.knowledge.base.service
-Bundle-Version: 1.3.26
+Bundle-Version: 1.3.27
 Export-Package:\
 	com.liferay.knowledge.base.configuration,\
 	com.liferay.knowledge.base.model.impl,\
@@ -9,5 +9,5 @@ Export-Package:\
 	com.liferay.knowledge.base.service.util
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Knowledge Base
-Liferay-Require-SchemaVersion: 2.0.0
+Liferay-Require-SchemaVersion: 2.0.1
 Liferay-Service: true

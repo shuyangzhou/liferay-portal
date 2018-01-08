@@ -25,8 +25,6 @@ import com.liferay.journal.model.JournalFeed;
 import com.liferay.journal.model.JournalFeedModel;
 import com.liferay.journal.model.JournalFeedSoap;
 
-import com.liferay.petra.string.StringPool;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
