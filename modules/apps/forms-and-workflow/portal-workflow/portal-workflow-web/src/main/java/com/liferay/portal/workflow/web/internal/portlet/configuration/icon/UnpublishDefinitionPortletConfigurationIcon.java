@@ -77,6 +77,8 @@ public class UnpublishDefinitionPortletConfigurationIcon
 		portletURL.setParameter("name", portletRequest.getParameter("name"));
 		portletURL.setParameter(
 			"version", portletRequest.getParameter("version"));
+		portletURL.setParameter(
+			"mvcPath", portletRequest.getParameter("mvcPath"));
 
 		return portletURL.toString();
 	}

@@ -324,25 +324,39 @@
 }
 
 .lfr-nav.nav-tabs.nav-bar-workflow {
-	margin-bottom: 0px;
+	margin-bottom: 0;
 }
 
-.task-content {
-	height: 10.5em;
-	margin-bottom: 2em;
-	overflow-y: auto;
+.task-action {
+	position: relative;
 
-	textarea {
-		height: 7.5em;
+	&, .task-action > form {
+		height: inherit;
 	}
-}
 
-.task-content-comment {
-	overflow: hidden;
-}
+	.task-action-button {
+		bottom: 0;
+		display: table;
+		margin: 0;
+		padding: 1.5rem;
+		position: absolute;
+		right: 0;
+		text-align: right;
+		width: 100%;
+	}
 
-.task-button {
-	display: flex;
-	height: 5.3em;
-	margin: -0.7em;
+	.task-action-content {
+		height: calc(100% - 88px);
+		left: 0;
+		margin: 0;
+		overflow-y: auto;
+		position: absolute;
+		top: 0;
+		width: 100%;
+	}
+
+	.task-action-content .form-group {
+		margin: 0;
+		padding: 1.5rem 1.5rem 0;
+	}
 }

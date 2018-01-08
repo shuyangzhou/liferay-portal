@@ -1252,9 +1252,7 @@ public class JournalUtil {
 		List<Element> curElements = curParentElement.elements(
 			"dynamic-element");
 
-		for (int i = 0; i < curElements.size(); i++) {
-			Element curElement = curElements.get(i);
-
+		for (Element curElement : curElements) {
 			_mergeArticleContentDelete(curElement, newDocument);
 
 			String instanceId = curElement.attributeValue("instance-id");
