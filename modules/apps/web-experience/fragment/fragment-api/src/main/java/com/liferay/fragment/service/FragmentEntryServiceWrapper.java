@@ -36,6 +36,15 @@ public class FragmentEntryServiceWrapper implements FragmentEntryService,
 	@Override
 	public com.liferay.fragment.model.FragmentEntry addFragmentEntry(
 		long groupId, long fragmentCollectionId, java.lang.String name,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _fragmentEntryService.addFragmentEntry(groupId,
+			fragmentCollectionId, name, serviceContext);
+	}
+
+	@Override
+	public com.liferay.fragment.model.FragmentEntry addFragmentEntry(
+		long groupId, long fragmentCollectionId, java.lang.String name,
 		java.lang.String css, java.lang.String html, java.lang.String js,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -44,10 +53,9 @@ public class FragmentEntryServiceWrapper implements FragmentEntryService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.fragment.model.FragmentEntry> deleteFragmentEntries(
-		long[] fragmentEntriesIds)
+	public void deleteFragmentEntries(long[] fragmentEntriesIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _fragmentEntryService.deleteFragmentEntries(fragmentEntriesIds);
+		_fragmentEntryService.deleteFragmentEntries(fragmentEntriesIds);
 	}
 
 	@Override

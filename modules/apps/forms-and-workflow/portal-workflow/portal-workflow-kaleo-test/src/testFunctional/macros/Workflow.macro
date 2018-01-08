@@ -383,7 +383,7 @@
 			<var name="key_menuItem" value="Delete" />
 		</execute>
 
-		<execute function="AssertTextEquals" locator1="WorkflowDefinition#DIALOG_BOX_TITLE" value1="Delete Workflow?" />
+		<execute function="AssertTextEquals" locator1="WorkflowDefinition#DIALOG_BOX_TITLE" value1="Delete workflow?" />
 
 		<execute function="AssertTextEquals" locator1="WorkflowDefinition#DIALOG_BOX_BODY" value1="A deleted workflow cannot be recovered." />
 
