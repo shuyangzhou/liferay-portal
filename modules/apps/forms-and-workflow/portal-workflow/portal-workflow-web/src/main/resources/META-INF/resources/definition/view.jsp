@@ -60,7 +60,20 @@ if (cur > 0) {
 WorkflowDefinitionSearch workflowDefinitionSearch = new WorkflowDefinitionSearch(renderRequest, portletURL);
 %>
 
-<liferay-ui:error exception="<%= RequiredWorkflowDefinitionException.class %>" message="you-cannot-deactivate-or-delete-this-definition" />
+<liferay-ui:error exception="<%= RequiredWorkflowDefinitionException.class %>">
+
+	<%
+	RequiredWorkflowDefinitionException requiredWorkflowDefinitionException = (RequiredWorkflowDefinitionException)errorException;
+
+	Object[] messageArguments = workflowDefinitionDisplayContext.getMessageArguments(
+			requiredWorkflowDefinitionException.getWorkflowDefinitionLinks());
+
+	String messageKey = workflowDefinitionDisplayContext.getMessageKey(
+			requiredWorkflowDefinitionException.getWorkflowDefinitionLinks());
+	%>
+
+	<liferay-ui:message arguments="<%= messageArguments %>" key="<%= messageKey %>" translateArguments="<%= false %>" />
+</liferay-ui:error>
 
 <liferay-util:include page="/definition/add_button.jsp" servletContext="<%= application %>" />
 

@@ -541,11 +541,6 @@ public class JournalArticleWrapper implements JournalArticle,
 		return _journalArticle.getFolderId();
 	}
 
-	/**
-	* Returns the friendly URLs for all configured locales.
-	*
-	* @return the friendly URLs for all configured locales
-	*/
 	@Override
 	public Map<java.util.Locale, java.lang.String> getFriendlyURLMap()
 		throws com.liferay.portal.kernel.exception.PortalException {

@@ -119,11 +119,6 @@ public interface JournalArticle extends JournalArticleModel, PersistedModel,
 	public JournalFolder getFolder()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	/**
-	* Returns the friendly URLs for all configured locales.
-	*
-	* @return the friendly URLs for all configured locales
-	*/
 	public java.util.Map<java.util.Locale, java.lang.String> getFriendlyURLMap()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
