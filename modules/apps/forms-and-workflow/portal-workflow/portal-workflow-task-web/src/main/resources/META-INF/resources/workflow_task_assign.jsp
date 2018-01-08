@@ -28,39 +28,39 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 <liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="assignWorkflowTask" var="assignURL" />
 
-<div class="container-fluid-1280">
+<div class="task-action">
 	<aui:form action="<%= assignURL %>" method="post" name="assignFm">
-		<aui:input name="workflowTaskId" type="hidden" value="<%= String.valueOf(workflowTask.getWorkflowTaskId()) %>" />
+		<div class="task-action-content">
+			<aui:input name="workflowTaskId" type="hidden" value="<%= String.valueOf(workflowTask.getWorkflowTaskId()) %>" />
 
-		<c:choose>
-			<c:when test="<%= assigneeUserId > 0 %>">
-				<aui:input name="assigneeUserId" type="hidden" value="<%= String.valueOf(assigneeUserId) %>" />
-			</c:when>
-			<c:otherwise>
-				<aui:select disabled="<%= !hasOtherAssignees %>" label="assign-to" name="assigneeUserId">
+			<c:choose>
+				<c:when test="<%= assigneeUserId > 0 %>">
+					<aui:input name="assigneeUserId" type="hidden" value="<%= String.valueOf(assigneeUserId) %>" />
+				</c:when>
+				<c:otherwise>
+					<aui:select disabled="<%= !hasOtherAssignees %>" label="assign-to" name="assigneeUserId">
 
-					<%
-					for (long pooledActorId : workflowTaskDisplayContext.getActorsIds(workflowTask)) {
-					%>
+						<%
+						for (long pooledActorId : workflowTaskDisplayContext.getActorsIds(workflowTask)) {
+						%>
 
-						<aui:option label="<%= workflowTaskDisplayContext.getActorName(pooledActorId) %>" selected="<%= workflowTask.getAssigneeUserId() == pooledActorId %>" value="<%= String.valueOf(pooledActorId) %>" />
+							<aui:option label="<%= workflowTaskDisplayContext.getActorName(pooledActorId) %>" selected="<%= workflowTask.getAssigneeUserId() == pooledActorId %>" value="<%= String.valueOf(pooledActorId) %>" />
 
-					<%
-					}
-					%>
+						<%
+						}
+						%>
 
-				</aui:select>
-			</c:otherwise>
-		</c:choose>
+					</aui:select>
+				</c:otherwise>
+			</c:choose>
 
-		<div class="task-content">
-			<aui:input cols="55" cssClass="task-content-comment" disabled="<%= !hasOtherAssignees && assigneeUserId <= 0 %>" name="comment" placeholder="comment" rows="1" type="textarea" />
+			<aui:input cols="55" cssClass="task-action-comment" disabled="<%= !hasOtherAssignees && assigneeUserId <= 0 %>" name="comment" placeholder="comment" rows="1" type="textarea" />
 		</div>
 
-		<aui:button-row cssClass="modal-footer task-button">
-			<aui:button cssClass="btn-lg" disabled="<%= !hasOtherAssignees && assigneeUserId <= 0 %>" name="done" primary="<%= true %>" value="done" />
+		<aui:button-row cssClass="modal-footer task-action-button">
+			<aui:button disabled="<%= !hasOtherAssignees && assigneeUserId <= 0 %>" name="done" primary="<%= true %>" value="done" />
 
-			<aui:button cssClass="btn-lg" name="close" type="cancel" />
+			<aui:button name="close" type="cancel" />
 		</aui:button-row>
 	</aui:form>
 </div>

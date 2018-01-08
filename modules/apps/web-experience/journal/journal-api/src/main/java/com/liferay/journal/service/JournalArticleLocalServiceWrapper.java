@@ -75,6 +75,138 @@ public class JournalArticleLocalServiceWrapper
 	* @param titleMap the web content article's locales and localized titles
 	* @param descriptionMap the web content article's locales and localized
 	descriptions
+	* @param friendlyURLMap the web content article's locales and localized
+	friendly URLs
+	* @param content the HTML content wrapped in XML
+	* @param ddmStructureKey the primary key of the web content article's DDM
+	structure, if the article is related to a DDM structure, or
+	<code>null</code> otherwise
+	* @param ddmTemplateKey the primary key of the web content article's DDM
+	template
+	* @param layoutUuid the unique string identifying the web content
+	article's display page
+	* @param displayDateMonth the month the web content article is set to
+	display
+	* @param displayDateDay the calendar day the web content article is set to
+	display
+	* @param displayDateYear the year the web content article is set to
+	display
+	* @param displayDateHour the hour the web content article is set to
+	display
+	* @param displayDateMinute the minute the web content article is set to
+	display
+	* @param expirationDateMonth the month the web content article is set to
+	expire
+	* @param expirationDateDay the calendar day the web content article is set
+	to expire
+	* @param expirationDateYear the year the web content article is set to
+	expire
+	* @param expirationDateHour the hour the web content article is set to
+	expire
+	* @param expirationDateMinute the minute the web content article is set to
+	expire
+	* @param neverExpire whether the web content article is not set to auto
+	expire
+	* @param reviewDateMonth the month the web content article is set for
+	review
+	* @param reviewDateDay the calendar day the web content article is set for
+	review
+	* @param reviewDateYear the year the web content article is set for review
+	* @param reviewDateHour the hour the web content article is set for review
+	* @param reviewDateMinute the minute the web content article is set for
+	review
+	* @param neverReview whether the web content article is not set for review
+	* @param indexable whether the web content article is searchable
+	* @param smallImage whether the web content article has a small image
+	* @param smallImageURL the web content article's small image URL
+	* @param smallImageFile the web content article's small image file
+	* @param images the web content's images
+	* @param articleURL the web content article's accessible URL
+	* @param latestVersion whether the article references and structure fields
+	are validated or not, as it is needed for the latest version only
+	* @param serviceContext the service context to be applied. Can set the
+	UUID, creation date, modification date, expando bridge
+	attributes, guest permissions, group permissions, asset category
+	IDs, asset tag names, asset link entry IDs, URL title, and
+	workflow actions for the web content article. Can also set
+	whether to add the default guest and group permissions.
+	* @return the web content article
+	*/
+	@Override
+	public com.liferay.journal.model.JournalArticle addArticle(long userId,
+		long groupId, long folderId, long classNameId, long classPK,
+		java.lang.String articleId, boolean autoArticleId, double version,
+		java.util.Map<java.util.Locale, java.lang.String> titleMap,
+		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+		java.util.Map<java.util.Locale, java.lang.String> friendlyURLMap,
+		java.lang.String content, java.lang.String ddmStructureKey,
+		java.lang.String ddmTemplateKey, java.lang.String layoutUuid,
+		int displayDateMonth, int displayDateDay, int displayDateYear,
+		int displayDateHour, int displayDateMinute, int expirationDateMonth,
+		int expirationDateDay, int expirationDateYear, int expirationDateHour,
+		int expirationDateMinute, boolean neverExpire, int reviewDateMonth,
+		int reviewDateDay, int reviewDateYear, int reviewDateHour,
+		int reviewDateMinute, boolean neverReview, boolean indexable,
+		boolean smallImage, java.lang.String smallImageURL,
+		java.io.File smallImageFile,
+		java.util.Map<java.lang.String, byte[]> images,
+		java.lang.String articleURL, boolean latestVersion,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _journalArticleLocalService.addArticle(userId, groupId,
+			folderId, classNameId, classPK, articleId, autoArticleId, version,
+			titleMap, descriptionMap, friendlyURLMap, content, ddmStructureKey,
+			ddmTemplateKey, layoutUuid, displayDateMonth, displayDateDay,
+			displayDateYear, displayDateHour, displayDateMinute,
+			expirationDateMonth, expirationDateDay, expirationDateYear,
+			expirationDateHour, expirationDateMinute, neverExpire,
+			reviewDateMonth, reviewDateDay, reviewDateYear, reviewDateHour,
+			reviewDateMinute, neverReview, indexable, smallImage,
+			smallImageURL, smallImageFile, images, articleURL, latestVersion,
+			serviceContext);
+	}
+
+	/**
+	* Adds a web content article with additional parameters.
+	*
+	* <p>
+	* The web content articles hold HTML content wrapped in XML. The XML lets
+	* you specify the article's default locale and available locales. Here is a
+	* content example:
+	* </p>
+	*
+	* <p>
+	* <pre>
+	* <code>
+	* &lt;?xml version='1.0' encoding='UTF-8'?&gt;
+	* &lt;root default-locale="en_US" available-locales="en_US"&gt;
+	*     &lt;static-content language-id="en_US"&gt;
+	*         &lt;![CDATA[&lt;p&gt;&lt;b&gt;&lt;i&gt;test&lt;i&gt; content&lt;b&gt;&lt;/p&gt;]]&gt;
+	*     &lt;/static-content&gt;
+	* &lt;/root&gt;
+	* </code>
+	* </pre>
+	* </p>
+	*
+	* @param userId the primary key of the web content article's creator/owner
+	* @param groupId the primary key of the web content article's group
+	* @param folderId the primary key of the web content article folder
+	* @param classNameId the primary key of the DDMStructure class if the web
+	content article is related to a DDM structure, the primary key of
+	the class name associated with the article, or
+	JournalArticleConstants.CLASSNAME_ID_DEFAULT in the journal-api
+	module otherwise
+	* @param classPK the primary key of the DDM structure, if the primary key
+	of the DDMStructure class is given as the
+	<code>classNameId</code> parameter, the primary key of the class
+	associated with the web content article, or <code>0</code>
+	otherwise
+	* @param articleId the primary key of the web content article
+	* @param autoArticleId whether to auto generate the web content article ID
+	* @param version the web content article's version
+	* @param titleMap the web content article's locales and localized titles
+	* @param descriptionMap the web content article's locales and localized
+	descriptions
 	* @param content the HTML content wrapped in XML
 	* @param ddmStructureKey the primary key of the web content article's DDM
 	structure, if the article is related to a DDM structure, or
