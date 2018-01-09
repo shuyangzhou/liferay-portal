@@ -422,7 +422,9 @@ AUI.add(
 
 						instance._dataProvidersList.set('options', dataProvidersList);
 
-						instance._dataProvidersList.setValue([value]);
+						if (value) {
+							instance._dataProvidersList.setValue([value]);
+						}
 					},
 
 					_retriveRequiredInputs: function(inputs) {

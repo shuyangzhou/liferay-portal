@@ -23,6 +23,7 @@ import com.liferay.dynamic.data.mapping.form.web.configuration.DDMFormWebConfigu
 import com.liferay.dynamic.data.mapping.form.web.internal.constants.DDMFormPortletKeys;
 import com.liferay.dynamic.data.mapping.form.web.internal.display.context.DDMFormAdminDisplayContext;
 import com.liferay.dynamic.data.mapping.form.web.internal.display.context.DDMFormAdminFieldSetDisplayContext;
+import com.liferay.dynamic.data.mapping.form.web.internal.instance.lifecycle.AddDefaultSharedFormLayoutPortalInstanceLifecycleListener;
 import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesJSONSerializer;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
@@ -196,11 +197,12 @@ public class DDMFormAdminPortlet extends MVCPortlet {
 
 		portletSession.setAttribute("currentTab", currentTab);
 
-		if (currentTab.equals("field-set")) {
+		if (currentTab.equals("element-set")) {
 			renderRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT,
 				new DDMFormAdminFieldSetDisplayContext(
 					renderRequest, renderResponse,
+					_addDefaultSharedFormLayoutPortalInstanceLifecycleListener,
 					_ddmFormWebConfigurationActivator.
 						getDDLFormWebConfiguration(),
 					_ddmFormInstanceRecordLocalService, _ddmFormInstanceService,
@@ -241,6 +243,7 @@ public class DDMFormAdminPortlet extends MVCPortlet {
 				WebKeys.PORTLET_DISPLAY_CONTEXT,
 				new DDMFormAdminDisplayContext(
 					renderRequest, renderResponse,
+					_addDefaultSharedFormLayoutPortalInstanceLifecycleListener,
 					_ddmFormWebConfigurationActivator.
 						getDDLFormWebConfiguration(),
 					_ddmFormInstanceRecordLocalService, _ddmFormInstanceService,
@@ -260,6 +263,10 @@ public class DDMFormAdminPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDMFormAdminPortlet.class);
+
+	@Reference
+	private AddDefaultSharedFormLayoutPortalInstanceLifecycleListener
+		_addDefaultSharedFormLayoutPortalInstanceLifecycleListener;
 
 	@Reference
 	private DDMFormFieldTypeServicesTracker _ddmFormFieldTypeServicesTracker;

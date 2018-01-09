@@ -24,12 +24,9 @@ import static org.hamcrest.core.Is.is;
 
 import com.liferay.apio.architect.list.FunctionalList;
 
-import org.hamcrest.CoreMatchers;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.MatcherAssert;
 import org.hamcrest.StringDescription;
-import org.hamcrest.core.Is;
 
 import org.junit.Test;
 
@@ -55,9 +52,8 @@ public class IsAFunctionalListTest {
 	public void testInvalidFunctionalListFails() {
 		FunctionalList<Integer> functionalList = new FunctionalList<>(null, 1);
 
-		MatcherAssert.assertThat(
-			functionalList,
-			Is.is(CoreMatchers.not(aFunctionalListThat(contains(2, 3)))));
+		assertThat(
+			functionalList, is(not(aFunctionalListThat(contains(2, 3)))));
 	}
 
 	@Test

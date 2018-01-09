@@ -295,6 +295,8 @@ AUI.add(
 										instance._removeLoading();
 
 										instance._setFocusToFirstPageField(settingsForm);
+
+										delete field.newField;
 									}
 								);
 

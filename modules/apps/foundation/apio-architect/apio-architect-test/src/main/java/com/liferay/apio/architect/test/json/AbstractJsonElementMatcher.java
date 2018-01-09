@@ -38,9 +38,19 @@ public abstract class AbstractJsonElementMatcher<T extends JsonElement, S>
 		JsonElementType jsonElementType, Matcher<S> sMatcher,
 		Function<T, S> transformFunction) {
 
+		this(
+			jsonElementType, " element with a value that ", sMatcher,
+			transformFunction);
+	}
+
+	public AbstractJsonElementMatcher(
+		JsonElementType jsonElementType, String message, Matcher<S> sMatcher,
+		Function<T, S> transformFunction) {
+
 		super(JsonElement.class);
 
 		_jsonElementType = Objects.requireNonNull(jsonElementType);
+		_message = message;
 		_sMatcher = sMatcher;
 		_transformFunction = transformFunction;
 	}
@@ -50,7 +60,7 @@ public abstract class AbstractJsonElementMatcher<T extends JsonElement, S>
 		description.appendDescriptionOf(
 			_jsonElementType
 		).appendText(
-			" element with a value that "
+			_message
 		).appendDescriptionOf(
 			_sMatcher
 		);
@@ -62,8 +72,7 @@ public abstract class AbstractJsonElementMatcher<T extends JsonElement, S>
 	 * @return the text to use when validation fails
 	 */
 	protected String getFailText() {
-		return "was " + _jsonElementType.getReadableName() +
-			" element with a value that ";
+		return "was " + _jsonElementType.getReadableName() + _message;
 	}
 
 	/**
@@ -114,6 +123,7 @@ public abstract class AbstractJsonElementMatcher<T extends JsonElement, S>
 	}
 
 	private final JsonElementType _jsonElementType;
+	private final String _message;
 	private final Matcher<S> _sMatcher;
 	private final Function<T, S> _transformFunction;
 

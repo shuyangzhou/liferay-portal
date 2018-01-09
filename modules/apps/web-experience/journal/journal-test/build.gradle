@@ -13,7 +13,7 @@ dependencies {
 	provided group: "com.liferay.portal", name: "com.liferay.util.java", version: "2.0.0"
 
 	testCompile group: "com.liferay", name: "com.liferay.dynamic.data.mapping.api", version: "3.6.0-20170105.185234-4"
-	testCompile group: "com.liferay", name: "com.liferay.portal.search", version: "3.1.0"
+	testCompile group: "com.liferay", name: "com.liferay.portal.search", version: "4.0.0"
 	testCompile group: "com.liferay", name: "com.liferay.registry.api", version: "1.0.0"
 	testCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.49.0"
 	testCompile group: "javax.portlet", name: "portlet-api", version: "2.0"
@@ -21,7 +21,7 @@ dependencies {
 	testCompile project(":apps:web-experience:journal:journal-api")
 
 	testIntegrationCompile group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.8"
-	testIntegrationCompile group: "com.liferay", name: "com.liferay.asset.service", version: "1.2.0-20170905.203518-1"
+	testIntegrationCompile group: "com.liferay", name: "com.liferay.asset.api", version: "1.0.0-20171201.200132-3"
 	testIntegrationCompile group: "com.liferay", name: "com.liferay.asset.test.util", version: "1.0.0-20170905.203607-1"
 	testIntegrationCompile group: "com.liferay", name: "com.liferay.dynamic.data.mapping.io", version: "2.0.0"
 	testIntegrationCompile group: "com.liferay", name: "com.liferay.dynamic.data.mapping.service", version: "2.0.0"

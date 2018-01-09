@@ -14,87 +14,123 @@
 
 package com.liferay.apio.architect.message.hal.internal;
 
+import static com.liferay.apio.architect.message.hal.internal.HALTestUtil.aRootElementJsonObjectWithId;
+import static com.liferay.apio.architect.message.hal.internal.HALTestUtil.isALinkTo;
+import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonArrayThat;
+import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonInt;
+import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonObjectWhere;
+import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonObjectWith;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.core.Is.is;
+
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import com.liferay.apio.architect.message.json.JSONObjectBuilder;
+import com.liferay.apio.architect.representor.Representor;
+import com.liferay.apio.architect.test.json.Conditions;
+import com.liferay.apio.architect.test.model.RootModel;
+import com.liferay.apio.architect.test.writer.MockPageWriter;
+import com.liferay.apio.architect.test.writer.MockWriterUtil;
+import com.liferay.apio.architect.wiring.osgi.manager.representable.RepresentableManager;
 
-import org.junit.Assert;
+import java.util.Optional;
+
+import javax.ws.rs.core.HttpHeaders;
+
+import org.hamcrest.Matcher;
+
 import org.junit.Test;
 
+import org.mockito.Mockito;
+
 /**
+ * @author Alejandro Hernández
  * @author Javier Gamarra
  */
-public class HALPageMessageMapperTest {
+public class HALPageMessageMapperTest implements RepresentableManager {
 
-	@Test
-	public void testMapCollectionURL() {
-		_halPageMessageMapper.mapCollectionURL(
-			_jsonObjectBuilder, "http://localhost:8080");
+	public HALPageMessageMapperTest() {
+		_pageMessageMapper = new HALPageMessageMapper<>();
 
-		JsonObject jsonObject = _jsonObjectBuilder.build();
+		_pageMessageMapper.representableManager = this;
+	}
 
-		Assert.assertEquals(
-			"{\"_links\":{\"collection\":" +
-				"{\"href\":\"http://localhost:8080\"}}}",
-			jsonObject.toString());
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T, U> Optional<Representor<T, U>> getRepresentorOptional(
+		Class<T> modelClass) {
+
+		Optional<Representor<?, ?>> optional =
+			MockWriterUtil.getRepresentorOptional(modelClass);
+
+		return optional.map(representor -> (Representor<T, U>)representor);
 	}
 
 	@Test
-	public void testMapCurrentPageURL() {
-		_halPageMessageMapper.mapCurrentPageURL(
-			_jsonObjectBuilder, "http://localhost:8080");
+	public void testHALPageMessageMapper() {
+		HttpHeaders httpHeaders = Mockito.mock(HttpHeaders.class);
 
-		JsonObject jsonObject = _jsonObjectBuilder.build();
+		JsonObject jsonObject = MockPageWriter.write(
+			httpHeaders, _pageMessageMapper);
 
-		Assert.assertEquals(
-			"{\"_links\":{\"self\":{\"href\":\"http://localhost:8080\"}}}",
-			jsonObject.toString());
+		Conditions.Builder builder = new Conditions.Builder();
+
+		Conditions conditions = builder.where(
+			"_embedded", _isAJsonObjectWithTheEmbedded
+		).where(
+			"_links", _isAJsonObjectWithTheLinks
+		).where(
+			"count", is(aJsonInt(equalTo(3)))
+		).where(
+			"total", is(aJsonInt(equalTo(9)))
+		).build();
+
+		assertThat(jsonObject, is(aJsonObjectWith(conditions)));
 	}
 
 	@Test
-	public void testMapFirstPageURL() {
-		_halPageMessageMapper.mapFirstPageURL(
-			_jsonObjectBuilder, "http://localhost:8080");
+	public void testMediaTypeIsCorrect() {
+		String mediaType = _pageMessageMapper.getMediaType();
 
-		JsonObject jsonObject = _jsonObjectBuilder.build();
-
-		Assert.assertEquals(
-			"{\"_links\":{\"first\":{\"href\":\"http://localhost:8080\"}}}",
-			jsonObject.toString());
+		assertThat(mediaType, is(equalTo("application/hal+json")));
 	}
 
-	@Test
-	public void testMapItemBooleanField() {
-		_halPageMessageMapper.mapItemBooleanField(
-			null, _jsonObjectBuilder, "fieldName", true);
+	private static final Matcher<JsonElement> _isAJsonObjectWithTheEmbedded;
+	private static final Matcher<JsonElement> _isAJsonObjectWithTheLinks;
 
-		JsonObject jsonObject = _jsonObjectBuilder.build();
+	static {
+		Conditions.Builder builder = new Conditions.Builder();
 
-		Assert.assertEquals("{\"fieldName\":true}", jsonObject.toString());
+		@SuppressWarnings("unchecked")
+		Matcher<Iterable<? extends JsonElement>> containsTheEmbedded = contains(
+			aRootElementJsonObjectWithId("1"),
+			aRootElementJsonObjectWithId("2"),
+			aRootElementJsonObjectWithId("3"));
+
+		_isAJsonObjectWithTheEmbedded = is(
+			aJsonObjectWhere(
+				"Type 1", is(aJsonArrayThat(containsTheEmbedded))));
+
+		Conditions linkConditions = builder.where(
+			"collection", isALinkTo("localhost/p/name/id/models")
+		).where(
+			"first", isALinkTo("localhost/p/name/id/models?page=1&per_page=3")
+		).where(
+			"last", isALinkTo("localhost/p/name/id/models?page=3&per_page=3")
+		).where(
+			"next", isALinkTo("localhost/p/name/id/models?page=3&per_page=3")
+		).where(
+			"prev", isALinkTo("localhost/p/name/id/models?page=1&per_page=3")
+		).where(
+			"self", isALinkTo("localhost/p/name/id/models?page=2&per_page=3")
+		).build();
+
+		_isAJsonObjectWithTheLinks = is(aJsonObjectWith(linkConditions));
 	}
 
-	@Test
-	public void testMapItemEmbeddedResourceBooleanField() {
-		_halPageMessageMapper.mapItemBooleanField(
-			null, _jsonObjectBuilder, "fieldName", true);
-
-		JsonObject jsonObject = _jsonObjectBuilder.build();
-
-		Assert.assertEquals("{\"fieldName\":true}", jsonObject.toString());
-	}
-
-	@Test
-	public void testMapPageCount() {
-		_halPageMessageMapper.mapPageCount(_jsonObjectBuilder, 1);
-
-		JsonObject jsonObject = _jsonObjectBuilder.build();
-
-		Assert.assertEquals("{\"count\":1}", jsonObject.toString());
-	}
-
-	private final HALPageMessageMapper _halPageMessageMapper =
-		new HALPageMessageMapper();
-	private final JSONObjectBuilder _jsonObjectBuilder =
-		new JSONObjectBuilder();
+	private final HALPageMessageMapper<RootModel> _pageMessageMapper;
 
 }

@@ -25,7 +25,7 @@ long formInstanceId = BeanParamUtil.getLong(formInstance, request, "formInstance
 long groupId = BeanParamUtil.getLong(formInstance, request, "groupId", scopeGroupId);
 long ddmStructureId = BeanParamUtil.getLong(formInstance, request, "structureId");
 
-String defaultLanguageId = LocaleUtil.toLanguageId(LocaleUtil.getSiteDefault());
+String defaultLanguageId = ddmFormAdminDisplayContext.getDefaultLanguageId();
 
 Locale[] availableLocales = ddmFormAdminDisplayContext.getAvailableLocales();
 
@@ -88,7 +88,7 @@ renderResponse.setTitle((formInstance == null) ? LanguageUtil.get(request, "new-
 
 		<%@ include file="/admin/exceptions.jspf" %>
 
-		<aui:fieldset cssClass="ddm-form-basic-info">
+		<div class="ddm-form-basic-info">
 			<div class="container-fluid-1280">
 				<h1>
 					<liferay-ui:input-editor
@@ -118,14 +118,14 @@ renderResponse.setTitle((formInstance == null) ? LanguageUtil.get(request, "new-
 
 				<aui:input name="description" type="hidden" />
 			</div>
-		</aui:fieldset>
+		</div>
 
-		<aui:fieldset cssClass="container-fluid-1280 ddm-form-builder-app">
+		<div class="container-fluid-1280 ddm-form-builder-app">
 			<aui:input name="serializedFormBuilderContext" type="hidden" />
 
 			<div id="<portlet:namespace />formBuilder"></div>
 			<div id="<portlet:namespace />ruleBuilder"></div>
-		</aui:fieldset>
+		</div>
 
 		<div class="container-fluid-1280">
 			<aui:button-row cssClass="ddm-form-builder-buttons">

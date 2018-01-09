@@ -14,22 +14,22 @@
 
 package com.liferay.apio.architect.functional;
 
+import static com.liferay.apio.architect.test.result.TryMatchers.aFailTry;
+import static com.liferay.apio.architect.test.result.TryMatchers.aSuccessTry;
+import static com.liferay.apio.architect.test.result.TryMatchers.aTryWithValueThat;
+
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 import com.liferay.apio.architect.exception.FalsePredicateException;
-import com.liferay.apio.architect.test.result.TryMatchers;
 
 import java.io.Closeable;
 import java.io.IOException;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.core.Is;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -78,9 +78,7 @@ public class TryTest {
 	}
 
 	@Test
-	public void testInvokingFallibleWithResourcesWithExceptionCreatesFailure()
-		throws Exception {
-
+	public void testInvokingFallibleWithResourcesWithExceptionCreatesFailure() {
 		Try<String> stringTry = Try.fromFallibleWithResources(
 			() -> () -> {
 			},
@@ -88,19 +86,17 @@ public class TryTest {
 				throw new IllegalArgumentException();
 			});
 
-		MatcherAssert.assertThat(stringTry, Is.is(TryMatchers.aFailTry()));
+		assertThat(stringTry, is(aFailTry()));
 	}
 
 	@Test
-	public void testInvokingFallibleWithResourcesWithValueCreatesSuccess()
-		throws Exception {
-
+	public void testInvokingFallibleWithResourcesWithValueCreatesSuccess() {
 		Try<String> stringTry = Try.fromFallibleWithResources(
 			() -> () -> {
 			},
 			__ -> "Live long");
 
-		MatcherAssert.assertThat(stringTry, Is.is(TryMatchers.aSuccessTry()));
+		assertThat(stringTry, is(aSuccessTry()));
 	}
 
 	@Parameters(method = FAIL)
@@ -130,9 +126,9 @@ public class TryTest {
 	public void testInvokingFilterOnSuccessWithValidPredicateReturnsValue(
 		Try<String> stringTry) {
 
-		MatcherAssert.assertThat(
+		assertThat(
 			stringTry.filter(string -> string.startsWith("Live")),
-			Is.is(TryMatchers.aTryWithValueThat(equalTo("Live long"))));
+			is(aTryWithValueThat(equalTo("Live long"))));
 	}
 
 	@Parameters(method = FAIL)
@@ -181,14 +177,14 @@ public class TryTest {
 				throw new IllegalArgumentException();
 			});
 
-		MatcherAssert.assertThat(stringTry, Is.is(TryMatchers.aFailTry()));
+		assertThat(stringTry, is(aFailTry()));
 	}
 
 	@Test
 	public void testInvokingFromFallibleWithValueCreatesSuccess() {
 		Try<String> stringTry = Try.fromFallible(() -> "Live long");
 
-		MatcherAssert.assertThat(stringTry, Is.is(TryMatchers.aSuccessTry()));
+		assertThat(stringTry, is(aSuccessTry()));
 	}
 
 	@Parameters(method = SUCCESS)
@@ -268,9 +264,9 @@ public class TryTest {
 	public void testInvokingMapFailMatchingOnSuccessShouldReturnValue(
 		Try<String> stringTry) {
 
-		MatcherAssert.assertThat(
+		assertThat(
 			stringTry.mapFailMatching(RuntimeException.class, IOException::new),
-			Is.is(TryMatchers.aTryWithValueThat(equalTo("Live long"))));
+			is(aTryWithValueThat(equalTo("Live long"))));
 	}
 
 	@Parameters(method = FAIL)
@@ -289,9 +285,9 @@ public class TryTest {
 	public void testInvokingMapFailOnSuccessShouldReturnValue(
 		Try<String> stringTry) {
 
-		MatcherAssert.assertThat(
+		assertThat(
 			stringTry.mapFail(__ -> new IOException()),
-			Is.is(TryMatchers.aTryWithValueThat(equalTo("Live long"))));
+			is(aTryWithValueThat(equalTo("Live long"))));
 	}
 
 	@Parameters(method = FAIL)
@@ -350,7 +346,7 @@ public class TryTest {
 	@Parameters(method = FAIL)
 	@Test
 	public void testOnFailureShouldBeFailure(Try<String> stringTry) {
-		MatcherAssert.assertThat(stringTry, Is.is(TryMatchers.aFailTry()));
+		assertThat(stringTry, is(aFailTry()));
 	}
 
 	@Test(expected = RuntimeException.class)
@@ -384,7 +380,7 @@ public class TryTest {
 		Try<String> newTry = stringTry.flatMap(
 			string -> Try.success(string + " and prosper"));
 
-		MatcherAssert.assertThat(newTry, Is.is(TryMatchers.aFailTry()));
+		assertThat(newTry, is(aFailTry()));
 	}
 
 	@Parameters(method = SUCCESS)
@@ -395,11 +391,8 @@ public class TryTest {
 		Try<String> newTry = stringTry.flatMap(
 			string -> Try.success(string + " and prosper"));
 
-		MatcherAssert.assertThat(
-			newTry,
-			Is.is(
-				TryMatchers.aTryWithValueThat(
-					equalTo("Live long and prosper"))));
+		assertThat(
+			newTry, is(aTryWithValueThat(equalTo("Live long and prosper"))));
 	}
 
 	@Parameters(method = FAIL)
@@ -409,7 +402,7 @@ public class TryTest {
 
 		Try<String> newTry = stringTry.map(string -> string + " and prosper");
 
-		MatcherAssert.assertThat(newTry, Is.is(TryMatchers.aFailTry()));
+		assertThat(newTry, is(aFailTry()));
 	}
 
 	@Parameters(method = SUCCESS)
@@ -419,11 +412,8 @@ public class TryTest {
 
 		Try<String> newTry = stringTry.map(string -> string + " and prosper");
 
-		MatcherAssert.assertThat(
-			newTry,
-			Is.is(
-				TryMatchers.aTryWithValueThat(
-					equalTo("Live long and prosper"))));
+		assertThat(
+			newTry, is(aTryWithValueThat(equalTo("Live long and prosper"))));
 	}
 
 	@Parameters(method = SUCCESS)
@@ -484,16 +474,15 @@ public class TryTest {
 	public void testOnRecoveringWithFailureOnSuccessShouldReturnFirstValue(
 		Try<String> stringTry) {
 
-		MatcherAssert.assertThat(
+		assertThat(
 			stringTry.recoverWith(__ -> Try.fail(new Exception())),
-			Is.is(TryMatchers.aTryWithValueThat(equalTo("Live long"))));
+			is(aTryWithValueThat(equalTo("Live long"))));
 	}
 
 	@Parameters(method = FAIL)
 	@Test
 	public void testOnRecoveringWithShouldHavePreviousExceptionAsParameter(
-			Try<String> stringTry)
-		throws Exception {
+		Try<String> stringTry) {
 
 		Try.Failure failure = (Try.Failure)stringTry;
 
@@ -510,9 +499,9 @@ public class TryTest {
 	public void testOnRecoveringWithSuccessOnFailureShouldReturnNewValue(
 		Try<String> stringTry) {
 
-		MatcherAssert.assertThat(
+		assertThat(
 			stringTry.recoverWith(__ -> Try.fromFallible(() -> "and prosper")),
-			Is.is(TryMatchers.aTryWithValueThat(equalTo("and prosper"))));
+			is(aTryWithValueThat(equalTo("and prosper"))));
 	}
 
 	@Parameters(method = SUCCESS)
@@ -520,9 +509,9 @@ public class TryTest {
 	public void testOnRecoveringWithSuccessOnSuccessShouldReturnFirstValue(
 		Try<String> stringTry) {
 
-		MatcherAssert.assertThat(
+		assertThat(
 			stringTry.recoverWith(__ -> Try.fromFallible(() -> "and prosper")),
-			Is.is(TryMatchers.aTryWithValueThat(equalTo("Live long"))));
+			is(aTryWithValueThat(equalTo("Live long"))));
 	}
 
 	@Parameters(method = FAIL)
@@ -548,15 +537,13 @@ public class TryTest {
 	@Parameters(method = SUCCESS)
 	@Test
 	public void testOnSuccessShouldBeSuccess(Try<String> stringTry) {
-		MatcherAssert.assertThat(stringTry, Is.is(TryMatchers.aSuccessTry()));
+		assertThat(stringTry, is(aSuccessTry()));
 	}
 
 	@Parameters(method = SUCCESS)
 	@Test
 	public void testOnSuccessShouldGetValue(Try<String> stringTry) {
-		MatcherAssert.assertThat(
-			stringTry,
-			Is.is(TryMatchers.aTryWithValueThat(equalTo("Live long"))));
+		assertThat(stringTry, is(aTryWithValueThat(equalTo("Live long"))));
 	}
 
 }

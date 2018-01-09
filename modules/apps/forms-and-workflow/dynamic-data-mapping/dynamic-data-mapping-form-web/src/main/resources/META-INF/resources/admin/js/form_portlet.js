@@ -11,7 +11,7 @@ AUI.add(
 
 		var STR_UNTITLED_FORM = Liferay.Language.get('untitled-form');
 
-		var STR_UNTITLED_FIELD_SET = Liferay.Language.get('untitled-field-set');
+		var STR_UNTITLED_ELEMENT_SET = Liferay.Language.get('untitled-element-set');
 
 		var TPL_BUTTON_SPINNER = '<span aria-hidden="true"><span class="icon-spinner icon-spin"></span></span>';
 
@@ -33,6 +33,7 @@ AUI.add(
 					},
 
 					formBuilder: {
+						value: {}
 					},
 
 					localizedDescription: {
@@ -79,9 +80,14 @@ AUI.add(
 					initializer: function() {
 						var instance = this;
 
+						var formBuilder = instance.get('formBuilder');
+
+						formBuilder.set('defaultLanguageId', instance.get('defaultLanguageId'));
+						formBuilder.set('editingLanguageId', instance.get('editingLanguageId'));
+
 						instance.layoutVisitor = new LayoutSerializer(
 							{
-								builder: instance.get('formBuilder'),
+								builder: formBuilder,
 								defaultLanguageId: instance.get('defaultLanguageId')
 							}
 						);
@@ -276,7 +282,7 @@ AUI.add(
 
 						var state = {
 							availableLanguageIds: translationManager.get('availableLocales'),
-							defaultLanguageId: translationManager.get('defaultLocale'),
+							defaultLanguageId: formBuilder.get('defaultLanguageId'),
 							description: instance.get('localizedDescription'),
 							name: instance._getLocalizedName(),
 							pages: instance.layoutVisitor.getPages(),
@@ -570,7 +576,7 @@ AUI.add(
 						var localizedName = instance.get('localizedName');
 
 						if (!localizedName[defaultLanguageId]) {
-							localizedName[defaultLanguageId] = instance._isFormView() ? STR_UNTITLED_FORM : STR_UNTITLED_FIELD_SET;
+							localizedName[defaultLanguageId] = instance._isFormView() ? STR_UNTITLED_FORM : STR_UNTITLED_ELEMENT_SET;
 						}
 
 						return localizedName;

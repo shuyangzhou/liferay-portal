@@ -26,8 +26,6 @@ import com.google.gson.JsonPrimitive;
 
 import com.liferay.apio.architect.test.json.JsonElementType;
 
-import org.hamcrest.MatcherAssert;
-
 import org.junit.Test;
 
 /**
@@ -79,18 +77,18 @@ public class JsonElementTypeTest {
 
 	@Test
 	public void testInvokingGetReadableNameReturnsCorrectName() {
-		MatcherAssert.assertThat(
+		assertThat(
 			JsonElementType.ARRAY.getReadableName(), is(equalTo("an array")));
-		MatcherAssert.assertThat(
+		assertThat(
 			JsonElementType.BOOLEAN.getReadableName(),
 			is(equalTo("a boolean")));
-		MatcherAssert.assertThat(
+		assertThat(
 			JsonElementType.NUMBER.getReadableName(), is(equalTo("a number")));
-		MatcherAssert.assertThat(
+		assertThat(
 			JsonElementType.OBJECT.getReadableName(), is(equalTo("an object")));
-		MatcherAssert.assertThat(
+		assertThat(
 			JsonElementType.OTHER.getReadableName(), is(equalTo("other")));
-		MatcherAssert.assertThat(
+		assertThat(
 			JsonElementType.STRING.getReadableName(), is(equalTo("a string")));
 	}
 

@@ -34,6 +34,7 @@ page import="com.liferay.announcements.kernel.model.AnnouncementsDelivery" %><%@
 page import="com.liferay.announcements.kernel.model.AnnouncementsEntryConstants" %><%@
 page import="com.liferay.announcements.kernel.service.AnnouncementsDeliveryLocalServiceUtil" %><%@
 page import="com.liferay.petra.string.CharPool" %><%@
+page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
 page import="com.liferay.portal.kernel.bean.BeanPropertiesUtil" %><%@
 page import="com.liferay.portal.kernel.configuration.Filter" %><%@
@@ -115,7 +116,6 @@ page import="com.liferay.portal.kernel.security.membershippolicy.UserGroupMember
 page import="com.liferay.portal.kernel.security.permission.ActionKeys" %><%@
 page import="com.liferay.portal.kernel.service.AddressServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.EmailAddressServiceUtil" %><%@
-page import="com.liferay.portal.kernel.service.GroupLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.LayoutLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil" %><%@
@@ -123,10 +123,8 @@ page import="com.liferay.portal.kernel.service.LayoutSetPrototypeServiceUtil" %>
 page import="com.liferay.portal.kernel.service.OrgLaborServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.OrganizationLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.OrganizationServiceUtil" %><%@
-page import="com.liferay.portal.kernel.service.PasswordPolicyLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.PhoneServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.RoleLocalServiceUtil" %><%@
-page import="com.liferay.portal.kernel.service.UserGroupGroupRoleLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.UserGroupLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.UserGroupRoleLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.service.UserLocalServiceUtil" %><%@
@@ -150,7 +148,6 @@ page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.PropsKeys" %><%@
 page import="com.liferay.portal.kernel.util.StringBundler" %><%@
-page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.TextFormatter" %><%@
 page import="com.liferay.portal.kernel.util.UnicodeFormatter" %><%@
@@ -180,8 +177,11 @@ page import="com.liferay.taglib.search.ResultRow" %><%@
 page import="com.liferay.taglib.search.SearchEntry" %><%@
 page import="com.liferay.users.admin.configuration.UserFileUploadsConfiguration" %><%@
 page import="com.liferay.users.admin.constants.UsersAdminPortletKeys" %><%@
+page import="com.liferay.users.admin.display.context.InitDisplayContext" %><%@
+page import="com.liferay.users.admin.display.context.UserDisplayContext" %><%@
 page import="com.liferay.users.admin.kernel.util.UsersAdmin" %><%@
 page import="com.liferay.users.admin.kernel.util.UsersAdminUtil" %><%@
+page import="com.liferay.users.admin.web.constants.UserFormConstants" %><%@
 page import="com.liferay.users.admin.web.constants.UsersAdminWebKeys" %><%@
 page import="com.liferay.users.admin.web.search.AddUserOrganizationChecker" %><%@
 page import="com.liferay.users.admin.web.search.OrganizationChecker" %><%@
@@ -213,32 +213,12 @@ page import="javax.portlet.WindowState" %>
 <%
 PortalPreferences portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(liferayPortletRequest);
 
-boolean filterManageableGroups = true;
-
-boolean filterManageableOrganizations = true;
-
-if (permissionChecker.hasPermission(null, Organization.class.getName(), Organization.class.getName(), ActionKeys.VIEW)) {
-	filterManageableOrganizations = false;
-}
-
-boolean filterManageableRoles = true;
-boolean filterManageableUserGroupRoles = true;
-boolean filterManageableUserGroups = true;
-
 String myAccountPortletId = PortletProviderUtil.getPortletId(PortalMyAccountApplicationType.MyAccount.CLASS_NAME, PortletProvider.Action.VIEW);
 
-if (portletName.equals(myAccountPortletId)) {
-	filterManageableGroups = false;
-	filterManageableOrganizations = false;
-	filterManageableRoles = false;
-	filterManageableUserGroupRoles = false;
-	filterManageableUserGroups = false;
-}
-else if (permissionChecker.isCompanyAdmin()) {
-	filterManageableGroups = false;
-	filterManageableOrganizations = false;
-	filterManageableUserGroups = false;
-}
+InitDisplayContext initDisplayContext = new InitDisplayContext(request, portletName);
+
+boolean filterManageableOrganizations = initDisplayContext.isFilterManageableOrganizations();
+boolean filterManageableUserGroups = initDisplayContext.isFilterManageableUserGroups();
 %>
 
 <%@ include file="/init-ext.jsp" %>

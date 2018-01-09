@@ -18,6 +18,7 @@ import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServices
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderer;
 import com.liferay.dynamic.data.mapping.form.values.factory.DDMFormValuesFactory;
 import com.liferay.dynamic.data.mapping.form.web.configuration.DDMFormWebConfiguration;
+import com.liferay.dynamic.data.mapping.form.web.internal.instance.lifecycle.AddDefaultSharedFormLayoutPortalInstanceLifecycleListener;
 import com.liferay.dynamic.data.mapping.form.web.internal.search.FieldSetSearch;
 import com.liferay.dynamic.data.mapping.form.web.internal.search.FieldSetSearchTerms;
 import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesJSONSerializer;
@@ -41,7 +42,6 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -66,7 +66,9 @@ public class DDMFormAdminFieldSetDisplayContext
 
 	public DDMFormAdminFieldSetDisplayContext(
 		RenderRequest renderRequest, RenderResponse renderResponse,
-		DDMFormWebConfiguration ddlFormWebConfiguration,
+		AddDefaultSharedFormLayoutPortalInstanceLifecycleListener
+			addDefaultSharedFormLayoutPortalInstanceLifecycleListener,
+		DDMFormWebConfiguration ddmFormWebConfiguration,
 		DDMFormInstanceRecordLocalService formInstanceRecordLocalService,
 		DDMFormInstanceService formInstanceService,
 		DDMFormFieldTypeServicesTracker formFieldTypeServicesTracker,
@@ -79,12 +81,13 @@ public class DDMFormAdminFieldSetDisplayContext
 		WorkflowEngineManager workflowEngineManager) {
 
 		super(
-			renderRequest, renderResponse, ddlFormWebConfiguration,
-			formInstanceRecordLocalService, formInstanceService,
-			formFieldTypeServicesTracker, formFieldTypesJSONSerializer,
-			formRenderer, formValuesFactory, formValuesMerger,
-			structureLocalService, structureService, jsonFactory, storageEngine,
-			workflowEngineManager);
+			renderRequest, renderResponse,
+			addDefaultSharedFormLayoutPortalInstanceLifecycleListener,
+			ddmFormWebConfiguration, formInstanceRecordLocalService,
+			formInstanceService, formFieldTypeServicesTracker,
+			formFieldTypesJSONSerializer, formRenderer, formValuesFactory,
+			formValuesMerger, structureLocalService, structureService,
+			jsonFactory, storageEngine, workflowEngineManager);
 	}
 
 	@Override
@@ -116,11 +119,8 @@ public class DDMFormAdminFieldSetDisplayContext
 		DDMStructure structure = getDDMStructure();
 
 		if (structure != null) {
-			ThemeDisplay themeDisplay =
-				formAdminRequestHelper.getThemeDisplay();
-
 			return LocalizationUtil.getLocalization(
-				structure.getDescription(), themeDisplay.getLanguageId());
+				structure.getDescription(), getDefaultLanguageId());
 		}
 
 		return getJSONObjectLocalizedPropertyFromRequest("description");
@@ -177,11 +177,8 @@ public class DDMFormAdminFieldSetDisplayContext
 		DDMStructure structure = getDDMStructure();
 
 		if (structure != null) {
-			ThemeDisplay themeDisplay =
-				formAdminRequestHelper.getThemeDisplay();
-
 			return LocalizationUtil.getLocalization(
-				structure.getName(), themeDisplay.getLanguageId());
+				structure.getName(), getDefaultLanguageId());
 		}
 
 		return getJSONObjectLocalizedPropertyFromRequest("name");
@@ -195,11 +192,12 @@ public class DDMFormAdminFieldSetDisplayContext
 
 		portletURL.setParameter("mvcPath", "/admin/view.jsp");
 		portletURL.setParameter("groupId", String.valueOf(getScopeGroupId()));
-		portletURL.setParameter("currentTab", "field-set");
+		portletURL.setParameter("currentTab", "element-set");
 
 		return portletURL;
 	}
 
+	@Override
 	public SearchContainer<?> getSearch() {
 		PortletURL portletURL = getPortletURL();
 
@@ -219,10 +217,11 @@ public class DDMFormAdminFieldSetDisplayContext
 		fieldSetsSearch.setOrderByType(orderByType);
 
 		if (fieldSetsSearch.isSearch()) {
-			fieldSetsSearch.setEmptyResultsMessage("no-field-sets-were-found");
+			fieldSetsSearch.setEmptyResultsMessage(
+				"no-element-sets-were-found");
 		}
 		else {
-			fieldSetsSearch.setEmptyResultsMessage("there-are-no-field-sets");
+			fieldSetsSearch.setEmptyResultsMessage("there-are-no-element-sets");
 		}
 
 		setFieldSetsSearchResults(fieldSetsSearch);

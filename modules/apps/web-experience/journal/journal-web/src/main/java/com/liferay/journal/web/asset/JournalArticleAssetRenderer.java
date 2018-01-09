@@ -207,7 +207,7 @@ public class JournalArticleAssetRenderer
 		String summary = _article.getDescription(locale);
 
 		if (Validator.isNotNull(summary)) {
-			return summary;
+			return HtmlUtil.stripHtml(summary);
 		}
 
 		try {

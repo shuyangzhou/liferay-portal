@@ -220,13 +220,13 @@ public class WebFormUtil {
 
 		sb.append("var fieldsMap = {};\n");
 
-		for (String key : fieldsMap.keySet()) {
+		for (Map.Entry<String, String> entry : fieldsMap.entrySet()) {
 			sb.append("fieldsMap['");
-			sb.append(key);
+			sb.append(entry.getKey());
 			sb.append("'] = '");
 
 			String value = StringUtil.replace(
-				fieldsMap.get(key), new String[] {"\r\n", "\r", "\n"},
+				entry.getValue(), new String[] {"\r\n", "\r", "\n"},
 				new String[] {"\\n", "\\n", "\\n"});
 
 			sb.append(HtmlUtil.escapeJS(value));
@@ -237,8 +237,8 @@ public class WebFormUtil {
 		sb.append("function validation(currentFieldValue, fieldsMap) {\n");
 		sb.append(validationScript);
 		sb.append("}\n");
-		sb.append("internalValidationResult = ");
-		sb.append("validation(currentFieldValue, fieldsMap);");
+		sb.append("internalValidationResult = validation(currentFieldValue, ");
+		sb.append("fieldsMap);");
 
 		String script = sb.toString();
 

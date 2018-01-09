@@ -51,7 +51,17 @@ AUI.add(
 
 						var inputNode = instance.getInputNode();
 
-						return !inputNode.val() || hasErrors;
+						return inputNode && !inputNode.val() || hasErrors;
+					},
+
+					render: function() {
+						var instance = this;
+
+						var container = instance.get('container');
+
+						container.plug(A.Plugin.ParseContent);
+
+						return CaptchaField.superclass.render.apply(instance, arguments);
 					},
 
 					showErrorMessage: Lang.emptyFn,
@@ -94,6 +104,6 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['liferay-ddm-form-renderer-field']
+		requires: ['aui-parse-content', 'liferay-ddm-form-renderer-field']
 	}
 );

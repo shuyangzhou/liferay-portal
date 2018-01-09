@@ -28,7 +28,7 @@ String currentTab = ParamUtil.getString(request, "currentTab", "forms");
 	<c:when test='<%= currentTab.equals("forms") %>'>
 		<liferay-util:include page="/admin/view_form_instance.jsp" servletContext="<%= application %>" />
 	</c:when>
-	<c:when test='<%= currentTab.equals("field-set") %>'>
-		<liferay-util:include page="/admin/view_field_set.jsp" servletContext="<%= application %>" />
+	<c:when test='<%= currentTab.equals("element-set") %>'>
+		<liferay-util:include page="/admin/view_element_set.jsp" servletContext="<%= application %>" />
 	</c:when>
 </c:choose>

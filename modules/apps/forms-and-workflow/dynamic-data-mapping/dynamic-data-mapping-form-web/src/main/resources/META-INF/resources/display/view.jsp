@@ -16,13 +16,24 @@
 
 <%@ include file="/display/init.jsp" %>
 
-<liferay-util:dynamic-include key="com.liferay.dynamic.data.mapping.form.web#/display/view.jsp#pre" />
-
 <%
 String redirect = ParamUtil.getString(request, "redirect", currentURL);
 
 long formInstanceId = ddmFormDisplayContext.getFormInstanceId();
 %>
+
+<aui:script>
+	function <portlet:namespace />analyticsClientCreated(event) {
+		Liferay.fire('ddmFormView', {formId: <%= formInstanceId %>});
+
+		Liferay.fire("ddmFormPageShow", {
+			formId: <%= formInstanceId %>,
+			page: 1
+		});
+	}
+
+	Liferay.on('analyticsClientCreated', <portlet:namespace />analyticsClientCreated);
+</aui:script>
 
 <c:choose>
 	<c:when test="<%= formInstanceId == 0 %>">
@@ -142,6 +153,7 @@ long formInstanceId = ddmFormDisplayContext.getFormInstanceId();
 
 							<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="addFormInstanceRecord" var="autoSaveFormInstanceRecordURL">
 								<portlet:param name="autoSave" value="<%= Boolean.TRUE.toString() %>" />
+								<portlet:param name="preview" value="<%= String.valueOf(ddmFormDisplayContext.isPreview()) %>" />
 							</liferay-portlet:resourceURL>
 
 							function <portlet:namespace />autoSave() {
@@ -172,9 +184,9 @@ long formInstanceId = ddmFormDisplayContext.getFormInstanceId();
 							}
 							else {
 								Liferay.after(
-									Liferay.namespace('DDM').Form + ':render',
+									'<%= ddmFormDisplayContext.getContainerId() %>DDMForm:render',
 									function(event) {
-										<portlet:namespace />form = Liferay.component(event.containerId + 'DDMForm');
+										<portlet:namespace />form = Liferay.component('<%= ddmFormDisplayContext.getContainerId() %>DDMForm');
 
 										if (<portlet:namespace />form) {
 											<portlet:namespace />startAutoSave();
@@ -229,5 +241,3 @@ long formInstanceId = ddmFormDisplayContext.getFormInstanceId();
 		</div>
 	</div>
 </c:if>
-
-<liferay-util:dynamic-include key="com.liferay.dynamic.data.mapping.form.web#/display/view.jsp#post" />

@@ -1,6 +1,8 @@
 AUI.add(
 	'liferay-ddm-form-renderer-expressions-evaluator',
 	function(A) {
+		var CACHE = {};
+
 		var ExpressionsEvaluator = A.Component.create(
 			{
 				ATTRS: {
@@ -125,33 +127,46 @@ AUI.add(
 
 						var form = instance.get('form');
 
-						instance._request = A.io.request(
-							instance.get('evaluatorURL'),
-							{
-								data: A.merge(
-									form.getEvaluationPayload(),
-									{
-										trigger: event.trigger ? event.trigger.get('fieldName') || '' : ''
-									}
-								),
-								method: 'POST',
-								on: {
-									failure: function(event) {
-										if (event.details[1].statusText !== 'abort') {
-											callback.call(instance, null);
-										}
-										else {
-											callback.call(instance, {});
-										}
-									},
-									success: function(event, id, xhr) {
-										var result = xhr.responseText;
+						var payload = form.getEvaluationPayload();
 
-										callback.call(instance, JSON.parse(result));
+						var type = payload.type;
+
+						if (payload.newField && CACHE[type]) {
+							callback.call(instance, JSON.parse(CACHE[type]));
+						}
+						else {
+							instance._request = A.io.request(
+								instance.get('evaluatorURL'),
+								{
+									data: A.merge(
+										payload,
+										{
+											trigger: event.trigger ? event.trigger.get('fieldName') || '' : ''
+										}
+									),
+									method: 'POST',
+									on: {
+										failure: function(event) {
+											if (event.details[1].statusText !== 'abort') {
+												callback.call(instance, null);
+											}
+											else {
+												callback.call(instance, {});
+											}
+										},
+										success: function(event, id, xhr) {
+											var result = xhr.responseText;
+
+											if (payload.newField) {
+												CACHE[type] = result;
+											}
+
+											callback.call(instance, JSON.parse(result));
+										}
 									}
 								}
-							}
-						);
+							);
+						}
 					},
 
 					_getEnabled: function(enabled) {

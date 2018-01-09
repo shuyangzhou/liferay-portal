@@ -36,13 +36,13 @@ String currentTab = ParamUtil.getString(request, "currentTab", "forms");
 		/>
 
 		<%
-		portletURL.setParameter("currentTab", "field-set");
+		portletURL.setParameter("currentTab", "element-set");
 		%>
 
 		<aui:nav-item
 			href="<%= portletURL.toString() %>"
-			label="field-sets"
-			selected='<%= currentTab.equals("field-set") %>'
+			label="element-sets"
+			selected='<%= currentTab.equals("element-set") %>'
 		/>
 	</aui:nav>
 

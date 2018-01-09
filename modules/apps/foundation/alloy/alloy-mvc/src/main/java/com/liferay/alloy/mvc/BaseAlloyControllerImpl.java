@@ -17,6 +17,7 @@ package com.liferay.alloy.mvc;
 import com.liferay.alloy.mvc.internal.json.web.service.AlloyControllerInvokerManager;
 import com.liferay.alloy.mvc.internal.json.web.service.AlloyMockUtil;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.bean.ConstantsBeanFactoryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -80,7 +81,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ServiceBeanMethodInvocationFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.Validator;
@@ -1494,8 +1494,9 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 
 		Map<String, Object> modelAttributes = baseModel.getModelAttributes();
 
-		for (String key : modelAttributes.keySet()) {
-			Object value = modelAttributes.get(key);
+		for (Map.Entry<String, Object> entry : modelAttributes.entrySet()) {
+			String key = entry.getKey();
+			Object value = entry.getValue();
 
 			if (value instanceof Boolean) {
 				jsonObject.put(String.valueOf(key), (Boolean)value);
@@ -1528,8 +1529,8 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 
 		Map<String, Field> fields = document.getFields();
 
-		for (String key : fields.keySet()) {
-			Field field = fields.get(key);
+		for (Map.Entry<String, Field> entry : fields.entrySet()) {
+			Field field = entry.getValue();
 
 			jsonObject.put(field.getName(), field.getValue());
 		}

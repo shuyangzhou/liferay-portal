@@ -18,16 +18,17 @@ import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderer;
 import com.liferay.dynamic.data.mapping.form.values.factory.DDMFormValuesFactory;
 import com.liferay.dynamic.data.mapping.form.web.internal.constants.DDMFormPortletKeys;
 import com.liferay.dynamic.data.mapping.form.web.internal.display.context.DDMFormDisplayContext;
+import com.liferay.dynamic.data.mapping.form.web.internal.instance.lifecycle.AddDefaultSharedFormLayoutPortalInstanceLifecycleListener;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstance;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceSettings;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordVersionLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceService;
+import com.liferay.dynamic.data.mapping.util.DDMFormValuesMerger;
 import com.liferay.dynamic.data.mapping.validator.DDMFormValuesValidationException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
@@ -115,7 +116,12 @@ public class DDMFormPortlet extends MVCPortlet {
 				SessionErrors.add(actionRequest, cause.getClass(), cause);
 			}
 
-			if (isSharedLayout(actionRequest)) {
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
+
+			if (_addDefaultSharedFormLayoutPortalInstanceLifecycleListener.
+					isSharedLayout(themeDisplay)) {
+
 				saveParametersInSession(actionRequest);
 			}
 		}
@@ -194,17 +200,6 @@ public class DDMFormPortlet extends MVCPortlet {
 		return false;
 	}
 
-	protected boolean isSharedLayout(ActionRequest actionRequest) {
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		Layout layout = themeDisplay.getLayout();
-
-		String type = layout.getType();
-
-		return type.equals(LayoutConstants.TYPE_SHARED_PORTLET);
-	}
-
 	protected void saveParametersInSession(ActionRequest actionRequest) {
 		long formInstanceId = ParamUtil.getLong(
 			actionRequest, "formInstanceId");
@@ -224,13 +219,18 @@ public class DDMFormPortlet extends MVCPortlet {
 		DDMFormDisplayContext ddlFormDisplayContext = new DDMFormDisplayContext(
 			renderRequest, renderResponse, _ddmFormInstanceService,
 			_ddmFormInstanceRecordVersionLocalService, _ddmFormRenderer,
-			_ddmFormValuesFactory, _workflowDefinitionLinkLocalService);
+			_ddmFormValuesFactory, _ddmFormValuesMerger,
+			_workflowDefinitionLinkLocalService);
 
 		renderRequest.setAttribute(
 			WebKeys.PORTLET_DISPLAY_CONTEXT, ddlFormDisplayContext);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(DDMFormPortlet.class);
+
+	@Reference
+	private AddDefaultSharedFormLayoutPortalInstanceLifecycleListener
+		_addDefaultSharedFormLayoutPortalInstanceLifecycleListener;
 
 	@Reference
 	private DDMFormInstanceRecordVersionLocalService
@@ -244,6 +244,9 @@ public class DDMFormPortlet extends MVCPortlet {
 
 	@Reference
 	private DDMFormValuesFactory _ddmFormValuesFactory;
+
+	@Reference
+	private DDMFormValuesMerger _ddmFormValuesMerger;
 
 	@Reference
 	private Portal _portal;

@@ -49,7 +49,7 @@ String currentTab = ParamUtil.getString(request, "currentTab", "forms");
 			<c:when test='<%= currentTab.equals("forms") %>'>
 				<liferay-frontend:management-bar-button href='<%= "javascript:" + renderResponse.getNamespace() + "deleteFormInstances();" %>' icon="trash" label="delete" />
 			</c:when>
-			<c:when test='<%= currentTab.equals("field-set") %>'>
+			<c:when test='<%= currentTab.equals("element-set") %>'>
 				<liferay-frontend:management-bar-button href='<%= "javascript:" + renderResponse.getNamespace() + "deleteStructures();" %>' icon="trash" label="delete" />
 			</c:when>
 		</c:choose>
@@ -73,7 +73,7 @@ String currentTab = ParamUtil.getString(request, "currentTab", "forms");
 			}
 		</aui:script>
 	</c:when>
-	<c:when test='<%= currentTab.equals("field-set") %>'>
+	<c:when test='<%= currentTab.equals("element-set") %>'>
 		<aui:script>
 			function <portlet:namespace />deleteStructures() {
 				if (confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this") %>')) {
@@ -84,7 +84,7 @@ String currentTab = ParamUtil.getString(request, "currentTab", "forms");
 					form.attr('method', 'post');
 					form.fm('deleteStructureIds').val(Liferay.Util.listCheckedExcept(searchContainer, '<portlet:namespace />allRowIds'));
 
-					submitForm(form, '<portlet:actionURL name="deleteStructure"><portlet:param name="mvcPath" value="/admin/view.jsp" /><portlet:param name="currentTab" value="field-set" /><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:actionURL>');
+					submitForm(form, '<portlet:actionURL name="deleteStructure"><portlet:param name="mvcPath" value="/admin/view.jsp" /><portlet:param name="currentTab" value="element-set" /><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:actionURL>');
 				}
 			}
 		</aui:script>

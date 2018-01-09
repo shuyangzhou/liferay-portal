@@ -40,7 +40,7 @@ public class IsJsonArray
 		Matcher<Iterable<? extends JsonElement>> jsonArrayMatcher) {
 
 		super(
-			JsonElementType.ARRAY, jsonArrayMatcher,
+			JsonElementType.ARRAY, " that is an ", jsonArrayMatcher,
 			jsonArray -> {
 				List<JsonElement> jsonElements = new ArrayList<>();
 

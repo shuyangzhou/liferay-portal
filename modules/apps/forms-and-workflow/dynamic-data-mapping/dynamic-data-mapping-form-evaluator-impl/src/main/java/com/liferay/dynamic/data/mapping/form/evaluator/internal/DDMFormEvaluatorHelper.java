@@ -468,11 +468,14 @@ public class DDMFormEvaluatorHelper {
 			DDMFormFieldValue ddmFormFieldValue)
 		throws DDMExpressionException {
 
-		for (String ddmFormFieldName : _ddmFormFieldValuesMap.keySet()) {
+		for (Map.Entry<String, List<DDMFormFieldValue>> entry :
+				_ddmFormFieldValuesMap.entrySet()) {
+
+			String ddmFormFieldName = entry.getKey();
+
 			DDMFormField ddmFormField = _ddmFormFieldsMap.get(ddmFormFieldName);
 
-			List<DDMFormFieldValue> ddmFormFieldValues =
-				_ddmFormFieldValuesMap.get(ddmFormFieldName);
+			List<DDMFormFieldValue> ddmFormFieldValues = entry.getValue();
 
 			DDMFormFieldValue selectedDDMFormFieldValue =
 				ddmFormFieldValues.get(0);

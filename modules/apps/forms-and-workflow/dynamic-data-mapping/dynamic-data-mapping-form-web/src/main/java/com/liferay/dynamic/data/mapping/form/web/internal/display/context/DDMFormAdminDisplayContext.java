@@ -23,6 +23,7 @@ import com.liferay.dynamic.data.mapping.form.web.configuration.DDMFormWebConfigu
 import com.liferay.dynamic.data.mapping.form.web.internal.constants.DDMFormPortletKeys;
 import com.liferay.dynamic.data.mapping.form.web.internal.constants.DDMFormWebKeys;
 import com.liferay.dynamic.data.mapping.form.web.internal.display.context.util.DDMFormAdminRequestHelper;
+import com.liferay.dynamic.data.mapping.form.web.internal.instance.lifecycle.AddDefaultSharedFormLayoutPortalInstanceLifecycleListener;
 import com.liferay.dynamic.data.mapping.form.web.internal.search.FormInstanceSearch;
 import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesJSONSerializer;
 import com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance;
@@ -51,7 +52,6 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -85,9 +85,6 @@ import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-import javax.servlet.Servlet;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -97,6 +94,8 @@ public class DDMFormAdminDisplayContext {
 
 	public DDMFormAdminDisplayContext(
 		RenderRequest renderRequest, RenderResponse renderResponse,
+		AddDefaultSharedFormLayoutPortalInstanceLifecycleListener
+			addDefaultSharedFormLayoutPortalInstanceLifecycleListener,
 		DDMFormWebConfiguration formWebConfiguration,
 		DDMFormInstanceRecordLocalService formInstanceRecordLocalService,
 		DDMFormInstanceService formInstanceService,
@@ -111,6 +110,8 @@ public class DDMFormAdminDisplayContext {
 
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
+		_addDefaultSharedFormLayoutPortalInstanceLifecycleListener =
+			addDefaultSharedFormLayoutPortalInstanceLifecycleListener;
 		_ddmFormWebConfiguration = formWebConfiguration;
 		_ddmFormInstanceRecordLocalService = formInstanceRecordLocalService;
 		_ddmFormInstanceService = formInstanceService;
@@ -263,11 +264,8 @@ public class DDMFormAdminDisplayContext {
 		DDMFormInstance formInstance = getDDMFormInstance();
 
 		if (formInstance != null) {
-			ThemeDisplay themeDisplay =
-				formAdminRequestHelper.getThemeDisplay();
-
 			return LocalizationUtil.getLocalization(
-				formInstance.getDescription(), themeDisplay.getLanguageId());
+				formInstance.getDescription(), getFormDefaultLanguageId());
 		}
 
 		return getJSONObjectLocalizedPropertyFromRequest("description");
@@ -318,11 +316,8 @@ public class DDMFormAdminDisplayContext {
 		DDMFormInstance formInstance = getDDMFormInstance();
 
 		if (formInstance != null) {
-			ThemeDisplay themeDisplay =
-				formAdminRequestHelper.getThemeDisplay();
-
 			return LocalizationUtil.getLocalization(
-				formInstance.getName(), themeDisplay.getLanguageId());
+				formInstance.getName(), getFormDefaultLanguageId());
 		}
 
 		return getJSONObjectLocalizedPropertyFromRequest("name");
@@ -408,16 +403,6 @@ public class DDMFormAdminDisplayContext {
 		return portletURL;
 	}
 
-	public String getPreviewFormURL() throws PortalException {
-		String publishedFormURL = getPublishedFormURL();
-
-		if (Validator.isNull(publishedFormURL)) {
-			return StringPool.BLANK;
-		}
-
-		return publishedFormURL.concat("/preview");
-	}
-
 	public String getPublishedFormURL() throws PortalException {
 		return getPublishedFormURL(_ddmFormInstance);
 	}
@@ -460,7 +445,8 @@ public class DDMFormAdminDisplayContext {
 	}
 
 	public String getRestrictedFormURL() {
-		return getFormLayoutURL(true);
+		return _addDefaultSharedFormLayoutPortalInstanceLifecycleListener.
+			getFormLayoutURL(formAdminRequestHelper.getThemeDisplay(), true);
 	}
 
 	public long getScopeGroupId() {
@@ -505,7 +491,8 @@ public class DDMFormAdminDisplayContext {
 	}
 
 	public String getSharedFormURL() {
-		return getFormLayoutURL(false);
+		return _addDefaultSharedFormLayoutPortalInstanceLifecycleListener.
+			getFormLayoutURL(formAdminRequestHelper.getThemeDisplay(), false);
 	}
 
 	public DDMStructureService getStructureService() {
@@ -800,21 +787,6 @@ public class DDMFormAdminDisplayContext {
 		}
 	}
 
-	protected String getFormLayoutURL(boolean privateLayout) {
-		StringBundler sb = new StringBundler(3);
-
-		ThemeDisplay themeDisplay = formAdminRequestHelper.getThemeDisplay();
-
-		Group group = themeDisplay.getSiteGroup();
-
-		sb.append(themeDisplay.getPortalURL());
-		sb.append(group.getPathFriendlyURL(privateLayout, themeDisplay));
-
-		sb.append("/forms/shared/-/form/");
-
-		return sb.toString();
-	}
-
 	protected String getJSONObjectLocalizedPropertyFromRequest(
 		String propertyName) {
 
@@ -855,14 +827,6 @@ public class DDMFormAdminDisplayContext {
 		return ParamUtil.getString(_renderRequest, "keywords");
 	}
 
-	protected String getServletContextPath(Servlet servlet) {
-		ServletConfig servletConfig = servlet.getServletConfig();
-
-		ServletContext servletContext = servletConfig.getServletContext();
-
-		return servletContext.getContextPath();
-	}
-
 	protected Locale getSiteDefaultLocale() {
 		ThemeDisplay themeDisplay = formAdminRequestHelper.getThemeDisplay();
 
@@ -889,22 +853,6 @@ public class DDMFormAdminDisplayContext {
 		}
 
 		return false;
-	}
-
-	protected String serialize(
-		List<DDMDataProviderInstance> dataProviderInstances, Locale locale) {
-
-		JSONArray jsonArray = _jsonFactory.createJSONArray();
-
-		for (DDMDataProviderInstance dataProviderInstance :
-				dataProviderInstances) {
-
-			JSONObject jsonObject = toJSONObject(dataProviderInstance, locale);
-
-			jsonArray.put(jsonObject);
-		}
-
-		return jsonArray.toString();
 	}
 
 	protected void setDDMFormInstanceSearchResults(
@@ -948,6 +896,8 @@ public class DDMFormAdminDisplayContext {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDMFormAdminDisplayContext.class);
 
+	private final AddDefaultSharedFormLayoutPortalInstanceLifecycleListener
+		_addDefaultSharedFormLayoutPortalInstanceLifecycleListener;
 	private final DDMFormFieldTypeServicesTracker
 		_ddmFormFieldTypeServicesTracker;
 	private final DDMFormFieldTypesJSONSerializer

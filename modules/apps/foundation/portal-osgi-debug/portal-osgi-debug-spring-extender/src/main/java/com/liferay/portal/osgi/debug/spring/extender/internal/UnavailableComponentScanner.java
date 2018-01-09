@@ -16,11 +16,11 @@ package com.liferay.portal.osgi.debug.spring.extender.internal;
 
 import static java.lang.Thread.sleep;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.osgi.debug.spring.extender.internal.configuration.UnavailableComponentScannerConfiguration;
 
@@ -126,15 +126,13 @@ public class UnavailableComponentScanner {
 			}
 
 			if (!unavailableComponentDeclarations.isEmpty()) {
-				sb.append("Found unavailable component in bundle ");
-				sb.append("{id: ");
+				sb.append("Found unavailable component in bundle {id: ");
 				sb.append(bundle.getBundleId());
 				sb.append(", name: ");
 				sb.append(bundle.getSymbolicName());
 				sb.append(", version: ");
 				sb.append(bundle.getVersion());
-				sb.append("}");
-				sb.append(".\n");
+				sb.append("}.\n");
 
 				for (Map.Entry
 						<ComponentDeclaration,

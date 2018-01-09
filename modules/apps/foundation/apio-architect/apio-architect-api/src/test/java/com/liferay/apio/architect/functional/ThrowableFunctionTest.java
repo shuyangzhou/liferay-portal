@@ -14,15 +14,13 @@
 
 package com.liferay.apio.architect.functional;
 
+import static com.liferay.apio.architect.test.result.TryMatchers.aTryWithValueThat;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 import com.liferay.apio.architect.function.ThrowableFunction;
-import com.liferay.apio.architect.test.result.TryMatchers;
-
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.core.Is;
 
 import org.junit.Test;
 
@@ -41,11 +39,9 @@ public class ThrowableFunctionTest {
 		ThrowableFunction<String, String> secondFunction =
 			string -> string + "prosper";
 
-		MatcherAssert.assertThat(
+		assertThat(
 			stringTry.map(firstFunction.andThen(secondFunction)),
-			Is.is(
-				TryMatchers.aTryWithValueThat(
-					equalTo("Live long and prosper"))));
+			is(aTryWithValueThat(equalTo("Live long and prosper"))));
 	}
 
 	@Test
@@ -57,9 +53,9 @@ public class ThrowableFunctionTest {
 		ThrowableFunction<Integer, Integer> secondFunction =
 			integer -> integer + 3;
 
-		MatcherAssert.assertThat(
+		assertThat(
 			stringTry.map(secondFunction.compose(firstFunction)),
-			Is.is(TryMatchers.aTryWithValueThat(equalTo(6))));
+			is(aTryWithValueThat(equalTo(6))));
 	}
 
 }

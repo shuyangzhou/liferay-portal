@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.test.writer;
 
+import static com.liferay.apio.architect.test.writer.MockWriterUtil.getRequestInfo;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -22,7 +24,6 @@ import com.liferay.apio.architect.message.json.DocumentationMessageMapper;
 import com.liferay.apio.architect.request.RequestInfo;
 import com.liferay.apio.architect.writer.DocumentationWriter;
 
-import java.util.Locale;
 import java.util.Optional;
 
 import javax.ws.rs.core.HttpHeaders;
@@ -37,31 +38,6 @@ import javax.ws.rs.core.HttpHeaders;
  * @author Alejandro Hernández
  */
 public class MockDocumentationWriter {
-
-	/**
-	 * Returns a {@link RequestInfo} with the provided {@code HttpHeaders}, a
-	 * mock {@link com.liferay.apio.architect.url.ServerURL}, and a mock {@code
-	 * javax.servlet.http.HttpServletRequest}.
-	 *
-	 * @param  httpHeaders the HTTP headers
-	 * @return the {@code RequestInfo}
-	 */
-	public static RequestInfo getRequestInfo(HttpHeaders httpHeaders) {
-		return RequestInfo.create(
-			builder -> builder.httpHeaders(
-				httpHeaders
-			).httpServletRequest(
-				null
-			).serverURL(
-				() -> "localhost"
-			).embedded(
-				__ -> false
-			).fields(
-				__ -> string -> true
-			).language(
-				Locale::getDefault
-			).build());
-	}
 
 	/**
 	 * Writes a {@link Documentation} object.

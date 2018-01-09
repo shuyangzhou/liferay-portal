@@ -229,6 +229,14 @@ public class KaleoDefinitionVersionLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion getFirstKaleoDefinitionVersion(
+		long companyId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _kaleoDefinitionVersionLocalService.getFirstKaleoDefinitionVersion(companyId,
+			name);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
 		return _kaleoDefinitionVersionLocalService.getIndexableActionableDynamicQuery();
 	}

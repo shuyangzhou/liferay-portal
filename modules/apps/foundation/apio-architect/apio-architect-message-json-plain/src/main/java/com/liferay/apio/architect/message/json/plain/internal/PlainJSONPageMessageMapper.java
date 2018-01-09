@@ -17,11 +17,11 @@ package com.liferay.apio.architect.message.json.plain.internal;
 import com.liferay.apio.architect.list.FunctionalList;
 import com.liferay.apio.architect.message.json.JSONObjectBuilder;
 import com.liferay.apio.architect.message.json.PageMessageMapper;
+import com.liferay.apio.architect.message.json.SingleModelMessageMapper;
 
 import javax.ws.rs.core.HttpHeaders;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * Represents collection pages in plain JSON.
@@ -53,7 +53,7 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 	public void mapCurrentPageURL(
 		JSONObjectBuilder jsonObjectBuilder, String url) {
 
-		_plainJSONSingleModelMessageMapper.mapSelfURL(jsonObjectBuilder, url);
+		_singleModelMessageMapper.mapSelfURL(jsonObjectBuilder, url);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 		JSONObjectBuilder itemJSONObjectBuilder, String fieldName,
 		Boolean value) {
 
-		_plainJSONSingleModelMessageMapper.mapBooleanField(
+		_singleModelMessageMapper.mapBooleanField(
 			itemJSONObjectBuilder, fieldName, value);
 	}
 
@@ -84,7 +84,7 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		Boolean value) {
 
-		_plainJSONSingleModelMessageMapper.mapEmbeddedResourceBooleanField(
+		_singleModelMessageMapper.mapEmbeddedResourceBooleanField(
 			itemJSONObjectBuilder, embeddedPathElements, fieldName, value);
 	}
 
@@ -95,7 +95,7 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		String url) {
 
-		_plainJSONSingleModelMessageMapper.mapEmbeddedResourceLink(
+		_singleModelMessageMapper.mapEmbeddedResourceLink(
 			itemJSONObjectBuilder, embeddedPathElements, fieldName, url);
 	}
 
@@ -106,7 +106,7 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		Number value) {
 
-		_plainJSONSingleModelMessageMapper.mapEmbeddedResourceNumberField(
+		_singleModelMessageMapper.mapEmbeddedResourceNumberField(
 			itemJSONObjectBuilder, embeddedPathElements, fieldName, value);
 	}
 
@@ -117,7 +117,7 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		String value) {
 
-		_plainJSONSingleModelMessageMapper.mapEmbeddedResourceStringField(
+		_singleModelMessageMapper.mapEmbeddedResourceStringField(
 			itemJSONObjectBuilder, embeddedPathElements, fieldName, value);
 	}
 
@@ -127,7 +127,7 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 		JSONObjectBuilder itemJSONObjectBuilder,
 		FunctionalList<String> embeddedPathElements, String url) {
 
-		_plainJSONSingleModelMessageMapper.mapEmbeddedResourceURL(
+		_singleModelMessageMapper.mapEmbeddedResourceURL(
 			itemJSONObjectBuilder, embeddedPathElements, url);
 	}
 
@@ -136,7 +136,7 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 		JSONObjectBuilder pageJSONObjectBuilder,
 		JSONObjectBuilder itemJSONObjectBuilder, String fieldName, String url) {
 
-		_plainJSONSingleModelMessageMapper.mapLink(
+		_singleModelMessageMapper.mapLink(
 			itemJSONObjectBuilder, fieldName, url);
 	}
 
@@ -146,7 +146,7 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 		JSONObjectBuilder itemJSONObjectBuilder,
 		FunctionalList<String> embeddedPathElements, String url) {
 
-		_plainJSONSingleModelMessageMapper.mapLinkedResourceURL(
+		_singleModelMessageMapper.mapLinkedResourceURL(
 			itemJSONObjectBuilder, embeddedPathElements, url);
 	}
 
@@ -156,7 +156,7 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 		JSONObjectBuilder itemJSONObjectBuilder, String fieldName,
 		Number value) {
 
-		_plainJSONSingleModelMessageMapper.mapNumberField(
+		_singleModelMessageMapper.mapNumberField(
 			itemJSONObjectBuilder, fieldName, value);
 	}
 
@@ -165,8 +165,7 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 		JSONObjectBuilder pageJSONObjectBuilder,
 		JSONObjectBuilder itemJSONObjectBuilder, String url) {
 
-		_plainJSONSingleModelMessageMapper.mapSelfURL(
-			itemJSONObjectBuilder, url);
+		_singleModelMessageMapper.mapSelfURL(itemJSONObjectBuilder, url);
 	}
 
 	@Override
@@ -175,7 +174,7 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 		JSONObjectBuilder itemJSONObjectBuilder, String fieldName,
 		String value) {
 
-		_plainJSONSingleModelMessageMapper.mapStringField(
+		_singleModelMessageMapper.mapStringField(
 			itemJSONObjectBuilder, fieldName, value);
 	}
 
@@ -246,8 +245,7 @@ public class PlainJSONPageMessageMapper<T> implements PageMessageMapper<T> {
 		);
 	}
 
-	@Reference
-	private PlainJSONSingleModelMessageMapper
-		_plainJSONSingleModelMessageMapper;
+	private final SingleModelMessageMapper _singleModelMessageMapper =
+		new PlainJSONSingleModelMessageMapper();
 
 }

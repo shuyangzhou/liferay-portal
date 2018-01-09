@@ -1,5 +1,6 @@
 @import "bourbon";
 @import "utilities";
+
 @import "field-type-checkbox-switch";
 
 %flex-space-between {
@@ -145,6 +146,14 @@
 }
 
 .liferay-ddm-form-field-numeric {
+}
+
+.liferay-ddm-form-field-options .form-control-feedback {
+	margin-left: 0;
+
+	[class^="icon"] {
+		display: none;
+	}
 }
 
 .liferay-ddm-form-field-tip {

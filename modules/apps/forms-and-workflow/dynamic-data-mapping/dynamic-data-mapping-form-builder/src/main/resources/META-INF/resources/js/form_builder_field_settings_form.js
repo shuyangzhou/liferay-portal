@@ -10,6 +10,10 @@ AUI.add(
 		var FormBuilderSettingsForm = A.Component.create(
 			{
 				ATTRS: {
+					builder: {
+						value: {}
+					},
+
 					editMode: {
 						value: false
 					},
@@ -35,6 +39,14 @@ AUI.add(
 						instance._fieldEventHandlers = [];
 					},
 
+					destructor: function() {
+						var instance = this;
+
+						(new A.EventHandle(instance._eventHandlers)).detach();
+
+						(new A.EventHandle(instance._fieldEventHandlers)).detach();
+					},
+
 					getEvaluationPayload: function() {
 						var instance = this;
 
@@ -43,6 +55,7 @@ AUI.add(
 						return A.merge(
 							FormBuilderSettingsForm.superclass.getEvaluationPayload.apply(instance, arguments),
 							{
+								newField: field.newField,
 								type: field.get('type')
 							}
 						);
@@ -73,13 +86,16 @@ AUI.add(
 					_afterFieldValueChange: function(event) {
 						var instance = this;
 
+						var builder = instance.get('builder');
+
 						var field = event.target;
+
 						var formBuilderField = instance.get('field');
 
 						var localizedValue = field.get('context.localizedValue');
 
 						if (localizedValue) {
-							var locale = formBuilderField.get('locale');
+							var locale = builder.get('editingLanguageId');
 
 							localizedValue[locale] = event.newVal;
 						}
@@ -324,9 +340,13 @@ AUI.add(
 
 						var formBuilderField = instance.get('field');
 
-						var locale = formBuilderField.get('locale');
+						var builder = instance.get('builder');
 
-						if (locale === themeDisplay.getDefaultLanguageId()) {
+						var defaultLocale = builder.get('defaultLanguageId');
+
+						var locale = builder.get('editingLanguageId');
+
+						if (defaultLocale === locale) {
 							nameField.set('value', event.newVal);
 							formBuilderField.set('context.fieldName', event.newVal);
 						}

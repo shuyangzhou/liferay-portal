@@ -795,21 +795,24 @@ public class JournalDisplayContext {
 		articleSearchContainer.setOrderByComparator(orderByComparator);
 		articleSearchContainer.setOrderByType(getOrderByType());
 
-		EntriesChecker entriesChecker = new EntriesChecker(
-			_liferayPortletRequest, _liferayPortletResponse, _trashHelper);
+		if (!showVersions) {
+			EntriesChecker entriesChecker = new EntriesChecker(
+				_liferayPortletRequest, _liferayPortletResponse, _trashHelper);
 
-		entriesChecker.setCssClass("entry-selector");
-		entriesChecker.setRememberCheckBoxStateURLRegex(
-			StringBundler.concat(
-				"^(?!.*", _liferayPortletResponse.getNamespace(),
-				"redirect).*(folderId=", String.valueOf(getFolderId()), ")"));
+			entriesChecker.setCssClass("entry-selector");
+			entriesChecker.setRememberCheckBoxStateURLRegex(
+				StringBundler.concat(
+					"^(?!.*", _liferayPortletResponse.getNamespace(),
+					"redirect).*(folderId=", String.valueOf(getFolderId()),
+					")"));
 
-		articleSearchContainer.setRowChecker(entriesChecker);
+			articleSearchContainer.setRowChecker(entriesChecker);
 
-		EntriesMover entriesMover = new EntriesMover(
-			_trashHelper.isTrashEnabled(themeDisplay.getScopeGroupId()));
+			EntriesMover entriesMover = new EntriesMover(
+				_trashHelper.isTrashEnabled(themeDisplay.getScopeGroupId()));
 
-		articleSearchContainer.setRowMover(entriesMover);
+			articleSearchContainer.setRowMover(entriesMover);
+		}
 
 		if (isNavigationMine() || isNavigationRecent()) {
 			boolean includeOwner = true;
@@ -946,9 +949,7 @@ public class JournalDisplayContext {
 
 				Document[] documents = hits.getDocs();
 
-				for (int i = 0; i < documents.length; i++) {
-					Document document = documents[i];
-
+				for (Document document : documents) {
 					JournalArticle article = null;
 					JournalFolder folder = null;
 

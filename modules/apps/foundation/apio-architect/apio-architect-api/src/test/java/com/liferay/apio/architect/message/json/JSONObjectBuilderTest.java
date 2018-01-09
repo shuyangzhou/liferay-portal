@@ -14,6 +14,12 @@
 
 package com.liferay.apio.architect.message.json;
 
+import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonArrayThat;
+import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonBoolean;
+import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonInt;
+import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonObjectWhere;
+import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonString;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.contains;
@@ -24,15 +30,9 @@ import static org.hamcrest.Matchers.not;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import com.liferay.apio.architect.test.json.JsonMatchers;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.Arrays;
 
 import org.hamcrest.Matcher;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 
 import org.junit.Test;
 
@@ -48,57 +48,27 @@ public class JSONObjectBuilderTest {
 				"array"
 			).arrayValue();
 
-		List<Boolean> booleanList = new ArrayList<Boolean>() {
-			{
-				add(false);
-				add(true);
-			}
-		};
-
 		JsonObject jsonObject = new JsonObject();
 
 		jsonObject.addProperty("solution", 42);
 
-		Collection<JsonObject> jsonObjectList = new ArrayList<JsonObject>() {
-			{
-				add(jsonObject);
-				add(jsonObject);
-			}
-		};
-
-		List<Number> numberList = new ArrayList<Number>() {
-			{
-				add(21);
-				add(42);
-			}
-		};
-
-		List<String> stringList = new ArrayList<String>() {
-			{
-				add("api");
-				add("apio");
-			}
-		};
-
-		arrayValueStep.addAllBooleans(booleanList);
-		arrayValueStep.addAllJsonObjects(jsonObjectList);
-		arrayValueStep.addAllNumbers(numberList);
-		arrayValueStep.addAllStrings(stringList);
+		arrayValueStep.addAllBooleans(Arrays.asList(false, true));
+		arrayValueStep.addAllJsonObjects(Arrays.asList(jsonObject, jsonObject));
+		arrayValueStep.addAllNumbers(Arrays.asList(21, 42));
+		arrayValueStep.addAllStrings(Arrays.asList("api", "apio"));
 
 		@SuppressWarnings("unchecked")
-		Matcher<JsonElement> isAJsonArrayWithElements = Matchers.is(
-			JsonMatchers.aJsonArrayThat(
-				Matchers.contains(
-					JsonMatchers.aJsonBoolean(false),
-					JsonMatchers.aJsonBoolean(true),
+		Matcher<JsonElement> isAJsonArrayWithElements = is(
+			aJsonArrayThat(
+				contains(
+					aJsonBoolean(false), aJsonBoolean(true),
 					_aJsonObjectWithTheSolution, _aJsonObjectWithTheSolution,
-					JsonMatchers.aJsonInt(equalTo(21)),
-					JsonMatchers.aJsonInt(equalTo(42)),
-					JsonMatchers.aJsonString(equalTo("api")),
-					JsonMatchers.aJsonString(equalTo("apio")))));
+					aJsonInt(equalTo(21)), aJsonInt(equalTo(42)),
+					aJsonString(equalTo("api")),
+					aJsonString(equalTo("apio")))));
 
-		Matcher<JsonElement> isAJsonObjectWithAnArray = Matchers.is(
-			JsonMatchers.aJsonObjectWhere("array", isAJsonArrayWithElements));
+		Matcher<JsonElement> isAJsonObjectWithAnArray = is(
+			aJsonObjectWhere("array", isAJsonArrayWithElements));
 
 		assertThat(getJsonObject(), isAJsonObjectWithAnArray);
 	}
@@ -117,11 +87,11 @@ public class JSONObjectBuilderTest {
 		);
 
 		@SuppressWarnings("unchecked")
-		Matcher<JsonElement> isAJsonArrayWithElements = Matchers.is(
-			JsonMatchers.aJsonArrayThat(contains(_aJsonObjectWithTheSolution)));
+		Matcher<JsonElement> isAJsonArrayWithElements = is(
+			aJsonArrayThat(contains(_aJsonObjectWithTheSolution)));
 
-		Matcher<JsonElement> isAJsonObjectWithAnArray = Matchers.is(
-			JsonMatchers.aJsonObjectWhere("array", isAJsonArrayWithElements));
+		Matcher<JsonElement> isAJsonObjectWithAnArray = is(
+			aJsonObjectWhere("array", isAJsonArrayWithElements));
 
 		assertThat(getJsonObject(), isAJsonObjectWithAnArray);
 	}
@@ -144,11 +114,11 @@ public class JSONObjectBuilderTest {
 		);
 
 		@SuppressWarnings("unchecked")
-		Matcher<JsonElement> isAJsonArrayWithElements = Matchers.is(
-			JsonMatchers.aJsonArrayThat(contains(_aJsonObjectWithTheSolution)));
+		Matcher<JsonElement> isAJsonArrayWithElements = is(
+			aJsonArrayThat(contains(_aJsonObjectWithTheSolution)));
 
-		Matcher<JsonElement> isAJsonObjectWithAnArray = Matchers.is(
-			JsonMatchers.aJsonObjectWhere("array", isAJsonArrayWithElements));
+		Matcher<JsonElement> isAJsonObjectWithAnArray = is(
+			aJsonObjectWhere("array", isAJsonArrayWithElements));
 
 		assertThat(getJsonObject(), isAJsonObjectWithAnArray);
 	}
@@ -165,15 +135,14 @@ public class JSONObjectBuilderTest {
 		arrayValueStep.addString("apio");
 
 		@SuppressWarnings("unchecked")
-		Matcher<JsonElement> isAJsonArrayWithElements = Matchers.is(
-			JsonMatchers.aJsonArrayThat(
-				Matchers.contains(
-					JsonMatchers.aJsonBoolean(true),
-					JsonMatchers.aJsonInt(equalTo(42)),
-					JsonMatchers.aJsonString(equalTo("apio")))));
+		Matcher<JsonElement> isAJsonArrayWithElements = is(
+			aJsonArrayThat(
+				contains(
+					aJsonBoolean(true), aJsonInt(equalTo(42)),
+					aJsonString(equalTo("apio")))));
 
-		Matcher<JsonElement> isAJsonObjectWithAnArray = Matchers.is(
-			JsonMatchers.aJsonObjectWhere("array", isAJsonArrayWithElements));
+		Matcher<JsonElement> isAJsonObjectWithAnArray = is(
+			aJsonObjectWhere("array", isAJsonArrayWithElements));
 
 		assertThat(getJsonObject(), isAJsonObjectWithAnArray);
 	}
@@ -184,11 +153,9 @@ public class JSONObjectBuilderTest {
 			"array"
 		).arrayValue();
 
-		Matcher<JsonElement> isAJsonObjectWithAnArray = Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"array",
-				Matchers.is(
-					JsonMatchers.aJsonArrayThat(not(contains(anything()))))));
+		Matcher<JsonElement> isAJsonObjectWithAnArray = is(
+			aJsonObjectWhere(
+				"array", is(aJsonArrayThat(not(contains(anything()))))));
 
 		assertThat(getJsonObject(), isAJsonObjectWithAnArray);
 	}
@@ -201,9 +168,8 @@ public class JSONObjectBuilderTest {
 			true
 		);
 
-		Matcher<JsonElement> isAJsonObjectWithTheSolution = Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"solution", Matchers.is(JsonMatchers.aJsonBoolean(true))));
+		Matcher<JsonElement> isAJsonObjectWithTheSolution = is(
+			aJsonObjectWhere("solution", is(aJsonBoolean(true))));
 
 		assertThat(getJsonObject(), isAJsonObjectWithTheSolution);
 	}
@@ -230,9 +196,8 @@ public class JSONObjectBuilderTest {
 			42
 		);
 
-		Matcher<JsonElement> isAJsonObjectWithTheFirst = Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"first", Matchers.is(JsonMatchers.aJsonInt(equalTo(42)))));
+		Matcher<JsonElement> isAJsonObjectWithTheFirst = is(
+			aJsonObjectWhere("first", is(aJsonInt(equalTo(42)))));
 
 		assertThat(getJsonObject(), isAJsonObjectWithTheFirst);
 	}
@@ -248,9 +213,8 @@ public class JSONObjectBuilderTest {
 			42
 		);
 
-		Matcher<JsonElement> isAJsonObjectWithTheFirst = Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"first", is(is(_aJsonObjectWithTheSolution))));
+		Matcher<JsonElement> isAJsonObjectWithTheFirst = is(
+			aJsonObjectWhere("first", is(is(_aJsonObjectWithTheSolution))));
 
 		assertThat(getJsonObject(), isAJsonObjectWithTheFirst);
 	}
@@ -265,9 +229,8 @@ public class JSONObjectBuilderTest {
 			42
 		);
 
-		Matcher<JsonElement> isAJsonObjectWithTheSolution = Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"solution", isAJsonObjectWithTheFirstPrefix()));
+		Matcher<JsonElement> isAJsonObjectWithTheSolution = is(
+			aJsonObjectWhere("solution", isAJsonObjectWithTheFirstPrefix()));
 
 		assertThat(getJsonObject(), isAJsonObjectWithTheSolution);
 	}
@@ -282,11 +245,9 @@ public class JSONObjectBuilderTest {
 			42
 		);
 
-		MatcherAssert.assertThat(
+		assertThat(
 			getJsonObject(),
-			Matchers.is(
-				JsonMatchers.aJsonObjectWhere(
-					"solution", isAJsonObjectWithTheFirst())));
+			is(aJsonObjectWhere("solution", isAJsonObjectWithTheFirst())));
 	}
 
 	@Test
@@ -299,9 +260,8 @@ public class JSONObjectBuilderTest {
 			42
 		);
 
-		Matcher<JsonElement> isAJsonObjectWithTheFirst = Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"first", is(is(_aJsonObjectWithTheSolution))));
+		Matcher<JsonElement> isAJsonObjectWithTheFirst = is(
+			aJsonObjectWhere("first", is(is(_aJsonObjectWithTheSolution))));
 
 		assertThat(getJsonObject(), isAJsonObjectWithTheFirst);
 	}
@@ -317,9 +277,8 @@ public class JSONObjectBuilderTest {
 			42
 		);
 
-		Matcher<JsonElement> isAJsonObjectWithTheFirst = Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"first", is(is(_aJsonObjectWithTheSolution))));
+		Matcher<JsonElement> isAJsonObjectWithTheFirst = is(
+			aJsonObjectWhere("first", is(is(_aJsonObjectWithTheSolution))));
 
 		assertThat(getJsonObject(), isAJsonObjectWithTheFirst);
 	}
@@ -343,11 +302,9 @@ public class JSONObjectBuilderTest {
 			42
 		);
 
-		MatcherAssert.assertThat(
+		assertThat(
 			getJsonObject(),
-			Matchers.is(
-				JsonMatchers.aJsonObjectWhere(
-					"the", is(_aJsonObjectWithTheSolution))));
+			is(aJsonObjectWhere("the", is(_aJsonObjectWithTheSolution))));
 	}
 
 	@Test
@@ -391,10 +348,9 @@ public class JSONObjectBuilderTest {
 			"forty-two"
 		);
 
-		Matcher<JsonElement> isAJsonObjectWithTheSolution = Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"solution",
-				Matchers.is(JsonMatchers.aJsonString(equalTo("forty-two")))));
+		Matcher<JsonElement> isAJsonObjectWithTheSolution = is(
+			aJsonObjectWhere(
+				"solution", is(aJsonString(equalTo("forty-two")))));
 
 		assertThat(getJsonObject(), isAJsonObjectWithTheSolution);
 	}
@@ -416,57 +372,45 @@ public class JSONObjectBuilderTest {
 	}
 
 	protected Matcher<JsonElement> isAJsonObjectWithTheFirst() {
-		Matcher<JsonElement> isAJsonObjectWithTheThirdSuffix = Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"suffix", Matchers.is(JsonMatchers.aJsonInt(equalTo(42)))));
+		Matcher<JsonElement> isAJsonObjectWithTheThirdSuffix = is(
+			aJsonObjectWhere("suffix", is(aJsonInt(equalTo(42)))));
 
-		Matcher<JsonElement> isAJsonObjectWithTheThird = Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"third", isAJsonObjectWithTheThirdSuffix));
+		Matcher<JsonElement> isAJsonObjectWithTheThird = is(
+			aJsonObjectWhere("third", isAJsonObjectWithTheThirdSuffix));
 
-		Matcher<JsonElement> isAJsonObjectWithTheSecondSuffix = Matchers.is(
-			JsonMatchers.aJsonObjectWhere("suffix", isAJsonObjectWithTheThird));
+		Matcher<JsonElement> isAJsonObjectWithTheSecondSuffix = is(
+			aJsonObjectWhere("suffix", isAJsonObjectWithTheThird));
 
-		Matcher<JsonElement> isAJsonObjectWithTheSecond = Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"second", isAJsonObjectWithTheSecondSuffix));
+		Matcher<JsonElement> isAJsonObjectWithTheSecond = is(
+			aJsonObjectWhere("second", isAJsonObjectWithTheSecondSuffix));
 
-		Matcher<JsonElement> isAJsonObjectWithTheFirstSuffix = Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"suffix", isAJsonObjectWithTheSecond));
+		Matcher<JsonElement> isAJsonObjectWithTheFirstSuffix = is(
+			aJsonObjectWhere("suffix", isAJsonObjectWithTheSecond));
 
-		return Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"first", isAJsonObjectWithTheFirstSuffix));
+		return is(aJsonObjectWhere("first", isAJsonObjectWithTheFirstSuffix));
 	}
 
 	protected Matcher<JsonElement> isAJsonObjectWithTheFirstPrefix() {
-		Matcher<JsonElement> isAJsonObjectWithTheThird = Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"third", Matchers.is(JsonMatchers.aJsonInt(equalTo(42)))));
+		Matcher<JsonElement> isAJsonObjectWithTheThird = is(
+			aJsonObjectWhere("third", is(aJsonInt(equalTo(42)))));
 
-		Matcher<JsonElement> isAJsonObjectWithTheThirdPrefix = Matchers.is(
-			JsonMatchers.aJsonObjectWhere("prefix", isAJsonObjectWithTheThird));
+		Matcher<JsonElement> isAJsonObjectWithTheThirdPrefix = is(
+			aJsonObjectWhere("prefix", isAJsonObjectWithTheThird));
 
-		Matcher<JsonElement> isAJsonObjectWithTheSecond = Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"second", isAJsonObjectWithTheThirdPrefix));
+		Matcher<JsonElement> isAJsonObjectWithTheSecond = is(
+			aJsonObjectWhere("second", isAJsonObjectWithTheThirdPrefix));
 
-		Matcher<JsonElement> isAJsonObjectWithTheSecondPrefix = Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"prefix", isAJsonObjectWithTheSecond));
+		Matcher<JsonElement> isAJsonObjectWithTheSecondPrefix = is(
+			aJsonObjectWhere("prefix", isAJsonObjectWithTheSecond));
 
-		Matcher<JsonElement> isAJsonObjectWithTheFirst = Matchers.is(
-			JsonMatchers.aJsonObjectWhere(
-				"first", isAJsonObjectWithTheSecondPrefix));
+		Matcher<JsonElement> isAJsonObjectWithTheFirst = is(
+			aJsonObjectWhere("first", isAJsonObjectWithTheSecondPrefix));
 
-		return Matchers.is(
-			JsonMatchers.aJsonObjectWhere("prefix", isAJsonObjectWithTheFirst));
+		return is(aJsonObjectWhere("prefix", isAJsonObjectWithTheFirst));
 	}
 
 	private final Matcher<JsonElement> _aJsonObjectWithTheSolution =
-		JsonMatchers.aJsonObjectWhere(
-			"solution", Matchers.is(JsonMatchers.aJsonInt(equalTo(42))));
+		aJsonObjectWhere("solution", is(aJsonInt(equalTo(42))));
 	private final JSONObjectBuilder _jsonObjectBuilder =
 		new JSONObjectBuilder();
 

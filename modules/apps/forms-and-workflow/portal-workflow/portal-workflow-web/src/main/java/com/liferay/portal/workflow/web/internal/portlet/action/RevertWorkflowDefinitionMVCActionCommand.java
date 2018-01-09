@@ -84,8 +84,8 @@ public class RevertWorkflowDefinitionMVCActionCommand
 
 		String dateTime = dateTimeFormat.format(workflowDefinitionModifiedDate);
 
-		ResourceBundle resourceBundle =
-			resourceBundleLoader.loadResourceBundle(locale);
+		ResourceBundle resourceBundle = resourceBundleLoader.loadResourceBundle(
+			locale);
 
 		SessionMessages.add(
 			actionRequest, "requestProcessed",
@@ -131,4 +131,5 @@ public class RevertWorkflowDefinitionMVCActionCommand
 
 		sendRedirect(actionRequest, actionResponse);
 	}
+
 }

@@ -35,8 +35,6 @@ import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
-import com.liferay.portal.kernel.test.rule.Sync;
-import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -64,15 +62,12 @@ import org.junit.runner.RunWith;
  * @author Sergio González
  */
 @RunWith(Arquillian.class)
-@Sync
 public class BookmarksFolderLocalServiceTest {
 
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(),
-			SynchronousDestinationTestRule.INSTANCE);
+		new LiferayIntegrationTestRule();
 
 	@Before
 	public void setUp() throws Exception {
@@ -105,7 +100,7 @@ public class BookmarksFolderLocalServiceTest {
 			PermissionCheckerFactoryUtil.create(user);
 
 		Assert.assertTrue(
-			_folderModelResourcePermission.contains(
+			_bookmarksFolderModelResourcePermission.contains(
 				permissionChecker, folder, ActionKeys.ADD_FOLDER));
 	}
 
@@ -249,7 +244,7 @@ public class BookmarksFolderLocalServiceTest {
 		filter = "model.class.name=com.liferay.bookmarks.model.BookmarksFolder"
 	)
 	private static ModelResourcePermission<BookmarksFolder>
-		_folderModelResourcePermission;
+		_bookmarksFolderModelResourcePermission;
 
 	@DeleteAfterTestRun
 	private Group _group;
