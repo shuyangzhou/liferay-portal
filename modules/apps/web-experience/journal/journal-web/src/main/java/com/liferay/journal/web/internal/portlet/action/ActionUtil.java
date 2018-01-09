@@ -90,8 +90,7 @@ public class ActionUtil {
 
 		if (index != -1) {
 			sourceArticleId = sourceArticleId.substring(
-				index + JournalPortlet.VERSION_SEPARATOR.length(),
-				sourceArticleId.length());
+				index + JournalPortlet.VERSION_SEPARATOR.length());
 		}
 
 		double sourceVersion = GetterUtil.getDouble(sourceArticleId);
@@ -103,8 +102,7 @@ public class ActionUtil {
 
 		if (index != -1) {
 			targetArticleId = targetArticleId.substring(
-				index + JournalPortlet.VERSION_SEPARATOR.length(),
-				targetArticleId.length());
+				index + JournalPortlet.VERSION_SEPARATOR.length());
 		}
 
 		double targetVersion = GetterUtil.getDouble(targetArticleId);
