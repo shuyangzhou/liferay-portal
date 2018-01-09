@@ -18,7 +18,6 @@ import com.liferay.admin.kernel.util.PortalMyAccountApplicationType;
 import com.liferay.expando.kernel.model.CustomAttributesDisplay;
 import com.liferay.petra.content.ContentUtil;
 import com.liferay.petra.lang.ClassLoaderPool;
-import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.application.type.ApplicationType;
 import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.configuration.Configuration;
@@ -69,6 +68,7 @@ import com.liferay.portal.kernel.servlet.ServletContextUtil;
 import com.liferay.portal.kernel.spring.aop.Skip;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -79,6 +79,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.xml.Attribute;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.QName;
@@ -2433,6 +2434,21 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		portletApp.addServletURLPatterns(servletURLPatterns);
 		portletApp.setServletContext(servletContext);
 
+		Map<String, String[]> containerRuntimeOptions =
+			portletApp.getContainerRuntimeOptions();
+
+		Attribute rootVersionAttribute = rootElement.attribute("version");
+
+		if (rootVersionAttribute != null) {
+			String[] portletSpecVersion = StringUtil.split(
+				rootVersionAttribute.getValue(), CharPool.PERIOD);
+
+			if (portletSpecVersion.length > 0) {
+				containerRuntimeOptions.put(
+					"com.liferay.portlet.spec.version", portletSpecVersion);
+			}
+		}
+
 		Set<String> userAttributes = portletApp.getUserAttributes();
 
 		for (Element userAttributeElement :
@@ -2505,9 +2521,6 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 				values.add(valueElement.getTextTrim());
 			}
-
-			Map<String, String[]> containerRuntimeOptions =
-				portletApp.getContainerRuntimeOptions();
 
 			containerRuntimeOptions.put(
 				name, values.toArray(new String[values.size()]));
