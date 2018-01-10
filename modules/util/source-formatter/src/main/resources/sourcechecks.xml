@@ -65,7 +65,6 @@
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal/portal-dao-orm-custom-sql" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal/portal-instance-lifecycle" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal/portal-jmx" />
-			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal/portal-output-stream-container" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal/portal-spring-extender" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal/portal-upgrade" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal/portal-upload" />
@@ -83,11 +82,9 @@
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security/portal-security-ldap" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security/portal-security-service-access-policy-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security-sso/portal-security-sso-facebook-connect" />
-			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security-sso/portal-security-sso-google" />
-			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security-sso/portal-security-sso-ntlm" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security-sso/portal-security-sso-openid" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security-sso/portal-security-sso-openid-connect" />
-			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security-sso/portal-security-sso-opensso" />
+			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security-sso/portal-security-sso-token" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-settings/portal-settings-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-template/portal-template-soy" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/text-localizer/text-localizer-address" />
@@ -106,19 +103,15 @@
 			<property name="allowedExportPackageDirName" value="modules/apps/static/" />
 			<property name="allowedExportPackageDirName" value="modules/apps/sync/sync-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/asset/asset-categories-admin-web" />
-			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/asset/asset-display-template-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/asset/asset-publisher-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/asset/asset-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/export-import/export-import-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/export-import/export-import-web" />
-			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/fragment/fragment-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/layout/layout-item-selector-web" />
-			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/layout/layout-page-template-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/portlet-display-template/portlet-display-template" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/product-navigation/product-navigation-product-menu-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/rss/rss-util" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/rss/rss-web" />
-			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/site-navigation/site-navigation-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/web-experience/staging/staging-portlet-data-handler" />
 		</check>
 		<check name="BNDIncludeResourceCheck" />
