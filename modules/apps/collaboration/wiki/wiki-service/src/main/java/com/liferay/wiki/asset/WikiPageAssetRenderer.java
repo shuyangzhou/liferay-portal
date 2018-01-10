@@ -16,6 +16,7 @@ package com.liferay.wiki.asset;
 
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.BaseJSPAssetRenderer;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -54,7 +55,9 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author Julio Camarero
  * @author Sergio González
+ * @deprecated As of 1.7.0, with no direct replacement
  */
+@Deprecated
 public class WikiPageAssetRenderer
 	extends BaseJSPAssetRenderer<WikiPage> implements TrashRenderer {
 
@@ -315,19 +318,25 @@ public class WikiPageAssetRenderer
 		return _page.getUuid();
 	}
 
-	public boolean hasDeletePermission(PermissionChecker permissionChecker) {
+	public boolean hasDeletePermission(PermissionChecker permissionChecker)
+		throws PortalException {
+
 		return WikiPagePermissionChecker.contains(
 			permissionChecker, _page, ActionKeys.DELETE);
 	}
 
 	@Override
-	public boolean hasEditPermission(PermissionChecker permissionChecker) {
+	public boolean hasEditPermission(PermissionChecker permissionChecker)
+		throws PortalException {
+
 		return WikiPagePermissionChecker.contains(
 			permissionChecker, _page, ActionKeys.UPDATE);
 	}
 
 	@Override
-	public boolean hasViewPermission(PermissionChecker permissionChecker) {
+	public boolean hasViewPermission(PermissionChecker permissionChecker)
+		throws PortalException {
+
 		return WikiPagePermissionChecker.contains(
 			permissionChecker, _page, ActionKeys.VIEW);
 	}

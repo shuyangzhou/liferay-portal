@@ -15,7 +15,7 @@
 package com.liferay.document.library.layout.set.prototype.internal.instance.lifecycle;
 
 import com.liferay.asset.publisher.web.constants.AssetPublisherPortletKeys;
-import com.liferay.document.library.web.constants.DLPortletKeys;
+import com.liferay.document.library.constants.DLPortletKeys;
 import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.DefaultLayoutPrototypesUtil;
 import com.liferay.portal.kernel.util.DefaultLayoutSetPrototypesUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.rss.web.constants.RSSPortletKeys;
+import com.liferay.rss.constants.RSSPortletKeys;
 import com.liferay.site.navigation.language.constants.SiteNavigationLanguagePortletKeys;
 import com.liferay.social.activities.constants.SocialActivitiesPortletKeys;
 

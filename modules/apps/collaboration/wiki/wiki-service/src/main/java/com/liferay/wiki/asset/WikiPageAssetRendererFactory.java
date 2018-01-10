@@ -15,7 +15,6 @@
 package com.liferay.wiki.asset;
 
 import com.liferay.asset.kernel.model.AssetRenderer;
-import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.BaseAssetRendererFactory;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -37,7 +36,6 @@ import javax.portlet.WindowStateException;
 
 import javax.servlet.ServletContext;
 
-import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -46,11 +44,9 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jorge Ferrer
  * @author Raymond Augé
  * @author Sergio González
+ * @deprecated As of 1.7.0, with no direct replacement
  */
-@Component(
-	immediate = true, property = {"javax.portlet.name=" + WikiPortletKeys.WIKI},
-	service = AssetRendererFactory.class
-)
+@Deprecated
 public class WikiPageAssetRendererFactory
 	extends BaseAssetRendererFactory<WikiPage> {
 
