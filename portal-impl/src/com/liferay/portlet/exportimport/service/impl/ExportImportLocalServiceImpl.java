@@ -16,6 +16,7 @@ package com.liferay.portlet.exportimport.service.impl;
 
 import com.liferay.document.library.kernel.util.DLValidatorUtil;
 import com.liferay.exportimport.kernel.background.task.BackgroundTaskExecutorNames;
+import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationFactory;
 import com.liferay.exportimport.kernel.controller.ExportController;
 import com.liferay.exportimport.kernel.controller.ExportImportControllerRegistryUtil;
 import com.liferay.exportimport.kernel.controller.ImportController;
@@ -30,6 +31,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -67,6 +69,25 @@ public class ExportImportLocalServiceImpl
 		catch (Exception e) {
 			throw new SystemException(e);
 		}
+	}
+
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
+	public File exportLayoutsAsFile(
+			long userId, long groupId, boolean privateLayout,
+			Map<String, String[]> parameterMap)
+		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
+
+		ExportImportConfiguration exportImportConfiguration =
+			ExportImportConfigurationFactory.
+				buildDefaultLocalPublishingExportImportConfiguration(
+					user, groupId, 0, privateLayout, parameterMap);
+
+		return exportLayoutsAsFile(exportImportConfiguration);
 	}
 
 	@Override
@@ -225,6 +246,25 @@ public class ExportImportLocalServiceImpl
 		finally {
 			FileUtil.delete(file);
 		}
+	}
+
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
+	public void importLayouts(
+			long userId, long groupId, boolean privateLayout,
+			Map<String, String[]> parameterMap, File file)
+		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
+
+		ExportImportConfiguration exportImportConfiguration =
+			ExportImportConfigurationFactory.
+				buildDefaultLocalPublishingExportImportConfiguration(
+					user, 0, groupId, privateLayout, parameterMap);
+
+		importLayouts(exportImportConfiguration, file);
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 Bundle-Name: ${manifest.bundle.name}
 Bundle-SymbolicName: ${manifest.bundle.symbolic.name}
-Bundle-Version: 2.59.0
+Bundle-Version: 2.60.0
 Export-Package:\
 	!com.liferay.portal.kernel.internal.*,\
 	!com.liferay.portal.kernel.test.*,\
@@ -16,4 +16,4 @@ Include-Resource:\
 	@../tmp/lib-pre/com.liferay.portal.kernel.message.boards.compat.jar,\
 	@../tmp/lib-pre/com.liferay.portal.kernel.nio.compat.jar,\
 	@../tmp/lib-pre/com.liferay.portal.kernel.util.compat.jar
--baseline: *;file=${project.dir}/.bnd/ant-baseline-cache/com.liferay.portal.kernel-2.58.0.jar
+-baseline: *;file=${project.dir}/.bnd/ant-baseline-cache/com.liferay.portal.kernel-2.59.0.jar
