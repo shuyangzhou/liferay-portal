@@ -15,10 +15,10 @@
 package com.liferay.adaptive.media.blogs.web.internal.blogs.util;
 
 import com.liferay.blogs.util.BlogsEntryAttachmentContentUpdater;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepository;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
