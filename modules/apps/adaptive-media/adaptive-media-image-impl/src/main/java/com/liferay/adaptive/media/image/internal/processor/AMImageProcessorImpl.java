@@ -17,13 +17,13 @@ package com.liferay.adaptive.media.image.internal.processor;
 import com.liferay.adaptive.media.exception.AMRuntimeException;
 import com.liferay.adaptive.media.image.configuration.AMImageConfigurationEntry;
 import com.liferay.adaptive.media.image.configuration.AMImageConfigurationHelper;
-import com.liferay.adaptive.media.image.mime.type.AMImageMimeTypeProvider;
 import com.liferay.adaptive.media.image.model.AMImageEntry;
 import com.liferay.adaptive.media.image.processor.AMImageProcessor;
 import com.liferay.adaptive.media.image.scaler.AMImageScaledImage;
 import com.liferay.adaptive.media.image.scaler.AMImageScaler;
 import com.liferay.adaptive.media.image.scaler.AMImageScalerTracker;
 import com.liferay.adaptive.media.image.service.AMImageEntryLocalService;
+import com.liferay.adaptive.media.image.validator.AMImageValidator;
 import com.liferay.adaptive.media.processor.AMProcessor;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -50,9 +50,7 @@ public final class AMImageProcessorImpl implements AMImageProcessor {
 	@Override
 	public void cleanUp(FileVersion fileVersion) {
 		try {
-			if (!_amImageMimeTypeProvider.isMimeTypeSupported(
-					fileVersion.getMimeType())) {
-
+			if (!_amImageValidator.isValid(fileVersion)) {
 				return;
 			}
 
@@ -66,9 +64,7 @@ public final class AMImageProcessorImpl implements AMImageProcessor {
 
 	@Override
 	public void process(FileVersion fileVersion) {
-		if (!_amImageMimeTypeProvider.isMimeTypeSupported(
-				fileVersion.getMimeType())) {
-
+		if (!_amImageValidator.isValid(fileVersion)) {
 			return;
 		}
 
@@ -85,9 +81,7 @@ public final class AMImageProcessorImpl implements AMImageProcessor {
 	public void process(
 		FileVersion fileVersion, String configurationEntryUuid) {
 
-		if (!_amImageMimeTypeProvider.isMimeTypeSupported(
-				fileVersion.getMimeType())) {
-
+		if (!_amImageValidator.isValid(fileVersion)) {
 			return;
 		}
 
@@ -159,22 +153,20 @@ public final class AMImageProcessorImpl implements AMImageProcessor {
 	}
 
 	@Reference(unbind = "-")
-	public void setAMImageMimeTypeProvider(
-		AMImageMimeTypeProvider amImageMimeTypeProvider) {
-
-		_amImageMimeTypeProvider = amImageMimeTypeProvider;
-	}
-
-	@Reference(unbind = "-")
 	public void setAMImageScalerTracker(
 		AMImageScalerTracker amImageScalerTracker) {
 
 		_amImageScalerTracker = amImageScalerTracker;
 	}
 
+	@Reference(unbind = "-")
+	public void setAMImageValidator(AMImageValidator amImageValidator) {
+		_amImageValidator = amImageValidator;
+	}
+
 	private AMImageConfigurationHelper _amImageConfigurationHelper;
 	private AMImageEntryLocalService _amImageEntryLocalService;
-	private AMImageMimeTypeProvider _amImageMimeTypeProvider;
 	private AMImageScalerTracker _amImageScalerTracker;
+	private AMImageValidator _amImageValidator;
 
 }
