@@ -16,11 +16,11 @@ package com.liferay.adaptive.media.web.internal.processor;
 
 import com.liferay.adaptive.media.AMURIResolver;
 import com.liferay.adaptive.media.web.internal.constants.AMWebConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.net.URI;
 
@@ -60,9 +60,11 @@ public class DefaultAMURIResolverTest {
 
 		String uriString = uri.toString();
 
-		Assert.assertTrue(uriString.contains(pathModule));
-		Assert.assertTrue(uriString.contains(AMWebConstants.SERVLET_PATH));
-		Assert.assertTrue(uriString.contains(relativeURI.toString()));
+		Assert.assertTrue(uriString, uriString.contains(pathModule));
+		Assert.assertTrue(
+			uriString, uriString.contains(AMWebConstants.SERVLET_PATH));
+		Assert.assertTrue(
+			uriString, uriString.contains(relativeURI.toString()));
 	}
 
 	@Test
@@ -82,9 +84,11 @@ public class DefaultAMURIResolverTest {
 
 		String uriString = uri.toString();
 
-		Assert.assertTrue(uriString.contains(pathModule));
-		Assert.assertTrue(uriString.contains(AMWebConstants.SERVLET_PATH));
-		Assert.assertTrue(uriString.contains(relativeURI.toString()));
+		Assert.assertTrue(uriString, uriString.contains(pathModule));
+		Assert.assertTrue(
+			uriString, uriString.contains(AMWebConstants.SERVLET_PATH));
+		Assert.assertTrue(
+			uriString, uriString.contains(relativeURI.toString()));
 	}
 
 	private final AMURIResolver _amURIResolver = new DefaultAMURIResolver();

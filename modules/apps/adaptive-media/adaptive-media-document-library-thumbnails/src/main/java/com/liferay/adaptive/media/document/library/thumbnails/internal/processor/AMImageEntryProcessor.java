@@ -20,6 +20,9 @@ import com.liferay.adaptive.media.image.finder.AMImageFinder;
 import com.liferay.adaptive.media.image.mime.type.AMImageMimeTypeProvider;
 import com.liferay.adaptive.media.image.processor.AMImageAttribute;
 import com.liferay.adaptive.media.image.processor.AMImageProcessor;
+import com.liferay.adaptive.media.image.validator.AMImageValidator;
+import com.liferay.adaptive.media.processor.AMAsyncProcessor;
+import com.liferay.adaptive.media.processor.AMAsyncProcessorLocator;
 import com.liferay.document.library.kernel.model.DLProcessorConstants;
 import com.liferay.document.library.kernel.util.DLProcessor;
 import com.liferay.document.library.kernel.util.ImageProcessor;
@@ -29,7 +32,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.xml.Element;
@@ -118,6 +120,10 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 		Optional<AdaptiveMedia<AMImageProcessor>> adaptiveMediaOptional =
 			adaptiveMediaStream.findFirst();
 
+		if (!adaptiveMediaOptional.isPresent()) {
+			_processAMImage(fileVersion);
+		}
+
 		return adaptiveMediaOptional.map(
 			AdaptiveMedia::getInputStream
 		).orElse(
@@ -134,6 +140,10 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 
 		Optional<AdaptiveMedia<AMImageProcessor>> adaptiveMediaOptional =
 			adaptiveMediaStream.findFirst();
+
+		if (!adaptiveMediaOptional.isPresent()) {
+			_processAMImage(fileVersion);
+		}
 
 		return adaptiveMediaOptional.flatMap(
 			mediaMedia -> mediaMedia.getValueOptional(
@@ -166,6 +176,8 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 				return true;
 			}
 
+			_processAMImage(fileVersion);
+
 			return false;
 		}
 		catch (PortalException pe) {
@@ -186,7 +198,7 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 
 	@Override
 	public boolean isImageSupported(FileVersion fileVersion) {
-		return _isMimeTypeSupported(fileVersion.getMimeType());
+		return _amImageValidator.isValid(fileVersion);
 	}
 
 	@Override
@@ -196,12 +208,36 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 
 	@Override
 	public boolean isSupported(FileVersion fileVersion) {
-		return _isMimeTypeSupported(fileVersion.getMimeType());
+		return _amImageValidator.isValid(fileVersion);
 	}
 
 	@Override
 	public boolean isSupported(String mimeType) {
 		return _isMimeTypeSupported(mimeType);
+	}
+
+	@Reference(unbind = "-")
+	public void setAMAsyncProcessorLocator(
+		AMAsyncProcessorLocator amAsyncProcessorLocator) {
+
+		_amAsyncProcessorLocator = amAsyncProcessorLocator;
+	}
+
+	@Reference(unbind = "-")
+	public void setAMImageFinder(AMImageFinder amImageFinder) {
+		_amImageFinder = amImageFinder;
+	}
+
+	@Reference(unbind = "-")
+	public void setAMImageMimeTypeProvider(
+		AMImageMimeTypeProvider amImageMimeTypeProvider) {
+
+		_amImageMimeTypeProvider = amImageMimeTypeProvider;
+	}
+
+	@Reference(unbind = "-")
+	public void setAMImageValidator(AMImageValidator amImageValidator) {
+		_amImageValidator = amImageValidator;
 	}
 
 	@Override
@@ -236,19 +272,36 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 	}
 
 	private boolean _isMimeTypeSupported(String mimeType) {
-		return ArrayUtil.contains(
-			_amImageMimeTypeProvider.getSupportedMimeTypes(), mimeType);
+		return _amImageMimeTypeProvider.isMimeTypeSupported(mimeType);
+	}
+
+	private void _processAMImage(FileVersion fileVersion) {
+		if (!_amImageValidator.isValid(fileVersion)) {
+			return;
+		}
+
+		try {
+			AMAsyncProcessor<FileVersion, ?> amAsyncProcessor =
+				_amAsyncProcessorLocator.locateForClass(FileVersion.class);
+
+			amAsyncProcessor.triggerProcess(
+				fileVersion, String.valueOf(fileVersion.getFileVersionId()));
+		}
+		catch (PortalException pe) {
+			_log.error(
+				"Unable to create lazy adaptive media for file version " +
+					fileVersion.getFileVersionId(),
+				pe);
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AMImageEntryProcessor.class);
 
-	@Reference
+	private AMAsyncProcessorLocator _amAsyncProcessorLocator;
 	private AMImageFinder _amImageFinder;
-
-	@Reference
 	private AMImageMimeTypeProvider _amImageMimeTypeProvider;
-
+	private AMImageValidator _amImageValidator;
 	private final ImageProcessor _imageProcessor = new ImageProcessorImpl();
 
 }
