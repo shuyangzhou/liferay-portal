@@ -1,4 +1,4 @@
-FROM liferay/portal-tomcat-mysql:master-2089294ff076c896108e5cffcf0efe66b165afad
+FROM liferay/portal-tomcat-mysql:master-ae2014bf020d5042231e0ea754f3fb5914a5130b
 MAINTAINER Sergio González <sergio.gonzalez@liferay.com>
 
 RUN rm $LIFERAY_HOME/osgi/modules/com.liferay.adaptive.media*.jar

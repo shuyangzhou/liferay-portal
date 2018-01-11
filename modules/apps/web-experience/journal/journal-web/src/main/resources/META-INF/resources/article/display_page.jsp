@@ -21,9 +21,9 @@ JournalArticle article = journalDisplayContext.getArticle();
 
 long groupId = BeanParamUtil.getLong(article, request, "groupId", scopeGroupId);
 
-long classNameId = ParamUtil.getLong(request, "classNameId");
-
 Group group = GroupLocalServiceUtil.fetchGroup(groupId);
+
+long classNameId = ParamUtil.getLong(request, "classNameId");
 
 boolean changeStructure = GetterUtil.getBoolean(request.getAttribute("edit_article.jsp-changeStructure"));
 %>
