@@ -63,7 +63,7 @@ public class AMImageHTMLTagFactoryImplTest {
 
 		expectedSB.append("<picture data-fileEntryId=\"1234\">");
 		expectedSB.append("<source media=\"(max-width:1989px)\" ");
-		expectedSB.append("srcset=\"adaptiveURL\"/>");
+		expectedSB.append("srcset=\"adaptiveURL\" />");
 		expectedSB.append("<img src=\"originalURL\"/>");
 		expectedSB.append("</picture>");
 
@@ -84,13 +84,13 @@ public class AMImageHTMLTagFactoryImplTest {
 		String originalImgTag =
 			"<img src=\"originalURL\" data-fileEntryId=\"1234\"/>";
 
-		StringBundler expectedSB = new StringBundler(8);
+		StringBundler expectedSB = new StringBundler(7);
 
 		expectedSB.append("<picture data-fileEntryId=\"1234\">");
 		expectedSB.append("<source media=\"(max-width:1986px)\" ");
-		expectedSB.append("srcset=\"adaptiveURL1\"/>");
+		expectedSB.append("srcset=\"adaptiveURL1\" />");
 		expectedSB.append("<source media=\"(max-width:1989px)\" ");
-		expectedSB.append("srcset=\"adaptiveURL2\"/>");
+		expectedSB.append("srcset=\"adaptiveURL2\" />");
 		expectedSB.append("<img src=\"originalURL\"/>");
 		expectedSB.append("</picture>");
 
@@ -106,7 +106,7 @@ public class AMImageHTMLTagFactoryImplTest {
 			new MediaQuery(
 				Collections.emptyList(), RandomTestUtil.randomString()));
 
-		StringBundler expectedSB = new StringBundler(8);
+		StringBundler expectedSB = new StringBundler(3);
 
 		expectedSB.append("<picture data-fileEntryId=\"1234\">");
 		expectedSB.append("<img src=\"originalURL\"/>");
@@ -146,11 +146,11 @@ public class AMImageHTMLTagFactoryImplTest {
 		originalSB.append(CharPool.NEW_LINE);
 		originalSB.append("src=\"adaptable\"/>");
 
-		StringBundler expectedSB = new StringBundler(6);
+		StringBundler expectedSB = new StringBundler(5);
 
 		expectedSB.append("<picture data-fileEntryId=\"1234\">");
 		expectedSB.append("<source media=\"(max-width:1989px)\" ");
-		expectedSB.append("srcset=\"adaptiveURL\"/>");
+		expectedSB.append("srcset=\"adaptiveURL\" />");
 		expectedSB.append("<img \nsrc=\"adaptable\"/>");
 		expectedSB.append("</picture>");
 
@@ -171,7 +171,7 @@ public class AMImageHTMLTagFactoryImplTest {
 
 		expectedSB.append("<picture data-fileEntryId=\"1234\">");
 		expectedSB.append("<source media=\"(max-width:1989px)\" ");
-		expectedSB.append("srcset=\"adaptiveURL\"/>");
+		expectedSB.append("srcset=\"adaptiveURL\" />");
 		expectedSB.append("<img src=\"originalURL\"/>");
 		expectedSB.append("</picture>");
 
