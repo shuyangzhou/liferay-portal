@@ -16,6 +16,7 @@ package com.liferay.adaptive.media.document.library.internal.repository.registry
 
 import com.liferay.adaptive.media.processor.AMAsyncProcessor;
 import com.liferay.adaptive.media.processor.AMAsyncProcessorLocator;
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.repository.DocumentRepository;
@@ -140,6 +141,10 @@ public abstract class BaseOverridingRepositoryDefiner
 	}
 
 	private void _deleteAdaptiveMedia(FileEntry fileEntry) {
+		if (ExportImportThreadLocal.isImportInProcess()) {
+			return;
+		}
+
 		try {
 			AMAsyncProcessor<FileVersion, ?> amAsyncProcessor =
 				_amAsyncProcessorLocator.locateForClass(FileVersion.class);
@@ -181,6 +186,10 @@ public abstract class BaseOverridingRepositoryDefiner
 	}
 
 	private void _updateAdaptiveMedia(FileEntry fileEntry) {
+		if (ExportImportThreadLocal.isImportInProcess()) {
+			return;
+		}
+
 		try {
 			AMAsyncProcessor<FileVersion, ?> amAsyncProcessor =
 				_amAsyncProcessorLocator.locateForClass(FileVersion.class);

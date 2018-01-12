@@ -19,7 +19,7 @@ import com.liferay.fragment.model.FragmentCollection;
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.service.FragmentCollectionServiceUtil;
 import com.liferay.fragment.service.FragmentEntryServiceUtil;
-import com.liferay.fragment.web.internal.security.permission.FragmentPermission;
+import com.liferay.fragment.web.internal.security.permission.resource.FragmentPermission;
 import com.liferay.fragment.web.util.FragmentPortletUtil;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -100,7 +100,8 @@ public class FragmentDisplayContext {
 	public String getEditFragmentEntryRedirect() throws PortalException {
 		PortletURL portletURL = _renderResponse.createRenderURL();
 
-		portletURL.setParameter("mvcPath", "/view_fragment_entries.jsp");
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/fragment/view_fragment_entries");
 
 		if (getFragmentCollectionId() > 0) {
 			portletURL.setParameter(
@@ -140,7 +141,7 @@ public class FragmentDisplayContext {
 		if (Validator.isNull(redirect)) {
 			PortletURL backURL = _renderResponse.createRenderURL();
 
-			backURL.setParameter("mvcPath", "/view.jsp");
+			backURL.setParameter("mvcRenderCommandName", "/fragment/view");
 
 			redirect = backURL.toString();
 		}

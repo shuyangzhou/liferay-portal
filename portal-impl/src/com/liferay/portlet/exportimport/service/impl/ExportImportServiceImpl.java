@@ -53,6 +53,22 @@ public class ExportImportServiceImpl extends ExportImportServiceBaseImpl {
 			exportImportConfiguration);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
+	public File exportLayoutsAsFile(
+			long userId, long groupId, boolean privateLayout,
+			Map<String, String[]> parameterMap)
+		throws PortalException {
+
+		GroupPermissionUtil.check(
+			getPermissionChecker(), groupId, ActionKeys.EXPORT_IMPORT_LAYOUTS);
+
+		return exportImportLocalService.exportLayoutsAsFile(
+			userId, groupId, privateLayout, parameterMap);
+	}
+
 	@Override
 	public long exportLayoutsAsFileInBackground(
 			ExportImportConfiguration exportImportConfiguration)
@@ -157,6 +173,23 @@ public class ExportImportServiceImpl extends ExportImportServiceBaseImpl {
 
 		exportImportLocalService.importLayouts(
 			exportImportConfiguration, inputStream);
+	}
+
+	/**
+	 * @deprecated As of 7.0.0
+	 */
+	@Deprecated
+	@Override
+	public void importLayouts(
+			long userId, long groupId, boolean privateLayout,
+			Map<String, String[]> parameterMap, File file)
+		throws PortalException {
+
+		GroupPermissionUtil.check(
+			getPermissionChecker(), groupId, ActionKeys.EXPORT_IMPORT_LAYOUTS);
+
+		exportImportLocalService.importLayouts(
+			userId, groupId, privateLayout, parameterMap, file);
 	}
 
 	@Override

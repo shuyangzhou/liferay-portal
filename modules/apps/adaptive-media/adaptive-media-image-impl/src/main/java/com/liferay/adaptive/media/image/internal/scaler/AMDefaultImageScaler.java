@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.image.ImageToolUtil;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 
 import java.awt.image.RenderedImage;
 
@@ -69,7 +70,14 @@ public class AMDefaultImageScaler implements AMImageScaler {
 				scaledRenderedImage.getWidth());
 		}
 		catch (IOException | PortalException e) {
-			throw new AMRuntimeException.IOException(e);
+			StringBundler sb = new StringBundler(4);
+
+			sb.append("Unable to scale file entry ");
+			sb.append(fileVersion.getFileEntryId());
+			sb.append(" to match adaptive media configuration ");
+			sb.append(amImageConfigurationEntry.getUUID());
+
+			throw new AMRuntimeException.IOException(sb.toString(), e);
 		}
 	}
 
