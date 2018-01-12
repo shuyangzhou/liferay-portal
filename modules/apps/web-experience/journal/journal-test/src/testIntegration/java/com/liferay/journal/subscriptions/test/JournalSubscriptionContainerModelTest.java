@@ -21,7 +21,6 @@ import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.journal.service.JournalFolderLocalServiceUtil;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
@@ -36,7 +35,6 @@ import org.junit.runner.RunWith;
  * @author Roberto Díaz
  */
 @RunWith(Arquillian.class)
-@Sync
 public class JournalSubscriptionContainerModelTest
 	extends BaseSubscriptionContainerModelTestCase {
 

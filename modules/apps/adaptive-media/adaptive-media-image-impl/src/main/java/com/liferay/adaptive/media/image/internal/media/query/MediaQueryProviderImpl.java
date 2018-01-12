@@ -255,21 +255,21 @@ public class MediaQueryProviderImpl implements MediaQueryProvider {
 			Optional<AdaptiveMedia<AMImageProcessor>> hdAdaptiveMediaOptional)
 		throws PortalException {
 
-		StringBundler src = new StringBundler(3);
+		StringBundler sb = new StringBundler(4);
 
 		List<Condition> conditions = _getConditions(
 			adaptiveMedia, previousAdaptiveMedia);
 
-		src.append(adaptiveMedia.getURI());
+		sb.append(adaptiveMedia.getURI());
 
 		hdAdaptiveMediaOptional.ifPresent(
 			hdAdaptiveMedia -> {
-				src.append(", ");
-				src.append(hdAdaptiveMedia.getURI());
-				src.append(" 2x");
+				sb.append(", ");
+				sb.append(hdAdaptiveMedia.getURI());
+				sb.append(" 2x");
 			});
 
-		return new MediaQuery(conditions, src.toString());
+		return new MediaQuery(conditions, sb.toString());
 	}
 
 	private Optional<Integer> _getPropertiesValue(

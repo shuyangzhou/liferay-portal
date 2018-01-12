@@ -26,8 +26,6 @@ import com.liferay.portal.kernel.model.ClassedModel;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.Sync;
-import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -62,7 +60,6 @@ import org.junit.runner.RunWith;
  * @author Eudaldo Alonso
  */
 @RunWith(Arquillian.class)
-@Sync
 public class JournalFolderTrashHandlerTest
 	extends BaseTrashHandlerTestCase
 	implements WhenCanBeDuplicatedInTrash, WhenHasGrandParent,
@@ -74,9 +71,7 @@ public class JournalFolderTrashHandlerTest
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
-		new AggregateTestRule(
-			new LiferayIntegrationTestRule(),
-			SynchronousDestinationTestRule.INSTANCE);
+		new LiferayIntegrationTestRule();
 
 	@BeforeClass
 	public static void setUpClass() {

@@ -21,7 +21,11 @@ import com.liferay.portal.kernel.model.Layout;
 
 /**
  * @author Eduardo Garcia
+ * @deprecated As of 7.0.0, replaced by {@link
+ *             com.liferay.message.boards.internal.model.listener.
+ *             LayoutModelListener}
  */
+@Deprecated
 public class LayoutModelListener extends BaseModelListener<Layout> {
 
 	@Override

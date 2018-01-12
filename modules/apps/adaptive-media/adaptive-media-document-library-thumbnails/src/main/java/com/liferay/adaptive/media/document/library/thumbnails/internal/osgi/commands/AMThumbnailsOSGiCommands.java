@@ -22,6 +22,7 @@ import com.liferay.adaptive.media.image.service.AMImageEntryLocalService;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.image.ImageBag;
 import com.liferay.portal.kernel.image.ImageToolUtil;
@@ -34,7 +35,6 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.awt.image.RenderedImage;

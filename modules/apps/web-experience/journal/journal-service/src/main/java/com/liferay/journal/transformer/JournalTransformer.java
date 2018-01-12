@@ -327,6 +327,10 @@ public class JournalTransformer {
 
 					HttpServletRequest request = themeDisplay.getRequest();
 
+					if (request != null) {
+						template.prepare(request);
+					}
+
 					templateManager.addTaglibSupport(
 						template, request, themeDisplay.getResponse());
 					templateManager.addTaglibTheme(

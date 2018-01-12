@@ -19,12 +19,12 @@ import com.liferay.adaptive.media.AdaptiveMedia;
 import com.liferay.adaptive.media.exception.AMException;
 import com.liferay.adaptive.media.handler.AMRequestHandler;
 import com.liferay.adaptive.media.web.internal.constants.AMWebConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.IOException;
 

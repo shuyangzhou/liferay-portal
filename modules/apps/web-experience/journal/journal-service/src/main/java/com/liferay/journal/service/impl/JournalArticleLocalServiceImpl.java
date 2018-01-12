@@ -151,7 +151,6 @@ import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.MathUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -408,9 +407,7 @@ public class JournalArticleLocalServiceImpl
 
 		Locale locale = getArticleDefaultLocale(content);
 
-		if (MapUtil.isEmpty(friendlyURLMap)) {
-			friendlyURLMap = titleMap;
-		}
+		friendlyURLMap = _checkFriendlyURLMap(locale, friendlyURLMap, titleMap);
 
 		Map<String, String> urlTitleMap = _getURLTitleMap(
 			groupId, resourcePrimKey, friendlyURLMap);
@@ -9059,6 +9056,25 @@ public class JournalArticleLocalServiceImpl
 
 		return journalArticleLocalizationPersistence.update(
 			journalArticleLocalization);
+	}
+
+	private Map<Locale, String> _checkFriendlyURLMap(
+		Locale defaultLocale, Map<Locale, String> friendlyURLMap,
+		Map<Locale, String> titleMap) {
+
+		for (Map.Entry<Locale, String> friendlyURL :
+				friendlyURLMap.entrySet()) {
+
+			if (Validator.isNotNull(friendlyURL.getValue())) {
+				return friendlyURLMap;
+			}
+		}
+
+		Map<Locale, String> defaultFriendlyURLMap = new HashMap<>();
+
+		defaultFriendlyURLMap.put(defaultLocale, titleMap.get(defaultLocale));
+
+		return defaultFriendlyURLMap;
 	}
 
 	private int _getUniqueUrlTitleCount(
