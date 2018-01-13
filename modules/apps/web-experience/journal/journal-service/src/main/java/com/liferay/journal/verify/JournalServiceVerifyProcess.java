@@ -529,8 +529,8 @@ public class JournalServiceVerifyProcess extends VerifyLayout {
 
 			StringBundler sb = new StringBundler(15);
 
-			sb.append("select JournalArticle.* from JournalArticle left ");
-			sb.append("join JournalArticle tempJournalArticle on ");
+			sb.append("select JournalArticle.* from JournalArticle left join ");
+			sb.append("JournalArticle tempJournalArticle on ");
 			sb.append("(JournalArticle.groupId = tempJournalArticle.groupId) ");
 			sb.append("and (JournalArticle.articleId = ");
 			sb.append("tempJournalArticle.articleId) and ");

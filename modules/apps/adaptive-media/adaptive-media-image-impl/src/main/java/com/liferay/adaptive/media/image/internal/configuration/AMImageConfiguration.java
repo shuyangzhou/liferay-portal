@@ -49,4 +49,16 @@ public interface AMImageConfiguration {
 	)
 	public boolean gifsicleEnabled();
 
+	/**
+	 * Set the maximum image size for adaptive media generation. Images larger
+	 * than this value will not generate adaptive media images. A value of -1
+	 * indicates that all images will generate adaptive media images. A value of
+	 * 0 indicates that no adaptive media images will be generated.
+	 */
+	@Meta.AD(
+		deflt = "10485760", description = "max-image-size-key-description",
+		name = "max-image-size", required = false
+	)
+	public int imageMaxSize();
+
 }

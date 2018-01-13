@@ -37,7 +37,7 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	property = {
 		"javax.portlet.name=" + FragmentPortletKeys.FRAGMENT,
-		"mvc.command.name=editFragmentEntry"
+		"mvc.command.name=/fragment/edit_fragment_entry"
 	},
 	service = MVCActionCommand.class
 )
@@ -55,19 +55,20 @@ public class EditFragmentEntryMVCActionCommand extends BaseMVCActionCommand {
 		String css = ParamUtil.getString(actionRequest, "cssContent");
 		String js = ParamUtil.getString(actionRequest, "jsContent");
 		String html = ParamUtil.getString(actionRequest, "htmlContent");
+		int status = ParamUtil.getInteger(actionRequest, "status");
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			actionRequest);
 
 		try {
 			_fragmentEntryService.updateFragmentEntry(
-				fragmentEntryId, name, css, html, js, serviceContext);
+				fragmentEntryId, name, css, html, js, status, serviceContext);
 		}
 		catch (FragmentEntryContentException fece) {
 			hideDefaultErrorMessage(actionRequest);
 
 			actionResponse.setRenderParameter(
-				"mvcPath", "/edit_fragment_entry.jsp");
+				"mvcRenderCommandName", "/fragment/edit_fragment_entry");
 			actionResponse.setRenderParameter(
 				"fragmentEntryId", String.valueOf(fragmentEntryId));
 			actionResponse.setRenderParameter("cssContent", css);

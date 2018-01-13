@@ -127,8 +127,8 @@ public class KaleoTaskFormInstanceLocalServiceImpl
 	}
 
 	@Override
-	public KaleoTaskFormInstance
-		fetchKaleoTaskFormKaleoTaskFormInstance(long kaleoTaskFormId) {
+	public KaleoTaskFormInstance fetchKaleoTaskFormKaleoTaskFormInstance(
+		long kaleoTaskFormId) {
 
 		return kaleoTaskFormInstancePersistence.fetchByKaleoTaskFormId(
 			kaleoTaskFormId);

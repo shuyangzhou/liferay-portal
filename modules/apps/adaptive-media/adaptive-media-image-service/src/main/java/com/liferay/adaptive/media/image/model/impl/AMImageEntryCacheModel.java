@@ -18,10 +18,11 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.adaptive.media.image.model.AMImageEntry;
 
+import com.liferay.petra.string.StringPool;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -100,7 +101,7 @@ public class AMImageEntryCacheModel implements CacheModel<AMImageEntry>,
 		AMImageEntryImpl amImageEntryImpl = new AMImageEntryImpl();
 
 		if (uuid == null) {
-			amImageEntryImpl.setUuid(StringPool.BLANK);
+			amImageEntryImpl.setUuid("");
 		}
 		else {
 			amImageEntryImpl.setUuid(uuid);
@@ -118,7 +119,7 @@ public class AMImageEntryCacheModel implements CacheModel<AMImageEntry>,
 		}
 
 		if (configurationUuid == null) {
-			amImageEntryImpl.setConfigurationUuid(StringPool.BLANK);
+			amImageEntryImpl.setConfigurationUuid("");
 		}
 		else {
 			amImageEntryImpl.setConfigurationUuid(configurationUuid);
@@ -127,7 +128,7 @@ public class AMImageEntryCacheModel implements CacheModel<AMImageEntry>,
 		amImageEntryImpl.setFileVersionId(fileVersionId);
 
 		if (mimeType == null) {
-			amImageEntryImpl.setMimeType(StringPool.BLANK);
+			amImageEntryImpl.setMimeType("");
 		}
 		else {
 			amImageEntryImpl.setMimeType(mimeType);
@@ -168,7 +169,7 @@ public class AMImageEntryCacheModel implements CacheModel<AMImageEntry>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -182,7 +183,7 @@ public class AMImageEntryCacheModel implements CacheModel<AMImageEntry>,
 		objectOutput.writeLong(createDate);
 
 		if (configurationUuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(configurationUuid);
@@ -191,7 +192,7 @@ public class AMImageEntryCacheModel implements CacheModel<AMImageEntry>,
 		objectOutput.writeLong(fileVersionId);
 
 		if (mimeType == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(mimeType);
