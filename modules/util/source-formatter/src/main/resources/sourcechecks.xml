@@ -20,7 +20,6 @@
 		<check name="BNDBundleInformationCheck" />
 		<check name="BNDDirectoryNameCheck" />
 		<check name="BNDExportsCheck">
-			<property name="allowedExportPackageDirName" value="apio-architect-sample-liferay-portal" />
 			<property name="allowedExportPackageDirName" value="dynamic-data-mapping-data-provider" />
 			<property name="allowedExportPackageDirName" value="dynamic-data-mapping-expression" />
 			<property name="allowedExportPackageDirName" value="dynamic-data-mapping-form-builder" />
