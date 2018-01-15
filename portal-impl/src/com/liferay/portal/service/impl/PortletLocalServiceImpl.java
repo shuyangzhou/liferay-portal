@@ -79,6 +79,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.xml.Attribute;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.QName;
@@ -746,7 +747,13 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 			Set<String> servletURLPatterns = readWebXML(xmls[4]);
 
-			_readWebXML(xmls[4], portletApp.getServletContextName());
+			ExtraPortletAppConfig extraPortletAppConfig =
+				new ExtraPortletAppConfig();
+
+			extraPortletAppConfig.setLocaleEncodings(
+				_readLocaleEncodings(xmls[4]));
+			ExtraPortletAppConfigRegistry.registerExtraPortletAppConfig(
+				portletApp.getServletContextName(), extraPortletAppConfig);
 
 			Map<String, Portlet> portletsMap = readPortletXML(
 				StringPool.BLANK, servletContext, xmls[0], servletURLPatterns,
@@ -851,7 +858,13 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		try {
 			Set<String> servletURLPatterns = readWebXML(xmls[3]);
 
-			_readWebXML(xmls[3], servletContextName);
+			ExtraPortletAppConfig extraPortletAppConfig =
+				new ExtraPortletAppConfig();
+
+			extraPortletAppConfig.setLocaleEncodings(
+				_readLocaleEncodings(xmls[3]));
+			ExtraPortletAppConfigRegistry.registerExtraPortletAppConfig(
+				servletContextName, extraPortletAppConfig);
 
 			portletsMap = readPortletXML(
 				servletContextName, servletContext, xmls[0], servletURLPatterns,
@@ -2449,6 +2462,30 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		portletApp.addServletURLPatterns(servletURLPatterns);
 		portletApp.setServletContext(servletContext);
 
+		ExtraPortletAppConfig extraPortletAppConfig =
+			ExtraPortletAppConfigRegistry.getExtraPortletAppConfig(
+				servletContextName);
+
+		extraPortletAppConfig.setPortletSpecMajorVersion(2);
+		extraPortletAppConfig.setPortletSpecMinorVersion(0);
+
+		Attribute rootVersionAttribute = rootElement.attribute("version");
+
+		if (rootVersionAttribute != null) {
+			String[] portletSpecVersion = StringUtil.split(
+				rootVersionAttribute.getValue(), CharPool.PERIOD);
+
+			if (portletSpecVersion.length > 0) {
+				extraPortletAppConfig.setPortletSpecMajorVersion(
+					GetterUtil.getInteger(portletSpecVersion[0], 2));
+
+				if (portletSpecVersion.length > 1) {
+					extraPortletAppConfig.setPortletSpecMinorVersion(
+						GetterUtil.getInteger(portletSpecVersion[1]));
+				}
+			}
+		}
+
 		Set<String> userAttributes = portletApp.getUserAttributes();
 
 		for (Element userAttributeElement :
@@ -2767,7 +2804,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		return PortalUtil.isCustomPortletMode(new PortletMode(portletModeName));
 	}
 
-	private void _readWebXML(String xml, String servletContextName)
+	private Map<String, String> _readLocaleEncodings(String xml)
 		throws Exception {
 
 		Map<String, String> localeEncodings = new HashMap<>();
@@ -2792,11 +2829,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			}
 		}
 
-		ExtraPortletAppConfig extraPortletAppConfig = new ExtraPortletAppConfig(
-			localeEncodings);
-
-		ExtraPortletAppConfigRegistry.registerExtraPortletAppConfig(
-			servletContextName, extraPortletAppConfig);
+		return localeEncodings;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
