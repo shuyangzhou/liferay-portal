@@ -18,17 +18,40 @@ import java.util.Map;
 
 /**
  * @author Leon Chi
+ * @author Neil Griffin
  */
 public class ExtraPortletAppConfig {
-
-	public ExtraPortletAppConfig(Map<String, String> localeEncodings) {
-		_localeEncodings = localeEncodings;
-	}
 
 	public String getEncoding(String locale) {
 		return _localeEncodings.get(locale);
 	}
 
-	private final Map<String, String> _localeEncodings;
+	public Map<String, String> getLocaleEncodings() {
+		return _localeEncodings;
+	}
+
+	public int getPortletSpecMajorVersion() {
+		return _portletSpecMajorVersion;
+	}
+
+	public int getPortletSpecMinorVersion() {
+		return _portletSpecMinorVersion;
+	}
+
+	public void setLocaleEncodings(Map<String, String> localeEncodings) {
+		_localeEncodings = localeEncodings;
+	}
+
+	public void setPortletSpecMajorVersion(int portletSpecMajorVersion) {
+		_portletSpecMajorVersion = portletSpecMajorVersion;
+	}
+
+	public void setPortletSpecMinorVersion(int portletSpecMinorVersion) {
+		_portletSpecMinorVersion = portletSpecMinorVersion;
+	}
+
+	private Map<String, String> _localeEncodings;
+	private int _portletSpecMajorVersion;
+	private int _portletSpecMinorVersion;
 
 }
