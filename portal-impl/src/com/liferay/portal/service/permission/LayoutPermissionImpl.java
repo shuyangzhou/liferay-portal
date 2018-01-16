@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserGroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermission;
@@ -244,11 +245,15 @@ public class LayoutPermissionImpl
 			// action
 
 			long parentLayoutId = layout.getParentLayoutId();
+			long layoutGroupId = layout.getGroupId();
+
+			if (layout instanceof VirtualLayout) {
+				layoutGroupId = ((VirtualLayout)layout).getSourceGroupId();
+			}
 
 			while (parentLayoutId != LayoutConstants.DEFAULT_PARENT_LAYOUT_ID) {
 				Layout parentLayout = LayoutLocalServiceUtil.getLayout(
-					layout.getGroupId(), layout.isPrivateLayout(),
-					parentLayoutId);
+					layoutGroupId, layout.isPrivateLayout(), parentLayoutId);
 
 				if (contains(permissionChecker, parentLayout, actionId)) {
 					return true;
@@ -549,6 +554,12 @@ public class LayoutPermissionImpl
 			if (hasPermission != null) {
 				return hasPermission.booleanValue();
 			}
+		}
+		else if (!checkViewableGroup && group.isUserGroup() &&
+				 actionId.equals(ActionKeys.VIEW)) {
+
+			return UserGroupLocalServiceUtil.hasUserUserGroup(
+				permissionChecker.getUserId(), group.getClassPK());
 		}
 
 		return containsWithViewableGroup(

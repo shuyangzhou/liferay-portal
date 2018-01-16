@@ -1209,9 +1209,50 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	public Map<Long, List<Layout>> getLayoutChildLayouts(
 		LayoutSet layoutSet, List<Layout> parentLayouts) {
 
-		List<Layout> childLayouts = _getChildLayouts(
-			layoutSet,
-			ListUtil.toLongArray(parentLayouts, Layout::getLayoutId));
+		Map<LayoutSet, List<Layout>> parentLayoutMap = new HashMap<>();
+
+		for (Layout parentLayout : parentLayouts) {
+			if (parentLayout instanceof VirtualLayout) {
+				VirtualLayout virtualLayout = (VirtualLayout)parentLayout;
+
+				Layout sourceLayout = virtualLayout.getSourceLayout();
+
+				LayoutSet sourceLayoutSet = sourceLayout.getLayoutSet();
+
+				List<Layout> layoutList = parentLayoutMap.get(sourceLayoutSet);
+
+				if (layoutList == null) {
+					layoutList = new ArrayList<>();
+
+					parentLayoutMap.put(sourceLayoutSet, layoutList);
+				}
+
+				layoutList.add(sourceLayout);
+			}
+			else {
+				List<Layout> layoutList = parentLayoutMap.get(layoutSet);
+
+				if (layoutList == null) {
+					layoutList = new ArrayList<>();
+
+					parentLayoutMap.put(layoutSet, layoutList);
+				}
+
+				layoutList.add(parentLayout);
+			}
+		}
+
+		List<Layout> childLayouts = new ArrayList<>();
+
+		for (Map.Entry<LayoutSet, List<Layout>> entry :
+				parentLayoutMap.entrySet()) {
+
+			List<Layout> newChildLayouts = _getChildLayouts(
+				entry.getKey(),
+				ListUtil.toLongArray(parentLayouts, Layout::getLayoutId));
+
+			childLayouts.addAll(newChildLayouts);
+		}
 
 		Map<Long, List<Layout>> layoutChildLayouts = new HashMap<>();
 
@@ -1421,7 +1462,46 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 	public List<Layout> getLayouts(
 		long groupId, boolean privateLayout, String type) {
 
-		return layoutPersistence.findByG_P_T(groupId, privateLayout, type);
+		Group group = groupPersistence.fetchByPrimaryKey(groupId);
+
+		List<Layout> layouts = layoutPersistence.findByG_P_T(
+			groupId, privateLayout, type);
+
+		if (group.isUser()) {
+			layouts = ListUtil.copy(layouts);
+
+			Set<Long> checkedPlids = new HashSet<>();
+			List<Long> checkParentLayoutIds = new ArrayList<>();
+
+			checkParentLayoutIds.add(LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
+
+			while (!checkParentLayoutIds.isEmpty()) {
+				long parentLayoutId = checkParentLayoutIds.remove(0);
+
+				LayoutSet layoutSet = layoutSetPersistence.fetchByG_P(
+					groupId, privateLayout);
+
+				try {
+					List<Layout> newLayouts = _addUserGroupLayouts(
+						group, layoutSet, new ArrayList<>(), parentLayoutId);
+
+					for (Layout newLayout : newLayouts) {
+						long newLayoutPlid = newLayout.getPlid();
+						long newLayoutLayoutId = newLayout.getLayoutId();
+
+						if (checkedPlids.add(newLayoutPlid)) {
+							layouts.add(newLayout);
+							checkParentLayoutIds.add(newLayoutLayoutId);
+						}
+					}
+				}
+				catch (PortalException pe) {
+					_log.error(pe, pe);
+				}
+			}
+		}
+
+		return layouts;
 	}
 
 	/**
