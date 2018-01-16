@@ -2040,6 +2040,8 @@ public class HttpImpl implements Http {
 
 		String[] params = StringUtil.split(queryString, CharPool.AMPERSAND);
 
+		params = ArrayUtil.unique(params);
+
 		List<String> redirectParams = new ArrayList<>();
 
 		for (String param : params) {
