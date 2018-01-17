@@ -85,6 +85,14 @@
 		<execute function="AssertElementPresent" locator1="NavTab#ACTIVE_TAB_LINK" />
 	</command>
 
+	<command name="gotoNavUnderline">
+		<var name="key_navUnderline" value="${navUnderline}" />
+
+		<execute function="AssertClick" locator1="NavUnderline#NAV_UNDERLINE_LINK" value1="${navUnderline}" />
+
+		<execute function="AssertElementPresent" locator1="NavUnderline#ACTIVE_NAV_UNDERLINE_LINK" />
+	</command>
+
 	<command name="gotoPage" summary="Navigate to the page named '${pageName}'">
 		<execute macro="Navigator#openURL" />
 

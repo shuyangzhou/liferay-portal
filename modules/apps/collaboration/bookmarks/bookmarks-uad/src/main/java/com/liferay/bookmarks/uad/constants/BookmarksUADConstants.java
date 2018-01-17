@@ -12,19 +12,14 @@
  * details.
  */
 
-package com.liferay.portal.configuration.settings.internal.constants;
+package com.liferay.bookmarks.uad.constants;
 
 /**
- * @author Drew Brokke
+ * @author Noah Sherrill
  */
-public class SettingsLocatorHelperTestConstants {
+public class BookmarksUADConstants {
 
-	public static final String TEST_CONFIGURATION_PID =
-		"com.liferay.portal.configuration.settings.internal.samples." +
-			"TestConfiguration";
-
-	public static final String TEST_DEFAULT_VALUE = "testDefaultValue";
-
-	public static final String TEST_KEY = "settingsLocatorTestKey";
+	public static final String BOOKMARKS_ENTRY =
+		"com.liferay.bookmarks.model.BookmarksEntry";
 
 }

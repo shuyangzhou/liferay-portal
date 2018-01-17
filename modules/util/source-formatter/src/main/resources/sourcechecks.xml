@@ -35,8 +35,6 @@
 			<property name="allowedExportPackageDirName" value="journal-content-asset-addon-entry/journal-content-asset-addon-entry-common" />
 			<property name="allowedExportPackageDirName" value="journal-service" />
 			<property name="allowedExportPackageDirName" value="journal-web" />
-			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/blogs/blogs-item-selector-web" />
-			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/blogs/blogs-recent-bloggers-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/blogs/blogs-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/bookmarks/bookmarks-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/message-boards/message-boards-web" />
@@ -77,7 +75,6 @@
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security/portal-security-ldap" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security/portal-security-service-access-policy-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security-sso/portal-security-sso-openid-connect" />
-			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-security-sso/portal-security-sso-token" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-settings/portal-settings-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/portal-template/portal-template-soy" />
 			<property name="allowedExportPackageDirName" value="modules/apps/foundation/users-admin/users-admin-web" />
