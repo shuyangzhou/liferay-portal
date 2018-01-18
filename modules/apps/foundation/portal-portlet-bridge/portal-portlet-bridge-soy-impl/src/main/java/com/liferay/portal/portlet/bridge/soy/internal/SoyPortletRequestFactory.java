@@ -107,9 +107,8 @@ public class SoyPortletRequestFactory {
 		User user = PortalUtil.getUser(actionRequestImpl);
 
 		return ActionResponseFactory.create(
-			actionRequestImpl, httpServletResponse, _portlet.getPortletId(),
-			user, themeDisplay.getLayout(), actionRequestImpl.getWindowState(),
-			actionRequestImpl.getPortletMode());
+			actionRequestImpl, httpServletResponse, user,
+			themeDisplay.getLayout());
 	}
 
 	public RenderRequestImpl createRenderRequest(
@@ -165,9 +164,8 @@ public class SoyPortletRequestFactory {
 		HttpServletResponse httpServletResponse =
 			PortalUtil.getHttpServletResponse(resourceResponse);
 
-		return RenderResponseFactory.create(
-			renderRequestImpl, httpServletResponse, _portlet.getPortletId(),
-			_portlet.getCompanyId());
+		return RenderResponseFactory.create(renderRequestImpl,
+			httpServletResponse);
 	}
 
 	private final Portlet _portlet;
