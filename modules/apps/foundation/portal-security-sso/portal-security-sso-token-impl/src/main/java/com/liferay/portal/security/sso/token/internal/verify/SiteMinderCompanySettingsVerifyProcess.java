@@ -88,7 +88,7 @@ public class SiteMinderCompanySettingsVerifyProcess
 	}
 
 	/**
-	 * @deprecated As of 3.0.0, with no direct replacement
+	 * @deprecated As of 1.0.0, with no direct replacement
 	 */
 	@Deprecated
 	@Reference(unbind = "-")
