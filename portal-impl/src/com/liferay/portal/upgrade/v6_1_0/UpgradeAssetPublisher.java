@@ -33,7 +33,9 @@ import javax.portlet.PortletPreferences;
  * @author Juan Fernández
  * @author Sergio Sanchez
  * @author Brian Wing Shun Chan
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class UpgradeAssetPublisher extends BaseUpgradePortletPreferences {
 
 	protected long getIGImageFileEntryType(long companyId) throws Exception {

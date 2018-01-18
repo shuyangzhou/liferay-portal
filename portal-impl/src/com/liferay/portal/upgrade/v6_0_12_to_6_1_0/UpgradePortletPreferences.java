@@ -20,7 +20,9 @@ import com.liferay.portal.upgrade.v6_1_0.UpgradeCommunityProperties;
 /**
  * @author Julio Camarero
  * @author Douglas Wong
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class UpgradePortletPreferences
 	extends CamelCaseUpgradePortletPreferences {
 

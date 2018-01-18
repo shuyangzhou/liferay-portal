@@ -25,7 +25,9 @@ import java.sql.ResultSet;
 /**
  * @author Hugo Huijser
  * @author Jorge Ferrer
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class UpgradeGroup extends UpgradeProcess {
 
 	@Override

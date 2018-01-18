@@ -39,7 +39,9 @@ import com.liferay.portal.upgrade.v6_1_0.UpgradeWorkflow;
 
 /**
  * @author Matthew Kong
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class UpgradeProcess_6_0_12_to_6_1_0 extends Pre7UpgradeProcess {
 
 	@Override

@@ -33,7 +33,9 @@ import java.util.Locale;
 /**
  * @author Jorge Ferrer
  * @author Julio Camarero
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class UpgradeLayout extends UpgradeProcess {
 
 	@Override

@@ -134,7 +134,15 @@ public class DBUpgrader {
 
 		// Check required build number
 
-		checkRequiredBuildNumber(ReleaseInfo.RELEASE_5_2_3_BUILD_NUMBER);
+		int requiredBuildNumber = ReleaseInfo.RELEASE_6_1_0_BUILD_NUMBER;
+
+		if (ReleaseInfo.getBuildNumber() <
+				ReleaseInfo.RELEASE_7_1_0_BUILD_NUMBER) {
+
+			requiredBuildNumber = ReleaseInfo.RELEASE_6_0_12_BUILD_NUMBER;
+		}
+
+		checkRequiredBuildNumber(requiredBuildNumber);
 
 		// Upgrade
 

@@ -27,7 +27,9 @@ import java.sql.ResultSet;
 /**
  * @author Juan Fernández
  * @author Sergio González
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class UpgradeJournal extends UpgradeProcess {
 
 	@Override

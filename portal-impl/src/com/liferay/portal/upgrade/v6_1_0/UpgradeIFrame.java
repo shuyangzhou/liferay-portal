@@ -23,7 +23,9 @@ import javax.portlet.PortletPreferences;
 
 /**
  * @author Tamas Molnar
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class UpgradeIFrame extends BaseUpgradePortletPreferences {
 
 	@Override

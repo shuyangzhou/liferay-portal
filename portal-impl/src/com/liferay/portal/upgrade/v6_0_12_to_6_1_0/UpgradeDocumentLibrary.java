@@ -38,7 +38,9 @@ import java.util.Set;
  * @author Douglas Wong
  * @author Alexander Chow
  * @author Minhchau Dang
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 	protected void addDLSync(

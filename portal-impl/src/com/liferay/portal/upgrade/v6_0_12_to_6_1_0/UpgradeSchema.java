@@ -19,7 +19,9 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
  * @author Matthew Kong
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class UpgradeSchema extends UpgradeProcess {
 
 	@Override

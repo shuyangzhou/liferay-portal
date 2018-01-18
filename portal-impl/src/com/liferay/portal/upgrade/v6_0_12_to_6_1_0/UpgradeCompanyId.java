@@ -19,7 +19,9 @@ import com.liferay.portal.upgrade.v6_0_12_to_6_1_0.util.ResourceBlockPermissionT
 
 /**
  * @author Cristina González
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class UpgradeCompanyId extends UpgradeProcess {
 
 	@Override

@@ -61,7 +61,9 @@ import java.util.Map;
  * @author Sergio González
  * @author Miguel Pastor
  * @author Vilmos Papp
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class UpgradeImageGallery extends UpgradeProcess {
 
 	public UpgradeImageGallery() throws Exception {

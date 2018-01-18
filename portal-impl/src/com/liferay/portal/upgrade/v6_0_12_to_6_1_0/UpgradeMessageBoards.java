@@ -24,7 +24,9 @@ import java.sql.Timestamp;
 
 /**
  * @author Shuyang Zhou
+ * @deprecated As of 7.0.0, with no direct replacement
  */
+@Deprecated
 public class UpgradeMessageBoards extends UpgradeProcess {
 
 	protected void addThreadFlag(
