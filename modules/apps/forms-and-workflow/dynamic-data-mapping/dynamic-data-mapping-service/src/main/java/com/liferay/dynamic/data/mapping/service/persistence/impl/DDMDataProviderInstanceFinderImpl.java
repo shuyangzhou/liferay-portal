@@ -18,7 +18,7 @@ import com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance;
 import com.liferay.dynamic.data.mapping.model.impl.DDMDataProviderInstanceImpl;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMDataProviderInstanceFinder;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.dao.orm.custom.sql.api.CustomSQL;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQL;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
