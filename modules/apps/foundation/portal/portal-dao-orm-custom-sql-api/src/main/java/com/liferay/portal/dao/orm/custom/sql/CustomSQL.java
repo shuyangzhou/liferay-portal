@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.dao.orm.custom.sql.api;
+package com.liferay.portal.dao.orm.custom.sql;
 
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.dao.orm.WildcardMode;
