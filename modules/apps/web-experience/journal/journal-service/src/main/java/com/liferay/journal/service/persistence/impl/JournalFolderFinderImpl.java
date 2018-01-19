@@ -22,7 +22,7 @@ import com.liferay.journal.service.persistence.JournalArticleUtil;
 import com.liferay.journal.service.persistence.JournalFolderFinder;
 import com.liferay.journal.service.persistence.JournalFolderUtil;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.dao.orm.custom.sql.api.CustomSQL;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQL;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
