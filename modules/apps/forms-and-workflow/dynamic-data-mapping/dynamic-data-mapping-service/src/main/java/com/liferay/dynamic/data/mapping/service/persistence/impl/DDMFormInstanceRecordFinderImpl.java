@@ -17,7 +17,7 @@ package com.liferay.dynamic.data.mapping.service.persistence.impl;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord;
 import com.liferay.dynamic.data.mapping.model.impl.DDMFormInstanceRecordImpl;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMFormInstanceRecordFinder;
-import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
+import com.liferay.portal.dao.orm.custom.sql.api.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
