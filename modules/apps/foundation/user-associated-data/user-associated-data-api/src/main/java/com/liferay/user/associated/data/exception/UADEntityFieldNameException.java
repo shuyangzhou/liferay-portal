@@ -12,15 +12,28 @@
  * details.
  */
 
-package com.liferay.marketplace.store.web.constants;
+package com.liferay.user.associated.data.exception;
+
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
- * @author Ryan Park
+ * @author Noah Sherrill
  */
-public class MarketplaceStoreWebKeys {
+public class UADEntityFieldNameException extends PortalException {
 
-	public static final String OAUTH_AUTHORIZED = "OAUTH_AUTHORIZED";
+	public UADEntityFieldNameException() {
+	}
 
-	public static final String OAUTH_REQUEST_TOKEN = "OAUTH_REQUEST_TOKEN";
+	public UADEntityFieldNameException(String msg) {
+		super(msg);
+	}
+
+	public UADEntityFieldNameException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+
+	public UADEntityFieldNameException(Throwable cause) {
+		super(cause);
+	}
 
 }
