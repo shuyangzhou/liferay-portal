@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.portal.dao.orm.custom.sql.impl;
+package com.liferay.portal.dao.orm.custom.sql.internal;
 
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.dao.orm.custom.sql.api.CustomSQL;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQL;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.dao.orm.WildcardMode;
