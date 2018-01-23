@@ -162,7 +162,7 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			expirationDateHour, expirationDateMinute, neverExpire,
 			reviewDateMonth, reviewDateDay, reviewDateYear, reviewDateHour,
 			reviewDateMinute, neverReview, indexable, smallImage, smallImageURL,
-			smallFile, images, articleURL, true, serviceContext);
+			smallFile, images, articleURL, serviceContext);
 	}
 
 	/**
@@ -422,12 +422,14 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException {
 
+		JournalArticle article = journalArticlePersistence.findByG_A_V(
+			groupId, articleId, version);
+
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, version,
-			ActionKeys.DELETE);
+			getPermissionChecker(), article, ActionKeys.DELETE);
 
 		journalArticleLocalService.deleteArticle(
-			groupId, articleId, version, articleURL, serviceContext);
+			article, articleURL, serviceContext);
 	}
 
 	/**
@@ -448,8 +450,11 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException {
 
+		JournalArticle article = journalArticleLocalService.getArticle(
+			groupId, articleId);
+
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, ActionKeys.DELETE);
+			getPermissionChecker(), article, ActionKeys.DELETE);
 
 		journalArticleLocalService.deleteArticle(
 			groupId, articleId, serviceContext);
@@ -479,13 +484,15 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, version,
-			ActionKeys.EXPIRE);
+		JournalArticle article = journalArticlePersistence.findByG_A_V(
+			groupId, articleId, version);
 
-		return journalArticleLocalService.expireArticle(
-			getUserId(), groupId, articleId, version, articleURL,
-			serviceContext);
+		JournalArticlePermission.check(
+			getPermissionChecker(), article, ActionKeys.EXPIRE);
+
+		return journalArticleLocalService.updateStatus(
+			getUserId(), article, WorkflowConstants.STATUS_EXPIRED, articleURL,
+			serviceContext, new HashMap<>());
 	}
 
 	/**
@@ -512,8 +519,11 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException {
 
+		JournalArticle article = journalArticleLocalService.getArticle(
+			groupId, articleId);
+
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, ActionKeys.EXPIRE);
+			getPermissionChecker(), article, ActionKeys.EXPIRE);
 
 		journalArticleLocalService.expireArticle(
 			getUserId(), groupId, articleId, articleURL, serviceContext);
@@ -563,10 +573,13 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 	public JournalArticle getArticle(long groupId, String articleId)
 		throws PortalException {
 
-		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, ActionKeys.VIEW);
+		JournalArticle article = journalArticleLocalService.getArticle(
+			groupId, articleId);
 
-		return journalArticleLocalService.getArticle(groupId, articleId);
+		JournalArticlePermission.check(
+			getPermissionChecker(), article, ActionKeys.VIEW);
+
+		return article;
 	}
 
 	/**
@@ -583,12 +596,13 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			long groupId, String articleId, double version)
 		throws PortalException {
 
-		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, version,
-			ActionKeys.VIEW);
-
-		return journalArticleLocalService.getArticle(
+		JournalArticle article = journalArticleLocalService.getArticle(
 			groupId, articleId, version);
+
+		JournalArticlePermission.check(
+			getPermissionChecker(), article, ActionKeys.VIEW);
+
+		return article;
 	}
 
 	/**
@@ -616,8 +630,7 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			groupId, className, classPK);
 
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, article.getArticleId(),
-			article.getVersion(), ActionKeys.VIEW);
+			getPermissionChecker(), article, ActionKeys.VIEW);
 
 		return article;
 	}
@@ -662,9 +675,11 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			PortletRequestModel portletRequestModel, ThemeDisplay themeDisplay)
 		throws PortalException {
 
+		JournalArticle article = journalArticlePersistence.findByG_A_V(
+			groupId, articleId, version);
+
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, version,
-			ActionKeys.VIEW);
+			getPermissionChecker(), article, ActionKeys.VIEW);
 
 		return journalArticleLocalService.getArticleContent(
 			groupId, articleId, version, null, null, languageId,
@@ -691,9 +706,11 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			ThemeDisplay themeDisplay)
 		throws PortalException {
 
+		JournalArticle article = journalArticlePersistence.findByG_A_V(
+			groupId, articleId, version);
+
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, version,
-			ActionKeys.VIEW);
+			getPermissionChecker(), article, ActionKeys.VIEW);
 
 		return journalArticleLocalService.getArticleContent(
 			groupId, articleId, version, null, languageId, themeDisplay);
@@ -716,8 +733,11 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			PortletRequestModel portletRequestModel, ThemeDisplay themeDisplay)
 		throws PortalException {
 
+		JournalArticle article = journalArticleLocalService.getArticle(
+			groupId, articleId);
+
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, ActionKeys.VIEW);
+			getPermissionChecker(), article, ActionKeys.VIEW);
 
 		return journalArticleLocalService.getArticleContent(
 			groupId, articleId, null, null, languageId, portletRequestModel,
@@ -743,8 +763,11 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			ThemeDisplay themeDisplay)
 		throws PortalException {
 
+		JournalArticle article = journalArticleLocalService.getArticle(
+			groupId, articleId);
+
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, ActionKeys.VIEW);
+			getPermissionChecker(), article, ActionKeys.VIEW);
 
 		return journalArticleLocalService.getArticleContent(
 			groupId, articleId, null, languageId, themeDisplay);
@@ -1361,12 +1384,13 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			long groupId, String articleId, int status)
 		throws PortalException {
 
-		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, status,
-			ActionKeys.VIEW);
-
-		return journalArticleLocalService.getLatestArticle(
+		JournalArticle article = journalArticleLocalService.getLatestArticle(
 			groupId, articleId, status);
+
+		JournalArticlePermission.check(
+			getPermissionChecker(), article, ActionKeys.VIEW);
+
+		return article;
 	}
 
 	/**
@@ -1393,8 +1417,7 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			groupId, className, classPK);
 
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, article.getArticleId(),
-			article.getVersion(), ActionKeys.VIEW);
+			getPermissionChecker(), article, ActionKeys.VIEW);
 
 		return article;
 	}
@@ -1522,7 +1545,7 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			groupId, articleId, WorkflowConstants.STATUS_IN_TRASH);
 
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, ActionKeys.UPDATE);
+			getPermissionChecker(), article, ActionKeys.UPDATE);
 
 		return journalArticleLocalService.moveArticleFromTrash(
 			getUserId(), groupId, article, newFolderId, serviceContext);
@@ -1541,8 +1564,11 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 	public JournalArticle moveArticleToTrash(long groupId, String articleId)
 		throws PortalException {
 
+		JournalArticle article = journalArticleLocalService.getArticle(
+			groupId, articleId);
+
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, ActionKeys.DELETE);
+			getPermissionChecker(), article, ActionKeys.DELETE);
 
 		return journalArticleLocalService.moveArticleToTrash(
 			getUserId(), groupId, articleId);
@@ -1583,9 +1609,11 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			long groupId, String articleId, double version, String languageId)
 		throws PortalException {
 
+		JournalArticle article = journalArticlePersistence.findByG_A_V(
+			groupId, articleId, version);
+
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, version,
-			ActionKeys.UPDATE);
+			getPermissionChecker(), article, ActionKeys.UPDATE);
 
 		return journalArticleLocalService.removeArticleLocale(
 			groupId, articleId, version, languageId);
@@ -2079,8 +2107,7 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 		JournalArticle article = getLatestArticle(articleId);
 
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, article.getArticleId(),
-			ActionKeys.SUBSCRIBE);
+			getPermissionChecker(), article, ActionKeys.SUBSCRIBE);
 
 		journalArticleLocalService.subscribe(getUserId(), groupId, articleId);
 	}
@@ -2112,8 +2139,7 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 		JournalArticle article = getLatestArticle(articleId);
 
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, article.getArticleId(),
-			ActionKeys.SUBSCRIBE);
+			getPermissionChecker(), article, ActionKeys.SUBSCRIBE);
 
 		journalArticleLocalService.unsubscribe(getUserId(), groupId, articleId);
 	}
@@ -2175,9 +2201,11 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			String layoutUuid, ServiceContext serviceContext)
 		throws PortalException {
 
+		JournalArticle article = journalArticlePersistence.findByG_A_V(
+			groupId, articleId, version);
+
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, version,
-			ActionKeys.UPDATE);
+			getPermissionChecker(), article, ActionKeys.UPDATE);
 
 		return journalArticleLocalService.updateArticle(
 			userId, groupId, folderId, articleId, version, titleMap,
@@ -2278,9 +2306,11 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			String articleURL, ServiceContext serviceContext)
 		throws PortalException {
 
+		JournalArticle article = journalArticlePersistence.findByG_A_V(
+			groupId, articleId, version);
+
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, version,
-			ActionKeys.UPDATE);
+			getPermissionChecker(), article, ActionKeys.UPDATE);
 
 		return journalArticleLocalService.updateArticle(
 			getUserId(), groupId, folderId, articleId, version, titleMap,
@@ -2291,7 +2321,7 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			expirationDateHour, expirationDateMinute, neverExpire,
 			reviewDateMonth, reviewDateDay, reviewDateYear, reviewDateHour,
 			reviewDateMinute, neverReview, indexable, smallImage, smallImageURL,
-			smallFile, images, articleURL, true, serviceContext);
+			smallFile, images, articleURL, serviceContext);
 	}
 
 	/**
@@ -2386,9 +2416,11 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException {
 
+		JournalArticle article = journalArticlePersistence.findByG_A_V(
+			groupId, articleId, version);
+
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, version,
-			ActionKeys.UPDATE);
+			getPermissionChecker(), article, ActionKeys.UPDATE);
 
 		return journalArticleLocalService.updateArticle(
 			getUserId(), groupId, folderId, articleId, version, titleMap,
@@ -2447,9 +2479,11 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			String content, ServiceContext serviceContext)
 		throws PortalException {
 
+		JournalArticle article = journalArticlePersistence.findByG_A_V(
+			groupId, articleId, version);
+
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, version,
-			ActionKeys.UPDATE);
+			getPermissionChecker(), article, ActionKeys.UPDATE);
 
 		return journalArticleLocalService.updateArticle(
 			getUserId(), groupId, folderId, articleId, version, content,
@@ -2480,9 +2514,11 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			Map<String, byte[]> images, ServiceContext serviceContext)
 		throws PortalException {
 
+		JournalArticle article = journalArticlePersistence.findByG_A_V(
+			groupId, articleId, version);
+
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, version,
-			ActionKeys.UPDATE);
+			getPermissionChecker(), article, ActionKeys.UPDATE);
 
 		return journalArticleLocalService.updateArticleTranslation(
 			groupId, articleId, version, locale, title, description, content,
@@ -2506,12 +2542,15 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			long groupId, String articleId, double version, String content)
 		throws PortalException {
 
-		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, version,
-			ActionKeys.UPDATE);
+		JournalArticle article = journalArticlePersistence.findByG_A_V(
+			groupId, articleId, version);
 
-		return journalArticleLocalService.updateContent(
-			groupId, articleId, version, content);
+		JournalArticlePermission.check(
+			getPermissionChecker(), article, ActionKeys.UPDATE);
+
+		article.setContent(content);
+
+		return journalArticleLocalService.updateJournalArticle(article);
 	}
 
 	/**
@@ -2536,13 +2575,15 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			String articleURL, ServiceContext serviceContext)
 		throws PortalException {
 
+		JournalArticle article = journalArticlePersistence.findByG_A_V(
+			groupId, articleId, version);
+
 		JournalArticlePermission.check(
-			getPermissionChecker(), groupId, articleId, version,
-			ActionKeys.UPDATE);
+			getPermissionChecker(), article, ActionKeys.UPDATE);
 
 		return journalArticleLocalService.updateStatus(
-			getUserId(), groupId, articleId, version, status, articleURL,
-			new HashMap<String, Serializable>(), serviceContext);
+			getUserId(), article, status, articleURL, serviceContext,
+			new HashMap<String, Serializable>());
 	}
 
 }
