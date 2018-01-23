@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Wiki Engine JSPWiki
 Bundle-SymbolicName: com.liferay.wiki.engine.jspwiki
-Bundle-Version: 2.0.18
+Bundle-Version: 2.0.19
 Import-Package:\
 	!junit.framework.*,\
 	\

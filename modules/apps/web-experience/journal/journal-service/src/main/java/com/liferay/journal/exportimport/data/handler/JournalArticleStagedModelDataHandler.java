@@ -269,16 +269,6 @@ public class JournalArticleStagedModelDataHandler
 		articleElement.addAttribute(
 			"article-resource-uuid", article.getArticleResourceUuid());
 
-		JournalArticle latestArticle =
-			_journalArticleLocalService.fetchLatestArticle(
-				article.getResourcePrimKey());
-
-		if ((latestArticle != null) &&
-			(latestArticle.getId() == article.getId())) {
-
-			articleElement.addAttribute("latest", String.valueOf(true));
-		}
-
 		if (article.getFolderId() !=
 				JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 
@@ -362,6 +352,10 @@ public class JournalArticleStagedModelDataHandler
 				}
 			}
 		}
+
+		JournalArticle latestArticle =
+			_journalArticleLocalService.fetchLatestArticle(
+				article.getResourcePrimKey());
 
 		if ((latestArticle != null) &&
 			(latestArticle.getId() == article.getId())) {
@@ -741,9 +735,6 @@ public class JournalArticleStagedModelDataHandler
 			String articleResourceUuid = articleElement.attributeValue(
 				"article-resource-uuid");
 
-			boolean latest = GetterUtil.getBoolean(
-				articleElement.attributeValue("latest"));
-
 			// Used when importing LARs with journal schemas under 1.1.0
 
 			_setLegacyValues(article);
@@ -792,7 +783,7 @@ public class JournalArticleStagedModelDataHandler
 						reviewDateHour, reviewDateMinute, neverReview,
 						article.isIndexable(), article.isSmallImage(),
 						article.getSmallImageURL(), smallFile, null, articleURL,
-						latest, serviceContext);
+						serviceContext);
 				}
 				else {
 					importedArticle = _journalArticleLocalService.updateArticle(
@@ -809,7 +800,7 @@ public class JournalArticleStagedModelDataHandler
 						reviewDateHour, reviewDateMinute, neverReview,
 						article.isIndexable(), article.isSmallImage(),
 						article.getSmallImageURL(), smallFile, null, articleURL,
-						latest, serviceContext);
+						serviceContext);
 
 					String articleUuid = article.getUuid();
 					String importedArticleUuid = importedArticle.getUuid();

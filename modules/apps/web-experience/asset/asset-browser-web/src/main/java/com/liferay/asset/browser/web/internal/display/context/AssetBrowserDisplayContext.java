@@ -23,7 +23,9 @@ import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.asset.util.AssetHelper;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItem;
 import com.liferay.frontend.taglib.servlet.taglib.ManagementBarFilterItem;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -41,7 +43,6 @@ import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -344,6 +345,24 @@ public class AssetBrowserDisplayContext {
 		Group group = GroupLocalServiceUtil.fetchGroup(getGroupId());
 
 		return group.getDescriptiveName(themeDisplay.getLocale());
+	}
+
+	public List<NavigationItem> getNavigationItems() throws PortalException {
+		List<NavigationItem> navigationItems = new ArrayList<>();
+
+		NavigationItem entriesNavigationItem = new NavigationItem();
+
+		entriesNavigationItem.setActive(true);
+
+		PortletURL mainURL = getPortletURL();
+
+		entriesNavigationItem.setHref(mainURL.toString());
+
+		entriesNavigationItem.setLabel(LanguageUtil.get(_request, "entries"));
+
+		navigationItems.add(entriesNavigationItem);
+
+		return navigationItems;
 	}
 
 	public String getOrderByCol() {

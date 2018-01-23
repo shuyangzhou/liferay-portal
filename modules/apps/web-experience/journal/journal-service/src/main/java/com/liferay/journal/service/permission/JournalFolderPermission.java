@@ -14,21 +14,13 @@
 
 package com.liferay.journal.service.permission;
 
-import com.liferay.exportimport.kernel.staging.permission.StagingPermissionUtil;
-import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFolder;
-import com.liferay.journal.model.JournalFolderConstants;
 import com.liferay.journal.service.JournalFolderLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.portlet.PortletProvider;
-import com.liferay.portal.kernel.portlet.PortletProviderUtil;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionHelper;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -36,11 +28,13 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Juan Fernández
  * @author Zsolt Berentey
+ * @deprecated As of 4.0.0, with no direct replacement
  */
 @Component(
 	property = {"model.class.name=com.liferay.journal.model.JournalFolder"},
 	service = BaseModelPermissionChecker.class
 )
+@Deprecated
 public class JournalFolderPermission implements BaseModelPermissionChecker {
 
 	public static void check(
@@ -48,11 +42,8 @@ public class JournalFolderPermission implements BaseModelPermissionChecker {
 			String actionId)
 		throws PortalException {
 
-		if (!contains(permissionChecker, folder, actionId)) {
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, JournalFolder.class.getName(),
-				folder.getFolderId(), actionId);
-		}
+		_journalFolderModelResourcePermission.check(
+			permissionChecker, folder, actionId);
 	}
 
 	public static void check(
@@ -60,93 +51,28 @@ public class JournalFolderPermission implements BaseModelPermissionChecker {
 			String actionId)
 		throws PortalException {
 
-		if (!contains(permissionChecker, groupId, folderId, actionId)) {
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, JournalFolder.class.getName(), folderId,
-				actionId);
-		}
+		ModelResourcePermissionHelper.check(
+			_journalFolderModelResourcePermission, permissionChecker, groupId,
+			folderId, actionId);
 	}
 
 	public static boolean contains(
-		PermissionChecker permissionChecker, JournalFolder folder,
-		String actionId) {
+			PermissionChecker permissionChecker, JournalFolder folder,
+			String actionId)
+		throws PortalException {
 
-		String portletId = PortletProviderUtil.getPortletId(
-			JournalArticle.class.getName(), PortletProvider.Action.EDIT);
-
-		if (actionId.equals(ActionKeys.ADD_FOLDER)) {
-			actionId = ActionKeys.ADD_SUBFOLDER;
-		}
-
-		Boolean hasPermission = StagingPermissionUtil.hasPermission(
-			permissionChecker, folder.getGroupId(),
-			JournalFolder.class.getName(), folder.getFolderId(), portletId,
-			actionId);
-
-		if (hasPermission != null) {
-			return hasPermission.booleanValue();
-		}
-
-		if (actionId.equals(ActionKeys.VIEW) &&
-			PropsValues.PERMISSIONS_VIEW_DYNAMIC_INHERITANCE) {
-
-			long folderId = folder.getFolderId();
-
-			while (folderId !=
-						JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
-
-				JournalFolder parentFolder = folder;
-
-				folder = _journalFolderLocalService.fetchFolder(folderId);
-
-				if (folder != null) {
-					if (!_hasPermission(permissionChecker, folder, actionId)) {
-						return false;
-					}
-				}
-				else {
-					if (parentFolder.isInTrash()) {
-						folder = parentFolder;
-
-						break;
-					}
-					else {
-						_log.error("Unable to get journal folder " + folderId);
-
-						return false;
-					}
-				}
-
-				folderId = folder.getParentFolderId();
-			}
-
-			return JournalPermission.contains(
-				permissionChecker, folder.getGroupId(), actionId);
-		}
-
-		return _hasPermission(permissionChecker, folder, actionId);
+		return _journalFolderModelResourcePermission.contains(
+			permissionChecker, folder, actionId);
 	}
 
 	public static boolean contains(
-		PermissionChecker permissionChecker, long groupId, long folderId,
-		String actionId) {
+			PermissionChecker permissionChecker, long groupId, long folderId,
+			String actionId)
+		throws PortalException {
 
-		if (folderId == JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
-			return JournalPermission.contains(
-				permissionChecker, groupId, actionId);
-		}
-		else {
-			JournalFolder folder = _journalFolderLocalService.fetchFolder(
-				folderId);
-
-			if (folder == null) {
-				_log.error("Unable to get journal folder " + folderId);
-
-				return false;
-			}
-
-			return contains(permissionChecker, folder, actionId);
-		}
+		return ModelResourcePermissionHelper.contains(
+			_journalFolderModelResourcePermission, permissionChecker, groupId,
+			folderId, actionId);
 	}
 
 	@Override
@@ -155,36 +81,26 @@ public class JournalFolderPermission implements BaseModelPermissionChecker {
 			String actionId)
 		throws PortalException {
 
-		check(permissionChecker, groupId, primaryKey, actionId);
+		ModelResourcePermissionHelper.check(
+			_journalFolderModelResourcePermission, permissionChecker, groupId,
+			primaryKey, actionId);
 	}
 
-	@Reference(unbind = "-")
 	protected void setJournalFolderLocalService(
 		JournalFolderLocalService journalFolderLocalService) {
-
-		_journalFolderLocalService = journalFolderLocalService;
 	}
 
-	private static boolean _hasPermission(
-		PermissionChecker permissionChecker, JournalFolder folder,
-		String actionId) {
+	@Reference(
+		target = "(model.class.name=com.liferay.journal.model.JournalFolder)",
+		unbind = "-"
+	)
+	protected void setModelResourcePermission(
+		ModelResourcePermission<JournalFolder> modelResourcePermission) {
 
-		if (permissionChecker.hasOwnerPermission(
-				folder.getCompanyId(), JournalFolder.class.getName(),
-				folder.getFolderId(), folder.getUserId(), actionId) ||
-			permissionChecker.hasPermission(
-				folder.getGroupId(), JournalFolder.class.getName(),
-				folder.getFolderId(), actionId)) {
-
-			return true;
-		}
-
-		return false;
+		_journalFolderModelResourcePermission = modelResourcePermission;
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		JournalFolderPermission.class);
-
-	private static JournalFolderLocalService _journalFolderLocalService;
+	private static ModelResourcePermission<JournalFolder>
+		_journalFolderModelResourcePermission;
 
 }

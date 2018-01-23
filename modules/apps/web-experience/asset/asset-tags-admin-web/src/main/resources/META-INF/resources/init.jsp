@@ -20,6 +20,7 @@
 
 <%@ taglib uri="http://liferay.com/tld/asset" prefix="liferay-asset" %><%@
 taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
+taglib uri="http://liferay.com/tld/clay" prefix="clay" %><%@
 taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
@@ -31,10 +32,10 @@ page import="com.liferay.asset.kernel.exception.NoSuchTagException" %><%@
 page import="com.liferay.asset.kernel.model.AssetTag" %><%@
 page import="com.liferay.asset.tags.admin.web.internal.display.context.AssetTagsDisplayContext" %><%@
 page import="com.liferay.asset.util.AssetHelper" %><%@
+page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.dao.search.ResultRow" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
-page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %>

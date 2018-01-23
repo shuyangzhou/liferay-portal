@@ -25,5 +25,5 @@
 		"lintSoy": "mcritic src",
 		"prettier": "prettier-eslint src/**/*.es.js test/**/*.es.js"
 	},
-	"version": "1.0.60"
+	"version": "1.0.61"
 }
