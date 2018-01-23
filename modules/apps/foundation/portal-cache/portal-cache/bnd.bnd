@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Portal Cache
 Bundle-SymbolicName: com.liferay.portal.cache
-Bundle-Version: 2.4.9
+Bundle-Version: 2.4.10
 Export-Package:\
 	com.liferay.portal.cache,\
 	com.liferay.portal.cache.configuration,\
