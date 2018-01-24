@@ -14,8 +14,8 @@
 
 package com.liferay.translator.web.internal.model;
 
-import com.liferay.portal.kernel.util.ReflectionUtil;
-import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.StringPool;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;

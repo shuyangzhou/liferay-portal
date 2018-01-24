@@ -18,6 +18,7 @@ import com.liferay.announcements.kernel.model.AnnouncementsFlag;
 import com.liferay.announcements.uad.constants.AnnouncementsUADConstants;
 import com.liferay.announcements.uad.test.AnnouncementsFlagUADEntityTestHelper;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.test.rule.Inject;
@@ -44,7 +45,7 @@ public class AnnouncementsFlagUADEntityAggregatorTest
 		new LiferayIntegrationTestRule();
 
 	@Override
-	protected Object addDataObject(long userId) throws Exception {
+	protected BaseModel<?> addBaseModel(long userId) throws Exception {
 		AnnouncementsFlag announcementsFlag =
 			_announcementsFlagUADEntityTestHelper.addAnnouncementsFlag(userId);
 
@@ -55,7 +56,7 @@ public class AnnouncementsFlagUADEntityAggregatorTest
 
 	@Override
 	protected String getUADRegistryKey() {
-		return AnnouncementsUADConstants.ANNOUNCEMENTS_FLAG;
+		return AnnouncementsUADConstants.CLASS_NAME_ANNOUNCEMENTS_FLAG;
 	}
 
 	@DeleteAfterTestRun
