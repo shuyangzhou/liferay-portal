@@ -178,10 +178,8 @@ public class EditImageConfigurationEntryMVCActionCommand
 		}
 	}
 
-	private AMImageConfigurationEntry
-			_addHighResolutionConfigurationEntry(
-				long companyId,
-				AMImageConfigurationEntry amImageConfigurationEntry)
+	private AMImageConfigurationEntry _addHighResolutionConfigurationEntry(
+			long companyId, AMImageConfigurationEntry amImageConfigurationEntry)
 		throws AMImageConfigurationException, IOException {
 
 		Map<String, String> properties =

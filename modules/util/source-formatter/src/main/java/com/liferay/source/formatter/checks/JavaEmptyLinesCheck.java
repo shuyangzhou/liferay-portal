@@ -30,6 +30,8 @@ public class JavaEmptyLinesCheck extends EmptyLinesCheck {
 
 		content = fixMissingEmptyLines(absolutePath, content);
 
+		content = fixMissingEmptyLinesAroundComments(content);
+
 		content = fixRedundantEmptyLines(content);
 
 		content = fixIncorrectEmptyLineBeforeCloseCurlyBrace(content);
@@ -39,6 +41,12 @@ public class JavaEmptyLinesCheck extends EmptyLinesCheck {
 		content = _fixRedundantEmptyLineInLambdaExpression(content);
 
 		content = _fixIncorrectEmptyLineInsideStatement(content);
+
+		if (content.endsWith("\n}") && !content.endsWith("\n\n}") &&
+			!content.endsWith("{\n}")) {
+
+			return StringUtil.replaceLast(content, "\n}", "\n\n}");
+		}
 
 		return content;
 	}
