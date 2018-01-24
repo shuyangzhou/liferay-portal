@@ -134,7 +134,7 @@ public class DBUpgrader {
 
 		// Check required build number
 
-		checkRequiredBuildNumber(ReleaseInfo.RELEASE_5_2_3_BUILD_NUMBER);
+		checkRequiredBuildNumber(ReleaseInfo.RELEASE_6_1_0_BUILD_NUMBER);
 
 		// Upgrade
 
@@ -311,14 +311,12 @@ public class DBUpgrader {
 			return;
 		}
 
-		StringBundler sb = new StringBundler(8);
+		StringBundler sb = new StringBundler(6);
 
 		sb.append("Permission conversion to algorithm 6 has not been ");
 		sb.append("completed. Please complete the conversion prior to ");
 		sb.append("starting the portal. The conversion process is available ");
-		sb.append("in portal versions starting with ");
-		sb.append(ReleaseInfo.RELEASE_5_2_3_BUILD_NUMBER);
-		sb.append(" and prior to ");
+		sb.append("in portal versions starting with 5203 and prior to ");
 		sb.append(ReleaseInfo.RELEASE_6_2_0_BUILD_NUMBER);
 		sb.append(".");
 

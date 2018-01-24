@@ -250,6 +250,36 @@
 		</execute>
 	</command>
 
+	<command name="editDisplayDate">
+		<var method="DateUtil#getCurrentDate()" name="displayDateDay" />
+		<var method="DateUtil#getCurrentMonth()" name="displayDateMonth" />
+		<var method="DateUtil#getCurrentYear()" name="displayDateYear" />
+
+		<var name="displayDate" value="${displayDateMonth}/${displayDateDay}/${displayDateYear}" />
+
+		<execute function="Type" locator1="TextInput#DISPLAY_DATE" value1="${displayDate}" />
+
+		<var method="DateUtil#getCurrentHour()" name="displayTimeHour" />
+
+		<var name="displayTimeMinute" value="${displayTimeMinute}" />
+
+		<var name="displayTime" value="${displayTimeHour}:${displayTimeMinute}" />
+
+		<execute function="Type" locator1="TextInput#DISPLAY_DATE_TIME" value1="${displayTime}" />
+	</command>
+
+	<command name="editDisplayDateYear">
+		<var method="selenium#getElementValue(TextInput#DISPLAY_DATE_DAY)" name="displayDateDay" />
+		<var method="selenium#getElementValue(TextInput#DISPLAY_DATE_MONTH)" name="displayDateMonth" />
+		<var method="DateUtil#getCurrentYear()" name="displayDateYear" />
+
+		<var method="MathUtil#sum('${displayDateYear}','1')" name="displayDateYear" />
+
+		<var name="displayDate" value="${displayDateMonth}/${displayDateDay}/${displayDateYear}" />
+
+		<execute function="Type" locator1="TextInput#DISPLAY_DATE" value1="${displayDate}" />
+	</command>
+
 	<command name="editEntryContent">
 		<execute macro="BlogsEntry#editTitle">
 			<var name="entryTitle" value="${entryTitle}" />
@@ -557,9 +587,9 @@
 		<var name="key_entryContent" value="${entryContent}" />
 		<var name="key_entryTitle" value="${entryTitle}" />
 
-		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${entrySearchTerm}" />
-
-		<execute function="KeyPress" locator1="NavBar#BASIC_SEARCH_FIELD" value1="\RETURN" />
+		<execute macro="Search#searchCP">
+			<var name="searchTerm" value="${entrySearchTerm}" />
+		</execute>
 
 		<execute function="AssertTextEquals" locator1="Blogs#DESCRIPTIVE_VIEW_ENTRY_TITLE" value1="${entryTitle}" />
 	</command>
@@ -568,9 +598,9 @@
 		<var name="key_entryContent" value="${entryContent}" />
 		<var name="key_entryTitle" value="${entryTitle}" />
 
-		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${entrySearchTerm}" />
-
-		<execute function="KeyPress" locator1="NavBar#BASIC_SEARCH_FIELD" value1="\RETURN" />
+		<execute macro="Search#searchCP">
+			<var name="searchTerm" value="${entrySearchTerm}" />
+		</execute>
 
 		<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="No entries were found." />
 		<execute function="AssertElementNotPresent" locator1="Blogs#DESCRIPTIVE_VIEW_ENTRY_TITLE" value1="${entryTitle}" />
@@ -580,9 +610,10 @@
 		<var name="key_entryContent" value="${entryContent}" />
 		<var name="key_entryTitle" value="${entryTitle}" />
 
-		<execute function="Type" locator1="TextInput#SEARCH" value1="${entrySearchTerm}" />
-
-		<execute function="AssertClick" locator1="Button#SEARCH" value1="Search" />
+		<execute macro="Search#searchPG">
+			<var name="searchTerm" value="${entrySearchTerm}" />
+			<var name="portletName" value="Blogs" />
+		</execute>
 
 		<execute function="AssertTextEquals" locator1="Message#INFO" value1="No entries were found that matched the keywords: ${entrySearchTerm}." />
 
@@ -594,9 +625,9 @@
 		<var name="key_entryContent" value="${entryContent}" />
 		<var name="key_entryTitle" value="${entryTitle}" />
 
-		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${entrySearchTerm}" />
-
-		<execute function="AssertClick" locator1="Button#SEARCH" value1="Search" />
+		<execute macro="Search#searchCP">
+			<var name="searchTerm" value="${entrySearchTerm}" />
+		</execute>
 
 		<execute function="AssertTextEquals" locator1="Message#INFO" value1="No entries were found that matched the keywords: ${entrySearchTerm}." />
 		<execute function="AssertElementNotPresent" locator1="Blogs#SEARCH_RESULTS_ENTRY_TITLE" value1="${entryTitle}" />
@@ -607,8 +638,10 @@
 		<var name="key_entryContent" value="${entryContent}" />
 		<var name="key_entryTitle" value="${entryTitle}" />
 
-		<execute function="Type" locator1="TextInput#SEARCH" value1="${entrySearchTerm}" />
-		<execute function="AssertClick" locator1="Button#SEARCH" value1="Search" />
+		<execute macro="Search#searchPG">
+			<var name="searchTerm" value="${entrySearchTerm}" />
+			<var name="portletName" value="Blogs" />
+		</execute>
 
 		<execute function="AssertTextEquals" locator1="Blogs#SEARCH_RESULTS_ENTRY_TITLE" value1="${entryTitle}" />
 		<execute function="AssertTextEquals" locator1="Blogs#SEARCH_RESULTS_ENTRY_DESCRIPTION" value1="${entryContent}" />

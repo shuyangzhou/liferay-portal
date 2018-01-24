@@ -1082,11 +1082,6 @@
 		<execute function="AssertTextEquals" locator1="KnowledgeBase#DISPLAY_VOTES" value1="${articleVoteCount}" />
 	</command>
 
-	<command name="searchPGViaKBSearch">
-		<execute function="Type" locator1="KnowledgeBaseSearch#SEARCH_FIELD" value1="${searchTerm}" />
-
-		<execute function="Click" locator1="NavBar#SEARCH_BUTTON" />
-	</command>
 
 	<command name="selectAllCP">
 		<execute function="Check#checkAll" locator1="Checkbox#SELECT_ALL" />

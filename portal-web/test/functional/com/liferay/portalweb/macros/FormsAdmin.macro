@@ -93,11 +93,6 @@
 		<execute macro="PortletEntry#save" />
 	</command>
 
-	<command name="searchFormEntry">
-		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${searchTerm}" />
-
-		<execute function="Click" locator1="Icon#BASIC_SEARCH" />
-	</command>
 
 	<command name="teardownForms">
 		<while>

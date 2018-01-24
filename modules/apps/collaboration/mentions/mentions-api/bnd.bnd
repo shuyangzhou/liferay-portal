@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Mentions API
 Bundle-SymbolicName: com.liferay.mentions.api
-Bundle-Version: 2.2.1
+Bundle-Version: 2.2.2
 Export-Package:\
 	com.liferay.mentions.configuration,\
 	com.liferay.mentions.constants,\

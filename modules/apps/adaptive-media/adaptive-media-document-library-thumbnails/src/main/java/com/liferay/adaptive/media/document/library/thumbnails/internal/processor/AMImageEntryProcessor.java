@@ -253,8 +253,8 @@ public class AMImageEntryProcessor implements DLProcessor, ImageProcessor {
 		FileVersion sourceFileVersion, FileVersion destinationFileVersion) {
 	}
 
-	private Stream<AdaptiveMedia<AMImageProcessor>>
-			_getThumbnailAdaptiveMedia(FileVersion fileVersion)
+	private Stream<AdaptiveMedia<AMImageProcessor>> _getThumbnailAdaptiveMedia(
+			FileVersion fileVersion)
 		throws PortalException {
 
 		return _amImageFinder.getAdaptiveMediaStream(

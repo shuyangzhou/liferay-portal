@@ -57,28 +57,34 @@ public class JournalFeedServiceImpl extends JournalFeedServiceBaseImpl {
 
 	@Override
 	public void deleteFeed(long groupId, String feedId) throws PortalException {
-		JournalFeedPermission.check(
-			getPermissionChecker(), groupId, feedId, ActionKeys.DELETE);
+		JournalFeed feed = journalFeedPersistence.findByG_F(groupId, feedId);
 
-		journalFeedLocalService.deleteFeed(groupId, feedId);
+		JournalFeedPermission.check(
+			getPermissionChecker(), feed, ActionKeys.DELETE);
+
+		journalFeedLocalService.deleteFeed(feed);
 	}
 
 	@Override
 	public JournalFeed getFeed(long feedId) throws PortalException {
-		JournalFeedPermission.check(
-			getPermissionChecker(), feedId, ActionKeys.VIEW);
+		JournalFeed feed = journalFeedLocalService.getFeed(feedId);
 
-		return journalFeedLocalService.getFeed(feedId);
+		JournalFeedPermission.check(
+			getPermissionChecker(), feed, ActionKeys.VIEW);
+
+		return feed;
 	}
 
 	@Override
 	public JournalFeed getFeed(long groupId, String feedId)
 		throws PortalException {
 
-		JournalFeedPermission.check(
-			getPermissionChecker(), groupId, feedId, ActionKeys.VIEW);
+		JournalFeed feed = journalFeedPersistence.findByG_F(groupId, feedId);
 
-		return journalFeedLocalService.getFeed(groupId, feedId);
+		JournalFeedPermission.check(
+			getPermissionChecker(), feed, ActionKeys.VIEW);
+
+		return feed;
 	}
 
 	@Override
@@ -91,8 +97,10 @@ public class JournalFeedServiceImpl extends JournalFeedServiceBaseImpl {
 			double feedVersion, ServiceContext serviceContext)
 		throws PortalException {
 
+		JournalFeed feed = journalFeedPersistence.findByG_F(groupId, feedId);
+
 		JournalFeedPermission.check(
-			getPermissionChecker(), groupId, feedId, ActionKeys.UPDATE);
+			getPermissionChecker(), feed, ActionKeys.UPDATE);
 
 		return journalFeedLocalService.updateFeed(
 			groupId, feedId, name, description, ddmStructureKey, ddmTemplateKey,

@@ -87,7 +87,7 @@ public class JenkinsResultsParserUtil {
 
 	public static boolean debug;
 
-	public static String combine(String...strings) {
+	public static String combine(String... strings) {
 		if ((strings == null) || (strings.length == 0)) {
 			return "";
 		}
@@ -120,6 +120,12 @@ public class JenkinsResultsParserUtil {
 				}
 
 				return;
+			}
+
+			File parentFile = target.getParentFile();
+
+			if ((parentFile != null) && !parentFile.exists()) {
+				parentFile.mkdirs();
 			}
 
 			try (FileInputStream fileInputStream =
@@ -472,6 +478,7 @@ public class JenkinsResultsParserUtil {
 	}
 
 	public static String fixURL(String url) {
+		url = url.replace("#", "%23");
 		url = url.replace("(", "%28");
 		url = url.replace(")", "%29");
 		url = url.replace("[", "%5B");

@@ -91,8 +91,8 @@ public class AddDataProviderMVCActionCommand extends BaseMVCActionCommand {
 			DDMDataProviderInstance.class.getName(), actionRequest);
 
 		ddmDataProviderInstanceService.addDataProviderInstance(
-			groupId, getLocalizedMap(themeDisplay.getLocale(), name),
-			getLocalizedMap(themeDisplay.getLocale(), description),
+			groupId, getLocalizedMap(themeDisplay.getSiteDefaultLocale(), name),
+			getLocalizedMap(themeDisplay.getSiteDefaultLocale(), description),
 			ddmFormValues, type, serviceContext);
 	}
 

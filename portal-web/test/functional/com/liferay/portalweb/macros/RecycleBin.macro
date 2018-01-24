@@ -190,11 +190,6 @@
 		<execute function="AssertElementNotPresent" locator1="RecycleBin#RECYCLE_BIN_TABLE_NAME" />
 	</command>
 
-	<command name="searchCP">
-		<execute function="Type" locator1="NavBar#BASIC_SEARCH_FIELD" value1="${assetName}" />
-
-		<execute function="Click" locator1="Icon#BASIC_SEARCH" />
-	</command>
 
 	<command name="undoMoveToRecycleBin">
 		<execute function="AssertClick" locator1="Button#UNDO" value1="Undo" />

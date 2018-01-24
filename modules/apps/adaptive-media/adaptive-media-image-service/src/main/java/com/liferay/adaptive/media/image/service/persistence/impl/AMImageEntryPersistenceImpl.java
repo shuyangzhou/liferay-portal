@@ -22,8 +22,6 @@ import com.liferay.adaptive.media.image.model.impl.AMImageEntryImpl;
 import com.liferay.adaptive.media.image.model.impl.AMImageEntryModelImpl;
 import com.liferay.adaptive.media.image.service.persistence.AMImageEntryPersistence;
 
-import com.liferay.petra.string.StringPool;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
