@@ -77,6 +77,10 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 		}
 	}
 
+	/**
+	 * @deprecated As of 4.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static void check(
 			PermissionChecker permissionChecker, long groupId, String articleId,
 			double version, String actionId)
@@ -91,6 +95,10 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 		}
 	}
 
+	/**
+	 * @deprecated As of 4.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static void check(
 			PermissionChecker permissionChecker, long groupId, String articleId,
 			int status, String actionId)
@@ -105,6 +113,10 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 		}
 	}
 
+	/**
+	 * @deprecated As of 4.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static void check(
 			PermissionChecker permissionChecker, long groupId, String articleId,
 			String actionId)
@@ -157,6 +169,10 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 		return contains(permissionChecker, article, actionId);
 	}
 
+	/**
+	 * @deprecated As of 4.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static boolean contains(
 		PermissionChecker permissionChecker, long groupId, String articleId,
 		double version, String actionId) {
@@ -177,6 +193,10 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 		return contains(permissionChecker, article, actionId);
 	}
 
+	/**
+	 * @deprecated As of 4.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static boolean contains(
 		PermissionChecker permissionChecker, long groupId, String articleId,
 		int status, String actionId) {
@@ -197,6 +217,10 @@ public class JournalArticlePermission implements BaseModelPermissionChecker {
 		return contains(permissionChecker, article, actionId);
 	}
 
+	/**
+	 * @deprecated As of 4.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public static boolean contains(
 		PermissionChecker permissionChecker, long groupId, String articleId,
 		String actionId) {

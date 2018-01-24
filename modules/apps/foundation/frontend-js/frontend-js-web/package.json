@@ -39,5 +39,5 @@
 		"prettier": "prettier-eslint src/**/*.es.js test/**/*.es.js",
 		"test": "jest"
 	},
-	"version": "1.0.68"
+	"version": "1.0.69"
 }

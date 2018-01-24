@@ -9,7 +9,11 @@ dependencies {
 
 	compileOnly fileTree(builtBy: [rootProject.tasks.extractGradleApi25], dir: new File(rootProject.buildDir, "gradle-2.5"))
 
-	provided group: "com.liferay", name: "com.liferay.source.formatter", version: "1.0.537"
+	provided group: "com.liferay", name: "com.liferay.source.formatter", version: "1.0.541"
+}
+
+pluginBundle {
+	tags = ["java", "style"]
 }
 
 updateReadme {
@@ -26,8 +30,4 @@ updateReadme {
 
 uploadArchives {
 	dependsOn updateReadme
-}
-
-pluginBundle {
-	tags = ["java", "style"]
 }
