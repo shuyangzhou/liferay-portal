@@ -50,12 +50,8 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = WikiCacheHelper.class)
 public class WikiCacheHelper {
 
-	public void clearCache(long nodeId) {
+	public void clearCache() {
 		_portalCache.removeAll();
-	}
-
-	public void clearCache(long nodeId, String title) {
-		clearCache(nodeId);
 	}
 
 	public WikiPageDisplay getDisplay(
