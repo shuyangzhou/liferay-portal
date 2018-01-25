@@ -7,7 +7,6 @@ Export-Package:\
 	com.liferay.wiki.importer.impl.mediawiki,\
 	com.liferay.wiki.model.impl,\
 	com.liferay.wiki.search,\
-	com.liferay.wiki.social,\
 	com.liferay.wiki.util,\
 	com.liferay.wiki.util.comparator
 Import-Package:\
