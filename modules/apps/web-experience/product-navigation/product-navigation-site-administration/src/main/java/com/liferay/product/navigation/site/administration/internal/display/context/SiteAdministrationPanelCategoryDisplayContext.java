@@ -15,7 +15,9 @@
 package com.liferay.product.navigation.site.administration.internal.display.context;
 
 import com.liferay.application.list.GroupProvider;
+import com.liferay.application.list.PanelAppRegistry;
 import com.liferay.application.list.PanelCategory;
+import com.liferay.application.list.PanelCategoryRegistry;
 import com.liferay.application.list.constants.ApplicationListWebKeys;
 import com.liferay.application.list.constants.PanelCategoryKeys;
 import com.liferay.application.list.display.context.logic.PanelCategoryHelper;
@@ -41,7 +43,6 @@ import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.product.navigation.product.menu.web.display.context.ProductMenuDisplayContext;
 import com.liferay.product.navigation.site.administration.internal.application.list.SiteAdministrationPanelCategory;
 import com.liferay.product.navigation.site.administration.internal.constants.SiteAdministrationWebKeys;
 import com.liferay.site.util.GroupURLProvider;
@@ -339,12 +340,8 @@ public class SiteAdministrationPanelCategoryDisplayContext {
 			return _collapsedPanel;
 		}
 
-		ProductMenuDisplayContext productMenuDisplayContext =
-			new ProductMenuDisplayContext(_portletRequest, _portletResponse);
-
 		_collapsedPanel = Objects.equals(
-			_panelCategory.getKey(),
-			productMenuDisplayContext.getRootPanelCategoryKey());
+			_panelCategory.getKey(), _getRootPanelCategoryKey());
 
 		return _collapsedPanel;
 	}
@@ -481,6 +478,52 @@ public class SiteAdministrationPanelCategoryDisplayContext {
 		_recentGroupManager.addRecentGroup(request, groupId);
 
 		_groupProvider.setGroup(request, _group);
+	}
+
+	private String _getRootPanelCategoryKey() {
+		PanelAppRegistry panelAppRegistry =
+			(PanelAppRegistry)_portletRequest.getAttribute(
+				ApplicationListWebKeys.PANEL_APP_REGISTRY);
+		PanelCategoryRegistry panelCategoryRegistry =
+			(PanelCategoryRegistry)_portletRequest.getAttribute(
+				ApplicationListWebKeys.PANEL_CATEGORY_REGISTRY);
+
+		String rootPanelCategoryKey = StringPool.BLANK;
+
+		List<PanelCategory> childPanelCategories =
+			panelCategoryRegistry.getChildPanelCategories(
+				PanelCategoryKeys.ROOT, _themeDisplay.getPermissionChecker(),
+				_themeDisplay.getScopeGroup());
+
+		if (!childPanelCategories.isEmpty()) {
+			PanelCategory lastChildPanelCategory = childPanelCategories.get(
+				childPanelCategories.size() - 1);
+
+			rootPanelCategoryKey = lastChildPanelCategory.getKey();
+
+			if (Validator.isNotNull(_themeDisplay.getPpid())) {
+				PanelCategoryHelper panelCategoryHelper =
+					new PanelCategoryHelper(
+						panelAppRegistry, panelCategoryRegistry);
+
+				for (PanelCategory panelCategory :
+						panelCategoryRegistry.getChildPanelCategories(
+							PanelCategoryKeys.ROOT)) {
+
+					if (panelCategoryHelper.containsPortlet(
+							_themeDisplay.getPpid(), panelCategory.getKey(),
+							_themeDisplay.getPermissionChecker(),
+							_themeDisplay.getScopeGroup())) {
+
+						rootPanelCategoryKey = panelCategory.getKey();
+
+						return rootPanelCategoryKey;
+					}
+				}
+			}
+		}
+
+		return rootPanelCategoryKey;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
