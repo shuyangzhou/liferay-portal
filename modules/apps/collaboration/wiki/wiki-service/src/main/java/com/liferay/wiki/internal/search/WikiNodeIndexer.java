@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.wiki.search;
+package com.liferay.wiki.internal.search;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;

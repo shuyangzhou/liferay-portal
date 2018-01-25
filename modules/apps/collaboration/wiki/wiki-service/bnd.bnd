@@ -4,7 +4,6 @@ Bundle-Version: 1.7.0
 Export-Package:\
 	com.liferay.wiki.engine.impl,\
 	com.liferay.wiki.importer.impl.mediawiki,\
-	com.liferay.wiki.search,\
 	com.liferay.wiki.util
 Import-Package:\
 	!com.liferay.portal.tools.sql,\
