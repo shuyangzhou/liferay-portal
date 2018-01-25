@@ -144,7 +144,7 @@ public class WikiPageTitleSearcherTest {
 	}
 
 	protected void assertSearch(String keywords, int length) throws Exception {
-		Indexer<?> indexer = WikiPageTitleSearcher.getInstance();
+		Indexer<?> indexer = new WikiPageTitleSearcher();
 
 		_searchContext.setKeywords(StringUtil.toLowerCase(keywords));
 
@@ -156,7 +156,7 @@ public class WikiPageTitleSearcherTest {
 	protected void assertSearchNode(String keywords, long nodeId)
 		throws Exception {
 
-		Indexer<?> indexer = WikiPageTitleSearcher.getInstance();
+		Indexer<?> indexer = new WikiPageTitleSearcher();
 
 		_searchContext.setKeywords(StringUtil.toLowerCase(keywords));
 
@@ -176,7 +176,7 @@ public class WikiPageTitleSearcherTest {
 	protected void assertSearchTitle(String keywords, String title)
 		throws Exception {
 
-		Indexer<?> indexer = WikiPageTitleSearcher.getInstance();
+		Indexer<?> indexer = new WikiPageTitleSearcher();
 
 		_searchContext.setKeywords(StringUtil.toLowerCase(keywords));
 
