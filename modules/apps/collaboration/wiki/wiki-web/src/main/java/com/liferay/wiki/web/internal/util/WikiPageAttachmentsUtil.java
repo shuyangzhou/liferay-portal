@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.wiki.util;
+package com.liferay.wiki.web.internal.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
