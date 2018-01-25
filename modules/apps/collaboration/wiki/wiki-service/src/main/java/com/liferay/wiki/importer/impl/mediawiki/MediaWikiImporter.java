@@ -49,7 +49,6 @@ import com.liferay.wiki.engine.impl.WikiEngineRenderer;
 import com.liferay.wiki.exception.ImportFilesException;
 import com.liferay.wiki.exception.NoSuchPageException;
 import com.liferay.wiki.importer.WikiImporter;
-import com.liferay.wiki.importer.impl.WikiImporterKeys;
 import com.liferay.wiki.internal.translator.MediaWikiToCreoleTranslator;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
@@ -88,6 +87,14 @@ public class MediaWikiImporter implements WikiImporter {
 	public static final String FORMAT_CREOLE = "creole";
 
 	public static final String FORMAT_MEDIAWIKI = "mediawiki";
+
+	public static final String OPTIONS_FRONT_PAGE = "OPTIONS_FRONT_PAGE";
+
+	public static final String OPTIONS_IMPORT_LATEST_VERSION =
+		"OPTIONS_IMPORT_LATEST_VERSION";
+
+	public static final String OPTIONS_STRICT_IMPORT_MODE =
+		"OPTIONS_STRICT_IMPORT_MODE";
 
 	public static final String SHARED_IMAGES_CONTENT = "See attachments";
 
@@ -283,8 +290,7 @@ public class MediaWikiImporter implements WikiImporter {
 	protected void moveFrontPage(
 		long userId, WikiNode node, Map<String, String[]> options) {
 
-		String frontPageTitle = MapUtil.getString(
-			options, WikiImporterKeys.OPTIONS_FRONT_PAGE);
+		String frontPageTitle = MapUtil.getString(options, OPTIONS_FRONT_PAGE);
 
 		if (Validator.isNotNull(frontPageTitle)) {
 			frontPageTitle = _wikiPageTitleValidator.normalize(frontPageTitle);
@@ -459,9 +465,9 @@ public class MediaWikiImporter implements WikiImporter {
 		InputStream imagesInputStream, Map<String, String[]> options) {
 
 		boolean importLatestVersion = MapUtil.getBoolean(
-			options, WikiImporterKeys.OPTIONS_IMPORT_LATEST_VERSION);
+			options, OPTIONS_IMPORT_LATEST_VERSION);
 		boolean strictImportMode = MapUtil.getBoolean(
-			options, WikiImporterKeys.OPTIONS_STRICT_IMPORT_MODE);
+			options, OPTIONS_STRICT_IMPORT_MODE);
 
 		ProgressTracker progressTracker =
 			ProgressTrackerThreadLocal.getProgressTracker();
