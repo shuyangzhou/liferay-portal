@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.wiki.importer.impl;
+package com.liferay.wiki.web.internal.importer;
 
 import com.liferay.wiki.importer.WikiImporter;
 
