@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
@@ -174,14 +173,6 @@ public class WikiUtil {
 		orderedNodes.addAll(nodes);
 
 		return orderedNodes;
-	}
-
-	public static String processContent(String content) {
-		content = StringUtil.replace(content, "</p>", "</p>\n");
-		content = StringUtil.replace(content, "</br>", "</br>\n");
-		content = StringUtil.replace(content, "</div>", "</div>\n");
-
-		return content;
 	}
 
 	@Reference(
