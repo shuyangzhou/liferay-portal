@@ -12,12 +12,13 @@
  * details.
  */
 
-package com.liferay.wiki.service.permission;
+package com.liferay.wiki.internal.security.permission;
 
 import com.liferay.portal.kernel.security.permission.PermissionUpdateHandler;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.wiki.model.WikiNode;
-import com.liferay.wiki.service.WikiNodeLocalService;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.wiki.model.WikiPage;
+import com.liferay.wiki.service.WikiPageLocalService;
 
 import java.util.Date;
 
@@ -28,33 +29,33 @@ import org.osgi.service.component.annotations.Reference;
  * @author Gergely Mathe
  */
 @Component(
-	property = {"model.class.name=com.liferay.wiki.model.WikiNode"},
+	property = {"model.class.name=com.liferay.wiki.model.WikiPage"},
 	service = PermissionUpdateHandler.class
 )
-public class WikiNodePermissionUpdateHandler
+public class WikiPagePermissionUpdateHandler
 	implements PermissionUpdateHandler {
 
 	@Override
 	public void updatedPermission(String primKey) {
-		WikiNode wikiNode = _wikiNodeLocalService.fetchWikiNode(
-			GetterUtil.getLong(primKey));
+		WikiPage wikiPage = _wikiPageLocalService.fetchLatestPage(
+			GetterUtil.getLong(primKey), WorkflowConstants.STATUS_ANY, true);
 
-		if (wikiNode == null) {
+		if (wikiPage == null) {
 			return;
 		}
 
-		wikiNode.setModifiedDate(new Date());
+		wikiPage.setModifiedDate(new Date());
 
-		_wikiNodeLocalService.updateWikiNode(wikiNode);
+		_wikiPageLocalService.updateWikiPage(wikiPage);
 	}
 
 	@Reference(unbind = "-")
-	protected void setWikiNodeLocalService(
-		WikiNodeLocalService wikiNodeLocalService) {
+	protected void setWikiPageLocalService(
+		WikiPageLocalService wikiPageLocalService) {
 
-		_wikiNodeLocalService = wikiNodeLocalService;
+		_wikiPageLocalService = wikiPageLocalService;
 	}
 
-	private WikiNodeLocalService _wikiNodeLocalService;
+	private WikiPageLocalService _wikiPageLocalService;
 
 }
