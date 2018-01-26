@@ -1,9 +1,7 @@
 Bundle-Name: Liferay Wiki Service
 Bundle-SymbolicName: com.liferay.wiki.service
 Bundle-Version: 1.7.0
-Export-Package:\
-	com.liferay.wiki.engine.impl,\
-	com.liferay.wiki.util
+Export-Package: com.liferay.wiki.engine.impl
 Import-Package:\
 	!com.liferay.portal.tools.sql,\
 	\

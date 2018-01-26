@@ -33,10 +33,10 @@ import com.liferay.taglib.servlet.PipingServletResponse;
 import com.liferay.wiki.engine.WikiEngine;
 import com.liferay.wiki.exception.PageContentException;
 import com.liferay.wiki.exception.WikiFormatException;
+import com.liferay.wiki.internal.util.WikiCacheHelper;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.model.WikiPageDisplay;
-import com.liferay.wiki.util.WikiCacheHelper;
 
 import java.io.IOException;
 import java.io.Writer;
