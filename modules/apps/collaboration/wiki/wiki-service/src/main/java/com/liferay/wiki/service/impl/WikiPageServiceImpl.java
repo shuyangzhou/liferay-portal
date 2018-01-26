@@ -389,16 +389,11 @@ public class WikiPageServiceImpl extends WikiPageServiceBaseImpl {
 	}
 
 	@Override
-	public List<WikiPage> getOrphans(long groupId, long nodeId)
-		throws PortalException {
-
+	public List<WikiPage> getOrphans(WikiNode node) throws PortalException {
 		_wikiNodeModelResourcePermission.check(
-			getPermissionChecker(), nodeId, ActionKeys.VIEW);
+			getPermissionChecker(), node, ActionKeys.VIEW);
 
-		List<WikiPage> pages = wikiPagePersistence.filterFindByG_N_H_S(
-			groupId, nodeId, true, WorkflowConstants.STATUS_APPROVED);
-
-		return wikiEngineRenderer.filterOrphans(pages);
+		return wikiPageLocalService.getOrphans(node.getNodeId());
 	}
 
 	@Override
