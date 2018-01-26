@@ -134,7 +134,9 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		List<String> fileNames = sourceFormatterArgs.getFileNames();
 
 		if (fileNames != null) {
-			return fileNames;
+			return SourceFormatterUtil.filterFileNames(
+				fileNames, new String[0], getIncludes(),
+				new SourceFormatterExcludes(), false);
 		}
 
 		return doGetFileNames();
@@ -273,17 +275,20 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		throws Exception {
 
 		Set<String> modifiedContents = new HashSet<>();
+		Set<String> modifiedMessages = new TreeSet<>();
 
 		String newContent = format(
 			file, fileName, absolutePath, content, content, modifiedContents,
-			0);
+			modifiedMessages, 0);
 
-		processFormattedFile(file, fileName, content, newContent);
+		processFormattedFile(
+			file, fileName, content, newContent, modifiedMessages);
 	}
 
 	protected String format(
 			File file, String fileName, String absolutePath, String content,
-			String originalContent, Set<String> modifiedContents, int count)
+			String originalContent, Set<String> modifiedContents,
+			Set<String> modifiedMessages, int count)
 		throws Exception {
 
 		_sourceFormatterMessagesMap.remove(fileName);
@@ -291,7 +296,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		_checkUTF8(file, fileName);
 
 		String newContent = _processSourceChecks(
-			file, fileName, absolutePath, content);
+			file, fileName, absolutePath, content, modifiedMessages);
 
 		if ((newContent == null) || content.equals(newContent)) {
 			return newContent;
@@ -322,7 +327,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 		return format(
 			file, fileName, absolutePath, newContent, originalContent,
-			modifiedContents, count);
+			modifiedContents, modifiedMessages, count);
 	}
 
 	protected List<String> getAllFileNames() {
@@ -392,12 +397,15 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	}
 
 	protected File processFormattedFile(
-			File file, String fileName, String content, String newContent)
+			File file, String fileName, String content, String newContent,
+			Set<String> modifiedMessages)
 		throws Exception {
 
 		if (!content.equals(newContent)) {
 			if (sourceFormatterArgs.isPrintErrors()) {
-				SourceFormatterUtil.printError(fileName, file);
+				for (String modifiedMessage : modifiedMessages) {
+					SourceFormatterUtil.printError(fileName, modifiedMessage);
+				}
 			}
 
 			if (sourceFormatterArgs.isAutoFix()) {
@@ -649,12 +657,13 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	}
 
 	private String _processSourceChecks(
-			File file, String fileName, String absolutePath, String content)
+			File file, String fileName, String absolutePath, String content,
+			Set<String> modifiedMessages)
 		throws Exception {
 
 		SourceChecksResult sourceChecksResult =
 			SourceChecksUtil.processSourceChecks(
-				file, fileName, absolutePath, content,
+				file, fileName, absolutePath, content, modifiedMessages,
 				_isModulesFile(absolutePath), _sourceChecks,
 				_sourceChecksSuppressions,
 				sourceFormatterArgs.isShowDebugInformation());
