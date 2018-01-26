@@ -198,9 +198,9 @@ public class WikiPageServiceWrapper implements WikiPageService,
 
 	@Override
 	public java.util.List<com.liferay.wiki.model.WikiPage> getOrphans(
-		long groupId, long nodeId)
+		com.liferay.wiki.model.WikiNode node)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _wikiPageService.getOrphans(groupId, nodeId);
+		return _wikiPageService.getOrphans(node);
 	}
 
 	/**

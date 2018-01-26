@@ -192,9 +192,9 @@ public class WikiPageServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.wiki.model.WikiPage> getOrphans(
-		long groupId, long nodeId)
+		com.liferay.wiki.model.WikiNode node)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getOrphans(groupId, nodeId);
+		return getService().getOrphans(node);
 	}
 
 	/**

@@ -687,14 +687,13 @@ public class WikiPageServiceHttp {
 	}
 
 	public static java.util.List<com.liferay.wiki.model.WikiPage> getOrphans(
-		HttpPrincipal httpPrincipal, long groupId, long nodeId)
+		HttpPrincipal httpPrincipal, com.liferay.wiki.model.WikiNode node)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(WikiPageServiceUtil.class,
 					"getOrphans", _getOrphansParameterTypes20);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					nodeId);
+			MethodHandler methodHandler = new MethodHandler(methodKey, node);
 
 			Object returnObj = null;
 
@@ -1599,7 +1598,7 @@ public class WikiPageServiceHttp {
 			java.lang.String.class, java.lang.String.class
 		};
 	private static final Class<?>[] _getOrphansParameterTypes20 = new Class[] {
-			long.class, long.class
+			com.liferay.wiki.model.WikiNode.class
 		};
 	private static final Class<?>[] _getPageParameterTypes21 = new Class[] {
 			long.class
