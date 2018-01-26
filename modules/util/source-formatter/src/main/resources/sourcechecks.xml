@@ -35,7 +35,6 @@
 			<property name="allowedExportPackageDirName" value="journal-content-asset-addon-entry/journal-content-asset-addon-entry-common" />
 			<property name="allowedExportPackageDirName" value="journal-service" />
 			<property name="allowedExportPackageDirName" value="journal-web" />
-			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/blogs/blogs-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/bookmarks/bookmarks-service" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/message-boards/message-boards-web" />
 			<property name="allowedExportPackageDirName" value="modules/apps/collaboration/microblogs/microblogs-service" />
@@ -136,6 +135,16 @@
 		<check name="GradleBlockOrderCheck" />
 		<check name="GradleBodyCheck" />
 		<check name="GradleDependenciesCheck" />
+		<check name="GradleExportedPackageDependenciesCheck">
+			<property name="exportPackageBundleSymbolicNamePrefix" value="com.liferay.arquillian." />
+			<property name="exportPackageBundleSymbolicNamePrefix" value="com.liferay.frontend." />
+			<property name="exportPackageBundleSymbolicNamePrefix" value="com.liferay.gradle." />
+			<property name="exportPackageBundleSymbolicNamePrefix" value="com.liferay.portal." />
+			<property name="exportPackageBundleSymbolicNamePrefix" value="com.liferay.project." />
+			<property name="exportPackageBundleSymbolicNamePrefix" value="com.liferay.util." />
+			<property name="exportPackageBundleSymbolicNamePrefix" value="com.liferay.webjars." />
+			<property name="exportPackageBundleSymbolicNamePrefix" value="com.liferay.whip" />
+		</check>
 		<check name="GradleImportsCheck" />
 		<check name="GradleIndentationCheck" />
 		<check name="GradlePropertiesCheck" />
