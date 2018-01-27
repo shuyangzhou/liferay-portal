@@ -41,6 +41,8 @@ import java.io.Writer;
 
 import java.util.Collection;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,8 +54,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Brian Wing Shun Chan
@@ -139,7 +147,7 @@ public class WikiEngineRenderer {
 	}
 
 	public WikiEngine fetchWikiEngine(String format) {
-		return _wikiEngineTracker.getWikiEngine(format);
+		return _wikiEngineMap.get(format);
 	}
 
 	public String getFormatLabel(String format, Locale locale) {
@@ -154,7 +162,7 @@ public class WikiEngineRenderer {
 	}
 
 	public Collection<String> getFormats() {
-		return _wikiEngineTracker.getFormats();
+		return _wikiEngineMap.keySet();
 	}
 
 	public String getFormattedContent(
@@ -205,7 +213,7 @@ public class WikiEngineRenderer {
 			WikiPage page)
 		throws IOException, ServletException, WikiFormatException {
 
-		WikiEngine wikiEngine = _wikiEngineTracker.getWikiEngine(format);
+		WikiEngine wikiEngine = _wikiEngineMap.get(format);
 
 		if (wikiEngine == null) {
 			throw new WikiFormatException();
@@ -229,14 +237,25 @@ public class WikiEngineRenderer {
 		writer.write(sb.toString());
 	}
 
-	@Reference(unbind = "-")
-	protected void setWikiCacheHelper(WikiCacheHelper wikiCacheHelper) {
-		_wikiCacheHelper = wikiCacheHelper;
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
+		_serviceTracker = new ServiceTracker<>(
+			bundleContext, WikiEngine.class,
+			new WikiEngineServiceTrackerCustomizer());
+
+		_serviceTracker.open();
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
 	}
 
 	@Reference(unbind = "-")
-	protected void setWikiEngineTracker(WikiEngineTracker wikiEngineTracker) {
-		_wikiEngineTracker = wikiEngineTracker;
+	protected void setWikiCacheHelper(WikiCacheHelper wikiCacheHelper) {
+		_wikiCacheHelper = wikiCacheHelper;
 	}
 
 	private String _convertURLs(String url, Matcher matcher) {
@@ -280,7 +299,47 @@ public class WikiEngineRenderer {
 	private static final Pattern _viewPageURLPattern = Pattern.compile(
 		"\\[\\$BEGIN_PAGE_TITLE\\$\\](.*?)\\[\\$END_PAGE_TITLE\\$\\]");
 
+	private BundleContext _bundleContext;
+	private ServiceTracker<WikiEngine, WikiEngine> _serviceTracker;
 	private WikiCacheHelper _wikiCacheHelper;
-	private WikiEngineTracker _wikiEngineTracker;
+	private final Map<String, WikiEngine> _wikiEngineMap =
+		new ConcurrentHashMap<>();
+
+	private class WikiEngineServiceTrackerCustomizer
+		implements ServiceTrackerCustomizer<WikiEngine, WikiEngine> {
+
+		@Override
+		public WikiEngine addingService(
+			ServiceReference<WikiEngine> serviceReference) {
+
+			WikiEngine wikiEngine = _bundleContext.getService(serviceReference);
+
+			_wikiEngineMap.put(wikiEngine.getFormat(), wikiEngine);
+
+			_wikiCacheHelper.clearCache();
+
+			return wikiEngine;
+		}
+
+		@Override
+		public void modifiedService(
+			ServiceReference<WikiEngine> serviceReference,
+			WikiEngine wikiEngine) {
+
+			removedService(serviceReference, wikiEngine);
+			addingService(serviceReference);
+		}
+
+		@Override
+		public void removedService(
+			ServiceReference<WikiEngine> serviceReference,
+			WikiEngine wikiEngine) {
+
+			_bundleContext.ungetService(serviceReference);
+
+			_wikiEngineMap.remove(wikiEngine.getFormat());
+		}
+
+	}
 
 }
