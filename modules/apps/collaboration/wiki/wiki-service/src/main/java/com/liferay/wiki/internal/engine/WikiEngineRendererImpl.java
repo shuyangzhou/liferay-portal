@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.wiki.engine.impl;
+package com.liferay.wiki.internal.engine;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cache.MultiVMPool;
