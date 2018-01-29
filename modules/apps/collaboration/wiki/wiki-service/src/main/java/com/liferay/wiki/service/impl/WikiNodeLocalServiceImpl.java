@@ -15,7 +15,11 @@
 package com.liferay.wiki.service.impl;
 
 import com.liferay.document.library.kernel.model.DLFolderConstants;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -29,6 +33,7 @@ import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
+import com.liferay.portal.kernel.util.NotificationThreadLocal;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -46,9 +51,10 @@ import com.liferay.wiki.constants.WikiConstants;
 import com.liferay.wiki.exception.DuplicateNodeNameException;
 import com.liferay.wiki.exception.NodeNameException;
 import com.liferay.wiki.importer.WikiImporter;
-import com.liferay.wiki.importer.impl.WikiImporterTracker;
+import com.liferay.wiki.internal.util.WikiCacheThreadLocal;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
+import com.liferay.wiki.model.WikiPageDisplay;
 import com.liferay.wiki.service.base.WikiNodeLocalServiceBaseImpl;
 
 import java.io.InputStream;
@@ -57,6 +63,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * Provides the local service for accessing, adding, deleting, importing,
@@ -185,6 +194,22 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 	}
 
 	@Override
+	public void afterPropertiesSet() {
+		super.afterPropertiesSet();
+
+		Bundle bundle = FrameworkUtil.getBundle(WikiNodeLocalServiceImpl.class);
+
+		_wikiImporterServiceTrackerMap =
+			ServiceTrackerMapFactory.singleValueMap(
+				bundle.getBundleContext(), WikiImporter.class, "importer");
+
+		_wikiImporterServiceTrackerMap.open();
+
+		_portalCache = multiVMPool.getPortalCache(
+			WikiPageDisplay.class.getName());
+	}
+
+	@Override
 	public void deleteNode(long nodeId) throws PortalException {
 		WikiNode node = wikiNodePersistence.findByPrimaryKey(nodeId);
 
@@ -200,7 +225,18 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 
 		// Pages
 
-		wikiPageLocalService.deletePages(node.getNodeId());
+		boolean clearCache = WikiCacheThreadLocal.isClearCache();
+
+		try {
+			WikiCacheThreadLocal.setClearCache(true);
+
+			wikiPageLocalService.deletePages(node.getNodeId());
+		}
+		finally {
+			WikiCacheThreadLocal.setClearCache(clearCache);
+
+			_portalCache.removeAll();
+		}
 
 		// Node
 
@@ -358,7 +394,7 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 
 		WikiNode node = getNode(nodeId);
 
-		WikiImporter wikiImporter = wikiImporterTracker.getWikiImporter(
+		WikiImporter wikiImporter = _wikiImporterServiceTrackerMap.getService(
 			importer);
 
 		if (wikiImporter == null) {
@@ -366,7 +402,21 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 				"Unable to instantiate wiki importer with name " + importer);
 		}
 
-		wikiImporter.importPages(userId, node, inputStreams, options);
+		boolean notificationsEnabled = NotificationThreadLocal.isEnabled();
+		boolean clearCache = WikiCacheThreadLocal.isClearCache();
+
+		try {
+			NotificationThreadLocal.setEnabled(false);
+			WikiCacheThreadLocal.setClearCache(false);
+
+			wikiImporter.importPages(userId, node, inputStreams, options);
+		}
+		finally {
+			NotificationThreadLocal.setEnabled(notificationsEnabled);
+			WikiCacheThreadLocal.setClearCache(clearCache);
+
+			_portalCache.removeAll();
+		}
 	}
 
 	@Override
@@ -375,7 +425,18 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 
 		WikiNode node = wikiNodePersistence.findByPrimaryKey(nodeId);
 
-		return moveNodeToTrash(userId, node);
+		boolean clearCache = WikiCacheThreadLocal.isClearCache();
+
+		try {
+			WikiCacheThreadLocal.setClearCache(true);
+
+			return moveNodeToTrash(userId, node);
+		}
+		finally {
+			WikiCacheThreadLocal.setClearCache(clearCache);
+
+			_portalCache.removeAll();
+		}
 	}
 
 	@Override
@@ -577,6 +638,9 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 		validate(0, groupId, name);
 	}
 
+	@ServiceReference(type = MultiVMPool.class)
+	protected MultiVMPool multiVMPool;
+
 	@ServiceReference(type = SubscriptionLocalService.class)
 	protected SubscriptionLocalService subscriptionLocalService;
 
@@ -589,10 +653,11 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 	@ServiceReference(type = WikiGroupServiceConfiguration.class)
 	protected WikiGroupServiceConfiguration wikiGroupServiceConfiguration;
 
-	@ServiceReference(type = WikiImporterTracker.class)
-	protected WikiImporterTracker wikiImporterTracker;
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		WikiNodeLocalServiceImpl.class);
+
+	private PortalCache<?, ?> _portalCache;
+	private ServiceTrackerMap<String, WikiImporter>
+		_wikiImporterServiceTrackerMap;
 
 }

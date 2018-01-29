@@ -305,10 +305,10 @@ public class WikiPageServiceSoap {
 	}
 
 	public static com.liferay.wiki.model.WikiPageSoap[] getOrphans(
-		long groupId, long nodeId) throws RemoteException {
+		com.liferay.wiki.model.WikiNodeSoap node) throws RemoteException {
 		try {
-			java.util.List<com.liferay.wiki.model.WikiPage> returnValue = WikiPageServiceUtil.getOrphans(groupId,
-					nodeId);
+			java.util.List<com.liferay.wiki.model.WikiPage> returnValue = WikiPageServiceUtil.getOrphans(com.liferay.wiki.model.impl.WikiNodeModelImpl.toModel(
+						node));
 
 			return com.liferay.wiki.model.WikiPageSoap.toSoapModels(returnValue);
 		}
