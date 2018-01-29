@@ -15,6 +15,8 @@
 package com.liferay.wiki.engine.impl;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.diff.DiffHtmlUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
@@ -31,10 +33,10 @@ import com.liferay.taglib.servlet.PipingServletResponse;
 import com.liferay.wiki.engine.WikiEngine;
 import com.liferay.wiki.exception.PageContentException;
 import com.liferay.wiki.exception.WikiFormatException;
-import com.liferay.wiki.internal.util.WikiCacheHelper;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.model.WikiPageDisplay;
+import com.liferay.wiki.service.WikiPageLocalServiceUtil;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -195,7 +197,7 @@ public class WikiEngineRenderer {
 		String attachmentURLPrefix = sb.toString();
 
 		if (!preview && (version == 0)) {
-			WikiPageDisplay pageDisplay = _wikiCacheHelper.getDisplay(
+			WikiPageDisplay pageDisplay = WikiPageLocalServiceUtil.getDisplay(
 				page.getNodeId(), title, curViewPageURL, () -> curEditPageURL,
 				attachmentURLPrefix);
 
@@ -246,16 +248,14 @@ public class WikiEngineRenderer {
 			new WikiEngineServiceTrackerCustomizer());
 
 		_serviceTracker.open();
+
+		_portalCache = _multiVMPool.getPortalCache(
+			WikiPageDisplay.class.getName());
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_serviceTracker.close();
-	}
-
-	@Reference(unbind = "-")
-	protected void setWikiCacheHelper(WikiCacheHelper wikiCacheHelper) {
-		_wikiCacheHelper = wikiCacheHelper;
 	}
 
 	private String _convertURLs(String url, Matcher matcher) {
@@ -300,8 +300,12 @@ public class WikiEngineRenderer {
 		"\\[\\$BEGIN_PAGE_TITLE\\$\\](.*?)\\[\\$END_PAGE_TITLE\\$\\]");
 
 	private BundleContext _bundleContext;
+
+	@Reference
+	private MultiVMPool _multiVMPool;
+
+	private PortalCache<?, ?> _portalCache;
 	private ServiceTracker<WikiEngine, WikiEngine> _serviceTracker;
-	private WikiCacheHelper _wikiCacheHelper;
 	private final Map<String, WikiEngine> _wikiEngineMap =
 		new ConcurrentHashMap<>();
 
@@ -316,7 +320,7 @@ public class WikiEngineRenderer {
 
 			_wikiEngineMap.put(wikiEngine.getFormat(), wikiEngine);
 
-			_wikiCacheHelper.clearCache();
+			_portalCache.removeAll();
 
 			return wikiEngine;
 		}

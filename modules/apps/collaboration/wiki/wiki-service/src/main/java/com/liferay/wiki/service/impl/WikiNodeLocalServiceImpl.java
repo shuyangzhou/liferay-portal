@@ -18,7 +18,8 @@ import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -50,10 +51,10 @@ import com.liferay.wiki.constants.WikiConstants;
 import com.liferay.wiki.exception.DuplicateNodeNameException;
 import com.liferay.wiki.exception.NodeNameException;
 import com.liferay.wiki.importer.WikiImporter;
-import com.liferay.wiki.internal.util.WikiCacheHelper;
 import com.liferay.wiki.internal.util.WikiCacheThreadLocal;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
+import com.liferay.wiki.model.WikiPageDisplay;
 import com.liferay.wiki.service.base.WikiNodeLocalServiceBaseImpl;
 
 import java.io.InputStream;
@@ -203,6 +204,9 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 				bundle.getBundleContext(), WikiImporter.class, "importer");
 
 		_wikiImporterServiceTrackerMap.open();
+
+		_portalCache = multiVMPool.getPortalCache(
+			WikiPageDisplay.class.getName());
 	}
 
 	@Override
@@ -231,7 +235,7 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 		finally {
 			WikiCacheThreadLocal.setClearCache(clearCache);
 
-			wikiCacheHelper.clearCache();
+			_portalCache.removeAll();
 		}
 
 		// Node
@@ -411,7 +415,7 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 			NotificationThreadLocal.setEnabled(notificationsEnabled);
 			WikiCacheThreadLocal.setClearCache(clearCache);
 
-			wikiCacheHelper.clearCache();
+			_portalCache.removeAll();
 		}
 	}
 
@@ -431,7 +435,7 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 		finally {
 			WikiCacheThreadLocal.setClearCache(clearCache);
 
-			wikiCacheHelper.clearCache();
+			_portalCache.removeAll();
 		}
 	}
 
@@ -634,6 +638,9 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 		validate(0, groupId, name);
 	}
 
+	@ServiceReference(type = MultiVMPool.class)
+	protected MultiVMPool multiVMPool;
+
 	@ServiceReference(type = SubscriptionLocalService.class)
 	protected SubscriptionLocalService subscriptionLocalService;
 
@@ -643,15 +650,13 @@ public class WikiNodeLocalServiceImpl extends WikiNodeLocalServiceBaseImpl {
 	@ServiceReference(type = TrashHelper.class)
 	protected TrashHelper trashHelper;
 
-	@BeanReference
-	protected WikiCacheHelper wikiCacheHelper;
-
 	@ServiceReference(type = WikiGroupServiceConfiguration.class)
 	protected WikiGroupServiceConfiguration wikiGroupServiceConfiguration;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		WikiNodeLocalServiceImpl.class);
 
+	private PortalCache<?, ?> _portalCache;
 	private ServiceTrackerMap<String, WikiImporter>
 		_wikiImporterServiceTrackerMap;
 
