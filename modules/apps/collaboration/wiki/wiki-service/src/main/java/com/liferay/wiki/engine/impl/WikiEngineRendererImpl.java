@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.wiki.engine.WikiEngine;
+import com.liferay.wiki.engine.WikiEngineRenderer;
 import com.liferay.wiki.exception.PageContentException;
 import com.liferay.wiki.exception.WikiFormatException;
 import com.liferay.wiki.model.WikiPage;
@@ -51,8 +52,9 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  * @author Jorge Ferrer
  */
 @Component(immediate = true, service = WikiEngineRenderer.class)
-public class WikiEngineRenderer {
+public class WikiEngineRendererImpl implements WikiEngineRenderer {
 
+	@Override
 	public String convert(
 			WikiPage page, PortletURL viewPageURL, PortletURL editPageURL,
 			String attachmentURLPrefix)
@@ -106,6 +108,7 @@ public class WikiEngineRenderer {
 		return content;
 	}
 
+	@Override
 	public String diffHtml(
 			WikiPage sourcePage, WikiPage targetPage, PortletURL viewPageURL,
 			PortletURL editPageURL, String attachmentURLPrefix)
@@ -129,10 +132,12 @@ public class WikiEngineRenderer {
 			new UnsyncStringReader(targetContent));
 	}
 
+	@Override
 	public WikiEngine fetchWikiEngine(String format) {
 		return _wikiEngineMap.get(format);
 	}
 
+	@Override
 	public Collection<String> getFormats() {
 		return _wikiEngineMap.keySet();
 	}
