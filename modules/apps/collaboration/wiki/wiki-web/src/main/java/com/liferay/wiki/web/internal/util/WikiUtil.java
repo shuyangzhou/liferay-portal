@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.diff.DiffVersion;
 import com.liferay.portal.kernel.diff.DiffVersionsInfo;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -31,13 +32,18 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.taglib.servlet.PipingServletResponse;
 import com.liferay.wiki.engine.WikiEngine;
 import com.liferay.wiki.engine.impl.WikiEngineRenderer;
+import com.liferay.wiki.exception.WikiFormatException;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.model.WikiPageDisplay;
 import com.liferay.wiki.service.WikiPageLocalService;
 import com.liferay.wiki.util.comparator.PageVersionComparator;
+
+import java.io.IOException;
+import java.io.Writer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +55,10 @@ import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.PageContext;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -231,6 +240,35 @@ public class WikiUtil {
 		orderedNodes.addAll(nodes);
 
 		return orderedNodes;
+	}
+
+	public static void renderEditPageHTML(
+			WikiEngineRenderer wikiEngineRenderer, String format,
+			PageContext pageContext, WikiNode node, WikiPage page)
+		throws IOException, ServletException, WikiFormatException {
+
+		WikiEngine wikiEngine = wikiEngineRenderer.fetchWikiEngine(format);
+
+		if (wikiEngine == null) {
+			throw new WikiFormatException();
+		}
+
+		HttpServletResponse response =
+			(HttpServletResponse)pageContext.getResponse();
+
+		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
+
+		PipingServletResponse pipingServletResponse = new PipingServletResponse(
+			response, unsyncStringWriter);
+
+		wikiEngine.renderEditPage(
+			pageContext.getRequest(), pipingServletResponse, node, page);
+
+		Writer writer = pageContext.getOut();
+
+		StringBundler sb = unsyncStringWriter.getStringBundler();
+
+		writer.write(sb.toString());
 	}
 
 	@Reference(
