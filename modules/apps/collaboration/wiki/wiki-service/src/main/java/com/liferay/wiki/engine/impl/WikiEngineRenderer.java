@@ -37,7 +37,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import java.util.Collection;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
@@ -143,17 +142,6 @@ public class WikiEngineRenderer {
 
 	public WikiEngine fetchWikiEngine(String format) {
 		return _wikiEngineMap.get(format);
-	}
-
-	public String getFormatLabel(String format, Locale locale) {
-		WikiEngine wikiEngine = fetchWikiEngine(format);
-
-		if (wikiEngine != null) {
-			return wikiEngine.getFormatLabel(locale);
-		}
-		else {
-			return StringPool.BLANK;
-		}
 	}
 
 	public Collection<String> getFormats() {
