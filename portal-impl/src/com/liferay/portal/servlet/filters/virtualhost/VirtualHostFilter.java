@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -252,7 +253,9 @@ public class VirtualHostFilter extends BasePortalFilter {
 
 					forwardURL = forwardURL.concat(friendlyURL);
 
-					forwardURL = _appendQueryString(request, forwardURL);
+					if (ServerDetector.isWebSphere()) {
+						forwardURL = _appendQueryString(request, forwardURL);
+					}
 
 					if (_log.isDebugEnabled()) {
 						_log.debug("Forward to " + forwardURL);
@@ -369,7 +372,10 @@ public class VirtualHostFilter extends BasePortalFilter {
 				forwardURLString = sb.toString();
 			}
 
-			forwardURLString = _appendQueryString(request, forwardURLString);
+			if (ServerDetector.isWebSphere()) {
+				forwardURLString = _appendQueryString(
+					request, forwardURLString);
+			}
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("Forward to " + forwardURLString);
