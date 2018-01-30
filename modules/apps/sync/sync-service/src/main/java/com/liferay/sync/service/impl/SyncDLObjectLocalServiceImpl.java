@@ -37,7 +37,7 @@ import com.liferay.sync.constants.SyncDLObjectConstants;
 import com.liferay.sync.internal.util.SyncHelperUtil;
 import com.liferay.sync.model.SyncDLObject;
 import com.liferay.sync.service.base.SyncDLObjectLocalServiceBaseImpl;
-import com.liferay.sync.service.configuration.SyncServiceConfigurationValues;
+import com.liferay.sync.service.internal.configuration.SyncServiceConfigurationValues;
 
 import java.util.Date;
 import java.util.List;
