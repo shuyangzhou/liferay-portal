@@ -15,38 +15,51 @@
 package com.liferay.shopping.service.permission;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
+import com.liferay.shopping.constants.ShoppingConstants;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jorge Ferrer
+ * @deprecated As of 2.1.0, with no direct replacement
  */
 @Component(
 	immediate = true,
-	property = {"resource.name=" + ShoppingPermission.RESOURCE_NAME},
+	property = {"resource.name=" + ShoppingConstants.RESOURCE_NAME},
 	service = ShoppingPermission.class
 )
+@Deprecated
 public class ShoppingPermission {
 
-	public static final String RESOURCE_NAME = "com.liferay.shopping";
+	public static final String RESOURCE_NAME = ShoppingConstants.RESOURCE_NAME;
 
 	public static void check(
 			PermissionChecker permissionChecker, long groupId, String actionId)
 		throws PortalException {
 
-		if (!contains(permissionChecker, groupId, actionId)) {
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, RESOURCE_NAME, groupId, actionId);
-		}
+		_portletResourcePermission.check(permissionChecker, groupId, actionId);
 	}
 
 	public static boolean contains(
 		PermissionChecker permissionChecker, long groupId, String actionId) {
 
-		return permissionChecker.hasPermission(
-			groupId, RESOURCE_NAME, groupId, actionId);
+		return _portletResourcePermission.contains(
+			permissionChecker, groupId, actionId);
 	}
+
+	@Reference(
+		target = "(resource.name=" + ShoppingConstants.RESOURCE_NAME + ")",
+		unbind = "-"
+	)
+	protected void setPortletResourcePermission(
+		PortletResourcePermission portletResourcePermission) {
+
+		_portletResourcePermission = portletResourcePermission;
+	}
+
+	private static PortletResourcePermission _portletResourcePermission;
 
 }

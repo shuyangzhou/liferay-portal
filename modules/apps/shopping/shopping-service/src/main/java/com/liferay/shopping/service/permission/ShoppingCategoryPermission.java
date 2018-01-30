@@ -15,25 +15,25 @@
 package com.liferay.shopping.service.permission;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionHelper;
 import com.liferay.shopping.model.ShoppingCategory;
-import com.liferay.shopping.model.ShoppingCategoryConstants;
-import com.liferay.shopping.service.ShoppingCategoryLocalServiceUtil;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
+ * @deprecated As of 2.1.0, with no direct replacement
  */
 @Component(
 	immediate = true,
 	property = {"model.class.name=com.liferay.shopping.model.ShoppingCategory"},
 	service = ShoppingCategoryPermission.class
 )
+@Deprecated
 public class ShoppingCategoryPermission implements BaseModelPermissionChecker {
 
 	public static void check(
@@ -41,11 +41,9 @@ public class ShoppingCategoryPermission implements BaseModelPermissionChecker {
 			String actionId)
 		throws PortalException {
 
-		if (!contains(permissionChecker, groupId, categoryId, actionId)) {
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, ShoppingCategory.class.getName(), categoryId,
-				actionId);
-		}
+		ModelResourcePermissionHelper.check(
+			_shoppingCategoryModelResourcePermission, permissionChecker,
+			groupId, categoryId, actionId);
 	}
 
 	public static void check(
@@ -53,11 +51,8 @@ public class ShoppingCategoryPermission implements BaseModelPermissionChecker {
 			String actionId)
 		throws PortalException {
 
-		if (!contains(permissionChecker, category, actionId)) {
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, ShoppingCategory.class.getName(),
-				category.getCategoryId(), actionId);
-		}
+		_shoppingCategoryModelResourcePermission.check(
+			permissionChecker, category, actionId);
 	}
 
 	public static boolean contains(
@@ -65,18 +60,9 @@ public class ShoppingCategoryPermission implements BaseModelPermissionChecker {
 			String actionId)
 		throws PortalException {
 
-		if (categoryId ==
-				ShoppingCategoryConstants.DEFAULT_PARENT_CATEGORY_ID) {
-
-			return ShoppingPermission.contains(
-				permissionChecker, groupId, actionId);
-		}
-		else {
-			ShoppingCategory category =
-				ShoppingCategoryLocalServiceUtil.getCategory(categoryId);
-
-			return contains(permissionChecker, category, actionId);
-		}
+		return ModelResourcePermissionHelper.contains(
+			_shoppingCategoryModelResourcePermission, permissionChecker,
+			groupId, categoryId, actionId);
 	}
 
 	public static boolean contains(
@@ -84,33 +70,8 @@ public class ShoppingCategoryPermission implements BaseModelPermissionChecker {
 			String actionId)
 		throws PortalException {
 
-		if (actionId.equals(ActionKeys.ADD_CATEGORY)) {
-			actionId = ActionKeys.ADD_SUBCATEGORY;
-		}
-
-		if (actionId.equals(ActionKeys.VIEW) &&
-			PropsValues.PERMISSIONS_VIEW_DYNAMIC_INHERITANCE) {
-
-			long categoryId = category.getCategoryId();
-
-			while (categoryId !=
-						ShoppingCategoryConstants.DEFAULT_PARENT_CATEGORY_ID) {
-
-				category = ShoppingCategoryLocalServiceUtil.getCategory(
-					categoryId);
-
-				if (!_hasPermission(permissionChecker, category, actionId)) {
-					return false;
-				}
-
-				categoryId = category.getParentCategoryId();
-			}
-
-			return ShoppingPermission.contains(
-				permissionChecker, category.getGroupId(), actionId);
-		}
-
-		return _hasPermission(permissionChecker, category, actionId);
+		return _shoppingCategoryModelResourcePermission.contains(
+			permissionChecker, category, actionId);
 	}
 
 	@Override
@@ -119,24 +80,22 @@ public class ShoppingCategoryPermission implements BaseModelPermissionChecker {
 			String actionId)
 		throws PortalException {
 
-		check(permissionChecker, groupId, primaryKey, actionId);
+		ModelResourcePermissionHelper.check(
+			_shoppingCategoryModelResourcePermission, permissionChecker,
+			groupId, primaryKey, actionId);
 	}
 
-	private static boolean _hasPermission(
-		PermissionChecker permissionChecker, ShoppingCategory category,
-		String actionId) {
+	@Reference(
+		target = "(model.class.name=com.liferay.shopping.model.ShoppingCategory)",
+		unbind = "-"
+	)
+	protected void setModelResourcePermission(
+		ModelResourcePermission<ShoppingCategory> modelResourcePermission) {
 
-		if (permissionChecker.hasOwnerPermission(
-				category.getCompanyId(), ShoppingCategory.class.getName(),
-				category.getCategoryId(), category.getUserId(), actionId) ||
-			permissionChecker.hasPermission(
-				category.getGroupId(), ShoppingCategory.class.getName(),
-				category.getCategoryId(), actionId)) {
-
-			return true;
-		}
-
-		return false;
+		_shoppingCategoryModelResourcePermission = modelResourcePermission;
 	}
+
+	private static ModelResourcePermission<ShoppingCategory>
+		_shoppingCategoryModelResourcePermission;
 
 }

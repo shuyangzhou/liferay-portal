@@ -15,22 +15,23 @@
 package com.liferay.shopping.service.permission;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.shopping.model.ShoppingOrder;
-import com.liferay.shopping.service.ShoppingOrderLocalServiceUtil;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
+ * @deprecated As of 2.1.0, with no direct replacement
  */
 @Component(
 	immediate = true,
 	property = {"model.class.name=com.liferay.shopping.model.ShoppingOrder"},
 	service = ShoppingOrderPermission.class
 )
+@Deprecated
 public class ShoppingOrderPermission {
 
 	public static void check(
@@ -38,11 +39,8 @@ public class ShoppingOrderPermission {
 			String actionId)
 		throws PortalException {
 
-		if (!contains(permissionChecker, groupId, orderId, actionId)) {
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, ShoppingOrder.class.getName(), orderId,
-				actionId);
-		}
+		_shoppingOrderModelResourcePermission.check(
+			permissionChecker, orderId, actionId);
 	}
 
 	public static void check(
@@ -50,11 +48,8 @@ public class ShoppingOrderPermission {
 			ShoppingOrder order, String actionId)
 		throws PortalException {
 
-		if (!contains(permissionChecker, groupId, order, actionId)) {
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, ShoppingOrder.class.getName(),
-				order.getOrderId(), actionId);
-		}
+		_shoppingOrderModelResourcePermission.check(
+			permissionChecker, order, actionId);
 	}
 
 	public static boolean contains(
@@ -62,31 +57,30 @@ public class ShoppingOrderPermission {
 			String actionId)
 		throws PortalException {
 
-		ShoppingOrder order = ShoppingOrderLocalServiceUtil.getOrder(orderId);
-
-		return contains(permissionChecker, groupId, order, actionId);
+		return _shoppingOrderModelResourcePermission.contains(
+			permissionChecker, orderId, actionId);
 	}
 
 	public static boolean contains(
-		PermissionChecker permissionChecker, long groupId, ShoppingOrder order,
-		String actionId) {
+			PermissionChecker permissionChecker, long groupId,
+			ShoppingOrder order, String actionId)
+		throws PortalException {
 
-		if (ShoppingPermission.contains(
-				permissionChecker, groupId, ActionKeys.MANAGE_ORDERS)) {
-
-			return true;
-		}
-
-		if (permissionChecker.hasOwnerPermission(
-				order.getCompanyId(), ShoppingOrder.class.getName(),
-				order.getOrderId(), order.getUserId(), actionId)) {
-
-			return true;
-		}
-
-		return permissionChecker.hasPermission(
-			order.getGroupId(), ShoppingOrder.class.getName(),
-			order.getOrderId(), actionId);
+		return _shoppingOrderModelResourcePermission.contains(
+			permissionChecker, order, actionId);
 	}
+
+	@Reference(
+		target = "(model.class.name=com.liferay.shopping.model.ShoppingOrder)",
+		unbind = "-"
+	)
+	protected void setModelResourcePermission(
+		ModelResourcePermission<ShoppingOrder> modelResourcePermission) {
+
+		_shoppingOrderModelResourcePermission = modelResourcePermission;
+	}
+
+	private static ModelResourcePermission<ShoppingOrder>
+		_shoppingOrderModelResourcePermission;
 
 }
