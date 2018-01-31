@@ -132,6 +132,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * Provides the local service for accessing, adding, checking in/out, deleting,
@@ -1643,16 +1644,59 @@ public class DLFileEntryLocalServiceImpl
 		configuration = "DLFileEntry", incrementClass = NumberIncrement.class
 	)
 	@Override
-	public void incrementViewCounter(DLFileEntry dlFileEntry, int increment) {
+	public void incrementViewCounter(DLFileEntry dlFileEntry, int increment)
+		throws PortalException {
+
 		if (ExportImportThreadLocal.isImportInProcess()) {
 			return;
 		}
 
-		dlFileEntry = dlFileEntryPersistence.fetchByPrimaryKey(
-			dlFileEntry.getFileEntryId());
+		long fileEntryId = dlFileEntry.getFileEntryId();
+
+		dlFileEntry = dlFileEntryPersistence.fetchByPrimaryKey(fileEntryId);
 
 		if (dlFileEntry == null) {
 			return;
+		}
+
+		String newFileVersion = dlFileEntry.getVersion();
+
+		DLFileVersion dlFileVersion = dlFileEntry.getLatestFileVersion(true);
+
+		if (dlFileVersion != null) {
+			String latestVersion = dlFileVersion.getVersion();
+
+			if (!newFileVersion.equals(latestVersion)) {
+				String[] splitNewVersion = newFileVersion.split(
+					Pattern.quote("."));
+				String[] splitLatestVersion = latestVersion.split(
+					Pattern.quote("."));
+
+				try {
+					int firstNewToken = Integer.valueOf(splitNewVersion[0]);
+					int firstLatestToken = Integer.valueOf(
+						splitLatestVersion[0]);
+
+					if (firstNewToken < firstLatestToken) {
+						dlFileEntry.setVersion(latestVersion);
+					}
+					else {
+						int secondNewToken = Integer.valueOf(
+							splitNewVersion[1]);
+						int secondLatestToken = Integer.valueOf(
+							splitLatestVersion[1]);
+
+						if (secondNewToken < secondLatestToken) {
+							dlFileEntry.setVersion(latestVersion);
+						}
+					}
+				}
+				catch (NumberFormatException nfe) {
+					if (_log.isWarnEnabled()) {
+						_log.warn("File version is non-numeric.");
+					}
+				}
+			}
 		}
 
 		dlFileEntry.setModifiedDate(dlFileEntry.getModifiedDate());

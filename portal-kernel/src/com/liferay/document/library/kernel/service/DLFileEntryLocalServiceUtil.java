@@ -800,7 +800,8 @@ public class DLFileEntryLocalServiceUtil {
 
 	public static void incrementViewCounter(
 		com.liferay.document.library.kernel.model.DLFileEntry dlFileEntry,
-		int increment) {
+		int increment)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().incrementViewCounter(dlFileEntry, increment);
 	}
 

@@ -605,7 +605,8 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@BufferedIncrement(configuration = "DLFileEntry", incrementClass = NumberIncrement.class)
-	public void incrementViewCounter(DLFileEntry dlFileEntry, int increment);
+	public void incrementViewCounter(DLFileEntry dlFileEntry, int increment)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean isFileEntryCheckedOut(long fileEntryId)
