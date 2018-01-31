@@ -1124,12 +1124,20 @@ AUI.add(
 								var layout = instance.getActiveLayout();
 
 								field._col.get('value').removeField(field);
+
 								row = field.get('content').ancestor('.layout-row');
+
 								layout.normalizeColsHeight(new A.NodeList(row));
+
 								fieldNode.remove();
+
 								instance.getFieldSettingsPanel().close();
+
 								instance._traverseFormPages();
+
 								instance._applyDragAndDrop();
+
+								instance._adjustEmptyForm(instance.getActiveLayout());
 							}
 						);
 					},
