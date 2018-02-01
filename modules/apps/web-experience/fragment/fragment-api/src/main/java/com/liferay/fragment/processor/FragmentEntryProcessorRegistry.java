@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 
 import java.util.Collections;
 
+import org.jsoup.nodes.Document;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -33,17 +34,16 @@ import org.osgi.service.component.annotations.Deactivate;
 @Component(immediate = true, service = FragmentEntryProcessorRegistry.class)
 public class FragmentEntryProcessorRegistry {
 
-	public String processFragmentEntryHTML(String html, JSONObject jsonObject)
+	public void processFragmentEntryHTML(
+			Document document, JSONObject jsonObject)
 		throws PortalException {
 
 		for (FragmentEntryProcessor fragmentEntryProcessor :
 				_serviceTrackerList) {
 
-			html = fragmentEntryProcessor.processFragmentEntryHTML(
-				html, jsonObject);
+			fragmentEntryProcessor.processFragmentEntryHTML(
+				document, jsonObject);
 		}
-
-		return html;
 	}
 
 	public void validateFragmentEntryHTML(String html) throws PortalException {
