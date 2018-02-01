@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ResourceBundle;
 
+import org.jsoup.nodes.Document;
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -37,10 +38,9 @@ import org.osgi.service.component.annotations.Component;
 public class NullableFragmentEntryProcessor implements FragmentEntryProcessor {
 
 	@Override
-	public String processFragmentEntryHTML(String html, JSONObject jsonObject)
+	public void processFragmentEntryHTML(
+			Document document, JSONObject jsonObject)
 		throws PortalException {
-
-		return html;
 	}
 
 	@Override

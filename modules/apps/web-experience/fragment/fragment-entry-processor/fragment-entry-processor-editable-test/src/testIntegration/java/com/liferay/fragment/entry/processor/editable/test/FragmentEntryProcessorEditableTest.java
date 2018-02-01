@@ -31,11 +31,14 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -85,13 +88,22 @@ public class FragmentEntryProcessorEditableTest {
 		jsonObject.put("editable_img", "sample.jpg");
 		jsonObject.put("editable_text", "test");
 
-		byte[] testResultFileBytes = FileUtil.getBytes(
-			getClass(), "dependencies/processed_fragment_entry.html");
+		Document document = Jsoup.parseBodyFragment(fragmentEntry.getHtml());
 
-		Assert.assertEquals(
-			_fragmentEntryProcessorRegistry.processFragmentEntryHTML(
-				fragmentEntry.getHtml(), jsonObject),
-			new String(testResultFileBytes));
+		_fragmentEntryProcessorRegistry.processFragmentEntryHTML(
+			document, jsonObject);
+
+		Class<?> clazz = getClass();
+
+		ClassLoader classLoader = clazz.getClassLoader();
+
+		String processedFragmentEntry = StringUtil.read(
+			classLoader, "dependencies/processed_fragment_entry.html");
+
+		Document processedFragmentEntryDocument =
+			Jsoup.parseBodyFragment(processedFragmentEntry);
+
+		Assert.assertEquals(document, processedFragmentEntryDocument);
 	}
 
 	@Inject
