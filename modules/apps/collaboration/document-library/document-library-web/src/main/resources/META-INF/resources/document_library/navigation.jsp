@@ -17,38 +17,13 @@
 <%@ include file="/document_library/init.jsp" %>
 
 <%
-long repositoryId = GetterUtil.getLong((String)request.getAttribute("view.jsp-repositoryId"));
-
-long folderId = GetterUtil.getLong((String)request.getAttribute("view.jsp-folderId"));
-
+DLAdminDisplayContext dlAdminDisplayContext = dlDisplayContextProvider.getDLAdminDisplayContext(liferayPortletRequest, liferayPortletResponse, currentURLObj);
 DLPortletInstanceSettingsHelper dlPortletInstanceSettingsHelper = new DLPortletInstanceSettingsHelper(dlRequestHelper);
 %>
 
-<c:if test="<%= dlPortletInstanceSettingsHelper.isShowTabs() || dlPortletInstanceSettingsHelper.isShowSearch() %>">
-	<aui:nav-bar cssClass='<%= dlPortletInstanceSettingsHelper.isShowSearch() ? "collapse-basic-search" : StringPool.BLANK %>' markupView="lexicon">
-		<c:if test="<%= dlPortletInstanceSettingsHelper.isShowTabs() %>">
-			<liferay-util:include page="/document_library/navigation_tabs.jsp" servletContext="<%= application %>" />
-		</c:if>
-
-		<c:if test="<%= dlPortletInstanceSettingsHelper.isShowSearch() %>">
-			<aui:nav-bar-search>
-				<liferay-portlet:renderURL varImpl="searchURL">
-					<portlet:param name="mvcRenderCommandName" value="/document_library/search" />
-					<portlet:param name="repositoryId" value="<%= String.valueOf(repositoryId) %>" />
-					<portlet:param name="searchRepositoryId" value="<%= String.valueOf(repositoryId) %>" />
-					<portlet:param name="folderId" value="<%= String.valueOf(folderId) %>" />
-					<portlet:param name="searchFolderId" value="<%= String.valueOf(folderId) %>" />
-					<portlet:param name="showRepositoryTabs" value="<%= (folderId == 0) ? Boolean.TRUE.toString() : Boolean.FALSE.toString() %>" />
-					<portlet:param name="showSearchInfo" value="<%= Boolean.TRUE.toString() %>" />
-				</liferay-portlet:renderURL>
-
-				<aui:form action="<%= searchURL.toString() %>" method="get" name="searchFm">
-					<liferay-portlet:renderURLParams varImpl="searchURL" />
-					<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
-
-					<liferay-ui:input-search markupView="lexicon" />
-				</aui:form>
-			</aui:nav-bar-search>
-		</c:if>
-	</aui:nav-bar>
+<c:if test="<%= dlPortletInstanceSettingsHelper.isShowTabs() %>">
+	<clay:navigation-bar
+		inverted="<%= true %>"
+		items="<%= dlAdminDisplayContext.getNavigationItems() %>"
+	/>
 </c:if>

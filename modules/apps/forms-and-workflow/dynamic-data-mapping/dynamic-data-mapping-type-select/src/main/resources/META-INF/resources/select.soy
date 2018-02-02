@@ -61,7 +61,7 @@
 					{/if}
 				{/if}
 
-				<div class="form-control select-field-trigger" {if $dir}dir="{$dir}"{/if} id="{$name}" name="{$name}">
+				<div class="form-control select-field-trigger" {if $dir}dir="{$dir}"{/if} id="{$name}" name="{$name}" {if $readOnly} disabled{/if}>
 					{if $multiple}
 						{if $displayValue}
 							<ul class="multiple-badge-list">
@@ -144,7 +144,7 @@
 		{foreach $currentValue in $value}
 			{if $option.value == $currentValue}
 				<li>
-					<span class="badge badge-default badge-sm multiple-badge" data-original-title="{$option.label}" title="{$option.label}">
+					<span class="badge badge-primary badge-sm multiple-badge" data-original-title="{$option.label}" title="{$option.label}">
 						{$option.label}
 						{if not $readOnly}
 							<a class="trigger-badge-item-close" data-badge-value="{$option.value}" href="javascript:void(0)">{$badgeCloseIcon}</a>
@@ -167,7 +167,7 @@
 	{@param? required: bool}
 	{@param? tip: string}
 
-	<label class="control-label{$readOnly ? ' disabled' : ''}" for="{$name}">
+	<label class="{$readOnly ? ' disabled' : ''}" for="{$name}">
 		{$label}
 
 		{if $required}
@@ -175,7 +175,7 @@
 		{/if}
 	</label>
 
-	<p class="liferay-ddm-form-field-tip">{$tip ? $tip: ''}</p>
+	<span class="form-text">{$tip ? $tip: ''}</span>
 {/template}
 
 /**

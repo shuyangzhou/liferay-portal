@@ -22,10 +22,21 @@ import com.liferay.source.formatter.BNDSettings;
 import com.liferay.source.formatter.checks.util.BNDSourceUtil;
 import com.liferay.source.formatter.checks.util.JavaSourceUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author Hugo Huijser
  */
 public class JavaPackagePathCheck extends BaseFileCheck {
+
+	public void setAllowedInternalPackageDirName(
+		String allowedInternalPackageDirName) {
+
+		_allowedInternalPackageDirNames.add(allowedInternalPackageDirName);
+	}
 
 	@Override
 	protected String doProcess(
@@ -40,7 +51,7 @@ public class JavaPackagePathCheck extends BaseFileCheck {
 			return content;
 		}
 
-		_checkPackageName(fileName, packageName);
+		_checkPackageName(fileName, absolutePath, packageName);
 
 		if (isModulesFile(absolutePath) && !isModulesApp(absolutePath, true)) {
 			_checkModulePackageName(fileName, packageName);
@@ -88,7 +99,9 @@ public class JavaPackagePathCheck extends BaseFileCheck {
 		}
 	}
 
-	private void _checkPackageName(String fileName, String packageName) {
+	private void _checkPackageName(
+		String fileName, String absolutePath, String packageName) {
+
 		int pos = fileName.lastIndexOf(CharPool.SLASH);
 
 		String filePath = StringUtil.replace(
@@ -109,6 +122,31 @@ public class JavaPackagePathCheck extends BaseFileCheck {
 				fileName, "Do not use 'impl' inside 'internal'",
 				"package.markdown");
 		}
+
+		for (String allowedInternalPackageDirName :
+				_allowedInternalPackageDirNames) {
+
+			if (absolutePath.contains(allowedInternalPackageDirName)) {
+				return;
+			}
+		}
+
+		if (absolutePath.contains("-api/src/")) {
+			Matcher matcher = _internalPackagePattern.matcher(packageName);
+
+			if (matcher.find()) {
+				addMessage(
+					fileName,
+					"Do not use '" + matcher.group(1) +
+						"' package in API module",
+					"package.markdown");
+			}
+		}
 	}
+
+	private final List<String> _allowedInternalPackageDirNames =
+		new ArrayList<>();
+	private final Pattern _internalPackagePattern = Pattern.compile(
+		"\\.(impl|internal)(\\.|\\Z)");
 
 }

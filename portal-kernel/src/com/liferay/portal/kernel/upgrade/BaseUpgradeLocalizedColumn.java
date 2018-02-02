@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.upgrade;
 
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.upgrade.util.UpgradeProcessUtil;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
@@ -21,8 +22,10 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
-import java.sql.PreparedStatement;
+import java.io.IOException;
+
 import java.sql.SQLException;
 
 import java.util.Locale;
@@ -52,6 +55,11 @@ public abstract class BaseUpgradeLocalizedColumn extends UpgradeProcess {
 				resourceBundleLoader, tableName, columnName, originalContent,
 				localizationMapKey, localizationXMLKey, companyId);
 		}
+	}
+
+	private String _escape(String string) {
+		return string.replace(
+			StringPool.APOSTROPHE, StringPool.DOUBLE_APOSTROPHE);
 	}
 
 	private String _getLocalizationXML(
@@ -91,15 +99,16 @@ public abstract class BaseUpgradeLocalizedColumn extends UpgradeProcess {
 			resourceBundleLoader);
 
 		String sql = StringBundler.concat(
-			"update ", tableName, " set ", columnName, " = ? where ",
-			columnName, " = ? and companyId = ?");
+			"update ", tableName, " set ", columnName, " = '",
+			_escape(localizationXML), "' where CAST_CLOB_TEXT(", columnName,
+			") = '", _escape(originalContent), "' and companyId = ",
+			String.valueOf(companyId));
 
-		try (PreparedStatement ps = connection.prepareStatement(sql)) {
-			ps.setString(1, localizationXML);
-			ps.setString(2, originalContent);
-			ps.setLong(3, companyId);
-
-			ps.executeUpdate();
+		try {
+			runSQL(sql);
+		}
+		catch (IOException ioe) {
+			throw new SystemException(ioe);
 		}
 	}
 
