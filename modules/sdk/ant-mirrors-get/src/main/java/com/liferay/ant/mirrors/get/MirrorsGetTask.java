@@ -16,7 +16,6 @@ package com.liferay.ant.mirrors.get;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -300,9 +299,11 @@ public class MirrorsGetTask extends Task {
 		try {
 			remoteMD5 = toString(url);
 		}
-		catch (FileNotFoundException fnfe) {
+		catch (Exception e) {
 			if (_verbose) {
-				System.out.println("URL does not point to a valid MD5 file.");
+				System.out.println("Unable to access MD5 file");
+
+				e.printStackTrace();
 			}
 
 			return true;

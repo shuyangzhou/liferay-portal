@@ -51,67 +51,10 @@ pageContext.setAttribute("portletURL", portletURL);
 
 <liferay-ui:error exception="<%= RequiredRoleException.class %>" message="you-cannot-delete-a-system-role" />
 
-<c:if test="<%= PortalPermissionUtil.contains(permissionChecker, ActionKeys.ADD_ROLE) %>">
-	<liferay-portlet:renderURL varImpl="addRoleURL">
-		<portlet:param name="mvcPath" value="/edit_role.jsp" />
-		<portlet:param name="redirect" value="<%= portletURLString %>" />
-		<portlet:param name="tabs1" value="details" />
-		<portlet:param name="type" value="<%= String.valueOf(type) %>" />
-	</liferay-portlet:renderURL>
-
-	<liferay-frontend:add-menu>
-
-		<%
-		String title = null;
-
-		if (type == RoleConstants.TYPE_SITE) {
-			title = "site-role";
-		}
-		else if (type == RoleConstants.TYPE_ORGANIZATION) {
-			title = "organization-role";
-		}
-		else {
-			title = "regular-role";
-		}
-		%>
-
-		<liferay-frontend:add-menu-item title="<%= LanguageUtil.get(request, title) %>" url="<%= addRoleURL.toString() %>" />
-	</liferay-frontend:add-menu>
-</c:if>
-
-<aui:nav-bar cssClass="collapse-basic-search" markupView="lexicon">
-	<aui:nav cssClass="navbar-nav">
-
-		<%
-		portletURL.setParameter("type", String.valueOf(RoleConstants.TYPE_REGULAR));
-		%>
-
-		<aui:nav-item href="<%= portletURL.toString() %>" label="regular-roles" selected="<%= type == RoleConstants.TYPE_REGULAR %>" />
-
-		<%
-		portletURL.setParameter("type", String.valueOf(RoleConstants.TYPE_SITE));
-		%>
-
-		<aui:nav-item href="<%= portletURL.toString() %>" label="site-roles" selected="<%= type == RoleConstants.TYPE_SITE %>" />
-
-		<%
-		portletURL.setParameter("type", String.valueOf(RoleConstants.TYPE_ORGANIZATION));
-		%>
-
-		<aui:nav-item href="<%= portletURL.toString() %>" label="organization-roles" selected="<%= type == RoleConstants.TYPE_ORGANIZATION %>" />
-
-		<%
-		portletURL.setParameter("type", String.valueOf(type));
-		%>
-
-	</aui:nav>
-
-	<aui:nav-bar-search>
-		<aui:form action="<%= portletURLString %>" name="searchFm">
-			<liferay-ui:input-search autoFocus="<%= windowState.equals(WindowState.MAXIMIZED) %>" markupView="lexicon" />
-		</aui:form>
-	</aui:nav-bar-search>
-</aui:nav-bar>
+<clay:navigation-bar
+	inverted="<%= true %>"
+	items="<%= roleDisplayContext.getViewRoleNavigationItems(portletURL) %>"
+/>
 
 <liferay-frontend:management-bar
 	includeCheckBox="<%= true %>"
@@ -129,6 +72,12 @@ pageContext.setAttribute("portletURL", portletURL);
 			orderColumns='<%= new String[] {"title"} %>'
 			portletURL="<%= portletURL %>"
 		/>
+
+		<li>
+			<aui:form action="<%= portletURLString %>" name="searchFm">
+				<liferay-ui:input-search autoFocus="<%= windowState.equals(WindowState.MAXIMIZED) %>" markupView="lexicon" />
+			</aui:form>
+		</li>
 	</liferay-frontend:management-bar-filters>
 
 	<liferay-frontend:management-bar-buttons>
@@ -137,6 +86,34 @@ pageContext.setAttribute("portletURL", portletURL);
 			portletURL="<%= portletURL %>"
 			selectedDisplayStyle="<%= displayStyle %>"
 		/>
+
+		<c:if test="<%= PortalPermissionUtil.contains(permissionChecker, ActionKeys.ADD_ROLE) %>">
+			<liferay-portlet:renderURL varImpl="addRoleURL">
+				<portlet:param name="mvcPath" value="/edit_role.jsp" />
+				<portlet:param name="redirect" value="<%= portletURLString %>" />
+				<portlet:param name="tabs1" value="details" />
+				<portlet:param name="type" value="<%= String.valueOf(type) %>" />
+			</liferay-portlet:renderURL>
+
+			<liferay-frontend:add-menu inline="<%= true %>">
+
+				<%
+				String title = null;
+
+				if (type == RoleConstants.TYPE_SITE) {
+					title = "site-role";
+				}
+				else if (type == RoleConstants.TYPE_ORGANIZATION) {
+					title = "organization-role";
+				}
+				else {
+					title = "regular-role";
+				}
+				%>
+
+				<liferay-frontend:add-menu-item title="<%= LanguageUtil.get(request, title) %>" url="<%= addRoleURL.toString() %>" />
+			</liferay-frontend:add-menu>
+		</c:if>
 	</liferay-frontend:management-bar-buttons>
 
 	<liferay-frontend:management-bar-action-buttons>
