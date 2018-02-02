@@ -18,5 +18,5 @@
 
 <%
 ExportImportConfiguration exportImportConfiguration = (ExportImportConfiguration)request.getAttribute("liferay-staging:configuration-header:exportImportConfiguration");
-String label = GetterUtil.getString((String)request.getAttribute("liferay-staging:configuration-header:label"));
+String label = GetterUtil.getString(request.getAttribute("liferay-staging:configuration-header:label"));
 %>
