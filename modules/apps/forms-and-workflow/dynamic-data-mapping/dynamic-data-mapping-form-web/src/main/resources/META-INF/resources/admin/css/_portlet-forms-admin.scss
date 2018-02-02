@@ -383,12 +383,10 @@
 
 		.form-builder-controls-trigger {
 			margin: 0;
-			top: 18px;
+			top: 13px;
 		}
 	}
 
-	.form-control[readonly],
-	.form-control[disabled],
 	input[type='checkbox'],
 	input[type='radio'] {
 		background-color: transparent;

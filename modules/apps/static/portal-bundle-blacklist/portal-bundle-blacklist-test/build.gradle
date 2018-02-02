@@ -3,6 +3,7 @@ targetCompatibility = "1.8"
 
 dependencies {
 	testCompile group: "com.liferay", name: "com.liferay.petra.lang", version: "1.0.0"
+	testCompile group: "com.liferay", name: "com.liferay.petra.string", version: "1.0.0"
 	testCompile group: "com.liferay", name: "com.liferay.portal.lpkg.deployer.test.util", version: "1.0.0"
 	testCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
 
@@ -10,7 +11,7 @@ dependencies {
 	testIntegrationCompile group: "com.liferay", name: "com.liferay.osgi.util", version: "3.2.0"
 	testIntegrationCompile group: "com.liferay", name: "com.liferay.petra.function", version: "1.0.0"
 	testIntegrationCompile group: "org.osgi", name: "org.osgi.core", version: "5.0.0"
-	testIntegrationCompile project(":apps:static:portal-bundle-blacklist:portal-bundle-blacklist")
+	testIntegrationCompile project(":apps:static:portal-bundle-blacklist:portal-bundle-blacklist-api")
 }
 
 test {
