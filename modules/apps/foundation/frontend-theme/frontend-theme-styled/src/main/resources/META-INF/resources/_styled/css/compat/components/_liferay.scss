@@ -86,13 +86,13 @@
 		}
 	}
 
-	// Modals
+	/* ---------- Modals ---------- */
 
 	.dialog-with-footer .button-holder.dialog-footer {
 		background-color: $modal-content-bg;
 	}
 
-	// Friendly URL
+	/* ---------- Friendly URL ---------- */
 
 	.lfr-friendly-url-input-group.input-group {
 		.input-group-addon {
@@ -105,7 +105,7 @@
 		}
 	}
 
-	// Forms builder
+	/* ---------- Forms builder ---------- */
 
 	#settings .lfr-ddm-form-page {
 		margin-top: 0;
@@ -150,5 +150,14 @@
 	.layout-row-container-row .layout-builder-move-cut-button.layout-builder-move-cut-row-button {
 		right: 30px;
 		top: -22px;
+	}
+
+	/* ---------- Portlet forms ---------- */
+
+	.portal-popup, .portlet-forms-admin {
+		.asset-icon .sticker .lexicon-icon {
+			height: 100%;
+			width: 1em;
+		}
 	}
 }
