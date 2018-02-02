@@ -80,7 +80,7 @@
 </tr>
 <tr>
 	<td>CONTAINER</td>
-	<td>//div[@class='navbar ' or contains(@class,'navbar-default')]//div[contains(@class,'container')]</td>
+	<td>//div[@class='navbar ' or contains(@class,'navbar-default')]//div[contains(@class,'container')] | //div[contains(@class,'navbar-collapse')]/div[contains(@class,'container')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -216,6 +216,11 @@
 <tr>
 	<td>STRUCTURES</td>
 	<td>//*[@data-qa-id='navigation']//a[contains(.,'Structures')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TEMPLATES</td>
+	<td>//ul[contains(@class,'navbar-nav')]/li/a[contains(.,'Templates')]</td>
 	<td></td>
 </tr>
 <tr>

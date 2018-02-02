@@ -14,7 +14,7 @@
 
 package com.liferay.asset.publisher.web.internal;
 
-import com.liferay.asset.publisher.web.constants.AssetPublisherWebKeys;
+import com.liferay.asset.publisher.constants.AssetPublisherWebKeys;
 import com.liferay.asset.publisher.web.display.context.ParentSitesItemSelectorViewDisplayContext;
 import com.liferay.item.selector.ItemSelectorReturnType;
 import com.liferay.item.selector.ItemSelectorView;
@@ -71,11 +71,6 @@ public class ParentSitesItemSelectorView
 		ResourceBundle resourceBundle = _portal.getResourceBundle(locale);
 
 		return ResourceBundleUtil.getString(resourceBundle, "parent-sites");
-	}
-
-	@Override
-	public boolean isShowSearch() {
-		return true;
 	}
 
 	@Override
