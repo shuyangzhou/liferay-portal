@@ -35,6 +35,8 @@ Map<String, String> orderColumns = new HashMap<String, String>();
 
 orderColumns.put("modifiedDate", "modified-date");
 orderColumns.put("title", "title");
+
+WikiURLHelper wikiURLHelper = new WikiURLHelper(wikiRequestHelper, renderResponse, wikiGroupServiceConfiguration);
 %>
 
 <liferay-frontend:management-bar-navigation
@@ -50,3 +52,13 @@ orderColumns.put("title", "title");
 		portletURL="<%= portletURL %>"
 	/>
 </c:if>
+
+<li>
+	<aui:form action="<%= wikiURLHelper.getSearchURL() %>" method="get" name="searchFm">
+		<liferay-portlet:renderURLParams portletURL="<%= wikiURLHelper.getSearchURL() %>" />
+		<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
+		<aui:input name="nodeId" type="hidden" value="<%= node.getNodeId() %>" />
+
+		<liferay-ui:input-search id="keywords1" markupView="lexicon" />
+	</aui:form>
+</li>

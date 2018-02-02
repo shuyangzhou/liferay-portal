@@ -34,10 +34,10 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.sync.constants.SyncDLObjectConstants;
+import com.liferay.sync.internal.util.SyncHelperUtil;
 import com.liferay.sync.model.SyncDLObject;
 import com.liferay.sync.service.base.SyncDLObjectLocalServiceBaseImpl;
-import com.liferay.sync.service.configuration.SyncServiceConfigurationValues;
-import com.liferay.sync.util.SyncUtil;
+import com.liferay.sync.service.internal.configuration.SyncServiceConfigurationValues;
 
 import java.util.Date;
 import java.util.List;
@@ -393,7 +393,7 @@ public class SyncDLObjectLocalServiceImpl
 
 					if (!type.equals(SyncDLObjectConstants.TYPE_FOLDER)) {
 						syncDLObject.setLanTokenKey(
-							SyncUtil.getLanTokenKey(
+							SyncHelperUtil.getLanTokenKey(
 								parentSyncDLObject.getModifiedTime(),
 								syncDLObject.getTypePK(), false));
 					}

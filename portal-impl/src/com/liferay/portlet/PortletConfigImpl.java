@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.portlet.PortletBag;
 import com.liferay.portal.kernel.portlet.PortletBagPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -111,6 +112,12 @@ public class PortletConfigImpl implements LiferayPortletConfig {
 					portletAppContainerRuntimeOption.getValue());
 			}
 		}
+
+		Set<String> keySet = containerRuntimeOptions.keySet();
+
+		keySet.retainAll(
+			SetUtil.fromEnumeration(
+				_portletContext.getContainerRuntimeOptions()));
 
 		return Collections.unmodifiableMap(containerRuntimeOptions);
 	}
