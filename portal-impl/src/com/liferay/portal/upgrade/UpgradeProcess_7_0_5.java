@@ -16,11 +16,13 @@ package com.liferay.portal.upgrade;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.ReleaseInfo;
+import com.liferay.portal.upgrade.v7_0_5.UpgradeBookmarks;
 import com.liferay.portal.upgrade.v7_0_5.UpgradeCompany;
 import com.liferay.portal.upgrade.v7_0_5.UpgradeContact;
 import com.liferay.portal.upgrade.v7_0_5.UpgradeEmailAddress;
 import com.liferay.portal.upgrade.v7_0_5.UpgradeExpando;
 import com.liferay.portal.upgrade.v7_0_5.UpgradeGroup;
+import com.liferay.portal.upgrade.v7_0_5.UpgradeLayoutPrototype;
 import com.liferay.portal.upgrade.v7_0_5.UpgradeMBMailingList;
 import com.liferay.portal.upgrade.v7_0_5.UpgradePortalPreferences;
 import com.liferay.portal.upgrade.v7_0_5.UpgradeUser;
@@ -39,11 +41,13 @@ public class UpgradeProcess_7_0_5 extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		upgrade(UpgradeBookmarks.class);
 		upgrade(UpgradeCompany.class);
 		upgrade(UpgradeContact.class);
 		upgrade(UpgradeGroup.class);
 		upgrade(UpgradeEmailAddress.class);
 		upgrade(UpgradeExpando.class);
+		upgrade(UpgradeLayoutPrototype.class);
 		upgrade(UpgradeMBMailingList.class);
 		upgrade(UpgradePortalPreferences.class);
 		upgrade(UpgradeUser.class);
