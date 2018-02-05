@@ -93,6 +93,17 @@ renderResponse.setTitle(LanguageUtil.get(request, "feeds"));
 			portletURL="<%= PortletURLUtil.clone(portletURL, renderResponse) %>"
 			selectedDisplayStyle="<%= displayStyle %>"
 		/>
+
+		<c:if test="<%= JournalPermission.contains(permissionChecker, scopeGroupId, ActionKeys.ADD_FEED) %>">
+			<portlet:renderURL var="editFeedURL">
+				<portlet:param name="mvcPath" value="/edit_feed.jsp" />
+				<portlet:param name="redirect" value="<%= currentURL %>" />
+			</portlet:renderURL>
+
+			<liferay-frontend:add-menu inline="<%= true %>">
+				<liferay-frontend:add-menu-item title='<%= LanguageUtil.get(request, "add-feed") %>' url="<%= editFeedURL %>" />
+			</liferay-frontend:add-menu>
+		</c:if>
 	</liferay-frontend:management-bar-buttons>
 
 	<liferay-frontend:management-bar-action-buttons>
@@ -209,21 +220,13 @@ renderResponse.setTitle(LanguageUtil.get(request, "feeds"));
 	</liferay-ui:search-container>
 </aui:form>
 
-<aui:script>
-	function <portlet:namespace />deleteFeeds() {
-		if (confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-the-selected-feeds") %>')) {
-			submitForm(document.<portlet:namespace />fm);
+<aui:script sandbox="<%= true %>">
+	$('#<portlet:namespace />deleteFeeds').on(
+		'click',
+		function() {
+			if (confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-the-selected-feeds") %>')) {
+				submitForm(document.<portlet:namespace />fm);
+			}
 		}
-	}
+	);
 </aui:script>
-
-<c:if test="<%= JournalPermission.contains(permissionChecker, scopeGroupId, ActionKeys.ADD_FEED) %>">
-	<portlet:renderURL var="editFeedURL">
-		<portlet:param name="mvcPath" value="/edit_feed.jsp" />
-		<portlet:param name="redirect" value="<%= currentURL %>" />
-	</portlet:renderURL>
-
-	<liferay-frontend:add-menu>
-		<liferay-frontend:add-menu-item title='<%= LanguageUtil.get(request, "add-feed") %>' url="<%= editFeedURL %>" />
-	</liferay-frontend:add-menu>
-</c:if>

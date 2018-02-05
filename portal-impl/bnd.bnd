@@ -1,6 +1,6 @@
 Bundle-Name: ${manifest.bundle.name}
 Bundle-SymbolicName: ${manifest.bundle.symbolic.name}
-Bundle-Version: 2.27.3
+Bundle-Version: 2.29.0
 Export-Package:\
 	com.liferay.portal.bean,\
 	com.liferay.portal.cache.thread.local,\
@@ -82,5 +82,6 @@ Include-Resource:\
 	@../tmp/lib-pre/com.liferay.portal.impl.document.library.compat.jar,\
 	@../tmp/lib-pre/com.liferay.portal.impl.message.boards.compat.jar,\
 	@../tmp/lib-pre/com.liferay.portal.impl.trash.compat.jar
+Liferay-Service: true
 Private-Package: com.liferay.*.dependencies
 -donotcopy: (log4j\.properties|logging\.properties|portal-.*\.properties|system-.*\.properties|\.touch)
