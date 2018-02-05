@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Frontend JS Web
 Bundle-SymbolicName: com.liferay.frontend.js.web
-Bundle-Version: 1.0.69
+Bundle-Version: 1.0.70
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Frontend Infrastructure
 Liferay-Top-Head-Authenticated-JS-Resources:\
@@ -33,6 +33,8 @@ Liferay-Top-Head-Authenticated-JS-Resources:\
 	/liferay/deprecated.js
 Liferay-Top-Head-JS-Resources:\
 	/jquery/jquery.js,\
+	\
+	/clay/popper.js,\
 	\
 	/clay/bootstrap.js,\
 	\

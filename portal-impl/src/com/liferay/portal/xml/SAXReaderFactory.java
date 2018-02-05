@@ -31,22 +31,25 @@ public class SAXReaderFactory {
 	public static final SAXReader getSAXReader(
 		XMLReader xmlReader, boolean validate, boolean secure) {
 
-		SAXReader reader = null;
+		SAXReader saxReader = null;
+
+		DocumentFactory documentFactory = DocumentFactory.getInstance();
 
 		try {
-			reader = new SAXReader(xmlReader, validate);
+			saxReader = new SAXReader(xmlReader, validate);
 
-			reader.setEntityResolver(new EntityResolver());
-			reader.setFeature(_FEATURES_DYNAMIC, validate);
-			reader.setFeature(_FEATURES_VALIDATION, validate);
-			reader.setFeature(_FEATURES_VALIDATION_SCHEMA, validate);
-			reader.setFeature(
+			saxReader.setDocumentFactory(documentFactory);
+			saxReader.setEntityResolver(new EntityResolver());
+			saxReader.setFeature(_FEATURES_DYNAMIC, validate);
+			saxReader.setFeature(_FEATURES_VALIDATION, validate);
+			saxReader.setFeature(_FEATURES_VALIDATION_SCHEMA, validate);
+			saxReader.setFeature(
 				_FEATURES_VALIDATION_SCHEMA_FULL_CHECKING, validate);
 
 			if (!secure) {
-				reader.setFeature(_FEATURES_DISALLOW_DOCTYPE_DECL, false);
-				reader.setFeature(_FEATURES_LOAD_DTD_GRAMMAR, validate);
-				reader.setFeature(_FEATURES_LOAD_EXTERNAL_DTD, validate);
+				saxReader.setFeature(_FEATURES_DISALLOW_DOCTYPE_DECL, false);
+				saxReader.setFeature(_FEATURES_LOAD_DTD_GRAMMAR, validate);
+				saxReader.setFeature(_FEATURES_LOAD_EXTERNAL_DTD, validate);
 			}
 		}
 		catch (Exception e) {
@@ -55,12 +58,13 @@ public class SAXReaderFactory {
 					"XSD validation is disabled because " + e.getMessage());
 			}
 
-			reader = new SAXReader(xmlReader, false);
+			saxReader = new SAXReader(xmlReader, false);
 
-			reader.setEntityResolver(new EntityResolver());
+			saxReader.setDocumentFactory(documentFactory);
+			saxReader.setEntityResolver(new EntityResolver());
 		}
 
-		return reader;
+		return saxReader;
 	}
 
 	public static final SAXReader getSAXReader(
