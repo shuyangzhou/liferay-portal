@@ -251,7 +251,7 @@ public class Person {
 	}
 
 	private static final AtomicLong _count = new AtomicLong(10);
-	private static Map<Long, Person> _persons = new HashMap<>();
+	private static final Map<Long, Person> _persons = new HashMap<>();
 
 	static {
 		for (long personId = 0; personId < 10; personId++) {

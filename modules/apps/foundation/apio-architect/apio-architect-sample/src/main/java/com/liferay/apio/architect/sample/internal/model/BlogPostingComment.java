@@ -253,7 +253,7 @@ public class BlogPostingComment {
 		_modifiedDate = modifiedDate;
 	}
 
-	private static Map<Long, Map<Long, BlogPostingComment>>
+	private static final Map<Long, Map<Long, BlogPostingComment>>
 		_blogPostingComments = new HashMap<>();
 	private static final AtomicLong _count = new AtomicLong(0);
 

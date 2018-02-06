@@ -89,7 +89,6 @@ MBListDisplayContext mbListDisplayContext = mbDisplayContextProvider.getMbListDi
 <c:if test="<%= !mbListDisplayContext.isShowRecentPosts() %>">
 	<liferay-util:include page="/message_boards_admin/nav.jsp" servletContext="<%= application %>">
 		<liferay-util:param name="navItemSelected" value="threads" />
-		<liferay-util:param name="showSearchFm" value="<%= Boolean.TRUE.toString() %>" />
 	</liferay-util:include>
 </c:if>
 
@@ -126,6 +125,10 @@ mbListDisplayContext.populateResultsAndTotal(searchContainer);
 			portletURL="<%= searchContainer.getIteratorURL() %>"
 			selectedDisplayStyle="descriptive"
 		/>
+
+		<c:if test="<%= !mbListDisplayContext.isShowSearch() && !mbListDisplayContext.isShowRecentPosts() %>">
+			<liferay-util:include page="/message_boards_admin/add_button.jsp" servletContext="<%= application %>" />
+		</c:if>
 	</liferay-frontend:management-bar-buttons>
 
 	<portlet:renderURL var="viewEntriesHomeURL">
@@ -152,6 +155,21 @@ mbListDisplayContext.populateResultsAndTotal(searchContainer);
 			orderColumns='<%= new String[] {"modified-date", "title"} %>'
 			portletURL="<%= portletURL %>"
 		/>
+
+		<liferay-portlet:renderURL varImpl="searchURL">
+			<portlet:param name="mvcRenderCommandName" value="/message_boards_admin/search" />
+		</liferay-portlet:renderURL>
+
+		<li>
+			<aui:form action="<%= searchURL %>" name="searchFm">
+				<liferay-portlet:renderURLParams varImpl="searchURL" />
+				<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
+				<aui:input name="breadcrumbsCategoryId" type="hidden" value="<%= categoryId %>" />
+				<aui:input name="searchCategoryId" type="hidden" value="<%= categoryId %>" />
+
+				<liferay-ui:input-search markupView="lexicon" />
+			</aui:form>
+		</li>
 	</liferay-frontend:management-bar-filters>
 
 	<liferay-frontend:management-bar-action-buttons>
@@ -192,7 +210,7 @@ request.setAttribute("view.jsp-entriesSearchContainer", searchContainer);
 					displayStyle="<%= rssDisplayStyle %>"
 					feedType="<%= rssFeedType %>"
 					message="rss"
-					url="<%= MBUtil.getRSSURL(plid, 0, 0, groupThreadsUserId, themeDisplay) %>"
+					url="<%= MBRSSUtil.getRSSURL(plid, 0, 0, groupThreadsUserId, themeDisplay) %>"
 				/>
 			</c:if>
 		</div>
@@ -223,10 +241,6 @@ request.setAttribute("view.jsp-entriesSearchContainer", searchContainer);
 
 	</c:otherwise>
 </c:choose>
-
-<c:if test="<%= !mbListDisplayContext.isShowSearch() && !mbListDisplayContext.isShowRecentPosts() %>">
-	<liferay-util:include page="/message_boards_admin/add_button.jsp" servletContext="<%= application %>" />
-</c:if>
 
 <aui:script>
 	function <portlet:namespace />deleteEntries() {

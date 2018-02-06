@@ -15,18 +15,16 @@
 package com.liferay.apio.architect.single.model;
 
 /**
- * Provides a wrapper for a model. This avoids problems related to the Java
- * generics system.
+ * Provides a wrapper for a model.
  *
  * @author Alejandro Hernández
  * @param  <T> the model's type
- * @review
  */
 public class SingleModel<T> {
 
-	public SingleModel(T model, Class<T> modelClass) {
+	public SingleModel(T model, String resourceName) {
 		_model = model;
-		_modelClass = modelClass;
+		_resourceName = resourceName;
 	}
 
 	/**
@@ -39,15 +37,16 @@ public class SingleModel<T> {
 	}
 
 	/**
-	 * Returns the model class.
+	 * Returns the resource's name.
 	 *
-	 * @return the model class
+	 * @return the resource name
+	 * @review
 	 */
-	public Class<T> getModelClass() {
-		return _modelClass;
+	public String getResourceName() {
+		return _resourceName;
 	}
 
 	private final T _model;
-	private final Class<T> _modelClass;
+	private final String _resourceName;
 
 }

@@ -15,9 +15,10 @@
 package com.liferay.apio.architect.routes;
 
 import static com.liferay.apio.architect.operation.Method.DELETE;
-import static com.liferay.apio.architect.operation.Method.UPDATE;
+import static com.liferay.apio.architect.operation.Method.PUT;
 import static com.liferay.apio.architect.routes.RoutesBuilderUtil.provide;
 import static com.liferay.apio.architect.routes.RoutesBuilderUtil.provideConsumer;
+import static com.liferay.apio.architect.unsafe.Unsafe.unsafeCast;
 
 import com.liferay.apio.architect.alias.IdentifierFunction;
 import com.liferay.apio.architect.alias.ProvideFunction;
@@ -35,7 +36,6 @@ import com.liferay.apio.architect.function.TetraFunction;
 import com.liferay.apio.architect.function.TriFunction;
 import com.liferay.apio.architect.operation.Operation;
 import com.liferay.apio.architect.single.model.SingleModel;
-import com.liferay.apio.architect.uri.Path;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,19 +47,18 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * Holds information about the routes supported for a {@link
+ * Holds information about the routes supported for an {@link
  * com.liferay.apio.architect.router.ItemRouter}.
  *
  * <p>
- * This interface's methods return functions to get the different endpoints of
- * the item resource. You should always use a {@link Builder} to create
+ * This interface's methods return functions to get the item resource's
+ * different endpoints. You should always use a {@link Builder} to create
  * instances of this interface.
  * </p>
  *
  * @author Alejandro Hernández
  * @param  <T> the model's type
  * @see    Builder
- * @review
  */
 public class ItemRoutes<T> {
 
@@ -110,24 +109,17 @@ public class ItemRoutes<T> {
 	/**
 	 * Returns the list of operations for the single item resource.
 	 *
-	 * @return the list of operations for the single item resource
-	 * @review
+	 * @return the list of operations
 	 */
 	public List<Operation> getOperations() {
 		List<Operation> operations = new ArrayList<>();
 
-		Optional<DeleteItemConsumer> deleteConsumerOptional =
-			getDeleteConsumerOptional();
+		getDeleteConsumerOptional().ifPresent(
+			__ -> operations.add(new Operation(DELETE, _name + "/delete")));
 
-		if (deleteConsumerOptional.isPresent()) {
-			operations.add(new Operation(DELETE, _name + "/delete"));
-		}
-
-		Optional<Form> formOptional = getFormOptional();
-
-		formOptional.ifPresent(
+		getFormOptional().ifPresent(
 			form -> operations.add(
-				new Operation(form, UPDATE, _name + "/update")));
+				new Operation(form, PUT, _name + "/update")));
 
 		return operations;
 	}
@@ -145,22 +137,21 @@ public class ItemRoutes<T> {
 	}
 
 	/**
-	 * Creates the {@link ItemRoutes} of a {@link
+	 * Creates the {@code ItemRoutes} of an {@link
 	 * com.liferay.apio.architect.router.ItemRouter}.
 	 *
 	 * @param  <T> the model's type
-	 * @param  <S> the model identifier's type ({@link Long}, {@link String},
-	 *         etc.)
+	 * @param  <S> the model identifier's type. It must be a subclass of {@code
+	 *         Identifier}.
 	 * @review
 	 */
 	@SuppressWarnings("unused")
 	public static class Builder<T, S> {
 
 		public Builder(
-			Class<T> modelClass, String name, ProvideFunction provideFunction,
-			IdentifierFunction identifierFunction) {
+			String name, ProvideFunction provideFunction,
+			IdentifierFunction<S> identifierFunction) {
 
-			_modelClass = modelClass;
 			_name = name;
 			_provideFunction = provideFunction;
 			_identifierFunction = identifierFunction;
@@ -177,11 +168,11 @@ public class ItemRoutes<T> {
 			BiFunction<S, A, T> biFunction, Class<A> aClass) {
 
 			_singleModelFunction = httpServletRequest -> path -> provide(
-				_provideFunction, httpServletRequest, aClass,
+				_provideFunction.apply(httpServletRequest), aClass,
 				a -> biFunction.andThen(
-					t -> new SingleModel<>(t, _modelClass)
+					t -> new SingleModel<>(t, _name)
 				).apply(
-					_getIdentifier(path), a
+					_identifierFunction.apply(path), a
 				));
 
 			return this;
@@ -196,9 +187,9 @@ public class ItemRoutes<T> {
 		public Builder<T, S> addGetter(Function<S, T> function) {
 			_singleModelFunction =
 				httpServletRequest -> path -> function.andThen(
-					t -> new SingleModel<>(t, _modelClass)
+					t -> new SingleModel<>(t, _name)
 				).apply(
-					_getIdentifier(path)
+					_identifierFunction.apply(path)
 				);
 
 			return this;
@@ -219,12 +210,12 @@ public class ItemRoutes<T> {
 			Class<B> bClass, Class<C> cClass, Class<D> dClass) {
 
 			_singleModelFunction = httpServletRequest -> path -> provide(
-				_provideFunction, httpServletRequest, aClass, bClass, cClass,
-				dClass,
+				_provideFunction.apply(httpServletRequest), aClass, bClass,
+				cClass, dClass,
 				a -> b -> c -> d -> pentaFunction.andThen(
-					t -> new SingleModel<>(t, _modelClass)
+					t -> new SingleModel<>(t, _name)
 				).apply(
-					_getIdentifier(path), a, b, c, d
+					_identifierFunction.apply(path), a, b, c, d
 				));
 
 			return this;
@@ -244,11 +235,12 @@ public class ItemRoutes<T> {
 			Class<B> bClass, Class<C> cClass) {
 
 			_singleModelFunction = httpServletRequest -> path -> provide(
-				_provideFunction, httpServletRequest, aClass, bClass, cClass,
+				_provideFunction.apply(httpServletRequest), aClass, bClass,
+				cClass,
 				a -> b -> c -> tetraFunction.andThen(
-					t -> new SingleModel<>(t, _modelClass)
+					t -> new SingleModel<>(t, _name)
 				).apply(
-					_getIdentifier(path), a, b, c
+					_identifierFunction.apply(path), a, b, c
 				));
 
 			return this;
@@ -267,11 +259,11 @@ public class ItemRoutes<T> {
 			Class<B> bClass) {
 
 			_singleModelFunction = httpServletRequest -> path -> provide(
-				_provideFunction, httpServletRequest, aClass, bClass,
+				_provideFunction.apply(httpServletRequest), aClass, bClass,
 				a -> b -> triFunction.andThen(
-					t -> new SingleModel<>(t, _modelClass)
+					t -> new SingleModel<>(t, _name)
 				).apply(
-					_getIdentifier(path), a, b
+					_identifierFunction.apply(path), a, b
 				));
 
 			return this;
@@ -289,8 +281,8 @@ public class ItemRoutes<T> {
 			BiConsumer<S, A> biConsumer, Class<A> aClass) {
 
 			_deleteItemConsumer = httpServletRequest -> path -> provideConsumer(
-				_provideFunction, httpServletRequest, aClass,
-				a -> biConsumer.accept(_getIdentifier(path), a));
+				_provideFunction.apply(httpServletRequest), aClass,
+				a -> biConsumer.accept(_identifierFunction.apply(path), a));
 
 			return this;
 		}
@@ -303,7 +295,7 @@ public class ItemRoutes<T> {
 		 */
 		public Builder<T, S> addRemover(Consumer<S> consumer) {
 			_deleteItemConsumer = httpServletRequest -> path -> consumer.accept(
-				_getIdentifier(path));
+				_identifierFunction.apply(path));
 
 			return this;
 		}
@@ -327,10 +319,10 @@ public class ItemRoutes<T> {
 			Class<B> bClass, Class<C> cClass, Class<D> dClass) {
 
 			_deleteItemConsumer = httpServletRequest -> path -> provideConsumer(
-				_provideFunction, httpServletRequest, aClass, bClass, cClass,
-				dClass,
+				_provideFunction.apply(httpServletRequest), aClass, bClass,
+				cClass, dClass,
 				a -> b -> c -> d -> pentaConsumer.accept(
-					_getIdentifier(path), a, b, c, d));
+					_identifierFunction.apply(path), a, b, c, d));
 
 			return this;
 		}
@@ -352,9 +344,10 @@ public class ItemRoutes<T> {
 			Class<B> bClass, Class<C> cClass) {
 
 			_deleteItemConsumer = httpServletRequest -> path -> provideConsumer(
-				_provideFunction, httpServletRequest, aClass, bClass, cClass,
+				_provideFunction.apply(httpServletRequest), aClass, bClass,
+				cClass,
 				a -> b -> c -> tetraConsumer.accept(
-					_getIdentifier(path), a, b, c));
+					_identifierFunction.apply(path), a, b, c));
 
 			return this;
 		}
@@ -374,8 +367,9 @@ public class ItemRoutes<T> {
 			Class<B> bClass) {
 
 			_deleteItemConsumer = httpServletRequest -> path -> provideConsumer(
-				_provideFunction, httpServletRequest, aClass, bClass,
-				a -> b -> triConsumer.accept(_getIdentifier(path), a, b));
+				_provideFunction.apply(httpServletRequest), aClass, bClass,
+				a -> b -> triConsumer.accept(
+					_identifierFunction.apply(path), a, b));
 
 			return this;
 		}
@@ -386,7 +380,6 @@ public class ItemRoutes<T> {
 		 * @param  biFunction the updater function that removes the item
 		 * @return the updated builder
 		 */
-		@SuppressWarnings("unchecked")
 		public <R> Builder<T, S> addUpdater(
 			BiFunction<S, R, T> biFunction,
 			FormBuilderFunction<R> formBuilderFunction) {
@@ -396,9 +389,9 @@ public class ItemRoutes<T> {
 
 			_updateItemFunction =
 				httpServletRequest -> path -> body -> biFunction.andThen(
-					t -> new SingleModel<>(t, _modelClass)
+					t -> new SingleModel<>(t, _name)
 				).apply(
-					_getIdentifier(path), (R)_form.get(body)
+					_identifierFunction.apply(path), unsafeCast(_form.get(body))
 				);
 
 			return this;
@@ -418,7 +411,6 @@ public class ItemRoutes<T> {
 		 *         parameter
 		 * @return the updated builder
 		 */
-		@SuppressWarnings("unchecked")
 		public <A, B, C, D, R> Builder<T, S> addUpdater(
 			HexaFunction<S, R, A, B, C, D, T> hexaFunction, Class<A> aClass,
 			Class<B> bClass, Class<C> cClass, Class<D> dClass,
@@ -428,12 +420,13 @@ public class ItemRoutes<T> {
 				new Form.Builder<>(Arrays.asList("u", _name)));
 
 			_updateItemFunction = httpServletRequest -> path -> body -> provide(
-				_provideFunction, httpServletRequest, aClass, bClass, cClass,
-				dClass,
+				_provideFunction.apply(httpServletRequest), aClass, bClass,
+				cClass, dClass,
 				a -> b -> c -> d -> hexaFunction.andThen(
-					t -> new SingleModel<>(t, _modelClass)
+					t -> new SingleModel<>(t, _name)
 				).apply(
-					_getIdentifier(path), (R)_form.get(body), a, b, c, d
+					_identifierFunction.apply(path),
+					unsafeCast(_form.get(body)), a, b, c, d
 				));
 
 			return this;
@@ -451,7 +444,6 @@ public class ItemRoutes<T> {
 		 *         parameter
 		 * @return the updated builder
 		 */
-		@SuppressWarnings("unchecked")
 		public <A, B, C, R> Builder<T, S> addUpdater(
 			PentaFunction<S, R, A, B, C, T> pentaFunction, Class<A> aClass,
 			Class<B> bClass, Class<C> cClass,
@@ -461,11 +453,13 @@ public class ItemRoutes<T> {
 				new Form.Builder<>(Arrays.asList("u", _name)));
 
 			_updateItemFunction = httpServletRequest -> path -> body -> provide(
-				_provideFunction, httpServletRequest, aClass, bClass, cClass,
+				_provideFunction.apply(httpServletRequest), aClass, bClass,
+				cClass,
 				a -> b -> c -> pentaFunction.andThen(
-					t -> new SingleModel<>(t, _modelClass)
+					t -> new SingleModel<>(t, _name)
 				).apply(
-					_getIdentifier(path), (R)_form.get(body), a, b, c
+					_identifierFunction.apply(path),
+					unsafeCast(_form.get(body)), a, b, c
 				));
 
 			return this;
@@ -481,7 +475,6 @@ public class ItemRoutes<T> {
 		 *         parameter
 		 * @return the updated builder
 		 */
-		@SuppressWarnings("unchecked")
 		public <A, B, R> Builder<T, S> addUpdater(
 			TetraFunction<S, R, A, B, T> tetraFunction, Class<A> aClass,
 			Class<B> bClass, FormBuilderFunction<R> formBuilderFunction) {
@@ -490,11 +483,12 @@ public class ItemRoutes<T> {
 				new Form.Builder<>(Arrays.asList("u", _name)));
 
 			_updateItemFunction = httpServletRequest -> path -> body -> provide(
-				_provideFunction, httpServletRequest, aClass, bClass,
+				_provideFunction.apply(httpServletRequest), aClass, bClass,
 				a -> b -> tetraFunction.andThen(
-					t -> new SingleModel<>(t, _modelClass)
+					t -> new SingleModel<>(t, _name)
 				).apply(
-					_getIdentifier(path), (R)_form.get(body), a, b
+					_identifierFunction.apply(path),
+					unsafeCast(_form.get(body)), a, b
 				));
 
 			return this;
@@ -508,7 +502,6 @@ public class ItemRoutes<T> {
 		 *         parameter
 		 * @return the updated builder
 		 */
-		@SuppressWarnings("unchecked")
 		public <A, R> Builder<T, S> addUpdater(
 			TriFunction<S, R, A, T> triFunction, Class<A> aClass,
 			FormBuilderFunction<R> formBuilderFunction) {
@@ -517,11 +510,12 @@ public class ItemRoutes<T> {
 				new Form.Builder<>(Arrays.asList("u", _name)));
 
 			_updateItemFunction = httpServletRequest -> path -> body -> provide(
-				_provideFunction, httpServletRequest, aClass,
+				_provideFunction.apply(httpServletRequest), aClass,
 				a -> triFunction.andThen(
-					t -> new SingleModel<>(t, _modelClass)
+					t -> new SingleModel<>(t, _name)
 				).apply(
-					_getIdentifier(path), (R)_form.get(body), a
+					_identifierFunction.apply(path),
+					unsafeCast(_form.get(body)), a
 				));
 
 			return this;
@@ -537,15 +531,9 @@ public class ItemRoutes<T> {
 			return new ItemRoutes<>(this);
 		}
 
-		@SuppressWarnings("unchecked")
-		private <V> V _getIdentifier(Path path) {
-			return (V)_identifierFunction.apply(path);
-		}
-
 		private DeleteItemConsumer _deleteItemConsumer;
 		private Form _form;
-		private final IdentifierFunction _identifierFunction;
-		private final Class<T> _modelClass;
+		private final IdentifierFunction<S> _identifierFunction;
 		private final String _name;
 		private final ProvideFunction _provideFunction;
 		private GetItemFunction<T> _singleModelFunction;
@@ -553,10 +541,10 @@ public class ItemRoutes<T> {
 
 	}
 
-	private DeleteItemConsumer _deleteItemConsumer;
-	private Form _form;
+	private final DeleteItemConsumer _deleteItemConsumer;
+	private final Form _form;
 	private final String _name;
-	private GetItemFunction<T> _singleModelFunction;
-	private UpdateItemFunction<T> _updateItemFunction;
+	private final GetItemFunction<T> _singleModelFunction;
+	private final UpdateItemFunction<T> _updateItemFunction;
 
 }

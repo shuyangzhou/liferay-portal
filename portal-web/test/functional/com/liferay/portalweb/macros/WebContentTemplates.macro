@@ -164,7 +164,7 @@
 		<if>
 			<isset var="templateDescription" />
 			<then>
-				<execute macro="PortletEntry#inputDescription">
+				<execute macro="PortletEntry#inputDescriptionTextInput">
 					<var name="description" value="${templateDescription}" />
 				</execute>
 			</then>
@@ -238,10 +238,6 @@
 				<execute function="Type#clickAtType" locator1="TextInput#NAME" value1="${localization2Name}" />
 			</then>
 		</if>
-	</command>
-
-	<command name="save">
-		<execute macro="Button#clickSave" />
 	</command>
 
 	<command name="tearDownCP">

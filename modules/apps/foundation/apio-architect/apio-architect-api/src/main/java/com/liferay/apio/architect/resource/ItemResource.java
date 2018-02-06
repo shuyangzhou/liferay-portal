@@ -16,15 +16,21 @@ package com.liferay.apio.architect.resource;
 
 import aQute.bnd.annotation.ConsumerType;
 
+import com.liferay.apio.architect.identifier.Identifier;
 import com.liferay.apio.architect.representor.Representable;
 import com.liferay.apio.architect.router.ItemRouter;
 
 /**
- * Maps your domain models to resources that Apio can understand.
+ * Maps your domain models to item resources that Apio can understand.
  *
  * <p>
- * Resources behave like an API so you must add the API's name via the {@link
+ * Resources behave like an API, so you must add the API's name via the {@link
  * #getName()} method.
+ * </p>
+ *
+ * <p>
+ * The type param provided for the resource ID must be unique in the whole
+ * application.
  * </p>
  *
  * <p>
@@ -36,18 +42,20 @@ import com.liferay.apio.architect.router.ItemRouter;
  *
  * <p>
  * You can add the different supported routes via the {@link
- * #itemRoutes(com.liferay.apio.architect.routes.ItemRoutes.Builder)}
- * (Routes.Builder)} method.
+ * #itemRoutes(com.liferay.apio.architect.routes.ItemRoutes.Builder)} method.
  * </p>
  *
  * @author Alejandro Hernández
  * @param  <T> the model's type
- * @param  <S> the model identifier's type ({@link Long}, {@link String}, etc.)
+ * @param  <S> the type of the model's identifier (e.g., {@code Long}, {@code
+ *         String}, etc.)
+ * @param  <U> the type of the resource's identifier. It must be a subclass of
+ *         {@code Identifier<S>}.
  * @see    com.liferay.apio.architect.representor.Representor.Builder
  * @see    com.liferay.apio.architect.routes.ItemRoutes.Builder
  * @review
  */
 @ConsumerType
-public interface ItemResource<T, S>
-	extends Representable<T, S>, ItemRouter<T, S> {
+public interface ItemResource<T, S, U extends Identifier<S>>
+	extends Representable<T, S, U>, ItemRouter<T, S, U> {
 }

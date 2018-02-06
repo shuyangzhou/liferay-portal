@@ -16,6 +16,7 @@ package com.liferay.apio.architect.uri.mapper;
 
 import aQute.bnd.annotation.ConsumerType;
 
+import com.liferay.apio.architect.identifier.Identifier;
 import com.liferay.apio.architect.uri.Path;
 
 /**
@@ -29,11 +30,20 @@ import com.liferay.apio.architect.uri.Path;
  * </p>
  *
  * @author Alejandro Hernández
- * @param  <T> the type of the identifier to map
- * @review
+ * @param  <T> the identifier type to map
  */
 @ConsumerType
 public interface PathIdentifierMapper<T> {
+
+	/**
+	 * Converts an identifier to its corresponding path.
+	 *
+	 * @param  clazz the class of the resource's identifier
+	 * @param  t the identifier
+	 * @return the corresponding path
+	 * @review
+	 */
+	public Path map(Class<? extends Identifier<T>> clazz, T t);
 
 	/**
 	 * Converts a path to its corresponding identifier.
@@ -42,14 +52,5 @@ public interface PathIdentifierMapper<T> {
 	 * @return the corresponding identifier
 	 */
 	public T map(Path path);
-
-	/**
-	 * Converts an identifier to its corresponding path.
-	 *
-	 * @param  t the identifier
-	 * @param  modelClass the class of the model identified by the identifier
-	 * @return the corresponding path
-	 */
-	public <U> Path map(T t, Class<U> modelClass);
 
 }

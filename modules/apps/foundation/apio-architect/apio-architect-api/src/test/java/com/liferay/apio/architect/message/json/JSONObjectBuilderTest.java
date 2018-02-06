@@ -14,11 +14,11 @@
 
 package com.liferay.apio.architect.message.json;
 
-import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonArrayThat;
-import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonBoolean;
-import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonInt;
-import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonObjectWhere;
-import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonString;
+import static com.liferay.apio.architect.test.util.json.JsonMatchers.aJsonArrayThat;
+import static com.liferay.apio.architect.test.util.json.JsonMatchers.aJsonBoolean;
+import static com.liferay.apio.architect.test.util.json.JsonMatchers.aJsonInt;
+import static com.liferay.apio.architect.test.util.json.JsonMatchers.aJsonObjectWhere;
+import static com.liferay.apio.architect.test.util.json.JsonMatchers.aJsonString;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.anything;
@@ -31,6 +31,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.hamcrest.Matcher;
 
@@ -57,15 +58,14 @@ public class JSONObjectBuilderTest {
 		arrayValueStep.addAllNumbers(Arrays.asList(21, 42));
 		arrayValueStep.addAllStrings(Arrays.asList("api", "apio"));
 
-		@SuppressWarnings("unchecked")
+		List<Matcher<? super JsonElement>> matchers = Arrays.asList(
+			aJsonBoolean(false), aJsonBoolean(true),
+			_aJsonObjectWithTheSolution, _aJsonObjectWithTheSolution,
+			aJsonInt(equalTo(21)), aJsonInt(equalTo(42)),
+			aJsonString(equalTo("api")), aJsonString(equalTo("apio")));
+
 		Matcher<JsonElement> isAJsonArrayWithElements = is(
-			aJsonArrayThat(
-				contains(
-					aJsonBoolean(false), aJsonBoolean(true),
-					_aJsonObjectWithTheSolution, _aJsonObjectWithTheSolution,
-					aJsonInt(equalTo(21)), aJsonInt(equalTo(42)),
-					aJsonString(equalTo("api")),
-					aJsonString(equalTo("apio")))));
+			aJsonArrayThat(contains(matchers)));
 
 		Matcher<JsonElement> isAJsonObjectWithAnArray = is(
 			aJsonObjectWhere("array", isAJsonArrayWithElements));
@@ -134,12 +134,12 @@ public class JSONObjectBuilderTest {
 		arrayValueStep.addNumber(42);
 		arrayValueStep.addString("apio");
 
-		@SuppressWarnings("unchecked")
+		List<Matcher<? super JsonElement>> matchers = Arrays.asList(
+			aJsonBoolean(true), aJsonInt(equalTo(42)),
+			aJsonString(equalTo("apio")));
+
 		Matcher<JsonElement> isAJsonArrayWithElements = is(
-			aJsonArrayThat(
-				contains(
-					aJsonBoolean(true), aJsonInt(equalTo(42)),
-					aJsonString(equalTo("apio")))));
+			aJsonArrayThat(contains(matchers)));
 
 		Matcher<JsonElement> isAJsonObjectWithAnArray = is(
 			aJsonObjectWhere("array", isAJsonArrayWithElements));

@@ -16,12 +16,18 @@ package com.liferay.apio.architect.router;
 
 import aQute.bnd.annotation.ConsumerType;
 
+import com.liferay.apio.architect.identifier.Identifier;
 import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.apio.architect.routes.ItemRoutes.Builder;
 
 /**
- * Instances of this interface represent the mapping between HTTP requests for
- * an item resource and the functions that perform that requests.
+ * Represents the mapping between HTTP requests for an item resource and the
+ * functions that perform those requests.
+ *
+ * <p>
+ * The type param provided for the resource ID must be unique in the whole
+ * application.
+ * </p>
  *
  * <p>
  * You can add the different supported routes for the item resource via the
@@ -31,17 +37,20 @@ import com.liferay.apio.architect.routes.ItemRoutes.Builder;
  * <p>
  * The union of an instance of this interface with a {@link
  * com.liferay.apio.architect.representor.Representable} creates a complete
- * resource that will behave as its own API.
+ * resource that behaves as its own API.
  * </p>
  *
  * @author Alejandro Hernández
  * @param  <T> the model's type
- * @param  <S> the model identifier's type ({@link Long}, {@link String}, etc.)
- * @see    ItemRoutes.Builder
+ * @param  <S> the type of the model's identifier (e.g., {@code Long}, {@code
+ *         String}, etc.)
+ * @param  <U> the type of the resource's identifier. It must be a subclass of
+ *         {@code Identifier<S>}.
  * @review
  */
 @ConsumerType
-public interface ItemRouter<T, S> {
+@SuppressWarnings("unused")
+public interface ItemRouter<T, S, U extends Identifier<S>> {
 
 	/**
 	 * Creates the {@link ItemRoutes} supported by the item resource. Use the

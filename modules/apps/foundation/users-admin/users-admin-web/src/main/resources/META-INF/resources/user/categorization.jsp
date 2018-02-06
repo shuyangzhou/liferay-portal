@@ -17,7 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-User selUser = (User)request.getAttribute("user.selUser");
+User selUser = (User)request.getAttribute(UsersAdminWebKeys.SELECTED_USER);
 %>
 
 <aui:model-context bean="<%= selUser %>" model="<%= User.class %>" />
@@ -29,6 +29,10 @@ User selUser = (User)request.getAttribute("user.selUser");
 <liferay-asset:asset-tags-error />
 
 <aui:fieldset>
+	<label class="control-label">
+		<liferay-ui:message key="categorization" />
+	</label>
+
 	<liferay-asset:asset-categories-selector className="<%= User.class.getName() %>" classPK="<%= (selUser != null) ? selUser.getPrimaryKey() : 0 %>" />
 
 	<liferay-asset:asset-tags-selector className="<%= User.class.getName() %>" classPK="<%= (selUser != null) ? selUser.getPrimaryKey() : 0 %>" />

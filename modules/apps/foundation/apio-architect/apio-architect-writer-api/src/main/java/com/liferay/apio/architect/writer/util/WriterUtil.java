@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.writer.util;
 
+import static com.liferay.apio.architect.unsafe.Unsafe.unsafeCast;
+
 import com.liferay.apio.architect.list.FunctionalList;
 import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.request.RequestInfo;
@@ -22,6 +24,7 @@ import com.liferay.apio.architect.uri.Path;
 import com.liferay.apio.architect.writer.FieldsWriter;
 import com.liferay.apio.architect.writer.alias.PathFunction;
 import com.liferay.apio.architect.writer.alias.RepresentorFunction;
+import com.liferay.apio.architect.writer.alias.SingleModelFunction;
 
 import java.util.Optional;
 
@@ -43,26 +46,53 @@ public class WriterUtil {
 	 * @param  embeddedPathElements the embedded path element list
 	 * @param  requestInfo the current request's information
 	 * @param  pathFunction the function to get the {@link Path}
+	 * @param  rootRepresentorFunction the function to get the {@link
+	 *         Representor} of the parent model
+	 * @param  rootSingleModel the parent model
+	 * @return the {@code FieldsWriter} for the model
+	 * @review
+	 */
+	public static <T, S> Optional<FieldsWriter<T, ?>> getFieldsWriter(
+		SingleModel<T> singleModel, FunctionalList<String> embeddedPathElements,
+		RequestInfo requestInfo, PathFunction pathFunction,
+		RepresentorFunction representorFunction,
+		RepresentorFunction rootRepresentorFunction,
+		SingleModelFunction singleModelFunction,
+		SingleModel<S> rootSingleModel) {
+
+		Optional<Representor<T, ?>> representorOptional = unsafeCast(
+			representorFunction.apply(singleModel.getResourceName()));
+
+		Optional<Path> pathOptional = getPathOptional(
+			singleModel, pathFunction, representorFunction,
+			rootRepresentorFunction, rootSingleModel);
+
+		return representorOptional.flatMap(
+			representor -> pathOptional.map(
+				path -> new FieldsWriter<>(
+					singleModel, requestInfo, representor, path,
+					embeddedPathElements, singleModelFunction)));
+	}
+
+	/**
+	 * Returns the {@link FieldsWriter} for a given model.
+	 *
+	 * @param  singleModel the single model
+	 * @param  embeddedPathElements the embedded path element list
+	 * @param  requestInfo the current request's information
+	 * @param  pathFunction the function to get the {@link Path}
 	 * @param  representorFunction the function to get the {@link Representor}
 	 * @return the {@code FieldsWriter} for the model
 	 */
 	public static <T> Optional<FieldsWriter<T, ?>> getFieldsWriter(
 		SingleModel<T> singleModel, FunctionalList<String> embeddedPathElements,
 		RequestInfo requestInfo, PathFunction pathFunction,
-		RepresentorFunction representorFunction) {
+		RepresentorFunction representorFunction,
+		SingleModelFunction singleModelFunction) {
 
-		Optional<Representor<T, ?>> representorOptional =
-			getRepresentorOptional(
-				singleModel.getModelClass(), representorFunction);
-
-		Optional<Path> pathOptional = getPathOptional(
-			singleModel, pathFunction, representorFunction);
-
-		return representorOptional.flatMap(
-			representor -> pathOptional.map(
-				path -> new FieldsWriter<>(
-					singleModel, requestInfo, representor, path,
-					embeddedPathElements)));
+		return getFieldsWriter(
+			singleModel, embeddedPathElements, requestInfo, pathFunction,
+			representorFunction, null, singleModelFunction, null);
 	}
 
 	/**
@@ -81,33 +111,58 @@ public class WriterUtil {
 		SingleModel<T> singleModel, PathFunction pathFunction,
 		RepresentorFunction representorFunction) {
 
-		Optional<Representor<T, ?>> optional = getRepresentorOptional(
-			singleModel.getModelClass(), representorFunction);
-
-		return optional.flatMap(
-			representor -> pathFunction.apply(
-				representor.getIdentifier(singleModel.getModel()),
-				representor.getIdentifierClass(), singleModel.getModelClass()));
+		return getPathOptional(
+			singleModel, pathFunction, representorFunction, null, null);
 	}
 
 	/**
-	 * Returns a model's {@link Representor}, if it exists. Otherwise, this
-	 * method returns {@code Optional#empty()}.
+	 * Returns a model's {@link Path}, if the model's {@code Representor} and
+	 * {@code Path} exist. Otherwise, this method returns {@code
+	 * Optional#empty()}.
 	 *
-	 * @param  modelClass the model's class
+	 * @param  singleModel the single model
+	 * @param  pathFunction the function that gets the {@code Path}
 	 * @param  representorFunction the function that gets the {@code
 	 *         Representor}
-	 * @return the model's {@code Representor}, if it exists; returns {@code
-	 *         Optional#empty()} otherwise
+	 * @param  rootRepresentorFunction the function that gets the {@code
+	 *         Representor} for the parent model
+	 * @param  rootSingleModel the parent model
+	 * @return the model's {@code Path}, if the model's {@code Representor} and
+	 *         {@code Path} exist; returns {@code Optional#empty()} otherwise
+	 * @review
 	 */
-	@SuppressWarnings("unchecked")
-	public static <T> Optional<Representor<T, ?>> getRepresentorOptional(
-		Class<T> modelClass, RepresentorFunction representorFunction) {
+	public static <T, S> Optional<Path> getPathOptional(
+		SingleModel<T> singleModel, PathFunction pathFunction,
+		RepresentorFunction representorFunction,
+		RepresentorFunction rootRepresentorFunction,
+		SingleModel<S> rootSingleModel) {
 
-		Optional<? extends Representor<?, ?>> optional =
-			representorFunction.apply(modelClass);
+		Optional<Representor<T, ?>> optional = unsafeCast(
+			representorFunction.apply(singleModel.getResourceName()));
 
-		return optional.map(representor -> (Representor<T, ?>)representor);
+		return optional.flatMap(
+			representor -> {
+				if (representor.getIdentifierFunction() == null) {
+					Optional<Representor<S, ?>> representorOptional =
+						unsafeCast(
+							rootRepresentorFunction.apply(
+								rootSingleModel.getResourceName()));
+
+					if (representorOptional.isPresent()) {
+						Representor<S, ?> rootRepresentor =
+							representorOptional.get();
+
+						return pathFunction.apply(
+							rootSingleModel.getResourceName(),
+							rootRepresentor.getIdentifier(
+								rootSingleModel.getModel()));
+					}
+				}
+
+				return pathFunction.apply(
+					singleModel.getResourceName(),
+					representor.getIdentifier(singleModel.getModel()));
+			});
 	}
 
 	private WriterUtil() {

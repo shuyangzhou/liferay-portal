@@ -614,8 +614,8 @@ create table LayoutPrototype (
 	userName VARCHAR(75) null,
 	createDate DATE null,
 	modifiedDate DATE null,
-	name STRING null,
-	description STRING null,
+	name TEXT null,
+	description TEXT null,
 	settings_ STRING null,
 	active_ BOOLEAN
 );
@@ -712,83 +712,6 @@ create table ListType (
 	listTypeId LONG not null primary key,
 	name VARCHAR(75) null,
 	type_ VARCHAR(75) null
-);
-
-create table MBCategory (
-	uuid_ VARCHAR(75) null,
-	categoryId LONG not null primary key,
-	groupId LONG,
-	companyId LONG,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	parentCategoryId LONG,
-	name VARCHAR(75) null,
-	description STRING null,
-	displayStyle VARCHAR(75) null,
-	threadCount INTEGER,
-	messageCount INTEGER,
-	lastPostDate DATE null,
-	lastPublishDate DATE null,
-	status INTEGER,
-	statusByUserId LONG,
-	statusByUserName VARCHAR(75) null,
-	statusDate DATE null
-);
-
-create table MBMessage (
-	uuid_ VARCHAR(75) null,
-	messageId LONG not null primary key,
-	groupId LONG,
-	companyId LONG,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	classNameId LONG,
-	classPK LONG,
-	categoryId LONG,
-	threadId LONG,
-	rootMessageId LONG,
-	parentMessageId LONG,
-	subject VARCHAR(75) null,
-	body TEXT null,
-	format VARCHAR(75) null,
-	anonymous BOOLEAN,
-	priority DOUBLE,
-	allowPingbacks BOOLEAN,
-	answer BOOLEAN,
-	lastPublishDate DATE null,
-	status INTEGER,
-	statusByUserId LONG,
-	statusByUserName VARCHAR(75) null,
-	statusDate DATE null
-);
-
-create table MBThread (
-	uuid_ VARCHAR(75) null,
-	threadId LONG not null primary key,
-	groupId LONG,
-	companyId LONG,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	categoryId LONG,
-	rootMessageId LONG,
-	rootMessageUserId LONG,
-	messageCount INTEGER,
-	viewCount INTEGER,
-	lastPostByUserId LONG,
-	lastPostDate DATE null,
-	priority DOUBLE,
-	question BOOLEAN,
-	lastPublishDate DATE null,
-	status INTEGER,
-	statusByUserId LONG,
-	statusByUserName VARCHAR(75) null,
-	statusDate DATE null
 );
 
 create table MembershipRequest (

@@ -16,7 +16,7 @@ package com.liferay.screens.service.impl;
 
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
-import com.liferay.asset.publisher.web.util.AssetPublisherUtil;
+import com.liferay.asset.publisher.util.AssetPublisherHelper;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryService;
 import com.liferay.document.library.kernel.model.DLFileEntry;
@@ -119,11 +119,16 @@ public class ScreensAssetEntryServiceImpl
 			List<Layout> layouts = layoutLocalService.getLayouts(companyId);
 
 			if (!layouts.isEmpty()) {
-				Layout layout = layouts.get(0);
+				AssetEntryQuery assetEntryQuery =
+					_assetPublisherHelper.getAssetEntryQuery(
+						portletPreferences, groupId, layouts.get(0), null,
+						null);
+
+				assetEntryQuery.setEnd(max);
+				assetEntryQuery.setStart(0);
 
 				List<AssetEntry> assetEntries =
-					_assetPublisherUtil.getAssetEntries(
-						portletPreferences, layout, groupId, max, false);
+					assetEntryLocalService.getEntries(assetEntryQuery);
 
 				assetEntries = filterAssetEntries(assetEntries);
 
@@ -139,7 +144,7 @@ public class ScreensAssetEntryServiceImpl
 					PermissionCheckerFactoryUtil.create(getUser());
 
 				List<AssetEntry> assetEntries =
-					_assetPublisherUtil.getAssetEntries(
+					_assetPublisherHelper.getAssetEntries(
 						null, portletPreferences, permissionChecker,
 						new long[] {groupId}, false, false, false);
 
@@ -361,8 +366,8 @@ public class ScreensAssetEntryServiceImpl
 		return jsonObject;
 	}
 
-	@ServiceReference(type = AssetPublisherUtil.class)
-	private AssetPublisherUtil _assetPublisherUtil;
+	@ServiceReference(type = AssetPublisherHelper.class)
+	private AssetPublisherHelper _assetPublisherHelper;
 
 	@ServiceReference(type = BlogsEntryService.class)
 	private BlogsEntryService _blogsEntryService;

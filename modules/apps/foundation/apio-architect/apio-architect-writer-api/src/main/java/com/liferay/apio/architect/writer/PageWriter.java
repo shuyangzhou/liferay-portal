@@ -14,28 +14,37 @@
 
 package com.liferay.apio.architect.writer;
 
+import static com.liferay.apio.architect.unsafe.Unsafe.unsafeCast;
 import static com.liferay.apio.architect.writer.url.URLCreator.createCollectionPageURL;
 import static com.liferay.apio.architect.writer.url.URLCreator.createCollectionURL;
+import static com.liferay.apio.architect.writer.url.URLCreator.createFormURL;
 import static com.liferay.apio.architect.writer.url.URLCreator.createNestedCollectionURL;
 import static com.liferay.apio.architect.writer.util.WriterUtil.getFieldsWriter;
 import static com.liferay.apio.architect.writer.util.WriterUtil.getPathOptional;
 
 import com.google.gson.JsonObject;
 
+import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.list.FunctionalList;
 import com.liferay.apio.architect.message.json.JSONObjectBuilder;
 import com.liferay.apio.architect.message.json.PageMessageMapper;
+import com.liferay.apio.architect.operation.Operation;
 import com.liferay.apio.architect.pagination.Page;
 import com.liferay.apio.architect.pagination.PageType;
+import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.request.RequestInfo;
 import com.liferay.apio.architect.single.model.SingleModel;
 import com.liferay.apio.architect.uri.Path;
-import com.liferay.apio.architect.url.ServerURL;
+import com.liferay.apio.architect.writer.alias.NestedPageOperationsFunction;
+import com.liferay.apio.architect.writer.alias.PageOperationsFunction;
 import com.liferay.apio.architect.writer.alias.PathFunction;
 import com.liferay.apio.architect.writer.alias.RepresentorFunction;
 import com.liferay.apio.architect.writer.alias.ResourceNameFunction;
+import com.liferay.apio.architect.writer.alias.SingleModelFunction;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -62,12 +71,15 @@ public class PageWriter<T> {
 	}
 
 	public PageWriter(Builder<T> builder) {
+		_nestedPageOperationsFunction = builder._nestedPageOperationsFunction;
+		_pageOperationsFunction = builder._pageOperationsFunction;
 		_page = builder._page;
 		_pageMessageMapper = builder._pageMessageMapper;
 		_pathFunction = builder._pathFunction;
 		_representorFunction = builder._representorFunction;
 		_requestInfo = builder._requestInfo;
 		_resourceNameFunction = builder._resourceNameFunction;
+		_singleModelFunction = builder._singleModelFunction;
 
 		_jsonObjectBuilder = new JSONObjectBuilder();
 	}
@@ -75,14 +87,14 @@ public class PageWriter<T> {
 	/**
 	 * Writes the handled {@link Page} to a string. This method uses a {@link
 	 * FieldsWriter} to write the different fields of its items' {@link
-	 * com.liferay.apio.architect.representor.Representor}. If no {@code
-	 * Representor} or {@code Path} exist for the model, this method returns
-	 * {@code Optional#empty()}.
+	 * Representor}. If no {@code Representor} or {@code Path} exist for the
+	 * model, this method returns {@code Optional#empty()}.
 	 *
 	 * @return the representation of the {@code Page}, if the {@code
 	 *         Representor} and {@code Path} exist for the model; returns {@code
 	 *         Optional#empty()} otherwise
 	 */
+	@SuppressWarnings("Duplicates")
 	public String write() {
 		_pageMessageMapper.onStart(
 			_jsonObjectBuilder, _page, _requestInfo.getHttpHeaders());
@@ -96,15 +108,51 @@ public class PageWriter<T> {
 
 		_writePageURLs();
 
-		Optional<String> optional = _getCollectionURLOptional();
+		String url = _getCollectionURL();
 
-		optional.ifPresent(
-			url -> _pageMessageMapper.mapCollectionURL(
-				_jsonObjectBuilder, url));
+		_pageMessageMapper.mapCollectionURL(_jsonObjectBuilder, url);
+
+		String resourceName = _page.getResourceName();
 
 		items.forEach(
-			model -> _writeItem(
-				new SingleModel<>(model, _page.getModelClass())));
+			model -> _writeItem(new SingleModel<>(model, resourceName)));
+
+		Optional<Path> pathOptional = _page.getPathOptional();
+
+		List<Operation> operations = pathOptional.map(
+			path -> _nestedPageOperationsFunction.apply(
+				path.getName()
+			).apply(
+				resourceName
+			)
+		).orElseGet(
+			() -> _pageOperationsFunction.apply(resourceName)
+		);
+
+		operations.forEach(
+			operation -> {
+				JSONObjectBuilder operationJSONObjectBuilder =
+					new JSONObjectBuilder();
+
+				_pageMessageMapper.onStartOperation(
+					_jsonObjectBuilder, operationJSONObjectBuilder, operation);
+
+				Optional<Form> formOptional = operation.getFormOptional();
+
+				formOptional.map(
+					form -> createFormURL(_requestInfo.getServerURL(), form)
+				).ifPresent(
+					formURL -> _pageMessageMapper.mapOperationFormURL(
+						_jsonObjectBuilder, operationJSONObjectBuilder, formURL)
+				);
+
+				_pageMessageMapper.mapOperationMethod(
+					_jsonObjectBuilder, operationJSONObjectBuilder,
+					operation.method);
+
+				_pageMessageMapper.onFinishOperation(
+					_jsonObjectBuilder, operationJSONObjectBuilder, operation);
+			});
 
 		_pageMessageMapper.onFinish(
 			_jsonObjectBuilder, _page, _requestInfo.getHttpHeaders());
@@ -148,6 +196,27 @@ public class PageWriter<T> {
 
 		}
 
+		public class NestedPageOperationsFunctionStep {
+
+			/**
+			 * Adds information to the builder about the function that gets the
+			 * operations of a page model class.
+			 *
+			 * @param  nestedPageOperationsFunction the function that gets the
+			 *         operations of a page model class
+			 * @return the updated builder
+			 * @review
+			 */
+			public PathFunctionStep nestedPageOperationsFunction(
+				NestedPageOperationsFunction nestedPageOperationsFunction) {
+
+				_nestedPageOperationsFunction = nestedPageOperationsFunction;
+
+				return new PathFunctionStep();
+			}
+
+		}
+
 		public class PageMessageMapperStep {
 
 			/**
@@ -157,12 +226,33 @@ public class PageWriter<T> {
 			 * @param  pageMessageMapper the {@code PageMessageMapper} headers.
 			 * @return the updated builder
 			 */
-			public PathFunctionStep pageMessageMapper(
+			public PageOperationsFunctionStep pageMessageMapper(
 				PageMessageMapper<T> pageMessageMapper) {
 
 				_pageMessageMapper = pageMessageMapper;
 
-				return new PathFunctionStep();
+				return new PageOperationsFunctionStep();
+			}
+
+		}
+
+		public class PageOperationsFunctionStep {
+
+			/**
+			 * Adds information to the builder about the function that gets the
+			 * operations of a page model class.
+			 *
+			 * @param  pageOperationsFunction the function that gets the
+			 *         operations of a page model class
+			 * @return the updated builder
+			 * @review
+			 */
+			public NestedPageOperationsFunctionStep pageOperationsFunction(
+				PageOperationsFunction pageOperationsFunction) {
+
+				_pageOperationsFunction = pageOperationsFunction;
+
+				return new NestedPageOperationsFunctionStep();
 			}
 
 		}
@@ -191,8 +281,7 @@ public class PageWriter<T> {
 
 			/**
 			 * Adds information to the builder about the function that gets a
-			 * class's {@link
-			 * com.liferay.apio.architect.representor.Representor}.
+			 * class's {@link Representor}.
 			 *
 			 * @param  representorFunction the function that gets a class's
 			 *         {@code Representor}
@@ -218,10 +307,12 @@ public class PageWriter<T> {
 			 *         RequestInfo.Builder}
 			 * @return the updated builder
 			 */
-			public BuildStep requestInfo(RequestInfo requestInfo) {
+			public SingleModelFunctionStep requestInfo(
+				RequestInfo requestInfo) {
+
 				_requestInfo = requestInfo;
 
-				return new BuildStep();
+				return new SingleModelFunctionStep();
 			}
 
 		}
@@ -230,8 +321,7 @@ public class PageWriter<T> {
 
 			/**
 			 * Adds information to the builder about the function that gets the
-			 * name of a class's {@link
-			 * com.liferay.apio.architect.representor.Representor}.
+			 * name of a class's {@link Representor}.
 			 *
 			 * @param  resourceNameFunction the function that gets the name of a
 			 *         class's {@code Representor}
@@ -247,39 +337,53 @@ public class PageWriter<T> {
 
 		}
 
+		public class SingleModelFunctionStep {
+
+			/**
+			 * Adds information to the builder about the function that gets the
+			 * {@code SingleModel} from a class using its identifier.
+			 *
+			 * @param  singleModelFunction the function that gets the {@code SingleModel} of a class
+			 * @return the updated builder
+			 */
+			public BuildStep singleModelFunction(
+				SingleModelFunction singleModelFunction) {
+
+				_singleModelFunction = singleModelFunction;
+
+				return new BuildStep();
+			}
+
+		}
+
+		private NestedPageOperationsFunction _nestedPageOperationsFunction;
 		private Page<T> _page;
 		private PageMessageMapper<T> _pageMessageMapper;
+		private PageOperationsFunction _pageOperationsFunction;
 		private PathFunction _pathFunction;
 		private RepresentorFunction _representorFunction;
 		private RequestInfo _requestInfo;
 		private ResourceNameFunction _resourceNameFunction;
+		private SingleModelFunction _singleModelFunction;
 
 	}
 
-	private Optional<String> _getCollectionURLOptional() {
-		Class<T> modelClass = _page.getModelClass();
-
-		Optional<String> optional = _resourceNameFunction.apply(
-			modelClass.getName());
+	private String _getCollectionURL() {
+		Optional<Path> optional = _page.getPathOptional();
 
 		return optional.map(
-			name -> {
-				Optional<Path> pathOptional = _page.getPathOptional();
-
-				ServerURL serverURL = _requestInfo.getServerURL();
-
-				return pathOptional.map(
-					path -> createNestedCollectionURL(serverURL, path, name)
-				).orElseGet(
-					() -> createCollectionURL(serverURL, name)
-				);
-			});
+			path -> createNestedCollectionURL(
+				_requestInfo.getServerURL(), path, _page.getResourceName())
+		).orElseGet(
+			() -> createCollectionURL(
+				_requestInfo.getServerURL(), _page.getResourceName())
+		);
 	}
 
 	private void _writeItem(SingleModel<T> singleModel) {
 		Optional<FieldsWriter<T, ?>> optional = getFieldsWriter(
 			singleModel, null, _requestInfo, _pathFunction,
-			_representorFunction);
+			_representorFunction, _singleModelFunction);
 
 		if (!optional.isPresent()) {
 			return;
@@ -290,11 +394,15 @@ public class PageWriter<T> {
 		JSONObjectBuilder itemJsonObjectBuilder = new JSONObjectBuilder();
 
 		_pageMessageMapper.onStartItem(
-			_jsonObjectBuilder, itemJsonObjectBuilder, singleModel.getModel(),
-			singleModel.getModelClass(), _requestInfo.getHttpHeaders());
+			_jsonObjectBuilder, itemJsonObjectBuilder, singleModel,
+			_requestInfo.getHttpHeaders());
 
 		fieldsWriter.writeBooleanFields(
 			(field, value) -> _pageMessageMapper.mapItemBooleanField(
+				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
+
+		fieldsWriter.writeBooleanListFields(
+			(field, value) -> _pageMessageMapper.mapItemBooleanListField(
 				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
 
 		fieldsWriter.writeLocalizedStringFields(
@@ -305,8 +413,16 @@ public class PageWriter<T> {
 			(field, value) -> _pageMessageMapper.mapItemNumberField(
 				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
 
+		fieldsWriter.writeNumberListFields(
+			(field, value) -> _pageMessageMapper.mapItemNumberListField(
+				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
+
 		fieldsWriter.writeStringFields(
 			(field, value) -> _pageMessageMapper.mapItemStringField(
+				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
+
+		fieldsWriter.writeStringListFields(
+			(field, value) -> _pageMessageMapper.mapItemStringListField(
 				_jsonObjectBuilder, itemJsonObjectBuilder, field, value));
 
 		fieldsWriter.writeLinks(
@@ -348,18 +464,34 @@ public class PageWriter<T> {
 					_jsonObjectBuilder, itemJsonObjectBuilder,
 					embeddedPathElements, url));
 
+		_writeNestedResources(
+			_representorFunction, singleModel, itemJsonObjectBuilder,
+			singleModel, null);
+
 		_pageMessageMapper.onFinishItem(
-			_jsonObjectBuilder, itemJsonObjectBuilder, singleModel.getModel(),
-			singleModel.getModelClass(), _requestInfo.getHttpHeaders());
+			_jsonObjectBuilder, itemJsonObjectBuilder, singleModel,
+			_requestInfo.getHttpHeaders());
 	}
 
 	private <S> void _writeItemEmbeddedModelFields(
 		SingleModel<S> singleModel, FunctionalList<String> embeddedPathElements,
 		JSONObjectBuilder itemJsonObjectBuilder) {
 
+		_writeItemEmbeddedModelFields(
+			singleModel, embeddedPathElements, itemJsonObjectBuilder,
+			_representorFunction, singleModel);
+	}
+
+	private <S, U> void _writeItemEmbeddedModelFields(
+		SingleModel<S> singleModel, FunctionalList<String> embeddedPathElements,
+		JSONObjectBuilder itemJsonObjectBuilder,
+		RepresentorFunction representorFunction,
+		SingleModel<U> rootSingleModel) {
+
 		Optional<FieldsWriter<S, ?>> optional = getFieldsWriter(
 			singleModel, embeddedPathElements, _requestInfo, _pathFunction,
-			_representorFunction);
+			representorFunction, _representorFunction, _singleModelFunction,
+			rootSingleModel);
 
 		if (!optional.isPresent()) {
 			return;
@@ -370,6 +502,12 @@ public class PageWriter<T> {
 		fieldsWriter.writeBooleanFields(
 			(field, value) ->
 				_pageMessageMapper.mapItemEmbeddedResourceBooleanField(
+					_jsonObjectBuilder, itemJsonObjectBuilder,
+					embeddedPathElements, field, value));
+
+		fieldsWriter.writeBooleanListFields(
+			(field, value) ->
+				_pageMessageMapper.mapItemEmbeddedResourceBooleanListField(
 					_jsonObjectBuilder, itemJsonObjectBuilder,
 					embeddedPathElements, field, value));
 
@@ -385,9 +523,21 @@ public class PageWriter<T> {
 					_jsonObjectBuilder, itemJsonObjectBuilder,
 					embeddedPathElements, field, value));
 
+		fieldsWriter.writeNumberListFields(
+			(field, value) ->
+				_pageMessageMapper.mapItemEmbeddedResourceNumberListField(
+					_jsonObjectBuilder, itemJsonObjectBuilder,
+					embeddedPathElements, field, value));
+
 		fieldsWriter.writeStringFields(
 			(field, value) ->
 				_pageMessageMapper.mapItemEmbeddedResourceStringField(
+					_jsonObjectBuilder, itemJsonObjectBuilder,
+					embeddedPathElements, field, value));
+
+		fieldsWriter.writeStringListFields(
+			(field, value) ->
+				_pageMessageMapper.mapItemEmbeddedResourceStringListField(
 					_jsonObjectBuilder, itemJsonObjectBuilder,
 					embeddedPathElements, field, value));
 
@@ -428,45 +578,84 @@ public class PageWriter<T> {
 				_pageMessageMapper.mapItemLinkedResourceURL(
 					_jsonObjectBuilder, itemJsonObjectBuilder,
 					resourceEmbeddedPathElements, url));
+
+		_writeNestedResources(
+			representorFunction, singleModel, itemJsonObjectBuilder,
+			rootSingleModel, embeddedPathElements);
 	}
 
-	private void _writePageURLs() {
-		Optional<String> optional = _getCollectionURLOptional();
+	private <S, U> void _writeNestedResources(
+		RepresentorFunction representorFunction, SingleModel<U> singleModel,
+		JSONObjectBuilder itemJsonObjectBuilder, SingleModel<S> rootSingleModel,
+		FunctionalList<String> embeddedPathElements) {
 
-		optional.ifPresent(
-			url -> {
-				_pageMessageMapper.mapCurrentPageURL(
-					_jsonObjectBuilder,
-					createCollectionPageURL(url, _page, PageType.CURRENT));
+		Optional<Representor<U, ?>> representorOptional = unsafeCast(
+			representorFunction.apply(singleModel.getResourceName()));
 
-				_pageMessageMapper.mapFirstPageURL(
-					_jsonObjectBuilder,
-					createCollectionPageURL(url, _page, PageType.FIRST));
+		representorOptional.ifPresent(
+			_representor -> {
+				Map<String, Representor<?, ?>> nestedFields =
+					_representor.getNestedFields();
 
-				_pageMessageMapper.mapLastPageURL(
-					_jsonObjectBuilder,
-					createCollectionPageURL(url, _page, PageType.LAST));
+				nestedFields.forEach(
+					(key, value) -> {
+						Map<String, Function<U, ?>> nestedFieldFunctions =
+							_representor.getNestedFieldFunctions();
 
-				if (_page.hasNext()) {
-					_pageMessageMapper.mapNextPageURL(
-						_jsonObjectBuilder,
-						createCollectionPageURL(url, _page, PageType.NEXT));
-				}
+						Function<U, ?> nestedFieldMapper =
+							nestedFieldFunctions.get(key);
 
-				if (_page.hasPrevious()) {
-					_pageMessageMapper.mapPreviousPageURL(
-						_jsonObjectBuilder,
-						createCollectionPageURL(url, _page, PageType.PREVIOUS));
-				}
+						Object mappedModel = nestedFieldMapper.apply(
+							singleModel.getModel());
+
+						FunctionalList<String> embeddedNestedPathElements =
+							new FunctionalList<>(embeddedPathElements, key);
+
+						_writeItemEmbeddedModelFields(
+							new SingleModel<>(mappedModel, ""),
+							embeddedNestedPathElements, itemJsonObjectBuilder,
+							__ -> Optional.of(value), rootSingleModel);
+					});
 			});
 	}
 
+	private void _writePageURLs() {
+		String url = _getCollectionURL();
+
+		_pageMessageMapper.mapCurrentPageURL(
+			_jsonObjectBuilder,
+			createCollectionPageURL(url, _page, PageType.CURRENT));
+
+		_pageMessageMapper.mapFirstPageURL(
+			_jsonObjectBuilder,
+			createCollectionPageURL(url, _page, PageType.FIRST));
+
+		_pageMessageMapper.mapLastPageURL(
+			_jsonObjectBuilder,
+			createCollectionPageURL(url, _page, PageType.LAST));
+
+		if (_page.hasNext()) {
+			_pageMessageMapper.mapNextPageURL(
+				_jsonObjectBuilder,
+				createCollectionPageURL(url, _page, PageType.NEXT));
+		}
+
+		if (_page.hasPrevious()) {
+			_pageMessageMapper.mapPreviousPageURL(
+				_jsonObjectBuilder,
+				createCollectionPageURL(url, _page, PageType.PREVIOUS));
+		}
+	}
+
 	private final JSONObjectBuilder _jsonObjectBuilder;
+	private final NestedPageOperationsFunction _nestedPageOperationsFunction;
 	private final Page<T> _page;
 	private final PageMessageMapper<T> _pageMessageMapper;
+	private final PageOperationsFunction _pageOperationsFunction;
 	private final PathFunction _pathFunction;
 	private final RepresentorFunction _representorFunction;
 	private final RequestInfo _requestInfo;
 	private final ResourceNameFunction _resourceNameFunction;
+	private SingleModelFunction _singleModelFunction;
 
 }

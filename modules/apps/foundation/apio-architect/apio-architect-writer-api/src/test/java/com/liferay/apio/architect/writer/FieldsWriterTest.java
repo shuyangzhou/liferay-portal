@@ -14,9 +14,11 @@
 
 package com.liferay.apio.architect.writer;
 
-import static com.liferay.apio.architect.test.list.FunctionalListMatchers.aFunctionalListThat;
+import static com.liferay.apio.architect.test.util.list.FunctionalListMatchers.aFunctionalListThat;
 
 import static com.spotify.hamcrest.optional.OptionalMatchers.optionalWithValue;
+
+import static java.util.Arrays.asList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -31,9 +33,11 @@ import com.liferay.apio.architect.list.FunctionalList;
 import com.liferay.apio.architect.related.RelatedModel;
 import com.liferay.apio.architect.request.RequestInfo;
 import com.liferay.apio.architect.single.model.SingleModel;
-import com.liferay.apio.architect.test.model.FirstEmbeddedModel;
-import com.liferay.apio.architect.test.model.RootModel;
-import com.liferay.apio.architect.test.representor.MockRepresentorCreator;
+import com.liferay.apio.architect.test.util.identifier.FirstEmbeddedId;
+import com.liferay.apio.architect.test.util.model.FirstEmbeddedModel;
+import com.liferay.apio.architect.test.util.model.RootModel;
+import com.liferay.apio.architect.test.util.representor.MockRepresentorCreator;
+import com.liferay.apio.architect.test.util.writer.MockWriterUtil;
 import com.liferay.apio.architect.uri.Path;
 
 import java.util.ArrayList;
@@ -85,30 +89,33 @@ public class FieldsWriterTest {
 		);
 
 		_fieldsWriter = new FieldsWriter<>(
-			new SingleModel<>(() -> "first", RootModel.class), _requestInfo,
+			new SingleModel<>(() -> "first", "root"), _requestInfo,
 			MockRepresentorCreator.createRootModelRepresentor(true),
-			new Path("name", "id"), new FunctionalList<>(null, "first"));
+			new Path("name", "id"), new FunctionalList<>(null, "first"),
+			MockWriterUtil::getSingleModel);
 	}
 
 	@Test
 	public void testGetSingleModel() {
-		SingleModel<Integer> parentSingleModel = new SingleModel<>(
-			3, Integer.class);
+		SingleModel<Integer> parentSingleModel = new SingleModel<>(3, "");
 
 		RelatedModel<Integer, String> relatedModel = new RelatedModel<>(
-			"key", String.class,
-			integer -> Optional.of(String.valueOf(integer)));
+			"key", FirstEmbeddedId.class, String::valueOf);
 
-		Optional<SingleModel<String>> optional = FieldsWriter.getSingleModel(
-			relatedModel, parentSingleModel);
+		Optional<SingleModel<FirstEmbeddedModel>> optional =
+			FieldsWriter.getSingleModel(
+				relatedModel, parentSingleModel,
+				MockWriterUtil::getSingleModel);
 
 		assertThat(optional, is(optionalWithValue()));
 
 		optional.ifPresent(
 			singleModel -> {
-				assertThat(singleModel.getModelClass(), is(String.class));
+				assertThat(singleModel.getResourceName(), is("first"));
 
-				assertThat(singleModel.getModel(), is("3"));
+				FirstEmbeddedModel firstEmbeddedModel = singleModel.getModel();
+
+				assertThat(firstEmbeddedModel.getId(), is("3"));
 			});
 	}
 
@@ -167,6 +174,21 @@ public class FieldsWriterTest {
 
 		assertThat(booleans, is(aMapWithSize(1)));
 		assertThat(booleans, hasEntry("boolean2", false));
+	}
+
+	@Test
+	public void testWriteBooleanListFields() {
+		Map<String, List<Boolean>> booleans = new HashMap<>();
+
+		_fieldsWriter.writeBooleanListFields(booleans::put);
+
+		assertThat(booleans, is(aMapWithSize(2)));
+		assertThat(
+			booleans,
+			hasEntry("booleanList1", asList(true, true, false, false)));
+		assertThat(
+			booleans,
+			hasEntry("booleanList2", asList(true, false, true, false)));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -511,6 +533,17 @@ public class FieldsWriterTest {
 		assertThat(numbers, hasEntry("number2", 42));
 	}
 
+	@Test
+	public void testWriteNumberListFields() {
+		Map<String, List<Number>> numbers = new HashMap<>();
+
+		_fieldsWriter.writeNumberListFields(numbers::put);
+
+		assertThat(numbers, is(aMapWithSize(2)));
+		assertThat(numbers, hasEntry("numberList1", asList(1, 2, 3, 4, 5)));
+		assertThat(numbers, hasEntry("numberList2", asList(6, 7, 8, 9, 10)));
+	}
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testWriteRelatedCollections() {
@@ -590,27 +623,6 @@ public class FieldsWriterTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testWriteRelatedModelFailsIfEmptyRelatedModel() {
-		RelatedModel<RootModel, Integer> relatedModel = new RelatedModel<>(
-			"key", Integer.class, __ -> Optional.empty());
-
-		Function<SingleModel<?>, Optional<Path>> pathFunction = Mockito.mock(
-			Function.class);
-
-		Mockito.when(
-			pathFunction.apply(Mockito.any())
-		).thenReturn(
-			Optional.of(new Path("name1", "id1"))
-		);
-		_fieldsWriter.writeRelatedModel(
-			relatedModel, pathFunction,
-			(singleModel, embeddedPathElements) ->
-				Assert.fail("Shouldn't be called"),
-			(url, embeddedPathElements) -> Assert.fail("Shouldn't be called"),
-			(url, embeddedPathElements) -> Assert.fail("Shouldn't be called"));
-	}
-
-	@Test
 	public void testWriteSingleURL() {
 		_fieldsWriter.writeSingleURL(
 			url -> assertThat(url, is("www.liferay.com/p/name/id")));
@@ -643,6 +655,19 @@ public class FieldsWriterTest {
 
 		assertThat(strings, is(aMapWithSize(1)));
 		assertThat(strings, hasEntry("string2", "Hypermedia"));
+	}
+
+	@Test
+	public void testWriteStringListFields() {
+		Map<String, List<String>> strings = new HashMap<>();
+
+		_fieldsWriter.writeStringListFields(strings::put);
+
+		assertThat(strings, is(aMapWithSize(2)));
+		assertThat(
+			strings, hasEntry("stringList1", asList("a", "b", "c", "d", "e")));
+		assertThat(
+			strings, hasEntry("stringList2", asList("f", "g", "h", "i", "j")));
 	}
 
 	@Test

@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.message.json;
 
+import static com.liferay.apio.architect.unsafe.Unsafe.unsafeCast;
+
 import static com.spotify.hamcrest.optional.OptionalMatchers.emptyOptional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -56,9 +58,8 @@ public class PageMessageMapperTest {
 
 	@Test
 	public void testMessageMapperRestItemMethodsOnSingleModelMapperByDefault() {
-		@SuppressWarnings("unchecked")
-		SingleModelMessageMapper<Integer> singleModelMessageMapper =
-			Mockito.mock(SingleModelMessageMapper.class);
+		SingleModelMessageMapper<Integer> singleModelMessageMapper = unsafeCast(
+			Mockito.mock(SingleModelMessageMapper.class));
 
 		PageMessageMapper<Integer> pageMessageMapper =
 			new PageMessageMapper<Integer>() {
@@ -77,23 +78,9 @@ public class PageMessageMapperTest {
 
 			};
 
-		pageMessageMapper.mapItemBooleanField(null, null, null, null);
-		pageMessageMapper.mapItemEmbeddedResourceBooleanField(
-			null, null, null, null, null);
-		pageMessageMapper.mapItemEmbeddedResourceLink(
-			null, null, null, null, null);
-		pageMessageMapper.mapItemEmbeddedResourceNumberField(
-			null, null, null, null, null);
-		pageMessageMapper.mapItemEmbeddedResourceStringField(
-			null, null, null, null, null);
-		pageMessageMapper.mapItemEmbeddedResourceTypes(null, null, null, null);
-		pageMessageMapper.mapItemEmbeddedResourceURL(null, null, null, null);
-		pageMessageMapper.mapItemLink(null, null, null, null);
-		pageMessageMapper.mapItemLinkedResourceURL(null, null, null, null);
-		pageMessageMapper.mapItemNumberField(null, null, null, null);
-		pageMessageMapper.mapItemSelfURL(null, null, null);
-		pageMessageMapper.mapItemStringField(null, null, null, null);
-		pageMessageMapper.mapItemTypes(null, null, null);
+		_callAllItemMethods(pageMessageMapper);
+
+		_callAllOperationMethods(pageMessageMapper);
 
 		Mockito.verify(
 			singleModelMessageMapper
@@ -103,7 +90,19 @@ public class PageMessageMapperTest {
 
 		Mockito.verify(
 			singleModelMessageMapper
+		).mapBooleanListField(
+			null, null, null
+		);
+
+		Mockito.verify(
+			singleModelMessageMapper
 		).mapEmbeddedResourceBooleanField(
+			null, null, null, null
+		);
+
+		Mockito.verify(
+			singleModelMessageMapper
+		).mapEmbeddedResourceBooleanListField(
 			null, null, null, null
 		);
 
@@ -121,7 +120,19 @@ public class PageMessageMapperTest {
 
 		Mockito.verify(
 			singleModelMessageMapper
+		).mapEmbeddedResourceNumberListField(
+			null, null, null, null
+		);
+
+		Mockito.verify(
+			singleModelMessageMapper
 		).mapEmbeddedResourceStringField(
+			null, null, null, null
+		);
+
+		Mockito.verify(
+			singleModelMessageMapper
+		).mapEmbeddedResourceStringListField(
 			null, null, null, null
 		);
 
@@ -157,6 +168,24 @@ public class PageMessageMapperTest {
 
 		Mockito.verify(
 			singleModelMessageMapper
+		).mapNumberListField(
+			null, null, null
+		);
+
+		Mockito.verify(
+			singleModelMessageMapper
+		).mapOperationFormURL(
+			null, null, null
+		);
+
+		Mockito.verify(
+			singleModelMessageMapper
+		).mapOperationMethod(
+			null, null, null
+		);
+
+		Mockito.verify(
+			singleModelMessageMapper
 		).mapSelfURL(
 			null, null
 		);
@@ -169,12 +198,70 @@ public class PageMessageMapperTest {
 
 		Mockito.verify(
 			singleModelMessageMapper
+		).mapStringListField(
+			null, null, null
+		);
+
+		Mockito.verify(
+			singleModelMessageMapper
 		).mapTypes(
 			null, null
+		);
+
+		Mockito.verify(
+			singleModelMessageMapper
+		).onFinishOperation(
+			null, null, null
+		);
+
+		Mockito.verify(
+			singleModelMessageMapper
+		).onStartOperation(
+			null, null, null
 		);
 	}
 
 	@Mock
 	public Page<Integer> page;
+
+	private static void _callAllItemMethods(
+		PageMessageMapper<Integer> pageMessageMapper) {
+
+		pageMessageMapper.mapItemBooleanField(null, null, null, null);
+		pageMessageMapper.mapItemBooleanListField(null, null, null, null);
+		pageMessageMapper.mapItemEmbeddedResourceBooleanField(
+			null, null, null, null, null);
+		pageMessageMapper.mapItemEmbeddedResourceBooleanListField(
+			null, null, null, null, null);
+		pageMessageMapper.mapItemEmbeddedResourceLink(
+			null, null, null, null, null);
+		pageMessageMapper.mapItemEmbeddedResourceNumberField(
+			null, null, null, null, null);
+		pageMessageMapper.mapItemEmbeddedResourceNumberListField(
+			null, null, null, null, null);
+		pageMessageMapper.mapItemEmbeddedResourceStringField(
+			null, null, null, null, null);
+		pageMessageMapper.mapItemEmbeddedResourceStringListField(
+			null, null, null, null, null);
+		pageMessageMapper.mapItemEmbeddedResourceTypes(null, null, null, null);
+		pageMessageMapper.mapItemEmbeddedResourceURL(null, null, null, null);
+		pageMessageMapper.mapItemLink(null, null, null, null);
+		pageMessageMapper.mapItemLinkedResourceURL(null, null, null, null);
+		pageMessageMapper.mapItemNumberField(null, null, null, null);
+		pageMessageMapper.mapItemNumberListField(null, null, null, null);
+		pageMessageMapper.mapItemSelfURL(null, null, null);
+		pageMessageMapper.mapItemStringField(null, null, null, null);
+		pageMessageMapper.mapItemStringListField(null, null, null, null);
+		pageMessageMapper.mapItemTypes(null, null, null);
+	}
+
+	private static void _callAllOperationMethods(
+		PageMessageMapper<Integer> pageMessageMapper) {
+
+		pageMessageMapper.mapOperationFormURL(null, null, null);
+		pageMessageMapper.mapOperationMethod(null, null, null);
+		pageMessageMapper.onFinishOperation(null, null, null);
+		pageMessageMapper.onStartOperation(null, null, null);
+	}
 
 }

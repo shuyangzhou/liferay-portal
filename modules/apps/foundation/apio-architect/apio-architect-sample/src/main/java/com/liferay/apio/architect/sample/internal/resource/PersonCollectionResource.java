@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.sample.internal.resource;
 
+import static com.liferay.apio.architect.sample.internal.auth.PermissionChecker.hasPermission;
+
 import com.liferay.apio.architect.pagination.PageItems;
 import com.liferay.apio.architect.pagination.Pagination;
 import com.liferay.apio.architect.representor.Representor;
@@ -21,11 +23,13 @@ import com.liferay.apio.architect.resource.CollectionResource;
 import com.liferay.apio.architect.routes.CollectionRoutes;
 import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.apio.architect.sample.internal.form.PersonForm;
+import com.liferay.apio.architect.sample.internal.identifier.PersonId;
 import com.liferay.apio.architect.sample.internal.model.Person;
 
 import java.util.List;
 import java.util.Optional;
 
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.NotFoundException;
 
 import org.osgi.service.component.annotations.Component;
@@ -39,7 +43,7 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(immediate = true)
 public class PersonCollectionResource
-	implements CollectionResource<Person, Long> {
+	implements CollectionResource<Person, Long, PersonId> {
 
 	@Override
 	public CollectionRoutes<Person> collectionRoutes(
@@ -98,6 +102,10 @@ public class PersonCollectionResource
 	}
 
 	private Person _addPerson(PersonForm personForm) {
+		if (!hasPermission()) {
+			throw new ForbiddenException();
+		}
+
 		return Person.addPerson(
 			personForm.getAddress(), personForm.getImage(),
 			personForm.getBirthDate(), personForm.getEmail(),
@@ -106,6 +114,10 @@ public class PersonCollectionResource
 	}
 
 	private void _deletePerson(Long personId) {
+		if (!hasPermission()) {
+			throw new ForbiddenException();
+		}
+
 		Person.deletePerson(personId);
 	}
 
@@ -125,6 +137,10 @@ public class PersonCollectionResource
 	}
 
 	private Person _updatePerson(Long personId, PersonForm personForm) {
+		if (!hasPermission()) {
+			throw new ForbiddenException();
+		}
+
 		Optional<Person> optional = Person.updatePerson(
 			personForm.getAddress(), personForm.getImage(),
 			personForm.getBirthDate(), personForm.getEmail(),

@@ -14,10 +14,12 @@
 
 package com.liferay.apio.architect.writer;
 
+import static com.liferay.apio.architect.unsafe.Unsafe.unsafeCast;
 import static com.liferay.apio.architect.writer.url.URLCreator.createBinaryURL;
 import static com.liferay.apio.architect.writer.url.URLCreator.createNestedCollectionURL;
 import static com.liferay.apio.architect.writer.url.URLCreator.createSingleURL;
 
+import com.liferay.apio.architect.identifier.Identifier;
 import com.liferay.apio.architect.list.FunctionalList;
 import com.liferay.apio.architect.related.RelatedCollection;
 import com.liferay.apio.architect.related.RelatedModel;
@@ -25,7 +27,9 @@ import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.request.RequestInfo;
 import com.liferay.apio.architect.response.control.Fields;
 import com.liferay.apio.architect.single.model.SingleModel;
+import com.liferay.apio.architect.unsafe.Unsafe;
 import com.liferay.apio.architect.uri.Path;
+import com.liferay.apio.architect.writer.alias.SingleModelFunction;
 
 import java.util.List;
 import java.util.Map;
@@ -56,29 +60,34 @@ public class FieldsWriter<T, S> {
 	 * @param  parentSingleModel the related model's parent single model
 	 * @return the single model version of the related model
 	 */
-	public static <T, S> Optional<SingleModel<S>> getSingleModel(
-		RelatedModel<T, S> relatedModel, SingleModel<T> parentSingleModel) {
+	public static <T, S, U> Optional<SingleModel<U>> getSingleModel(
+		RelatedModel<T, S> relatedModel, SingleModel<T> parentSingleModel,
+		SingleModelFunction singleModelFunction) {
 
-		Optional<S> optional = relatedModel.getModelFunction(
+		Function<T, S> identifierFunction =
+			relatedModel.getIdentifierFunction();
+
+		return identifierFunction.andThen(
+			s -> singleModelFunction.apply(s, relatedModel.getIdentifierClass())
 		).apply(
 			parentSingleModel.getModel()
+		).map(
+			Unsafe::unsafeCast
 		);
-
-		Class<S> modelClass = relatedModel.getModelClass();
-
-		return optional.map(model -> new SingleModel<>(model, modelClass));
 	}
 
 	public FieldsWriter(
 		SingleModel<T> singleModel, RequestInfo requestInfo,
 		Representor<T, S> representor, Path path,
-		FunctionalList<String> embeddedPathElements) {
+		FunctionalList<String> embeddedPathElements,
+		SingleModelFunction singleModelFunction) {
 
 		_singleModel = singleModel;
 		_requestInfo = requestInfo;
 		_representor = representor;
 		_path = path;
 		_embeddedPathElements = embeddedPathElements;
+		_singleModelFunction = singleModelFunction;
 	}
 
 	/**
@@ -121,6 +130,20 @@ public class FieldsWriter<T, S> {
 	 */
 	public void writeBooleanFields(BiConsumer<String, Boolean> biConsumer) {
 		writeFields(Representor::getBooleanFunctions, writeField(biConsumer));
+	}
+
+	/**
+	 * Writes the model's boolean list fields. This method uses a {@code
+	 * BiConsumer} so each {@code javax.ws.rs.ext.MessageBodyWriter} can write
+	 * each field differently.
+	 *
+	 * @param biConsumer the {@code BiConsumer} called to write each field
+	 */
+	public void writeBooleanListFields(
+		BiConsumer<String, List<Boolean>> biConsumer) {
+
+		writeFields(
+			Representor::getBooleanListFunctions, writeField(biConsumer));
 	}
 
 	/**
@@ -241,6 +264,20 @@ public class FieldsWriter<T, S> {
 	}
 
 	/**
+	 * Writes the model's number list fields. This method uses a {@code
+	 * BiConsumer} so each {@code javax.ws.rs.ext.MessageBodyWriter} can write
+	 * each field differently.
+	 *
+	 * @param biConsumer the {@code BiConsumer} called to write each field
+	 */
+	public void writeNumberListFields(
+		BiConsumer<String, List<Number>> biConsumer) {
+
+		writeFields(
+			Representor::getNumberListFunctions, writeField(biConsumer));
+	}
+
+	/**
 	 * Writes the related collection's URL, using a {@code BiConsumer}.
 	 *
 	 * @param relatedCollection the related collection
@@ -248,8 +285,8 @@ public class FieldsWriter<T, S> {
 	 * @param biConsumer the {@code BiConsumer} that writes the related
 	 *        collection URL
 	 */
-	public <U> void writeRelatedCollection(
-		RelatedCollection<T, U> relatedCollection, String resourceName,
+	public <U extends Identifier> void writeRelatedCollection(
+		RelatedCollection<U> relatedCollection, String resourceName,
 		FunctionalList<String> parentEmbeddedPathElements,
 		BiConsumer<String, FunctionalList<String>> biConsumer) {
 
@@ -284,15 +321,16 @@ public class FieldsWriter<T, S> {
 		Function<String, Optional<String>> nameFunction,
 		BiConsumer<String, FunctionalList<String>> biConsumer) {
 
-		Stream<RelatedCollection<T, ?>> stream =
+		Stream<RelatedCollection<?>> stream =
 			_representor.getRelatedCollections();
 
 		stream.forEach(
 			relatedCollection -> {
-				Class<?> modelClass = relatedCollection.getModelClass();
+				Class<?> identifierClass =
+					relatedCollection.getIdentifierClass();
 
 				Optional<String> optional = nameFunction.apply(
-					modelClass.getName());
+					identifierClass.getName());
 
 				optional.ifPresent(
 					name -> writeRelatedCollection(
@@ -328,7 +366,8 @@ public class FieldsWriter<T, S> {
 			relatedModel, pathFunction,
 			(url, embeddedPathElements) -> {
 				Optional<SingleModel<U>> singleModelOptional = getSingleModel(
-					relatedModel, _singleModel);
+					relatedModel, _singleModel,
+					unsafeCast(_singleModelFunction));
 
 				if (!singleModelOptional.isPresent()) {
 					return;
@@ -380,7 +419,7 @@ public class FieldsWriter<T, S> {
 		}
 
 		Optional<SingleModel<U>> optional = getSingleModel(
-			relatedModel, _singleModel);
+			relatedModel, _singleModel, unsafeCast(_singleModelFunction));
 
 		FunctionalList<String> embeddedPathElements = new FunctionalList<>(
 			_embeddedPathElements, key);
@@ -450,6 +489,20 @@ public class FieldsWriter<T, S> {
 	}
 
 	/**
+	 * Writes the model's string list fields. This method uses a {@code
+	 * BiConsumer} so each {@code javax.ws.rs.ext.MessageBodyWriter} can write
+	 * each field differently.
+	 *
+	 * @param biConsumer the {@code BiConsumer} called to write each field
+	 */
+	public void writeStringListFields(
+		BiConsumer<String, List<String>> biConsumer) {
+
+		writeFields(
+			Representor::getStringListFunctions, writeField(biConsumer));
+	}
+
+	/**
 	 * Writes the model's types. This method uses a consumer so each {@link
 	 * javax.ws.rs.ext.MessageBodyWriter} can write the types differently.
 	 *
@@ -464,5 +517,6 @@ public class FieldsWriter<T, S> {
 	private final Representor<T, S> _representor;
 	private final RequestInfo _requestInfo;
 	private final SingleModel<T> _singleModel;
+	private final SingleModelFunction _singleModelFunction;
 
 }

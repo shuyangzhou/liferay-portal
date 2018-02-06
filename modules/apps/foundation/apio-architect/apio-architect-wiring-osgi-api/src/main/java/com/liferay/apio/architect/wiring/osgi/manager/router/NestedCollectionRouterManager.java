@@ -16,8 +16,10 @@ package com.liferay.apio.architect.wiring.osgi.manager.router;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.apio.architect.operation.Operation;
 import com.liferay.apio.architect.routes.NestedCollectionRoutes;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -38,7 +40,17 @@ public interface NestedCollectionRouterManager {
 	 * @param  nestedName the nested collection resource's name
 	 * @return the nested collection routes
 	 */
-	public <T> Optional<NestedCollectionRoutes<T>>
+	public <T, S> Optional<NestedCollectionRoutes<T, S>>
 		getNestedCollectionRoutesOptional(String name, String nestedName);
+
+	/**
+	 * Returns the operations for the nested page resource's class.
+	 *
+	 * @param  name the parent resource's name
+	 * @param  nestedName the nested collection resource's name
+	 * @return the list of operations
+	 * @review
+	 */
+	public List<Operation> getOperations(String name, String nestedName);
 
 }

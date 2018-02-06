@@ -14,17 +14,23 @@
 
 package com.liferay.apio.architect.wiring.osgi.internal.manager.router;
 
-import com.liferay.apio.architect.alias.ProvideFunction;
-import com.liferay.apio.architect.error.ApioDeveloperError.MustHaveValidGenericType;
+import static com.liferay.apio.architect.alias.ProvideFunction.curry;
+import static com.liferay.apio.architect.unsafe.Unsafe.unsafeCast;
+import static com.liferay.apio.architect.wiring.osgi.internal.manager.util.ManagerUtil.getNameOrFail;
+
+import com.liferay.apio.architect.identifier.Identifier;
+import com.liferay.apio.architect.operation.Operation;
 import com.liferay.apio.architect.router.CollectionRouter;
 import com.liferay.apio.architect.routes.CollectionRoutes;
 import com.liferay.apio.architect.routes.CollectionRoutes.Builder;
+import com.liferay.apio.architect.unsafe.Unsafe;
 import com.liferay.apio.architect.wiring.osgi.internal.manager.base.BaseManager;
 import com.liferay.apio.architect.wiring.osgi.manager.ProviderManager;
-import com.liferay.apio.architect.wiring.osgi.manager.representable.ModelClassManager;
+import com.liferay.apio.architect.wiring.osgi.manager.representable.IdentifierClassManager;
 import com.liferay.apio.architect.wiring.osgi.manager.representable.NameManager;
 import com.liferay.apio.architect.wiring.osgi.manager.router.CollectionRouterManager;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -48,19 +54,28 @@ public class CollectionRouterManagerImpl
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public <T> Optional<CollectionRoutes<T>> getCollectionRoutesOptional(
-		String name) {
+	public <T> Optional<CollectionRoutes<T>>
+		getCollectionRoutesOptional(String name) {
 
-		Optional<Class<T>> optional = _modelClassManager.getModelClassOptional(
-			name);
+		Optional<Class<Identifier>> optional =
+			_identifierClassManager.getIdentifierClassOptional(name);
 
-		return optional.map(
-			Class::getName
-		).flatMap(
+		return optional.flatMap(
 			this::getServiceOptional
 		).map(
-			routes -> (CollectionRoutes<T>)routes
+			Unsafe::unsafeCast
+		);
+	}
+
+	@Override
+	public List<Operation> getOperations(String name) {
+		Optional<CollectionRoutes<Object>> optional =
+			getCollectionRoutesOptional(name);
+
+		return optional.map(
+			CollectionRoutes::getOperations
+		).orElseGet(
+			Collections::emptyList
 		);
 	}
 
@@ -82,29 +97,26 @@ public class CollectionRouterManagerImpl
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected CollectionRoutes map(
 		CollectionRouter collectionRouter,
-		ServiceReference<CollectionRouter> serviceReference,
-		Class<?> modelClass) {
+		ServiceReference<CollectionRouter> serviceReference, Class<?> clazz) {
 
-		ProvideFunction provideFunction =
-			httpServletRequest -> clazz -> _providerManager.provideOptional(
-				clazz, httpServletRequest);
+		String name = getNameOrFail(clazz, _nameManager);
 
-		Optional<String> optional = _nameManager.getNameOptional(
-			modelClass.getName());
+		return _getCollectionRoutes(unsafeCast(collectionRouter), name);
+	}
 
-		String name = optional.orElseThrow(
-			() -> new MustHaveValidGenericType(modelClass));
+	private <T, S extends Identifier> CollectionRoutes<T> _getCollectionRoutes(
+		CollectionRouter<T, S> collectionRouter, String name) {
 
-		Builder builder = new Builder<>(modelClass, name, provideFunction);
+		Builder<T> builder = new Builder<>(
+			name, curry(_providerManager::provideOptional));
 
 		return collectionRouter.collectionRoutes(builder);
 	}
 
 	@Reference
-	private ModelClassManager _modelClassManager;
+	private IdentifierClassManager _identifierClassManager;
 
 	@Reference
 	private NameManager _nameManager;

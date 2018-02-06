@@ -14,10 +14,10 @@
 
 package com.liferay.apio.architect.message.json.ld.internal;
 
-import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonArrayThat;
-import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonBoolean;
-import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonObjectWith;
-import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonString;
+import static com.liferay.apio.architect.test.util.json.JsonMatchers.aJsonArrayThat;
+import static com.liferay.apio.architect.test.util.json.JsonMatchers.aJsonBoolean;
+import static com.liferay.apio.architect.test.util.json.JsonMatchers.aJsonObjectWith;
+import static com.liferay.apio.architect.test.util.json.JsonMatchers.aJsonString;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,8 +27,11 @@ import static org.hamcrest.core.Is.is;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import com.liferay.apio.architect.test.json.Conditions;
-import com.liferay.apio.architect.test.writer.MockFormWriter;
+import com.liferay.apio.architect.test.util.json.Conditions;
+import com.liferay.apio.architect.test.util.writer.MockFormWriter;
+
+import java.util.Arrays;
+import java.util.List;
 
 import javax.ws.rs.core.HttpHeaders;
 
@@ -61,7 +64,7 @@ public class JSONLDFormMessageMapperTest {
 		).where(
 			"description", is(aJsonString(equalTo("description")))
 		).where(
-			"supportedProperty", is(aJsonArrayThat(_containsTheProperties))
+			"supportedProperty", is(aJsonArrayThat(contains(_theProperties)))
 		).where(
 			"title", is(aJsonString(equalTo("title")))
 		).build();
@@ -98,8 +101,8 @@ public class JSONLDFormMessageMapperTest {
 		return is(aJsonString(equalTo(url)));
 	}
 
-	private static final Matcher<Iterable<? extends JsonElement>>
-		_containsTheProperties = contains(
+	private static final List<Matcher<? super JsonElement>> _theProperties =
+		Arrays.asList(
 			aJsonObjectWith(_conditionsForField("boolean1", false)),
 			aJsonObjectWith(_conditionsForField("date1", false)),
 			aJsonObjectWith(_conditionsForField("double1", false)),

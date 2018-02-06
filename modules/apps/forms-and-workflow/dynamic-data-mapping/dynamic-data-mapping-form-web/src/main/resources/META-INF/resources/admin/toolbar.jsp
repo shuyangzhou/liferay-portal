@@ -28,6 +28,8 @@ String currentTab = ParamUtil.getString(request, "currentTab", "forms");
 >
 	<liferay-frontend:management-bar-buttons>
 		<liferay-util:include page="/admin/display_style_buttons.jsp" servletContext="<%= application %>" />
+
+		<liferay-util:include page="/admin/display_add_menu.jsp" servletContext="<%= application %>" />
 	</liferay-frontend:management-bar-buttons>
 
 	<liferay-frontend:management-bar-filters>
@@ -42,6 +44,14 @@ String currentTab = ParamUtil.getString(request, "currentTab", "forms");
 			orderColumns='<%= new String[] {"create-date", "modified-date", "name"} %>'
 			portletURL="<%= portletURL %>"
 		/>
+
+		<li>
+			<c:if test="<%= ddmFormAdminDisplayContext.isShowSearch() %>">
+				<aui:form action="<%= ddmFormAdminDisplayContext.getPortletURL() %>" method="post" name="fm1">
+					<liferay-ui:input-search markupView="lexicon" />
+				</aui:form>
+			</c:if>
+		</li>
 	</liferay-frontend:management-bar-filters>
 
 	<liferay-frontend:management-bar-action-buttons>

@@ -33,8 +33,8 @@ import javax.ws.rs.core.HttpHeaders;
  * only map the provided part of the resource to its representation in a JSON
  * object. To enable this, each method receives a {@link JSONObjectBuilder}.
  *
- * The methods {@link #onStart(JSONObjectBuilder, Object, Class, HttpHeaders)}
- * and {@link #onFinish(JSONObjectBuilder, Object, Class, HttpHeaders)} are
+ * The methods {@link #onStart(JSONObjectBuilder, SingleModel, HttpHeaders)}
+ * and {@link #onFinish(JSONObjectBuilder, SingleModel, HttpHeaders)} are
  * called when the writer starts and finishes the single model item,
  * respectively. Otherwise, the message mapper's methods aren't called in a
  * particular order.
@@ -43,7 +43,6 @@ import javax.ws.rs.core.HttpHeaders;
  * @author Carlos Sierra Andrés
  * @author Jorge Ferrer
  * @param  <T> the model's type
- * @review
  */
 @ConsumerType
 @SuppressWarnings("unused")
@@ -65,6 +64,18 @@ public interface SingleModelMessageMapper<T> {
 	 */
 	public default void mapBooleanField(
 		JSONObjectBuilder jsonObjectBuilder, String fieldName, Boolean value) {
+	}
+
+	/**
+	 * Maps a resource's boolean list field to its JSON object representation.
+	 *
+	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param fieldName the field's name
+	 * @param value the field's value
+	 */
+	public default void mapBooleanListField(
+		JSONObjectBuilder jsonObjectBuilder, String fieldName,
+		List<Boolean> value) {
 	}
 
 	/**
@@ -115,6 +126,21 @@ public interface SingleModelMessageMapper<T> {
 	}
 
 	/**
+	 * Maps an embedded resource's boolean list field to its JSON object
+	 * representation.
+	 *
+	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param embeddedPathElements the current resource's embedded path elements
+	 * @param fieldName the field's name
+	 * @param value the field's value
+	 */
+	public default void mapEmbeddedResourceBooleanListField(
+		JSONObjectBuilder jsonObjectBuilder,
+		FunctionalList<String> embeddedPathElements, String fieldName,
+		List<Boolean> value) {
+	}
+
+	/**
 	 * Maps an embedded resource's link to its JSON object representation.
 	 *
 	 * @param jsonObjectBuilder the JSON object builder for the model
@@ -144,6 +170,21 @@ public interface SingleModelMessageMapper<T> {
 	}
 
 	/**
+	 * Maps an embedded resource's number list field to its JSON object
+	 * representation.
+	 *
+	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param embeddedPathElements the current resource's embedded path elements
+	 * @param fieldName the field's name
+	 * @param value the field's value
+	 */
+	public default void mapEmbeddedResourceNumberListField(
+		JSONObjectBuilder jsonObjectBuilder,
+		FunctionalList<String> embeddedPathElements, String fieldName,
+		List<Number> value) {
+	}
+
+	/**
 	 * Maps an embedded resource's string field to its JSON object
 	 * representation.
 	 *
@@ -156,6 +197,21 @@ public interface SingleModelMessageMapper<T> {
 		JSONObjectBuilder jsonObjectBuilder,
 		FunctionalList<String> embeddedPathElements, String fieldName,
 		String value) {
+	}
+
+	/**
+	 * Maps an embedded resource's string list field to its JSON object
+	 * representation.
+	 *
+	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param embeddedPathElements the current resource's embedded path elements
+	 * @param fieldName the field's name
+	 * @param value the field's value
+	 */
+	public default void mapEmbeddedResourceStringListField(
+		JSONObjectBuilder jsonObjectBuilder,
+		FunctionalList<String> embeddedPathElements, String fieldName,
+		List<String> value) {
 	}
 
 	/**
@@ -217,6 +273,18 @@ public interface SingleModelMessageMapper<T> {
 	}
 
 	/**
+	 * Maps a resource's number list field to its JSON object representation.
+	 *
+	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param fieldName the field's name
+	 * @param value the field's value
+	 */
+	public default void mapNumberListField(
+		JSONObjectBuilder jsonObjectBuilder, String fieldName,
+		List<Number> value) {
+	}
+
+	/**
 	 * Maps a resource operation form's URL to its JSON object representation.
 	 *
 	 * @param singleModelJSONObjectBuilder the JSON object builder for the model
@@ -264,6 +332,18 @@ public interface SingleModelMessageMapper<T> {
 	}
 
 	/**
+	 * Maps a resource's string list field to its JSON object representation.
+	 *
+	 * @param jsonObjectBuilder the JSON object builder for the model
+	 * @param fieldName the field's name
+	 * @param value the field's value
+	 */
+	public default void mapStringListField(
+		JSONObjectBuilder jsonObjectBuilder, String fieldName,
+		List<String> value) {
+	}
+
+	/**
 	 * Maps a resource's types to their JSON object representation.
 	 *
 	 * @param jsonObjectBuilder the JSON object builder for the model
@@ -277,12 +357,11 @@ public interface SingleModelMessageMapper<T> {
 	 * Finishes the model. This is the final mapper method the writer calls.
 	 *
 	 * @param jsonObjectBuilder the JSON object builder for the model
-	 * @param model the model
-	 * @param modelClass the model class
+	 * @param singleModel the single model
 	 * @param httpHeaders the current request's HTTP headers
 	 */
 	public default void onFinish(
-		JSONObjectBuilder jsonObjectBuilder, T model, Class<T> modelClass,
+		JSONObjectBuilder jsonObjectBuilder, SingleModel<T> singleModel,
 		HttpHeaders httpHeaders) {
 	}
 
@@ -321,12 +400,11 @@ public interface SingleModelMessageMapper<T> {
 	 * the model.
 	 *
 	 * @param jsonObjectBuilder the JSON object builder for the model
-	 * @param model the model
-	 * @param modelClass the model class
+	 * @param singleModel the single model
 	 * @param httpHeaders the current request's HTTP headers
 	 */
 	public default void onStart(
-		JSONObjectBuilder jsonObjectBuilder, T model, Class<T> modelClass,
+		JSONObjectBuilder jsonObjectBuilder, SingleModel<T> singleModel,
 		HttpHeaders httpHeaders) {
 	}
 

@@ -15,13 +15,12 @@
 package com.liferay.apio.architect.operation;
 
 /**
- * Instances of this enum represent the different methods allows for operations.
+ * Represents the methods that allow for an {@link Operation}.
  *
  * @author Alejandro Hernández
- * @review
  */
 public enum Method {
 
-	DELETE, GET, POST, UPDATE
+	DELETE, GET, POST, PUT
 
 }

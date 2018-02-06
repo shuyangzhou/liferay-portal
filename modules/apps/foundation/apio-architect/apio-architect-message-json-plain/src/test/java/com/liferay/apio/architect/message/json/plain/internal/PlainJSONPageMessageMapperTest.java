@@ -16,9 +16,9 @@ package com.liferay.apio.architect.message.json.plain.internal;
 
 import static com.liferay.apio.architect.message.json.plain.internal.PlainJSONTestUtil.aRootElementJsonObjectWithId;
 import static com.liferay.apio.architect.message.json.plain.internal.PlainJSONTestUtil.isALinkTo;
-import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonArrayThat;
-import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonInt;
-import static com.liferay.apio.architect.test.json.JsonMatchers.aJsonObjectWith;
+import static com.liferay.apio.architect.test.util.json.JsonMatchers.aJsonArrayThat;
+import static com.liferay.apio.architect.test.util.json.JsonMatchers.aJsonInt;
+import static com.liferay.apio.architect.test.util.json.JsonMatchers.aJsonObjectWith;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,10 +29,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import com.liferay.apio.architect.message.json.PageMessageMapper;
-import com.liferay.apio.architect.test.json.Conditions;
-import com.liferay.apio.architect.test.json.Conditions.Builder;
-import com.liferay.apio.architect.test.model.RootModel;
-import com.liferay.apio.architect.test.writer.MockPageWriter;
+import com.liferay.apio.architect.test.util.json.Conditions;
+import com.liferay.apio.architect.test.util.json.Conditions.Builder;
+import com.liferay.apio.architect.test.util.model.RootModel;
+import com.liferay.apio.architect.test.util.writer.MockPageWriter;
+
+import java.util.Arrays;
+import java.util.List;
 
 import javax.ws.rs.core.HttpHeaders;
 
@@ -65,7 +68,7 @@ public class PlainJSONPageMessageMapperTest {
 		Builder builder = new Builder();
 
 		Conditions conditions = builder.where(
-			"collection", isALinkTo("localhost/p/name/id/models")
+			"collection", isALinkTo("localhost/p/name/id/root")
 		).where(
 			"elements", is(aJsonArrayThat(_containsTheElements))
 		).where(
@@ -73,7 +76,7 @@ public class PlainJSONPageMessageMapperTest {
 		).where(
 			"pages", _isAJsonObjectWithThePages
 		).where(
-			"self", isALinkTo("localhost/p/name/id/models?page=2&per_page=3")
+			"self", isALinkTo("localhost/p/name/id/root?page=2&per_page=3")
 		).where(
 			"totalNumberOfItems", is(aJsonInt(equalTo(9)))
 		).build();
@@ -90,21 +93,23 @@ public class PlainJSONPageMessageMapperTest {
 		Builder builder = new Builder();
 
 		Conditions pagesConditions = builder.where(
-			"first", isALinkTo("localhost/p/name/id/models?page=1&per_page=3")
+			"first", isALinkTo("localhost/p/name/id/root?page=1&per_page=3")
 		).where(
-			"last", isALinkTo("localhost/p/name/id/models?page=3&per_page=3")
+			"last", isALinkTo("localhost/p/name/id/root?page=3&per_page=3")
 		).where(
-			"next", isALinkTo("localhost/p/name/id/models?page=3&per_page=3")
+			"next", isALinkTo("localhost/p/name/id/root?page=3&per_page=3")
 		).where(
-			"prev", isALinkTo("localhost/p/name/id/models?page=1&per_page=3")
+			"prev", isALinkTo("localhost/p/name/id/root?page=1&per_page=3")
 		).build();
 
 		_isAJsonObjectWithThePages = is(aJsonObjectWith(pagesConditions));
 
-		_containsTheElements = contains(
+		List<Matcher<? super JsonElement>> theElements = Arrays.asList(
 			aRootElementJsonObjectWithId("1"),
 			aRootElementJsonObjectWithId("2"),
 			aRootElementJsonObjectWithId("3"));
+
+		_containsTheElements = contains(theElements);
 	}
 
 	private final PageMessageMapper<RootModel> _pageMessageMapper =

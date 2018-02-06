@@ -1352,8 +1352,6 @@
 		</execute>
 	</command>
 
-	<!-- The time zone option should change automatically because of Daylight Savings Time (DST). Since Los Angeles switches between Pacific Daylight Time (PDT), (UTC -07:00) and Pacific Standard Time (PST), (UTC -08:00), this macro will have to be updated accordingly. -->
-
 	<command name="editUserDisplaySettingsTimeZonePacific">
 		<execute macro="UserNavigator#gotoDisplaySettings" />
 
@@ -1527,6 +1525,20 @@
 				</execute>
 			</else>
 		</if>
+	</command>
+
+	<command name="forgotPasswordSendResetLink">
+		<execute macro="SignInNavigator#gotoForgotPassword" />
+
+		<execute function="Type" locator1="TextInput#EMAIL_ADDRESS" value1="${userEmailAddress}" />
+
+		<execute macro="Button#clickNext" />
+
+		<execute function="AssertClick" locator1="Button#SEND_PASSWORD_RESET_LINK" value1="Send Password Reset Link" />
+
+		<execute macro="Alert#viewSuccessMessageText">
+			<var name="successMessage" value="Your password was sent to the provided email address." />
+		</execute>
 	</command>
 
 	<command name="gotoEditCP">
@@ -1870,6 +1882,7 @@
 			<condition function="IsElementPresent#pauseIsElementPresent" locator1="TextInput#ANSWER" />
 			<then>
 				<execute function="Type" locator1="TextInput#ANSWER" value1="test" />
+
 				<execute macro="Button#clickSave" />
 			</then>
 		</if>
@@ -1998,6 +2011,38 @@
 		<execute function="Pause" locator1="5000" />
 	</command>
 
+	<command name="setPasswordByResetLink">
+		<execute function="Type" locator1="UsersAndOrganizationsEditUser#PASSWORD_NEW_PASSWORD_FIELD" value1="${newPassword1}" />
+		<execute function="Type" locator1="UsersAndOrganizationsEditUser#PASSWORD_ENTER_AGAIN_FIELD" value1="${newPassword2}" />
+
+		<execute macro="Button#clickSave" />
+
+		<if>
+			<not>
+				<equals arg1="${newPassword1}" arg2="${newPassword2}" />
+			</not>
+			<then>
+				<execute function="AssertTextEquals#assertPartialText" locator1="TextInput#ALERT" value1="Please enter the same value again." />
+			</then>
+			<elseif>
+				<not>
+					<isset var="invalidateLength" />
+				</not>
+				<then>
+					<execute macro="User#acceptEndUserLicenseAgreement" />
+
+					<execute macro="User#answerPasswordReminder" />
+				</then>
+			</elseif>
+			<elseif>
+				<equals arg1="${invalidateLength}" arg2="Short" />
+				<then>
+					<execute function="AssertTextEquals#assertPartialText" locator1="Message#ERROR" value1="That password is too short. Please make sure your password is at least 6 characters long." />
+				</then>
+			</elseif>
+		</if>
+	</command>
+
 	<command name="signInPG">
 		<execute function="AssertClick" locator1="UserBar#USER_SIGN_IN" value1="Sign In" />
 
@@ -2046,6 +2091,7 @@
 			<condition function="IsElementPresent#pauseIsElementPresent" locator1="TextInput#ANSWER" />
 			<then>
 				<execute function="Type" locator1="TextInput#ANSWER" value1="test" />
+
 				<execute macro="Button#clickSave" />
 			</then>
 		</if>
@@ -2307,6 +2353,19 @@
 		<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="No users were found." />
 	</command>
 
+	<command name="viewUserCustomFieldsCP">
+		<var name="key_customFieldName" value="${customFieldName}" />
+
+		<execute function="AssertTextEquals" locator1="UsersAndOrganizationsEditUser#CUSTOM_FIELDS_LABEL" value1="${customFieldName}" />
+
+		<if>
+			<equals arg1="${customFieldName}" arg2="Boolean" />
+			<then>
+				<execute function="AssertSelectedLabel" locator1="UsersAndOrganizationsEditUser#CUSTOM_FIELDS_SELECT" value1="${customFieldValue}" />
+			</then>
+		</if>
+	</command>
+
 	<command name="viewUserInfomationOrganizationSitesCP">
 		<execute macro="UserNavigator#gotoMemberships" />
 
@@ -2337,25 +2396,6 @@
 		<var name="key_userGroupName" value="${userGroupName}" />
 
 		<execute function="AssertTextEquals" locator1="UsersAndOrganizationsEditUser#USER_GROUPS_TABLE_NAME" value1="${userGroupName}" />
-	</command>
-
-	<command name="viewUserMiscellaneousCustomFieldsCP">
-		<execute function="AssertClick" locator1="UsersAndOrganizations#MISCELLANEOUS" value1="Miscellaneous" />
-
-		<execute macro="Panel#expandPanel">
-			<var name="panelHeading" value="Custom Fields" />
-		</execute>
-
-		<var name="key_customFieldName" value="${customFieldName}" />
-
-		<execute function="AssertTextEquals" locator1="UsersAndOrganizationsEditUser#CUSTOM_FIELDS_LABEL" value1="${customFieldName}" />
-
-		<if>
-			<equals arg1="${customFieldName}" arg2="Boolean" />
-			<then>
-				<execute function="AssertSelectedLabel" locator1="UsersAndOrganizationsEditUser#CUSTOM_FIELDS_SELECT" value1="${customFieldValue}" />
-			</then>
-		</if>
 	</command>
 
 	<command name="viewUserSiteCP">

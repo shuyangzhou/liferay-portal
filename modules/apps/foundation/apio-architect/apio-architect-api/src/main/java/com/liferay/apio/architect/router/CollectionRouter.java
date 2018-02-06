@@ -16,31 +16,34 @@ package com.liferay.apio.architect.router;
 
 import aQute.bnd.annotation.ConsumerType;
 
+import com.liferay.apio.architect.identifier.Identifier;
 import com.liferay.apio.architect.routes.CollectionRoutes;
 import com.liferay.apio.architect.routes.CollectionRoutes.Builder;
 
 /**
- * Instances of this interface represent the mapping between HTTP requests for a
- * collection resource and the functions that perform that requests.
+ * Represents the mapping between HTTP requests for a collection resource and
+ * the functions that perform that requests.
  *
  * <p>
- * You can add the different supported routes for the collection resource via
+ * You can add the different routes supported for the collection resource via
  * the {@link #collectionRoutes(CollectionRoutes.Builder)} method.
  * </p>
  *
  * <p>
  * The union of an instance of this interface with a {@link
  * com.liferay.apio.architect.representor.Representable} creates a complete
- * resource that will behave as its own API.
+ * resource that behaves as its own API.
  * </p>
  *
  * @author Alejandro Hernández
  * @param  <T> the model's type
+ * @param  <S> the type of the resource's identifier. It must be a subclass of
+ *         {@code Identifier}.
  * @see    CollectionRoutes.Builder
- * @review
  */
 @ConsumerType
-public interface CollectionRouter<T> {
+@SuppressWarnings("unused")
+public interface CollectionRouter<T, S extends Identifier> {
 
 	/**
 	 * Creates the {@link CollectionRoutes} supported by the collection
