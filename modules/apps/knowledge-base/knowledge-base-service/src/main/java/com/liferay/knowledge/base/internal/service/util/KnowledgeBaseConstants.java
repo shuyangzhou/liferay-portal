@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.knowledge.base.service.util;
+package com.liferay.knowledge.base.internal.service.util;
 
 /**
  * @author Adolfo Pérez
