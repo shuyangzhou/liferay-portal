@@ -116,11 +116,7 @@ public class ModulesStructureTest {
 							dirPath, gitRepoBuildGradleTemplate,
 							gitRepoSettingsGradleTemplate);
 					}
-					else if (Files.exists(dirPath.resolve("app.bnd"))) {
-						_testAppBuildScripts(dirPath);
-					}
-
-					if (!gitRepo) {
+					else {
 						Path gradlePropertiesPath = dirPath.resolve(
 							"gradle.properties");
 
@@ -135,14 +131,21 @@ public class ModulesStructureTest {
 							"Forbidden " + settingsGradlePath,
 							Files.deleteIfExists(settingsGradlePath));
 
-						Assert.assertFalse(
-							"Forbidden " + buildGradlePath,
-							Files.exists(buildGradlePath) &&
-							ModulesStructureTestUtil.contains(
-								buildGradlePath,
-								"apply plugin: \"com.liferay.defaults.plugin\"",
-								"apply plugin: " +
-									"\"com.liferay.root.defaults.plugin\""));
+						if (Files.exists(dirPath.resolve("app.bnd"))) {
+							_testEquals(buildGradlePath, _APP_BUILD_GRADLE);
+						}
+						else {
+							Assert.assertFalse(
+								"Forbidden " + buildGradlePath,
+								Files.exists(buildGradlePath) &&
+								ModulesStructureTestUtil.contains(
+									buildGradlePath, _APP_BUILD_GRADLE,
+									"apply plugin: " +
+										"\"com.liferay.defaults.plugin\"",
+									"apply plugin: " +
+										"\"com.liferay.root.defaults." +
+											"plugin\""));
+						}
 
 						Path buildExtGradlePath = dirPath.resolve(
 							"build-ext.gradle");
@@ -752,15 +755,6 @@ public class ModulesStructureTest {
 				parentDirPath.resolve(".gitignore"),
 				_getAntPluginsGitIgnore(parentDirPath, null));
 		}
-	}
-
-	private void _testAppBuildScripts(Path dirPath) throws IOException {
-		Path buildGradlePath = dirPath.resolve("build.gradle");
-
-		String buildGradle = ModulesStructureTestUtil.read(buildGradlePath);
-
-		Assert.assertEquals(
-			"Incorrect " + buildGradlePath, _APP_BUILD_GRADLE, buildGradle);
 	}
 
 	private void _testEquals(Path path, String expected) throws IOException {

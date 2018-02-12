@@ -51,18 +51,16 @@ public class EditLayoutPageTemplateEntryMVCActionCommand
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			actionRequest);
-
-		long layoutPageTemplateCollectionId = ParamUtil.getLong(
-			actionRequest, "layoutPageTemplateCollectionId");
-
 		long layoutPageTemplateEntryId = ParamUtil.getLong(
 			actionRequest, "layoutPageTemplateEntryId");
 
+		long layoutPageTemplateCollectionId = ParamUtil.getLong(
+			actionRequest, "layoutPageTemplateCollectionId");
 		String name = ParamUtil.getString(actionRequest, "name");
-
 		List<FragmentEntry> fragmentEntries = new ArrayList<>();
+
+		ServiceContext serviceContext = ServiceContextFactory.getInstance(
+			actionRequest);
 
 		if (layoutPageTemplateEntryId <= 0) {
 
