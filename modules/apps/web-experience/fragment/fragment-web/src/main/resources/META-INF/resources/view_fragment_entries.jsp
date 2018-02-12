@@ -52,11 +52,11 @@ renderResponse.setTitle(fragmentDisplayContext.getFragmentCollectionTitle());
 				<liferay-frontend:add-menu-item id="addFragmentEntryMenuItem" title='<%= LanguageUtil.get(request, "add-fragment") %>' url="<%= addFragmentEntryURL.toString() %>" />
 			</liferay-frontend:add-menu>
 
-			<aui:script require="metal-dom/src/all/dom as dom">
+			<aui:script require="metal-dom/src/all/dom as dom,frontend-js-web/liferay/modal/commands/OpenSimpleInputModal.es as modalCommands">
 				function handleAddFragmentEntryMenuItemClick(event) {
 					event.preventDefault();
 
-					Liferay.Util.openSimpleInputModal(
+					modalCommands.openSimpleInputModal(
 						{
 							dialogTitle: '<liferay-ui:message key="add-fragment" />',
 							formSubmitURL: '<%= addFragmentEntryURL %>',
@@ -78,7 +78,7 @@ renderResponse.setTitle(fragmentDisplayContext.getFragmentCollectionTitle());
 
 						event.preventDefault();
 
-						Liferay.Util.openSimpleInputModal({
+						modalCommands.openSimpleInputModal({
 							dialogTitle: '<liferay-ui:message key="rename-fragment" />',
 							formSubmitURL: data.formSubmitUrl,
 							idFieldName: 'id',
@@ -155,6 +155,12 @@ renderResponse.setTitle(fragmentDisplayContext.getFragmentCollectionTitle());
 			keyProperty="fragmentEntryId"
 			modelVar="fragmentEntry"
 		>
+			<portlet:renderURL var="editFragmentEntryURL">
+				<portlet:param name="mvcRenderCommandName" value="/fragment/edit_fragment_entry" />
+				<portlet:param name="redirect" value="<%= currentURL %>" />
+				<portlet:param name="fragmentCollectionId" value="<%= String.valueOf(fragmentEntry.getFragmentCollectionId()) %>" />
+				<portlet:param name="fragmentEntryId" value="<%= String.valueOf(fragmentEntry.getFragmentEntryId()) %>" />
+			</portlet:renderURL>
 
 			<%
 			row.setCssClass("entry-card lfr-asset-item " + row.getCssClass());
@@ -174,6 +180,7 @@ renderResponse.setTitle(fragmentDisplayContext.getFragmentCollectionTitle());
 							resultRow="<%= row %>"
 							rowChecker="<%= searchContainer.getRowChecker() %>"
 							title="<%= fragmentEntry.getName() %>"
+							url="<%= editFragmentEntryURL %>"
 						>
 							<liferay-frontend:vertical-card-header>
 
@@ -198,6 +205,7 @@ renderResponse.setTitle(fragmentDisplayContext.getFragmentCollectionTitle());
 							resultRow="<%= row %>"
 							rowChecker="<%= searchContainer.getRowChecker() %>"
 							title="<%= fragmentEntry.getName() %>"
+							url="<%= editFragmentEntryURL %>"
 						>
 							<liferay-frontend:vertical-card-header>
 

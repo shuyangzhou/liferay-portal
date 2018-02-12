@@ -16,6 +16,12 @@ package com.liferay.jenkins.results.parser;
 
 import java.io.IOException;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+
+import java.util.Map;
+import java.util.Properties;
+
 import org.apache.commons.lang.StringUtils;
 
 import org.dom4j.Element;
@@ -28,86 +34,44 @@ import org.json.JSONObject;
  */
 public class BaseTestResult implements TestResult {
 
-	public BaseTestResult(Build build, JSONObject caseJSONObject) {
-		if (build == null) {
-			throw new IllegalArgumentException("Build may not be null");
-		}
-
-		this.build = build;
-
-		className = caseJSONObject.getString("className");
-
-		duration = (long)(caseJSONObject.getDouble("duration") * 1000D);
-
-		int x = className.lastIndexOf(".");
-
-		try {
-			simpleClassName = className.substring(x + 1);
-
-			packageName = className.substring(0, x);
-		}
-		catch (StringIndexOutOfBoundsException sioobe) {
-			packageName = className;
-			simpleClassName = className;
-
-			System.out.println(
-				"Invalid test class name \"" + className + "\" in build " +
-					build.getBuildURL());
-		}
-
-		testName = caseJSONObject.getString("name");
-
-		status = caseJSONObject.getString("status");
-
-		if (status.equals("FAILED") && caseJSONObject.has("errorDetails") &&
-			caseJSONObject.has("errorStackTrace")) {
-
-			errorDetails = caseJSONObject.optString("errorDetails");
-			errorStackTrace = caseJSONObject.optString("errorStackTrace");
-		}
-	}
-
 	@Override
 	public Build getBuild() {
-		return build;
+		return _build;
 	}
 
 	@Override
 	public String getClassName() {
-		return className;
-	}
-
-	@Override
-	public String getConsoleOutputURL(String testrayLogsURL) {
-		StringBuilder sb = new StringBuilder();
-
-		sb.append(testrayLogsURL);
-		sb.append("/jenkins-console.txt.gz");
-
-		return sb.toString();
+		return _className;
 	}
 
 	@Override
 	public String getDisplayName() {
+		String testName = getTestName();
+
 		if (testName.startsWith("test[")) {
 			return testName.substring(5, testName.length() - 1);
 		}
 
-		return simpleClassName + "." + testName;
+		return getSimpleClassName() + "." + testName;
 	}
 
 	@Override
 	public long getDuration() {
-		return duration;
+		return _duration;
+	}
+
+	@Override
+	public String getErrorDetails() {
+		return _errorDetails;
+	}
+
+	@Override
+	public String getErrorStackTrace() {
+		return _errorStackTrace;
 	}
 
 	@Override
 	public Element getGitHubElement() {
-		return getGitHubElement(null);
-	}
-
-	@Override
-	public Element getGitHubElement(String testrayLogsURL) {
 		String testReportURL = getTestReportURL();
 
 		Element downstreamBuildListItemElement = Dom4JUtil.getNewElement(
@@ -116,33 +80,9 @@ public class BaseTestResult implements TestResult {
 		downstreamBuildListItemElement.add(
 			Dom4JUtil.getNewAnchorElement(testReportURL, getDisplayName()));
 
-		if ((testrayLogsURL != null) &&
-			testReportURL.contains("com.liferay.poshi.runner/PoshiRunner")) {
+		String errorStackTrace = getErrorStackTrace();
 
-			Dom4JUtil.addToElement(
-				downstreamBuildListItemElement, " - ",
-				Dom4JUtil.getNewAnchorElement(
-					getPoshiReportURL(testrayLogsURL), "Poshi Report"),
-				" - ",
-				Dom4JUtil.getNewAnchorElement(
-					getPoshiSummaryURL(testrayLogsURL), "Poshi Summary"),
-				" - ",
-				Dom4JUtil.getNewAnchorElement(
-					getConsoleOutputURL(testrayLogsURL), "Console Output"));
-
-			if (errorDetails != null) {
-				Dom4JUtil.addToElement(
-					Dom4JUtil.toCodeSnippetElement(errorDetails));
-			}
-
-			if (hasLiferayLog(testrayLogsURL)) {
-				Dom4JUtil.addToElement(
-					downstreamBuildListItemElement, " - ",
-					Dom4JUtil.getNewAnchorElement(
-						getLiferayLogURL(testrayLogsURL), "Liferay Log"));
-			}
-		}
-		else if (errorStackTrace != null) {
+		if ((errorStackTrace != null) && !errorStackTrace.isEmpty()) {
 			String trimmedStackTrace = StringUtils.abbreviate(
 				errorStackTrace, _MAX_ERROR_STACK_DISPLAY_LENGTH);
 
@@ -154,113 +94,163 @@ public class BaseTestResult implements TestResult {
 	}
 
 	@Override
-	public String getLiferayLogURL(String testrayLogsURL) {
-		StringBuilder sb = new StringBuilder();
-
-		String name = getDisplayName();
-
-		sb.append(testrayLogsURL);
-		sb.append("/");
-		sb.append(name.replace("#", "_"));
-		sb.append("/liferay-log.txt.gz");
-
-		return sb.toString();
-	}
-
-	@Override
 	public String getPackageName() {
-		return packageName;
+		String className = getClassName();
+
+		int x = className.lastIndexOf(".");
+
+		if (x < 0) {
+			return "(root)";
+		}
+
+		return className.substring(0, x);
 	}
 
 	@Override
-	public String getPoshiReportURL(String testrayLogsURL) {
-		StringBuilder sb = new StringBuilder();
+	public String getSimpleClassName() {
+		String className = getClassName();
 
-		String name = getDisplayName();
+		int x = className.lastIndexOf(".");
 
-		sb.append(testrayLogsURL);
-		sb.append("/");
-		sb.append(name.replace("#", "_"));
-		sb.append("/index.html.gz");
-
-		return sb.toString();
-	}
-
-	@Override
-	public String getPoshiSummaryURL(String testrayLogsURL) {
-		StringBuilder sb = new StringBuilder();
-
-		String name = getDisplayName();
-
-		sb.append(testrayLogsURL);
-		sb.append("/");
-		sb.append(name.replace("#", "_"));
-		sb.append("/summary.html.gz");
-
-		return sb.toString();
+		return className.substring(x + 1);
 	}
 
 	@Override
 	public String getStatus() {
-		return status;
+		return _status;
 	}
 
 	@Override
 	public String getTestName() {
-		return testName;
+		return _testName;
+	}
+
+	public String getTestrayLogsURL() {
+		Properties buildProperties = null;
+
+		try {
+			buildProperties = JenkinsResultsParserUtil.getBuildProperties();
+		}
+		catch (IOException ioe) {
+			throw new RuntimeException("Unable to get build properties", ioe);
+		}
+
+		String logBaseURL = null;
+
+		if (buildProperties.containsKey("log.base.url")) {
+			logBaseURL = buildProperties.getProperty("log.base.url");
+		}
+
+		if (logBaseURL == null) {
+			logBaseURL = _DEFAULT_LOG_BASE_URL;
+		}
+
+		Build build = getBuild();
+
+		Map<String, String> startPropertiesTempMap =
+			build.getStartPropertiesTempMap();
+
+		return JenkinsResultsParserUtil.combine(
+			logBaseURL, "/",
+			startPropertiesTempMap.get("TOP_LEVEL_MASTER_HOSTNAME"), "/",
+			startPropertiesTempMap.get("TOP_LEVEL_START_TIME"), "/",
+			startPropertiesTempMap.get("TOP_LEVEL_JOB_NAME"), "/",
+			startPropertiesTempMap.get("TOP_LEVEL_BUILD_NUMBER"), "/",
+			build.getJobVariant(), "/", getAxisNumber());
 	}
 
 	@Override
 	public String getTestReportURL() {
 		StringBuilder sb = new StringBuilder();
 
+		Build build = getBuild();
+
 		sb.append(build.getBuildURL());
+
 		sb.append("/testReport/");
-		sb.append(packageName);
+		sb.append(getPackageName());
 		sb.append("/");
-		sb.append(simpleClassName);
+		sb.append(getSimpleClassName());
 		sb.append("/");
+		sb.append(getEncodedTestName());
 
-		String encodedTestName = testName;
+		String testReportURL = sb.toString();
 
-		encodedTestName = encodedTestName.replace("[", "_");
-		encodedTestName = encodedTestName.replace("]", "_");
-		encodedTestName = encodedTestName.replace("#", "_");
-
-		if (packageName.equals("junit.framework")) {
-			encodedTestName = encodedTestName.replace(".", "_");
+		if (testReportURL.startsWith("http")) {
+			try {
+				return JenkinsResultsParserUtil.encode(testReportURL);
+			}
+			catch (MalformedURLException | URISyntaxException e) {
+				System.out.println(
+					"Unable to encode the test report " + testReportURL);
+			}
 		}
 
-		sb.append(encodedTestName);
+		return testReportURL;
+	}
+
+	protected BaseTestResult(Build build, JSONObject caseJSONObject) {
+		if (build == null) {
+			throw new IllegalArgumentException("Build may not be null");
+		}
+
+		_build = build;
+		_className = caseJSONObject.getString("className");
+		_duration = (long)(caseJSONObject.getDouble("duration") * 1000D);
+		_status = caseJSONObject.getString("status");
+		_testName = caseJSONObject.getString("name");
+
+		if (_status.equals("FAILED") && caseJSONObject.has("errorDetails") &&
+			caseJSONObject.has("errorStackTrace")) {
+
+			_errorDetails = caseJSONObject.optString("errorDetails");
+			_errorStackTrace = caseJSONObject.optString("errorStackTrace");
+		}
+		else {
+			_errorDetails = null;
+			_errorStackTrace = null;
+		}
+	}
+
+	protected String getAxisNumber() {
+		AxisBuild axisBuild = null;
+
+		Build build = getBuild();
+
+		if (build instanceof AxisBuild) {
+			axisBuild = (AxisBuild)build;
+
+			return axisBuild.getAxisNumber();
+		}
+
+		return "INVALID_AXIS_NUMBER";
+	}
+
+	protected String getEncodedTestName() {
+		StringBuilder sb = new StringBuilder(getTestName());
+
+		for (int i = 0; i < sb.length(); i++) {
+			char c = sb.charAt(i);
+
+			if (!Character.isJavaIdentifierPart(c)) {
+				sb.setCharAt(i, '_');
+			}
+		}
 
 		return sb.toString();
 	}
 
-	@Override
-	public boolean hasLiferayLog(String testrayLogsURL) {
-		String liferayLog = null;
-
-		try {
-			liferayLog = JenkinsResultsParserUtil.toString(
-				getLiferayLogURL(testrayLogsURL), false, 0, 0, 0);
-		}
-		catch (IOException ioe) {
-			return false;
-		}
-
-		return !liferayLog.isEmpty();
-	}
-
-	protected Build build;
-	protected String className;
-	protected long duration;
-	protected String errorDetails;
-	protected String errorStackTrace;
-	protected String packageName;
-	protected String simpleClassName;
-	protected String status;
-	protected String testName;
+	private static final String _DEFAULT_LOG_BASE_URL =
+		"https://testray.liferay.com/reports/production/logs";
 
 	private static final int _MAX_ERROR_STACK_DISPLAY_LENGTH = 1500;
+
+	private final Build _build;
+	private final String _className;
+	private final long _duration;
+	private final String _errorDetails;
+	private final String _errorStackTrace;
+	private final String _status;
+	private final String _testName;
 
 }

@@ -50,16 +50,8 @@ String displayStyle = siteNavigationMenuItemSelectorViewDisplayContext.getDispla
 			portletURL="<%= siteNavigationMenuItemSelectorViewDisplayContext.getPortletURL() %>"
 		/>
 
-		<%
-		PortletURL searchURL = PortletURLUtil.clone(currentURLObj, liferayPortletResponse);
-
-		searchURL.setParameter("resetCur", Boolean.TRUE.toString());
-		%>
-
 		<li>
-			<aui:form action='<%= HttpUtil.removeParameter(searchURL.toString(), liferayPortletResponse.getNamespace() + "keywords") %>' name="searchFm">
-				<liferay-ui:input-search markupView="lexicon" />
-			</aui:form>
+			<liferay-item-selector:search />
 		</li>
 	</liferay-frontend:management-bar-filters>
 </liferay-frontend:management-bar>
@@ -85,7 +77,6 @@ String displayStyle = siteNavigationMenuItemSelectorViewDisplayContext.getDispla
 			<c:choose>
 				<c:when test='<%= displayStyle.equals("descriptive") %>'>
 					<liferay-ui:search-container-column-user
-						cssClass="user-icon-lg"
 						showDetails="<%= false %>"
 						userId="<%= siteNavigationMenu.getUserId() %>"
 					/>
@@ -132,7 +123,7 @@ String displayStyle = siteNavigationMenuItemSelectorViewDisplayContext.getDispla
 
 							<liferay-frontend:vertical-card-sticker-bottom>
 								<liferay-ui:user-portrait
-									cssClass="sticker sticker-bottom user-icon-lg"
+									cssClass="sticker sticker-bottom"
 									userId="<%= siteNavigationMenu.getUserId() %>"
 								/>
 							</liferay-frontend:vertical-card-sticker-bottom>
