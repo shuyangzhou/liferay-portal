@@ -14,9 +14,9 @@
 
 package com.liferay.frontend.js.loader.modules.extender.internal.npm.builtin;
 
+import com.liferay.frontend.js.loader.modules.extender.internal.npm.model.JSModuleAdapter;
 import com.liferay.frontend.js.loader.modules.extender.npm.JSPackage;
 import com.liferay.frontend.js.loader.modules.extender.npm.ModuleNameUtil;
-import com.liferay.frontend.js.loader.modules.extender.npm.model.JSModuleAdapter;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringBundler;
 
