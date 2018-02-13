@@ -2,5 +2,5 @@
 
 <suppressions>
 	<suppress checks="JavaModuleInternalImportsCheck" files="modules/apps/static/portal-lpkg-deployer/portal-lpkg-deployer/src/main/java/com/liferay/portal/lpkg/deployer/internal/TargetPlatformIndexerProcessCallable\.java" />
-	<suppress checks="JavaXMLSecurityCheck" files="modules/apps/static/portal-target-platform-indexer/portal-target-platform-indexer/src/main/java/com/liferay/portal/target/platform/indexer/internal/DefaultIndexValidator\.java" />
+	<suppress checks="JavaXMLSecurityCheck" files="modules/apps/static/portal-target-platform-indexer/portal-target-platform-indexer-impl/src/main/java/com/liferay/portal/target/platform/indexer/internal/DefaultIndexValidator\.java" />
 </suppressions>
