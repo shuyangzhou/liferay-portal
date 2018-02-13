@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.frontend.js.loader.modules.extender.npm.builtin;
+package com.liferay.frontend.js.loader.modules.extender.internal.npm.builtin;
 
 import com.liferay.frontend.js.loader.modules.extender.npm.JSPackage;
 import com.liferay.frontend.js.loader.modules.extender.npm.ModuleNameUtil;
