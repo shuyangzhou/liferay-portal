@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.frontend.js.loader.modules.extender.npm.model;
+package com.liferay.frontend.js.loader.modules.extender.internal.npm.model;
 
 import com.liferay.frontend.js.loader.modules.extender.npm.JSBundle;
 import com.liferay.frontend.js.loader.modules.extender.npm.JSModule;
