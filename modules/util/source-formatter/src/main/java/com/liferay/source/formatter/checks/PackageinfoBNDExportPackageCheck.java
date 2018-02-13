@@ -15,7 +15,7 @@
 package com.liferay.source.formatter.checks;
 
 import com.liferay.petra.string.CharPool;
-import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.source.formatter.BNDSettings;
@@ -41,7 +41,9 @@ public class PackageinfoBNDExportPackageCheck extends BaseFileCheck {
 			String fileName, String absolutePath, String content)
 		throws Exception {
 
-		if (!_hasBNDExportPackage(fileName)) {
+		if (absolutePath.contains("/src/main/resources/") &&
+			!_hasBNDExportPackage(fileName)) {
+
 			return null;
 		}
 

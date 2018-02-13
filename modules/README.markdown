@@ -77,6 +77,7 @@ module with `ant all` and the other marker files choose the deploy directory.
 
 File Name | Description
 --------- | -----------
+`.lfrbuild-deploy-wsdd` | Deploys the WSDD fragment JAR file when deploying the OSGi module.
 `.lfrbuild-lowest-major-version` | Declares the lowest major version of the released artifact to use in the semantic versioning check.
 `.lfrbuild-portal-pre` | Builds the module, during the `ant compile` execution, in the `tmp/lib-pre` directory before building `portal-kernel`, `portal-impl`, etc.
 `.lfrbuild-portal-private` | Deploys the module during the `ant all` execution in a private branch. `-test` modules never have this file.
@@ -119,7 +120,6 @@ File Name | Description
 
 File Name | Description
 --------- | -----------
-`.lfrbuild-poshi-runner-resources` | Publishes the directory as a Poshi Runner resources JAR file.
 `.lfrbuild-release-src` | Includes the app's source code in the DXP release, when added to the root of an app.
 `.lfrbuild-releng-ignore` | Ignores checking the module for staleness, so the module is never publishable. A *stale* module has code that is different from the latest published release. If a `.lfrbuild-releng-ignore` file is added to a parent directory, the whole subtree is be ignored.
 

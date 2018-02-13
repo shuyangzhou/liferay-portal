@@ -15,8 +15,8 @@
 package com.liferay.source.formatter.checks;
 
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.Validator;
@@ -405,9 +405,9 @@ public class LanguageKeysCheck extends BaseFileCheck {
 		"mergeLang \\{\\s*sourceDirs = \\[(.*?)\\]", Pattern.DOTALL);
 	private final Pattern _metaAnnotationDescriptionParameterPattern =
 		Pattern.compile(
-			"@Meta\\.(?:AD|OCD)\\([^\\{]+?\\sdescription = \"(.+?)\"");
+			"@Meta\\.(?:AD|OCD)\\([^\\{]*?description\\s*=\\s*\"(.+?)\"");
 	private final Pattern _metaAnnotationNameParameterPattern = Pattern.compile(
-		"@Meta\\.(?:AD|OCD)\\([^\\{]+?\\sname = \"(.+?)\"");
+		"@Meta\\.(?:AD|OCD)\\([^\\{]*?name\\s*=\\s*\"(.+?)\"");
 	private final Map<String, Properties> _moduleLangLanguagePropertiesMap =
 		new HashMap<>();
 	private final Map<String, Properties> _moduleLanguagePropertiesMap =

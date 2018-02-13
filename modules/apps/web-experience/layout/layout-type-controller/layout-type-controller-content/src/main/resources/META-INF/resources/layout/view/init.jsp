@@ -14,8 +14,17 @@
  */
 --%>
 
+<%@ page import="com.liferay.portal.kernel.io.unsync.UnsyncStringWriter" %><%@
+page import="com.liferay.portal.kernel.template.StringTemplateResource" %><%@
+page import="com.liferay.portal.kernel.template.Template" %><%@
+page import="com.liferay.portal.kernel.template.TemplateConstants" %><%@
+page import="com.liferay.portal.kernel.template.TemplateManager" %><%@
+page import="com.liferay.portal.kernel.template.TemplateManagerUtil" %><%@
+page import="com.liferay.portal.kernel.template.TemplateResource" %><%@
+page import="com.liferay.portal.kernel.util.StringBundler" %>
+
 <%@ include file="/init.jsp" %>
 
 <%
-List<FragmentEntryInstanceLink> fragmentEntryInstanceLinks = (List<FragmentEntryInstanceLink>)request.getAttribute(ContentLayoutTypeControllerWebKeys.LAYOUT_FRAGMENTS);
+List<FragmentEntryLink> fragmentEntryLinks = (List<FragmentEntryLink>)request.getAttribute(ContentLayoutTypeControllerWebKeys.LAYOUT_FRAGMENTS);
 %>

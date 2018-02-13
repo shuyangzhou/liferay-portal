@@ -16,8 +16,6 @@ package com.liferay.layout.page.template.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.fragment.model.FragmentEntry;
-
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -76,7 +74,7 @@ public interface LayoutPageTemplateEntryLocalService extends BaseLocalService,
 
 	public LayoutPageTemplateEntry addLayoutPageTemplateEntry(long userId,
 		long groupId, long layoutPageTemplateCollectionId,
-		java.lang.String name, List<FragmentEntry> fragmentEntries,
+		java.lang.String name, long[] fragmentEntryIds,
 		ServiceContext serviceContext) throws PortalException;
 
 	/**
@@ -264,12 +262,12 @@ public interface LayoutPageTemplateEntryLocalService extends BaseLocalService,
 	public LayoutPageTemplateEntry updateLayoutPageTemplateEntry(
 		LayoutPageTemplateEntry layoutPageTemplateEntry);
 
-	public LayoutPageTemplateEntry updateLayoutPageTemplateEntry(long userId,
-		long layoutPageTemplateEntryId, java.lang.String name,
-		List<FragmentEntry> fragmentEntries, ServiceContext serviceContext)
-		throws PortalException;
-
 	public LayoutPageTemplateEntry updateLayoutPageTemplateEntry(
 		long layoutPageTemplateEntryId, java.lang.String name)
 		throws PortalException;
+
+	public LayoutPageTemplateEntry updateLayoutPageTemplateEntry(
+		long layoutPageTemplateEntryId, java.lang.String name,
+		long[] fragmentEntryIds, java.lang.String editableValues,
+		ServiceContext serviceContext) throws PortalException;
 }
