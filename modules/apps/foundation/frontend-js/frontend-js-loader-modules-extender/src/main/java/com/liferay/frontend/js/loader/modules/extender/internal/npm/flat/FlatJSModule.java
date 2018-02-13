@@ -14,9 +14,9 @@
 
 package com.liferay.frontend.js.loader.modules.extender.internal.npm.flat;
 
+import com.liferay.frontend.js.loader.modules.extender.internal.npm.builtin.BuiltInJSModule;
 import com.liferay.frontend.js.loader.modules.extender.npm.JSPackage;
 import com.liferay.frontend.js.loader.modules.extender.npm.ModuleNameUtil;
-import com.liferay.frontend.js.loader.modules.extender.npm.builtin.BuiltInJSModule;
 
 import java.io.IOException;
 import java.io.InputStream;
