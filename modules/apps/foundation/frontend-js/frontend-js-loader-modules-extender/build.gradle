@@ -3,6 +3,7 @@ dependencies {
 	compileInclude group: "org.json", name: "json", version: "20140107"
 
 	provided group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
+	provided group: "com.liferay", name: "com.liferay.frontend.js.loader.modules.extender.api", version: "1.0.0"
 	provided group: "com.liferay", name: "com.liferay.osgi.felix.util", version: "1.0.0"
 	provided group: "com.liferay", name: "com.liferay.osgi.util", version: "3.0.0"
 	provided group: "com.liferay", name: "com.liferay.petra.string", version: "1.0.0"
