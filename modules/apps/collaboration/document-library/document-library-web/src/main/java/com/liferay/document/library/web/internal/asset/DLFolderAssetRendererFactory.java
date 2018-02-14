@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portlet.documentlibrary.service.permission.DLFolderPermission;
 import com.liferay.trash.TrashHelper;
 
 import javax.portlet.PortletRequest;
@@ -109,7 +108,7 @@ public class DLFolderAssetRendererFactory
 
 		Folder folder = _dlAppLocalService.getFolder(classPK);
 
-		return DLFolderPermission.contains(permissionChecker, folder, actionId);
+		return folder.containsPermission(permissionChecker, actionId);
 	}
 
 	@Reference(unbind = "-")

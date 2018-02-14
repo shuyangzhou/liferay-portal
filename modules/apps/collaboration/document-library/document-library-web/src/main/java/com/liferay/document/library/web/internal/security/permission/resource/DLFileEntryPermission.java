@@ -76,7 +76,7 @@ public class DLFileEntryPermission {
 	}
 
 	@Reference(
-		target = "(model.class.name=com.liferay.document.library.kernel.model.FileEntry)",
+		target = "(model.class.name=com.liferay.portal.kernel.repository.model.FileEntry)",
 		unbind = "-"
 	)
 	protected void setFileEntryModelResourcePermission(
