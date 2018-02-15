@@ -77,7 +77,9 @@ public class StringUtil {
 				sb.append(delimiter);
 			}
 
-			sb.append(String.valueOf(array[i]).trim());
+			String value = String.valueOf(array[i]);
+
+			sb.append(value.trim());
 		}
 
 		return sb.toString();
