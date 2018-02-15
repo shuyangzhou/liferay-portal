@@ -16,10 +16,9 @@ package com.liferay.bookmarks.uad.entity;
 
 import com.liferay.bookmarks.model.BookmarksEntry;
 import com.liferay.bookmarks.uad.constants.BookmarksUADConstants;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.user.associated.data.entity.BaseUADEntity;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -42,11 +41,15 @@ public class BookmarksEntryUADEntity extends BaseUADEntity {
 	}
 
 	@Override
-	public Map<String, Object> getEntityNonAnonymizableFieldValues(
-			List<String> nonAnonymizableFieldNames)
-		throws PortalException {
+	public Map<String, Object> getEntityNonanonymizableFieldValues() {
+		Map<String, Object> entityNonanonymizableFieldValues = new HashMap<>();
 
-		return null;
+		entityNonanonymizableFieldValues.put(
+			"description", _bookmarksEntry.getDescription());
+		entityNonanonymizableFieldValues.put("name", _bookmarksEntry.getName());
+		entityNonanonymizableFieldValues.put("url", _bookmarksEntry.getUrl());
+
+		return entityNonanonymizableFieldValues;
 	}
 
 	private final BookmarksEntry _bookmarksEntry;
