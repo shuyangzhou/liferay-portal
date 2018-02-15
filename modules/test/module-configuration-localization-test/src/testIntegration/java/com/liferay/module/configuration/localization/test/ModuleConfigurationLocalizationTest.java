@@ -83,7 +83,9 @@ public class ModuleConfigurationLocalizationTest {
 			sb.append(bundleError);
 		}
 
-		Assert.assertEquals(sb.toString(), 0, sb.index());
+		if (sb.index() != 0) {
+			Assert.fail(sb.toString());
+		}
 	}
 
 	private String _collectBundleError(Bundle bundle) {
