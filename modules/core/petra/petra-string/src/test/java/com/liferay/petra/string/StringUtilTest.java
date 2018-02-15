@@ -52,72 +52,93 @@ public class StringUtilTest {
 	}
 
 	@Test
+	public void testExtractDigits() {
+		Assert.assertEquals(StringPool.BLANK, StringUtil.extractDigits(null));
+		Assert.assertEquals(
+			StringPool.BLANK, StringUtil.extractDigits(StringPool.BLANK));
+		Assert.assertEquals(StringPool.BLANK, StringUtil.extractDigits("abc"));
+		Assert.assertEquals("123", StringUtil.extractDigits("a1b2c3"));
+		Assert.assertEquals(
+			"1234567890", StringUtil.extractDigits("1234567890"));
+		Assert.assertEquals(
+			"1234567890", StringUtil.extractDigits("123-456-7890"));
+		Assert.assertEquals(
+			"1234567890", StringUtil.extractDigits("(123) 456-7890"));
+	}
+
+	@Test
 	public void testIsDigit() {
-		char[] digitChars = {CharPool.NUMBER_0, CharPool.NUMBER_1,
-			CharPool.NUMBER_2, CharPool.NUMBER_3, CharPool.NUMBER_4,
-			CharPool.NUMBER_5, CharPool.NUMBER_6, CharPool.NUMBER_7,
-			CharPool.NUMBER_8, CharPool.NUMBER_9};
-	
+		char[] digitChars = {
+			CharPool.NUMBER_0, CharPool.NUMBER_1, CharPool.NUMBER_2,
+			CharPool.NUMBER_3, CharPool.NUMBER_4, CharPool.NUMBER_5,
+			CharPool.NUMBER_6, CharPool.NUMBER_7, CharPool.NUMBER_8,
+			CharPool.NUMBER_9
+		};
+
 		for (char c : digitChars) {
 			Assert.assertTrue(StringUtil.isDigit(c));
 		}
-	
-		char[] nonDigitChars = {CharPool.SPACE, CharPool.COMMA,
-			CharPool.LOWER_CASE_A, CharPool.UPPER_CASE_A,
-			CharPool.LOWER_CASE_B, CharPool.UPPER_CASE_B,
-			CharPool.LOWER_CASE_C, CharPool.UPPER_CASE_C,
-			CharPool.EXCLAMATION, CharPool.AT};
-		
+
+		char[] nonDigitChars = {
+			CharPool.SPACE, CharPool.COMMA, CharPool.LOWER_CASE_A,
+			CharPool.UPPER_CASE_A, CharPool.LOWER_CASE_B, CharPool.UPPER_CASE_B,
+			CharPool.LOWER_CASE_C, CharPool.UPPER_CASE_C, CharPool.EXCLAMATION,
+			CharPool.AT
+		};
+
 		for (char c : nonDigitChars) {
 			Assert.assertFalse(StringUtil.isDigit(c));
 		}
 	}
-	
-	@Test
-	public void testExtractDigits() {
-		Assert.assertEquals(StringPool.BLANK, StringUtil.extractDigits(null));
-		Assert.assertEquals(StringPool.BLANK, StringUtil.extractDigits(StringPool.BLANK));
-		Assert.assertEquals(StringPool.BLANK, StringUtil.extractDigits("abc"));
-		Assert.assertEquals("123", StringUtil.extractDigits("a1b2c3"));
-		Assert.assertEquals("1234567890", StringUtil.extractDigits("1234567890"));
-		Assert.assertEquals("1234567890", StringUtil.extractDigits("123-456-7890"));
-		Assert.assertEquals("1234567890", StringUtil.extractDigits("(123) 456-7890"));
-	}
-	
+
 	@Test
 	public void testMerge() {
 		Assert.assertEquals(null, StringUtil.merge(null, StringPool.BLANK));
-		
+
 		Object[] emptyArray = new String[0];
-		Assert.assertEquals(StringPool.BLANK, StringUtil.merge(emptyArray, StringPool.COMMA));
-		
+
+		Assert.assertEquals(
+			StringPool.BLANK, StringUtil.merge(emptyArray, StringPool.COMMA));
+
 		Object[] unaryArray = {"alphabet"};
-		Assert.assertEquals("alphabet", StringUtil.merge(unaryArray, StringPool.COMMA));
-		
+
+		Assert.assertEquals(
+			"alphabet", StringUtil.merge(unaryArray, StringPool.COMMA));
+
 		Object[] abcArray = {"abc", "Abc", "ABC"};
-		Assert.assertEquals("abc,Abc,ABC", StringUtil.merge(abcArray, StringPool.COMMA));
+
+		Assert.assertEquals(
+			"abc,Abc,ABC", StringUtil.merge(abcArray, StringPool.COMMA));
 	}
-	
+
 	@Test
 	public void testRemoveChars() {
 		Assert.assertEquals(null, StringUtil.removeChars(null, null));
-		Assert.assertEquals(null, StringUtil.removeChars(null, CharPool.LOWER_CASE_A));
+		Assert.assertEquals(
+			null, StringUtil.removeChars(null, CharPool.LOWER_CASE_A));
 		Assert.assertEquals("abc", StringUtil.removeChars("abc", null));
-		Assert.assertEquals(StringPool.BLANK,
+		Assert.assertEquals(
+			StringPool.BLANK,
 			StringUtil.removeChars("a", CharPool.LOWER_CASE_A));
 
-		char[] abcArray = {CharPool.LOWER_CASE_A, CharPool.LOWER_CASE_B,
-			CharPool.LOWER_CASE_C};
-		Assert.assertEquals(StringPool.BLANK,
-			StringUtil.removeChars("a", abcArray));
-		Assert.assertEquals(StringPool.BLANK,
-			StringUtil.removeChars("abc", abcArray));
+		char[] abcArray = {
+			CharPool.LOWER_CASE_A, CharPool.LOWER_CASE_B, CharPool.LOWER_CASE_C
+		};
+
+		Assert.assertEquals(
+			StringPool.BLANK, StringUtil.removeChars("a", abcArray));
+		Assert.assertEquals(
+			StringPool.BLANK, StringUtil.removeChars("abc", abcArray));
 		Assert.assertEquals("d", StringUtil.removeChars("abcd", abcArray));
-		Assert.assertEquals("deed", StringUtil.removeChars("abcdeedcba", abcArray));
-		
-		char[] upperAbcArray = {CharPool.UPPER_CASE_A, CharPool.UPPER_CASE_B,
-				CharPool.UPPER_CASE_C};
-		Assert.assertEquals("alphabet", StringUtil.removeChars("alphabet", upperAbcArray));
+		Assert.assertEquals(
+			"deed", StringUtil.removeChars("abcdeedcba", abcArray));
+
+		char[] upperAbcArray = {
+			CharPool.UPPER_CASE_A, CharPool.UPPER_CASE_B, CharPool.UPPER_CASE_C
+		};
+
+		Assert.assertEquals(
+			"alphabet", StringUtil.removeChars("alphabet", upperAbcArray));
 	}
 
 	@Test
