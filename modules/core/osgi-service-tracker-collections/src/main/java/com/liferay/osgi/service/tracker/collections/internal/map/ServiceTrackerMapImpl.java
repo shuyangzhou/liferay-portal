@@ -59,6 +59,8 @@ public class ServiceTrackerMapImpl<K, SR, TS, R>
 			bundleContext, clazz, filterString,
 			new ServiceReferenceServiceTrackerCustomizer());
 
+		_serviceTracker.open();
+
 		_logger = new Logger(bundleContext);
 	}
 
@@ -87,11 +89,6 @@ public class ServiceTrackerMapImpl<K, SR, TS, R>
 	@Override
 	public Set<K> keySet() {
 		return Collections.unmodifiableSet(_serviceTrackerBuckets.keySet());
-	}
-
-	@Override
-	public void open() {
-		_serviceTracker.open();
 	}
 
 	@Override
