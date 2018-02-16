@@ -21,13 +21,13 @@ import java.util.List;
  */
 public class EntityOrder {
 
-	public EntityOrder(boolean asc, List<EntityColumn> columns) {
+	public EntityOrder(boolean asc, List<EntityColumn> entityColumns) {
 		_asc = asc;
-		_columns = columns;
+		_entityColumns = entityColumns;
 	}
 
-	public List<EntityColumn> getColumns() {
-		return _columns;
+	public List<EntityColumn> getEntityColumns() {
+		return _entityColumns;
 	}
 
 	public boolean isAscending() {
@@ -35,6 +35,6 @@ public class EntityOrder {
 	}
 
 	private final boolean _asc;
-	private final List<EntityColumn> _columns;
+	private final List<EntityColumn> _entityColumns;
 
 }

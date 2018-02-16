@@ -78,7 +78,7 @@ public interface ${entity.name}${sessionTypeName}Service
 
 	<#assign overrideMethodNames = [] />
 
-	<#if stringUtil.equals(sessionTypeName, "Local") && entity.hasColumns()>
+	<#if stringUtil.equals(sessionTypeName, "Local") && entity.hasEntityColumns()>
 		<#if entity.isPermissionedModel()>
 			, PermissionedModelLocalService
 		<#elseif entity.isResourcedModel()>
@@ -117,7 +117,7 @@ public interface ${entity.name}${sessionTypeName}Service
 				@Override
 			</#if>
 
-			<#if serviceBuilder.isServiceReadOnlyMethod(method, entity.txRequiredList) && !stringUtil.equals(method.name, "getOSGiServiceIdentifier")>
+			<#if serviceBuilder.isServiceReadOnlyMethod(method, entity.txRequiredMethodNames) && !stringUtil.equals(method.name, "getOSGiServiceIdentifier")>
 				@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 			</#if>
 			public

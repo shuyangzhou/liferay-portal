@@ -166,15 +166,15 @@ public interface ${entity.name}Model extends
 	 */
 	public void setPrimaryKey(${entity.PKClassName} primaryKey);
 
-	<#list entity.regularColList as column>
-		<#if stringUtil.equals(column.name, "classNameId")>
+	<#list entity.regularEntityColumns as entityColumn>
+		<#if stringUtil.equals(entityColumn.name, "classNameId")>
 			/**
 			 * Returns the fully qualified class name of this ${entity.humanName}.
 			 *
 			 * @return the fully qualified class name of this ${entity.humanName}
 			 */
 
-			<#if overrideColumnNames?seq_index_of(column.name) != -1>
+			<#if overrideColumnNames?seq_index_of(entityColumn.name) != -1>
 				@Override
 			</#if>
 
@@ -189,8 +189,8 @@ public interface ${entity.name}Model extends
 			modelName = apiPackagePath + ".model." + entity.name
 		/>
 
-		<#if modelHintsUtil.getHints(modelName, column.name)??>
-			<#assign hints = modelHintsUtil.getHints(modelName, column.name) />
+		<#if modelHintsUtil.getHints(modelName, entityColumn.name)??>
+			<#assign hints = modelHintsUtil.getHints(modelName, entityColumn.name) />
 
 			<#if hints["auto-escape"]??>
 				<#assign autoEscapeHintValue = hints["auto-escape"] />
@@ -202,178 +202,178 @@ public interface ${entity.name}Model extends
 		</#if>
 
 		/**
-		 * Returns the ${column.humanName} of this ${entity.humanName}.
+		 * Returns the ${entityColumn.humanName} of this ${entity.humanName}.
 		 *
-		 * @return the ${column.humanName} of this ${entity.humanName}
+		 * @return the ${entityColumn.humanName} of this ${entity.humanName}
 		 */
 
-		<#if autoEscape && stringUtil.equals(column.type, "String") && (column.localized == false)>
+		<#if autoEscape && stringUtil.equals(entityColumn.type, "String") && (entityColumn.localized == false)>
 			@AutoEscape
 		</#if>
 
-		<#if overrideColumnNames?seq_index_of(column.name) != -1>
+		<#if overrideColumnNames?seq_index_of(entityColumn.name) != -1>
 			@Override
 		</#if>
 
-		public ${column.genericizedType} get${column.methodName}();
+		public ${entityColumn.genericizedType} get${entityColumn.methodName}();
 
-		<#if column.localized>
+		<#if entityColumn.localized>
 			/**
-			 * Returns the localized ${column.humanName} of this ${entity.humanName} in the language. Uses the default language if no localization exists for the requested language.
+			 * Returns the localized ${entityColumn.humanName} of this ${entity.humanName} in the language. Uses the default language if no localization exists for the requested language.
 			 *
 			 * @param locale the locale of the language
-			 * @return the localized ${column.humanName} of this ${entity.humanName}
+			 * @return the localized ${entityColumn.humanName} of this ${entity.humanName}
 			 */
 			@AutoEscape
-			public String get${column.methodName}(Locale locale);
+			public String get${entityColumn.methodName}(Locale locale);
 
 			/**
-			 * Returns the localized ${column.humanName} of this ${entity.humanName} in the language, optionally using the default language if no localization exists for the requested language.
+			 * Returns the localized ${entityColumn.humanName} of this ${entity.humanName} in the language, optionally using the default language if no localization exists for the requested language.
 			 *
 			 * @param locale the local of the language
 			 * @param useDefault whether to use the default language if no localization exists for the requested language
-			 * @return the localized ${column.humanName} of this ${entity.humanName}. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+			 * @return the localized ${entityColumn.humanName} of this ${entity.humanName}. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 			 */
 			@AutoEscape
-			public String get${column.methodName}(Locale locale, boolean useDefault);
+			public String get${entityColumn.methodName}(Locale locale, boolean useDefault);
 
 			/**
-			 * Returns the localized ${column.humanName} of this ${entity.humanName} in the language. Uses the default language if no localization exists for the requested language.
+			 * Returns the localized ${entityColumn.humanName} of this ${entity.humanName} in the language. Uses the default language if no localization exists for the requested language.
 			 *
 			 * @param languageId the ID of the language
-			 * @return the localized ${column.humanName} of this ${entity.humanName}
+			 * @return the localized ${entityColumn.humanName} of this ${entity.humanName}
 			 */
 			@AutoEscape
-			public String get${column.methodName}(String languageId);
+			public String get${entityColumn.methodName}(String languageId);
 
 			/**
-			 * Returns the localized ${column.humanName} of this ${entity.humanName} in the language, optionally using the default language if no localization exists for the requested language.
+			 * Returns the localized ${entityColumn.humanName} of this ${entity.humanName} in the language, optionally using the default language if no localization exists for the requested language.
 			 *
 			 * @param languageId the ID of the language
 			 * @param useDefault whether to use the default language if no localization exists for the requested language
-			 * @return the localized ${column.humanName} of this ${entity.humanName}
+			 * @return the localized ${entityColumn.humanName} of this ${entity.humanName}
 			 */
 			@AutoEscape
-			public String get${column.methodName}(String languageId, boolean useDefault);
+			public String get${entityColumn.methodName}(String languageId, boolean useDefault);
 
 			@AutoEscape
-			public String get${column.methodName}CurrentLanguageId();
+			public String get${entityColumn.methodName}CurrentLanguageId();
 
 			@AutoEscape
-			public String get${column.methodName}CurrentValue();
+			public String get${entityColumn.methodName}CurrentValue();
 
 			/**
-			 * Returns a map of the locales and localized ${column.humanNames} of this ${entity.humanName}.
+			 * Returns a map of the locales and localized ${entityColumn.humanNames} of this ${entity.humanName}.
 			 *
-			 * @return the locales and localized ${column.humanNames} of this ${entity.humanName}
+			 * @return the locales and localized ${entityColumn.humanNames} of this ${entity.humanName}
 			 */
-			public Map<Locale, String> get${column.methodName}Map();
+			public Map<Locale, String> get${entityColumn.methodName}Map();
 		</#if>
 
-		<#if stringUtil.equals(column.type, "boolean")>
+		<#if stringUtil.equals(entityColumn.type, "boolean")>
 			/**
-			 * Returns <code>true</code> if this ${entity.humanName} is ${column.humanName}.
+			 * Returns <code>true</code> if this ${entity.humanName} is ${entityColumn.humanName}.
 			 *
-			 * @return <code>true</code> if this ${entity.humanName} is ${column.humanName}; <code>false</code> otherwise
+			 * @return <code>true</code> if this ${entity.humanName} is ${entityColumn.humanName}; <code>false</code> otherwise
 			 */
-			public boolean is${column.methodName}();
+			public boolean is${entityColumn.methodName}();
 		</#if>
 
 		/**
-		<#if stringUtil.equals(column.type, "boolean")>
-		 * Sets whether this ${entity.humanName} is ${column.humanName}.
+		<#if stringUtil.equals(entityColumn.type, "boolean")>
+		 * Sets whether this ${entity.humanName} is ${entityColumn.humanName}.
 		<#else>
-		 * Sets the ${column.humanName} of this ${entity.humanName}.
+		 * Sets the ${entityColumn.humanName} of this ${entity.humanName}.
 		</#if>
 		 *
-		 * @param ${column.name} the ${column.humanName} of this ${entity.humanName}
+		 * @param ${entityColumn.name} the ${entityColumn.humanName} of this ${entity.humanName}
 		 */
-		<#if overrideColumnNames?seq_index_of(column.name) != -1>
+		<#if overrideColumnNames?seq_index_of(entityColumn.name) != -1>
 			@Override
 		</#if>
-		public void set${column.methodName}(${column.genericizedType} ${column.name});
+		public void set${entityColumn.methodName}(${entityColumn.genericizedType} ${entityColumn.name});
 
-		<#if column.localized>
+		<#if entityColumn.localized>
 			/**
-			 * Sets the localized ${column.humanName} of this ${entity.humanName} in the language.
+			 * Sets the localized ${entityColumn.humanName} of this ${entity.humanName} in the language.
 			 *
-			 * @param ${column.name} the localized ${column.humanName} of this ${entity.humanName}
+			 * @param ${entityColumn.name} the localized ${entityColumn.humanName} of this ${entity.humanName}
 			 * @param locale the locale of the language
 			 */
-			public void set${column.methodName}(String ${column.name}, Locale locale);
+			public void set${entityColumn.methodName}(String ${entityColumn.name}, Locale locale);
 
 			/**
-			 * Sets the localized ${column.humanName} of this ${entity.humanName} in the language, and sets the default locale.
+			 * Sets the localized ${entityColumn.humanName} of this ${entity.humanName} in the language, and sets the default locale.
 			 *
-			 * @param ${column.name} the localized ${column.humanName} of this ${entity.humanName}
+			 * @param ${entityColumn.name} the localized ${entityColumn.humanName} of this ${entity.humanName}
 			 * @param locale the locale of the language
 			 * @param defaultLocale the default locale
 			 */
-			public void set${column.methodName}(String ${column.name}, Locale locale, Locale defaultLocale);
+			public void set${entityColumn.methodName}(String ${entityColumn.name}, Locale locale, Locale defaultLocale);
 
-			public void set${column.methodName}CurrentLanguageId(String languageId);
+			public void set${entityColumn.methodName}CurrentLanguageId(String languageId);
 
 			/**
-			 * Sets the localized ${column.humanNames} of this ${entity.humanName} from the map of locales and localized ${column.humanNames}.
+			 * Sets the localized ${entityColumn.humanNames} of this ${entity.humanName} from the map of locales and localized ${entityColumn.humanNames}.
 			 *
-			 * @param ${column.name}Map the locales and localized ${column.humanNames} of this ${entity.humanName}
+			 * @param ${entityColumn.name}Map the locales and localized ${entityColumn.humanNames} of this ${entity.humanName}
 			 */
-			public void set${column.methodName}Map(Map<Locale, String> ${column.name}Map);
+			public void set${entityColumn.methodName}Map(Map<Locale, String> ${entityColumn.name}Map);
 
 			/**
-			 * Sets the localized ${column.humanNames} of this ${entity.humanName} from the map of locales and localized ${column.humanNames}, and sets the default locale.
+			 * Sets the localized ${entityColumn.humanNames} of this ${entity.humanName} from the map of locales and localized ${entityColumn.humanNames}, and sets the default locale.
 			 *
-			 * @param ${column.name}Map the locales and localized ${column.humanNames} of this ${entity.humanName}
+			 * @param ${entityColumn.name}Map the locales and localized ${entityColumn.humanNames} of this ${entity.humanName}
 			 * @param defaultLocale the default locale
 			 */
-			public void set${column.methodName}Map(Map<Locale, String> ${column.name}Map, Locale defaultLocale);
+			public void set${entityColumn.methodName}Map(Map<Locale, String> ${entityColumn.name}Map, Locale defaultLocale);
 		</#if>
 
-		<#if stringUtil.equals(column.name, "resourcePrimKey") && entity.isResourcedModel()>
+		<#if stringUtil.equals(entityColumn.name, "resourcePrimKey") && entity.isResourcedModel()>
 			@Override
 			public boolean isResourceMain();
 		</#if>
 
-		<#if column.userUuid>
+		<#if entityColumn.userUuid>
 			/**
-			 * Returns the ${column.userUuidHumanName} of this ${entity.humanName}.
+			 * Returns the ${entityColumn.userUuidHumanName} of this ${entity.humanName}.
 			 *
-			 * @return the ${column.userUuidHumanName} of this ${entity.humanName}
+			 * @return the ${entityColumn.userUuidHumanName} of this ${entity.humanName}
 			 */
 
-			<#if overrideColumnNames?seq_index_of(column.userUuidName) != -1>
+			<#if overrideColumnNames?seq_index_of(entityColumn.userUuidName) != -1>
 				@Override
 			</#if>
 
-			public String get${column.methodUserUuidName}();
+			public String get${entityColumn.methodUserUuidName}();
 
 			/**
-			 * Sets the ${column.userUuidHumanName} of this ${entity.humanName}.
+			 * Sets the ${entityColumn.userUuidHumanName} of this ${entity.humanName}.
 			 *
-			 * @param ${column.userUuidName} the ${column.userUuidHumanName} of this ${entity.humanName}
+			 * @param ${entityColumn.userUuidName} the ${entityColumn.userUuidHumanName} of this ${entity.humanName}
 			 */
 
-			<#if overrideColumnNames?seq_index_of(column.userUuidName) != -1>
+			<#if overrideColumnNames?seq_index_of(entityColumn.userUuidName) != -1>
 				@Override
 			</#if>
 
-			public void set${column.methodUserUuidName}(String ${column.userUuidName});
+			public void set${entityColumn.methodUserUuidName}(String ${entityColumn.userUuidName});
 		</#if>
 	</#list>
 
 	<#if entity.localizedEntity??>
 		public String[] getAvailableLanguageIds();
 
-		<#list entity.localizedColumns as column>
-			public String get${column.methodName}();
+		<#list entity.localizedColumns as entityColumn>
+			public String get${entityColumn.methodName}();
 
-			public String get${column.methodName}(String languageId);
+			public String get${entityColumn.methodName}(String languageId);
 
-			public String get${column.methodName}(String languageId, boolean useDefault);
+			public String get${entityColumn.methodName}(String languageId, boolean useDefault);
 
-			public String get${column.methodName}MapAsXML();
+			public String get${entityColumn.methodName}MapAsXML();
 
-			public Map<String, String> getLanguageIdTo${column.methodName}Map();
+			public Map<String, String> getLanguageIdTo${entityColumn.methodName}Map();
 		</#list>
 	</#if>
 
@@ -504,7 +504,7 @@ public interface ${entity.name}Model extends
 	</#if>
 
 	<#if entity.isContainerModel()>
-		<#if !entity.hasColumn("containerModelId")>
+		<#if !entity.hasEntityColumn("containerModelId")>
 			/**
 			 * Returns the container model ID of this ${entity.humanName}.
 			 *
@@ -530,7 +530,7 @@ public interface ${entity.name}Model extends
 		@Override
 		public String getContainerModelName();
 
-		<#if !entity.hasColumn("parentContainerModelId")>
+		<#if !entity.hasEntityColumn("parentContainerModelId")>
 			/**
 			 * Returns the parent container model ID of this ${entity.humanName}.
 			 *

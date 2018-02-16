@@ -34,7 +34,7 @@ public interface ${entity.name} extends
 
 	<#assign overrideColumnNames = [] />
 
-	<#if entity.hasLocalService() && entity.hasColumns()>
+	<#if entity.hasLocalService() && entity.hasEntityColumns()>
 		<#if entity.isHierarchicalTree()>
 			, NestedSetsTreeNodeModel
 		</#if>
@@ -81,18 +81,18 @@ public interface ${entity.name} extends
 		};
 	</#if>
 
-	<#list entity.columnList as column>
-		<#if column.isAccessor() || column.isPrimary()>
-			public static final Accessor<${entity.name}, ${serviceBuilder.getPrimitiveObj(column.type)}> ${column.getAccessorName(apiPackagePath + ".model." + entity.name)} = new Accessor<${entity.name}, ${serviceBuilder.getPrimitiveObj(column.type)}>() {
+	<#list entity.entityColumns as entityColumn>
+		<#if entityColumn.isAccessor() || entityColumn.isPrimary()>
+			public static final Accessor<${entity.name}, ${serviceBuilder.getPrimitiveObj(entityColumn.type)}> ${entityColumn.getAccessorName(apiPackagePath + ".model." + entity.name)} = new Accessor<${entity.name}, ${serviceBuilder.getPrimitiveObj(entityColumn.type)}>() {
 
 				@Override
-				public ${serviceBuilder.getPrimitiveObj(column.type)} get(${entity.name} ${entity.varName}) {
-					return ${entity.varName}.get${column.methodName}(<#if column.isLocalized()>LocaleThreadLocal.getThemeDisplayLocale()</#if>);
+				public ${serviceBuilder.getPrimitiveObj(entityColumn.type)} get(${entity.name} ${entity.varName}) {
+					return ${entity.varName}.get${entityColumn.methodName}(<#if entityColumn.isLocalized()>LocaleThreadLocal.getThemeDisplayLocale()</#if>);
 				}
 
 				@Override
-				public Class<${serviceBuilder.getPrimitiveObj(column.type)}> getAttributeClass() {
-					return ${serviceBuilder.getPrimitiveObj(column.type)}.class;
+				public Class<${serviceBuilder.getPrimitiveObj(entityColumn.type)}> getAttributeClass() {
+					return ${serviceBuilder.getPrimitiveObj(entityColumn.type)}.class;
 				}
 
 				@Override

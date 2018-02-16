@@ -1,7 +1,7 @@
 <#list entities as entity>
 	<#assign modelName = apiPackagePath + ".model." + entity.name />
 
-	<#if entity.hasColumns()>
+	<#if entity.hasEntityColumns()>
 		<model name="${modelName}">
 			<#if modelHintsUtil.getDefaultHints(modelName)??>
 				<#assign defaultHints = modelHintsUtil.getDefaultHints(modelName) />
@@ -15,21 +15,21 @@
 				</#if>
 			</#if>
 
-			<#list entity.columnList as column>
-				<#if !column.isCollection()>
+			<#list entity.entityColumns as entityColumn>
+				<#if !entityColumn.isCollection()>
 					<field
 
-					<#if column.localized>
+					<#if entityColumn.localized>
 						localized="true"
 					</#if>
 
-					name="${column.name}" type="${column.type}"
+					name="${entityColumn.name}" type="${entityColumn.type}"
 
 					<#assign closeField = false />
 
-					<#if modelHintsUtil.getFieldsElement(modelName, column.name)??>
+					<#if modelHintsUtil.getFieldsElement(modelName, entityColumn.name)??>
 						<#assign
-							fieldsElement = modelHintsUtil.getFieldsElement(modelName, column.name)
+							fieldsElement = modelHintsUtil.getFieldsElement(modelName, entityColumn.name)
 
 							hintElements = fieldsElement.elements()
 						/>
@@ -39,20 +39,20 @@
 						</#if>
 					</#if>
 
-					<#if modelHintsUtil.getSanitizeTuple(modelName, column.name)??>
+					<#if modelHintsUtil.getSanitizeTuple(modelName, entityColumn.name)??>
 						<#assign closeField = true />
 					</#if>
 
-					<#if modelHintsUtil.getValidators(modelName, column.name)??>
+					<#if modelHintsUtil.getValidators(modelName, entityColumn.name)??>
 						<#assign closeField = true />
 					</#if>
 
 					<#if closeField>
 						>
 
-						<#if modelHintsUtil.getFieldsElement(modelName, column.name)??>
+						<#if modelHintsUtil.getFieldsElement(modelName, entityColumn.name)??>
 							<#assign
-								fieldsElement = modelHintsUtil.getFieldsElement(modelName, column.name)
+								fieldsElement = modelHintsUtil.getFieldsElement(modelName, entityColumn.name)
 
 								hintElements = fieldsElement.elements()
 							/>
@@ -66,9 +66,9 @@
 							</#list>
 						</#if>
 
-						<#if modelHintsUtil.getSanitizeTuple(modelName, column.name)??>
+						<#if modelHintsUtil.getSanitizeTuple(modelName, entityColumn.name)??>
 							<#assign
-								sanitizeTuple = modelHintsUtil.getSanitizeTuple(modelName, column.name)
+								sanitizeTuple = modelHintsUtil.getSanitizeTuple(modelName, entityColumn.name)
 
 								contentType = sanitizeTuple.getObject(1)
 								modes = sanitizeTuple.getObject(2)
@@ -77,8 +77,8 @@
 							<sanitize content-type="${contentType}" modes="${modes}" />
 						</#if>
 
-						<#if modelHintsUtil.getValidators(modelName, column.name)??>
-							<#assign validators = modelHintsUtil.getValidators(modelName, column.name) />
+						<#if modelHintsUtil.getValidators(modelName, entityColumn.name)??>
+							<#assign validators = modelHintsUtil.getValidators(modelName, entityColumn.name) />
 
 							<#list validators as curValidator>
 								<#assign

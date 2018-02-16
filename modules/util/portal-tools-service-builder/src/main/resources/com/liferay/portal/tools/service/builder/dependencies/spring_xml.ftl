@@ -11,9 +11,9 @@
 		<#include "spring_xml_session.ftl">
 	</#if>
 
-	<#if entity.hasColumns()>
+	<#if entity.hasEntityColumns()>
 		<#if !stringUtil.equals(entity.dataSource, "liferayDataSource") || !stringUtil.equals(entity.sessionFactory, "liferaySessionFactory")>
-			<bean class="${entity.getPersistenceClass()}" id="${apiPackagePath}.service.persistence.${entity.name}Persistence" parent="basePersistence">
+			<bean class="${entity.persistenceClassName}" id="${apiPackagePath}.service.persistence.${entity.name}Persistence" parent="basePersistence">
 				<#if !stringUtil.equals(entity.dataSource, "liferayDataSource")>
 					<property name="dataSource" ref="${entity.getDataSource()}" />
 				</#if>
@@ -23,13 +23,13 @@
 				</#if>
 			</bean>
 		<#else>
-			<bean class="${entity.getPersistenceClass()}" id="${apiPackagePath}.service.persistence.${entity.name}Persistence" parent="basePersistence" />
+			<bean class="${entity.persistenceClassName}" id="${apiPackagePath}.service.persistence.${entity.name}Persistence" parent="basePersistence" />
 		</#if>
 	</#if>
 
-	<#if entity.hasFinderClass()>
+	<#if entity.hasFinderClassName()>
 		<#if !stringUtil.equals(entity.dataSource, "liferayDataSource") || !stringUtil.equals(entity.sessionFactory, "liferaySessionFactory")>
-			<bean class="${entity.finderClass}" id="${apiPackagePath}.service.persistence.${entity.name}Finder" parent="basePersistence">
+			<bean class="${entity.finderClassName}" id="${apiPackagePath}.service.persistence.${entity.name}Finder" parent="basePersistence">
 				<#if !stringUtil.equals(entity.dataSource, "liferayDataSource")>
 					<property name="dataSource" ref="${entity.getDataSource()}" />
 				</#if>
@@ -39,7 +39,7 @@
 				</#if>
 			</bean>
 		<#else>
-			<bean class="${entity.finderClass}" id="${apiPackagePath}.service.persistence.${entity.name}Finder" parent="basePersistence" />
+			<bean class="${entity.finderClassName}" id="${apiPackagePath}.service.persistence.${entity.name}Finder" parent="basePersistence" />
 		</#if>
 	</#if>
 </#list>

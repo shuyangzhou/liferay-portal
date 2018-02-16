@@ -1,5 +1,5 @@
-<#list finderColsList as finderCol>
-	<#if sqlQuery?? && sqlQuery && (finderCol.name != finderCol.DBName)>
+<#list entityColumns as entityColumn>
+	<#if sqlQuery?? && sqlQuery && (entityColumn.name != entityColumn.DBName)>
 		<#assign finderFieldSuffix = finderFieldSQLSuffix />
 	<#else>
 		<#assign finderFieldSuffix = "" />

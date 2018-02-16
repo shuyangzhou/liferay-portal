@@ -38,8 +38,8 @@ public class ${entity.name}Soap implements Serializable {
 	public static ${entity.name}Soap toSoapModel(${entity.name} model) {
 		${entity.name}Soap soapModel = new ${entity.name}Soap();
 
-		<#list entity.regularColList as column>
-			soapModel.set${column.methodName}(model.get${column.methodName}());
+		<#list entity.regularEntityColumns as entityColumn>
+			soapModel.set${entityColumn.methodName}(model.get${entityColumn.methodName}());
 		</#list>
 
 		return soapModel;
@@ -88,10 +88,10 @@ public class ${entity.name}Soap implements Serializable {
 	public ${entity.PKClassName} getPrimaryKey() {
 		<#if entity.hasCompoundPK()>
 			return new ${entity.PKClassName}(
-				<#list entity.PKList as column>
-					_${column.name}
+				<#list entity.PKList as entityColumn>
+					_${entityColumn.name}
 
-					<#if column_has_next>
+					<#if entityColumn_has_next>
 						,
 					</#if>
 				</#list>
@@ -103,32 +103,32 @@ public class ${entity.name}Soap implements Serializable {
 
 	public void setPrimaryKey(${entity.PKClassName} pk) {
 		<#if entity.hasCompoundPK()>
-			<#list entity.PKList as column>
-				set${column.methodName}(pk.${column.name});
+			<#list entity.PKList as entityColumn>
+				set${entityColumn.methodName}(pk.${entityColumn.name});
 			</#list>
 		<#else>
 			set${entity.PKList[0].methodName}(pk);
 		</#if>
 	}
 
-	<#list entity.regularColList as column>
-		public ${column.genericizedType} get${column.methodName}() {
-			return _${column.name};
+	<#list entity.regularEntityColumns as entityColumn>
+		public ${entityColumn.genericizedType} get${entityColumn.methodName}() {
+			return _${entityColumn.name};
 		}
 
-		<#if column.type== "boolean">
-			public ${column.type} is${column.methodName}() {
-				return _${column.name};
+		<#if entityColumn.type== "boolean">
+			public ${entityColumn.type} is${entityColumn.methodName}() {
+				return _${entityColumn.name};
 			}
 		</#if>
 
-		public void set${column.methodName}(${column.genericizedType} ${column.name}) {
-			_${column.name} = ${column.name};
+		public void set${entityColumn.methodName}(${entityColumn.genericizedType} ${entityColumn.name}) {
+			_${entityColumn.name} = ${entityColumn.name};
 		}
 	</#list>
 
-	<#list entity.regularColList as column>
-		private ${column.genericizedType} _${column.name};
+	<#list entity.regularEntityColumns as entityColumn>
+		private ${entityColumn.genericizedType} _${entityColumn.name};
 	</#list>
 
 }

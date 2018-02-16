@@ -32,7 +32,7 @@ public class ${entity.name}FinderBaseImpl
 	public ${entity.name}FinderBaseImpl() {
 		setModelClass(${entity.name}.class);
 
-		<#if entity.badNamedColumnsList?size != 0>
+		<#if entity.badEntityColumns?size != 0>
 			try {
 				Field field = BasePersistenceImpl.class.getDeclaredField("_dbColumnNames");
 
@@ -40,8 +40,8 @@ public class ${entity.name}FinderBaseImpl
 
 				Map<String, String> dbColumnNames = new HashMap<String, String>();
 
-				<#list entity.badNamedColumnsList as column>
-					dbColumnNames.put("${column.name}", "${column.DBName}");
+				<#list entity.badEntityColumns as badEntityColumn>
+					dbColumnNames.put("${badEntityColumn.name}", "${badEntityColumn.DBName}");
 				</#list>
 
 				field.set(this, dbColumnNames);
@@ -54,14 +54,14 @@ public class ${entity.name}FinderBaseImpl
 		</#if>
 	}
 
-	<#if entity.badNamedColumnsList?size != 0>
+	<#if entity.badEntityColumns?size != 0>
 		@Override
 		public Set<String> getBadColumnNames() {
 			return get${entity.name}Persistence().getBadColumnNames();
 		}
 	</#if>
 
-	<#if entity.hasColumns() && !stringUtil.equals(entity.name, "Counter")>
+	<#if entity.hasEntityColumns() && !stringUtil.equals(entity.name, "Counter")>
 		/**
 		 * Returns the ${entity.humanName} persistence.
 		 *
@@ -81,12 +81,12 @@ public class ${entity.name}FinderBaseImpl
 		}
 	</#if>
 
-	<#if entity.hasColumns() && !stringUtil.equals(entity.name, "Counter")>
+	<#if entity.hasEntityColumns() && !stringUtil.equals(entity.name, "Counter")>
 		@BeanReference(type = ${entity.name}Persistence.class)
 		protected ${entity.name}Persistence ${entity.varName}Persistence;
 	</#if>
 
-	<#if entity.badNamedColumnsList?size != 0>
+	<#if entity.badEntityColumns?size != 0>
 		private static final Log _log = LogFactoryUtil.getLog(${entity.name}FinderBaseImpl.class);
 	</#if>
 
