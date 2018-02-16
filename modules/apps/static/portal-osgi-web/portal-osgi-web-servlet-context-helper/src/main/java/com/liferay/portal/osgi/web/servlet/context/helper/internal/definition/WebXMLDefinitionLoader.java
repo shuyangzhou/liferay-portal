@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.osgi.web.servlet.JSPServletFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.definition.FilterDefinition;
 import com.liferay.portal.osgi.web.servlet.context.helper.definition.ListenerDefinition;
 import com.liferay.portal.osgi.web.servlet.context.helper.definition.ServletDefinition;
@@ -62,6 +63,8 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.felix.utils.log.Logger;
 
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.framework.wiring.BundleWiring;
 
 import org.xml.sax.Attributes;
@@ -236,7 +239,23 @@ public class WebXMLDefinitionLoader extends DefaultHandler {
 
 			_servletDefinition.setJSPFile(jspFile);
 
-			_servletDefinition.setServlet(new JspServletWrapper(jspFile));
+			BundleContext bundleContext = _bundle.getBundleContext();
+
+			ServiceReference<JSPServletFactory> serviceReference =
+				bundleContext.getServiceReference(JSPServletFactory.class);
+
+			JSPServletFactory jspServletFactory = null;
+
+			try {
+				jspServletFactory = bundleContext.getService(serviceReference);
+
+				_servletDefinition.setServlet(
+					new JspServletWrapper(
+						jspServletFactory.createJSPServlet(), jspFile));
+			}
+			finally {
+				bundleContext.ungetService(serviceReference);
+			}
 		}
 		else if (qName.equals("listener")) {
 			if (_listenerDefinition.getEventListener() != null) {
