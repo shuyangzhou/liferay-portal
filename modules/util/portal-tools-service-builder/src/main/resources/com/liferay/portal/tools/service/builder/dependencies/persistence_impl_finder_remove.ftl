@@ -1,4 +1,4 @@
-<#assign finderColsList = finder.getColumns() />
+<#assign entityColumns = finder.entityColumns />
 
 <#-- Case 3: finder.isCollection() && !finder.isUnique() -->
 
@@ -6,22 +6,22 @@
 	/**
 	 * Removes all the ${entity.humanNames} where ${finder.getHumanConditions(false)} from the database.
 	 *
-	<#list finderColsList as finderCol>
-	 * @param ${finderCol.name} the ${finderCol.humanName}
+	<#list entityColumns as entityColumn>
+	 * @param ${entityColumn.name} the ${entityColumn.humanName}
 	</#list>
 	 */
 	@Override
 	public void removeBy${finder.name}(
 
-	<#list finderColsList as finderCol>
-		${finderCol.type} ${finderCol.name}<#if finderCol_has_next>,</#if>
+	<#list entityColumns as entityColumn>
+		${entityColumn.type} ${entityColumn.name}<#if entityColumn_has_next>,</#if>
 	</#list>
 
 	) {
 		for (${entity.name} ${entity.varName} : findBy${finder.name}(
 
-		<#list finderColsList as finderCol>
-			${finderCol.name},
+		<#list entityColumns as entityColumn>
+			${entityColumn.name},
 		</#list>
 
 		QueryUtil.ALL_POS, QueryUtil.ALL_POS, null
@@ -36,18 +36,18 @@
 	/**
 	 * Removes the ${entity.humanName} where ${finder.getHumanConditions(false)} from the database.
 	 *
-	<#list finderColsList as finderCol>
-	 * @param ${finderCol.name} the ${finderCol.humanName}
+	<#list entityColumns as entityColumn>
+	 * @param ${entityColumn.name} the ${entityColumn.humanName}
 	</#list>
 	 * @return the ${entity.humanName} that was removed
 	 */
 	@Override
 	public ${entity.name} removeBy${finder.name}(
 
-	<#list finderColsList as finderCol>
-		${finderCol.type} ${finderCol.name}
+	<#list entityColumns as entityColumn>
+		${entityColumn.type} ${entityColumn.name}
 
-		<#if finderCol_has_next>
+		<#if entityColumn_has_next>
 			,
 		</#if>
 	</#list>
@@ -55,10 +55,10 @@
 	) throws ${noSuchEntity}Exception {
 		${entity.name} ${entity.varName} = findBy${finder.name}(
 
-		<#list finderColsList as finderCol>
-			${finderCol.name}
+		<#list entityColumns as entityColumn>
+			${entityColumn.name}
 
-			<#if finderCol_has_next>
+			<#if entityColumn_has_next>
 				,
 			</#if>
 		</#list>

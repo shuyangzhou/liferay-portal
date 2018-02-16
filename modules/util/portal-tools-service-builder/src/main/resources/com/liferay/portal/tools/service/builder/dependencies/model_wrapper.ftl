@@ -55,8 +55,8 @@ public class ${entity.name}Wrapper implements ${entity.name}, ModelWrapper<${ent
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		<#list entity.regularColList as column>
-			attributes.put("${column.name}", get${column.methodName}());
+		<#list entity.regularEntityColumns as entityColumn>
+			attributes.put("${entityColumn.name}", get${entityColumn.methodName}());
 		</#list>
 
 		return attributes;
@@ -64,25 +64,25 @@ public class ${entity.name}Wrapper implements ${entity.name}, ModelWrapper<${ent
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		<#list entity.regularColList as column>
-			<#if column.isPrimitiveType()>
-				${serviceBuilder.getPrimitiveObj(column.type)}
+		<#list entity.regularEntityColumns as entityColumn>
+			<#if entityColumn.isPrimitiveType()>
+				${serviceBuilder.getPrimitiveObj(entityColumn.type)}
 			<#else>
-				${column.genericizedType}
+				${entityColumn.genericizedType}
 			</#if>
 
-			${column.name} =
+			${entityColumn.name} =
 
-			<#if column.isPrimitiveType()>
-				(${serviceBuilder.getPrimitiveObj(column.type)})
+			<#if entityColumn.isPrimitiveType()>
+				(${serviceBuilder.getPrimitiveObj(entityColumn.type)})
 			<#else>
-				(${column.genericizedType})
+				(${entityColumn.genericizedType})
 			</#if>
 
-			attributes.get("${column.name}");
+			attributes.get("${entityColumn.name}");
 
-			if (${column.name} != null) {
-				set${column.methodName}(${column.name});
+			if (${entityColumn.name} != null) {
+				set${entityColumn.methodName}(${entityColumn.name});
 			}
 		</#list>
 	}

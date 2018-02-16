@@ -80,6 +80,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.chemistry.opencmis.client.api.CmisObject;
@@ -1548,7 +1549,7 @@ public class CMISRepository extends BaseCmisRepository {
 					"cmis:isPrivateWorkingCopy",
 					"cmis:isVersionSeriesCheckedOut",
 					"cmis:lastModificationDate", "cmis:name",
-					"cmis:versionSeriesId"));
+					"cmis:versionLabel", "cmis:versionSeriesId"));
 
 			ItemIterable<CmisObject> cmisObjects = cmisParentFolder.getChildren(
 				operationContext);
@@ -1576,7 +1577,12 @@ public class CMISRepository extends BaseCmisRepository {
 
 					cmisFileEntry.setParentFolder(parentFolder);
 
-					if (document.isPrivateWorkingCopy()) {
+					Boolean privateWorkingCopy =
+						document.isPrivateWorkingCopy();
+
+					if (((privateWorkingCopy != null) && privateWorkingCopy) ||
+						Objects.equals(document.getVersionLabel(), "pwc")) {
+
 						foldersAndFileEntries.remove(cmisFileEntry);
 						fileEntries.remove(cmisFileEntry);
 					}

@@ -1,4 +1,4 @@
-StringBundler query = new StringBundler(${finderColsList?size + 1});
+StringBundler query = new StringBundler(${entityColumns?size + 1});
 
 query.append(_SQL_COUNT_${entity.alias?upper_case}_WHERE);
 

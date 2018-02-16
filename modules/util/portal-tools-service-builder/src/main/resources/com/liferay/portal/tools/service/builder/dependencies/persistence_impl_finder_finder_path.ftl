@@ -1,4 +1,4 @@
-<#assign finderColsList = finder.getColumns() />
+<#assign entityColumns = finder.entityColumns />
 
 <#if finder.isCollection()>
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_${finder.name?upper_case} = new FinderPath(
@@ -8,8 +8,8 @@
 		FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
 		"findBy${finder.name}",
 		new String[] {
-			<#list finderColsList as finderCol>
-				${serviceBuilder.getPrimitiveObj("${finderCol.type}")}.class.getName(),
+			<#list entityColumns as entityColumn>
+				${serviceBuilder.getPrimitiveObj("${entityColumn.type}")}.class.getName(),
 			</#list>
 
 			Integer.class.getName(), Integer.class.getName(), OrderByComparator.class.getName()
@@ -23,10 +23,10 @@
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findBy${finder.name}",
 			new String[] {
-				<#list finderColsList as finderCol>
-					${serviceBuilder.getPrimitiveObj("${finderCol.type}")}.class.getName()
+				<#list entityColumns as entityColumn>
+					${serviceBuilder.getPrimitiveObj("${entityColumn.type}")}.class.getName()
 
-					<#if finderCol_has_next>
+					<#if entityColumn_has_next>
 						,
 					</#if>
 				</#list>
@@ -35,22 +35,20 @@
 			<#if columnBitmaskEnabled>
 				,
 
-				<#list finderColsList as finderCol>
-					${entity.name}ModelImpl.${finderCol.name?upper_case}_COLUMN_BITMASK
+				<#list entityColumns as entityColumn>
+					${entity.name}ModelImpl.${entityColumn.name?upper_case}_COLUMN_BITMASK
 
-					<#if finderCol_has_next>
+					<#if entityColumn_has_next>
 						|
 					</#if>
 				</#list>
 
-				<#if entity.getOrder()??>
-					<#assign orderList = entity.getOrder().getColumns() />
-
-					<#list orderList as order>
+				<#if entity.entityOrder??>
+					<#list entity.entityOrder.entityColumns as entityColumn>
 						<#assign pkList = entity.getPKList() />
 
-						<#if !finderColsList?seq_contains(order) && !pkList?seq_contains(order)>
-							| ${entity.name}ModelImpl.${order.name?upper_case}_COLUMN_BITMASK
+						<#if !entityColumns?seq_contains(entityColumn) && !pkList?seq_contains(entityColumn)>
+							| ${entity.name}ModelImpl.${entityColumn.name?upper_case}_COLUMN_BITMASK
 						</#if>
 					</#list>
 				</#if>
@@ -68,10 +66,10 @@
 		FINDER_CLASS_NAME_ENTITY,
 		"fetchBy${finder.name}",
 		new String[] {
-			<#list finderColsList as finderCol>
-				${serviceBuilder.getPrimitiveObj("${finderCol.type}")}.class.getName()
+			<#list entityColumns as entityColumn>
+				${serviceBuilder.getPrimitiveObj("${entityColumn.type}")}.class.getName()
 
-				<#if finderCol_has_next>
+				<#if entityColumn_has_next>
 					,
 				</#if>
 			</#list>
@@ -80,10 +78,10 @@
 		<#if columnBitmaskEnabled>
 			,
 
-			<#list finderColsList as finderCol>
-				${entity.name}ModelImpl.${finderCol.name?upper_case}_COLUMN_BITMASK
+			<#list entityColumns as entityColumn>
+				${entity.name}ModelImpl.${entityColumn.name?upper_case}_COLUMN_BITMASK
 
-				<#if finderCol_has_next>
+				<#if entityColumn_has_next>
 					|
 				</#if>
 			</#list>
@@ -100,10 +98,10 @@
 		FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 		"countBy${finder.name}",
 		new String[] {
-			<#list finderColsList as finderCol>
-				${serviceBuilder.getPrimitiveObj("${finderCol.type}")}.class.getName()
+			<#list entityColumns as entityColumn>
+				${serviceBuilder.getPrimitiveObj("${entityColumn.type}")}.class.getName()
 
-				<#if finderCol_has_next>
+				<#if entityColumn_has_next>
 					,
 				</#if>
 			</#list>
@@ -118,10 +116,10 @@
 		FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
 		"countBy${finder.name}",
 		new String[] {
-			<#list finderColsList as finderCol>
-				${serviceBuilder.getPrimitiveObj("${finderCol.type}")}.class.getName()
+			<#list entityColumns as entityColumn>
+				${serviceBuilder.getPrimitiveObj("${entityColumn.type}")}.class.getName()
 
-				<#if finderCol_has_next>
+				<#if entityColumn_has_next>
 					,
 				</#if>
 			</#list>

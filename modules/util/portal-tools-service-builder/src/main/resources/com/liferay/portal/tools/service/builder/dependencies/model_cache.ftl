@@ -102,19 +102,19 @@ public class ${entity.name}CacheModel implements CacheModel<${entity.name}>, Ext
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(${(entity.regularColList?size - entity.blobList?size) * 2 + 1});
+		StringBundler sb = new StringBundler(${(entity.regularEntityColumns?size - entity.blobEntityColumns?size) * 2 + 1});
 
-		<#list entity.regularColList as column>
-			<#if !stringUtil.equals(column.type, "Blob")>
-				<#if column_index == 0>
-					sb.append("{${column.name}=");
-					sb.append(${column.name});
-				<#elseif column_has_next>
-					sb.append(", ${column.name}=");
-					sb.append(${column.name});
+		<#list entity.regularEntityColumns as entityColumn>
+			<#if !stringUtil.equals(entityColumn.type, "Blob")>
+				<#if entityColumn_index == 0>
+					sb.append("{${entityColumn.name}=");
+					sb.append(${entityColumn.name});
+				<#elseif entityColumn_has_next>
+					sb.append(", ${entityColumn.name}=");
+					sb.append(${entityColumn.name});
 				<#else>
-					sb.append(", ${column.name}=");
-					sb.append(${column.name});
+					sb.append(", ${entityColumn.name}=");
+					sb.append(${entityColumn.name});
 					sb.append("}");
 				</#if>
 			</#if>
@@ -127,25 +127,25 @@ public class ${entity.name}CacheModel implements CacheModel<${entity.name}>, Ext
 	public ${entity.name} toEntityModel() {
 		${entity.name}Impl ${entity.varName}Impl = new ${entity.name}Impl();
 
-		<#list entity.regularColList as column>
-			<#if !stringUtil.equals(column.type, "Blob")>
-				<#if stringUtil.equals(column.type, "Date")>
-					if (${column.name} == Long.MIN_VALUE) {
-						${entity.varName}Impl.set${column.methodName}(null);
+		<#list entity.regularEntityColumns as entityColumn>
+			<#if !stringUtil.equals(entityColumn.type, "Blob")>
+				<#if stringUtil.equals(entityColumn.type, "Date")>
+					if (${entityColumn.name} == Long.MIN_VALUE) {
+						${entity.varName}Impl.set${entityColumn.methodName}(null);
 					}
 					else {
-						${entity.varName}Impl.set${column.methodName}(new Date(${column.name}));
+						${entity.varName}Impl.set${entityColumn.methodName}(new Date(${entityColumn.name}));
 					}
 				<#else>
-					<#if stringUtil.equals(column.type, "String")>
-						if (${column.name} == null) {
-							${entity.varName}Impl.set${column.methodName}("");
+					<#if stringUtil.equals(entityColumn.type, "String")>
+						if (${entityColumn.name} == null) {
+							${entity.varName}Impl.set${entityColumn.methodName}("");
 						}
 						else {
-							${entity.varName}Impl.set${column.methodName}(${column.name});
+							${entity.varName}Impl.set${entityColumn.methodName}(${entityColumn.name});
 						}
 					<#else>
-						${entity.varName}Impl.set${column.methodName}(${column.name});
+						${entity.varName}Impl.set${entityColumn.methodName}(${entityColumn.name});
 					</#if>
 				</#if>
 			</#if>
@@ -166,11 +166,11 @@ public class ${entity.name}CacheModel implements CacheModel<${entity.name}>, Ext
 	public void readExternal(ObjectInput objectInput) throws
 		<#assign throwsClassNotFoundException = false />
 
-		<#list entity.regularColList as column>
-			<#if column.primitiveType>
-			<#elseif stringUtil.equals(column.type, "Date")>
-			<#elseif stringUtil.equals(column.type, "String")>
-			<#elseif !stringUtil.equals(column.type, "Blob")>
+		<#list entity.regularEntityColumns as entityColumn>
+			<#if entityColumn.primitiveType>
+			<#elseif stringUtil.equals(entityColumn.type, "Date")>
+			<#elseif stringUtil.equals(entityColumn.type, "String")>
+			<#elseif !stringUtil.equals(entityColumn.type, "Blob")>
 				<#assign throwsClassNotFoundException = true />
 			</#if>
 		</#list>
@@ -185,17 +185,17 @@ public class ${entity.name}CacheModel implements CacheModel<${entity.name}>, Ext
 
 		IOException {
 
-		<#list entity.regularColList as column>
-			<#if column.primitiveType>
-				<#assign columnPrimitiveType = serviceBuilder.getPrimitiveType(column.genericizedType) />
+		<#list entity.regularEntityColumns as entityColumn>
+			<#if entityColumn.primitiveType>
+				<#assign entityColumnPrimitiveType = serviceBuilder.getPrimitiveType(entityColumn.genericizedType) />
 
-				${column.name} = objectInput.read${textFormatter.format(columnPrimitiveType, 6)}();
-			<#elseif stringUtil.equals(column.type, "Date")>
-				${column.name} = objectInput.readLong();
-			<#elseif stringUtil.equals(column.type, "String")>
-				${column.name} = objectInput.readUTF();
-			<#elseif !stringUtil.equals(column.type, "Blob")>
-				${column.name} = (${column.genericizedType})objectInput.readObject();
+				${entityColumn.name} = objectInput.read${textFormatter.format(entityColumnPrimitiveType, 6)}();
+			<#elseif stringUtil.equals(entityColumn.type, "Date")>
+				${entityColumn.name} = objectInput.readLong();
+			<#elseif stringUtil.equals(entityColumn.type, "String")>
+				${entityColumn.name} = objectInput.readUTF();
+			<#elseif !stringUtil.equals(entityColumn.type, "Blob")>
+				${entityColumn.name} = (${entityColumn.genericizedType})objectInput.readObject();
 			</#if>
 		</#list>
 
@@ -206,10 +206,10 @@ public class ${entity.name}CacheModel implements CacheModel<${entity.name}>, Ext
 		<#if entity.hasCompoundPK()>
 			${entity.PKVarName} = new ${entity.PKClassName}(
 
-				<#list entity.PKList as column>
-					${column.name}
+				<#list entity.PKList as entityColumn>
+					${entityColumn.name}
 
-					<#if column_has_next>
+					<#if entityColumn_has_next>
 						,
 					</#if>
 				</#list>
@@ -220,22 +220,22 @@ public class ${entity.name}CacheModel implements CacheModel<${entity.name}>, Ext
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
-		<#list entity.regularColList as column>
-			<#if column.primitiveType>
-				<#assign columnPrimitiveType = serviceBuilder.getPrimitiveType(column.genericizedType) />
+		<#list entity.regularEntityColumns as entityColumn>
+			<#if entityColumn.primitiveType>
+				<#assign entityColumnPrimitiveType = serviceBuilder.getPrimitiveType(entityColumn.genericizedType) />
 
-				objectOutput.write${textFormatter.format(columnPrimitiveType, 6)}(${column.name});
-			<#elseif stringUtil.equals(column.type, "Date")>
-				objectOutput.writeLong(${column.name});
-			<#elseif stringUtil.equals(column.type, "String")>
-				if (${column.name} == null) {
+				objectOutput.write${textFormatter.format(entityColumnPrimitiveType, 6)}(${entityColumn.name});
+			<#elseif stringUtil.equals(entityColumn.type, "Date")>
+				objectOutput.writeLong(${entityColumn.name});
+			<#elseif stringUtil.equals(entityColumn.type, "String")>
+				if (${entityColumn.name} == null) {
 					objectOutput.writeUTF("");
 				}
 				else {
-					objectOutput.writeUTF(${column.name});
+					objectOutput.writeUTF(${entityColumn.name});
 				}
-			<#elseif !stringUtil.equals(column.type, "Blob")>
-				objectOutput.writeObject(${column.name});
+			<#elseif !stringUtil.equals(entityColumn.type, "Blob")>
+				objectOutput.writeObject(${entityColumn.name});
 			</#if>
 		</#list>
 
@@ -244,14 +244,14 @@ public class ${entity.name}CacheModel implements CacheModel<${entity.name}>, Ext
 		</#list>
 	}
 
-	<#list entity.regularColList as column>
-		<#if !stringUtil.equals(column.type, "Blob")>
-			<#if stringUtil.equals(column.type, "Date")>
-				public long ${column.name};
+	<#list entity.regularEntityColumns as entityColumn>
+		<#if !stringUtil.equals(entityColumn.type, "Blob")>
+			<#if stringUtil.equals(entityColumn.type, "Date")>
+				public long ${entityColumn.name};
 			<#else>
-				<#assign columnPrimitiveType = serviceBuilder.getPrimitiveType(column.genericizedType) />
+				<#assign entityColumnPrimitiveType = serviceBuilder.getPrimitiveType(entityColumn.genericizedType) />
 
-				public ${columnPrimitiveType} ${column.name};
+				public ${entityColumnPrimitiveType} ${entityColumn.name};
 			</#if>
 		</#if>
 	</#list>

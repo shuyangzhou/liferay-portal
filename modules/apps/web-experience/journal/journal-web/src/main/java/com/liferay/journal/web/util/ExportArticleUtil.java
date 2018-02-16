@@ -18,6 +18,7 @@ import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.service.JournalArticleLocalService;
+import com.liferay.journal.util.ExportArticleHelper;
 import com.liferay.journal.util.JournalContent;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
@@ -56,8 +57,8 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Eudaldo Alonso
  */
-@Component(service = ExportArticleUtil.class)
-public class ExportArticleUtil {
+@Component(service = ExportArticleHelper.class)
+public class ExportArticleUtil implements ExportArticleHelper {
 
 	/**
 	 * @deprecated As of 1.5.0, replaced by {@link #sendFile(String,
@@ -85,6 +86,7 @@ public class ExportArticleUtil {
 		sendFile(targetExtension, portletRequest, portletResponse);
 	}
 
+	@Override
 	public void sendFile(
 			String targetExtension, PortletRequest portletRequest,
 			PortletResponse portletResponse)

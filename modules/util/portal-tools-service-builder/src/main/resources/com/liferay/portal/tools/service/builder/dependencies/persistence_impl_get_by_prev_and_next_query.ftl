@@ -1,10 +1,10 @@
 StringBundler query = null;
 
 if (orderByComparator != null) {
-	query = new StringBundler(${finderColsList?size + 3} + (orderByComparator.getOrderByConditionFields().length * 3) + (orderByComparator.getOrderByFields().length * 3));
+	query = new StringBundler(${entityColumns?size + 3} + (orderByComparator.getOrderByConditionFields().length * 3) + (orderByComparator.getOrderByFields().length * 3));
 }
 else {
-	query = new StringBundler(${finderColsList?size + 2});
+	query = new StringBundler(${entityColumns?size + 2});
 }
 
 query.append(_SQL_SELECT_${entity.alias?upper_case}_WHERE);

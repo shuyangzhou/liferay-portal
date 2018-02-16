@@ -21,19 +21,19 @@ public class ${entity.name}JSONSerializer {
 	public static JSONObject toJSONObject(${entity.name} model) {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		<#list entity.regularColList as column>
-			<#if stringUtil.equals(column.type, "Date")>
-				Date ${column.name} = model.get${column.methodName}();
+		<#list entity.regularEntityColumns as entityColumn>
+			<#if stringUtil.equals(entityColumn.type, "Date")>
+				Date ${entityColumn.name} = model.get${entityColumn.methodName}();
 
-				String ${column.name}JSON = "";
+				String ${entityColumn.name}JSON = "";
 
-				if (${column.name} != null) {
-					${column.name}JSON = String.valueOf(${column.name}.getTime());
+				if (${entityColumn.name} != null) {
+					${entityColumn.name}JSON = String.valueOf(${entityColumn.name}.getTime());
 				}
 
-				jsonObject.put("${column.name}", ${column.name}JSON);
+				jsonObject.put("${entityColumn.name}", ${entityColumn.name}JSON);
 			<#else>
-				jsonObject.put("${column.name}", model.get${column.methodName}());
+				jsonObject.put("${entityColumn.name}", model.get${entityColumn.methodName}());
 			</#if>
 		</#list>
 
