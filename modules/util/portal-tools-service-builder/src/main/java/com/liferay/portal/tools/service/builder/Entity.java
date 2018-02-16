@@ -54,31 +54,31 @@ public class Entity implements Comparable<Entity> {
 
 		};
 
-	public static EntityColumn getColumn(
-		String name, List<EntityColumn> columnList) {
+	public static EntityColumn getEntityColumn(
+		String name, List<EntityColumn> entityColumns) {
 
-		for (EntityColumn entityColumn : columnList) {
+		for (EntityColumn entityColumn : entityColumns) {
 			if (name.equals(entityColumn.getName())) {
 				return entityColumn;
 			}
 		}
 
-		throw new RuntimeException("Column " + name + " not found");
+		throw new RuntimeException("Entity column " + name + " not found");
 	}
 
-	public static boolean hasColumn(
-		String name, List<EntityColumn> columnList) {
+	public static boolean hasEntityColumn(
+		String name, List<EntityColumn> entityColumns) {
 
-		return hasColumn(name, null, columnList);
+		return hasEntityColumn(name, null, entityColumns);
 	}
 
-	public static boolean hasColumn(
-		String name, String type, List<EntityColumn> columnList) {
+	public static boolean hasEntityColumn(
+		String name, String type, List<EntityColumn> entityColumns) {
 
-		int index = columnList.indexOf(new EntityColumn(name));
+		int index = entityColumns.indexOf(new EntityColumn(name));
 
 		if (index != -1) {
-			EntityColumn entityColumn = columnList.get(index);
+			EntityColumn entityColumn = entityColumns.get(index);
 
 			if ((type == null) || type.equals(entityColumn.getType())) {
 				return true;
@@ -100,16 +100,17 @@ public class Entity implements Comparable<Entity> {
 		String packagePath, String apiPackagePath, String portletName,
 		String portletShortName, String name, String humanName, String table,
 		String alias, boolean uuid, boolean uuidAccessor, boolean localService,
-		boolean remoteService, String persistenceClass, String finderClass,
+		boolean remoteService, String persistenceClass, String finderClassName,
 		String dataSource, String sessionFactory, String txManager,
 		boolean cacheEnabled, boolean dynamicUpdateEnabled, boolean jsonEnabled,
 		boolean mvccEnabled, boolean trashEnabled, boolean deprecated,
-		List<EntityColumn> pkList, List<EntityColumn> regularColList,
-		List<EntityColumn> blobList, List<EntityColumn> collectionList,
-		List<EntityColumn> columnList, EntityOrder order,
-		List<EntityFinder> finderList, List<Entity> referenceList,
-		List<String> unresolvedReferenceList, List<String> txRequiredList,
-		boolean resourceActionModel) {
+		List<EntityColumn> pkList, List<EntityColumn> regularEntityColumns,
+		List<EntityColumn> blobEntityColumns,
+		List<EntityColumn> collectionEntityColumns,
+		List<EntityColumn> entityColumns, EntityOrder entityOrder,
+		List<EntityFinder> entityFinders, List<Entity> referenceEntities,
+		List<String> unresolvedReferenceEntityNames,
+		List<String> txRequiredMethodNames, boolean resourceActionModel) {
 
 		_packagePath = packagePath;
 		_apiPackagePath = apiPackagePath;
@@ -124,8 +125,8 @@ public class Entity implements Comparable<Entity> {
 		_uuidAccessor = uuidAccessor;
 		_localService = localService;
 		_remoteService = remoteService;
-		_persistenceClass = persistenceClass;
-		_finderClass = finderClass;
+		_persistenceClassName = persistenceClass;
+		_finderClassName = finderClassName;
 		_dataSource = GetterUtil.getString(dataSource, _DATA_SOURCE_DEFAULT);
 		_sessionFactory = GetterUtil.getString(
 			sessionFactory, _SESSION_FACTORY_DEFAULT);
@@ -135,35 +136,35 @@ public class Entity implements Comparable<Entity> {
 		_mvccEnabled = mvccEnabled;
 		_trashEnabled = trashEnabled;
 		_deprecated = deprecated;
-		_pkList = pkList;
-		_regularColList = regularColList;
-		_blobList = blobList;
-		_collectionList = collectionList;
-		_columnList = columnList;
-		_order = order;
-		_finderList = finderList;
-		_referenceList = referenceList;
-		_unresolvedReferenceList = unresolvedReferenceList;
-		_txRequiredList = txRequiredList;
+		_pkEntityColumns = pkList;
+		_regularEntityColumns = regularEntityColumns;
+		_blobEntityColumns = blobEntityColumns;
+		_collectionEntityColumns = collectionEntityColumns;
+		_entityColumns = entityColumns;
+		_entityOrder = entityOrder;
+		_entityFinders = entityFinders;
+		_referenceEntities = referenceEntities;
+		_unresolvedReferenceEntityNames = unresolvedReferenceEntityNames;
+		_txRequiredMethodNames = txRequiredMethodNames;
 		_resourceActionModel = resourceActionModel;
 
-		if (_finderList != null) {
-			Set<EntityColumn> finderColumns = new HashSet<>();
+		if (_entityFinders != null) {
+			Set<EntityColumn> finderEntityColumns = new HashSet<>();
 
-			for (EntityFinder entityFinder : _finderList) {
-				finderColumns.addAll(entityFinder.getColumns());
+			for (EntityFinder entityFinder : _entityFinders) {
+				finderEntityColumns.addAll(entityFinder.getEntityColumns());
 			}
 
-			_finderColumnsList = new ArrayList<>(finderColumns);
+			_finderEntityColumns = new ArrayList<>(finderEntityColumns);
 
-			Collections.sort(_finderColumnsList);
+			Collections.sort(_finderEntityColumns);
 		}
 		else {
-			_finderColumnsList = Collections.emptyList();
+			_finderEntityColumns = Collections.emptyList();
 		}
 
-		if ((_blobList != null) && !_blobList.isEmpty()) {
-			for (EntityColumn entityColumn : _blobList) {
+		if ((_blobEntityColumns != null) && !_blobEntityColumns.isEmpty()) {
+			for (EntityColumn entityColumn : _blobEntityColumns) {
 				if (!entityColumn.isLazy()) {
 					cacheEnabled = false;
 
@@ -176,8 +177,8 @@ public class Entity implements Comparable<Entity> {
 
 		boolean containerModel = false;
 
-		if ((_columnList != null) && !_columnList.isEmpty()) {
-			for (EntityColumn entityColumn : _columnList) {
+		if ((_entityColumns != null) && !_entityColumns.isEmpty()) {
+			for (EntityColumn entityColumn : _entityColumns) {
 				if (entityColumn.isContainerModel() ||
 					entityColumn.isParentContainerModel()) {
 
@@ -191,8 +192,8 @@ public class Entity implements Comparable<Entity> {
 		_containerModel = containerModel;
 	}
 
-	public void addReference(Entity reference) {
-		_referenceList.add(reference);
+	public void addReferenceEntity(Entity referenceEntity) {
+		_referenceEntities.add(referenceEntity);
 	}
 
 	@Override
@@ -230,92 +231,83 @@ public class Entity implements Comparable<Entity> {
 		return _apiPackagePath;
 	}
 
-	public List<EntityColumn> getBadNamedColumnsList() {
-		List<EntityColumn> badNamedColumnsList = ListUtil.copy(_columnList);
+	public List<EntityColumn> getBadEntityColumns() {
+		List<EntityColumn> entityColumns = ListUtil.copy(_entityColumns);
 
-		Iterator<EntityColumn> itr = badNamedColumnsList.iterator();
+		Iterator<EntityColumn> iterator = entityColumns.iterator();
 
-		while (itr.hasNext()) {
-			EntityColumn entityColumn = itr.next();
+		while (iterator.hasNext()) {
+			EntityColumn entityColumn = iterator.next();
 
 			String name = entityColumn.getName();
 
 			if (name.equals(entityColumn.getDBName())) {
-				itr.remove();
+				iterator.remove();
 			}
 		}
 
-		return badNamedColumnsList;
+		return entityColumns;
 	}
 
-	public List<EntityColumn> getBlobList() {
-		return _blobList;
+	public List<EntityColumn> getBlobEntityColumns() {
+		return _blobEntityColumns;
 	}
 
-	public List<EntityFinder> getCollectionFinderList() {
-		List<EntityFinder> finderList = new ArrayList<>(_finderList.size());
+	public List<EntityColumn> getCollectionEntityColumns() {
+		return _collectionEntityColumns;
+	}
 
-		for (EntityFinder entityFinder : _finderList) {
+	public List<EntityFinder> getCollectionEntityFinders() {
+		List<EntityFinder> entityFinders = new ArrayList<>(
+			_entityFinders.size());
+
+		for (EntityFinder entityFinder : _entityFinders) {
 			if (entityFinder.isCollection() &&
 				!entityFinder.hasCustomComparator()) {
 
-				finderList.add(entityFinder);
+				entityFinders.add(entityFinder);
 			}
 		}
 
-		return finderList;
-	}
-
-	public List<EntityColumn> getCollectionList() {
-		return _collectionList;
-	}
-
-	public EntityColumn getColumn(String name) {
-		return getColumn(name, _columnList);
-	}
-
-	public EntityColumn getColumnByMappingTable(String mappingTable) {
-		for (EntityColumn entityColumn : _columnList) {
-			String entityColumnMappingTable = entityColumn.getMappingTable();
-
-			if ((entityColumnMappingTable != null) &&
-				entityColumnMappingTable.equals(mappingTable)) {
-
-				return entityColumn;
-			}
-		}
-
-		return null;
-	}
-
-	public List<EntityColumn> getColumnList() {
-		return _columnList;
+		return entityFinders;
 	}
 
 	public String getDataSource() {
 		return _dataSource;
 	}
 
-	public EntityColumn getFilterPKColumn() {
-		for (EntityColumn entityColumn : _columnList) {
+	public EntityColumn getEntityColumn(String name) {
+		return getEntityColumn(name, _entityColumns);
+	}
+
+	public List<EntityColumn> getEntityColumns() {
+		return _entityColumns;
+	}
+
+	public EntityOrder getEntityOrder() {
+		return _entityOrder;
+	}
+
+	public EntityColumn getFilterPKEntityColumn() {
+		for (EntityColumn entityColumn : _entityColumns) {
 			if (entityColumn.isFilterPrimary()) {
 				return entityColumn;
 			}
 		}
 
-		return _getPKColumn();
+		return _getPKEntityColumn();
 	}
 
-	public String getFinderClass() {
-		return _finderClass;
+	public String getFinderClassName() {
+		return _finderClassName;
 	}
 
 	public List<EntityColumn> getFinderColumnsList() {
-		return _finderColumnsList;
+		return _finderEntityColumns;
 	}
 
 	public List<EntityFinder> getFinderList() {
-		return _finderList;
+		return _entityFinders;
 	}
 
 	public String getHumanName() {
@@ -342,10 +334,6 @@ public class Entity implements Comparable<Entity> {
 		return TextFormatter.formatPlural(_name);
 	}
 
-	public EntityOrder getOrder() {
-		return _order;
-	}
-
 	public String getPackagePath() {
 		return _packagePath;
 	}
@@ -354,8 +342,8 @@ public class Entity implements Comparable<Entity> {
 		return _parentTransients;
 	}
 
-	public String getPersistenceClass() {
-		return _persistenceClass;
+	public String getPersistenceClassName() {
+		return _persistenceClassName;
 	}
 
 	public String getPKClassName() {
@@ -363,7 +351,7 @@ public class Entity implements Comparable<Entity> {
 			return _name + "PK";
 		}
 
-		EntityColumn entityColumn = _getPKColumn();
+		EntityColumn entityColumn = _getPKEntityColumn();
 
 		return entityColumn.getType();
 	}
@@ -373,13 +361,13 @@ public class Entity implements Comparable<Entity> {
 			return getVarName() + "PK";
 		}
 
-		EntityColumn entityColumn = _getPKColumn();
+		EntityColumn entityColumn = _getPKEntityColumn();
 
 		return entityColumn.getDBName();
 	}
 
 	public List<EntityColumn> getPKList() {
-		return _pkList;
+		return _pkEntityColumns;
 	}
 
 	public String getPKVarName() {
@@ -387,7 +375,7 @@ public class Entity implements Comparable<Entity> {
 			return getVarName() + "PK";
 		}
 
-		EntityColumn entityColumn = _getPKColumn();
+		EntityColumn entityColumn = _getPKEntityColumn();
 
 		return entityColumn.getName();
 	}
@@ -397,7 +385,7 @@ public class Entity implements Comparable<Entity> {
 			return getVarName() + "PKs";
 		}
 
-		EntityColumn entityColumn = _getPKColumn();
+		EntityColumn entityColumn = _getPKEntityColumn();
 
 		return entityColumn.getNames();
 	}
@@ -410,12 +398,12 @@ public class Entity implements Comparable<Entity> {
 		return _portletShortName;
 	}
 
-	public List<Entity> getReferenceList() {
-		return _referenceList;
+	public List<Entity> getReferenceEntities() {
+		return _referenceEntities;
 	}
 
-	public List<EntityColumn> getRegularColList() {
-		return _regularColList;
+	public List<EntityColumn> getRegularEntityColumns() {
+		return _regularEntityColumns;
 	}
 
 	public String getSessionFactory() {
@@ -447,44 +435,56 @@ public class Entity implements Comparable<Entity> {
 		return _txManager;
 	}
 
-	public List<String> getTxRequiredList() {
-		return _txRequiredList;
+	public List<String> getTxRequiredMethodNames() {
+		return _txRequiredMethodNames;
+	}
+
+	public List<EntityColumn> getUADNonanonymizableEntityColumns() {
+		List<EntityColumn> uadNonanonymizableEntityColumns = new ArrayList<>();
+
+		for (EntityColumn entityColumn : _entityColumns) {
+			if (entityColumn.isUADNonanonymizable()) {
+				uadNonanonymizableEntityColumns.add(entityColumn);
+			}
+		}
+
+		return uadNonanonymizableEntityColumns;
 	}
 
 	public List<String> getUADUserIdColumnNames() {
 		List<String> uadUserIdColumnNames = new ArrayList<>();
 
-		for (EntityColumn col : _columnList) {
-			if (col.isUADUserId()) {
-				uadUserIdColumnNames.add(col.getName());
+		for (EntityColumn entityColumn : _entityColumns) {
+			if (entityColumn.isUADUserId()) {
+				uadUserIdColumnNames.add(entityColumn.getName());
 			}
 		}
 
 		return uadUserIdColumnNames;
 	}
 
-	public List<EntityFinder> getUniqueFinderList() {
-		List<EntityFinder> finderList = ListUtil.copy(_finderList);
+	public List<EntityFinder> getUniqueEntityFinders() {
+		List<EntityFinder> entityFinders = ListUtil.copy(_entityFinders);
 
-		Iterator<EntityFinder> itr = finderList.iterator();
+		Iterator<EntityFinder> iterator = entityFinders.iterator();
 
-		while (itr.hasNext()) {
-			EntityFinder finder = itr.next();
+		while (iterator.hasNext()) {
+			EntityFinder entityFinder = iterator.next();
 
-			if (finder.isCollection() && !finder.isUnique()) {
-				itr.remove();
+			if (entityFinder.isCollection() && !entityFinder.isUnique()) {
+				iterator.remove();
 			}
 		}
 
-		return finderList;
+		return entityFinders;
 	}
 
-	public List<String> getUnresolvedReferenceList() {
-		if (_unresolvedReferenceList == null) {
+	public List<String> getUnresolvedResolvedReferenceEntityNames() {
+		if (_unresolvedReferenceEntityNames == null) {
 			return new ArrayList<>();
 		}
 
-		return _unresolvedReferenceList;
+		return _unresolvedReferenceEntityNames;
 	}
 
 	public String getVarName() {
@@ -496,9 +496,9 @@ public class Entity implements Comparable<Entity> {
 	}
 
 	public boolean hasActionableDynamicQuery() {
-		if (hasColumns() && hasLocalService()) {
+		if (hasEntityColumns() && hasLocalService()) {
 			if (hasCompoundPK()) {
-				EntityColumn entityColumn = _pkList.get(0);
+				EntityColumn entityColumn = _pkEntityColumns.get(0);
 
 				return entityColumn.isPrimitiveType();
 			}
@@ -511,7 +511,7 @@ public class Entity implements Comparable<Entity> {
 	}
 
 	public boolean hasArrayableOperator() {
-		for (EntityFinder finder : _finderList) {
+		for (EntityFinder finder : _entityFinders) {
 			if (finder.hasArrayableOperator()) {
 				return true;
 			}
@@ -520,39 +520,21 @@ public class Entity implements Comparable<Entity> {
 		return false;
 	}
 
-	public boolean hasColumn(String name) {
-		return hasColumn(name, _columnList);
-	}
-
-	public boolean hasColumn(String name, String type) {
-		return hasColumn(name, type, _columnList);
-	}
-
-	public boolean hasColumns() {
-		if (ListUtil.isEmpty(_columnList)) {
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
-
 	public boolean hasCompoundPK() {
-		if (_pkList.size() > 1) {
+		if (_pkEntityColumns.size() > 1) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean hasEagerBlobColumn() {
-		if ((_blobList == null) || _blobList.isEmpty()) {
+		if ((_blobEntityColumns == null) || _blobEntityColumns.isEmpty()) {
 			return false;
 		}
 
-		for (EntityColumn col : _blobList) {
-			if (!col.isLazy()) {
+		for (EntityColumn blobEntityColumns : _blobEntityColumns) {
+			if (!blobEntityColumns.isLazy()) {
 				return true;
 			}
 		}
@@ -560,13 +542,28 @@ public class Entity implements Comparable<Entity> {
 		return false;
 	}
 
-	public boolean hasFinderClass() {
-		if (Validator.isNull(_finderClass)) {
+	public boolean hasEntityColumn(String name) {
+		return hasEntityColumn(name, _entityColumns);
+	}
+
+	public boolean hasEntityColumn(String name, String type) {
+		return hasEntityColumn(name, type, _entityColumns);
+	}
+
+	public boolean hasEntityColumns() {
+		if (ListUtil.isEmpty(_entityColumns)) {
 			return false;
 		}
-		else {
-			return true;
+
+		return true;
+	}
+
+	public boolean hasFinderClassName() {
+		if (Validator.isNull(_finderClassName)) {
+			return false;
 		}
+
+		return true;
 	}
 
 	@Override
@@ -574,13 +571,13 @@ public class Entity implements Comparable<Entity> {
 		return _name.hashCode();
 	}
 
-	public boolean hasLazyBlobColumn() {
-		if ((_blobList == null) || _blobList.isEmpty()) {
+	public boolean hasLazyBlobEntityColumn() {
+		if ((_blobEntityColumns == null) || _blobEntityColumns.isEmpty()) {
 			return false;
 		}
 
-		for (EntityColumn entityColumn : _blobList) {
-			if (entityColumn.isLazy()) {
+		for (EntityColumn blobEntityColumns : _blobEntityColumns) {
+			if (blobEntityColumns.isLazy()) {
 				return true;
 			}
 		}
@@ -601,7 +598,7 @@ public class Entity implements Comparable<Entity> {
 			return false;
 		}
 
-		EntityColumn entityColumn = _getPKColumn();
+		EntityColumn entityColumn = _getPKEntityColumn();
 
 		if (entityColumn.isPrimitiveType(includeWrappers)) {
 			return true;
@@ -628,10 +625,10 @@ public class Entity implements Comparable<Entity> {
 			return false;
 		}
 
-		if (hasColumn("classPK")) {
-			EntityColumn classPKCol = getColumn("classPK");
+		if (hasEntityColumn("classPK")) {
+			EntityColumn classPKEntityColumn = getEntityColumn("classPK");
 
-			String classPKColType = classPKCol.getType();
+			String classPKColType = classPKEntityColumn.getType();
 
 			if (classPKColType.equals("long")) {
 				return true;
@@ -642,9 +639,10 @@ public class Entity implements Comparable<Entity> {
 	}
 
 	public boolean isAuditedModel() {
-		if (hasColumn("companyId") && hasColumn("createDate", "Date") &&
-			hasColumn("modifiedDate", "Date") && hasColumn("userId") &&
-			hasColumn("userName")) {
+		if (hasEntityColumn("companyId") &&
+			hasEntityColumn("createDate", "Date") &&
+			hasEntityColumn("modifiedDate", "Date") &&
+			hasEntityColumn("userId") && hasEntityColumn("userName")) {
 
 			return true;
 		}
@@ -698,7 +696,7 @@ public class Entity implements Comparable<Entity> {
 	public boolean isGroupedModel() {
 		String pkVarName = getPKVarName();
 
-		if (isAuditedModel() && hasColumn("groupId") &&
+		if (isAuditedModel() && hasEntityColumn("groupId") &&
 			!pkVarName.equals("groupId")) {
 
 			return true;
@@ -713,15 +711,15 @@ public class Entity implements Comparable<Entity> {
 			return false;
 		}
 
-		EntityColumn entityColumn = _getPKColumn();
+		EntityColumn entityColumn = _getPKEntityColumn();
 
 		String methodName = entityColumn.getMethodName();
 
-		if ((_columnList.indexOf(new EntityColumn("parent" + methodName)) !=
+		if ((_entityColumns.indexOf(new EntityColumn("parent" + methodName)) !=
 				-1) &&
-			(_columnList.indexOf(new EntityColumn("left" + methodName)) !=
+			(_entityColumns.indexOf(new EntityColumn("left" + methodName)) !=
 				-1) &&
-			(_columnList.indexOf(new EntityColumn("right" + methodName)) !=
+			(_entityColumns.indexOf(new EntityColumn("right" + methodName)) !=
 				-1)) {
 
 			return true;
@@ -736,7 +734,7 @@ public class Entity implements Comparable<Entity> {
 	}
 
 	public boolean isLocalizedModel() {
-		for (EntityColumn entityColumn : _columnList) {
+		for (EntityColumn entityColumn : _entityColumns) {
 			if (entityColumn.isLocalized()) {
 				return true;
 			}
@@ -750,7 +748,7 @@ public class Entity implements Comparable<Entity> {
 	}
 
 	public boolean isOrdered() {
-		if (_order != null) {
+		if (_entityOrder != null) {
 			return true;
 		}
 		else {
@@ -759,7 +757,7 @@ public class Entity implements Comparable<Entity> {
 	}
 
 	public boolean isPermissionCheckEnabled() {
-		for (EntityFinder finder : _finderList) {
+		for (EntityFinder finder : _entityFinders) {
 			if (isPermissionCheckEnabled(finder)) {
 				return true;
 			}
@@ -778,17 +776,17 @@ public class Entity implements Comparable<Entity> {
 			return false;
 		}
 
-		if (hasColumn("groupId") && !finder.hasColumn("groupId")) {
+		if (hasEntityColumn("groupId") && !finder.hasEntityColumn("groupId")) {
 			return false;
 		}
 
-		EntityColumn entityColumn = _getPKColumn();
+		EntityColumn entityColumn = _getPKEntityColumn();
 
 		return StringUtil.equalsIgnoreCase("long", entityColumn.getType());
 	}
 
 	public boolean isPermissionedModel() {
-		if (hasColumn("resourceBlockId")) {
+		if (hasEntityColumn("resourceBlockId")) {
 			return true;
 		}
 		else {
@@ -801,8 +799,8 @@ public class Entity implements Comparable<Entity> {
 	}
 
 	public boolean isResolved() {
-		if ((_unresolvedReferenceList != null) &&
-			_unresolvedReferenceList.isEmpty()) {
+		if ((_unresolvedReferenceEntityNames != null) &&
+			_unresolvedReferenceEntityNames.isEmpty()) {
 
 			return true;
 		}
@@ -813,7 +811,7 @@ public class Entity implements Comparable<Entity> {
 	public boolean isResourcedModel() {
 		String pkVarName = getPKVarName();
 
-		if (hasColumn("resourcePrimKey") &&
+		if (hasEntityColumn("resourcePrimKey") &&
 			!pkVarName.equals("resourcePrimKey")) {
 
 			return true;
@@ -830,7 +828,7 @@ public class Entity implements Comparable<Entity> {
 			return false;
 		}
 
-		return hasColumn("companyId");
+		return hasEntityColumn("companyId");
 	}
 
 	public boolean isStagedAuditedModel() {
@@ -843,7 +841,7 @@ public class Entity implements Comparable<Entity> {
 
 	public boolean isStagedGroupedModel() {
 		if (isGroupedModel() && isStagedModel() &&
-			hasColumn("lastPublishDate", "Date")) {
+			hasEntityColumn("lastPublishDate", "Date")) {
 
 			return true;
 		}
@@ -852,9 +850,9 @@ public class Entity implements Comparable<Entity> {
 	}
 
 	public boolean isStagedModel() {
-		if (hasUuid() && hasColumn("companyId") &&
-			hasColumn("createDate", "Date") &&
-			hasColumn("modifiedDate", "Date")) {
+		if (hasUuid() && hasEntityColumn("companyId") &&
+			hasEntityColumn("createDate", "Date") &&
+			hasEntityColumn("modifiedDate", "Date")) {
 
 			return true;
 		}
@@ -867,7 +865,7 @@ public class Entity implements Comparable<Entity> {
 	}
 
 	public boolean isTreeModel() {
-		if (hasColumn("treePath")) {
+		if (hasEntityColumn("treePath")) {
 			return true;
 		}
 
@@ -875,10 +873,11 @@ public class Entity implements Comparable<Entity> {
 	}
 
 	public boolean isTypedModel() {
-		if (hasColumn("classNameId")) {
-			EntityColumn classNameIdCol = getColumn("classNameId");
+		if (hasEntityColumn("classNameId")) {
+			EntityColumn classNameIdEntityColumn = getEntityColumn(
+				"classNameId");
 
-			String classNameIdColType = classNameIdCol.getType();
+			String classNameIdColType = classNameIdEntityColumn.getType();
 
 			if (classNameIdColType.equals("long")) {
 				return true;
@@ -889,8 +888,8 @@ public class Entity implements Comparable<Entity> {
 	}
 
 	public boolean isUADEnabled() {
-		for (EntityColumn col : _columnList) {
-			if (col.isUADEnabled()) {
+		for (EntityColumn entityColumn : _entityColumns) {
+			if (entityColumn.isUADEnabled()) {
 				return true;
 			}
 		}
@@ -899,8 +898,9 @@ public class Entity implements Comparable<Entity> {
 	}
 
 	public boolean isWorkflowEnabled() {
-		if (hasColumn("status") && hasColumn("statusByUserId") &&
-			hasColumn("statusByUserName") && hasColumn("statusDate")) {
+		if (hasEntityColumn("status") && hasEntityColumn("statusByUserId") &&
+			hasEntityColumn("statusByUserName") &&
+			hasEntityColumn("statusDate")) {
 
 			return true;
 		}
@@ -916,7 +916,7 @@ public class Entity implements Comparable<Entity> {
 	public void setLocalizedEntity(Entity localizedEntity) {
 		_localizedEntity = localizedEntity;
 
-		_referenceList.add(localizedEntity);
+		_referenceEntities.add(localizedEntity);
 	}
 
 	public void setParentTransients(List<String> transients) {
@@ -928,20 +928,20 @@ public class Entity implements Comparable<Entity> {
 	}
 
 	public void setResolved() {
-		_unresolvedReferenceList = null;
+		_unresolvedReferenceEntityNames = null;
 	}
 
 	public void setTransients(List<String> transients) {
 		_transients = transients;
 	}
 
-	private EntityColumn _getPKColumn() {
-		if (_pkList.isEmpty()) {
+	private EntityColumn _getPKEntityColumn() {
+		if (_pkEntityColumns.isEmpty()) {
 			throw new RuntimeException(
 				"There is no primary key for entity " + _name);
 		}
 
-		return _pkList.get(0);
+		return _pkEntityColumns.get(0);
 	}
 
 	private static final String _DATA_SOURCE_DEFAULT = "liferayDataSource";
@@ -954,17 +954,18 @@ public class Entity implements Comparable<Entity> {
 
 	private final String _alias;
 	private final String _apiPackagePath;
-	private List<EntityColumn> _blobList;
+	private List<EntityColumn> _blobEntityColumns;
 	private final boolean _cacheEnabled;
-	private final List<EntityColumn> _collectionList;
-	private final List<EntityColumn> _columnList;
+	private final List<EntityColumn> _collectionEntityColumns;
 	private final boolean _containerModel;
 	private final String _dataSource;
 	private final boolean _deprecated;
 	private final boolean _dynamicUpdateEnabled;
-	private final String _finderClass;
-	private final List<EntityColumn> _finderColumnsList;
-	private final List<EntityFinder> _finderList;
+	private final List<EntityColumn> _entityColumns;
+	private final List<EntityFinder> _entityFinders;
+	private final EntityOrder _entityOrder;
+	private final String _finderClassName;
+	private final List<EntityColumn> _finderEntityColumns;
 	private final String _humanName;
 	private final boolean _jsonEnabled;
 	private List<EntityColumn> _localizedColumns;
@@ -972,16 +973,15 @@ public class Entity implements Comparable<Entity> {
 	private final boolean _localService;
 	private final boolean _mvccEnabled;
 	private final String _name;
-	private final EntityOrder _order;
 	private final String _packagePath;
 	private List<String> _parentTransients;
-	private final String _persistenceClass;
-	private final List<EntityColumn> _pkList;
+	private final String _persistenceClassName;
+	private final List<EntityColumn> _pkEntityColumns;
 	private boolean _portalReference;
 	private final String _portletName;
 	private final String _portletShortName;
-	private final List<Entity> _referenceList;
-	private final List<EntityColumn> _regularColList;
+	private final List<Entity> _referenceEntities;
+	private final List<EntityColumn> _regularEntityColumns;
 	private final boolean _remoteService;
 	private final boolean _resourceActionModel;
 	private final String _sessionFactory;
@@ -989,8 +989,8 @@ public class Entity implements Comparable<Entity> {
 	private List<String> _transients;
 	private final boolean _trashEnabled;
 	private final String _txManager;
-	private final List<String> _txRequiredList;
-	private List<String> _unresolvedReferenceList;
+	private final List<String> _txRequiredMethodNames;
+	private List<String> _unresolvedReferenceEntityNames;
 	private final boolean _uuid;
 	private final boolean _uuidAccessor;
 

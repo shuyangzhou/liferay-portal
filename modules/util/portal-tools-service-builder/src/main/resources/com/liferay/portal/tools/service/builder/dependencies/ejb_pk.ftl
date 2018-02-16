@@ -17,8 +17,8 @@ import java.util.Date;
 @ProviderType
 public class ${entity.PKClassName} implements Comparable<${entity.PKClassName}>, Serializable {
 
-	<#list entity.PKList as column>
-		public ${column.type} ${column.name};
+	<#list entity.PKList as entityColumn>
+		public ${entityColumn.type} ${entityColumn.name};
 	</#list>
 
 	public ${entity.PKClassName}() {
@@ -26,34 +26,34 @@ public class ${entity.PKClassName} implements Comparable<${entity.PKClassName}>,
 
 	public ${entity.PKClassName}(
 
-	<#list entity.PKList as column>
-		${column.type} ${column.name}
+	<#list entity.PKList as entityColumn>
+		${entityColumn.type} ${entityColumn.name}
 
-		<#if column_has_next>
+		<#if entityColumn_has_next>
 			,
 		</#if>
 	</#list>
 
 	) {
-		<#list entity.PKList as column>
-			this.${column.name} = ${column.name};
+		<#list entity.PKList as entityColumn>
+			this.${entityColumn.name} = ${entityColumn.name};
 		</#list>
 	}
 
-	<#list entity.PKList as column>
-		<#if !column.isCollection()>
-			public ${column.type} get${column.methodName}() {
-				return ${column.name};
+	<#list entity.PKList as entityColumn>
+		<#if !entityColumn.isCollection()>
+			public ${entityColumn.type} get${entityColumn.methodName}() {
+				return ${entityColumn.name};
 			}
 
-			<#if column.type== "boolean">
-				public ${column.type} is${column.methodName}() {
-					return ${column.name};
+			<#if entityColumn.type== "boolean">
+				public ${entityColumn.type} is${entityColumn.methodName}() {
+					return ${entityColumn.name};
 				}
 			</#if>
 
-			public void set${column.methodName}(${column.type} ${column.name}) {
-				this.${column.name} = ${column.name};
+			public void set${entityColumn.methodName}(${entityColumn.type} ${entityColumn.name}) {
+				this.${entityColumn.name} = ${entityColumn.name};
 			}
 		</#if>
 	</#list>
@@ -66,23 +66,23 @@ public class ${entity.PKClassName} implements Comparable<${entity.PKClassName}>,
 
 		int value = 0;
 
-		<#list entity.PKList as column>
-			<#if column.isPrimitiveType()>
-				<#if stringUtil.equals(column.type, "boolean")>
-					if (!${column.name} && pk.${column.name}) {
+		<#list entity.PKList as entityColumn>
+			<#if entityColumn.isPrimitiveType()>
+				<#if stringUtil.equals(entityColumn.type, "boolean")>
+					if (!${entityColumn.name} && pk.${entityColumn.name}) {
 						value = -1;
 					}
-					else if (${column.name} && !pk.${column.name}) {
+					else if (${entityColumn.name} && !pk.${entityColumn.name}) {
 						value = 1;
 					}
 					else {
 						value = 0;
 					}
 				<#else>
-					if (${column.name} < pk.${column.name}) {
+					if (${entityColumn.name} < pk.${entityColumn.name}) {
 						value = -1;
 					}
-					else if (${column.name} > pk.${column.name}) {
+					else if (${entityColumn.name} > pk.${entityColumn.name}) {
 						value = 1;
 					}
 					else {
@@ -90,10 +90,10 @@ public class ${entity.PKClassName} implements Comparable<${entity.PKClassName}>,
 					}
 				</#if>
 			<#else>
-				<#if stringUtil.equals(column.type, "Date")>
-					value = DateUtil.compareTo(${column.name}, pk.${column.name});
+				<#if stringUtil.equals(entityColumn.type, "Date")>
+					value = DateUtil.compareTo(${entityColumn.name}, pk.${entityColumn.name});
 				<#else>
-					value = ${column.name}.compareTo(pk.${column.name});
+					value = ${entityColumn.name}.compareTo(pk.${entityColumn.name});
 				</#if>
 			</#if>
 
@@ -119,14 +119,14 @@ public class ${entity.PKClassName} implements Comparable<${entity.PKClassName}>,
 
 		if (
 
-		<#list entity.PKList as column>
-			<#if column.isPrimitiveType()>
-				(${column.name} == pk.${column.name})
+		<#list entity.PKList as entityColumn>
+			<#if entityColumn.isPrimitiveType()>
+				(${entityColumn.name} == pk.${entityColumn.name})
 			<#else>
-				(${column.name}.equals(pk.${column.name}))
+				(${entityColumn.name}.equals(pk.${entityColumn.name}))
 			</#if>
 
-			<#if column_has_next> && </#if>
+			<#if entityColumn_has_next> && </#if>
 		</#list>
 
 		) {
@@ -141,8 +141,8 @@ public class ${entity.PKClassName} implements Comparable<${entity.PKClassName}>,
 	public int hashCode() {
 		int hashCode = 0;
 
-		<#list entity.PKList as column>
-			hashCode = HashUtil.hash(hashCode, ${column.name});
+		<#list entity.PKList as entityColumn>
+			hashCode = HashUtil.hash(hashCode, ${entityColumn.name});
 		</#list>
 
 		return hashCode;
@@ -154,14 +154,14 @@ public class ${entity.PKClassName} implements Comparable<${entity.PKClassName}>,
 
 		sb.append("{");
 
-		<#list entity.PKList as column>
-			<#if column?is_first>
-				sb.append("${column.name}=");
+		<#list entity.PKList as entityColumn>
+			<#if entityColumn?is_first>
+				sb.append("${entityColumn.name}=");
 			<#else>
-				sb.append(", ${column.name}=");
+				sb.append(", ${entityColumn.name}=");
 			</#if>
 
-			sb.append(${column.name});
+			sb.append(${entityColumn.name});
 		</#list>
 
 		sb.append("}");

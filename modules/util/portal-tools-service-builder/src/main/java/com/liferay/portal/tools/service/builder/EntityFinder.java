@@ -28,14 +28,14 @@ public class EntityFinder {
 
 	public EntityFinder(
 		String name, String returnType, boolean unique, String where,
-		boolean dbIndex, List<EntityColumn> columns) {
+		boolean dbIndex, List<EntityColumn> entityColumns) {
 
 		_name = name;
 		_returnType = returnType;
 		_unique = unique;
 		_where = where;
 		_dbIndex = dbIndex;
-		_columns = columns;
+		_entityColumns = entityColumns;
 
 		if (isCollection() && isUnique() && !hasArrayableOperator()) {
 			throw new IllegalArgumentException(
@@ -50,35 +50,35 @@ public class EntityFinder {
 		}
 	}
 
-	public EntityColumn getColumn(String name) {
-		for (EntityColumn column : _columns) {
-			if (name.equals(column.getName())) {
-				return column;
+	public EntityColumn getEntityColumn(String name) {
+		for (EntityColumn entityColumn : _entityColumns) {
+			if (name.equals(entityColumn.getName())) {
+				return entityColumn;
 			}
 		}
 
 		return null;
 	}
 
-	public List<EntityColumn> getColumns() {
-		return _columns;
+	public List<EntityColumn> getEntityColumns() {
+		return _entityColumns;
 	}
 
 	public String getHumanConditions(boolean arrayable) {
-		if (_columns.size() == 1) {
-			EntityColumn column = _columns.get(0);
+		if (_entityColumns.size() == 1) {
+			EntityColumn entityColumn = _entityColumns.get(0);
 
-			return column.getHumanCondition(arrayable);
+			return entityColumn.getHumanCondition(arrayable);
 		}
 
-		StringBundler sb = new StringBundler(_columns.size() * 2);
+		StringBundler sb = new StringBundler(_entityColumns.size() * 2);
 
-		for (EntityColumn column : _columns) {
+		for (EntityColumn column : _entityColumns) {
 			sb.append(column.getHumanCondition(arrayable));
 			sb.append(" and ");
 		}
 
-		if (!_columns.isEmpty()) {
+		if (!_entityColumns.isEmpty()) {
 			sb.setIndex(sb.index() - 1);
 		}
 
@@ -102,7 +102,7 @@ public class EntityFinder {
 	}
 
 	public boolean hasArrayableOperator() {
-		for (EntityColumn column : _columns) {
+		for (EntityColumn column : _entityColumns) {
 			if (column.hasArrayableOperator()) {
 				return true;
 			}
@@ -111,12 +111,8 @@ public class EntityFinder {
 		return false;
 	}
 
-	public boolean hasColumn(String name) {
-		return Entity.hasColumn(name, _columns);
-	}
-
 	public boolean hasCustomComparator() {
-		for (EntityColumn column : _columns) {
+		for (EntityColumn column : _entityColumns) {
 			String comparator = column.getComparator();
 
 			if (!comparator.equals(StringPool.EQUAL)) {
@@ -125,6 +121,10 @@ public class EntityFinder {
 		}
 
 		return false;
+	}
+
+	public boolean hasEntityColumn(String name) {
+		return Entity.hasEntityColumn(name, _entityColumns);
 	}
 
 	public boolean isCollection() {
@@ -144,8 +144,8 @@ public class EntityFinder {
 		return _unique;
 	}
 
-	private final List<EntityColumn> _columns;
 	private final boolean _dbIndex;
+	private final List<EntityColumn> _entityColumns;
 	private final String _name;
 	private final String _returnType;
 	private final boolean _unique;

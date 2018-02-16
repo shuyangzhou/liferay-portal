@@ -2,7 +2,7 @@ package ${packagePath}.model.impl;
 
 import ${apiPackagePath}.model.${entity.name};
 
-<#if entity.hasLocalService() && entity.hasColumns()>
+<#if entity.hasLocalService() && entity.hasEntityColumns()>
 	import ${apiPackagePath}.service.${entity.name}LocalServiceUtil;
 
 	import com.liferay.portal.kernel.exception.PortalException;
@@ -44,7 +44,7 @@ public abstract class ${entity.name}BaseImpl extends ${entity.name}ModelImpl imp
 	 * Never modify or reference this class directly. All methods that expect a ${entity.humanName} model instance should use the {@link ${entity.name}} interface instead.
 	 */
 
-	<#if entity.hasLocalService() && entity.hasColumns()>
+	<#if entity.hasLocalService() && entity.hasEntityColumns()>
 		@Override
 		public void persist() {
 			if (this.isNew()) {
@@ -58,7 +58,7 @@ public abstract class ${entity.name}BaseImpl extends ${entity.name}ModelImpl imp
 		<#if entity.isTreeModel()>
 			<#assign pkColumn = entity.getPKList()?first />
 
-			<#if entity.hasColumn("parent" + pkColumn.methodName)>
+			<#if entity.hasEntityColumn("parent" + pkColumn.methodName)>
 				@Override
 				@SuppressWarnings("unused")
 				public String buildTreePath() throws PortalException {
