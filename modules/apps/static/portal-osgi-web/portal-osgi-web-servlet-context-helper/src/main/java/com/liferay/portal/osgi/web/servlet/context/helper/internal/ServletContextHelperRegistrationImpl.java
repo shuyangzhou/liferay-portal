@@ -18,10 +18,10 @@ import com.liferay.portal.kernel.servlet.PortletServlet;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.osgi.web.servlet.JSPServletFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistration;
 import com.liferay.portal.osgi.web.servlet.context.helper.definition.WebXMLDefinition;
 import com.liferay.portal.osgi.web.servlet.context.helper.internal.definition.WebXMLDefinitionLoader;
-import com.liferay.portal.osgi.web.servlet.jsp.compiler.JspServlet;
 
 import java.net.URL;
 
@@ -233,8 +233,23 @@ public class ServletContextHelperRegistrationImpl
 			HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_PATTERN,
 			new String[] {"*.jsp", "*.jspx"});
 
-		return _bundleContext.registerService(
-			Servlet.class, new JspServlet() {}, properties);
+		ServiceReference<JSPServletFactory> serviceReference =
+			_bundleContext.getServiceReference(JSPServletFactory.class);
+
+		JSPServletFactory jspServletFactory = null;
+
+		try {
+			jspServletFactory = _bundleContext.getService(serviceReference);
+
+			return _bundleContext.registerService(
+				Servlet.class, jspServletFactory.createJSPServlet(),
+				properties);
+		}
+		finally {
+			if (jspServletFactory != null) {
+				_bundleContext.ungetService(serviceReference);
+			}
+		}
 	}
 
 	protected ServiceRegistration<Servlet> createPortletServlet() {

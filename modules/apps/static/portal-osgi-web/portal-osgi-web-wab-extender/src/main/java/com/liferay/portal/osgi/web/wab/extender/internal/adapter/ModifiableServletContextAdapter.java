@@ -15,6 +15,7 @@
 package com.liferay.portal.osgi.web.wab.extender.internal.adapter;
 
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.osgi.web.servlet.JSPServletFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.definition.FilterDefinition;
 import com.liferay.portal.osgi.web.servlet.context.helper.definition.ListenerDefinition;
 import com.liferay.portal.osgi.web.servlet.context.helper.definition.ServletDefinition;
@@ -50,6 +51,7 @@ import org.apache.felix.utils.log.Logger;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
 /**
  * @author Raymond Augé
@@ -533,7 +535,25 @@ public class ModifiableServletContextAdapter
 
 				if (servlet == null) {
 					if (Validator.isNotNull(jspFile)) {
-						servlet = new JspServletWrapper(jspFile);
+						BundleContext bundleContext =
+							_bundle.getBundleContext();
+
+						ServiceReference<JSPServletFactory> serviceReference =
+							bundleContext.getServiceReference(
+								JSPServletFactory.class);
+
+						JSPServletFactory jspServletFactory = null;
+
+						try {
+							jspServletFactory = bundleContext.getService(
+								serviceReference);
+
+							servlet = new JspServletWrapper(
+								jspServletFactory.createJSPServlet(), jspFile);
+						}
+						finally {
+							bundleContext.ungetService(serviceReference);
+						}
 					}
 					else {
 						Class<?> clazz = _bundle.loadClass(servletClassName);
