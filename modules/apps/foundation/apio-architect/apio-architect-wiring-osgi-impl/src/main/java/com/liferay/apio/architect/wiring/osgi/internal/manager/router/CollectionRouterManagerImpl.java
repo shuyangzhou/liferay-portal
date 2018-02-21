@@ -16,26 +16,30 @@ package com.liferay.apio.architect.wiring.osgi.internal.manager.router;
 
 import static com.liferay.apio.architect.alias.ProvideFunction.curry;
 import static com.liferay.apio.architect.unsafe.Unsafe.unsafeCast;
-import static com.liferay.apio.architect.wiring.osgi.internal.manager.util.ManagerUtil.getNameOrFail;
+import static com.liferay.apio.architect.wiring.osgi.internal.manager.ManagerCache.INSTANCE;
 
-import com.liferay.apio.architect.identifier.Identifier;
+import com.liferay.apio.architect.logger.ApioLogger;
 import com.liferay.apio.architect.router.CollectionRouter;
 import com.liferay.apio.architect.routes.CollectionRoutes;
 import com.liferay.apio.architect.routes.CollectionRoutes.Builder;
+import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.apio.architect.unsafe.Unsafe;
-import com.liferay.apio.architect.wiring.osgi.internal.manager.base.BaseManager;
+import com.liferay.apio.architect.wiring.osgi.internal.manager.base.SimpleBaseManager;
 import com.liferay.apio.architect.wiring.osgi.manager.ProviderManager;
-import com.liferay.apio.architect.wiring.osgi.manager.representable.IdentifierClassManager;
 import com.liferay.apio.architect.wiring.osgi.manager.representable.NameManager;
 import com.liferay.apio.architect.wiring.osgi.manager.router.CollectionRouterManager;
+import com.liferay.apio.architect.wiring.osgi.manager.router.ItemRouterManager;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.TreeSet;
 import java.util.stream.Stream;
 
-import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -44,7 +48,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true)
 public class CollectionRouterManagerImpl
-	extends BaseManager<CollectionRouter, CollectionRoutes>
+	extends SimpleBaseManager<CollectionRouter>
 	implements CollectionRouterManager {
 
 	public CollectionRouterManagerImpl() {
@@ -55,54 +59,102 @@ public class CollectionRouterManagerImpl
 	public <T> Optional<CollectionRoutes<T>> getCollectionRoutesOptional(
 		String name) {
 
-		Optional<Class<Identifier>> optional =
-			_identifierClassManager.getIdentifierClassOptional(name);
+		if (!INSTANCE.hasCollectionRoutes()) {
+			_generateCollectionRoutes();
+		}
 
-		return optional.flatMap(
-			this::getServiceOptional
+		Optional<Map<String, CollectionRoutes>> optional =
+			INSTANCE.getCollectionRoutesOptional();
+
+		return optional.map(
+			map -> map.get(name)
 		).map(
 			Unsafe::unsafeCast
 		);
 	}
 
 	@Override
-	public List<String> getResourceNames() {
-		Set<String> keys = getServiceTrackerMap().keySet();
-
-		Stream<String> stream = keys.stream();
-
-		return stream.map(
-			className -> _nameManager.getNameOptional(className)
-		).filter(
-			Optional::isPresent
-		).map(
-			Optional::get
-		).collect(
-			Collectors.toList()
-		);
+	public Integer getPrincipalTypeParamPosition() {
+		return 1;
 	}
 
 	@Override
-	protected CollectionRoutes map(
-		CollectionRouter collectionRouter,
-		ServiceReference<CollectionRouter> serviceReference, Class<?> clazz) {
+	public List<String> getResourceNames() {
+		if (!INSTANCE.hasRootResourceNames()) {
+			_generateCollectionRoutes();
+		}
 
-		String name = getNameOrFail(clazz, _nameManager);
+		Optional<List<String>> optional =
+			INSTANCE.getRootResourceNamesOptional();
 
-		return _getCollectionRoutes(unsafeCast(collectionRouter), name);
+		return optional.orElseGet(Collections::emptyList);
 	}
 
-	private <T, S extends Identifier> CollectionRoutes<T> _getCollectionRoutes(
-		CollectionRouter<T, S> collectionRouter, String name) {
+	private void _generateCollectionRoutes() {
+		Stream<String> stream = getKeyStream();
 
-		Builder<T> builder = new Builder<>(
-			name, curry(_providerManager::provideOptional));
+		List<String> resourceNames = new ArrayList<>();
 
-		return collectionRouter.collectionRoutes(builder);
+		Map<String, CollectionRoutes> collectionRoutes = new HashMap<>();
+
+		stream.forEach(
+			className -> {
+				Optional<String> nameOptional = _nameManager.getNameOptional(
+					className);
+
+				if (!nameOptional.isPresent()) {
+					_apioLogger.warning(
+						"Could not found a Representable for classname " +
+							className);
+
+					return;
+				}
+
+				String name = nameOptional.get();
+
+				CollectionRouter<Object, ?> collectionRouter = unsafeCast(
+					serviceTrackerMap.getService(className));
+
+				Set<String> neededProviders = new TreeSet<>();
+
+				Builder<Object> builder = new Builder<>(
+					name, curry(_providerManager::provideMandatory),
+					neededProviders::add);
+
+				List<String> missingProviders =
+					_providerManager.getMissingProviders(neededProviders);
+
+				if (!missingProviders.isEmpty()) {
+					_apioLogger.warning(
+						"Missing providers for classes: " + missingProviders);
+
+					return;
+				}
+
+				Optional<ItemRoutes<Object, Object>> optional =
+					_itemRouterManager.getItemRoutesOptional(name);
+
+				if (!optional.isPresent()) {
+					_apioLogger.warning(
+						"Missing item router for resource with name " + name);
+
+					return;
+				}
+
+				resourceNames.add(name);
+				collectionRoutes.put(
+					name, collectionRouter.collectionRoutes(builder));
+			});
+
+		INSTANCE.setRootResourceNames(resourceNames);
+		INSTANCE.setCollectionRoutes(collectionRoutes);
 	}
 
 	@Reference
-	private IdentifierClassManager _identifierClassManager;
+	private ApioLogger _apioLogger;
+
+	@Reference
+	private ItemRouterManager _itemRouterManager;
 
 	@Reference
 	private NameManager _nameManager;

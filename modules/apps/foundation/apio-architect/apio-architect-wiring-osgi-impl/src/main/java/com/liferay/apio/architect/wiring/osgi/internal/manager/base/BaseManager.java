@@ -14,6 +14,7 @@
 
 package com.liferay.apio.architect.wiring.osgi.internal.manager.base;
 
+import static com.liferay.apio.architect.wiring.osgi.internal.manager.ManagerCache.INSTANCE;
 import static com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory.openSingleValueMap;
 
 import com.liferay.apio.architect.wiring.osgi.internal.service.reference.mapper.CustomServiceReferenceMapper;
@@ -22,6 +23,8 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapper.E
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -31,11 +34,10 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Deactivate;
 
 /**
- * Manages services that have a generic type. Stores the services transformed
- * with the {@link #map(Object, ServiceReference, Class)} function.
+ * Manages services that have a generic type. This class stores the services
+ * transformed with the function {@link #map(Object, ServiceReference, Class)}.
  *
  * @author Alejandro Hernández
- * @review
  */
 public abstract class BaseManager<T, U>
 	extends TransformServiceTrackerCustomizer<T, U> {
@@ -46,30 +48,33 @@ public abstract class BaseManager<T, U>
 
 	@Activate
 	public void activate(BundleContext bundleContext) {
-		_serviceTrackerMap = openSingleValueMap(
+		serviceTrackerMap = openSingleValueMap(
 			bundleContext, getManagedClass(), null, this::emit, this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_serviceTrackerMap.close();
+		serviceTrackerMap.close();
+		INSTANCE.clear();
 	}
 
 	/**
-	 * Returns the {@code ServiceTrackerMap}.
+	 * Returns the service tracker key stream.
 	 *
-	 * @return the service tracker map
-	 */
-	public ServiceTrackerMap<String, U> getServiceTrackerMap() {
-		return _serviceTrackerMap;
-	}
-
-	/**
-	 * Emits a the key of a service using an {@link Emitter<String>}.
-	 *
-	 * @param  serviceReference the service reference
-	 * @param  emitter the emitter
+	 * @return the service tracker key stream
 	 * @review
+	 */
+	public Stream<String> getKeyStream() {
+		Set<String> keys = serviceTrackerMap.keySet();
+
+		return keys.stream();
+	}
+
+	/**
+	 * Emits a service's key using an {@code Emitter<String>}.
+	 *
+	 * @param serviceReference the service reference
+	 * @param emitter the emitter
 	 */
 	protected void emit(
 		ServiceReference<T> serviceReference, Emitter<String> emitter) {
@@ -106,9 +111,9 @@ public abstract class BaseManager<T, U>
 	 * @return the service, if present; {@code Optional#empty()} otherwise
 	 */
 	protected Optional<U> getServiceOptional(String className) {
-		return Optional.ofNullable(_serviceTrackerMap.getService(className));
+		return Optional.ofNullable(serviceTrackerMap.getService(className));
 	}
 
-	private ServiceTrackerMap<String, U> _serviceTrackerMap;
+	protected ServiceTrackerMap<String, U> serviceTrackerMap;
 
 }

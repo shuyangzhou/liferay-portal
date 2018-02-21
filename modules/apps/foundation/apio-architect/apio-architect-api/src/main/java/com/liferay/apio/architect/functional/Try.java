@@ -23,6 +23,7 @@ import java.io.Closeable;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -226,6 +227,22 @@ public abstract class Try<T> {
 	public abstract T getUnchecked();
 
 	/**
+	 * Calls the provided consumer if the current {@code Try} instance is a
+	 * {@code Failure}; otherwise nothing occurs.
+	 *
+	 * @review
+	 */
+	public abstract void ifFailure(Consumer<Exception> consumer);
+
+	/**
+	 * Calls the provided consumer if the current {@code Try} instance is a
+	 * {@code Success}; otherwise nothing occurs.
+	 *
+	 * @review
+	 */
+	public abstract void ifSuccess(Consumer<T> consumer);
+
+	/**
 	 * Returns {@code true} if the current {@code Try} instance is a {@code
 	 * Failure}; otherwise returns {@code false}.
 	 *
@@ -410,6 +427,16 @@ public abstract class Try<T> {
 		ThrowableFunction<? super Exception, Try<T>> throwableFunction);
 
 	/**
+	 * Returns the current {@code Try} instance as an {@code Optional}
+	 * containing the value if it's a {@code Success} or {@code
+	 * Optional#empty()} if it's a {@code Failure}.
+	 *
+	 * @return an {@code Optional} containing the value if it's a {@code
+	 *         Success}; {@code Optional#empty()} otherwise
+	 */
+	public abstract Optional<T> toOptional();
+
+	/**
 	 * The implementation of {@code Try}'S failure case. Don't try to
 	 * instantiate this class directly. To instantiate this class when you don't
 	 * know if the operation will fail, use {@link
@@ -463,6 +490,17 @@ public abstract class Try<T> {
 			}
 
 			throw new RuntimeException(_exception);
+		}
+
+		@Override
+		public void ifFailure(Consumer<Exception> consumer) {
+			Objects.requireNonNull(consumer);
+
+			consumer.accept(_exception);
+		}
+
+		@Override
+		public void ifSuccess(Consumer<T> consumer) {
 		}
 
 		@Override
@@ -546,6 +584,11 @@ public abstract class Try<T> {
 			}
 		}
 
+		@Override
+		public Optional<T> toOptional() {
+			return Optional.empty();
+		}
+
 		private Failure(Exception exception) {
 			_exception = exception;
 		}
@@ -624,6 +667,17 @@ public abstract class Try<T> {
 		}
 
 		@Override
+		public void ifFailure(Consumer<Exception> consumer) {
+		}
+
+		@Override
+		public void ifSuccess(Consumer<T> consumer) {
+			Objects.requireNonNull(consumer);
+
+			consumer.accept(_value);
+		}
+
+		@Override
 		public boolean isFailure() {
 			return false;
 		}
@@ -697,6 +751,11 @@ public abstract class Try<T> {
 			Objects.requireNonNull(throwableFunction);
 
 			return this;
+		}
+
+		@Override
+		public Optional<T> toOptional() {
+			return Optional.ofNullable(_value);
 		}
 
 		private Success(T value) {

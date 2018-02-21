@@ -17,11 +17,10 @@ package com.liferay.apio.architect.wiring.osgi.internal.manager.base;
 import org.osgi.framework.ServiceReference;
 
 /**
- * Manages services that have a generic type. It doesn't perform any
- * transformation on the stored services.
+ * Manages services that have a generic type. No transformations are performed
+ * on the stored services.
  *
  * @author Alejandro Hernández
- * @review
  */
 public abstract class SimpleBaseManager<T> extends BaseManager<T, T> {
 

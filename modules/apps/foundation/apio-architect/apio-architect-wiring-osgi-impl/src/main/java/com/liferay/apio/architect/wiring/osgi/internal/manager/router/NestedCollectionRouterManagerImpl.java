@@ -16,25 +16,32 @@ package com.liferay.apio.architect.wiring.osgi.internal.manager.router;
 
 import static com.liferay.apio.architect.alias.ProvideFunction.curry;
 import static com.liferay.apio.architect.unsafe.Unsafe.unsafeCast;
+import static com.liferay.apio.architect.wiring.osgi.internal.manager.ManagerCache.INSTANCE;
 import static com.liferay.apio.architect.wiring.osgi.internal.manager.TypeArgumentProperties.KEY_PARENT_IDENTIFIER_CLASS;
 import static com.liferay.apio.architect.wiring.osgi.internal.manager.util.ManagerUtil.getGenericClassFromPropertyOrElse;
-import static com.liferay.apio.architect.wiring.osgi.internal.manager.util.ManagerUtil.getNameOrFail;
 import static com.liferay.apio.architect.wiring.osgi.internal.manager.util.ManagerUtil.getTypeParamOrFail;
 
-import com.liferay.apio.architect.identifier.Identifier;
+import com.liferay.apio.architect.logger.ApioLogger;
 import com.liferay.apio.architect.router.NestedCollectionRouter;
+import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.apio.architect.routes.NestedCollectionRoutes;
 import com.liferay.apio.architect.routes.NestedCollectionRoutes.Builder;
 import com.liferay.apio.architect.unsafe.Unsafe;
-import com.liferay.apio.architect.wiring.osgi.internal.manager.base.BaseManager;
+import com.liferay.apio.architect.wiring.osgi.internal.manager.base.SimpleBaseManager;
 import com.liferay.apio.architect.wiring.osgi.internal.service.reference.mapper.CustomServiceReferenceMapper;
 import com.liferay.apio.architect.wiring.osgi.manager.ProviderManager;
-import com.liferay.apio.architect.wiring.osgi.manager.representable.IdentifierClassManager;
 import com.liferay.apio.architect.wiring.osgi.manager.representable.NameManager;
+import com.liferay.apio.architect.wiring.osgi.manager.router.ItemRouterManager;
 import com.liferay.apio.architect.wiring.osgi.manager.router.NestedCollectionRouterManager;
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapper.Emitter;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Stream;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -48,7 +55,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true)
 public class NestedCollectionRouterManagerImpl
-	extends BaseManager<NestedCollectionRouter, NestedCollectionRoutes>
+	extends SimpleBaseManager<NestedCollectionRouter>
 	implements NestedCollectionRouterManager {
 
 	public NestedCollectionRouterManagerImpl() {
@@ -59,22 +66,15 @@ public class NestedCollectionRouterManagerImpl
 	public <T, S> Optional<NestedCollectionRoutes<T, S>>
 		getNestedCollectionRoutesOptional(String name, String nestedName) {
 
-		Optional<Class<Identifier>> optional1 =
-			_identifierClassManager.getIdentifierClassOptional(name);
+		if (!INSTANCE.hasNestedCollectionRoutes()) {
+			_generateNestedCollectionRoutes();
+		}
 
-		Optional<Class<Identifier>> optional2 =
-			_identifierClassManager.getIdentifierClassOptional(nestedName);
+		Optional<Map<String, NestedCollectionRoutes>> optional =
+			INSTANCE.getNestedCollectionRoutesOptional();
 
-		return optional1.map(
-			Class::getName
-		).flatMap(
-			className1 -> optional2.map(
-				Class::getName
-			).map(
-				className2 -> className1 + "-" + className2
-			).flatMap(
-				this::getServiceOptional
-			)
+		return optional.map(
+			map -> map.get(name + "-" + nestedName)
 		).map(
 			Unsafe::unsafeCast
 		);
@@ -106,38 +106,103 @@ public class NestedCollectionRouterManagerImpl
 			serviceReference, key -> emitter.emit(clazz.getName() + "-" + key));
 	}
 
-	@Override
-	protected NestedCollectionRoutes map(
-		NestedCollectionRouter nestedCollectionRouter,
-		ServiceReference<NestedCollectionRouter> serviceReference,
-		Class<?> clazz) {
+	private void _generateNestedCollectionRoutes() {
+		Stream<String> stream = getKeyStream();
 
-		Class<?> parentIdentifierClass = getGenericClassFromPropertyOrElse(
-			serviceReference, KEY_PARENT_IDENTIFIER_CLASS,
-			() -> getTypeParamOrFail(
-				nestedCollectionRouter, NestedCollectionRouter.class, 3));
+		Map<String, NestedCollectionRoutes> nestedCollectionRoutes =
+			new HashMap<>();
 
-		String name = getNameOrFail(parentIdentifierClass, _nameManager);
+		stream.forEach(
+			key -> {
+				String[] classNames = key.split("-");
 
-		String nestedName = getNameOrFail(clazz, _nameManager);
+				if (classNames.length != 2) {
+					return;
+				}
 
-		return _getNestedCollectionRoutes(
-			unsafeCast(nestedCollectionRouter), name, nestedName);
-	}
+				String parentClassName = classNames[0];
+				String nestedClassName = classNames[1];
 
-	private <T, S, U extends Identifier<S>> NestedCollectionRoutes<T, S>
-		_getNestedCollectionRoutes(
-			NestedCollectionRouter<T, ?, S, U> nestedCollectionRouter,
-			String name, String nestedName) {
+				Optional<String> nameOptional = _nameManager.getNameOptional(
+					parentClassName);
 
-		Builder<T, S> builder = new Builder<>(
-			name, nestedName, curry(_providerManager::provideOptional));
+				if (!nameOptional.isPresent()) {
+					_apioLogger.warning(
+						"Could not found a Representable for classname " +
+							parentClassName);
 
-		return nestedCollectionRouter.collectionRoutes(builder);
+					return;
+				}
+
+				String name = nameOptional.get();
+
+				Optional<String> nestedNameOptional =
+					_nameManager.getNameOptional(nestedClassName);
+
+				if (!nestedNameOptional.isPresent()) {
+					_apioLogger.warning(
+						"Could not found a Representable for classname " +
+							nestedClassName);
+
+					return;
+				}
+
+				String nestedName = nestedNameOptional.get();
+
+				NestedCollectionRouter<Object, ?, Object, ?>
+					nestedCollectionRouter = unsafeCast(
+						serviceTrackerMap.getService(key));
+
+				Set<String> neededProviders = new TreeSet<>();
+
+				Builder<Object, Object> builder = new Builder<>(
+					name, nestedName, curry(_providerManager::provideMandatory),
+					neededProviders::add);
+
+				List<String> missingProviders =
+					_providerManager.getMissingProviders(neededProviders);
+
+				if (!missingProviders.isEmpty()) {
+					_apioLogger.warning(
+						"Missing providers for classes: " + missingProviders);
+
+					return;
+				}
+
+				Optional<ItemRoutes<Object, Object>> nestedItemRoutes =
+					_itemRouterManager.getItemRoutesOptional(nestedName);
+
+				if (!nestedItemRoutes.isPresent()) {
+					_apioLogger.warning(
+						"Missing item router for resource with name " +
+							nestedName);
+
+					return;
+				}
+
+				Optional<ItemRoutes<Object, Object>> parentItemRoutes =
+					_itemRouterManager.getItemRoutesOptional(name);
+
+				if (!parentItemRoutes.isPresent()) {
+					_apioLogger.warning(
+						"Missing item router for resource with name " + name);
+
+					return;
+				}
+
+				nestedCollectionRoutes.put(
+					name + "-" + nestedName,
+					nestedCollectionRouter.collectionRoutes(builder));
+			});
+
+		INSTANCE.setNestedCollectionRoutes(nestedCollectionRoutes);
 	}
 
 	@Reference
-	private IdentifierClassManager _identifierClassManager;
+	private ApioLogger _apioLogger;
+
+	@Reference
+	private ItemRouterManager _itemRouterManager;
 
 	@Reference
 	private NameManager _nameManager;

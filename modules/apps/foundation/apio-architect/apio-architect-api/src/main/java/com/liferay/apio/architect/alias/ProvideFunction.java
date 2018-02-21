@@ -14,7 +14,6 @@
 
 package com.liferay.apio.architect.alias;
 
-import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -28,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Alejandro Hernández
  */
 public interface ProvideFunction
-	extends RequestFunction<Function<Class<?>, Optional<?>>> {
+	extends RequestFunction<Function<Class<?>, ?>> {
 
 	/**
 	 * Currifies a non-currified version of a {@code ProvideFunction}.
@@ -39,7 +38,7 @@ public interface ProvideFunction
 	 * @review
 	 */
 	public static ProvideFunction curry(
-		BiFunction<HttpServletRequest, Class<?>, Optional<?>> biFunction) {
+		BiFunction<HttpServletRequest, Class<?>, ?> biFunction) {
 
 		return a -> b -> biFunction.apply(a, b);
 	}

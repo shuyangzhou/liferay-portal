@@ -17,11 +17,8 @@ package com.liferay.apio.architect.application.internal.uri.mapper;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import com.liferay.apio.architect.error.ApioDeveloperError.UnresolvableURI;
-import com.liferay.apio.architect.identifier.Identifier;
 import com.liferay.apio.architect.uri.Path;
-
-import java.util.Optional;
+import com.liferay.apio.architect.uri.mapper.PathIdentifierMapper;
 
 import org.junit.Test;
 
@@ -31,14 +28,8 @@ import org.junit.Test;
 public class PathStringIdentifierMapperTest {
 
 	@Test
-	public void testMapReturnsPathIfNameManagerReturnsValidName() {
-		PathStringIdentifierMapper pathStringIdentifierMapper =
-			new PathStringIdentifierMapper();
-
-		pathStringIdentifierMapper.nameManager = __ -> Optional.of("name");
-
-		Path path = pathStringIdentifierMapper.map(
-			StringIdentifier.class, "id");
+	public void testMapReturnsPath() {
+		Path path = _pathIdentifierMapper.map("name", "id");
 
 		assertThat(path.getName(), is("name"));
 		assertThat(path.getId(), is("id"));
@@ -46,26 +37,12 @@ public class PathStringIdentifierMapperTest {
 
 	@Test
 	public void testMapReturnsString() {
-		PathStringIdentifierMapper pathStringIdentifierMapper =
-			new PathStringIdentifierMapper();
-
-		String identifier = pathStringIdentifierMapper.map(
-			new Path("name", "id"));
+		String identifier = _pathIdentifierMapper.map(new Path("name", "id"));
 
 		assertThat(identifier, is("id"));
 	}
 
-	@Test(expected = UnresolvableURI.class)
-	public void testMapThrowsExceptionIfNameManagerReturnsEmptyOptional() {
-		PathStringIdentifierMapper pathStringIdentifierMapper =
-			new PathStringIdentifierMapper();
-
-		pathStringIdentifierMapper.nameManager = __ -> Optional.empty();
-
-		pathStringIdentifierMapper.map(StringIdentifier.class, "id");
-	}
-
-	private interface StringIdentifier extends Identifier<String> {
-	}
+	private final PathIdentifierMapper<String> _pathIdentifierMapper =
+		new PathStringIdentifierMapper();
 
 }

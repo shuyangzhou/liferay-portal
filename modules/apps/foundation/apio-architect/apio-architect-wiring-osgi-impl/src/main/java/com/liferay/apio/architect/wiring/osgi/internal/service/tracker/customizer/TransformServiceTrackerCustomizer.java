@@ -14,6 +14,7 @@
 
 package com.liferay.apio.architect.wiring.osgi.internal.service.tracker.customizer;
 
+import static com.liferay.apio.architect.wiring.osgi.internal.manager.ManagerCache.INSTANCE;
 import static com.liferay.apio.architect.wiring.osgi.internal.manager.TypeArgumentProperties.KEY_PRINCIPAL_TYPE_ARGUMENT;
 import static com.liferay.apio.architect.wiring.osgi.internal.manager.util.ManagerUtil.getGenericClassFromPropertyOrElse;
 import static com.liferay.apio.architect.wiring.osgi.internal.manager.util.ManagerUtil.getTypeParamOrFail;
@@ -25,11 +26,10 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
- * Instances of this class represent a {@code ServiceTrackerCustomizer} that
- * transforms the service to another type.
+ * Represents a {@code ServiceTrackerCustomizer} that transforms the service to
+ * another type.
  *
  * @author Alejandro Hernández
- * @review
  */
 public abstract class TransformServiceTrackerCustomizer<T, U>
 	implements ServiceTrackerCustomizer<T, U> {
@@ -52,14 +52,17 @@ public abstract class TransformServiceTrackerCustomizer<T, U>
 			() -> getTypeParamOrFail(
 				t, _managedClass, getPrincipalTypeParamPosition()));
 
-		return map(t, serviceReference, clazz);
+		U u = map(t, serviceReference, clazz);
+
+		onAddedService(serviceReference, u);
+
+		return u;
 	}
 
 	/**
-	 * Returns the position of the principal type param.
+	 * Returns the principal type parameter's position.
 	 *
 	 * @return the position
-	 * @review
 	 */
 	public Integer getPrincipalTypeParamPosition() {
 		return 2;
@@ -85,32 +88,41 @@ public abstract class TransformServiceTrackerCustomizer<T, U>
 	 * Returns the managed class.
 	 *
 	 * @return the managed class
-	 * @review
 	 */
 	protected Class<T> getManagedClass() {
 		return _managedClass;
 	}
 
 	/**
-	 * Transforms a service of type {@link T} into a {@link U}.
+	 * Transforms a service of type {@code T} into a {@code U}.
 	 *
 	 * @param  t the service to transform
 	 * @param  serviceReference the service reference
 	 * @param  clazz the generic class
-	 * @return the service transformed to a {@link U}
-	 * @review
+	 * @return the transformed service
 	 */
 	protected abstract U map(
 		T t, ServiceReference<T> serviceReference, Class<?> clazz);
 
 	/**
-	 * Called when the service is being removed.
+	 * Called when the service is being added.
 	 *
-	 * @param  serviceReference the service reference being removed
-	 * @param  u the service being removed
+	 * @param  serviceReference the service reference being added
+	 * @param  u the service being added
 	 * @review
 	 */
+	protected void onAddedService(ServiceReference<T> serviceReference, U u) {
+		INSTANCE.clear();
+	}
+
+	/**
+	 * Called when the service is being removed.
+	 *
+	 * @param serviceReference the service reference being removed
+	 * @param u the service being removed
+	 */
 	protected void onRemovedService(ServiceReference<T> serviceReference, U u) {
+		INSTANCE.clear();
 	}
 
 	private final Class<T> _managedClass;
