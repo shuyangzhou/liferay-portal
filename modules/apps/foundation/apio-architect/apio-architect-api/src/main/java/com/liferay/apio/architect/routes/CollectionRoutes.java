@@ -16,7 +16,6 @@ package com.liferay.apio.architect.routes;
 
 import static com.liferay.apio.architect.operation.Method.POST;
 import static com.liferay.apio.architect.routes.RoutesBuilderUtil.provide;
-import static com.liferay.apio.architect.unsafe.Unsafe.unsafeCast;
 
 import com.liferay.apio.architect.alias.ProvideFunction;
 import com.liferay.apio.architect.alias.form.FormBuilderFunction;
@@ -38,6 +37,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -105,9 +105,13 @@ public class CollectionRoutes<T> {
 	@SuppressWarnings("unused")
 	public static class Builder<T> {
 
-		public Builder(String name, ProvideFunction provideFunction) {
+		public Builder(
+			String name, ProvideFunction provideFunction,
+			Consumer<String> neededProviderConsumer) {
+
 			_name = name;
 			_provideFunction = provideFunction;
+			_neededProviderConsumer = neededProviderConsumer;
 		}
 
 		/**
@@ -126,17 +130,21 @@ public class CollectionRoutes<T> {
 			Function<Credentials, Boolean> permissionFunction,
 			FormBuilderFunction<R> formBuilderFunction) {
 
+			_neededProviderConsumer.accept(aClass.getName());
+
 			_collectionPermissionFunction = permissionFunction;
 
-			_form = formBuilderFunction.apply(
+			Form<R> form = formBuilderFunction.apply(
 				new Form.Builder<>(Arrays.asList("c", _name)));
+
+			_form = form;
 
 			_createItemFunction = httpServletRequest -> body -> provide(
 				_provideFunction.apply(httpServletRequest), aClass,
 				a -> biFunction.andThen(
 					t -> new SingleModel<>(t, _name, Collections.emptyList())
 				).apply(
-					unsafeCast(_form.get(body)), a
+					form.get(body), a
 				));
 
 			return this;
@@ -159,14 +167,16 @@ public class CollectionRoutes<T> {
 
 			_collectionPermissionFunction = permissionFunction;
 
-			_form = formBuilderFunction.apply(
+			Form<R> form = formBuilderFunction.apply(
 				new Form.Builder<>(Arrays.asList("c", _name)));
+
+			_form = form;
 
 			_createItemFunction = httpServletRequest -> body ->
 				function.andThen(
 					t -> new SingleModel<>(t, _name, Collections.emptyList())
 				).apply(
-					unsafeCast(_form.get(body))
+					form.get(body)
 				);
 
 			return this;
@@ -193,10 +203,17 @@ public class CollectionRoutes<T> {
 			Function<Credentials, Boolean> permissionFunction,
 			FormBuilderFunction<R> formBuilderFunction) {
 
+			_neededProviderConsumer.accept(aClass.getName());
+			_neededProviderConsumer.accept(bClass.getName());
+			_neededProviderConsumer.accept(cClass.getName());
+			_neededProviderConsumer.accept(dClass.getName());
+
 			_collectionPermissionFunction = permissionFunction;
 
-			_form = formBuilderFunction.apply(
+			Form<R> form = formBuilderFunction.apply(
 				new Form.Builder<>(Arrays.asList("c", _name)));
+
+			_form = form;
 
 			_createItemFunction = httpServletRequest -> body -> provide(
 				_provideFunction.apply(httpServletRequest), aClass, bClass,
@@ -204,7 +221,7 @@ public class CollectionRoutes<T> {
 				a -> b -> c -> d -> pentaFunction.andThen(
 					t -> new SingleModel<>(t, _name, Collections.emptyList())
 				).apply(
-					unsafeCast(_form.get(body)), a, b, c, d
+					form.get(body), a, b, c, d
 				));
 
 			return this;
@@ -230,10 +247,16 @@ public class CollectionRoutes<T> {
 			Function<Credentials, Boolean> permissionFunction,
 			FormBuilderFunction<R> formBuilderFunction) {
 
+			_neededProviderConsumer.accept(aClass.getName());
+			_neededProviderConsumer.accept(bClass.getName());
+			_neededProviderConsumer.accept(cClass.getName());
+
 			_collectionPermissionFunction = permissionFunction;
 
-			_form = formBuilderFunction.apply(
+			Form<R> form = formBuilderFunction.apply(
 				new Form.Builder<>(Arrays.asList("c", _name)));
+
+			_form = form;
 
 			_createItemFunction = httpServletRequest -> body -> provide(
 				_provideFunction.apply(httpServletRequest), aClass, bClass,
@@ -241,7 +264,7 @@ public class CollectionRoutes<T> {
 				a -> b -> c -> pentaFunction.andThen(
 					t -> new SingleModel<>(t, _name, Collections.emptyList())
 				).apply(
-					unsafeCast(_form.get(body)), a, b, c
+					form.get(body), a, b, c
 				));
 
 			return this;
@@ -265,17 +288,22 @@ public class CollectionRoutes<T> {
 			Class<B> bClass, Function<Credentials, Boolean> permissionFunction,
 			FormBuilderFunction<R> formBuilderFunction) {
 
+			_neededProviderConsumer.accept(aClass.getName());
+			_neededProviderConsumer.accept(bClass.getName());
+
 			_collectionPermissionFunction = permissionFunction;
 
-			_form = formBuilderFunction.apply(
+			Form<R> form = formBuilderFunction.apply(
 				new Form.Builder<>(Arrays.asList("c", _name)));
+
+			_form = form;
 
 			_createItemFunction = httpServletRequest -> body -> provide(
 				_provideFunction.apply(httpServletRequest), aClass, bClass,
 				a -> b -> triFunction.andThen(
 					t -> new SingleModel<>(t, _name, Collections.emptyList())
 				).apply(
-					unsafeCast(_form.get(body)), a, b
+					form.get(body), a, b
 				));
 
 			return this;
@@ -291,6 +319,8 @@ public class CollectionRoutes<T> {
 		public <A> Builder<T> addGetter(
 			BiFunction<Pagination, A, PageItems<T>> biFunction,
 			Class<A> aClass) {
+
+			_neededProviderConsumer.accept(aClass.getName());
 
 			_getPageFunction = httpServletRequest -> provide(
 				_provideFunction.apply(httpServletRequest), Pagination.class,
@@ -344,6 +374,11 @@ public class CollectionRoutes<T> {
 			Class<A> aClass, Class<B> bClass, Class<C> cClass,
 			Class<D> dClass) {
 
+			_neededProviderConsumer.accept(aClass.getName());
+			_neededProviderConsumer.accept(bClass.getName());
+			_neededProviderConsumer.accept(cClass.getName());
+			_neededProviderConsumer.accept(dClass.getName());
+
 			_getPageFunction = httpServletRequest -> provide(
 				_provideFunction.apply(httpServletRequest), Pagination.class,
 				aClass, bClass, cClass, dClass, Credentials.class,
@@ -373,6 +408,10 @@ public class CollectionRoutes<T> {
 			TetraFunction<Pagination, A, B, C, PageItems<T>> tetraFunction,
 			Class<A> aClass, Class<B> bClass, Class<C> cClass) {
 
+			_neededProviderConsumer.accept(aClass.getName());
+			_neededProviderConsumer.accept(bClass.getName());
+			_neededProviderConsumer.accept(cClass.getName());
+
 			_getPageFunction = httpServletRequest -> provide(
 				_provideFunction.apply(httpServletRequest), Pagination.class,
 				aClass, bClass, cClass, Credentials.class,
@@ -399,6 +438,9 @@ public class CollectionRoutes<T> {
 		public <A, B> Builder<T> addGetter(
 			TriFunction<Pagination, A, B, PageItems<T>> triFunction,
 			Class<A> aClass, Class<B> bClass) {
+
+			_neededProviderConsumer.accept(aClass.getName());
+			_neededProviderConsumer.accept(bClass.getName());
 
 			_getPageFunction = httpServletRequest -> provide(
 				_provideFunction.apply(httpServletRequest), Pagination.class,
@@ -442,6 +484,7 @@ public class CollectionRoutes<T> {
 		private Form _form;
 		private GetPageFunction<T> _getPageFunction;
 		private final String _name;
+		private final Consumer<String> _neededProviderConsumer;
 		private final ProvideFunction _provideFunction;
 
 	}

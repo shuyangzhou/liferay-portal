@@ -20,6 +20,7 @@ import com.liferay.apio.architect.documentation.Documentation;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 /**
  * Declares the endpoint from which all of your APIs originate. There should
@@ -75,7 +76,7 @@ public interface RootEndpoint {
 	 * @return the endpoint for page operations.
 	 * @review
 	 */
-	@Path("/p/")
-	public PageEndpoint pageEndpoint();
+	@Path("/p/{name}")
+	public PageEndpoint pageEndpoint(@PathParam("name") String name);
 
 }

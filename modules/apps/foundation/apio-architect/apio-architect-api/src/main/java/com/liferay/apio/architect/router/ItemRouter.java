@@ -60,6 +60,6 @@ public interface ItemRouter<T, S, U extends Identifier<S>> {
 	 *        instance
 	 * @see   ItemRoutes.Builder
 	 */
-	public ItemRoutes<T> itemRoutes(Builder<T, S> builder);
+	public ItemRoutes<T, S> itemRoutes(Builder<T, S> builder);
 
 }

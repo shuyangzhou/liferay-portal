@@ -24,11 +24,10 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 /**
- * An implementation of a {@link ServiceReferenceMapper} that emits the first
- * generic type param class' name as the key.
+ * An implementation of a {@code ServiceReferenceMapper} that emits the first
+ * generic type parameter class's name as the key.
  *
  * @author Alejandro Hernández
- * @review
  */
 public class CustomServiceReferenceMapper<T>
 	implements ServiceReferenceMapper<String, T> {

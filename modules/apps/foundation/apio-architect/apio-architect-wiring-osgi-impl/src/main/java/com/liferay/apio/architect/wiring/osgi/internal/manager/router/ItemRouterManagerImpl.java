@@ -16,24 +16,27 @@ package com.liferay.apio.architect.wiring.osgi.internal.manager.router;
 
 import static com.liferay.apio.architect.alias.ProvideFunction.curry;
 import static com.liferay.apio.architect.unsafe.Unsafe.unsafeCast;
-import static com.liferay.apio.architect.wiring.osgi.internal.manager.util.ManagerUtil.getNameOrFail;
+import static com.liferay.apio.architect.wiring.osgi.internal.manager.ManagerCache.INSTANCE;
 
-import com.liferay.apio.architect.error.ApioDeveloperError.MustHavePathIdentifierMapper;
-import com.liferay.apio.architect.identifier.Identifier;
+import com.liferay.apio.architect.logger.ApioLogger;
 import com.liferay.apio.architect.router.ItemRouter;
 import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.apio.architect.routes.ItemRoutes.Builder;
 import com.liferay.apio.architect.unsafe.Unsafe;
-import com.liferay.apio.architect.wiring.osgi.internal.manager.base.BaseManager;
+import com.liferay.apio.architect.wiring.osgi.internal.manager.base.SimpleBaseManager;
 import com.liferay.apio.architect.wiring.osgi.manager.PathIdentifierMapperManager;
 import com.liferay.apio.architect.wiring.osgi.manager.ProviderManager;
-import com.liferay.apio.architect.wiring.osgi.manager.representable.IdentifierClassManager;
 import com.liferay.apio.architect.wiring.osgi.manager.representable.NameManager;
 import com.liferay.apio.architect.wiring.osgi.manager.router.ItemRouterManager;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Stream;
 
-import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -42,53 +45,88 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true)
 public class ItemRouterManagerImpl
-	extends BaseManager<ItemRouter, ItemRoutes> implements ItemRouterManager {
+	extends SimpleBaseManager<ItemRouter> implements ItemRouterManager {
 
 	public ItemRouterManagerImpl() {
 		super(ItemRouter.class);
 	}
 
 	@Override
-	public <T> Optional<ItemRoutes<T>> getItemRoutesOptional(String name) {
-		Optional<Class<Identifier>> optional =
-			_identifierClassManager.getIdentifierClassOptional(name);
+	public <T, S> Optional<ItemRoutes<T, S>> getItemRoutesOptional(
+		String name) {
 
-		return optional.flatMap(
-			this::getServiceOptional
+		if (!INSTANCE.hasItemRoutes()) {
+			_generateItemRoutes();
+		}
+
+		Optional<Map<String, ItemRoutes>> optional =
+			INSTANCE.getItemRoutesOptional();
+
+		return optional.map(
+			map -> map.get(name)
 		).map(
 			Unsafe::unsafeCast
 		);
 	}
 
-	@Override
-	protected ItemRoutes map(
-		ItemRouter itemRouter, ServiceReference<ItemRouter> serviceReference,
-		Class<?> clazz) {
+	private void _generateItemRoutes() {
+		Stream<String> stream = getKeyStream();
 
-		String name = getNameOrFail(clazz, _nameManager);
+		Map<String, ItemRoutes> itemRoutes = new HashMap<>();
 
-		return _getItemRoutes(unsafeCast(itemRouter), clazz, name);
-	}
+		stream.forEach(
+			className -> {
+				Optional<String> nameOptional = _nameManager.getNameOptional(
+					className);
 
-	private <T, S, U extends Identifier<S>> ItemRoutes<T> _getItemRoutes(
-		ItemRouter<T, S, U> itemRouter, Class<?> clazz, String name) {
+				if (!nameOptional.isPresent()) {
+					_apioLogger.warning(
+						"Could not found a Representable for classname " +
+							className);
 
-		Builder<T, S> builder = new Builder<>(
-			name, curry(_providerManager::provideOptional),
-			path -> {
-				Optional<S> optional =
-					_pathIdentifierMapperManager.mapToIdentifier(
-						unsafeCast(clazz), path);
+					return;
+				}
 
-				return optional.orElseThrow(
-					() -> new MustHavePathIdentifierMapper(clazz));
+				String name = nameOptional.get();
+
+				ItemRouter<Object, Object, ?> itemRouter = unsafeCast(
+					serviceTrackerMap.getService(className));
+
+				Set<String> neededProviders = new TreeSet<>();
+
+				Builder<Object, Object> builder = new Builder<>(
+					name, curry(_providerManager::provideMandatory),
+					neededProviders::add);
+
+				List<String> missingProviders =
+					_providerManager.getMissingProviders(neededProviders);
+
+				if (!missingProviders.isEmpty()) {
+					_apioLogger.warning(
+						"Missing providers for classes: " + missingProviders);
+
+					return;
+				}
+
+				boolean hasPathIdentifierMapper =
+					_pathIdentifierMapperManager.hasPathIdentifierMapper(name);
+
+				if (!hasPathIdentifierMapper) {
+					_apioLogger.warning(
+						"Missing path identifier mapper for resource with " +
+							"name " + name);
+
+					return;
+				}
+
+				itemRoutes.put(name, itemRouter.itemRoutes(builder));
 			});
 
-		return itemRouter.itemRoutes(builder);
+		INSTANCE.setItemRoutes(itemRoutes);
 	}
 
 	@Reference
-	private IdentifierClassManager _identifierClassManager;
+	private ApioLogger _apioLogger;
 
 	@Reference
 	private NameManager _nameManager;
