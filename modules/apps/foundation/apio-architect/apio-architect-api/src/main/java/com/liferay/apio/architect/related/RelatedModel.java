@@ -27,7 +27,6 @@ import java.util.function.Function;
  * @param  <T> the model's type
  * @param  <S> the model identifier's type (e.g., {@code Long}, {@code String},
  *         etc.)
- * @review
  */
 public class RelatedModel<T, S> {
 
