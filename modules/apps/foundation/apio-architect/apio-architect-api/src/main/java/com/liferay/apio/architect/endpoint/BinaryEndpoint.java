@@ -31,10 +31,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
 /**
- * Declares the endpoint for the binary operations.
+ * Declares the endpoint for binary operations.
  *
  * @author Alejandro Hernández
- * @review
  */
 public class BinaryEndpoint {
 

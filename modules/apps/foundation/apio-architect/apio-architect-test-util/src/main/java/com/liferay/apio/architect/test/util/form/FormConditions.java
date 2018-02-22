@@ -36,11 +36,11 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 /**
- * Provides tests for the {@code Matcher} {@link
+ * Provides tests for the {@code Matcher} returned by {@link
  * FormMatchers#isAFormWithConditions(Function)}.
  *
  * <p>
- * Don't directly instantiate this class. Use an instance of a {@link Builder}
+ * Don't directly instantiate this class. Use a {@link Builder} instance
  * instead.
  * </p>
  *
@@ -87,20 +87,19 @@ public class FormConditions<T> extends TypeSafeDiagnosingMatcher<Form<T>> {
 		 * Adds a new {@code Matcher} for a boolean part of the form.
 		 *
 		 * <p>
-		 * The form function should return the value {@code true}.
+		 * The form function should return {@code true}.
 		 * </p>
 		 *
 		 * <p>
-		 * To provide information about the form method to call, the method
-		 * {@link FormMatchers#isReturnedIn(Function)} should be used.
+		 * To provide information about the form method to call, use the method
+		 * {@link FormMatchers#isReturnedIn(Function)}.
 		 * </p>
 		 *
-		 * @param  key the name of field being read from the HTTP body
-		 * @param  function a function that takes the field value and returns a
-		 *         {@code Matcher} for the {@code Form}. The method {@link
-		 *         FormMatchers#isReturnedIn(Function)} should be used here.
+		 * @param  key the name of the field read from the HTTP body
+		 * @param  function the function that takes the field value and returns
+		 *         a {@code Matcher} for the {@code Form}. Use the method {@link
+		 *         FormMatchers#isReturnedIn(Function)}.
 		 * @return the builder's next step
-		 * @review
 		 */
 		public Builder<T> whereBoolean(
 			String key, Function<Object, Matcher<T>> function) {
@@ -118,16 +117,15 @@ public class FormConditions<T> extends TypeSafeDiagnosingMatcher<Form<T>> {
 		 * </p>
 		 *
 		 * <p>
-		 * To provide information about the form method to call, the method
-		 * {@link FormMatchers#isReturnedIn(Function)} should be used.
+		 * To provide information about the form method to call, use the method
+		 * {@link FormMatchers#isReturnedIn(Function)}.
 		 * </p>
 		 *
-		 * @param  key the name of field being read from the HTTP body
-		 * @param  function a function that takes the field value and returns a
-		 *         {@code Matcher} for the {@code Form}. The method {@link
-		 *         FormMatchers#isReturnedIn(Function)} should be used here.
+		 * @param  key the name of the field read from the HTTP body
+		 * @param  function the function that takes the field value and returns
+		 *         a {@code Matcher} for the {@code Form}. Use the method {@link
+		 *         FormMatchers#isReturnedIn(Function)}.
 		 * @return the builder's next step
-		 * @review
 		 */
 		public Builder<T> whereDate(
 			String key, Function<Object, Matcher<T>> function) {
@@ -152,16 +150,15 @@ public class FormConditions<T> extends TypeSafeDiagnosingMatcher<Form<T>> {
 		 * </p>
 		 *
 		 * <p>
-		 * To provide information about the form method to call, the method
-		 * {@link FormMatchers#isReturnedIn(Function)} should be used.
+		 * To provide information about the form method to call, use the method
+		 * {@link FormMatchers#isReturnedIn(Function)}.
 		 * </p>
 		 *
-		 * @param  key the name of field being read from the HTTP body
-		 * @param  function a function that takes the field value and returns a
-		 *         {@code Matcher} for the {@code Form}. The method {@link
-		 *         FormMatchers#isReturnedIn(Function)} should be used here.
+		 * @param  key the name of the field read from the HTTP body
+		 * @param  function the function that takes the field value and returns
+		 *         a {@code Matcher} for the {@code Form}. Use the method {@link
+		 *         FormMatchers#isReturnedIn(Function)}.
 		 * @return the builder's next step
-		 * @review
 		 */
 		public Builder<T> whereDouble(
 			String key, Function<Object, Matcher<T>> function) {
@@ -179,16 +176,15 @@ public class FormConditions<T> extends TypeSafeDiagnosingMatcher<Form<T>> {
 		 * </p>
 		 *
 		 * <p>
-		 * To provide information about the form method to call, the method
-		 * {@link FormMatchers#isReturnedIn(Function)} should be used.
+		 * To provide information about the form method to call, use the method
+		 * {@link FormMatchers#isReturnedIn(Function)}.
 		 * </p>
 		 *
-		 * @param  key the name of field being read from the HTTP body
-		 * @param  function a function that takes the field value and returns a
-		 *         {@code Matcher} for the {@code Form}. The method {@link
-		 *         FormMatchers#isReturnedIn(Function)} should be used here.
+		 * @param  key the name of the field read from the HTTP body
+		 * @param  function the function that takes the field value and returns
+		 *         a {@code Matcher} for the {@code Form}. Use the method {@link
+		 *         FormMatchers#isReturnedIn(Function)}.
 		 * @return the builder's next step
-		 * @review
 		 */
 		public Builder<T> whereLong(
 			String key, Function<Object, Matcher<T>> function) {
@@ -206,16 +202,15 @@ public class FormConditions<T> extends TypeSafeDiagnosingMatcher<Form<T>> {
 		 * </p>
 		 *
 		 * <p>
-		 * To provide information about the form method to call, the method
-		 * {@link FormMatchers#isReturnedIn(Function)} should be used.
+		 * To provide information about the form method to call, use the method
+		 * {@link FormMatchers#isReturnedIn(Function)}.
 		 * </p>
 		 *
-		 * @param  key the name of field being read from the HTTP body
-		 * @param  function a function that takes the field value and returns a
-		 *         {@code Matcher} for the {@code Form}. The method {@link
-		 *         FormMatchers#isReturnedIn(Function)} should be used here.
+		 * @param  key the name of the field read from the HTTP body
+		 * @param  function the function that takes the field value and returns
+		 *         a {@code Matcher} for the {@code Form}. Use the method {@link
+		 *         FormMatchers#isReturnedIn(Function)}.
 		 * @return the builder's next step
-		 * @review
 		 */
 		public Builder<T> whereString(
 			String key, Function<Object, Matcher<T>> function) {

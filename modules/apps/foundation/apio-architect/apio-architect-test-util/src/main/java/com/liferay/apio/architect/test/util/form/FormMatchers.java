@@ -25,7 +25,8 @@ import java.util.function.Function;
 import org.hamcrest.Matcher;
 
 /**
- * Provides {@link Matcher} objects that can be used in testing {@code Forms}.
+ * Provides {@code Matcher} objects that can be used in testing
+ * {@code Forms}.
  *
  * <p>
  * This class shouldn't be instantiated.
@@ -36,14 +37,13 @@ import org.hamcrest.Matcher;
 public class FormMatchers {
 
 	/**
-	 * Checks if a {@code Form} is indeed a valid {@code Form} that follows
-	 * certain conditions.
+	 * Returns a {@code Matcher} that checks if a {@code Form} meets certain
+	 * conditions.
 	 *
-	 * @param  function a function that receives a {@link
+	 * @param  function the function that receives a {@link
 	 *         FormConditions.Builder} and returns the constructed {@link
 	 *         FormConditions}
-	 * @return the matcher that checks if the form is valid
-	 * @review
+	 * @return the matcher
 	 */
 	public static <T> Matcher<Form<T>> isAFormWithConditions(
 		Function<Builder<T>, FormConditions<T>> function) {
@@ -55,11 +55,10 @@ public class FormMatchers {
 	 * Returns a function that receives an object and returns a {@code Matcher}
 	 * for a {@code Form} part.
 	 *
-	 * @param  function a function that takes an instance of the form and
+	 * @param  function the function that takes an instance of the form and
 	 *         returns something
-	 * @return a function that receives an object and returns a matcher for a
+	 * @return the function that receives an object and returns a matcher for a
 	 *         form part
-	 * @review
 	 */
 	public static <T> Function<Object, Matcher<T>> isReturnedIn(
 		Function<T, ?> function) {

@@ -17,11 +17,8 @@ package com.liferay.apio.architect.application.internal.uri.mapper;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import com.liferay.apio.architect.error.ApioDeveloperError.UnresolvableURI;
-import com.liferay.apio.architect.identifier.Identifier;
 import com.liferay.apio.architect.uri.Path;
-
-import java.util.Optional;
+import com.liferay.apio.architect.uri.mapper.PathIdentifierMapper;
 
 import javax.ws.rs.BadRequestException;
 
@@ -34,35 +31,17 @@ public class PathLongIdentifierMapperTest {
 
 	@Test
 	public void testMapReturnsLongIfValidPathId() {
-		PathLongIdentifierMapper pathLongIdentifierMapper =
-			new PathLongIdentifierMapper();
-
-		Long identifier = pathLongIdentifierMapper.map(new Path("name", "42"));
+		Long identifier = _pathIdentifierMapper.map(new Path("name", "42"));
 
 		assertThat(identifier, is(42L));
 	}
 
 	@Test
-	public void testMapReturnsPathIfNameManagerReturnsValidName() {
-		PathLongIdentifierMapper pathLongIdentifierMapper =
-			new PathLongIdentifierMapper();
-
-		pathLongIdentifierMapper.nameManager = __ -> Optional.of("name");
-
-		Path path = pathLongIdentifierMapper.map(LongIdentifier.class, 42L);
+	public void testMapReturnsPath() {
+		Path path = _pathIdentifierMapper.map("name", 42L);
 
 		assertThat(path.getName(), is("name"));
 		assertThat(path.getId(), is("42"));
-	}
-
-	@Test(expected = UnresolvableURI.class)
-	public void testMapThrowsExceptionIfNameManagerReturnsEmptyOptional() {
-		PathLongIdentifierMapper pathLongIdentifierMapper =
-			new PathLongIdentifierMapper();
-
-		pathLongIdentifierMapper.nameManager = __ -> Optional.empty();
-
-		pathLongIdentifierMapper.map(LongIdentifier.class, 42L);
 	}
 
 	@Test(expected = BadRequestException.class)
@@ -73,7 +52,7 @@ public class PathLongIdentifierMapperTest {
 		pathLongIdentifierMapper.map(new Path("name", "wrong"));
 	}
 
-	private interface LongIdentifier extends Identifier<Long> {
-	}
+	private final PathIdentifierMapper<Long> _pathIdentifierMapper =
+		new PathLongIdentifierMapper();
 
 }
