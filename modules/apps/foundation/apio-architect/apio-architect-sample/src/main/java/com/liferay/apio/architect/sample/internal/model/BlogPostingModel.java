@@ -22,10 +22,10 @@ import com.github.javafaker.service.RandomService;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -61,6 +61,45 @@ public class BlogPostingModel {
 		_blogPostings.put(blogPostingId, blogPostingModel);
 
 		return blogPostingModel;
+	}
+
+	/**
+	 * Compute the fake data for this model class.
+	 *
+	 * @review
+	 */
+	public static void computeBlogPostingModels() {
+		for (long blogPostingId = 0; blogPostingId < 42; blogPostingId++) {
+			Faker faker = new Faker();
+
+			Book book = faker.book();
+
+			Lorem lorem = faker.lorem();
+
+			List<String> paragraphs = lorem.paragraphs(5);
+
+			Stream<String> stream = paragraphs.stream();
+
+			String content = stream.map(
+				paragraph -> "<p>" + paragraph + "</p>"
+			).collect(
+				Collectors.joining()
+			);
+
+			RandomService randomService = faker.random();
+
+			int creatorId = randomService.nextInt(PersonModel.getPeopleCount());
+
+			DateAndTime dateAndTime = faker.date();
+
+			Date date = dateAndTime.past(400, TimeUnit.DAYS);
+
+			BlogPostingModel blogPostingModel = new BlogPostingModel(
+				blogPostingId, content, date, creatorId, date, lorem.sentence(),
+				book.title());
+
+			_blogPostings.put(blogPostingId, blogPostingModel);
+		}
 	}
 
 	/**
@@ -228,42 +267,8 @@ public class BlogPostingModel {
 	}
 
 	private static final Map<Long, BlogPostingModel> _blogPostings =
-		new HashMap<>();
+		new ConcurrentHashMap<>();
 	private static final AtomicLong _count = new AtomicLong(29);
-
-	static {
-		for (long blogPostingId = 0; blogPostingId < 42; blogPostingId++) {
-			Faker faker = new Faker();
-
-			Book book = faker.book();
-
-			Lorem lorem = faker.lorem();
-
-			List<String> paragraphs = lorem.paragraphs(5);
-
-			Stream<String> stream = paragraphs.stream();
-
-			String content = stream.map(
-				paragraph -> "<p>" + paragraph + "</p>"
-			).collect(
-				Collectors.joining()
-			);
-
-			RandomService randomService = faker.random();
-
-			int creatorId = randomService.nextInt(PersonModel.getPeopleCount());
-
-			DateAndTime dateAndTime = faker.date();
-
-			Date date = dateAndTime.past(400, TimeUnit.DAYS);
-
-			BlogPostingModel blogPostingModel = new BlogPostingModel(
-				blogPostingId, content, date, creatorId, date, lorem.sentence(),
-				book.title());
-
-			_blogPostings.put(blogPostingId, blogPostingModel);
-		}
-	}
 
 	private final long _blogPostingId;
 	private final String _content;

@@ -28,11 +28,10 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Dummy class that can be used to {@link
+ * Provides a dummy class that can be used with {@link
  * com.liferay.apio.architect.representor.Representor}.
  *
  * @author Alejandro Hernández
- * @review
  */
 public class Dummy {
 

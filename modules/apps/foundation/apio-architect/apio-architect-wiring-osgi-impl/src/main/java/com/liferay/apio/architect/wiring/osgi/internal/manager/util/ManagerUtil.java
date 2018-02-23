@@ -18,13 +18,11 @@ import com.liferay.apio.architect.error.ApioDeveloperError.MustHaveValidGenericT
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.unsafe.Unsafe;
 import com.liferay.apio.architect.wiring.osgi.internal.service.tracker.customizer.ServiceRegistrationServiceTrackerCustomizer;
-import com.liferay.apio.architect.wiring.osgi.manager.representable.NameManager;
 import com.liferay.apio.architect.wiring.osgi.util.GenericUtil;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -34,25 +32,22 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
- * Util class for managers.
+ * Provides a util class for managers.
  *
  * @author Alejandro Hernández
- * @review
  */
 public class ManagerUtil {
 
 	/**
-	 * Creates a {@code ServiceTracker} that will register its managed services
-	 * as the classes provided in the {@code classes} parameter.
+	 * Creates and returns a {@code ServiceTracker} that registers its managed
+	 * services as the classes provided in the {@code classes} parameter.
 	 *
 	 * @param  bundleContext the bundle context
 	 * @param  clazz the managed class
-	 * @param  classes the list of classes with which the service will be
-	 *         registered
-	 * @param  biConsumer function that can be used to alter the properties
+	 * @param  classes the list of classes to register the service under
+	 * @param  biConsumer the function that can be used to alter the properties
 	 *         dictionary
 	 * @return the service tracker
-	 * @review
 	 */
 	public static <T> ServiceTracker<T, ServiceRegistration<?>>
 		createServiceTracker(
@@ -83,18 +78,17 @@ public class ManagerUtil {
 	}
 
 	/**
-	 * Returns the generic class stored inside the properties of a {@code
-	 * ServiceReference}, if it's present and a {@code Class}. Returns the
-	 * result of the provided {@code Supplier} otherwise.
+	 * Returns a {@code Class}, and the generic class if it's present inside the
+	 * properties of a {@code ServiceReference}. Returns the result of the
+	 * provided {@code Supplier} otherwise.
 	 *
 	 * @param  serviceReference the service reference
 	 * @param  typeArgumentProperty the type argument position
-	 * @param  supplier the supplier to call if the property is not found or is
-	 *         not a {@code Class}
-	 * @return the generic class stored inside the properties of a {@code
-	 *         ServiceReference}, if it's present and a {@code Class}; the
-	 *         result of the provided {@code Supplier} otherwise.
-	 * @review
+	 * @param  supplier the supplier to call if the property isn't found or
+	 *         isn't a {@code Class}
+	 * @return the {@code Class}, and the generic class if it's present inside
+	 *         the properties of a {@code ServiceReference}; the result of the
+	 *         provided {@code Supplier} otherwise
 	 */
 	public static <T> Class<T> getGenericClassFromPropertyOrElse(
 		ServiceReference serviceReference, String typeArgumentProperty,
@@ -114,31 +108,11 @@ public class ManagerUtil {
 	}
 
 	/**
-	 * Returns the name of a resource identified by a certain class.
-	 *
-	 * @param  clazz the class that identifies the resource
-	 * @param  nameManager an instance of a {@code NameManager}
-	 * @return the name of the resource
-	 * @review
-	 */
-	public static String getNameOrFail(
-		Class<?> clazz, NameManager nameManager) {
-
-		Optional<String> nameOptional = nameManager.getNameOptional(
-			clazz.getName());
-
-		return nameOptional.orElseThrow(
-			() -> new MustHaveValidGenericType(clazz));
-	}
-
-	/**
 	 * Returns a dictionary containing the properties of a {@code
 	 * ServiceReference}.
 	 *
 	 * @param  serviceReference the service reference
-	 * @return a dictionary containing the properties of a {@code
-	 *         ServiceReference}
-	 * @review
+	 * @return the dictionary
 	 */
 	public static <T> Dictionary<String, Object> getProperties(
 		ServiceReference<T> serviceReference) {
@@ -156,14 +130,13 @@ public class ManagerUtil {
 	}
 
 	/**
-	 * Return a type param from a generic interface of the class of an object at
-	 * a certain position or fail.
+	 * Returns a type parameter from a generic interface of the class of an
+	 * object at a certain position, or fails.
 	 *
 	 * @param  t the object
-	 * @param  interfaceClass the interface class to look for
-	 * @param  position the type param position
-	 * @return the type param
-	 * @review
+	 * @param  interfaceClass the class's interface
+	 * @param  position the position
+	 * @return the type parameter
 	 */
 	public static <T, U> Class<U> getTypeParamOrFail(
 		T t, Class<T> interfaceClass, Integer position) {

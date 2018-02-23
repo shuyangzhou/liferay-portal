@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.portlet.ActionRequest;
@@ -204,12 +205,20 @@ public class FlagsTag extends TemplateRendererTag {
 		return dataJSONObject;
 	}
 
-	private String[] _getReasons(long companyId) throws PortalException {
+	private Map<String, String> _getReasons(long companyId)
+		throws PortalException {
+
 		FlagsGroupServiceConfiguration flagsGroupServiceConfiguration =
 			ConfigurationProviderUtil.getCompanyConfiguration(
 				FlagsGroupServiceConfiguration.class, companyId);
 
-		return flagsGroupServiceConfiguration.reasons();
+		Map<String, String> reasons = new HashMap<>();
+
+		for (String reason : flagsGroupServiceConfiguration.reasons()) {
+			reasons.put(reason, LanguageUtil.get(request, reason));
+		}
+
+		return reasons;
 	}
 
 	private String _getURI() throws WindowStateException {

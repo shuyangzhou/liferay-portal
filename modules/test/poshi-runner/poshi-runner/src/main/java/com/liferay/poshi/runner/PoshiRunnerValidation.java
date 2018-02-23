@@ -1476,34 +1476,25 @@ public class PoshiRunnerValidation {
 	protected static void validateTestCaseContext(
 		Element element, String filePath) {
 
+		String namespace = PoshiRunnerContext.getNamespaceFromFilePath(
+			filePath);
+
 		String testName = element.attributeValue("test-case");
-
-		String namespace =
-			PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassCommandName(
-				testName);
-
-		if (namespace != null) {
-			_exceptions.add(
-				new Exception(
-					"Namespace is not supported for nested test case " +
-						"execution \n" + filePath + ":" +
-							element.attributeValue("line-number")));
-		}
 
 		String className =
 			PoshiRunnerGetterUtil.getClassNameFromNamespacedClassCommandName(
-				testName);
-
-		String commandName =
-			PoshiRunnerGetterUtil.getCommandNameFromNamespacedClassCommandName(
 				testName);
 
 		if (className.equals("super")) {
 			className = PoshiRunnerGetterUtil.getExtendedTestCaseName(filePath);
 		}
 
+		String commandName =
+			PoshiRunnerGetterUtil.getCommandNameFromNamespacedClassCommandName(
+				testName);
+
 		validateTestName(
-			className + "#" + commandName,
+			namespace + "." + className + "#" + commandName,
 			filePath + ":" + element.attributeValue("line-number"));
 	}
 
