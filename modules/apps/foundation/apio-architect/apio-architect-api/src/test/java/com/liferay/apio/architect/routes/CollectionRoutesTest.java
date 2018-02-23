@@ -27,6 +27,7 @@ import static java.util.Collections.singletonMap;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 
@@ -43,6 +44,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.Test;
 
@@ -54,7 +57,9 @@ public class CollectionRoutesTest {
 	@Test
 	public void testEmptyBuilderBuildsEmptyRoutes() {
 		Builder<String> builder = new Builder<>(
-			"name", REQUEST_PROVIDE_FUNCTION);
+			"name", REQUEST_PROVIDE_FUNCTION,
+			__ -> {
+			});
 
 		CollectionRoutes<String> collectionRoutes = builder.build();
 
@@ -71,8 +76,10 @@ public class CollectionRoutesTest {
 
 	@Test
 	public void testFiveParameterBuilderMethodsCreatesValidRoutes() {
+		Set<String> neededProviders = new TreeSet<>();
+
 		Builder<String> builder = new Builder<>(
-			"name", REQUEST_PROVIDE_FUNCTION);
+			"name", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
 		CollectionRoutes<String> collectionRoutes = builder.addCreator(
 			this::_testAndReturnFourParameterCreatorRoute, String.class,
@@ -83,13 +90,21 @@ public class CollectionRoutesTest {
 			Long.class, Boolean.class, Integer.class
 		).build();
 
+		assertThat(
+			neededProviders,
+			contains(
+				Boolean.class.getName(), Integer.class.getName(),
+				Long.class.getName(), String.class.getName()));
+
 		_testCollectionRoutes(collectionRoutes);
 	}
 
 	@Test
 	public void testFourParameterBuilderMethodsCreatesValidRoutes() {
+		Set<String> neededProviders = new TreeSet<>();
+
 		Builder<String> builder = new Builder<>(
-			"name", REQUEST_PROVIDE_FUNCTION);
+			"name", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
 		CollectionRoutes<String> collectionRoutes = builder.addCreator(
 			this::_testAndReturnThreeParameterCreatorRoute, String.class,
@@ -100,13 +115,21 @@ public class CollectionRoutesTest {
 			Long.class, Boolean.class
 		).build();
 
+		assertThat(
+			neededProviders,
+			contains(
+				Boolean.class.getName(), Long.class.getName(),
+				String.class.getName()));
+
 		_testCollectionRoutes(collectionRoutes);
 	}
 
 	@Test
 	public void testOneParameterBuilderMethodsCreatesValidRoutes() {
+		Set<String> neededProviders = new TreeSet<>();
+
 		Builder<String> builder = new Builder<>(
-			"name", REQUEST_PROVIDE_FUNCTION);
+			"name", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
 		CollectionRoutes<String> collectionRoutes = builder.addCreator(
 			this::_testAndReturnNoParameterCreatorRoute,
@@ -115,13 +138,17 @@ public class CollectionRoutesTest {
 			this::_testAndReturnNoParameterGetterRoute
 		).build();
 
+		assertThat(neededProviders.size(), is(0));
+
 		_testCollectionRoutes(collectionRoutes);
 	}
 
 	@Test
 	public void testThreeParameterBuilderMethodsCreatesValidRoutes() {
+		Set<String> neededProviders = new TreeSet<>();
+
 		Builder<String> builder = new Builder<>(
-			"name", REQUEST_PROVIDE_FUNCTION);
+			"name", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
 		CollectionRoutes<String> collectionRoutes = builder.addCreator(
 			this::_testAndReturnTwoParameterCreatorRoute, String.class,
@@ -131,13 +158,19 @@ public class CollectionRoutesTest {
 			Long.class
 		).build();
 
+		assertThat(
+			neededProviders,
+			contains(Long.class.getName(), String.class.getName()));
+
 		_testCollectionRoutes(collectionRoutes);
 	}
 
 	@Test
 	public void testTwoParameterBuilderMethodsCreatesValidRoutes() {
+		Set<String> neededProviders = new TreeSet<>();
+
 		Builder<String> builder = new Builder<>(
-			"name", REQUEST_PROVIDE_FUNCTION);
+			"name", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
 		CollectionRoutes<String> collectionRoutes = builder.addCreator(
 			this::_testAndReturnOneParameterCreatorRoute, String.class,
@@ -145,6 +178,8 @@ public class CollectionRoutesTest {
 		).addGetter(
 			this::_testAndReturnOneParameterGetterRoute, String.class
 		).build();
+
+		assertThat(neededProviders, contains(String.class.getName()));
 
 		_testCollectionRoutes(collectionRoutes);
 	}
