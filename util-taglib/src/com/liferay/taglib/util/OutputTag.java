@@ -125,7 +125,7 @@ public class OutputTag extends PositionTagSupport {
 		return outputData;
 	}
 
-	private String _addAtrribute(
+	private static String _addAtrribute(
 		String content, String tagName, String attributeName,
 		String attributeValue) {
 
@@ -149,9 +149,7 @@ public class OutputTag extends PositionTagSupport {
 
 			if (!subcontent.contains(attributeName)) {
 				content = StringUtil.insert(
-					content,
-					StringBundler.concat(
-						" ", attributeName, "=", attributeValue),
+					content, " " + attributeName + "=" + attributeValue,
 					x + tagName.length() + 1);
 			}
 		}

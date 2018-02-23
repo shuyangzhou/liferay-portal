@@ -14,13 +14,8 @@
 
 package com.liferay.apio.architect.alias;
 
-import static com.spotify.hamcrest.optional.OptionalMatchers.optionalWithValue;
-
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-
-import java.util.Optional;
 
 import org.junit.Test;
 
@@ -32,15 +27,15 @@ public class ProvideFunctionTest {
 	@Test
 	public void test() {
 		ProvideFunction provideFunction = ProvideFunction.curry(
-			(httpServletRequest, aClass) -> Optional.of("Apio"));
+			(httpServletRequest, aClass) -> "Apio");
 
-		Optional<?> optional = provideFunction.apply(
+		Object object = provideFunction.apply(
 			null
 		).apply(
 			null
 		);
 
-		assertThat(optional, is(optionalWithValue(equalTo("Apio"))));
+		assertThat(object, is("Apio"));
 	}
 
 }

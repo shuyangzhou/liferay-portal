@@ -29,20 +29,20 @@ import com.liferay.apio.architect.router.ItemRouter;
  * </p>
  *
  * <p>
- * The type param provided for the resource ID must be unique in the whole
+ * The type parameter provided for the resource ID must be unique in the
  * application.
  * </p>
  *
  * <p>
- * Representors created by the {@link
+ * Representors created by the method {@link
  * #representor(com.liferay.apio.architect.representor.Representor.Builder)}
- * method hold all the information needed to write your domain models'
- * hypermedia representations.
+ * hold all the information needed to write your domain models' hypermedia
+ * representations.
  * </p>
  *
  * <p>
- * You can add the different supported routes via the {@link
- * #itemRoutes(com.liferay.apio.architect.routes.ItemRoutes.Builder)} method.
+ * You can add the different supported routes via the method {@link
+ * #itemRoutes(com.liferay.apio.architect.routes.ItemRoutes.Builder)}.
  * </p>
  *
  * @author Alejandro Hernández
@@ -53,7 +53,6 @@ import com.liferay.apio.architect.router.ItemRouter;
  *         {@code Identifier<S>}.
  * @see    com.liferay.apio.architect.representor.Representor.Builder
  * @see    com.liferay.apio.architect.routes.ItemRoutes.Builder
- * @review
  */
 @ConsumerType
 public interface ItemResource<T, S, U extends Identifier<S>>
