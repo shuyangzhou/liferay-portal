@@ -17,7 +17,6 @@ package com.liferay.apio.architect.routes;
 import static com.liferay.apio.architect.operation.Method.DELETE;
 import static com.liferay.apio.architect.operation.Method.PUT;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.FORM_BUILDER_FUNCTION;
-import static com.liferay.apio.architect.routes.RoutesTestUtil.IDENTIFIER_FUNCTION;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.ITEM_PERMISSION_FUNCTION;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.REQUEST_PROVIDE_FUNCTION;
 
@@ -27,6 +26,7 @@ import static com.spotify.hamcrest.optional.OptionalMatchers.optionalWithValue;
 import static java.util.Collections.singletonMap;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 
@@ -36,11 +36,12 @@ import com.liferay.apio.architect.alias.routes.UpdateItemFunction;
 import com.liferay.apio.architect.operation.Operation;
 import com.liferay.apio.architect.routes.ItemRoutes.Builder;
 import com.liferay.apio.architect.single.model.SingleModel;
-import com.liferay.apio.architect.uri.Path;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.Test;
 
@@ -52,21 +53,23 @@ public class ItemRoutesTest {
 	@Test
 	public void testEmptyBuilderBuildsEmptyRoutes() {
 		Builder<String, Long> builder = new Builder<>(
-			"name", REQUEST_PROVIDE_FUNCTION, IDENTIFIER_FUNCTION);
+			"name", REQUEST_PROVIDE_FUNCTION,
+			__ -> {
+			});
 
-		ItemRoutes<String> itemRoutes = builder.build();
+		ItemRoutes<String, Long> itemRoutes = builder.build();
 
-		Optional<DeleteItemConsumer> deleteItemConsumerOptional =
+		Optional<DeleteItemConsumer<Long>> deleteItemConsumerOptional =
 			itemRoutes.getDeleteConsumerOptional();
 
 		assertThat(deleteItemConsumerOptional, is(emptyOptional()));
 
-		Optional<GetItemFunction<String>> getItemFunctionOptional =
+		Optional<GetItemFunction<String, Long>> getItemFunctionOptional =
 			itemRoutes.getItemFunctionOptional();
 
 		assertThat(getItemFunctionOptional, is(emptyOptional()));
 
-		Optional<UpdateItemFunction<String>> updateItemFunctionOptional =
+		Optional<UpdateItemFunction<String, Long>> updateItemFunctionOptional =
 			itemRoutes.getUpdateItemFunctionOptional();
 
 		assertThat(updateItemFunctionOptional, is(emptyOptional()));
@@ -74,10 +77,12 @@ public class ItemRoutesTest {
 
 	@Test
 	public void testFiveParameterBuilderMethodsCreatesValidRoutes() {
-		Builder<String, Long> builder = new Builder<>(
-			"name", REQUEST_PROVIDE_FUNCTION, IDENTIFIER_FUNCTION);
+		Set<String> neededProviders = new TreeSet<>();
 
-		ItemRoutes<String> itemRoutes = builder.addGetter(
+		Builder<String, Long> builder = new Builder<>(
+			"name", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
+
+		ItemRoutes<String, Long> itemRoutes = builder.addGetter(
 			this::_testAndReturnFourParameterGetterRoute, String.class,
 			Long.class, Boolean.class, Integer.class
 		).addRemover(
@@ -89,15 +94,23 @@ public class ItemRoutesTest {
 			FORM_BUILDER_FUNCTION
 		).build();
 
+		assertThat(
+			neededProviders,
+			contains(
+				Boolean.class.getName(), Integer.class.getName(),
+				Long.class.getName(), String.class.getName()));
+
 		_testItemRoutes(itemRoutes);
 	}
 
 	@Test
 	public void testFourParameterBuilderMethodsCreatesValidRoutes() {
-		Builder<String, Long> builder = new Builder<>(
-			"name", REQUEST_PROVIDE_FUNCTION, IDENTIFIER_FUNCTION);
+		Set<String> neededProviders = new TreeSet<>();
 
-		ItemRoutes<String> itemRoutes = builder.addGetter(
+		Builder<String, Long> builder = new Builder<>(
+			"name", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
+
+		ItemRoutes<String, Long> itemRoutes = builder.addGetter(
 			this::_testAndReturnThreeParameterGetterRoute, String.class,
 			Long.class, Boolean.class
 		).addRemover(
@@ -109,15 +122,23 @@ public class ItemRoutesTest {
 			FORM_BUILDER_FUNCTION
 		).build();
 
+		assertThat(
+			neededProviders,
+			contains(
+				Boolean.class.getName(), Long.class.getName(),
+				String.class.getName()));
+
 		_testItemRoutes(itemRoutes);
 	}
 
 	@Test
 	public void testOneParameterBuilderMethodsCreatesValidRoutes() {
-		Builder<String, Long> builder = new Builder<>(
-			"name", REQUEST_PROVIDE_FUNCTION, IDENTIFIER_FUNCTION);
+		Set<String> neededProviders = new TreeSet<>();
 
-		ItemRoutes<String> itemRoutes = builder.addGetter(
+		Builder<String, Long> builder = new Builder<>(
+			"name", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
+
+		ItemRoutes<String, Long> itemRoutes = builder.addGetter(
 			this::_testAndReturnNoParameterGetterRoute
 		).addRemover(
 			this::_testAndReturnNoParameterRemoverRoute,
@@ -127,15 +148,19 @@ public class ItemRoutesTest {
 			ITEM_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
 		).build();
 
+		assertThat(neededProviders.size(), is(0));
+
 		_testItemRoutes(itemRoutes);
 	}
 
 	@Test
 	public void testThreeParameterBuilderMethodsCreatesValidRoutes() {
-		Builder<String, Long> builder = new Builder<>(
-			"name", REQUEST_PROVIDE_FUNCTION, IDENTIFIER_FUNCTION);
+		Set<String> neededProviders = new TreeSet<>();
 
-		ItemRoutes<String> itemRoutes = builder.addGetter(
+		Builder<String, Long> builder = new Builder<>(
+			"name", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
+
+		ItemRoutes<String, Long> itemRoutes = builder.addGetter(
 			this::_testAndReturnTwoParameterGetterRoute, String.class,
 			Long.class
 		).addRemover(
@@ -146,15 +171,21 @@ public class ItemRoutesTest {
 			Long.class, ITEM_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
 		).build();
 
+		assertThat(
+			neededProviders,
+			contains(Long.class.getName(), String.class.getName()));
+
 		_testItemRoutes(itemRoutes);
 	}
 
 	@Test
 	public void testTwoParameterBuilderMethodsCreatesValidRoutes() {
-		Builder<String, Long> builder = new Builder<>(
-			"name", REQUEST_PROVIDE_FUNCTION, IDENTIFIER_FUNCTION);
+		Set<String> neededProviders = new TreeSet<>();
 
-		ItemRoutes<String> itemRoutes = builder.addGetter(
+		Builder<String, Long> builder = new Builder<>(
+			"name", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
+
+		ItemRoutes<String, Long> itemRoutes = builder.addGetter(
 			this::_testAndReturnOneParameterGetterRoute, String.class
 		).addRemover(
 			this::_testOneParameterRemoverRoute, String.class,
@@ -163,6 +194,8 @@ public class ItemRoutesTest {
 			this::_testAndReturnOneParameterUpdaterRoute, String.class,
 			ITEM_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
 		).build();
+
+		assertThat(neededProviders, contains(String.class.getName()));
 
 		_testItemRoutes(itemRoutes);
 	}
@@ -265,8 +298,8 @@ public class ItemRoutesTest {
 		_testThreeParameterRemoverRoute(identifier, string, aLong, aBoolean);
 	}
 
-	private void _testItemRoutes(ItemRoutes<String> itemRoutes) {
-		Optional<ItemRoutes<String>> optional = Optional.of(itemRoutes);
+	private void _testItemRoutes(ItemRoutes<String, Long> itemRoutes) {
+		Optional<ItemRoutes<String, Long>> optional = Optional.of(itemRoutes);
 
 		Map body = optional.flatMap(
 			ItemRoutes::getFormOptional
@@ -280,15 +313,13 @@ public class ItemRoutesTest {
 
 		assertThat(body, is(_body));
 
-		Path path = new Path("name", "42");
-
 		optional.flatMap(
 			ItemRoutes::getDeleteConsumerOptional
 		).get(
 		).apply(
 			null
 		).accept(
-			path
+			42L
 		);
 
 		SingleModel<String> updatedSingleModel = optional.flatMap(
@@ -297,7 +328,7 @@ public class ItemRoutesTest {
 		).apply(
 			null
 		).apply(
-			path
+			42L
 		).apply(
 			_body
 		);

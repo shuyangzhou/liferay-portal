@@ -18,7 +18,6 @@ import static org.osgi.service.component.annotations.ReferenceCardinality.AT_LEA
 import static org.osgi.service.component.annotations.ReferencePolicyOption.GREEDY;
 
 import com.liferay.apio.architect.error.ApioDeveloperError.MustHaveFormMessageMapper;
-import com.liferay.apio.architect.error.ApioDeveloperError.MustHaveProvider;
 import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.functional.Try.Success;
@@ -44,7 +43,6 @@ import java.nio.charset.StandardCharsets;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
@@ -114,7 +112,8 @@ public class FormMessageBodyWriter implements MessageBodyWriter<Success<Form>> {
 			).httpServletRequest(
 				_httpServletRequest
 			).serverURL(
-				getServerURL()
+				_providerManager.provideMandatory(
+					_httpServletRequest, ServerURL.class)
 			).embedded(
 				_providerManager.provideOptional(
 					_httpServletRequest, Embedded.class
@@ -173,20 +172,6 @@ public class FormMessageBodyWriter implements MessageBodyWriter<Success<Form>> {
 		).orElseThrow(
 			() -> new MustHaveFormMessageMapper(mediaTypeString)
 		);
-	}
-
-	/**
-	 * Returns the server URL, or throws a {@link MustHaveProvider} developer
-	 * error.
-	 *
-	 * @return the server URL
-	 */
-	protected ServerURL getServerURL() {
-		Optional<ServerURL> optional = _providerManager.provideOptional(
-			_httpServletRequest, ServerURL.class);
-
-		return optional.orElseThrow(
-			() -> new MustHaveProvider(ServerURL.class));
 	}
 
 	@Reference(cardinality = AT_LEAST_ONE, policyOption = GREEDY)

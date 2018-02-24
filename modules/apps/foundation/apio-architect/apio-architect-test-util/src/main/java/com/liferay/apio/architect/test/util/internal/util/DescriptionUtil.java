@@ -31,13 +31,12 @@ import org.hamcrest.StringDescription;
 public class DescriptionUtil {
 
 	/**
-	 * Appends the description of a field and indents it inside the provided
+	 * Appends and indents a field's description inside the provided
 	 * description.
 	 *
-	 * @param  description the description
-	 * @param  key the field's key
-	 * @param  consumer the consumer that updates the field's description
-	 * @review
+	 * @param description the provided description
+	 * @param key the field's key
+	 * @param consumer the consumer that updates the field's description
 	 */
 	public static void indentDescription(
 		Description description, String key, Consumer<Description> consumer) {
