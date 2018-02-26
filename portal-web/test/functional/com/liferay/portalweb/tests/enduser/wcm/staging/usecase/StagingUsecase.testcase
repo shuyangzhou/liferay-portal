@@ -1118,6 +1118,7 @@
 
 		<execute macro="Staging#configurePublishToLive">
 			<var name="contentDateRange" value="All" />
+			<var name="mainContent" value="Documents and Media" />
 			<var name="uncheckContentNameList" value="Documents and Media" />
 			<var name="uncheckSubContent" value="Web Content" />
 		</execute>

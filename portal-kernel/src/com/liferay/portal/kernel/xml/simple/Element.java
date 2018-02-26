@@ -14,9 +14,9 @@
 
 package com.liferay.portal.kernel.xml.simple;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.LinkedList;
 
@@ -58,6 +58,7 @@ public class Element {
 
 	public Element(String name, String text, boolean addHeader) {
 		_name = name;
+
 		_text = _formatText(text);
 		_elementStack = new LinkedList<>();
 		_sb = new StringBundler();

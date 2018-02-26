@@ -20,12 +20,11 @@ import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 /**
- * A {@code org.hamcrest.Matcher} that checks if an element is a {@link
+ * Provides a {@code org.hamcrest.Matcher} that checks if an element is a {@link
  * Try.Failure}.
  *
  * @author Alejandro Hernández
  * @param  <T> the {@code Try}'s possible value type
- * @review
  */
 public class FailTry<T> extends TypeSafeDiagnosingMatcher<Try<T>> {
 

@@ -25,26 +25,24 @@ import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 
 /**
- * Utility class for returning suppliers for the common exceptions inside
- * endpoints.
+ * Provides a utility class for returning suppliers for the common exceptions
+ * inside endpoints.
  *
  * <p>
- * This class shouldn't be instantiated
+ * This class shouldn't be instantiated.
  * </p>
  *
  * @author Alejandro Hernández
- * @review
  */
 public class ExceptionSupplierUtil {
 
 	/**
-	 * Return a supplier of {@code NotAllowedException}.
+	 * Returns a supplier of {@code NotAllowedException}.
 	 *
-	 * @param  method the method that is not allowed
-	 * @param  path the path in which the method is not allowed. The components
-	 *         of the path will be joined using slashes ("/")
+	 * @param  method the method that isn't allowed
+	 * @param  path the path in which the method isn't allowed. The path's
+	 *         components are joined using forward slashes {@code /}
 	 * @return a supplier of {@code NotAllowedException}
-	 * @review
 	 */
 	public static Supplier<NotAllowedException> notAllowed(
 		Method method, String... path) {
@@ -59,12 +57,11 @@ public class ExceptionSupplierUtil {
 	}
 
 	/**
-	 * Return a supplier of {@code NotFoundException}.
+	 * Returns a supplier of {@code NotFoundException}.
 	 *
-	 * @param  path the path in which no endpoint is found. The components of
-	 *         the path will be joined using slashes ("/")
+	 * @param  path the path in which no endpoint is found. The path's
+	 *         components are joined using forward slashes {@code /}
 	 * @return a supplier of {@code NotFoundException}
-	 * @review
 	 */
 	public static Supplier<NotFoundException> notFound(String... path) {
 		return () -> new NotFoundException(

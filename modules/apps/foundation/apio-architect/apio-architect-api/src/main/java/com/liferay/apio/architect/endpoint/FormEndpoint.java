@@ -31,17 +31,17 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
 /**
- * Declares the endpoint for the form operations.
+ * Declares the endpoint for form operations.
  *
  * @author Alejandro Hernández
- * @review
  */
 public class FormEndpoint {
 
 	public FormEndpoint(
 		Function<String, Optional<CollectionRoutes<Object>>>
 			collectionRoutesFunction,
-		Function<String, Optional<ItemRoutes<Object>>> itemRoutesFunction,
+		Function<String, Optional<ItemRoutes<Object, Object>>>
+			itemRoutesFunction,
 		BiFunction<String, String, Optional
 			<NestedCollectionRoutes<Object, Object>>>
 				nestedCollectionRoutesFunction) {
@@ -114,7 +114,7 @@ public class FormEndpoint {
 
 	private final Function<String, Optional<CollectionRoutes<Object>>>
 		_collectionRoutesFunction;
-	private final Function<String, Optional<ItemRoutes<Object>>>
+	private final Function<String, Optional<ItemRoutes<Object, Object>>>
 		_itemRoutesFunction;
 	private final BiFunction<String, String,
 		Optional<NestedCollectionRoutes<Object, Object>>>
