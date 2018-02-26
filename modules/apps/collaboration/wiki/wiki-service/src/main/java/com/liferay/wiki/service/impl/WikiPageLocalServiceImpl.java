@@ -24,6 +24,8 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.diff.DiffHtmlUtil;
@@ -32,6 +34,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
@@ -109,7 +113,6 @@ import com.liferay.wiki.model.impl.WikiPageImpl;
 import com.liferay.wiki.processor.WikiPageRenameContentProcessor;
 import com.liferay.wiki.service.base.WikiPageLocalServiceBaseImpl;
 import com.liferay.wiki.social.WikiActivityKeys;
-import com.liferay.wiki.util.WikiCacheHelper;
 import com.liferay.wiki.util.comparator.PageCreateDateComparator;
 import com.liferay.wiki.util.comparator.PageVersionComparator;
 import com.liferay.wiki.validator.WikiPageTitleValidator;
@@ -136,6 +139,8 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.time.StopWatch;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -473,6 +478,10 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
 			bundleContext, WikiPageRenameContentProcessor.class,
 			"wiki.format.name");
+
+		_portalCache =
+			(PortalCache<String, Serializable>)multiVMPool.getPortalCache(
+				WikiPageDisplay.class.getName());
 	}
 
 	@Override
@@ -778,6 +787,10 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		super.destroy();
 
 		_serviceTrackerMap.close();
+
+		_portalCache.removeAll();
+
+		multiVMPool.removePortalCache(WikiPageDisplay.class.getName());
 	}
 
 	@Override
@@ -973,6 +986,41 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 	}
 
 	@Override
+	public WikiPageDisplay getDisplay(
+			long nodeId, String title, PortletURL viewPageURL,
+			Supplier<PortletURL> editPageURLSupplier,
+			String attachmentURLPrefix)
+		throws PortalException {
+
+		StopWatch stopWatch = new StopWatch();
+
+		stopWatch.start();
+
+		String key = _encodeKey(nodeId, title, viewPageURL.toString());
+
+		WikiPageDisplay pageDisplay = (WikiPageDisplay)_portalCache.get(key);
+
+		if (pageDisplay == null) {
+			pageDisplay = getPageDisplay(
+				nodeId, title, viewPageURL, editPageURLSupplier.get(),
+				attachmentURLPrefix);
+
+			_portalCache.put(key, pageDisplay);
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				StringBundler.concat(
+					"getDisplay for {", String.valueOf(nodeId), ", ", title,
+					", ", String.valueOf(viewPageURL), ", ",
+					String.valueOf(editPageURLSupplier.get()), "} takes ",
+					String.valueOf(stopWatch.getTime()), " ms"));
+		}
+
+		return pageDisplay;
+	}
+
+	@Override
 	public WikiPage getDraftPage(long nodeId, String title)
 		throws PortalException {
 
@@ -1100,8 +1148,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		List<Map<String, Boolean>> pageTitles = new ArrayList<>();
 
 		for (WikiPage page : pages) {
-			pageTitles.add(
-				wikiCacheHelper.getOutgoingLinks(page, wikiEngineRenderer));
+			pageTitles.add(_getOutgoingLinks(page));
 		}
 
 		Set<WikiPage> notOrphans = new HashSet<>();
@@ -1141,8 +1188,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 		Map<String, WikiPage> pages = new LinkedHashMap<>();
 
-		Map<String, Boolean> links = wikiCacheHelper.getOutgoingLinks(
-			page, wikiEngineRenderer);
+		Map<String, Boolean> links = _getOutgoingLinks(page);
 
 		for (Map.Entry<String, Boolean> entry : links.entrySet()) {
 			String curTitle = entry.getKey();
@@ -1278,7 +1324,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		}
 
 		if (!workflowAssetPreview && page.isApproved()) {
-			return wikiCacheHelper.getDisplay(
+			return getDisplay(
 				page.getNodeId(), page.getTitle(), viewPageURL,
 				editPageURLSupplier, attachmentURLPrefix);
 		}
@@ -2249,7 +2295,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			return;
 		}
 
-		wikiCacheHelper.clearCache();
+		_portalCache.removeAll();
 	}
 
 	protected void deletePageAttachment(long fileEntryId)
@@ -2474,8 +2520,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 	protected boolean isLinkedTo(WikiPage page, String targetTitle)
 		throws PortalException {
 
-		Map<String, Boolean> links = wikiCacheHelper.getOutgoingLinks(
-			page, wikiEngineRenderer);
+		Map<String, Boolean> links = _getOutgoingLinks(page);
 
 		Boolean link = links.get(StringUtil.toLowerCase(targetTitle));
 
@@ -2799,7 +2844,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		// Cache
 
 		if (WikiCacheThreadLocal.isClearCache()) {
-			wikiCacheHelper.clearCache();
+			_portalCache.removeAll();
 		}
 
 		// Workflow
@@ -2992,7 +3037,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		sb.append(URLCodec.encodeURL(page.getTitle()));
 		sb.append("&fileName=");
 
-		String attachmentURLPrefix =  sb.toString();
+		String attachmentURLPrefix = sb.toString();
 
 		String pageDiffs = StringPool.BLANK;
 
@@ -3293,6 +3338,9 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 	@ServiceReference(type = ConfigurationProvider.class)
 	protected ConfigurationProvider configurationProvider;
 
+	@ServiceReference(type = MultiVMPool.class)
+	protected MultiVMPool multiVMPool;
+
 	@ServiceReference(type = SubscriptionLocalService.class)
 	protected SubscriptionLocalService subscriptionLocalService;
 
@@ -3305,14 +3353,26 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 	@ServiceReference(type = TrashVersionLocalService.class)
 	protected TrashVersionLocalService trashVersionLocalService;
 
-	@ServiceReference(type = WikiCacheHelper.class)
-	protected WikiCacheHelper wikiCacheHelper;
-
 	@ServiceReference(type = WikiEngineRenderer.class)
 	protected WikiEngineRenderer wikiEngineRenderer;
 
 	@ServiceReference(type = WikiPageTitleValidator.class)
 	protected WikiPageTitleValidator wikiPageTitleValidator;
+
+	private String _encodeKey(long nodeId, String title, String postfix) {
+		StringBundler sb = new StringBundler(5);
+
+		sb.append(StringUtil.toHexString(nodeId));
+		sb.append(StringPool.POUND);
+		sb.append(title);
+
+		if (postfix != null) {
+			sb.append(StringPool.POUND);
+			sb.append(postfix);
+		}
+
+		return sb.toString();
+	}
 
 	private String _formatContent(String content) {
 		return StringUtil.replace(
@@ -3320,6 +3380,38 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			new String[] {"</p>\n", "</br>\n", "</div>\n"});
 	}
 
+	private Map<String, Boolean> _getOutgoingLinks(WikiPage page)
+		throws PageContentException {
+
+		String key = _encodeKey(
+			page.getNodeId(), page.getTitle(), _OUTGOING_LINKS);
+
+		Map<String, Boolean> links = (Map<String, Boolean>)_portalCache.get(
+			key);
+
+		if (links == null) {
+			WikiEngine wikiEngine = wikiEngineRenderer.fetchWikiEngine(
+				page.getFormat());
+
+			if (wikiEngine != null) {
+				links = wikiEngine.getOutgoingLinks(page);
+			}
+			else {
+				links = Collections.emptyMap();
+			}
+
+			_portalCache.put(key, (Serializable)links);
+		}
+
+		return links;
+	}
+
+	private static final String _OUTGOING_LINKS = "OUTGOING_LINKS";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		WikiPageLocalServiceImpl.class);
+
+	private PortalCache<String, Serializable> _portalCache;
 	private ServiceTrackerMap<String, WikiPageRenameContentProcessor>
 		_serviceTrackerMap;
 
