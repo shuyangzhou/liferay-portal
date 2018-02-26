@@ -201,7 +201,7 @@ public class WikiEngineRenderer {
 
 		if (!preview && (version == 0)) {
 			WikiPageDisplay pageDisplay = _wikiCacheHelper.getDisplay(
-				page.getNodeId(), title, curViewPageURL, curEditPageURL,
+				page.getNodeId(), title, curViewPageURL, () -> curEditPageURL,
 				attachmentURLPrefix);
 
 			if (pageDisplay != null) {
