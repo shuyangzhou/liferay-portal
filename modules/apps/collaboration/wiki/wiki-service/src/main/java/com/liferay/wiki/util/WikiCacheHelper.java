@@ -71,14 +71,6 @@ public class WikiCacheHelper {
 	}
 
 	public WikiPageDisplay getDisplay(
-		long nodeId, String title, PortletURL viewPageURL,
-		PortletURL editPageURL, String attachmentURLPrefix) {
-
-		return getDisplay(
-			nodeId, title, viewPageURL, () -> editPageURL, attachmentURLPrefix);
-	}
-
-	public WikiPageDisplay getDisplay(
 			long nodeId, String title, PortletURL viewPageURL,
 			Supplier<PortletURL> editPageURLSupplier,
 			String attachmentURLPrefix)
