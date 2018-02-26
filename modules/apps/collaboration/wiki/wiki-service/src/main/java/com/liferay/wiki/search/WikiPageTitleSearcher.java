@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.search.BaseSearcher;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Field;
-import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
@@ -40,14 +39,14 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Roberto Díaz
  */
-@Component(immediate = true, service = WikiPageTitleSearcher.class)
+@Component(
+	immediate = true,
+	property = "model.class.name=com.liferay.wiki.model.WikiPage",
+	service = BaseSearcher.class
+)
 public class WikiPageTitleSearcher extends BaseSearcher {
 
 	public static final String[] CLASS_NAMES = {WikiPage.class.getName()};
-
-	public static Indexer<?> getInstance() {
-		return new WikiPageTitleSearcher();
-	}
 
 	public WikiPageTitleSearcher() {
 		setDefaultSelectedFieldNames(Field.TITLE);
