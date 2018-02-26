@@ -65,7 +65,7 @@ public class PersonCollectionResource
 	}
 
 	@Override
-	public ItemRoutes<PersonModel> itemRoutes(
+	public ItemRoutes<PersonModel, Long> itemRoutes(
 		ItemRoutes.Builder<PersonModel, Long> builder) {
 
 		return builder.addGetter(

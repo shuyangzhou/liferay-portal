@@ -43,7 +43,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Message Boards Page" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
@@ -192,7 +194,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Site Page Name" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -329,7 +333,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Message Boards Page" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
@@ -383,7 +389,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Message Boards Page" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
@@ -466,7 +474,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Message Boards Page" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
@@ -524,7 +534,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Message Boards Page" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
@@ -549,7 +561,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Message Boards Page 2" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
@@ -586,7 +600,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Message Boards Page 3" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
@@ -1180,7 +1196,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Site Page Name" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
@@ -1329,7 +1347,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Message Boards Page" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
@@ -1451,7 +1471,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Message Boards Page" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
@@ -1686,12 +1708,13 @@
 
 		<execute function="Click" locator1="NavBar#HOME" />
 
-		<execute macro="RSS#viewFeed">
+		<execute macro="RSS#gotoFeed">
+			<var name="rssURL" value="message_boards" />
+		</execute>
+
+		<execute macro="RSS#viewFeedEntry">
 			<var name="entryContent" value="MB Thread Message Body 1,MB Thread Message Body 2" />
 			<var name="entryTitle" value="MB Thread Message Subject 1,MB Thread Message Subject 2" />
-			<var name="feedSubtitle" value="MB Thread Message Subject 1" />
-			<var name="feedTitle" value="MB Thread Message Subject 1" />
-			<var name="rssURL" value="message_boards" />
 		</execute>
 	</command>
 
@@ -1703,7 +1726,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Message Boards Page" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
@@ -1823,7 +1848,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Message Boards Page" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
@@ -1864,7 +1891,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Message Boards Page" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
@@ -1906,7 +1935,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Message Boards Page" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
@@ -2017,7 +2048,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Message Boards Page" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
@@ -2106,7 +2139,9 @@
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
+			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Message Boards Page" />
+			<var name="sitePageType" value="Empty Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">

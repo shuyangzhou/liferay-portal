@@ -16,8 +16,6 @@ package com.liferay.apio.architect.endpoint;
 
 import static com.liferay.apio.architect.routes.RoutesTestUtil.COLLECTION_PERMISSION_FUNCTION;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.FORM_BUILDER_FUNCTION;
-import static com.liferay.apio.architect.routes.RoutesTestUtil.IDENTIFIER_FUNCTION;
-import static com.liferay.apio.architect.routes.RoutesTestUtil.ITEM_PERMISSION_FUNCTION;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.REQUEST_PROVIDE_FUNCTION;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.getNestedCollectionPermissionFunction;
 import static com.liferay.apio.architect.test.util.result.TryMatchers.aFailTry;
@@ -151,7 +149,9 @@ public class FormEndpointTest {
 
 	private static <T> CollectionRoutes<T> _collectionRoutes() {
 		CollectionRoutes.Builder<T> builder = new CollectionRoutes.Builder<>(
-			"name", REQUEST_PROVIDE_FUNCTION);
+			"name", REQUEST_PROVIDE_FUNCTION,
+			__ -> {
+			});
 
 		return builder.addCreator(
 			__ -> null, COLLECTION_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
@@ -161,14 +161,17 @@ public class FormEndpointTest {
 	private static <T> CollectionRoutes<T> _emptyCollectionRoutes() {
 		return new CollectionRoutes<>(
 			new CollectionRoutes.Builder<>(
-				"", httpServletRequest -> aClass -> Optional.empty()));
+				"", httpServletRequest -> aClass -> Optional.empty(),
+				__ -> {
+				}));
 	}
 
-	private static <T> ItemRoutes<T> _emptyItemRoutes() {
+	private static <T, S> ItemRoutes<T, S> _emptyItemRoutes() {
 		return new ItemRoutes<>(
 			new ItemRoutes.Builder<>(
 				"", httpServletRequest -> aClass -> Optional.empty(),
-				__ -> null));
+				__ -> {
+				}));
 	}
 
 	private static <T, S> NestedCollectionRoutes<T, S>
@@ -176,15 +179,19 @@ public class FormEndpointTest {
 
 		return new NestedCollectionRoutes<>(
 			new NestedCollectionRoutes.Builder<>(
-				"", "", httpServletRequest -> aClass -> Optional.empty()));
+				"", "", httpServletRequest -> aClass -> Optional.empty(),
+				__ -> {
+				}));
 	}
 
-	private static <T> ItemRoutes<T> _itemRoutes() {
-		ItemRoutes.Builder<T, Long> builder = new ItemRoutes.Builder<>(
-			"name", REQUEST_PROVIDE_FUNCTION, IDENTIFIER_FUNCTION);
+	private static <T, S> ItemRoutes<T, S> _itemRoutes() {
+		ItemRoutes.Builder<T, S> builder = new ItemRoutes.Builder<>(
+			"name", REQUEST_PROVIDE_FUNCTION,
+			__ -> {
+			});
 
 		return builder.addUpdater(
-			(aLong, body) -> null, ITEM_PERMISSION_FUNCTION,
+			(aLong, body) -> null, (credentials, s) -> true,
 			FORM_BUILDER_FUNCTION
 		).build();
 	}
@@ -194,7 +201,9 @@ public class FormEndpointTest {
 
 		NestedCollectionRoutes.Builder<T, S> builder =
 			new NestedCollectionRoutes.Builder<>(
-				"name", "nestedName", REQUEST_PROVIDE_FUNCTION);
+				"name", "nestedName", REQUEST_PROVIDE_FUNCTION,
+				__ -> {
+				});
 
 		return builder.addCreator(
 			(s, body) -> null, getNestedCollectionPermissionFunction(),

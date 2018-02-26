@@ -8,169 +8,94 @@
 		</if>
 
 		<if>
-			<equals arg1="${exportPermissions}" arg2="true" />
+			<isset var="contentDateRange" />
 			<then>
-				<execute function="Check#checkToggleSwitch" locator1="ExportImport#PERMISSIONS" />
+				<execute macro="ContentConfiguration#contentDateRange">
+					<var name="contentDateRange" value="${contentDateRange}" />
+				</execute>
 			</then>
 		</if>
 
 		<if>
-			<equals arg1="${deleteMissingPages}" arg2="true" />
+			<equals arg1="${exportPermissions}" arg2="true" />
 			<then>
-				<execute macro="Panel#expandPanel">
-					<var name="panelHeading" value="Deletions" />
-				</execute>
-
-				<execute function="Check#checkToggleSwitch" locator1="ToggleSwitch#EXPORT_INDIVIDUAL_DELETIONS" />
+				<execute macro="ContentConfiguration#exportPermissions" />
 			</then>
 		</if>
 
 		<if>
 			<equals arg1="${uncheckLogo}" arg2="true" />
 			<then>
-				<execute function="Uncheck" locator1="PagesConfiguration#PAGES_LOGO_CHECKBOX" />
+				<execute macro="ContentConfiguration#uncheckLogo" />
 			</then>
 		</if>
 
 		<if>
 			<equals arg1="${uncheckSitePagesSettings}" arg2="true" />
 			<then>
-				<execute function="Uncheck" locator1="PagesConfiguration#PAGES_SITE_PAGES_SETTINGS_CHECKBOX" />
+				<execute macro="ContentConfiguration#uncheckSitePagesSettings" />
 			</then>
 		</if>
 
 		<if>
 			<equals arg1="${uncheckSiteTemplateSettings}" arg2="true" />
 			<then>
-				<execute function="Uncheck" locator1="PagesConfiguration#PAGES_SITE_TEMPLATE_SETTINGS_CHECKBOX" />
+				<execute macro="ContentConfiguration#uncheckSiteTemplateSettings" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="checkPageName" />
 			<then>
-				<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PUBLIC_PAGES_CHECKBOX" />
-
-				<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PUBLIC_PAGES_CHECKBOX" />
-
-				<for list="${checkPageName}" param="pageName">
-					<var name="key_pageName" value="${pageName}" />
-
-					<if>
-						<condition function="IsElementNotPresent" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_CHECKED" />
-						<then>
-							<var name="key_pageName" value="${pageName}" />
-
-							<execute function="Click" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_NAME" />
-						</then>
-					</if>
-				</for>
+				<execute macro="ContentConfiguration#checkPageName">
+					<var name="checkPageName" value="${checkPageName}" />
+				</execute>
 			</then>
 		</if>
 
 		<if>
 			<equals arg1="${contentDeletion}" arg2="true" />
 			<then>
-				<execute macro="Panel#expandPanel">
-					<var name="panelHeading" value="Deletions" />
-				</execute>
-
-				<execute function="Check#checkToggleSwitch" locator1="ToggleSwitch#EXPORT_INDIVIDUAL_DELETIONS" />
+				<execute macro="ContentConfiguration#contentDeletion" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="checkContentNameList" />
 			<then>
-				<execute macro="Panel#expandPanel">
-					<var name="panelHeading" value="Content" />
+				<execute macro="ContentConfiguration#checkContentNameList">
+					<var name="checkContentNameList" value="${checkContentNameList}" />
 				</execute>
-
-				<execute function="Select" locator1="Select#EXPORT_IMPORT_CONTENT" value1="Choose Content" />
-
-				<for list="${checkContentNameList}" param="contentName">
-					<var name="key_contentName" value="${contentName}" />
-
-					<execute function="Check" locator1="PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX" />
-				</for>
 			</then>
 		</if>
 
 		<if>
 			<isset var="uncheckContentNameList" />
 			<then>
-				<execute macro="Panel#expandPanel">
-					<var name="panelHeading" value="Content" />
+				<execute macro="ContentConfiguration#uncheckContentNameList">
+					<var name="uncheckContentNameList" value="${uncheckContentNameList}" />
 				</execute>
-
-				<execute function="Select" locator1="Select#EXPORT_IMPORT_CONTENT" value1="Choose Content" />
-
-				<for list="${uncheckContentNameList}" param="contentName">
-					<var name="key_contentName" value="${contentName}" />
-
-					<execute function="Uncheck" locator1="PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX" />
-				</for>
 			</then>
 		</if>
 
 		<if>
 			<isset var="uncheckSubContent" />
 			<then>
-				<var name="key_contentName" value="${mainContent}" />
-
-				<execute function="Check" locator1="PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX" />
-
-				<execute function="AssertClick" locator1="ExportImport#CONTENT_CHOOSE_CONTENT_CONTENT_CHANGE_LINK" value1="Change" />
-
-				<var name="key_subContent" value="${uncheckSubContent}" />
-
-				<execute function="Uncheck" locator1="ExportImport#CONTENT_CHOOSE_CONTENT_SUBCONTENT_CHECKBOX" />
-
-				<execute function="AssertClick" locator1="Button#OK" value1="OK" />
+				<execute macro="ContentConfiguration#uncheckSubContent">
+					<var name="mainContent" value="${mainContent}" />
+					<var name="uncheckSubContent" value="${uncheckSubContent}" />
+				</execute>
 			</then>
 		</if>
 
 		<if>
 			<isset var="uncheckSubSubContent" />
 			<then>
-				<var name="key_contentName" value="${contentName}" />
-
-				<execute function="Check" locator1="PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX" />
-
-				<execute function="AssertClick" locator1="ExportImport#CONTENT_CHOOSE_CONTENT_CONTENT_CHANGE_LINK" value1="Change" />
-
-				<var name="key_subContent" value="${subContent}" />
-				<var name="key_subSubContent" value="${uncheckSubSubContent}" />
-
-				<execute function="Uncheck" locator1="ExportImport#CONTENT_CHOOSE_CONTENT_SUB_SUBCONTENT_CHECKBOX" />
-
-				<execute function="AssertClick" locator1="Button#OK" value1="OK" />
-			</then>
-		</if>
-
-		<if>
-			<isset var="contentDateRange" />
-			<then>
-				<execute function="Click" locator1="Radio#CHOOSE_CONTENT_DATE_RANGE_CHANGE" />
-
-				<var name="key_contentDateRange" value="${contentDateRange}" />
-
-				<execute function="Type" locator1="Select#DATE_RANGE_START_DATE" value1="${dateRangeStartDate}" />
-				<execute function="Type" locator1="Select#DATE_RANGE_END_DATE" value1="${dateRangeEndDate}" />
-
-				<execute function="Click" locator1="Link#REFRESH_COUNTS" />
-			</then>
-		</if>
-
-		<if>
-			<isset var="lastDateRange" />
-			<then>
-				<execute function="Click" locator1="Radio#RANGE_LAST" />
-
-				<var name="key_lastDateRange" value="${lastDateRange}" />
-
-				<execute function="Click" locator1="Select#LAST_TIME" value1="${lastDateRange}" />
-				<execute function="Click" locator1="Link#REFRESH_COUNTS" />
+				<execute macro="ContentConfiguration#uncheckSubSubContent">
+					<var name="contentName" value="${uncheckSubSubContent}" />
+					<var name="subContent" value="subContent" />
+					<var name="uncheckSubSubContent" value="${uncheckSubSubContent}" />
+				</execute>
 			</then>
 		</if>
 	</command>
