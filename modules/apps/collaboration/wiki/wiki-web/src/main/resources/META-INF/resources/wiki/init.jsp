@@ -42,7 +42,6 @@ page import="com.liferay.wiki.exception.PageVersionException" %><%@
 page import="com.liferay.wiki.exception.RequiredNodeException" %><%@
 page import="com.liferay.wiki.exception.WikiFormatException" %><%@
 page import="com.liferay.wiki.social.WikiActivityKeys" %><%@
-page import="com.liferay.wiki.util.WikiPageAttachmentsUtil" %><%@
 page import="com.liferay.wiki.util.comparator.PageVersionComparator" %><%@
 page import="com.liferay.wiki.validator.WikiPageTitleValidator" %><%@
 page import="com.liferay.wiki.web.configuration.WikiPortletInstanceConfiguration" %><%@
@@ -58,6 +57,7 @@ page import="com.liferay.wiki.web.internal.portlet.toolbar.item.WikiPortletToolb
 page import="com.liferay.wiki.web.internal.security.permission.resource.WikiNodePermission" %><%@
 page import="com.liferay.wiki.web.internal.security.permission.resource.WikiPagePermission" %><%@
 page import="com.liferay.wiki.web.internal.security.permission.resource.WikiResourcePermission" %><%@
+page import="com.liferay.wiki.web.internal.util.WikiPageAttachmentsUtil" %><%@
 page import="com.liferay.wiki.web.internal.util.WikiUtil" %><%@
 page import="com.liferay.wiki.web.internal.util.WikiWebComponentProvider" %>
 
