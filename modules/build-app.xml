@@ -19,6 +19,14 @@
 
 	<property name="osgi.dir" value="${liferay.home}/osgi" />
 
+	<path id="lib.classpath">
+		<fileset dir="${project.dir}/lib/development" includes="*.jar" />
+		<fileset dir="${project.dir}/lib/global" includes="*.jar" />
+		<fileset dir="${project.dir}/lib/portal" includes="*.jar" />
+	</path>
+
+	<taskdef classname="com.liferay.ant.beanshell.BeanShellTask" classpathref="lib.classpath" name="beanshell" />
+
 	<macrodef name="set-artifact-versions-previous-release">
 		<attribute name="app.version.previous.release" />
 
