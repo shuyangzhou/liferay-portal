@@ -16,14 +16,12 @@ package com.liferay.wiki.engine.impl;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.diff.DiffHtmlUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -41,13 +39,8 @@ import com.liferay.wiki.util.WikiCacheHelper;
 import java.io.IOException;
 import java.io.Writer;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -147,44 +140,6 @@ public class WikiEngineRenderer {
 
 	public WikiEngine fetchWikiEngine(String format) {
 		return _wikiEngineTracker.getWikiEngine(format);
-	}
-
-	public List<WikiPage> filterOrphans(List<WikiPage> pages)
-		throws PortalException {
-
-		List<Map<String, Boolean>> pageTitles = new ArrayList<>();
-
-		for (WikiPage page : pages) {
-			pageTitles.add(_wikiCacheHelper.getOutgoingLinks(page, this));
-		}
-
-		Set<WikiPage> notOrphans = new HashSet<>();
-
-		for (WikiPage page : pages) {
-			for (Map<String, Boolean> pageTitle : pageTitles) {
-				String pageTitleLowerCase = page.getTitle();
-
-				pageTitleLowerCase = StringUtil.toLowerCase(pageTitleLowerCase);
-
-				if (pageTitle.get(pageTitleLowerCase) != null) {
-					notOrphans.add(page);
-
-					break;
-				}
-			}
-		}
-
-		List<WikiPage> orphans = new ArrayList<>();
-
-		for (WikiPage page : pages) {
-			if (!notOrphans.contains(page)) {
-				orphans.add(page);
-			}
-		}
-
-		orphans = ListUtil.sort(orphans);
-
-		return orphans;
 	}
 
 	public String getFormatLabel(String format, Locale locale) {

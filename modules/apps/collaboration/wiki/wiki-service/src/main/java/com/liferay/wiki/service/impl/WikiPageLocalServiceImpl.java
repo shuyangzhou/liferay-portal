@@ -1097,7 +1097,40 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		List<WikiPage> pages = wikiPagePersistence.findByN_H_S(
 			nodeId, true, WorkflowConstants.STATUS_APPROVED);
 
-		return wikiEngineRenderer.filterOrphans(pages);
+		List<Map<String, Boolean>> pageTitles = new ArrayList<>();
+
+		for (WikiPage page : pages) {
+			pageTitles.add(
+				wikiCacheHelper.getOutgoingLinks(page, wikiEngineRenderer));
+		}
+
+		Set<WikiPage> notOrphans = new HashSet<>();
+
+		for (WikiPage page : pages) {
+			for (Map<String, Boolean> pageTitle : pageTitles) {
+				String pageTitleLowerCase = page.getTitle();
+
+				pageTitleLowerCase = StringUtil.toLowerCase(pageTitleLowerCase);
+
+				if (pageTitle.get(pageTitleLowerCase) != null) {
+					notOrphans.add(page);
+
+					break;
+				}
+			}
+		}
+
+		List<WikiPage> orphans = new ArrayList<>();
+
+		for (WikiPage page : pages) {
+			if (!notOrphans.contains(page)) {
+				orphans.add(page);
+			}
+		}
+
+		orphans = ListUtil.sort(orphans);
+
+		return orphans;
 	}
 
 	@Override
