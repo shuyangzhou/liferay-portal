@@ -36,7 +36,7 @@ import com.liferay.wiki.constants.WikiPortletKeys;
 import com.liferay.wiki.engine.impl.WikiEngineRenderer;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiPageService;
-import com.liferay.wiki.util.WikiUtil;
+import com.liferay.wiki.web.internal.util.WikiUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
