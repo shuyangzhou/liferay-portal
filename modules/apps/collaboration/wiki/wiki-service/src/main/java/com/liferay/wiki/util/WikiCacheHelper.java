@@ -93,7 +93,7 @@ public class WikiCacheHelper {
 		WikiPageDisplay pageDisplay = (WikiPageDisplay)_portalCache.get(key);
 
 		if (pageDisplay == null) {
-			pageDisplay = _getPageDisplay(
+			pageDisplay = WikiPageLocalServiceUtil.getPageDisplay(
 				nodeId, title, viewPageURL, editPageURLSupplier.get(),
 				attachmentURLPrefix);
 
@@ -173,15 +173,6 @@ public class WikiCacheHelper {
 		}
 
 		return sb.toString();
-	}
-
-	private WikiPageDisplay _getPageDisplay(
-			long nodeId, String title, PortletURL viewPageURL,
-			PortletURL editPageURL, String attachmentURLPrefix)
-		throws PortalException {
-
-		return WikiPageLocalServiceUtil.getPageDisplay(
-			nodeId, title, viewPageURL, editPageURL, attachmentURLPrefix);
 	}
 
 	private static final String _CACHE_NAME = WikiPageDisplay.class.getName();
