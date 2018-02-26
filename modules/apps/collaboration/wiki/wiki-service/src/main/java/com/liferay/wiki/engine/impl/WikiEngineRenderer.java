@@ -14,6 +14,9 @@
 
 package com.liferay.wiki.engine.impl;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapListener;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.diff.DiffHtmlUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
@@ -40,6 +43,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,7 +56,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -139,7 +146,13 @@ public class WikiEngineRenderer {
 	}
 
 	public WikiEngine fetchWikiEngine(String format) {
-		return _wikiEngineTracker.getWikiEngine(format);
+		List<WikiEngine> wikiEngines = _serviceTrackerMap.getService(format);
+
+		if (wikiEngines == null) {
+			return null;
+		}
+
+		return wikiEngines.get(0);
 	}
 
 	public String getFormatLabel(String format, Locale locale) {
@@ -154,7 +167,7 @@ public class WikiEngineRenderer {
 	}
 
 	public Collection<String> getFormats() {
-		return _wikiEngineTracker.getFormats();
+		return _serviceTrackerMap.keySet();
 	}
 
 	public String getFormattedContent(
@@ -205,7 +218,7 @@ public class WikiEngineRenderer {
 			WikiPage page)
 		throws IOException, ServletException, WikiFormatException {
 
-		WikiEngine wikiEngine = _wikiEngineTracker.getWikiEngine(format);
+		WikiEngine wikiEngine = fetchWikiEngine(format);
 
 		if (wikiEngine == null) {
 			throw new WikiFormatException();
@@ -229,14 +242,55 @@ public class WikiEngineRenderer {
 		writer.write(sb.toString());
 	}
 
-	@Reference(unbind = "-")
-	protected void setWikiCacheHelper(WikiCacheHelper wikiCacheHelper) {
-		_wikiCacheHelper = wikiCacheHelper;
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
+		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
+			bundleContext, WikiEngine.class, null,
+			(serviceReference, emitter) -> {
+				WikiEngine wikiEngine = _bundleContext.getService(
+					serviceReference);
+
+				try {
+					emitter.emit(wikiEngine.getFormat());
+				}
+				finally {
+					_bundleContext.ungetService(serviceReference);
+				}
+			},
+			new ServiceTrackerMapListener<String, WikiEngine,
+				List<WikiEngine>>() {
+
+				@Override
+				public void keyEmitted(
+					ServiceTrackerMap<String, List<WikiEngine>>
+						serviceTrackerMap,
+					String key, WikiEngine service, List<WikiEngine> content) {
+
+					_wikiCacheHelper.clearCache();
+				}
+
+				@Override
+				public void keyRemoved(
+					ServiceTrackerMap<String, List<WikiEngine>>
+						serviceTrackerMap,
+					String key, WikiEngine service, List<WikiEngine> content) {
+
+					_wikiCacheHelper.clearCache();
+				}
+
+			});
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
 	@Reference(unbind = "-")
-	protected void setWikiEngineTracker(WikiEngineTracker wikiEngineTracker) {
-		_wikiEngineTracker = wikiEngineTracker;
+	protected void setWikiCacheHelper(WikiCacheHelper wikiCacheHelper) {
+		_wikiCacheHelper = wikiCacheHelper;
 	}
 
 	private String _convertURLs(String url, Matcher matcher) {
@@ -280,7 +334,8 @@ public class WikiEngineRenderer {
 	private static final Pattern _viewPageURLPattern = Pattern.compile(
 		"\\[\\$BEGIN_PAGE_TITLE\\$\\](.*?)\\[\\$END_PAGE_TITLE\\$\\]");
 
+	private BundleContext _bundleContext;
+	private ServiceTrackerMap<String, List<WikiEngine>> _serviceTrackerMap;
 	private WikiCacheHelper _wikiCacheHelper;
-	private WikiEngineTracker _wikiEngineTracker;
 
 }
