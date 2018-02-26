@@ -150,17 +150,6 @@ public class WikiEngineRenderer {
 		return wikiEngines.get(0);
 	}
 
-	public String getFormatLabel(String format, Locale locale) {
-		WikiEngine wikiEngine = fetchWikiEngine(format);
-
-		if (wikiEngine != null) {
-			return wikiEngine.getFormatLabel(locale);
-		}
-		else {
-			return StringPool.BLANK;
-		}
-	}
-
 	public Collection<String> getFormats() {
 		return _serviceTrackerMap.keySet();
 	}

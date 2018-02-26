@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.wiki.engine.WikiEngine;
 import com.liferay.wiki.engine.impl.WikiEngineRenderer;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
@@ -118,6 +120,18 @@ public class WikiUtil {
 		}
 
 		return new DiffVersionsInfo(diffVersions, nextVersion, previousVersion);
+	}
+
+	public static String getFormatLabel(
+		WikiEngineRenderer wikiEngineRenderer, String format, Locale locale) {
+
+		WikiEngine wikiEngine = wikiEngineRenderer.fetchWikiEngine(format);
+
+		if (wikiEngine != null) {
+			return wikiEngine.getFormatLabel(locale);
+		}
+
+		return StringPool.BLANK;
 	}
 
 	public static String getFormattedContent(
