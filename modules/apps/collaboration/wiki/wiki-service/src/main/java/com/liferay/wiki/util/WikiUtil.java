@@ -110,16 +110,6 @@ public class WikiUtil {
 		return new DiffVersionsInfo(diffVersions, nextVersion, previousVersion);
 	}
 
-	public static List<String> getNodeNames(List<WikiNode> nodes) {
-		List<String> nodeNames = new ArrayList<>(nodes.size());
-
-		for (WikiNode node : nodes) {
-			nodeNames.add(node.getName());
-		}
-
-		return nodeNames;
-	}
-
 	public static List<WikiNode> getNodes(
 			List<WikiNode> nodes, String[] hiddenNodes,
 			PermissionChecker permissionChecker)
