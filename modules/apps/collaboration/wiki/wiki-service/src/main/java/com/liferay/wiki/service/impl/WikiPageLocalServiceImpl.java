@@ -2972,8 +2972,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 				page, null, null, attachmentURLPrefix);
 		}
 		else {
-			pageContent = page.getContent();
-			pageContent = WikiUtil.processContent(pageContent);
+			pageContent = _formatContent(page.getContent());
 		}
 
 		String pageTitle = page.getTitle();
@@ -3276,6 +3275,12 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 	@ServiceReference(type = WikiPageTitleValidator.class)
 	protected WikiPageTitleValidator wikiPageTitleValidator;
+
+	private String _formatContent(String content) {
+		return StringUtil.replace(
+			content, new String[] {"</p>", "</br>", "</div>"},
+			new String[] {"</p>\n", "</br>\n", "</div>\n"});
+	}
 
 	private ServiceTrackerMap<String, WikiPageRenameContentProcessor>
 		_serviceTrackerMap;
