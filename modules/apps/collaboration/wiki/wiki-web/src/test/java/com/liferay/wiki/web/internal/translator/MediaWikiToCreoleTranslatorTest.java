@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.wiki.internal.translator;
+package com.liferay.wiki.web.internal.translator;
 
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.Digester;
