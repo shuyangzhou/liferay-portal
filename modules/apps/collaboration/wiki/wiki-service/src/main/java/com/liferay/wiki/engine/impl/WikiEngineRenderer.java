@@ -24,14 +24,10 @@ import com.liferay.portal.kernel.diff.DiffHtmlUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
-import com.liferay.portal.kernel.portlet.PortletURLUtil;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.servlet.PipingServletResponse;
 import com.liferay.wiki.engine.WikiEngine;
 import com.liferay.wiki.exception.PageContentException;
@@ -39,7 +35,6 @@ import com.liferay.wiki.exception.WikiFormatException;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.model.WikiPageDisplay;
-import com.liferay.wiki.service.WikiPageLocalServiceUtil;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -51,8 +46,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.portlet.PortletURL;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
@@ -170,49 +163,6 @@ public class WikiEngineRenderer {
 
 	public Collection<String> getFormats() {
 		return _serviceTrackerMap.keySet();
-	}
-
-	public String getFormattedContent(
-			RenderRequest renderRequest, RenderResponse renderResponse,
-			WikiPage page, PortletURL viewPageURL, PortletURL editPageURL,
-			String title, boolean preview)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		double version = ParamUtil.getDouble(renderRequest, "version");
-
-		PortletURL curViewPageURL = PortletURLUtil.clone(
-			viewPageURL, renderResponse);
-		PortletURL curEditPageURL = PortletURLUtil.clone(
-			editPageURL, renderResponse);
-
-		StringBundler sb = new StringBundler(8);
-
-		sb.append(themeDisplay.getPathMain());
-		sb.append("/wiki/get_page_attachment?p_l_id=");
-		sb.append(themeDisplay.getPlid());
-		sb.append("&nodeId=");
-		sb.append(page.getNodeId());
-		sb.append("&title=");
-		sb.append(URLCodec.encodeURL(page.getTitle()));
-		sb.append("&fileName=");
-
-		String attachmentURLPrefix = sb.toString();
-
-		if (!preview && (version == 0)) {
-			WikiPageDisplay pageDisplay = WikiPageLocalServiceUtil.getDisplay(
-				page.getNodeId(), title, curViewPageURL, () -> curEditPageURL,
-				attachmentURLPrefix);
-
-			if (pageDisplay != null) {
-				return pageDisplay.getFormattedContent();
-			}
-		}
-
-		return convert(
-			page, curViewPageURL, curEditPageURL, attachmentURLPrefix);
 	}
 
 	public void renderEditPageHTML(
