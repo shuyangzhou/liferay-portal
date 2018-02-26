@@ -18,6 +18,8 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapListener;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.cache.MultiVMPool;
+import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.diff.DiffHtmlUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
@@ -37,7 +39,7 @@ import com.liferay.wiki.exception.WikiFormatException;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.model.WikiPageDisplay;
-import com.liferay.wiki.util.WikiCacheHelper;
+import com.liferay.wiki.service.WikiPageLocalServiceUtil;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -200,7 +202,7 @@ public class WikiEngineRenderer {
 		String attachmentURLPrefix = sb.toString();
 
 		if (!preview && (version == 0)) {
-			WikiPageDisplay pageDisplay = _wikiCacheHelper.getDisplay(
+			WikiPageDisplay pageDisplay = WikiPageLocalServiceUtil.getDisplay(
 				page.getNodeId(), title, curViewPageURL, () -> curEditPageURL,
 				attachmentURLPrefix);
 
@@ -268,7 +270,7 @@ public class WikiEngineRenderer {
 						serviceTrackerMap,
 					String key, WikiEngine service, List<WikiEngine> content) {
 
-					_wikiCacheHelper.clearCache();
+					_portalCache.removeAll();
 				}
 
 				@Override
@@ -277,20 +279,18 @@ public class WikiEngineRenderer {
 						serviceTrackerMap,
 					String key, WikiEngine service, List<WikiEngine> content) {
 
-					_wikiCacheHelper.clearCache();
+					_portalCache.removeAll();
 				}
 
 			});
+
+		_portalCache = _multiVMPool.getPortalCache(
+			WikiPageDisplay.class.getName());
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		_serviceTrackerMap.close();
-	}
-
-	@Reference(unbind = "-")
-	protected void setWikiCacheHelper(WikiCacheHelper wikiCacheHelper) {
-		_wikiCacheHelper = wikiCacheHelper;
 	}
 
 	private String _convertURLs(String url, Matcher matcher) {
@@ -335,7 +335,11 @@ public class WikiEngineRenderer {
 		"\\[\\$BEGIN_PAGE_TITLE\\$\\](.*?)\\[\\$END_PAGE_TITLE\\$\\]");
 
 	private BundleContext _bundleContext;
+
+	@Reference
+	private MultiVMPool _multiVMPool;
+
+	private PortalCache<?, ?> _portalCache;
 	private ServiceTrackerMap<String, List<WikiEngine>> _serviceTrackerMap;
-	private WikiCacheHelper _wikiCacheHelper;
 
 }
