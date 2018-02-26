@@ -301,7 +301,7 @@ if (portletTitleBasedNavigation) {
 									for (String format : formats) {
 									%>
 
-										<aui:option label="<%= wikiEngineRenderer.getFormatLabel(format, locale) %>" selected="<%= selectedFormat.equals(format) %>" value="<%= format %>" />
+										<aui:option label="<%= WikiUtil.getFormatLabel(wikiEngineRenderer, format, locale) %>" selected="<%= selectedFormat.equals(format) %>" value="<%= format %>" />
 
 									<%
 									}
