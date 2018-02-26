@@ -20,11 +20,7 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -61,10 +57,6 @@ public class WikiImporterTracker {
 		return (String)serviceReference.getProperty(key);
 	}
 
-	public WikiImporter getWikiImporter(String importer) {
-		return _bundleContext.getService(_serviceReferences.get(importer));
-	}
-
 	public void modifiedService(
 		ServiceReference<WikiImporter> serviceReference) {
 
@@ -81,14 +73,6 @@ public class WikiImporterTracker {
 		_serviceReferences.remove(importer);
 	}
 
-	@Activate
-	protected void activate() {
-		Bundle bundle = FrameworkUtil.getBundle(WikiImporterTracker.class);
-
-		_bundleContext = bundle.getBundleContext();
-	}
-
-	private BundleContext _bundleContext;
 	private final ConcurrentMap<String, ServiceReference<WikiImporter>>
 		_serviceReferences = new ConcurrentSkipListMap<>();
 
