@@ -17,6 +17,7 @@ package com.liferay.wiki.util;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -78,8 +79,10 @@ public class WikiCacheHelper {
 	}
 
 	public WikiPageDisplay getDisplay(
-		long nodeId, String title, PortletURL viewPageURL,
-		Supplier<PortletURL> editPageURLSupplier, String attachmentURLPrefix) {
+			long nodeId, String title, PortletURL viewPageURL,
+			Supplier<PortletURL> editPageURLSupplier,
+			String attachmentURLPrefix)
+		throws PortalException {
 
 		StopWatch stopWatch = new StopWatch();
 
@@ -94,9 +97,7 @@ public class WikiCacheHelper {
 				nodeId, title, viewPageURL, editPageURLSupplier.get(),
 				attachmentURLPrefix);
 
-			if (pageDisplay != null) {
-				_portalCache.put(key, pageDisplay);
-			}
+			_portalCache.put(key, pageDisplay);
 		}
 
 		if (_log.isDebugEnabled()) {
@@ -175,33 +176,12 @@ public class WikiCacheHelper {
 	}
 
 	private WikiPageDisplay _getPageDisplay(
-		long nodeId, String title, PortletURL viewPageURL,
-		PortletURL editPageURL, String attachmentURLPrefix) {
+			long nodeId, String title, PortletURL viewPageURL,
+			PortletURL editPageURL, String attachmentURLPrefix)
+		throws PortalException {
 
-		try {
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					StringBundler.concat(
-						"Get page display for {", String.valueOf(nodeId), ", ",
-						title, ", ", String.valueOf(viewPageURL), ", ",
-						String.valueOf(editPageURL), "}"));
-			}
-
-			return WikiPageLocalServiceUtil.getPageDisplay(
-				nodeId, title, viewPageURL, editPageURL, attachmentURLPrefix);
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					StringBundler.concat(
-						"Unable to get page display for {",
-						String.valueOf(nodeId), ", ", title, ", ",
-						String.valueOf(viewPageURL), ", ",
-						String.valueOf(editPageURL), "}"));
-			}
-
-			return null;
-		}
+		return WikiPageLocalServiceUtil.getPageDisplay(
+			nodeId, title, viewPageURL, editPageURL, attachmentURLPrefix);
 	}
 
 	private static final String _CACHE_NAME = WikiPageDisplay.class.getName();
