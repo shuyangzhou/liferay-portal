@@ -110,7 +110,6 @@ import com.liferay.wiki.processor.WikiPageRenameContentProcessor;
 import com.liferay.wiki.service.base.WikiPageLocalServiceBaseImpl;
 import com.liferay.wiki.social.WikiActivityKeys;
 import com.liferay.wiki.util.WikiCacheHelper;
-import com.liferay.wiki.util.WikiUtil;
 import com.liferay.wiki.util.comparator.PageCreateDateComparator;
 import com.liferay.wiki.util.comparator.PageVersionComparator;
 import com.liferay.wiki.validator.WikiPageTitleValidator;
@@ -2946,15 +2945,21 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			return;
 		}
 
-		String portalURL = serviceContext.getPortalURL();
-
 		WikiPage previousVersionPage = getPreviousVersionPage(page);
 
-		String attachmentURLPrefix = WikiUtil.getAttachmentURLPrefix(
-			serviceContext.getPathMain(), serviceContext.getPlid(),
-			page.getNodeId(), page.getTitle());
+		StringBundler sb = new StringBundler(9);
 
-		attachmentURLPrefix = portalURL + attachmentURLPrefix;
+		sb.append(serviceContext.getPortalURL());
+		sb.append(serviceContext.getPathMain());
+		sb.append("/wiki/get_page_attachment?p_l_id=");
+		sb.append(serviceContext.getPlid());
+		sb.append("&nodeId=");
+		sb.append(page.getNodeId());
+		sb.append("&title=");
+		sb.append(URLCodec.encodeURL(page.getTitle()));
+		sb.append("&fileName=");
+
+		String attachmentURLPrefix =  sb.toString();
 
 		String pageDiffs = StringPool.BLANK;
 
