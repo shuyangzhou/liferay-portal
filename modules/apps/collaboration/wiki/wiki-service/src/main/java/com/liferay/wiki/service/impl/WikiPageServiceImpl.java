@@ -384,17 +384,25 @@ public class WikiPageServiceImpl extends WikiPageServiceBaseImpl {
 			feedURL, entryURL, attachmentURLPrefix, pages, false, null);
 	}
 
+	/**
+	 * @deprecated As of 2.0.0, replaced by {@link #getOrphans(WikiNode)}
+	 */
+	@Deprecated
 	@Override
 	public List<WikiPage> getOrphans(long groupId, long nodeId)
 		throws PortalException {
 
+		WikiNode node = wikiNodeLocalService.getNode(nodeId);
+
+		return getOrphans(node);
+	}
+
+	@Override
+	public List<WikiPage> getOrphans(WikiNode node) throws PortalException {
 		_wikiNodeModelResourcePermission.check(
-			getPermissionChecker(), nodeId, ActionKeys.VIEW);
+			getPermissionChecker(), node, ActionKeys.VIEW);
 
-		List<WikiPage> pages = wikiPagePersistence.filterFindByG_N_H_S(
-			groupId, nodeId, true, WorkflowConstants.STATUS_APPROVED);
-
-		return wikiEngineRenderer.filterOrphans(pages);
+		return wikiPageLocalService.getOrphans(node.getNodeId());
 	}
 
 	@Override
