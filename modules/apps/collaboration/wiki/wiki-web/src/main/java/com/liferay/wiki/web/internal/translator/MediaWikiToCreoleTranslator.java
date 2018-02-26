@@ -12,13 +12,13 @@
  * details.
  */
 
-package com.liferay.wiki.internal.translator;
+package com.liferay.wiki.web.internal.translator;
 
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.wiki.importer.impl.mediawiki.MediaWikiImporter;
+import com.liferay.wiki.web.internal.importer.MediaWikiImporter;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

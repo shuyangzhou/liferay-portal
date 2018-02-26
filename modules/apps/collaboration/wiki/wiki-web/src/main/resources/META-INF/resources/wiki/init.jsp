@@ -52,6 +52,7 @@ page import="com.liferay.wiki.web.internal.display.context.logic.WikiVisualizati
 page import="com.liferay.wiki.web.internal.display.context.util.WikiRequestHelper" %><%@
 page import="com.liferay.wiki.web.internal.display.context.util.WikiSocialActivityHelper" %><%@
 page import="com.liferay.wiki.web.internal.display.context.util.WikiURLHelper" %><%@
+page import="com.liferay.wiki.web.internal.importer.MediaWikiImporter" %><%@
 page import="com.liferay.wiki.web.internal.importer.WikiImporterTracker" %><%@
 page import="com.liferay.wiki.web.internal.portlet.toolbar.item.WikiPortletToolbarContributor" %><%@
 page import="com.liferay.wiki.web.internal.security.permission.resource.WikiNodePermission" %><%@

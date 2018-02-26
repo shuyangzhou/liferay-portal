@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.wiki.importer.impl.mediawiki;
+package com.liferay.wiki.web.internal.importer;
 
 import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.asset.kernel.service.AssetTagLocalService;
@@ -49,12 +49,12 @@ import com.liferay.wiki.engine.impl.WikiEngineRenderer;
 import com.liferay.wiki.exception.ImportFilesException;
 import com.liferay.wiki.exception.NoSuchPageException;
 import com.liferay.wiki.importer.WikiImporter;
-import com.liferay.wiki.internal.translator.MediaWikiToCreoleTranslator;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.model.WikiPageConstants;
 import com.liferay.wiki.service.WikiPageLocalService;
 import com.liferay.wiki.validator.WikiPageTitleValidator;
+import com.liferay.wiki.web.internal.translator.MediaWikiToCreoleTranslator;
 
 import java.io.IOException;
 import java.io.InputStream;
