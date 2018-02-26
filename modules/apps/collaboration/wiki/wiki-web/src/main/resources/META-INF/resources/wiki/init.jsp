@@ -43,7 +43,6 @@ page import="com.liferay.wiki.exception.RequiredNodeException" %><%@
 page import="com.liferay.wiki.exception.WikiFormatException" %><%@
 page import="com.liferay.wiki.importer.impl.WikiImporterKeys" %><%@
 page import="com.liferay.wiki.importer.impl.WikiImporterTracker" %><%@
-page import="com.liferay.wiki.model.impl.WikiPageImpl" %><%@
 page import="com.liferay.wiki.social.WikiActivityKeys" %><%@
 page import="com.liferay.wiki.util.WikiPageAttachmentsUtil" %><%@
 page import="com.liferay.wiki.util.WikiUtil" %><%@
