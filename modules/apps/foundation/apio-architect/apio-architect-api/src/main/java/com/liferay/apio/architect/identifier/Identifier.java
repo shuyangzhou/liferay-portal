@@ -15,17 +15,15 @@
 package com.liferay.apio.architect.identifier;
 
 /**
- * Represents a resource identifier. Resources must not use this class directly.
- * Instead, they should create a wrapper interface and use it.
+ * Represents a resource identifier. Resources must not use this class directly
+ * (create and use a wrapper interface instead).
  *
  * <p>
- * For example, if the internal model is identified with a {@code Long} value,
- * then an interface {@code interface MyResourceId extends Identifier<Long>}
- * should be used.
+ * For example, if the internal model is identified with a {@code Long}, then an
+ * then an interface extending {@code Identifier<Long>} should be used.
  * </p>
  *
  * @author Alejandro Hernández
- * @review
  */
 @SuppressWarnings("unused")
 public interface Identifier<T> {

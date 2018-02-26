@@ -1,0 +1,32 @@
+{
+	"csfConfig": {
+		"path:**/*.js": {
+			"js": {
+				"lint": {
+					"globals": {
+						"$": true,
+						"MODULE_PATH": true
+					}
+				}
+			}
+		}
+	},
+	"dependencies": {
+		"metal": "^2.13.2",
+		"metal-component": "^2.16.3",
+		"metal-soy": "^2.13.2",
+		"metal-state": "^2.13.2"
+	},
+	"devDependencies": {
+		"check-source-formatting": "^2.0.4",
+		"liferay-module-config-generator": "^1.1.10",
+		"metal-cli": "^4.3.3"
+	},
+	"name": "layout-taglib",
+	"scripts": {
+		"checkFormat": "npm run csf",
+		"csf": "csf src/**/*.js",
+		"format": "npm run csf -- -i"
+	},
+	"version": "2.1.6"
+}

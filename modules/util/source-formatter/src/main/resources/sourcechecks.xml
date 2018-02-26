@@ -180,6 +180,7 @@
 		<check name="JavaDeprecatedJavadocCheck" />
 		<check name="JavaDiamondOperatorCheck" />
 		<check name="JavaDeserializationSecurityCheck" />
+		<check name="JavaEmptyLineAfterSuperCallCheck" />
 		<check name="JavaEmptyLinesCheck" />
 		<check name="JavaExceptionCheck" />
 		<check name="JavaForLoopCheck" />
@@ -274,6 +275,7 @@
 
 		<!-- Portal checks -->
 
+		<check name="JavaCleanUpMethodSuperCleanUpCheck" />
 		<check name="JavaCleanUpMethodVariablesCheck" />
 		<check name="JavaFinderCacheCheck" />
 		<check name="JavaFinderImplCustomSQLCheck" />
@@ -396,6 +398,7 @@
 		<check name="PropertiesServiceKeysCheck" />
 	</source-processor>
 	<source-processor name="SoySourceProcessor">
+		<check name="SoyEmptyLinesCheck" />
 		<check name="WhitespaceCheck" />
 	</source-processor>
 	<source-processor name="SQLSourceProcessor">

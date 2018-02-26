@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.string.StringPool;
+
 import java.io.Serializable;
 
 import java.util.HashMap;
@@ -36,6 +38,7 @@ public class ProgressTracker implements Serializable {
 
 	public ProgressTracker(String progressId) {
 		_progressId = progressId;
+
 		addProgress(ProgressStatusConstants.PREPARED, 0, StringPool.BLANK);
 	}
 
