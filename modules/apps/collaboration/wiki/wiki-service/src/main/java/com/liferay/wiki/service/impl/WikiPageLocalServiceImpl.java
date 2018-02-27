@@ -95,7 +95,7 @@ import com.liferay.wiki.configuration.WikiGroupServiceOverriddenConfiguration;
 import com.liferay.wiki.constants.WikiConstants;
 import com.liferay.wiki.constants.WikiPortletKeys;
 import com.liferay.wiki.engine.WikiEngine;
-import com.liferay.wiki.engine.impl.WikiEngineRenderer;
+import com.liferay.wiki.engine.WikiEngineRenderer;
 import com.liferay.wiki.escape.WikiEscapeUtil;
 import com.liferay.wiki.exception.DuplicatePageException;
 import com.liferay.wiki.exception.NoSuchPageException;

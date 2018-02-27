@@ -45,7 +45,7 @@ import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.zip.ZipReader;
 import com.liferay.portal.kernel.zip.ZipReaderFactoryUtil;
 import com.liferay.wiki.configuration.WikiGroupServiceConfiguration;
-import com.liferay.wiki.engine.impl.WikiEngineRenderer;
+import com.liferay.wiki.engine.WikiEngineRenderer;
 import com.liferay.wiki.exception.ImportFilesException;
 import com.liferay.wiki.exception.NoSuchPageException;
 import com.liferay.wiki.importer.WikiImporter;
