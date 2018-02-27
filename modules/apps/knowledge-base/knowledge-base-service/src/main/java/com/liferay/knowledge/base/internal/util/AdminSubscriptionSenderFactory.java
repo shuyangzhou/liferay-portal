@@ -14,8 +14,8 @@
 
 package com.liferay.knowledge.base.internal.util;
 
+import com.liferay.knowledge.base.internal.service.util.AdminSubscriptionSender;
 import com.liferay.knowledge.base.model.KBArticle;
-import com.liferay.knowledge.base.service.util.AdminSubscriptionSender;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.SubscriptionSender;

@@ -33,4 +33,11 @@ public interface ApioLogger {
 	 */
 	public void error(APIError apiError);
 
+	/**
+	 * Logs a warning message.
+	 *
+	 * @param message the message
+	 */
+	public void warning(String message);
+
 }

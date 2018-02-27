@@ -24,7 +24,9 @@ String backURL = ParamUtil.getString(request, "backURL", redirect);
 List<UADEntitySetComposite> uadEntitySetComposites = (List<UADEntitySetComposite>)request.getAttribute(UserAssociatedDataWebKeys.UAD_ENTITY_SET_COMPOSITES);
 %>
 
-<div class="container-fluid-1280">
+<div class="container-fluid container-fluid-max-xl container-form-lg">
+	<liferay-ui:header title="application-data-review" />
+
 	<liferay-ui:search-container
 		emptyResultsMessage="no-data-requires-anonymization"
 		id="UADEntitySetComposite"
@@ -41,9 +43,10 @@ List<UADEntitySetComposite> uadEntitySetComposites = (List<UADEntitySetComposite
 			modelVar="uadEntitySetComposite"
 		>
 			<portlet:renderURL var="manageUserAssociatedDataEntitiesURL">
-				<portlet:param name="mvcRenderCommandName" value="/user_associated_data/manage_user_associated_data_entity_types" />
+				<portlet:param name="mvcRenderCommandName" value="/user_associated_data/manage_user_associated_data_entities" />
 				<portlet:param name="selUserId" value="<%= String.valueOf(selUserId) %>" />
 				<portlet:param name="uadEntitySetName" value="<%= uadEntitySetComposite.getUADEntitySetName() %>" />
+				<portlet:param name="uadRegistryKey" value="<%= uadEntitySetComposite.getDefaultRegistryKey() %>" />
 			</portlet:renderURL>
 
 			<liferay-ui:search-container-column-text
