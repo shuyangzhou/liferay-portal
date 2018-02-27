@@ -20,7 +20,6 @@ import com.liferay.apio.architect.identifier.Identifier;
  * Represents the identifier for the {@code RootModel}.
  *
  * @author Alejandro Hernández
- * @review
  */
 public interface RootModelId extends Identifier<String> {
 }

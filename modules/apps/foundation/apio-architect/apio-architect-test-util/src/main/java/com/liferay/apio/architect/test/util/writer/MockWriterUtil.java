@@ -104,13 +104,13 @@ public class MockWriterUtil {
 	}
 
 	/**
-	 * Returns a mock {@link SingleModel} for a certain identifier class, and
-	 * with the provided identifier as ID.
+	 * Returns a mock {@link
+	 * SingleModel} (with the provided
+	 * identifier as its ID) for an identifier class.
 	 *
-	 * @param  identifier the single model identifier
-	 * @param  identifierClass the resource identifier class
-	 * @return a mock {@code SingleModel} for the identifier class
-	 * @review
+	 * @param  identifier the single model's identifier
+	 * @param  identifierClass the identifier class
+	 * @return the mock {@code SingleModel}
 	 */
 	public static Optional<SingleModel> getSingleModel(
 		Object identifier, Class<? extends Identifier> identifierClass) {

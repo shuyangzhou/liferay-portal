@@ -16,6 +16,8 @@ package com.liferay.apio.architect.wiring.osgi.manager;
 
 import aQute.bnd.annotation.ProviderType;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +32,28 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ProviderType
 public interface ProviderManager {
+
+	/**
+	 * Returns the list of missing providers class names.
+	 *
+	 * @param  neededProviders the list of needed providers
+	 * @return the list of missing providers class names
+	 * @review
+	 */
+	public List<String> getMissingProviders(Collection<String> neededProviders);
+
+	/**
+	 * Returns the instance of type {@code T} if a valid {@code Provider} can be
+	 * found. Throws a {@code NotFoundException} otherwise.
+	 *
+	 * @param  httpServletRequest the current request
+	 * @param  clazz the class type {@code T}
+	 * @return the instance of {@code T}, if a valid {@code Provider} is
+	 *         present; throws {@code NotFoundException} otherwise
+	 * @review
+	 */
+	public <T> T provideMandatory(
+		HttpServletRequest httpServletRequest, Class<T> clazz);
 
 	/**
 	 * Returns the instance of type {@code T} if a valid {@code Provider} can be
