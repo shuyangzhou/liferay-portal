@@ -31,11 +31,10 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
- * Allow developers to register its resources as a {@link CollectionResource}
- * instead of implement an register each of the enclosing interfaces separately.
+ * Registers resources as {@link CollectionResource}, instead of implementing a
+ * register for each of the enclosing interfaces separately.
  *
  * @author Alejandro Hernández
- * @review
  */
 @Component(immediate = true)
 public class CollectionResourceManager {
