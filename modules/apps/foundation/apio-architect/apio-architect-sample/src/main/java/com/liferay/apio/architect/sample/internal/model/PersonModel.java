@@ -23,10 +23,10 @@ import com.github.javafaker.Name;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -66,6 +66,39 @@ public class PersonModel {
 		_persons.put(personId, personModel);
 
 		return personModel;
+	}
+
+	/**
+	 * Compute the fake data for this model class.
+	 *
+	 * @review
+	 */
+	public static void computePersonModels() {
+		for (long personId = 0; personId < 10; personId++) {
+			Faker faker = new Faker();
+
+			Address address = faker.address();
+
+			Internet internet = faker.internet();
+
+			DateAndTime dateAndTime = faker.date();
+
+			Calendar calendar = Calendar.getInstance();
+
+			calendar.add(Calendar.YEAR, -21);
+
+			Date birthDate = dateAndTime.past(
+				10000, TimeUnit.DAYS, calendar.getTime());
+
+			Name name = faker.name();
+
+			PersonModel personModel = new PersonModel(
+				address.fullAddress(), internet.avatar(), birthDate,
+				internet.safeEmailAddress(), name.firstName(), name.title(),
+				name.lastName(), personId);
+
+			_persons.put(personId, personModel);
+		}
 	}
 
 	/**
@@ -251,35 +284,8 @@ public class PersonModel {
 	}
 
 	private static final AtomicLong _count = new AtomicLong(9);
-	private static final Map<Long, PersonModel> _persons = new HashMap<>();
-
-	static {
-		for (long personId = 0; personId < 10; personId++) {
-			Faker faker = new Faker();
-
-			Address address = faker.address();
-
-			Internet internet = faker.internet();
-
-			DateAndTime dateAndTime = faker.date();
-
-			Calendar calendar = Calendar.getInstance();
-
-			calendar.add(Calendar.YEAR, -21);
-
-			Date birthDate = dateAndTime.past(
-				10000, TimeUnit.DAYS, calendar.getTime());
-
-			Name name = faker.name();
-
-			PersonModel personModel = new PersonModel(
-				address.fullAddress(), internet.avatar(), birthDate,
-				internet.safeEmailAddress(), name.firstName(), name.title(),
-				name.lastName(), personId);
-
-			_persons.put(personId, personModel);
-		}
-	}
+	private static final Map<Long, PersonModel> _persons =
+		new ConcurrentHashMap<>();
 
 	private final String _address;
 	private final String _avatar;

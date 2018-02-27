@@ -39,15 +39,14 @@ import java.util.stream.Stream;
 public class RepresentorTestUtil {
 
 	/**
-	 * Tests that a {@code Map<String, Function<T, S>>} has a key list equals to
-	 * the provided key list and a value list (obtained from applying {@code t}
-	 * to each actual value), equals to the provided value list.
+	 * Tests that a {@code Map<String, Function<T, S>>} has a key list equal to
+	 * the provided key list, and a value list (obtained by applying {@code t}
+	 * to each value) equal to the provided value list.
 	 *
-	 * @param  t the t instance
-	 * @param  map the map to test
-	 * @param  keyList the expected key list
-	 * @param  valueList the expected value list
-	 * @review
+	 * @param t the {@code t} instance
+	 * @param map the map to test
+	 * @param keyList the expected key list
+	 * @param valueList the expected value list
 	 */
 	public static <T, S> void testFieldFunctions(
 		T t, Map<String, ? extends Function<T, S>> map, List<String> keyList,
@@ -57,17 +56,16 @@ public class RepresentorTestUtil {
 	}
 
 	/**
-	 * Tests that a {@code Map<String, Function<T, S>>} has a key list equals to
-	 * the provided key list and a value list (obtained from applying {@code t}
-	 * to each actual value and transformed with the provided function), equals
-	 * to the provided value list.
+	 * Tests that a {@code Map<String, Function<T, S>>} has a key list equal to
+	 * the provided key list, and a value list (obtained by applying {@code t}
+	 * to each value, and transformed with the provided function), equal to the
+	 * provided value list.
 	 *
-	 * @param  t the t instance
-	 * @param  map the map to test
-	 * @param  function the function to transform the map's values
-	 * @param  keyList the expected key list
-	 * @param  valueList the expected value list
-	 * @review
+	 * @param t the {@code t} instance
+	 * @param map the map to test
+	 * @param function the function that transforms the map's values
+	 * @param keyList the expected key list
+	 * @param valueList the expected value list
 	 */
 	public static <T, S, U> void testFields(
 		T t, Map<String, ? extends Function<T, S>> map, Function<S, U> function,
@@ -84,15 +82,14 @@ public class RepresentorTestUtil {
 	}
 
 	/**
-	 * Tests that a {@code Map<String, U>} has a key list equals to the provided
-	 * key list and a value list (transformed with the provided function),
-	 * equals to the provided value list.
+	 * Tests that a {@code Map<String, U>} has a key list equal to the provided
+	 * key list, and a value list (transformed with the provided function) equal
+	 * to the provided value list.
 	 *
-	 * @param  map the map to test
-	 * @param  function the function to transform the map's values
-	 * @param  keyList the expected key list
-	 * @param  valueList the expected value list
-	 * @review
+	 * @param map the map to test
+	 * @param function the function that transforms the map's values
+	 * @param keyList the expected key list
+	 * @param valueList the expected value list
 	 */
 	public static <T, S> void testMap(
 		Map<String, T> map, Function<T, S> function, List<String> keyList,
@@ -114,15 +111,15 @@ public class RepresentorTestUtil {
 	}
 
 	/**
-	 * Test a {@code RelatedModel} with the information provided.
+	 * Tests a {@code RelatedModel} with the provided {@link
+	 * Dummy}, key, identifier
+	 * class, and ID.
 	 *
-	 * @param  relatedModel the related model
-	 * @param  dummy the dummy instance
-	 * @param  key the key that the related model should have
-	 * @param  identifierClass the identifier class that the related model
-	 *         should have
-	 * @param  value the value of the ID that the related model should have
-	 * @review
+	 * @param relatedModel the related model
+	 * @param dummy the dummy instance
+	 * @param key the related model's key
+	 * @param identifierClass the related model's identifier class
+	 * @param value the value of the related model's ID
 	 */
 	public static void testRelatedModel(
 		RelatedModel<Dummy, ?> relatedModel, Dummy dummy, String key,

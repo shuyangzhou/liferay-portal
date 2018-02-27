@@ -24,11 +24,10 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
- * This interface can be used to create a {@code ServiceRegistration} {@code
- * ServiceTrackerCustomizer} with a lambda instead of an anonymous class.
+ * Creates a {@code ServiceRegistration} {@code ServiceTrackerCustomizer} with a
+ * lambda instead of an anonymous class.
  *
  * @author Alejandro Hernández
- * @review
  */
 @FunctionalInterface
 public interface ServiceRegistrationServiceTrackerCustomizer<T>

@@ -438,6 +438,12 @@
 	<td>//div[contains(@data-fieldname,'${key_fieldName}')]//a[@download='${key_uploadFileName}']</td>
 	<td></td>
 </tr>
+<!--CHANGE FIELD TYPE-->
+<tr>
+	<td>CHANGE_FIELD_TYPE_BUTTON</td>
+	<td>//button[contains(@id,'field-type-menu-content')]</td>
+	<td></td>
+</tr>
 </tbody>
 </table>
 </body>

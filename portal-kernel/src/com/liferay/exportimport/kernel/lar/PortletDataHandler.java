@@ -14,8 +14,8 @@
 
 package com.liferay.exportimport.kernel.lar;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.util.StringPool;
 
 import javax.portlet.PortletPreferences;
 
@@ -193,7 +193,7 @@ public interface PortletDataHandler {
 	 */
 	public default PortletDataHandlerControl[] getStagingControls() {
 		return new PortletDataHandlerControl[0];
-	};
+	}
 
 	/**
 	 * Handles any special processing of the data when the portlet is imported

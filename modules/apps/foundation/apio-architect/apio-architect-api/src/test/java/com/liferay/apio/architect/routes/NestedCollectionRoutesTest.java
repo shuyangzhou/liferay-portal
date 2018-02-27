@@ -28,6 +28,7 @@ import static java.util.Collections.singletonMap;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 
@@ -45,6 +46,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.Test;
 
@@ -56,7 +59,9 @@ public class NestedCollectionRoutesTest {
 	@Test
 	public void testEmptyBuilderBuildsEmptyRoutes() {
 		Builder<String, Long> builder = new Builder<>(
-			"name", "nested", REQUEST_PROVIDE_FUNCTION);
+			"name", "nested", REQUEST_PROVIDE_FUNCTION,
+			__ -> {
+			});
 
 		NestedCollectionRoutes<String, Long> nestedCollectionRoutes =
 			builder.build();
@@ -74,8 +79,10 @@ public class NestedCollectionRoutesTest {
 
 	@Test
 	public void testFiveParameterBuilderMethodsCreatesValidRoutes() {
+		Set<String> neededProviders = new TreeSet<>();
+
 		Builder<String, Long> builder = new Builder<>(
-			"name", "nested", REQUEST_PROVIDE_FUNCTION);
+			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
 		NestedCollectionRoutes<String, Long> nestedCollectionRoutes =
 			builder.addCreator(
@@ -87,13 +94,21 @@ public class NestedCollectionRoutesTest {
 				Long.class, Boolean.class, Integer.class
 			).build();
 
+		assertThat(
+			neededProviders,
+			contains(
+				Boolean.class.getName(), Integer.class.getName(),
+				Long.class.getName(), String.class.getName()));
+
 		_testNestedCollectionRoutes(nestedCollectionRoutes);
 	}
 
 	@Test
 	public void testFourParameterBuilderMethodsCreatesValidRoutes() {
+		Set<String> neededProviders = new TreeSet<>();
+
 		Builder<String, Long> builder = new Builder<>(
-			"name", "nested", REQUEST_PROVIDE_FUNCTION);
+			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
 		NestedCollectionRoutes<String, Long> nestedCollectionRoutes =
 			builder.addCreator(
@@ -105,13 +120,21 @@ public class NestedCollectionRoutesTest {
 				Long.class, Boolean.class
 			).build();
 
+		assertThat(
+			neededProviders,
+			contains(
+				Boolean.class.getName(), Long.class.getName(),
+				String.class.getName()));
+
 		_testNestedCollectionRoutes(nestedCollectionRoutes);
 	}
 
 	@Test
 	public void testOneParameterBuilderMethodsCreatesValidRoutes() {
+		Set<String> neededProviders = new TreeSet<>();
+
 		Builder<String, Long> builder = new Builder<>(
-			"name", "nested", REQUEST_PROVIDE_FUNCTION);
+			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
 		NestedCollectionRoutes<String, Long> nestedCollectionRoutes =
 			builder.addCreator(
@@ -121,13 +144,17 @@ public class NestedCollectionRoutesTest {
 				this::_testAndReturnNoParameterGetterRoute
 			).build();
 
+		assertThat(neededProviders.size(), is(0));
+
 		_testNestedCollectionRoutes(nestedCollectionRoutes);
 	}
 
 	@Test
 	public void testThreeParameterBuilderMethodsCreatesValidRoutes() {
+		Set<String> neededProviders = new TreeSet<>();
+
 		Builder<String, Long> builder = new Builder<>(
-			"name", "nested", REQUEST_PROVIDE_FUNCTION);
+			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
 		NestedCollectionRoutes<String, Long> nestedCollectionRoutes =
 			builder.addCreator(
@@ -139,13 +166,19 @@ public class NestedCollectionRoutesTest {
 				Long.class
 			).build();
 
+		assertThat(
+			neededProviders,
+			contains(Long.class.getName(), String.class.getName()));
+
 		_testNestedCollectionRoutes(nestedCollectionRoutes);
 	}
 
 	@Test
 	public void testTwoParameterBuilderMethodsCreatesValidRoutes() {
+		Set<String> neededProviders = new TreeSet<>();
+
 		Builder<String, Long> builder = new Builder<>(
-			"name", "nested", REQUEST_PROVIDE_FUNCTION);
+			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
 		NestedCollectionRoutes<String, Long> nestedCollectionRoutes =
 			builder.addCreator(
@@ -154,6 +187,8 @@ public class NestedCollectionRoutesTest {
 			).addGetter(
 				this::_testAndReturnOneParameterGetterRoute, String.class
 			).build();
+
+		assertThat(neededProviders, contains(String.class.getName()));
 
 		_testNestedCollectionRoutes(nestedCollectionRoutes);
 	}
