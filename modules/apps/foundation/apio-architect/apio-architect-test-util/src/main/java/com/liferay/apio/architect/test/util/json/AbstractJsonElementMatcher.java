@@ -30,8 +30,7 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
  *
  * @author Alejandro Hernández
  * @param  <T> the type of {@code JsonElement} this matcher validates
- * @param  <S> the type of the actual value of the element
- * @review
+ * @param  <S> the type of the element's actual value
  */
 public abstract class AbstractJsonElementMatcher<T extends JsonElement, S>
 	extends TypeSafeDiagnosingMatcher<JsonElement> {
