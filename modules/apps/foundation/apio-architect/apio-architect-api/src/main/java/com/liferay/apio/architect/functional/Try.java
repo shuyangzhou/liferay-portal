@@ -23,6 +23,7 @@ import java.io.Closeable;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -111,18 +112,17 @@ public abstract class Try<T> {
 	/**
 	 * Creates a new {@code Try} instance by executing a fallible lambda that
 	 * returns an {@code Optional} in a {@link ThrowableSupplier}. If this
-	 * throws an exception a {@code Failure} instance is created. If the
+	 * throws an exception, a {@code Failure} instance is created. If the
 	 * returned {@code Optional} is empty, a {@code Failure} containing the
-	 * value of the exception supplier is returned. Otherwise, a {@code Success}
+	 * exception supplier's value is returned. Otherwise, a {@code Success}
 	 * instance with the lambda's {@code Optional} result is created.
 	 *
 	 * @param  throwableSupplier the throwable supplier that contains the
 	 *         fallible lambda that returns an {@code Optional}
-	 * @param  supplier the supplier for the exception in the case the obtained
-	 *         {@code Optional} is {@code Optional#empty()}
+	 * @param  supplier the supplier for the exception if the obtained {@code
+	 *         Optional} is {@code Optional#empty()}
 	 * @return {@code Failure} if the throwable supplier throws an exception, or
 	 *         the {@code Optional} is empty; {@code Success} otherwise
-	 * @review
 	 */
 	public static <T> Try<T> fromOptional(
 		ThrowableSupplier<Optional<T>> throwableSupplier,
@@ -226,6 +226,22 @@ public abstract class Try<T> {
 	public abstract T getUnchecked();
 
 	/**
+	 * Calls the provided consumer if the current {@code Try} instance is a
+	 * {@code Failure}; otherwise nothing occurs.
+	 *
+	 * @param consumer the consumer
+	 */
+	public abstract void ifFailure(Consumer<Exception> consumer);
+
+	/**
+	 * Calls the provided consumer if the current {@code Try} instance is a
+	 * {@code Success}; otherwise nothing occurs.
+	 *
+	 * @param consumer the consumer
+	 */
+	public abstract void ifSuccess(Consumer<T> consumer);
+
+	/**
 	 * Returns {@code true} if the current {@code Try} instance is a {@code
 	 * Failure}; otherwise returns {@code false}.
 	 *
@@ -291,16 +307,15 @@ public abstract class Try<T> {
 
 	/**
 	 * Returns the result of applying the mapping function to the {@code
-	 * Success} instance's value and unwrapping the resultant {@code Optional},
+	 * Success} instance's value and unwrapping the resulting {@code Optional},
 	 * if the current {@code Try} instance is a {@code Success} and the {@code
-	 * Optional} is not {@code Optional#empty()}; otherwise returns the {@code
+	 * Optional} isn't {@code Optional#empty()}; otherwise returns the {@code
 	 * Failure}.
 	 *
 	 * @param  throwableFunction the mapping function
-	 * @return the result of the mapping function unwrapped if applied to the
-	 *         {@code Success} instance's value doesn't return {@code
-	 *         Optional#empty()}; the {@code Failure} instance otherwise
-	 * @review
+	 * @return the mapping function's result if the {@code Success} instance's
+	 *         value doesn't return {@code Optional#empty()}; the {@code
+	 *         Failure} instance otherwise
 	 */
 	public <S> Try<S> mapOptional(
 		ThrowableFunction<? super T, ? extends Optional<S>> throwableFunction) {
@@ -316,18 +331,17 @@ public abstract class Try<T> {
 
 	/**
 	 * Returns the result of applying the mapping function to the {@code
-	 * Success} instance's value and unwrapping the resultant {@code Optional},
+	 * Success} instance's value and unwrapping the resulting {@code Optional},
 	 * if the current {@code Try} instance is a {@code Success} and the {@code
-	 * Optional} is not {@code Optional#empty()}; otherwise returns the {@code
-	 * Failure} instance populated with the provided exception.
+	 * Optional} isn't {@code Optional#empty()}; otherwise returns the {@code
+	 * Failure} instance with the provided exception.
 	 *
 	 * @param  throwableFunction the mapping function
-	 * @param  supplier the supplier for the exception in the case the obtained
-	 *         {@code Optional} is {@code Optional#empty()}
-	 * @return the result of the mapping function unwrapped if applied to the
-	 *         {@code Success} instance's value doesn't return {@code
-	 *         Optional#empty()}; the {@code Failure} instance otherwise
-	 * @review
+	 * @param  supplier the exception's supplier in case the obtained {@code
+	 *         Optional} is {@code Optional#empty()}
+	 * @return the mapping function's result if the {@code Success} instance's
+	 *         value doesn't return {@code Optional#empty()}; the {@code
+	 *         Failure} instance otherwise
 	 */
 	public <S> Try<S> mapOptional(
 		ThrowableFunction<? super T, ? extends Optional<S>> throwableFunction,
@@ -410,6 +424,16 @@ public abstract class Try<T> {
 		ThrowableFunction<? super Exception, Try<T>> throwableFunction);
 
 	/**
+	 * Returns the current {@code Try} instance as an {@code Optional}
+	 * containing the value if it's a {@code Success} or {@code
+	 * Optional#empty()} if it's a {@code Failure}.
+	 *
+	 * @return an {@code Optional} containing the value if it's a {@code
+	 *         Success}; {@code Optional#empty()} otherwise
+	 */
+	public abstract Optional<T> toOptional();
+
+	/**
 	 * The implementation of {@code Try}'S failure case. Don't try to
 	 * instantiate this class directly. To instantiate this class when you don't
 	 * know if the operation will fail, use {@link
@@ -463,6 +487,17 @@ public abstract class Try<T> {
 			}
 
 			throw new RuntimeException(_exception);
+		}
+
+		@Override
+		public void ifFailure(Consumer<Exception> consumer) {
+			Objects.requireNonNull(consumer);
+
+			consumer.accept(_exception);
+		}
+
+		@Override
+		public void ifSuccess(Consumer<T> consumer) {
 		}
 
 		@Override
@@ -546,6 +581,11 @@ public abstract class Try<T> {
 			}
 		}
 
+		@Override
+		public Optional<T> toOptional() {
+			return Optional.empty();
+		}
+
 		private Failure(Exception exception) {
 			_exception = exception;
 		}
@@ -624,6 +664,17 @@ public abstract class Try<T> {
 		}
 
 		@Override
+		public void ifFailure(Consumer<Exception> consumer) {
+		}
+
+		@Override
+		public void ifSuccess(Consumer<T> consumer) {
+			Objects.requireNonNull(consumer);
+
+			consumer.accept(_value);
+		}
+
+		@Override
 		public boolean isFailure() {
 			return false;
 		}
@@ -697,6 +748,11 @@ public abstract class Try<T> {
 			Objects.requireNonNull(throwableFunction);
 
 			return this;
+		}
+
+		@Override
+		public Optional<T> toOptional() {
+			return Optional.ofNullable(_value);
 		}
 
 		private Success(T value) {

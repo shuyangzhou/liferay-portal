@@ -26,8 +26,8 @@ import java.util.function.Function;
  *
  * @author Alejandro Hernández
  * @param  <T> the model's type
- * @param  <S> the parent model identifier's type. It must be a subclass of
- *         {@code Identifier}.
+ * @param  <S> the type of the model's identifier (e.g., {@code Long}, {@code
+ *         String}, etc.)
  */
 @FunctionalInterface
 public interface NestedGetPageFunction<T, S>

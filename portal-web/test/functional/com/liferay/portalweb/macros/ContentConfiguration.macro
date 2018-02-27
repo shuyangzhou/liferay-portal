@@ -1,0 +1,193 @@
+<definition>
+	<command name="checkContentNameList">
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Content" />
+		</execute>
+
+		<for list="${checkContentNameList}" param="contentName">
+			<var name="key_contentName" value="${contentName}" />
+
+			<execute function="Check" locator1="PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX" />
+		</for>
+	</command>
+
+	<command name="checkPageName">
+		<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PUBLIC_PAGES_CHECKBOX" />
+
+		<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PUBLIC_PAGES_CHECKBOX" />
+
+		<for list="${checkPageName}" param="pageName">
+			<var name="key_pageName" value="${pageName}" />
+
+			<if>
+				<condition function="IsElementNotPresent" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_CHECKED" />
+				<then>
+					<var name="key_pageName" value="${pageName}" />
+
+					<execute function="Click" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_NAME" />
+				</then>
+			</if>
+		</for>
+	</command>
+
+	<command name="checkPrivatePages">
+		<if>
+			<condition function="IsElementPresent" locator1="PagesConfiguration#PAGES_ALL_PUBLIC_PAGES_CHECKBOX" />
+			<then>
+				<execute function="Click" locator1="PagesConfiguration#CHANGE_TO_PRIVATE_PAGES" />
+			</then>
+		</if>
+
+		<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PRIVATE_PAGES_CHECKBOX" />
+
+		<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PRIVATE_PAGES_CHECKBOX" />
+
+		<for list="${checkPrivatePages}" param="pageName">
+			<var name="key_pageName" value="${pageName}" />
+
+			<if>
+				<condition function="IsElementNotPresent" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_CHECKED" />
+				<then>
+					<var name="key_pageName" value="${pageName}" />
+
+					<execute function="Click" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_NAME" />
+				</then>
+			</if>
+		</for>
+	</command>
+
+	<command name="checkPublicPages">
+		<if>
+			<condition function="IsElementPresent" locator1="PagesConfiguration#PAGES_ALL_PRIVATE_PAGES_CHECKBOX" />
+			<then>
+				<execute function="Click" locator1="PagesConfiguration#CHANGE_TO_PUBLIC_PAGES" />
+			</then>
+		</if>
+
+		<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PUBLIC_PAGES_CHECKBOX" />
+
+		<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PUBLIC_PAGES_CHECKBOX" />
+
+		<for list="${checkPublicPages}" param="pageName">
+			<var name="key_pageName" value="${pageName}" />
+
+			<if>
+				<condition function="IsElementNotPresent" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_CHECKED" />
+				<then>
+					<var name="key_pageName" value="${pageName}" />
+
+					<execute function="Click" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_NAME" />
+				</then>
+			</if>
+		</for>
+	</command>
+
+	<command name="contentDateRange">
+		<if>
+			<equals arg1="${contentDateRange}" arg2="All" />
+			<then>
+				<execute function="Click" locator1="Radio#CHOOSE_CONTENT_DATE_RANGE_CHANGE" />
+
+				<execute function="Check" locator1="Radio#RANGE_ALL" />
+
+				<execute function="Click" locator1="Link#REFRESH_COUNTS" />
+			</then>
+		</if>
+
+		<if>
+			<equals arg1="${contentDateRange}" arg2="Date Range" />
+			<then>
+				<execute function="Click" locator1="Radio#CHOOSE_CONTENT_DATE_RANGE_CHANGE" />
+
+				<var name="key_contentDateRange" value="${contentDateRange}" />
+
+				<execute function="Type" locator1="Select#DATE_RANGE_START_DATE" value1="${dateRangeStartDate}" />
+				<execute function="Type" locator1="Select#DATE_RANGE_END_DATE" value1="${dateRangeEndDate}" />
+
+				<execute function="Click" locator1="Link#REFRESH_COUNTS" />
+			</then>
+		</if>
+
+		<if>
+			<equals arg1="${contentDateRange}" arg2="Last" />
+			<then>
+				<execute function="Click" locator1="Radio#CHOOSE_CONTENT_DATE_RANGE_CHANGE" />
+
+				<execute function="Click" locator1="Radio#RANGE_LAST" />
+
+				<execute function="Click" locator1="Link#REFRESH_COUNTS" />
+			</then>
+		</if>
+	</command>
+
+	<command name="contentDeletion">
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Deletions" />
+		</execute>
+
+		<execute function="Check" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_DELETION_CHECKBOX" />
+	</command>
+
+	<command name="deleteMissingPages">
+		<execute function="Check" locator1="PagesConfiguration#PAGES_DELETE_MISSING_PAGES_CHECKBOX" />
+	</command>
+
+	<command name="exportPermissions">
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Permissions" />
+		</execute>
+
+		<execute function="Check" locator1="Checkbox#PERMISSIONS" />
+	</command>
+
+	<command name="uncheckContentNameList">
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Content" />
+		</execute>
+
+		<for list="${uncheckContentNameList}" param="contentName">
+			<var name="key_contentName" value="${contentName}" />
+
+			<execute function="Uncheck" locator1="PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX" />
+		</for>
+	</command>
+
+	<command name="uncheckLogo">
+		<execute function="Uncheck" locator1="PagesConfiguration#PAGES_LOGO_CHECKBOX" />
+	</command>
+
+	<command name="uncheckSitePagesSettings">
+		<execute function="Uncheck" locator1="PagesConfiguration#PAGES_SITE_PAGES_SETTINGS_CHECKBOX" />
+	</command>
+
+	<command name="uncheckSiteTemplateSettings">
+		<execute function="Uncheck" locator1="PagesConfiguration#PAGES_SITE_TEMPLATE_SETTINGS_CHECKBOX" />
+	</command>
+
+	<command name="uncheckSubContent">
+		<var name="key_contentName" value="${mainContent}" />
+
+		<execute function="AssertClick" locator1="ExportImport#CONTENT_CHOOSE_CONTENT_CONTENT_CHANGE_LINK" value1="Change" />
+
+		<var name="key_subContent" value="${uncheckSubContent}" />
+
+		<execute function="Uncheck" locator1="ExportImport#CONTENT_CHOOSE_CONTENT_SUBCONTENT_CHECKBOX" />
+
+		<execute function="AssertClick" locator1="Button#OK" value1="OK" />
+	</command>
+
+	<command name="uncheckSubSubContent">
+		<var name="key_contentName" value="${contentName}" />
+
+		<execute function="Check" locator1="PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX" />
+
+		<execute function="AssertClick" locator1="ExportImport#CONTENT_CHOOSE_CONTENT_CONTENT_CHANGE_LINK" value1="Change" />
+
+		<var name="key_subContent" value="${subContent}" />
+		<var name="key_subSubContent" value="${uncheckSubSubContent}" />
+
+		<execute function="Uncheck" locator1="ExportImport#CONTENT_CHOOSE_CONTENT_SUB_SUBCONTENT_CHECKBOX" />
+
+		<execute function="AssertClick" locator1="Button#OK" value1="OK" />
+	</command>
+</definition>

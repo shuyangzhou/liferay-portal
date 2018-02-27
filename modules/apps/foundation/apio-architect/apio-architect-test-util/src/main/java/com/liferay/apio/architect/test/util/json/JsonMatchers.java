@@ -149,10 +149,8 @@ public final class JsonMatchers {
 	 * Returns a matcher that checks if an element is a {@code
 	 * com.google.gson.JsonArray} containing the list of booleans provided.
 	 *
-	 * @param  values the list of values
-	 * @return the matcher that checks if an element is a JSON array with the
-	 *         provided booleans
-	 * @review
+	 * @param  values the list of boolean values
+	 * @return the matcher
 	 */
 	@SuppressWarnings("unchecked")
 	public static Matcher<JsonElement> isAJsonArrayContaining(
@@ -171,12 +169,10 @@ public final class JsonMatchers {
 
 	/**
 	 * Returns a matcher that checks if an element is a {@code
-	 * com.google.gson.JsonArray} containing the list of ints provided.
+	 * com.google.gson.JsonArray} containing the list of integers provided.
 	 *
-	 * @param  values the list of values
-	 * @return the matcher that checks if an element is a JSON array with the
-	 *         provided ints
-	 * @review
+	 * @param  values the list of integer values
+	 * @return the matcher
 	 */
 	@SuppressWarnings("unchecked")
 	public static Matcher<JsonElement> isAJsonArrayContaining(
@@ -195,12 +191,10 @@ public final class JsonMatchers {
 
 	/**
 	 * Returns a matcher that checks if an element is a {@code
-	 * com.google.gson.JsonArray} containing the list of longs provided.
+	 * com.google.gson.JsonArray} containing the list of long values provided.
 	 *
-	 * @param  values the list of values
-	 * @return the matcher that checks if an element is a JSON array with the
-	 *         provided longs
-	 * @review
+	 * @param  values the list of long values
+	 * @return the matcher
 	 */
 	@SuppressWarnings("unchecked")
 	public static Matcher<JsonElement> isAJsonArrayContaining(Long... values) {
@@ -219,10 +213,8 @@ public final class JsonMatchers {
 	 * Returns a matcher that checks if an element is a {@code
 	 * com.google.gson.JsonArray} containing the list of strings provided.
 	 *
-	 * @param  values the list of values
-	 * @return the matcher that checks if an element is a JSON array with the
-	 *         provided strings
-	 * @review
+	 * @param  values the list of string values
+	 * @return the matcher
 	 */
 	@SuppressWarnings("unchecked")
 	public static Matcher<JsonElement> isAJsonArrayContaining(

@@ -36,6 +36,6 @@ public interface ItemRouterManager {
 	 * @param  name the item resource's name
 	 * @return the item routes
 	 */
-	public <T> Optional<ItemRoutes<T>> getItemRoutesOptional(String name);
+	public <T, S> Optional<ItemRoutes<T, S>> getItemRoutesOptional(String name);
 
 }
