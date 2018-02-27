@@ -20,7 +20,6 @@ import static org.osgi.service.component.annotations.ReferenceCardinality.AT_LEA
 import static org.osgi.service.component.annotations.ReferencePolicyOption.GREEDY;
 
 import com.liferay.apio.architect.error.ApioDeveloperError.MustHaveMessageMapper;
-import com.liferay.apio.architect.error.ApioDeveloperError.MustHaveProvider;
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.identifier.Identifier;
 import com.liferay.apio.architect.language.Language;
@@ -31,7 +30,7 @@ import com.liferay.apio.architect.response.control.Embedded;
 import com.liferay.apio.architect.response.control.Fields;
 import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.apio.architect.single.model.SingleModel;
-import com.liferay.apio.architect.uri.Path;
+import com.liferay.apio.architect.unsafe.Unsafe;
 import com.liferay.apio.architect.url.ServerURL;
 import com.liferay.apio.architect.wiring.osgi.manager.PathIdentifierMapperManager;
 import com.liferay.apio.architect.wiring.osgi.manager.ProviderManager;
@@ -129,7 +128,8 @@ public class PageMessageBodyWriter<T>
 			).httpServletRequest(
 				_httpServletRequest
 			).serverURL(
-				getServerURL()
+				_providerManager.provideMandatory(
+					_httpServletRequest, ServerURL.class)
 			).embedded(
 				_providerManager.provideOptional(
 					_httpServletRequest, Embedded.class
@@ -156,17 +156,7 @@ public class PageMessageBodyWriter<T>
 			).pageMessageMapper(
 				getPageMessageMapper(mediaType, page)
 			).pathFunction(
-				(resourceName, identifier) -> {
-					Optional<Class<Identifier>> optional =
-						_identifierClassManager.getIdentifierClassOptional(
-							resourceName);
-
-					return optional.flatMap(
-						identifierClass ->
-							_pathIdentifierMapperManager.mapToPath(
-								unsafeCast(identifierClass),
-								unsafeCast(identifier)));
-				}
+				_pathIdentifierMapperManager::mapToPath
 			).resourceNameFunction(
 				_nameManager::getNameOptional
 			).representorFunction(
@@ -210,42 +200,23 @@ public class PageMessageBodyWriter<T>
 		);
 	}
 
-	/**
-	 * Returns the server URL, or throws a {@link MustHaveProvider} developer
-	 * error.
-	 *
-	 * @return the server URL
-	 */
-	protected ServerURL getServerURL() {
-		Optional<ServerURL> optional = _providerManager.provideOptional(
-			_httpServletRequest, ServerURL.class);
-
-		return optional.orElseThrow(
-			() -> new MustHaveProvider(ServerURL.class));
-	}
-
 	private Optional<SingleModel> _getSingleModelOptional(
 		Object identifier, Class<? extends Identifier> identifierClass) {
 
 		Optional<String> nameOptional = _nameManager.getNameOptional(
 			identifierClass.getName());
 
-		Optional<Path> pathOptional = _pathIdentifierMapperManager.mapToPath(
-			unsafeCast(identifierClass), identifier);
-
 		return nameOptional.flatMap(
-			name -> {
-				Optional<ItemRoutes<Object>> itemRoutesOptional =
-					_itemRouterManager.getItemRoutesOptional(name);
-
-				return itemRoutesOptional.flatMap(
-					ItemRoutes::getItemFunctionOptional
-				).map(
-					function -> function.apply(_httpServletRequest)
-				).flatMap(
-					pathOptional::map
-				);
-			});
+			_itemRouterManager::getItemRoutesOptional
+		).flatMap(
+			ItemRoutes::getItemFunctionOptional
+		).map(
+			function -> function.apply(_httpServletRequest)
+		).map(
+			function -> function.apply(identifier)
+		).map(
+			Unsafe::unsafeCast
+		);
 	}
 
 	@Context

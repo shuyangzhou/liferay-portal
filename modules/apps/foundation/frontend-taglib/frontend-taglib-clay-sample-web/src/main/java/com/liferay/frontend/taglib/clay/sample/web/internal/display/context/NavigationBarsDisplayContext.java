@@ -14,39 +14,48 @@
 
 package com.liferay.frontend.taglib.clay.sample.web.internal.display.context;
 
-import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItem;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemList;
+import com.liferay.portal.kernel.util.IntegerWrapper;
 
 /**
  * @author Chema Balsas
  */
 public class NavigationBarsDisplayContext {
 
-	public List<NavigationItem> getNavigationItems() {
+	public NavigationItemList getNavigationItems() {
 		if (_navigationItems != null) {
 			return _navigationItems;
 		}
 
-		_navigationItems = new ArrayList<>();
+		_navigationItems = new NavigationItemList() {
+			{
+				IntegerWrapper integerWrapper = new IntegerWrapper(1);
 
-		for (int i = 0; i < 8; i++) {
-			NavigationItem navigationItem = new NavigationItem();
+				while (true) {
+					if (integerWrapper.getValue() == 8) {
+						break;
+					}
 
-			if (i == 3) {
-				navigationItem.setActive(true);
+					add(
+						navigationItem -> {
+							if (integerWrapper.getValue() == 4) {
+								navigationItem.setActive(true);
+							}
+
+							navigationItem.setHref(
+								"#" + integerWrapper.getValue());
+							navigationItem.setLabel(
+								"Page " + integerWrapper.getValue());
+						});
+
+					integerWrapper.increment();
+				}
 			}
-
-			navigationItem.setHref("#" + i);
-			navigationItem.setLabel("Page " + i);
-
-			_navigationItems.add(navigationItem);
-		}
+		};
 
 		return _navigationItems;
 	}
 
-	private List<NavigationItem> _navigationItems;
+	private NavigationItemList _navigationItems;
 
 }

@@ -68,7 +68,7 @@ public class BlogPostingCollectionResource
 	}
 
 	@Override
-	public ItemRoutes<BlogPostingModel> itemRoutes(
+	public ItemRoutes<BlogPostingModel, Long> itemRoutes(
 		ItemRoutes.Builder<BlogPostingModel, Long> builder) {
 
 		return builder.addGetter(

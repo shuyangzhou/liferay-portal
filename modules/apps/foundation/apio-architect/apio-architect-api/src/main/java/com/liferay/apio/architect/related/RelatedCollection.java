@@ -17,12 +17,11 @@ package com.liferay.apio.architect.related;
 import com.liferay.apio.architect.identifier.Identifier;
 
 /**
- * Represents the relation between a resource and a collection.
+ * Represents the relation between a resource and a collection. The type of the
+ * resource's identifier must be a subclass of {@code Identifier}.
  *
  * @author Alejandro Hernández
- * @param  <T> the type of the resource's identifier. It must be a subclass of
- *         {@code Identifier}.
- * @review
+ * @param  <T> the type of the resource's identifier
  */
 public class RelatedCollection<T extends Identifier> {
 

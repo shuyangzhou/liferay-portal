@@ -29,6 +29,7 @@ import com.liferay.user.associated.data.exception.UADEntityException;
 import com.liferay.user.associated.data.util.UADAnonymizerHelper;
 import com.liferay.user.associated.data.util.UADDynamicQueryHelper;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -82,12 +83,12 @@ public class BookmarksEntryUADEntityAnonymizer extends BaseUADEntityAnonymizer {
 
 	@Override
 	public List<String> getEntityNonanonymizableFieldNames() {
-		return null;
+		return Arrays.asList("description", "name", "url");
 	}
 
 	@Override
-	protected List<UADEntity> getUADEntities(long userId, int start, int end) {
-		return _uadEntityAggregator.getUADEntities(userId, start, end);
+	protected UADEntityAggregator getUADEntityAggregator() {
+		return _uadEntityAggregator;
 	}
 
 	private void _autoAnonymize(BookmarksEntry bookmarksEntry, long userId)
