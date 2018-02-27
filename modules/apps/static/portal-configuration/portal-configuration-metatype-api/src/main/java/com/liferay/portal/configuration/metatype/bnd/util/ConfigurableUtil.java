@@ -23,6 +23,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
@@ -127,9 +128,22 @@ public class ConfigurableUtil {
 		constructorMethodVisitor.visitCode();
 
 		constructorMethodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
-		constructorMethodVisitor.visitMethodInsn(
-			Opcodes.INVOKESPECIAL, objectClassBinaryName, "<init>", "()V",
-			false);
+
+		try {
+			constructorMethodVisitor.visitMethodInsn(
+				Opcodes.INVOKESPECIAL, objectClassBinaryName, "<init>", "()V",
+				false);
+		}
+		catch (NoSuchMethodError nsme) {
+			System.out.println(
+				"###########Classpath: " +
+					System.getProperty("java.class.path") +
+						"\nJar location: " + 
+							constructorMethodVisitor.getClass().getProtectionDomain().getCodeSource().getLocation() +
+								"\nMethod list: " + Arrays.asList(constructorMethodVisitor.getClass().getMethods()));
+
+			throw nsme;
+		}
 
 		for (Method method : declaredMethods) {
 			Class<?> returnType = method.getReturnType();
