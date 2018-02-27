@@ -21,11 +21,10 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 /**
- * A {@code Matcher} that checks if the element returned by a function matches
- * with a certain {@code Matcher}.
+ * Provides a {@code Matcher} that checks if the element returned
+ * by a function matches another specific {@code Matcher}.
  *
  * @author Alejandro Hernández
- * @review
  */
 public class IsReturnedIn<T> extends TypeSafeDiagnosingMatcher<T> {
 

@@ -15,7 +15,6 @@
 package com.liferay.apio.architect.alias.routes;
 
 import com.liferay.apio.architect.alias.RequestFunction;
-import com.liferay.apio.architect.uri.Path;
 
 import java.util.function.Consumer;
 
@@ -24,7 +23,9 @@ import java.util.function.Consumer;
  * item.
  *
  * @author Alejandro Hernández
+ * @param  <T> the type of the model's identifier (e.g., {@code Long}, {@code
+ *         String}, etc.)
  */
 @FunctionalInterface
-public interface DeleteItemConsumer extends RequestFunction<Consumer<Path>> {
+public interface DeleteItemConsumer<T> extends RequestFunction<Consumer<T>> {
 }

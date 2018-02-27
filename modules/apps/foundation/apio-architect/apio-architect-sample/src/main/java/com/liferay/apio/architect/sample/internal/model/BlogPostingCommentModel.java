@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -63,6 +64,44 @@ public class BlogPostingCommentModel {
 			_count.getAndIncrement(), blogPostingCommentModel);
 
 		return blogPostingCommentModel;
+	}
+
+	/**
+	 * Compute the fake data for this model class.
+	 *
+	 * @review
+	 */
+	public static void computeBlogPostingCommentModels() {
+		for (long blogPostingId = 0;
+			 blogPostingId < BlogPostingModel.getBlogPostingCount();
+			 blogPostingId++) {
+
+			Map<Long, BlogPostingCommentModel> blogPostingComments =
+				new HashMap<>();
+			Random random = new Random();
+
+			for (int i = 0; i < random.nextInt(70); i++) {
+				long authorId = random.nextInt(PersonModel.getPeopleCount());
+
+				Faker faker = new Faker();
+
+				Shakespeare shakespeare = faker.shakespeare();
+
+				DateAndTime dateAndTime = faker.date();
+
+				Date date = dateAndTime.past(400, TimeUnit.DAYS);
+
+				BlogPostingCommentModel blogPostingCommentModel =
+					new BlogPostingCommentModel(
+						authorId, _count.get(), blogPostingId,
+						shakespeare.hamletQuote(), date, date);
+
+				blogPostingComments.put(
+					_count.getAndIncrement(), blogPostingCommentModel);
+			}
+
+			_blogPostingComments.put(blogPostingId, blogPostingComments);
+		}
 	}
 
 	/**
@@ -255,41 +294,8 @@ public class BlogPostingCommentModel {
 	}
 
 	private static final Map<Long, Map<Long, BlogPostingCommentModel>>
-		_blogPostingComments = new HashMap<>();
+		_blogPostingComments = new ConcurrentHashMap<>();
 	private static final AtomicLong _count = new AtomicLong(0);
-
-	static {
-		for (long blogPostingId = 0;
-			 blogPostingId < BlogPostingModel.getBlogPostingCount();
-			 blogPostingId++) {
-
-			Map<Long, BlogPostingCommentModel> blogPostingComments =
-				new HashMap<>();
-			Random random = new Random();
-
-			for (int i = 0; i < random.nextInt(70); i++) {
-				long authorId = random.nextInt(PersonModel.getPeopleCount());
-
-				Faker faker = new Faker();
-
-				Shakespeare shakespeare = faker.shakespeare();
-
-				DateAndTime dateAndTime = faker.date();
-
-				Date date = dateAndTime.past(400, TimeUnit.DAYS);
-
-				BlogPostingCommentModel blogPostingCommentModel =
-					new BlogPostingCommentModel(
-						authorId, _count.get(), blogPostingId,
-						shakespeare.hamletQuote(), date, date);
-
-				blogPostingComments.put(
-					_count.getAndIncrement(), blogPostingCommentModel);
-			}
-
-			_blogPostingComments.put(blogPostingId, blogPostingComments);
-		}
-	}
 
 	private final long _authorId;
 	private final long _blogPostingCommentId;

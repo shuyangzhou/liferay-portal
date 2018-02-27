@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -286,6 +287,10 @@ public interface AssetLinkLocalService extends BaseLocalService,
 	public List<AssetLink> getDirectLinks(long entryId, int typeId,
 		boolean excludeInvisibleLinks);
 
+	/**
+	* @deprecated As of 7.0.0, with no direct replacement
+	*/
+	@java.lang.Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ExportActionableDynamicQuery getExportActionbleDynamicQuery(
 		PortletDataContext portletDataContext);
@@ -303,6 +308,10 @@ public interface AssetLinkLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AssetLink> getLinks(long entryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetLink> getLinks(long groupId, Date startDate, Date endDate,
+		int start, int end);
 
 	/**
 	* Returns all the asset links of the given link type whose first or second

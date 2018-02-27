@@ -99,11 +99,6 @@
 </tr>
 <!-- PERMISSIONS -->
 <tr>
-	<td>PERMISSIONS</td>
-	<td>//input[contains(@id,'PERMISSIONS')]</td>
-	<td></td>
-</tr>
-<tr>
 	<td>PERMISSIONS_TITLE</td>
 	<td>//div[contains(@id,'permissionsTitle')]/a</td>
 	<td></td>

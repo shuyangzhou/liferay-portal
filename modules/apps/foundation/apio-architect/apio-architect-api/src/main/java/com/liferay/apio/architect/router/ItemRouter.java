@@ -25,7 +25,7 @@ import com.liferay.apio.architect.routes.ItemRoutes.Builder;
  * functions that perform those requests.
  *
  * <p>
- * The type param provided for the resource ID must be unique in the whole
+ * The type parameter provided for the resource ID must be unique in the
  * application.
  * </p>
  *
@@ -46,7 +46,6 @@ import com.liferay.apio.architect.routes.ItemRoutes.Builder;
  *         String}, etc.)
  * @param  <U> the type of the resource's identifier. It must be a subclass of
  *         {@code Identifier<S>}.
- * @review
  */
 @ConsumerType
 @SuppressWarnings("unused")
@@ -60,6 +59,6 @@ public interface ItemRouter<T, S, U extends Identifier<S>> {
 	 *        instance
 	 * @see   ItemRoutes.Builder
 	 */
-	public ItemRoutes<T> itemRoutes(Builder<T, S> builder);
+	public ItemRoutes<T, S> itemRoutes(Builder<T, S> builder);
 
 }

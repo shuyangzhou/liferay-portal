@@ -19,6 +19,8 @@
 <%
 String mvcPath = ParamUtil.getString(request, "mvcPath", "/view_template.jsp");
 
+String tabs1 = ParamUtil.getString(request, "tabs1", "templates");
+
 long templateId = ParamUtil.getLong(request, "templateId");
 
 long groupId = ParamUtil.getLong(request, "groupId", PortalUtil.getScopeGroupId(request, refererPortletName, true));
@@ -65,6 +67,23 @@ portletURL.setParameter("keywords", keywords);
 			orderColumns='<%= new String[] {"modified-date", "id"} %>'
 			portletURL="<%= portletURL %>"
 		/>
+
+		<li>
+			<portlet:renderURL var="searchURL">
+				<portlet:param name="mvcPath" value="<%= mvcPath %>" />
+				<portlet:param name="tabs1" value="<%= tabs1 %>" />
+				<portlet:param name="templateId" value="<%= String.valueOf(templateId) %>" />
+				<portlet:param name="groupId" value="<%= String.valueOf(groupId) %>" />
+				<portlet:param name="classNameId" value="<%= String.valueOf(classNameId) %>" />
+				<portlet:param name="classPK" value="<%= String.valueOf(classPK) %>" />
+				<portlet:param name="resourceClassNameId" value="<%= String.valueOf(resourceClassNameId) %>" />
+				<portlet:param name="eventName" value="<%= eventName %>" />
+			</portlet:renderURL>
+
+			<aui:form action="<%= searchURL.toString() %>" method="post" name="searchForm">
+				<liferay-util:include page="/template_search.jsp" servletContext="<%= application %>" />
+			</aui:form>
+		</li>
 	</liferay-frontend:management-bar-filters>
 
 	<c:if test="<%= includeCheckBox %>">
