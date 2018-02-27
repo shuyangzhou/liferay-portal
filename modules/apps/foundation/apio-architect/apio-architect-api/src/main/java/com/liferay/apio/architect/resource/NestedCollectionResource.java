@@ -29,22 +29,22 @@ import com.liferay.apio.architect.router.NestedCollectionRouter;
  * </p>
  *
  * <p>
- * The type param provided for the resource ID must be unique in the whole
+ * The type param provided for the resource ID must be unique in the
  * application.
  * </p>
  *
  * <p>
- * Representors created by the {@link
+ * Representors created by the method {@link
  * #representor(com.liferay.apio.architect.representor.Representor.Builder)}
- * method hold all the information needed to write your domain models'
- * hypermedia representations.
+ * hold all the information needed to write your domain models' hypermedia
+ * representations.
  * </p>
  *
  * <p>
  * You can add the different supported routes for the collection resource via
- * the {@link
+ * the method {@link
  * #collectionRoutes(
- * com.liferay.apio.architect.routes.NestedCollectionRoutes.Builder)} method.
+ * com.liferay.apio.architect.routes.NestedCollectionRoutes.Builder)}.
  * </p>
  *
  * <p>
@@ -66,7 +66,6 @@ import com.liferay.apio.architect.router.NestedCollectionRouter;
  * @see    com.liferay.apio.architect.representor.Representor.Builder
  * @see    com.liferay.apio.architect.routes.ItemRoutes.Builder
  * @see    com.liferay.apio.architect.routes.NestedCollectionRoutes.Builder
- * @review
  */
 @ConsumerType
 public interface NestedCollectionResource

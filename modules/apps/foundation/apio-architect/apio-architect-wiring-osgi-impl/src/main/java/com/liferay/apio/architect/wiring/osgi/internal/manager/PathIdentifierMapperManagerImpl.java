@@ -14,61 +14,79 @@
 
 package com.liferay.apio.architect.wiring.osgi.internal.manager;
 
-import static com.liferay.apio.architect.unsafe.Unsafe.unsafeCast;
 import static com.liferay.apio.architect.wiring.osgi.util.GenericUtil.getGenericTypeArgumentTry;
 
+import com.liferay.apio.architect.error.ApioDeveloperError.MustHavePathIdentifierMapper;
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.identifier.Identifier;
+import com.liferay.apio.architect.unsafe.Unsafe;
 import com.liferay.apio.architect.uri.Path;
 import com.liferay.apio.architect.uri.mapper.PathIdentifierMapper;
-import com.liferay.apio.architect.wiring.osgi.internal.manager.base.SimpleBaseManager;
+import com.liferay.apio.architect.wiring.osgi.internal.manager.base.ClassNameBaseManager;
 import com.liferay.apio.architect.wiring.osgi.manager.PathIdentifierMapperManager;
+import com.liferay.apio.architect.wiring.osgi.manager.representable.IdentifierClassManager;
 
 import java.util.Optional;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alejandro Hernández
  */
 @Component(immediate = true)
 public class PathIdentifierMapperManagerImpl
-	extends SimpleBaseManager<PathIdentifierMapper>
+	extends ClassNameBaseManager<PathIdentifierMapper>
 	implements PathIdentifierMapperManager {
 
 	public PathIdentifierMapperManagerImpl() {
-		super(PathIdentifierMapper.class);
+		super(PathIdentifierMapper.class, 0);
 	}
 
 	@Override
-	public <T> Optional<T> mapToIdentifier(
-		Class<? extends Identifier<T>> clazz, Path path) {
-
-		return _getPathIdentifierMapperOptional(clazz).map(
-			pathIdentifierMapper -> pathIdentifierMapper.map(path));
+	public boolean hasPathIdentifierMapper(String name) {
+		return _getPathIdentifierMapperTry(name).isSuccess();
 	}
 
 	@Override
-	public <T> Optional<Path> mapToPath(
-		Class<? extends Identifier<T>> clazz, T identifier) {
+	public <T> T mapToIdentifierOrFail(Path path) {
+		Try<PathIdentifierMapper<T>> pathIdentifierMapperTry =
+			_getPathIdentifierMapperTry(path.getName());
 
-		return _getPathIdentifierMapperOptional(clazz).map(
-			pathIdentifierMapper -> pathIdentifierMapper.map(
-				clazz, identifier));
+		return pathIdentifierMapperTry.map(
+			service -> service.map(path)
+		).orElseThrow(
+			() -> new MustHavePathIdentifierMapper(path)
+		);
 	}
 
-	private <T> Optional<PathIdentifierMapper<T>>
-		_getPathIdentifierMapperOptional(Class<? extends Identifier<T>> clazz) {
+	@Override
+	public <T> Optional<Path> mapToPath(String name, T identifier) {
+		Try<PathIdentifierMapper<T>> pathIdentifierMapperTry =
+			_getPathIdentifierMapperTry(name);
 
-		Try<Class<Object>> classTry = getGenericTypeArgumentTry(
-			clazz, Identifier.class, 0);
-
-		return unsafeCast(
-			classTry.map(
-				this::getServiceOptional
-			).orElseGet(
-				Optional::empty
-			));
+		return pathIdentifierMapperTry.map(
+			service -> service.map(name, identifier)
+		).toOptional();
 	}
+
+	private <T> Try<PathIdentifierMapper<T>> _getPathIdentifierMapperTry(
+		String name) {
+
+		Try<String> stringTry = Try.success(name);
+
+		return stringTry.mapOptional(
+			_identifierClassManager::getIdentifierClassOptional
+		).flatMap(
+			clazz -> getGenericTypeArgumentTry(clazz, Identifier.class, 0)
+		).mapOptional(
+			this::getServiceOptional
+		).map(
+			Unsafe::unsafeCast
+		);
+	}
+
+	@Reference
+	private IdentifierClassManager _identifierClassManager;
 
 }

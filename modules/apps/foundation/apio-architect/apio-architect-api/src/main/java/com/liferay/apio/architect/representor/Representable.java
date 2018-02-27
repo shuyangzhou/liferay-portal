@@ -24,7 +24,7 @@ import com.liferay.apio.architect.representor.Representor.Builder;
  * representation.
  *
  * <p>
- * The type param provided for the resource ID must be unique in the whole
+ * The type parameter provided for the resource ID must be unique in the
  * application.
  * </p>
  *
@@ -38,7 +38,7 @@ import com.liferay.apio.architect.representor.Representor.Builder;
  * The union of an instance of this interface and one or more routers from the
  * {@code com.liferay.apio.architect.router} package (such as {@link
  * com.liferay.apio.architect.router.ItemRouter}) creates a complete resource
- * that will behave as its own API.
+ * that behaves as its own API.
  * </p>
  *
  * @author Alejandro Hernández
@@ -47,7 +47,6 @@ import com.liferay.apio.architect.representor.Representor.Builder;
  *         String}, etc.)
  * @param  <U> the type of the resource's identifier. It must be a subclass of
  *         {@code Identifier<S>}.
- * @review
  */
 @ConsumerType
 @SuppressWarnings("unused")

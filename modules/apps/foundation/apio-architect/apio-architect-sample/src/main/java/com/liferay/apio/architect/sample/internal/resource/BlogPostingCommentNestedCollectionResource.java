@@ -72,7 +72,7 @@ public class BlogPostingCommentNestedCollectionResource implements
 	}
 
 	@Override
-	public ItemRoutes<BlogPostingCommentModel> itemRoutes(
+	public ItemRoutes<BlogPostingCommentModel, Long> itemRoutes(
 		ItemRoutes.Builder<BlogPostingCommentModel, Long> builder) {
 
 		return builder.addGetter(

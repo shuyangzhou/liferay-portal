@@ -35,10 +35,9 @@ public interface RepresentableManager {
 	 * Returns the representor of the collection resource's model class, if that
 	 * representor exists. Returns {@code Optional#empty()} otherwise.
 	 *
-	 * @param  name the representable's name
+	 * @param  name the representor's name
 	 * @return the model class's representor, if present; {@code
 	 *         Optional#empty()} otherwise
-	 * @review
 	 */
 	public <T, U> Optional<Representor<T, U>>
 		getRepresentorOptional(String name);
