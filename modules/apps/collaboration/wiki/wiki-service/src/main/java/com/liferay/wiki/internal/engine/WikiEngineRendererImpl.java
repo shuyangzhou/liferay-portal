@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.wiki.engine.impl;
+package com.liferay.wiki.internal.engine;
 
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
