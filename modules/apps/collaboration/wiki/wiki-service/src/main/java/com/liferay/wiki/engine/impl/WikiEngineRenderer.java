@@ -22,34 +22,22 @@ import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.diff.DiffHtmlUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
-import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
-import com.liferay.taglib.servlet.PipingServletResponse;
 import com.liferay.wiki.engine.WikiEngine;
 import com.liferay.wiki.exception.PageContentException;
 import com.liferay.wiki.exception.WikiFormatException;
-import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.model.WikiPageDisplay;
 
-import java.io.IOException;
-import java.io.Writer;
-
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.portlet.PortletURL;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.PageContext;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -152,35 +140,6 @@ public class WikiEngineRenderer {
 
 	public Collection<String> getFormats() {
 		return _serviceTrackerMap.keySet();
-	}
-
-	public void renderEditPageHTML(
-			String format, PageContext pageContext, WikiNode node,
-			WikiPage page)
-		throws IOException, ServletException, WikiFormatException {
-
-		WikiEngine wikiEngine = fetchWikiEngine(format);
-
-		if (wikiEngine == null) {
-			throw new WikiFormatException();
-		}
-
-		HttpServletResponse response =
-			(HttpServletResponse)pageContext.getResponse();
-
-		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
-
-		PipingServletResponse pipingServletResponse = new PipingServletResponse(
-			response, unsyncStringWriter);
-
-		wikiEngine.renderEditPage(
-			pageContext.getRequest(), pipingServletResponse, node, page);
-
-		Writer writer = pageContext.getOut();
-
-		StringBundler sb = unsyncStringWriter.getStringBundler();
-
-		writer.write(sb.toString());
 	}
 
 	@Activate
