@@ -11,6 +11,66 @@
 	<short-name>liferay-layout</short-name>
 	<uri>http://liferay.com/tld/layout</uri>
 	<tag>
+		<description>Creates a component that displays a contextual sidebar.</description>
+		<name>contextual-sidebar</name>
+		<tag-class>com.liferay.layout.taglib.servlet.taglib.soy.ContextualSidebarTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description></description>
+			<name>body</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>bodyClasses</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>componentId</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>elementClasses</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>header</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>headerClasses</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>namespace</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>visible</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
 		<description>Creates a component that displays a tree of pages.</description>
 		<name>layouts-tree</name>
 		<tag-class>com.liferay.layout.taglib.servlet.taglib.LayoutsTreeTag</tag-class>
@@ -108,6 +168,12 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description>The position of the scripts rendered by this tag. See the documentation of <![CDATA[<code>&lt;aui:script&gt;</code>]]>'s position attribute for more details.</description>
+			<name>scriptsPosition</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
 			<description>Whether to provide each node a checkbox so the pages can be selected.</description>

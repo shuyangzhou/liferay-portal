@@ -18,6 +18,9 @@ import static com.liferay.apio.architect.test.util.result.TryMatchers.aFailTry;
 import static com.liferay.apio.architect.test.util.result.TryMatchers.aSuccessTry;
 import static com.liferay.apio.architect.test.util.result.TryMatchers.aTryWithValueThat;
 
+import static com.spotify.hamcrest.optional.OptionalMatchers.emptyOptional;
+import static com.spotify.hamcrest.optional.OptionalMatchers.optionalWithValue;
+
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -27,6 +30,11 @@ import com.liferay.apio.architect.exception.FalsePredicateException;
 
 import java.io.Closeable;
 import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -187,6 +195,31 @@ public class TryTest {
 		assertThat(stringTry, is(aSuccessTry()));
 	}
 
+	@Test
+	public void testInvokingFromOptionalCreatesFailureFromEmptyOptional() {
+		Try<Integer> integerTry = Try.fromOptional(
+			Optional::empty, () -> new IllegalArgumentException("Apio"));
+
+		assertThat(integerTry.isFailure(), is(true));
+
+		integerTry.ifFailure(
+			exception -> {
+				assertThat(
+					exception.getClass(), is(IllegalArgumentException.class));
+
+				assertThat(exception.getMessage(), is("Apio"));
+			});
+	}
+
+	@Test
+	public void testInvokingFromOptionalCreatesSuccessFromValueOptional() {
+		Try<Integer> integerTry = Try.fromOptional(
+			() -> Optional.of(42), Exception::new);
+
+		assertThat(integerTry.isSuccess(), is(true));
+		assertThat(integerTry.getUnchecked(), is(42));
+	}
+
 	@Parameters(method = SUCCESS)
 	@Test
 	public void testInvokingGetOnSuccessShouldReturnValue(Try<String> stringTry)
@@ -203,6 +236,55 @@ public class TryTest {
 		Try.Success success = (Try.Success)stringTry;
 
 		assertThat(success.getValue(), is("Live long"));
+	}
+
+	@Parameters(method = FAIL)
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvokingIfFailureWithFailureInvokesConsumer(
+			Try<String> stringTry)
+		throws Exception {
+
+		List<Exception> list = new ArrayList<>();
+
+		stringTry.ifFailure(list::add);
+
+		throw list.get(0);
+	}
+
+	@Parameters(method = SUCCESS)
+	@Test
+	public void testInvokingIfFailureWithSuccessDoesNotInvokeConsumer(
+		Try<String> stringTry) {
+
+		List<Exception> list = new ArrayList<>();
+
+		stringTry.ifFailure(list::add);
+
+		assertThat(list.isEmpty(), is(true));
+	}
+
+	@Parameters(method = FAIL)
+	@Test
+	public void testInvokingIfSuccessWithFailureDoesNotInvokeConsumer(
+		Try<String> stringTry) {
+
+		List<String> list = new ArrayList<>();
+
+		stringTry.ifSuccess(list::add);
+
+		assertThat(list.isEmpty(), is(true));
+	}
+
+	@Parameters(method = SUCCESS)
+	@Test
+	public void testInvokingIfSuccessWithSuccessInvokesConsumer(
+		Try<String> stringTry) {
+
+		List<String> list = new ArrayList<>();
+
+		stringTry.ifSuccess(list::add);
+
+		assertThat(list.get(0), is("Live long"));
 	}
 
 	@Parameters(method = FAIL)
@@ -290,6 +372,46 @@ public class TryTest {
 			is(aTryWithValueThat(equalTo("Live long"))));
 	}
 
+	@Parameters(method = SUCCESS)
+	@Test
+	public void testInvokingMapOptionalCreatesFailureWithEmptyOptional(
+		Try<String> stringTry) {
+
+		Try<String> newStringTry1 = stringTry.mapOptional(
+			__ -> Optional.empty(), () -> new IllegalArgumentException("Apio"));
+
+		assertThat(newStringTry1.isFailure(), is(true));
+
+		newStringTry1.ifFailure(
+			exception -> {
+				assertThat(
+					exception.getClass(), is(IllegalArgumentException.class));
+
+				assertThat(exception.getMessage(), is("Apio"));
+			});
+
+		Try<String> newStringTry2 = stringTry.mapOptional(
+			__ -> Optional.empty());
+
+		assertThat(newStringTry2.isFailure(), is(true));
+
+		newStringTry2.ifFailure(
+			exception -> assertThat(
+				exception.getClass(), is(NoSuchElementException.class)));
+	}
+
+	@Parameters(method = SUCCESS)
+	@Test
+	public void testInvokingMapOptionalCreatesSuccessFromValueOptional(
+		Try<String> stringTry) {
+
+		Try<String> newStringTry = stringTry.mapOptional(
+			string -> Optional.of(string + " and prosper"), Exception::new);
+
+		assertThat(newStringTry.isSuccess(), is(true));
+		assertThat(newStringTry.getUnchecked(), is("Live long and prosper"));
+	}
+
 	@Parameters(method = FAIL)
 	@Test
 	public void testInvokingOrElseGetOnFailureShouldReturnValue(
@@ -338,6 +460,24 @@ public class TryTest {
 		assertThat(
 			stringTry.orElseThrow(UnsupportedOperationException::new),
 			is("Live long"));
+	}
+
+	@Parameters(method = FAIL)
+	@Test
+	public void testInvokingToOptionalWithFailureReturnEmptyOptional(
+		Try<String> stringTry) {
+
+		assertThat(stringTry.toOptional(), is(emptyOptional()));
+	}
+
+	@Parameters(method = SUCCESS)
+	@Test
+	public void testInvokingToOptionalWithSuccessReturnValuedOptional(
+		Try<String> stringTry) {
+
+		assertThat(
+			stringTry.toOptional(),
+			is(optionalWithValue(equalTo("Live long"))));
 	}
 
 	@Parameters(method = FAIL)
