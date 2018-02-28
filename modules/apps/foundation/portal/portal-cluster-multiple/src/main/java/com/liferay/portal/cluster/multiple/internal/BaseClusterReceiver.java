@@ -77,8 +77,6 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 		List<Address> oldAddresses = null;
 
 		try {
-			_countDownLatch.await();
-
 			oldAddresses = _addresses;
 
 			_addresses = addresses;
@@ -87,11 +85,6 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 				_executorService.execute(
 					new AddressesUpdatedRunnable(oldAddresses, addresses));
 			}
-		}
-		catch (InterruptedException ie) {
-			_log.error(
-				"Latch opened prematurely by interruption. Dependence may " +
-					"not be ready.");
 		}
 		catch (RejectedExecutionException ree) {
 			_log.error(
@@ -114,8 +107,6 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 		Address oldCoordinatorAddress = null;
 
 		try {
-			_countDownLatch.await();
-
 			oldCoordinatorAddress = _coordinatorAddress;
 
 			_coordinatorAddress = coordinatorAddress;
@@ -125,11 +116,6 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 					new CoordinatorAddressUpdatedRunnable(
 						oldCoordinatorAddress, coordinatorAddress));
 			}
-		}
-		catch (InterruptedException ie) {
-			_log.error(
-				"Latch opened prematurely by interruption. Dependence may " +
-					"not be ready.");
 		}
 		catch (RejectedExecutionException ree) {
 			_log.error(
@@ -159,15 +145,8 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 	@Override
 	public void receive(Object messagePayload, Address srcAddress) {
 		try {
-			_countDownLatch.await();
-
 			_executorService.execute(
 				new ReceiveRunnable(messagePayload, srcAddress));
-		}
-		catch (InterruptedException ie) {
-			_log.error(
-				"Latch opened prematurely by interruption. Dependence may " +
-					"not be ready.");
 		}
 		catch (RejectedExecutionException ree) {
 			_log.error(
@@ -200,6 +179,15 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 
 		@Override
 		public void run() {
+			try {
+				_countDownLatch.await();
+			}
+			catch (InterruptedException ie) {
+				_log.error(
+					"Latch opened prematurely by interruption. Dependents " +
+						"may not be ready.");
+			}
+
 			doAddressesUpdated(_oldAddresses, _newAddresses);
 		}
 
@@ -219,6 +207,15 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 
 		@Override
 		public void run() {
+			try {
+				_countDownLatch.await();
+			}
+			catch (InterruptedException ie) {
+				_log.error(
+					"Latch opened prematurely by interruption. Dependents " +
+						"may not be ready.");
+			}
+
 			doCoordinatorAddressUpdated(
 				_oldCoordinatorAddress, _newCoordinatorAddress);
 		}
@@ -239,6 +236,15 @@ public abstract class BaseClusterReceiver implements ClusterReceiver {
 
 		@Override
 		public void run() {
+			try {
+				_countDownLatch.await();
+			}
+			catch (InterruptedException ie) {
+				_log.error(
+					"Latch opened prematurely by interruption. Dependents " +
+						"may not be ready.");
+			}
+
 			doReceive(_messagePayload, _srcAddress);
 		}
 
