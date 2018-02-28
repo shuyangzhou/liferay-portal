@@ -86,7 +86,6 @@ public class Page<T> {
 	 * Returns the list of operations for the page.
 	 *
 	 * @return the list of operations
-	 * @review
 	 */
 	public List<Operation> getOperations() {
 		return _operations;
@@ -114,8 +113,7 @@ public class Page<T> {
 	/**
 	 * Returns the resource's name.
 	 *
-	 * @return the resource name
-	 * @review
+	 * @return the resource's name
 	 */
 	public String getResourceName() {
 		return _resourceName;

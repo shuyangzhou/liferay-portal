@@ -14,7 +14,6 @@
 
 package com.liferay.apio.architect.routes;
 
-import com.liferay.apio.architect.alias.IdentifierFunction;
 import com.liferay.apio.architect.alias.ProvideFunction;
 import com.liferay.apio.architect.alias.form.FormBuilderFunction;
 import com.liferay.apio.architect.credentials.Credentials;
@@ -22,9 +21,10 @@ import com.liferay.apio.architect.pagination.Pagination;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import javax.ws.rs.NotFoundException;
 
 /**
  * Provides utilities for testing routes classes.
@@ -35,8 +35,6 @@ public class RoutesTestUtil {
 
 	/**
 	 * A collection permission function that always returns {@code true}.
-	 *
-	 * @review
 	 */
 	public static final Function<Credentials, Boolean>
 		COLLECTION_PERMISSION_FUNCTION = __ -> true;
@@ -44,8 +42,6 @@ public class RoutesTestUtil {
 	/**
 	 * A {@code FormBuilderFunction} that creates a {@code Map<String, Object>}
 	 * {@code Form}.
-	 *
-	 * @review
 	 */
 	public static final FormBuilderFunction<Map<String, Object>>
 		FORM_BUILDER_FUNCTION = builder -> builder.title(
@@ -59,70 +55,52 @@ public class RoutesTestUtil {
 		).build();
 
 	/**
-	 * An {@code IdentifierFunction} that returns the {@code Path} ID long's
-	 * value.
-	 *
-	 * @review
-	 */
-	public static final IdentifierFunction<Long> IDENTIFIER_FUNCTION =
-		path -> Long.valueOf(path.getId());
-
-	/**
 	 * An item permission function that always returns {@code true}.
-	 *
-	 * @review
 	 */
 	public static final BiFunction<Credentials, Long, Boolean>
 		ITEM_PERMISSION_FUNCTION = (credentials, aLong) -> true;
 
 	/**
-	 * Mocked {@code Pagination}.
-	 *
-	 * @review
+	 * A mock {@code Pagination} object.
 	 */
 	public static final Pagination PAGINATION = new Pagination(4, 2);
 
 	/**
-	 * A function that is able to provide instances of {@code String}, {@code
-	 * Long}, {@code Integer}, {@code Boolean}, {@code Float}, {@code
-	 * Pagination} and {@code Credentials}.
-	 *
-	 * @review
+	 * A function that provides instances of {@code String}, {@code Long},
+	 * {@code Integer}, {@code Boolean}, {@code Float}, {@code Pagination}, and
+	 * {@code Credentials}.
 	 */
-	public static final Function<Class<?>, Optional<?>> PROVIDE_FUNCTION =
-		aClass -> {
-			if (aClass.equals(String.class)) {
-				return Optional.of("Apio");
-			}
-			else if (aClass.equals(Long.class)) {
-				return Optional.of(42L);
-			}
-			else if (aClass.equals(Integer.class)) {
-				return Optional.of(2017);
-			}
-			else if (aClass.equals(Boolean.class)) {
-				return Optional.of(true);
-			}
-			else if (aClass.equals(Float.class)) {
-				return Optional.of(0.1F);
-			}
-			else if (aClass.equals(Pagination.class)) {
-				return Optional.of(PAGINATION);
-			}
-			else if (aClass.equals(Credentials.class)) {
-				return Optional.of((Credentials)() -> "auth");
-			}
-			else {
-				return Optional.empty();
-			}
-		};
+	public static final Function<Class<?>, ?> PROVIDE_FUNCTION = aClass -> {
+		if (aClass.equals(String.class)) {
+			return "Apio";
+		}
+		else if (aClass.equals(Long.class)) {
+			return 42L;
+		}
+		else if (aClass.equals(Integer.class)) {
+			return 2017;
+		}
+		else if (aClass.equals(Boolean.class)) {
+			return true;
+		}
+		else if (aClass.equals(Float.class)) {
+			return 0.1F;
+		}
+		else if (aClass.equals(Pagination.class)) {
+			return PAGINATION;
+		}
+		else if (aClass.equals(Credentials.class)) {
+			return (Credentials)() -> "auth";
+		}
+		else {
+			throw new NotFoundException();
+		}
+	};
 
 	/**
-	 * A {@code ProvideFunction} that is able to provide instances of {@code
-	 * String}, {@code Long}, {@code Integer}, {@code Boolean}, {@code Float}
-	 * and {@code Pagination}.
-	 *
-	 * @review
+	 * A {@code ProvideFunction} that provides instances of {@code String},
+	 * {@code Long}, {@code Integer}, {@code Boolean}, {@code Float}, and {@code
+	 * Pagination}.
 	 */
 	public static final ProvideFunction REQUEST_PROVIDE_FUNCTION =
 		__ -> PROVIDE_FUNCTION;
@@ -130,8 +108,6 @@ public class RoutesTestUtil {
 	/**
 	 * Returns a nested collection permission function that always returns
 	 * {@code true}.
-	 *
-	 * @review
 	 */
 	public static <S> BiFunction<Credentials, S, Boolean>
 		getNestedCollectionPermissionFunction() {
