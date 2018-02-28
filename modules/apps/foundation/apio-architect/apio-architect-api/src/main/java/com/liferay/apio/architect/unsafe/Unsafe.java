@@ -15,14 +15,13 @@
 package com.liferay.apio.architect.unsafe;
 
 /**
- * Utility class for unsafe operations
+ * Provides a utility class for unsafe operations.
  *
  * <p>
- * This class shouldn't be instantiated
+ * This class shouldn't be instantiated.
  * </p>
  *
  * @author Alejandro Hernández
- * @review
  */
 public class Unsafe {
 
@@ -31,7 +30,6 @@ public class Unsafe {
 	 *
 	 * @param  t the object to cast
 	 * @return the casted object
-	 * @review
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T, S> S unsafeCast(T t) {

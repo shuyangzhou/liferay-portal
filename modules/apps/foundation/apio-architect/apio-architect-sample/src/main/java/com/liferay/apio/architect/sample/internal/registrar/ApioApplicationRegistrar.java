@@ -14,6 +14,10 @@
 
 package com.liferay.apio.architect.sample.internal.registrar;
 
+import com.liferay.apio.architect.sample.internal.model.BlogPostingCommentModel;
+import com.liferay.apio.architect.sample.internal.model.BlogPostingModel;
+import com.liferay.apio.architect.sample.internal.model.PersonModel;
+
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -56,6 +60,10 @@ public class ApioApplicationRegistrar {
 
 		_serviceRegistration = bundleContext.registerService(
 			Application.class, application, properties);
+
+		PersonModel.computePersonModels();
+		BlogPostingModel.computeBlogPostingModels();
+		BlogPostingCommentModel.computeBlogPostingCommentModels();
 	}
 
 	@Deactivate

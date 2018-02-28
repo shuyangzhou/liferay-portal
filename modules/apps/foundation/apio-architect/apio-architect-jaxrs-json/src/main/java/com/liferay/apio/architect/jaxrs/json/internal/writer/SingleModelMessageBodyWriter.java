@@ -29,7 +29,7 @@ import com.liferay.apio.architect.response.control.Embedded;
 import com.liferay.apio.architect.response.control.Fields;
 import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.apio.architect.single.model.SingleModel;
-import com.liferay.apio.architect.uri.Path;
+import com.liferay.apio.architect.unsafe.Unsafe;
 import com.liferay.apio.architect.url.ServerURL;
 import com.liferay.apio.architect.wiring.osgi.manager.PathIdentifierMapperManager;
 import com.liferay.apio.architect.wiring.osgi.manager.ProviderManager;
@@ -127,7 +127,8 @@ public class SingleModelMessageBodyWriter<T>
 			).httpServletRequest(
 				_httpServletRequest
 			).serverURL(
-				getServerURL()
+				_providerManager.provideMandatory(
+					_httpServletRequest, ServerURL.class)
 			).embedded(
 				_providerManager.provideOptional(
 					_httpServletRequest, Embedded.class
@@ -154,17 +155,7 @@ public class SingleModelMessageBodyWriter<T>
 			).modelMessageMapper(
 				getSingleModelMessageMapper(mediaType, singleModel)
 			).pathFunction(
-				(resourceName, identifier) -> {
-					Optional<Class<Identifier>> optional =
-						_identifierClassManager.getIdentifierClassOptional(
-							resourceName);
-
-					return optional.flatMap(
-						identifierClass ->
-							_pathIdentifierMapperManager.mapToPath(
-								unsafeCast(identifierClass),
-								unsafeCast(identifier)));
-				}
+				_pathIdentifierMapperManager::mapToPath
 			).resourceNameFunction(
 				_nameManager::getNameOptional
 			).representorFunction(
@@ -181,20 +172,6 @@ public class SingleModelMessageBodyWriter<T>
 		resultOptional.ifPresent(printWriter::write);
 
 		printWriter.close();
-	}
-
-	/**
-	 * Returns the server URL, or throws a {@link
-	 * ApioDeveloperError.MustHaveProvider} developer error.
-	 *
-	 * @return the server URL
-	 */
-	protected ServerURL getServerURL() {
-		Optional<ServerURL> optional = _providerManager.provideOptional(
-			_httpServletRequest, ServerURL.class);
-
-		return optional.orElseThrow(
-			() -> new ApioDeveloperError.MustHaveProvider(ServerURL.class));
 	}
 
 	/**
@@ -231,22 +208,17 @@ public class SingleModelMessageBodyWriter<T>
 		Optional<String> nameOptional = _nameManager.getNameOptional(
 			identifierClass.getName());
 
-		Optional<Path> pathOptional = _pathIdentifierMapperManager.mapToPath(
-			unsafeCast(identifierClass), identifier);
-
 		return nameOptional.flatMap(
-			name -> {
-				Optional<ItemRoutes<Object>> itemRoutesOptional =
-					_itemRouterManager.getItemRoutesOptional(name);
-
-				return itemRoutesOptional.flatMap(
-					ItemRoutes::getItemFunctionOptional
-				).map(
-					function -> function.apply(_httpServletRequest)
-				).flatMap(
-					pathOptional::map
-				);
-			});
+			_itemRouterManager::getItemRoutesOptional
+		).flatMap(
+			ItemRoutes::getItemFunctionOptional
+		).map(
+			function -> function.apply(_httpServletRequest)
+		).map(
+			function -> function.apply(identifier)
+		).map(
+			Unsafe::unsafeCast
+		);
 	}
 
 	@Context

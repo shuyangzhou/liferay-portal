@@ -21,11 +21,12 @@ import static com.liferay.apio.architect.routes.RoutesTestUtil.PROVIDE_FUNCTION;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-import com.liferay.apio.architect.error.ApioDeveloperError.MustHaveProvider;
 import com.liferay.apio.architect.language.Language;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+
+import javax.ws.rs.NotFoundException;
 
 import org.junit.Test;
 
@@ -49,8 +50,8 @@ public class RoutesBuilderUtilTest {
 		}
 	}
 
-	@Test(expected = MustHaveProvider.class)
-	public void testFiveParameterProvideConsumerMethodFailsIfOptionalEmpty() {
+	@Test(expected = NotFoundException.class)
+	public void testFiveParameterProvideConsumerMethodFailsIfNoProvider() {
 		provideConsumer(
 			PROVIDE_FUNCTION, Language.class, Long.class, Integer.class,
 			Boolean.class,
@@ -59,8 +60,8 @@ public class RoutesBuilderUtilTest {
 			});
 	}
 
-	@Test(expected = MustHaveProvider.class)
-	public void testFiveParameterProvideMethodFailsIfOptionalEmpty() {
+	@Test(expected = NotFoundException.class)
+	public void testFiveParameterProvideMethodFailsIfNoProvider() {
 		provide(
 			PROVIDE_FUNCTION, Language.class, Long.class, Integer.class,
 			Boolean.class, Float.class,
@@ -87,8 +88,8 @@ public class RoutesBuilderUtilTest {
 		assertThat(result, is("The result"));
 	}
 
-	@Test(expected = MustHaveProvider.class)
-	public void testFourParameterProvideConsumerMethodFailsIfOptionalEmpty() {
+	@Test(expected = NotFoundException.class)
+	public void testFourParameterProvideConsumerMethodFailsIfNoProvider() {
 		provideConsumer(
 			PROVIDE_FUNCTION, Language.class, Long.class, Integer.class,
 			Boolean.class,
@@ -110,8 +111,8 @@ public class RoutesBuilderUtilTest {
 			});
 	}
 
-	@Test(expected = MustHaveProvider.class)
-	public void testFourParameterProvideMethodFailsIfOptionalEmpty() {
+	@Test(expected = NotFoundException.class)
+	public void testFourParameterProvideMethodFailsIfNoProvider() {
 		provide(
 			PROVIDE_FUNCTION, Language.class, Long.class, Integer.class,
 			Boolean.class,
@@ -137,8 +138,8 @@ public class RoutesBuilderUtilTest {
 		assertThat(result, is("The result"));
 	}
 
-	@Test(expected = MustHaveProvider.class)
-	public void testOneParameterProvideConsumerMethodFailsIfOptionalEmpty() {
+	@Test(expected = NotFoundException.class)
+	public void testOneParameterProvideConsumerMethodFailsIfNoProvider() {
 		provideConsumer(
 			PROVIDE_FUNCTION, Language.class,
 			string -> {
@@ -153,8 +154,8 @@ public class RoutesBuilderUtilTest {
 			string -> assertThat(string, is("Apio")));
 	}
 
-	@Test(expected = MustHaveProvider.class)
-	public void testOneParameterProvideMethodFailsIfOptionalEmpty() {
+	@Test(expected = NotFoundException.class)
+	public void testOneParameterProvideMethodFailsIfNoProvider() {
 		provide(
 			PROVIDE_FUNCTION, Language.class,
 			string -> {
@@ -175,8 +176,8 @@ public class RoutesBuilderUtilTest {
 		assertThat(result, is("The result"));
 	}
 
-	@Test(expected = MustHaveProvider.class)
-	public void testThreeParameterProvideConsumerMethodFailsIfOptionalEmpty() {
+	@Test(expected = NotFoundException.class)
+	public void testThreeParameterProvideConsumerMethodFailsIfNoProvider() {
 		provideConsumer(
 			PROVIDE_FUNCTION, Language.class, Long.class, Integer.class,
 			string -> aLong -> integer -> {
@@ -195,8 +196,8 @@ public class RoutesBuilderUtilTest {
 			});
 	}
 
-	@Test(expected = MustHaveProvider.class)
-	public void testThreeParameterProvideMethodFailsIfOptionalEmpty() {
+	@Test(expected = NotFoundException.class)
+	public void testThreeParameterProvideMethodFailsIfNoProvider() {
 		provide(
 			PROVIDE_FUNCTION, Language.class, Long.class, Integer.class,
 			string -> aLong -> integer -> {
@@ -219,8 +220,8 @@ public class RoutesBuilderUtilTest {
 		assertThat(result, is("The result"));
 	}
 
-	@Test(expected = MustHaveProvider.class)
-	public void testTwoParameterProvideConsumerMethodFailsIfOptionalEmpty() {
+	@Test(expected = NotFoundException.class)
+	public void testTwoParameterProvideConsumerMethodFailsIfNoProvider() {
 		provideConsumer(
 			PROVIDE_FUNCTION, Language.class, Long.class,
 			string -> aLong -> {
@@ -238,8 +239,8 @@ public class RoutesBuilderUtilTest {
 			});
 	}
 
-	@Test(expected = MustHaveProvider.class)
-	public void testTwoParameterProvideMethodFailsIfOptionalEmpty() {
+	@Test(expected = NotFoundException.class)
+	public void testTwoParameterProvideMethodFailsIfNoProvider() {
 		provide(
 			PROVIDE_FUNCTION, Language.class, Long.class,
 			string -> aLong -> {

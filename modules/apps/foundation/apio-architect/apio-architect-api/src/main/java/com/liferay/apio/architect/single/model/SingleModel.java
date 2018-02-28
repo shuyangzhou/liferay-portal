@@ -47,7 +47,6 @@ public class SingleModel<T> {
 	 * Returns the list of operations for the model.
 	 *
 	 * @return the list of operations
-	 * @review
 	 */
 	public List<Operation> getOperations() {
 		return _operations;
@@ -56,8 +55,7 @@ public class SingleModel<T> {
 	/**
 	 * Returns the resource's name.
 	 *
-	 * @return the resource name
-	 * @review
+	 * @return the resource's name
 	 */
 	public String getResourceName() {
 		return _resourceName;

@@ -32,12 +32,10 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
- * Allow developers to register its resources as a {@link
- * NestedCollectionResource} instead of implement an register each of the
- * enclosing interfaces separately.
+ * Registers resources as {@link NestedCollectionResource}, instead of
+ * implementing a register for each of the enclosing interfaces separately.
  *
  * @author Alejandro Hernández
- * @review
  */
 @Component(immediate = true)
 public class NestedCollectionResourceManager {

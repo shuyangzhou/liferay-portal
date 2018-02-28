@@ -292,225 +292,81 @@
 		<if>
 			<equals arg1="${deleteMissingPages}" arg2="true" />
 			<then>
-				<if>
-					<condition function="IsElementPresent" locator1="StagingPublishToLive#PAGES_CHANGE_LINK" />
-					<then>
-						<execute function="AssertClick" locator1="StagingPublishToLive#PAGES_CHANGE_LINK" value1="Change" />
-
-						<execute function="Check" locator1="PagesConfiguration#PAGES_DELETE_MISSING_PAGES_CHECKBOX" />
-
-						<execute function="AssertClick" locator1="Button#OK" value1="OK" />
-					</then>
-					<else>
-						<execute function="Check" locator1="PagesConfiguration#PAGES_DELETE_MISSING_PAGES_CHECKBOX" />
-					</else>
-				</if>
+				<execute macro="ContentConfiguration#deleteMissingPages" />
 			</then>
 		</if>
 
 		<if>
 			<equals arg1="${uncheckLogo}" arg2="true" />
 			<then>
-				<if>
-					<condition function="IsElementPresent" locator1="StagingPublishToLive#PAGES_CHANGE_LINK" />
-					<then>
-						<execute function="AssertClick" locator1="StagingPublishToLive#PAGES_CHANGE_LINK" value1="Change" />
-
-						<execute function="Uncheck" locator1="PagesConfiguration#PAGES_LOGO_CHECKBOX" />
-
-						<execute function="AssertClick" locator1="Button#OK" value1="OK" />
-					</then>
-					<else>
-						<execute function="Uncheck" locator1="PagesConfiguration#PAGES_LOGO_CHECKBOX" />
-					</else>
-				</if>
+				<execute macro="ContentConfiguration#uncheckLogo" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="checkPageName" />
 			<then>
-				<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PUBLIC_PAGES_CHECKBOX" />
-
-				<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PUBLIC_PAGES_CHECKBOX" />
-
-				<for list="${checkPageName}" param="pageName">
-					<var name="key_pageName" value="${pageName}" />
-
-					<if>
-						<condition function="IsElementNotPresent" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_CHECKED" />
-						<then>
-							<var name="key_pageName" value="${pageName}" />
-
-							<execute function="Click" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_NAME" />
-						</then>
-					</if>
-				</for>
+				<execute macro="ContentConfiguration#checkPageName">
+					<var name="checkPageName" value="${checkPageName}" />
+				</execute>
 			</then>
 		</if>
 
 		<if>
-			<equals arg1="${contentDateRange}" arg2="All" />
+			<isset var="contentDateRange" />
 			<then>
-				<execute function="Click" locator1="Radio#CHOOSE_CONTENT_DATE_RANGE_CHANGE" />
-
-				<execute function="Check" locator1="Radio#RANGE_ALL" />
-
-				<execute function="Click" locator1="Link#REFRESH_COUNTS" />
-			</then>
-		</if>
-
-		<if>
-			<equals arg1="${contentDateRange}" arg2="Date Range" />
-			<then>
-				<execute function="Click" locator1="Radio#CHOOSE_CONTENT_DATE_RANGE_CHANGE" />
-
-				<var name="key_contentDateRange" value="${contentDateRange}" />
-
-				<execute function="Type" locator1="Select#DATE_RANGE_START_DATE" value1="${dateRangeStartDate}" />
-				<execute function="Type" locator1="Select#DATE_RANGE_END_DATE" value1="${dateRangeEndDate}" />
-
-				<execute function="Click" locator1="Link#REFRESH_COUNTS" />
-			</then>
-		</if>
-
-		<if>
-			<equals arg1="${contentDateRange}" arg2="Last" />
-			<then>
-				<execute function="Click" locator1="Radio#CHOOSE_CONTENT_DATE_RANGE_CHANGE" />
-
-				<execute function="Click" locator1="Radio#RANGE_LAST" />
-
-				<execute function="Click" locator1="Link#REFRESH_COUNTS" />
+				<execute macro="ContentConfiguration#contentDateRange">
+					<var name="contentDateRange" value="${contentDateRange}" />
+				</execute>
 			</then>
 		</if>
 
 		<if>
 			<equals arg1="${contentDeletion}" arg2="true" />
 			<then>
-				<if>
-					<condition function="IsElementPresent" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_DELETION_HEADER_NOT_EXPANDED" />
-					<then>
-						<execute function="Click" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_DELETION_HEADER" />
-					</then>
-				</if>
-
-				<execute function="Pause" locator1="2000" />
-
-				<execute function="Check" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_DELETION_CHECKBOX" />
+				<execute macro="ContentConfiguration#contentDeletion" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="checkContentNameList" />
 			<then>
-				<for list="${checkContentNameList}" param="contentName">
-					<var name="key_contentName" value="${contentName}" />
-
-					<execute function="Check" locator1="PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX" />
-				</for>
+				<execute macro="ContentConfiguration#checkContentNameList" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="uncheckContentNameList" />
 			<then>
-				<for list="${uncheckContentNameList}" param="contentName">
-					<var name="key_contentName" value="${contentName}" />
-
-					<execute function="Uncheck" locator1="PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX" />
-				</for>
+				<execute macro="ContentConfiguration#uncheckContentNameList" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="uncheckSubContent" />
 			<then>
-				<var name="key_uncheckContent" value="${uncheckSubContent}" />
-
-				<execute function="AssertClick" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_CONTENT_CHANGE_LINK" value1="Change" />
-
-				<execute function="Uncheck" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_SUBCONTENT_CHECKBOX" />
-
-				<execute function="AssertClick" locator1="Button#OK" value1="OK" />
+				<execute macro="ContentConfiguration#uncheckSubContent" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="uncheckSubSubContent" />
 			<then>
-				<var name="key_contentName" value="${contentName}" />
-
-				<execute function="Check" locator1="PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX" />
-
-				<var name="key_uncheckContent" value="${contentName}" />
-
-				<execute function="AssertClick" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_CONTENT_CHANGE_LINK" value1="Change" />
-
-				<var name="key_subContent" value="${subContent}" />
-				<var name="key_subSubContent" value="${uncheckSubSubContent}" />
-
-				<execute function="Uncheck" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_SUB_SUBCONTENT_CHECKBOX" />
-
-				<execute function="AssertClick" locator1="Button#OK" value1="OK" />
+				<execute macro="ContentConfiguration#uncheckSubSubContent" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="checkPrivatePages" />
 			<then>
-				<if>
-					<condition function="IsElementPresent" locator1="PagesConfiguration#PAGES_ALL_PUBLIC_PAGES_CHECKBOX" />
-					<then>
-						<execute function="Click" locator1="PagesConfiguration#CHANGE_TO_PRIVATE_PAGES" />
-					</then>
-				</if>
-
-				<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PRIVATE_PAGES_CHECKBOX" />
-
-				<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PRIVATE_PAGES_CHECKBOX" />
-
-				<for list="${checkPrivatePages}" param="pageName">
-					<var name="key_pageName" value="${pageName}" />
-
-					<if>
-						<condition function="IsElementNotPresent" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_CHECKED" />
-						<then>
-							<var name="key_pageName" value="${pageName}" />
-
-							<execute function="Click" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_NAME" />
-						</then>
-					</if>
-				</for>
+				<execute macro="ContentConfiguration#checkPrivatePages" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="checkPublicPages" />
 			<then>
-				<if>
-					<condition function="IsElementPresent" locator1="PagesConfiguration#PAGES_ALL_PRIVATE_PAGES_CHECKBOX" />
-					<then>
-						<execute function="Click" locator1="PagesConfiguration#CHANGE_TO_PUBLIC_PAGES" />
-					</then>
-				</if>
-
-				<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PUBLIC_PAGES_CHECKBOX" />
-
-				<execute function="Click" locator1="PagesConfiguration#PAGES_ALL_PUBLIC_PAGES_CHECKBOX" />
-
-				<for list="${checkPublicPages}" param="pageName">
-					<var name="key_pageName" value="${pageName}" />
-
-					<if>
-						<condition function="IsElementNotPresent" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_CHECKED" />
-						<then>
-							<var name="key_pageName" value="${pageName}" />
-
-							<execute function="Click" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_NAME" />
-						</then>
-					</if>
-				</for>
+				<execute macro="ContentConfiguration#checkPublicPages" />
 			</then>
 		</if>
 	</command>
