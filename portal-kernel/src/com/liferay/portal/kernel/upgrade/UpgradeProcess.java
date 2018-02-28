@@ -434,8 +434,8 @@ public abstract class UpgradeProcess
 				}
 			}
 			catch (SQLException sqle) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
+				if (_log.isInfoEnabled()) {
+					_log.info(
 						StringBundler.concat(
 							"Attempting to upgrade table ", tableName,
 							" by recreating the table due to: ",
@@ -453,8 +453,8 @@ public abstract class UpgradeProcess
 					(String)tableSQLCreateField.get(null),
 					(String[])tableSQLAddIndexesField.get(null));
 
-				if (_log.isWarnEnabled()) {
-					_log.warn(
+				if (_log.isInfoEnabled()) {
+					_log.info(
 						"Successfully recreated and upgraded table " +
 							tableName);
 				}
