@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 
 /**
  * @author Shuyang Zhou
@@ -36,6 +37,22 @@ public class ServletOutputStreamAdapter extends ServletOutputStream {
 	@Override
 	public void flush() throws IOException {
 		outputStream.flush();
+	}
+
+	/**
+	* @since Servlet 3.1
+	*/
+	@Override
+	public boolean isReady() {
+		throw new UnsupportedOperationException("Not implemented");
+	}
+
+	/**
+	* @since Servlet 3.1
+	*/
+	@Override
+	public void setWriteListener(WriteListener listener) {
+		throw new UnsupportedOperationException("Not implemented");
 	}
 
 	@Override

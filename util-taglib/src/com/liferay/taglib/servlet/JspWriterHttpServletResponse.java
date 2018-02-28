@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import javax.servlet.jsp.JspWriter;
@@ -39,6 +40,22 @@ public class JspWriterHttpServletResponse extends HttpServletResponseWrapper {
 	@Override
 	public ServletOutputStream getOutputStream() {
 		return new ServletOutputStream() {
+
+			/**
+			 * @since Servlet 3.1
+			 */
+			@Override
+			public boolean isReady() {
+				throw new UnsupportedOperationException("Not implemented");
+			}
+
+			/**
+			* @since Servlet 3.1
+			*/
+			@Override
+			public void setWriteListener(WriteListener listener) {
+				throw new UnsupportedOperationException("Not implemented");
+			}
 
 			@Override
 			public void write(int b) throws IOException {
