@@ -183,13 +183,6 @@ AUI.add(
 								{
 									autoLoad: false,
 									on: {
-										success: function(event, id, obj) {
-											Liferay.fire('sessionExpired');
-
-											if (instance.get('redirectOnExpire')) {
-												location.href = instance.get('redirectUrl');
-											}
-										},
 										failure: function(event, id, obj) {
 											instance._expireIO = null;
 
@@ -199,6 +192,13 @@ AUI.add(
 												},
 												1000
 											);
+										},
+										success: function(event, id, obj) {
+											Liferay.fire('sessionExpired');
+
+											if (instance.get('redirectOnExpire')) {
+												location.href = instance.get('redirectUrl');
+											}
 										}
 									}
 								}

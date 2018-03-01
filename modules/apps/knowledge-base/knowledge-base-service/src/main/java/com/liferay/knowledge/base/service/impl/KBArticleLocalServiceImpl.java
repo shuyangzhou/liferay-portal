@@ -38,8 +38,8 @@ import com.liferay.knowledge.base.internal.util.KBArticleLocalSiblingNavigationH
 import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.knowledge.base.model.KBFolder;
 import com.liferay.knowledge.base.service.base.KBArticleLocalServiceBaseImpl;
-import com.liferay.knowledge.base.service.util.AdminUtil;
 import com.liferay.knowledge.base.service.util.KnowledgeBaseConstants;
+import com.liferay.knowledge.base.util.AdminUtilHelper;
 import com.liferay.knowledge.base.util.KnowledgeBaseUtil;
 import com.liferay.knowledge.base.util.comparator.KBArticlePriorityComparator;
 import com.liferay.knowledge.base.util.comparator.KBArticleVersionComparator;
@@ -106,6 +106,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Peter Shin
@@ -187,7 +189,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		kbArticle.setDescription(description);
 		kbArticle.setPriority(priority);
 		kbArticle.setSections(
-			StringUtil.merge(AdminUtil.escapeSections(sections)));
+			StringUtil.merge(_adminUtilHelper.escapeSections(sections)));
 		kbArticle.setViewCount(0);
 		kbArticle.setLatest(true);
 		kbArticle.setMain(false);
@@ -864,7 +866,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		long groupId, String[] sections, int status, int start, int end,
 		OrderByComparator<KBArticle> orderByComparator) {
 
-		String[] array = AdminUtil.escapeSections(sections);
+		String[] array = _adminUtilHelper.escapeSections(sections);
 
 		for (int i = 0; i < array.length; i++) {
 			array[i] = StringUtil.quote(array[i], StringPool.PERCENT);
@@ -887,7 +889,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 	public int getSectionsKBArticlesCount(
 		long groupId, String[] sections, int status) {
 
-		String[] array = AdminUtil.escapeSections(sections);
+		String[] array = _adminUtilHelper.escapeSections(sections);
 
 		for (int i = 0; i < array.length; i++) {
 			array[i] = StringUtil.quote(array[i], StringPool.PERCENT);
@@ -1156,7 +1158,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		kbArticle.setDescription(description);
 		kbArticle.setSourceURL(sourceURL);
 		kbArticle.setSections(
-			StringUtil.merge(AdminUtil.escapeSections(sections)));
+			StringUtil.merge(_adminUtilHelper.escapeSections(sections)));
 		kbArticle.setLatest(true);
 		kbArticle.setMain(false);
 		kbArticle.setExpandoBridgeAttributes(serviceContext);
@@ -1611,7 +1613,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 			String value = BeanPropertiesUtil.getString(kbArticle, param);
 
 			try {
-				value = AdminUtil.getKBArticleDiff(
+				value = _adminUtilHelper.getKBArticleDiff(
 					kbArticle.getResourcePrimKey(), kbArticle.getVersion() - 1,
 					kbArticle.getVersion(), param);
 			}
@@ -1882,6 +1884,11 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		}
 	}
 
+	@Reference(unbind = "-")
+	protected void setAdminUtilHelper(AdminUtilHelper adminUtilHelper) {
+		_adminUtilHelper = adminUtilHelper;
+	}
+
 	protected void updatePermissionFields(
 			long resourcePrimKey, long parentResourceClassNameId,
 			long parentResourcePrimKey)
@@ -2086,5 +2093,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		KBArticleLocalServiceImpl.class);
+
+	private AdminUtilHelper _adminUtilHelper;
 
 }
