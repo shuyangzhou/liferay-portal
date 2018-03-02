@@ -12,10 +12,29 @@ import templates from './TagSelector.soy';
 class TagSelector extends Component {
 
 	/**
+	 * Focuses the input field (tagInput ref) used for adding new tags.
+	 * @private
+	 */
+
+	focusTagInput_() {
+		this.refs.tagInput.focus();
+	}
+
+	/**
+	 * Updates the calculated rule fields for `queryValues` every time a new
+	 * tag entry is added or removed to the selection
+	 * @protected
+	 */
+
+	onEntriesChanged_() {
+		this.rule.queryValues = this.tagsSelector_.entries.keys.join();
+	}
+
+	/**
 	 * @inheritDoc
 	 */
 
-	attached() {
+	rendered() {
 		this.element.addEventListener('click', this.focusTagInput_.bind(this));
 
 		AUI().use(
@@ -43,25 +62,6 @@ class TagSelector extends Component {
 				this.element.parentNode.removeAttribute('tabindex');
 			}.bind(this)
 		);
-	}
-
-	/**
-	 * Updates the calculated rule fields for `queryValues` every time a new
-	 * tag entry is added or removed to the selection
-	 * @protected
-	 */
-
-	onEntriesChanged_() {
-		this.rule.queryValues = this.tagsSelector_.entries.keys.join();
-	}
-
-	/**
-	 * Focuses the input field (tagInput ref) used for adding new tags.
-	 * @private
-	 */
-
-	focusTagInput_() {
-		this.refs.tagInput.focus();
 	}
 }
 

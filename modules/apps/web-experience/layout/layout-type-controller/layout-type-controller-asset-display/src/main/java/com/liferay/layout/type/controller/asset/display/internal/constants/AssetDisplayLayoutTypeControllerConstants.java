@@ -12,21 +12,13 @@
  * details.
  */
 
-package com.liferay.wsrp.internal.upgrade.v1_0_0;
-
-import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
-import com.liferay.wsrp.constants.WSRPPortletKeys;
+package com.liferay.layout.type.controller.asset.display.internal.constants;
 
 /**
- * @author Peter Fellwock
+ * @author Jürgen Kappler
  */
-public class UpgradePortletId extends BaseUpgradePortletId {
+public class AssetDisplayLayoutTypeControllerConstants {
 
-	@Override
-	protected String[][] getRenamePortletIdsArray() {
-		return new String[][] {
-			new String[] {"2_WAR_wsrpportlet", WSRPPortletKeys.WSRP_CONSUMER}
-		};
-	}
+	public static final String LAYOUT_TYPE_ASSET_DISPLAY = "asset_display";
 
 }
