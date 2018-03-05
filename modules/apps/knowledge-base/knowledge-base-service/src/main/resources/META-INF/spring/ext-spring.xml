@@ -8,4 +8,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
 >
 	<bean class="com.liferay.knowledge.base.internal.util.AdminHelperImpl" id="com.liferay.knowledge.base.util.AdminHelper" />
+	<bean class="com.liferay.knowledge.base.service.util.AdminUtil" id="com.liferay.knowledge.base.service.util.AdminUtil">
+		<property name="adminHelper" ref="com.liferay.knowledge.base.util.AdminHelper" />
+	</bean>
 </beans>
