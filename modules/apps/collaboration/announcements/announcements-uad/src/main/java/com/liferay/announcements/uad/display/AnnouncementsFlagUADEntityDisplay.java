@@ -15,6 +15,7 @@
 package com.liferay.announcements.uad.display;
 
 import com.liferay.announcements.uad.constants.AnnouncementsUADConstants;
+import com.liferay.announcements.uad.entity.AnnouncementsFlagUADEntity;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.util.Portal;
@@ -44,26 +45,36 @@ public class AnnouncementsFlagUADEntityDisplay extends BaseUADEntityDisplay {
 			LiferayPortletResponse liferayPortletResponse)
 		throws Exception {
 
-		return "";
+		AnnouncementsFlagUADEntity announcementsFlagUADEntity =
+			(AnnouncementsFlagUADEntity)uadEntity;
+
+		return _announcementsFlagUADEntityDisplayHelper.
+			getAnnouncementsFlagEditURL(
+				announcementsFlagUADEntity.getAnnouncementsFlag(),
+				liferayPortletRequest, liferayPortletResponse);
 	}
 
 	@Override
-	public String getEntityTypeDescription() {
+	public String getUADEntityTypeDescription() {
 		return "A flag indicating the status of an announcements entry";
 	}
 
 	@Override
-	public String getEntityTypeName() {
+	public String getUADEntityTypeName() {
 		return "AnnouncementsFlag";
 	}
 
 	@Override
-	public List<String> getEntityTypeNonanonymizableFieldNamesList() {
-		return _uadEntityAnonymizer.getEntityNonanonymizableFieldNames();
+	public List<String> getUADEntityTypeNonanonymizableFieldNamesList() {
+		return _uadEntityAnonymizer.getUADEntityNonanonymizableFieldNames();
 	}
 
 	@Reference
 	protected Portal portal;
+
+	@Reference
+	private AnnouncementsFlagUADEntityDisplayHelper
+		_announcementsFlagUADEntityDisplayHelper;
 
 	@Reference(
 		target = "(model.class.name=" + AnnouncementsUADConstants.CLASS_NAME_ANNOUNCEMENTS_FLAG + ")"

@@ -15,9 +15,9 @@
 package com.liferay.bookmarks.uad.display;
 
 import com.liferay.bookmarks.uad.constants.BookmarksUADConstants;
+import com.liferay.bookmarks.uad.entity.BookmarksEntryUADEntity;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.user.associated.data.anonymizer.UADEntityAnonymizer;
 import com.liferay.user.associated.data.display.BaseUADEntityDisplay;
 import com.liferay.user.associated.data.display.UADEntityDisplay;
@@ -44,26 +44,32 @@ public class BookmarksEntryUADEntityDisplay extends BaseUADEntityDisplay {
 			LiferayPortletResponse liferayPortletResponse)
 		throws Exception {
 
-		return "";
+		BookmarksEntryUADEntity bookmarksEntryUADEntity =
+			(BookmarksEntryUADEntity)uadEntity;
+
+		return _bookmarksEntryUADEntityDisplayHelper.getBookmarksEntryEditURL(
+			bookmarksEntryUADEntity.getBookmarksEntry(), liferayPortletRequest,
+			liferayPortletResponse);
 	}
 
 	@Override
-	public String getEntityTypeDescription() {
+	public String getUADEntityTypeDescription() {
 		return "A link to another page or website";
 	}
 
 	@Override
-	public String getEntityTypeName() {
+	public String getUADEntityTypeName() {
 		return "BookmarksEntry";
 	}
 
 	@Override
-	public List<String> getEntityTypeNonanonymizableFieldNamesList() {
-		return _uadEntityAnonymizer.getEntityNonanonymizableFieldNames();
+	public List<String> getUADEntityTypeNonanonymizableFieldNamesList() {
+		return _uadEntityAnonymizer.getUADEntityNonanonymizableFieldNames();
 	}
 
 	@Reference
-	protected Portal portal;
+	private BookmarksEntryUADEntityDisplayHelper
+		_bookmarksEntryUADEntityDisplayHelper;
 
 	@Reference(
 		target = "(model.class.name=" + BookmarksUADConstants.CLASS_NAME_BOOKMARKS_ENTRY + ")"

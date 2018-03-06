@@ -2,6 +2,7 @@ package ${packagePath}.uad.entity;
 
 import ${apiPackagePath}.model.${entity.name};
 import ${packagePath}.uad.constants.${portletShortName}UADConstants;
+
 import com.liferay.user.associated.data.entity.UADEntity;
 import com.liferay.user.associated.data.test.util.BaseUADEntityTestCase;
 
@@ -40,7 +41,7 @@ public class ${entity.name}UADEntityTest extends BaseUADEntityTestCase {
 
 	@Override
 	protected String getUADRegistryKey() {
-		return ${portletShortName}UADConstants.CLASS_NAME_${textFormatter.format(textFormatter.format(entity.name, 7), 0)};
+		return ${portletShortName}UADConstants.CLASS_NAME_${entity.constantName};
 	}
 
 	@Mock

@@ -2,6 +2,7 @@ package ${packagePath}.uad.entity;
 
 import ${apiPackagePath}.model.${entity.name};
 import ${packagePath}.uad.constants.${portletShortName}UADConstants;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.entity.BaseUADEntity;
@@ -22,7 +23,7 @@ import java.util.Map;
 public class ${entity.name}UADEntity extends BaseUADEntity {
 
 	public ${entity.name}UADEntity(long userId, String uadEntityId, ${entity.name} ${entity.varName}) {
-		super(userId, uadEntityId, ${portletShortName}UADConstants.CLASS_NAME_${textFormatter.format(textFormatter.format(entity.name, 7), 0)});
+		super(userId, uadEntityId, ${portletShortName}UADConstants.CLASS_NAME_${entity.constantName});
 
 		_${entity.varName} = ${entity.varName};
 	}
@@ -33,14 +34,14 @@ public class ${entity.name}UADEntity extends BaseUADEntity {
 
 	<#if entity.UADNonanonymizableEntityColumns?has_content>
 		@Override
-		public Map<String, Object> getEntityNonanonymizableFieldValues() {
-			Map<String, Object> entityNonanonymizableFieldValues = new HashMap<String, Object>();
+		public Map<String, Object> getUADEntityNonanonymizableFieldValues() {
+			Map<String, Object> uadEntityNonanonymizableFieldValues = new HashMap<String, Object>();
 
 			<#list entity.UADNonanonymizableEntityColumns as uadNonanonymizableEntityColumn>
-				entityNonanonymizableFieldValues.put("${uadNonanonymizableEntityColumn.name}", _${entity.varName}.get${textFormatter.format(uadNonanonymizableEntityColumn.name, 6)}());
+				uadEntityNonanonymizableFieldValues.put("${uadNonanonymizableEntityColumn.name}", _${entity.varName}.get${textFormatter.format(uadNonanonymizableEntityColumn.name, 6)}());
 			</#list>
 
-			return entityNonanonymizableFieldValues;
+			return uadEntityNonanonymizableFieldValues;
 		}
 	</#if>
 
