@@ -56,6 +56,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.impl.ResourceImpl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -467,8 +468,9 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		// class, then for the group that the class may belong to, and then for
 		// the company that the class belongs to.
 
-		boolean value = ResourceLocalServiceUtil.hasUserPermissions(
-			user.getUserId(), groupId, resources, actionId, roleIds);
+		boolean value =
+			ResourcePermissionLocalServiceUtil.hasResourcePermission(
+				resources, roleIds, actionId);
 
 		logHasUserPermission(groupId, name, primKey, actionId, stopWatch, 4);
 
@@ -719,7 +721,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 
 		List<Resource> resources = new ArrayList<>(4);
 
-		Resource individualResource = ResourceLocalServiceUtil.getResource(
+		Resource individualResource = new ResourceImpl(
 			companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, primKey);
 
 		resources.add(individualResource);
@@ -727,7 +729,7 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		// Group
 
 		if (groupId > 0) {
-			Resource groupResource = ResourceLocalServiceUtil.getResource(
+			Resource groupResource = new ResourceImpl(
 				companyId, name, ResourceConstants.SCOPE_GROUP,
 				String.valueOf(groupId));
 
@@ -737,17 +739,16 @@ public class AdvancedPermissionChecker extends BasePermissionChecker {
 		// Group template
 
 		if (signedIn && (groupId > 0)) {
-			Resource groupTemplateResource =
-				ResourceLocalServiceUtil.getResource(
-					companyId, name, ResourceConstants.SCOPE_GROUP_TEMPLATE,
-					String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID));
+			Resource groupTemplateResource = new ResourceImpl(
+				companyId, name, ResourceConstants.SCOPE_GROUP_TEMPLATE,
+				String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID));
 
 			resources.add(groupTemplateResource);
 		}
 
 		// Company
 
-		Resource companyResource = ResourceLocalServiceUtil.getResource(
+		Resource companyResource = new ResourceImpl(
 			companyId, name, ResourceConstants.SCOPE_COMPANY,
 			String.valueOf(companyId));
 

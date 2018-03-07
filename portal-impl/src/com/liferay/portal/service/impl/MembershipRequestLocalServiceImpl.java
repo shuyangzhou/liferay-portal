@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.impl.ResourceImpl;
 import com.liferay.portal.service.base.MembershipRequestLocalServiceBaseImpl;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.ResourcePermissionUtil;
@@ -231,7 +232,7 @@ public class MembershipRequestLocalServiceImpl
 
 		roles.addAll(teamRoles);
 
-		Resource resource = resourceLocalService.getResource(
+		Resource resource = new ResourceImpl(
 			group.getCompanyId(), modelResource,
 			ResourceConstants.SCOPE_INDIVIDUAL, String.valueOf(groupId));
 
