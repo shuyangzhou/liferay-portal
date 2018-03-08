@@ -1502,6 +1502,9 @@ public class ServiceBuilder {
 		else if (type.equals("short") || type.equals("Short")) {
 			return "INTEGER";
 		}
+		else if (type.equals("BigDecimal")) {
+			return "DECIMAL";
+		}
 		else if (type.equals("Date")) {
 			return "TIMESTAMP";
 		}
@@ -1531,6 +1534,9 @@ public class ServiceBuilder {
 		}
 		else if (type.equals("short") || type.equals("Short")) {
 			return "INTEGER";
+		}
+		else if (type.equals("BigDecimal")) {
+			return "DECIMAL";
 		}
 		else if (type.equals("Blob")) {
 			return "BLOB";
@@ -3873,10 +3879,12 @@ public class ServiceBuilder {
 
 		// Write file
 
-		File bndFile = new File(
+		File file = new File(
 			StringBundler.concat(_uadDirName, "/../../../bnd.bnd"));
 
-		ToolsUtil.writeFileRaw(bndFile, content, _modifiedFileNames);
+		if (!file.exists()) {
+			ToolsUtil.writeFileRaw(file, content, _modifiedFileNames);
+		}
 	}
 
 	private void _createUADConstants(List<Entity> entities) throws Exception {
@@ -4126,11 +4134,13 @@ public class ServiceBuilder {
 
 		// Write file
 
-		File bndFile = new File(
+		File file = new File(
 			StringBundler.concat(
 				_uadTestIntegrationDirName, "/../../../bnd.bnd"));
 
-		ToolsUtil.writeFileRaw(bndFile, content, _modifiedFileNames);
+		if (!file.exists()) {
+			ToolsUtil.writeFileRaw(file, content, _modifiedFileNames);
+		}
 	}
 
 	private void _deleteFile(String fileName) {
@@ -4705,6 +4715,25 @@ public class ServiceBuilder {
 					sb.append("TEXT");
 				}
 			}
+			else if (type.equals("BigDecimal")) {
+				Map<String, String> hints = ModelHintsUtil.getHints(
+					_apiPackagePath + ".model." + entity.getName(),
+					entityColumn.getName());
+
+				String precision = "30";
+				String scale = "16";
+
+				if (hints != null) {
+					precision = hints.getOrDefault("precision", precision);
+					scale = hints.getOrDefault("scale", scale);
+				}
+
+				sb.append("DECIMAL(");
+				sb.append(precision);
+				sb.append(", ");
+				sb.append(scale);
+				sb.append(")");
+			}
 			else {
 				sb.append("invalid");
 			}
@@ -4716,8 +4745,8 @@ public class ServiceBuilder {
 					sb.append(" primary key");
 				}
 			}
-			else if (type.equals("Date") || type.equals("Map") ||
-					 type.equals("String")) {
+			else if (type.equals("BigDecimal") || type.equals("Date") ||
+					 type.equals("Map") || type.equals("String")) {
 
 				sb.append(" null");
 			}
