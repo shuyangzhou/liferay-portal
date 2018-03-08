@@ -32,7 +32,5 @@ dependencies {
 	testIntegrationCompile group: "com.liferay", name: "com.liferay.trash.test.util", version: "1.0.0-20170327.173148-1"
 	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "2.0.0"
 	testIntegrationCompile project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-api")
-	testIntegrationCompile project(":apps:web-experience:journal:journal-service")
-	testIntegrationCompile project(":apps:web-experience:journal:journal-web")
 	testIntegrationCompile project(":apps:web-experience:rss:rss-api")
 }
