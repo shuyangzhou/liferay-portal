@@ -42,7 +42,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Mate Thurzo
  */
 @Component(
-	immediate = true,
+	immediate = true, property = "name=PortletDisplayTemplateImporter",
 	service = {Capability.class, PortletDisplayTemplateImportCapability.class}
 )
 public class PortletDisplayTemplateImportCapability implements Capability {
