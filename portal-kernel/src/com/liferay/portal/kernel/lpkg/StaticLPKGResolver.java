@@ -21,45 +21,74 @@ import com.liferay.portal.kernel.util.ReleaseInfo;
  */
 public class StaticLPKGResolver {
 
-	public static String getStaticLPKGBundleSymbolicName() {
-		return _STATIC_LPKG_BUNDLE_SYMBOLIC_NAME;
+	public static String[] getStaticLPKGBundleSymbolicNames() {
+		return _STATIC_LPKG_BUNDLE_SYMBOLIC_NAMES;
 	}
 
-	public static String getStaticLPKGFileName() {
-		return _STATIC_LPKG_FILE_NAME;
+	public static String[] getStaticLPKGFileNames() {
+		return _STATIC_LPKG_FILE_NAMES;
 	}
 
-	private static final String _STATIC_LPKG_BUNDLE_SYMBOLIC_NAME;
+	private static final String[] _STATIC_LPKG_BUNDLE_NAMES = {
+		"OSGi API", "OSGi Felix File Install Configuration Cleaner Impl",
+		"Portal Bundle Blacklist API", "Portal Bundle Blacklist Impl",
+		"Portal Component Blacklist API", "Portal Component Blacklist Impl",
+		"Portal Configuration Static API", "Portal Configuration Static Impl",
+		"Portal Static API", "Portal Static Impl", "Portal LPKG Deployer API",
+		"Portal LPKG Deployer Impl", "Portal OSGi Web API",
+		"Portal OSGi Web Impl", "Portal Target Platform Indexer API",
+		"Portal Target Platform Indexer Impl", "Required Dependencies Impl"
+	};
 
-	private static final String _STATIC_LPKG_FILE_NAME;
+	private static final String[] _STATIC_LPKG_BUNDLE_SYMBOLIC_NAMES;
+
+	private static final String[] _STATIC_LPKG_FILE_NAMES;
 
 	static {
-		String staticLPKGBundleSymbolicName = System.getProperty(
-			"static.lpkg.bundle.symbolic.name");
+		String staticLPKGBundleSymbolicNames = System.getProperty(
+			"static.lpkg.bundle.symbolic.names");
 
 		String name = ReleaseInfo.getName();
 
-		if (staticLPKGBundleSymbolicName == null) {
+		String[] staticLPKGBundleSymbolicNameArray =
+			new String[_STATIC_LPKG_BUNDLE_NAMES.length];
+
+		if (staticLPKGBundleSymbolicNames == null) {
+			String lpkgSymbolicNamePrefix = "Liferay ";
+
 			if (name.contains("Community")) {
-				_STATIC_LPKG_BUNDLE_SYMBOLIC_NAME = "Liferay CE Static";
+				lpkgSymbolicNamePrefix = "Liferay CE ";
 			}
-			else {
-				_STATIC_LPKG_BUNDLE_SYMBOLIC_NAME = "Liferay Static";
+
+			for (int i = 0; i < staticLPKGBundleSymbolicNameArray.length; i++) {
+				staticLPKGBundleSymbolicNameArray[i] =
+					lpkgSymbolicNamePrefix.concat(_STATIC_LPKG_BUNDLE_NAMES[i]);
 			}
 		}
 		else {
-			_STATIC_LPKG_BUNDLE_SYMBOLIC_NAME = staticLPKGBundleSymbolicName;
+			staticLPKGBundleSymbolicNameArray =
+				staticLPKGBundleSymbolicNames.split(",");
 		}
 
-		String staticLPKGFileName = System.getProperty("static.lpkg.file.name");
+		_STATIC_LPKG_BUNDLE_SYMBOLIC_NAMES = staticLPKGBundleSymbolicNameArray;
 
-		if (staticLPKGFileName == null) {
-			_STATIC_LPKG_FILE_NAME = _STATIC_LPKG_BUNDLE_SYMBOLIC_NAME.concat(
-				".lpkg");
+		String staticLPKGFileNames = System.getProperty(
+			"static.lpkg.file.names");
+
+		String[] staticLPKGFileNameArray =
+			new String[_STATIC_LPKG_BUNDLE_SYMBOLIC_NAMES.length];
+
+		if (staticLPKGFileNames == null) {
+			for (int i = 0; i < staticLPKGFileNameArray.length; i++) {
+				staticLPKGFileNameArray[i] =
+					_STATIC_LPKG_BUNDLE_SYMBOLIC_NAMES[i].concat(".lpkg");
+			}
 		}
 		else {
-			_STATIC_LPKG_FILE_NAME = staticLPKGFileName;
+			staticLPKGFileNameArray = staticLPKGFileNames.split(",");
 		}
+
+		_STATIC_LPKG_FILE_NAMES = staticLPKGFileNameArray;
 	}
 
 }
