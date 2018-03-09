@@ -1618,6 +1618,30 @@ another task with the same name is being executed in a parent project.
 - [LPS-78436]: Update the [Liferay Source Formatter] dependency to version
 1.0.559.
 
+## 2.3.88 - 2018-03-05
+
+### Changed
+- [LPS-78459]: Update the [Liferay Source Formatter] dependency to version
+1.0.560.
+
+## 2.3.89 - 2018-03-07
+
+### Changed
+- [LPS-78050]: Update the [Liferay Source Formatter] dependency to version
+1.0.561.
+
+## 2.3.90 - 2018-03-07
+
+### Changed
+- [LPS-77425]: Update the [Liferay Source Formatter] dependency to version
+1.0.562.
+
+## 2.3.91 - 2018-03-07
+
+### Changed
+- [LPS-78459]: Update the [Liferay Source Formatter] dependency to version
+1.0.563.
+
 [Liferay Source Formatter]: https://github.com/liferay/liferay-portal/tree/master/modules/util/source-formatter
 [LPS-52675]: https://issues.liferay.com/browse/LPS-52675
 [LPS-62970]: https://issues.liferay.com/browse/LPS-62970
@@ -1716,6 +1740,7 @@ another task with the same name is being executed in a parent project.
 [LPS-77186]: https://issues.liferay.com/browse/LPS-77186
 [LPS-77305]: https://issues.liferay.com/browse/LPS-77305
 [LPS-77402]: https://issues.liferay.com/browse/LPS-77402
+[LPS-77425]: https://issues.liferay.com/browse/LPS-77425
 [LPS-77630]: https://issues.liferay.com/browse/LPS-77630
 [LPS-77795]: https://issues.liferay.com/browse/LPS-77795
 [LPS-77836]: https://issues.liferay.com/browse/LPS-77836
@@ -1724,8 +1749,10 @@ another task with the same name is being executed in a parent project.
 [LPS-77968]: https://issues.liferay.com/browse/LPS-77968
 [LPS-78033]: https://issues.liferay.com/browse/LPS-78033
 [LPS-78038]: https://issues.liferay.com/browse/LPS-78038
+[LPS-78050]: https://issues.liferay.com/browse/LPS-78050
 [LPS-78071]: https://issues.liferay.com/browse/LPS-78071
 [LPS-78150]: https://issues.liferay.com/browse/LPS-78150
 [LPS-78231]: https://issues.liferay.com/browse/LPS-78231
 [LPS-78261]: https://issues.liferay.com/browse/LPS-78261
 [LPS-78436]: https://issues.liferay.com/browse/LPS-78436
+[LPS-78459]: https://issues.liferay.com/browse/LPS-78459

@@ -21,7 +21,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 /**
  * @author Michael C. Han
  */
-@ExtendedObjectClassDefinition(category = "foundation")
+@ExtendedObjectClassDefinition(category = "search")
 @Meta.OCD(
 	id = "com.liferay.portal.search.elasticsearch6.configuration.ElasticsearchConfiguration",
 	localization = "content/Language",
@@ -49,14 +49,14 @@ public interface ElasticsearchConfiguration {
 	public String indexNamePrefix();
 
 	@Meta.AD(
-		deflt = "", description = "index-number-of-replicas-help",
-		name = "index-number-of-replicas", required = false
+		deflt = "", description = "number-of-index-replicas-help",
+		name = "number-of-index-replicas", required = false
 	)
 	public String indexNumberOfReplicas();
 
 	@Meta.AD(
-		deflt = "", description = "index-number-of-shards-help",
-		name = "index-number-of-shards", required = false
+		deflt = "", description = "number-of-index-shards-help",
+		name = "number-of-index-shards", required = false
 	)
 	public String indexNumberOfShards();
 
