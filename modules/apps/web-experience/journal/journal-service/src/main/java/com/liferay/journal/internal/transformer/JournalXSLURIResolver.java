@@ -14,7 +14,7 @@
 
 package com.liferay.journal.internal.transformer;
 
-import com.liferay.journal.util.impl.JournalUtil;
+import com.liferay.journal.util.JournalUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.log.Log;

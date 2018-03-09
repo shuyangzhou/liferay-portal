@@ -16,7 +16,7 @@ package com.liferay.journal.properties.transformer.listener.internal;
 
 import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.journal.constants.JournalTransformerListenerKeys;
-import com.liferay.journal.util.impl.JournalUtil;
+import com.liferay.journal.util.JournalUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
