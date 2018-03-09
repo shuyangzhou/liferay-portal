@@ -31,7 +31,8 @@ UADEntity uadEntity = (UADEntity)row.getObject();
 
 	<liferay-ui:icon
 		message="auto-anonymize"
-		url="<%= autoAnonymizeURL %>"
+		onClick='<%= renderResponse.getNamespace() + "confirmAction('" + autoAnonymizeURL.toString() + "', '" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-anonymize-this-entity") + "')" %>'
+		url="javascript:;"
 	/>
 
 	<portlet:actionURL name="/user_associated_data/delete_user_associated_data_entity" var="deleteURL">
@@ -42,17 +43,7 @@ UADEntity uadEntity = (UADEntity)row.getObject();
 
 	<liferay-ui:icon
 		message="delete"
-		url="<%= deleteURL %>"
-	/>
-
-	<portlet:actionURL name="/user_associated_data/export_user_associated_data_entity" var="exportURL">
-		<portlet:param name="redirect" value="<%= currentURL %>" />
-		<portlet:param name="uadEntityId" value="<%= uadEntity.getUADEntityId() %>" />
-		<portlet:param name="uadRegistryKey" value="<%= uadEntity.getUADRegistryKey() %>" />
-	</portlet:actionURL>
-
-	<liferay-ui:icon
-		message="export"
-		url="<%= exportURL %>"
+		onClick='<%= renderResponse.getNamespace() + "confirmAction('" + deleteURL.toString() + "', '" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this-entity") + "')" %>'
+		url="javascript:;"
 	/>
 </liferay-ui:icon-menu>
