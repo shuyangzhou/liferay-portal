@@ -12,9 +12,8 @@
  * details.
  */
 
-package com.liferay.journal.internal.transformer;
+package com.liferay.journal.util;
 
-import com.liferay.journal.util.JournalTransformerListenerRegistry;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.templateparser.TransformerListener;
 
