@@ -19,12 +19,10 @@ import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.exception.RequiredTemplateException;
 import com.liferay.dynamic.data.mapping.exception.StorageFieldRequiredException;
-import com.liferay.dynamic.data.mapping.exception.StructureDefinitionException;
 import com.liferay.dynamic.data.mapping.io.DDMFormXSDDeserializer;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
-import com.liferay.dynamic.data.mapping.service.DDMStructureServiceUtil;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMTemplateTestUtil;
@@ -34,16 +32,12 @@ import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.model.JournalFolderConstants;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.journal.service.JournalArticleServiceUtil;
-import com.liferay.journal.service.impl.JournalArticleLocalServiceImpl;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-import com.liferay.portal.kernel.service.ClassNameServiceUtil;
 import com.liferay.portal.kernel.service.PortalPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -55,9 +49,12 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.service.test.ServiceTestUtil;
+import com.liferay.portal.test.log.CaptureAppender;
+import com.liferay.portal.test.log.Log4JLoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
@@ -69,6 +66,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.spi.LoggingEvent;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -171,7 +171,7 @@ public class JournalArticleServiceTest {
 			"test-journal-content-html-required-field.xml", requiredFields);
 	}
 
-	@Test(expected = StructureDefinitionException.class)
+	@Test
 	public void testCheckArticleWithInvalidStructure() throws Exception {
 		DDMStructure ddmStructure = DDMStructureTestUtil.addStructure(
 			JournalArticle.class.getName());
@@ -186,7 +186,38 @@ public class JournalArticleServiceTest {
 			content, ddmStructure.getStructureKey(),
 			ddmTemplate.getTemplateKey());
 
-		checkArticleMatchesStructure(article, ddmStructure);
+		try (CaptureAppender captureAppender =
+				Log4JLoggerTestUtil.configureLog4JLogger(
+					"com.liferay.journal.service.impl." +
+						"JournalArticleLocalServiceImpl",
+					Level.WARN)) {
+
+			JournalArticleLocalServiceUtil.checkStructure(
+				article.getGroupId(), article.getArticleId(),
+				article.getVersion());
+
+			List<LoggingEvent> loggingEvents =
+				captureAppender.getLoggingEvents();
+
+			Assert.assertEquals(
+				loggingEvents.toString(), 1, loggingEvents.size());
+
+			StringBundler sb = new StringBundler(7);
+
+			sb.append("Article {groupId=");
+			sb.append(article.getGroupId());
+			sb.append(", articleId=");
+			sb.append(article.getArticleId());
+			sb.append(", version=");
+			sb.append(article.getVersion());
+			sb.append("} has content that does not match its structure: ");
+
+			LoggingEvent loggingEvent = loggingEvents.get(0);
+
+			String message = (String)loggingEvent.getMessage();
+
+			Assert.assertTrue(message.startsWith(sb.toString()));
+		}
 	}
 
 	@Test
@@ -199,14 +230,8 @@ public class JournalArticleServiceTest {
 		JournalArticle article = JournalTestUtil.addArticle(
 			group.getGroupId(), parentFolder.getFolderId(), "title", "content");
 
-		ClassName className = ClassNameServiceUtil.fetchClassName(
-			JournalArticle.class.getName());
-
-		DDMStructure ddmStructure = DDMStructureServiceUtil.getStructure(
-			group.getGroupId(), className.getClassNameId(),
-			article.getDDMStructureKey());
-
-		checkArticleMatchesStructure(article, ddmStructure);
+		JournalArticleLocalServiceUtil.checkStructure(
+			article.getGroupId(), article.getArticleId(), article.getVersion());
 	}
 
 	@Test
@@ -583,23 +608,6 @@ public class JournalArticleServiceTest {
 		}
 
 		return articles;
-	}
-
-	protected void checkArticleMatchesStructure(
-			JournalArticle article, DDMStructure ddmStructure)
-		throws PortalException {
-
-		new JournalArticleLocalServiceImpl() {
-
-			@Override
-			public void checkStructure(
-					JournalArticle article, DDMStructure structure)
-				throws PortalException {
-
-				super.checkStructure(article, structure);
-			}
-
-		}.checkStructure(article, ddmStructure);
 	}
 
 	protected int countArticlesByKeyword(String keyword, int status)
