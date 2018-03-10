@@ -33,36 +33,26 @@
 					contentsLanguageId="<%= languageId %>"
 					cssClass='<%= \"language-value \" + cssClass %>'
 					editorName="<%= editorName %>"
-					name="<%= fieldName %>"
-					onBlurMethod='<%= randomNamespace + \"OnBlurEditor\" %>'
+					name='<%= inputEditorName %>'
 					onChangeMethod='<%= randomNamespace + \"OnChangeEditor\" %>'
-					onFocusMethod='<%= randomNamespace + \"OnFocusEditor\" %>'
 					placeholder="<%= placeholder %>"
 					toolbarSet="<%= toolbarSet %>"
 				/>
 
 				<aui:script>
-					function <portlet:namespace /><%= randomNamespace %>OnBlurEditor() {
-						Liferay.component('<portlet:namespace /><%= HtmlUtil.escapeJS(fieldName) %>').blur();
-					}
-
 					function <portlet:namespace /><%= randomNamespace %>OnChangeEditor() {
 						var inputLocalized = Liferay.component('<portlet:namespace /><%= HtmlUtil.escapeJS(fieldName) %>');
 
-						var editor = window['<portlet:namespace /><%= HtmlUtil.escapeJS(fieldName) %>'];
+						var editor = window['<portlet:namespace /><%= HtmlUtil.escapeJS(inputEditorName) %>'];
 
 						inputLocalized.updateInputLanguage(editor.getHTML());
-					}
-
-					function <portlet:namespace /><%= randomNamespace %>OnFocusEditor() {
-						Liferay.component('<portlet:namespace /><%= HtmlUtil.escapeJS(fieldName) %>').focus();
 					}
 
 					$('#<portlet:namespace /><%= id %>ContentBox').on(
 						'click',
 						'.palette-item-inner',
 						function() {
-							window['<portlet:namespace /><%= HtmlUtil.escapeJS(fieldName) %>'].focus();
+							window['<portlet:namespace /><%= HtmlUtil.escapeJS(inputEditorName) %>'].focus();
 						}
 					);
 				</aui:script>
@@ -305,6 +295,11 @@
 			%>
 
 			var errorLanguageIds = A.Array.dedupe(A.Object.keys(errors));
+			var placeholder = '#<portlet:namespace /><%= id + HtmlUtil.getAUICompatibleId(fieldSuffix) %>';
+
+			<c:if test='<%= type.equals("editor") %>'>
+				placeholder = placeholder + 'Editor';
+			</c:if>
 
 			Liferay.InputLocalized.register(
 				'<portlet:namespace /><%= id + HtmlUtil.getAUICompatibleId(fieldSuffix) %>',
@@ -321,7 +316,7 @@
 					fieldPrefix: '<%= fieldPrefix %>',
 					fieldPrefixSeparator: '<%= fieldPrefixSeparator %>',
 					id: '<%= id %>',
-					inputPlaceholder: '#<portlet:namespace /><%= id + HtmlUtil.getAUICompatibleId(fieldSuffix) %>',
+					inputPlaceholder: placeholder,
 					inputBox: '#<portlet:namespace /><%= id %>BoundingBox',
 					items: availableLanguageIds,
 					itemsError: errorLanguageIds,

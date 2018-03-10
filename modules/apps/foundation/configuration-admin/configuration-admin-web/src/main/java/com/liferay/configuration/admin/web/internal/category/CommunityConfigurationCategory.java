@@ -25,7 +25,7 @@ import org.osgi.service.component.annotations.Component;
 public class CommunityConfigurationCategory implements ConfigurationCategory {
 
 	@Override
-	public String getCategorySetKey() {
+	public String getCategorySection() {
 		return _CATEGORY_SET_KEY;
 	}
 
@@ -36,6 +36,6 @@ public class CommunityConfigurationCategory implements ConfigurationCategory {
 
 	private static final String _CATEGORY_SET_KEY = "social";
 
-	private static final String _KEY = "xsl-content";
+	private static final String _KEY = "community";
 
 }
