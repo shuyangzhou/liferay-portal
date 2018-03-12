@@ -89,7 +89,7 @@ String message = "add";
 				}
 			}
 			else {
-				templateHandlers = PortletDisplayTemplateUtil.getPortletDisplayTemplateHandlers();
+				templateHandlers = PortletDisplayTemplateHandlerUtil.getPortletDisplayTemplateHandlers();
 
 				Iterator<TemplateHandler> itr = templateHandlers.iterator();
 

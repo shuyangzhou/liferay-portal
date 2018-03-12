@@ -21,7 +21,7 @@ long classNameId = GetterUtil.getLong((String)request.getAttribute("liferay-ddm:
 DDMTemplate portletDisplayDDMTemplate = (DDMTemplate)request.getAttribute("liferay-ddm:template-selector:portletDisplayDDMTemplate");
 ResourceBundle resourceBundle = (ResourceBundle)request.getAttribute("liferay-ddm:template-selector:resourceBundle");
 
-long ddmTemplateGroupId = PortletDisplayTemplateUtil.getDDMTemplateGroupId(themeDisplay.getScopeGroupId());
+long ddmTemplateGroupId = PortletDisplayDDMTemplateUtil.getDDMTemplateGroupId(themeDisplay.getScopeGroupId());
 
 Group ddmTemplateGroup = GroupLocalServiceUtil.getGroup(ddmTemplateGroupId);
 %>

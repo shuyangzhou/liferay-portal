@@ -16,13 +16,13 @@ package com.liferay.dynamic.data.mapping.taglib.servlet.taglib;
 
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.taglib.internal.servlet.ServletContextUtil;
+import com.liferay.dynamic.data.mapping.taglib.internal.util.PortletDisplayDDMTemplateUtil;
 import com.liferay.dynamic.data.mapping.taglib.servlet.taglib.base.BaseTemplateSelectorTag;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portlet.display.template.PortletDisplayTemplateUtil;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -40,7 +40,7 @@ public class TemplateSelectorTag extends BaseTemplateSelectorTag {
 		DDMTemplate portletDisplayDDMTemplate = getPortletDisplayDDMTemplate();
 
 		if (portletDisplayDDMTemplate != null) {
-			return PortletDisplayTemplateUtil.getDisplayStyle(
+			return PortletDisplayDDMTemplateUtil.getDisplayStyle(
 				portletDisplayDDMTemplate.getTemplateKey());
 		}
 
@@ -79,9 +79,10 @@ public class TemplateSelectorTag extends BaseTemplateSelectorTag {
 			displayStyle = super.getDefaultDisplayStyle();
 		}
 
-		return PortletDisplayTemplateUtil.getPortletDisplayTemplateDDMTemplate(
-			getDisplayStyleGroupId(), PortalUtil.getClassNameId(getClassName()),
-			displayStyle, true);
+		return
+			PortletDisplayDDMTemplateUtil.getPortletDisplayTemplateDDMTemplate(
+				getDisplayStyleGroupId(),
+				PortalUtil.getClassNameId(getClassName()), displayStyle, true);
 	}
 
 	protected ResourceBundle getResourceBundle() {
