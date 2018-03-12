@@ -172,7 +172,7 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 					"extension) where (fileName is null or fileName = '') " +
 						"and LENGTH(title) + LENGTH(extension) < 255");
 
-			_updateLongFileEntryFileNames();
+			_updateLongFileNames("DLFileEntry");
 
 			runSQL(
 				"update DLFileEntry set fileName = REPLACE(fileName, '/', " +
@@ -385,7 +385,7 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 					"fileName = '') and LENGTH(title) + LENGTH(extension) < ",
 					"255"));
 
-			_updateLongFileVersionFileNames();
+			_updateLongFileNames("DLFileVersion");
 		}
 	}
 
@@ -544,55 +544,35 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 		}
 	}
 
-	private void _updateLongFileEntryFileNames() throws Exception {
+	private void _updateLongFileNames(String tableName) throws Exception {
 		try (PreparedStatement ps1 = connection.prepareStatement(
-				"select fileEntryId, title, extension from DLFileEntry where " +
-					"fileName = '' or fileName is null");
+				"select fileEntryId, title, extension from " + tableName +
+					" where fileName = '' or fileName is null");
 			PreparedStatement ps2 = AutoBatchPreparedStatementUtil.autoBatch(
 				connection.prepareStatement(
-					"update DLFileEntry set fileName = ? where fileEntryId = " +
-						"?"));
+					"update " + tableName +
+						" set fileName = ? where fileEntryId = ?"));
 			ResultSet rs = ps1.executeQuery()) {
 
-			_updateLongFileNames(ps2, rs);
-		}
-	}
+			while (rs.next()) {
+				long fileEntryId = rs.getLong("fileEntryId");
+				String extension = rs.getString("extension");
+				String title = rs.getString("title");
 
-	private void _updateLongFileNames(PreparedStatement ps, ResultSet rs)
-		throws Exception {
+				int availableLength = 254 - extension.length();
 
-		while (rs.next()) {
-			long fileEntryId = rs.getLong("fileEntryId");
-			String extension = rs.getString("extension");
-			String title = rs.getString("title");
+				String fileName =
+					title.substring(0, availableLength) + StringPool.PERIOD +
+						extension;
 
-			int availableLength = 254 - extension.length();
+				ps2.setString(1, fileName);
 
-			String fileName =
-				title.substring(0, availableLength) + StringPool.PERIOD +
-					extension;
+				ps2.setLong(2, fileEntryId);
 
-			ps.setString(1, fileName);
+				ps2.addBatch();
+			}
 
-			ps.setLong(2, fileEntryId);
-
-			ps.addBatch();
-		}
-
-		ps.executeBatch();
-	}
-
-	private void _updateLongFileVersionFileNames() throws Exception {
-		try (PreparedStatement ps1 = connection.prepareStatement(
-				"select fileEntryId, title, extension from DLFileVersion " +
-					"where fileName = '' or fileName is null");
-			PreparedStatement ps2 = AutoBatchPreparedStatementUtil.autoBatch(
-				connection.prepareStatement(
-					"update DLFileVersion set fileName = ? where fileEntryId " +
-						"= ?"));
-			ResultSet rs = ps1.executeQuery()) {
-
-			_updateLongFileNames(ps2, rs);
+			ps2.executeBatch();
 		}
 	}
 
