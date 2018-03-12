@@ -324,7 +324,7 @@
 				<var name="navItem" value="${navItem}" />
 			</execute>
 
-			<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="There are no members. You can add a member by clicking the plus button on the bottom right corner." />
+			<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="No users were found." />
 		</for>
 	</command>
 </definition>

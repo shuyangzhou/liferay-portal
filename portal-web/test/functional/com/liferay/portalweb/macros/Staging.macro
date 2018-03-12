@@ -129,7 +129,7 @@
 
 				<execute function="Confirm" value1="Are you sure you want to activate local staging for ${siteName}?" />
 
-				<execute function="AssertTextEquals" locator1="Staging#INITIAL_PROCESS_SUCCESSFUL" value1="Successful" />
+				<execute function="AssertTextEquals" locator1="Staging#PROCESS_RESULT" value1="SUCCESSFUL" />
 			</else>
 		</if>
 
@@ -331,14 +331,18 @@
 		<if>
 			<isset var="checkContentNameList" />
 			<then>
-				<execute macro="ContentConfiguration#checkContentNameList" />
+				<execute macro="ContentConfiguration#checkContentNameList">
+					<var name="checkContentNameList" value="${checkContentNameList}" />
+				</execute>
 			</then>
 		</if>
 
 		<if>
 			<isset var="uncheckContentNameList" />
 			<then>
-				<execute macro="ContentConfiguration#uncheckContentNameList" />
+				<execute macro="ContentConfiguration#uncheckContentNameList">
+					<var name="uncheckContentNameList" value="${uncheckContentNameList}" />
+				</execute>
 			</then>
 		</if>
 
@@ -359,14 +363,18 @@
 		<if>
 			<isset var="checkPrivatePages" />
 			<then>
-				<execute macro="ContentConfiguration#checkPrivatePages" />
+				<execute macro="ContentConfiguration#checkPrivatePages">
+					<var name="checkPrivatePages" value="${checkPrivatePages}" />
+				</execute>
 			</then>
 		</if>
 
 		<if>
 			<isset var="checkPublicPages" />
 			<then>
-				<execute macro="ContentConfiguration#checkPublicPages" />
+				<execute macro="ContentConfiguration#checkPublicPages">
+					<var name="checkPublicPages" value="${checkPublicPages}" />
+				</execute>
 			</then>
 		</if>
 	</command>
@@ -725,7 +733,7 @@
 
 		<execute function="Pause" locator1="30000" />
 
-		<execute function="AssertTextEquals" locator1="Staging#INITIAL_PROCESS_SUCCESSFUL" value1="Successful" />
+		<execute function="AssertTextEquals" locator1="Staging#PROCESS_RESULT" value1="SUCCESSFUL" />
 	</command>
 
 	<command name="publishToLive">
@@ -801,8 +809,6 @@
 		<execute function="Pause" locator1="5000" />
 
 		<execute function="AssertTextEquals" locator1="Staging#PROCESS_SUCCESSFUL" value1="Successful" />
-
-		<execute function="SelectFrame" value1="relative=top" />
 
 		<if>
 			<condition function="IsElementPresent" locator1="Icon#CLOSE" />
