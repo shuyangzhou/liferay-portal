@@ -21,6 +21,7 @@ import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServices
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldValueAccessor;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRendererConstants;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingContext;
+import com.liferay.dynamic.data.mapping.form.renderer.internal.util.DDMFormTemplateContextFactoryUtil;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldValidation;
@@ -75,6 +76,7 @@ public class DDMFormFieldTemplateContextFactory {
 	}
 
 	protected DDMFormFieldRenderingContext createDDDMFormFieldRenderingContext(
+		DDMFormFieldEvaluationResult ddmFormFieldEvaluationResult,
 		Map<String, Object> ddmFormFieldTemplateContext) {
 
 		DDMFormFieldRenderingContext ddmFormFieldRenderingContext =
@@ -88,6 +90,10 @@ public class DDMFormFieldTemplateContextFactory {
 		ddmFormFieldRenderingContext.setPortletNamespace(
 			_ddmFormRenderingContext.getPortletNamespace());
 		ddmFormFieldRenderingContext.setProperties(ddmFormFieldTemplateContext);
+		ddmFormFieldRenderingContext.setProperty(
+			"ddmFormFieldEvaluationResult", ddmFormFieldEvaluationResult);
+		ddmFormFieldRenderingContext.setProperty(
+			"groupId", _ddmFormRenderingContext.getGroupId());
 
 		return ddmFormFieldRenderingContext;
 	}
@@ -152,6 +158,8 @@ public class DDMFormFieldTemplateContextFactory {
 		setDDMFormFieldTemplateContextOptions(
 			ddmFormFieldTemplateContext, ddmFormFieldEvaluationResult,
 			ddmFormField.getDDMFormFieldOptions());
+		setDDMFormFieldTemplateContextPathThemeImages(
+			ddmFormFieldTemplateContext);
 		setDDMFormFieldTemplateContextReadOnly(
 			ddmFormFieldTemplateContext, ddmFormFieldEvaluationResult);
 		setDDMFormFieldTemplateContextRepeatable(
@@ -183,7 +191,8 @@ public class DDMFormFieldTemplateContextFactory {
 		// Contributed template parameters
 
 		setDDMFormFieldTemplateContextContributedParameters(
-			ddmFormFieldTemplateContext, ddmFormField);
+			ddmFormFieldEvaluationResult, ddmFormFieldTemplateContext,
+			ddmFormField);
 
 		return ddmFormFieldTemplateContext;
 	}
@@ -316,6 +325,7 @@ public class DDMFormFieldTemplateContextFactory {
 	}
 
 	protected void setDDMFormFieldTemplateContextContributedParameters(
+		DDMFormFieldEvaluationResult ddmFormFieldEvaluationResult,
 		Map<String, Object> ddmFormFieldTemplateContext,
 		DDMFormField ddmFormField) {
 
@@ -330,10 +340,8 @@ public class DDMFormFieldTemplateContextFactory {
 		}
 
 		DDMFormFieldRenderingContext ddmFormFieldRenderingContext =
-			createDDDMFormFieldRenderingContext(ddmFormFieldTemplateContext);
-
-		ddmFormFieldRenderingContext.setProperty(
-			"groupId", _ddmFormRenderingContext.getGroupId());
+			createDDDMFormFieldRenderingContext(
+				ddmFormFieldEvaluationResult, ddmFormFieldTemplateContext);
 
 		Map<String, Object> contributedParameters =
 			ddmFormFieldTemplateContextContributor.getParameters(
@@ -471,6 +479,15 @@ public class DDMFormFieldTemplateContextFactory {
 			ddmFormFieldTemplateContext.put(
 				"options", createOptions(ddmFormFieldOptions));
 		}
+	}
+
+	protected void setDDMFormFieldTemplateContextPathThemeImages(
+		Map<String, Object> ddmFormFieldTemplateContext) {
+
+		ddmFormFieldTemplateContext.put(
+			"pathThemeImages",
+			DDMFormTemplateContextFactoryUtil.getPathThemeImages(
+				_ddmFormRenderingContext.getHttpServletRequest()));
 	}
 
 	protected void setDDMFormFieldTemplateContextReadOnly(
