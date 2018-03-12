@@ -378,14 +378,12 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 					"CONCAT('%.', extension) or extension = '' or extension " +
 						"is null");
 
-			StringBundler sb = new StringBundler(4);
-
-			sb.append("update DLFileVersion set fileName = CONCAT(title, ");
-			sb.append("CONCAT('.', extension)) where (fileName is null or ");
-			sb.append("fileName = '') and LENGTH(title) + LENGTH(extension) ");
-			sb.append("< 255");
-
-			runSQL(sb.toString());
+			runSQL(
+				StringBundler.concat(
+					"update DLFileVersion set fileName = CONCAT(title, ",
+					"CONCAT('.', extension)) where (fileName is null or ",
+					"fileName = '') and LENGTH(title) + LENGTH(extension) < ",
+					"255"));
 
 			_updateLongFileVersionFileNames();
 		}
