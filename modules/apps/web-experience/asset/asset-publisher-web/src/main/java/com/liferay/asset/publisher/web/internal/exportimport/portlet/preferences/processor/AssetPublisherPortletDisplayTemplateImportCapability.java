@@ -15,33 +15,25 @@
 package com.liferay.asset.publisher.web.internal.exportimport.portlet.preferences.processor;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
-import com.liferay.exportimport.portlet.preferences.processor.Capability;
-import com.liferay.portlet.display.template.exportimport.portlet.preferences.processor.PortletDisplayTemplateImportCapability;
+import com.liferay.portlet.display.template.exportimport.portlet.preferences.processor.CustomizedImportCapabilityRegister;
 
 import javax.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
- * Provides the implementation of the import capability {@link
- * AssetPublisherPortletDisplayTemplateImportCapability} for the Asset Publisher
+ * Provides the implementation of the import capability for the Asset Publisher
  * portlet. This allows the display style and display style group ID to be
  * provided based on the existence of the template handler.
  *
  * @author Mate Thurzo
  */
-@Component(
-	immediate = true,
-	service = {
-		AssetPublisherPortletDisplayTemplateImportCapability.class,
-		Capability.class
-	}
-)
+@Component(immediate = true, property = "name=AssetImportCapabilityRegister")
 public class AssetPublisherPortletDisplayTemplateImportCapability
-	extends PortletDisplayTemplateImportCapability {
+	implements CustomizedImportCapabilityRegister {
 
 	@Override
-	protected String getDisplayStyle(
+	public String getDisplayStyle(
 		PortletDataContext portletDataContext, String portletId,
 		PortletPreferences portletPreferences) {
 
@@ -50,7 +42,7 @@ public class AssetPublisherPortletDisplayTemplateImportCapability
 	}
 
 	@Override
-	protected long getDisplayStyleGroupId(
+	public long getDisplayStyleGroupId(
 		PortletDataContext portletDataContext, String portletId,
 		PortletPreferences portletPreferences) {
 
