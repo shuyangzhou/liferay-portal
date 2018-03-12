@@ -32,12 +32,11 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.model.JournalFolderConstants;
+import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.journal.service.JournalArticleServiceUtil;
-import com.liferay.journal.service.impl.JournalArticleLocalServiceImpl;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
@@ -46,6 +45,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ClassNameServiceUtil;
 import com.liferay.portal.kernel.service.PortalPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -55,14 +55,20 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.service.test.ServiceTestUtil;
+import com.liferay.portal.spring.aop.ServiceBeanAopProxy;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 
 import java.io.InputStream;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,10 +79,14 @@ import java.util.Map;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.springframework.aop.TargetSource;
+import org.springframework.aop.framework.AdvisedSupport;
 
 /**
  * @author Juan Fernández
@@ -89,6 +99,22 @@ public class JournalArticleServiceTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		AdvisedSupport advisedSupport = ServiceBeanAopProxy.getAdvisedSupport(
+			_journalArticleLocalService);
+
+		TargetSource targetSource = advisedSupport.getTargetSource();
+
+		if (ProxyUtil.isProxyClass(_journalArticleLocalService.getClass())) {
+			_journalArticleLocalServiceImplInstance = targetSource.getTarget();
+		}
+
+		_checkStructureMethod = ReflectionTestUtil.getMethod(
+			_journalArticleLocalServiceImplInstance.getClass(),
+			"checkStructure", JournalArticle.class, DDMStructure.class);
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -172,7 +198,7 @@ public class JournalArticleServiceTest {
 	}
 
 	@Test(expected = StructureDefinitionException.class)
-	public void testCheckArticleWithInvalidStructure() throws Exception {
+	public void testCheckArticleWithInvalidStructure() throws Throwable {
 		DDMStructure ddmStructure = DDMStructureTestUtil.addStructure(
 			JournalArticle.class.getName());
 
@@ -186,7 +212,13 @@ public class JournalArticleServiceTest {
 			content, ddmStructure.getStructureKey(),
 			ddmTemplate.getTemplateKey());
 
-		checkArticleMatchesStructure(article, ddmStructure);
+		try {
+			_checkStructureMethod.invoke(
+				_journalArticleLocalServiceImplInstance, article, ddmStructure);
+		}
+		catch (InvocationTargetException ite) {
+			throw ite.getCause();
+		}
 	}
 
 	@Test
@@ -206,7 +238,8 @@ public class JournalArticleServiceTest {
 			group.getGroupId(), className.getClassNameId(),
 			article.getDDMStructureKey());
 
-		checkArticleMatchesStructure(article, ddmStructure);
+		_checkStructureMethod.invoke(
+			_journalArticleLocalServiceImplInstance, article, ddmStructure);
 	}
 
 	@Test
@@ -585,23 +618,6 @@ public class JournalArticleServiceTest {
 		return articles;
 	}
 
-	protected void checkArticleMatchesStructure(
-			JournalArticle article, DDMStructure ddmStructure)
-		throws PortalException {
-
-		new JournalArticleLocalServiceImpl() {
-
-			@Override
-			public void checkStructure(
-					JournalArticle article, DDMStructure structure)
-				throws PortalException {
-
-				super.checkStructure(article, structure);
-			}
-
-		}.checkStructure(article, ddmStructure);
-	}
-
 	protected int countArticlesByKeyword(String keyword, int status)
 		throws Exception {
 
@@ -746,6 +762,13 @@ public class JournalArticleServiceTest {
 			article, "Version 2", article.getContent(), false, true,
 			serviceContext);
 	}
+
+	private static Method _checkStructureMethod;
+
+	@Inject
+	private static JournalArticleLocalService _journalArticleLocalService;
+
+	private static Object _journalArticleLocalServiceImplInstance;
 
 	private JournalArticle _article;
 	private DDMFormXSDDeserializer _ddmFormXSDDeserializer;
