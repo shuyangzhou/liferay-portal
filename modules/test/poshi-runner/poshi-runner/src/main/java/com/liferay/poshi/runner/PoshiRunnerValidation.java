@@ -21,8 +21,6 @@ import com.liferay.poshi.runner.util.Validator;
 
 import java.lang.reflect.Method;
 
-import java.net.URL;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,9 +55,7 @@ public class PoshiRunnerValidation {
 	}
 
 	public static void validate() throws Exception {
-		for (URL resourceURL : PoshiRunnerContext.getResourceURLs()) {
-			String filePath = resourceURL.getFile();
-
+		for (String filePath : PoshiRunnerContext.getFilePaths()) {
 			if (OSDetector.isWindows()) {
 				filePath = filePath.replace("/", "\\");
 			}
