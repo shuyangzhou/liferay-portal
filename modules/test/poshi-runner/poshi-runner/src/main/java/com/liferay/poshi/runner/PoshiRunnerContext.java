@@ -77,7 +77,6 @@ public class PoshiRunnerContext {
 		_filePaths.clear();
 		_functionLocatorCounts.clear();
 		_pathLocators.clear();
-		_resourceURLs.clear();
 		_rootElements.clear();
 		_seleniumParameterCounts.clear();
 	}
@@ -90,6 +89,10 @@ public class PoshiRunnerContext {
 		String fileName, String namespace) {
 
 		return _filePaths.get(namespace + "." + fileName);
+	}
+
+	public static List<String> getFilePaths() {
+		return new ArrayList<>(_filePaths.values());
 	}
 
 	public static Element getFunctionCommandElement(
@@ -201,10 +204,6 @@ public class PoshiRunnerContext {
 		String className, String namespace) {
 
 		return _rootElements.get("path#" + namespace + "." + className);
-	}
-
-	public static List<URL> getResourceURLs() {
-		return _resourceURLs;
 	}
 
 	public static int getSeleniumParameterCount(String commandName) {
@@ -376,9 +375,23 @@ public class PoshiRunnerContext {
 		return classCommandName;
 	}
 
+	private static Exception _getDuplicateLocatorsException() {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(
+			"Duplicate locator(s) found while loading Poshi files into " +
+				"context:\n");
+
+		for (String exception : _duplicateLocatorMessages) {
+			sb.append(exception);
+			sb.append("\n\n");
+		}
+
+		return new Exception(sb.toString());
+	}
+
 	private static List<URL> _getPoshiURLs(
-			FileSystem fileSystem, String[] includes, String baseDirName,
-			String namespace)
+			FileSystem fileSystem, String[] includes, String baseDirName)
 		throws IOException {
 
 		List<URL> urls = null;
@@ -391,33 +404,14 @@ public class PoshiRunnerContext {
 				fileSystem, includes, baseDirName);
 		}
 
-		for (URL url : urls) {
-			String filePath = url.getFile();
-
-			if (OSDetector.isWindows()) {
-				if (filePath.startsWith("/")) {
-					filePath = filePath.substring(1);
-				}
-
-				filePath = filePath.replace("/", "\\");
-			}
-
-			_filePaths.put(
-				namespace + "." +
-					PoshiRunnerGetterUtil.getFileNameFromFilePath(filePath),
-				filePath);
-
-			_resourceURLs.add(url);
-		}
-
 		return urls;
 	}
 
 	private static List<URL> _getPoshiURLs(
-			String[] includes, String baseDirName, String namespace)
+			String[] includes, String baseDirName)
 		throws Exception {
 
-		return _getPoshiURLs(null, includes, baseDirName, namespace);
+		return _getPoshiURLs(null, includes, baseDirName);
 	}
 
 	private static String _getTestBatchGroups() throws Exception {
@@ -782,6 +776,10 @@ public class PoshiRunnerContext {
 		_readPoshiFiles(poshiFileNames, _TEST_BASE_DIR_NAME);
 
 		_initComponentCommandNamesMap();
+
+		if (!_duplicateLocatorMessages.isEmpty()) {
+			throw _getDuplicateLocatorsException();
+		}
 	}
 
 	private static void _readPoshiFiles(
@@ -789,13 +787,9 @@ public class PoshiRunnerContext {
 		throws Exception {
 
 		for (String baseDirName : baseDirNames) {
-			for (URL url :
-					_getPoshiURLs(includes, baseDirName, _DEFAULT_NAMESPACE)) {
+			List<URL> poshiURLs = _getPoshiURLs(includes, baseDirName);
 
-				_storeRootElement(
-					PoshiRunnerGetterUtil.getRootElementFromURL(url),
-					url.getFile(), _DEFAULT_NAMESPACE);
-			}
+			_storeRootElements(poshiURLs, _DEFAULT_NAMESPACE);
 		}
 	}
 
@@ -846,14 +840,9 @@ public class PoshiRunnerContext {
 
 					List<URL> poshiURLs = _getPoshiURLs(
 						fileSystem, includes,
-						resourceURLString.substring(x + 1), namespace);
+						resourceURLString.substring(x + 1));
 
-					for (URL poshiURL : poshiURLs) {
-						_storeRootElement(
-							PoshiRunnerGetterUtil.getRootElementFromURL(
-								poshiURL),
-							poshiURL.getFile(), namespace);
-					}
+					_storeRootElements(poshiURLs, namespace);
 				}
 			}
 		}
@@ -963,10 +952,13 @@ public class PoshiRunnerContext {
 	}
 
 	private static void _storePathElement(
-			Element rootElement, String className, String namespace)
+			Element rootElement, String className, String filePath,
+			String namespace)
 		throws Exception {
 
 		_rootElements.put("path#" + namespace + "." + className, rootElement);
+
+		List<String> locatorKeys = new ArrayList<>();
 
 		Element bodyElement = rootElement.element("body");
 
@@ -986,6 +978,27 @@ public class PoshiRunnerContext {
 			Element locatorElement = tdElements.get(1);
 
 			String locator = locatorElement.getText();
+
+			if (locatorKey.equals("") && locator.equals("")) {
+				continue;
+			}
+
+			if (locatorKeys.contains(locatorKey)) {
+				StringBuilder sb = new StringBuilder();
+
+				sb.append("Duplicate path locator key '");
+				sb.append(className + "#" + locatorKey);
+				sb.append("' at namespace '");
+				sb.append(namespace);
+				sb.append("' \n");
+				sb.append(filePath);
+				sb.append(": ");
+				sb.append(locatorKeyElement.attributeValue("line-number"));
+
+				_duplicateLocatorMessages.add(sb.toString());
+			}
+
+			locatorKeys.add(locatorKey);
 
 			if (locatorKey.equals("EXTEND_ACTION_PATH")) {
 				_pathExtensions.put(namespace + "." + className, locator);
@@ -1044,9 +1057,37 @@ public class PoshiRunnerContext {
 				String classCommandName = className + "#" + commandName;
 
 				if (isCommandElement(classType, classCommandName, namespace)) {
-					System.out.println(
-						"Duplicate command name\n" + filePath + ":" +
-							commandElement.attributeValue("line-number"));
+					StringBuilder sb = new StringBuilder();
+
+					sb.append("Duplicate command name '");
+					sb.append(classCommandName);
+					sb.append("' at namespace '");
+					sb.append(namespace);
+					sb.append("'\n");
+					sb.append(filePath);
+					sb.append(": ");
+					sb.append(commandElement.attributeValue("line-number"));
+					sb.append("\n");
+
+					String duplicateElementFilePath = getFilePathFromFileName(
+						PoshiRunnerGetterUtil.getFileNameFromFilePath(filePath),
+						namespace);
+
+					if (Validator.isNull(duplicateElementFilePath)) {
+						duplicateElementFilePath = filePath;
+					}
+
+					sb.append(duplicateElementFilePath);
+					sb.append(": ");
+
+					Element duplicateElement = _commandElements.get(
+						classType + "#" + namespace + "." + classCommandName);
+
+					sb.append(duplicateElement.attributeValue("line-number"));
+
+					_duplicateLocatorMessages.add(sb.toString());
+
+					continue;
 				}
 
 				String namespacedClassCommandName =
@@ -1118,7 +1159,54 @@ public class PoshiRunnerContext {
 			}
 		}
 		else if (classType.equals("path")) {
-			_storePathElement(rootElement, className, namespace);
+			_storePathElement(rootElement, className, filePath, namespace);
+		}
+	}
+
+	private static void _storeRootElements(List<URL> urls, String namespace)
+		throws Exception {
+
+		Map<String, String> filePaths = new HashMap<>();
+
+		for (URL url : urls) {
+			String filePath = url.getFile();
+
+			if (OSDetector.isWindows()) {
+				if (filePath.startsWith("/")) {
+					filePath = filePath.substring(1);
+				}
+
+				filePath = filePath.replace("/", "\\");
+			}
+
+			String fileName = PoshiRunnerGetterUtil.getFileNameFromFilePath(
+				filePath);
+
+			if (filePaths.containsKey(fileName)) {
+				System.out.println(
+					"WARNING: Duplicate file name '" + fileName +
+						"' found within the namespace '" + namespace + "':\n" +
+							filePath + "\n" + filePaths.get(fileName) + "\n");
+			}
+
+			filePaths.put(fileName, filePath);
+
+			_storeRootElement(
+				PoshiRunnerGetterUtil.getRootElementFromURL(url), filePath,
+				namespace);
+
+			if (OSDetector.isWindows()) {
+				if (filePath.startsWith("/")) {
+					filePath = filePath.substring(1);
+				}
+
+				filePath = filePath.replace("/", "\\");
+			}
+
+			_filePaths.put(
+				namespace + "." +
+					PoshiRunnerGetterUtil.getFileNameFromFilePath(filePath),
+				filePath);
 		}
 	}
 
@@ -1180,6 +1268,8 @@ public class PoshiRunnerContext {
 		new HashMap<>();
 	private static final Map<String, String> _commandSummaries =
 		new HashMap<>();
+	private static final Set<String> _duplicateLocatorMessages =
+		new HashSet<>();
 	private static final Map<String, String> _filePaths = new HashMap<>();
 	private static final Map<String, Integer> _functionLocatorCounts =
 		new HashMap<>();
@@ -1191,7 +1281,6 @@ public class PoshiRunnerContext {
 	private static final Pattern _poshiResourceJarNamePattern = Pattern.compile(
 		"jar:.*\\/(?<namespace>\\w+)\\-(?<branchName>\\w+" +
 			"(\\-\\w+)*)\\-(?<sha>\\w+)\\.jar.*");
-	private static final List<URL> _resourceURLs = new ArrayList<>();
 	private static final Map<String, Element> _rootElements = new HashMap<>();
 	private static final Map<String, Integer> _seleniumParameterCounts =
 		new HashMap<>();

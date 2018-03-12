@@ -164,11 +164,18 @@ prepareMajorIncrement {
 	description = "Prepares the build scripts of modules and portal artifacts to a major version increment."
 
 	doLast {
-		Map<String, String> moduleNamePathsMap = [:]
+		Map<String, String> moduleNamePathsMap = [
+			"com.liferay.portal.configuration.metatype": ":apps:static:portal-configuration:portal-configuration-metatype-api",
+			"com.liferay.portal.mobile.device.detection.fiftyonedegrees": ":apps:portal-mobile-device-detection-fiftyonedegrees:portal-mobile-device-detection-fiftyonedegrees-api",
+			"com.liferay.portal.osgi.web.wab.generator": ":apps:static:portal-osgi-web:portal-osgi-web-wab-generator-api",
+			"com.liferay.portal.profile": ":apps:static:portal:portal-profile-api",
+			"com.liferay.portal.template.soy": ":apps:foundation:portal-template:portal-template-soy-api",
+			"com.liferay.portal.upgrade": ":apps:foundation:portal:portal-upgrade-api"
+		]
 
 		projectDir.traverse(
 			preDir: {
-				if (it.name in [".gradle", ".github", "build", "classes", "node_modules", "third-party"]) {
+				if (it.name in [".gradle", ".github", "build", "classes", "node_modules", "project-templates", "third-party"]) {
 					return FileVisitResult.SKIP_SUBTREE
 				}
 
@@ -194,7 +201,9 @@ prepareMajorIncrement {
 
 				modulePath = ":" + modulePath.replace(File.separatorChar, ':' as char)
 
-				moduleNamePathsMap[bundleSymbolicName] = modulePath
+				if (!moduleNamePathsMap.containsKey(bundleSymbolicName)) {
+					moduleNamePathsMap[bundleSymbolicName] = modulePath
+				}
 
 				return FileVisitResult.SKIP_SUBTREE
 			},
@@ -208,13 +217,33 @@ prepareMajorIncrement {
 
 			String content = buildGradleFile.getText("UTF-8")
 
+			List<String> markerFileNames = [".lfrbuild-ci", ".lfrbuild-portal", ".lfrbuild-slim"]
+
+			markerFileNames = markerFileNames.findAll {
+				_exists(dir, it)
+			}
+
 			content = content.replaceAll(/group: "com\.liferay", name: "(.+)", version: "\d.+"/) {
 				String dependency, String artifactName ->
 
 				String modulePath = moduleNamePathsMap[artifactName]
 
 				if (!modulePath) {
-					return null
+					println "Unable to find project for artifact ${artifactName}"
+
+					return dependency
+				}
+
+				String moduleDirName = modulePath.substring(1)
+
+				File moduleDir = new File(projectDir, moduleDirName.replace(':' as char, File.separatorChar))
+
+				for (String markerFileName : markerFileNames) {
+					if (!_exists(moduleDir, markerFileName)) {
+						println "Skipping dependency from ${dir} to ${moduleDir} since it lacks a ${markerFileName} file"
+
+						return dependency
+					}
 				}
 
 				return "project(\"${modulePath}\")"
@@ -252,14 +281,42 @@ prepareMajorIncrement {
 
 			String content = versionFile.getText("UTF-8")
 
+			String oldVersionString = null
+			String newVersionString = null
+
 			content = content.replaceFirst(versionPattern) {
 				String all, String versionString ->
 
 				VersionNumber versionNumber = VersionNumber.parse(versionString)
 
+				if ((versionNumber.minor == 0) && (versionNumber.micro == 0)) {
+					println "Skipping increment of version ${versionString} in ${dir}"
+
+					return all
+				}
+
+				oldVersionString = versionString
+
 				VersionNumber newVersionNumber = new VersionNumber(versionNumber.major + 1, 0, 0, null)
 
-				all.replace versionString, newVersionNumber as String
+				newVersionString = newVersionNumber as String
+
+				all.replace versionString, newVersionString
+			}
+
+			if (oldVersionString && newVersionString) {
+				for (String jsonFileName in ["package.json", "package-lock.json"]) {
+					File jsonFile = new File(dir, jsonFileName)
+
+					if (jsonFile.exists()) {
+						String json = jsonFile.getText("UTF-8")
+
+						json = json.replace("\n\t\"version\": \"${oldVersionString}\"", "\n\t\"version\": \"${newVersionString}\"")
+						json = json.replace("\n  \"version\": \"${oldVersionString}\"", "\n  \"version\": \"${newVersionString}\"")
+
+						jsonFile.setText json, "UTF-8"
+					}
+				}
 			}
 
 			versionFile.setText content, "UTF-8"

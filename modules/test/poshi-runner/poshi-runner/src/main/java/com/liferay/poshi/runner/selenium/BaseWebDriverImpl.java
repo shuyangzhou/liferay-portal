@@ -2656,6 +2656,8 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			sikuliType(image, filePath);
 		}
 
+		pause("1000");
+
 		keyboard.type(Key.ENTER);
 	}
 
@@ -2672,6 +2674,8 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		sikuliType(image, fileName);
 
 		Keyboard keyboard = new DesktopKeyboard();
+
+		pause("1000");
 
 		keyboard.type(Key.ENTER);
 	}
@@ -2697,6 +2701,8 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		}
 
 		sikuliType(image, fileName);
+
+		pause("1000");
 
 		keyboard.type(Key.ENTER);
 	}

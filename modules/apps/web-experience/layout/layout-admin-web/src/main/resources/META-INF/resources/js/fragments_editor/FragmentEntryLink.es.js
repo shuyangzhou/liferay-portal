@@ -1,5 +1,6 @@
 import Component from 'metal-component';
 import {Config} from 'metal-state';
+import {isFunction, isObject} from 'metal';
 import Soy from 'metal-soy';
 
 import templates from './FragmentEntryLink.soy';
@@ -22,6 +23,8 @@ class FragmentEntryLink extends Component {
 
 	created() {
 		this._handleEditorChange = this._handleEditorChange.bind(this);
+
+		Liferay.on('beforeNavigate', () => this._destroyEditors());
 	}
 
 	/**
@@ -29,7 +32,7 @@ class FragmentEntryLink extends Component {
 	 * @review
 	 */
 
-	detached() {
+	disposed() {
 		this._destroyEditors();
 	}
 
@@ -118,7 +121,7 @@ class FragmentEntryLink extends Component {
 				editableElement => {
 					const editableId = editableElement.id;
 
-					const editableContent = typeof this.editableValues[editableId] === 'undefined' ? editableElement.innerHTML : this.editableValues[editableId];
+					const editableContent = editableElement.innerHTML;
 
 					const wrapper = document.createElement('div');
 
@@ -221,7 +224,7 @@ class FragmentEntryLink extends Component {
 	 */
 
 	_handleFragmentKeyUp(event) {
-		if (document.activeElement === this.refs.fragmentWrapper) {
+		if (document.activeElement === this.refs.fragmentEntryLinkWrapper) {
 			switch (event.which) {
 			case ARROW_DOWN_KEYCODE:
 				this._emitMoveEvent(FragmentEntryLink.MOVE_DIRECTIONS.DOWN);
@@ -304,7 +307,13 @@ FragmentEntryLink.STATE = {
 	 * @type {string}
 	 */
 
-	content: Config.string().value(''),
+	content: Config.any()
+		.setter(
+			content => {
+				return !isFunction(content) && isObject(content) ? content.value.content : content;
+			}
+		)
+		.value(''),
 
 	/**
 	 * Editable values that should be used instead of the default ones
