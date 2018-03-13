@@ -686,6 +686,10 @@ public class JournalDisplayContext {
 			return _orderByType;
 		}
 
+		if (isNavigationRecent()) {
+			return "desc";
+		}
+
 		_orderByType = ParamUtil.getString(_request, "orderByType");
 
 		if (Validator.isNull(_orderByType)) {
@@ -814,11 +818,7 @@ public class JournalDisplayContext {
 		SearchContainer articleSearchContainer = new SearchContainer(
 			_liferayPortletRequest, getPortletURL(), null, null);
 
-		if (!isSearch()) {
-			articleSearchContainer.setEmptyResultsMessageCssClass(
-				"taglib-empty-result-message-header-has-plus-btn");
-		}
-		else {
+		if (isSearch()) {
 			articleSearchContainer.setSearch(true);
 		}
 
@@ -857,7 +857,7 @@ public class JournalDisplayContext {
 			}
 
 			if (isNavigationRecent()) {
-				articleSearchContainer.setOrderByCol("create-date");
+				articleSearchContainer.setOrderByCol("modified-date");
 				articleSearchContainer.setOrderByType(getOrderByType());
 			}
 
