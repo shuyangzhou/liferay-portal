@@ -11,5 +11,4 @@ dependencies {
 	provided project(":apps:static:portal-configuration:portal-configuration-metatype-api")
 	provided project(":apps:web-experience:journal:journal-api")
 	provided project(":apps:web-experience:journal:journal-content-asset-addon-entry:journal-content-asset-addon-entry-api")
-	provided project(":apps:web-experience:journal:journal-service")
 }

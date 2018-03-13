@@ -19,6 +19,7 @@ import aQute.bnd.differ.Baseline.Info;
 import aQute.bnd.differ.DiffPluginImpl;
 import aQute.bnd.osgi.Constants;
 import aQute.bnd.osgi.Jar;
+import aQute.bnd.osgi.Resource;
 import aQute.bnd.service.diff.Delta;
 import aQute.bnd.service.diff.Diff;
 import aQute.bnd.version.Version;
@@ -197,7 +198,8 @@ public abstract class Baseline {
 					}
 				}
 
-				boolean correctPackageInfo = generatePackageInfo(info, delta);
+				boolean correctPackageInfo = generatePackageInfo(
+					newJar, info, delta);
 
 				if (!correctPackageInfo) {
 					if (delta == Delta.ADDED) {
@@ -434,7 +436,7 @@ public abstract class Baseline {
 			"==========", "==========");
 	}
 
-	protected boolean generatePackageInfo(Info info, Delta delta)
+	protected boolean generatePackageInfo(Jar jar, Info info, Delta delta)
 		throws Exception {
 
 		boolean correct = true;
@@ -456,20 +458,41 @@ public abstract class Baseline {
 			}
 		}
 		else {
+			boolean writePackageInfoFile = true;
+
 			if (!packageInfoFile.exists()) {
 				correct = false;
+
+				Resource resource = jar.getResource(
+					info.packageName.replace('.', '/') + "/packageinfo");
+
+				if (resource != null) {
+					writePackageInfoFile = false;
+
+					String content = IO.collect(resource.openInputStream());
+
+					if (content.startsWith("version ")) {
+						Version version = Version.parseVersion(
+							content.substring(8));
+
+						if (version.equals(info.suggestedVersion)) {
+							correct = true;
+						}
+					}
+				}
 			}
 
-			packageDir.mkdirs();
+			if (writePackageInfoFile) {
+				packageDir.mkdirs();
 
-			FileOutputStream fileOutputStream = new FileOutputStream(
-				packageInfoFile);
+				try (FileOutputStream fileOutputStream = new FileOutputStream(
+						packageInfoFile)) {
 
-			String content = "version " + info.suggestedVersion;
+					String content = "version " + info.suggestedVersion;
 
-			fileOutputStream.write(content.getBytes());
-
-			fileOutputStream.close();
+					fileOutputStream.write(content.getBytes());
+				}
+			}
 		}
 
 		return correct;

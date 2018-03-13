@@ -47,6 +47,7 @@ import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.journal.configuration.JournalFileUploadsConfiguration;
 import com.liferay.journal.configuration.JournalGroupServiceConfiguration;
 import com.liferay.journal.configuration.JournalServiceConfiguration;
+import com.liferay.journal.constants.JournalActivityKeys;
 import com.liferay.journal.constants.JournalConstants;
 import com.liferay.journal.exception.ArticleContentException;
 import com.liferay.journal.exception.ArticleExpirationDateException;
@@ -61,6 +62,7 @@ import com.liferay.journal.exception.DuplicateArticleIdException;
 import com.liferay.journal.exception.InvalidDDMStructureException;
 import com.liferay.journal.exception.NoSuchArticleException;
 import com.liferay.journal.exception.RequiredArticleLocalizationException;
+import com.liferay.journal.internal.util.JournalHelperUtil;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
 import com.liferay.journal.model.JournalArticleDisplay;
@@ -69,7 +71,6 @@ import com.liferay.journal.model.JournalArticleResource;
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.model.impl.JournalArticleDisplayImpl;
 import com.liferay.journal.service.base.JournalArticleLocalServiceBaseImpl;
-import com.liferay.journal.social.JournalActivityKeys;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.journal.util.comparator.ArticleIDComparator;
 import com.liferay.journal.util.comparator.ArticleVersionComparator;
@@ -7861,7 +7862,7 @@ public class JournalArticleLocalServiceImpl
 
 			articleContent = articleDisplay.getContent();
 
-			articleDiffs = JournalUtil.diffHtml(
+			articleDiffs = JournalHelperUtil.diffHtml(
 				article.getGroupId(), article.getArticleId(),
 				previousApprovedArticle.getVersion(), article.getVersion(),
 				LocaleUtil.toLanguageId(LocaleUtil.getSiteDefault()),
@@ -7995,7 +7996,7 @@ public class JournalArticleLocalServiceImpl
 			Hits hits = indexer.search(
 				searchContext, JournalUtil.SELECTED_FIELD_NAMES);
 
-			List<JournalArticle> articles = JournalUtil.getArticles(hits);
+			List<JournalArticle> articles = JournalHelperUtil.getArticles(hits);
 
 			if (articles != null) {
 				return new BaseModelSearchResult<>(articles, hits.getLength());
@@ -8598,7 +8599,7 @@ public class JournalArticleLocalServiceImpl
 			long groupId, long folderId, String ddmStructureKey)
 		throws PortalException {
 
-		int restrictionType = JournalUtil.getRestrictionType(folderId);
+		int restrictionType = JournalHelperUtil.getRestrictionType(folderId);
 
 		DDMStructure ddmStructure = ddmStructureLocalService.getStructure(
 			PortalUtil.getSiteGroupId(groupId),
@@ -8656,7 +8657,8 @@ public class JournalArticleLocalServiceImpl
 		}
 
 		if (Validator.isNotNull(layoutUuid)) {
-			Layout layout = JournalUtil.getArticleLayout(layoutUuid, groupId);
+			Layout layout = JournalHelperUtil.getArticleLayout(
+				layoutUuid, groupId);
 
 			if (layout == null) {
 				throw new NoSuchLayoutException(

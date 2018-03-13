@@ -128,7 +128,7 @@ else {
 
 </span>
 
-<c:if test="<%= nullable && !required && !showDisableCheckbox %>">
+<c:if test="<%= nullable && !required && showDisableCheckbox %>">
 
 	<%
 	String dateTogglerCheckboxName = TextFormatter.format(dateTogglerCheckboxLabel, TextFormatter.M);
@@ -140,7 +140,7 @@ else {
 		var checkbox = $('#<%= namespace + randomNamespace + dateTogglerCheckboxName %>');
 
 		checkbox.on(
-			'click mouseover',
+			'click',
 			function(event) {
 				var checked = checkbox.prop('checked');
 
