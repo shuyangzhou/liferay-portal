@@ -1051,7 +1051,7 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="language" value="Japanese (Japan)" />
+			<var name="locale" value="ja-jp" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -1067,7 +1067,7 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="language" value="English (United States)" />
+			<var name="locale" value="en-us" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -1273,12 +1273,10 @@
 			<var name="portlet" value="System Settings" />
 		</execute>
 
-		<execute macro="SearchPortlet#searchPG">
-			<var name="searchTerm" value="Web Content" />
-		</execute>
-
-		<execute macro="SystemSettings#editConfiguration">
+		<execute macro="SystemSettings#gotoConfiguration">
+			<var name="configurationCategory" value="Web Content" />
 			<var name="configurationName" value="Web Content" />
+			<var name="configurationScope" value="Virtual Instance Scope" />
 		</execute>
 
 		<execute macro="SystemSettings#enableSetting">
@@ -3506,22 +3504,20 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="language" value="French (France)" />
+			<var name="locale" value="fr-fr" />
 		</execute>
 
 		<execute macro="WebContent#viewPGViaWCD">
 			<var name="webContentContent" value="WC contenu WebContent" />
 		</execute>
 
-		<execute macro="Portlet#gotoPortletOptions">
-			<var name="portletName" value="Affichage de contenus web" />
-			<var name="portletOption" value="Modifier le contenu de Web" />
+		<execute macro="WebContentNavigator#gotoEditPGViaWCD">
+			<var name="menuItem" value="Modifier le contenu de Web" />
+			<var name="webContentTitle" value="WC WebContent Titre" />
 		</execute>
 
-		<execute macro="IFrame#selectEditAssetFrame" />
-
 		<execute macro="WebContent#selectLocale">
-			<var name="language" value="France (Francaise)" />
+			<var name="language" value="français (France)" />
 		</execute>
 
 		<execute macro="WebContent#viewCP">
@@ -3540,7 +3536,7 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="language" value="Chinese (China)" />
+			<var name="locale" value="zh-cn" />
 		</execute>
 
 		<execute macro="WebContent#viewPGViaWCD">
@@ -3565,7 +3561,7 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="language" value="English (United States)" />
+			<var name="locale" value="en-us" />
 		</execute>
 	</command>
 

@@ -15,8 +15,7 @@
 package com.liferay.user.groups.admin.internal.exportimport.portlet.preferences.processor;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
-import com.liferay.exportimport.portlet.preferences.processor.Capability;
-import com.liferay.portlet.display.template.exportimport.portlet.preferences.processor.PortletDisplayTemplateImportCapability;
+import com.liferay.portlet.display.template.exportimport.portlet.preferences.processor.PortletDisplayTemplateImportRegister;
 
 import javax.portlet.PortletPreferences;
 
@@ -25,18 +24,12 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Mate Thurzo
  */
-@Component(
-	immediate = true,
-	service = {
-		Capability.class,
-		UserGroupsAdminPortletDisplayTemplateImportCapability.class
-	}
-)
+@Component(immediate = true, property = "name=UserGroupsAdminImportCapability")
 public class UserGroupsAdminPortletDisplayTemplateImportCapability
-	extends PortletDisplayTemplateImportCapability {
+	implements PortletDisplayTemplateImportRegister {
 
 	@Override
-	protected String getDisplayStyle(
+	public String getDisplayStyle(
 		PortletDataContext portletDataContext, String portletId,
 		PortletPreferences portletPreferences) {
 
@@ -45,7 +38,7 @@ public class UserGroupsAdminPortletDisplayTemplateImportCapability
 	}
 
 	@Override
-	protected long getDisplayStyleGroupId(
+	public long getDisplayStyleGroupId(
 		PortletDataContext portletDataContext, String portletId,
 		PortletPreferences portletPreferences) {
 
