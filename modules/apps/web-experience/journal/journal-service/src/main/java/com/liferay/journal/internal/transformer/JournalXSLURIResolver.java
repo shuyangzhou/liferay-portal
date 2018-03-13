@@ -14,7 +14,7 @@
 
 package com.liferay.journal.internal.transformer;
 
-import com.liferay.journal.util.impl.JournalUtil;
+import com.liferay.journal.util.JournalHelper;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.log.Log;
@@ -36,6 +36,8 @@ import java.util.regex.Pattern;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
+
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -113,7 +115,7 @@ public class JournalXSLURIResolver implements Externalizable, XSLURIResolver {
 
 				String templateId = matcher.group(1);
 
-				content = JournalUtil.getTemplateScript(
+				content = _journalHelper.getTemplateScript(
 					articleGroupId, templateId, _tokens, _languageId);
 			}
 			else {
@@ -143,6 +145,9 @@ public class JournalXSLURIResolver implements Externalizable, XSLURIResolver {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalXSLURIResolver.class);
+
+	@Reference
+	private JournalHelper _journalHelper;
 
 	private String _languageId;
 	private final Pattern _templateIdPattern = Pattern.compile(
