@@ -96,8 +96,7 @@ public class UserGroupLocalServiceUtil {
 	*/
 	@Deprecated
 	public static com.liferay.portal.kernel.model.UserGroup addUserGroup(
-		long userId, long companyId, java.lang.String name,
-		java.lang.String description)
+		long userId, long companyId, String name, String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().addUserGroup(userId, companyId, name, description);
 	}
@@ -122,8 +121,8 @@ public class UserGroupLocalServiceUtil {
 	* @return the user group
 	*/
 	public static com.liferay.portal.kernel.model.UserGroup addUserGroup(
-		long userId, long companyId, java.lang.String name,
-		java.lang.String description, ServiceContext serviceContext)
+		long userId, long companyId, String name, String description,
+		ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addUserGroup(userId, companyId, name, description,
@@ -335,7 +334,7 @@ public class UserGroupLocalServiceUtil {
 	* Performs a dynamic query on the database and returns a range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -353,7 +352,7 @@ public class UserGroupLocalServiceUtil {
 	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -400,7 +399,7 @@ public class UserGroupLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.UserGroup fetchUserGroup(
-		long companyId, java.lang.String name) {
+		long companyId, String name) {
 		return getService().fetchUserGroup(companyId, name);
 	}
 
@@ -412,7 +411,7 @@ public class UserGroupLocalServiceUtil {
 	* @return the matching user group, or <code>null</code> if a matching user group could not be found
 	*/
 	public static com.liferay.portal.kernel.model.UserGroup fetchUserGroupByUuidAndCompanyId(
-		java.lang.String uuid, long companyId) {
+		String uuid, long companyId) {
 		return getService().fetchUserGroupByUuidAndCompanyId(uuid, companyId);
 	}
 
@@ -471,7 +470,7 @@ public class UserGroupLocalServiceUtil {
 	*
 	* @return the OSGi service identifier
 	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
+	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -533,7 +532,7 @@ public class UserGroupLocalServiceUtil {
 	* @return Returns the user group with the name
 	*/
 	public static com.liferay.portal.kernel.model.UserGroup getUserGroup(
-		long companyId, java.lang.String name)
+		long companyId, String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserGroup(companyId, name);
 	}
@@ -547,7 +546,7 @@ public class UserGroupLocalServiceUtil {
 	* @throws PortalException if a matching user group could not be found
 	*/
 	public static com.liferay.portal.kernel.model.UserGroup getUserGroupByUuidAndCompanyId(
-		java.lang.String uuid, long companyId)
+		String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getUserGroupByUuidAndCompanyId(uuid, companyId);
 	}
@@ -556,7 +555,7 @@ public class UserGroupLocalServiceUtil {
 	* Returns a range of all the user groups.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.UserGroupModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of user groups
@@ -672,19 +671,18 @@ public class UserGroupLocalServiceUtil {
 	user group's name or description (optionally <code>null</code>)
 	* @param params the finder params (optionally <code>null</code>). For more
 	information see {@link
-	com.liferay.portal.kernel.service.persistence.UserGroupFinder}
+	UserGroupFinder}
 	* @param start the lower bound of the range of user groups to return
 	* @param end the upper bound of the range of user groups to return (not
 	inclusive)
 	* @param obc the comparator to order the user groups (optionally
 	<code>null</code>)
 	* @return the matching user groups ordered by comparator <code>obc</code>
-	* @see com.liferay.portal.kernel.service.persistence.UserGroupFinder
+	* @see UserGroupFinder
 	*/
 	public static java.util.List<com.liferay.portal.kernel.model.UserGroup> search(
-		long companyId, java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end,
+		long companyId, String keywords,
+		java.util.LinkedHashMap<String, Object> params, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.UserGroup> obc) {
 		return getService().search(companyId, keywords, params, start, end, obc);
 	}
@@ -718,8 +716,7 @@ public class UserGroupLocalServiceUtil {
 	* @see com.liferay.user.groups.admin.web.search.UserGroupIndexer
 	*/
 	public static com.liferay.portal.kernel.search.Hits search(long companyId,
-		java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		String keywords, java.util.LinkedHashMap<String, Object> params,
 		int start, int end, com.liferay.portal.kernel.search.Sort sort) {
 		return getService().search(companyId, keywords, params, start, end, sort);
 	}
@@ -743,7 +740,7 @@ public class UserGroupLocalServiceUtil {
 	<code>null</code>)
 	* @param params the finder params (optionally <code>null</code>). For more
 	information see {@link
-	com.liferay.portal.kernel.service.persistence.UserGroupFinder}
+	UserGroupFinder}
 	* @param andOperator whether every field must match its keywords or just
 	one field
 	* @param start the lower bound of the range of user groups to return
@@ -752,12 +749,12 @@ public class UserGroupLocalServiceUtil {
 	* @param obc the comparator to order the user groups (optionally
 	<code>null</code>)
 	* @return the matching user groups ordered by comparator <code>obc</code>
-	* @see com.liferay.portal.kernel.service.persistence.UserGroupFinder
+	* @see UserGroupFinder
 	*/
 	public static java.util.List<com.liferay.portal.kernel.model.UserGroup> search(
-		long companyId, java.lang.String name, java.lang.String description,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator, int start, int end,
+		long companyId, String name, String description,
+		java.util.LinkedHashMap<String, Object> params, boolean andOperator,
+		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portal.kernel.model.UserGroup> obc) {
 		return getService()
 				   .search(companyId, name, description, params, andOperator,
@@ -793,13 +790,12 @@ public class UserGroupLocalServiceUtil {
 	* @param sort the field and direction by which to sort (optionally
 	<code>null</code>)
 	* @return the matching user groups ordered by sort
-	* @see com.liferay.portal.kernel.service.persistence.UserGroupFinder
+	* @see UserGroupFinder
 	*/
 	public static com.liferay.portal.kernel.search.Hits search(long companyId,
-		java.lang.String name, java.lang.String description,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch, int start, int end,
-		com.liferay.portal.kernel.search.Sort sort) {
+		String name, String description,
+		java.util.LinkedHashMap<String, Object> params, boolean andSearch,
+		int start, int end, com.liferay.portal.kernel.search.Sort sort) {
 		return getService()
 				   .search(companyId, name, description, params, andSearch,
 			start, end, sort);
@@ -813,12 +809,12 @@ public class UserGroupLocalServiceUtil {
 	user group's name or description (optionally <code>null</code>)
 	* @param params the finder params (optionally <code>null</code>). For more
 	information see {@link
-	com.liferay.portal.kernel.service.persistence.UserGroupFinder}
+	UserGroupFinder}
 	* @return the number of matching user groups
-	* @see com.liferay.portal.kernel.service.persistence.UserGroupFinder
+	* @see UserGroupFinder
 	*/
-	public static int searchCount(long companyId, java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
+	public static int searchCount(long companyId, String keywords,
+		java.util.LinkedHashMap<String, Object> params) {
 		return getService().searchCount(companyId, keywords, params);
 	}
 
@@ -831,15 +827,14 @@ public class UserGroupLocalServiceUtil {
 	<code>null</code>)
 	* @param params the finder params (optionally <code>null</code>). For more
 	information see {@link
-	com.liferay.portal.kernel.service.persistence.UserGroupFinder}
+	UserGroupFinder}
 	* @param andOperator whether every field must match its keywords or just
 	one field
 	* @return the number of matching user groups
-	* @see com.liferay.portal.kernel.service.persistence.UserGroupFinder
+	* @see UserGroupFinder
 	*/
-	public static int searchCount(long companyId, java.lang.String name,
-		java.lang.String description,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+	public static int searchCount(long companyId, String name,
+		String description, java.util.LinkedHashMap<String, Object> params,
 		boolean andOperator) {
 		return getService()
 				   .searchCount(companyId, name, description, params,
@@ -847,9 +842,9 @@ public class UserGroupLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult<com.liferay.portal.kernel.model.UserGroup> searchUserGroups(
-		long companyId, java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end, com.liferay.portal.kernel.search.Sort sort)
+		long companyId, String keywords,
+		java.util.LinkedHashMap<String, Object> params, int start, int end,
+		com.liferay.portal.kernel.search.Sort sort)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .searchUserGroups(companyId, keywords, params, start, end,
@@ -857,10 +852,9 @@ public class UserGroupLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult<com.liferay.portal.kernel.model.UserGroup> searchUserGroups(
-		long companyId, java.lang.String name, java.lang.String description,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch, int start, int end,
-		com.liferay.portal.kernel.search.Sort sort)
+		long companyId, String name, String description,
+		java.util.LinkedHashMap<String, Object> params, boolean andSearch,
+		int start, int end, com.liferay.portal.kernel.search.Sort sort)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .searchUserGroups(companyId, name, description, params,
@@ -916,8 +910,7 @@ public class UserGroupLocalServiceUtil {
 	*/
 	@Deprecated
 	public static com.liferay.portal.kernel.model.UserGroup updateUserGroup(
-		long companyId, long userGroupId, java.lang.String name,
-		java.lang.String description)
+		long companyId, long userGroupId, String name, String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateUserGroup(companyId, userGroupId, name, description);
@@ -936,8 +929,8 @@ public class UserGroupLocalServiceUtil {
 	* @return the user group
 	*/
 	public static com.liferay.portal.kernel.model.UserGroup updateUserGroup(
-		long companyId, long userGroupId, java.lang.String name,
-		java.lang.String description, ServiceContext serviceContext)
+		long companyId, long userGroupId, String name, String description,
+		ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateUserGroup(companyId, userGroupId, name, description,

@@ -56,7 +56,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see AssetTagLocalServiceUtil
- * @see com.liferay.portlet.asset.service.base.AssetTagLocalServiceBaseImpl
+ * @see AssetTagLocalServiceBaseImpl
  * @see com.liferay.portlet.asset.service.impl.AssetTagLocalServiceImpl
  * @generated
  */
@@ -98,7 +98,7 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @return the asset tag that was added
 	*/
 	@Indexable(type = IndexableType.REINDEX)
-	public AssetTag addTag(long userId, long groupId, java.lang.String name,
+	public AssetTag addTag(long userId, long groupId, String name,
 		ServiceContext serviceContext) throws PortalException;
 
 	/**
@@ -116,8 +116,8 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @return the asset tags matching the group and names and new asset tags
 	matching the names that don't already exist in the group
 	*/
-	public List<AssetTag> checkTags(long userId, Group group,
-		java.lang.String[] names) throws PortalException;
+	public List<AssetTag> checkTags(long userId, Group group, String[] names)
+		throws PortalException;
 
 	/**
 	* Returns the asset tags matching the group and names, creating new asset
@@ -130,8 +130,8 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @return the asset tags matching the group and names and new asset tags
 	matching the names that don't already exist in the group
 	*/
-	public List<AssetTag> checkTags(long userId, long groupId,
-		java.lang.String[] names) throws PortalException;
+	public List<AssetTag> checkTags(long userId, long groupId, String[] names)
+		throws PortalException;
 
 	public void clearAssetEntryAssetTags(long entryId);
 
@@ -226,7 +226,7 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* Performs a dynamic query on the database and returns a range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetTagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetTagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -241,7 +241,7 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetTagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetTagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -282,8 +282,7 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @return the matching asset tag, or <code>null</code> if a matching asset tag could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetTag fetchAssetTagByUuidAndGroupId(java.lang.String uuid,
-		long groupId);
+	public AssetTag fetchAssetTagByUuidAndGroupId(String uuid, long groupId);
 
 	/**
 	* Returns the asset tag with the name in the group.
@@ -294,7 +293,7 @@ public interface AssetTagLocalService extends BaseLocalService,
 	it could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetTag fetchTag(long groupId, java.lang.String name);
+	public AssetTag fetchTag(long groupId, String name);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -341,14 +340,14 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @throws PortalException if a matching asset tag could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetTag getAssetTagByUuidAndGroupId(java.lang.String uuid,
-		long groupId) throws PortalException;
+	public AssetTag getAssetTagByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException;
 
 	/**
 	* Returns a range of all the asset tags.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetTagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetTagModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of asset tags
@@ -366,8 +365,8 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @return the matching asset tags, or an empty list if no matches were found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetTag> getAssetTagsByUuidAndCompanyId(
-		java.lang.String uuid, long companyId);
+	public List<AssetTag> getAssetTagsByUuidAndCompanyId(String uuid,
+		long companyId);
 
 	/**
 	* Returns a range of asset tags matching the UUID and company.
@@ -380,8 +379,8 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @return the range of matching asset tags, or an empty list if no matches were found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetTag> getAssetTagsByUuidAndCompanyId(
-		java.lang.String uuid, long companyId, int start, int end,
+	public List<AssetTag> getAssetTagsByUuidAndCompanyId(String uuid,
+		long companyId, int start, int end,
 		OrderByComparator<AssetTag> orderByComparator);
 
 	/**
@@ -451,7 +450,7 @@ public interface AssetTagLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -460,13 +459,11 @@ public interface AssetTagLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AssetTag> getSocialActivityCounterOffsetTags(long groupId,
-		java.lang.String socialActivityCounterName, int startOffset,
-		int endOffset);
+		String socialActivityCounterName, int startOffset, int endOffset);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AssetTag> getSocialActivityCounterPeriodTags(long groupId,
-		java.lang.String socialActivityCounterName, int startPeriod,
-		int endPeriod);
+		String socialActivityCounterName, int startPeriod, int endPeriod);
 
 	/**
 	* Returns the asset tag with the primary key.
@@ -485,8 +482,7 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @return the asset tag with the name in the group
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetTag getTag(long groupId, java.lang.String name)
-		throws PortalException;
+	public AssetTag getTag(long groupId, String name) throws PortalException;
 
 	/**
 	* Returns the primary keys of the asset tags with the names in the group.
@@ -496,7 +492,7 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @return the primary keys of the asset tags with the names in the group
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getTagIds(long groupId, java.lang.String[] names);
+	public long[] getTagIds(long groupId, String[] names);
 
 	/**
 	* Returns the primary keys of the asset tags with the name in the groups.
@@ -506,7 +502,7 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @return the primary keys of the asset tags with the name in the groups
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getTagIds(long[] groupIds, java.lang.String name);
+	public long[] getTagIds(long[] groupIds, String name);
 
 	/**
 	* Returns the primary keys of the asset tags with the names in the groups.
@@ -516,7 +512,7 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @return the primary keys of the asset tags with the names in the groups
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getTagIds(long[] groupIds, java.lang.String[] names);
+	public long[] getTagIds(long[] groupIds, String[] names);
 
 	/**
 	* Returns the primary keys of the asset tags with the names.
@@ -525,7 +521,7 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @return the primary keys of the asset tags with the names
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getTagIds(java.lang.String name);
+	public long[] getTagIds(String name);
 
 	/**
 	* Returns the names of all the asset tags.
@@ -533,7 +529,7 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @return the names of all the asset tags
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String[] getTagNames();
+	public String[] getTagNames();
 
 	/**
 	* Returns the names of the asset tags of the entity.
@@ -543,7 +539,7 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @return the names of the asset tags of the entity
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String[] getTagNames(long classNameId, long classPK);
+	public String[] getTagNames(long classNameId, long classPK);
 
 	/**
 	* Returns the names of the asset tags of the entity
@@ -553,8 +549,7 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @return the names of the asset tags of the entity
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String[] getTagNames(java.lang.String className,
-		long classPK);
+	public String[] getTagNames(String className, long classPK);
 
 	/**
 	* Returns all the asset tags.
@@ -575,12 +570,11 @@ public interface AssetTagLocalService extends BaseLocalService,
 	public List<AssetTag> getTags(long classNameId, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetTag> getTags(long groupId, long classNameId,
-		java.lang.String name);
+	public List<AssetTag> getTags(long groupId, long classNameId, String name);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetTag> getTags(long groupId, long classNameId,
-		java.lang.String name, int start, int end);
+	public List<AssetTag> getTags(long groupId, long classNameId, String name,
+		int start, int end);
 
 	/**
 	* Returns the asset tags of the entity.
@@ -591,13 +585,13 @@ public interface AssetTagLocalService extends BaseLocalService,
 	*/
 	@ThreadLocalCachable
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetTag> getTags(java.lang.String className, long classPK);
+	public List<AssetTag> getTags(String className, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTagsSize(long groupId, long classNameId, java.lang.String name);
+	public int getTagsSize(long groupId, long classNameId, String name);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTagsSize(long groupId, java.lang.String name);
+	public int getTagsSize(long groupId, String name);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasAssetEntryAssetTag(long entryId, long tagId);
@@ -615,7 +609,7 @@ public interface AssetTagLocalService extends BaseLocalService,
 	name; <code>false</code> otherwise.
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasTag(long groupId, java.lang.String name);
+	public boolean hasTag(long groupId, String name);
 
 	/**
 	* Increments the number of assets to which the asset tag has been applied.
@@ -650,8 +644,7 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @return the asset tags in the group whose names match the pattern
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetTag> search(long groupId, java.lang.String name,
-		int start, int end);
+	public List<AssetTag> search(long groupId, String name, int start, int end);
 
 	/**
 	* Returns the asset tags in the groups whose names match the pattern.
@@ -663,13 +656,12 @@ public interface AssetTagLocalService extends BaseLocalService,
 	* @return the asset tags in the groups whose names match the pattern
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetTag> search(long[] groupIds, java.lang.String name,
-		int start, int end);
+	public List<AssetTag> search(long[] groupIds, String name, int start,
+		int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public BaseModelSearchResult<AssetTag> searchTags(long[] groupIds,
-		java.lang.String name, int start, int end, Sort sort)
-		throws PortalException;
+		String name, int start, int end, Sort sort) throws PortalException;
 
 	public void setAssetEntryAssetTags(long entryId, long[] tagIds);
 
@@ -683,6 +675,6 @@ public interface AssetTagLocalService extends BaseLocalService,
 	public AssetTag updateAssetTag(AssetTag assetTag);
 
 	@Indexable(type = IndexableType.REINDEX)
-	public AssetTag updateTag(long userId, long tagId, java.lang.String name,
+	public AssetTag updateTag(long userId, long tagId, String name,
 		ServiceContext serviceContext) throws PortalException;
 }

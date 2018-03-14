@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Brian Wing Shun Chan
  * @see AnnouncementsFlagServiceUtil
- * @see com.liferay.portlet.announcements.service.base.AnnouncementsFlagServiceBaseImpl
+ * @see AnnouncementsFlagServiceBaseImpl
  * @see com.liferay.portlet.announcements.service.impl.AnnouncementsFlagServiceImpl
  * @generated
  */
@@ -62,5 +62,5 @@ public interface AnnouncementsFlagService extends BaseService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 }

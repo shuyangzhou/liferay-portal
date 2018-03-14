@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Brian Wing Shun Chan
  * @see ExportImportConfigurationServiceUtil
- * @see com.liferay.portlet.exportimport.service.base.ExportImportConfigurationServiceBaseImpl
+ * @see ExportImportConfigurationServiceBaseImpl
  * @see com.liferay.portlet.exportimport.service.impl.ExportImportConfigurationServiceImpl
  * @generated
  */
@@ -56,7 +56,7 @@ public interface ExportImportConfigurationService extends BaseService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	public ExportImportConfiguration moveExportImportConfigurationToTrash(
 		long exportImportConfigurationId) throws PortalException;

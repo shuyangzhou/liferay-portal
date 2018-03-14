@@ -43,7 +43,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see OrgLaborLocalServiceUtil
- * @see com.liferay.portal.service.base.OrgLaborLocalServiceBaseImpl
+ * @see OrgLaborLocalServiceBaseImpl
  * @see com.liferay.portal.service.impl.OrgLaborLocalServiceImpl
  * @generated
  */
@@ -213,7 +213,7 @@ public interface OrgLaborLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

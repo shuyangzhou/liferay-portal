@@ -46,7 +46,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see SocialRelationLocalServiceUtil
- * @see com.liferay.portlet.social.service.base.SocialRelationLocalServiceBaseImpl
+ * @see SocialRelationLocalServiceBaseImpl
  * @see com.liferay.portlet.social.service.impl.SocialRelationLocalServiceImpl
  * @generated
  */
@@ -230,8 +230,8 @@ public interface SocialRelationLocalService extends BaseLocalService,
 	* @return the matching social relation, or <code>null</code> if a matching social relation could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SocialRelation fetchSocialRelationByUuidAndCompanyId(
-		java.lang.String uuid, long companyId);
+	public SocialRelation fetchSocialRelationByUuidAndCompanyId(String uuid,
+		long companyId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -279,7 +279,7 @@ public interface SocialRelationLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -396,8 +396,8 @@ public interface SocialRelationLocalService extends BaseLocalService,
 	* @throws PortalException if a matching social relation could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SocialRelation getSocialRelationByUuidAndCompanyId(
-		java.lang.String uuid, long companyId) throws PortalException;
+	public SocialRelation getSocialRelationByUuidAndCompanyId(String uuid,
+		long companyId) throws PortalException;
 
 	/**
 	* Returns a range of all the social relations.

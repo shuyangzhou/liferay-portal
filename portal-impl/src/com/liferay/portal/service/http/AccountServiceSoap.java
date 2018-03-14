@@ -18,7 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.portal.kernel.service.AccountServiceUtil} service utility. The
+ * {@link AccountServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,7 +53,7 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see AccountServiceHttp
  * @see com.liferay.portal.kernel.model.AccountSoap
- * @see com.liferay.portal.kernel.service.AccountServiceUtil
+ * @see AccountServiceUtil
  * @generated
  */
 @ProviderType

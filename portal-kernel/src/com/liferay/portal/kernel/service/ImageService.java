@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Brian Wing Shun Chan
  * @see ImageServiceUtil
- * @see com.liferay.portal.service.base.ImageServiceBaseImpl
+ * @see ImageServiceBaseImpl
  * @see com.liferay.portal.service.impl.ImageServiceImpl
  * @generated
  */
@@ -55,5 +55,5 @@ public interface ImageService extends BaseService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 }

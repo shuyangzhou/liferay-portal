@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Brian Wing Shun Chan
  * @see DLTrashLocalServiceUtil
- * @see com.liferay.portlet.documentlibrary.service.base.DLTrashLocalServiceBaseImpl
+ * @see DLTrashLocalServiceBaseImpl
  * @see com.liferay.portlet.documentlibrary.service.impl.DLTrashLocalServiceImpl
  * @generated
  */
@@ -51,7 +51,7 @@ public interface DLTrashLocalService extends BaseLocalService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	public FileEntry moveFileEntryFromTrash(long userId, long repositoryId,
 		long fileEntryId, long newFolderId, ServiceContext serviceContext)

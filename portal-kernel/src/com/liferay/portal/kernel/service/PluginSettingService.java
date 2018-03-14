@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Brian Wing Shun Chan
  * @see PluginSettingServiceUtil
- * @see com.liferay.portal.service.base.PluginSettingServiceBaseImpl
+ * @see PluginSettingServiceBaseImpl
  * @see com.liferay.portal.service.impl.PluginSettingServiceImpl
  * @generated
  */
@@ -52,9 +52,9 @@ public interface PluginSettingService extends BaseService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
-	public PluginSetting updatePluginSetting(long companyId,
-		java.lang.String pluginId, java.lang.String pluginType,
-		java.lang.String roles, boolean active) throws PortalException;
+	public PluginSetting updatePluginSetting(long companyId, String pluginId,
+		String pluginType, String roles, boolean active)
+		throws PortalException;
 }

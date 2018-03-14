@@ -44,7 +44,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see CounterLocalServiceUtil
- * @see com.liferay.counter.service.base.CounterLocalServiceBaseImpl
+ * @see CounterLocalServiceBaseImpl
  * @see com.liferay.counter.service.impl.CounterLocalServiceImpl
  * @generated
  */
@@ -74,7 +74,7 @@ public interface CounterLocalService extends BaseLocalService,
 	* @param name the primary key for the new counter
 	* @return the new counter
 	*/
-	public Counter createCounter(java.lang.String name);
+	public Counter createCounter(String name);
 
 	/**
 	* Deletes the counter from the database. Also notifies the appropriate model listeners.
@@ -93,8 +93,7 @@ public interface CounterLocalService extends BaseLocalService,
 	* @throws PortalException if a counter with the primary key could not be found
 	*/
 	@Indexable(type = IndexableType.DELETE)
-	public Counter deleteCounter(java.lang.String name)
-		throws PortalException;
+	public Counter deleteCounter(String name) throws PortalException;
 
 	/**
 	* @throws PortalException
@@ -163,7 +162,7 @@ public interface CounterLocalService extends BaseLocalService,
 		Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Counter fetchCounter(java.lang.String name);
+	public Counter fetchCounter(String name);
 
 	/**
 	* Returns the counter with the primary key.
@@ -173,7 +172,7 @@ public interface CounterLocalService extends BaseLocalService,
 	* @throws PortalException if a counter with the primary key could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Counter getCounter(java.lang.String name) throws PortalException;
+	public Counter getCounter(String name) throws PortalException;
 
 	/**
 	* Returns a range of all the counters.
@@ -198,14 +197,14 @@ public interface CounterLocalService extends BaseLocalService,
 	public int getCountersCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<java.lang.String> getNames();
+	public List<String> getNames();
 
 	/**
 	* Returns the OSGi service identifier.
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -216,19 +215,19 @@ public interface CounterLocalService extends BaseLocalService,
 	public long increment();
 
 	@Transactional(isolation = Isolation.COUNTER, propagation = Propagation.REQUIRES_NEW)
-	public long increment(java.lang.String name);
+	public long increment(String name);
 
 	@Transactional(isolation = Isolation.COUNTER, propagation = Propagation.REQUIRES_NEW)
-	public long increment(java.lang.String name, int size);
+	public long increment(String name, int size);
 
 	@Transactional(isolation = Isolation.COUNTER, propagation = Propagation.REQUIRES_NEW)
-	public void rename(java.lang.String oldName, java.lang.String newName);
+	public void rename(String oldName, String newName);
 
 	@Transactional(isolation = Isolation.COUNTER, propagation = Propagation.REQUIRES_NEW)
-	public void reset(java.lang.String name);
+	public void reset(String name);
 
 	@Transactional(isolation = Isolation.COUNTER, propagation = Propagation.REQUIRES_NEW)
-	public void reset(java.lang.String name, long size);
+	public void reset(String name, long size);
 
 	/**
 	* Updates the counter in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

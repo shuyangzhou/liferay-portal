@@ -46,7 +46,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see AnnouncementsFlagLocalServiceUtil
- * @see com.liferay.portlet.announcements.service.base.AnnouncementsFlagLocalServiceBaseImpl
+ * @see AnnouncementsFlagLocalServiceBaseImpl
  * @see com.liferay.portlet.announcements.service.impl.AnnouncementsFlagLocalServiceImpl
  * @generated
  */
@@ -225,7 +225,7 @@ public interface AnnouncementsFlagLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
