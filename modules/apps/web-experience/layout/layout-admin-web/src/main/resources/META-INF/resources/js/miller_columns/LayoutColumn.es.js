@@ -11,25 +11,31 @@ import templates from './LayoutColumn.soy';
 
 class LayoutColumn extends Component {
 
-    /**
+	/**
      * Handle copy layout click in order to show simple input modal.
      * @param {Event} event
      * @private
      */
 
-    _handleCopyLayoutClick(event) {
-        event.preventDefault();
+	_handleCopyLayoutClick(event) {
+		event.preventDefault();
 
-        new OpenSimpleInputModal(
-            {
-                dialogTitle: Liferay.Language.get('copy-page'),
-                formSubmitURL: event.delegateTarget.href,
-                mainFieldName: 'name',
-                mainFieldLabel: Liferay.Language.get('name'),
-                namespace: this.portletNamespace,
-                spritemap: this.pathThemeImages + '/lexicon/icons.svg'
-            }
-        );
+		const config = {
+			dialogTitle: Liferay.Language.get('copy-page'),
+			formSubmitURL: event.delegateTarget.href,
+			mainFieldLabel: Liferay.Language.get('name'),
+			mainFieldName: 'name',
+			namespace: this.portletNamespace,
+			spritemap: this.pathThemeImages + '/lexicon/icons.svg'
+		};
+
+		if (this.siteNavigationMenuName !== '') {
+			config.checkboxFieldLabel = _.sub(Liferay.Language.get('add-this-page-to-the-primary-navigation-x'), this.siteNavigationMenuName);
+			config.checkboxFieldName = 'TypeSettingsProperties--addToPrimaryMenu--';
+			config.checkboxFieldValue = true;
+		}
+
+		new OpenSimpleInputModal(config);
 	}
 
 	/**
@@ -119,7 +125,17 @@ LayoutColumn.STATE = {
 	 * @type {!string}
 	 */
 
-	portletNamespace: Config.string().required()
+	portletNamespace: Config.string().required(),
+
+	/**
+	 * Site navigation menu name, to add layouts by default
+	 * @instance
+	 * @memberof Layout
+	 * @type {!string}
+	 */
+
+	siteNavigationMenuName: Config.string().required()
+
 };
 
 Soy.register(LayoutColumn, templates);

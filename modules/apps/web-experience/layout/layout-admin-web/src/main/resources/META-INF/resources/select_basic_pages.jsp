@@ -66,12 +66,17 @@ SelectLayoutPageTemplateEntryDisplayContext selectLayoutPageTemplateEntryDisplay
 
 <portlet:actionURL name="/layout/add_simple_layout" var="addLayoutURL">
 	<portlet:param name="mvcPath" value="/select_layout_page_template_entry.jsp" />
+	<portlet:param name="portletResource" value="<%= portletDisplay.getPortletName() %>" />
 	<portlet:param name="groupId" value="<%= String.valueOf(layoutsAdminDisplayContext.getGroupId()) %>" />
 	<portlet:param name="liveGroupId" value="<%= String.valueOf(layoutsAdminDisplayContext.getLiveGroupId()) %>" />
 	<portlet:param name="stagingGroupId" value="<%= String.valueOf(layoutsAdminDisplayContext.getStagingGroupId()) %>" />
 	<portlet:param name="parentLayoutId" value="<%= String.valueOf(layoutsAdminDisplayContext.getParentLayoutId()) %>" />
 	<portlet:param name="privateLayout" value="<%= String.valueOf(layoutsAdminDisplayContext.isPrivateLayout()) %>" />
 </portlet:actionURL>
+
+<%
+SiteNavigationMenu primarySiteNavigationMenu = SiteNavigationMenuLocalServiceUtil.fetchPrimarySiteNavigationMenu(scopeGroupId);
+%>
 
 <aui:script require="metal-dom/src/all/dom as dom,frontend-js-web/liferay/modal/commands/OpenSimpleInputModal.es as modalCommands">
 	var addLayoutActionOptionQueryClickHandler = dom.delegate(
@@ -83,6 +88,12 @@ SelectLayoutPageTemplateEntryDisplayContext selectLayoutPageTemplateEntryDisplay
 
 			modalCommands.openSimpleInputModal(
 				{
+					<c:if test="<%= primarySiteNavigationMenu != null %>">
+						checkboxFieldLabel: '<liferay-ui:message arguments="<%= primarySiteNavigationMenu.getName() %>" key="add-this-page-to-the-primary-navigation-x"/>',
+						checkboxFieldName: 'TypeSettingsProperties--addToPrimaryMenu--',
+						checkboxFieldValue: true,
+					</c:if>
+
 					dialogTitle: '<liferay-ui:message key="add-page" />',
 					formSubmitURL: '<%= addLayoutURL %>',
 					idFieldName: 'type',
