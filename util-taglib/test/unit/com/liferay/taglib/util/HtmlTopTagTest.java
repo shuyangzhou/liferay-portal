@@ -75,7 +75,7 @@ public class HtmlTopTagTest {
 			"permanent");
 		_testDataSennaTrackAttributeAdded(
 			"<meta content=\"initial-scale=1.0, width=device-width\" " +
-				"name=\"viewport\">",
+				"name=\"viewport\" />",
 			null);
 	}
 

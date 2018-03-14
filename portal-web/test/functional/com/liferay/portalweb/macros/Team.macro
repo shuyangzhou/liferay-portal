@@ -324,7 +324,9 @@
 				<var name="navItem" value="${navItem}" />
 			</execute>
 
-			<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="There are no members. You can add a member by clicking the plus button on the bottom right corner." />
+			<var method="StringUtil#lowerCase('${navItem}')" name="lowercaseNavItem" />
+
+			<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="No ${lowercaseNavItem} were found." />
 		</for>
 	</command>
 </definition>
