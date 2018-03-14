@@ -213,6 +213,28 @@
 
 	<target if="artifact.bnd" name="get-artifact-properties-bnd">
 		<property file="bnd.bnd" />
+		<property file="../subsystem.bnd" />
+		<property file="../../subsystem.bnd" />
+
+		<condition property="artifact.location.dest" value="${osgi.dir}/marketplace/${Liferay-Releng-Subsystem-Title} SPI/${Bundle-SymbolicName}-${Bundle-Version}.jar">
+			<and>
+				<isset property="Liferay-Releng-Subsystem-Title" />
+				<matches pattern=".*\.spi" string="${Bundle-SymbolicName}" />
+			</and>
+		</condition>
+
+		<condition property="artifact.location.dest" value="${osgi.dir}/marketplace/${Liferay-Releng-Subsystem-Title} API/${Bundle-SymbolicName}-${Bundle-Version}.jar">
+			<and>
+				<isset property="Liferay-Releng-Subsystem-Title" />
+				<isset property="Export-Package" />
+			</and>
+		</condition>
+
+		<condition property="artifact.location.dest" value="${osgi.dir}/marketplace/${Liferay-Releng-Subsystem-Title} Impl/${Bundle-SymbolicName}-${Bundle-Version}.jar">
+			<isset property="Liferay-Releng-Subsystem-Title" />
+		</condition>
+
+		<basename file=".." property="subsystem.dir.name" />
 
 		<property name="artifact.location.dest" value="${osgi.dir}/marketplace/${Bundle-SymbolicName}-${Bundle-Version}.jar" />
 
@@ -279,6 +301,12 @@
 				<striplinebreaks />
 			</filterchain>
 		</loadfile>
+
+		<property file="../subsystem.bnd" />
+
+		<condition property="artifact.location.dest" value="${osgi.dir}/marketplace/${Liferay-Releng-Subsystem-Title} Impl/${artifact.name}-${artifact.version}.war">
+			<isset property="Liferay-Releng-Subsystem-Title" />
+		</condition>
 
 		<property name="artifact.location.dest" value="${osgi.dir}/marketplace/${artifact.name}-${artifact.version}.war" />
 
@@ -358,7 +386,9 @@
 			<fileset dir="${artifact.dir.name}" includes="${artifact.dependencies.file.names}" />
 		</delete>
 
-		<move todir="${osgi.dir}/marketplace">
+		<dirname file="${artifact.location.dest}" property="artifact.location.parent.dir" />
+
+		<move todir="${artifact.location.parent.dir}">
 			<fileset refid="artifact.dependencies.files" />
 		</move>
 

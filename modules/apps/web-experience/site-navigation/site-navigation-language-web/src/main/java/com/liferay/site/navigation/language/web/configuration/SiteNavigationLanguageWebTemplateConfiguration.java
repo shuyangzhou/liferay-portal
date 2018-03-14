@@ -21,7 +21,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 /**
  * @author Juergen Kappler
  */
-@ExtendedObjectClassDefinition(category = "web-experience")
+@ExtendedObjectClassDefinition(category = "navigation")
 @Meta.OCD(
 	id = "com.liferay.site.navigation.language.web.configuration.SiteNavigationLanguageWebTemplateConfiguration",
 	localization = "content/Language",
@@ -30,7 +30,8 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 public interface SiteNavigationLanguageWebTemplateConfiguration {
 
 	@Meta.AD(
-		deflt = "language-icon-ftl", name = "ddm-template-key", required = false
+		deflt = "language-icon-menu-ftl", name = "ddm-template-key",
+		required = false
 	)
 	public String ddmTemplateKey();
 

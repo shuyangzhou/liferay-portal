@@ -118,6 +118,7 @@
 		{
 			editSiteNavigationMenuItemParentURL: '<portlet:actionURL name="/navigation_menu/edit_site_navigation_menu_item_parent"><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:actionURL>',
 			menuContainerSelector: '.site-navigation-menu-container',
+			menuItemContainerSelector: '.container-item',
 			menuItemSelector: '.site-navigation-menu-item',
 			namespace: '<portlet:namespace />'
 		}
@@ -157,11 +158,13 @@
 			}
 
 			function setSidebarBody(content) {
-				var sidebarBody = document.getElementById('<portlet:namespace />sidebarBody');
+				var sidebarBody = A.one('#<portlet:namespace />sidebarBody');
 				var sidebarHeaderButton = document.getElementById('<portlet:namespace />sidebarHeaderButton');
 
 				if (sidebarBody) {
-					sidebarBody.innerHTML = content;
+					sidebarBody.plug(A.Plugin.ParseContent);
+
+					sidebarBody.setContent(content);
 				}
 
 				if (sidebarHeaderButton) {
