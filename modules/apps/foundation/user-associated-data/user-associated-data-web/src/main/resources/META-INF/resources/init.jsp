@@ -27,6 +27,7 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
+page import="com.liferay.portal.kernel.language.UnicodeLanguageUtil" %><%@
 page import="com.liferay.portal.kernel.model.Group" %><%@
 page import="com.liferay.portal.kernel.model.User" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
@@ -35,11 +36,10 @@ page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.taglib.search.ResultRow" %><%@
 page import="com.liferay.user.associated.data.display.UADEntityDisplay" %><%@
 page import="com.liferay.user.associated.data.entity.UADEntity" %><%@
-page import="com.liferay.user.associated.data.web.internal.constants.UserAssociatedDataWebKeys" %><%@
-page import="com.liferay.user.associated.data.web.internal.display.ManageUserAssociatedDataEntitiesDisplay" %><%@
-page import="com.liferay.user.associated.data.web.internal.util.UADEntitySetComposite" %>
-
-<%@ page import="java.util.List" %>
+page import="com.liferay.user.associated.data.web.internal.constants.UADWebKeys" %><%@
+page import="com.liferay.user.associated.data.web.internal.display.UADApplicationSummaryDisplay" %><%@
+page import="com.liferay.user.associated.data.web.internal.display.ViewUADApplicationsSummaryDisplay" %><%@
+page import="com.liferay.user.associated.data.web.internal.display.ViewUADEntitiesDisplay" %>
 
 <liferay-frontend:defineObjects />
 

@@ -48,8 +48,6 @@
 			<if>
 				<condition function="IsElementNotPresent" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_CHECKED" />
 				<then>
-					<var name="key_pageName" value="${pageName}" />
-
 					<execute function="Click" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_NAME" />
 				</then>
 			</if>
@@ -74,8 +72,6 @@
 			<if>
 				<condition function="IsElementNotPresent" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_CHECKED" />
 				<then>
-					<var name="key_pageName" value="${pageName}" />
-
 					<execute function="Click" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_NAME" />
 				</then>
 			</if>
@@ -146,9 +142,9 @@
 		</execute>
 
 		<for list="${uncheckContentNameList}" param="contentName">
-			<var name="key_contentName" value="${contentName}" />
-
-			<execute function="Uncheck" locator1="PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX" />
+			<execute function="Uncheck" locator1="PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX">
+				<var name="key_contentName" value="${contentName}" />
+			</execute>
 		</for>
 	</command>
 
@@ -165,6 +161,8 @@
 	</command>
 
 	<command name="uncheckSubContent">
+		<execute function="SelectFrame" value1="relative=top" />
+
 		<var name="key_contentName" value="${mainContent}" />
 
 		<execute function="AssertClick" locator1="ExportImport#CONTENT_CHOOSE_CONTENT_CONTENT_CHANGE_LINK" value1="Change" />
