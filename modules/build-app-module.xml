@@ -270,20 +270,20 @@
 
 		<condition property="artifact.location.dest" value="${osgi.dir}/marketplace/${liferay.releng.app.title.prefix} ${subsystem.title} API/${Bundle-SymbolicName}-${Bundle-Version}.jar">
 			<and>
-				<available file="../../subsystem.bnd" />
+				<available file="../../suite.bnd" />
 				<isset property="Export-Package" />
 			</and>
 		</condition>
 
 		<condition property="artifact.location.dest" value="${osgi.dir}/marketplace/${liferay.releng.app.title.prefix} ${subsystem.title} SPI/${Bundle-SymbolicName}-${Bundle-Version}.jar">
 			<and>
-				<available file="../../subsystem.bnd" />
+				<available file="../../suite.bnd" />
 				<matches pattern=".*\.spi" string="${Bundle-SymbolicName}" />
 			</and>
 		</condition>
 
 		<condition property="artifact.location.dest" value="${osgi.dir}/marketplace/${liferay.releng.app.title.prefix} ${subsystem.title} Impl/${Bundle-SymbolicName}-${Bundle-Version}.jar">
-			<available file="../../subsystem.bnd" />
+			<available file="../../suite.bnd" />
 		</condition>
 
 		<property name="artifact.location.dest" value="${osgi.dir}/marketplace/${Bundle-SymbolicName}-${Bundle-Version}.jar" />
