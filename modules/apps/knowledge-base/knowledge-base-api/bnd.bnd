@@ -1,7 +1,8 @@
 Bundle-Name: Liferay Knowledge Base API
 Bundle-SymbolicName: com.liferay.knowledge.base.api
-Bundle-Version: 4.10.0
+Bundle-Version: 5.0.0
 Export-Package:\
+	com.liferay.knowledge.base.configuration,\
 	com.liferay.knowledge.base.constants,\
 	com.liferay.knowledge.base.exception,\
 	com.liferay.knowledge.base.model,\

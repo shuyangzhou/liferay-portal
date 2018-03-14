@@ -16,6 +16,7 @@ package com.liferay.osgi.felix.file.install.configuration.cleaner.internal;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 
@@ -66,13 +67,16 @@ public class ConfigurationCleaner {
 			try {
 				File file = new File(new URI(fileName));
 
-				if (!file.exists()) {
+				File localConfigFile = new File(
+					PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR, file.getName());
+
+				if (!localConfigFile.exists()) {
 					configuration.delete();
 
 					if (_log.isInfoEnabled()) {
 						_log.info(
-							"Configuration was reset because " + fileName +
-								" being deleted");
+							"Configuration was reset because " +
+								file.getName() + " being deleted");
 					}
 				}
 			}

@@ -16,17 +16,10 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-renderResponse.setTitle(LanguageUtil.get(request, "pages"));
-%>
-
 <liferay-ui:success key='<%= portletDisplay.getPortletName() + "layoutAdded" %>' message='<%= LanguageUtil.get(resourceBundle, "the-page-was-created-succesfully") %>' />
 <liferay-ui:success key='<%= portletDisplay.getPortletName() + "layoutUpdated" %>' message='<%= LanguageUtil.get(resourceBundle, "the-page-was-updated-succesfully") %>' />
 
-<liferay-ui:error
-	exception="<%= GroupInheritContentException.class %>"
-	message="this-page-cannot-be-deleted-and-cannot-have-child-pages-because-it-is-associated-to-a-site-template"
-/>
+<liferay-ui:error exception="<%= GroupInheritContentException.class %>" message="this-page-cannot-be-deleted-and-cannot-have-child-pages-because-it-is-associated-to-a-site-template" />
 
 <clay:navigation-bar
 	inverted="<%= true %>"
@@ -93,11 +86,14 @@ renderResponse.setTitle(LanguageUtil.get(request, "pages"));
 			<%
 			Map<String, Object> context = new HashMap<>();
 
+			SiteNavigationMenu primarySiteNavigationMenu = SiteNavigationMenuLocalServiceUtil.fetchPrimarySiteNavigationMenu(scopeGroupId);
+
 			context.put("breadcrumbEntries", layoutsAdminDisplayContext.getBreadcrumbEntriesJSONArray());
 			context.put("layoutColumns", layoutsAdminDisplayContext.getLayoutColumnsJSONArray());
 			context.put("pathThemeImages", themeDisplay.getPathThemeImages());
 			context.put("portletNamespace", renderResponse.getNamespace());
 			context.put("searchContainerId", "pages");
+			context.put("siteNavigationMenuName", (primarySiteNavigationMenu != null) ? primarySiteNavigationMenu.getName() : StringPool.BLANK);
 			%>
 
 			<soy:template-renderer

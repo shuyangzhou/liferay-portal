@@ -19,17 +19,11 @@ package com.liferay.configuration.admin.web.internal.constants;
  */
 public class ConfigurationAdminWebKeys {
 
-	public static final String CONFIGURATION_CATEGORIES =
-		"CONFIGURATION_CATEGORIES";
-
-	public static final String CONFIGURATION_CATEGORY =
-		"CONFIGURATION_CATEGORY";
-
 	public static final String CONFIGURATION_CATEGORY_MENU_DISPLAY =
 		"CONFIGURATION_CATEGORY_MENU_DISPLAY";
 
-	public static final String CONFIGURATION_CATEGORY_SET_DISPLAYS =
-		"CONFIGURATION_CATEGORY_SET_DISPLAYS";
+	public static final String CONFIGURATION_CATEGORY_SECTION_DISPLAYS =
+		"CONFIGURATION_CATEGORY_SECTION_DISPLAYS";
 
 	public static final String CONFIGURATION_MODEL = "CONFIGURATION_MODEL";
 
