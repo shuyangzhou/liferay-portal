@@ -145,6 +145,9 @@ public class PropsValues {
 	public static final String SELENIUM_EXECUTABLE_DIR_NAME = PropsUtil.get(
 		"selenium.executable.dir.name");
 
+	public static final String SELENIUM_GECKO_DRIVER_EXECUTABLE = PropsUtil.get(
+		"selenium.gecko.driver.executable");
+
 	public static final String SELENIUM_HOST = PropsUtil.get("selenium.host");
 
 	public static final String SELENIUM_IE_DRIVER_EXECUTABLE = PropsUtil.get(

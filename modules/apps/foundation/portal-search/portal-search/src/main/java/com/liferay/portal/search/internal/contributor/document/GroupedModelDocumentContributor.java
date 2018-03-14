@@ -15,7 +15,6 @@
 package com.liferay.portal.search.internal.contributor.document;
 
 import com.liferay.portal.kernel.model.BaseModel;
-import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.DocumentContributor;
@@ -28,7 +27,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Michael C. Han
  */
-@Component(immediate = true, service = DocumentContributor.class)
+@Component(
+	immediate = true, property = {"service.ranking=10000"},
+	service = DocumentContributor.class
+)
 public class GroupedModelDocumentContributor implements DocumentContributor {
 
 	@Override
@@ -40,28 +42,11 @@ public class GroupedModelDocumentContributor implements DocumentContributor {
 		GroupedModel groupedModel = (GroupedModel)baseModel;
 
 		document.addKeyword(
-			Field.GROUP_ID, getSiteGroupId(groupedModel.getGroupId()));
+			Field.GROUP_ID,
+			GroupUtil.getSiteGroupId(
+				groupLocalService, groupedModel.getGroupId()));
+
 		document.addKeyword(Field.SCOPE_GROUP_ID, groupedModel.getGroupId());
-	}
-
-	protected Group getSiteGroup(long groupId) {
-		Group group = groupLocalService.fetchGroup(groupId);
-
-		if ((group != null) && group.isLayout()) {
-			group = group.getParentGroup();
-		}
-
-		return group;
-	}
-
-	protected long getSiteGroupId(long groupId) {
-		Group group = getSiteGroup(groupId);
-
-		if (group == null) {
-			return groupId;
-		}
-
-		return group.getGroupId();
 	}
 
 	@Reference
