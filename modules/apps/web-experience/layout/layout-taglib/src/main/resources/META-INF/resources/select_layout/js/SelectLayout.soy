@@ -1,0 +1,51 @@
+{namespace com.liferay.layout.taglib.SelectLayout}
+
+/**
+ * This renders the main element.
+ */
+{template .render}
+	{@param nodes: list<?>}
+	{@param pathThemeImages: string}
+	{@param? multiSelection: bool}
+	{@param? namespace: string}
+	{@param? _selectedNodeChange: any}
+	{@param? viewType: string}
+
+	<div class="select-layout">
+		<nav class="management-bar navbar navbar-light">
+			<div class="navbar-form navbar-form-autofit">
+				<div class="container-fluid">
+					<div class="input-group input-group-inset">
+						<div class="input-group-input">
+							<input class="form-control" data-oninput="_searchNodes" name="{$namespace}filterKeywords" placeholder="{msg desc=""}search{/msg}" type="text">
+						</div>
+
+						<span class="input-group-inset-item">
+							<button class="btn btn-unstyled" type="button">
+								<svg class="lexicon-icon">
+									<use xlink:href="{$pathThemeImages}/lexicon/icons.svg#search"></use>
+								</svg>
+							</button>
+						</span>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container-fluid-1280 layouts-selector" id="{$namespace}selectLayoutFm">
+			<fieldset class="panel-body">
+				<div class="layout-tree" id="{$namespace}layoutContainer">
+					{call liferay.frontend.CardsTreeview.render}
+						{param events: [
+							'selectedNodesChanged': $_selectedNodeChange
+						] /}
+						{param multiSelection: $multiSelection /}
+						{param nodes: $nodes /}
+						{param pathThemeImages: $pathThemeImages /}
+						{param viewType: $viewType /}
+					{/call}
+				</div>
+			</fieldset>
+		</div>
+	</div>
+{/template}
