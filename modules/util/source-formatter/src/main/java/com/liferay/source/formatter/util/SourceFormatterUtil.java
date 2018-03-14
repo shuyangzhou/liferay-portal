@@ -24,6 +24,7 @@ import com.liferay.source.formatter.ExcludeSyntax;
 import com.liferay.source.formatter.ExcludeSyntaxPattern;
 import com.liferay.source.formatter.SourceFormatterExcludes;
 import com.liferay.source.formatter.checks.util.SourceUtil;
+import com.liferay.source.formatter.checkstyle.util.AlloyMVCCheckstyleUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +55,7 @@ public class SourceFormatterUtil {
 	public static List<String> filterFileNames(
 		List<String> allFileNames, String[] excludes, String[] includes,
 		SourceFormatterExcludes sourceFormatterExcludes,
-		boolean forceIncludeSourceFormatterExcludes) {
+		boolean forceIncludeAllFiles) {
 
 		List<String> excludeRegexList = new ArrayList<>();
 		Map<String, List<String>> excludeRegexMap = new HashMap<>();
@@ -81,7 +82,7 @@ public class SourceFormatterUtil {
 			}
 		}
 
-		if (!forceIncludeSourceFormatterExcludes) {
+		if (!forceIncludeAllFiles) {
 			Map<String, List<ExcludeSyntaxPattern>> excludeSyntaxPatternsMap =
 				sourceFormatterExcludes.getExcludeSyntaxPatternsMap();
 
@@ -192,18 +193,25 @@ public class SourceFormatterUtil {
 	}
 
 	public static List<File> getSuppressionsFiles(
-		String basedir, List<String> allFileNames,
-		SourceFormatterExcludes sourceFormatterExcludes, String... fileNames) {
+			String basedir, List<String> allFileNames,
+			SourceFormatterExcludes sourceFormatterExcludes,
+			String... fileNames)
+		throws Exception {
 
 		List<File> suppressionsFiles = new ArrayList<>();
 
-		for (String fileName : fileNames) {
+		String[] includes = new String[fileNames.length];
+
+		for (int i = 0; i < fileNames.length; i++) {
+			String fileName = fileNames[i];
+
+			includes[i] = "**/" + fileName;
 
 			// Find suppressions files in any parent directory
 
 			String parentDirName = basedir;
 
-			for (int i = 0; i < ToolsUtil.PORTAL_MAX_DIR_LEVEL; i++) {
+			for (int j = 0; j < ToolsUtil.PORTAL_MAX_DIR_LEVEL; j++) {
 				File suppressionsFile = new File(parentDirName + fileName);
 
 				if (suppressionsFile.exists()) {
@@ -212,23 +220,24 @@ public class SourceFormatterUtil {
 
 				parentDirName += "../";
 			}
-
-			// Find suppressions files in any child directory
-
-			List<String> moduleSuppressionsFileNames = filterFileNames(
-				allFileNames, new String[0], new String[] {"**/" + fileName},
-				sourceFormatterExcludes, true);
-
-			for (String moduleSuppressionsFileName :
-					moduleSuppressionsFileNames) {
-
-				moduleSuppressionsFileName = StringUtil.replace(
-					moduleSuppressionsFileName, CharPool.BACK_SLASH,
-					CharPool.SLASH);
-
-				suppressionsFiles.add(new File(moduleSuppressionsFileName));
-			}
 		}
+
+		// Find suppressions files in any child directory
+
+		List<String> moduleSuppressionsFileNames = filterFileNames(
+			allFileNames, new String[0], includes, sourceFormatterExcludes,
+			true);
+
+		for (String moduleSuppressionsFileName : moduleSuppressionsFileNames) {
+			moduleSuppressionsFileName = StringUtil.replace(
+				moduleSuppressionsFileName, CharPool.BACK_SLASH,
+				CharPool.SLASH);
+
+			suppressionsFiles.add(new File(moduleSuppressionsFileName));
+		}
+
+		suppressionsFiles.addAll(
+			AlloyMVCCheckstyleUtil.getSuppressionsFiles(suppressionsFiles));
 
 		return suppressionsFiles;
 	}

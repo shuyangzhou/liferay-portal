@@ -31,8 +31,7 @@ AUI.add(
 				var evaluator = instance.get('evaluator');
 
 				instance._eventHandlers.push(
-					evaluator.after('evaluationEnded', A.bind('_afterEvaluationEnded', instance)),
-					evaluator.after('evaluationStarted', A.bind('_afterEvaluationStarted', instance))
+					evaluator.after('evaluationEnded', A.bind('_afterEvaluationEnded', instance))
 				);
 			},
 
@@ -108,7 +107,8 @@ AUI.add(
 									valid: fieldContext.valid,
 									value: fieldContext.value,
 									visible: fieldContext.visible
-								}
+								},
+								field.getEvaluationContext(fieldContext)
 							);
 
 							field.set('context', fieldContext);
@@ -132,14 +132,6 @@ AUI.add(
 				trigger.hideFeedback();
 
 				instance.processEvaluationResultEvent(event);
-			},
-
-			_afterEvaluationStarted: function(event) {
-				var instance = this;
-
-				var trigger = event.trigger;
-
-				trigger.showLoadingFeedback();
 			},
 
 			_valueEvaluator: function() {
