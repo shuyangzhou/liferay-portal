@@ -75,9 +75,9 @@ public class AssetCategoryLocalServiceWrapper
 	@Override
 	public com.liferay.asset.kernel.model.AssetCategory addCategory(
 		long userId, long groupId, long parentCategoryId,
-		java.util.Map<java.util.Locale, java.lang.String> titleMap,
-		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
-		long vocabularyId, java.lang.String[] categoryProperties,
+		java.util.Map<java.util.Locale, String> titleMap,
+		java.util.Map<java.util.Locale, String> descriptionMap,
+		long vocabularyId, String[] categoryProperties,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _assetCategoryLocalService.addCategory(userId, groupId,
@@ -87,7 +87,7 @@ public class AssetCategoryLocalServiceWrapper
 
 	@Override
 	public com.liferay.asset.kernel.model.AssetCategory addCategory(
-		long userId, long groupId, java.lang.String title, long vocabularyId,
+		long userId, long groupId, String title, long vocabularyId,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _assetCategoryLocalService.addCategory(userId, groupId, title,
@@ -254,7 +254,7 @@ public class AssetCategoryLocalServiceWrapper
 	* Performs a dynamic query on the database and returns a range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -273,7 +273,7 @@ public class AssetCategoryLocalServiceWrapper
 	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -333,7 +333,7 @@ public class AssetCategoryLocalServiceWrapper
 	*/
 	@Override
 	public com.liferay.asset.kernel.model.AssetCategory fetchAssetCategoryByUuidAndGroupId(
-		java.lang.String uuid, long groupId) {
+		String uuid, long groupId) {
 		return _assetCategoryLocalService.fetchAssetCategoryByUuidAndGroupId(uuid,
 			groupId);
 	}
@@ -346,8 +346,7 @@ public class AssetCategoryLocalServiceWrapper
 
 	@Override
 	public com.liferay.asset.kernel.model.AssetCategory fetchCategory(
-		long groupId, long parentCategoryId, java.lang.String name,
-		long vocabularyId) {
+		long groupId, long parentCategoryId, String name, long vocabularyId) {
 		return _assetCategoryLocalService.fetchCategory(groupId,
 			parentCategoryId, name, vocabularyId);
 	}
@@ -361,7 +360,7 @@ public class AssetCategoryLocalServiceWrapper
 	* Returns a range of all the asset categories.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of asset categories
@@ -383,7 +382,7 @@ public class AssetCategoryLocalServiceWrapper
 	*/
 	@Override
 	public java.util.List<com.liferay.asset.kernel.model.AssetCategory> getAssetCategoriesByUuidAndCompanyId(
-		java.lang.String uuid, long companyId) {
+		String uuid, long companyId) {
 		return _assetCategoryLocalService.getAssetCategoriesByUuidAndCompanyId(uuid,
 			companyId);
 	}
@@ -400,7 +399,7 @@ public class AssetCategoryLocalServiceWrapper
 	*/
 	@Override
 	public java.util.List<com.liferay.asset.kernel.model.AssetCategory> getAssetCategoriesByUuidAndCompanyId(
-		java.lang.String uuid, long companyId, int start, int end,
+		String uuid, long companyId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.asset.kernel.model.AssetCategory> orderByComparator) {
 		return _assetCategoryLocalService.getAssetCategoriesByUuidAndCompanyId(uuid,
 			companyId, start, end, orderByComparator);
@@ -440,7 +439,7 @@ public class AssetCategoryLocalServiceWrapper
 	*/
 	@Override
 	public com.liferay.asset.kernel.model.AssetCategory getAssetCategoryByUuidAndGroupId(
-		java.lang.String uuid, long groupId)
+		String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _assetCategoryLocalService.getAssetCategoryByUuidAndGroupId(uuid,
 			groupId);
@@ -503,7 +502,7 @@ public class AssetCategoryLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.asset.kernel.model.AssetCategory> getCategories(
-		java.lang.String className, long classPK) {
+		String className, long classPK) {
 		return _assetCategoryLocalService.getCategories(className, classPK);
 	}
 
@@ -516,29 +515,28 @@ public class AssetCategoryLocalServiceWrapper
 
 	@Override
 	public com.liferay.asset.kernel.model.AssetCategory getCategory(
-		java.lang.String uuid, long groupId)
+		String uuid, long groupId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _assetCategoryLocalService.getCategory(uuid, groupId);
 	}
 
 	@Override
-	public long[] getCategoryIds(java.lang.String className, long classPK) {
+	public long[] getCategoryIds(String className, long classPK) {
 		return _assetCategoryLocalService.getCategoryIds(className, classPK);
 	}
 
 	@Override
-	public java.lang.String[] getCategoryNames() {
+	public String[] getCategoryNames() {
 		return _assetCategoryLocalService.getCategoryNames();
 	}
 
 	@Override
-	public java.lang.String[] getCategoryNames(long classNameId, long classPK) {
+	public String[] getCategoryNames(long classNameId, long classPK) {
 		return _assetCategoryLocalService.getCategoryNames(classNameId, classPK);
 	}
 
 	@Override
-	public java.lang.String[] getCategoryNames(java.lang.String className,
-		long classPK) {
+	public String[] getCategoryNames(String className, long classPK) {
 		return _assetCategoryLocalService.getCategoryNames(className, classPK);
 	}
 
@@ -590,7 +588,7 @@ public class AssetCategoryLocalServiceWrapper
 	* @return the OSGi service identifier
 	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _assetCategoryLocalService.getOSGiServiceIdentifier();
 	}
 
@@ -602,14 +600,13 @@ public class AssetCategoryLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<java.lang.Long> getSubcategoryIds(
-		long parentCategoryId) {
+	public java.util.List<Long> getSubcategoryIds(long parentCategoryId) {
 		return _assetCategoryLocalService.getSubcategoryIds(parentCategoryId);
 	}
 
 	@Override
-	public long[] getViewableCategoryIds(java.lang.String className,
-		long classPK, long[] categoryIds)
+	public long[] getViewableCategoryIds(String className, long classPK,
+		long[] categoryIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _assetCategoryLocalService.getViewableCategoryIds(className,
 			classPK, categoryIds);
@@ -684,16 +681,16 @@ public class AssetCategoryLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.asset.kernel.model.AssetCategory> search(
-		long groupId, java.lang.String name,
-		java.lang.String[] categoryProperties, int start, int end) {
+		long groupId, String name, String[] categoryProperties, int start,
+		int end) {
 		return _assetCategoryLocalService.search(groupId, name,
 			categoryProperties, start, end);
 	}
 
 	@Override
 	public com.liferay.portal.kernel.search.BaseModelSearchResult<com.liferay.asset.kernel.model.AssetCategory> searchCategories(
-		long companyId, long groupIds, java.lang.String title,
-		long vocabularyId, int start, int end)
+		long companyId, long groupIds, String title, long vocabularyId,
+		int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _assetCategoryLocalService.searchCategories(companyId, groupIds,
 			title, vocabularyId, start, end);
@@ -701,8 +698,8 @@ public class AssetCategoryLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.kernel.search.BaseModelSearchResult<com.liferay.asset.kernel.model.AssetCategory> searchCategories(
-		long companyId, long[] groupIds, java.lang.String title,
-		long[] vocabularyIds, int start, int end)
+		long companyId, long[] groupIds, String title, long[] vocabularyIds,
+		int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _assetCategoryLocalService.searchCategories(companyId, groupIds,
 			title, vocabularyIds, start, end);
@@ -710,7 +707,7 @@ public class AssetCategoryLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.kernel.search.BaseModelSearchResult<com.liferay.asset.kernel.model.AssetCategory> searchCategories(
-		long companyId, long[] groupIds, java.lang.String title,
+		long companyId, long[] groupIds, String title,
 		long[] parentCategoryIds, long[] vocabularyIds, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _assetCategoryLocalService.searchCategories(companyId, groupIds,
@@ -719,8 +716,8 @@ public class AssetCategoryLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.kernel.search.BaseModelSearchResult<com.liferay.asset.kernel.model.AssetCategory> searchCategories(
-		long companyId, long[] groupIds, java.lang.String title,
-		long[] vocabularyIds, long[] parentCategoryIds, int start, int end,
+		long companyId, long[] groupIds, String title, long[] vocabularyIds,
+		long[] parentCategoryIds, int start, int end,
 		com.liferay.portal.kernel.search.Sort sort)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _assetCategoryLocalService.searchCategories(companyId, groupIds,
@@ -748,9 +745,9 @@ public class AssetCategoryLocalServiceWrapper
 	@Override
 	public com.liferay.asset.kernel.model.AssetCategory updateCategory(
 		long userId, long categoryId, long parentCategoryId,
-		java.util.Map<java.util.Locale, java.lang.String> titleMap,
-		java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
-		long vocabularyId, java.lang.String[] categoryProperties,
+		java.util.Map<java.util.Locale, String> titleMap,
+		java.util.Map<java.util.Locale, String> descriptionMap,
+		long vocabularyId, String[] categoryProperties,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _assetCategoryLocalService.updateCategory(userId, categoryId,

@@ -43,7 +43,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see RecentLayoutRevisionLocalServiceUtil
- * @see com.liferay.portal.service.base.RecentLayoutRevisionLocalServiceBaseImpl
+ * @see RecentLayoutRevisionLocalServiceBaseImpl
  * @see com.liferay.portal.service.impl.RecentLayoutRevisionLocalServiceImpl
  * @generated
  */
@@ -190,7 +190,7 @@ public interface RecentLayoutRevisionLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

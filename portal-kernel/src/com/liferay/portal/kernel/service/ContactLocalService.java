@@ -43,7 +43,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see ContactLocalServiceUtil
- * @see com.liferay.portal.service.base.ContactLocalServiceBaseImpl
+ * @see ContactLocalServiceBaseImpl
  * @see com.liferay.portal.service.impl.ContactLocalServiceImpl
  * @generated
  */
@@ -68,15 +68,12 @@ public interface ContactLocalService extends BaseLocalService,
 	public Contact addContact(Contact contact);
 
 	@Indexable(type = IndexableType.REINDEX)
-	public Contact addContact(long userId, java.lang.String className,
-		long classPK, java.lang.String emailAddress,
-		java.lang.String firstName, java.lang.String middleName,
-		java.lang.String lastName, long prefixId, long suffixId, boolean male,
-		int birthdayMonth, int birthdayDay, int birthdayYear,
-		java.lang.String smsSn, java.lang.String facebookSn,
-		java.lang.String jabberSn, java.lang.String skypeSn,
-		java.lang.String twitterSn, java.lang.String jobTitle)
-		throws PortalException;
+	public Contact addContact(long userId, String className, long classPK,
+		String emailAddress, String firstName, String middleName,
+		String lastName, long prefixId, long suffixId, boolean male,
+		int birthdayMonth, int birthdayDay, int birthdayYear, String smsSn,
+		String facebookSn, String jabberSn, String skypeSn, String twitterSn,
+		String jobTitle) throws PortalException;
 
 	/**
 	* Creates a new contact with the primary key. Does not add the contact to the database.
@@ -224,7 +221,7 @@ public interface ContactLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -241,12 +238,10 @@ public interface ContactLocalService extends BaseLocalService,
 	public Contact updateContact(Contact contact);
 
 	@Indexable(type = IndexableType.REINDEX)
-	public Contact updateContact(long contactId, java.lang.String emailAddress,
-		java.lang.String firstName, java.lang.String middleName,
-		java.lang.String lastName, long prefixId, long suffixId, boolean male,
-		int birthdayMonth, int birthdayDay, int birthdayYear,
-		java.lang.String smsSn, java.lang.String facebookSn,
-		java.lang.String jabberSn, java.lang.String skypeSn,
-		java.lang.String twitterSn, java.lang.String jobTitle)
+	public Contact updateContact(long contactId, String emailAddress,
+		String firstName, String middleName, String lastName, long prefixId,
+		long suffixId, boolean male, int birthdayMonth, int birthdayDay,
+		int birthdayYear, String smsSn, String facebookSn, String jabberSn,
+		String skypeSn, String twitterSn, String jobTitle)
 		throws PortalException;
 }

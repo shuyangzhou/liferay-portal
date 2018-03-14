@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Brian Wing Shun Chan
  * @see DLFileShortcutServiceUtil
- * @see com.liferay.portlet.documentlibrary.service.base.DLFileShortcutServiceBaseImpl
+ * @see DLFileShortcutServiceBaseImpl
  * @see com.liferay.portlet.documentlibrary.service.impl.DLFileShortcutServiceImpl
  * @generated
  */
@@ -66,7 +66,7 @@ public interface DLFileShortcutService extends BaseService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	public DLFileShortcut updateFileShortcut(long fileShortcutId,
 		long repositoryId, long folderId, long toFileEntryId,

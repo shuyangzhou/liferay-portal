@@ -21,7 +21,7 @@ import aQute.bnd.annotation.ProviderType;
  * {@link com.liferay.portal.kernel.service.AccountServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * {@link com.liferay.portal.kernel.security.auth.HttpPrincipal} parameter.
+ * {@link HttpPrincipal} parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -40,7 +40,7 @@ import aQute.bnd.annotation.ProviderType;
  *
  * @author Brian Wing Shun Chan
  * @see AccountServiceSoap
- * @see com.liferay.portal.kernel.security.auth.HttpPrincipal
+ * @see HttpPrincipal
  * @see com.liferay.portal.kernel.service.AccountServiceUtil
  * @generated
  */

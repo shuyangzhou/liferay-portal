@@ -1011,7 +1011,7 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 	}
 
 	/**
-	 * Returns the powwow server with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the powwow server with the primary key or throws a {@link NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the powwow server
 	 * @return the powwow server

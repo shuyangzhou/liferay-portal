@@ -44,7 +44,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see UserGroupRoleLocalServiceUtil
- * @see com.liferay.portal.service.base.UserGroupRoleLocalServiceBaseImpl
+ * @see UserGroupRoleLocalServiceBaseImpl
  * @see com.liferay.portal.service.impl.UserGroupRoleLocalServiceImpl
  * @generated
  */
@@ -200,7 +200,7 @@ public interface UserGroupRoleLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -272,12 +272,12 @@ public interface UserGroupRoleLocalService extends BaseLocalService,
 		boolean inherit);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasUserGroupRole(long userId, long groupId,
-		java.lang.String roleName) throws PortalException;
+	public boolean hasUserGroupRole(long userId, long groupId, String roleName)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasUserGroupRole(long userId, long groupId,
-		java.lang.String roleName, boolean inherit) throws PortalException;
+	public boolean hasUserGroupRole(long userId, long groupId, String roleName,
+		boolean inherit) throws PortalException;
 
 	/**
 	* Updates the user group role in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

@@ -45,7 +45,7 @@ import javax.portlet.PortletPreferences;
  *
  * @author Brian Wing Shun Chan
  * @see PortalPreferencesLocalServiceUtil
- * @see com.liferay.portal.service.base.PortalPreferencesLocalServiceBaseImpl
+ * @see PortalPreferencesLocalServiceBaseImpl
  * @see com.liferay.portal.service.impl.PortalPreferencesLocalServiceImpl
  * @generated
  */
@@ -60,7 +60,7 @@ public interface PortalPreferencesLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link PortalPreferencesLocalServiceUtil} to access the portal preferences local service. Add custom service methods to {@link com.liferay.portal.service.impl.PortalPreferencesLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public PortalPreferences addPortalPreferences(long ownerId, int ownerType,
-		java.lang.String defaultPreferences);
+		String defaultPreferences);
 
 	/**
 	* Adds the portal preferences to the database. Also notifies the appropriate model listeners.
@@ -184,7 +184,7 @@ public interface PortalPreferencesLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -229,7 +229,7 @@ public interface PortalPreferencesLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PortletPreferences getPreferences(long ownerId, int ownerType,
-		java.lang.String defaultPreferences);
+		String defaultPreferences);
 
 	/**
 	* Updates the portal preferences in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -245,5 +245,5 @@ public interface PortalPreferencesLocalService extends BaseLocalService,
 		com.liferay.portal.kernel.portlet.PortalPreferences portalPreferences);
 
 	public PortalPreferences updatePreferences(long ownerId, int ownerType,
-		java.lang.String xml);
+		String xml);
 }

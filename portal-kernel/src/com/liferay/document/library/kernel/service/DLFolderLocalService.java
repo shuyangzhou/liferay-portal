@@ -58,7 +58,7 @@ import java.util.Map;
  *
  * @author Brian Wing Shun Chan
  * @see DLFolderLocalServiceUtil
- * @see com.liferay.portlet.documentlibrary.service.base.DLFolderLocalServiceBaseImpl
+ * @see DLFolderLocalServiceBaseImpl
  * @see com.liferay.portlet.documentlibrary.service.impl.DLFolderLocalServiceImpl
  * @generated
  */
@@ -93,9 +93,9 @@ public interface DLFolderLocalService extends BaseLocalService,
 	public DLFolder addDLFolder(DLFolder dlFolder);
 
 	public DLFolder addFolder(long userId, long groupId, long repositoryId,
-		boolean mountPoint, long parentFolderId, java.lang.String name,
-		java.lang.String description, boolean hidden,
-		ServiceContext serviceContext) throws PortalException;
+		boolean mountPoint, long parentFolderId, String name,
+		String description, boolean hidden, ServiceContext serviceContext)
+		throws PortalException;
 
 	public void clearDLFileEntryTypeDLFolders(long fileEntryTypeId);
 
@@ -110,7 +110,7 @@ public interface DLFolderLocalService extends BaseLocalService,
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link #deleteAllByGroup(long)}
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	public void deleteAll(long groupId) throws PortalException;
 
 	public void deleteAllByGroup(long groupId) throws PortalException;
@@ -190,7 +190,7 @@ public interface DLFolderLocalService extends BaseLocalService,
 	* Performs a dynamic query on the database and returns a range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.documentlibrary.model.impl.DLFolderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.documentlibrary.model.impl.DLFolderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -205,7 +205,7 @@ public interface DLFolderLocalService extends BaseLocalService,
 	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.documentlibrary.model.impl.DLFolderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.documentlibrary.model.impl.DLFolderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -246,18 +246,16 @@ public interface DLFolderLocalService extends BaseLocalService,
 	* @return the matching document library folder, or <code>null</code> if a matching document library folder could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFolder fetchDLFolderByUuidAndGroupId(java.lang.String uuid,
-		long groupId);
+	public DLFolder fetchDLFolderByUuidAndGroupId(String uuid, long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DLFolder fetchFolder(long folderId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFolder fetchFolder(long groupId, long parentFolderId,
-		java.lang.String name);
+	public DLFolder fetchFolder(long groupId, long parentFolderId, String name);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFolder fetchFolder(java.lang.String uuid, long groupId);
+	public DLFolder fetchFolder(String uuid, long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -310,14 +308,14 @@ public interface DLFolderLocalService extends BaseLocalService,
 	* @throws PortalException if a matching document library folder could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFolder getDLFolderByUuidAndGroupId(java.lang.String uuid,
-		long groupId) throws PortalException;
+	public DLFolder getDLFolderByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException;
 
 	/**
 	* Returns a range of all the document library folders.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.documentlibrary.model.impl.DLFolderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.documentlibrary.model.impl.DLFolderModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of document library folders
@@ -335,8 +333,8 @@ public interface DLFolderLocalService extends BaseLocalService,
 	* @return the matching document library folders, or an empty list if no matches were found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<DLFolder> getDLFoldersByUuidAndCompanyId(
-		java.lang.String uuid, long companyId);
+	public List<DLFolder> getDLFoldersByUuidAndCompanyId(String uuid,
+		long companyId);
 
 	/**
 	* Returns a range of document library folders matching the UUID and company.
@@ -349,8 +347,8 @@ public interface DLFolderLocalService extends BaseLocalService,
 	* @return the range of matching document library folders, or an empty list if no matches were found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<DLFolder> getDLFoldersByUuidAndCompanyId(
-		java.lang.String uuid, long companyId, int start, int end,
+	public List<DLFolder> getDLFoldersByUuidAndCompanyId(String uuid,
+		long companyId, int start, int end,
 		OrderByComparator<DLFolder> orderByComparator);
 
 	/**
@@ -366,7 +364,7 @@ public interface DLFolderLocalService extends BaseLocalService,
 		PortletDataContext portletDataContext);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<java.lang.Object> getFileEntriesAndFileShortcuts(long groupId,
+	public List<Object> getFileEntriesAndFileShortcuts(long groupId,
 		long folderId, QueryDefinition<?> queryDefinition);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -377,8 +375,8 @@ public interface DLFolderLocalService extends BaseLocalService,
 	public DLFolder getFolder(long folderId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFolder getFolder(long groupId, long parentFolderId,
-		java.lang.String name) throws PortalException;
+	public DLFolder getFolder(long groupId, long parentFolderId, String name)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long getFolderId(long companyId, long folderId);
@@ -387,9 +385,9 @@ public interface DLFolderLocalService extends BaseLocalService,
 	* @deprecated As of 7.0.0, replaced by {@link #getGroupFolderIds(long,
 	long)}
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<java.lang.Long> getFolderIds(long groupId, long parentFolderId);
+	public List<Long> getFolderIds(long groupId, long parentFolderId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DLFolder> getFolders(long groupId, long parentFolderId);
@@ -413,14 +411,14 @@ public interface DLFolderLocalService extends BaseLocalService,
 		int start, int end, OrderByComparator<DLFolder> obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<java.lang.Object> getFoldersAndFileEntriesAndFileShortcuts(
-		long groupId, long folderId, java.lang.String[] mimeTypes,
-		boolean includeMountFolders, QueryDefinition<?> queryDefinition);
+	public List<Object> getFoldersAndFileEntriesAndFileShortcuts(long groupId,
+		long folderId, String[] mimeTypes, boolean includeMountFolders,
+		QueryDefinition<?> queryDefinition);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getFoldersAndFileEntriesAndFileShortcutsCount(long groupId,
-		long folderId, java.lang.String[] mimeTypes,
-		boolean includeMountFolders, QueryDefinition<?> queryDefinition);
+		long folderId, String[] mimeTypes, boolean includeMountFolders,
+		QueryDefinition<?> queryDefinition);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getFoldersCount(long groupId, long parentFolderId);
@@ -434,12 +432,11 @@ public interface DLFolderLocalService extends BaseLocalService,
 		boolean includeMountfolders);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<java.lang.Long> getGroupFolderIds(long groupId,
-		long parentFolderId);
+	public List<Long> getGroupFolderIds(long groupId, long parentFolderId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public void getGroupSubfolderIds(List<java.lang.Long> folderIds,
-		long groupId, long folderId);
+	public void getGroupSubfolderIds(List<Long> folderIds, long groupId,
+		long folderId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
@@ -462,7 +459,7 @@ public interface DLFolderLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -470,7 +467,7 @@ public interface DLFolderLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<java.lang.Long> getRepositoryFolderIds(long repositoryId,
+	public List<Long> getRepositoryFolderIds(long repositoryId,
 		long parentFolderId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -481,16 +478,16 @@ public interface DLFolderLocalService extends BaseLocalService,
 	public int getRepositoryFoldersCount(long repositoryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public void getRepositorySubfolderIds(List<java.lang.Long> folderIds,
+	public void getRepositorySubfolderIds(List<Long> folderIds,
 		long repositoryId, long folderId);
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link #getGroupSubfolderIds(List,
 	long, long)}
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public void getSubfolderIds(List<java.lang.Long> folderIds, long groupId,
+	public void getSubfolderIds(List<Long> folderIds, long groupId,
 		long folderId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -509,7 +506,7 @@ public interface DLFolderLocalService extends BaseLocalService,
 	public Lock lockFolder(long userId, long folderId)
 		throws PortalException;
 
-	public Lock lockFolder(long userId, long folderId, java.lang.String owner,
+	public Lock lockFolder(long userId, long folderId, String owner,
 		boolean inheritable, long expirationTime) throws PortalException;
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -519,17 +516,15 @@ public interface DLFolderLocalService extends BaseLocalService,
 	public void rebuildTree(long companyId) throws PortalException;
 
 	public void rebuildTree(long companyId, long parentFolderId,
-		java.lang.String parentTreePath, boolean reindex)
-		throws PortalException;
+		String parentTreePath, boolean reindex) throws PortalException;
 
 	public void setDLFileEntryTypeDLFolders(long fileEntryTypeId,
 		long[] folderIds);
 
-	public void unlockFolder(long groupId, long parentFolderId,
-		java.lang.String name, java.lang.String lockUuid)
-		throws PortalException;
+	public void unlockFolder(long groupId, long parentFolderId, String name,
+		String lockUuid) throws PortalException;
 
-	public void unlockFolder(long folderId, java.lang.String lockUuid)
+	public void unlockFolder(long folderId, String lockUuid)
 		throws PortalException;
 
 	/**
@@ -545,34 +540,32 @@ public interface DLFolderLocalService extends BaseLocalService,
 	* @deprecated As of 7.0.0, replaced by {@link #updateFolder(long, long,
 	String, String, long, List, int, ServiceContext)}
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	public DLFolder updateFolder(long folderId, long parentFolderId,
-		java.lang.String name, java.lang.String description,
-		long defaultFileEntryTypeId, List<java.lang.Long> fileEntryTypeIds,
-		boolean overrideFileEntryTypes, ServiceContext serviceContext)
-		throws PortalException;
+		String name, String description, long defaultFileEntryTypeId,
+		List<Long> fileEntryTypeIds, boolean overrideFileEntryTypes,
+		ServiceContext serviceContext) throws PortalException;
 
 	@Indexable(type = IndexableType.REINDEX)
 	public DLFolder updateFolder(long folderId, long parentFolderId,
-		java.lang.String name, java.lang.String description,
-		long defaultFileEntryTypeId, List<java.lang.Long> fileEntryTypeIds,
-		int restrictionType, ServiceContext serviceContext)
-		throws PortalException;
+		String name, String description, long defaultFileEntryTypeId,
+		List<Long> fileEntryTypeIds, int restrictionType,
+		ServiceContext serviceContext) throws PortalException;
 
 	/**
 	* @deprecated As of 7.0.0, replaced {@link #updateFolder(long, long,
 	String, String, long, List, int, ServiceContext)}
 	*/
-	@java.lang.Deprecated
-	public DLFolder updateFolder(long folderId, java.lang.String name,
-		java.lang.String description, long defaultFileEntryTypeId,
-		List<java.lang.Long> fileEntryTypeIds, boolean overrideFileEntryTypes,
+	@Deprecated
+	public DLFolder updateFolder(long folderId, String name,
+		String description, long defaultFileEntryTypeId,
+		List<Long> fileEntryTypeIds, boolean overrideFileEntryTypes,
 		ServiceContext serviceContext) throws PortalException;
 
 	@Indexable(type = IndexableType.REINDEX)
-	public DLFolder updateFolder(long folderId, java.lang.String name,
-		java.lang.String description, long defaultFileEntryTypeId,
-		List<java.lang.Long> fileEntryTypeIds, int restrictionType,
+	public DLFolder updateFolder(long folderId, String name,
+		String description, long defaultFileEntryTypeId,
+		List<Long> fileEntryTypeIds, int restrictionType,
 		ServiceContext serviceContext) throws PortalException;
 
 	/**
@@ -580,27 +573,27 @@ public interface DLFolderLocalService extends BaseLocalService,
 	updateFolderAndFileEntryTypes(long, long, long, String,
 	String, long, List, int, ServiceContext)}
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	public DLFolder updateFolderAndFileEntryTypes(long userId, long folderId,
-		long parentFolderId, java.lang.String name,
-		java.lang.String description, long defaultFileEntryTypeId,
-		List<java.lang.Long> fileEntryTypeIds, boolean overrideFileEntryTypes,
-		ServiceContext serviceContext) throws PortalException;
+		long parentFolderId, String name, String description,
+		long defaultFileEntryTypeId, List<Long> fileEntryTypeIds,
+		boolean overrideFileEntryTypes, ServiceContext serviceContext)
+		throws PortalException;
 
 	public DLFolder updateFolderAndFileEntryTypes(long userId, long folderId,
-		long parentFolderId, java.lang.String name,
-		java.lang.String description, long defaultFileEntryTypeId,
-		List<java.lang.Long> fileEntryTypeIds, int restrictionType,
-		ServiceContext serviceContext) throws PortalException;
+		long parentFolderId, String name, String description,
+		long defaultFileEntryTypeId, List<Long> fileEntryTypeIds,
+		int restrictionType, ServiceContext serviceContext)
+		throws PortalException;
 
 	@BufferedIncrement(configuration = "DLFolderEntry", incrementClass = DateOverrideIncrement.class)
 	public void updateLastPostDate(long folderId, Date lastPostDate)
 		throws PortalException;
 
 	public DLFolder updateStatus(long userId, long folderId, int status,
-		Map<java.lang.String, Serializable> workflowContext,
-		ServiceContext serviceContext) throws PortalException;
+		Map<String, Serializable> workflowContext, ServiceContext serviceContext)
+		throws PortalException;
 
-	public boolean verifyInheritableLock(long folderId,
-		java.lang.String lockUuid) throws PortalException;
+	public boolean verifyInheritableLock(long folderId, String lockUuid)
+		throws PortalException;
 }

@@ -7,7 +7,8 @@
 						"$": true,
 						"AlloyEditor": true,
 						"CKEDITOR": true,
-						"MODULE_PATH": true
+						"MODULE_PATH": true,
+						"_": true
 					}
 				}
 			}
@@ -33,5 +34,5 @@
 		"csf": "csf src/**/*.js",
 		"format": "npm run csf -- -i"
 	},
-	"version": "1.0.63"
+	"version": "2.0.0"
 }

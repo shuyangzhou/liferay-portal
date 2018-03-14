@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Brian Wing Shun Chan
  * @see UserGroupGroupRoleServiceUtil
- * @see com.liferay.portal.service.base.UserGroupGroupRoleServiceBaseImpl
+ * @see UserGroupGroupRoleServiceBaseImpl
  * @see com.liferay.portal.service.impl.UserGroupGroupRoleServiceImpl
  * @generated
  */
@@ -62,5 +62,5 @@ public interface UserGroupGroupRoleService extends BaseService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 }

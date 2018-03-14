@@ -43,7 +43,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see BrowserTrackerLocalServiceUtil
- * @see com.liferay.portal.service.base.BrowserTrackerLocalServiceBaseImpl
+ * @see BrowserTrackerLocalServiceBaseImpl
  * @see com.liferay.portal.service.impl.BrowserTrackerLocalServiceImpl
  * @generated
  */
@@ -213,7 +213,7 @@ public interface BrowserTrackerLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

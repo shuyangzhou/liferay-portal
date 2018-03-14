@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Portal Tools Service Builder
 Bundle-SymbolicName: com.liferay.portal.tools.service.builder
-Bundle-Version: 1.0.183
+Bundle-Version: 2.0.0
 Import-Package:\
 	!javax.portlet.*,\
 	\
@@ -17,8 +17,11 @@ Main-Class: com.liferay.portal.tools.service.builder.ServiceBuilder
 	com/liferay/journal/service.xml=../../../modules/apps/web-experience/journal/journal-service/service.xml,\
 	com/liferay/mobile/device/rules/service.xml=../../../modules/apps/foundation/mobile-device-rules/mobile-device-rules-service/service.xml,\
 	com/liferay/shopping/service.xml=../../../modules/apps/shopping/shopping-service/service.xml,\
-	@com.liferay.petra.string-[0-9]*.jar!/com/liferay/petra/string/CharPool.class,\
-	@com.liferay.petra.string-[0-9]*.jar!/com/liferay/petra/string/StringPool.class,\
+	@com.liferay.petra.concurrent-[0-9]*.jar,\
+	@com.liferay.petra.lang-[0-9]*.jar,\
+	@com.liferay.petra.memory-[0-9]*.jar,\
+	@com.liferay.petra.reflect-[0-9]*.jar,\
+	@com.liferay.petra.string-[0-9]*.jar,\
 	@com.liferay.petra.xml-[0-9]*.jar!/com/liferay/petra/xml/Dom4jUtil.class,\
 	@com.liferay.petra.xml-[0-9]*.jar!/com/liferay/petra/xml/XMLUtil.class,\
 	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/counter/service.xml,\
@@ -34,6 +37,8 @@ Main-Class: com.liferay.portal.tools.service.builder.ServiceBuilder
 	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/tools/JavaImportsFormatter.class,\
 	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/tools/ToolsUtil.class,\
 	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/util/EntityResolver.class,\
+	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/xml/DocumentFactory.class,\
+	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/xml/QNameCache.class,\
 	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portal/xml/SAXReaderFactory.class,\
 	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portlet/announcements/service.xml,\
 	@com.liferay.portal.impl-[0-9]*.jar!/com/liferay/portlet/asset/service.xml,\
