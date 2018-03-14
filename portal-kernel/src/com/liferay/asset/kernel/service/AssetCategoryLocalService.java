@@ -59,7 +59,7 @@ import java.util.Map;
  *
  * @author Brian Wing Shun Chan
  * @see AssetCategoryLocalServiceUtil
- * @see com.liferay.portlet.asset.service.base.AssetCategoryLocalServiceBaseImpl
+ * @see AssetCategoryLocalServiceBaseImpl
  * @see com.liferay.portlet.asset.service.impl.AssetCategoryLocalServiceImpl
  * @generated
  */
@@ -95,13 +95,13 @@ public interface AssetCategoryLocalService extends BaseLocalService,
 
 	@Indexable(type = IndexableType.REINDEX)
 	public AssetCategory addCategory(long userId, long groupId,
-		long parentCategoryId, Map<Locale, java.lang.String> titleMap,
-		Map<Locale, java.lang.String> descriptionMap, long vocabularyId,
-		java.lang.String[] categoryProperties, ServiceContext serviceContext)
+		long parentCategoryId, Map<Locale, String> titleMap,
+		Map<Locale, String> descriptionMap, long vocabularyId,
+		String[] categoryProperties, ServiceContext serviceContext)
 		throws PortalException;
 
-	public AssetCategory addCategory(long userId, long groupId,
-		java.lang.String title, long vocabularyId, ServiceContext serviceContext)
+	public AssetCategory addCategory(long userId, long groupId, String title,
+		long vocabularyId, ServiceContext serviceContext)
 		throws PortalException;
 
 	public void addCategoryResources(AssetCategory category,
@@ -191,7 +191,7 @@ public interface AssetCategoryLocalService extends BaseLocalService,
 	* Performs a dynamic query on the database and returns a range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -206,7 +206,7 @@ public interface AssetCategoryLocalService extends BaseLocalService,
 	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -247,15 +247,15 @@ public interface AssetCategoryLocalService extends BaseLocalService,
 	* @return the matching asset category, or <code>null</code> if a matching asset category could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetCategory fetchAssetCategoryByUuidAndGroupId(
-		java.lang.String uuid, long groupId);
+	public AssetCategory fetchAssetCategoryByUuidAndGroupId(String uuid,
+		long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AssetCategory fetchCategory(long categoryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AssetCategory fetchCategory(long groupId, long parentCategoryId,
-		java.lang.String name, long vocabularyId);
+		String name, long vocabularyId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -264,7 +264,7 @@ public interface AssetCategoryLocalService extends BaseLocalService,
 	* Returns a range of all the asset categories.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of asset categories
@@ -283,7 +283,7 @@ public interface AssetCategoryLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AssetCategory> getAssetCategoriesByUuidAndCompanyId(
-		java.lang.String uuid, long companyId);
+		String uuid, long companyId);
 
 	/**
 	* Returns a range of asset categories matching the UUID and company.
@@ -297,7 +297,7 @@ public interface AssetCategoryLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AssetCategory> getAssetCategoriesByUuidAndCompanyId(
-		java.lang.String uuid, long companyId, int start, int end,
+		String uuid, long companyId, int start, int end,
 		OrderByComparator<AssetCategory> orderByComparator);
 
 	/**
@@ -328,8 +328,8 @@ public interface AssetCategoryLocalService extends BaseLocalService,
 	* @throws PortalException if a matching asset category could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetCategory getAssetCategoryByUuidAndGroupId(
-		java.lang.String uuid, long groupId) throws PortalException;
+	public AssetCategory getAssetCategoryByUuidAndGroupId(String uuid,
+		long groupId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AssetCategory> getAssetEntryAssetCategories(long entryId);
@@ -366,28 +366,26 @@ public interface AssetCategoryLocalService extends BaseLocalService,
 	public List<AssetCategory> getCategories(long classNameId, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetCategory> getCategories(java.lang.String className,
-		long classPK);
+	public List<AssetCategory> getCategories(String className, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AssetCategory getCategory(long categoryId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetCategory getCategory(java.lang.String uuid, long groupId)
+	public AssetCategory getCategory(String uuid, long groupId)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getCategoryIds(java.lang.String className, long classPK);
+	public long[] getCategoryIds(String className, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String[] getCategoryNames();
+	public String[] getCategoryNames();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String[] getCategoryNames(long classNameId, long classPK);
+	public String[] getCategoryNames(long classNameId, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String[] getCategoryNames(java.lang.String className,
-		long classPK);
+	public String[] getCategoryNames(String className, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AssetCategory> getChildCategories(long parentCategoryId);
@@ -417,7 +415,7 @@ public interface AssetCategoryLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -425,11 +423,11 @@ public interface AssetCategoryLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<java.lang.Long> getSubcategoryIds(long parentCategoryId);
+	public List<Long> getSubcategoryIds(long parentCategoryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getViewableCategoryIds(java.lang.String className,
-		long classPK, long[] categoryIds) throws PortalException;
+	public long[] getViewableCategoryIds(String className, long classPK,
+		long[] categoryIds) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AssetCategory> getVocabularyCategories(long vocabularyId,
@@ -468,30 +466,30 @@ public interface AssetCategoryLocalService extends BaseLocalService,
 	public void rebuildTree(long groupId, boolean force);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetCategory> search(long groupId, java.lang.String name,
-		java.lang.String[] categoryProperties, int start, int end);
+	public List<AssetCategory> search(long groupId, String name,
+		String[] categoryProperties, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public BaseModelSearchResult<AssetCategory> searchCategories(
-		long companyId, long groupIds, java.lang.String title,
-		long vocabularyId, int start, int end) throws PortalException;
+		long companyId, long groupIds, String title, long vocabularyId,
+		int start, int end) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public BaseModelSearchResult<AssetCategory> searchCategories(
-		long companyId, long[] groupIds, java.lang.String title,
-		long[] vocabularyIds, int start, int end) throws PortalException;
+		long companyId, long[] groupIds, String title, long[] vocabularyIds,
+		int start, int end) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public BaseModelSearchResult<AssetCategory> searchCategories(
-		long companyId, long[] groupIds, java.lang.String title,
+		long companyId, long[] groupIds, String title,
 		long[] parentCategoryIds, long[] vocabularyIds, int start, int end)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public BaseModelSearchResult<AssetCategory> searchCategories(
-		long companyId, long[] groupIds, java.lang.String title,
-		long[] vocabularyIds, long[] parentCategoryIds, int start, int end,
-		Sort sort) throws PortalException;
+		long companyId, long[] groupIds, String title, long[] vocabularyIds,
+		long[] parentCategoryIds, int start, int end, Sort sort)
+		throws PortalException;
 
 	public void setAssetEntryAssetCategories(long entryId, long[] categoryIds);
 
@@ -506,8 +504,8 @@ public interface AssetCategoryLocalService extends BaseLocalService,
 
 	@Indexable(type = IndexableType.REINDEX)
 	public AssetCategory updateCategory(long userId, long categoryId,
-		long parentCategoryId, Map<Locale, java.lang.String> titleMap,
-		Map<Locale, java.lang.String> descriptionMap, long vocabularyId,
-		java.lang.String[] categoryProperties, ServiceContext serviceContext)
+		long parentCategoryId, Map<Locale, String> titleMap,
+		Map<Locale, String> descriptionMap, long vocabularyId,
+		String[] categoryProperties, ServiceContext serviceContext)
 		throws PortalException;
 }

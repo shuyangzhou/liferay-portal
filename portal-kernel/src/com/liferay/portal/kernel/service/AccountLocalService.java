@@ -43,7 +43,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see AccountLocalServiceUtil
- * @see com.liferay.portal.service.base.AccountLocalServiceBaseImpl
+ * @see AccountLocalServiceBaseImpl
  * @see com.liferay.portal.service.impl.AccountLocalServiceImpl
  * @generated
  */
@@ -210,7 +210,7 @@ public interface AccountLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

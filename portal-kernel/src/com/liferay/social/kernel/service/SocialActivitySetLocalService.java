@@ -46,7 +46,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see SocialActivitySetLocalServiceUtil
- * @see com.liferay.portlet.social.service.base.SocialActivitySetLocalServiceBaseImpl
+ * @see SocialActivitySetLocalServiceBaseImpl
  * @see com.liferay.portlet.social.service.impl.SocialActivitySetLocalServiceImpl
  * @generated
  */
@@ -210,7 +210,7 @@ public interface SocialActivitySetLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

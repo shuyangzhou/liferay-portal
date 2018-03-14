@@ -484,13 +484,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>MOVE_THREAD</td>
-	<td>//button[contains(.,'Move Thread')]</td>
+	<td>MOVE_TO_THE_RECYCLE_BIN</td>
+	<td>//a[contains(@class,'btn') and contains(.,'Move to the Recycle Bin')] | //button[contains(.,'Move to the Recycle Bin')]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>MOVE_TO_THE_RECYCLE_BIN</td>
-	<td>//a[contains(@class,'btn') and contains(.,'Move to the Recycle Bin')] | //button[contains(.,'Move to the Recycle Bin')]</td>
+	<td>NEW_THREAD</td>
+	<td>//span[contains(.,'New Thread')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -531,11 +531,6 @@
 <tr>
 	<td>POST</td>
 	<td>//div[@class='button-holder']/button[contains(@id,'MicroblogsPortlet')]/span[contains(.,'Post')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>POST_NEW_THREAD</td>
-	<td>//span[contains(.,'Post New Thread')]</td>
 	<td></td>
 </tr>
 <tr>

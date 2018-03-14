@@ -34,7 +34,7 @@ import com.liferay.social.kernel.model.SocialRequest;
  *
  * @author Brian Wing Shun Chan
  * @see SocialRequestServiceUtil
- * @see com.liferay.portlet.social.service.base.SocialRequestServiceBaseImpl
+ * @see SocialRequestServiceBaseImpl
  * @see com.liferay.portlet.social.service.impl.SocialRequestServiceImpl
  * @generated
  */
@@ -55,7 +55,7 @@ public interface SocialRequestService extends BaseService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	public SocialRequest updateRequest(long requestId, int status,
 		ThemeDisplay themeDisplay) throws PortalException;

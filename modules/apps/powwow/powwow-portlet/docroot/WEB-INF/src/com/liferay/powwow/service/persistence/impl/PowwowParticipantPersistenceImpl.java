@@ -2116,7 +2116,7 @@ public class PowwowParticipantPersistenceImpl extends BasePersistenceImpl<Powwow
 	}
 
 	/**
-	 * Returns the powwow participant with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the powwow participant with the primary key or throws a {@link NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the powwow participant
 	 * @return the powwow participant

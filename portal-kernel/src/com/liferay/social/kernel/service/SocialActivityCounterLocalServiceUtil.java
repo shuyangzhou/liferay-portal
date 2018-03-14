@@ -72,7 +72,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	* @return the added activity counter
 	*/
 	public static com.liferay.social.kernel.model.SocialActivityCounter addActivityCounter(
-		long groupId, long classNameId, long classPK, java.lang.String name,
+		long groupId, long classNameId, long classPK, String name,
 		int ownerType, int totalValue, long previousActivityCounterId,
 		int periodLength)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -165,8 +165,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	* @param className the entity's class name
 	* @param classPK the primary key of the entity
 	*/
-	public static void deleteActivityCounters(java.lang.String className,
-		long classPK)
+	public static void deleteActivityCounters(String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteActivityCounters(className, classPK);
 	}
@@ -233,8 +232,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	* @param className the asset's class name
 	* @param classPK the primary key of the asset
 	*/
-	public static void disableActivityCounters(java.lang.String className,
-		long classPK)
+	public static void disableActivityCounters(String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().disableActivityCounters(className, classPK);
 	}
@@ -258,7 +256,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	* Performs a dynamic query on the database and returns a range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.social.model.impl.SocialActivityCounterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.social.model.impl.SocialActivityCounterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -276,7 +274,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.social.model.impl.SocialActivityCounterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.social.model.impl.SocialActivityCounterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -346,8 +344,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	* @param className the asset's class name
 	* @param classPK the primary key of the asset
 	*/
-	public static void enableActivityCounters(java.lang.String className,
-		long classPK)
+	public static void enableActivityCounters(String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().enableActivityCounters(className, classPK);
 	}
@@ -365,7 +362,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	* @return the matching activity counter
 	*/
 	public static com.liferay.social.kernel.model.SocialActivityCounter fetchActivityCounterByEndPeriod(
-		long groupId, long classNameId, long classPK, java.lang.String name,
+		long groupId, long classNameId, long classPK, String name,
 		int ownerType, int endPeriod) {
 		return getService()
 				   .fetchActivityCounterByEndPeriod(groupId, classNameId,
@@ -385,7 +382,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	* @return the matching activity counter
 	*/
 	public static com.liferay.social.kernel.model.SocialActivityCounter fetchActivityCounterByStartPeriod(
-		long groupId, long classNameId, long classPK, java.lang.String name,
+		long groupId, long classNameId, long classPK, String name,
 		int ownerType, int startPeriod) {
 		return getService()
 				   .fetchActivityCounterByStartPeriod(groupId, classNameId,
@@ -404,8 +401,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	* @return the matching activity counter
 	*/
 	public static com.liferay.social.kernel.model.SocialActivityCounter fetchLatestActivityCounter(
-		long groupId, long classNameId, long classPK, java.lang.String name,
-		int ownerType) {
+		long groupId, long classNameId, long classPK, String name, int ownerType) {
 		return getService()
 				   .fetchLatestActivityCounter(groupId, classNameId, classPK,
 			name, ownerType);
@@ -439,7 +435,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	* @return the matching activity counters
 	*/
 	public static java.util.List<com.liferay.social.kernel.model.SocialActivityCounter> getOffsetActivityCounters(
-		long groupId, java.lang.String name, int startOffset, int endOffset) {
+		long groupId, String name, int startOffset, int endOffset) {
 		return getService()
 				   .getOffsetActivityCounters(groupId, name, startOffset,
 			endOffset);
@@ -463,7 +459,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	* @return the distribution of matching activity counters
 	*/
 	public static java.util.List<com.liferay.social.kernel.model.SocialActivityCounter> getOffsetDistributionActivityCounters(
-		long groupId, java.lang.String name, int startOffset, int endOffset) {
+		long groupId, String name, int startOffset, int endOffset) {
 		return getService()
 				   .getOffsetDistributionActivityCounters(groupId, name,
 			startOffset, endOffset);
@@ -474,7 +470,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	*
 	* @return the OSGi service identifier
 	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
+	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -494,7 +490,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	* @return the matching activity counters
 	*/
 	public static java.util.List<com.liferay.social.kernel.model.SocialActivityCounter> getPeriodActivityCounters(
-		long groupId, java.lang.String name, int startPeriod, int endPeriod) {
+		long groupId, String name, int startPeriod, int endPeriod) {
 		return getService()
 				   .getPeriodActivityCounters(groupId, name, startPeriod,
 			endPeriod);
@@ -518,7 +514,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	* @return the distribution of matching activity counters
 	*/
 	public static java.util.List<com.liferay.social.kernel.model.SocialActivityCounter> getPeriodDistributionActivityCounters(
-		long groupId, java.lang.String name, int startPeriod, int endPeriod) {
+		long groupId, String name, int startPeriod, int endPeriod) {
 		return getService()
 				   .getPeriodDistributionActivityCounters(groupId, name,
 			startPeriod, endPeriod);
@@ -547,7 +543,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	* Returns a range of all the social activity counters.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.social.model.impl.SocialActivityCounterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.social.model.impl.SocialActivityCounterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of social activity counters
@@ -596,8 +592,8 @@ public class SocialActivityCounterLocalServiceUtil {
 	* @return the range of matching tuples
 	*/
 	public static java.util.List<com.liferay.portal.kernel.util.Tuple> getUserActivityCounters(
-		long groupId, java.lang.String[] rankingNames,
-		java.lang.String[] selectedNames, int start, int end) {
+		long groupId, String[] rankingNames, String[] selectedNames, int start,
+		int end) {
 		return getService()
 				   .getUserActivityCounters(groupId, rankingNames,
 			selectedNames, start, end);
@@ -611,7 +607,7 @@ public class SocialActivityCounterLocalServiceUtil {
 	* @return the number of matching users
 	*/
 	public static int getUserActivityCountersCount(long groupId,
-		java.lang.String[] rankingNames) {
+		String[] rankingNames) {
 		return getService().getUserActivityCountersCount(groupId, rankingNames);
 	}
 

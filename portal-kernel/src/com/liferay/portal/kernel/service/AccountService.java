@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Brian Wing Shun Chan
  * @see AccountServiceUtil
- * @see com.liferay.portal.service.base.AccountServiceBaseImpl
+ * @see AccountServiceBaseImpl
  * @see com.liferay.portal.service.impl.AccountServiceImpl
  * @generated
  */
@@ -51,5 +51,5 @@ public interface AccountService extends BaseService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 }

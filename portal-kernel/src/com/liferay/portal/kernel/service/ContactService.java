@@ -35,7 +35,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see ContactServiceUtil
- * @see com.liferay.portal.service.base.ContactServiceBaseImpl
+ * @see ContactServiceBaseImpl
  * @see com.liferay.portal.service.impl.ContactServiceImpl
  * @generated
  */
@@ -67,5 +67,5 @@ public interface ContactService extends BaseService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 }

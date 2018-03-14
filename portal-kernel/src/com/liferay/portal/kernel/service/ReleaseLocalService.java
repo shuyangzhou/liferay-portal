@@ -46,7 +46,7 @@ import java.util.Properties;
  *
  * @author Brian Wing Shun Chan
  * @see ReleaseLocalServiceUtil
- * @see com.liferay.portal.service.base.ReleaseLocalServiceBaseImpl
+ * @see ReleaseLocalServiceBaseImpl
  * @see com.liferay.portal.service.impl.ReleaseLocalServiceImpl
  * @generated
  */
@@ -70,11 +70,9 @@ public interface ReleaseLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public Release addRelease(Release release);
 
-	public Release addRelease(java.lang.String servletContextName,
-		int buildNumber);
+	public Release addRelease(String servletContextName, int buildNumber);
 
-	public Release addRelease(java.lang.String servletContextName,
-		java.lang.String schemaVersion);
+	public Release addRelease(String servletContextName, String schemaVersion);
 
 	/**
 	* Creates a new release with the primary key. Does not add the release to the database.
@@ -175,7 +173,7 @@ public interface ReleaseLocalService extends BaseLocalService,
 	public Release fetchRelease(long releaseId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Release fetchRelease(java.lang.String servletContextName);
+	public Release fetchRelease(String servletContextName);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -191,7 +189,7 @@ public interface ReleaseLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -230,9 +228,9 @@ public interface ReleaseLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getReleasesCount();
 
-	public Release updateRelease(long releaseId,
-		java.lang.String schemaVersion, int buildNumber, Date buildDate,
-		boolean verified) throws PortalException;
+	public Release updateRelease(long releaseId, String schemaVersion,
+		int buildNumber, Date buildDate, boolean verified)
+		throws PortalException;
 
 	/**
 	* Updates the release in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -243,15 +241,15 @@ public interface ReleaseLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public Release updateRelease(Release release);
 
-	public void updateRelease(java.lang.String servletContextName,
+	public void updateRelease(String servletContextName,
 		List<UpgradeProcess> upgradeProcesses, int buildNumber,
 		int previousBuildNumber, boolean indexOnUpgrade)
 		throws PortalException;
 
-	public void updateRelease(java.lang.String servletContextName,
+	public void updateRelease(String servletContextName,
 		List<UpgradeProcess> upgradeProcesses,
-		Properties unfilteredPortalProperties) throws java.lang.Exception;
+		Properties unfilteredPortalProperties) throws Exception;
 
-	public void updateRelease(java.lang.String servletContextName,
-		java.lang.String schemaVersion, java.lang.String previousSchemaVersion);
+	public void updateRelease(String servletContextName, String schemaVersion,
+		String previousSchemaVersion);
 }

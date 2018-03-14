@@ -43,7 +43,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see ClusterGroupLocalServiceUtil
- * @see com.liferay.portal.service.base.ClusterGroupLocalServiceBaseImpl
+ * @see ClusterGroupLocalServiceBaseImpl
  * @see com.liferay.portal.service.impl.ClusterGroupLocalServiceImpl
  * @generated
  */
@@ -67,10 +67,9 @@ public interface ClusterGroupLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public ClusterGroup addClusterGroup(ClusterGroup clusterGroup);
 
-	public ClusterGroup addClusterGroup(java.lang.String name,
-		List<java.lang.String> clusterNodeIds);
+	public ClusterGroup addClusterGroup(String name, List<String> clusterNodeIds);
 
-	public ClusterGroup addWholeClusterGroup(java.lang.String name);
+	public ClusterGroup addWholeClusterGroup(String name);
 
 	/**
 	* Creates a new cluster group with the primary key. Does not add the cluster group to the database.
@@ -213,7 +212,7 @@ public interface ClusterGroupLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

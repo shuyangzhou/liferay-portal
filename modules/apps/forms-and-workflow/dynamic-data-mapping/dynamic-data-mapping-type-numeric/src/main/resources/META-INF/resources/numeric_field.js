@@ -4,7 +4,7 @@ AUI.add(
 		new A.TooltipDelegate(
 			{
 				position: 'left',
-				trigger: '.liferay-ddm-form-field-numeric .help-icon',
+				trigger: '.liferay-ddm-form-field-numeric .trigger-tooltip',
 				triggerHideEvent: ['blur', 'mouseleave'],
 				triggerShowEvent: ['focus', 'mouseover'],
 				visible: false
@@ -55,6 +55,12 @@ AUI.add(
 						return 'input';
 					},
 
+					getEvaluationContext: function(context) {
+						return {
+							dataType: context.dataType
+						};
+					},
+
 					getTemplateContext: function() {
 						var instance = this;
 
@@ -90,12 +96,6 @@ AUI.add(
 						var instance = this;
 
 						NumericField.superclass.showErrorMessage.apply(instance, arguments);
-
-						var container = instance.get('container');
-
-						var inputGroup = container.one('.input-group-container');
-
-						inputGroup.insert(container.one('.form-feedback-indicator'), 'after');
 					},
 
 					_onNumericFieldKeyPress: function(event) {

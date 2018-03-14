@@ -64,7 +64,7 @@ import java.util.Map;
  *
  * @author Brian Wing Shun Chan
  * @see DLFileEntryLocalServiceUtil
- * @see com.liferay.portlet.documentlibrary.service.base.DLFileEntryLocalServiceBaseImpl
+ * @see DLFileEntryLocalServiceBaseImpl
  * @see com.liferay.portlet.documentlibrary.service.impl.DLFileEntryLocalServiceImpl
  * @generated
  */
@@ -89,23 +89,21 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 	public DLFileEntry addDLFileEntry(DLFileEntry dlFileEntry);
 
 	public DLFileEntry addFileEntry(long userId, long groupId,
-		long repositoryId, long folderId, java.lang.String sourceFileName,
-		java.lang.String mimeType, java.lang.String title,
-		java.lang.String description, java.lang.String changeLog,
-		long fileEntryTypeId,
-		Map<java.lang.String, DDMFormValues> ddmFormValuesMap, File file,
-		InputStream is, long size, ServiceContext serviceContext)
+		long repositoryId, long folderId, String sourceFileName,
+		String mimeType, String title, String description, String changeLog,
+		long fileEntryTypeId, Map<String, DDMFormValues> ddmFormValuesMap,
+		File file, InputStream is, long size, ServiceContext serviceContext)
 		throws PortalException;
 
 	public DLFileVersion cancelCheckOut(long userId, long fileEntryId)
 		throws PortalException;
 
 	public void checkInFileEntry(long userId, long fileEntryId,
-		boolean majorVersion, java.lang.String changeLog,
-		ServiceContext serviceContext) throws PortalException;
+		boolean majorVersion, String changeLog, ServiceContext serviceContext)
+		throws PortalException;
 
 	public void checkInFileEntry(long userId, long fileEntryId,
-		java.lang.String lockUuid, ServiceContext serviceContext)
+		String lockUuid, ServiceContext serviceContext)
 		throws PortalException;
 
 	public DLFileEntry checkOutFileEntry(long userId, long fileEntryId,
@@ -113,18 +111,17 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 		throws PortalException;
 
 	public DLFileEntry checkOutFileEntry(long userId, long fileEntryId,
-		long fileEntryTypeId, java.lang.String owner, long expirationTime,
+		long fileEntryTypeId, String owner, long expirationTime,
 		ServiceContext serviceContext) throws PortalException;
 
 	public DLFileEntry checkOutFileEntry(long userId, long fileEntryId,
 		ServiceContext serviceContext) throws PortalException;
 
 	public DLFileEntry checkOutFileEntry(long userId, long fileEntryId,
-		java.lang.String owner, long expirationTime,
-		ServiceContext serviceContext) throws PortalException;
-
-	public void convertExtraSettings(java.lang.String[] keys)
+		String owner, long expirationTime, ServiceContext serviceContext)
 		throws PortalException;
+
+	public void convertExtraSettings(String[] keys) throws PortalException;
 
 	public DLFileEntry copyFileEntry(long userId, long groupId,
 		long repositoryId, long fileEntryId, long destFolderId,
@@ -183,7 +180,7 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 
 	@Indexable(type = IndexableType.REINDEX)
 	public DLFileEntry deleteFileVersion(long userId, long fileEntryId,
-		java.lang.String version) throws PortalException;
+		String version) throws PortalException;
 
 	/**
 	* @throws PortalException
@@ -215,7 +212,7 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 	* Performs a dynamic query on the database and returns a range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.documentlibrary.model.impl.DLFileEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.documentlibrary.model.impl.DLFileEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -230,7 +227,7 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.documentlibrary.model.impl.DLFileEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.documentlibrary.model.impl.DLFileEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -271,26 +268,25 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 	* @return the matching document library file entry, or <code>null</code> if a matching document library file entry could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFileEntry fetchDLFileEntryByUuidAndGroupId(java.lang.String uuid,
+	public DLFileEntry fetchDLFileEntryByUuidAndGroupId(String uuid,
 		long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFileEntry fetchFileEntry(long groupId, long folderId,
-		java.lang.String title);
+	public DLFileEntry fetchFileEntry(long groupId, long folderId, String title);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFileEntry fetchFileEntry(java.lang.String uuid, long groupId);
+	public DLFileEntry fetchFileEntry(String uuid, long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DLFileEntry fetchFileEntryByAnyImageId(long imageId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DLFileEntry fetchFileEntryByFileName(long groupId, long folderId,
-		java.lang.String fileName);
+		String fileName);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DLFileEntry fetchFileEntryByName(long groupId, long folderId,
-		java.lang.String name);
+		String name);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -306,7 +302,7 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 	* Returns a range of all the document library file entries.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.documentlibrary.model.impl.DLFileEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.documentlibrary.model.impl.DLFileEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of document library file entries
@@ -324,8 +320,8 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 	* @return the matching document library file entries, or an empty list if no matches were found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<DLFileEntry> getDLFileEntriesByUuidAndCompanyId(
-		java.lang.String uuid, long companyId);
+	public List<DLFileEntry> getDLFileEntriesByUuidAndCompanyId(String uuid,
+		long companyId);
 
 	/**
 	* Returns a range of document library file entries matching the UUID and company.
@@ -338,8 +334,8 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 	* @return the range of matching document library file entries, or an empty list if no matches were found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<DLFileEntry> getDLFileEntriesByUuidAndCompanyId(
-		java.lang.String uuid, long companyId, int start, int end,
+	public List<DLFileEntry> getDLFileEntriesByUuidAndCompanyId(String uuid,
+		long companyId, int start, int end,
 		OrderByComparator<DLFileEntry> orderByComparator);
 
 	/**
@@ -370,8 +366,8 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 	* @throws PortalException if a matching document library file entry could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFileEntry getDLFileEntryByUuidAndGroupId(java.lang.String uuid,
-		long groupId) throws PortalException;
+	public DLFileEntry getDLFileEntryByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
@@ -387,72 +383,67 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 	* @deprecated As of 7.0.0, replaced by {@link #getFile(long, String,
 	boolean)}
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public File getFile(long userId, long fileEntryId,
-		java.lang.String version, boolean incrementCounter)
-		throws PortalException;
+	public File getFile(long userId, long fileEntryId, String version,
+		boolean incrementCounter) throws PortalException;
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link #getFile(long, String,
 	boolean, int)}
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public File getFile(long userId, long fileEntryId,
-		java.lang.String version, boolean incrementCounter, int increment)
-		throws PortalException;
+	public File getFile(long userId, long fileEntryId, String version,
+		boolean incrementCounter, int increment) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public File getFile(long fileEntryId, java.lang.String version,
+	public File getFile(long fileEntryId, String version,
 		boolean incrementCounter) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public File getFile(long fileEntryId, java.lang.String version,
+	public File getFile(long fileEntryId, String version,
 		boolean incrementCounter, int increment) throws PortalException;
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link #getFileAsStream(long,
 	String)}
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public InputStream getFileAsStream(long userId, long fileEntryId,
-		java.lang.String version) throws PortalException;
+		String version) throws PortalException;
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link #getFileAsStream(long,
 	String, boolean)}
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public InputStream getFileAsStream(long userId, long fileEntryId,
-		java.lang.String version, boolean incrementCounter)
-		throws PortalException;
+		String version, boolean incrementCounter) throws PortalException;
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link #getFileAsStream(long,
 	String, boolean, int)}
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public InputStream getFileAsStream(long userId, long fileEntryId,
-		java.lang.String version, boolean incrementCounter, int increment)
+		String version, boolean incrementCounter, int increment)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public InputStream getFileAsStream(long fileEntryId,
-		java.lang.String version) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public InputStream getFileAsStream(long fileEntryId,
-		java.lang.String version, boolean incrementCounter)
+	public InputStream getFileAsStream(long fileEntryId, String version)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public InputStream getFileAsStream(long fileEntryId,
-		java.lang.String version, boolean incrementCounter, int increment)
-		throws PortalException;
+	public InputStream getFileAsStream(long fileEntryId, String version,
+		boolean incrementCounter) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public InputStream getFileAsStream(long fileEntryId, String version,
+		boolean incrementCounter, int increment) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DLFileEntry> getFileEntries(int start, int end);
@@ -470,19 +461,16 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DLFileEntry> getFileEntries(long groupId, long userId,
-		List<java.lang.Long> repositoryIds, List<java.lang.Long> folderIds,
-		java.lang.String[] mimeTypes,
-		QueryDefinition<DLFileEntry> queryDefinition)
-		throws java.lang.Exception;
+		List<Long> repositoryIds, List<Long> folderIds, String[] mimeTypes,
+		QueryDefinition<DLFileEntry> queryDefinition) throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DLFileEntry> getFileEntries(long groupId, long userId,
-		List<java.lang.Long> folderIds, java.lang.String[] mimeTypes,
-		QueryDefinition<DLFileEntry> queryDefinition)
-		throws java.lang.Exception;
+		List<Long> folderIds, String[] mimeTypes,
+		QueryDefinition<DLFileEntry> queryDefinition) throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<DLFileEntry> getFileEntries(long folderId, java.lang.String name);
+	public List<DLFileEntry> getFileEntries(long folderId, String name);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getFileEntriesCount();
@@ -490,7 +478,7 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 	/**
 	* @deprecated As of 7.0.0, with no direct replacement
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getFileEntriesCount(long groupId, DateRange dateRange,
 		long repositoryId, QueryDefinition<DLFileEntry> queryDefinition);
@@ -503,31 +491,28 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getFileEntriesCount(long groupId, long userId,
-		List<java.lang.Long> repositoryIds, List<java.lang.Long> folderIds,
-		java.lang.String[] mimeTypes,
-		QueryDefinition<DLFileEntry> queryDefinition)
-		throws java.lang.Exception;
+		List<Long> repositoryIds, List<Long> folderIds, String[] mimeTypes,
+		QueryDefinition<DLFileEntry> queryDefinition) throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getFileEntriesCount(long groupId, long userId,
-		List<java.lang.Long> folderIds, java.lang.String[] mimeTypes,
-		QueryDefinition<DLFileEntry> queryDefinition)
-		throws java.lang.Exception;
+		List<Long> folderIds, String[] mimeTypes,
+		QueryDefinition<DLFileEntry> queryDefinition) throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DLFileEntry getFileEntry(long fileEntryId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFileEntry getFileEntry(long groupId, long folderId,
-		java.lang.String title) throws PortalException;
+	public DLFileEntry getFileEntry(long groupId, long folderId, String title)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DLFileEntry getFileEntryByName(long groupId, long folderId,
-		java.lang.String name) throws PortalException;
+		String name) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DLFileEntry getFileEntryByUuidAndGroupId(java.lang.String uuid,
-		long groupId) throws PortalException;
+	public DLFileEntry getFileEntryByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DLFileEntry> getGroupFileEntries(long groupId, int start,
@@ -578,7 +563,7 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -593,9 +578,8 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 	public int getRepositoryFileEntriesCount(long repositoryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String getUniqueTitle(long groupId, long folderId,
-		long fileEntryId, java.lang.String title, java.lang.String extension)
-		throws PortalException;
+	public String getUniqueTitle(long groupId, long folderId, long fileEntryId,
+		String title, String extension) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasExtraSettings();
@@ -620,7 +604,7 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 	* @deprecated As of 7.0.0, replaced by {@link #isKeepFileVersionLabel(long,
 	boolean, ServiceContext)}
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean isKeepFileVersionLabel(long fileEntryId,
 		ServiceContext serviceContext) throws PortalException;
@@ -635,9 +619,8 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 
 	public void rebuildTree(long companyId) throws PortalException;
 
-	public void revertFileEntry(long userId, long fileEntryId,
-		java.lang.String version, ServiceContext serviceContext)
-		throws PortalException;
+	public void revertFileEntry(long userId, long fileEntryId, String version,
+		ServiceContext serviceContext) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Hits search(long groupId, long userId, long creatorUserId,
@@ -645,11 +628,11 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Hits search(long groupId, long userId, long creatorUserId,
-		long folderId, java.lang.String[] mimeTypes, int status, int start,
-		int end) throws PortalException;
+		long folderId, String[] mimeTypes, int status, int start, int end)
+		throws PortalException;
 
-	public void setTreePaths(long folderId, java.lang.String treePath,
-		boolean reindex) throws PortalException;
+	public void setTreePaths(long folderId, String treePath, boolean reindex)
+		throws PortalException;
 
 	public void unlockFileEntry(long fileEntryId);
 
@@ -663,11 +646,10 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 	public DLFileEntry updateDLFileEntry(DLFileEntry dlFileEntry);
 
 	public DLFileEntry updateFileEntry(long userId, long fileEntryId,
-		java.lang.String sourceFileName, java.lang.String mimeType,
-		java.lang.String title, java.lang.String description,
-		java.lang.String changeLog, boolean majorVersion, long fileEntryTypeId,
-		Map<java.lang.String, DDMFormValues> ddmFormValuesMap, File file,
-		InputStream is, long size, ServiceContext serviceContext)
+		String sourceFileName, String mimeType, String title,
+		String description, String changeLog, boolean majorVersion,
+		long fileEntryTypeId, Map<String, DDMFormValues> ddmFormValuesMap,
+		File file, InputStream is, long size, ServiceContext serviceContext)
 		throws PortalException;
 
 	public DLFileEntry updateFileEntryType(long userId, long fileEntryId,
@@ -679,16 +661,14 @@ public interface DLFileEntryLocalService extends BaseLocalService,
 
 	public DLFileEntry updateStatus(long userId, long fileVersionId,
 		int status, ServiceContext serviceContext,
-		Map<java.lang.String, Serializable> workflowContext)
-		throws PortalException;
+		Map<String, Serializable> workflowContext) throws PortalException;
 
 	public void validateFile(long groupId, long folderId, long fileEntryId,
-		java.lang.String fileName, java.lang.String title)
+		String fileName, String title) throws PortalException;
+
+	public boolean verifyFileEntryCheckOut(long fileEntryId, String lockUuid)
 		throws PortalException;
 
-	public boolean verifyFileEntryCheckOut(long fileEntryId,
-		java.lang.String lockUuid) throws PortalException;
-
-	public boolean verifyFileEntryLock(long fileEntryId,
-		java.lang.String lockUuid) throws PortalException;
+	public boolean verifyFileEntryLock(long fileEntryId, String lockUuid)
+		throws PortalException;
 }

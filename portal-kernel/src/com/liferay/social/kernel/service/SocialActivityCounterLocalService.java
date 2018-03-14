@@ -50,7 +50,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see SocialActivityCounterLocalServiceUtil
- * @see com.liferay.portlet.social.service.base.SocialActivityCounterLocalServiceBaseImpl
+ * @see SocialActivityCounterLocalServiceBaseImpl
  * @see com.liferay.portlet.social.service.impl.SocialActivityCounterLocalServiceImpl
  * @generated
  */
@@ -97,7 +97,7 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public SocialActivityCounter addActivityCounter(long groupId,
-		long classNameId, long classPK, java.lang.String name, int ownerType,
+		long classNameId, long classPK, String name, int ownerType,
 		int totalValue, long previousActivityCounterId, int periodLength)
 		throws PortalException;
 
@@ -174,7 +174,7 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	* @param className the entity's class name
 	* @param classPK the primary key of the entity
 	*/
-	public void deleteActivityCounters(java.lang.String className, long classPK)
+	public void deleteActivityCounters(String className, long classPK)
 		throws PortalException;
 
 	/**
@@ -232,7 +232,7 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	* @param className the asset's class name
 	* @param classPK the primary key of the asset
 	*/
-	public void disableActivityCounters(java.lang.String className, long classPK)
+	public void disableActivityCounters(String className, long classPK)
 		throws PortalException;
 
 	public DynamicQuery dynamicQuery();
@@ -249,7 +249,7 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	* Performs a dynamic query on the database and returns a range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.social.model.impl.SocialActivityCounterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.social.model.impl.SocialActivityCounterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -264,7 +264,7 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.social.model.impl.SocialActivityCounterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.social.model.impl.SocialActivityCounterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -321,7 +321,7 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	* @param className the asset's class name
 	* @param classPK the primary key of the asset
 	*/
-	public void enableActivityCounters(java.lang.String className, long classPK)
+	public void enableActivityCounters(String className, long classPK)
 		throws PortalException;
 
 	/**
@@ -338,7 +338,7 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SocialActivityCounter fetchActivityCounterByEndPeriod(long groupId,
-		long classNameId, long classPK, java.lang.String name, int ownerType,
+		long classNameId, long classPK, String name, int ownerType,
 		int endPeriod);
 
 	/**
@@ -355,7 +355,7 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SocialActivityCounter fetchActivityCounterByStartPeriod(
-		long groupId, long classNameId, long classPK, java.lang.String name,
+		long groupId, long classNameId, long classPK, String name,
 		int ownerType, int startPeriod);
 
 	/**
@@ -371,7 +371,7 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SocialActivityCounter fetchLatestActivityCounter(long groupId,
-		long classNameId, long classPK, java.lang.String name, int ownerType);
+		long classNameId, long classPK, String name, int ownerType);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SocialActivityCounter fetchSocialActivityCounter(
@@ -399,7 +399,7 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SocialActivityCounter> getOffsetActivityCounters(long groupId,
-		java.lang.String name, int startOffset, int endOffset);
+		String name, int startOffset, int endOffset);
 
 	/**
 	* Returns the distribution of the activity counters with the given name and
@@ -420,14 +420,14 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SocialActivityCounter> getOffsetDistributionActivityCounters(
-		long groupId, java.lang.String name, int startOffset, int endOffset);
+		long groupId, String name, int startOffset, int endOffset);
 
 	/**
 	* Returns the OSGi service identifier.
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	/**
 	* Returns all the activity counters with the given name and time period.
@@ -446,7 +446,7 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SocialActivityCounter> getPeriodActivityCounters(long groupId,
-		java.lang.String name, int startPeriod, int endPeriod);
+		String name, int startPeriod, int endPeriod);
 
 	/**
 	* Returns the distribution of activity counters with the given name and
@@ -467,7 +467,7 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SocialActivityCounter> getPeriodDistributionActivityCounters(
-		long groupId, java.lang.String name, int startPeriod, int endPeriod);
+		long groupId, String name, int startPeriod, int endPeriod);
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -489,7 +489,7 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	* Returns a range of all the social activity counters.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.social.model.impl.SocialActivityCounterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.social.model.impl.SocialActivityCounterModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of social activity counters
@@ -537,8 +537,7 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Tuple> getUserActivityCounters(long groupId,
-		java.lang.String[] rankingNames, java.lang.String[] selectedNames,
-		int start, int end);
+		String[] rankingNames, String[] selectedNames, int start, int end);
 
 	/**
 	* Returns the number of users having a rank based on the given counters.
@@ -548,8 +547,7 @@ public interface SocialActivityCounterLocalService extends BaseLocalService,
 	* @return the number of matching users
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getUserActivityCountersCount(long groupId,
-		java.lang.String[] rankingNames);
+	public int getUserActivityCountersCount(long groupId, String[] rankingNames);
 
 	/**
 	* Increments the <code>user.achievements</code> counter for a user.

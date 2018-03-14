@@ -43,7 +43,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see UserNotificationDeliveryLocalServiceUtil
- * @see com.liferay.portal.service.base.UserNotificationDeliveryLocalServiceBaseImpl
+ * @see UserNotificationDeliveryLocalServiceBaseImpl
  * @see com.liferay.portal.service.impl.UserNotificationDeliveryLocalServiceImpl
  * @generated
  */
@@ -58,7 +58,7 @@ public interface UserNotificationDeliveryLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link UserNotificationDeliveryLocalServiceUtil} to access the user notification delivery local service. Add custom service methods to {@link com.liferay.portal.service.impl.UserNotificationDeliveryLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public UserNotificationDelivery addUserNotificationDelivery(long userId,
-		java.lang.String portletId, long classNameId, int notificationType,
+		String portletId, long classNameId, int notificationType,
 		int deliveryType, boolean deliver) throws PortalException;
 
 	/**
@@ -100,9 +100,8 @@ public interface UserNotificationDeliveryLocalService extends BaseLocalService,
 	public UserNotificationDelivery deleteUserNotificationDelivery(
 		long userNotificationDeliveryId) throws PortalException;
 
-	public void deleteUserNotificationDelivery(long userId,
-		java.lang.String portletId, long classNameId, int notificationType,
-		int deliveryType);
+	public void deleteUserNotificationDelivery(long userId, String portletId,
+		long classNameId, int notificationType, int deliveryType);
 
 	/**
 	* Deletes the user notification delivery from the database. Also notifies the appropriate model listeners.
@@ -179,7 +178,7 @@ public interface UserNotificationDeliveryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public UserNotificationDelivery fetchUserNotificationDelivery(long userId,
-		java.lang.String portletId, long classNameId, int notificationType,
+		String portletId, long classNameId, int notificationType,
 		int deliveryType);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -193,7 +192,7 @@ public interface UserNotificationDeliveryLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -236,7 +235,7 @@ public interface UserNotificationDeliveryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public UserNotificationDelivery getUserNotificationDelivery(long userId,
-		java.lang.String portletId, long classNameId, int notificationType,
+		String portletId, long classNameId, int notificationType,
 		int deliveryType, boolean deliver) throws PortalException;
 
 	public UserNotificationDelivery updateUserNotificationDelivery(
