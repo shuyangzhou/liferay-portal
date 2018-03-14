@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.LayoutPrototype;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -31,11 +32,11 @@ import com.liferay.portal.kernel.service.LayoutPrototypeService;
 import com.liferay.portal.kernel.service.LayoutService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
+import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.sites.kernel.util.SitesUtil;
@@ -81,7 +82,6 @@ public class AddLayoutPrototypeLayoutMVCActionCommand
 		long parentLayoutId = ParamUtil.getLong(
 			actionRequest, "parentLayoutId");
 		String name = ParamUtil.getString(actionRequest, "name");
-		String type = StringPool.BLANK;
 
 		Map<Locale, String> nameMap = new HashMap<>();
 
@@ -106,12 +106,19 @@ public class AddLayoutPrototypeLayoutMVCActionCommand
 			Layout layout = _layoutService.addLayout(
 				groupId, privateLayout, parentLayoutId, nameMap,
 				new HashMap<>(), new HashMap<>(), new HashMap<>(),
-				new HashMap<>(), type, typeSettingsProperties.toString(), false,
-				new HashMap<>(), serviceContext);
+				new HashMap<>(), LayoutConstants.TYPE_PORTLET,
+				typeSettingsProperties.toString(), false, new HashMap<>(),
+				serviceContext);
 
 			// Force propagation from page template to page. See LPS-48430.
 
 			SitesUtil.mergeLayoutPrototypeLayout(layout.getGroup(), layout);
+
+			String portletResource = ParamUtil.getString(
+				actionRequest, "portletResource");
+
+			MultiSessionMessages.add(
+				actionRequest, portletResource + "layoutAdded", layout);
 
 			jsonObject.put("redirectURL", getRedirectURL(actionResponse));
 
