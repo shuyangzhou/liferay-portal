@@ -1213,7 +1213,7 @@ public class AnnouncementsDeliveryPersistenceImpl extends BasePersistenceImpl<An
 	}
 
 	/**
-	 * Returns the announcements delivery with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the announcements delivery with the primary key or throws a {@link NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the announcements delivery
 	 * @return the announcements delivery

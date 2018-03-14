@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Brian Wing Shun Chan
  * @see UserGroupRoleServiceUtil
- * @see com.liferay.portal.service.base.UserGroupRoleServiceBaseImpl
+ * @see UserGroupRoleServiceBaseImpl
  * @see com.liferay.portal.service.impl.UserGroupRoleServiceImpl
  * @generated
  */
@@ -62,7 +62,7 @@ public interface UserGroupRoleService extends BaseService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	public void updateUserGroupRoles(long userId, long groupId,
 		long[] addedRoleIds, long[] deletedRoleIds) throws PortalException;

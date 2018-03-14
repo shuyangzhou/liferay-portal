@@ -2264,7 +2264,7 @@ public class RecentLayoutBranchPersistenceImpl extends BasePersistenceImpl<Recen
 	}
 
 	/**
-	 * Returns the recent layout branch with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the recent layout branch with the primary key or throws a {@link NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the recent layout branch
 	 * @return the recent layout branch

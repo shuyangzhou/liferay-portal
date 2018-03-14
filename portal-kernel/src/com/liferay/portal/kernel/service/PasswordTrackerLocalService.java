@@ -43,7 +43,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see PasswordTrackerLocalServiceUtil
- * @see com.liferay.portal.service.base.PasswordTrackerLocalServiceBaseImpl
+ * @see PasswordTrackerLocalServiceBaseImpl
  * @see com.liferay.portal.service.impl.PasswordTrackerLocalServiceImpl
  * @generated
  */
@@ -178,7 +178,7 @@ public interface PasswordTrackerLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	/**
 	* Returns the password tracker with the primary key.
@@ -219,14 +219,14 @@ public interface PasswordTrackerLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean isSameAsCurrentPassword(long userId,
-		java.lang.String newClearTextPwd) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean isValidPassword(long userId, java.lang.String newClearTextPwd)
+	public boolean isSameAsCurrentPassword(long userId, String newClearTextPwd)
 		throws PortalException;
 
-	public void trackPassword(long userId, java.lang.String encPassword)
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean isValidPassword(long userId, String newClearTextPwd)
+		throws PortalException;
+
+	public void trackPassword(long userId, String encPassword)
 		throws PortalException;
 
 	/**

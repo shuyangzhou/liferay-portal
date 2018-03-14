@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Brian Wing Shun Chan
  * @see PortalLocalServiceUtil
- * @see com.liferay.portal.service.base.PortalLocalServiceBaseImpl
+ * @see PortalLocalServiceBaseImpl
  * @see com.liferay.portal.service.impl.PortalLocalServiceImpl
  * @generated
  */
@@ -48,5 +48,5 @@ public interface PortalLocalService extends BaseLocalService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 }

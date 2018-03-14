@@ -46,7 +46,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see OAuthTokenLocalServiceUtil
- * @see com.liferay.opensocial.service.base.OAuthTokenLocalServiceBaseImpl
+ * @see OAuthTokenLocalServiceBaseImpl
  * @see com.liferay.opensocial.service.impl.OAuthTokenLocalServiceImpl
  * @generated
  */
@@ -60,10 +60,9 @@ public interface OAuthTokenLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link OAuthTokenLocalServiceUtil} to access the o auth token local service. Add custom service methods to {@link com.liferay.opensocial.service.impl.OAuthTokenLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public OAuthToken addOAuthToken(long userId, java.lang.String gadgetKey,
-		java.lang.String serviceName, long moduleId,
-		java.lang.String accessToken, java.lang.String tokenName,
-		java.lang.String tokenSecret, java.lang.String sessionHandle,
+	public OAuthToken addOAuthToken(long userId, String gadgetKey,
+		String serviceName, long moduleId, String accessToken,
+		String tokenName, String tokenSecret, String sessionHandle,
 		long expiration) throws PortalException;
 
 	/**
@@ -94,8 +93,8 @@ public interface OAuthTokenLocalService extends BaseLocalService,
 	public OAuthToken deleteOAuthToken(long oAuthTokenId)
 		throws PortalException;
 
-	public void deleteOAuthToken(long userId, java.lang.String gadgetKey,
-		java.lang.String serviceName, long moduleId, java.lang.String tokenName)
+	public void deleteOAuthToken(long userId, String gadgetKey,
+		String serviceName, long moduleId, String tokenName)
 		throws PortalException;
 
 	/**
@@ -107,8 +106,7 @@ public interface OAuthTokenLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.DELETE)
 	public OAuthToken deleteOAuthToken(OAuthToken oAuthToken);
 
-	public void deleteOAuthTokens(java.lang.String gadgetKey,
-		java.lang.String serviceName);
+	public void deleteOAuthTokens(String gadgetKey, String serviceName);
 
 	/**
 	* @throws PortalException
@@ -180,8 +178,8 @@ public interface OAuthTokenLocalService extends BaseLocalService,
 	public OAuthToken fetchOAuthToken(long oAuthTokenId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public OAuthToken fetchOAuthToken(long userId, java.lang.String gadgetKey,
-		java.lang.String serviceName, long moduleId, java.lang.String tokenName);
+	public OAuthToken fetchOAuthToken(long userId, String gadgetKey,
+		String serviceName, long moduleId, String tokenName);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -201,8 +199,8 @@ public interface OAuthTokenLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public OAuthToken getOAuthToken(long userId, java.lang.String gadgetKey,
-		java.lang.String serviceName, long moduleId, java.lang.String tokenName)
+	public OAuthToken getOAuthToken(long userId, String gadgetKey,
+		String serviceName, long moduleId, String tokenName)
 		throws PortalException;
 
 	/**
@@ -220,8 +218,7 @@ public interface OAuthTokenLocalService extends BaseLocalService,
 	public List<OAuthToken> getOAuthTokens(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<OAuthToken> getOAuthTokens(java.lang.String gadgetKey,
-		java.lang.String serviceName);
+	public List<OAuthToken> getOAuthTokens(String gadgetKey, String serviceName);
 
 	/**
 	* Returns the number of o auth tokens.
@@ -236,7 +233,7 @@ public interface OAuthTokenLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

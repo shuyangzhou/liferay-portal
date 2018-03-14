@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.PortletItem;
-import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -33,7 +32,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Brian Wing Shun Chan
  * @see PortletPreferencesServiceUtil
- * @see com.liferay.portal.service.base.PortletPreferencesServiceBaseImpl
+ * @see PortletPreferencesServiceBaseImpl
  * @see com.liferay.portal.service.impl.PortletPreferencesServiceImpl
  * @generated
  */
@@ -56,21 +55,21 @@ public interface PortletPreferencesService extends BaseService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	public void restoreArchivedPreferences(long groupId, Layout layout,
-		java.lang.String portletId, long portletItemId,
+		String portletId, long portletItemId,
 		javax.portlet.PortletPreferences preferences) throws PortalException;
 
 	public void restoreArchivedPreferences(long groupId, Layout layout,
-		java.lang.String portletId, PortletItem portletItem,
+		String portletId, PortletItem portletItem,
 		javax.portlet.PortletPreferences preferences) throws PortalException;
 
-	public void restoreArchivedPreferences(long groupId, java.lang.String name,
-		Layout layout, java.lang.String portletId,
+	public void restoreArchivedPreferences(long groupId, String name,
+		Layout layout, String portletId,
 		javax.portlet.PortletPreferences preferences) throws PortalException;
 
 	public void updateArchivePreferences(long userId, long groupId,
-		java.lang.String name, java.lang.String portletId,
+		String name, String portletId,
 		javax.portlet.PortletPreferences preferences) throws PortalException;
 }

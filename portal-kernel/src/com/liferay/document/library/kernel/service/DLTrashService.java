@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Brian Wing Shun Chan
  * @see DLTrashServiceUtil
- * @see com.liferay.portlet.documentlibrary.service.base.DLTrashServiceBaseImpl
+ * @see DLTrashServiceBaseImpl
  * @see com.liferay.portlet.documentlibrary.service.impl.DLTrashServiceImpl
  * @generated
  */
@@ -56,7 +56,7 @@ public interface DLTrashService extends BaseService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	/**
 	* Moves the file entry from a trashed folder to the new folder.

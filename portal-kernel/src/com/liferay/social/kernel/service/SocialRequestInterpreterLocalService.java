@@ -35,7 +35,7 @@ import com.liferay.social.kernel.model.SocialRequestInterpreter;
  *
  * @author Brian Wing Shun Chan
  * @see SocialRequestInterpreterLocalServiceUtil
- * @see com.liferay.portlet.social.service.base.SocialRequestInterpreterLocalServiceBaseImpl
+ * @see SocialRequestInterpreterLocalServiceBaseImpl
  * @see com.liferay.portlet.social.service.impl.SocialRequestInterpreterLocalServiceImpl
  * @generated
  */
@@ -72,7 +72,7 @@ public interface SocialRequestInterpreterLocalService extends BaseLocalService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	/**
 	* Creates a human readable request feed entry for the social request using

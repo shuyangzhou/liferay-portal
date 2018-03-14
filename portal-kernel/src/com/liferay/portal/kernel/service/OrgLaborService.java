@@ -34,7 +34,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see OrgLaborServiceUtil
- * @see com.liferay.portal.service.base.OrgLaborServiceBaseImpl
+ * @see OrgLaborServiceBaseImpl
  * @see com.liferay.portal.service.impl.OrgLaborServiceImpl
  * @generated
  */
@@ -68,7 +68,7 @@ public interface OrgLaborService extends BaseService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	public OrgLabor updateOrgLabor(long orgLaborId, long typeId, int sunOpen,
 		int sunClose, int monOpen, int monClose, int tueOpen, int tueClose,

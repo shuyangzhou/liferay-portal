@@ -43,7 +43,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see ListTypeLocalServiceUtil
- * @see com.liferay.portal.service.base.ListTypeLocalServiceBaseImpl
+ * @see ListTypeLocalServiceBaseImpl
  * @see com.liferay.portal.service.impl.ListTypeLocalServiceImpl
  * @generated
  */
@@ -67,7 +67,7 @@ public interface ListTypeLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public ListType addListType(ListType listType);
 
-	public ListType addListType(java.lang.String name, java.lang.String type);
+	public ListType addListType(String name, String type);
 
 	/**
 	* Creates a new list type with the primary key. Does not add the list type to the database.
@@ -196,7 +196,7 @@ public interface ListTypeLocalService extends BaseLocalService,
 	public List<ListType> getListTypes(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<ListType> getListTypes(java.lang.String type);
+	public List<ListType> getListTypes(String type);
 
 	/**
 	* Returns the number of list types.
@@ -211,7 +211,7 @@ public interface ListTypeLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -227,9 +227,9 @@ public interface ListTypeLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public ListType updateListType(ListType listType);
 
-	public void validate(long listTypeId, long classNameId,
-		java.lang.String type) throws PortalException;
+	public void validate(long listTypeId, long classNameId, String type)
+		throws PortalException;
 
-	public void validate(long listTypeId, java.lang.String type)
+	public void validate(long listTypeId, String type)
 		throws PortalException;
 }

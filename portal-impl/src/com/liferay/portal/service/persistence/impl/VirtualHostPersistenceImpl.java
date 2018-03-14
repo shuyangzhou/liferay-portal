@@ -871,7 +871,7 @@ public class VirtualHostPersistenceImpl extends BasePersistenceImpl<VirtualHost>
 	}
 
 	/**
-	 * Returns the virtual host with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the virtual host with the primary key or throws a {@link NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the virtual host
 	 * @return the virtual host

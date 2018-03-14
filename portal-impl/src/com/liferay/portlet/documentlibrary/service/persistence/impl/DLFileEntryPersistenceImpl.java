@@ -15452,7 +15452,7 @@ public class DLFileEntryPersistenceImpl extends BasePersistenceImpl<DLFileEntry>
 	}
 
 	/**
-	 * Returns the document library file entry with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the document library file entry with the primary key or throws a {@link NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the document library file entry
 	 * @return the document library file entry

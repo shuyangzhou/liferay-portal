@@ -36,7 +36,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see DLFileVersionServiceUtil
- * @see com.liferay.portlet.documentlibrary.service.base.DLFileVersionServiceBaseImpl
+ * @see DLFileVersionServiceBaseImpl
  * @see com.liferay.portlet.documentlibrary.service.impl.DLFileVersionServiceImpl
  * @generated
  */
@@ -76,5 +76,5 @@ public interface DLFileVersionService extends BaseService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 }

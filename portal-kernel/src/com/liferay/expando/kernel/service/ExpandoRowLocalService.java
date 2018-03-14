@@ -46,7 +46,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see ExpandoRowLocalServiceUtil
- * @see com.liferay.portlet.expando.service.base.ExpandoRowLocalServiceBaseImpl
+ * @see ExpandoRowLocalServiceBaseImpl
  * @see com.liferay.portlet.expando.service.impl.ExpandoRowLocalServiceImpl
  * @generated
  */
@@ -113,11 +113,11 @@ public interface ExpandoRowLocalService extends BaseLocalService,
 
 	public void deleteRow(long tableId, long classPK) throws PortalException;
 
-	public void deleteRow(long companyId, long classNameId,
-		java.lang.String tableName, long classPK) throws PortalException;
+	public void deleteRow(long companyId, long classNameId, String tableName,
+		long classPK) throws PortalException;
 
-	public void deleteRow(long companyId, java.lang.String className,
-		java.lang.String tableName, long classPK) throws PortalException;
+	public void deleteRow(long companyId, String className, String tableName,
+		long classPK) throws PortalException;
 
 	public void deleteRows(long classPK);
 
@@ -195,14 +195,13 @@ public interface ExpandoRowLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ExpandoRow> getDefaultTableRows(long companyId,
-		java.lang.String className, int start, int end);
+		String className, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getDefaultTableRowsCount(long companyId, long classNameId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getDefaultTableRowsCount(long companyId,
-		java.lang.String className);
+	public int getDefaultTableRowsCount(long companyId, String className);
 
 	/**
 	* Returns the expando row with the primary key.
@@ -244,7 +243,7 @@ public interface ExpandoRowLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -260,33 +259,31 @@ public interface ExpandoRowLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ExpandoRow getRow(long companyId, long classNameId,
-		java.lang.String tableName, long classPK);
+		String tableName, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ExpandoRow getRow(long companyId, java.lang.String className,
-		java.lang.String tableName, long classPK);
+	public ExpandoRow getRow(long companyId, String className,
+		String tableName, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ExpandoRow> getRows(long tableId, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ExpandoRow> getRows(long companyId, long classNameId,
-		java.lang.String tableName, int start, int end);
+		String tableName, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<ExpandoRow> getRows(long companyId, java.lang.String className,
-		java.lang.String tableName, int start, int end);
+	public List<ExpandoRow> getRows(long companyId, String className,
+		String tableName, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getRowsCount(long tableId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getRowsCount(long companyId, long classNameId,
-		java.lang.String tableName);
+	public int getRowsCount(long companyId, long classNameId, String tableName);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getRowsCount(long companyId, java.lang.String className,
-		java.lang.String tableName);
+	public int getRowsCount(long companyId, String className, String tableName);
 
 	/**
 	* Updates the expando row in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

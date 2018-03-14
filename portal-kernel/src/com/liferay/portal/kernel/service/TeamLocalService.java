@@ -47,7 +47,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see TeamLocalServiceUtil
- * @see com.liferay.portal.service.base.TeamLocalServiceBaseImpl
+ * @see TeamLocalServiceBaseImpl
  * @see com.liferay.portal.service.impl.TeamLocalServiceImpl
  * @generated
  */
@@ -66,12 +66,12 @@ public interface TeamLocalService extends BaseLocalService,
 	* @deprecated As of 7.0.0, replaced by {@link #addTeam(long, long, String,
 	String, ServiceContext)}
 	*/
-	@java.lang.Deprecated
-	public Team addTeam(long userId, long groupId, java.lang.String name,
-		java.lang.String description) throws PortalException;
+	@Deprecated
+	public Team addTeam(long userId, long groupId, String name,
+		String description) throws PortalException;
 
-	public Team addTeam(long userId, long groupId, java.lang.String name,
-		java.lang.String description, ServiceContext serviceContext)
+	public Team addTeam(long userId, long groupId, String name,
+		String description, ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -170,7 +170,7 @@ public interface TeamLocalService extends BaseLocalService,
 	* Performs a dynamic query on the database and returns a range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.TeamModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.TeamModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -185,7 +185,7 @@ public interface TeamLocalService extends BaseLocalService,
 	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.TeamModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.TeamModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -219,7 +219,7 @@ public interface TeamLocalService extends BaseLocalService,
 	public Team fetchTeam(long teamId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Team fetchTeam(long groupId, java.lang.String name);
+	public Team fetchTeam(long groupId, String name);
 
 	/**
 	* Returns the team matching the UUID and group.
@@ -229,7 +229,7 @@ public interface TeamLocalService extends BaseLocalService,
 	* @return the matching team, or <code>null</code> if a matching team could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Team fetchTeamByUuidAndGroupId(java.lang.String uuid, long groupId);
+	public Team fetchTeamByUuidAndGroupId(String uuid, long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -249,7 +249,7 @@ public interface TeamLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -267,8 +267,7 @@ public interface TeamLocalService extends BaseLocalService,
 	public Team getTeam(long teamId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Team getTeam(long groupId, java.lang.String name)
-		throws PortalException;
+	public Team getTeam(long groupId, String name) throws PortalException;
 
 	/**
 	* Returns the team matching the UUID and group.
@@ -279,14 +278,14 @@ public interface TeamLocalService extends BaseLocalService,
 	* @throws PortalException if a matching team could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Team getTeamByUuidAndGroupId(java.lang.String uuid, long groupId)
+	public Team getTeamByUuidAndGroupId(String uuid, long groupId)
 		throws PortalException;
 
 	/**
 	* Returns a range of all the teams.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.TeamModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portal.model.impl.TeamModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of teams
@@ -304,8 +303,7 @@ public interface TeamLocalService extends BaseLocalService,
 	* @return the matching teams, or an empty list if no matches were found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Team> getTeamsByUuidAndCompanyId(java.lang.String uuid,
-		long companyId);
+	public List<Team> getTeamsByUuidAndCompanyId(String uuid, long companyId);
 
 	/**
 	* Returns a range of teams matching the UUID and company.
@@ -318,9 +316,8 @@ public interface TeamLocalService extends BaseLocalService,
 	* @return the range of matching teams, or an empty list if no matches were found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Team> getTeamsByUuidAndCompanyId(java.lang.String uuid,
-		long companyId, int start, int end,
-		OrderByComparator<Team> orderByComparator);
+	public List<Team> getTeamsByUuidAndCompanyId(String uuid, long companyId,
+		int start, int end, OrderByComparator<Team> orderByComparator);
 
 	/**
 	* Returns the number of teams.
@@ -393,22 +390,20 @@ public interface TeamLocalService extends BaseLocalService,
 	public boolean hasUserTeams(long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Team> search(long groupId, java.lang.String name,
-		java.lang.String description,
-		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end, OrderByComparator<Team> obc);
+	public List<Team> search(long groupId, String name, String description,
+		LinkedHashMap<String, Object> params, int start, int end,
+		OrderByComparator<Team> obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(long groupId, java.lang.String name,
-		java.lang.String description,
-		LinkedHashMap<java.lang.String, java.lang.Object> params);
+	public int searchCount(long groupId, String name, String description,
+		LinkedHashMap<String, Object> params);
 
 	public void setUserGroupTeams(long userGroupId, long[] teamIds);
 
 	public void setUserTeams(long userId, long[] teamIds);
 
-	public Team updateTeam(long teamId, java.lang.String name,
-		java.lang.String description) throws PortalException;
+	public Team updateTeam(long teamId, String name, String description)
+		throws PortalException;
 
 	/**
 	* Updates the team in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

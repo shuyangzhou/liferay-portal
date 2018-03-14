@@ -52,7 +52,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see AssetEntryLocalServiceUtil
- * @see com.liferay.portlet.asset.service.base.AssetEntryLocalServiceBaseImpl
+ * @see AssetEntryLocalServiceBaseImpl
  * @see com.liferay.portlet.asset.service.impl.AssetEntryLocalServiceImpl
  * @generated
  */
@@ -148,7 +148,7 @@ public interface AssetEntryLocalService extends BaseLocalService,
 
 	public void deleteEntry(long entryId) throws PortalException;
 
-	public void deleteEntry(java.lang.String className, long classPK)
+	public void deleteEntry(String className, long classPK)
 		throws PortalException;
 
 	public void deleteGroupEntries(long groupId) throws PortalException;
@@ -174,7 +174,7 @@ public interface AssetEntryLocalService extends BaseLocalService,
 	* Performs a dynamic query on the database and returns a range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -189,7 +189,7 @@ public interface AssetEntryLocalService extends BaseLocalService,
 	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -229,10 +229,10 @@ public interface AssetEntryLocalService extends BaseLocalService,
 	public AssetEntry fetchEntry(long classNameId, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetEntry fetchEntry(long groupId, java.lang.String classUuid);
+	public AssetEntry fetchEntry(long groupId, String classUuid);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetEntry fetchEntry(java.lang.String className, long classPK);
+	public AssetEntry fetchEntry(String className, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -268,7 +268,7 @@ public interface AssetEntryLocalService extends BaseLocalService,
 	* Returns a range of all the asset entries.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.portlet.asset.model.impl.AssetEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of asset entries
@@ -334,38 +334,35 @@ public interface AssetEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AssetEntry> getEntries(long[] groupIds, long[] classNameIds,
-		java.lang.String keywords, java.lang.String userName,
-		java.lang.String title, java.lang.String description,
-		java.lang.Boolean listable, boolean advancedSearch,
-		boolean andOperator, int start, int end, java.lang.String orderByCol1,
-		java.lang.String orderByCol2, java.lang.String orderByType1,
-		java.lang.String orderByType2);
+		String keywords, String userName, String title, String description,
+		Boolean listable, boolean advancedSearch, boolean andOperator,
+		int start, int end, String orderByCol1, String orderByCol2,
+		String orderByType1, String orderByType2);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getEntriesCount(AssetEntryQuery entryQuery);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getEntriesCount(long[] groupIds, long[] classNameIds,
-		java.lang.String keywords, java.lang.String userName,
-		java.lang.String title, java.lang.String description,
-		java.lang.Boolean listable, boolean advancedSearch, boolean andOperator);
+		String keywords, String userName, String title, String description,
+		Boolean listable, boolean advancedSearch, boolean andOperator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AssetEntry getEntry(long entryId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetEntry getEntry(long groupId, java.lang.String classUuid)
+	public AssetEntry getEntry(long groupId, String classUuid)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetEntry getEntry(java.lang.String className, long classPK)
+	public AssetEntry getEntry(String className, long classPK)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public double getEntryPriority(long classNameId, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public double getEntryPriority(java.lang.String className, long classPK);
+	public double getEntryPriority(String className, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AssetEntry> getGroupEntries(long groupId);
@@ -381,7 +378,7 @@ public interface AssetEntryLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AssetEntry getParentEntry(long entryId) throws PortalException;
@@ -395,11 +392,11 @@ public interface AssetEntryLocalService extends BaseLocalService,
 	public AssetEntry getPreviousEntry(long entryId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetEntry> getTopViewedEntries(java.lang.String className,
-		boolean asc, int start, int end);
+	public List<AssetEntry> getTopViewedEntries(String className, boolean asc,
+		int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AssetEntry> getTopViewedEntries(java.lang.String[] className,
+	public List<AssetEntry> getTopViewedEntries(String[] className,
 		boolean asc, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -418,11 +415,11 @@ public interface AssetEntryLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetEntry incrementViewCounter(long userId,
-		java.lang.String className, long classPK) throws PortalException;
+	public AssetEntry incrementViewCounter(long userId, String className,
+		long classPK) throws PortalException;
 
 	@BufferedIncrement(configuration = "AssetEntry", incrementClass = NumberIncrement.class)
-	public void incrementViewCounter(long userId, java.lang.String className,
+	public void incrementViewCounter(long userId, String className,
 		long classPK, int increment);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -430,83 +427,71 @@ public interface AssetEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Hits search(long companyId, long[] groupIds, long userId,
-		java.lang.String className, long classTypeId,
-		java.lang.String keywords, boolean showNonindexable, int status,
+		String className, long classTypeId, String keywords,
+		boolean showNonindexable, int status, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Hits search(long companyId, long[] groupIds, long userId,
+		String className, long classTypeId, String keywords,
+		boolean showNonindexable, int[] statuses, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Hits search(long companyId, long[] groupIds, long userId,
+		String className, long classTypeId, String keywords,
+		boolean showNonindexable, int[] statuses, int start, int end, Sort sort);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Hits search(long companyId, long[] groupIds, long userId,
+		String className, long classTypeId, String keywords, int status,
 		int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Hits search(long companyId, long[] groupIds, long userId,
-		java.lang.String className, long classTypeId,
-		java.lang.String keywords, boolean showNonindexable, int[] statuses,
-		int start, int end);
+		String className, long classTypeId, String userName, String title,
+		String description, String assetCategoryIds, String assetTagNames,
+		boolean showNonindexable, int status, boolean andSearch, int start,
+		int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Hits search(long companyId, long[] groupIds, long userId,
-		java.lang.String className, long classTypeId,
-		java.lang.String keywords, boolean showNonindexable, int[] statuses,
-		int start, int end, Sort sort);
+		String className, long classTypeId, String userName, String title,
+		String description, String assetCategoryIds, String assetTagNames,
+		boolean showNonindexable, int[] statuses, boolean andSearch, int start,
+		int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Hits search(long companyId, long[] groupIds, long userId,
-		java.lang.String className, long classTypeId,
-		java.lang.String keywords, int status, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Hits search(long companyId, long[] groupIds, long userId,
-		java.lang.String className, long classTypeId,
-		java.lang.String userName, java.lang.String title,
-		java.lang.String description, java.lang.String assetCategoryIds,
-		java.lang.String assetTagNames, boolean showNonindexable, int status,
-		boolean andSearch, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Hits search(long companyId, long[] groupIds, long userId,
-		java.lang.String className, long classTypeId,
-		java.lang.String userName, java.lang.String title,
-		java.lang.String description, java.lang.String assetCategoryIds,
-		java.lang.String assetTagNames, boolean showNonindexable,
-		int[] statuses, boolean andSearch, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Hits search(long companyId, long[] groupIds, long userId,
-		java.lang.String className, long classTypeId,
-		java.lang.String userName, java.lang.String title,
-		java.lang.String description, java.lang.String assetCategoryIds,
-		java.lang.String assetTagNames, int status, boolean andSearch,
-		int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Hits search(long companyId, long[] groupIds, long userId,
-		java.lang.String className, java.lang.String keywords, int status,
-		int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Hits search(long companyId, long[] groupIds, long userId,
-		java.lang.String className, java.lang.String userName,
-		java.lang.String title, java.lang.String description,
-		java.lang.String assetCategoryIds, java.lang.String assetTagNames,
+		String className, long classTypeId, String userName, String title,
+		String description, String assetCategoryIds, String assetTagNames,
 		int status, boolean andSearch, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long searchCount(long companyId, long[] groupIds, long userId,
-		java.lang.String className, long classTypeId,
-		java.lang.String keywords, boolean showNonindexable, int[] statuses);
+	public Hits search(long companyId, long[] groupIds, long userId,
+		String className, String keywords, int status, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Hits search(long companyId, long[] groupIds, long userId,
+		String className, String userName, String title, String description,
+		String assetCategoryIds, String assetTagNames, int status,
+		boolean andSearch, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long searchCount(long companyId, long[] groupIds, long userId,
-		java.lang.String className, long classTypeId,
-		java.lang.String userName, java.lang.String title,
-		java.lang.String description, java.lang.String assetCategoryIds,
-		java.lang.String assetTagNames, boolean showInvisible,
+		String className, long classTypeId, String keywords,
+		boolean showNonindexable, int[] statuses);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long searchCount(long companyId, long[] groupIds, long userId,
+		String className, long classTypeId, String userName, String title,
+		String description, String assetCategoryIds, String assetTagNames,
+		boolean showInvisible, boolean showNonindexable, int[] statuses,
+		boolean andSearch);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long searchCount(long companyId, long[] groupIds, long userId,
+		String className, long classTypeId, String userName, String title,
+		String description, String assetCategoryIds, String assetTagNames,
 		boolean showNonindexable, int[] statuses, boolean andSearch);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long searchCount(long companyId, long[] groupIds, long userId,
-		java.lang.String className, long classTypeId,
-		java.lang.String userName, java.lang.String title,
-		java.lang.String description, java.lang.String assetCategoryIds,
-		java.lang.String assetTagNames, boolean showNonindexable,
-		int[] statuses, boolean andSearch);
 
 	public void setAssetCategoryAssetEntries(long categoryId, long[] entryIds);
 
@@ -522,14 +507,12 @@ public interface AssetEntryLocalService extends BaseLocalService,
 	public AssetEntry updateAssetEntry(AssetEntry assetEntry);
 
 	public AssetEntry updateEntry(long userId, long groupId, Date createDate,
-		Date modifiedDate, java.lang.String className, long classPK,
-		java.lang.String classUuid, long classTypeId, long[] categoryIds,
-		java.lang.String[] tagNames, boolean listable, boolean visible,
-		Date startDate, Date endDate, Date publishDate, Date expirationDate,
-		java.lang.String mimeType, java.lang.String title,
-		java.lang.String description, java.lang.String summary,
-		java.lang.String url, java.lang.String layoutUuid, int height,
-		int width, java.lang.Double priority) throws PortalException;
+		Date modifiedDate, String className, long classPK, String classUuid,
+		long classTypeId, long[] categoryIds, String[] tagNames,
+		boolean listable, boolean visible, Date startDate, Date endDate,
+		Date publishDate, Date expirationDate, String mimeType, String title,
+		String description, String summary, String url, String layoutUuid,
+		int height, int width, Double priority) throws PortalException;
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link #updateEntry(long, long,
@@ -537,16 +520,14 @@ public interface AssetEntryLocalService extends BaseLocalService,
 	boolean, boolean, Date, Date, Date, Date, String, String,
 	String, String, String, String, int, int, Double)}
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	public AssetEntry updateEntry(long userId, long groupId, Date createDate,
-		Date modifiedDate, java.lang.String className, long classPK,
-		java.lang.String classUuid, long classTypeId, long[] categoryIds,
-		java.lang.String[] tagNames, boolean listable, boolean visible,
-		Date startDate, Date endDate, Date expirationDate,
-		java.lang.String mimeType, java.lang.String title,
-		java.lang.String description, java.lang.String summary,
-		java.lang.String url, java.lang.String layoutUuid, int height,
-		int width, java.lang.Double priority) throws PortalException;
+		Date modifiedDate, String className, long classPK, String classUuid,
+		long classTypeId, long[] categoryIds, String[] tagNames,
+		boolean listable, boolean visible, Date startDate, Date endDate,
+		Date expirationDate, String mimeType, String title, String description,
+		String summary, String url, String layoutUuid, int height, int width,
+		Double priority) throws PortalException;
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link #updateEntry(long, long,
@@ -554,62 +535,58 @@ public interface AssetEntryLocalService extends BaseLocalService,
 	boolean, boolean, Date, Date, Date, Date, String, String,
 	String, String, String, String, int, int, Double)}
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	public AssetEntry updateEntry(long userId, long groupId, Date createDate,
-		Date modifiedDate, java.lang.String className, long classPK,
-		java.lang.String classUuid, long classTypeId, long[] categoryIds,
-		java.lang.String[] tagNames, boolean visible, Date startDate,
-		Date endDate, Date expirationDate, java.lang.String mimeType,
-		java.lang.String title, java.lang.String description,
-		java.lang.String summary, java.lang.String url,
-		java.lang.String layoutUuid, int height, int width,
-		java.lang.Integer priority, boolean sync) throws PortalException;
+		Date modifiedDate, String className, long classPK, String classUuid,
+		long classTypeId, long[] categoryIds, String[] tagNames,
+		boolean visible, Date startDate, Date endDate, Date expirationDate,
+		String mimeType, String title, String description, String summary,
+		String url, String layoutUuid, int height, int width, Integer priority,
+		boolean sync) throws PortalException;
 
-	public AssetEntry updateEntry(long userId, long groupId,
-		java.lang.String className, long classPK, long[] categoryIds,
-		java.lang.String[] tagNames) throws PortalException;
+	public AssetEntry updateEntry(long userId, long groupId, String className,
+		long classPK, long[] categoryIds, String[] tagNames)
+		throws PortalException;
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link #updateEntry(String, long,
 	Date, Date, boolean, boolean)}
 	*/
-	@java.lang.Deprecated
-	public AssetEntry updateEntry(java.lang.String className, long classPK,
+	@Deprecated
+	public AssetEntry updateEntry(String className, long classPK,
 		Date publishDate, boolean visible) throws PortalException;
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link #updateEntry(String, long,
 	Date, Date, boolean, boolean)}
 	*/
-	@java.lang.Deprecated
-	public AssetEntry updateEntry(java.lang.String className, long classPK,
+	@Deprecated
+	public AssetEntry updateEntry(String className, long classPK,
 		Date publishDate, Date expirationDate, boolean visible)
 		throws PortalException;
 
-	public AssetEntry updateEntry(java.lang.String className, long classPK,
+	public AssetEntry updateEntry(String className, long classPK,
 		Date publishDate, Date expirationDate, boolean listable, boolean visible)
 		throws PortalException;
 
 	public AssetEntry updateVisible(AssetEntry entry, boolean visible)
 		throws PortalException;
 
-	public AssetEntry updateVisible(java.lang.String className, long classPK,
+	public AssetEntry updateVisible(String className, long classPK,
 		boolean visible) throws PortalException;
 
-	public void validate(long groupId, java.lang.String className,
-		long classPK, long classTypePK, long[] categoryIds,
-		java.lang.String[] tagNames) throws PortalException;
-
-	public void validate(long groupId, java.lang.String className,
-		long classTypePK, long[] categoryIds, java.lang.String[] tagNames)
+	public void validate(long groupId, String className, long classPK,
+		long classTypePK, long[] categoryIds, String[] tagNames)
 		throws PortalException;
+
+	public void validate(long groupId, String className, long classTypePK,
+		long[] categoryIds, String[] tagNames) throws PortalException;
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link #validate(long, String, long,
 	long[], String[])}
 	*/
-	@java.lang.Deprecated
-	public void validate(long groupId, java.lang.String className,
-		long[] categoryIds, java.lang.String[] tagNames)
-		throws PortalException;
+	@Deprecated
+	public void validate(long groupId, String className, long[] categoryIds,
+		String[] tagNames) throws PortalException;
 }

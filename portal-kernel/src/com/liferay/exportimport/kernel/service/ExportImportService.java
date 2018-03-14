@@ -39,7 +39,7 @@ import java.util.Map;
  *
  * @author Brian Wing Shun Chan
  * @see ExportImportServiceUtil
- * @see com.liferay.portlet.exportimport.service.base.ExportImportServiceBaseImpl
+ * @see ExportImportServiceBaseImpl
  * @see com.liferay.portlet.exportimport.service.impl.ExportImportServiceImpl
  * @generated
  */
@@ -61,10 +61,9 @@ public interface ExportImportService extends BaseService {
 	/**
 	* @deprecated As of 7.0.0
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	public File exportLayoutsAsFile(long userId, long groupId,
-		boolean privateLayout,
-		Map<java.lang.String, java.lang.String[]> parameterMap)
+		boolean privateLayout, Map<String, String[]> parameterMap)
 		throws PortalException;
 
 	public long exportLayoutsAsFileInBackground(
@@ -87,7 +86,7 @@ public interface ExportImportService extends BaseService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	public void importLayouts(
 		ExportImportConfiguration exportImportConfiguration, File file)
@@ -100,9 +99,9 @@ public interface ExportImportService extends BaseService {
 	/**
 	* @deprecated As of 7.0.0
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	public void importLayouts(long userId, long groupId, boolean privateLayout,
-		Map<java.lang.String, java.lang.String[]> parameterMap, File file)
+		Map<String, String[]> parameterMap, File file)
 		throws PortalException;
 
 	public long importLayoutsInBackground(

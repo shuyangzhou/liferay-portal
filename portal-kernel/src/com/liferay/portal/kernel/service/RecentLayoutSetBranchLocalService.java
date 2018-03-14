@@ -43,7 +43,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see RecentLayoutSetBranchLocalServiceUtil
- * @see com.liferay.portal.service.base.RecentLayoutSetBranchLocalServiceBaseImpl
+ * @see RecentLayoutSetBranchLocalServiceBaseImpl
  * @see com.liferay.portal.service.impl.RecentLayoutSetBranchLocalServiceImpl
  * @generated
  */
@@ -189,7 +189,7 @@ public interface RecentLayoutSetBranchLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

@@ -43,7 +43,7 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see PluginSettingLocalServiceUtil
- * @see com.liferay.portal.service.base.PluginSettingLocalServiceBaseImpl
+ * @see PluginSettingLocalServiceBaseImpl
  * @see com.liferay.portal.service.impl.PluginSettingLocalServiceImpl
  * @generated
  */
@@ -67,8 +67,8 @@ public interface PluginSettingLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public PluginSetting addPluginSetting(PluginSetting pluginSetting);
 
-	public void checkPermission(long userId, java.lang.String pluginId,
-		java.lang.String pluginType) throws PortalException;
+	public void checkPermission(long userId, String pluginId, String pluginType)
+		throws PortalException;
 
 	/**
 	* Creates a new plugin setting with the primary key. Does not add the plugin setting to the database.
@@ -181,7 +181,7 @@ public interface PluginSettingLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -200,8 +200,8 @@ public interface PluginSettingLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PluginSetting getPluginSetting(long companyId,
-		java.lang.String pluginId, java.lang.String pluginType);
+	public PluginSetting getPluginSetting(long companyId, String pluginId,
+		String pluginType);
 
 	/**
 	* Returns a range of all the plugin settings.
@@ -226,12 +226,10 @@ public interface PluginSettingLocalService extends BaseLocalService,
 	public int getPluginSettingsCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasPermission(long userId, java.lang.String pluginId,
-		java.lang.String pluginType);
+	public boolean hasPermission(long userId, String pluginId, String pluginType);
 
-	public PluginSetting updatePluginSetting(long companyId,
-		java.lang.String pluginId, java.lang.String pluginType,
-		java.lang.String roles, boolean active);
+	public PluginSetting updatePluginSetting(long companyId, String pluginId,
+		String pluginType, String roles, boolean active);
 
 	/**
 	* Updates the plugin setting in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

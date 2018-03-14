@@ -18,7 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.social.kernel.service.SocialRequestServiceUtil} service utility. The
+ * {@link SocialRequestServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,7 +53,7 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see SocialRequestServiceHttp
  * @see com.liferay.social.kernel.model.SocialRequestSoap
- * @see com.liferay.social.kernel.service.SocialRequestServiceUtil
+ * @see SocialRequestServiceUtil
  * @generated
  */
 @ProviderType

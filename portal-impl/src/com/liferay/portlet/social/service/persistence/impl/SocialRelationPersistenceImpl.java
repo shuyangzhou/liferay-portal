@@ -6278,7 +6278,7 @@ public class SocialRelationPersistenceImpl extends BasePersistenceImpl<SocialRel
 	}
 
 	/**
-	 * Returns the social relation with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the social relation with the primary key or throws a {@link NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the social relation
 	 * @return the social relation
