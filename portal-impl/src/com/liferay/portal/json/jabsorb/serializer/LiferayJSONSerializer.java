@@ -14,10 +14,18 @@
 
 package com.liferay.portal.json.jabsorb.serializer;
 
+import com.liferay.petra.lang.ClassLoaderPool;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+
 import org.jabsorb.JSONSerializer;
 import org.jabsorb.serializer.ObjectMatch;
 import org.jabsorb.serializer.SerializerState;
 import org.jabsorb.serializer.UnmarshallException;
+
+import org.json.JSONObject;
 
 /**
  * @author Tomas Polesovsky
@@ -49,5 +57,49 @@ public class LiferayJSONSerializer extends JSONSerializer {
 
 		return super.unmarshall(serializerState, clazz, jsonObj);
 	}
+
+	@Override
+	protected Class getClassFromHint(Object object) throws UnmarshallException {
+		if (object == null) {
+			return null;
+		}
+
+		if (object instanceof JSONObject) {
+			String className = StringPool.BLANK;
+
+			try {
+				JSONObject jsonObject = (JSONObject)object;
+
+				className = jsonObject.getString("javaClass");
+
+				if (jsonObject.has("contextName")) {
+					String contextName = jsonObject.getString("contextName");
+
+					ClassLoader classLoader = ClassLoaderPool.getClassLoader(
+						contextName);
+
+					if (classLoader != null) {
+						return Class.forName(className, true, classLoader);
+					}
+
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							StringBundler.concat(
+								"Unable to get class loader for class ",
+								className, " in context ", contextName));
+					}
+				}
+			}
+			catch (Exception e) {
+				throw new UnmarshallException(
+					"Unable to get class " + className, e);
+			}
+		}
+
+		return super.getClassFromHint(object);
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		LiferayJSONSerializer.class);
 
 }

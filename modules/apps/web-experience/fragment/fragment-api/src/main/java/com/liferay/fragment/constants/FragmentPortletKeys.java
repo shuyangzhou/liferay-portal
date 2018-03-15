@@ -22,4 +22,7 @@ public class FragmentPortletKeys {
 	public static final String FRAGMENT =
 		"com_liferay_fragment_web_portlet_FragmentPortlet";
 
+	public static final String FRAGMENT_DISPLAY =
+		"com_liferay_fragment_display_web_portlet_FragmentEntryDisplayPortlet";
+
 }

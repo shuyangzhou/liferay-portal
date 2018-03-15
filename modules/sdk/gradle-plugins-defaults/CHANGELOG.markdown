@@ -2941,6 +2941,80 @@ version 2.2.0.
 ### Changed
 - [LPS-78436]: Update the [Liferay Gradle Plugins] dependency to version 3.8.5.
 
+## 5.3.16 - 2018-03-05
+
+### Changed
+- [LPS-76997]: Update the [Liferay Gradle Plugins] dependency to version 3.8.6.
+
+## 5.3.17 - 2018-03-05
+
+### Changed
+- [LPS-78459]: Update the [Liferay Gradle Plugins] dependency to version 3.8.7.
+
+## 5.3.18 - 2018-03-07
+
+### Changed
+- [LPS-78050]: Update the [Liferay Gradle Plugins] dependency to version 3.8.8.
+
+## 5.3.19 - 2018-03-07
+
+### Changed
+- [LPS-77425]: Update the [Liferay Gradle Plugins] dependency to version 3.8.9.
+
+## 5.3.20 - 2018-03-07
+
+### Changed
+- [LPS-78571]: Update the [Liferay Gradle Plugins] dependency to version 3.8.10.
+
+## 5.3.21 - 2018-03-07
+
+### Changed
+- [LPS-78459]: Update the [Liferay Gradle Plugins] dependency to version 3.8.11.
+
+## 5.3.22 - 2018-03-07
+
+### Changed
+- [LPS-78493]: Update the [Liferay Gradle Plugins] dependency to version 3.8.12.
+
+## 5.3.23 - 2018-03-08
+
+### Changed
+- [LPS-78558]: Update the [Find Security Bugs] dependency to version
+1.7.1.LIFERAY-PATCHED-1.
+- [LPS-78571]: Update the [Liferay Gradle Plugins] dependency to version 3.8.13.
+
+## 5.3.24 - 2018-03-09
+
+### Changed
+- [LPS-77524]: Allow to have a `testIntegrationCompile` dependency from a
+project with path `:test:arquillian-extension-junit-bridge` without
+`.lfrbuild-portal` marker file.
+
+## 5.3.25 - 2018-03-10
+
+### Changed
+- [LPS-78308]: Update the [Liferay Gradle Plugins] dependency to version 3.8.14.
+
+## 5.3.26 - 2018-03-12
+
+### Changed
+- [LPS-78669]: Update the [Liferay Gradle Plugins] dependency to version 3.8.15.
+
+## 5.3.27 - 2018-03-12
+
+### Changed
+- [LPS-78269]: Update the [Liferay Gradle Plugins] dependency to version 3.8.16.
+
+## 5.3.28 - 2018-03-13
+
+### Changed
+- [LPS-78767]: Update the [Liferay Gradle Plugins] dependency to version 3.8.17.
+
+## 5.3.29 - 2018-03-13
+
+### Changed
+- [LPS-78767]: Update the [Liferay Gradle Plugins] dependency to version 3.8.18.
+
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle License Report]: https://github.com/jk1/Gradle-License-Report
 [Liferay CDN]: https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public
@@ -3247,6 +3321,7 @@ version 2.2.0.
 [LPS-76840]: https://issues.liferay.com/browse/LPS-76840
 [LPS-76954]: https://issues.liferay.com/browse/LPS-76954
 [LPS-76957]: https://issues.liferay.com/browse/LPS-76957
+[LPS-76997]: https://issues.liferay.com/browse/LPS-76997
 [LPS-77111]: https://issues.liferay.com/browse/LPS-77111
 [LPS-77143]: https://issues.liferay.com/browse/LPS-77143
 [LPS-77186]: https://issues.liferay.com/browse/LPS-77186
@@ -3257,7 +3332,9 @@ version 2.2.0.
 [LPS-77400]: https://issues.liferay.com/browse/LPS-77400
 [LPS-77402]: https://issues.liferay.com/browse/LPS-77402
 [LPS-77423]: https://issues.liferay.com/browse/LPS-77423
+[LPS-77425]: https://issues.liferay.com/browse/LPS-77425
 [LPS-77441]: https://issues.liferay.com/browse/LPS-77441
+[LPS-77524]: https://issues.liferay.com/browse/LPS-77524
 [LPS-77532]: https://issues.liferay.com/browse/LPS-77532
 [LPS-77630]: https://issues.liferay.com/browse/LPS-77630
 [LPS-77795]: https://issues.liferay.com/browse/LPS-77795
@@ -3270,13 +3347,22 @@ version 2.2.0.
 [LPS-77996]: https://issues.liferay.com/browse/LPS-77996
 [LPS-78033]: https://issues.liferay.com/browse/LPS-78033
 [LPS-78038]: https://issues.liferay.com/browse/LPS-78038
+[LPS-78050]: https://issues.liferay.com/browse/LPS-78050
 [LPS-78071]: https://issues.liferay.com/browse/LPS-78071
 [LPS-78096]: https://issues.liferay.com/browse/LPS-78096
 [LPS-78150]: https://issues.liferay.com/browse/LPS-78150
 [LPS-78231]: https://issues.liferay.com/browse/LPS-78231
 [LPS-78261]: https://issues.liferay.com/browse/LPS-78261
 [LPS-78266]: https://issues.liferay.com/browse/LPS-78266
+[LPS-78269]: https://issues.liferay.com/browse/LPS-78269
+[LPS-78308]: https://issues.liferay.com/browse/LPS-78308
 [LPS-78436]: https://issues.liferay.com/browse/LPS-78436
+[LPS-78459]: https://issues.liferay.com/browse/LPS-78459
+[LPS-78493]: https://issues.liferay.com/browse/LPS-78493
+[LPS-78558]: https://issues.liferay.com/browse/LPS-78558
+[LPS-78571]: https://issues.liferay.com/browse/LPS-78571
+[LPS-78669]: https://issues.liferay.com/browse/LPS-78669
+[LPS-78767]: https://issues.liferay.com/browse/LPS-78767
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981

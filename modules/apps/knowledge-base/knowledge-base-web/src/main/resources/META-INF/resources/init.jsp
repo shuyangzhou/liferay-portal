@@ -26,6 +26,7 @@ taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/rss" prefix="liferay-rss" %><%@
 taglib uri="http://liferay.com/tld/security" prefix="liferay-security" %><%@
+taglib uri="http://liferay.com/tld/social-bookmarks" prefix="liferay-social-bookmarks" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
@@ -83,8 +84,6 @@ page import="com.liferay.knowledge.base.service.KBCommentServiceUtil" %><%@
 page import="com.liferay.knowledge.base.service.KBFolderLocalServiceUtil" %><%@
 page import="com.liferay.knowledge.base.service.KBFolderServiceUtil" %><%@
 page import="com.liferay.knowledge.base.service.KBTemplateServiceUtil" %><%@
-page import="com.liferay.knowledge.base.service.util.AdminUtil" %><%@
-page import="com.liferay.knowledge.base.service.util.KnowledgeBaseConstants" %><%@
 page import="com.liferay.knowledge.base.util.KnowledgeBaseUtil" %><%@
 page import="com.liferay.knowledge.base.util.comparator.KBArticlePriorityComparator" %><%@
 page import="com.liferay.knowledge.base.util.comparator.KBObjectsTitleComparator" %><%@
@@ -112,6 +111,8 @@ page import="com.liferay.knowledge.base.web.internal.security.permission.resourc
 page import="com.liferay.knowledge.base.web.internal.security.permission.resource.KBCommentPermission" %><%@
 page import="com.liferay.knowledge.base.web.internal.security.permission.resource.KBFolderPermission" %><%@
 page import="com.liferay.knowledge.base.web.internal.security.permission.resource.KBTemplatePermission" %><%@
+page import="com.liferay.knowledge.base.web.internal.social.SocialBookmarksUtil" %><%@
+page import="com.liferay.knowledge.base.web.internal.util.AdminUtil" %><%@
 page import="com.liferay.knowledge.base.web.internal.util.KBArticleAssetEntriesUtil" %><%@
 page import="com.liferay.message.boards.model.MBMessage" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@

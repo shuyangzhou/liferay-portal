@@ -14,8 +14,11 @@
 
 package com.liferay.portal.json.jabsorb.serializer;
 
+import com.liferay.petra.lang.ClassLoaderPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -86,6 +89,13 @@ public class LiferaySerializer extends AbstractSerializer {
 		if (ser.getMarshallClassHints()) {
 			try {
 				jsonObject.put("javaClass", javaClass.getName());
+
+				String contextName = ClassLoaderPool.getContextName(
+					javaClass.getClassLoader());
+
+				if (Validator.isNotNull(contextName)) {
+					jsonObject.put("contextName", contextName);
+				}
 			}
 			catch (Exception e) {
 				throw new MarshallException("Unable to put javaClass", e);
@@ -194,11 +204,33 @@ public class LiferaySerializer extends AbstractSerializer {
 		}
 
 		try {
-			Class.forName(javaClassName);
+			ClassLoader classLoader = null;
+
+			if (jsonObject.has("contextName")) {
+				String contextName = jsonObject.getString("contextName");
+
+				classLoader = ClassLoaderPool.getClassLoader(contextName);
+
+				if (classLoader == null) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							StringBundler.concat(
+								"Unable to get class loader for class ",
+								javaClassName, " in context ", contextName));
+					}
+				}
+			}
+
+			if (classLoader != null) {
+				Class.forName(javaClassName, true, classLoader);
+			}
+			else {
+				Class.forName(javaClassName);
+			}
 		}
 		catch (Exception e) {
 			throw new UnmarshallException(
-				"Unable to load javaClass " + javaClassName, e);
+				"Unable to get class " + javaClassName, e);
 		}
 
 		JSONObject serializableJSONObject = null;
@@ -270,13 +302,35 @@ public class LiferaySerializer extends AbstractSerializer {
 		Object javaClassInstance = null;
 
 		try {
-			javaClass = Class.forName(javaClassName);
+			ClassLoader classLoader = null;
+
+			if (jsonObject.has("contextName")) {
+				String contextName = jsonObject.getString("contextName");
+
+				classLoader = ClassLoaderPool.getClassLoader(contextName);
+
+				if (classLoader == null) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							StringBundler.concat(
+								"Unable to get class loader for class ",
+								javaClassName, " in context ", contextName));
+					}
+				}
+			}
+
+			if (classLoader != null) {
+				javaClass = Class.forName(javaClassName, true, classLoader);
+			}
+			else {
+				javaClass = Class.forName(javaClassName);
+			}
 
 			javaClassInstance = javaClass.newInstance();
 		}
 		catch (Exception e) {
 			throw new UnmarshallException(
-				"Unable to load javaClass " + javaClassName, e);
+				"Unable to get class " + javaClassName, e);
 		}
 
 		JSONObject serializableJSONObject = null;
@@ -344,6 +398,9 @@ public class LiferaySerializer extends AbstractSerializer {
 							serializableJSONObject.get(fieldName));
 					}
 					catch (Exception e) {
+						if (_log.isDebugEnabled()) {
+							_log.debug(e, e);
+						}
 					}
 
 					if (value != null) {

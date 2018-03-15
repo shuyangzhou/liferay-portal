@@ -27,8 +27,7 @@ page import="com.liferay.portal.security.sso.openid.connect.constants.OpenIdConn
 
 <%@ page import="java.util.Collection" %>
 
-<%@ page import="javax.portlet.ActionRequest" %><%@
-page import="javax.portlet.WindowState" %>
+<%@ page import="javax.portlet.ActionRequest" %>
 
 <liferay-frontend:defineObjects />
 

@@ -74,7 +74,7 @@ kbDisplayPortletInstanceConfiguration = ParameterMapUtil.setParameterMap(KBDispl
 										}
 										%>
 
-										<liferay-ui:input-resource id="configurationKBObject" url="<%= title %>" />
+										<liferay-ui:input-resource id="configurationKBObject" title="<%= title %>" url="<%= title %>" />
 
 										<aui:button name="selectKBObjectButton" value="select" />
 									</aui:field-wrapper>
@@ -111,9 +111,9 @@ kbDisplayPortletInstanceConfiguration = ParameterMapUtil.setParameterMap(KBDispl
 								<liferay-ui:message key="social-bookmarks" />
 							</h4>
 
-							<liferay-ui:social-bookmarks-settings
+							<liferay-social-bookmarks:bookmarks-settings
 								displayStyle="<%= kbDisplayPortletInstanceConfiguration.socialBookmarksDisplayStyle() %>"
-								types="<%= kbDisplayPortletInstanceConfiguration.socialBookmarksTypes() %>"
+								types="<%= SocialBookmarksUtil.getSocialBookmarksTypes(kbDisplayPortletInstanceConfiguration.socialBookmarksTypes()) %>"
 							/>
 
 							<aui:input label="content-root-prefix" name="preferences--contentRootPrefix--" type="input" value="<%= kbDisplayPortletInstanceConfiguration.contentRootPrefix() %>" />

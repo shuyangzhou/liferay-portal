@@ -504,6 +504,7 @@ public class DDMFormFieldFreeMarkerRenderer implements DDMFormFieldRenderer {
 		freeMarkerContext.put("editorName", editor.getName());
 
 		freeMarkerContext.put("fieldStructure", fieldContext);
+		freeMarkerContext.put("localizable", ddmFormField.isLocalizable());
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);

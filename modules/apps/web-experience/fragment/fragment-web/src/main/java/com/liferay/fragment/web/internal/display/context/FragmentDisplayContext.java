@@ -168,17 +168,11 @@ public class FragmentDisplayContext {
 	}
 
 	public String getFragmentCollectionsRedirect() throws PortalException {
-		String redirect = ParamUtil.getString(_request, "redirect");
+		PortletURL backURL = _renderResponse.createRenderURL();
 
-		if (Validator.isNull(redirect)) {
-			PortletURL backURL = _renderResponse.createRenderURL();
+		backURL.setParameter("mvcRenderCommandName", "/fragment/view");
 
-			backURL.setParameter("mvcRenderCommandName", "/fragment/view");
-
-			redirect = backURL.toString();
-		}
-
-		return redirect;
+		return backURL.toString();
 	}
 
 	public SearchContainer getFragmentCollectionsSearchContainer()
@@ -196,15 +190,7 @@ public class FragmentDisplayContext {
 				_renderRequest, _renderResponse.createRenderURL(), null,
 				"there-are-no-collections");
 
-		if (!isSearch()) {
-			fragmentCollectionsSearchContainer.setEmptyResultsMessage(
-				"there-are-no-collections.-you-can-add-a-collection-by-" +
-					"clicking-the-plus-button-on-the-bottom-right-corner");
-
-			fragmentCollectionsSearchContainer.setEmptyResultsMessageCssClass(
-				"taglib-empty-result-message-header-has-plus-btn");
-		}
-		else {
+		if (isSearch()) {
 			fragmentCollectionsSearchContainer.setSearch(true);
 		}
 
@@ -283,14 +269,7 @@ public class FragmentDisplayContext {
 			_renderRequest, _renderResponse.createRenderURL(), null,
 			"there-are-no-fragments");
 
-		if (!isSearch()) {
-			fragmentEntriesSearchContainer.setEmptyResultsMessage(
-				"there-are-no-fragments.-you-can-add-a-fragment-by-clicking-" +
-					"the-plus-button-on-the-bottom-right-corner");
-			fragmentEntriesSearchContainer.setEmptyResultsMessageCssClass(
-				"taglib-empty-result-message-header-has-plus-btn");
-		}
-		else {
+		if (isSearch()) {
 			fragmentEntriesSearchContainer.setSearch(true);
 		}
 

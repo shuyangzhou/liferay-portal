@@ -92,27 +92,32 @@ String duplicateTitle = workflowDefinitionDisplayContext.getDuplicateTitle(workf
 </liferay-ui:icon-menu>
 
 <div class="hide" id="<%= randomNamespace %>titleInputLocalized">
-	<aui:col>
-		<aui:field-wrapper label="title">
-			<liferay-ui:input-localized name="title" xml="<%= duplicateTitle %>" />
-		</aui:field-wrapper>
-	</aui:col>
+	<aui:form name='<%= randomNamespace + "form" %>'>
+		<aui:input name="randomNamespace" type="hidden" value="<%= randomNamespace %>" />
+		<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
+		<aui:input name="name" type="hidden" value="<%= PortalUUIDUtil.generate() %>" />
+		<aui:input name="content" type="hidden" value="<%= workflowDefinition.getContent() %>" />
+		<aui:input name="defaultDuplicationTitle" type="hidden" value="<%= duplicateTitle %>" />
+		<aui:input name="duplicatedDefinitionTitle" type="hidden" value="<%= workflowDefinition.getTitle(LanguageUtil.getLanguageId(request)) %>" />
 
-	<aui:col>
-		<liferay-ui:message key="copy-does-not-include-revisions" />
-	</aui:col>
-</div>
+		<aui:fieldset>
+			<aui:col>
+				<aui:field-wrapper label="title">
+					<liferay-ui:input-localized name='<%= randomNamespace + "title" %>' xml="<%= duplicateTitle %>" />
+				</aui:field-wrapper>
+			</aui:col>
 
-<div class="hide" id="<%= randomNamespace %>contentInput">
-	<aui:input name="name" type="hidden" value="<%= PortalUUIDUtil.generate() %>" />
-	<aui:input name="content" type="hidden" value="<%= workflowDefinition.getContent() %>" />
-	<aui:input name="duplicatedDefinitionTitle" type="hidden" value="<%= workflowDefinition.getTitle(LanguageUtil.getLanguageId(request)) %>" />
+			<aui:col>
+				<liferay-ui:message key="copy-does-not-include-revisions" />
+			</aui:col>
+		</aui:fieldset>
+	</aui:form>
 </div>
 
 <aui:script use="liferay-workflow-web">
 	var title = '<liferay-ui:message key="duplicate-workflow" />';
 
-	var confirmBeforeDuplicateDialog = A.rbind('confirmBeforeDuplicateDialog', Liferay.WorkflowWeb, '<%= duplicateWorkflowDefinition %>', title, '<%= randomNamespace %>');
+	var confirmBeforeDuplicateDialog = A.rbind('confirmBeforeDuplicateDialog', Liferay.WorkflowWeb, '<%= duplicateWorkflowDefinition %>', title, '<%= randomNamespace %>', '<portlet:namespace />');
 
 	Liferay.delegateClick('<portlet:namespace />duplicate<%= workflowDefinition.getName() %>', confirmBeforeDuplicateDialog);
 </aui:script>

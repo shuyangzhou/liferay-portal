@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.mapping.form.renderer.internal;
 
 import com.liferay.dynamic.data.mapping.form.evaluator.DDMFormEvaluationResult;
 import com.liferay.dynamic.data.mapping.form.evaluator.DDMFormFieldEvaluationResult;
+import com.liferay.dynamic.data.mapping.form.evaluator.internal.DDMFormEvaluationResultBuilder;
 import com.liferay.dynamic.data.mapping.form.field.type.BaseDDMFormFieldRenderer;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldRenderer;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTemplateContextContributor;
@@ -34,15 +35,20 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageConstants;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -58,6 +64,7 @@ public class DDMFormFieldTemplateContextFactoryTest {
 
 	@Before
 	public void setUp() {
+		setUpDDMFormTemplateContextFactoryUtil();
 		setUpLanguageUtil();
 	}
 
@@ -416,6 +423,7 @@ public class DDMFormFieldTemplateContextFactoryTest {
 		DDMFormRenderingContext ddmFormRenderingContext =
 			new DDMFormRenderingContext();
 
+		ddmFormRenderingContext.setHttpServletRequest(_request);
 		ddmFormRenderingContext.setLocale(_LOCALE);
 		ddmFormRenderingContext.setPortletNamespace(_PORTLET_NAMESPACE);
 		ddmFormRenderingContext.setReadOnly(ddmFormReadOnly);
@@ -444,13 +452,8 @@ public class DDMFormFieldTemplateContextFactoryTest {
 
 		ddmFormFieldEvaluationResults.add(ddmFormFieldEvaluationResult);
 
-		DDMFormEvaluationResult ddmFormEvaluationResult =
-			new DDMFormEvaluationResult();
-
-		ddmFormEvaluationResult.setDDMFormFieldEvaluationResults(
-			ddmFormFieldEvaluationResults);
-
-		return ddmFormEvaluationResult;
+		return DDMFormEvaluationResultBuilder.build(
+			ddmFormFieldEvaluationResults, Collections.emptySet());
 	}
 
 	protected DDMFormFieldRenderer getTextDDMFormFieldRenderer() {
@@ -517,6 +520,20 @@ public class DDMFormFieldTemplateContextFactoryTest {
 		return ddmFormFieldTypeServicesTracker;
 	}
 
+	protected void setUpDDMFormTemplateContextFactoryUtil() {
+		_request = Mockito.mock(HttpServletRequest.class);
+
+		ThemeDisplay themeDisplay = new ThemeDisplay();
+
+		themeDisplay.setPathThemeImages(StringPool.BLANK);
+
+		Mockito.when(
+			(ThemeDisplay)_request.getAttribute(WebKeys.THEME_DISPLAY)
+		).thenReturn(
+			themeDisplay
+		);
+	}
+
 	protected void setUpLanguageUtil() {
 		Language language = Mockito.mock(Language.class);
 
@@ -546,5 +563,6 @@ public class DDMFormFieldTemplateContextFactoryTest {
 	private static final String _PORTLET_NAMESPACE = "_PORTLET_NAMESPACE_";
 
 	private final JSONFactory _jsonFactory = new JSONFactoryImpl();
+	private HttpServletRequest _request;
 
 }

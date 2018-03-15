@@ -49,7 +49,6 @@ page import="com.liferay.portal.security.ldap.exportimport.configuration.LDAPExp
 page import="com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration" %><%@
 page import="com.liferay.portal.security.ldap.util.LDAPUtil" %><%@
 page import="com.liferay.portal.security.ldap.validator.LDAPFilterException" %><%@
-page import="com.liferay.portal.settings.authentication.ldap.web.internal.portlet.constants.LDAPSettingsConstants" %><%@
 page import="com.liferay.portal.settings.authentication.ldap.web.internal.portlet.util.ConfigurationProviderUtil" %><%@
 page import="com.liferay.portal.settings.authentication.ldap.web.internal.util.LDAPFilterValidatorUtil" %><%@
 page import="com.liferay.portal.settings.authentication.ldap.web.internal.util.PortalLDAPUtil" %><%@
@@ -64,8 +63,7 @@ page import="javax.naming.directory.Attributes" %><%@
 page import="javax.naming.directory.SearchResult" %><%@
 page import="javax.naming.ldap.LdapContext" %>
 
-<%@ page import="javax.portlet.ActionRequest" %><%@
-page import="javax.portlet.PortletURL" %>
+<%@ page import="javax.portlet.PortletURL" %>
 
 <liferay-frontend:defineObjects />
 
@@ -87,6 +85,4 @@ ConfigurationProvider<LDAPImportConfiguration> ldapImportConfigurationProvider =
 LDAPImportConfiguration ldapImportConfiguration = ldapImportConfigurationProvider.getConfiguration(themeDisplay.getCompanyId());
 
 ConfigurationProvider<LDAPServerConfiguration> ldapServerConfigurationProvider = ConfigurationProviderUtil.getLDAPServerConfigurationProvider();
-
-List<LDAPServerConfiguration> ldapServerConfigurations = ldapServerConfigurationProvider.getConfigurations(themeDisplay.getCompanyId(), false);
 %>
