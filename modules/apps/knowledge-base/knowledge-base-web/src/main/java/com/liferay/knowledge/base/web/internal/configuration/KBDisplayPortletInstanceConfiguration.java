@@ -23,7 +23,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
  * @author Roberto Díaz
  */
 @ExtendedObjectClassDefinition(
-	category = "collaboration",
+	category = "knowledge-base",
 	scope = ExtendedObjectClassDefinition.Scope.PORTLET_INSTANCE
 )
 @Meta.OCD(
@@ -92,8 +92,8 @@ public interface KBDisplayPortletInstanceConfiguration {
 	public String socialBookmarksDisplayStyle();
 
 	@Meta.AD(
-		deflt = "${server-property://com.liferay.portal/social.bookmark.types}",
-		name = "social-bookmarks-types", required = false
+		deflt = StringPool.STAR, name = "social-bookmarks-types",
+		required = false
 	)
 	public String socialBookmarksTypes();
 

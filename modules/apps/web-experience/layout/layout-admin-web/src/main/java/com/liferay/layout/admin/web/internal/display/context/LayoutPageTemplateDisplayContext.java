@@ -20,7 +20,6 @@ import com.liferay.layout.admin.web.internal.util.LayoutPageTemplatePortletUtil;
 import com.liferay.layout.page.template.model.LayoutPageTemplateCollection;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.LayoutPageTemplateCollectionServiceUtil;
-import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalServiceUtil;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryServiceUtil;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -154,16 +153,7 @@ public class LayoutPageTemplateDisplayContext {
 				_renderRequest, _renderResponse.createRenderURL(), null,
 				"there-are-no-collections");
 
-		if (!isSearch()) {
-			layoutPageTemplateCollectionsSearchContainer.setEmptyResultsMessage(
-				"there-are-no-collections.-you-can-add-a-collection-by-" +
-					"clicking-the-plus-button-on-the-bottom-right-corner");
-
-			layoutPageTemplateCollectionsSearchContainer.
-				setEmptyResultsMessageCssClass(
-					"taglib-empty-result-message-header-has-plus-btn");
-		}
-		else {
+		if (isSearch()) {
 			layoutPageTemplateCollectionsSearchContainer.setSearch(true);
 		}
 
@@ -258,15 +248,7 @@ public class LayoutPageTemplateDisplayContext {
 				_renderRequest, _renderResponse.createRenderURL(), null,
 				"there-are-no-page-templates");
 
-		if (!isSearch()) {
-			layoutPageTemplateEntriesSearchContainer.setEmptyResultsMessage(
-				"there-are-no-page-templates.-you-can-add-a-page-template-by-" +
-					"clicking-the-plus-button-on-the-bottom-right-corner");
-			layoutPageTemplateEntriesSearchContainer.
-				setEmptyResultsMessageCssClass(
-					"taglib-empty-result-message-header-has-plus-btn");
-		}
-		else {
+		if (isSearch()) {
 			layoutPageTemplateEntriesSearchContainer.setSearch(true);
 		}
 
@@ -291,13 +273,12 @@ public class LayoutPageTemplateDisplayContext {
 
 		if (isSearch()) {
 			layoutPageTemplateEntries =
-				LayoutPageTemplateEntryLocalServiceUtil.
-					getLayoutPageTemplateEntries(
-						themeDisplay.getScopeGroupId(),
-						getLayoutPageTemplateCollectionId(), getKeywords(),
-						layoutPageTemplateEntriesSearchContainer.getStart(),
-						layoutPageTemplateEntriesSearchContainer.getEnd(),
-						orderByComparator);
+				LayoutPageTemplateEntryServiceUtil.getLayoutPageTemplateEntries(
+					themeDisplay.getScopeGroupId(),
+					getLayoutPageTemplateCollectionId(), getKeywords(),
+					layoutPageTemplateEntriesSearchContainer.getStart(),
+					layoutPageTemplateEntriesSearchContainer.getEnd(),
+					orderByComparator);
 
 			layoutPageTemplateEntriesCount =
 				LayoutPageTemplateEntryServiceUtil.
@@ -307,13 +288,12 @@ public class LayoutPageTemplateDisplayContext {
 		}
 		else {
 			layoutPageTemplateEntries =
-				LayoutPageTemplateEntryLocalServiceUtil.
-					getLayoutPageTemplateEntries(
-						themeDisplay.getScopeGroupId(),
-						getLayoutPageTemplateCollectionId(),
-						layoutPageTemplateEntriesSearchContainer.getStart(),
-						layoutPageTemplateEntriesSearchContainer.getEnd(),
-						orderByComparator);
+				LayoutPageTemplateEntryServiceUtil.getLayoutPageTemplateEntries(
+					themeDisplay.getScopeGroupId(),
+					getLayoutPageTemplateCollectionId(),
+					layoutPageTemplateEntriesSearchContainer.getStart(),
+					layoutPageTemplateEntriesSearchContainer.getEnd(),
+					orderByComparator);
 
 			layoutPageTemplateEntriesCount =
 				LayoutPageTemplateEntryServiceUtil.
@@ -458,6 +438,10 @@ public class LayoutPageTemplateDisplayContext {
 		throws PortalException {
 
 		if (_hasLayoutPageTemplateEntriesResults()) {
+			return true;
+		}
+
+		if (isSearch()) {
 			return true;
 		}
 

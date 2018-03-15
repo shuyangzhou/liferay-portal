@@ -27,16 +27,16 @@ public class ConfigurationCategoryDisplay {
 		_configurationCategory = configurationCategory;
 	}
 
-	public String getCategorySetKey() {
-		return _configurationCategory.getCategorySetKey();
+	public String getCategorySection() {
+		return _configurationCategory.getCategorySection();
 	}
 
 	public String getIcon() {
-		return _configurationCategory.getIcon();
+		return _configurationCategory.getCategoryIcon();
 	}
 
 	public String getKey() {
-		return _configurationCategory.getKey();
+		return _configurationCategory.getCategoryKey();
 	}
 
 	private final ConfigurationCategory _configurationCategory;

@@ -3,6 +3,7 @@ dependencies {
 	compileInclude group: "com.beust", name: "jcommander", version: "1.60"
 	compileInclude group: "org.slf4j", name: "slf4j-api", version: "1.6.6"
 	compileInclude group: "org.slf4j", name: "slf4j-simple", version: "1.6.6"
+	compileInclude project(":sdk:ant-bnd")
 }
 
 liferayOSGi {
