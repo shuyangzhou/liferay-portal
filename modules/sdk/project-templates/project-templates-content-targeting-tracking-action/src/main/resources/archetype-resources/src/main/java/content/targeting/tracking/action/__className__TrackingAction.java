@@ -4,9 +4,9 @@ import com.liferay.content.targeting.api.model.BaseJSPTrackingAction;
 import com.liferay.content.targeting.api.model.TrackingAction;
 import com.liferay.content.targeting.exception.InvalidTrackingActionException;
 import com.liferay.content.targeting.model.TrackingActionInstance;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.List;
 import java.util.Locale;
