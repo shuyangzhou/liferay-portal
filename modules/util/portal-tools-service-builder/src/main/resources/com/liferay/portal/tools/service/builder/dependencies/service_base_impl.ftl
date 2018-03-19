@@ -52,6 +52,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +78,11 @@ import ${apiPackagePath}.service.${entity.name}${sessionTypeName}Service;
 
 <#if entity.localizedEntity??>
 	import ${apiPackagePath}.model.${entity.name}Localization;
+</#if>
+
+<#if entity.isVersioned()>
+	import ${apiPackagePath}.model.${entity.name}Version;
+	import com.liferay.portal.kernel.service.version.VersionService;
 </#if>
 
 <#list referenceEntities as referenceEntity>
@@ -113,7 +119,13 @@ import ${apiPackagePath}.service.${entity.name}${sessionTypeName}Service;
 </#if>
 
 	@ProviderType
-	public abstract class ${entity.name}LocalServiceBaseImpl extends BaseLocalServiceImpl implements ${entity.name}LocalService, IdentifiableOSGiService {
+	public abstract class ${entity.name}LocalServiceBaseImpl extends BaseLocalServiceImpl implements ${entity.name}LocalService, IdentifiableOSGiService
+
+	<#if entity.isVersioned()>
+		, VersionService<${entity.name}, ${entity.name}Version>
+	</#if>
+
+	{
 
 		/*
 		 * NOTE FOR DEVELOPERS:
@@ -170,16 +182,34 @@ import ${apiPackagePath}.service.${entity.name}${sessionTypeName}Service;
 			return ${entity.varName}Persistence.update(${entity.varName});
 		}
 
-		/**
-		 * Creates a new ${entity.humanName} with the primary key. Does not add the ${entity.humanName} to the database.
-		 *
-		 * @param ${entity.PKVarName} the primary key for the new ${entity.humanName}
-		 * @return the new ${entity.humanName}
-		 */
-		@Override
-		public ${entity.name} create${entity.name}(${entity.PKClassName} ${entity.PKVarName}) {
-			return ${entity.varName}Persistence.create(${entity.PKVarName});
-		}
+		<#if entity.isVersioned()>
+			/**
+			 * Creates a new ${entity.humanName} with the primary key. Does not add the ${entity.humanName} to the database.
+			 *
+			 * @return the new ${entity.humanName}
+			 */
+			@Override
+			public ${entity.name} create() {
+				long primaryKey = counterLocalService.increment(${entity.name}.class.getName());
+
+				${entity.name} ${entity.varName} = ${entity.varName}Persistence.create(primaryKey);
+
+				${entity.varName}.setHeadId(primaryKey);
+
+				return ${entity.varName};
+			}
+		<#else>
+			/**
+			* Creates a new ${entity.humanName} with the primary key. Does not add the ${entity.humanName} to the database.
+			*
+			* @param ${entity.PKVarName} the primary key for the new ${entity.humanName}
+			* @return the new ${entity.humanName}
+			*/
+			@Override
+			public ${entity.name} create${entity.name}(${entity.PKClassName} ${entity.PKVarName}) {
+				return ${entity.varName}Persistence.create(${entity.PKVarName});
+			}
+		</#if>
 
 		<#assign serviceBaseExceptions = serviceBuilder.getServiceBaseExceptions(methods, "delete" + entity.name, [entity.PKClassName], ["PortalException"]) />
 
@@ -735,7 +765,11 @@ import ${apiPackagePath}.service.${entity.name}${sessionTypeName}Service;
 		@Indexable(type = IndexableType.REINDEX)
 		@Override
 		public ${entity.name} update${entity.name}(${entity.name} ${entity.varName}) <#if (serviceBaseExceptions?size gt 0)>throws ${stringUtil.merge(serviceBaseExceptions)} </#if>{
-			return ${entity.varName}Persistence.update(${entity.varName});
+			<#if entity.isVersioned()>
+				return update(${entity.varName});
+			<#else>
+				return ${entity.varName}Persistence.update(${entity.varName});
+			</#if>
 		}
 
 		<#list entity.blobEntityColumns as entityColumn>
@@ -1228,6 +1262,264 @@ import ${apiPackagePath}.service.${entity.name}${sessionTypeName}Service;
 			</#if>
 		</#if>
 	}
+
+	<#if stringUtil.equals(sessionTypeName, "Local") && entity.isVersioned()>
+		<#assign pkEntityMethod = entity.PKEntityColumns?first.methodName />
+
+		@Override
+		public List<${entity.name}Version> delete(${entity.name} ${entity.varName}) {
+			if (${entity.varName}.isDraft()) {
+				${entity.varName}Persistence.remove(${entity.varName});
+
+				return Collections.emptyList();
+			}
+
+			_deleteDraft(${entity.varName});
+
+			List<${entity.name}Version> ${entity.varName}Versions = getVersions(${entity.varName});
+
+			for (${entity.name}Version ${entity.varName}Version : ${entity.varName}Versions) {
+				${entity.varName}VersionPersistence.remove(${entity.varName}Version);
+			}
+
+			${entity.varName}LocalService.delete${entity.name}(${entity.varName});
+
+			return ${entity.varName}Versions;
+		}
+
+		@Override
+		public ${entity.name}Version deleteVersion(${entity.name}Version ${entity.varName}Version) throws PortalException {
+			${entity.name}Version latest${entity.name}Version = ${entity.varName}VersionPersistence.findBy${pkEntityMethod}_First(${entity.varName}Version.getVersionedModelId(), null);
+
+			if (latest${entity.name}Version.getVersion() == ${entity.varName}Version.getVersion()) {
+				throw new IllegalArgumentException("Cannot delete latest version " + ${entity.varName}Version.getVersion() + ", revert to go back to a previous version");
+			}
+
+			return ${entity.varName}VersionPersistence.remove(${entity.varName}Version);
+		}
+
+		@Override
+		public ${entity.name} fetchDraft(${entity.name} ${entity.varName}) {
+			if (${entity.varName}.isDraft()) {
+				return ${entity.varName};
+			}
+
+			return ${entity.varName}Persistence.fetchByHeadId(${entity.varName}.getPrimaryKey());
+		}
+
+		@Override
+		public ${entity.name} fetchDraft(long primaryKey) {
+			return ${entity.varName}Persistence.fetchByHeadId(primaryKey);
+		}
+
+		@Override
+		public ${entity.name}Version fetchLatestVersion(${entity.name} ${entity.varName}) {
+			long primaryKey = ${entity.varName}.getPrimaryKey();
+
+			if (${entity.varName}.isDraft()) {
+				primaryKey = ${entity.varName}.getHeadId();
+			}
+
+			return ${entity.varName}VersionPersistence.fetchBy${pkEntityMethod}_First(primaryKey, null);
+		}
+
+		@Override
+		public ${entity.name} fetchPublished(${entity.name} ${entity.varName}) {
+			if (!${entity.varName}.isDraft()) {
+				return ${entity.varName};
+			}
+
+			if (${entity.varName}.getHeadId() == ${entity.varName}.getPrimaryKey()) {
+				return null;
+			}
+
+			return ${entity.varName}Persistence.fetchByPrimaryKey(${entity.varName}.getHeadId());
+		}
+
+		@Override
+		public ${entity.name} fetchPublished(long primaryKey) {
+			${entity.name} ${entity.varName} = ${entity.varName}Persistence.fetchByPrimaryKey(primaryKey);
+
+			if ((${entity.varName} == null) || (${entity.varName}.getHeadId() == ${entity.varName}.getPrimaryKey())) {
+				return null;
+			}
+
+			return ${entity.varName};
+		}
+
+		@Override
+		public ${entity.name} getDraft(${entity.name} ${entity.varName}) {
+			if (${entity.varName}.isDraft()) {
+				return ${entity.varName};
+			}
+
+			${entity.name} draft${entity.name} = ${entity.varName}Persistence.fetchByHeadId(${entity.varName}.getPrimaryKey());
+
+			if (draft${entity.name} == null) {
+				draft${entity.name} = _createDraft(${entity.varName});
+			}
+
+			return draft${entity.name};
+		}
+
+		@Override
+		public ${entity.name} getDraft(long primaryKey) throws PortalException {
+			${entity.name} draft${entity.name} = ${entity.varName}Persistence.fetchByHeadId(primaryKey);
+
+			if (draft${entity.name} == null) {
+				${entity.name} ${entity.varName} = ${entity.varName}Persistence.findByPrimaryKey(primaryKey);
+
+				draft${entity.name} = _createDraft(${entity.varName});
+			}
+
+			return draft${entity.name};
+		}
+
+		@Override
+		public ${entity.name}Version getVersion(${entity.name} ${entity.varName}, int version) throws PortalException {
+			long primaryKey = ${entity.varName}.getPrimaryKey();
+
+			if (${entity.varName}.isDraft()) {
+				primaryKey = ${entity.varName}.getHeadId();
+			}
+
+			return ${entity.varName}VersionPersistence.findBy${pkEntityMethod}_Version(primaryKey, version);
+		}
+
+		@Override
+		public List<${entity.name}Version> getVersions(${entity.name} ${entity.varName}) {
+			long primaryKey = ${entity.varName}.getPrimaryKey();
+
+			if (${entity.varName}.isDraft()) {
+				if (${entity.varName}.getHeadId() == ${entity.varName}.getPrimaryKey()) {
+					return Collections.emptyList();
+				}
+
+				primaryKey = ${entity.varName}.getHeadId();
+			}
+
+			return ${entity.varName}VersionPersistence.findBy${pkEntityMethod}(primaryKey);
+		}
+
+		@Indexable(type = IndexableType.REINDEX)
+		@Override
+		public ${entity.name} publish(${entity.name} ${entity.varName}) throws PortalException {
+			if (!${entity.varName}.isDraft()) {
+				throw new IllegalArgumentException("Can only publish drafts " + ${entity.varName}.getPrimaryKey());
+			}
+
+			if (${entity.varName}.getHeadId() == ${entity.varName}.getPrimaryKey()) {
+				return _publishVersion(${entity.varName}, ${entity.varName}.toVersionModel());
+			}
+
+			${entity.name} published${entity.name} = ${entity.varName}Persistence.fetchByPrimaryKey(${entity.varName}.getHeadId());
+
+			<#list entity.entityColumns as entityColumn>
+				<#if !entityColumn.isPrimary() && !stringUtil.equals(entityColumn.methodName, "HeadId") && !stringUtil.equals(entityColumn.methodName, "MvccVersion")>
+					published${entity.name}.set${entityColumn.methodName}(${entity.varName}.get${entityColumn.methodName}());
+				</#if>
+			</#list>
+
+			published${entity.name} = _publishVersion(published${entity.name}, published${entity.name}.toVersionModel());
+
+			${entity.varName}Persistence.remove(${entity.varName});
+
+			return published${entity.name};
+		}
+
+		@Indexable(type = IndexableType.REINDEX)
+		@Override
+		public ${entity.name} revert(${entity.name} ${entity.varName}, int version) throws PortalException {
+			${entity.name}Version ${entity.varName}Version = getVersion(${entity.varName}, version);
+
+			${entity.name} current${entity.name} = null;
+
+			if (${entity.varName}.isDraft()) {
+				current${entity.name} = ${entity.varName}Persistence.findByPrimaryKey(${entity.varName}.getHeadId());
+
+				${entity.varName}Persistence.remove(${entity.varName});
+			}
+			else {
+				current${entity.name} = ${entity.varName};
+
+				_deleteDraft(${entity.varName});
+			}
+
+			${entity.name} previous${entity.name} = ${entity.varName}Version.toVersionedModel();
+
+			previous${entity.name}.setMvccVersion(current${entity.name}.getMvccVersion());
+
+			return _publishVersion(previous${entity.name}, previous${entity.name}.toVersionModel());
+		}
+
+		@Indexable(type = IndexableType.REINDEX)
+		@Override
+		public ${entity.name} update(${entity.name} ${entity.varName}) {
+			if (${entity.varName}.isDraft()) {
+				return ${entity.varName}Persistence.update(${entity.varName});
+			}
+
+			${entity.name} draft${entity.name} = ${entity.varName}Persistence.fetchByHeadId(${entity.varName}.getPrimaryKey());
+
+			if (draft${entity.name} != null) {
+				throw new IllegalArgumentException("Draft already exists for " + ${entity.varName}.getPrimaryKey());
+			}
+
+			draft${entity.name} = _createDraft(${entity.varName});
+
+			return ${entity.varName}Persistence.update(draft${entity.name});
+		}
+
+		private ${entity.name} _createDraft(${entity.name} ${entity.varName}) {
+			${entity.name}Impl draft${entity.name} = new ${entity.name}Impl();
+
+			draft${entity.name}.setNew(true);
+
+			<#list entity.entityColumns as entityColumn>
+				<#if entityColumn.isPrimary()>
+					draft${entity.name}.setPrimaryKey(counterLocalService.increment(${entity.name}.class.getName()));
+				<#elseif stringUtil.equals(entityColumn.methodName, "MvccVersion")>
+					draft${entity.name}.setMvccVersion(0);
+				<#elseif stringUtil.equals(entityColumn.methodName, "HeadId")>
+					draft${entity.name}.setHeadId(${entity.varName}.getPrimaryKey());
+				<#else>
+					draft${entity.name}.set${entityColumn.methodName}(${entity.varName}.get${entityColumn.methodName}());
+				</#if>
+			</#list>
+
+			draft${entity.name}.resetOriginalValues();
+
+			return draft${entity.name};
+		}
+
+		private void _deleteDraft(${entity.name} ${entity.varName}) {
+			${entity.name} draft${entity.name} = ${entity.varName}Persistence.fetchByHeadId(${entity.varName}.getPrimaryKey());
+
+			if (draft${entity.name} != null) {
+				${entity.varName}LocalService.delete${entity.name}(draft${entity.name});
+			}
+		}
+
+		private ${entity.name} _publishVersion(${entity.name} ${entity.varName}, ${entity.name}Version ${entity.varName}Version) {
+			int version = 1;
+
+			${entity.name}Version latest${entity.name}Version = fetchLatestVersion(${entity.varName});
+
+			if (latest${entity.name}Version != null) {
+				version = latest${entity.name}Version.getVersion() + 1;
+			}
+
+			${entity.varName}Version.setNew(true);
+			${entity.varName}Version.setPrimaryKey(counterLocalService.increment(${entity.name}Version.class.getName()));
+			${entity.varName}Version.setVersion(version);
+
+			${entity.varName}VersionPersistence.update(${entity.varName}Version);
+
+			${entity.varName}.setHeadId(-${entity.varName}.getPrimaryKey());
+
+			return ${entity.varName}Persistence.update(${entity.varName});
+		}
+	</#if>
 
 	/**
 	 * Returns the OSGi service identifier.
