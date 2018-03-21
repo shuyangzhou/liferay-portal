@@ -178,6 +178,10 @@ public class PortletSessionImpl implements LiferayPortletSession {
 
 	@Override
 	public boolean isNew() {
+		if (isInvalidated()) {
+			throw new IllegalStateException();
+		}
+
 		return session.isNew();
 	}
 

@@ -219,6 +219,10 @@ public class MVCActionCommandTest {
 			return null;
 		}
 
+		@Override
+		public void setSessionRequest(HttpServletRequest httpServletRequest) {
+		}
+
 		private final MockHttpServletRequest _mockHttpServletRequest =
 			new MockHttpServletRequest();
 

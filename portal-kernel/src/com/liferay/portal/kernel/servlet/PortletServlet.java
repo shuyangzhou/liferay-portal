@@ -104,6 +104,14 @@ public class PortletServlet extends HttpServlet {
 
 		portletSession.setHttpSession(session);
 
+		LiferayPortletRequest liferayPortletRequest =
+			PortalUtil.getLiferayPortletRequest(portletRequest);
+
+		HttpServletRequest portletRequestHttpServletRequest =
+			liferayPortletRequest.getHttpServletRequest();
+
+		liferayPortletRequest.setSessionRequest(request);
+
 		try {
 			PortletFilterUtil.doFilter(
 				portletRequest, portletResponse, lifecycle, filterChain);
@@ -112,6 +120,10 @@ public class PortletServlet extends HttpServlet {
 			_log.error(pe, pe);
 
 			throw new ServletException(pe);
+		}
+		finally {
+			liferayPortletRequest.setSessionRequest(
+				portletRequestHttpServletRequest);
 		}
 	}
 

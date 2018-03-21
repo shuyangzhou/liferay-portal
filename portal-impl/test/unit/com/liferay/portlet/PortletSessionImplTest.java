@@ -142,6 +142,14 @@ public class PortletSessionImplTest {
 
 		portletSessionImpl.invalidate();
 
+		try {
+			portletSessionImpl.isNew();
+
+			Assert.fail();
+		}
+		catch (IllegalStateException iae) {
+		}
+
 		Assert.assertTrue(_mockHttpSession.isInvalid());
 
 		portletSessionImpl.setMaxInactiveInterval(Integer.MAX_VALUE);
