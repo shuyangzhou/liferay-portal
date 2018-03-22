@@ -23,7 +23,6 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -38,52 +37,27 @@ import java.util.function.Consumer;
 public class ReflectionUtil {
 
 	public static Object arrayClone(Object array) {
-		Class<?> clazz = array.getClass();
-
-		if (!clazz.isArray()) {
-			throw new IllegalArgumentException(
-				"Input object is not an array: " + array);
-		}
-
-		try {
-			return _cloneMethod.invoke(array);
-		}
-		catch (Exception e) {
-			return throwException(e);
-		}
+		return com.liferay.petra.reflect.ReflectionUtil.arrayClone(array);
 	}
 
 	public static Field getDeclaredField(Class<?> clazz, String name)
 		throws Exception {
 
-		Field field = clazz.getDeclaredField(name);
-
-		field.setAccessible(true);
-
-		return unfinalField(field);
+		return com.liferay.petra.reflect.ReflectionUtil.getDeclaredField(
+			clazz, name);
 	}
 
 	public static Field[] getDeclaredFields(Class<?> clazz) throws Exception {
-		Field[] fields = clazz.getDeclaredFields();
-
-		for (Field field : fields) {
-			field.setAccessible(true);
-
-			unfinalField(field);
-		}
-
-		return fields;
+		return com.liferay.petra.reflect.ReflectionUtil.getDeclaredFields(
+			clazz);
 	}
 
 	public static Method getDeclaredMethod(
 			Class<?> clazz, String name, Class<?>... parameterTypes)
 		throws Exception {
 
-		Method method = clazz.getDeclaredMethod(name, parameterTypes);
-
-		method.setAccessible(true);
-
-		return method;
+		return com.liferay.petra.reflect.ReflectionUtil.getDeclaredMethod(
+			clazz, name, parameterTypes);
 	}
 
 	/**
@@ -138,46 +112,22 @@ public class ReflectionUtil {
 	}
 
 	public static Class<?>[] getInterfaces(Object object) {
-		return getInterfaces(object, null);
+		return com.liferay.petra.reflect.ReflectionUtil.getInterfaces(object);
 	}
 
 	public static Class<?>[] getInterfaces(
 		Object object, ClassLoader classLoader) {
 
-		return getInterfaces(
-			object, classLoader,
-			cnfe -> {
-			});
+		return com.liferay.petra.reflect.ReflectionUtil.getInterfaces(
+			object, classLoader);
 	}
 
 	public static Class<?>[] getInterfaces(
 		Object object, ClassLoader classLoader,
 		Consumer<ClassNotFoundException> classNotFoundHandler) {
 
-		Set<Class<?>> interfaceClasses = new LinkedHashSet<>();
-
-		Class<?> superClass = object.getClass();
-
-		while (superClass != null) {
-			for (Class<?> interfaceClass : superClass.getInterfaces()) {
-				try {
-					if (classLoader == null) {
-						interfaceClasses.add(interfaceClass);
-					}
-					else {
-						interfaceClasses.add(
-							classLoader.loadClass(interfaceClass.getName()));
-					}
-				}
-				catch (ClassNotFoundException cnfe) {
-					classNotFoundHandler.accept(cnfe);
-				}
-			}
-
-			superClass = superClass.getSuperclass();
-		}
-
-		return interfaceClasses.toArray(new Class<?>[interfaceClasses.size()]);
+		return com.liferay.petra.reflect.ReflectionUtil.getInterfaces(
+			object, classLoader, classNotFoundHandler);
 	}
 
 	/**
@@ -253,17 +203,12 @@ public class ReflectionUtil {
 	}
 
 	public static <T> T throwException(Throwable throwable) {
-		return ReflectionUtil.<T, RuntimeException>_throwException(throwable);
+		return com.liferay.petra.reflect.ReflectionUtil.throwException(
+			throwable);
 	}
 
 	public static Field unfinalField(Field field) throws Exception {
-		int modifiers = field.getModifiers();
-
-		if ((modifiers & Modifier.FINAL) == Modifier.FINAL) {
-			_modifiersField.setInt(field, modifiers & ~Modifier.FINAL);
-		}
-
-		return field;
+		return com.liferay.petra.reflect.ReflectionUtil.unfinalField(field);
 	}
 
 	private static Type _getGenericInterface(
@@ -287,32 +232,6 @@ public class ReflectionUtil {
 		}
 
 		return null;
-	}
-
-	@SuppressWarnings("unchecked")
-	private static <T, E extends Throwable> T _throwException(
-			Throwable throwable)
-		throws E {
-
-		throw (E)throwable;
-	}
-
-	private static final Method _cloneMethod;
-	private static final Field _modifiersField;
-
-	static {
-		try {
-			_cloneMethod = Object.class.getDeclaredMethod("clone");
-
-			_cloneMethod.setAccessible(true);
-
-			_modifiersField = Field.class.getDeclaredField("modifiers");
-
-			_modifiersField.setAccessible(true);
-		}
-		catch (Exception e) {
-			throw new ExceptionInInitializerError(e);
-		}
 	}
 
 }
