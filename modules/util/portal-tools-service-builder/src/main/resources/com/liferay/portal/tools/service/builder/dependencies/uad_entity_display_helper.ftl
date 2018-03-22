@@ -17,9 +17,9 @@ import org.osgi.service.component.annotations.Component;
 public class ${entity.name}UADEntityDisplayHelper {
 
 	/**
-	 * Returns an ordered string array of the names of the fields to be
-	 * displayed. Each field name will correspond to a table column in the order
-	 * they are specified.
+	 * Returns an ordered string array of the fields' names to be displayed.
+	 * Each field name corresponds to a table column based on the order they are
+	 * specified.
 	 *
 	 * @return the array of field names to display
 	 */
@@ -38,14 +38,14 @@ public class ${entity.name}UADEntityDisplayHelper {
 	public String get${entity.name}EditURL(${entity.name} ${entity.varName}, LiferayPortletRequest liferayPortletRequest, LiferayPortletResponse liferayPortletResponse) {
 		return "";
 	}
-ad
+
 	@Override
 	public Map<String, Object> getUADEntityNonanonymizableFieldValues(${entity.name} ${entity.varName}) {
 		Map<String, Object> uadEntityNonanonymizableFieldValues = new HashMap<String, Object>();
 
-<#list entity.UADNonanonymizableEntityColumns as uadNonanonymizableEntityColumn>
-		uadEntityNonanonymizableFieldValues.put("${uadNonanonymizableEntityColumn.name}", ${entity.varName}.get${textFormatter.format(uadNonanonymizableEntityColumn.name, 6)}());
-</#list>
+		<#list entity.UADNonanonymizableEntityColumns as uadNonanonymizableEntityColumn>
+			uadEntityNonanonymizableFieldValues.put("${uadNonanonymizableEntityColumn.name}", ${entity.varName}.get${textFormatter.format(uadNonanonymizableEntityColumn.name, 6)}());
+		</#list>
 
 		return uadEntityNonanonymizableFieldValues;
 	}
