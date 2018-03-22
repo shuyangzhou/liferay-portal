@@ -95,8 +95,32 @@ public class PullRequest {
 		return _ownerUserName;
 	}
 
+	public String getRepositoryName() {
+		return _repositoryName;
+	}
+
+	public String getSenderBranchName() {
+		JSONObject headJSONObject = _jsonObject.getJSONObject("head");
+
+		return headJSONObject.getString("ref");
+	}
+
+	public String getSenderUsername() {
+		JSONObject headJSONObject = _jsonObject.getJSONObject("head");
+
+		JSONObject userJSONObject = headJSONObject.getJSONObject("user");
+
+		return userJSONObject.getString("login");
+	}
+
 	public TestSuiteStatus getTestSuiteStatus() {
 		return _testSuiteStatus;
+	}
+
+	public String getUpstreamBranchName() {
+		JSONObject baseJSONObject = _jsonObject.getJSONObject("base");
+
+		return baseJSONObject.getString("ref");
 	}
 
 	public void refresh() {
@@ -142,8 +166,8 @@ public class PullRequest {
 
 	public static enum TestSuiteStatus {
 
-		ERROR("de4753"), FAILURE("de4753"), MISSING("cccccc"),
-		PENDING("fbca04"), SUCCESS("28a745");
+		ERROR("fccdcc"), FAILURE("fccdcc"), MISSING("eeeeee"),
+		PENDING("fff4c9"), SUCCESS("c7e8cb");
 
 		public String getColor() {
 			return _color;

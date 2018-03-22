@@ -22,13 +22,32 @@ import com.liferay.portal.kernel.exception.PortalException;
  */
 public interface MBListDisplayContext extends MBDisplayContext {
 
+	public int getCategoryEntriesDelta();
+
+	public int getThreadEntriesDelta();
+
 	public boolean isShowMyPosts();
 
 	public boolean isShowRecentPosts();
 
 	public boolean isShowSearch();
 
+	public void populateCategoriesResultsAndTotal(
+			SearchContainer searchContainer)
+		throws PortalException;
+
+	/**
+	 * @deprecated As of 4.0.0, with no direct replacement
+	 */
+	@Deprecated
 	public void populateResultsAndTotal(SearchContainer searchContainer)
 		throws PortalException;
+
+	public void populateThreadsResultsAndTotal(SearchContainer searchContainer)
+		throws PortalException;
+
+	public void setCategoryEntriesDelta(SearchContainer searchContainer);
+
+	public void setThreadEntriesDelta(SearchContainer searchContainer);
 
 }

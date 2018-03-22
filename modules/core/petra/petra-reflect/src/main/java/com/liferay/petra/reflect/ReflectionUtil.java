@@ -18,7 +18,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+import java.util.ArrayDeque;
 import java.util.LinkedHashSet;
+import java.util.Queue;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -95,12 +97,17 @@ public class ReflectionUtil {
 		Object object, ClassLoader classLoader,
 		Consumer<ClassNotFoundException> classNotFoundHandler) {
 
+		Queue<Class<?>> queue = new ArrayDeque<>();
 		Set<Class<?>> interfaceClasses = new LinkedHashSet<>();
 
-		Class<?> superClass = object.getClass();
+		Class<?> clazz = object.getClass();
 
-		while (superClass != null) {
-			for (Class<?> interfaceClass : superClass.getInterfaces()) {
+		queue.add(clazz);
+
+		while (!queue.isEmpty()) {
+			clazz = queue.remove();
+
+			for (Class<?> interfaceClass : clazz.getInterfaces()) {
 				try {
 					if (classLoader == null) {
 						interfaceClasses.add(interfaceClass);
@@ -113,9 +120,15 @@ public class ReflectionUtil {
 				catch (ClassNotFoundException cnfe) {
 					classNotFoundHandler.accept(cnfe);
 				}
+
+				queue.add(interfaceClass);
 			}
 
-			superClass = superClass.getSuperclass();
+			clazz = clazz.getSuperclass();
+
+			if (clazz != null) {
+				queue.add(clazz);
+			}
 		}
 
 		return interfaceClasses.toArray(new Class<?>[interfaceClasses.size()]);

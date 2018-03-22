@@ -165,8 +165,9 @@ public class ReflectionUtilTest {
 	public void testGetInterfaces() {
 		Class<?>[] interfaces = ReflectionUtil.getInterfaces(new TestClass());
 
-		Assert.assertEquals(Arrays.toString(interfaces), 1, interfaces.length);
+		Assert.assertEquals(Arrays.toString(interfaces), 2, interfaces.length);
 		Assert.assertSame(TestInterface.class, interfaces[0]);
+		Assert.assertSame(TestBaseInterface.class, interfaces[1]);
 
 		AtomicReference<ClassNotFoundException> atomicReference =
 			new AtomicReference<>();
@@ -237,7 +238,10 @@ public class ReflectionUtilTest {
 
 	}
 
-	private interface TestInterface {
+	private interface TestBaseInterface {
+	}
+
+	private interface TestInterface extends TestBaseInterface {
 	}
 
 }
