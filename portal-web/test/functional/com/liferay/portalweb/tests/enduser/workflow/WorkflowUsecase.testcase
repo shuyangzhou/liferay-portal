@@ -1371,6 +1371,16 @@
 		</execute>
 
 		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Navigation" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Site Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
+			<var name="pageName" value="Site Page" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Configuration" />
 			<var name="panel" value="Site Administration" />
 			<var name="portlet" value="Workflow" />
@@ -1421,8 +1431,17 @@
 		</execute>
 
 		<execute macro="Workflow#viewConfigurationSelected">
-			<var name="workflowDefinition" value="Single Approver" />
+			<var name="workflowDefinition" value="Single Approver (1)" />
 			<var name="workflowResourceValue" value="Blogs Entry" />
+		</execute>
+
+		<execute macro="Workflow#viewConfigurationSelected">
+			<var name="workflowDefinition" value="No Workflow" />
+			<var name="workflowResourceValue" value="Calendar Event" />
+		</execute>
+
+		<execute macro="Navigator#openSiteURL">
+			<var name="siteName" value="New Site" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -1432,8 +1451,13 @@
 		</execute>
 
 		<execute macro="Workflow#viewConfigurationSelected">
-			<var name="workflowDefinition" value="Single Approver" />
+			<var name="workflowDefinition" value="Single Approver (1)" />
 			<var name="workflowResourceValue" value="Blogs Entry" />
+		</execute>
+
+		<execute macro="Workflow#viewConfigurationSelected">
+			<var name="workflowDefinition" value="Single Approver (Version 1)" />
+			<var name="workflowResourceValue" value="Calendar Event" />
 		</execute>
 	</command>
 
@@ -1681,16 +1705,24 @@
 		<execute macro="WebContentNavigator#gotoAddCP" />
 
 		<execute macro="WebContent#addWithWorkflowCP">
-			<var name="webContentContent"><![CDATA[&lt;script&gt;alert("web content article")&lt;/script&gt;]]></var>
+			<var name="webContentContent"><![CDATA[&lt;script&gt;alert(123);&lt;/script&gt;]]></var>
 			<var name="webContentTitle" value="WC WebContent Title" />
 		</execute>
 
 		<execute macro="WebContent#viewWithWorkflowCP">
-			<var name="webContentContent"><![CDATA[<script>alert("web content article")</script>]]></var>
+			<var name="webContentContent"><![CDATA[<script>alert(123);</script>]]></var>
 			<var name="webContentTitle" value="WC WebContent Title" />
 			<var name="workflowStatus" value="Pending" />
 			<var name="workflowTask" value="Review" />
 		</execute>
+
+		<execute function="AssertAlertNotPresent" />
+
+		<var name="actualScript"><![CDATA[<script>alert(123);</script>]]></var>
+		<var name="escapedScript"><![CDATA[&lt;script&gt;alert(123);&lt;/script&gt;]]></var>
+
+		<execute function="AssertHTMLSourceTextNotPresent" value1="${actualScript}" />
+		<execute function="AssertHTMLSourceTextPresent" value1="${escapedScript}" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -1704,8 +1736,16 @@
 			<var name="workflowAssetTitle" value="WC WebContent Title" />
 			<var name="workflowAssetType" value="Web Content Article" />
 			<var name="workflowTask" value="Review" />
-			<var name="workflowActivityComment"><![CDATA[<script>alert("web commenting on WC")</script>]]></var>
+			<var name="workflowActivityComment"><![CDATA[<script>alert(123);</script>]]></var>
 		</execute>
+
+		<execute function="AssertAlertNotPresent" />
+
+		<var name="actualScript"><![CDATA[<script>alert(123);</script>]]></var>
+		<var name="escapedScript"><![CDATA[&lt;script&gt;alert(123);&lt;/script&gt;]]></var>
+
+		<execute function="AssertHTMLSourceTextNotPresent" value1="${actualScript}" />
+		<execute function="AssertHTMLSourceTextPresent" value1="${escapedScript}" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -1719,8 +1759,16 @@
 			<var name="workflowAssetTitle" value="WC WebContent Title" />
 			<var name="workflowAssetType" value="Web Content Article" />
 			<var name="workflowTask" value="Review" />
-			<var name="workflowActivityComment"><![CDATA[<script>alert("approve")</script>]]></var>
+			<var name="workflowActivityComment"><![CDATA[<script>alert(123);</script>]]></var>
 		</execute>
+
+		<execute function="AssertAlertNotPresent" />
+
+		<var name="actualScript"><![CDATA[<script>alert(123);</script>]]></var>
+		<var name="escapedScript"><![CDATA[&lt;script&gt;alert(123);&lt;/script&gt;]]></var>
+
+		<execute function="AssertHTMLSourceTextNotPresent" value1="${actualScript}" />
+		<execute function="AssertHTMLSourceTextPresent" value1="${escapedScript}" />
 
 		<execute macro="Navigator#openURL" />
 
@@ -1735,9 +1783,17 @@
 		</execute>
 
 		<execute macro="WebContent#viewCP">
-			<var name="webContentContent"><![CDATA[<script>alert("web content article")</script>]]></var>
+			<var name="webContentContent"><![CDATA[<script>alert(123);</script>]]></var>
 			<var name="webContentTitle" value="WC WebContent Title" />
 		</execute>
+
+		<execute function="AssertAlertNotPresent" />
+
+		<var name="actualScript"><![CDATA[<script>alert(123);</script>]]></var>
+		<var name="escapedScript"><![CDATA[&lt;script&gt;alert(123);&lt;/script&gt;]]></var>
+
+		<execute function="AssertHTMLSourceTextNotPresent" value1="${actualScript}" />
+		<execute function="AssertHTMLSourceTextPresent" value1="${escapedScript}" />
 
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Sites" />
@@ -1769,8 +1825,16 @@
 		</execute>
 
 		<execute macro="WebContent#viewPGViaAP">
-			<var name="webContentContent"><![CDATA[<script>alert("web content article")</script>]]></var>
+			<var name="webContentContent"><![CDATA[<script>alert(123);</script>]]></var>
 			<var name="webContentTitle" value="WC WebContent Title" />
 		</execute>
+
+		<execute function="AssertAlertNotPresent" />
+
+		<var name="actualScript"><![CDATA[<script>alert(123);</script>]]></var>
+		<var name="escapedScript"><![CDATA[&lt;script&gt;alert(123);&lt;/script&gt;]]></var>
+
+		<execute function="AssertHTMLSourceTextNotPresent" value1="${actualScript}" />
+		<execute function="AssertHTMLSourceTextPresent" value1="${escapedScript}" />
 	</command>
 </definition>

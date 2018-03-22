@@ -424,12 +424,16 @@ AUI.add(
 						var instance = this;
 
 						instance.renderRule();
+
+						instance._hideAddRuleButton();
 					},
 
 					_handleCancelRule: function() {
 						var instance = this;
 
 						instance.syncUI();
+
+						instance._showAddRuleButton();
 					},
 
 					_handleDeleteCardClick: function(event) {
@@ -452,6 +456,8 @@ AUI.add(
 						instance._currentRuleId = ruleId;
 
 						instance.renderRule(instance.get('rules')[ruleId]);
+
+						instance._hideAddRuleButton();
 					},
 
 					_handleSaveRule: function(event) {
@@ -475,6 +481,14 @@ AUI.add(
 						instance.syncUI();
 
 						instance._currentRuleId = null;
+
+						instance._showAddRuleButton();
+					},
+
+					_hideAddRuleButton: function() {
+						var instance = this;
+
+						A.one('.lfr-ddm-add-rule').addClass('hide');
 					},
 
 					_onRulesChange: function(val) {
@@ -543,6 +557,12 @@ AUI.add(
 						);
 
 						return rules;
+					},
+
+					_showAddRuleButton: function() {
+						var instance = this;
+
+						A.one('.lfr-ddm-add-rule').removeClass('hide');
 					}
 				}
 			}

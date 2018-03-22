@@ -93,12 +93,9 @@
 	</command>
 
 	<command name="addRoleViewPermissions">
-		<var name="key_rowEntry" value="${templateName}" />
-
-		<execute function="Click#waitForMenuToggleJSClick" locator1="Icon#ROW_VERTICAL_ELLIPSIS" />
-
-		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="Permissions">
-			<var name="key_menuItem" value="Permissions" />
+		<execute macro="LexiconEntry#gotoEntryMenuItem">
+			<var name="menuItem" value="Permissions" />
+			<var name="rowEntry" value="${templateName}" />
 		</execute>
 
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
@@ -233,17 +230,17 @@
 
 		<execute macro="PortletEntry#changeLocale">
 			<var name="fieldName" value="Name" />
-			<var name="locale" value="${localization1NameKey}" />
+			<var name="locale" value="${locale}" />
 		</execute>
 
 		<execute function="Type#clickAtType" locator1="TextInput#NAME" value1="${localization1Name}" />
 
 		<if>
-			<isset var="localization2NameKey" />
+			<isset var="locale2" />
 			<then>
 				<execute macro="PortletEntry#changeLocale">
 					<var name="fieldName" value="Name" />
-					<var name="locale" value="${localization2NameKey}" />
+					<var name="locale" value="${locale2}" />
 				</execute>
 
 				<execute function="Type#clickAtType" locator1="TextInput#NAME" value1="${localization2Name}" />
