@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.wiki.internal.asset.categories.validator;
+package com.liferay.wiki.internal.asset.validator;
 
 import com.liferay.asset.kernel.validator.AssetEntryValidatorExclusionRule;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
