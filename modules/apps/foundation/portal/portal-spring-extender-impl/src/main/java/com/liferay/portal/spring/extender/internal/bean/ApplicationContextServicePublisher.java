@@ -88,32 +88,6 @@ public class ApplicationContextServicePublisher {
 		_serviceRegistrations.clear();
 	}
 
-	protected Dictionary<String, Object> getBeanProperties(
-		String symbloicName, Object object) {
-
-		HashMapDictionary<String, Object> properties =
-			new HashMapDictionary<>();
-
-		properties.put("origin.bundle.symbolic.name", symbloicName);
-
-		try {
-			Class<?> clazz = getTargetClass(object);
-
-			OSGiBeanProperties osgiBeanProperties =
-				AnnotationUtils.findAnnotation(
-					clazz, OSGiBeanProperties.class);
-
-			if (osgiBeanProperties != null) {
-				properties.putAll(
-					OSGiBeanProperties.Convert.toMap(osgiBeanProperties));
-			}
-		}
-		catch (Exception e) {
-		}
-
-		return properties;
-	}
-
 	protected Class<?> getTargetClass(Object service) throws Exception {
 		Class<?> clazz = service.getClass();
 
@@ -236,9 +210,27 @@ public class ApplicationContextServicePublisher {
 
 		Bundle bundle = bundleContext.getBundle();
 
-		registerService(
-			bundleContext, bean, names,
-			getBeanProperties(bundle.getSymbolicName(), bean));
+		HashMapDictionary<String, Object> properties =
+			new HashMapDictionary<>();
+
+		properties.put("origin.bundle.symbolic.name", bundle.getSymbolicName());
+
+		try {
+			Class<?> clazz = getTargetClass(bean);
+
+			OSGiBeanProperties osgiBeanProperties =
+				AnnotationUtils.findAnnotation(
+					clazz, OSGiBeanProperties.class);
+
+			if (osgiBeanProperties != null) {
+				properties.putAll(
+					OSGiBeanProperties.Convert.toMap(osgiBeanProperties));
+			}
+		}
+		catch (Exception e) {
+		}
+
+		registerService(bundleContext, bean, names, properties);
 	}
 
 	protected void registerService(
