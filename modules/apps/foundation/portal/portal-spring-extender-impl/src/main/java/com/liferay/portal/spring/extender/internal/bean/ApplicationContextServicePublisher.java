@@ -117,52 +117,6 @@ public class ApplicationContextServicePublisher {
 		return properties;
 	}
 
-	protected Set<Class<?>> getInterfaces(Object object) throws Exception {
-		Class<?> clazz = getTargetClass(object);
-
-		Set<Class<?>> interfaceClasses = new LinkedHashSet<>();
-
-		Class<?>[] serviceClasses = null;
-
-		OSGiBeanProperties osgiBeanProperties = AnnotationUtils.findAnnotation(
-			clazz, OSGiBeanProperties.class);
-
-		if (osgiBeanProperties != null) {
-			serviceClasses = osgiBeanProperties.service();
-		}
-
-		if ((serviceClasses == null) || (serviceClasses.length == 0)) {
-			Queue<Class<?>> queue = new ArrayDeque<>();
-
-			queue.add(clazz);
-
-			while (!queue.isEmpty()) {
-				clazz = queue.remove();
-
-				for (Class<?> interfaceClass : clazz.getInterfaces()) {
-					interfaceClasses.add(interfaceClass);
-
-					queue.add(interfaceClass);
-				}
-
-				clazz = clazz.getSuperclass();
-
-				if (clazz != null) {
-					queue.add(clazz);
-				}
-			}
-		}
-		else {
-			for (Class<?> serviceClazz : serviceClasses) {
-				serviceClazz.cast(object);
-			}
-
-			Collections.addAll(interfaceClasses, osgiBeanProperties.service());
-		}
-
-		return interfaceClasses;
-	}
-
 	protected Class<?> getTargetClass(Object service) throws Exception {
 		Class<?> clazz = service.getClass();
 
@@ -213,10 +167,49 @@ public class ApplicationContextServicePublisher {
 	}
 
 	protected void registerService(BundleContext bundleContext, Object bean) {
-		Set<Class<?>> interfaces = null;
+		Set<Class<?>> interfaces = new LinkedHashSet<>();
 
 		try {
-			interfaces = getInterfaces(bean);
+			Class<?> clazz = getTargetClass(bean);
+
+			Class<?>[] serviceClasses = null;
+
+			OSGiBeanProperties osgiBeanProperties =
+				AnnotationUtils.findAnnotation(clazz, OSGiBeanProperties.class);
+
+			if (osgiBeanProperties != null) {
+				serviceClasses = osgiBeanProperties.service();
+			}
+
+			if ((serviceClasses == null) || (serviceClasses.length == 0)) {
+				Queue<Class<?>> queue = new ArrayDeque<>();
+
+				queue.add(clazz);
+
+				while (!queue.isEmpty()) {
+					clazz = queue.remove();
+
+					for (Class<?> interfaceClass : clazz.getInterfaces()) {
+						interfaces.add(interfaceClass);
+
+						queue.add(interfaceClass);
+					}
+
+					clazz = clazz.getSuperclass();
+
+					if (clazz != null) {
+						queue.add(clazz);
+					}
+				}
+			}
+			else {
+				for (Class<?> serviceClazz : serviceClasses) {
+					serviceClazz.cast(bean);
+				}
+
+				Collections.addAll(
+					interfaces, osgiBeanProperties.service());
+			}
 		}
 		catch (Exception e) {
 			_log.error("Unable to register service " + bean, e);
