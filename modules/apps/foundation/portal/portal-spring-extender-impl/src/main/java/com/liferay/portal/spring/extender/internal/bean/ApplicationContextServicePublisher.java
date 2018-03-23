@@ -136,50 +136,52 @@ public class ApplicationContextServicePublisher {
 	protected void registerService(BundleContext bundleContext, Object bean) {
 		Set<Class<?>> interfaces = new LinkedHashSet<>();
 
+		Class<?> clazz = null;
+
 		try {
-			Class<?> clazz = getTargetClass(bean);
-
-			Class<?>[] serviceClasses = null;
-
-			OSGiBeanProperties osgiBeanProperties =
-				AnnotationUtils.findAnnotation(clazz, OSGiBeanProperties.class);
-
-			if (osgiBeanProperties != null) {
-				serviceClasses = osgiBeanProperties.service();
-			}
-
-			if ((serviceClasses == null) || (serviceClasses.length == 0)) {
-				Queue<Class<?>> queue = new ArrayDeque<>();
-
-				queue.add(clazz);
-
-				while (!queue.isEmpty()) {
-					clazz = queue.remove();
-
-					for (Class<?> interfaceClass : clazz.getInterfaces()) {
-						interfaces.add(interfaceClass);
-
-						queue.add(interfaceClass);
-					}
-
-					clazz = clazz.getSuperclass();
-
-					if (clazz != null) {
-						queue.add(clazz);
-					}
-				}
-			}
-			else {
-				for (Class<?> serviceClazz : serviceClasses) {
-					serviceClazz.cast(bean);
-				}
-
-				Collections.addAll(
-					interfaces, osgiBeanProperties.service());
-			}
+			clazz = getTargetClass(bean);
 		}
 		catch (Exception e) {
 			_log.error("Unable to register service " + bean, e);
+		}
+
+		Class<?>[] serviceClasses = null;
+
+		OSGiBeanProperties osgiBeanProperties = AnnotationUtils.findAnnotation(
+			clazz, OSGiBeanProperties.class);
+
+		if (osgiBeanProperties != null) {
+			serviceClasses = osgiBeanProperties.service();
+		}
+
+		if ((serviceClasses == null) || (serviceClasses.length == 0)) {
+			Queue<Class<?>> queue = new ArrayDeque<>();
+
+			queue.add(clazz);
+
+			while (!queue.isEmpty()) {
+				clazz = queue.remove();
+
+				for (Class<?> interfaceClass : clazz.getInterfaces()) {
+					interfaces.add(interfaceClass);
+
+					queue.add(interfaceClass);
+				}
+
+				clazz = clazz.getSuperclass();
+
+				if (clazz != null) {
+					queue.add(clazz);
+				}
+			}
+		}
+		else {
+			for (Class<?> serviceClazz : serviceClasses) {
+				serviceClazz.cast(bean);
+			}
+
+			Collections.addAll(
+				interfaces, osgiBeanProperties.service());
 		}
 
 		interfaces.add(bean.getClass());
@@ -211,19 +213,9 @@ public class ApplicationContextServicePublisher {
 
 		properties.put("origin.bundle.symbolic.name", bundle.getSymbolicName());
 
-		try {
-			Class<?> clazz = getTargetClass(bean);
-
-			OSGiBeanProperties osgiBeanProperties =
-				AnnotationUtils.findAnnotation(
-					clazz, OSGiBeanProperties.class);
-
-			if (osgiBeanProperties != null) {
-				properties.putAll(
-					OSGiBeanProperties.Convert.toMap(osgiBeanProperties));
-			}
-		}
-		catch (Exception e) {
+		if (osgiBeanProperties != null) {
+			properties.putAll(
+				OSGiBeanProperties.Convert.toMap(osgiBeanProperties));
 		}
 
 		registerService(bundleContext, bean, names, properties);
