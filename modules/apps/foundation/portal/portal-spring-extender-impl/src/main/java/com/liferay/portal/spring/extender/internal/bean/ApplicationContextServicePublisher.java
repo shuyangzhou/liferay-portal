@@ -143,6 +143,8 @@ public class ApplicationContextServicePublisher {
 		}
 		catch (Exception e) {
 			_log.error("Unable to register service " + bean, e);
+
+			return;
 		}
 
 		Class<?>[] serviceClasses = null;
