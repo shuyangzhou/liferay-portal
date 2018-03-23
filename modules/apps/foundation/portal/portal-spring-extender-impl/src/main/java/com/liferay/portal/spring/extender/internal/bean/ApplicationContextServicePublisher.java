@@ -76,8 +76,16 @@ public class ApplicationContextServicePublisher {
 
 		Bundle bundle = _bundleContext.getBundle();
 
-		registerApplicationContext(
-			_applicationContext, bundle.getSymbolicName());
+		HashMapDictionary<String, Object> properties =
+			new HashMapDictionary<>();
+
+		properties.put(
+			"org.springframework.context.service.name",
+			bundle.getSymbolicName());
+
+		registerService(
+			_bundleContext, _applicationContext,
+			Arrays.asList(ApplicationContext.class.getName()), properties);
 	}
 
 	public void unregister() {
@@ -121,20 +129,6 @@ public class ApplicationContextServicePublisher {
 		}
 
 		return false;
-	}
-
-	protected void registerApplicationContext(
-		ApplicationContext applicationContext, String bundleSymbolicName) {
-
-		HashMapDictionary<String, Object> properties =
-			new HashMapDictionary<>();
-
-		properties.put(
-			"org.springframework.context.service.name", bundleSymbolicName);
-
-		registerService(
-			_bundleContext, applicationContext,
-			Arrays.asList(ApplicationContext.class.getName()), properties);
 	}
 
 	protected void registerService(BundleContext bundleContext, Object bean) {
