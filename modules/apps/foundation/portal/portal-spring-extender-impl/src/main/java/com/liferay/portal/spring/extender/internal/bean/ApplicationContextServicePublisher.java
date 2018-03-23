@@ -25,7 +25,6 @@ import com.liferay.portal.util.PropsValues;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -82,9 +81,12 @@ public class ApplicationContextServicePublisher {
 			"org.springframework.context.service.name",
 			bundle.getSymbolicName());
 
-		registerService(
-			_applicationContext,
-			Arrays.asList(ApplicationContext.class.getName()), properties);
+		ServiceRegistration<?> serviceRegistration =
+			_bundleContext.registerService(
+				ApplicationContext.class.getName(), _applicationContext,
+				properties);
+
+		_serviceRegistrations.add(serviceRegistration);
 	}
 
 	public void unregister() {
