@@ -26,7 +26,6 @@ import com.liferay.portal.util.PropsValues;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -70,7 +69,7 @@ public class ApplicationContextServicePublisher {
 			}
 
 			if (bean != null) {
-				registerService(_bundleContext, bean);
+				registerService(bean);
 			}
 		}
 
@@ -84,7 +83,7 @@ public class ApplicationContextServicePublisher {
 			bundle.getSymbolicName());
 
 		registerService(
-			_bundleContext, _applicationContext,
+			_applicationContext,
 			Arrays.asList(ApplicationContext.class.getName()), properties);
 	}
 
@@ -114,7 +113,7 @@ public class ApplicationContextServicePublisher {
 		return false;
 	}
 
-	protected void registerService(BundleContext bundleContext, Object bean) {
+	protected void registerService(Object bean) {
 		Set<Class<?>> interfaces = new LinkedHashSet<>();
 
 		Class<?> clazz = bean.getClass();
@@ -200,7 +199,7 @@ public class ApplicationContextServicePublisher {
 			return;
 		}
 
-		Bundle bundle = bundleContext.getBundle();
+		Bundle bundle = _bundleContext.getBundle();
 
 		HashMapDictionary<String, Object> properties =
 			new HashMapDictionary<>();
@@ -212,15 +211,15 @@ public class ApplicationContextServicePublisher {
 				OSGiBeanProperties.Convert.toMap(osgiBeanProperties));
 		}
 
-		registerService(bundleContext, bean, names, properties);
+		registerService(bean, names, properties);
 	}
 
 	protected void registerService(
-		BundleContext bundleContext, Object bean, List<String> interfaces,
+		Object bean, List<String> interfaces,
 		Dictionary<String, Object> properties) {
 
 		ServiceRegistration<?> serviceRegistration =
-			bundleContext.registerService(
+			_bundleContext.registerService(
 				interfaces.toArray(new String[interfaces.size()]), bean,
 				properties);
 
