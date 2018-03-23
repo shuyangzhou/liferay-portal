@@ -14,7 +14,6 @@
 
 package com.liferay.portal.spring.extender.internal.bean;
 
-import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -24,11 +23,14 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.spring.aop.ServiceBeanAopProxy;
 import com.liferay.portal.util.PropsValues;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 import org.osgi.framework.Bundle;
@@ -115,28 +117,46 @@ public class ApplicationContextServicePublisher {
 	}
 
 	protected Set<Class<?>> getInterfaces(Object object) throws Exception {
-		Class<? extends Object> clazz = getTargetClass(object);
+		Class<?> clazz = getTargetClass(object);
 
 		OSGiBeanProperties osgiBeanProperties = AnnotationUtils.findAnnotation(
 			clazz, OSGiBeanProperties.class);
 
-		if (osgiBeanProperties == null) {
-			return new HashSet<>(
-				Arrays.asList(ReflectionUtil.getInterfaces(object)));
+		if (osgiBeanProperties != null) {
+			Class<?>[] serviceClasses = osgiBeanProperties.service();
+
+			if (serviceClasses.length > 0) {
+				for (Class<?> serviceClazz : serviceClasses) {
+					serviceClazz.cast(object);
+				}
+
+				return new HashSet<>(
+					Arrays.asList(osgiBeanProperties.service()));
+			}
 		}
 
-		Class<?>[] serviceClasses = osgiBeanProperties.service();
+		Queue<Class<?>> queue = new ArrayDeque<>();
+		Set<Class<?>> interfaceClasses = new LinkedHashSet<>();
 
-		if (serviceClasses.length == 0) {
-			return new HashSet<>(
-				Arrays.asList(ReflectionUtil.getInterfaces(object)));
+		queue.add(clazz);
+
+		while (!queue.isEmpty()) {
+			clazz = queue.remove();
+
+			for (Class<?> interfaceClass : clazz.getInterfaces()) {
+				interfaceClasses.add(interfaceClass);
+
+				queue.add(interfaceClass);
+			}
+
+			clazz = clazz.getSuperclass();
+
+			if (clazz != null) {
+				queue.add(clazz);
+			}
 		}
 
-		for (Class<?> serviceClazz : serviceClasses) {
-			serviceClazz.cast(object);
-		}
-
-		return new HashSet<>(Arrays.asList(osgiBeanProperties.service()));
+		return interfaceClasses;
 	}
 
 	protected Class<?> getTargetClass(Object service) throws Exception {
