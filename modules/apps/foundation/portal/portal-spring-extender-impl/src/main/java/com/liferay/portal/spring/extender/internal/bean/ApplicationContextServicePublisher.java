@@ -173,10 +173,9 @@ public class ApplicationContextServicePublisher {
 		else {
 			for (Class<?> serviceClazz : serviceClasses) {
 				serviceClazz.cast(bean);
-			}
 
-			Collections.addAll(
-				interfaces, osgiBeanProperties.service());
+				interfaces.add(serviceClazz);
+			}
 		}
 
 		interfaces.add(bean.getClass());
