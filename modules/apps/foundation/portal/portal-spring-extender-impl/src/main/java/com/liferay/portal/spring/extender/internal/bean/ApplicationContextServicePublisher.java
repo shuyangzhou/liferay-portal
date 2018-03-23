@@ -26,6 +26,7 @@ import com.liferay.portal.util.PropsValues;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -119,41 +120,44 @@ public class ApplicationContextServicePublisher {
 	protected Set<Class<?>> getInterfaces(Object object) throws Exception {
 		Class<?> clazz = getTargetClass(object);
 
+		Set<Class<?>> interfaceClasses = new LinkedHashSet<>();
+
+		Class<?>[] serviceClasses = null;
+
 		OSGiBeanProperties osgiBeanProperties = AnnotationUtils.findAnnotation(
 			clazz, OSGiBeanProperties.class);
 
 		if (osgiBeanProperties != null) {
-			Class<?>[] serviceClasses = osgiBeanProperties.service();
-
-			if (serviceClasses.length > 0) {
-				for (Class<?> serviceClazz : serviceClasses) {
-					serviceClazz.cast(object);
-				}
-
-				return new HashSet<>(
-					Arrays.asList(osgiBeanProperties.service()));
-			}
+			serviceClasses = osgiBeanProperties.service();
 		}
 
-		Queue<Class<?>> queue = new ArrayDeque<>();
-		Set<Class<?>> interfaceClasses = new LinkedHashSet<>();
+		if ((serviceClasses == null) || (serviceClasses.length == 0)) {
+			Queue<Class<?>> queue = new ArrayDeque<>();
 
-		queue.add(clazz);
+			queue.add(clazz);
 
-		while (!queue.isEmpty()) {
-			clazz = queue.remove();
+			while (!queue.isEmpty()) {
+				clazz = queue.remove();
 
-			for (Class<?> interfaceClass : clazz.getInterfaces()) {
-				interfaceClasses.add(interfaceClass);
+				for (Class<?> interfaceClass : clazz.getInterfaces()) {
+					interfaceClasses.add(interfaceClass);
 
-				queue.add(interfaceClass);
+					queue.add(interfaceClass);
+				}
+
+				clazz = clazz.getSuperclass();
+
+				if (clazz != null) {
+					queue.add(clazz);
+				}
+			}
+		}
+		else {
+			for (Class<?> serviceClazz : serviceClasses) {
+				serviceClazz.cast(object);
 			}
 
-			clazz = clazz.getSuperclass();
-
-			if (clazz != null) {
-				queue.add(clazz);
-			}
+			Collections.addAll(interfaceClasses, osgiBeanProperties.service());
 		}
 
 		return interfaceClasses;
