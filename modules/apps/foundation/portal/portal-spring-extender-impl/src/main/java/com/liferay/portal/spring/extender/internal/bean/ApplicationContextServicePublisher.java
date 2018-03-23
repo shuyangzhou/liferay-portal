@@ -25,7 +25,6 @@ import com.liferay.portal.util.PropsValues;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -213,17 +212,9 @@ public class ApplicationContextServicePublisher {
 				OSGiBeanProperties.Convert.toMap(osgiBeanProperties));
 		}
 
-		registerService(bean, names, properties);
-	}
-
-	protected void registerService(
-		Object bean, List<String> interfaces,
-		Dictionary<String, Object> properties) {
-
 		ServiceRegistration<?> serviceRegistration =
 			_bundleContext.registerService(
-				interfaces.toArray(new String[interfaces.size()]), bean,
-				properties);
+				names.toArray(new String[names.size()]), bean, properties);
 
 		_serviceRegistrations.add(serviceRegistration);
 	}
