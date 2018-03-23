@@ -96,25 +96,6 @@ public class ApplicationContextServicePublisher {
 		_serviceRegistrations.clear();
 	}
 
-	protected Class<?> getTargetClass(Object service) throws Exception {
-		Class<?> clazz = service.getClass();
-
-		if (ProxyUtil.isProxyClass(clazz)) {
-			AdvisedSupport advisedSupport =
-				ServiceBeanAopProxy.getAdvisedSupport(service);
-
-			if (advisedSupport != null) {
-				TargetSource targetSource = advisedSupport.getTargetSource();
-
-				Object target = targetSource.getTarget();
-
-				clazz = target.getClass();
-			}
-		}
-
-		return clazz;
-	}
-
 	protected boolean isIgnoredInterface(String interfaceClassName) {
 		for (String ignoredInterfaceClassName :
 				PropsValues.MODULE_FRAMEWORK_SERVICES_IGNORED_INTERFACES) {
@@ -136,10 +117,22 @@ public class ApplicationContextServicePublisher {
 	protected void registerService(BundleContext bundleContext, Object bean) {
 		Set<Class<?>> interfaces = new LinkedHashSet<>();
 
-		Class<?> clazz = null;
+		Class<?> clazz = bean.getClass();
 
 		try {
-			clazz = getTargetClass(bean);
+			if (ProxyUtil.isProxyClass(clazz)) {
+				AdvisedSupport advisedSupport =
+					ServiceBeanAopProxy.getAdvisedSupport(bean);
+
+				if (advisedSupport != null) {
+					TargetSource targetSource =
+						advisedSupport.getTargetSource();
+
+					Object target = targetSource.getTarget();
+
+					clazz = target.getClass();
+				}
+			}
 		}
 		catch (Exception e) {
 			_log.error("Unable to register service " + bean, e);
