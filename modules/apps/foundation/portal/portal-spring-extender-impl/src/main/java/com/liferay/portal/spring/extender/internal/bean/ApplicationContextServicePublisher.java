@@ -103,9 +103,9 @@ public class ApplicationContextServicePublisher {
 			if (!ignoredInterfaceClassName.startsWith(StringPool.EXCLAMATION) &&
 				(ignoredInterfaceClassName.equals(interfaceClassName) ||
 				 (ignoredInterfaceClassName.endsWith(StringPool.STAR) &&
-				  interfaceClassName.startsWith(
-					  ignoredInterfaceClassName.substring(
-						  0, ignoredInterfaceClassName.length() - 1))))) {
+				  interfaceClassName.regionMatches(
+					  0, ignoredInterfaceClassName, 0,
+					  ignoredInterfaceClassName.length() - 1)))) {
 
 				return true;
 			}
