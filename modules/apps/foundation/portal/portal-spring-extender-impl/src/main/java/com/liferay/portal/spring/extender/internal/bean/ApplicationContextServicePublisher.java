@@ -24,11 +24,9 @@ import com.liferay.portal.spring.aop.ServiceBeanAopProxy;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
@@ -121,7 +119,7 @@ public class ApplicationContextServicePublisher {
 	}
 
 	protected void registerService(String symbolicName, Object bean) {
-		Set<Class<?>> interfaces = new LinkedHashSet<>();
+		Set<String> names = new LinkedHashSet<>();
 
 		Class<?> clazz = bean.getClass();
 
@@ -164,7 +162,7 @@ public class ApplicationContextServicePublisher {
 				clazz = queue.remove();
 
 				for (Class<?> interfaceClass : clazz.getInterfaces()) {
-					interfaces.add(interfaceClass);
+					_optionallyAddInterfaceName(names, interfaceClass);
 
 					queue.add(interfaceClass);
 				}
@@ -180,17 +178,11 @@ public class ApplicationContextServicePublisher {
 			for (Class<?> serviceClazz : serviceClasses) {
 				serviceClazz.cast(bean);
 
-				interfaces.add(serviceClazz);
+				_optionallyAddInterfaceName(names, serviceClazz);
 			}
 		}
 
-		interfaces.add(bean.getClass());
-
-		List<String> names = new ArrayList<>(interfaces.size());
-
-		for (Class<?> interfaceClass : interfaces) {
-			_optionallyAddInterfaceName(names, interfaceClass);
-		}
+		_optionallyAddInterfaceName(names, bean.getClass());
 
 		if (names.isEmpty()) {
 			if (_log.isDebugEnabled()) {
