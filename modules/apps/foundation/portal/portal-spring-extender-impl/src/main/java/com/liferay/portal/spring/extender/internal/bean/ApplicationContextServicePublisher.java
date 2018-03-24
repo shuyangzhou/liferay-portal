@@ -54,6 +54,10 @@ public class ApplicationContextServicePublisher {
 	}
 
 	public void register() {
+		Bundle bundle = _bundleContext.getBundle();
+
+		String symbolicName = bundle.getSymbolicName();
+
 		for (String beanName : _applicationContext.getBeanDefinitionNames()) {
 			Object bean = null;
 
@@ -67,18 +71,15 @@ public class ApplicationContextServicePublisher {
 			}
 
 			if (bean != null) {
-				registerService(bean);
+				registerService(symbolicName, bean);
 			}
 		}
-
-		Bundle bundle = _bundleContext.getBundle();
 
 		HashMapDictionary<String, Object> properties =
 			new HashMapDictionary<>();
 
 		properties.put(
-			"org.springframework.context.service.name",
-			bundle.getSymbolicName());
+			"org.springframework.context.service.name", symbolicName);
 
 		ServiceRegistration<?> serviceRegistration =
 			_bundleContext.registerService(
@@ -114,7 +115,7 @@ public class ApplicationContextServicePublisher {
 		return false;
 	}
 
-	protected void registerService(Object bean) {
+	protected void registerService(String symbolicName, Object bean) {
 		Set<Class<?>> interfaces = new LinkedHashSet<>();
 
 		Class<?> clazz = bean.getClass();
@@ -200,12 +201,10 @@ public class ApplicationContextServicePublisher {
 			return;
 		}
 
-		Bundle bundle = _bundleContext.getBundle();
-
 		HashMapDictionary<String, Object> properties =
 			new HashMapDictionary<>();
 
-		properties.put("origin.bundle.symbolic.name", bundle.getSymbolicName());
+		properties.put("origin.bundle.symbolic.name", symbolicName);
 
 		if (osgiBeanProperties != null) {
 			properties.putAll(
