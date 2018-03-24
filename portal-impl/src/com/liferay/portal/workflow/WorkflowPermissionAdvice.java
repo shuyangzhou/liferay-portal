@@ -17,39 +17,73 @@ package com.liferay.portal.workflow;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
+import java.util.Date;
+import java.util.Map;
 
 /**
  * @author Brian Wing Shun Chan
  */
 public class WorkflowPermissionAdvice {
 
-	public Object invoke(ProceedingJoinPoint proceedingJoinPoint)
-		throws Throwable {
+	public static WorkflowTaskManager create(
+		WorkflowTaskManager workflowTaskManager) {
 
-		Signature signature = proceedingJoinPoint.getSignature();
-
-		String methodName = signature.getName();
-
-		Object[] arguments = proceedingJoinPoint.getArgs();
-
-		if (methodName.equals(_ASSIGN_WORKFLOW_TASK_TO_USER_METHOD_NAME)) {
-			long userId = (Long)arguments[1];
-
-			PermissionChecker permissionChecker =
-				PermissionThreadLocal.getPermissionChecker();
-
-			if (permissionChecker.getUserId() != userId) {
-				throw new PrincipalException();
-			}
-		}
-
-		return proceedingJoinPoint.proceed();
+		return (WorkflowTaskManager)ProxyUtil.newProxyInstance(
+			WorkflowPermissionAdvice.class.getClassLoader(),
+			new Class<?>[] {WorkflowTaskManager.class},
+			new WorkflowPermissionInvocationHandler(workflowTaskManager));
 	}
 
-	private static final String _ASSIGN_WORKFLOW_TASK_TO_USER_METHOD_NAME =
-		"assignWorkflowTaskToUser";
+	private static final Method _ASSIGN_WORKFLOW_TASK_TO_USER_METHOD;
+
+	static {
+		try {
+			_ASSIGN_WORKFLOW_TASK_TO_USER_METHOD =
+				WorkflowTaskManager.class.getMethod(
+					"assignWorkflowTaskToUser", long.class, long.class,
+					long.class, long.class, String.class, Date.class,
+					Map.class);
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new ExceptionInInitializerError(nsme);
+		}
+	}
+
+	private static class WorkflowPermissionInvocationHandler
+		implements InvocationHandler {
+
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] arguments)
+			throws Throwable {
+
+			if (_ASSIGN_WORKFLOW_TASK_TO_USER_METHOD.equals(method)) {
+				long userId = (Long)arguments[1];
+
+				PermissionChecker permissionChecker =
+					PermissionThreadLocal.getPermissionChecker();
+
+				if (permissionChecker.getUserId() != userId) {
+					throw new PrincipalException();
+				}
+			}
+
+			return method.invoke(_workflowTaskManager, arguments);
+		}
+
+		private WorkflowPermissionInvocationHandler(
+			WorkflowTaskManager workflowTaskManager) {
+
+			_workflowTaskManager = workflowTaskManager;
+		}
+
+		private final WorkflowTaskManager _workflowTaskManager;
+
+	}
 
 }
