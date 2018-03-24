@@ -25,6 +25,7 @@ import com.liferay.portal.util.PropsValues;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -97,7 +98,11 @@ public class ApplicationContextServicePublisher {
 		_serviceRegistrations.clear();
 	}
 
-	protected boolean isIgnoredInterface(String interfaceClassName) {
+	private void _optionallyAddInterfaceName(
+		Collection<String> names, Class<?> clazz) {
+
+		String interfaceClassName = clazz.getName();
+
 		for (String ignoredInterfaceClassName :
 				PropsValues.MODULE_FRAMEWORK_SERVICES_IGNORED_INTERFACES) {
 
@@ -108,11 +113,11 @@ public class ApplicationContextServicePublisher {
 					  0, ignoredInterfaceClassName, 0,
 					  ignoredInterfaceClassName.length() - 1)))) {
 
-				return true;
+				return;
 			}
 		}
 
-		return false;
+		names.add(interfaceClassName);
 	}
 
 	protected void registerService(String symbolicName, Object bean) {
@@ -184,11 +189,7 @@ public class ApplicationContextServicePublisher {
 		List<String> names = new ArrayList<>(interfaces.size());
 
 		for (Class<?> interfaceClass : interfaces) {
-			String interfaceClassName = interfaceClass.getName();
-
-			if (!isIgnoredInterface(interfaceClassName)) {
-				names.add(interfaceClassName);
-			}
+			_optionallyAddInterfaceName(names, interfaceClass);
 		}
 
 		if (names.isEmpty()) {
