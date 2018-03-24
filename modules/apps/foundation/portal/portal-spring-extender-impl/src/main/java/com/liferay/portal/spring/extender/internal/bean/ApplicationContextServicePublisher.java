@@ -70,7 +70,7 @@ public class ApplicationContextServicePublisher {
 			}
 
 			if (bean != null) {
-				registerService(symbolicName, bean);
+				_registerService(symbolicName, bean);
 			}
 		}
 
@@ -118,7 +118,7 @@ public class ApplicationContextServicePublisher {
 		names.add(interfaceClassName);
 	}
 
-	protected void registerService(String symbolicName, Object bean) {
+	private void _registerService(String symbolicName, Object bean) {
 		Set<String> names = new LinkedHashSet<>();
 
 		Class<?> clazz = bean.getClass();
