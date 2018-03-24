@@ -144,10 +144,10 @@ public class ApplicationContextServicePublisher {
 			return;
 		}
 
-		Class<?>[] serviceClasses = null;
-
 		OSGiBeanProperties osgiBeanProperties = AnnotationUtils.findAnnotation(
 			clazz, OSGiBeanProperties.class);
+
+		Class<?>[] serviceClasses = null;
 
 		if (osgiBeanProperties != null) {
 			serviceClasses = osgiBeanProperties.service();
