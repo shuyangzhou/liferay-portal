@@ -22,12 +22,13 @@ import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetStagingHandler;
 import com.liferay.portal.kernel.util.ClassLoaderUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.spring.aop.ChainableMethodAdvice;
+import com.liferay.portal.spring.aop.ServiceBeanMethodInvocation;
 import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
 /**
@@ -35,11 +36,23 @@ import org.aopalliance.intercept.MethodInvocation;
  * @author Brian Wing Shun Chan
  * @author Raymond Augé
  */
-public class LayoutSetLocalServiceStagingAdvice implements MethodInterceptor {
+public class LayoutSetLocalServiceStagingAdvice extends ChainableMethodAdvice {
 
 	@Override
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
 		Object returnValue = methodInvocation.proceed();
+
+		ServiceBeanMethodInvocation serviceBeanMethodInvocation =
+			(ServiceBeanMethodInvocation)methodInvocation;
+
+		if (serviceBeanMethodInvocation.getTargetClass() !=
+				LayoutSetLocalServiceImpl.class) {
+
+			serviceBeanAopCacheManager.removeMethodInterceptor(
+				methodInvocation, this);
+
+			return returnValue;
+		}
 
 		if (!StagingAdvicesThreadLocal.isEnabled()) {
 			return returnValue;
