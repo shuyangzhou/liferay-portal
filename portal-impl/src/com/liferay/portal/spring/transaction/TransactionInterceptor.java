@@ -14,9 +14,10 @@
 
 package com.liferay.portal.spring.transaction;
 
+import com.liferay.portal.spring.aop.ChainableMethodAdvice;
+
 import java.lang.reflect.Method;
 
-import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
 import org.springframework.transaction.PlatformTransactionManager;
@@ -26,7 +27,7 @@ import org.springframework.transaction.interceptor.TransactionAttributeSource;
 /**
  * @author Shuyang Zhou
  */
-public class TransactionInterceptor implements MethodInterceptor {
+public class TransactionInterceptor extends ChainableMethodAdvice {
 
 	public TransactionAttributeSource getTransactionAttributeSource() {
 		return transactionAttributeSource;
