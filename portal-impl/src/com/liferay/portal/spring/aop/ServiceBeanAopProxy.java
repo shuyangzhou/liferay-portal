@@ -122,6 +122,10 @@ public class ServiceBeanAopProxy
 			fullMethodInterceptors.add(methodInterceptor);
 
 			methodInterceptor = chainableMethodAdvice.nextMethodInterceptor;
+
+			if (methodInterceptor == null) {
+				break;
+			}
 		}
 
 		classLevelMethodInterceptors.trimToSize();
