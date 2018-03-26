@@ -16,6 +16,8 @@ package com.liferay.portal.lpkg.deployer.override;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
+import com.liferay.portal.kernel.lpkg.StaticLPKGResolver;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -71,6 +73,9 @@ public class LPKGOverrideTest {
 
 		Map<String, String> overrides = new HashMap<>();
 
+		String[] lpkgStaticFileNames =
+			StaticLPKGResolver.getStaticLPKGFileNames();
+
 		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(
 				Paths.get(liferayHome, "/osgi/marketplace"), "*.lpkg")) {
 
@@ -99,9 +104,12 @@ public class LPKGOverrideTest {
 
 						name = matcher.group(1) + matcher.group(4);
 
-						String lpkgPathString = lpkgPath.toString();
+						Path lpkgPathName = lpkgPath.getFileName();
 
-						if (lpkgPathString.endsWith("Static.lpkg")) {
+						if (ArrayUtil.contains(
+								lpkgStaticFileNames, lpkgPathName.toString(),
+								false)) {
+
 							Path staticOverridePath = Paths.get(
 								liferayHome, "/osgi/static/", name);
 
