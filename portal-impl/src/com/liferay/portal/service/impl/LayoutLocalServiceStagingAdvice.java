@@ -72,7 +72,6 @@ import org.springframework.core.annotation.Order;
  * @author Raymond Augé
  * @author Brian Wing Shun Chan
  */
-@Order(1)
 public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 
 	public LayoutLocalServiceStagingAdvice() {
