@@ -48,6 +48,8 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.spring.aop.ChainableMethodAdvice;
+import com.liferay.portal.spring.aop.ServiceBeanMethodInvocation;
 import com.liferay.portlet.exportimport.staging.ProxiedLayoutsThreadLocal;
 import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
 
@@ -63,17 +65,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-
-import org.springframework.core.annotation.Order;
 
 /**
  * @author Raymond Augé
  * @author Brian Wing Shun Chan
  */
-@Order(1)
-public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
+public class LayoutLocalServiceStagingAdvice extends ChainableMethodAdvice {
 
 	public LayoutLocalServiceStagingAdvice() {
 		if (_log.isDebugEnabled()) {
@@ -125,6 +123,18 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 
 	@Override
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+		ServiceBeanMethodInvocation serviceBeanMethodInvocation =
+			(ServiceBeanMethodInvocation)methodInvocation;
+
+		if (serviceBeanMethodInvocation.getTargetClass() !=
+				LayoutLocalServiceImpl.class) {
+
+			serviceBeanAopCacheManager.removeMethodInterceptor(
+				methodInvocation, this);
+
+			return methodInvocation.proceed();
+		}
+
 		if (!StagingAdvicesThreadLocal.isEnabled()) {
 			return methodInvocation.proceed();
 		}
