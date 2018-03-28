@@ -14,13 +14,17 @@
 
 package com.liferay.analytics.client;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.analytics.model.AnalyticsEventsMessage;
 
 /**
  * @author Eduardo Garcia
  */
+@ProviderType
 public interface AnalyticsClient {
 
-	public Object sendAnalytics(AnalyticsEventsMessage analyticsEventsMessage);
+	public Object sendAnalytics(AnalyticsEventsMessage analyticsEventsMessage)
+		throws Exception;
 
 }

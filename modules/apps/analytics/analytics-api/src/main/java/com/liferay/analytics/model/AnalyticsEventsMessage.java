@@ -18,6 +18,7 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,16 @@ import java.util.Map;
  * @author Marcellus Tavares
  */
 public final class AnalyticsEventsMessage implements Serializable {
+
+	public static AnalyticsEventsMessage.Builder builder(
+		AnalyticsEventsMessage analyticsEventsMessage) {
+
+		return new AnalyticsEventsMessage.Builder(analyticsEventsMessage);
+	}
+
+	public static AnalyticsEventsMessage.Builder builder(String analyticsKey) {
+		return new AnalyticsEventsMessage.Builder(analyticsKey);
+	}
 
 	public static AnalyticsEventsMessage.Builder builder(
 		String analyticsKey, String userId) {
@@ -89,6 +100,33 @@ public final class AnalyticsEventsMessage implements Serializable {
 			return this;
 		}
 
+		public Builder userId(String userId) {
+			_analyticsEventsMessage._userId = userId;
+
+			return this;
+		}
+
+		protected Builder(AnalyticsEventsMessage analyticsEventsMessage) {
+			_analyticsEventsMessage._analyticsKey =
+				analyticsEventsMessage.getAnalyticsKey();
+
+			_analyticsEventsMessage._context =
+				analyticsEventsMessage.getContext();
+
+			_analyticsEventsMessage._events =
+				analyticsEventsMessage.getEvents();
+
+			_analyticsEventsMessage._protocolVersion =
+				analyticsEventsMessage.getProtocolVersion();
+
+			_analyticsEventsMessage._userId =
+				analyticsEventsMessage.getUserId();
+		}
+
+		protected Builder(String analyticsKey) {
+			_analyticsEventsMessage._analyticsKey = analyticsKey;
+		}
+
 		protected Builder(String analyticsKey, String userId) {
 			_analyticsEventsMessage._analyticsKey = analyticsKey;
 			_analyticsEventsMessage._userId = userId;
@@ -99,7 +137,7 @@ public final class AnalyticsEventsMessage implements Serializable {
 
 	}
 
-	public static final class Event {
+	public static final class Event implements Serializable {
 
 		public static Event.Builder builder(
 			String applicationId, String eventId) {
@@ -109,6 +147,10 @@ public final class AnalyticsEventsMessage implements Serializable {
 
 		public String getApplicationId() {
 			return _applicationId;
+		}
+
+		public Date getEventDate() {
+			return new Date(_eventDate.getTime());
 		}
 
 		public String getEventId() {
@@ -151,6 +193,7 @@ public final class AnalyticsEventsMessage implements Serializable {
 		}
 
 		private String _applicationId;
+		private Date _eventDate = new Date();
 		private String _eventId;
 		private Map<String, String> _properties = new HashMap<>();
 
