@@ -14,6 +14,8 @@
 
 package com.liferay.analytics.data.binding.internal;
 
+import com.fasterxml.jackson.databind.util.ISO8601Utils;
+
 import com.liferay.analytics.data.binding.JSONObjectMapper;
 import com.liferay.analytics.model.AnalyticsEventsMessage;
 
@@ -21,6 +23,8 @@ import java.net.URL;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import java.text.ParsePosition;
 
 import java.util.List;
 import java.util.Map;
@@ -58,6 +62,10 @@ public class AnalyticsEventsMessageJSONObjectMapperTest {
 		AnalyticsEventsMessage.Event event = events.get(0);
 
 		Assert.assertEquals("ApplicationId", event.getApplicationId());
+		Assert.assertEquals(
+			ISO8601Utils.parse(
+				"2017-11-20T19:52:56.723Z", new ParsePosition(0)),
+			event.getEventDate());
 		Assert.assertEquals("View", event.getEventId());
 
 		Map<String, String> properties = event.getProperties();
@@ -83,15 +91,21 @@ public class AnalyticsEventsMessageJSONObjectMapperTest {
 		eventBuilder.property("k1", "v1");
 		eventBuilder.property("k2", "v2");
 
-		messageBuilder.event(eventBuilder.build());
+		AnalyticsEventsMessage.Event event = eventBuilder.build();
+
+		messageBuilder.event(event);
 
 		messageBuilder.protocolVersion("1.0");
 
-		String expectedJSONString = read("analytics_events_message.json");
+		String expectedJSON = read("analytics_events_message.json");
 
-		String actualJSONString = _jsonObjectMapper.map(messageBuilder.build());
+		expectedJSON = expectedJSON.replace(
+			"2017-11-20T19:52:56.723Z",
+			ISO8601Utils.format(event.getEventDate(), true));
 
-		JSONAssert.assertEquals(expectedJSONString, actualJSONString, false);
+		String actualJSON = _jsonObjectMapper.map(messageBuilder.build());
+
+		JSONAssert.assertEquals(expectedJSON, actualJSON, false);
 	}
 
 	protected String read(String fileName) throws Exception {
@@ -101,7 +115,7 @@ public class AnalyticsEventsMessageJSONObjectMapperTest {
 
 		byte[] bytes = Files.readAllBytes(Paths.get(url.toURI()));
 
-		return new String(bytes);
+		return new String(bytes, "UTF-8");
 	}
 
 	private final JSONObjectMapper<AnalyticsEventsMessage> _jsonObjectMapper =

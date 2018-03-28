@@ -14,11 +14,14 @@
 
 package com.liferay.analytics.data.binding;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.io.IOException;
 
 /**
  * @author Marcellus Tavares
  */
+@ProviderType
 public interface JSONObjectMapper<T> {
 
 	public T map(String json) throws IOException;

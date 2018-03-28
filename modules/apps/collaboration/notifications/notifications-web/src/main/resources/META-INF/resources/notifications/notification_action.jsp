@@ -80,13 +80,21 @@ if (subscriptionId > 0) {
 		/>
 	</c:if>
 
-	<portlet:actionURL name="deleteUserNotificationEvent" var="deleteURL">
-		<portlet:param name="redirect" value="<%= currentURL %>" />
-		<portlet:param name="userNotificationEventId" value="<%= String.valueOf(userNotificationEvent.getUserNotificationEventId()) %>" />
-	</portlet:actionURL>
+	<%
+	Map<String, Object> rowData = row.getData();
 
-	<liferay-ui:icon
-		message="delete"
-		url="<%= deleteURL.toString() %>"
-	/>
+	UserNotificationFeedEntry userNotificationFeedEntry = (UserNotificationFeedEntry)rowData.get("userNotificationFeedEntry");
+	%>
+
+	<c:if test="<%= !userNotificationFeedEntry.isActionable() %>">
+		<portlet:actionURL name="deleteUserNotificationEvent" var="deleteURL">
+			<portlet:param name="redirect" value="<%= currentURL %>" />
+			<portlet:param name="userNotificationEventId" value="<%= String.valueOf(userNotificationEvent.getUserNotificationEventId()) %>" />
+		</portlet:actionURL>
+
+		<liferay-ui:icon
+			message="delete"
+			url="<%= deleteURL.toString() %>"
+		/>
+	</c:if>
 </liferay-ui:icon-menu>

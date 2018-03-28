@@ -3,7 +3,7 @@
 		<execute function="SelectFrame" locator1="IFrame#CONFIGURATION" />
 
 		<execute macro="Panel#expandPanel">
-			<var name="panelHeading" value="Languages" />
+			<var name="panel" value="Languages" />
 		</execute>
 
 		<for list="${availableLanguages}" param="availableLanguage">
@@ -17,7 +17,7 @@
 		<execute function="SelectFrame" locator1="IFrame#CONFIGURATION" />
 
 		<execute macro="Panel#expandPanel">
-			<var name="panelHeading" value="Languages" />
+			<var name="panel" value="Languages" />
 		</execute>
 
 		<for list="${currentLanguages}" param="currentLanguage">
@@ -31,7 +31,7 @@
 		<execute function="SelectFrame" locator1="IFrame#CONFIGURATION" />
 
 		<execute macro="Panel#expandPanel">
-			<var name="panelHeading" value="Languages" />
+			<var name="panel" value="Languages" />
 		</execute>
 
 		<while>
@@ -83,7 +83,7 @@
 		<execute function="SelectFrame" locator1="IFrame#CONFIGURATION" />
 
 		<execute macro="Panel#expandPanel">
-			<var name="panelHeading" value="Languages" />
+			<var name="panel" value="Languages" />
 		</execute>
 
 		<execute function="Select" locator1="LanguageConfiguration#DISPLAY_TEMPLATE_SELECT" value1="${displayStyle}" />
@@ -91,14 +91,6 @@
 		<execute macro="Button#clickSave" />
 
 		<execute function="SelectFrame" value1="relative=top" />
-	</command>
-
-	<command name="viewDisplayTemplateIconMenu">
-		<var name="key_language" value="${language}" />
-
-		<execute function="Click" locator1="Language#ICON_MENU_DROPDOWN" />
-
-		<execute function="AssertTextEquals" locator1="Language#ICON_MENU_LANGUAGE" value1="${language}" />
 	</command>
 
 	<command name="viewDisplayTemplateLongText">

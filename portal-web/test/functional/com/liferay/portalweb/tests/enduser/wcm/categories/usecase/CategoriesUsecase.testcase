@@ -460,7 +460,7 @@
 		</execute>
 
 		<execute macro="Panel#expandPanel">
-			<var name="panelHeading" value="Categorization" />
+			<var name="panel" value="Categorization" />
 		</execute>
 
 		<execute macro="AssetCategorization#addCategory">
@@ -534,10 +534,6 @@
 		<execute macro="Category#viewPath">
 			<var name="categoryName" value="Category Name" />
 			<var name="path" value="Topic > Category Name" />
-		</execute>
-
-		<execute macro="LexiconEntry#gotoEntry">
-			<var name="rowEntry" value="Category Name" />
 		</execute>
 
 		<execute macro="Category#viewPath">
@@ -676,7 +672,7 @@
 		</execute>
 
 		<execute macro="Panel#expandPanel">
-			<var name="panelHeading" value="Metadata" />
+			<var name="panel" value="Metadata" />
 		</execute>
 
 		<execute macro="AssetCategorization#addCategory">
@@ -691,7 +687,7 @@
 		</execute>
 
 		<execute macro="Panel#expandPanel">
-			<var name="panelHeading" value="Metadata" />
+			<var name="panel" value="Metadata" />
 		</execute>
 
 		<execute function="AssertTextNotPresent" value1="Vocabulary Name" />
@@ -2329,10 +2325,6 @@
 		<execute macro="Category#viewPath">
 			<var name="categoryName" value="Category Name" />
 			<var name="path" value="Topic > Category Name" />
-		</execute>
-
-		<execute macro="LexiconEntry#gotoEntry">
-			<var name="rowEntry" value="Category Name" />
 		</execute>
 
 		<execute macro="Category#viewPath">
