@@ -21,9 +21,9 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW);
 
-WorkflowDefinitionLinkSearchEntry workflowDefinitionLinkSearchEntry = (WorkflowDefinitionLinkSearchEntry)row.getObject();
-
 String randomNamespace = (String)row.getParameter("randomNamespace");
+
+WorkflowDefinitionLinkSearchEntry workflowDefinitionLinkSearchEntry = (WorkflowDefinitionLinkSearchEntry)row.getObject();
 
 String className = workflowDefinitionLinkSearchEntry.getClassName();
 String resource = workflowDefinitionLinkSearchEntry.getResource();

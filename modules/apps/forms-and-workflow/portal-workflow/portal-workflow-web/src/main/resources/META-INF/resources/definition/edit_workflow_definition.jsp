@@ -122,7 +122,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 					<aui:icon cssClass="icon-monospaced sidenav-close text-default visible-xs-inline-block" image="times" markupView="lexicon" url="javascript:;" />
 
 					<h4>
-						<%= workflowDefinition.getTitle(LanguageUtil.getLanguageId(request)) %>
+						<%= HtmlUtil.escape(workflowDefinition.getTitle(LanguageUtil.getLanguageId(request))) %>
 					</h4>
 				</div>
 
@@ -422,6 +422,17 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 		'<portlet:namespace />duplicateDefinition',
 		function(event) {
 			Liferay.WorkflowWeb.confirmBeforeDuplicateDialog(this, '<%= duplicateWorkflowDefinition %>', duplicateWorkflowTitle, '<%= randomNamespace %>', '<portlet:namespace />');
+		}
+	);
+
+	A.one('#<portlet:namespace />title').on(
+		'keypress',
+		function(event) {
+			var keycode = (event.keyCode ? event.keyCode : event.which);
+
+			if (keycode == '13') {
+				event.preventDefault();
+			}
 		}
 	);
 </aui:script>

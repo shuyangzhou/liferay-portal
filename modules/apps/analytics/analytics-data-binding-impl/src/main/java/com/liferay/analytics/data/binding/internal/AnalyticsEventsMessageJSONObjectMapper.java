@@ -17,12 +17,18 @@ package com.liferay.analytics.data.binding.internal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
+import com.fasterxml.jackson.databind.util.ISO8601Utils;
 
 import com.liferay.analytics.data.binding.JSONObjectMapper;
 import com.liferay.analytics.model.AnalyticsEventsMessage;
 
 import java.io.IOException;
 
+import java.text.FieldPosition;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +69,11 @@ public class AnalyticsEventsMessageJSONObjectMapper
 
 		_objectMapper.configure(
 			DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+		_objectMapper.configure(
+			SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
+		_objectMapper.setDateFormat(new ISO8601MillisDateFormat());
 	}
 
 	private static final class AnalyticsEventsMessageMixIn {
@@ -89,11 +100,29 @@ public class AnalyticsEventsMessageJSONObjectMapper
 		@JsonProperty("applicationId")
 		private String _applicationId;
 
+		@JsonProperty("eventDate")
+		private Date _eventDate;
+
 		@JsonProperty("eventId")
 		private String _eventId;
 
 		@JsonProperty("properties")
 		private Map<String, String> _properties;
+
+	}
+
+	private final class ISO8601MillisDateFormat extends ISO8601DateFormat {
+
+		@Override
+		public StringBuffer format(
+			Date date, StringBuffer toAppendTo, FieldPosition fieldPosition) {
+
+			String value = ISO8601Utils.format(date, true);
+
+			toAppendTo.append(value);
+
+			return toAppendTo;
+		}
 
 	}
 
