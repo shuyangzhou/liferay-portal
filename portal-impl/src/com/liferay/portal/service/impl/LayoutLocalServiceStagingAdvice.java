@@ -17,7 +17,7 @@ package com.liferay.portal.service.impl;
 import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
 import com.liferay.exportimport.kernel.staging.StagingUtil;
-import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -255,8 +255,12 @@ public class LayoutLocalServiceStagingAdvice extends ChainableMethodAdvice {
 
 		// Layout
 
+		LayoutLocalServiceHelper layoutLocalServiceHelper =
+			_getLayoutLocalServiceHelper();
+
 		parentLayoutId = layoutLocalServiceHelper.getParentLayoutId(
 			groupId, privateLayout, parentLayoutId);
+
 		String name = nameMap.get(LocaleUtil.getSiteDefault());
 
 		Map<Locale, String> layoutFriendlyURLMap =
@@ -478,6 +482,9 @@ public class LayoutLocalServiceStagingAdvice extends ChainableMethodAdvice {
 			return layoutLocalService.updateName(layout, name, languageId);
 		}
 
+		LayoutLocalServiceHelper layoutLocalServiceHelper =
+			_getLayoutLocalServiceHelper();
+
 		layoutLocalServiceHelper.validateName(name, languageId);
 
 		layout.setName(name, LocaleUtil.fromLanguageId(languageId));
@@ -683,8 +690,15 @@ public class LayoutLocalServiceStagingAdvice extends ChainableMethodAdvice {
 		return returnValue;
 	}
 
-	@BeanReference(type = LayoutLocalServiceHelper.class)
-	protected LayoutLocalServiceHelper layoutLocalServiceHelper;
+	private LayoutLocalServiceHelper _getLayoutLocalServiceHelper() {
+		if (_layoutLocalServiceHelper == null) {
+			_layoutLocalServiceHelper =
+				(LayoutLocalServiceHelper)PortalBeanLocatorUtil.locate(
+					LayoutLocalServiceHelper.class.getName());
+		}
+
+		return _layoutLocalServiceHelper;
+	}
 
 	private static final Class<?>[] _GET_LAYOUTS_TYPES =
 		{Long.TYPE, Boolean.TYPE, Long.TYPE};
@@ -709,5 +723,7 @@ public class LayoutLocalServiceStagingAdvice extends ChainableMethodAdvice {
 		_layoutLocalServiceStagingAdviceMethodNames.add("updateLookAndFeel");
 		_layoutLocalServiceStagingAdviceMethodNames.add("updateName");
 	}
+
+	private volatile LayoutLocalServiceHelper _layoutLocalServiceHelper;
 
 }
