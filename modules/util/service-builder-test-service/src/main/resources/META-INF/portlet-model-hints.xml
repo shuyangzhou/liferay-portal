@@ -5,4 +5,16 @@
 		<field name="bigDecimalEntryId" type="long" />
 		<field name="bigDecimalValue" type="BigDecimal" />
 	</model>
+	<model name="com.liferay.service.builder.test.model.VersionedEntry">
+		<field name="mvccVersion" type="long" />
+		<field name="versionedEntryId" type="long" />
+		<field name="content" type="String" />
+		<field name="headId" type="long" />
+	</model>
+	<model name="com.liferay.service.builder.test.model.VersionedEntryVersion">
+		<field name="versionedEntryVersionId" type="long" />
+		<field name="version" type="int" />
+		<field name="versionedEntryId" type="long" />
+		<field name="content" type="String" />
+	</model>
 </model-hints>
