@@ -1040,8 +1040,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			if (!ignoredClass.startsWith(StringPool.EXCLAMATION) &&
 				(ignoredClass.equals(interfaceClassName) ||
 				 (ignoredClass.endsWith(StringPool.STAR) &&
-				  interfaceClassName.startsWith(
-					  ignoredClass.substring(0, ignoredClass.length() - 1))))) {
+				  interfaceClassName.regionMatches(
+					  0, ignoredClass, 0, ignoredClass.length() - 1)))) {
 
 				return true;
 			}
