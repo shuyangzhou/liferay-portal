@@ -22,9 +22,6 @@ import java.util.function.Consumer;
  */
 public class LabelItemList extends ArrayList<LabelItem> {
 
-	public LabelItemList() {
-	}
-
 	public void add(Consumer<LabelItem> consumer) {
 		LabelItem labelItem = new LabelItem();
 
