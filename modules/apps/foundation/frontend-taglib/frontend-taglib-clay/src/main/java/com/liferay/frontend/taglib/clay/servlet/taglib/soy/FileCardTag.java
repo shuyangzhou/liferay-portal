@@ -15,6 +15,7 @@
 package com.liferay.frontend.taglib.clay.servlet.taglib.soy;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.soy.base.BaseClayCardTag;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItemList;
 
 /**
  * @author Julien Castelain
@@ -29,8 +30,8 @@ public class FileCardTag extends BaseClayCardTag {
 		putValue("icon", icon);
 	}
 
-	public void setLabels(Object labels) {
-		putValue("labels", labels);
+	public void setLabels(LabelItemList labelItemList) {
+		putValue("labels", labelItemList);
 	}
 
 	public void setLabelStylesMap(Object labelStylesMap) {
