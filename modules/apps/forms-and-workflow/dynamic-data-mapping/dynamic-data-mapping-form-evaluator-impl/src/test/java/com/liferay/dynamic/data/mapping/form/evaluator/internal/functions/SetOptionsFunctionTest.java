@@ -52,8 +52,8 @@ public class SetOptionsFunctionTest extends BaseDDMFormRuleFunctionTestCase {
 	public void testEvaluate() {
 		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
-		jsonArray.put(createJSONObject("label a", "value a"));
-		jsonArray.put(createJSONObject("label b", "value b"));
+		jsonArray.put(createJSONObject("value a", "label a"));
+		jsonArray.put(createJSONObject("value b", "label b"));
 
 		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
