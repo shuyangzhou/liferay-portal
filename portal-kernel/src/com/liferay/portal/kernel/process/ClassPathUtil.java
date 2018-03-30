@@ -282,7 +282,16 @@ public class ClassPathUtil {
 
 		int pos = -1;
 
-		if (!path.startsWith("file:") ||
+		if (protocol.equals("file") && (pos = path.indexOf(CharPool.EXCLAMATION)) == -1) {
+			String classesDirName = path.substring(
+				0, path.length() - pathOfClass.length());
+
+			String libDirName = classesDirName.substring(
+				0, classesDirName.length() - "classes/".length());
+
+			dir = new File(libDirName);
+		}
+		else if (!path.startsWith("file:") ||
 			((pos = path.indexOf(CharPool.EXCLAMATION)) == -1)) {
 
 			if (!path.endsWith(pathOfClass)) {
