@@ -9,7 +9,7 @@ Import-Package:\
 -includeresource:\
 	classes,\
 	test-classes/integration,\
-	@test-lib/biz.aQute.bndlib.jar!/aQute/lib/filter/*,\
+	@test-lib/biz.aQute.bndlib.jar,\
 	@test-lib/com.liferay.petra.concurrent.jar,\
 	@test-lib/com.liferay.petra.executor.jar,\
 	@test-lib/com.liferay.petra.function.jar,\
