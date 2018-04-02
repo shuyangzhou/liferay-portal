@@ -17,7 +17,8 @@ package com.liferay.apio.architect.jaxrs.json.internal.reader;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import com.liferay.apio.architect.form.Body;
 import com.liferay.apio.architect.functional.Try;
@@ -29,8 +30,12 @@ import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
@@ -71,17 +76,62 @@ public class JSONBodyMessageBodyReader implements MessageBodyReader<Body> {
 
 		Gson gson = new Gson();
 
-		TypeToken<Map<String, String>> typeToken =
-			new TypeToken<Map<String, String>>() {};
-
-		Try<Map<String, String>> mapTry = Try.fromFallibleWithResources(
+		Try<JsonObject> mapTry = Try.fromFallibleWithResources(
 			() -> new InputStreamReader(entityStream, "UTF-8"),
-			streamReader -> gson.fromJson(streamReader, typeToken.getType()));
+			streamReader -> gson.fromJson(streamReader, JsonObject.class));
 
-		Map<String, String> map = mapTry.orElseThrow(
+		JsonObject jsonObject = mapTry.orElseThrow(
 			() -> new BadRequestException("Body is not a valid JSON"));
 
-		return key -> Optional.ofNullable(map.get(key));
+		return Body.create(
+			_transform(
+				jsonObject,
+				(Try<JsonElement> aTry) -> aTry.filter(
+					JsonElement::isJsonPrimitive
+				).map(
+					JsonElement::getAsString
+				)),
+			_transform(
+				jsonObject,
+				(Try<JsonElement> aTry) -> aTry.filter(
+					JsonElement::isJsonArray
+				).map(
+					JsonElement::getAsJsonArray
+				).map(
+					jsonArray -> {
+						List<JsonElement> jsonElements = new ArrayList<>();
+
+						Iterator<JsonElement> iterator = jsonArray.iterator();
+
+						iterator.forEachRemaining(jsonElements::add);
+
+						return jsonElements;
+					}
+				).map(
+					List::stream
+				).map(
+					stream -> stream.filter(
+						JsonElement::isJsonPrimitive
+					).map(
+						JsonElement::getAsString
+					).collect(
+						Collectors.toList()
+					)
+				)));
+	}
+
+	private <T> Function<String, Optional<T>> _transform(
+		JsonObject jsonObject, Function<Try<JsonElement>, Try<T>> function) {
+
+		return key -> {
+			Try<String> keyTry = Try.success(key);
+
+			return function.apply(
+				keyTry.map(jsonObject::get)
+			).fold(
+				__ -> Optional.empty(), Optional::of
+			);
+		};
 	}
 
 }

@@ -488,11 +488,7 @@ public class TryTest {
 
 		List<Integer> list = new ArrayList<>();
 
-		stringTry.fold(
-			__ -> list.add(3),
-			__ -> {
-				list.add(5);
-			});
+		stringTry.voidFold(__ -> list.add(3), __ -> list.add(5));
 
 		assertThat(list, contains(3));
 	}
@@ -504,11 +500,7 @@ public class TryTest {
 
 		List<Integer> list = new ArrayList<>();
 
-		stringTry.fold(
-			__ -> list.add(3),
-			__ -> {
-				list.add(5);
-			});
+		stringTry.voidFold(__ -> list.add(3), __ -> list.add(5));
 
 		assertThat(list, contains(5));
 	}
@@ -520,7 +512,7 @@ public class TryTest {
 
 		List<Integer> list = new ArrayList<>();
 
-		stringTry.fold(
+		stringTry.voidFold(
 			exception -> {
 				assertThat(
 					exception, is(instanceOf(IllegalArgumentException.class)));

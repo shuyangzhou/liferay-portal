@@ -30,8 +30,8 @@ import java.util.Optional;
 public class MediaObjectUpdaterForm {
 
 	/**
-	 * Builds a {@code Form} that generates {@code MediaObjectCreatorForm} depending on
-	 * the HTTP body.
+	 * Builds a {@code Form} that generates {@code MediaObjectCreatorForm}
+	 * depending on the HTTP body.
 	 *
 	 * @param  formBuilder the {@code Form} builder
 	 * @return a folder form

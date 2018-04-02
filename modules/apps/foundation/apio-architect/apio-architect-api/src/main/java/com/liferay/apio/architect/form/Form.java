@@ -15,25 +15,43 @@
 package com.liferay.apio.architect.form;
 
 import static com.liferay.apio.architect.form.FieldType.BOOLEAN;
+import static com.liferay.apio.architect.form.FieldType.BOOLEAN_LIST;
 import static com.liferay.apio.architect.form.FieldType.DATE;
+import static com.liferay.apio.architect.form.FieldType.DATE_LIST;
 import static com.liferay.apio.architect.form.FieldType.DOUBLE;
+import static com.liferay.apio.architect.form.FieldType.DOUBLE_LIST;
 import static com.liferay.apio.architect.form.FieldType.FILE;
+import static com.liferay.apio.architect.form.FieldType.FILE_LIST;
 import static com.liferay.apio.architect.form.FieldType.LONG;
+import static com.liferay.apio.architect.form.FieldType.LONG_LIST;
 import static com.liferay.apio.architect.form.FieldType.STRING;
+import static com.liferay.apio.architect.form.FieldType.STRING_LIST;
 import static com.liferay.apio.architect.form.FormUtil.getOptionalBoolean;
+import static com.liferay.apio.architect.form.FormUtil.getOptionalBooleanList;
 import static com.liferay.apio.architect.form.FormUtil.getOptionalDate;
+import static com.liferay.apio.architect.form.FormUtil.getOptionalDateList;
 import static com.liferay.apio.architect.form.FormUtil.getOptionalDouble;
+import static com.liferay.apio.architect.form.FormUtil.getOptionalDoubleList;
 import static com.liferay.apio.architect.form.FormUtil.getOptionalFile;
+import static com.liferay.apio.architect.form.FormUtil.getOptionalFileList;
 import static com.liferay.apio.architect.form.FormUtil.getOptionalFormFieldStream;
 import static com.liferay.apio.architect.form.FormUtil.getOptionalLong;
+import static com.liferay.apio.architect.form.FormUtil.getOptionalLongList;
 import static com.liferay.apio.architect.form.FormUtil.getOptionalString;
+import static com.liferay.apio.architect.form.FormUtil.getOptionalStringList;
 import static com.liferay.apio.architect.form.FormUtil.getRequiredBoolean;
+import static com.liferay.apio.architect.form.FormUtil.getRequiredBooleanList;
 import static com.liferay.apio.architect.form.FormUtil.getRequiredDate;
+import static com.liferay.apio.architect.form.FormUtil.getRequiredDateList;
 import static com.liferay.apio.architect.form.FormUtil.getRequiredDouble;
+import static com.liferay.apio.architect.form.FormUtil.getRequiredDoubleList;
 import static com.liferay.apio.architect.form.FormUtil.getRequiredFile;
+import static com.liferay.apio.architect.form.FormUtil.getRequiredFileList;
 import static com.liferay.apio.architect.form.FormUtil.getRequiredFormFieldStream;
 import static com.liferay.apio.architect.form.FormUtil.getRequiredLong;
+import static com.liferay.apio.architect.form.FormUtil.getRequiredLongList;
 import static com.liferay.apio.architect.form.FormUtil.getRequiredString;
+import static com.liferay.apio.architect.form.FormUtil.getRequiredStringList;
 
 import com.liferay.apio.architect.file.BinaryFile;
 import com.liferay.apio.architect.language.Language;
@@ -87,6 +105,18 @@ public class Form<T> {
 		_requiredFiles.forEach(getRequiredFile(body, t));
 		_requiredLongs.forEach(getRequiredLong(body, t));
 		_requiredStrings.forEach(getRequiredString(body, t));
+		_optionalBooleanLists.forEach(getOptionalBooleanList(body, t));
+		_optionalDateLists.forEach(getOptionalDateList(body, t));
+		_optionalDoubleLists.forEach(getOptionalDoubleList(body, t));
+		_optionalFileLists.forEach(getOptionalFileList(body, t));
+		_optionalLongLists.forEach(getOptionalLongList(body, t));
+		_optionalStringLists.forEach(getOptionalStringList(body, t));
+		_requiredBooleanLists.forEach(getRequiredBooleanList(body, t));
+		_requiredDateLists.forEach(getRequiredDateList(body, t));
+		_requiredDoubleLists.forEach(getRequiredDoubleList(body, t));
+		_requiredFileLists.forEach(getRequiredFileList(body, t));
+		_requiredLongLists.forEach(getRequiredLongList(body, t));
+		_requiredStringLists.forEach(getRequiredStringList(body, t));
 
 		return t;
 	}
@@ -110,17 +140,29 @@ public class Form<T> {
 	public List<FormField> getFormFields() {
 		Stream<Stream<FormField>> stream = Stream.of(
 			getOptionalFormFieldStream(_optionalBooleans, BOOLEAN),
+			getOptionalFormFieldStream(_optionalBooleanLists, BOOLEAN_LIST),
 			getOptionalFormFieldStream(_optionalDates, DATE),
+			getOptionalFormFieldStream(_optionalDateLists, DATE_LIST),
 			getOptionalFormFieldStream(_optionalDoubles, DOUBLE),
+			getOptionalFormFieldStream(_optionalDoubleLists, DOUBLE_LIST),
 			getOptionalFormFieldStream(_optionalFiles, FILE),
+			getOptionalFormFieldStream(_optionalFileLists, FILE_LIST),
 			getOptionalFormFieldStream(_optionalLongs, LONG),
+			getOptionalFormFieldStream(_optionalLongLists, LONG_LIST),
 			getOptionalFormFieldStream(_optionalStrings, STRING),
+			getOptionalFormFieldStream(_optionalStringLists, STRING_LIST),
 			getRequiredFormFieldStream(_requiredBooleans, BOOLEAN),
+			getRequiredFormFieldStream(_requiredBooleanLists, BOOLEAN_LIST),
 			getRequiredFormFieldStream(_requiredDates, DATE),
+			getRequiredFormFieldStream(_requiredDateLists, DATE_LIST),
 			getRequiredFormFieldStream(_requiredDoubles, DOUBLE),
+			getRequiredFormFieldStream(_requiredDoubleLists, DOUBLE_LIST),
 			getRequiredFormFieldStream(_requiredFiles, FILE),
+			getRequiredFormFieldStream(_requiredFileLists, FILE_LIST),
 			getRequiredFormFieldStream(_requiredLongs, LONG),
-			getRequiredFormFieldStream(_requiredStrings, STRING));
+			getRequiredFormFieldStream(_requiredLongLists, LONG_LIST),
+			getRequiredFormFieldStream(_requiredStrings, STRING),
+			getRequiredFormFieldStream(_requiredStringLists, STRING_LIST));
 
 		return stream.flatMap(
 			Function.identity()
@@ -242,6 +284,30 @@ public class Form<T> {
 			}
 
 			/**
+			 * Requests an optional boolean list from the HTTP request body.
+			 *
+			 * <p>
+			 * This method calls the provided consumer with the store instance
+			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
+			 * method) and the field value, if the field is present. A {@code
+			 * javax.ws.rs.BadRequestException} is thrown if the field is found
+			 * but it isn't a boolean list.
+			 * </p>
+			 *
+			 * @param  key the field's key
+			 * @param  biConsumer the consumer to call if the field is found
+			 * @return the updated builder
+			 */
+			public FieldStep addOptionalBooleanList(
+				String key, BiConsumer<T, List<Boolean>> biConsumer) {
+
+				_form._optionalBooleanLists.put(
+					key, t -> list -> biConsumer.accept(t, list));
+
+				return this;
+			}
+
+			/**
 			 * Requests an optional date from the HTTP request body.
 			 *
 			 * <p>
@@ -261,6 +327,30 @@ public class Form<T> {
 
 				_form._optionalDates.put(
 					key, t -> date -> biConsumer.accept(t, date));
+
+				return this;
+			}
+
+			/**
+			 * Requests an optional date list from the HTTP request body.
+			 *
+			 * <p>
+			 * This method calls the provided consumer with the store instance
+			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
+			 * method) and the field value, if the field is present. A {@code
+			 * javax.ws.rs.BadRequestException} is thrown if the field is found
+			 * but it isn't a date list.
+			 * </p>
+			 *
+			 * @param  key the field's key
+			 * @param  biConsumer the consumer to call if the field is found
+			 * @return the updated builder
+			 */
+			public FieldStep addOptionalDateList(
+				String key, BiConsumer<T, List<Date>> biConsumer) {
+
+				_form._optionalDateLists.put(
+					key, t -> list -> biConsumer.accept(t, list));
 
 				return this;
 			}
@@ -290,6 +380,30 @@ public class Form<T> {
 			}
 
 			/**
+			 * Requests an optional double list from the HTTP request body.
+			 *
+			 * <p>
+			 * This method calls the provided consumer with the store instance
+			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
+			 * method) and the field value, if the field is present. A {@code
+			 * javax.ws.rs.BadRequestException} is thrown if the field is found
+			 * but it isn't a double list.
+			 * </p>
+			 *
+			 * @param  key the field's key
+			 * @param  biConsumer the consumer to call if the field is found
+			 * @return the updated builder
+			 */
+			public FieldStep addOptionalDoubleList(
+				String key, BiConsumer<T, List<Double>> biConsumer) {
+
+				_form._optionalDoubleLists.put(
+					key, t -> list -> biConsumer.accept(t, list));
+
+				return this;
+			}
+
+			/**
 			 * Requests an optional file from the HTTP request body.
 			 *
 			 * <p>
@@ -309,6 +423,30 @@ public class Form<T> {
 
 				_form._optionalFiles.put(
 					key, t -> binaryFile -> biConsumer.accept(t, binaryFile));
+
+				return this;
+			}
+
+			/**
+			 * Requests an optional file list from the HTTP request body.
+			 *
+			 * <p>
+			 * This method calls the provided consumer with the store instance
+			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
+			 * method) and the field value, if the field is present. A {@code
+			 * javax.ws.rs.BadRequestException} is thrown if the field is found
+			 * but it isn't a file list.
+			 * </p>
+			 *
+			 * @param  key the field's key
+			 * @param  biConsumer the consumer to call if the field is found
+			 * @return the updated builder
+			 */
+			public FieldStep addOptionalFileList(
+				String key, BiConsumer<T, List<BinaryFile>> biConsumer) {
+
+				_form._optionalFileLists.put(
+					key, t -> list -> biConsumer.accept(t, list));
 
 				return this;
 			}
@@ -338,6 +476,30 @@ public class Form<T> {
 			}
 
 			/**
+			 * Requests an optional long list from the HTTP request body.
+			 *
+			 * <p>
+			 * This method calls the provided consumer with the store instance
+			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
+			 * method) and the field value, if the field is present. A {@code
+			 * javax.ws.rs.BadRequestException} is thrown if the field is found
+			 * but it isn't a long list.
+			 * </p>
+			 *
+			 * @param  key the field's key
+			 * @param  biConsumer the consumer to call if the field is found
+			 * @return the updated builder
+			 */
+			public FieldStep addOptionalLongList(
+				String key, BiConsumer<T, List<Long>> biConsumer) {
+
+				_form._optionalLongLists.put(
+					key, t -> list -> biConsumer.accept(t, list));
+
+				return this;
+			}
+
+			/**
 			 * Requests an optional string from the HTTP request body.
 			 *
 			 * <p>
@@ -357,6 +519,30 @@ public class Form<T> {
 
 				_form._optionalStrings.put(
 					key, t -> string -> biConsumer.accept(t, string));
+
+				return this;
+			}
+
+			/**
+			 * Requests an optional string list from the HTTP request body.
+			 *
+			 * <p>
+			 * This method calls the provided consumer with the store instance
+			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
+			 * method) and the field value, if the field is present. A {@code
+			 * javax.ws.rs.BadRequestException} is thrown if the field is found
+			 * but it isn't a string list.
+			 * </p>
+			 *
+			 * @param  key the field's key
+			 * @param  biConsumer the consumer to call if the field is found
+			 * @return the updated builder
+			 */
+			public FieldStep addOptionalStringList(
+				String key, BiConsumer<T, List<String>> biConsumer) {
+
+				_form._optionalStringLists.put(
+					key, t -> list -> biConsumer.accept(t, list));
 
 				return this;
 			}
@@ -386,6 +572,30 @@ public class Form<T> {
 			}
 
 			/**
+			 * Requests a mandatory boolean list from the HTTP request body.
+			 *
+			 * <p>
+			 * This method calls the provided consumer with the store instance
+			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
+			 * method) and the field value. A {@code
+			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
+			 * found, or it's found but it isn't a boolean list.
+			 * </p>
+			 *
+			 * @param  key the field's key
+			 * @param  biConsumer the consumer to call
+			 * @return the updated builder
+			 */
+			public FieldStep addRequiredBooleanList(
+				String key, BiConsumer<T, List<Boolean>> biConsumer) {
+
+				_form._requiredBooleanLists.put(
+					key, t -> list -> biConsumer.accept(t, list));
+
+				return this;
+			}
+
+			/**
 			 * Requests a mandatory date from the HTTP request body.
 			 *
 			 * <p>
@@ -405,6 +615,30 @@ public class Form<T> {
 
 				_form._requiredDates.put(
 					key, t -> date -> biConsumer.accept(t, date));
+
+				return this;
+			}
+
+			/**
+			 * Requests a mandatory date list from the HTTP request body.
+			 *
+			 * <p>
+			 * This method calls the provided consumer with the store instance
+			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
+			 * method) and the field value. A {@code
+			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
+			 * found, or it's found but it isn't a date list.
+			 * </p>
+			 *
+			 * @param  key the field's key
+			 * @param  biConsumer the consumer to call
+			 * @return the updated builder
+			 */
+			public FieldStep addRequiredDateList(
+				String key, BiConsumer<T, List<Date>> biConsumer) {
+
+				_form._requiredDateLists.put(
+					key, t -> list -> biConsumer.accept(t, list));
 
 				return this;
 			}
@@ -434,6 +668,30 @@ public class Form<T> {
 			}
 
 			/**
+			 * Requests a mandatory double list from the HTTP request body.
+			 *
+			 * <p>
+			 * This method calls the provided consumer with the store instance
+			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
+			 * method) and the field value. A {@code
+			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
+			 * found, or it's found but it isn't a double list.
+			 * </p>
+			 *
+			 * @param  key the field's key
+			 * @param  biConsumer the consumer to call
+			 * @return the updated builder
+			 */
+			public FieldStep addRequiredDoubleList(
+				String key, BiConsumer<T, List<Double>> biConsumer) {
+
+				_form._requiredDoubleLists.put(
+					key, t -> list -> biConsumer.accept(t, list));
+
+				return this;
+			}
+
+			/**
 			 * Requests a mandatory file from the HTTP request body.
 			 *
 			 * <p>
@@ -453,6 +711,30 @@ public class Form<T> {
 
 				_form._requiredFiles.put(
 					key, t -> binaryFile -> biConsumer.accept(t, binaryFile));
+
+				return this;
+			}
+
+			/**
+			 * Requests a mandatory file list from the HTTP request body.
+			 *
+			 * <p>
+			 * This method calls the provided consumer with the store instance
+			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
+			 * method) and the field value. A {@code
+			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
+			 * found, or it's found but it isn't a file list.
+			 * </p>
+			 *
+			 * @param  key the field's key
+			 * @param  biConsumer the consumer to call
+			 * @return the updated builder
+			 */
+			public FieldStep addRequiredFileList(
+				String key, BiConsumer<T, List<BinaryFile>> biConsumer) {
+
+				_form._requiredFileLists.put(
+					key, t -> list -> biConsumer.accept(t, list));
 
 				return this;
 			}
@@ -482,6 +764,30 @@ public class Form<T> {
 			}
 
 			/**
+			 * Requests a mandatory long list from the HTTP request body.
+			 *
+			 * <p>
+			 * This method calls the provided consumer with the store instance
+			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
+			 * method) and the field value. A {@code
+			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
+			 * found, or it's found but it isn't a long list.
+			 * </p>
+			 *
+			 * @param  key the field's key
+			 * @param  biConsumer the consumer to call
+			 * @return the updated builder
+			 */
+			public FieldStep addRequiredLongList(
+				String key, BiConsumer<T, List<Long>> biConsumer) {
+
+				_form._requiredLongLists.put(
+					key, t -> list -> biConsumer.accept(t, list));
+
+				return this;
+			}
+
+			/**
 			 * Requests a mandatory string from the HTTP request body.
 			 *
 			 * <p>
@@ -501,6 +807,30 @@ public class Form<T> {
 
 				_form._requiredStrings.put(
 					key, t -> string -> biConsumer.accept(t, string));
+
+				return this;
+			}
+
+			/**
+			 * Requests a mandatory string list from the HTTP request body.
+			 *
+			 * <p>
+			 * This method calls the provided consumer with the store instance
+			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
+			 * method) and the field value. A {@code
+			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
+			 * found, or it's found but it isn't a string list.
+			 * </p>
+			 *
+			 * @param  key the field's key
+			 * @param  biConsumer the consumer to call
+			 * @return the updated builder
+			 */
+			public FieldStep addRequiredStringList(
+				String key, BiConsumer<T, List<String>> biConsumer) {
+
+				_form._requiredStringLists.put(
+					key, t -> list -> biConsumer.accept(t, list));
 
 				return this;
 			}
@@ -526,28 +856,52 @@ public class Form<T> {
 	}
 
 	private Function<Language, String> _descriptionFunction;
+	private final Map<String, Function<T, Consumer<List<Boolean>>>>
+		_optionalBooleanLists = new HashMap<>();
 	private final Map<String, Function<T, Consumer<Boolean>>>
 		_optionalBooleans = new HashMap<>();
+	private final Map<String, Function<T, Consumer<List<Date>>>>
+		_optionalDateLists = new HashMap<>();
 	private final Map<String, Function<T, Consumer<Date>>> _optionalDates =
 		new HashMap<>();
+	private final Map<String, Function<T, Consumer<List<Double>>>>
+		_optionalDoubleLists = new HashMap<>();
 	private final Map<String, Function<T, Consumer<Double>>> _optionalDoubles =
 		new HashMap<>();
+	private final Map<String, Function<T, Consumer<List<BinaryFile>>>>
+		_optionalFileLists = new HashMap<>();
 	private final Map<String, Function<T, Consumer<BinaryFile>>>
 		_optionalFiles = new HashMap<>();
+	private final Map<String, Function<T, Consumer<List<Long>>>>
+		_optionalLongLists = new HashMap<>();
 	private final Map<String, Function<T, Consumer<Long>>> _optionalLongs =
 		new HashMap<>();
+	private final Map<String, Function<T, Consumer<List<String>>>>
+		_optionalStringLists = new HashMap<>();
 	private final Map<String, Function<T, Consumer<String>>> _optionalStrings =
 		new HashMap<>();
+	private final Map<String, Function<T, Consumer<List<Boolean>>>>
+		_requiredBooleanLists = new HashMap<>();
 	private final Map<String, Function<T, Consumer<Boolean>>>
 		_requiredBooleans = new HashMap<>();
+	private final Map<String, Function<T, Consumer<List<Date>>>>
+		_requiredDateLists = new HashMap<>();
 	private final Map<String, Function<T, Consumer<Date>>> _requiredDates =
 		new HashMap<>();
+	private final Map<String, Function<T, Consumer<List<Double>>>>
+		_requiredDoubleLists = new HashMap<>();
 	private final Map<String, Function<T, Consumer<Double>>> _requiredDoubles =
 		new HashMap<>();
+	private final Map<String, Function<T, Consumer<List<BinaryFile>>>>
+		_requiredFileLists = new HashMap<>();
 	private final Map<String, Function<T, Consumer<BinaryFile>>>
 		_requiredFiles = new HashMap<>();
+	private final Map<String, Function<T, Consumer<List<Long>>>>
+		_requiredLongLists = new HashMap<>();
 	private final Map<String, Function<T, Consumer<Long>>> _requiredLongs =
 		new HashMap<>();
+	private final Map<String, Function<T, Consumer<List<String>>>>
+		_requiredStringLists = new HashMap<>();
 	private final Map<String, Function<T, Consumer<String>>> _requiredStrings =
 		new HashMap<>();
 	private Supplier<T> _supplier;

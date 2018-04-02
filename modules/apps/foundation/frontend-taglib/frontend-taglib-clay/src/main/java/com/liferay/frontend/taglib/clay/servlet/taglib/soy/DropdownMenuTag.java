@@ -15,6 +15,7 @@
 package com.liferay.frontend.taglib.clay.servlet.taglib.soy;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.soy.base.BaseClayTag;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
@@ -66,8 +67,8 @@ public class DropdownMenuTag extends BaseClayTag {
 		putValue("icon", icon);
 	}
 
-	public void setItems(Object items) {
-		putValue("items", items);
+	public void setItems(DropdownItemList dropdownItemList) {
+		putValue("items", dropdownItemList);
 	}
 
 	public void setItemsIconAlignment(String itemsIconAlignment) {

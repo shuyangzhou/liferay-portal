@@ -185,6 +185,9 @@ public class ModulesStructureTest {
 						return FileVisitResult.SKIP_SUBTREE;
 					}
 
+					String dirAbsolutePath =
+						ModulesStructureTestUtil.getAbsolutePath(dirPath);
+
 					if (Files.exists(dirPath.resolve("package.json"))) {
 						Path packageJSONPath = dirPath.resolve("package.json");
 
@@ -193,7 +196,9 @@ public class ModulesStructureTest {
 
 							_testThemeBuildScripts(dirPath);
 						}
-						else if (!dirName.contains("project-templates")) {
+						else if (!dirAbsolutePath.contains(
+									"/project-templates/")) {
+
 							Path packageLockJSONPath = dirPath.resolve(
 								"package-lock.json");
 
@@ -539,7 +544,7 @@ public class ModulesStructureTest {
 				curGradleDependency.getModuleVersion());
 
 			if (((curConfigurationPos == configurationPos) && (value < 0)) ||
-				(curConfigurationPos < configurationPos) && (value <= 0)) {
+				((curConfigurationPos < configurationPos) && (value <= 0))) {
 
 				return curGradleDependency;
 			}

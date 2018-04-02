@@ -22,21 +22,23 @@
 	{@param? tip: string}
 
 	<div class="form-group{$visible ? '' : ' hide'} liferay-ddm-form-field-editor" data-fieldname="{$name}">
-		{if $showLabel}
-			<label class="control-label" for="{$name}">
+		<label class="control-label" for="{$name}">
+			{if $showLabel}
 				{$label}{sp}
+			{/if}
 
-				{if $required}
-					<svg aria-hidden="true" class="lexicon-icon lexicon-icon-asterisk reference-mark">
-						<use xlink:href="{$pathThemeImages}/lexicon/icons.svg#asterisk" />
-					</svg>
-				{/if}
-			</label>
+			{if $required}
+				<svg aria-hidden="true" class="lexicon-icon lexicon-icon-asterisk reference-mark">
+					<use xlink:href="{$pathThemeImages}/lexicon/icons.svg#asterisk" />
+				</svg>
+			{/if}
+		</label>
 
+		{if $showLabel}
 			<p class="liferay-ddm-form-field-tip">{$tip ? $tip: ''}</p>
 		{/if}
 
-		<div class="form-control input-group-container">
+		<div class="field-type-editor form-control input-group-container">
 			<div class="alloy-editor-container input-group" id="{$name}Container">
 				<div class="alloy-editor alloy-editor-placeholder" contenteditable="false" data-placeholder="{$placeholder}" id="{$name}Editor" name="{$name}Editor">
 				{$value}
