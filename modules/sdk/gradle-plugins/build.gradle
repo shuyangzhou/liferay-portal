@@ -10,10 +10,10 @@ task copyBundle(type: Copy)
 task copyGradleTestDependencies(type: Copy)
 task downloadBundle(type: Download)
 
-String bundleUrl = "https://cdn.lfrs.sl/releases.liferay.com/portal/7.0.4-ga5/liferay-ce-portal-tomcat-7.0-ga5-20171018150113838.zip"
+String bundleUrl = "https://cdn.lfrs.sl/releases.liferay.com/portal/7.0.5-ga6/liferay-ce-portal-tomcat-7.0-ga6-20180320170724974.zip"
 
 if (System.properties["http.proxyHost"] == "squid.lax.liferay.com") {
-	bundleUrl = "http://mirrors.liferay.com/releases.liferay.com/portal/7.0.4-ga5/liferay-ce-portal-tomcat-7.0-ga5-20171018150113838.zip"
+	bundleUrl = "http://mirrors.liferay.com/releases.liferay.com/portal/7.0.5-ga6/liferay-ce-portal-tomcat-7.0-ga6-20180320170724974.zip"
 }
 
 copyBundle {
@@ -38,14 +38,14 @@ dependencies {
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.alloy.taglib", version: "2.0.0"
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.css.builder", version: "2.2.0"
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.db.support", version: "1.0.3"
-	compile group: "com.liferay", name: "com.liferay.gradle.plugins.gulp", version: "2.0.27"
+	compile group: "com.liferay", name: "com.liferay.gradle.plugins.gulp", version: "2.0.28"
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.jasper.jspc", version: "2.0.3"
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.javadoc.formatter", version: "1.0.20"
-	compile group: "com.liferay", name: "com.liferay.gradle.plugins.js.module.config.generator", version: "2.1.28"
-	compile group: "com.liferay", name: "com.liferay.gradle.plugins.js.transpiler", version: "2.4.7"
+	compile group: "com.liferay", name: "com.liferay.gradle.plugins.js.module.config.generator", version: "2.1.29"
+	compile group: "com.liferay", name: "com.liferay.gradle.plugins.js.transpiler", version: "2.4.8"
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.lang.builder", version: "2.2.1"
-	compile group: "com.liferay", name: "com.liferay.gradle.plugins.service.builder", version: "2.1.2"
-	compile group: "com.liferay", name: "com.liferay.gradle.plugins.source.formatter", version: "2.3.113"
+	compile group: "com.liferay", name: "com.liferay.gradle.plugins.service.builder", version: "2.1.3"
+	compile group: "com.liferay", name: "com.liferay.gradle.plugins.source.formatter", version: "2.3.116"
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.soy", version: "3.1.4"
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.test.integration", version: "2.2.1"
 	compile group: "com.liferay", name: "com.liferay.gradle.plugins.tld.formatter", version: "1.0.7"
