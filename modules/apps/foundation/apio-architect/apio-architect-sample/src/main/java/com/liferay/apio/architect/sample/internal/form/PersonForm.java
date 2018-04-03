@@ -16,7 +16,9 @@ package com.liferay.apio.architect.sample.internal.form;
 
 import com.liferay.apio.architect.form.Form;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Represents the values extracted from a person form.
@@ -41,12 +43,12 @@ public class PersonForm {
 			__ -> "This form can be used to create or update a person"
 		).constructor(
 			PersonForm::new
+		).addOptionalStringList(
+			"jobTitle", PersonForm::_setJobTitles
 		).addRequiredDate(
 			"birthDate", PersonForm::_setBirthDate
 		).addRequiredString(
 			"givenName", PersonForm::_setGivenName
-		).addRequiredString(
-			"jobTitle", PersonForm::_setJobTitle
 		).addRequiredString(
 			"address", PersonForm::_setAddress
 		).addRequiredString(
@@ -113,12 +115,12 @@ public class PersonForm {
 	}
 
 	/**
-	 * Returns the person's job title.
+	 * Returns the person's job titles.
 	 *
-	 * @return the person's job title
+	 * @return the person's job titles
 	 */
-	public String getJobTitle() {
-		return _jobTitle;
+	public List<String> getJobTitles() {
+		return _jobTitles;
 	}
 
 	private void _setAddress(String address) {
@@ -145,8 +147,8 @@ public class PersonForm {
 		_image = image;
 	}
 
-	private void _setJobTitle(String jobTitle) {
-		_jobTitle = jobTitle;
+	private void _setJobTitles(List<String> jobTitles) {
+		_jobTitles = jobTitles;
 	}
 
 	private String _address;
@@ -155,6 +157,6 @@ public class PersonForm {
 	private String _familyName;
 	private String _givenName;
 	private String _image;
-	private String _jobTitle;
+	private List<String> _jobTitles = Collections.emptyList();
 
 }

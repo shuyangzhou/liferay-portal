@@ -18,7 +18,7 @@
 	{@param readOnly: bool}
 	{@param showAsSwitcher: bool}
 	{@param showLabel: bool}
-	{@param value: bool}
+	{@param value: ?}
 	{@param visible: bool}
 	{@param? required: bool}
 	{@param? tip: string}
@@ -53,8 +53,10 @@
 				</span>
 			</label>
 
-			{if $tip}
-				<span class="form-text">{$tip}</span>
+			{if $showLabel}
+				{if $tip}
+					<span class="form-text">{$tip}</span>
+				{/if}
 			{/if}
 		{else}
 			<div class="custom-control custom-checkbox">

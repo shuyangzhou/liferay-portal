@@ -183,26 +183,6 @@ public abstract class Try<T> {
 		ThrowableFunction<? super T, Try<S>> function);
 
 	/**
-	 * Applies {@code failureConsumer} if this is a {@code Failure}, or {@code
-	 * successConsumer} if this is a {@code Success}.
-	 *
-	 * <p>
-	 * If {@code successConsumer} throws an {@code Exception}, this method
-	 * returns the result of applying {@code failureConsumer} to the new {@code
-	 * Exception}.
-	 * </p>
-	 *
-	 * @param  failureConsumer the consumer to apply when this {@code Try} is a
-	 *         {@code Failure}
-	 * @param  successConsumer the consumer to apply when this {@code Try} is a
-	 *         {@code Success}
-	 * @review
-	 */
-	public abstract void fold(
-		Consumer<Exception> failureConsumer,
-		ThrowableConsumer<T> successConsumer);
-
-	/**
 	 * Returns the value that results from applying {@code failureFunction} if
 	 * this is a {@code Failure}, or {@code successFunction} if this is a {@code
 	 * Success}.
@@ -455,6 +435,26 @@ public abstract class Try<T> {
 	public abstract Optional<T> toOptional();
 
 	/**
+	 * Applies {@code failureConsumer} if this is a {@code Failure}, or {@code
+	 * successConsumer} if this is a {@code Success}.
+	 *
+	 * <p>
+	 * If {@code successConsumer} throws an {@code Exception}, this method
+	 * returns the result of applying {@code failureConsumer} to the new {@code
+	 * Exception}.
+	 * </p>
+	 *
+	 * @param  failureConsumer the consumer to apply when this {@code Try} is a
+	 *         {@code Failure}
+	 * @param  successConsumer the consumer to apply when this {@code Try} is a
+	 *         {@code Success}
+	 * @review
+	 */
+	public abstract void voidFold(
+		Consumer<Exception> failureConsumer,
+		ThrowableConsumer<T> successConsumer);
+
+	/**
 	 * The implementation of {@code Try}'S failure case. Don't try to
 	 * instantiate this class directly. To instantiate this class when you don't
 	 * know if the operation will fail, use {@link
@@ -475,16 +475,6 @@ public abstract class Try<T> {
 			Objects.requireNonNull(throwableFunction);
 
 			return Try.fail(_exception);
-		}
-
-		@Override
-		public void fold(
-			Consumer<Exception> failureConsumer,
-			ThrowableConsumer<T> successConsumer) {
-
-			Objects.requireNonNull(failureConsumer);
-
-			failureConsumer.accept(_exception);
 		}
 
 		@Override
@@ -617,6 +607,16 @@ public abstract class Try<T> {
 			return Optional.empty();
 		}
 
+		@Override
+		public void voidFold(
+			Consumer<Exception> failureConsumer,
+			ThrowableConsumer<T> successConsumer) {
+
+			Objects.requireNonNull(failureConsumer);
+
+			failureConsumer.accept(_exception);
+		}
+
 		private Failure(Exception exception) {
 			_exception = exception;
 		}
@@ -657,22 +657,6 @@ public abstract class Try<T> {
 			}
 			catch (Exception e) {
 				return Try.fail(e);
-			}
-		}
-
-		@Override
-		public void fold(
-			Consumer<Exception> failureConsumer,
-			ThrowableConsumer<T> successConsumer) {
-
-			Objects.requireNonNull(successConsumer);
-			Objects.requireNonNull(failureConsumer);
-
-			try {
-				successConsumer.accept(_value);
-			}
-			catch (Exception e) {
-				failureConsumer.accept(e);
 			}
 		}
 
@@ -801,6 +785,22 @@ public abstract class Try<T> {
 		@Override
 		public Optional<T> toOptional() {
 			return Optional.ofNullable(_value);
+		}
+
+		@Override
+		public void voidFold(
+			Consumer<Exception> failureConsumer,
+			ThrowableConsumer<T> successConsumer) {
+
+			Objects.requireNonNull(successConsumer);
+			Objects.requireNonNull(failureConsumer);
+
+			try {
+				successConsumer.accept(_value);
+			}
+			catch (Exception e) {
+				failureConsumer.accept(e);
+			}
 		}
 
 		private Success(T value) {

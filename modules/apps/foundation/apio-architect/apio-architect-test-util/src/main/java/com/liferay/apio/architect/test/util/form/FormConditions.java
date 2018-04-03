@@ -23,6 +23,7 @@ import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.functional.Try;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -82,8 +83,11 @@ public class FormConditions<T> extends TypeSafeDiagnosingMatcher<Form<T>> {
 		 * @return the {@code FormConditions} instance
 		 */
 		public FormConditions<T> build() {
-			return new FormConditions<>(
-				key -> Optional.ofNullable(_map.get(key)), _matchers);
+			Body body = Body.create(
+				key -> Optional.ofNullable(_map.get(key)),
+				key -> Optional.ofNullable(_listMap.get(key)));
+
+			return new FormConditions<>(body, _matchers);
 		}
 
 		/**
@@ -192,13 +196,13 @@ public class FormConditions<T> extends TypeSafeDiagnosingMatcher<Form<T>> {
 		public Builder<T> whereLong(
 			String key, Function<Object, Matcher<T>> function) {
 
-			_add(key, function, "42", Long.valueOf(42));
+			_add(key, function, "42", 42L);
 
 			return this;
 		}
 
 		/**
-		 * Adds a new {@code Matcher} for a boolean part of the form.
+		 * Adds a new {@code Matcher} for a string part of the form.
 		 *
 		 * <p>
 		 * The form function should return the value {@code "String"}.
@@ -223,6 +227,35 @@ public class FormConditions<T> extends TypeSafeDiagnosingMatcher<Form<T>> {
 			return this;
 		}
 
+		/**
+		 * Adds a new {@code Matcher} for a string list part of the form.
+		 *
+		 * <p>
+		 * The form function should return a list containing {@code "String1"}
+		 * and {@code "String2}.
+		 * </p>
+		 *
+		 * <p>
+		 * To provide information about the form method to call, use the method
+		 * {@link FormMatchers#isReturnedIn(Function)}.
+		 * </p>
+		 *
+		 * @param  key the name of the field read from the HTTP body
+		 * @param  function the function that takes the field value and returns
+		 *         a {@code Matcher} for the {@code Form}. Use the method {@link
+		 *         FormMatchers#isReturnedIn(Function)}.
+		 * @return the builder's next step
+		 */
+		public Builder<T> whereStringList(
+			String key, Function<Object, Matcher<T>> function) {
+
+			_addList(
+				key, function, Arrays.asList("String1", "String2"),
+				Arrays.asList("String1", "String2"));
+
+			return this;
+		}
+
 		private void _add(
 			String key, Function<Object, Matcher<T>> function, String value,
 			Object transformedValue) {
@@ -231,6 +264,15 @@ public class FormConditions<T> extends TypeSafeDiagnosingMatcher<Form<T>> {
 			_matchers.add(function.apply(transformedValue));
 		}
 
+		private void _addList(
+			String key, Function<Object, Matcher<T>> function,
+			List<String> list, List<Object> transformedList) {
+
+			_listMap.put(key, list);
+			_matchers.add(function.apply(transformedList));
+		}
+
+		private final Map<String, List<String>> _listMap = new HashMap<>();
 		private final Map<String, String> _map = new HashMap<>();
 		private final List<Matcher<T>> _matchers = new ArrayList<>();
 

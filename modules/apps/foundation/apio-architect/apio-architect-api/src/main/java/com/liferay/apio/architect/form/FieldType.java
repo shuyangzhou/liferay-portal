@@ -19,6 +19,7 @@ package com.liferay.apio.architect.form;
  */
 public enum FieldType {
 
-	BOOLEAN, DATE, DOUBLE, FILE, LONG, STRING
+	BOOLEAN, BOOLEAN_LIST, DATE, DATE_LIST, DOUBLE, DOUBLE_LIST, FILE,
+	FILE_LIST, LONG, LONG_LIST, STRING, STRING_LIST
 
 }

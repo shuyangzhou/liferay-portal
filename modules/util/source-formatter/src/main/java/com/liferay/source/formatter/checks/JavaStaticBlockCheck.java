@@ -17,7 +17,6 @@ package com.liferay.source.formatter.checks;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.source.formatter.parser.JavaClass;
-import com.liferay.source.formatter.parser.JavaStaticBlock;
 import com.liferay.source.formatter.parser.JavaTerm;
 import com.liferay.source.formatter.parser.JavaVariable;
 
@@ -69,8 +68,8 @@ public class JavaStaticBlockCheck extends BaseJavaTermCheck {
 				continue;
 			}
 
-			if ((previousJavaTerm instanceof JavaStaticBlock) &&
-				(javaTerm instanceof JavaStaticBlock)) {
+			if (previousJavaTerm.isJavaStaticBlock() &&
+				javaTerm.isJavaStaticBlock()) {
 
 				classContent = StringUtil.replaceFirst(
 					classContent, javaTerm.getContent(), StringPool.BLANK);
@@ -123,14 +122,31 @@ public class JavaStaticBlockCheck extends BaseJavaTermCheck {
 	private JavaTerm _getLastReferencedJavaTerm(
 		String staticBlockContent, List<JavaTerm> childJavaTerms) {
 
+		boolean containsMethodCall = false;
+
+		for (JavaTerm javaTerm : childJavaTerms) {
+			if (javaTerm.isStatic() && javaTerm.isJavaMethod() &&
+				staticBlockContent.matches(
+					"[\\s\\S]*\\s" + javaTerm.getName() + "\\([\\s\\S]*")) {
+
+				containsMethodCall = true;
+
+				break;
+			}
+		}
+
 		for (int i = childJavaTerms.size() - 1; i >= 0; i--) {
 			JavaTerm javaTerm = childJavaTerms.get(i);
 
-			if (javaTerm.isStatic() &&
-				((javaTerm instanceof JavaClass) ||
-				 (javaTerm instanceof JavaVariable)) &&
-				staticBlockContent.matches(
+			if (!javaTerm.isStatic() ||
+				!staticBlockContent.matches(
 					"[\\s\\S]*\\W" + javaTerm.getName() + "\\W[\\s\\S]*")) {
+
+				continue;
+			}
+
+			if (javaTerm.isJavaClass() ||
+				(javaTerm.isJavaVariable() && !containsMethodCall)) {
 
 				return javaTerm;
 			}
@@ -143,7 +159,7 @@ public class JavaStaticBlockCheck extends BaseJavaTermCheck {
 		String classContent, List<JavaTerm> childJavaTerms) {
 
 		for (JavaTerm childJavaTerm : childJavaTerms) {
-			if (!(childJavaTerm instanceof JavaStaticBlock)) {
+			if (!childJavaTerm.isJavaStaticBlock()) {
 				continue;
 			}
 

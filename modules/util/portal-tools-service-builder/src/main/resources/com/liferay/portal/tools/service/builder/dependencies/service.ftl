@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.service.Base${sessionTypeName}Service;
 import com.liferay.portal.kernel.service.PermissionedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedResourcedModelLocalService;
+import com.liferay.portal.kernel.service.version.VersionService;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -18,6 +19,10 @@ import com.liferay.portal.kernel.transaction.Transactional;
 <#list imports as import>
 import ${import};
 </#list>
+
+<#if entity.isVersioned()>
+	import ${apiPackagePath}.model.${entity.name}Version;
+</#if>
 
 <#if stringUtil.equals(sessionTypeName, "Local")>
 /**
@@ -69,6 +74,13 @@ import ${import};
 		},
 		service = ${entity.name}${sessionTypeName}Service.class
 	)
+<#elseif stringUtil.equals(sessionTypeName, "Local") && entity.isVersioned()>
+	@OSGiBeanProperties(
+		property = {
+			"model.class.name=${apiPackagePath}.model.${entity.name}",
+			"version.model.class.name=${apiPackagePath}.model.${entity.name}Version"
+		}
+	)
 </#if>
 
 @ProviderType
@@ -84,6 +96,11 @@ public interface ${entity.name}${sessionTypeName}Service
 		<#elseif entity.isResourcedModel()>
 			, PersistedModelLocalService
 			, PersistedResourcedModelLocalService
+		<#elseif entity.isVersioned()>
+			, PersistedModelLocalService
+			, VersionService<${entity.name}, ${entity.name}Version>
+
+			<#assign overrideMethodNames = overrideMethodNames + ["create", "delete", "deleteVersion", "fetchLatestVersion", "getVersion", "getVersions", "publish", "revert", "update"] />
 		<#else>
 			, PersistedModelLocalService
 		</#if>

@@ -30,6 +30,17 @@ import ${apiPackagePath}.model.${entity.name}Soap;
 	import ${apiPackagePath}.model.${entity.name}Localization;
 </#if>
 
+<#if entity.isVersioned()>
+	import ${apiPackagePath}.model.${entity.name}Version;
+	import ${apiPackagePath}.model.impl.${entity.name}VersionImpl;
+
+<#elseif entity.versionedEntity??>
+	<#assign versionedEntity = entity.versionedEntity />
+
+	import ${apiPackagePath}.model.${versionedEntity.name};
+	import ${apiPackagePath}.model.impl.${versionedEntity.name}Impl;
+</#if>
+
 import ${apiPackagePath}.service.${entity.name}LocalServiceUtil;
 
 import aQute.bnd.annotation.ProviderType;
@@ -525,6 +536,55 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		</#list>
 	</#if>
 
+	<#if entity.isVersioned()>
+		@Override
+		public boolean isDraft() {
+			if (getHeadId() > 0) {
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public ${entity.name}Version toVersionModel() {
+			${entity.name}Version ${entity.varName}Version = new ${entity.name}VersionImpl();
+
+			<#list entity.entityColumns as entityColumn>
+				<#if !stringUtil.equals(entityColumn.methodName, "HeadId") && !stringUtil.equals(entityColumn.methodName, "MvccVersion")>
+					${entity.varName}Version.set${entityColumn.methodName}(get${entityColumn.methodName}());
+				</#if>
+			</#list>
+
+			return ${entity.varName}Version;
+		}
+	<#elseif entity.versionedEntity??>
+		<#assign versionedEntity = entity.versionedEntity />
+
+		@Override
+		public long getVersionedModelId() {
+			return get${versionedEntity.PKEntityColumns[0].methodName}();
+		}
+
+		@Override
+		public void setVersionedModelId(long ${versionedEntity.getPKVarName()}) {
+			set${versionedEntity.PKEntityColumns[0].methodName}(${versionedEntity.getPKVarName()});
+		}
+
+		@Override
+		public ${versionedEntity.name} toVersionedModel() {
+			${versionedEntity.name} ${versionedEntity.varName} = new ${versionedEntity.name}Impl();
+
+			<#list versionedEntity.entityColumns as entityColumn>
+				<#if !stringUtil.equals(entityColumn.methodName, "HeadId") && !stringUtil.equals(entityColumn.methodName, "MvccVersion")>
+					${versionedEntity.varName}.set${entityColumn.methodName}(get${entityColumn.methodName}());
+				</#if>
+			</#list>
+
+			return ${versionedEntity.varName};
+		}
+	</#if>
+
 	<#list entity.regularEntityColumns as entityColumn>
 		<#if stringUtil.equals(entityColumn.name, "classNameId") && !hasClassNameCacheField>
 			@Override
@@ -920,7 +980,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 			com.liferay.portal.kernel.trash.TrashHandler trashHandler = getTrashHandler();
 
-			if (!Validator.isNull(trashHandler.getContainerModelClassName(getPrimaryKey()))) {
+			if (Validator.isNotNull(trashHandler.getContainerModelClassName(getPrimaryKey()))) {
 				ContainerModel containerModel = null;
 
 				try {

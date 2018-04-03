@@ -95,8 +95,8 @@ public class Entity implements Comparable<Entity> {
 		this(
 			null, null, null, name, null, null, null, false, false, false, true,
 			null, null, null, null, null, true, false, false, false, false,
-			false, null, null, null, null, null, null, null, null, null, null,
-			false, null);
+			false, false, null, null, null, null, null, null, null, null, null,
+			null, false, null);
 	}
 
 	public Entity(
@@ -106,7 +106,7 @@ public class Entity implements Comparable<Entity> {
 		String persistenceClass, String finderClassName, String dataSource,
 		String sessionFactory, String txManager, boolean cacheEnabled,
 		boolean dynamicUpdateEnabled, boolean jsonEnabled, boolean mvccEnabled,
-		boolean trashEnabled, boolean deprecated,
+		boolean trashEnabled, boolean deprecated, boolean versioned,
 		List<EntityColumn> pkEntityColumns,
 		List<EntityColumn> regularEntityColumns,
 		List<EntityColumn> blobEntityColumns,
@@ -134,6 +134,7 @@ public class Entity implements Comparable<Entity> {
 		_mvccEnabled = mvccEnabled;
 		_trashEnabled = trashEnabled;
 		_deprecated = deprecated;
+		_versioned = versioned;
 		_pkEntityColumns = pkEntityColumns;
 		_regularEntityColumns = regularEntityColumns;
 		_blobEntityColumns = blobEntityColumns;
@@ -395,6 +396,13 @@ public class Entity implements Comparable<Entity> {
 			interfaceNames.add("TrashedModel");
 		}
 
+		if (isVersioned()) {
+			interfaceNames.add("VersionedModel<" + _name + "Version>");
+		}
+		else if (_versionedEntity != null) {
+			interfaceNames.add("VersionModel<" + _versionedEntity._name + ">");
+		}
+
 		if (isWorkflowEnabled()) {
 			interfaceNames.add("WorkflowedModel");
 		}
@@ -472,6 +480,13 @@ public class Entity implements Comparable<Entity> {
 		if (isTypedModel()) {
 			overrideColumnName.add("className");
 			overrideColumnName.add("classNameId");
+		}
+
+		if (isVersioned()) {
+			overrideColumnName.add("headId");
+		}
+		else if (_versionedEntity != null) {
+			overrideColumnName.add("version");
 		}
 
 		if (isWorkflowEnabled()) {
@@ -677,6 +692,10 @@ public class Entity implements Comparable<Entity> {
 
 	public String getVarNames() {
 		return TextFormatter.formatPlural(getVarName());
+	}
+
+	public Entity getVersionedEntity() {
+		return _versionedEntity;
 	}
 
 	public boolean hasActionableDynamicQuery() {
@@ -1083,6 +1102,10 @@ public class Entity implements Comparable<Entity> {
 		return false;
 	}
 
+	public boolean isVersioned() {
+		return _versioned;
+	}
+
 	public boolean isWorkflowEnabled() {
 		if (hasEntityColumn("status") && hasEntityColumn("statusByUserId") &&
 			hasEntityColumn("statusByUserName") &&
@@ -1121,6 +1144,10 @@ public class Entity implements Comparable<Entity> {
 
 	public void setTransients(List<String> transients) {
 		_transients = transients;
+	}
+
+	public void setVersionedEntity(Entity versionedEntity) {
+		_versionedEntity = versionedEntity;
 	}
 
 	private EntityColumn _getPKEntityColumn() {
@@ -1181,5 +1208,7 @@ public class Entity implements Comparable<Entity> {
 	private List<String> _unresolvedReferenceEntityNames;
 	private final boolean _uuid;
 	private final boolean _uuidAccessor;
+	private final boolean _versioned;
+	private Entity _versionedEntity;
 
 }

@@ -22,6 +22,7 @@ import com.github.javafaker.DateAndTime;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Internet;
 import com.github.javafaker.Name;
+import com.github.javafaker.service.RandomService;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -32,6 +33,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -68,9 +70,19 @@ public class PersonModel {
 
 			Name name = faker.name();
 
+			RandomService randomService = faker.random();
+
+			IntStream intStream = IntStream.range(0, randomService.nextInt(5));
+
+			List<String> jobTitles = intStream.mapToObj(
+				__ -> name.title()
+			).collect(
+				Collectors.toList()
+			);
+
 			PersonModel personModel = new PersonModel(
 				address.fullAddress(), internet.avatar(), birthDate,
-				internet.safeEmailAddress(), name.firstName(), name.title(),
+				internet.safeEmailAddress(), name.firstName(), jobTitles,
 				name.lastName(), _count.get());
 
 			_personModels.put(_count.getAndIncrement(), personModel);
@@ -85,16 +97,16 @@ public class PersonModel {
 	 * @param  birthDate the person's birth date
 	 * @param  email the person's email
 	 * @param  firstName the person's first name
-	 * @param  jobTitle the person's job title
+	 * @param  jobTitles the person's job titles
 	 * @param  lastName the person's last name
 	 * @return the new person
 	 */
 	public static PersonModel create(
 		String address, String avatar, Date birthDate, String email,
-		String firstName, String jobTitle, String lastName) {
+		String firstName, List<String> jobTitles, String lastName) {
 
 		PersonModel personModel = new PersonModel(
-			address, avatar, birthDate, email, firstName, jobTitle, lastName,
+			address, avatar, birthDate, email, firstName, jobTitles, lastName,
 			_count.get());
 
 		_personModels.put(_count.getAndIncrement(), personModel);
@@ -164,7 +176,7 @@ public class PersonModel {
 	 * @param  birthDate the person's birth date
 	 * @param  email the person's email
 	 * @param  firstName the person's first name
-	 * @param  jobTitle the person's job title
+	 * @param  jobTitles the person's job titles
 	 * @param  lastName the person's last name
 	 * @param  id the person's ID
 	 * @return the updated person, if present; {@code Optional#empty()}
@@ -172,7 +184,7 @@ public class PersonModel {
 	 */
 	public static Optional<PersonModel> update(
 		String address, String avatar, Date birthDate, String email,
-		String firstName, String jobTitle, String lastName, long id) {
+		String firstName, List<String> jobTitles, String lastName, long id) {
 
 		PersonModel personModel = _personModels.get(id);
 
@@ -181,7 +193,7 @@ public class PersonModel {
 		}
 
 		personModel = new PersonModel(
-			avatar, address, birthDate, email, firstName, jobTitle, lastName,
+			avatar, address, birthDate, email, firstName, jobTitles, lastName,
 			id);
 
 		_personModels.put(id, personModel);
@@ -253,12 +265,12 @@ public class PersonModel {
 	}
 
 	/**
-	 * Returns the person's job title.
+	 * Returns the person's job titles.
 	 *
-	 * @return the person's job title
+	 * @return the person's job titles
 	 */
-	public String getJobTitle() {
-		return _jobTitle;
+	public List<String> getJobTitles() {
+		return _jobTitles;
 	}
 
 	/**
@@ -272,14 +284,14 @@ public class PersonModel {
 
 	private PersonModel(
 		String address, String avatar, Date birthDate, String email,
-		String firstName, String jobTitle, String lastName, long id) {
+		String firstName, List<String> jobTitles, String lastName, long id) {
 
 		_address = address;
 		_avatar = avatar;
 		_birthDate = birthDate;
 		_email = email;
 		_firstName = firstName;
-		_jobTitle = jobTitle;
+		_jobTitles = jobTitles;
 		_lastName = lastName;
 		_id = id;
 	}
@@ -294,7 +306,7 @@ public class PersonModel {
 	private final String _email;
 	private final String _firstName;
 	private final long _id;
-	private final String _jobTitle;
+	private final List<String> _jobTitles;
 	private final String _lastName;
 
 }
