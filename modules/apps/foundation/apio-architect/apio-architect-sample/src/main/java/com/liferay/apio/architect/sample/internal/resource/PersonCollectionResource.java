@@ -100,8 +100,8 @@ public class PersonCollectionResource
 			"givenName", PersonModel::getFirstName
 		).addString(
 			"image", PersonModel::getAvatar
-		).addString(
-			"jobTitle", PersonModel::getJobTitle
+		).addStringList(
+			"jobTitle", PersonModel::getJobTitles
 		).addString(
 			"name", PersonModel::getFullName
 		).build();
@@ -117,7 +117,7 @@ public class PersonCollectionResource
 		return PersonModel.create(
 			personForm.getAddress(), personForm.getImage(),
 			personForm.getBirthDate(), personForm.getEmail(),
-			personForm.getGivenName(), personForm.getJobTitle(),
+			personForm.getGivenName(), personForm.getJobTitles(),
 			personForm.getFamilyName());
 	}
 
@@ -154,7 +154,7 @@ public class PersonCollectionResource
 		Optional<PersonModel> optional = PersonModel.update(
 			personForm.getAddress(), personForm.getImage(),
 			personForm.getBirthDate(), personForm.getEmail(),
-			personForm.getGivenName(), personForm.getJobTitle(),
+			personForm.getGivenName(), personForm.getJobTitles(),
 			personForm.getFamilyName(), id);
 
 		return optional.orElseThrow(

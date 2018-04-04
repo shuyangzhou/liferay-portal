@@ -15,15 +15,21 @@
 package com.liferay.apio.architect.form;
 
 import static com.liferay.apio.architect.form.FieldType.BOOLEAN;
+import static com.liferay.apio.architect.form.FieldType.BOOLEAN_LIST;
 import static com.liferay.apio.architect.form.FieldType.DATE;
+import static com.liferay.apio.architect.form.FieldType.DATE_LIST;
 import static com.liferay.apio.architect.form.FieldType.DOUBLE;
+import static com.liferay.apio.architect.form.FieldType.DOUBLE_LIST;
 import static com.liferay.apio.architect.form.FieldType.FILE;
+import static com.liferay.apio.architect.form.FieldType.FILE_LIST;
 import static com.liferay.apio.architect.form.FieldType.LONG;
+import static com.liferay.apio.architect.form.FieldType.LONG_LIST;
 import static com.liferay.apio.architect.form.FieldType.STRING;
+import static com.liferay.apio.architect.form.FieldType.STRING_LIST;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import static java.util.Collections.emptyList;
+import static java.util.Arrays.asList;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -42,13 +48,14 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 import javax.ws.rs.BadRequestException;
 
@@ -77,7 +84,7 @@ public class FormTest {
 	@Test
 	public void testFormCreatesValidForm() {
 		Builder<Map<String, Object>> builder = new Builder<>(
-			Arrays.asList("1", "2", "3"));
+			asList("1", "2", "3"));
 
 		Form<Map<String, Object>> form = builder.title(
 			__ -> "title"
@@ -87,16 +94,28 @@ public class FormTest {
 			HashMap::new
 		).addOptionalBoolean(
 			"boolean1", (map, aBoolean) -> map.put("b1", aBoolean)
+		).addOptionalBooleanList(
+			"booleanList", (map, list) -> map.put("bl1", list)
 		).addOptionalDate(
 			"date1", (map, date) -> map.put("d1", date)
+		).addOptionalDateList(
+			"dateList", (map, list) -> map.put("dl1", list)
 		).addOptionalDouble(
 			"double1", (map, aDouble) -> map.put("do1", aDouble)
+		).addOptionalDoubleList(
+			"doubleList", (map, list) -> map.put("dol1", list)
 		).addOptionalFile(
 			"file1", (map, binaryFile) -> map.put("f1", binaryFile)
+		).addOptionalFileList(
+			"fileList", (map, list) -> map.put("fl1", list)
 		).addOptionalLong(
 			"long1", (map, aLong) -> map.put("l1", aLong)
+		).addOptionalLongList(
+			"longList", (map, list) -> map.put("ll1", list)
 		).addOptionalString(
 			"string1", (map, string) -> map.put("s1", string)
+		).addOptionalStringList(
+			"stringList", (map, list) -> map.put("sl1", list)
 		).addRequiredBoolean(
 			"boolean2", (map, aBoolean) -> map.put("b2", aBoolean)
 		).addRequiredDate(
@@ -109,6 +128,18 @@ public class FormTest {
 			"long2", (map, aLong) -> map.put("l2", aLong)
 		).addRequiredString(
 			"string2", (map, string) -> map.put("s2", string)
+		).addRequiredBooleanList(
+			"booleanList", (map, list) -> map.put("bl2", list)
+		).addRequiredDateList(
+			"dateList", (map, list) -> map.put("dl2", list)
+		).addRequiredDoubleList(
+			"doubleList", (map, list) -> map.put("dol2", list)
+		).addRequiredFileList(
+			"fileList", (map, list) -> map.put("fl2", list)
+		).addRequiredLongList(
+			"longList", (map, list) -> map.put("ll2", list)
+		).addRequiredStringList(
+			"stringList", (map, list) -> map.put("sl2", list)
 		).build();
 
 		assertThat(form.id, is("1/2/3"));
@@ -120,29 +151,41 @@ public class FormTest {
 
 		List<FormField> formFields = form.getFormFields();
 
-		assertThat(formFields, hasSize(12));
+		assertThat(formFields, hasSize(24));
 		assertThat(
 			formFields,
 			contains(
 				new FormField("boolean1", false, BOOLEAN),
+				new FormField("booleanList", false, BOOLEAN_LIST),
 				new FormField("date1", false, DATE),
+				new FormField("dateList", false, DATE_LIST),
 				new FormField("double1", false, DOUBLE),
+				new FormField("doubleList", false, DOUBLE_LIST),
 				new FormField("file1", false, FILE),
+				new FormField("fileList", false, FILE_LIST),
 				new FormField("long1", false, LONG),
+				new FormField("longList", false, LONG_LIST),
 				new FormField("string1", false, STRING),
+				new FormField("stringList", false, STRING_LIST),
 				new FormField("boolean2", true, BOOLEAN),
+				new FormField("booleanList", true, BOOLEAN_LIST),
 				new FormField("date2", true, DATE),
+				new FormField("dateList", true, DATE_LIST),
 				new FormField("double2", true, DOUBLE),
+				new FormField("doubleList", true, DOUBLE_LIST),
 				new FormField("file2", true, FILE),
+				new FormField("fileList", true, FILE_LIST),
 				new FormField("long2", true, LONG),
-				new FormField("string2", true, STRING)));
+				new FormField("longList", true, LONG_LIST),
+				new FormField("string2", true, STRING),
+				new FormField("stringList", true, STRING_LIST)));
 
 		assertThat(title, is("title"));
 		assertThat(description, is("description"));
 
 		Map<String, Object> map = form.get(_body);
 
-		assertThat(map.size(), is(12));
+		assertThat(map.size(), is(24));
 		assertThat(map, hasEntry(equalTo("b1"), equalTo(true)));
 		assertThat(map, hasEntry(equalTo("b2"), equalTo(false)));
 		assertThat(
@@ -169,23 +212,16 @@ public class FormTest {
 
 	@Test
 	public void testFormDoesNotAddMissingOptionals() {
-		Builder<Map<String, Object>> builder = new Builder<>(emptyList());
-
-		Form<Map<String, Object>> form = builder.title(
-			__ -> "title"
-		).description(
-			__ -> "description"
-		).constructor(
-			HashMap::new
-		).addOptionalBoolean(
-			"boolean3", (map, string) -> map.put("b2", string)
-		).addOptionalDate(
-			"date3", (map, string) -> map.put("d2", string)
-		).addRequiredString(
-			"string1", (map, string) -> map.put("s1", string)
-		).addOptionalString(
-			"string3", (map, string) -> map.put("s2", string)
-		).build();
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addOptionalBoolean(
+				"boolean3", (map, string) -> map.put("b2", string)
+			).addOptionalDate(
+				"date3", (map, string) -> map.put("d2", string)
+			).addRequiredString(
+				"string1", (map, string) -> map.put("s1", string)
+			).addOptionalString(
+				"string3", (map, string) -> map.put("s2", string)
+			));
 
 		Map<String, Object> map = form.get(_body);
 
@@ -195,142 +231,176 @@ public class FormTest {
 
 	@Test(expected = BadRequestException.class)
 	public void testFormFailsIfOptionalDateIsNotDate() {
-		Builder<Map<String, Object>> builder = new Builder<>(emptyList());
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addOptionalDate(
+				"long1", (map, string) -> map.put("l1", string)));
 
-		Form<Map<String, Object>> form = builder.title(
-			__ -> "title"
-		).description(
-			__ -> "description"
-		).constructor(
-			HashMap::new
-		).addOptionalDate(
-			"long1", (map, string) -> map.put("l1", string)
-		).build();
+		form.get(_body);
+	}
+
+	@Test(expected = BadRequestException.class)
+	public void testFormFailsIfOptionalDateListHasANoDate() {
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addOptionalDateList(
+				"mixedList", (map, list) -> map.put("l1", list)));
 
 		form.get(_body);
 	}
 
 	@Test(expected = BadRequestException.class)
 	public void testFormFailsIfOptionalDoubleIsNotDouble() {
-		Builder<Map<String, Object>> builder = new Builder<>(emptyList());
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addOptionalDouble(
+				"string1", (map, string) -> map.put("s1", string)));
 
-		Form<Map<String, Object>> form = builder.title(
-			__ -> "title"
-		).description(
-			__ -> "description"
-		).constructor(
-			HashMap::new
-		).addOptionalDouble(
-			"string1", (map, string) -> map.put("s1", string)
-		).build();
+		form.get(_body);
+	}
+
+	@Test(expected = BadRequestException.class)
+	public void testFormFailsIfOptionalDoubleListHasANoDouble() {
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addOptionalDoubleList(
+				"mixedList", (map, list) -> map.put("l1", list)));
 
 		form.get(_body);
 	}
 
 	@Test(expected = BadRequestException.class)
 	public void testFormFailsIfOptionalLongIsNotLong() {
-		Builder<Map<String, Object>> builder = new Builder<>(emptyList());
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addOptionalLong(
+				"string1", (map, string) -> map.put("s1", string)));
 
-		Form<Map<String, Object>> form = builder.title(
-			__ -> "title"
-		).description(
-			__ -> "description"
-		).constructor(
-			HashMap::new
-		).addOptionalLong(
-			"string1", (map, string) -> map.put("s1", string)
-		).build();
+		form.get(_body);
+	}
+
+	@Test(expected = BadRequestException.class)
+	public void testFormFailsIfOptionalLongListHasANoLong() {
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addOptionalLongList(
+				"mixedList", (map, list) -> map.put("l1", list)));
+
+		form.get(_body);
+	}
+
+	@Test(expected = BadRequestException.class)
+	public void testFormFailsIfRequiredDateDateHasANoDate() {
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addRequiredDateList(
+				"mixedList", (map, list) -> map.put("l1", list)));
 
 		form.get(_body);
 	}
 
 	@Test(expected = BadRequestException.class)
 	public void testFormFailsIfRequiredDateIsNotDate() {
-		Builder<Map<String, Object>> builder = new Builder<>(emptyList());
-
-		Form<Map<String, Object>> form = builder.title(
-			__ -> "title"
-		).description(
-			__ -> "description"
-		).constructor(
-			HashMap::new
-		).addRequiredDate(
-			"long1", (map, string) -> map.put("l1", string)
-		).build();
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addRequiredDate(
+				"long1", (map, string) -> map.put("l1", string)));
 
 		form.get(_body);
 	}
 
 	@Test(expected = BadRequestException.class)
 	public void testFormFailsIfRequiredDoubleIsNotDouble() {
-		Builder<Map<String, Object>> builder = new Builder<>(emptyList());
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addRequiredDouble(
+				"string1", (map, string) -> map.put("s1", string)));
 
-		Form<Map<String, Object>> form = builder.title(
-			__ -> "title"
-		).description(
-			__ -> "description"
-		).constructor(
-			HashMap::new
-		).addRequiredDouble(
-			"string1", (map, string) -> map.put("s1", string)
-		).build();
+		form.get(_body);
+	}
+
+	@Test(expected = BadRequestException.class)
+	public void testFormFailsIfRequiredDoubleListHasANoDouble() {
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addRequiredDoubleList(
+				"mixedList", (map, list) -> map.put("l1", list)));
 
 		form.get(_body);
 	}
 
 	@Test(expected = BadRequestException.class)
 	public void testFormFailsIfRequiredFileIsNotPresent() {
-		Builder<Map<String, Object>> builder = new Builder<>(emptyList());
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addRequiredFile(
+				"file1", (map, string) -> map.put("f1", string)
+			).addRequiredFile(
+				"file3", (map, string) -> map.put("f3", string)
+			));
 
-		Form<Map<String, Object>> form = builder.title(
-			__ -> "title"
-		).description(
-			__ -> "description"
-		).constructor(
-			HashMap::new
-		).addRequiredFile(
-			"file1", (map, string) -> map.put("f1", string)
-		).addRequiredFile(
-			"file3", (map, string) -> map.put("f3", string)
-		).build();
+		form.get(_body);
+	}
+
+	@Test(expected = BadRequestException.class)
+	public void testFormFailsIfRequiredFileListIsNotPresent() {
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addRequiredFileList(
+				"fileList", (map, list) -> map.put("l1", list)
+			).addRequiredFile(
+				"otherList", (map, list) -> map.put("l3", list)
+			));
 
 		form.get(_body);
 	}
 
 	@Test(expected = BadRequestException.class)
 	public void testFormFailsIfRequiredLongIsNotLong() {
-		Builder<Map<String, Object>> builder = new Builder<>(emptyList());
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addRequiredLong(
+				"string1", (map, string) -> map.put("s1", string)));
 
-		Form<Map<String, Object>> form = builder.title(
-			__ -> "title"
-		).description(
-			__ -> "description"
-		).constructor(
-			HashMap::new
-		).addRequiredLong(
-			"string1", (map, string) -> map.put("s1", string)
-		).build();
+		form.get(_body);
+	}
+
+	@Test(expected = BadRequestException.class)
+	public void testFormFailsIfRequiredLongListHasANoLong() {
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addRequiredLongList(
+				"mixedList", (map, list) -> map.put("l1", list)));
 
 		form.get(_body);
 	}
 
 	@Test(expected = BadRequestException.class)
 	public void testFormFailsIfRequiredStringIsNotPresent() {
-		Builder<Map<String, Object>> builder = new Builder<>(emptyList());
-
-		Form<Map<String, Object>> form = builder.title(
-			__ -> "title"
-		).description(
-			__ -> "description"
-		).constructor(
-			HashMap::new
-		).addRequiredString(
-			"string1", (map, string) -> map.put("s1", string)
-		).addRequiredString(
-			"string3", (map, string) -> map.put("s2", string)
-		).build();
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addRequiredString(
+				"string1", (map, string) -> map.put("s1", string)
+			).addRequiredString(
+				"string3", (map, string) -> map.put("s2", string)
+			));
 
 		form.get(_body);
+	}
+
+	@Test(expected = BadRequestException.class)
+	public void testFormFailsIfRequiredStringListIsNotPresent() {
+		Form<Map<String, Object>> form = _mapForm(
+			builder -> builder.addRequiredStringList(
+				"stringList", (map, list) -> map.put("l1", list)
+			).addRequiredStringList(
+				"otherList", (map, list) -> map.put("l2", list)
+			));
+
+		form.get(_body);
+	}
+
+	private static Form<Map<String, Object>> _mapForm(
+		Function<Builder<Map<String, Object>>.FieldStep,
+			Builder<Map<String, Object>>.FieldStep> function) {
+
+		Builder<Map<String, Object>> builder = new Builder<>(
+			Collections.emptyList());
+
+		return function.apply(
+			builder.title(
+				__ -> "title"
+			).description(
+				__ -> "description"
+			).constructor(
+				HashMap::new
+			)
+		).build();
 	}
 
 	private String _readBinaryFile(BinaryFile binaryFile) {
@@ -358,6 +428,20 @@ public class FormTest {
 			}
 		};
 
+		Map<String, List<String>> valueLists =
+			new HashMap<String, List<String>>() {
+				{
+					put("booleanList", asList("true", "false"));
+					put(
+						"dateList",
+						asList("2016-06-15T09:00Z", "2017-04-03T18:36Z"));
+					put("doubleList", asList("3.5", "25.2"));
+					put("longList", asList("42", "2017"));
+					put("stringList", asList("Apio", "Hypermedia"));
+					put("mixedList", asList("Apio", "56"));
+				}
+			};
+
 		BinaryFile binaryFile1 = new BinaryFile(
 			new ByteArrayInputStream("Input Stream 1".getBytes(UTF_8)), 0L,
 			"mimetype1");
@@ -372,8 +456,13 @@ public class FormTest {
 			}
 		};
 
+		Map<String, List<BinaryFile>> fileLists = Collections.singletonMap(
+			"fileList", asList(binaryFile1, binaryFile2));
+
 		_body = Body.create(
 			key -> Optional.ofNullable(values.get(key)),
+			key -> Optional.ofNullable(valueLists.get(key)),
+			key -> Optional.ofNullable(fileLists.get(key)),
 			key -> Optional.ofNullable(files.get(key)));
 	}
 

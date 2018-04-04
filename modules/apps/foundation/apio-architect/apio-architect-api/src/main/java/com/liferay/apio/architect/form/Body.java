@@ -16,6 +16,7 @@ package com.liferay.apio.architect.form;
 
 import com.liferay.apio.architect.file.BinaryFile;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -31,19 +32,19 @@ public interface Body {
 	 * Creates a new {@code Body} from two lambdas.
 	 *
 	 * @param  valueFunction the function used to obtain values
-	 * @param  fileFunction the function used to obtain files
+	 * @param  valueListFunction the function used to obtain lists of values
 	 * @return the body instance
 	 * @review
 	 */
 	public static Body create(
 		Function<String, Optional<String>> valueFunction,
-		Function<String, Optional<BinaryFile>> fileFunction) {
+		Function<String, Optional<List<String>>> valueListFunction) {
 
 		return new Body() {
 
 			@Override
-			public Optional<BinaryFile> getFileOptional(String key) {
-				return fileFunction.apply(key);
+			public Optional<List<String>> getValueListOptional(String key) {
+				return valueListFunction.apply(key);
 			}
 
 			@Override
@@ -55,6 +56,59 @@ public interface Body {
 	}
 
 	/**
+	 * Creates a new {@code Body} from four lambdas.
+	 *
+	 * @param  valueFunction the function used to obtain values
+	 * @param  valueListFunction the function used to obtain lists of values
+	 * @param  fileListFunction the function used to obtain lists of files
+	 * @param  fileFunction the function used to obtain files
+	 * @return the body instance
+	 * @review
+	 */
+	public static Body create(
+		Function<String, Optional<String>> valueFunction,
+		Function<String, Optional<List<String>>> valueListFunction,
+		Function<String, Optional<List<BinaryFile>>> fileListFunction,
+		Function<String, Optional<BinaryFile>> fileFunction) {
+
+		return new Body() {
+
+			@Override
+			public Optional<List<BinaryFile>> getFileListOptional(String key) {
+				return fileListFunction.apply(key);
+			}
+
+			@Override
+			public Optional<BinaryFile> getFileOptional(String key) {
+				return fileFunction.apply(key);
+			}
+
+			@Override
+			public Optional<List<String>> getValueListOptional(String key) {
+				return valueListFunction.apply(key);
+			}
+
+			@Override
+			public Optional<String> getValueOptional(String key) {
+				return valueFunction.apply(key);
+			}
+
+		};
+	}
+
+	/**
+	 * Returns a list of files from the body, if present. Returns {@code
+	 * Optional#empty()} otherwise.
+	 *
+	 * @param  key the key for extracting the list of files
+	 * @return the list, if present; {@code Optional#empty()} otherwise
+	 * @review
+	 */
+	public default Optional<List<BinaryFile>> getFileListOptional(String key) {
+		return Optional.empty();
+	}
+
+	/**
 	 * Returns a binary file from the body, if present. Returns {@code
 	 * Optional#empty()} otherwise.
 	 *
@@ -63,6 +117,18 @@ public interface Body {
 	 * @review
 	 */
 	public default Optional<BinaryFile> getFileOptional(String key) {
+		return Optional.empty();
+	}
+
+	/**
+	 * Returns a list of values from the body, if present. Returns {@code
+	 * Optional#empty()} otherwise.
+	 *
+	 * @param  key the key for extracting the list of values
+	 * @return the list, if present; {@code Optional#empty()} otherwise
+	 * @review
+	 */
+	public default Optional<List<String>> getValueListOptional(String key) {
 		return Optional.empty();
 	}
 
