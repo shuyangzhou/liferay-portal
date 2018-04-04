@@ -279,10 +279,14 @@ public class InvokerFilterContainerImpl
 				Map<String, String> params = new HashMap<>();
 
 				for (String key : serviceReference.getPropertyKeys()) {
-					String value = GetterUtil.getString(
-						serviceReference.getProperty(key));
+					if (!key.startsWith("javax.portlet.init-param.")) {
+						continue;
+					}
 
-					params.put(key, value);
+					params.put(
+						key.substring("javax.portlet.init-param.".length()),
+						GetterUtil.getString(
+							serviceReference.getProperty(key)));
 				}
 
 				FilterConfig filterConfig = new FilterConfigImpl(

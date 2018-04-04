@@ -28,8 +28,8 @@ import com.liferay.apio.architect.form.Form.Builder;
 public class MediaObjectCreatorForm {
 
 	/**
-	 * Builds a {@code Form} that generates {@code MediaObjectCreatorForm} depending on
-	 * the HTTP body.
+	 * Builds a {@code Form} that generates {@code MediaObjectCreatorForm}
+	 * depending on the HTTP body.
 	 *
 	 * @param  formBuilder the {@code Form} builder
 	 * @return a folder form

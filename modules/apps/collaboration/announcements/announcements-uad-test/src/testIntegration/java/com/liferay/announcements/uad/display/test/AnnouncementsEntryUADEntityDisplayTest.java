@@ -59,7 +59,12 @@ public class AnnouncementsEntryUADEntityDisplayTest
 
 	@Override
 	protected String getApplicationName() {
-		return AnnouncementsUADConstants.UAD_ENTITY_SET_NAME;
+		return AnnouncementsUADConstants.APPLICATION_NAME;
+	}
+
+	@Override
+	protected String getTypeDescription() {
+		return "Announcements posted by the user";
 	}
 
 	@Override
@@ -70,11 +75,6 @@ public class AnnouncementsEntryUADEntityDisplayTest
 	@Override
 	protected UADEntityDisplay getUADEntityDisplay() {
 		return _uadEntityDisplay;
-	}
-
-	@Override
-	protected String getUADEntityTypeDescription() {
-		return "Announcements posted by the user";
 	}
 
 	@DeleteAfterTestRun

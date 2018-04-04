@@ -74,6 +74,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ERROR_4</td>
+	<td>xpath=(//div[contains(@class,'alert') and (contains(@class,'alert-danger')) and (not(contains(@id,'warningMessage')))])</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ERROR_3_ALT</td>
 	<td>//div[@class='alert alert-warning']</td>
 	<td></td>
@@ -145,7 +150,7 @@
 </tr>
 <tr>
 	<td>INFO_4</td>
-	<td>xpath=(//div[contains(@class,'alert-info') and contains(@class,'alert-warning')]/a)[1]</td>
+	<td>xpath=(//div[contains(@class,'alert-info')]/a)[1]</td>
 	<td></td>
 </tr>
 <tr>

@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.jaxrs.json.internal.reader;
 
+import static java.util.Map.Entry.comparingByKey;
+
 import static javax.ws.rs.core.MediaType.MULTIPART_FORM_DATA;
 
 import static org.apache.commons.fileupload.servlet.ServletFileUpload.isMultipartContent;
@@ -27,11 +29,19 @@ import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -98,35 +108,109 @@ public class MultipartBodyMessageBodyReader implements MessageBodyReader<Body> {
 
 			Map<String, String> values = new HashMap<>();
 			Map<String, BinaryFile> binaryFiles = new HashMap<>();
+			Map<String, Map<Integer, String>> indexedValueLists =
+				new HashMap<>();
+			Map<String, Map<Integer, BinaryFile>> indexedFileLists =
+				new HashMap<>();
 
 			while (iterator.hasNext()) {
 				FileItem fileItem = iterator.next();
 
 				String name = fileItem.getFieldName();
 
-				if (fileItem.isFormField()) {
-					InputStream stream = fileItem.getInputStream();
+				Matcher matcher = _arrayPattern.matcher(name);
 
-					values.put(name, Streams.asString(stream));
+				if (matcher.matches()) {
+					int index = Integer.parseInt(matcher.group(2));
+
+					String actualName = matcher.group(1);
+
+					_storeFileItem(
+						fileItem,
+						value -> {
+							Map<Integer, String> indexedMap =
+								indexedValueLists.computeIfAbsent(
+									actualName, __ -> new HashMap<>());
+
+							indexedMap.put(index, value);
+						},
+						binaryFile -> {
+							Map<Integer, BinaryFile> indexedMap =
+								indexedFileLists.computeIfAbsent(
+									actualName, __ -> new HashMap<>());
+
+							indexedMap.put(index, binaryFile);
+						});
 				}
 				else {
-					BinaryFile binaryFile = new BinaryFile(
-						fileItem.getInputStream(), fileItem.getSize(),
-						fileItem.getContentType());
-
-					binaryFiles.put(name, binaryFile);
+					_storeFileItem(
+						fileItem, value -> values.put(name, value),
+						binaryFile -> binaryFiles.put(name, binaryFile));
 				}
 			}
 
+			Map<String, List<String>> valueLists = _flattenMap(
+				indexedValueLists);
+
+			Map<String, List<BinaryFile>> fileLists = _flattenMap(
+				indexedFileLists);
+
 			return Body.create(
 				key -> Optional.ofNullable(values.get(key)),
+				key -> Optional.ofNullable(valueLists.get(key)),
+				key -> Optional.ofNullable(fileLists.get(key)),
 				key -> Optional.ofNullable(binaryFiles.get(key)));
 		}
-		catch (FileUploadException fue) {
+		catch (FileUploadException | IndexOutOfBoundsException |
+			   NumberFormatException e) {
+
 			throw new BadRequestException(
-				"Request body is not a valid multipart form", fue);
+				"Request body is not a valid multipart form", e);
 		}
 	}
+
+	private <T> Map<String, List<T>> _flattenMap(
+		Map<String, Map<Integer, T>> indexedValueLists) {
+
+		Set<Entry<String, Map<Integer, T>>> entries =
+			indexedValueLists.entrySet();
+
+		Stream<Entry<String, Map<Integer, T>>> stream = entries.stream();
+
+		return stream.sorted(
+			comparingByKey()
+		).collect(
+			Collectors.toMap(
+				Entry::getKey,
+				v -> {
+					Map<Integer, T> map = v.getValue();
+
+					return new ArrayList<>(map.values());
+				})
+		);
+	}
+
+	private void _storeFileItem(
+			FileItem fileItem, Consumer<String> valueConsumer,
+			Consumer<BinaryFile> fileConsumer)
+		throws IOException {
+
+		if (fileItem.isFormField()) {
+			InputStream stream = fileItem.getInputStream();
+
+			valueConsumer.accept(Streams.asString(stream));
+		}
+		else {
+			BinaryFile binaryFile = new BinaryFile(
+				fileItem.getInputStream(), fileItem.getSize(),
+				fileItem.getContentType());
+
+			fileConsumer.accept(binaryFile);
+		}
+	}
+
+	private static final Pattern _arrayPattern = Pattern.compile(
+		"([A-Z|a-z]+)\\[([0-9]+)]");
 
 	@Context
 	private HttpServletRequest _httpServletRequest;

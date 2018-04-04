@@ -14,6 +14,7 @@
 
 package com.liferay.frontend.taglib.clay.servlet.taglib.soy.base;
 
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.portal.kernel.dao.search.ResultRow;
 import com.liferay.portal.kernel.dao.search.RowChecker;
 import com.liferay.portal.kernel.util.Validator;
@@ -60,8 +61,8 @@ public class BaseClayCardTag extends BaseClayTag {
 		return super.doStartTag();
 	}
 
-	public void setActionItems(Object actionItems) {
-		putValue("actionItems", actionItems);
+	public void setActionItems(DropdownItemList dropdownItemList) {
+		putValue("actionItems", dropdownItemList);
 	}
 
 	public void setDisabled(Boolean disabled) {
