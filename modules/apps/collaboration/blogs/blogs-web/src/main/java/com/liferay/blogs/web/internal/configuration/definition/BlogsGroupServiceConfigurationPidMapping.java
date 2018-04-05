@@ -12,23 +12,29 @@
  * details.
  */
 
-package com.liferay.captcha.configuration.definition;
+package com.liferay.blogs.web.internal.configuration.definition;
 
-import com.liferay.captcha.configuration.CaptchaConfiguration;
-import com.liferay.portal.kernel.settings.definition.ConfigurationBeanDeclaration;
+import com.liferay.blogs.configuration.BlogsGroupServiceConfiguration;
+import com.liferay.blogs.constants.BlogsConstants;
+import com.liferay.portal.kernel.settings.definition.ConfigurationPidMapping;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Pei-Jung Lan
+ * @author Sergio González
  */
 @Component
-public class CaptchaConfigurationBeanDeclaration
-	implements ConfigurationBeanDeclaration {
+public class BlogsGroupServiceConfigurationPidMapping
+	implements ConfigurationPidMapping {
 
 	@Override
 	public Class<?> getConfigurationBeanClass() {
-		return CaptchaConfiguration.class;
+		return BlogsGroupServiceConfiguration.class;
+	}
+
+	@Override
+	public String getConfigurationPid() {
+		return BlogsConstants.SERVICE_NAME;
 	}
 
 }

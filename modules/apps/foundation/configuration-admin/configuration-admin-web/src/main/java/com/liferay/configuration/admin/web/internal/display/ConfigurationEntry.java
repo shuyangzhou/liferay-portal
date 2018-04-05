@@ -12,23 +12,23 @@
  * details.
  */
 
-package com.liferay.bookmarks.configuration.definition;
+package com.liferay.configuration.admin.web.internal.display;
 
-import com.liferay.bookmarks.configuration.BookmarksGroupServiceConfiguration;
-import com.liferay.portal.kernel.settings.definition.ConfigurationBeanDeclaration;
-
-import org.osgi.service.component.annotations.Component;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 /**
- * @author Iván Zaera
+ * @author Jorge Ferrer
  */
-@Component
-public class BookmarksGroupServiceConfigurationBeanDeclaration
-	implements ConfigurationBeanDeclaration {
+public interface ConfigurationEntry {
 
-	@Override
-	public Class<?> getConfigurationBeanClass() {
-		return BookmarksGroupServiceConfiguration.class;
-	}
+	public String getCategory();
+
+	public String getEditURL(
+		RenderRequest renderRequest, RenderResponse renderResponse);
+
+	public String getName();
+
+	public String getScope();
 
 }

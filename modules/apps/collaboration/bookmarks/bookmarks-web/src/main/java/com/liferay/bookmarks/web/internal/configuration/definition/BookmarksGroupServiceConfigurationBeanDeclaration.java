@@ -12,23 +12,23 @@
  * details.
  */
 
-package com.liferay.blogs.configuration.definition;
+package com.liferay.bookmarks.web.internal.configuration.definition;
 
-import com.liferay.blogs.configuration.BlogsGroupServiceConfiguration;
+import com.liferay.bookmarks.configuration.BookmarksGroupServiceConfiguration;
 import com.liferay.portal.kernel.settings.definition.ConfigurationBeanDeclaration;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Sergio González
+ * @author Iván Zaera
  */
 @Component
-public class BlogsGroupServiceConfigurationBeanDeclaration
+public class BookmarksGroupServiceConfigurationBeanDeclaration
 	implements ConfigurationBeanDeclaration {
 
 	@Override
 	public Class<?> getConfigurationBeanClass() {
-		return BlogsGroupServiceConfiguration.class;
+		return BookmarksGroupServiceConfiguration.class;
 	}
 
 }
