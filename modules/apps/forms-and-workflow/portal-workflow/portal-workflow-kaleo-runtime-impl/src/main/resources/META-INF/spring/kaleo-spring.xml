@@ -12,13 +12,16 @@
 
 	<!-- Advice -->
 
+	<bean class="com.liferay.portal.spring.aop.AopProxyFactoryImpl" id="aopProxyFactory">
+		<property name="methodInterceptor" ref="serviceAdvice" />
+	</bean>
 	<bean class="com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator">
 		<property name="beanMatcher">
 			<bean class="com.liferay.portal.spring.aop.BeanNameMatcher">
 				<property name="beanNamePattern" value="*GraphWalker" />
 			</bean>
 		</property>
-		<property name="methodInterceptor" ref="transactionAdvice" />
+		<property name="aopProxyFactory" ref="aopProxyFactory" />
 	</bean>
 	<bean class="com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator">
 		<property name="beanMatcher">
@@ -26,7 +29,7 @@
 				<property name="beanNamePattern" value="*KaleoSignaler" />
 			</bean>
 		</property>
-		<property name="methodInterceptor" ref="transactionAdvice" />
+		<property name="aopProxyFactory" ref="aopProxyFactory" />
 	</bean>
 	<bean class="com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator">
 		<property name="beanMatcher">
@@ -34,7 +37,7 @@
 				<property name="beanNamePattern" value="*TaskManager" />
 			</bean>
 		</property>
-		<property name="methodInterceptor" ref="transactionAdvice" />
+		<property name="aopProxyFactory" ref="aopProxyFactory" />
 	</bean>
 	<bean class="com.liferay.portal.spring.aop.ServiceBeanAutoProxyCreator">
 		<property name="beanMatcher">
@@ -42,7 +45,7 @@
 				<property name="beanNamePattern" value="*WorkflowEngine" />
 			</bean>
 		</property>
-		<property name="methodInterceptor" ref="transactionAdvice" />
+		<property name="aopProxyFactory" ref="aopProxyFactory" />
 	</bean>
 
 	<!-- Manager -->
