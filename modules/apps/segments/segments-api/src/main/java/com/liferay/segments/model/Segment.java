@@ -12,15 +12,24 @@
  * details.
  */
 
-package com.liferay.portlet;
+package com.liferay.segments.model;
+
+import aQute.bnd.annotation.ProviderType;
+
+import java.util.Locale;
 
 /**
- * @author     Jorge Ferrer
- * @author     Brian Wing Shun Chan
- * @deprecated As of 6.2.0, moved to {@link
- *             com.liferay.portal.kernel.portlet.BaseFriendlyURLMapper}
+ * Models a Segment.
+ *
+ * @author Eduardo Garcia
  */
-@Deprecated
-public abstract class BaseFriendlyURLMapper
-	extends com.liferay.portal.kernel.portlet.BaseFriendlyURLMapper {
+@ProviderType
+public interface Segment {
+
+	public String getDescription(Locale locale);
+
+	public String getName(Locale locale);
+
+	public String getSegmentId();
+
 }
