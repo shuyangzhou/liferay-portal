@@ -118,7 +118,7 @@ public class ApplicationContextServicePublisher {
 				"Unable to unwrap service during registration " + bean, e);
 		}
 
-		Set<String> names = OSGiBeanProperties.Service.interfaces(
+		Set<String> names = OSGiBeanProperties.Service.services(
 			bean, osgiBeanProperties,
 			PropsValues.MODULE_FRAMEWORK_SERVICES_IGNORED_INTERFACES);
 

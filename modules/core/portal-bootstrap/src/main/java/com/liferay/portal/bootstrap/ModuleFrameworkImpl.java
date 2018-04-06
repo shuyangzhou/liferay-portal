@@ -1114,7 +1114,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		OSGiBeanProperties osgiBeanProperties = clazz.getAnnotation(
 			OSGiBeanProperties.class);
 
-		Set<String> names = OSGiBeanProperties.Service.interfaces(
+		Set<String> names = OSGiBeanProperties.Service.services(
 			bean, osgiBeanProperties,
 			PropsValues.MODULE_FRAMEWORK_SERVICES_IGNORED_INTERFACES);
 

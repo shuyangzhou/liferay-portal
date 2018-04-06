@@ -62,7 +62,7 @@ public class OSGiBeanPropertiesTest {
 		class C implements Serializable {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 
@@ -79,7 +79,7 @@ public class OSGiBeanPropertiesTest {
 		class C extends B {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 
@@ -96,7 +96,7 @@ public class OSGiBeanPropertiesTest {
 		class C extends B {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 
@@ -110,7 +110,7 @@ public class OSGiBeanPropertiesTest {
 		class C implements Serializable {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 
@@ -124,7 +124,7 @@ public class OSGiBeanPropertiesTest {
 		class C implements EventListener, Serializable {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 
@@ -138,7 +138,7 @@ public class OSGiBeanPropertiesTest {
 		class C {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 
@@ -152,7 +152,7 @@ public class OSGiBeanPropertiesTest {
 		class C implements Serializable {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 
@@ -166,7 +166,7 @@ public class OSGiBeanPropertiesTest {
 		class C {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 
@@ -183,7 +183,7 @@ public class OSGiBeanPropertiesTest {
 		class C extends B {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 
@@ -200,7 +200,7 @@ public class OSGiBeanPropertiesTest {
 		class C extends B {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 
@@ -214,7 +214,7 @@ public class OSGiBeanPropertiesTest {
 		class C implements Serializable {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 
@@ -228,7 +228,7 @@ public class OSGiBeanPropertiesTest {
 		class C implements EventListener, Serializable {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 
@@ -241,7 +241,7 @@ public class OSGiBeanPropertiesTest {
 		class C {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 
@@ -257,7 +257,7 @@ public class OSGiBeanPropertiesTest {
 		class C extends B {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 
@@ -273,7 +273,7 @@ public class OSGiBeanPropertiesTest {
 		class C extends B {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 
@@ -286,7 +286,7 @@ public class OSGiBeanPropertiesTest {
 		class C implements Serializable {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 
@@ -299,7 +299,7 @@ public class OSGiBeanPropertiesTest {
 		class C implements EventListener, Serializable {
 		}
 
-		Set<String> interfaceClasses = OSGiBeanProperties.Service.interfaces(
+		Set<String> interfaceClasses = OSGiBeanProperties.Service.services(
 			new C(), C.class.getAnnotation(OSGiBeanProperties.class),
 			StringPool.EMPTY_ARRAY);
 

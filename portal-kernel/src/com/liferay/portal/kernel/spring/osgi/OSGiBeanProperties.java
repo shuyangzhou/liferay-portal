@@ -192,7 +192,7 @@ public @interface OSGiBeanProperties {
 		 * type, a {@link ClassCastException} is thrown.
 		 *
 		 * @deprecated As of 7.0.0, replaced by {@link
-		 *             #interfaces(Object, OSGiBeanProperties, String[])}
+		 *             #services(Object, OSGiBeanProperties, String[])}
 		 * @param object the object (bean)
 		 * @return the service types
 		 */
@@ -203,20 +203,41 @@ public @interface OSGiBeanProperties {
 			OSGiBeanProperties osgiBeanProperties = clazz.getAnnotation(
 				OSGiBeanProperties.class);
 
-			return _interfaces(
+			return _services(
 				object, osgiBeanProperties, StringPool.EMPTY_ARRAY,
 				Function.identity());
 		}
 
-		public static Set<String> interfaces(
+		public static Set<String> services(
 			Object object, OSGiBeanProperties osgiBeanProperties,
 			String[] ignoredInterfaces) {
 
-			return _interfaces(
+			return _services(
 				object, osgiBeanProperties, ignoredInterfaces, Class::getName);
 		}
 
-		private static <T> Set<T> _interfaces(
+		private static <T> void _optionallyCollectInterface(
+			Class<?> clazz, Set<T> interfaces, String[] ignoredInterfaces,
+			Function<Class<?>, T> mappingFunction) {
+
+			String interfaceClassName = clazz.getName();
+
+			for (String ignoredInterface : ignoredInterfaces) {
+				if (!ignoredInterface.startsWith(StringPool.EXCLAMATION) &&
+					(ignoredInterface.equals(interfaceClassName) ||
+					 (ignoredInterface.endsWith(StringPool.STAR) &&
+					  interfaceClassName.regionMatches(
+						  0, ignoredInterface, 0,
+						  ignoredInterface.length() - 1)))) {
+
+					return;
+				}
+			}
+
+			interfaces.add(mappingFunction.apply(clazz));
+		}
+
+		private static <T> Set<T> _services(
 			Object object, OSGiBeanProperties osgiBeanProperties,
 			String[] ignoredInterfaces, Function<Class<?>, T> mappingFunction) {
 
@@ -272,27 +293,6 @@ public @interface OSGiBeanProperties {
 				mappingFunction);
 
 			return interfaces;
-		}
-
-		private static <T> void _optionallyCollectInterface(
-			Class<?> clazz, Set<T> interfaces, String[] ignoredInterfaces,
-			Function<Class<?>, T> mappingFunction) {
-
-			String interfaceClassName = clazz.getName();
-
-			for (String ignoredInterface : ignoredInterfaces) {
-				if (!ignoredInterface.startsWith(StringPool.EXCLAMATION) &&
-					(ignoredInterface.equals(interfaceClassName) ||
-					 (ignoredInterface.endsWith(StringPool.STAR) &&
-					  interfaceClassName.regionMatches(
-						  0, ignoredInterface, 0,
-						  ignoredInterface.length() - 1)))) {
-
-					return;
-				}
-			}
-
-			interfaces.add(mappingFunction.apply(clazz));
 		}
 
 	}
