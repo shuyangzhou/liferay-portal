@@ -27,21 +27,23 @@ public class UserAuthenticationConfigurationCategory
 
 	@Override
 	public String getCategoryIcon() {
-		return "password-policies";
+		return _CATEGORY_ICON;
 	}
 
 	@Override
 	public String getCategoryKey() {
-		return _KEY;
+		return _CATEGORY_KEY;
 	}
 
 	@Override
 	public String getCategorySection() {
-		return _CATEGORY_SET_KEY;
+		return _CATEGORY_SECTION;
 	}
 
-	private static final String _CATEGORY_SET_KEY = "platform";
+	private static final String _CATEGORY_ICON = "password-policies";
 
-	private static final String _KEY = "user-authentication";
+	private static final String _CATEGORY_KEY = "user-authentication";
+
+	private static final String _CATEGORY_SECTION = "platform";
 
 }

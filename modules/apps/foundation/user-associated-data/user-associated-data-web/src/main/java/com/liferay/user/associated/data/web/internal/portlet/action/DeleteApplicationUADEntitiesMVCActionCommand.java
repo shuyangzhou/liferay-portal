@@ -14,12 +14,9 @@
 
 package com.liferay.user.associated.data.web.internal.portlet.action;
 
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
-import com.liferay.user.associated.data.anonymizer.UADEntityAnonymizer;
+import com.liferay.user.associated.data.anonymizer.UADAnonymizer;
 import com.liferay.user.associated.data.constants.UserAssociatedDataPortletKeys;
 import com.liferay.user.associated.data.web.internal.util.UADApplicationSummaryHelper;
 
@@ -43,29 +40,26 @@ import org.osgi.service.component.annotations.Reference;
 	service = MVCActionCommand.class
 )
 public class DeleteApplicationUADEntitiesMVCActionCommand
-	extends BaseMVCActionCommand {
+	extends BaseUADMVCActionCommand {
 
 	@Override
 	protected void doProcessAction(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		User selectedUser = _portal.getSelectedUser(actionRequest);
+		long selectedUserId = getSelectedUserId(actionRequest);
 
 		String applicationName = ParamUtil.getString(
 			actionRequest, "applicationName");
 
-		List<UADEntityAnonymizer> uadEntityAnonymizers =
-			_uadApplicationSummaryHelper.getApplicationUADEntityAnonymizers(
+		List<UADAnonymizer> uadAnonymizers =
+			_uadApplicationSummaryHelper.getApplicationUADAnonymizers(
 				applicationName);
 
-		for (UADEntityAnonymizer uadEntityAnonymizer : uadEntityAnonymizers) {
-			uadEntityAnonymizer.deleteAll(selectedUser.getUserId());
+		for (UADAnonymizer uadAnonymizer : uadAnonymizers) {
+			uadAnonymizer.deleteAll(selectedUserId);
 		}
 	}
-
-	@Reference
-	private Portal _portal;
 
 	@Reference
 	private UADApplicationSummaryHelper _uadApplicationSummaryHelper;

@@ -17,6 +17,8 @@ package com.liferay.frontend.taglib.clay.servlet.taglib.soy;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.frontend.taglib.clay.internal.js.loader.modules.extender.npm.NPMResolverProvider;
 import com.liferay.frontend.taglib.clay.servlet.taglib.soy.base.BaseClayTag;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItemList;
 import com.liferay.petra.string.StringPool;
@@ -38,6 +40,21 @@ public class ManagementToolbarTag extends BaseClayTag {
 	@Override
 	public int doStartTag() {
 		Map<String, Object> context = getContext();
+
+		CreationMenu creationMenu = (CreationMenu)context.get("creationMenu");
+
+		if (creationMenu != null) {
+			DropdownItemList dropdownItemList =
+				(DropdownItemList)creationMenu.get("primaryItems");
+
+			if ((dropdownItemList != null) && (dropdownItemList.size() == 1)) {
+				DropdownItem dropdownItem = dropdownItemList.get(0);
+
+				setCreationMenu(dropdownItem.get("href"));
+
+				creationMenu.remove("primaryItems");
+			}
+		}
 
 		String searchInputName = (String)context.get("searchInputName");
 

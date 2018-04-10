@@ -27,21 +27,23 @@ public class AdaptiveMediaConfigurationCategory
 
 	@Override
 	public String getCategoryIcon() {
-		return "picture";
+		return _CATEGORY_ICON;
 	}
 
 	@Override
 	public String getCategoryKey() {
-		return _KEY;
+		return _CATEGORY_KEY;
 	}
 
 	@Override
 	public String getCategorySection() {
-		return _CATEGORY_SET_KEY;
+		return _CATEGORY_SECTION;
 	}
 
-	private static final String _CATEGORY_SET_KEY = "content-management";
+	private static final String _CATEGORY_ICON = "picture";
 
-	private static final String _KEY = "adaptive-media";
+	private static final String _CATEGORY_KEY = "adaptive-media";
+
+	private static final String _CATEGORY_SECTION = "content-management";
 
 }

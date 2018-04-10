@@ -3018,8 +3018,8 @@ marker file.
 ## 5.3.30 - 2018-03-15
 
 ### Changed
-- [LPS-78741]: Configure the `npmInstall` task to run `npm ci` instead of
-`npm install` when not on Jenkins.
+- [LPS-78741]: Configure the `npmInstall` task to run `npm ci` instead of `npm
+install` when not on Jenkins.
 - [LPS-78741]: Update the [Liferay Gradle Plugins] dependency to version 3.8.19.
 - [LPS-78741]: Update the [Liferay Gradle Plugins JSDoc] dependency to version
 2.0.2.
@@ -3117,7 +3117,7 @@ marker file.
 
 ### Added
 - [LPS-78477]: When on Jenkins, fail the `testIntegration` task if any dependent
-projects defined in the `testIntegrationCompile` configuration does not have a
+projects defined in the `testIntegrationCompile` configuration do not have a
 `.lfrbuild-portal` or a `lfrbuild-ci` marker file.
 
 ### Changed
@@ -3163,7 +3163,7 @@ projects defined in the `testIntegrationCompile` configuration does not have a
 ### Changed
 - [LPS-78741]: Configure the `npmInstall` task to run `npm ci` instead of
 `npm install` when on the master branch and not on Jenkins.
-- [LPS-78741]: Set the Node.js version to `6.6.0` and disable global Node.js
+- [LPS-78741]: Set the Node.js version to 6.6.0 and disable the global Node.js
 execution when on the `7.0.x` branch.
 - [LPS-78741]: Update the [Liferay Gradle Plugins JSDoc] dependency to version
 2.0.4.
@@ -3216,7 +3216,7 @@ version 1.2.2.
 ## 5.3.65 - 2018-04-05
 
 ### Changed
-- [LPS-75049]: Add support for `compileOnly` configuration.
+- [LPS-75049]: Add support for the `compileOnly` configuration.
 - [LPS-75049]: Add `compileOnly` dependencies to the test integration compile
 classpath.
 - [LPS-79365]: Update the [Liferay Gradle Plugins] dependency to version 3.10.9.
@@ -3227,11 +3227,29 @@ classpath.
 - [LPS-74544]: Update the [Liferay Gradle Plugins] dependency to version
 3.10.10.
 
+## 5.3.67 - 2018-04-06
+
+### Changed
+- [LPS-78971]: Update the [Liferay Gradle Plugins] dependency to version
+3.10.11.
+
 ## 5.3.68 - 2018-04-06
 
 ### Changed
 - [LPS-75049]: Add `compileOnly` dependencies to the test integration runtime
 classpath.
+
+## 5.3.69 - 2018-04-09
+
+### Changed
+- [LPS-79450]: Update the [Liferay Gradle Plugins] dependency to version
+3.10.12.
+
+## 5.3.70 - 2018-04-09
+
+### Changed
+- [LPS-74171]: Update the [Liferay Gradle Plugins] dependency to version
+3.10.13.
 
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle License Report]: https://github.com/jk1/Gradle-License-Report
@@ -3455,6 +3473,7 @@ classpath.
 [LPS-74139]: https://issues.liferay.com/browse/LPS-74139
 [LPS-74143]: https://issues.liferay.com/browse/LPS-74143
 [LPS-74155]: https://issues.liferay.com/browse/LPS-74155
+[LPS-74171]: https://issues.liferay.com/browse/LPS-74171
 [LPS-74207]: https://issues.liferay.com/browse/LPS-74207
 [LPS-74210]: https://issues.liferay.com/browse/LPS-74210
 [LPS-74222]: https://issues.liferay.com/browse/LPS-74222
@@ -3592,6 +3611,7 @@ classpath.
 [LPS-78854]: https://issues.liferay.com/browse/LPS-78854
 [LPS-78901]: https://issues.liferay.com/browse/LPS-78901
 [LPS-78911]: https://issues.liferay.com/browse/LPS-78911
+[LPS-78971]: https://issues.liferay.com/browse/LPS-78971
 [LPS-79131]: https://issues.liferay.com/browse/LPS-79131
 [LPS-79191]: https://issues.liferay.com/browse/LPS-79191
 [LPS-79192]: https://issues.liferay.com/browse/LPS-79192
@@ -3600,6 +3620,7 @@ classpath.
 [LPS-79286]: https://issues.liferay.com/browse/LPS-79286
 [LPS-79360]: https://issues.liferay.com/browse/LPS-79360
 [LPS-79365]: https://issues.liferay.com/browse/LPS-79365
+[LPS-79450]: https://issues.liferay.com/browse/LPS-79450
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981

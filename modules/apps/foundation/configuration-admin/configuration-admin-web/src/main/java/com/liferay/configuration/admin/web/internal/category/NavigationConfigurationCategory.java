@@ -26,16 +26,16 @@ public class NavigationConfigurationCategory implements ConfigurationCategory {
 
 	@Override
 	public String getCategoryKey() {
-		return _KEY;
+		return _CATEGORY_KEY;
 	}
 
 	@Override
 	public String getCategorySection() {
-		return _CATEGORY_SET_KEY;
+		return _CATEGORY_SECTION;
 	}
 
-	private static final String _CATEGORY_SET_KEY = "content-management";
+	private static final String _CATEGORY_KEY = "navigation";
 
-	private static final String _KEY = "navigation";
+	private static final String _CATEGORY_SECTION = "content-management";
 
 }

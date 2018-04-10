@@ -27,16 +27,16 @@ public class FrontendInfrastructureConfigurationCategory
 
 	@Override
 	public String getCategoryKey() {
-		return _KEY;
+		return _CATEGORY_KEY;
 	}
 
 	@Override
 	public String getCategorySection() {
-		return _CATEGORY_SET_KEY;
+		return _CATEGORY_SECTION;
 	}
 
-	private static final String _CATEGORY_SET_KEY = "platform";
+	private static final String _CATEGORY_KEY = "frontend-infrastructure";
 
-	private static final String _KEY = "frontend-infrastructure";
+	private static final String _CATEGORY_SECTION = "platform";
 
 }
