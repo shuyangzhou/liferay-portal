@@ -81,7 +81,7 @@ renderResponse.setTitle(title);
 
 <portlet:actionURL name="/fragment/edit_fragment_entry" var="editFragmentEntryURL" />
 
-<aui:form action="<%= editFragmentEntryURL %>" cssClass="container-fluid-1280" enctype="multipart/form-data" method="post" name="fm">
+<aui:form action="<%= editFragmentEntryURL %>" enctype="multipart/form-data" method="post" name="fm">
 	<aui:input name="redirect" type="hidden" value="<%= fragmentDisplayContext.getEditFragmentEntryRedirect() %>" />
 	<aui:input name="fragmentEntryId" type="hidden" value="<%= fragmentDisplayContext.getFragmentEntryId() %>" />
 	<aui:input name="fragmentCollectionId" type="hidden" value="<%= fragmentDisplayContext.getFragmentCollectionId() %>" />
@@ -134,6 +134,25 @@ renderResponse.setTitle(title);
 			event.preventDefault();
 
 			dom.toElement('#<portlet:namespace />status').value = '<%= WorkflowConstants.STATUS_APPROVED %>';
+
+			if (!fragmentEditor.isHtmlValid()) {
+				AUI().use('liferay-alert', () => {
+					new Liferay.Alert(
+						{
+							delay: {
+								hide: 500,
+								show: 0
+							},
+							duration: 500,
+							icon: 'exclamation-circle',
+							message: '<liferay-ui:message key="fragment-html-is-invalid" />',
+							type: 'danger'
+						}
+					).render();
+				});
+
+				return;
+			}
 
 			submitForm(document.querySelector('#<portlet:namespace />fm'));
 		}

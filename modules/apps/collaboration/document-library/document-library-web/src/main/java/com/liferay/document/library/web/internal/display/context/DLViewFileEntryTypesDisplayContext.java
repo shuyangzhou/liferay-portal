@@ -16,6 +16,7 @@ package com.liferay.document.library.web.internal.display.context;
 
 import com.liferay.document.library.kernel.service.DLFileEntryTypeServiceUtil;
 import com.liferay.document.library.web.internal.security.permission.resource.DLPermission;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -50,13 +51,15 @@ public class DLViewFileEntryTypesDisplayContext {
 		return getSearchActionURL();
 	}
 
-	public String getCreationURL() {
+	public CreationMenu getCreationMenu() {
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
 		if (DLPermission.contains(
 				themeDisplay.getPermissionChecker(),
 				themeDisplay.getScopeGroupId(), ActionKeys.ADD_DOCUMENT_TYPE)) {
+
+			CreationMenu creationMenu = new CreationMenu(request);
 
 			PortletURL creationURL = renderResponse.createRenderURL();
 
@@ -65,7 +68,10 @@ public class DLViewFileEntryTypesDisplayContext {
 			creationURL.setParameter(
 				"redirect", PortalUtil.getCurrentURL(request));
 
-			return creationURL.toString();
+			creationMenu.addPrimaryDropdownItem(
+				dropdownItem -> dropdownItem.setHref(creationURL.toString()));
+
+			return creationMenu;
 		}
 
 		return null;

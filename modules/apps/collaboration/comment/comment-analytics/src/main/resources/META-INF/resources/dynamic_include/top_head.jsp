@@ -16,22 +16,28 @@
 
 <%@ include file="/dynamic_include/init.jsp" %>
 
-<aui:script>
-	Liferay.on(
-		'messagePosted',
-		function(event) {
-			if (window.Analytics) {
-				Analytics.send(
-					'POST',
-					'Comment',
-					{
-						className: event.className,
-						classPK: event.classPK,
-						commentId: event.commentId,
-						text: event.text
-					}
-				);
-			}
+<aui:script sandbox="<%= true %>">
+	var onDestroyPortlet = function() {
+		Liferay.detach('messagePosted', onMessagePosted);
+		Liferay.detach('destroyPortlet', onDestroyPortlet);
+	}
+
+	Liferay.on('destroyPortlet', onDestroyPortlet);
+
+	var onMessagePosted = function(event) {
+		if (window.Analytics) {
+			Analytics.send(
+				'POST',
+				'Comment',
+				{
+					className: event.className,
+					classPK: event.classPK,
+					commentId: event.commentId,
+					text: event.text
+				}
+			);
 		}
-	);
+	}
+
+	Liferay.on('messagePosted', onMessagePosted);
 </aui:script>
