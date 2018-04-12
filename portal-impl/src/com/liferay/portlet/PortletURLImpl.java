@@ -39,14 +39,12 @@ import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.CookieKeys;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.URLCodec;
@@ -58,7 +56,6 @@ import com.liferay.portal.util.PropsValues;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 import java.security.Key;
@@ -102,30 +99,6 @@ public class PortletURLImpl
 		this(request, portlet, null, layout, lifecycle);
 	}
 
-	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
-	 *             #PortletURLImpl(HttpServletRequest, Portlet, Layout, String)}
-	 */
-	@Deprecated
-	public PortletURLImpl(
-		HttpServletRequest request, String portletId, Layout layout,
-		String lifecycle) {
-
-		this(request, portletId, null, layout, lifecycle);
-	}
-
-	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
-	 *             #PortletURLImpl(HttpServletRequest, String, Layout, String)}
-	 */
-	@Deprecated
-	public PortletURLImpl(
-		HttpServletRequest request, String portletId, long plid,
-		String lifecycle) {
-
-		this(request, portletId, null, plid, lifecycle);
-	}
-
 	public PortletURLImpl(
 		PortletRequest portletRequest, Portlet portlet, Layout layout,
 		String lifecycle) {
@@ -133,34 +106,6 @@ public class PortletURLImpl
 		this(
 			PortalUtil.getHttpServletRequest(portletRequest), portlet,
 			portletRequest, layout, lifecycle);
-	}
-
-	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
-	 *             #PortletURLImpl(PortletRequest, Portlet, Layout, String)}
-	 */
-	@Deprecated
-	public PortletURLImpl(
-		PortletRequest portletRequest, String portletId, Layout layout,
-		String lifecycle) {
-
-		this(
-			PortalUtil.getHttpServletRequest(portletRequest), portletId,
-			portletRequest, layout, lifecycle);
-	}
-
-	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
-	 *             #PortletURLImpl(PortletRequest, String, Layout, String)}
-	 */
-	@Deprecated
-	public PortletURLImpl(
-		PortletRequest portletRequest, String portletId, long plid,
-		String lifecycle) {
-
-		this(
-			PortalUtil.getHttpServletRequest(portletRequest), portletId,
-			portletRequest, plid, lifecycle);
 	}
 
 	@Override
@@ -302,20 +247,6 @@ public class PortletURLImpl
 	@Override
 	public Set<String> getRemovedParameterNames() {
 		return _removedParameterNames;
-	}
-
-	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
-	 *             #visitReservedParameters(BiConsumer)}
-	 */
-	@Deprecated
-	@Override
-	public Map<String, String> getReservedParameterMap() {
-		LinkedHashMap<String, String> linkedHashMap = new LinkedHashMap<>();
-
-		visitReservedParameters(linkedHashMap::put);
-
-		return Collections.unmodifiableMap(linkedHashMap);
 	}
 
 	@Override
@@ -759,21 +690,6 @@ public class PortletURLImpl
 		writer.write(toString);
 	}
 
-	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
-	 *             #PortletURLImpl(HttpServletRequest, String, PortletRequest,
-	 *             Layout, String)}
-	 */
-	@Deprecated
-	protected PortletURLImpl(
-		HttpServletRequest request, String portletId,
-		PortletRequest portletRequest, long plid, String lifecycle) {
-
-		this(request, portletId, portletRequest, null, lifecycle);
-
-		_plid = plid;
-	}
-
 	protected void addPortalAuthToken(StringBundler sb, Key key) {
 		AuthTokenUtil.addCSRFToken(_request, this);
 	}
@@ -1030,126 +946,6 @@ public class PortletURLImpl
 		return result;
 	}
 
-	protected String generateWSRPToString() {
-		StringBundler sb = new StringBundler("wsrp_rewrite?wsrp-urlType=");
-
-		if (_lifecycle.equals(PortletRequest.ACTION_PHASE)) {
-			sb.append(URLCodec.encodeURL("blockingAction"));
-		}
-		else if (_lifecycle.equals(PortletRequest.RENDER_PHASE)) {
-			sb.append(URLCodec.encodeURL("render"));
-		}
-		else if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-			sb.append(URLCodec.encodeURL("resource"));
-		}
-
-		sb.append(StringPool.AMPERSAND);
-
-		if (_windowStateString != null) {
-			sb.append("wsrp-windowState=");
-			sb.append(URLCodec.encodeURL("wsrp:" + _windowStateString));
-			sb.append(StringPool.AMPERSAND);
-		}
-
-		if (_portletModeString != null) {
-			sb.append("wsrp-mode=");
-			sb.append(URLCodec.encodeURL("wsrp:" + _portletModeString));
-			sb.append(StringPool.AMPERSAND);
-		}
-
-		if (_resourceID != null) {
-			sb.append("wsrp-resourceID=");
-			sb.append(URLCodec.encodeURL(_resourceID));
-			sb.append(StringPool.AMPERSAND);
-		}
-
-		if (_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-			sb.append("wsrp-resourceCacheability=");
-			sb.append(URLCodec.encodeURL(_cacheability));
-			sb.append(StringPool.AMPERSAND);
-		}
-
-		if (PropsValues.PORTLET_URL_ANCHOR_ENABLE) {
-			if (_anchor && (_windowStateString != null) &&
-				!_windowStateString.equals(WindowState.MAXIMIZED.toString()) &&
-				!_windowStateString.equals(
-					LiferayWindowState.EXCLUSIVE.toString()) &&
-				!_windowStateString.equals(
-					LiferayWindowState.POP_UP.toString())) {
-
-				sb.append("wsrp-fragmentID=#p_");
-				sb.append(URLCodec.encodeURL(_portlet.getPortletId()));
-				sb.append(StringPool.AMPERSAND);
-			}
-		}
-
-		Map<String, String[]> renderParams = _params;
-
-		if (_copyCurrentRenderParameters &&
-			!(_lifecycle.equals(PortletRequest.RESOURCE_PHASE) &&
-			 _cacheability.equals(ResourceURL.FULL))) {
-
-			renderParams = _mergeWithRenderParameters(renderParams);
-		}
-
-		StringBundler parameterSB = new StringBundler();
-
-		int previousSbIndex = sb.index();
-
-		for (Map.Entry<String, String[]> entry : renderParams.entrySet()) {
-			String name = entry.getKey();
-			String[] values = entry.getValue();
-
-			if (isParameterIncludedInPath(name)) {
-				continue;
-			}
-
-			if (!_lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
-				String publicRenderParameterName = getPublicRenderParameterName(
-					name);
-
-				if (Validator.isNotNull(publicRenderParameterName)) {
-					name = publicRenderParameterName;
-				}
-			}
-
-			for (String value : values) {
-				_appendNamespaceAndEncode(parameterSB, name);
-
-				parameterSB.append(StringPool.EQUAL);
-				parameterSB.append(URLCodec.encodeURL(value));
-				parameterSB.append(StringPool.AMPERSAND);
-			}
-		}
-
-		if (sb.index() > previousSbIndex) {
-			sb.setIndex(sb.index() - 1);
-		}
-
-		sb.append("wsrp-navigationalState=");
-
-		byte[] parameterBytes = null;
-
-		try {
-			String parameterString = parameterSB.toString();
-
-			parameterBytes = parameterString.getBytes(StringPool.UTF8);
-		}
-		catch (UnsupportedEncodingException uee) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(uee, uee);
-			}
-		}
-
-		String navigationalState = Base64.encodeToURL(parameterBytes);
-
-		sb.append(navigationalState);
-
-		sb.append("/wsrp_rewrite");
-
-		return sb.toString();
-	}
-
 	protected String getPublicRenderParameterName(String name) {
 		String publicRenderParameterName = null;
 
@@ -1177,31 +973,6 @@ public class PortletURLImpl
 		else {
 			return false;
 		}
-	}
-
-	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
-	 */
-	@Deprecated
-	protected void mergeRenderParameters() {
-		_params = _mergeWithRenderParameters(_params);
-	}
-
-	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
-	 */
-	@Deprecated
-	protected String prependNamespace(String name) {
-		String namespace = getNamespace();
-
-		if (!name.startsWith(PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE) &&
-			!name.startsWith(namespace) &&
-			!PortalUtil.isReservedParameter(name)) {
-
-			return namespace.concat(name);
-		}
-
-		return name;
 	}
 
 	protected String processValue(Key key, int value) {
@@ -1248,7 +1019,6 @@ public class PortletURLImpl
 		_params = new LinkedHashMap<>();
 		_removePublicRenderParameters = new LinkedHashSet<>();
 		_secure = PortalUtil.isSecure(request);
-		_wsrp = ParamUtil.getBoolean(request, "wsrp");
 
 		if (lifecycle.equals(PortletRequest.RESOURCE_PHASE)) {
 			_copyCurrentRenderParameters = true;
@@ -1439,17 +1209,12 @@ public class PortletURLImpl
 	private String _toString;
 	private boolean _windowStateRestoreCurrentView;
 	private String _windowStateString;
-	private final boolean _wsrp;
 
 	private class ToStringPrivilegedAction implements PrivilegedAction<String> {
 
 		@Override
 		public String run() {
 			_callPortletURLGenerationListener();
-
-			if (_wsrp) {
-				return generateWSRPToString();
-			}
 
 			return generateToString();
 		}
