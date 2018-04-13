@@ -82,20 +82,18 @@ public class AlloyEditorEmbedConfigContributor
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("id", editorEmbedProvider.getId());
-
-		JSONArray schemasJSONArray = JSONFactoryUtil.createJSONArray();
-
-		jsonObject.put("schemas", schemasJSONArray);
-
-		String[] schemas = editorEmbedProvider.getSchemas();
-
-		for (String schema : schemas) {
-			schemasJSONArray.put(schema);
-		}
-
 		jsonObject.put("tpl", editorEmbedProvider.getTpl());
-
 		jsonObject.put("type", editorEmbedProviderType);
+
+		JSONArray urlSchemesJSONArray = JSONFactoryUtil.createJSONArray();
+
+		jsonObject.put("urlSchemes", urlSchemesJSONArray);
+
+		String[] urlSchemes = editorEmbedProvider.getURLSchemes();
+
+		for (String urlScheme : urlSchemes) {
+			urlSchemesJSONArray.put(urlScheme);
+		}
 
 		return jsonObject;
 	}
