@@ -38,16 +38,16 @@ public class OAuth20Util {
 		serviceBuilder.apiSecret(apiSecret);
 		serviceBuilder.callback(callbackURL);
 
-		OAuth20Service oAuthService = serviceBuilder.build(
+		OAuth20Service oAuth20Service = serviceBuilder.build(
 			new OAuth20APIImpl(accessTokenEndpoint, authorizationBaseURL));
 
-		OAuth2AccessToken oAuthAccessToken = new OAuth2AccessToken(
+		OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(
 			accessTokenString);
 
 		OAuthRequest oAuthRequest = new OAuthRequest(
-			Verb.GET, requestURL, oAuthService);
+			Verb.GET, requestURL, oAuth20Service);
 
-		oAuthService.signRequest(oAuthAccessToken, oAuthRequest);
+		oAuth20Service.signRequest(oAuth2AccessToken, oAuthRequest);
 
 		Response response = oAuthRequest.send();
 
