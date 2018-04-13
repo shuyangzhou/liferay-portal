@@ -12,8 +12,8 @@
 	}
 
 	&.like, &.thumbs {
-		a svg {
-			margin-right: 8px;
+		.rating-element * {
+			pointer-events: none;
 		}
 	}
 

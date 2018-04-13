@@ -144,6 +144,4 @@ public interface DestinationNames {
 
 	public static final String WORKFLOW_TASK = "liferay/workflow_task";
 
-	public static final String WSRP = "liferay/wsrp";
-
 }
