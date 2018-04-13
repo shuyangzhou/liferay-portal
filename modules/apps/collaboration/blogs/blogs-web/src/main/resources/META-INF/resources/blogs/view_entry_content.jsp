@@ -21,12 +21,6 @@ SearchContainer searchContainer = (SearchContainer)request.getAttribute("view_en
 
 BlogsEntry entry = (BlogsEntry)request.getAttribute("view_entry_content.jsp-entry");
 
-AssetEntry assetEntry = (AssetEntry)request.getAttribute("view_entry_content.jsp-assetEntry");
-
-if (assetEntry == null) {
-	assetEntry = AssetEntryLocalServiceUtil.getEntry(BlogsEntry.class.getName(), entry.getEntryId());
-}
-
 RatingsEntry ratingsEntry = (RatingsEntry)request.getAttribute("view_entry_content.jsp-ratingsEntry");
 RatingsStats ratingsStats = (RatingsStats)request.getAttribute("view_entry_content.jsp-ratingsStats");
 %>
@@ -82,8 +76,7 @@ RatingsStats ratingsStats = (RatingsStats)request.getAttribute("view_entry_conte
 					%>
 
 					<liferay-ui:user-portrait
-						userId="<%= entry.getUserId() %>"
-						userName="<%= entry.getUserName() %>"
+						user="<%= entryUser %>"
 					/>
 				</div>
 
@@ -96,6 +89,11 @@ RatingsStats ratingsStats = (RatingsStats)request.getAttribute("view_entry_conte
 								<span class="hide-accessible"><liferay-ui:message key="published-date" /></span><liferay-ui:message arguments="<%= LanguageUtil.getTimeDescription(request, System.currentTimeMillis() - entry.getStatusDate().getTime(), true) %>" key="x-ago" translateArguments="<%= false %>" />
 
 								<c:if test="<%= blogsPortletInstanceConfiguration.enableViewCount() %>">
+
+									<%
+									AssetEntry assetEntry = _getAssetEntry(request, entry);
+									%>
+
 									- <liferay-ui:message arguments="<%= assetEntry.getViewCount() %>" key='<%= assetEntry.getViewCount() == 1 ? "x-view" : "x-views" %>' />
 								</c:if>
 							</div>
@@ -158,15 +156,17 @@ RatingsStats ratingsStats = (RatingsStats)request.getAttribute("view_entry_conte
 								</c:choose>
 							</portlet:renderURL>
 
-							<a class="btn btn-outline-borderless btn-outline-secondary btn-sm" href="<%= viewEntryCommentsURL.toString() %>">
-								<span class="inline-item inline-item-before">
-									<clay:icon
-										symbol="comments"
-									/>
-								</span>
+							<liferay-util:whitespace-remover>
+								<a class="btn btn-outline-borderless btn-outline-secondary btn-sm" href="<%= viewEntryCommentsURL.toString() %>">
+									<span class="inline-item inline-item-before">
+										<clay:icon
+											symbol="comments"
+										/>
+									</span>
 
-								<%= String.valueOf(messagesCount) %>
-							</a>
+									<%= String.valueOf(messagesCount) %>
+								</a>
+							</liferay-util:whitespace-remover>
 						</div>
 					</c:if>
 
@@ -238,6 +238,11 @@ RatingsStats ratingsStats = (RatingsStats)request.getAttribute("view_entry_conte
 
 				<c:if test="<%= blogsPortletInstanceConfiguration.enableRelatedAssets() %>">
 					<div class="entry-links">
+
+						<%
+						AssetEntry assetEntry = _getAssetEntry(request, entry);
+						%>
+
 						<liferay-asset:asset-links
 							assetEntryId="<%= (assetEntry != null) ? assetEntry.getEntryId() : 0 %>"
 							className="<%= BlogsEntry.class.getName() %>"
@@ -271,3 +276,17 @@ RatingsStats ratingsStats = (RatingsStats)request.getAttribute("view_entry_conte
 
 	</c:otherwise>
 </c:choose>
+
+<%!
+private AssetEntry _getAssetEntry(HttpServletRequest request, BlogsEntry entry) throws PortalException, SystemException {
+	AssetEntry assetEntry = (AssetEntry)request.getAttribute("view_entry_content.jsp-assetEntry");
+
+	if (assetEntry == null) {
+		assetEntry = AssetEntryLocalServiceUtil.getEntry(BlogsEntry.class.getName(), entry.getEntryId());
+
+		request.setAttribute("view_entry_content.jsp-assetEntry", assetEntry);
+	}
+
+	return assetEntry;
+}
+%>

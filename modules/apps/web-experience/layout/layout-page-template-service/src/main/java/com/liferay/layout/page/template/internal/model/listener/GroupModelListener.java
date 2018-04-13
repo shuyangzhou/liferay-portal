@@ -16,6 +16,7 @@ package com.liferay.layout.page.template.internal.model.listener;
 
 import com.liferay.fragment.model.FragmentCollection;
 import com.liferay.fragment.service.FragmentCollectionLocalService;
+import com.liferay.fragment.service.FragmentEntryLinkLocalService;
 import com.liferay.layout.page.template.model.LayoutPageTemplateCollection;
 import com.liferay.layout.page.template.service.LayoutPageTemplateCollectionLocalService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -66,6 +67,11 @@ public class GroupModelListener extends BaseModelListener<Group> {
 				_fragmentCollectionLocalService.deleteFragmentCollection(
 					fragmentCollection);
 			}
+
+			// Fragment entry links
+
+			_fragmentEntryLinkLocalService.deleteFragmentEntryLinks(
+				group.getGroupId());
 		}
 		catch (Exception e) {
 			throw new ModelListenerException(e);
@@ -74,6 +80,9 @@ public class GroupModelListener extends BaseModelListener<Group> {
 
 	@Reference(unbind = "-")
 	private FragmentCollectionLocalService _fragmentCollectionLocalService;
+
+	@Reference(unbind = "-")
+	private FragmentEntryLinkLocalService _fragmentEntryLinkLocalService;
 
 	@Reference(unbind = "-")
 	private LayoutPageTemplateCollectionLocalService
