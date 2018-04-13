@@ -20,12 +20,12 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.test.log.CaptureAppender;
 import com.liferay.portal.test.log.Log4JLoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.test.PortletContainerTestUtil;
 import com.liferay.portal.util.test.PortletContainerTestUtil.Response;
-import com.liferay.portlet.PortletURLImpl;
 import com.liferay.portlet.SecurityPortletContainerWrapper;
 
 import java.io.IOException;
@@ -76,9 +76,9 @@ public class RenderRequestPortletContainerTest
 			PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
 		String url =
-			layout.getRegularURL(httpServletRequest) +
-				"?p_p_id='\"><script>alert(1)</script>&p_p_lifecycle=0&" +
-					"p_p_state=exclusive";
+			layout.getRegularURL(httpServletRequest) + "?p_p_id=" +
+				URLCodec.encodeURL("'\"><script>alert(1)</script>") +
+					"&p_p_lifecycle=0&p_p_state=exclusive";
 
 		try (CaptureAppender captureAppender =
 				Log4JLoggerTestUtil.configureLog4JLogger(
@@ -156,7 +156,7 @@ public class RenderRequestPortletContainerTest
 		HttpServletRequest httpServletRequest =
 			PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
-		PortletURL portletURL = new PortletURLImpl(
+		PortletURL portletURL = PortletURLFactoryUtil.create(
 			httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
 			PortletRequest.RESOURCE_PHASE);
 
@@ -168,7 +168,7 @@ public class RenderRequestPortletContainerTest
 		// Make a render request to the target portlet using the portlet
 		// authentication token
 
-		portletURL = new PortletURLImpl(
+		portletURL = PortletURLFactoryUtil.create(
 			httpServletRequest, testTargetPortletId, layout.getPlid(),
 			PortletRequest.RENDER_PHASE);
 
@@ -195,7 +195,7 @@ public class RenderRequestPortletContainerTest
 		HttpServletRequest httpServletRequest =
 			PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
-		PortletURL portletURL = new PortletURLImpl(
+		PortletURL portletURL = PortletURLFactoryUtil.create(
 			httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
 			PortletRequest.RENDER_PHASE);
 
@@ -233,7 +233,7 @@ public class RenderRequestPortletContainerTest
 		HttpServletRequest httpServletRequest =
 			PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
-		PortletURL portletURL = new PortletURLImpl(
+		PortletURL portletURL = PortletURLFactoryUtil.create(
 			httpServletRequest, TEST_PORTLET_ID, layout.getPlid(),
 			PortletRequest.RENDER_PHASE);
 

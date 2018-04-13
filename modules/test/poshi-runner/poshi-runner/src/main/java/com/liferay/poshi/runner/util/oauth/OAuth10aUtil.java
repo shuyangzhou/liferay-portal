@@ -42,13 +42,13 @@ public class OAuth10aUtil {
 			new OAuth10aAPIImpl(
 				accessTokenEndpoint, authorizationURL, requestTokenEndpoint));
 
-		OAuth1AccessToken oAuthAccessToken = new OAuth1AccessToken(
+		OAuth1AccessToken oAuth1AccessToken = new OAuth1AccessToken(
 			accessTokenString, accessTokenSecret);
 
 		OAuthRequest oAuthRequest = new OAuthRequest(
 			Verb.GET, requestURL, oAuthService);
 
-		oAuthService.signRequest(oAuthAccessToken, oAuthRequest);
+		oAuthService.signRequest(oAuth1AccessToken, oAuthRequest);
 
 		Response response = oAuthRequest.send();
 
