@@ -20,9 +20,12 @@ import com.liferay.asset.kernel.service.AssetTagLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetTagServiceUtil;
 import com.liferay.asset.tags.constants.AssetTagsAdminPortletKeys;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItemList;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItem;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -72,7 +75,7 @@ public class AssetTagsDisplayContext {
 		_request = request;
 	}
 
-	public DropdownItemList getActionItemsDropdownItemList() {
+	public List<DropdownItem> getActionDropdownItems() {
 		return new DropdownItemList(_request) {
 			{
 				add(
@@ -146,13 +149,13 @@ public class AssetTagsDisplayContext {
 		return _displayStyle;
 	}
 
-	public DropdownItemList getFilterItemsDropdownItemList() {
+	public List<DropdownItem> getFilterDropdownItems() {
 		return new DropdownItemList(_request) {
 			{
 				addGroup(
 					dropdownGroupItem -> {
-						dropdownGroupItem.setDropdownItemList(
-							_getOrderByDropdownItemList());
+						dropdownGroupItem.setDropdownItems(
+							_getOrderByDropdownItems());
 						dropdownGroupItem.setLabel("order-by");
 					});
 			}
@@ -209,7 +212,7 @@ public class AssetTagsDisplayContext {
 		return _mergeTagNames;
 	}
 
-	public NavigationItemList getNavigationItems() {
+	public List<NavigationItem> getNavigationItems() {
 		return new NavigationItemList(_request) {
 			{
 				add(
@@ -392,7 +395,7 @@ public class AssetTagsDisplayContext {
 		return tagsSearchContainer.getTotal();
 	}
 
-	public ViewTypeItemList getViewTypeItemList() {
+	public List<ViewTypeItem> getViewTypeItems() {
 		PortletURL portletURL = _renderResponse.createActionURL();
 
 		portletURL.setParameter(
@@ -438,7 +441,7 @@ public class AssetTagsDisplayContext {
 		return false;
 	}
 
-	private DropdownItemList _getOrderByDropdownItemList() {
+	private List<DropdownItem> _getOrderByDropdownItems() {
 		return new DropdownItemList(_request) {
 			{
 				add(

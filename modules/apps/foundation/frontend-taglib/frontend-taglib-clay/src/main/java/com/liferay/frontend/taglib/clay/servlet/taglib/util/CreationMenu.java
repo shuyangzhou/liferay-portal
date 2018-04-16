@@ -17,6 +17,7 @@ package com.liferay.frontend.taglib.clay.servlet.taglib.util;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.List;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
@@ -34,11 +35,11 @@ public class CreationMenu extends HashMap {
 	public CreationMenu(HttpServletRequest request) {
 		_request = request;
 
-		_favoriteDropdownItemList = new DropdownItemList(_request);
-		_primaryDropdownItemList = new DropdownItemList(_request);
-		_restDropdownItemList = new DropdownItemList(_request);
+		_favoriteDropdownItems = new DropdownItemList(_request);
+		_primaryDropdownItems = new DropdownItemList(_request);
+		_restDropdownItems = new DropdownItemList(_request);
 
-		put("primaryItems", _primaryDropdownItemList);
+		put("primaryItems", _primaryDropdownItems);
 	}
 
 	public void addDropdownItem(Consumer<DropdownItem> consumer) {
@@ -50,9 +51,9 @@ public class CreationMenu extends HashMap {
 
 		consumer.accept(dropdownItem);
 
-		_favoriteDropdownItemList.add(dropdownItem);
+		_favoriteDropdownItems.add(dropdownItem);
 
-		put("secondaryItems", _buildSecondaryDropdownItemList());
+		put("secondaryItems", _buildSecondaryDropdownItems());
 	}
 
 	public void addPrimaryDropdownItem(Consumer<DropdownItem> consumer) {
@@ -60,7 +61,7 @@ public class CreationMenu extends HashMap {
 
 		consumer.accept(dropdownItem);
 
-		_primaryDropdownItemList.add(dropdownItem);
+		_primaryDropdownItems.add(dropdownItem);
 	}
 
 	public void addRestDropdownItem(Consumer<DropdownItem> consumer) {
@@ -68,9 +69,9 @@ public class CreationMenu extends HashMap {
 
 		consumer.accept(dropdownItem);
 
-		_restDropdownItemList.add(dropdownItem);
+		_restDropdownItems.add(dropdownItem);
 
-		put("secondaryItems", _buildSecondaryDropdownItemList());
+		put("secondaryItems", _buildSecondaryDropdownItems());
 	}
 
 	public void setCaption(String caption) {
@@ -93,38 +94,38 @@ public class CreationMenu extends HashMap {
 		put("viewMoreURL", viewMoreURL);
 	}
 
-	private DropdownItemList _buildSecondaryDropdownItemList() {
+	private List<DropdownItem> _buildSecondaryDropdownItems() {
 		DropdownItemList secondaryDropdownItemList = new DropdownItemList(
 			_request);
 
-		if (!_favoriteDropdownItemList.isEmpty()) {
+		if (!_favoriteDropdownItems.isEmpty()) {
 			secondaryDropdownItemList.addGroup(
 				dropdownGroupItem -> {
-					dropdownGroupItem.setDropdownItemList(
-						_favoriteDropdownItemList);
+					dropdownGroupItem.setDropdownItems(
+						_favoriteDropdownItems);
 					dropdownGroupItem.setLabel(
 						LanguageUtil.get(_request, "favorites"));
 
-					if (!_restDropdownItemList.isEmpty()) {
+					if (!_restDropdownItems.isEmpty()) {
 						dropdownGroupItem.setSeparator(true);
 					}
 				});
 		}
 
-		if (!_restDropdownItemList.isEmpty()) {
+		if (!_restDropdownItems.isEmpty()) {
 			secondaryDropdownItemList.addGroup(
 				dropdownGroupItem -> {
-					dropdownGroupItem.setDropdownItemList(
-						_restDropdownItemList);
+					dropdownGroupItem.setDropdownItems(
+						_restDropdownItems);
 				});
 		}
 
 		return secondaryDropdownItemList;
 	}
 
-	private final DropdownItemList _favoriteDropdownItemList;
-	private final DropdownItemList _primaryDropdownItemList;
+	private final List<DropdownItem> _favoriteDropdownItems;
+	private final List<DropdownItem> _primaryDropdownItems;
 	private final HttpServletRequest _request;
-	private final DropdownItemList _restDropdownItemList;
+	private final List<DropdownItem> _restDropdownItems;
 
 }

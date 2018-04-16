@@ -17,9 +17,17 @@
 <%@ include file="/init.jsp" %>
 
 <%
+String backURL = ParamUtil.getString(request, "backURL");
+
 long backgroundTaskId = ParamUtil.getLong(request, "backgroundTaskId");
 
 portletDisplay.setDescription(LanguageUtil.get(request, "process-details"));
+
+if (Validator.isNotNull(backURL)) {
+	portletDisplay.setShowBackIcon(true);
+	portletDisplay.setURLBack(backURL);
+}
+
 renderResponse.setTitle(LanguageUtil.get(request, "process-details"));
 %>
 

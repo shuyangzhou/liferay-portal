@@ -552,7 +552,8 @@ public class LayoutsAdminDisplayContext {
 			return _redirect;
 		}
 
-		_redirect = ParamUtil.getString(_liferayPortletRequest, "redirect");
+		_redirect = ParamUtil.getString(
+			_liferayPortletRequest, "redirect", _themeDisplay.getURLCurrent());
 
 		return _redirect;
 	}
@@ -612,7 +613,9 @@ public class LayoutsAdminDisplayContext {
 		selectLayoutPageTemplateEntryURL.setParameter(
 			"mvcPath", "/select_layout_page_template_entry.jsp");
 		selectLayoutPageTemplateEntryURL.setParameter(
-			"redirect", _themeDisplay.getURLCurrent());
+			"navigation", getNavigation());
+		selectLayoutPageTemplateEntryURL.setParameter(
+			"redirect", getRedirect());
 		selectLayoutPageTemplateEntryURL.setParameter(
 			"backURL", _themeDisplay.getURLCurrent());
 		selectLayoutPageTemplateEntryURL.setParameter(
@@ -1031,7 +1034,7 @@ public class LayoutsAdminDisplayContext {
 			layoutJSONObject.put("active", _isActive(layout.getPlid()));
 
 			int childLayoutsCount = LayoutLocalServiceUtil.getLayoutsCount(
-				getGroup(), isPrivatePages(), layout.getLayoutId());
+				getSelGroup(), isPrivatePages(), layout.getLayoutId());
 
 			layoutJSONObject.put("hasChild", childLayoutsCount > 0);
 

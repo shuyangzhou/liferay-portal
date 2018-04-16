@@ -18,13 +18,14 @@ import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.frontend.taglib.clay.internal.js.loader.modules.extender.npm.NPMResolverProvider;
 import com.liferay.frontend.taglib.clay.servlet.taglib.soy.base.BaseClayTag;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
-import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
-import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItemList;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItem;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -84,8 +85,8 @@ public class ManagementToolbarTag extends BaseClayTag {
 			"frontend-taglib-clay/management_toolbar/ManagementToolbar.es");
 	}
 
-	public void setActionItems(DropdownItemList actionItems) {
-		putValue("actionItems", actionItems);
+	public void setActionItems(List<DropdownItem> actionDropdownItems) {
+		putValue("actionItems", actionDropdownItems);
 	}
 
 	public void setClearResultsURL(String clearResultsURL) {
@@ -104,8 +105,12 @@ public class ManagementToolbarTag extends BaseClayTag {
 		putValue("disabled", disabled);
 	}
 
-	public void setFilterItems(DropdownItemList filterItems) {
-		putValue("filterItems", filterItems);
+	public void setFilterItems(List<DropdownItem> filterDropdownItems) {
+		putValue("filterItems", filterDropdownItems);
+	}
+
+	public void setInfoPanelId(String infoPanelId) {
+		putValue("infoPanelId", infoPanelId);
 	}
 
 	public void setSearchActionURL(String searchActionURL) {
@@ -168,8 +173,8 @@ public class ManagementToolbarTag extends BaseClayTag {
 		putValue("totalItems", totalItems);
 	}
 
-	public void setViewTypes(ViewTypeItemList viewTypes) {
-		putValue("viewTypes", viewTypes);
+	public void setViewTypes(List<ViewTypeItem> viewTypeItems) {
+		putValue("viewTypes", viewTypeItems);
 	}
 
 	@Override
@@ -177,7 +182,8 @@ public class ManagementToolbarTag extends BaseClayTag {
 		return _NAMESPACED_PARAMS;
 	}
 
-	private static final String[] _NAMESPACED_PARAMS =
-		{"searchContainerId", "searchFormName", "searchInputName"};
+	private static final String[] _NAMESPACED_PARAMS = {
+		"infoPanelId", "searchContainerId", "searchFormName", "searchInputName"
+	};
 
 }

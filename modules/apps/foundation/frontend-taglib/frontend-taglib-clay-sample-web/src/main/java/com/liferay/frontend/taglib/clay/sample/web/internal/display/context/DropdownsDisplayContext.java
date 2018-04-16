@@ -14,19 +14,22 @@
 
 package com.liferay.frontend.taglib.clay.sample.web.internal.display.context;
 
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
+
+import java.util.List;
 
 /**
  * @author Chema Balsas
  */
 public class DropdownsDisplayContext {
 
-	public DropdownItemList getDefaultDropdownItemList() {
-		if (_defaultDropdownItemList != null) {
-			return _defaultDropdownItemList;
+	public List<DropdownItem> getDefaultDropdownItems() {
+		if (_defaultDropdownItems != null) {
+			return _defaultDropdownItems;
 		}
 
-		_defaultDropdownItemList = new DropdownItemList() {
+		_defaultDropdownItems = new DropdownItemList() {
 			{
 				add(
 					dropdownItem -> {
@@ -56,15 +59,15 @@ public class DropdownsDisplayContext {
 			}
 		};
 
-		return _defaultDropdownItemList;
+		return _defaultDropdownItems;
 	}
 
-	public DropdownItemList getGroupDropdownItemList() {
-		if (_groupDropdownItemList != null) {
-			return _groupDropdownItemList;
+	public List<DropdownItem> getGroupDropdownItems() {
+		if (_groupDropdownItems != null) {
+			return _groupDropdownItems;
 		}
 
-		DropdownItemList group1DropdownItemList = new DropdownItemList() {
+		List<DropdownItem> group1DropdownItems = new DropdownItemList() {
 			{
 				add(
 					dropdownItem -> {
@@ -80,7 +83,7 @@ public class DropdownsDisplayContext {
 			}
 		};
 
-		DropdownItemList group2DropdownItemList = new DropdownItemList() {
+		List<DropdownItem> group2DropdownItems = new DropdownItemList() {
 			{
 				add(
 					dropdownItem -> {
@@ -96,34 +99,34 @@ public class DropdownsDisplayContext {
 			}
 		};
 
-		_groupDropdownItemList = new DropdownItemList() {
+		_groupDropdownItems = new DropdownItemList() {
 			{
 				addGroup(
 					dropdownGroupItem -> {
-						dropdownGroupItem.setDropdownItemList(
-							group1DropdownItemList);
+						dropdownGroupItem.setDropdownItems(
+							group1DropdownItems);
 						dropdownGroupItem.setLabel("Group 1");
 						dropdownGroupItem.setSeparator(true);
 					});
 
 				addGroup(
 					dropdownGroupItem -> {
-						dropdownGroupItem.setDropdownItemList(
-							group2DropdownItemList);
+						dropdownGroupItem.setDropdownItems(
+							group2DropdownItems);
 						dropdownGroupItem.setLabel("Group 2");
 					});
 			}
 		};
 
-		return _groupDropdownItemList;
+		return _groupDropdownItems;
 	}
 
-	public DropdownItemList getIconDropdownItemList() {
-		if (_iconDropdownItemList != null) {
-			return _iconDropdownItemList;
+	public List<DropdownItem> getIconDropdownItems() {
+		if (_iconDropdownItems != null) {
+			return _iconDropdownItems;
 		}
 
-		_iconDropdownItemList = new DropdownItemList() {
+		_iconDropdownItems = new DropdownItemList() {
 			{
 				add(
 					dropdownItem -> {
@@ -169,15 +172,15 @@ public class DropdownsDisplayContext {
 			}
 		};
 
-		return _iconDropdownItemList;
+		return _iconDropdownItems;
 	}
 
-	public DropdownItemList getInputDropdownItemList() {
-		if (_inputDropdownItemList != null) {
-			return _inputDropdownItemList;
+	public List<DropdownItem> getInputDropdownItems() {
+		if (_inputDropdownItems != null) {
+			return _inputDropdownItems;
 		}
 
-		DropdownItemList group1DropdownItemList = new DropdownItemList() {
+		List<DropdownItem> group1DropdownItems = new DropdownItemList() {
 			{
 				addCheckbox(
 					dropdownCheckboxItem -> {
@@ -195,7 +198,7 @@ public class DropdownsDisplayContext {
 			}
 		};
 
-		DropdownItemList group2DropdownItemList = new DropdownItemList() {
+		List<DropdownItem> group2DropdownItems = new DropdownItemList() {
 			{
 				addRadio(
 					dropdownRadioItem -> {
@@ -213,12 +216,12 @@ public class DropdownsDisplayContext {
 			}
 		};
 
-		_inputDropdownItemList = new DropdownItemList() {
+		_inputDropdownItems = new DropdownItemList() {
 			{
 				addGroup(
 					dropdownGroupItem -> {
-						dropdownGroupItem.setDropdownItemList(
-							group1DropdownItemList);
+						dropdownGroupItem.setDropdownItems(
+							group1DropdownItems);
 						dropdownGroupItem.setLabel("Group 1");
 						dropdownGroupItem.setSeparator(true);
 					});
@@ -226,19 +229,19 @@ public class DropdownsDisplayContext {
 				addRadioGroup(
 					dropdownRadioGroupItem -> {
 						dropdownRadioGroupItem.setInputName("radiogroup");
-						dropdownRadioGroupItem.setDropdownItemList(
-							group2DropdownItemList);
+						dropdownRadioGroupItem.setDropdownItems(
+							group2DropdownItems);
 						dropdownRadioGroupItem.setLabel("Group 2");
 					});
 			}
 		};
 
-		return _inputDropdownItemList;
+		return _inputDropdownItems;
 	}
 
-	private DropdownItemList _defaultDropdownItemList;
-	private DropdownItemList _groupDropdownItemList;
-	private DropdownItemList _iconDropdownItemList;
-	private DropdownItemList _inputDropdownItemList;
+	private List<DropdownItem> _defaultDropdownItems;
+	private List<DropdownItem> _groupDropdownItems;
+	private List<DropdownItem> _iconDropdownItems;
+	private List<DropdownItem> _inputDropdownItems;
 
 }

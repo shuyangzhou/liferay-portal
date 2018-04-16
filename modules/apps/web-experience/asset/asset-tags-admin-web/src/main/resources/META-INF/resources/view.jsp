@@ -22,12 +22,12 @@
 />
 
 <clay:management-toolbar
-	actionItems="<%= assetTagsDisplayContext.getActionItemsDropdownItemList() %>"
+	actionItems="<%= assetTagsDisplayContext.getActionDropdownItems() %>"
 	clearResultsURL="<%= assetTagsDisplayContext.getClearResultsURL() %>"
 	componentId="assetTagsManagementToolbar"
 	creationMenu="<%= assetTagsDisplayContext.isShowAddButton() ? assetTagsDisplayContext.getCreationMenu() : null %>"
 	disabled="<%= assetTagsDisplayContext.getTotalItems() == 0 %>"
-	filterItems="<%= assetTagsDisplayContext.getFilterItemsDropdownItemList() %>"
+	filterItems="<%= assetTagsDisplayContext.getFilterDropdownItems() %>"
 	namespace="<%= renderResponse.getNamespace() %>"
 	searchActionURL="<%= assetTagsDisplayContext.getSearchActionURL() %>"
 	searchContainerId="assetTags"
@@ -36,7 +36,7 @@
 	sortingOrder="<%= assetTagsDisplayContext.getOrderByType() %>"
 	sortingURL="<%= assetTagsDisplayContext.getSortingURL() %>"
 	totalItems="<%= assetTagsDisplayContext.getTotalItems() %>"
-	viewTypes="<%= assetTagsDisplayContext.getViewTypeItemList() %>"
+	viewTypes="<%= assetTagsDisplayContext.getViewTypeItems() %>"
 />
 
 <portlet:actionURL name="deleteTag" var="deleteTagURL">

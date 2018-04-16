@@ -127,12 +127,39 @@ public class SourceFormatterUtil {
 
 		outerLoop:
 		for (String fileName : allFileNames) {
-			String encodedFileName = SourceUtil.getAbsolutePath(fileName);
+			String encodedFileName = _getEncodedFileName(fileName);
+
+			boolean print = false;
+
+			if (fileName.endsWith("PulpoTraverson.java")) {
+				System.out.println("_______________");
+				System.out.println("fileName: " + fileName);
+				System.out.println("encodedFileName: " + encodedFileName);
+
+				print = true;
+			}
 
 			for (String includeRegex : includeRegexList) {
+				if (print) {
+					System.out.println("includeRegex: " + includeRegex);
+				}
+
 				if (encodedFileName.matches(includeRegex)) {
+					if (print) {
+						System.out.println("includeMatch: " + includeRegex);
+					}
+
 					for (String excludeRegex : excludeRegexList) {
+						if (print) {
+							System.out.println(
+								"excludeRegex1: " + excludeRegex);
+						}
+
 						if (encodedFileName.matches(excludeRegex)) {
+							if (print) {
+								System.out.println("match1: " + excludeRegex);
+							}
+
 							continue outerLoop;
 						}
 					}
@@ -145,10 +172,33 @@ public class SourceFormatterUtil {
 						if (encodedFileName.startsWith(
 								propertiesFileLocation)) {
 
+							if (print) {
+								System.out.println(
+									"propertiesFileLocation1: " +
+										propertiesFileLocation);
+							}
+
 							for (String excludeRegex : entry.getValue()) {
+								if (print) {
+									System.out.println(
+										"excludeRegex2: " + excludeRegex);
+								}
+
 								if (encodedFileName.matches(excludeRegex)) {
+									if (print) {
+										System.out.println(
+											"match2: " + excludeRegex);
+									}
+
 									continue outerLoop;
 								}
+							}
+						}
+						else {
+							if (print) {
+								System.out.println(
+									"propertiesFileLocation2: " +
+										propertiesFileLocation);
 							}
 						}
 					}
@@ -519,6 +569,21 @@ public class SourceFormatterUtil {
 		catch (IOException ioe) {
 			throw new RuntimeException(ioe);
 		}
+	}
+
+	private static String _getEncodedFileName(String fileName) {
+		String absolutePath = SourceUtil.getAbsolutePath(fileName);
+
+		if (true) {
+			return absolutePath;
+		}
+
+		if (!absolutePath.startsWith("/home/travis/")) {
+			return absolutePath;
+		}
+
+		return StringUtil.replace(
+			fileName, CharPool.BACK_SLASH, CharPool.SLASH);
 	}
 
 	private static PathMatchers _getPathMatchers(

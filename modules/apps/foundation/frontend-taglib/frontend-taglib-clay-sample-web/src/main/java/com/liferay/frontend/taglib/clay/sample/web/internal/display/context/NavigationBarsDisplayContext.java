@@ -15,19 +15,22 @@
 package com.liferay.frontend.taglib.clay.sample.web.internal.display.context;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemList;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItem;
 import com.liferay.portal.kernel.util.IntegerWrapper;
+
+import java.util.List;
 
 /**
  * @author Chema Balsas
  */
 public class NavigationBarsDisplayContext {
 
-	public NavigationItemList getNavigationItemList() {
-		if (_navigationItemList != null) {
-			return _navigationItemList;
+	public List<NavigationItem> getNavigationItems() {
+		if (_navigationItems != null) {
+			return _navigationItems;
 		}
 
-		_navigationItemList = new NavigationItemList() {
+		_navigationItems = new NavigationItemList() {
 			{
 				IntegerWrapper integerWrapper = new IntegerWrapper(1);
 
@@ -53,9 +56,9 @@ public class NavigationBarsDisplayContext {
 			}
 		};
 
-		return _navigationItemList;
+		return _navigationItems;
 	}
 
-	private NavigationItemList _navigationItemList;
+	private List<NavigationItem> _navigationItems;
 
 }

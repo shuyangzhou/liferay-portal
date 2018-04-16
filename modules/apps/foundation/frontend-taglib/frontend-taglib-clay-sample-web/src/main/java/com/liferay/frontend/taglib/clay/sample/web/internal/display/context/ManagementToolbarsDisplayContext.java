@@ -15,10 +15,13 @@
 package com.liferay.frontend.taglib.clay.sample.web.internal.display.context;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItemList;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItem;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author Carlos Lancha
@@ -29,12 +32,12 @@ public class ManagementToolbarsDisplayContext {
 		_request = request;
 	}
 
-	public DropdownItemList getActionDropdownItemList() {
-		if (_actionDropdownItemList != null) {
-			return _actionDropdownItemList;
+	public List<DropdownItem> getActionDropdownItems() {
+		if (_actionDropdownItems != null) {
+			return _actionDropdownItems;
 		}
 
-		_actionDropdownItemList = new DropdownItemList() {
+		_actionDropdownItems = new DropdownItemList() {
 			{
 				add(
 					dropdownItem -> {
@@ -60,7 +63,7 @@ public class ManagementToolbarsDisplayContext {
 			}
 		};
 
-		return _actionDropdownItemList;
+		return _actionDropdownItems;
 	}
 
 	public CreationMenu getCreationMenu() {
@@ -99,12 +102,12 @@ public class ManagementToolbarsDisplayContext {
 		return _creationMenu;
 	}
 
-	public DropdownItemList getFilterDropdownItemList() {
-		if (_filterDropdownItemList != null) {
-			return _filterDropdownItemList;
+	public List<DropdownItem> getFilterDropdownItems() {
+		if (_filterDropdownItems != null) {
+			return _filterDropdownItems;
 		}
 
-		DropdownItemList filterByDropdownItemList = new DropdownItemList() {
+		List<DropdownItem> filterByDropdownItems = new DropdownItemList() {
 			{
 				add(
 					dropdownItem -> {
@@ -120,7 +123,7 @@ public class ManagementToolbarsDisplayContext {
 			}
 		};
 
-		DropdownItemList orderByDropdownItemList = new DropdownItemList() {
+		List<DropdownItem> orderByDropdownItems = new DropdownItemList() {
 			{
 				add(
 					dropdownItem -> {
@@ -136,33 +139,33 @@ public class ManagementToolbarsDisplayContext {
 			}
 		};
 
-		_filterDropdownItemList = new DropdownItemList() {
+		_filterDropdownItems = new DropdownItemList() {
 			{
 				addGroup(
 					dropdownGroupItem -> {
-						dropdownGroupItem.setDropdownItemList(
-							filterByDropdownItemList);
+						dropdownGroupItem.setDropdownItems(
+							filterByDropdownItems);
 						dropdownGroupItem.setLabel("Filter By");
 					});
 
 				addGroup(
 					dropdownGroupItem -> {
-						dropdownGroupItem.setDropdownItemList(
-							orderByDropdownItemList);
+						dropdownGroupItem.setDropdownItems(
+							orderByDropdownItems);
 						dropdownGroupItem.setLabel("Order By");
 					});
 			}
 		};
 
-		return _filterDropdownItemList;
+		return _filterDropdownItems;
 	}
 
-	public ViewTypeItemList getViewTypeItemList() {
-		if (_viewTypeItemList != null) {
-			return _viewTypeItemList;
+	public List<ViewTypeItem> getViewTypeItems() {
+		if (_viewTypeItems != null) {
+			return _viewTypeItems;
 		}
 
-		_viewTypeItemList = new ViewTypeItemList() {
+		_viewTypeItems = new ViewTypeItemList() {
 			{
 				addCardViewTypeItem(
 					viewTypeItem -> {
@@ -182,13 +185,13 @@ public class ManagementToolbarsDisplayContext {
 			}
 		};
 
-		return _viewTypeItemList;
+		return _viewTypeItems;
 	}
 
-	private DropdownItemList _actionDropdownItemList;
+	private List<DropdownItem> _actionDropdownItems;
 	private CreationMenu _creationMenu;
-	private DropdownItemList _filterDropdownItemList;
+	private List<DropdownItem> _filterDropdownItems;
 	private final HttpServletRequest _request;
-	private ViewTypeItemList _viewTypeItemList;
+	private List<ViewTypeItem> _viewTypeItems;
 
 }

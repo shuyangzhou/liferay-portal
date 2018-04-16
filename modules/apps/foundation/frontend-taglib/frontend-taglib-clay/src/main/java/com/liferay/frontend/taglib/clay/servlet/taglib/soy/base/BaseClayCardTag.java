@@ -14,11 +14,12 @@
 
 package com.liferay.frontend.taglib.clay.servlet.taglib.soy.base;
 
-import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.portal.kernel.dao.search.ResultRow;
 import com.liferay.portal.kernel.dao.search.RowChecker;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,8 +62,8 @@ public class BaseClayCardTag extends BaseClayTag {
 		return super.doStartTag();
 	}
 
-	public void setActionItems(DropdownItemList dropdownItemList) {
-		putValue("actionItems", dropdownItemList);
+	public void setActionItems(List<DropdownItem> actionDropdownItems) {
+		putValue("actionItems", actionDropdownItems);
 	}
 
 	public void setDisabled(Boolean disabled) {

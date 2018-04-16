@@ -447,8 +447,9 @@ public class PoshiRunnerContext {
 		if (Validator.isNotNull(PropsValues.TEST_RUN_ENVIRONMENT)) {
 			StringBuilder sb = new StringBuilder();
 
+			sb.append("(");
 			sb.append(propertyQuery);
-			sb.append(" AND ");
+			sb.append(") AND ");
 			sb.append("(test.run.environment == \"");
 			sb.append(PropsValues.TEST_RUN_ENVIRONMENT);
 			sb.append("\" OR test.run.environment == null)");

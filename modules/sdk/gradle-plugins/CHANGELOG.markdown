@@ -4052,10 +4052,88 @@ version 1.0.190.
 - [LPS-74171]: Update the default value of the
 `liferay.appServers.tomcat.version` property to `9.0.6`.
 
+## 3.10.14 - 2018-04-10
+
+### Changed
+- [LPS-78308]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.124.
+- [LPS-78308]: Update the [Liferay Source Formatter] dependency to version
+1.0.596.
+
+## 3.10.15 - 2018-04-10
+
+### Changed
+- [LPS-78911]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.125.
+- [LPS-78911]: Update the [Liferay Source Formatter] dependency to version
+1.0.597.
+
+## 3.10.16 - 2018-04-11
+
+### Changed
+- [LPS-75010]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.126.
+- [LPS-75010]: Update the [Liferay Source Formatter] dependency to version
+1.0.598.
+
+## 3.10.17 - 2018-04-12
+
+### Changed
+- [LPS-79576]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.127.
+- [LPS-79576]: Update the [Liferay Source Formatter] dependency to version
+1.0.600.
+
+## 3.10.18 - 2018-04-12
+
+### Changed
+- [LPS-79576]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.128.
+- [LPS-79576]: Update the [Liferay Source Formatter] dependency to version
+1.0.601.
+
+## 3.11.0 - 2018-04-12
+
+### Added
+- [LPS-75530]: Add `gradlew watch --continuous` to quickly redeploy OSGi modules
+at any code change.
+- [LPS-75530]: Set the [Liferay Gogo Shell Client] dependency to version 1.0.0.
+
+### Changed
+- [LPS-74544]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.129.
+- [LPS-74544]: Update the [Liferay Source Formatter] dependency to version
+1.0.602.
+
+## 3.11.1 - 2018-04-13
+
+### Changed
+- [LPS-79576]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.130.
+- [LPS-79576]: Update the [Liferay Source Formatter] dependency to version
+1.0.603.
+
+## 3.11.2 - 2018-04-13
+
+### Changed
+- [LPS-77639]: Update the [Liferay Gradle Plugins Service Builder] dependency to
+version 2.1.8.
+- [LPS-77639]: Update the [Liferay Portal Tools Service Builder] dependency to
+version 1.0.191.
+
+## 3.11.3 - 2018-04-13
+
+### Changed
+- [LPS-79623]: Update the [Liferay Gradle Plugins Service Builder] dependency to
+version 2.1.9.
+- [LPS-79623]: Update the [Liferay Portal Tools Service Builder] dependency to
+version 1.0.192.
+
 [Gradle Bundle Plugin]: https://github.com/TomDmitriev/gradle-bundle-plugin
 [Liferay Alloy Taglib]: https://github.com/liferay/alloy-taglibs
 [Liferay Ant BND]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/ant-bnd
 [Liferay CSS Builder]: https://github.com/liferay/liferay-portal/tree/master/modules/util/css-builder
+[Liferay Gogo Shell Client]: https://github.com/liferay/liferay-portal/tree/master/modules/util/gogo-shell-client
 [Liferay Gradle Plugins Alloy Taglib]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-alloy-taglib
 [Liferay Gradle Plugins CSS Builder]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-css-builder
 [Liferay Gradle Plugins DB Support]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-db-support
@@ -4309,6 +4387,7 @@ version 1.0.190.
 [LPS-75427]: https://issues.liferay.com/browse/LPS-75427
 [LPS-75430]: https://issues.liferay.com/browse/LPS-75430
 [LPS-75488]: https://issues.liferay.com/browse/LPS-75488
+[LPS-75530]: https://issues.liferay.com/browse/LPS-75530
 [LPS-75554]: https://issues.liferay.com/browse/LPS-75554
 [LPS-75589]: https://issues.liferay.com/browse/LPS-75589
 [LPS-75610]: https://issues.liferay.com/browse/LPS-75610
@@ -4354,6 +4433,7 @@ version 1.0.190.
 [LPS-77425]: https://issues.liferay.com/browse/LPS-77425
 [LPS-77532]: https://issues.liferay.com/browse/LPS-77532
 [LPS-77630]: https://issues.liferay.com/browse/LPS-77630
+[LPS-77639]: https://issues.liferay.com/browse/LPS-77639
 [LPS-77795]: https://issues.liferay.com/browse/LPS-77795
 [LPS-77836]: https://issues.liferay.com/browse/LPS-77836
 [LPS-77840]: https://issues.liferay.com/browse/LPS-77840
@@ -4396,4 +4476,6 @@ version 1.0.190.
 [LPS-79365]: https://issues.liferay.com/browse/LPS-79365
 [LPS-79385]: https://issues.liferay.com/browse/LPS-79385
 [LPS-79450]: https://issues.liferay.com/browse/LPS-79450
+[LPS-79576]: https://issues.liferay.com/browse/LPS-79576
+[LPS-79623]: https://issues.liferay.com/browse/LPS-79623
 [LRDOCS-3023]: https://issues.liferay.com/browse/LRDOCS-3023
