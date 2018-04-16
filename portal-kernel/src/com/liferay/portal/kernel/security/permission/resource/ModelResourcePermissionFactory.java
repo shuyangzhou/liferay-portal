@@ -19,11 +19,22 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.internal.security.permission.resource.DefaultModelResourcePermission;
 import com.liferay.portal.kernel.model.ClassedModel;
 import com.liferay.portal.kernel.model.GroupedModel;
+import com.liferay.portal.kernel.security.permission.resource.definition.ModelResourcePermissionDefinition;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceReference;
+import com.liferay.registry.ServiceRegistration;
+import com.liferay.registry.ServiceTracker;
+import com.liferay.registry.ServiceTrackerCustomizer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.ToLongFunction;
 import java.util.function.UnaryOperator;
@@ -59,11 +70,15 @@ public class ModelResourcePermissionFactory {
 		List<ModelResourcePermissionLogic<T>> modelResourcePermissionLogics =
 			new ArrayList<>();
 
+		ModelResourcePermissionDefinition<T> modelResourcePermissionDefinition =
+			new DefaultModelResourcePermissionDefinition<>(
+				modelClass, primKeyToLongFunction, getModelUnsafeFunction,
+				portletResourcePermission, actionIdMapper);
+
 		ModelResourcePermission<T> modelResourcePermission =
 			new DefaultModelResourcePermission<>(
-				modelClass.getName(), primKeyToLongFunction,
-				getModelUnsafeFunction, portletResourcePermission,
-				modelResourcePermissionLogics, actionIdMapper);
+				modelResourcePermissionDefinition,
+				modelResourcePermissionLogics);
 
 		modelResourcePermissionConfigurator.
 			configureModelResourcePermissionLogics(
@@ -91,6 +106,177 @@ public class ModelResourcePermissionFactory {
 			ModelResourcePermission<T> modelResourcePermission,
 			Consumer<ModelResourcePermissionLogic<T>> consumer);
 
+	}
+
+	private static <T extends GroupedModel> ModelResourcePermission<T> _create(
+		ModelResourcePermissionDefinition<T>
+			modelResourcePermissionDefinition) {
+
+		List<ModelResourcePermissionLogic<T>> modelResourcePermissionLogics =
+			new ArrayList<>();
+
+		ModelResourcePermission<T> modelResourcePermission =
+			new DefaultModelResourcePermission<>(
+				modelResourcePermissionDefinition,
+				modelResourcePermissionLogics);
+
+		modelResourcePermissionDefinition.registerModelResourcePermissionLogics(
+			modelResourcePermission, modelResourcePermissionLogics::add);
+
+		return modelResourcePermission;
+	}
+
+	private static final Map<String, ServiceRegistration<?>>
+		_serviceRegistrations = new ConcurrentHashMap<>();
+	private static final ServiceTracker
+		<ModelResourcePermissionDefinition, ModelResourcePermissionDefinition>
+			_serviceTracker;
+
+	private static class DefaultModelResourcePermissionDefinition
+		<T extends GroupedModel>
+			implements ModelResourcePermissionDefinition<T> {
+
+		@Override
+		public T getModel(long primaryKey) throws PortalException {
+			return _getModelUnsafeFunction.apply(primaryKey);
+		}
+
+		@Override
+		public Class<T> getModelClass() {
+			return _modelClass;
+		}
+
+		@Override
+		public PortletResourcePermission getPortletResourcePermission() {
+			return _portletResourcePermission;
+		}
+
+		@Override
+		public long getPrimaryKey(T t) {
+			return _primKeyToLongFunction.applyAsLong(t);
+		}
+
+		@Override
+		public String mapActionId(String actionId) {
+			return _actionIdMapper.apply(actionId);
+		}
+
+		@Override
+		public void registerModelResourcePermissionLogics(
+			ModelResourcePermission<T> modelResourcePermission,
+			Consumer<ModelResourcePermissionLogic<T>> logicConsumer) {
+		}
+
+		private DefaultModelResourcePermissionDefinition(
+			Class<T> modelClass, ToLongFunction<T> primKeyToLongFunction,
+			UnsafeFunction<Long, T, ? extends PortalException>
+				getModelUnsafeFunction,
+			PortletResourcePermission portletResourcePermission,
+			UnaryOperator<String> actionIdMapper) {
+
+			_modelClass = Objects.requireNonNull(modelClass);
+			_primKeyToLongFunction = Objects.requireNonNull(
+				primKeyToLongFunction);
+			_getModelUnsafeFunction = Objects.requireNonNull(
+				getModelUnsafeFunction);
+			_portletResourcePermission = portletResourcePermission;
+			_actionIdMapper = Objects.requireNonNull(actionIdMapper);
+		}
+
+		private final UnaryOperator<String> _actionIdMapper;
+		private final UnsafeFunction<Long, T, ? extends PortalException>
+			_getModelUnsafeFunction;
+		private final Class<T> _modelClass;
+		private final PortletResourcePermission _portletResourcePermission;
+		private final ToLongFunction<T> _primKeyToLongFunction;
+
+	}
+
+	private static class
+		ModelResourcePermissionDefinitionServiceTrackerCustomizer
+			implements ServiceTrackerCustomizer
+				<ModelResourcePermissionDefinition,
+					ModelResourcePermissionDefinition> {
+
+		@Override
+		public ModelResourcePermissionDefinition addingService(
+			ServiceReference<ModelResourcePermissionDefinition>
+				serviceReference) {
+
+			Registry registry = RegistryUtil.getRegistry();
+
+			ModelResourcePermissionDefinition<?>
+				modelResourcePermissionDefinition = registry.getService(
+					serviceReference);
+
+			ModelResourcePermission<?> modelResourcePermission = _create(
+				modelResourcePermissionDefinition);
+
+			Map<String, Object> properties = new HashMap<>();
+
+			Class<?> modelClass =
+				modelResourcePermissionDefinition.getModelClass();
+
+			properties.put("model.class.name", modelClass.getName());
+
+			Object serviceRanking = serviceReference.getProperty(
+				"service.ranking");
+
+			if (serviceRanking != null) {
+				properties.put("service.ranking", serviceRanking);
+			}
+
+			ServiceRegistration<ModelResourcePermission> serviceRegistration =
+				registry.registerService(
+					ModelResourcePermission.class, modelResourcePermission,
+					properties);
+
+			Class<?> clazz = modelResourcePermissionDefinition.getClass();
+
+			_serviceRegistrations.put(clazz.getName(), serviceRegistration);
+
+			return modelResourcePermissionDefinition;
+		}
+
+		@Override
+		public void modifiedService(
+			ServiceReference<ModelResourcePermissionDefinition>
+				serviceReference,
+			ModelResourcePermissionDefinition
+				modelResourcePermissionDefinition) {
+		}
+
+		@Override
+		public void removedService(
+			ServiceReference<ModelResourcePermissionDefinition>
+				serviceReference,
+			ModelResourcePermissionDefinition
+				modelResourcePermissionDefinition) {
+
+			Class<?> clazz = modelResourcePermissionDefinition.getClass();
+
+			ServiceRegistration<?> serviceRegistration =
+				_serviceRegistrations.remove(clazz.getName());
+
+			if (serviceRegistration != null) {
+				serviceRegistration.unregister();
+			}
+
+			Registry registry = RegistryUtil.getRegistry();
+
+			registry.ungetService(serviceReference);
+		}
+
+	}
+
+	static {
+		Registry registry = RegistryUtil.getRegistry();
+
+		_serviceTracker = registry.trackServices(
+			ModelResourcePermissionDefinition.class,
+			new ModelResourcePermissionDefinitionServiceTrackerCustomizer());
+
+		_serviceTracker.open();
 	}
 
 }
