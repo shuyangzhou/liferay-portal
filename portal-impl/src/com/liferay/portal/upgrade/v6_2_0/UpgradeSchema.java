@@ -30,7 +30,16 @@ public class UpgradeSchema extends UpgradeProcess {
 			"update-6.1.1-6.2.0-journal.sql", "update-6.1.1-6.2.0-user.sql",
 			"update-6.1.1-6.2.0-wiki.sql");
 
+		upgrade(new UpgradeAnnouncements());
+		upgrade(new UpgradeGroup());
+		upgrade(new UpgradeLayout());
+		upgrade(new UpgradeLayoutRevision());
+		upgrade(new UpgradeLayoutSet());
+		upgrade(new UpgradeLayoutSetBranch());
 		upgrade(new UpgradeMVCCVersion());
+		upgrade(new UpgradePortletItem());
+		upgrade(new UpgradeRepository());
+		upgrade(new UpgradeSQLServer());
 	}
 
 }
