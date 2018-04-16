@@ -651,13 +651,16 @@ public class HttpImpl implements Http {
 			return url;
 		}
 
-		int pos = url.indexOf(Http.PROTOCOL_DELIMITER);
+		url = url.trim();
 
-		if (pos != -1) {
-			return url.substring(0, pos);
+		Matcher matcher = _protocolsPattern.matcher(url);
+
+		if (matcher.lookingAt()) {
+			return matcher.group(1);
 		}
-
-		return Http.HTTP;
+		else {
+			return StringPool.BLANK;
+		}
 	}
 
 	@Override
@@ -695,13 +698,11 @@ public class HttpImpl implements Http {
 			return false;
 		}
 
-		int pos = url.indexOf(Http.PROTOCOL_DELIMITER);
+		url = url.trim();
 
-		if (pos != -1) {
-			return true;
-		}
+		Matcher matcher = _protocolsPattern.matcher(url);
 
-		return false;
+		return matcher.lookingAt();
 	}
 
 	@Override
@@ -1111,11 +1112,11 @@ public class HttpImpl implements Http {
 
 		url = url.trim();
 
-		if (url.startsWith(Http.HTTP_WITH_SLASH)) {
-			return url.substring(Http.HTTP_WITH_SLASH.length());
-		}
-		else if (url.startsWith(Http.HTTPS_WITH_SLASH)) {
-			return url.substring(Http.HTTPS_WITH_SLASH.length());
+		String protocol = getProtocol(url);
+
+		if (protocol.length() > 0) {
+			return url.substring(
+				protocol.length() + Http.PROTOCOL_DELIMITER.length());
 		}
 		else {
 			return url;
@@ -2116,6 +2117,8 @@ public class HttpImpl implements Http {
 	private final Pattern _nonProxyHostsPattern;
 	private final PoolingHttpClientConnectionManager
 		_poolingHttpClientConnectionManager;
+	private final Pattern _protocolsPattern = Pattern.compile(
+		"^([a-zA-Z][a-zA-Z0-9]*)://");
 	private final List<String> _proxyAuthPrefs = new ArrayList<>();
 	private final CloseableHttpClient _proxyCloseableHttpClient;
 	private final Credentials _proxyCredentials;
