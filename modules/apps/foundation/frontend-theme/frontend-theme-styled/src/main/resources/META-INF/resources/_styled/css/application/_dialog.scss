@@ -8,6 +8,12 @@
 }
 
 .dialog-iframe-popup {
+	.sheet {
+		.lfr-nav {
+			margin-top: -24px;
+		}
+	}
+
 	.contacts-portlet .portlet-configuration-container .form {
 		position: static;
 	}
@@ -34,10 +40,10 @@
 	.portlet-configuration-body-content,
 	.process-list,
 	.roles-selector-body {
-		> .container-fluid-1280 {
+		> .container-fluid-1280, .container-view {
 			padding-top: 20px;
 
-			> .nav-tabs-default {
+			> .nav-tabs-default, .nav-tabs-underline {
 				margin-left: -$grid-gutter-width / 2;
 				margin-right: -$grid-gutter-width / 2;
 				margin-top: -20px;
@@ -47,19 +53,6 @@
 		> .lfr-nav + .container-fluid-1280 {
 			padding-top: 0;
 		}
-	}
-
-	.dialog-body,
-	.lfr-form-content,
-	.portlet-configuration-body-content {
-		bottom: 0;
-		left: 0;
-		margin-bottom: 0;
-		overflow: auto;
-		position: absolute;
-		right: 0;
-		top: 0;
-		-webkit-overflow-scrolling: touch;
 	}
 
 	.login-container {
@@ -140,7 +133,7 @@
 }
 
 .dialog-with-footer {
-	.button-holder {
+	.button-holder, .sheet-footer {
 		&.dialog-footer {
 			background-color: $dialog-footer-bg;
 			border-top: 1px solid $dialog-footer-border-color;
@@ -153,12 +146,10 @@
 			left: 0;
 			margin: 0;
 			padding: 10px 15px;
-			position: absolute;
 			width: 100%;
 
-			@include sm {
-				background-color: $dialog-desktop-footer-bg;
-				padding: $dialog-footer-padding;
+			@include md {
+				position: fixed;
 			}
 		}
 	}
@@ -169,10 +160,8 @@
 	.lfr-form-content,
 	.portlet-configuration-body-content,
 	.roles-selector-body {
-		bottom: $dialog-footer-height;
-
-		@include sm {
-			bottom: $dialog-desktop-footer-height;
+		@include md {
+			padding-bottom: $dialog-footer-height;
 		}
 	}
 

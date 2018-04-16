@@ -552,7 +552,8 @@ public class LayoutsAdminDisplayContext {
 			return _redirect;
 		}
 
-		_redirect = ParamUtil.getString(_liferayPortletRequest, "redirect");
+		_redirect = ParamUtil.getString(
+			_liferayPortletRequest, "redirect", _themeDisplay.getURLCurrent());
 
 		return _redirect;
 	}
@@ -612,7 +613,9 @@ public class LayoutsAdminDisplayContext {
 		selectLayoutPageTemplateEntryURL.setParameter(
 			"mvcPath", "/select_layout_page_template_entry.jsp");
 		selectLayoutPageTemplateEntryURL.setParameter(
-			"redirect", _themeDisplay.getURLCurrent());
+			"navigation", getNavigation());
+		selectLayoutPageTemplateEntryURL.setParameter(
+			"redirect", getRedirect());
 		selectLayoutPageTemplateEntryURL.setParameter(
 			"backURL", _themeDisplay.getURLCurrent());
 		selectLayoutPageTemplateEntryURL.setParameter(
