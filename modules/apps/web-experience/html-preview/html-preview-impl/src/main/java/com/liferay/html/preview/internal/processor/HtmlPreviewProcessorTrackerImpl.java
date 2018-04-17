@@ -12,7 +12,10 @@
  * details.
  */
 
-package com.liferay.html.preview.processor;
+package com.liferay.html.preview.internal.processor;
+
+import com.liferay.html.preview.processor.HtmlPreviewProcessor;
+import com.liferay.html.preview.processor.HtmlPreviewProcessorTracker;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
