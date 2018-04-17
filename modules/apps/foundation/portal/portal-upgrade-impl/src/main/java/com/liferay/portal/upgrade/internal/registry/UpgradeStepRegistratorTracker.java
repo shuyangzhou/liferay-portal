@@ -52,41 +52,6 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 @Component(immediate = true)
 public class UpgradeStepRegistratorTracker {
 
-	public static List<ServiceRegistration<UpgradeStep>> register(
-		BundleContext bundleContext, String bundleSymbolicName,
-		String fromSchemaVersionString, String toSchemaVersionString,
-		Dictionary<String, Object> properties, UpgradeStep... upgradeSteps) {
-
-		List<ServiceRegistration<UpgradeStep>> serviceRegistrations =
-			new ArrayList<>();
-
-		List<UpgradeInfo> upgradeInfos = createUpgradeInfos(
-			fromSchemaVersionString, toSchemaVersionString,
-			GetterUtil.getInteger(properties.get("build.number")),
-			upgradeSteps);
-
-		for (UpgradeInfo upgradeInfo : upgradeInfos) {
-			properties.put("build.number", upgradeInfo.getBuildNumber());
-			properties.put("upgrade.bundle.symbolic.name", bundleSymbolicName);
-			properties.put("upgrade.db.type", "any");
-			properties.put(
-				"upgrade.from.schema.version",
-				upgradeInfo.getFromSchemaVersionString());
-			properties.put(
-				"upgrade.to.schema.version",
-				upgradeInfo.getToSchemaVersionString());
-
-			ServiceRegistration<UpgradeStep> serviceRegistration =
-				bundleContext.registerService(
-					UpgradeStep.class, upgradeInfo.getUpgradeStep(),
-					properties);
-
-			serviceRegistrations.add(serviceRegistration);
-		}
-
-		return serviceRegistrations;
-	}
-
 	protected static List<UpgradeInfo> createUpgradeInfos(
 		String fromSchemaVersionString, String toSchemaVersionString,
 		int buildNumber, UpgradeStep... upgradeSteps) {
@@ -248,10 +213,35 @@ public class UpgradeStepRegistratorTracker {
 
 			properties.put("build.number", buildNumber);
 
-			_serviceRegistrations.addAll(
-				UpgradeStepRegistratorTracker.register(
-					_bundleContext, bundleSymbolicName, fromSchemaVersionString,
-					toSchemaVersionString, properties, upgradeSteps));
+			List<ServiceRegistration<UpgradeStep>> serviceRegistrations =
+				new ArrayList<>();
+
+			List<UpgradeInfo> upgradeInfos = createUpgradeInfos(
+				fromSchemaVersionString, toSchemaVersionString,
+				GetterUtil.getInteger(properties.get("build.number")),
+				upgradeSteps);
+
+			for (UpgradeInfo upgradeInfo : upgradeInfos) {
+				properties.put("build.number", upgradeInfo.getBuildNumber());
+				properties.put(
+					"upgrade.bundle.symbolic.name", bundleSymbolicName);
+				properties.put("upgrade.db.type", "any");
+				properties.put(
+					"upgrade.from.schema.version",
+					upgradeInfo.getFromSchemaVersionString());
+				properties.put(
+					"upgrade.to.schema.version",
+					upgradeInfo.getToSchemaVersionString());
+
+				ServiceRegistration<UpgradeStep> serviceRegistration =
+					_bundleContext.registerService(
+						UpgradeStep.class, upgradeInfo.getUpgradeStep(),
+						properties);
+
+				serviceRegistrations.add(serviceRegistration);
+			}
+
+			_serviceRegistrations.addAll(serviceRegistrations);
 		}
 
 		private UpgradeStepRegistry(
