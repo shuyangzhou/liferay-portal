@@ -653,14 +653,27 @@ public class HttpImpl implements Http {
 
 		url = url.trim();
 
-		Matcher matcher = _protocolsPattern.matcher(url);
+		int pos = url.indexOf(Http.PROTOCOL_DELIMITER);
 
-		if (matcher.lookingAt()) {
-			return matcher.group(1);
-		}
-		else {
+		//unable to find delimiter or input starts with delimiter
+
+		if (pos <= 0) {
 			return StringPool.BLANK;
 		}
+
+		//protocol always starts with a letter
+
+		if (!_isLetter(url.charAt(0))) {
+			return StringPool.BLANK;
+		}
+
+		for (int i = 1; i < pos; ++i) {
+			if (!_isLetter(url.charAt(i)) && !_isNumber(url.charAt(i))) {
+				return StringPool.BLANK;
+			}
+		}
+
+		return url.substring(0, pos);
 	}
 
 	@Override
@@ -700,9 +713,27 @@ public class HttpImpl implements Http {
 
 		url = url.trim();
 
-		Matcher matcher = _protocolsPattern.matcher(url);
+		int pos = url.indexOf(Http.PROTOCOL_DELIMITER);
 
-		return matcher.lookingAt();
+		//unable to find delimiter or input starts with delimiter
+
+		if (pos <= 0) {
+			return false;
+		}
+
+		//protocol always starts with a letter
+
+		if (!_isLetter(url.charAt(0))) {
+			return false;
+		}
+
+		for (int i = 1; i < pos; ++i) {
+			if (!_isLetter(url.charAt(i)) && !_isNumber(url.charAt(i))) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	@Override
@@ -1985,6 +2016,26 @@ public class HttpImpl implements Http {
 		}
 	}
 
+	private boolean _isLetter(char c) {
+		if (((CharPool.UPPER_CASE_A <= c) && (c <= CharPool.UPPER_CASE_Z)) ||
+			((CharPool.LOWER_CASE_A <= c) && (c <= CharPool.LOWER_CASE_Z))) {
+
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	private boolean _isNumber(char c) {
+		if ((CharPool.NUMBER_0 <= c) && (c <= CharPool.NUMBER_9)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	private String _shortenURL(String url, int currentLength) {
 		int index = url.indexOf(CharPool.QUESTION);
 
@@ -2117,8 +2168,6 @@ public class HttpImpl implements Http {
 	private final Pattern _nonProxyHostsPattern;
 	private final PoolingHttpClientConnectionManager
 		_poolingHttpClientConnectionManager;
-	private final Pattern _protocolsPattern = Pattern.compile(
-		"^([a-zA-Z][a-zA-Z0-9]*)://");
 	private final List<String> _proxyAuthPrefs = new ArrayList<>();
 	private final CloseableHttpClient _proxyCloseableHttpClient;
 	private final Credentials _proxyCredentials;
