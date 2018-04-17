@@ -241,10 +241,18 @@ public class ReleaseManagerOSGiCommands {
 		String bundleSymbolicName,
 		ServiceTrackerMap<String, List<UpgradeInfo>> serviceTrackerMap) {
 
-		String schemaVersionString = getSchemaVersionString(bundleSymbolicName);
-
 		ReleaseGraphManager releaseGraphManager = new ReleaseGraphManager(
 			serviceTrackerMap.getService(bundleSymbolicName));
+
+		String schemaVersionString = "0.0.0";
+
+		Release release = _releaseLocalService.fetchRelease(bundleSymbolicName);
+
+		if ((release != null) &&
+			Validator.isNotNull(release.getSchemaVersion())) {
+
+			schemaVersionString = release.getSchemaVersion();
+		}
 
 		List<List<UpgradeInfo>> upgradeInfosList =
 			releaseGraphManager.getUpgradeInfosList(schemaVersionString);
