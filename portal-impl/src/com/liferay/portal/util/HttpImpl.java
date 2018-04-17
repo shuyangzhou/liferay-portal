@@ -655,13 +655,9 @@ public class HttpImpl implements Http {
 
 		int pos = url.indexOf(Http.PROTOCOL_DELIMITER);
 
-		//unable to find delimiter or input starts with delimiter
-
 		if (pos <= 0) {
 			return StringPool.BLANK;
 		}
-
-		//protocol always starts with a letter
 
 		if (!_isLetter(url.charAt(0))) {
 			return StringPool.BLANK;
@@ -715,13 +711,9 @@ public class HttpImpl implements Http {
 
 		int pos = url.indexOf(Http.PROTOCOL_DELIMITER);
 
-		//unable to find delimiter or input starts with delimiter
-
 		if (pos <= 0) {
 			return false;
 		}
-
-		//protocol always starts with a letter
 
 		if (!_isLetter(url.charAt(0))) {
 			return false;
