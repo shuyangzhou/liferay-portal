@@ -24,9 +24,18 @@ import java.sql.SQLException;
  */
 public class DBContext {
 
+	public Connection getConnection() {
+		try {
+			return DataAccess.getConnection();
+		}
+		catch (SQLException sqle) {
+			throw new RuntimeException(sqle);
+		}
+	}
+
 	public Connection getDataAccess() {
 		try {
-			return DataAccess.getUpgradeOptimizedConnection();
+			return DataAccess.getConnection();
 		}
 		catch (SQLException sqle) {
 			throw new RuntimeException(sqle);
@@ -35,15 +44,6 @@ public class DBContext {
 
 	public DBManager getDBManager() {
 		return DBManagerUtil.getDBManager();
-	}
-
-	public Connection getUpgradeOptimizedConnection() {
-		try {
-			return DataAccess.getUpgradeOptimizedConnection();
-		}
-		catch (SQLException sqle) {
-			throw new RuntimeException(sqle);
-		}
 	}
 
 }
