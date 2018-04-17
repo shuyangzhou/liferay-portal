@@ -23,20 +23,17 @@ import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.upgrade.internal.excutor.UpgradeExecutor;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator.Registry;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Dictionary;
 import java.util.List;
 import java.util.Properties;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -108,17 +105,18 @@ public class UpgradeStepRegistratorTracker {
 		UpgradeStepRegistratorTracker.class);
 
 	private BundleContext _bundleContext;
-	private ServiceTracker
-		<UpgradeStepRegistrator, Collection<ServiceRegistration<UpgradeStep>>>
-			_serviceTracker;
+	private ServiceTracker<UpgradeStepRegistrator, UpgradeStepRegistrator>
+		_serviceTracker;
+
+	@Reference
+	private UpgradeExecutor _upgradeExecutor;
 
 	private class UpgradeStepRegistratorServiceTrackerCustomizer
 		implements ServiceTrackerCustomizer
-			<UpgradeStepRegistrator,
-				Collection<ServiceRegistration<UpgradeStep>>> {
+			<UpgradeStepRegistrator, UpgradeStepRegistrator> {
 
 		@Override
-		public Collection<ServiceRegistration<UpgradeStep>> addingService(
+		public UpgradeStepRegistrator addingService(
 			ServiceReference<UpgradeStepRegistrator> serviceReference) {
 
 			UpgradeStepRegistrator upgradeStepRegistrator =
@@ -128,22 +126,18 @@ public class UpgradeStepRegistratorTracker {
 				return null;
 			}
 
-			Collection<ServiceRegistration<UpgradeStep>> serviceRegistrations =
-				new ArrayList<>();
-
 			upgradeStepRegistrator.register(
-				new UpgradeStepRegistry(
-					upgradeStepRegistrator, serviceRegistrations));
+				new UpgradeStepRegistry(upgradeStepRegistrator));
 
-			return serviceRegistrations;
+			return upgradeStepRegistrator;
 		}
 
 		@Override
 		public void modifiedService(
 			ServiceReference<UpgradeStepRegistrator> serviceReference,
-			Collection<ServiceRegistration<UpgradeStep>> serviceRegistrations) {
+			UpgradeStepRegistrator upgradeStepRegistrator) {
 
-			removedService(serviceReference, serviceRegistrations);
+			removedService(serviceReference, upgradeStepRegistrator);
 
 			addingService(serviceReference);
 		}
@@ -151,13 +145,9 @@ public class UpgradeStepRegistratorTracker {
 		@Override
 		public void removedService(
 			ServiceReference<UpgradeStepRegistrator> serviceReference,
-			Collection<ServiceRegistration<UpgradeStep>> serviceRegistrations) {
+			UpgradeStepRegistrator upgradeStepRegistrator) {
 
-			for (ServiceRegistration<UpgradeStep> serviceRegistration :
-					serviceRegistrations) {
-
-				serviceRegistration.unregister();
-			}
+			_bundleContext.ungetService(serviceReference);
 		}
 
 	}
@@ -194,51 +184,19 @@ public class UpgradeStepRegistratorTracker {
 				}
 			}
 
-			Dictionary<String, Object> properties = new HashMapDictionary<>();
-
-			properties.put("build.number", buildNumber);
-
-			List<ServiceRegistration<UpgradeStep>> serviceRegistrations =
-				new ArrayList<>();
-
 			List<UpgradeInfo> upgradeInfos = createUpgradeInfos(
-				fromSchemaVersionString, toSchemaVersionString,
-				GetterUtil.getInteger(properties.get("build.number")),
+				fromSchemaVersionString, toSchemaVersionString, buildNumber,
 				upgradeSteps);
 
-			for (UpgradeInfo upgradeInfo : upgradeInfos) {
-				properties.put("build.number", upgradeInfo.getBuildNumber());
-				properties.put(
-					"upgrade.bundle.symbolic.name", bundleSymbolicName);
-				properties.put("upgrade.db.type", "any");
-				properties.put(
-					"upgrade.from.schema.version",
-					upgradeInfo.getFromSchemaVersionString());
-				properties.put(
-					"upgrade.to.schema.version",
-					upgradeInfo.getToSchemaVersionString());
-
-				ServiceRegistration<UpgradeStep> serviceRegistration =
-					_bundleContext.registerService(
-						UpgradeStep.class, upgradeInfo.getUpgradeStep(),
-						properties);
-
-				serviceRegistrations.add(serviceRegistration);
-			}
-
-			_serviceRegistrations.addAll(serviceRegistrations);
+			_upgradeExecutor.execute(bundleSymbolicName, upgradeInfos);
 		}
 
 		private UpgradeStepRegistry(
-			UpgradeStepRegistrator upgradeStepRegistrator,
-			Collection<ServiceRegistration<UpgradeStep>> serviceRegistrations) {
+			UpgradeStepRegistrator upgradeStepRegistrator) {
 
 			_upgradeStepRegistrator = upgradeStepRegistrator;
-			_serviceRegistrations = serviceRegistrations;
 		}
 
-		private final Collection<ServiceRegistration<UpgradeStep>>
-			_serviceRegistrations;
 		private final UpgradeStepRegistrator _upgradeStepRegistrator;
 
 	}
