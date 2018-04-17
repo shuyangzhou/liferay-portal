@@ -16,25 +16,49 @@ package com.liferay.meris;
 
 import aQute.bnd.annotation.ProviderType;
 
-import java.util.Comparator;
-import java.util.List;
 import java.util.Locale;
 
 /**
+ * Represents a segment.
+ *
  * @author Eduardo Garcia
+ * @review
  */
 @ProviderType
 public interface MerisSegment {
 
+	/**
+	 * Returns the segment description
+	 *
+	 * @param  locale the {@code Locale} of the language
+	 * @return the segment description
+	 * @review
+	 */
 	public String getDescription(Locale locale);
 
-	public List<MerisRule> getMerisRules(
-		int start, int end, Comparator<MerisRule> comparator);
-
+	/**
+	 * Returns the unique ID of the segment
+	 *
+	 * @return the unique ID of the segment
+	 * @review
+	 */
 	public String getMerisSegmentId();
 
+	/**
+	 * Returns the segment name
+	 *
+	 * @param  locale the {@code Locale} of the language
+	 * @return the segment name
+	 * @review
+	 */
 	public String getName(Locale locale);
 
+	/**
+	 * Returns the ID of the segment scope
+	 *
+	 * @return the ID of the segment scope
+	 * @review
+	 */
 	public String getScopeId();
 
 }

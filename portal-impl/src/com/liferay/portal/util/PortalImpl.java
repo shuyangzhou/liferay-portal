@@ -1560,7 +1560,7 @@ public class PortalImpl implements Portal {
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+			con = DataAccess.getConnection();
 
 			ps = con.prepareStatement(
 				"select classNameId from ClassName_ where value = ?");
@@ -3211,16 +3211,17 @@ public class PortalImpl implements Portal {
 			return themeDisplay.getPathMain() + PATH_PORTAL_LAYOUT;
 		}
 
-		if (!layout.isTypeURL()) {
-			String layoutFriendlyURL = getLayoutFriendlyURL(
-				layout, themeDisplay);
+		if (layout.isTypeURL()) {
+			return getLayoutActualURL(layout);
+		}
 
-			if (Validator.isNotNull(layoutFriendlyURL)) {
-				layoutFriendlyURL = addPreservedParameters(
-					themeDisplay, layout, layoutFriendlyURL, doAsUser);
+		String layoutFriendlyURL = getLayoutFriendlyURL(layout, themeDisplay);
 
-				return layoutFriendlyURL;
-			}
+		if (Validator.isNotNull(layoutFriendlyURL)) {
+			layoutFriendlyURL = addPreservedParameters(
+				themeDisplay, layout, layoutFriendlyURL, doAsUser);
+
+			return layoutFriendlyURL;
 		}
 
 		String layoutURL = getLayoutActualURL(layout);
