@@ -96,6 +96,7 @@ public class PortalImplEscapeRedirectTest extends PowerMockito {
 			Assert.assertNull(_portalImpl.escapeRedirect("test@liferay.com"));
 			Assert.assertNull(_portalImpl.escapeRedirect("@liferay.com"));
 			Assert.assertNull(_portalImpl.escapeRedirect(":@liferay.com"));
+			Assert.assertNull(_portalImpl.escapeRedirect("//www.google.com"));
 		}
 		finally {
 			setPropsValuesValue(
