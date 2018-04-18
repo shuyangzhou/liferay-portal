@@ -14,6 +14,9 @@
 
 package com.liferay.portal.kernel.io;
 
+import com.liferay.petra.memory.DeleteFileFinalizeAction;
+import com.liferay.petra.memory.FinalizeManager;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -35,7 +38,9 @@ public class AutoDeleteFileInputStream extends FileInputStream {
 		super.close();
 
 		if (!_file.delete()) {
-			_file.deleteOnExit();
+			FinalizeManager.register(
+				_file, new DeleteFileFinalizeAction(_file.getAbsolutePath()),
+				FinalizeManager.WEAK_REFERENCE_FACTORY);
 		}
 	}
 
