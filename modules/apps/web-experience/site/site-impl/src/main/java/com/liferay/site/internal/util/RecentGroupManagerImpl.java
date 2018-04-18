@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.site.util;
+package com.liferay.site.internal.util;
 
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.SessionClicks;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.site.util.RecentGroupManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
