@@ -26,7 +26,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Drew Brokke
  */
 @Component(immediate = true, service = UADAnonymizerHelper.class)
-public class UADAnonymizerHelper {
+public class UADAnonymizerHelperImpl {
 
 	public User getAnonymousUser() throws PortalException {
 		return _userLocalService.getDefaultUser(
