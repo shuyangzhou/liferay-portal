@@ -2202,8 +2202,6 @@ public class WSRPProducerPersistenceImpl extends BasePersistenceImpl<WSRPProduce
 
 	@Override
 	protected WSRPProducer removeImpl(WSRPProducer wsrpProducer) {
-		wsrpProducer = toUnwrappedModel(wsrpProducer);
-
 		Session session = null;
 
 		try {
@@ -2234,8 +2232,6 @@ public class WSRPProducerPersistenceImpl extends BasePersistenceImpl<WSRPProduce
 
 	@Override
 	public WSRPProducer updateImpl(WSRPProducer wsrpProducer) {
-		wsrpProducer = toUnwrappedModel(wsrpProducer);
-
 		boolean isNew = wsrpProducer.isNew();
 
 		WSRPProducerModelImpl wsrpProducerModelImpl = (WSRPProducerModelImpl)wsrpProducer;
@@ -2389,30 +2385,6 @@ public class WSRPProducerPersistenceImpl extends BasePersistenceImpl<WSRPProduce
 		wsrpProducer.resetOriginalValues();
 
 		return wsrpProducer;
-	}
-
-	protected WSRPProducer toUnwrappedModel(WSRPProducer wsrpProducer) {
-		if (wsrpProducer instanceof WSRPProducerImpl) {
-			return wsrpProducer;
-		}
-
-		WSRPProducerImpl wsrpProducerImpl = new WSRPProducerImpl();
-
-		wsrpProducerImpl.setNew(wsrpProducer.isNew());
-		wsrpProducerImpl.setPrimaryKey(wsrpProducer.getPrimaryKey());
-
-		wsrpProducerImpl.setUuid(wsrpProducer.getUuid());
-		wsrpProducerImpl.setWsrpProducerId(wsrpProducer.getWsrpProducerId());
-		wsrpProducerImpl.setGroupId(wsrpProducer.getGroupId());
-		wsrpProducerImpl.setCompanyId(wsrpProducer.getCompanyId());
-		wsrpProducerImpl.setCreateDate(wsrpProducer.getCreateDate());
-		wsrpProducerImpl.setModifiedDate(wsrpProducer.getModifiedDate());
-		wsrpProducerImpl.setName(wsrpProducer.getName());
-		wsrpProducerImpl.setVersion(wsrpProducer.getVersion());
-		wsrpProducerImpl.setPortletIds(wsrpProducer.getPortletIds());
-		wsrpProducerImpl.setLastPublishDate(wsrpProducer.getLastPublishDate());
-
-		return wsrpProducerImpl;
 	}
 
 	/**
