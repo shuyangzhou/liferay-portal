@@ -12,12 +12,13 @@
  * details.
  */
 
-package com.liferay.user.associated.data.util;
+package com.liferay.user.associated.data.internal.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.user.associated.data.util.UADAnonymizerHelper;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
