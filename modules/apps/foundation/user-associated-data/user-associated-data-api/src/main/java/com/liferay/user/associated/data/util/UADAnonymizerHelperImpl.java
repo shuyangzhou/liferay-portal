@@ -26,13 +26,15 @@ import org.osgi.service.component.annotations.Reference;
  * @author Drew Brokke
  */
 @Component(immediate = true, service = UADAnonymizerHelper.class)
-public class UADAnonymizerHelperImpl {
+public class UADAnonymizerHelperImpl implements UADAnonymizerHelper {
 
+	@Override
 	public User getAnonymousUser() throws PortalException {
 		return _userLocalService.getDefaultUser(
 			CompanyThreadLocal.getCompanyId());
 	}
 
+	@Override
 	public long getAnonymousUserId() throws PortalException {
 		User anonymousUser = getAnonymousUser();
 
