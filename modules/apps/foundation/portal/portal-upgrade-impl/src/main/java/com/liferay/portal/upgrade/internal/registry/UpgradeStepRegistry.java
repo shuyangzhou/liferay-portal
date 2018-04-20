@@ -16,7 +16,6 @@ package com.liferay.portal.upgrade.internal.registry;
 
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.upgrade.internal.executor.UpgradeExecutor;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator.Registry;
 
 import java.util.ArrayList;
@@ -27,13 +26,12 @@ import java.util.List;
  */
 public class UpgradeStepRegistry implements Registry {
 
-	public UpgradeStepRegistry(
-		String bundleSymbolicName, int buildNumber,
-		UpgradeExecutor upgradeExecutor) {
-
-		_bundleSymbolicName = bundleSymbolicName;
+	public UpgradeStepRegistry(int buildNumber) {
 		_buildNumber = buildNumber;
-		_upgradeExecutor = upgradeExecutor;
+	}
+
+	public List<UpgradeInfo> getUpgradeInfos() {
+		return _upgradeInfos;
 	}
 
 	@Override
@@ -53,8 +51,6 @@ public class UpgradeStepRegistry implements Registry {
 			return;
 		}
 
-		List<UpgradeInfo> upgradeInfos = new ArrayList<>();
-
 		String upgradeInfoFromSchemaVersionString = fromSchemaVersionString;
 
 		for (int i = 0; i < upgradeSteps.length - 1; i++) {
@@ -67,7 +63,7 @@ public class UpgradeStepRegistry implements Registry {
 				upgradeInfoFromSchemaVersionString,
 				upgradeInfoToSchemaVersionString, _buildNumber, upgradeStep);
 
-			upgradeInfos.add(upgradeInfo);
+			_upgradeInfos.add(upgradeInfo);
 
 			upgradeInfoFromSchemaVersionString =
 				upgradeInfoToSchemaVersionString;
@@ -77,13 +73,10 @@ public class UpgradeStepRegistry implements Registry {
 			upgradeInfoFromSchemaVersionString, toSchemaVersionString,
 			_buildNumber, upgradeSteps[upgradeSteps.length - 1]);
 
-		upgradeInfos.add(upgradeInfo);
-
-		_upgradeExecutor.execute(_bundleSymbolicName, upgradeInfos);
+		_upgradeInfos.add(upgradeInfo);
 	}
 
 	private final int _buildNumber;
-	private final String _bundleSymbolicName;
-	private final UpgradeExecutor _upgradeExecutor;
+	private final List<UpgradeInfo> _upgradeInfos = new ArrayList<>();
 
 }

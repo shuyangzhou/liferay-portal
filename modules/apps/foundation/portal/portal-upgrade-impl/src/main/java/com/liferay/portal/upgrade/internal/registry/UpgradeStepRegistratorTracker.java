@@ -112,9 +112,13 @@ public class UpgradeStepRegistratorTracker {
 				}
 			}
 
-			upgradeStepRegistrator.register(
-				new UpgradeStepRegistry(
-					bundleSymbolicName, buildNumber, _upgradeExecutor));
+			UpgradeStepRegistry upgradeStepRegistry = new UpgradeStepRegistry(
+				buildNumber);
+
+			upgradeStepRegistrator.register(upgradeStepRegistry);
+
+			_upgradeExecutor.execute(
+				bundleSymbolicName, upgradeStepRegistry.getUpgradeInfos());
 
 			return upgradeStepRegistrator;
 		}
