@@ -16,7 +16,9 @@ package com.liferay.portal.upgrade.internal.registry;
 
 import com.liferay.portal.kernel.dao.db.DBProcessContext;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
+import com.liferay.portal.upgrade.internal.executor.UpgradeExecutor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,11 +32,18 @@ public class UpgradeStepRegistryTest {
 
 	@Test
 	public void testCreateUpgradeInfos() {
+		TestUpgradeExecutor testUpgradeExecutor = new TestUpgradeExecutor();
+
+		UpgradeStepRegistry upgradeStepRegistry = new UpgradeStepRegistry(
+			null, 0, testUpgradeExecutor);
+
 		TestUpgradeStep testUpgradeStep = new TestUpgradeStep();
 
-		List<UpgradeInfo> upgradeInfos = UpgradeStepRegistry.createUpgradeInfos(
-			"0.0.0", "1.0.0", 0, testUpgradeStep, testUpgradeStep,
-			testUpgradeStep, testUpgradeStep);
+		upgradeStepRegistry.register(
+			"0.0.0", "1.0.0", testUpgradeStep, testUpgradeStep, testUpgradeStep,
+			testUpgradeStep);
+
+		List<UpgradeInfo> upgradeInfos = testUpgradeExecutor._upgradeInfos;
 
 		Assert.assertEquals(upgradeInfos.toString(), 4, upgradeInfos.size());
 		Assert.assertEquals(
@@ -50,23 +59,48 @@ public class UpgradeStepRegistryTest {
 
 	@Test
 	public void testCreateUpgradeInfosWithNoSteps() {
-		List<UpgradeInfo> upgradeInfos = UpgradeStepRegistry.createUpgradeInfos(
-			"0.0.0", "1.0.0", 0);
+		TestUpgradeExecutor testUpgradeExecutor = new TestUpgradeExecutor();
+
+		UpgradeStepRegistry upgradeStepRegistry = new UpgradeStepRegistry(
+			null, 0, testUpgradeExecutor);
+
+		upgradeStepRegistry.register("0.0.0", "1.0.0");
+
+		List<UpgradeInfo> upgradeInfos = testUpgradeExecutor._upgradeInfos;
 
 		Assert.assertTrue(upgradeInfos.toString(), upgradeInfos.isEmpty());
 	}
 
 	@Test
 	public void testCreateUpgradeInfosWithOneStep() {
+		TestUpgradeExecutor testUpgradeExecutor = new TestUpgradeExecutor();
+
+		UpgradeStepRegistry upgradeStepRegistry = new UpgradeStepRegistry(
+			null, 0, testUpgradeExecutor);
+
 		TestUpgradeStep testUpgradeStep = new TestUpgradeStep();
 
-		List<UpgradeInfo> upgradeInfos = UpgradeStepRegistry.createUpgradeInfos(
-			"0.0.0", "1.0.0", 0, testUpgradeStep);
+		upgradeStepRegistry.register("0.0.0", "1.0.0", testUpgradeStep);
+
+		List<UpgradeInfo> upgradeInfos = testUpgradeExecutor._upgradeInfos;
 
 		Assert.assertEquals(upgradeInfos.toString(), 1, upgradeInfos.size());
 		Assert.assertEquals(
 			new UpgradeInfo("0.0.0", "1.0.0", 0, testUpgradeStep),
 			upgradeInfos.get(0));
+	}
+
+	private static class TestUpgradeExecutor extends UpgradeExecutor {
+
+		@Override
+		public void execute(
+			String bundleSymbolicName, List<UpgradeInfo> upgradeInfos) {
+
+			_upgradeInfos.addAll(upgradeInfos);
+		}
+
+		private final List<UpgradeInfo> _upgradeInfos = new ArrayList<>();
+
 	}
 
 	private static class TestUpgradeStep implements UpgradeStep {
