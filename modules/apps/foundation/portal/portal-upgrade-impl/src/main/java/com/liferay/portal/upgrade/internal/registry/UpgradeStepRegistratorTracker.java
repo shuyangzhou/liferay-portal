@@ -128,8 +128,35 @@ public class UpgradeStepRegistratorTracker {
 				return null;
 			}
 
+			Class<? extends UpgradeStepRegistrator> clazz =
+				upgradeStepRegistrator.getClass();
+
+			Bundle bundle = FrameworkUtil.getBundle(clazz);
+
+			String bundleSymbolicName = bundle.getSymbolicName();
+
+			int buildNumber = 0;
+
+			try {
+				Configuration configuration =
+					ConfigurationFactoryUtil.getConfiguration(
+						clazz.getClassLoader(), "service");
+
+				Properties properties = configuration.getProperties();
+
+				buildNumber = GetterUtil.getInteger(
+					properties.getProperty("build.number"));
+			}
+			catch (Exception e) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Unable to read service.properties for " +
+							bundleSymbolicName);
+				}
+			}
+
 			upgradeStepRegistrator.register(
-				new UpgradeStepRegistry(upgradeStepRegistrator));
+				new UpgradeStepRegistry(bundleSymbolicName, buildNumber));
 
 			return upgradeStepRegistrator;
 		}
@@ -170,49 +197,22 @@ public class UpgradeStepRegistratorTracker {
 			String fromSchemaVersionString, String toSchemaVersionString,
 			UpgradeStep... upgradeSteps) {
 
-			Class<? extends UpgradeStepRegistrator> clazz =
-				_upgradeStepRegistrator.getClass();
-
-			Bundle bundle = FrameworkUtil.getBundle(clazz);
-
-			String bundleSymbolicName = bundle.getSymbolicName();
-
-			int buildNumber = 0;
-
-			try {
-				if (ArrayUtil.isNotEmpty(upgradeSteps)) {
-					Configuration configuration =
-						ConfigurationFactoryUtil.getConfiguration(
-							clazz.getClassLoader(), "service");
-
-					Properties properties = configuration.getProperties();
-
-					buildNumber = GetterUtil.getInteger(
-						properties.getProperty("build.number"));
-				}
-			}
-			catch (Exception e) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Unable to read service.properties for " +
-							bundleSymbolicName);
-				}
-			}
-
 			List<UpgradeInfo> upgradeInfos = createUpgradeInfos(
-				fromSchemaVersionString, toSchemaVersionString, buildNumber,
+				fromSchemaVersionString, toSchemaVersionString, _buildNumber,
 				upgradeSteps);
 
-			_upgradeExecutor.execute(bundleSymbolicName, upgradeInfos);
+			_upgradeExecutor.execute(_bundleSymbolicName, upgradeInfos);
 		}
 
 		private UpgradeStepRegistry(
-			UpgradeStepRegistrator upgradeStepRegistrator) {
+			String bundleSymbolicName, int buildNumber) {
 
-			_upgradeStepRegistrator = upgradeStepRegistrator;
+			_bundleSymbolicName = bundleSymbolicName;
+			_buildNumber = buildNumber;
 		}
 
-		private final UpgradeStepRegistrator _upgradeStepRegistrator;
+		private final int _buildNumber;
+		private final String _bundleSymbolicName;
 
 	}
 
