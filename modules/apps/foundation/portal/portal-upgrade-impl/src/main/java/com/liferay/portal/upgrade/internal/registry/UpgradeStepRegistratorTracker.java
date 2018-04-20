@@ -156,7 +156,8 @@ public class UpgradeStepRegistratorTracker {
 			}
 
 			upgradeStepRegistrator.register(
-				new UpgradeStepRegistry(bundleSymbolicName, buildNumber));
+				new UpgradeStepRegistry(
+					bundleSymbolicName, buildNumber, _upgradeExecutor));
 
 			return upgradeStepRegistrator;
 		}
@@ -181,7 +182,7 @@ public class UpgradeStepRegistratorTracker {
 
 	}
 
-	private class UpgradeStepRegistry implements Registry {
+	private static class UpgradeStepRegistry implements Registry {
 
 		@Override
 		public void register(
@@ -205,14 +206,17 @@ public class UpgradeStepRegistratorTracker {
 		}
 
 		private UpgradeStepRegistry(
-			String bundleSymbolicName, int buildNumber) {
+			String bundleSymbolicName, int buildNumber,
+			UpgradeExecutor upgradeExecutor) {
 
 			_bundleSymbolicName = bundleSymbolicName;
 			_buildNumber = buildNumber;
+			_upgradeExecutor = upgradeExecutor;
 		}
 
 		private final int _buildNumber;
 		private final String _bundleSymbolicName;
+		private final UpgradeExecutor _upgradeExecutor;
 
 	}
 
