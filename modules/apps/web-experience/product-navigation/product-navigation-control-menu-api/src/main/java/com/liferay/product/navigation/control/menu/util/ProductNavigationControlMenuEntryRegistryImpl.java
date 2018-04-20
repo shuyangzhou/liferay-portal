@@ -41,8 +41,10 @@ import org.osgi.service.component.annotations.Deactivate;
 @Component(
 	immediate = true, service = ProductNavigationControlMenuEntryRegistry.class
 )
-public class ProductNavigationControlMenuEntryRegistryImpl {
+public class ProductNavigationControlMenuEntryRegistryImpl
+	implements ProductNavigationControlMenuEntryRegistry {
 
+	@Override
 	public List<ProductNavigationControlMenuEntry>
 		getProductNavigationControlMenuEntries(
 			ProductNavigationControlMenuCategory
@@ -59,6 +61,7 @@ public class ProductNavigationControlMenuEntryRegistryImpl {
 		return productNavigationControlMenuEntries;
 	}
 
+	@Override
 	public List<ProductNavigationControlMenuEntry>
 		getProductNavigationControlMenuEntries(
 			ProductNavigationControlMenuCategory
@@ -114,7 +117,7 @@ public class ProductNavigationControlMenuEntryRegistryImpl {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ProductNavigationControlMenuEntryRegistry.class);
+		ProductNavigationControlMenuEntryRegistryImpl.class);
 
 	private ServiceTrackerMap<String, List<ProductNavigationControlMenuEntry>>
 		_serviceTrackerMap;
