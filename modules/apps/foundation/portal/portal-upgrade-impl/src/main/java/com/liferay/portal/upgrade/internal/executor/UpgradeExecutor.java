@@ -146,7 +146,14 @@ public class UpgradeExecutor {
 				UpgradeStep upgradeStep = upgradeInfo.getUpgradeStep();
 
 				try {
-					_updateReleaseState(_STATE_IN_PROGRESS);
+					Release release = _releaseLocalService.fetchRelease(
+						_bundleSymbolicName);
+
+					if (release != null) {
+						release.setState(_STATE_IN_PROGRESS);
+
+						_releaseLocalService.updateRelease(release);
+					}
 
 					upgradeStep.upgrade(
 						new DBProcessContext() {
@@ -192,17 +199,6 @@ public class UpgradeExecutor {
 			}
 
 			CacheRegistryUtil.clear();
-		}
-
-		private void _updateReleaseState(int state) {
-			Release release = _releaseLocalService.fetchRelease(
-				_bundleSymbolicName);
-
-			if (release != null) {
-				release.setState(state);
-
-				_releaseLocalService.updateRelease(release);
-			}
 		}
 
 		private static final int _STATE_IN_PROGRESS = -1;
