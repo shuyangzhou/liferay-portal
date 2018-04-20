@@ -647,7 +647,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				${entity.varName}.setNew(false);
 			}
 			else {
-				<#if entity.hasLazyBlobEntityColumn()>
+				<#if entity.versionedEntity??>
+					throw new IllegalArgumentException("${entity.name} is read only, create a new version instead");
+				<#elseif entity.hasLazyBlobEntityColumn()>
 
 					<#-- Workaround for HHH-2680 -->
 
@@ -690,7 +692,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 						args = new Object[] {
 							<#list entityColumns as entityColumn>
-								${entity.varName}ModelImpl.get${entityColumn.methodName}()
+								<#if stringUtil.equals(entityColumn.type, "boolean")>
+									${entity.varName}ModelImpl.is${entityColumn.methodName}()
+								<#else>
+									${entity.varName}ModelImpl.get${entityColumn.methodName}()
+								</#if>
 
 								<#if entityColumn_has_next>
 									,

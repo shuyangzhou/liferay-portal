@@ -58,7 +58,11 @@ public class ${entity.name}Wrapper implements ${entity.name}, ModelWrapper<${ent
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		<#list entity.regularEntityColumns as entityColumn>
-			attributes.put("${entityColumn.name}", get${entityColumn.methodName}());
+			<#if stringUtil.equals(entityColumn.type, "boolean")>
+				attributes.put("${entityColumn.name}", is${entityColumn.methodName}());
+			<#else>
+				attributes.put("${entityColumn.name}", get${entityColumn.methodName}());
+			</#if>
 		</#list>
 
 		return attributes;
@@ -204,6 +208,42 @@ public class ${entity.name}Wrapper implements ${entity.name}, ModelWrapper<${ent
 		@Override
 		public StagedModelType getStagedModelType() {
 			return _${entity.varName}.getStagedModelType();
+		}
+	</#if>
+
+	<#if entity.versionEntity??>
+		<#assign versionEntity = entity.versionEntity />
+
+		@Override
+		public boolean isDraft() {
+			return _${entity.varName}.isDraft();
+		}
+
+		@Override
+		public void populateVersionModel(${versionEntity.name} ${versionEntity.varName}) {
+			_${entity.varName}.populateVersionModel(${versionEntity.varName});
+		}
+	<#elseif entity.versionedEntity??>
+		<#assign versionedEntity = entity.versionedEntity />
+
+		@Override
+		public long getVersionedModelId() {
+			return _${entity.varName}.getVersionedModelId();
+		}
+
+		@Override
+		public void setVersionedModelId(long id) {
+			_${entity.varName}.setVersionedModelId(id);
+		}
+
+		@Override
+		public void populateVersionedModel(${versionedEntity.name} ${versionedEntity.varName}) {
+			_${entity.varName}.populateVersionedModel(${versionedEntity.varName});
+		}
+
+		@Override
+		public ${versionedEntity.name} toVersionedModel() {
+			return _${entity.varName}.toVersionedModel();
 		}
 	</#if>
 
