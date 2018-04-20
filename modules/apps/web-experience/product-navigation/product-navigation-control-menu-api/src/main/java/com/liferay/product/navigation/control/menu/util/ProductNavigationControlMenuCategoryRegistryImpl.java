@@ -44,7 +44,7 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	service = ProductNavigationControlMenuCategoryRegistry.class
 )
-public class ProductNavigationControlMenuCategoryRegistry {
+public class ProductNavigationControlMenuCategoryRegistryImpl {
 
 	public List<ProductNavigationControlMenuCategory>
 		getProductNavigationControlMenuCategories(
