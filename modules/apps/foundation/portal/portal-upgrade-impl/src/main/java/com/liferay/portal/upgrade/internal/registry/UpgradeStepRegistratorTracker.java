@@ -20,16 +20,10 @@ import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.upgrade.UpgradeStep;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.upgrade.internal.executor.UpgradeExecutor;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator.Registry;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Properties;
 
 import org.osgi.framework.Bundle;
@@ -48,43 +42,6 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  */
 @Component(immediate = true)
 public class UpgradeStepRegistratorTracker {
-
-	protected static List<UpgradeInfo> createUpgradeInfos(
-		String fromSchemaVersionString, String toSchemaVersionString,
-		int buildNumber, UpgradeStep... upgradeSteps) {
-
-		if (ArrayUtil.isEmpty(upgradeSteps)) {
-			return Collections.emptyList();
-		}
-
-		List<UpgradeInfo> upgradeInfos = new ArrayList<>();
-
-		String upgradeInfoFromSchemaVersionString = fromSchemaVersionString;
-
-		for (int i = 0; i < upgradeSteps.length - 1; i++) {
-			UpgradeStep upgradeStep = upgradeSteps[i];
-
-			String upgradeInfoToSchemaVersionString =
-				toSchemaVersionString + "-step" + (i - upgradeSteps.length + 1);
-
-			UpgradeInfo upgradeInfo = new UpgradeInfo(
-				upgradeInfoFromSchemaVersionString,
-				upgradeInfoToSchemaVersionString, buildNumber, upgradeStep);
-
-			upgradeInfos.add(upgradeInfo);
-
-			upgradeInfoFromSchemaVersionString =
-				upgradeInfoToSchemaVersionString;
-		}
-
-		UpgradeInfo upgradeInfo = new UpgradeInfo(
-			upgradeInfoFromSchemaVersionString, toSchemaVersionString,
-			buildNumber, upgradeSteps[upgradeSteps.length - 1]);
-
-		upgradeInfos.add(upgradeInfo);
-
-		return upgradeInfos;
-	}
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
@@ -179,44 +136,6 @@ public class UpgradeStepRegistratorTracker {
 
 			_bundleContext.ungetService(serviceReference);
 		}
-
-	}
-
-	private static class UpgradeStepRegistry implements Registry {
-
-		@Override
-		public void register(
-			String bundleSymbolicName, String fromSchemaVersionString,
-			String toSchemaVersionString, UpgradeStep... upgradeSteps) {
-
-			register(
-				fromSchemaVersionString, toSchemaVersionString, upgradeSteps);
-		}
-
-		@Override
-		public void register(
-			String fromSchemaVersionString, String toSchemaVersionString,
-			UpgradeStep... upgradeSteps) {
-
-			List<UpgradeInfo> upgradeInfos = createUpgradeInfos(
-				fromSchemaVersionString, toSchemaVersionString, _buildNumber,
-				upgradeSteps);
-
-			_upgradeExecutor.execute(_bundleSymbolicName, upgradeInfos);
-		}
-
-		private UpgradeStepRegistry(
-			String bundleSymbolicName, int buildNumber,
-			UpgradeExecutor upgradeExecutor) {
-
-			_bundleSymbolicName = bundleSymbolicName;
-			_buildNumber = buildNumber;
-			_upgradeExecutor = upgradeExecutor;
-		}
-
-		private final int _buildNumber;
-		private final String _bundleSymbolicName;
-		private final UpgradeExecutor _upgradeExecutor;
 
 	}
 
