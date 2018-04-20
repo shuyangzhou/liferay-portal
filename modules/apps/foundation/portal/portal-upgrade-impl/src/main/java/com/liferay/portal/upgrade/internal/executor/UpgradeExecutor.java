@@ -179,19 +179,17 @@ public class UpgradeExecutor {
 					Release release = _releaseLocalService.fetchRelease(
 						_bundleSymbolicName);
 
-					if ((release != null) &&
-						((buildNumber > 0) ||
-						 (state == ReleaseConstants.STATE_UPGRADE_FAILURE))) {
+					if (release != null) {
+						if (buildNumber > 0) {
+							release.setBuildNumber(buildNumber);
+						}
 
-						release.setBuildNumber(buildNumber);
 						release.setState(state);
 
 						_releaseLocalService.updateRelease(release);
 					}
 				}
 			}
-
-			_updateReleaseState(ReleaseConstants.STATE_GOOD);
 
 			CacheRegistryUtil.clear();
 		}
