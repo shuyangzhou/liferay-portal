@@ -70,12 +70,13 @@ public class MBThreadWrapper implements MBThread, ModelWrapper<MBThread> {
 		attributes.put("categoryId", getCategoryId());
 		attributes.put("rootMessageId", getRootMessageId());
 		attributes.put("rootMessageUserId", getRootMessageUserId());
+		attributes.put("title", getTitle());
 		attributes.put("messageCount", getMessageCount());
 		attributes.put("viewCount", getViewCount());
 		attributes.put("lastPostByUserId", getLastPostByUserId());
 		attributes.put("lastPostDate", getLastPostDate());
 		attributes.put("priority", getPriority());
-		attributes.put("question", getQuestion());
+		attributes.put("question", isQuestion());
 		attributes.put("lastPublishDate", getLastPublishDate());
 		attributes.put("status", getStatus());
 		attributes.put("statusByUserId", getStatusByUserId());
@@ -151,6 +152,12 @@ public class MBThreadWrapper implements MBThread, ModelWrapper<MBThread> {
 
 		if (rootMessageUserId != null) {
 			setRootMessageUserId(rootMessageUserId);
+		}
+
+		String title = (String)attributes.get("title");
+
+		if (title != null) {
+			setTitle(title);
 		}
 
 		Integer messageCount = (Integer)attributes.get("messageCount");
@@ -515,6 +522,16 @@ public class MBThreadWrapper implements MBThread, ModelWrapper<MBThread> {
 	@Override
 	public long getThreadId() {
 		return _mbThread.getThreadId();
+	}
+
+	/**
+	* Returns the title of this message boards thread.
+	*
+	* @return the title of this message boards thread
+	*/
+	@Override
+	public java.lang.String getTitle() {
+		return _mbThread.getTitle();
 	}
 
 	/**
@@ -1024,6 +1041,16 @@ public class MBThreadWrapper implements MBThread, ModelWrapper<MBThread> {
 	@Override
 	public void setThreadId(long threadId) {
 		_mbThread.setThreadId(threadId);
+	}
+
+	/**
+	* Sets the title of this message boards thread.
+	*
+	* @param title the title of this message boards thread
+	*/
+	@Override
+	public void setTitle(java.lang.String title) {
+		_mbThread.setTitle(title);
 	}
 
 	/**
