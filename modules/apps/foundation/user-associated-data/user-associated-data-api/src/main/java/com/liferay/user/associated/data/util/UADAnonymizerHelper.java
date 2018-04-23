@@ -16,30 +16,14 @@ package com.liferay.user.associated.data.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-import com.liferay.portal.kernel.service.UserLocalService;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Drew Brokke
+ * @author Lance Ji
  */
-@Component(immediate = true, service = UADAnonymizerHelper.class)
-public class UADAnonymizerHelper {
+public interface UADAnonymizerHelper {
 
-	public User getAnonymousUser() throws PortalException {
-		return _userLocalService.getDefaultUser(
-			CompanyThreadLocal.getCompanyId());
-	}
+	public User getAnonymousUser() throws PortalException;
 
-	public long getAnonymousUserId() throws PortalException {
-		User anonymousUser = getAnonymousUser();
-
-		return anonymousUser.getUserId();
-	}
-
-	@Reference
-	private UserLocalService _userLocalService;
+	public long getAnonymousUserId() throws PortalException;
 
 }

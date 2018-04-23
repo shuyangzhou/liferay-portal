@@ -14,56 +14,13 @@
 
 package com.liferay.map.util;
 
-import com.liferay.map.constants.MapProviderWebKeys;
-import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PrefsPropsUtil;
-
-import javax.portlet.PortletPreferences;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
- * @author Jürgen Kappler
+ * @author Lance Ji
  */
-@Component(immediate = true, service = MapProviderHelper.class)
-public class MapProviderHelper {
+public interface MapProviderHelper {
 
-	public String getMapProviderKey(long companyId) {
-		PortletPreferences companyPortletPreferences =
-			PrefsPropsUtil.getPreferences(companyId);
+	public String getMapProviderKey(long companyId);
 
-		return companyPortletPreferences.getValue(
-			MapProviderWebKeys.MAP_PROVIDER_KEY, null);
-	}
-
-	public String getMapProviderKey(long companyId, long groupId) {
-		String companyMapProviderKey = getMapProviderKey(companyId);
-
-		Group group = groupLocalService.fetchGroup(groupId);
-
-		if (group == null) {
-			return companyMapProviderKey;
-		}
-		else {
-			if (group.isStagingGroup()) {
-				group = group.getLiveGroup();
-			}
-
-			return GetterUtil.getString(
-				group.getTypeSettingsProperty(
-					MapProviderWebKeys.MAP_PROVIDER_KEY),
-				companyMapProviderKey);
-		}
-	}
-
-	@Reference(unbind = "-")
-	protected void setGroupLocalService(GroupLocalService groupLocalService) {
-		this.groupLocalService = groupLocalService;
-	}
-
-	protected GroupLocalService groupLocalService;
+	public String getMapProviderKey(long companyId, long groupId);
 
 }
