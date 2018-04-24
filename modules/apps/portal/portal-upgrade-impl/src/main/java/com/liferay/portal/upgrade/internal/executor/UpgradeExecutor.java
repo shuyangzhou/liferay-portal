@@ -142,11 +142,11 @@ public class UpgradeExecutor {
 			int buildNumber = 0;
 			int state = ReleaseConstants.STATE_GOOD;
 
-			for (UpgradeInfo upgradeInfo : _upgradeInfos) {
-				UpgradeStep upgradeStep = upgradeInfo.getUpgradeStep();
+			try {
+				_updateReleaseState(_STATE_IN_PROGRESS);
 
-				try {
-					_updateReleaseState(_STATE_IN_PROGRESS);
+				for (UpgradeInfo upgradeInfo : _upgradeInfos) {
+					UpgradeStep upgradeStep = upgradeInfo.getUpgradeStep();
 
 					upgradeStep.upgrade(
 						new DBProcessContext() {
@@ -170,28 +170,26 @@ public class UpgradeExecutor {
 
 					buildNumber = upgradeInfo.getBuildNumber();
 				}
-				catch (Exception e) {
-					state = ReleaseConstants.STATE_UPGRADE_FAILURE;
+			}
+			catch (Exception e) {
+				state = ReleaseConstants.STATE_UPGRADE_FAILURE;
 
-					ReflectionUtil.throwException(e);
-				}
-				finally {
-					Release release = _releaseLocalService.fetchRelease(
-						_bundleSymbolicName);
+				ReflectionUtil.throwException(e);
+			}
+			finally {
+				Release release = _releaseLocalService.fetchRelease(
+					_bundleSymbolicName);
 
-					if ((release != null) &&
-						((buildNumber > 0) ||
-						 (state == ReleaseConstants.STATE_UPGRADE_FAILURE))) {
-
+				if (release != null) {
+					if (buildNumber > 0) {
 						release.setBuildNumber(buildNumber);
-						release.setState(state);
-
-						_releaseLocalService.updateRelease(release);
 					}
+
+					release.setState(state);
+
+					_releaseLocalService.updateRelease(release);
 				}
 			}
-
-			_updateReleaseState(ReleaseConstants.STATE_GOOD);
 
 			CacheRegistryUtil.clear();
 		}
