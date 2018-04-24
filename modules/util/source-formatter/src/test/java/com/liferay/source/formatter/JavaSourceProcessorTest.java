@@ -33,6 +33,7 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 			"Use org.junit.Assert instead of org.testng.Assert, see LPS-55690");
 	}
 
+	@Test
 	public void testCombineLines() throws Exception {
 		test("CombineLines.testjava");
 	}
@@ -57,6 +58,7 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 			"Duplicate DuplicateConstructors");
 	}
 
+	@Test
 	public void testDuplicateMethods() throws Exception {
 		test("DuplicateMethods.testjava", "Duplicate method");
 	}
@@ -144,6 +146,7 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 		test("IncorrectIfStatement.testjava", "Incorrect if statement", 23);
 	}
 
+	@Test
 	public void testIncorrectImports() throws Exception {
 		test("IncorrectImports1.testjava");
 		test(
@@ -155,6 +158,7 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 			});
 	}
 
+	@Test
 	public void testIncorrectLineBreaks() throws Exception {
 		test(
 			"IncorrectLineBreaks1.testjava",
@@ -207,6 +211,7 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 			new Integer[] {24, 28});
 	}
 
+	@Test
 	public void testIncorrectTabs() throws Exception {
 		test(
 			"IncorrectTabs.testjava",
@@ -220,6 +225,7 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 			new Integer[] {26, 30, 31, 32, 37});
 	}
 
+	@Test
 	public void testIncorrectVariableNames() throws Exception {
 		test(
 			"IncorrectVariableNames1.testjava",
@@ -246,10 +252,12 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 			new Integer[] {26, 29});
 	}
 
+	@Test
 	public void testIncorrectWhitespace() throws Exception {
 		test("IncorrectWhitespace.testjava");
 	}
 
+	@Test
 	public void testInefficientStringMethods() throws Exception {
 		test(
 			"InefficientStringMethods.testjava",
@@ -265,6 +273,7 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 		test("JavaParameterAnnotations.testjava");
 	}
 
+	@Test
 	public void testJavaTermDividers() throws Exception {
 		test("JavaTermDividers.testjava");
 	}
@@ -296,6 +305,7 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 			new Integer[] {27, 36, 41, 53, 58, 68});
 	}
 
+	@Test
 	public void testLPS28266() throws Exception {
 		test("LPS28266.testjava", "Use rs.getInt(1) for count");
 	}
@@ -305,6 +315,7 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 		test("MissingAuthor.testjava", "Missing author", 20);
 	}
 
+	@Test
 	public void testMissingEmptyLines() throws Exception {
 		test("MissingEmptyLines.testjava");
 	}
@@ -341,6 +352,7 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 		test("RedundantCommas.testjava");
 	}
 
+	@Test
 	public void testSecureRandomNumberGeneration() throws Exception {
 		test(
 			"SecureRandomNumberGeneration.testjava",
@@ -374,6 +386,7 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 		test("SortJavaTerms4.testjava");
 	}
 
+	@Test
 	public void testSortMethodsWithAnnotatedParameters() throws Exception {
 		test("SortMethodsWithAnnotatedParameters.testjava");
 	}
