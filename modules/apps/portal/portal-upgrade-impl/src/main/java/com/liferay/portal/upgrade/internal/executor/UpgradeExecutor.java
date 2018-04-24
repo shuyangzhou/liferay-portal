@@ -14,6 +14,7 @@
 
 package com.liferay.portal.upgrade.internal.executor;
 
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.db.DBContext;
 import com.liferay.portal.kernel.dao.db.DBProcessContext;
@@ -105,7 +106,7 @@ public class UpgradeExecutor {
 				outputStreamContainer.getDescription(), outputStream);
 		}
 		catch (IOException ioe) {
-			throw new RuntimeException(ioe);
+			ReflectionUtil.throwException(ioe);
 		}
 
 		release = _releaseLocalService.fetchRelease(bundleSymbolicName);
@@ -172,7 +173,7 @@ public class UpgradeExecutor {
 				catch (Exception e) {
 					state = ReleaseConstants.STATE_UPGRADE_FAILURE;
 
-					throw new RuntimeException(e);
+					ReflectionUtil.throwException(e);
 				}
 				finally {
 					Release release = _releaseLocalService.fetchRelease(
