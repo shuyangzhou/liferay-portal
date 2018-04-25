@@ -24,6 +24,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.service.FragmentEntryLinkLocalService;
+import com.liferay.fragment.service.persistence.FragmentEntryLinkFinder;
 import com.liferay.fragment.service.persistence.FragmentEntryLinkPersistence;
 import com.liferay.fragment.service.persistence.FragmentEntryPersistence;
 
@@ -50,6 +51,7 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -104,6 +106,7 @@ public abstract class FragmentEntryLinkLocalServiceBaseImpl
 	 * @return the new fragment entry link
 	 */
 	@Override
+	@Transactional(enabled = false)
 	public FragmentEntryLink createFragmentEntryLink(long fragmentEntryLinkId) {
 		return fragmentEntryLinkPersistence.create(fragmentEntryLinkId);
 	}
@@ -491,6 +494,25 @@ public abstract class FragmentEntryLinkLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the fragment entry link finder.
+	 *
+	 * @return the fragment entry link finder
+	 */
+	public FragmentEntryLinkFinder getFragmentEntryLinkFinder() {
+		return fragmentEntryLinkFinder;
+	}
+
+	/**
+	 * Sets the fragment entry link finder.
+	 *
+	 * @param fragmentEntryLinkFinder the fragment entry link finder
+	 */
+	public void setFragmentEntryLinkFinder(
+		FragmentEntryLinkFinder fragmentEntryLinkFinder) {
+		this.fragmentEntryLinkFinder = fragmentEntryLinkFinder;
+	}
+
+	/**
 	 * Returns the counter local service.
 	 *
 	 * @return the counter local service
@@ -659,6 +681,8 @@ public abstract class FragmentEntryLinkLocalServiceBaseImpl
 	protected FragmentEntryLinkLocalService fragmentEntryLinkLocalService;
 	@BeanReference(type = FragmentEntryLinkPersistence.class)
 	protected FragmentEntryLinkPersistence fragmentEntryLinkPersistence;
+	@BeanReference(type = FragmentEntryLinkFinder.class)
+	protected FragmentEntryLinkFinder fragmentEntryLinkFinder;
 	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
 	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
 	@BeanReference(type = com.liferay.fragment.service.FragmentEntryLocalService.class)
