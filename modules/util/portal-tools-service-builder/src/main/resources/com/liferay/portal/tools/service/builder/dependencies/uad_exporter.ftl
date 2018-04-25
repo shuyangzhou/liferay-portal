@@ -5,6 +5,7 @@ import ${apiPackagePath}.service.${entity.name}LocalService;
 import ${packagePath}.uad.constants.${portletShortName}UADConstants;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.user.associated.data.exporter.UADExporter;
 
@@ -30,6 +31,27 @@ public class ${entity.name}UADExporter extends DynamicQueryUADExporter<${entity.
 	@Override
 	protected String[] doGetUserIdFieldNames() {
 		return ${portletShortName}UADConstants.USER_ID_FIELD_NAMES_${entity.constantName};
+	}
+
+	@Override
+	protected String toXmlString(${entity.name} ${entity.varName}) {
+		StringBundler sb = new StringBundler(${entity.UADEntityColumns?size * 3 + 4});
+
+		sb.append("<model><model-name>");
+		sb.append("${apiPackagePath}.model.${entity.name}");
+		sb.append("</model-name>");
+
+		<#list entity.UADEntityColumns as entityColumn>
+			<#if !stringUtil.equals(entityColumn.type, "Blob") || !entityColumn.lazy>
+				sb.append("<column><column-name>${entityColumn.name}</column-name><column-value><![CDATA[");
+				sb.append(${entity.varName}.get${entityColumn.methodName}());
+				sb.append("]]></column-value></column>");
+			</#if>
+		</#list>
+
+		sb.append("</model>");
+
+		return sb.toString();
 	}
 
 	@Reference

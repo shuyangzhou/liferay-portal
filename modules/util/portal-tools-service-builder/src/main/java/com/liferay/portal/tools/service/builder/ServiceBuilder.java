@@ -17,13 +17,13 @@ package com.liferay.portal.tools.service.builder;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.xml.Dom4jUtil;
-import com.liferay.portal.freemarker.FreeMarkerUtil;
 import com.liferay.portal.kernel.dao.db.IndexMetadata;
 import com.liferay.portal.kernel.dao.db.IndexMetadataFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
+import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.model.cache.CacheField;
 import com.liferay.portal.kernel.plugin.Version;
@@ -60,8 +60,13 @@ import com.thoughtworks.qdox.model.impl.AbstractBaseJavaEntity;
 import com.thoughtworks.qdox.model.impl.DefaultJavaMethod;
 import com.thoughtworks.qdox.model.impl.DefaultJavaParameterizedType;
 
+import freemarker.cache.ClassTemplateLoader;
+
 import freemarker.ext.beans.BeansWrapper;
 
+import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapperBuilder;
+import freemarker.template.Template;
 import freemarker.template.TemplateHashModel;
 import freemarker.template.TemplateModelException;
 
@@ -909,14 +914,14 @@ public class ServiceBuilder {
 									entity.
 										getUADNonanonymizableEntityColumns())) {
 
-								_removeUADEntityDisplay(entity);
-								_removeUADEntityDisplayHelper(entity);
-								_removeUADEntityDisplayTest(entity);
+								_removeUADDisplay(entity);
+								_removeUADDisplayHelper(entity);
+								_removeUADDisplayTest(entity);
 							}
 							else {
-								_createUADEntityDisplay(entity);
-								_createUADEntityDisplayHelper(entity);
-								_createUADEntityDisplayTest(entity);
+								_createUADDisplay(entity);
+								_createUADDisplayHelper(entity);
+								_createUADDisplayTest(entity);
 							}
 						}
 						else {
@@ -924,9 +929,9 @@ public class ServiceBuilder {
 							//_removeUADAggregatorTest(entity);
 							//_removeUADAnonymizer(entity);
 							//_removeUADAnonymizerTest(entity);
-							//_removeUADEntityDisplay(entity);
-							//_removeUADEntityDisplayHelper(entity);
-							//_removeUADEntityDisplayTest(entity);
+							//_removeUADDisplay(entity);
+							//_removeUADDisplayHelper(entity);
+							//_removeUADDisplayTest(entity);
 							//_removeUADEntityTestHelper(entity);
 							//_removeUADExporter(entity);
 							//_removeUADExporterTest(entity);
@@ -1986,6 +1991,27 @@ public class ServiceBuilder {
 		sb.append(StringPool.CLOSE_PARENTHESIS);
 
 		return sb.toString();
+	}
+
+	private static Configuration _getConfiguration() {
+		if (_configuration != null) {
+			return _configuration;
+		}
+
+		_configuration = new Configuration(Configuration.getVersion());
+
+		_configuration.setNumberFormat("computer");
+
+		DefaultObjectWrapperBuilder defaultObjectWrapperBuilder =
+			new DefaultObjectWrapperBuilder(Configuration.getVersion());
+
+		_configuration.setObjectWrapper(defaultObjectWrapperBuilder.build());
+
+		_configuration.setTemplateLoader(
+			new ClassTemplateLoader(ServiceBuilder.class, StringPool.SLASH));
+		_configuration.setTemplateUpdateDelayMilliseconds(Long.MAX_VALUE);
+
+		return _configuration;
 	}
 
 	private static SAXReader _getSAXReader() {
@@ -4049,41 +4075,41 @@ public class ServiceBuilder {
 			file, content, _author, _jalopySettings, _modifiedFileNames);
 	}
 
-	private void _createUADEntityDisplay(Entity entity) throws Exception {
+	private void _createUADDisplay(Entity entity) throws Exception {
 		Map<String, Object> context = _getContext();
 
 		context.put("entity", entity);
 
 		// Content
 
-		String content = _processTemplate(_tplUADEntityDisplay, context);
+		String content = _processTemplate(_tplUADDisplay, context);
 
 		// Write file
 
 		File file = new File(
 			StringBundler.concat(
 				_uadOutputPath, "/uad/display/", entity.getName(),
-				"UADEntityDisplay.java"));
+				"UADDisplay.java"));
 
 		ToolsUtil.writeFile(
 			file, content, _author, _jalopySettings, _modifiedFileNames);
 	}
 
-	private void _createUADEntityDisplayHelper(Entity entity) throws Exception {
+	private void _createUADDisplayHelper(Entity entity) throws Exception {
 		Map<String, Object> context = _getContext();
 
 		context.put("entity", entity);
 
 		// Content
 
-		String content = _processTemplate(_tplUADEntityDisplayHelper, context);
+		String content = _processTemplate(_tplUADDisplayHelper, context);
 
 		// Write file
 
 		File file = new File(
 			StringBundler.concat(
 				_uadOutputPath, "/uad/display/", entity.getName(),
-				"UADEntityDisplayHelper.java"));
+				"UADDisplayHelper.java"));
 
 		if (!file.exists()) {
 			ToolsUtil.writeFile(
@@ -4091,21 +4117,21 @@ public class ServiceBuilder {
 		}
 	}
 
-	private void _createUADEntityDisplayTest(Entity entity) throws Exception {
+	private void _createUADDisplayTest(Entity entity) throws Exception {
 		Map<String, Object> context = _getContext();
 
 		context.put("entity", entity);
 
 		// Content
 
-		String content = _processTemplate(_tplUADEntityDisplayTest, context);
+		String content = _processTemplate(_tplUADDisplayTest, context);
 
 		// Write file
 
 		File file = new File(
 			StringBundler.concat(
 				_uadTestIntegrationOutputPath, "/uad/display/test/",
-				entity.getName(), "UADEntityDisplayTest.java"));
+				entity.getName(), "UADDisplayTest.java"));
 
 		ToolsUtil.writeFile(
 			file, content, _author, _jalopySettings, _modifiedFileNames);
@@ -6209,8 +6235,15 @@ public class ServiceBuilder {
 
 		_currentTplName = name;
 
-		return StringUtil.removeChar(
-			FreeMarkerUtil.process(name, context), '\r');
+		Configuration configuration = _getConfiguration();
+
+		Template template = configuration.getTemplate(name);
+
+		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
+
+		template.process(context, unsyncStringWriter);
+
+		return StringUtil.removeChar(unsyncStringWriter.toString(), '\r');
 	}
 
 	private Map<String, Object> _putDeprecatedKeys(
@@ -6536,32 +6569,32 @@ public class ServiceBuilder {
 				entity.getName(), "UADAnonymizerTest.java"));
 	}
 
+	private void _removeUADDisplay(Entity entity) {
+		_deleteFile(
+			StringBundler.concat(
+				_uadOutputPath, "/uad/display/", entity.getName(),
+				"UADDisplay.java"));
+	}
+
+	private void _removeUADDisplayHelper(Entity entity) {
+		_deleteFile(
+			StringBundler.concat(
+				_uadOutputPath, "/uad/display/", entity.getName(),
+				"UADDisplayHelper.java"));
+	}
+
+	private void _removeUADDisplayTest(Entity entity) {
+		_deleteFile(
+			StringBundler.concat(
+				_uadTestIntegrationOutputPath, "/uad/display/test/",
+				entity.getName(), "UADDisplayTest.java"));
+	}
+
 	private void _removeUADEntity(Entity entity) {
 		_deleteFile(
 			StringBundler.concat(
 				_uadOutputPath, "/uad/entity/", entity.getName(),
 				"UADEntity.java"));
-	}
-
-	private void _removeUADEntityDisplay(Entity entity) {
-		_deleteFile(
-			StringBundler.concat(
-				_uadOutputPath, "/uad/display/", entity.getName(),
-				"UADEntityDisplay.java"));
-	}
-
-	private void _removeUADEntityDisplayHelper(Entity entity) {
-		_deleteFile(
-			StringBundler.concat(
-				_uadOutputPath, "/uad/display/", entity.getName(),
-				"UADEntityDisplayHelper.java"));
-	}
-
-	private void _removeUADEntityDisplayTest(Entity entity) {
-		_deleteFile(
-			StringBundler.concat(
-				_uadTestIntegrationOutputPath, "/uad/display/test/",
-				entity.getName(), "UADEntityDisplayTest.java"));
 	}
 
 	private void _removeUADEntityTest(Entity entity) {
@@ -6632,6 +6665,7 @@ public class ServiceBuilder {
 	private static Pattern _beansAttributePattern = Pattern.compile(
 		"\\s+([^=]*)=\\s*\"([^\"]*)\"");
 	private static Pattern _beansPattern = Pattern.compile("<beans[^>]*>");
+	private static Configuration _configuration;
 	private static Pattern _getterPattern = Pattern.compile(
 		StringBundler.concat(
 			"public .* get.*", Pattern.quote("("), "|public boolean is.*",
@@ -6731,11 +6765,9 @@ public class ServiceBuilder {
 		_TPL_ROOT + "uad_anonymizer_test.ftl";
 	private String _tplUADBnd = _TPL_ROOT + "uad_bnd.ftl";
 	private String _tplUADConstants = _TPL_ROOT + "uad_constants.ftl";
-	private String _tplUADEntityDisplay = _TPL_ROOT + "uad_entity_display.ftl";
-	private String _tplUADEntityDisplayHelper =
-		_TPL_ROOT + "uad_entity_display_helper.ftl";
-	private String _tplUADEntityDisplayTest =
-		_TPL_ROOT + "uad_entity_display_test.ftl";
+	private String _tplUADDisplay = _TPL_ROOT + "uad_display.ftl";
+	private String _tplUADDisplayHelper = _TPL_ROOT + "uad_display_helper.ftl";
+	private String _tplUADDisplayTest = _TPL_ROOT + "uad_display_test.ftl";
 	private String _tplUADEntityTestHelper =
 		_TPL_ROOT + "uad_entity_test_helper.ftl";
 	private String _tplUADExporter = _TPL_ROOT + "uad_exporter.ftl";

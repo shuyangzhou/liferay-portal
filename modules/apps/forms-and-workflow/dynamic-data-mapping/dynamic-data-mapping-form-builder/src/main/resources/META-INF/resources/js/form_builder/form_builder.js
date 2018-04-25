@@ -1360,7 +1360,7 @@ AUI.add(
 						var warningMessage = instance.get('container').one('.required-warning');
 
 						if (instance.get('container').one('.lfr-ddm-form-field-container .lexicon-icon-asterisk')) {
-							warningMessage.removeAttribute('style')
+							warningMessage.removeAttribute('style');
 							warningMessage.removeClass('hide');
 							warningMessage.set('hidden', false);
 						}

@@ -169,7 +169,7 @@ AUI.add(
 							var autosaveInterval = Liferay.DDM.FormSettings.autosaveInterval;
 
 							if (autosaveInterval > 0) {
-								instance._intervalId = setInterval(A.bind('_autosave', instance), autosaveInterval * MINUTE);
+								instance._intervalId = setInterval(A.bind('_autosave', instance, true), autosaveInterval * MINUTE);
 							}
 						}
 					},
@@ -402,6 +402,7 @@ AUI.add(
 									},
 									width: 600
 								},
+								id: 'leaveFormDialog',
 								title: Liferay.Language.get('leave-form')
 							}
 						);
@@ -532,7 +533,7 @@ AUI.add(
 						instance.disableNameEditor();
 					},
 
-					_autosave: function(callback) {
+					_autosave: function(saveAsDraft, callback) {
 						var instance = this;
 
 						callback = callback || EMPTY_FN;
@@ -545,7 +546,9 @@ AUI.add(
 							if (!instance._isSameState(instance.savedState, state)) {
 								var editForm = instance.get('editForm');
 
-								var formData = instance._getFormData(A.IO.stringify(editForm.form));
+								var formData = instance._getFormData(
+									A.IO.stringify(editForm.form), saveAsDraft
+								);
 
 								A.io.request(
 									Liferay.DDM.FormSettings.autosaveURL,
@@ -659,7 +662,7 @@ AUI.add(
 						return window[instance.ns('descriptionEditor')];
 					},
 
-					_getFormData: function(formString) {
+					_getFormData: function(formString, saveAsDraft) {
 						var instance = this;
 
 						var formObject = A.QueryString.parse(formString);
@@ -671,6 +674,8 @@ AUI.add(
 						if (instance._isFormView()) {
 							formObject[instance.ns('published')] = JSON.stringify(instance.get('published'));
 						}
+
+						formObject[instance.ns('saveAsDraft')] = saveAsDraft;
 
 						formString = A.QueryString.stringify(formObject);
 
@@ -840,6 +845,7 @@ AUI.add(
 						var instance = this;
 
 						instance._autosave(
+							true,
 							function() {
 								var previewURL = instance._createPreviewURL();
 
@@ -852,6 +858,7 @@ AUI.add(
 						var instance = this;
 
 						instance._autosave(
+							false,
 							function() {
 								var publishedValue = instance.get('published');
 
