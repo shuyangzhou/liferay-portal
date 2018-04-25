@@ -1461,9 +1461,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 	@Override
 	public String toString() {
-		<#assign initialCapacity = entity.regularEntityColumns?size * 2 + 1 />
-
-		StringBundler sb = new StringBundler(${initialCapacity?c});
+		StringBundler sb = new StringBundler(${entity.regularEntityColumns?size * 2 + 1});
 
 		<#list entity.regularEntityColumns as entityColumn>
 			<#if !stringUtil.equals(entityColumn.type, "Blob") || !entityColumn.lazy>
@@ -1488,9 +1486,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 	@Override
 	public String toXmlString() {
-		<#assign initialCapacity = entity.regularEntityColumns?size * 3 + 4 />
-
-		StringBundler sb = new StringBundler(${initialCapacity?c});
+		StringBundler sb = new StringBundler(${entity.regularEntityColumns?size * 3 + 4});
 
 		sb.append("<model><model-name>");
 		sb.append("${apiPackagePath}.model.${entity.name}");
