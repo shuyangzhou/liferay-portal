@@ -122,11 +122,12 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 				"value.object.column.bitmask.enabled.com.liferay.layout.page.template.model.LayoutPageTemplateEntry"),
 			true);
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
-	public static final long DEFAULTTEMPLATE_COLUMN_BITMASK = 2L;
-	public static final long GROUPID_COLUMN_BITMASK = 4L;
-	public static final long LAYOUTPAGETEMPLATECOLLECTIONID_COLUMN_BITMASK = 8L;
-	public static final long NAME_COLUMN_BITMASK = 16L;
-	public static final long TYPE_COLUMN_BITMASK = 32L;
+	public static final long CLASSTYPEID_COLUMN_BITMASK = 2L;
+	public static final long DEFAULTTEMPLATE_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 8L;
+	public static final long LAYOUTPAGETEMPLATECOLLECTIONID_COLUMN_BITMASK = 16L;
+	public static final long NAME_COLUMN_BITMASK = 32L;
+	public static final long TYPE_COLUMN_BITMASK = 64L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -236,7 +237,7 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 		attributes.put("name", getName());
 		attributes.put("type", getType());
 		attributes.put("htmlPreviewEntryId", getHtmlPreviewEntryId());
-		attributes.put("defaultTemplate", getDefaultTemplate());
+		attributes.put("defaultTemplate", isDefaultTemplate());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -524,7 +525,19 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 
 	@Override
 	public void setClassTypeId(long classTypeId) {
+		_columnBitmask |= CLASSTYPEID_COLUMN_BITMASK;
+
+		if (!_setOriginalClassTypeId) {
+			_setOriginalClassTypeId = true;
+
+			_originalClassTypeId = _classTypeId;
+		}
+
 		_classTypeId = classTypeId;
+	}
+
+	public long getOriginalClassTypeId() {
+		return _originalClassTypeId;
 	}
 
 	@JSON
@@ -660,7 +673,7 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 		layoutPageTemplateEntryImpl.setName(getName());
 		layoutPageTemplateEntryImpl.setType(getType());
 		layoutPageTemplateEntryImpl.setHtmlPreviewEntryId(getHtmlPreviewEntryId());
-		layoutPageTemplateEntryImpl.setDefaultTemplate(getDefaultTemplate());
+		layoutPageTemplateEntryImpl.setDefaultTemplate(isDefaultTemplate());
 
 		layoutPageTemplateEntryImpl.resetOriginalValues();
 
@@ -735,6 +748,10 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 
 		layoutPageTemplateEntryModelImpl._setOriginalClassNameId = false;
 
+		layoutPageTemplateEntryModelImpl._originalClassTypeId = layoutPageTemplateEntryModelImpl._classTypeId;
+
+		layoutPageTemplateEntryModelImpl._setOriginalClassTypeId = false;
+
 		layoutPageTemplateEntryModelImpl._originalName = layoutPageTemplateEntryModelImpl._name;
 
 		layoutPageTemplateEntryModelImpl._originalType = layoutPageTemplateEntryModelImpl._type;
@@ -804,7 +821,7 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 
 		layoutPageTemplateEntryCacheModel.htmlPreviewEntryId = getHtmlPreviewEntryId();
 
-		layoutPageTemplateEntryCacheModel.defaultTemplate = getDefaultTemplate();
+		layoutPageTemplateEntryCacheModel.defaultTemplate = isDefaultTemplate();
 
 		return layoutPageTemplateEntryCacheModel;
 	}
@@ -840,7 +857,7 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 		sb.append(", htmlPreviewEntryId=");
 		sb.append(getHtmlPreviewEntryId());
 		sb.append(", defaultTemplate=");
-		sb.append(getDefaultTemplate());
+		sb.append(isDefaultTemplate());
 		sb.append("}");
 
 		return sb.toString();
@@ -909,7 +926,7 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>defaultTemplate</column-name><column-value><![CDATA[");
-		sb.append(getDefaultTemplate());
+		sb.append(isDefaultTemplate());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -938,6 +955,8 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;
 	private long _classTypeId;
+	private long _originalClassTypeId;
+	private boolean _setOriginalClassTypeId;
 	private String _name;
 	private String _originalName;
 	private int _type;
