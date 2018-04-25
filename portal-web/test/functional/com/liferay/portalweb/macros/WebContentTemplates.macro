@@ -2,7 +2,9 @@
 	<command name="addCP">
 		<execute macro="LexiconEntry#gotoAdd" />
 
-		<execute function="Type#clickAtType" locator1="TextInput#NAME" value1="${templateName}" />
+		<execute macro="PortletEntry#inputName">
+			<var name="name" value="${templateName}" />
+		</execute>
 
 		<execute macro="Panel#expandPanel">
 			<var name="panel" value="Details" />
@@ -268,7 +270,7 @@
 		<while>
 			<condition function="IsElementNotPresent" locator1="Message#EMPTY_INFO" />
 			<then>
-				<execute function="Check#checkAll" locator1="Checkbox#SELECT_ALL" />
+				<execute macro="PortletEntry#selectAll" />
 
 				<execute function="ClickNoError" locator1="Icon#DELETE" />
 
@@ -285,7 +287,7 @@
 		<while>
 			<condition function="IsElementNotPresent" locator1="Message#EMPTY_INFO" />
 			<then>
-				<execute function="Check#checkAll" locator1="Checkbox#SELECT_ALL" />
+				<execute macro="PortletEntry#selectAll" />
 
 				<execute function="ClickNoError" locator1="Icon#DELETE" />
 
