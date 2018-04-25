@@ -143,6 +143,10 @@
 		<field name="categoryId" type="long" />
 		<field name="rootMessageId" type="long" />
 		<field name="rootMessageUserId" type="long" />
+		<field name="title" type="String">
+			<sanitize content-type="text/plain" modes="ALL" />
+			<validator name="required" />
+		</field>
 		<field name="messageCount" type="int" />
 		<field name="viewCount" type="int" />
 		<field name="lastPostByUserId" type="long" />
