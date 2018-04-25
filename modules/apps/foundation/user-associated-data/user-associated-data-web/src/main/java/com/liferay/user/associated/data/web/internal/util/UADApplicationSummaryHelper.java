@@ -14,9 +14,12 @@
 
 package com.liferay.user.associated.data.web.internal.util;
 
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
@@ -26,12 +29,13 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.user.associated.data.anonymizer.UADAnonymizer;
 import com.liferay.user.associated.data.constants.UserAssociatedDataPortletKeys;
-import com.liferay.user.associated.data.display.UADEntityDisplay;
+import com.liferay.user.associated.data.display.UADDisplay;
 import com.liferay.user.associated.data.web.internal.display.UADApplicationSummaryDisplay;
 import com.liferay.user.associated.data.web.internal.registry.UADRegistry;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -43,6 +47,8 @@ import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -51,6 +57,39 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = UADApplicationSummaryHelper.class)
 public class UADApplicationSummaryHelper {
+
+	public DropdownItemList createManagementBarFilterItems(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws PortalException {
+
+		HttpServletRequest request = _portal.getHttpServletRequest(
+			renderRequest);
+
+		return new DropdownItemList(request) {
+			{
+				DropdownItemList filterByNavigationDropdownItemList =
+					getFilterByNavigationDropdownItemList(
+						renderRequest, renderResponse);
+
+				addGroup(
+					dropdownGroupItem -> {
+						dropdownGroupItem.setDropdownItems(
+							filterByNavigationDropdownItemList);
+						dropdownGroupItem.setLabel("filter-by-navigation");
+					});
+
+				DropdownItemList orderByNavigationDropdownItemList =
+					getOrderByDropdownItemList(renderRequest, renderResponse);
+
+				addGroup(
+					dropdownGroupItem -> {
+						dropdownGroupItem.setDropdownItems(
+							orderByNavigationDropdownItemList);
+						dropdownGroupItem.setLabel("order-by");
+					});
+			}
+		};
+	}
 
 	public SearchContainer<UADApplicationSummaryDisplay> createSearchContainer(
 		RenderRequest renderRequest, RenderResponse renderResponse,
@@ -71,15 +110,11 @@ public class UADApplicationSummaryHelper {
 		SearchContainer<UADApplicationSummaryDisplay> searchContainer =
 			new SearchContainer<>(portletRequest, currentURL, null, null);
 
-		searchContainer.setOrderByCol(
-			ParamUtil.getString(
-				renderRequest, searchContainer.getOrderByColParam(), "name"));
-		searchContainer.setOrderByType(
-			ParamUtil.getString(
-				renderRequest, searchContainer.getOrderByTypeParam(), "asc"));
+		searchContainer.setOrderByCol(getOrderByCol(renderRequest));
+		searchContainer.setOrderByType(getOrderByType(renderRequest));
 
 		Predicate<UADApplicationSummaryDisplay> predicate = getPredicate(
-			ParamUtil.getString(renderRequest, "navigation", "all"));
+			getNavigation(renderRequest));
 
 		Supplier<Stream<UADApplicationSummaryDisplay>> streamSupplier = () ->
 			getUADApplicationSummaryDisplayStream(portletRequest, userId).
@@ -113,11 +148,11 @@ public class UADApplicationSummaryHelper {
 	public List<UADAnonymizer> getApplicationUADAnonymizers(
 		String applicationName) {
 
-		Stream<UADEntityDisplay> uadEntityDisplayStream =
-			getApplicationUADEntityDisplayStream(applicationName);
+		Stream<UADDisplay> uadDisplayStream = getApplicationUADDisplayStream(
+			applicationName);
 
-		return uadEntityDisplayStream.map(
-			UADEntityDisplay::getKey
+		return uadDisplayStream.map(
+			UADDisplay::getKey
 		).map(
 			key -> _uadRegistry.getUADAnonymizer(key)
 		).collect(
@@ -125,15 +160,36 @@ public class UADApplicationSummaryHelper {
 		);
 	}
 
-	public Stream<UADEntityDisplay> getApplicationUADEntityDisplayStream(
+	public Stream<UADDisplay> getApplicationUADDisplayStream(
 		String applicationName) {
 
-		Stream<UADEntityDisplay> uadEntityDisplayStream =
-			_uadRegistry.getUADEntityDisplayStream();
+		Stream<UADDisplay> uadDisplayStream =
+			_uadRegistry.getUADDisplayStream();
 
-		return uadEntityDisplayStream.filter(
-			uadEntityDisplay -> applicationName.equals(
-				uadEntityDisplay.getApplicationName()));
+		return uadDisplayStream.filter(
+			uadDisplay -> applicationName.equals(
+				uadDisplay.getApplicationName()));
+	}
+
+	public PortletURL getBaseURL(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws PortalException {
+
+		PortletURL baseURL = renderResponse.createRenderURL();
+
+		baseURL.setParameter(
+			"mvcRenderCommandName", "/view_uad_applications_summary");
+		baseURL.setParameter("navigation", getNavigation(renderRequest));
+		baseURL.setParameter("orderByCol", getOrderByCol(renderRequest));
+		baseURL.setParameter("orderByType", getOrderByType(renderRequest));
+
+		User user = _portal.getSelectedUser(renderRequest);
+
+		long userId = user.getUserId();
+
+		baseURL.setParameter("p_u_i_d", String.valueOf(userId));
+
+		return baseURL;
 	}
 
 	public Comparator<UADApplicationSummaryDisplay> getComparator(
@@ -155,13 +211,81 @@ public class UADApplicationSummaryHelper {
 	}
 
 	public String getDefaultUADRegistryKey(String applicationName) {
-		Stream<UADEntityDisplay> uadEntityDisplayStream =
-			getApplicationUADEntityDisplayStream(applicationName);
+		Stream<UADDisplay> uadDisplayStream = getApplicationUADDisplayStream(
+			applicationName);
 
-		return uadEntityDisplayStream.map(
-			UADEntityDisplay::getKey
+		return uadDisplayStream.map(
+			UADDisplay::getKey
 		).findFirst(
 		).get();
+	}
+
+	public DropdownItemList getFilterByNavigationDropdownItemList(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws PortalException {
+
+		HttpServletRequest request = _portal.getHttpServletRequest(
+			renderRequest);
+
+		PortletURL baseURL = getBaseURL(renderRequest, renderResponse);
+
+		return new DropdownItemList(request) {
+			{
+				for (String navigation :
+						new String[] {"all", "in-progress", "done"}) {
+
+					add(
+						dropdownItem -> {
+							dropdownItem.setActive(
+								navigation.equals(
+									getNavigation(renderRequest)));
+							dropdownItem.setHref(
+								baseURL, "navigation", navigation);
+							dropdownItem.setLabel(navigation);
+						});
+				}
+			}
+		};
+	}
+
+	public String getNavigation(RenderRequest renderRequest) {
+		return ParamUtil.getString(renderRequest, "navigation", "all");
+	}
+
+	public String getOrderByCol(RenderRequest renderRequest) {
+		return ParamUtil.getString(renderRequest, "orderByCol", "name");
+	}
+
+	public DropdownItemList getOrderByDropdownItemList(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws PortalException {
+
+		HttpServletRequest request = _portal.getHttpServletRequest(
+			renderRequest);
+
+		PortletURL baseURL = getBaseURL(renderRequest, renderResponse);
+
+		return new DropdownItemList(request) {
+			{
+				for (String orderByCol :
+						new String[] {"name", "items", "status"}) {
+
+					add(
+						dropdownItem -> {
+							dropdownItem.setActive(
+								orderByCol.equals(
+									getOrderByCol(renderRequest)));
+							dropdownItem.setHref(
+								baseURL, "orderByCol", orderByCol);
+							dropdownItem.setLabel(orderByCol);
+						});
+				}
+			}
+		};
+	}
+
+	public String getOrderByType(RenderRequest renderRequest) {
+		return ParamUtil.getString(renderRequest, "orderByType", "asc");
 	}
 
 	public Predicate<UADApplicationSummaryDisplay> getPredicate(
@@ -178,10 +302,10 @@ public class UADApplicationSummaryHelper {
 	}
 
 	public int getReviewableUADEntitiesCount(
-		Stream<UADEntityDisplay> uadEntityDisplayStream, long userId) {
+		Stream<UADDisplay> uadDisplayStream, long userId) {
 
-		return uadEntityDisplayStream.map(
-			uadEntityDisplay -> uadEntityDisplay.getKey()
+		return uadDisplayStream.map(
+			uadDisplay -> uadDisplay.getKey()
 		).map(
 			key -> _uadRegistry.getUADAggregator(key)
 		).mapToInt(
@@ -189,9 +313,29 @@ public class UADApplicationSummaryHelper {
 		).sum();
 	}
 
+	public String getSortingURL(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws PortalException {
+
+		PortletURL sortingURL = getBaseURL(renderRequest, renderResponse);
+
+		String orderByType;
+
+		if (Objects.equals(getOrderByType(renderRequest), "asc")) {
+			orderByType = "desc";
+		}
+		else {
+			orderByType = "asc";
+		}
+
+		sortingURL.setParameter("orderByType", orderByType);
+
+		return sortingURL.toString();
+	}
+
 	public int getTotalReviewableUADEntitiesCount(long userId) {
 		return getReviewableUADEntitiesCount(
-			_uadRegistry.getUADEntityDisplayStream(), userId);
+			_uadRegistry.getUADDisplayStream(), userId);
 	}
 
 	public UADApplicationSummaryDisplay getUADApplicationSummaryDisplay(
@@ -201,7 +345,7 @@ public class UADApplicationSummaryHelper {
 			new UADApplicationSummaryDisplay();
 
 		int count = getReviewableUADEntitiesCount(
-			getApplicationUADEntityDisplayStream(applicationName), userId);
+			getApplicationUADDisplayStream(applicationName), userId);
 
 		uadApplicationSummaryDisplay.setCount(count);
 
@@ -219,11 +363,11 @@ public class UADApplicationSummaryHelper {
 		getUADApplicationSummaryDisplayStream(
 			PortletRequest portletRequest, long userId) {
 
-		Stream<UADEntityDisplay> uadEntityDisplayStream =
-			_uadRegistry.getUADEntityDisplayStream();
+		Stream<UADDisplay> uadDisplayStream =
+			_uadRegistry.getUADDisplayStream();
 
-		return uadEntityDisplayStream.map(
-			UADEntityDisplay::getApplicationName
+		return uadDisplayStream.map(
+			UADDisplay::getApplicationName
 		).distinct(
 		).sorted(
 		).map(
