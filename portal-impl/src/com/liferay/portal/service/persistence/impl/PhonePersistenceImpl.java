@@ -3470,7 +3470,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 					if ((companyId != phone.getCompanyId()) ||
 							(classNameId != phone.getClassNameId()) ||
 							(classPK != phone.getClassPK()) ||
-							(primary != phone.getPrimary())) {
+							(primary != phone.isPrimary())) {
 						list = null;
 
 						break;
@@ -4122,8 +4122,6 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 	@Override
 	protected Phone removeImpl(Phone phone) {
-		phone = toUnwrappedModel(phone);
-
 		Session session = null;
 
 		try {
@@ -4154,8 +4152,6 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 
 	@Override
 	public Phone updateImpl(Phone phone) {
-		phone = toUnwrappedModel(phone);
-
 		boolean isNew = phone.isNew();
 
 		PhoneModelImpl phoneModelImpl = (PhoneModelImpl)phone;
@@ -4263,7 +4259,7 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 			args = new Object[] {
 					phoneModelImpl.getCompanyId(),
 					phoneModelImpl.getClassNameId(), phoneModelImpl.getClassPK(),
-					phoneModelImpl.getPrimary()
+					phoneModelImpl.isPrimary()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_C_C_P, args);
@@ -4418,34 +4414,6 @@ public class PhonePersistenceImpl extends BasePersistenceImpl<Phone>
 		phone.resetOriginalValues();
 
 		return phone;
-	}
-
-	protected Phone toUnwrappedModel(Phone phone) {
-		if (phone instanceof PhoneImpl) {
-			return phone;
-		}
-
-		PhoneImpl phoneImpl = new PhoneImpl();
-
-		phoneImpl.setNew(phone.isNew());
-		phoneImpl.setPrimaryKey(phone.getPrimaryKey());
-
-		phoneImpl.setMvccVersion(phone.getMvccVersion());
-		phoneImpl.setUuid(phone.getUuid());
-		phoneImpl.setPhoneId(phone.getPhoneId());
-		phoneImpl.setCompanyId(phone.getCompanyId());
-		phoneImpl.setUserId(phone.getUserId());
-		phoneImpl.setUserName(phone.getUserName());
-		phoneImpl.setCreateDate(phone.getCreateDate());
-		phoneImpl.setModifiedDate(phone.getModifiedDate());
-		phoneImpl.setClassNameId(phone.getClassNameId());
-		phoneImpl.setClassPK(phone.getClassPK());
-		phoneImpl.setNumber(phone.getNumber());
-		phoneImpl.setExtension(phone.getExtension());
-		phoneImpl.setTypeId(phone.getTypeId());
-		phoneImpl.setPrimary(phone.isPrimary());
-
-		return phoneImpl;
 	}
 
 	/**

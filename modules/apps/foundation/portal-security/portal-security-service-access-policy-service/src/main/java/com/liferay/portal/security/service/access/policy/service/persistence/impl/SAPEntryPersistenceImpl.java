@@ -3011,7 +3011,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 			if ((list != null) && !list.isEmpty()) {
 				for (SAPEntry sapEntry : list) {
 					if ((companyId != sapEntry.getCompanyId()) ||
-							(defaultSAPEntry != sapEntry.getDefaultSAPEntry())) {
+							(defaultSAPEntry != sapEntry.isDefaultSAPEntry())) {
 						list = null;
 
 						break;
@@ -4288,8 +4288,6 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 
 	@Override
 	protected SAPEntry removeImpl(SAPEntry sapEntry) {
-		sapEntry = toUnwrappedModel(sapEntry);
-
 		Session session = null;
 
 		try {
@@ -4320,8 +4318,6 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 
 	@Override
 	public SAPEntry updateImpl(SAPEntry sapEntry) {
-		sapEntry = toUnwrappedModel(sapEntry);
-
 		boolean isNew = sapEntry.isNew();
 
 		SAPEntryModelImpl sapEntryModelImpl = (SAPEntryModelImpl)sapEntry;
@@ -4405,7 +4401,7 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 
 			args = new Object[] {
 					sapEntryModelImpl.getCompanyId(),
-					sapEntryModelImpl.getDefaultSAPEntry()
+					sapEntryModelImpl.isDefaultSAPEntry()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_D, args);
@@ -4502,32 +4498,6 @@ public class SAPEntryPersistenceImpl extends BasePersistenceImpl<SAPEntry>
 		sapEntry.resetOriginalValues();
 
 		return sapEntry;
-	}
-
-	protected SAPEntry toUnwrappedModel(SAPEntry sapEntry) {
-		if (sapEntry instanceof SAPEntryImpl) {
-			return sapEntry;
-		}
-
-		SAPEntryImpl sapEntryImpl = new SAPEntryImpl();
-
-		sapEntryImpl.setNew(sapEntry.isNew());
-		sapEntryImpl.setPrimaryKey(sapEntry.getPrimaryKey());
-
-		sapEntryImpl.setUuid(sapEntry.getUuid());
-		sapEntryImpl.setSapEntryId(sapEntry.getSapEntryId());
-		sapEntryImpl.setCompanyId(sapEntry.getCompanyId());
-		sapEntryImpl.setUserId(sapEntry.getUserId());
-		sapEntryImpl.setUserName(sapEntry.getUserName());
-		sapEntryImpl.setCreateDate(sapEntry.getCreateDate());
-		sapEntryImpl.setModifiedDate(sapEntry.getModifiedDate());
-		sapEntryImpl.setAllowedServiceSignatures(sapEntry.getAllowedServiceSignatures());
-		sapEntryImpl.setDefaultSAPEntry(sapEntry.isDefaultSAPEntry());
-		sapEntryImpl.setEnabled(sapEntry.isEnabled());
-		sapEntryImpl.setName(sapEntry.getName());
-		sapEntryImpl.setTitle(sapEntry.getTitle());
-
-		return sapEntryImpl;
 	}
 
 	/**
