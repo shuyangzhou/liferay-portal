@@ -9680,7 +9680,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 			if ((list != null) && !list.isEmpty()) {
 				for (MBMessage mbMessage : list) {
 					if ((threadId != mbMessage.getThreadId()) ||
-							(answer != mbMessage.getAnswer())) {
+							(answer != mbMessage.isAnswer())) {
 						list = null;
 
 						break;
@@ -16852,7 +16852,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 					if ((groupId != mbMessage.getGroupId()) ||
 							(categoryId != mbMessage.getCategoryId()) ||
 							(threadId != mbMessage.getThreadId()) ||
-							(answer != mbMessage.getAnswer())) {
+							(answer != mbMessage.isAnswer())) {
 						list = null;
 
 						break;
@@ -19634,8 +19634,6 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 	@Override
 	protected MBMessage removeImpl(MBMessage mbMessage) {
-		mbMessage = toUnwrappedModel(mbMessage);
-
 		Session session = null;
 
 		try {
@@ -19666,8 +19664,6 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 	@Override
 	public MBMessage updateImpl(MBMessage mbMessage) {
-		mbMessage = toUnwrappedModel(mbMessage);
-
 		boolean isNew = mbMessage.isNew();
 
 		MBMessageModelImpl mbMessageModelImpl = (MBMessageModelImpl)mbMessage;
@@ -19862,7 +19858,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 			args = new Object[] {
 					mbMessageModelImpl.getThreadId(),
-					mbMessageModelImpl.getAnswer()
+					mbMessageModelImpl.isAnswer()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_T_A, args);
@@ -19951,7 +19947,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 					mbMessageModelImpl.getGroupId(),
 					mbMessageModelImpl.getCategoryId(),
 					mbMessageModelImpl.getThreadId(),
-					mbMessageModelImpl.getAnswer()
+					mbMessageModelImpl.isAnswer()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_C_T_A, args);
@@ -20544,46 +20540,6 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 		mbMessage.resetOriginalValues();
 
 		return mbMessage;
-	}
-
-	protected MBMessage toUnwrappedModel(MBMessage mbMessage) {
-		if (mbMessage instanceof MBMessageImpl) {
-			return mbMessage;
-		}
-
-		MBMessageImpl mbMessageImpl = new MBMessageImpl();
-
-		mbMessageImpl.setNew(mbMessage.isNew());
-		mbMessageImpl.setPrimaryKey(mbMessage.getPrimaryKey());
-
-		mbMessageImpl.setUuid(mbMessage.getUuid());
-		mbMessageImpl.setMessageId(mbMessage.getMessageId());
-		mbMessageImpl.setGroupId(mbMessage.getGroupId());
-		mbMessageImpl.setCompanyId(mbMessage.getCompanyId());
-		mbMessageImpl.setUserId(mbMessage.getUserId());
-		mbMessageImpl.setUserName(mbMessage.getUserName());
-		mbMessageImpl.setCreateDate(mbMessage.getCreateDate());
-		mbMessageImpl.setModifiedDate(mbMessage.getModifiedDate());
-		mbMessageImpl.setClassNameId(mbMessage.getClassNameId());
-		mbMessageImpl.setClassPK(mbMessage.getClassPK());
-		mbMessageImpl.setCategoryId(mbMessage.getCategoryId());
-		mbMessageImpl.setThreadId(mbMessage.getThreadId());
-		mbMessageImpl.setRootMessageId(mbMessage.getRootMessageId());
-		mbMessageImpl.setParentMessageId(mbMessage.getParentMessageId());
-		mbMessageImpl.setSubject(mbMessage.getSubject());
-		mbMessageImpl.setBody(mbMessage.getBody());
-		mbMessageImpl.setFormat(mbMessage.getFormat());
-		mbMessageImpl.setAnonymous(mbMessage.isAnonymous());
-		mbMessageImpl.setPriority(mbMessage.getPriority());
-		mbMessageImpl.setAllowPingbacks(mbMessage.isAllowPingbacks());
-		mbMessageImpl.setAnswer(mbMessage.isAnswer());
-		mbMessageImpl.setLastPublishDate(mbMessage.getLastPublishDate());
-		mbMessageImpl.setStatus(mbMessage.getStatus());
-		mbMessageImpl.setStatusByUserId(mbMessage.getStatusByUserId());
-		mbMessageImpl.setStatusByUserName(mbMessage.getStatusByUserName());
-		mbMessageImpl.setStatusDate(mbMessage.getStatusDate());
-
-		return mbMessageImpl;
 	}
 
 	/**

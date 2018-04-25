@@ -1324,7 +1324,7 @@ public class JournalContentSearchPersistenceImpl extends BasePersistenceImpl<Jou
 			if ((list != null) && !list.isEmpty()) {
 				for (JournalContentSearch journalContentSearch : list) {
 					if ((groupId != journalContentSearch.getGroupId()) ||
-							(privateLayout != journalContentSearch.getPrivateLayout())) {
+							(privateLayout != journalContentSearch.isPrivateLayout())) {
 						list = null;
 
 						break;
@@ -2482,7 +2482,7 @@ public class JournalContentSearchPersistenceImpl extends BasePersistenceImpl<Jou
 			if ((list != null) && !list.isEmpty()) {
 				for (JournalContentSearch journalContentSearch : list) {
 					if ((groupId != journalContentSearch.getGroupId()) ||
-							(privateLayout != journalContentSearch.getPrivateLayout()) ||
+							(privateLayout != journalContentSearch.isPrivateLayout()) ||
 							(layoutId != journalContentSearch.getLayoutId())) {
 						list = null;
 
@@ -3075,7 +3075,7 @@ public class JournalContentSearchPersistenceImpl extends BasePersistenceImpl<Jou
 			if ((list != null) && !list.isEmpty()) {
 				for (JournalContentSearch journalContentSearch : list) {
 					if ((groupId != journalContentSearch.getGroupId()) ||
-							(privateLayout != journalContentSearch.getPrivateLayout()) ||
+							(privateLayout != journalContentSearch.isPrivateLayout()) ||
 							!Objects.equals(articleId,
 								journalContentSearch.getArticleId())) {
 						list = null;
@@ -3726,7 +3726,7 @@ public class JournalContentSearchPersistenceImpl extends BasePersistenceImpl<Jou
 			if ((list != null) && !list.isEmpty()) {
 				for (JournalContentSearch journalContentSearch : list) {
 					if ((groupId != journalContentSearch.getGroupId()) ||
-							(privateLayout != journalContentSearch.getPrivateLayout()) ||
+							(privateLayout != journalContentSearch.isPrivateLayout()) ||
 							(layoutId != journalContentSearch.getLayoutId()) ||
 							!Objects.equals(portletId,
 								journalContentSearch.getPortletId())) {
@@ -4851,8 +4851,6 @@ public class JournalContentSearchPersistenceImpl extends BasePersistenceImpl<Jou
 	@Override
 	protected JournalContentSearch removeImpl(
 		JournalContentSearch journalContentSearch) {
-		journalContentSearch = toUnwrappedModel(journalContentSearch);
-
 		Session session = null;
 
 		try {
@@ -4884,8 +4882,6 @@ public class JournalContentSearchPersistenceImpl extends BasePersistenceImpl<Jou
 	@Override
 	public JournalContentSearch updateImpl(
 		JournalContentSearch journalContentSearch) {
-		journalContentSearch = toUnwrappedModel(journalContentSearch);
-
 		boolean isNew = journalContentSearch.isNew();
 
 		JournalContentSearchModelImpl journalContentSearchModelImpl = (JournalContentSearchModelImpl)journalContentSearch;
@@ -4934,7 +4930,7 @@ public class JournalContentSearchPersistenceImpl extends BasePersistenceImpl<Jou
 
 			args = new Object[] {
 					journalContentSearchModelImpl.getGroupId(),
-					journalContentSearchModelImpl.getPrivateLayout()
+					journalContentSearchModelImpl.isPrivateLayout()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_P, args);
@@ -4952,7 +4948,7 @@ public class JournalContentSearchPersistenceImpl extends BasePersistenceImpl<Jou
 
 			args = new Object[] {
 					journalContentSearchModelImpl.getGroupId(),
-					journalContentSearchModelImpl.getPrivateLayout(),
+					journalContentSearchModelImpl.isPrivateLayout(),
 					journalContentSearchModelImpl.getLayoutId()
 				};
 
@@ -4962,7 +4958,7 @@ public class JournalContentSearchPersistenceImpl extends BasePersistenceImpl<Jou
 
 			args = new Object[] {
 					journalContentSearchModelImpl.getGroupId(),
-					journalContentSearchModelImpl.getPrivateLayout(),
+					journalContentSearchModelImpl.isPrivateLayout(),
 					journalContentSearchModelImpl.getArticleId()
 				};
 
@@ -4972,7 +4968,7 @@ public class JournalContentSearchPersistenceImpl extends BasePersistenceImpl<Jou
 
 			args = new Object[] {
 					journalContentSearchModelImpl.getGroupId(),
-					journalContentSearchModelImpl.getPrivateLayout(),
+					journalContentSearchModelImpl.isPrivateLayout(),
 					journalContentSearchModelImpl.getLayoutId(),
 					journalContentSearchModelImpl.getPortletId()
 				};
@@ -5145,28 +5141,6 @@ public class JournalContentSearchPersistenceImpl extends BasePersistenceImpl<Jou
 		journalContentSearch.resetOriginalValues();
 
 		return journalContentSearch;
-	}
-
-	protected JournalContentSearch toUnwrappedModel(
-		JournalContentSearch journalContentSearch) {
-		if (journalContentSearch instanceof JournalContentSearchImpl) {
-			return journalContentSearch;
-		}
-
-		JournalContentSearchImpl journalContentSearchImpl = new JournalContentSearchImpl();
-
-		journalContentSearchImpl.setNew(journalContentSearch.isNew());
-		journalContentSearchImpl.setPrimaryKey(journalContentSearch.getPrimaryKey());
-
-		journalContentSearchImpl.setContentSearchId(journalContentSearch.getContentSearchId());
-		journalContentSearchImpl.setGroupId(journalContentSearch.getGroupId());
-		journalContentSearchImpl.setCompanyId(journalContentSearch.getCompanyId());
-		journalContentSearchImpl.setPrivateLayout(journalContentSearch.isPrivateLayout());
-		journalContentSearchImpl.setLayoutId(journalContentSearch.getLayoutId());
-		journalContentSearchImpl.setPortletId(journalContentSearch.getPortletId());
-		journalContentSearchImpl.setArticleId(journalContentSearch.getArticleId());
-
-		return journalContentSearchImpl;
 	}
 
 	/**

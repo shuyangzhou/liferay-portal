@@ -1072,22 +1072,11 @@
 	</command>
 
 	<command name="gotoArticlePermissionsCP">
-		<var name="key_webContentTitle" value="${webContentTitle}" />
-
-		<execute function="Click" locator1="Icon#HEADER_VERTICAL_ELLIPSIS" />
-
-		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="Permissions">
-			<var name="key_menuItem" value="Permissions" />
+		<execute macro="LexiconEntry#gotoHeaderMenuItem">
+			<var name="menuItem" value="Permissions" />
 		</execute>
 
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
-	</command>
-
-	<command name="gotoViewSpecificVersionHistoryCP">
-		<execute macro="LexiconEntry#gotoEntryMenuItem">
-			<var name="menuItem" value="View History" />
-			<var name="rowEntry" value="${webContentTitle}" />
-		</execute>
 	</command>
 
 	<command name="moveArticlesToFolderCP">
@@ -1217,7 +1206,7 @@
 			<var name="displayStyle" value="descriptive" />
 		</execute>
 
-		<execute function="Check#checkAll" locator1="Checkbox#SELECT_ALL" />
+		<execute macro="PortletEntry#selectAll" />
 
 		<execute function="Click" locator1="Icon#MOVE_TO_RECYCLE_BIN" />
 
@@ -1427,7 +1416,7 @@
 		<if>
 			<condition function="IsElementPresent#pauseIsElementPresent" locator1="WC#ENTRY_DESCRIPTIVE_THUMBNAIL_GENERIC" />
 			<then>
-				<execute function="Check#checkAll" locator1="Checkbox#SELECT_ALL" />
+				<execute macro="PortletEntry#selectAll" />
 
 				<execute function="Click" locator1="Icon#MOVE_TO_RECYCLE_BIN" />
 

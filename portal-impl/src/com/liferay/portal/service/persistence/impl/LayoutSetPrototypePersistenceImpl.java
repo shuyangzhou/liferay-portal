@@ -3063,7 +3063,7 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 			if ((list != null) && !list.isEmpty()) {
 				for (LayoutSetPrototype layoutSetPrototype : list) {
 					if ((companyId != layoutSetPrototype.getCompanyId()) ||
-							(active != layoutSetPrototype.getActive())) {
+							(active != layoutSetPrototype.isActive())) {
 						list = null;
 
 						break;
@@ -4047,8 +4047,6 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 	@Override
 	protected LayoutSetPrototype removeImpl(
 		LayoutSetPrototype layoutSetPrototype) {
-		layoutSetPrototype = toUnwrappedModel(layoutSetPrototype);
-
 		Session session = null;
 
 		try {
@@ -4079,8 +4077,6 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 
 	@Override
 	public LayoutSetPrototype updateImpl(LayoutSetPrototype layoutSetPrototype) {
-		layoutSetPrototype = toUnwrappedModel(layoutSetPrototype);
-
 		boolean isNew = layoutSetPrototype.isNew();
 
 		LayoutSetPrototypeModelImpl layoutSetPrototypeModelImpl = (LayoutSetPrototypeModelImpl)layoutSetPrototype;
@@ -4166,7 +4162,7 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 
 			args = new Object[] {
 					layoutSetPrototypeModelImpl.getCompanyId(),
-					layoutSetPrototypeModelImpl.getActive()
+					layoutSetPrototypeModelImpl.isActive()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_A, args);
@@ -4263,33 +4259,6 @@ public class LayoutSetPrototypePersistenceImpl extends BasePersistenceImpl<Layou
 		layoutSetPrototype.resetOriginalValues();
 
 		return layoutSetPrototype;
-	}
-
-	protected LayoutSetPrototype toUnwrappedModel(
-		LayoutSetPrototype layoutSetPrototype) {
-		if (layoutSetPrototype instanceof LayoutSetPrototypeImpl) {
-			return layoutSetPrototype;
-		}
-
-		LayoutSetPrototypeImpl layoutSetPrototypeImpl = new LayoutSetPrototypeImpl();
-
-		layoutSetPrototypeImpl.setNew(layoutSetPrototype.isNew());
-		layoutSetPrototypeImpl.setPrimaryKey(layoutSetPrototype.getPrimaryKey());
-
-		layoutSetPrototypeImpl.setMvccVersion(layoutSetPrototype.getMvccVersion());
-		layoutSetPrototypeImpl.setUuid(layoutSetPrototype.getUuid());
-		layoutSetPrototypeImpl.setLayoutSetPrototypeId(layoutSetPrototype.getLayoutSetPrototypeId());
-		layoutSetPrototypeImpl.setCompanyId(layoutSetPrototype.getCompanyId());
-		layoutSetPrototypeImpl.setUserId(layoutSetPrototype.getUserId());
-		layoutSetPrototypeImpl.setUserName(layoutSetPrototype.getUserName());
-		layoutSetPrototypeImpl.setCreateDate(layoutSetPrototype.getCreateDate());
-		layoutSetPrototypeImpl.setModifiedDate(layoutSetPrototype.getModifiedDate());
-		layoutSetPrototypeImpl.setName(layoutSetPrototype.getName());
-		layoutSetPrototypeImpl.setDescription(layoutSetPrototype.getDescription());
-		layoutSetPrototypeImpl.setSettings(layoutSetPrototype.getSettings());
-		layoutSetPrototypeImpl.setActive(layoutSetPrototype.isActive());
-
-		return layoutSetPrototypeImpl;
 	}
 
 	/**

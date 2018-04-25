@@ -1795,7 +1795,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 			if ((list != null) && !list.isEmpty()) {
 				for (KaleoInstance kaleoInstance : list) {
 					if ((kaleoDefinitionVersionId != kaleoInstance.getKaleoDefinitionVersionId()) ||
-							(completed != kaleoInstance.getCompleted())) {
+							(completed != kaleoInstance.isCompleted())) {
 						list = null;
 
 						break;
@@ -3700,8 +3700,6 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 	@Override
 	protected KaleoInstance removeImpl(KaleoInstance kaleoInstance) {
-		kaleoInstance = toUnwrappedModel(kaleoInstance);
-
 		Session session = null;
 
 		try {
@@ -3732,8 +3730,6 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 	@Override
 	public KaleoInstance updateImpl(KaleoInstance kaleoInstance) {
-		kaleoInstance = toUnwrappedModel(kaleoInstance);
-
 		boolean isNew = kaleoInstance.isNew();
 
 		KaleoInstanceModelImpl kaleoInstanceModelImpl = (KaleoInstanceModelImpl)kaleoInstance;
@@ -3815,7 +3811,7 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 
 			args = new Object[] {
 					kaleoInstanceModelImpl.getKaleoDefinitionVersionId(),
-					kaleoInstanceModelImpl.getCompleted()
+					kaleoInstanceModelImpl.isCompleted()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_KDVI_C, args);
@@ -3982,36 +3978,6 @@ public class KaleoInstancePersistenceImpl extends BasePersistenceImpl<KaleoInsta
 		kaleoInstance.resetOriginalValues();
 
 		return kaleoInstance;
-	}
-
-	protected KaleoInstance toUnwrappedModel(KaleoInstance kaleoInstance) {
-		if (kaleoInstance instanceof KaleoInstanceImpl) {
-			return kaleoInstance;
-		}
-
-		KaleoInstanceImpl kaleoInstanceImpl = new KaleoInstanceImpl();
-
-		kaleoInstanceImpl.setNew(kaleoInstance.isNew());
-		kaleoInstanceImpl.setPrimaryKey(kaleoInstance.getPrimaryKey());
-
-		kaleoInstanceImpl.setKaleoInstanceId(kaleoInstance.getKaleoInstanceId());
-		kaleoInstanceImpl.setGroupId(kaleoInstance.getGroupId());
-		kaleoInstanceImpl.setCompanyId(kaleoInstance.getCompanyId());
-		kaleoInstanceImpl.setUserId(kaleoInstance.getUserId());
-		kaleoInstanceImpl.setUserName(kaleoInstance.getUserName());
-		kaleoInstanceImpl.setCreateDate(kaleoInstance.getCreateDate());
-		kaleoInstanceImpl.setModifiedDate(kaleoInstance.getModifiedDate());
-		kaleoInstanceImpl.setKaleoDefinitionVersionId(kaleoInstance.getKaleoDefinitionVersionId());
-		kaleoInstanceImpl.setKaleoDefinitionName(kaleoInstance.getKaleoDefinitionName());
-		kaleoInstanceImpl.setKaleoDefinitionVersion(kaleoInstance.getKaleoDefinitionVersion());
-		kaleoInstanceImpl.setRootKaleoInstanceTokenId(kaleoInstance.getRootKaleoInstanceTokenId());
-		kaleoInstanceImpl.setClassName(kaleoInstance.getClassName());
-		kaleoInstanceImpl.setClassPK(kaleoInstance.getClassPK());
-		kaleoInstanceImpl.setCompleted(kaleoInstance.isCompleted());
-		kaleoInstanceImpl.setCompletionDate(kaleoInstance.getCompletionDate());
-		kaleoInstanceImpl.setWorkflowContext(kaleoInstance.getWorkflowContext());
-
-		return kaleoInstanceImpl;
 	}
 
 	/**

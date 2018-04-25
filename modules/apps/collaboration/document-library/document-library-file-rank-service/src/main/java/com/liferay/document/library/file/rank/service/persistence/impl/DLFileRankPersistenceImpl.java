@@ -1773,7 +1773,7 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 				for (DLFileRank dlFileRank : list) {
 					if ((groupId != dlFileRank.getGroupId()) ||
 							(userId != dlFileRank.getUserId()) ||
-							(active != dlFileRank.getActive())) {
+							(active != dlFileRank.isActive())) {
 						list = null;
 
 						break;
@@ -2699,8 +2699,6 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 
 	@Override
 	protected DLFileRank removeImpl(DLFileRank dlFileRank) {
-		dlFileRank = toUnwrappedModel(dlFileRank);
-
 		Session session = null;
 
 		try {
@@ -2731,8 +2729,6 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 
 	@Override
 	public DLFileRank updateImpl(DLFileRank dlFileRank) {
-		dlFileRank = toUnwrappedModel(dlFileRank);
-
 		boolean isNew = dlFileRank.isNew();
 
 		DLFileRankModelImpl dlFileRankModelImpl = (DLFileRankModelImpl)dlFileRank;
@@ -2789,7 +2785,7 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 			args = new Object[] {
 					dlFileRankModelImpl.getGroupId(),
 					dlFileRankModelImpl.getUserId(),
-					dlFileRankModelImpl.getActive()
+					dlFileRankModelImpl.isActive()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_U_A, args);
@@ -2890,27 +2886,6 @@ public class DLFileRankPersistenceImpl extends BasePersistenceImpl<DLFileRank>
 		dlFileRank.resetOriginalValues();
 
 		return dlFileRank;
-	}
-
-	protected DLFileRank toUnwrappedModel(DLFileRank dlFileRank) {
-		if (dlFileRank instanceof DLFileRankImpl) {
-			return dlFileRank;
-		}
-
-		DLFileRankImpl dlFileRankImpl = new DLFileRankImpl();
-
-		dlFileRankImpl.setNew(dlFileRank.isNew());
-		dlFileRankImpl.setPrimaryKey(dlFileRank.getPrimaryKey());
-
-		dlFileRankImpl.setFileRankId(dlFileRank.getFileRankId());
-		dlFileRankImpl.setGroupId(dlFileRank.getGroupId());
-		dlFileRankImpl.setCompanyId(dlFileRank.getCompanyId());
-		dlFileRankImpl.setUserId(dlFileRank.getUserId());
-		dlFileRankImpl.setCreateDate(dlFileRank.getCreateDate());
-		dlFileRankImpl.setFileEntryId(dlFileRank.getFileEntryId());
-		dlFileRankImpl.setActive(dlFileRank.isActive());
-
-		return dlFileRankImpl;
 	}
 
 	/**

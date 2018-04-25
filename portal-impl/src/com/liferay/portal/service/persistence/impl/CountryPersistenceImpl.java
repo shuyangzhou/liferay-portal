@@ -885,7 +885,7 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Country country : list) {
-					if ((active != country.getActive())) {
+					if ((active != country.isActive())) {
 						list = null;
 
 						break;
@@ -1529,8 +1529,6 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 
 	@Override
 	protected Country removeImpl(Country country) {
-		country = toUnwrappedModel(country);
-
 		Session session = null;
 
 		try {
@@ -1561,8 +1559,6 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 
 	@Override
 	public Country updateImpl(Country country) {
-		country = toUnwrappedModel(country);
-
 		boolean isNew = country.isNew();
 
 		CountryModelImpl countryModelImpl = (CountryModelImpl)country;
@@ -1595,7 +1591,7 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 		}
 		else
 		 if (isNew) {
-			Object[] args = new Object[] { countryModelImpl.getActive() };
+			Object[] args = new Object[] { countryModelImpl.isActive() };
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_ACTIVE, args);
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ACTIVE,
@@ -1634,29 +1630,6 @@ public class CountryPersistenceImpl extends BasePersistenceImpl<Country>
 		country.resetOriginalValues();
 
 		return country;
-	}
-
-	protected Country toUnwrappedModel(Country country) {
-		if (country instanceof CountryImpl) {
-			return country;
-		}
-
-		CountryImpl countryImpl = new CountryImpl();
-
-		countryImpl.setNew(country.isNew());
-		countryImpl.setPrimaryKey(country.getPrimaryKey());
-
-		countryImpl.setMvccVersion(country.getMvccVersion());
-		countryImpl.setCountryId(country.getCountryId());
-		countryImpl.setName(country.getName());
-		countryImpl.setA2(country.getA2());
-		countryImpl.setA3(country.getA3());
-		countryImpl.setNumber(country.getNumber());
-		countryImpl.setIdd(country.getIdd());
-		countryImpl.setZipRequired(country.isZipRequired());
-		countryImpl.setActive(country.isActive());
-
-		return countryImpl;
 	}
 
 	/**
