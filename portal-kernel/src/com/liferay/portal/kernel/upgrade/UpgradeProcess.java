@@ -86,7 +86,7 @@ public abstract class UpgradeProcess
 			_log.info("Upgrading " + ClassUtil.getClassName(this));
 		}
 
-		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+		try (Connection con = DataAccess.getConnection()) {
 			connection = con;
 
 			doUpgrade();
@@ -672,14 +672,11 @@ public abstract class UpgradeProcess
 			"release_", "repository", "repositoryentry", "resourceaction",
 			"resourceblock", "resourceblockpermission", "resourcepermission",
 			"resourcetypepermission", "role_", "servicecomponent",
-			"shoppingcart", "shoppingcategory", "shoppingcoupon",
-			"shoppingitem", "shoppingitemfield", "shoppingitemprice",
-			"shoppingorder", "shoppingorderitem", "socialactivity",
-			"socialactivityachievement", "socialactivitycounter",
-			"socialactivitylimit", "socialactivityset", "socialactivitysetting",
-			"socialrelation", "socialrequest", "subscription", "systemevent",
-			"team", "ticket", "trashentry", "trashversion",
-			"usernotificationdelivery", "user_", "usergroup",
+			"socialactivity", "socialactivityachievement",
+			"socialactivitycounter", "socialactivitylimit", "socialactivityset",
+			"socialactivitysetting", "socialrelation", "socialrequest",
+			"subscription", "systemevent", "team", "ticket", "trashentry",
+			"trashversion", "usernotificationdelivery", "user_", "usergroup",
 			"usergroupgrouprole", "usergrouprole", "usergroups_teams",
 			"useridmapper", "usernotificationevent", "users_groups",
 			"users_orgs", "users_roles", "users_teams", "users_usergroups",

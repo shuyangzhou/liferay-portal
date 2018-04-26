@@ -4889,7 +4889,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 			DLFolder dlFolder = (DLFolder)result;
 
 			if ((repositoryId != dlFolder.getRepositoryId()) ||
-					(mountPoint != dlFolder.getMountPoint())) {
+					(mountPoint != dlFolder.isMountPoint())) {
 				result = null;
 			}
 		}
@@ -4943,7 +4943,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 					cacheResult(dlFolder);
 
 					if ((dlFolder.getRepositoryId() != repositoryId) ||
-							(dlFolder.getMountPoint() != mountPoint)) {
+							(dlFolder.isMountPoint() != mountPoint)) {
 						finderCache.putResult(FINDER_PATH_FETCH_BY_R_M,
 							finderArgs, dlFolder);
 					}
@@ -6302,7 +6302,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 			if ((list != null) && !list.isEmpty()) {
 				for (DLFolder dlFolder : list) {
 					if ((groupId != dlFolder.getGroupId()) ||
-							(mountPoint != dlFolder.getMountPoint()) ||
+							(mountPoint != dlFolder.isMountPoint()) ||
 							(parentFolderId != dlFolder.getParentFolderId())) {
 						list = null;
 
@@ -8024,9 +8024,9 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 			if ((list != null) && !list.isEmpty()) {
 				for (DLFolder dlFolder : list) {
 					if ((groupId != dlFolder.getGroupId()) ||
-							(mountPoint != dlFolder.getMountPoint()) ||
+							(mountPoint != dlFolder.isMountPoint()) ||
 							(parentFolderId != dlFolder.getParentFolderId()) ||
-							(hidden != dlFolder.getHidden())) {
+							(hidden != dlFolder.isHidden())) {
 						list = null;
 
 						break;
@@ -9050,11 +9050,10 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 			if ((list != null) && !list.isEmpty()) {
 				for (DLFolder dlFolder : list) {
 					if ((groupId != dlFolder.getGroupId()) ||
-							(mountPoint != dlFolder.getMountPoint()) ||
+							(mountPoint != dlFolder.isMountPoint()) ||
 							!StringUtil.wildcardMatches(
 								dlFolder.getTreePath(), treePath, '_', '%',
-								'\\', true) ||
-							(hidden != dlFolder.getHidden())) {
+								'\\', true) || (hidden != dlFolder.isHidden())) {
 						list = null;
 
 						break;
@@ -10183,7 +10182,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 				for (DLFolder dlFolder : list) {
 					if ((groupId != dlFolder.getGroupId()) ||
 							(parentFolderId != dlFolder.getParentFolderId()) ||
-							(hidden != dlFolder.getHidden()) ||
+							(hidden != dlFolder.isHidden()) ||
 							(status != dlFolder.getStatus())) {
 						list = null;
 
@@ -11239,9 +11238,9 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 			if ((list != null) && !list.isEmpty()) {
 				for (DLFolder dlFolder : list) {
 					if ((groupId != dlFolder.getGroupId()) ||
-							(mountPoint != dlFolder.getMountPoint()) ||
+							(mountPoint != dlFolder.isMountPoint()) ||
 							(parentFolderId != dlFolder.getParentFolderId()) ||
-							(hidden != dlFolder.getHidden()) ||
+							(hidden != dlFolder.isHidden()) ||
 							(status != dlFolder.getStatus())) {
 						list = null;
 
@@ -12232,7 +12231,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 			new Object[] { dlFolder.getUuid(), dlFolder.getGroupId() }, dlFolder);
 
 		finderCache.putResult(FINDER_PATH_FETCH_BY_R_M,
-			new Object[] { dlFolder.getRepositoryId(), dlFolder.getMountPoint() },
+			new Object[] { dlFolder.getRepositoryId(), dlFolder.isMountPoint() },
 			dlFolder);
 
 		finderCache.putResult(FINDER_PATH_FETCH_BY_G_P_N,
@@ -12321,7 +12320,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 		args = new Object[] {
 				dlFolderModelImpl.getRepositoryId(),
-				dlFolderModelImpl.getMountPoint()
+				dlFolderModelImpl.isMountPoint()
 			};
 
 		finderCache.putResult(FINDER_PATH_COUNT_BY_R_M, args, Long.valueOf(1),
@@ -12366,7 +12365,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 		if (clearCurrent) {
 			Object[] args = new Object[] {
 					dlFolderModelImpl.getRepositoryId(),
-					dlFolderModelImpl.getMountPoint()
+					dlFolderModelImpl.isMountPoint()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_R_M, args);
@@ -12642,7 +12641,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 			args = new Object[] {
 					dlFolderModelImpl.getGroupId(),
-					dlFolderModelImpl.getMountPoint(),
+					dlFolderModelImpl.isMountPoint(),
 					dlFolderModelImpl.getParentFolderId()
 				};
 
@@ -12652,9 +12651,9 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 			args = new Object[] {
 					dlFolderModelImpl.getGroupId(),
-					dlFolderModelImpl.getMountPoint(),
+					dlFolderModelImpl.isMountPoint(),
 					dlFolderModelImpl.getParentFolderId(),
-					dlFolderModelImpl.getHidden()
+					dlFolderModelImpl.isHidden()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_M_P_H, args);
@@ -12664,7 +12663,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 			args = new Object[] {
 					dlFolderModelImpl.getGroupId(),
 					dlFolderModelImpl.getParentFolderId(),
-					dlFolderModelImpl.getHidden(), dlFolderModelImpl.getStatus()
+					dlFolderModelImpl.isHidden(), dlFolderModelImpl.getStatus()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_P_H_S, args);
@@ -12673,9 +12672,9 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 			args = new Object[] {
 					dlFolderModelImpl.getGroupId(),
-					dlFolderModelImpl.getMountPoint(),
+					dlFolderModelImpl.isMountPoint(),
 					dlFolderModelImpl.getParentFolderId(),
-					dlFolderModelImpl.getHidden(), dlFolderModelImpl.getStatus()
+					dlFolderModelImpl.isHidden(), dlFolderModelImpl.getStatus()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_M_P_H_S, args);
@@ -12852,7 +12851,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 				args = new Object[] {
 						dlFolderModelImpl.getGroupId(),
-						dlFolderModelImpl.getMountPoint(),
+						dlFolderModelImpl.isMountPoint(),
 						dlFolderModelImpl.getParentFolderId()
 					};
 
@@ -12876,9 +12875,9 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 				args = new Object[] {
 						dlFolderModelImpl.getGroupId(),
-						dlFolderModelImpl.getMountPoint(),
+						dlFolderModelImpl.isMountPoint(),
 						dlFolderModelImpl.getParentFolderId(),
-						dlFolderModelImpl.getHidden()
+						dlFolderModelImpl.isHidden()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_M_P_H, args);
@@ -12902,7 +12901,7 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 				args = new Object[] {
 						dlFolderModelImpl.getGroupId(),
 						dlFolderModelImpl.getParentFolderId(),
-						dlFolderModelImpl.getHidden(),
+						dlFolderModelImpl.isHidden(),
 						dlFolderModelImpl.getStatus()
 					};
 
@@ -12927,9 +12926,9 @@ public class DLFolderPersistenceImpl extends BasePersistenceImpl<DLFolder>
 
 				args = new Object[] {
 						dlFolderModelImpl.getGroupId(),
-						dlFolderModelImpl.getMountPoint(),
+						dlFolderModelImpl.isMountPoint(),
 						dlFolderModelImpl.getParentFolderId(),
-						dlFolderModelImpl.getHidden(),
+						dlFolderModelImpl.isHidden(),
 						dlFolderModelImpl.getStatus()
 					};
 

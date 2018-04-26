@@ -1,5 +1,6 @@
 <definition component-name="portal-search">
 	<property name="portal.release" value="true" />
+	<property name="portal.suite.search.engine" value="elasticsearch6,solr" />
 	<property name="portal.upstream" value="true" />
 	<property name="testray.main.component.name" value="Web Search" />
 
@@ -1380,7 +1381,7 @@
 		</execute>
 
 		<var name="actualScript"><![CDATA[<script>alert(123);</script>]]></var>
-		<var name="escapedScript"><![CDATA[&lt;script&gt;alert(123);&lt;/script&gt;]]></var>
+		<var name="escapedScript"><![CDATA[&lt;script&gt;<span class="highlight">alert</span>(123);&lt;/script&gt;]]></var>
 
 		<execute function="AssertHTMLSourceTextNotPresent" value1="${actualScript}" />
 		<execute function="AssertHTMLSourceTextPresent" value1="${escapedScript}" />
@@ -1708,10 +1709,10 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Configuration" />
 			<var name="panel" value="Control Panel" />
-			<var name="portlet" value="Server Administration" />
+			<var name="portlet" value="Search" />
 		</execute>
 
-		<execute macro="ServerAdministration#executeServerResourcesActions">
+		<execute macro="SearchAdministration#executeSearchActions">
 			<var name="actionsDescription" value="Reindex all search indexes." />
 		</execute>
 

@@ -82,6 +82,7 @@ public interface KaleoTaskFormLocalService extends BaseLocalService,
 	* @param kaleoTaskFormId the primary key for the new kaleo task form
 	* @return the new kaleo task form
 	*/
+	@Transactional(enabled = false)
 	public KaleoTaskForm createKaleoTaskForm(long kaleoTaskFormId);
 
 	public void deleteCompanyKaleoTaskForms(long companyId);
@@ -226,7 +227,7 @@ public interface KaleoTaskFormLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

@@ -83,6 +83,7 @@ public interface KaleoNotificationRecipientLocalService extends BaseLocalService
 	* @param kaleoNotificationRecipientId the primary key for the new kaleo notification recipient
 	* @return the new kaleo notification recipient
 	*/
+	@Transactional(enabled = false)
 	public KaleoNotificationRecipient createKaleoNotificationRecipient(
 		long kaleoNotificationRecipientId);
 
@@ -231,7 +232,7 @@ public interface KaleoNotificationRecipientLocalService extends BaseLocalService
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

@@ -101,6 +101,7 @@ public interface AMImageEntryLocalService extends BaseLocalService,
 	* @param amImageEntryId the primary key for the new am image entry
 	* @return the new am image entry
 	*/
+	@Transactional(enabled = false)
 	public AMImageEntry createAMImageEntry(long amImageEntryId);
 
 	/**
@@ -155,9 +156,8 @@ public interface AMImageEntryLocalService extends BaseLocalService,
 	* @param fileVersionId the primary key of the file version
 	* @throws PortalException if the file version was not found
 	*/
-	public void deleteAMImageEntryFileVersion(
-		java.lang.String configurationUuid, long fileVersionId)
-		throws PortalException;
+	public void deleteAMImageEntryFileVersion(String configurationUuid,
+		long fileVersionId) throws PortalException;
 
 	/**
 	* @throws PortalException
@@ -239,7 +239,7 @@ public interface AMImageEntryLocalService extends BaseLocalService,
 	a matching adaptive media image entry could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AMImageEntry fetchAMImageEntry(java.lang.String configurationUuid,
+	public AMImageEntry fetchAMImageEntry(String configurationUuid,
 		long fileVersionId);
 
 	/**
@@ -250,8 +250,8 @@ public interface AMImageEntryLocalService extends BaseLocalService,
 	* @return the matching am image entry, or <code>null</code> if a matching am image entry could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AMImageEntry fetchAMImageEntryByUuidAndGroupId(
-		java.lang.String uuid, long groupId);
+	public AMImageEntry fetchAMImageEntryByUuidAndGroupId(String uuid,
+		long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -278,8 +278,8 @@ public interface AMImageEntryLocalService extends BaseLocalService,
 	* @return the matching am image entries, or an empty list if no matches were found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AMImageEntry> getAMImageEntriesByUuidAndCompanyId(
-		java.lang.String uuid, long companyId);
+	public List<AMImageEntry> getAMImageEntriesByUuidAndCompanyId(String uuid,
+		long companyId);
 
 	/**
 	* Returns a range of am image entries matching the UUID and company.
@@ -292,8 +292,8 @@ public interface AMImageEntryLocalService extends BaseLocalService,
 	* @return the range of matching am image entries, or an empty list if no matches were found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AMImageEntry> getAMImageEntriesByUuidAndCompanyId(
-		java.lang.String uuid, long companyId, int start, int end,
+	public List<AMImageEntry> getAMImageEntriesByUuidAndCompanyId(String uuid,
+		long companyId, int start, int end,
 		OrderByComparator<AMImageEntry> orderByComparator);
 
 	/**
@@ -315,8 +315,7 @@ public interface AMImageEntryLocalService extends BaseLocalService,
 	configuration
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAMImageEntriesCount(long companyId,
-		java.lang.String configurationUuid);
+	public int getAMImageEntriesCount(long companyId, String configurationUuid);
 
 	/**
 	* Returns the am image entry with the primary key.
@@ -338,7 +337,7 @@ public interface AMImageEntryLocalService extends BaseLocalService,
 	* @throws PortalException if a matching am image entry could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AMImageEntry getAMImageEntryByUuidAndGroupId(java.lang.String uuid,
+	public AMImageEntry getAMImageEntryByUuidAndGroupId(String uuid,
 		long groupId) throws PortalException;
 
 	/**
@@ -377,7 +376,7 @@ public interface AMImageEntryLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	/**
 	* Returns the percentage of images that have an adaptive media image
@@ -391,7 +390,7 @@ public interface AMImageEntryLocalService extends BaseLocalService,
 	the expected adaptive media images
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getPercentage(long companyId, java.lang.String configurationUuid);
+	public int getPercentage(long companyId, String configurationUuid);
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

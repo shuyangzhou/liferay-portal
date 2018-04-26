@@ -505,15 +505,24 @@ public class HttpImpl implements Http {
 			return url;
 		}
 
-		url = removeProtocol(url);
-
-		int pos = url.indexOf(CharPool.SLASH);
-
-		if (pos != -1) {
-			return url.substring(0, pos);
+		if (_getProtocolDelimiterIndex(url) < 0) {
+			url = Http.HTTPS_WITH_SLASH + url;
 		}
 
-		return url;
+		try {
+			URI uri = new URI(url);
+
+			String host = uri.getHost();
+
+			if (host == null) {
+				return StringPool.BLANK;
+			}
+
+			return host;
+		}
+		catch (URISyntaxException urise) {
+			return StringPool.BLANK;
+		}
 	}
 
 	/**
@@ -632,17 +641,15 @@ public class HttpImpl implements Http {
 
 	@Override
 	public String getProtocol(String url) {
-		if (Validator.isNull(url)) {
-			return url;
+		int index = _getProtocolDelimiterIndex(url);
+
+		if (index > 0) {
+			url = url.trim();
+
+			return url.substring(0, index);
 		}
 
-		int pos = url.indexOf(Http.PROTOCOL_DELIMITER);
-
-		if (pos != -1) {
-			return url.substring(0, pos);
-		}
-
-		return Http.HTTP;
+		return StringPool.BLANK;
 	}
 
 	@Override
@@ -676,13 +683,7 @@ public class HttpImpl implements Http {
 
 	@Override
 	public boolean hasProtocol(String url) {
-		if (Validator.isNull(url)) {
-			return false;
-		}
-
-		int pos = url.indexOf(Http.PROTOCOL_DELIMITER);
-
-		if (pos != -1) {
+		if (_getProtocolDelimiterIndex(url) > 0) {
 			return true;
 		}
 
@@ -1090,67 +1091,15 @@ public class HttpImpl implements Http {
 
 	@Override
 	public String removeProtocol(String url) {
-		if (Validator.isNull(url)) {
-			return url;
+		int index = _getProtocolDelimiterIndex(url);
+
+		if (index > 0) {
+			url = url.trim();
+
+			return url.substring(index + PROTOCOL_DELIMITER.length());
 		}
 
-		url = url.trim();
-
-		// "/[a-zA-Z0-9]+" is considered as valid relative URL
-
-		if ((url.length() >= 2) && (url.charAt(0) == CharPool.SLASH) &&
-			_isLetterOrNumber(url.charAt(1))) {
-
-			return url;
-		}
-
-		int pos = 0;
-
-		protocol:
-		while (true) {
-
-			// Find and skip all valid protocol "[a-zA-Z0-9]+://" headers
-
-			int index = url.indexOf(Http.PROTOCOL_DELIMITER, pos);
-
-			if (index > 0) {
-				boolean hasProtocol = true;
-
-				for (int i = pos; i < index; i++) {
-					if (!_isLetterOrNumber(url.charAt(i))) {
-						hasProtocol = false;
-
-						break;
-					}
-				}
-
-				if (hasProtocol) {
-					pos = index + Http.PROTOCOL_DELIMITER.length();
-
-					continue;
-				}
-			}
-
-			// Ignore all "[\\\\/]+" after valid protocol header
-
-			for (int i = pos; i < url.length(); i++) {
-				char c = url.charAt(i);
-
-				if ((c != CharPool.SLASH) && (c != CharPool.BACK_SLASH)) {
-					if (i != pos) {
-						pos = i;
-
-						continue protocol;
-					}
-
-					break;
-				}
-			}
-
-			// Chop off protocol and return
-
-			return url.substring(pos);
-		}
+		return url;
 	}
 
 	@Override
@@ -1947,6 +1896,10 @@ public class HttpImpl implements Http {
 				response.addHeader(header.getName(), header.getValue());
 			}
 
+			if (httpEntity == null) {
+				return null;
+			}
+
 			InputStream inputStream = httpEntity.getContent();
 
 			final CloseableHttpResponse referenceCloseableHttpResponse =
@@ -2015,15 +1968,34 @@ public class HttpImpl implements Http {
 		}
 	}
 
-	private boolean _isLetterOrNumber(char c) {
-		if (((CharPool.NUMBER_0 <= c) && (c <= CharPool.NUMBER_9)) ||
-			((CharPool.UPPER_CASE_A <= c) && (c <= CharPool.UPPER_CASE_Z)) ||
-			((CharPool.LOWER_CASE_A <= c) && (c <= CharPool.LOWER_CASE_Z))) {
-
-			return true;
+	private int _getProtocolDelimiterIndex(String url) {
+		if (Validator.isNull(url)) {
+			return -1;
 		}
 
-		return false;
+		url = url.trim();
+
+		// Define protocol as "[a-zA-Z][a-zA-Z0-9]*://"
+
+		int pos = url.indexOf(Http.PROTOCOL_DELIMITER);
+
+		if (pos <= 0) {
+			return -1;
+		}
+
+		if (!Validator.isChar(url.charAt(0))) {
+			return -1;
+		}
+
+		for (int i = 1; i < pos; ++i) {
+			if (!Validator.isChar(url.charAt(i)) &&
+				!Validator.isDigit(url.charAt(i))) {
+
+				return -1;
+			}
+		}
+
+		return pos;
 	}
 
 	private String _shortenURL(String url, int currentLength) {

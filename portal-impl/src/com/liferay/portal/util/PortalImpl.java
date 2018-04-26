@@ -914,16 +914,16 @@ public class PortalImpl implements Portal {
 			return url;
 		}
 
-		String domain = HttpUtil.getDomain(url);
+		if ((url.charAt(0) == CharPool.SLASH) &&
+			((url.length() > 1) && (url.charAt(1) != CharPool.SLASH))) {
 
-		if (domain.isEmpty()) {
 			return url;
 		}
 
-		int pos = domain.indexOf(CharPool.COLON);
+		String domain = HttpUtil.getDomain(url);
 
-		if (pos != -1) {
-			domain = domain.substring(0, pos);
+		if (domain.isEmpty()) {
+			return null;
 		}
 
 		if (!_validPortalDomainCheckDisabled && isValidPortalDomain(domain)) {
@@ -1560,7 +1560,7 @@ public class PortalImpl implements Portal {
 		ResultSet rs = null;
 
 		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
+			con = DataAccess.getConnection();
 
 			ps = con.prepareStatement(
 				"select classNameId from ClassName_ where value = ?");
@@ -2800,7 +2800,7 @@ public class PortalImpl implements Portal {
 
 		if ((layoutSet == null) ||
 			(layoutSet.getGroupId() != layout.getGroupId()) ||
-			(layoutSet.getPrivateLayout() != layout.getPrivateLayout())) {
+			(layoutSet.isPrivateLayout() != layout.isPrivateLayout())) {
 
 			layoutSet = layout.getLayoutSet();
 		}
@@ -7653,7 +7653,7 @@ public class PortalImpl implements Portal {
 		}
 
 		long defaultPlid = LayoutLocalServiceUtil.getDefaultPlid(
-			layout.getGroupId(), layout.getPrivateLayout());
+			layout.getGroupId(), layout.isPrivateLayout());
 
 		return LayoutLocalServiceUtil.fetchLayout(defaultPlid);
 	}
@@ -8506,7 +8506,7 @@ public class PortalImpl implements Portal {
 			boolean canonicalURL, boolean controlPanel)
 		throws PortalException {
 
-		boolean privateLayoutSet = layoutSet.getPrivateLayout();
+		boolean privateLayoutSet = layoutSet.isPrivateLayout();
 
 		String portalURL = themeDisplay.getPortalURL();
 

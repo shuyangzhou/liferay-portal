@@ -79,6 +79,7 @@ public interface MBStatsUserLocalService extends BaseLocalService,
 	* @param statsUserId the primary key for the new message boards stats user
 	* @return the new message boards stats user
 	*/
+	@Transactional(enabled = false)
 	public MBStatsUser createMBStatsUser(long statsUserId);
 
 	/**
@@ -231,7 +232,7 @@ public interface MBStatsUserLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
