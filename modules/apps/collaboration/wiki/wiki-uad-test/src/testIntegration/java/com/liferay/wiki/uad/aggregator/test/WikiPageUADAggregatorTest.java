@@ -16,7 +16,6 @@ package com.liferay.wiki.uad.aggregator.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.test.rule.Inject;
@@ -28,7 +27,7 @@ import com.liferay.user.associated.data.test.util.WhenHasStatusByUserIdField;
 
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.uad.constants.WikiUADConstants;
-import com.liferay.wiki.uad.test.WikiPageUADEntityTestHelper;
+import com.liferay.wiki.uad.test.WikiPageUADTestHelper;
 
 import org.junit.After;
 import org.junit.ClassRule;
@@ -44,16 +43,16 @@ import java.util.List;
  * @generated
  */
 @RunWith(Arquillian.class)
-public class WikiPageUADAggregatorTest extends BaseUADAggregatorTestCase
-	implements WhenHasStatusByUserIdField {
+public class WikiPageUADAggregatorTest extends BaseUADAggregatorTestCase<WikiPage>
+	implements WhenHasStatusByUserIdField<WikiPage> {
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule = new LiferayIntegrationTestRule();
 
 	@Override
-	public BaseModel<?> addBaseModelWithStatusByUserId(long userId,
+	public WikiPage addBaseModelWithStatusByUserId(long userId,
 		long statusByUserId) throws Exception {
-		WikiPage wikiPage = _wikiPageUADEntityTestHelper.addWikiPageWithStatusByUserId(userId,
+		WikiPage wikiPage = _wikiPageUADTestHelper.addWikiPageWithStatusByUserId(userId,
 				statusByUserId);
 
 		_wikiPages.add(wikiPage);
@@ -61,9 +60,14 @@ public class WikiPageUADAggregatorTest extends BaseUADAggregatorTestCase
 		return wikiPage;
 	}
 
+	@After
+	public void tearDown() throws Exception {
+		_wikiPageUADTestHelper.cleanUpDependencies(_wikiPages);
+	}
+
 	@Override
-	protected BaseModel<?> addBaseModel(long userId) throws Exception {
-		WikiPage wikiPage = _wikiPageUADEntityTestHelper.addWikiPage(userId);
+	protected WikiPage addBaseModel(long userId) throws Exception {
+		WikiPage wikiPage = _wikiPageUADTestHelper.addWikiPage(userId);
 
 		_wikiPages.add(wikiPage);
 
@@ -75,15 +79,10 @@ public class WikiPageUADAggregatorTest extends BaseUADAggregatorTestCase
 		return _uadAggregator;
 	}
 
-	@After
-	public void tearDown() throws Exception {
-		_wikiPageUADEntityTestHelper.cleanUpDependencies(_wikiPages);
-	}
-
 	@DeleteAfterTestRun
 	private final List<WikiPage> _wikiPages = new ArrayList<WikiPage>();
 	@Inject
-	private WikiPageUADEntityTestHelper _wikiPageUADEntityTestHelper;
+	private WikiPageUADTestHelper _wikiPageUADTestHelper;
 	@Inject(filter = "model.class.name=" +
 	WikiUADConstants.CLASS_NAME_WIKI_PAGE)
 	private UADAggregator _uadAggregator;

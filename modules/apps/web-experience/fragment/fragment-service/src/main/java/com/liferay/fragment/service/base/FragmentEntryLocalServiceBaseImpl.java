@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.service.FragmentEntryLocalService;
 import com.liferay.fragment.service.persistence.FragmentCollectionPersistence;
+import com.liferay.fragment.service.persistence.FragmentEntryLinkFinder;
 import com.liferay.fragment.service.persistence.FragmentEntryLinkPersistence;
 import com.liferay.fragment.service.persistence.FragmentEntryPersistence;
 
@@ -43,6 +44,7 @@ import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -96,6 +98,7 @@ public abstract class FragmentEntryLocalServiceBaseImpl
 	 * @return the new fragment entry
 	 */
 	@Override
+	@Transactional(enabled = false)
 	public FragmentEntry createFragmentEntry(long fragmentEntryId) {
 		return fragmentEntryPersistence.create(fragmentEntryId);
 	}
@@ -545,6 +548,25 @@ public abstract class FragmentEntryLocalServiceBaseImpl
 		this.fragmentEntryLinkPersistence = fragmentEntryLinkPersistence;
 	}
 
+	/**
+	 * Returns the fragment entry link finder.
+	 *
+	 * @return the fragment entry link finder
+	 */
+	public FragmentEntryLinkFinder getFragmentEntryLinkFinder() {
+		return fragmentEntryLinkFinder;
+	}
+
+	/**
+	 * Sets the fragment entry link finder.
+	 *
+	 * @param fragmentEntryLinkFinder the fragment entry link finder
+	 */
+	public void setFragmentEntryLinkFinder(
+		FragmentEntryLinkFinder fragmentEntryLinkFinder) {
+		this.fragmentEntryLinkFinder = fragmentEntryLinkFinder;
+	}
+
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register("com.liferay.fragment.model.FragmentEntry",
 			fragmentEntryLocalService);
@@ -621,6 +643,8 @@ public abstract class FragmentEntryLocalServiceBaseImpl
 	protected com.liferay.fragment.service.FragmentEntryLinkLocalService fragmentEntryLinkLocalService;
 	@BeanReference(type = FragmentEntryLinkPersistence.class)
 	protected FragmentEntryLinkPersistence fragmentEntryLinkPersistence;
+	@BeanReference(type = FragmentEntryLinkFinder.class)
+	protected FragmentEntryLinkFinder fragmentEntryLinkFinder;
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
 	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
 }

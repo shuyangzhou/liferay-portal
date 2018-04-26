@@ -90,6 +90,7 @@ public interface MBThreadLocalService extends BaseLocalService,
 	* @param threadId the primary key for the new message boards thread
 	* @return the new message boards thread
 	*/
+	@Transactional(enabled = false)
 	public MBThread createMBThread(long threadId);
 
 	/**
@@ -199,8 +200,7 @@ public interface MBThreadLocalService extends BaseLocalService,
 	* @return the matching message boards thread, or <code>null</code> if a matching message boards thread could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public MBThread fetchMBThreadByUuidAndGroupId(java.lang.String uuid,
-		long groupId);
+	public MBThread fetchMBThreadByUuidAndGroupId(String uuid, long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public MBThread fetchThread(long threadId);
@@ -271,8 +271,8 @@ public interface MBThreadLocalService extends BaseLocalService,
 	* @throws PortalException if a matching message boards thread could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public MBThread getMBThreadByUuidAndGroupId(java.lang.String uuid,
-		long groupId) throws PortalException;
+	public MBThread getMBThreadByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException;
 
 	/**
 	* Returns a range of all the message boards threads.
@@ -296,8 +296,8 @@ public interface MBThreadLocalService extends BaseLocalService,
 	* @return the matching message boards threads, or an empty list if no matches were found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<MBThread> getMBThreadsByUuidAndCompanyId(
-		java.lang.String uuid, long companyId);
+	public List<MBThread> getMBThreadsByUuidAndCompanyId(String uuid,
+		long companyId);
 
 	/**
 	* Returns a range of message boards threads matching the UUID and company.
@@ -310,8 +310,8 @@ public interface MBThreadLocalService extends BaseLocalService,
 	* @return the range of matching message boards threads, or an empty list if no matches were found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<MBThread> getMBThreadsByUuidAndCompanyId(
-		java.lang.String uuid, long companyId, int start, int end,
+	public List<MBThread> getMBThreadsByUuidAndCompanyId(String uuid,
+		long companyId, int start, int end,
 		OrderByComparator<MBThread> orderByComparator);
 
 	/**
@@ -322,6 +322,10 @@ public interface MBThreadLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getMBThreadsCount();
 
+	/**
+	* @deprecated As of 2.0.0, with no direct replacement
+	*/
+	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<MBThread> getNoAssetThreads();
 
@@ -330,7 +334,7 @@ public interface MBThreadLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -395,9 +399,8 @@ public interface MBThreadLocalService extends BaseLocalService,
 		long startDate, long endDate, int status, int start, int end)
 		throws PortalException;
 
-	public MBThread splitThread(long userId, long messageId,
-		java.lang.String subject, ServiceContext serviceContext)
-		throws PortalException;
+	public MBThread splitThread(long userId, long messageId, String subject,
+		ServiceContext serviceContext) throws PortalException;
 
 	/**
 	* Updates the message boards thread in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

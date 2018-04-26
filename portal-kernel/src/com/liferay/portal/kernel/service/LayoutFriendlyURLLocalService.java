@@ -76,14 +76,14 @@ public interface LayoutFriendlyURLLocalService extends BaseLocalService,
 		LayoutFriendlyURL layoutFriendlyURL);
 
 	public LayoutFriendlyURL addLayoutFriendlyURL(long userId, long companyId,
-		long groupId, long plid, boolean privateLayout,
-		java.lang.String friendlyURL, java.lang.String languageId,
-		ServiceContext serviceContext) throws PortalException;
+		long groupId, long plid, boolean privateLayout, String friendlyURL,
+		String languageId, ServiceContext serviceContext)
+		throws PortalException;
 
 	public List<LayoutFriendlyURL> addLayoutFriendlyURLs(long userId,
 		long companyId, long groupId, long plid, boolean privateLayout,
-		Map<Locale, java.lang.String> friendlyURLMap,
-		ServiceContext serviceContext) throws PortalException;
+		Map<Locale, String> friendlyURLMap, ServiceContext serviceContext)
+		throws PortalException;
 
 	/**
 	* Creates a new layout friendly url with the primary key. Does not add the layout friendly url to the database.
@@ -91,6 +91,7 @@ public interface LayoutFriendlyURLLocalService extends BaseLocalService,
 	* @param layoutFriendlyURLId the primary key for the new layout friendly url
 	* @return the new layout friendly url
 	*/
+	@Transactional(enabled = false)
 	public LayoutFriendlyURL createLayoutFriendlyURL(long layoutFriendlyURLId);
 
 	/**
@@ -114,7 +115,7 @@ public interface LayoutFriendlyURLLocalService extends BaseLocalService,
 	public LayoutFriendlyURL deleteLayoutFriendlyURL(long layoutFriendlyURLId)
 		throws PortalException;
 
-	public void deleteLayoutFriendlyURL(long plid, java.lang.String languageId);
+	public void deleteLayoutFriendlyURL(long plid, String languageId);
 
 	public void deleteLayoutFriendlyURLs(long plid);
 
@@ -186,23 +187,21 @@ public interface LayoutFriendlyURLLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LayoutFriendlyURL fetchFirstLayoutFriendlyURL(long groupId,
-		boolean privateLayout, java.lang.String friendlyURL);
+		boolean privateLayout, String friendlyURL);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LayoutFriendlyURL fetchLayoutFriendlyURL(long layoutFriendlyURLId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LayoutFriendlyURL fetchLayoutFriendlyURL(long groupId,
-		boolean privateLayout, java.lang.String friendlyURL,
-		java.lang.String languageId);
+		boolean privateLayout, String friendlyURL, String languageId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public LayoutFriendlyURL fetchLayoutFriendlyURL(long plid, String languageId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LayoutFriendlyURL fetchLayoutFriendlyURL(long plid,
-		java.lang.String languageId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public LayoutFriendlyURL fetchLayoutFriendlyURL(long plid,
-		java.lang.String languageId, boolean useDefault);
+		String languageId, boolean useDefault);
 
 	/**
 	* Returns the layout friendly url matching the UUID and group.
@@ -213,7 +212,7 @@ public interface LayoutFriendlyURLLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LayoutFriendlyURL fetchLayoutFriendlyURLByUuidAndGroupId(
-		java.lang.String uuid, long groupId);
+		String uuid, long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -237,13 +236,12 @@ public interface LayoutFriendlyURLLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public LayoutFriendlyURL getLayoutFriendlyURL(long plid,
-		java.lang.String languageId) throws PortalException;
+	public LayoutFriendlyURL getLayoutFriendlyURL(long plid, String languageId)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public LayoutFriendlyURL getLayoutFriendlyURL(long plid,
-		java.lang.String languageId, boolean useDefault)
-		throws PortalException;
+	public LayoutFriendlyURL getLayoutFriendlyURL(long plid, String languageId,
+		boolean useDefault) throws PortalException;
 
 	/**
 	* Returns the layout friendly url matching the UUID and group.
@@ -254,12 +252,12 @@ public interface LayoutFriendlyURLLocalService extends BaseLocalService,
 	* @throws PortalException if a matching layout friendly url could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public LayoutFriendlyURL getLayoutFriendlyURLByUuidAndGroupId(
-		java.lang.String uuid, long groupId) throws PortalException;
+	public LayoutFriendlyURL getLayoutFriendlyURLByUuidAndGroupId(String uuid,
+		long groupId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Map<java.lang.Long, java.lang.String> getLayoutFriendlyURLs(
-		Group siteGroup, List<Layout> layouts, java.lang.String languageId);
+	public Map<Long, String> getLayoutFriendlyURLs(Group siteGroup,
+		List<Layout> layouts, String languageId);
 
 	/**
 	* Returns a range of all the layout friendly urls.
@@ -280,7 +278,7 @@ public interface LayoutFriendlyURLLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LayoutFriendlyURL> getLayoutFriendlyURLs(long plid,
-		java.lang.String friendlyURL, int start, int end);
+		String friendlyURL, int start, int end);
 
 	/**
 	* Returns all the layout friendly urls matching the UUID and company.
@@ -291,7 +289,7 @@ public interface LayoutFriendlyURLLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LayoutFriendlyURL> getLayoutFriendlyURLsByUuidAndCompanyId(
-		java.lang.String uuid, long companyId);
+		String uuid, long companyId);
 
 	/**
 	* Returns a range of layout friendly urls matching the UUID and company.
@@ -305,7 +303,7 @@ public interface LayoutFriendlyURLLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LayoutFriendlyURL> getLayoutFriendlyURLsByUuidAndCompanyId(
-		java.lang.String uuid, long companyId, int start, int end,
+		String uuid, long companyId, int start, int end,
 		OrderByComparator<LayoutFriendlyURL> orderByComparator);
 
 	/**
@@ -321,7 +319,7 @@ public interface LayoutFriendlyURLLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -340,11 +338,11 @@ public interface LayoutFriendlyURLLocalService extends BaseLocalService,
 
 	public LayoutFriendlyURL updateLayoutFriendlyURL(long userId,
 		long companyId, long groupId, long plid, boolean privateLayout,
-		java.lang.String friendlyURL, java.lang.String languageId,
-		ServiceContext serviceContext) throws PortalException;
+		String friendlyURL, String languageId, ServiceContext serviceContext)
+		throws PortalException;
 
 	public List<LayoutFriendlyURL> updateLayoutFriendlyURLs(long userId,
 		long companyId, long groupId, long plid, boolean privateLayout,
-		Map<Locale, java.lang.String> friendlyURLMap,
-		ServiceContext serviceContext) throws PortalException;
+		Map<Locale, String> friendlyURLMap, ServiceContext serviceContext)
+		throws PortalException;
 }

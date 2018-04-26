@@ -81,6 +81,7 @@ public interface SyncDLFileVersionDiffLocalService extends BaseLocalService,
 	* @param syncDLFileVersionDiffId the primary key for the new sync dl file version diff
 	* @return the new sync dl file version diff
 	*/
+	@Transactional(enabled = false)
 	public SyncDLFileVersionDiff createSyncDLFileVersionDiff(
 		long syncDLFileVersionDiffId);
 
@@ -196,7 +197,7 @@ public interface SyncDLFileVersionDiffLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

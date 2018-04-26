@@ -169,7 +169,7 @@ AUI.add(
 							var autosaveInterval = Liferay.DDM.FormSettings.autosaveInterval;
 
 							if (autosaveInterval > 0) {
-								instance._intervalId = setInterval(A.bind('_autosave', instance), autosaveInterval * MINUTE);
+								instance._intervalId = setInterval(A.bind('_autosave', instance, true), autosaveInterval * MINUTE);
 							}
 						}
 					},
@@ -402,6 +402,7 @@ AUI.add(
 									},
 									width: 600
 								},
+								id: 'leaveFormDialog',
 								title: Liferay.Language.get('leave-form')
 							}
 						);
@@ -484,14 +485,8 @@ AUI.add(
 					_afterAutosave: function(event) {
 						var instance = this;
 
-						var autosaveMessage = A.Lang.sub(
-							Liferay.Language.get('draft-saved-on-x'),
-							[
-								event.modifiedDate
-							]
-						);
+						instance._updateAutosaveBar(event.saveAsDraft, event.modifiedDate);
 
-						instance.one('#autosaveMessage').set('innerHTML', autosaveMessage);
 						A.one('.publish-icon').removeClass('hide');
 					},
 
@@ -532,7 +527,7 @@ AUI.add(
 						instance.disableNameEditor();
 					},
 
-					_autosave: function(callback) {
+					_autosave: function(saveAsDraft, callback) {
 						var instance = this;
 
 						callback = callback || EMPTY_FN;
@@ -545,7 +540,9 @@ AUI.add(
 							if (!instance._isSameState(instance.savedState, state)) {
 								var editForm = instance.get('editForm');
 
-								var formData = instance._getFormData(A.IO.stringify(editForm.form));
+								var formData = instance._getFormData(
+									A.IO.stringify(editForm.form), saveAsDraft
+								);
 
 								A.io.request(
 									Liferay.DDM.FormSettings.autosaveURL,
@@ -556,11 +553,12 @@ AUI.add(
 
 												instance._defineIds(responseData);
 
-												instance.savedState = state;
+												instance.savedState = A.clone(state);
 
 												instance.fire(
 													'autosave',
 													{
+														saveAsDraft: saveAsDraft,
 														modifiedDate: responseData.modifiedDate
 													}
 												);
@@ -659,7 +657,7 @@ AUI.add(
 						return window[instance.ns('descriptionEditor')];
 					},
 
-					_getFormData: function(formString) {
+					_getFormData: function(formString, saveAsDraft) {
 						var instance = this;
 
 						var formObject = A.QueryString.parse(formString);
@@ -671,6 +669,8 @@ AUI.add(
 						if (instance._isFormView()) {
 							formObject[instance.ns('published')] = JSON.stringify(instance.get('published'));
 						}
+
+						formObject[instance.ns('saveAsDraft')] = saveAsDraft;
 
 						formString = A.QueryString.stringify(formObject);
 
@@ -840,6 +840,7 @@ AUI.add(
 						var instance = this;
 
 						instance._autosave(
+							true,
 							function() {
 								var previewURL = instance._createPreviewURL();
 
@@ -852,6 +853,7 @@ AUI.add(
 						var instance = this;
 
 						instance._autosave(
+							false,
 							function() {
 								var publishedValue = instance.get('published');
 
@@ -873,12 +875,16 @@ AUI.add(
 
 												instance.syncInputValues();
 
+												var responseData = this.get('responseData');
+
 												if (newPublishedValue) {
 													instance._handlePublishAction();
 												}
 												else {
 													instance._handleUnpublishAction();
 												}
+
+												instance._updateAutosaveBar(false, responseData.modifiedDate);
 											}
 										},
 										data: payload,
@@ -917,7 +923,7 @@ AUI.add(
 						instance.renderUI();
 						instance.bindUI();
 
-						instance.savedState = instance.getState();
+						instance.savedState = A.clone(instance.getState());
 					},
 
 					_onRulesButtonClick: function() {
@@ -1084,6 +1090,28 @@ AUI.add(
 						localizedName[editingLanguageId] = name;
 
 						instance._setName(name);
+					},
+
+					_updateAutosaveBar: function(savedAsDraft, modifiedDate) {
+						var instance = this;
+
+						var message = '';
+
+						if (savedAsDraft) {
+							message = Liferay.Language.get('draft-saved-on-x');
+						}
+						else {
+							message = Liferay.Language.get('saved-on-x');
+						}
+
+						var autosaveMessage = A.Lang.sub(
+							message,
+							[
+								modifiedDate
+							]
+						);
+
+						instance.one('#autosaveMessage').set('innerHTML', autosaveMessage);
 					}
 				}
 			}

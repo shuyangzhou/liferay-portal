@@ -63,15 +63,14 @@ public interface SiteNavigationMenuItemLocalService extends BaseLocalService,
 	 */
 	public SiteNavigationMenuItem addSiteNavigationMenuItem(long userId,
 		long groupId, long siteNavigationMenuId,
-		long parentSiteNavigationMenuItemId, java.lang.String type, int order,
-		java.lang.String typeSettings, ServiceContext serviceContext)
+		long parentSiteNavigationMenuItemId, String type, int order,
+		String typeSettings, ServiceContext serviceContext)
 		throws PortalException;
 
 	public SiteNavigationMenuItem addSiteNavigationMenuItem(long userId,
 		long groupId, long siteNavigationMenuId,
-		long parentSiteNavigationMenuItemId, java.lang.String type,
-		java.lang.String typeSettings, ServiceContext serviceContext)
-		throws PortalException;
+		long parentSiteNavigationMenuItemId, String type, String typeSettings,
+		ServiceContext serviceContext) throws PortalException;
 
 	/**
 	* Adds the site navigation menu item to the database. Also notifies the appropriate model listeners.
@@ -89,6 +88,7 @@ public interface SiteNavigationMenuItemLocalService extends BaseLocalService,
 	* @param siteNavigationMenuItemId the primary key for the new site navigation menu item
 	* @return the new site navigation menu item
 	*/
+	@Transactional(enabled = false)
 	public SiteNavigationMenuItem createSiteNavigationMenuItem(
 		long siteNavigationMenuItemId);
 
@@ -201,7 +201,7 @@ public interface SiteNavigationMenuItemLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -255,7 +255,7 @@ public interface SiteNavigationMenuItemLocalService extends BaseLocalService,
 		int order) throws PortalException;
 
 	public SiteNavigationMenuItem updateSiteNavigationMenuItem(long userId,
-		long siteNavigationMenuItemId, java.lang.String typeSettings,
+		long siteNavigationMenuItemId, String typeSettings,
 		ServiceContext serviceContext) throws PortalException;
 
 	/**
