@@ -269,7 +269,11 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 			${entity.name} model = new ${entity.name}Impl();
 
 			<#list entity.regularEntityColumns as entityColumn>
-				model.set${entityColumn.methodName}(soapModel.get${entityColumn.methodName}());
+				<#if stringUtil.equals(entityColumn.type, "boolean")>
+					model.set${entityColumn.methodName}(soapModel.is${entityColumn.methodName}());
+				<#else>
+					model.set${entityColumn.methodName}(soapModel.get${entityColumn.methodName}());
+				</#if>
 			</#list>
 
 			return model;
@@ -414,7 +418,11 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		<#list entity.regularEntityColumns as entityColumn>
-			attributes.put("${entityColumn.name}", get${entityColumn.methodName}());
+			<#if stringUtil.equals(entityColumn.type, "boolean")>
+				attributes.put("${entityColumn.name}", is${entityColumn.methodName}());
+			<#else>
+				attributes.put("${entityColumn.name}", get${entityColumn.methodName}());
+			</#if>
 		</#list>
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -1241,6 +1249,8 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 
 				<#if entityColumn.entityName??>
 					(${entityColumn.entityName})get${entityColumn.methodName}().clone()
+				<#elseif stringUtil.equals(entityColumn.type, "boolean")>
+					is${entityColumn.methodName}()
 				<#else>
 					get${entityColumn.methodName}()
 				</#if>
@@ -1262,7 +1272,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 			<#list entity.entityOrder.entityColumns as entityColumn>
 				<#if entityColumn.isPrimitiveType()>
 					<#if stringUtil.equals(entityColumn.type, "boolean")>
-						value = Boolean.compare(get${entityColumn.methodName}(), ${entity.varName}.get${entityColumn.methodName}());
+						value = Boolean.compare(is${entityColumn.methodName}(), ${entity.varName}.is${entityColumn.methodName}());
 					<#else>
 						if (get${entityColumn.methodName}() < ${entity.varName}.get${entityColumn.methodName}()) {
 							value = -1;
@@ -1427,7 +1437,11 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 						${entity.varName}CacheModel.${entityColumn.name} = Long.MIN_VALUE;
 					}
 				<#else>
-					${entity.varName}CacheModel.${entityColumn.name} = get${entityColumn.methodName}();
+					<#if stringUtil.equals(entityColumn.type, "boolean")>
+						${entity.varName}CacheModel.${entityColumn.name} = is${entityColumn.methodName}();
+					<#else>
+						${entity.varName}CacheModel.${entityColumn.name} = get${entityColumn.methodName}();
+					</#if>
 
 					<#if stringUtil.equals(entityColumn.type, "String")>
 						String ${entityColumn.name} = ${entity.varName}CacheModel.${entityColumn.name};
@@ -1459,13 +1473,15 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 			<#if !stringUtil.equals(entityColumn.type, "Blob") || !entityColumn.lazy>
 				<#if entityColumn_index == 0>
 					sb.append("{${entityColumn.name}=");
-					sb.append(get${entityColumn.methodName}());
-				<#elseif entityColumn_has_next>
-					sb.append(", ${entityColumn.name}=");
-					sb.append(get${entityColumn.methodName}());
 				<#else>
 					sb.append(", ${entityColumn.name}=");
+				</#if>
+				<#if stringUtil.equals(entityColumn.type, "boolean")>
+					sb.append(is${entityColumn.methodName}());
+				<#else>
 					sb.append(get${entityColumn.methodName}());
+				</#if>
+				<#if !entityColumn_has_next>
 					sb.append("}");
 				</#if>
 			</#if>
@@ -1487,7 +1503,11 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		<#list entity.regularEntityColumns as entityColumn>
 			<#if !stringUtil.equals(entityColumn.type, "Blob") || !entityColumn.lazy>
 				sb.append("<column><column-name>${entityColumn.name}</column-name><column-value><![CDATA[");
-				sb.append(get${entityColumn.methodName}());
+				<#if stringUtil.equals(entityColumn.type, "boolean")>
+					sb.append(is${entityColumn.methodName}());
+				<#else>
+					sb.append(get${entityColumn.methodName}());
+				</#if>
 				sb.append("]]></column-value></column>");
 			</#if>
 		</#list>

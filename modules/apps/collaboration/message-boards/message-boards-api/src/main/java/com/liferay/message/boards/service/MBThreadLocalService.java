@@ -90,6 +90,7 @@ public interface MBThreadLocalService extends BaseLocalService,
 	* @param threadId the primary key for the new message boards thread
 	* @return the new message boards thread
 	*/
+	@Transactional(enabled = false)
 	public MBThread createMBThread(long threadId);
 
 	/**
@@ -322,6 +323,10 @@ public interface MBThreadLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getMBThreadsCount();
 
+	/**
+	* @deprecated As of 2.0.0, with no direct replacement
+	*/
+	@java.lang.Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<MBThread> getNoAssetThreads();
 
