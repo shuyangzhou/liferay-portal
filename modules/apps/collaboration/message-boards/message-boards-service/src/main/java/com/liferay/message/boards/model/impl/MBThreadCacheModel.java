@@ -64,7 +64,7 @@ public class MBThreadCacheModel implements CacheModel<MBThread>, Externalizable 
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(45);
+		StringBundler sb = new StringBundler(47);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -88,6 +88,8 @@ public class MBThreadCacheModel implements CacheModel<MBThread>, Externalizable 
 		sb.append(rootMessageId);
 		sb.append(", rootMessageUserId=");
 		sb.append(rootMessageUserId);
+		sb.append(", title=");
+		sb.append(title);
 		sb.append(", messageCount=");
 		sb.append(messageCount);
 		sb.append(", viewCount=");
@@ -155,6 +157,14 @@ public class MBThreadCacheModel implements CacheModel<MBThread>, Externalizable 
 		mbThreadImpl.setCategoryId(categoryId);
 		mbThreadImpl.setRootMessageId(rootMessageId);
 		mbThreadImpl.setRootMessageUserId(rootMessageUserId);
+
+		if (title == null) {
+			mbThreadImpl.setTitle("");
+		}
+		else {
+			mbThreadImpl.setTitle(title);
+		}
+
 		mbThreadImpl.setMessageCount(messageCount);
 		mbThreadImpl.setViewCount(viewCount);
 		mbThreadImpl.setLastPostByUserId(lastPostByUserId);
@@ -218,6 +228,7 @@ public class MBThreadCacheModel implements CacheModel<MBThread>, Externalizable 
 		rootMessageId = objectInput.readLong();
 
 		rootMessageUserId = objectInput.readLong();
+		title = objectInput.readUTF();
 
 		messageCount = objectInput.readInt();
 
@@ -272,6 +283,13 @@ public class MBThreadCacheModel implements CacheModel<MBThread>, Externalizable 
 
 		objectOutput.writeLong(rootMessageUserId);
 
+		if (title == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(title);
+		}
+
 		objectOutput.writeInt(messageCount);
 
 		objectOutput.writeInt(viewCount);
@@ -309,6 +327,7 @@ public class MBThreadCacheModel implements CacheModel<MBThread>, Externalizable 
 	public long categoryId;
 	public long rootMessageId;
 	public long rootMessageUserId;
+	public String title;
 	public int messageCount;
 	public int viewCount;
 	public long lastPostByUserId;
