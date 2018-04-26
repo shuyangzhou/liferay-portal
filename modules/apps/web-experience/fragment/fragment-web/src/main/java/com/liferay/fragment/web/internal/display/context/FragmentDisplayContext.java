@@ -34,8 +34,12 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -146,7 +150,7 @@ public class FragmentDisplayContext {
 	}
 
 	public List<DropdownItem> getFragmentCollectionActionItemsDropdownItems() {
-		return new DropdownItemList(_request) {
+		return new DropdownItemList() {
 			{
 				add(
 					dropdownItem -> {
@@ -154,7 +158,8 @@ public class FragmentDisplayContext {
 							"javascript:" + _renderResponse.getNamespace() +
 								"exportSelectedFragmentCollections();");
 						dropdownItem.setIcon("import-export");
-						dropdownItem.setLabel("export");
+						dropdownItem.setLabel(
+							LanguageUtil.get(_request, "export"));
 						dropdownItem.setQuickAction(true);
 					});
 
@@ -164,7 +169,8 @@ public class FragmentDisplayContext {
 							"javascript:" + _renderResponse.getNamespace() +
 								"deleteSelectedFragmentCollections();");
 						dropdownItem.setIcon("trash");
-						dropdownItem.setLabel("delete");
+						dropdownItem.setLabel(
+							LanguageUtil.get(_request, "delete"));
 						dropdownItem.setQuickAction(true);
 					});
 			}
@@ -180,7 +186,7 @@ public class FragmentDisplayContext {
 	}
 
 	public CreationMenu getFragmentCollectionCreationMenu() {
-		return new CreationMenu(_request) {
+		return new CreationMenu() {
 			{
 				addPrimaryDropdownItem(
 					dropdownItem -> {
@@ -188,27 +194,30 @@ public class FragmentDisplayContext {
 							_renderResponse.createRenderURL(),
 							"mvcRenderCommandName",
 							"/fragment/edit_fragment_collection");
-						dropdownItem.setLabel("add-collection");
+						dropdownItem.setLabel(
+							LanguageUtil.get(_request, "add-collection"));
 					});
 			}
 		};
 	}
 
 	public List<DropdownItem> getFragmentCollectionFilterItemsDropdownItems() {
-		return new DropdownItemList(_request) {
+		return new DropdownItemList() {
 			{
 				addGroup(
 					dropdownGroupItem -> {
 						dropdownGroupItem.setDropdownItems(
 							_getFragmentCollectionFilterNavigationDropdownItems());
-						dropdownGroupItem.setLabel("filter-by-navigation");
+						dropdownGroupItem.setLabel(
+							LanguageUtil.get(_request, "filter-by-navigation"));
 					});
 
 				addGroup(
 					dropdownGroupItem -> {
 						dropdownGroupItem.setDropdownItems(
 							_getFragmentCollectionOrderByDropdownItems());
-						dropdownGroupItem.setLabel("order-by");
+						dropdownGroupItem.setLabel(
+							LanguageUtil.get(_request, "order-by"));
 					});
 			}
 		};
@@ -276,9 +285,6 @@ public class FragmentDisplayContext {
 			return _fragmentCollectionsSearchContainer;
 		}
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		SearchContainer fragmentCollectionsSearchContainer =
 			new SearchContainer(
 				_renderRequest, _renderResponse.createRenderURL(), null,
@@ -308,26 +314,26 @@ public class FragmentDisplayContext {
 		if (_isSearch()) {
 			fragmentCollections =
 				FragmentCollectionServiceUtil.getFragmentCollections(
-					themeDisplay.getScopeGroupId(), _getKeywords(),
+					_getGroupId(), _getKeywords(),
 					fragmentCollectionsSearchContainer.getStart(),
 					fragmentCollectionsSearchContainer.getEnd(),
 					orderByComparator);
 
 			fragmentCollectionsCount =
 				FragmentCollectionServiceUtil.getFragmentCollectionsCount(
-					themeDisplay.getScopeGroupId(), _getKeywords());
+					_getGroupId(), _getKeywords());
 		}
 		else {
 			fragmentCollections =
 				FragmentCollectionServiceUtil.getFragmentCollections(
-					themeDisplay.getScopeGroupId(),
+					_getGroupId(),
 					fragmentCollectionsSearchContainer.getStart(),
 					fragmentCollectionsSearchContainer.getEnd(),
 					orderByComparator);
 
 			fragmentCollectionsCount =
 				FragmentCollectionServiceUtil.getFragmentCollectionsCount(
-					themeDisplay.getScopeGroupId());
+					_getGroupId());
 		}
 
 		fragmentCollectionsSearchContainer.setTotal(fragmentCollectionsCount);
@@ -358,7 +364,7 @@ public class FragmentDisplayContext {
 
 	public List<ViewTypeItem> getFragmentCollectionViewTypeItems() {
 		return new ViewTypeItemList(
-			_request, _getFragmentCollectionPortletURL(), getDisplayStyle()) {
+			_getFragmentCollectionPortletURL(), getDisplayStyle()) {
 
 			{
 				addCardViewTypeItem();
@@ -371,9 +377,6 @@ public class FragmentDisplayContext {
 		if (_fragmentEntriesSearchContainer != null) {
 			return _fragmentEntriesSearchContainer;
 		}
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
-			WebKeys.THEME_DISPLAY);
 
 		SearchContainer fragmentEntriesSearchContainer = new SearchContainer(
 			_renderRequest, _renderResponse.createRenderURL(), null,
@@ -399,24 +402,23 @@ public class FragmentDisplayContext {
 
 		if (_isSearch()) {
 			fragmentEntries = FragmentEntryServiceUtil.getFragmentEntries(
-				themeDisplay.getScopeGroupId(), getFragmentCollectionId(),
-				_getKeywords(), fragmentEntriesSearchContainer.getStart(),
-				fragmentEntriesSearchContainer.getEnd(), orderByComparator);
-
-			fragmentEntriesCount =
-				FragmentEntryServiceUtil.getFragmentCollectionsCount(
-					themeDisplay.getScopeGroupId(), getFragmentCollectionId(),
-					_getKeywords());
-		}
-		else {
-			fragmentEntries = FragmentEntryServiceUtil.getFragmentEntries(
-				themeDisplay.getScopeGroupId(), getFragmentCollectionId(),
+				_getGroupId(), getFragmentCollectionId(), _getKeywords(),
 				fragmentEntriesSearchContainer.getStart(),
 				fragmentEntriesSearchContainer.getEnd(), orderByComparator);
 
 			fragmentEntriesCount =
 				FragmentEntryServiceUtil.getFragmentCollectionsCount(
-					themeDisplay.getScopeGroupId(), getFragmentCollectionId());
+					_getGroupId(), getFragmentCollectionId(), _getKeywords());
+		}
+		else {
+			fragmentEntries = FragmentEntryServiceUtil.getFragmentEntries(
+				_getGroupId(), getFragmentCollectionId(),
+				fragmentEntriesSearchContainer.getStart(),
+				fragmentEntriesSearchContainer.getEnd(), orderByComparator);
+
+			fragmentEntriesCount =
+				FragmentEntryServiceUtil.getFragmentCollectionsCount(
+					_getGroupId(), getFragmentCollectionId());
 		}
 
 		fragmentEntriesSearchContainer.setResults(fragmentEntries);
@@ -439,7 +441,7 @@ public class FragmentDisplayContext {
 	}
 
 	public List<DropdownItem> getFragmentEntryActionItemsDropdownItems() {
-		return new DropdownItemList(_request) {
+		return new DropdownItemList() {
 			{
 				add(
 					dropdownItem -> {
@@ -447,7 +449,8 @@ public class FragmentDisplayContext {
 							"javascript:" + _renderResponse.getNamespace() +
 								"exportSelectedFragmentEntries();");
 						dropdownItem.setIcon("import-export");
-						dropdownItem.setLabel("export");
+						dropdownItem.setLabel(
+							LanguageUtil.get(_request, "export"));
 						dropdownItem.setQuickAction(true);
 					});
 
@@ -457,7 +460,8 @@ public class FragmentDisplayContext {
 							"javascript:" + _renderResponse.getNamespace() +
 								"deleteSelectedFragmentEntries();");
 						dropdownItem.setIcon("trash");
-						dropdownItem.setLabel("delete");
+						dropdownItem.setLabel(
+							LanguageUtil.get(_request, "delete"));
 						dropdownItem.setQuickAction(true);
 					});
 			}
@@ -473,20 +477,22 @@ public class FragmentDisplayContext {
 	}
 
 	public List<DropdownItem> getFragmentEntryFilterItemsDropdownItems() {
-		return new DropdownItemList(_request) {
+		return new DropdownItemList() {
 			{
 				addGroup(
 					dropdownGroupItem -> {
 						dropdownGroupItem.setDropdownItems(
 							_getFragmentEntryFilterNavigationDropdownItems());
-						dropdownGroupItem.setLabel("filter-by-navigation");
+						dropdownGroupItem.setLabel(
+							LanguageUtil.get(_request, "filter-by-navigation"));
 					});
 
 				addGroup(
 					dropdownGroupItem -> {
 						dropdownGroupItem.setDropdownItems(
 							_getFragmentEntryOrderByDropdownItems());
-						dropdownGroupItem.setLabel("order-by");
+						dropdownGroupItem.setLabel(
+							LanguageUtil.get(_request, "order-by"));
 					});
 			}
 		};
@@ -547,7 +553,7 @@ public class FragmentDisplayContext {
 
 	public List<ViewTypeItem> getFragmentEntryViewTypeItems() {
 		return new ViewTypeItemList(
-			_request, _getFragmentEntryPortletURL(), getDisplayStyle()) {
+			_getFragmentEntryPortletURL(), getDisplayStyle()) {
 
 			{
 				addCardViewTypeItem();
@@ -608,6 +614,29 @@ public class FragmentDisplayContext {
 		return _orderByType;
 	}
 
+	public long getRenderLayoutPlid() {
+		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		Layout renderLayout = LayoutLocalServiceUtil.fetchFirstLayout(
+			themeDisplay.getScopeGroupId(), false,
+			LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
+
+		if (renderLayout != null) {
+			return renderLayout.getPlid();
+		}
+
+		renderLayout = LayoutLocalServiceUtil.fetchFirstLayout(
+			themeDisplay.getScopeGroupId(), true,
+			LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
+
+		if (renderLayout != null) {
+			return renderLayout.getPlid();
+		}
+
+		return themeDisplay.getPlid();
+	}
+
 	public boolean isDisabledFragmentCollectionsManagementBar() {
 		if (_hasFragmentCollectionsResults()) {
 			return false;
@@ -649,21 +678,22 @@ public class FragmentDisplayContext {
 	private List<DropdownItem>
 		_getFragmentCollectionFilterNavigationDropdownItems() {
 
-		return new DropdownItemList(_request) {
+		return new DropdownItemList() {
 			{
 				add(
 					dropdownItem -> {
 						dropdownItem.setActive(true);
 						dropdownItem.setHref(
 							_getFragmentCollectionPortletURL());
-						dropdownItem.setLabel("all");
+						dropdownItem.setLabel(
+							LanguageUtil.get(_request, "all"));
 					});
 			}
 		};
 	}
 
 	private List<DropdownItem> _getFragmentCollectionOrderByDropdownItems() {
-		return new DropdownItemList(_request) {
+		return new DropdownItemList() {
 			{
 				add(
 					dropdownItem -> {
@@ -672,7 +702,8 @@ public class FragmentDisplayContext {
 						dropdownItem.setHref(
 							_getFragmentCollectionPortletURL(), "orderByCol",
 							"name");
-						dropdownItem.setLabel("name");
+						dropdownItem.setLabel(
+							LanguageUtil.get(_request, "name"));
 					});
 
 				add(
@@ -682,7 +713,8 @@ public class FragmentDisplayContext {
 						dropdownItem.setHref(
 							_getFragmentCollectionPortletURL(), "orderByCol",
 							"create-date");
-						dropdownItem.setLabel("create-date");
+						dropdownItem.setLabel(
+							LanguageUtil.get(_request, "create-date"));
 					});
 			}
 		};
@@ -723,20 +755,21 @@ public class FragmentDisplayContext {
 	private List<DropdownItem>
 		_getFragmentEntryFilterNavigationDropdownItems() {
 
-		return new DropdownItemList(_request) {
+		return new DropdownItemList() {
 			{
 				add(
 					dropdownItem -> {
 						dropdownItem.setActive(true);
 						dropdownItem.setHref(_getFragmentEntryPortletURL());
-						dropdownItem.setLabel("all");
+						dropdownItem.setLabel(
+							LanguageUtil.get(_request, "all"));
 					});
 			}
 		};
 	}
 
 	private List<DropdownItem> _getFragmentEntryOrderByDropdownItems() {
-		return new DropdownItemList(_request) {
+		return new DropdownItemList() {
 			{
 				add(
 					dropdownItem -> {
@@ -745,7 +778,8 @@ public class FragmentDisplayContext {
 						dropdownItem.setHref(
 							_getFragmentEntryPortletURL(), "orderByCol",
 							"name");
-						dropdownItem.setLabel("name");
+						dropdownItem.setLabel(
+							LanguageUtil.get(_request, "name"));
 					});
 
 				add(
@@ -755,7 +789,8 @@ public class FragmentDisplayContext {
 						dropdownItem.setHref(
 							_getFragmentEntryPortletURL(), "orderByCol",
 							"create-date");
-						dropdownItem.setLabel("create-date");
+						dropdownItem.setLabel(
+							LanguageUtil.get(_request, "create-date"));
 					});
 			}
 		};
@@ -794,6 +829,21 @@ public class FragmentDisplayContext {
 		}
 
 		return portletURL;
+	}
+
+	private long _getGroupId() {
+		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		Group scopeGroup = themeDisplay.getScopeGroup();
+
+		long scopeGroupId = scopeGroup.getGroupId();
+
+		if (scopeGroup.isStagingGroup()) {
+			scopeGroupId = scopeGroup.getLiveGroupId();
+		}
+
+		return scopeGroupId;
 	}
 
 	private String _getKeywords() {

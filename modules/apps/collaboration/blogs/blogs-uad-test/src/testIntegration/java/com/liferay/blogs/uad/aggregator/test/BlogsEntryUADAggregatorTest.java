@@ -18,9 +18,8 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.uad.constants.BlogsUADConstants;
-import com.liferay.blogs.uad.test.BlogsEntryUADEntityTestHelper;
+import com.liferay.blogs.uad.test.BlogsEntryUADTestHelper;
 
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.test.rule.Inject;
@@ -44,16 +43,16 @@ import java.util.List;
  * @generated
  */
 @RunWith(Arquillian.class)
-public class BlogsEntryUADAggregatorTest extends BaseUADAggregatorTestCase
-	implements WhenHasStatusByUserIdField {
+public class BlogsEntryUADAggregatorTest extends BaseUADAggregatorTestCase<BlogsEntry>
+	implements WhenHasStatusByUserIdField<BlogsEntry> {
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule = new LiferayIntegrationTestRule();
 
 	@Override
-	public BaseModel<?> addBaseModelWithStatusByUserId(long userId,
+	public BlogsEntry addBaseModelWithStatusByUserId(long userId,
 		long statusByUserId) throws Exception {
-		BlogsEntry blogsEntry = _blogsEntryUADEntityTestHelper.addBlogsEntryWithStatusByUserId(userId,
+		BlogsEntry blogsEntry = _blogsEntryUADTestHelper.addBlogsEntryWithStatusByUserId(userId,
 				statusByUserId);
 
 		_blogsEntries.add(blogsEntry);
@@ -61,9 +60,14 @@ public class BlogsEntryUADAggregatorTest extends BaseUADAggregatorTestCase
 		return blogsEntry;
 	}
 
+	@After
+	public void tearDown() throws Exception {
+		_blogsEntryUADTestHelper.cleanUpDependencies(_blogsEntries);
+	}
+
 	@Override
-	protected BaseModel<?> addBaseModel(long userId) throws Exception {
-		BlogsEntry blogsEntry = _blogsEntryUADEntityTestHelper.addBlogsEntry(userId);
+	protected BlogsEntry addBaseModel(long userId) throws Exception {
+		BlogsEntry blogsEntry = _blogsEntryUADTestHelper.addBlogsEntry(userId);
 
 		_blogsEntries.add(blogsEntry);
 
@@ -75,15 +79,10 @@ public class BlogsEntryUADAggregatorTest extends BaseUADAggregatorTestCase
 		return _uadAggregator;
 	}
 
-	@After
-	public void tearDown() throws Exception {
-		_blogsEntryUADEntityTestHelper.cleanUpDependencies(_blogsEntries);
-	}
-
 	@DeleteAfterTestRun
 	private final List<BlogsEntry> _blogsEntries = new ArrayList<BlogsEntry>();
 	@Inject
-	private BlogsEntryUADEntityTestHelper _blogsEntryUADEntityTestHelper;
+	private BlogsEntryUADTestHelper _blogsEntryUADTestHelper;
 	@Inject(filter = "model.class.name=" +
 	BlogsUADConstants.CLASS_NAME_BLOGS_ENTRY)
 	private UADAggregator _uadAggregator;

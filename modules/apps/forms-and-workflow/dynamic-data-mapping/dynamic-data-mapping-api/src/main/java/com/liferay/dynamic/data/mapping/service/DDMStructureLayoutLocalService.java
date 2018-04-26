@@ -88,6 +88,7 @@ public interface DDMStructureLayoutLocalService extends BaseLocalService,
 	* @param structureLayoutId the primary key for the new ddm structure layout
 	* @return the new ddm structure layout
 	*/
+	@Transactional(enabled = false)
 	public DDMStructureLayout createDDMStructureLayout(long structureLayoutId);
 
 	/**
@@ -195,7 +196,7 @@ public interface DDMStructureLayoutLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DDMStructureLayout fetchDDMStructureLayoutByUuidAndGroupId(
-		java.lang.String uuid, long groupId);
+		String uuid, long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -221,7 +222,7 @@ public interface DDMStructureLayoutLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DDMStructureLayout getDDMStructureLayoutByUuidAndGroupId(
-		java.lang.String uuid, long groupId) throws PortalException;
+		String uuid, long groupId) throws PortalException;
 
 	/**
 	* Returns a range of all the ddm structure layouts.
@@ -246,7 +247,7 @@ public interface DDMStructureLayoutLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DDMStructureLayout> getDDMStructureLayoutsByUuidAndCompanyId(
-		java.lang.String uuid, long companyId);
+		String uuid, long companyId);
 
 	/**
 	* Returns a range of ddm structure layouts matching the UUID and company.
@@ -260,7 +261,7 @@ public interface DDMStructureLayoutLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DDMStructureLayout> getDDMStructureLayoutsByUuidAndCompanyId(
-		java.lang.String uuid, long companyId, int start, int end,
+		String uuid, long companyId, int start, int end,
 		OrderByComparator<DDMStructureLayout> orderByComparator);
 
 	/**
@@ -283,7 +284,7 @@ public interface DDMStructureLayoutLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

@@ -83,6 +83,7 @@ public interface AssetEntryAssetCategoryRelLocalService extends BaseLocalService
 	* @param assetEntryAssetCategoryRelId the primary key for the new asset entry asset category rel
 	* @return the new asset entry asset category rel
 	*/
+	@Transactional(enabled = false)
 	public AssetEntryAssetCategoryRel createAssetEntryAssetCategoryRel(
 		long assetEntryAssetCategoryRelId);
 
@@ -236,7 +237,7 @@ public interface AssetEntryAssetCategoryRelLocalService extends BaseLocalService
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

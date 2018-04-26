@@ -88,6 +88,7 @@ public interface MBBanLocalService extends BaseLocalService,
 	* @param banId the primary key for the new message boards ban
 	* @return the new message boards ban
 	*/
+	@Transactional(enabled = false)
 	public MBBan createMBBan(long banId);
 
 	public void deleteBan(long banId) throws PortalException;
@@ -199,7 +200,7 @@ public interface MBBanLocalService extends BaseLocalService,
 	* @return the matching message boards ban, or <code>null</code> if a matching message boards ban could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public MBBan fetchMBBanByUuidAndGroupId(java.lang.String uuid, long groupId);
+	public MBBan fetchMBBanByUuidAndGroupId(String uuid, long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -236,7 +237,7 @@ public interface MBBanLocalService extends BaseLocalService,
 	* @throws PortalException if a matching message boards ban could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public MBBan getMBBanByUuidAndGroupId(java.lang.String uuid, long groupId)
+	public MBBan getMBBanByUuidAndGroupId(String uuid, long groupId)
 		throws PortalException;
 
 	/**
@@ -261,8 +262,7 @@ public interface MBBanLocalService extends BaseLocalService,
 	* @return the matching message boards bans, or an empty list if no matches were found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<MBBan> getMBBansByUuidAndCompanyId(java.lang.String uuid,
-		long companyId);
+	public List<MBBan> getMBBansByUuidAndCompanyId(String uuid, long companyId);
 
 	/**
 	* Returns a range of message boards bans matching the UUID and company.
@@ -275,9 +275,8 @@ public interface MBBanLocalService extends BaseLocalService,
 	* @return the range of matching message boards bans, or an empty list if no matches were found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<MBBan> getMBBansByUuidAndCompanyId(java.lang.String uuid,
-		long companyId, int start, int end,
-		OrderByComparator<MBBan> orderByComparator);
+	public List<MBBan> getMBBansByUuidAndCompanyId(String uuid, long companyId,
+		int start, int end, OrderByComparator<MBBan> orderByComparator);
 
 	/**
 	* Returns the number of message boards bans.
@@ -292,7 +291,7 @@ public interface MBBanLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

@@ -1,5 +1,9 @@
 <definition component-name="portal-search">
+	<property name="osgi.app.includes" value="portal-search-solr" />
+	<property name="osgi.module.configuration.file.names" value="com.liferay.portal.bundle.blacklist.internal.BundleBlacklistConfiguration.config" />
+	<property name="osgi.module.configurations" value="blacklistBundleSymbolicNames=&quot;com.liferay.portal.mobile.device.detection.fiftyonedegrees.api,com.liferay.portal.mobile.device.detection.fiftyonedegrees.enterprise,com.liferay.portal.mobile.device.detection.fiftyonedegrees.enterprise.test.data,com.liferay.portal.mobile.device.detection.fiftyonedegrees,com.liferay.portal.search.elasticsearch6.api,com.liferay.portal.search.elasticsearch6.impl,com.liferay.portal.search.elasticsearch6.xpack.security.impl,com.liferay.portal.search.elasticsearch6.xpack.monitoring.web&quot;" />
 	<property name="portal.release" value="true" />
+	<property name="portal.suite.search.engine" value="solr" />
 	<property name="portal.upstream" value="true" />
 	<property name="solr.enabled" value="true" />
 	<property name="testray.main.component.name" value="SOLR Impl" />
@@ -184,10 +188,10 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Configuration" />
 			<var name="panel" value="Control Panel" />
-			<var name="portlet" value="Server Administration" />
+			<var name="portlet" value="Search" />
 		</execute>
 
-		<execute macro="ServerAdministration#executeServerResourcesActions">
+		<execute macro="SearchAdministration#executeSearchActions">
 			<var name="actionsDescription" value="Reindex all search indexes." />
 		</execute>
 
@@ -270,10 +274,10 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Configuration" />
 			<var name="panel" value="Control Panel" />
-			<var name="portlet" value="Server Administration" />
+			<var name="portlet" value="Search" />
 		</execute>
 
-		<execute macro="ServerAdministration#executeServerResourcesActions">
+		<execute macro="SearchAdministration#executeSearchActions">
 			<var name="actionsDescription" value="Reindex all search indexes." />
 		</execute>
 
@@ -350,10 +354,10 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Configuration" />
 			<var name="panel" value="Control Panel" />
-			<var name="portlet" value="Server Administration" />
+			<var name="portlet" value="Search" />
 		</execute>
 
-		<execute macro="ServerAdministration#executeServerResourcesActions">
+		<execute macro="SearchAdministration#executeSearchActions">
 			<var name="actionsDescription" value="Reindex all search indexes." />
 		</execute>
 
@@ -402,10 +406,10 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Configuration" />
 			<var name="panel" value="Control Panel" />
-			<var name="portlet" value="Server Administration" />
+			<var name="portlet" value="Search" />
 		</execute>
 
-		<execute macro="ServerAdministration#executeServerResourcesActions">
+		<execute macro="SearchAdministration#executeSearchActions">
 			<var name="actionsDescription" value="Reindex all search indexes." />
 		</execute>
 

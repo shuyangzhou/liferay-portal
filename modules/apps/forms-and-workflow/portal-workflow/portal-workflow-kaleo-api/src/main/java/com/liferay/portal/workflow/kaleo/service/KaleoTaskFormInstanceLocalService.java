@@ -73,7 +73,7 @@ public interface KaleoTaskFormInstanceLocalService extends BaseLocalService,
 		KaleoTaskFormInstance kaleoTaskFormInstance);
 
 	public KaleoTaskFormInstance addKaleoTaskFormInstance(long groupId,
-		long kaleoTaskFormId, java.lang.String formValues,
+		long kaleoTaskFormId, String formValues,
 		KaleoTaskInstanceToken kaleoTaskInstanceToken,
 		ServiceContext serviceContext) throws PortalException;
 
@@ -85,6 +85,7 @@ public interface KaleoTaskFormInstanceLocalService extends BaseLocalService,
 	* @param kaleoTaskFormInstanceId the primary key for the new kaleo task form instance
 	* @return the new kaleo task form instance
 	*/
+	@Transactional(enabled = false)
 	public KaleoTaskFormInstance createKaleoTaskFormInstance(
 		long kaleoTaskFormInstanceId);
 
@@ -243,7 +244,7 @@ public interface KaleoTaskFormInstanceLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

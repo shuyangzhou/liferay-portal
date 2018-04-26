@@ -18,9 +18,8 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
 import com.liferay.message.boards.model.MBThread;
 import com.liferay.message.boards.uad.constants.MBUADConstants;
-import com.liferay.message.boards.uad.test.MBThreadUADEntityTestHelper;
+import com.liferay.message.boards.uad.test.MBThreadUADTestHelper;
 
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.test.rule.Inject;
@@ -44,16 +43,16 @@ import java.util.List;
  * @generated
  */
 @RunWith(Arquillian.class)
-public class MBThreadUADAggregatorTest extends BaseUADAggregatorTestCase
-	implements WhenHasStatusByUserIdField {
+public class MBThreadUADAggregatorTest extends BaseUADAggregatorTestCase<MBThread>
+	implements WhenHasStatusByUserIdField<MBThread> {
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule = new LiferayIntegrationTestRule();
 
 	@Override
-	public BaseModel<?> addBaseModelWithStatusByUserId(long userId,
+	public MBThread addBaseModelWithStatusByUserId(long userId,
 		long statusByUserId) throws Exception {
-		MBThread mbThread = _mbThreadUADEntityTestHelper.addMBThreadWithStatusByUserId(userId,
+		MBThread mbThread = _mbThreadUADTestHelper.addMBThreadWithStatusByUserId(userId,
 				statusByUserId);
 
 		_mbThreads.add(mbThread);
@@ -61,9 +60,14 @@ public class MBThreadUADAggregatorTest extends BaseUADAggregatorTestCase
 		return mbThread;
 	}
 
+	@After
+	public void tearDown() throws Exception {
+		_mbThreadUADTestHelper.cleanUpDependencies(_mbThreads);
+	}
+
 	@Override
-	protected BaseModel<?> addBaseModel(long userId) throws Exception {
-		MBThread mbThread = _mbThreadUADEntityTestHelper.addMBThread(userId);
+	protected MBThread addBaseModel(long userId) throws Exception {
+		MBThread mbThread = _mbThreadUADTestHelper.addMBThread(userId);
 
 		_mbThreads.add(mbThread);
 
@@ -75,15 +79,10 @@ public class MBThreadUADAggregatorTest extends BaseUADAggregatorTestCase
 		return _uadAggregator;
 	}
 
-	@After
-	public void tearDown() throws Exception {
-		_mbThreadUADEntityTestHelper.cleanUpDependencies(_mbThreads);
-	}
-
 	@DeleteAfterTestRun
 	private final List<MBThread> _mbThreads = new ArrayList<MBThread>();
 	@Inject
-	private MBThreadUADEntityTestHelper _mbThreadUADEntityTestHelper;
+	private MBThreadUADTestHelper _mbThreadUADTestHelper;
 	@Inject(filter = "model.class.name=" + MBUADConstants.CLASS_NAME_MB_THREAD)
 	private UADAggregator _uadAggregator;
 }
