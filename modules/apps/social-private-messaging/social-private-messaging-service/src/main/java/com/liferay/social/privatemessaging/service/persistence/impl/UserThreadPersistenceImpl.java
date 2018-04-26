@@ -1450,7 +1450,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 			if ((list != null) && !list.isEmpty()) {
 				for (UserThread userThread : list) {
 					if ((userId != userThread.getUserId()) ||
-							(deleted != userThread.getDeleted())) {
+							(deleted != userThread.isDeleted())) {
 						list = null;
 
 						break;
@@ -2007,8 +2007,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 			if ((list != null) && !list.isEmpty()) {
 				for (UserThread userThread : list) {
 					if ((userId != userThread.getUserId()) ||
-							(read != userThread.getRead()) ||
-							(deleted != userThread.getDeleted())) {
+							(read != userThread.isRead()) ||
+							(deleted != userThread.isDeleted())) {
 						list = null;
 
 						break;
@@ -2672,8 +2672,6 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 
 	@Override
 	protected UserThread removeImpl(UserThread userThread) {
-		userThread = toUnwrappedModel(userThread);
-
 		Session session = null;
 
 		try {
@@ -2704,8 +2702,6 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 
 	@Override
 	public UserThread updateImpl(UserThread userThread) {
-		userThread = toUnwrappedModel(userThread);
-
 		boolean isNew = userThread.isNew();
 
 		UserThreadModelImpl userThreadModelImpl = (UserThreadModelImpl)userThread;
@@ -2774,7 +2770,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 
 			args = new Object[] {
 					userThreadModelImpl.getUserId(),
-					userThreadModelImpl.getDeleted()
+					userThreadModelImpl.isDeleted()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_D, args);
@@ -2783,8 +2779,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 
 			args = new Object[] {
 					userThreadModelImpl.getUserId(),
-					userThreadModelImpl.getRead(),
-					userThreadModelImpl.getDeleted()
+					userThreadModelImpl.isRead(),
+					userThreadModelImpl.isDeleted()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_R_D, args);
@@ -2844,7 +2840,7 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 
 				args = new Object[] {
 						userThreadModelImpl.getUserId(),
-						userThreadModelImpl.getDeleted()
+						userThreadModelImpl.isDeleted()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_U_D, args);
@@ -2866,8 +2862,8 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 
 				args = new Object[] {
 						userThreadModelImpl.getUserId(),
-						userThreadModelImpl.getRead(),
-						userThreadModelImpl.getDeleted()
+						userThreadModelImpl.isRead(),
+						userThreadModelImpl.isDeleted()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_U_R_D, args);
@@ -2885,30 +2881,6 @@ public class UserThreadPersistenceImpl extends BasePersistenceImpl<UserThread>
 		userThread.resetOriginalValues();
 
 		return userThread;
-	}
-
-	protected UserThread toUnwrappedModel(UserThread userThread) {
-		if (userThread instanceof UserThreadImpl) {
-			return userThread;
-		}
-
-		UserThreadImpl userThreadImpl = new UserThreadImpl();
-
-		userThreadImpl.setNew(userThread.isNew());
-		userThreadImpl.setPrimaryKey(userThread.getPrimaryKey());
-
-		userThreadImpl.setUserThreadId(userThread.getUserThreadId());
-		userThreadImpl.setCompanyId(userThread.getCompanyId());
-		userThreadImpl.setUserId(userThread.getUserId());
-		userThreadImpl.setUserName(userThread.getUserName());
-		userThreadImpl.setCreateDate(userThread.getCreateDate());
-		userThreadImpl.setModifiedDate(userThread.getModifiedDate());
-		userThreadImpl.setMbThreadId(userThread.getMbThreadId());
-		userThreadImpl.setTopMBMessageId(userThread.getTopMBMessageId());
-		userThreadImpl.setRead(userThread.isRead());
-		userThreadImpl.setDeleted(userThread.isDeleted());
-
-		return userThreadImpl;
 	}
 
 	/**

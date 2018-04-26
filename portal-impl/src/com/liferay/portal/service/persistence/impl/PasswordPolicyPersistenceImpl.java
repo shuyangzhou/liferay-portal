@@ -3008,7 +3008,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 			PasswordPolicy passwordPolicy = (PasswordPolicy)result;
 
 			if ((companyId != passwordPolicy.getCompanyId()) ||
-					(defaultPolicy != passwordPolicy.getDefaultPolicy())) {
+					(defaultPolicy != passwordPolicy.isDefaultPolicy())) {
 				result = null;
 			}
 		}
@@ -3062,7 +3062,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 					cacheResult(passwordPolicy);
 
 					if ((passwordPolicy.getCompanyId() != companyId) ||
-							(passwordPolicy.getDefaultPolicy() != defaultPolicy)) {
+							(passwordPolicy.isDefaultPolicy() != defaultPolicy)) {
 						finderCache.putResult(FINDER_PATH_FETCH_BY_C_DP,
 							finderArgs, passwordPolicy);
 					}
@@ -3449,7 +3449,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 
 		finderCache.putResult(FINDER_PATH_FETCH_BY_C_DP,
 			new Object[] {
-				passwordPolicy.getCompanyId(), passwordPolicy.getDefaultPolicy()
+				passwordPolicy.getCompanyId(), passwordPolicy.isDefaultPolicy()
 			}, passwordPolicy);
 
 		finderCache.putResult(FINDER_PATH_FETCH_BY_C_N,
@@ -3530,7 +3530,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 		PasswordPolicyModelImpl passwordPolicyModelImpl) {
 		Object[] args = new Object[] {
 				passwordPolicyModelImpl.getCompanyId(),
-				passwordPolicyModelImpl.getDefaultPolicy()
+				passwordPolicyModelImpl.isDefaultPolicy()
 			};
 
 		finderCache.putResult(FINDER_PATH_COUNT_BY_C_DP, args, Long.valueOf(1),
@@ -3554,7 +3554,7 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 		if (clearCurrent) {
 			Object[] args = new Object[] {
 					passwordPolicyModelImpl.getCompanyId(),
-					passwordPolicyModelImpl.getDefaultPolicy()
+					passwordPolicyModelImpl.isDefaultPolicy()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_DP, args);
@@ -3671,8 +3671,6 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 
 	@Override
 	protected PasswordPolicy removeImpl(PasswordPolicy passwordPolicy) {
-		passwordPolicy = toUnwrappedModel(passwordPolicy);
-
 		Session session = null;
 
 		try {
@@ -3703,8 +3701,6 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 
 	@Override
 	public PasswordPolicy updateImpl(PasswordPolicy passwordPolicy) {
-		passwordPolicy = toUnwrappedModel(passwordPolicy);
-
 		boolean isNew = passwordPolicy.isNew();
 
 		PasswordPolicyModelImpl passwordPolicyModelImpl = (PasswordPolicyModelImpl)passwordPolicy;
@@ -3859,55 +3855,6 @@ public class PasswordPolicyPersistenceImpl extends BasePersistenceImpl<PasswordP
 		passwordPolicy.resetOriginalValues();
 
 		return passwordPolicy;
-	}
-
-	protected PasswordPolicy toUnwrappedModel(PasswordPolicy passwordPolicy) {
-		if (passwordPolicy instanceof PasswordPolicyImpl) {
-			return passwordPolicy;
-		}
-
-		PasswordPolicyImpl passwordPolicyImpl = new PasswordPolicyImpl();
-
-		passwordPolicyImpl.setNew(passwordPolicy.isNew());
-		passwordPolicyImpl.setPrimaryKey(passwordPolicy.getPrimaryKey());
-
-		passwordPolicyImpl.setMvccVersion(passwordPolicy.getMvccVersion());
-		passwordPolicyImpl.setUuid(passwordPolicy.getUuid());
-		passwordPolicyImpl.setPasswordPolicyId(passwordPolicy.getPasswordPolicyId());
-		passwordPolicyImpl.setCompanyId(passwordPolicy.getCompanyId());
-		passwordPolicyImpl.setUserId(passwordPolicy.getUserId());
-		passwordPolicyImpl.setUserName(passwordPolicy.getUserName());
-		passwordPolicyImpl.setCreateDate(passwordPolicy.getCreateDate());
-		passwordPolicyImpl.setModifiedDate(passwordPolicy.getModifiedDate());
-		passwordPolicyImpl.setDefaultPolicy(passwordPolicy.isDefaultPolicy());
-		passwordPolicyImpl.setName(passwordPolicy.getName());
-		passwordPolicyImpl.setDescription(passwordPolicy.getDescription());
-		passwordPolicyImpl.setChangeable(passwordPolicy.isChangeable());
-		passwordPolicyImpl.setChangeRequired(passwordPolicy.isChangeRequired());
-		passwordPolicyImpl.setMinAge(passwordPolicy.getMinAge());
-		passwordPolicyImpl.setCheckSyntax(passwordPolicy.isCheckSyntax());
-		passwordPolicyImpl.setAllowDictionaryWords(passwordPolicy.isAllowDictionaryWords());
-		passwordPolicyImpl.setMinAlphanumeric(passwordPolicy.getMinAlphanumeric());
-		passwordPolicyImpl.setMinLength(passwordPolicy.getMinLength());
-		passwordPolicyImpl.setMinLowerCase(passwordPolicy.getMinLowerCase());
-		passwordPolicyImpl.setMinNumbers(passwordPolicy.getMinNumbers());
-		passwordPolicyImpl.setMinSymbols(passwordPolicy.getMinSymbols());
-		passwordPolicyImpl.setMinUpperCase(passwordPolicy.getMinUpperCase());
-		passwordPolicyImpl.setRegex(passwordPolicy.getRegex());
-		passwordPolicyImpl.setHistory(passwordPolicy.isHistory());
-		passwordPolicyImpl.setHistoryCount(passwordPolicy.getHistoryCount());
-		passwordPolicyImpl.setExpireable(passwordPolicy.isExpireable());
-		passwordPolicyImpl.setMaxAge(passwordPolicy.getMaxAge());
-		passwordPolicyImpl.setWarningTime(passwordPolicy.getWarningTime());
-		passwordPolicyImpl.setGraceLimit(passwordPolicy.getGraceLimit());
-		passwordPolicyImpl.setLockout(passwordPolicy.isLockout());
-		passwordPolicyImpl.setMaxFailure(passwordPolicy.getMaxFailure());
-		passwordPolicyImpl.setLockoutDuration(passwordPolicy.getLockoutDuration());
-		passwordPolicyImpl.setRequireUnlock(passwordPolicy.isRequireUnlock());
-		passwordPolicyImpl.setResetFailureCount(passwordPolicy.getResetFailureCount());
-		passwordPolicyImpl.setResetTicketMaxAge(passwordPolicy.getResetTicketMaxAge());
-
-		return passwordPolicyImpl;
 	}
 
 	/**

@@ -1588,7 +1588,7 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 
 			if ((list != null) && !list.isEmpty()) {
 				for (MBMailingList mbMailingList : list) {
-					if ((active != mbMailingList.getActive())) {
+					if ((active != mbMailingList.isActive())) {
 						list = null;
 
 						break;
@@ -2463,8 +2463,6 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 
 	@Override
 	protected MBMailingList removeImpl(MBMailingList mbMailingList) {
-		mbMailingList = toUnwrappedModel(mbMailingList);
-
 		Session session = null;
 
 		try {
@@ -2495,8 +2493,6 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 
 	@Override
 	public MBMailingList updateImpl(MBMailingList mbMailingList) {
-		mbMailingList = toUnwrappedModel(mbMailingList);
-
 		boolean isNew = mbMailingList.isNew();
 
 		MBMailingListModelImpl mbMailingListModelImpl = (MBMailingListModelImpl)mbMailingList;
@@ -2573,7 +2569,7 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID_C,
 				args);
 
-			args = new Object[] { mbMailingListModelImpl.getActive() };
+			args = new Object[] { mbMailingListModelImpl.isActive() };
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_ACTIVE, args);
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ACTIVE,
@@ -2633,7 +2629,7 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ACTIVE,
 					args);
 
-				args = new Object[] { mbMailingListModelImpl.getActive() };
+				args = new Object[] { mbMailingListModelImpl.isActive() };
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_ACTIVE, args);
 				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ACTIVE,
@@ -2651,46 +2647,6 @@ public class MBMailingListPersistenceImpl extends BasePersistenceImpl<MBMailingL
 		mbMailingList.resetOriginalValues();
 
 		return mbMailingList;
-	}
-
-	protected MBMailingList toUnwrappedModel(MBMailingList mbMailingList) {
-		if (mbMailingList instanceof MBMailingListImpl) {
-			return mbMailingList;
-		}
-
-		MBMailingListImpl mbMailingListImpl = new MBMailingListImpl();
-
-		mbMailingListImpl.setNew(mbMailingList.isNew());
-		mbMailingListImpl.setPrimaryKey(mbMailingList.getPrimaryKey());
-
-		mbMailingListImpl.setUuid(mbMailingList.getUuid());
-		mbMailingListImpl.setMailingListId(mbMailingList.getMailingListId());
-		mbMailingListImpl.setGroupId(mbMailingList.getGroupId());
-		mbMailingListImpl.setCompanyId(mbMailingList.getCompanyId());
-		mbMailingListImpl.setUserId(mbMailingList.getUserId());
-		mbMailingListImpl.setUserName(mbMailingList.getUserName());
-		mbMailingListImpl.setCreateDate(mbMailingList.getCreateDate());
-		mbMailingListImpl.setModifiedDate(mbMailingList.getModifiedDate());
-		mbMailingListImpl.setCategoryId(mbMailingList.getCategoryId());
-		mbMailingListImpl.setEmailAddress(mbMailingList.getEmailAddress());
-		mbMailingListImpl.setInProtocol(mbMailingList.getInProtocol());
-		mbMailingListImpl.setInServerName(mbMailingList.getInServerName());
-		mbMailingListImpl.setInServerPort(mbMailingList.getInServerPort());
-		mbMailingListImpl.setInUseSSL(mbMailingList.isInUseSSL());
-		mbMailingListImpl.setInUserName(mbMailingList.getInUserName());
-		mbMailingListImpl.setInPassword(mbMailingList.getInPassword());
-		mbMailingListImpl.setInReadInterval(mbMailingList.getInReadInterval());
-		mbMailingListImpl.setOutEmailAddress(mbMailingList.getOutEmailAddress());
-		mbMailingListImpl.setOutCustom(mbMailingList.isOutCustom());
-		mbMailingListImpl.setOutServerName(mbMailingList.getOutServerName());
-		mbMailingListImpl.setOutServerPort(mbMailingList.getOutServerPort());
-		mbMailingListImpl.setOutUseSSL(mbMailingList.isOutUseSSL());
-		mbMailingListImpl.setOutUserName(mbMailingList.getOutUserName());
-		mbMailingListImpl.setOutPassword(mbMailingList.getOutPassword());
-		mbMailingListImpl.setAllowAnonymous(mbMailingList.isAllowAnonymous());
-		mbMailingListImpl.setActive(mbMailingList.isActive());
-
-		return mbMailingListImpl;
 	}
 
 	/**

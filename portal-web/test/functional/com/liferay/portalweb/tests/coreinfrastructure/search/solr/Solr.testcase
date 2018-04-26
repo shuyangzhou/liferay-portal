@@ -1,5 +1,6 @@
 <definition component-name="portal-search">
 	<property name="portal.release" value="true" />
+	<property name="portal.suite.search.engine" value="solr" />
 	<property name="portal.upstream" value="true" />
 	<property name="solr.enabled" value="true" />
 	<property name="testray.main.component.name" value="SOLR Impl" />
@@ -184,10 +185,10 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Configuration" />
 			<var name="panel" value="Control Panel" />
-			<var name="portlet" value="Server Administration" />
+			<var name="portlet" value="Search" />
 		</execute>
 
-		<execute macro="ServerAdministration#executeServerResourcesActions">
+		<execute macro="SearchAdministration#executeSearchActions">
 			<var name="actionsDescription" value="Reindex all search indexes." />
 		</execute>
 
@@ -270,10 +271,10 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Configuration" />
 			<var name="panel" value="Control Panel" />
-			<var name="portlet" value="Server Administration" />
+			<var name="portlet" value="Search" />
 		</execute>
 
-		<execute macro="ServerAdministration#executeServerResourcesActions">
+		<execute macro="SearchAdministration#executeSearchActions">
 			<var name="actionsDescription" value="Reindex all search indexes." />
 		</execute>
 
@@ -350,10 +351,10 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Configuration" />
 			<var name="panel" value="Control Panel" />
-			<var name="portlet" value="Server Administration" />
+			<var name="portlet" value="Search" />
 		</execute>
 
-		<execute macro="ServerAdministration#executeServerResourcesActions">
+		<execute macro="SearchAdministration#executeSearchActions">
 			<var name="actionsDescription" value="Reindex all search indexes." />
 		</execute>
 
@@ -402,10 +403,10 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Configuration" />
 			<var name="panel" value="Control Panel" />
-			<var name="portlet" value="Server Administration" />
+			<var name="portlet" value="Search" />
 		</execute>
 
-		<execute macro="ServerAdministration#executeServerResourcesActions">
+		<execute macro="SearchAdministration#executeSearchActions">
 			<var name="actionsDescription" value="Reindex all search indexes." />
 		</execute>
 

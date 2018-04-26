@@ -694,7 +694,7 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 
 			if ((list != null) && !list.isEmpty()) {
 				for (Region region : list) {
-					if ((active != region.getActive())) {
+					if ((active != region.isActive())) {
 						list = null;
 
 						break;
@@ -1460,7 +1460,7 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 			if ((list != null) && !list.isEmpty()) {
 				for (Region region : list) {
 					if ((countryId != region.getCountryId()) ||
-							(active != region.getActive())) {
+							(active != region.isActive())) {
 						list = null;
 
 						break;
@@ -2086,8 +2086,6 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 
 	@Override
 	protected Region removeImpl(Region region) {
-		region = toUnwrappedModel(region);
-
 		Session session = null;
 
 		try {
@@ -2118,8 +2116,6 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 
 	@Override
 	public Region updateImpl(Region region) {
-		region = toUnwrappedModel(region);
-
 		boolean isNew = region.isNew();
 
 		RegionModelImpl regionModelImpl = (RegionModelImpl)region;
@@ -2158,14 +2154,14 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COUNTRYID,
 				args);
 
-			args = new Object[] { regionModelImpl.getActive() };
+			args = new Object[] { regionModelImpl.isActive() };
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_ACTIVE, args);
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ACTIVE,
 				args);
 
 			args = new Object[] {
-					regionModelImpl.getCountryId(), regionModelImpl.getActive()
+					regionModelImpl.getCountryId(), regionModelImpl.isActive()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_A, args);
@@ -2203,7 +2199,7 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ACTIVE,
 					args);
 
-				args = new Object[] { regionModelImpl.getActive() };
+				args = new Object[] { regionModelImpl.isActive() };
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_ACTIVE, args);
 				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ACTIVE,
@@ -2223,7 +2219,7 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 
 				args = new Object[] {
 						regionModelImpl.getCountryId(),
-						regionModelImpl.getActive()
+						regionModelImpl.isActive()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_A, args);
@@ -2241,26 +2237,6 @@ public class RegionPersistenceImpl extends BasePersistenceImpl<Region>
 		region.resetOriginalValues();
 
 		return region;
-	}
-
-	protected Region toUnwrappedModel(Region region) {
-		if (region instanceof RegionImpl) {
-			return region;
-		}
-
-		RegionImpl regionImpl = new RegionImpl();
-
-		regionImpl.setNew(region.isNew());
-		regionImpl.setPrimaryKey(region.getPrimaryKey());
-
-		regionImpl.setMvccVersion(region.getMvccVersion());
-		regionImpl.setRegionId(region.getRegionId());
-		regionImpl.setCountryId(region.getCountryId());
-		regionImpl.setRegionCode(region.getRegionCode());
-		regionImpl.setName(region.getName());
-		regionImpl.setActive(region.isActive());
-
-		return regionImpl;
 	}
 
 	/**

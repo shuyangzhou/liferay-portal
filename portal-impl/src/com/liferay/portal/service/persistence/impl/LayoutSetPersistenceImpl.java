@@ -1246,7 +1246,7 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 			LayoutSet layoutSet = (LayoutSet)result;
 
 			if ((groupId != layoutSet.getGroupId()) ||
-					(privateLayout != layoutSet.getPrivateLayout())) {
+					(privateLayout != layoutSet.isPrivateLayout())) {
 				result = null;
 			}
 		}
@@ -1289,7 +1289,7 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 					cacheResult(layoutSet);
 
 					if ((layoutSet.getGroupId() != groupId) ||
-							(layoutSet.getPrivateLayout() != privateLayout)) {
+							(layoutSet.isPrivateLayout() != privateLayout)) {
 						finderCache.putResult(FINDER_PATH_FETCH_BY_G_P,
 							finderArgs, layoutSet);
 					}
@@ -1468,7 +1468,7 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 		if (result instanceof LayoutSet) {
 			LayoutSet layoutSet = (LayoutSet)result;
 
-			if ((privateLayout != layoutSet.getPrivateLayout()) ||
+			if ((privateLayout != layoutSet.isPrivateLayout()) ||
 					(logoId != layoutSet.getLogoId())) {
 				result = null;
 			}
@@ -1522,7 +1522,7 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 
 					cacheResult(layoutSet);
 
-					if ((layoutSet.getPrivateLayout() != privateLayout) ||
+					if ((layoutSet.isPrivateLayout() != privateLayout) ||
 							(layoutSet.getLogoId() != logoId)) {
 						finderCache.putResult(FINDER_PATH_FETCH_BY_P_L,
 							finderArgs, layoutSet);
@@ -1654,11 +1654,11 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 			LayoutSetImpl.class, layoutSet.getPrimaryKey(), layoutSet);
 
 		finderCache.putResult(FINDER_PATH_FETCH_BY_G_P,
-			new Object[] { layoutSet.getGroupId(), layoutSet.getPrivateLayout() },
+			new Object[] { layoutSet.getGroupId(), layoutSet.isPrivateLayout() },
 			layoutSet);
 
 		finderCache.putResult(FINDER_PATH_FETCH_BY_P_L,
-			new Object[] { layoutSet.getPrivateLayout(), layoutSet.getLogoId() },
+			new Object[] { layoutSet.isPrivateLayout(), layoutSet.getLogoId() },
 			layoutSet);
 
 		layoutSet.resetOriginalValues();
@@ -1733,7 +1733,7 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 		LayoutSetModelImpl layoutSetModelImpl) {
 		Object[] args = new Object[] {
 				layoutSetModelImpl.getGroupId(),
-				layoutSetModelImpl.getPrivateLayout()
+				layoutSetModelImpl.isPrivateLayout()
 			};
 
 		finderCache.putResult(FINDER_PATH_COUNT_BY_G_P, args, Long.valueOf(1),
@@ -1742,7 +1742,7 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 			layoutSetModelImpl, false);
 
 		args = new Object[] {
-				layoutSetModelImpl.getPrivateLayout(),
+				layoutSetModelImpl.isPrivateLayout(),
 				layoutSetModelImpl.getLogoId()
 			};
 
@@ -1757,7 +1757,7 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 		if (clearCurrent) {
 			Object[] args = new Object[] {
 					layoutSetModelImpl.getGroupId(),
-					layoutSetModelImpl.getPrivateLayout()
+					layoutSetModelImpl.isPrivateLayout()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_P, args);
@@ -1777,7 +1777,7 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-					layoutSetModelImpl.getPrivateLayout(),
+					layoutSetModelImpl.isPrivateLayout(),
 					layoutSetModelImpl.getLogoId()
 				};
 
@@ -1869,8 +1869,6 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 
 	@Override
 	protected LayoutSet removeImpl(LayoutSet layoutSet) {
-		layoutSet = toUnwrappedModel(layoutSet);
-
 		Session session = null;
 
 		try {
@@ -1901,8 +1899,6 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 
 	@Override
 	public LayoutSet updateImpl(LayoutSet layoutSet) {
-		layoutSet = toUnwrappedModel(layoutSet);
-
 		boolean isNew = layoutSet.isNew();
 
 		LayoutSetModelImpl layoutSetModelImpl = (LayoutSetModelImpl)layoutSet;
@@ -2024,35 +2020,6 @@ public class LayoutSetPersistenceImpl extends BasePersistenceImpl<LayoutSet>
 		layoutSet.resetOriginalValues();
 
 		return layoutSet;
-	}
-
-	protected LayoutSet toUnwrappedModel(LayoutSet layoutSet) {
-		if (layoutSet instanceof LayoutSetImpl) {
-			return layoutSet;
-		}
-
-		LayoutSetImpl layoutSetImpl = new LayoutSetImpl();
-
-		layoutSetImpl.setNew(layoutSet.isNew());
-		layoutSetImpl.setPrimaryKey(layoutSet.getPrimaryKey());
-
-		layoutSetImpl.setMvccVersion(layoutSet.getMvccVersion());
-		layoutSetImpl.setLayoutSetId(layoutSet.getLayoutSetId());
-		layoutSetImpl.setGroupId(layoutSet.getGroupId());
-		layoutSetImpl.setCompanyId(layoutSet.getCompanyId());
-		layoutSetImpl.setCreateDate(layoutSet.getCreateDate());
-		layoutSetImpl.setModifiedDate(layoutSet.getModifiedDate());
-		layoutSetImpl.setPrivateLayout(layoutSet.isPrivateLayout());
-		layoutSetImpl.setLogoId(layoutSet.getLogoId());
-		layoutSetImpl.setThemeId(layoutSet.getThemeId());
-		layoutSetImpl.setColorSchemeId(layoutSet.getColorSchemeId());
-		layoutSetImpl.setCss(layoutSet.getCss());
-		layoutSetImpl.setPageCount(layoutSet.getPageCount());
-		layoutSetImpl.setSettings(layoutSet.getSettings());
-		layoutSetImpl.setLayoutSetPrototypeUuid(layoutSet.getLayoutSetPrototypeUuid());
-		layoutSetImpl.setLayoutSetPrototypeLinkEnabled(layoutSet.isLayoutSetPrototypeLinkEnabled());
-
-		return layoutSetImpl;
 	}
 
 	/**

@@ -3268,7 +3268,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 			if ((list != null) && !list.isEmpty()) {
 				for (KBArticle kbArticle : list) {
 					if ((resourcePrimKey != kbArticle.getResourcePrimKey()) ||
-							(latest != kbArticle.getLatest())) {
+							(latest != kbArticle.isLatest())) {
 						list = null;
 
 						break;
@@ -3736,7 +3736,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 				for (KBArticle kbArticle : list) {
 					if (!ArrayUtil.contains(resourcePrimKeies,
 								kbArticle.getResourcePrimKey()) ||
-							(latest != kbArticle.getLatest())) {
+							(latest != kbArticle.isLatest())) {
 						list = null;
 
 						break;
@@ -4102,7 +4102,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 			if ((list != null) && !list.isEmpty()) {
 				for (KBArticle kbArticle : list) {
 					if ((resourcePrimKey != kbArticle.getResourcePrimKey()) ||
-							(main != kbArticle.getMain())) {
+							(main != kbArticle.isMain())) {
 						list = null;
 
 						break;
@@ -4568,7 +4568,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 				for (KBArticle kbArticle : list) {
 					if (!ArrayUtil.contains(resourcePrimKeies,
 								kbArticle.getResourcePrimKey()) ||
-							(main != kbArticle.getMain())) {
+							(main != kbArticle.isMain())) {
 						list = null;
 
 						break;
@@ -5763,7 +5763,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 			if ((list != null) && !list.isEmpty()) {
 				for (KBArticle kbArticle : list) {
 					if ((groupId != kbArticle.getGroupId()) ||
-							(latest != kbArticle.getLatest())) {
+							(latest != kbArticle.isLatest())) {
 						list = null;
 
 						break;
@@ -6679,7 +6679,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 			if ((list != null) && !list.isEmpty()) {
 				for (KBArticle kbArticle : list) {
 					if ((groupId != kbArticle.getGroupId()) ||
-							(main != kbArticle.getMain())) {
+							(main != kbArticle.isMain())) {
 						list = null;
 
 						break;
@@ -8508,7 +8508,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 			if ((list != null) && !list.isEmpty()) {
 				for (KBArticle kbArticle : list) {
 					if ((companyId != kbArticle.getCompanyId()) ||
-							(latest != kbArticle.getLatest())) {
+							(latest != kbArticle.isLatest())) {
 						list = null;
 
 						break;
@@ -9049,7 +9049,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 			if ((list != null) && !list.isEmpty()) {
 				for (KBArticle kbArticle : list) {
 					if ((companyId != kbArticle.getCompanyId()) ||
-							(main != kbArticle.getMain())) {
+							(main != kbArticle.isMain())) {
 						list = null;
 
 						break;
@@ -10137,7 +10137,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 			if ((list != null) && !list.isEmpty()) {
 				for (KBArticle kbArticle : list) {
 					if ((parentResourcePrimKey != kbArticle.getParentResourcePrimKey()) ||
-							(latest != kbArticle.getLatest())) {
+							(latest != kbArticle.isLatest())) {
 						list = null;
 
 						break;
@@ -10608,7 +10608,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 				for (KBArticle kbArticle : list) {
 					if (!ArrayUtil.contains(parentResourcePrimKeies,
 								kbArticle.getParentResourcePrimKey()) ||
-							(latest != kbArticle.getLatest())) {
+							(latest != kbArticle.isLatest())) {
 						list = null;
 
 						break;
@@ -10974,7 +10974,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 			if ((list != null) && !list.isEmpty()) {
 				for (KBArticle kbArticle : list) {
 					if ((parentResourcePrimKey != kbArticle.getParentResourcePrimKey()) ||
-							(main != kbArticle.getMain())) {
+							(main != kbArticle.isMain())) {
 						list = null;
 
 						break;
@@ -11445,7 +11445,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 				for (KBArticle kbArticle : list) {
 					if (!ArrayUtil.contains(parentResourcePrimKeies,
 								kbArticle.getParentResourcePrimKey()) ||
-							(main != kbArticle.getMain())) {
+							(main != kbArticle.isMain())) {
 						list = null;
 
 						break;
@@ -12916,7 +12916,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 				for (KBArticle kbArticle : list) {
 					if ((resourcePrimKey != kbArticle.getResourcePrimKey()) ||
 							(groupId != kbArticle.getGroupId()) ||
-							(latest != kbArticle.getLatest())) {
+							(latest != kbArticle.isLatest())) {
 						list = null;
 
 						break;
@@ -13908,7 +13908,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 					if (!ArrayUtil.contains(resourcePrimKeies,
 								kbArticle.getResourcePrimKey()) ||
 							(groupId != kbArticle.getGroupId()) ||
-							(latest != kbArticle.getLatest())) {
+							(latest != kbArticle.isLatest())) {
 						list = null;
 
 						break;
@@ -14450,7 +14450,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 				for (KBArticle kbArticle : list) {
 					if ((resourcePrimKey != kbArticle.getResourcePrimKey()) ||
 							(groupId != kbArticle.getGroupId()) ||
-							(main != kbArticle.getMain())) {
+							(main != kbArticle.isMain())) {
 						list = null;
 
 						break;
@@ -15440,7 +15440,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 					if (!ArrayUtil.contains(resourcePrimKeies,
 								kbArticle.getResourcePrimKey()) ||
 							(groupId != kbArticle.getGroupId()) ||
-							(main != kbArticle.getMain())) {
+							(main != kbArticle.isMain())) {
 						list = null;
 
 						break;
@@ -17512,7 +17512,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 				for (KBArticle kbArticle : list) {
 					if ((groupId != kbArticle.getGroupId()) ||
 							(parentResourcePrimKey != kbArticle.getParentResourcePrimKey()) ||
-							(latest != kbArticle.getLatest())) {
+							(latest != kbArticle.isLatest())) {
 						list = null;
 
 						break;
@@ -18510,7 +18510,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 					if ((groupId != kbArticle.getGroupId()) ||
 							!ArrayUtil.contains(parentResourcePrimKeies,
 								kbArticle.getParentResourcePrimKey()) ||
-							(latest != kbArticle.getLatest())) {
+							(latest != kbArticle.isLatest())) {
 						list = null;
 
 						break;
@@ -19057,7 +19057,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 				for (KBArticle kbArticle : list) {
 					if ((groupId != kbArticle.getGroupId()) ||
 							(parentResourcePrimKey != kbArticle.getParentResourcePrimKey()) ||
-							(main != kbArticle.getMain())) {
+							(main != kbArticle.isMain())) {
 						list = null;
 
 						break;
@@ -20055,7 +20055,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 					if ((groupId != kbArticle.getGroupId()) ||
 							!ArrayUtil.contains(parentResourcePrimKeies,
 								kbArticle.getParentResourcePrimKey()) ||
-							(main != kbArticle.getMain())) {
+							(main != kbArticle.isMain())) {
 						list = null;
 
 						break;
@@ -23208,7 +23208,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 				for (KBArticle kbArticle : list) {
 					if ((groupId != kbArticle.getGroupId()) ||
 							(kbFolderId != kbArticle.getKbFolderId()) ||
-							(latest != kbArticle.getLatest())) {
+							(latest != kbArticle.isLatest())) {
 						list = null;
 
 						break;
@@ -25157,7 +25157,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 							!StringUtil.wildcardMatches(
 								kbArticle.getSections(), sections, '_', '%',
 								'\\', true) ||
-							(latest != kbArticle.getLatest())) {
+							(latest != kbArticle.isLatest())) {
 						list = null;
 
 						break;
@@ -26221,7 +26221,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 					if ((groupId != kbArticle.getGroupId()) ||
 							!ArrayUtil.contains(sectionses,
 								kbArticle.getSections()) ||
-							(latest != kbArticle.getLatest())) {
+							(latest != kbArticle.isLatest())) {
 						list = null;
 
 						break;
@@ -26827,7 +26827,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 					if ((groupId != kbArticle.getGroupId()) ||
 							!StringUtil.wildcardMatches(
 								kbArticle.getSections(), sections, '_', '%',
-								'\\', true) || (main != kbArticle.getMain())) {
+								'\\', true) || (main != kbArticle.isMain())) {
 						list = null;
 
 						break;
@@ -27891,7 +27891,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 					if ((groupId != kbArticle.getGroupId()) ||
 							!ArrayUtil.contains(sectionses,
 								kbArticle.getSections()) ||
-							(main != kbArticle.getMain())) {
+							(main != kbArticle.isMain())) {
 						list = null;
 
 						break;
@@ -32095,8 +32095,6 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 	@Override
 	protected KBArticle removeImpl(KBArticle kbArticle) {
-		kbArticle = toUnwrappedModel(kbArticle);
-
 		Session session = null;
 
 		try {
@@ -32127,8 +32125,6 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 	@Override
 	public KBArticle updateImpl(KBArticle kbArticle) {
-		kbArticle = toUnwrappedModel(kbArticle);
-
 		boolean isNew = kbArticle.isNew();
 
 		KBArticleModelImpl kbArticleModelImpl = (KBArticleModelImpl)kbArticle;
@@ -32245,7 +32241,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 			args = new Object[] {
 					kbArticleModelImpl.getResourcePrimKey(),
-					kbArticleModelImpl.getLatest()
+					kbArticleModelImpl.isLatest()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_R_L, args);
@@ -32254,7 +32250,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 			args = new Object[] {
 					kbArticleModelImpl.getResourcePrimKey(),
-					kbArticleModelImpl.getMain()
+					kbArticleModelImpl.isMain()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_R_M, args);
@@ -32272,7 +32268,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 			args = new Object[] {
 					kbArticleModelImpl.getGroupId(),
-					kbArticleModelImpl.getLatest()
+					kbArticleModelImpl.isLatest()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_L, args);
@@ -32280,8 +32276,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 				args);
 
 			args = new Object[] {
-					kbArticleModelImpl.getGroupId(),
-					kbArticleModelImpl.getMain()
+					kbArticleModelImpl.getGroupId(), kbArticleModelImpl.isMain()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_M, args);
@@ -32299,7 +32294,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 			args = new Object[] {
 					kbArticleModelImpl.getCompanyId(),
-					kbArticleModelImpl.getLatest()
+					kbArticleModelImpl.isLatest()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_L, args);
@@ -32308,7 +32303,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 			args = new Object[] {
 					kbArticleModelImpl.getCompanyId(),
-					kbArticleModelImpl.getMain()
+					kbArticleModelImpl.isMain()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_M, args);
@@ -32326,7 +32321,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 			args = new Object[] {
 					kbArticleModelImpl.getParentResourcePrimKey(),
-					kbArticleModelImpl.getLatest()
+					kbArticleModelImpl.isLatest()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_P_L, args);
@@ -32335,7 +32330,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 			args = new Object[] {
 					kbArticleModelImpl.getParentResourcePrimKey(),
-					kbArticleModelImpl.getMain()
+					kbArticleModelImpl.isMain()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_P_M, args);
@@ -32354,7 +32349,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 			args = new Object[] {
 					kbArticleModelImpl.getResourcePrimKey(),
 					kbArticleModelImpl.getGroupId(),
-					kbArticleModelImpl.getLatest()
+					kbArticleModelImpl.isLatest()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_R_G_L, args);
@@ -32363,8 +32358,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 			args = new Object[] {
 					kbArticleModelImpl.getResourcePrimKey(),
-					kbArticleModelImpl.getGroupId(),
-					kbArticleModelImpl.getMain()
+					kbArticleModelImpl.getGroupId(), kbArticleModelImpl.isMain()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_R_G_M, args);
@@ -32384,7 +32378,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 			args = new Object[] {
 					kbArticleModelImpl.getGroupId(),
 					kbArticleModelImpl.getParentResourcePrimKey(),
-					kbArticleModelImpl.getLatest()
+					kbArticleModelImpl.isLatest()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_P_L, args);
@@ -32394,7 +32388,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 			args = new Object[] {
 					kbArticleModelImpl.getGroupId(),
 					kbArticleModelImpl.getParentResourcePrimKey(),
-					kbArticleModelImpl.getMain()
+					kbArticleModelImpl.isMain()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_P_M, args);
@@ -32424,7 +32418,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 			args = new Object[] {
 					kbArticleModelImpl.getGroupId(),
 					kbArticleModelImpl.getKbFolderId(),
-					kbArticleModelImpl.getLatest()
+					kbArticleModelImpl.isLatest()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_KBFI_L, args);
@@ -32549,7 +32543,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 				args = new Object[] {
 						kbArticleModelImpl.getResourcePrimKey(),
-						kbArticleModelImpl.getLatest()
+						kbArticleModelImpl.isLatest()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_R_L, args);
@@ -32570,7 +32564,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 				args = new Object[] {
 						kbArticleModelImpl.getResourcePrimKey(),
-						kbArticleModelImpl.getMain()
+						kbArticleModelImpl.isMain()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_R_M, args);
@@ -32612,7 +32606,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 				args = new Object[] {
 						kbArticleModelImpl.getGroupId(),
-						kbArticleModelImpl.getLatest()
+						kbArticleModelImpl.isLatest()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_L, args);
@@ -32633,7 +32627,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 				args = new Object[] {
 						kbArticleModelImpl.getGroupId(),
-						kbArticleModelImpl.getMain()
+						kbArticleModelImpl.isMain()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_M, args);
@@ -32675,7 +32669,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 				args = new Object[] {
 						kbArticleModelImpl.getCompanyId(),
-						kbArticleModelImpl.getLatest()
+						kbArticleModelImpl.isLatest()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_L, args);
@@ -32696,7 +32690,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 				args = new Object[] {
 						kbArticleModelImpl.getCompanyId(),
-						kbArticleModelImpl.getMain()
+						kbArticleModelImpl.isMain()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_M, args);
@@ -32738,7 +32732,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 				args = new Object[] {
 						kbArticleModelImpl.getParentResourcePrimKey(),
-						kbArticleModelImpl.getLatest()
+						kbArticleModelImpl.isLatest()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_P_L, args);
@@ -32759,7 +32753,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 
 				args = new Object[] {
 						kbArticleModelImpl.getParentResourcePrimKey(),
-						kbArticleModelImpl.getMain()
+						kbArticleModelImpl.isMain()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_P_M, args);
@@ -32803,7 +32797,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 				args = new Object[] {
 						kbArticleModelImpl.getResourcePrimKey(),
 						kbArticleModelImpl.getGroupId(),
-						kbArticleModelImpl.getLatest()
+						kbArticleModelImpl.isLatest()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_R_G_L, args);
@@ -32826,7 +32820,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 				args = new Object[] {
 						kbArticleModelImpl.getResourcePrimKey(),
 						kbArticleModelImpl.getGroupId(),
-						kbArticleModelImpl.getMain()
+						kbArticleModelImpl.isMain()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_R_G_M, args);
@@ -32872,7 +32866,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 				args = new Object[] {
 						kbArticleModelImpl.getGroupId(),
 						kbArticleModelImpl.getParentResourcePrimKey(),
-						kbArticleModelImpl.getLatest()
+						kbArticleModelImpl.isLatest()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_P_L, args);
@@ -32895,7 +32889,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 				args = new Object[] {
 						kbArticleModelImpl.getGroupId(),
 						kbArticleModelImpl.getParentResourcePrimKey(),
-						kbArticleModelImpl.getMain()
+						kbArticleModelImpl.isMain()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_P_M, args);
@@ -32964,7 +32958,7 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 				args = new Object[] {
 						kbArticleModelImpl.getGroupId(),
 						kbArticleModelImpl.getKbFolderId(),
-						kbArticleModelImpl.getLatest()
+						kbArticleModelImpl.isLatest()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_KBFI_L, args);
@@ -33030,49 +33024,6 @@ public class KBArticlePersistenceImpl extends BasePersistenceImpl<KBArticle>
 		kbArticle.resetOriginalValues();
 
 		return kbArticle;
-	}
-
-	protected KBArticle toUnwrappedModel(KBArticle kbArticle) {
-		if (kbArticle instanceof KBArticleImpl) {
-			return kbArticle;
-		}
-
-		KBArticleImpl kbArticleImpl = new KBArticleImpl();
-
-		kbArticleImpl.setNew(kbArticle.isNew());
-		kbArticleImpl.setPrimaryKey(kbArticle.getPrimaryKey());
-
-		kbArticleImpl.setUuid(kbArticle.getUuid());
-		kbArticleImpl.setKbArticleId(kbArticle.getKbArticleId());
-		kbArticleImpl.setResourcePrimKey(kbArticle.getResourcePrimKey());
-		kbArticleImpl.setGroupId(kbArticle.getGroupId());
-		kbArticleImpl.setCompanyId(kbArticle.getCompanyId());
-		kbArticleImpl.setUserId(kbArticle.getUserId());
-		kbArticleImpl.setUserName(kbArticle.getUserName());
-		kbArticleImpl.setCreateDate(kbArticle.getCreateDate());
-		kbArticleImpl.setModifiedDate(kbArticle.getModifiedDate());
-		kbArticleImpl.setRootResourcePrimKey(kbArticle.getRootResourcePrimKey());
-		kbArticleImpl.setParentResourceClassNameId(kbArticle.getParentResourceClassNameId());
-		kbArticleImpl.setParentResourcePrimKey(kbArticle.getParentResourcePrimKey());
-		kbArticleImpl.setKbFolderId(kbArticle.getKbFolderId());
-		kbArticleImpl.setVersion(kbArticle.getVersion());
-		kbArticleImpl.setTitle(kbArticle.getTitle());
-		kbArticleImpl.setUrlTitle(kbArticle.getUrlTitle());
-		kbArticleImpl.setContent(kbArticle.getContent());
-		kbArticleImpl.setDescription(kbArticle.getDescription());
-		kbArticleImpl.setPriority(kbArticle.getPriority());
-		kbArticleImpl.setSections(kbArticle.getSections());
-		kbArticleImpl.setViewCount(kbArticle.getViewCount());
-		kbArticleImpl.setLatest(kbArticle.isLatest());
-		kbArticleImpl.setMain(kbArticle.isMain());
-		kbArticleImpl.setSourceURL(kbArticle.getSourceURL());
-		kbArticleImpl.setLastPublishDate(kbArticle.getLastPublishDate());
-		kbArticleImpl.setStatus(kbArticle.getStatus());
-		kbArticleImpl.setStatusByUserId(kbArticle.getStatusByUserId());
-		kbArticleImpl.setStatusByUserName(kbArticle.getStatusByUserName());
-		kbArticleImpl.setStatusDate(kbArticle.getStatusDate());
-
-		return kbArticleImpl;
 	}
 
 	/**

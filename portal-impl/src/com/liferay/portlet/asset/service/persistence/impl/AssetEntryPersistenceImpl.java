@@ -1212,7 +1212,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 
 			if ((list != null) && !list.isEmpty()) {
 				for (AssetEntry assetEntry : list) {
-					if ((visible != assetEntry.getVisible())) {
+					if ((visible != assetEntry.isVisible())) {
 						list = null;
 
 						break;
@@ -3865,7 +3865,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 				for (AssetEntry assetEntry : list) {
 					if ((groupId != assetEntry.getGroupId()) ||
 							(classNameId != assetEntry.getClassNameId()) ||
-							(visible != assetEntry.getVisible())) {
+							(visible != assetEntry.isVisible())) {
 						list = null;
 
 						break;
@@ -5248,8 +5248,6 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 
 	@Override
 	protected AssetEntry removeImpl(AssetEntry assetEntry) {
-		assetEntry = toUnwrappedModel(assetEntry);
-
 		assetEntryToAssetCategoryTableMapper.deleteLeftPrimaryKeyTableMappings(assetEntry.getPrimaryKey());
 
 		assetEntryToAssetTagTableMapper.deleteLeftPrimaryKeyTableMappings(assetEntry.getPrimaryKey());
@@ -5284,8 +5282,6 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 
 	@Override
 	public AssetEntry updateImpl(AssetEntry assetEntry) {
-		assetEntry = toUnwrappedModel(assetEntry);
-
 		boolean isNew = assetEntry.isNew();
 
 		AssetEntryModelImpl assetEntryModelImpl = (AssetEntryModelImpl)assetEntry;
@@ -5352,7 +5348,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
 				args);
 
-			args = new Object[] { assetEntryModelImpl.getVisible() };
+			args = new Object[] { assetEntryModelImpl.isVisible() };
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_VISIBLE, args);
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_VISIBLE,
@@ -5379,7 +5375,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 			args = new Object[] {
 					assetEntryModelImpl.getGroupId(),
 					assetEntryModelImpl.getClassNameId(),
-					assetEntryModelImpl.getVisible()
+					assetEntryModelImpl.isVisible()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_C_V, args);
@@ -5447,7 +5443,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_VISIBLE,
 					args);
 
-				args = new Object[] { assetEntryModelImpl.getVisible() };
+				args = new Object[] { assetEntryModelImpl.isVisible() };
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_VISIBLE, args);
 				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_VISIBLE,
@@ -5522,7 +5518,7 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 				args = new Object[] {
 						assetEntryModelImpl.getGroupId(),
 						assetEntryModelImpl.getClassNameId(),
-						assetEntryModelImpl.getVisible()
+						assetEntryModelImpl.isVisible()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_C_V, args);
@@ -5565,47 +5561,6 @@ public class AssetEntryPersistenceImpl extends BasePersistenceImpl<AssetEntry>
 		assetEntry.resetOriginalValues();
 
 		return assetEntry;
-	}
-
-	protected AssetEntry toUnwrappedModel(AssetEntry assetEntry) {
-		if (assetEntry instanceof AssetEntryImpl) {
-			return assetEntry;
-		}
-
-		AssetEntryImpl assetEntryImpl = new AssetEntryImpl();
-
-		assetEntryImpl.setNew(assetEntry.isNew());
-		assetEntryImpl.setPrimaryKey(assetEntry.getPrimaryKey());
-
-		assetEntryImpl.setEntryId(assetEntry.getEntryId());
-		assetEntryImpl.setGroupId(assetEntry.getGroupId());
-		assetEntryImpl.setCompanyId(assetEntry.getCompanyId());
-		assetEntryImpl.setUserId(assetEntry.getUserId());
-		assetEntryImpl.setUserName(assetEntry.getUserName());
-		assetEntryImpl.setCreateDate(assetEntry.getCreateDate());
-		assetEntryImpl.setModifiedDate(assetEntry.getModifiedDate());
-		assetEntryImpl.setClassNameId(assetEntry.getClassNameId());
-		assetEntryImpl.setClassPK(assetEntry.getClassPK());
-		assetEntryImpl.setClassUuid(assetEntry.getClassUuid());
-		assetEntryImpl.setClassTypeId(assetEntry.getClassTypeId());
-		assetEntryImpl.setListable(assetEntry.isListable());
-		assetEntryImpl.setVisible(assetEntry.isVisible());
-		assetEntryImpl.setStartDate(assetEntry.getStartDate());
-		assetEntryImpl.setEndDate(assetEntry.getEndDate());
-		assetEntryImpl.setPublishDate(assetEntry.getPublishDate());
-		assetEntryImpl.setExpirationDate(assetEntry.getExpirationDate());
-		assetEntryImpl.setMimeType(assetEntry.getMimeType());
-		assetEntryImpl.setTitle(assetEntry.getTitle());
-		assetEntryImpl.setDescription(assetEntry.getDescription());
-		assetEntryImpl.setSummary(assetEntry.getSummary());
-		assetEntryImpl.setUrl(assetEntry.getUrl());
-		assetEntryImpl.setLayoutUuid(assetEntry.getLayoutUuid());
-		assetEntryImpl.setHeight(assetEntry.getHeight());
-		assetEntryImpl.setWidth(assetEntry.getWidth());
-		assetEntryImpl.setPriority(assetEntry.getPriority());
-		assetEntryImpl.setViewCount(assetEntry.getViewCount());
-
-		return assetEntryImpl;
 	}
 
 	/**

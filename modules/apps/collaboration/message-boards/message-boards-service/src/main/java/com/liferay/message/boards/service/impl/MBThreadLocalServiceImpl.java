@@ -100,6 +100,7 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 		thread.setCategoryId(categoryId);
 		thread.setRootMessageId(message.getMessageId());
 		thread.setRootMessageUserId(message.getUserId());
+		thread.setTitle(message.getSubject());
 
 		if (message.isAnonymous()) {
 			thread.setLastPostByUserId(0);
@@ -426,6 +427,10 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 		}
 	}
 
+	/**
+	* @deprecated As of 2.0.0, with no direct replacement
+	*/
+	@Deprecated
 	@Override
 	public List<MBThread> getNoAssetThreads() {
 		return mbThreadFinder.findByNoAssets();
@@ -1035,6 +1040,10 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 			}
 
 			message.setSubject(subject);
+
+			thread.setTitle(subject);
+
+			mbThreadLocalService.updateMBThread(thread);
 		}
 
 		message.setThreadId(thread.getThreadId());

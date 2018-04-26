@@ -3050,7 +3050,7 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 			if ((list != null) && !list.isEmpty()) {
 				for (LayoutPrototype layoutPrototype : list) {
 					if ((companyId != layoutPrototype.getCompanyId()) ||
-							(active != layoutPrototype.getActive())) {
+							(active != layoutPrototype.isActive())) {
 						list = null;
 
 						break;
@@ -4030,8 +4030,6 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 
 	@Override
 	protected LayoutPrototype removeImpl(LayoutPrototype layoutPrototype) {
-		layoutPrototype = toUnwrappedModel(layoutPrototype);
-
 		Session session = null;
 
 		try {
@@ -4062,8 +4060,6 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 
 	@Override
 	public LayoutPrototype updateImpl(LayoutPrototype layoutPrototype) {
-		layoutPrototype = toUnwrappedModel(layoutPrototype);
-
 		boolean isNew = layoutPrototype.isNew();
 
 		LayoutPrototypeModelImpl layoutPrototypeModelImpl = (LayoutPrototypeModelImpl)layoutPrototype;
@@ -4148,7 +4144,7 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 
 			args = new Object[] {
 					layoutPrototypeModelImpl.getCompanyId(),
-					layoutPrototypeModelImpl.getActive()
+					layoutPrototypeModelImpl.isActive()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_A, args);
@@ -4229,7 +4225,7 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 
 				args = new Object[] {
 						layoutPrototypeModelImpl.getCompanyId(),
-						layoutPrototypeModelImpl.getActive()
+						layoutPrototypeModelImpl.isActive()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_A, args);
@@ -4245,32 +4241,6 @@ public class LayoutPrototypePersistenceImpl extends BasePersistenceImpl<LayoutPr
 		layoutPrototype.resetOriginalValues();
 
 		return layoutPrototype;
-	}
-
-	protected LayoutPrototype toUnwrappedModel(LayoutPrototype layoutPrototype) {
-		if (layoutPrototype instanceof LayoutPrototypeImpl) {
-			return layoutPrototype;
-		}
-
-		LayoutPrototypeImpl layoutPrototypeImpl = new LayoutPrototypeImpl();
-
-		layoutPrototypeImpl.setNew(layoutPrototype.isNew());
-		layoutPrototypeImpl.setPrimaryKey(layoutPrototype.getPrimaryKey());
-
-		layoutPrototypeImpl.setMvccVersion(layoutPrototype.getMvccVersion());
-		layoutPrototypeImpl.setUuid(layoutPrototype.getUuid());
-		layoutPrototypeImpl.setLayoutPrototypeId(layoutPrototype.getLayoutPrototypeId());
-		layoutPrototypeImpl.setCompanyId(layoutPrototype.getCompanyId());
-		layoutPrototypeImpl.setUserId(layoutPrototype.getUserId());
-		layoutPrototypeImpl.setUserName(layoutPrototype.getUserName());
-		layoutPrototypeImpl.setCreateDate(layoutPrototype.getCreateDate());
-		layoutPrototypeImpl.setModifiedDate(layoutPrototype.getModifiedDate());
-		layoutPrototypeImpl.setName(layoutPrototype.getName());
-		layoutPrototypeImpl.setDescription(layoutPrototype.getDescription());
-		layoutPrototypeImpl.setSettings(layoutPrototype.getSettings());
-		layoutPrototypeImpl.setActive(layoutPrototype.isActive());
-
-		return layoutPrototypeImpl;
 	}
 
 	/**

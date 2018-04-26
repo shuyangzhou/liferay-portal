@@ -213,7 +213,7 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 				for (PowwowServer powwowServer : list) {
 					if (!Objects.equals(providerType,
 								powwowServer.getProviderType()) ||
-							(active != powwowServer.getActive())) {
+							(active != powwowServer.isActive())) {
 						list = null;
 
 						break;
@@ -850,8 +850,6 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 
 	@Override
 	protected PowwowServer removeImpl(PowwowServer powwowServer) {
-		powwowServer = toUnwrappedModel(powwowServer);
-
 		Session session = null;
 
 		try {
@@ -882,8 +880,6 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 
 	@Override
 	public PowwowServer updateImpl(PowwowServer powwowServer) {
-		powwowServer = toUnwrappedModel(powwowServer);
-
 		boolean isNew = powwowServer.isNew();
 
 		PowwowServerModelImpl powwowServerModelImpl = (PowwowServerModelImpl)powwowServer;
@@ -940,7 +936,7 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 		 if (isNew) {
 			Object[] args = new Object[] {
 					powwowServerModelImpl.getProviderType(),
-					powwowServerModelImpl.getActive()
+					powwowServerModelImpl.isActive()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_PT_A, args);
@@ -966,7 +962,7 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 
 				args = new Object[] {
 						powwowServerModelImpl.getProviderType(),
-						powwowServerModelImpl.getActive()
+						powwowServerModelImpl.isActive()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_PT_A, args);
@@ -982,32 +978,6 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 		powwowServer.resetOriginalValues();
 
 		return powwowServer;
-	}
-
-	protected PowwowServer toUnwrappedModel(PowwowServer powwowServer) {
-		if (powwowServer instanceof PowwowServerImpl) {
-			return powwowServer;
-		}
-
-		PowwowServerImpl powwowServerImpl = new PowwowServerImpl();
-
-		powwowServerImpl.setNew(powwowServer.isNew());
-		powwowServerImpl.setPrimaryKey(powwowServer.getPrimaryKey());
-
-		powwowServerImpl.setPowwowServerId(powwowServer.getPowwowServerId());
-		powwowServerImpl.setCompanyId(powwowServer.getCompanyId());
-		powwowServerImpl.setUserId(powwowServer.getUserId());
-		powwowServerImpl.setUserName(powwowServer.getUserName());
-		powwowServerImpl.setCreateDate(powwowServer.getCreateDate());
-		powwowServerImpl.setModifiedDate(powwowServer.getModifiedDate());
-		powwowServerImpl.setName(powwowServer.getName());
-		powwowServerImpl.setProviderType(powwowServer.getProviderType());
-		powwowServerImpl.setUrl(powwowServer.getUrl());
-		powwowServerImpl.setApiKey(powwowServer.getApiKey());
-		powwowServerImpl.setSecret(powwowServer.getSecret());
-		powwowServerImpl.setActive(powwowServer.isActive());
-
-		return powwowServerImpl;
 	}
 
 	/**

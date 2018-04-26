@@ -3502,7 +3502,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 					if ((companyId != emailAddress.getCompanyId()) ||
 							(classNameId != emailAddress.getClassNameId()) ||
 							(classPK != emailAddress.getClassPK()) ||
-							(primary != emailAddress.getPrimary())) {
+							(primary != emailAddress.isPrimary())) {
 						list = null;
 
 						break;
@@ -4163,8 +4163,6 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 	@Override
 	protected EmailAddress removeImpl(EmailAddress emailAddress) {
-		emailAddress = toUnwrappedModel(emailAddress);
-
 		Session session = null;
 
 		try {
@@ -4195,8 +4193,6 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 
 	@Override
 	public EmailAddress updateImpl(EmailAddress emailAddress) {
-		emailAddress = toUnwrappedModel(emailAddress);
-
 		boolean isNew = emailAddress.isNew();
 
 		EmailAddressModelImpl emailAddressModelImpl = (EmailAddressModelImpl)emailAddress;
@@ -4307,7 +4303,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 					emailAddressModelImpl.getCompanyId(),
 					emailAddressModelImpl.getClassNameId(),
 					emailAddressModelImpl.getClassPK(),
-					emailAddressModelImpl.getPrimary()
+					emailAddressModelImpl.isPrimary()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_C_C_P, args);
@@ -4453,7 +4449,7 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 						emailAddressModelImpl.getCompanyId(),
 						emailAddressModelImpl.getClassNameId(),
 						emailAddressModelImpl.getClassPK(),
-						emailAddressModelImpl.getPrimary()
+						emailAddressModelImpl.isPrimary()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_C_C_P, args);
@@ -4469,33 +4465,6 @@ public class EmailAddressPersistenceImpl extends BasePersistenceImpl<EmailAddres
 		emailAddress.resetOriginalValues();
 
 		return emailAddress;
-	}
-
-	protected EmailAddress toUnwrappedModel(EmailAddress emailAddress) {
-		if (emailAddress instanceof EmailAddressImpl) {
-			return emailAddress;
-		}
-
-		EmailAddressImpl emailAddressImpl = new EmailAddressImpl();
-
-		emailAddressImpl.setNew(emailAddress.isNew());
-		emailAddressImpl.setPrimaryKey(emailAddress.getPrimaryKey());
-
-		emailAddressImpl.setMvccVersion(emailAddress.getMvccVersion());
-		emailAddressImpl.setUuid(emailAddress.getUuid());
-		emailAddressImpl.setEmailAddressId(emailAddress.getEmailAddressId());
-		emailAddressImpl.setCompanyId(emailAddress.getCompanyId());
-		emailAddressImpl.setUserId(emailAddress.getUserId());
-		emailAddressImpl.setUserName(emailAddress.getUserName());
-		emailAddressImpl.setCreateDate(emailAddress.getCreateDate());
-		emailAddressImpl.setModifiedDate(emailAddress.getModifiedDate());
-		emailAddressImpl.setClassNameId(emailAddress.getClassNameId());
-		emailAddressImpl.setClassPK(emailAddress.getClassPK());
-		emailAddressImpl.setAddress(emailAddress.getAddress());
-		emailAddressImpl.setTypeId(emailAddress.getTypeId());
-		emailAddressImpl.setPrimary(emailAddress.isPrimary());
-
-		return emailAddressImpl;
 	}
 
 	/**
