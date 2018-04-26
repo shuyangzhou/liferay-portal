@@ -30,7 +30,9 @@ public class JavaVerifyUpgradeConnectionCheck extends BaseFileCheck {
 	protected String doProcess(
 		String fileName, String absolutePath, String content) {
 
-		if (fileName.endsWith("Test.java") ||
+		if (absolutePath.contains("/test/") ||
+			fileName.endsWith("DBUpgrader.java") ||
+			fileName.endsWith("Test.java") ||
 			fileName.endsWith("UpgradeTableListener.java") ||
 			content.contains("Callable<Void>")) {
 
@@ -46,8 +48,7 @@ public class JavaVerifyUpgradeConnectionCheck extends BaseFileCheck {
 		int x = -1;
 
 		while (true) {
-			x = content.indexOf(
-				"DataAccess.getUpgradeOptimizedConnection", x + 1);
+			x = content.indexOf("DataAccess.getConnection", x + 1);
 
 			if (x == -1) {
 				break;
@@ -56,7 +57,7 @@ public class JavaVerifyUpgradeConnectionCheck extends BaseFileCheck {
 			addMessage(
 				fileName,
 				"Use existing connection field instead of " +
-					"DataAccess.getUpgradeOptimizedConnection",
+					"DataAccess.getConnection",
 				getLineCount(content, x));
 		}
 

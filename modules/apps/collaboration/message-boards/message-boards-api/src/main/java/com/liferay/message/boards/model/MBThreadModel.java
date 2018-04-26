@@ -270,6 +270,21 @@ public interface MBThreadModel extends BaseModel<MBThread>, ContainerModel,
 	public void setRootMessageUserUuid(String rootMessageUserUuid);
 
 	/**
+	 * Returns the title of this message boards thread.
+	 *
+	 * @return the title of this message boards thread
+	 */
+	@AutoEscape
+	public String getTitle();
+
+	/**
+	 * Sets the title of this message boards thread.
+	 *
+	 * @param title the title of this message boards thread
+	 */
+	public void setTitle(String title);
+
+	/**
 	 * Returns the message count of this message boards thread.
 	 *
 	 * @return the message count of this message boards thread
