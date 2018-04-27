@@ -97,7 +97,8 @@ public class AutoDeleteFileInputStreamTest {
 		Set<String> files = ReflectionTestUtil.getFieldValue(
 			Class.forName("java.io.DeleteOnExitHook"), "files");
 
-		Assert.assertFalse(files.toString(), files.contains(tempFile));
+		Assert.assertFalse(
+			files.toString(), files.contains(tempFile.getPath()));
 
 		// Unable to delete on close
 
@@ -161,7 +162,8 @@ public class AutoDeleteFileInputStreamTest {
 
 		Assert.assertFalse(tempFile.exists());
 		Assert.assertEquals(2, checkDeleteCount.get());
-		Assert.assertFalse(files.toString(), files.contains(tempFile));
+		Assert.assertFalse(
+			files.toString(), files.contains(tempFile.getPath()));
 	}
 
 }
