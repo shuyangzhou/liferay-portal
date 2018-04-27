@@ -12,8 +12,8 @@
 			</else>
 		</if>
 
-		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="descriptive" />
+		<execute macro="LexiconEntry#changeDisplayStyle">
+			<var name="displayStyle" value="list" />
 		</execute>
 
 		<execute function="AssertTextEquals#assertPartialText" locator1="WC#ENTRY_DESCRIPTIVE_TITLE" value1="${webContentTitle}" />
@@ -156,13 +156,6 @@
 		<execute function="SelectFrame" value1="relative=top" />
 	</command>
 
-	<command name="gotoEditTemplate">
-		<execute macro="LexiconEntry#gotoEntryMenuItem">
-			<var name="menuItem" value="Edit" />
-			<var name="rowEntry" value="${templateName}" />
-		</execute>
-	</command>
-
 	<command name="gotoLocalizedEditPGViaWCD">
 		<execute macro="Portlet#gotoPortletOptions">
 			<var name="portletName" value="${localizedPortletName}" />
@@ -223,26 +216,16 @@
 			<var name="portletTitle" value="${webContentTitle}" />
 		</execute>
 
-		<execute function="Click" locator1="Icon#HEADER_VERTICAL_ELLIPSIS" />
-
-		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="Preview">
-			<var name="key_menuItem" value="Preview" />
-		</execute>
-	</command>
-
-	<command name="gotoViewSource">
-		<execute function="Click" locator1="Icon#HEADER_VERTICAL_ELLIPSIS" />
-
-		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="View Source">
-			<var name="key_menuItem" value="View Source" />
+		<execute macro="LexiconEntry#gotoHeaderMenuItem">
+			<var name="menuItem" value="Preview" />
 		</execute>
 	</command>
 
 	<command name="gotoViewStatus">
 		<var name="key_webContentTitle" value="${webContentTitle}" />
 
-		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="descriptive" />
+		<execute macro="LexiconEntry#changeDisplayStyle">
+			<var name="displayStyle" value="list" />
 		</execute>
 
 		<execute function="AssertElementPresent#pauseAssertVisible" locator1="WC#ENTRY_DESCRIPTIVE_THUMBNAIL" />

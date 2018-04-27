@@ -60,9 +60,9 @@ public interface UserTrackerLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link UserTrackerLocalServiceUtil} to access the user tracker local service. Add custom service methods to {@link com.liferay.portal.service.impl.UserTrackerLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public UserTracker addUserTracker(long companyId, long userId,
-		Date modifiedDate, java.lang.String sessionId,
-		java.lang.String remoteAddr, java.lang.String remoteHost,
-		java.lang.String userAgent, List<UserTrackerPath> userTrackerPaths);
+		Date modifiedDate, String sessionId, String remoteAddr,
+		String remoteHost, String userAgent,
+		List<UserTrackerPath> userTrackerPaths);
 
 	/**
 	* Adds the user tracker to the database. Also notifies the appropriate model listeners.
@@ -79,6 +79,7 @@ public interface UserTrackerLocalService extends BaseLocalService,
 	* @param userTrackerId the primary key for the new user tracker
 	* @return the new user tracker
 	*/
+	@Transactional(enabled = false)
 	public UserTracker createUserTracker(long userTrackerId);
 
 	/**
@@ -181,7 +182,7 @@ public interface UserTrackerLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

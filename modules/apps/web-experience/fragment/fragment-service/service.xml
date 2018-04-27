@@ -155,6 +155,7 @@
 		<column name="editableValues" type="String" />
 		<column name="position" type="int" />
 		<column name="lastPropagationDate" type="Date" />
+		<column name="namespace" type="String" />
 
 		<!-- Order -->
 
@@ -198,6 +199,8 @@
 		<exception>FragmentCollectionName</exception>
 		<exception>FragmentEntryContent</exception>
 		<exception>FragmentEntryName</exception>
+		<exception>InvalidFragmentCollectionFile</exception>
+		<exception>InvalidFragmentEntryFile</exception>
 		<exception>RequiredFragmentEntry</exception>
 	</exceptions>
 </service-builder>

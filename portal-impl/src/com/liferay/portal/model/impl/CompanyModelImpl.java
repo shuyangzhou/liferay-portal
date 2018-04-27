@@ -135,9 +135,9 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		model.setMx(soapModel.getMx());
 		model.setHomeURL(soapModel.getHomeURL());
 		model.setLogoId(soapModel.getLogoId());
-		model.setSystem(soapModel.getSystem());
+		model.setSystem(soapModel.isSystem());
 		model.setMaxUsers(soapModel.getMaxUsers());
-		model.setActive(soapModel.getActive());
+		model.setActive(soapModel.isActive());
 
 		return model;
 	}
@@ -210,9 +210,9 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		attributes.put("mx", getMx());
 		attributes.put("homeURL", getHomeURL());
 		attributes.put("logoId", getLogoId());
-		attributes.put("system", getSystem());
+		attributes.put("system", isSystem());
 		attributes.put("maxUsers", getMaxUsers());
-		attributes.put("active", getActive());
+		attributes.put("active", isActive());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -501,11 +501,11 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 	public void setKeyObj(java.security.Key keyObj) {
 	}
 
-	public java.lang.String getVirtualHostname() {
+	public String getVirtualHostname() {
 		return null;
 	}
 
-	public void setVirtualHostname(java.lang.String virtualHostname) {
+	public void setVirtualHostname(String virtualHostname) {
 	}
 
 	public long getColumnBitmask() {
@@ -547,9 +547,9 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		companyImpl.setMx(getMx());
 		companyImpl.setHomeURL(getHomeURL());
 		companyImpl.setLogoId(getLogoId());
-		companyImpl.setSystem(getSystem());
+		companyImpl.setSystem(isSystem());
 		companyImpl.setMaxUsers(getMaxUsers());
-		companyImpl.setActive(getActive());
+		companyImpl.setActive(isActive());
 
 		companyImpl.resetOriginalValues();
 
@@ -677,11 +677,11 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 
 		companyCacheModel.logoId = getLogoId();
 
-		companyCacheModel.system = getSystem();
+		companyCacheModel.system = isSystem();
 
 		companyCacheModel.maxUsers = getMaxUsers();
 
-		companyCacheModel.active = getActive();
+		companyCacheModel.active = isActive();
 
 		companyCacheModel._companySecurityBag = getCompanySecurityBag();
 
@@ -713,11 +713,11 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		sb.append(", logoId=");
 		sb.append(getLogoId());
 		sb.append(", system=");
-		sb.append(getSystem());
+		sb.append(isSystem());
 		sb.append(", maxUsers=");
 		sb.append(getMaxUsers());
 		sb.append(", active=");
-		sb.append(getActive());
+		sb.append(isActive());
 		sb.append("}");
 
 		return sb.toString();
@@ -765,7 +765,7 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>system</column-name><column-value><![CDATA[");
-		sb.append(getSystem());
+		sb.append(isSystem());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>maxUsers</column-name><column-value><![CDATA[");
@@ -773,7 +773,7 @@ public class CompanyModelImpl extends BaseModelImpl<Company>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>active</column-name><column-value><![CDATA[");
-		sb.append(getActive());
+		sb.append(isActive());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

@@ -14,15 +14,10 @@
 
 package com.liferay.announcements.uad.exporter;
 
-import com.liferay.announcements.kernel.model.AnnouncementsEntry;
-import com.liferay.announcements.kernel.service.AnnouncementsEntryLocalService;
 import com.liferay.announcements.uad.constants.AnnouncementsUADConstants;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.user.associated.data.exporter.UADExporter;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Noah Sherrill
@@ -33,20 +28,5 @@ import org.osgi.service.component.annotations.Reference;
 	service = UADExporter.class
 )
 public class AnnouncementsEntryUADExporter
-	extends DynamicQueryUADExporter<AnnouncementsEntry> {
-
-	@Override
-	protected ActionableDynamicQuery doGetActionableDynamicQuery() {
-		return _announcementsEntryLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	protected String[] doGetUserIdFieldNames() {
-		return AnnouncementsUADConstants.
-			USER_ID_FIELD_NAMES_ANNOUNCEMENTS_ENTRY;
-	}
-
-	@Reference
-	private AnnouncementsEntryLocalService _announcementsEntryLocalService;
-
+	extends BaseAnnouncementsEntryUADExporter {
 }

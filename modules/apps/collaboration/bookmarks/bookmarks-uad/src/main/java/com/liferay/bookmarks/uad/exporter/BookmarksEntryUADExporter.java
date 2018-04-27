@@ -14,15 +14,10 @@
 
 package com.liferay.bookmarks.uad.exporter;
 
-import com.liferay.bookmarks.model.BookmarksEntry;
-import com.liferay.bookmarks.service.BookmarksEntryLocalService;
 import com.liferay.bookmarks.uad.constants.BookmarksUADConstants;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.user.associated.data.exporter.UADExporter;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Noah Sherrill
@@ -32,20 +27,5 @@ import org.osgi.service.component.annotations.Reference;
 	property = "model.class.name=" + BookmarksUADConstants.CLASS_NAME_BOOKMARKS_ENTRY,
 	service = UADExporter.class
 )
-public class BookmarksEntryUADExporter
-	extends DynamicQueryUADExporter<BookmarksEntry> {
-
-	@Override
-	protected ActionableDynamicQuery doGetActionableDynamicQuery() {
-		return _bookmarksEntryLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	protected String[] doGetUserIdFieldNames() {
-		return BookmarksUADConstants.USER_ID_FIELD_NAMES_BOOKMARKS_ENTRY;
-	}
-
-	@Reference
-	private BookmarksEntryLocalService _bookmarksEntryLocalService;
-
+public class BookmarksEntryUADExporter extends BaseBookmarksEntryUADExporter {
 }

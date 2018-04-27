@@ -22,11 +22,13 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItemList;
+import com.liferay.layout.page.template.constants.LayoutPageTemplateEntryTypeConstants;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalServiceUtil;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -59,19 +61,17 @@ public class FragmentEntryLinkDisplayContext {
 		_request = PortalUtil.getHttpServletRequest(renderRequest);
 	}
 
-	public DropdownItemList getActionItemsDropdownItemList() {
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
-			_renderRequest);
-
-		return new DropdownItemList(request) {
+	public List<DropdownItem> getActionItemsDropdownItemList() {
+		return new DropdownItemList() {
 			{
 				add(
 					dropdownItem -> {
 						dropdownItem.setHref(
 							"javascript:" + _renderResponse.getNamespace() +
 								"propagate();");
-						dropdownItem.setIcon("reload");
-						dropdownItem.setLabel("propagate");
+						dropdownItem.setIcon("upload");
+						dropdownItem.setLabel(
+							LanguageUtil.get(_request, "propagate"));
 						dropdownItem.setQuickAction(true);
 					});
 			}
@@ -90,17 +90,19 @@ public class FragmentEntryLinkDisplayContext {
 
 		return FragmentEntryLinkLocalServiceUtil.getFragmentEntryLinksCount(
 			fragmentEntry.getGroupId(), getFragmentEntryId(),
-			PortalUtil.getClassNameId(LayoutPageTemplateEntry.class));
+			PortalUtil.getClassNameId(LayoutPageTemplateEntry.class),
+			LayoutPageTemplateEntryTypeConstants.TYPE_DISPLAY_PAGE);
 	}
 
 	public List<DropdownItem> getFilterItemsDropdownItems() {
-		return new DropdownItemList(_request) {
+		return new DropdownItemList() {
 			{
 				addGroup(
 					dropdownGroupItem -> {
 						dropdownGroupItem.setDropdownItems(
 							_getOrderByDropdownItems());
-						dropdownGroupItem.setLabel("order-by");
+						dropdownGroupItem.setLabel(
+							LanguageUtil.get(_request, "order-by"));
 					});
 			}
 		};
@@ -161,6 +163,29 @@ public class FragmentEntryLinkDisplayContext {
 		}
 	}
 
+	public String getFragmentEntryLinkTypeLabel(
+			FragmentEntryLink fragmentEntryLink)
+		throws PortalException {
+
+		if (fragmentEntryLink.getClassNameId() ==
+				PortalUtil.getClassNameId(Layout.class)) {
+
+			return "page";
+		}
+
+		LayoutPageTemplateEntry layoutPageTemplateEntry =
+			LayoutPageTemplateEntryLocalServiceUtil.getLayoutPageTemplateEntry(
+				fragmentEntryLink.getClassPK());
+
+		if (layoutPageTemplateEntry.getType() ==
+				LayoutPageTemplateEntryTypeConstants.TYPE_DISPLAY_PAGE) {
+
+			return "display-page";
+		}
+
+		return "page-template";
+	}
+
 	public String getKeywords() {
 		if (Validator.isNotNull(_keywords)) {
 			return _keywords;
@@ -215,7 +240,8 @@ public class FragmentEntryLinkDisplayContext {
 
 		return FragmentEntryLinkLocalServiceUtil.getFragmentEntryLinksCount(
 			fragmentEntry.getGroupId(), getFragmentEntryId(),
-			PortalUtil.getClassNameId(LayoutPageTemplateEntry.class));
+			PortalUtil.getClassNameId(LayoutPageTemplateEntry.class),
+			LayoutPageTemplateEntryTypeConstants.TYPE_BASIC);
 	}
 
 	public PortletURL getPortletURL() {
@@ -285,6 +311,7 @@ public class FragmentEntryLinkDisplayContext {
 				FragmentEntryLinkLocalServiceUtil.getFragmentEntryLinks(
 					fragmentEntry.getGroupId(), getFragmentEntryId(),
 					PortalUtil.getClassNameId(LayoutPageTemplateEntry.class),
+					LayoutPageTemplateEntryTypeConstants.TYPE_BASIC,
 					fragmentEntryLinksSearchContainer.getStart(),
 					fragmentEntryLinksSearchContainer.getEnd(),
 					orderByComparator);
@@ -292,13 +319,15 @@ public class FragmentEntryLinkDisplayContext {
 			fragmentEntryLinksCount =
 				FragmentEntryLinkLocalServiceUtil.getFragmentEntryLinksCount(
 					fragmentEntry.getGroupId(), getFragmentEntryId(),
-					PortalUtil.getClassNameId(LayoutPageTemplateEntry.class));
+					PortalUtil.getClassNameId(LayoutPageTemplateEntry.class),
+					LayoutPageTemplateEntryTypeConstants.TYPE_BASIC);
 		}
 		else if (Objects.equals(getNavigation(), "display-pages")) {
 			fragmentEntryLinks =
 				FragmentEntryLinkLocalServiceUtil.getFragmentEntryLinks(
 					fragmentEntry.getGroupId(), getFragmentEntryId(),
 					PortalUtil.getClassNameId(LayoutPageTemplateEntry.class),
+					LayoutPageTemplateEntryTypeConstants.TYPE_DISPLAY_PAGE,
 					fragmentEntryLinksSearchContainer.getStart(),
 					fragmentEntryLinksSearchContainer.getEnd(),
 					orderByComparator);
@@ -306,7 +335,8 @@ public class FragmentEntryLinkDisplayContext {
 			fragmentEntryLinksCount =
 				FragmentEntryLinkLocalServiceUtil.getFragmentEntryLinksCount(
 					fragmentEntry.getGroupId(), getFragmentEntryId(),
-					PortalUtil.getClassNameId(LayoutPageTemplateEntry.class));
+					PortalUtil.getClassNameId(LayoutPageTemplateEntry.class),
+					LayoutPageTemplateEntryTypeConstants.TYPE_DISPLAY_PAGE);
 		}
 		else {
 			fragmentEntryLinks =
@@ -330,7 +360,7 @@ public class FragmentEntryLinkDisplayContext {
 	}
 
 	public List<ViewTypeItem> getViewTypeItems() {
-		return new ViewTypeItemList(_request, getPortletURL(), "list") {
+		return new ViewTypeItemList(getPortletURL(), "list") {
 			{
 				addTableViewTypeItem();
 			}
@@ -338,14 +368,15 @@ public class FragmentEntryLinkDisplayContext {
 	}
 
 	private List<DropdownItem> _getOrderByDropdownItems() {
-		return new DropdownItemList(_request) {
+		return new DropdownItemList() {
 			{
 				add(
 					dropdownItem -> {
 						dropdownItem.setActive(true);
 						dropdownItem.setHref(
 							getPortletURL(), "orderByCol", "last-propagation");
-						dropdownItem.setLabel("last-propagation");
+						dropdownItem.setLabel(
+							LanguageUtil.get(_request, "last-propagation"));
 					});
 			}
 		};

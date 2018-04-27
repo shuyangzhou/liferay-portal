@@ -14,7 +14,7 @@
 
 package com.liferay.portal.spring.aop;
 
-import org.springframework.aop.framework.AdvisedSupport;
+import com.liferay.portal.kernel.spring.aop.AdvisedSupport;
 
 /**
  * @author Miguel Pastor

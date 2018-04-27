@@ -14,23 +14,24 @@
 
 package com.liferay.user.associated.data.web.internal.portlet.action;
 
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemList;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
-import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.user.associated.data.aggregator.UADAggregator;
 import com.liferay.user.associated.data.constants.UserAssociatedDataPortletKeys;
-import com.liferay.user.associated.data.display.UADEntityDisplay;
+import com.liferay.user.associated.data.display.UADDisplay;
 import com.liferay.user.associated.data.web.internal.constants.UADWebKeys;
 import com.liferay.user.associated.data.web.internal.display.UADEntity;
 import com.liferay.user.associated.data.web.internal.display.ViewUADEntitiesDisplay;
@@ -38,14 +39,15 @@ import com.liferay.user.associated.data.web.internal.registry.UADRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.portlet.PortletException;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -79,37 +81,35 @@ public class ViewUADEntitiesMVCRenderCommand implements MVCRenderCommand {
 			ViewUADEntitiesDisplay viewUADEntitiesDisplay =
 				new ViewUADEntitiesDisplay();
 
-			PortletRequest portletRequest =
-				(PortletRequest)renderRequest.getAttribute(
-					JavaConstants.JAVAX_PORTLET_REQUEST);
+			viewUADEntitiesDisplay.setActionDropdownItems(
+				_getActionDropdownItems(renderRequest, renderResponse));
+			viewUADEntitiesDisplay.setApplicationName(applicationName);
+
 			LiferayPortletResponse liferayPortletResponse =
-				_portal.getLiferayPortletResponse(
-					(PortletResponse)renderRequest.getAttribute(
-						JavaConstants.JAVAX_PORTLET_RESPONSE));
+				_portal.getLiferayPortletResponse(renderResponse);
 
 			PortletURL currentURL = PortletURLUtil.getCurrent(
-				_portal.getLiferayPortletRequest(portletRequest),
-				liferayPortletResponse);
+				renderRequest, renderResponse);
 
-			viewUADEntitiesDisplay.setApplicationName(applicationName);
 			viewUADEntitiesDisplay.setNavigationItems(
 				_getNavigationItems(
 					applicationName, uadRegistryKey, currentURL,
 					liferayPortletResponse));
 
-			UADEntityDisplay uadEntityDisplay =
-				_uadRegistry.getUADEntityDisplay(uadRegistryKey);
+			UADDisplay uadDisplay = _uadRegistry.getUADDisplay(uadRegistryKey);
 
 			viewUADEntitiesDisplay.setSearchContainer(
 				_getSearchContainer(
-					renderRequest, currentURL, uadRegistryKey, uadEntityDisplay,
+					renderRequest, currentURL, uadRegistryKey, uadDisplay,
 					selectedUser.getUserId(), liferayPortletResponse));
-			viewUADEntitiesDisplay.setTypeName(uadEntityDisplay.getTypeName());
+			viewUADEntitiesDisplay.setTypeName(
+				uadDisplay.getTypeName(
+					LocaleThreadLocal.getThemeDisplayLocale()));
 
 			viewUADEntitiesDisplay.setUADRegistryKey(uadRegistryKey);
 
 			renderRequest.setAttribute(
-				UADWebKeys.INFO_PANEL_UAD_ENTITY_DISPLAY, uadEntityDisplay);
+				UADWebKeys.INFO_PANEL_UAD_DISPLAY, uadDisplay);
 			renderRequest.setAttribute(
 				UADWebKeys.VIEW_UAD_ENTITIES_DISPLAY, viewUADEntitiesDisplay);
 		}
@@ -121,23 +121,20 @@ public class ViewUADEntitiesMVCRenderCommand implements MVCRenderCommand {
 	}
 
 	private <T> UADEntity<T> _constructUADEntity(
-			T entity, UADAggregator<T> uadAggregator,
-			UADEntityDisplay<T> uadEntityDisplay,
+			T entity, UADAggregator<T> uadAggregator, UADDisplay<T> uadDisplay,
 			LiferayPortletRequest liferayPortletRequest,
 			LiferayPortletResponse liferayPortletResponse)
 		throws Exception {
 
 		UADEntity<T> uadEntity = new UADEntity(
 			entity, uadAggregator.getPrimaryKey(entity),
-			uadEntityDisplay.getEditURL(
+			uadDisplay.getEditURL(
 				entity, liferayPortletRequest, liferayPortletResponse));
 
 		Map<String, Object> nonanonymizableFieldValues =
-			uadEntityDisplay.getNonanonymizableFieldValues(entity);
+			uadDisplay.getNonanonymizableFieldValues(entity);
 
-		for (String displayFieldName :
-				uadEntityDisplay.getDisplayFieldNames()) {
-
+		for (String displayFieldName : uadDisplay.getDisplayFieldNames()) {
 			Object nonanonymizableFieldValue = nonanonymizableFieldValues.get(
 				displayFieldName);
 
@@ -150,6 +147,37 @@ public class ViewUADEntitiesMVCRenderCommand implements MVCRenderCommand {
 		return uadEntity;
 	}
 
+	private DropdownItemList _getActionDropdownItems(
+		RenderRequest renderRequest, RenderResponse renderResponse) {
+
+		HttpServletRequest request = _portal.getHttpServletRequest(
+			renderRequest);
+
+		return new DropdownItemList() {
+			{
+				add(
+					dropdownItem -> {
+						dropdownItem.setHref(
+							StringBundler.concat(
+								"javascript:", renderResponse.getNamespace(),
+								"doAnonymizeMultiple();"));
+						dropdownItem.setLabel(
+							LanguageUtil.get(request, "anonymize"));
+					});
+				add(
+					dropdownItem -> {
+						dropdownItem.setHref(
+							StringBundler.concat(
+								"javascript:", renderResponse.getNamespace(),
+								"doDeleteMultiple();"));
+						dropdownItem.setLabel(
+							LanguageUtil.get(request, "delete"));
+					});
+			}
+
+		};
+	}
+
 	private List<NavigationItem> _getNavigationItems(
 			String applicationName, String uadRegistryKey,
 			PortletURL currentURL,
@@ -158,26 +186,22 @@ public class ViewUADEntitiesMVCRenderCommand implements MVCRenderCommand {
 
 		NavigationItemList navigationItemList = new NavigationItemList();
 
-		for (UADEntityDisplay uadEntityDisplay :
-				_uadRegistry.getUADEntityDisplays()) {
+		Locale locale = LocaleThreadLocal.getThemeDisplayLocale();
+		PortletURL tabPortletURL = PortletURLUtil.clone(
+			currentURL, liferayPortletResponse);
 
-			if (!applicationName.equals(
-					uadEntityDisplay.getApplicationName())) {
-
+		for (UADDisplay uadDisplay : _uadRegistry.getUADDisplays()) {
+			if (!applicationName.equals(uadDisplay.getApplicationName())) {
 				continue;
 			}
-
-			PortletURL tabPortletURL = PortletURLUtil.clone(
-				currentURL, liferayPortletResponse);
 
 			navigationItemList.add(
 				navigationItem -> {
 					navigationItem.setActive(
-						uadRegistryKey.equals(uadEntityDisplay.getKey()));
+						uadRegistryKey.equals(uadDisplay.getKey()));
 					navigationItem.setHref(
-						tabPortletURL, "uadRegistryKey",
-						uadEntityDisplay.getKey());
-					navigationItem.setLabel(uadEntityDisplay.getTypeName());
+						tabPortletURL, "uadRegistryKey", uadDisplay.getKey());
+					navigationItem.setLabel(uadDisplay.getTypeName(locale));
 				});
 		}
 
@@ -186,17 +210,15 @@ public class ViewUADEntitiesMVCRenderCommand implements MVCRenderCommand {
 
 	private SearchContainer<UADEntity> _getSearchContainer(
 			RenderRequest renderRequest, PortletURL currentURL,
-			String uadRegistryKey, UADEntityDisplay uadEntityDisplay,
-			long selectedUserId, LiferayPortletResponse liferayPortletResponse)
+			String uadRegistryKey, UADDisplay uadDisplay, long selectedUserId,
+			LiferayPortletResponse liferayPortletResponse)
 		throws Exception {
 
 		LiferayPortletRequest liferayPortletRequest =
-			_portal.getLiferayPortletRequest(
-				(PortletRequest)renderRequest.getAttribute(
-					JavaConstants.JAVAX_PORTLET_REQUEST));
+			_portal.getLiferayPortletRequest(renderRequest);
 
 		SearchContainer<UADEntity> searchContainer = new SearchContainer<>(
-			liferayPortletRequest, currentURL, null, null);
+			renderRequest, currentURL, null, null);
 
 		UADAggregator uadAggregator = _uadRegistry.getUADAggregator(
 			uadRegistryKey);
@@ -210,8 +232,8 @@ public class ViewUADEntitiesMVCRenderCommand implements MVCRenderCommand {
 		for (Object entity : entities) {
 			uadEntities.add(
 				_constructUADEntity(
-					entity, uadAggregator, uadEntityDisplay,
-					liferayPortletRequest, liferayPortletResponse));
+					entity, uadAggregator, uadDisplay, liferayPortletRequest,
+					liferayPortletResponse));
 		}
 
 		searchContainer.setResults(uadEntities);
@@ -221,9 +243,6 @@ public class ViewUADEntitiesMVCRenderCommand implements MVCRenderCommand {
 
 		return searchContainer;
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		ViewUADEntitiesMVCRenderCommand.class);
 
 	@Reference
 	private Portal _portal;

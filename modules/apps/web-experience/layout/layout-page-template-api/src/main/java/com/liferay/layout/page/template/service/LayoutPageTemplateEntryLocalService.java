@@ -73,14 +73,14 @@ public interface LayoutPageTemplateEntryLocalService extends BaseLocalService,
 		LayoutPageTemplateEntry layoutPageTemplateEntry);
 
 	public LayoutPageTemplateEntry addLayoutPageTemplateEntry(long userId,
-		long groupId, long layoutPageTemplateCollectionId,
-		java.lang.String name, int type, long[] fragmentEntryIds,
-		ServiceContext serviceContext) throws PortalException;
+		long groupId, long layoutPageTemplateCollectionId, String name,
+		int type, long[] fragmentEntryIds, ServiceContext serviceContext)
+		throws PortalException;
 
 	public LayoutPageTemplateEntry addLayoutPageTemplateEntry(long userId,
-		long groupId, long layoutPageTemplateCollectionId,
-		java.lang.String name, long[] fragmentEntryIds,
-		ServiceContext serviceContext) throws PortalException;
+		long groupId, long layoutPageTemplateCollectionId, String name,
+		long[] fragmentEntryIds, ServiceContext serviceContext)
+		throws PortalException;
 
 	/**
 	* Creates a new layout page template entry with the primary key. Does not add the layout page template entry to the database.
@@ -88,6 +88,7 @@ public interface LayoutPageTemplateEntryLocalService extends BaseLocalService,
 	* @param layoutPageTemplateEntryId the primary key for the new layout page template entry
 	* @return the new layout page template entry
 	*/
+	@Transactional(enabled = false)
 	public LayoutPageTemplateEntry createLayoutPageTemplateEntry(
 		long layoutPageTemplateEntryId);
 
@@ -222,8 +223,8 @@ public interface LayoutPageTemplateEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LayoutPageTemplateEntry> getLayoutPageTemplateEntries(
-		long groupId, long layoutPageTemplateCollectionId,
-		java.lang.String name, int start, int end,
+		long groupId, long layoutPageTemplateCollectionId, String name,
+		int start, int end,
 		OrderByComparator<LayoutPageTemplateEntry> orderByComparator);
 
 	/**
@@ -250,7 +251,7 @@ public interface LayoutPageTemplateEntryLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -268,15 +269,17 @@ public interface LayoutPageTemplateEntryLocalService extends BaseLocalService,
 		LayoutPageTemplateEntry layoutPageTemplateEntry);
 
 	public LayoutPageTemplateEntry updateLayoutPageTemplateEntry(
+		long layoutPageTemplateEntryId, boolean defaultTemplate);
+
+	public LayoutPageTemplateEntry updateLayoutPageTemplateEntry(
 		long layoutPageTemplateEntryId, long classNameId, long classTypeId)
 		throws PortalException;
 
 	public LayoutPageTemplateEntry updateLayoutPageTemplateEntry(
-		long layoutPageTemplateEntryId, java.lang.String name)
-		throws PortalException;
+		long layoutPageTemplateEntryId, String name) throws PortalException;
 
 	public LayoutPageTemplateEntry updateLayoutPageTemplateEntry(
-		long layoutPageTemplateEntryId, java.lang.String name,
-		long[] fragmentEntryIds, java.lang.String editableValues,
-		ServiceContext serviceContext) throws PortalException;
+		long layoutPageTemplateEntryId, String name, long[] fragmentEntryIds,
+		String editableValues, ServiceContext serviceContext)
+		throws PortalException;
 }

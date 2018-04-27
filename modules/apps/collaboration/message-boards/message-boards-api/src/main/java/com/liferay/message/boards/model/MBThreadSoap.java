@@ -45,12 +45,13 @@ public class MBThreadSoap implements Serializable {
 		soapModel.setCategoryId(model.getCategoryId());
 		soapModel.setRootMessageId(model.getRootMessageId());
 		soapModel.setRootMessageUserId(model.getRootMessageUserId());
+		soapModel.setTitle(model.getTitle());
 		soapModel.setMessageCount(model.getMessageCount());
 		soapModel.setViewCount(model.getViewCount());
 		soapModel.setLastPostByUserId(model.getLastPostByUserId());
 		soapModel.setLastPostDate(model.getLastPostDate());
 		soapModel.setPriority(model.getPriority());
-		soapModel.setQuestion(model.getQuestion());
+		soapModel.setQuestion(model.isQuestion());
 		soapModel.setLastPublishDate(model.getLastPublishDate());
 		soapModel.setStatus(model.getStatus());
 		soapModel.setStatusByUserId(model.getStatusByUserId());
@@ -196,6 +197,14 @@ public class MBThreadSoap implements Serializable {
 		_rootMessageUserId = rootMessageUserId;
 	}
 
+	public String getTitle() {
+		return _title;
+	}
+
+	public void setTitle(String title) {
+		_title = title;
+	}
+
 	public int getMessageCount() {
 		return _messageCount;
 	}
@@ -299,6 +308,7 @@ public class MBThreadSoap implements Serializable {
 	private long _categoryId;
 	private long _rootMessageId;
 	private long _rootMessageUserId;
+	private String _title;
 	private int _messageCount;
 	private int _viewCount;
 	private long _lastPostByUserId;

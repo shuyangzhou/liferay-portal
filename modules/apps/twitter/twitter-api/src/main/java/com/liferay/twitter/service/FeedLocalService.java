@@ -76,6 +76,7 @@ public interface FeedLocalService extends BaseLocalService,
 	* @param feedId the primary key for the new feed
 	* @return the new feed
 	*/
+	@Transactional(enabled = false)
 	public Feed createFeed(long feedId);
 
 	/**
@@ -209,7 +210,7 @@ public interface FeedLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

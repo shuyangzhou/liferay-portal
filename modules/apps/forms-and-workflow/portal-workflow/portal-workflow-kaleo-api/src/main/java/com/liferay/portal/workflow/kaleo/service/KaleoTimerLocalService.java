@@ -71,8 +71,8 @@ public interface KaleoTimerLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public KaleoTimer addKaleoTimer(KaleoTimer kaleoTimer);
 
-	public KaleoTimer addKaleoTimer(java.lang.String kaleoClassName,
-		long kaleoClassPK, long kaleoDefinitionVersionId, Timer timer,
+	public KaleoTimer addKaleoTimer(String kaleoClassName, long kaleoClassPK,
+		long kaleoDefinitionVersionId, Timer timer,
 		ServiceContext serviceContext) throws PortalException;
 
 	/**
@@ -81,6 +81,7 @@ public interface KaleoTimerLocalService extends BaseLocalService,
 	* @param kaleoTimerId the primary key for the new kaleo timer
 	* @return the new kaleo timer
 	*/
+	@Transactional(enabled = false)
 	public KaleoTimer createKaleoTimer(long kaleoTimerId);
 
 	/**
@@ -204,11 +205,11 @@ public interface KaleoTimerLocalService extends BaseLocalService,
 	public List<KaleoTimer> getKaleoTimers(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<KaleoTimer> getKaleoTimers(java.lang.String kaleoClassName,
+	public List<KaleoTimer> getKaleoTimers(String kaleoClassName,
 		long kaleoClassPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<KaleoTimer> getKaleoTimers(java.lang.String kaleoClassName,
+	public List<KaleoTimer> getKaleoTimers(String kaleoClassName,
 		long kaleoClassPK, boolean blocking);
 
 	/**
@@ -224,7 +225,7 @@ public interface KaleoTimerLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

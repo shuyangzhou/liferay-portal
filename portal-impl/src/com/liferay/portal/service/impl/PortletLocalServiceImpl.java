@@ -78,6 +78,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.xml.Attribute;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.QName;
@@ -135,6 +136,7 @@ import javax.servlet.ServletContext;
  * @author Eduardo Lundgren
  * @author Wesley Gong
  * @author Shuyang Zhou
+ * @author Neil Griffin
  */
 public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
@@ -987,7 +989,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 				portletModel.setDefaultPluginSetting(
 					portlet.getDefaultPluginSetting());
 				portletModel.setRoles(portlet.getRoles());
-				portletModel.setActive(portlet.getActive());
+				portletModel.setActive(portlet.isActive());
 			}
 		}
 
@@ -2444,6 +2446,25 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		portletApp.addServletURLPatterns(servletURLPatterns);
 		portletApp.setServletContext(servletContext);
+		portletApp.setSpecMajorVersion(2);
+		portletApp.setSpecMinorVersion(0);
+
+		Attribute versionAttribute = rootElement.attribute("version");
+
+		if (versionAttribute != null) {
+			String[] versionAttributeParts = StringUtil.split(
+				versionAttribute.getValue(), CharPool.PERIOD);
+
+			if (versionAttributeParts.length > 0) {
+				portletApp.setSpecMajorVersion(
+					GetterUtil.getInteger(versionAttributeParts[0], 2));
+
+				if (versionAttributeParts.length > 1) {
+					portletApp.setSpecMinorVersion(
+						GetterUtil.getInteger(versionAttributeParts[1]));
+				}
+			}
+		}
 
 		Set<String> userAttributes = portletApp.getUserAttributes();
 

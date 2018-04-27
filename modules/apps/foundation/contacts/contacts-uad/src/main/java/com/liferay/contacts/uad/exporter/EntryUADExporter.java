@@ -14,17 +14,11 @@
 
 package com.liferay.contacts.uad.exporter;
 
-import com.liferay.contacts.model.Entry;
-import com.liferay.contacts.service.EntryLocalService;
 import com.liferay.contacts.uad.constants.ContactsUADConstants;
 
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-
-import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.user.associated.data.exporter.UADExporter;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -32,17 +26,5 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, property =  {
 	"model.class.name=" + ContactsUADConstants.CLASS_NAME_ENTRY}, service = UADExporter.class)
-public class EntryUADExporter extends DynamicQueryUADExporter<Entry> {
-	@Override
-	protected ActionableDynamicQuery doGetActionableDynamicQuery() {
-		return _entryLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	protected String[] doGetUserIdFieldNames() {
-		return ContactsUADConstants.USER_ID_FIELD_NAMES_ENTRY;
-	}
-
-	@Reference
-	private EntryLocalService _entryLocalService;
+public class EntryUADExporter extends BaseEntryUADExporter {
 }

@@ -18,9 +18,8 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 
 import com.liferay.message.boards.model.MBCategory;
 import com.liferay.message.boards.uad.constants.MBUADConstants;
-import com.liferay.message.boards.uad.test.MBCategoryUADEntityTestHelper;
+import com.liferay.message.boards.uad.test.MBCategoryUADTestHelper;
 
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.test.rule.Inject;
@@ -44,16 +43,16 @@ import java.util.List;
  * @generated
  */
 @RunWith(Arquillian.class)
-public class MBCategoryUADAggregatorTest extends BaseUADAggregatorTestCase
-	implements WhenHasStatusByUserIdField {
+public class MBCategoryUADAggregatorTest extends BaseUADAggregatorTestCase<MBCategory>
+	implements WhenHasStatusByUserIdField<MBCategory> {
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule = new LiferayIntegrationTestRule();
 
 	@Override
-	public BaseModel<?> addBaseModelWithStatusByUserId(long userId,
+	public MBCategory addBaseModelWithStatusByUserId(long userId,
 		long statusByUserId) throws Exception {
-		MBCategory mbCategory = _mbCategoryUADEntityTestHelper.addMBCategoryWithStatusByUserId(userId,
+		MBCategory mbCategory = _mbCategoryUADTestHelper.addMBCategoryWithStatusByUserId(userId,
 				statusByUserId);
 
 		_mbCategories.add(mbCategory);
@@ -61,9 +60,14 @@ public class MBCategoryUADAggregatorTest extends BaseUADAggregatorTestCase
 		return mbCategory;
 	}
 
+	@After
+	public void tearDown() throws Exception {
+		_mbCategoryUADTestHelper.cleanUpDependencies(_mbCategories);
+	}
+
 	@Override
-	protected BaseModel<?> addBaseModel(long userId) throws Exception {
-		MBCategory mbCategory = _mbCategoryUADEntityTestHelper.addMBCategory(userId);
+	protected MBCategory addBaseModel(long userId) throws Exception {
+		MBCategory mbCategory = _mbCategoryUADTestHelper.addMBCategory(userId);
 
 		_mbCategories.add(mbCategory);
 
@@ -75,15 +79,10 @@ public class MBCategoryUADAggregatorTest extends BaseUADAggregatorTestCase
 		return _uadAggregator;
 	}
 
-	@After
-	public void tearDown() throws Exception {
-		_mbCategoryUADEntityTestHelper.cleanUpDependencies(_mbCategories);
-	}
-
 	@DeleteAfterTestRun
 	private final List<MBCategory> _mbCategories = new ArrayList<MBCategory>();
 	@Inject
-	private MBCategoryUADEntityTestHelper _mbCategoryUADEntityTestHelper;
+	private MBCategoryUADTestHelper _mbCategoryUADTestHelper;
 	@Inject(filter = "model.class.name=" +
 	MBUADConstants.CLASS_NAME_MB_CATEGORY)
 	private UADAggregator _uadAggregator;

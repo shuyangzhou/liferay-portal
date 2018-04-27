@@ -16,6 +16,7 @@ package com.liferay.fragment.service.impl;
 
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.model.FragmentEntryLink;
+import com.liferay.fragment.processor.FragmentEntryProcessorRegistry;
 import com.liferay.fragment.service.base.FragmentEntryLinkLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -27,6 +28,8 @@ import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.ArrayList;
@@ -72,10 +75,21 @@ public class FragmentEntryLinkLocalServiceImpl
 		fragmentEntryLink.setCss(css);
 		fragmentEntryLink.setHtml(html);
 		fragmentEntryLink.setJs(js);
+
+		if (Validator.isNull(editableValues)) {
+			JSONObject jsonObject =
+				_fragmentEntryProcessorRegistry.
+					getDefaultEditableValuesJSONObject(html);
+
+			editableValues = jsonObject.toString();
+		}
+
 		fragmentEntryLink.setEditableValues(editableValues);
+
 		fragmentEntryLink.setPosition(position);
 		fragmentEntryLink.setLastPropagationDate(
 			serviceContext.getCreateDate(new Date()));
+		fragmentEntryLink.setNamespace(StringUtil.randomId());
 
 		fragmentEntryLinkPersistence.update(fragmentEntryLink);
 
@@ -156,6 +170,17 @@ public class FragmentEntryLinkLocalServiceImpl
 
 	@Override
 	public List<FragmentEntryLink> getFragmentEntryLinks(
+		long groupId, long fragmentEntryId, long classNameId,
+		int layoutPageTemplateType, int start, int end,
+		OrderByComparator<FragmentEntryLink> orderByComparator) {
+
+		return fragmentEntryLinkFinder.findByG_F_C_L(
+			groupId, fragmentEntryId, classNameId, layoutPageTemplateType,
+			start, end, orderByComparator);
+	}
+
+	@Override
+	public List<FragmentEntryLink> getFragmentEntryLinks(
 		long groupId, long fragmentEntryId, long classNameId, int start,
 		int end, OrderByComparator<FragmentEntryLink> orderByComparator) {
 
@@ -176,6 +201,15 @@ public class FragmentEntryLinkLocalServiceImpl
 
 		return fragmentEntryLinkPersistence.countByG_F_C(
 			groupId, fragmentEntryId, classNameId);
+	}
+
+	@Override
+	public int getFragmentEntryLinksCount(
+		long groupId, long fragmentEntryId, long classNameId,
+		int layoutPageTemplateType) {
+
+		return fragmentEntryLinkFinder.countByG_F_C_L(
+			groupId, fragmentEntryId, classNameId, layoutPageTemplateType);
 	}
 
 	@Override
@@ -269,6 +303,30 @@ public class FragmentEntryLinkLocalServiceImpl
 				serviceContext);
 		}
 	}
+
+	@Override
+	public FragmentEntryLink updateLatestChanges(long fragmentEntryLinkId)
+		throws PortalException {
+
+		FragmentEntryLink fragmentEntryLink =
+			fragmentEntryLinkPersistence.findByPrimaryKey(fragmentEntryLinkId);
+
+		FragmentEntry fragmentEntry = fragmentEntryPersistence.findByPrimaryKey(
+			fragmentEntryLink.getFragmentEntryId());
+
+		fragmentEntryLink.setCss(fragmentEntry.getCss());
+		fragmentEntryLink.setHtml(fragmentEntry.getHtml());
+		fragmentEntryLink.setJs(fragmentEntry.getJs());
+
+		fragmentEntryLink.setLastPropagationDate(new Date());
+
+		fragmentEntryLinkPersistence.update(fragmentEntryLink);
+
+		return fragmentEntryLink;
+	}
+
+	@ServiceReference(type = FragmentEntryProcessorRegistry.class)
+	private FragmentEntryProcessorRegistry _fragmentEntryProcessorRegistry;
 
 	@ServiceReference(type = JSONFactory.class)
 	private JSONFactory _jsonFactory;
