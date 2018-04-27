@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Brian Wing Shun Chan
  * @see MBBanServiceUtil
- * @see com.liferay.message.boards.service.base.MBBanServiceBaseImpl
+ * @see MBBanServiceBaseImpl
  * @see com.liferay.message.boards.service.impl.MBBanServiceImpl
  * @generated
  */
@@ -63,5 +63,5 @@ public interface MBBanService extends BaseService {
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 }

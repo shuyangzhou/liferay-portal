@@ -75,6 +75,7 @@ public interface ImageLocalService extends BaseLocalService,
 	* @param imageId the primary key for the new image
 	* @return the new image
 	*/
+	@Transactional(enabled = false)
 	public Image createImage(long imageId);
 
 	/**
@@ -220,7 +221,7 @@ public interface ImageLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -242,7 +243,7 @@ public interface ImageLocalService extends BaseLocalService,
 	public Image updateImage(long imageId, byte[] bytes)
 		throws PortalException;
 
-	public Image updateImage(long imageId, byte[] bytes, java.lang.String type,
+	public Image updateImage(long imageId, byte[] bytes, String type,
 		int height, int width, int size) throws PortalException;
 
 	public Image updateImage(long imageId, File file) throws PortalException;

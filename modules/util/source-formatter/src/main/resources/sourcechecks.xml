@@ -182,7 +182,9 @@
 		</check>
 		<check name="JavaCleanUpMethodSuperCleanUpCheck" />
 		<check name="JavaCleanUpMethodVariablesCheck" />
-		<check name="JavaDataAccessConnectionCheck" />
+		<check name="JavaDataAccessConnectionCheck">
+			<property name="enabled" value="false" />
+		</check>
 		<check name="JavaDeprecatedKernelClassesCheck">
 			<property name="enabled" value="false" />
 		</check>
@@ -200,6 +202,9 @@
 		<check name="JavaTestMethodAnnotationsCheck" />
 		<check name="JavaUnsafeCastingCheck" />
 		<check name="JavaUpgradeClassCheck" />
+		<check name="JavaUpgradeConnectionCheck">
+			<property name="enabled" value="false" />
+		</check>
 		<check name="JavaVariableTypeCheck">
 			<property name="immutableFieldTypes" value="boolean,byte,char,double,float,int,long,short,Boolean,Byte,Character,Class,Double,Float,Int,Long,Number,Short,String" />
 		</check>
@@ -292,7 +297,9 @@
 		<check name="PropertiesDefinitionKeysCheck" />
 		<check name="PropertiesDependenciesFileCheck" />
 		<check name="PropertiesImportedFilesContentCheck" />
-		<check name="PropertiesLanguageKeysCheck" />
+		<check name="PropertiesLanguageKeysCheck">
+			<property name="enabled" value="false" />
+		</check>
 		<check name="PropertiesLiferayPluginPackageFileCheck" />
 		<check name="PropertiesLongLinesCheck" />
 		<check name="PropertiesPortalFileCheck" />

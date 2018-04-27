@@ -77,6 +77,7 @@ public interface DDMTemplateVersionLocalService extends BaseLocalService,
 	* @param templateVersionId the primary key for the new ddm template version
 	* @return the new ddm template version
 	*/
+	@Transactional(enabled = false)
 	public DDMTemplateVersion createDDMTemplateVersion(long templateVersionId);
 
 	/**
@@ -217,7 +218,7 @@ public interface DDMTemplateVersionLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -229,8 +230,8 @@ public interface DDMTemplateVersionLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public DDMTemplateVersion getTemplateVersion(long templateId,
-		java.lang.String version) throws PortalException;
+	public DDMTemplateVersion getTemplateVersion(long templateId, String version)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DDMTemplateVersion> getTemplateVersions(long templateId,

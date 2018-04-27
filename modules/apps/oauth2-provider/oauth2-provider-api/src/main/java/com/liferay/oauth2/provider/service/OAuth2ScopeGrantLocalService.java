@@ -94,11 +94,12 @@ public interface OAuth2ScopeGrantLocalService extends BaseLocalService,
 	* @param oAuth2ScopeGrantId the primary key for the new o auth2 scope grant
 	* @return the new o auth2 scope grant
 	*/
+	@Transactional(enabled = false)
 	public OAuth2ScopeGrant createOAuth2ScopeGrant(long oAuth2ScopeGrantId);
 
 	public OAuth2ScopeGrant createOAuth2ScopeGrant(long companyId,
-		long oAuth2ApplicationScopeAliasesId, java.lang.String applicationName,
-		java.lang.String bundleSymbolicName, java.lang.String scope)
+		long oAuth2ApplicationScopeAliasesId, String applicationName,
+		String bundleSymbolicName, String scope)
 		throws DuplicateOAuth2ScopeGrantException;
 
 	public void deleteOAuth2AuthorizationOAuth2ScopeGrant(
@@ -267,8 +268,8 @@ public interface OAuth2ScopeGrantLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Collection<OAuth2ScopeGrant> getOAuth2ScopeGrants(long companyId,
-		java.lang.String applicationName, java.lang.String bundleSymbolicName,
-		java.lang.String accessTokenContent);
+		String applicationName, String bundleSymbolicName,
+		String accessTokenContent);
 
 	/**
 	* Returns the number of o auth2 scope grants.
@@ -283,7 +284,7 @@ public interface OAuth2ScopeGrantLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

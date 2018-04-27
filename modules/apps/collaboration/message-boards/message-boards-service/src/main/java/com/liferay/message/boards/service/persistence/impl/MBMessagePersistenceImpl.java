@@ -9680,7 +9680,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 			if ((list != null) && !list.isEmpty()) {
 				for (MBMessage mbMessage : list) {
 					if ((threadId != mbMessage.getThreadId()) ||
-							(answer != mbMessage.getAnswer())) {
+							(answer != mbMessage.isAnswer())) {
 						list = null;
 
 						break;
@@ -16852,7 +16852,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 					if ((groupId != mbMessage.getGroupId()) ||
 							(categoryId != mbMessage.getCategoryId()) ||
 							(threadId != mbMessage.getThreadId()) ||
-							(answer != mbMessage.getAnswer())) {
+							(answer != mbMessage.isAnswer())) {
 						list = null;
 
 						break;
@@ -19862,7 +19862,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 			args = new Object[] {
 					mbMessageModelImpl.getThreadId(),
-					mbMessageModelImpl.getAnswer()
+					mbMessageModelImpl.isAnswer()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_T_A, args);
@@ -19951,7 +19951,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 					mbMessageModelImpl.getGroupId(),
 					mbMessageModelImpl.getCategoryId(),
 					mbMessageModelImpl.getThreadId(),
-					mbMessageModelImpl.getAnswer()
+					mbMessageModelImpl.isAnswer()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_C_T_A, args);
@@ -20271,7 +20271,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 
 				args = new Object[] {
 						mbMessageModelImpl.getThreadId(),
-						mbMessageModelImpl.getAnswer()
+						mbMessageModelImpl.isAnswer()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_T_A, args);
@@ -20476,7 +20476,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 						mbMessageModelImpl.getGroupId(),
 						mbMessageModelImpl.getCategoryId(),
 						mbMessageModelImpl.getThreadId(),
-						mbMessageModelImpl.getAnswer()
+						mbMessageModelImpl.isAnswer()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_C_T_A, args);
@@ -20587,7 +20587,7 @@ public class MBMessagePersistenceImpl extends BasePersistenceImpl<MBMessage>
 	}
 
 	/**
-	 * Returns the message-boards message with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the message-boards message with the primary key or throws a {@link NoSuchModelException} if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the message-boards message
 	 * @return the message-boards message
