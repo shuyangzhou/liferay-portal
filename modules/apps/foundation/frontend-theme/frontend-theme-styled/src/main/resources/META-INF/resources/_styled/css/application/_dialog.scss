@@ -9,7 +9,7 @@
 
 .dialog-iframe-popup {
 	.sheet {
-		.lfr-nav {
+		> .lfr-nav {
 			margin-top: -24px;
 		}
 	}
@@ -78,6 +78,12 @@
 		}
 	}
 
+	.navigation-bar > .container {
+		margin-left: 24px;
+		margin-right: 24px;
+		padding: 0;
+	}
+
 	.panel-group .panel {
 		border-left-width: 0;
 		border-radius: 0;
@@ -132,6 +138,12 @@
 }
 
 .dialog-with-footer {
+	#main-content, #wrapper {
+		@include md {
+			height: calc(100% - #{$dialog-footer-height});
+		}
+	}
+
 	.button-holder, .sheet-footer {
 		&.dialog-footer {
 			background-color: $dialog-footer-bg;
@@ -144,7 +156,7 @@
 
 			left: 0;
 			margin: 0;
-			padding: 10px 15px;
+			padding: 10px 24px;
 			width: 100%;
 
 			@include md {

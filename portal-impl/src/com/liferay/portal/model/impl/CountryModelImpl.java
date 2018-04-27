@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.CountryModel;
 import com.liferay.portal.kernel.model.CountrySoap;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -129,8 +130,8 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 		model.setA3(soapModel.getA3());
 		model.setNumber(soapModel.getNumber());
 		model.setIdd(soapModel.getIdd());
-		model.setZipRequired(soapModel.getZipRequired());
-		model.setActive(soapModel.getActive());
+		model.setZipRequired(soapModel.isZipRequired());
+		model.setActive(soapModel.isActive());
 
 		return model;
 	}
@@ -202,8 +203,8 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 		attributes.put("a3", getA3());
 		attributes.put("number", getNumber());
 		attributes.put("idd", getIdd());
-		attributes.put("zipRequired", getZipRequired());
-		attributes.put("active", getActive());
+		attributes.put("zipRequired", isZipRequired());
+		attributes.put("active", isActive());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -484,8 +485,8 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 		countryImpl.setA3(getA3());
 		countryImpl.setNumber(getNumber());
 		countryImpl.setIdd(getIdd());
-		countryImpl.setZipRequired(getZipRequired());
-		countryImpl.setActive(getActive());
+		countryImpl.setZipRequired(isZipRequired());
+		countryImpl.setActive(isActive());
 
 		countryImpl.resetOriginalValues();
 
@@ -607,9 +608,9 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 			countryCacheModel.idd = null;
 		}
 
-		countryCacheModel.zipRequired = getZipRequired();
+		countryCacheModel.zipRequired = isZipRequired();
 
-		countryCacheModel.active = getActive();
+		countryCacheModel.active = isActive();
 
 		return countryCacheModel;
 	}
@@ -633,9 +634,9 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 		sb.append(", idd=");
 		sb.append(getIdd());
 		sb.append(", zipRequired=");
-		sb.append(getZipRequired());
+		sb.append(isZipRequired());
 		sb.append(", active=");
-		sb.append(getActive());
+		sb.append(isActive());
 		sb.append("}");
 
 		return sb.toString();
@@ -679,11 +680,11 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>zipRequired</column-name><column-value><![CDATA[");
-		sb.append(getZipRequired());
+		sb.append(isZipRequired());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>active</column-name><column-value><![CDATA[");
-		sb.append(getActive());
+		sb.append(isActive());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -693,7 +694,7 @@ public class CountryModelImpl extends BaseModelImpl<Country>
 
 	private static final ClassLoader _classLoader = Country.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			Country.class
+			Country.class, ModelWrapper.class
 		};
 	private long _mvccVersion;
 	private long _countryId;

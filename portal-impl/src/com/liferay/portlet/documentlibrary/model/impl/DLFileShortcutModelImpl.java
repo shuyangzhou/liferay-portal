@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -169,7 +170,7 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		model.setFolderId(soapModel.getFolderId());
 		model.setToFileEntryId(soapModel.getToFileEntryId());
 		model.setTreePath(soapModel.getTreePath());
-		model.setActive(soapModel.getActive());
+		model.setActive(soapModel.isActive());
 		model.setLastPublishDate(soapModel.getLastPublishDate());
 		model.setStatus(soapModel.getStatus());
 		model.setStatusByUserId(soapModel.getStatusByUserId());
@@ -251,7 +252,7 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		attributes.put("folderId", getFolderId());
 		attributes.put("toFileEntryId", getToFileEntryId());
 		attributes.put("treePath", getTreePath());
-		attributes.put("active", getActive());
+		attributes.put("active", isActive());
 		attributes.put("lastPublishDate", getLastPublishDate());
 		attributes.put("status", getStatus());
 		attributes.put("statusByUserId", getStatusByUserId());
@@ -977,7 +978,7 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		dlFileShortcutImpl.setFolderId(getFolderId());
 		dlFileShortcutImpl.setToFileEntryId(getToFileEntryId());
 		dlFileShortcutImpl.setTreePath(getTreePath());
-		dlFileShortcutImpl.setActive(getActive());
+		dlFileShortcutImpl.setActive(isActive());
 		dlFileShortcutImpl.setLastPublishDate(getLastPublishDate());
 		dlFileShortcutImpl.setStatus(getStatus());
 		dlFileShortcutImpl.setStatusByUserId(getStatusByUserId());
@@ -1136,7 +1137,7 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 			dlFileShortcutCacheModel.treePath = null;
 		}
 
-		dlFileShortcutCacheModel.active = getActive();
+		dlFileShortcutCacheModel.active = isActive();
 
 		Date lastPublishDate = getLastPublishDate();
 
@@ -1200,7 +1201,7 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		sb.append(", treePath=");
 		sb.append(getTreePath());
 		sb.append(", active=");
-		sb.append(getActive());
+		sb.append(isActive());
 		sb.append(", lastPublishDate=");
 		sb.append(getLastPublishDate());
 		sb.append(", status=");
@@ -1274,7 +1275,7 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>active</column-name><column-value><![CDATA[");
-		sb.append(getActive());
+		sb.append(isActive());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
@@ -1304,7 +1305,7 @@ public class DLFileShortcutModelImpl extends BaseModelImpl<DLFileShortcut>
 
 	private static final ClassLoader _classLoader = DLFileShortcut.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			DLFileShortcut.class
+			DLFileShortcut.class, ModelWrapper.class
 		};
 	private String _uuid;
 	private String _originalUuid;

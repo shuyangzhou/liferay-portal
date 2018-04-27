@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -206,7 +207,7 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		model.setLocation(soapModel.getLocation());
 		model.setStartTime(soapModel.getStartTime());
 		model.setEndTime(soapModel.getEndTime());
-		model.setAllDay(soapModel.getAllDay());
+		model.setAllDay(soapModel.isAllDay());
 		model.setRecurrence(soapModel.getRecurrence());
 		model.setFirstReminder(soapModel.getFirstReminder());
 		model.setFirstReminderType(soapModel.getFirstReminderType());
@@ -301,7 +302,7 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		attributes.put("location", getLocation());
 		attributes.put("startTime", getStartTime());
 		attributes.put("endTime", getEndTime());
-		attributes.put("allDay", getAllDay());
+		attributes.put("allDay", isAllDay());
 		attributes.put("recurrence", getRecurrence());
 		attributes.put("firstReminder", getFirstReminder());
 		attributes.put("firstReminderType", getFirstReminderType());
@@ -1535,7 +1536,7 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		calendarBookingImpl.setLocation(getLocation());
 		calendarBookingImpl.setStartTime(getStartTime());
 		calendarBookingImpl.setEndTime(getEndTime());
-		calendarBookingImpl.setAllDay(getAllDay());
+		calendarBookingImpl.setAllDay(isAllDay());
 		calendarBookingImpl.setRecurrence(getRecurrence());
 		calendarBookingImpl.setFirstReminder(getFirstReminder());
 		calendarBookingImpl.setFirstReminderType(getFirstReminderType());
@@ -1747,7 +1748,7 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 
 		calendarBookingCacheModel.endTime = getEndTime();
 
-		calendarBookingCacheModel.allDay = getAllDay();
+		calendarBookingCacheModel.allDay = isAllDay();
 
 		calendarBookingCacheModel.recurrence = getRecurrence();
 
@@ -1851,7 +1852,7 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		sb.append(", endTime=");
 		sb.append(getEndTime());
 		sb.append(", allDay=");
-		sb.append(getAllDay());
+		sb.append(isAllDay());
 		sb.append(", recurrence=");
 		sb.append(getRecurrence());
 		sb.append(", firstReminder=");
@@ -1959,7 +1960,7 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>allDay</column-name><column-value><![CDATA[");
-		sb.append(getAllDay());
+		sb.append(isAllDay());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>recurrence</column-name><column-value><![CDATA[");
@@ -2009,7 +2010,7 @@ public class CalendarBookingModelImpl extends BaseModelImpl<CalendarBooking>
 
 	private static final ClassLoader _classLoader = CalendarBooking.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			CalendarBooking.class
+			CalendarBooking.class, ModelWrapper.class
 		};
 	private String _uuid;
 	private String _originalUuid;

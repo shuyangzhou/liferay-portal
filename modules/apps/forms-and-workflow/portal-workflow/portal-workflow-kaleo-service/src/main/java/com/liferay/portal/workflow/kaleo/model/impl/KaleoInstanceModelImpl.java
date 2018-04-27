@@ -22,6 +22,7 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -180,7 +181,7 @@ public class KaleoInstanceModelImpl extends BaseModelImpl<KaleoInstance>
 		attributes.put("rootKaleoInstanceTokenId", getRootKaleoInstanceTokenId());
 		attributes.put("className", getClassName());
 		attributes.put("classPK", getClassPK());
-		attributes.put("completed", getCompleted());
+		attributes.put("completed", isCompleted());
 		attributes.put("completionDate", getCompletionDate());
 		attributes.put("workflowContext", getWorkflowContext());
 
@@ -648,7 +649,7 @@ public class KaleoInstanceModelImpl extends BaseModelImpl<KaleoInstance>
 		kaleoInstanceImpl.setRootKaleoInstanceTokenId(getRootKaleoInstanceTokenId());
 		kaleoInstanceImpl.setClassName(getClassName());
 		kaleoInstanceImpl.setClassPK(getClassPK());
-		kaleoInstanceImpl.setCompleted(getCompleted());
+		kaleoInstanceImpl.setCompleted(isCompleted());
 		kaleoInstanceImpl.setCompletionDate(getCompletionDate());
 		kaleoInstanceImpl.setWorkflowContext(getWorkflowContext());
 
@@ -817,7 +818,7 @@ public class KaleoInstanceModelImpl extends BaseModelImpl<KaleoInstance>
 
 		kaleoInstanceCacheModel.classPK = getClassPK();
 
-		kaleoInstanceCacheModel.completed = getCompleted();
+		kaleoInstanceCacheModel.completed = isCompleted();
 
 		Date completionDate = getCompletionDate();
 
@@ -870,7 +871,7 @@ public class KaleoInstanceModelImpl extends BaseModelImpl<KaleoInstance>
 		sb.append(", classPK=");
 		sb.append(getClassPK());
 		sb.append(", completed=");
-		sb.append(getCompleted());
+		sb.append(isCompleted());
 		sb.append(", completionDate=");
 		sb.append(getCompletionDate());
 		sb.append(", workflowContext=");
@@ -942,7 +943,7 @@ public class KaleoInstanceModelImpl extends BaseModelImpl<KaleoInstance>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>completed</column-name><column-value><![CDATA[");
-		sb.append(getCompleted());
+		sb.append(isCompleted());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>completionDate</column-name><column-value><![CDATA[");
@@ -960,7 +961,7 @@ public class KaleoInstanceModelImpl extends BaseModelImpl<KaleoInstance>
 
 	private static final ClassLoader _classLoader = KaleoInstance.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			KaleoInstance.class
+			KaleoInstance.class, ModelWrapper.class
 		};
 	private long _kaleoInstanceId;
 	private long _groupId;

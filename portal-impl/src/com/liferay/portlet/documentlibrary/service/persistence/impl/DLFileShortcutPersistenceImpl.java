@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
@@ -51,6 +52,7 @@ import com.liferay.portlet.documentlibrary.model.impl.DLFileShortcutModelImpl;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -4100,7 +4102,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 				for (DLFileShortcut dlFileShortcut : list) {
 					if ((groupId != dlFileShortcut.getGroupId()) ||
 							(folderId != dlFileShortcut.getFolderId()) ||
-							(active != dlFileShortcut.getActive())) {
+							(active != dlFileShortcut.isActive())) {
 						list = null;
 
 						break;
@@ -5092,7 +5094,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 				for (DLFileShortcut dlFileShortcut : list) {
 					if ((groupId != dlFileShortcut.getGroupId()) ||
 							(folderId != dlFileShortcut.getFolderId()) ||
-							(active != dlFileShortcut.getActive()) ||
+							(active != dlFileShortcut.isActive()) ||
 							(status != dlFileShortcut.getStatus())) {
 						list = null;
 
@@ -6215,8 +6217,6 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 	@Override
 	protected DLFileShortcut removeImpl(DLFileShortcut dlFileShortcut) {
-		dlFileShortcut = toUnwrappedModel(dlFileShortcut);
-
 		Session session = null;
 
 		try {
@@ -6247,9 +6247,23 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 
 	@Override
 	public DLFileShortcut updateImpl(DLFileShortcut dlFileShortcut) {
-		dlFileShortcut = toUnwrappedModel(dlFileShortcut);
-
 		boolean isNew = dlFileShortcut.isNew();
+
+		if (!(dlFileShortcut instanceof DLFileShortcutModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(dlFileShortcut.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(dlFileShortcut);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in dlFileShortcut proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom DLFileShortcut implementation " +
+				dlFileShortcut.getClass());
+		}
 
 		DLFileShortcutModelImpl dlFileShortcutModelImpl = (DLFileShortcutModelImpl)dlFileShortcut;
 
@@ -6349,7 +6363,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 			args = new Object[] {
 					dlFileShortcutModelImpl.getGroupId(),
 					dlFileShortcutModelImpl.getFolderId(),
-					dlFileShortcutModelImpl.getActive()
+					dlFileShortcutModelImpl.isActive()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_F_A, args);
@@ -6359,7 +6373,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 			args = new Object[] {
 					dlFileShortcutModelImpl.getGroupId(),
 					dlFileShortcutModelImpl.getFolderId(),
-					dlFileShortcutModelImpl.getActive(),
+					dlFileShortcutModelImpl.isActive(),
 					dlFileShortcutModelImpl.getStatus()
 				};
 
@@ -6483,7 +6497,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 				args = new Object[] {
 						dlFileShortcutModelImpl.getGroupId(),
 						dlFileShortcutModelImpl.getFolderId(),
-						dlFileShortcutModelImpl.getActive()
+						dlFileShortcutModelImpl.isActive()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_F_A, args);
@@ -6507,7 +6521,7 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 				args = new Object[] {
 						dlFileShortcutModelImpl.getGroupId(),
 						dlFileShortcutModelImpl.getFolderId(),
-						dlFileShortcutModelImpl.getActive(),
+						dlFileShortcutModelImpl.isActive(),
 						dlFileShortcutModelImpl.getStatus()
 					};
 
@@ -6527,38 +6541,6 @@ public class DLFileShortcutPersistenceImpl extends BasePersistenceImpl<DLFileSho
 		dlFileShortcut.resetOriginalValues();
 
 		return dlFileShortcut;
-	}
-
-	protected DLFileShortcut toUnwrappedModel(DLFileShortcut dlFileShortcut) {
-		if (dlFileShortcut instanceof DLFileShortcutImpl) {
-			return dlFileShortcut;
-		}
-
-		DLFileShortcutImpl dlFileShortcutImpl = new DLFileShortcutImpl();
-
-		dlFileShortcutImpl.setNew(dlFileShortcut.isNew());
-		dlFileShortcutImpl.setPrimaryKey(dlFileShortcut.getPrimaryKey());
-
-		dlFileShortcutImpl.setUuid(dlFileShortcut.getUuid());
-		dlFileShortcutImpl.setFileShortcutId(dlFileShortcut.getFileShortcutId());
-		dlFileShortcutImpl.setGroupId(dlFileShortcut.getGroupId());
-		dlFileShortcutImpl.setCompanyId(dlFileShortcut.getCompanyId());
-		dlFileShortcutImpl.setUserId(dlFileShortcut.getUserId());
-		dlFileShortcutImpl.setUserName(dlFileShortcut.getUserName());
-		dlFileShortcutImpl.setCreateDate(dlFileShortcut.getCreateDate());
-		dlFileShortcutImpl.setModifiedDate(dlFileShortcut.getModifiedDate());
-		dlFileShortcutImpl.setRepositoryId(dlFileShortcut.getRepositoryId());
-		dlFileShortcutImpl.setFolderId(dlFileShortcut.getFolderId());
-		dlFileShortcutImpl.setToFileEntryId(dlFileShortcut.getToFileEntryId());
-		dlFileShortcutImpl.setTreePath(dlFileShortcut.getTreePath());
-		dlFileShortcutImpl.setActive(dlFileShortcut.isActive());
-		dlFileShortcutImpl.setLastPublishDate(dlFileShortcut.getLastPublishDate());
-		dlFileShortcutImpl.setStatus(dlFileShortcut.getStatus());
-		dlFileShortcutImpl.setStatusByUserId(dlFileShortcut.getStatusByUserId());
-		dlFileShortcutImpl.setStatusByUserName(dlFileShortcut.getStatusByUserName());
-		dlFileShortcutImpl.setStatusDate(dlFileShortcut.getStatusDate());
-
-		return dlFileShortcutImpl;
 	}
 
 	/**

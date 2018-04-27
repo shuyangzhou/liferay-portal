@@ -77,6 +77,7 @@ public interface ResourceTypePermissionLocalService extends BaseLocalService,
 	* @param resourceTypePermissionId the primary key for the new resource type permission
 	* @return the new resource type permission
 	*/
+	@Transactional(enabled = false)
 	public ResourceTypePermission createResourceTypePermission(
 		long resourceTypePermissionId);
 
@@ -173,22 +174,22 @@ public interface ResourceTypePermissionLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ResourceTypePermission fetchResourceTypePermission(long companyId,
-		long groupId, java.lang.String name, long roleId);
+		long groupId, String name, long roleId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long getCompanyScopeActionIds(long companyId, java.lang.String name,
+	public long getCompanyScopeActionIds(long companyId, String name,
 		long roleId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long getGroupScopeActionIds(long companyId, long groupId,
-		java.lang.String name, long roleId);
+		String name, long roleId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ResourceTypePermission> getGroupScopeResourceTypePermissions(
-		long companyId, java.lang.String name, long roleId);
+		long companyId, String name, long roleId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
@@ -198,7 +199,7 @@ public interface ResourceTypePermissionLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -207,7 +208,7 @@ public interface ResourceTypePermissionLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ResourceBlockPermissionsContainer getResourceBlockPermissionsContainer(
-		long companyId, long groupId, java.lang.String name);
+		long companyId, long groupId, String name);
 
 	/**
 	* Returns the resource type permission with the primary key.
@@ -248,25 +249,22 @@ public interface ResourceTypePermissionLocalService extends BaseLocalService,
 		long roleId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasCompanyScopePermission(long companyId,
-		java.lang.String name, long roleId, java.lang.String actionId)
-		throws PortalException;
+	public boolean hasCompanyScopePermission(long companyId, String name,
+		long roleId, String actionId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasEitherScopePermission(long companyId,
-		java.lang.String name, long roleId, java.lang.String actionId)
-		throws PortalException;
+	public boolean hasEitherScopePermission(long companyId, String name,
+		long roleId, String actionId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasGroupScopePermission(long companyId, long groupId,
-		java.lang.String name, long roleId, java.lang.String actionId)
-		throws PortalException;
+		String name, long roleId, String actionId) throws PortalException;
 
 	public void updateCompanyScopeResourceTypePermissions(long companyId,
-		java.lang.String name, long roleId, long actionIdsLong, long operator);
+		String name, long roleId, long actionIdsLong, long operator);
 
 	public void updateGroupScopeResourceTypePermissions(long companyId,
-		long groupId, java.lang.String name, long roleId, long actionIdsLong,
+		long groupId, String name, long roleId, long actionIdsLong,
 		long operator);
 
 	/**

@@ -83,6 +83,7 @@ public interface KaleoTransitionLocalService extends BaseLocalService,
 	* @param kaleoTransitionId the primary key for the new kaleo transition
 	* @return the new kaleo transition
 	*/
+	@Transactional(enabled = false)
 	public KaleoTransition createKaleoTransition(long kaleoTransitionId);
 
 	public void deleteCompanyKaleoTransitions(long companyId);
@@ -206,8 +207,8 @@ public interface KaleoTransitionLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KaleoTransition getKaleoTransition(long kaleoNodeId,
-		java.lang.String name) throws PortalException;
+	public KaleoTransition getKaleoTransition(long kaleoNodeId, String name)
+		throws PortalException;
 
 	/**
 	* Returns a range of all the kaleo transitions.
@@ -242,7 +243,7 @@ public interface KaleoTransitionLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

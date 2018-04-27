@@ -64,6 +64,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -74,6 +75,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.math.BigDecimal;
 
@@ -247,7 +249,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				FINDER_PATH_FETCH_BY_${uniqueEntityFinder.name?upper_case},
 				new Object[] {
 					<#list entityColumns as entityColumn>
-						${entity.varName}.get${entityColumn.methodName}()
+						<#if stringUtil.equals(entityColumn.type, "boolean")>
+							${entity.varName}.is${entityColumn.methodName}()
+						<#else>
+							${entity.varName}.get${entityColumn.methodName}()
+						</#if>
 
 						<#if entityColumn_has_next>
 							,
@@ -336,7 +342,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				</#if>
 				args = new Object[] {
 					<#list entityColumns as entityColumn>
-						${entity.varName}ModelImpl.get${entityColumn.methodName}()
+						<#if stringUtil.equals(entityColumn.type, "boolean")>
+							${entity.varName}ModelImpl.is${entityColumn.methodName}()
+						<#else>
+							${entity.varName}ModelImpl.get${entityColumn.methodName}()
+						</#if>
 
 						<#if entityColumn_has_next>
 							,
@@ -356,7 +366,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				if (clearCurrent) {
 					Object[] args = new Object[] {
 						<#list entityColumns as entityColumn>
-							${entity.varName}ModelImpl.get${entityColumn.methodName}()
+							<#if stringUtil.equals(entityColumn.type, "boolean")>
+								${entity.varName}ModelImpl.is${entityColumn.methodName}()
+							<#else>
+								${entity.varName}ModelImpl.get${entityColumn.methodName}()
+							</#if>
 
 							<#if entityColumn_has_next>
 								,
@@ -463,8 +477,6 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 	@Override
 	protected ${entity.name} removeImpl(${entity.name} ${entity.varName}) {
-		${entity.varName} = toUnwrappedModel(${entity.varName});
-
 		<#list entity.entityColumns as entityColumn>
 			<#if entityColumn.isCollection() && entityColumn.isMappingManyToMany()>
 				<#assign referenceEntity = serviceBuilder.getEntity(entityColumn.entityName) />
@@ -516,11 +528,21 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 	@Override
 	public ${entity.name} updateImpl(${apiPackagePath}.model.${entity.name} ${entity.varName}) {
-		${entity.varName} = toUnwrappedModel(${entity.varName});
-
 		boolean isNew = ${entity.varName}.isNew();
 
 		<#if entity.isHierarchicalTree() || (entity.collectionEntityFinders?size != 0) || (entity.uniqueEntityFinders?size &gt; 0) || (entity.hasEntityColumn("createDate", "Date") && entity.hasEntityColumn("modifiedDate", "Date"))>
+			if (!(${entity.varName} instanceof ${entity.name}ModelImpl)) {
+				InvocationHandler invocationHandler = null;
+
+				if (ProxyUtil.isProxyClass(${entity.varName}.getClass())) {
+					invocationHandler = ProxyUtil.getInvocationHandler(${entity.varName});
+
+					throw new IllegalArgumentException("Implement ModelWrapper in ${entity.varName} proxy " + invocationHandler.getClass());
+				}
+
+				throw new IllegalArgumentException("Implement ModelWrapper in custom ${entity.name} implementation " + ${entity.varName}.getClass());
+			}
+
 			${entity.name}ModelImpl ${entity.varName}ModelImpl = (${entity.name}ModelImpl)${entity.varName};
 		</#if>
 
@@ -690,7 +712,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 						args = new Object[] {
 							<#list entityColumns as entityColumn>
-								${entity.varName}ModelImpl.get${entityColumn.methodName}()
+								<#if stringUtil.equals(entityColumn.type, "boolean")>
+									${entity.varName}ModelImpl.is${entityColumn.methodName}()
+								<#else>
+									${entity.varName}ModelImpl.get${entityColumn.methodName}()
+								</#if>
 
 								<#if entityColumn_has_next>
 									,
@@ -718,7 +744,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 						<#else>
 							<#list entityColumns as entityColumn>
 								<#if entityColumn.isPrimitiveType()>
-									(${entity.varName}.get${entityColumn.methodName}() != ${entity.varName}ModelImpl.getOriginal${entityColumn.methodName}())
+									<#if stringUtil.equals(entityColumn.type, "boolean")>
+										(${entity.varName}.is${entityColumn.methodName}() != ${entity.varName}ModelImpl.getOriginal${entityColumn.methodName}())
+									<#else>
+										(${entity.varName}.get${entityColumn.methodName}() != ${entity.varName}ModelImpl.getOriginal${entityColumn.methodName}())
+									</#if>
 								<#else>
 									!Objects.equals(${entity.varName}.get${entityColumn.methodName}(), ${entity.varName}ModelImpl.getOriginal${entityColumn.methodName}())
 								</#if>
@@ -745,7 +775,11 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 						args = new Object[] {
 							<#list entityColumns as entityColumn>
-								${entity.varName}ModelImpl.get${entityColumn.methodName}()
+								<#if stringUtil.equals(entityColumn.type, "boolean")>
+									${entity.varName}ModelImpl.is${entityColumn.methodName}()
+								<#else>
+									${entity.varName}ModelImpl.get${entityColumn.methodName}()
+								</#if>
 
 								<#if entityColumn_has_next>
 									,
@@ -770,31 +804,6 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		${entity.varName}.resetOriginalValues();
 
 		return ${entity.varName};
-	}
-
-	protected ${entity.name} toUnwrappedModel(${entity.name} ${entity.varName}) {
-		if (${entity.varName} instanceof ${entity.name}Impl) {
-			return ${entity.varName};
-		}
-
-		${entity.name}Impl ${entity.varName}Impl = new ${entity.name}Impl();
-
-		${entity.varName}Impl.setNew(${entity.varName}.isNew());
-		${entity.varName}Impl.setPrimaryKey(${entity.varName}.getPrimaryKey());
-
-		<#list entity.regularEntityColumns as entityColumn>
-			${entity.varName}Impl.set${entityColumn.methodName}(
-
-			<#if stringUtil.equals(entityColumn.type, "boolean")>
-				${entity.varName}.is${entityColumn.methodName}()
-			<#else>
-				${entity.varName}.get${entityColumn.methodName}()
-			</#if>
-
-			);
-		</#list>
-
-		return ${entity.varName}Impl;
 	}
 
 	/**

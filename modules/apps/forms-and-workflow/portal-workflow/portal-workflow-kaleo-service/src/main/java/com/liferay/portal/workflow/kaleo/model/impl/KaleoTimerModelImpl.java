@@ -22,6 +22,7 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -174,7 +175,7 @@ public class KaleoTimerModelImpl extends BaseModelImpl<KaleoTimer>
 		attributes.put("kaleoClassPK", getKaleoClassPK());
 		attributes.put("kaleoDefinitionVersionId", getKaleoDefinitionVersionId());
 		attributes.put("name", getName());
-		attributes.put("blocking", getBlocking());
+		attributes.put("blocking", isBlocking());
 		attributes.put("description", getDescription());
 		attributes.put("duration", getDuration());
 		attributes.put("scale", getScale());
@@ -598,7 +599,7 @@ public class KaleoTimerModelImpl extends BaseModelImpl<KaleoTimer>
 		kaleoTimerImpl.setKaleoClassPK(getKaleoClassPK());
 		kaleoTimerImpl.setKaleoDefinitionVersionId(getKaleoDefinitionVersionId());
 		kaleoTimerImpl.setName(getName());
-		kaleoTimerImpl.setBlocking(getBlocking());
+		kaleoTimerImpl.setBlocking(isBlocking());
 		kaleoTimerImpl.setDescription(getDescription());
 		kaleoTimerImpl.setDuration(getDuration());
 		kaleoTimerImpl.setScale(getScale());
@@ -745,7 +746,7 @@ public class KaleoTimerModelImpl extends BaseModelImpl<KaleoTimer>
 			kaleoTimerCacheModel.name = null;
 		}
 
-		kaleoTimerCacheModel.blocking = getBlocking();
+		kaleoTimerCacheModel.blocking = isBlocking();
 
 		kaleoTimerCacheModel.description = getDescription();
 
@@ -805,7 +806,7 @@ public class KaleoTimerModelImpl extends BaseModelImpl<KaleoTimer>
 		sb.append(", name=");
 		sb.append(getName());
 		sb.append(", blocking=");
-		sb.append(getBlocking());
+		sb.append(isBlocking());
 		sb.append(", description=");
 		sb.append(getDescription());
 		sb.append(", duration=");
@@ -875,7 +876,7 @@ public class KaleoTimerModelImpl extends BaseModelImpl<KaleoTimer>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>blocking</column-name><column-value><![CDATA[");
-		sb.append(getBlocking());
+		sb.append(isBlocking());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>description</column-name><column-value><![CDATA[");
@@ -905,7 +906,7 @@ public class KaleoTimerModelImpl extends BaseModelImpl<KaleoTimer>
 
 	private static final ClassLoader _classLoader = KaleoTimer.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			KaleoTimer.class
+			KaleoTimer.class, ModelWrapper.class
 		};
 	private long _kaleoTimerId;
 	private long _groupId;

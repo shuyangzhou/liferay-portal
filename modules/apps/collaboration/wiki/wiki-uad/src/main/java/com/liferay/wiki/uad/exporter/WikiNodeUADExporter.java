@@ -14,17 +14,11 @@
 
 package com.liferay.wiki.uad.exporter;
 
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-
-import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.user.associated.data.exporter.UADExporter;
 
-import com.liferay.wiki.model.WikiNode;
-import com.liferay.wiki.service.WikiNodeLocalService;
 import com.liferay.wiki.uad.constants.WikiUADConstants;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -32,17 +26,5 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, property =  {
 	"model.class.name=" + WikiUADConstants.CLASS_NAME_WIKI_NODE}, service = UADExporter.class)
-public class WikiNodeUADExporter extends DynamicQueryUADExporter<WikiNode> {
-	@Override
-	protected ActionableDynamicQuery doGetActionableDynamicQuery() {
-		return _wikiNodeLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	protected String[] doGetUserIdFieldNames() {
-		return WikiUADConstants.USER_ID_FIELD_NAMES_WIKI_NODE;
-	}
-
-	@Reference
-	private WikiNodeLocalService _wikiNodeLocalService;
+public class WikiNodeUADExporter extends BaseWikiNodeUADExporter {
 }

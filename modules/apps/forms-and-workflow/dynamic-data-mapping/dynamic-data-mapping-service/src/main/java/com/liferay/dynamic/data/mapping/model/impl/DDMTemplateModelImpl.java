@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -199,8 +200,8 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 		model.setMode(soapModel.getMode());
 		model.setLanguage(soapModel.getLanguage());
 		model.setScript(soapModel.getScript());
-		model.setCacheable(soapModel.getCacheable());
-		model.setSmallImage(soapModel.getSmallImage());
+		model.setCacheable(soapModel.isCacheable());
+		model.setSmallImage(soapModel.isSmallImage());
 		model.setSmallImageId(soapModel.getSmallImageId());
 		model.setSmallImageURL(soapModel.getSmallImageURL());
 		model.setLastPublishDate(soapModel.getLastPublishDate());
@@ -289,8 +290,8 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 		attributes.put("mode", getMode());
 		attributes.put("language", getLanguage());
 		attributes.put("script", getScript());
-		attributes.put("cacheable", getCacheable());
-		attributes.put("smallImage", getSmallImage());
+		attributes.put("cacheable", isCacheable());
+		attributes.put("smallImage", isSmallImage());
 		attributes.put("smallImageId", getSmallImageId());
 		attributes.put("smallImageURL", getSmallImageURL());
 		attributes.put("lastPublishDate", getLastPublishDate());
@@ -1154,11 +1155,11 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 		_lastPublishDate = lastPublishDate;
 	}
 
-	public java.lang.String getResourceClassName() {
+	public String getResourceClassName() {
 		return null;
 	}
 
-	public void setResourceClassName(java.lang.String resourceClassName) {
+	public void setResourceClassName(String resourceClassName) {
 	}
 
 	@Override
@@ -1301,8 +1302,8 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 		ddmTemplateImpl.setMode(getMode());
 		ddmTemplateImpl.setLanguage(getLanguage());
 		ddmTemplateImpl.setScript(getScript());
-		ddmTemplateImpl.setCacheable(getCacheable());
-		ddmTemplateImpl.setSmallImage(getSmallImage());
+		ddmTemplateImpl.setCacheable(isCacheable());
+		ddmTemplateImpl.setSmallImage(isSmallImage());
 		ddmTemplateImpl.setSmallImageId(getSmallImageId());
 		ddmTemplateImpl.setSmallImageURL(getSmallImageURL());
 		ddmTemplateImpl.setLastPublishDate(getLastPublishDate());
@@ -1531,9 +1532,9 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 			ddmTemplateCacheModel.script = null;
 		}
 
-		ddmTemplateCacheModel.cacheable = getCacheable();
+		ddmTemplateCacheModel.cacheable = isCacheable();
 
-		ddmTemplateCacheModel.smallImage = getSmallImage();
+		ddmTemplateCacheModel.smallImage = isSmallImage();
 
 		ddmTemplateCacheModel.smallImageId = getSmallImageId();
 
@@ -1606,9 +1607,9 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 		sb.append(", script=");
 		sb.append(getScript());
 		sb.append(", cacheable=");
-		sb.append(getCacheable());
+		sb.append(isCacheable());
 		sb.append(", smallImage=");
-		sb.append(getSmallImage());
+		sb.append(isSmallImage());
 		sb.append(", smallImageId=");
 		sb.append(getSmallImageId());
 		sb.append(", smallImageURL=");
@@ -1714,11 +1715,11 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>cacheable</column-name><column-value><![CDATA[");
-		sb.append(getCacheable());
+		sb.append(isCacheable());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>smallImage</column-name><column-value><![CDATA[");
-		sb.append(getSmallImage());
+		sb.append(isSmallImage());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>smallImageId</column-name><column-value><![CDATA[");
@@ -1740,7 +1741,7 @@ public class DDMTemplateModelImpl extends BaseModelImpl<DDMTemplate>
 
 	private static final ClassLoader _classLoader = DDMTemplate.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			DDMTemplate.class
+			DDMTemplate.class, ModelWrapper.class
 		};
 	private String _uuid;
 	private String _originalUuid;

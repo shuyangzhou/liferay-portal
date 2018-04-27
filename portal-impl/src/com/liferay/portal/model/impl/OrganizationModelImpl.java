@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.OrganizationModel;
 import com.liferay.portal.kernel.model.OrganizationSoap;
@@ -161,7 +162,7 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		model.setTreePath(soapModel.getTreePath());
 		model.setName(soapModel.getName());
 		model.setType(soapModel.getType());
-		model.setRecursable(soapModel.getRecursable());
+		model.setRecursable(soapModel.isRecursable());
 		model.setRegionId(soapModel.getRegionId());
 		model.setCountryId(soapModel.getCountryId());
 		model.setStatusId(soapModel.getStatusId());
@@ -261,7 +262,7 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		attributes.put("treePath", getTreePath());
 		attributes.put("name", getName());
 		attributes.put("type", getType());
-		attributes.put("recursable", getRecursable());
+		attributes.put("recursable", isRecursable());
 		attributes.put("regionId", getRegionId());
 		attributes.put("countryId", getCountryId());
 		attributes.put("statusId", getStatusId());
@@ -754,7 +755,7 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		organizationImpl.setTreePath(getTreePath());
 		organizationImpl.setName(getName());
 		organizationImpl.setType(getType());
-		organizationImpl.setRecursable(getRecursable());
+		organizationImpl.setRecursable(isRecursable());
 		organizationImpl.setRegionId(getRegionId());
 		organizationImpl.setCountryId(getCountryId());
 		organizationImpl.setStatusId(getStatusId());
@@ -915,7 +916,7 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 			organizationCacheModel.type = null;
 		}
 
-		organizationCacheModel.recursable = getRecursable();
+		organizationCacheModel.recursable = isRecursable();
 
 		organizationCacheModel.regionId = getRegionId();
 
@@ -965,7 +966,7 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		sb.append(", type=");
 		sb.append(getType());
 		sb.append(", recursable=");
-		sb.append(getRecursable());
+		sb.append(isRecursable());
 		sb.append(", regionId=");
 		sb.append(getRegionId());
 		sb.append(", countryId=");
@@ -1039,7 +1040,7 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>recursable</column-name><column-value><![CDATA[");
-		sb.append(getRecursable());
+		sb.append(isRecursable());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>regionId</column-name><column-value><![CDATA[");
@@ -1069,7 +1070,7 @@ public class OrganizationModelImpl extends BaseModelImpl<Organization>
 
 	private static final ClassLoader _classLoader = Organization.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			Organization.class
+			Organization.class, ModelWrapper.class
 		};
 	private long _mvccVersion;
 	private String _uuid;

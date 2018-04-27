@@ -24,6 +24,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.RepositoryEntry;
 import com.liferay.portal.kernel.model.RepositoryEntryModel;
 import com.liferay.portal.kernel.model.User;
@@ -171,7 +172,7 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("repositoryId", getRepositoryId());
 		attributes.put("mappedId", getMappedId());
-		attributes.put("manualCheckInRequired", getManualCheckInRequired());
+		attributes.put("manualCheckInRequired", isManualCheckInRequired());
 		attributes.put("lastPublishDate", getLastPublishDate());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -536,7 +537,7 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 		repositoryEntryImpl.setModifiedDate(getModifiedDate());
 		repositoryEntryImpl.setRepositoryId(getRepositoryId());
 		repositoryEntryImpl.setMappedId(getMappedId());
-		repositoryEntryImpl.setManualCheckInRequired(getManualCheckInRequired());
+		repositoryEntryImpl.setManualCheckInRequired(isManualCheckInRequired());
 		repositoryEntryImpl.setLastPublishDate(getLastPublishDate());
 
 		repositoryEntryImpl.resetOriginalValues();
@@ -679,7 +680,7 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 			repositoryEntryCacheModel.mappedId = null;
 		}
 
-		repositoryEntryCacheModel.manualCheckInRequired = getManualCheckInRequired();
+		repositoryEntryCacheModel.manualCheckInRequired = isManualCheckInRequired();
 
 		Date lastPublishDate = getLastPublishDate();
 
@@ -720,7 +721,7 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 		sb.append(", mappedId=");
 		sb.append(getMappedId());
 		sb.append(", manualCheckInRequired=");
-		sb.append(getManualCheckInRequired());
+		sb.append(isManualCheckInRequired());
 		sb.append(", lastPublishDate=");
 		sb.append(getLastPublishDate());
 		sb.append("}");
@@ -782,7 +783,7 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>manualCheckInRequired</column-name><column-value><![CDATA[");
-		sb.append(getManualCheckInRequired());
+		sb.append(isManualCheckInRequired());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
@@ -796,7 +797,7 @@ public class RepositoryEntryModelImpl extends BaseModelImpl<RepositoryEntry>
 
 	private static final ClassLoader _classLoader = RepositoryEntry.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			RepositoryEntry.class
+			RepositoryEntry.class, ModelWrapper.class
 		};
 	private long _mvccVersion;
 	private String _uuid;

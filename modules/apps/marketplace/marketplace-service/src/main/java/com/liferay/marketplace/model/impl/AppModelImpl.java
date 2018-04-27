@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -153,7 +154,7 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		model.setCategory(soapModel.getCategory());
 		model.setIconURL(soapModel.getIconURL());
 		model.setVersion(soapModel.getVersion());
-		model.setRequired(soapModel.getRequired());
+		model.setRequired(soapModel.isRequired());
 
 		return model;
 	}
@@ -231,7 +232,7 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		attributes.put("category", getCategory());
 		attributes.put("iconURL", getIconURL());
 		attributes.put("version", getVersion());
-		attributes.put("required", getRequired());
+		attributes.put("required", isRequired());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -635,7 +636,7 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		appImpl.setCategory(getCategory());
 		appImpl.setIconURL(getIconURL());
 		appImpl.setVersion(getVersion());
-		appImpl.setRequired(getRequired());
+		appImpl.setRequired(isRequired());
 
 		appImpl.resetOriginalValues();
 
@@ -801,7 +802,7 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 			appCacheModel.version = null;
 		}
 
-		appCacheModel.required = getRequired();
+		appCacheModel.required = isRequired();
 
 		return appCacheModel;
 	}
@@ -837,7 +838,7 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		sb.append(", version=");
 		sb.append(getVersion());
 		sb.append(", required=");
-		sb.append(getRequired());
+		sb.append(isRequired());
 		sb.append("}");
 
 		return sb.toString();
@@ -905,7 +906,7 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>required</column-name><column-value><![CDATA[");
-		sb.append(getRequired());
+		sb.append(isRequired());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -915,7 +916,7 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
 	private static final ClassLoader _classLoader = App.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			App.class
+			App.class, ModelWrapper.class
 		};
 	private String _uuid;
 	private String _originalUuid;

@@ -14,15 +14,10 @@
 
 package com.liferay.announcements.uad.exporter;
 
-import com.liferay.announcements.kernel.model.AnnouncementsFlag;
-import com.liferay.announcements.kernel.service.AnnouncementsFlagLocalService;
 import com.liferay.announcements.uad.constants.AnnouncementsUADConstants;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.user.associated.data.exporter.UADExporter;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Noah Sherrill
@@ -33,19 +28,5 @@ import org.osgi.service.component.annotations.Reference;
 	service = UADExporter.class
 )
 public class AnnouncementsFlagUADExporter
-	extends DynamicQueryUADExporter<AnnouncementsFlag> {
-
-	@Override
-	protected ActionableDynamicQuery doGetActionableDynamicQuery() {
-		return _announcementsFlagLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	protected String[] doGetUserIdFieldNames() {
-		return AnnouncementsUADConstants.USER_ID_FIELD_NAMES_ANNOUNCEMENTS_FLAG;
-	}
-
-	@Reference
-	private AnnouncementsFlagLocalService _announcementsFlagLocalService;
-
+	extends BaseAnnouncementsFlagUADExporter {
 }

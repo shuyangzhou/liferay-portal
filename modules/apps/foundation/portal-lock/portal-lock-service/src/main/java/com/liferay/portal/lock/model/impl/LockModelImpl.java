@@ -22,6 +22,7 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -164,7 +165,7 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 		attributes.put("className", getClassName());
 		attributes.put("key", getKey());
 		attributes.put("owner", getOwner());
-		attributes.put("inheritable", getInheritable());
+		attributes.put("inheritable", isInheritable());
 		attributes.put("expirationDate", getExpirationDate());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -505,7 +506,7 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 		lockImpl.setClassName(getClassName());
 		lockImpl.setKey(getKey());
 		lockImpl.setOwner(getOwner());
-		lockImpl.setInheritable(getInheritable());
+		lockImpl.setInheritable(isInheritable());
 		lockImpl.setExpirationDate(getExpirationDate());
 
 		lockImpl.resetOriginalValues();
@@ -645,7 +646,7 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 			lockCacheModel.owner = null;
 		}
 
-		lockCacheModel.inheritable = getInheritable();
+		lockCacheModel.inheritable = isInheritable();
 
 		Date expirationDate = getExpirationDate();
 
@@ -684,7 +685,7 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 		sb.append(", owner=");
 		sb.append(getOwner());
 		sb.append(", inheritable=");
-		sb.append(getInheritable());
+		sb.append(isInheritable());
 		sb.append(", expirationDate=");
 		sb.append(getExpirationDate());
 		sb.append("}");
@@ -742,7 +743,7 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>inheritable</column-name><column-value><![CDATA[");
-		sb.append(getInheritable());
+		sb.append(isInheritable());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>expirationDate</column-name><column-value><![CDATA[");
@@ -756,7 +757,7 @@ public class LockModelImpl extends BaseModelImpl<Lock> implements LockModel {
 
 	private static final ClassLoader _classLoader = Lock.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			Lock.class
+			Lock.class, ModelWrapper.class
 		};
 	private long _mvccVersion;
 	private String _uuid;

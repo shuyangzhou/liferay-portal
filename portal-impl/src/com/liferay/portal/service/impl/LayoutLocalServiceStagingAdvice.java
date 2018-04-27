@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutStagingHandler;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
@@ -36,6 +37,7 @@ import com.liferay.portal.kernel.service.SystemEventLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.LayoutRevisionUtil;
 import com.liferay.portal.kernel.service.persistence.LayoutUtil;
+import com.liferay.portal.kernel.spring.aop.AdvisedSupport;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntry;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -64,8 +66,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.aop.TargetSource;
-import org.springframework.aop.framework.AdvisedSupport;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -86,14 +86,12 @@ public class LayoutLocalServiceStagingAdvice implements BeanFactoryAware {
 		AdvisedSupport advisedSupport = ServiceBeanAopProxy.getAdvisedSupport(
 			_beanFactory.getBean(LayoutLocalService.class.getName()));
 
-		TargetSource targetSource = advisedSupport.getTargetSource();
-
 		advisedSupport.setTarget(
 			ProxyUtil.newProxyInstance(
 				LayoutLocalServiceStagingAdvice.class.getClassLoader(),
 				new Class<?>[] {LayoutLocalService.class},
 				new LayoutLocalServiceStagingInvocationHandler(
-					this, targetSource.getTarget())));
+					this, advisedSupport.getTarget())));
 
 		layoutLocalServiceHelper =
 			(LayoutLocalServiceHelper)_beanFactory.getBean(
@@ -462,7 +460,7 @@ public class LayoutLocalServiceStagingAdvice implements BeanFactoryAware {
 
 				proxiedLayout = ProxyUtil.newProxyInstance(
 					ClassLoaderUtil.getPortalClassLoader(),
-					new Class<?>[] {Layout.class},
+					new Class<?>[] {Layout.class, ModelWrapper.class},
 					new LayoutStagingHandler(layout));
 
 				proxiedLayouts.put(layout, proxiedLayout);
@@ -473,7 +471,8 @@ public class LayoutLocalServiceStagingAdvice implements BeanFactoryAware {
 
 		Object proxiedLayout = ProxyUtil.newProxyInstance(
 			ClassLoaderUtil.getPortalClassLoader(),
-			new Class<?>[] {Layout.class}, new LayoutStagingHandler(layout));
+			new Class<?>[] {Layout.class, ModelWrapper.class},
+			new LayoutStagingHandler(layout));
 
 		Map<Layout, Object> proxiedLayouts = new HashMap<>();
 

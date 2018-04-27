@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -216,7 +217,7 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		model.setLargeImageId(soapModel.getLargeImageId());
 		model.setCustom1ImageId(soapModel.getCustom1ImageId());
 		model.setCustom2ImageId(soapModel.getCustom2ImageId());
-		model.setManualCheckInRequired(soapModel.getManualCheckInRequired());
+		model.setManualCheckInRequired(soapModel.isManualCheckInRequired());
 		model.setLastPublishDate(soapModel.getLastPublishDate());
 
 		return model;
@@ -310,7 +311,7 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		attributes.put("largeImageId", getLargeImageId());
 		attributes.put("custom1ImageId", getCustom1ImageId());
 		attributes.put("custom2ImageId", getCustom2ImageId());
-		attributes.put("manualCheckInRequired", getManualCheckInRequired());
+		attributes.put("manualCheckInRequired", isManualCheckInRequired());
 		attributes.put("lastPublishDate", getLastPublishDate());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -1305,7 +1306,7 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		dlFileEntryImpl.setLargeImageId(getLargeImageId());
 		dlFileEntryImpl.setCustom1ImageId(getCustom1ImageId());
 		dlFileEntryImpl.setCustom2ImageId(getCustom2ImageId());
-		dlFileEntryImpl.setManualCheckInRequired(getManualCheckInRequired());
+		dlFileEntryImpl.setManualCheckInRequired(isManualCheckInRequired());
 		dlFileEntryImpl.setLastPublishDate(getLastPublishDate());
 
 		dlFileEntryImpl.resetOriginalValues();
@@ -1576,7 +1577,7 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 		dlFileEntryCacheModel.custom2ImageId = getCustom2ImageId();
 
-		dlFileEntryCacheModel.manualCheckInRequired = getManualCheckInRequired();
+		dlFileEntryCacheModel.manualCheckInRequired = isManualCheckInRequired();
 
 		Date lastPublishDate = getLastPublishDate();
 
@@ -1651,7 +1652,7 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		sb.append(", custom2ImageId=");
 		sb.append(getCustom2ImageId());
 		sb.append(", manualCheckInRequired=");
-		sb.append(getManualCheckInRequired());
+		sb.append(isManualCheckInRequired());
 		sb.append(", lastPublishDate=");
 		sb.append(getLastPublishDate());
 		sb.append("}");
@@ -1781,7 +1782,7 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>manualCheckInRequired</column-name><column-value><![CDATA[");
-		sb.append(getManualCheckInRequired());
+		sb.append(isManualCheckInRequired());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
@@ -1795,7 +1796,7 @@ public class DLFileEntryModelImpl extends BaseModelImpl<DLFileEntry>
 
 	private static final ClassLoader _classLoader = DLFileEntry.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			DLFileEntry.class
+			DLFileEntry.class, ModelWrapper.class
 		};
 	private String _uuid;
 	private String _originalUuid;

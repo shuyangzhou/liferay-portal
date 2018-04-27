@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -151,8 +152,8 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		model.setCreateDate(soapModel.getCreateDate());
 		model.setModifiedDate(soapModel.getModifiedDate());
 		model.setAllowedServiceSignatures(soapModel.getAllowedServiceSignatures());
-		model.setDefaultSAPEntry(soapModel.getDefaultSAPEntry());
-		model.setEnabled(soapModel.getEnabled());
+		model.setDefaultSAPEntry(soapModel.isDefaultSAPEntry());
+		model.setEnabled(soapModel.isEnabled());
 		model.setName(soapModel.getName());
 		model.setTitle(soapModel.getTitle());
 
@@ -227,8 +228,8 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("allowedServiceSignatures", getAllowedServiceSignatures());
-		attributes.put("defaultSAPEntry", getDefaultSAPEntry());
-		attributes.put("enabled", getEnabled());
+		attributes.put("defaultSAPEntry", isDefaultSAPEntry());
+		attributes.put("enabled", isEnabled());
 		attributes.put("name", getName());
 		attributes.put("title", getTitle());
 
@@ -736,8 +737,8 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		sapEntryImpl.setCreateDate(getCreateDate());
 		sapEntryImpl.setModifiedDate(getModifiedDate());
 		sapEntryImpl.setAllowedServiceSignatures(getAllowedServiceSignatures());
-		sapEntryImpl.setDefaultSAPEntry(getDefaultSAPEntry());
-		sapEntryImpl.setEnabled(getEnabled());
+		sapEntryImpl.setDefaultSAPEntry(isDefaultSAPEntry());
+		sapEntryImpl.setEnabled(isEnabled());
 		sapEntryImpl.setName(getName());
 		sapEntryImpl.setTitle(getTitle());
 
@@ -872,9 +873,9 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 			sapEntryCacheModel.allowedServiceSignatures = null;
 		}
 
-		sapEntryCacheModel.defaultSAPEntry = getDefaultSAPEntry();
+		sapEntryCacheModel.defaultSAPEntry = isDefaultSAPEntry();
 
-		sapEntryCacheModel.enabled = getEnabled();
+		sapEntryCacheModel.enabled = isEnabled();
 
 		sapEntryCacheModel.name = getName();
 
@@ -916,9 +917,9 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		sb.append(", allowedServiceSignatures=");
 		sb.append(getAllowedServiceSignatures());
 		sb.append(", defaultSAPEntry=");
-		sb.append(getDefaultSAPEntry());
+		sb.append(isDefaultSAPEntry());
 		sb.append(", enabled=");
-		sb.append(getEnabled());
+		sb.append(isEnabled());
 		sb.append(", name=");
 		sb.append(getName());
 		sb.append(", title=");
@@ -971,11 +972,11 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>defaultSAPEntry</column-name><column-value><![CDATA[");
-		sb.append(getDefaultSAPEntry());
+		sb.append(isDefaultSAPEntry());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>enabled</column-name><column-value><![CDATA[");
-		sb.append(getEnabled());
+		sb.append(isEnabled());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>name</column-name><column-value><![CDATA[");
@@ -993,7 +994,7 @@ public class SAPEntryModelImpl extends BaseModelImpl<SAPEntry>
 
 	private static final ClassLoader _classLoader = SAPEntry.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			SAPEntry.class
+			SAPEntry.class, ModelWrapper.class
 		};
 	private String _uuid;
 	private String _originalUuid;

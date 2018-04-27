@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -957,11 +958,11 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 		_lastPublishDate = lastPublishDate;
 	}
 
-	public java.lang.String getClassName() {
+	public String getClassName() {
 		return null;
 	}
 
-	public void setClassName(java.lang.String className) {
+	public void setClassName(String className) {
 	}
 
 	public com.liferay.dynamic.data.mapping.model.DDMForm getDDMForm() {
@@ -1477,7 +1478,7 @@ public class DDMStructureModelImpl extends BaseModelImpl<DDMStructure>
 
 	private static final ClassLoader _classLoader = DDMStructure.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			DDMStructure.class
+			DDMStructure.class, ModelWrapper.class
 		};
 	private String _uuid;
 	private String _originalUuid;

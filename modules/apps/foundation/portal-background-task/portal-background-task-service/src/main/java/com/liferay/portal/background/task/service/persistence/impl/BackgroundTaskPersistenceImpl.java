@@ -37,11 +37,14 @@ import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -1219,7 +1222,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 			if ((list != null) && !list.isEmpty()) {
 				for (BackgroundTask backgroundTask : list) {
-					if ((completed != backgroundTask.getCompleted())) {
+					if ((completed != backgroundTask.isCompleted())) {
 						list = null;
 
 						break;
@@ -5819,7 +5822,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 					if ((groupId != backgroundTask.getGroupId()) ||
 							!Objects.equals(taskExecutorClassName,
 								backgroundTask.getTaskExecutorClassName()) ||
-							(completed != backgroundTask.getCompleted())) {
+							(completed != backgroundTask.isCompleted())) {
 						list = null;
 
 						break;
@@ -6361,7 +6364,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 								backgroundTask.getGroupId()) ||
 							!ArrayUtil.contains(taskExecutorClassNames,
 								backgroundTask.getTaskExecutorClassName()) ||
-							(completed != backgroundTask.getCompleted())) {
+							(completed != backgroundTask.isCompleted())) {
 						list = null;
 
 						break;
@@ -7873,7 +7876,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 							!Objects.equals(name, backgroundTask.getName()) ||
 							!Objects.equals(taskExecutorClassName,
 								backgroundTask.getTaskExecutorClassName()) ||
-							(completed != backgroundTask.getCompleted())) {
+							(completed != backgroundTask.isCompleted())) {
 						list = null;
 
 						break;
@@ -8461,7 +8464,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 							!Objects.equals(name, backgroundTask.getName()) ||
 							!Objects.equals(taskExecutorClassName,
 								backgroundTask.getTaskExecutorClassName()) ||
-							(completed != backgroundTask.getCompleted())) {
+							(completed != backgroundTask.isCompleted())) {
 						list = null;
 
 						break;
@@ -8983,8 +8986,6 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 	@Override
 	protected BackgroundTask removeImpl(BackgroundTask backgroundTask) {
-		backgroundTask = toUnwrappedModel(backgroundTask);
-
 		Session session = null;
 
 		try {
@@ -9015,9 +9016,23 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 
 	@Override
 	public BackgroundTask updateImpl(BackgroundTask backgroundTask) {
-		backgroundTask = toUnwrappedModel(backgroundTask);
-
 		boolean isNew = backgroundTask.isNew();
+
+		if (!(backgroundTask instanceof BackgroundTaskModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(backgroundTask.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(backgroundTask);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in backgroundTask proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom BackgroundTask implementation " +
+				backgroundTask.getClass());
+		}
 
 		BackgroundTaskModelImpl backgroundTaskModelImpl = (BackgroundTaskModelImpl)backgroundTask;
 
@@ -9084,7 +9099,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPANYID,
 				args);
 
-			args = new Object[] { backgroundTaskModelImpl.getCompleted() };
+			args = new Object[] { backgroundTaskModelImpl.isCompleted() };
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPLETED, args);
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPLETED,
@@ -9136,7 +9151,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 			args = new Object[] {
 					backgroundTaskModelImpl.getGroupId(),
 					backgroundTaskModelImpl.getTaskExecutorClassName(),
-					backgroundTaskModelImpl.getCompleted()
+					backgroundTaskModelImpl.isCompleted()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_T_C, args);
@@ -9157,7 +9172,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 					backgroundTaskModelImpl.getGroupId(),
 					backgroundTaskModelImpl.getName(),
 					backgroundTaskModelImpl.getTaskExecutorClassName(),
-					backgroundTaskModelImpl.getCompleted()
+					backgroundTaskModelImpl.isCompleted()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_N_T_C, args);
@@ -9214,7 +9229,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPLETED,
 					args);
 
-				args = new Object[] { backgroundTaskModelImpl.getCompleted() };
+				args = new Object[] { backgroundTaskModelImpl.isCompleted() };
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_COMPLETED, args);
 				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_COMPLETED,
@@ -9339,7 +9354,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 				args = new Object[] {
 						backgroundTaskModelImpl.getGroupId(),
 						backgroundTaskModelImpl.getTaskExecutorClassName(),
-						backgroundTaskModelImpl.getCompleted()
+						backgroundTaskModelImpl.isCompleted()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_T_C, args);
@@ -9387,7 +9402,7 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 						backgroundTaskModelImpl.getGroupId(),
 						backgroundTaskModelImpl.getName(),
 						backgroundTaskModelImpl.getTaskExecutorClassName(),
-						backgroundTaskModelImpl.getCompleted()
+						backgroundTaskModelImpl.isCompleted()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_N_T_C, args);
@@ -9403,36 +9418,6 @@ public class BackgroundTaskPersistenceImpl extends BasePersistenceImpl<Backgroun
 		backgroundTask.resetOriginalValues();
 
 		return backgroundTask;
-	}
-
-	protected BackgroundTask toUnwrappedModel(BackgroundTask backgroundTask) {
-		if (backgroundTask instanceof BackgroundTaskImpl) {
-			return backgroundTask;
-		}
-
-		BackgroundTaskImpl backgroundTaskImpl = new BackgroundTaskImpl();
-
-		backgroundTaskImpl.setNew(backgroundTask.isNew());
-		backgroundTaskImpl.setPrimaryKey(backgroundTask.getPrimaryKey());
-
-		backgroundTaskImpl.setMvccVersion(backgroundTask.getMvccVersion());
-		backgroundTaskImpl.setBackgroundTaskId(backgroundTask.getBackgroundTaskId());
-		backgroundTaskImpl.setGroupId(backgroundTask.getGroupId());
-		backgroundTaskImpl.setCompanyId(backgroundTask.getCompanyId());
-		backgroundTaskImpl.setUserId(backgroundTask.getUserId());
-		backgroundTaskImpl.setUserName(backgroundTask.getUserName());
-		backgroundTaskImpl.setCreateDate(backgroundTask.getCreateDate());
-		backgroundTaskImpl.setModifiedDate(backgroundTask.getModifiedDate());
-		backgroundTaskImpl.setName(backgroundTask.getName());
-		backgroundTaskImpl.setServletContextNames(backgroundTask.getServletContextNames());
-		backgroundTaskImpl.setTaskExecutorClassName(backgroundTask.getTaskExecutorClassName());
-		backgroundTaskImpl.setTaskContextMap(backgroundTask.getTaskContextMap());
-		backgroundTaskImpl.setCompleted(backgroundTask.isCompleted());
-		backgroundTaskImpl.setCompletionDate(backgroundTask.getCompletionDate());
-		backgroundTaskImpl.setStatus(backgroundTask.getStatus());
-		backgroundTaskImpl.setStatusMessage(backgroundTask.getStatusMessage());
-
-		return backgroundTaskImpl;
 	}
 
 	/**

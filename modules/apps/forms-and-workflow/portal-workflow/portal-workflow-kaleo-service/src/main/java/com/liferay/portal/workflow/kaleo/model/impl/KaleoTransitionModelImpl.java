@@ -22,6 +22,7 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -178,7 +179,7 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 		attributes.put("sourceKaleoNodeName", getSourceKaleoNodeName());
 		attributes.put("targetKaleoNodeId", getTargetKaleoNodeId());
 		attributes.put("targetKaleoNodeName", getTargetKaleoNodeName());
-		attributes.put("defaultTransition", getDefaultTransition());
+		attributes.put("defaultTransition", isDefaultTransition());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -606,7 +607,7 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 		kaleoTransitionImpl.setSourceKaleoNodeName(getSourceKaleoNodeName());
 		kaleoTransitionImpl.setTargetKaleoNodeId(getTargetKaleoNodeId());
 		kaleoTransitionImpl.setTargetKaleoNodeName(getTargetKaleoNodeName());
-		kaleoTransitionImpl.setDefaultTransition(getDefaultTransition());
+		kaleoTransitionImpl.setDefaultTransition(isDefaultTransition());
 
 		kaleoTransitionImpl.resetOriginalValues();
 
@@ -778,7 +779,7 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 			kaleoTransitionCacheModel.targetKaleoNodeName = null;
 		}
 
-		kaleoTransitionCacheModel.defaultTransition = getDefaultTransition();
+		kaleoTransitionCacheModel.defaultTransition = isDefaultTransition();
 
 		return kaleoTransitionCacheModel;
 	}
@@ -818,7 +819,7 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 		sb.append(", targetKaleoNodeName=");
 		sb.append(getTargetKaleoNodeName());
 		sb.append(", defaultTransition=");
-		sb.append(getDefaultTransition());
+		sb.append(isDefaultTransition());
 		sb.append("}");
 
 		return sb.toString();
@@ -894,7 +895,7 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>defaultTransition</column-name><column-value><![CDATA[");
-		sb.append(getDefaultTransition());
+		sb.append(isDefaultTransition());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -904,7 +905,7 @@ public class KaleoTransitionModelImpl extends BaseModelImpl<KaleoTransition>
 
 	private static final ClassLoader _classLoader = KaleoTransition.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			KaleoTransition.class
+			KaleoTransition.class, ModelWrapper.class
 		};
 	private long _kaleoTransitionId;
 	private long _groupId;

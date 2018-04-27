@@ -25,6 +25,7 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -153,7 +154,7 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 		attributes.put("userId", getUserId());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("fileEntryId", getFileEntryId());
-		attributes.put("active", getActive());
+		attributes.put("active", isActive());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -396,7 +397,7 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 		dlFileRankImpl.setUserId(getUserId());
 		dlFileRankImpl.setCreateDate(getCreateDate());
 		dlFileRankImpl.setFileEntryId(getFileEntryId());
-		dlFileRankImpl.setActive(getActive());
+		dlFileRankImpl.setActive(isActive());
 
 		dlFileRankImpl.resetOriginalValues();
 
@@ -505,7 +506,7 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 
 		dlFileRankCacheModel.fileEntryId = getFileEntryId();
 
-		dlFileRankCacheModel.active = getActive();
+		dlFileRankCacheModel.active = isActive();
 
 		return dlFileRankCacheModel;
 	}
@@ -527,7 +528,7 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 		sb.append(", fileEntryId=");
 		sb.append(getFileEntryId());
 		sb.append(", active=");
-		sb.append(getActive());
+		sb.append(isActive());
 		sb.append("}");
 
 		return sb.toString();
@@ -567,7 +568,7 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>active</column-name><column-value><![CDATA[");
-		sb.append(getActive());
+		sb.append(isActive());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -577,7 +578,7 @@ public class DLFileRankModelImpl extends BaseModelImpl<DLFileRank>
 
 	private static final ClassLoader _classLoader = DLFileRank.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			DLFileRank.class
+			DLFileRank.class, ModelWrapper.class
 		};
 	private long _fileRankId;
 	private long _groupId;

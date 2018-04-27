@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -50,6 +51,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
@@ -6023,7 +6025,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			if ((list != null) && !list.isEmpty()) {
 				for (JournalArticle journalArticle : list) {
 					if ((resourcePrimKey != journalArticle.getResourcePrimKey()) ||
-							(indexable != journalArticle.getIndexable())) {
+							(indexable != journalArticle.isIndexable())) {
 						list = null;
 
 						break;
@@ -20108,7 +20110,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			if ((list != null) && !list.isEmpty()) {
 				for (JournalArticle journalArticle : list) {
 					if ((resourcePrimKey != journalArticle.getResourcePrimKey()) ||
-							(indexable != journalArticle.getIndexable()) ||
+							(indexable != journalArticle.isIndexable()) ||
 							(status != journalArticle.getStatus())) {
 						list = null;
 
@@ -20608,7 +20610,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 			if ((list != null) && !list.isEmpty()) {
 				for (JournalArticle journalArticle : list) {
 					if ((resourcePrimKey != journalArticle.getResourcePrimKey()) ||
-							(indexable != journalArticle.getIndexable()) ||
+							(indexable != journalArticle.isIndexable()) ||
 							!ArrayUtil.contains(statuses,
 								journalArticle.getStatus())) {
 						list = null;
@@ -31800,8 +31802,6 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	@Override
 	protected JournalArticle removeImpl(JournalArticle journalArticle) {
-		journalArticle = toUnwrappedModel(journalArticle);
-
 		Session session = null;
 
 		try {
@@ -31832,9 +31832,23 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	@Override
 	public JournalArticle updateImpl(JournalArticle journalArticle) {
-		journalArticle = toUnwrappedModel(journalArticle);
-
 		boolean isNew = journalArticle.isNew();
+
+		if (!(journalArticle instanceof JournalArticleModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(journalArticle.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(journalArticle);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in journalArticle proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom JournalArticle implementation " +
+				journalArticle.getClass());
+		}
 
 		JournalArticleModelImpl journalArticleModelImpl = (JournalArticleModelImpl)journalArticle;
 
@@ -31956,7 +31970,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			args = new Object[] {
 					journalArticleModelImpl.getResourcePrimKey(),
-					journalArticleModelImpl.getIndexable()
+					journalArticleModelImpl.isIndexable()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_R_I, args);
@@ -32073,7 +32087,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 			args = new Object[] {
 					journalArticleModelImpl.getResourcePrimKey(),
-					journalArticleModelImpl.getIndexable(),
+					journalArticleModelImpl.isIndexable(),
 					journalArticleModelImpl.getStatus()
 				};
 
@@ -32343,7 +32357,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 				args = new Object[] {
 						journalArticleModelImpl.getResourcePrimKey(),
-						journalArticleModelImpl.getIndexable()
+						journalArticleModelImpl.isIndexable()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_R_I, args);
@@ -32617,7 +32631,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 				args = new Object[] {
 						journalArticleModelImpl.getResourcePrimKey(),
-						journalArticleModelImpl.getIndexable(),
+						journalArticleModelImpl.isIndexable(),
 						journalArticleModelImpl.getStatus()
 					};
 
@@ -32821,53 +32835,6 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		journalArticle.resetOriginalValues();
 
 		return journalArticle;
-	}
-
-	protected JournalArticle toUnwrappedModel(JournalArticle journalArticle) {
-		if (journalArticle instanceof JournalArticleImpl) {
-			return journalArticle;
-		}
-
-		JournalArticleImpl journalArticleImpl = new JournalArticleImpl();
-
-		journalArticleImpl.setNew(journalArticle.isNew());
-		journalArticleImpl.setPrimaryKey(journalArticle.getPrimaryKey());
-
-		journalArticleImpl.setUuid(journalArticle.getUuid());
-		journalArticleImpl.setId(journalArticle.getId());
-		journalArticleImpl.setResourcePrimKey(journalArticle.getResourcePrimKey());
-		journalArticleImpl.setGroupId(journalArticle.getGroupId());
-		journalArticleImpl.setCompanyId(journalArticle.getCompanyId());
-		journalArticleImpl.setUserId(journalArticle.getUserId());
-		journalArticleImpl.setUserName(journalArticle.getUserName());
-		journalArticleImpl.setCreateDate(journalArticle.getCreateDate());
-		journalArticleImpl.setModifiedDate(journalArticle.getModifiedDate());
-		journalArticleImpl.setFolderId(journalArticle.getFolderId());
-		journalArticleImpl.setClassNameId(journalArticle.getClassNameId());
-		journalArticleImpl.setClassPK(journalArticle.getClassPK());
-		journalArticleImpl.setTreePath(journalArticle.getTreePath());
-		journalArticleImpl.setArticleId(journalArticle.getArticleId());
-		journalArticleImpl.setVersion(journalArticle.getVersion());
-		journalArticleImpl.setUrlTitle(journalArticle.getUrlTitle());
-		journalArticleImpl.setContent(journalArticle.getContent());
-		journalArticleImpl.setDDMStructureKey(journalArticle.getDDMStructureKey());
-		journalArticleImpl.setDDMTemplateKey(journalArticle.getDDMTemplateKey());
-		journalArticleImpl.setDefaultLanguageId(journalArticle.getDefaultLanguageId());
-		journalArticleImpl.setLayoutUuid(journalArticle.getLayoutUuid());
-		journalArticleImpl.setDisplayDate(journalArticle.getDisplayDate());
-		journalArticleImpl.setExpirationDate(journalArticle.getExpirationDate());
-		journalArticleImpl.setReviewDate(journalArticle.getReviewDate());
-		journalArticleImpl.setIndexable(journalArticle.isIndexable());
-		journalArticleImpl.setSmallImage(journalArticle.isSmallImage());
-		journalArticleImpl.setSmallImageId(journalArticle.getSmallImageId());
-		journalArticleImpl.setSmallImageURL(journalArticle.getSmallImageURL());
-		journalArticleImpl.setLastPublishDate(journalArticle.getLastPublishDate());
-		journalArticleImpl.setStatus(journalArticle.getStatus());
-		journalArticleImpl.setStatusByUserId(journalArticle.getStatusByUserId());
-		journalArticleImpl.setStatusByUserName(journalArticle.getStatusByUserName());
-		journalArticleImpl.setStatusDate(journalArticle.getStatusDate());
-
-		return journalArticleImpl;
 	}
 
 	/**

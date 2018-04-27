@@ -24,6 +24,7 @@ import com.liferay.journal.model.JournalContentSearchModel;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -145,7 +146,7 @@ public class JournalContentSearchModelImpl extends BaseModelImpl<JournalContentS
 		attributes.put("contentSearchId", getContentSearchId());
 		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
-		attributes.put("privateLayout", getPrivateLayout());
+		attributes.put("privateLayout", isPrivateLayout());
 		attributes.put("layoutId", getLayoutId());
 		attributes.put("portletId", getPortletId());
 		attributes.put("articleId", getArticleId());
@@ -376,7 +377,7 @@ public class JournalContentSearchModelImpl extends BaseModelImpl<JournalContentS
 		journalContentSearchImpl.setContentSearchId(getContentSearchId());
 		journalContentSearchImpl.setGroupId(getGroupId());
 		journalContentSearchImpl.setCompanyId(getCompanyId());
-		journalContentSearchImpl.setPrivateLayout(getPrivateLayout());
+		journalContentSearchImpl.setPrivateLayout(isPrivateLayout());
 		journalContentSearchImpl.setLayoutId(getLayoutId());
 		journalContentSearchImpl.setPortletId(getPortletId());
 		journalContentSearchImpl.setArticleId(getArticleId());
@@ -471,7 +472,7 @@ public class JournalContentSearchModelImpl extends BaseModelImpl<JournalContentS
 
 		journalContentSearchCacheModel.companyId = getCompanyId();
 
-		journalContentSearchCacheModel.privateLayout = getPrivateLayout();
+		journalContentSearchCacheModel.privateLayout = isPrivateLayout();
 
 		journalContentSearchCacheModel.layoutId = getLayoutId();
 
@@ -505,7 +506,7 @@ public class JournalContentSearchModelImpl extends BaseModelImpl<JournalContentS
 		sb.append(", companyId=");
 		sb.append(getCompanyId());
 		sb.append(", privateLayout=");
-		sb.append(getPrivateLayout());
+		sb.append(isPrivateLayout());
 		sb.append(", layoutId=");
 		sb.append(getLayoutId());
 		sb.append(", portletId=");
@@ -539,7 +540,7 @@ public class JournalContentSearchModelImpl extends BaseModelImpl<JournalContentS
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>privateLayout</column-name><column-value><![CDATA[");
-		sb.append(getPrivateLayout());
+		sb.append(isPrivateLayout());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>layoutId</column-name><column-value><![CDATA[");
@@ -561,7 +562,7 @@ public class JournalContentSearchModelImpl extends BaseModelImpl<JournalContentS
 
 	private static final ClassLoader _classLoader = JournalContentSearch.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			JournalContentSearch.class
+			JournalContentSearch.class, ModelWrapper.class
 		};
 	private long _contentSearchId;
 	private long _groupId;

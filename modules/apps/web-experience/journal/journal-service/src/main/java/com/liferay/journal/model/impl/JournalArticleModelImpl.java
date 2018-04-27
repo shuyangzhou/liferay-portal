@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -221,8 +222,8 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 		model.setDisplayDate(soapModel.getDisplayDate());
 		model.setExpirationDate(soapModel.getExpirationDate());
 		model.setReviewDate(soapModel.getReviewDate());
-		model.setIndexable(soapModel.getIndexable());
-		model.setSmallImage(soapModel.getSmallImage());
+		model.setIndexable(soapModel.isIndexable());
+		model.setSmallImage(soapModel.isSmallImage());
 		model.setSmallImageId(soapModel.getSmallImageId());
 		model.setSmallImageURL(soapModel.getSmallImageURL());
 		model.setLastPublishDate(soapModel.getLastPublishDate());
@@ -318,8 +319,8 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 		attributes.put("displayDate", getDisplayDate());
 		attributes.put("expirationDate", getExpirationDate());
 		attributes.put("reviewDate", getReviewDate());
-		attributes.put("indexable", getIndexable());
-		attributes.put("smallImage", getSmallImage());
+		attributes.put("indexable", isIndexable());
+		attributes.put("smallImage", isSmallImage());
 		attributes.put("smallImageId", getSmallImageId());
 		attributes.put("smallImageURL", getSmallImageURL());
 		attributes.put("lastPublishDate", getLastPublishDate());
@@ -1512,8 +1513,8 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 		journalArticleImpl.setDisplayDate(getDisplayDate());
 		journalArticleImpl.setExpirationDate(getExpirationDate());
 		journalArticleImpl.setReviewDate(getReviewDate());
-		journalArticleImpl.setIndexable(getIndexable());
-		journalArticleImpl.setSmallImage(getSmallImage());
+		journalArticleImpl.setIndexable(isIndexable());
+		journalArticleImpl.setSmallImage(isSmallImage());
 		journalArticleImpl.setSmallImageId(getSmallImageId());
 		journalArticleImpl.setSmallImageURL(getSmallImageURL());
 		journalArticleImpl.setLastPublishDate(getLastPublishDate());
@@ -1809,9 +1810,9 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 			journalArticleCacheModel.reviewDate = Long.MIN_VALUE;
 		}
 
-		journalArticleCacheModel.indexable = getIndexable();
+		journalArticleCacheModel.indexable = isIndexable();
 
-		journalArticleCacheModel.smallImage = getSmallImage();
+		journalArticleCacheModel.smallImage = isSmallImage();
 
 		journalArticleCacheModel.smallImageId = getSmallImageId();
 
@@ -1911,9 +1912,9 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 		sb.append(", reviewDate=");
 		sb.append(getReviewDate());
 		sb.append(", indexable=");
-		sb.append(getIndexable());
+		sb.append(isIndexable());
 		sb.append(", smallImage=");
-		sb.append(getSmallImage());
+		sb.append(isSmallImage());
 		sb.append(", smallImageId=");
 		sb.append(getSmallImageId());
 		sb.append(", smallImageURL=");
@@ -2039,11 +2040,11 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>indexable</column-name><column-value><![CDATA[");
-		sb.append(getIndexable());
+		sb.append(isIndexable());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>smallImage</column-name><column-value><![CDATA[");
-		sb.append(getSmallImage());
+		sb.append(isSmallImage());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>smallImageId</column-name><column-value><![CDATA[");
@@ -2081,7 +2082,7 @@ public class JournalArticleModelImpl extends BaseModelImpl<JournalArticle>
 
 	private static final ClassLoader _classLoader = JournalArticle.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			JournalArticle.class
+			JournalArticle.class, ModelWrapper.class
 		};
 	private String _uuid;
 	private String _originalUuid;

@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -41,6 +42,8 @@ import com.liferay.portal.workflow.kaleo.model.impl.KaleoTransitionModelImpl;
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoTransitionPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -1989,7 +1992,7 @@ public class KaleoTransitionPersistenceImpl extends BasePersistenceImpl<KaleoTra
 			KaleoTransition kaleoTransition = (KaleoTransition)result;
 
 			if ((kaleoNodeId != kaleoTransition.getKaleoNodeId()) ||
-					(defaultTransition != kaleoTransition.getDefaultTransition())) {
+					(defaultTransition != kaleoTransition.isDefaultTransition())) {
 				result = null;
 			}
 		}
@@ -2043,7 +2046,7 @@ public class KaleoTransitionPersistenceImpl extends BasePersistenceImpl<KaleoTra
 					cacheResult(kaleoTransition);
 
 					if ((kaleoTransition.getKaleoNodeId() != kaleoNodeId) ||
-							(kaleoTransition.getDefaultTransition() != defaultTransition)) {
+							(kaleoTransition.isDefaultTransition() != defaultTransition)) {
 						finderCache.putResult(FINDER_PATH_FETCH_BY_KNI_DT,
 							finderArgs, kaleoTransition);
 					}
@@ -2165,7 +2168,7 @@ public class KaleoTransitionPersistenceImpl extends BasePersistenceImpl<KaleoTra
 		finderCache.putResult(FINDER_PATH_FETCH_BY_KNI_DT,
 			new Object[] {
 				kaleoTransition.getKaleoNodeId(),
-				kaleoTransition.getDefaultTransition()
+				kaleoTransition.isDefaultTransition()
 			}, kaleoTransition);
 
 		kaleoTransition.resetOriginalValues();
@@ -2253,7 +2256,7 @@ public class KaleoTransitionPersistenceImpl extends BasePersistenceImpl<KaleoTra
 
 		args = new Object[] {
 				kaleoTransitionModelImpl.getKaleoNodeId(),
-				kaleoTransitionModelImpl.getDefaultTransition()
+				kaleoTransitionModelImpl.isDefaultTransition()
 			};
 
 		finderCache.putResult(FINDER_PATH_COUNT_BY_KNI_DT, args,
@@ -2288,7 +2291,7 @@ public class KaleoTransitionPersistenceImpl extends BasePersistenceImpl<KaleoTra
 		if (clearCurrent) {
 			Object[] args = new Object[] {
 					kaleoTransitionModelImpl.getKaleoNodeId(),
-					kaleoTransitionModelImpl.getDefaultTransition()
+					kaleoTransitionModelImpl.isDefaultTransition()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_KNI_DT, args);
@@ -2380,8 +2383,6 @@ public class KaleoTransitionPersistenceImpl extends BasePersistenceImpl<KaleoTra
 
 	@Override
 	protected KaleoTransition removeImpl(KaleoTransition kaleoTransition) {
-		kaleoTransition = toUnwrappedModel(kaleoTransition);
-
 		Session session = null;
 
 		try {
@@ -2412,9 +2413,23 @@ public class KaleoTransitionPersistenceImpl extends BasePersistenceImpl<KaleoTra
 
 	@Override
 	public KaleoTransition updateImpl(KaleoTransition kaleoTransition) {
-		kaleoTransition = toUnwrappedModel(kaleoTransition);
-
 		boolean isNew = kaleoTransition.isNew();
+
+		if (!(kaleoTransition instanceof KaleoTransitionModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(kaleoTransition.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(kaleoTransition);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in kaleoTransition proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom KaleoTransition implementation " +
+				kaleoTransition.getClass());
+		}
 
 		KaleoTransitionModelImpl kaleoTransitionModelImpl = (KaleoTransitionModelImpl)kaleoTransition;
 
@@ -2562,36 +2577,6 @@ public class KaleoTransitionPersistenceImpl extends BasePersistenceImpl<KaleoTra
 		kaleoTransition.resetOriginalValues();
 
 		return kaleoTransition;
-	}
-
-	protected KaleoTransition toUnwrappedModel(KaleoTransition kaleoTransition) {
-		if (kaleoTransition instanceof KaleoTransitionImpl) {
-			return kaleoTransition;
-		}
-
-		KaleoTransitionImpl kaleoTransitionImpl = new KaleoTransitionImpl();
-
-		kaleoTransitionImpl.setNew(kaleoTransition.isNew());
-		kaleoTransitionImpl.setPrimaryKey(kaleoTransition.getPrimaryKey());
-
-		kaleoTransitionImpl.setKaleoTransitionId(kaleoTransition.getKaleoTransitionId());
-		kaleoTransitionImpl.setGroupId(kaleoTransition.getGroupId());
-		kaleoTransitionImpl.setCompanyId(kaleoTransition.getCompanyId());
-		kaleoTransitionImpl.setUserId(kaleoTransition.getUserId());
-		kaleoTransitionImpl.setUserName(kaleoTransition.getUserName());
-		kaleoTransitionImpl.setCreateDate(kaleoTransition.getCreateDate());
-		kaleoTransitionImpl.setModifiedDate(kaleoTransition.getModifiedDate());
-		kaleoTransitionImpl.setKaleoDefinitionVersionId(kaleoTransition.getKaleoDefinitionVersionId());
-		kaleoTransitionImpl.setKaleoNodeId(kaleoTransition.getKaleoNodeId());
-		kaleoTransitionImpl.setName(kaleoTransition.getName());
-		kaleoTransitionImpl.setDescription(kaleoTransition.getDescription());
-		kaleoTransitionImpl.setSourceKaleoNodeId(kaleoTransition.getSourceKaleoNodeId());
-		kaleoTransitionImpl.setSourceKaleoNodeName(kaleoTransition.getSourceKaleoNodeName());
-		kaleoTransitionImpl.setTargetKaleoNodeId(kaleoTransition.getTargetKaleoNodeId());
-		kaleoTransitionImpl.setTargetKaleoNodeName(kaleoTransition.getTargetKaleoNodeName());
-		kaleoTransitionImpl.setDefaultTransition(kaleoTransition.isDefaultTransition());
-
-		return kaleoTransitionImpl;
 	}
 
 	/**

@@ -22,6 +22,7 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -164,7 +165,7 @@ public class PowwowServerModelImpl extends BaseModelImpl<PowwowServer>
 		attributes.put("url", getUrl());
 		attributes.put("apiKey", getApiKey());
 		attributes.put("secret", getSecret());
-		attributes.put("active", getActive());
+		attributes.put("active", isActive());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -490,7 +491,7 @@ public class PowwowServerModelImpl extends BaseModelImpl<PowwowServer>
 		powwowServerImpl.setUrl(getUrl());
 		powwowServerImpl.setApiKey(getApiKey());
 		powwowServerImpl.setSecret(getSecret());
-		powwowServerImpl.setActive(getActive());
+		powwowServerImpl.setActive(isActive());
 
 		powwowServerImpl.resetOriginalValues();
 
@@ -638,7 +639,7 @@ public class PowwowServerModelImpl extends BaseModelImpl<PowwowServer>
 			powwowServerCacheModel.secret = null;
 		}
 
-		powwowServerCacheModel.active = getActive();
+		powwowServerCacheModel.active = isActive();
 
 		return powwowServerCacheModel;
 	}
@@ -670,7 +671,7 @@ public class PowwowServerModelImpl extends BaseModelImpl<PowwowServer>
 		sb.append(", secret=");
 		sb.append(getSecret());
 		sb.append(", active=");
-		sb.append(getActive());
+		sb.append(isActive());
 		sb.append("}");
 
 		return sb.toString();
@@ -730,7 +731,7 @@ public class PowwowServerModelImpl extends BaseModelImpl<PowwowServer>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>active</column-name><column-value><![CDATA[");
-		sb.append(getActive());
+		sb.append(isActive());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -740,7 +741,7 @@ public class PowwowServerModelImpl extends BaseModelImpl<PowwowServer>
 
 	private static final ClassLoader _classLoader = PowwowServer.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			PowwowServer.class
+			PowwowServer.class, ModelWrapper.class
 		};
 	private long _powwowServerId;
 	private long _companyId;

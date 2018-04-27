@@ -77,6 +77,7 @@ public interface DDMFormInstanceVersionLocalService extends BaseLocalService,
 	* @param formInstanceVersionId the primary key for the new ddm form instance version
 	* @return the new ddm form instance version
 	*/
+	@Transactional(enabled = false)
 	public DDMFormInstanceVersion createDDMFormInstanceVersion(
 		long formInstanceVersionId);
 
@@ -216,8 +217,7 @@ public interface DDMFormInstanceVersionLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DDMFormInstanceVersion getFormInstanceVersion(
-		long ddmFormInstanceId, java.lang.String version)
-		throws PortalException;
+		long ddmFormInstanceId, String version) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DDMFormInstanceVersion> getFormInstanceVersions(
@@ -238,12 +238,16 @@ public interface DDMFormInstanceVersionLocalService extends BaseLocalService,
 	public DDMFormInstanceVersion getLatestFormInstanceVersion(
 		long ddmFormInstanceId) throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public DDMFormInstanceVersion getLatestFormInstanceVersion(
+		long formInstanceId, int status) throws PortalException;
+
 	/**
 	* Returns the OSGi service identifier.
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

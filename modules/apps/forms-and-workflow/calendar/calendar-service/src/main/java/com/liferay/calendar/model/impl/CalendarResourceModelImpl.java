@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -168,7 +169,7 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		model.setCode(soapModel.getCode());
 		model.setName(soapModel.getName());
 		model.setDescription(soapModel.getDescription());
-		model.setActive(soapModel.getActive());
+		model.setActive(soapModel.isActive());
 		model.setLastPublishDate(soapModel.getLastPublishDate());
 
 		return model;
@@ -249,7 +250,7 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		attributes.put("code", getCode());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
-		attributes.put("active", getActive());
+		attributes.put("active", isActive());
 		attributes.put("lastPublishDate", getLastPublishDate());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -992,7 +993,7 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		calendarResourceImpl.setCode(getCode());
 		calendarResourceImpl.setName(getName());
 		calendarResourceImpl.setDescription(getDescription());
-		calendarResourceImpl.setActive(getActive());
+		calendarResourceImpl.setActive(isActive());
 		calendarResourceImpl.setLastPublishDate(getLastPublishDate());
 
 		calendarResourceImpl.resetOriginalValues();
@@ -1165,7 +1166,7 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 			calendarResourceCacheModel.description = null;
 		}
 
-		calendarResourceCacheModel.active = getActive();
+		calendarResourceCacheModel.active = isActive();
 
 		Date lastPublishDate = getLastPublishDate();
 
@@ -1212,7 +1213,7 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		sb.append(", description=");
 		sb.append(getDescription());
 		sb.append(", active=");
-		sb.append(getActive());
+		sb.append(isActive());
 		sb.append(", lastPublishDate=");
 		sb.append(getLastPublishDate());
 		sb.append("}");
@@ -1286,7 +1287,7 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>active</column-name><column-value><![CDATA[");
-		sb.append(getActive());
+		sb.append(isActive());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
@@ -1300,7 +1301,7 @@ public class CalendarResourceModelImpl extends BaseModelImpl<CalendarResource>
 
 	private static final ClassLoader _classLoader = CalendarResource.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			CalendarResource.class
+			CalendarResource.class, ModelWrapper.class
 		};
 	private String _uuid;
 	private String _originalUuid;

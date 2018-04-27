@@ -22,6 +22,7 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -183,7 +184,7 @@ public class KaleoTaskAssignmentInstanceModelImpl extends BaseModelImpl<KaleoTas
 		attributes.put("kaleoTaskName", getKaleoTaskName());
 		attributes.put("assigneeClassName", getAssigneeClassName());
 		attributes.put("assigneeClassPK", getAssigneeClassPK());
-		attributes.put("completed", getCompleted());
+		attributes.put("completed", isCompleted());
 		attributes.put("completionDate", getCompletionDate());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -643,7 +644,7 @@ public class KaleoTaskAssignmentInstanceModelImpl extends BaseModelImpl<KaleoTas
 		kaleoTaskAssignmentInstanceImpl.setKaleoTaskName(getKaleoTaskName());
 		kaleoTaskAssignmentInstanceImpl.setAssigneeClassName(getAssigneeClassName());
 		kaleoTaskAssignmentInstanceImpl.setAssigneeClassPK(getAssigneeClassPK());
-		kaleoTaskAssignmentInstanceImpl.setCompleted(getCompleted());
+		kaleoTaskAssignmentInstanceImpl.setCompleted(isCompleted());
 		kaleoTaskAssignmentInstanceImpl.setCompletionDate(getCompletionDate());
 
 		kaleoTaskAssignmentInstanceImpl.resetOriginalValues();
@@ -813,7 +814,7 @@ public class KaleoTaskAssignmentInstanceModelImpl extends BaseModelImpl<KaleoTas
 
 		kaleoTaskAssignmentInstanceCacheModel.assigneeClassPK = getAssigneeClassPK();
 
-		kaleoTaskAssignmentInstanceCacheModel.completed = getCompleted();
+		kaleoTaskAssignmentInstanceCacheModel.completed = isCompleted();
 
 		Date completionDate = getCompletionDate();
 
@@ -862,7 +863,7 @@ public class KaleoTaskAssignmentInstanceModelImpl extends BaseModelImpl<KaleoTas
 		sb.append(", assigneeClassPK=");
 		sb.append(getAssigneeClassPK());
 		sb.append(", completed=");
-		sb.append(getCompleted());
+		sb.append(isCompleted());
 		sb.append(", completionDate=");
 		sb.append(getCompletionDate());
 		sb.append("}");
@@ -941,7 +942,7 @@ public class KaleoTaskAssignmentInstanceModelImpl extends BaseModelImpl<KaleoTas
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>completed</column-name><column-value><![CDATA[");
-		sb.append(getCompleted());
+		sb.append(isCompleted());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>completionDate</column-name><column-value><![CDATA[");
@@ -955,7 +956,7 @@ public class KaleoTaskAssignmentInstanceModelImpl extends BaseModelImpl<KaleoTas
 
 	private static final ClassLoader _classLoader = KaleoTaskAssignmentInstance.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			KaleoTaskAssignmentInstance.class
+			KaleoTaskAssignmentInstance.class, ModelWrapper.class
 		};
 	private long _kaleoTaskAssignmentInstanceId;
 	private long _groupId;

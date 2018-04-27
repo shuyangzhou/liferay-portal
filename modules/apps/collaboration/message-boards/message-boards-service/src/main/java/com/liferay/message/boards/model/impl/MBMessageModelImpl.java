@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -196,10 +197,10 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 		model.setSubject(soapModel.getSubject());
 		model.setBody(soapModel.getBody());
 		model.setFormat(soapModel.getFormat());
-		model.setAnonymous(soapModel.getAnonymous());
+		model.setAnonymous(soapModel.isAnonymous());
 		model.setPriority(soapModel.getPriority());
-		model.setAllowPingbacks(soapModel.getAllowPingbacks());
-		model.setAnswer(soapModel.getAnswer());
+		model.setAllowPingbacks(soapModel.isAllowPingbacks());
+		model.setAnswer(soapModel.isAnswer());
 		model.setLastPublishDate(soapModel.getLastPublishDate());
 		model.setStatus(soapModel.getStatus());
 		model.setStatusByUserId(soapModel.getStatusByUserId());
@@ -286,10 +287,10 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 		attributes.put("subject", getSubject());
 		attributes.put("body", getBody());
 		attributes.put("format", getFormat());
-		attributes.put("anonymous", getAnonymous());
+		attributes.put("anonymous", isAnonymous());
 		attributes.put("priority", getPriority());
-		attributes.put("allowPingbacks", getAllowPingbacks());
-		attributes.put("answer", getAnswer());
+		attributes.put("allowPingbacks", isAllowPingbacks());
+		attributes.put("answer", isAnswer());
 		attributes.put("lastPublishDate", getLastPublishDate());
 		attributes.put("status", getStatus());
 		attributes.put("statusByUserId", getStatusByUserId());
@@ -1250,10 +1251,10 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 		mbMessageImpl.setSubject(getSubject());
 		mbMessageImpl.setBody(getBody());
 		mbMessageImpl.setFormat(getFormat());
-		mbMessageImpl.setAnonymous(getAnonymous());
+		mbMessageImpl.setAnonymous(isAnonymous());
 		mbMessageImpl.setPriority(getPriority());
-		mbMessageImpl.setAllowPingbacks(getAllowPingbacks());
-		mbMessageImpl.setAnswer(getAnswer());
+		mbMessageImpl.setAllowPingbacks(isAllowPingbacks());
+		mbMessageImpl.setAnswer(isAnswer());
 		mbMessageImpl.setLastPublishDate(getLastPublishDate());
 		mbMessageImpl.setStatus(getStatus());
 		mbMessageImpl.setStatusByUserId(getStatusByUserId());
@@ -1462,13 +1463,13 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 			mbMessageCacheModel.format = null;
 		}
 
-		mbMessageCacheModel.anonymous = getAnonymous();
+		mbMessageCacheModel.anonymous = isAnonymous();
 
 		mbMessageCacheModel.priority = getPriority();
 
-		mbMessageCacheModel.allowPingbacks = getAllowPingbacks();
+		mbMessageCacheModel.allowPingbacks = isAllowPingbacks();
 
-		mbMessageCacheModel.answer = getAnswer();
+		mbMessageCacheModel.answer = isAnswer();
 
 		Date lastPublishDate = getLastPublishDate();
 
@@ -1542,13 +1543,13 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 		sb.append(", format=");
 		sb.append(getFormat());
 		sb.append(", anonymous=");
-		sb.append(getAnonymous());
+		sb.append(isAnonymous());
 		sb.append(", priority=");
 		sb.append(getPriority());
 		sb.append(", allowPingbacks=");
-		sb.append(getAllowPingbacks());
+		sb.append(isAllowPingbacks());
 		sb.append(", answer=");
-		sb.append(getAnswer());
+		sb.append(isAnswer());
 		sb.append(", lastPublishDate=");
 		sb.append(getLastPublishDate());
 		sb.append(", status=");
@@ -1642,7 +1643,7 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>anonymous</column-name><column-value><![CDATA[");
-		sb.append(getAnonymous());
+		sb.append(isAnonymous());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>priority</column-name><column-value><![CDATA[");
@@ -1650,11 +1651,11 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>allowPingbacks</column-name><column-value><![CDATA[");
-		sb.append(getAllowPingbacks());
+		sb.append(isAllowPingbacks());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>answer</column-name><column-value><![CDATA[");
-		sb.append(getAnswer());
+		sb.append(isAnswer());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>lastPublishDate</column-name><column-value><![CDATA[");
@@ -1684,7 +1685,7 @@ public class MBMessageModelImpl extends BaseModelImpl<MBMessage>
 
 	private static final ClassLoader _classLoader = MBMessage.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			MBMessage.class
+			MBMessage.class, ModelWrapper.class
 		};
 	private String _uuid;
 	private String _originalUuid;

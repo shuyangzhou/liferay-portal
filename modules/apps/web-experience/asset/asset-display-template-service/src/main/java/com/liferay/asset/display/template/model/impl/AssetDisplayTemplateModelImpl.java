@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -143,7 +144,7 @@ public class AssetDisplayTemplateModelImpl extends BaseModelImpl<AssetDisplayTem
 		model.setName(soapModel.getName());
 		model.setClassNameId(soapModel.getClassNameId());
 		model.setDDMTemplateId(soapModel.getDDMTemplateId());
-		model.setMain(soapModel.getMain());
+		model.setMain(soapModel.isMain());
 
 		return model;
 	}
@@ -219,7 +220,7 @@ public class AssetDisplayTemplateModelImpl extends BaseModelImpl<AssetDisplayTem
 		attributes.put("name", getName());
 		attributes.put("classNameId", getClassNameId());
 		attributes.put("DDMTemplateId", getDDMTemplateId());
-		attributes.put("main", getMain());
+		attributes.put("main", isMain());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -551,7 +552,7 @@ public class AssetDisplayTemplateModelImpl extends BaseModelImpl<AssetDisplayTem
 		assetDisplayTemplateImpl.setName(getName());
 		assetDisplayTemplateImpl.setClassNameId(getClassNameId());
 		assetDisplayTemplateImpl.setDDMTemplateId(getDDMTemplateId());
-		assetDisplayTemplateImpl.setMain(getMain());
+		assetDisplayTemplateImpl.setMain(isMain());
 
 		assetDisplayTemplateImpl.resetOriginalValues();
 
@@ -677,7 +678,7 @@ public class AssetDisplayTemplateModelImpl extends BaseModelImpl<AssetDisplayTem
 
 		assetDisplayTemplateCacheModel.DDMTemplateId = getDDMTemplateId();
 
-		assetDisplayTemplateCacheModel.main = getMain();
+		assetDisplayTemplateCacheModel.main = isMain();
 
 		return assetDisplayTemplateCacheModel;
 	}
@@ -707,7 +708,7 @@ public class AssetDisplayTemplateModelImpl extends BaseModelImpl<AssetDisplayTem
 		sb.append(", DDMTemplateId=");
 		sb.append(getDDMTemplateId());
 		sb.append(", main=");
-		sb.append(getMain());
+		sb.append(isMain());
 		sb.append("}");
 
 		return sb.toString();
@@ -764,7 +765,7 @@ public class AssetDisplayTemplateModelImpl extends BaseModelImpl<AssetDisplayTem
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>main</column-name><column-value><![CDATA[");
-		sb.append(getMain());
+		sb.append(isMain());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -774,7 +775,7 @@ public class AssetDisplayTemplateModelImpl extends BaseModelImpl<AssetDisplayTem
 
 	private static final ClassLoader _classLoader = AssetDisplayTemplate.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			AssetDisplayTemplate.class
+			AssetDisplayTemplate.class, ModelWrapper.class
 		};
 	private long _assetDisplayTemplateId;
 	private long _groupId;

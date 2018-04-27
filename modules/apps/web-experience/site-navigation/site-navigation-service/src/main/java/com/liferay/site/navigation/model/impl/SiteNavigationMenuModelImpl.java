@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -139,7 +140,7 @@ public class SiteNavigationMenuModelImpl extends BaseModelImpl<SiteNavigationMen
 		model.setModifiedDate(soapModel.getModifiedDate());
 		model.setName(soapModel.getName());
 		model.setType(soapModel.getType());
-		model.setAuto(soapModel.getAuto());
+		model.setAuto(soapModel.isAuto());
 
 		return model;
 	}
@@ -214,7 +215,7 @@ public class SiteNavigationMenuModelImpl extends BaseModelImpl<SiteNavigationMen
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("name", getName());
 		attributes.put("type", getType());
-		attributes.put("auto", getAuto());
+		attributes.put("auto", isAuto());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -519,7 +520,7 @@ public class SiteNavigationMenuModelImpl extends BaseModelImpl<SiteNavigationMen
 		siteNavigationMenuImpl.setModifiedDate(getModifiedDate());
 		siteNavigationMenuImpl.setName(getName());
 		siteNavigationMenuImpl.setType(getType());
-		siteNavigationMenuImpl.setAuto(getAuto());
+		siteNavigationMenuImpl.setAuto(isAuto());
 
 		siteNavigationMenuImpl.resetOriginalValues();
 
@@ -649,7 +650,7 @@ public class SiteNavigationMenuModelImpl extends BaseModelImpl<SiteNavigationMen
 
 		siteNavigationMenuCacheModel.type = getType();
 
-		siteNavigationMenuCacheModel.auto = getAuto();
+		siteNavigationMenuCacheModel.auto = isAuto();
 
 		return siteNavigationMenuCacheModel;
 	}
@@ -677,7 +678,7 @@ public class SiteNavigationMenuModelImpl extends BaseModelImpl<SiteNavigationMen
 		sb.append(", type=");
 		sb.append(getType());
 		sb.append(", auto=");
-		sb.append(getAuto());
+		sb.append(isAuto());
 		sb.append("}");
 
 		return sb.toString();
@@ -729,7 +730,7 @@ public class SiteNavigationMenuModelImpl extends BaseModelImpl<SiteNavigationMen
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>auto</column-name><column-value><![CDATA[");
-		sb.append(getAuto());
+		sb.append(isAuto());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -739,7 +740,7 @@ public class SiteNavigationMenuModelImpl extends BaseModelImpl<SiteNavigationMen
 
 	private static final ClassLoader _classLoader = SiteNavigationMenu.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			SiteNavigationMenu.class
+			SiteNavigationMenu.class, ModelWrapper.class
 		};
 	private long _siteNavigationMenuId;
 	private long _groupId;

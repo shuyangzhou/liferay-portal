@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ContainerModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
@@ -186,11 +187,11 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		model.setNodeId(soapModel.getNodeId());
 		model.setTitle(soapModel.getTitle());
 		model.setVersion(soapModel.getVersion());
-		model.setMinorEdit(soapModel.getMinorEdit());
+		model.setMinorEdit(soapModel.isMinorEdit());
 		model.setContent(soapModel.getContent());
 		model.setSummary(soapModel.getSummary());
 		model.setFormat(soapModel.getFormat());
-		model.setHead(soapModel.getHead());
+		model.setHead(soapModel.isHead());
 		model.setParentTitle(soapModel.getParentTitle());
 		model.setRedirectTitle(soapModel.getRedirectTitle());
 		model.setLastPublishDate(soapModel.getLastPublishDate());
@@ -274,11 +275,11 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		attributes.put("nodeId", getNodeId());
 		attributes.put("title", getTitle());
 		attributes.put("version", getVersion());
-		attributes.put("minorEdit", getMinorEdit());
+		attributes.put("minorEdit", isMinorEdit());
 		attributes.put("content", getContent());
 		attributes.put("summary", getSummary());
 		attributes.put("format", getFormat());
-		attributes.put("head", getHead());
+		attributes.put("head", isHead());
 		attributes.put("parentTitle", getParentTitle());
 		attributes.put("redirectTitle", getRedirectTitle());
 		attributes.put("lastPublishDate", getLastPublishDate());
@@ -1232,11 +1233,11 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		wikiPageImpl.setNodeId(getNodeId());
 		wikiPageImpl.setTitle(getTitle());
 		wikiPageImpl.setVersion(getVersion());
-		wikiPageImpl.setMinorEdit(getMinorEdit());
+		wikiPageImpl.setMinorEdit(isMinorEdit());
 		wikiPageImpl.setContent(getContent());
 		wikiPageImpl.setSummary(getSummary());
 		wikiPageImpl.setFormat(getFormat());
-		wikiPageImpl.setHead(getHead());
+		wikiPageImpl.setHead(isHead());
 		wikiPageImpl.setParentTitle(getParentTitle());
 		wikiPageImpl.setRedirectTitle(getRedirectTitle());
 		wikiPageImpl.setLastPublishDate(getLastPublishDate());
@@ -1441,7 +1442,7 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 		wikiPageCacheModel.version = getVersion();
 
-		wikiPageCacheModel.minorEdit = getMinorEdit();
+		wikiPageCacheModel.minorEdit = isMinorEdit();
 
 		wikiPageCacheModel.content = getContent();
 
@@ -1467,7 +1468,7 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 			wikiPageCacheModel.format = null;
 		}
 
-		wikiPageCacheModel.head = getHead();
+		wikiPageCacheModel.head = isHead();
 
 		wikiPageCacheModel.parentTitle = getParentTitle();
 
@@ -1547,7 +1548,7 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		sb.append(", version=");
 		sb.append(getVersion());
 		sb.append(", minorEdit=");
-		sb.append(getMinorEdit());
+		sb.append(isMinorEdit());
 		sb.append(", content=");
 		sb.append(getContent());
 		sb.append(", summary=");
@@ -1555,7 +1556,7 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		sb.append(", format=");
 		sb.append(getFormat());
 		sb.append(", head=");
-		sb.append(getHead());
+		sb.append(isHead());
 		sb.append(", parentTitle=");
 		sb.append(getParentTitle());
 		sb.append(", redirectTitle=");
@@ -1633,7 +1634,7 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>minorEdit</column-name><column-value><![CDATA[");
-		sb.append(getMinorEdit());
+		sb.append(isMinorEdit());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>content</column-name><column-value><![CDATA[");
@@ -1649,7 +1650,7 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>head</column-name><column-value><![CDATA[");
-		sb.append(getHead());
+		sb.append(isHead());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>parentTitle</column-name><column-value><![CDATA[");
@@ -1687,7 +1688,7 @@ public class WikiPageModelImpl extends BaseModelImpl<WikiPage>
 
 	private static final ClassLoader _classLoader = WikiPage.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WikiPage.class
+			WikiPage.class, ModelWrapper.class
 		};
 	private String _uuid;
 	private String _originalUuid;

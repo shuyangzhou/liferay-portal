@@ -22,6 +22,7 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -187,9 +188,9 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 		attributes.put("kaleoTaskInstanceTokenId", getKaleoTaskInstanceTokenId());
 		attributes.put("kaleoTimerId", getKaleoTimerId());
 		attributes.put("kaleoTimerName", getKaleoTimerName());
-		attributes.put("blocking", getBlocking());
+		attributes.put("blocking", isBlocking());
 		attributes.put("completionUserId", getCompletionUserId());
-		attributes.put("completed", getCompleted());
+		attributes.put("completed", isCompleted());
 		attributes.put("completionDate", getCompletionDate());
 		attributes.put("workflowContext", getWorkflowContext());
 
@@ -701,9 +702,9 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 		kaleoTimerInstanceTokenImpl.setKaleoTaskInstanceTokenId(getKaleoTaskInstanceTokenId());
 		kaleoTimerInstanceTokenImpl.setKaleoTimerId(getKaleoTimerId());
 		kaleoTimerInstanceTokenImpl.setKaleoTimerName(getKaleoTimerName());
-		kaleoTimerInstanceTokenImpl.setBlocking(getBlocking());
+		kaleoTimerInstanceTokenImpl.setBlocking(isBlocking());
 		kaleoTimerInstanceTokenImpl.setCompletionUserId(getCompletionUserId());
-		kaleoTimerInstanceTokenImpl.setCompleted(getCompleted());
+		kaleoTimerInstanceTokenImpl.setCompleted(isCompleted());
 		kaleoTimerInstanceTokenImpl.setCompletionDate(getCompletionDate());
 		kaleoTimerInstanceTokenImpl.setWorkflowContext(getWorkflowContext());
 
@@ -865,11 +866,11 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 			kaleoTimerInstanceTokenCacheModel.kaleoTimerName = null;
 		}
 
-		kaleoTimerInstanceTokenCacheModel.blocking = getBlocking();
+		kaleoTimerInstanceTokenCacheModel.blocking = isBlocking();
 
 		kaleoTimerInstanceTokenCacheModel.completionUserId = getCompletionUserId();
 
-		kaleoTimerInstanceTokenCacheModel.completed = getCompleted();
+		kaleoTimerInstanceTokenCacheModel.completed = isCompleted();
 
 		Date completionDate = getCompletionDate();
 
@@ -926,11 +927,11 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 		sb.append(", kaleoTimerName=");
 		sb.append(getKaleoTimerName());
 		sb.append(", blocking=");
-		sb.append(getBlocking());
+		sb.append(isBlocking());
 		sb.append(", completionUserId=");
 		sb.append(getCompletionUserId());
 		sb.append(", completed=");
-		sb.append(getCompleted());
+		sb.append(isCompleted());
 		sb.append(", completionDate=");
 		sb.append(getCompletionDate());
 		sb.append(", workflowContext=");
@@ -1011,7 +1012,7 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>blocking</column-name><column-value><![CDATA[");
-		sb.append(getBlocking());
+		sb.append(isBlocking());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>completionUserId</column-name><column-value><![CDATA[");
@@ -1019,7 +1020,7 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>completed</column-name><column-value><![CDATA[");
-		sb.append(getCompleted());
+		sb.append(isCompleted());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>completionDate</column-name><column-value><![CDATA[");
@@ -1037,7 +1038,7 @@ public class KaleoTimerInstanceTokenModelImpl extends BaseModelImpl<KaleoTimerIn
 
 	private static final ClassLoader _classLoader = KaleoTimerInstanceToken.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			KaleoTimerInstanceToken.class
+			KaleoTimerInstanceToken.class, ModelWrapper.class
 		};
 	private long _kaleoTimerInstanceTokenId;
 	private long _groupId;

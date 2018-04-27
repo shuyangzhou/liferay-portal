@@ -77,21 +77,21 @@ public interface FriendlyURLEntryLocalService extends BaseLocalService,
 	public FriendlyURLEntry addFriendlyURLEntry(
 		FriendlyURLEntry friendlyURLEntry);
 
-	public FriendlyURLEntry addFriendlyURLEntry(long groupId,
-		java.lang.Class<?> clazz, long classPK, java.lang.String urlTitle,
+	public FriendlyURLEntry addFriendlyURLEntry(long groupId, Class<?> clazz,
+		long classPK, String urlTitle, ServiceContext serviceContext)
+		throws PortalException;
+
+	public FriendlyURLEntry addFriendlyURLEntry(long groupId, long classNameId,
+		long classPK, Map<String, String> urlTitleMap,
 		ServiceContext serviceContext) throws PortalException;
 
 	public FriendlyURLEntry addFriendlyURLEntry(long groupId, long classNameId,
-		long classPK, Map<java.lang.String, java.lang.String> urlTitleMap,
-		ServiceContext serviceContext) throws PortalException;
+		long classPK, String defaultLanguageId,
+		Map<String, String> urlTitleMap, ServiceContext serviceContext)
+		throws PortalException;
 
 	public FriendlyURLEntry addFriendlyURLEntry(long groupId, long classNameId,
-		long classPK, java.lang.String defaultLanguageId,
-		Map<java.lang.String, java.lang.String> urlTitleMap,
-		ServiceContext serviceContext) throws PortalException;
-
-	public FriendlyURLEntry addFriendlyURLEntry(long groupId, long classNameId,
-		long classPK, java.lang.String urlTitle, ServiceContext serviceContext)
+		long classPK, String urlTitle, ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -100,6 +100,7 @@ public interface FriendlyURLEntryLocalService extends BaseLocalService,
 	* @param friendlyURLEntryId the primary key for the new friendly url entry
 	* @return the new friendly url entry
 	*/
+	@Transactional(enabled = false)
 	public FriendlyURLEntry createFriendlyURLEntry(long friendlyURLEntryId);
 
 	/**
@@ -123,7 +124,7 @@ public interface FriendlyURLEntryLocalService extends BaseLocalService,
 	public FriendlyURLEntry deleteFriendlyURLEntry(long friendlyURLEntryId)
 		throws PortalException;
 
-	public void deleteFriendlyURLEntry(long groupId, java.lang.Class<?> clazz,
+	public void deleteFriendlyURLEntry(long groupId, Class<?> clazz,
 		long classPK) throws PortalException;
 
 	public void deleteGroupFriendlyURLEntries(long groupId, long classNameId);
@@ -198,12 +199,12 @@ public interface FriendlyURLEntryLocalService extends BaseLocalService,
 	public FriendlyURLEntry fetchFriendlyURLEntry(long friendlyURLEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public FriendlyURLEntry fetchFriendlyURLEntry(long groupId,
-		java.lang.Class<?> clazz, java.lang.String urlTitle);
+	public FriendlyURLEntry fetchFriendlyURLEntry(long groupId, Class<?> clazz,
+		String urlTitle);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public FriendlyURLEntry fetchFriendlyURLEntry(long groupId,
-		long classNameId, java.lang.String urlTitle);
+		long classNameId, String urlTitle);
 
 	/**
 	* Returns the friendly url entry matching the UUID and group.
@@ -213,12 +214,16 @@ public interface FriendlyURLEntryLocalService extends BaseLocalService,
 	* @return the matching friendly url entry, or <code>null</code> if a matching friendly url entry could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public FriendlyURLEntry fetchFriendlyURLEntryByUuidAndGroupId(
-		java.lang.String uuid, long groupId);
+	public FriendlyURLEntry fetchFriendlyURLEntryByUuidAndGroupId(String uuid,
+		long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public FriendlyURLEntryLocalization fetchFriendlyURLEntryLocalization(
-		long friendlyURLEntryId, java.lang.String languageId);
+		long groupId, long classNameId, String urlTitle);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public FriendlyURLEntryLocalization fetchFriendlyURLEntryLocalization(
+		long friendlyURLEntryId, String languageId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -254,7 +259,7 @@ public interface FriendlyURLEntryLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<FriendlyURLEntry> getFriendlyURLEntriesByUuidAndCompanyId(
-		java.lang.String uuid, long companyId);
+		String uuid, long companyId);
 
 	/**
 	* Returns a range of friendly url entries matching the UUID and company.
@@ -268,7 +273,7 @@ public interface FriendlyURLEntryLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<FriendlyURLEntry> getFriendlyURLEntriesByUuidAndCompanyId(
-		java.lang.String uuid, long companyId, int start, int end,
+		String uuid, long companyId, int start, int end,
 		OrderByComparator<FriendlyURLEntry> orderByComparator);
 
 	/**
@@ -299,13 +304,12 @@ public interface FriendlyURLEntryLocalService extends BaseLocalService,
 	* @throws PortalException if a matching friendly url entry could not be found
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public FriendlyURLEntry getFriendlyURLEntryByUuidAndGroupId(
-		java.lang.String uuid, long groupId) throws PortalException;
+	public FriendlyURLEntry getFriendlyURLEntryByUuidAndGroupId(String uuid,
+		long groupId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public FriendlyURLEntryLocalization getFriendlyURLEntryLocalization(
-		long friendlyURLEntryId, java.lang.String languageId)
-		throws PortalException;
+		long friendlyURLEntryId, String languageId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<FriendlyURLEntryLocalization> getFriendlyURLEntryLocalizations(
@@ -315,8 +319,8 @@ public interface FriendlyURLEntryLocalService extends BaseLocalService,
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public FriendlyURLEntry getMainFriendlyURLEntry(java.lang.Class<?> clazz,
-		long classPK) throws PortalException;
+	public FriendlyURLEntry getMainFriendlyURLEntry(Class<?> clazz, long classPK)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public FriendlyURLEntry getMainFriendlyURLEntry(long classNameId,
@@ -327,7 +331,7 @@ public interface FriendlyURLEntryLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -335,8 +339,8 @@ public interface FriendlyURLEntryLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String getUniqueUrlTitle(long groupId, long classNameId,
-		long classPK, java.lang.String urlTitle);
+	public String getUniqueUrlTitle(long groupId, long classNameId,
+		long classPK, String urlTitle);
 
 	public void setMainFriendlyURLEntry(FriendlyURLEntry friendlyURLEntry);
 
@@ -351,24 +355,22 @@ public interface FriendlyURLEntryLocalService extends BaseLocalService,
 		FriendlyURLEntry friendlyURLEntry);
 
 	public FriendlyURLEntry updateFriendlyURLEntry(long friendlyURLEntryId,
-		long classNameId, long classPK, java.lang.String defaultLanguageId,
-		Map<java.lang.String, java.lang.String> urlTitleMap)
-		throws PortalException;
+		long classNameId, long classPK, String defaultLanguageId,
+		Map<String, String> urlTitleMap) throws PortalException;
 
 	public FriendlyURLEntryLocalization updateFriendlyURLLocalization(
 		FriendlyURLEntryLocalization friendlyURLEntryLocalization);
 
 	public FriendlyURLEntryLocalization updateFriendlyURLLocalization(
-		long friendlyURLLocalizationId, java.lang.String urlTitle)
+		long friendlyURLLocalizationId, String urlTitle)
 		throws PortalException;
 
 	public void validate(long groupId, long classNameId, long classPK,
-		Map<java.lang.String, java.lang.String> urlTitleMap)
-		throws PortalException;
+		Map<String, String> urlTitleMap) throws PortalException;
 
 	public void validate(long groupId, long classNameId, long classPK,
-		java.lang.String urlTitle) throws PortalException;
+		String urlTitle) throws PortalException;
 
-	public void validate(long groupId, long classNameId,
-		java.lang.String urlTitle) throws PortalException;
+	public void validate(long groupId, long classNameId, String urlTitle)
+		throws PortalException;
 }

@@ -78,6 +78,7 @@ public interface DDMStructureVersionLocalService extends BaseLocalService,
 	* @param structureVersionId the primary key for the new ddm structure version
 	* @return the new ddm structure version
 	*/
+	@Transactional(enabled = false)
 	public DDMStructureVersion createDDMStructureVersion(
 		long structureVersionId);
 
@@ -219,7 +220,7 @@ public interface DDMStructureVersionLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -232,7 +233,7 @@ public interface DDMStructureVersionLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DDMStructureVersion getStructureVersion(long structureId,
-		java.lang.String version) throws PortalException;
+		String version) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DDMForm getStructureVersionDDMForm(

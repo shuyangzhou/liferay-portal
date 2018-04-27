@@ -14,6 +14,8 @@
 
 package com.liferay.fragment.entry.processor.editable.parser;
 
+import com.liferay.fragment.exception.FragmentEntryContentException;
+
 import org.jsoup.nodes.Element;
 
 /**
@@ -23,6 +25,8 @@ import org.jsoup.nodes.Element;
  */
 public interface EditableElementParser {
 
+	public String getValue(Element element);
+
 	/**
 	 * Replaces editable element value with the provided one.
 	 *
@@ -30,5 +34,15 @@ public interface EditableElementParser {
 	 * @param value New element value
 	 */
 	public void replace(Element element, String value);
+
+	/**
+	 * Validates editable element
+	 *
+	 * @param element Editable element to validate
+	 * @throws FragmentEntryContentException In case of invalid editable element
+	 */
+	public default void validate(Element element)
+		throws FragmentEntryContentException {
+	}
 
 }

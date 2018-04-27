@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.LayoutSetBranchPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.impl.LayoutSetBranchImpl;
@@ -47,6 +48,7 @@ import com.liferay.portal.model.impl.LayoutSetBranchModelImpl;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -1084,7 +1086,7 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 			if ((list != null) && !list.isEmpty()) {
 				for (LayoutSetBranch layoutSetBranch : list) {
 					if ((groupId != layoutSetBranch.getGroupId()) ||
-							(privateLayout != layoutSetBranch.getPrivateLayout())) {
+							(privateLayout != layoutSetBranch.isPrivateLayout())) {
 						list = null;
 
 						break;
@@ -1986,7 +1988,7 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 			LayoutSetBranch layoutSetBranch = (LayoutSetBranch)result;
 
 			if ((groupId != layoutSetBranch.getGroupId()) ||
-					(privateLayout != layoutSetBranch.getPrivateLayout()) ||
+					(privateLayout != layoutSetBranch.isPrivateLayout()) ||
 					!Objects.equals(name, layoutSetBranch.getName())) {
 				result = null;
 			}
@@ -2048,7 +2050,7 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 					cacheResult(layoutSetBranch);
 
 					if ((layoutSetBranch.getGroupId() != groupId) ||
-							(layoutSetBranch.getPrivateLayout() != privateLayout) ||
+							(layoutSetBranch.isPrivateLayout() != privateLayout) ||
 							(layoutSetBranch.getName() == null) ||
 							!layoutSetBranch.getName().equals(name)) {
 						finderCache.putResult(FINDER_PATH_FETCH_BY_G_P_N,
@@ -2309,8 +2311,8 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 			if ((list != null) && !list.isEmpty()) {
 				for (LayoutSetBranch layoutSetBranch : list) {
 					if ((groupId != layoutSetBranch.getGroupId()) ||
-							(privateLayout != layoutSetBranch.getPrivateLayout()) ||
-							(master != layoutSetBranch.getMaster())) {
+							(privateLayout != layoutSetBranch.isPrivateLayout()) ||
+							(master != layoutSetBranch.isMaster())) {
 						list = null;
 
 						break;
@@ -3201,7 +3203,7 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 
 		finderCache.putResult(FINDER_PATH_FETCH_BY_G_P_N,
 			new Object[] {
-				layoutSetBranch.getGroupId(), layoutSetBranch.getPrivateLayout(),
+				layoutSetBranch.getGroupId(), layoutSetBranch.isPrivateLayout(),
 				layoutSetBranch.getName()
 			}, layoutSetBranch);
 
@@ -3280,7 +3282,7 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 		LayoutSetBranchModelImpl layoutSetBranchModelImpl) {
 		Object[] args = new Object[] {
 				layoutSetBranchModelImpl.getGroupId(),
-				layoutSetBranchModelImpl.getPrivateLayout(),
+				layoutSetBranchModelImpl.isPrivateLayout(),
 				layoutSetBranchModelImpl.getName()
 			};
 
@@ -3295,7 +3297,7 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 		if (clearCurrent) {
 			Object[] args = new Object[] {
 					layoutSetBranchModelImpl.getGroupId(),
-					layoutSetBranchModelImpl.getPrivateLayout(),
+					layoutSetBranchModelImpl.isPrivateLayout(),
 					layoutSetBranchModelImpl.getName()
 				};
 
@@ -3389,8 +3391,6 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 
 	@Override
 	protected LayoutSetBranch removeImpl(LayoutSetBranch layoutSetBranch) {
-		layoutSetBranch = toUnwrappedModel(layoutSetBranch);
-
 		Session session = null;
 
 		try {
@@ -3421,9 +3421,23 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 
 	@Override
 	public LayoutSetBranch updateImpl(LayoutSetBranch layoutSetBranch) {
-		layoutSetBranch = toUnwrappedModel(layoutSetBranch);
-
 		boolean isNew = layoutSetBranch.isNew();
+
+		if (!(layoutSetBranch instanceof LayoutSetBranchModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(layoutSetBranch.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(layoutSetBranch);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in layoutSetBranch proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom LayoutSetBranch implementation " +
+				layoutSetBranch.getClass());
+		}
 
 		LayoutSetBranchModelImpl layoutSetBranchModelImpl = (LayoutSetBranchModelImpl)layoutSetBranch;
 
@@ -3486,7 +3500,7 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 
 			args = new Object[] {
 					layoutSetBranchModelImpl.getGroupId(),
-					layoutSetBranchModelImpl.getPrivateLayout()
+					layoutSetBranchModelImpl.isPrivateLayout()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_P, args);
@@ -3495,8 +3509,8 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 
 			args = new Object[] {
 					layoutSetBranchModelImpl.getGroupId(),
-					layoutSetBranchModelImpl.getPrivateLayout(),
-					layoutSetBranchModelImpl.getMaster()
+					layoutSetBranchModelImpl.isPrivateLayout(),
+					layoutSetBranchModelImpl.isMaster()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_G_P_M, args);
@@ -3539,7 +3553,7 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 
 				args = new Object[] {
 						layoutSetBranchModelImpl.getGroupId(),
-						layoutSetBranchModelImpl.getPrivateLayout()
+						layoutSetBranchModelImpl.isPrivateLayout()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_P, args);
@@ -3561,8 +3575,8 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 
 				args = new Object[] {
 						layoutSetBranchModelImpl.getGroupId(),
-						layoutSetBranchModelImpl.getPrivateLayout(),
-						layoutSetBranchModelImpl.getMaster()
+						layoutSetBranchModelImpl.isPrivateLayout(),
+						layoutSetBranchModelImpl.isMaster()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_G_P_M, args);
@@ -3581,39 +3595,6 @@ public class LayoutSetBranchPersistenceImpl extends BasePersistenceImpl<LayoutSe
 		layoutSetBranch.resetOriginalValues();
 
 		return layoutSetBranch;
-	}
-
-	protected LayoutSetBranch toUnwrappedModel(LayoutSetBranch layoutSetBranch) {
-		if (layoutSetBranch instanceof LayoutSetBranchImpl) {
-			return layoutSetBranch;
-		}
-
-		LayoutSetBranchImpl layoutSetBranchImpl = new LayoutSetBranchImpl();
-
-		layoutSetBranchImpl.setNew(layoutSetBranch.isNew());
-		layoutSetBranchImpl.setPrimaryKey(layoutSetBranch.getPrimaryKey());
-
-		layoutSetBranchImpl.setMvccVersion(layoutSetBranch.getMvccVersion());
-		layoutSetBranchImpl.setLayoutSetBranchId(layoutSetBranch.getLayoutSetBranchId());
-		layoutSetBranchImpl.setGroupId(layoutSetBranch.getGroupId());
-		layoutSetBranchImpl.setCompanyId(layoutSetBranch.getCompanyId());
-		layoutSetBranchImpl.setUserId(layoutSetBranch.getUserId());
-		layoutSetBranchImpl.setUserName(layoutSetBranch.getUserName());
-		layoutSetBranchImpl.setCreateDate(layoutSetBranch.getCreateDate());
-		layoutSetBranchImpl.setModifiedDate(layoutSetBranch.getModifiedDate());
-		layoutSetBranchImpl.setPrivateLayout(layoutSetBranch.isPrivateLayout());
-		layoutSetBranchImpl.setName(layoutSetBranch.getName());
-		layoutSetBranchImpl.setDescription(layoutSetBranch.getDescription());
-		layoutSetBranchImpl.setMaster(layoutSetBranch.isMaster());
-		layoutSetBranchImpl.setLogoId(layoutSetBranch.getLogoId());
-		layoutSetBranchImpl.setThemeId(layoutSetBranch.getThemeId());
-		layoutSetBranchImpl.setColorSchemeId(layoutSetBranch.getColorSchemeId());
-		layoutSetBranchImpl.setCss(layoutSetBranch.getCss());
-		layoutSetBranchImpl.setSettings(layoutSetBranch.getSettings());
-		layoutSetBranchImpl.setLayoutSetPrototypeUuid(layoutSetBranch.getLayoutSetPrototypeUuid());
-		layoutSetBranchImpl.setLayoutSetPrototypeLinkEnabled(layoutSetBranch.isLayoutSetPrototypeLinkEnabled());
-
-		return layoutSetBranchImpl;
 	}
 
 	/**

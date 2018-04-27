@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -168,7 +169,7 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 		model.setDisplayDate(soapModel.getDisplayDate());
 		model.setExpirationDate(soapModel.getExpirationDate());
 		model.setPriority(soapModel.getPriority());
-		model.setAlert(soapModel.getAlert());
+		model.setAlert(soapModel.isAlert());
 
 		return model;
 	}
@@ -250,7 +251,7 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 		attributes.put("displayDate", getDisplayDate());
 		attributes.put("expirationDate", getExpirationDate());
 		attributes.put("priority", getPriority());
-		attributes.put("alert", getAlert());
+		attributes.put("alert", isAlert());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -753,7 +754,7 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 		announcementsEntryImpl.setDisplayDate(getDisplayDate());
 		announcementsEntryImpl.setExpirationDate(getExpirationDate());
 		announcementsEntryImpl.setPriority(getPriority());
-		announcementsEntryImpl.setAlert(getAlert());
+		announcementsEntryImpl.setAlert(isAlert());
 
 		announcementsEntryImpl.resetOriginalValues();
 
@@ -956,7 +957,7 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 
 		announcementsEntryCacheModel.priority = getPriority();
 
-		announcementsEntryCacheModel.alert = getAlert();
+		announcementsEntryCacheModel.alert = isAlert();
 
 		return announcementsEntryCacheModel;
 	}
@@ -998,7 +999,7 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 		sb.append(", priority=");
 		sb.append(getPriority());
 		sb.append(", alert=");
-		sb.append(getAlert());
+		sb.append(isAlert());
 		sb.append("}");
 
 		return sb.toString();
@@ -1078,7 +1079,7 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>alert</column-name><column-value><![CDATA[");
-		sb.append(getAlert());
+		sb.append(isAlert());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -1088,7 +1089,7 @@ public class AnnouncementsEntryModelImpl extends BaseModelImpl<AnnouncementsEntr
 
 	private static final ClassLoader _classLoader = AnnouncementsEntry.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			AnnouncementsEntry.class
+			AnnouncementsEntry.class, ModelWrapper.class
 		};
 	private String _uuid;
 	private String _originalUuid;
