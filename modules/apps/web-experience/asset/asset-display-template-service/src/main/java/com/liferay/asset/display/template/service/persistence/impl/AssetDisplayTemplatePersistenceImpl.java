@@ -39,11 +39,14 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -3049,8 +3052,6 @@ public class AssetDisplayTemplatePersistenceImpl extends BasePersistenceImpl<Ass
 	@Override
 	protected AssetDisplayTemplate removeImpl(
 		AssetDisplayTemplate assetDisplayTemplate) {
-		assetDisplayTemplate = toUnwrappedModel(assetDisplayTemplate);
-
 		Session session = null;
 
 		try {
@@ -3082,9 +3083,23 @@ public class AssetDisplayTemplatePersistenceImpl extends BasePersistenceImpl<Ass
 	@Override
 	public AssetDisplayTemplate updateImpl(
 		AssetDisplayTemplate assetDisplayTemplate) {
-		assetDisplayTemplate = toUnwrappedModel(assetDisplayTemplate);
-
 		boolean isNew = assetDisplayTemplate.isNew();
+
+		if (!(assetDisplayTemplate instanceof AssetDisplayTemplateModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(assetDisplayTemplate.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(assetDisplayTemplate);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in assetDisplayTemplate proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom AssetDisplayTemplate implementation " +
+				assetDisplayTemplate.getClass());
+		}
 
 		AssetDisplayTemplateModelImpl assetDisplayTemplateModelImpl = (AssetDisplayTemplateModelImpl)assetDisplayTemplate;
 
@@ -3209,32 +3224,6 @@ public class AssetDisplayTemplatePersistenceImpl extends BasePersistenceImpl<Ass
 		assetDisplayTemplate.resetOriginalValues();
 
 		return assetDisplayTemplate;
-	}
-
-	protected AssetDisplayTemplate toUnwrappedModel(
-		AssetDisplayTemplate assetDisplayTemplate) {
-		if (assetDisplayTemplate instanceof AssetDisplayTemplateImpl) {
-			return assetDisplayTemplate;
-		}
-
-		AssetDisplayTemplateImpl assetDisplayTemplateImpl = new AssetDisplayTemplateImpl();
-
-		assetDisplayTemplateImpl.setNew(assetDisplayTemplate.isNew());
-		assetDisplayTemplateImpl.setPrimaryKey(assetDisplayTemplate.getPrimaryKey());
-
-		assetDisplayTemplateImpl.setAssetDisplayTemplateId(assetDisplayTemplate.getAssetDisplayTemplateId());
-		assetDisplayTemplateImpl.setGroupId(assetDisplayTemplate.getGroupId());
-		assetDisplayTemplateImpl.setCompanyId(assetDisplayTemplate.getCompanyId());
-		assetDisplayTemplateImpl.setUserId(assetDisplayTemplate.getUserId());
-		assetDisplayTemplateImpl.setUserName(assetDisplayTemplate.getUserName());
-		assetDisplayTemplateImpl.setCreateDate(assetDisplayTemplate.getCreateDate());
-		assetDisplayTemplateImpl.setModifiedDate(assetDisplayTemplate.getModifiedDate());
-		assetDisplayTemplateImpl.setName(assetDisplayTemplate.getName());
-		assetDisplayTemplateImpl.setClassNameId(assetDisplayTemplate.getClassNameId());
-		assetDisplayTemplateImpl.setDDMTemplateId(assetDisplayTemplate.getDDMTemplateId());
-		assetDisplayTemplateImpl.setMain(assetDisplayTemplate.isMain());
-
-		return assetDisplayTemplateImpl;
 	}
 
 	/**
