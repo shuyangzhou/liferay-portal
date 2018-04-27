@@ -14,17 +14,11 @@
 
 package com.liferay.blogs.uad.exporter;
 
-import com.liferay.blogs.model.BlogsEntry;
-import com.liferay.blogs.service.BlogsEntryLocalService;
 import com.liferay.blogs.uad.constants.BlogsUADConstants;
 
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-
-import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.user.associated.data.exporter.UADExporter;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -32,17 +26,5 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, property =  {
 	"model.class.name=" + BlogsUADConstants.CLASS_NAME_BLOGS_ENTRY}, service = UADExporter.class)
-public class BlogsEntryUADExporter extends DynamicQueryUADExporter<BlogsEntry> {
-	@Override
-	protected ActionableDynamicQuery doGetActionableDynamicQuery() {
-		return _blogsEntryLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	protected String[] doGetUserIdFieldNames() {
-		return BlogsUADConstants.USER_ID_FIELD_NAMES_BLOGS_ENTRY;
-	}
-
-	@Reference
-	private BlogsEntryLocalService _blogsEntryLocalService;
+public class BlogsEntryUADExporter extends BaseBlogsEntryUADExporter {
 }

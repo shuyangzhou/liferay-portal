@@ -128,7 +128,7 @@ public class CalEventImporter {
 			_log.info("Importing CalEvent records");
 		}
 
-		try (Connection con = DataAccess.getUpgradeOptimizedConnection()) {
+		try (Connection con = DataAccess.getConnection()) {
 			connection = con;
 
 			DBInspector dbInspector = new DBInspector(connection);
@@ -325,10 +325,10 @@ public class CalEventImporter {
 	protected void addMBThread(
 		String uuid, long threadId, long groupId, long companyId, long userId,
 		String userName, Date createDate, Date modifiedDate, long categoryId,
-		long rootMessageId, long rootMessageUserId, int messageCount,
-		int viewCount, long lastPostByUserId, Date lastPostDate,
-		double priority, boolean question, int status, long statusByUserId,
-		String statusByUserName, Date statusDate) {
+		long rootMessageId, long rootMessageUserId, String title,
+		int messageCount, int viewCount, long lastPostByUserId,
+		Date lastPostDate, double priority, boolean question, int status,
+		long statusByUserId, String statusByUserName, Date statusDate) {
 
 		MBThread mbThread = _mbThreadLocalService.createMBThread(threadId);
 
@@ -342,6 +342,7 @@ public class CalEventImporter {
 		mbThread.setCategoryId(categoryId);
 		mbThread.setRootMessageId(rootMessageId);
 		mbThread.setRootMessageUserId(rootMessageUserId);
+		mbThread.setTitle(title);
 		mbThread.setMessageCount(messageCount);
 		mbThread.setViewCount(viewCount);
 		mbThread.setLastPostByUserId(lastPostByUserId);
@@ -1185,10 +1186,10 @@ public class CalEventImporter {
 			mbThread.getCompanyId(), mbThread.getUserId(),
 			mbThread.getUserName(), mbThread.getCreateDate(),
 			mbThread.getModifiedDate(), mbThread.getCategoryId(), 0,
-			mbThread.getRootMessageUserId(), mbThread.getMessageCount(),
-			mbThread.getViewCount(), mbThread.getLastPostByUserId(),
-			mbThread.getLastPostDate(), mbThread.getPriority(),
-			mbThread.isQuestion(), mbThread.getStatus(),
+			mbThread.getRootMessageUserId(), mbThread.getTitle(),
+			mbThread.getMessageCount(), mbThread.getViewCount(),
+			mbThread.getLastPostByUserId(), mbThread.getLastPostDate(),
+			mbThread.getPriority(), mbThread.isQuestion(), mbThread.getStatus(),
 			mbThread.getStatusByUserId(), mbThread.getStatusByUserName(),
 			mbThread.getStatusDate());
 

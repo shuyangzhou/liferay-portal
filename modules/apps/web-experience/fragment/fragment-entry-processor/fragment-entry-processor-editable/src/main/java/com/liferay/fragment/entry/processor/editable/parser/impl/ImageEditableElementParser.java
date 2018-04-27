@@ -15,9 +15,12 @@
 package com.liferay.fragment.entry.processor.editable.parser.impl;
 
 import com.liferay.fragment.entry.processor.editable.parser.EditableElementParser;
+import com.liferay.fragment.exception.FragmentEntryContentException;
+import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.util.ResourceBundleUtil;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.ResourceBundle;
 
 import org.jsoup.nodes.Element;
 
@@ -33,20 +36,37 @@ import org.osgi.service.component.annotations.Component;
 public class ImageEditableElementParser implements EditableElementParser {
 
 	@Override
-	public void replace(Element element, String value) {
+	public String getValue(Element element) {
 		List<Element> elements = element.getElementsByTag("img");
-
-		if (elements.size() != 1) {
-			return;
-		}
 
 		Element replaceableElement = elements.get(0);
 
-		if (!Objects.equals(replaceableElement.nodeName(), "img")) {
-			return;
-		}
+		return replaceableElement.attr("src");
+	}
+
+	@Override
+	public void replace(Element element, String value) {
+		List<Element> elements = element.getElementsByTag("img");
+
+		Element replaceableElement = elements.get(0);
 
 		replaceableElement.attr("src", value);
+	}
+
+	@Override
+	public void validate(Element element) throws FragmentEntryContentException {
+		List<Element> elements = element.getElementsByTag("img");
+
+		if (elements.size() != 1) {
+			ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
+				"content.Language", getClass());
+
+			throw new FragmentEntryContentException(
+				LanguageUtil.format(
+					resourceBundle,
+					"each-editable-image-element-must-contain-an-img-tag",
+					new Object[] {"<em>", "</em>"}, false));
+		}
 	}
 
 }

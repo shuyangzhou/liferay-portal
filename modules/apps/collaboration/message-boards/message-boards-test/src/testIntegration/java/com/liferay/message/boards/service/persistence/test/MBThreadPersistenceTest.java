@@ -145,6 +145,8 @@ public class MBThreadPersistenceTest {
 
 		newMBThread.setRootMessageUserId(RandomTestUtil.nextLong());
 
+		newMBThread.setTitle(RandomTestUtil.randomString());
+
 		newMBThread.setMessageCount(RandomTestUtil.nextInt());
 
 		newMBThread.setViewCount(RandomTestUtil.nextInt());
@@ -194,6 +196,7 @@ public class MBThreadPersistenceTest {
 			newMBThread.getRootMessageId());
 		Assert.assertEquals(existingMBThread.getRootMessageUserId(),
 			newMBThread.getRootMessageUserId());
+		Assert.assertEquals(existingMBThread.getTitle(), newMBThread.getTitle());
 		Assert.assertEquals(existingMBThread.getMessageCount(),
 			newMBThread.getMessageCount());
 		Assert.assertEquals(existingMBThread.getViewCount(),
@@ -205,8 +208,8 @@ public class MBThreadPersistenceTest {
 			Time.getShortTimestamp(newMBThread.getLastPostDate()));
 		AssertUtils.assertEquals(existingMBThread.getPriority(),
 			newMBThread.getPriority());
-		Assert.assertEquals(existingMBThread.getQuestion(),
-			newMBThread.getQuestion());
+		Assert.assertEquals(existingMBThread.isQuestion(),
+			newMBThread.isQuestion());
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingMBThread.getLastPublishDate()),
 			Time.getShortTimestamp(newMBThread.getLastPublishDate()));
@@ -395,10 +398,10 @@ public class MBThreadPersistenceTest {
 			"threadId", true, "groupId", true, "companyId", true, "userId",
 			true, "userName", true, "createDate", true, "modifiedDate", true,
 			"categoryId", true, "rootMessageId", true, "rootMessageUserId",
-			true, "messageCount", true, "viewCount", true, "lastPostByUserId",
-			true, "lastPostDate", true, "priority", true, "question", true,
-			"lastPublishDate", true, "status", true, "statusByUserId", true,
-			"statusByUserName", true, "statusDate", true);
+			true, "title", true, "messageCount", true, "viewCount", true,
+			"lastPostByUserId", true, "lastPostDate", true, "priority", true,
+			"question", true, "lastPublishDate", true, "status", true,
+			"statusByUserId", true, "statusByUserName", true, "statusDate", true);
 	}
 
 	@Test
@@ -637,6 +640,8 @@ public class MBThreadPersistenceTest {
 		mbThread.setRootMessageId(RandomTestUtil.nextLong());
 
 		mbThread.setRootMessageUserId(RandomTestUtil.nextLong());
+
+		mbThread.setTitle(RandomTestUtil.randomString());
 
 		mbThread.setMessageCount(RandomTestUtil.nextInt());
 

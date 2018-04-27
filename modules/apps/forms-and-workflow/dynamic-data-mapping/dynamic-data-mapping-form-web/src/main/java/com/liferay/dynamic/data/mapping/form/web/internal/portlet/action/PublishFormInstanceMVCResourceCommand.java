@@ -18,7 +18,9 @@ import com.liferay.dynamic.data.mapping.constants.DDMActionKeys;
 import com.liferay.dynamic.data.mapping.constants.DDMPortletKeys;
 import com.liferay.dynamic.data.mapping.form.values.query.DDMFormValuesQuery;
 import com.liferay.dynamic.data.mapping.form.values.query.DDMFormValuesQueryFactory;
+import com.liferay.dynamic.data.mapping.form.web.internal.portlet.action.util.BaseDDMFormMVCResourceCommand;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstance;
+import com.liferay.dynamic.data.mapping.model.DDMFormInstanceVersion;
 import com.liferay.dynamic.data.mapping.model.Value;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
@@ -28,12 +30,14 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
-import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -55,7 +59,7 @@ import org.osgi.service.component.annotations.Reference;
 	service = MVCResourceCommand.class
 )
 public class PublishFormInstanceMVCResourceCommand
-	extends BaseMVCResourceCommand {
+	extends BaseDDMFormMVCResourceCommand {
 
 	@Override
 	protected void doServeResource(
@@ -84,8 +88,28 @@ public class PublishFormInstanceMVCResourceCommand
 
 			updatePublishedDDMFormFieldValue(settingsDDMFormValues, published);
 
-			_formInstanceService.updateFormInstance(
-				formInstanceId, settingsDDMFormValues);
+			ServiceContext serviceContext = ServiceContextFactory.getInstance(
+				DDMFormInstance.class.getName(), resourceRequest);
+
+			if (published) {
+				serviceContext.setAttribute(
+					"status", WorkflowConstants.STATUS_APPROVED);
+			}
+			else {
+				DDMFormInstanceVersion latestFormInstanceVersion =
+					formInstance.getFormInstanceVersion(
+						formInstance.getVersion());
+
+				serviceContext.setAttribute(
+					"status", latestFormInstanceVersion.getStatus());
+			}
+
+			formInstance = _formInstanceService.updateFormInstance(
+				formInstanceId, formInstance.getStructureId(),
+				formInstance.getNameMap(), formInstance.getDescriptionMap(),
+				settingsDDMFormValues, serviceContext);
+
+			writeResponse(resourceRequest, resourceResponse, formInstance);
 		}
 		catch (Throwable t) {
 			resourceResponse.setProperty(

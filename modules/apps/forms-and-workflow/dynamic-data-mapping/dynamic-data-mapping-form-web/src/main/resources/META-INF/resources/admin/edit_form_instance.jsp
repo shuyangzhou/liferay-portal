@@ -94,7 +94,7 @@ renderResponse.setTitle((formInstance == null) ? LanguageUtil.get(request, "new-
 				<h1>
 					<liferay-ui:input-editor
 						autoCreate="<%= false %>"
-						contents="<%= HtmlUtil.escape(ddmFormAdminDisplayContext.getFormName()) %>"
+						contents="<%= HtmlUtil.escape(HtmlUtil.unescape(ddmFormAdminDisplayContext.getFormName())) %>"
 						cssClass="ddm-form-name"
 						editorName="alloyeditor"
 						name="nameEditor"
@@ -108,7 +108,7 @@ renderResponse.setTitle((formInstance == null) ? LanguageUtil.get(request, "new-
 				<h5>
 					<liferay-ui:input-editor
 						autoCreate="<%= false %>"
-						contents="<%= HtmlUtil.escape(ddmFormAdminDisplayContext.getFormDescription()) %>"
+						contents="<%= HtmlUtil.escape(HtmlUtil.unescape(ddmFormAdminDisplayContext.getFormDescription())) %>"
 						cssClass="ddm-form-description h5"
 						editorName="alloyeditor"
 						name="descriptionEditor"
@@ -140,9 +140,7 @@ renderResponse.setTitle((formInstance == null) ? LanguageUtil.get(request, "new-
 
 		<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="publishFormInstance" var="publishFormInstanceURL" />
 
-		<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="saveFormInstance" var="autoSaveFormInstanceURL">
-			<portlet:param name="autoSave" value="<%= Boolean.TRUE.toString() %>" />
-		</liferay-portlet:resourceURL>
+		<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="saveFormInstance" var="autoSaveFormInstanceURL" />
 
 		<liferay-form:ddm-form-builder
 			ddmStructureId="<%= ddmFormAdminDisplayContext.getDDMStructureId() %>"
@@ -159,8 +157,8 @@ renderResponse.setTitle((formInstance == null) ? LanguageUtil.get(request, "new-
 				portletNamespace: '<portlet:namespace />',
 				publishFormInstanceURL: '<%= publishFormInstanceURL.toString() %>',
 				restrictedFormURL: '<%= ddmFormAdminDisplayContext.getRestrictedFormURL() %>',
-				showPagination: true,
-				sharedFormURL: '<%= ddmFormAdminDisplayContext.getSharedFormURL() %>'
+				sharedFormURL: '<%= ddmFormAdminDisplayContext.getSharedFormURL() %>',
+				showPagination: true
 			};
 
 			var initHandler = Liferay.after(
@@ -206,16 +204,16 @@ renderResponse.setTitle((formInstance == null) ? LanguageUtil.get(request, "new-
 					'formPortlet',
 					new Liferay.DDM.FormPortlet(
 						{
+							defaultLanguageId: '<%= ddmFormAdminDisplayContext.getDefaultLanguageId() %>',
+							editForm: form,
+							editingLanguageId: '<%= ddmFormAdminDisplayContext.getDefaultLanguageId() %>',
+							formBuilder: Liferay.component('<portlet:namespace />formBuilder'),
+							formInstanceId: <%= formInstanceId %>,
 							localizedDescription: <%= ddmFormAdminDisplayContext.getFormLocalizedDescription() %>,
 							localizedName: <%= ddmFormAdminDisplayContext.getFormLocalizedName() %>,
-							defaultLanguageId: '<%= ddmFormAdminDisplayContext.getDefaultLanguageId() %>',
-							editingLanguageId: '<%= ddmFormAdminDisplayContext.getDefaultLanguageId() %>',
-							editForm: form,
-							formBuilder: Liferay.component('<portlet:namespace />formBuilder'),
 							namespace: '<portlet:namespace />',
 							published: !!<%= ddmFormAdminDisplayContext.isFormPublished() %>,
 							publishFormInstanceURL: '<%= publishFormInstanceURL.toString() %>',
-							formInstanceId: <%= formInstanceId %>,
 							ruleBuilder: Liferay.component('<portlet:namespace />ruleBuilder'),
 							translationManager: Liferay.component('<portlet:namespace />translationManager')
 						}

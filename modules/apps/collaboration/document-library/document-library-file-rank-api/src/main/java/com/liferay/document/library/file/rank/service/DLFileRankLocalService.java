@@ -84,6 +84,7 @@ public interface DLFileRankLocalService extends BaseLocalService,
 	* @param fileRankId the primary key for the new document library file rank
 	* @return the new document library file rank
 	*/
+	@Transactional(enabled = false)
 	public DLFileRank createDLFileRank(long fileRankId);
 
 	/**
@@ -240,7 +241,7 @@ public interface DLFileRankLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

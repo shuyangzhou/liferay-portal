@@ -58,7 +58,7 @@ public interface MembershipRequestLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link MembershipRequestLocalServiceUtil} to access the membership request local service. Add custom service methods to {@link com.liferay.portal.service.impl.MembershipRequestLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public MembershipRequest addMembershipRequest(long userId, long groupId,
-		java.lang.String comments, ServiceContext serviceContext)
+		String comments, ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -77,6 +77,7 @@ public interface MembershipRequestLocalService extends BaseLocalService,
 	* @param membershipRequestId the primary key for the new membership request
 	* @return the new membership request
 	*/
+	@Transactional(enabled = false)
 	public MembershipRequest createMembershipRequest(long membershipRequestId);
 
 	/**
@@ -223,7 +224,7 @@ public interface MembershipRequestLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -255,6 +256,6 @@ public interface MembershipRequestLocalService extends BaseLocalService,
 		MembershipRequest membershipRequest);
 
 	public void updateStatus(long replierUserId, long membershipRequestId,
-		java.lang.String replyComments, long statusId, boolean addUserToGroup,
+		String replyComments, long statusId, boolean addUserToGroup,
 		ServiceContext serviceContext) throws PortalException;
 }

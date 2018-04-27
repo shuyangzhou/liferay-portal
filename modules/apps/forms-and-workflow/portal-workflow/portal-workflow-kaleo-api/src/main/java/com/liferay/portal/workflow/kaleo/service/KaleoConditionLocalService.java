@@ -81,6 +81,7 @@ public interface KaleoConditionLocalService extends BaseLocalService,
 	* @param kaleoConditionId the primary key for the new kaleo condition
 	* @return the new kaleo condition
 	*/
+	@Transactional(enabled = false)
 	public KaleoCondition createKaleoCondition(long kaleoConditionId);
 
 	public void deleteCompanyKaleoConditions(long companyId);
@@ -225,7 +226,7 @@ public interface KaleoConditionLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

@@ -14,17 +14,11 @@
 
 package com.liferay.message.boards.uad.exporter;
 
-import com.liferay.message.boards.model.MBCategory;
-import com.liferay.message.boards.service.MBCategoryLocalService;
 import com.liferay.message.boards.uad.constants.MBUADConstants;
 
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-
-import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.user.associated.data.exporter.UADExporter;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -32,17 +26,5 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, property =  {
 	"model.class.name=" + MBUADConstants.CLASS_NAME_MB_CATEGORY}, service = UADExporter.class)
-public class MBCategoryUADExporter extends DynamicQueryUADExporter<MBCategory> {
-	@Override
-	protected ActionableDynamicQuery doGetActionableDynamicQuery() {
-		return _mbCategoryLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	protected String[] doGetUserIdFieldNames() {
-		return MBUADConstants.USER_ID_FIELD_NAMES_MB_CATEGORY;
-	}
-
-	@Reference
-	private MBCategoryLocalService _mbCategoryLocalService;
+public class MBCategoryUADExporter extends BaseMBCategoryUADExporter {
 }

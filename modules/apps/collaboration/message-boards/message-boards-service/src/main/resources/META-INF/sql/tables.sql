@@ -128,6 +128,7 @@ create table MBThread (
 	categoryId LONG,
 	rootMessageId LONG,
 	rootMessageUserId LONG,
+	title VARCHAR(75) null,
 	messageCount INTEGER,
 	viewCount INTEGER,
 	lastPostByUserId LONG,

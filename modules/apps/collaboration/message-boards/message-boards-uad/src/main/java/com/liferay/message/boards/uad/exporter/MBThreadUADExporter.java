@@ -14,17 +14,11 @@
 
 package com.liferay.message.boards.uad.exporter;
 
-import com.liferay.message.boards.model.MBThread;
-import com.liferay.message.boards.service.MBThreadLocalService;
 import com.liferay.message.boards.uad.constants.MBUADConstants;
 
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-
-import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.user.associated.data.exporter.UADExporter;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -32,17 +26,5 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, property =  {
 	"model.class.name=" + MBUADConstants.CLASS_NAME_MB_THREAD}, service = UADExporter.class)
-public class MBThreadUADExporter extends DynamicQueryUADExporter<MBThread> {
-	@Override
-	protected ActionableDynamicQuery doGetActionableDynamicQuery() {
-		return _mbThreadLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	protected String[] doGetUserIdFieldNames() {
-		return MBUADConstants.USER_ID_FIELD_NAMES_MB_THREAD;
-	}
-
-	@Reference
-	private MBThreadLocalService _mbThreadLocalService;
+public class MBThreadUADExporter extends BaseMBThreadUADExporter {
 }

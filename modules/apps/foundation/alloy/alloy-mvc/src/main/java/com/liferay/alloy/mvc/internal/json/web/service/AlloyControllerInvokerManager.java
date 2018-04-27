@@ -398,6 +398,16 @@ public class AlloyControllerInvokerManager {
 
 			simpleName = simpleName.concat(_BASE_CLASS_NAME);
 		}
+		else if (StringUtil.endsWith(controllerClass.getName(), "Controller")) {
+			Package pkg = controllerClass.getPackage();
+
+			prefix = pkg.getName();
+
+			simpleName = controllerClass.getSimpleName();
+
+			simpleName = simpleName.substring(
+				0, simpleName.indexOf("Controller")) + _BASE_CLASS_NAME;
+		}
 		else {
 			prefix = controllerClass.getName();
 

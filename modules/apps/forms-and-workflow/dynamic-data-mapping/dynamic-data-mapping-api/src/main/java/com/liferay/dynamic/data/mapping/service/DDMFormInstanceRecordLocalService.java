@@ -92,6 +92,7 @@ public interface DDMFormInstanceRecordLocalService extends BaseLocalService,
 	* @param formInstanceRecordId the primary key for the new ddm form instance record
 	* @return the new ddm form instance record
 	*/
+	@Transactional(enabled = false)
 	public DDMFormInstanceRecord createDDMFormInstanceRecord(
 		long formInstanceRecordId);
 
@@ -206,7 +207,7 @@ public interface DDMFormInstanceRecordLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DDMFormInstanceRecord fetchDDMFormInstanceRecordByUuidAndGroupId(
-		java.lang.String uuid, long groupId);
+		String uuid, long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DDMFormInstanceRecord fetchFormInstanceRecord(
@@ -236,7 +237,7 @@ public interface DDMFormInstanceRecordLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DDMFormInstanceRecord getDDMFormInstanceRecordByUuidAndGroupId(
-		java.lang.String uuid, long groupId) throws PortalException;
+		String uuid, long groupId) throws PortalException;
 
 	/**
 	* Returns a range of all the ddm form instance records.
@@ -262,7 +263,7 @@ public interface DDMFormInstanceRecordLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DDMFormInstanceRecord> getDDMFormInstanceRecordsByUuidAndCompanyId(
-		java.lang.String uuid, long companyId);
+		String uuid, long companyId);
 
 	/**
 	* Returns a range of ddm form instance records matching the UUID and company.
@@ -276,7 +277,7 @@ public interface DDMFormInstanceRecordLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<DDMFormInstanceRecord> getDDMFormInstanceRecordsByUuidAndCompanyId(
-		java.lang.String uuid, long companyId, int start, int end,
+		String uuid, long companyId, int start, int end,
 		OrderByComparator<DDMFormInstanceRecord> orderByComparator);
 
 	/**
@@ -330,7 +331,7 @@ public interface DDMFormInstanceRecordLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -338,7 +339,7 @@ public interface DDMFormInstanceRecordLocalService extends BaseLocalService,
 		throws PortalException;
 
 	public void revertFormInstanceRecord(long userId,
-		long ddmFormInstanceRecordId, java.lang.String version,
+		long ddmFormInstanceRecordId, String version,
 		ServiceContext serviceContext) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

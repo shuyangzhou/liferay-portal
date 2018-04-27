@@ -213,7 +213,7 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 				for (PowwowServer powwowServer : list) {
 					if (!Objects.equals(providerType,
 								powwowServer.getProviderType()) ||
-							(active != powwowServer.getActive())) {
+							(active != powwowServer.isActive())) {
 						list = null;
 
 						break;
@@ -940,7 +940,7 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 		 if (isNew) {
 			Object[] args = new Object[] {
 					powwowServerModelImpl.getProviderType(),
-					powwowServerModelImpl.getActive()
+					powwowServerModelImpl.isActive()
 				};
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_PT_A, args);
@@ -966,7 +966,7 @@ public class PowwowServerPersistenceImpl extends BasePersistenceImpl<PowwowServe
 
 				args = new Object[] {
 						powwowServerModelImpl.getProviderType(),
-						powwowServerModelImpl.getActive()
+						powwowServerModelImpl.isActive()
 					};
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_PT_A, args);

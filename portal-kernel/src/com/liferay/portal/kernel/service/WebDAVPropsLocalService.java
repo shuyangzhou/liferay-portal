@@ -73,6 +73,7 @@ public interface WebDAVPropsLocalService extends BaseLocalService,
 	* @param webDavPropsId the primary key for the new web dav props
 	* @return the new web dav props
 	*/
+	@Transactional(enabled = false)
 	public WebDAVProps createWebDAVProps(long webDavPropsId);
 
 	/**
@@ -93,7 +94,7 @@ public interface WebDAVPropsLocalService extends BaseLocalService,
 	public WebDAVProps deleteWebDAVProps(long webDavPropsId)
 		throws PortalException;
 
-	public void deleteWebDAVProps(java.lang.String className, long classPK);
+	public void deleteWebDAVProps(String className, long classPK);
 
 	/**
 	* Deletes the web dav props from the database. Also notifies the appropriate model listeners.
@@ -177,7 +178,7 @@ public interface WebDAVPropsLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -196,8 +197,8 @@ public interface WebDAVPropsLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public WebDAVProps getWebDAVProps(long companyId,
-		java.lang.String className, long classPK);
+	public WebDAVProps getWebDAVProps(long companyId, String className,
+		long classPK);
 
 	/**
 	* Returns a range of all the web dav propses.

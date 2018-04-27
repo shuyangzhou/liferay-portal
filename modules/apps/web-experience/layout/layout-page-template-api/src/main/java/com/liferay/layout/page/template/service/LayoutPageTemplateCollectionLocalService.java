@@ -73,9 +73,8 @@ public interface LayoutPageTemplateCollectionLocalService
 		LayoutPageTemplateCollection layoutPageTemplateCollection);
 
 	public LayoutPageTemplateCollection addLayoutPageTemplateCollection(
-		long userId, long groupId, java.lang.String name,
-		java.lang.String description, ServiceContext serviceContext)
-		throws PortalException;
+		long userId, long groupId, String name, String description,
+		ServiceContext serviceContext) throws PortalException;
 
 	/**
 	* Creates a new layout page template collection with the primary key. Does not add the layout page template collection to the database.
@@ -83,6 +82,7 @@ public interface LayoutPageTemplateCollectionLocalService
 	* @param layoutPageTemplateCollectionId the primary key for the new layout page template collection
 	* @return the new layout page template collection
 	*/
+	@Transactional(enabled = false)
 	public LayoutPageTemplateCollection createLayoutPageTemplateCollection(
 		long layoutPageTemplateCollectionId);
 
@@ -223,7 +223,7 @@ public interface LayoutPageTemplateCollectionLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LayoutPageTemplateCollection> getLayoutPageTemplateCollections(
-		long groupId, java.lang.String name, int start, int end,
+		long groupId, String name, int start, int end,
 		OrderByComparator<LayoutPageTemplateCollection> orderByComparator);
 
 	/**
@@ -239,7 +239,7 @@ public interface LayoutPageTemplateCollectionLocalService
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -257,6 +257,6 @@ public interface LayoutPageTemplateCollectionLocalService
 		LayoutPageTemplateCollection layoutPageTemplateCollection);
 
 	public LayoutPageTemplateCollection updateLayoutPageTemplateCollection(
-		long layoutPageTemplateCollectionId, java.lang.String name,
-		java.lang.String description) throws PortalException;
+		long layoutPageTemplateCollectionId, String name, String description)
+		throws PortalException;
 }

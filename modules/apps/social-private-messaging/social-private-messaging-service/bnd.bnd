@@ -1,7 +1,0 @@
-Bundle-Name: Liferay Social Private Messaging Service
-Bundle-SymbolicName: com.liferay.social.privatemessaging.service
-Bundle-Version: 4.0.0
-Liferay-Releng-Module-Group-Description:
-Liferay-Releng-Module-Group-Title: Social Private Messaging
-Liferay-Require-SchemaVersion: 1.0.1
-Liferay-Service: true

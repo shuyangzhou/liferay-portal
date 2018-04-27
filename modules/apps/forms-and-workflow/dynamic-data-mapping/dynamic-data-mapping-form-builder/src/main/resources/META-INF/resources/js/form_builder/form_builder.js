@@ -436,6 +436,14 @@ AUI.add(
 					editField: function(field) {
 						var instance = this;
 
+						var contentBox = instance.get('fieldSettingsPanel').get('contentBox');
+
+						var content = contentBox.one('.tabbable-content');
+
+						if (content) {
+							content.hide();
+						}
+
 						instance.showFieldSettingsPanel(field);
 					},
 
@@ -1360,7 +1368,7 @@ AUI.add(
 						var warningMessage = instance.get('container').one('.required-warning');
 
 						if (instance.get('container').one('.lfr-ddm-form-field-container .lexicon-icon-asterisk')) {
-							warningMessage.removeAttribute('style')
+							warningMessage.removeAttribute('style');
 							warningMessage.removeClass('hide');
 							warningMessage.set('hidden', false);
 						}

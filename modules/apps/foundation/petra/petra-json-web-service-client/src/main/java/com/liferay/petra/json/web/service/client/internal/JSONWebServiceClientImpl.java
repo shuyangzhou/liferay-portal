@@ -49,6 +49,12 @@ public class JSONWebServiceClientImpl extends BaseJSONWebServiceClientImpl {
 		setHostPort(Integer.parseInt(_getString("hostPort", properties)));
 		setKeyStore((KeyStore)properties.get("keyStore"));
 		setLogin(_getString("login", properties));
+
+		if (properties.containsKey("maxAttempts")) {
+			setMaxAttempts(
+				Integer.parseInt(_getString("maxAttempts", properties)));
+		}
+
 		setPassword(_getString("password", properties));
 		setProtocol(_getString("protocol", properties));
 

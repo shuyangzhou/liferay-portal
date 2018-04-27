@@ -79,6 +79,7 @@ public interface DDMDataProviderInstanceLinkLocalService
 	* @param dataProviderInstanceLinkId the primary key for the new ddm data provider instance link
 	* @return the new ddm data provider instance link
 	*/
+	@Transactional(enabled = false)
 	public DDMDataProviderInstanceLink createDDMDataProviderInstanceLink(
 		long dataProviderInstanceLinkId);
 
@@ -237,7 +238,7 @@ public interface DDMDataProviderInstanceLinkLocalService
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
