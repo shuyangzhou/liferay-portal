@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,22 +11,28 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ include file="/admin/init.jsp" %>
+package com.liferay.oauth2.provider.rest.spi.request.scope.checker.filter;
 
-<%
-PortletURL portletURL = ddmFormAdminDisplayContext.getPortletURL();
+import com.liferay.oauth2.provider.scope.ScopeChecker;
 
-int delta = ParamUtil.getInteger(request, "delta");
+import java.util.Arrays;
+import java.util.Collection;
 
-if (delta > 0) {
-	portletURL.setParameter("delta", String.valueOf(delta));
+/**
+ * @author Carlos Sierra Andrés
+ */
+public class TestScopeChecker implements ScopeChecker {
+
+	public TestScopeChecker(String... allowedScopes) {
+		_allowedScopes = Arrays.asList(allowedScopes);
+	}
+
+	@Override
+	public boolean checkScope(String scope) {
+		return _allowedScopes.contains(scope);
+	}
+
+	private final Collection<String> _allowedScopes;
+
 }
-%>
-
-<liferay-frontend:management-bar-display-buttons
-	displayViews="<%= ddmFormAdminDisplayContext.getDisplayViews() %>"
-	portletURL="<%= portletURL %>"
-	selectedDisplayStyle="<%= ddmFormAdminDisplayContext.getDisplayStyle() %>"
-/>
