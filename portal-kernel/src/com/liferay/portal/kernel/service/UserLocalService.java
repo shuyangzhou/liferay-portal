@@ -951,7 +951,7 @@ public interface UserLocalService extends BaseLocalService,
 	* @return the users who do not have any contacts
 	* @deprecated As of 7.0.0, with no direct replacement
 	*/
-	@java.lang.Deprecated
+	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<User> getNoContacts();
 
