@@ -96,7 +96,7 @@ public class JSONCurlUtil {
 		public Request(String requestString, String requestMethod) {
 			_requestMethod = requestMethod;
 
-			requestString = requestString.replaceAll("\\s+\\\\?\\s*\\n", "\n");
+			requestString = requestString.replaceAll("\\s+\\\\?\\s*\\n", " ");
 
 			requestString = _encodeCurlData(requestString);
 
@@ -264,7 +264,7 @@ public class JSONCurlUtil {
 		}
 
 		private static Pattern _escapePattern = Pattern.compile(
-			"<CURL_DATA\\[(.*?)\\]CURL_DATA>");
+			"<CURL_DATA\\[([\\s\\S]*?)\\]CURL_DATA>");
 		private static Pattern _requestPattern = Pattern.compile(
 			"(-[\\w#:\\.]|--[\\w#:\\.-]{2,}|https?:[^\\s]+)(\\s+|\\Z)");
 
@@ -280,9 +280,7 @@ public class JSONCurlUtil {
 		public RequestOption(String optionType, String optionValue) {
 			_optionType = optionType;
 
-			_optionValue = _formatOptionValue(optionValue);
-
-			_validateRequestOption();
+			_optionValue = _formatOptionValue(optionType, optionValue);
 		}
 
 		public String getRequestOptionType() {
@@ -299,23 +297,41 @@ public class JSONCurlUtil {
 			sb.append(getRequestOptionType());
 
 			if (!_optionValue.isEmpty()) {
-				sb.append(" \"");
-				sb.append(_unEscapeOptionValue(_optionValue));
-				sb.append("\"");
+				sb.append(" ");
+				sb.append(_escapeOptionValue(_optionValue));
 			}
 
 			return sb.toString();
 		}
 
 		private String _escapeOptionValue(String optionValue) {
-			if (optionValue == null) {
-				return null;
+			StringBuilder sb = new StringBuilder();
+
+			if (OSDetector.isWindows()) {
+				sb.append("\"");
+
+				optionValue = optionValue.replaceAll(
+					"\\\\\"", "\\\\\\\\\\\\\\\"");
+				optionValue = optionValue.replaceAll("(?<!\\\\)\"", "\\\\\\\"");
+
+				sb.append(optionValue);
+
+				sb.append("\"");
+			}
+			else {
+				sb.append("'");
+				sb.append(optionValue);
+				sb.append("'");
 			}
 
-			return optionValue.replaceAll("\\\\\"", "\"");
+			return sb.toString();
 		}
 
-		private String _formatOptionValue(String optionValue) {
+		private String _formatOptionValue(
+			String optionType, String optionValue) {
+
+			optionValue = optionValue.trim();
+
 			if ((optionValue.startsWith("'") && optionValue.endsWith("'")) ||
 				(optionValue.startsWith("\"") && optionValue.endsWith("\""))) {
 
@@ -323,29 +339,19 @@ public class JSONCurlUtil {
 					1, optionValue.length() - 1);
 			}
 
-			return _escapeOptionValue(optionValue);
-		}
-
-		private String _unEscapeOptionValue(String optionValue) {
-			if (optionValue == null) {
-				return null;
-			}
-
-			optionValue = optionValue.replaceAll("(?<!\\\\)\"", "\\\\\"");
-
-			return optionValue;
-		}
-
-		private void _validateRequestOption() {
-			if (_optionType.equals("--json-data")) {
+			if (optionType.equals("--json-data")) {
 				try {
-					new JSONObject(_optionValue);
+					JSONObject jsonObject = new JSONObject(optionValue);
+
+					optionValue = jsonObject.toString();
 				}
 				catch (JSONException jsone) {
 					throw new RuntimeException(
-						"Invalid JSON: '" + _optionValue + "'");
+						"Invalid JSON: '" + optionValue + "'");
 				}
 			}
+
+			return optionValue;
 		}
 
 		private static Map<String, String> _customOptionsMap = new HashMap<>();
