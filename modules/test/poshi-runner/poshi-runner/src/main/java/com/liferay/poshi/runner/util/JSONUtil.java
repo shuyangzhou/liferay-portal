@@ -15,12 +15,24 @@
 package com.liferay.poshi.runner.util;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * @author Leslie Wong
  */
 public class JSONUtil {
+
+	public static String formatJSONString(String json) {
+		try {
+			JSONObject jsonObject = new JSONObject(json);
+
+			return jsonObject.toString();
+		}
+		catch (JSONException jsone) {
+			throw new RuntimeException("Invalid JSON: " + json);
+		}
+	}
 
 	public static Object get(JSONObject jsonObject, String name)
 		throws Exception {
