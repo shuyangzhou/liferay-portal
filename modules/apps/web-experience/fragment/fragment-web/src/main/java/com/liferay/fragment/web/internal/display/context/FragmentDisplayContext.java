@@ -240,7 +240,7 @@ public class FragmentDisplayContext {
 					navigationItem -> {
 						navigationItem.setActive(true);
 						navigationItem.setHref(
-							_renderResponse.createRenderURL());
+							(PortletURL)_renderResponse.createRenderURL());
 						navigationItem.setLabel(
 							LanguageUtil.get(_request, "collections"));
 					});
