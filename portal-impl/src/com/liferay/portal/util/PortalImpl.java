@@ -200,7 +200,6 @@ import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.model.impl.CookieRemotePreference;
 import com.liferay.portal.model.impl.LayoutTypeImpl;
-import com.liferay.portal.model.impl.LayoutTypePortletImpl;
 import com.liferay.portal.plugin.PluginPackageUtil;
 import com.liferay.portal.security.jaas.JAASHelper;
 import com.liferay.portal.security.lang.DoPrivilegedUtil;
@@ -916,8 +915,8 @@ public class PortalImpl implements Portal {
 
 		url = url.trim();
 
-		if ((url.charAt(0) == CharPool.SLASH) &&
-			((url.length() > 1) && (url.charAt(1) != CharPool.SLASH))) {
+		if ((url.charAt(0) == CharPool.SLASH) && (url.length() > 1) &&
+			(url.charAt(1) != CharPool.SLASH)) {
 
 			return url;
 		}
@@ -7247,19 +7246,14 @@ public class PortalImpl implements Portal {
 
 				updateLayout = true;
 			}
-			else if (layoutType instanceof LayoutTypePortletImpl) {
-				LayoutTypePortletImpl layoutTypePortletImpl =
-					(LayoutTypePortletImpl)layoutType;
+			else if (isCustomPortletMode(portletMode) &&
+					 !layoutType.hasModeCustomPortletId(
+						 portletId, portletMode.toString())) {
 
-				if (isCustomPortletMode(portletMode) &&
-					!layoutTypePortletImpl.hasModeCustomPortletId(
-						portletId, portletMode.toString())) {
+				layoutType.addModeCustomPortletId(
+					portletId, portletMode.toString());
 
-					layoutTypePortletImpl.addModeCustomPortletId(
-						portletId, portletMode.toString());
-
-					updateLayout = true;
-				}
+				updateLayout = true;
 			}
 
 			if (updateLayout &&

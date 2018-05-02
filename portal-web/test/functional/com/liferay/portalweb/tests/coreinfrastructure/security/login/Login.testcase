@@ -125,7 +125,7 @@
 		</execute>
 	</command>
 
-	<command name="GoogleSSOSmoke" priority="4">
+	<command ignore="true" name="GoogleSSOSmoke" priority="4">
 		<property name="test.name.skip.portal.instance" value="Login#GoogleSSOSmoke" />
 
 		<var method="TestPropsUtil#get('google.client.id')" name="googleClientID" />
@@ -267,7 +267,7 @@
 		</execute>
 	</command>
 
-	<command name="OpenSSOSmoke" priority="5">
+	<command ignore="true" name="OpenSSOSmoke" priority="5">
 		<property name="openam.enabled" value="true" />
 		<property name="test.name.skip.portal.instance" value="Login#OpenSSOSmoke" />
 
@@ -293,7 +293,7 @@
 
 				<var method="MathUtil#sum('${pauseCount}', '1')" name="pauseCount" />
 
-				<echo>Pause count: ${pauseCount}</echo>
+				<echo message="Pause count: ${pauseCount}" />
 			</then>
 		</while>
 
