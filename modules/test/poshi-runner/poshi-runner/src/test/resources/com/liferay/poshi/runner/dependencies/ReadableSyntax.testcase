@@ -7,6 +7,9 @@ definition {
 
 	// This is a comment
 
+	/*This is a multiline
+		comment.*/
+
 	var userPassword = "password";
 	var userScreenName = "joeblogs";
 
@@ -25,6 +28,8 @@ definition {
 	@priority = "5"
 	testAddUser {
 		// This is a comment
+		/*This is a multiline
+			comment.*/
 		property portal.release = "false";
 		var specialCharacters = "&quot;\&quot;";
 		var userEmailAddress = "userea@liferay.com";

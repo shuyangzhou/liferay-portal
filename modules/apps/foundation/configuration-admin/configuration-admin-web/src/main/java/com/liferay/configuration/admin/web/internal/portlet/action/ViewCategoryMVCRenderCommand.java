@@ -17,7 +17,7 @@ package com.liferay.configuration.admin.web.internal.portlet.action;
 import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
 import com.liferay.configuration.admin.web.internal.display.ConfigurationCategoryMenuDisplay;
 import com.liferay.configuration.admin.web.internal.display.ConfigurationEntry;
-import com.liferay.configuration.admin.web.internal.util.ConfigurationModelRetriever;
+import com.liferay.configuration.admin.web.internal.util.ConfigurationEntryRetriever;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderConstants;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -64,7 +64,7 @@ public class ViewCategoryMVCRenderCommand implements MVCRenderCommand {
 
 		try {
 			ConfigurationCategoryMenuDisplay configurationCategoryMenuDisplay =
-				_configurationModelRetriever.
+				_configurationEntryRetriever.
 					getConfigurationCategoryMenuDisplay(
 						configurationCategory, themeDisplay.getLanguageId());
 
@@ -97,7 +97,7 @@ public class ViewCategoryMVCRenderCommand implements MVCRenderCommand {
 	}
 
 	@Reference
-	private ConfigurationModelRetriever _configurationModelRetriever;
+	private ConfigurationEntryRetriever _configurationEntryRetriever;
 
 	@Reference
 	private Portal _portal;

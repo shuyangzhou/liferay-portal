@@ -36,6 +36,7 @@ import com.liferay.user.associated.data.web.internal.constants.UADWebKeys;
 import com.liferay.user.associated.data.web.internal.display.UADEntity;
 import com.liferay.user.associated.data.web.internal.display.ViewUADEntitiesDisplay;
 import com.liferay.user.associated.data.web.internal.registry.UADRegistry;
+import com.liferay.user.associated.data.web.internal.util.SelectedUserHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +72,8 @@ public class ViewUADEntitiesMVCRenderCommand implements MVCRenderCommand {
 		throws PortletException {
 
 		try {
-			User selectedUser = _portal.getSelectedUser(renderRequest);
+			User selectedUser = _selectedUserHelper.getSelectedUser(
+				renderRequest);
 
 			String applicationName = ParamUtil.getString(
 				renderRequest, "applicationName");
@@ -131,18 +133,10 @@ public class ViewUADEntitiesMVCRenderCommand implements MVCRenderCommand {
 			uadDisplay.getEditURL(
 				entity, liferayPortletRequest, liferayPortletResponse));
 
-		Map<String, Object> nonanonymizableFieldValues =
-			uadDisplay.getNonanonymizableFieldValues(entity);
+		Map<String, Object> columnFieldValues = uadDisplay.getFieldValues(
+			entity, uadDisplay.getColumnFieldNames());
 
-		for (String displayFieldName : uadDisplay.getDisplayFieldNames()) {
-			Object nonanonymizableFieldValue = nonanonymizableFieldValues.get(
-				displayFieldName);
-
-			if (nonanonymizableFieldValue != null) {
-				uadEntity.addColumnEntry(
-					displayFieldName, nonanonymizableFieldValue);
-			}
-		}
+		columnFieldValues.forEach(uadEntity::addColumnEntry);
 
 		return uadEntity;
 	}
@@ -246,6 +240,9 @@ public class ViewUADEntitiesMVCRenderCommand implements MVCRenderCommand {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private SelectedUserHelper _selectedUserHelper;
 
 	@Reference
 	private UADRegistry _uadRegistry;
