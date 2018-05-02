@@ -45,7 +45,7 @@ themes = ListUtil.sort(themes, new ThemeNameComparator(orderByType.equals("asc")
 				add(
 					navigationItem -> {
 						navigationItem.setActive(true);
-						navigationItem.setHref(renderResponse.createRenderURL());
+						navigationItem.setHref((PortletURL)renderResponse.createRenderURL());
 						navigationItem.setLabel(LanguageUtil.get(request, "available-themes"));
 					});
 			}
