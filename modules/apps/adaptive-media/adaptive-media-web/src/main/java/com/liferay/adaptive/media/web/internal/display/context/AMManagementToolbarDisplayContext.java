@@ -138,6 +138,9 @@ public class AMManagementToolbarDisplayContext {
 				add(
 					SafeConsumer.ignore(
 						dropdownItem -> {
+							dropdownItem.setActive(
+								entriesNavigation.equals("all"));
+
 							PortletURL allImageConfigurationEntriesURL =
 								PortletURLUtil.clone(
 									_currentURLObj, _liferayPortletResponse);
@@ -145,14 +148,16 @@ public class AMManagementToolbarDisplayContext {
 							dropdownItem.setHref(
 								allImageConfigurationEntriesURL,
 								"entriesNavigation", "all");
-							dropdownItem.setActive(
-								entriesNavigation.equals("all"));
+
 							dropdownItem.setLabel(
 								LanguageUtil.get(_request, "all"));
 						}));
 				add(
 					SafeConsumer.ignore(
 						dropdownItem -> {
+							dropdownItem.setActive(
+								entriesNavigation.equals("enabled"));
+
 							PortletURL enabledImageConfigurationEntriesURL =
 								PortletURLUtil.clone(
 									_currentURLObj, _liferayPortletResponse);
@@ -160,14 +165,16 @@ public class AMManagementToolbarDisplayContext {
 							dropdownItem.setHref(
 								enabledImageConfigurationEntriesURL,
 								"entriesNavigation", "enabled");
-							dropdownItem.setActive(
-								entriesNavigation.equals("enabled"));
+
 							dropdownItem.setLabel(
 								LanguageUtil.get(_request, "enabled"));
 						}));
 				add(
 					SafeConsumer.ignore(
 						dropdownItem -> {
+							dropdownItem.setActive(
+								entriesNavigation.equals("disabled"));
+
 							PortletURL disabledImageConfigurationEntriesURL =
 								PortletURLUtil.clone(
 									_currentURLObj, _liferayPortletResponse);
@@ -175,8 +182,7 @@ public class AMManagementToolbarDisplayContext {
 							dropdownItem.setHref(
 								disabledImageConfigurationEntriesURL,
 								"entriesNavigation", "disabled");
-							dropdownItem.setActive(
-								entriesNavigation.equals("disabled"));
+
 							dropdownItem.setLabel(
 								LanguageUtil.get(_request, "disabled"));
 						}));
