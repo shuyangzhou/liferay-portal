@@ -17,7 +17,7 @@ follow.
 3. Unzip the client into your Liferay instance
    (e.g., `${liferayHome}/tools/portal-tools-db-upgrade-client`).
 
-4. Run `java -jar com.liferay.portal.tools.db.upgrade.client.jar`.
+4. Run `db_upgrade.bat` in Windows or `db_upgrade.sh` in Unix environments.
 
 ### Using JPM
 

@@ -5,9 +5,12 @@
 	<portlet-resource>
 		<portlet-name>com_liferay_push_notifications_web_portlet_PushNotificationsPortlet</portlet-name>
 		<permissions>
-			<supports />
-			<site-member-defaults />
-			<guest-defaults />
+			<supports>
+				<action-key>ACCESS_IN_CONTROL_PANEL</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults/>
+			<guest-defaults/>
 			<guest-unsupported>
 				<action-key>ACCESS_IN_CONTROL_PANEL</action-key>
 				<action-key>VIEW</action-key>

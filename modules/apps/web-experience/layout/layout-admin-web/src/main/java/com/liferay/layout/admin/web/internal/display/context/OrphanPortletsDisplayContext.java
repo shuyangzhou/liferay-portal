@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.portlet.PortletURL;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -67,6 +69,7 @@ public class OrphanPortletsDisplayContext {
 	}
 
 	public List<NavigationItem> getNavigationItems() {
+		PortletURL portletURL = _liferayPortletResponse.createRenderURL();
 		HttpServletRequest request = PortalUtil.getHttpServletRequest(
 			_liferayPortletRequest);
 
@@ -75,8 +78,7 @@ public class OrphanPortletsDisplayContext {
 				add(
 					navigationItem -> {
 						navigationItem.setActive(true);
-						navigationItem.setHref(
-							_liferayPortletResponse.createRenderURL());
+						navigationItem.setHref(portletURL);
 						navigationItem.setLabel(
 							LanguageUtil.get(request, "orphan-portlets"));
 					});
@@ -139,7 +141,7 @@ public class OrphanPortletsDisplayContext {
 		List<PortletPreferences> portletPreferences =
 			PortletPreferencesLocalServiceUtil.getPortletPreferences(
 				PortletKeys.PREFS_OWNER_ID_DEFAULT,
-				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, getSelPlid());
+				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, layout.getPlid());
 
 		for (PortletPreferences portletPreference : portletPreferences) {
 			String portletId = portletPreference.getPortletId();

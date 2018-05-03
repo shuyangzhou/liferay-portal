@@ -69,6 +69,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
+import javax.portlet.MutableRenderParameters;
+import javax.portlet.MutableResourceParameters;
 import javax.portlet.PortletException;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletModeException;
@@ -80,6 +82,7 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceURL;
 import javax.portlet.WindowState;
 import javax.portlet.WindowStateException;
+import javax.portlet.annotations.PortletSerializable;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -122,6 +125,18 @@ public class PortletURLImpl
 		if (key == null) {
 			throw new IllegalArgumentException();
 		}
+	}
+
+	@Override
+	public Appendable append(Appendable appendable) throws IOException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Appendable append(Appendable appendable, boolean escapeXml)
+		throws IOException {
+
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -250,8 +265,18 @@ public class PortletURLImpl
 	}
 
 	@Override
+	public MutableRenderParameters getRenderParameters() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public String getResourceID() {
 		return _resourceID;
+	}
+
+	@Override
+	public MutableResourceParameters getResourceParameters() {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -330,6 +355,11 @@ public class PortletURLImpl
 		_anchor = anchor;
 
 		clearCache();
+	}
+
+	@Override
+	public void setBeanParameter(PortletSerializable portletSerializable) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -494,12 +524,14 @@ public class PortletURLImpl
 			for (Map.Entry<String, String[]> entry : params.entrySet()) {
 				try {
 					String key = entry.getKey();
-					String[] value = entry.getValue();
 
 					if (key == null) {
 						throw new IllegalArgumentException();
 					}
-					else if (value == null) {
+
+					String[] value = entry.getValue();
+
+					if (value == null) {
 						throw new IllegalArgumentException();
 					}
 
@@ -875,7 +907,6 @@ public class PortletURLImpl
 
 		for (Map.Entry<String, String[]> entry : renderParams.entrySet()) {
 			String name = entry.getKey();
-			String[] values = entry.getValue();
 
 			if (isParameterIncludedInPath(name)) {
 				continue;
@@ -890,7 +921,7 @@ public class PortletURLImpl
 				}
 			}
 
-			for (String value : values) {
+			for (String value : entry.getValue()) {
 				_appendNamespaceAndEncode(sb, name);
 
 				sb.append(StringPool.EQUAL);
