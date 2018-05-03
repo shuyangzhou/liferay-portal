@@ -665,6 +665,7 @@ public class PoshiRunnerValidation {
 		String className =
 			PoshiRunnerGetterUtil.getClassNameFromNamespacedClassCommandName(
 				function);
+
 		String namespace = PoshiRunnerContext.getNamespaceFromFilePath(
 			filePath);
 
