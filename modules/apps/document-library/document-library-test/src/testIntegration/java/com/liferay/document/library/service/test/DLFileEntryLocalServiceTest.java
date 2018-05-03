@@ -61,6 +61,7 @@ import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
+import com.liferay.portal.kernel.test.util.TestDataConstants;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -68,7 +69,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.test.randomizerbumpers.TikaSafeRandomizerBumper;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 import com.liferay.portlet.documentlibrary.util.test.DLTestUtil;
@@ -142,8 +142,7 @@ public class DLFileEntryLocalServiceTest {
 			FileEntry fileEntry = DLAppLocalServiceUtil.addFileEntry(
 				TestPropsValues.getUserId(), _group.getGroupId(),
 				folder.getFolderId(), RandomTestUtil.randomString(),
-				ContentTypes.TEXT_PLAIN,
-				RandomTestUtil.randomBytes(TikaSafeRandomizerBumper.INSTANCE),
+				ContentTypes.TEXT_PLAIN, TestDataConstants.TEST_BYTE_ARRAY,
 				serviceContext);
 
 			serviceContext = ServiceContextTestUtil.getServiceContext(
@@ -217,8 +216,7 @@ public class DLFileEntryLocalServiceTest {
 			FileEntry fileEntry = DLAppLocalServiceUtil.addFileEntry(
 				TestPropsValues.getUserId(), _group.getGroupId(),
 				folder.getFolderId(), RandomTestUtil.randomString(),
-				ContentTypes.TEXT_PLAIN,
-				RandomTestUtil.randomBytes(TikaSafeRandomizerBumper.INSTANCE),
+				ContentTypes.TEXT_PLAIN, TestDataConstants.TEST_BYTE_ARRAY,
 				serviceContext);
 
 			LocalRepository localRepository =
@@ -234,8 +232,7 @@ public class DLFileEntryLocalServiceTest {
 			DLAppLocalServiceUtil.addFileEntry(
 				TestPropsValues.getUserId(), _group.getGroupId(),
 				folder.getFolderId(), RandomTestUtil.randomString(),
-				ContentTypes.TEXT_PLAIN,
-				RandomTestUtil.randomBytes(TikaSafeRandomizerBumper.INSTANCE),
+				ContentTypes.TEXT_PLAIN, TestDataConstants.TEST_BYTE_ARRAY,
 				serviceContext);
 		}
 
@@ -305,8 +302,7 @@ public class DLFileEntryLocalServiceTest {
 	public void testGetNoAssetEntries() throws Exception {
 		DLFolder dlFolder = DLTestUtil.addDLFolder(_group.getGroupId());
 
-		byte[] bytes = RandomTestUtil.randomBytes(
-			TikaSafeRandomizerBumper.INSTANCE);
+		byte[] bytes = TestDataConstants.TEST_BYTE_ARRAY;
 
 		InputStream is = new ByteArrayInputStream(bytes);
 
