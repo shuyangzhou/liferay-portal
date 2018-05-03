@@ -75,7 +75,6 @@ import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -85,7 +84,6 @@ import org.junit.rules.TemporaryFolder;
  * @author Gregory Amerson
  * @author Andrea Di Giorgi
  */
-@Ignore
 public class ProjectTemplatesTest {
 
 	@ClassRule
@@ -2206,22 +2204,23 @@ public class ProjectTemplatesTest {
 
 		GradleRunner gradleRunner = GradleRunner.create();
 
+		List<String> arguments = new ArrayList<>(taskPaths.length + 3);
+
+		arguments.add("--stacktrace");
+
 		String httpProxyHost = mavenExecutor.getHttpProxyHost();
 		int httpProxyPort = mavenExecutor.getHttpProxyPort();
 
 		if (Validator.isNotNull(httpProxyHost) && (httpProxyPort > 0)) {
-			String[] arguments = new String[taskPaths.length + 2];
-
-			arguments[0] = "-Dhttp.proxyHost=" + httpProxyHost;
-			arguments[1] = "-Dhttp.proxyPort=" + httpProxyPort;
-
-			System.arraycopy(taskPaths, 0, arguments, 2, taskPaths.length);
-
-			gradleRunner.withArguments(arguments);
+			arguments.add("-Dhttp.proxyHost=" + httpProxyHost);
+			arguments.add("-Dhttp.proxyPort=" + httpProxyPort);
 		}
-		else {
-			gradleRunner.withArguments(taskPaths);
+
+		for (String taskPath : taskPaths) {
+			arguments.add(taskPath);
 		}
+
+		gradleRunner.withArguments(arguments);
 
 		gradleRunner.withGradleDistribution(_gradleDistribution);
 		gradleRunner.withProjectDir(projectDir);
