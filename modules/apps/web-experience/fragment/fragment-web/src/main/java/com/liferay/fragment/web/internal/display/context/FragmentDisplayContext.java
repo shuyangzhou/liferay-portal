@@ -190,7 +190,7 @@ public class FragmentDisplayContext {
 				addPrimaryDropdownItem(
 					dropdownItem -> {
 						dropdownItem.setHref(
-							_renderResponse.createRenderURL(),
+							(PortletURL)_renderResponse.createRenderURL(),
 							"mvcRenderCommandName",
 							"/fragment/edit_fragment_collection");
 						dropdownItem.setLabel(
