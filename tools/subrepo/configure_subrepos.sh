@@ -302,9 +302,13 @@ master
 master-private
 "
 
+			BRANCHES=()
+
 			for BRANCH_JSON in $(echo "${OUTPUT}" | tr '\n' ' ' | sed 's/ //g' | sed 's/"name"/\'$'\n&/g' | grep '"name"')
 			do
 				BRANCH="$(echo "${BRANCH_JSON}" | sed 's/.*"name":"//' | sed 's/".*//')"
+
+				BRANCHES=("${BRANCHES[@]}" "${BRANCH}")
 
 				if [[ "$(echo "${PROTECTED_BRANCHES}" | grep "^${BRANCH}\$")" ]] && [[ -z "$(echo "${PROTECTED_JSON}" | grep "\"name\":.*\"${BRANCH}\"")" ]]
 				then
