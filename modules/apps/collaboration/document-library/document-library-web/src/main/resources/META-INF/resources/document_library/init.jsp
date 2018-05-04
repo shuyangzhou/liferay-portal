@@ -24,8 +24,6 @@ page import="com.liferay.staging.StagingGroupHelper" %><%@
 page import="com.liferay.staging.StagingGroupHelperUtil" %>
 
 <%
-PortalPreferences portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(liferayPortletRequest);
-
 DLRequestHelper dlRequestHelper = new DLRequestHelper(request);
 
 String portletId = dlRequestHelper.getResourcePortletId();
@@ -34,29 +32,20 @@ portletName = dlRequestHelper.getResourcePortletName();
 
 String portletResource = dlRequestHelper.getPortletResource();
 
-DLPortletInstanceSettings dlPortletInstanceSettings = dlRequestHelper.getDLPortletInstanceSettings();
-DLGroupServiceSettings dlGroupServiceSettings = dlRequestHelper.getDLGroupServiceSettings();
+DLAdminDisplayContext dlAdminDisplayContext = (DLAdminDisplayContext)request.getAttribute(DLWebKeys.DOCUMENT_LIBRARY_ADMIN_DISPLAY_CONTEXT);
 
-long rootFolderId = dlPortletInstanceSettings.getRootFolderId();
-String rootFolderName = StringPool.BLANK;
+if (dlAdminDisplayContext == null) {
+	dlAdminDisplayContext = new DLAdminDisplayContext(liferayPortletRequest, liferayPortletResponse);
 
-if (rootFolderId != DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
-	try {
-		Folder rootFolder = DLAppLocalServiceUtil.getFolder(rootFolderId);
-
-		rootFolderName = rootFolder.getName();
-
-		if (rootFolder.getGroupId() != scopeGroupId) {
-			rootFolderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
-			rootFolderName = StringPool.BLANK;
-		}
-	}
-	catch (NoSuchFolderException | PrincipalException e) {
-		rootFolderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
-	}
+	request.setAttribute(DLWebKeys.DOCUMENT_LIBRARY_ADMIN_DISPLAY_CONTEXT, dlAdminDisplayContext);
 }
 
 DLConfiguration dlConfiguration = ConfigurationProviderUtil.getSystemConfiguration(DLConfiguration.class);
+DLGroupServiceSettings dlGroupServiceSettings = dlRequestHelper.getDLGroupServiceSettings();
+DLPortletInstanceSettings dlPortletInstanceSettings = dlRequestHelper.getDLPortletInstanceSettings();
+
+long rootFolderId = dlAdminDisplayContext.getRootFolderId();
+String rootFolderName = dlAdminDisplayContext.getRootFolderName();
 
 boolean showComments = ParamUtil.getBoolean(request, "showComments", true);
 boolean showHeader = ParamUtil.getBoolean(request, "showHeader", true);

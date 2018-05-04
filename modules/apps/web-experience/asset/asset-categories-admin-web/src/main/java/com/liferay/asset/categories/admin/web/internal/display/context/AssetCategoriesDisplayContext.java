@@ -111,8 +111,8 @@ public class AssetCategoriesDisplayContext {
 					navigationItem -> {
 						navigationItem.setActive(true);
 						navigationItem.setHref(
-							_renderResponse.createRenderURL(), "mvcPath",
-							"/view_categories.jsp", "vocabularyId",
+							(PortletURL)_renderResponse.createRenderURL(),
+							"mvcPath", "/view_categories.jsp", "vocabularyId",
 							String.valueOf(getVocabularyId()));
 						navigationItem.setLabel(
 							LanguageUtil.get(_request, "categories"));
@@ -212,7 +212,7 @@ public class AssetCategoriesDisplayContext {
 					navigationItem -> {
 						navigationItem.setActive(true);
 						navigationItem.setHref(
-							_renderResponse.createRenderURL());
+							(PortletURL)_renderResponse.createRenderURL());
 						navigationItem.setLabel(
 							LanguageUtil.get(_request, "vocabularies"));
 					});
@@ -686,8 +686,8 @@ public class AssetCategoriesDisplayContext {
 				addPrimaryDropdownItem(
 					dropdownItem -> {
 						dropdownItem.setHref(
-							_renderResponse.createRenderURL(), "mvcPath",
-							"/edit_vocabulary.jsp");
+							(PortletURL)_renderResponse.createRenderURL(),
+							"mvcPath", "/edit_vocabulary.jsp");
 						dropdownItem.setLabel(
 							LanguageUtil.get(_request, "add-vocabulary"));
 					});
@@ -1116,7 +1116,8 @@ public class AssetCategoriesDisplayContext {
 				add(
 					dropdownItem -> {
 						dropdownItem.setActive(true);
-						dropdownItem.setHref(_renderResponse.createRenderURL());
+						dropdownItem.setHref(
+							(PortletURL)_renderResponse.createRenderURL());
 						dropdownItem.setLabel(
 							LanguageUtil.get(_request, "all"));
 					});
@@ -1130,7 +1131,8 @@ public class AssetCategoriesDisplayContext {
 				add(
 					dropdownItem -> {
 						dropdownItem.setActive(true);
-						dropdownItem.setHref(_renderResponse.createRenderURL());
+						dropdownItem.setHref(
+							(PortletURL)_renderResponse.createRenderURL());
 						dropdownItem.setLabel(
 							LanguageUtil.get(_request, "create-date"));
 					});

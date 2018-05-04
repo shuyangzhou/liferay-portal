@@ -12,13 +12,22 @@
  * details.
  */
 
-package com.liferay.sync.web.internal.constants;
+package com.liferay.portal.search.spi.model.query.contributor;
+
+import aQute.bnd.annotation.ConsumerType;
+
+import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.filter.BooleanFilter;
+import com.liferay.portal.search.spi.model.registrar.ModelSearchSettings;
 
 /**
- * @author Shinn Lok
+ * @author André de Oliveira
  */
-public interface SyncWebKeys {
+@ConsumerType
+public interface ModelPreFilterContributor {
 
-	public static final String IP_GEOCODER = "IP_GEOCODER";
+	public void contribute(
+		BooleanFilter booleanFilter, ModelSearchSettings modelSearchSettings,
+		SearchContext searchContext);
 
 }
