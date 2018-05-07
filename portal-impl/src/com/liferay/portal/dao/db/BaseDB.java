@@ -365,6 +365,16 @@ public abstract class BaseDB implements DB {
 			boolean failOnError)
 		throws IOException, NamingException, SQLException {
 
+		template = StringUtil.trim(template);
+
+		if ((template == null) || template.isEmpty()) {
+			return;
+		}
+
+		if (!template.endsWith(StringPool.SEMICOLON)) {
+			template += StringPool.SEMICOLON;
+		}
+
 		template = applyMaxStringIndexLengthLimitation(template);
 
 		if (evaluate) {
@@ -391,7 +401,13 @@ public abstract class BaseDB implements DB {
 				if (line.startsWith("@include ")) {
 					int pos = line.indexOf(" ");
 
-					String includeFileName = line.substring(pos + 1);
+					int end = line.length();
+
+					if (StringUtil.endsWith(line, StringPool.SEMICOLON)) {
+						end -= 1;
+					}
+
+					String includeFileName = line.substring(pos + 1, end);
 
 					ClassLoader classLoader =
 						ClassLoaderUtil.getContextClassLoader();
@@ -789,11 +805,11 @@ public abstract class BaseDB implements DB {
 
 			String tableNameLowerCase = StringUtil.toLowerCase(tableName);
 
-			boolean unique = index.isUnique();
-
 			validIndexNames.add(indexNameUpperCase);
 
 			if (indexNames.contains(indexNameLowerCase)) {
+				boolean unique = index.isUnique();
+
 				if (unique &&
 					indexesSQLLowerCase.contains(
 						"create unique index " + indexNameLowerCase + " ")) {

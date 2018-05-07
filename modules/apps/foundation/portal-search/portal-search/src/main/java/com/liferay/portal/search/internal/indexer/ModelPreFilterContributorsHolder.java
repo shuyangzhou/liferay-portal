@@ -12,17 +12,17 @@
  * details.
  */
 
-package com.liferay.document.library.display.context;
+package com.liferay.portal.search.internal.indexer;
 
-import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItem;
+import com.liferay.portal.search.spi.model.query.contributor.ModelPreFilterContributor;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 /**
- * @author Alejandro Tardín
+ * @author André de Oliveira
  */
-public interface DLAdminDisplayContext {
+public interface ModelPreFilterContributorsHolder {
 
-	public List<NavigationItem> getNavigationItems();
+	public Stream<ModelPreFilterContributor> getByModel(String entryClassName);
 
 }
