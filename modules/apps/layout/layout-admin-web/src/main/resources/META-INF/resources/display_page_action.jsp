@@ -31,7 +31,7 @@ LayoutPageTemplateEntry layoutPageTemplateEntry = (LayoutPageTemplateEntry)row.g
 >
 	<c:if test="<%= LayoutPageTemplateEntryPermission.contains(permissionChecker, layoutPageTemplateEntry, ActionKeys.UPDATE) %>">
 		<portlet:renderURL var="editDisplayPageURL">
-			<portlet:param name="mvcPath" value="/edit_layout_page_template_entry.jsp" />
+			<portlet:param name="mvcRenderCommandName" value="/layout/edit_layout_page_template_entry" />
 			<portlet:param name="redirect" value="<%= currentURL %>" />
 			<portlet:param name="layoutPageTemplateEntryId" value="<%= String.valueOf(layoutPageTemplateEntry.getLayoutPageTemplateEntryId()) %>" />
 			<portlet:param name="layoutPageTemplateCollectionId" value="<%= String.valueOf(layoutPageTemplateEntry.getLayoutPageTemplateCollectionId()) %>" />
@@ -83,7 +83,7 @@ LayoutPageTemplateEntry layoutPageTemplateEntry = (LayoutPageTemplateEntry)row.g
 		/>
 	</c:if>
 
-	<c:if test="<%= Objects.equals(layoutPageTemplateEntry.getType(), LayoutPageTemplateEntryTypeConstants.TYPE_DISPLAY_PAGE) && (layoutPageTemplateEntry.getClassNameId() > 0) && LayoutPageTemplateEntryPermission.contains(permissionChecker, layoutPageTemplateEntry, ActionKeys.UPDATE) %>">
+	<c:if test="<%= layoutPageTemplateEntry.isApproved() && Objects.equals(layoutPageTemplateEntry.getType(), LayoutPageTemplateEntryTypeConstants.TYPE_DISPLAY_PAGE) && (layoutPageTemplateEntry.getClassNameId() > 0) && LayoutPageTemplateEntryPermission.contains(permissionChecker, layoutPageTemplateEntry, ActionKeys.UPDATE) %>">
 		<portlet:actionURL name="/layout/edit_layout_page_template_settings" var="editLayoutPageTemplateSettingsURL">
 			<portlet:param name="redirect" value="<%= currentURL %>" />
 			<portlet:param name="layoutPageTemplateEntryId" value="<%= String.valueOf(layoutPageTemplateEntry.getLayoutPageTemplateEntryId()) %>" />

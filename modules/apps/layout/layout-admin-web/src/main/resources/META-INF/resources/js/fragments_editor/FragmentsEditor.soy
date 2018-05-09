@@ -20,6 +20,8 @@
 	{@param imageSelectorURL: string}
 	{@param languageId: string}
 	{@param portletNamespace: string}
+	{@param redirectURL: string}
+	{@param sidebarTabs: list<[enabled:bool, id:string, label:string]>}
 	{@param spritemap: string}
 	{@param? _contextualSidebarVisible: bool}
 	{@param? _dirty: bool}
@@ -31,6 +33,7 @@
 	{@param? _handleMappeableFieldClicked: any}
 	{@param? _handleMappeableFieldSelected: any}
 	{@param? _handleMappingTypeSelected: any}
+	{@param? _handlePublishButtonClick: any}
 	{@param? _handleToggleContextualSidebarButtonClick: any}
 	{@param? _handleSelectAssetTypeButtonClick: any}
 	{@param? _handleSelectMappingDialogVisibleChanged: any}
@@ -43,7 +46,6 @@
 	{@param? _selectMappingDialogVisible: bool}
 	{@param? _selectMappingTypeDialogVisible: bool}
 	{@param? _sidebarSelectedTab: string}
-	{@param? _sidebarTabs: list<[id:string, label:string]>}
 	{@param? _translationStatus: [
 		languageValues: list<[languageId: string, values: list<string>]>,
 		translationKeys: list<string>
@@ -68,6 +70,7 @@
 			label: string
 		]
 	]}
+	{@param? status: string}
 	{@param? updateLayoutPageTemplateEntryAssetTypeURL: any}
 
 	<div id="{$id}">
@@ -75,11 +78,14 @@
 			{param availableLanguages: $availableLanguages /}
 			{param defaultLanguageId: $defaultLanguageId /}
 			{param languageId: $languageId /}
+			{param redirectURL: $redirectURL /}
 			{param spritemap: $spritemap /}
 			{param dirty: $_dirty /}
+			{param handlePublishButtonClick: $_handlePublishButtonClick /}
 			{param handleToggleContextualSidebarButtonClick: $_handleToggleContextualSidebarButtonClick /}
 			{param handleTranslationLanguageChange: $_handleTranslationLanguageChange /}
 			{param lastSaveDate: $_lastSaveDate /}
+			{param status: $status /}
 			{param translationStatus: $_translationStatus /}
 		{/call}
 
@@ -159,15 +165,17 @@
 					<div class="sidebar-section">
 						<nav class="navbar navbar-expand-md navbar-underline">
 							<ul class="navbar-nav">
-								{if $_sidebarTabs}
-									{foreach $sidebarTab in $_sidebarTabs}
-										{call .sidebarTab}
-											{param active: $sidebarTab.id == $_sidebarSelectedTab /}
-											{param id: $sidebarTab.id /}
-											{param key: $sidebarTab.id /}
-											{param handleTabClick: $_handleSidebarTabClick /}
-											{param label: $sidebarTab.label /}
-										{/call}
+								{if $sidebarTabs}
+									{foreach $sidebarTab in $sidebarTabs}
+										{if $sidebarTab.enabled}
+											{call .sidebarTab}
+												{param active: $sidebarTab.id == $_sidebarSelectedTab /}
+												{param id: $sidebarTab.id /}
+												{param key: $sidebarTab.id /}
+												{param handleTabClick: $_handleSidebarTabClick /}
+												{param label: $sidebarTab.label /}
+											{/call}
+										{/if}
 									{/foreach}
 								{/if}
 							</ul>
@@ -253,9 +261,11 @@
 	{@param languageId: string}
 	{@param spritemap: string}
 	{@param? dirty: bool}
+	{@param? handlePublishButtonClick: any}
 	{@param? handleToggleContextualSidebarButtonClick: any}
 	{@param? handleTranslationLanguageChange: any}
 	{@param? lastSaveDate: string}
+	{@param? status: string}
 	{@param? translationStatus: [
 		languageValues: list<[languageId: string, values: list<string>]>,
 		translationKeys: list<string>
@@ -286,6 +296,16 @@
 			</ul>
 
 			<ul class="navbar-nav">
+				{if $status}
+					<li class="nav-item">
+						<span class="label label-secondary">{$status}</span>
+					</li>
+				{/if}
+				<li class="nav-item">
+					<button class="btn btn-primary nav-btn" data-onclick="{$handlePublishButtonClick}">
+						{msg desc=""}publish{/msg}
+					</button>
+				</li>
 				<li class="nav-item">
 					<button class="btn btn-secondary nav-btn" data-onclick="{$handleToggleContextualSidebarButtonClick}">
 						<svg class="icon-monospaced lexicon-icon">
