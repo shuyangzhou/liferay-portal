@@ -2394,16 +2394,7 @@ ${tomcat-gc-log}
 
 						sb.append("TEST_CLASS_GROUP_");
 						sb.append(i);
-						sb.append("=");
-
-						for (File testClass : testClassGroup) {
-							sb.append(testClass.toPath());
-							sb.append(",");
-						}
-
-						if (!testClassGroup.isEmpty()) {
-							sb.setLength(sb.length() - 1);
-						}
+						sb.append("=com/liferay/arquillian/extension/junit/bridge/junit/test/TransactionalTestRuleArquillianTest.class");
 
 						sb.append("\n\n");
 					}
