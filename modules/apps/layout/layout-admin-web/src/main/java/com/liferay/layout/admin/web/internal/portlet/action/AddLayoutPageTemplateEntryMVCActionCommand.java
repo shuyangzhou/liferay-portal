@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -74,7 +75,7 @@ public class AddLayoutPageTemplateEntryMVCActionCommand
 				_layoutPageTemplateEntryService.addLayoutPageTemplateEntry(
 					serviceContext.getScopeGroupId(),
 					layoutPageTemplateCollectionId, name, type, null,
-					serviceContext);
+					WorkflowConstants.STATUS_DRAFT, serviceContext);
 
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
@@ -104,7 +105,7 @@ public class AddLayoutPageTemplateEntryMVCActionCommand
 		PortletURL portletURL = liferayPortletResponse.createRenderURL();
 
 		portletURL.setParameter(
-			"mvcPath", "/edit_layout_page_template_entry.jsp");
+			"mvcRenderCommandName", "/layout/edit_layout_page_template_entry");
 
 		String redirect = ParamUtil.getString(actionRequest, "redirect");
 

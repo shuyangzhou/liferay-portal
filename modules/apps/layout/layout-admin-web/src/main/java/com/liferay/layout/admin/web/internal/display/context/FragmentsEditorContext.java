@@ -50,6 +50,7 @@ import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -173,6 +174,10 @@ public class FragmentsEditorContext {
 
 		soyContext.put("portletNamespace", _renderResponse.getNamespace());
 		soyContext.put(
+			"publishLayoutPageTemplateEntryURL",
+			_getFragmentEntryActionURL(
+				"/layout/publish_layout_page_template_entry"));
+		soyContext.put(
 			"renderFragmentEntryURL",
 			_getFragmentEntryActionURL("/layout/render_fragment_entry"));
 
@@ -181,9 +186,27 @@ public class FragmentsEditorContext {
 		}
 
 		soyContext.put("sidebarTabs", _getSidebarTabs());
+
+		String redirect = ParamUtil.getString(_request, "redirect");
+
+		soyContext.put("redirectURL", redirect);
+
 		soyContext.put(
 			"spritemap",
 			_themeDisplay.getPathThemeImages() + "/lexicon/icons.svg");
+
+		LayoutPageTemplateEntry layoutPageTemplateEntry =
+			_getLayoutPageTemplateEntry();
+
+		if (layoutPageTemplateEntry.getStatus() !=
+				WorkflowConstants.STATUS_APPROVED) {
+
+			soyContext.put(
+				"status",
+				WorkflowConstants.getStatusLabel(
+					layoutPageTemplateEntry.getStatus()));
+		}
+
 		soyContext.put(
 			"updateFragmentEntryLinksURL",
 			_getFragmentEntryActionURL("/layout/update_fragment_entry_links"));
@@ -324,23 +347,44 @@ public class FragmentsEditorContext {
 		return soyContext;
 	}
 
-	private SoyContext _getSidebarTab(String label) {
-		SoyContext soyContext = SoyContextFactoryUtil.createSoyContext();
-
-		soyContext.put("id", label);
-		soyContext.put(
-			"label", LanguageUtil.get(_themeDisplay.getLocale(), label));
-
-		return soyContext;
-	}
-
 	private List<SoyContext> _getSidebarTabs() {
 		List<SoyContext> soyContexts = new ArrayList<>();
 
-		soyContexts.add(_getSidebarTab("available"));
+		SoyContext availableSoyContext =
+			SoyContextFactoryUtil.createSoyContext();
+
+		availableSoyContext.put("enabled", true);
+		availableSoyContext.put("id", "available");
+		availableSoyContext.put(
+			"label", LanguageUtil.get(_themeDisplay.getLocale(), "available"));
+
+		soyContexts.add(availableSoyContext);
+
+		SoyContext addedSoyContext = SoyContextFactoryUtil.createSoyContext();
+
+		List<FragmentEntryLink> fragmentEntryLinks =
+			FragmentEntryLinkLocalServiceUtil.getFragmentEntryLinks(
+				_themeDisplay.getScopeGroupId(), _classNameId, _classPK);
+
+		addedSoyContext.put("enabled", fragmentEntryLinks.isEmpty());
+
+		addedSoyContext.put("id", "added");
+		addedSoyContext.put(
+			"label", LanguageUtil.get(_themeDisplay.getLocale(), "added"));
+
+		soyContexts.add(addedSoyContext);
 
 		if (_showMapping) {
-			soyContexts.add(_getSidebarTab("mapping"));
+			SoyContext mappingSoyContext =
+				SoyContextFactoryUtil.createSoyContext();
+
+			mappingSoyContext.put("enabled", true);
+			mappingSoyContext.put("id", "mapping");
+			mappingSoyContext.put(
+				"label",
+				LanguageUtil.get(_themeDisplay.getLocale(), "mapping"));
+
+			soyContexts.add(mappingSoyContext);
 		}
 
 		return soyContexts;

@@ -81,6 +81,10 @@ DisplayPageDisplayContext displayPageDisplayContext = new DisplayPageDisplayCont
 							</liferay-frontend:vertical-card-header>
 
 							<liferay-frontend:vertical-card-footer>
+								<span class="label <%= (layoutPageTemplateEntry.getStatus() == WorkflowConstants.STATUS_APPROVED) ? "label-success" : "label-secondary" %>">
+									<liferay-ui:message key="<%= WorkflowConstants.getStatusLabel(layoutPageTemplateEntry.getStatus()) %>" />
+								</span>
+
 								<div class="row">
 									<div class="col text-truncate">
 
@@ -145,6 +149,10 @@ DisplayPageDisplayContext displayPageDisplayContext = new DisplayPageDisplayCont
 							</liferay-frontend:vertical-card-header>
 
 							<liferay-frontend:vertical-card-footer>
+								<span class="label <%= (layoutPageTemplateEntry.getStatus() == WorkflowConstants.STATUS_APPROVED) ? "label-success" : "label-secondary" %>">
+									<liferay-ui:message key="<%= WorkflowConstants.getStatusLabel(layoutPageTemplateEntry.getStatus()) %>" />
+								</span>
+
 								<div class="row">
 									<div class="col text-truncate">
 
@@ -206,7 +214,7 @@ DisplayPageDisplayContext displayPageDisplayContext = new DisplayPageDisplayCont
 </aui:form>
 
 <portlet:actionURL name="/layout/add_layout_page_template_entry" var="addDisplayPageURL">
-	<portlet:param name="mvcPath" value="/edit_layout_page_template_entry.jsp" />
+	<portlet:param name="mvcRenderCommandName" value="/layout/edit_layout_page_template_entry" />
 	<portlet:param name="redirect" value="<%= currentURL %>" />
 	<portlet:param name="type" value="<%= String.valueOf(LayoutPageTemplateEntryTypeConstants.TYPE_DISPLAY_PAGE) %>" />
 </portlet:actionURL>
