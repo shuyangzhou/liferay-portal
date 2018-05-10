@@ -394,7 +394,7 @@ do
 
 	if [[ -z "$(echo "${BRANCH_JSON}" | grep '"sha"')" ]]
 	then
-		error "Failed to retrieve the branch information for ${BRANCH} via the GitHub API."
+		error "Failed to retrieve the branch information for ${BRANCH} via the GitHub API at liferay/${SUBREPO}:${BRANCH}."
 	fi
 
 	CURRENT_TREE_URL="$(echo "${BRANCH_JSON}" | grep '/git/trees/' | sed 's/"[^"]*$//' | sed 's/.*"//')"
@@ -415,7 +415,7 @@ do
 
 	if [[ -z "$(echo "${TREE_CONTENT}" | grep "\"${CURRENT_TREE_URL}\"")" ]]
 	then
-		error "Failed to retrieve the tree content for ${BRANCH} via the GitHub API."
+		error "Failed to retrieve the tree content for ${BRANCH} via the GitHub API at liferay/${SUBREPO}:${BRANCH}."
 	fi
 
 	GRADLEW_BAT_REMOTE_SHA="$(echo "${TREE_CONTENT}" | grep '"gradlew.bat"' | sed 's/.*"sha":"//' | sed 's/".*//')"
