@@ -4338,8 +4338,8 @@ version 1.0.207.
 to version 2.3.144.
 - [LPS-79679]: Update the [Liferay Source Formatter] dependency to version
 1.0.617.
-- [LPS-79959]: Update the default value of the
-`liferay.appServers.jboss.version` property to `7.1.0`.
+- [LPS-79959]: Update the `liferay.appServers.jboss.version` property's default
+value to `7.1.0`.
 - [LPS-80184]: Update the [Liferay Gradle Plugins Service Builder] dependency to
 version 2.1.25.
 - [LPS-80184]: Update the [Liferay Portal Tools Service Builder] dependency to
@@ -4442,6 +4442,16 @@ version 1.0.211.
 version 2.1.29.
 - [LPS-80544]: Update the [Liferay Portal Tools Service Builder] dependency to
 version 1.0.212.
+
+## 3.12.0 - 2018-05-09
+
+### Added
+- [LPS-79453]: Add the `com.liferay.osgi.ext.plugin` plugin to build Ext OSGi
+modules.
+
+### Fixed
+- [LPS-79453]: Avoid adding the `-ext` suffix twice when building Ext plugins.
+- [LPS-79453]: Fix the `deploy` task of Ext plugins.
 
 [Gradle Bundle Plugin]: https://github.com/TomDmitriev/gradle-bundle-plugin
 [Liferay Alloy Taglib]: https://github.com/liferay/alloy-taglibs
@@ -4797,6 +4807,7 @@ version 1.0.212.
 [LPS-79386]: https://issues.liferay.com/browse/LPS-79386
 [LPS-79388]: https://issues.liferay.com/browse/LPS-79388
 [LPS-79450]: https://issues.liferay.com/browse/LPS-79450
+[LPS-79453]: https://issues.liferay.com/browse/LPS-79453
 [LPS-79576]: https://issues.liferay.com/browse/LPS-79576
 [LPS-79623]: https://issues.liferay.com/browse/LPS-79623
 [LPS-79665]: https://issues.liferay.com/browse/LPS-79665

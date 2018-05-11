@@ -22,7 +22,7 @@ import com.liferay.frontend.taglib.chart.servlet.taglib.soy.base.BaseChartTag;
 public class AreaStepChartTag extends BaseChartTag {
 
 	public AreaStepChartTag() {
-		super("AreaStepChart");
+		super("AreaStepChart", "ClayAreaStepChart.render");
 	}
 
 }

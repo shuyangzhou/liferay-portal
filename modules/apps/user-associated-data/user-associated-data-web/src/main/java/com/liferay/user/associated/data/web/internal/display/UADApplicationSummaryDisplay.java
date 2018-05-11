@@ -19,32 +19,32 @@ package com.liferay.user.associated.data.web.internal.display;
  */
 public class UADApplicationSummaryDisplay {
 
-	public int getCount() {
-		return _count;
+	public String getApplicationKey() {
+		return _applicationKey;
 	}
 
-	public String getName() {
-		return _name;
+	public int getCount() {
+		return _count;
 	}
 
 	public String getViewURL() {
 		return _viewURL;
 	}
 
-	public void setCount(int count) {
-		_count = count;
+	public void setApplicationKey(String applicationKey) {
+		_applicationKey = applicationKey;
 	}
 
-	public void setName(String name) {
-		_name = name;
+	public void setCount(int count) {
+		_count = count;
 	}
 
 	public void setViewURL(String viewURL) {
 		_viewURL = viewURL;
 	}
 
+	private String _applicationKey;
 	private int _count;
-	private String _name;
 	private String _viewURL;
 
 }
