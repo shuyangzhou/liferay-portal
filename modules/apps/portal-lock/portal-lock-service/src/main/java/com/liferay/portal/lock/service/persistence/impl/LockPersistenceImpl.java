@@ -1296,7 +1296,11 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 		Object[] finderArgs = null;
 
 		finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_LTEXPIRATIONDATE;
-		finderArgs = new Object[] { expirationDate, start, end, orderByComparator };
+		finderArgs = new Object[] {
+				_getTime(expirationDate),
+				
+				start, end, orderByComparator
+			};
 
 		List<Lock> list = null;
 
@@ -1680,7 +1684,7 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 	public int countByLtExpirationDate(Date expirationDate) {
 		FinderPath finderPath = FINDER_PATH_WITH_PAGINATION_COUNT_BY_LTEXPIRATIONDATE;
 
-		Object[] finderArgs = new Object[] { expirationDate };
+		Object[] finderArgs = new Object[] { _getTime(expirationDate) };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -2805,6 +2809,15 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 	protected EntityCache entityCache;
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
+
+	private Long _getTime(Date date) {
+		if (date == null) {
+			return null;
+		}
+
+		return date.getTime();
+	}
+
 	private static final String _SQL_SELECT_LOCK = "SELECT lock FROM Lock lock";
 	private static final String _SQL_SELECT_LOCK_WHERE_PKS_IN = "SELECT lock FROM Lock lock WHERE lockId IN (";
 	private static final String _SQL_SELECT_LOCK_WHERE = "SELECT lock FROM Lock lock WHERE ";
