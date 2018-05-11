@@ -119,6 +119,7 @@ import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
+import org.dom4j.DocumentType;
 import org.dom4j.Element;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
@@ -594,6 +595,8 @@ public class ServiceBuilder {
 			Document document = saxReader.read(
 				new XMLSafeReader(
 					ToolsUtil.getContent(_normalize(inputFileName))));
+
+			_compatProperties = _getCompatProperties(document.getDocType());
 
 			Element rootElement = document.getRootElement();
 
@@ -4433,6 +4436,31 @@ public class ServiceBuilder {
 		return columnLengths;
 	}
 
+	private Properties _getCompatProperties(DocumentType documentType) {
+		String systemID = documentType.getSystemID();
+
+		_pattern = Pattern.compile(".*service-builder_(.*).dtd");
+
+		Matcher matcher = _pattern.matcher(systemID);
+
+		matcher.matches();
+
+		String version = matcher.group(1);
+
+		Properties properties = new Properties();
+
+		try (InputStream is = ServiceBuilder.class.getResourceAsStream(
+				"dependencies/" + version + "/compatibility.properties")) {
+
+			properties.load(is);
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+		return properties;
+	}
+
 	private Map<String, Object> _getContext() throws TemplateModelException {
 		BeansWrapper beansWrapper = BeansWrapper.getDefaultInstance();
 
@@ -6980,6 +7008,7 @@ public class ServiceBuilder {
 	private boolean _build;
 	private long _buildNumber;
 	private boolean _buildNumberIncrement;
+	private Properties _compatProperties;
 	private String _currentTplName;
 	private int _databaseNameMaxLength = 30;
 	private List<Entity> _entities;
@@ -6995,6 +7024,7 @@ public class ServiceBuilder {
 	private boolean _osgiModule;
 	private String _outputPath;
 	private String _packagePath;
+	private Pattern _pattern;
 	private String _pluginName;
 	private String _portletShortName = StringPool.BLANK;
 	private String _propsUtil;
