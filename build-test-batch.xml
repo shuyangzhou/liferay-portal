@@ -302,9 +302,23 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 					<set-portal-impl-system-ext-properties />
 
-					<exec executable="${database.service.executable}" failonerror="true">
+					<exec executable="${database.service.executable}" outputproperty="exec.output" resultproperty="exec.result">
 						<arg line="${database.service.cmd.start}" />
 					</exec>
+
+					<echo>Exec.output: ${exec.output}</echo>
+
+					<if>
+						<and>
+							<equals arg1="${exec.result}" arg2="2" />
+							<equals arg1="@{database.type}" arg2="db2" />
+						</and>
+						<then>
+							<exec executable="db2diag">
+								<arg line="-H 1d" />
+							</exec>
+						</then>
+					</if>
 
 					<antcall inheritall="false" target="copy-optional-jars">
 						<param name="database.type" value="@{database.type}" />
