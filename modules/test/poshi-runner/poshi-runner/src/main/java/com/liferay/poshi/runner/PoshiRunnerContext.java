@@ -1292,7 +1292,7 @@ public class PoshiRunnerContext {
 	private static final Map<String, String> _pathLocators = new HashMap<>();
 	private static final Pattern _poshiResourceJarNamePattern = Pattern.compile(
 		"jar:.*\\/(?<namespace>\\w+)\\-(?<branchName>\\w+" +
-			"(\\-\\w+)*)\\-(?<sha>\\w+)\\.jar.*");
+			"([\\-\\.]\\w+)*)\\-(?<timestamp>\\d+)\\-(?<sha>\\w+)\\.jar.*");
 	private static final Map<String, Element> _rootElements = new HashMap<>();
 	private static final Map<String, Integer> _seleniumParameterCounts =
 		new HashMap<>();
