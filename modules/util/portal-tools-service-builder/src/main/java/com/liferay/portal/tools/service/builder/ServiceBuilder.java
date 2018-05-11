@@ -2111,6 +2111,9 @@ public class ServiceBuilder {
 		Map<String, Object> context = _getContext();
 
 		context.put("entity", entity);
+		context.put(
+			"stringBundlerCompat",
+			_compatProperties.getProperty("StringBundler"));
 
 		// Content
 
@@ -2168,6 +2171,9 @@ public class ServiceBuilder {
 		Map<String, Object> context = _getContext();
 
 		context.put("entity", entity);
+		context.put(
+			"stringBundlerCompat",
+			_compatProperties.getProperty("StringBundler"));
 
 		// Content
 
@@ -2358,6 +2364,9 @@ public class ServiceBuilder {
 		Map<String, Object> context = _getContext();
 
 		context.put("entity", entity);
+		context.put(
+			"stringBundlerCompat",
+			_compatProperties.getProperty("StringBundler"));
 
 		JavaClass modelImplJavaClass = _getJavaClass(
 			StringBundler.concat(
@@ -2716,6 +2725,9 @@ public class ServiceBuilder {
 
 		context.put("cacheFields", _getCacheFields(modelImplJavaClass));
 		context.put("entity", entity);
+		context.put(
+			"stringBundlerCompat",
+			_compatProperties.getProperty("StringBundler"));
 
 		context = _putDeprecatedKeys(context, modelImplJavaClass);
 
@@ -2808,6 +2820,9 @@ public class ServiceBuilder {
 		context.put("cacheFields", _getCacheFields(modelImplJavaClass));
 		context.put("entity", entity);
 		context.put("hasClassNameCacheField", hasClassNameCacheField);
+		context.put(
+			"stringBundlerCompat",
+			_compatProperties.getProperty("StringBundler"));
 
 		context = _putDeprecatedKeys(context, modelImplJavaClass);
 
@@ -2928,6 +2943,9 @@ public class ServiceBuilder {
 
 		context.put("entity", entity);
 		context.put("referenceEntities", _mergeReferenceEntities(entity));
+		context.put(
+			"stringBundlerCompat",
+			_compatProperties.getProperty("StringBundler"));
 
 		JavaClass modelImplJavaClass = _getJavaClass(
 			StringBundler.concat(
