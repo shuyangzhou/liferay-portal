@@ -52,14 +52,14 @@ public class SchedulerProxyMessagingConfigurator {
 		Destination destination = _destinationFactory.createDestination(
 			destinationConfiguration);
 
+		destination.register(_proxyMessageListener);
+
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
 		properties.put("destination.name", destination.getName());
 
 		_destinationServiceRegistration = bundleContext.registerService(
 			Destination.class, destination, properties);
-
-		destination.register(_proxyMessageListener);
 	}
 
 	@Deactivate
