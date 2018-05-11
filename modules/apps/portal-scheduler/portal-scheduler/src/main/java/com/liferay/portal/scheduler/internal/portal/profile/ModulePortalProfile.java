@@ -62,12 +62,11 @@ public class ModulePortalProfile extends BaseDSModulePortalProfile {
 			bundleContext.registerService(
 				SchedulerEngineHelper.class,
 				ProxyFactory.newDummyInstance(SchedulerEngineHelper.class),
-				new HashMapDictionary<String, Object>());
+				new HashMapDictionary<>());
 		}
 
 		init(
 			componentContext, supportedPortalProfileNames,
-			SchedulerEngineHelperImpl.class.getName(),
 			SchedulerHelperPropertiesVerifyProcess.class.getName(),
 			SchedulerProxyMessagingConfigurator.class.getName());
 	}
