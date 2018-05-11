@@ -35,6 +35,7 @@ public class ClassNameLocalServiceImpl
 	extends ClassNameLocalServiceBaseImpl implements CacheRegistryItem {
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public ClassName addClassName(String value) {
 		ClassName className = classNamePersistence.fetchByValue(value);
 
