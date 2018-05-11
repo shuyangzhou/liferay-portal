@@ -2074,10 +2074,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		}
 
 		get(targetURL);
-
-		if (PropsValues.BROWSER_TYPE.equals("internetexplorer")) {
-			refresh();
-		}
 	}
 
 	@Override
