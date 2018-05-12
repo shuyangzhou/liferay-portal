@@ -815,9 +815,9 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			}
 		}
 
-		if (expiredJobMessages.isEmpty()) {
-			return;
-		}
+//		if (expiredJobMessages.isEmpty()) {
+//			return;
+//		}
 
 		_serviceTracker = new ServiceTracker<>(
 			_bundleContext, SchedulerEngineHelper.class,
