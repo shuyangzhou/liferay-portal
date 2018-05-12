@@ -15,6 +15,7 @@
 package com.liferay.portal.upgrade.v7_0_3;
 
 import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.log.Log;
@@ -22,8 +23,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringUtil;
 
-import java.sql.PreparedStatement;
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -33,44 +35,60 @@ import java.sql.SQLException;
 public class UpgradeSybase extends UpgradeProcess {
 
 	protected void alterVarcharColumns() throws Exception {
-		StringBundler sb = new StringBundler(3);
+		DatabaseMetaData databaseMetaData = connection.getMetaData();
+		DBInspector dbInspector = new DBInspector(connection);
 
-		sb.append("select o.name, c.name from sysobjects o, syscolumns c, ");
-		sb.append("systypes t where o.id = c.id and c.type = t.type and ");
-		sb.append("t.name = 'varchar' and c.length = 1000");
+		String catalog = dbInspector.getCatalog();
+		String schema = dbInspector.getSchema();
 
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps = connection.prepareStatement(sb.toString());
-			ResultSet rs = ps.executeQuery()) {
+			ResultSet tableRS = databaseMetaData.getTables(
+				catalog, schema, null, new String[] {"TABLE"})) {
 
-			while (rs.next()) {
-				String tableName = rs.getString(1);
+			while (tableRS.next()) {
+				String tableName = tableRS.getString("TABLE_NAME");
 
-				String columnName = rs.getString(2);
+				try (ResultSet columnRS = databaseMetaData.getColumns(
+						catalog, schema, tableName, null)) {
 
-				try {
-					runSQL(
-						StringBundler.concat(
-							"alter table ", tableName, " modify ", columnName,
-							" varchar(4000)"));
-				}
-				catch (SQLException sqle) {
-					if (sqle.getErrorCode() == 1441) {
-						if (_log.isWarnEnabled()) {
-							sb = new StringBundler(6);
+					while (columnRS.next()) {
+						int size = columnRS.getInt("COLUMN_SIZE");
 
-							sb.append("Unable to alter length of column ");
-							sb.append(columnName);
-							sb.append(" for table ");
-							sb.append(tableName);
-							sb.append(" because it contains values larger ");
-							sb.append("than the new column length");
+						if ((size == 1000) &&
+							StringUtil.equalsIgnoreCase(
+								"varchar", columnRS.getString("TYPE_NAME"))) {
 
-							_log.warn(sb.toString());
+							String columnName = columnRS.getString(
+								"COLUMN_NAME");
+
+							try {
+								runSQL(
+									StringBundler.concat(
+										"alter table ", tableName, " modify ",
+										columnName, " varchar(4000)"));
+							}
+							catch (SQLException sqle) {
+								if (sqle.getErrorCode() == 1441) {
+									if (_log.isWarnEnabled()) {
+										StringBundler sb = new StringBundler(8);
+
+										sb.append("Unable to alter length of ");
+										sb.append("column ");
+										sb.append(columnName);
+										sb.append(" for table ");
+										sb.append(tableName);
+										sb.append(" because it contains ");
+										sb.append("values larger than the ");
+										sb.append("new column length");
+
+										_log.warn(sb.toString());
+									}
+								}
+								else {
+									throw sqle;
+								}
+							}
 						}
-					}
-					else {
-						throw sqle;
 					}
 				}
 			}
