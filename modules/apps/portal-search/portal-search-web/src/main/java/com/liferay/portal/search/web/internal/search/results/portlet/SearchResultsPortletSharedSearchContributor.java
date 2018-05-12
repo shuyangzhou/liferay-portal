@@ -15,6 +15,7 @@
 package com.liferay.portal.search.web.internal.search.results.portlet;
 
 import com.liferay.portal.kernel.search.QueryConfig;
+import com.liferay.portal.search.web.internal.search.results.constants.SearchResultsPortletKeys;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 
@@ -25,7 +26,10 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author André de Oliveira
  */
-@Component(immediate = true)
+@Component(
+	immediate = true,
+	property = "javax.portlet.name=" + SearchResultsPortletKeys.SEARCH_RESULTS
+)
 public class SearchResultsPortletSharedSearchContributor
 	implements PortletSharedSearchContributor {
 

@@ -17,6 +17,7 @@ package com.liferay.portal.search.web.internal.tag.facet.portlet;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.search.facet.tag.AssetTagNamesFacetFactory;
 import com.liferay.portal.search.web.internal.tag.facet.builder.AssetTagsFacetBuilder;
+import com.liferay.portal.search.web.internal.tag.facet.constants.TagFacetPortletKeys;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 
@@ -28,7 +29,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Lino Alves
  */
-@Component(immediate = true)
+@Component(
+	immediate = true,
+	property = "javax.portlet.name=" + TagFacetPortletKeys.TAG_FACET
+)
 public class TagFacetPortletSharedSearchContributor
 	implements PortletSharedSearchContributor {
 

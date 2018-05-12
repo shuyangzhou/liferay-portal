@@ -16,6 +16,7 @@ package com.liferay.portal.search.web.internal.site.facet.portlet;
 
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.ScopeFacetFactory;
+import com.liferay.portal.search.web.internal.site.facet.constants.SiteFacetPortletKeys;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 
@@ -27,7 +28,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author André de Oliveira
  */
-@Component(immediate = true)
+@Component(
+	immediate = true,
+	property = "javax.portlet.name=" + SiteFacetPortletKeys.SITE_FACET
+)
 public class SiteFacetPortletSharedSearchContributor
 	implements PortletSharedSearchContributor {
 

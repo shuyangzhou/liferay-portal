@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.search.web.internal.category.facet.builder.AssetCategoriesFacetBuilder;
 import com.liferay.portal.search.web.internal.category.facet.builder.AssetCategoriesFacetFactory;
+import com.liferay.portal.search.web.internal.category.facet.constants.CategoryFacetPortletKeys;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 
@@ -30,7 +31,10 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Lino Alves
  */
-@Component(immediate = true)
+@Component(
+	immediate = true,
+	property = "javax.portlet.name=" + CategoryFacetPortletKeys.CATEGORY_FACET
+)
 public class CategoryFacetPortletSharedSearchContributor
 	implements PortletSharedSearchContributor {
 

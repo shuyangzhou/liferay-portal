@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.search.facet.custom.CustomFacetFactory;
 import com.liferay.portal.search.web.internal.custom.facet.builder.CustomFacetBuilder;
+import com.liferay.portal.search.web.internal.custom.facet.constants.CustomFacetPortletKeys;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchContributor;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSettings;
 
@@ -32,7 +33,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  *@author Wade Cao
  */
-@Component(immediate = true)
+@Component(
+	immediate = true,
+	property = "javax.portlet.name=" + CustomFacetPortletKeys.CUSTOM_FACET
+)
 public class CustomFacetPortletSharedSearchContributor
 	implements PortletSharedSearchContributor {
 
