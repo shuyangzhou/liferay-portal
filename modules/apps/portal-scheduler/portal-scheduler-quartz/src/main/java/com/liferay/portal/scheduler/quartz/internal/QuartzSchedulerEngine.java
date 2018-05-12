@@ -49,6 +49,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -56,6 +58,8 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 import org.quartz.Calendar;
 import org.quartz.JobBuilder;
@@ -408,6 +412,10 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 			if (!_memoryScheduler.isInStandbyMode()) {
 				_memoryScheduler.standby();
 			}
+
+			if (_serviceTracker != null) {
+				_serviceTracker.close();
+			}
 		}
 		catch (Exception e) {
 			throw new SchedulerException("Unable to shutdown scheduler", e);
@@ -555,13 +563,15 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	}
 
 	@Activate
-	protected void activate() {
+	protected void activate(BundleContext bundleContext) {
 		_schedulerEngineEnabled = GetterUtil.getBoolean(
 			_props.get(PropsKeys.SCHEDULER_ENABLED));
 
 		if (!_schedulerEngineEnabled) {
 			return;
 		}
+
+		_bundleContext = bundleContext;
 
 		try {
 			_persistedScheduler = initializeScheduler(
@@ -779,6 +789,8 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	protected void initJobState() throws Exception {
 		List<String> groupNames = _persistedScheduler.getJobGroupNames();
 
+		final List<Message> expiredJobMessages = new ArrayList<>();
+
 		for (String groupName : groupNames) {
 			Set<JobKey> jobkeys = _persistedScheduler.getJobKeys(
 				GroupMatcher.jobGroupEquals(groupName));
@@ -797,14 +809,58 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 
 				Message message = getMessage(jobDataMap);
 
-				if (_schedulerEngineHelper != null) {
-					_schedulerEngineHelper.auditSchedulerJobs(
-						message, TriggerState.EXPIRED);
-				}
+				expiredJobMessages.add(message);
 
 				_persistedScheduler.deleteJob(jobKey);
 			}
 		}
+
+		if (expiredJobMessages.isEmpty()) {
+			return;
+		}
+
+		_serviceTracker = new ServiceTracker<>(
+			_bundleContext, SchedulerEngineHelper.class,
+			new ServiceTrackerCustomizer
+				<SchedulerEngineHelper, SchedulerEngineHelper>() {
+
+				@Override
+				public SchedulerEngineHelper addingService(
+					ServiceReference<SchedulerEngineHelper> serviceReference) {
+
+					SchedulerEngineHelper schedulerEngineHelper =
+						_bundleContext.getService(serviceReference);
+
+					try {
+						for (Message message : expiredJobMessages) {
+							schedulerEngineHelper.auditSchedulerJobs(
+								message, TriggerState.EXPIRED);
+						}
+					}
+					catch (SchedulerException se) {
+						_log.error(se);
+					}
+
+					return schedulerEngineHelper;
+				}
+
+				@Override
+				public void modifiedService(
+					ServiceReference<SchedulerEngineHelper> serviceReference,
+					SchedulerEngineHelper schedulerEngineHelper) {
+				}
+
+				@Override
+				public void removedService(
+					ServiceReference<SchedulerEngineHelper> serviceReference,
+					SchedulerEngineHelper schedulerEngineHelper) {
+
+					_bundleContext.ungetService(serviceReference);
+				}
+
+			});
+
+		_serviceTracker.open();
 	}
 
 	protected void schedule(
@@ -913,17 +969,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	protected void setRelease(Release release) {
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void setSchedulerEngineHelper(
-		SchedulerEngineHelper schedulerEngineHelper) {
-
-		_schedulerEngineHelper = schedulerEngineHelper;
-	}
-
 	protected void unschedule(Scheduler scheduler, JobKey jobKey)
 		throws Exception {
 
@@ -976,12 +1021,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		PortletLocalService portletLocalService) {
 
 		_portletLocalService = null;
-	}
-
-	protected void unsetSchedulerEngineHelper(
-		SchedulerEngineHelper schedulerEngineHelper) {
-
-		_schedulerEngineHelper = null;
 	}
 
 	protected void update(
@@ -1052,6 +1091,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	private static final Log _log = LogFactoryUtil.getLog(
 		QuartzSchedulerEngine.class);
 
+	private BundleContext _bundleContext;
 	private int _descriptionMaxLength;
 	private int _groupNameMaxLength;
 	private int _jobNameMaxLength;
@@ -1063,6 +1103,7 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	private Props _props;
 	private QuartzTriggerFactory _quartzTriggerFactory;
 	private volatile boolean _schedulerEngineEnabled;
-	private SchedulerEngineHelper _schedulerEngineHelper;
+	private ServiceTracker<SchedulerEngineHelper, SchedulerEngineHelper>
+		_serviceTracker;
 
 }
