@@ -21,11 +21,13 @@ import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.proxy.ProxyMessageListener;
 import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.scheduler.internal.SchedulerEngineHelperImpl;
 
 import java.util.Dictionary;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -41,8 +43,8 @@ import org.osgi.service.component.annotations.Reference;
 public class SchedulerProxyMessagingConfigurator {
 
 	@Activate
-	protected void activate(BundleContext bundleContext) {
-		_bundleContext = bundleContext;
+	protected void activate(ComponentContext componentContext) {
+		_componentContext = componentContext;
 
 		DestinationConfiguration destinationConfiguration =
 			new DestinationConfiguration(
@@ -52,28 +54,34 @@ public class SchedulerProxyMessagingConfigurator {
 		Destination destination = _destinationFactory.createDestination(
 			destinationConfiguration);
 
+		destination.register(_proxyMessageListener);
+
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
 		properties.put("destination.name", destination.getName());
 
+		BundleContext bundleContext = componentContext.getBundleContext();
+
 		_destinationServiceRegistration = bundleContext.registerService(
 			Destination.class, destination, properties);
 
-		destination.register(_proxyMessageListener);
+		componentContext.enableComponent(
+			SchedulerEngineHelperImpl.class.getName());
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		if (_destinationServiceRegistration != null) {
-			Destination destination = _bundleContext.getService(
-				_destinationServiceRegistration.getReference());
+		BundleContext bundleContext = _componentContext.getBundleContext();
 
-			_destinationServiceRegistration.unregister();
+		Destination destination = bundleContext.getService(
+			_destinationServiceRegistration.getReference());
 
-			destination.destroy();
-		}
+		_destinationServiceRegistration.unregister();
 
-		_bundleContext = null;
+		destination.destroy();
+
+		_componentContext.disableComponent(
+			SchedulerEngineHelperImpl.class.getName());
 	}
 
 	@Reference(unbind = "-")
@@ -98,10 +106,9 @@ public class SchedulerProxyMessagingConfigurator {
 		_proxyMessageListener = proxyMessageListener;
 	}
 
-	private volatile BundleContext _bundleContext;
+	private ComponentContext _componentContext;
 	private DestinationFactory _destinationFactory;
-	private volatile ServiceRegistration<Destination>
-		_destinationServiceRegistration;
+	private ServiceRegistration<Destination> _destinationServiceRegistration;
 	private ProxyMessageListener _proxyMessageListener;
 
 }
