@@ -39,7 +39,8 @@ public class ConditionPoshiElement extends ExecutePoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(parentPoshiElement, readableSyntax)) {
-			return new ConditionPoshiElement(readableSyntax);
+			return new ConditionPoshiElement(
+				parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -58,8 +59,10 @@ public class ConditionPoshiElement extends ExecutePoshiElement {
 		super(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected ConditionPoshiElement(String readableSyntax) {
-		super(_ELEMENT_NAME, readableSyntax);
+	protected ConditionPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	@Override
