@@ -185,13 +185,14 @@ public class SiteNavigationAdminDisplayContext {
 	}
 
 	public List<NavigationItem> getNavigationItems() {
+		PortletURL portletURL = _liferayPortletResponse.createRenderURL();
+
 		return new NavigationItemList() {
 			{
 				add(
 					navigationItem -> {
 						navigationItem.setActive(true);
-						navigationItem.setHref(
-							_liferayPortletResponse.createRenderURL());
+						navigationItem.setHref(portletURL);
 						navigationItem.setLabel(
 							LanguageUtil.get(_request, "menus"));
 					});
@@ -269,10 +270,6 @@ public class SiteNavigationAdminDisplayContext {
 		SearchContainer searchContainer = new SearchContainer(
 			_liferayPortletRequest, getPortletURL(), null,
 			"there-are-no-navigation-menus");
-
-		if (Validator.isNotNull(getKeywords())) {
-			searchContainer.setSearch(true);
-		}
 
 		OrderByComparator<SiteNavigationMenu> orderByComparator =
 			SiteNavigationMenuPortletUtil.getOrderByComparator(

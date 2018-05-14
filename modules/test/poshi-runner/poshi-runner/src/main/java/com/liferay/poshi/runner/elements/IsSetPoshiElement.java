@@ -39,7 +39,7 @@ public class IsSetPoshiElement extends PoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(parentPoshiElement, readableSyntax)) {
-			return new IsSetPoshiElement(readableSyntax);
+			return new IsSetPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -68,8 +68,10 @@ public class IsSetPoshiElement extends PoshiElement {
 		super(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected IsSetPoshiElement(String readableSyntax) {
-		super(_ELEMENT_NAME, readableSyntax);
+	protected IsSetPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	@Override

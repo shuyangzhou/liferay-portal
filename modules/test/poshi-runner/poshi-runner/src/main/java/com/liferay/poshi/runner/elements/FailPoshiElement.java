@@ -39,7 +39,7 @@ public class FailPoshiElement extends EchoPoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(readableSyntax)) {
-			return new FailPoshiElement(readableSyntax);
+			return new FailPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -56,8 +56,10 @@ public class FailPoshiElement extends EchoPoshiElement {
 		super(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected FailPoshiElement(String readableSyntax) {
-		super(_ELEMENT_NAME, readableSyntax);
+	protected FailPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	@Override

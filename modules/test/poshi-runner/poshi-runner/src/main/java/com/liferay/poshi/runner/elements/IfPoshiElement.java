@@ -40,7 +40,7 @@ public class IfPoshiElement extends PoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(readableSyntax)) {
-			return new IfPoshiElement(readableSyntax);
+			return new IfPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -97,8 +97,10 @@ public class IfPoshiElement extends PoshiElement {
 		this(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected IfPoshiElement(String readableSyntax) {
-		super("if", readableSyntax);
+	protected IfPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super("if", parentPoshiElement, readableSyntax);
 	}
 
 	protected IfPoshiElement(String name, Element element) {
@@ -111,8 +113,10 @@ public class IfPoshiElement extends PoshiElement {
 		super(elementName, attributes, nodes);
 	}
 
-	protected IfPoshiElement(String name, String readableSyntax) {
-		super(name, readableSyntax);
+	protected IfPoshiElement(
+		String name, PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(name, parentPoshiElement, readableSyntax);
 	}
 
 	@Override

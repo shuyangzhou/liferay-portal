@@ -179,10 +179,6 @@ public class FragmentDisplayContext {
 			_renderRequest, _renderResponse.createRenderURL(), null,
 			"there-are-no-fragments");
 
-		if (_isSearch()) {
-			fragmentEntriesSearchContainer.setSearch(true);
-		}
-
 		fragmentEntriesSearchContainer.setRowChecker(
 			new EmptyOnClickRowChecker(_renderResponse));
 
@@ -405,7 +401,7 @@ public class FragmentDisplayContext {
 					navigationItem -> {
 						navigationItem.setActive(true);
 						navigationItem.setHref(
-							_renderResponse.createRenderURL());
+							(PortletURL)_renderResponse.createRenderURL());
 						navigationItem.setLabel(
 							LanguageUtil.get(_request, "fragments"));
 					});

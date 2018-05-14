@@ -62,7 +62,7 @@ request.setAttribute("view.jsp-orderByType", orderByType);
 				add(
 					navigationItem -> {
 						navigationItem.setActive(true);
-						navigationItem.setHref(renderResponse.createRenderURL(), "mvcRenderCommandName", "/wiki_admin/view");
+						navigationItem.setHref((PortletURL)renderResponse.createRenderURL(), "mvcRenderCommandName", "/wiki_admin/view");
 						navigationItem.setLabel(LanguageUtil.get(request, "wikis"));
 					});
 			}
@@ -129,7 +129,7 @@ int nodesCount = WikiNodeServiceUtil.getNodesCount(scopeGroupId);
 		<liferay-frontend:management-bar-button
 			href='<%= "javascript:" + renderResponse.getNamespace() + "deleteNodes();" %>'
 			icon='<%= trashHelper.isTrashEnabled(scopeGroupId) ? "trash" : "times" %>'
-			label='<%= trashHelper.isTrashEnabled(scopeGroupId) ? "recycle-bin" : "delete" %>'
+			label='<%= trashHelper.isTrashEnabled(scopeGroupId) ? "move-to-the-recycle-bin" : "delete" %>'
 		/>
 	</liferay-frontend:management-bar-action-buttons>
 </liferay-frontend:management-bar>

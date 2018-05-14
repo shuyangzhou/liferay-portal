@@ -111,8 +111,8 @@ public class AssetCategoriesDisplayContext {
 					navigationItem -> {
 						navigationItem.setActive(true);
 						navigationItem.setHref(
-							_renderResponse.createRenderURL(), "mvcPath",
-							"/view_categories.jsp", "vocabularyId",
+							(PortletURL)_renderResponse.createRenderURL(),
+							"mvcPath", "/view_categories.jsp", "vocabularyId",
 							String.valueOf(getVocabularyId()));
 						navigationItem.setLabel(
 							LanguageUtil.get(_request, "categories"));
@@ -212,7 +212,7 @@ public class AssetCategoriesDisplayContext {
 					navigationItem -> {
 						navigationItem.setActive(true);
 						navigationItem.setHref(
-							_renderResponse.createRenderURL());
+							(PortletURL)_renderResponse.createRenderURL());
 						navigationItem.setLabel(
 							LanguageUtil.get(_request, "vocabularies"));
 					});
@@ -365,10 +365,6 @@ public class AssetCategoriesDisplayContext {
 
 		SearchContainer categoriesSearchContainer = new SearchContainer(
 			_renderRequest, _getIteratorURL(), null, "there-are-no-categories");
-
-		if (Validator.isNotNull(_getKeywords())) {
-			categoriesSearchContainer.setSearch(true);
-		}
 
 		categoriesSearchContainer.setOrderByCol(_getOrderByCol());
 
@@ -686,8 +682,8 @@ public class AssetCategoriesDisplayContext {
 				addPrimaryDropdownItem(
 					dropdownItem -> {
 						dropdownItem.setHref(
-							_renderResponse.createRenderURL(), "mvcPath",
-							"/edit_vocabulary.jsp");
+							(PortletURL)_renderResponse.createRenderURL(),
+							"mvcPath", "/edit_vocabulary.jsp");
 						dropdownItem.setLabel(
 							LanguageUtil.get(_request, "add-vocabulary"));
 					});
@@ -734,12 +730,6 @@ public class AssetCategoriesDisplayContext {
 			_renderRequest, _renderResponse.createRenderURL(), null,
 			"there-are-no-vocabularies");
 
-		String keywords = _getKeywords();
-
-		if (Validator.isNotNull(keywords)) {
-			vocabulariesSearchContainer.setSearch(true);
-		}
-
 		vocabulariesSearchContainer.setOrderByCol(_getOrderByCol());
 
 		String orderByType = getOrderByType();
@@ -779,6 +769,8 @@ public class AssetCategoriesDisplayContext {
 			WebKeys.THEME_DISPLAY);
 
 		long scopeGroupId = themeDisplay.getScopeGroupId();
+
+		String keywords = _getKeywords();
 
 		if (Validator.isNotNull(keywords)) {
 			Sort sort = new Sort("createDate", Sort.LONG_TYPE, orderByAsc);
@@ -1116,7 +1108,8 @@ public class AssetCategoriesDisplayContext {
 				add(
 					dropdownItem -> {
 						dropdownItem.setActive(true);
-						dropdownItem.setHref(_renderResponse.createRenderURL());
+						dropdownItem.setHref(
+							(PortletURL)_renderResponse.createRenderURL());
 						dropdownItem.setLabel(
 							LanguageUtil.get(_request, "all"));
 					});
@@ -1130,7 +1123,8 @@ public class AssetCategoriesDisplayContext {
 				add(
 					dropdownItem -> {
 						dropdownItem.setActive(true);
-						dropdownItem.setHref(_renderResponse.createRenderURL());
+						dropdownItem.setHref(
+							(PortletURL)_renderResponse.createRenderURL());
 						dropdownItem.setLabel(
 							LanguageUtil.get(_request, "create-date"));
 					});
