@@ -39,7 +39,8 @@ public class TakeScreenshotPoshiElement extends PoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(readableSyntax)) {
-			return new TakeScreenshotPoshiElement(readableSyntax);
+			return new TakeScreenshotPoshiElement(
+				parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -69,8 +70,10 @@ public class TakeScreenshotPoshiElement extends PoshiElement {
 		super(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected TakeScreenshotPoshiElement(String readableSyntax) {
-		super(_ELEMENT_NAME, readableSyntax);
+	protected TakeScreenshotPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	@Override

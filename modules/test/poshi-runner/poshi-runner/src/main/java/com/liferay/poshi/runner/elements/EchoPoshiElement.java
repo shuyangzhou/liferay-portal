@@ -39,7 +39,7 @@ public class EchoPoshiElement extends PoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(readableSyntax)) {
-			return new EchoPoshiElement(readableSyntax);
+			return new EchoPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -70,8 +70,10 @@ public class EchoPoshiElement extends PoshiElement {
 		this(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected EchoPoshiElement(String readableSyntax) {
-		super(_ELEMENT_NAME, readableSyntax);
+	protected EchoPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	protected EchoPoshiElement(String name, Element element) {
@@ -84,8 +86,10 @@ public class EchoPoshiElement extends PoshiElement {
 		super(elementName, attributes, nodes);
 	}
 
-	protected EchoPoshiElement(String name, String readableSyntax) {
-		super(name, readableSyntax);
+	protected EchoPoshiElement(
+		String name, PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(name, parentPoshiElement, readableSyntax);
 	}
 
 	@Override
