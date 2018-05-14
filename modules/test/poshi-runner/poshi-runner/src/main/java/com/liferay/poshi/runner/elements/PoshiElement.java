@@ -140,10 +140,16 @@ public abstract class PoshiElement
 		}
 	}
 
-	protected PoshiElement(String name, String readableSyntax) {
+	protected PoshiElement(
+		String name, PoshiElement parentPoshiElement, String readableSyntax) {
+
 		super(name);
 
+		setParent(parentPoshiElement);
+
 		parseReadableSyntax(readableSyntax);
+
+		detach();
 	}
 
 	protected String createReadableBlock(String content) {
@@ -177,6 +183,12 @@ public abstract class PoshiElement
 		return RegexUtil.getGroup(readableSyntax, ".*?\\{(.*)\\}", 1);
 	}
 
+	protected String getFileType() {
+		PoshiElement poshiParentElement = (PoshiElement)getParent();
+
+		return poshiParentElement.getFileType();
+	}
+
 	protected String getNameFromAssignment(String assignment) {
 		String name = assignment.split("=")[0];
 
@@ -197,6 +209,12 @@ public abstract class PoshiElement
 
 	protected String getQuotedContent(String readableSyntax) {
 		return RegexUtil.getGroup(readableSyntax, ".*?\"(.*)\"", 1);
+	}
+
+	protected String getReadableCommandKeyword() {
+		PoshiElement poshiParentElement = (PoshiElement)getParent();
+
+		return poshiParentElement.getReadableCommandKeyword();
 	}
 
 	protected String getReadableEscapedContent(String readableSyntax) {

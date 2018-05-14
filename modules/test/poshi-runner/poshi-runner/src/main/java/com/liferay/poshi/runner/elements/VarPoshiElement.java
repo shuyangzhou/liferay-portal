@@ -45,7 +45,7 @@ public class VarPoshiElement extends PoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(readableSyntax)) {
-			return new VarPoshiElement(readableSyntax);
+			return new VarPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -164,8 +164,10 @@ public class VarPoshiElement extends PoshiElement {
 		this(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected VarPoshiElement(String readableSyntax) {
-		this(_ELEMENT_NAME, readableSyntax);
+	protected VarPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		this(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	protected VarPoshiElement(String name, Element element) {
@@ -182,8 +184,10 @@ public class VarPoshiElement extends PoshiElement {
 		super(elementName, attributes, nodes);
 	}
 
-	protected VarPoshiElement(String name, String readableSyntax) {
-		super(name, readableSyntax);
+	protected VarPoshiElement(
+		String name, PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(name, parentPoshiElement, readableSyntax);
 	}
 
 	@Override
