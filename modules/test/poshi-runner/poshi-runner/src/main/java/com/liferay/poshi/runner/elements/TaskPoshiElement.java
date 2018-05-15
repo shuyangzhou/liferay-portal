@@ -40,7 +40,7 @@ public class TaskPoshiElement extends PoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(readableSyntax)) {
-			return new TaskPoshiElement(readableSyntax);
+			return new TaskPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -94,8 +94,10 @@ public class TaskPoshiElement extends PoshiElement {
 		super(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected TaskPoshiElement(String readableSyntax) {
-		super(_ELEMENT_NAME, readableSyntax);
+	protected TaskPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	@Override

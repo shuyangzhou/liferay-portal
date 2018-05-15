@@ -39,7 +39,7 @@ public class WhilePoshiElement extends IfPoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(readableSyntax)) {
-			return new WhilePoshiElement(readableSyntax);
+			return new WhilePoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -56,8 +56,10 @@ public class WhilePoshiElement extends IfPoshiElement {
 		super(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected WhilePoshiElement(String readableSyntax) {
-		super(_ELEMENT_NAME, readableSyntax);
+	protected WhilePoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	@Override

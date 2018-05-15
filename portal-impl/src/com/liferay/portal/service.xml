@@ -1386,7 +1386,7 @@
 
 		<reference entity="ListType" package-path="com.liferay.portal" />
 	</entity>
-	<entity local-service="true" name="PasswordPolicy" remote-service="true" uuid="true">
+	<entity local-service="true" name="PasswordPolicy" remote-service="true" uad-application-name="Password Policies Admin" uad-dir-path="../modules/apps/password-policies-admin/password-policies-admin-uad/src/main/java" uad-package-path="com.liferay.password.policies.admin" uuid="true">
 
 		<!-- PK fields -->
 
@@ -1396,7 +1396,7 @@
 
 		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
-		<column name="userName" type="String" />
+		<column name="userName" type="String" uad-anonymize-field-name="fullName" />
 		<column name="createDate" type="Date" />
 		<column name="modifiedDate" type="Date" />
 
@@ -1677,7 +1677,7 @@
 		<reference entity="ResourcePermission" package-path="com.liferay.portal" />
 		<reference entity="Role" package-path="com.liferay.portal" />
 	</entity>
-	<entity local-service="true" name="PortletItem" remote-service="false">
+	<entity local-service="true" name="PortletItem" remote-service="false" uad-dir-path="../modules/apps/portal/portal-uad/src/main/java" uad-package-path="com.liferay.portal">
 
 		<!-- PK fields -->
 
@@ -1691,7 +1691,7 @@
 
 		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
-		<column name="userName" type="String" />
+		<column name="userName" type="String" uad-anonymize-field-name="fullName" />
 		<column name="createDate" type="Date" />
 		<column name="modifiedDate" type="Date" />
 
@@ -1985,7 +1985,7 @@
 			<finder-column case-sensitive="false" name="servletContextName" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="Repository" remote-service="true" uuid="true">
+	<entity local-service="true" name="Repository" remote-service="true" uad-dir-path="../modules/apps/portal/portal-uad/src/main/java" uad-package-path="com.liferay.portal" uuid="true">
 
 		<!-- PK fields -->
 
@@ -1999,7 +1999,7 @@
 
 		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
-		<column name="userName" type="String" />
+		<column name="userName" type="String" uad-anonymize-field-name="fullName" />
 		<column name="createDate" type="Date" />
 		<column name="modifiedDate" type="Date" />
 
@@ -2042,7 +2042,7 @@
 		<reference entity="DLFolder" package-path="com.liferay.portlet.documentlibrary" />
 		<reference entity="ExpandoValue" package-path="com.liferay.portlet.expando" />
 	</entity>
-	<entity local-service="true" name="RepositoryEntry" remote-service="false" uuid="true">
+	<entity local-service="true" name="RepositoryEntry" remote-service="false" uad-dir-path="../modules/apps/portal/portal-uad/src/main/java" uad-package-path="com.liferay.portal" uuid="true">
 
 		<!-- PK fields -->
 
@@ -2056,7 +2056,7 @@
 
 		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
-		<column name="userName" type="String" />
+		<column name="userName" type="String" uad-anonymize-field-name="fullName" />
 		<column name="createDate" type="Date" />
 		<column name="modifiedDate" type="Date" />
 
@@ -2310,7 +2310,7 @@
 
 		<reference entity="ResourceAction" package-path="com.liferay.portal" />
 	</entity>
-	<entity local-service="true" name="Role" remote-service="true" uuid="true">
+	<entity local-service="true" name="Role" remote-service="true" uad-application-name="Roles" uad-dir-path="../modules/apps/roles/roles-uad/src/main/java" uad-package-path="com.liferay.roles" uuid="true">
 
 		<!-- PK fields -->
 
@@ -2320,7 +2320,7 @@
 
 		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
-		<column name="userName" type="String" />
+		<column name="userName" type="String" uad-anonymize-field-name="fullName" />
 		<column name="createDate" type="Date" />
 		<column name="modifiedDate" type="Date" />
 
@@ -2481,7 +2481,7 @@
 		<reference entity="User" package-path="com.liferay.portal" />
 		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
 	</entity>
-	<entity local-service="true" name="SystemEvent" remote-service="false">
+	<entity local-service="true" name="SystemEvent" remote-service="false" uad-dir-path="../modules/apps/portal/portal-uad/src/main/java" uad-package-path="com.liferay.portal">
 
 		<!-- PK fields -->
 
@@ -2495,7 +2495,7 @@
 
 		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
-		<column name="userName" type="String" />
+		<column name="userName" type="String" uad-anonymize-field-name="fullName" />
 		<column name="createDate" type="Date" />
 
 		<!-- Other fields -->
@@ -2542,7 +2542,7 @@
 		<reference entity="Group" package-path="com.liferay.portal" />
 		<reference entity="User" package-path="com.liferay.portal" />
 	</entity>
-	<entity local-service="true" name="Team" remote-service="true" uuid="true">
+	<entity local-service="true" name="Team" remote-service="true" uad-application-name="Site Teams" uad-dir-path="../modules/apps/site/site-teams-uad/src/main/java" uad-package-path="com.liferay.site.teams" uuid="true">
 
 		<!-- PK fields -->
 
@@ -2552,7 +2552,7 @@
 
 		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
-		<column name="userName" type="String" />
+		<column name="userName" type="String" uad-anonymize-field-name="fullName" />
 		<column name="createDate" type="Date" />
 		<column name="modifiedDate" type="Date" />
 
@@ -2803,7 +2803,7 @@
 		<reference entity="SocialRelation" package-path="com.liferay.portlet.social" />
 		<reference entity="SocialRequest" package-path="com.liferay.portlet.social" />
 	</entity>
-	<entity local-service="true" name="UserGroup" remote-service="true" uuid="true">
+	<entity local-service="true" name="UserGroup" remote-service="true" uad-application-name="User Groups Admin" uad-dir-path="../modules/apps/user-groups-admin/user-groups-admin-uad/src/main/java" uad-package-path="com.liferay.user.groups.admin" uuid="true">
 
 		<!-- PK fields -->
 
@@ -2813,7 +2813,7 @@
 
 		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
-		<column name="userName" type="String" />
+		<column name="userName" type="String" uad-anonymize-field-name="fullName" />
 		<column name="createDate" type="Date" />
 		<column name="modifiedDate" type="Date" />
 
@@ -2968,7 +2968,7 @@
 			<finder-column name="externalUserId" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="UserNotificationDelivery" remote-service="false">
+	<entity local-service="true" name="UserNotificationDelivery" remote-service="false" uad-application-name="Notifications" uad-auto-delete="true" uad-dir-path="../modules/apps/notifications/notifications-uad/src/main/java" uad-package-path="com.liferay.notifications">
 
 		<!-- PK fields -->
 
@@ -2977,7 +2977,7 @@
 		<!-- Audit fields -->
 
 		<column name="companyId" type="long" />
-		<column name="userId" type="long" />
+		<column name="userId" type="long" uad-anonymize-field-name="userId" />
 
 		<!-- Other fields -->
 
@@ -3004,7 +3004,7 @@
 
 		<reference entity="User" package-path="com.liferay.portal" />
 	</entity>
-	<entity local-service="true" name="UserNotificationEvent" remote-service="false" uuid="true">
+	<entity local-service="true" name="UserNotificationEvent" remote-service="false" uad-application-name="Notifications" uad-auto-delete="true" uad-dir-path="../modules/apps/notifications/notifications-uad/src/main/java" uad-package-path="com.liferay.notifications" uuid="true">
 
 		<!-- PK fields -->
 
@@ -3013,7 +3013,7 @@
 		<!-- Audit fields -->
 
 		<column name="companyId" type="long" />
-		<column name="userId" type="long" />
+		<column name="userId" type="long" uad-anonymize-field-name="userId" />
 
 		<!-- Other fields -->
 
@@ -3095,7 +3095,7 @@
 
 		<reference entity="User" package-path="com.liferay.portal" />
 	</entity>
-	<entity local-service="true" name="UserTracker" remote-service="false">
+	<entity local-service="true" name="UserTracker" remote-service="false" uad-application-name="Users Admin" uad-auto-delete="true" uad-dir-path="../modules/apps/users-admin/users-admin-uad/src/main/java" uad-package-path="com.liferay.users.admin">
 
 		<!-- PK fields -->
 
@@ -3104,7 +3104,7 @@
 		<!-- Audit fields -->
 
 		<column name="companyId" type="long" />
-		<column name="userId" type="long" />
+		<column name="userId" type="long" uad-anonymize-field-name="userId" />
 		<column name="modifiedDate" type="Date" />
 
 		<!-- Other fields -->
@@ -3271,7 +3271,7 @@
 		<reference entity="ListType" package-path="com.liferay.portal" />
 		<reference entity="User" package-path="com.liferay.portal" />
 	</entity>
-	<entity local-service="true" name="WorkflowDefinitionLink" remote-service="false">
+	<entity local-service="true" name="WorkflowDefinitionLink" remote-service="false" uad-application-name="Portal Workflow" uad-dir-path="../modules/apps/portal-workflow/portal-workflow-uad/src/main/java" uad-package-path="com.liferay.portal.workflow">
 
 		<!-- PK fields -->
 
@@ -3285,7 +3285,7 @@
 
 		<column name="companyId" type="long" />
 		<column name="userId" type="long" />
-		<column name="userName" type="String" />
+		<column name="userName" type="String" uad-anonymize-field-name="fullName" />
 		<column name="createDate" type="Date" />
 		<column name="modifiedDate" type="Date" />
 

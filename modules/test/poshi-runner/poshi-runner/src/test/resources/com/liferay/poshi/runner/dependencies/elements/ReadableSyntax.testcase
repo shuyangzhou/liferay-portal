@@ -1,0 +1,267 @@
+@component-name = "portal-acceptance"
+@ignore = "true"
+definition {
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Smoke";
+
+	// This is a comment
+
+	/*This is a multiline
+		comment.*/
+
+	static var userPassword = "password";
+	var userScreenName = "joeblogs";
+
+	setUp {
+		TestCase.setUpPortalInstance();
+
+		SignIn.signIn();
+	}
+
+	tearDown {
+		PortalInstances.tearDownCP(
+			testPortalInstance = "TestPropsUtil.get('test.portal.instance')"
+		);
+	}
+
+	@priority = "5"
+	test AddUser {
+		// This is a comment
+		/*This is a multiline
+			comment.*/
+		property portal.release = "false";
+		var specialCharacters = "&quot;\&quot;";
+		var userEmailAddress = "userea@liferay.com";
+		var userFirstName = "userfn";
+		var userLastName = "userln";
+
+		FormFields.editText(
+			fieldName = "label",
+			fieldValue = ",-+!@#$%^*()=_.?/;:{}[]\|"
+		);
+
+		ProductMenu.gotoControlPanelUsers(
+			portlet = "Users and Organizations"
+		);
+
+		echo("This is a message.");
+
+		for (breadcrumbName : "${breadcrumbListVisible}") {
+			var key_breadcrumbName = "${breadcrumbName}";
+			var breadcrumbNameUppercase = "StringUtil.upperCase('${breadcrumbName}')";
+			var historyVersion = "selenium.getText('Staging#HISTORY_VERSION')";
+
+			AssertTextEquals(locator1 = "Breadcrumb#BREADCRUMB_ENTRY", value1 = "${breadcrumbNameUppercase}");
+
+			for (breadcrumbName : "${breadcrumbListVisible}") {
+				AssertTextEquals(locator1 = "Breadcrumb#BREADCRUMB_ENTRY", value1 = "${breadcrumbNameUppercase}");
+			}
+
+			if (isSet(duplicate)) {
+				Alert.viewErrorMessage(
+					errorMessage = "A configuration with this ID already exists. Please enter a unique ID."
+				);
+
+				echo("Please enter a unique ID.");
+				// This is a comment
+			}
+			else if (isSet(duplicate)) {
+				echo("Please enter a unique ID.");
+			}
+			else {
+				Alert.viewSuccessMessage();
+				// This is a comment
+			}
+			// This is a comment
+		}
+
+		for (breadcrumbName : "Breadcrumb: 1, Breadcrumb: 2") {
+			AssertTextEquals(locator1 = "Breadcrumb#BREADCRUMB_ENTRY", value1 = "${breadcrumbNameUppercase}");
+		}
+
+		User.addCP(
+			userEmailAddress = "${userEmailAddress}",
+			userFirstName = "${userFirstName}",
+			userLastName = "${userLastName}",
+			userScreenName = "${userScreenName}",
+			userScreenName = ""
+		);
+	}
+
+	@description = "Ensure that the super admin can add pages, add portlets, navigate to the product menu, use the WYSIWYG editor, and view alert messages."
+	@priority = "5"
+	test Smoke {
+		property portal.smoke = "true";
+		property test.assert.warning.exceptions = "true";
+
+		if (isSet(duplicate)) {
+			Alert.viewErrorMessage(
+				errorMessage = "A configuration with this ID already exists. Please enter a unique ID."
+			);
+
+			if (!(isSet(duplicate))) {
+				Alert.viewErrorMessage(
+					errorMessage = "A configuration with this ID already exists. Please enter a unique ID."
+				);
+			}
+			else {
+				Alert.viewSuccessMessage();
+			}
+		}
+		else {
+			Alert.viewSuccessMessage();
+
+			if (isSet(duplicate)) {
+				Alert.viewErrorMessage(
+					errorMessage = "A configuration with this ID already exists. Please enter a unique ID."
+				);
+			}
+			else {
+				Alert.viewSuccessMessage();
+			}
+		}
+
+		if ("${check}" == "true") {
+			Alert.viewSuccessMessage();
+		}
+
+		if (IsElementPresent(locator1 = "Blogs#ADD_BLOGS_ENTRY")) {
+			Alert.viewSuccessMessage();
+		}
+
+		if (IsElementPresent(locator1 = "Blogs#ADD_BLOGS_ENTRY")) {
+			Alert.viewSuccessMessage();
+		}
+		else {
+			fail("Element not present");
+		}
+
+		if ((IsElementPresent(locator1 = "Blogs#ADD_BLOGS_ENTRY")) && ("${check}" == "true") && (isSet(duplicate))) {
+			Alert.viewSuccessMessage();
+		}
+
+		if ((IsElementPresent(locator1 = "Blogs#ADD_BLOGS_ENTRY")) || ("${check}" == "true") || (isSet(duplicate))) {
+			Alert.viewSuccessMessage();
+		}
+
+		if (IsElementPresent(locator1 = "Blogs#ADD_BLOGS_ENTRY")) {
+			Alert.viewSuccessMessage();
+		}
+		else if ("${check}" == "true") {
+			Alert.viewErrorMessage();
+		}
+
+		var siteName = return(
+			TestCase.getSiteName(
+				siteName = "${siteName}"
+			),
+			siteName
+		);
+		var testCDATA = ''''alert(0)'"alert(0)"><img src=x onerror=alert(0)><script>alert(0)</script>''';
+		var testCDATA = ''''''';
+		var wikiPageContent = '''<p id='demo'>PASS</p>
+
+<script type='text/javascript'>
+	document.getElementById('demo').innerHTML = 'FAIL';
+</script>''';
+
+		AlloyEditor.addSourceContent(
+			content = '''
+<h2 class="text-center">Space Program 大学生涯教育</h2>
+
+<p class="text-center">地球から、宇宙の果てへ</p>
+'''
+		);
+
+		KaleoDesigner.viewSourceXMLLine(
+			kdSourceXML = '''<name>Timer Name</name>''',
+			line = "21"
+		);
+
+		User.editDetailsViaMyAccount(
+			userFirstNameEdit = ''''alert(0)'"alert(0)"><img src=x onerror=alert(0)><script>alert(0)</script>''',
+			userLastNameEdit = '''<script>document.write("XSS"); window.stop();</script>''',
+			userMiddleNameEdit = '''<script>document.write("XSS"); window.stop();</script>'''
+		);
+
+		Smoke.viewWelcomePage();
+
+		takeScreenshot();
+
+		while (IsElementPresent(locator1 = "AssetCategorization#TAGS_REMOVE_ICON_GENERIC", key_userScreenName = "ldapusercn")) {
+			Click(locator1 = "AssetCategorization#TAGS_REMOVE_ICON_GENERIC");
+		}
+
+		while (IsElementPresent(locator1 = "AssetCategorization#TAGS_REMOVE_ICON_GENERIC") && (maxIterations = "16")) {
+			Click(locator1 = "AssetCategorization#TAGS_REMOVE_ICON_GENERIC");
+		}
+
+		Smoke.runSmoke();
+
+		AssertElementPresent(locator1 = "Home#PAGE", value1 = "Welcome");
+
+		Type(locator1 = "DDMField#INTEGER", value1 = "5", key_fieldName = "Integer");
+
+		Click(locator1 = "Home#PAGE");
+
+		Refresh();
+
+		Refresh.refresh();
+
+		Type(value1 = "Welcome");
+
+		AssertElementPresent.assertElementPresent(locator1 = "Home#PAGE", value1 = "Welcome");
+	}
+
+	@description = "Ensure that a user can add multiple Blogs Entries."
+	@priority = "4"
+	test AddBlogsEntries {
+		property testray.component.names = "Blogs";
+		property testray.main.component.name = "Blogs";
+
+		task ("Add a blogs entry called 'Blogs Entry1 Title' with content 'Blogs Entry1 Content'") {
+			Navigator.openURL();
+
+			ProductMenu.gotoPortlet(
+				category = "Content",
+				panel = "Site Administration",
+				portlet = "Blogs"
+			);
+
+			Blogs.addEntry(
+				entryContent = "Blogs Entry1 Content",
+				entryTitle = "Blogs Entry1 Title"
+			);
+		}
+
+		task ("Add a blogs entry called 'Blogs Entry2 Title' with content 'Blogs Entry2 Content'") {
+			Navigator.openURL();
+
+			ProductMenu.gotoPortlet(
+				category = "Content",
+				panel = "Site Administration",
+				portlet = "Blogs"
+			);
+
+			Blogs.addEntry(
+				entryContent = "Blogs Entry2 Content",
+				entryTitle = "Blogs Entry2 Title"
+			);
+		}
+	}
+
+	@ignore = "true"
+	test GotoLinkToPageChildPages {
+		var key_pageName = "${parentPage}";
+
+		toggle ("LPS-68869") {
+			on {
+				Click(locator1 = "DDLEditRecord#LINK_TO_PAGE_PAGE_TOGGLER");
+			}
+			off {
+				Click(locator1 = "DDLEditRecord#LINK_TO_PAGE_PAGE_CARET");
+			}
+		}
+	}
+}
