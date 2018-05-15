@@ -31,93 +31,110 @@ import org.junit.Test;
 public class PoshiElementFactoryTest {
 
 	@Test
-	public void testPoshiToReadable() throws Exception {
-		String baselineReadableSyntax = FileUtil.read(_READABLE_TEST_FILE_PATH);
+	public void testPoshiMacroToReadable() throws Exception {
+		String expected = FileUtil.read(_BASE_DIR + "ReadableSyntax.macro");
 
-		PoshiElement poshiElement =
-			(PoshiElement)PoshiNodeFactory.newPoshiNodeFromFile(
-				_POSHI_TEST_FILE_PATH);
+		PoshiElement poshiElement = _getPoshiElement("PoshiSyntax.macro");
 
-		String readableSyntax = poshiElement.toReadableSyntax();
+		String actual = poshiElement.toReadableSyntax();
 
-		if (!readableSyntax.equals(baselineReadableSyntax)) {
-			StringBuilder sb = new StringBuilder();
-
-			sb.append("\n\nBaseline readable syntax:");
-			sb.append(baselineReadableSyntax);
-			sb.append("\n\nGenerated readable syntax:");
-			sb.append(readableSyntax);
-
-			throw new Exception(
-				"Poshi syntax does not translate to readable syntax" +
-					sb.toString());
-		}
+		_assertEqualStrings(
+			actual, expected,
+			"Poshi syntax does not translate to readable syntax");
 	}
 
 	@Test
-	public void testPoshiToReadableToXML() throws Exception {
-		PoshiElement poshiElement =
-			(PoshiElement)PoshiNodeFactory.newPoshiNodeFromFile(
-				_POSHI_TEST_FILE_PATH);
+	public void testPoshiTestToReadable() throws Exception {
+		String expected = FileUtil.read(_BASE_DIR + "ReadableSyntax.testcase");
 
-		String readableSyntax = poshiElement.toReadableSyntax();
+		PoshiElement poshiElement = _getPoshiElement("PoshiSyntax.testcase");
 
-		PoshiNode<?, ?> elementFromReadableSyntax =
-			PoshiNodeFactory.newPoshiNode(null, readableSyntax);
+		String actual = poshiElement.toReadableSyntax();
 
-		Element baselineElement = _getBaselineElement();
-
-		if (!_areElementsEqual(
-				baselineElement, (PoshiElement)elementFromReadableSyntax)) {
-
-			StringBuilder sb = new StringBuilder();
-
-			sb.append("\n\nBaseline XML:");
-			sb.append(Dom4JUtil.format(baselineElement));
-			sb.append("\n\nXML from readable syntax:");
-			sb.append(Dom4JUtil.format(elementFromReadableSyntax));
-
-			throw new Exception(
-				"Readable syntax does not translate to XML" + sb.toString());
-		}
+		_assertEqualStrings(
+			actual, expected,
+			"Poshi syntax does not translate to readable syntax");
 	}
 
 	@Test
-	public void testPoshiToXML() throws Exception {
-		Element baselineElement = _getBaselineElement();
-		PoshiElement poshiElement =
-			(PoshiElement)PoshiNodeFactory.newPoshiNodeFromFile(
-				_POSHI_TEST_FILE_PATH);
+	public void testPoshiTestToReadableToXML() throws Exception {
+		PoshiElement poshiElement = _getPoshiElement("PoshiSyntax.testcase");
 
-		if (!_areElementsEqual(baselineElement, poshiElement)) {
-			StringBuilder sb = new StringBuilder();
+		String readableSyntax = poshiElement.toReadableSyntax();
 
-			sb.append("\n\nBaseline XML:");
-			sb.append(Dom4JUtil.format(baselineElement));
-			sb.append("\n\nGenerated XML:");
-			sb.append(Dom4JUtil.format(poshiElement));
+		PoshiElement actualElement =
+			(PoshiElement)PoshiNodeFactory.newPoshiNode(
+				readableSyntax, "testcase");
 
-			throw new Exception(
-				"Poshi syntax does not translate to XML" + sb.toString());
-		}
+		Element expectedElement = _getDom4JElement("PoshiSyntax.testcase");
+
+		_assertEqualElements(
+			actualElement, expectedElement,
+			"Poshi syntax is not preserved in full translation.");
 	}
 
-	private static boolean _areElementsEqual(Element element1, Element element2)
+	@Test
+	public void testPoshiTestToXML() throws Exception {
+		PoshiElement actualElement = _getPoshiElement("PoshiSyntax.testcase");
+		Element expectedElement = _getDom4JElement("PoshiSyntax.testcase");
+
+		_assertEqualElements(
+			actualElement, expectedElement,
+			"Poshi syntax does not translate to XML.");
+	}
+
+	@Test
+	public void testReadableMacroToXML() throws Exception {
+		PoshiElement actualElement = _getPoshiElement("ReadableSyntax.macro");
+		Element expectedElement = _getDom4JElement("PoshiSyntax.macro");
+
+		_assertEqualElements(
+			actualElement, expectedElement,
+			"Readable syntax does not translate to XML.");
+	}
+
+	@Test
+	public void testReadableTestToXML() throws Exception {
+		PoshiElement actualElement = _getPoshiElement(
+			"ReadableSyntax.testcase");
+		Element expectedElement = _getDom4JElement("PoshiSyntax.testcase");
+
+		_assertEqualElements(
+			actualElement, expectedElement,
+			"Readable syntax does not translate to XML.");
+	}
+
+	private static void _assertEqualElements(
+			Element actualElement, Element expectedElement, String errorMessage)
 		throws Exception {
 
 		NodeComparator nodeComparator = new NodeComparator();
 
-		int compare = nodeComparator.compare(element1, element2);
+		int compare = nodeComparator.compare(actualElement, expectedElement);
 
-		if (compare == 0) {
-			return true;
+		if (compare != 0) {
+			String actual = Dom4JUtil.format(actualElement);
+			String expected = Dom4JUtil.format(expectedElement);
+
+			_getErrorMessage(actual, expected, errorMessage);
+
+			throw new Exception(errorMessage);
 		}
-
-		return false;
 	}
 
-	private static Element _getBaselineElement() throws Exception {
-		String fileContent = FileUtil.read(_POSHI_TEST_FILE_PATH);
+	private static void _assertEqualStrings(
+			String actual, String expected, String errorMessage)
+		throws Exception {
+
+		if (!actual.equals(expected)) {
+			errorMessage = _getErrorMessage(actual, expected, errorMessage);
+
+			throw new Exception(errorMessage);
+		}
+	}
+
+	private static Element _getDom4JElement(String fileName) throws Exception {
+		String fileContent = FileUtil.read(_BASE_DIR + fileName);
 
 		Document document = Dom4JUtil.parse(fileContent);
 
@@ -126,6 +143,26 @@ public class PoshiElementFactoryTest {
 		_removeWhiteSpaceTextNodes(rootElement);
 
 		return rootElement;
+	}
+
+	private static String _getErrorMessage(
+			String actual, String expected, String errorMessage)
+		throws Exception {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(errorMessage);
+		sb.append("\n\nExpected:\n");
+		sb.append(expected);
+		sb.append("\n\nActual:\n");
+		sb.append(actual);
+
+		return sb.toString();
+	}
+
+	private static PoshiElement _getPoshiElement(String fileName) {
+		return (PoshiElement)PoshiNodeFactory.newPoshiNodeFromFile(
+			_BASE_DIR + fileName);
 	}
 
 	private static void _removeWhiteSpaceTextNodes(Element element) {
@@ -148,12 +185,7 @@ public class PoshiElementFactoryTest {
 		}
 	}
 
-	private static final String _POSHI_TEST_FILE_PATH =
-		"src/test/resources/com/liferay/poshi/runner/dependencies" +
-			"/PoshiSyntax.testcase";
-
-	private static final String _READABLE_TEST_FILE_PATH =
-		"src/test/resources/com/liferay/poshi/runner/dependencies" +
-			"/ReadableSyntax.testcase";
+	private static final String _BASE_DIR =
+		"src/test/resources/com/liferay/poshi/runner/dependencies/elements/";
 
 }
