@@ -876,6 +876,7 @@ public class ServiceBuilder {
 
 					_createUADBnd(uadApplicationName);
 					_createUADConstants(uadApplicationName);
+					_createUADLanguageProperties(uadApplicationName);
 					_createUADTestBnd(uadApplicationName);
 				}
 
@@ -3971,8 +3972,10 @@ public class ServiceBuilder {
 				"/uad/anonymizer/test/", entity.getName(),
 				"UADAnonymizerTest.java"));
 
-		ToolsUtil.writeFile(
-			file, content, _author, _jalopySettings, _modifiedFileNames);
+		if (!file.exists()) {
+			ToolsUtil.writeFile(
+				file, content, _author, _jalopySettings, _modifiedFileNames);
+		}
 	}
 
 	private void _createUADBnd(String uadApplicationName) throws Exception {
@@ -4071,8 +4074,10 @@ public class ServiceBuilder {
 				entity.getUADTestIntegrationOutputPath(), "/uad/display/test/",
 				entity.getName(), "UADDisplayTest.java"));
 
-		ToolsUtil.writeFile(
-			file, content, _author, _jalopySettings, _modifiedFileNames);
+		if (!file.exists()) {
+			ToolsUtil.writeFile(
+				file, content, _author, _jalopySettings, _modifiedFileNames);
+		}
 	}
 
 	private void _createUADExporter(Entity entity) throws Exception {
@@ -4113,8 +4118,43 @@ public class ServiceBuilder {
 				entity.getUADTestIntegrationOutputPath(), "/uad/exporter/test/",
 				entity.getName(), "UADExporterTest.java"));
 
-		ToolsUtil.writeFile(
-			file, content, _author, _jalopySettings, _modifiedFileNames);
+		if (!file.exists()) {
+			ToolsUtil.writeFile(
+				file, content, _author, _jalopySettings, _modifiedFileNames);
+		}
+	}
+
+	private void _createUADLanguageProperties(String uadApplicationName)
+		throws Exception {
+
+		Map<String, Object> context = _getContext();
+
+		List<Entity> entities = _uadApplicationEntities.get(uadApplicationName);
+
+		Entity entity = entities.get(0);
+
+		context.put("uadApplicationName", uadApplicationName);
+		context.put("uadPackagePath", entity.getUADPackagePath());
+
+		// Content
+
+		String content = _processTemplate(_tplUADLangugageProperties, context);
+
+		// Write file
+
+		String uadOutputPath = entity.getUADOutputPath();
+
+		int index = uadOutputPath.indexOf("/src/");
+
+		String uadDirName = uadOutputPath.substring(0, index);
+
+		File file = new File(
+			StringBundler.concat(
+				uadDirName, "/src/main/resources/content/Language.properties"));
+
+		if (!file.exists()) {
+			ToolsUtil.writeFileRaw(file, content, _modifiedFileNames);
+		}
 	}
 
 	private void _createUADTestBnd(String uadApplicationName) throws Exception {
@@ -5156,8 +5196,8 @@ public class ServiceBuilder {
 	private String _getUADBundleName(String uadApplicationName) {
 		return "Liferay " +
 			TextFormatter.format(
-				TextFormatter.format(uadApplicationName, TextFormatter.H),
-				TextFormatter.G) + " UAD";
+				TextFormatter.format(uadApplicationName, TextFormatter.K),
+				TextFormatter.J) + " UAD";
 	}
 
 	private List<Path> _getUpdateSQLFilePaths() throws IOException {
@@ -5495,6 +5535,12 @@ public class ServiceBuilder {
 		String uadApplicationName = GetterUtil.getString(
 			entityElement.attributeValue("uad-application-name"),
 			_portletShortName);
+
+		uadApplicationName = TextFormatter.format(
+			uadApplicationName, TextFormatter.D);
+
+		boolean uadAutoDelete = GetterUtil.getBoolean(
+			entityElement.attributeValue("uad-auto-delete"));
 		String uadDirPath = GetterUtil.getString(
 			entityElement.attributeValue("uad-dir-path"), _uadDirName);
 		String uadPackagePath = GetterUtil.getString(
@@ -5502,6 +5548,19 @@ public class ServiceBuilder {
 
 		String uadOutputPath =
 			uadDirPath + "/" + StringUtil.replace(uadPackagePath, '.', '/');
+
+		boolean versioned = GetterUtil.getBoolean(
+			entityElement.attributeValue("versioned"));
+
+		if (versioned) {
+			mvccEnabled = GetterUtil.getBoolean(
+				entityElement.attributeValue("mvcc-enabled"), true);
+
+			if (!mvccEnabled) {
+				throw new IllegalArgumentException(
+					"Cannot use versioned entity with mvccEnabled disabled");
+			}
+		}
 
 		boolean deprecated = GetterUtil.getBoolean(
 			entityElement.attributeValue("deprecated"));
@@ -5533,6 +5592,15 @@ public class ServiceBuilder {
 			columnElement.addAttribute("type", "long");
 
 			columnElements.add(0, columnElement);
+		}
+
+		if (versioned) {
+			Element columnElement = DocumentHelper.createElement("column");
+
+			columnElement.addAttribute("name", "headId");
+			columnElement.addAttribute("type", "long");
+
+			columnElements.add(columnElement);
 		}
 
 		Element localizedEntityElement = entityElement.element(
@@ -5818,6 +5886,21 @@ public class ServiceBuilder {
 			finderElements.add(0, finderElement);
 		}
 
+		if (versioned) {
+			Element finderElement = DocumentHelper.createElement("finder");
+
+			finderElement.addAttribute("name", "HeadId");
+			finderElement.addAttribute("return-type", entityName);
+			finderElement.addAttribute("unique", "true");
+
+			Element finderColumnElement = finderElement.addElement(
+				"finder-column");
+
+			finderColumnElement.addAttribute("name", "headId");
+
+			finderElements.add(finderElement);
+		}
+
 		String alias = TextFormatter.format(entityName, TextFormatter.I);
 
 		if (_badAliasNames.contains(StringUtil.toLowerCase(alias))) {
@@ -5949,11 +6032,11 @@ public class ServiceBuilder {
 			remoteService, persistenceClassName, finderClassName, dataSource,
 			sessionFactory, txManager, cacheEnabled, dynamicUpdateEnabled,
 			jsonEnabled, mvccEnabled, trashEnabled, uadApplicationName,
-			uadOutputPath, uadPackagePath, deprecated, pkEntityColumns,
-			regularEntityColumns, blobEntityColumns, collectionEntityColumns,
-			entityColumns, entityOrder, entityFinders, referenceEntities,
-			unresolvedReferenceEntityNames, txRequiredMethodNames,
-			resourceActionModel);
+			uadAutoDelete, uadOutputPath, uadPackagePath, deprecated,
+			pkEntityColumns, regularEntityColumns, blobEntityColumns,
+			collectionEntityColumns, entityColumns, entityOrder, entityFinders,
+			referenceEntities, unresolvedReferenceEntityNames,
+			txRequiredMethodNames, resourceActionModel);
 
 		_entities.add(entity);
 
@@ -5974,8 +6057,18 @@ public class ServiceBuilder {
 			}
 		}
 
+		if (versioned) {
+			_parseVersionEntity(entity, columnElements);
+		}
+
 		if (localizedEntityElement != null) {
 			_parseLocalizedEntity(entity, localizedEntityElement);
+
+			if (versioned) {
+				Entity localizedEntity = entity.getLocalizedEntity();
+
+				entity.addReferenceEntity(localizedEntity.getVersionEntity());
+			}
 		}
 
 		return entity;
@@ -6017,8 +6110,11 @@ public class ServiceBuilder {
 		newLocalizedEntityElement.addAttribute("local-service", "false");
 		newLocalizedEntityElement.addAttribute("mvcc-enabled", "true");
 
-		newLocalizedEntityElement.addAttribute(
-			"name", entity.getName() + "Localization");
+		String localizedEntityName = GetterUtil.getString(
+			localizedEntityElement.attributeValue("name"),
+			entity.getName() + "Localization");
+
+		newLocalizedEntityElement.addAttribute("name", localizedEntityName);
 
 		newLocalizedEntityElement.addAttribute("remote-service", "false");
 
@@ -6027,9 +6123,21 @@ public class ServiceBuilder {
 				"session-factory", entity.getSessionFactory());
 		}
 
+		String localizedEntityTableName = localizedEntityElement.attributeValue(
+			"table");
+
+		if (Validator.isNotNull(localizedEntityTableName)) {
+			newLocalizedEntityElement.addAttribute(
+				"table", localizedEntityTableName);
+		}
+
 		if (Validator.isNotNull(entity.getTXManager())) {
 			newLocalizedEntityElement.addAttribute(
 				"tx-manager", entity.getTXManager());
+		}
+
+		if (entity.getVersionEntity() != null) {
+			newLocalizedEntityElement.addAttribute("versioned", "true");
 		}
 
 		newLocalizedEntityElement.addAttribute("uuid", "false");
@@ -6040,7 +6148,8 @@ public class ServiceBuilder {
 			newLocalizedEntityElement.addElement("column");
 
 		newLocalizedColumnElement.addAttribute(
-			"name", entity.getVarName() + "LocalizationId");
+			"name",
+			TextFormatter.format(localizedEntityName + "Id", TextFormatter.I));
 		newLocalizedColumnElement.addAttribute("primary", "true");
 		newLocalizedColumnElement.addAttribute("type", "long");
 
@@ -6139,7 +6248,7 @@ public class ServiceBuilder {
 			"name", finderName + "_LanguageId");
 
 		newLocalizedFinderElement.addAttribute(
-			"return-type", entity.getName() + "Localization");
+			"return-type", localizedEntityName);
 
 		newLocalizedFinderElement.addAttribute("unique", "true");
 
@@ -6236,6 +6345,192 @@ public class ServiceBuilder {
 
 		entity.setLocalizedEntityColumns(localizedEntityColumns);
 		entity.setLocalizedEntity(localizedEntity);
+	}
+
+	private void _parseVersionEntity(
+			Entity entity, List<Element> columnElements)
+		throws Exception {
+
+		// Version entity
+
+		Element versionEntityElement = DocumentHelper.createElement("entity");
+
+		if (Validator.isNotNull(entity.getDataSource())) {
+			versionEntityElement.addAttribute(
+				"data-source", entity.getDataSource());
+		}
+
+		if (entity.isDeprecated()) {
+			versionEntityElement.addAttribute("deprecated", "true");
+		}
+
+		versionEntityElement.addAttribute("local-service", "false");
+		versionEntityElement.addAttribute("mvcc-enabled", "false");
+
+		versionEntityElement.addAttribute("name", entity.getName() + "Version");
+
+		versionEntityElement.addAttribute("remote-service", "false");
+
+		if (Validator.isNotNull(entity.getSessionFactory())) {
+			versionEntityElement.addAttribute(
+				"session-factory", entity.getSessionFactory());
+		}
+
+		if (Validator.isNotNull(entity.getTXManager())) {
+			versionEntityElement.addAttribute(
+				"tx-manager", entity.getTXManager());
+		}
+
+		versionEntityElement.addAttribute("uuid", "false");
+
+		// Version columns
+
+		Element versionEntityColumnElement = versionEntityElement.addElement(
+			"column");
+
+		versionEntityColumnElement.addAttribute(
+			"name", entity.getVarName() + "VersionId");
+		versionEntityColumnElement.addAttribute("primary", "true");
+		versionEntityColumnElement.addAttribute("type", "long");
+
+		List<EntityColumn> pkEntityColumns = entity.getPKEntityColumns();
+
+		if (pkEntityColumns.size() > 1) {
+			throw new IllegalArgumentException(
+				"Unable to use versioned entity with compound primary key");
+		}
+
+		EntityColumn pkEntityColumn = pkEntityColumns.get(0);
+
+		if (!Objects.equals("long", pkEntityColumn.getType())) {
+			throw new IllegalArgumentException(
+				"Must have long primary key to create versioned entity");
+		}
+
+		versionEntityColumnElement = versionEntityElement.addElement("column");
+
+		versionEntityColumnElement.addAttribute("name", "version");
+		versionEntityColumnElement.addAttribute("type", "int");
+
+		// Copied columns
+
+		for (Element columnElement : columnElements) {
+			String dbName = columnElement.attributeValue("db-name");
+			String name = columnElement.attributeValue("name");
+			String type = columnElement.attributeValue("type");
+
+			if (!name.equals("mvccVersion") && !name.equals("headId")) {
+				versionEntityColumnElement = versionEntityElement.addElement(
+					"column");
+
+				if (Validator.isNotNull(dbName)) {
+					versionEntityColumnElement.addAttribute("db-name", dbName);
+				}
+
+				versionEntityColumnElement.addAttribute("name", name);
+				versionEntityColumnElement.addAttribute("type", type);
+			}
+		}
+
+		// Order
+
+		Element orderElement = versionEntityElement.addElement("order");
+
+		Element orderColumnElement = orderElement.addElement("order-column");
+
+		orderColumnElement.addAttribute("name", "version");
+		orderColumnElement.addAttribute("order-by", "desc");
+
+		// Finders
+
+		Element versionFinderElement = versionEntityElement.addElement(
+			"finder");
+
+		String finderName = TextFormatter.format(
+			pkEntityColumn.getName(), TextFormatter.G);
+
+		versionFinderElement.addAttribute("name", finderName);
+
+		versionFinderElement.addAttribute("return-type", "Collection");
+
+		Element versionColumnElement = versionFinderElement.addElement(
+			"finder-column");
+
+		versionColumnElement.addAttribute("name", pkEntityColumn.getName());
+
+		versionFinderElement = versionEntityElement.addElement("finder");
+
+		versionFinderElement.addAttribute("name", finderName + "_Version");
+
+		versionFinderElement.addAttribute(
+			"return-type", entity.getName() + "Version");
+
+		versionFinderElement.addAttribute("unique", "true");
+
+		versionColumnElement = versionFinderElement.addElement("finder-column");
+
+		versionColumnElement.addAttribute("name", pkEntityColumn.getName());
+
+		versionColumnElement = versionFinderElement.addElement("finder-column");
+
+		versionColumnElement.addAttribute("name", "version");
+
+		// Copied finders
+
+		for (EntityFinder entityFinder : entity.getEntityFinders()) {
+			finderName = entityFinder.getName();
+
+			if (finderName.equals("HeadId")) {
+				continue;
+			}
+
+			versionFinderElement = versionEntityElement.addElement("finder");
+
+			versionFinderElement.addAttribute("name", finderName);
+
+			versionFinderElement.addAttribute("return-type", "Collection");
+
+			for (EntityColumn entityColumn : entityFinder.getEntityColumns()) {
+				versionColumnElement = versionFinderElement.addElement(
+					"finder-column");
+
+				versionColumnElement.addAttribute(
+					"name", entityColumn.getName());
+			}
+
+			versionFinderElement = versionEntityElement.addElement("finder");
+
+			versionFinderElement.addAttribute("name", finderName + "_Version");
+
+			for (EntityColumn entityColumn : entityFinder.getEntityColumns()) {
+				versionColumnElement = versionFinderElement.addElement(
+					"finder-column");
+
+				versionColumnElement.addAttribute(
+					"name", entityColumn.getName());
+			}
+
+			versionColumnElement = versionFinderElement.addElement(
+				"finder-column");
+
+			versionColumnElement.addAttribute("name", "version");
+
+			if (entityFinder.isUnique()) {
+				versionFinderElement.addAttribute(
+					"return-type", entity.getName() + "Version");
+
+				versionFinderElement.addAttribute("unique", "true");
+			}
+			else {
+				versionFinderElement.addAttribute("return-type", "Collection");
+			}
+		}
+
+		Entity versionEntity = _parseEntity(versionEntityElement);
+
+		entity.setVersionEntity(versionEntity);
+
+		versionEntity.setVersionedEntity(entity);
 	}
 
 	private String _processTemplate(String name, Map<String, Object> context)
@@ -6768,6 +7063,8 @@ public class ServiceBuilder {
 	private String _tplUADDisplayTest = _TPL_ROOT + "uad_display_test.ftl";
 	private String _tplUADExporter = _TPL_ROOT + "uad_exporter.ftl";
 	private String _tplUADExporterTest = _TPL_ROOT + "uad_exporter_test.ftl";
+	private String _tplUADLangugageProperties =
+		_TPL_ROOT + "uad_language_properties.ftl";
 	private String _tplUADTestBnd = _TPL_ROOT + "uad_test_bnd.ftl";
 	private String _tplUADTestHelper = _TPL_ROOT + "uad_test_helper.ftl";
 	private Map<String, List<Entity>> _uadApplicationEntities = new HashMap<>();

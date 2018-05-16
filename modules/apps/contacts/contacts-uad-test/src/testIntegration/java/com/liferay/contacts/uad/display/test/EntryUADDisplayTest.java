@@ -15,37 +15,38 @@
 package com.liferay.contacts.uad.display.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-
 import com.liferay.contacts.model.Entry;
-import com.liferay.contacts.uad.constants.ContactsUADConstants;
 import com.liferay.contacts.uad.test.EntryUADTestHelper;
-
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-
 import com.liferay.user.associated.data.display.UADDisplay;
 import com.liferay.user.associated.data.test.util.BaseUADDisplayTestCase;
-
-import org.junit.After;
-import org.junit.ClassRule;
-import org.junit.Rule;
-
-import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.runner.RunWith;
+
 /**
  * @author Brian Wing Shun Chan
- * @generated
  */
 @RunWith(Arquillian.class)
 public class EntryUADDisplayTest extends BaseUADDisplayTestCase<Entry> {
+
 	@ClassRule
 	@Rule
-	public static final AggregateTestRule aggregateTestRule = new LiferayIntegrationTestRule();
+	public static final AggregateTestRule aggregateTestRule =
+		new LiferayIntegrationTestRule();
+
+	@After
+	public void tearDown() throws Exception {
+		_entryUADTestHelper.cleanUpDependencies(_entries);
+	}
 
 	@Override
 	protected Entry addBaseModel(long userId) throws Exception {
@@ -57,24 +58,17 @@ public class EntryUADDisplayTest extends BaseUADDisplayTestCase<Entry> {
 	}
 
 	@Override
-	protected String getApplicationName() {
-		return ContactsUADConstants.APPLICATION_NAME;
-	}
-
-	@Override
 	protected UADDisplay getUADDisplay() {
 		return _uadDisplay;
 	}
 
-	@After
-	public void tearDown() throws Exception {
-		_entryUADTestHelper.cleanUpDependencies(_entries);
-	}
-
 	@DeleteAfterTestRun
-	private final List<Entry> _entries = new ArrayList<Entry>();
+	private final List<Entry> _entries = new ArrayList<>();
+
 	@Inject
 	private EntryUADTestHelper _entryUADTestHelper;
+
 	@Inject(filter = "component.name=*.EntryUADDisplay")
 	private UADDisplay _uadDisplay;
+
 }

@@ -14,14 +14,23 @@
 
 package com.liferay.poshi.runner.elements;
 
+import com.google.common.reflect.ClassPath;
+
+import com.liferay.poshi.runner.PoshiRunnerContext;
 import com.liferay.poshi.runner.util.Dom4JUtil;
+import com.liferay.poshi.runner.util.PropsUtil;
 import com.liferay.poshi.runner.util.RegexUtil;
+
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
+import java.util.TreeSet;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.dom4j.Attribute;
@@ -140,10 +149,16 @@ public abstract class PoshiElement
 		}
 	}
 
-	protected PoshiElement(String name, String readableSyntax) {
+	protected PoshiElement(
+		String name, PoshiElement parentPoshiElement, String readableSyntax) {
+
 		super(name);
 
+		setParent(parentPoshiElement);
+
 		parseReadableSyntax(readableSyntax);
+
+		detach();
 	}
 
 	protected String createReadableBlock(String content) {
@@ -177,6 +192,12 @@ public abstract class PoshiElement
 		return RegexUtil.getGroup(readableSyntax, ".*?\\{(.*)\\}", 1);
 	}
 
+	protected String getFileType() {
+		PoshiElement poshiParentElement = (PoshiElement)getParent();
+
+		return poshiParentElement.getFileType();
+	}
+
 	protected String getNameFromAssignment(String assignment) {
 		String name = assignment.split("=")[0];
 
@@ -197,6 +218,12 @@ public abstract class PoshiElement
 
 	protected String getQuotedContent(String readableSyntax) {
 		return RegexUtil.getGroup(readableSyntax, ".*?\"(.*)\"", 1);
+	}
+
+	protected String getReadableCommandKeyword() {
+		PoshiElement poshiParentElement = (PoshiElement)getParent();
+
+		return poshiParentElement.getReadableCommandKeyword();
 	}
 
 	protected String getReadableEscapedContent(String readableSyntax) {
@@ -304,6 +331,7 @@ public abstract class PoshiElement
 		readableSyntax = readableSyntax.trim();
 
 		if (readableSyntax.startsWith("property") ||
+			readableSyntax.startsWith("static var") ||
 			readableSyntax.startsWith("var")) {
 
 			if (readableSyntax.endsWith("\'\'\';") ||
@@ -362,8 +390,10 @@ public abstract class PoshiElement
 		return poshiElements;
 	}
 
+	protected static final Set<String> functionFileNames = new TreeSet<>();
 	protected static final Pattern nestedVarAssignmentPattern = Pattern.compile(
 		"(\\w*? = \".*?\"|\\w*? = \'\'\'.*?\'\'\')($|\\s|,)", Pattern.DOTALL);
+	protected static final Set<String> utilClassNames = new TreeSet<>();
 
 	private void _addAttributes(Element element) {
 		for (Attribute attribute :
@@ -383,12 +413,41 @@ public abstract class PoshiElement
 
 	private static final Map<Character, Character> _codeBoundariesMap =
 		new HashMap<>();
+	private static final Pattern _namespacedfunctionFileNamePattern =
+		Pattern.compile(".*?\\.(.*?)\\.function");
 
 	static {
 		_codeBoundariesMap.put('\"', '\"');
 		_codeBoundariesMap.put('(', ')');
 		_codeBoundariesMap.put('{', '}');
 		_codeBoundariesMap.put('[', ']');
+
+		try {
+			ClassPath classPath = ClassPath.from(
+				PropsUtil.class.getClassLoader());
+
+			for (ClassPath.ClassInfo classInfo :
+					classPath.getTopLevelClasses(
+						"com.liferay.poshi.runner.util")) {
+
+				utilClassNames.add(classInfo.getName());
+				utilClassNames.add(classInfo.getSimpleName());
+			}
+		}
+		catch (IOException ioe) {
+			throw new RuntimeException(ioe);
+		}
+
+		for (String namespacedFunctionFileName :
+				PoshiRunnerContext.getFilePathKeys()) {
+
+			Matcher matcher = _namespacedfunctionFileNamePattern.matcher(
+				namespacedFunctionFileName);
+
+			if (matcher.find()) {
+				functionFileNames.add(matcher.group(1));
+			}
+		}
 	}
 
 }

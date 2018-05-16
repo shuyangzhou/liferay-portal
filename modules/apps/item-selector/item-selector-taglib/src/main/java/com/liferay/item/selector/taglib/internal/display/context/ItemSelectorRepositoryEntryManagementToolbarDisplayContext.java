@@ -44,12 +44,12 @@ public class ItemSelectorRepositoryEntryManagementToolbarDisplayContext {
 
 	public ItemSelectorRepositoryEntryManagementToolbarDisplayContext(
 		LiferayPortletRequest liferayPortletRequest,
-		LiferayPortletResponse liferayPortletResponse) {
+		LiferayPortletResponse liferayPortletResponse,
+		HttpServletRequest request) {
 
 		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
-
-		_request = _liferayPortletRequest.getHttpServletRequest();
+		_request = request;
 
 		_currentURLObj = PortletURLUtil.getCurrent(
 			_liferayPortletRequest, _liferayPortletResponse);
@@ -85,14 +85,14 @@ public class ItemSelectorRepositoryEntryManagementToolbarDisplayContext {
 	}
 
 	public PortletURL getSortingURL() throws PortletException {
-		PortletURL currentSortingURL = _getCurrentSortingURL();
+		PortletURL sortingURL = _getCurrentSortingURL();
 
 		String orderByType = getOrderByType();
 
-		currentSortingURL.setParameter(
+		sortingURL.setParameter(
 			"orderByType", Objects.equals(orderByType, "asc") ? "desc" : "asc");
 
-		return currentSortingURL;
+		return sortingURL;
 	}
 
 	public ViewTypeItemList getViewTypes() throws PortletException {

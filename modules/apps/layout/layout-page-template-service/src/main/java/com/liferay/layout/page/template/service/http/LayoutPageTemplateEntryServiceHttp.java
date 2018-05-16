@@ -807,8 +807,8 @@ public class LayoutPageTemplateEntryServiceHttp {
 
 	public static java.util.List<com.liferay.layout.page.template.model.LayoutPageTemplateEntry> getLayoutPageTemplateEntries(
 		HttpPrincipal httpPrincipal, long groupId,
-		long layoutPageTemplateCollectionId, String name, int start,
-		int status, int end,
+		long layoutPageTemplateCollectionId, String name, int status,
+		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.layout.page.template.model.LayoutPageTemplateEntry> orderByComparator) {
 		try {
 			MethodKey methodKey = new MethodKey(LayoutPageTemplateEntryServiceUtil.class,
@@ -816,7 +816,7 @@ public class LayoutPageTemplateEntryServiceHttp {
 					_getLayoutPageTemplateEntriesParameterTypes24);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					layoutPageTemplateCollectionId, name, start, status, end,
+					layoutPageTemplateCollectionId, name, status, start, end,
 					orderByComparator);
 
 			Object returnObj = null;
@@ -985,14 +985,15 @@ public class LayoutPageTemplateEntryServiceHttp {
 	}
 
 	public static int getLayoutPageTemplateEntriesCount(
-		HttpPrincipal httpPrincipal, long groupId, long layoutPageTemplateFolder) {
+		HttpPrincipal httpPrincipal, long groupId,
+		long layoutPageTemplateFolderId) {
 		try {
 			MethodKey methodKey = new MethodKey(LayoutPageTemplateEntryServiceUtil.class,
 					"getLayoutPageTemplateEntriesCount",
 					_getLayoutPageTemplateEntriesCountParameterTypes30);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					layoutPageTemplateFolder);
+					layoutPageTemplateFolderId);
 
 			Object returnObj = null;
 
@@ -1014,14 +1015,14 @@ public class LayoutPageTemplateEntryServiceHttp {
 
 	public static int getLayoutPageTemplateEntriesCount(
 		HttpPrincipal httpPrincipal, long groupId,
-		long layoutPageTemplateFolder, int status) {
+		long layoutPageTemplateFolderId, int status) {
 		try {
 			MethodKey methodKey = new MethodKey(LayoutPageTemplateEntryServiceUtil.class,
 					"getLayoutPageTemplateEntriesCount",
 					_getLayoutPageTemplateEntriesCountParameterTypes31);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					layoutPageTemplateFolder, status);
+					layoutPageTemplateFolderId, status);
 
 			Object returnObj = null;
 
@@ -1159,14 +1160,14 @@ public class LayoutPageTemplateEntryServiceHttp {
 
 	public static int getLayoutPageTemplateEntriesCount(
 		HttpPrincipal httpPrincipal, long groupId,
-		long layoutPageTemplateFolder, String name) {
+		long layoutPageTemplateFolderId, String name) {
 		try {
 			MethodKey methodKey = new MethodKey(LayoutPageTemplateEntryServiceUtil.class,
 					"getLayoutPageTemplateEntriesCount",
 					_getLayoutPageTemplateEntriesCountParameterTypes36);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					layoutPageTemplateFolder, name);
+					layoutPageTemplateFolderId, name);
 
 			Object returnObj = null;
 
@@ -1188,14 +1189,14 @@ public class LayoutPageTemplateEntryServiceHttp {
 
 	public static int getLayoutPageTemplateEntriesCount(
 		HttpPrincipal httpPrincipal, long groupId,
-		long layoutPageTemplateFolder, String name, int status) {
+		long layoutPageTemplateFolderId, String name, int status) {
 		try {
 			MethodKey methodKey = new MethodKey(LayoutPageTemplateEntryServiceUtil.class,
 					"getLayoutPageTemplateEntriesCount",
 					_getLayoutPageTemplateEntriesCountParameterTypes37);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					layoutPageTemplateFolder, name, status);
+					layoutPageTemplateFolderId, name, status);
 
 			Object returnObj = null;
 

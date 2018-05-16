@@ -68,13 +68,13 @@ public class DLAdminManagementToolbarDisplayContext {
 	public DLAdminManagementToolbarDisplayContext(
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
+		HttpServletRequest request,
 		DLAdminDisplayContext dlAdminDisplayContext) {
 
 		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
+		_request = request;
 		_dlAdminDisplayContext = dlAdminDisplayContext;
-
-		_request = liferayPortletRequest.getHttpServletRequest();
 
 		_dlRequestHelper = new DLRequestHelper(_request);
 
@@ -178,7 +178,8 @@ public class DLAdminManagementToolbarDisplayContext {
 									dropdownItem.setIcon("trash");
 									dropdownItem.setLabel(
 										LanguageUtil.get(
-											_request, "recycle-bin"));
+											_request,
+											"move-to-the-recycle-bin"));
 								}
 								else {
 									dropdownItem.setIcon("times");
@@ -217,6 +218,10 @@ public class DLAdminManagementToolbarDisplayContext {
 
 		List<Menu> menus = dlPortletToolbarContributor.getPortletTitleMenus(
 			_liferayPortletRequest, _liferayPortletResponse);
+
+		if (menus.isEmpty()) {
+			return null;
+		}
 
 		CreationMenu creationMenu = new CreationMenu();
 
@@ -298,13 +303,13 @@ public class DLAdminManagementToolbarDisplayContext {
 	}
 
 	public PortletURL getSortingURL() {
-		PortletURL currentSortingURL = _getCurrentSortingURL();
+		PortletURL sortingURL = _getCurrentSortingURL();
 
-		currentSortingURL.setParameter(
+		sortingURL.setParameter(
 			"orderByType",
 			Objects.equals(_getOrderByType(), "asc") ? "desc" : "asc");
 
-		return currentSortingURL;
+		return sortingURL;
 	}
 
 	public int getTotalItems() {
