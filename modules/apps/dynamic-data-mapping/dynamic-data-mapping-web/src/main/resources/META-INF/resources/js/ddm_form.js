@@ -768,9 +768,12 @@ AUI.add(
 
 							fieldJSON.value = instance.get('localizationMap');
 
-							var form = instance.getForm();
+							if (instance.get('localizable')) {
+								var form = instance.getForm();
 
-							form.addAvailableLanguageIds(AObject.keys(fieldJSON.value));
+								form.addAvailableLanguageIds(AObject.keys(fieldJSON.value));
+							}
+
 						}
 
 						var fields = instance.get('fields');
@@ -3051,11 +3054,11 @@ AUI.add(
 					setLabel: function() {
 						var instance = this;
 
-						var fieldDefinition = instance.getFieldDefinition();
+						var options = instance._getOptions();
 
 						instance.getInputNode().all('option').each(
 							function(item, index) {
-								var optionDefinition = fieldDefinition.options[index];
+								var optionDefinition = options[index];
 
 								var optionLabel = optionDefinition.label[instance.get('displayLocale')];
 
@@ -3080,6 +3083,28 @@ AUI.add(
 								item.set('selected', value.indexOf(item.val()) > -1);
 							}
 						);
+					},
+
+					_getOptions: function() {
+						var instance = this;
+
+						var fieldDefinition = instance.getFieldDefinition();
+
+						var fieldOptions = fieldDefinition.options;
+
+						return fieldOptions.unshift(instance._getPlaceholderOption());
+					},
+
+					_getPlaceholderOption: function() {
+						var instance = this;
+						var label = {};
+
+						label[instance.get('displayLocale')] = '';
+
+						return {
+							label: label,
+							value: ''
+						};
 					}
 				}
 			}

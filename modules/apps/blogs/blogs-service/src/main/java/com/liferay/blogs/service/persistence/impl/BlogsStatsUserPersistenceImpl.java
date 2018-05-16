@@ -35,10 +35,13 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
@@ -2486,12 +2489,12 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 				(orderByComparator == null)) {
 			pagination = false;
 			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_L;
-			finderArgs = new Object[] { userId, lastPostDate };
+			finderArgs = new Object[] { userId, _getTime(lastPostDate) };
 		}
 		else {
 			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_U_L;
 			finderArgs = new Object[] {
-					userId, lastPostDate,
+					userId, _getTime(lastPostDate),
 					
 					start, end, orderByComparator
 				};
@@ -2904,7 +2907,7 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	public int countByU_L(long userId, Date lastPostDate) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_U_L;
 
-		Object[] finderArgs = new Object[] { userId, lastPostDate };
+		Object[] finderArgs = new Object[] { userId, _getTime(lastPostDate) };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -3163,8 +3166,6 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 
 	@Override
 	protected BlogsStatsUser removeImpl(BlogsStatsUser blogsStatsUser) {
-		blogsStatsUser = toUnwrappedModel(blogsStatsUser);
-
 		Session session = null;
 
 		try {
@@ -3195,9 +3196,23 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 
 	@Override
 	public BlogsStatsUser updateImpl(BlogsStatsUser blogsStatsUser) {
-		blogsStatsUser = toUnwrappedModel(blogsStatsUser);
-
 		boolean isNew = blogsStatsUser.isNew();
+
+		if (!(blogsStatsUser instanceof BlogsStatsUserModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(blogsStatsUser.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(blogsStatsUser);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in blogsStatsUser proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom BlogsStatsUser implementation " +
+				blogsStatsUser.getClass());
+		}
 
 		BlogsStatsUserModelImpl blogsStatsUserModelImpl = (BlogsStatsUserModelImpl)blogsStatsUser;
 
@@ -3322,29 +3337,6 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 		blogsStatsUser.resetOriginalValues();
 
 		return blogsStatsUser;
-	}
-
-	protected BlogsStatsUser toUnwrappedModel(BlogsStatsUser blogsStatsUser) {
-		if (blogsStatsUser instanceof BlogsStatsUserImpl) {
-			return blogsStatsUser;
-		}
-
-		BlogsStatsUserImpl blogsStatsUserImpl = new BlogsStatsUserImpl();
-
-		blogsStatsUserImpl.setNew(blogsStatsUser.isNew());
-		blogsStatsUserImpl.setPrimaryKey(blogsStatsUser.getPrimaryKey());
-
-		blogsStatsUserImpl.setStatsUserId(blogsStatsUser.getStatsUserId());
-		blogsStatsUserImpl.setGroupId(blogsStatsUser.getGroupId());
-		blogsStatsUserImpl.setCompanyId(blogsStatsUser.getCompanyId());
-		blogsStatsUserImpl.setUserId(blogsStatsUser.getUserId());
-		blogsStatsUserImpl.setEntryCount(blogsStatsUser.getEntryCount());
-		blogsStatsUserImpl.setLastPostDate(blogsStatsUser.getLastPostDate());
-		blogsStatsUserImpl.setRatingsTotalEntries(blogsStatsUser.getRatingsTotalEntries());
-		blogsStatsUserImpl.setRatingsTotalScore(blogsStatsUser.getRatingsTotalScore());
-		blogsStatsUserImpl.setRatingsAverageScore(blogsStatsUser.getRatingsAverageScore());
-
-		return blogsStatsUserImpl;
 	}
 
 	/**
@@ -3752,6 +3744,15 @@ public class BlogsStatsUserPersistenceImpl extends BasePersistenceImpl<BlogsStat
 	protected EntityCache entityCache;
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
+
+	private Long _getTime(Date date) {
+		if (date == null) {
+			return null;
+		}
+
+		return date.getTime();
+	}
+
 	private static final String _SQL_SELECT_BLOGSSTATSUSER = "SELECT blogsStatsUser FROM BlogsStatsUser blogsStatsUser";
 	private static final String _SQL_SELECT_BLOGSSTATSUSER_WHERE_PKS_IN = "SELECT blogsStatsUser FROM BlogsStatsUser blogsStatsUser WHERE statsUserId IN (";
 	private static final String _SQL_SELECT_BLOGSSTATSUSER_WHERE = "SELECT blogsStatsUser FROM BlogsStatsUser blogsStatsUser WHERE ";

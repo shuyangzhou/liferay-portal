@@ -15,12 +15,15 @@
 package com.liferay.layout.uad.test;
 
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
+import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalService;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 
 import java.util.List;
 
-import org.junit.Assume;
-
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -28,31 +31,22 @@ import org.osgi.service.component.annotations.Component;
 @Component(immediate = true, service = LayoutSetPrototypeUADTestHelper.class)
 public class LayoutSetPrototypeUADTestHelper {
 
-	/**
-	 * Implement addLayoutSetPrototype() to enable some UAD tests.
-	 *
-	 * <p>
-	 * Several UAD tests depend on creating one or more valid LayoutSetPrototypes with a specified user ID in order to execute correctly. Implement addLayoutSetPrototype() such that it creates a valid LayoutSetPrototype with the specified user ID value and returns it in order to enable the UAD tests that depend on it.
-	 * </p>
-	 */
 	public LayoutSetPrototype addLayoutSetPrototype(long userId)
 		throws Exception {
 
-		Assume.assumeTrue(false);
-
-		return null;
+		return _layoutSetPrototypeLocalService.addLayoutSetPrototype(
+			userId, TestPropsValues.getCompanyId(),
+			RandomTestUtil.randomLocaleStringMap(),
+			RandomTestUtil.randomLocaleStringMap(), true, true,
+			ServiceContextTestUtil.getServiceContext());
 	}
 
-	/**
-	 * Implement cleanUpDependencies(List<LayoutSetPrototype> layoutSetPrototypes) if tests require additional tear down logic.
-	 *
-	 * <p>
-	 * Several UAD tests depend on creating one or more valid LayoutSetPrototypes with specified user ID and status by user ID in order to execute correctly. Implement cleanUpDependencies(List<LayoutSetPrototype> layoutSetPrototypes) such that any additional objects created during the construction of layoutSetPrototypes are safely removed.
-	 * </p>
-	 */
 	public void cleanUpDependencies(
 			List<LayoutSetPrototype> layoutSetPrototypes)
 		throws Exception {
 	}
+
+	@Reference
+	private LayoutSetPrototypeLocalService _layoutSetPrototypeLocalService;
 
 }

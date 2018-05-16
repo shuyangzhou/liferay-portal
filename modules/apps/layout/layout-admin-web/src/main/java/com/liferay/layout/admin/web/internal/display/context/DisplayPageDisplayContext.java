@@ -78,9 +78,8 @@ public class DisplayPageDisplayContext {
 			{
 				add(
 					dropdownItem -> {
-						dropdownItem.setHref(
-							"javascript:" + _renderResponse.getNamespace() +
-								"deleteSelectedDisplayPages();");
+						dropdownItem.putData(
+							"action", "deleteSelectedDisplayPages");
 						dropdownItem.setIcon("trash");
 						dropdownItem.setLabel(
 							LanguageUtil.get(_request, "delete"));
@@ -108,10 +107,6 @@ public class DisplayPageDisplayContext {
 		SearchContainer displayPagesSearchContainer = new SearchContainer(
 			_renderRequest, _renderResponse.createRenderURL(), null,
 			"there-are-no-display-pages");
-
-		if (isSearch()) {
-			displayPagesSearchContainer.setSearch(true);
-		}
 
 		displayPagesSearchContainer.setRowChecker(
 			new EmptyOnClickRowChecker(_renderResponse));
