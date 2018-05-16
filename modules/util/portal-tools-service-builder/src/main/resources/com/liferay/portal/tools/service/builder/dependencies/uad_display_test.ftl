@@ -22,7 +22,6 @@ import org.junit.runner.RunWith;
 
 /**
  * @author ${author}
- * @generated
  */
 @RunWith(Arquillian.class)
 public class ${entity.name}UADDisplayTest extends BaseUADDisplayTestCase<${entity.name}> {
@@ -38,11 +37,6 @@ public class ${entity.name}UADDisplayTest extends BaseUADDisplayTestCase<${entit
 		_${entity.varNames}.add(${entity.varName});
 
 		return ${entity.varName};
-	}
-
-	@Override
-	protected String getApplicationName() {
-		return ${entity.UADApplicationName}UADConstants.APPLICATION_NAME;
 	}
 
 	@Override

@@ -372,15 +372,14 @@ public class LayoutPageTemplateEntryServiceImpl
 		OrderByComparator<LayoutPageTemplateEntry> orderByComparator) {
 
 		return getLayoutPageTemplateEntries(
-			groupId, classNameId, classTypeId,
-			_customSQL.keywords(name, WildcardMode.SURROUND)[0], type,
+			groupId, classNameId, classTypeId, name, type,
 			WorkflowConstants.STATUS_ANY, start, end, orderByComparator);
 	}
 
 	@Override
 	public List<LayoutPageTemplateEntry> getLayoutPageTemplateEntries(
 		long groupId, long layoutPageTemplateCollectionId, String name,
-		int start, int status, int end,
+		int status, int start, int end,
 		OrderByComparator<LayoutPageTemplateEntry> orderByComparator) {
 
 		if (status == WorkflowConstants.STATUS_ANY) {
@@ -403,8 +402,7 @@ public class LayoutPageTemplateEntryServiceImpl
 		OrderByComparator<LayoutPageTemplateEntry> orderByComparator) {
 
 		return getLayoutPageTemplateEntries(
-			groupId, layoutPageTemplateCollectionId,
-			_customSQL.keywords(name, WildcardMode.SURROUND)[0],
+			groupId, layoutPageTemplateCollectionId, name,
 			WorkflowConstants.STATUS_ANY, start, end, orderByComparator);
 	}
 
@@ -430,8 +428,8 @@ public class LayoutPageTemplateEntryServiceImpl
 		OrderByComparator<LayoutPageTemplateEntry> orderByComparator) {
 
 		return getLayoutPageTemplateEntries(
-			groupId, _customSQL.keywords(name, WildcardMode.SURROUND)[0], type,
-			WorkflowConstants.STATUS_ANY, start, end, orderByComparator);
+			groupId, name, type, WorkflowConstants.STATUS_ANY, start, end,
+			orderByComparator);
 	}
 
 	@Override
@@ -455,23 +453,23 @@ public class LayoutPageTemplateEntryServiceImpl
 
 	@Override
 	public int getLayoutPageTemplateEntriesCount(
-		long groupId, long layoutPageTemplateFolder) {
+		long groupId, long layoutPageTemplateFolderId) {
 
 		return getLayoutPageTemplateEntriesCount(
-			groupId, layoutPageTemplateFolder, WorkflowConstants.STATUS_ANY);
+			groupId, layoutPageTemplateFolderId, WorkflowConstants.STATUS_ANY);
 	}
 
 	@Override
 	public int getLayoutPageTemplateEntriesCount(
-		long groupId, long layoutPageTemplateFolder, int status) {
+		long groupId, long layoutPageTemplateFolderId, int status) {
 
 		if (status == WorkflowConstants.STATUS_ANY) {
 			return layoutPageTemplateEntryPersistence.filterCountByG_L(
-				groupId, layoutPageTemplateFolder);
+				groupId, layoutPageTemplateFolderId);
 		}
 
 		return layoutPageTemplateEntryPersistence.filterCountByG_L_S(
-			groupId, layoutPageTemplateFolder, status);
+			groupId, layoutPageTemplateFolderId, status);
 	}
 
 	@Override
@@ -503,8 +501,7 @@ public class LayoutPageTemplateEntryServiceImpl
 		int type) {
 
 		return getLayoutPageTemplateEntriesCount(
-			groupId, classNameId, classTypeId,
-			_customSQL.keywords(name, WildcardMode.SURROUND)[0], type,
+			groupId, classNameId, classTypeId, name, type,
 			WorkflowConstants.STATUS_ANY);
 	}
 
@@ -527,26 +524,26 @@ public class LayoutPageTemplateEntryServiceImpl
 
 	@Override
 	public int getLayoutPageTemplateEntriesCount(
-		long groupId, long layoutPageTemplateFolder, String name) {
+		long groupId, long layoutPageTemplateFolderId, String name) {
 
 		return getLayoutPageTemplateEntriesCount(
-			groupId, layoutPageTemplateFolder,
-			_customSQL.keywords(name, WildcardMode.SURROUND)[0],
+			groupId, layoutPageTemplateFolderId, name,
 			WorkflowConstants.STATUS_ANY);
 	}
 
 	@Override
 	public int getLayoutPageTemplateEntriesCount(
-		long groupId, long layoutPageTemplateFolder, String name, int status) {
+		long groupId, long layoutPageTemplateFolderId, String name,
+		int status) {
 
 		if (status == WorkflowConstants.STATUS_ANY) {
 			return layoutPageTemplateEntryPersistence.filterCountByG_L_LikeN(
-				groupId, layoutPageTemplateFolder,
+				groupId, layoutPageTemplateFolderId,
 				_customSQL.keywords(name, WildcardMode.SURROUND)[0]);
 		}
 
 		return layoutPageTemplateEntryPersistence.filterCountByG_L_LikeN_S(
-			groupId, layoutPageTemplateFolder,
+			groupId, layoutPageTemplateFolderId,
 			_customSQL.keywords(name, WildcardMode.SURROUND)[0], status);
 	}
 
@@ -555,8 +552,7 @@ public class LayoutPageTemplateEntryServiceImpl
 		long groupId, String name, int type) {
 
 		return getLayoutPageTemplateEntriesCount(
-			groupId, _customSQL.keywords(name, WildcardMode.SURROUND)[0], type,
-			WorkflowConstants.STATUS_ANY);
+			groupId, name, type, WorkflowConstants.STATUS_ANY);
 	}
 
 	@Override

@@ -3531,6 +3531,27 @@ version 2.2.3.
 ### Changed
 - [LPS-79453]: Update the [Liferay Gradle Plugins] dependency to version 3.12.0.
 
+## 5.3.118 - 2018-05-13
+
+### Changed
+- [LPS-80840]: Update the [Liferay Gradle Plugins] dependency to version 3.12.1.
+
+## 5.3.119 - 2018-05-14
+
+### Changed
+- [LPS-79799]: Update the [Liferay Gradle Plugins] dependency to version 3.12.2.
+
+## 5.3.120 - 2018-05-14
+
+### Changed
+- [LPS-79679]: Update the [Liferay Gradle Plugins] dependency to version 3.12.3.
+
+## 5.4.0 - 2018-05-15
+
+### Added
+- [LPS-80944]: Add the plugin `com.liferay.spring.boot.defaults` to configure
+Spring Boot projects according to Liferay defaults.
+
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle License Report]: https://github.com/jk1/Gradle-License-Report
 [Liferay CDN]: https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public
@@ -3931,6 +3952,8 @@ version 2.2.3.
 [LPS-80517]: https://issues.liferay.com/browse/LPS-80517
 [LPS-80520]: https://issues.liferay.com/browse/LPS-80520
 [LPS-80544]: https://issues.liferay.com/browse/LPS-80544
+[LPS-80840]: https://issues.liferay.com/browse/LPS-80840
+[LPS-80944]: https://issues.liferay.com/browse/LPS-80944
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981

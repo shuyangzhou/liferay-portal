@@ -44,7 +44,7 @@ public class ExecutePoshiElement extends PoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(parentPoshiElement, readableSyntax)) {
-			return new ExecutePoshiElement(readableSyntax);
+			return new ExecutePoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -52,6 +52,18 @@ public class ExecutePoshiElement extends PoshiElement {
 
 	@Override
 	public void parseReadableSyntax(String readableSyntax) {
+		String executeClassName = RegexUtil.getGroup(
+			readableSyntax, "(.*?)(\\(|\\.)", 1);
+
+		String executeType = "macro";
+
+		if (PoshiElement.utilClassNames.contains(executeClassName)) {
+			executeType = "class";
+		}
+		else if (PoshiElement.functionFileNames.contains(executeClassName)) {
+			executeType = "function";
+		}
+
 		if (readableSyntax.contains("return(\n")) {
 			PoshiNode returnPoshiNode = PoshiNodeFactory.newPoshiNode(
 				this, readableSyntax);
@@ -64,31 +76,14 @@ public class ExecutePoshiElement extends PoshiElement {
 			}
 		}
 
-		String executeType = "macro";
-
-		String content = getParentheticalContent(readableSyntax);
-
-		String[] functionAttributeNames =
-			{"locator1", "locator2", "value1", "value2"};
-
-		for (String functionAttributeName : functionAttributeNames) {
-			if (content.startsWith(functionAttributeName)) {
-				executeType = "function";
-
-				break;
-			}
-		}
-
 		String executeCommandName = RegexUtil.getGroup(
 			readableSyntax, "([^\\s]*)\\(", 1);
 
 		executeCommandName = executeCommandName.replace(".", "#");
 
-		if (!executeCommandName.contains("#") && (content.length() == 0)) {
-			executeType = "function";
-		}
-
 		addAttribute(executeType, executeCommandName);
+
+		String content = getParentheticalContent(readableSyntax);
 
 		if (content.length() == 0) {
 			return;
@@ -107,7 +102,7 @@ public class ExecutePoshiElement extends PoshiElement {
 
 			boolean functionAttributeAdded = false;
 
-			for (String functionAttributeName : functionAttributeNames) {
+			for (String functionAttributeName : _FUNCTION_ATTRIBUTE_NAMES) {
 				if (assignment.startsWith(functionAttributeName)) {
 					String name = getNameFromAssignment(assignment);
 					String value = getQuotedContent(assignment);
@@ -206,8 +201,10 @@ public class ExecutePoshiElement extends PoshiElement {
 		this(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected ExecutePoshiElement(String readableSyntax) {
-		super("execute", readableSyntax);
+	protected ExecutePoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super("execute", parentPoshiElement, readableSyntax);
 	}
 
 	protected ExecutePoshiElement(String name, Element element) {
@@ -220,8 +217,10 @@ public class ExecutePoshiElement extends PoshiElement {
 		super(elementName, attributes, nodes);
 	}
 
-	protected ExecutePoshiElement(String name, String readableSyntax) {
-		super(name, readableSyntax);
+	protected ExecutePoshiElement(
+		String name, PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(name, parentPoshiElement, readableSyntax);
 	}
 
 	protected String createFunctionReadableBlock(String content) {
@@ -341,5 +340,8 @@ public class ExecutePoshiElement extends PoshiElement {
 	}
 
 	private static final String _ELEMENT_NAME = "execute";
+
+	private static final String[] _FUNCTION_ATTRIBUTE_NAMES =
+		{"locator1", "locator2", "value1", "value2"};
 
 }
