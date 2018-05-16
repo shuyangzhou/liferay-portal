@@ -41,14 +41,16 @@ renderResponse.setTitle(LanguageUtil.get(request, "add-page"));
 							List<LayoutPageTemplateCollection> layoutPageTemplateCollections = LayoutPageTemplateCollectionServiceUtil.getLayoutPageTemplateCollections(scopeGroupId);
 
 							for (LayoutPageTemplateCollection layoutPageTemplateCollection : layoutPageTemplateCollections) {
-								long layoutPageTemplateCollectionId = layoutPageTemplateCollection.getLayoutPageTemplateCollectionId();
+								int layoutPageTemplateEntriesCount = LayoutPageTemplateEntryServiceUtil.getLayoutPageTemplateEntriesCount(themeDisplay.getScopeGroupId(), layoutPageTemplateCollection.getLayoutPageTemplateCollectionId(), WorkflowConstants.STATUS_APPROVED);
 							%>
 
-								<li class="nav-item">
-									<a class="nav-link truncate-text <%= (selectLayoutPageTemplateEntryDisplayContext.getLayoutPageTemplateCollectionId() == layoutPageTemplateCollectionId) ? "active" : StringPool.BLANK %>" href="<%= layoutsAdminDisplayContext.getSelectLayoutPageTemplateEntryURL(layoutPageTemplateCollectionId) %>">
-										<%= layoutPageTemplateCollection.getName() %>
-									</a>
-								</li>
+								<c:if test="<%= layoutPageTemplateEntriesCount > 0 %>">
+									<li class="nav-item">
+										<a class="nav-link truncate-text <%= (selectLayoutPageTemplateEntryDisplayContext.getLayoutPageTemplateCollectionId() == layoutPageTemplateCollection.getLayoutPageTemplateCollectionId()) ? "active" : StringPool.BLANK %>" href="<%= layoutsAdminDisplayContext.getSelectLayoutPageTemplateEntryURL(layoutPageTemplateCollection.getLayoutPageTemplateCollectionId()) %>">
+											<%= layoutPageTemplateCollection.getName() %>
+										</a>
+									</li>
+								</c:if>
 
 							<%
 							}

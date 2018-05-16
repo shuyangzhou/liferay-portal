@@ -353,7 +353,7 @@ public class PoshiRunnerGetterUtil {
 		String filePath = url.getFile();
 
 		if (!fileContent.contains("<definition") &&
-			filePath.endsWith(".testcase")) {
+			(filePath.endsWith(".macro") || filePath.endsWith(".testcase"))) {
 
 			PoshiNode<?, ?> poshiNode = PoshiNodeFactory.newPoshiNodeFromFile(
 				filePath);

@@ -41,7 +41,7 @@ public class ReturnPoshiElement extends PoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(parentPoshiElement, readableSyntax)) {
-			return new ReturnPoshiElement(readableSyntax);
+			return new ReturnPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -74,8 +74,10 @@ public class ReturnPoshiElement extends PoshiElement {
 		super(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected ReturnPoshiElement(String readableSyntax) {
-		super(_ELEMENT_NAME, readableSyntax);
+	protected ReturnPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	@Override

@@ -302,9 +302,11 @@ mariadb.executable=${mariadb.executable}]]></echo>
 
 					<set-portal-impl-system-ext-properties />
 
-					<exec executable="${database.service.executable}" failonerror="true">
+					<exec executable="${database.service.executable}" resultproperty="exec.result">
 						<arg line="${database.service.cmd.start}" />
 					</exec>
+
+					<diagnose-database-start database.type="@{database.type}" exec.result="${exec.result}" />
 
 					<antcall inheritall="false" target="copy-optional-jars">
 						<param name="database.type" value="@{database.type}" />
@@ -336,6 +338,29 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					</exec>
 				</action>
 			</database-test-action>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="diagnose-database-start">
+		<attribute name="database.type" />
+		<attribute name="exec.result" />
+
+		<sequential>
+			<if>
+				<equals arg1="@{database.type}" arg2="db2" />
+				<then>
+					<if>
+						<not>
+							<equals arg1="@{exec.result}" arg2="0" />
+						</not>
+						<then>
+							<exec executable="db2diag">
+								<arg line="-H 1d" />
+							</exec>
+						</then>
+					</if>
+				</then>
+			</if>
 		</sequential>
 	</macrodef>
 
@@ -1432,6 +1457,13 @@ app.server.type=@{app.server.type}]]></echo>
 							<delete dir="${liferay.home}/osgi/portal" />
 							<delete dir="${liferay.home}/osgi/static" />
 							<delete dir="${liferay.home}/osgi/war" />
+
+							<delete>
+								<fileset
+									dir="${liferay.home}/osgi/test"
+									excludes="com.liferay.portal.test.jar,com.liferay.portal.test.integration.jar"
+								/>
+							</delete>
 
 							<trycatch>
 								<try>
@@ -3437,9 +3469,12 @@ ${output.content}</echo>
 					<then>
 						<exec executable="git" output="${project.dir}/build.services.diff.txt">
 							<arg value="diff" />
-							<arg value="&quot;:!*/*-portlet-service.jar&quot;" />
-							<arg value="&quot;:!*/src/main/resources/service.properties&quot;" />
-							<arg value="&quot;:!*/src/service.properties&quot;" />
+							<arg value="--" />
+							<arg value="." />
+							<arg value=":!*/*-portlet-service.jar" />
+							<arg value=":!*/packageinfo" />
+							<arg value=":!*/src/main/resources/service.properties" />
+							<arg value=":!*/src/service.properties" />
 						</exec>
 
 						<loadfile
@@ -3450,9 +3485,7 @@ ${output.content}</echo>
 						<delete file="${project.dir}/build.services.diff.txt" />
 
 						<if>
-							<not>
-								<equals arg1="${build.services.diff.txt.content}" arg2="" />
-							</not>
+							<isset property="build.services.diff.txt.content" />
 							<then>
 								<echo message="${build.services.diff.txt.content}" />
 
@@ -3632,6 +3665,14 @@ information. Make sure to commit in all build services results.
 				<fail message="${failure.property}" />
 			</catch>
 		</trycatch>
+	</target>
+
+	<target name="subrepository-functional-bundle-tomcat80-mysql56-jdk8">
+		<antcall target="compile" />
+
+		<antcall inheritAll="false" target="install-portal-snapshots" />
+
+		<antcall target="functional-bundle-tomcat-mysql56-jdk8" />
 	</target>
 
 	<target name="subrepository-functional-tomcat80-mysql56-jdk8">

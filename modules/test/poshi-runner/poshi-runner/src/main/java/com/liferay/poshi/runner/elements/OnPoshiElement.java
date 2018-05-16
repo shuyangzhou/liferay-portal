@@ -40,7 +40,8 @@ public class OnPoshiElement extends PoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (isElementType(readableSyntax)) {
-			return new OnPoshiElement(_ELEMENT_NAME, readableSyntax);
+			return new OnPoshiElement(
+				_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -85,8 +86,10 @@ public class OnPoshiElement extends PoshiElement {
 		super(elementName, attributes, nodes);
 	}
 
-	protected OnPoshiElement(String name, String readableSyntax) {
-		super(name, readableSyntax);
+	protected OnPoshiElement(
+		String name, PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(name, parentPoshiElement, readableSyntax);
 	}
 
 	@Override
