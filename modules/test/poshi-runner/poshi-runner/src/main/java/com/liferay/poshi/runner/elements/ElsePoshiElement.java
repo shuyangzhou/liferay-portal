@@ -39,7 +39,7 @@ public class ElsePoshiElement extends ThenPoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(parentPoshiElement, readableSyntax)) {
-			return new ElsePoshiElement(readableSyntax);
+			return new ElsePoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -63,8 +63,10 @@ public class ElsePoshiElement extends ThenPoshiElement {
 		super(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected ElsePoshiElement(String readableSyntax) {
-		super("else", readableSyntax);
+	protected ElsePoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super("else", parentPoshiElement, readableSyntax);
 	}
 
 	@Override

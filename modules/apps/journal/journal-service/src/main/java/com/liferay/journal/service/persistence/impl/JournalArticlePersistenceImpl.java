@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -50,6 +51,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
@@ -19492,7 +19494,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 		finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_LTD_S;
 		finderArgs = new Object[] {
-				displayDate, status,
+				_getTime(displayDate), status,
 				
 				start, end, orderByComparator
 			};
@@ -19903,7 +19905,7 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	public int countByLtD_S(Date displayDate, int status) {
 		FinderPath finderPath = FINDER_PATH_WITH_PAGINATION_COUNT_BY_LTD_S;
 
-		Object[] finderArgs = new Object[] { displayDate, status };
+		Object[] finderArgs = new Object[] { _getTime(displayDate), status };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -31619,12 +31621,14 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 				(orderByComparator == null)) {
 			pagination = false;
 			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_ED_ST;
-			finderArgs = new Object[] { classNameId, expirationDate, status };
+			finderArgs = new Object[] {
+					classNameId, _getTime(expirationDate), status
+				};
 		}
 		else {
 			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_C_ED_ST;
 			finderArgs = new Object[] {
-					classNameId, expirationDate, status,
+					classNameId, _getTime(expirationDate), status,
 					
 					start, end, orderByComparator
 				};
@@ -32067,7 +32071,9 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	public int countByC_ED_ST(long classNameId, Date expirationDate, int status) {
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_ED_ST;
 
-		Object[] finderArgs = new Object[] { classNameId, expirationDate, status };
+		Object[] finderArgs = new Object[] {
+				classNameId, _getTime(expirationDate), status
+			};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -32433,8 +32439,6 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	@Override
 	protected JournalArticle removeImpl(JournalArticle journalArticle) {
-		journalArticle = toUnwrappedModel(journalArticle);
-
 		Session session = null;
 
 		try {
@@ -32465,9 +32469,23 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 
 	@Override
 	public JournalArticle updateImpl(JournalArticle journalArticle) {
-		journalArticle = toUnwrappedModel(journalArticle);
-
 		boolean isNew = journalArticle.isNew();
+
+		if (!(journalArticle instanceof JournalArticleModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(journalArticle.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(journalArticle);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in journalArticle proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom JournalArticle implementation " +
+				journalArticle.getClass());
+		}
 
 		JournalArticleModelImpl journalArticleModelImpl = (JournalArticleModelImpl)journalArticle;
 
@@ -33489,53 +33507,6 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 		return journalArticle;
 	}
 
-	protected JournalArticle toUnwrappedModel(JournalArticle journalArticle) {
-		if (journalArticle instanceof JournalArticleImpl) {
-			return journalArticle;
-		}
-
-		JournalArticleImpl journalArticleImpl = new JournalArticleImpl();
-
-		journalArticleImpl.setNew(journalArticle.isNew());
-		journalArticleImpl.setPrimaryKey(journalArticle.getPrimaryKey());
-
-		journalArticleImpl.setUuid(journalArticle.getUuid());
-		journalArticleImpl.setId(journalArticle.getId());
-		journalArticleImpl.setResourcePrimKey(journalArticle.getResourcePrimKey());
-		journalArticleImpl.setGroupId(journalArticle.getGroupId());
-		journalArticleImpl.setCompanyId(journalArticle.getCompanyId());
-		journalArticleImpl.setUserId(journalArticle.getUserId());
-		journalArticleImpl.setUserName(journalArticle.getUserName());
-		journalArticleImpl.setCreateDate(journalArticle.getCreateDate());
-		journalArticleImpl.setModifiedDate(journalArticle.getModifiedDate());
-		journalArticleImpl.setFolderId(journalArticle.getFolderId());
-		journalArticleImpl.setClassNameId(journalArticle.getClassNameId());
-		journalArticleImpl.setClassPK(journalArticle.getClassPK());
-		journalArticleImpl.setTreePath(journalArticle.getTreePath());
-		journalArticleImpl.setArticleId(journalArticle.getArticleId());
-		journalArticleImpl.setVersion(journalArticle.getVersion());
-		journalArticleImpl.setUrlTitle(journalArticle.getUrlTitle());
-		journalArticleImpl.setContent(journalArticle.getContent());
-		journalArticleImpl.setDDMStructureKey(journalArticle.getDDMStructureKey());
-		journalArticleImpl.setDDMTemplateKey(journalArticle.getDDMTemplateKey());
-		journalArticleImpl.setDefaultLanguageId(journalArticle.getDefaultLanguageId());
-		journalArticleImpl.setLayoutUuid(journalArticle.getLayoutUuid());
-		journalArticleImpl.setDisplayDate(journalArticle.getDisplayDate());
-		journalArticleImpl.setExpirationDate(journalArticle.getExpirationDate());
-		journalArticleImpl.setReviewDate(journalArticle.getReviewDate());
-		journalArticleImpl.setIndexable(journalArticle.isIndexable());
-		journalArticleImpl.setSmallImage(journalArticle.isSmallImage());
-		journalArticleImpl.setSmallImageId(journalArticle.getSmallImageId());
-		journalArticleImpl.setSmallImageURL(journalArticle.getSmallImageURL());
-		journalArticleImpl.setLastPublishDate(journalArticle.getLastPublishDate());
-		journalArticleImpl.setStatus(journalArticle.getStatus());
-		journalArticleImpl.setStatusByUserId(journalArticle.getStatusByUserId());
-		journalArticleImpl.setStatusByUserName(journalArticle.getStatusByUserName());
-		journalArticleImpl.setStatusDate(journalArticle.getStatusDate());
-
-		return journalArticleImpl;
-	}
-
 	/**
 	 * Returns the journal article with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
 	 *
@@ -33946,6 +33917,15 @@ public class JournalArticlePersistenceImpl extends BasePersistenceImpl<JournalAr
 	protected EntityCache entityCache;
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
+
+	private Long _getTime(Date date) {
+		if (date == null) {
+			return null;
+		}
+
+		return date.getTime();
+	}
+
 	private static final String _SQL_SELECT_JOURNALARTICLE = "SELECT journalArticle FROM JournalArticle journalArticle";
 	private static final String _SQL_SELECT_JOURNALARTICLE_WHERE_PKS_IN = "SELECT journalArticle FROM JournalArticle journalArticle WHERE id_ IN (";
 	private static final String _SQL_SELECT_JOURNALARTICLE_WHERE = "SELECT journalArticle FROM JournalArticle journalArticle WHERE ";
