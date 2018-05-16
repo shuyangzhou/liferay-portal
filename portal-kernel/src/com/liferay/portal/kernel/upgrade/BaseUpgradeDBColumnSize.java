@@ -118,24 +118,18 @@ public abstract class BaseUpgradeDBColumnSize extends UpgradeProcess {
 								upgradeColumn(tableName, columnName);
 							}
 							catch (SQLException sqle) {
-								if (sqle.getErrorCode() == 1441) {
-									if (_log.isWarnEnabled()) {
-										StringBundler sb = new StringBundler(8);
+								if (_log.isWarnEnabled()) {
+									StringBundler sb = new StringBundler(7);
 
-										sb.append("Unable to alter length of ");
-										sb.append("column ");
-										sb.append(columnName);
-										sb.append(" for table ");
-										sb.append(tableName);
-										sb.append(" because it contains ");
-										sb.append("values larger than the ");
-										sb.append("new column length");
+									sb.append("Unable to alter length of ");
+									sb.append("column ");
+									sb.append(columnName);
+									sb.append(" for table ");
+									sb.append(tableName);
+									sb.append(" because: ");
+									sb.append(sqle.getMessage());
 
-										_log.warn(sb.toString());
-									}
-								}
-								else {
-									throw sqle;
+									_log.warn(sb.toString());
 								}
 							}
 						}
