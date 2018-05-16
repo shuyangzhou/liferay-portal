@@ -28,6 +28,9 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author Preston Crary
  */
@@ -65,7 +68,31 @@ public abstract class BaseUpgradeDBColumnSize extends UpgradeProcess {
 				catalog, schema, null, new String[] {"TABLE"})) {
 
 			while (tableRS.next()) {
-				String tableName = tableRS.getString("TABLE_NAME");
+				String tableName = dbInspector.normalizeName(
+					tableRS.getString("TABLE_NAME"));
+
+				Set<String> invalidColumnNames = new HashSet<>();
+
+				try (ResultSet primaryKeyRS = databaseMetaData.getPrimaryKeys(
+						catalog, schema, tableName)) {
+
+					while (primaryKeyRS.next()) {
+						String primaryKeyName = StringUtil.toUpperCase(
+							primaryKeyRS.getString("COLUMN_NAME"));
+
+						invalidColumnNames.add(primaryKeyName);
+					}
+				}
+
+				try (ResultSet indexRS = databaseMetaData.getIndexInfo(
+						catalog, schema, tableName, false, false)) {
+
+					while (indexRS.next()) {
+						invalidColumnNames.add(
+							StringUtil.toUpperCase(
+								indexRS.getString("COLUMN_NAME")));
+					}
+				}
 
 				try (ResultSet columnRS = databaseMetaData.getColumns(
 						catalog, schema, tableName, null)) {
@@ -80,6 +107,12 @@ public abstract class BaseUpgradeDBColumnSize extends UpgradeProcess {
 
 							String columnName = columnRS.getString(
 								"COLUMN_NAME");
+
+							if (invalidColumnNames.contains(
+									StringUtil.toUpperCase(columnName))) {
+
+								continue;
+							}
 
 							try {
 								upgradeColumn(tableName, columnName);
