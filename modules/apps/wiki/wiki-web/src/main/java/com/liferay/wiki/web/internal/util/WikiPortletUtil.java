@@ -17,6 +17,7 @@ package com.liferay.wiki.web.internal.util;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
+import com.liferay.wiki.util.comparator.NodeLastPostDateComparator;
 import com.liferay.wiki.util.comparator.NodeNameComparator;
 import com.liferay.wiki.util.comparator.PageCreateDateComparator;
 import com.liferay.wiki.util.comparator.PageTitleComparator;
@@ -36,13 +37,15 @@ public class WikiPortletUtil {
 			orderByAsc = true;
 		}
 
-		OrderByComparator<WikiNode> orderByComparator = null;
-
-		if (orderByCol.equals("name")) {
-			orderByComparator = new NodeNameComparator(orderByAsc);
+		if (orderByCol.equals("lastPostDate")) {
+			return new NodeLastPostDateComparator(orderByAsc);
 		}
 
-		return orderByComparator;
+		if (orderByCol.equals("name")) {
+			return new NodeNameComparator(orderByAsc);
+		}
+
+		return null;
 	}
 
 	public static OrderByComparator<WikiPage> getPageOrderByComparator(
@@ -54,19 +57,19 @@ public class WikiPortletUtil {
 			orderByAsc = true;
 		}
 
-		OrderByComparator<WikiPage> orderByComparator = null;
-
 		if (orderByCol.equals("modifiedDate")) {
-			orderByComparator = new PageCreateDateComparator(orderByAsc);
-		}
-		else if (orderByCol.equals("title")) {
-			orderByComparator = new PageTitleComparator(orderByAsc);
-		}
-		else if (orderByCol.equals("version")) {
-			orderByComparator = new PageVersionComparator(orderByAsc);
+			return new PageCreateDateComparator(orderByAsc);
 		}
 
-		return orderByComparator;
+		if (orderByCol.equals("title")) {
+			return new PageTitleComparator(orderByAsc);
+		}
+
+		if (orderByCol.equals("version")) {
+			return new PageVersionComparator(orderByAsc);
+		}
+
+		return null;
 	}
 
 }

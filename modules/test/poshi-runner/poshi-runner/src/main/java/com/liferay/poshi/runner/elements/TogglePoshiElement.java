@@ -40,7 +40,7 @@ public class TogglePoshiElement extends PoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(readableSyntax)) {
-			return new TogglePoshiElement(readableSyntax);
+			return new TogglePoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -94,8 +94,10 @@ public class TogglePoshiElement extends PoshiElement {
 		super(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected TogglePoshiElement(String readableSyntax) {
-		super(_ELEMENT_NAME, readableSyntax);
+	protected TogglePoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	@Override

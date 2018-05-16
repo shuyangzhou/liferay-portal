@@ -68,13 +68,13 @@ public class DLAdminManagementToolbarDisplayContext {
 	public DLAdminManagementToolbarDisplayContext(
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
+		HttpServletRequest request,
 		DLAdminDisplayContext dlAdminDisplayContext) {
 
 		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
+		_request = request;
 		_dlAdminDisplayContext = dlAdminDisplayContext;
-
-		_request = liferayPortletRequest.getHttpServletRequest();
 
 		_dlRequestHelper = new DLRequestHelper(_request);
 
@@ -178,7 +178,8 @@ public class DLAdminManagementToolbarDisplayContext {
 									dropdownItem.setIcon("trash");
 									dropdownItem.setLabel(
 										LanguageUtil.get(
-											_request, "recycle-bin"));
+											_request,
+											"move-to-the-recycle-bin"));
 								}
 								else {
 									dropdownItem.setIcon("times");
@@ -218,6 +219,10 @@ public class DLAdminManagementToolbarDisplayContext {
 		List<Menu> menus = dlPortletToolbarContributor.getPortletTitleMenus(
 			_liferayPortletRequest, _liferayPortletResponse);
 
+		if (menus.isEmpty()) {
+			return null;
+		}
+
 		CreationMenu creationMenu = new CreationMenu();
 
 		for (Menu menu : menus) {
@@ -237,6 +242,10 @@ public class DLAdminManagementToolbarDisplayContext {
 	}
 
 	public List<DropdownItem> getFilterDropdownItems() {
+		if (_isSearch()) {
+			return null;
+		}
+
 		return new DropdownItemList() {
 			{
 				addGroup(
@@ -249,7 +258,7 @@ public class DLAdminManagementToolbarDisplayContext {
 									_request, "filter-by-navigation"));
 						}));
 
-				if (!_isSearch() && !_isNavigationRecent()) {
+				if (!_isNavigationRecent()) {
 					addGroup(
 						dropdownGroupItem -> {
 							dropdownGroupItem.setDropdownItems(
@@ -294,17 +303,25 @@ public class DLAdminManagementToolbarDisplayContext {
 	}
 
 	public String getSortingOrder() {
+		if (_isSearch()) {
+			return null;
+		}
+
 		return _dlAdminDisplayContext.getOrderByType();
 	}
 
 	public PortletURL getSortingURL() {
-		PortletURL currentSortingURL = _getCurrentSortingURL();
+		if (_isSearch()) {
+			return null;
+		}
 
-		currentSortingURL.setParameter(
+		PortletURL sortingURL = _getCurrentSortingURL();
+
+		sortingURL.setParameter(
 			"orderByType",
 			Objects.equals(_getOrderByType(), "asc") ? "desc" : "asc");
 
-		return currentSortingURL;
+		return sortingURL;
 	}
 
 	public int getTotalItems() {

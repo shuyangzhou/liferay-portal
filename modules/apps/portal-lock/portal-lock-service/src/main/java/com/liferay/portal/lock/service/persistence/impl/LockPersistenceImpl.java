@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
@@ -43,6 +44,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
@@ -1296,7 +1298,11 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 		Object[] finderArgs = null;
 
 		finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_LTEXPIRATIONDATE;
-		finderArgs = new Object[] { expirationDate, start, end, orderByComparator };
+		finderArgs = new Object[] {
+				_getTime(expirationDate),
+				
+				start, end, orderByComparator
+			};
 
 		List<Lock> list = null;
 
@@ -1680,7 +1686,7 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 	public int countByLtExpirationDate(Date expirationDate) {
 		FinderPath finderPath = FINDER_PATH_WITH_PAGINATION_COUNT_BY_LTEXPIRATIONDATE;
 
-		Object[] finderArgs = new Object[] { expirationDate };
+		Object[] finderArgs = new Object[] { _getTime(expirationDate) };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -2234,8 +2240,6 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 
 	@Override
 	protected Lock removeImpl(Lock lock) {
-		lock = toUnwrappedModel(lock);
-
 		Session session = null;
 
 		try {
@@ -2265,9 +2269,23 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 
 	@Override
 	public Lock updateImpl(Lock lock) {
-		lock = toUnwrappedModel(lock);
-
 		boolean isNew = lock.isNew();
+
+		if (!(lock instanceof LockModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(lock.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(lock);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in lock proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom Lock implementation " +
+				lock.getClass());
+		}
 
 		LockModelImpl lockModelImpl = (LockModelImpl)lock;
 
@@ -2370,32 +2388,6 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 		lock.resetOriginalValues();
 
 		return lock;
-	}
-
-	protected Lock toUnwrappedModel(Lock lock) {
-		if (lock instanceof LockImpl) {
-			return lock;
-		}
-
-		LockImpl lockImpl = new LockImpl();
-
-		lockImpl.setNew(lock.isNew());
-		lockImpl.setPrimaryKey(lock.getPrimaryKey());
-
-		lockImpl.setMvccVersion(lock.getMvccVersion());
-		lockImpl.setUuid(lock.getUuid());
-		lockImpl.setLockId(lock.getLockId());
-		lockImpl.setCompanyId(lock.getCompanyId());
-		lockImpl.setUserId(lock.getUserId());
-		lockImpl.setUserName(lock.getUserName());
-		lockImpl.setCreateDate(lock.getCreateDate());
-		lockImpl.setClassName(lock.getClassName());
-		lockImpl.setKey(lock.getKey());
-		lockImpl.setOwner(lock.getOwner());
-		lockImpl.setInheritable(lock.isInheritable());
-		lockImpl.setExpirationDate(lock.getExpirationDate());
-
-		return lockImpl;
 	}
 
 	/**
@@ -2805,6 +2797,15 @@ public class LockPersistenceImpl extends BasePersistenceImpl<Lock>
 	protected EntityCache entityCache;
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
+
+	private Long _getTime(Date date) {
+		if (date == null) {
+			return null;
+		}
+
+		return date.getTime();
+	}
+
 	private static final String _SQL_SELECT_LOCK = "SELECT lock FROM Lock lock";
 	private static final String _SQL_SELECT_LOCK_WHERE_PKS_IN = "SELECT lock FROM Lock lock WHERE lockId IN (";
 	private static final String _SQL_SELECT_LOCK_WHERE = "SELECT lock FROM Lock lock WHERE ";

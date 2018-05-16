@@ -34,23 +34,24 @@ public abstract class Base${entity.name}UADAnonymizer extends DynamicQueryUADAno
 			<#assign uadUserIdEntityColumn = entity.getEntityColumn(uadUserIdColumnName) />
 
 					if (${entity.varName}.get${uadUserIdEntityColumn.methodName}() == userId) {
-			<#list entity.UADAnonymizableEntityColumnsMap[uadUserIdColumnName] as uadAnonymizableEntityColumn>
-				${entity.varName}.set${uadAnonymizableEntityColumn.methodName}(anonymousUser.get${textFormatter.format(uadAnonymizableEntityColumn.UADAnonymizeFieldName, 6)}());
-			</#list>
+						<#if entity.UADAutoDelete>
+							delete(${entity.varName});
+						<#else>
+							<#list entity.UADAnonymizableEntityColumnsMap[uadUserIdColumnName] as uadAnonymizableEntityColumn>
+								${entity.varName}.set${uadAnonymizableEntityColumn.methodName}(anonymousUser.get${textFormatter.format(uadAnonymizableEntityColumn.UADAnonymizeFieldName, 6)}());
+							</#list>
+						</#if>
 					}
 		</#list>
 
-		${entity.varName}LocalService.update${entity.name}(${entity.varName});
+		<#if !entity.UADAutoDelete>
+			${entity.varName}LocalService.update${entity.name}(${entity.varName});
+		</#if>
 	}
 
 	@Override
 	public void delete(${entity.name} ${entity.varName}) throws PortalException {
 		${entity.varName}LocalService.${deleteUADEntityMethodName}(${entity.varName});
-	}
-
-	@Override
-	public String getApplicationName() {
-		return ${entity.UADApplicationName}UADConstants.APPLICATION_NAME;
 	}
 
 	@Override

@@ -82,24 +82,55 @@ public abstract class PoshiNodeFactory {
 			return newPoshiNode;
 		}
 
-		throw new RuntimeException("Unknown readble syntax\n" + readableSyntax);
+		throw new RuntimeException(
+			"Unknown readable syntax\n" + readableSyntax);
 	}
 
-	public static PoshiNode<?, ?> newPoshiNodeFromFile(String filePath) {
-		File file = new File(filePath);
+	public static PoshiNode<?, ?> newPoshiNode(
+		String content, String fileType) {
 
 		try {
-			String content = FileUtil.read(file);
+			DefinitionPoshiElement definitionPoshiElement = null;
+
+			for (PoshiElement poshiElement : _poshiElements) {
+				if (poshiElement instanceof DefinitionPoshiElement &&
+					fileType.equals(poshiElement.getFileType())) {
+
+					definitionPoshiElement =
+						(DefinitionPoshiElement)poshiElement;
+				}
+			}
 
 			if (content.contains("<definition")) {
 				Document document = Dom4JUtil.parse(content);
 
 				Element rootElement = document.getRootElement();
 
-				return newPoshiNode(rootElement);
+				return definitionPoshiElement.clone(rootElement);
 			}
 
-			return newPoshiNode(null, content);
+			return definitionPoshiElement.clone(content);
+		}
+		catch (Exception e) {
+			System.out.println("Unable to generate the Poshi element");
+
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public static PoshiNode<?, ?> newPoshiNodeFromFile(String filePath) {
+		try {
+			File file = new File(filePath);
+
+			String content = FileUtil.read(file);
+
+			int index = filePath.lastIndexOf(".");
+
+			String fileType = filePath.substring(index + 1);
+
+			return newPoshiNode(content, fileType);
 		}
 		catch (Exception e) {
 			System.out.println("Unable to generate the Poshi element");

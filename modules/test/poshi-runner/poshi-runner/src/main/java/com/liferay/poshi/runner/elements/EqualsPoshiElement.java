@@ -39,7 +39,7 @@ public class EqualsPoshiElement extends PoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(parentPoshiElement, readableSyntax)) {
-			return new EqualsPoshiElement(readableSyntax);
+			return new EqualsPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -86,8 +86,10 @@ public class EqualsPoshiElement extends PoshiElement {
 		super(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected EqualsPoshiElement(String readableSyntax) {
-		super(_ELEMENT_NAME, readableSyntax);
+	protected EqualsPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	@Override
