@@ -80,6 +80,7 @@ import java.io.File;
 import java.io.InputStream;
 
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.List;
@@ -1440,9 +1441,17 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 				group.getGroupId(), fileEntry.getFileEntryId(), fileName,
 				false);
 
-			fileEntry = updateFileEntry(
-				group.getGroupId(), fileEntry.getFileEntryId(), fileName,
-				false);
+			ServiceContext serviceContext =
+				ServiceContextTestUtil.getServiceContext(group.getGroupId());
+
+			BitSet bitSet = BitSet.valueOf(TestDataConstants.TEST_BYTE_ARRAY);
+
+			bitSet.flip(bitSet.size());
+
+			fileEntry = DLAppServiceUtil.updateFileEntry(
+				fileEntry.getFileEntryId(), fileName, ContentTypes.TEXT_PLAIN,
+				fileName, StringPool.BLANK, StringPool.BLANK, false,
+				bitSet.toByteArray(), serviceContext);
 
 			Assert.assertEquals(
 				"Version label incorrect after major update", "1.2",
