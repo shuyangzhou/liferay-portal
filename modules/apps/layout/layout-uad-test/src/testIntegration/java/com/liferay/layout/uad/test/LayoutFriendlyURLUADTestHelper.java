@@ -14,13 +14,24 @@
 
 package com.liferay.layout.uad.test;
 
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.LayoutFriendlyURL;
+import com.liferay.portal.kernel.service.LayoutFriendlyURLLocalService;
+import com.liferay.portal.kernel.service.LayoutLocalService;
+import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
+import com.liferay.portal.kernel.test.randomizerbumpers.UniqueStringRandomizerBumper;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.test.randomizerbumpers.FriendlyURLRandomizerBumper;
 
 import java.util.List;
 
-import org.junit.Assume;
-
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -28,30 +39,40 @@ import org.osgi.service.component.annotations.Component;
 @Component(immediate = true, service = LayoutFriendlyURLUADTestHelper.class)
 public class LayoutFriendlyURLUADTestHelper {
 
-	/**
-	 * Implement addLayoutFriendlyURL() to enable some UAD tests.
-	 *
-	 * <p>
-	 * Several UAD tests depend on creating one or more valid LayoutFriendlyURLs with a specified user ID in order to execute correctly. Implement addLayoutFriendlyURL() such that it creates a valid LayoutFriendlyURL with the specified user ID value and returns it in order to enable the UAD tests that depend on it.
-	 * </p>
-	 */
 	public LayoutFriendlyURL addLayoutFriendlyURL(long userId)
 		throws Exception {
 
-		Assume.assumeTrue(false);
+		String name = RandomTestUtil.randomString(
+			FriendlyURLRandomizerBumper.INSTANCE,
+			NumericStringRandomizerBumper.INSTANCE,
+			UniqueStringRandomizerBumper.INSTANCE);
 
-		return null;
+		String friendlyURL =
+			StringPool.SLASH + FriendlyURLNormalizerUtil.normalize(name);
+
+		Layout layout = _layoutLocalService.addLayout(
+			userId, TestPropsValues.getGroupId(), false,
+			LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, name,
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			LayoutConstants.TYPE_PORTLET, false, friendlyURL,
+			ServiceContextTestUtil.getServiceContext());
+
+		return _layoutFriendlyURLLocalService.getLayoutFriendlyURL(
+			layout.getPlid(), layout.getDefaultLanguageId());
 	}
 
-	/**
-	 * Implement cleanUpDependencies(List<LayoutFriendlyURL> layoutFriendlyURLs) if tests require additional tear down logic.
-	 *
-	 * <p>
-	 * Several UAD tests depend on creating one or more valid LayoutFriendlyURLs with specified user ID and status by user ID in order to execute correctly. Implement cleanUpDependencies(List<LayoutFriendlyURL> layoutFriendlyURLs) such that any additional objects created during the construction of layoutFriendlyURLs are safely removed.
-	 * </p>
-	 */
 	public void cleanUpDependencies(List<LayoutFriendlyURL> layoutFriendlyURLs)
 		throws Exception {
+
+		for (LayoutFriendlyURL layoutFriendlyURL : layoutFriendlyURLs) {
+			_layoutLocalService.deleteLayout(layoutFriendlyURL.getPlid());
+		}
 	}
+
+	@Reference
+	private LayoutFriendlyURLLocalService _layoutFriendlyURLLocalService;
+
+	@Reference
+	private LayoutLocalService _layoutLocalService;
 
 }

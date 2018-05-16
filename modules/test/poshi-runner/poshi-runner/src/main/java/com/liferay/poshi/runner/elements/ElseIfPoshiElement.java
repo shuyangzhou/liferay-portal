@@ -39,7 +39,7 @@ public class ElseIfPoshiElement extends IfPoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(readableSyntax)) {
-			return new ElseIfPoshiElement(readableSyntax);
+			return new ElseIfPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -84,8 +84,10 @@ public class ElseIfPoshiElement extends IfPoshiElement {
 		super(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected ElseIfPoshiElement(String readableSyntax) {
-		super(_ELEMENT_NAME, readableSyntax);
+	protected ElseIfPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	@Override

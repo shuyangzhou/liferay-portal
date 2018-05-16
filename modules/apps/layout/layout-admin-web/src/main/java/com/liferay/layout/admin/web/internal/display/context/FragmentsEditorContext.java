@@ -367,7 +367,7 @@ public class FragmentsEditorContext {
 			FragmentEntryLinkLocalServiceUtil.getFragmentEntryLinks(
 				_themeDisplay.getScopeGroupId(), _classNameId, _classPK);
 
-		addedSoyContext.put("enabled", fragmentEntryLinks.isEmpty());
+		addedSoyContext.put("enabled", !fragmentEntryLinks.isEmpty());
 
 		addedSoyContext.put("id", "added");
 		addedSoyContext.put(
@@ -401,6 +401,7 @@ public class FragmentsEditorContext {
 		for (FragmentCollection fragmentCollection : fragmentCollections) {
 			List<FragmentEntry> fragmentEntries =
 				FragmentEntryServiceUtil.getFragmentEntries(
+					_themeDisplay.getScopeGroupId(),
 					fragmentCollection.getFragmentCollectionId(),
 					WorkflowConstants.STATUS_APPROVED);
 
