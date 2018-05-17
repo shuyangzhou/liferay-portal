@@ -60,7 +60,6 @@ public class LayoutPageTemplateDisplayContext {
 
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
-
 		_request = request;
 	}
 
@@ -69,9 +68,8 @@ public class LayoutPageTemplateDisplayContext {
 			{
 				add(
 					dropdownItem -> {
-						dropdownItem.setHref(
-							"javascript:" + _renderResponse.getNamespace() +
-								"deleteLayoutPageTemplateEntries();");
+						dropdownItem.putData(
+							"action", "deleteLayoutPageTemplateEntries");
 						dropdownItem.setIcon("trash");
 						dropdownItem.setLabel(
 							LanguageUtil.get(_request, "delete"));
@@ -226,10 +224,6 @@ public class LayoutPageTemplateDisplayContext {
 			new SearchContainer(
 				_renderRequest, _renderResponse.createRenderURL(), null,
 				"there-are-no-page-templates");
-
-		if (isSearch()) {
-			layoutPageTemplateEntriesSearchContainer.setSearch(true);
-		}
 
 		layoutPageTemplateEntriesSearchContainer.setRowChecker(
 			new EmptyOnClickRowChecker(_renderResponse));

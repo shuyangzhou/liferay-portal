@@ -179,10 +179,6 @@ public class FragmentDisplayContext {
 			_renderRequest, _renderResponse.createRenderURL(), null,
 			"there-are-no-fragments");
 
-		if (_isSearch()) {
-			fragmentEntriesSearchContainer.setSearch(true);
-		}
-
 		fragmentEntriesSearchContainer.setRowChecker(
 			new EmptyOnClickRowChecker(_renderResponse));
 
@@ -243,9 +239,8 @@ public class FragmentDisplayContext {
 			{
 				add(
 					dropdownItem -> {
-						dropdownItem.setHref(
-							"javascript:" + _renderResponse.getNamespace() +
-								"exportSelectedFragmentEntries();");
+						dropdownItem.putData(
+							"action", "exportSelectedFragmentEntries");
 						dropdownItem.setIcon("import-export");
 						dropdownItem.setLabel(
 							LanguageUtil.get(_request, "export"));
@@ -254,9 +249,8 @@ public class FragmentDisplayContext {
 
 				add(
 					dropdownItem -> {
-						dropdownItem.setHref(
-							"javascript:" + _renderResponse.getNamespace() +
-								"deleteSelectedFragmentEntries();");
+						dropdownItem.putData(
+							"action", "deleteSelectedFragmentEntries");
 						dropdownItem.setIcon("trash");
 						dropdownItem.setLabel(
 							LanguageUtil.get(_request, "delete"));

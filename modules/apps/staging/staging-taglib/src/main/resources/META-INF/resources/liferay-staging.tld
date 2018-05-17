@@ -532,11 +532,56 @@
 		<tag-class>com.liferay.staging.taglib.servlet.taglib.ProcessListTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
+			<description>Whether to show the delete menu. The default value is true.</description>
+			<name>deleteMenu</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description>The empty results message's language key.</description>
+			<name>emptyResultsMessage</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The local background task executor's class name. See the <![CDATA[<code>com.liferay.exportimport.kernel.background.task.BackgroundTaskExecutorNames</code>]]> class for details.</description>
+			<name>localTaskExecutorClassName</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The MVC render command's name.</description>
+			<name>mvcRenderCommandName</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Whether to show the relaunch menu. The default value is true.</description>
+			<name>relaunchMenu</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description>The remote background task executor's class name. See the <![CDATA[<code>com.liferay.exportimport.kernel.background.task.BackgroundTaskExecutorNames</code>]]> class for details.</description>
+			<name>remoteTaskExecutorClassName</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
 			<description>The row splitter for the search container. It should implement <![CDATA[<code>ResultRowSplitter</code>]]>.</description>
 			<name>resultRowSplitter</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 			<type>com.liferay.portal.kernel.dao.search.ResultRowSplitter</type>
+		</attribute>
+		<attribute>
+			<description>Whether to show the summary menu. The default value is true.</description>
+			<name>summaryMenu</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
 		</attribute>
 	</tag>
 	<tag>
@@ -552,9 +597,30 @@
 			<type>com.liferay.portal.kernel.backgroundtask.BackgroundTask</type>
 		</attribute>
 		<attribute>
+			<description>Whether to show the delete menu. The default value is true.</description>
+			<name>deleteMenu</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
 			<description>Whether the publication is local.</description>
 			<name>localPublishing</name>
 			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description>Whether to show the relaunch menu. The default value is true.</description>
+			<name>relaunchMenu</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description>Whether to show the summary menu. The default value is true.</description>
+			<name>summaryMenu</name>
+			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 			<type>boolean</type>
 		</attribute>
@@ -668,7 +734,7 @@
 		<tag-class>com.liferay.staging.taglib.servlet.taglib.RadioTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
-			<description>Whether the radio is checked. The default is unchecked.</description>
+			<description>Whether the radio button is checked. The default is unchecked.</description>
 			<name>checked</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -717,7 +783,7 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>The value of the radio button.</description>
+			<description>The radio button's value.</description>
 			<name>value</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>

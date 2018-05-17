@@ -40,7 +40,7 @@ public class ForPoshiElement extends PoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(readableSyntax)) {
-			return new ForPoshiElement(readableSyntax);
+			return new ForPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -70,7 +70,7 @@ public class ForPoshiElement extends PoshiElement {
 			}
 
 			if (isReadableSyntaxComment(readableBlock)) {
-				add(PoshiNodeFactory.newPoshiNode(null, readableBlock));
+				add(PoshiNodeFactory.newPoshiNode(this, readableBlock));
 
 				continue;
 			}
@@ -97,8 +97,10 @@ public class ForPoshiElement extends PoshiElement {
 		super(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected ForPoshiElement(String readableSyntax) {
-		super(_ELEMENT_NAME, readableSyntax);
+	protected ForPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	@Override

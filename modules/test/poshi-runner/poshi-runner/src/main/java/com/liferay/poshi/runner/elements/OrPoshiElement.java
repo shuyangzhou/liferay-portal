@@ -40,7 +40,7 @@ public class OrPoshiElement extends PoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(parentPoshiElement, readableSyntax)) {
-			return new OrPoshiElement(readableSyntax);
+			return new OrPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -79,8 +79,10 @@ public class OrPoshiElement extends PoshiElement {
 		super(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected OrPoshiElement(String readableSyntax) {
-		super(_ELEMENT_NAME, readableSyntax);
+	protected OrPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	@Override

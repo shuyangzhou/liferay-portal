@@ -66,11 +66,19 @@ public class LayoutSetStagingHandler
 		throws Throwable {
 
 		try {
+			String methodName = method.getName();
+
+			if (methodName.equals("getWrappedModel")) {
+				return _layoutSet;
+			}
+
 			if (_layoutSetBranch == null) {
 				return method.invoke(_layoutSet, arguments);
 			}
 
-			String methodName = method.getName();
+			if (methodName.equals("clone")) {
+				return _clone();
+			}
 
 			if (methodName.equals("toEscapedModel")) {
 				if (_layoutSet.isEscapedModel()) {
@@ -78,10 +86,6 @@ public class LayoutSetStagingHandler
 				}
 
 				return _toEscapedModel();
-			}
-
-			if (methodName.equals("clone")) {
-				return _clone();
 			}
 
 			Object bean = _layoutSet;
@@ -114,7 +118,7 @@ public class LayoutSetStagingHandler
 	private Object _clone() {
 		return ProxyUtil.newProxyInstance(
 			PortalClassLoaderUtil.getClassLoader(),
-			new Class<?>[] {LayoutSet.class},
+			new Class<?>[] {LayoutSet.class, ModelWrapper.class},
 			new LayoutSetStagingHandler(_layoutSet));
 	}
 
@@ -150,7 +154,7 @@ public class LayoutSetStagingHandler
 	private Object _toEscapedModel() {
 		return ProxyUtil.newProxyInstance(
 			PortalClassLoaderUtil.getClassLoader(),
-			new Class<?>[] {Layout.class},
+			new Class<?>[] {LayoutSet.class, ModelWrapper.class},
 			new LayoutSetStagingHandler(_layoutSet.toEscapedModel()));
 	}
 
@@ -169,10 +173,8 @@ public class LayoutSetStagingHandler
 		_layoutSetBranchMethodNames.add("getLogo");
 		_layoutSetBranchMethodNames.add("getLogoId");
 		_layoutSetBranchMethodNames.add("getSettings");
-		_layoutSetBranchMethodNames.add("getSettings");
 		_layoutSetBranchMethodNames.add("getSettingsProperties");
 		_layoutSetBranchMethodNames.add("getSettingsProperty");
-		_layoutSetBranchMethodNames.add("getStagingLogoId");
 		_layoutSetBranchMethodNames.add("getTheme");
 		_layoutSetBranchMethodNames.add("getThemeId");
 		_layoutSetBranchMethodNames.add("getThemeSetting");
@@ -181,10 +183,8 @@ public class LayoutSetStagingHandler
 		_layoutSetBranchMethodNames.add("isLogo");
 		_layoutSetBranchMethodNames.add("setColorSchemeId");
 		_layoutSetBranchMethodNames.add("setCss");
-		_layoutSetBranchMethodNames.add("setEscapedModel");
 		_layoutSetBranchMethodNames.add("setLayoutSetPrototypeLinkEnabled");
 		_layoutSetBranchMethodNames.add("setLayoutSetPrototypeUuid");
-		_layoutSetBranchMethodNames.add("setLogo");
 		_layoutSetBranchMethodNames.add("setLogoId");
 		_layoutSetBranchMethodNames.add("setSettings");
 		_layoutSetBranchMethodNames.add("setSettingsProperties");

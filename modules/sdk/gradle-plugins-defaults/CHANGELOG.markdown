@@ -3531,12 +3531,70 @@ version 2.2.3.
 ### Changed
 - [LPS-79453]: Update the [Liferay Gradle Plugins] dependency to version 3.12.0.
 
+## 5.3.118 - 2018-05-13
+
+### Changed
+- [LPS-80840]: Update the [Liferay Gradle Plugins] dependency to version 3.12.1.
+
+## 5.3.119 - 2018-05-14
+
+### Changed
+- [LPS-79799]: Update the [Liferay Gradle Plugins] dependency to version 3.12.2.
+
+## 5.3.120 - 2018-05-14
+
+### Changed
+- [LPS-79679]: Update the [Liferay Gradle Plugins] dependency to version 3.12.3.
+
+## 5.3.121 - 2018-05-15
+
+### Changed
+- [LPS-80920]: Update the [Liferay Gradle Plugins] dependency to version 3.12.4.
+
+## 5.4.0 - 2018-05-15
+
+### Added
+- [LPS-80944]: Add the plugin `com.liferay.spring.boot.defaults` to configure
+Spring Boot projects according to Liferay defaults.
+
+### Changed
+- [LPS-80944]: Update the [Liferay Gradle Plugins] dependency to version 3.12.5.
+
+## 5.4.1 - 2018-05-15
+
+### Changed
+- [LPS-79262]: Update the [Liferay Gradle Plugins] dependency to version 3.12.6.
+
+## 5.4.2 - 2018-05-15
+
+### Changed
+- [LPS-79679]: Update the [Liferay Gradle Plugins] dependency to version 3.12.7.
+
+## 5.4.3 - 2018-05-16
+
+### Changed
+- [LPS-80950]: Update the [Liferay Gradle Plugins Poshi Runner] dependency to
+version 2.2.4.
+
+## 5.4.4 - 2018-05-16
+
+### Added
+- [LPS-80944]: The `com.liferay.spring.boot.defaults` plugin now automatically
+adds the local Maven and [Liferay CDN] repositories to the project.
+
+## 5.4.5 - 2018-05-16
+
+### Changed
+- [LPS-80950]: Update the [Liferay Gradle Plugins Change Log Builder] dependency
+to version 1.0.4.
+
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle License Report]: https://github.com/jk1/Gradle-License-Report
 [Liferay CDN]: https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public
 [Liferay Gradle Plugins]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins
 [Liferay Gradle Plugins App Javadoc Builder]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-app-javadoc-builder
 [Liferay Gradle Plugins Baseline]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-baseline
+[Liferay Gradle Plugins Change Log Builder]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-change-log-builder
 [Liferay Gradle Plugins Dependency Checker]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-dependency-checker
 [Liferay Gradle Plugins JSDoc]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-jsdoc
 [Liferay Gradle Plugins Lang Merger]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-lang-merger
@@ -3900,6 +3958,7 @@ version 2.2.3.
 [LPS-79191]: https://issues.liferay.com/browse/LPS-79191
 [LPS-79192]: https://issues.liferay.com/browse/LPS-79192
 [LPS-79226]: https://issues.liferay.com/browse/LPS-79226
+[LPS-79262]: https://issues.liferay.com/browse/LPS-79262
 [LPS-79282]: https://issues.liferay.com/browse/LPS-79282
 [LPS-79286]: https://issues.liferay.com/browse/LPS-79286
 [LPS-79360]: https://issues.liferay.com/browse/LPS-79360
@@ -3931,6 +3990,10 @@ version 2.2.3.
 [LPS-80517]: https://issues.liferay.com/browse/LPS-80517
 [LPS-80520]: https://issues.liferay.com/browse/LPS-80520
 [LPS-80544]: https://issues.liferay.com/browse/LPS-80544
+[LPS-80840]: https://issues.liferay.com/browse/LPS-80840
+[LPS-80920]: https://issues.liferay.com/browse/LPS-80920
+[LPS-80944]: https://issues.liferay.com/browse/LPS-80944
+[LPS-80950]: https://issues.liferay.com/browse/LPS-80950
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981

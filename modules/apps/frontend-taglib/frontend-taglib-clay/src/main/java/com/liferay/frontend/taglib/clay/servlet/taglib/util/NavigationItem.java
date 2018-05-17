@@ -17,6 +17,7 @@ package com.liferay.frontend.taglib.clay.servlet.taglib.util;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.portlet.PortletURL;
 
@@ -25,12 +26,45 @@ import javax.portlet.PortletURL;
  */
 public class NavigationItem extends HashMap<String, Object> {
 
+	public void putData(String key, String value) {
+		Map<String, Object> data = (Map<String, Object>)get("data");
+
+		if (data == null) {
+			data = new HashMap<>();
+
+			put("data", data);
+		}
+
+		data.put(key, value);
+	}
+
 	public void setActive(boolean active) {
 		put("active", active);
 	}
 
+	public void setData(Map<String, Object> data) {
+		put("data", data);
+	}
+
 	public void setDisabled(boolean disabled) {
 		put("disabled", disabled);
+	}
+
+	public void setHref(Object href) {
+		if (href != null) {
+			if (href instanceof PortletURL) {
+				setHref((PortletURL)href, null);
+			}
+			else if (href instanceof String) {
+				put("href", href);
+			}
+			else {
+				put("href", href.toString());
+			}
+		}
+		else {
+			put("href", href);
+		}
 	}
 
 	public void setHref(PortletURL portletURL, Object... parameters) {
@@ -54,10 +88,6 @@ public class NavigationItem extends HashMap<String, Object> {
 		}
 
 		setHref(portletURL.toString());
-	}
-
-	public void setHref(String href) {
-		put("href", href);
 	}
 
 	public void setLabel(String label) {

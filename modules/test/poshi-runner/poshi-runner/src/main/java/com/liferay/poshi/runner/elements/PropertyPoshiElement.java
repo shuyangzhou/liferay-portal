@@ -39,7 +39,7 @@ public class PropertyPoshiElement extends VarPoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(readableSyntax)) {
-			return new PropertyPoshiElement(readableSyntax);
+			return new PropertyPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -58,8 +58,10 @@ public class PropertyPoshiElement extends VarPoshiElement {
 		super(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected PropertyPoshiElement(String readableSyntax) {
-		super(_ELEMENT_NAME, readableSyntax);
+	protected PropertyPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	private boolean _isElementType(String readableSyntax) {

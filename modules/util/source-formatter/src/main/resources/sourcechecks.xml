@@ -58,6 +58,7 @@
 		<check name="FTLLiferayVariableOrderCheck" />
 		<check name="FTLStringRelationalOperatorCheck" />
 		<check name="FTLStylingCheck" />
+		<check name="FTLTagAttributesCheck" />
 		<check name="FTLTagCheck" />
 		<check name="FTLWhitespaceCheck" />
 	</source-processor>
@@ -96,7 +97,7 @@
 		<check name="JavaCollatorUtilCheck" />
 		<check name="JavaCombineLinesCheck" />
 		<check name="JavaConfigurationAdminCheck" />
-		<check name="JavaConstructorParameterOrderCheck" />
+		<check name="JavaConstructorParametersCheck" />
 		<check name="JavaConstructorSuperCallCheck" />
 		<check name="JavaDeprecatedJavadocCheck" />
 		<check name="JavaDiamondOperatorCheck" />
@@ -222,6 +223,7 @@
 	<source-processor name="JSONSourceProcessor">
 		<check name="JSONIndentationCheck" />
 		<check name="JSONPropertyOrderCheck" />
+		<check name="JSONValidationCheck" />
 		<check name="JSONWhitespaceCheck">
 			<property name="allowLeadingSpaces" value="true" />
 		</check>
@@ -330,6 +332,7 @@
 		<check name="TLDElementOrderCheck" />
 		<check name="TLDTypeCheck" />
 		<check name="WhitespaceCheck" />
+		<check name="XMLIndentationCheck" />
 	</source-processor>
 	<source-processor name="TSSourceProcessor">
 		<check name="WhitespaceCheck" />

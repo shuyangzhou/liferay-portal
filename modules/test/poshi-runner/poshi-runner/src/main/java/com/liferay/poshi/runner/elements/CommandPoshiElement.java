@@ -43,8 +43,8 @@ public class CommandPoshiElement extends PoshiElement {
 	public PoshiElement clone(
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
-		if (_isElementType(readableSyntax)) {
-			return new CommandPoshiElement(readableSyntax);
+		if (_isElementType(parentPoshiElement, readableSyntax)) {
+			return new CommandPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -54,7 +54,7 @@ public class CommandPoshiElement extends PoshiElement {
 	public void parseReadableSyntax(String readableSyntax) {
 		for (String readableBlock : getReadableBlocks(readableSyntax)) {
 			if (isReadableSyntaxComment(readableBlock)) {
-				add(PoshiNodeFactory.newPoshiNode(null, readableBlock));
+				add(PoshiNodeFactory.newPoshiNode(this, readableBlock));
 
 				continue;
 			}
@@ -69,7 +69,8 @@ public class CommandPoshiElement extends PoshiElement {
 
 			if (readableBlock.endsWith("{")) {
 				String name = RegexUtil.getGroup(
-					readableBlock, "test([\\w]*)", 1);
+					readableBlock, getReadableCommandKeyword() + " ([\\w]*)",
+					1);
 
 				addAttribute("name", name);
 
@@ -143,8 +144,10 @@ public class CommandPoshiElement extends PoshiElement {
 		this(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected CommandPoshiElement(String readableSyntax) {
-		this(_ELEMENT_NAME, readableSyntax);
+	protected CommandPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		this(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	protected CommandPoshiElement(String name, Element element) {
@@ -157,8 +160,10 @@ public class CommandPoshiElement extends PoshiElement {
 		super(elementName, attributes, nodes);
 	}
 
-	protected CommandPoshiElement(String name, String readableSyntax) {
-		super(name, readableSyntax);
+	protected CommandPoshiElement(
+		String name, PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(name, parentPoshiElement, readableSyntax);
 	}
 
 	protected String createReadableBlock(List<String> items) {
@@ -250,7 +255,7 @@ public class CommandPoshiElement extends PoshiElement {
 			}
 
 			if ((trimmedLine.endsWith(" {") &&
-				 trimmedLine.startsWith("test")) ||
+				 trimmedLine.startsWith(getReadableCommandKeyword() + " ")) ||
 				trimmedLine.startsWith("@")) {
 
 				readableBlocks.add(trimmedLine);
@@ -280,7 +285,7 @@ public class CommandPoshiElement extends PoshiElement {
 	}
 
 	protected String getReadableCommandTitle() {
-		return "test" + attributeValue("name");
+		return getReadableCommandKeyword() + " " + attributeValue("name");
 	}
 
 	protected boolean isCDATAVar(String readableSyntax) {
@@ -291,7 +296,9 @@ public class CommandPoshiElement extends PoshiElement {
 		return false;
 	}
 
-	private boolean _isElementType(String readableSyntax) {
+	private boolean _isElementType(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
 		readableSyntax = readableSyntax.trim();
 
 		if (!isBalancedReadableSyntax(readableSyntax)) {
@@ -302,6 +309,10 @@ public class CommandPoshiElement extends PoshiElement {
 			return false;
 		}
 
+		if (!(parentPoshiElement instanceof DefinitionPoshiElement)) {
+			return false;
+		}
+
 		for (String line : readableSyntax.split("\n")) {
 			line = line.trim();
 
@@ -309,7 +320,10 @@ public class CommandPoshiElement extends PoshiElement {
 				continue;
 			}
 
-			if (!(line.endsWith("{") && line.startsWith("test"))) {
+			if (!(line.endsWith("{") &&
+				line.startsWith(
+					parentPoshiElement.getReadableCommandKeyword()))) {
+
 				return false;
 			}
 
