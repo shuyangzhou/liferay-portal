@@ -237,10 +237,10 @@ public class LayoutPageTemplateEntryServiceWrapper
 	@Override
 	public java.util.List<com.liferay.layout.page.template.model.LayoutPageTemplateEntry> getLayoutPageTemplateEntries(
 		long groupId, long layoutPageTemplateCollectionId, String name,
-		int start, int status, int end,
+		int status, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.layout.page.template.model.LayoutPageTemplateEntry> orderByComparator) {
 		return _layoutPageTemplateEntryService.getLayoutPageTemplateEntries(groupId,
-			layoutPageTemplateCollectionId, name, start, status, end,
+			layoutPageTemplateCollectionId, name, status, start, end,
 			orderByComparator);
 	}
 
@@ -284,16 +284,16 @@ public class LayoutPageTemplateEntryServiceWrapper
 
 	@Override
 	public int getLayoutPageTemplateEntriesCount(long groupId,
-		long layoutPageTemplateFolder) {
+		long layoutPageTemplateFolderId) {
 		return _layoutPageTemplateEntryService.getLayoutPageTemplateEntriesCount(groupId,
-			layoutPageTemplateFolder);
+			layoutPageTemplateFolderId);
 	}
 
 	@Override
 	public int getLayoutPageTemplateEntriesCount(long groupId,
-		long layoutPageTemplateFolder, int status) {
+		long layoutPageTemplateFolderId, int status) {
 		return _layoutPageTemplateEntryService.getLayoutPageTemplateEntriesCount(groupId,
-			layoutPageTemplateFolder, status);
+			layoutPageTemplateFolderId, status);
 	}
 
 	@Override
@@ -326,16 +326,16 @@ public class LayoutPageTemplateEntryServiceWrapper
 
 	@Override
 	public int getLayoutPageTemplateEntriesCount(long groupId,
-		long layoutPageTemplateFolder, String name) {
+		long layoutPageTemplateFolderId, String name) {
 		return _layoutPageTemplateEntryService.getLayoutPageTemplateEntriesCount(groupId,
-			layoutPageTemplateFolder, name);
+			layoutPageTemplateFolderId, name);
 	}
 
 	@Override
 	public int getLayoutPageTemplateEntriesCount(long groupId,
-		long layoutPageTemplateFolder, String name, int status) {
+		long layoutPageTemplateFolderId, String name, int status) {
 		return _layoutPageTemplateEntryService.getLayoutPageTemplateEntriesCount(groupId,
-			layoutPageTemplateFolder, name, status);
+			layoutPageTemplateFolderId, name, status);
 	}
 
 	@Override

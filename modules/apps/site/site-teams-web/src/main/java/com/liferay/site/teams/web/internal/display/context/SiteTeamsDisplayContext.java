@@ -76,9 +76,7 @@ public class SiteTeamsDisplayContext {
 			{
 				add(
 					dropdownItem -> {
-						dropdownItem.setHref(
-							"javascript:" + _renderResponse.getNamespace() +
-								"deleteSelectedTeams();");
+						dropdownItem.putData("action", "deleteSelectedTeams");
 						dropdownItem.setIcon("trash");
 						dropdownItem.setLabel(
 							LanguageUtil.get(_request, "delete"));
@@ -203,10 +201,6 @@ public class SiteTeamsDisplayContext {
 			_renderRequest, getPortletURL());
 
 		searchContainer.setEmptyResultsMessage("there-are-no-site-teams");
-
-		if (Validator.isNotNull(getKeywords())) {
-			searchContainer.setSearch(true);
-		}
 
 		searchContainer.setId("teams");
 		searchContainer.setRowChecker(

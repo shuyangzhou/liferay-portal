@@ -80,9 +80,7 @@ public class AssetTagsDisplayContext {
 			{
 				add(
 					dropdownItem -> {
-						dropdownItem.setHref(
-							"javascript:" + _renderResponse.getNamespace() +
-								"mergeTags();");
+						dropdownItem.putData("action", "mergeTags");
 						dropdownItem.setIcon("change");
 						dropdownItem.setLabel(
 							LanguageUtil.get(_request, "merge"));
@@ -91,9 +89,7 @@ public class AssetTagsDisplayContext {
 
 				add(
 					dropdownItem -> {
-						dropdownItem.setHref(
-							"javascript:" + _renderResponse.getNamespace() +
-								"deleteTags();");
+						dropdownItem.putData("action", "deleteTags");
 						dropdownItem.setIcon("trash");
 						dropdownItem.setLabel(
 							LanguageUtil.get(_request, "delete"));
@@ -317,17 +313,13 @@ public class AssetTagsDisplayContext {
 			_renderRequest, _renderResponse.createRenderURL(), null,
 			"there-are-no-tags");
 
-		String keywords = getKeywords();
-
-		if (Validator.isNotNull(keywords)) {
-			tagsSearchContainer.setSearch(true);
-		}
-
 		tagsSearchContainer.setRowChecker(
 			new EmptyOnClickRowChecker(_renderResponse));
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
 			WebKeys.THEME_DISPLAY);
+
+		String keywords = getKeywords();
 
 		if (Validator.isNotNull(keywords)) {
 			Sort sort = null;

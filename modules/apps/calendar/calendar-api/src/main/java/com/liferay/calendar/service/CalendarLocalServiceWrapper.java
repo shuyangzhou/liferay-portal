@@ -216,6 +216,12 @@ public class CalendarLocalServiceWrapper implements CalendarLocalService,
 	}
 
 	@Override
+	public com.liferay.calendar.model.Calendar fetchGroupCalendar(
+		long companyId, long groupId, String name) {
+		return _calendarLocalService.fetchGroupCalendar(companyId, groupId, name);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return _calendarLocalService.getActionableDynamicQuery();
 	}

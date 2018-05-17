@@ -170,7 +170,7 @@ public interface LayoutPageTemplateEntryService extends BaseService {
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LayoutPageTemplateEntry> getLayoutPageTemplateEntries(
 		long groupId, long layoutPageTemplateCollectionId, String name,
-		int start, int status, int end,
+		int status, int start, int end,
 		OrderByComparator<LayoutPageTemplateEntry> orderByComparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -198,11 +198,11 @@ public interface LayoutPageTemplateEntryService extends BaseService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getLayoutPageTemplateEntriesCount(long groupId,
-		long layoutPageTemplateFolder);
+		long layoutPageTemplateFolderId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getLayoutPageTemplateEntriesCount(long groupId,
-		long layoutPageTemplateFolder, int status);
+		long layoutPageTemplateFolderId, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getLayoutPageTemplateEntriesCount(long groupId,
@@ -222,11 +222,11 @@ public interface LayoutPageTemplateEntryService extends BaseService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getLayoutPageTemplateEntriesCount(long groupId,
-		long layoutPageTemplateFolder, String name);
+		long layoutPageTemplateFolderId, String name);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getLayoutPageTemplateEntriesCount(long groupId,
-		long layoutPageTemplateFolder, String name, int status);
+		long layoutPageTemplateFolderId, String name, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getLayoutPageTemplateEntriesCount(long groupId, String name,

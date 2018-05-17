@@ -49,6 +49,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -198,6 +200,28 @@ public class MBCommentManagerImpl implements CommentManager {
 	}
 
 	@Override
+	public List<Comment> getChildComments(
+		long parentCommentId, int status, int start, int end) {
+
+		return Stream.of(
+			_mbMessageLocalService.getChildMessages(
+				parentCommentId, status, start, end)
+		).flatMap(
+			List::stream
+		).map(
+			MBCommentImpl::new
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	@Override
+	public int getChildCommentsCount(long parentCommentId, int status) {
+		return _mbMessageLocalService.getChildMessagesCount(
+			parentCommentId, status);
+	}
+
+	@Override
 	public int getCommentsCount(String className, long classPK) {
 		long classNameId = _portal.getClassNameId(className);
 
@@ -238,6 +262,31 @@ public class MBCommentManagerImpl implements CommentManager {
 	@Override
 	public DiscussionStagingHandler getDiscussionStagingHandler() {
 		return new MBDiscussionStagingHandler();
+	}
+
+	@Override
+	public List<Comment> getRootComments(
+			String className, long classPK, int status, int start, int end)
+		throws PortalException {
+
+		return Stream.of(
+			_mbMessageLocalService.getRootMessages(
+				className, classPK, status, start, end)
+		).flatMap(
+			List::stream
+		).map(
+			MBCommentImpl::new
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	@Override
+	public int getRootCommentsCount(
+		String className, long classPK, int status) {
+
+		return _mbMessageLocalService.getRootMessagesCount(
+			className, classPK, status);
 	}
 
 	@Override

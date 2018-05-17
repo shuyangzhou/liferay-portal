@@ -39,7 +39,7 @@ public class OffPoshiElement extends OnPoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (isElementType(readableSyntax)) {
-			return new OffPoshiElement(readableSyntax);
+			return new OffPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -56,8 +56,10 @@ public class OffPoshiElement extends OnPoshiElement {
 		super(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected OffPoshiElement(String readableSyntax) {
-		super(_ELEMENT_NAME, readableSyntax);
+	protected OffPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	@Override

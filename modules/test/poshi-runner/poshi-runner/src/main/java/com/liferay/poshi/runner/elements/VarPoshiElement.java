@@ -45,7 +45,7 @@ public class VarPoshiElement extends PoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(readableSyntax)) {
-			return new VarPoshiElement(readableSyntax);
+			return new VarPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -71,6 +71,14 @@ public class VarPoshiElement extends PoshiElement {
 
 	@Override
 	public void parseReadableSyntax(String readableSyntax) {
+		if (readableSyntax.startsWith("static")) {
+			addAttribute("static", "true");
+
+			readableSyntax = readableSyntax.replaceFirst("static", "");
+
+			readableSyntax = readableSyntax.trim();
+		}
+
 		String name = getNameFromAssignment(readableSyntax);
 
 		addAttribute("name", name);
@@ -108,6 +116,12 @@ public class VarPoshiElement extends PoshiElement {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("\n\t");
+
+		String staticAttribute = attributeValue("static");
+
+		if (staticAttribute != null) {
+			sb.append("static ");
+		}
 
 		PoshiElement parentElement = (PoshiElement)getParent();
 
@@ -164,8 +178,10 @@ public class VarPoshiElement extends PoshiElement {
 		this(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected VarPoshiElement(String readableSyntax) {
-		this(_ELEMENT_NAME, readableSyntax);
+	protected VarPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		this(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	protected VarPoshiElement(String name, Element element) {
@@ -182,8 +198,10 @@ public class VarPoshiElement extends PoshiElement {
 		super(elementName, attributes, nodes);
 	}
 
-	protected VarPoshiElement(String name, String readableSyntax) {
-		super(name, readableSyntax);
+	protected VarPoshiElement(
+		String name, PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(name, parentPoshiElement, readableSyntax);
 	}
 
 	@Override
@@ -234,7 +252,9 @@ public class VarPoshiElement extends PoshiElement {
 			return false;
 		}
 
-		if (!readableSyntax.startsWith("var ")) {
+		if (!readableSyntax.startsWith("static var") &&
+			!readableSyntax.startsWith("var ")) {
+
 			return false;
 		}
 
