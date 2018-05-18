@@ -1,4 +1,5 @@
 <definition component-name="portal-wcm">
+	<property name="portal.release" value="true" />
 	<property name="portal.upstream" value="true" />
 	<property name="testray.main.component.name" value="Fragments" />
 
@@ -44,8 +45,6 @@
 	</tear-down>
 
 	<command name="AddCollectionFragmentWithSnippets" priority="5">
-		<property name="portal.acceptance" value="pending" />
-
 		<execute macro="Navigator#gotoNavNested">
 			<var name="navNested" value="Collection Name" />
 		</execute>
@@ -129,7 +128,7 @@
 	</command>
 
 	<command name="DeleteFragment" priority="5">
-		<property name="portal.acceptance" value="pending" />
+		<property name="portal.acceptance" value="true" />
 
 		<execute macro="Navigator#gotoNavNested">
 			<var name="navNested" value="Collection Name" />
@@ -169,7 +168,7 @@
 	</command>
 
 	<command name="DeleteFragmentCollection" priority="5">
-		<property name="portal.acceptance" value="pending" />
+		<property name="portal.acceptance" value="true" />
 
 		<execute macro="Collection#deleteCollection">
 			<var name="collectionName" value="Collection Name" />
