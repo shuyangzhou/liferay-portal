@@ -67,73 +67,13 @@ import java.rmi.RemoteException;
 public class LayoutPageTemplateEntryServiceSoap {
 	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap addLayoutPageTemplateEntry(
 		long groupId, long layoutPageTemplateCollectionId, String name,
-		int type, long[] fragmentEntryIds, int status,
+		int type, int status,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
 			com.liferay.layout.page.template.model.LayoutPageTemplateEntry returnValue =
 				LayoutPageTemplateEntryServiceUtil.addLayoutPageTemplateEntry(groupId,
-					layoutPageTemplateCollectionId, name, type,
-					fragmentEntryIds, status, serviceContext);
-
-			return com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap.toSoapModel(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap addLayoutPageTemplateEntry(
-		long groupId, long layoutPageTemplateCollectionId, String name,
-		int type, long[] fragmentEntryIds,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws RemoteException {
-		try {
-			com.liferay.layout.page.template.model.LayoutPageTemplateEntry returnValue =
-				LayoutPageTemplateEntryServiceUtil.addLayoutPageTemplateEntry(groupId,
-					layoutPageTemplateCollectionId, name, type,
-					fragmentEntryIds, serviceContext);
-
-			return com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap.toSoapModel(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap addLayoutPageTemplateEntry(
-		long groupId, long layoutPageTemplateCollectionId, String name,
-		long[] fragmentEntryIds, int status,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws RemoteException {
-		try {
-			com.liferay.layout.page.template.model.LayoutPageTemplateEntry returnValue =
-				LayoutPageTemplateEntryServiceUtil.addLayoutPageTemplateEntry(groupId,
-					layoutPageTemplateCollectionId, name, fragmentEntryIds,
-					status, serviceContext);
-
-			return com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap.toSoapModel(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap addLayoutPageTemplateEntry(
-		long groupId, long layoutPageTemplateCollectionId, String name,
-		long[] fragmentEntryIds,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws RemoteException {
-		try {
-			com.liferay.layout.page.template.model.LayoutPageTemplateEntry returnValue =
-				LayoutPageTemplateEntryServiceUtil.addLayoutPageTemplateEntry(groupId,
-					layoutPageTemplateCollectionId, name, fragmentEntryIds,
+					layoutPageTemplateCollectionId, name, type, status,
 					serviceContext);
 
 			return com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap.toSoapModel(returnValue);
@@ -145,13 +85,47 @@ public class LayoutPageTemplateEntryServiceSoap {
 		}
 	}
 
-	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap[] deleteLayoutPageTemplateEntries(
+	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap addLayoutPageTemplateEntry(
+		long groupId, long layoutPageTemplateCollectionId, String name,
+		int type,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			com.liferay.layout.page.template.model.LayoutPageTemplateEntry returnValue =
+				LayoutPageTemplateEntryServiceUtil.addLayoutPageTemplateEntry(groupId,
+					layoutPageTemplateCollectionId, name, type, serviceContext);
+
+			return com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap addLayoutPageTemplateEntry(
+		long groupId, long layoutPageTemplateCollectionId, String name,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			com.liferay.layout.page.template.model.LayoutPageTemplateEntry returnValue =
+				LayoutPageTemplateEntryServiceUtil.addLayoutPageTemplateEntry(groupId,
+					layoutPageTemplateCollectionId, name, serviceContext);
+
+			return com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static void deleteLayoutPageTemplateEntries(
 		long[] layoutPageTemplateEntryIds) throws RemoteException {
 		try {
-			java.util.List<com.liferay.layout.page.template.model.LayoutPageTemplateEntry> returnValue =
-				LayoutPageTemplateEntryServiceUtil.deleteLayoutPageTemplateEntries(layoutPageTemplateEntryIds);
-
-			return com.liferay.layout.page.template.model.LayoutPageTemplateEntrySoap.toSoapModels(returnValue);
+			LayoutPageTemplateEntryServiceUtil.deleteLayoutPageTemplateEntries(layoutPageTemplateEntryIds);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
