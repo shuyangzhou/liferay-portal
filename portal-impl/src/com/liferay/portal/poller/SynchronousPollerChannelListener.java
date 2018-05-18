@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.notifications.ChannelListener;
 import com.liferay.portal.kernel.notifications.NotificationEvent;
 
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Edward Han
@@ -36,32 +38,33 @@ public class SynchronousPollerChannelListener implements ChannelListener {
 		notify();
 	}
 
-	public synchronized String getNotificationEvents(
+	public String getNotificationEvents(
 			long companyId, long userId,
 			JSONObject pollerResponseHeaderJSONObject, long timeout)
 		throws ChannelException {
 
+		_lock.lock();
+
 		try {
-			if (!_complete) {
-				wait(timeout);
+			_waitForCompletion(timeout);
+
+			List<NotificationEvent> notificationEvents =
+				ChannelHubManagerUtil.fetchNotificationEvents(
+					companyId, userId, true);
+
+			JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+			jsonArray.put(pollerResponseHeaderJSONObject);
+
+			for (NotificationEvent notificationEvent : notificationEvents) {
+				jsonArray.put(notificationEvent.toJSONObject());
 			}
+
+			return jsonArray.toString();
 		}
-		catch (InterruptedException ie) {
+		finally {
+			_lock.unlock();
 		}
-
-		List<NotificationEvent> notificationEvents =
-			ChannelHubManagerUtil.fetchNotificationEvents(
-				companyId, userId, true);
-
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
-		jsonArray.put(pollerResponseHeaderJSONObject);
-
-		for (NotificationEvent notificationEvent : notificationEvents) {
-			jsonArray.put(notificationEvent.toJSONObject());
-		}
-
-		return jsonArray.toString();
 	}
 
 	@Override
@@ -71,6 +74,17 @@ public class SynchronousPollerChannelListener implements ChannelListener {
 		notify();
 	}
 
+	private synchronized void _waitForCompletion(long timeout) {
+		try {
+			if (!_complete) {
+				wait(timeout);
+			}
+		}
+		catch (InterruptedException ie) {
+		}
+	}
+
 	private boolean _complete;
+	private final Lock _lock = new ReentrantLock();
 
 }
