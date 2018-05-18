@@ -384,7 +384,9 @@ public class TargetPlatformIndexer implements Indexer {
 
 	private static final String _PARAMETER_STRING_JDK_VERSION =
 		"osgi.ee;osgi.ee=JavaSE;version:List<Version>=\"1.0.0,1.1.0,1.2.0," +
-			"1.3.0,1.4.0,1.5.0,1.6.0,1.7.0,1.8.0\"";
+			"1.3.0,1.4.0,1.5.0,1.6.0,1.7.0,1.8.0\"," +
+			"osgi.ee;osgi.ee=JavaSE/compact1;version:List<Version>=\"1.8.0\"," +
+			"osgi.contract;osgi.contract=JavaServlet;version:Version=\"3.1\"";
 
 	private static final String _PARAMETER_STRING_OS_VERSION =
 		"eclipse.platform;osgi.os=linux;osgi.arch=x86_64;osgi.ws=gtk;osgi.nl=" +
