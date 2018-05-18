@@ -18,9 +18,10 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.asset.display.page.model.AssetDisplayPageEntry;
 
+import com.liferay.petra.string.StringBundler;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -69,8 +70,8 @@ public class AssetDisplayPageEntryCacheModel implements CacheModel<AssetDisplayP
 		sb.append(assetDisplayPageEntryId);
 		sb.append(", assetEntryId=");
 		sb.append(assetEntryId);
-		sb.append(", layoutId=");
-		sb.append(layoutId);
+		sb.append(", layoutPageTemplateEntryId=");
+		sb.append(layoutPageTemplateEntryId);
 		sb.append("}");
 
 		return sb.toString();
@@ -82,7 +83,7 @@ public class AssetDisplayPageEntryCacheModel implements CacheModel<AssetDisplayP
 
 		assetDisplayPageEntryImpl.setAssetDisplayPageEntryId(assetDisplayPageEntryId);
 		assetDisplayPageEntryImpl.setAssetEntryId(assetEntryId);
-		assetDisplayPageEntryImpl.setLayoutId(layoutId);
+		assetDisplayPageEntryImpl.setLayoutPageTemplateEntryId(layoutPageTemplateEntryId);
 
 		assetDisplayPageEntryImpl.resetOriginalValues();
 
@@ -95,7 +96,7 @@ public class AssetDisplayPageEntryCacheModel implements CacheModel<AssetDisplayP
 
 		assetEntryId = objectInput.readLong();
 
-		layoutId = objectInput.readLong();
+		layoutPageTemplateEntryId = objectInput.readLong();
 	}
 
 	@Override
@@ -105,10 +106,10 @@ public class AssetDisplayPageEntryCacheModel implements CacheModel<AssetDisplayP
 
 		objectOutput.writeLong(assetEntryId);
 
-		objectOutput.writeLong(layoutId);
+		objectOutput.writeLong(layoutPageTemplateEntryId);
 	}
 
 	public long assetDisplayPageEntryId;
 	public long assetEntryId;
-	public long layoutId;
+	public long layoutPageTemplateEntryId;
 }

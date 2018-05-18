@@ -18,9 +18,10 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 
+import com.liferay.petra.string.StringBundler;
+
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -65,7 +66,7 @@ public class LayoutPageTemplateEntryCacheModel implements CacheModel<LayoutPageT
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(39);
 
 		sb.append("{layoutPageTemplateEntryId=");
 		sb.append(layoutPageTemplateEntryId);
@@ -95,6 +96,8 @@ public class LayoutPageTemplateEntryCacheModel implements CacheModel<LayoutPageT
 		sb.append(htmlPreviewEntryId);
 		sb.append(", defaultTemplate=");
 		sb.append(defaultTemplate);
+		sb.append(", layoutPrototypeId=");
+		sb.append(layoutPrototypeId);
 		sb.append(", status=");
 		sb.append(status);
 		sb.append(", statusByUserId=");
@@ -152,6 +155,7 @@ public class LayoutPageTemplateEntryCacheModel implements CacheModel<LayoutPageT
 		layoutPageTemplateEntryImpl.setType(type);
 		layoutPageTemplateEntryImpl.setHtmlPreviewEntryId(htmlPreviewEntryId);
 		layoutPageTemplateEntryImpl.setDefaultTemplate(defaultTemplate);
+		layoutPageTemplateEntryImpl.setLayoutPrototypeId(layoutPrototypeId);
 		layoutPageTemplateEntryImpl.setStatus(status);
 		layoutPageTemplateEntryImpl.setStatusByUserId(statusByUserId);
 
@@ -200,6 +204,8 @@ public class LayoutPageTemplateEntryCacheModel implements CacheModel<LayoutPageT
 
 		defaultTemplate = objectInput.readBoolean();
 
+		layoutPrototypeId = objectInput.readLong();
+
 		status = objectInput.readInt();
 
 		statusByUserId = objectInput.readLong();
@@ -247,6 +253,8 @@ public class LayoutPageTemplateEntryCacheModel implements CacheModel<LayoutPageT
 
 		objectOutput.writeBoolean(defaultTemplate);
 
+		objectOutput.writeLong(layoutPrototypeId);
+
 		objectOutput.writeInt(status);
 
 		objectOutput.writeLong(statusByUserId);
@@ -275,6 +283,7 @@ public class LayoutPageTemplateEntryCacheModel implements CacheModel<LayoutPageT
 	public int type;
 	public long htmlPreviewEntryId;
 	public boolean defaultTemplate;
+	public long layoutPrototypeId;
 	public int status;
 	public long statusByUserId;
 	public String statusByUserName;
