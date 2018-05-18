@@ -72,9 +72,8 @@ public class HikariConnectionPoolMetrics extends BaseConnectionPoolMetrics {
 
 	@Override
 	protected String getPoolName() {
-		Thread currentThread = Thread.currentThread();
-
-		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+		ClassLoader contextClassLoader =
+			HikariConnectionPoolMetrics.class.getClassLoader();
 
 		try {
 			Class<?> clazz = contextClassLoader.loadClass(
