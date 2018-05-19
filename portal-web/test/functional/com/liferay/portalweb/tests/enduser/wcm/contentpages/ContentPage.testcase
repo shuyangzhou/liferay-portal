@@ -1,4 +1,5 @@
 <definition component-name="portal-wcm">
+	<property name="portal.release" value="true" />
 	<property name="portal.upstream" value="true" />
 	<property name="testray.main.component.name" value="Content Pages" />
 
@@ -44,7 +45,7 @@
 	</tear-down>
 
 	<command name="AddContentPage" priority="5">
-		<property name="portal.acceptance" value="pending" />
+		<property name="portal.acceptance" value="true" />
 
 		<execute macro="Navigator#gotoNavNested">
 			<var name="navNested" value="Collection Name" />
