@@ -16,6 +16,7 @@ package com.liferay.oauth2.provider.rest.internal.endpoint;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -79,7 +80,21 @@ public class OAuth2ProviderEndpointConfigurationsPublisher {
 
 	private void _createCXFConfiguration(
 			ConfigurationAdmin configurationAdmin, String contextPath)
-		throws IOException {
+		throws InvalidSyntaxException, IOException {
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append("(&(contextPath=");
+		sb.append(_escape(contextPath));
+		sb.append(")(service.factoryPid=com.liferay.portal.remote.cxf.common.");
+		sb.append("configuration.CXFEndpointPublisherConfiguration))");
+
+		Configuration[] cxfConfigurations =
+			configurationAdmin.listConfigurations(sb.toString());
+
+		if (!ArrayUtil.isNotEmpty(cxfConfigurations)) {
+			return;
+		}
 
 		_cxfConfiguration = configurationAdmin.createFactoryConfiguration(
 			"com.liferay.portal.remote.cxf.common.configuration." +
