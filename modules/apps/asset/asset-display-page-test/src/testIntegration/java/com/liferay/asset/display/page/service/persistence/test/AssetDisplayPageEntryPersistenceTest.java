@@ -124,7 +124,7 @@ public class AssetDisplayPageEntryPersistenceTest {
 
 		newAssetDisplayPageEntry.setAssetEntryId(RandomTestUtil.nextLong());
 
-		newAssetDisplayPageEntry.setLayoutId(RandomTestUtil.nextLong());
+		newAssetDisplayPageEntry.setLayoutPageTemplateEntryId(RandomTestUtil.nextLong());
 
 		_assetDisplayPageEntries.add(_persistence.update(
 				newAssetDisplayPageEntry));
@@ -135,8 +135,8 @@ public class AssetDisplayPageEntryPersistenceTest {
 			newAssetDisplayPageEntry.getAssetDisplayPageEntryId());
 		Assert.assertEquals(existingAssetDisplayPageEntry.getAssetEntryId(),
 			newAssetDisplayPageEntry.getAssetEntryId());
-		Assert.assertEquals(existingAssetDisplayPageEntry.getLayoutId(),
-			newAssetDisplayPageEntry.getLayoutId());
+		Assert.assertEquals(existingAssetDisplayPageEntry.getLayoutPageTemplateEntryId(),
+			newAssetDisplayPageEntry.getLayoutPageTemplateEntryId());
 	}
 
 	@Test
@@ -144,6 +144,14 @@ public class AssetDisplayPageEntryPersistenceTest {
 		_persistence.countByAssetEntryId(RandomTestUtil.nextLong());
 
 		_persistence.countByAssetEntryId(0L);
+	}
+
+	@Test
+	public void testCountByLayoutPageTemplateEntryId()
+		throws Exception {
+		_persistence.countByLayoutPageTemplateEntryId(RandomTestUtil.nextLong());
+
+		_persistence.countByLayoutPageTemplateEntryId(0L);
 	}
 
 	@Test
@@ -171,8 +179,8 @@ public class AssetDisplayPageEntryPersistenceTest {
 
 	protected OrderByComparator<AssetDisplayPageEntry> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("AssetDisplayPageEntry",
-			"assetDisplayPageEntryId", true, "assetEntryId", true, "layoutId",
-			true);
+			"assetDisplayPageEntryId", true, "assetEntryId", true,
+			"layoutPageTemplateEntryId", true);
 	}
 
 	@Test
@@ -399,7 +407,7 @@ public class AssetDisplayPageEntryPersistenceTest {
 
 		assetDisplayPageEntry.setAssetEntryId(RandomTestUtil.nextLong());
 
-		assetDisplayPageEntry.setLayoutId(RandomTestUtil.nextLong());
+		assetDisplayPageEntry.setLayoutPageTemplateEntryId(RandomTestUtil.nextLong());
 
 		_assetDisplayPageEntries.add(_persistence.update(assetDisplayPageEntry));
 

@@ -749,12 +749,6 @@ public class MeetupsRegistrationPersistenceImpl extends BasePersistenceImpl<Meet
 					result = meetupsRegistration;
 
 					cacheResult(meetupsRegistration);
-
-					if ((meetupsRegistration.getUserId() != userId) ||
-							(meetupsRegistration.getMeetupsEntryId() != meetupsEntryId)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_U_ME,
-							finderArgs, meetupsRegistration);
-					}
 				}
 			}
 			catch (Exception e) {

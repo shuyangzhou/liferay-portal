@@ -240,14 +240,6 @@ public class FeedPersistenceImpl extends BasePersistenceImpl<Feed>
 					result = feed;
 
 					cacheResult(feed);
-
-					if ((feed.getUserId() != userId) ||
-							(feed.getTwitterScreenName() == null) ||
-							!feed.getTwitterScreenName()
-									 .equals(twitterScreenName)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_U_TSN,
-							finderArgs, feed);
-					}
 				}
 			}
 			catch (Exception e) {

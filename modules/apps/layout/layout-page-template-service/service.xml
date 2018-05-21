@@ -75,10 +75,11 @@
 		<column name="layoutPageTemplateCollectionId" type="long" />
 		<column name="classNameId" type="long" />
 		<column name="classTypeId" type="long" />
-		<column name="name" type="String" />
+		<column accessor="true" name="name" type="String" />
 		<column name="type" type="int" />
 		<column name="htmlPreviewEntryId" type="long" />
 		<column name="defaultTemplate" type="boolean" />
+		<column name="layoutPrototypeId" type="long" />
 		<column name="status" type="int" />
 		<column name="statusByUserId" type="long" />
 		<column name="statusByUserName" type="String" />
@@ -106,6 +107,10 @@
 		<finder name="G_T" return-type="Collection">
 			<finder-column name="groupId" />
 			<finder-column name="type" />
+		</finder>
+		<finder name="G_LP" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="layoutPrototypeId" />
 		</finder>
 		<finder name="G_L_LikeN" return-type="Collection">
 			<finder-column name="groupId" />
@@ -194,5 +199,6 @@
 		<exception>DuplicateLayoutPageTemplateEntry</exception>
 		<exception>LayoutPageTemplateCollectionName</exception>
 		<exception>LayoutPageTemplateEntryName</exception>
+		<exception>RequiredLayoutPageTemplateEntry</exception>
 	</exceptions>
 </service-builder>
