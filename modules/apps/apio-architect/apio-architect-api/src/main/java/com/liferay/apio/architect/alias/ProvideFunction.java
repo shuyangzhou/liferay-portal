@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Defines a type alias for a function that receives the HTTP request, and
- * returns a function that receives a class and returns an optional instance of
- * that class.
+ * returns a function that receives a class and returns an instance of that
+ * class.
  *
  * @author Alejandro Hernández
  */

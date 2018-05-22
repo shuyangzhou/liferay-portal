@@ -52,8 +52,8 @@ public class BlogPostingCollectionResource
 		<BlogPostingModel, Long, BlogPostingIdentifier> {
 
 	@Override
-	public CollectionRoutes<BlogPostingModel> collectionRoutes(
-		CollectionRoutes.Builder<BlogPostingModel> builder) {
+	public CollectionRoutes<BlogPostingModel, Long> collectionRoutes(
+		CollectionRoutes.Builder<BlogPostingModel, Long> builder) {
 
 		return builder.addGetter(
 			this::_getPageItems

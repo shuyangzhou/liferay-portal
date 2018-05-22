@@ -31,8 +31,9 @@ public interface ExceptionMapperManager {
 
 	/**
 	 * Converts an exception to its generic {@link APIError} representation, if
-	 * a valid {@link ExceptionMapper} exists. Returns {@code Optional#empty()}
-	 * otherwise.
+	 * a valid {@link
+	 * com.liferay.apio.architect.exception.mapper.ExceptionMapper} exists.
+	 * Returns {@code Optional#empty()} otherwise.
 	 *
 	 * <p>
 	 * If no {@code ExceptionMapper} can be found for the exception class, this
