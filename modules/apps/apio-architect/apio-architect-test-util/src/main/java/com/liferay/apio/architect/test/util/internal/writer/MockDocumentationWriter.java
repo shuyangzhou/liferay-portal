@@ -59,7 +59,7 @@ public class MockDocumentationWriter {
 
 		RequestInfo requestInfo = getRequestInfo(httpHeaders);
 
-		CollectionRoutes.Builder<String> builder1 =
+		CollectionRoutes.Builder<String, Object> builder1 =
 			new CollectionRoutes.Builder<>(
 				"name", null,
 				__ -> {
@@ -78,7 +78,7 @@ public class MockDocumentationWriter {
 
 		ItemRoutes build = builder2.build();
 
-		CollectionRoutes<String> collectionRoutes = builder1.build();
+		CollectionRoutes<String, Object> collectionRoutes = builder1.build();
 
 		Documentation documentation = new Documentation(
 			__ -> Optional.of(() -> "Title"),

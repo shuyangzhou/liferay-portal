@@ -95,6 +95,9 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 				fullClassName);
 
 			if (javaFile == null) {
+				System.out.println(
+					"No matching files found for " + fullClassName);
+
 				return null;
 			}
 
@@ -587,12 +590,6 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 
 		List<String> testClassNamesExcludesRelativeGlobs = Arrays.asList(
 			testClassNamesExcludesPropertyValue.split(","));
-
-		if (testRelevantChanges) {
-			testClassNamesExcludesRelativeGlobs =
-				getRelevantTestClassNamesRelativeGlobs(
-					testClassNamesExcludesRelativeGlobs);
-		}
 
 		testClassNamesExcludesPathMatchers.addAll(
 			_getTestClassNamesPathMatchers(

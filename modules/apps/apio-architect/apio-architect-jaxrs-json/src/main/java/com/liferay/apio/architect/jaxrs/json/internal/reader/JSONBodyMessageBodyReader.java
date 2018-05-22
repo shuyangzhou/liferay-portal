@@ -17,6 +17,7 @@ package com.liferay.apio.architect.jaxrs.json.internal.reader;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -34,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.ws.rs.BadRequestException;
@@ -76,63 +76,84 @@ public class JSONBodyMessageBodyReader implements MessageBodyReader<Body> {
 			InputStream entityStream)
 		throws IOException {
 
+		return _getBody(entityStream);
+	}
+
+	private static Body _getBody(InputStream entityStream) {
 		Gson gson = new Gson();
 
-		JsonObject jsonObject = Try.fromFallibleWithResources(
+		return Try.fromFallibleWithResources(
 			() -> new InputStreamReader(entityStream, "UTF-8"),
 			streamReader -> gson.fromJson(streamReader, JsonObject.class)
-		).orElseThrow(
-			() -> new BadRequestException("Body is not a valid JSON")
+		).map(
+			JSONBodyMessageBodyReader::_getBody
+		).recover(
+			__ -> _getListBody(entityStream, gson)
 		);
+	}
 
+	private static Body _getBody(JsonObject jsonObject) {
 		return Body.create(
-			_transform(
-				jsonObject,
-				aTry -> aTry.filter(
+			key -> Optional.ofNullable(
+				jsonObject.get(key)
+			).filter(
+				JsonElement::isJsonPrimitive
+			).map(
+				JsonElement::getAsString
+			),
+			key -> Optional.ofNullable(
+				jsonObject.get(key)
+			).filter(
+				JsonElement::isJsonArray
+			).map(
+				JsonElement::getAsJsonArray
+			).map(
+				JSONBodyMessageBodyReader::_getJsonElements
+			).map(
+				List::stream
+			).map(
+				stream -> stream.filter(
 					JsonElement::isJsonPrimitive
 				).map(
 					JsonElement::getAsString
-				)),
-			_transform(
-				jsonObject,
-				aTry -> aTry.filter(
-					JsonElement::isJsonArray
-				).map(
-					JsonElement::getAsJsonArray
-				).map(
-					jsonArray -> {
-						List<JsonElement> jsonElements = new ArrayList<>();
-
-						Iterator<JsonElement> iterator = jsonArray.iterator();
-
-						iterator.forEachRemaining(jsonElements::add);
-
-						return jsonElements;
-					}
-				).map(
-					List::stream
-				).map(
-					stream -> stream.filter(
-						JsonElement::isJsonPrimitive
-					).map(
-						JsonElement::getAsString
-					).collect(
-						Collectors.toList()
-					)
-				)));
+				).collect(
+					Collectors.toList()
+				)
+			));
 	}
 
-	private <T> Function<String, Optional<T>> _transform(
-		JsonObject jsonObject, Function<Try<JsonElement>, Try<T>> function) {
+	private static List<JsonElement> _getJsonElements(JsonArray jsonArray) {
+		List<JsonElement> jsonElements = new ArrayList<>();
 
-		return key -> function.apply(
-			Try.success(
-				key
+		Iterator<JsonElement> iterator = jsonArray.iterator();
+
+		iterator.forEachRemaining(jsonElements::add);
+
+		return jsonElements;
+	}
+
+	private static Body _getListBody(InputStream entityStream, Gson gson) {
+		return Try.fromFallibleWithResources(
+			() -> new InputStreamReader(entityStream, "UTF-8"),
+			streamReader -> gson.fromJson(streamReader, JsonArray.class)
+		).map(
+			JSONBodyMessageBodyReader::_getJsonElements
+		).map(
+			List::stream
+		).map(
+			stream -> stream.filter(
+				JsonElement::isJsonObject
 			).map(
-				jsonObject::get
+				JsonElement::getAsJsonObject
+			).map(
+				JSONBodyMessageBodyReader::_getBody
+			).collect(
+				Collectors.toList()
 			)
-		).fold(
-			__ -> Optional.empty(), Optional::of
+		).map(
+			Body::create
+		).orElseThrow(
+			() -> new BadRequestException("Body is not a valid JSON")
 		);
 	}
 

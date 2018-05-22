@@ -143,6 +143,18 @@ public class ContactLocalServiceImpl extends ContactLocalServiceBaseImpl {
 	}
 
 	@Override
+	public List<Contact> getCompanyContacts(
+		long companyId, int start, int end) {
+
+		return contactPersistence.findByCompanyId(companyId, start, end);
+	}
+
+	@Override
+	public int getCompanyContactsCount(long companyId) {
+		return contactPersistence.countByCompanyId(companyId);
+	}
+
+	@Override
 	public List<Contact> getContacts(
 		long classNameId, long classPK, int start, int end,
 		OrderByComparator<Contact> orderByComparator) {

@@ -119,7 +119,7 @@ public class HttpRequestUtil {
 
 				if (!(urlConnection instanceof HttpURLConnection)) {
 					throw new IllegalArgumentException(
-						"Connection must be of type HTTP.");
+						"Connection must be of type HTTP");
 				}
 
 				HttpURLConnection httpURLConnection =

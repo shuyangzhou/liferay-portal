@@ -48,7 +48,12 @@ public class PoshiProseDefinitionTest extends TestCase {
 				"Test directory does not exist: " + _TEST_BASE_DIR_NAME);
 		}
 
-		PoshiRunnerContext.readFiles();
+		PoshiRunnerContext.readFiles(
+			PoshiRunnerContext.POSHI_SUPPORT_FILE_INCLUDES,
+			_TEST_BASE_DIR_NAME);
+
+		PoshiRunnerContext.readFiles(
+			PoshiRunnerContext.POSHI_TEST_FILE_INCLUDES, _TEST_BASE_DIR_NAME);
 
 		_poshiProseDefinition = new PoshiProseDefinition(
 			_POSHI_PROSE_FILE_NAME, read(_testBaseDir, _POSHI_PROSE_FILE_NAME));
