@@ -55,12 +55,12 @@ public class CollectionRoutesTest {
 
 	@Test
 	public void testEmptyBuilderBuildsEmptyRoutes() {
-		Builder<String> builder = new Builder<>(
+		Builder<String, ?> builder = new Builder<>(
 			"name", REQUEST_PROVIDE_FUNCTION,
 			__ -> {
 			});
 
-		CollectionRoutes<String> collectionRoutes = builder.build();
+		CollectionRoutes<String, ?> collectionRoutes = builder.build();
 
 		Optional<CreateItemFunction<String>> createItemFunctionOptional =
 			collectionRoutes.getCreateItemFunctionOptional();
@@ -77,10 +77,10 @@ public class CollectionRoutesTest {
 	public void testFiveParameterBuilderMethodsCreatesValidRoutes() {
 		Set<String> neededProviders = new TreeSet<>();
 
-		Builder<String> builder = new Builder<>(
+		Builder<String, ?> builder = new Builder<>(
 			"name", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
-		CollectionRoutes<String> collectionRoutes = builder.addCreator(
+		CollectionRoutes<String, ?> collectionRoutes = builder.addCreator(
 			this::_testAndReturnFourParameterCreatorRoute, String.class,
 			Long.class, Boolean.class, Integer.class,
 			COLLECTION_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
@@ -102,10 +102,10 @@ public class CollectionRoutesTest {
 	public void testFourParameterBuilderMethodsCreatesValidRoutes() {
 		Set<String> neededProviders = new TreeSet<>();
 
-		Builder<String> builder = new Builder<>(
+		Builder<String, ?> builder = new Builder<>(
 			"name", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
-		CollectionRoutes<String> collectionRoutes = builder.addCreator(
+		CollectionRoutes<String, ?> collectionRoutes = builder.addCreator(
 			this::_testAndReturnThreeParameterCreatorRoute, String.class,
 			Long.class, Boolean.class, COLLECTION_PERMISSION_FUNCTION,
 			FORM_BUILDER_FUNCTION
@@ -127,10 +127,10 @@ public class CollectionRoutesTest {
 	public void testOneParameterBuilderMethodsCreatesValidRoutes() {
 		Set<String> neededProviders = new TreeSet<>();
 
-		Builder<String> builder = new Builder<>(
+		Builder<String, ?> builder = new Builder<>(
 			"name", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
-		CollectionRoutes<String> collectionRoutes = builder.addCreator(
+		CollectionRoutes<String, ?> collectionRoutes = builder.addCreator(
 			this::_testAndReturnNoParameterCreatorRoute,
 			COLLECTION_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
 		).addGetter(
@@ -146,10 +146,10 @@ public class CollectionRoutesTest {
 	public void testThreeParameterBuilderMethodsCreatesValidRoutes() {
 		Set<String> neededProviders = new TreeSet<>();
 
-		Builder<String> builder = new Builder<>(
+		Builder<String, ?> builder = new Builder<>(
 			"name", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
-		CollectionRoutes<String> collectionRoutes = builder.addCreator(
+		CollectionRoutes<String, ?> collectionRoutes = builder.addCreator(
 			this::_testAndReturnTwoParameterCreatorRoute, String.class,
 			Long.class, COLLECTION_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
 		).addGetter(
@@ -168,10 +168,10 @@ public class CollectionRoutesTest {
 	public void testTwoParameterBuilderMethodsCreatesValidRoutes() {
 		Set<String> neededProviders = new TreeSet<>();
 
-		Builder<String> builder = new Builder<>(
+		Builder<String, ?> builder = new Builder<>(
 			"name", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
-		CollectionRoutes<String> collectionRoutes = builder.addCreator(
+		CollectionRoutes<String, ?> collectionRoutes = builder.addCreator(
 			this::_testAndReturnOneParameterCreatorRoute, String.class,
 			COLLECTION_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
 		).addGetter(
@@ -270,9 +270,9 @@ public class CollectionRoutesTest {
 	}
 
 	private void _testCollectionRoutes(
-		CollectionRoutes<String> collectionRoutes) {
+		CollectionRoutes<String, ?> collectionRoutes) {
 
-		Optional<CollectionRoutes<String>> optional = Optional.of(
+		Optional<CollectionRoutes<String, ?>> optional = Optional.of(
 			collectionRoutes);
 
 		Map map = optional.flatMap(

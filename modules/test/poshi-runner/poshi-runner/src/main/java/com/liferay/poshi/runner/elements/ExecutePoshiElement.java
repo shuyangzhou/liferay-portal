@@ -70,8 +70,6 @@ public class ExecutePoshiElement extends PoshiElement {
 				if (readableSyntax.startsWith(utilClassName)) {
 					addAttribute("class", utilClassName);
 
-					System.out.println(utilClassName);
-
 					methodName = methodName.replace(utilClassName + ".", "");
 
 					addAttribute("method", methodName);
