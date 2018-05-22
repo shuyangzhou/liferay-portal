@@ -196,10 +196,7 @@ public class CounterLocalServiceTest {
 			sb.append(File.pathSeparator);
 			sb.append(PropsValues.LIFERAY_LIB_PORTAL_DIR);
 			sb.append(File.separator);
-			sb.append(
-				PropsUtil.get(
-					PropsKeys.SETUP_LIFERAY_POOL_PROVIDER_JAR_NAME,
-					new Filter("hikaricp")));
+			sb.append("hikaricp.jar");
 
 			classPath = sb.toString();
 		}

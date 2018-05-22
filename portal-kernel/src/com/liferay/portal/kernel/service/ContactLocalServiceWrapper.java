@@ -196,6 +196,17 @@ public class ContactLocalServiceWrapper implements ContactLocalService,
 		return _contactLocalService.getActionableDynamicQuery();
 	}
 
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.Contact> getCompanyContacts(
+		long companyId, int start, int end) {
+		return _contactLocalService.getCompanyContacts(companyId, start, end);
+	}
+
+	@Override
+	public int getCompanyContactsCount(long companyId) {
+		return _contactLocalService.getCompanyContactsCount(companyId);
+	}
+
 	/**
 	* Returns the contact with the primary key.
 	*
