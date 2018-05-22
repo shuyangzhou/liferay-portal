@@ -681,10 +681,6 @@ public abstract class BaseBuild implements Build {
 			jobVariant = getParameterValue("JENKINS_JOB_VARIANT");
 		}
 
-		if ((jobVariant == null) || jobVariant.isEmpty()) {
-			jobVariant = getJobName();
-		}
-
 		return jobVariant;
 	}
 
@@ -1398,7 +1394,7 @@ public abstract class BaseBuild implements Build {
 			content = Dom4JUtil.format(gitHubMessage, false);
 		}
 		catch (IOException ioe) {
-			throw new RuntimeException("Unable to format github message.", ioe);
+			throw new RuntimeException("Unable to format github message", ioe);
 		}
 
 		for (String contentFlag : _HIGH_PRIORITY_CONTENT_FLAGS) {

@@ -107,6 +107,7 @@ import org.apache.commons.lang.time.StopWatch;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -482,20 +483,6 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 		finally {
 			ldapContext.close();
 		}
-	}
-
-	@Reference(policyOption = ReferencePolicyOption.GREEDY, unbind = "-")
-	public void setAttributesTransformer(
-		AttributesTransformer attributesTransformer) {
-
-		_attributesTransformer = attributesTransformer;
-	}
-
-	@Reference(policyOption = ReferencePolicyOption.GREEDY, unbind = "-")
-	public void setLDAPToPortalConverter(
-		LDAPToPortalConverter ldapToPortalConverter) {
-
-		_ldapToPortalConverter = ldapToPortalConverter;
 	}
 
 	@Reference(unbind = "-")
@@ -1412,11 +1399,6 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 		_lockManager = lockManager;
 	}
 
-	@Reference(policyOption = ReferencePolicyOption.GREEDY, unbind = "-")
-	protected void setPortalLDAP(PortalLDAP portalLDAP) {
-		_portalLDAP = portalLDAP;
-	}
-
 	protected void setProperty(
 		Object bean1, Object bean2, String propertyName) {
 
@@ -1719,7 +1701,12 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 	private static final Log _log = LogFactoryUtil.getLog(
 		LDAPUserImporterImpl.class);
 
-	private AttributesTransformer _attributesTransformer;
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	private volatile AttributesTransformer _attributesTransformer;
+
 	private CompanyLocalService _companyLocalService;
 	private String _companySecurityAuthType;
 	private ExpandoValueLocalService _expandoValueLocalService;
@@ -1734,10 +1721,22 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 	private ConfigurationProvider<LDAPServerConfiguration>
 		_ldapServerConfigurationProvider;
 	private LDAPSettings _ldapSettings;
-	private LDAPToPortalConverter _ldapToPortalConverter;
+
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	private volatile LDAPToPortalConverter _ldapToPortalConverter;
+
 	private LockManager _lockManager;
 	private PortalCache<String, Long> _portalCache;
-	private PortalLDAP _portalLDAP;
+
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	private volatile PortalLDAP _portalLDAP;
+
 	private RoleLocalService _roleLocalService;
 	private UserGroupLocalService _userGroupLocalService;
 	private UserLocalService _userLocalService;

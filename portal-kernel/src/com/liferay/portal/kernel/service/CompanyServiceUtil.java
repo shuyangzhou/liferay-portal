@@ -78,6 +78,15 @@ public class CompanyServiceUtil {
 	}
 
 	/**
+	* Returns all the companies.
+	*
+	* @return the companies
+	*/
+	public static java.util.List<com.liferay.portal.kernel.model.Company> getCompanies() {
+		return getService().getCompanies();
+	}
+
+	/**
 	* Returns the company with the primary key.
 	*
 	* @param companyId the primary key of the company

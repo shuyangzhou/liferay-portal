@@ -38,7 +38,7 @@ public interface NestedCollectionRouterManager {
 	 * @param  nestedName the nested collection resource's name
 	 * @return the nested collection routes
 	 */
-	public <T, S> Optional<NestedCollectionRoutes<T, S>>
+	public <T, S, U> Optional<NestedCollectionRoutes<T, S, U>>
 		getNestedCollectionRoutesOptional(String name, String nestedName);
 
 }
