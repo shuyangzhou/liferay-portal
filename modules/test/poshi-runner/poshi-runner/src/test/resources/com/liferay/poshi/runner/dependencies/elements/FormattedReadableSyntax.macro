@@ -5,6 +5,7 @@ definition {
 		);
 	}
 
+	@prose = "I assert the ${breadcrumbName}"
 	macro viewPG {
 		var key_breadcrumbName = "${breadcrumbName}";
 		var breadcrumbNameUppercase = StringUtil.upperCase('${breadcrumbName}');

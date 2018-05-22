@@ -15,9 +15,10 @@
 package com.liferay.apio.architect.wiring.osgi.internal.manager.base;
 
 import static com.liferay.apio.architect.wiring.osgi.internal.manager.TypeArgumentProperties.KEY_PRINCIPAL_TYPE_ARGUMENT;
-import static com.liferay.apio.architect.wiring.osgi.internal.manager.util.ManagerUtil.getGenericClassFromPropertyOrElse;
-import static com.liferay.apio.architect.wiring.osgi.internal.manager.util.ManagerUtil.getTypeParamOrFail;
+import static com.liferay.apio.architect.wiring.osgi.internal.manager.util.ManagerUtil.getGenericClassFromProperty;
+import static com.liferay.apio.architect.wiring.osgi.internal.manager.util.ManagerUtil.getTypeParamTry;
 
+import com.liferay.apio.architect.functional.Try;
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapper.Emitter;
 
 import java.util.Optional;
@@ -33,7 +34,7 @@ import org.osgi.framework.ServiceReference;
 public abstract class ClassNameBaseManager<T> extends BaseManager<T, String> {
 
 	public ClassNameBaseManager(
-		Class<T> managedClass, Integer principalTypeParamPosition) {
+		Class<T> managedClass, int principalTypeParamPosition) {
 
 		super(managedClass);
 
@@ -46,12 +47,22 @@ public abstract class ClassNameBaseManager<T> extends BaseManager<T, String> {
 
 		T t = bundleContext.getService(serviceReference);
 
-		Class<?> genericClass = getGenericClassFromPropertyOrElse(
-			serviceReference, KEY_PRINCIPAL_TYPE_ARGUMENT,
-			() -> getTypeParamOrFail(
-				t, _managedClass, _principalTypeParamPosition));
+		if (t == null) {
+			return;
+		}
 
-		emitter.emit(genericClass.getName());
+		Try<Class<Object>> classTry = getGenericClassFromProperty(
+			serviceReference, KEY_PRINCIPAL_TYPE_ARGUMENT);
+
+		classTry.recoverWith(
+			__ -> getTypeParamTry(t, _managedClass, _principalTypeParamPosition)
+		).map(
+			Class::getName
+		).voidFold(
+			__ -> warning(
+				"Unable to get generic information from " + t.getClass()),
+			emitter::emit
+		);
 	}
 
 	/**
@@ -67,6 +78,6 @@ public abstract class ClassNameBaseManager<T> extends BaseManager<T, String> {
 	}
 
 	private final Class<T> _managedClass;
-	private final Integer _principalTypeParamPosition;
+	private final int _principalTypeParamPosition;
 
 }
