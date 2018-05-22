@@ -14,6 +14,8 @@
 
 package com.liferay.portlet;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -96,7 +98,9 @@ import javax.servlet.http.HttpSession;
 /**
  * @author Shuyang Zhou
  * @author Raymond Augé
+ * @author Neil Griffin
  */
+@ProviderType
 public class PortletContainerImpl implements PortletContainer {
 
 	@Override
@@ -192,7 +196,30 @@ public class PortletContainerImpl implements PortletContainer {
 					_processGroupId(request, portlet);
 				}
 
-				_render(request, response, portlet);
+				_render(request, response, portlet, false);
+
+				return null;
+			});
+	}
+
+	@Override
+	public void renderHeaders(
+			HttpServletRequest request, HttpServletResponse response,
+			Portlet portlet)
+		throws PortletContainerException {
+
+		_preserveGroupIds(
+			request,
+			() -> {
+				String portletId = ParamUtil.getString(request, "p_p_id");
+
+				if ((portlet != null) &&
+					portletId.equals(portlet.getPortletId())) {
+
+					_processGroupId(request, portlet);
+				}
+
+				_render(request, response, portlet, true);
 
 				return null;
 			});
@@ -682,7 +709,7 @@ public class PortletContainerImpl implements PortletContainer {
 
 	private void _render(
 			HttpServletRequest request, HttpServletResponse response,
-			Portlet portlet)
+			Portlet portlet, boolean headerPhase)
 		throws Exception {
 
 		if ((portlet != null) && portlet.isInstanceable() &&
@@ -750,6 +777,7 @@ public class PortletContainerImpl implements PortletContainer {
 		String lifecycle = (String)request.getAttribute(
 			PortletRequest.LIFECYCLE_PHASE);
 
+		request.setAttribute(WebKeys.RENDER_HEADERS, headerPhase);
 		request.setAttribute(WebKeys.RENDER_PORTLET, portlet);
 
 		String path = (String)request.getAttribute(WebKeys.RENDER_PATH);
