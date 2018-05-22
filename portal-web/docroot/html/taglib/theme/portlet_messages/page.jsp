@@ -63,10 +63,10 @@ else if (group.isStagingGroup()) {
 	</c:choose>
 </c:if>
 
-<c:if test='<%= MultiSessionMessages.contains(renderRequest, "requestProcessed") && !MultiSessionMessages.contains(renderRequest, portlet.getPortletId() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_SUCCESS_MESSAGE) %>'>
+<c:if test='<%= MultiSessionMessages.contains(portletRequest, "requestProcessed") && !MultiSessionMessages.contains(portletRequest, portlet.getPortletId() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_SUCCESS_MESSAGE) %>'>
 
 	<%
-	String successMessage = (String)MultiSessionMessages.get(renderRequest, "requestProcessed");
+	String successMessage = (String)MultiSessionMessages.get(portletRequest, "requestProcessed");
 	%>
 
 	<liferay-util:buffer
@@ -81,7 +81,7 @@ else if (group.isStagingGroup()) {
 			</c:otherwise>
 		</c:choose>
 
-		<c:if test="<%= themeDisplay.isStatePopUp() && MultiSessionMessages.contains(renderRequest, portlet.getPortletId() + SessionMessages.KEY_SUFFIX_CLOSE_REDIRECT) %>">
+		<c:if test="<%= themeDisplay.isStatePopUp() && MultiSessionMessages.contains(portletRequest, portlet.getPortletId() + SessionMessages.KEY_SUFFIX_CLOSE_REDIRECT) %>">
 
 			<%
 			String taglibMessage = "class=\"lfr-hide-dialog\" href=\"javascript:;\"";
@@ -97,6 +97,6 @@ else if (group.isStagingGroup()) {
 <liferay-ui:success key="<%= portlet.getPortletId() + SessionMessages.KEY_SUFFIX_UPDATED_CONFIGURATION %>" message="you-have-successfully-updated-the-setup" />
 <liferay-ui:success key="<%= portlet.getPortletId() + SessionMessages.KEY_SUFFIX_UPDATED_PREFERENCES %>" message="you-have-successfully-updated-your-preferences" />
 
-<c:if test="<%= !MultiSessionMessages.contains(renderRequest, portlet.getPortletId() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE) %>">
+<c:if test="<%= !MultiSessionMessages.contains(portletRequest, portlet.getPortletId() + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE) %>">
 	<liferay-ui:error />
 </c:if>

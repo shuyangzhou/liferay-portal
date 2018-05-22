@@ -70,5 +70,5 @@ import com.liferay.apio.architect.router.NestedCollectionRouter;
 @ConsumerType
 public interface NestedCollectionResource
 	<T, S, U extends Identifier<S>, V, W extends Identifier<V>>
-		extends ItemResource<T, S, U>, NestedCollectionRouter<T, U, V, W> {
+		extends ItemResource<T, S, U>, NestedCollectionRouter<T, S, U, V, W> {
 }

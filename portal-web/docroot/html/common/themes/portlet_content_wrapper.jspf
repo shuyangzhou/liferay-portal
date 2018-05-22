@@ -33,7 +33,7 @@
 				</c:if>
 
 				<c:choose>
-					<c:when test="<%= PortalUtil.isSkipPortletContentRendering(group, layoutTypePortlet, portletDisplay, portletName) %>">
+					<c:when test="<%= PortalUtil.isSkipPortletContentRendering(group, layoutTypePortlet, portletDisplay, portletDisplay.getPortletName()) %>">
 						<div class="alert alert-info">
 							<c:choose>
 								<c:when test="<%= layout.isPortletEmbedded(portlet.getPortletId(), group.getGroupId()) %>">

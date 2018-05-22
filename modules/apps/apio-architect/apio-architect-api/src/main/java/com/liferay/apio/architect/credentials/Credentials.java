@@ -23,5 +23,5 @@ import java.util.function.Supplier;
  *
  * @author Alejandro Hernández
  */
-public interface Credentials extends Supplier<String> {
+public interface Credentials extends Supplier<Object> {
 }

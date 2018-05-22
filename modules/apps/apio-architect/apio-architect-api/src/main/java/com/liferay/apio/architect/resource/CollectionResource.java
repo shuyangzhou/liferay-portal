@@ -64,5 +64,5 @@ import com.liferay.apio.architect.router.CollectionRouter;
  */
 @ConsumerType
 public interface CollectionResource<T, S, U extends Identifier<S>>
-	extends ItemResource<T, S, U>, CollectionRouter<T, U> {
+	extends ItemResource<T, S, U>, CollectionRouter<T, S, U> {
 }

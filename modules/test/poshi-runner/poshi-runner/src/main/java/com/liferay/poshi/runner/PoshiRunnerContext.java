@@ -71,6 +71,12 @@ import org.dom4j.io.SAXReader;
  */
 public class PoshiRunnerContext {
 
+	public static final String[] POSHI_SUPPORT_FILE_INCLUDES =
+		{"**/*.action", "**/*.function", "**/*.macro", "**/*.path"};
+
+	public static final String[] POSHI_TEST_FILE_INCLUDES =
+		{"**/*.prose", "**/*.testcase"};
+
 	public static void clear() {
 		_commandElements.clear();
 		_commandReturns.clear();
@@ -293,6 +299,7 @@ public class PoshiRunnerContext {
 		throws Exception {
 
 		_readPoshiFiles(includes, baseDirNames);
+		_readSeleniumFiles();
 	}
 
 	public static void setTestCaseNamespacedClassCommandName(
@@ -768,12 +775,12 @@ public class PoshiRunnerContext {
 	private static void _readPoshiFiles() throws Exception {
 		if (Validator.isNotNull(PropsValues.TEST_INCLUDE_DIR_NAMES)) {
 			_readPoshiFiles(
-				_POSHI_SUPPORT_FILE_INCLUDES,
+				POSHI_SUPPORT_FILE_INCLUDES,
 				PropsValues.TEST_INCLUDE_DIR_NAMES);
 		}
 
 		for (String[] poshiFileIncludes : new String[][] {
-				_POSHI_SUPPORT_FILE_INCLUDES, _POSHI_TEST_FILE_INCLUDES
+				POSHI_SUPPORT_FILE_INCLUDES, POSHI_TEST_FILE_INCLUDES
 			}) {
 
 			_readPoshiFilesFromClassPath(poshiFileIncludes, "testFunctional");
@@ -1279,12 +1286,6 @@ public class PoshiRunnerContext {
 	}
 
 	private static final String _DEFAULT_NAMESPACE = "LocalFile";
-
-	private static final String[] _POSHI_SUPPORT_FILE_INCLUDES =
-		{"**/*.action", "**/*.function", "**/*.macro", "**/*.path"};
-
-	private static final String[] _POSHI_TEST_FILE_INCLUDES =
-		{"**/*.prose", "**/*.testcase"};
 
 	private static final String _TEST_BASE_DIR_NAME =
 		PoshiRunnerGetterUtil.getCanonicalPath(PropsValues.TEST_BASE_DIR_NAME);
