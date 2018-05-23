@@ -197,6 +197,15 @@ public class ContactLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
+	public static java.util.List<com.liferay.portal.kernel.model.Contact> getCompanyContacts(
+		long companyId, int start, int end) {
+		return getService().getCompanyContacts(companyId, start, end);
+	}
+
+	public static int getCompanyContactsCount(long companyId) {
+		return getService().getCompanyContactsCount(companyId);
+	}
+
 	/**
 	* Returns the contact with the primary key.
 	*
