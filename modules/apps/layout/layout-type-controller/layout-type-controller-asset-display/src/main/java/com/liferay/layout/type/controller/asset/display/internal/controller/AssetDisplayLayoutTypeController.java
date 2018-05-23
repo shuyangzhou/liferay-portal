@@ -93,7 +93,7 @@ public class AssetDisplayLayoutTypeController
 
 	@Override
 	public boolean isFirstPageable() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -155,7 +155,7 @@ public class AssetDisplayLayoutTypeController
 					assetEntry.getEntryId());
 
 		if (assetDisplayPageEntry != null) {
-			return assetDisplayPageEntry.getLayoutId();
+			return assetDisplayPageEntry.getLayoutPageTemplateEntryId();
 		}
 
 		LayoutPageTemplateEntry defaultLayoutPageTemplateEntry =

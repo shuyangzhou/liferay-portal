@@ -56,10 +56,10 @@ public class PageEndpointImpl<T, S> implements PageEndpoint<T> {
 		String name, HttpServletRequest httpServletRequest,
 		Function<String, Optional<Class<Identifier>>> identifierClassFunction,
 		Function<String, Try<SingleModel<T>>> singleModelFunction,
-		Supplier<Optional<CollectionRoutes<T>>> collectionRoutesSupplier,
+		Supplier<Optional<CollectionRoutes<T, S>>> collectionRoutesSupplier,
 		Supplier<Optional<Representor<T>>> representorSupplier,
 		Supplier<Optional<ItemRoutes<T, S>>> itemRoutesSupplier,
-		Function<String, Optional<NestedCollectionRoutes<T, Object>>>
+		Function<String, Optional<NestedCollectionRoutes<T, S, Object>>>
 			nestedCollectionRoutesFunction,
 		Function<Path, S> identifierFunction) {
 
@@ -245,7 +245,7 @@ public class PageEndpointImpl<T, S> implements PageEndpoint<T> {
 		);
 	}
 
-	private final Supplier<Optional<CollectionRoutes<T>>>
+	private final Supplier<Optional<CollectionRoutes<T, S>>>
 		_collectionRoutesSupplier;
 	private final HttpServletRequest _httpServletRequest;
 	private final Function<String, Optional<Class<Identifier>>>
@@ -253,8 +253,8 @@ public class PageEndpointImpl<T, S> implements PageEndpoint<T> {
 	private final Function<Path, S> _identifierFunction;
 	private final Supplier<Optional<ItemRoutes<T, S>>> _itemRoutesSupplier;
 	private final String _name;
-	private final Function<String, Optional<NestedCollectionRoutes<T, Object>>>
-		_nestedCollectionRoutesFunction;
+	private final Function<String, Optional<NestedCollectionRoutes
+		<T, S, Object>>> _nestedCollectionRoutesFunction;
 	private final Supplier<Optional<Representor<T>>> _representorSupplier;
 	private final Function<String, Try<SingleModel<T>>> _singleModelFunction;
 

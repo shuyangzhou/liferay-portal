@@ -40,7 +40,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * Holds information about the routes supported for a {@link
@@ -54,11 +53,13 @@ import java.util.function.Function;
  *
  * @author Alejandro Hernández
  * @param  <T> the model's type
+ * @param  <S> the type of the model's identifier (e.g., {@code Long}, {@code
+ *         String}, etc.)
  * @see    Builder
  */
-public class CollectionRoutes<T> {
+public class CollectionRoutes<T, S> {
 
-	public CollectionRoutes(Builder<T> builder) {
+	public CollectionRoutes(Builder<T, S> builder) {
 		_createItemFunction = builder._createItemFunction;
 		_form = builder._form;
 		_getPageFunction = builder._getPageFunction;
@@ -105,7 +106,7 @@ public class CollectionRoutes<T> {
 	 * com.liferay.apio.architect.router.CollectionRouter}.
 	 */
 	@SuppressWarnings("unused")
-	public static class Builder<T> {
+	public static class Builder<T, S> {
 
 		public Builder(
 			String name, ProvideFunction provideFunction,
@@ -126,9 +127,9 @@ public class CollectionRoutes<T> {
 		 *         this operation
 		 * @return the updated builder
 		 */
-		public <A, R> Builder<T> addCreator(
+		public <A, R> Builder<T, S> addCreator(
 			ThrowableBiFunction<R, A, T> throwableBiFunction, Class<A> aClass,
-			Function<Credentials, Boolean> permissionFunction,
+			ThrowableFunction<Credentials, Boolean> permissionFunction,
 			FormBuilderFunction<R> formBuilderFunction) {
 
 			_neededProviderConsumer.accept(aClass.getName());
@@ -160,9 +161,9 @@ public class CollectionRoutes<T> {
 		 *         this operation
 		 * @return the updated builder
 		 */
-		public <R> Builder<T> addCreator(
+		public <R> Builder<T, S> addCreator(
 			ThrowableFunction<R, T> throwableFunction,
-			Function<Credentials, Boolean> permissionFunction,
+			ThrowableFunction<Credentials, Boolean> permissionFunction,
 			FormBuilderFunction<R> formBuilderFunction) {
 
 			_collectionPermissionFunction = permissionFunction;
@@ -197,10 +198,10 @@ public class CollectionRoutes<T> {
 		 *         this operation
 		 * @return the updated builder
 		 */
-		public <A, B, C, D, R> Builder<T> addCreator(
+		public <A, B, C, D, R> Builder<T, S> addCreator(
 			ThrowablePentaFunction<R, A, B, C, D, T> throwablePentaFunction,
 			Class<A> aClass, Class<B> bClass, Class<C> cClass, Class<D> dClass,
-			Function<Credentials, Boolean> permissionFunction,
+			ThrowableFunction<Credentials, Boolean> permissionFunction,
 			FormBuilderFunction<R> formBuilderFunction) {
 
 			_neededProviderConsumer.accept(aClass.getName());
@@ -239,10 +240,10 @@ public class CollectionRoutes<T> {
 		 *         this operation
 		 * @return the updated builder
 		 */
-		public <A, B, C, R> Builder<T> addCreator(
+		public <A, B, C, R> Builder<T, S> addCreator(
 			ThrowableTetraFunction<R, A, B, C, T> throwableTetraFunction,
 			Class<A> aClass, Class<B> bClass, Class<C> cClass,
-			Function<Credentials, Boolean> permissionFunction,
+			ThrowableFunction<Credentials, Boolean> permissionFunction,
 			FormBuilderFunction<R> formBuilderFunction) {
 
 			_neededProviderConsumer.accept(aClass.getName());
@@ -279,10 +280,10 @@ public class CollectionRoutes<T> {
 		 *         this operation
 		 * @return the updated builder
 		 */
-		public <A, B, R> Builder<T> addCreator(
+		public <A, B, R> Builder<T, S> addCreator(
 			ThrowableTriFunction<R, A, B, T> throwableTriFunction,
 			Class<A> aClass, Class<B> bClass,
-			Function<Credentials, Boolean> permissionFunction,
+			ThrowableFunction<Credentials, Boolean> permissionFunction,
 			FormBuilderFunction<R> formBuilderFunction) {
 
 			_neededProviderConsumer.accept(aClass.getName());
@@ -313,7 +314,7 @@ public class CollectionRoutes<T> {
 		 * @param  aClass the class of the page function's third parameter
 		 * @return the updated builder
 		 */
-		public <A> Builder<T> addGetter(
+		public <A> Builder<T, S> addGetter(
 			ThrowableBiFunction<Pagination, A, PageItems<T>>
 				throwableBiFunction,
 			Class<A> aClass) {
@@ -340,7 +341,7 @@ public class CollectionRoutes<T> {
 		 * @param  throwableFunction the function that calculates the page
 		 * @return the updated builder
 		 */
-		public Builder<T> addGetter(
+		public Builder<T, S> addGetter(
 			ThrowableFunction<Pagination, PageItems<T>> throwableFunction) {
 
 			_getPageFunction = httpServletRequest -> provide(
@@ -367,7 +368,7 @@ public class CollectionRoutes<T> {
 		 * @param  dClass the class of the page function's fifth parameter
 		 * @return the updated builder
 		 */
-		public <A, B, C, D> Builder<T> addGetter(
+		public <A, B, C, D> Builder<T, S> addGetter(
 			ThrowablePentaFunction<Pagination, A, B, C, D, PageItems<T>>
 				throwablePentaFunction,
 			Class<A> aClass, Class<B> bClass, Class<C> cClass,
@@ -403,7 +404,7 @@ public class CollectionRoutes<T> {
 		 * @param  cClass the class of the page function's fourth parameter
 		 * @return the updated builder
 		 */
-		public <A, B, C> Builder<T> addGetter(
+		public <A, B, C> Builder<T, S> addGetter(
 			ThrowableTetraFunction<Pagination, A, B, C, PageItems<T>>
 				throwableTetraFunction,
 			Class<A> aClass, Class<B> bClass, Class<C> cClass) {
@@ -435,7 +436,7 @@ public class CollectionRoutes<T> {
 		 * @param  bClass the class of the page function's third parameter
 		 * @return the updated builder
 		 */
-		public <A, B> Builder<T> addGetter(
+		public <A, B> Builder<T, S> addGetter(
 			ThrowableTriFunction<Pagination, A, B, PageItems<T>>
 				throwableTriFunction,
 			Class<A> aClass, Class<B> bClass) {
@@ -462,7 +463,7 @@ public class CollectionRoutes<T> {
 		 *
 		 * @return the {@code Routes} instance
 		 */
-		public CollectionRoutes<T> build() {
+		public CollectionRoutes<T, S> build() {
 			return new CollectionRoutes<>(this);
 		}
 
@@ -470,7 +471,11 @@ public class CollectionRoutes<T> {
 			return Optional.ofNullable(
 				_form
 			).filter(
-				__ -> _collectionPermissionFunction.apply(credentials)
+				__ -> Try.fromFallible(
+					() -> _collectionPermissionFunction.apply(credentials)
+				).orElse(
+					false
+				)
 			).map(
 				form -> new Operation(form, POST, _name + "/create")
 			).map(
@@ -480,7 +485,8 @@ public class CollectionRoutes<T> {
 			);
 		}
 
-		private Function<Credentials, Boolean> _collectionPermissionFunction;
+		private ThrowableFunction<Credentials, Boolean>
+			_collectionPermissionFunction;
 		private CreateItemFunction<T> _createItemFunction;
 		private Form _form;
 		private GetPageFunction<T> _getPageFunction;

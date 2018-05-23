@@ -31,7 +31,12 @@ boolean active = BeanParamUtil.getBoolean(workflowDefinition, request, "active")
 String duplicateTitle = workflowDefinitionDisplayContext.getDuplicateTitle(workflowDefinition);
 
 portletDisplay.setShowBackIcon(true);
-portletDisplay.setURLBack(redirect);
+
+PortletURL portletURL = PortalUtil.getControlPanelPortletURL(renderRequest, WorkflowPortletKeys.CONTROL_PANEL_WORKFLOW, PortletRequest.RENDER_PHASE);
+
+portletURL.setParameter("mvcPath", "/view.jsp");
+
+portletDisplay.setURLBack(portletURL.toString());
 
 renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request, "new-workflow") : workflowDefinition.getTitle(LanguageUtil.getLanguageId(request)));
 %>
@@ -243,7 +248,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 
 							<liferay-ui:message arguments="<%= importFileMark %>" key="write-your-definition-or-x" translateArguments="<%= false %>" />
 
-							<input class="workflow-definition-upload-source" id="<portlet:namespace />upload" type="file" />
+							<input accept="application/xml" class="workflow-definition-upload-source" id="<portlet:namespace />upload" type="file" />
 						</aui:col>
 
 						<aui:col cssClass="workflow-definition-content-source-wrapper" id="contentSourceWrapper">
@@ -317,13 +322,13 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 
 	var xmlFormatter = new Liferay.XMLFormatter();
 
-	var editorContentElement = A.one('#<portlet:namespace />content');
+	var content = xmlFormatter.format('<%= HtmlUtil.escapeJS(content) %>');
 
-	if (editorContentElement) {
-		var content = xmlFormatter.format(editorContentElement.val());
-
-		contentEditor.set(STR_VALUE, content);
+	if (content) {
+		content = content.trim();
 	}
+
+	contentEditor.set(STR_VALUE, content);
 
 	var uploadFile = $('#<portlet:namespace />upload');
 
