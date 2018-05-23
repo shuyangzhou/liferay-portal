@@ -38,12 +38,12 @@ import javax.ws.rs.PathParam;
 public class FormEndpoint {
 
 	public FormEndpoint(
-		Function<String, Optional<CollectionRoutes<Object>>>
+		Function<String, Optional<CollectionRoutes<Object, Object>>>
 			collectionRoutesFunction,
 		Function<String, Optional<ItemRoutes<Object, Object>>>
 			itemRoutesFunction,
 		BiFunction<String, String, Optional
-			<NestedCollectionRoutes<Object, Object>>>
+			<NestedCollectionRoutes<Object, Object, Object>>>
 				nestedCollectionRoutesFunction) {
 
 		_collectionRoutesFunction = collectionRoutesFunction;
@@ -112,12 +112,12 @@ public class FormEndpoint {
 			notFound(name));
 	}
 
-	private final Function<String, Optional<CollectionRoutes<Object>>>
+	private final Function<String, Optional<CollectionRoutes<Object, Object>>>
 		_collectionRoutesFunction;
 	private final Function<String, Optional<ItemRoutes<Object, Object>>>
 		_itemRoutesFunction;
 	private final BiFunction<String, String,
-		Optional<NestedCollectionRoutes<Object, Object>>>
+		Optional<NestedCollectionRoutes<Object, Object, Object>>>
 			_nestedCollectionRoutesFunction;
 
 }

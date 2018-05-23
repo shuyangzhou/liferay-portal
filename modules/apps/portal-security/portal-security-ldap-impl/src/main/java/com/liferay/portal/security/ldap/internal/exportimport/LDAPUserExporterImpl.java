@@ -57,6 +57,7 @@ import org.apache.commons.lang.time.StopWatch;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -391,13 +392,6 @@ public class LDAPUserExporterImpl implements UserExporter {
 		}
 	}
 
-	@Reference(policyOption = ReferencePolicyOption.GREEDY, unbind = "-")
-	public void setPortalToLDAPConverter(
-		PortalToLDAPConverter portalToLDAPConverter) {
-
-		_portalToLDAPConverter = portalToLDAPConverter;
-	}
-
 	protected Binding addGroup(
 			long ldapServerId, LdapContext ldapContext, UserGroup userGroup,
 			User user, Properties groupMappings, Properties userMappings)
@@ -459,11 +453,6 @@ public class LDAPUserExporterImpl implements UserExporter {
 		_ldapSettings = ldapSettings;
 	}
 
-	@Reference(policyOption = ReferencePolicyOption.GREEDY, unbind = "-")
-	protected void setPortalLDAP(PortalLDAP portalLDAP) {
-		_portalLDAP = portalLDAP;
-	}
-
 	@Reference(unbind = "-")
 	protected void setUserGroupLocalService(
 		UserGroupLocalService userGroupLocalService) {
@@ -482,8 +471,19 @@ public class LDAPUserExporterImpl implements UserExporter {
 	private ConfigurationProvider<LDAPAuthConfiguration>
 		_ldapAuthConfigurationProvider;
 	private LDAPSettings _ldapSettings;
-	private PortalLDAP _portalLDAP;
-	private PortalToLDAPConverter _portalToLDAPConverter;
+
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	private volatile PortalLDAP _portalLDAP;
+
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	private volatile PortalToLDAPConverter _portalToLDAPConverter;
+
 	private UserGroupLocalService _userGroupLocalService;
 	private UserLocalService _userLocalService;
 

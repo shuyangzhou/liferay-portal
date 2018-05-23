@@ -48,6 +48,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -83,64 +84,7 @@ public class FormTest {
 
 	@Test
 	public void testFormCreatesValidForm() {
-		Builder<Map<String, Object>> builder = new Builder<>(
-			asList("1", "2", "3"));
-
-		Form<Map<String, Object>> form = builder.title(
-			__ -> "title"
-		).description(
-			__ -> "description"
-		).constructor(
-			HashMap::new
-		).addOptionalBoolean(
-			"boolean1", (map, aBoolean) -> map.put("b1", aBoolean)
-		).addOptionalBooleanList(
-			"booleanList", (map, list) -> map.put("bl1", list)
-		).addOptionalDate(
-			"date1", (map, date) -> map.put("d1", date)
-		).addOptionalDateList(
-			"dateList", (map, list) -> map.put("dl1", list)
-		).addOptionalDouble(
-			"double1", (map, aDouble) -> map.put("do1", aDouble)
-		).addOptionalDoubleList(
-			"doubleList", (map, list) -> map.put("dol1", list)
-		).addOptionalFile(
-			"file1", (map, binaryFile) -> map.put("f1", binaryFile)
-		).addOptionalFileList(
-			"fileList", (map, list) -> map.put("fl1", list)
-		).addOptionalLong(
-			"long1", (map, aLong) -> map.put("l1", aLong)
-		).addOptionalLongList(
-			"longList", (map, list) -> map.put("ll1", list)
-		).addOptionalString(
-			"string1", (map, string) -> map.put("s1", string)
-		).addOptionalStringList(
-			"stringList", (map, list) -> map.put("sl1", list)
-		).addRequiredBoolean(
-			"boolean2", (map, aBoolean) -> map.put("b2", aBoolean)
-		).addRequiredDate(
-			"date2", (map, date) -> map.put("d2", date)
-		).addRequiredDouble(
-			"double2", (map, aDouble) -> map.put("do2", aDouble)
-		).addRequiredFile(
-			"file2", (map, binaryFile) -> map.put("f2", binaryFile)
-		).addRequiredLong(
-			"long2", (map, aLong) -> map.put("l2", aLong)
-		).addRequiredString(
-			"string2", (map, string) -> map.put("s2", string)
-		).addRequiredBooleanList(
-			"booleanList", (map, list) -> map.put("bl2", list)
-		).addRequiredDateList(
-			"dateList", (map, list) -> map.put("dl2", list)
-		).addRequiredDoubleList(
-			"doubleList", (map, list) -> map.put("dol2", list)
-		).addRequiredFileList(
-			"fileList", (map, list) -> map.put("fl2", list)
-		).addRequiredLongList(
-			"longList", (map, list) -> map.put("ll2", list)
-		).addRequiredStringList(
-			"stringList", (map, list) -> map.put("sl2", list)
-		).build();
+		Form<Map<String, Object>> form = _getForm();
 
 		assertThat(form.id, is("1/2/3"));
 
@@ -185,29 +129,7 @@ public class FormTest {
 
 		Map<String, Object> map = form.get(_body);
 
-		assertThat(map.size(), is(24));
-		assertThat(map, hasEntry(equalTo("b1"), equalTo(true)));
-		assertThat(map, hasEntry(equalTo("b2"), equalTo(false)));
-		assertThat(
-			map, hasEntry(equalTo("d1"), equalTo(new Date(1465981200000L))));
-		assertThat(
-			map, hasEntry(equalTo("d2"), equalTo(new Date(1491244560000L))));
-		assertThat(map, hasEntry(equalTo("l1"), equalTo(42L)));
-		assertThat(map, hasEntry(equalTo("l2"), equalTo(2017L)));
-		assertThat(map, hasEntry(equalTo("do1"), equalTo(3.5D)));
-		assertThat(map, hasEntry(equalTo("do2"), equalTo(25.2D)));
-		assertThat(map, hasEntry(equalTo("s1"), equalTo("Apio")));
-		assertThat(map, hasEntry(equalTo("s2"), equalTo("Hypermedia")));
-
-		BinaryFile binaryFile1 = (BinaryFile)map.get("f1");
-
-		assertThat(_readBinaryFile(binaryFile1), is("Input Stream 1"));
-		assertThat(binaryFile1.getMimeType(), is("mimetype1"));
-
-		BinaryFile binaryFile2 = (BinaryFile)map.get("f2");
-
-		assertThat(_readBinaryFile(binaryFile2), is("Input Stream 2"));
-		assertThat(binaryFile2.getMimeType(), is("mimetype2"));
+		_testBody(map);
 	}
 
 	@Test
@@ -385,6 +307,42 @@ public class FormTest {
 		form.get(_body);
 	}
 
+	@Test
+	public void testListFormCreatesValidList() {
+		Form<Map<String, Object>> form = _getForm();
+
+		List<Map<String, Object>> list = form.getList(_listBody);
+
+		list.forEach(FormTest::_testBody);
+	}
+
+	private static Body _createBody(
+		Map<String, String> values, Map<String, List<String>> valueLists) {
+
+		BinaryFile binaryFile1 = new BinaryFile(
+			new ByteArrayInputStream("Input Stream 1".getBytes(UTF_8)), 0L,
+			"mimetype1");
+		BinaryFile binaryFile2 = new BinaryFile(
+			new ByteArrayInputStream("Input Stream 2".getBytes(UTF_8)), 0L,
+			"mimetype2");
+
+		Map<String, BinaryFile> files = new HashMap<String, BinaryFile>() {
+			{
+				put("file1", binaryFile1);
+				put("file2", binaryFile2);
+			}
+		};
+
+		Map<String, List<BinaryFile>> fileLists = Collections.singletonMap(
+			"fileList", asList(binaryFile1, binaryFile2));
+
+		return Body.create(
+			key -> Optional.ofNullable(values.get(key)),
+			key -> Optional.ofNullable(valueLists.get(key)),
+			key -> Optional.ofNullable(fileLists.get(key)),
+			key -> Optional.ofNullable(files.get(key)));
+	}
+
 	private static Form<Map<String, Object>> _mapForm(
 		Function<Builder<Map<String, Object>>.FieldStep,
 			Builder<Map<String, Object>>.FieldStep> function) {
@@ -403,14 +361,102 @@ public class FormTest {
 		).build();
 	}
 
-	private String _readBinaryFile(BinaryFile binaryFile) {
+	private static String _readBinaryFile(BinaryFile binaryFile) {
 		return Try.fromFallibleWithResources(
 			() -> new BufferedReader(new InputStreamReader(
 				binaryFile.getInputStream())),
 			BufferedReader::readLine).getUnchecked();
 	}
 
+	private static void _testBody(Map<String, Object> map) {
+		assertThat(map.size(), is(24));
+		assertThat(map, hasEntry(equalTo("b1"), equalTo(true)));
+		assertThat(map, hasEntry(equalTo("b2"), equalTo(false)));
+		assertThat(
+			map, hasEntry(equalTo("d1"), equalTo(new Date(1465981200000L))));
+		assertThat(
+			map, hasEntry(equalTo("d2"), equalTo(new Date(1491244560000L))));
+		assertThat(map, hasEntry(equalTo("l1"), equalTo(42L)));
+		assertThat(map, hasEntry(equalTo("l2"), equalTo(2017L)));
+		assertThat(map, hasEntry(equalTo("do1"), equalTo(3.5D)));
+		assertThat(map, hasEntry(equalTo("do2"), equalTo(25.2D)));
+		assertThat(map, hasEntry(equalTo("s1"), equalTo("Apio")));
+		assertThat(map, hasEntry(equalTo("s2"), equalTo("Hypermedia")));
+
+		BinaryFile binaryFile1 = (BinaryFile)map.get("f1");
+
+		assertThat(_readBinaryFile(binaryFile1), is("Input Stream 1"));
+		assertThat(binaryFile1.getMimeType(), is("mimetype1"));
+
+		BinaryFile binaryFile2 = (BinaryFile)map.get("f2");
+
+		assertThat(_readBinaryFile(binaryFile2), is("Input Stream 2"));
+		assertThat(binaryFile2.getMimeType(), is("mimetype2"));
+	}
+
+	private Form<Map<String, Object>> _getForm() {
+		Builder<Map<String, Object>> builder = new Builder<>(
+			asList("1", "2", "3"));
+
+		return builder.title(
+			__ -> "title"
+		).description(
+			__ -> "description"
+		).constructor(
+			HashMap::new
+		).addOptionalBoolean(
+			"boolean1", (map, aBoolean) -> map.put("b1", aBoolean)
+		).addOptionalBooleanList(
+			"booleanList", (map, list) -> map.put("bl1", list)
+		).addOptionalDate(
+			"date1", (map, date) -> map.put("d1", date)
+		).addOptionalDateList(
+			"dateList", (map, list) -> map.put("dl1", list)
+		).addOptionalDouble(
+			"double1", (map, aDouble) -> map.put("do1", aDouble)
+		).addOptionalDoubleList(
+			"doubleList", (map, list) -> map.put("dol1", list)
+		).addOptionalFile(
+			"file1", (map, binaryFile) -> map.put("f1", binaryFile)
+		).addOptionalFileList(
+			"fileList", (map, list) -> map.put("fl1", list)
+		).addOptionalLong(
+			"long1", (map, aLong) -> map.put("l1", aLong)
+		).addOptionalLongList(
+			"longList", (map, list) -> map.put("ll1", list)
+		).addOptionalString(
+			"string1", (map, string) -> map.put("s1", string)
+		).addOptionalStringList(
+			"stringList", (map, list) -> map.put("sl1", list)
+		).addRequiredBoolean(
+			"boolean2", (map, aBoolean) -> map.put("b2", aBoolean)
+		).addRequiredDate(
+			"date2", (map, date) -> map.put("d2", date)
+		).addRequiredDouble(
+			"double2", (map, aDouble) -> map.put("do2", aDouble)
+		).addRequiredFile(
+			"file2", (map, binaryFile) -> map.put("f2", binaryFile)
+		).addRequiredLong(
+			"long2", (map, aLong) -> map.put("l2", aLong)
+		).addRequiredString(
+			"string2", (map, string) -> map.put("s2", string)
+		).addRequiredBooleanList(
+			"booleanList", (map, list) -> map.put("bl2", list)
+		).addRequiredDateList(
+			"dateList", (map, list) -> map.put("dl2", list)
+		).addRequiredDoubleList(
+			"doubleList", (map, list) -> map.put("dol2", list)
+		).addRequiredFileList(
+			"fileList", (map, list) -> map.put("fl2", list)
+		).addRequiredLongList(
+			"longList", (map, list) -> map.put("ll2", list)
+		).addRequiredStringList(
+			"stringList", (map, list) -> map.put("sl2", list)
+		).build();
+	}
+
 	private static final Body _body;
+	private static final Body _listBody;
 
 	static {
 		Map<String, String> values = new HashMap<String, String>() {
@@ -442,28 +488,13 @@ public class FormTest {
 				}
 			};
 
-		BinaryFile binaryFile1 = new BinaryFile(
-			new ByteArrayInputStream("Input Stream 1".getBytes(UTF_8)), 0L,
-			"mimetype1");
-		BinaryFile binaryFile2 = new BinaryFile(
-			new ByteArrayInputStream("Input Stream 2".getBytes(UTF_8)), 0L,
-			"mimetype2");
+		_body = _createBody(values, valueLists);
 
-		Map<String, BinaryFile> files = new HashMap<String, BinaryFile>() {
-			{
-				put("file1", binaryFile1);
-				put("file2", binaryFile2);
-			}
-		};
+		Body body1 = _createBody(values, valueLists);
+		Body body2 = _createBody(values, valueLists);
+		Body body3 = _createBody(values, valueLists);
 
-		Map<String, List<BinaryFile>> fileLists = Collections.singletonMap(
-			"fileList", asList(binaryFile1, binaryFile2));
-
-		_body = Body.create(
-			key -> Optional.ofNullable(values.get(key)),
-			key -> Optional.ofNullable(valueLists.get(key)),
-			key -> Optional.ofNullable(fileLists.get(key)),
-			key -> Optional.ofNullable(files.get(key)));
+		_listBody = Body.create(Arrays.asList(body1, body2, body3));
 	}
 
 }

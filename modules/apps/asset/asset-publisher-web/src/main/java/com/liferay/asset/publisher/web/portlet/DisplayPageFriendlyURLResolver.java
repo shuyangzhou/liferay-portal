@@ -31,6 +31,8 @@ import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
 import com.liferay.journal.service.JournalArticleLocalService;
+import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
+import com.liferay.layout.page.template.service.LayoutPageTemplateEntryService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -56,6 +58,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.List;
 import java.util.Locale;
@@ -85,25 +88,20 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 			JournalArticleConstants.CANONICAL_URL_SEPARATOR.length());
 
 		JournalArticle journalArticle =
-			_journalArticleLocalService.getArticleByUrlTitle(groupId, urlTitle);
+			_journalArticleLocalService.getLatestArticleByUrlTitle(
+				groupId, urlTitle, WorkflowConstants.STATUS_APPROVED);
 
 		AssetEntry assetEntry = _assetEntryLocalService.fetchEntry(
 			JournalArticle.class.getName(),
 			journalArticle.getResourcePrimKey());
 
-		AssetDisplayPageEntry assetDisplayPageEntry = _getAssetDisplayPageEntry(
-			assetEntry);
-
-		if (assetDisplayPageEntry != null) {
-			return _getDisplayPageURL(
-				assetEntry, groupId, mainPath, requestContext);
+		if (_isShowDisplayPageEntry(assetEntry)) {
+			return _getDisplayPageURL(assetEntry, mainPath, requestContext);
 		}
 
-		String layoutActualURL = _getBasicLayoutURL(
+		return _getBasicLayoutURL(
 			groupId, privateLayout, mainPath, friendlyURL, params,
 			requestContext, urlTitle, journalArticle);
-
-		return layoutActualURL;
 	}
 
 	@Override
@@ -139,8 +137,7 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 			journalArticle.getResourcePrimKey());
 
 		try {
-			Layout layout = _getAssetDisplayPageEntryLayout(
-				assetEntry, groupId);
+			Layout layout = _getAssetDisplayPageEntryLayout(assetEntry);
 
 			if (layout != null) {
 				return layout;
@@ -207,19 +204,11 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 		return _createAssetDisplayLayout(groupId);
 	}
 
-	private AssetDisplayPageEntry _getAssetDisplayPageEntry(
-		AssetEntry assetEntry) {
-
-		return _assetDisplayPageEntryLocalService.
-			fetchAssetDisplayPageEntryByAssetEntryId(assetEntry.getEntryId());
-	}
-
-	private Layout _getAssetDisplayPageEntryLayout(
-			AssetEntry assetEntry, long groupId)
+	private Layout _getAssetDisplayPageEntryLayout(AssetEntry assetEntry)
 		throws PortalException {
 
-		if (_getAssetDisplayPageEntry(assetEntry) != null) {
-			return _getAssetDisplayLayout(groupId);
+		if (_isShowDisplayPageEntry(assetEntry)) {
+			return _getAssetDisplayLayout(assetEntry.getGroupId());
 		}
 
 		return null;
@@ -346,7 +335,7 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 	}
 
 	private String _getDisplayPageURL(
-			AssetEntry assetEntry, long groupId, String mainPath,
+			AssetEntry assetEntry, String mainPath,
 			Map<String, Object> requestContext)
 		throws PortalException {
 
@@ -371,9 +360,31 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 		_portal.addPageSubtitle(assetEntry.getTitle(locale), request);
 		_portal.addPageDescription(assetEntry.getDescription(locale), request);
 
-		Layout layout = _getAssetDisplayPageEntryLayout(assetEntry, groupId);
+		Layout layout = _getAssetDisplayPageEntryLayout(assetEntry);
 
 		return _portal.getLayoutActualURL(layout, mainPath);
+	}
+
+	private boolean _isShowDisplayPageEntry(AssetEntry assetEntry) {
+		AssetDisplayPageEntry assetDisplayPageEntry =
+			_assetDisplayPageEntryLocalService.
+				fetchAssetDisplayPageEntryByAssetEntryId(
+					assetEntry.getEntryId());
+
+		if (assetDisplayPageEntry != null) {
+			return true;
+		}
+
+		LayoutPageTemplateEntry defaultLayoutPageTemplateEntry =
+			_layoutPageTemplateEntryService.fetchDefaultLayoutPageTemplateEntry(
+				assetEntry.getGroupId(), assetEntry.getClassNameId(),
+				assetEntry.getClassTypeId());
+
+		if (defaultLayoutPageTemplateEntry != null) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -405,6 +416,9 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 
 	private JournalArticleLocalService _journalArticleLocalService;
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private LayoutPageTemplateEntryService _layoutPageTemplateEntryService;
 
 	@Reference
 	private Portal _portal;

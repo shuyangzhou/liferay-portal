@@ -81,6 +81,7 @@ import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -1034,18 +1035,6 @@ public class JournalArticleStagedModelDataHandler
 		_imageLocalService = imageLocalService;
 	}
 
-	@Reference(
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(model.class.name=com.liferay.journal.model.JournalArticle)",
-		unbind = "-"
-	)
-	protected void setJournalArticleExportImportContentProcessor(
-		ExportImportContentProcessor<String> exportImportContentProcessor) {
-
-		_journalArticleExportImportContentProcessor =
-			exportImportContentProcessor;
-	}
-
 	@Reference(unbind = "-")
 	protected void setJournalArticleLocalService(
 		JournalArticleLocalService journalArticleLocalService) {
@@ -1145,8 +1134,15 @@ public class JournalArticleStagedModelDataHandler
 	private DDMStructureLocalService _ddmStructureLocalService;
 	private DDMTemplateLocalService _ddmTemplateLocalService;
 	private ImageLocalService _imageLocalService;
-	private ExportImportContentProcessor<String>
+
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(model.class.name=com.liferay.journal.model.JournalArticle)"
+	)
+	private volatile ExportImportContentProcessor<String>
 		_journalArticleExportImportContentProcessor;
+
 	private JournalArticleLocalService _journalArticleLocalService;
 	private JournalArticleResourceLocalService
 		_journalArticleResourceLocalService;

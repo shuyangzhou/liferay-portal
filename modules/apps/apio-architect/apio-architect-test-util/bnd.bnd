@@ -1,4 +1,4 @@
-Bundle-Name: Liferay Apio Architect Test Util
+Bundle-Name: Liferay Apio Architect Test Utilities
 Bundle-SymbolicName: com.liferay.apio.architect.test.util
 Bundle-Version: 1.0.0
 Export-Package:\
@@ -10,7 +10,6 @@ Export-Package:\
 	com.liferay.apio.architect.test.util.representor,\
 	com.liferay.apio.architect.test.util.result,\
 	com.liferay.apio.architect.test.util.writer
-
 Import-Package:\
 	!org.hamcrest.*,\
 	\

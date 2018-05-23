@@ -40,6 +40,16 @@ public class ContactServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.portal.service.impl.ContactServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static java.util.List<com.liferay.portal.kernel.model.Contact> getCompanyContacts(
+		long companyId, int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getCompanyContacts(companyId, start, end);
+	}
+
+	public static int getCompanyContactsCount(long companyId) {
+		return getService().getCompanyContactsCount(companyId);
+	}
+
 	public static com.liferay.portal.kernel.model.Contact getContact(
 		long contactId)
 		throws com.liferay.portal.kernel.exception.PortalException {

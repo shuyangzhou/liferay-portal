@@ -3,7 +3,7 @@
 		<execute function="SelectFrame" locator1="IFrame#CONFIGURATION" />
 	</command>
 
-	<command name="viewPG">
+	<command name="viewPG" prose="I assert the ${breadcrumbName}">
 		<var name="key_breadcrumbName" value="${breadcrumbName}" />
 
 		<var method="StringUtil#upperCase('${breadcrumbName}')" name="breadcrumbNameUppercase" />

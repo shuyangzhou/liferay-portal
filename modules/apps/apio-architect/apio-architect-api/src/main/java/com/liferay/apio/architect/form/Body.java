@@ -38,19 +38,9 @@ public interface Body {
 		Function<String, Optional<String>> valueFunction,
 		Function<String, Optional<List<String>>> valueListFunction) {
 
-		return new Body() {
-
-			@Override
-			public Optional<List<String>> getValueListOptional(String key) {
-				return valueListFunction.apply(key);
-			}
-
-			@Override
-			public Optional<String> getValueOptional(String key) {
-				return valueFunction.apply(key);
-			}
-
-		};
+		return create(
+			valueFunction, valueListFunction, __ -> Optional.empty(),
+			__ -> Optional.empty());
 	}
 
 	/**
@@ -91,6 +81,40 @@ public interface Body {
 			}
 
 		};
+	}
+
+	/**
+	 * Creates and returns a new {@code Body} with other bodies as members. This
+	 * kind of body is used for example, in batch operations.
+	 *
+	 * @param  bodies the list of bodies
+	 * @return the body
+	 * @review
+	 */
+	public static Body create(List<Body> bodies) {
+		return new Body() {
+
+			@Override
+			public Optional<List<Body>> getBodyMembersOptional() {
+				return Optional.of(bodies);
+			}
+
+			@Override
+			public Optional<String> getValueOptional(String key) {
+				return Optional.empty();
+			}
+
+		};
+	}
+
+	/**
+	 * Returns a list of nested bodies from the body, if present; returns {@code
+	 * Optional#empty()} otherwise.
+	 *
+	 * @return the list, if present; {@code Optional#empty()} otherwise
+	 */
+	public default Optional<List<Body>> getBodyMembersOptional() {
+		return Optional.empty();
 	}
 
 	/**
