@@ -16,6 +16,10 @@ package com.liferay.apio.architect.wiring.osgi.internal.manager.base;
 
 import static com.liferay.apio.architect.wiring.osgi.internal.manager.cache.ManagerCache.INSTANCE;
 
+import static org.osgi.service.component.annotations.ReferenceCardinality.OPTIONAL;
+import static org.osgi.service.component.annotations.ReferencePolicyOption.GREEDY;
+
+import com.liferay.apio.architect.logger.ApioLogger;
 import com.liferay.apio.architect.wiring.osgi.internal.service.tracker.map.listener.ClearCacheServiceTrackerMapListener;
 import com.liferay.osgi.service.tracker.collections.internal.DefaultServiceTrackerCustomizer;
 import com.liferay.osgi.service.tracker.collections.internal.map.ServiceTrackerMapImpl;
@@ -24,12 +28,13 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapper.E
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 
 import java.util.Set;
-import java.util.stream.Stream;
+import java.util.function.BiConsumer;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * Manages services that have a generic type.
@@ -63,15 +68,11 @@ public abstract class BaseManager<T, U> {
 		INSTANCE.clear();
 	}
 
-	/**
-	 * Returns the service tracker key stream.
-	 *
-	 * @return the service tracker key stream
-	 */
-	public Stream<U> getKeyStream() {
+	public void forEachService(BiConsumer<U, T> biConsumer) {
 		Set<U> keys = serviceTrackerMap.keySet();
 
-		return keys.stream();
+		keys.forEach(
+			u -> biConsumer.accept(u, serviceTrackerMap.getService(u)));
 	}
 
 	/**
@@ -82,6 +83,21 @@ public abstract class BaseManager<T, U> {
 	 */
 	protected abstract void emit(
 		ServiceReference<T> serviceReference, Emitter<U> emitter);
+
+	/**
+	 * Warns a message through an {@code ApioLogger} if one can be found.
+	 *
+	 * @param  message the message to log
+	 * @review
+	 */
+	protected void warning(String message) {
+		if (apioLogger != null) {
+			apioLogger.warning(message);
+		}
+	}
+
+	@Reference(cardinality = OPTIONAL, policyOption = GREEDY)
+	protected ApioLogger apioLogger;
 
 	protected BundleContext bundleContext;
 	protected ServiceTrackerMap<U, T> serviceTrackerMap;

@@ -15,14 +15,9 @@
 package com.liferay.apio.architect.wiring.osgi.internal.manager.router;
 
 import static com.liferay.apio.architect.alias.ProvideFunction.curry;
-import static com.liferay.apio.architect.unsafe.Unsafe.unsafeCast;
 import static com.liferay.apio.architect.wiring.osgi.internal.manager.cache.ManagerCache.INSTANCE;
 
-import static org.osgi.service.component.annotations.ReferenceCardinality.OPTIONAL;
-import static org.osgi.service.component.annotations.ReferencePolicyOption.GREEDY;
-
 import com.liferay.apio.architect.credentials.Credentials;
-import com.liferay.apio.architect.logger.ApioLogger;
 import com.liferay.apio.architect.pagination.Pagination;
 import com.liferay.apio.architect.router.CollectionRouter;
 import com.liferay.apio.architect.routes.CollectionRoutes;
@@ -41,7 +36,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -55,7 +49,7 @@ public class CollectionRouterManagerImpl
 	implements CollectionRouterManager {
 
 	public CollectionRouterManagerImpl() {
-		super(CollectionRouter.class, 1);
+		super(CollectionRouter.class, 2);
 	}
 
 	@Override
@@ -64,7 +58,7 @@ public class CollectionRouterManagerImpl
 	}
 
 	@Override
-	public <T> Optional<CollectionRoutes<T>> getCollectionRoutesOptional(
+	public <T, S> Optional<CollectionRoutes<T, S>> getCollectionRoutesOptional(
 		String name) {
 
 		return INSTANCE.getCollectionRoutesOptional(
@@ -81,55 +75,44 @@ public class CollectionRouterManagerImpl
 			_providerManager.getMissingProviders(_mandatoryClassNames);
 
 		if (!missingMandatoryProviders.isEmpty()) {
-			if (_apioLogger != null) {
-				_apioLogger.warning(
-					"Missing providers for mandatory classes: " +
-						missingMandatoryProviders);
-			}
+			warning(
+				"Missing providers for mandatory classes: " +
+					missingMandatoryProviders);
 
 			return;
 		}
 
-		Stream<String> stream = getKeyStream();
-
-		stream.forEach(
-			className -> {
+		forEachService(
+			(className, collectionRouter) -> {
 				Optional<String> nameOptional = _nameManager.getNameOptional(
 					className);
 
 				if (!nameOptional.isPresent()) {
-					if (_apioLogger != null) {
-						_apioLogger.warning(
-							"Unable to find a Representable for class name " +
-								className);
-					}
+					warning(
+						"Unable to find a Representable for class name " +
+							className);
 
 					return;
 				}
 
 				String name = nameOptional.get();
 
-				CollectionRouter<Object, ?> collectionRouter = unsafeCast(
-					serviceTrackerMap.getService(className));
-
 				Set<String> neededProviders = new TreeSet<>();
 
-				Builder<Object> builder = new Builder<>(
+				Builder builder = new Builder<>(
 					name, curry(_providerManager::provideMandatory),
 					neededProviders::add);
 
-				CollectionRoutes<Object> collectionRoutes =
+				@SuppressWarnings("unchecked")
+				CollectionRoutes collectionRoutes =
 					collectionRouter.collectionRoutes(builder);
 
 				List<String> missingProviders =
 					_providerManager.getMissingProviders(neededProviders);
 
 				if (!missingProviders.isEmpty()) {
-					if (_apioLogger != null) {
-						_apioLogger.warning(
-							"Missing providers for classes: " +
-								missingProviders);
-					}
+					warning(
+						"Missing providers for classes: " + missingProviders);
 
 					return;
 				}
@@ -138,11 +121,8 @@ public class CollectionRouterManagerImpl
 					_itemRouterManager.getItemRoutesOptional(name);
 
 				if (!optional.isPresent()) {
-					if (_apioLogger != null) {
-						_apioLogger.warning(
-							"Missing item router for resource with name " +
-								name);
-					}
+					warning(
+						"Missing item router for resource with name " + name);
 
 					return;
 				}
@@ -155,9 +135,6 @@ public class CollectionRouterManagerImpl
 	private static final List<String> _mandatoryClassNames = Arrays.asList(
 		Credentials.class.getName(), ServerURL.class.getName(),
 		Pagination.class.getName());
-
-	@Reference(cardinality = OPTIONAL, policyOption = GREEDY)
-	private ApioLogger _apioLogger;
 
 	@Reference
 	private ItemRouterManager _itemRouterManager;
