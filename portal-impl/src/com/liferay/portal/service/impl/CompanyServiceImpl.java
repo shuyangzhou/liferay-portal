@@ -107,6 +107,16 @@ public class CompanyServiceImpl extends CompanyServiceBaseImpl {
 	}
 
 	/**
+	 * Returns all the companies.
+	 *
+	 * @return the companies
+	 */
+	@Override
+	public List<Company> getCompanies() {
+		return companyLocalService.getCompanies();
+	}
+
+	/**
 	 * Returns the company with the primary key.
 	 *
 	 * @param  companyId the primary key of the company

@@ -64,6 +64,35 @@ import java.rmi.RemoteException;
  */
 @ProviderType
 public class ContactServiceSoap {
+	public static com.liferay.portal.kernel.model.ContactSoap[] getCompanyContacts(
+		long companyId, int start, int end) throws RemoteException {
+		try {
+			java.util.List<com.liferay.portal.kernel.model.Contact> returnValue = ContactServiceUtil.getCompanyContacts(companyId,
+					start, end);
+
+			return com.liferay.portal.kernel.model.ContactSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static int getCompanyContactsCount(long companyId)
+		throws RemoteException {
+		try {
+			int returnValue = ContactServiceUtil.getCompanyContactsCount(companyId);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	public static com.liferay.portal.kernel.model.ContactSoap getContact(
 		long contactId) throws RemoteException {
 		try {

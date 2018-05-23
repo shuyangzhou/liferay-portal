@@ -37,13 +37,15 @@ import com.liferay.apio.architect.routes.CollectionRoutes.Builder;
  *
  * @author Alejandro Hernández
  * @param  <T> the model's type
- * @param  <S> the type of the resource's identifier. It must be a subclass of
+ * @param  <S> the type of the model's identifier (e.g., {@code Long}, {@code
+ *         String}, etc.)
+ * @param  <U> the type of the resource's identifier. It must be a subclass of
  *         {@code Identifier}.
  * @see    CollectionRoutes.Builder
  */
 @ConsumerType
 @SuppressWarnings("unused")
-public interface CollectionRouter<T, S extends Identifier> {
+public interface CollectionRouter<T, S, U extends Identifier<S>> {
 
 	/**
 	 * Creates the {@link CollectionRoutes} supported by the collection
@@ -54,6 +56,6 @@ public interface CollectionRouter<T, S extends Identifier> {
 	 *        CollectionRoutes} instance
 	 * @see   CollectionRoutes.Builder
 	 */
-	public CollectionRoutes<T> collectionRoutes(Builder<T> builder);
+	public CollectionRoutes<T, S> collectionRoutes(Builder<T, S> builder);
 
 }
