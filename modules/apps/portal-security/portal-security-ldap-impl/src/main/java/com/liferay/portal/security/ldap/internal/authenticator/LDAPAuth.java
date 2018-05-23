@@ -63,6 +63,7 @@ import javax.naming.ldap.LdapContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -727,11 +728,6 @@ public class LDAPAuth implements Authenticator {
 		_ldapSettings = ldapSettings;
 	}
 
-	@Reference(policyOption = ReferencePolicyOption.GREEDY, unbind = "-")
-	protected void setLdapUserImporter(LDAPUserImporter ldapUserImporter) {
-		_ldapUserImporter = ldapUserImporter;
-	}
-
 	@Reference(unbind = "-")
 	protected void setOmniadmin(Omniadmin omniadmin) {
 		_omniadmin = omniadmin;
@@ -740,11 +736,6 @@ public class LDAPAuth implements Authenticator {
 	@Reference(unbind = "-")
 	protected void setPasswordEncryptor(PasswordEncryptor passwordEncryptor) {
 		_passwordEncryptor = passwordEncryptor;
-	}
-
-	@Reference(policyOption = ReferencePolicyOption.GREEDY, unbind = "-")
-	protected void setPortalLDAP(PortalLDAP portalLDAP) {
-		_portalLDAP = portalLDAP;
 	}
 
 	@Reference(unbind = "-")
@@ -781,10 +772,22 @@ public class LDAPAuth implements Authenticator {
 	private ConfigurationProvider<LDAPServerConfiguration>
 		_ldapServerConfigurationProvider;
 	private LDAPSettings _ldapSettings;
-	private LDAPUserImporter _ldapUserImporter;
+
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	private volatile LDAPUserImporter _ldapUserImporter;
+
 	private Omniadmin _omniadmin;
 	private PasswordEncryptor _passwordEncryptor;
-	private PortalLDAP _portalLDAP;
+
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	private volatile PortalLDAP _portalLDAP;
+
 	private Props _props;
 	private ConfigurationProvider<SystemLDAPConfiguration>
 		_systemLDAPConfigurationProvider;

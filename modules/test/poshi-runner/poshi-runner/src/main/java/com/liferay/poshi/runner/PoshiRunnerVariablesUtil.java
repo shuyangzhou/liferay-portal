@@ -32,7 +32,6 @@ public class PoshiRunnerVariablesUtil {
 		_commandMap.clear();
 		_commandMapStack.clear();
 		_executeMap.clear();
-		_returnMap.clear();
 		_staticMap.clear();
 	}
 
@@ -42,10 +41,6 @@ public class PoshiRunnerVariablesUtil {
 
 	public static boolean containsKeyInExecuteMap(String key) throws Exception {
 		return _executeMap.containsKey(replaceCommandVars(key));
-	}
-
-	public static boolean containsKeyInReturnMap(String key) throws Exception {
-		return _returnMap.containsKey(replaceCommandVars(key));
 	}
 
 	public static boolean containsKeyInStaticMap(String key) throws Exception {
@@ -72,16 +67,6 @@ public class PoshiRunnerVariablesUtil {
 		return null;
 	}
 
-	public static String getStringFromReturnMap(String key) throws Exception {
-		if (containsKeyInReturnMap(replaceCommandVars(key))) {
-			Object object = getValueFromReturnMap(key);
-
-			return object.toString();
-		}
-
-		return null;
-	}
-
 	public static Object getValueFromCommandMap(String key) throws Exception {
 		return _commandMap.get(replaceCommandVars(key));
 	}
@@ -90,15 +75,10 @@ public class PoshiRunnerVariablesUtil {
 		return _executeMap.get(replaceCommandVars(key));
 	}
 
-	public static Object getValueFromReturnMap(String key) throws Exception {
-		return _returnMap.get(replaceCommandVars(key));
-	}
-
 	public static void popCommandMap() {
 		_commandMap = _commandMapStack.pop();
 
 		_executeMap = new HashMap<>();
-		_returnMap = new HashMap<>();
 	}
 
 	public static void pushCommandMap() {
@@ -115,7 +95,6 @@ public class PoshiRunnerVariablesUtil {
 		}
 
 		_executeMap = new HashMap<>();
-		_returnMap = new HashMap<>();
 	}
 
 	public static void putIntoCommandMap(String key, Object value)
@@ -139,18 +118,6 @@ public class PoshiRunnerVariablesUtil {
 		}
 		else {
 			_executeMap.put(replaceCommandVars(key), value);
-		}
-	}
-
-	public static void putIntoReturnMap(String key, Object value)
-		throws Exception {
-
-		if (value instanceof String) {
-			_returnMap.put(
-				replaceCommandVars(key), replaceCommandVars((String)value));
-		}
-		else {
-			_returnMap.put(replaceCommandVars(key), value);
 		}
 	}
 
@@ -195,7 +162,6 @@ public class PoshiRunnerVariablesUtil {
 		new Stack<>();
 	private static Map<String, Object> _executeMap = new HashMap<>();
 	private static final Pattern _pattern = Pattern.compile("\\$\\{([^}]*)\\}");
-	private static Map<String, Object> _returnMap = new HashMap<>();
 	private static final Map<String, Object> _staticMap = new HashMap<>();
 
 }

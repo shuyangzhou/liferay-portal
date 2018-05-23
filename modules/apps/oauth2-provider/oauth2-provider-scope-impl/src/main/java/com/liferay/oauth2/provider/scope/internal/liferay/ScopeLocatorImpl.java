@@ -28,6 +28,7 @@ import com.liferay.oauth2.provider.scope.spi.scope.matcher.ScopeMatcherFactory;
 import com.liferay.osgi.service.tracker.collections.ServiceReferenceServiceTuple;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
+import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,6 +46,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
@@ -93,7 +95,7 @@ public class ScopeLocatorImpl implements ScopeLocator {
 		ServiceReference<?> serviceReference =
 			serviceReferenceServiceTuple.getServiceReference();
 
-		Bundle bundle = serviceReference.getBundle();
+		Bundle bundle = getBundle(serviceReference);
 
 		Collection<LiferayOAuth2Scope> locatedScopes = new ArrayList<>(
 			scopes.size());
@@ -177,13 +179,18 @@ public class ScopeLocatorImpl implements ScopeLocator {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
 		setScopedPrefixHandlerFactories(
 			_scopedServiceTrackerMapFactory.create(
 				bundleContext, PrefixHandlerFactory.class,
 				OAuth2ProviderScopeConstants.OSGI_JAXRS_NAME,
 				() -> {
-					if (_defaultPrefixHandlerFactory != null) {
-						return _defaultPrefixHandlerFactory;
+					PrefixHandlerFactory prefixHandlerFactory =
+						_defaultPrefixHandlerFactory;
+
+					if (prefixHandlerFactory != null) {
+						return prefixHandlerFactory;
 					}
 					else {
 						return propertyAccessor ->
@@ -199,8 +206,10 @@ public class ScopeLocatorImpl implements ScopeLocator {
 				bundleContext, ScopeMapper.class,
 				OAuth2ProviderScopeConstants.OSGI_JAXRS_NAME,
 				() -> {
-					if (_defaultScopeMapper != null) {
-						return _defaultScopeMapper;
+					ScopeMapper scopeMapper = _defaultScopeMapper;
+
+					if (scopeMapper != null) {
+						return scopeMapper;
 					}
 					else {
 						return ScopeMapper.PASSTHROUGH_SCOPEMAPPER;
@@ -224,6 +233,29 @@ public class ScopeLocatorImpl implements ScopeLocator {
 		_scopedScopeFinders.close();
 		_scopedScopeMapper.close();
 		_scopedScopeMatcherFactories.close();
+	}
+
+	protected Bundle getBundle(ServiceReference<?> serviceReference) {
+		Object property = serviceReference.getProperty(
+			"original.service.bundleid");
+
+		if (property == null) {
+			return serviceReference.getBundle();
+		}
+
+		long bundleId = GetterUtil.getLong(property, -1L);
+
+		if (bundleId == -1) {
+			return serviceReference.getBundle();
+		}
+
+		Bundle bundle = _bundleContext.getBundle(bundleId);
+
+		if (bundle == null) {
+			return serviceReference.getBundle();
+		}
+
+		return bundle;
 	}
 
 	protected ScopeMatcherFactory getScopeMatcherFactory(long companyId) {
@@ -258,26 +290,6 @@ public class ScopeLocatorImpl implements ScopeLocator {
 			scopesAlias.substring(prefix.length()));
 
 		return scopeMatcher.match(scope);
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(osgi.jaxrs.name=Default)", unbind = "-"
-	)
-	protected void setDefaultPrefixHandlerFactory(
-		PrefixHandlerFactory defaultPrefixHandlerFactory) {
-
-		_defaultPrefixHandlerFactory = defaultPrefixHandlerFactory;
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(osgi.jaxrs.name=Default)", unbind = "-"
-	)
-	protected void setDefaultScopeMapper(ScopeMapper defaultScopeMapper) {
-		_defaultScopeMapper = defaultScopeMapper;
 	}
 
 	@Reference(name = "default", unbind = "-")
@@ -329,8 +341,24 @@ public class ScopeLocatorImpl implements ScopeLocator {
 			scopeFinderByNameServiceTrackerMap;
 	}
 
-	private PrefixHandlerFactory _defaultPrefixHandlerFactory;
-	private ScopeMapper _defaultScopeMapper;
+	private BundleContext _bundleContext;
+
+	@Reference(
+		cardinality = ReferenceCardinality.OPTIONAL,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(osgi.jaxrs.name=Default)"
+	)
+	private volatile PrefixHandlerFactory _defaultPrefixHandlerFactory;
+
+	@Reference(
+		cardinality = ReferenceCardinality.OPTIONAL,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(osgi.jaxrs.name=Default)"
+	)
+	private volatile ScopeMapper _defaultScopeMapper;
+
 	private ScopeMatcherFactory _defaultScopeMatcherFactory;
 	private ScopedServiceTrackerMap<PrefixHandlerFactory>
 		_scopedPrefixHandlerFactories;

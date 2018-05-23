@@ -16,6 +16,7 @@ package com.liferay.portal.test.rule.callback;
 
 import com.liferay.portal.kernel.dao.jdbc.pool.metrics.ConnectionPoolMetrics;
 import com.liferay.portal.kernel.test.rule.callback.BaseTestCallback;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 import com.liferay.registry.ServiceReference;
@@ -49,13 +50,18 @@ public class JDBCConnectionLeakDetectionTestCallback
 			ConnectionPoolMetrics connectionPoolMetrics = _registry.getService(
 				serviceReference);
 
-			int activeNumber = _connectionPoolActiveNumbers.remove(
+			int previousActiveNumber = _connectionPoolActiveNumbers.remove(
 				connectionPoolMetrics.getConnectionPoolName());
 
-			Assert.assertEquals(
-				"Active connection count differ before and after test for " +
+			int currentActiveNumber = connectionPoolMetrics.getNumActive();
+
+			Assert.assertTrue(
+				StringBundler.concat(
+					"Active connection count increased after test for ",
 					connectionPoolMetrics.getConnectionPoolName(),
-				activeNumber, connectionPoolMetrics.getNumActive());
+					" previous active number: ", previousActiveNumber,
+					", current active number: ", currentActiveNumber),
+				previousActiveNumber >= currentActiveNumber);
 
 			_registry.ungetService(serviceReference);
 		}

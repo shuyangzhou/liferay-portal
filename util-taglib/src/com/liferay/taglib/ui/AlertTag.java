@@ -68,7 +68,7 @@ public class AlertTag extends IncludeTag {
 		values.put("type", _type);
 
 		String result = StringUtil.replace(
-			_TMPL_CONTENT, StringPool.POUND, StringPool.POUND, values);
+			_CONTENT_TMPL, StringPool.POUND, StringPool.POUND, values);
 
 		ScriptTag.doTag(
 			null, null, "liferay-alert", result, getBodyContent(), pageContext);
@@ -149,7 +149,7 @@ public class AlertTag extends IncludeTag {
 
 	private static final String _PAGE = "/html/taglib/ui/alert/page.jsp";
 
-	private static final String _TMPL_CONTENT = StringUtil.read(
+	private static final String _CONTENT_TMPL = StringUtil.read(
 		AlertTag.class, "alert/alert.tmpl");
 
 	private Integer _animationTime = 500;
