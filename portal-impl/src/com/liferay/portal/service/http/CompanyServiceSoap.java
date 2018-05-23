@@ -123,6 +123,25 @@ public class CompanyServiceSoap {
 	}
 
 	/**
+	* Returns all the companies.
+	*
+	* @return the companies
+	*/
+	public static com.liferay.portal.kernel.model.CompanySoap[] getCompanies()
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.portal.kernel.model.Company> returnValue = CompanyServiceUtil.getCompanies();
+
+			return com.liferay.portal.kernel.model.CompanySoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	/**
 	* Returns the company with the primary key.
 	*
 	* @param companyId the primary key of the company

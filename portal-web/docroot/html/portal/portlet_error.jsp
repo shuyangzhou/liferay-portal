@@ -19,7 +19,7 @@
 <portlet:defineObjects />
 
 <%
-String portletTitle = HtmlUtil.escape(PortalUtil.getPortletTitle(renderResponse));
+String portletTitle = HtmlUtil.escape(PortalUtil.getPortletTitle(liferayPortletResponse));
 
 if (portletTitle == null) {
 	portletTitle = LanguageUtil.get(request, "portlet");

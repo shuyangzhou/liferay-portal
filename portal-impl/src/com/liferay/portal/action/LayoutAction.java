@@ -309,6 +309,8 @@ public class LayoutAction extends Action {
 
 			if (layout != null) {
 				if (themeDisplay.isStateExclusive()) {
+					PortletContainerUtil.renderHeaders(
+						request, response, portlet);
 					PortletContainerUtil.render(request, response, portlet);
 
 					return null;

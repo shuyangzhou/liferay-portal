@@ -31,6 +31,18 @@ public class ContactServiceWrapper implements ContactService,
 	}
 
 	@Override
+	public java.util.List<com.liferay.portal.kernel.model.Contact> getCompanyContacts(
+		long companyId, int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _contactService.getCompanyContacts(companyId, start, end);
+	}
+
+	@Override
+	public int getCompanyContactsCount(long companyId) {
+		return _contactService.getCompanyContactsCount(companyId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.model.Contact getContact(long contactId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _contactService.getContact(contactId);

@@ -31,14 +31,22 @@ Portlet portlet = (Portlet)request.getAttribute(WebKeys.RENDER_PORTLET);
 
 PortletPreferences portletSetup = portletDisplay.getPortletSetup();
 
-RenderResponseImpl renderResponseImpl = (RenderResponseImpl)PortletResponseImpl.getPortletResponseImpl(renderResponse);
+String lifecycle = (String)request.getAttribute(PortletRequest.LIFECYCLE_PHASE);
 
 // Portlet title
+
+String responseTitle = null;
+
+if (PortletRequest.RENDER_PHASE.equals(lifecycle)) {
+	RenderResponseImpl defineObjectsRenderResponse = (RenderResponseImpl)pageContext.getAttribute("renderResponse");
+
+	responseTitle = defineObjectsRenderResponse.getTitle();
+}
 
 String portletTitle = PortletConfigurationUtil.getPortletTitle(portletSetup, themeDisplay.getLanguageId());
 
 if (portletDisplay.isAccess() && portletDisplay.isActive() && Validator.isNull(portletTitle)) {
-	portletTitle = renderResponseImpl.getTitle();
+	portletTitle = responseTitle;
 }
 
 if (Validator.isNull(portletTitle)) {
@@ -78,7 +86,16 @@ Group group = layout.getGroup();
 				<c:otherwise>
 
 					<%
-					pageContext.getOut().print(renderRequest.getAttribute(WebKeys.PORTLET_CONTENT));
+					if (PortletRequest.HEADER_PHASE.equals(lifecycle)) {
+						RenderRequest defineObjectsHeaderRequest = (HeaderRequest)pageContext.getAttribute("headerRequest");
+
+						pageContext.getOut().print(defineObjectsHeaderRequest.getAttribute(WebKeys.PORTLET_CONTENT));
+					}
+					else {
+						RenderRequest defineObjectsRenderRequest = (RenderRequest)pageContext.getAttribute("renderRequest");
+
+						pageContext.getOut().print(defineObjectsRenderRequest.getAttribute(WebKeys.PORTLET_CONTENT));
+					}
 					%>
 
 				</c:otherwise>

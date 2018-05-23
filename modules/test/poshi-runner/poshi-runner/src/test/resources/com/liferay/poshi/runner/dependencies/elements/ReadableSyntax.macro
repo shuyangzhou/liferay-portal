@@ -3,6 +3,7 @@ definition {
 		SelectFrame(locator1 = "IFrame#CONFIGURATION");
 	}
 
+	@prose = "I assert the ${breadcrumbName}"
 	macro viewPG {
 		var key_breadcrumbName = "${breadcrumbName}";
 		var breadcrumbNameUppercase = StringUtil.upperCase('${breadcrumbName}');

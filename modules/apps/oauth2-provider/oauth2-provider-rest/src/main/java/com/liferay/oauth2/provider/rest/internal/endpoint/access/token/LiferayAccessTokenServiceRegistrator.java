@@ -14,7 +14,6 @@
 
 package com.liferay.oauth2.provider.rest.internal.endpoint.access.token;
 
-import com.liferay.oauth2.provider.rest.internal.endpoint.constants.OAuth2ProviderRestEndpointConstants;
 import com.liferay.oauth2.provider.rest.internal.endpoint.liferay.LiferayOAuthDataProvider;
 import com.liferay.portal.kernel.util.MapUtil;
 
@@ -33,6 +32,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -69,9 +69,9 @@ public class LiferayAccessTokenServiceRegistrator {
 			new Hashtable<>();
 
 		liferayAccessTokenServiceProperties.put(
-			OAuth2ProviderRestEndpointConstants.
-				PROPERTY_KEY_OAUTH2_ENDPOINT_JAXRS_RESOURCE,
-			true);
+			"osgi.jaxrs.application.select",
+			"(osgi.jaxrs.name=Liferay.OAuth2.Application)");
+		liferayAccessTokenServiceProperties.put("osgi.jaxrs.resource", true);
 
 		_serviceRegistration = bundleContext.registerService(
 			Object.class, liferayAccessTokenService,
@@ -80,8 +80,8 @@ public class LiferayAccessTokenServiceRegistrator {
 
 	@Reference(
 		cardinality = ReferenceCardinality.AT_LEAST_ONE,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "removeAccessTokenGrantHandler"
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
 	)
 	protected void addAccessTokenGrantHandler(
 		AccessTokenGrantHandler accessTokenGrantHandler) {
