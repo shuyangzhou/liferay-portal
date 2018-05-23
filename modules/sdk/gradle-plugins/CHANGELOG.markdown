@@ -4539,6 +4539,72 @@ to version 2.3.159.
 - [LPS-79679]: Update the [Liferay Source Formatter] dependency to version
 1.0.632.
 
+## 3.12.9 - 2018-05-17
+
+### Changed
+- [LPS-79679]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.160.
+- [LPS-79679]: Update the [Liferay Source Formatter] dependency to version
+1.0.633.
+
+## 3.12.10 - 2018-05-17
+
+### Changed
+- [LPS-81106]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.161.
+- [LPS-81106]: Update the [Liferay Source Formatter] dependency to version
+1.0.634.
+
+## 3.12.11 - 2018-05-17
+
+### Changed
+- [LPS-80517]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.162.
+- [LPS-80517]: Update the [Liferay Source Formatter] dependency to version
+1.0.635.
+
+## 3.12.12 - 2018-05-19
+
+### Changed
+- [LPS-79679]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.163.
+- [LPS-79679]: Update the [Liferay Source Formatter] dependency to version
+1.0.636.
+- [LPS-80920]: Update the [Liferay Gradle Plugins Service Builder] dependency to
+version 2.1.34.
+- [LPS-80920]: Update the [Liferay Portal Tools Service Builder] dependency to
+version 1.0.217.
+
+## 3.12.13 - 2018-05-21
+
+### Changed
+- [LPS-79963]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.164.
+- [LPS-79963]: Update the [Liferay Source Formatter] dependency to version
+1.0.637.
+
+## 3.12.14 - 2018-05-21
+
+### Changed
+- [LPS-78986]: Update the default value of the `app.server.websphere.version`
+property to `9.0.0.0`.
+- [LPS-79742]: Update the default value of the `app.server.tcserver.version`
+property to `4.0.0`.
+- [LPS-80347]: Update the default value of the `app.server.weblogic.version`
+property to `12.2.1`.
+- [LPS-81106]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.165.
+- [LPS-81106]: Update the [Liferay Source Formatter] dependency to version
+1.0.638.
+
+## 3.12.15 - 2018-05-22
+
+### Changed
+- [LPS-79679]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.166.
+- [LPS-79679]: Update the [Liferay Source Formatter] dependency to version
+1.0.639.
+
 [Gradle Bundle Plugin]: https://github.com/TomDmitriev/gradle-bundle-plugin
 [Liferay Alloy Taglib]: https://github.com/liferay/alloy-taglibs
 [Liferay Ant BND]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/ant-bnd
@@ -4879,6 +4945,7 @@ to version 2.3.159.
 [LPS-78901]: https://issues.liferay.com/browse/LPS-78901
 [LPS-78911]: https://issues.liferay.com/browse/LPS-78911
 [LPS-78971]: https://issues.liferay.com/browse/LPS-78971
+[LPS-78986]: https://issues.liferay.com/browse/LPS-78986
 [LPS-79131]: https://issues.liferay.com/browse/LPS-79131
 [LPS-79191]: https://issues.liferay.com/browse/LPS-79191
 [LPS-79192]: https://issues.liferay.com/browse/LPS-79192
@@ -4899,6 +4966,7 @@ to version 2.3.159.
 [LPS-79623]: https://issues.liferay.com/browse/LPS-79623
 [LPS-79665]: https://issues.liferay.com/browse/LPS-79665
 [LPS-79679]: https://issues.liferay.com/browse/LPS-79679
+[LPS-79742]: https://issues.liferay.com/browse/LPS-79742
 [LPS-79755]: https://issues.liferay.com/browse/LPS-79755
 [LPS-79799]: https://issues.liferay.com/browse/LPS-79799
 [LPS-79919]: https://issues.liferay.com/browse/LPS-79919
@@ -4913,6 +4981,7 @@ to version 2.3.159.
 [LPS-80125]: https://issues.liferay.com/browse/LPS-80125
 [LPS-80184]: https://issues.liferay.com/browse/LPS-80184
 [LPS-80332]: https://issues.liferay.com/browse/LPS-80332
+[LPS-80347]: https://issues.liferay.com/browse/LPS-80347
 [LPS-80386]: https://issues.liferay.com/browse/LPS-80386
 [LPS-80466]: https://issues.liferay.com/browse/LPS-80466
 [LPS-80513]: https://issues.liferay.com/browse/LPS-80513
@@ -4921,4 +4990,5 @@ to version 2.3.159.
 [LPS-80544]: https://issues.liferay.com/browse/LPS-80544
 [LPS-80840]: https://issues.liferay.com/browse/LPS-80840
 [LPS-80920]: https://issues.liferay.com/browse/LPS-80920
+[LPS-81106]: https://issues.liferay.com/browse/LPS-81106
 [LRDOCS-3023]: https://issues.liferay.com/browse/LRDOCS-3023

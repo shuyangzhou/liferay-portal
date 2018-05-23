@@ -195,10 +195,11 @@ public abstract class DefinitionPoshiElement extends PoshiElement {
 	protected boolean isBalanceValidationRequired(String readableSyntax) {
 		readableSyntax = readableSyntax.trim();
 
-		if ((readableSyntax.startsWith("@") && readableSyntax.contains("{")) ||
-			readableSyntax.startsWith("setUp") ||
-			readableSyntax.startsWith("tearDown") ||
-			readableSyntax.startsWith(getReadableCommandKeyword())) {
+		if (readableSyntax.endsWith("}") &&
+			(readableSyntax.startsWith("@") ||
+			 readableSyntax.startsWith("setUp") ||
+			 readableSyntax.startsWith("tearDown") ||
+			 readableSyntax.startsWith(getReadableCommandKeyword()))) {
 
 			return true;
 		}

@@ -69,6 +69,16 @@ public class CompanyServiceWrapper implements CompanyService,
 	}
 
 	/**
+	* Returns all the companies.
+	*
+	* @return the companies
+	*/
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.Company> getCompanies() {
+		return _companyService.getCompanies();
+	}
+
+	/**
 	* Returns the company with the primary key.
 	*
 	* @param companyId the primary key of the company

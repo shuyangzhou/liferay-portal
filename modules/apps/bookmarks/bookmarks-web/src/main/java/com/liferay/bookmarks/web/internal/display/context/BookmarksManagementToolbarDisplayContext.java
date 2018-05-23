@@ -25,7 +25,6 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.SafeConsumer;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItemList;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -87,11 +86,7 @@ public class BookmarksManagementToolbarDisplayContext {
 				add(
 					SafeConsumer.ignore(
 						dropdownItem -> {
-							dropdownItem.setHref(
-								StringBundler.concat(
-									"javascript:",
-									_liferayPortletResponse.getNamespace(),
-									"deleteEntries();"));
+							dropdownItem.putData("action", "deleteEntries");
 
 							if (_trashHelper.isTrashEnabled(
 									_themeDisplay.getScopeGroupId())) {
@@ -131,6 +126,10 @@ public class BookmarksManagementToolbarDisplayContext {
 		List<Menu> menus =
 			bookmarksPortletToolbarContributor.getPortletTitleMenus(
 				_liferayPortletRequest, _liferayPortletResponse);
+
+		if (menus.isEmpty()) {
+			return null;
+		}
 
 		CreationMenu creationMenu = new CreationMenu();
 

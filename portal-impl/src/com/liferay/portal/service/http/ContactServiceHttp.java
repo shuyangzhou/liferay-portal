@@ -54,12 +54,71 @@ import com.liferay.portal.kernel.util.MethodKey;
  */
 @ProviderType
 public class ContactServiceHttp {
+	public static java.util.List<com.liferay.portal.kernel.model.Contact> getCompanyContacts(
+		HttpPrincipal httpPrincipal, long companyId, int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			MethodKey methodKey = new MethodKey(ContactServiceUtil.class,
+					"getCompanyContacts", _getCompanyContactsParameterTypes0);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					companyId, start, end);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+
+			return (java.util.List<com.liferay.portal.kernel.model.Contact>)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	public static int getCompanyContactsCount(HttpPrincipal httpPrincipal,
+		long companyId) {
+		try {
+			MethodKey methodKey = new MethodKey(ContactServiceUtil.class,
+					"getCompanyContactsCount",
+					_getCompanyContactsCountParameterTypes1);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey, companyId);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+
+			return ((Integer)returnObj).intValue();
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
 	public static com.liferay.portal.kernel.model.Contact getContact(
 		HttpPrincipal httpPrincipal, long contactId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(ContactServiceUtil.class,
-					"getContact", _getContactParameterTypes0);
+					"getContact", _getContactParameterTypes2);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, contactId);
 
@@ -92,7 +151,7 @@ public class ContactServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(ContactServiceUtil.class,
-					"getContacts", _getContactsParameterTypes1);
+					"getContacts", _getContactsParameterTypes3);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					classNameId, classPK, start, end, orderByComparator);
@@ -124,7 +183,7 @@ public class ContactServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(ContactServiceUtil.class,
-					"getContactsCount", _getContactsCountParameterTypes2);
+					"getContactsCount", _getContactsCountParameterTypes4);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					classNameId, classPK);
@@ -152,14 +211,20 @@ public class ContactServiceHttp {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(ContactServiceHttp.class);
-	private static final Class<?>[] _getContactParameterTypes0 = new Class[] {
+	private static final Class<?>[] _getCompanyContactsParameterTypes0 = new Class[] {
+			long.class, int.class, int.class
+		};
+	private static final Class<?>[] _getCompanyContactsCountParameterTypes1 = new Class[] {
 			long.class
 		};
-	private static final Class<?>[] _getContactsParameterTypes1 = new Class[] {
+	private static final Class<?>[] _getContactParameterTypes2 = new Class[] {
+			long.class
+		};
+	private static final Class<?>[] _getContactsParameterTypes3 = new Class[] {
 			long.class, long.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _getContactsCountParameterTypes2 = new Class[] {
+	private static final Class<?>[] _getContactsCountParameterTypes4 = new Class[] {
 			long.class, long.class
 		};
 }

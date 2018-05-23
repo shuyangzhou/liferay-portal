@@ -3,6 +3,8 @@
 <suppressions>
 	<source-check>
 		<suppress checks="JavaMultiPlusConcatCheck" files=".*" />
+		<suppress checks="JavaStylingCheck" files="poshi-runner/src/test/java/com/liferay/poshi/runner/pql/PQLEntityFactoryTest\.java" />
+		<suppress checks="JavaStylingCheck" files="poshi-runner/src/test/java/com/liferay/poshi/runner/pql/PQLQueryTest\.java" />
 		<suppress checks="JavaXMLSecurityCheck" files=".*" />
 	</source-check>
 </suppressions>

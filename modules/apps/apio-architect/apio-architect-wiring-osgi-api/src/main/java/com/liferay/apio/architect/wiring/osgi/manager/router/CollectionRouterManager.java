@@ -40,7 +40,7 @@ public interface CollectionRouterManager {
 	 * @param  name the collection resource's name
 	 * @return the collection routes
 	 */
-	public <T> Optional<CollectionRoutes<T>> getCollectionRoutesOptional(
+	public <T, S> Optional<CollectionRoutes<T, S>> getCollectionRoutesOptional(
 		String name);
 
 	/**

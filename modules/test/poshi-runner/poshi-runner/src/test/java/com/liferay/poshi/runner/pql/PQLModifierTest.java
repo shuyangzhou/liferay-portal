@@ -147,7 +147,7 @@ public class PQLModifierTest extends TestCase {
 		}
 		finally {
 			if (actualError == null) {
-				throw new Exception("No error thrown.");
+				throw new Exception("No error thrown");
 			}
 		}
 	}

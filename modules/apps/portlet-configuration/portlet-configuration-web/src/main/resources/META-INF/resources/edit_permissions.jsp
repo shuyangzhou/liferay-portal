@@ -19,12 +19,13 @@
 <%
 PortletConfigurationPermissionsDisplayContext portletConfigurationPermissionsDisplayContext = new PortletConfigurationPermissionsDisplayContext(request, renderRequest);
 
+Resource resource = portletConfigurationPermissionsDisplayContext.getResource();
+SearchContainer roleSearchContainer = portletConfigurationPermissionsDisplayContext.getRoleSearchContainer();
+
 if (Validator.isNotNull(portletConfigurationPermissionsDisplayContext.getModelResource())) {
 	PortalUtil.addPortletBreadcrumbEntry(request, HtmlUtil.unescape(portletConfigurationPermissionsDisplayContext.getSelResourceDescription()), null);
 	PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "permissions"), currentURL);
 }
-
-Resource resource = portletConfigurationPermissionsDisplayContext.getResource();
 %>
 
 <div class="edit-permissions portlet-configuration-edit-permissions">
@@ -35,6 +36,7 @@ Resource resource = portletConfigurationPermissionsDisplayContext.getResource();
 
 		<clay:management-toolbar
 			clearResultsURL="<%= portletConfigurationPermissionsDisplayContext.getClearResultsURL() %>"
+			itemsTotal="<%= roleSearchContainer.getTotal() %>"
 			searchActionURL="<%= portletConfigurationPermissionsDisplayContext.getSearchActionURL() %>"
 			searchFormName="searchFm"
 			selectable="<%= false %>"
@@ -44,7 +46,7 @@ Resource resource = portletConfigurationPermissionsDisplayContext.getResource();
 			<aui:input name="resourceId" type="hidden" value="<%= resource.getResourceId() %>" />
 
 			<liferay-ui:search-container
-				searchContainer="<%= portletConfigurationPermissionsDisplayContext.getRoleSearchContainer() %>"
+				searchContainer="<%= roleSearchContainer %>"
 			>
 				<liferay-ui:search-container-row
 					className="com.liferay.portal.kernel.model.Role"
