@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,7 +46,36 @@ public class LayoutPageTemplateEntryServiceImpl
 	@Override
 	public LayoutPageTemplateEntry addLayoutPageTemplateEntry(
 			long groupId, long layoutPageTemplateCollectionId, String name,
-			int type, long[] fragmentEntryIds, int status,
+			int type, int status, ServiceContext serviceContext)
+		throws PortalException {
+
+		_portletResourcePermission.check(
+			getPermissionChecker(), groupId,
+			LayoutPageTemplateActionKeys.ADD_LAYOUT_PAGE_TEMPLATE_ENTRY);
+
+		return layoutPageTemplateEntryLocalService.addLayoutPageTemplateEntry(
+			getUserId(), groupId, layoutPageTemplateCollectionId, name, type,
+			status, serviceContext);
+	}
+
+	@Override
+	public LayoutPageTemplateEntry addLayoutPageTemplateEntry(
+			long groupId, long layoutPageTemplateCollectionId, String name,
+			int type, ServiceContext serviceContext)
+		throws PortalException {
+
+		_portletResourcePermission.check(
+			getPermissionChecker(), groupId,
+			LayoutPageTemplateActionKeys.ADD_LAYOUT_PAGE_TEMPLATE_ENTRY);
+
+		return layoutPageTemplateEntryLocalService.addLayoutPageTemplateEntry(
+			getUserId(), groupId, layoutPageTemplateCollectionId, name, type,
+			WorkflowConstants.STATUS_DRAFT, serviceContext);
+	}
+
+	@Override
+	public LayoutPageTemplateEntry addLayoutPageTemplateEntry(
+			long groupId, long layoutPageTemplateCollectionId, String name,
 			ServiceContext serviceContext)
 		throws PortalException {
 
@@ -56,86 +84,23 @@ public class LayoutPageTemplateEntryServiceImpl
 			LayoutPageTemplateActionKeys.ADD_LAYOUT_PAGE_TEMPLATE_ENTRY);
 
 		return layoutPageTemplateEntryLocalService.addLayoutPageTemplateEntry(
-			getUserId(), groupId, layoutPageTemplateCollectionId, name, type,
-			fragmentEntryIds, status, serviceContext);
-	}
-
-	@Override
-	public LayoutPageTemplateEntry addLayoutPageTemplateEntry(
-			long groupId, long layoutPageTemplateCollectionId, String name,
-			int type, long[] fragmentEntryIds, ServiceContext serviceContext)
-		throws PortalException {
-
-		_portletResourcePermission.check(
-			getPermissionChecker(), groupId,
-			LayoutPageTemplateActionKeys.ADD_LAYOUT_PAGE_TEMPLATE_ENTRY);
-
-		return layoutPageTemplateEntryLocalService.addLayoutPageTemplateEntry(
-			getUserId(), groupId, layoutPageTemplateCollectionId, name, type,
-			fragmentEntryIds, WorkflowConstants.STATUS_DRAFT, serviceContext);
-	}
-
-	@Override
-	public LayoutPageTemplateEntry addLayoutPageTemplateEntry(
-			long groupId, long layoutPageTemplateCollectionId, String name,
-			long[] fragmentEntryIds, int status, ServiceContext serviceContext)
-		throws PortalException {
-
-		_portletResourcePermission.check(
-			getPermissionChecker(), groupId,
-			LayoutPageTemplateActionKeys.ADD_LAYOUT_PAGE_TEMPLATE_ENTRY);
-
-		return layoutPageTemplateEntryLocalService.addLayoutPageTemplateEntry(
 			getUserId(), groupId, layoutPageTemplateCollectionId, name,
-			fragmentEntryIds, status, serviceContext);
+			serviceContext);
 	}
 
 	@Override
-	public LayoutPageTemplateEntry addLayoutPageTemplateEntry(
-			long groupId, long layoutPageTemplateCollectionId, String name,
-			long[] fragmentEntryIds, ServiceContext serviceContext)
+	public void deleteLayoutPageTemplateEntries(
+			long[] layoutPageTemplateEntryIds)
 		throws PortalException {
-
-		_portletResourcePermission.check(
-			getPermissionChecker(), groupId,
-			LayoutPageTemplateActionKeys.ADD_LAYOUT_PAGE_TEMPLATE_ENTRY);
-
-		return layoutPageTemplateEntryLocalService.addLayoutPageTemplateEntry(
-			getUserId(), groupId, layoutPageTemplateCollectionId, name,
-			fragmentEntryIds, WorkflowConstants.STATUS_DRAFT, serviceContext);
-	}
-
-	@Override
-	public List<LayoutPageTemplateEntry> deleteLayoutPageTemplateEntries(
-		long[] layoutPageTemplateEntryIds) {
-
-		List<LayoutPageTemplateEntry> undeletableLayoutPageTemplateEntries =
-			new ArrayList<>();
 
 		for (long layoutPageTemplateEntryId : layoutPageTemplateEntryIds) {
-			try {
-				_layoutPageTemplateEntryModelResourcePermission.check(
-					getPermissionChecker(), layoutPageTemplateEntryId,
-					ActionKeys.DELETE);
+			_layoutPageTemplateEntryModelResourcePermission.check(
+				getPermissionChecker(), layoutPageTemplateEntryId,
+				ActionKeys.DELETE);
 
-				layoutPageTemplateEntryLocalService.
-					deleteLayoutPageTemplateEntry(layoutPageTemplateEntryId);
-			}
-			catch (PortalException pe) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(pe, pe);
-				}
-
-				LayoutPageTemplateEntry layoutPageTemplateEntry =
-					layoutPageTemplateEntryPersistence.fetchByPrimaryKey(
-						layoutPageTemplateEntryId);
-
-				undeletableLayoutPageTemplateEntries.add(
-					layoutPageTemplateEntry);
-			}
+			layoutPageTemplateEntryLocalService.deleteLayoutPageTemplateEntry(
+				layoutPageTemplateEntryId);
 		}
-
-		return undeletableLayoutPageTemplateEntries;
 	}
 
 	@Override
