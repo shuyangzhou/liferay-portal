@@ -18,7 +18,6 @@ import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryLocalService;
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
-import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.exportimport.content.processor.ExportImportContentProcessor;
 import com.liferay.exportimport.data.handler.base.BaseStagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
@@ -48,7 +47,6 @@ import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -66,6 +64,7 @@ import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -233,9 +232,6 @@ public class BlogsEntryStagedModelDataHandler
 
 		long userId = portletDataContext.getUserId(entry.getUserUuid());
 
-		Element entryElement =
-			portletDataContext.getImportDataStagedModelElement(entry);
-
 		String content =
 			_exportImportContentProcessor.replaceImportContentReferences(
 				portletDataContext, entry, entry.getContent());
@@ -287,8 +283,7 @@ public class BlogsEntryStagedModelDataHandler
 					entry.getContent(), displayDateMonth, displayDateDay,
 					displayDateYear, displayDateHour, displayDateMinute,
 					allowPingbacks, allowTrackbacks, trackbacks,
-					entry.getCoverImageCaption(), new ImageSelector(),
-					new ImageSelector(), serviceContext);
+					entry.getCoverImageCaption(), null, null, serviceContext);
 			}
 		}
 		else {
@@ -302,87 +297,30 @@ public class BlogsEntryStagedModelDataHandler
 
 		// Cover image
 
-		ImageSelector coverImageSelector = null;
-
 		Map<Long, Long> fileEntryIds =
 			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
 				FileEntry.class);
-		List<Element> attachmentElements =
-			portletDataContext.getReferenceDataElements(
-				entry, DLFileEntry.class,
-				PortletDataContext.REFERENCE_TYPE_WEAK);
 
-		if (Validator.isNotNull(entry.getCoverImageURL())) {
-			coverImageSelector = new ImageSelector(entry.getCoverImageURL());
-		}
-		else if (entry.getCoverImageFileEntryId() != 0) {
+		if (entry.getCoverImageFileEntryId() != 0) {
 			long coverImageFileEntryId = MapUtil.getLong(
 				fileEntryIds, entry.getCoverImageFileEntryId(), 0);
 
 			importedEntry.setCoverImageFileEntryId(coverImageFileEntryId);
 
-			_blogsEntryLocalService.updateBlogsEntry(importedEntry);
-
-			coverImageSelector = _getImageSelector(
-				portletDataContext, entry.getCoverImageFileEntryId(),
-				attachmentElements);
-		}
-
-		if (coverImageSelector != null) {
-			_blogsEntryLocalService.addOriginalImageFileEntry(
-				userId, importedEntry.getGroupId(), importedEntry.getEntryId(),
-				coverImageSelector);
+			importedEntry = _blogsEntryLocalService.updateBlogsEntry(
+				importedEntry);
 		}
 
 		// Small image
 
-		ImageSelector smallImageSelector = null;
+		if (entry.isSmallImage() && (entry.getSmallImageFileEntryId() != 0)) {
+			long smallImageFileEntryId = MapUtil.getLong(
+				fileEntryIds, entry.getSmallImageFileEntryId(), 0);
 
-		if (entry.isSmallImage()) {
-			String smallImagePath = entryElement.attributeValue(
-				"small-image-path");
+			importedEntry.setSmallImageFileEntryId(smallImageFileEntryId);
 
-			if (Validator.isNotNull(entry.getSmallImageURL())) {
-				smallImageSelector = new ImageSelector(
-					entry.getSmallImageURL());
-			}
-			else if (Validator.isNotNull(smallImagePath)) {
-				String smallImageFileName =
-					entry.getSmallImageId() + StringPool.PERIOD +
-						entry.getSmallImageType();
-
-				try (InputStream inputStream =
-						portletDataContext.getZipEntryAsInputStream(
-							smallImagePath)) {
-
-					smallImageSelector = new ImageSelector(
-						FileUtil.getBytes(inputStream), smallImageFileName,
-						MimeTypesUtil.getContentType(smallImageFileName), null);
-				}
-			}
-			else if (entry.getSmallImageFileEntryId() != 0) {
-				long smallImageFileEntryId = MapUtil.getLong(
-					fileEntryIds, entry.getSmallImageFileEntryId(), 0);
-
-				importedEntry.setSmallImageFileEntryId(smallImageFileEntryId);
-
-				_blogsEntryLocalService.updateBlogsEntry(importedEntry);
-
-				smallImageSelector = _getImageSelector(
-					portletDataContext, entry.getSmallImageFileEntryId(),
-					attachmentElements);
-			}
-		}
-
-		if (smallImageSelector != null) {
-			_blogsEntryLocalService.addOriginalImageFileEntry(
-				userId, importedEntry.getGroupId(), importedEntry.getEntryId(),
-				smallImageSelector);
-		}
-
-		if ((coverImageSelector != null) || (smallImageSelector != null)) {
-			importedEntry = _blogsEntryLocalService.getEntry(
-				importedEntry.getEntryId());
+			importedEntry = _blogsEntryLocalService.updateBlogsEntry(
+				importedEntry);
 		}
 
 		Map<Long, Long> newPrimaryKeysMap =
@@ -503,17 +441,6 @@ public class BlogsEntryStagedModelDataHandler
 		BlogsEntryLocalService blogsEntryLocalService) {
 
 		_blogsEntryLocalService = blogsEntryLocalService;
-	}
-
-	@Reference(
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(model.class.name=com.liferay.blogs.model.BlogsEntry)",
-		unbind = "-"
-	)
-	protected void setExportImportContentProcessor(
-		ExportImportContentProcessor<String> exportImportContentProcessor) {
-
-		_exportImportContentProcessor = exportImportContentProcessor;
 	}
 
 	@Reference(unbind = "-")
@@ -647,7 +574,14 @@ public class BlogsEntryStagedModelDataHandler
 	@Reference
 	private CommentManager _commentManager;
 
-	private ExportImportContentProcessor<String> _exportImportContentProcessor;
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(model.class.name=com.liferay.blogs.model.BlogsEntry)"
+	)
+	private volatile ExportImportContentProcessor<String>
+		_exportImportContentProcessor;
+
 	private FriendlyURLEntryLocalService _friendlyURLEntryLocalService;
 	private ImageLocalService _imageLocalService;
 

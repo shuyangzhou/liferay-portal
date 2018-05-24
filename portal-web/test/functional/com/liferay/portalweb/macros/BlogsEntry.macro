@@ -892,8 +892,8 @@
 	<command name="viewEntryTable">
 		<var name="key_entryTitle" value="${entryTitle}" />
 
-		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="list" />
+		<execute macro="LexiconEntry#changeDisplayStyle">
+			<var name="displayStyle" value="table" />
 		</execute>
 
 		<execute function="AssertElementPresent" locator1="Blogs#ENTRY_TABLE_CHECKBOX" />
@@ -1104,9 +1104,9 @@
 	</command>
 
 	<command name="viewRSS">
-		<var name="key_text" value="rss RSS" />
+		<var name="key_text" value="rss-full RSS" />
 
-		<execute function="AssertClick" locator1="Button#ANY" value1="rss RSS" />
+		<execute function="AssertClick" locator1="Button#ANY" value1="rss-full RSS" />
 
 		<execute function="Pause" locator1="3000" />
 
@@ -1339,8 +1339,8 @@
 	<command name="viewWithWorkflowCP">
 		<var name="key_entryTitle" value="${entryTitle}" />
 
-		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="list" />
+		<execute macro="LexiconEntry#changeDisplayStyle">
+			<var name="displayStyle" value="table" />
 		</execute>
 
 		<execute function="AssertTextEquals" locator1="Blogs#ENTRY_TABLE_TITLE" value1="${entryTitle}" />

@@ -96,9 +96,9 @@
 			<message key="assert.add.information" value="Add ''{0}'' as extra parameter at the beginning of the ''Assert.assertEquals'' call to provide more information to the test. See LPS-70411." />
 		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.ChainingCheck">
-			<property name="allowedClassNames" value=".*[Bb]uilder,Awaitility,EasyMock,Mockito,Optional,Response,RestAssured,(Double|Int|Long)?Stream,Try" />
+			<property name="allowedClassNames" value=".*[Bb]uilder,Awaitility,EasyMock,Filter,Mockito,Optional,Response,RestAssured,(Double|Int|Long)?Stream,Try" />
 			<property name="allowedMethodNames" value="bind" />
-			<property name="allowedVariableTypeNames" value="^(?!String).+Builder,Column,CompletableFuture,ContactsEngineClient,Dataset,Description,FormsEventDatasetFilter,.*Function,HttpSecurity,Optional,Response,(Double|Int|Long)?Stream,Try" />
+			<property name="allowedVariableTypeNames" value="^(?!String).+Builder,Column,CompletableFuture,ContactsEngineClient,Dataset,Description,(FormsEventDataset)?Filter,.*Function,HttpSecurity,Optional,Response,(Double|Int|Long)?Stream,Try" />
 			<message key="chaining.allowed" value="Chaining is allowed on ''{0}''. See https://github.com/liferay/liferay-portal/blob/master/modules/util/source-formatter/documentation/chaining.markdown" />
 			<message key="chaining.avoid" value="Avoid chaining on method ''{0}''. See https://github.com/liferay/liferay-portal/blob/master/modules/util/source-formatter/documentation/chaining.markdown" />
 			<message key="concat.avoid.too.many" value="Use StringBundler instead of chaining concat when there is more than 3 parts" />
@@ -128,6 +128,9 @@
 		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.EnumConstantOrderCheck">
 			<message key="enum.constant.incorrect.order" value="Enum constant ''{0}'' should come after constant ''{1}''" />
+		</module>
+		<module name="com.liferay.source.formatter.checkstyle.checks.ExceptionMessageCheck">
+			<message key="message.incorrect" value="Incorrect exception message. See https://github.com/liferay/liferay-portal/blob/master/modules/util/source-formatter/documentation/phrase_vs_sentence.markdown" />
 		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.FilterStringWhitespaceCheck">
 			<message key="whitespace.incorrect" value="The value of ''{0}'' should not have spaces around ''='', see LPS-70526" />
@@ -163,6 +166,9 @@
 		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.LocalPatternCheck">
 			<message key="pattern.local" value="Create a global variable for Pattern ''{0}''" />
+		</module>
+		<module name="com.liferay.source.formatter.checkstyle.checks.LogMessageCheck">
+			<message key="message.incorrect" value="Incorrect log message. See https://github.com/liferay/liferay-portal/blob/master/modules/util/source-formatter/documentation/phrase_vs_sentence.markdown" />
 		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.LPS42924Check">
 			<message key="lps42924" value="Use ''classNameLocalService.getClassNameId'' instead of ''PortalUtil.getClassName''" />
@@ -223,7 +229,12 @@
 		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.ReferenceAnnotationCheck">
 			<property name="enabled" value="false" />
+			<message key="default.unbind.redundant" value="No need to specify default ''unbind'' method. See https://osgi.org/javadoc/r4v43/cmpn/org/osgi/service/component/annotations/Reference.html#unbind()" />
 			<message key="greedy.policy.option.incorrect" value="When using ''policyOption = ReferencePolicyOption.GREEDY'', always use ''policy = ReferencePolicy.DYNAMIC'' as well. See https://github.com/liferay/liferay-portal/blob/master/modules/util/source-formatter/documentation/reference_annotation.markdown" />
+			<message key="unbind.dynamic.policy.missing" value="Always specify a valid ''unbind'' method when using ''policy = ReferencePolicy.DYNAMIC'' policy. See https://osgi.org/javadoc/r4v43/cmpn/org/osgi/service/component/annotations/Reference.html#unbind()" />
+			<message key="unbind.static.policy.missing" value="Specify ''unbind'' method. Use ''unbind = {0}'' when ''unbind'' method is not needed. See https://osgi.org/javadoc/r4v43/cmpn/org/osgi/service/component/annotations/Reference.html#unbind()" />
+			<message key="volatile.incorrect" value="Variable ''{0}'' should not be volatile" />
+			<message key="volatile.missing" value="Variable ''{0}'' should be volatile" />
 		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.SelfReferenceCheck">
 			<message key="self.reference.unneeded" value="Reference to method ''{0}'' does not need ''{1}''" />

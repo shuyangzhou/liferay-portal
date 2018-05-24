@@ -175,6 +175,12 @@ public interface ContactLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Contact> getCompanyContacts(long companyId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getCompanyContactsCount(long companyId);
+
 	/**
 	* Returns the contact with the primary key.
 	*

@@ -336,7 +336,7 @@
 	</command>
 
 	<command name="ImportLARsOnStagedSite" priority="5">
-		<property name="portal.acceptance" value="pending" />
+		<property name="portal.acceptance" value="false" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="Navigator#gotoStagedSitePage">
@@ -609,7 +609,7 @@
 	</command>
 
 	<command name="PublishPortlet" priority="5">
-		<property name="portal.acceptance" value="pending" />
+		<property name="portal.acceptance" value="false" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="ProductMenu#gotoSite">
@@ -1022,7 +1022,7 @@
 	</command>
 
 	<command name="TrashEntryReferencePublishing" priority="5">
-		<property name="portal.acceptance" value="pending" />
+		<property name="portal.acceptance" value="false" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="Navigator#gotoStagedSitePage">

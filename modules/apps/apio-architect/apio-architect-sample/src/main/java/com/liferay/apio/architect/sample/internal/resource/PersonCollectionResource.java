@@ -49,8 +49,8 @@ public class PersonCollectionResource
 	implements CollectionResource<PersonModel, Long, PersonIdentifier> {
 
 	@Override
-	public CollectionRoutes<PersonModel> collectionRoutes(
-		CollectionRoutes.Builder<PersonModel> builder) {
+	public CollectionRoutes<PersonModel, Long> collectionRoutes(
+		CollectionRoutes.Builder<PersonModel, Long> builder) {
 
 		return builder.addGetter(
 			this::_getPageItems
