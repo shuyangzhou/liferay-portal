@@ -374,8 +374,8 @@ public class ScopeLocatorImpl implements ScopeLocator {
 	}
 
 	private BundleContext _bundleContext;
-	private PrefixHandlerFactory _defaultPrefixHandlerFactory;
-	private ScopeMapper _defaultScopeMapper;
+	private volatile PrefixHandlerFactory _defaultPrefixHandlerFactory;
+	private volatile ScopeMapper _defaultScopeMapper;
 	private ScopeMatcherFactory _defaultScopeMatcherFactory;
 	private ScopedServiceTrackerMap<PrefixHandlerFactory>
 		_scopedPrefixHandlerFactories;
