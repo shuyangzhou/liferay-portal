@@ -14,7 +14,7 @@
  */
 --%>
 
-<%@ include file="/publish_entity_menu_item/init.jsp" %>
+<%@ include file="/publish_model_menu_item/init.jsp" %>
 
 <c:if test="<%= GroupPermissionUtil.contains(permissionChecker, themeDisplay.getScopeGroup(), ActionKeys.EXPORT_IMPORT_PORTLET_INFO) && showMenuItem %>">
 
@@ -30,7 +30,7 @@
 	%>
 
 	<liferay-ui:icon
-		message="publish"
+		message="publish-to-live"
 		url="<%= portletURL.toString() %>"
 	/>
 </c:if>

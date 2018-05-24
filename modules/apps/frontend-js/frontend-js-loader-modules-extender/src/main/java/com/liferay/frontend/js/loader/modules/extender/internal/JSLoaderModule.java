@@ -17,6 +17,8 @@ package com.liferay.frontend.js.loader.modules.extender.internal;
 import aQute.bnd.osgi.Constants;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PredicateFilter;
@@ -191,10 +193,10 @@ public class JSLoaderModule {
 	}
 
 	protected String generateMapsConfiguration(
-		String configuration, String[] exportJSSubmodules) {
+		String configuration, String[] jsSubmodulesExport) {
 
 		boolean exportAll = ArrayUtil.contains(
-			exportJSSubmodules, StringPool.STAR);
+			jsSubmodulesExport, StringPool.STAR);
 
 		JSONObject mapsConfigurationJSONObject = new JSONObject();
 
@@ -230,7 +232,7 @@ public class JSLoaderModule {
 				};
 
 			if (exportAll ||
-				ArrayUtil.exists(exportJSSubmodules, wildcardPredicateFilter)) {
+				ArrayUtil.exists(jsSubmodulesExport, wildcardPredicateFilter)) {
 
 				mapsConfigurationJSONObject.put(
 					submoduleName, moduleRootPath.concat(submoduleName));
@@ -293,14 +295,27 @@ public class JSLoaderModule {
 
 			Dictionary<String, String> headers = _bundle.getHeaders();
 
-			String exportJSSubmodules = GetterUtil.getString(
-				headers.get("Liferay-Export-JS-Submodules"));
+			String jsSubmodulesExport = GetterUtil.getString(
+				headers.get("Liferay-JS-Submodules-Export"));
 
-			if (Validator.isNotNull(exportJSSubmodules)) {
+			if (Validator.isNull(jsSubmodulesExport)) {
+				jsSubmodulesExport = GetterUtil.getString(
+					headers.get("Liferay-Export-JS-Submodules"));
+
+				if (Validator.isNotNull(jsSubmodulesExport) &&
+					_log.isWarnEnabled()) {
+
+					_log.warn(
+						"Liferay-Export-JS-Submodules is deprecated and " +
+							"renamed to Liferay-JS-Submodules-Export");
+				}
+			}
+
+			if (Validator.isNotNull(jsSubmodulesExport)) {
 				_unversionedMapsConfiguration = normalize(
 					generateMapsConfiguration(
 						_unversionedConfiguration,
-						StringUtil.split(exportJSSubmodules)));
+						StringUtil.split(jsSubmodulesExport)));
 			}
 		}
 		catch (IOException ioe) {
@@ -314,6 +329,8 @@ public class JSLoaderModule {
 
 		return text.matches(pattern);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(JSLoaderModule.class);
 
 	private final boolean _applyVersioning;
 	private final Bundle _bundle;
