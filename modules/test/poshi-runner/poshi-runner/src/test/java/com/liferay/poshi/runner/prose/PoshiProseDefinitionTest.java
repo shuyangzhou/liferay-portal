@@ -27,6 +27,8 @@ import java.nio.file.Paths;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import org.dom4j.Element;
 import org.dom4j.util.NodeComparator;
 
@@ -48,7 +50,11 @@ public class PoshiProseDefinitionTest extends TestCase {
 				"Test directory does not exist: " + _TEST_BASE_DIR_NAME);
 		}
 
-		PoshiRunnerContext.readFiles();
+		String[] poshiFileNames = ArrayUtils.addAll(
+			PoshiRunnerContext.POSHI_SUPPORT_FILE_INCLUDES,
+			PoshiRunnerContext.POSHI_TEST_FILE_INCLUDES);
+
+		PoshiRunnerContext.readFiles(poshiFileNames, _TEST_BASE_DIR_NAME);
 
 		_poshiProseDefinition = new PoshiProseDefinition(
 			_POSHI_PROSE_FILE_NAME, read(_testBaseDir, _POSHI_PROSE_FILE_NAME));

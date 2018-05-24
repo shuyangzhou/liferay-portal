@@ -17,18 +17,16 @@ package com.liferay.apio.architect.wiring.osgi.internal.manager.representable;
 import static com.liferay.apio.architect.unsafe.Unsafe.unsafeCast;
 import static com.liferay.apio.architect.wiring.osgi.internal.manager.TypeArgumentProperties.KEY_PRINCIPAL_TYPE_ARGUMENT;
 import static com.liferay.apio.architect.wiring.osgi.internal.manager.cache.ManagerCache.INSTANCE;
-import static com.liferay.apio.architect.wiring.osgi.internal.manager.util.ManagerUtil.getGenericClassFromPropertyOrElse;
-import static com.liferay.apio.architect.wiring.osgi.internal.manager.util.ManagerUtil.getTypeParamOrFail;
+import static com.liferay.apio.architect.wiring.osgi.internal.manager.util.ManagerUtil.getGenericClassFromProperty;
+import static com.liferay.apio.architect.wiring.osgi.internal.manager.util.ManagerUtil.getTypeParamTry;
 
-import static org.osgi.service.component.annotations.ReferenceCardinality.OPTIONAL;
-import static org.osgi.service.component.annotations.ReferencePolicyOption.GREEDY;
-
+import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.identifier.Identifier;
-import com.liferay.apio.architect.logger.ApioLogger;
 import com.liferay.apio.architect.related.RelatedCollection;
 import com.liferay.apio.architect.representor.Representable;
 import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.representor.Representor.Builder;
+import com.liferay.apio.architect.unsafe.Unsafe;
 import com.liferay.apio.architect.wiring.osgi.internal.manager.base.BaseManager;
 import com.liferay.apio.architect.wiring.osgi.manager.representable.IdentifierClassManager;
 import com.liferay.apio.architect.wiring.osgi.manager.representable.NameManager;
@@ -49,7 +47,6 @@ import java.util.stream.Stream;
 
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alejandro Hernández
@@ -96,24 +93,31 @@ public class RepresentableManagerImpl
 		Representable representable = bundleContext.getService(
 			serviceReference);
 
-		Class<Identifier> genericClass = getGenericClassFromPropertyOrElse(
-			serviceReference, KEY_PRINCIPAL_TYPE_ARGUMENT,
-			() -> getTypeParamOrFail(representable, Representable.class, 2));
+		if (representable == null) {
+			return;
+		}
 
-		emitter.emit(genericClass);
+		Try<Class<Object>> classTry = getGenericClassFromProperty(
+			serviceReference, KEY_PRINCIPAL_TYPE_ARGUMENT);
+
+		classTry.recoverWith(
+			__ -> getTypeParamTry(representable, Representable.class, 2)
+		).<Class<Identifier>>map(
+			Unsafe::unsafeCast
+		).voidFold(
+			__ -> warning(
+				"Unable to get identifier class from " +
+					representable.getClass()),
+			emitter::emit
+		);
 	}
 
 	private void _computeRepresentables() {
 		Map<String, List<RelatedCollection<?>>> relatedCollections =
 			new HashMap<>();
 
-		Stream<Class<Identifier>> keyStream = getKeyStream();
-
-		keyStream.forEach(
-			clazz -> {
-				Representable representable = serviceTrackerMap.getService(
-					clazz);
-
+		forEachService(
+			(clazz, representable) -> {
 				String name = representable.getName();
 
 				Optional<Map<String, String>> optional =
@@ -132,22 +136,20 @@ public class RepresentableManagerImpl
 				).findFirst();
 
 				if (classNameOptional.isPresent()) {
-					if (_apioLogger != null) {
-						_apioLogger.warning(
-							_getDuplicateErrorMessage(
-								clazz, name, classNameOptional.get()));
-					}
+					String className = classNameOptional.get();
+
+					warning(_getDuplicateErrorMessage(clazz, name, className));
 
 					return;
 				}
 
+				Representor<Object> representor = _getRepresentor(
+					unsafeCast(representable), unsafeCast(clazz),
+					relatedCollections);
+
 				INSTANCE.putName(clazz.getName(), name);
 				INSTANCE.putIdentifierClass(name, clazz);
-				INSTANCE.putRepresentor(
-					name,
-					_getRepresentor(
-						unsafeCast(representable), unsafeCast(clazz),
-						relatedCollections));
+				INSTANCE.putRepresentor(name, representor);
 			});
 	}
 
@@ -165,9 +167,7 @@ public class RepresentableManagerImpl
 		).append(
 			name
 		).append(
-			", but it's already in use by Representable "
-		).append(
-			"registered under "
+			", but it's already in use by Representable registered under "
 		).append(
 			className
 		).toString();
@@ -194,8 +194,5 @@ public class RepresentableManagerImpl
 
 		return representable.representor(builder);
 	}
-
-	@Reference(cardinality = OPTIONAL, policyOption = GREEDY)
-	private ApioLogger _apioLogger;
 
 }

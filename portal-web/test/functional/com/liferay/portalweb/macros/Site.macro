@@ -204,7 +204,7 @@
 	<command name="approveJoinSiteRestrictedViaMySitesPG">
 		<var name="key_userScreenName" value="${userScreenName}" />
 
-		<execute function="Click" locator1="Button#INFO" />
+		<execute function="Click" locator1="Icon#INFO" />
 
 		<execute function="AssertTextEquals#assertPartialText" locator1="SiteMemberships#MEMBERSHIP_TYPE" value1="Membership Type: Restricted" />
 		<execute function="AssertElementPresent" locator1="SiteMemberships#REQUEST_MESSAGE" />
@@ -213,8 +213,8 @@
 
 		<execute function="Click" locator1="SiteMemberships#REQUEST_MESSAGE" />
 
-		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="list" />
+		<execute macro="LexiconEntry#changeDisplayStyle">
+			<var name="displayStyle" value="table" />
 		</execute>
 
 		<execute function="AssertTextEquals" locator1="SiteMembershipsViewMembershipRequests#USER_NAME" value1="${userFirstName} ${userLastName}" />
@@ -264,8 +264,8 @@
 
 		<execute function="SelectFrame" locator1="SiteSettingsDefaultUserAssociations#TEAMS_SELECT_IFRAME" />
 
-		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="list" />
+		<execute macro="LexiconEntry#changeDisplayStyle">
+			<var name="displayStyle" value="table" />
 		</execute>
 
 		<var name="key_rowEntry" value="${teamName}" />
@@ -412,9 +412,19 @@
 		<if>
 			<condition function="IsNotVisible" locator1="SiteSettingsDisplaySettings#DEFINE_DEFAULT_AND_AVAILABLE_SITE_LANGUAGES_RADIO" />
 			<then>
-				<execute macro="Navigator#gotoNavTab">
-					<var name="navTab" value="Languages" />
-				</execute>
+				<if>
+					<isset var="localizedLanguageTab" />
+					<then>
+						<execute macro="Navigator#gotoNavTab">
+							<var name="navTab" value="${localizedLanguageTab}" />
+						</execute>
+					</then>
+					<else>
+						<execute macro="Navigator#gotoNavTab">
+							<var name="navTab" value="Languages" />
+						</execute>
+					</else>
+				</if>
 			</then>
 		</if>
 
@@ -453,7 +463,17 @@
 			</then>
 		</if>
 
-		<execute function="Click" locator1="Button#SAVE" />
+		<if>
+			<isset var="localizedSaveButton" />
+			<then>
+				<var name="key_saveButton" value="${localizedSaveButton}" />
+
+				<execute function="AssertClick" locator1="Button#SAVE_LOCALIZED" value1="${localizedSaveButton}" />
+			</then>
+			<else>
+				<execute function="Click" locator1="Button#SAVE" />
+			</else>
+		</if>
 
 		<if>
 			<isset var="localizedSuccessMessage" />
@@ -594,6 +614,20 @@
 		<execute function="Check" locator1="Checkbox#ENABLE_RECYCLE_BIN" />
 
 		<execute macro="PortletEntry#save" />
+	</command>
+
+	<command name="getSiteId" returns="siteId">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Configuration" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Site Settings" />
+		</execute>
+
+		<execute function="AssertElementPresent" locator1="SitesEditSite#SITE_ID" />
+
+		<var method="selenium#getElementValue(SitesEditSite#SITE_ID)" name="siteId" />
+
+		<return name="siteId" value="${siteId}" />
 	</command>
 
 	<command name="gotoSiteViaMySitesPG">
@@ -961,7 +995,10 @@
 		<if>
 			<equals arg1="${chooseButtonAvailable}" arg2="false" />
 			<then>
-				<execute function="AssertTextNotPresent" locator1="SitesSelectSite#SITES_TABLE_NAME" value1="${parentSiteName}" />
+				<execute function="AssertElementNotPresent" locator1="SitesSelectSite#SITES_TABLE_NAME">
+					<var name="key_parentSiteName" value="${parentSiteName}" />
+				</execute>
+
 				<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="No sites were found." />
 			</then>
 		</if>
@@ -1202,7 +1239,7 @@
 	</command>
 
 	<command name="viewNoSiteMembershipsRequest">
-		<execute function="Click" locator1="Button#INFO" />
+		<execute function="Click" locator1="Icon#INFO" />
 
 		<execute function="AssertElementNotPresent" locator1="SiteMemberships#REQUEST_MESSAGE" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="SiteMemberships#MEMBERSHIP_TYPE" value1="Membership Type: Restricted" />
@@ -1296,15 +1333,15 @@
 	</command>
 
 	<command name="viewSiteMembershipsRequest">
-		<execute function="Click" locator1="Button#INFO" />
+		<execute function="Click" locator1="Icon#INFO" />
 
 		<execute function="AssertTextEquals#assertPartialText" locator1="SiteMemberships#MEMBERSHIP_TYPE" value1="Membership Type: Restricted" />
 		<execute function="AssertElementPresent" locator1="SiteMemberships#REQUEST_MESSAGE" />
 
 		<execute function="Click" locator1="SiteMemberships#REQUEST_MESSAGE" />
 
-		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="list" />
+		<execute macro="LexiconEntry#changeDisplayStyle">
+			<var name="displayStyle" value="table" />
 		</execute>
 
 		<execute function="AssertTextEquals" locator1="SiteMembershipsViewMembershipRequests#USER_NAME" value1="${userFirstName} ${userLastName}" />

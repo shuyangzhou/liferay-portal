@@ -34,6 +34,16 @@ import java.lang.ref.SoftReference;
  */
 public class StringBundler implements Serializable {
 
+	public static String concat(Object... objects) {
+		String[] strings = new String[objects.length];
+
+		for (int i = 0; i < objects.length; i++) {
+			strings[i] = String.valueOf(objects[i]);
+		}
+
+		return _toString(strings, strings.length);
+	}
+
 	public static String concat(String... strings) {
 		for (int i = 0; i < strings.length; i++) {
 			if (strings[i] == null) {

@@ -207,8 +207,20 @@ public class JournalDisplayContext {
 		String key = JournalPortletUtil.getAddMenuFavItemKey(
 			_liferayPortletRequest, _liferayPortletResponse);
 
-		_addMenuFavItems = portalPreferences.getValues(
+		List<String> addMenuFavItemsList = new ArrayList<>();
+
+		String[] addMenuFavItems = portalPreferences.getValues(
 			JournalPortletKeys.JOURNAL, key, new String[0]);
+
+		for (DDMStructure ddmStructure : getDDMStructures()) {
+			if (ArrayUtil.contains(
+					addMenuFavItems, ddmStructure.getStructureKey())) {
+
+				addMenuFavItemsList.add(ddmStructure.getStructureKey());
+			}
+		}
+
+		_addMenuFavItems = ArrayUtil.toStringArray(addMenuFavItemsList);
 
 		return _addMenuFavItems;
 	}
@@ -865,6 +877,18 @@ public class JournalDisplayContext {
 		}
 
 		return orderColumns;
+	}
+
+	public long getParentFolderId() {
+		if (_parentFolderId != null) {
+			return _parentFolderId;
+		}
+
+		_parentFolderId = ParamUtil.getLong(
+			_request, "parentFolderId",
+			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
+
+		return _parentFolderId;
 	}
 
 	public PortletURL getPortletURL() {
@@ -1646,8 +1670,12 @@ public class JournalDisplayContext {
 			jsonObject.put("id", folder.getFolderId());
 			jsonObject.put("name", folder.getName());
 
-			if (folder.getFolderId() == getFolderId()) {
+			if (folder.getFolderId() == getParentFolderId()) {
 				jsonObject.put("selected", true);
+			}
+
+			if (folder.getFolderId() == getFolderId()) {
+				jsonObject.put("disabled", true);
 			}
 
 			jsonArray.put(jsonObject);
@@ -1801,6 +1829,7 @@ public class JournalDisplayContext {
 	private String _navigation;
 	private String _orderByCol;
 	private String _orderByType;
+	private Long _parentFolderId;
 	private final PortalPreferences _portalPreferences;
 	private final PortletPreferences _portletPreferences;
 	private final HttpServletRequest _request;

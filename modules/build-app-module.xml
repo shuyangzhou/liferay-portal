@@ -40,6 +40,7 @@
 			<available file="hotfix" />
 			<available file=".lfrbuild-app-server-lib" />
 			<available file=".lfrbuild-portal-pre" />
+			<available file=".lfrbuild-releng-ignore" />
 			<contains string="${basedir}" substring="modules-compat-data" />
 			<contains string="${basedir}" substring="required-dependencies" />
 		</or>
@@ -61,6 +62,13 @@
 		<available file=".lfrbuild-deploy-wsdd" />
 	</condition>
 
+	<condition property="replace.artifact.sources.license.text">
+		<and>
+			<istrue value="${current.branch.private}" />
+			<istrue value="${download.artifact.sources}" />
+		</and>
+	</condition>
+
 	<target if="artifact.hotfix" name="copy-hotfix-artifact">
 		<copy
 			todir="${dist.dir}"
@@ -77,8 +85,10 @@
 			copy-hotfix-artifact,
 			download-artifact,
 			download-artifact-dependencies,
+			download-artifact-sources,
 			download-artifact-wsdd,
-			record-artifact-change-log"
+			record-artifact-change-log,
+			replace-artifact-sources-license-text"
 		name="dist-module-artifact"
 	/>
 
@@ -127,6 +137,44 @@
 			<arg value="-Dforced.cache.enabled=true" />
 			<arg value="-Pforced.deploy.dir=${dist.dir}" />
 		</exec>
+	</target>
+
+	<target depends="get-artifact-properties" if="${download.artifact.sources}" name="download-artifact-sources" unless="artifact.exclude">
+		<fail message="Missing artifact.properties file in ${releng.module.dir}.">
+			<condition>
+				<not>
+					<available file="${releng.module.dir}/artifact.properties" />
+				</not>
+			</condition>
+		</fail>
+
+		<loadproperties srcFile="${releng.module.dir}/artifact.properties">
+			<filterchain>
+				<linecontains>
+					<contains value="artifact.sources.url=" />
+				</linecontains>
+			</filterchain>
+		</loadproperties>
+
+		<mkdir dir="${dist.dir}/sources" />
+
+		<if>
+			<contains string="${basedir}" substring="private${file.separator}" />
+			<then>
+				<get
+					dest="${dist.dir}/sources"
+					password="${build.repository.private.password}"
+					src="${artifact.sources.url}"
+					username="${build.repository.private.username}"
+				/>
+			</then>
+			<else>
+				<get
+					dest="${dist.dir}/sources"
+					src="${artifact.sources.url}"
+				/>
+			</else>
+		</if>
 	</target>
 
 	<target depends="get-artifact-properties" if="download.artifact.wsdd" name="download-artifact-wsdd" unless="artifact.exclude">
@@ -234,6 +282,10 @@
 	<target if="artifact.bnd" name="get-artifact-properties-bnd">
 		<property file="bnd.bnd" />
 
+		<condition property="artifact.location.dest" value="${osgi.dir}/marketplace/${Bundle-SymbolicName}-${Bundle-Version}.jar">
+			<equals arg1="${lp.version}" arg2="7.0.0" />
+		</condition>
+
 		<condition property="artifact.location.dest" value="${osgi.dir}/marketplace/${lpkg.title.prefix}${liferay.releng.app.title} - SPI/${Bundle-SymbolicName}-${Bundle-Version}.jar">
 			<matches pattern=".*\.spi" string="${Bundle-SymbolicName}" />
 		</condition>
@@ -319,6 +371,10 @@
 			</filterchain>
 		</loadfile>
 
+		<condition property="artifact.location.dest" value="${osgi.dir}/marketplace/${artifact.name}-${artifact.version}.war">
+			<equals arg1="${lp.version}" arg2="7.0.0" />
+		</condition>
+
 		<property name="artifact.location.dest" value="${osgi.dir}/marketplace/${lpkg.title.prefix}${liferay.releng.app.title} - Impl/${artifact.name}-${artifact.version}.war" />
 
 		<condition property="artifact.location.src" value="${osgi.dir}/war/${artifact.name}.war">
@@ -334,6 +390,10 @@
 		<property file="${ant.file}/../../release.properties" />
 
 		<property file="docroot/WEB-INF/liferay-plugin-package.properties" />
+
+		<condition property="artifact.location.dest" value="${osgi.dir}/marketplace/${artifact.name}-${lp.version}.${module-incremental-version}.war">
+			<equals arg1="${lp.version}" arg2="7.0.0" />
+		</condition>
 
 		<property name="artifact.location.dest" value="${osgi.dir}/marketplace/${lpkg.title.prefix}${liferay.releng.app.title} - Impl/${artifact.name}-${lp.version}.${module-incremental-version}.war" />
 		<property name="artifact.location.src" value="${osgi.dir}/../deploy/${artifact.name}-${lp.version}.${module-incremental-version}.war" />
@@ -448,6 +508,62 @@
 
 	<target depends="get-artifact-change-log-ticket-list" description="Record the change log tickets for the current module to app.changelog." if="${artifact.has.change.log.ticket.list}" name="record-artifact-change-log">
 		<echo append="true" file="${dist.dir}/ticket.list.tmp">${artifact.change.log.ticket.list} </echo>
+	</target>
+
+	<target depends="download-artifact-sources" if="replace.artifact.sources.license.text" name="replace-artifact-sources-license-text">
+		<delete dir="tmp" />
+
+		<mkdir dir="tmp" />
+
+		<loadfile
+			property="artifact.sources.file"
+		>
+			<filterchain>
+				<replaceregex pattern="^.+\/" replace="" />
+
+				<striplinebreaks />
+			</filterchain>
+			<propertyresource name="artifact.sources.url" />
+		</loadfile>
+
+		<unzip
+			dest="tmp"
+			src="${dist.dir}/sources/${artifact.sources.file}"
+		/>
+
+		<regexp id="license.text.pattern" pattern="/\*\*${line.separator} \* Copyright \(c\) 2000-(?:20\d\d|present) Liferay, Inc\. All rights reserved.${line.separator} \*${line.separator} \* This library is free software; you can redistribute it and\/or modify it under${line.separator} \* the terms of the GNU Lesser General Public License as published by the Free${line.separator} \* Software Foundation; either version 2\.1 of the License, or \(at your option\)${line.separator} \* any later version\.${line.separator} \*${line.separator} \* This library is distributed in the hope that it will be useful, but WITHOUT${line.separator} \* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS${line.separator} \* FOR A PARTICULAR PURPOSE\. See the GNU Lesser General Public License for more${line.separator} \* details\.${line.separator} \*/" />
+
+		<substitution expression="/**${line.separator} * Copyright (c) 2000-present Liferay, Inc. All rights reserved.${line.separator} *${line.separator} * The contents of this file are subject to the terms of the Liferay Enterprise${line.separator} * Subscription License (&quot;License&quot;). You may not use this file except in${line.separator} * compliance with the License. You can obtain a copy of the License by${line.separator} * contacting Liferay, Inc. See the License for the specific language governing${line.separator} * permissions and limitations under the License, including but not limited to${line.separator} * distribution rights of the Software.${line.separator} *${line.separator} *${line.separator} *${line.separator} */" id="license.text.replace" />
+
+		<replaceregexp
+			flags="g"
+		>
+			<fileset
+				dir="tmp"
+				id="files"
+				includes="**/*"
+			/>
+			<regexp refid="license.text.pattern" />
+			<substitution refid="license.text.replace" />
+		</replaceregexp>
+
+		<loadfile
+			property="artifact.sources.file.commercial"
+		>
+			<propertyresource name="artifact.sources.file" />
+			<filterchain>
+				<tokenfilter>
+					<replaceregex pattern="(.+-sources)\.jar" replace="\1-commercial.jar" />
+				</tokenfilter>
+			</filterchain>
+		</loadfile>
+
+		<zip
+			basedir="tmp"
+			destfile="${dist.dir}/sources/${artifact.sources.file.commercial}"
+		/>
+
+		<delete file="${dist.dir}/sources/${artifact.sources.file}" />
 	</target>
 
 	<target depends="reset-artifact-dependencies" name="reset-artifact">
