@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.lang.reflect.Modifier;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.dom4j.Comment;
@@ -200,12 +202,30 @@ public abstract class PoshiNodeFactory {
 			ClassPath classPath = ClassPath.from(
 				PoshiNode.class.getClassLoader());
 
+			List<Class<?>> poshiElementClasses = new ArrayList<>();
+
 			for (ClassPath.ClassInfo classInfo :
 					classPath.getTopLevelClasses(
 						"com.liferay.poshi.runner.elements")) {
 
-				Class<?> clazz = classInfo.load();
+				poshiElementClasses.add(classInfo.load());
+			}
 
+			Collections.sort(
+				poshiElementClasses,
+				new Comparator<Class<?>>() {
+
+					@Override
+					public int compare(Class<?> class1, Class<?> class2) {
+						String className1 = class1.getName();
+						String className2 = class2.getName();
+
+						return className1.compareTo(className2);
+					}
+
+				});
+
+			for (Class<?> clazz : poshiElementClasses) {
 				if (Modifier.isAbstract(clazz.getModifiers()) ||
 					!(PoshiComment.class.isAssignableFrom(clazz) ||
 					PoshiElement.class.isAssignableFrom(clazz))) {

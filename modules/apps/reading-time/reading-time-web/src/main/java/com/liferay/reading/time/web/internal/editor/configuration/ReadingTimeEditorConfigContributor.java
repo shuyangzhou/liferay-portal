@@ -33,10 +33,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Alejandro Tardín
  */
 @Component(
-	property = {
-		"editor.config.key=contentEditor", "editor.name=alloyeditor",
-		"editor.name=ckeditor", "service.ranking:Integer=102"
-	},
+	property = "editor.config.key=reading-time-editor-config-key",
 	service = EditorConfigContributor.class
 )
 public class ReadingTimeEditorConfigContributor

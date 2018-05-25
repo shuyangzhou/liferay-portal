@@ -191,7 +191,7 @@ public class BaseTestResult implements TestResult {
 
 	protected BaseTestResult(Build build, JSONObject caseJSONObject) {
 		if (build == null) {
-			throw new IllegalArgumentException("Build is NULL");
+			throw new IllegalArgumentException("Build is null");
 		}
 
 		_build = build;

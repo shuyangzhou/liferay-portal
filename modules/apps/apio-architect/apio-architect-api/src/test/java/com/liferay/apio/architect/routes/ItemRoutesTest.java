@@ -17,7 +17,8 @@ package com.liferay.apio.architect.routes;
 import static com.liferay.apio.architect.operation.Method.DELETE;
 import static com.liferay.apio.architect.operation.Method.PUT;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.FORM_BUILDER_FUNCTION;
-import static com.liferay.apio.architect.routes.RoutesTestUtil.ITEM_PERMISSION_FUNCTION;
+import static com.liferay.apio.architect.routes.RoutesTestUtil.HAS_REMOVE_PERMISSION_FUNCTION;
+import static com.liferay.apio.architect.routes.RoutesTestUtil.HAS_UPDATE_PERMISSION_FUNCTION;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.REQUEST_PROVIDE_FUNCTION;
 
 import static com.spotify.hamcrest.optional.OptionalMatchers.emptyOptional;
@@ -88,11 +89,11 @@ public class ItemRoutesTest {
 			Long.class, Boolean.class, Integer.class
 		).addRemover(
 			this::_testFourParameterRemoverRoute, String.class, Long.class,
-			Boolean.class, Integer.class, ITEM_PERMISSION_FUNCTION
+			Boolean.class, Integer.class, HAS_REMOVE_PERMISSION_FUNCTION
 		).addUpdater(
 			this::_testAndReturnFourParameterUpdaterRoute, String.class,
-			Long.class, Boolean.class, Integer.class, ITEM_PERMISSION_FUNCTION,
-			FORM_BUILDER_FUNCTION
+			Long.class, Boolean.class, Integer.class,
+			HAS_UPDATE_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
 		).build();
 
 		assertThat(
@@ -118,10 +119,10 @@ public class ItemRoutesTest {
 			Long.class, Boolean.class
 		).addRemover(
 			this::_testThreeParameterRemoverRoute, String.class, Long.class,
-			Boolean.class, ITEM_PERMISSION_FUNCTION
+			Boolean.class, HAS_REMOVE_PERMISSION_FUNCTION
 		).addUpdater(
 			this::_testAndReturnThreeParameterUpdaterRoute, String.class,
-			Long.class, Boolean.class, ITEM_PERMISSION_FUNCTION,
+			Long.class, Boolean.class, HAS_UPDATE_PERMISSION_FUNCTION,
 			FORM_BUILDER_FUNCTION
 		).build();
 
@@ -147,10 +148,10 @@ public class ItemRoutesTest {
 			this::_testAndReturnNoParameterGetterRoute
 		).addRemover(
 			this::_testAndReturnNoParameterRemoverRoute,
-			ITEM_PERMISSION_FUNCTION
+			HAS_REMOVE_PERMISSION_FUNCTION
 		).addUpdater(
 			this::_testAndReturnNoParameterUpdaterRoute,
-			ITEM_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
+			HAS_UPDATE_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
 		).build();
 
 		assertThat(neededProviders.size(), is(0));
@@ -172,10 +173,10 @@ public class ItemRoutesTest {
 			Long.class
 		).addRemover(
 			this::_testTwoParameterRemoverRoute, String.class, Long.class,
-			ITEM_PERMISSION_FUNCTION
+			HAS_REMOVE_PERMISSION_FUNCTION
 		).addUpdater(
 			this::_testAndReturnTwoParameterUpdaterRoute, String.class,
-			Long.class, ITEM_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
+			Long.class, HAS_UPDATE_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
 		).build();
 
 		assertThat(
@@ -198,10 +199,10 @@ public class ItemRoutesTest {
 			this::_testAndReturnOneParameterGetterRoute, String.class
 		).addRemover(
 			this::_testOneParameterRemoverRoute, String.class,
-			ITEM_PERMISSION_FUNCTION
+			HAS_REMOVE_PERMISSION_FUNCTION
 		).addUpdater(
 			this::_testAndReturnOneParameterUpdaterRoute, String.class,
-			ITEM_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
+			HAS_UPDATE_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
 		).build();
 
 		assertThat(neededProviders, contains(String.class.getName()));

@@ -321,6 +321,20 @@ public abstract class PoshiElement
 		return false;
 	}
 
+	protected boolean isMacroReturnVar(String readableSyntax) {
+		readableSyntax = readableSyntax.trim();
+
+		String value = getValueFromAssignment(readableSyntax);
+
+		if (!value.matches("(?s)^\".*\"$") && !value.matches("(?s)^'.*'$") &&
+			!isValidFunctionFileName(value) && !isValidUtilClassName(value)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	protected boolean isMultilineReadableSyntaxComment(String readableSyntax) {
 		readableSyntax = readableSyntax.trim();
 
@@ -463,6 +477,9 @@ public abstract class PoshiElement
 				utilClassNames.add(classInfo.getName());
 				utilClassNames.add(classInfo.getSimpleName());
 			}
+
+			utilClassNames.add("selenium");
+			utilClassNames.add("TestPropsUtil");
 		}
 		catch (IOException ioe) {
 			throw new RuntimeException(ioe);

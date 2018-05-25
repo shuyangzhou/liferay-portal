@@ -27,7 +27,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
@@ -92,7 +92,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
@@ -200,29 +200,6 @@
 			<var name="userFirstName" value="Skändi" />
 			<var name="userLastName" value="Ääkkönen" />
 			<var name="userScreenName" value="uskandi" />
-		</execute>
-	</command>
-
-	<command name="ViewSuccessMessageText" priority="5">
-		<property name="portal.acceptance" value="true" />
-
-		<execute macro="ProductMenu#gotoPortlet">
-			<var name="category" value="Content" />
-			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Blogs" />
-		</execute>
-
-		<execute macro="BlogsNavigator#gotoAddEntry" />
-
-		<execute macro="BlogsEntry#addEntryContent">
-			<var name="entryContent" value="Blogs Content" />
-			<var name="entryTitle" value="Blogs Title" />
-		</execute>
-
-		<execute macro="Button#clickPublish" />
-
-		<execute macro="Alert#viewSuccessMessageText">
-			<var name="successMessage" value="Your request completed successfully." />
 		</execute>
 	</command>
 </definition>

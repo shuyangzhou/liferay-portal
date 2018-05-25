@@ -18,7 +18,7 @@ import static com.liferay.apio.architect.operation.Method.POST;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.FORM_BUILDER_FUNCTION;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.PAGINATION;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.REQUEST_PROVIDE_FUNCTION;
-import static com.liferay.apio.architect.routes.RoutesTestUtil.getNestedCollectionPermissionFunction;
+import static com.liferay.apio.architect.routes.RoutesTestUtil.hasNestedAddingPermissionFunction;
 
 import static com.spotify.hamcrest.optional.OptionalMatchers.emptyOptional;
 import static com.spotify.hamcrest.optional.OptionalMatchers.optionalWithValue;
@@ -57,12 +57,12 @@ public class NestedCollectionRoutesTest {
 
 	@Test
 	public void testEmptyBuilderBuildsEmptyRoutes() {
-		Builder<String, Long> builder = new Builder<>(
+		Builder<String, Long, Long> builder = new Builder<>(
 			"name", "nested", REQUEST_PROVIDE_FUNCTION,
 			__ -> {
 			});
 
-		NestedCollectionRoutes<String, Long> nestedCollectionRoutes =
+		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
 			builder.build();
 
 		Optional<NestedCreateItemFunction<String, Long>> optional1 =
@@ -80,14 +80,14 @@ public class NestedCollectionRoutesTest {
 	public void testFiveParameterBuilderMethodsCreatesValidRoutes() {
 		Set<String> neededProviders = new TreeSet<>();
 
-		Builder<String, Long> builder = new Builder<>(
+		Builder<String, Long, Long> builder = new Builder<>(
 			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
-		NestedCollectionRoutes<String, Long> nestedCollectionRoutes =
+		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
 			builder.addCreator(
 				this::_testAndReturnFourParameterCreatorRoute, String.class,
 				Long.class, Boolean.class, Integer.class,
-				getNestedCollectionPermissionFunction(), FORM_BUILDER_FUNCTION
+				hasNestedAddingPermissionFunction(), FORM_BUILDER_FUNCTION
 			).addGetter(
 				this::_testAndReturnFourParameterGetterRoute, String.class,
 				Long.class, Boolean.class, Integer.class
@@ -106,14 +106,14 @@ public class NestedCollectionRoutesTest {
 	public void testFourParameterBuilderMethodsCreatesValidRoutes() {
 		Set<String> neededProviders = new TreeSet<>();
 
-		Builder<String, Long> builder = new Builder<>(
+		Builder<String, Long, Long> builder = new Builder<>(
 			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
-		NestedCollectionRoutes<String, Long> nestedCollectionRoutes =
+		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
 			builder.addCreator(
 				this::_testAndReturnThreeParameterCreatorRoute, String.class,
-				Long.class, Boolean.class,
-				getNestedCollectionPermissionFunction(), FORM_BUILDER_FUNCTION
+				Long.class, Boolean.class, hasNestedAddingPermissionFunction(),
+				FORM_BUILDER_FUNCTION
 			).addGetter(
 				this::_testAndReturnThreeParameterGetterRoute, String.class,
 				Long.class, Boolean.class
@@ -132,13 +132,13 @@ public class NestedCollectionRoutesTest {
 	public void testOneParameterBuilderMethodsCreatesValidRoutes() {
 		Set<String> neededProviders = new TreeSet<>();
 
-		Builder<String, Long> builder = new Builder<>(
+		Builder<String, Long, Long> builder = new Builder<>(
 			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
-		NestedCollectionRoutes<String, Long> nestedCollectionRoutes =
+		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
 			builder.addCreator(
 				this::_testAndReturnNoParameterCreatorRoute,
-				getNestedCollectionPermissionFunction(), FORM_BUILDER_FUNCTION
+				hasNestedAddingPermissionFunction(), FORM_BUILDER_FUNCTION
 			).addGetter(
 				this::_testAndReturnNoParameterGetterRoute
 			).build();
@@ -152,13 +152,13 @@ public class NestedCollectionRoutesTest {
 	public void testThreeParameterBuilderMethodsCreatesValidRoutes() {
 		Set<String> neededProviders = new TreeSet<>();
 
-		Builder<String, Long> builder = new Builder<>(
+		Builder<String, Long, Long> builder = new Builder<>(
 			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
-		NestedCollectionRoutes<String, Long> nestedCollectionRoutes =
+		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
 			builder.addCreator(
 				this::_testAndReturnTwoParameterCreatorRoute, String.class,
-				Long.class, getNestedCollectionPermissionFunction(),
+				Long.class, hasNestedAddingPermissionFunction(),
 				FORM_BUILDER_FUNCTION
 			).addGetter(
 				this::_testAndReturnTwoParameterGetterRoute, String.class,
@@ -176,13 +176,13 @@ public class NestedCollectionRoutesTest {
 	public void testTwoParameterBuilderMethodsCreatesValidRoutes() {
 		Set<String> neededProviders = new TreeSet<>();
 
-		Builder<String, Long> builder = new Builder<>(
+		Builder<String, Long, Long> builder = new Builder<>(
 			"name", "nested", REQUEST_PROVIDE_FUNCTION, neededProviders::add);
 
-		NestedCollectionRoutes<String, Long> nestedCollectionRoutes =
+		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes =
 			builder.addCreator(
 				this::_testAndReturnOneParameterCreatorRoute, String.class,
-				getNestedCollectionPermissionFunction(), FORM_BUILDER_FUNCTION
+				hasNestedAddingPermissionFunction(), FORM_BUILDER_FUNCTION
 			).addGetter(
 				this::_testAndReturnOneParameterGetterRoute, String.class
 			).build();
@@ -287,10 +287,10 @@ public class NestedCollectionRoutesTest {
 	}
 
 	private void _testNestedCollectionRoutes(
-		NestedCollectionRoutes<String, Long> nestedCollectionRoutes) {
+		NestedCollectionRoutes<String, Long, Long> nestedCollectionRoutes) {
 
-		Optional<NestedCollectionRoutes<String, Long>> optional = Optional.of(
-			nestedCollectionRoutes);
+		Optional<NestedCollectionRoutes<String, Long, Long>> optional =
+			Optional.of(nestedCollectionRoutes);
 
 		Map map = optional.flatMap(
 			NestedCollectionRoutes::getFormOptional

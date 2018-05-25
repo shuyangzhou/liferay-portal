@@ -29,7 +29,6 @@ import com.liferay.message.boards.util.comparator.ThreadModifiedDateComparator;
 import com.liferay.message.boards.util.comparator.ThreadTitleComparator;
 import com.liferay.message.boards.web.internal.security.permission.MBCategoryPermission;
 import com.liferay.message.boards.web.internal.util.MBUtil;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -84,11 +83,7 @@ public class MBEntriesManagementToolbarDisplayContext {
 				add(
 					SafeConsumer.ignore(
 						dropdownItem -> {
-							dropdownItem.setHref(
-								StringBundler.concat(
-									"javascript:",
-									_liferayPortletResponse.getNamespace(),
-									"deleteEntries();"));
+							dropdownItem.putData("action", "deleteEntries");
 
 							boolean trashEnabled = _trashHelper.isTrashEnabled(
 								themeDisplay.getScopeGroupId());
@@ -111,14 +106,8 @@ public class MBEntriesManagementToolbarDisplayContext {
 				add(
 					SafeConsumer.ignore(
 						dropdownItem -> {
-							dropdownItem.setHref(
-								StringBundler.concat(
-									"javascript:",
-									_liferayPortletResponse.getNamespace(),
-									"lockEntries();"));
-
+							dropdownItem.putData("action", "lockEntries");
 							dropdownItem.setIcon("lock");
-
 							dropdownItem.setLabel(
 								LanguageUtil.get(_request, "lock"));
 
@@ -127,17 +116,10 @@ public class MBEntriesManagementToolbarDisplayContext {
 				add(
 					SafeConsumer.ignore(
 						dropdownItem -> {
-							dropdownItem.setHref(
-								StringBundler.concat(
-									"javascript:",
-									_liferayPortletResponse.getNamespace(),
-									"unlockEntries();"));
-
+							dropdownItem.putData("action", "unlockEntries");
 							dropdownItem.setIcon("unlock");
-
 							dropdownItem.setLabel(
 								LanguageUtil.get(_request, "unlock"));
-
 							dropdownItem.setQuickAction(true);
 						}));
 			}
@@ -145,7 +127,7 @@ public class MBEntriesManagementToolbarDisplayContext {
 	}
 
 	public CreationMenu getCreationMenu() throws PortalException {
-		CreationMenu creationMenu = new CreationMenu();
+		CreationMenu creationMenu = null;
 
 		MBCategory category = (MBCategory)_request.getAttribute(
 			WebKeys.MESSAGE_BOARDS_CATEGORY);
@@ -159,6 +141,10 @@ public class MBEntriesManagementToolbarDisplayContext {
 				themeDisplay.getPermissionChecker(),
 				themeDisplay.getScopeGroupId(), categoryId,
 				ActionKeys.ADD_CATEGORY)) {
+
+			if (creationMenu == null) {
+				creationMenu = new CreationMenu();
+			}
 
 			creationMenu.addDropdownItem(
 				dropdownItem -> {
@@ -184,6 +170,10 @@ public class MBEntriesManagementToolbarDisplayContext {
 				themeDisplay.getPermissionChecker(),
 				themeDisplay.getScopeGroupId(), categoryId,
 				ActionKeys.ADD_MESSAGE)) {
+
+			if (creationMenu == null) {
+				creationMenu = new CreationMenu();
+			}
 
 			creationMenu.addDropdownItem(
 				dropdownItem -> {

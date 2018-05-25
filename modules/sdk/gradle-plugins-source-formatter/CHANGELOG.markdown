@@ -2050,6 +2050,66 @@ another task with the same name is being executed in a parent project.
 - [LPS-79679]: Update the [Liferay Source Formatter] dependency to version
 1.0.632.
 
+## 2.3.160 - 2018-05-17
+
+### Changed
+- [LPS-79679]: Update the [Liferay Source Formatter] dependency to version
+1.0.633.
+
+## 2.3.161 - 2018-05-17
+
+### Changed
+- [LPS-81106]: Update the [Liferay Source Formatter] dependency to version
+1.0.634.
+
+## 2.3.162 - 2018-05-17
+
+### Changed
+- [LPS-80517]: Update the [Liferay Source Formatter] dependency to version
+1.0.635.
+
+## 2.3.163 - 2018-05-19
+
+### Changed
+- [LPS-79679]: Update the [Liferay Source Formatter] dependency to version
+1.0.636.
+
+## 2.3.164 - 2018-05-21
+
+### Changed
+- [LPS-79963]: Update the [Liferay Source Formatter] dependency to version
+1.0.637.
+
+## 2.3.165 - 2018-05-21
+
+### Changed
+- [LPS-81106]: Update the [Liferay Source Formatter] dependency to version
+1.0.638.
+
+## 2.3.166 - 2018-05-22
+
+### Changed
+- [LPS-79679]: Update the [Liferay Source Formatter] dependency to version
+1.0.639.
+
+## 2.3.167 - 2018-05-23
+
+### Changed
+- [LPS-74544]: Update the [Liferay Source Formatter] dependency to version
+1.0.640.
+
+## 2.3.168 - 2018-05-23
+
+### Changed
+- [LPS-79709]: Update the [Liferay Source Formatter] dependency to version
+1.0.641.
+
+## 2.3.169 - 2018-05-23
+
+### Changed
+- [LPS-74544]: Update the [Liferay Source Formatter] dependency to version
+1.0.642.
+
 [Liferay Source Formatter]: https://github.com/liferay/liferay-portal/tree/master/modules/util/source-formatter
 [LPS-52675]: https://issues.liferay.com/browse/LPS-52675
 [LPS-62970]: https://issues.liferay.com/browse/LPS-62970
@@ -2184,6 +2244,7 @@ another task with the same name is being executed in a parent project.
 [LPS-79360]: https://issues.liferay.com/browse/LPS-79360
 [LPS-79576]: https://issues.liferay.com/browse/LPS-79576
 [LPS-79679]: https://issues.liferay.com/browse/LPS-79679
+[LPS-79709]: https://issues.liferay.com/browse/LPS-79709
 [LPS-79755]: https://issues.liferay.com/browse/LPS-79755
 [LPS-79919]: https://issues.liferay.com/browse/LPS-79919
 [LPS-79963]: https://issues.liferay.com/browse/LPS-79963
@@ -2191,3 +2252,4 @@ another task with the same name is being executed in a parent project.
 [LPS-80332]: https://issues.liferay.com/browse/LPS-80332
 [LPS-80517]: https://issues.liferay.com/browse/LPS-80517
 [LPS-80520]: https://issues.liferay.com/browse/LPS-80520
+[LPS-81106]: https://issues.liferay.com/browse/LPS-81106

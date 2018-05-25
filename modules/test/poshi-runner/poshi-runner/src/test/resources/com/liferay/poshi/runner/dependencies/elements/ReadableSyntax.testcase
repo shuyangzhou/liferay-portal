@@ -152,11 +152,8 @@ definition {
 			Alert.viewErrorMessage();
 		}
 
-		var siteName = return(
-			TestCase.getSiteName(
-				siteName = "${siteName}"
-			),
-			siteName
+		var siteName = TestCase.getSiteName(
+			siteName = "${siteName}"
 		);
 		var testCDATA = ''''alert(0)'"alert(0)"><img src=x onerror=alert(0)><script>alert(0)</script>''';
 		var testCDATA = ''''''';

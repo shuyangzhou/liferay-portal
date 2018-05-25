@@ -39,7 +39,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
@@ -64,7 +64,7 @@
 			<execute macro="ProductMenu#gotoPortlet">
 				<var name="category" value="Build" />
 				<var name="panel" value="Site Administration" />
-				<var name="portlet" value="Site Pages" />
+				<var name="portlet" value="Pages" />
 			</execute>
 
 			<execute macro="SitePages#addPublicPage">
@@ -131,7 +131,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
@@ -155,7 +155,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
@@ -196,7 +196,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPrivatePage">
@@ -238,7 +238,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPrivatePage">
@@ -274,7 +274,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPrivatePage">
@@ -311,7 +311,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
@@ -353,7 +353,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
@@ -389,7 +389,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
@@ -412,7 +412,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
@@ -434,14 +434,14 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
 			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Site Page Name" />
 			<var name="privacy" value="Public" />
-			<var name="sitePageType" value="Layout" />
+			<var name="sitePageType" value="Widget Page" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -455,14 +455,14 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
 			<var name="columnName" value="1-2-1 Columns" />
 			<var name="pageName" value="Site Page Name" />
 			<var name="privacy" value="Public" />
-			<var name="sitePageType" value="Layout" />
+			<var name="sitePageType" value="Widget Page" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -480,14 +480,14 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
 			<var name="columnName" value="Freeform" />
 			<var name="pageName" value="Site Page Name" />
 			<var name="privacy" value="Public" />
-			<var name="sitePageType" value="Layout" />
+			<var name="sitePageType" value="Widget Page" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -501,14 +501,14 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
 			<var name="columnName" value="2 Columns (50/50)" />
 			<var name="pageName" value="Site Page Name" />
 			<var name="privacy" value="Public" />
-			<var name="sitePageType" value="Layout" />
+			<var name="sitePageType" value="Widget Page" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -522,14 +522,14 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
 			<var name="columnName" value="2 Columns (70/30)" />
 			<var name="pageName" value="Site Page Name" />
 			<var name="privacy" value="Public" />
-			<var name="sitePageType" value="Layout" />
+			<var name="sitePageType" value="Widget Page" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -543,14 +543,14 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
 			<var name="columnName" value="3 Columns" />
 			<var name="pageName" value="Site Page Name" />
 			<var name="privacy" value="Public" />
-			<var name="sitePageType" value="Layout" />
+			<var name="sitePageType" value="Widget Page" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -564,14 +564,14 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
 			<var name="columnName" value="1-2 Columns (30/70)" />
 			<var name="pageName" value="Site Page Name" />
 			<var name="privacy" value="Public" />
-			<var name="sitePageType" value="Layout" />
+			<var name="sitePageType" value="Widget Page" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -589,14 +589,14 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
 			<var name="columnName" value="1-2 Columns (70/30)" />
 			<var name="pageName" value="Site Page Name" />
 			<var name="privacy" value="Public" />
-			<var name="sitePageType" value="Layout" />
+			<var name="sitePageType" value="Widget Page" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -610,14 +610,14 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
 			<var name="columnName" value="2-2 Columns" />
 			<var name="pageName" value="Site Page Name" />
 			<var name="privacy" value="Public" />
-			<var name="sitePageType" value="Layout" />
+			<var name="sitePageType" value="Widget Page" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -631,14 +631,14 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
 			<var name="columnName" value="1-3-1 Columns" />
 			<var name="pageName" value="Site Page Name" />
 			<var name="privacy" value="Public" />
-			<var name="sitePageType" value="Layout" />
+			<var name="sitePageType" value="Widget Page" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -652,14 +652,14 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
 			<var name="columnName" value="1-3-2 Columns" />
 			<var name="pageName" value="Site Page Name" />
 			<var name="privacy" value="Public" />
-			<var name="sitePageType" value="Layout" />
+			<var name="sitePageType" value="Widget Page" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -673,14 +673,14 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
 			<var name="columnName" value="2-1-2 Columns" />
 			<var name="pageName" value="Site Page Name" />
 			<var name="privacy" value="Public" />
-			<var name="sitePageType" value="Layout" />
+			<var name="sitePageType" value="Widget Page" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -694,14 +694,14 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
 			<var name="columnName" value="3-2-3 Columns" />
 			<var name="pageName" value="Site Page Name" />
 			<var name="privacy" value="Public" />
-			<var name="sitePageType" value="Layout" />
+			<var name="sitePageType" value="Widget Page" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -729,7 +729,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
@@ -752,7 +752,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="Page#copyApplicationsFromPageToPage">
@@ -787,7 +787,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<for list="Site Page 1,Site Page 2,Site Page 3" param="pageName">
@@ -808,7 +808,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
@@ -818,7 +818,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#gotoPageMenuItem">
@@ -838,7 +838,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#gotoPageMenuItem">
@@ -882,7 +882,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
@@ -898,7 +898,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
@@ -932,7 +932,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">

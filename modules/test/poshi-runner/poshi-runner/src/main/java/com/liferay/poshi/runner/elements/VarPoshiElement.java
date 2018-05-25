@@ -257,7 +257,7 @@ public class VarPoshiElement extends PoshiElement {
 			return false;
 		}
 
-		if (readableSyntax.contains(" = return(")) {
+		if (isMacroReturnVar(readableSyntax)) {
 			return false;
 		}
 

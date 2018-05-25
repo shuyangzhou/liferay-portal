@@ -4,7 +4,7 @@
 	<property name="custom.properties" value="default.layout.template.id=1_column${line.separator}company.default.time.zone=America/Los_Angeles" />
 	<property name="testray.main.component.name" value="Calendar" />
 
-	<var name="pageName" value="Calendar Page" />
+	<var name="pageName" value="Staging Test Page" />
 	<var name="portletName" value="Calendar" />
 
 	<set-up>
@@ -25,19 +25,19 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="SitePages#addPublicPage">
 			<var name="pageName" value="Staging Test Page" />
-			<var name="sitePageType" value="Layout" />
+			<var name="sitePageType" value="Widget Page" />
 		</execute>
 
 		<execute macro="SitePages#configurePage">
 			<var name="columnName" value="1 Column" />
 			<var name="pageName" value="Staging Test Page" />
 			<var name="privacy" value="Public" />
-			<var name="sitePageType" value="Layout" />
+			<var name="sitePageType" value="Widget Page" />
 		</execute>
 
 		<execute macro="Navigator#gotoSitePage">
@@ -61,7 +61,7 @@
 			</then>
 			<else>
 				<execute macro="Navigator#gotoPage">
-					<var name="pageName" value="Calendar Page" />
+					<var name="pageName" value="Staging Test Page" />
 				</execute>
 
 				<if>

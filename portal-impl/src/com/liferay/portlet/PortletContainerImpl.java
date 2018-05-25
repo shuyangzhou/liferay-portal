@@ -14,6 +14,8 @@
 
 package com.liferay.portlet;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -65,6 +67,7 @@ import com.liferay.portal.kernel.util.comparator.PortletConfigurationIconCompara
 import com.liferay.portal.kernel.webdav.WebDAVStorage;
 import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.theme.PortletDisplayFactory;
+import com.liferay.portlet.internal.PortletAppUtil;
 import com.liferay.util.SerializableUtil;
 
 import java.io.Serializable;
@@ -96,7 +99,9 @@ import javax.servlet.http.HttpSession;
 /**
  * @author Shuyang Zhou
  * @author Raymond Augé
+ * @author Neil Griffin
  */
+@ProviderType
 public class PortletContainerImpl implements PortletContainer {
 
 	@Override
@@ -192,7 +197,30 @@ public class PortletContainerImpl implements PortletContainer {
 					_processGroupId(request, portlet);
 				}
 
-				_render(request, response, portlet);
+				_render(request, response, portlet, false);
+
+				return null;
+			});
+	}
+
+	@Override
+	public void renderHeaders(
+			HttpServletRequest request, HttpServletResponse response,
+			Portlet portlet)
+		throws PortletContainerException {
+
+		_preserveGroupIds(
+			request,
+			() -> {
+				String portletId = ParamUtil.getString(request, "p_p_id");
+
+				if ((portlet != null) &&
+					portletId.equals(portlet.getPortletId())) {
+
+					_processGroupId(request, portlet);
+				}
+
+				_render(request, response, portlet, true);
 
 				return null;
 			});
@@ -682,7 +710,7 @@ public class PortletContainerImpl implements PortletContainer {
 
 	private void _render(
 			HttpServletRequest request, HttpServletResponse response,
-			Portlet portlet)
+			Portlet portlet, boolean headerPhase)
 		throws Exception {
 
 		if ((portlet != null) && portlet.isInstanceable() &&
@@ -756,6 +784,10 @@ public class PortletContainerImpl implements PortletContainer {
 
 		if (path == null) {
 			path = "/html/portal/render_portlet.jsp";
+		}
+
+		if (headerPhase) {
+			path = "/html/portal/header_portlet.jsp";
 		}
 
 		RequestDispatcher requestDispatcher =
@@ -845,8 +877,20 @@ public class PortletContainerImpl implements PortletContainer {
 		WindowState windowState = (WindowState)request.getAttribute(
 			WebKeys.WINDOW_STATE);
 
+		int portletSpecMajorVersion = PortletAppUtil.getSpecMajorVersion(
+			portlet.getPortletApp());
+
+		if (portletSpecMajorVersion == 3) {
+			WindowState requestWindowState = WindowStateFactory.getWindowState(
+				ParamUtil.getString(request, "p_p_state"), 3);
+
+			if (WindowState.UNDEFINED.equals(requestWindowState)) {
+				windowState = requestWindowState;
+			}
+		}
+
 		PortletMode portletMode = PortletModeFactory.getPortletMode(
-			ParamUtil.getString(request, "p_p_mode"));
+			ParamUtil.getString(request, "p_p_mode"), portletSpecMajorVersion);
 
 		PortletPreferencesIds portletPreferencesIds =
 			PortletPreferencesFactoryUtil.getPortletPreferencesIds(

@@ -5,10 +5,13 @@ definition {
 		);
 	}
 
+	@prose = "I assert the ${breadcrumbName}"
 	macro viewPG {
 		var key_breadcrumbName = "${breadcrumbName}";
 		var breadcrumbNameUppercase = StringUtil.upperCase('${breadcrumbName}');
 
 		AssertTextEquals(locator1 = "Breadcrumb#BREADCRUMB_ENTRY", value1 = "${breadcrumbNameUppercase}");
+
+		return "${breadcrumbNameUppercase}";
 	}
 }
