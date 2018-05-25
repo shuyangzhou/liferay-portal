@@ -23,6 +23,11 @@ public class UpgradeSchema extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		upgrade(new UpgradeAssetCategory());
+		upgrade(new UpgradeAssetVocabulary());
+		upgrade(new UpgradeOrganization());
+		upgrade(new UpgradeUser());
+		upgrade(new UpgradeUserGroup());
 		upgrade(new UpgradeMVCCVersion());
 	}
 
