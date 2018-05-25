@@ -4607,7 +4607,11 @@ public class PortalImpl implements Portal {
 		PortletResponseImpl portletResponseImpl =
 			PortletResponseImpl.getPortletResponseImpl(portletResponse);
 
-		return ((RenderResponseImpl)portletResponseImpl).getTitle();
+		if (portletResponseImpl instanceof RenderResponseImpl) {
+			return ((RenderResponseImpl)portletResponseImpl).getTitle();
+		}
+
+		return null;
 	}
 
 	@Override
