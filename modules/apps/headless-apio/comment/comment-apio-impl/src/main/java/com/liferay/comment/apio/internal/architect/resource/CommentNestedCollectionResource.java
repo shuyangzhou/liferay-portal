@@ -48,8 +48,8 @@ public class CommentNestedCollectionResource
 		<Comment, Long, CommentIdentifier, Long, CommentIdentifier> {
 
 	@Override
-	public NestedCollectionRoutes<Comment, Long> collectionRoutes(
-		NestedCollectionRoutes.Builder<Comment, Long> builder) {
+	public NestedCollectionRoutes<Comment, Long, Long> collectionRoutes(
+		NestedCollectionRoutes.Builder<Comment, Long, Long> builder) {
 
 		return builder.addGetter(
 			this::_getPageItems, PermissionChecker.class
@@ -58,7 +58,7 @@ public class CommentNestedCollectionResource
 
 	@Override
 	public String getName() {
-		return "comments";
+		return "comment";
 	}
 
 	@Override

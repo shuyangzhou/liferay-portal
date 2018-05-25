@@ -16,6 +16,9 @@ package com.liferay.exportimport.internal.staging;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.changeset.model.ChangesetCollection;
+import com.liferay.changeset.service.ChangesetCollectionLocalService;
+import com.liferay.changeset.service.ChangesetEntryLocalService;
 import com.liferay.document.library.kernel.exception.DuplicateFileEntryException;
 import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.exception.FileNameException;
@@ -72,6 +75,7 @@ import com.liferay.portal.kernel.lock.LockManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -83,6 +87,7 @@ import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.RecentLayoutBranch;
 import com.liferay.portal.kernel.model.RecentLayoutRevision;
 import com.liferay.portal.kernel.model.RecentLayoutSetBranch;
+import com.liferay.portal.kernel.model.StagedGroupedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.WorkflowInstanceLink;
 import com.liferay.portal.kernel.model.adapter.StagedTheme;
@@ -95,6 +100,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutBranchLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
@@ -138,6 +144,8 @@ import com.liferay.portal.service.http.GroupServiceHttp;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.exportimport.service.http.StagingServiceHttp;
 import com.liferay.portlet.exportimport.staging.ProxiedLayoutsThreadLocal;
+import com.liferay.staging.StagingGroupHelper;
+import com.liferay.staging.StagingGroupHelperUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -177,6 +185,43 @@ import org.osgi.service.component.annotations.Reference;
 @DoPrivileged
 @ProviderType
 public class StagingImpl implements Staging {
+
+	@Override
+	public <T extends BaseModel> void addModelToChangesetCollection(T model)
+		throws PortalException {
+
+		if (!(model instanceof StagedGroupedModel) ||
+			ExportImportThreadLocal.isInitialLayoutStagingInProcess()) {
+
+			return;
+		}
+
+		StagedGroupedModel stagedGroupedModel = (StagedGroupedModel)model;
+
+		long classNameId = _classNameLocalService.getClassNameId(
+			stagedGroupedModel.getModelClassName());
+		long classPK = (long)stagedGroupedModel.getPrimaryKeyObj();
+
+		long groupId = stagedGroupedModel.getGroupId();
+
+		Group group = _groupLocalService.getGroup(groupId);
+
+		StagingGroupHelper stagingGroupHelper =
+			StagingGroupHelperUtil.getStagingGroupHelper();
+
+		if (!stagingGroupHelper.isStagingGroup(group)) {
+			return;
+		}
+
+		ChangesetCollection changesetCollection =
+			_changesetCollectionLocalService.fetchOrAddChangesetCollection(
+				groupId,
+				StagingConstants.RANGE_FROM_LAST_PUBLISH_DATE_CHANGESET_NAME);
+
+		_changesetEntryLocalService.fetchOrAddChangesetEntry(
+			changesetCollection.getChangesetCollectionId(), classNameId,
+			classPK);
+	}
 
 	@Override
 	public String buildRemoteURL(
@@ -292,7 +337,7 @@ public class StagingImpl implements Staging {
 			portletRequest, targetGroupId);
 
 		Map<String, String[]> parameterMap =
-			ExportImportConfigurationParameterMapFactory.buildParameterMap(
+			_exportImportConfigurationParameterMapFactory.buildParameterMap(
 				portletRequest);
 
 		parameterMap.put(
@@ -344,7 +389,7 @@ public class StagingImpl implements Staging {
 		long plid = ParamUtil.getLong(portletRequest, "plid");
 
 		Map<String, String[]> parameterMap =
-			ExportImportConfigurationParameterMapFactory.buildParameterMap(
+			_exportImportConfigurationParameterMapFactory.buildParameterMap(
 				portletRequest);
 
 		return publishPortlet(
@@ -368,7 +413,7 @@ public class StagingImpl implements Staging {
 			WebKeys.THEME_DISPLAY);
 
 		Map<String, String[]> parameterMap =
-			ExportImportConfigurationParameterMapFactory.buildParameterMap(
+			_exportImportConfigurationParameterMapFactory.buildParameterMap(
 				portletRequest);
 
 		return publishPortlet(
@@ -1882,7 +1927,8 @@ public class StagingImpl implements Staging {
 	@Deprecated
 	@Override
 	public Map<String, String[]> getStagingParameters() {
-		return ExportImportConfigurationParameterMapFactory.buildParameterMap();
+		return
+			_exportImportConfigurationParameterMapFactory.buildParameterMap();
 	}
 
 	/**
@@ -1895,7 +1941,7 @@ public class StagingImpl implements Staging {
 	public Map<String, String[]> getStagingParameters(
 		PortletRequest portletRequest) {
 
-		return ExportImportConfigurationParameterMapFactory.buildParameterMap(
+		return _exportImportConfigurationParameterMapFactory.buildParameterMap(
 			portletRequest);
 	}
 
@@ -2076,7 +2122,7 @@ public class StagingImpl implements Staging {
 		throws PortalException {
 
 		Map<String, String[]> parameterMap =
-			ExportImportConfigurationParameterMapFactory.buildParameterMap();
+			_exportImportConfigurationParameterMapFactory.buildParameterMap();
 
 		parameterMap.put(
 			PortletDataHandlerKeys.DELETE_MISSING_LAYOUTS,
@@ -2458,7 +2504,7 @@ public class StagingImpl implements Staging {
 				portletRequest, targetGroupId);
 
 			Map<String, String[]> parameterMap =
-				ExportImportConfigurationParameterMapFactory.buildParameterMap(
+				_exportImportConfigurationParameterMapFactory.buildParameterMap(
 					portletRequest);
 
 			parameterMap.put(
@@ -2510,7 +2556,7 @@ public class StagingImpl implements Staging {
 		long plid = ParamUtil.getLong(portletRequest, "plid");
 
 		Map<String, String[]> parameterMap =
-			ExportImportConfigurationParameterMapFactory.buildParameterMap(
+			_exportImportConfigurationParameterMapFactory.buildParameterMap(
 				portletRequest);
 
 		return publishPortlet(
@@ -2586,7 +2632,7 @@ public class StagingImpl implements Staging {
 			Map<Long, Boolean> layoutIdMap = _exportImportHelper.getLayoutIdMap(
 				portletRequest);
 			Map<String, String[]> parameterMap =
-				ExportImportConfigurationParameterMapFactory.buildParameterMap(
+				_exportImportConfigurationParameterMapFactory.buildParameterMap(
 					portletRequest);
 			remoteAddress = ParamUtil.getString(
 				portletRequest, "remoteAddress",
@@ -2663,7 +2709,7 @@ public class StagingImpl implements Staging {
 		long[] layoutIds = _exportImportHelper.getLayoutIds(
 			portletRequest, targetGroupId);
 		Map<String, String[]> parameterMap =
-			ExportImportConfigurationParameterMapFactory.buildParameterMap(
+			_exportImportConfigurationParameterMapFactory.buildParameterMap(
 				portletRequest);
 		ScheduleInformation scheduleInformation = getScheduleInformation(
 			portletRequest, targetGroupId, false);
@@ -2718,7 +2764,7 @@ public class StagingImpl implements Staging {
 			layoutIds = _exportImportHelper.getLayoutIds(
 				portletRequest, targetGroupId);
 			parameterMap =
-				ExportImportConfigurationParameterMapFactory.buildParameterMap(
+				_exportImportConfigurationParameterMapFactory.buildParameterMap(
 					portletRequest);
 		}
 
@@ -2787,7 +2833,7 @@ public class StagingImpl implements Staging {
 			privateLayout = getPrivateLayout(portletRequest);
 			layoutIdMap = _exportImportHelper.getLayoutIdMap(portletRequest);
 			parameterMap =
-				ExportImportConfigurationParameterMapFactory.buildParameterMap(
+				_exportImportConfigurationParameterMapFactory.buildParameterMap(
 					portletRequest);
 			remoteAddress = ParamUtil.getString(
 				portletRequest, "remoteAddress",
@@ -3352,10 +3398,13 @@ public class StagingImpl implements Staging {
 		throws PortalException {
 
 		if (ExportImportThreadLocal.isLayoutStagingInProcess()) {
-			LayoutRevision layoutRevision =
-				_layoutRevisionLocalService.fetchLastLayoutRevision(plid, true);
+			List<LayoutRevision> layoutRevisions =
+				_layoutRevisionLocalService.getLayoutRevisions(
+					layoutSetBranchId, plid, true);
 
-			if (layoutRevision != null) {
+			if (layoutRevisions != null) {
+				LayoutRevision layoutRevision = layoutRevisions.get(0);
+
 				return layoutRevision.getLayoutRevisionId();
 			}
 			else {
@@ -3991,11 +4040,24 @@ public class StagingImpl implements Staging {
 	private BackgroundTaskManager _backgroundTaskManager;
 
 	@Reference
+	private ChangesetCollectionLocalService _changesetCollectionLocalService;
+
+	@Reference
+	private ChangesetEntryLocalService _changesetEntryLocalService;
+
+	@Reference
+	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
 	private DLValidator _dlValidator;
 
 	@Reference
 	private ExportImportConfigurationLocalService
 		_exportImportConfigurationLocalService;
+
+	@Reference
+	private ExportImportConfigurationParameterMapFactory
+		_exportImportConfigurationParameterMapFactory;
 
 	@Reference
 	private ExportImportHelper _exportImportHelper;

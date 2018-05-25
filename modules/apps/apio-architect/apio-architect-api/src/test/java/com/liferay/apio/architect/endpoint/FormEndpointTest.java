@@ -14,10 +14,10 @@
 
 package com.liferay.apio.architect.endpoint;
 
-import static com.liferay.apio.architect.routes.RoutesTestUtil.COLLECTION_PERMISSION_FUNCTION;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.FORM_BUILDER_FUNCTION;
+import static com.liferay.apio.architect.routes.RoutesTestUtil.HAS_ADDING_PERMISSION_FUNCTION;
 import static com.liferay.apio.architect.routes.RoutesTestUtil.REQUEST_PROVIDE_FUNCTION;
-import static com.liferay.apio.architect.routes.RoutesTestUtil.getNestedCollectionPermissionFunction;
+import static com.liferay.apio.architect.routes.RoutesTestUtil.hasNestedAddingPermissionFunction;
 import static com.liferay.apio.architect.test.util.result.TryMatchers.aFailTry;
 import static com.liferay.apio.architect.test.util.result.TryMatchers.aSuccessTry;
 
@@ -147,18 +147,18 @@ public class FormEndpointTest {
 		assertThat(form.id, is("u/name"));
 	}
 
-	private static <T> CollectionRoutes<T> _collectionRoutes() {
-		CollectionRoutes.Builder<T> builder = new CollectionRoutes.Builder<>(
+	private static <T, S> CollectionRoutes<T, S> _collectionRoutes() {
+		CollectionRoutes.Builder<T, S> builder = new CollectionRoutes.Builder<>(
 			"name", REQUEST_PROVIDE_FUNCTION,
 			__ -> {
 			});
 
 		return builder.addCreator(
-			__ -> null, COLLECTION_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
+			__ -> null, HAS_ADDING_PERMISSION_FUNCTION, FORM_BUILDER_FUNCTION
 		).build();
 	}
 
-	private static <T> CollectionRoutes<T> _emptyCollectionRoutes() {
+	private static <T, S> CollectionRoutes<T, S> _emptyCollectionRoutes() {
 		return new CollectionRoutes<>(
 			new CollectionRoutes.Builder<>(
 				"", httpServletRequest -> aClass -> Optional.empty(),
@@ -174,7 +174,7 @@ public class FormEndpointTest {
 				}));
 	}
 
-	private static <T, S> NestedCollectionRoutes<T, S>
+	private static <T, S, U> NestedCollectionRoutes<T, S, U>
 		_emptyNestedCollectionRoutes() {
 
 		return new NestedCollectionRoutes<>(
@@ -196,17 +196,17 @@ public class FormEndpointTest {
 		).build();
 	}
 
-	private static <T, S> NestedCollectionRoutes<T, S>
+	private static <T, S, U> NestedCollectionRoutes<T, S, U>
 		_nestedCollectionRoutes() {
 
-		NestedCollectionRoutes.Builder<T, S> builder =
+		NestedCollectionRoutes.Builder<T, S, U> builder =
 			new NestedCollectionRoutes.Builder<>(
 				"name", "nestedName", REQUEST_PROVIDE_FUNCTION,
 				__ -> {
 				});
 
 		return builder.addCreator(
-			(s, body) -> null, getNestedCollectionPermissionFunction(),
+			(s, body) -> null, hasNestedAddingPermissionFunction(),
 			FORM_BUILDER_FUNCTION
 		).build();
 	}

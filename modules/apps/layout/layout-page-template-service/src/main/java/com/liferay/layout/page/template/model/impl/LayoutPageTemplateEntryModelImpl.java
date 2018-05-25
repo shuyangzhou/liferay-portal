@@ -85,8 +85,9 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 			{ "classTypeId", Types.BIGINT },
 			{ "name", Types.VARCHAR },
 			{ "type_", Types.INTEGER },
-			{ "htmlPreviewEntryId", Types.BIGINT },
+			{ "previewFileEntryId", Types.BIGINT },
 			{ "defaultTemplate", Types.BOOLEAN },
+			{ "layoutPrototypeId", Types.BIGINT },
 			{ "status", Types.INTEGER },
 			{ "statusByUserId", Types.BIGINT },
 			{ "statusByUserName", Types.VARCHAR },
@@ -107,15 +108,16 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 		TABLE_COLUMNS_MAP.put("classTypeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("type_", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("htmlPreviewEntryId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("previewFileEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("defaultTemplate", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("layoutPrototypeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("statusByUserId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("statusDate", Types.TIMESTAMP);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table LayoutPageTemplateEntry (layoutPageTemplateEntryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,layoutPageTemplateCollectionId LONG,classNameId LONG,classTypeId LONG,name VARCHAR(75) null,type_ INTEGER,htmlPreviewEntryId LONG,defaultTemplate BOOLEAN,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null)";
+	public static final String TABLE_SQL_CREATE = "create table LayoutPageTemplateEntry (layoutPageTemplateEntryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,layoutPageTemplateCollectionId LONG,classNameId LONG,classTypeId LONG,name VARCHAR(75) null,type_ INTEGER,previewFileEntryId LONG,defaultTemplate BOOLEAN,layoutPrototypeId LONG,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null)";
 	public static final String TABLE_SQL_DROP = "drop table LayoutPageTemplateEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY layoutPageTemplateEntry.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY LayoutPageTemplateEntry.name ASC";
@@ -136,9 +138,10 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 	public static final long DEFAULTTEMPLATE_COLUMN_BITMASK = 4L;
 	public static final long GROUPID_COLUMN_BITMASK = 8L;
 	public static final long LAYOUTPAGETEMPLATECOLLECTIONID_COLUMN_BITMASK = 16L;
-	public static final long NAME_COLUMN_BITMASK = 32L;
-	public static final long STATUS_COLUMN_BITMASK = 64L;
-	public static final long TYPE_COLUMN_BITMASK = 128L;
+	public static final long LAYOUTPROTOTYPEID_COLUMN_BITMASK = 32L;
+	public static final long NAME_COLUMN_BITMASK = 64L;
+	public static final long STATUS_COLUMN_BITMASK = 128L;
+	public static final long TYPE_COLUMN_BITMASK = 256L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -166,8 +169,9 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 		model.setClassTypeId(soapModel.getClassTypeId());
 		model.setName(soapModel.getName());
 		model.setType(soapModel.getType());
-		model.setHtmlPreviewEntryId(soapModel.getHtmlPreviewEntryId());
+		model.setPreviewFileEntryId(soapModel.getPreviewFileEntryId());
 		model.setDefaultTemplate(soapModel.isDefaultTemplate());
+		model.setLayoutPrototypeId(soapModel.getLayoutPrototypeId());
 		model.setStatus(soapModel.getStatus());
 		model.setStatusByUserId(soapModel.getStatusByUserId());
 		model.setStatusByUserName(soapModel.getStatusByUserName());
@@ -251,8 +255,9 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 		attributes.put("classTypeId", getClassTypeId());
 		attributes.put("name", getName());
 		attributes.put("type", getType());
-		attributes.put("htmlPreviewEntryId", getHtmlPreviewEntryId());
+		attributes.put("previewFileEntryId", getPreviewFileEntryId());
 		attributes.put("defaultTemplate", isDefaultTemplate());
+		attributes.put("layoutPrototypeId", getLayoutPrototypeId());
 		attributes.put("status", getStatus());
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
@@ -340,16 +345,22 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 			setType(type);
 		}
 
-		Long htmlPreviewEntryId = (Long)attributes.get("htmlPreviewEntryId");
+		Long previewFileEntryId = (Long)attributes.get("previewFileEntryId");
 
-		if (htmlPreviewEntryId != null) {
-			setHtmlPreviewEntryId(htmlPreviewEntryId);
+		if (previewFileEntryId != null) {
+			setPreviewFileEntryId(previewFileEntryId);
 		}
 
 		Boolean defaultTemplate = (Boolean)attributes.get("defaultTemplate");
 
 		if (defaultTemplate != null) {
 			setDefaultTemplate(defaultTemplate);
+		}
+
+		Long layoutPrototypeId = (Long)attributes.get("layoutPrototypeId");
+
+		if (layoutPrototypeId != null) {
+			setLayoutPrototypeId(layoutPrototypeId);
 		}
 
 		Integer status = (Integer)attributes.get("status");
@@ -634,13 +645,13 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 
 	@JSON
 	@Override
-	public long getHtmlPreviewEntryId() {
-		return _htmlPreviewEntryId;
+	public long getPreviewFileEntryId() {
+		return _previewFileEntryId;
 	}
 
 	@Override
-	public void setHtmlPreviewEntryId(long htmlPreviewEntryId) {
-		_htmlPreviewEntryId = htmlPreviewEntryId;
+	public void setPreviewFileEntryId(long previewFileEntryId) {
+		_previewFileEntryId = previewFileEntryId;
 	}
 
 	@JSON
@@ -670,6 +681,29 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 
 	public boolean getOriginalDefaultTemplate() {
 		return _originalDefaultTemplate;
+	}
+
+	@JSON
+	@Override
+	public long getLayoutPrototypeId() {
+		return _layoutPrototypeId;
+	}
+
+	@Override
+	public void setLayoutPrototypeId(long layoutPrototypeId) {
+		_columnBitmask |= LAYOUTPROTOTYPEID_COLUMN_BITMASK;
+
+		if (!_setOriginalLayoutPrototypeId) {
+			_setOriginalLayoutPrototypeId = true;
+
+			_originalLayoutPrototypeId = _layoutPrototypeId;
+		}
+
+		_layoutPrototypeId = layoutPrototypeId;
+	}
+
+	public long getOriginalLayoutPrototypeId() {
+		return _originalLayoutPrototypeId;
 	}
 
 	@JSON
@@ -872,8 +906,9 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 		layoutPageTemplateEntryImpl.setClassTypeId(getClassTypeId());
 		layoutPageTemplateEntryImpl.setName(getName());
 		layoutPageTemplateEntryImpl.setType(getType());
-		layoutPageTemplateEntryImpl.setHtmlPreviewEntryId(getHtmlPreviewEntryId());
+		layoutPageTemplateEntryImpl.setPreviewFileEntryId(getPreviewFileEntryId());
 		layoutPageTemplateEntryImpl.setDefaultTemplate(isDefaultTemplate());
+		layoutPageTemplateEntryImpl.setLayoutPrototypeId(getLayoutPrototypeId());
 		layoutPageTemplateEntryImpl.setStatus(getStatus());
 		layoutPageTemplateEntryImpl.setStatusByUserId(getStatusByUserId());
 		layoutPageTemplateEntryImpl.setStatusByUserName(getStatusByUserName());
@@ -966,6 +1001,10 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 
 		layoutPageTemplateEntryModelImpl._setOriginalDefaultTemplate = false;
 
+		layoutPageTemplateEntryModelImpl._originalLayoutPrototypeId = layoutPageTemplateEntryModelImpl._layoutPrototypeId;
+
+		layoutPageTemplateEntryModelImpl._setOriginalLayoutPrototypeId = false;
+
 		layoutPageTemplateEntryModelImpl._originalStatus = layoutPageTemplateEntryModelImpl._status;
 
 		layoutPageTemplateEntryModelImpl._setOriginalStatus = false;
@@ -1027,9 +1066,11 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 
 		layoutPageTemplateEntryCacheModel.type = getType();
 
-		layoutPageTemplateEntryCacheModel.htmlPreviewEntryId = getHtmlPreviewEntryId();
+		layoutPageTemplateEntryCacheModel.previewFileEntryId = getPreviewFileEntryId();
 
 		layoutPageTemplateEntryCacheModel.defaultTemplate = isDefaultTemplate();
+
+		layoutPageTemplateEntryCacheModel.layoutPrototypeId = getLayoutPrototypeId();
 
 		layoutPageTemplateEntryCacheModel.status = getStatus();
 
@@ -1057,7 +1098,7 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(39);
 
 		sb.append("{layoutPageTemplateEntryId=");
 		sb.append(getLayoutPageTemplateEntryId());
@@ -1083,10 +1124,12 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 		sb.append(getName());
 		sb.append(", type=");
 		sb.append(getType());
-		sb.append(", htmlPreviewEntryId=");
-		sb.append(getHtmlPreviewEntryId());
+		sb.append(", previewFileEntryId=");
+		sb.append(getPreviewFileEntryId());
 		sb.append(", defaultTemplate=");
 		sb.append(isDefaultTemplate());
+		sb.append(", layoutPrototypeId=");
+		sb.append(getLayoutPrototypeId());
 		sb.append(", status=");
 		sb.append(getStatus());
 		sb.append(", statusByUserId=");
@@ -1102,7 +1145,7 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(58);
+		StringBundler sb = new StringBundler(61);
 
 		sb.append("<model><model-name>");
 		sb.append(
@@ -1158,12 +1201,16 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 		sb.append(getType());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>htmlPreviewEntryId</column-name><column-value><![CDATA[");
-		sb.append(getHtmlPreviewEntryId());
+			"<column><column-name>previewFileEntryId</column-name><column-value><![CDATA[");
+		sb.append(getPreviewFileEntryId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>defaultTemplate</column-name><column-value><![CDATA[");
 		sb.append(isDefaultTemplate());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>layoutPrototypeId</column-name><column-value><![CDATA[");
+		sb.append(getLayoutPrototypeId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>status</column-name><column-value><![CDATA[");
@@ -1215,10 +1262,13 @@ public class LayoutPageTemplateEntryModelImpl extends BaseModelImpl<LayoutPageTe
 	private int _type;
 	private int _originalType;
 	private boolean _setOriginalType;
-	private long _htmlPreviewEntryId;
+	private long _previewFileEntryId;
 	private boolean _defaultTemplate;
 	private boolean _originalDefaultTemplate;
 	private boolean _setOriginalDefaultTemplate;
+	private long _layoutPrototypeId;
+	private long _originalLayoutPrototypeId;
+	private boolean _setOriginalLayoutPrototypeId;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;

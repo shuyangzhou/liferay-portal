@@ -1668,7 +1668,7 @@
 				<execute macro="ProductMenu#gotoPortlet">
 					<var name="category" value="Build" />
 					<var name="panel" value="Site Administration" />
-					<var name="portlet" value="Site Pages" />
+					<var name="portlet" value="Pages" />
 				</execute>
 
 				<execute macro="SitePages#addPublicPage">
@@ -1693,7 +1693,7 @@
 
 		<execute macro="CalendarEvent#delete" />
 
-		<execute macro="Alert#waitForSuccessMessageHide" />
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="tearDownOnBusyDayInCurrentMonth">
@@ -1732,7 +1732,7 @@
 	</command>
 
 	<command name="viewAllDay">
-		<for list="${viewType}" param="Day,Week,Month">
+		<for list="Day,Week,Month" param="viewType">
 			<execute macro="CalendarNavigator#gotoView">
 				<var name="viewType" value="${viewType}" />
 			</execute>
@@ -1936,7 +1936,7 @@
 	</command>
 
 	<command name="viewEventNotToday">
-		<for list="${viewType}" param="Day,Week,Month">
+		<for list="Day,Week,Month" param="viewType">
 			<execute macro="CalendarNavigator#gotoView">
 				<var name="viewType" value="${viewType}" />
 			</execute>
@@ -2275,7 +2275,7 @@
 	</command>
 
 	<command name="viewYearly">
-		<for list="${viewType}" param="Day,Week,Month">
+		<for list="Day,Week,Month" param="viewType">
 			<execute macro="CalendarNavigator#gotoView">
 				<var name="viewType" value="${viewType}" />
 			</execute>

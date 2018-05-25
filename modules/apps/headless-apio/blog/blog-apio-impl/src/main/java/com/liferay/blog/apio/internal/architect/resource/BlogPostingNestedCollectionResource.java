@@ -28,7 +28,7 @@ import com.liferay.blog.apio.internal.architect.form.BlogPostingForm;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryService;
 import com.liferay.comment.apio.architect.identifier.CommentIdentifier;
-import com.liferay.media.object.apio.architect.identifier.FileEntryIdentifier;
+import com.liferay.media.object.apio.architect.identifier.MediaObjectIdentifier;
 import com.liferay.person.apio.architect.identifier.PersonIdentifier;
 import com.liferay.portal.apio.identifier.ClassNameClassPK;
 import com.liferay.portal.apio.permission.HasPermission;
@@ -57,21 +57,21 @@ public class BlogPostingNestedCollectionResource
 		Long, WebSiteIdentifier> {
 
 	@Override
-	public NestedCollectionRoutes<BlogsEntry, Long> collectionRoutes(
-		NestedCollectionRoutes.Builder<BlogsEntry, Long> builder) {
+	public NestedCollectionRoutes<BlogsEntry, Long, Long> collectionRoutes(
+		NestedCollectionRoutes.Builder<BlogsEntry, Long, Long> builder) {
 
 		return builder.addGetter(
 			this::_getPageItems
 		).addCreator(
 			this::_addBlogsEntry,
-			_hasPermission.forAddingEntries(BlogsEntry.class),
+			_hasPermission.forAddingIn(WebSiteIdentifier.class),
 			BlogPostingForm::buildForm
 		).build();
 	}
 
 	@Override
 	public String getName() {
-		return "blog-postings";
+		return "blog-posting";
 	}
 
 	@Override
@@ -81,11 +81,9 @@ public class BlogPostingNestedCollectionResource
 		return builder.addGetter(
 			_blogsService::getEntry
 		).addRemover(
-			idempotent(_blogsService::deleteEntry),
-			_hasPermission.forDeleting(BlogsEntry.class)
+			idempotent(_blogsService::deleteEntry), _hasPermission::forDeleting
 		).addUpdater(
-			this::_updateBlogsEntry,
-			_hasPermission.forUpdating(BlogsEntry.class),
+			this::_updateBlogsEntry, _hasPermission::forUpdating,
 			BlogPostingForm::buildForm
 		).build();
 	}
@@ -117,7 +115,7 @@ public class BlogPostingNestedCollectionResource
 		).addLinkedModel(
 			"creator", PersonIdentifier.class, BlogsEntry::getUserId
 		).addLinkedModel(
-			"image", FileEntryIdentifier.class,
+			"image", MediaObjectIdentifier.class,
 			BlogsEntry::getCoverImageFileEntryId
 		).addRelatedCollection(
 			"comments", CommentIdentifier.class
@@ -196,7 +194,7 @@ public class BlogPostingNestedCollectionResource
 	@Reference
 	private BlogsEntryService _blogsService;
 
-	@Reference
-	private HasPermission _hasPermission;
+	@Reference(target = "(model.class.name=com.liferay.blogs.model.BlogsEntry)")
+	private HasPermission<Long> _hasPermission;
 
 }

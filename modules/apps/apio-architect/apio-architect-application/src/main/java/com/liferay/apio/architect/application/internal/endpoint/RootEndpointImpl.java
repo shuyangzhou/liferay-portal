@@ -27,7 +27,6 @@ import com.liferay.apio.architect.endpoint.FormEndpoint;
 import com.liferay.apio.architect.endpoint.RootEndpoint;
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.routes.ItemRoutes;
-import com.liferay.apio.architect.routes.NestedCollectionRoutes;
 import com.liferay.apio.architect.single.model.SingleModel;
 import com.liferay.apio.architect.uri.Path;
 import com.liferay.apio.architect.url.ServerURL;
@@ -38,7 +37,6 @@ import com.liferay.apio.architect.wiring.osgi.manager.representable.Representabl
 import com.liferay.apio.architect.wiring.osgi.manager.router.CollectionRouterManager;
 import com.liferay.apio.architect.wiring.osgi.manager.router.ItemRouterManager;
 import com.liferay.apio.architect.wiring.osgi.manager.router.NestedCollectionRouterManager;
-import com.liferay.apio.architect.wiring.osgi.manager.router.ReusableNestedCollectionRouterManager;
 
 import java.util.List;
 import java.util.Optional;
@@ -96,7 +94,7 @@ public class RootEndpointImpl implements RootEndpoint {
 		return new FormEndpoint(
 			_collectionRouterManager::getCollectionRoutesOptional,
 			_itemRouterManager::getItemRoutesOptional,
-			this::_getNestedCollectionRoutesOptional);
+			_nestedCollectionRouterManager::getNestedCollectionRoutesOptional);
 	}
 
 	@Override
@@ -140,23 +138,9 @@ public class RootEndpointImpl implements RootEndpoint {
 			() -> _collectionRouterManager.getCollectionRoutesOptional(name),
 			() -> _representableManager.getRepresentorOptional(name),
 			() -> _itemRouterManager.getItemRoutesOptional(name),
-			nestedName -> _getNestedCollectionRoutesOptional(name, nestedName),
+			nestedName -> _nestedCollectionRouterManager.
+				getNestedCollectionRoutesOptional(name, nestedName),
 			_pathIdentifierMapperManager::mapToIdentifierOrFail);
-	}
-
-	private <T> Optional<NestedCollectionRoutes<T, Object>>
-		_getNestedCollectionRoutesOptional(String name, String nestedName) {
-
-		Optional<NestedCollectionRoutes<T, Object>> optional =
-			_nestedCollectionRouterManager.getNestedCollectionRoutesOptional(
-				name, nestedName);
-
-		return optional.map(
-			Optional::of
-		).orElseGet(
-			() -> _reusableNestedCollectionRouterManager.
-				getNestedCollectionRoutesOptional(nestedName)
-		);
 	}
 
 	private <T, S> Try<SingleModel<T>> _getSingleModelTry(
@@ -203,9 +187,5 @@ public class RootEndpointImpl implements RootEndpoint {
 
 	@Reference
 	private RepresentableManager _representableManager;
-
-	@Reference
-	private ReusableNestedCollectionRouterManager
-		_reusableNestedCollectionRouterManager;
 
 }

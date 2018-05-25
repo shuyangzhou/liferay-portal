@@ -16,14 +16,11 @@ package com.liferay.bookmarks.uad.anonymizer;
 
 import com.liferay.bookmarks.model.BookmarksEntry;
 import com.liferay.bookmarks.service.BookmarksEntryLocalService;
-import com.liferay.bookmarks.uad.constants.BookmarksUADConstants;
+import com.liferay.bookmarks.uad.constants.BookmarksEntryUADConstants;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.user.associated.data.anonymizer.DynamicQueryUADAnonymizer;
-
-import java.util.Arrays;
-import java.util.List;
 
 import org.osgi.service.component.annotations.Reference;
 
@@ -65,11 +62,6 @@ public abstract class BaseBookmarksEntryUADAnonymizer
 	}
 
 	@Override
-	public List<String> getNonanonymizableFieldNames() {
-		return Arrays.asList("description", "name", "url");
-	}
-
-	@Override
 	public Class<BookmarksEntry> getTypeClass() {
 		return BookmarksEntry.class;
 	}
@@ -81,7 +73,7 @@ public abstract class BaseBookmarksEntryUADAnonymizer
 
 	@Override
 	protected String[] doGetUserIdFieldNames() {
-		return BookmarksUADConstants.USER_ID_FIELD_NAMES_BOOKMARKS_ENTRY;
+		return BookmarksEntryUADConstants.USER_ID_FIELD_NAMES_BOOKMARKS_ENTRY;
 	}
 
 	@Reference

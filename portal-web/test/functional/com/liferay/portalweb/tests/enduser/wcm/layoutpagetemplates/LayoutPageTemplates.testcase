@@ -1,4 +1,5 @@
 <definition component-name="portal-wcm">
+	<property name="portal.release" value="true" />
 	<property name="portal.upstream" value="true" />
 	<property name="testray.main.component.name" value="Layout Page Templates" />
 
@@ -20,7 +21,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Fragments" />
+			<var name="portlet" value="Page Fragments" />
 		</execute>
 
 		<execute macro="Collection#addCollection">
@@ -44,6 +45,8 @@
 	</tear-down>
 
 	<command name="AddLayoutPageTemplateRemoveFragment" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<execute macro="Navigator#gotoNavNested">
 			<var name="navNested" value="Collection Name" />
 		</execute>
@@ -54,7 +57,7 @@
 
 		<execute macro="TestCase#getFileContent">
 			<return from="fileContent" name="htmlSnippet" />
-			<var name="fileName" value="Document_3.html" />
+			<var name="fileName" value="fragment_button.html" />
 		</execute>
 
 		<execute macro="Fragment#typeFragmentEditor">
@@ -67,7 +70,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="Navigator#gotoNavItem">
@@ -113,7 +116,7 @@
 
 		<execute macro="TestCase#getFileContent">
 			<return from="fileContent" name="htmlSnippet" />
-			<var name="fileName" value="Document_4.html" />
+			<var name="fileName" value="fragment_image.html" />
 		</execute>
 
 		<execute macro="Fragment#typeFragmentEditor">
@@ -123,7 +126,7 @@
 
 		<execute macro="TestCase#getFileContent">
 			<return from="fileContent" name="cssSnippet" />
-			<var name="fileName" value="Document_4.css" />
+			<var name="fileName" value="fragment_image.css" />
 		</execute>
 
 		<execute macro="Fragment#typeFragmentEditor">
@@ -136,7 +139,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="Navigator#gotoNavItem">
@@ -177,7 +180,7 @@
 
 		<execute macro="TestCase#getFileContent">
 			<return from="fileContent" name="htmlSnippet" />
-			<var name="fileName" value="Document_1.html" />
+			<var name="fileName" value="fragment_title.html" />
 		</execute>
 
 		<execute macro="Fragment#typeFragmentEditor">
@@ -190,7 +193,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="Navigator#gotoNavItem">
@@ -225,11 +228,13 @@
 		</execute>
 	</command>
 
-	<command name="DeleteCollection" priority="4">
+	<command name="DeleteCollection" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="Navigator#gotoNavItem">
@@ -241,7 +246,7 @@
 		</execute>
 
 		<execute macro="Collection#deleteCollection">
-			<var name="collectioNName" value="Collection Name" />
+			<var name="collectionName" value="Collection Name" />
 		</execute>
 
 		<execute macro="Collection#viewNotPresent">
@@ -250,10 +255,12 @@
 	</command>
 
 	<command name="DeletePageTemplate" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="Navigator#gotoNavItem">
@@ -275,7 +282,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="Navigator#gotoNavItem">
@@ -299,7 +306,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="Navigator#gotoNavItem">
@@ -318,7 +325,7 @@
 		</execute>
 
 		<execute macro="Collection#viewPresent">
-			<var name="rowEntry" value="Collection Name New" />
+			<var name="collectionName" value="Collection Name New" />
 		</execute>
 	</command>
 
@@ -326,7 +333,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="Navigator#gotoNavItem">
@@ -348,7 +355,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="Navigator#gotoNavItem">
@@ -370,6 +377,8 @@
 	</command>
 
 	<command name="ReorderFragments" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<execute macro="Navigator#gotoNavNested">
 			<var name="navNested" value="Collection Name" />
 		</execute>
@@ -380,7 +389,7 @@
 
 		<execute macro="TestCase#getFileContent">
 			<return from="fileContent" name="htmlSnippet" />
-			<var name="fileName" value="Document_1.html" />
+			<var name="fileName" value="fragment_title.html" />
 		</execute>
 
 		<execute macro="Fragment#typeFragmentEditor">
@@ -390,7 +399,7 @@
 
 		<execute macro="TestCase#getFileContent">
 			<return from="fileContent" name="cssSnippet" />
-			<var name="fileName" value="Document_1.css" />
+			<var name="fileName" value="fragment_title.css" />
 		</execute>
 
 		<execute macro="Fragment#typeFragmentEditor">
@@ -406,7 +415,7 @@
 
 		<execute macro="TestCase#getFileContent">
 			<return from="fileContent" name="htmlSnippet" />
-			<var name="fileName" value="Document_2.html" />
+			<var name="fileName" value="fragment_content.html" />
 		</execute>
 
 		<execute macro="Fragment#typeFragmentEditor">
@@ -416,7 +425,7 @@
 
 		<execute macro="TestCase#getFileContent">
 			<return from="fileContent" name="cssSnippet" />
-			<var name="fileName" value="Document_2.css" />
+			<var name="fileName" value="fragment_content.css" />
 		</execute>
 
 		<execute macro="Fragment#typeFragmentEditor">
@@ -429,7 +438,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="Navigator#gotoNavItem">
@@ -511,7 +520,7 @@
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Build" />
 			<var name="panel" value="Site Administration" />
-			<var name="portlet" value="Site Pages" />
+			<var name="portlet" value="Pages" />
 		</execute>
 
 		<execute macro="Navigator#gotoNavItem">

@@ -32,6 +32,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "form-entries"));
 <clay:management-toolbar
 	actionDropdownItems="<%= ddmFormViewFormInstanceRecordsDisplayContext.getActionItemsDropdownItems() %>"
 	clearResultsURL="<%= ddmFormViewFormInstanceRecordsDisplayContext.getClearResultsURL() %>"
+	componentId="ddmFormInstanceRecordsManagementToolbar"
 	disabled="<%= ddmFormViewFormInstanceRecordsDisplayContext.isDisabledManagementBar() %>"
 	filterDropdownItems="<%= ddmFormViewFormInstanceRecordsDisplayContext.getFilterItemsDropdownItems() %>"
 	itemsTotal="<%= ddmFormViewFormInstanceRecordsDisplayContext.getTotalItems() %>"
@@ -39,7 +40,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "form-entries"));
 	searchActionURL="<%= ddmFormViewFormInstanceRecordsDisplayContext.getSearchActionURL() %>"
 	searchContainerId="<%= ddmFormViewFormInstanceRecordsDisplayContext.getSearchContainerId() %>"
 	searchFormName="fm"
-	sortingOrder="<%= ddmFormViewFormInstanceRecordsDisplayContext.getOrderByType() %>"
+	sortingOrder="<%= HtmlUtil.escape(ddmFormViewFormInstanceRecordsDisplayContext.getOrderByType()) %>"
 	sortingURL="<%= ddmFormViewFormInstanceRecordsDisplayContext.getSortingURL() %>"
 />
 
@@ -72,7 +73,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "form-entries"));
 				%>
 
 					<liferay-ui:search-container-column-text
-						name="<%= ddmFormViewFormInstanceRecordsDisplayContext.getColumnName(ddmFormField) %>"
+						name="<%= HtmlUtil.escape(ddmFormViewFormInstanceRecordsDisplayContext.getColumnName(ddmFormField)) %>"
 						truncate="<%= true %>"
 						value="<%= ddmFormViewFormInstanceRecordsDisplayContext.getColumnValue(ddmFormFieldsMap.get(ddmFormField.getName()), ddmFormFieldValuesMap.get(ddmFormField.getName())) %>"
 					/>
@@ -93,7 +94,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "form-entries"));
 
 				<liferay-ui:search-container-column-text
 					name="author"
-					value="<%= PortalUtil.getUserName(formInstanceRecord) %>"
+					value="<%= HtmlUtil.escape(PortalUtil.getUserName(formInstanceRecord)) %>"
 				/>
 
 				<liferay-ui:search-container-column-jsp
@@ -120,7 +121,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "form-entries"));
 <%@ include file="/admin/export_form_instance.jspf" %>
 
 <aui:script>
-	function <portlet:namespace />deleteRecords() {
+	var deleteRecords = function() {
 		if (confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this") %>')) {
 			var form = AUI.$(document.<portlet:namespace />searchContainerForm);
 
@@ -132,4 +133,23 @@ renderResponse.setTitle(LanguageUtil.get(request, "form-entries"));
 			submitForm(form, '<portlet:actionURL name="deleteFormInstanceRecord"><portlet:param name="mvcPath" value="/admin/view_form_instance_records.jsp" /><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:actionURL>');
 		}
 	}
+
+	var ACTIONS = {
+		'deleteRecords': deleteRecords
+	};
+
+	Liferay.componentReady('ddmFormInstanceRecordsManagementToolbar').then(
+		function(managementToolbar) {
+			managementToolbar.on(
+			['actionItemClicked'],
+				function(event) {
+					var itemData = event.data.item.data;
+
+					if (itemData && itemData.action && ACTIONS[itemData.action]) {
+						ACTIONS[itemData.action]();
+					}
+				}
+			);
+		}
+	);
 </aui:script>

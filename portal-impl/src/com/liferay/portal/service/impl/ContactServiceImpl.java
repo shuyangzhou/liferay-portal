@@ -16,7 +16,9 @@ package com.liferay.portal.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Contact;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.permission.CommonPermissionUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.service.base.ContactServiceBaseImpl;
@@ -28,6 +30,24 @@ import java.util.List;
  * @author Vilmos Papp
  */
 public class ContactServiceImpl extends ContactServiceBaseImpl {
+
+	@Override
+	public List<Contact> getCompanyContacts(long companyId, int start, int end)
+		throws PortalException {
+
+		PermissionChecker permissionChecker = getPermissionChecker();
+
+		if (!permissionChecker.isCompanyAdmin(companyId)) {
+			throw new PrincipalException.MustBeOmniadmin(permissionChecker);
+		}
+
+		return contactPersistence.findByCompanyId(companyId, start, end);
+	}
+
+	@Override
+	public int getCompanyContactsCount(long companyId) {
+		return contactPersistence.countByCompanyId(companyId);
+	}
 
 	@Override
 	public Contact getContact(long contactId) throws PortalException {

@@ -52,9 +52,9 @@ public class BlogPostingCommentNestedCollectionResource implements
 			BlogPostingIdentifier> {
 
 	@Override
-	public NestedCollectionRoutes<BlogPostingCommentModel, Long>
+	public NestedCollectionRoutes<BlogPostingCommentModel, Long, Long>
 		collectionRoutes(
-			NestedCollectionRoutes.Builder<BlogPostingCommentModel, Long>
+			NestedCollectionRoutes.Builder<BlogPostingCommentModel, Long, Long>
 				builder) {
 
 		return builder.addGetter(

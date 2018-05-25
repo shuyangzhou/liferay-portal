@@ -85,6 +85,14 @@ public interface CompanyService extends BaseService {
 	public void deleteLogo(long companyId) throws PortalException;
 
 	/**
+	* Returns all the companies.
+	*
+	* @return the companies
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Company> getCompanies();
+
+	/**
 	* Returns the company with the primary key.
 	*
 	* @param companyId the primary key of the company

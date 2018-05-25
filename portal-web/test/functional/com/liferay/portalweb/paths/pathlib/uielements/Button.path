@@ -260,7 +260,7 @@
 </tr>
 <tr>
 	<td>CLOSE_SUCCESS_MESSAGE</td>
-	<td>//button[contains(@class,'close')]</td>
+	<td>//button[@aria-label='Close']</td>
 	<td></td>
 </tr>
 <tr>
@@ -310,7 +310,7 @@
 </tr>
 <tr>
 	<td>DELETE_ENTRY</td>
-	<td>//li[contains(@class,'nav-item')]/a[contains(@href,'deleteEntries')]</td>
+	<td>xpath=(//li[contains(@class,'nav-item navbar-breakpoint')]/button[contains(@type,'button')])[1]</td>
 	<td></td>
 </tr>
 <tr>

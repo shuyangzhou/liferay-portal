@@ -14,17 +14,16 @@
 
 package com.liferay.apio.architect.wiring.osgi.internal.manager.util;
 
-import com.liferay.apio.architect.error.ApioDeveloperError.MustHaveValidGenericType;
+import static com.liferay.apio.architect.wiring.osgi.util.GenericUtil.getGenericTypeArgumentTry;
+
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.unsafe.Unsafe;
 import com.liferay.apio.architect.wiring.osgi.internal.service.tracker.customizer.ServiceRegistrationServiceTrackerCustomizer;
-import com.liferay.apio.architect.wiring.osgi.util.GenericUtil;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -61,12 +60,13 @@ public class ManagerUtil {
 					Dictionary<String, Object> properties = getProperties(
 						serviceReference);
 
-					T t = null;
+					T t = Try.fromFallible(
+						() -> bundleContext.getService(serviceReference)
+					).orElse(
+						null
+					);
 
-					try {
-						t = bundleContext.getService(serviceReference);
-					}
-					catch (Exception e) {
+					if (t == null) {
 						return null;
 					}
 
@@ -78,21 +78,18 @@ public class ManagerUtil {
 	}
 
 	/**
-	 * Returns a {@code Class}, and the generic class if it's present inside the
-	 * properties of a {@code ServiceReference}. Returns the result of the
-	 * provided {@code Supplier} otherwise.
+	 * Returns a {@code Try.Success} containing the generic class if it's
+	 * present inside the properties of a {@code ServiceReference}. Returns a
+	 * {@code Failure} if something fails
 	 *
 	 * @param  serviceReference the service reference
 	 * @param  typeArgumentProperty the type argument position
-	 * @param  supplier the supplier to call if the property isn't found or
-	 *         isn't a {@code Class}
-	 * @return the {@code Class}, and the generic class if it's present inside
-	 *         the properties of a {@code ServiceReference}; the result of the
-	 *         provided {@code Supplier} otherwise
+	 * @return a {@code Try.Success} containing the generic class if it's
+	 *         present inside the properties of a {@code ServiceReference}; a
+	 *         {@code Failure} with the error otherwise
 	 */
-	public static <T> Class<T> getGenericClassFromPropertyOrElse(
-		ServiceReference serviceReference, String typeArgumentProperty,
-		Supplier<Class<T>> supplier) {
+	public static <T> Try<Class<T>> getGenericClassFromProperty(
+		ServiceReference serviceReference, String typeArgumentProperty) {
 
 		return Try.success(
 			typeArgumentProperty
@@ -100,10 +97,8 @@ public class ManagerUtil {
 			serviceReference::getProperty
 		).filter(
 			Objects::nonNull
-		).<Class<T>>map(
+		).map(
 			Unsafe::unsafeCast
-		).orElseGet(
-			supplier
 		);
 	}
 
@@ -130,23 +125,27 @@ public class ManagerUtil {
 	}
 
 	/**
-	 * Returns a type parameter from a generic interface of the class of an
-	 * object at a certain position, or fails.
+	 * Returns a {@code Try.Success} containing the type parameter from a
+	 * generic interface of the class of an object at a certain position, or a
+	 * {@code Try.Failure} if something fails.
 	 *
 	 * @param  t the object
 	 * @param  interfaceClass the class's interface
 	 * @param  position the position
-	 * @return the type parameter
+	 * @return a {@code Try.Success} containing the type parameter; otherwise a
+	 *         {@code Try.Failure} containing the failure
 	 */
-	public static <T, U> Class<U> getTypeParamOrFail(
-		T t, Class<T> interfaceClass, Integer position) {
+	public static <T, U> Try<Class<U>> getTypeParamTry(
+		T t, Class<T> interfaceClass, int position) {
 
-		Class<?> clazz = t.getClass();
-
-		Try<Class<U>> classTry = GenericUtil.getGenericTypeArgumentTry(
-			clazz, interfaceClass, position);
-
-		return classTry.orElseThrow(() -> new MustHaveValidGenericType(clazz));
+		return Try.fromFallible(
+			() -> getGenericTypeArgumentTry(
+				t.getClass(), interfaceClass, position)
+		).flatMap(
+			classTry -> classTry
+		).map(
+			Unsafe::unsafeCast
+		);
 	}
 
 }

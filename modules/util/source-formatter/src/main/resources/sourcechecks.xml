@@ -6,6 +6,9 @@
 		<check name="ReturnCharacterCheck" />
 	</source-processor>
 	<source-processor name="BNDSourceProcessor">
+		<check name="BNDBundleCheck">
+			<property name="enabled" value="false" />
+		</check>
 		<check name="BNDCapabilityCheck" />
 		<check name="BNDDefinitionKeysCheck" />
 		<check name="BNDImportsCheck" />
@@ -132,6 +135,9 @@
 		<check name="JavaStaticBlockCheck" />
 		<check name="JavaStaticImportsCheck" />
 		<check name="JavaStopWatchCheck" />
+		<check name="JavaStringBundlerConcatCheck">
+			<property name="enabled" value="false" />
+		</check>
 		<check name="JavaStylingCheck" />
 		<check name="JavaSystemExceptionCheck" />
 		<check name="JavaTermDividersCheck" />

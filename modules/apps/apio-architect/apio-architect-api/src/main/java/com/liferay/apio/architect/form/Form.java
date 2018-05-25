@@ -61,12 +61,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.ws.rs.BadRequestException;
 
 /**
  * Holds information about an operation's form. The {@link #get(Body)} method
@@ -171,6 +174,30 @@ public class Form<T> {
 	}
 
 	/**
+	 * Returns multiple form's information in list of classes of type {@code T},
+	 * where type {@code T} matches the type parameter of the {@link Builder}
+	 * that created the form.
+	 *
+	 * @param  body the HTTP request body
+	 * @return multiple form's information in a list of classes of type {@code
+	 *         T}
+	 */
+	public List<T> getList(Body body) {
+		Optional<List<Body>> optional = body.getBodyMembersOptional();
+
+		List<Body> bodyMembers = optional.orElseThrow(
+			() -> new BadRequestException("Body does not contain members"));
+
+		Stream<Body> stream = bodyMembers.stream();
+
+		return stream.map(
+			this::get
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	/**
 	 * Returns the form's title, which depends on the HTTP request language.
 	 *
 	 * @param  language the HTTP request language information
@@ -265,8 +292,8 @@ public class Form<T> {
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
 			 * method) and the field value, if the field is present. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field is found
-			 * but it isn't a boolean.
+			 * BadRequestException} is thrown if the field is found but it isn't
+			 * a boolean.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -289,8 +316,8 @@ public class Form<T> {
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
 			 * method) and the field value, if the field is present. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field is found
-			 * but it isn't a boolean list.
+			 * BadRequestException} is thrown if the field is found but it isn't
+			 * a boolean list.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -313,8 +340,8 @@ public class Form<T> {
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
 			 * method) and the field value, if the field is present. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field is found
-			 * but it isn't a date.
+			 * BadRequestException} is thrown if the field is found but it isn't
+			 * a date.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -337,8 +364,8 @@ public class Form<T> {
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
 			 * method) and the field value, if the field is present. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field is found
-			 * but it isn't a date list.
+			 * BadRequestException} is thrown if the field is found but it isn't
+			 * a date list.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -361,8 +388,8 @@ public class Form<T> {
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
 			 * method) and the field value, if the field is present. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field is found
-			 * but it isn't a double.
+			 * BadRequestException} is thrown if the field is found but it isn't
+			 * a double.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -385,8 +412,8 @@ public class Form<T> {
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
 			 * method) and the field value, if the field is present. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field is found
-			 * but it isn't a double list.
+			 * BadRequestException} is thrown if the field is found but it isn't
+			 * a double list.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -409,8 +436,8 @@ public class Form<T> {
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
 			 * method) and the field value, if the field is present. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field is found
-			 * but it isn't a file.
+			 * BadRequestException} is thrown if the field is found but it isn't
+			 * a file.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -433,8 +460,8 @@ public class Form<T> {
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
 			 * method) and the field value, if the field is present. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field is found
-			 * but it isn't a file list.
+			 * BadRequestException} is thrown if the field is found but it isn't
+			 * a file list.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -457,8 +484,8 @@ public class Form<T> {
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
 			 * method) and the field value, if the field is present. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field is found
-			 * but it isn't a long.
+			 * BadRequestException} is thrown if the field is found but it isn't
+			 * a long.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -481,8 +508,8 @@ public class Form<T> {
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
 			 * method) and the field value, if the field is present. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field is found
-			 * but it isn't a long list.
+			 * BadRequestException} is thrown if the field is found but it isn't
+			 * a long list.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -505,8 +532,8 @@ public class Form<T> {
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
 			 * method) and the field value, if the field is present. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field is found
-			 * but it isn't a string.
+			 * BadRequestException} is thrown if the field is found but it isn't
+			 * a string.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -529,8 +556,8 @@ public class Form<T> {
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
 			 * method) and the field value, if the field is present. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field is found
-			 * but it isn't a string list.
+			 * BadRequestException} is thrown if the field is found but it isn't
+			 * a string list.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -552,9 +579,9 @@ public class Form<T> {
 			 * <p>
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
-			 * method) and the field value. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
-			 * found, or it's found but it isn't a boolean.
+			 * method) and the field value. A {@code BadRequestException} is
+			 * thrown if the field isn't found, or it's found but it isn't a
+			 * boolean.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -576,9 +603,9 @@ public class Form<T> {
 			 * <p>
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
-			 * method) and the field value. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
-			 * found, or it's found but it isn't a boolean list.
+			 * method) and the field value. A {@code BadRequestException} is
+			 * thrown if the field isn't found, or it's found but it isn't a
+			 * boolean list.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -600,9 +627,9 @@ public class Form<T> {
 			 * <p>
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
-			 * method) and the field value. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
-			 * found, or it's found but it isn't a date.
+			 * method) and the field value. A {@code BadRequestException} is
+			 * thrown if the field isn't found, or it's found but it isn't a
+			 * date.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -624,9 +651,9 @@ public class Form<T> {
 			 * <p>
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
-			 * method) and the field value. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
-			 * found, or it's found but it isn't a date list.
+			 * method) and the field value. A {@code BadRequestException} is
+			 * thrown if the field isn't found, or it's found but it isn't a
+			 * date list.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -648,9 +675,9 @@ public class Form<T> {
 			 * <p>
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
-			 * method) and the field value. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
-			 * found, or it's found but it isn't a double.
+			 * method) and the field value. A {@code BadRequestException} is
+			 * thrown if the field isn't found, or it's found but it isn't a
+			 * double.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -672,9 +699,9 @@ public class Form<T> {
 			 * <p>
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
-			 * method) and the field value. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
-			 * found, or it's found but it isn't a double list.
+			 * method) and the field value. A {@code BadRequestException} is
+			 * thrown if the field isn't found, or it's found but it isn't a
+			 * double list.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -696,9 +723,9 @@ public class Form<T> {
 			 * <p>
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
-			 * method) and the field value. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
-			 * found, or it's found but it isn't a file.
+			 * method) and the field value. A {@code BadRequestException} is
+			 * thrown if the field isn't found, or it's found but it isn't a
+			 * file.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -720,9 +747,9 @@ public class Form<T> {
 			 * <p>
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
-			 * method) and the field value. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
-			 * found, or it's found but it isn't a file list.
+			 * method) and the field value. A {@code BadRequestException} is
+			 * thrown if the field isn't found, or it's found but it isn't a
+			 * file list.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -744,9 +771,9 @@ public class Form<T> {
 			 * <p>
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
-			 * method) and the field value. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
-			 * found, or it's found but it isn't a long.
+			 * method) and the field value. A {@code BadRequestException} is
+			 * thrown if the field isn't found, or it's found but it isn't a
+			 * long.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -768,9 +795,9 @@ public class Form<T> {
 			 * <p>
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
-			 * method) and the field value. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
-			 * found, or it's found but it isn't a long list.
+			 * method) and the field value. A {@code BadRequestException} is
+			 * thrown if the field isn't found, or it's found but it isn't a
+			 * long list.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -792,9 +819,9 @@ public class Form<T> {
 			 * <p>
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
-			 * method) and the field value. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
-			 * found, or it's found but it isn't a string.
+			 * method) and the field value. A {@code BadRequestException} is
+			 * thrown if the field isn't found, or it's found but it isn't a
+			 * string.
 			 * </p>
 			 *
 			 * @param  key the field's key
@@ -816,9 +843,9 @@ public class Form<T> {
 			 * <p>
 			 * This method calls the provided consumer with the store instance
 			 * (provided with the {@link ConstructorStep#constructor(Supplier)}
-			 * method) and the field value. A {@code
-			 * javax.ws.rs.BadRequestException} is thrown if the field isn't
-			 * found, or it's found but it isn't a string list.
+			 * method) and the field value. A {@code BadRequestException} is
+			 * thrown if the field isn't found, or it's found but it isn't a
+			 * string list.
 			 * </p>
 			 *
 			 * @param  key the field's key
