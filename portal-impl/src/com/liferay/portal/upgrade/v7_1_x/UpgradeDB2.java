@@ -12,30 +12,29 @@
  * details.
  */
 
-package com.liferay.site.initializer;
+package com.liferay.portal.upgrade.v7_1_x;
 
-import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.site.exception.InitializationException;
-
-import java.util.Locale;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.db.DBType;
+import com.liferay.portal.kernel.upgrade.BaseUpgradeDBColumnSize;
 
 /**
- * @author Marco Leo
+ * @author Preston Crary
  */
-@ProviderType
-public interface GroupInitializer {
+public class UpgradeDB2 extends BaseUpgradeDBColumnSize {
 
-	public String getDescription(Locale locale);
+	public UpgradeDB2() {
+		super(DBType.DB2, "varchar", 750);
+	}
 
-	public String getKey();
+	@Override
+	protected void upgradeColumn(String tableName, String columnName)
+		throws Exception {
 
-	public String getName(Locale locale);
-
-	public String getThumbnailSrc();
-
-	public void initialize(long groupId) throws InitializationException;
-
-	public boolean isActive(long companyId);
+		runSQL(
+			StringBundler.concat(
+				"alter table ", tableName, " alter column ", columnName,
+				" set data type varchar(4000)"));
+	}
 
 }

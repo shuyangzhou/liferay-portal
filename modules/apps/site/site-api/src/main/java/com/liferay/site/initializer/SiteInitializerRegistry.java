@@ -22,13 +22,13 @@ import java.util.List;
  * @author Marco Leo
  */
 @ProviderType
-public interface GroupInitializerRegistry {
+public interface SiteInitializerRegistry {
 
-	public GroupInitializer getGroupInitializer(String key);
+	public SiteInitializer getSiteInitializer(String key);
 
-	public List<GroupInitializer> getGroupInitializers(long companyId);
+	public List<SiteInitializer> getSiteInitializers(long companyId);
 
-	public List<GroupInitializer> getGroupInitializers(
+	public List<SiteInitializer> getSiteInitializers(
 		long companyId, boolean active);
 
 }
