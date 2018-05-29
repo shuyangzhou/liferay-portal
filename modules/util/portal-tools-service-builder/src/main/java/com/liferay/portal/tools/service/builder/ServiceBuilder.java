@@ -5941,6 +5941,8 @@ public class ServiceBuilder {
 					finderColumnElement.attributeValue("comparator"), "=");
 				String finderColArrayableOperator = GetterUtil.getString(
 					finderColumnElement.attributeValue("arrayable-operator"));
+				boolean finderColArrayablePagination = GetterUtil.getBoolean(
+					finderColumnElement.attributeValue("arrayable-pagination"));
 
 				EntityColumn entityColumn = Entity.getEntityColumn(
 					finderColumnName, entityColumns);
@@ -5954,6 +5956,8 @@ public class ServiceBuilder {
 				entityColumn.setCaseSensitive(finderColCaseSensitive);
 				entityColumn.setComparator(finderColComparator);
 				entityColumn.setArrayableOperator(finderColArrayableOperator);
+				entityColumn.setArrayablePagination(
+					finderColArrayablePagination);
 
 				entityColumn.validate();
 
