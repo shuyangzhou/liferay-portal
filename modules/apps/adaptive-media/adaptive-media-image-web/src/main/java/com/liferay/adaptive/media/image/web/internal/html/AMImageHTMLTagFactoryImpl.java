@@ -15,6 +15,7 @@
 package com.liferay.adaptive.media.image.web.internal.html;
 
 import com.liferay.adaptive.media.image.html.AMImageHTMLTagFactory;
+import com.liferay.adaptive.media.image.html.constants.AMImageHTMLConstants;
 import com.liferay.adaptive.media.image.media.query.Condition;
 import com.liferay.adaptive.media.image.media.query.MediaQuery;
 import com.liferay.adaptive.media.image.media.query.MediaQueryProvider;
@@ -25,7 +26,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -48,9 +48,11 @@ public class AMImageHTMLTagFactoryImpl implements AMImageHTMLTagFactory {
 			return originalImgTag;
 		}
 
-		StringBundler sb = new StringBundler(3 + sourceElements.size());
+		StringBundler sb = new StringBundler(5 + sourceElements.size());
 
-		sb.append("<picture data-fileEntryId=\"");
+		sb.append("<picture ");
+		sb.append(AMImageHTMLConstants.ATTRIBUTE_NAME_FILE_ENTRY_ID);
+		sb.append("=\"");
 		sb.append(fileEntry.getFileEntryId());
 		sb.append("\">");
 
@@ -129,9 +131,6 @@ public class AMImageHTMLTagFactoryImpl implements AMImageHTMLTagFactory {
 			Collectors.toList()
 		);
 	}
-
-	private static final Pattern _pattern = Pattern.compile(
-		"\\s*data-fileEntryId=\"(\\d+)\"", Pattern.CASE_INSENSITIVE);
 
 	private MediaQueryProvider _mediaQueryProvider;
 

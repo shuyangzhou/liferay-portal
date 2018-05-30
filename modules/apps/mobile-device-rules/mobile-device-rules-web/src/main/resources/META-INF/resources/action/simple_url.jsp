@@ -17,8 +17,9 @@
 <%@ include file="/action/init.jsp" %>
 
 <%
-String url = GetterUtil.getString(typeSettingsProperties.get("url"));
 boolean ajax = GetterUtil.getBoolean(request.getParameter("ajax"));
+
+String url = GetterUtil.getString(typeSettingsProperties.get("url"));
 %>
 
 <aui:input cssClass="lfr-input-text-container" name="url" type="text" value="<%= url %>">
