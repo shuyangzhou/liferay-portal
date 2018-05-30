@@ -47,8 +47,8 @@ public class MBUserRankUtil {
 
 		String[] ranks = mbGroupServiceSettings.getRanks(languageId);
 
-		for (int i = 0; i < ranks.length; i++) {
-			String[] kvp = StringUtil.split(ranks[i], CharPool.EQUAL);
+		for (String curRank : ranks) {
+			String[] kvp = StringUtil.split(curRank, CharPool.EQUAL);
 
 			String kvpName = kvp[0];
 			int kvpPosts = GetterUtil.getInteger(kvp[1]);
@@ -79,22 +79,22 @@ public class MBUserRankUtil {
 
 		String[] ranks = mbGroupServiceSettings.getRanks(languageId);
 
-		for (int i = 0; i < ranks.length; i++) {
-			String[] kvp = StringUtil.split(ranks[i], CharPool.EQUAL);
+		for (String curRank : ranks) {
+			String[] kvp = StringUtil.split(curRank, CharPool.EQUAL);
 
-			String curRank = kvp[0];
-			String curRankValue = kvp[1];
+			String kvpName = kvp[0];
+			String kvpPosts = kvp[1];
 
 			String[] curRankValueKvp = StringUtil.split(
-				curRankValue, CharPool.COLON);
+				kvpPosts, CharPool.COLON);
 
 			if (curRankValueKvp.length <= 1) {
-				int posts = GetterUtil.getInteger(curRankValue);
+				int posts = GetterUtil.getInteger(kvpPosts);
 
 				if ((posts <= statsUser.getMessageCount()) &&
 					(posts >= maxPosts)) {
 
-					rank[0] = curRank;
+					rank[0] = kvpName;
 					maxPosts = posts;
 				}
 			}
