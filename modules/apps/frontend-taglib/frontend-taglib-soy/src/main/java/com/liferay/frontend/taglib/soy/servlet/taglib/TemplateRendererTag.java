@@ -106,7 +106,7 @@ public class TemplateRendererTag extends ParamAndPropertyAncestorTagImpl {
 
 		Map<String, Object> context = getContext();
 
-		if (Validator.isNotNull(_componentId) ||
+		if (Validator.isNotNull(_componentId) || Validator.isNotNull(_module) ||
 			Validator.isNotNull(context.get("data"))) {
 
 			return true;
@@ -145,7 +145,12 @@ public class TemplateRendererTag extends ParamAndPropertyAncestorTagImpl {
 	}
 
 	public void setContext(Map<String, Object> context) {
-		_context = context;
+		if (context instanceof SoyContext) {
+			_context = context;
+		}
+		else {
+			_context = SoyContextFactoryUtil.createSoyContext(context);
+		}
 	}
 
 	public void setDependencies(Set<String> dependencies) {
