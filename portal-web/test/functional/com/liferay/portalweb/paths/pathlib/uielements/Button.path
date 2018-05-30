@@ -140,7 +140,7 @@
 </tr>
 <tr>
 	<td>ANY</td>
-	<td>//*[contains(@class,'btn')][normalize-space()='${key_text}']</td>
+	<td>//*[contains(@class,'btn')][normalize-space(text())='${key_text}']</td>
 	<td></td>
 </tr>
 <tr>
@@ -756,6 +756,11 @@
 <tr>
 	<td>SUBMIT</td>
 	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MAIN_CONTENT_SUBMIT</td>
+	<td>//div[@id='main-content']//button[@type='submit']</td>
 	<td></td>
 </tr>
 <tr>

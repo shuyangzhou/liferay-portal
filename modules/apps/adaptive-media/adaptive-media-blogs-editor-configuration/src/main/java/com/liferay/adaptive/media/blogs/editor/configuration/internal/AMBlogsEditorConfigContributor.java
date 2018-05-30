@@ -14,6 +14,7 @@
 
 package com.liferay.adaptive.media.blogs.editor.configuration.internal;
 
+import com.liferay.adaptive.media.image.html.constants.AMImageHTMLConstants;
 import com.liferay.adaptive.media.image.item.selector.AMImageFileEntryItemSelectorReturnType;
 import com.liferay.blogs.constants.BlogsPortletKeys;
 import com.liferay.blogs.item.selector.criterion.BlogsItemSelectorCriterion;
@@ -102,6 +103,10 @@ public class AMBlogsEditorConfigContributor
 		if (!amImageURLItemSelectorReturnTypeAdded) {
 			return;
 		}
+
+		jsonObject.put(
+			"adaptiveMediaFileEntryAttributeName",
+			AMImageHTMLConstants.ATTRIBUTE_NAME_FILE_ENTRY_ID);
 
 		String extraPlugins = jsonObject.getString("extraPlugins");
 
