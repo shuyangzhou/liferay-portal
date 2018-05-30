@@ -12,23 +12,15 @@
  * details.
  */
 
-package com.liferay.site.initializer;
-
-import aQute.bnd.annotation.ProviderType;
-
-import java.util.List;
+package com.liferay.layout.type.controller.content.internal.constants;
 
 /**
- * @author Marco Leo
+ * @author Eudaldo Alonso
  */
-@ProviderType
-public interface GroupInitializerRegistry {
+public class ContentLayoutPortletKeys {
 
-	public GroupInitializer getGroupInitializer(String key);
-
-	public List<GroupInitializer> getGroupInitializers(long companyId);
-
-	public List<GroupInitializer> getGroupInitializers(
-		long companyId, boolean active);
+	public static final String CONTENT_PAGE_EDITOR_PORTLET =
+		"com_liferay_layout_type_controller_content_internal_portlet_" +
+			"ContentPageEditorPortlet";
 
 }
