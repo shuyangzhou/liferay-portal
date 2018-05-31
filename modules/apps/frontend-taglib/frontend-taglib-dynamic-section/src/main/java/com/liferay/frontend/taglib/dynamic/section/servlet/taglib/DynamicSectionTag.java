@@ -47,19 +47,23 @@ public class DynamicSectionTag extends BaseBodyTagSupport implements BodyTag {
 
 				String key = _PREFIX.concat(_name);
 
-				StringBundler sb = null;
+				StringBundler sb1 = null;
 
-				sb = getBodyContentAsStringBundler();
+				sb1 = getBodyContentAsStringBundler();
 
-				servletRequest.setAttribute(key, sb);
+				StringBundler sb2 = new StringBundler(sb1.length());
+
+				sb2.append(sb1);
+
+				servletRequest.setAttribute(key, sb2);
 
 				for (DynamicSection dynamicSection : _dynamicSections) {
-					sb = dynamicSection.modify(sb, pageContext);
+					sb1 = dynamicSection.modify(sb1, pageContext);
 				}
 
 				servletRequest.removeAttribute(key);
 
-				sb.writeTo(jspWriter);
+				sb1.writeTo(jspWriter);
 			}
 
 			return EVAL_PAGE;
