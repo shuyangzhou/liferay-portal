@@ -60,7 +60,7 @@ processSanitizerConfiguration {
 				|
 				|${line}
 				|		<tag name="picture" action="validate">
-				|			<attribute name="data-fileEntryId" onInvalid="removeAttribute">
+				|			<attribute name="data-fileentryid" onInvalid="removeAttribute">
 				|				<regexp-list>
 				|					<regexp name="positiveInteger" />
 				|				</regexp-list>
@@ -87,7 +87,7 @@ processSanitizerConfiguration {
 		else if (line.contains('<tag name="img"')) {
 			line = """\
 				|${line}
-				|			<attribute name="data-fileEntryId" onInvalid="removeAttribute">
+				|			<attribute name="data-fileentryid" onInvalid="removeAttribute">
 				|				<regexp-list>
 				|					<regexp name="positiveInteger"/>
 				|				</regexp-list>

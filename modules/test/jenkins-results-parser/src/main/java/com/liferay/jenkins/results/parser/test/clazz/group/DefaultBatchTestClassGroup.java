@@ -14,7 +14,7 @@
 
 package com.liferay.jenkins.results.parser.test.clazz.group;
 
-import com.liferay.jenkins.results.parser.PortalGitWorkingDirectory;
+import com.liferay.jenkins.results.parser.PortalTestClassJob;
 
 /**
  * @author Yi-Chen Tsai
@@ -22,10 +22,9 @@ import com.liferay.jenkins.results.parser.PortalGitWorkingDirectory;
 public class DefaultBatchTestClassGroup extends BatchTestClassGroup {
 
 	protected DefaultBatchTestClassGroup(
-		String batchName, PortalGitWorkingDirectory portalGitWorkingDirectory,
-		String testSuiteName) {
+		String batchName, PortalTestClassJob portalTestClassJob) {
 
-		super(batchName, portalGitWorkingDirectory, testSuiteName);
+		super(batchName, portalTestClassJob);
 
 		addTestClass(
 			BatchTestClass.getInstance(batchName, portalGitWorkingDirectory));
