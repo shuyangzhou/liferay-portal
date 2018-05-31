@@ -17,6 +17,8 @@
 <%@ include file="/action/init.jsp" %>
 
 <%
+boolean ajax = GetterUtil.getBoolean(request.getParameter("ajax"));
+
 long actionGroupId = GetterUtil.getLong(typeSettingsProperties.getProperty("groupId"));
 %>
 
@@ -46,3 +48,31 @@ long actionGroupId = GetterUtil.getLong(typeSettingsProperties.getProperty("grou
 <div id="<portlet:namespace />layouts">
 	<liferay-util:include page="/action/site_url_layouts.jsp" servletContext="<%= application %>" />
 </div>
+
+<c:if test="<%= ajax %>">
+	<aui:script use="liferay-form">
+		var form = Liferay.Form.get('<portlet:namespace />fm');
+
+		if (form) {
+			var rules = form.formValidator.get('rules');
+
+			var groupIdFieldName = '<portlet:namespace />groupId';
+
+			if (!(groupIdFieldName in rules)) {
+				rules[groupIdFieldName] = {
+					custom: false,
+					required: true
+				};
+			}
+
+			var plidFieldName = '<portlet:namespace />plid';
+
+			if (!(plidFieldName in rules)) {
+				rules[plidFieldName] = {
+					custom: false,
+					required: true
+				};
+			}
+		}
+	</aui:script>
+</c:if>

@@ -280,6 +280,10 @@ public interface Staging {
 	@Deprecated
 	public void lockGroup(long userId, long groupId) throws PortalException;
 
+	public void populateLastPublishDateCounts(
+			PortletDataContext portletDataContext, String[] classNames)
+		throws PortalException;
+
 	public long publishLayout(
 			long userId, long plid, long liveGroupId, boolean includeChildren)
 		throws PortalException;
@@ -459,6 +463,12 @@ public interface Staging {
 	public void updateStaging(PortletRequest portletRequest, Group liveGroup)
 		throws PortalException;
 
+	/**
+	 * @deprecated As of 5.0.0, replaced by {@link
+	 *             com.liferay.portal.kernel.service.GroupLocalService#validateRemote(
+	 *             long, String, int, String, boolean, long)}
+	 */
+	@Deprecated
 	public void validateRemote(
 			long groupId, String remoteAddress, int remotePort,
 			String remotePathContext, boolean secureConnection,
