@@ -59,7 +59,7 @@
 			dateRange = ExportImportDateUtil.getDateRange(exportImportConfiguration, portlet.getRootPortletId());
 		}
 
-		PortletDataContext portletDataContext = PortletDataContextFactoryUtil.createPreparePortletDataContext(company.getCompanyId(), exportGroupId, dateRange.getStartDate(), dateRange.getEndDate());
+		PortletDataContext portletDataContext = PortletDataContextFactoryUtil.createPreparePortletDataContext(company.getCompanyId(), exportGroupId, (range != null) ? range : defaultRange, dateRange.getStartDate(), dateRange.getEndDate());
 
 		portletDataHandler.prepareManifestSummary(portletDataContext);
 
@@ -94,7 +94,7 @@
 				name="<%= PortletDataHandlerKeys.PORTLET_DATA + StringPool.UNDERLINE + portlet.getPortletId() %>"
 			/>
 
-			<div class="<%= disableInputs && showPortletDataInput ? StringPool.BLANK : "hide " %>" id="<portlet:namespace />content_<%= portlet.getPortletId() %>">
+			<div class="<%= (disableInputs && showPortletDataInput) ? StringPool.BLANK : "hide " %>" id="<portlet:namespace />content_<%= portlet.getPortletId() %>">
 				<ul class="lfr-tree list-unstyled">
 					<li class="tree-item">
 						<aui:fieldset cssClass="portlet-type-data-section" label="<%= portletTitle %>">

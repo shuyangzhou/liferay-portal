@@ -193,7 +193,9 @@ public class PortletImpl extends PortletBaseImpl {
 		boolean addDefaultResource, String roles, Set<String> unlinkedRoles,
 		Map<String, String> roleMappers, boolean system, boolean active,
 		boolean include, Map<String, String> initParams, Integer expCache,
-		Map<String, Set<String>> portletModes,
+		boolean asyncSupported, int multipartFileSizeThreshold,
+		String multipartLocation, long multipartMaxFileSize,
+		long multipartMaxRequestSize, Map<String, Set<String>> portletModes,
 		Map<String, Set<String>> windowStates, Set<String> supportedLocales,
 		String resourceBundle, PortletInfo portletInfo,
 		Map<String, PortletFilter> portletFilters, Set<QName> processingEvents,
@@ -292,6 +294,11 @@ public class PortletImpl extends PortletBaseImpl {
 		_include = include;
 		_initParams = initParams;
 		_expCache = expCache;
+		_asyncSupported = asyncSupported;
+		_multipartFileSizeThreshold = multipartFileSizeThreshold;
+		_multipartLocation = multipartLocation;
+		_multipartMaxFileSize = multipartMaxFileSize;
+		_multipartMaxRequestSize = multipartMaxRequestSize;
 		_portletModes = portletModes;
 		_windowStates = windowStates;
 		_supportedLocales = supportedLocales;
@@ -411,11 +418,13 @@ public class PortletImpl extends PortletBaseImpl {
 			getFooterPortalJavaScript(), getFooterPortletJavaScript(),
 			getCssClassWrapper(), isAddDefaultResource(), getRoles(),
 			getUnlinkedRoles(), getRoleMappers(), isSystem(), isActive(),
-			isInclude(), getInitParams(), getExpCache(), getPortletModes(),
-			getWindowStates(), getSupportedLocales(), getResourceBundle(),
-			getPortletInfo(), getPortletFilters(), getProcessingEvents(),
-			getPublishingEvents(), getPublicRenderParameters(),
-			getPortletApp());
+			isInclude(), getInitParams(), getExpCache(), isAsyncSupported(),
+			getMultipartFileSizeThreshold(), getMultipartLocation(),
+			getMultipartMaxFileSize(), getMultipartMaxRequestSize(),
+			getPortletModes(), getWindowStates(), getSupportedLocales(),
+			getResourceBundle(), getPortletInfo(), getPortletFilters(),
+			getProcessingEvents(), getPublishingEvents(),
+			getPublicRenderParameters(), getPortletApp());
 
 		portletImpl.setApplicationTypes(getApplicationTypes());
 		portletImpl.setId(getId());
@@ -1114,6 +1123,42 @@ public class PortletImpl extends PortletBaseImpl {
 	@Override
 	public boolean getMaximizeHelp() {
 		return _maximizeHelp;
+	}
+
+	/**
+	 * Returns the maximum size of buffered bytes before storing occurs.
+	 *
+	 * @return the maximum size of buffered bytes before storing occurs
+	 */
+	public int getMultipartFileSizeThreshold() {
+		return _multipartFileSizeThreshold;
+	}
+
+	/**
+	 * Returns the directory for storing uploaded files.
+	 *
+	 * @return the directory for storing uploaded files
+	 */
+	public String getMultipartLocation() {
+		return _multipartLocation;
+	}
+
+	/**
+	 * Returns the maximum number of bytes permitted for an uploaded file.
+	 *
+	 * @return the maximum number of bytes permitted for an uploaded file
+	 */
+	public long getMultipartMaxFileSize() {
+		return _multipartMaxFileSize;
+	}
+
+	/**
+	 * Returns the maximum number of bytes permitted for a multipart request.
+	 *
+	 * @return the maximum number of bytes permitted for a multipart request
+	 */
+	public long getMultipartMaxRequestSize() {
+		return _multipartMaxRequestSize;
 	}
 
 	/**
@@ -2440,6 +2485,18 @@ public class PortletImpl extends PortletBaseImpl {
 		return _ajaxable;
 	}
 
+	/**
+	 * Returns <code>true</code> if the portlet supports asynchronous processing
+	 * in resource requests.
+	 *
+	 * @return <code>true</code> if the portlet supports asynchrounous
+	 *         processing in resource requests
+	 */
+	@Override
+	public boolean isAsyncSupported() {
+		return _asyncSupported;
+	}
+
 	@Override
 	public boolean isFullPageDisplayable() {
 		return _applicationTypes.contains(
@@ -2838,6 +2895,18 @@ public class PortletImpl extends PortletBaseImpl {
 	}
 
 	/**
+	 * Set to <code>true</code> if the portlet supports asynchronous processing
+	 * in resource requests.
+	 *
+	 * @param asyncSupported boolean value for whether the portlet supports
+	 *        asynchronous processing in resource requests
+	 */
+	@Override
+	public void setAsyncSupported(boolean asyncSupported) {
+		_asyncSupported = asyncSupported;
+	}
+
+	/**
 	 * Sets the names of the classes that represent atom collection adapters
 	 * associated with the portlet.
 	 *
@@ -3222,6 +3291,45 @@ public class PortletImpl extends PortletBaseImpl {
 	@Override
 	public void setMaximizeHelp(boolean maximizeHelp) {
 		_maximizeHelp = maximizeHelp;
+	}
+
+	/**
+	 * Sets the maximum size of buffered bytes before storing occurs.
+	 *
+	 * @param multipartFileSizeThreshold the maximum size of buffered bytes
+	 *        before storing occurs
+	 */
+	public void setMultipartFileSizeThreshold(int multipartFileSizeThreshold) {
+		_multipartFileSizeThreshold = multipartFileSizeThreshold;
+	}
+
+	/**
+	 * Sets the directory for storing uploaded files.
+	 *
+	 * @param multipartLocation the directory for storing uploaded files
+	 */
+	public void setMultipartLocation(String multipartLocation) {
+		_multipartLocation = multipartLocation;
+	}
+
+	/**
+	 * Sets the maximum number of bytes permitted for an uploaded file.
+	 *
+	 * @param multipartMaxFileSize the maximum number of bytes permitted for an
+	 *        uploaded file
+	 */
+	public void setMultipartMaxFileSize(long multipartMaxFileSize) {
+		_multipartMaxFileSize = multipartMaxFileSize;
+	}
+
+	/**
+	 * Sets the maximum number of bytes permitted for a multipart request.
+	 *
+	 * @param multipartMaxRequestSize the maximum number of bytes permitted for
+	 *        a multipart request
+	 */
+	public void setMultipartMaxRequestSize(long multipartMaxRequestSize) {
+		_multipartMaxRequestSize = multipartMaxRequestSize;
 	}
 
 	/**
@@ -4058,6 +4166,12 @@ public class PortletImpl extends PortletBaseImpl {
 	private List<String> _assetRendererFactoryClasses;
 
 	/**
+	 * <code>True</code> if the portlet supports asynchronous processing in
+	 * resource requests.
+	 */
+	private boolean _asyncSupported;
+
+	/**
 	 * The names of the classes that represents atom collection adapters
 	 * associated with the portlet.
 	 */
@@ -4240,6 +4354,26 @@ public class PortletImpl extends PortletBaseImpl {
 	 * user goes into the help mode.
 	 */
 	private boolean _maximizeHelp;
+
+	/**
+	 * The maximum size of buffered bytes before storing occurs.
+	 */
+	private int _multipartFileSizeThreshold;
+
+	/**
+	 * The directory for storing uploaded files.
+	 */
+	private String _multipartLocation;
+
+	/**
+	 * The maximum number of bytes permitted for an uploaded file.
+	 */
+	private long _multipartMaxFileSize;
+
+	/**
+	 * The maximum number of bytes permitted for a multipart request.
+	 */
+	private long _multipartMaxRequestSize;
 
 	/**
 	 * The name of the open search class of the portlet.

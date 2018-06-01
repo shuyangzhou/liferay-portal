@@ -280,7 +280,11 @@ public class PortletTracker
 			String jxPortletVersion = (String)serviceReference.getProperty(
 				"javax.portlet.version");
 
-			if (jxPortletVersion != null) {
+			if (jxPortletVersion == null) {
+				bundlePortletApp.setSpecMajorVersion(2);
+				bundlePortletApp.setSpecMinorVersion(0);
+			}
+			else {
 				String[] jxPortletVersionParts = StringUtil.split(
 					jxPortletVersion, CharPool.PERIOD);
 
@@ -404,6 +408,16 @@ public class PortletTracker
 		portletModel.setApplicationTypes(applicationTypes);
 	}
 
+	protected void collectAsyncSupported(
+		ServiceReference<Portlet> serviceReference,
+		com.liferay.portal.kernel.model.Portlet portletModel) {
+
+		boolean asyncSupported = GetterUtil.getBoolean(
+			serviceReference.getProperty("javax.portlet.async-supported"));
+
+		portletModel.setAsyncSupported(asyncSupported);
+	}
+
 	protected void collectCacheScope(
 		ServiceReference<Portlet> serviceReference,
 		com.liferay.portal.kernel.model.Portlet portletModel) {
@@ -447,9 +461,11 @@ public class PortletTracker
 		com.liferay.portal.kernel.model.Portlet portletModel) {
 
 		collectApplicationTypes(serviceReference, portletModel);
+		collectAsyncSupported(serviceReference, portletModel);
 		collectCacheScope(serviceReference, portletModel);
 		collectExpirationCache(serviceReference, portletModel);
 		collectInitParams(serviceReference, portletModel);
+		collectMultipartConfig(serviceReference, portletModel);
 		collectPortletInfo(serviceReference, portletModel);
 		collectPortletModes(serviceReference, portletModel);
 		collectPortletPreferences(serviceReference, portletModel);
@@ -639,6 +655,31 @@ public class PortletTracker
 			GetterUtil.getString(
 				get(serviceReference, "virtual-path"),
 				portletModel.getVirtualPath()));
+	}
+
+	protected void collectMultipartConfig(
+		ServiceReference<Portlet> serviceReference,
+		com.liferay.portal.kernel.model.Portlet portletModel) {
+
+		portletModel.setMultipartFileSizeThreshold(
+			GetterUtil.getInteger(
+				serviceReference.getProperty(
+					"javax.portlet.multipart.file-size-threshold")));
+		portletModel.setMultipartLocation(
+			GetterUtil.getString(
+				serviceReference.getProperty(
+					"javax.portlet.multipart.location"),
+				portletModel.getMultipartLocation()));
+		portletModel.setMultipartMaxFileSize(
+			GetterUtil.getLong(
+				serviceReference.getProperty(
+					"javax.portlet.multipart.max-file-size"),
+				-1L));
+		portletModel.setMultipartMaxRequestSize(
+			GetterUtil.getLong(
+				serviceReference.getProperty(
+					"javax.portlet.multipart.max-request-size"),
+				-1L));
 	}
 
 	protected void collectPortletInfo(

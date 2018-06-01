@@ -492,6 +492,7 @@ public class PortalImpl implements Portal {
 		_reservedParams.add("p_p_mode");
 		_reservedParams.add("p_p_resource_id");
 		_reservedParams.add("p_p_cacheability");
+		_reservedParams.add("p_p_hub");
 		_reservedParams.add("p_p_width");
 		_reservedParams.add("p_p_col_id");
 		_reservedParams.add("p_p_col_pos");
@@ -5531,6 +5532,14 @@ public class PortalImpl implements Portal {
 	public UploadServletRequest getUploadServletRequest(
 		HttpServletRequest request) {
 
+		return getUploadServletRequest(request, 0, null, 0, 0);
+	}
+
+	@Override
+	public UploadServletRequest getUploadServletRequest(
+		HttpServletRequest request, int fileSizeThreshold, String location,
+		long maxRequestSize, long maxFileSize) {
+
 		List<PersistentHttpServletRequestWrapper>
 			persistentHttpServletRequestWrappers = new ArrayList<>();
 
@@ -5583,7 +5592,9 @@ public class PortalImpl implements Portal {
 			currentRequest = httpServletRequestWrapper;
 		}
 
-		return new UploadServletRequestImpl(currentRequest);
+		return new UploadServletRequestImpl(
+			currentRequest, fileSizeThreshold, location, maxRequestSize,
+			maxFileSize);
 	}
 
 	@Override

@@ -347,6 +347,24 @@ public class StringUtil {
 		return true;
 	}
 
+	public static String join(String[] array, String delimiter) {
+		StringBuilder sb = new StringBuilder();
+
+		boolean start = true;
+
+		for (String string : array) {
+			if (!start) {
+				sb.append(delimiter);
+			}
+
+			sb.append(string);
+
+			start = false;
+		}
+
+		return sb.toString();
+	}
+
 	public static int length(String s) {
 		return s.length();
 	}

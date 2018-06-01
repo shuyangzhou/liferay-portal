@@ -165,6 +165,10 @@ public class SCRReferenceDynamicGreedyTest {
 			DynamicGreedyComponent dynamicGreedyComponent =
 				bundleContext.getService(serviceReference);
 
+			Assert.assertNotNull(
+				"Unable to get service with " + serviceReference,
+				dynamicGreedyComponent);
+
 			bindingCalls = dynamicGreedyComponent.getBindingCalls();
 
 			bundleContext.ungetService(serviceReference);
@@ -177,8 +181,7 @@ public class SCRReferenceDynamicGreedyTest {
 				Object.class, _service2, properties);
 
 			bindingCalls.add("step2");
-		}
-		finally {
+
 			serviceRegistration.unregister();
 
 			bindingCalls.add("step3");
@@ -188,7 +191,8 @@ public class SCRReferenceDynamicGreedyTest {
 			}
 
 			bindingCallsConsumer.accept(bindingCalls);
-
+		}
+		finally {
 			_componentController.disableComponent(name);
 		}
 	}

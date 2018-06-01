@@ -16,8 +16,10 @@ package com.liferay.layout.type.controller.content.internal.controller;
 
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.service.FragmentEntryLinkLocalService;
+import com.liferay.item.selector.ItemSelector;
 import com.liferay.layout.type.controller.content.internal.constants.ContentLayoutTypeControllerConstants;
 import com.liferay.layout.type.controller.content.internal.constants.ContentLayoutTypeControllerWebKeys;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
@@ -62,23 +64,38 @@ public class ContentLayoutTypeController extends BaseLayoutTypeControllerImpl {
 	}
 
 	@Override
+	public String includeEditContent(
+		HttpServletRequest request, HttpServletResponse response,
+		Layout layout) {
+
+		return StringPool.BLANK;
+	}
+
+	@Override
 	public boolean includeLayoutContent(
 			HttpServletRequest request, HttpServletResponse response,
 			Layout layout)
 		throws Exception {
 
-		List<FragmentEntryLink> fragmentEntryLinks =
-			_fragmentEntryLinkLocalService.getFragmentEntryLinks(
-				layout.getGroupId(),
-				_portal.getClassNameId(Layout.class.getName()),
-				layout.getPlid());
-
-		request.setAttribute(
-			ContentLayoutTypeControllerWebKeys.LAYOUT_FRAGMENTS,
-			fragmentEntryLinks);
-
 		String layoutMode = ParamUtil.getString(
 			request, "p_l_mode", Constants.VIEW);
+
+		if (layoutMode.equals(Constants.VIEW)) {
+			List<FragmentEntryLink> fragmentEntryLinks =
+				_fragmentEntryLinkLocalService.getFragmentEntryLinks(
+					layout.getGroupId(),
+					_portal.getClassNameId(Layout.class.getName()),
+					layout.getPlid());
+
+			request.setAttribute(
+				ContentLayoutTypeControllerWebKeys.LAYOUT_FRAGMENTS,
+				fragmentEntryLinks);
+		}
+		else {
+			request.setAttribute(
+				ContentLayoutTypeControllerWebKeys.ITEM_SELECTOR,
+				_itemSelector);
+		}
 
 		String page = getViewPage();
 
@@ -195,6 +212,9 @@ public class ContentLayoutTypeController extends BaseLayoutTypeControllerImpl {
 
 	@Reference
 	private FragmentEntryLinkLocalService _fragmentEntryLinkLocalService;
+
+	@Reference
+	private ItemSelector _itemSelector;
 
 	@Reference
 	private Portal _portal;

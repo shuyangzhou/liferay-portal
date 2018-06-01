@@ -358,7 +358,7 @@ public class PoshiRunnerGetterUtil {
 				new PoshiProseDefinition(
 					getFileNameFromFilePath(filePath), fileContent);
 
-			return poshiProseDefinition.toElement();
+			fileContent = Dom4JUtil.format(poshiProseDefinition.toElement());
 		}
 
 		if (!fileContent.contains("<definition") &&

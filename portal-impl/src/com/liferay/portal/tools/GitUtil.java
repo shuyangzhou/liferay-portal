@@ -47,6 +47,14 @@ public class GitUtil {
 	}
 
 	public static List<String> getCurrentBranchFileNames(
+			String baseDirName, String gitWorkingBranchName)
+		throws Exception {
+
+		return getCurrentBranchFileNames(
+			baseDirName, gitWorkingBranchName, false);
+	}
+
+	public static List<String> getCurrentBranchFileNames(
 			String baseDirName, String gitWorkingBranchName,
 			boolean includeDeletedFileNames)
 		throws Exception {
@@ -68,6 +76,12 @@ public class GitUtil {
 		return getFileContent(getLatestAuthorCommitId(), fileName);
 	}
 
+	public static List<String> getLatestAuthorFileNames(String baseDirName)
+		throws Exception {
+
+		return getLatestAuthorFileNames(baseDirName, false);
+	}
+
 	public static List<String> getLatestAuthorFileNames(
 			String baseDirName, boolean includeDeletedFileNames)
 		throws Exception {
@@ -87,6 +101,12 @@ public class GitUtil {
 		throws Exception {
 
 		return getFileContent("HEAD", fileName);
+	}
+
+	public static List<String> getLocalChangesFileNames(String baseDirName)
+		throws Exception {
+
+		return getLocalChangesFileNames(baseDirName, false);
 	}
 
 	public static List<String> getLocalChangesFileNames(
@@ -270,7 +290,7 @@ public class GitUtil {
 
 		unsyncBufferedReader = getGitCommandReader(
 			StringBundler.concat(
-				"git diff --diff-filter=AM --name-only ", commitId, " ",
+				"git diff --diff-filter=AMR --name-only ", commitId, " ",
 				latestCommitId));
 
 		String line = null;
@@ -312,14 +332,20 @@ public class GitUtil {
 	}
 
 	protected static int getGitLevel(String baseDirName) throws GitException {
-		for (int i = 0; i < ToolsUtil.PORTAL_MAX_DIR_LEVEL; i++) {
-			File file = new File(baseDirName + ".git");
+		File dir = new File(baseDirName);
 
-			if (file.exists()) {
+		for (int i = 0; i < ToolsUtil.PORTAL_MAX_DIR_LEVEL; i++) {
+			if ((dir == null) || !dir.exists()) {
+				continue;
+			}
+
+			File gitFile = new File(dir, ".git");
+
+			if (gitFile.exists()) {
 				return i;
 			}
 
-			baseDirName = "../" + baseDirName;
+			dir = dir.getParentFile();
 		}
 
 		throw new GitException(

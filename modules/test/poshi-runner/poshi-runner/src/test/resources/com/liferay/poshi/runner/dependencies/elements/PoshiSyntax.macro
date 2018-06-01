@@ -6,7 +6,7 @@
 	<command name="viewPG" prose="I assert the ${breadcrumbName}">
 		<var name="key_breadcrumbName" value="${breadcrumbName}" />
 
-		<var method="StringUtil#upperCase('${breadcrumbName}')" name="breadcrumbNameUppercase" />
+		<var method="StringUtil#upperCase('${breadcrumbName}')" static="true" name="breadcrumbNameUppercase" />
 
 		<execute function="AssertTextEquals" locator1="Breadcrumb#BREADCRUMB_ENTRY" value1="${breadcrumbNameUppercase}" />
 

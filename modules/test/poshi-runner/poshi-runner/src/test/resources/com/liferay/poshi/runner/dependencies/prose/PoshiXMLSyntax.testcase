@@ -1,4 +1,12 @@
 <definition>
+	<set-up>
+		<execute macro="LocalFile.PoshiXMLSyntax#visitURL">
+			<var name="url" value="https://www.google.com"/>
+		</execute>
+	</set-up>
+	<tear-down>
+		<execute macro="LocalFile.PoshiXMLSyntax#closeWindow"/>
+	</tear-down>
 	<command name="catSearch">
 		<execute macro="LocalFile.PoshiXMLSyntax#visitURL">
 			<var name="url" value="https://www.yahoo.com"/>
@@ -13,7 +21,7 @@
 			<var name="result4" value="lion"/>
 		</execute>
 	</command>
-	<command name="assertLiferayMainPageAvailability">
+	<command name="assert Liferay Main Page Availability">
 		<execute macro="LocalFile.PoshiXMLSyntax#visitURL">
 			<var name="url" value="https://www.liferay.com"/>
 		</execute>
@@ -60,6 +68,16 @@
 		</execute>
 		<execute macro="LocalFile.PoshiXMLSyntax#visitURL">
 			<var name="url" value="https://www.ask.com"/>
+		</execute>
+		<execute macro="LocalFile.PoshiXMLSyntax#sayALot">
+			<var name="text"><![CDATA[One
+Two
+Three]]></var>
+		</execute>
+		<execute macro="LocalFile.PoshiXMLSyntax#sayALot">
+			<var name="text"><![CDATA[Four
+Five
+Six]]></var>
 		</execute>
 	</command>
 </definition>

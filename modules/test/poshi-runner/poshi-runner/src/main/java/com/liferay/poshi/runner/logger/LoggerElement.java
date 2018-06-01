@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Matcher;
 
 /**
  * @author Michael Hashimoto
@@ -188,24 +189,11 @@ public class LoggerElement {
 	}
 
 	public void removeClassName(String className) {
-		String[] classNames = StringUtil.split(_className, " ");
+		String cleanedClassName = className.replaceFirst(
+			"(.*?)\\s*" + Matcher.quoteReplacement(className) + "\\s*(.*)",
+			"$1 $2");
 
-		StringBuilder sb = new StringBuilder();
-
-		for (int i = 0; i < classNames.length; i++) {
-			if (Validator.isNull(classNames[i])) {
-				continue;
-			}
-
-			if (Objects.equals(classNames[i], className)) {
-				continue;
-			}
-
-			sb.append(classNames[i]);
-			sb.append(" ");
-		}
-
-		setClassName(sb.toString());
+		setClassName(cleanedClassName.trim());
 	}
 
 	public void setAttribute(String attributeName, String attributeValue) {
@@ -327,20 +315,7 @@ public class LoggerElement {
 
 		Arrays.sort(classNames);
 
-		StringBuilder sb = new StringBuilder();
-
-		for (int i = 0; i < classNames.length; i++) {
-			if (Validator.isNull(classNames[i])) {
-				continue;
-			}
-
-			sb.append(classNames[i]);
-			sb.append(" ");
-		}
-
-		className = sb.toString();
-
-		return className.trim();
+		return StringUtil.join(classNames, " ");
 	}
 
 	private static final Set<String> _usedIds = new HashSet<>();

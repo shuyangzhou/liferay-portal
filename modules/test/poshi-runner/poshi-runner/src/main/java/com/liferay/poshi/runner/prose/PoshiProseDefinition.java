@@ -19,6 +19,8 @@ import com.liferay.poshi.runner.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.dom4j.Element;
 
@@ -30,12 +32,18 @@ public class PoshiProseDefinition {
 	public PoshiProseDefinition(String fileName, String fileContent) {
 		_fileName = fileName;
 
-		List<String> poshiProseScenarioStrings = StringUtil.split(
-			fileContent, PoshiProseScenario.KEYWORDS);
+		Matcher matcher = _definitionPattern.matcher(fileContent);
 
-		for (String poshiProseScenarioString : poshiProseScenarioStrings) {
-			_poshiProseScenarios.add(
-				new PoshiProseScenario(poshiProseScenarioString));
+		if (matcher.find()) {
+			String scenarios = matcher.group("scenarios");
+
+			List<String> poshiProseScenarioStrings = StringUtil.split(
+				scenarios, PoshiProseScenario.KEYWORDS);
+
+			for (String poshiProseScenarioString : poshiProseScenarioStrings) {
+				_poshiProseScenarios.add(
+					new PoshiProseScenario(poshiProseScenarioString));
+			}
 		}
 	}
 
@@ -53,6 +61,9 @@ public class PoshiProseDefinition {
 		return definitionElement;
 	}
 
+	private final Pattern _definitionPattern = Pattern.compile(
+		"(?s)(?<feature>Feature:.*?)?" +
+			"(?<scenarios>(Setup|Teardown|Scenario).*)");
 	private final String _fileName;
 	private final List<PoshiProseScenario> _poshiProseScenarios =
 		new ArrayList<>();

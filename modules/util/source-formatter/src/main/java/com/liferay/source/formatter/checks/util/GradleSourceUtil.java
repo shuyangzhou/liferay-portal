@@ -14,6 +14,11 @@
 
 package com.liferay.source.formatter.checks.util;
 
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +27,49 @@ import java.util.regex.Pattern;
  * @author Hugo Huijser
  */
 public class GradleSourceUtil {
+
+	public static String getConfiguration(String dependency) {
+		int pos = dependency.indexOf(StringPool.SPACE);
+
+		if (pos != -1) {
+			return StringUtil.trim(dependency.substring(0, pos));
+		}
+
+		return StringUtil.trim(dependency);
+	}
+
+	public static List<String> getDependenciesBlocks(String content) {
+		List<String> dependenciesBlocks = new ArrayList<>();
+
+		Matcher matcher = _dependenciesPattern.matcher(content);
+
+		while (matcher.find()) {
+			int y = matcher.start();
+
+			while (true) {
+				y = content.indexOf("}", y + 1);
+
+				if (y == -1) {
+					return dependenciesBlocks;
+				}
+
+				String dependencies = content.substring(
+					matcher.start(2), y + 1);
+
+				int level = SourceUtil.getLevel(dependencies, "{", "}");
+
+				if (level == 0) {
+					if (!dependencies.contains("}\n")) {
+						dependenciesBlocks.add(dependencies);
+					}
+
+					break;
+				}
+			}
+		}
+
+		return dependenciesBlocks;
+	}
 
 	public static boolean isSpringBootExecutable(String content) {
 		Matcher matcher = _springBootPattern.matcher(content);
@@ -55,6 +103,8 @@ public class GradleSourceUtil {
 		}
 	}
 
+	private static final Pattern _dependenciesPattern = Pattern.compile(
+		"(\n|\\A)(\t*)dependencies \\{\n");
 	private static final Pattern _springBootPattern = Pattern.compile(
 		"\\s*springBoot\\s*\\{", Pattern.CASE_INSENSITIVE);
 

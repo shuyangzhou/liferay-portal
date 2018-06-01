@@ -41,6 +41,7 @@
 		<field name="scopeAliases" type="String">
 			<hint-collection name="CLOB" />
 		</field>
+		<field name="scopeAliasesHash" type="long" />
 	</model>
 	<model name="com.liferay.oauth2.provider.model.OAuth2Authorization">
 		<field name="oAuth2AuthorizationId" type="long" />
@@ -53,12 +54,14 @@
 		<field name="accessTokenContent" type="String">
 			<hint-collection name="CLOB" />
 		</field>
+		<field name="accessTokenContentHash" type="long" />
 		<field name="accessTokenCreateDate" type="Date" />
 		<field name="accessTokenExpirationDate" type="Date" />
 		<field name="remoteIPInfo" type="String" />
 		<field name="refreshTokenContent" type="String">
 			<hint-collection name="CLOB" />
 		</field>
+		<field name="refreshTokenContentHash" type="long" />
 		<field name="refreshTokenCreateDate" type="Date" />
 		<field name="refreshTokenExpirationDate" type="Date" />
 	</model>

@@ -331,12 +331,16 @@ public class StagingLocalServiceImpl extends StagingLocalServiceBaseImpl {
 
 			Map<String, String[]> parameterMap =
 				ExportImportConfigurationParameterMapFactoryUtil.
-					buildParameterMap();
+					buildFullPublishParameterMap();
 
 			if (liveGroup.hasPrivateLayouts()) {
 				StagingUtil.publishLayouts(
 					userId, liveGroup.getGroupId(), stagingGroup.getGroupId(),
 					true, parameterMap);
+
+				parameterMap =
+					ExportImportConfigurationParameterMapFactoryUtil.
+						buildParameterMap();
 			}
 
 			if (liveGroup.hasPublicLayouts() ||
@@ -357,7 +361,7 @@ public class StagingLocalServiceImpl extends StagingLocalServiceBaseImpl {
 			long remoteGroupId, ServiceContext serviceContext)
 		throws PortalException {
 
-		StagingUtil.validateRemote(
+		groupLocalService.validateRemote(
 			stagingGroup.getGroupId(), remoteAddress, remotePort,
 			remotePathContext, secureConnection, remoteGroupId);
 

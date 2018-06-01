@@ -18,12 +18,15 @@
 
 <%
 LayoutPageTemplateDisplayContext layoutPageTemplateDisplayContext = new LayoutPageTemplateDisplayContext(renderRequest, renderResponse, request);
+
+request.setAttribute(LayoutAdminWebKeys.LAYOUT_PAGE_TEMPLATE_DISPLAY_CONTEXT, layoutPageTemplateDisplayContext);
 %>
 
 <clay:management-toolbar
 	actionDropdownItems="<%= layoutPageTemplateDisplayContext.geLayoutPageTemplateEntriesActionDropdownItems() %>"
 	clearResultsURL="<%= layoutPageTemplateDisplayContext.getClearResultsURL() %>"
 	componentId="layoutPageTemplateEntriesManagementToolbar"
+	creationMenu="<%= layoutPageTemplateDisplayContext.getCreationMenu() %>"
 	disabled="<%= layoutPageTemplateDisplayContext.isDisabledLayoutPageTemplateEntriesManagementBar() %>"
 	filterDropdownItems="<%= layoutPageTemplateDisplayContext.getFilterDropdownItems() %>"
 	itemsTotal="<%= layoutPageTemplateDisplayContext.getTotalItems() %>"
@@ -70,14 +73,27 @@ LayoutPageTemplateDisplayContext layoutPageTemplateDisplayContext = new LayoutPa
 							rowChecker="<%= searchContainer.getRowChecker() %>"
 							title="<%= layoutPageTemplateEntry.getName() %>"
 						>
-							<liferay-frontend:vertical-card-header>
-								<liferay-ui:message arguments="<%= LanguageUtil.getTimeDescription(request, System.currentTimeMillis() - layoutPageTemplateEntry.getCreateDate().getTime(), true) %>" key="x-ago" translateArguments="<%= false %>" />
-							</liferay-frontend:vertical-card-header>
-
 							<liferay-frontend:vertical-card-footer>
-								<span class="label <%= (layoutPageTemplateEntry.getStatus() == WorkflowConstants.STATUS_APPROVED) ? "label-success" : "label-secondary" %>">
-									<liferay-ui:message key="<%= WorkflowConstants.getStatusLabel(layoutPageTemplateEntry.getStatus()) %>" />
-								</span>
+								<div class="card-subtitle row">
+									<div class="col text-truncate">
+										<c:choose>
+											<c:when test="<%= Objects.equals(layoutPageTemplateEntry.getType(), LayoutPageTemplateEntryTypeConstants.TYPE_WIDGET_PAGE) %>">
+												<liferay-ui:message key="widget-page-template" />
+											</c:when>
+											<c:otherwise>
+												<liferay-ui:message key="content-page-template" />
+											</c:otherwise>
+										</c:choose>
+									</div>
+								</div>
+
+								<div class="card-subtitle row">
+									<div class="col text-truncate">
+										<span class="label <%= (layoutPageTemplateEntry.getStatus() == WorkflowConstants.STATUS_APPROVED) ? "label-success" : "label-secondary" %>">
+											<liferay-ui:message key="<%= WorkflowConstants.getStatusLabel(layoutPageTemplateEntry.getStatus()) %>" />
+										</span>
+									</div>
+								</div>
 							</liferay-frontend:vertical-card-footer>
 						</liferay-frontend:vertical-card>
 					</c:when>
@@ -86,19 +102,32 @@ LayoutPageTemplateDisplayContext layoutPageTemplateDisplayContext = new LayoutPa
 							actionJsp="/layout_page_template_entry_action.jsp"
 							actionJspServletContext="<%= application %>"
 							cssClass="entry-display-style"
-							icon="page"
+							icon='<%= Objects.equals(layoutPageTemplateEntry.getType(), LayoutPageTemplateEntryTypeConstants.TYPE_WIDGET_PAGE) ? "page-template" : "page" %>'
 							resultRow="<%= row %>"
 							rowChecker="<%= searchContainer.getRowChecker() %>"
 							title="<%= layoutPageTemplateEntry.getName() %>"
 						>
-							<liferay-frontend:vertical-card-header>
-								<liferay-ui:message arguments="<%= LanguageUtil.getTimeDescription(request, System.currentTimeMillis() - layoutPageTemplateEntry.getCreateDate().getTime(), true) %>" key="x-ago" translateArguments="<%= false %>" />
-							</liferay-frontend:vertical-card-header>
-
 							<liferay-frontend:vertical-card-footer>
-								<span class="label <%= (layoutPageTemplateEntry.getStatus() == WorkflowConstants.STATUS_APPROVED) ? "label-success" : "label-secondary" %>">
-									<liferay-ui:message key="<%= WorkflowConstants.getStatusLabel(layoutPageTemplateEntry.getStatus()) %>" />
-								</span>
+								<div class="card-subtitle row">
+									<div class="col text-truncate">
+										<c:choose>
+											<c:when test="<%= Objects.equals(layoutPageTemplateEntry.getType(), LayoutPageTemplateEntryTypeConstants.TYPE_WIDGET_PAGE) %>">
+												<liferay-ui:message key="widget-page-template" />
+											</c:when>
+											<c:otherwise>
+												<liferay-ui:message key="content-page-template" />
+											</c:otherwise>
+										</c:choose>
+									</div>
+								</div>
+
+								<div class="card-subtitle row">
+									<div class="col text-truncate">
+										<span class="label <%= (layoutPageTemplateEntry.getStatus() == WorkflowConstants.STATUS_APPROVED) ? "label-success" : "label-secondary" %>">
+											<liferay-ui:message key="<%= WorkflowConstants.getStatusLabel(layoutPageTemplateEntry.getStatus()) %>" />
+										</span>
+									</div>
+								</div>
 							</liferay-frontend:vertical-card-footer>
 						</liferay-frontend:icon-vertical-card>
 					</c:otherwise>
@@ -113,20 +142,16 @@ LayoutPageTemplateDisplayContext layoutPageTemplateDisplayContext = new LayoutPa
 	</liferay-ui:search-container>
 </aui:form>
 
-<portlet:actionURL name="/layout/add_layout_page_template_entry" var="addLayoutPageTemplateEntryURL">
-	<portlet:param name="mvcRenderCommandName" value="/layout/edit_layout_page_template_entry" />
-	<portlet:param name="redirect" value="<%= currentURL %>" />
-	<portlet:param name="layoutPageTemplateCollectionId" value="<%= String.valueOf(layoutPageTemplateDisplayContext.getLayoutPageTemplateCollectionId()) %>" />
-</portlet:actionURL>
-
 <aui:script require="metal-dom/src/all/dom as dom,frontend-js-web/liferay/modal/commands/OpenSimpleInputModal.es as modalCommands">
-	function handleAddLayoutPageTemplateEntryMenuItemClick(event) {
+	function addLayoutPageTemplateEntry(event) {
 		event.preventDefault();
+
+		var itemData = event.data.item.data
 
 		modalCommands.openSimpleInputModal(
 			{
 				dialogTitle: '<liferay-ui:message key="add-page-template" />',
-				formSubmitURL: '<%= addLayoutPageTemplateEntryURL %>',
+				formSubmitURL: itemData.addPageTemplateURL,
 				mainFieldLabel: '<liferay-ui:message key="name" />',
 				mainFieldName: 'name',
 				mainFieldPlaceholder: '<liferay-ui:message key="name" />',
@@ -149,7 +174,7 @@ LayoutPageTemplateDisplayContext layoutPageTemplateDisplayContext = new LayoutPa
 				{
 					dialogTitle: '<liferay-ui:message key="rename-layout-page-template" />',
 					formSubmitURL: data.formSubmitUrl,
-					idFieldName: 'layoutPageTemplateEntryId',
+					idFieldName: data.idFieldName,
 					idFieldValue: data.idFieldValue,
 					mainFieldLabel: '<liferay-ui:message key="name" />',
 					mainFieldName: 'name',
@@ -169,20 +194,19 @@ LayoutPageTemplateDisplayContext layoutPageTemplateDisplayContext = new LayoutPa
 	}
 
 	var ACTIONS = {
+		'addLayoutPageTemplateEntry': addLayoutPageTemplateEntry,
 		'deleteLayoutPageTemplateEntries': deleteLayoutPageTemplateEntries
 	};
 
 	Liferay.componentReady('layoutPageTemplateEntriesManagementToolbar').then(
 		(managementToolbar) => {
-			managementToolbar.on('creationButtonClicked', handleAddLayoutPageTemplateEntryMenuItemClick);
-
 			managementToolbar.on(
-				['actionItemClicked', 'filterItemClicked'],
+				['actionItemClicked', 'creationMenuItemClicked', 'filterItemClicked'],
 				function(event) {
 					var itemData = event.data.item.data;
 
 					if (itemData && itemData.action && ACTIONS[itemData.action]) {
-						ACTIONS[itemData.action]();
+						ACTIONS[itemData.action](event);
 					}
 				}
 			);

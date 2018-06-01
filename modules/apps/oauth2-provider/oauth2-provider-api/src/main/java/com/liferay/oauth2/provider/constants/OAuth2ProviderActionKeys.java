@@ -25,4 +25,7 @@ public class OAuth2ProviderActionKeys {
 
 	public static final String ACTION_REVOKE_TOKEN = "REVOKE_TOKEN";
 
+	public static final String ACTION_VIEW_GRANTED_AUTHORIZATIONS =
+		"VIEW_GRANTED_AUTHORIZATIONS";
+
 }

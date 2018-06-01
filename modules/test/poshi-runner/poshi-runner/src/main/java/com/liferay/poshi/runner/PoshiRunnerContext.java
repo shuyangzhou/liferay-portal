@@ -352,16 +352,6 @@ public class PoshiRunnerContext {
 		return properties;
 	}
 
-	private static List<String> _getCommandReturns(Element commandElement) {
-		String returns = commandElement.attributeValue("returns");
-
-		if (returns == null) {
-			return new ArrayList<>();
-		}
-
-		return Arrays.asList(StringUtil.split(returns));
-	}
-
 	private static String _getCommandSummary(
 		String classCommandName, String classType, Element commandElement,
 		Element rootElement) {
@@ -551,9 +541,8 @@ public class PoshiRunnerContext {
 			List<List<String>> partitions = Lists.partition(
 				classCommandNameGroup, groupSize);
 
-			for (int j = 0; j < partitions.size(); j++) {
-				classCommandNameGroups.put(
-					classCommandNameIndex, partitions.get(j));
+			for (List<String> partition : partitions) {
+				classCommandNameGroups.put(classCommandNameIndex, partition);
 
 				classCommandNameIndex++;
 			}
