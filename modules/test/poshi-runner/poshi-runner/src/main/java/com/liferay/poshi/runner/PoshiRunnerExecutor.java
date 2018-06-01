@@ -666,6 +666,13 @@ public class PoshiRunnerExecutor {
 
 				String returnName = returnElement.attributeValue("name");
 
+				if (PoshiRunnerVariablesUtil.containsKeyInStaticMap(
+						returnName)) {
+
+					PoshiRunnerVariablesUtil.putIntoStaticMap(
+						returnName, _macroReturnValue);
+				}
+
 				PoshiRunnerVariablesUtil.putIntoCommandMap(
 					returnName, _macroReturnValue);
 			}

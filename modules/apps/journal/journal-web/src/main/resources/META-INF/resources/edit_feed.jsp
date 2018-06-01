@@ -160,13 +160,13 @@ renderResponse.setTitle((feed == null) ? LanguageUtil.get(request, "new-feed") :
 					</c:otherwise>
 				</c:choose>
 
-				<aui:input autoFocus="<%= ((feed != null) && !journalWebConfiguration.journalFeedForceAutogenerateId() && (windowState.equals(WindowState.MAXIMIZED)) || windowState.equals(LiferayWindowState.POP_UP)) %>" cssClass="lfr-input-text-container" name="name" />
+				<aui:input autoFocus="<%= (feed != null) && !journalWebConfiguration.journalFeedForceAutogenerateId() && (windowState.equals(WindowState.MAXIMIZED) || windowState.equals(LiferayWindowState.POP_UP)) %>" cssClass="lfr-input-text-container" name="name" />
 
 				<aui:input cssClass="lfr-textarea-container" name="description" />
 
 				<aui:input cssClass="lfr-input-text-container" helpMessage="journal-feed-target-layout-friendly-url-help" name="targetLayoutFriendlyUrl" />
 
-				<aui:input cssClass="lfr-input-text-container" helpMessage="journal-feed-target-widget-id-help" name="targetPortletId" />
+				<aui:input cssClass="lfr-input-text-container" helpMessage="journal-feed-target-widget-id-help" label="target-widget-id" name="targetPortletId" />
 
 				<c:if test="<%= feed != null %>">
 					<aui:input name="url" type="resource" value="<%= feedURL.toString() %>" />
@@ -386,7 +386,7 @@ renderResponse.setTitle((feed == null) ? LanguageUtil.get(request, "new-feed") :
 	}
 
 	function <portlet:namespace />saveFeed() {
-		document.<portlet:namespace />fm['<portlet:namespace />javax-portlet-action'].value = '<%= feed == null ? "addFeed" : "updateFeed" %>';
+		document.<portlet:namespace />fm['<portlet:namespace />javax-portlet-action'].value = '<%= (feed == null) ? "addFeed" : "updateFeed" %>';
 
 		<c:if test="<%= feed == null %>">
 			document.<portlet:namespace />fm.<portlet:namespace />feedId.value = document.<portlet:namespace />fm.<portlet:namespace />newFeedId.value;

@@ -31,30 +31,65 @@ import org.dom4j.tree.DefaultAttribute;
 public class PoshiProseScenario {
 
 	public PoshiProseScenario(String poshiProseScenarioString) {
-		Matcher matcher = _scenarioPattern.matcher(poshiProseScenarioString);
+		Matcher setupMatcher = _setupPattern.matcher(poshiProseScenarioString);
 
-		if (!matcher.find()) {
-			throw new RuntimeException(
-				"Prose scenario does not match pattern " +
-					_scenarioPattern.pattern() + "\n" +
-						poshiProseScenarioString);
+		if (setupMatcher.find()) {
+			_scenarioContent = setupMatcher.group("content");
+			_scenarioName = null;
+			_type = Type.Setup;
 		}
+		else {
+			Matcher teardownMatcher = _teardownPattern.matcher(
+				poshiProseScenarioString);
 
-		_scenarioName = matcher.group("name");
-		_scenarioContent = matcher.group("content");
+			if (teardownMatcher.find()) {
+				_scenarioContent = teardownMatcher.group("content");
+				_scenarioName = null;
+				_type = Type.Teardown;
+			}
+			else {
+				Matcher scenarioMatcher = _scenarioPattern.matcher(
+					poshiProseScenarioString);
+
+				if (!scenarioMatcher.find()) {
+					throw new RuntimeException(
+						"Prose scenario does not match pattern " +
+							_scenarioPattern.pattern() + "\n" +
+								poshiProseScenarioString);
+				}
+
+				_scenarioContent = scenarioMatcher.group("content");
+				_scenarioName = scenarioMatcher.group("name");
+				_type = Type.Scenario;
+			}
+		}
 
 		List<String> poshiProseStatementStrings = StringUtil.split(
 			_scenarioContent, PoshiProseStatement.KEYWORDS);
 
 		for (String poshiProseStatementString : poshiProseStatementStrings) {
+			if (poshiProseStatementString.startsWith("#")) {
+				continue;
+			}
+
 			_poshiProseStatements.add(
 				new PoshiProseStatement(poshiProseStatementString));
 		}
 	}
 
 	public Element toElement() {
-		Element commandElement = Dom4JUtil.getNewElement(
-			"command", null, new DefaultAttribute("name", _scenarioName));
+		Element commandElement;
+
+		if (_type == Type.Setup) {
+			commandElement = Dom4JUtil.getNewElement("set-up");
+		}
+		else if (_type == Type.Teardown) {
+			commandElement = Dom4JUtil.getNewElement("tear-down");
+		}
+		else {
+			commandElement = Dom4JUtil.getNewElement(
+				"command", null, new DefaultAttribute("name", _scenarioName));
+		}
 
 		for (PoshiProseStatement poshiProseStatement : _poshiProseStatements) {
 			commandElement.add(poshiProseStatement.toElement());
@@ -63,13 +98,26 @@ public class PoshiProseScenario {
 		return commandElement;
 	}
 
-	protected static final String[] KEYWORDS = {"Scenario"};
+	protected static final String[] KEYWORDS =
+		{"Setup", "Scenario", "Teardown"};
+
+	protected enum Type {
+
+		Scenario, Setup, Teardown
+
+	}
 
 	private final List<PoshiProseStatement> _poshiProseStatements =
 		new ArrayList<>();
 	private final String _scenarioContent;
 	private final String _scenarioName;
 	private final Pattern _scenarioPattern = Pattern.compile(
-		"Scenario:[\\s]*(?<name>\\w+)[^\\w]*(?<content>[\\s\\S]*)");
+		"(?s)Scenario:\\s*(?<name>\\w([ \\w]*\\w)?)\\s*" +
+			"(?<content>[^\\s].*)");
+	private final Pattern _setupPattern = Pattern.compile(
+		"(?s)Setup:\\s*(?<content>[^\\s].*)");
+	private final Pattern _teardownPattern = Pattern.compile(
+		"(?s)Teardown:\\s*(?<content>[^\\s].*)");
+	private final Type _type;
 
 }

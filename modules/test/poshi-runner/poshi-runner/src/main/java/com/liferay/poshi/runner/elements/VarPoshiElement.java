@@ -21,6 +21,8 @@ import java.io.IOException;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import org.dom4j.Attribute;
 import org.dom4j.CDATA;
 import org.dom4j.Element;
@@ -94,7 +96,7 @@ public class VarPoshiElement extends PoshiElement {
 		if (value.endsWith("\"") && value.startsWith("\"")) {
 			value = getQuotedContent(value);
 
-			value = value.replace("&quot;", "\"");
+			value = StringEscapeUtils.unescapeXml(value);
 
 			addAttribute("value", value);
 
@@ -147,7 +149,7 @@ public class VarPoshiElement extends PoshiElement {
 				}
 			}
 			else {
-				value = value.replaceAll("\"", "&quot;");
+				value = StringEscapeUtils.escapeXml10(value);
 
 				if (parentElement instanceof ExecutePoshiElement) {
 					value = value.replace("\\", "\\\\");

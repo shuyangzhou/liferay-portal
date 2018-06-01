@@ -4,11 +4,13 @@ configurations {
 	arrayFind
 	fetch
 	objectAssign
+	urlSearchParams
 }
 
 task buildArrayFind(type: Copy)
 task buildFetch(type: Copy)
 task buildObjectAssign(type: Copy)
+task buildUrlSearchParams(type: Copy)
 
 buildArrayFind {
 	eachFile new StripPathSegmentsAction(5)
@@ -21,8 +23,8 @@ buildArrayFind {
 	includeEmptyDirs = false
 	into "classes/META-INF/resources"
 
-	rename { String fileName ->
-		fileName.replace("index", "array.find")
+	rename {
+		it.replace "index", "array.find"
 	}
 }
 
@@ -49,8 +51,24 @@ buildObjectAssign {
 	includeEmptyDirs = false
 	into "classes/META-INF/resources"
 
-	rename { String fileName ->
-		fileName.replace("object-assign-auto", "object.assign")
+	rename {
+		it.replace "object-assign-auto", "object.assign"
+	}
+}
+
+buildUrlSearchParams {
+	eachFile new StripPathSegmentsAction(6)
+
+	from {
+		zipTree(configurations.urlSearchParams.singleFile)
+	}
+
+	include "META-INF/resources/webjars/url-search-params/0.10.0/build/url-search-params.js"
+	includeEmptyDirs = false
+	into "classes/META-INF/resources"
+
+	rename {
+		it.replace "url-search-params", "url.search.params"
 	}
 }
 
@@ -58,6 +76,7 @@ classes {
 	dependsOn buildArrayFind
 	dependsOn buildFetch
 	dependsOn buildObjectAssign
+	dependsOn buildUrlSearchParams
 }
 
 dependencies {
@@ -73,4 +92,6 @@ dependencies {
 	fetch group: "org.webjars.npm", name: "whatwg-fetch", transitive: false, version: "2.0.4"
 
 	objectAssign group: "org.webjars.npm", name: "es6-object-assign", transitive: false, version: "1.1.0"
+
+	urlSearchParams group: "org.webjars.npm", name: "url-search-params", transitive: false, version: "0.10.0"
 }

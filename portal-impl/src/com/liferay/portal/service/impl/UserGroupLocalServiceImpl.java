@@ -15,13 +15,12 @@
 package com.liferay.portal.service.impl;
 
 import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationConstants;
-import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSettingsMapFactory;
+import com.liferay.exportimport.kernel.configuration.ExportImportConfigurationSettingsMapFactoryUtil;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.exportimport.kernel.lar.UserIdStrategy;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.petra.string.CharPool;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
@@ -552,14 +551,16 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 				companyId, keywords, params, start, end, obc);
 		}
 
-		String orderByType = StringPool.BLANK;
+		String orderByCol = obc.getOrderByFields()[0];
 
-		if (obc.isAscending()) {
-			orderByType = "asc";
+		String orderByType = "asc";
+
+		if (!obc.isAscending()) {
+			orderByType = "desc";
 		}
 
 		Sort sort = SortFactoryUtil.getSort(
-			UserGroup.class, obc.getOrderBy(), orderByType);
+			UserGroup.class, orderByCol, orderByType);
 
 		try {
 			return UsersAdminUtil.getUserGroups(
@@ -666,14 +667,16 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 				obc);
 		}
 
-		String orderByType = StringPool.BLANK;
+		String orderByCol = obc.getOrderByFields()[0];
 
-		if (obc.isAscending()) {
-			orderByType = "asc";
+		String orderByType = "asc";
+
+		if (!obc.isAscending()) {
+			orderByType = "desc";
 		}
 
 		Sort sort = SortFactoryUtil.getSort(
-			UserGroup.class, obc.getOrderBy(), orderByType);
+			UserGroup.class, orderByCol, orderByType);
 
 		try {
 			return UsersAdminUtil.getUserGroups(
@@ -1067,7 +1070,7 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 
 		if (userGroup.hasPrivateLayouts()) {
 			Map<String, Serializable> exportLayoutSettingsMap =
-				ExportImportConfigurationSettingsMapFactory.
+				ExportImportConfigurationSettingsMapFactoryUtil.
 					buildExportLayoutSettingsMap(
 						user, group.getGroupId(), true,
 						ExportImportHelperUtil.getAllLayoutIds(
@@ -1087,7 +1090,7 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 
 		if (userGroup.hasPublicLayouts()) {
 			Map<String, Serializable> exportLayoutSettingsMap =
-				ExportImportConfigurationSettingsMapFactory.
+				ExportImportConfigurationSettingsMapFactoryUtil.
 					buildExportLayoutSettingsMap(
 						user, group.getGroupId(), false,
 						ExportImportHelperUtil.getAllLayoutIds(
@@ -1178,7 +1181,7 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 
 		if (privateLayoutsFile != null) {
 			Map<String, Serializable> importLayoutSettingsMap =
-				ExportImportConfigurationSettingsMapFactory.
+				ExportImportConfigurationSettingsMapFactoryUtil.
 					buildImportLayoutSettingsMap(
 						user, groupId, true, null, parameterMap);
 
@@ -1195,7 +1198,7 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 
 		if (publicLayoutsFile != null) {
 			Map<String, Serializable> importLayoutSettingsMap =
-				ExportImportConfigurationSettingsMapFactory.
+				ExportImportConfigurationSettingsMapFactoryUtil.
 					buildImportLayoutSettingsMap(
 						user, groupId, false, null, parameterMap);
 

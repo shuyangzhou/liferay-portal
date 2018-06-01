@@ -55,7 +55,6 @@ import com.liferay.portal.search.web.search.result.SearchResultImageContributor;
 
 import java.text.DateFormat;
 import java.text.Format;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
@@ -609,13 +608,13 @@ public class SearchResultSummaryDisplayBuilder {
 
 		StringBundler sb = new StringBundler(4 * values.length);
 
-		for (int i = 0; i < values.length; i++) {
+		for (String value : values) {
 			if (field.isNumeric()) {
-				sb.append(HtmlUtil.escape(values[i]));
+				sb.append(HtmlUtil.escape(value));
 			}
 			else {
 				sb.append(StringPool.QUOTE);
-				sb.append(HtmlUtil.escape(values[i]));
+				sb.append(HtmlUtil.escape(value));
 				sb.append(StringPool.QUOTE);
 			}
 
@@ -674,17 +673,16 @@ public class SearchResultSummaryDisplayBuilder {
 	}
 
 	protected Date parseDateStringFieldValue(String dateStringFieldValue) {
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+
 		try {
-			return _DATE_STRING_FIELD_DATE_FORMAT.parse(dateStringFieldValue);
+			return dateFormat.parse(dateStringFieldValue);
 		}
-		catch (ParseException pe) {
+		catch (Exception e) {
 			throw new IllegalArgumentException(
-				"Unable to parse date string: " + dateStringFieldValue, pe);
+				"Unable to parse date string: " + dateStringFieldValue, e);
 		}
 	}
-
-	private static final DateFormat _DATE_STRING_FIELD_DATE_FORMAT =
-		new SimpleDateFormat("yyyyMMddHHmmss");
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SearchResultSummaryDisplayBuilder.class);

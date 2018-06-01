@@ -1,12 +1,21 @@
+Feature: This is a feature
+	This is a feature section
+
+Setup:
+	* I visit the URL "https://www.google.com"
+
+Teardown:
+	* I should close the window
+
 Scenario: catSearch
 	When I visit the URL "https://www.yahoo.com"
 	And I issue a search for "cats"
 	Then I should see "stray cat" and "domestic cat" and "kitten" and "lion"
 
-Scenario: assertLiferayMainPageAvailability
-	When I visit the URL "https://www.liferay.com"
-	And I wait for "title" to be present
-	Then I should close the window
+Scenario: assert Liferay Main Page Availability
+	* I visit the URL "https://www.liferay.com"
+	* I wait for "title" to be present
+	* I should close the window
 
 Scenario: multiLineString
     When I visit the URL "https://www.liferay.com"
@@ -44,3 +53,20 @@ Scenario: multiLineString
 		}
 		"""
 	Then I visit the URL "https://www.ask.com"
+	Then I have a lot to say:
+		"""
+		One
+		Two
+		Three
+		"""
+	And I have a lot to say:
+		""" my type
+		Four
+		Five
+		Six
+		"""
+		# This
+		# is
+		# a
+		## comment
+		### section

@@ -36,6 +36,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.io.StringWriter;
 
 import java.net.URI;
 
@@ -47,6 +48,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 
 import java.util.ArrayList;
@@ -54,6 +56,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.TreeMap;
 import java.util.concurrent.Callable;
@@ -63,6 +66,14 @@ import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
 
 import net.diibadaaba.zipdiff.DifferenceCalculator;
 import net.diibadaaba.zipdiff.Differences;
@@ -76,7 +87,6 @@ import org.gradle.testkit.runner.GradleRunner;
 import org.gradle.testkit.runner.TaskOutcome;
 
 import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -85,6 +95,9 @@ import org.junit.rules.TemporaryFolder;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 /**
  * @author Lawrence Lee
@@ -101,7 +114,7 @@ public class ProjectTemplatesTest {
 		new TemporaryFolder();
 
 	@BeforeClass
-	public static void setUpClass() throws IOException {
+	public static void setUpClass() throws Exception {
 		String gradleDistribution = System.getProperty("gradle.distribution");
 
 		if (Validator.isNull(gradleDistribution)) {
@@ -115,6 +128,13 @@ public class ProjectTemplatesTest {
 
 		_projectTemplateVersions = FileUtil.readProperties(
 			Paths.get("build", "project-template-versions.properties"));
+
+		XPathFactory xPathFactory = XPathFactory.newInstance();
+
+		XPath xPath = xPathFactory.newXPath();
+
+		_pomXmlNpmInstallXPathExpression = xPath.compile(
+			"//id[contains(text(),'npm-install')]/parent::*");
 	}
 
 	@Test
@@ -745,10 +765,10 @@ public class ProjectTemplatesTest {
 			"public class FooPortletKeys");
 		_testContains(
 			gradleProjectDir, "src/main/java/foo/test/portlet/FooPortlet.java",
-			"package foo.test.portlet;", "javax.portlet.display-name=foo.test",
+			"package foo.test.portlet;", "javax.portlet.display-name=Foo",
 			"javax.portlet.name=\" + FooPortletKeys.Foo",
 			"public class FooPortlet extends GenericPortlet {",
-			"printWriter.print(\"foo.test Portlet");
+			"printWriter.print(\"Hello from Foo");
 
 		File mavenProjectDir = _buildTemplateWithMaven(
 			"portlet", "foo.test", "com.test", "-DclassName=Foo",
@@ -811,7 +831,7 @@ public class ProjectTemplatesTest {
 				"/ProviderTestPortletKeys.java",
 			"package provider.test.constants;",
 			"public class ProviderTestPortletKeys",
-			"public static final String ProviderTest = \"ProviderTest\";");
+			"public static final String ProviderTest = \"providertest\";");
 
 		File mavenProjectDir = _buildTemplateWithMaven(
 			"portlet-provider", "provider.test", "com.test",
@@ -866,9 +886,9 @@ public class ProjectTemplatesTest {
 		_testContains(
 			gradleProjectDir,
 			"src/main/java/portlet/portlet/PortletPortlet.java",
-			"package portlet.portlet;", "javax.portlet.display-name=portlet",
+			"package portlet.portlet;", "javax.portlet.display-name=Portlet",
 			"public class PortletPortlet extends GenericPortlet {",
-			"printWriter.print(\"portlet Portlet");
+			"printWriter.print(\"Hello from Portlet");
 
 		File mavenProjectDir = _buildTemplateWithMaven(
 			"portlet", "portlet", "com.test", "-DclassName=Portlet",
@@ -899,7 +919,7 @@ public class ProjectTemplatesTest {
 				"extender.configuration.RestExtenderConfiguration-rest." +
 					"properties",
 			"contextPaths=/my-rest",
-			"jaxRsServiceFilterStrings=(component.name=" +
+			"jaxRsApplicationFilterStrings=(component.name=" +
 				"my.rest.application.MyRestApplication)");
 
 		File mavenProjectDir = _buildTemplateWithMaven(
@@ -1158,8 +1178,6 @@ public class ProjectTemplatesTest {
 
 	@Test
 	public void testBuildTemplateSoyPortlet() throws Exception {
-		Assume.assumeFalse(Validator.isNotNull(System.getenv("JENKINS_HOME")));
-
 		File gradleProjectDir = _buildTemplateWithGradle(
 			"soy-portlet", "foo", "--package-name", "com.liferay.test");
 
@@ -1198,7 +1216,7 @@ public class ProjectTemplatesTest {
 		_testContains(
 			gradleProjectDir,
 			"src/main/java/com/liferay/test/constants/FooPortletKeys.java",
-			"public static final String Foo = \"Foo\"");
+			"public static final String Foo = \"foo\"");
 		_testContains(
 			gradleProjectDir,
 			"src/main/java/com/liferay/test/portlet/FooPortlet.java",
@@ -1232,6 +1250,13 @@ public class ProjectTemplatesTest {
 			mavenPackageJsonPath,
 			mavenPackageJSON.getBytes(StandardCharsets.UTF_8));
 
+		if (Validator.isNotNull(System.getenv("JENKINS_HOME"))) {
+			_addNpmrc(gradleProjectDir);
+			_addNpmrc(mavenProjectDir);
+			_configureExecuteNpmTask(gradleProjectDir);
+			_configurePomNpmConfiguration(mavenProjectDir);
+		}
+
 		_buildProjects(gradleProjectDir, mavenProjectDir);
 
 		File gradleJarFile = new File(
@@ -1244,8 +1269,6 @@ public class ProjectTemplatesTest {
 
 	@Test
 	public void testBuildTemplateSoyPortlet71() throws Exception {
-		Assume.assumeFalse(Validator.isNotNull(System.getenv("JENKINS_HOME")));
-
 		File gradleProjectDir = _buildTemplateWithGradle(
 			"soy-portlet", "foo", "--package-name", "com.liferay.test",
 			"--liferayVersion", "7.1");
@@ -1285,7 +1308,7 @@ public class ProjectTemplatesTest {
 		_testContains(
 			gradleProjectDir,
 			"src/main/java/com/liferay/test/constants/FooPortletKeys.java",
-			"public static final String Foo = \"Foo\"");
+			"public static final String Foo = \"foo\"");
 		_testContains(
 			gradleProjectDir,
 			"src/main/java/com/liferay/test/portlet/FooSoyPortletRegister.java",
@@ -1320,6 +1343,13 @@ public class ProjectTemplatesTest {
 		Files.write(
 			mavenPackageJsonPath,
 			mavenPackageJSON.getBytes(StandardCharsets.UTF_8));
+
+		if (Validator.isNotNull(System.getenv("JENKINS_HOME"))) {
+			_addNpmrc(gradleProjectDir);
+			_addNpmrc(mavenProjectDir);
+			_configureExecuteNpmTask(gradleProjectDir);
+			_configurePomNpmConfiguration(mavenProjectDir);
+		}
 
 		_buildProjects(gradleProjectDir, mavenProjectDir);
 
@@ -1938,6 +1968,46 @@ public class ProjectTemplatesTest {
 	}
 
 	@Test
+	public void testCompareGradlePluginVersions() throws Exception {
+		String template = "mvc-portlet";
+		String name = "foo";
+
+		File gradleProjectDir = _buildTemplateWithGradle(template, name);
+
+		File workspaceDir = _buildWorkspace();
+
+		File modulesDir = new File(workspaceDir, "modules");
+
+		_buildTemplateWithGradle(modulesDir, template, name);
+
+		Optional<String> result = _executeGradle(
+			gradleProjectDir, true, _GRADLE_TASK_PATH_BUILD);
+
+		Matcher matcher = _gradlePluginVersionPattern.matcher(result.get());
+
+		String standaloneGradlePluginVersion = null;
+
+		if (matcher.matches()) {
+			standaloneGradlePluginVersion = matcher.group(1);
+		}
+
+		result = _executeGradle(
+			workspaceDir, true, ":modules:" + name + ":clean");
+
+		matcher = _gradlePluginVersionPattern.matcher(result.get());
+
+		String workspaceGradlePluginVersion = null;
+
+		if (matcher.matches()) {
+			workspaceGradlePluginVersion = matcher.group(1);
+		}
+
+		Assert.assertEquals(
+			"com.liferay.plugin versions do not match",
+			standaloneGradlePluginVersion, workspaceGradlePluginVersion);
+	}
+
+	@Test
 	public void testListTemplates() throws Exception {
 		final Map<String, String> expectedTemplates = new TreeMap<>();
 
@@ -2001,6 +2071,15 @@ public class ProjectTemplatesTest {
 
 	@Rule
 	public final TemporaryFolder temporaryFolder = new TemporaryFolder();
+
+	private static void _addNpmrc(File projectDir) throws IOException {
+		File npmrcFile = new File(projectDir, ".npmrc");
+
+		String content = "sass_binary_site=" + _NODEJS_NPM_CI_SASS_BINARY_SITE;
+
+		Files.write(
+			npmrcFile.toPath(), content.getBytes(StandardCharsets.UTF_8));
+	}
 
 	private static void _buildProjects(
 			File gradleProjectDir, File mavenProjectDir)
@@ -2238,6 +2317,84 @@ public class ProjectTemplatesTest {
 		return projectDir;
 	}
 
+	private static void _configureExecuteNpmTask(File projectDir)
+		throws Exception {
+
+		File buildGradleFile = _testContains(
+			projectDir, "build.gradle", "com.liferay.gradle.plugins",
+			"com.liferay.plugin");
+
+		StringBuilder sb = new StringBuilder();
+
+		String lineSeparator = System.lineSeparator();
+
+		sb.append(lineSeparator);
+
+		sb.append(
+			"import com.liferay.gradle.plugins.node.tasks.ExecuteNpmTask");
+		sb.append(lineSeparator);
+
+		sb.append("tasks.withType(ExecuteNpmTask) {");
+		sb.append(lineSeparator);
+
+		sb.append("\tregistry = '");
+		sb.append(_NODEJS_NPM_CI_REGISTRY);
+		sb.append('\'');
+		sb.append(lineSeparator);
+
+		sb.append('}');
+
+		String executeNpmTaskScript = sb.toString();
+
+		Files.write(
+			buildGradleFile.toPath(),
+			executeNpmTaskScript.getBytes(StandardCharsets.UTF_8),
+			StandardOpenOption.APPEND);
+	}
+
+	private static void _configurePomNpmConfiguration(File projectDir)
+		throws Exception {
+
+		DocumentBuilderFactory documentBuilderFactory =
+			DocumentBuilderFactory.newInstance();
+
+		DocumentBuilder documentBuilder =
+			documentBuilderFactory.newDocumentBuilder();
+
+		File pomXmlFile = new File(projectDir, "pom.xml");
+
+		Document document = documentBuilder.parse(pomXmlFile);
+
+		NodeList nodeList = (NodeList)_pomXmlNpmInstallXPathExpression.evaluate(
+			document, XPathConstants.NODESET);
+
+		Node executionNode = nodeList.item(0);
+
+		Element configurationElement = document.createElement("configuration");
+
+		executionNode.appendChild(configurationElement);
+
+		Element argumentsElement = document.createElement("arguments");
+
+		configurationElement.appendChild(argumentsElement);
+
+		Text text = document.createTextNode(
+			"install --registry=" + _NODEJS_NPM_CI_REGISTRY);
+
+		argumentsElement.appendChild(text);
+
+		TransformerFactory transformerFactory =
+			TransformerFactory.newInstance();
+
+		Transformer transformer = transformerFactory.newTransformer();
+
+		DOMSource domSource = new DOMSource(document);
+
+		StreamResult streamResult = new StreamResult(pomXmlFile);
+
+		transformer.transform(domSource, streamResult);
+	}
+
 	private static void _createNewFiles(String fileName, File... dirs)
 		throws IOException {
 
@@ -2254,7 +2411,8 @@ public class ProjectTemplatesTest {
 		}
 	}
 
-	private static void _executeGradle(File projectDir, String... taskPaths)
+	private static Optional<String> _executeGradle(
+			File projectDir, boolean debug, String... taskPaths)
 		throws IOException {
 
 		final String repositoryUrl = mavenExecutor.getRepositoryUrl();
@@ -2280,6 +2438,10 @@ public class ProjectTemplatesTest {
 								"\"" + _REPOSITORY_CDN_URL + "\"",
 								"\"" + repositoryUrl + "\"");
 
+							content = content.replace(
+								"repositories {",
+								"repositories {\tmavenLocal()\n");
+
 							Files.write(
 								path, content.getBytes(StandardCharsets.UTF_8));
 						}
@@ -2292,9 +2454,14 @@ public class ProjectTemplatesTest {
 
 		GradleRunner gradleRunner = GradleRunner.create();
 
-		List<String> arguments = new ArrayList<>(taskPaths.length + 3);
+		List<String> arguments = new ArrayList<>(taskPaths.length + 5);
 
-		arguments.add("--stacktrace");
+		if (debug) {
+			arguments.add("--debug");
+		}
+		else {
+			arguments.add("--stacktrace");
+		}
 
 		String httpProxyHost = mavenExecutor.getHttpProxyHost();
 		int httpProxyPort = mavenExecutor.getHttpProxyPort();
@@ -2306,6 +2473,13 @@ public class ProjectTemplatesTest {
 
 		for (String taskPath : taskPaths) {
 			arguments.add(taskPath);
+		}
+
+		String stdOutput = null;
+		StringWriter stringWriter = new StringWriter();
+
+		if (debug) {
+			gradleRunner.forwardStdOutput(stringWriter);
 		}
 
 		gradleRunner.withArguments(arguments);
@@ -2325,6 +2499,19 @@ public class ProjectTemplatesTest {
 				"Unexpected outcome for task \"" + buildTask.getPath() + "\"",
 				TaskOutcome.SUCCESS, buildTask.getOutcome());
 		}
+
+		if (debug) {
+			stdOutput = stringWriter.toString();
+			stringWriter.close();
+		}
+
+		return Optional.ofNullable(stdOutput);
+	}
+
+	private static void _executeGradle(File projectDir, String... taskPaths)
+		throws IOException {
+
+		_executeGradle(projectDir, false, taskPaths);
 	}
 
 	private static void _executeMaven(File projectDir, String... args)
@@ -2915,6 +3102,13 @@ public class ProjectTemplatesTest {
 			"src/main/java/" + packagePath + "/constants/" + className +
 				"WebKeys.java");
 
+		if (Validator.isNotNull(System.getenv("JENKINS_HOME"))) {
+			_addNpmrc(gradleProjectDir);
+			_addNpmrc(mavenProjectDir);
+			_configureExecuteNpmTask(gradleProjectDir);
+			_configurePomNpmConfiguration(mavenProjectDir);
+		}
+
 		_buildProjects(gradleProjectDir, mavenProjectDir);
 	}
 
@@ -3306,6 +3500,12 @@ public class ProjectTemplatesTest {
 		".mvn/wrapper/maven-wrapper.properties"
 	};
 
+	private static final String _NODEJS_NPM_CI_REGISTRY = System.getProperty(
+		"nodejs.npm.ci.registry");
+
+	private static final String _NODEJS_NPM_CI_SASS_BINARY_SITE =
+		System.getProperty("nodejs.npm.ci.sass.binary.site");
+
 	private static final String _OUTPUT_FILENAME_GLOB_REGEX = "*.{jar,war}";
 
 	private static final String _REPOSITORY_CDN_URL =
@@ -3323,6 +3523,10 @@ public class ProjectTemplatesTest {
 		"test.debug.bundle.diffs");
 
 	private static URI _gradleDistribution;
+	private static final Pattern _gradlePluginVersionPattern = Pattern.compile(
+		".*com\\.liferay\\.gradle\\.plugins:([0-9]+\\.[0-9]+\\.[0-9]+).*",
+		Pattern.DOTALL | Pattern.MULTILINE);
+	private static XPathExpression _pomXmlNpmInstallXPathExpression;
 	private static Properties _projectTemplateVersions;
 
 }

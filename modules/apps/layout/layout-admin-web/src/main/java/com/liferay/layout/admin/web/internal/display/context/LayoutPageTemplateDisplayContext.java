@@ -14,6 +14,7 @@
 
 package com.liferay.layout.admin.web.internal.display.context;
 
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.layout.admin.web.internal.security.permission.resource.LayoutPageTemplatePermission;
@@ -28,6 +29,9 @@ import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.LayoutPrototype;
+import com.liferay.portal.kernel.service.LayoutPrototypeServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -35,9 +39,12 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
+import javax.portlet.ActionRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -56,6 +63,9 @@ public class LayoutPageTemplateDisplayContext {
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
 		_request = request;
+
+		_themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
 	}
 
 	public List<DropdownItem> geLayoutPageTemplateEntriesActionDropdownItems() {
@@ -75,9 +85,6 @@ public class LayoutPageTemplateDisplayContext {
 	}
 
 	public List<DropdownItem> getActionDropdownItems() {
-		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		return new DropdownItemList() {
 			{
 				add(
@@ -86,7 +93,7 @@ public class LayoutPageTemplateDisplayContext {
 							_renderResponse.createRenderURL(),
 							"mvcRenderCommandName",
 							"/layout/edit_layout_page_template_collection",
-							"redirect", themeDisplay.getURLCurrent());
+							"redirect", _themeDisplay.getURLCurrent());
 						dropdownItem.setLabel(
 							LanguageUtil.get(_request, "new"));
 					});
@@ -100,6 +107,78 @@ public class LayoutPageTemplateDisplayContext {
 		clearResultsURL.setParameter("keywords", StringPool.BLANK);
 
 		return clearResultsURL.toString();
+	}
+
+	public CreationMenu getCreationMenu() {
+		return new CreationMenu() {
+			{
+				addPrimaryDropdownItem(
+					dropdownItem -> {
+						dropdownItem.putData(
+							"action", "addLayoutPageTemplateEntry");
+						dropdownItem.putData(
+							"addPageTemplateURL",
+							_getAddLayoutPageTemplateEntryURL());
+						dropdownItem.setHref("#");
+						dropdownItem.setLabel(
+							LanguageUtil.get(
+								_request, "content-page-template"));
+					});
+
+				addPrimaryDropdownItem(
+					dropdownItem -> {
+						dropdownItem.putData(
+							"action", "addLayoutPageTemplateEntry");
+						dropdownItem.putData(
+							"addPageTemplateURL", _getAddLayoutPrototypeURL());
+						dropdownItem.setHref("#");
+						dropdownItem.setLabel(
+							LanguageUtil.get(_request, "widget-page-template"));
+					});
+			}
+		};
+	}
+
+	public String getEditLayoutPageTemplateEntryURL(
+			LayoutPageTemplateEntry layoutPageTemplateEntry)
+		throws PortalException {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		if (Objects.equals(
+				layoutPageTemplateEntry.getType(),
+				LayoutPageTemplateEntryTypeConstants.TYPE_WIDGET_PAGE)) {
+
+			LayoutPrototype layoutPrototype = getLayoutPrototype(
+				layoutPageTemplateEntry);
+
+			if (layoutPrototype == null) {
+				return null;
+			}
+
+			Group layoutPrototypeGroup = layoutPrototype.getGroup();
+
+			return layoutPrototypeGroup.getDisplayURL(themeDisplay, true);
+		}
+
+		PortletURL editLayoutPageTemplateEntryURL =
+			_renderResponse.createRenderURL();
+
+		editLayoutPageTemplateEntryURL.setParameter(
+			"mvcRenderCommandName", "/layout/edit_layout_page_template_entry");
+		editLayoutPageTemplateEntryURL.setParameter(
+			"redirect", themeDisplay.getURLCurrent());
+		editLayoutPageTemplateEntryURL.setParameter(
+			"layoutPageTemplateEntryId",
+			String.valueOf(
+				layoutPageTemplateEntry.getLayoutPageTemplateEntryId()));
+		editLayoutPageTemplateEntryURL.setParameter(
+			"layoutPageTemplateCollectionId",
+			String.valueOf(
+				layoutPageTemplateEntry.getLayoutPageTemplateCollectionId()));
+
+		return editLayoutPageTemplateEntryURL.toString();
 	}
 
 	public List<DropdownItem> getFilterDropdownItems() {
@@ -182,13 +261,10 @@ public class LayoutPageTemplateDisplayContext {
 			return _layoutPageTemplateCollections;
 		}
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		_layoutPageTemplateCollections =
 			LayoutPageTemplateCollectionServiceUtil.
 				getLayoutPageTemplateCollections(
-					themeDisplay.getScopeGroupId());
+					_themeDisplay.getScopeGroupId());
 
 		return _layoutPageTemplateCollections;
 	}
@@ -197,9 +273,6 @@ public class LayoutPageTemplateDisplayContext {
 		if (_layoutPageTemplateEntriesSearchContainer != null) {
 			return _layoutPageTemplateEntriesSearchContainer;
 		}
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
-			WebKeys.THEME_DISPLAY);
 
 		SearchContainer layoutPageTemplateEntriesSearchContainer =
 			new SearchContainer(
@@ -228,7 +301,7 @@ public class LayoutPageTemplateDisplayContext {
 		if (isSearch()) {
 			layoutPageTemplateEntries =
 				LayoutPageTemplateEntryServiceUtil.getLayoutPageTemplateEntries(
-					themeDisplay.getScopeGroupId(),
+					_themeDisplay.getScopeGroupId(),
 					getLayoutPageTemplateCollectionId(), getKeywords(),
 					layoutPageTemplateEntriesSearchContainer.getStart(),
 					layoutPageTemplateEntriesSearchContainer.getEnd(),
@@ -237,13 +310,13 @@ public class LayoutPageTemplateDisplayContext {
 			layoutPageTemplateEntriesCount =
 				LayoutPageTemplateEntryServiceUtil.
 					getLayoutPageTemplateEntriesCount(
-						themeDisplay.getScopeGroupId(),
+						_themeDisplay.getScopeGroupId(),
 						getLayoutPageTemplateCollectionId(), getKeywords());
 		}
 		else {
 			layoutPageTemplateEntries =
 				LayoutPageTemplateEntryServiceUtil.getLayoutPageTemplateEntries(
-					themeDisplay.getScopeGroupId(),
+					_themeDisplay.getScopeGroupId(),
 					getLayoutPageTemplateCollectionId(),
 					layoutPageTemplateEntriesSearchContainer.getStart(),
 					layoutPageTemplateEntriesSearchContainer.getEnd(),
@@ -252,7 +325,7 @@ public class LayoutPageTemplateDisplayContext {
 			layoutPageTemplateEntriesCount =
 				LayoutPageTemplateEntryServiceUtil.
 					getLayoutPageTemplateEntriesCount(
-						themeDisplay.getScopeGroupId(),
+						_themeDisplay.getScopeGroupId(),
 						getLayoutPageTemplateCollectionId());
 		}
 
@@ -303,6 +376,14 @@ public class LayoutPageTemplateDisplayContext {
 		return layoutPageTemplateEntry.getName();
 	}
 
+	public LayoutPrototype getLayoutPrototype(
+			LayoutPageTemplateEntry layoutPageTemplateEntry)
+		throws PortalException {
+
+		return LayoutPrototypeServiceUtil.fetchLayoutPrototype(
+			layoutPageTemplateEntry.getLayoutPrototypeId());
+	}
+
 	public String getOrderByCol() {
 		if (Validator.isNotNull(_orderByCol)) {
 			return _orderByCol;
@@ -325,14 +406,11 @@ public class LayoutPageTemplateDisplayContext {
 	}
 
 	public PortletURL getPortletURL() {
-		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		PortletURL portletURL = _renderResponse.createRenderURL();
 
 		portletURL.setParameter("mvcRenderCommandName", "/layout/view");
 		portletURL.setParameter("tabs1", "page-templates");
-		portletURL.setParameter("redirect", themeDisplay.getURLCurrent());
+		portletURL.setParameter("redirect", _themeDisplay.getURLCurrent());
 
 		long layoutPageTemplateCollectionId =
 			getLayoutPageTemplateCollectionId();
@@ -387,6 +465,43 @@ public class LayoutPageTemplateDisplayContext {
 		return layoutPageTemplateEntriesSearchContainer.getTotal();
 	}
 
+	public Map<String, Object> getUpdateLayoutPageTemplateEntryData(
+			LayoutPageTemplateEntry layoutPageTemplateEntry)
+		throws PortalException {
+
+		String formSubmitURL = _getUpdateLayoutPageTemplateEntryURL(
+			layoutPageTemplateEntry);
+		String idFieldName = "layoutPageTemplateEntryId";
+		long idFieldValue =
+			layoutPageTemplateEntry.getLayoutPageTemplateEntryId();
+
+		if (Objects.equals(
+				layoutPageTemplateEntry.getType(),
+				LayoutPageTemplateEntryTypeConstants.TYPE_WIDGET_PAGE)) {
+
+			LayoutPrototype layoutPrototype = getLayoutPrototype(
+				layoutPageTemplateEntry);
+
+			if (layoutPrototype == null) {
+				return null;
+			}
+
+			formSubmitURL = _getUpdateLayoutPrototypeURL(layoutPrototype);
+			idFieldName = "layoutPrototypeId";
+			idFieldValue = layoutPrototype.getLayoutPrototypeId();
+		}
+
+		Map<String, Object> updateLayoutPageTemplateEntryData = new HashMap<>();
+
+		updateLayoutPageTemplateEntryData.put("form-submit-url", formSubmitURL);
+		updateLayoutPageTemplateEntryData.put("id-field-name", idFieldName);
+		updateLayoutPageTemplateEntryData.put("id-field-value", idFieldValue);
+		updateLayoutPageTemplateEntryData.put(
+			"main-field-value", layoutPageTemplateEntry.getName());
+
+		return updateLayoutPageTemplateEntryData;
+	}
+
 	public boolean isDisabledLayoutPageTemplateEntriesManagementBar() {
 		if (_hasLayoutPageTemplateEntriesResults()) {
 			return false;
@@ -418,12 +533,9 @@ public class LayoutPageTemplateDisplayContext {
 	}
 
 	public boolean isShowAddButton(String actionId) {
-		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		if (LayoutPageTemplatePermission.contains(
-				themeDisplay.getPermissionChecker(),
-				themeDisplay.getSiteGroupId(), actionId)) {
+				_themeDisplay.getPermissionChecker(),
+				_themeDisplay.getSiteGroupId(), actionId)) {
 
 			return true;
 		}
@@ -441,6 +553,36 @@ public class LayoutPageTemplateDisplayContext {
 		}
 
 		return false;
+	}
+
+	private String _getAddLayoutPageTemplateEntryURL() {
+		PortletURL actionURL = _renderResponse.createActionURL();
+
+		actionURL.setParameter(
+			ActionRequest.ACTION_NAME,
+			"/layout/add_layout_page_template_entry");
+		actionURL.setParameter(
+			"mvcRenderCommandName", "/layout/edit_layout_page_template_entry");
+		actionURL.setParameter(
+			"redirect", String.valueOf(_renderResponse.createRenderURL()));
+		actionURL.setParameter(
+			"layoutPageTemplateCollectionId",
+			String.valueOf(getLayoutPageTemplateCollectionId()));
+
+		return actionURL.toString();
+	}
+
+	private String _getAddLayoutPrototypeURL() {
+		PortletURL actionURL = _renderResponse.createActionURL();
+
+		actionURL.setParameter(
+			ActionRequest.ACTION_NAME,
+			"/layout_prototype/add_layout_prototype");
+		actionURL.setParameter(
+			"layoutPageTemplateCollectionId",
+			String.valueOf(getLayoutPageTemplateCollectionId()));
+
+		return actionURL.toString();
 	}
 
 	private List<DropdownItem> _getFilterNavigationDropdownItems() {
@@ -483,6 +625,46 @@ public class LayoutPageTemplateDisplayContext {
 		};
 	}
 
+	private String _getUpdateLayoutPageTemplateEntryURL(
+		LayoutPageTemplateEntry layoutPageTemplateEntry) {
+
+		PortletURL updateLayoutPageTemplateEntryURL =
+			_renderResponse.createActionURL();
+
+		updateLayoutPageTemplateEntryURL.setParameter(
+			ActionRequest.ACTION_NAME,
+			"/layout/update_layout_page_template_entry");
+		updateLayoutPageTemplateEntryURL.setParameter(
+			"redirect", _themeDisplay.getURLCurrent());
+		updateLayoutPageTemplateEntryURL.setParameter(
+			"layoutPageTemplateCollectionId",
+			String.valueOf(
+				layoutPageTemplateEntry.getLayoutPageTemplateCollectionId()));
+		updateLayoutPageTemplateEntryURL.setParameter(
+			"layoutPageTemplateEntryId",
+			String.valueOf(
+				layoutPageTemplateEntry.getLayoutPageTemplateEntryId()));
+
+		return updateLayoutPageTemplateEntryURL.toString();
+	}
+
+	private String _getUpdateLayoutPrototypeURL(
+		LayoutPrototype layoutPrototype) {
+
+		PortletURL updateLayoutPrototypeURL = _renderResponse.createActionURL();
+
+		updateLayoutPrototypeURL.setParameter(
+			ActionRequest.ACTION_NAME,
+			"/layout_prototype/update_layout_prototype");
+		updateLayoutPrototypeURL.setParameter(
+			"redirect", _themeDisplay.getURLCurrent());
+		updateLayoutPrototypeURL.setParameter(
+			"layoutPrototypeId",
+			String.valueOf(layoutPrototype.getLayoutPrototypeId()));
+
+		return updateLayoutPrototypeURL.toString();
+	}
+
 	private boolean _hasLayoutPageTemplateEntriesResults() {
 		SearchContainer searchContainer =
 			getLayoutPageTemplateEntriesSearchContainer();
@@ -494,7 +676,6 @@ public class LayoutPageTemplateDisplayContext {
 		return false;
 	}
 
-	private String _displayStyle;
 	private String _keywords;
 	private LayoutPageTemplateCollection _layoutPageTemplateCollection;
 	private Long _layoutPageTemplateCollectionId;
@@ -507,5 +688,6 @@ public class LayoutPageTemplateDisplayContext {
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
 	private final HttpServletRequest _request;
+	private final ThemeDisplay _themeDisplay;
 
 }

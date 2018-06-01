@@ -639,7 +639,7 @@
 	<command name="searchForAssetsAfterUpgrade">
 		<execute macro="Navigator#openURL" />
 
-		<execute macro="SearchPortlet#searchPG">
+		<!--<execute macro="SearchPortlet#searchPG">
 			<var name="searchTerm" value="Web Content" />
 		</execute>
 
@@ -658,7 +658,7 @@
 			<var name="searchAssetType" value="Document" />
 		</execute>
 
-		<!-- <execute macro="SearchPortlet#searchPG">
+		<execute macro="SearchPortlet#searchPG">
 			<var name="searchTerm" value="Message Boards" />
 		</execute>
 
@@ -666,7 +666,7 @@
 			<var name="searchAssetSummary" value="Message Boards Body" />
 			<var name="searchAssetTitle" value="Message Boards Subject" />
 			<var name="searchAssetType" value="Message Boards Message" />
-		</execute> -->
+		</execute>
 
 		<execute macro="SearchPortlet#searchPG">
 			<var name="searchTerm" value="Wiki" />
@@ -686,7 +686,7 @@
 			<var name="searchAssetSummary" value="Blogs Entry Content" />
 			<var name="searchAssetTitle" value="Blogs Entry Title" />
 			<var name="searchAssetType" value="Blogs Entry" />
-		</execute>
+		</execute> -->
 	</command>
 
 	<command name="viewAssetPublisher">
@@ -987,7 +987,7 @@
 
 		<execute macro="DMDocument#expandInfo" />
 
-		<execute function="AssertTextEquals" locator1="DocumentsAndMediaDocument#DOCUMENT_DETAILS_VERSION" value1="1.0">
+		<!-- <execute function="AssertTextEquals" locator1="DocumentsAndMediaDocument#DOCUMENT_DETAILS_VERSION" value1="1.0">
 			<var name="key_dmDocumentVersionNumber" value="1.0" />
 		</execute>
 
@@ -996,7 +996,7 @@
 			<var name="key_dmDocumentSize" value="22KB" />
 		</execute>
 
-		<!-- <execute macro="Navigator#gotoPage">
+		<execute macro="Navigator#gotoPage">
 			<var name="pageName" value="Message Boards" />
 		</execute>
 

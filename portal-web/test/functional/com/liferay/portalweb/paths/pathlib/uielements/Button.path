@@ -140,7 +140,7 @@
 </tr>
 <tr>
 	<td>ANY</td>
-	<td>//*[contains(@class,'btn')][normalize-space()='${key_text}']</td>
+	<td>//*[contains(@class,'btn')][normalize-space(text())='${key_text}']</td>
 	<td></td>
 </tr>
 <tr>
@@ -484,8 +484,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>MOVE_TO_THE_RECYCLE_BIN</td>
-	<td>//a[contains(@class,'btn') and contains(.,'Move to the Recycle Bin')] | //button[contains(.,'Move to the Recycle Bin')]</td>
+	<td>MOVE_TO_RECYCLE_BIN</td>
+	<td>//a[contains(@class,'btn') and contains(.,'Move to Recycle Bin')] | //button[contains(.,'Move to Recycle Bin')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -756,6 +756,11 @@
 <tr>
 	<td>SUBMIT</td>
 	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MAIN_CONTENT_SUBMIT</td>
+	<td>//div[@id='main-content']//button[@type='submit']</td>
 	<td></td>
 </tr>
 <tr>

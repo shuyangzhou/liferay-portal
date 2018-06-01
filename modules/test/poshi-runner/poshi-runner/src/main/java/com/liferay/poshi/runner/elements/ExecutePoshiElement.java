@@ -377,7 +377,9 @@ public class ExecutePoshiElement extends PoshiElement {
 			return true;
 		}
 
-		if (readableSyntax.startsWith("var ")) {
+		if (readableSyntax.startsWith("static var ") ||
+			readableSyntax.startsWith("var")) {
+
 			return false;
 		}
 

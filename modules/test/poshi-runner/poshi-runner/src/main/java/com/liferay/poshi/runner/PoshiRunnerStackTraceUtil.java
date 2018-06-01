@@ -210,6 +210,12 @@ public final class PoshiRunnerStackTraceUtil {
 			className + "." + fileExtension,
 			getCurrentNamespace(namespacedClassCommandName));
 
+		if (classType.equals("test-case") && (filePath == null)) {
+			filePath = PoshiRunnerContext.getFilePathFromFileName(
+				className + ".prose",
+				getCurrentNamespace(namespacedClassCommandName));
+		}
+
 		String commandName =
 			PoshiRunnerGetterUtil.getCommandNameFromNamespacedClassCommandName(
 				namespacedClassCommandName);
