@@ -42,10 +42,14 @@ import java.io.Writer;
 import java.lang.reflect.Constructor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.portlet.ActionURL;
@@ -456,17 +460,35 @@ public abstract class PortletResponseImpl implements LiferayPortletResponse {
 
 	@Override
 	public String getProperty(String key) {
-		throw new UnsupportedOperationException();
+		String[] values = (String[])_headers.get(key);
+
+		if ((values != null) && (values.length > 0)) {
+			return values[0];
+		}
+
+		return null;
 	}
 
 	@Override
 	public Collection<String> getPropertyNames() {
-		throw new UnsupportedOperationException();
+		Set<String> keySet = _headers.keySet();
+
+		if (keySet != null) {
+			return new LinkedHashSet<>(keySet);
+		}
+
+		return Collections.emptySet();
 	}
 
 	@Override
 	public Collection<String> getPropertyValues(String key) {
-		throw new UnsupportedOperationException();
+		String[] values = (String[])_headers.get(key);
+
+		if (values != null) {
+			return Arrays.asList(values);
+		}
+
+		return Collections.emptySet();
 	}
 
 	public URLEncoder getUrlEncoder() {
