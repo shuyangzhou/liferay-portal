@@ -29,6 +29,7 @@ import com.liferay.portlet.subscriptions.test.BaseSubscriptionRootContainerModel
 
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 
@@ -36,6 +37,7 @@ import org.junit.runner.RunWith;
  * @author Zsolt Berentey
  * @author Roberto Díaz
  */
+@Ignore
 @RunWith(Arquillian.class)
 public class JournalSubscriptionRootContainerModelTest
 	extends BaseSubscriptionRootContainerModelTestCase {

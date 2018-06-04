@@ -16,8 +16,8 @@
 
 <%@ include file="/init.jsp" %>
 
-<liferay-ui:success embed="<%= false %>" key='<%= portletDisplay.getPortletName() + "layoutAdded" %>' message='<%= LanguageUtil.get(resourceBundle, "the-page-was-created-succesfully") %>' />
-<liferay-ui:success embed="<%= false %>" key='<%= portletDisplay.getPortletName() + "layoutUpdated" %>' message='<%= LanguageUtil.get(resourceBundle, "the-page-was-updated-succesfully") %>' />
+<liferay-ui:success key='<%= portletDisplay.getPortletName() + "layoutAdded" %>' message='<%= LanguageUtil.get(resourceBundle, "the-page-was-created-succesfully") %>' />
+<liferay-ui:success key='<%= portletDisplay.getPortletName() + "layoutUpdated" %>' message='<%= LanguageUtil.get(resourceBundle, "the-page-was-updated-succesfully") %>' />
 
 <liferay-ui:error embed="<%= false %>" exception="<%= GroupInheritContentException.class %>" message="this-page-cannot-be-deleted-and-cannot-have-child-pages-because-it-is-associated-to-a-site-template" />
 
@@ -69,7 +69,7 @@
 			context.put("siteNavigationMenuNames", layoutsAdminDisplayContext.getAutoSiteNavigationMenuNames());
 			%>
 
-			<soy:template-renderer
+			<soy:component-renderer
 				context="<%= context %>"
 				module="layout-admin-web/js/miller_columns/Layout.es"
 				templateNamespace="com.liferay.layout.admin.web.Layout.render"

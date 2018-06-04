@@ -49,6 +49,7 @@ import javax.portlet.PortletException;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.portlet.RenderURL;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -77,6 +78,7 @@ public class SearchResultsPortletTest {
 
 		_portletURLFactory = createPortletURLFactory();
 		_renderRequest = createRenderRequest();
+		_renderResponse = createRenderResponse();
 		_searchResultsPortlet = createSearchResultsPortlet();
 	}
 
@@ -170,6 +172,18 @@ public class SearchResultsPortletTest {
 		return renderRequest;
 	}
 
+	protected RenderResponse createRenderResponse() {
+		RenderResponse renderRequest = Mockito.mock(RenderResponse.class);
+
+		Mockito.doReturn(
+			Mockito.mock(RenderURL.class)
+		).when(
+			renderRequest
+		).createRenderURL();
+
+		return renderRequest;
+	}
+
 	protected SearchResultsPortlet createSearchResultsPortlet()
 		throws Exception {
 
@@ -202,6 +216,11 @@ public class SearchResultsPortletTest {
 				RenderRequest renderRequest) {
 
 				return Mockito.mock(HttpServletRequest.class);
+			}
+
+			@Override
+			protected String getCurrentURL(RenderRequest renderRequest) {
+				return RandomTestUtil.randomString();
 			}
 
 			@Override
@@ -240,7 +259,7 @@ public class SearchResultsPortletTest {
 	}
 
 	protected void render() throws IOException, PortletException {
-		_searchResultsPortlet.render(_renderRequest, null);
+		_searchResultsPortlet.render(_renderRequest, _renderResponse);
 	}
 
 	protected void setUpHtmlUtil() throws Exception {
@@ -321,6 +340,10 @@ public class SearchResultsPortletTest {
 
 	private PortletURLFactory _portletURLFactory;
 	private RenderRequest _renderRequest;
+
+	@Mock
+	private RenderResponse _renderResponse;
+
 	private SearchResultsPortlet _searchResultsPortlet;
 
 }

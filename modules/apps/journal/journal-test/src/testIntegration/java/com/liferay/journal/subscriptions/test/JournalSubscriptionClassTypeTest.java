@@ -38,6 +38,7 @@ import com.liferay.portlet.subscriptions.test.BaseSubscriptionClassTypeTestCase;
 import java.util.List;
 
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 
@@ -45,6 +46,7 @@ import org.junit.runner.RunWith;
  * @author Zsolt Berentey
  * @author Roberto Díaz
  */
+@Ignore
 @RunWith(Arquillian.class)
 public class JournalSubscriptionClassTypeTest
 	extends BaseSubscriptionClassTypeTestCase {

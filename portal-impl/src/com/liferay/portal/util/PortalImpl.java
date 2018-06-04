@@ -6247,8 +6247,8 @@ public class PortalImpl implements Portal {
 
 		if (_getCommentsStrutsAction == null) {
 			_log.error(
-				"Unable to find a StrutsAction component with property " +
-					"path=/portal/comment/discussion/get_comments");
+				"Unable to find a Struts Action component with property " +
+					"\"path=/portal/comment/discussion/get_comments\"");
 
 			return;
 		}
@@ -9131,7 +9131,8 @@ public class PortalImpl implements Portal {
 
 			Registry registry = RegistryUtil.getRegistry();
 
-			String path = (String)serviceReference.getProperty("path");
+			String path = GetterUtil.getString(
+				serviceReference.getProperty("path"));
 
 			if ("/portal/comment/discussion/edit".equals(path)) {
 				_editDiscussionStrutsAction = null;

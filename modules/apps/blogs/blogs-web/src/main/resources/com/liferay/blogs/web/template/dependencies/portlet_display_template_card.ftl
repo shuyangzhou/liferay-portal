@@ -73,7 +73,6 @@
 											<#assign deleteEntryPortletURL = renderResponse.createActionURL() />
 
 											${deleteEntryPortletURL.setParameter("javax.portlet.action", "/blogs/edit_entry")}
-
 											${deleteEntryPortletURL.setParameter("cmd", trashHelper.isTrashEnabled(themeDisplay.getScopeGroupId())?then("move_to_trash", "delete"))}
 											${deleteEntryPortletURL.setParameter("redirect", currentURL)}
 											${deleteEntryPortletURL.setParameter("entryId", curBlogEntry.getEntryId()?string)}

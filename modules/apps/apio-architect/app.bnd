@@ -1,0 +1,14 @@
+Liferay-Releng-App-Description: Apio Architect is a server-side library that facilitates the creation of Apio REST APIs. It's also opinionated to reduce the amount of code API developers have to write. This is also achieved by out-of-the-box implementations of well known patterns in REST APIs, such as the Collection Pattern.
+Liferay-Releng-App-Title: ${liferay.releng.app.title.prefix}
+Liferay-Releng-Bundle: true
+Liferay-Releng-Category: Utility
+Liferay-Releng-Demo-Url:
+Liferay-Releng-Deprecated: false
+Liferay-Releng-Labs: true
+Liferay-Releng-Marketplace: false
+Liferay-Releng-Portal-Required: false
+Liferay-Releng-Public: ${liferay.releng.public}
+Liferay-Releng-Restart-Required: false
+Liferay-Releng-Suite:
+Liferay-Releng-Support-Url: http://www.liferay.com
+Liferay-Releng-Supported: ${liferay.releng.supported}
