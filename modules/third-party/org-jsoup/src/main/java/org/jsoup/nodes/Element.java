@@ -53,9 +53,9 @@ public class Element extends Node {
      * @param tag tag name
      */
     public Element(String tag, boolean useSquareBrackets) {
-        super(tag);
+        this(tag);
 
-        useSquareBrackets = useSquareBrackets;
+        this.useSquareBrackets = useSquareBrackets;
     }
 
     /**
