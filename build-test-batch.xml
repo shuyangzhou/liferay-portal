@@ -490,6 +490,12 @@ app.server.type=@{app.server.type}]]></echo>
 
 			<record-git-commit-portal />
 
+			<replace
+				file="portal-impl/src/META-INF/infrastructure-spring.xml"
+				token="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy"
+				value="com.liferay.portal.connection.LiferayDataSourceProxy"
+			/>
+
 			<antcall inheritAll="false" target="compile" />
 
 			<if>

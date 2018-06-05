@@ -14,16 +14,8 @@
 
 package com.liferay.portal.test.rule.callback;
 
-import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.dao.jdbc.pool.metrics.ConnectionPoolMetrics;
+import com.liferay.portal.connection.LiferayDataSourceProxy;
 import com.liferay.portal.kernel.test.rule.callback.BaseTestCallback;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
-import com.liferay.registry.ServiceReference;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.runner.Description;
@@ -32,75 +24,25 @@ import org.junit.runner.Description;
  * @author Tom Wang
  */
 public class JDBCConnectionLeakDetectionTestCallback
-	extends BaseTestCallback
-		<Collection<ServiceReference<ConnectionPoolMetrics>>,
-			Collection<ServiceReference<ConnectionPoolMetrics>>> {
+	extends BaseTestCallback<Void, Void> {
 
 	public static final JDBCConnectionLeakDetectionTestCallback INSTANCE =
 		new JDBCConnectionLeakDetectionTestCallback();
 
 	@Override
-	public void afterClass(
-		Description description,
-		Collection<ServiceReference<ConnectionPoolMetrics>> serviceReferences) {
+	public void afterClass(Description description, Void v) {
+		int count = LiferayDataSourceProxy.getAndResetOpenConnectionCount();
 
-		for (ServiceReference<ConnectionPoolMetrics> serviceReference :
-				serviceReferences) {
-
-			ConnectionPoolMetrics connectionPoolMetrics = _registry.getService(
-				serviceReference);
-
-			int previousActiveNumber = _connectionPoolActiveNumbers.remove(
-				connectionPoolMetrics.getConnectionPoolName());
-
-			int currentActiveNumber = connectionPoolMetrics.getNumActive();
-
-			Assert.assertTrue(
-				StringBundler.concat(
-					"Active connection count increased after test for ",
-					connectionPoolMetrics.getConnectionPoolName(),
-					" previous active number: ", previousActiveNumber,
-					", current active number: ", currentActiveNumber),
-				previousActiveNumber >= currentActiveNumber);
-
-			_registry.ungetService(serviceReference);
-		}
+		Assert.assertEquals("Leaked connection count: " + count, 0, count);
 	}
 
 	@Override
-	public Collection<ServiceReference<ConnectionPoolMetrics>> beforeClass(
-			Description description)
-		throws Exception {
+	public Void beforeClass(Description description) {
+		LiferayDataSourceProxy.setTestThreadThreadLocal(true);
 
-		_registry = RegistryUtil.getRegistry();
+		LiferayDataSourceProxy.getAndResetOpenConnectionCount();
 
-		Collection<ServiceReference<ConnectionPoolMetrics>> serviceReferences =
-			_registry.getServiceReferences(ConnectionPoolMetrics.class, null);
-
-		Assert.assertTrue(
-			"Number of connection pool should be 2 or more: " +
-				serviceReferences,
-			serviceReferences.size() >= 2);
-
-		for (ServiceReference<ConnectionPoolMetrics> serviceReference :
-				serviceReferences) {
-
-			ConnectionPoolMetrics connectionPoolMetrics = _registry.getService(
-				serviceReference);
-
-			_connectionPoolActiveNumbers.put(
-				connectionPoolMetrics.getConnectionPoolName(),
-				connectionPoolMetrics.getNumActive());
-
-			_registry.ungetService(serviceReference);
-		}
-
-		return serviceReferences;
+		return null;
 	}
-
-	private static Registry _registry;
-
-	private final Map<String, Integer> _connectionPoolActiveNumbers =
-		new HashMap<>();
 
 }
