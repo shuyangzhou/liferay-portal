@@ -30,10 +30,12 @@ import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.EventDefinition;
 import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.model.PortletCategory;
+import com.liferay.portal.kernel.model.PortletConstants;
 import com.liferay.portal.kernel.model.PortletInfo;
 import com.liferay.portal.kernel.model.PublicRenderParameter;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.portlet.InvokerPortlet;
+import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletInstanceFactory;
@@ -423,6 +425,69 @@ public class PortletTracker
 		com.liferay.portal.kernel.model.Portlet portletModel) {
 	}
 
+	protected void collectContainerRuntimeOptions(
+		ServiceReference<Portlet> serviceReference,
+		com.liferay.portal.kernel.model.Portlet portletModel) {
+
+		PortletApp portletApp = portletModel.getPortletApp();
+
+		Map<String, String[]> containerRuntimeOptionsMap =
+			portletApp.getContainerRuntimeOptions();
+
+		List<String> containerRuntimeOptions = StringPlus.asList(
+			serviceReference.getProperty(
+				"javax.portlet.container-runtime-option"));
+
+		for (String containerRuntimeOption : containerRuntimeOptions) {
+			String name = containerRuntimeOption;
+			String[] parts = StringUtil.split(
+				containerRuntimeOption, CharPool.SEMICOLON);
+
+			if (parts.length == 2) {
+				name = parts[0];
+			}
+
+			containerRuntimeOptionsMap.remove(name);
+		}
+
+		for (String containerRuntimeOption : containerRuntimeOptions) {
+			String name = containerRuntimeOption;
+			String value = null;
+			String[] parts = StringUtil.split(
+				containerRuntimeOption, CharPool.SEMICOLON);
+
+			if (parts.length == 2) {
+				name = parts[0];
+				value = parts[1];
+			}
+
+			String[] values = containerRuntimeOptionsMap.get(name);
+
+			if (values == null) {
+				values = new String[] {value};
+			}
+			else {
+				values = ArrayUtil.append(values, value);
+			}
+
+			String containerRuntimeOptionPrefix =
+				LiferayPortletConfig.class.getName();
+
+			String portletName = portletModel.getPortletName();
+
+			if (portletName.contains(PortletConstants.WAR_SEPARATOR)) {
+				portletName = portletName.substring(
+					0, portletName.indexOf(PortletConstants.WAR_SEPARATOR));
+			}
+
+			containerRuntimeOptionPrefix = containerRuntimeOptionPrefix.concat(
+				portletName);
+
+			containerRuntimeOptionsMap.put(
+				containerRuntimeOptionPrefix.concat(name), values);
+		}
+	}
+
 	protected void collectExpirationCache(
 		ServiceReference<Portlet> serviceReference,
 		com.liferay.portal.kernel.model.Portlet portletModel) {
@@ -463,6 +528,7 @@ public class PortletTracker
 		collectApplicationTypes(serviceReference, portletModel);
 		collectAsyncSupported(serviceReference, portletModel);
 		collectCacheScope(serviceReference, portletModel);
+		collectContainerRuntimeOptions(serviceReference, portletModel);
 		collectExpirationCache(serviceReference, portletModel);
 		collectInitParams(serviceReference, portletModel);
 		collectMultipartConfig(serviceReference, portletModel);
@@ -825,7 +891,7 @@ public class PortletTracker
 			String qname = null;
 
 			String[] parts = StringUtil.split(
-				supportedProcessingEvent, StringPool.SEMICOLON);
+				supportedProcessingEvent, CharPool.SEMICOLON);
 
 			if (parts.length == 2) {
 				name = parts[0];
@@ -871,7 +937,7 @@ public class PortletTracker
 			String qname = null;
 
 			String[] parts = StringUtil.split(
-				supportedPublicRenderParameter, StringPool.SEMICOLON);
+				supportedPublicRenderParameter, CharPool.SEMICOLON);
 
 			if (parts.length == 2) {
 				name = parts[0];
@@ -907,7 +973,7 @@ public class PortletTracker
 			String qname = null;
 
 			String[] parts = StringUtil.split(
-				supportedPublishingEvent, StringPool.SEMICOLON);
+				supportedPublishingEvent, CharPool.SEMICOLON);
 
 			if (parts.length == 2) {
 				name = parts[0];
