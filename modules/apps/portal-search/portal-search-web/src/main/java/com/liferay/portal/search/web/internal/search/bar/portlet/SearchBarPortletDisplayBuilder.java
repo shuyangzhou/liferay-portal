@@ -51,10 +51,10 @@ public class SearchBarPortletDisplayBuilder {
 			isAvailableEverythingSearchScope());
 		searchBarPortletDisplayContext.setCurrentSiteSearchScopeParameterString(
 			SearchScope.THIS_SITE.getParameterString());
-		searchBarPortletDisplayContext.setEmptySearchEnabled(
-			_emptySearchEnabled);
 		searchBarPortletDisplayContext.setEverythingSearchScopeParameterString(
 			SearchScope.EVERYTHING.getParameterString());
+		searchBarPortletDisplayContext.setEmptySearchEnabled(
+			_emptySearchEnabled);
 		searchBarPortletDisplayContext.setKeywords(getKeywords());
 		searchBarPortletDisplayContext.setKeywordsParameterName(
 			_keywordsParameterName);

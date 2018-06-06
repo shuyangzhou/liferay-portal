@@ -208,10 +208,16 @@ public class FacetedSearcherImpl
 				queryBooleanFilter, searchContext);
 
 			if (!fullQuery.hasChildren()) {
+				BooleanFilter preBooleanFilter =
+					fullQuery.getPreBooleanFilter();
+
+				Filter postFilter = fullQuery.getPostFilter();
+
 				fullQuery = new MatchAllQuery();
 
-				fullQuery.setPostFilter(fullQuery.getPostFilter());
-				fullQuery.setPreBooleanFilter(fullQuery.getPreBooleanFilter());
+				fullQuery.setPreBooleanFilter(preBooleanFilter);
+
+				fullQuery.setPostFilter(postFilter);
 			}
 
 			QueryConfig queryConfig = searchContext.getQueryConfig();
