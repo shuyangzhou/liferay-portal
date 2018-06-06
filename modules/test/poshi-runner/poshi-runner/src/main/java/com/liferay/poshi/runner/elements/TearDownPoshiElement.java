@@ -36,10 +36,10 @@ public class TearDownPoshiElement extends CommandPoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(readableSyntax)) {
-			return new TearDownPoshiElement(parentPoshiElement, readableSyntax);
+		if (_isElementType(poshiScript)) {
+			return new TearDownPoshiElement(parentPoshiElement, poshiScript);
 		}
 
 		return null;
@@ -59,9 +59,9 @@ public class TearDownPoshiElement extends CommandPoshiElement {
 	}
 
 	protected TearDownPoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+		super(_ELEMENT_NAME, parentPoshiElement, poshiScript);
 	}
 
 	protected TearDownPoshiElement(
@@ -71,22 +71,22 @@ public class TearDownPoshiElement extends CommandPoshiElement {
 	}
 
 	@Override
-	protected String getReadableCommandTitle() {
+	protected String getBlockName() {
 		return "tearDown";
 	}
 
-	private boolean _isElementType(String readableSyntax) {
-		readableSyntax = readableSyntax.trim();
+	private boolean _isElementType(String poshiScript) {
+		poshiScript = poshiScript.trim();
 
-		if (!isBalancedReadableSyntax(readableSyntax)) {
+		if (!isBalancedPoshiScript(poshiScript)) {
 			return false;
 		}
 
-		if (!readableSyntax.endsWith("}")) {
+		if (!poshiScript.endsWith("}")) {
 			return false;
 		}
 
-		for (String line : readableSyntax.split("\n")) {
+		for (String line : poshiScript.split("\n")) {
 			line = line.trim();
 
 			if (line.startsWith("@")) {
