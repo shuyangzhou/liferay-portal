@@ -17,15 +17,18 @@ package com.liferay.portal.search.web.internal.search.request;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.HitsImpl;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcher;
 import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcherManager;
+import com.liferay.portal.search.web.internal.util.SearchStringUtil;
 import com.liferay.portal.search.web.search.request.SearchRequest;
 import com.liferay.portal.search.web.search.request.SearchSettings;
 import com.liferay.portal.search.web.search.request.SearchSettingsContributor;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -142,10 +145,18 @@ public class SearchRequestImpl implements SearchRequest {
 	}
 
 	protected Hits search(SearchContext searchContext) {
-		FacetedSearcher facetedSearcher =
-			_facetedSearcherManager.createFacetedSearcher();
+		Optional<String> keywordsOptional = SearchStringUtil.maybe(
+			searchContext.getKeywords());
 
-		return search(facetedSearcher, searchContext);
+		Optional<Hits> hitsOptional = keywordsOptional.map(
+			keywords -> {
+				FacetedSearcher facetedSearcher =
+					_facetedSearcherManager.createFacetedSearcher();
+
+				return search(facetedSearcher, searchContext);
+			});
+
+		return hitsOptional.orElseGet(HitsImpl::new);
 	}
 
 	private final FacetedSearcherManager _facetedSearcherManager;
