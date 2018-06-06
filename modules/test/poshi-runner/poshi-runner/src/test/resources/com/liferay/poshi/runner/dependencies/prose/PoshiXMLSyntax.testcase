@@ -1,4 +1,4 @@
-<definition>
+<definition ignore="true" component-name="prose">
 	<set-up>
 		<execute macro="LocalFile.PoshiXMLSyntax#visitURL">
 			<var name="url" value="https://www.google.com"/>
@@ -7,7 +7,7 @@
 	<tear-down>
 		<execute macro="LocalFile.PoshiXMLSyntax#closeWindow"/>
 	</tear-down>
-	<command name="catSearch">
+	<command name="catSearch" priority="3">
 		<execute macro="LocalFile.PoshiXMLSyntax#visitURL">
 			<var name="url" value="https://www.yahoo.com"/>
 		</execute>
@@ -21,7 +21,7 @@
 			<var name="result4" value="lion"/>
 		</execute>
 	</command>
-	<command name="assert Liferay Main Page Availability">
+	<command name="assert Liferay Main Page Availability" priority="2">
 		<execute macro="LocalFile.PoshiXMLSyntax#visitURL">
 			<var name="url" value="https://www.liferay.com"/>
 		</execute>
@@ -30,7 +30,7 @@
 		</execute>
 		<execute macro="LocalFile.PoshiXMLSyntax#closeWindow"/>
 	</command>
-	<command name="multiLineString">
+	<command name="multiLineString" priority="1" ignore="true">
 		<execute macro="LocalFile.PoshiXMLSyntax#visitURL">
 			<var name="url" value="https://www.liferay.com"/>
 		</execute>
