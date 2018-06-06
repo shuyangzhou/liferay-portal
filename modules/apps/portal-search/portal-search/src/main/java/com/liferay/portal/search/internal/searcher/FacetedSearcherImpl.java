@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.search.generic.StringQuery;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.search.constants.SearchContextAttributes;
 import com.liferay.portal.search.internal.expando.ExpandoQueryContributorHelper;
 import com.liferay.portal.search.internal.indexer.PreFilterContributorHelper;
 
@@ -90,11 +89,7 @@ public class FacetedSearcherImpl
 			SearchContext searchContext)
 		throws Exception {
 
-		if (Validator.isBlank(keywords) &&
-			!GetterUtil.getBoolean(
-				searchContext.getAttribute(
-					SearchContextAttributes.ATTRIBUTE_KEY_EMPTY_SEARCH))) {
-
+		if (Validator.isNull(keywords)) {
 			return;
 		}
 
@@ -105,15 +100,13 @@ public class FacetedSearcherImpl
 			addSearchLocalizedTerm(
 				searchQuery, searchContext, Field.ASSET_CATEGORY_TITLES, false);
 
-			if (!Validator.isBlank(keywords)) {
-				searchQuery.addTerm(Field.ASSET_TAG_NAMES, keywords);
+			searchQuery.addTerm(Field.ASSET_TAG_NAMES, keywords);
 
-				searchQuery.addTerms(Field.KEYWORDS, keywords);
+			searchQuery.addTerms(Field.KEYWORDS, keywords);
 
-				addSearchExpando(
-					searchQuery, searchContext, keywords,
-					entryClassNameIndexerMap.keySet());
-			}
+			addSearchExpando(
+				searchQuery, searchContext, keywords,
+				entryClassNameIndexerMap.keySet());
 		}
 	}
 
@@ -127,8 +120,7 @@ public class FacetedSearcherImpl
 		String keywords = searchContext.getKeywords();
 
 		boolean luceneSyntax = GetterUtil.getBoolean(
-			searchContext.getAttribute(
-				SearchContextAttributes.ATTRIBUTE_KEY_LUCENE_SYNTAX));
+			searchContext.getAttribute("luceneSyntax"));
 
 		Map<String, Indexer<?>> entryClassNameIndexerMap =
 			_getEntryClassNameIndexerMap(
@@ -211,13 +203,9 @@ public class FacetedSearcherImpl
 				BooleanFilter preBooleanFilter =
 					fullQuery.getPreBooleanFilter();
 
-				Filter postFilter = fullQuery.getPostFilter();
-
 				fullQuery = new MatchAllQuery();
 
 				fullQuery.setPreBooleanFilter(preBooleanFilter);
-
-				fullQuery.setPostFilter(postFilter);
 			}
 
 			QueryConfig queryConfig = searchContext.getQueryConfig();
