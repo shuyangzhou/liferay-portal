@@ -53,7 +53,6 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.search.constants.SearchContextAttributes;
 import com.liferay.portal.search.solr.configuration.SolrConfiguration;
 import com.liferay.portal.search.solr.connection.SolrClientManager;
 import com.liferay.portal.search.solr.facet.FacetProcessor;
@@ -302,8 +301,7 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 		}
 
 		boolean luceneSyntax = GetterUtil.getBoolean(
-			searchContext.getAttribute(
-				SearchContextAttributes.ATTRIBUTE_KEY_LUCENE_SYNTAX));
+			searchContext.getAttribute("luceneSyntax"));
 
 		if (!luceneSyntax) {
 			solrQuery.setHighlightRequireFieldMatch(
