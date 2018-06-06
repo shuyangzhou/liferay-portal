@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.search.generic.StringQuery;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.search.constants.SearchContextAttributes;
 import com.liferay.portal.search.internal.expando.ExpandoQueryContributorHelper;
 import com.liferay.portal.search.internal.indexer.PreFilterContributorHelper;
 
@@ -89,7 +90,11 @@ public class FacetedSearcherImpl
 			SearchContext searchContext)
 		throws Exception {
 
-		if (Validator.isNull(keywords)) {
+		if (Validator.isBlank(keywords) &&
+			!GetterUtil.getBoolean(
+				searchContext.getAttribute(
+					SearchContextAttributes.ATTRIBUTE_KEY_EMPTY_SEARCH))) {
+
 			return;
 		}
 
@@ -100,13 +105,15 @@ public class FacetedSearcherImpl
 			addSearchLocalizedTerm(
 				searchQuery, searchContext, Field.ASSET_CATEGORY_TITLES, false);
 
-			searchQuery.addTerm(Field.ASSET_TAG_NAMES, keywords);
+			if (!Validator.isBlank(keywords)) {
+				searchQuery.addTerm(Field.ASSET_TAG_NAMES, keywords);
 
-			searchQuery.addTerms(Field.KEYWORDS, keywords);
+				searchQuery.addTerms(Field.KEYWORDS, keywords);
 
-			addSearchExpando(
-				searchQuery, searchContext, keywords,
-				entryClassNameIndexerMap.keySet());
+				addSearchExpando(
+					searchQuery, searchContext, keywords,
+					entryClassNameIndexerMap.keySet());
+			}
 		}
 	}
 
@@ -120,7 +127,8 @@ public class FacetedSearcherImpl
 		String keywords = searchContext.getKeywords();
 
 		boolean luceneSyntax = GetterUtil.getBoolean(
-			searchContext.getAttribute("luceneSyntax"));
+			searchContext.getAttribute(
+				SearchContextAttributes.ATTRIBUTE_KEY_LUCENE_SYNTAX));
 
 		Map<String, Indexer<?>> entryClassNameIndexerMap =
 			_getEntryClassNameIndexerMap(
@@ -191,28 +199,19 @@ public class FacetedSearcherImpl
 		try {
 			searchContext.setSearchEngineId(getSearchEngineId());
 
-			BooleanFilter queryBooleanFilter = new BooleanFilter();
+			BooleanFilter booleanFilter = new BooleanFilter();
 
-			queryBooleanFilter.addRequiredTerm(
+			booleanFilter.addRequiredTerm(
 				Field.COMPANY_ID, searchContext.getCompanyId());
 
-			Query fullQuery = createFullQuery(
-				queryBooleanFilter, searchContext);
-
-			if (!fullQuery.hasChildren()) {
-				BooleanFilter preBooleanFilter =
-					fullQuery.getPreBooleanFilter();
-
-				fullQuery = new MatchAllQuery();
-
-				fullQuery.setPreBooleanFilter(preBooleanFilter);
-			}
+			Query query = _getFinalQuery(
+				createFullQuery(booleanFilter, searchContext));
 
 			QueryConfig queryConfig = searchContext.getQueryConfig();
 
-			fullQuery.setQueryConfig(queryConfig);
+			query.setQueryConfig(queryConfig);
 
-			return _indexSearcherHelper.search(searchContext, fullQuery);
+			return _indexSearcherHelper.search(searchContext, query);
 		}
 		catch (Exception e) {
 			throw new SearchException(e);
@@ -317,6 +316,19 @@ public class FacetedSearcherImpl
 		}
 
 		return _searchEngineHelper.getEntryClassNames();
+	}
+
+	private Query _getFinalQuery(Query query) {
+		if (query.hasChildren()) {
+			return query;
+		}
+
+		MatchAllQuery matchAllQuery = new MatchAllQuery();
+
+		matchAllQuery.setPostFilter(query.getPostFilter());
+		matchAllQuery.setPreBooleanFilter(query.getPreBooleanFilter());
+
+		return matchAllQuery;
 	}
 
 	private void _postProcessFullQuery(

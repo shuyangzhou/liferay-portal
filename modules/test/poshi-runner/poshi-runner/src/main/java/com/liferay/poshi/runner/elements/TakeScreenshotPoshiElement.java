@@ -36,25 +36,25 @@ public class TakeScreenshotPoshiElement extends PoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(readableSyntax)) {
+		if (_isElementType(poshiScript)) {
 			return new TakeScreenshotPoshiElement(
-				parentPoshiElement, readableSyntax);
+				parentPoshiElement, poshiScript);
 		}
 
 		return null;
 	}
 
 	@Override
-	public void parseReadableSyntax(String readableSyntax) {
+	public void parsePoshiScript(String poshiScript) {
 	}
 
 	@Override
-	public String toReadableSyntax() {
-		String readableSyntax = super.toReadableSyntax();
+	public String toPoshiScript() {
+		String poshiScript = super.toPoshiScript();
 
-		return createReadableBlock(readableSyntax);
+		return createPoshiScriptSnippet(poshiScript);
 	}
 
 	protected TakeScreenshotPoshiElement() {
@@ -71,13 +71,13 @@ public class TakeScreenshotPoshiElement extends PoshiElement {
 	}
 
 	protected TakeScreenshotPoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+		super(_ELEMENT_NAME, parentPoshiElement, poshiScript);
 	}
 
 	@Override
-	protected String createReadableBlock(String content) {
+	protected String createPoshiScriptSnippet(String content) {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("\n\n");
@@ -93,8 +93,8 @@ public class TakeScreenshotPoshiElement extends PoshiElement {
 		return "takeScreenshot";
 	}
 
-	private boolean _isElementType(String readableSyntax) {
-		if (readableSyntax.startsWith(getBlockName())) {
+	private boolean _isElementType(String poshiScript) {
+		if (poshiScript.startsWith(getBlockName())) {
 			return true;
 		}
 

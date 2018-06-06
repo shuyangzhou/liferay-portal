@@ -27,16 +27,16 @@ public abstract class PoshiComment
 		super(null);
 	}
 
-	public abstract boolean isReadableSyntaxComment(String readableSyntax);
+	public abstract boolean isPoshiScriptComment(String poshiScript);
 
 	protected PoshiComment(Comment comment) {
 		super(comment.getText());
 	}
 
-	protected PoshiComment(String readableSyntax) {
+	protected PoshiComment(String poshiScript) {
 		this();
 
-		parseReadableSyntax(readableSyntax);
+		parsePoshiScript(poshiScript);
 	}
 
 }

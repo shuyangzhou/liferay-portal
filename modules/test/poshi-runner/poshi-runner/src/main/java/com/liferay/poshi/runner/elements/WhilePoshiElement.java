@@ -36,10 +36,10 @@ public class WhilePoshiElement extends IfPoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(readableSyntax)) {
-			return new WhilePoshiElement(parentPoshiElement, readableSyntax);
+		if (_isElementType(poshiScript)) {
+			return new WhilePoshiElement(parentPoshiElement, poshiScript);
 		}
 
 		return null;
@@ -57,9 +57,9 @@ public class WhilePoshiElement extends IfPoshiElement {
 	}
 
 	protected WhilePoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+		super(_ELEMENT_NAME, parentPoshiElement, poshiScript);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class WhilePoshiElement extends IfPoshiElement {
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(getReadableName());
+		sb.append(getPoshiScriptKeyword());
 		sb.append(" (");
 		sb.append(parentheticalContent);
 
@@ -85,8 +85,8 @@ public class WhilePoshiElement extends IfPoshiElement {
 	}
 
 	@Override
-	protected String getCondition(String readableSyntax) {
-		String parentheticalContent = getParentheticalContent(readableSyntax);
+	protected String getCondition(String poshiScript) {
+		String parentheticalContent = getParentheticalContent(poshiScript);
 
 		if (parentheticalContent.contains("&& (maxIterations = ")) {
 			int index = parentheticalContent.lastIndexOf("&&");
@@ -109,18 +109,18 @@ public class WhilePoshiElement extends IfPoshiElement {
 		return parentheticalContent.trim();
 	}
 
-	private boolean _isElementType(String readableSyntax) {
-		readableSyntax = readableSyntax.trim();
+	private boolean _isElementType(String poshiScript) {
+		poshiScript = poshiScript.trim();
 
-		if (!isBalancedReadableSyntax(readableSyntax)) {
+		if (!isBalancedPoshiScript(poshiScript)) {
 			return false;
 		}
 
-		if (!readableSyntax.startsWith("while (")) {
+		if (!poshiScript.startsWith("while (")) {
 			return false;
 		}
 
-		if (!readableSyntax.endsWith("}")) {
+		if (!poshiScript.endsWith("}")) {
 			return false;
 		}
 
