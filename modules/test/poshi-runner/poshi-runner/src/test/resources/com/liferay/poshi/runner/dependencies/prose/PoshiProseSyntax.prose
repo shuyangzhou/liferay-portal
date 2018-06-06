@@ -1,3 +1,6 @@
+@ignore = "true"
+@component-name = "prose"
+
 Feature: This is a feature
 	This is a feature section
 
@@ -8,16 +11,20 @@ Teardown:
 	* I should close the window
 
 Scenario: catSearch
+	@ priority = "3"
 	When I visit the URL "https://www.yahoo.com"
 	And I issue a search for "cats"
 	Then I should see "stray cat" and "domestic cat" and "kitten" and "lion"
 
 Scenario: assert Liferay Main Page Availability
+	@ priority = "2"
 	* I visit the URL "https://www.liferay.com"
 	* I wait for "title" to be present
 	* I should close the window
 
 Scenario: multiLineString
+	@ priority = "1"
+	@ ignore = "true"
     When I visit the URL "https://www.liferay.com"
     And I have a lot to say:
 		"""json

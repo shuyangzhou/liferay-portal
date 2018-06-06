@@ -36,39 +36,39 @@ public class ElseIfPoshiElement extends IfPoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(readableSyntax)) {
-			return new ElseIfPoshiElement(parentPoshiElement, readableSyntax);
+		if (_isElementType(poshiScript)) {
+			return new ElseIfPoshiElement(parentPoshiElement, poshiScript);
 		}
 
 		return null;
 	}
 
 	@Override
-	public void parseReadableSyntax(String readableSyntax) {
-		for (String readableBlock : getReadableBlocks(readableSyntax)) {
-			if (readableBlock.startsWith("else if (")) {
+	public void parsePoshiScript(String poshiScript) {
+		for (String poshiScriptSnippet : getPoshiScriptSnippets(poshiScript)) {
+			if (poshiScriptSnippet.startsWith("else if (")) {
 				add(
 					PoshiNodeFactory.newPoshiNode(
-						this, getParentheticalContent(readableBlock)));
+						this, getParentheticalContent(poshiScriptSnippet)));
 
 				continue;
 			}
 
-			add(PoshiNodeFactory.newPoshiNode(this, readableBlock));
+			add(PoshiNodeFactory.newPoshiNode(this, poshiScriptSnippet));
 		}
 	}
 
 	@Override
-	public String toReadableSyntax() {
+	public String toPoshiScript() {
 		StringBuilder sb = new StringBuilder();
 
 		PoshiElement thenElement = (PoshiElement)element("then");
 
-		String thenReadableSyntax = thenElement.toReadableSyntax();
+		String thenPoshiScript = thenElement.toPoshiScript();
 
-		sb.append(createReadableBlock(thenReadableSyntax));
+		sb.append(createPoshiScriptSnippet(thenPoshiScript));
 
 		return sb.toString();
 	}
@@ -85,28 +85,28 @@ public class ElseIfPoshiElement extends IfPoshiElement {
 	}
 
 	protected ElseIfPoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+		super(_ELEMENT_NAME, parentPoshiElement, poshiScript);
 	}
 
 	@Override
-	protected String getReadableName() {
+	protected String getPoshiScriptKeyword() {
 		return "else if";
 	}
 
-	private boolean _isElementType(String readableSyntax) {
-		readableSyntax = readableSyntax.trim();
+	private boolean _isElementType(String poshiScript) {
+		poshiScript = poshiScript.trim();
 
-		if (!isBalancedReadableSyntax(readableSyntax)) {
+		if (!isBalancedPoshiScript(poshiScript)) {
 			return false;
 		}
 
-		if (!readableSyntax.startsWith("else if (")) {
+		if (!poshiScript.startsWith("else if (")) {
 			return false;
 		}
 
-		if (!readableSyntax.endsWith("}")) {
+		if (!poshiScript.endsWith("}")) {
 			return false;
 		}
 
