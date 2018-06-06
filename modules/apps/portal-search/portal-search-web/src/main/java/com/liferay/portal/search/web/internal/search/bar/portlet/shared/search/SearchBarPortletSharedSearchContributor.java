@@ -16,7 +16,6 @@ package com.liferay.portal.search.web.internal.search.bar.portlet.shared.search;
 
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.search.constants.SearchContextAttributes;
 import com.liferay.portal.search.web.internal.display.context.Keywords;
 import com.liferay.portal.search.web.internal.display.context.SearchScope;
 import com.liferay.portal.search.web.internal.display.context.SearchScopePreference;
@@ -156,8 +155,7 @@ public class SearchBarPortletSharedSearchContributor
 		SearchContext searchContext =
 			portletSharedSearchSettings.getSearchContext();
 
-		searchContext.setAttribute(
-			SearchContextAttributes.ATTRIBUTE_KEY_LUCENE_SYNTAX, Boolean.TRUE);
+		searchContext.setAttribute("luceneSyntax", Boolean.TRUE);
 	}
 
 }
