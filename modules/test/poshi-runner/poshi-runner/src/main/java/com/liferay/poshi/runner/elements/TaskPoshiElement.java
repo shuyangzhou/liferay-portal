@@ -37,21 +37,21 @@ public class TaskPoshiElement extends PoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(readableSyntax)) {
-			return new TaskPoshiElement(parentPoshiElement, readableSyntax);
+		if (_isElementType(poshiScript)) {
+			return new TaskPoshiElement(parentPoshiElement, poshiScript);
 		}
 
 		return null;
 	}
 
 	@Override
-	public void parseReadableSyntax(String readableSyntax) {
-		for (String readableBlock : getReadableBlocks(readableSyntax)) {
-			if (readableBlock.startsWith("task (")) {
+	public void parsePoshiScript(String poshiScript) {
+		for (String poshiScriptSnippet : getPoshiScriptSnippets(poshiScript)) {
+			if (poshiScriptSnippet.startsWith("task (")) {
 				String parentheticalContent = getParentheticalContent(
-					readableBlock);
+					poshiScriptSnippet);
 
 				String summary = getQuotedContent(parentheticalContent);
 
@@ -60,12 +60,12 @@ public class TaskPoshiElement extends PoshiElement {
 				continue;
 			}
 
-			add(PoshiNodeFactory.newPoshiNode(this, readableBlock));
+			add(PoshiNodeFactory.newPoshiNode(this, poshiScriptSnippet));
 		}
 	}
 
 	@Override
-	public String toReadableSyntax() {
+	public String toPoshiScript() {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("\n");
@@ -73,12 +73,13 @@ public class TaskPoshiElement extends PoshiElement {
 		StringBuilder content = new StringBuilder();
 
 		for (PoshiElement poshiElement : toPoshiElements(elements())) {
-			content.append(poshiElement.toReadableSyntax());
+			content.append(poshiElement.toPoshiScript());
 		}
 
-		String readableBlock = createReadableBlock(content.toString());
+		String poshiScriptSnippet = createPoshiScriptSnippet(
+			content.toString());
 
-		sb.append(readableBlock);
+		sb.append(poshiScriptSnippet);
 
 		return sb.toString();
 	}
@@ -95,9 +96,9 @@ public class TaskPoshiElement extends PoshiElement {
 	}
 
 	protected TaskPoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+		super(_ELEMENT_NAME, parentPoshiElement, poshiScript);
 	}
 
 	@Override
@@ -111,32 +112,37 @@ public class TaskPoshiElement extends PoshiElement {
 		return sb.toString();
 	}
 
-	protected List<String> getReadableBlocks(String readableSyntax) {
+	protected String getPoshiScriptKeyword() {
+		return getName();
+	}
+
+	protected List<String> getPoshiScriptSnippets(String poshiScript) {
 		StringBuilder sb = new StringBuilder();
 
-		List<String> readableBlocks = new ArrayList<>();
+		List<String> poshiScriptSnippets = new ArrayList<>();
 
-		for (String line : readableSyntax.split("\n")) {
+		for (String line : poshiScript.split("\n")) {
 			String trimmedLine = line.trim();
 
-			String readableBlock = sb.toString();
+			String poshiScriptSnippet = sb.toString();
 
-			readableBlock = readableBlock.trim();
+			poshiScriptSnippet = poshiScriptSnippet.trim();
 
-			if (trimmedLine.startsWith(getReadableName() + " (") &&
-				trimmedLine.endsWith("{") && (readableBlock.length() == 0)) {
+			if (trimmedLine.startsWith(getPoshiScriptKeyword() + " (") &&
+				trimmedLine.endsWith("{") &&
+				(poshiScriptSnippet.length() == 0)) {
 
-				readableBlocks.add(line);
+				poshiScriptSnippets.add(line);
 
 				continue;
 			}
 
-			if (trimmedLine.endsWith("{") && readableBlocks.isEmpty()) {
+			if (trimmedLine.endsWith("{") && poshiScriptSnippets.isEmpty()) {
 				continue;
 			}
 
-			if (isValidReadableBlock(readableBlock)) {
-				readableBlocks.add(readableBlock);
+			if (isValidPoshiScriptSnippet(poshiScriptSnippet)) {
+				poshiScriptSnippets.add(poshiScriptSnippet);
 
 				sb.setLength(0);
 			}
@@ -145,25 +151,21 @@ public class TaskPoshiElement extends PoshiElement {
 			sb.append("\n");
 		}
 
-		return readableBlocks;
+		return poshiScriptSnippets;
 	}
 
-	protected String getReadableName() {
-		return getName();
-	}
+	private boolean _isElementType(String poshiScript) {
+		poshiScript = poshiScript.trim();
 
-	private boolean _isElementType(String readableSyntax) {
-		readableSyntax = readableSyntax.trim();
-
-		if (!isBalancedReadableSyntax(readableSyntax)) {
+		if (!isBalancedPoshiScript(poshiScript)) {
 			return false;
 		}
 
-		if (!readableSyntax.startsWith("task (")) {
+		if (!poshiScript.startsWith("task (")) {
 			return false;
 		}
 
-		if (!readableSyntax.endsWith("}")) {
+		if (!poshiScript.endsWith("}")) {
 			return false;
 		}
 

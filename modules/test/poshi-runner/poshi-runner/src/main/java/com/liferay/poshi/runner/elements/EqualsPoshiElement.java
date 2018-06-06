@@ -36,18 +36,18 @@ public class EqualsPoshiElement extends PoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(parentPoshiElement, readableSyntax)) {
-			return new EqualsPoshiElement(parentPoshiElement, readableSyntax);
+		if (_isElementType(parentPoshiElement, poshiScript)) {
+			return new EqualsPoshiElement(parentPoshiElement, poshiScript);
 		}
 
 		return null;
 	}
 
 	@Override
-	public void parseReadableSyntax(String readableSyntax) {
-		String[] equalsContentArray = readableSyntax.split("==");
+	public void parsePoshiScript(String poshiScript) {
+		String[] equalsContentArray = poshiScript.split("==");
 
 		String arg1 = equalsContentArray[0].trim();
 
@@ -63,7 +63,7 @@ public class EqualsPoshiElement extends PoshiElement {
 	}
 
 	@Override
-	public String toReadableSyntax() {
+	public String toPoshiScript() {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("\"");
@@ -87,9 +87,9 @@ public class EqualsPoshiElement extends PoshiElement {
 	}
 
 	protected EqualsPoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+		super(_ELEMENT_NAME, parentPoshiElement, poshiScript);
 	}
 
 	@Override
@@ -98,21 +98,20 @@ public class EqualsPoshiElement extends PoshiElement {
 	}
 
 	private boolean _isElementType(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
 		if (!isConditionValidInParent(parentPoshiElement)) {
 			return false;
 		}
 
-		if (readableSyntax.contains(" && ") ||
-			readableSyntax.contains(" || ") ||
-			readableSyntax.startsWith("!(") ||
-			readableSyntax.startsWith("else if (")) {
+		if (poshiScript.contains(" && ") || poshiScript.contains(" || ") ||
+			poshiScript.startsWith("!(") ||
+			poshiScript.startsWith("else if (")) {
 
 			return false;
 		}
 
-		if (readableSyntax.contains("==")) {
+		if (poshiScript.contains("==")) {
 			return true;
 		}
 
