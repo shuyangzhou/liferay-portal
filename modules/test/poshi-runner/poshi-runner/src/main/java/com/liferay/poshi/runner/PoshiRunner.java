@@ -233,7 +233,7 @@ public class PoshiRunner {
 			PoshiRunnerExecutor.runVarElement(varElement, false, false);
 		}
 
-		PoshiRunnerVariablesUtil.pushCommandMap(true);
+		PoshiRunnerVariablesUtil.pushCommandMap();
 
 		String classCommandName =
 			PoshiRunnerGetterUtil.
