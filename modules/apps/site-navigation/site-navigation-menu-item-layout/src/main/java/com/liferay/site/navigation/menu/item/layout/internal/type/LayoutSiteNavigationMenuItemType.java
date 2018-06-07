@@ -14,6 +14,7 @@
 
 package com.liferay.site.navigation.menu.item.layout.internal.type;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.petra.string.StringPool;
@@ -21,16 +22,21 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutType;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.LayoutLocalService;
+import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.webserver.WebServerServletTokenUtil;
+import com.liferay.portal.kernel.xml.Element;
 import com.liferay.site.navigation.menu.item.layout.constants.SiteNavigationMenuItemTypeConstants;
 import com.liferay.site.navigation.menu.item.layout.internal.constants.SiteNavigationMenuItemTypeLayoutWebKeys;
 import com.liferay.site.navigation.model.SiteNavigationMenuItem;
@@ -39,6 +45,7 @@ import com.liferay.site.navigation.type.SiteNavigationMenuItemType;
 import java.io.IOException;
 
 import java.util.Locale;
+import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletURL;
@@ -62,6 +69,19 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class LayoutSiteNavigationMenuItemType
 	implements SiteNavigationMenuItemType {
+
+	@Override
+	public void exportData(
+		PortletDataContext portletDataContext,
+		Element siteNavigationMenuItemElement,
+		SiteNavigationMenuItem siteNavigationMenuItem) {
+
+		Layout layout = _getLayout(siteNavigationMenuItem);
+
+		portletDataContext.addReferenceElement(
+			siteNavigationMenuItem, siteNavigationMenuItemElement, layout,
+			PortletDataContext.REFERENCE_TYPE_DEPENDENCY, true);
+	}
 
 	@Override
 	public PortletURL getAddURL(
@@ -185,6 +205,18 @@ public class LayoutSiteNavigationMenuItemType
 	}
 
 	@Override
+	public boolean hasPermission(
+			PermissionChecker permissionChecker,
+			SiteNavigationMenuItem siteNavigationMenuItem)
+		throws PortalException {
+
+		Layout layout = _getLayout(siteNavigationMenuItem);
+
+		return LayoutPermissionUtil.contains(
+			permissionChecker, layout.getPlid(), ActionKeys.VIEW);
+	}
+
+	@Override
 	public String iconURL(
 		SiteNavigationMenuItem siteNavigationMenuItem, String pathImage) {
 
@@ -203,6 +235,41 @@ public class LayoutSiteNavigationMenuItemType
 		sb.append(WebServerServletTokenUtil.getToken(layout.getIconImageId()));
 
 		return sb.toString();
+	}
+
+	@Override
+	public void importData(
+		PortletDataContext portletDataContext,
+		SiteNavigationMenuItem siteNavigationMenuItem,
+		SiteNavigationMenuItem importedSiteNavigationMenuItem) {
+
+		Map<Long, Long> layoutPlids =
+			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
+				Layout.class);
+
+		Layout layout = _getLayout(siteNavigationMenuItem);
+
+		long plid = MapUtil.getLong(
+			layoutPlids, layout.getPlid(), layout.getPlid());
+
+		Layout importedLayout = _layoutLocalService.fetchLayout(plid);
+
+		if (importedLayout != null) {
+			UnicodeProperties typeSettingsProperties = new UnicodeProperties();
+
+			typeSettingsProperties.fastLoad(
+				siteNavigationMenuItem.getTypeSettings());
+
+			typeSettingsProperties.put("layoutUuid", importedLayout.getUuid());
+			typeSettingsProperties.put(
+				"groupId", String.valueOf(importedLayout.getGroupId()));
+			typeSettingsProperties.put(
+				"privateLayout",
+				String.valueOf(importedLayout.isPrivateLayout()));
+
+			importedSiteNavigationMenuItem.setTypeSettings(
+				typeSettingsProperties.toString());
+		}
 	}
 
 	@Override

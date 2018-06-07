@@ -39,31 +39,31 @@ public class ReturnPoshiElement extends PoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(parentPoshiElement, readableSyntax)) {
-			return new ReturnPoshiElement(parentPoshiElement, readableSyntax);
+		if (_isElementType(parentPoshiElement, poshiScript)) {
+			return new ReturnPoshiElement(parentPoshiElement, poshiScript);
 		}
 
 		return null;
 	}
 
 	@Override
-	public void parseReadableSyntax(String readableSyntax) {
+	public void parsePoshiScript(String poshiScript) {
 		if (getParent() instanceof ExecutePoshiElement) {
 			String returnName = RegexUtil.getGroup(
-				readableSyntax, "var\\s*(.+?)\\s*=", 1);
+				poshiScript, "var\\s*(.+?)\\s*=", 1);
 
 			addAttribute("name", returnName);
 
 			return;
 		}
 
-		addAttribute("value", getQuotedContent(readableSyntax));
+		addAttribute("value", getQuotedContent(poshiScript));
 	}
 
 	@Override
-	public String toReadableSyntax() {
+	public String toPoshiScript() {
 		if (getParent() instanceof ExecutePoshiElement) {
 			return "";
 		}
@@ -84,13 +84,13 @@ public class ReturnPoshiElement extends PoshiElement {
 	}
 
 	protected ReturnPoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+		super(_ELEMENT_NAME, parentPoshiElement, poshiScript);
 	}
 
 	@Override
-	protected String createReadableBlock(String content) {
+	protected String createPoshiScriptSnippet(String content) {
 		StringBuilder sb = new StringBuilder();
 
 		String blockName = getBlockName();
@@ -116,24 +116,24 @@ public class ReturnPoshiElement extends PoshiElement {
 	}
 
 	private boolean _isElementType(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		readableSyntax = readableSyntax.trim();
+		poshiScript = poshiScript.trim();
 
 		if (parentPoshiElement instanceof ExecutePoshiElement) {
-			if (!readableSyntax.startsWith("var")) {
+			if (!poshiScript.startsWith("var")) {
 				return false;
 			}
 
-			if (isMacroReturnVar(readableSyntax)) {
+			if (isMacroReturnVar(poshiScript)) {
 				return true;
 			}
 
 			return false;
 		}
 
-		if (readableSyntax.startsWith("return ") &&
-			isBalancedReadableSyntax(readableSyntax)) {
+		if (poshiScript.startsWith("return ") &&
+			isBalancedPoshiScript(poshiScript)) {
 
 			return true;
 		}
