@@ -204,8 +204,15 @@ public class FacetedSearcherImpl
 			queryBooleanFilter.addRequiredTerm(
 				Field.COMPANY_ID, searchContext.getCompanyId());
 
-			Query fullQuery = _getFinalQuery(
-				createFullQuery(queryBooleanFilter, searchContext));
+			Query fullQuery = createFullQuery(
+				queryBooleanFilter, searchContext);
+
+			if (!fullQuery.hasChildren()) {
+				fullQuery = new MatchAllQuery();
+
+				fullQuery.setPostFilter(fullQuery.getPostFilter());
+				fullQuery.setPreBooleanFilter(fullQuery.getPreBooleanFilter());
+			}
 
 			QueryConfig queryConfig = searchContext.getQueryConfig();
 
@@ -316,19 +323,6 @@ public class FacetedSearcherImpl
 		}
 
 		return _searchEngineHelper.getEntryClassNames();
-	}
-
-	private Query _getFinalQuery(Query query) {
-		if (query.hasChildren()) {
-			return query;
-		}
-
-		MatchAllQuery matchAllQuery = new MatchAllQuery();
-
-		matchAllQuery.setPostFilter(query.getPostFilter());
-		matchAllQuery.setPreBooleanFilter(query.getPreBooleanFilter());
-
-		return matchAllQuery;
 	}
 
 	private void _postProcessFullQuery(
