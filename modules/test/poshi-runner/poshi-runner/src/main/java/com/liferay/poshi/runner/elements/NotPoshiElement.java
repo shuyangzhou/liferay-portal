@@ -36,30 +36,30 @@ public class NotPoshiElement extends PoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(parentPoshiElement, readableSyntax)) {
-			return new NotPoshiElement(parentPoshiElement, readableSyntax);
+		if (_isElementType(parentPoshiElement, poshiScript)) {
+			return new NotPoshiElement(parentPoshiElement, poshiScript);
 		}
 
 		return null;
 	}
 
 	@Override
-	public void parseReadableSyntax(String readableSyntax) {
+	public void parsePoshiScript(String poshiScript) {
 		add(
 			PoshiNodeFactory.newPoshiNode(
-				this, getParentheticalContent(readableSyntax)));
+				this, getParentheticalContent(poshiScript)));
 	}
 
 	@Override
-	public String toReadableSyntax() {
+	public String toPoshiScript() {
 		StringBuilder sb = new StringBuilder();
 
 		for (PoshiElement poshiElement : toPoshiElements(elements())) {
 			sb.append("!(");
 
-			sb.append(poshiElement.toReadableSyntax());
+			sb.append(poshiElement.toPoshiScript());
 
 			sb.append(")");
 		}
@@ -79,9 +79,9 @@ public class NotPoshiElement extends PoshiElement {
 	}
 
 	protected NotPoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+		super(_ELEMENT_NAME, parentPoshiElement, poshiScript);
 	}
 
 	@Override
@@ -90,19 +90,19 @@ public class NotPoshiElement extends PoshiElement {
 	}
 
 	private boolean _isElementType(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
 		if (!isConditionValidInParent(parentPoshiElement)) {
 			return false;
 		}
 
-		readableSyntax = readableSyntax.trim();
+		poshiScript = poshiScript.trim();
 
-		if (readableSyntax.startsWith("else if (")) {
+		if (poshiScript.startsWith("else if (")) {
 			return false;
 		}
 
-		if (readableSyntax.startsWith("!")) {
+		if (poshiScript.startsWith("!")) {
 			return true;
 		}
 

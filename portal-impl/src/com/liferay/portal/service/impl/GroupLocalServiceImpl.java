@@ -408,8 +408,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		group.setManualMembership(manualMembership);
 		group.setMembershipRestriction(membershipRestriction);
 		group.setFriendlyURL(friendlyURL);
-		group.setInheritContent(inheritContent);
 		group.setSite(site);
+		group.setInheritContent(inheritContent);
 		group.setActive(active);
 
 		if ((serviceContext != null) && (classNameId == groupClassNameId) &&
@@ -3618,7 +3618,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 		String groupKey = group.getGroupKey();
 
-		List<String> names = new ArrayList(nameMap.values());
+		List<String> names = new ArrayList<>(nameMap.values());
 
 		if (ListUtil.isNull(names)) {
 			throw new GroupKeyException();
