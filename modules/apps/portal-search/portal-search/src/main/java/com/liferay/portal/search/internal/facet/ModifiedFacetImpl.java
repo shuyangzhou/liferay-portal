@@ -48,15 +48,6 @@ public class ModifiedFacetImpl extends RangeFacet implements Facet {
 	}
 
 	@Override
-	public String getAggregationName() {
-		if (_aggregationName != null) {
-			return _aggregationName;
-		}
-
-		return getFieldName();
-	}
-
-	@Override
 	public String[] getSelections() {
 		return _selections;
 	}
@@ -68,7 +59,11 @@ public class ModifiedFacetImpl extends RangeFacet implements Facet {
 
 	@Override
 	public void setAggregationName(String aggregationName) {
-		_aggregationName = aggregationName;
+		FacetConfiguration facetConfiguration = getFacetConfiguration();
+
+		JSONObject dataJSONObject = facetConfiguration.getData();
+
+		dataJSONObject.put("aggregationName", aggregationName);
 	}
 
 	@Override
@@ -187,7 +182,6 @@ public class ModifiedFacetImpl extends RangeFacet implements Facet {
 		}
 	}
 
-	private String _aggregationName;
 	private String[] _selections = {};
 
 }
