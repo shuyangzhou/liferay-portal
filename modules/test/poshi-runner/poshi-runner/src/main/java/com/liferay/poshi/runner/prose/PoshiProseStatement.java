@@ -30,7 +30,7 @@ import org.dom4j.tree.DefaultAttribute;
 /**
  * @author Yi-Chen Tsai
  */
-public class PoshiProseStatement {
+public class PoshiProseStatement extends BasePoshiProse {
 
 	public PoshiProseStatement(String proseStatement) {
 		for (String proseKeyword : PoshiProseStatement.KEYWORDS) {
@@ -102,6 +102,7 @@ public class PoshiProseStatement {
 		}
 	}
 
+	@Override
 	public Element toElement() {
 		Element element = Dom4JUtil.getNewElement(
 			"execute", null,

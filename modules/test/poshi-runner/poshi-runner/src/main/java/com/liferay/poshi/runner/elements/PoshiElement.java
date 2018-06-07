@@ -61,20 +61,20 @@ public abstract class PoshiElement
 	}
 
 	public abstract PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax);
+		PoshiElement parentPoshiElement, String poshiScript);
 
-	public PoshiElement clone(String readableSyntax) {
-		return clone(null, readableSyntax);
+	public PoshiElement clone(String poshiScript) {
+		return clone(null, poshiScript);
 	}
 
-	public boolean isReadableSyntaxComment(String readableSyntax) {
-		readableSyntax = readableSyntax.trim();
+	public boolean isPoshiScriptComment(String poshiScript) {
+		poshiScript = poshiScript.trim();
 
-		if (readableSyntax.startsWith("//")) {
+		if (poshiScript.startsWith("//")) {
 			return true;
 		}
 
-		if (isMultilineReadableSyntaxComment(readableSyntax)) {
+		if (isMultilinePoshiScriptComment(poshiScript)) {
 			return true;
 		}
 
@@ -99,19 +99,19 @@ public abstract class PoshiElement
 	}
 
 	@Override
-	public String toReadableSyntax() {
+	public String toPoshiScript() {
 		StringBuilder sb = new StringBuilder();
 
 		for (Node node : Dom4JUtil.toNodeList(content())) {
 			if (node instanceof PoshiComment) {
 				PoshiComment poshiComment = (PoshiComment)node;
 
-				sb.append(poshiComment.toReadableSyntax());
+				sb.append(poshiComment.toPoshiScript());
 			}
 			else if (node instanceof PoshiElement) {
 				PoshiElement poshiElement = (PoshiElement)node;
 
-				sb.append(poshiElement.toReadableSyntax());
+				sb.append(poshiElement.toPoshiScript());
 			}
 		}
 
@@ -150,18 +150,18 @@ public abstract class PoshiElement
 	}
 
 	protected PoshiElement(
-		String name, PoshiElement parentPoshiElement, String readableSyntax) {
+		String name, PoshiElement parentPoshiElement, String poshiScript) {
 
 		super(name);
 
 		setParent(parentPoshiElement);
 
-		parseReadableSyntax(readableSyntax);
+		parsePoshiScript(poshiScript);
 
 		detach();
 	}
 
-	protected String createReadableBlock(String content) {
+	protected String createPoshiScriptSnippet(String content) {
 		StringBuilder sb = new StringBuilder();
 
 		String pad = getPad();
@@ -188,8 +188,8 @@ public abstract class PoshiElement
 
 	protected abstract String getBlockName();
 
-	protected String getBracedContent(String readableSyntax) {
-		return RegexUtil.getGroup(readableSyntax, ".*?\\{(.*)\\}", 1);
+	protected String getBracedContent(String poshiScript) {
+		return RegexUtil.getGroup(poshiScript, ".*?\\{(.*)\\}", 1);
 	}
 
 	protected String getFileType() {
@@ -212,28 +212,28 @@ public abstract class PoshiElement
 		return "\t";
 	}
 
-	protected String getParentheticalContent(String readableSyntax) {
-		return RegexUtil.getGroup(readableSyntax, ".*?\\((.*)\\)", 1);
+	protected String getParentheticalContent(String poshiScript) {
+		return RegexUtil.getGroup(poshiScript, ".*?\\((.*)\\)", 1);
 	}
 
-	protected String getQuotedContent(String readableSyntax) {
-		return RegexUtil.getGroup(readableSyntax, ".*?\"(.*)\"", 1);
+	protected String getPoshiScriptEscapedContent(String poshiScript) {
+		poshiScript = poshiScript.trim();
+
+		return poshiScript.substring(3, poshiScript.length() - 3);
 	}
 
-	protected String getReadableCommandKeyword() {
+	protected String getPoshiScriptKeyword() {
 		PoshiElement poshiParentElement = (PoshiElement)getParent();
 
-		return poshiParentElement.getReadableCommandKeyword();
+		return poshiParentElement.getPoshiScriptKeyword();
 	}
 
-	protected String getReadableEscapedContent(String readableSyntax) {
-		readableSyntax = readableSyntax.trim();
-
-		return readableSyntax.substring(3, readableSyntax.length() - 3);
+	protected String getQuotedContent(String poshiScript) {
+		return RegexUtil.getGroup(poshiScript, ".*?\"(.*)\"", 1);
 	}
 
-	protected String getSingleQuotedContent(String readableSyntax) {
-		return RegexUtil.getGroup(readableSyntax, ".*?\'(.*)\'", 1);
+	protected String getSingleQuotedContent(String poshiScript) {
+		return RegexUtil.getGroup(poshiScript, ".*?\'(.*)\'", 1);
 	}
 
 	protected String getValueFromAssignment(String assignment) {
@@ -252,14 +252,14 @@ public abstract class PoshiElement
 		return value.trim();
 	}
 
-	protected boolean isBalancedReadableSyntax(String readableSyntax) {
-		readableSyntax = readableSyntax.replaceAll("<!--.*?-->", "");
+	protected boolean isBalancedPoshiScript(String poshiScript) {
+		poshiScript = poshiScript.replaceAll("<!--.*?-->", "");
 
-		readableSyntax = readableSyntax.replaceAll("\'\'\'.*?\'\'\'", "\"\"");
+		poshiScript = poshiScript.replaceAll("\'\'\'.*?\'\'\'", "\"\"");
 
 		Stack<Character> stack = new Stack<>();
 
-		for (char c : readableSyntax.toCharArray()) {
+		for (char c : poshiScript.toCharArray()) {
 			if (!stack.isEmpty()) {
 				Character topCodeBoundary = stack.peek();
 
@@ -288,10 +288,10 @@ public abstract class PoshiElement
 		return stack.isEmpty();
 	}
 
-	protected boolean isBalanceValidationRequired(String readableSyntax) {
-		readableSyntax = readableSyntax.trim();
+	protected boolean isBalanceValidationRequired(String poshiScript) {
+		poshiScript = poshiScript.trim();
 
-		if (readableSyntax.endsWith(";") || readableSyntax.endsWith("}")) {
+		if (poshiScript.endsWith(";") || poshiScript.endsWith("}")) {
 			return true;
 		}
 
@@ -321,10 +321,10 @@ public abstract class PoshiElement
 		return false;
 	}
 
-	protected boolean isMacroReturnVar(String readableSyntax) {
-		readableSyntax = readableSyntax.trim();
+	protected boolean isMacroReturnVar(String poshiScript) {
+		poshiScript = poshiScript.trim();
 
-		String value = getValueFromAssignment(readableSyntax);
+		String value = getValueFromAssignment(poshiScript);
 
 		if (!value.matches("(?s)^\".*\"$") && !value.matches("(?s)^'.*'$") &&
 			!isValidFunctionFileName(value) && !isValidUtilClassName(value)) {
@@ -335,10 +335,10 @@ public abstract class PoshiElement
 		return false;
 	}
 
-	protected boolean isMultilineReadableSyntaxComment(String readableSyntax) {
-		readableSyntax = readableSyntax.trim();
+	protected boolean isMultilinePoshiScriptComment(String poshiScript) {
+		poshiScript = poshiScript.trim();
 
-		if (readableSyntax.endsWith("*/") && readableSyntax.startsWith("/*")) {
+		if (poshiScript.endsWith("*/") && poshiScript.startsWith("/*")) {
 			return true;
 		}
 
@@ -357,16 +357,15 @@ public abstract class PoshiElement
 		return false;
 	}
 
-	protected boolean isValidReadableBlock(String readableSyntax) {
-		readableSyntax = readableSyntax.trim();
+	protected boolean isValidPoshiScriptSnippet(String poshiScript) {
+		poshiScript = poshiScript.trim();
 
-		if (readableSyntax.startsWith("property") ||
-			readableSyntax.startsWith("static var") ||
-			readableSyntax.startsWith("var")) {
+		if (poshiScript.startsWith("property") ||
+			poshiScript.startsWith("static var") ||
+			poshiScript.startsWith("var")) {
 
-			if (readableSyntax.endsWith("\'\'\';") ||
-				readableSyntax.endsWith("\";") ||
-				readableSyntax.endsWith(");")) {
+			if (poshiScript.endsWith("\'\'\';") ||
+				poshiScript.endsWith("\";") || poshiScript.endsWith(");")) {
 
 				return true;
 			}
@@ -374,12 +373,12 @@ public abstract class PoshiElement
 			return false;
 		}
 
-		if (isReadableSyntaxComment(readableSyntax)) {
+		if (isPoshiScriptComment(poshiScript)) {
 			return true;
 		}
 
-		if (isBalanceValidationRequired(readableSyntax)) {
-			return isBalancedReadableSyntax(readableSyntax);
+		if (isBalanceValidationRequired(poshiScript)) {
+			return isBalancedPoshiScript(poshiScript);
 		}
 
 		return false;
