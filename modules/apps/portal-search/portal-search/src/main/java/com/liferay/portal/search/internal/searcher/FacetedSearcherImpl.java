@@ -199,19 +199,19 @@ public class FacetedSearcherImpl
 		try {
 			searchContext.setSearchEngineId(getSearchEngineId());
 
-			BooleanFilter booleanFilter = new BooleanFilter();
+			BooleanFilter queryBooleanFilter = new BooleanFilter();
 
-			booleanFilter.addRequiredTerm(
+			queryBooleanFilter.addRequiredTerm(
 				Field.COMPANY_ID, searchContext.getCompanyId());
 
-			Query query = _getFinalQuery(
-				createFullQuery(booleanFilter, searchContext));
+			Query fullQuery = _getFinalQuery(
+				createFullQuery(queryBooleanFilter, searchContext));
 
 			QueryConfig queryConfig = searchContext.getQueryConfig();
 
-			query.setQueryConfig(queryConfig);
+			fullQuery.setQueryConfig(queryConfig);
 
-			return _indexSearcherHelper.search(searchContext, query);
+			return _indexSearcherHelper.search(searchContext, fullQuery);
 		}
 		catch (Exception e) {
 			throw new SearchException(e);
