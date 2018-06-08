@@ -36,27 +36,27 @@ public class EchoPoshiElement extends PoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(readableSyntax)) {
-			return new EchoPoshiElement(parentPoshiElement, readableSyntax);
+		if (_isElementType(poshiScript)) {
+			return new EchoPoshiElement(parentPoshiElement, poshiScript);
 		}
 
 		return null;
 	}
 
 	@Override
-	public void parseReadableSyntax(String readableSyntax) {
-		String content = getQuotedContent(readableSyntax);
+	public void parsePoshiScript(String poshiScript) {
+		String content = getQuotedContent(poshiScript);
 
 		addAttribute("message", content);
 	}
 
 	@Override
-	public String toReadableSyntax() {
+	public String toPoshiScript() {
 		String message = attributeValue("message");
 
-		return createReadableBlock(message);
+		return createPoshiScriptSnippet(message);
 	}
 
 	protected EchoPoshiElement() {
@@ -71,9 +71,9 @@ public class EchoPoshiElement extends PoshiElement {
 	}
 
 	protected EchoPoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+		super(_ELEMENT_NAME, parentPoshiElement, poshiScript);
 	}
 
 	protected EchoPoshiElement(String name, Element element) {
@@ -87,13 +87,13 @@ public class EchoPoshiElement extends PoshiElement {
 	}
 
 	protected EchoPoshiElement(
-		String name, PoshiElement parentPoshiElement, String readableSyntax) {
+		String name, PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(name, parentPoshiElement, readableSyntax);
+		super(name, parentPoshiElement, poshiScript);
 	}
 
 	@Override
-	protected String createReadableBlock(String content) {
+	protected String createPoshiScriptSnippet(String content) {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("\n\n");
@@ -111,18 +111,18 @@ public class EchoPoshiElement extends PoshiElement {
 		return "echo";
 	}
 
-	private boolean _isElementType(String readableSyntax) {
-		readableSyntax = readableSyntax.trim();
+	private boolean _isElementType(String poshiScript) {
+		poshiScript = poshiScript.trim();
 
-		if (!isBalancedReadableSyntax(readableSyntax)) {
+		if (!isBalancedPoshiScript(poshiScript)) {
 			return false;
 		}
 
-		if (!readableSyntax.endsWith(");")) {
+		if (!poshiScript.endsWith(");")) {
 			return false;
 		}
 
-		if (!readableSyntax.startsWith("echo(")) {
+		if (!poshiScript.startsWith("echo(")) {
 			return false;
 		}
 
