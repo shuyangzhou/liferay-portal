@@ -36,10 +36,10 @@ public class PropertyPoshiElement extends VarPoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(readableSyntax)) {
-			return new PropertyPoshiElement(parentPoshiElement, readableSyntax);
+		if (_isElementType(poshiScript)) {
+			return new PropertyPoshiElement(parentPoshiElement, poshiScript);
 		}
 
 		return null;
@@ -59,23 +59,23 @@ public class PropertyPoshiElement extends VarPoshiElement {
 	}
 
 	protected PropertyPoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+		super(_ELEMENT_NAME, parentPoshiElement, poshiScript);
 	}
 
-	private boolean _isElementType(String readableSyntax) {
-		readableSyntax = readableSyntax.trim();
+	private boolean _isElementType(String poshiScript) {
+		poshiScript = poshiScript.trim();
 
-		if (!isBalancedReadableSyntax(readableSyntax)) {
+		if (!isBalancedPoshiScript(poshiScript)) {
 			return false;
 		}
 
-		if (!readableSyntax.endsWith(";")) {
+		if (!poshiScript.endsWith(";")) {
 			return false;
 		}
 
-		if (!readableSyntax.startsWith("property ")) {
+		if (!poshiScript.startsWith("property ")) {
 			return false;
 		}
 
