@@ -67,25 +67,25 @@ public abstract class PoshiNodeFactory {
 	}
 
 	public static PoshiNode<?, ?> newPoshiNode(
-		PoshiNode<?, ?> parentPoshiNode, String readableSyntax) {
+		PoshiNode<?, ?> parentPoshiNode, String poshiScript) {
 
 		PoshiNode<?, ?> newPoshiNode = null;
 
-		newPoshiNode = _newPoshiComment(readableSyntax);
+		newPoshiNode = _newPoshiComment(poshiScript);
 
 		if (newPoshiNode != null) {
 			return newPoshiNode;
 		}
 
 		newPoshiNode = _newPoshiElement(
-			(PoshiElement)parentPoshiNode, readableSyntax);
+			(PoshiElement)parentPoshiNode, poshiScript);
 
 		if (newPoshiNode != null) {
 			return newPoshiNode;
 		}
 
 		throw new RuntimeException(
-			"Unknown readable syntax\n" + readableSyntax);
+			"Unknown Poshi script syntax\n" + poshiScript);
 	}
 
 	public static PoshiNode<?, ?> newPoshiNode(
@@ -114,7 +114,7 @@ public abstract class PoshiNodeFactory {
 			return definitionPoshiElement.clone(content);
 		}
 		catch (Exception e) {
-			System.out.println("Unable to generate the Poshi element");
+			System.out.println("Unable to generate the Poshi XML");
 
 			e.printStackTrace();
 		}
@@ -135,7 +135,7 @@ public abstract class PoshiNodeFactory {
 			return newPoshiNode(content, fileType);
 		}
 		catch (Exception e) {
-			System.out.println("Unable to generate the Poshi element");
+			System.out.println("Unable to generate the Poshi XML");
 
 			e.printStackTrace();
 		}
@@ -155,9 +155,9 @@ public abstract class PoshiNodeFactory {
 		return null;
 	}
 
-	private static PoshiComment _newPoshiComment(String readableSyntax) {
+	private static PoshiComment _newPoshiComment(String poshiScript) {
 		for (PoshiComment poshiComment : _poshiComments) {
-			PoshiComment newPoshiComment = poshiComment.clone(readableSyntax);
+			PoshiComment newPoshiComment = poshiComment.clone(poshiScript);
 
 			if (newPoshiComment != null) {
 				return newPoshiComment;
@@ -180,11 +180,11 @@ public abstract class PoshiNodeFactory {
 	}
 
 	private static PoshiElement _newPoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
 		for (PoshiElement poshiElement : _poshiElements) {
 			PoshiElement newPoshiElement = poshiElement.clone(
-				parentPoshiElement, readableSyntax);
+				parentPoshiElement, poshiScript);
 
 			if (newPoshiElement != null) {
 				return newPoshiElement;

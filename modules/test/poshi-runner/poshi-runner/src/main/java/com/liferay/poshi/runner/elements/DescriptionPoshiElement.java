@@ -36,19 +36,18 @@ public class DescriptionPoshiElement extends PoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(parentPoshiElement, readableSyntax)) {
-			return new DescriptionPoshiElement(
-				parentPoshiElement, readableSyntax);
+		if (_isElementType(parentPoshiElement, poshiScript)) {
+			return new DescriptionPoshiElement(parentPoshiElement, poshiScript);
 		}
 
 		return null;
 	}
 
 	@Override
-	public void parseReadableSyntax(String readableSyntax) {
-		String message = getQuotedContent(readableSyntax);
+	public void parsePoshiScript(String poshiScript) {
+		String message = getQuotedContent(poshiScript);
 
 		addAttribute("message", message);
 	}
@@ -67,9 +66,9 @@ public class DescriptionPoshiElement extends PoshiElement {
 	}
 
 	protected DescriptionPoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+		super(_ELEMENT_NAME, parentPoshiElement, poshiScript);
 	}
 
 	@Override
@@ -78,10 +77,10 @@ public class DescriptionPoshiElement extends PoshiElement {
 	}
 
 	private boolean _isElementType(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
 		if ((parentPoshiElement instanceof CommandPoshiElement) &&
-			readableSyntax.startsWith("@description")) {
+			poshiScript.startsWith("@description")) {
 
 			return true;
 		}

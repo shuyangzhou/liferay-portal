@@ -36,24 +36,24 @@ public class IsSetPoshiElement extends PoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(parentPoshiElement, readableSyntax)) {
-			return new IsSetPoshiElement(parentPoshiElement, readableSyntax);
+		if (_isElementType(parentPoshiElement, poshiScript)) {
+			return new IsSetPoshiElement(parentPoshiElement, poshiScript);
 		}
 
 		return null;
 	}
 
 	@Override
-	public void parseReadableSyntax(String readableSyntax) {
-		String issetContent = getParentheticalContent(readableSyntax);
+	public void parsePoshiScript(String poshiScript) {
+		String issetContent = getParentheticalContent(poshiScript);
 
 		addAttribute("var", issetContent);
 	}
 
 	@Override
-	public String toReadableSyntax() {
+	public String toPoshiScript() {
 		return "isSet(" + attributeValue("var") + ")";
 	}
 
@@ -69,9 +69,9 @@ public class IsSetPoshiElement extends PoshiElement {
 	}
 
 	protected IsSetPoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+		super(_ELEMENT_NAME, parentPoshiElement, poshiScript);
 	}
 
 	@Override
@@ -80,19 +80,19 @@ public class IsSetPoshiElement extends PoshiElement {
 	}
 
 	private boolean _isElementType(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
 		if (!isConditionValidInParent(parentPoshiElement)) {
 			return false;
 		}
 
-		if (readableSyntax.startsWith("!") ||
-			readableSyntax.startsWith("else if (")) {
+		if (poshiScript.startsWith("!") ||
+			poshiScript.startsWith("else if (")) {
 
 			return false;
 		}
 
-		if (readableSyntax.startsWith("isSet(")) {
+		if (poshiScript.startsWith("isSet(")) {
 			return true;
 		}
 
