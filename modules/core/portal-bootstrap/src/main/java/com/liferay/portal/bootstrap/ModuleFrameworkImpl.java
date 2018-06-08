@@ -706,6 +706,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			PropsValues.MODULE_FRAMEWORK_STATE_DIR);
 
 		properties.put("eclipse.security", null);
+		properties.put("equinox.resolver.revision.batch.size", "700");
 		properties.put("java.security.manager", null);
 		properties.put("org.osgi.framework.security", null);
 
