@@ -37,36 +37,36 @@ public class OnPoshiElement extends PoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (isElementType(readableSyntax)) {
+		if (isElementType(poshiScript)) {
 			return new OnPoshiElement(
-				_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+				_ELEMENT_NAME, parentPoshiElement, poshiScript);
 		}
 
 		return null;
 	}
 
 	@Override
-	public void parseReadableSyntax(String readableSyntax) {
-		for (String readableBlock : getReadableBlocks(readableSyntax)) {
-			if (readableBlock.startsWith(getBlockName() + " {")) {
+	public void parsePoshiScript(String poshiScript) {
+		for (String poshiScriptSnippet : getPoshiScriptSnippets(poshiScript)) {
+			if (poshiScriptSnippet.startsWith(getBlockName() + " {")) {
 				continue;
 			}
 
-			add(PoshiNodeFactory.newPoshiNode(this, readableBlock));
+			add(PoshiNodeFactory.newPoshiNode(this, poshiScriptSnippet));
 		}
 	}
 
 	@Override
-	public String toReadableSyntax() {
+	public String toPoshiScript() {
 		StringBuilder sb = new StringBuilder();
 
 		for (PoshiElement poshiElement : toPoshiElements(elements())) {
-			sb.append(poshiElement.toReadableSyntax());
+			sb.append(poshiElement.toPoshiScript());
 		}
 
-		return createReadableBlock(sb.toString());
+		return createPoshiScriptSnippet(sb.toString());
 	}
 
 	protected OnPoshiElement() {
@@ -87,9 +87,9 @@ public class OnPoshiElement extends PoshiElement {
 	}
 
 	protected OnPoshiElement(
-		String name, PoshiElement parentPoshiElement, String readableSyntax) {
+		String name, PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(name, parentPoshiElement, readableSyntax);
+		super(name, parentPoshiElement, poshiScript);
 	}
 
 	@Override
@@ -97,32 +97,37 @@ public class OnPoshiElement extends PoshiElement {
 		return "on";
 	}
 
-	protected List<String> getReadableBlocks(String readableSyntax) {
+	protected String getPoshiScriptKeyword() {
+		return getName();
+	}
+
+	protected List<String> getPoshiScriptSnippets(String poshiScript) {
 		StringBuilder sb = new StringBuilder();
 
-		List<String> readableBlocks = new ArrayList<>();
+		List<String> poshiScriptSnippets = new ArrayList<>();
 
-		for (String line : readableSyntax.split("\n")) {
+		for (String line : poshiScript.split("\n")) {
 			String trimmedLine = line.trim();
 
-			String readableBlock = sb.toString();
+			String poshiScriptSnippet = sb.toString();
 
-			readableBlock = readableBlock.trim();
+			poshiScriptSnippet = poshiScriptSnippet.trim();
 
-			if (trimmedLine.startsWith(getReadableName() + " (") &&
-				trimmedLine.endsWith("{") && (readableBlock.length() == 0)) {
+			if (trimmedLine.startsWith(getPoshiScriptKeyword() + " (") &&
+				trimmedLine.endsWith("{") &&
+				(poshiScriptSnippet.length() == 0)) {
 
-				readableBlocks.add(line);
+				poshiScriptSnippets.add(line);
 
 				continue;
 			}
 
-			if (trimmedLine.endsWith("{") && readableBlocks.isEmpty()) {
+			if (trimmedLine.endsWith("{") && poshiScriptSnippets.isEmpty()) {
 				continue;
 			}
 
-			if (isValidReadableBlock(readableBlock)) {
-				readableBlocks.add(readableBlock);
+			if (isValidPoshiScriptSnippet(poshiScriptSnippet)) {
+				poshiScriptSnippets.add(poshiScriptSnippet);
 
 				sb.setLength(0);
 			}
@@ -131,25 +136,21 @@ public class OnPoshiElement extends PoshiElement {
 			sb.append("\n");
 		}
 
-		return readableBlocks;
+		return poshiScriptSnippets;
 	}
 
-	protected String getReadableName() {
-		return getName();
-	}
+	protected boolean isElementType(String poshiScript) {
+		poshiScript = poshiScript.trim();
 
-	protected boolean isElementType(String readableSyntax) {
-		readableSyntax = readableSyntax.trim();
-
-		if (!isBalancedReadableSyntax(readableSyntax)) {
+		if (!isBalancedPoshiScript(poshiScript)) {
 			return false;
 		}
 
-		if (!readableSyntax.startsWith(getBlockName() + " {")) {
+		if (!poshiScript.startsWith(getBlockName() + " {")) {
 			return false;
 		}
 
-		if (!readableSyntax.endsWith("}")) {
+		if (!poshiScript.endsWith("}")) {
 			return false;
 		}
 
