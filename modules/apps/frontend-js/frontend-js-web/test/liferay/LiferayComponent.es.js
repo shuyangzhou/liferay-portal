@@ -12,8 +12,9 @@ describe(
 					() => {
 						const window = {
 							Liferay: {
+								fire: () => 0,
 								namespace: 0,
-								fire: () => 0
+								on: () => 0
 							}
 						};
 
@@ -137,8 +138,8 @@ describe(
 							}
 						};
 
-						Liferay.component('myButton', 1);
-						Liferay.component('myButton', 2);
+						Liferay.component('myButton', {a: 1});
+						Liferay.component('myButton', {a: 2});
 
 						expect(msg).toEqual('Component with id "myButton" is being registered twice. This can lead to unexpected behaviour in the "Liferay.component" and "Liferay.componentReady" APIs, as well as in the "*:registered" events. ');
 					}

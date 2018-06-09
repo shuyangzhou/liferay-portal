@@ -3,7 +3,7 @@
 
 <service-builder auto-import-default-references="false" auto-namespace-tables="false" package-path="com.liferay.fragment">
 	<namespace>Fragment</namespace>
-	<entity local-service="true" name="FragmentCollection" remote-service="true">
+	<entity local-service="true" name="FragmentCollection" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -26,6 +26,7 @@
 		<column name="fragmentCollectionKey" type="String" />
 		<column name="name" type="String" />
 		<column name="description" type="String" />
+		<column name="lastPublishDate" type="Date" />
 
 		<!-- Order -->
 
@@ -53,7 +54,7 @@
 		<reference entity="Resource" package-path="com.liferay.portal" />
 		<reference entity="User" package-path="com.liferay.portal" />
 	</entity>
-	<entity local-service="true" name="FragmentEntry" remote-service="true">
+	<entity local-service="true" name="FragmentEntry" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -80,6 +81,7 @@
 		<column name="html" type="String" />
 		<column name="js" type="String" />
 		<column name="previewFileEntryId" type="long" />
+		<column name="lastPublishDate" type="Date" />
 		<column name="status" type="int" />
 		<column name="statusByUserId" type="long" />
 		<column name="statusByUserName" type="String" />
@@ -163,6 +165,7 @@
 		<column name="position" type="int" />
 		<column name="lastPropagationDate" type="Date" />
 		<column name="namespace" type="String" />
+		<column name="lastPublishDate" type="Date" />
 
 		<!-- Order -->
 
@@ -188,6 +191,12 @@
 		</finder>
 		<finder name="G_C_C" return-type="Collection">
 			<finder-column name="groupId" />
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+		</finder>
+		<finder name="G_F_C_C" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="fragmentEntryId" />
 			<finder-column name="classNameId" />
 			<finder-column name="classPK" />
 		</finder>
