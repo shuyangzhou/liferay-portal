@@ -72,6 +72,9 @@ import com.liferay.portlet.internal.PortletBagImpl;
 import com.liferay.registry.Filter;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceReference;
+import com.liferay.registry.ServiceTracker;
+import com.liferay.registry.ServiceTrackerCustomizer;
 import com.liferay.registry.collections.ServiceTrackerCollections;
 import com.liferay.registry.collections.ServiceTrackerList;
 import com.liferay.social.kernel.model.SocialActivityInterpreter;
@@ -83,6 +86,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.portlet.PreferencesValidator;
 
@@ -1016,5 +1022,136 @@ public class PortletBagFactory {
 	private Configuration _configuration;
 	private ServletContext _servletContext;
 	private Boolean _warFile;
+
+	private static class PortletServiceTrackerMap<T> {
+
+		public static <T> PortletServiceTrackerMap<T> create(
+			Class<T> serviceClass) {
+
+			PortletServiceTrackerMap<T> portletServiceTrackerMap =
+				new PortletServiceTrackerMap<>();
+
+			portletServiceTrackerMap._open(serviceClass);
+
+			return portletServiceTrackerMap;
+		}
+
+		public void close() {
+			_serviceTracker.close();
+		}
+
+		public List<T> get(Object portletName) {
+			List<T> services = _portletServices.get(portletName);
+
+			if (services == null) {
+				if (_SHARED_PORTLET_SERVICE_KEY.equals(portletName)) {
+					return _sharedPortletServices;
+				}
+
+				services = new CopyOnWriteArrayList<>(_sharedPortletServices);
+
+				List<T> oldServices = _portletServices.putIfAbsent(
+					portletName, services);
+
+				if (oldServices != null) {
+					services = oldServices;
+				}
+			}
+
+			return services;
+		}
+
+		private PortletServiceTrackerMap() {
+		}
+
+		private void _open(Class<T> serviceClass) {
+			Registry registry = RegistryUtil.getRegistry();
+
+			_serviceTracker = registry.trackServices(
+				serviceClass,
+				new ServiceTrackerCustomizer<T, ServiceAndProperty<T>>() {
+
+					@Override
+					public ServiceAndProperty<T> addingService(
+						ServiceReference<T> serviceReference) {
+
+						Object property = serviceReference.getProperty(
+							"javax.portlet.name");
+
+						if (property == null) {
+							return null;
+						}
+
+						T service = registry.getService(serviceReference);
+
+						List<T> services = get(property);
+
+						services.add(service);
+
+						if (_SHARED_PORTLET_SERVICE_KEY.equals(property)) {
+							for (List<T> portletServices :
+									_portletServices.values()) {
+
+								portletServices.add(service);
+							}
+						}
+
+						return new ServiceAndProperty<>(service, property);
+					}
+
+					@Override
+					public void modifiedService(
+						ServiceReference<T> serviceReference,
+						ServiceAndProperty<T> serviceAndProperty) {
+					}
+
+					@Override
+					public void removedService(
+						ServiceReference<T> serviceReference,
+						ServiceAndProperty<T> serviceAndProperty) {
+
+						T service = serviceAndProperty._service;
+						Object property = serviceAndProperty._property;
+
+						List<T> services = get(property);
+
+						services.remove(service);
+
+						if (_SHARED_PORTLET_SERVICE_KEY.equals(property)) {
+							for (List<T> portletServices :
+									_portletServices.values()) {
+
+								portletServices.add(service);
+							}
+						}
+
+						registry.ungetService(serviceReference);
+					}
+
+				});
+
+			_serviceTracker.open();
+		}
+
+		private static final Object _SHARED_PORTLET_SERVICE_KEY = "ALL";
+
+		private ConcurrentMap<Object, List<T>> _portletServices =
+			new ConcurrentHashMap<>();
+		private ServiceTracker<T, ServiceAndProperty<T>> _serviceTracker;
+		private List<T> _sharedPortletServices = new CopyOnWriteArrayList<>();
+
+	}
+
+	private static class ServiceAndProperty<T> {
+
+		private ServiceAndProperty(T service, Object property) {
+			_service = service;
+			_property = property;
+		}
+
+		private final Object _property;
+		private final T _service;
+
+	}
 
 }
