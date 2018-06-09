@@ -17,6 +17,7 @@ package com.liferay.asset.publisher.web.portlet;
 import com.liferay.asset.display.contributor.AssetDisplayContributor;
 import com.liferay.asset.display.contributor.AssetDisplayContributorTracker;
 import com.liferay.asset.display.contributor.constants.AssetDisplayWebKeys;
+import com.liferay.asset.display.page.constants.AssetDisplayPageConstants;
 import com.liferay.asset.display.page.model.AssetDisplayPageEntry;
 import com.liferay.asset.display.page.service.AssetDisplayPageEntryLocalService;
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
@@ -50,6 +51,7 @@ import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.InheritableMap;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -89,7 +91,9 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 
 		JournalArticle journalArticle =
 			_journalArticleLocalService.getLatestArticleByUrlTitle(
-				groupId, urlTitle, WorkflowConstants.STATUS_APPROVED);
+				groupId,
+				FriendlyURLNormalizerUtil.normalizeWithEncoding(urlTitle),
+				WorkflowConstants.STATUS_APPROVED);
 
 		AssetEntry assetEntry = _assetEntryLocalService.fetchEntry(
 			JournalArticle.class.getName(),
@@ -129,8 +133,12 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 		String urlTitle = friendlyURL.substring(
 			JournalArticleConstants.CANONICAL_URL_SEPARATOR.length());
 
+		String normalizedUrlTitle =
+			FriendlyURLNormalizerUtil.normalizeWithEncoding(urlTitle);
+
 		JournalArticle journalArticle =
-			_journalArticleLocalService.getArticleByUrlTitle(groupId, urlTitle);
+			_journalArticleLocalService.getArticleByUrlTitle(
+				groupId, normalizedUrlTitle);
 
 		AssetEntry assetEntry = _assetEntryLocalService.fetchEntry(
 			JournalArticle.class.getName(),
@@ -371,7 +379,16 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 				fetchAssetDisplayPageEntryByAssetEntryId(
 					assetEntry.getEntryId());
 
-		if (assetDisplayPageEntry != null) {
+		if ((assetDisplayPageEntry == null) ||
+			(assetDisplayPageEntry.getType() ==
+				AssetDisplayPageConstants.TYPE_NONE)) {
+
+			return false;
+		}
+
+		if (assetDisplayPageEntry.getType() ==
+				AssetDisplayPageConstants.TYPE_SPECIFIC) {
+
 			return true;
 		}
 

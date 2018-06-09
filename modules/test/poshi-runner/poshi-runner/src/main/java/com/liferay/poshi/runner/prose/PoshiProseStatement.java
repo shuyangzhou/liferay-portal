@@ -30,7 +30,7 @@ import org.dom4j.tree.DefaultAttribute;
 /**
  * @author Yi-Chen Tsai
  */
-public class PoshiProseStatement {
+public class PoshiProseStatement extends BasePoshiProse {
 
 	public PoshiProseStatement(String proseStatement) {
 		for (String proseKeyword : PoshiProseStatement.KEYWORDS) {
@@ -102,6 +102,7 @@ public class PoshiProseStatement {
 		}
 	}
 
+	@Override
 	public Element toElement() {
 		Element element = Dom4JUtil.getNewElement(
 			"execute", null,
@@ -149,7 +150,7 @@ public class PoshiProseStatement {
 	}
 
 	protected static final String[] KEYWORDS =
-		{"#", "*", "And", "Given", "Then", "When"};
+		{"*", "And", "Given", "Then", "When"};
 
 	private static final String _LINE_SEPARATOR = System.lineSeparator();
 

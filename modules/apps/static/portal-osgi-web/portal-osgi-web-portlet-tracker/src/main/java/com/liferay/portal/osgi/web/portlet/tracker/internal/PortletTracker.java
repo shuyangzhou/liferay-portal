@@ -31,7 +31,9 @@ import com.liferay.portal.kernel.model.EventDefinition;
 import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.model.PortletCategory;
 import com.liferay.portal.kernel.model.PortletInfo;
+import com.liferay.portal.kernel.model.PortletURLListener;
 import com.liferay.portal.kernel.model.PublicRenderParameter;
+import com.liferay.portal.kernel.model.portlet.PortletDependencyFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.portlet.InvokerPortlet;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
@@ -55,6 +57,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.kernel.xml.SAXReader;
+import com.liferay.portal.model.impl.PortletURLListenerImpl;
 import com.liferay.portal.model.impl.PublicRenderParameterImpl;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistration;
@@ -68,6 +71,8 @@ import java.io.IOException;
 import java.net.URL;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -465,7 +470,9 @@ public class PortletTracker
 		collectCacheScope(serviceReference, portletModel);
 		collectExpirationCache(serviceReference, portletModel);
 		collectInitParams(serviceReference, portletModel);
+		collectListeners(serviceReference, portletModel);
 		collectMultipartConfig(serviceReference, portletModel);
+		collectPortletDependencies(serviceReference, portletModel);
 		collectPortletInfo(serviceReference, portletModel);
 		collectPortletModes(serviceReference, portletModel);
 		collectPortletPreferences(serviceReference, portletModel);
@@ -542,6 +549,13 @@ public class PortletTracker
 		portletModel.setHeaderPortletJavaScript(
 			StringPlus.asList(
 				get(serviceReference, "header-portlet-javascript")));
+		portletModel.setHeaderRequestAttributePrefixes(
+			StringPlus.asList(
+				get(serviceReference, "header-request-attribute-prefix")));
+		portletModel.setHeaderTimeout(
+			GetterUtil.getInteger(
+				get(serviceReference, "header-timeout"),
+				portletModel.getHeaderTimeout()));
 		portletModel.setIcon(
 			GetterUtil.getString(
 				get(serviceReference, "icon"), portletModel.getIcon()));
@@ -572,6 +586,18 @@ public class PortletTracker
 			GetterUtil.getBoolean(
 				get(serviceReference, "pop-up-print"),
 				portletModel.isPopUpPrint()));
+		portletModel.setPartialActionServeResource(
+			GetterUtil.getBoolean(
+				get(serviceReference, "partial-action-serve-resource"),
+				portletModel.isPartialActionServeResource()));
+		portletModel.setPortletDependencyCssEnabled(
+			GetterUtil.getBoolean(
+				get(serviceReference, "portlet-dependency-css-enabled"),
+				portletModel.isPortletDependencyCssEnabled()));
+		portletModel.setPortletDependencyJavaScriptEnabled(
+			GetterUtil.getBoolean(
+				get(serviceReference, "portlet-dependency-javascript-enabled"),
+				portletModel.isPortletDependencyJavaScriptEnabled()));
 		portletModel.setPreferencesCompanyWide(
 			GetterUtil.getBoolean(
 				get(serviceReference, "preferences-company-wide"),
@@ -657,6 +683,42 @@ public class PortletTracker
 				portletModel.getVirtualPath()));
 	}
 
+	protected void collectListeners(
+		ServiceReference<Portlet> serviceReference,
+		com.liferay.portal.kernel.model.Portlet portletModel) {
+
+		PortletApp portletApp = portletModel.getPortletApp();
+
+		List<String> listenerClassNames = StringPlus.asList(
+			serviceReference.getProperty("javax.portlet.listener"));
+
+		List<PortletURLListener> portletURLListeners = new ArrayList<>();
+
+		for (String listenerClassName : listenerClassNames) {
+			int ordinal = 0;
+
+			String[] parts = StringUtil.split(
+				listenerClassName, CharPool.SEMICOLON);
+
+			if (parts.length == 2) {
+				listenerClassName = parts[0];
+				ordinal = GetterUtil.getInteger(parts[1]);
+			}
+
+			portletURLListeners.add(
+				new PortletURLListenerImpl(
+					listenerClassName, ordinal, portletApp));
+		}
+
+		Collections.sort(
+			portletURLListeners,
+			Comparator.comparingInt(PortletURLListener::getOrdinal));
+
+		for (PortletURLListener portletURLListener : portletURLListeners) {
+			portletApp.addPortletURLListener(portletURLListener);
+		}
+	}
+
 	protected void collectMultipartConfig(
 		ServiceReference<Portlet> serviceReference,
 		com.liferay.portal.kernel.model.Portlet portletModel) {
@@ -680,6 +742,22 @@ public class PortletTracker
 				serviceReference.getProperty(
 					"javax.portlet.multipart.max-request-size"),
 				-1L));
+	}
+
+	protected void collectPortletDependencies(
+		ServiceReference<Portlet> serviceReference,
+		com.liferay.portal.kernel.model.Portlet portletModel) {
+
+		List<String> dependencies = StringPlus.asList(
+			serviceReference.getProperty("javax.portlet.dependency"));
+
+		for (String dependency : dependencies) {
+			String[] parts = StringUtil.split(dependency, CharPool.SEMICOLON);
+
+			portletModel.addPortletDependency(
+				PortletDependencyFactoryUtil.createPortletDependency(
+					parts[0], parts[1], parts[2]));
+		}
 	}
 
 	protected void collectPortletInfo(
