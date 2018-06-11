@@ -116,6 +116,17 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	}
 
 	/**
+	* Adds a portlet JS/CSS resource dependency.
+	*
+	* @param portletDependency a portlet JS/CSS resource dependency
+	*/
+	@Override
+	public void addPortletDependency(
+		com.liferay.portal.kernel.model.portlet.PortletDependency portletDependency) {
+		_portlet.addPortletDependency(portletDependency);
+	}
+
+	/**
 	* Adds a processing event.
 	*/
 	@Override
@@ -642,6 +653,33 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	}
 
 	/**
+	* Returns a list of attribute name prefixes that will be referenced after
+	* the HEADER_PHASE completes for each portlet. Header request attributes
+	* that have names starting with any of the prefixes will be copied from the
+	* header request to the subsequent render request.
+	*
+	* @return a list of attribute name prefixes that will be referenced after
+	the HEADER_PHASE completes for each portlet. Header request
+	attributes that have names starting with any of the prefixes will
+	be copied from the header request to the subsequent render
+	request.
+	*/
+	@Override
+	public java.util.List<String> getHeaderRequestAttributePrefixes() {
+		return _portlet.getHeaderRequestAttributePrefixes();
+	}
+
+	/**
+	* Returns the header timeout of the portlet.
+	*
+	* @return the header timeout of the portlet
+	*/
+	@Override
+	public int getHeaderTimeout() {
+		return _portlet.getHeaderTimeout();
+	}
+
+	/**
 	* Returns the icon of the portlet.
 	*
 	* @return the icon of the portlet
@@ -982,6 +1020,16 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	@Override
 	public com.liferay.exportimport.kernel.lar.PortletDataHandler getPortletDataHandlerInstance() {
 		return _portlet.getPortletDataHandlerInstance();
+	}
+
+	/**
+	* Returns the list of portlet JS/CSS resource dependencies.
+	*
+	* @return the list of portlet JS/CSS resource dependencies.
+	*/
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.portlet.PortletDependency> getPortletDependencies() {
+		return _portlet.getPortletDependencies();
 	}
 
 	/**
@@ -2027,6 +2075,34 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	}
 
 	/**
+	* Returns <code>true</code> if CSS resource dependencies added via
+	* portlet.xml, @Dependency, or HeaderResponse.addDependency are to be added
+	* to the head of the portal page.
+	*
+	* @return <code>true</code> if CSS resource dependencies added via
+	portlet.xml, @Dependency, or HeaderResponse.addDependency are to be added
+	to the head of the portal page
+	*/
+	@Override
+	public boolean isPortletDependencyCssEnabled() {
+		return _portlet.isPortletDependencyCssEnabled();
+	}
+
+	/**
+	* Returns <code>true</code> if JavaScript resource dependencies added via
+	* portlet.xml, @Dependency, or HeaderResponse.addDependency are to be added
+	* to the head of the portal page.
+	*
+	* @return <code>true</code> if JavaScript resource dependencies added via
+	portlet.xml, @Dependency, or HeaderResponse.addDependency are to be added
+	to the head of the portal page
+	*/
+	@Override
+	public boolean isPortletDependencyJavaScriptEnabled() {
+		return _portlet.isPortletDependencyJavaScriptEnabled();
+	}
+
+	/**
 	* Returns <code>true</code> if preferences are shared across the entire
 	* company.
 	*
@@ -2658,6 +2734,34 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	}
 
 	/**
+	* Sets a list of attribute name prefixes that will be referenced after the
+	* HEADER_PHASE completes for each portlet. Header request attributes that
+	* have names starting with any of the prefixes will be copied from the
+	* header request to the subsequent render request.
+	*
+	* @param headerRequestAttributePrefixes a list of attribute name prefixes
+	that will be referenced after the HEADER_PHASE completes for each
+	portlet. Header request attributes that have names starting with
+	any of the prefixes will be copied from the header request to the
+	subsequent render request.
+	*/
+	@Override
+	public void setHeaderRequestAttributePrefixes(
+		java.util.List<String> headerRequestAttributePrefixes) {
+		_portlet.setHeaderRequestAttributePrefixes(headerRequestAttributePrefixes);
+	}
+
+	/**
+	* Sets the header timeout of the portlet.
+	*
+	* @param headerTimeout the header timeout of the portlet
+	*/
+	@Override
+	public void setHeaderTimeout(int headerTimeout) {
+		_portlet.setHeaderTimeout(headerTimeout);
+	}
+
+	/**
 	* Sets the icon of the portlet.
 	*
 	* @param icon the icon of the portlet
@@ -2919,6 +3023,38 @@ public class PortletWrapper implements Portlet, ModelWrapper<Portlet> {
 	@Override
 	public void setPortletDataHandlerClass(String portletDataHandlerClass) {
 		_portlet.setPortletDataHandlerClass(portletDataHandlerClass);
+	}
+
+	/**
+	* Set to <code>true</code> if the CSS resource dependencies added via
+	* portlet.xml, @Dependency, or HeaderResponse.addDependency are to be added
+	* to the head of the portal page.
+	*
+	* @param portletDependencyCssEnabled boolean value for whether the
+	CSS resource dependencies added via portlet.xml, @Dependency, or
+	HeaderResponse.addDependency are to be added to the head of the
+	portal page
+	*/
+	@Override
+	public void setPortletDependencyCssEnabled(
+		boolean portletDependencyCssEnabled) {
+		_portlet.setPortletDependencyCssEnabled(portletDependencyCssEnabled);
+	}
+
+	/**
+	* Set to <code>true</code> if the JavaScript resource dependencies added
+	* via portlet.xml, @Dependency, or HeaderResponse.addDependency are to be
+	* added to the head of the portal page.
+	*
+	* @param portletDependencyJavaScriptEnabled boolean value for whether
+	the JavaScript resource dependencies added via portlet.xml,
+	* @Dependency, or HeaderResponse.addDependency are to be added to
+	the head of the portal page
+	*/
+	@Override
+	public void setPortletDependencyJavaScriptEnabled(
+		boolean portletDependencyJavaScriptEnabled) {
+		_portlet.setPortletDependencyJavaScriptEnabled(portletDependencyJavaScriptEnabled);
 	}
 
 	/**

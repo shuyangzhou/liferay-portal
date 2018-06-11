@@ -15,6 +15,7 @@
 package com.liferay.poshi.runner.elements;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.dom4j.Attribute;
 import org.dom4j.Element;
@@ -36,10 +37,10 @@ public class WhilePoshiElement extends IfPoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(readableSyntax)) {
-			return new WhilePoshiElement(parentPoshiElement, readableSyntax);
+		if (_isElementType(poshiScript)) {
+			return new WhilePoshiElement(parentPoshiElement, poshiScript);
 		}
 
 		return null;
@@ -57,9 +58,9 @@ public class WhilePoshiElement extends IfPoshiElement {
 	}
 
 	protected WhilePoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+		super(_ELEMENT_NAME, parentPoshiElement, poshiScript);
 	}
 
 	@Override
@@ -69,7 +70,7 @@ public class WhilePoshiElement extends IfPoshiElement {
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(getReadableName());
+		sb.append(getPoshiScriptKeyword());
 		sb.append(" (");
 		sb.append(parentheticalContent);
 
@@ -85,8 +86,8 @@ public class WhilePoshiElement extends IfPoshiElement {
 	}
 
 	@Override
-	protected String getCondition(String readableSyntax) {
-		String parentheticalContent = getParentheticalContent(readableSyntax);
+	protected String getCondition(String poshiScript) {
+		String parentheticalContent = getParentheticalContent(poshiScript);
 
 		if (parentheticalContent.contains("&& (maxIterations = ")) {
 			int index = parentheticalContent.lastIndexOf("&&");
@@ -109,24 +110,16 @@ public class WhilePoshiElement extends IfPoshiElement {
 		return parentheticalContent.trim();
 	}
 
-	private boolean _isElementType(String readableSyntax) {
-		readableSyntax = readableSyntax.trim();
-
-		if (!isBalancedReadableSyntax(readableSyntax)) {
-			return false;
-		}
-
-		if (!readableSyntax.startsWith("while (")) {
-			return false;
-		}
-
-		if (!readableSyntax.endsWith("}")) {
-			return false;
-		}
-
-		return true;
+	private boolean _isElementType(String poshiScript) {
+		return isValidPoshiScriptBlock(_blockNamePattern, poshiScript);
 	}
 
 	private static final String _ELEMENT_NAME = "while";
+
+	private static final String _POSHI_SCRIPT_KEYWORD = _ELEMENT_NAME;
+
+	private static final Pattern _blockNamePattern = Pattern.compile(
+		"^" + _POSHI_SCRIPT_KEYWORD + BLOCK_NAME_PARAMETER_REGEX,
+		Pattern.DOTALL);
 
 }

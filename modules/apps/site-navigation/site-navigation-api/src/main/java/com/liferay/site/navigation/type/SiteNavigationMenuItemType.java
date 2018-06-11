@@ -14,11 +14,14 @@
 
 package com.liferay.site.navigation.type;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.xml.Element;
 import com.liferay.site.navigation.model.SiteNavigationMenuItem;
 
 import java.io.IOException;
@@ -36,6 +39,12 @@ import javax.servlet.http.HttpServletResponse;
  * @author Pavel Savinov
  */
 public interface SiteNavigationMenuItemType {
+
+	public default void exportData(
+		PortletDataContext portletDataContext,
+		Element siteNavigationMenuItemElement,
+		SiteNavigationMenuItem siteNavigationMenuItem) {
+	}
 
 	public default PortletURL getAddURL(
 		RenderRequest renderRequest, RenderResponse renderResponse) {
@@ -114,10 +123,24 @@ public interface SiteNavigationMenuItemType {
 			siteNavigationMenuItem, LanguageUtil.getLocale(languageId));
 	}
 
+	public default boolean hasPermission(
+			PermissionChecker permissionChecker,
+			SiteNavigationMenuItem siteNavigationMenuItem)
+		throws PortalException {
+
+		return true;
+	}
+
 	public default String iconURL(
 		SiteNavigationMenuItem siteNavigationMenuItem, String pathImage) {
 
 		return StringPool.BLANK;
+	}
+
+	public default void importData(
+		PortletDataContext portletDataContext,
+		SiteNavigationMenuItem siteNavigationMenuItem,
+		SiteNavigationMenuItem importedSiteNavigationMenuItem) {
 	}
 
 	public default boolean isBrowsable(

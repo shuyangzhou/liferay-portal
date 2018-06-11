@@ -1566,6 +1566,8 @@ public interface PropsKeys {
 
 	public static final String MODULE_FRAMEWORK_REGISTER_LIFERAY_SERVICES = "module.framework.register.liferay.services";
 
+	public static final String MODULE_FRAMEWORK_RESOLVER_REVISION_BATCH_SIZE = "module.framework.resolver.revision.batch.size";
+
 	public static final String MODULE_FRAMEWORK_RUNTIME_START_LEVEL = "module.framework.runtime.start.level";
 
 	public static final String MODULE_FRAMEWORK_SERVICES_IGNORED_INTERFACES = "module.framework.services.ignored.interfaces";
@@ -1967,6 +1969,10 @@ public interface PropsKeys {
 	public static final String PORTLET_CROSS_LAYOUT_INVOCATION_MODE = "portlet.cross.layout.invocation.mode";
 
 	public static final String PORTLET_CSS_ENABLED = "portlet.css.enabled";
+
+	public static final String PORTLET_DEPENDENCY_CSS_URN = "portlet.dependency.css.urn";
+
+	public static final String PORTLET_DEPENDENCY_JAVASCRIPT_URN = "portlet.dependency.javascript.urn";
 
 	public static final String PORTLET_DISPLAY_TEMPLATES_ERROR = "portlet.display.templates.error";
 
