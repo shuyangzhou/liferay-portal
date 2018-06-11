@@ -124,6 +124,8 @@ public class FragmentEntryPersistenceTest {
 
 		FragmentEntry newFragmentEntry = _persistence.create(pk);
 
+		newFragmentEntry.setUuid(RandomTestUtil.randomString());
+
 		newFragmentEntry.setGroupId(RandomTestUtil.nextLong());
 
 		newFragmentEntry.setCompanyId(RandomTestUtil.nextLong());
@@ -150,6 +152,8 @@ public class FragmentEntryPersistenceTest {
 
 		newFragmentEntry.setPreviewFileEntryId(RandomTestUtil.nextLong());
 
+		newFragmentEntry.setLastPublishDate(RandomTestUtil.nextDate());
+
 		newFragmentEntry.setStatus(RandomTestUtil.nextInt());
 
 		newFragmentEntry.setStatusByUserId(RandomTestUtil.nextLong());
@@ -162,6 +166,8 @@ public class FragmentEntryPersistenceTest {
 
 		FragmentEntry existingFragmentEntry = _persistence.findByPrimaryKey(newFragmentEntry.getPrimaryKey());
 
+		Assert.assertEquals(existingFragmentEntry.getUuid(),
+			newFragmentEntry.getUuid());
 		Assert.assertEquals(existingFragmentEntry.getFragmentEntryId(),
 			newFragmentEntry.getFragmentEntryId());
 		Assert.assertEquals(existingFragmentEntry.getGroupId(),
@@ -192,6 +198,9 @@ public class FragmentEntryPersistenceTest {
 			newFragmentEntry.getJs());
 		Assert.assertEquals(existingFragmentEntry.getPreviewFileEntryId(),
 			newFragmentEntry.getPreviewFileEntryId());
+		Assert.assertEquals(Time.getShortTimestamp(
+				existingFragmentEntry.getLastPublishDate()),
+			Time.getShortTimestamp(newFragmentEntry.getLastPublishDate()));
 		Assert.assertEquals(existingFragmentEntry.getStatus(),
 			newFragmentEntry.getStatus());
 		Assert.assertEquals(existingFragmentEntry.getStatusByUserId(),
@@ -201,6 +210,33 @@ public class FragmentEntryPersistenceTest {
 		Assert.assertEquals(Time.getShortTimestamp(
 				existingFragmentEntry.getStatusDate()),
 			Time.getShortTimestamp(newFragmentEntry.getStatusDate()));
+	}
+
+	@Test
+	public void testCountByUuid() throws Exception {
+		_persistence.countByUuid("");
+
+		_persistence.countByUuid("null");
+
+		_persistence.countByUuid((String)null);
+	}
+
+	@Test
+	public void testCountByUUID_G() throws Exception {
+		_persistence.countByUUID_G("", RandomTestUtil.nextLong());
+
+		_persistence.countByUUID_G("null", 0L);
+
+		_persistence.countByUUID_G((String)null, 0L);
+	}
+
+	@Test
+	public void testCountByUuid_C() throws Exception {
+		_persistence.countByUuid_C("", RandomTestUtil.nextLong());
+
+		_persistence.countByUuid_C("null", 0L);
+
+		_persistence.countByUuid_C((String)null, 0L);
 	}
 
 	@Test
@@ -285,13 +321,14 @@ public class FragmentEntryPersistenceTest {
 	}
 
 	protected OrderByComparator<FragmentEntry> getOrderByComparator() {
-		return OrderByComparatorFactoryUtil.create("FragmentEntry",
-			"fragmentEntryId", true, "groupId", true, "companyId", true,
+		return OrderByComparatorFactoryUtil.create("FragmentEntry", "uuid",
+			true, "fragmentEntryId", true, "groupId", true, "companyId", true,
 			"userId", true, "userName", true, "createDate", true,
 			"modifiedDate", true, "fragmentCollectionId", true,
 			"fragmentEntryKey", true, "name", true, "css", true, "html", true,
-			"js", true, "previewFileEntryId", true, "status", true,
-			"statusByUserId", true, "statusByUserName", true, "statusDate", true);
+			"js", true, "previewFileEntryId", true, "lastPublishDate", true,
+			"status", true, "statusByUserId", true, "statusByUserName", true,
+			"statusDate", true);
 	}
 
 	@Test
@@ -496,6 +533,13 @@ public class FragmentEntryPersistenceTest {
 
 		FragmentEntry existingFragmentEntry = _persistence.findByPrimaryKey(newFragmentEntry.getPrimaryKey());
 
+		Assert.assertTrue(Objects.equals(existingFragmentEntry.getUuid(),
+				ReflectionTestUtil.invoke(existingFragmentEntry,
+					"getOriginalUuid", new Class<?>[0])));
+		Assert.assertEquals(Long.valueOf(existingFragmentEntry.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(existingFragmentEntry,
+				"getOriginalGroupId", new Class<?>[0]));
+
 		Assert.assertEquals(Long.valueOf(existingFragmentEntry.getGroupId()),
 			ReflectionTestUtil.<Long>invoke(existingFragmentEntry,
 				"getOriginalGroupId", new Class<?>[0]));
@@ -509,6 +553,8 @@ public class FragmentEntryPersistenceTest {
 		long pk = RandomTestUtil.nextLong();
 
 		FragmentEntry fragmentEntry = _persistence.create(pk);
+
+		fragmentEntry.setUuid(RandomTestUtil.randomString());
 
 		fragmentEntry.setGroupId(RandomTestUtil.nextLong());
 
@@ -535,6 +581,8 @@ public class FragmentEntryPersistenceTest {
 		fragmentEntry.setJs(RandomTestUtil.randomString());
 
 		fragmentEntry.setPreviewFileEntryId(RandomTestUtil.nextLong());
+
+		fragmentEntry.setLastPublishDate(RandomTestUtil.nextDate());
 
 		fragmentEntry.setStatus(RandomTestUtil.nextInt());
 

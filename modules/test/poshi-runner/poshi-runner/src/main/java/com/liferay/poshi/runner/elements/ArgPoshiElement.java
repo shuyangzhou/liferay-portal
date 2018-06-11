@@ -36,22 +36,22 @@ public class ArgPoshiElement extends PoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(parentPoshiElement, readableSyntax)) {
-			return new ArgPoshiElement(parentPoshiElement, readableSyntax);
+		if (_isElementType(parentPoshiElement, poshiScript)) {
+			return new ArgPoshiElement(parentPoshiElement, poshiScript);
 		}
 
 		return null;
 	}
 
 	@Override
-	public void parseReadableSyntax(String readableSyntax) {
-		addAttribute("value", getSingleQuotedContent(readableSyntax));
+	public void parsePoshiScript(String poshiScript) {
+		addAttribute("value", getSingleQuotedContent(poshiScript));
 	}
 
 	@Override
-	public String toReadableSyntax() {
+	public String toPoshiScript() {
 		return "\'" + attributeValue("value") + "\'";
 	}
 
@@ -67,9 +67,9 @@ public class ArgPoshiElement extends PoshiElement {
 	}
 
 	protected ArgPoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+		super(_ELEMENT_NAME, parentPoshiElement, poshiScript);
 	}
 
 	@Override
@@ -78,15 +78,15 @@ public class ArgPoshiElement extends PoshiElement {
 	}
 
 	private boolean _isElementType(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
 		if (!(parentPoshiElement instanceof ExecutePoshiElement)) {
 			return false;
 		}
 
-		readableSyntax = readableSyntax.trim();
+		poshiScript = poshiScript.trim();
 
-		if (!readableSyntax.startsWith("\'")) {
+		if (!poshiScript.startsWith("\'")) {
 			return false;
 		}
 
