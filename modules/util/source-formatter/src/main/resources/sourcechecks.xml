@@ -103,6 +103,7 @@
 		<check name="JavaCollatorUtilCheck" />
 		<check name="JavaCombineLinesCheck" />
 		<check name="JavaConfigurationAdminCheck" />
+		<check name="JavaConfigurationCategoryCheck" />
 		<check name="JavaConstructorParametersCheck" />
 		<check name="JavaConstructorSuperCallCheck" />
 		<check name="JavaDeprecatedJavadocCheck" />
@@ -126,6 +127,7 @@
 		<check name="JavaLocalSensitiveComparisonCheck" />
 		<check name="JavaLongLinesCheck" />
 		<check name="JavaMetaOCDIdCheck" />
+		<check name="JavaModifiedServiceMethodCheck" />
 		<check name="JavaPackagePathCheck" />
 		<check name="JavaParameterAnnotationsCheck" />
 		<check name="JavaProcessCallableCheck" />
@@ -209,6 +211,7 @@
 		<check name="JavaLogStringBundlerCheck" />
 		<check name="JavaMultiPlusConcatCheck" />
 		<check name="JavaProviderTypeAnnotationCheck" />
+		<check name="JavaServiceObjectCheck" />
 		<check name="JavaServiceUtilCheck" />
 		<check name="JavaStringBundlerInitialCapacityCheck" />
 		<check name="JavaSwitchCheck" />
@@ -311,6 +314,7 @@
 		<check name="PropertiesCommentsCheck" />
 		<check name="PropertiesDefinitionKeysCheck" />
 		<check name="PropertiesDependenciesFileCheck" />
+		<check name="PropertiesEmptyLinesCheck" />
 		<check name="PropertiesImportedFilesContentCheck" />
 		<check name="PropertiesLanguageKeysCheck" />
 		<check name="PropertiesLiferayPluginPackageFileCheck" />
@@ -365,6 +369,9 @@
 		<check name="XMLResourceActionsFileCheck" />
 		<check name="XMLServiceEntityNameCheck" />
 		<check name="XMLServiceFileCheck" />
+		<check name="XMLServiceReferenceCheck">
+			<property name="enabled" value="false" />
+		</check>
 		<check name="XMLSolrSchemaFileCheck" />
 		<check name="XMLSuppressionsFileCheck" />
 		<check name="XMLTagAttributesCheck" />

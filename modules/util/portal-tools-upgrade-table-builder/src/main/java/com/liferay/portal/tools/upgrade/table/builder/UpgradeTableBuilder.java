@@ -16,6 +16,7 @@ package com.liferay.portal.tools.upgrade.table.builder;
 
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.tools.ArgumentsUtil;
 
@@ -145,7 +146,7 @@ public class UpgradeTableBuilder {
 			_upgradeTableDirName, upgradeFileVersion, upgradeFileName);
 
 		if (Files.notExists(upgradeFilePath)) {
-			if (!upgradeFileVersion.equals(_getSchemaVersion())) {
+			if (!_isRelevantUpgradePackage(upgradeFileVersion)) {
 				return;
 			}
 
@@ -159,6 +160,7 @@ public class UpgradeTableBuilder {
 		String content = _read(path);
 
 		String packagePath = _getPackagePath(content);
+
 		String className = fileName.substring(0, fileName.length() - 5);
 
 		String upgradeFileContent = _read(upgradeFilePath);
@@ -245,7 +247,7 @@ public class UpgradeTableBuilder {
 			int y = content.indexOf("*", x + 1);
 
 			if (y != -1) {
-				return content.substring(x + 10, y).trim();
+				return StringUtil.trim(content.substring(x + 10, y));
 			}
 		}
 
@@ -420,10 +422,6 @@ public class UpgradeTableBuilder {
 	}
 
 	private String _getSchemaVersion() throws IOException {
-		if (!_osgiModule) {
-			return _releaseInfoVersion;
-		}
-
 		Properties properties = new Properties();
 
 		Path path = Paths.get(_baseDirName, "bnd.bnd");
@@ -443,6 +441,25 @@ public class UpgradeTableBuilder {
 		}
 
 		return paths.get(0);
+	}
+
+	private boolean _isRelevantUpgradePackage(String upgradeFileVersion)
+		throws IOException {
+
+		String currentVersion = null;
+
+		if (_osgiModule) {
+			currentVersion = _getSchemaVersion();
+		}
+		else {
+			currentVersion = _releaseInfoVersion.substring(0, 3);
+		}
+
+		if (!upgradeFileVersion.startsWith(currentVersion)) {
+			return false;
+		}
+
+		return true;
 	}
 
 	private String _read(Path path) throws IOException {
