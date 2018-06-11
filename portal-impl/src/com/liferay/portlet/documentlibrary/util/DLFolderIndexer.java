@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
-import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -49,8 +48,11 @@ import javax.portlet.PortletResponse;
 
 /**
  * @author Alexander Chow
+ *
+ * @deprecated As of 7.0.0, replaced by {@link
+ *             com.liferay.document.library.internal.search.DLFolderIndexer}
  */
-@OSGiBeanProperties
+@Deprecated
 public class DLFolderIndexer
 	extends BaseIndexer<DLFolder> implements FolderIndexer {
 
