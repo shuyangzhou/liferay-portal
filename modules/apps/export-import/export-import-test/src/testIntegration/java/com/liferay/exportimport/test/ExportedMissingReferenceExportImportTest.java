@@ -45,7 +45,6 @@ import com.liferay.portal.kernel.zip.ZipReader;
 import com.liferay.portal.kernel.zip.ZipReaderFactoryUtil;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portlet.PortletBagImpl;
 import com.liferay.registry.collections.ServiceTrackerCollections;
 import com.liferay.registry.collections.ServiceTrackerList;
 
@@ -251,11 +250,11 @@ public class ExportedMissingReferenceExportImportTest
 			List<PortletDataHandler> portletDataHandlerInstances)
 		throws Exception {
 
+		PortletBag portletBag = PortletBagPool.get(portletId);
+
 		Field portletDataHandlerInstancesField =
 			ReflectionUtil.getDeclaredField(
-				PortletBagImpl.class, "_portletDataHandlerInstances");
-
-		PortletBag portletBag = PortletBagPool.get(portletId);
+				portletBag.getClass(), "_portletDataHandlerInstances");
 
 		List<PortletDataHandler> oldDataHandlerInstances =
 			portletBag.getPortletDataHandlerInstances();

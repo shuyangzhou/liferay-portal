@@ -55,7 +55,7 @@
 </tr>
 <tr>
 	<td>DOWNLOAD</td>
-	<td>//a[contains(@class,'taglib-icon')]/span[contains(@class,'taglib-text') and contains(.,'Download')]</td>
+	<td>//div[contains(@class,'btn-group-item')]/a[contains(@class,'btn-primary') and contains(.,'Download')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -186,6 +186,11 @@
 <tr>
 	<td>WEB_CONTENT_ARTICLE</td>
 	<td>//a[contains(@data-assettype,'Web Content Article') and contains(.,'${key_webContentTitle}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>WIKI_EDIT</td>
+	<td>//a[contains(@id,'Wiki') and contains(.,'Edit')]</td>
 	<td></td>
 </tr>
 </tbody>

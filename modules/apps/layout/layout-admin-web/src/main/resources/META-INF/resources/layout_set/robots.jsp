@@ -21,7 +21,7 @@ LayoutSet layoutSet = layoutsAdminDisplayContext.getSelLayoutSet();
 
 String virtualHostName = PortalUtil.getVirtualHostname(layoutSet);
 
-String defaultRobots = RobotsUtil.getRobots(layoutsAdminDisplayContext.getSelLayoutSet());
+String defaultRobots = RobotsUtil.getRobots(layoutsAdminDisplayContext.getSelLayoutSet(), request.isSecure());
 
 String robots = ParamUtil.getString(request, "robots", defaultRobots);
 %>

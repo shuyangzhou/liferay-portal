@@ -68,7 +68,6 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
-import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -99,11 +98,11 @@ import javax.portlet.PortletResponse;
  * @author Brian Wing Shun Chan
  * @author Raymond Augé
  * @author Alexander Chow
+ *
+ * @deprecated As of 7.0.0, replaced by {@link
+ *             com.liferay.document.library.internal.search.DLFileEntryIndexer}
  */
-@OSGiBeanProperties(
-	property = "related.entry.indexer.class.name=com.liferay.document.library.kernel.model.DLFileEntry",
-	service = {Indexer.class, RelatedEntryIndexer.class}
-)
+@Deprecated
 public class DLFileEntryIndexer
 	extends BaseIndexer<DLFileEntry> implements RelatedEntryIndexer {
 

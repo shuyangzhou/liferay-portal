@@ -110,6 +110,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1966,6 +1967,22 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		portletModel.setHeaderPortletJavaScript(headerPortletJavaScriptList);
 
+		List<String> headerRequestAttributePrefixes = new ArrayList<>();
+
+		for (Element headerRequestAttributePrefixElement :
+				portletElement.elements("header-request-attribute-prefix")) {
+
+			headerRequestAttributePrefixes.add(
+				headerRequestAttributePrefixElement.getText());
+		}
+
+		portletModel.setHeaderRequestAttributePrefixes(
+			headerRequestAttributePrefixes);
+		portletModel.setHeaderTimeout(
+			GetterUtil.getInteger(
+				portletElement.elementText("header-timeout"),
+				portletModel.getHeaderTimeout()));
+
 		List<String> footerPortalCssList = new ArrayList<>();
 
 		for (Element footerPortalCssElement :
@@ -2595,9 +2612,13 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 				portletsMap, validCustomPortletModes);
 		}
 
+		List<PortletFilter> portletFilters = new ArrayList<>();
+
 		for (Element filterElement : rootElement.elements("filter")) {
 			String filterName = filterElement.elementText("filter-name");
 			String filterClass = filterElement.elementText("filter-class");
+			int ordinal = GetterUtil.getInteger(
+				filterElement.elementText("ordinal"));
 
 			Set<String> lifecycles = new LinkedHashSet<>();
 
@@ -2617,9 +2638,16 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 					initParamElement.elementText("value"));
 			}
 
-			PortletFilter portletFilter = new PortletFilterImpl(
-				filterName, filterClass, lifecycles, initParams, portletApp);
+			portletFilters.add(
+				new PortletFilterImpl(
+					filterName, filterClass, ordinal, lifecycles, initParams,
+					portletApp));
+		}
 
+		Collections.sort(
+			portletFilters, Comparator.comparingInt(PortletFilter::getOrdinal));
+
+		for (PortletFilter portletFilter : portletFilters) {
 			portletApp.addPortletFilter(portletFilter);
 		}
 
@@ -2663,13 +2691,23 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			}
 		}
 
+		List<PortletURLListener> portletURLListeners = new ArrayList<>();
+
 		for (Element listenerElement : rootElement.elements("listener")) {
 			String listenerClass = listenerElement.elementText(
 				"listener-class");
+			int ordinal = GetterUtil.getInteger(
+				listenerElement.elementText("ordinal"));
 
-			PortletURLListener portletURLListener = new PortletURLListenerImpl(
-				listenerClass, portletApp);
+			portletURLListeners.add(
+				new PortletURLListenerImpl(listenerClass, ordinal, portletApp));
+		}
 
+		Collections.sort(
+			portletURLListeners,
+			Comparator.comparingInt(PortletURLListener::getOrdinal));
+
+		for (PortletURLListener portletURLListener : portletURLListeners) {
 			portletApp.addPortletURLListener(portletURLListener);
 		}
 
