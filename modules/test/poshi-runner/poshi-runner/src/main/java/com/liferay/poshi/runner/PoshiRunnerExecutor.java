@@ -596,7 +596,7 @@ public class PoshiRunnerExecutor {
 
 		PoshiRunnerStackTraceUtil.setCurrentElement(commandElement);
 
-		PoshiRunnerVariablesUtil.pushCommandMap(true);
+		PoshiRunnerVariablesUtil.pushCommandMap();
 
 		parseElement(commandElement);
 

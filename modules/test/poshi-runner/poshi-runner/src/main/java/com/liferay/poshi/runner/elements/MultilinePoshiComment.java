@@ -33,17 +33,17 @@ public class MultilinePoshiComment extends PoshiComment {
 	}
 
 	@Override
-	public PoshiComment clone(String readableSyntax) {
-		if (isReadableSyntaxComment(readableSyntax)) {
-			return new MultilinePoshiComment(readableSyntax);
+	public PoshiComment clone(String poshiScript) {
+		if (isPoshiScriptComment(poshiScript)) {
+			return new MultilinePoshiComment(poshiScript);
 		}
 
 		return null;
 	}
 
 	@Override
-	public boolean isReadableSyntaxComment(String readableSyntax) {
-		if (readableSyntax.endsWith("*/") && readableSyntax.startsWith("/*")) {
+	public boolean isPoshiScriptComment(String poshiScript) {
+		if (poshiScript.endsWith("*/") && poshiScript.startsWith("/*")) {
 			return true;
 		}
 
@@ -51,14 +51,14 @@ public class MultilinePoshiComment extends PoshiComment {
 	}
 
 	@Override
-	public void parseReadableSyntax(String readableSyntax) {
-		String text = readableSyntax.substring(2, readableSyntax.length() - 2);
+	public void parsePoshiScript(String poshiScript) {
+		String text = poshiScript.substring(2, poshiScript.length() - 2);
 
 		setText(text);
 	}
 
 	@Override
-	public String toReadableSyntax() {
+	public String toPoshiScript() {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("\n\t/*");
@@ -75,8 +75,8 @@ public class MultilinePoshiComment extends PoshiComment {
 		super(comment);
 	}
 
-	protected MultilinePoshiComment(String readableSyntax) {
-		super(readableSyntax);
+	protected MultilinePoshiComment(String poshiScript) {
+		super(poshiScript);
 	}
 
 }
