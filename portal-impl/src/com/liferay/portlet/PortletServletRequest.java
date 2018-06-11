@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portlet.internal.PortletRequestDispatcherImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -285,7 +286,9 @@ public class PortletServletRequest extends HttpServletRequestWrapper {
 			return clientDataRequest.getMethod();
 		}
 
-		if (_lifecycle.equals(PortletRequest.RENDER_PHASE)) {
+		if (_lifecycle.equals(PortletRequest.HEADER_PHASE) ||
+			_lifecycle.equals(PortletRequest.RENDER_PHASE)) {
+
 			return HttpMethods.GET;
 		}
 
