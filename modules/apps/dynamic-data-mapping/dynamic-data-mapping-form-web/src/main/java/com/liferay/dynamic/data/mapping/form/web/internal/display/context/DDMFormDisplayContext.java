@@ -14,6 +14,7 @@
 
 package com.liferay.dynamic.data.mapping.form.web.internal.display.context;
 
+import com.liferay.dynamic.data.mapping.constants.DDMActionKeys;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderer;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingContext;
 import com.liferay.dynamic.data.mapping.form.values.factory.DDMFormValuesFactory;
@@ -31,6 +32,7 @@ import com.liferay.dynamic.data.mapping.model.DDMFormLayoutRow;
 import com.liferay.dynamic.data.mapping.model.DDMFormSuccessPageSettings;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureVersion;
+import com.liferay.dynamic.data.mapping.service.DDMFormInstanceLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordVersionLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceService;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceVersionLocalService;
@@ -80,6 +82,7 @@ public class DDMFormDisplayContext {
 
 	public DDMFormDisplayContext(
 			RenderRequest renderRequest, RenderResponse renderResponse,
+			DDMFormInstanceLocalService ddmFormInstanceLocalService,
 			DDMFormInstanceRecordVersionLocalService
 				ddmFormInstanceRecordVersionLocalService,
 			DDMFormInstanceService ddmFormInstanceService,
@@ -95,6 +98,7 @@ public class DDMFormDisplayContext {
 
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
+		_ddmFormInstanceLocalService = ddmFormInstanceLocalService;
 		_ddmFormInstanceRecordVersionLocalService =
 			ddmFormInstanceRecordVersionLocalService;
 		_ddmFormInstanceService = ddmFormInstanceService;
@@ -113,7 +117,9 @@ public class DDMFormDisplayContext {
 			return;
 		}
 
-		DDMFormInstance ddmFormInstance = getFormInstance();
+		DDMFormInstance ddmFormInstance =
+			_ddmFormInstanceLocalService.fetchDDMFormInstance(
+				getFormInstanceId());
 
 		if ((ddmFormInstance == null) || !hasViewPermission()) {
 			renderRequest.setAttribute(
@@ -122,13 +128,20 @@ public class DDMFormDisplayContext {
 	}
 
 	public String[] getAvailableLanguageIds() throws PortalException {
+		ThemeDisplay themeDisplay = getThemeDisplay();
+
+		Set<Locale> siteAvailablesLocales = LanguageUtil.getAvailableLocales(
+			themeDisplay.getSiteGroupId());
+
 		DDMForm ddmForm = getDDMForm();
 
 		Set<Locale> availableLocales = ddmForm.getAvailableLocales();
 
 		Stream<Locale> localeStreams = availableLocales.stream();
 
-		return localeStreams.map(
+		return localeStreams.filter(
+			locale -> siteAvailablesLocales.contains(locale)
+		).map(
 			locale -> LanguageUtil.getLanguageId(locale)
 		).toArray(
 			String[]::new
@@ -180,6 +193,10 @@ public class DDMFormDisplayContext {
 			ddmFormInstance, ddmFormRenderingContext.getLocale());
 
 		ddmFormRenderingContext.setSubmitLabel(submitLabel);
+
+		if (!hasAddFormInstanceRecordPermission()) {
+			ddmFormRenderingContext.setReadOnly(true);
+		}
 
 		return _ddmFormRenderer.render(
 			ddmForm, ddmFormLayout, ddmFormRenderingContext);
@@ -244,7 +261,28 @@ public class DDMFormDisplayContext {
 		return ddmFormInstanceSettings.redirectURL();
 	}
 
-	public boolean isAutosaveEnabled() {
+	public boolean hasAddFormInstanceRecordPermission() throws PortalException {
+		if (_hasAddFormInstanceRecordPermission != null) {
+			return _hasAddFormInstanceRecordPermission;
+		}
+
+		_hasAddFormInstanceRecordPermission = true;
+
+		DDMFormInstance ddmFormInstance = getFormInstance();
+
+		if (ddmFormInstance != null) {
+			ThemeDisplay themeDisplay = getThemeDisplay();
+
+			_hasAddFormInstanceRecordPermission =
+				DDMFormInstancePermission.contains(
+					themeDisplay.getPermissionChecker(), ddmFormInstance,
+					DDMActionKeys.ADD_FORM_INSTANCE_RECORD);
+		}
+
+		return _hasAddFormInstanceRecordPermission;
+	}
+
+	public boolean isAutosaveEnabled() throws PortalException {
 		if (_autosaveEnabled != null) {
 			return _autosaveEnabled;
 		}
@@ -253,7 +291,12 @@ public class DDMFormDisplayContext {
 			_autosaveEnabled = Boolean.FALSE;
 		}
 		else {
-			_autosaveEnabled = Boolean.TRUE;
+			DDMFormInstance formInstance = getFormInstance();
+
+			DDMFormInstanceSettings formInstanceSettings =
+				formInstance.getSettingsModel();
+
+			_autosaveEnabled = formInstanceSettings.autosaveEnabled();
 		}
 
 		return _autosaveEnabled;
@@ -647,6 +690,7 @@ public class DDMFormDisplayContext {
 	private final String _containerId;
 	private DDMFormInstance _ddmFormInstance;
 	private long _ddmFormInstanceId;
+	private final DDMFormInstanceLocalService _ddmFormInstanceLocalService;
 	private final DDMFormInstanceRecordVersionLocalService
 		_ddmFormInstanceRecordVersionLocalService;
 	private final DDMFormInstanceService _ddmFormInstanceService;
@@ -656,6 +700,7 @@ public class DDMFormDisplayContext {
 	private final DDMFormValuesFactory _ddmFormValuesFactory;
 	private final DDMFormValuesMerger _ddmFormValuesMerger;
 	private final GroupLocalService _groupLocalService;
+	private Boolean _hasAddFormInstanceRecordPermission;
 	private Boolean _hasViewPermission;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;

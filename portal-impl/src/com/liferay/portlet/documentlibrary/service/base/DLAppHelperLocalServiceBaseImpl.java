@@ -28,14 +28,10 @@ import com.liferay.asset.kernel.service.persistence.AssetTagPersistence;
 import com.liferay.document.library.kernel.service.DLAppHelperLocalService;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryFinder;
 import com.liferay.document.library.kernel.service.persistence.DLFileEntryPersistence;
-import com.liferay.document.library.kernel.service.persistence.DLFileEntryTypeFinder;
-import com.liferay.document.library.kernel.service.persistence.DLFileEntryTypePersistence;
 import com.liferay.document.library.kernel.service.persistence.DLFileShortcutPersistence;
 import com.liferay.document.library.kernel.service.persistence.DLFileVersionPersistence;
 import com.liferay.document.library.kernel.service.persistence.DLFolderFinder;
 import com.liferay.document.library.kernel.service.persistence.DLFolderPersistence;
-
-import com.liferay.expando.kernel.service.persistence.ExpandoValuePersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -46,21 +42,10 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
-import com.liferay.portal.kernel.service.persistence.GroupFinder;
-import com.liferay.portal.kernel.service.persistence.GroupPersistence;
-import com.liferay.portal.kernel.service.persistence.ImagePersistence;
-import com.liferay.portal.kernel.service.persistence.LayoutFinder;
-import com.liferay.portal.kernel.service.persistence.LayoutPersistence;
-import com.liferay.portal.kernel.service.persistence.PortletPreferencesFinder;
-import com.liferay.portal.kernel.service.persistence.PortletPreferencesPersistence;
-import com.liferay.portal.kernel.service.persistence.RepositoryPersistence;
-import com.liferay.portal.kernel.service.persistence.WebDAVPropsPersistence;
 import com.liferay.portal.kernel.service.persistence.WorkflowInstanceLinkPersistence;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import com.liferay.ratings.kernel.service.persistence.RatingsEntryFinder;
-import com.liferay.ratings.kernel.service.persistence.RatingsEntryPersistence;
 import com.liferay.ratings.kernel.service.persistence.RatingsStatsFinder;
 import com.liferay.ratings.kernel.service.persistence.RatingsStatsPersistence;
 
@@ -165,286 +150,6 @@ public abstract class DLAppHelperLocalServiceBaseImpl
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
 		this.classNamePersistence = classNamePersistence;
-	}
-
-	/**
-	 * Returns the group local service.
-	 *
-	 * @return the group local service
-	 */
-	public com.liferay.portal.kernel.service.GroupLocalService getGroupLocalService() {
-		return groupLocalService;
-	}
-
-	/**
-	 * Sets the group local service.
-	 *
-	 * @param groupLocalService the group local service
-	 */
-	public void setGroupLocalService(
-		com.liferay.portal.kernel.service.GroupLocalService groupLocalService) {
-		this.groupLocalService = groupLocalService;
-	}
-
-	/**
-	 * Returns the group persistence.
-	 *
-	 * @return the group persistence
-	 */
-	public GroupPersistence getGroupPersistence() {
-		return groupPersistence;
-	}
-
-	/**
-	 * Sets the group persistence.
-	 *
-	 * @param groupPersistence the group persistence
-	 */
-	public void setGroupPersistence(GroupPersistence groupPersistence) {
-		this.groupPersistence = groupPersistence;
-	}
-
-	/**
-	 * Returns the group finder.
-	 *
-	 * @return the group finder
-	 */
-	public GroupFinder getGroupFinder() {
-		return groupFinder;
-	}
-
-	/**
-	 * Sets the group finder.
-	 *
-	 * @param groupFinder the group finder
-	 */
-	public void setGroupFinder(GroupFinder groupFinder) {
-		this.groupFinder = groupFinder;
-	}
-
-	/**
-	 * Returns the image local service.
-	 *
-	 * @return the image local service
-	 */
-	public com.liferay.portal.kernel.service.ImageLocalService getImageLocalService() {
-		return imageLocalService;
-	}
-
-	/**
-	 * Sets the image local service.
-	 *
-	 * @param imageLocalService the image local service
-	 */
-	public void setImageLocalService(
-		com.liferay.portal.kernel.service.ImageLocalService imageLocalService) {
-		this.imageLocalService = imageLocalService;
-	}
-
-	/**
-	 * Returns the image persistence.
-	 *
-	 * @return the image persistence
-	 */
-	public ImagePersistence getImagePersistence() {
-		return imagePersistence;
-	}
-
-	/**
-	 * Sets the image persistence.
-	 *
-	 * @param imagePersistence the image persistence
-	 */
-	public void setImagePersistence(ImagePersistence imagePersistence) {
-		this.imagePersistence = imagePersistence;
-	}
-
-	/**
-	 * Returns the layout local service.
-	 *
-	 * @return the layout local service
-	 */
-	public com.liferay.portal.kernel.service.LayoutLocalService getLayoutLocalService() {
-		return layoutLocalService;
-	}
-
-	/**
-	 * Sets the layout local service.
-	 *
-	 * @param layoutLocalService the layout local service
-	 */
-	public void setLayoutLocalService(
-		com.liferay.portal.kernel.service.LayoutLocalService layoutLocalService) {
-		this.layoutLocalService = layoutLocalService;
-	}
-
-	/**
-	 * Returns the layout persistence.
-	 *
-	 * @return the layout persistence
-	 */
-	public LayoutPersistence getLayoutPersistence() {
-		return layoutPersistence;
-	}
-
-	/**
-	 * Sets the layout persistence.
-	 *
-	 * @param layoutPersistence the layout persistence
-	 */
-	public void setLayoutPersistence(LayoutPersistence layoutPersistence) {
-		this.layoutPersistence = layoutPersistence;
-	}
-
-	/**
-	 * Returns the layout finder.
-	 *
-	 * @return the layout finder
-	 */
-	public LayoutFinder getLayoutFinder() {
-		return layoutFinder;
-	}
-
-	/**
-	 * Sets the layout finder.
-	 *
-	 * @param layoutFinder the layout finder
-	 */
-	public void setLayoutFinder(LayoutFinder layoutFinder) {
-		this.layoutFinder = layoutFinder;
-	}
-
-	/**
-	 * Returns the portlet preferences local service.
-	 *
-	 * @return the portlet preferences local service
-	 */
-	public com.liferay.portal.kernel.service.PortletPreferencesLocalService getPortletPreferencesLocalService() {
-		return portletPreferencesLocalService;
-	}
-
-	/**
-	 * Sets the portlet preferences local service.
-	 *
-	 * @param portletPreferencesLocalService the portlet preferences local service
-	 */
-	public void setPortletPreferencesLocalService(
-		com.liferay.portal.kernel.service.PortletPreferencesLocalService portletPreferencesLocalService) {
-		this.portletPreferencesLocalService = portletPreferencesLocalService;
-	}
-
-	/**
-	 * Returns the portlet preferences persistence.
-	 *
-	 * @return the portlet preferences persistence
-	 */
-	public PortletPreferencesPersistence getPortletPreferencesPersistence() {
-		return portletPreferencesPersistence;
-	}
-
-	/**
-	 * Sets the portlet preferences persistence.
-	 *
-	 * @param portletPreferencesPersistence the portlet preferences persistence
-	 */
-	public void setPortletPreferencesPersistence(
-		PortletPreferencesPersistence portletPreferencesPersistence) {
-		this.portletPreferencesPersistence = portletPreferencesPersistence;
-	}
-
-	/**
-	 * Returns the portlet preferences finder.
-	 *
-	 * @return the portlet preferences finder
-	 */
-	public PortletPreferencesFinder getPortletPreferencesFinder() {
-		return portletPreferencesFinder;
-	}
-
-	/**
-	 * Sets the portlet preferences finder.
-	 *
-	 * @param portletPreferencesFinder the portlet preferences finder
-	 */
-	public void setPortletPreferencesFinder(
-		PortletPreferencesFinder portletPreferencesFinder) {
-		this.portletPreferencesFinder = portletPreferencesFinder;
-	}
-
-	/**
-	 * Returns the repository local service.
-	 *
-	 * @return the repository local service
-	 */
-	public com.liferay.portal.kernel.service.RepositoryLocalService getRepositoryLocalService() {
-		return repositoryLocalService;
-	}
-
-	/**
-	 * Sets the repository local service.
-	 *
-	 * @param repositoryLocalService the repository local service
-	 */
-	public void setRepositoryLocalService(
-		com.liferay.portal.kernel.service.RepositoryLocalService repositoryLocalService) {
-		this.repositoryLocalService = repositoryLocalService;
-	}
-
-	/**
-	 * Returns the repository persistence.
-	 *
-	 * @return the repository persistence
-	 */
-	public RepositoryPersistence getRepositoryPersistence() {
-		return repositoryPersistence;
-	}
-
-	/**
-	 * Sets the repository persistence.
-	 *
-	 * @param repositoryPersistence the repository persistence
-	 */
-	public void setRepositoryPersistence(
-		RepositoryPersistence repositoryPersistence) {
-		this.repositoryPersistence = repositoryPersistence;
-	}
-
-	/**
-	 * Returns the web dav props local service.
-	 *
-	 * @return the web dav props local service
-	 */
-	public com.liferay.portal.kernel.service.WebDAVPropsLocalService getWebDAVPropsLocalService() {
-		return webDAVPropsLocalService;
-	}
-
-	/**
-	 * Sets the web dav props local service.
-	 *
-	 * @param webDAVPropsLocalService the web dav props local service
-	 */
-	public void setWebDAVPropsLocalService(
-		com.liferay.portal.kernel.service.WebDAVPropsLocalService webDAVPropsLocalService) {
-		this.webDAVPropsLocalService = webDAVPropsLocalService;
-	}
-
-	/**
-	 * Returns the web dav props persistence.
-	 *
-	 * @return the web dav props persistence
-	 */
-	public WebDAVPropsPersistence getWebDAVPropsPersistence() {
-		return webDAVPropsPersistence;
-	}
-
-	/**
-	 * Sets the web dav props persistence.
-	 *
-	 * @param webDAVPropsPersistence the web dav props persistence
-	 */
-	public void setWebDAVPropsPersistence(
-		WebDAVPropsPersistence webDAVPropsPersistence) {
-		this.webDAVPropsPersistence = webDAVPropsPersistence;
 	}
 
 	/**
@@ -728,100 +433,6 @@ public abstract class DLAppHelperLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the expando value local service.
-	 *
-	 * @return the expando value local service
-	 */
-	public com.liferay.expando.kernel.service.ExpandoValueLocalService getExpandoValueLocalService() {
-		return expandoValueLocalService;
-	}
-
-	/**
-	 * Sets the expando value local service.
-	 *
-	 * @param expandoValueLocalService the expando value local service
-	 */
-	public void setExpandoValueLocalService(
-		com.liferay.expando.kernel.service.ExpandoValueLocalService expandoValueLocalService) {
-		this.expandoValueLocalService = expandoValueLocalService;
-	}
-
-	/**
-	 * Returns the expando value persistence.
-	 *
-	 * @return the expando value persistence
-	 */
-	public ExpandoValuePersistence getExpandoValuePersistence() {
-		return expandoValuePersistence;
-	}
-
-	/**
-	 * Sets the expando value persistence.
-	 *
-	 * @param expandoValuePersistence the expando value persistence
-	 */
-	public void setExpandoValuePersistence(
-		ExpandoValuePersistence expandoValuePersistence) {
-		this.expandoValuePersistence = expandoValuePersistence;
-	}
-
-	/**
-	 * Returns the ratings entry local service.
-	 *
-	 * @return the ratings entry local service
-	 */
-	public com.liferay.ratings.kernel.service.RatingsEntryLocalService getRatingsEntryLocalService() {
-		return ratingsEntryLocalService;
-	}
-
-	/**
-	 * Sets the ratings entry local service.
-	 *
-	 * @param ratingsEntryLocalService the ratings entry local service
-	 */
-	public void setRatingsEntryLocalService(
-		com.liferay.ratings.kernel.service.RatingsEntryLocalService ratingsEntryLocalService) {
-		this.ratingsEntryLocalService = ratingsEntryLocalService;
-	}
-
-	/**
-	 * Returns the ratings entry persistence.
-	 *
-	 * @return the ratings entry persistence
-	 */
-	public RatingsEntryPersistence getRatingsEntryPersistence() {
-		return ratingsEntryPersistence;
-	}
-
-	/**
-	 * Sets the ratings entry persistence.
-	 *
-	 * @param ratingsEntryPersistence the ratings entry persistence
-	 */
-	public void setRatingsEntryPersistence(
-		RatingsEntryPersistence ratingsEntryPersistence) {
-		this.ratingsEntryPersistence = ratingsEntryPersistence;
-	}
-
-	/**
-	 * Returns the ratings entry finder.
-	 *
-	 * @return the ratings entry finder
-	 */
-	public RatingsEntryFinder getRatingsEntryFinder() {
-		return ratingsEntryFinder;
-	}
-
-	/**
-	 * Sets the ratings entry finder.
-	 *
-	 * @param ratingsEntryFinder the ratings entry finder
-	 */
-	public void setRatingsEntryFinder(RatingsEntryFinder ratingsEntryFinder) {
-		this.ratingsEntryFinder = ratingsEntryFinder;
-	}
-
-	/**
 	 * Returns the ratings stats local service.
 	 *
 	 * @return the ratings stats local service
@@ -1014,63 +625,6 @@ public abstract class DLAppHelperLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the document library file entry type local service.
-	 *
-	 * @return the document library file entry type local service
-	 */
-	public com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService getDLFileEntryTypeLocalService() {
-		return dlFileEntryTypeLocalService;
-	}
-
-	/**
-	 * Sets the document library file entry type local service.
-	 *
-	 * @param dlFileEntryTypeLocalService the document library file entry type local service
-	 */
-	public void setDLFileEntryTypeLocalService(
-		com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService dlFileEntryTypeLocalService) {
-		this.dlFileEntryTypeLocalService = dlFileEntryTypeLocalService;
-	}
-
-	/**
-	 * Returns the document library file entry type persistence.
-	 *
-	 * @return the document library file entry type persistence
-	 */
-	public DLFileEntryTypePersistence getDLFileEntryTypePersistence() {
-		return dlFileEntryTypePersistence;
-	}
-
-	/**
-	 * Sets the document library file entry type persistence.
-	 *
-	 * @param dlFileEntryTypePersistence the document library file entry type persistence
-	 */
-	public void setDLFileEntryTypePersistence(
-		DLFileEntryTypePersistence dlFileEntryTypePersistence) {
-		this.dlFileEntryTypePersistence = dlFileEntryTypePersistence;
-	}
-
-	/**
-	 * Returns the document library file entry type finder.
-	 *
-	 * @return the document library file entry type finder
-	 */
-	public DLFileEntryTypeFinder getDLFileEntryTypeFinder() {
-		return dlFileEntryTypeFinder;
-	}
-
-	/**
-	 * Sets the document library file entry type finder.
-	 *
-	 * @param dlFileEntryTypeFinder the document library file entry type finder
-	 */
-	public void setDLFileEntryTypeFinder(
-		DLFileEntryTypeFinder dlFileEntryTypeFinder) {
-		this.dlFileEntryTypeFinder = dlFileEntryTypeFinder;
-	}
-
-	/**
 	 * Returns the document library file shortcut local service.
 	 *
 	 * @return the document library file shortcut local service
@@ -1249,36 +803,6 @@ public abstract class DLAppHelperLocalServiceBaseImpl
 	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
 	@BeanReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-	@BeanReference(type = com.liferay.portal.kernel.service.GroupLocalService.class)
-	protected com.liferay.portal.kernel.service.GroupLocalService groupLocalService;
-	@BeanReference(type = GroupPersistence.class)
-	protected GroupPersistence groupPersistence;
-	@BeanReference(type = GroupFinder.class)
-	protected GroupFinder groupFinder;
-	@BeanReference(type = com.liferay.portal.kernel.service.ImageLocalService.class)
-	protected com.liferay.portal.kernel.service.ImageLocalService imageLocalService;
-	@BeanReference(type = ImagePersistence.class)
-	protected ImagePersistence imagePersistence;
-	@BeanReference(type = com.liferay.portal.kernel.service.LayoutLocalService.class)
-	protected com.liferay.portal.kernel.service.LayoutLocalService layoutLocalService;
-	@BeanReference(type = LayoutPersistence.class)
-	protected LayoutPersistence layoutPersistence;
-	@BeanReference(type = LayoutFinder.class)
-	protected LayoutFinder layoutFinder;
-	@BeanReference(type = com.liferay.portal.kernel.service.PortletPreferencesLocalService.class)
-	protected com.liferay.portal.kernel.service.PortletPreferencesLocalService portletPreferencesLocalService;
-	@BeanReference(type = PortletPreferencesPersistence.class)
-	protected PortletPreferencesPersistence portletPreferencesPersistence;
-	@BeanReference(type = PortletPreferencesFinder.class)
-	protected PortletPreferencesFinder portletPreferencesFinder;
-	@BeanReference(type = com.liferay.portal.kernel.service.RepositoryLocalService.class)
-	protected com.liferay.portal.kernel.service.RepositoryLocalService repositoryLocalService;
-	@BeanReference(type = RepositoryPersistence.class)
-	protected RepositoryPersistence repositoryPersistence;
-	@BeanReference(type = com.liferay.portal.kernel.service.WebDAVPropsLocalService.class)
-	protected com.liferay.portal.kernel.service.WebDAVPropsLocalService webDAVPropsLocalService;
-	@BeanReference(type = WebDAVPropsPersistence.class)
-	protected WebDAVPropsPersistence webDAVPropsPersistence;
 	@BeanReference(type = com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService.class)
 	protected com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService workflowInstanceLinkLocalService;
 	@BeanReference(type = WorkflowInstanceLinkPersistence.class)
@@ -1309,16 +833,6 @@ public abstract class DLAppHelperLocalServiceBaseImpl
 	protected AssetTagFinder assetTagFinder;
 	@BeanReference(type = com.liferay.document.library.kernel.service.DLAppLocalService.class)
 	protected com.liferay.document.library.kernel.service.DLAppLocalService dlAppLocalService;
-	@BeanReference(type = com.liferay.expando.kernel.service.ExpandoValueLocalService.class)
-	protected com.liferay.expando.kernel.service.ExpandoValueLocalService expandoValueLocalService;
-	@BeanReference(type = ExpandoValuePersistence.class)
-	protected ExpandoValuePersistence expandoValuePersistence;
-	@BeanReference(type = com.liferay.ratings.kernel.service.RatingsEntryLocalService.class)
-	protected com.liferay.ratings.kernel.service.RatingsEntryLocalService ratingsEntryLocalService;
-	@BeanReference(type = RatingsEntryPersistence.class)
-	protected RatingsEntryPersistence ratingsEntryPersistence;
-	@BeanReference(type = RatingsEntryFinder.class)
-	protected RatingsEntryFinder ratingsEntryFinder;
 	@BeanReference(type = com.liferay.ratings.kernel.service.RatingsStatsLocalService.class)
 	protected com.liferay.ratings.kernel.service.RatingsStatsLocalService ratingsStatsLocalService;
 	@BeanReference(type = RatingsStatsPersistence.class)
@@ -1341,12 +855,6 @@ public abstract class DLAppHelperLocalServiceBaseImpl
 	protected DLFileEntryPersistence dlFileEntryPersistence;
 	@BeanReference(type = DLFileEntryFinder.class)
 	protected DLFileEntryFinder dlFileEntryFinder;
-	@BeanReference(type = com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService.class)
-	protected com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService dlFileEntryTypeLocalService;
-	@BeanReference(type = DLFileEntryTypePersistence.class)
-	protected DLFileEntryTypePersistence dlFileEntryTypePersistence;
-	@BeanReference(type = DLFileEntryTypeFinder.class)
-	protected DLFileEntryTypeFinder dlFileEntryTypeFinder;
 	@BeanReference(type = com.liferay.document.library.kernel.service.DLFileShortcutLocalService.class)
 	protected com.liferay.document.library.kernel.service.DLFileShortcutLocalService dlFileShortcutLocalService;
 	@BeanReference(type = DLFileShortcutPersistence.class)

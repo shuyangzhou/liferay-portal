@@ -36,10 +36,10 @@ public class OffPoshiElement extends OnPoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (isElementType(readableSyntax)) {
-			return new OffPoshiElement(parentPoshiElement, readableSyntax);
+		if (isElementType(poshiScript)) {
+			return new OffPoshiElement(parentPoshiElement, poshiScript);
 		}
 
 		return null;
@@ -57,9 +57,9 @@ public class OffPoshiElement extends OnPoshiElement {
 	}
 
 	protected OffPoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+		super(_ELEMENT_NAME, parentPoshiElement, poshiScript);
 	}
 
 	@Override
