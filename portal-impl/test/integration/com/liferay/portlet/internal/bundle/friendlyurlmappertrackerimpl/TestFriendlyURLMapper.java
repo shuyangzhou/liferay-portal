@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portlet.bundle.friendlyurlmappertrackerimpl;
+package com.liferay.portlet.internal.bundle.friendlyurlmappertrackerimpl;
 
 import com.liferay.portal.kernel.portlet.FriendlyURLMapper;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
