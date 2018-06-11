@@ -65,9 +65,11 @@ public class LayoutPageTemplateEntryCacheModel implements CacheModel<LayoutPageT
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(39);
+		StringBundler sb = new StringBundler(43);
 
-		sb.append("{layoutPageTemplateEntryId=");
+		sb.append("{uuid=");
+		sb.append(uuid);
+		sb.append(", layoutPageTemplateEntryId=");
 		sb.append(layoutPageTemplateEntryId);
 		sb.append(", groupId=");
 		sb.append(groupId);
@@ -97,6 +99,8 @@ public class LayoutPageTemplateEntryCacheModel implements CacheModel<LayoutPageT
 		sb.append(defaultTemplate);
 		sb.append(", layoutPrototypeId=");
 		sb.append(layoutPrototypeId);
+		sb.append(", lastPublishDate=");
+		sb.append(lastPublishDate);
 		sb.append(", status=");
 		sb.append(status);
 		sb.append(", statusByUserId=");
@@ -113,6 +117,13 @@ public class LayoutPageTemplateEntryCacheModel implements CacheModel<LayoutPageT
 	@Override
 	public LayoutPageTemplateEntry toEntityModel() {
 		LayoutPageTemplateEntryImpl layoutPageTemplateEntryImpl = new LayoutPageTemplateEntryImpl();
+
+		if (uuid == null) {
+			layoutPageTemplateEntryImpl.setUuid("");
+		}
+		else {
+			layoutPageTemplateEntryImpl.setUuid(uuid);
+		}
 
 		layoutPageTemplateEntryImpl.setLayoutPageTemplateEntryId(layoutPageTemplateEntryId);
 		layoutPageTemplateEntryImpl.setGroupId(groupId);
@@ -155,6 +166,15 @@ public class LayoutPageTemplateEntryCacheModel implements CacheModel<LayoutPageT
 		layoutPageTemplateEntryImpl.setPreviewFileEntryId(previewFileEntryId);
 		layoutPageTemplateEntryImpl.setDefaultTemplate(defaultTemplate);
 		layoutPageTemplateEntryImpl.setLayoutPrototypeId(layoutPrototypeId);
+
+		if (lastPublishDate == Long.MIN_VALUE) {
+			layoutPageTemplateEntryImpl.setLastPublishDate(null);
+		}
+		else {
+			layoutPageTemplateEntryImpl.setLastPublishDate(new Date(
+					lastPublishDate));
+		}
+
 		layoutPageTemplateEntryImpl.setStatus(status);
 		layoutPageTemplateEntryImpl.setStatusByUserId(statusByUserId);
 
@@ -179,6 +199,8 @@ public class LayoutPageTemplateEntryCacheModel implements CacheModel<LayoutPageT
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
+		uuid = objectInput.readUTF();
+
 		layoutPageTemplateEntryId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -204,6 +226,7 @@ public class LayoutPageTemplateEntryCacheModel implements CacheModel<LayoutPageT
 		defaultTemplate = objectInput.readBoolean();
 
 		layoutPrototypeId = objectInput.readLong();
+		lastPublishDate = objectInput.readLong();
 
 		status = objectInput.readInt();
 
@@ -215,6 +238,13 @@ public class LayoutPageTemplateEntryCacheModel implements CacheModel<LayoutPageT
 	@Override
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
+		if (uuid == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(uuid);
+		}
+
 		objectOutput.writeLong(layoutPageTemplateEntryId);
 
 		objectOutput.writeLong(groupId);
@@ -253,6 +283,7 @@ public class LayoutPageTemplateEntryCacheModel implements CacheModel<LayoutPageT
 		objectOutput.writeBoolean(defaultTemplate);
 
 		objectOutput.writeLong(layoutPrototypeId);
+		objectOutput.writeLong(lastPublishDate);
 
 		objectOutput.writeInt(status);
 
@@ -268,6 +299,7 @@ public class LayoutPageTemplateEntryCacheModel implements CacheModel<LayoutPageT
 		objectOutput.writeLong(statusDate);
 	}
 
+	public String uuid;
 	public long layoutPageTemplateEntryId;
 	public long groupId;
 	public long companyId;
@@ -283,6 +315,7 @@ public class LayoutPageTemplateEntryCacheModel implements CacheModel<LayoutPageT
 	public long previewFileEntryId;
 	public boolean defaultTemplate;
 	public long layoutPrototypeId;
+	public long lastPublishDate;
 	public int status;
 	public long statusByUserId;
 	public String statusByUserName;

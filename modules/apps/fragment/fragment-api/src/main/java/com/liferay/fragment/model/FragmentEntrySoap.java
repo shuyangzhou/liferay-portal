@@ -34,6 +34,7 @@ public class FragmentEntrySoap implements Serializable {
 	public static FragmentEntrySoap toSoapModel(FragmentEntry model) {
 		FragmentEntrySoap soapModel = new FragmentEntrySoap();
 
+		soapModel.setUuid(model.getUuid());
 		soapModel.setFragmentEntryId(model.getFragmentEntryId());
 		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
@@ -48,6 +49,7 @@ public class FragmentEntrySoap implements Serializable {
 		soapModel.setHtml(model.getHtml());
 		soapModel.setJs(model.getJs());
 		soapModel.setPreviewFileEntryId(model.getPreviewFileEntryId());
+		soapModel.setLastPublishDate(model.getLastPublishDate());
 		soapModel.setStatus(model.getStatus());
 		soapModel.setStatusByUserId(model.getStatusByUserId());
 		soapModel.setStatusByUserName(model.getStatusByUserName());
@@ -102,6 +104,14 @@ public class FragmentEntrySoap implements Serializable {
 
 	public void setPrimaryKey(long pk) {
 		setFragmentEntryId(pk);
+	}
+
+	public String getUuid() {
+		return _uuid;
+	}
+
+	public void setUuid(String uuid) {
+		_uuid = uuid;
 	}
 
 	public long getFragmentEntryId() {
@@ -216,6 +226,14 @@ public class FragmentEntrySoap implements Serializable {
 		_previewFileEntryId = previewFileEntryId;
 	}
 
+	public Date getLastPublishDate() {
+		return _lastPublishDate;
+	}
+
+	public void setLastPublishDate(Date lastPublishDate) {
+		_lastPublishDate = lastPublishDate;
+	}
+
 	public int getStatus() {
 		return _status;
 	}
@@ -248,6 +266,7 @@ public class FragmentEntrySoap implements Serializable {
 		_statusDate = statusDate;
 	}
 
+	private String _uuid;
 	private long _fragmentEntryId;
 	private long _groupId;
 	private long _companyId;
@@ -262,6 +281,7 @@ public class FragmentEntrySoap implements Serializable {
 	private String _html;
 	private String _js;
 	private long _previewFileEntryId;
+	private Date _lastPublishDate;
 	private int _status;
 	private long _statusByUserId;
 	private String _statusByUserName;
