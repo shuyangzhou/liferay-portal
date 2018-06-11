@@ -29,6 +29,7 @@ class LiferayApp extends App {
 	/**
 	 * @inheritDoc
 	 */
+
 	constructor() {
 		super();
 

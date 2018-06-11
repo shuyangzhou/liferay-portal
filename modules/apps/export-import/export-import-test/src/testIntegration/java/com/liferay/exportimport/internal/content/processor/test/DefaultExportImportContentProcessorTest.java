@@ -353,6 +353,7 @@ public class DefaultExportImportContentProcessorTest {
 			true, true);
 	}
 
+	@Ignore
 	@Test
 	public void testExportLayoutReferencesWithContext() throws Exception {
 		PortalImpl portalImpl = new PortalImpl() {
