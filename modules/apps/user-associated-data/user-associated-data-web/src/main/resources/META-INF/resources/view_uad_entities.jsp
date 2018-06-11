@@ -21,7 +21,7 @@ ViewUADEntitiesDisplay viewUADEntitiesDisplay = (ViewUADEntitiesDisplay)request.
 
 SearchContainer<UADEntity> uadEntitySearchContainer = viewUADEntitiesDisplay.getSearchContainer();
 
-ViewUADEntitiesManagementToolbarDisplayContext viewUADEntitiesManagementToolbarDisplayContext = new ViewUADEntitiesManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, uadEntitySearchContainer);
+ViewUADEntitiesManagementToolbarDisplayContext viewUADEntitiesManagementToolbarDisplayContext = new ViewUADEntitiesManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, uadEntitySearchContainer);
 
 portletDisplay.setShowBackIcon(true);
 
@@ -40,14 +40,7 @@ renderResponse.setTitle(StringBundler.concat(selectedUser.getFullName(), " - ", 
 />
 
 <clay:management-toolbar
-	actionDropdownItems="<%= viewUADEntitiesManagementToolbarDisplayContext.getActionDropdownItems() %>"
-	disabled="<%= viewUADEntitiesManagementToolbarDisplayContext.getDisabled() %>"
-	infoPanelId="<%= viewUADEntitiesManagementToolbarDisplayContext.getInfoPanelId() %>"
-	itemsTotal="<%= viewUADEntitiesManagementToolbarDisplayContext.getItemsTotal() %>"
-	searchContainerId="<%= viewUADEntitiesManagementToolbarDisplayContext.getSearchContainerId() %>"
-	selectable="<%= viewUADEntitiesManagementToolbarDisplayContext.getSelectable() %>"
-	showInfoButton="<%= viewUADEntitiesManagementToolbarDisplayContext.getShowInfoButton() %>"
-	showSearch="<%= viewUADEntitiesManagementToolbarDisplayContext.getShowSearch() %>"
+	displayContext="<%= viewUADEntitiesManagementToolbarDisplayContext %>"
 />
 
 <aui:form method="post" name="viewUADEntitiesFm">
