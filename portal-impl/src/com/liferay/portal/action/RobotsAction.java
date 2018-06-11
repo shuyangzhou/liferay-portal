@@ -77,7 +77,7 @@ public class RobotsAction extends Action {
 				}
 			}
 
-			String robots = RobotsUtil.getRobots(layoutSet);
+			String robots = RobotsUtil.getRobots(layoutSet, request.isSecure());
 
 			ServletResponseUtil.sendFile(
 				request, response, null, robots.getBytes(StringPool.UTF8),

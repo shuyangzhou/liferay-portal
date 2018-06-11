@@ -81,12 +81,11 @@ public class SiteNavigationMenuLocalServiceImpl
 		SiteNavigationMenu siteNavigationMenu =
 			siteNavigationMenuPersistence.create(siteNavigationMenuId);
 
+		siteNavigationMenu.setUuid(serviceContext.getUuid());
 		siteNavigationMenu.setGroupId(groupId);
 		siteNavigationMenu.setCompanyId(user.getCompanyId());
 		siteNavigationMenu.setUserId(userId);
 		siteNavigationMenu.setUserName(user.getFullName());
-		siteNavigationMenu.setCreateDate(
-			serviceContext.getCreateDate(new Date()));
 		siteNavigationMenu.setName(name);
 		siteNavigationMenu.setType(type);
 		siteNavigationMenu.setAuto(auto);
@@ -180,6 +179,11 @@ public class SiteNavigationMenuLocalServiceImpl
 	}
 
 	@Override
+	public void deleteSiteNavigationMenus(long groupId) {
+		siteNavigationMenuPersistence.removeByGroupId(groupId);
+	}
+
+	@Override
 	public SiteNavigationMenu fetchPrimarySiteNavigationMenu(long groupId) {
 		return fetchSiteNavigationMenu(
 			groupId, SiteNavigationConstants.TYPE_PRIMARY);
@@ -249,10 +253,29 @@ public class SiteNavigationMenuLocalServiceImpl
 
 		User user = userLocalService.getUser(userId);
 
-		siteNavigationMenu.setModifiedDate(
-			serviceContext.getModifiedDate(new Date()));
 		siteNavigationMenu.setUserId(userId);
 		siteNavigationMenu.setUserName(user.getFullName());
+		siteNavigationMenu.setModifiedDate(
+			serviceContext.getModifiedDate(new Date()));
+		siteNavigationMenu.setType(type);
+		siteNavigationMenu.setAuto(auto);
+
+		return siteNavigationMenuPersistence.update(siteNavigationMenu);
+	}
+
+	@Override
+	public SiteNavigationMenu updateSiteNavigationMenu(
+			long userId, long siteNavigationMenuId, long groupId, String name,
+			int type, boolean auto)
+		throws PortalException {
+
+		SiteNavigationMenu siteNavigationMenu =
+			siteNavigationMenuPersistence.findByPrimaryKey(
+				siteNavigationMenuId);
+
+		siteNavigationMenu.setGroupId(groupId);
+		siteNavigationMenu.setUserId(userId);
+		siteNavigationMenu.setName(name);
 		siteNavigationMenu.setType(type);
 		siteNavigationMenu.setAuto(auto);
 
@@ -272,10 +295,10 @@ public class SiteNavigationMenuLocalServiceImpl
 		SiteNavigationMenu siteNavigationMenu = getSiteNavigationMenu(
 			siteNavigationMenuId);
 
-		siteNavigationMenu.setModifiedDate(
-			serviceContext.getModifiedDate(new Date()));
 		siteNavigationMenu.setUserId(userId);
 		siteNavigationMenu.setUserName(user.getFullName());
+		siteNavigationMenu.setModifiedDate(
+			serviceContext.getModifiedDate(new Date()));
 		siteNavigationMenu.setName(name);
 
 		return siteNavigationMenuPersistence.update(siteNavigationMenu);
