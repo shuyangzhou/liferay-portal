@@ -37,6 +37,7 @@
 		</execute>
 
 		<execute macro="DMDocument#addContractCP">
+			<var name="contractType" value="NDA" />
 			<var name="dmContractDealName" value="DM Contract Deal Name" />
 			<var name="dmContractDescription" value="DM Contract Description" />
 			<var name="dmContractFile" value="Document_1.pdf" />
@@ -45,6 +46,7 @@
 			<var name="dmContractTitle" value="DM Contract Title" />
 			<var name="effectiveDate" value="06/01/2017" />
 			<var name="expirationDate" value="06/15/2017" />
+			<var name="status" value="Draft" />
 		</execute>
 
 		<execute macro="DMNavigator#gotoDocumentCP">
@@ -70,6 +72,8 @@
 	</command>
 
 	<command name="AddShortcutToSiteDocument" priority="5">
+		<description message="This is a use case for LPS-82073." />
+
 		<property name="portal.acceptance" value="false" />
 		<property name="testray.component.names" value="Training" />
 
@@ -96,6 +100,12 @@
 			<var name="dmDocumentDescription" value="DM Document Description" />
 			<var name="dmDocumentFile" value="Document_1.txt" />
 			<var name="dmDocumentTitle" value="DM Document Title" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Documents and Media" />
 		</execute>
 
 		<execute macro="DMNavigator#gotoDocumentCP">

@@ -194,19 +194,6 @@
 		</execute>
 	</command>
 
-	<command name="copyApplicationsFromPageToPage">
-		<execute macro="LexiconEntry#gotoHeaderMenuItem">
-			<var name="menuItem" value="Copy Applications" />
-		</execute>
-
-		<execute function="AssertTextEquals" locator1="Message#INFO" value1="The applications in page ${pageName} will be replaced with the ones in the page you select below." />
-		<execute function="AssertTextEquals" locator1="SitePagesEditPage#COPY_APPLICATIONS_COPY_FROM_PAGE_LABEL" value1="Copy from Page" />
-
-		<execute function="Select#selectPartialText" locator1="SitePagesEditPage#COPY_APPLICATIONS_COPY_FROM_PAGE_SELECT" value1="${pageNameCopy}" />
-
-		<execute macro="PortletEntry#save" />
-	</command>
-
 	<command name="deleteFriendlyURLPG">
 		<execute macro="Navigator#gotoNavTab">
 			<var name="navTab" value="General" />
@@ -1057,6 +1044,7 @@
 	<command name="viewSiteNameTranslationsPG">
 		<execute macro="LanguagePortlet#selectLanguagePG">
 			<var name="locale" value="${locale}" />
+			<var name="textIcon" value="${textIcon}" />
 		</execute>
 
 		<execute function="AssertTextEquals" locator1="Home#SITE_NAME" value1="${siteName}" />

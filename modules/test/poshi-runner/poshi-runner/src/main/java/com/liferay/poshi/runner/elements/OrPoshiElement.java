@@ -37,29 +37,29 @@ public class OrPoshiElement extends PoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(parentPoshiElement, readableSyntax)) {
-			return new OrPoshiElement(parentPoshiElement, readableSyntax);
+		if (_isElementType(parentPoshiElement, poshiScript)) {
+			return new OrPoshiElement(parentPoshiElement, poshiScript);
 		}
 
 		return null;
 	}
 
 	@Override
-	public void parseReadableSyntax(String readableSyntax) {
-		for (String readableBlock : getReadableBlocks(readableSyntax)) {
-			add(PoshiNodeFactory.newPoshiNode(this, readableBlock));
+	public void parsePoshiScript(String poshiScript) {
+		for (String poshiScriptSnippet : getPoshiScriptSnippets(poshiScript)) {
+			add(PoshiNodeFactory.newPoshiNode(this, poshiScriptSnippet));
 		}
 	}
 
 	@Override
-	public String toReadableSyntax() {
+	public String toPoshiScript() {
 		StringBuilder sb = new StringBuilder();
 
 		for (PoshiElement poshiElement : toPoshiElements(elements())) {
 			sb.append("(");
-			sb.append(poshiElement.toReadableSyntax());
+			sb.append(poshiElement.toPoshiScript());
 			sb.append(") || ");
 		}
 
@@ -80,9 +80,9 @@ public class OrPoshiElement extends PoshiElement {
 	}
 
 	protected OrPoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
+		super(_ELEMENT_NAME, parentPoshiElement, poshiScript);
 	}
 
 	@Override
@@ -90,32 +90,32 @@ public class OrPoshiElement extends PoshiElement {
 		return "or";
 	}
 
-	protected List<String> getReadableBlocks(String readableSyntax) {
-		List<String> readableBlocks = new ArrayList<>();
+	protected List<String> getPoshiScriptSnippets(String poshiScript) {
+		List<String> poshiScriptSnippets = new ArrayList<>();
 
-		for (String condition : readableSyntax.split(" \\|\\| ")) {
+		for (String condition : poshiScript.split(" \\|\\| ")) {
 			condition = getParentheticalContent(condition);
 
-			readableBlocks.add(condition);
+			poshiScriptSnippets.add(condition);
 		}
 
-		return readableBlocks;
+		return poshiScriptSnippets;
 	}
 
 	private boolean _isElementType(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
 		if (!isConditionValidInParent(parentPoshiElement)) {
 			return false;
 		}
 
-		if (readableSyntax.contains(" && ") ||
-			readableSyntax.startsWith("else if (")) {
+		if (poshiScript.contains(" && ") ||
+			poshiScript.startsWith("else if (")) {
 
 			return false;
 		}
 
-		if (readableSyntax.contains(" || ")) {
+		if (poshiScript.contains(" || ")) {
 			return true;
 		}
 

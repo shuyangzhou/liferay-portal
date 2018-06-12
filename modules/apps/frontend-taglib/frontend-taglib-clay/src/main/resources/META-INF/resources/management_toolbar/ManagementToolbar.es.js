@@ -96,7 +96,7 @@ class ManagementToolbar extends ClayComponent {
 		event.stopPropagation();
 
 		if (this._sidenavInstance) {
-			this._sidenavInstance.toggle()
+			this._sidenavInstance.toggle();
 		}
 	}
 
@@ -278,6 +278,7 @@ ManagementToolbar.STATE = {
 	 * @memberof ManagementToolbar
 	 * @type {?object}
 	 */
+
 	searchData: Config.object(),
 
 	/**
@@ -287,6 +288,7 @@ ManagementToolbar.STATE = {
 	 * @memberof ManagementToolbar
 	 * @type {?(string|undefined)}
 	 */
+
 	searchFormMethod: Config.oneOf(['GET', 'POST']).value('GET'),
 
 	/**

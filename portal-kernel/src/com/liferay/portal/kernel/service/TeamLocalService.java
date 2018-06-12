@@ -243,6 +243,9 @@ public interface TeamLocalService extends BaseLocalService,
 	public List<Team> getGroupTeams(long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getGroupTeamsCount(long groupId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**

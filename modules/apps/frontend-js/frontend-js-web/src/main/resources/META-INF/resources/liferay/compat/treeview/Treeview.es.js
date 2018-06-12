@@ -7,10 +7,13 @@ import Soy from 'metal-soy';
 /**
  * Treeview component.
  */
+
 class Treeview extends Component {
+
 	/**
 	 * @inheritDoc
 	 */
+
 	attached() {
 		this.keyboardFocusManager_ = new KeyboardFocusManager(this, 'li')
 			.setFocusHandler(this.handleNextFocus_.bind(this))
@@ -24,6 +27,7 @@ class Treeview extends Component {
 	/**
 	 * @inheritDoc
 	 */
+
 	disposed() {
 		this.keyboardFocusManager_.dispose();
 		this.keyboardFocusManager_ = null;
@@ -36,6 +40,7 @@ class Treeview extends Component {
 	 *   searched node is located inside the `nodes` state.
 	 * @return {!Object}
 	 */
+
 	getNodeObj(path) {
 		var obj = this.nodes[path[0]];
 		for (var i = 1; i < path.length; i++) {
@@ -50,6 +55,7 @@ class Treeview extends Component {
 	 * @return {!Array<string>}
 	 * @protected
 	 */
+
 	getPath_(node) {
 		return node.getAttribute('data-treeview-path').split('-');
 	}
@@ -61,6 +67,7 @@ class Treeview extends Component {
 	 * @param {!Object} data
 	 * @protected
 	 */
+
 	handleKeyboardFocused_(data) {
 		this.lastFocusedRef_ = data.ref;
 	}
@@ -74,11 +81,13 @@ class Treeview extends Component {
 	 * @return {?string}
 	 * @protected
 	 */
+
 	handleLeftArrow_(path, obj) {
 		if (obj.expanded) {
 			obj.expanded = false;
 			this.nodes = this.nodes;
-		} else if (path.length > 1) {
+		}
+		else if (path.length > 1) {
 			path.pop();
 			return Treeview.NODE_REF_PREFIX + path.join('-');
 		}
@@ -90,19 +99,22 @@ class Treeview extends Component {
 	 * @return {boolean|string|Element}
 	 * @protected
 	 */
+
 	handleNextFocus_(event) {
 		event.stopPropagation();
 
 		const path = this.getPath_(event.delegateTarget);
 		const obj = this.getNodeObj(path);
 		switch (event.keyCode) {
-			case 37:
-				return this.handleLeftArrow_(path, obj);
-			case 39:
-				return this.handleRightArrow_(path, obj);
-			default:
-				// Use default behavior for other keys (like up/down arrows).
-				return true;
+		case 37:
+			return this.handleLeftArrow_(path, obj);
+		case 39:
+			return this.handleRightArrow_(path, obj);
+		default:
+
+			// Use default behavior for other keys (like up/down arrows).
+
+			return true;
 		}
 	}
 
@@ -111,6 +123,7 @@ class Treeview extends Component {
 	 * @param {!Event} event
 	 * @protected
 	 */
+
 	handleNodeClicked_(event) {
 		this.toggleExpandedState_(event.delegateTarget.parentNode.parentNode);
 	}
@@ -121,6 +134,7 @@ class Treeview extends Component {
 	 * @param {!Event} event
 	 * @protected
 	 */
+
 	handleNodeKeyUp_(event) {
 		if (event.keyCode === 13 || event.keyCode === 32) {
 			this.toggleExpandedState_(event.delegateTarget);
@@ -137,11 +151,13 @@ class Treeview extends Component {
 	 * @return {?string}
 	 * @protected
 	 */
+
 	handleRightArrow_(path, obj) {
 		if (obj.expanded) {
 			path.push(0);
 			return Treeview.NODE_REF_PREFIX + path.join('-');
-		} else if (obj.children){
+		}
+		else if (obj.children) {
 			obj.expanded = true;
 			this.nodes = this.nodes;
 		}
@@ -152,6 +168,7 @@ class Treeview extends Component {
 	 * @param {!Element} node
 	 * @protected
 	 */
+
 	toggleExpandedState_(node) {
 		var nodeObj = this.getNodeObj(this.getPath_(node));
 		nodeObj.expanded = !nodeObj.expanded;
@@ -161,6 +178,7 @@ class Treeview extends Component {
 Soy.register(Treeview, templates);
 
 // The prefix used for tree item nodes' refs.
+
 Treeview.NODE_REF_PREFIX = 'node-';
 
 /**
@@ -168,12 +186,15 @@ Treeview.NODE_REF_PREFIX = 'node-';
  * @type {!Object}
  * @static
  */
+
 Treeview.STATE = {
+
 	/**
 	 * The ref of the last item that has been focused, so that we can retain only
 	 * that node in the tab order.
 	 * @type {string}
 	 */
+
 	lastFocusedRef_: {
 		internal: true,
 		validator: core.isString
@@ -186,6 +207,7 @@ Treeview.STATE = {
 	 * @type {Array<!{children: Array, expanded: boolean?, name: string}>}
 	 * @default []
 	 */
+
 	nodes: {
 		validator: Array.isArray,
 		valueFn: function() {
@@ -194,5 +216,5 @@ Treeview.STATE = {
 	}
 };
 
-export { Treeview };
+export {Treeview};
 export default Treeview;

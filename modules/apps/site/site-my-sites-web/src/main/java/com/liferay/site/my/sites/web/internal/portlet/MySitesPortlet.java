@@ -87,6 +87,8 @@ public class MySitesPortlet extends MVCPortlet {
 				userId, groupId, MembershipRequestConstants.STATUS_PENDING)) {
 
 			SessionErrors.add(actionRequest, "membershipAlreadyRequested");
+
+			hideDefaultErrorMessage(actionRequest);
 		}
 		else {
 			_membershipRequestLocalService.addMembershipRequest(
@@ -95,6 +97,8 @@ public class MySitesPortlet extends MVCPortlet {
 			SessionMessages.add(actionRequest, "membershipRequestSent");
 
 			addSuccessMessage(actionRequest, actionResponse);
+
+			hideDefaultSuccessMessage(actionRequest);
 		}
 
 		sendRedirect(actionRequest, actionResponse);

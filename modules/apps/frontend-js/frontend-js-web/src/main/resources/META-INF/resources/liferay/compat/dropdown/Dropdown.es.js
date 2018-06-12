@@ -10,10 +10,13 @@ import templates from './Dropdown.soy';
 /**
  * Dropdown component.
  */
+
 class Dropdown extends Component {
+
 	/**
 	 * @inheritDoc
 	 */
+
 	attached() {
 		super.attached();
 		this.eventHandler_.add(dom.on(document, 'click', this.handleDocClick_.bind(this)));
@@ -22,6 +25,7 @@ class Dropdown extends Component {
 	/**
 	 * @inheritDoc
 	 */
+
 	created() {
 		this.eventHandler_ = new EventHandler();
 	}
@@ -29,6 +33,7 @@ class Dropdown extends Component {
 	/**
 	 * @inheritDoc
 	 */
+
 	detached() {
 		super.detached();
 		this.eventHandler_.removeAllListeners();
@@ -37,6 +42,7 @@ class Dropdown extends Component {
 	/**
 	 * Closes the dropdown.
 	 */
+
 	close() {
 		this.expanded = false;
 	}
@@ -45,6 +51,7 @@ class Dropdown extends Component {
 	 * Checks if the dropdown is currently open.
 	 * @return {boolean}
 	 */
+
 	isOpen() {
 		return this.expanded;
 	}
@@ -54,6 +61,7 @@ class Dropdown extends Component {
 	 * @param {!Event} event
 	 * @protected
 	 */
+
 	handleDocClick_(event) {
 		if (this.element.contains(event.target)) {
 			return;
@@ -64,6 +72,7 @@ class Dropdown extends Component {
 	/**
 	 * Opens the dropdown.
 	 */
+
 	open() {
 		this.expanded = true;
 	}
@@ -74,6 +83,7 @@ class Dropdown extends Component {
 	 * @return {!Object}
 	 * @protected
 	 */
+
 	setterClassMapFn_(val) {
 		return object.mixin(this.valueClassMapFn_(), val);
 	}
@@ -85,6 +95,7 @@ class Dropdown extends Component {
 	 * @return {number}
 	 * @protected
 	 */
+
 	setterPositionFn_(val) {
 		if (core.isNumber(val)) {
 			return val;
@@ -97,6 +108,7 @@ class Dropdown extends Component {
 	 * Synchronization logic for `expanded` state.
 	 * @param {boolean} expanded
 	 */
+
 	syncExpanded(expanded) {
 		if (expanded && this.alignElementSelector) {
 			var alignElement = this.element.querySelector(this.alignElementSelector);
@@ -112,6 +124,7 @@ class Dropdown extends Component {
 	/**
 	 * Toggles the dropdown, closing it when open or opening it when closed.
 	 */
+
 	toggle() {
 		this.expanded = !this.expanded;
 	}
@@ -122,16 +135,17 @@ class Dropdown extends Component {
 	 * @return {boolean}
 	 * @protected
 	 */
+
 	validatePosition_(position) {
 		if (Align.isValidPosition(position)) {
 			return true;
 		}
 		switch (position.toLowerCase()) {
-			case 'up':
-			case 'down':
-				return true;
-			default:
-				return false;
+		case 'up':
+		case 'down':
+			return true;
+		default:
+			return false;
 		}
 	}
 
@@ -141,6 +155,7 @@ class Dropdown extends Component {
 	 * @return {?string}
 	 * @protected
 	 */
+
 	valueBodyFn_() {
 		var dropdownMenu = this.element && this.element.querySelector('.dropdown-menu');
 
@@ -152,6 +167,7 @@ class Dropdown extends Component {
 	 * @return {!Object}
 	 * @protected
 	 */
+
 	valueClassMapFn_() {
 		return {
 			[Align.TopLeft]: 'dropup',
@@ -171,6 +187,7 @@ class Dropdown extends Component {
 	 * @return {?string}
 	 * @protected
 	 */
+
 	valueHeaderFn_() {
 		if (this.element) {
 			var wrapper = document.createElement('div');
@@ -195,11 +212,14 @@ Soy.register(Dropdown, templates);
  * @type {!Object}
  * @static
  */
+
 Dropdown.STATE = {
+
 	/**
 	 * The current position of the tooltip after being aligned via `Align.align`.
 	 * @type {number}
 	 */
+
 	alignedPosition: {
 		validator: Align.isValidPosition
 	},
@@ -211,6 +231,7 @@ Dropdown.STATE = {
 	 * always just follow the given position, even if it's not ideal.
 	 * @type {string}
 	 */
+
 	alignElementSelector: {
 		validator: core.isString
 	},
@@ -219,6 +240,7 @@ Dropdown.STATE = {
 	 * The dropdown's body content.
 	 * @type {string}
 	 */
+
 	body: {
 		isHtml: true,
 		valueFn: 'valueBodyFn_'
@@ -229,6 +251,7 @@ Dropdown.STATE = {
 	 * added to the dropdown when it's aligned in that position.
 	 * @type {!Object}
 	 */
+
 	classMap: {
 		setter: 'setterClassMapFn_',
 		validator: core.isObject,
@@ -239,6 +262,7 @@ Dropdown.STATE = {
 	 * The dropdown's header content.
 	 * @type {string}
 	 */
+
 	header: {
 		isHtml: true,
 		valueFn: 'valueHeaderFn_'
@@ -249,6 +273,7 @@ Dropdown.STATE = {
 	 * @type {boolean}
 	 * @default false
 	 */
+
 	expanded: {
 		value: false,
 		internal: true
@@ -260,6 +285,7 @@ Dropdown.STATE = {
 	 * @type {string|number}
 	 * @default Align.BottomLeft
 	 */
+
 	position: {
 		setter: 'setterPositionFn_',
 		value: Align.BottomLeft,
@@ -271,6 +297,7 @@ Dropdown.STATE = {
 	 * should be added on the "dropdown-menu" element, instead of the main element.
 	 * @type {boolean}
 	 */
+
 	positionClassOnMenu: {
 		value: false
 	}

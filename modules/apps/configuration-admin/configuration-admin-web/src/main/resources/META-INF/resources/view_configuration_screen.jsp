@@ -29,14 +29,15 @@ if (Validator.isNull(redirect)) {
 
 PortalUtil.addPortletBreadcrumbEntry(request, portletDisplay.getPortletDisplayName(), String.valueOf(renderResponse.createRenderURL()));
 
-PortletURL viewCategoryURL = renderResponse.createRenderURL();
+ConfigurationCategoryMenuDisplay configurationCategoryMenuDisplay = (ConfigurationCategoryMenuDisplay)request.getAttribute(ConfigurationAdminWebKeys.CONFIGURATION_CATEGORY_MENU_DISPLAY);
 
-viewCategoryURL.setParameter("mvcRenderCommandName", "/view_category");
-viewCategoryURL.setParameter("configurationCategory", configurationScreen.getCategoryKey());
+ConfigurationCategoryDisplay configurationCategoryDisplay = configurationCategoryMenuDisplay.getConfigurationCategoryDisplay();
 
-String categoryDisplayName = LanguageUtil.get(request, "category." + configurationScreen.getCategoryKey());
+String categoryDisplayName = HtmlUtil.escape(configurationCategoryDisplay.getCategoryLabel(locale));
 
-PortalUtil.addPortletBreadcrumbEntry(request, categoryDisplayName, viewCategoryURL.toString());
+String viewCategoryHREF = ConfigurationCategoryUtil.getHREF(configurationCategoryMenuDisplay, liferayPortletResponse, renderRequest, renderResponse);
+
+PortalUtil.addPortletBreadcrumbEntry(request, categoryDisplayName, viewCategoryHREF);
 
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(portletURL.toString());
@@ -64,7 +65,7 @@ renderResponse.setTitle(categoryDisplayName);
 		<div class="col-md-9">
 
 			<%
-			configurationScreen.render(request, response);
+			configurationScreen.render(request, PipingServletResponse.createPipingServletResponse(pageContext));
 			%>
 
 		</div>

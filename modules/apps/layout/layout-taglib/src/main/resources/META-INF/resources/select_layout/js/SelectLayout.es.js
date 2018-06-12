@@ -104,9 +104,9 @@ class SelectLayout extends Component {
 		else {
 			this.emit(
 				this.itemSelectorSaveEvent,
-                {
-                    data: data
-                }
+				{
+					data: data
+				}
 			);
 
 			Liferay.Util.getOpener().Liferay.fire(

@@ -14,6 +14,7 @@
 
 package com.liferay.fragment.model.impl;
 
+import com.liferay.fragment.constants.FragmentExportImportConstants;
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.service.FragmentEntryLocalServiceUtil;
 import com.liferay.petra.string.StringPool;
@@ -38,7 +39,10 @@ public class FragmentCollectionImpl extends FragmentCollectionBaseImpl {
 		jsonObject.put("description", getDescription());
 		jsonObject.put("name", getName());
 
-		zipWriter.addEntry(path + "/collection.json", jsonObject.toString());
+		zipWriter.addEntry(
+			path + StringPool.SLASH +
+				FragmentExportImportConstants.FILE_NAME_COLLECTION_CONFIG,
+			jsonObject.toString());
 
 		List<FragmentEntry> fragmentEntries =
 			FragmentEntryLocalServiceUtil.getFragmentEntries(

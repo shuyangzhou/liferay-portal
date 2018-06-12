@@ -313,6 +313,10 @@ public class TeamLocalServiceUtil {
 		return getService().getGroupTeams(groupId);
 	}
 
+	public static int getGroupTeamsCount(long groupId) {
+		return getService().getGroupTeamsCount(groupId);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
 		return getService().getIndexableActionableDynamicQuery();
 	}
