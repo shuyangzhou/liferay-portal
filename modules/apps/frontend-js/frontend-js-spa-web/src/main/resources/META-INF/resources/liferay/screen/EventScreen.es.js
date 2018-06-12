@@ -8,7 +8,7 @@ import {CancellablePromise} from 'metal-promise/lib/promise/Promise';
  * EventScreen
  *
  * Inherits from Senna's `HtmlScreen`. It performs logic that is
- * common to both {@link ActionURLScreen|ActionURLScreen} and 
+ * common to both {@link ActionURLScreen|ActionURLScreen} and
  * {@link RenderURLScreen|RenderURLScreen}.
  */
 
@@ -70,7 +70,7 @@ class EventScreen extends HtmlScreen {
 	}
 
 	/**
-	 * Attempts a regular navigation to the given path, if a form is not being 
+	 * Attempts a regular navigation to the given path, if a form is not being
 	 * submitted and the redirect Path can't be matched to a known route
 	 * @param  {!String} redirectPath The path to check
 	 */
@@ -127,10 +127,10 @@ class EventScreen extends HtmlScreen {
 
 	/**
 	 * @inheritDoc
-	 * Temporarily makes all permanent styles temporary when a language change is 
+	 * Temporarily makes all permanent styles temporary when a language change is
 	 * detected, so that they are disposed, re-downloaded, and re-parsed before
 	 * the screen flips. This is important because the content of the portal and
-	 * theme styles are dynamic and may depend on the displayed language. 
+	 * theme styles are dynamic and may depend on the displayed language.
 	 * Right-to-left (RTL) languages, for instance, have diffrent styles.
 	 * @param  {!Array} surfaces The surfaces to evaluate styles from
 	 */
@@ -178,7 +178,7 @@ class EventScreen extends HtmlScreen {
 
 	/**
 	 * @inheritDoc
-	 * Returns the cache if it's not expired or if the cache 
+	 * Returns the cache if it's not expired or if the cache
 	 * feature is not disabled
 	 * @return {!String} The cache contents
 	 */
@@ -244,9 +244,9 @@ class EventScreen extends HtmlScreen {
 	}
 
 	/**
-	 * The method used by {@link EventScreen#evaluateStyles|evaluateStyles}. This 
-	 * changes the static properties `HtmlScreen.selectors.stylesTemporary` and 
-	 * `HtmlScreen.selectors.stylesPermanent` temporarily. The action can be 
+	 * The method used by {@link EventScreen#evaluateStyles|evaluateStyles}. This
+	 * changes the static properties `HtmlScreen.selectors.stylesTemporary` and
+	 * `HtmlScreen.selectors.stylesPermanent` temporarily. The action can be
 	 * undone by {@link EventScreen#restoreSelectors_|restoreSelectors_}
 	 * @param  {!String} currentLanguageId
 	 * @param  {!String} languageId
@@ -274,7 +274,7 @@ class EventScreen extends HtmlScreen {
 
 	/**
 	 * The method used by {@link EventScreen#evaluateStyles|evaluateStyles}. This
-	 * restores the permanent and temporary selectors changed by 
+	 * restores the permanent and temporary selectors changed by
 	 * {@link EventScreen#makePermanentSelectorsTemporary_|makePermanentSelectorsTemporary_}.
 	 */
 

@@ -35,6 +35,7 @@ public class LayoutPageTemplateEntrySoap implements Serializable {
 		LayoutPageTemplateEntry model) {
 		LayoutPageTemplateEntrySoap soapModel = new LayoutPageTemplateEntrySoap();
 
+		soapModel.setUuid(model.getUuid());
 		soapModel.setLayoutPageTemplateEntryId(model.getLayoutPageTemplateEntryId());
 		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
@@ -50,6 +51,7 @@ public class LayoutPageTemplateEntrySoap implements Serializable {
 		soapModel.setPreviewFileEntryId(model.getPreviewFileEntryId());
 		soapModel.setDefaultTemplate(model.isDefaultTemplate());
 		soapModel.setLayoutPrototypeId(model.getLayoutPrototypeId());
+		soapModel.setLastPublishDate(model.getLastPublishDate());
 		soapModel.setStatus(model.getStatus());
 		soapModel.setStatusByUserId(model.getStatusByUserId());
 		soapModel.setStatusByUserName(model.getStatusByUserName());
@@ -107,6 +109,14 @@ public class LayoutPageTemplateEntrySoap implements Serializable {
 
 	public void setPrimaryKey(long pk) {
 		setLayoutPageTemplateEntryId(pk);
+	}
+
+	public String getUuid() {
+		return _uuid;
+	}
+
+	public void setUuid(String uuid) {
+		_uuid = uuid;
 	}
 
 	public long getLayoutPageTemplateEntryId() {
@@ -234,6 +244,14 @@ public class LayoutPageTemplateEntrySoap implements Serializable {
 		_layoutPrototypeId = layoutPrototypeId;
 	}
 
+	public Date getLastPublishDate() {
+		return _lastPublishDate;
+	}
+
+	public void setLastPublishDate(Date lastPublishDate) {
+		_lastPublishDate = lastPublishDate;
+	}
+
 	public int getStatus() {
 		return _status;
 	}
@@ -266,6 +284,7 @@ public class LayoutPageTemplateEntrySoap implements Serializable {
 		_statusDate = statusDate;
 	}
 
+	private String _uuid;
 	private long _layoutPageTemplateEntryId;
 	private long _groupId;
 	private long _companyId;
@@ -281,6 +300,7 @@ public class LayoutPageTemplateEntrySoap implements Serializable {
 	private long _previewFileEntryId;
 	private boolean _defaultTemplate;
 	private long _layoutPrototypeId;
+	private Date _lastPublishDate;
 	private int _status;
 	private long _statusByUserId;
 	private String _statusByUserName;

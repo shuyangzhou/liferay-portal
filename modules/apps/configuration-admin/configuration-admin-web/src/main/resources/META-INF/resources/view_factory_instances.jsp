@@ -17,20 +17,18 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String redirect = ParamUtil.getString(request, "redirect");
-
-PortletURL portletURL = renderResponse.createRenderURL();
-
-if (Validator.isNull(redirect)) {
-	redirect = portletURL.toString();
-}
+String redirect = ParamUtil.getString(request, "redirect", String.valueOf(renderResponse.createRenderURL()));
 
 ConfigurationModel configurationModel = (ConfigurationModel)request.getAttribute(ConfigurationAdminWebKeys.FACTORY_CONFIGURATION_MODEL);
 ConfigurationModelIterator configurationModelIterator = (ConfigurationModelIterator)request.getAttribute(ConfigurationAdminWebKeys.CONFIGURATION_MODEL_ITERATOR);
 
 PortalUtil.addPortletBreadcrumbEntry(request, portletDisplay.getPortletDisplayName(), String.valueOf(renderResponse.createRenderURL()));
 
-String categoryDisplayName = LanguageUtil.get(request, "category." + configurationModel.getCategory());
+ConfigurationCategoryMenuDisplay configurationCategoryMenuDisplay = (ConfigurationCategoryMenuDisplay)request.getAttribute(ConfigurationAdminWebKeys.CONFIGURATION_CATEGORY_MENU_DISPLAY);
+
+ConfigurationCategoryDisplay configurationCategoryDisplay = configurationCategoryMenuDisplay.getConfigurationCategoryDisplay();
+
+String categoryDisplayName = HtmlUtil.escape(configurationCategoryDisplay.getCategoryLabel(locale));
 
 PortletURL viewCategoryURL = renderResponse.createRenderURL();
 
@@ -50,9 +48,9 @@ String factoryConfigurationModelName = (componentResourceBundle != null) ? Langu
 PortalUtil.addPortletBreadcrumbEntry(request, factoryConfigurationModelName, null);
 
 portletDisplay.setShowBackIcon(true);
-portletDisplay.setURLBack(portletURL.toString());
+portletDisplay.setURLBack(redirect);
 
-renderResponse.setTitle(LanguageUtil.get(request, "category." + configurationModel.getCategory()));
+renderResponse.setTitle(categoryDisplayName);
 %>
 
 <div class="container-fluid container-fluid-max-xl">
@@ -121,8 +119,16 @@ renderResponse.setTitle(LanguageUtil.get(request, "category." + configurationMod
 					</span>
 				</h3>
 
+				<%
+				PortletURL iteratorURL = renderResponse.createRenderURL();
+
+				iteratorURL.setParameter("mvcRenderCommandName", "/view_factory_instances");
+				iteratorURL.setParameter("factoryPid", configurationModel.getFactoryPid());
+				%>
+
 				<liferay-ui:search-container
 					emptyResultsMessage='<%= LanguageUtil.format(request, "no-entries-for-x-have-been-added-yet", factoryConfigurationModelName) %>'
+					iteratorURL="<%= iteratorURL %>"
 					total="<%= configurationModelIterator.getTotal() %>"
 				>
 					<liferay-ui:search-container-results

@@ -1397,6 +1397,8 @@
 			<var name="entryTitle" value="Blogs Entry Title" />
 		</execute>
 
+		<execute function="Refresh" />
+
 		<execute macro="Blogs#addEntry">
 			<var name="entryContent" value="Blogs Entry Content 2" />
 			<var name="entryTitle" value="Blogs Entry Title 2" />
@@ -1551,6 +1553,11 @@
 			<var name="password" value="test" />
 			<var name="userEmailAddress" value="test@www.able.com" />
 			<var name="virtualHostsURL" value="http://www.baker.com:8080" />
+		</execute>
+
+		<execute macro="Navigator#gotoSpecificURLPage">
+			<var name="pageName" value="Private Blogs Page" />
+			<var name="url" value="http://www.able.com:8080" />
 		</execute>
 
 		<execute macro="BlogsNavigator#gotoEntryPG">

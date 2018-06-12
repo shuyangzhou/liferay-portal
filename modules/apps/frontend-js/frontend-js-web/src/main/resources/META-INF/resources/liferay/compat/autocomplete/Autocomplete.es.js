@@ -1,8 +1,8 @@
 import core from 'metal';
 import debounce from 'metal-debounce';
 import dom from 'metal-dom';
-import { CancellablePromise as Promise } from 'metal-promise';
-import { Align } from 'metal-position';
+import {CancellablePromise as Promise} from 'metal-promise';
+import {Align} from 'metal-position';
 import AutocompleteBase from './AutocompleteBase.es';
 import Soy from 'metal-soy';
 
@@ -17,10 +17,13 @@ const UP = 38;
 /*
  * Autocomplete component.
  */
+
 class Autocomplete extends AutocompleteBase {
+
 	/**
 	 * @inheritDoc
 	 */
+
 	attached() {
 		super.attached();
 		this.setAriaAttributes_();
@@ -37,24 +40,25 @@ class Autocomplete extends AutocompleteBase {
 	/**
 	 * Aligns main element to the input element.
 	 */
+
 	align() {
 		this.element.style.width = this.inputElement.offsetWidth + 'px';
 		var position = Align.align(this.element, this.inputElement, Align.Bottom, this.autoBestAlign);
 
 		dom.removeClasses(this.element, this.positionCss_);
 		switch (position) {
-			case Align.Top:
-			case Align.TopLeft:
-			case Align.TopRight:
-				this.positionCss_ = 'autocomplete-top';
-				break;
-			case Align.Bottom:
-			case Align.BottomLeft:
-			case Align.BottomRight:
-				this.positionCss_ = 'autocomplete-bottom';
-				break;
-			default:
-				this.positionCss_ = null;
+		case Align.Top:
+		case Align.TopLeft:
+		case Align.TopRight:
+			this.positionCss_ = 'autocomplete-top';
+			break;
+		case Align.Bottom:
+		case Align.BottomLeft:
+		case Align.BottomRight:
+			this.positionCss_ = 'autocomplete-bottom';
+			break;
+		default:
+			this.positionCss_ = null;
 
 		}
 		dom.addClasses(this.element, this.positionCss_);
@@ -65,6 +69,7 @@ class Autocomplete extends AutocompleteBase {
 	 * @param {number} index
 	 * @protected
 	 */
+
 	activateListItem_(index) {
 		let option = this.currentList_[index];
 		dom.removeClasses(this.currentList_[this.activeIndex_], 'active');
@@ -78,6 +83,7 @@ class Autocomplete extends AutocompleteBase {
 	 * @protected
 	 * @return {number} Index
 	 */
+
 	decreaseIndex_() {
 		return this.activeIndex_ === 0 ? this.getLastIndex_() : this.activeIndex_ - 1;
 	}
@@ -87,6 +93,7 @@ class Autocomplete extends AutocompleteBase {
 	 * @protected
 	 * @return {number} Index
 	 */
+
 	getLastIndex_() {
 		return this.getList().items.length - 1;
 	}
@@ -95,6 +102,7 @@ class Autocomplete extends AutocompleteBase {
 	 * Returns the `List` component being used to render the matched items.
 	 * @return {!List}
 	 */
+
 	getList() {
 		return this.components.list;
 	}
@@ -104,6 +112,7 @@ class Autocomplete extends AutocompleteBase {
 	 * @param {!Event} event
 	 * @protected
 	 */
+
 	handleActionKeys_() {
 		let selectedItem = this.getList().items[this.activeIndex_];
 		this.selectOption_(selectedItem);
@@ -114,6 +123,7 @@ class Autocomplete extends AutocompleteBase {
 	 * @param {!Event} event
 	 * @protected
 	 */
+
 	handleClick_(event) {
 		event.stopPropagation();
 	}
@@ -123,6 +133,7 @@ class Autocomplete extends AutocompleteBase {
 	 * focused autocomplete will not hide.
 	 * @param {!Event} event
 	 */
+
 	handleDocClick_() {
 		if (document.activeElement === this.inputElement) {
 			return;
@@ -134,6 +145,7 @@ class Autocomplete extends AutocompleteBase {
 	 * Handles input focus.
 	 * @param {!Event} event
 	 */
+
 	handleInputFocus_() {
 		this.request(this.inputElement.value);
 	}
@@ -143,6 +155,7 @@ class Autocomplete extends AutocompleteBase {
 	 * @param {number} index
 	 * @protected
 	 */
+
 	handleListRender_() {
 		if (this.visible) {
 			this.currentList_ = this.element.querySelectorAll('.listitem');
@@ -155,21 +168,22 @@ class Autocomplete extends AutocompleteBase {
 	 * @param {!Event} event
 	 * @protected
 	 */
+
 	handleKeyDown_(event) {
 		if (this.visible) {
 			switch (event.keyCode) {
-				case UP:
-					this.activateListItem_(this.decreaseIndex_());
-					event.preventDefault();
-					break;
-				case DOWN:
-					this.activateListItem_(this.increaseIndex_());
-					event.preventDefault();
-					break;
-				case ENTER:
-				case SPACE:
-					this.handleActionKeys_();
-					event.preventDefault();
+			case UP:
+				this.activateListItem_(this.decreaseIndex_());
+				event.preventDefault();
+				break;
+			case DOWN:
+				this.activateListItem_(this.increaseIndex_());
+				event.preventDefault();
+				break;
+			case ENTER:
+			case SPACE:
+				this.handleActionKeys_();
+				event.preventDefault();
 				break;
 			}
 		}
@@ -179,6 +193,7 @@ class Autocomplete extends AutocompleteBase {
 	 * Handles window resize events. Realigns the autocomplete results list to
 	 * the input field.
 	 */
+
 	handleWindowResize_() {
 		if (this.visible) {
 			this.align();
@@ -190,6 +205,7 @@ class Autocomplete extends AutocompleteBase {
 	 * @protected
 	 * @return {number} Index
 	 */
+
 	increaseIndex_() {
 		return this.activeIndex_ === this.getLastIndex_() ? 0 : this.activeIndex_ + 1;
 	}
@@ -200,6 +216,7 @@ class Autocomplete extends AutocompleteBase {
 	 * @param {!Element} item The list selected item.
 	 * @protected
 	 */
+
 	onListItemSelected_(item) {
 		let selectedIndex = parseInt(item.getAttribute('data-index'), 10);
 		let selectedItem = this.getList().items[selectedIndex];
@@ -209,11 +226,14 @@ class Autocomplete extends AutocompleteBase {
 	/**
 	 * @inheritDoc
 	 */
+
 	request(query) {
 		if (this.autocompleteClosing_) {
+
 			// While closing the input element will be focused, causing another
 			// request. This request should be ignored though, since we wish to close
 			// the dropdown list, not open it again.
+
 			return;
 		}
 
@@ -233,6 +253,7 @@ class Autocomplete extends AutocompleteBase {
 	 * @param {!Object} item The list selected item.
 	 * @protected
 	 */
+
 	selectOption_(selectedItem) {
 		this.autocompleteClosing_ = true;
 		this.emit('select', selectedItem);
@@ -244,6 +265,7 @@ class Autocomplete extends AutocompleteBase {
 	 * Set the required ARIA attributes to the inputElement.
 	 * @protected
 	 */
+
 	setAriaAttributes_() {
 		this.inputElement.setAttribute('aria-activedescendant', '');
 		this.inputElement.setAttribute('aria-autocomplete', 'list');
@@ -256,6 +278,7 @@ class Autocomplete extends AutocompleteBase {
 	 * Synchronization logic for `visible` state.
 	 * @param {boolean} visible
 	 */
+
 	syncVisible(visible) {
 		super.syncVisible(visible);
 
@@ -270,6 +293,7 @@ class Autocomplete extends AutocompleteBase {
 	 * @param {*} item
 	 * @protected
 	 */
+
 	assertItemObjectStructure_(item) {
 		if (!core.isObject(item)) {
 			throw new Promise.CancellationError('Autocomplete item must be an object');
@@ -286,7 +310,9 @@ Soy.register(Autocomplete, templates);
  * @type {!Object}
  * @static
  */
+
 Autocomplete.STATE = {
+
 	/**
 	 * Activate or Deactivate the suggestion of the best align region. If true,
 	 * the component will try to find a better region to align, otherwise,
@@ -294,6 +320,7 @@ Autocomplete.STATE = {
 	 * @type {boolean}
 	 * @default true.
 	 */
+
 	autoBestAlign: {
 		value: true,
 		validator: core.isBoolean
@@ -304,6 +331,7 @@ Autocomplete.STATE = {
 	 * the autocomplete.
 	 * @type {!function()}
 	 */
+
 	format: {
 		value: function(item) {
 			if (core.isString(item)) {
@@ -319,5 +347,5 @@ Autocomplete.STATE = {
 	}
 };
 
-export { Autocomplete };
+export {Autocomplete};
 export default Autocomplete;

@@ -14,12 +14,16 @@
 
 package com.liferay.source.formatter.checks;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.TextFormatter;
+import com.liferay.source.formatter.checks.util.BNDSourceUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author Peter Shin
@@ -36,9 +40,7 @@ public class BNDBundleCheck extends BaseFileCheck {
 			String fileName, String absolutePath, String content)
 		throws Exception {
 
-		if (!absolutePath.endsWith("/app.bnd") ||
-			!content.matches("(?s).*Liferay-Releng-Bundle:\\s*true.*")) {
-
+		if (!absolutePath.endsWith("/app.bnd")) {
 			return content;
 		}
 
@@ -49,43 +51,74 @@ public class BNDBundleCheck extends BaseFileCheck {
 		}
 
 		if (!content.matches(
-				"(?s).*Liferay-Releng-Fix-Delivery-Method:\\s*core.*")) {
+				"(?s).*Liferay-Releng-App-Title: " +
+					Pattern.quote("${liferay.releng.app.title.prefix}") +
+						" \\S+.*")) {
 
-			addMessage(
-				fileName,
-				StringBundler.concat(
-					"If the 'app.bnd' file contains 'Liferay-Releng-Bundle: ",
-					"true', it must have 'Liferay-Releng-Fix-Delivery-Method: ",
-					"core'"));
+			String appTitle = _getAppTitle(absolutePath);
+
+			content = BNDSourceUtil.updateInstruction(
+				content, "Liferay-Releng-App-Title",
+				"${liferay.releng.app.title.prefix} " + appTitle);
 		}
 
-		if (!content.matches("(?s).*Liferay-Releng-Marketplace:\\s*true.*")) {
-			addMessage(
-				fileName,
-				"If the 'app.bnd' file contains 'Liferay-Releng-Bundle: " +
-					"true', it must have 'Liferay-Releng-Marketplace: true'");
+		if (content.matches("(?s).*Liferay-Releng-Deprecated:\\s*true.*")) {
+			content = BNDSourceUtil.updateInstruction(
+				content, "Liferay-Releng-Bundle", "false");
 		}
 
-		if (!content.matches(
-				"(?s).*Liferay-Releng-Portal-Required:\\s*true.*")) {
+		content = BNDSourceUtil.updateInstruction(
+			content, "Liferay-Releng-Public", "${liferay.releng.public}");
+		content = BNDSourceUtil.updateInstruction(
+			content, "Liferay-Releng-Restart-Required", "true");
+		content = BNDSourceUtil.updateInstruction(
+			content, "Liferay-Releng-Support-Url", "http://www.liferay.com");
+		content = BNDSourceUtil.updateInstruction(
+			content, "Liferay-Releng-Supported", "${liferay.releng.supported}");
 
-			addMessage(
-				fileName,
-				StringBundler.concat(
-					"If the 'app.bnd' file contains 'Liferay-Releng-Bundle: ",
-					"true', it must have 'Liferay-Releng-Portal-Required: ",
-					"true'"));
-		}
-
-		if (!content.matches("(?s).*Liferay-Releng-Suite:[^\\S\\n]*\\S+.*")) {
-			addMessage(
-				fileName,
-				"If the 'app.bnd' file contains 'Liferay-Releng-Bundle: " +
-					"true', it must define a 'Liferay-Releng-Suite'");
+		for (String instruction : _REQUIRED_INSTRUCTIONS) {
+			if (!content.contains(instruction + ":")) {
+				content = StringBundler.concat(content, "\n", instruction, ":");
+			}
 		}
 
 		return content;
 	}
+
+	private String _getAppTitle(String absolutePath) {
+		int pos = absolutePath.lastIndexOf(StringPool.SLASH);
+
+		if (pos == -1) {
+			return StringPool.BLANK;
+		}
+
+		String dirName = absolutePath.substring(0, pos);
+
+		pos = dirName.lastIndexOf(StringPool.SLASH);
+
+		if (pos == -1) {
+			return StringPool.BLANK;
+		}
+
+		String shortDirName = dirName.substring(pos + 1);
+
+		if (shortDirName.startsWith("com-liferay-")) {
+			shortDirName = StringUtil.replaceFirst(
+				shortDirName, "com-liferay-", StringPool.BLANK);
+		}
+
+		return TextFormatter.format(shortDirName, TextFormatter.J);
+	}
+
+	private static final String[] _REQUIRED_INSTRUCTIONS = {
+		"Liferay-Releng-App-Description", "Liferay-Releng-App-Title",
+		"Liferay-Releng-Bundle", "Liferay-Releng-Category",
+		"Liferay-Releng-Demo-Url", "Liferay-Releng-Deprecated",
+		"Liferay-Releng-Fix-Delivery-Method", "Liferay-Releng-Labs",
+		"Liferay-Releng-Marketplace", "Liferay-Releng-Portal-Required",
+		"Liferay-Releng-Public", "Liferay-Releng-Restart-Required",
+		"Liferay-Releng-Support-Url", "Liferay-Releng-Supported"
+	};
 
 	private final List<String> _allowedFileNames = new ArrayList<>();
 

@@ -21,27 +21,79 @@ import com.liferay.jenkins.results.parser.PortalTestClassJob;
 import java.io.File;
 import java.io.IOException;
 
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Leslie Wong
  */
-public class SemVerBaselineBatchTestClassGroup extends BatchTestClassGroup {
+public class SemVerBaselineBatchTestClassGroup
+	extends ModulesBatchTestClassGroup {
 
-	public static class SemVerBaselineBatchTestClass extends BaseTestClass {
+	public static class SemVerBaselineBatchTestClass
+		extends ModulesBatchTestClass {
 
 		protected static SemVerBaselineBatchTestClass getInstance(
-			String batchName, File moduleBaseDir) {
+			File moduleBaseDir, File modulesDir) {
 
-			return new SemVerBaselineBatchTestClass(batchName, moduleBaseDir);
+			return new SemVerBaselineBatchTestClass(moduleBaseDir, modulesDir);
 		}
 
 		protected SemVerBaselineBatchTestClass(
-			String batchName, File moduleBaseDir) {
+			File moduleBaseDir, File modulesDir) {
 
 			super(moduleBaseDir);
 
-			addTestMethod(batchName);
+			final File baseDir = modulesDir;
+			final List<File> modulesProjectDirs = new ArrayList<>();
+			final Path moduleBaseDirPath = moduleBaseDir.toPath();
+
+			try {
+				Files.walkFileTree(
+					moduleBaseDirPath,
+					new SimpleFileVisitor<Path>() {
+
+						@Override
+						public FileVisitResult preVisitDirectory(
+							Path filePath, BasicFileAttributes attrs) {
+
+							if (filePath.equals(baseDir.toPath())) {
+								return FileVisitResult.CONTINUE;
+							}
+
+							File currentDirectory = filePath.toFile();
+
+							File bndBndFile = new File(
+								currentDirectory, "bnd.bnd");
+
+							File buildFile = new File(
+								currentDirectory, "build.gradle");
+
+							if (buildFile.exists() && bndBndFile.exists()) {
+								modulesProjectDirs.add(currentDirectory);
+
+								return FileVisitResult.SKIP_SUBTREE;
+							}
+
+							return FileVisitResult.CONTINUE;
+						}
+
+					});
+			}
+			catch (IOException ioe) {
+				throw new RuntimeException(
+					"Unable to get module marker files from " +
+						moduleBaseDir.getPath(),
+					ioe);
+			}
+
+			initTestMethods(modulesProjectDirs, modulesDir, "baseline");
 		}
 
 	}
@@ -50,27 +102,9 @@ public class SemVerBaselineBatchTestClassGroup extends BatchTestClassGroup {
 		String batchName, PortalTestClassJob portalTestClassJob) {
 
 		super(batchName, portalTestClassJob);
-
-		try {
-			excludesPathMatchers.addAll(
-				getPathMatchers(
-					getFirstPropertyValue("modules.excludes"),
-					portalGitWorkingDirectory.getWorkingDirectory()));
-
-			includesPathMatchers.addAll(
-				getPathMatchers(
-					getFirstPropertyValue("modules.includes"),
-					portalGitWorkingDirectory.getWorkingDirectory()));
-
-			setTestClasses();
-
-			setAxisTestClassGroups();
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException(ioe);
-		}
 	}
 
+	@Override
 	protected void setTestClasses() throws IOException {
 		PortalGitWorkingDirectory portalGitWorkingDirectory =
 			getPortalGitWorkingDirectory();
@@ -79,12 +113,12 @@ public class SemVerBaselineBatchTestClassGroup extends BatchTestClassGroup {
 			portalGitWorkingDirectory.getModifiedModuleDirsList(
 				excludesPathMatchers, includesPathMatchers);
 
+		File portalModulesBaseDir = new File(
+			portalGitWorkingDirectory.getWorkingDirectory(), "modules");
+
 		if (!testRelevantChanges) {
 			moduleDirsList = portalGitWorkingDirectory.getModuleDirsList(
 				excludesPathMatchers, includesPathMatchers);
-
-			File portalModulesBaseDir = new File(
-				portalGitWorkingDirectory.getWorkingDirectory(), "modules");
 
 			List<File> semVerMarkerFiles = JenkinsResultsParserUtil.findFiles(
 				portalModulesBaseDir, "\\.lfrbuild-semantic-versioning");
@@ -96,7 +130,8 @@ public class SemVerBaselineBatchTestClassGroup extends BatchTestClassGroup {
 
 		for (File moduleDir : moduleDirsList) {
 			testClasses.add(
-				SemVerBaselineBatchTestClass.getInstance(batchName, moduleDir));
+				SemVerBaselineBatchTestClass.getInstance(
+					moduleDir, portalModulesBaseDir));
 		}
 	}
 
