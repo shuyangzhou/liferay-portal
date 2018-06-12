@@ -1,11 +1,11 @@
 buildscript {
 	dependencies {
-		classpath group: "com.liferay", name: "com.liferay.gradle.plugins", version: "3.12.29"
+		classpath group: "com.liferay", name: "com.liferay.gradle.plugins", version: "3.12.38"
 	}
 
 	repositories {
 		maven {
-			url "https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public"
+			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
 		}
 	}
 }
@@ -33,7 +33,7 @@ dependencies {
 
 repositories {
 	maven {
-		url "https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public"
+		url "https://repository-cdn.liferay.com/nexus/content/groups/public"
 	}
 }
 

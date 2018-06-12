@@ -18,6 +18,8 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
+import com.liferay.exportimport.kernel.lar.StagedModelType;
+
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -58,6 +60,7 @@ public class FragmentEntryWrapper implements FragmentEntry,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
+		attributes.put("uuid", getUuid());
 		attributes.put("fragmentEntryId", getFragmentEntryId());
 		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
@@ -72,6 +75,7 @@ public class FragmentEntryWrapper implements FragmentEntry,
 		attributes.put("html", getHtml());
 		attributes.put("js", getJs());
 		attributes.put("previewFileEntryId", getPreviewFileEntryId());
+		attributes.put("lastPublishDate", getLastPublishDate());
 		attributes.put("status", getStatus());
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
@@ -82,6 +86,12 @@ public class FragmentEntryWrapper implements FragmentEntry,
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
+		String uuid = (String)attributes.get("uuid");
+
+		if (uuid != null) {
+			setUuid(uuid);
+		}
+
 		Long fragmentEntryId = (Long)attributes.get("fragmentEntryId");
 
 		if (fragmentEntryId != null) {
@@ -164,6 +174,12 @@ public class FragmentEntryWrapper implements FragmentEntry,
 
 		if (previewFileEntryId != null) {
 			setPreviewFileEntryId(previewFileEntryId);
+		}
+
+		Date lastPublishDate = (Date)attributes.get("lastPublishDate");
+
+		if (lastPublishDate != null) {
+			setLastPublishDate(lastPublishDate);
 		}
 
 		Integer status = (Integer)attributes.get("status");
@@ -308,6 +324,16 @@ public class FragmentEntryWrapper implements FragmentEntry,
 	}
 
 	/**
+	* Returns the last publish date of this fragment entry.
+	*
+	* @return the last publish date of this fragment entry
+	*/
+	@Override
+	public Date getLastPublishDate() {
+		return _fragmentEntry.getLastPublishDate();
+	}
+
+	/**
 	* Returns the modified date of this fragment entry.
 	*
 	* @return the modified date of this fragment entry
@@ -435,6 +461,16 @@ public class FragmentEntryWrapper implements FragmentEntry,
 	@Override
 	public String getUserUuid() {
 		return _fragmentEntry.getUserUuid();
+	}
+
+	/**
+	* Returns the uuid of this fragment entry.
+	*
+	* @return the uuid of this fragment entry
+	*/
+	@Override
+	public String getUuid() {
+		return _fragmentEntry.getUuid();
 	}
 
 	@Override
@@ -661,6 +697,16 @@ public class FragmentEntryWrapper implements FragmentEntry,
 	}
 
 	/**
+	* Sets the last publish date of this fragment entry.
+	*
+	* @param lastPublishDate the last publish date of this fragment entry
+	*/
+	@Override
+	public void setLastPublishDate(Date lastPublishDate) {
+		_fragmentEntry.setLastPublishDate(lastPublishDate);
+	}
+
+	/**
 	* Sets the modified date of this fragment entry.
 	*
 	* @param modifiedDate the modified date of this fragment entry
@@ -790,6 +836,16 @@ public class FragmentEntryWrapper implements FragmentEntry,
 		_fragmentEntry.setUserUuid(userUuid);
 	}
 
+	/**
+	* Sets the uuid of this fragment entry.
+	*
+	* @param uuid the uuid of this fragment entry
+	*/
+	@Override
+	public void setUuid(String uuid) {
+		_fragmentEntry.setUuid(uuid);
+	}
+
 	@Override
 	public com.liferay.portal.kernel.model.CacheModel<FragmentEntry> toCacheModel() {
 		return _fragmentEntry.toCacheModel();
@@ -832,6 +888,11 @@ public class FragmentEntryWrapper implements FragmentEntry,
 		}
 
 		return false;
+	}
+
+	@Override
+	public StagedModelType getStagedModelType() {
+		return _fragmentEntry.getStagedModelType();
 	}
 
 	@Override

@@ -41,14 +41,15 @@ if (configurationModel.isFactory()) {
 
 PortalUtil.addPortletBreadcrumbEntry(request, portletDisplay.getPortletDisplayName(), String.valueOf(renderResponse.createRenderURL()));
 
-String categoryDisplayName = LanguageUtil.get(request, "category." + configurationModel.getCategory());
+ConfigurationCategoryMenuDisplay configurationCategoryMenuDisplay = (ConfigurationCategoryMenuDisplay)request.getAttribute(ConfigurationAdminWebKeys.CONFIGURATION_CATEGORY_MENU_DISPLAY);
 
-PortletURL viewCategoryURL = renderResponse.createRenderURL();
+ConfigurationCategoryDisplay configurationCategoryDisplay = configurationCategoryMenuDisplay.getConfigurationCategoryDisplay();
 
-viewCategoryURL.setParameter("mvcRenderCommandName", "/view_category");
-viewCategoryURL.setParameter("configurationCategory", configurationModel.getCategory());
+String categoryDisplayName = HtmlUtil.escape(configurationCategoryDisplay.getCategoryLabel(locale));
 
-PortalUtil.addPortletBreadcrumbEntry(request, categoryDisplayName, viewCategoryURL.toString());
+String viewCategoryHREF = ConfigurationCategoryUtil.getHREF(configurationCategoryMenuDisplay, liferayPortletResponse, renderRequest, renderResponse);
+
+PortalUtil.addPortletBreadcrumbEntry(request, categoryDisplayName, viewCategoryHREF);
 
 ResourceBundleLoaderProvider resourceBundleLoaderProvider = (ResourceBundleLoaderProvider)request.getAttribute(ConfigurationAdminWebKeys.RESOURCE_BUNDLE_LOADER_PROVIDER);
 
@@ -192,7 +193,7 @@ renderResponse.setTitle(categoryDisplayName);
 					<%
 					ConfigurationFormRenderer configurationFormRenderer = (ConfigurationFormRenderer)request.getAttribute(ConfigurationAdminWebKeys.CONFIGURATION_FORM_RENDERER);
 
-					configurationFormRenderer.render(request, response);
+					configurationFormRenderer.render(request, PipingServletResponse.createPipingServletResponse(pageContext));
 					%>
 
 					<aui:button-row>

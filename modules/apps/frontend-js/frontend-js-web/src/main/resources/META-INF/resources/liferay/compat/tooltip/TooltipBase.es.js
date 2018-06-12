@@ -1,8 +1,8 @@
 import core from 'metal';
 import dom from 'metal-dom';
-import { Align } from 'metal-position';
+import {Align} from 'metal-position';
 import Component from 'metal-component';
-import { EventHandler } from 'metal-events';
+import {EventHandler} from 'metal-events';
 
 /**
  * The base class to be shared between components that have tooltip behavior.
@@ -10,10 +10,13 @@ import { EventHandler } from 'metal-events';
  * between components. The Tooltip component itself extends from this, as does
  * the crystal Popover component, which can be accessed at metal/crystal-popover.
  */
+
 class TooltipBase extends Component {
+
 	/**
 	 * @inheritDoc
 	 */
+
 	attached() {
 		this.align();
 		this.syncTriggerEvents(this.triggerEvents);
@@ -22,6 +25,7 @@ class TooltipBase extends Component {
 	/**
 	 * @inheritDoc
 	 */
+
 	created() {
 		this.currentAlignElement = this.alignElement;
 		this.eventHandler_ = new EventHandler();
@@ -30,6 +34,7 @@ class TooltipBase extends Component {
 	/**
 	 * @inheritDoc
 	 */
+
 	detached() {
 		this.eventHandler_.removeAllListeners();
 	}
@@ -37,6 +42,7 @@ class TooltipBase extends Component {
 	/**
 	 * @inheritDoc
 	 */
+
 	disposeInternal() {
 		super.disposeInternal();
 		clearTimeout(this.delay_);
@@ -49,6 +55,7 @@ class TooltipBase extends Component {
 	 * axis.
 	 * @param {Element=} opt_alignElement Optional element to align with.
 	 */
+
 	align(opt_alignElement) {
 		this.syncCurrentAlignElement(opt_alignElement || this.currentAlignElement);
 	}
@@ -58,6 +65,7 @@ class TooltipBase extends Component {
 	 * @param {number} delay
 	 * @private
 	 */
+
 	callAsync_(fn, delay) {
 		clearTimeout(this.delay_);
 		this.delay_ = setTimeout(fn.bind(this), delay);
@@ -68,6 +76,7 @@ class TooltipBase extends Component {
 	 * @param {!Event} event
 	 * @protected
 	 */
+
 	handleHide(event) {
 		const delegateTarget = event.delegateTarget;
 		const interactingWithDifferentTarget = delegateTarget && (delegateTarget !== this.currentAlignElement);
@@ -77,7 +86,8 @@ class TooltipBase extends Component {
 			}
 			if (interactingWithDifferentTarget) {
 				this.currentAlignElement = delegateTarget;
-			} else {
+			}
+			else {
 				this.visible = false;
 				this.syncVisible(false);
 			}
@@ -89,6 +99,7 @@ class TooltipBase extends Component {
 	 * @param {!Event} event
 	 * @protected
 	 */
+
 	handleShow(event) {
 		const delegateTarget = event.delegateTarget;
 		super.syncVisible(true);
@@ -103,10 +114,12 @@ class TooltipBase extends Component {
 	 * @param {!Event} event
 	 * @protected
 	 */
+
 	handleToggle(event) {
 		if (this.visible) {
 			this.handleHide(event);
-		} else {
+		}
+		else {
 			this.handleShow(event);
 		}
 	}
@@ -115,6 +128,7 @@ class TooltipBase extends Component {
 	 * Locks tooltip visibility.
 	 * @param {!Event} event
 	 */
+
 	lock() {
 		this.locked_ = true;
 	}
@@ -123,6 +137,7 @@ class TooltipBase extends Component {
 	 * Unlocks tooltip visibility.
 	 * @param {!Event} event
 	 */
+
 	unlock(event) {
 		this.locked_ = false;
 		this.handleHide(event);
@@ -133,6 +148,7 @@ class TooltipBase extends Component {
 	 * with the `alignElement`.
 	 * @param {Element} alignElement
 	 */
+
 	syncAlignElement(alignElement) {
 		this.currentAlignElement = alignElement;
 	}
@@ -142,6 +158,7 @@ class TooltipBase extends Component {
 	 * @param {Element} alignElement
 	 * @param {Element} prevAlignElement
 	 */
+
 	syncCurrentAlignElement(alignElement, prevAlignElement) {
 		if (prevAlignElement) {
 			alignElement.removeAttribute('aria-describedby');
@@ -160,6 +177,7 @@ class TooltipBase extends Component {
 	/**
 	 * State synchronization logic for `position`.
 	 */
+
 	syncPosition() {
 		this.syncCurrentAlignElement(this.currentAlignElement);
 	}
@@ -167,6 +185,7 @@ class TooltipBase extends Component {
 	/**
 	 * State synchronization logic for `selector`.
 	 */
+
 	syncSelector() {
 		this.syncTriggerEvents(this.triggerEvents);
 	}
@@ -175,6 +194,7 @@ class TooltipBase extends Component {
 	 * State synchronization logic for `triggerEvents`.
 	 * @param {!Array<string>} triggerEvents
 	 */
+
 	syncTriggerEvents(triggerEvents) {
 		if (!this.inDocument) {
 			return;
@@ -192,7 +212,8 @@ class TooltipBase extends Component {
 		if (triggerEvents[0] === triggerEvents[1]) {
 			this.eventHandler_.add(
 				dom.delegate(document, triggerEvents[0], selector, this.handleToggle.bind(this)));
-		} else {
+		}
+		else {
 			this.eventHandler_.add(
 				dom.delegate(document, triggerEvents[0], selector, this.handleShow.bind(this)),
 				dom.delegate(document, triggerEvents[1], selector, this.handleHide.bind(this)));
@@ -202,6 +223,7 @@ class TooltipBase extends Component {
 	/**
 	 * State synchronization logic for `visible`. Realigns the tooltip.
 	 */
+
 	syncVisible() {
 		this.align();
 	}
@@ -212,6 +234,7 @@ class TooltipBase extends Component {
  * @see `Align` class.
  * @static
  */
+
 TooltipBase.Align = Align;
 
 /**
@@ -219,11 +242,14 @@ TooltipBase.Align = Align;
  * @type {!Object}
  * @static
  */
+
 TooltipBase.STATE = {
+
 	/**
 	 * The current position of the tooltip after being aligned via `Align.align`.
 	 * @type {number}
 	 */
+
 	alignedPosition: {
 		validator: TooltipBase.Align.isValidPosition
 	},
@@ -232,6 +258,7 @@ TooltipBase.STATE = {
 	 * Element to align tooltip with.
 	 * @type {Element}
 	 */
+
 	alignElement: {
 		setter: dom.toElement
 	},
@@ -240,6 +267,7 @@ TooltipBase.STATE = {
 	 * The current element aligned tooltip with.
 	 * @type {Element}
 	 */
+
 	currentAlignElement: {
 		internal: true,
 		setter: dom.toElement
@@ -250,6 +278,7 @@ TooltipBase.STATE = {
 	 * @type {!Array<number>}
 	 * @default [ 500, 250 ]
 	 */
+
 	delay: {
 		validator: Array.isArray,
 		value: [500, 250]
@@ -260,6 +289,7 @@ TooltipBase.STATE = {
 	 * @type {!Array<string>}
 	 * @default ['mouseenter', 'mouseleave']
 	 */
+
 	triggerEvents: {
 		validator: Array.isArray,
 		value: ['mouseenter', 'mouseleave']
@@ -270,6 +300,7 @@ TooltipBase.STATE = {
 	 * specified targets by setting the `alignElement`.
 	 * @type {?string}
 	 */
+
 	selector: {
 		validator: core.isString
 	},
@@ -280,6 +311,7 @@ TooltipBase.STATE = {
 	 * @type {number}
 	 * @default Align.Bottom
 	 */
+
 	position: {
 		validator: TooltipBase.Align.isValidPosition,
 		value: TooltipBase.Align.Bottom
@@ -289,6 +321,7 @@ TooltipBase.STATE = {
 	 * Content to be placed inside tooltip.
 	 * @type {string}
 	 */
+
 	title: {
 	}
 };
@@ -298,7 +331,8 @@ TooltipBase.STATE = {
  * @type {!Array}
  * @static
  */
+
 TooltipBase.PositionClasses = ['top', 'right', 'bottom', 'left'];
 
-export { TooltipBase };
+export {TooltipBase};
 export default TooltipBase;

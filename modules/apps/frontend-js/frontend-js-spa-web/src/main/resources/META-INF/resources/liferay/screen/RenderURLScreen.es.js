@@ -5,7 +5,7 @@ import EventScreen from './EventScreen.es';
 /**
  * RenderURLScreen
  *
- * Inherits from {@link EventScreen|EventScreen}. This is the screen used for 
+ * Inherits from {@link EventScreen|EventScreen}. This is the screen used for
  * all requests made to RenderURLs.
  */
 

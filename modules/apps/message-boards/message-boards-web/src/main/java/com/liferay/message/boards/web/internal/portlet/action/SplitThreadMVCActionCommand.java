@@ -27,6 +27,7 @@ import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.message.boards.service.MBMessageService;
 import com.liferay.message.boards.service.MBThreadService;
 import com.liferay.message.boards.settings.MBGroupServiceSettings;
+import com.liferay.portal.kernel.portlet.LiferayActionResponse;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -39,7 +40,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portlet.ActionResponseImpl;
 
 import java.io.InputStream;
 
@@ -156,8 +156,10 @@ public class SplitThreadMVCActionCommand extends BaseMVCActionCommand {
 				message.isAllowPingbacks(), serviceContext);
 		}
 
-		PortletURL portletURL =
-			((ActionResponseImpl)actionResponse).createRenderURL();
+		LiferayActionResponse liferayActionResponse =
+			(LiferayActionResponse)actionResponse;
+
+		PortletURL portletURL = liferayActionResponse.createRenderURL();
 
 		portletURL.setParameter(
 			"mvcRenderCommandName", "/message_boards/view_message");

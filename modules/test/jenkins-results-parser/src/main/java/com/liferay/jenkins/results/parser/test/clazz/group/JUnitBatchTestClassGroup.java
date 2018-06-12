@@ -16,6 +16,7 @@ package com.liferay.jenkins.results.parser.test.clazz.group;
 
 import com.google.common.collect.Lists;
 
+import com.liferay.jenkins.results.parser.CentralMergePullRequestJob;
 import com.liferay.jenkins.results.parser.GitWorkingDirectory;
 import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 import com.liferay.jenkins.results.parser.PortalTestClassJob;
@@ -283,6 +284,13 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 
 		super(batchName, portalTestClassJob);
 
+		if (portalTestClassJob instanceof CentralMergePullRequestJob) {
+			_includeUnstagedTestClassFiles = true;
+		}
+		else {
+			_includeUnstagedTestClassFiles = false;
+		}
+
 		_setAutoBalanceTestFiles();
 
 		_setTestClassNamesExcludesRelativeGlobs();
@@ -293,6 +301,12 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 		_setIncludeAutoBalanceTests();
 
 		setAxisTestClassGroups();
+	}
+
+	protected List<String> getReleaseTestClassNamesRelativeGlobs(
+		List<String> testClassNamesRelativeGlobs) {
+
+		return testClassNamesRelativeGlobs;
 	}
 
 	protected List<String> getRelevantTestClassNamesRelativeGlobs(
@@ -564,7 +578,8 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 		}
 
 		List<File> modifiedJavaFilesList =
-			portalGitWorkingDirectory.getModifiedFilesList(".java");
+			portalGitWorkingDirectory.getModifiedFilesList(
+				".java", _includeUnstagedTestClassFiles);
 
 		if (!_autoBalanceTestFiles.isEmpty() &&
 			!modifiedJavaFilesList.isEmpty()) {
@@ -611,7 +626,12 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 			testClassNamesIncludesRelativeGlobs,
 			testClassNamesIncludesPropertyValue.split(","));
 
-		if (testRelevantChanges) {
+		if (testReleaseBundle) {
+			testClassNamesIncludesRelativeGlobs =
+				getReleaseTestClassNamesRelativeGlobs(
+					testClassNamesIncludesRelativeGlobs);
+		}
+		else if (testRelevantChanges) {
 			testClassNamesIncludesRelativeGlobs =
 				getRelevantTestClassNamesRelativeGlobs(
 					testClassNamesIncludesRelativeGlobs);
@@ -637,6 +657,7 @@ public class JUnitBatchTestClassGroup extends BatchTestClassGroup {
 
 	private final List<File> _autoBalanceTestFiles = new ArrayList<>();
 	private boolean _includeAutoBalanceTests;
+	private final boolean _includeUnstagedTestClassFiles;
 	private final Pattern _packagePathPattern = Pattern.compile(
 		".*/(?<packagePath>com/.*)");
 

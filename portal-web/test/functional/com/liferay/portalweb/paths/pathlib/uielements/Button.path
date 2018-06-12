@@ -144,6 +144,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>APPLY</td>
+	<td>//button[contains(.,'Apply')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>APPLY_EFFECTS</td>
 	<td>//div[contains(@class,'controls-container') and contains(@class,'open')]//button[contains(@class,'btn') and contains(.,'Apply')]</td>
 	<td></td>
@@ -459,6 +464,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>MAP_TO</td>
+	<td>//button[contains(.,'Map to')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>MERGE</td>
 	<td>//button[contains(.,'Merge')]</td>
 	<td></td>
@@ -761,11 +771,6 @@
 <tr>
 	<td>MAIN_CONTENT_SUBMIT</td>
 	<td>//div[@id='main-content']//button[@type='submit']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>MODAL_CONTENT_SUBMIT</td>
-	<td>//div[@class='modal-content']//button[contains(.,'Submit')]</td>
 	<td></td>
 </tr>
 <tr>

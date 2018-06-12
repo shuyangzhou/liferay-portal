@@ -22,14 +22,22 @@ import com.liferay.portal.kernel.model.PortletURLListener;
  */
 public class PortletURLListenerImpl implements PortletURLListener {
 
-	public PortletURLListenerImpl(String listenerClass, PortletApp portletApp) {
+	public PortletURLListenerImpl(
+		String listenerClass, int ordinal, PortletApp portletApp) {
+
 		_listenerClass = listenerClass;
+		_ordinal = ordinal;
 		_portletApp = portletApp;
 	}
 
 	@Override
 	public String getListenerClass() {
 		return _listenerClass;
+	}
+
+	@Override
+	public int getOrdinal() {
+		return _ordinal;
 	}
 
 	@Override
@@ -43,11 +51,17 @@ public class PortletURLListenerImpl implements PortletURLListener {
 	}
 
 	@Override
+	public void setOrdinal(int ordinal) {
+		_ordinal = ordinal;
+	}
+
+	@Override
 	public void setPortletApp(PortletApp portletApp) {
 		_portletApp = portletApp;
 	}
 
 	private String _listenerClass;
+	private int _ordinal;
 	private PortletApp _portletApp;
 
 }

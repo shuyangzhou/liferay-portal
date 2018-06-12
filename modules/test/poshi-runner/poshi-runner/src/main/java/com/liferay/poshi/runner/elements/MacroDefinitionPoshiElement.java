@@ -36,11 +36,11 @@ public class MacroDefinitionPoshiElement extends DefinitionPoshiElement {
 
 	@Override
 	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (isElementType(readableSyntax)) {
+		if (isElementType(poshiScript)) {
 			return new MacroDefinitionPoshiElement(
-				parentPoshiElement, readableSyntax);
+				parentPoshiElement, poshiScript);
 		}
 
 		return null;
@@ -60,9 +60,9 @@ public class MacroDefinitionPoshiElement extends DefinitionPoshiElement {
 	}
 
 	protected MacroDefinitionPoshiElement(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		super(parentPoshiElement, readableSyntax);
+		super(parentPoshiElement, poshiScript);
 	}
 
 	protected String getFileType() {

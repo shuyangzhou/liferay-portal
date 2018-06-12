@@ -1081,7 +1081,8 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="locale" value="ja-jp" />
+			<var name="locale" value="ja_JP" />
+			<var name="textIcon" value="日本語-日本" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -1097,7 +1098,8 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="locale" value="en-us" />
+			<var name="locale" value="en_US" />
+			<var name="textIcon" value="English-United States" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -1671,8 +1673,10 @@
 			<var name="webContentTitle" value="Web Content Title" />
 		</execute>
 
+		<var method="TestPropsUtil#get('portal.url')" name="portalURL" />
+
 		<execute macro="AlloyEditor#addSourceContent">
-			<var name="content"><![CDATA[<p><span><a href="http://localhost:8080/web/guest/home/-/testportlet">text</a></span></p>]]></var>
+			<var name="content"><![CDATA[<p><span><a href="${portalURL}/web/guest/home/-/testportlet">text</a></span></p>]]></var>
 		</execute>
 
 		<execute macro="PortletEntry#publish" />
@@ -3613,7 +3617,8 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="locale" value="fr-fr" />
+			<var name="locale" value="fr_FR" />
+			<var name="textIcon" value="français-France" />
 		</execute>
 
 		<execute macro="WebContent#viewPGViaWCD">
@@ -3646,7 +3651,8 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="locale" value="zh-cn" />
+			<var name="locale" value="zh-CN" />
+			<var name="textIcon" value="中文-中国" />
 		</execute>
 
 		<execute macro="WebContent#viewPGViaWCD">
@@ -3671,7 +3677,8 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="locale" value="en-us" />
+			<var name="locale" value="en_US" />
+			<var name="textIcon" value="English-United States" />
 		</execute>
 	</command>
 

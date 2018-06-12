@@ -6,12 +6,15 @@ import templates from './ListItem.soy.js';
 /**
  * List component.
  */
+
 class ListItem extends Component {
+
 	/**
 	 * Setter function for the `item` state key.
 	 * @param {!Object} item
 	 * @protected
 	 */
+
 	setterItemFn_(item) {
 		if (item.textPrimary && core.isString(item.textPrimary)) {
 			item.textPrimary = Soy.toIncDom(item.textPrimary);
@@ -35,11 +38,14 @@ Soy.register(ListItem, templates);
  * @type {Object}
  * @static
  */
+
 ListItem.STATE = {
+
 	/**
 	 * A unique identifier for each item.
 	 * @type {string}
 	 */
+
 	id: {
 		valueFn: () => 'list-component-item' + core.getUid()
 	},
@@ -48,6 +54,7 @@ ListItem.STATE = {
 	 * The item to be rendered.
 	 * @type {!Object}
 	 */
+
 	item: {
 		validator: core.isObject,
 		setter: 'setterItemFn_'
@@ -57,10 +64,11 @@ ListItem.STATE = {
 	 * The index of the item in the list.
 	 * @type {number}
 	 */
+
 	index: {
 		value: -1
 	}
 };
 
-export { ListItem };
+export {ListItem};
 export default ListItem;

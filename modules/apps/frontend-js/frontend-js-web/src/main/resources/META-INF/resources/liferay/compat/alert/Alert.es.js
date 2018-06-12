@@ -1,10 +1,10 @@
 'use strict';
 
-import { core } from 'metal';
+import {core} from 'metal';
 import dom from 'metal-dom';
 import Anim from 'metal-anim';
 import Component from 'metal-component';
-import { EventHandler } from 'metal-events';
+import {EventHandler} from 'metal-events';
 import Soy from 'metal-soy';
 
 import templates from './Alert.soy';
@@ -12,10 +12,13 @@ import templates from './Alert.soy';
 /**
  * Alert component.
  */
+
 class Alert extends Component {
+
 	/**
 	 * @inheritDoc
 	 */
+
 	created() {
 		this.eventHandler_ = new EventHandler();
 	}
@@ -23,6 +26,7 @@ class Alert extends Component {
 	/**
 	 * @inheritDoc
 	 */
+
 	detached() {
 		super.detached();
 		this.eventHandler_.removeAllListeners();
@@ -32,6 +36,7 @@ class Alert extends Component {
 	/**
 	 * Closes the alert, disposing it once the animation ends.
 	 */
+
 	close() {
 		dom.once(this.element, 'animationend', this.dispose.bind(this));
 		dom.once(this.element, 'transitionend', this.dispose.bind(this));
@@ -44,6 +49,7 @@ class Alert extends Component {
 	 * @param {!Event} event
 	 * @protected
 	 */
+
 	handleDocClick_(event) {
 		if (!this.element.contains(event.target)) {
 			this.hide();
@@ -53,6 +59,7 @@ class Alert extends Component {
 	/**
 	 * Hide the alert.
 	 */
+
 	hide() {
 		this.visible = false;
 	}
@@ -62,15 +69,17 @@ class Alert extends Component {
 	 * hiding animation is done.
 	 * @protected
 	 */
+
 	hideCompletely_() {
 		if (!this.isDisposed() && !this.visible) {
 			super.syncVisible(false);
 		}
- 	}
+	}
 
 	/**
 	 * Toggles the visibility of the alert.
 	 */
+
 	toggle() {
 		this.visible = !this.visible;
 	}
@@ -78,6 +87,7 @@ class Alert extends Component {
 	/**
 	 * Show the alert.
 	 */
+
 	show() {
 		this.visible = true;
 	}
@@ -87,10 +97,12 @@ class Alert extends Component {
 	 * a click event handler will be attached.
 	 * @param {boolean} dismissible
 	 */
+
 	syncDismissible(dismissible) {
 		if (dismissible) {
 			this.eventHandler_.add(dom.on(document, 'click', this.handleDocClick_.bind(this)));
-		} else {
+		}
+		else {
 			this.eventHandler_.removeAllListeners();
 		}
 	}
@@ -100,6 +112,7 @@ class Alert extends Component {
 	 * the alert will hide in the time (ms) defined.
 	 * @param {?number} hideDelay
 	 */
+
 	syncHideDelay(hideDelay) {
 		if (core.isNumber(hideDelay) && this.visible) {
 			clearTimeout(this.delay_);
@@ -112,12 +125,14 @@ class Alert extends Component {
 	 * based on the visibility of the alert.
 	 * @param {boolean} visible
 	 */
+
 	syncVisible(visible, prevVisible) {
 		var shouldAsync = false;
 		if (!visible) {
 			dom.once(this.element, 'animationend', this.hideCompletely_.bind(this));
 			dom.once(this.element, 'transitionend', this.hideCompletely_.bind(this));
-		} else if (core.isDef(prevVisible)) {
+		}
+		else if (core.isDef(prevVisible)) {
 			shouldAsync = true;
 			super.syncVisible(true);
 		}
@@ -132,6 +147,7 @@ class Alert extends Component {
 
 			// Some browsers do not fire transitionend events when running in background
 			// tab, see https://bugzilla.mozilla.org/show_bug.cgi?id=683696.
+
 			Anim.emulateEnd(this.element);
 
 			if (visible && core.isNumber(this.hideDelay)) {
@@ -140,11 +156,14 @@ class Alert extends Component {
 		};
 
 		if (shouldAsync) {
+
 			// We need to start the animation asynchronously because of the possible
 			// previous call to `super.syncVisible`, which doesn't allow the show
 			// animation to work as expected.
+
 			setTimeout(showOrHide, 0);
-		} else {
+		}
+		else {
 			showOrHide();
 		}
 	}
@@ -156,11 +175,14 @@ Soy.register(Alert, templates);
  * @type {!Object}
  * @static
  */
+
 Alert.STATE = {
+
 	/**
 	 * The CSS classes that should be added to the alert when being shown/hidden.
 	 * @type {!Object}
 	 */
+
 	animClasses: {
 		validator: core.isObject,
 		value: {
@@ -173,6 +195,7 @@ Alert.STATE = {
 	 * The body content of the alert.
 	 * @type {html|string}
 	 */
+
 	body: {
 	},
 
@@ -180,6 +203,7 @@ Alert.STATE = {
 	 * The content of close button of the alert.
 	 * @type {html|string}
 	 */
+
 	closeButtonHtml: {
 	},
 
@@ -188,6 +212,7 @@ Alert.STATE = {
 	 * @type {boolean}
 	 * @default true
 	 */
+
 	dismissible: {
 		validator: core.isBoolean,
 		value: true
@@ -198,6 +223,7 @@ Alert.STATE = {
 	 * @type {string}
 	 * @default 'alert-success'
 	 */
+
 	elementClasses: {
 		value: 'alert-success'
 	},
@@ -206,6 +232,7 @@ Alert.STATE = {
 	 * Delay hiding the alert (ms).
 	 * @type {?number}
 	 */
+
 	hideDelay: {
 		validator: core.isNumber
 	},
@@ -215,11 +242,12 @@ Alert.STATE = {
 	 * @type {boolean}
 	 * @default false
 	 */
+
 	visible: {
 		validator: core.isBoolean,
 		value: false
 	}
 };
 
-export { Alert };
+export {Alert};
 export default Alert;

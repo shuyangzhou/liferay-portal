@@ -516,7 +516,8 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="locale" value="de-de" />
+			<var name="locale" value="de-DE" />
+			<var name="textIcon" value="Deutsch-Deutschland" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -535,7 +536,8 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="locale" value="fr-fr" />
+			<var name="locale" value="fr_FR" />
+			<var name="textIcon" value="français-France" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -558,7 +560,8 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="locale" value="en-us" />
+			<var name="locale" value="en_US" />
+			<var name="textIcon" value="English-United States" />
 		</execute>
 	</command>
 
@@ -1088,7 +1091,8 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="locale" value="de-de" />
+			<var name="locale" value="de-DE" />
+			<var name="textIcon" value="Deutsch-Deutschland" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -1102,7 +1106,8 @@
 		</execute>
 
 		<execute macro="LanguagePortlet#selectLanguagePG">
-			<var name="locale" value="en-us" />
+			<var name="locale" value="en_US" />
+			<var name="textIcon" value="English-United States" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -2430,7 +2435,9 @@
 			<var name="dmDocumentTitle" value="DM Document Title" />
 			<var name="dmDocumentUploader" value="Test Test" />
 			<var name="dmDocumentVersionNumber" value="1.0" />
-			<var name="workflow" value="Approved" />
+			<var name="portletName" value="Documents and Media" />
+			<var name="searchTerm" value="DM Document Title" />
+			<var name="workflow" value="APPROVED" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">
@@ -2443,8 +2450,8 @@
 			<var name="pageName" value="Documents and Media Page" />
 		</execute>
 
-		<execute macro="Portlet#changeDisplayStyle">
-			<var name="displayStyle" value="descriptive" />
+		<execute macro="LexiconEntry#changeDisplayStyle">
+			<var name="displayStyle" value="list" />
 		</execute>
 
 		<execute macro="DMDocument#editPG">
@@ -2466,7 +2473,9 @@
 			<var name="dmDocumentTitle" value="DM Document Title Edit" />
 			<var name="dmDocumentUploader" value="Test Test" />
 			<var name="dmDocumentVersionNumber" value="1.1" />
-			<var name="workflow" value="Approved" />
+			<var name="portletName" value="Documents and Media" />
+			<var name="searchTerm" value="DM Document Title" />
+			<var name="workflow" value="APPROVED" />
 		</execute>
 
 		<execute macro="Navigator#gotoPage">

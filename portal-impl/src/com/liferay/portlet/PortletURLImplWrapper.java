@@ -14,19 +14,39 @@
 
 package com.liferay.portlet;
 
+import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.LiferayPortletURL;
+import com.liferay.portal.kernel.portlet.LiferayPortletURLWrapper;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portlet.internal.PortletResponseImpl;
+
+import javax.portlet.PortletResponse;
+
 /**
  * @author Brian Wing Shun Chan
  */
-public class PortletURLImplWrapper extends PortletURLImpl {
+public class PortletURLImplWrapper extends LiferayPortletURLWrapper {
 
 	public PortletURLImplWrapper(
-		PortletResponseImpl portletResponseImpl, long plid, String lifecycle) {
+		PortletResponse portletResponse, long plid, String lifecycle) {
 
-		super(
-			portletResponseImpl.getPortletRequest(),
-			portletResponseImpl.getPortlet(), null, lifecycle);
+		super(_createLiferayPortletURL(portletResponse, lifecycle));
 
 		setPlid(plid);
+	}
+
+	private static LiferayPortletURL _createLiferayPortletURL(
+		PortletResponse portletResponse, String lifecycle) {
+
+		LiferayPortletResponse liferayPortletResponse =
+			LiferayPortletUtil.getLiferayPortletResponse(portletResponse);
+
+		PortletResponseImpl portletResponseImpl = (PortletResponseImpl)
+			liferayPortletResponse;
+
+		return PortletURLFactoryUtil.create(
+			portletResponseImpl.getPortletRequest(),
+			portletResponseImpl.getPortlet(), null, lifecycle);
 	}
 
 }
