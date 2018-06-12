@@ -61,7 +61,14 @@ class Utils {
 		);
 
 		Liferay.Portlet.readyCounter = 0;
+
+		Liferay.destroyComponents(
+			function(component, destroyConfig) {
+				return destroyConfig.destroyOnNavigate;
+			}
+		);
 	}
+
 }
 
 export default Utils;

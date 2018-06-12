@@ -2,15 +2,18 @@ import core from 'metal';
 import dom from 'metal-dom';
 import CancellablePromise from 'metal-promise';
 import Component from 'metal-component';
-import { EventHandler } from 'metal-events';
+import {EventHandler} from 'metal-events';
 
 /*
  * AutocompleteBase component.
  */
+
 class AutocompleteBase extends Component {
+
 	/**
 	 * @inheritDoc
 	 */
+
 	created() {
 		this.eventHandler_ = new EventHandler();
 		this.on('select', this.select);
@@ -19,6 +22,7 @@ class AutocompleteBase extends Component {
 	/**
 	 * @inheritDoc
 	 */
+
 	attached() {
 		if (this.inputElement) {
 			this.eventHandler_.add(dom.on(this.inputElement, 'input', this.handleUserInput_.bind(this)));
@@ -28,6 +32,7 @@ class AutocompleteBase extends Component {
 	/**
 	 * @inheritDoc
 	 */
+
 	detached() {
 		this.eventHandler_.removeAllListeners();
 	}
@@ -37,6 +42,7 @@ class AutocompleteBase extends Component {
 	 * @param {!Event} event
 	 * @protected
 	 */
+
 	handleUserInput_() {
 		this.request(this.inputElement.value);
 	}
@@ -46,6 +52,7 @@ class AutocompleteBase extends Component {
 	 * @param {string} query
 	 * @return {!CancellablePromise} Deferred request.
 	 */
+
 	request(query) {
 		var self = this;
 
@@ -74,6 +81,7 @@ class AutocompleteBase extends Component {
 	 *     have to be normalized.
 	 * @protected
 	 */
+
 	setData_(val) {
 		if (!core.isFunction(val)) {
 			return function() {
@@ -89,12 +97,15 @@ class AutocompleteBase extends Component {
  * @type {!Object}
  * @static
  */
+
 AutocompleteBase.STATE = {
+
 	/**
 	 * List's main element ID value. It is also used to compose List items' id.
 	 * @type {string}
 	 * @default autocomplete- + core.getUid()
 	 */
+
 	listId: {
 		valueFn: () => 'autocomplete-' + core.getUid()
 	},
@@ -105,6 +116,7 @@ AutocompleteBase.STATE = {
 	 * Promise, it should be resolved with an array containing the results.
 	 * @type {Array.<object>|function}
 	 */
+
 	data: {
 		setter: 'setData_'
 	},
@@ -114,6 +126,7 @@ AutocompleteBase.STATE = {
 	 * @type {function}
 	 * @default Identity function.
 	 */
+
 	format: {
 		value: core.identityFunction,
 		validator: core.isFunction
@@ -123,6 +136,7 @@ AutocompleteBase.STATE = {
 	 * The element which will be used source for the data queries.
 	 * @type {DOMElement|string}
 	 */
+
 	inputElement: {
 		setter: dom.toElement
 	},
@@ -137,6 +151,7 @@ AutocompleteBase.STATE = {
 	 *	   this.inputElement.focus();
 	 *   }
 	 */
+
 	select: {
 		value: function(selectedValue) {
 			this.inputElement.value = selectedValue.text;
@@ -149,11 +164,12 @@ AutocompleteBase.STATE = {
 	 * Indicates if the component is visible or not.
 	 * @type {boolean}
 	 */
+
 	visible: {
 		validator: core.isBoolean,
 		value: false
 	}
 };
 
-export { AutocompleteBase };
+export {AutocompleteBase};
 export default AutocompleteBase;
