@@ -16,6 +16,24 @@
 	margin-left: 10px;
 }
 
+.ddm-form-builder-buttons {
+	.btn-default {
+		margin-left: 12px;
+
+		&.btn-link {
+			font-weight: 600;
+
+			&:focus {
+				box-shadow: none;
+			}
+		}
+
+		&.btn-primary {
+			margin-left: 0px;
+		}
+	}
+}
+
 .ddm-form-body-content {
 	margin-top: $baseline * 4;
 }
@@ -279,9 +297,8 @@
 		.form-builder-content,
 		.lfr-ddm-form-content {
 			background: #FFF;
-			border: 1px solid #DCE0E3;
-			border-radius: 1px;
-			box-shadow: 0 2px 4px rgba(188, 197, 204, 0.3);
+			border-color:#E7E7ED;
+			border-radius: 4px;
 			margin: 0 auto;
 			width: auto;
 		}

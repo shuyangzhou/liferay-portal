@@ -4586,12 +4586,12 @@ to version 2.3.164.
 ## 3.12.14 - 2018-05-21
 
 ### Changed
-- [LPS-78986]: Update the default value of the `app.server.websphere.version`
-property to `9.0.0.0`.
-- [LPS-79742]: Update the default value of the `app.server.tcserver.version`
-property to `4.0.0`.
-- [LPS-80347]: Update the default value of the `app.server.weblogic.version`
-property to `12.2.1`.
+- [LPS-78986]: Update the `app.server.websphere.version` property's default
+value to `9.0.0.0`.
+- [LPS-79742]: Update the `app.server.tcserver.version` property's default value
+to `4.0.0`.
+- [LPS-80347]: Update the `app.server.weblogic.version` property's default value
+to `12.2.1`.
 - [LPS-81106]: Update the [Liferay Gradle Plugins Source Formatter] dependency
 to version 2.3.165.
 - [LPS-81106]: Update the [Liferay Source Formatter] dependency to version
@@ -4732,6 +4732,66 @@ to version 2.3.179.
 version 2.1.39.
 - [LPS-81336]: Update the [Liferay Portal Tools Service Builder] dependency to
 version 1.0.222.
+
+## 3.12.29 - 2018-06-05
+
+### Changed
+- [LPS-81336]: Update the [Liferay Gradle Plugins Service Builder] dependency to
+version 2.1.40.
+- [LPS-81336]: Update the [Liferay Portal Tools Service Builder] dependency to
+version 1.0.223.
+
+## 3.12.30 - 2018-06-05
+
+### Changed
+- [LPS-82001]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.180.
+- [LPS-82001]: Update the [Liferay Source Formatter] dependency to version
+1.0.653.
+
+### Fixed
+- [LPS-75530]: Fix the log message for `ExecuteBndTask` so it displays the
+file's correct build time.
+
+## 3.12.31 - 2018-06-06
+
+### Changed
+- [LPS-81944]: Update the [Liferay Portal Tools Upgrade Table Builder]
+dependency to version 1.0.9.
+- [LPS-82001]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.181.
+- [LPS-82001]: Update the [Liferay Source Formatter] dependency to version
+1.0.654.
+
+## 3.12.32 - 2018-06-07
+
+### Changed
+- [LPS-78940]: Update the [Liferay Gradle Plugins Service Builder] dependency to
+version 2.1.41.
+- [LPS-78940]: Update the [Liferay Portal Tools Service Builder] dependency to
+version 1.0.224.
+- [LPS-79679]: Update the [Liferay Gradle Plugins Source Formatter] dependency
+to version 2.3.182.
+- [LPS-79679]: Update the [Liferay Source Formatter] dependency to version
+1.0.655.
+- [LPS-81900]: Update the [Liferay Gradle Plugins Soy] dependency to version
+3.1.5.
+
+## 3.12.33 - 2018-06-08
+
+### Changed
+- [LPS-82130]: Update the [Liferay Gradle Plugins Gulp] dependency to version
+2.0.31.
+- [LPS-82130]: Update the [Liferay Gradle Plugins JS Module Config Generator]
+dependency to version 2.1.32.
+- [LPS-82130]: Update the [Liferay Gradle Plugins JS Transpiler] dependency to
+version 2.4.11.
+
+## 3.12.35 - 2018-06-11
+
+### Changed
+- [LPS-81638]: Update the [Liferay Gradle Plugins Soy] dependency to version
+3.1.6.
 
 [Gradle Bundle Plugin]: https://github.com/TomDmitriev/gradle-bundle-plugin
 [Liferay Alloy Taglib]: https://github.com/liferay/alloy-taglibs
@@ -5073,6 +5133,7 @@ version 1.0.222.
 [LPS-78854]: https://issues.liferay.com/browse/LPS-78854
 [LPS-78901]: https://issues.liferay.com/browse/LPS-78901
 [LPS-78911]: https://issues.liferay.com/browse/LPS-78911
+[LPS-78940]: https://issues.liferay.com/browse/LPS-78940
 [LPS-78971]: https://issues.liferay.com/browse/LPS-78971
 [LPS-78986]: https://issues.liferay.com/browse/LPS-78986
 [LPS-79131]: https://issues.liferay.com/browse/LPS-79131
@@ -5126,5 +5187,10 @@ version 1.0.222.
 [LPS-81404]: https://issues.liferay.com/browse/LPS-81404
 [LPS-81555]: https://issues.liferay.com/browse/LPS-81555
 [LPS-81635]: https://issues.liferay.com/browse/LPS-81635
+[LPS-81638]: https://issues.liferay.com/browse/LPS-81638
 [LPS-81795]: https://issues.liferay.com/browse/LPS-81795
+[LPS-81900]: https://issues.liferay.com/browse/LPS-81900
+[LPS-81944]: https://issues.liferay.com/browse/LPS-81944
+[LPS-82001]: https://issues.liferay.com/browse/LPS-82001
+[LPS-82130]: https://issues.liferay.com/browse/LPS-82130
 [LRDOCS-3023]: https://issues.liferay.com/browse/LRDOCS-3023

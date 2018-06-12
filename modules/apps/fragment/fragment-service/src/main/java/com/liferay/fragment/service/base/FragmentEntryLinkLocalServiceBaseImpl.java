@@ -341,6 +341,8 @@ public abstract class FragmentEntryLinkLocalServiceBaseImpl
 
 		exportActionableDynamicQuery.setCompanyId(portletDataContext.getCompanyId());
 
+		exportActionableDynamicQuery.setGroupId(portletDataContext.getScopeGroupId());
+
 		exportActionableDynamicQuery.setPerformActionMethod(new ActionableDynamicQuery.PerformActionMethod<FragmentEntryLink>() {
 				@Override
 				public void performAction(FragmentEntryLink fragmentEntryLink)
@@ -570,25 +572,6 @@ public abstract class FragmentEntryLinkLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the resource local service.
-	 *
-	 * @return the resource local service
-	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
-		return resourceLocalService;
-	}
-
-	/**
-	 * Sets the resource local service.
-	 *
-	 * @param resourceLocalService the resource local service
-	 */
-	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
-		this.resourceLocalService = resourceLocalService;
-	}
-
-	/**
 	 * Returns the user local service.
 	 *
 	 * @return the user local service
@@ -689,8 +672,6 @@ public abstract class FragmentEntryLinkLocalServiceBaseImpl
 	protected com.liferay.fragment.service.FragmentEntryLocalService fragmentEntryLocalService;
 	@BeanReference(type = FragmentEntryPersistence.class)
 	protected FragmentEntryPersistence fragmentEntryPersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
 	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
 	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@ServiceReference(type = UserPersistence.class)

@@ -341,6 +341,11 @@ public class TeamLocalServiceWrapper implements TeamLocalService,
 	}
 
 	@Override
+	public int getGroupTeamsCount(long groupId) {
+		return _teamLocalService.getGroupTeamsCount(groupId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
 		return _teamLocalService.getIndexableActionableDynamicQuery();
 	}

@@ -71,6 +71,11 @@ public class BlogsStatsUserLocalServiceImpl
 	}
 
 	@Override
+	public BlogsStatsUser fetchStatsUser(long groupId, long userId) {
+		return blogsStatsUserPersistence.fetchByG_U(groupId, userId);
+	}
+
+	@Override
 	public List<BlogsStatsUser> getCompanyStatsUsers(
 		long companyId, int start, int end) {
 
@@ -158,8 +163,8 @@ public class BlogsStatsUserLocalServiceImpl
 
 			statsUser = blogsStatsUserPersistence.create(statsUserId);
 
-			statsUser.setCompanyId(group.getCompanyId());
 			statsUser.setGroupId(groupId);
+			statsUser.setCompanyId(group.getCompanyId());
 			statsUser.setUserId(userId);
 
 			blogsStatsUserPersistence.update(statsUser);
