@@ -35,17 +35,15 @@ import com.liferay.portal.kernel.security.permission.PermissionPropagator;
 import com.liferay.portal.kernel.servlet.URLEncoder;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.trash.TrashHandler;
-import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.webdav.WebDAVStorage;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.xmlrpc.Method;
+import com.liferay.registry.ServiceRegistration;
 import com.liferay.social.kernel.model.SocialActivityInterpreter;
 import com.liferay.social.kernel.model.SocialRequestInterpreter;
-
-import java.io.Closeable;
 
 import java.util.List;
 import java.util.Locale;
@@ -89,7 +87,8 @@ public class PortletBagImpl implements PortletBag {
 		List<PermissionPropagator> permissionPropagatorInstances,
 		List<TrashHandler> trashHandlerInstances,
 		List<WorkflowHandler<?>> workflowHandlerInstances,
-		List<PreferencesValidator> preferencesValidatorInstances) {
+		List<PreferencesValidator> preferencesValidatorInstances,
+		List<ServiceRegistration<?>> serviceRegistrations) {
 
 		_portletName = portletName;
 		_servletContext = servletContext;
@@ -123,6 +122,7 @@ public class PortletBagImpl implements PortletBag {
 		_trashHandlerInstances = trashHandlerInstances;
 		_workflowHandlerInstances = workflowHandlerInstances;
 		_preferencesValidatorInstances = preferencesValidatorInstances;
+		_serviceRegistrations = serviceRegistrations;
 	}
 
 	@Override
@@ -145,37 +145,19 @@ public class PortletBagImpl implements PortletBag {
 			getAtomCollectionAdapterInstances(),
 			getCustomAttributesDisplayInstances(),
 			getPermissionPropagatorInstances(), getTrashHandlerInstances(),
-			getWorkflowHandlerInstances(), getPreferencesValidatorInstances());
+			getWorkflowHandlerInstances(), getPreferencesValidatorInstances(),
+			_serviceRegistrations);
 	}
 
 	@Override
 	public void destroy() {
-		close(_assetRendererFactoryInstances);
-		close(_atomCollectionAdapterInstances);
-		close(_configurationActionInstances);
-		close(_controlPanelEntryInstances);
-		close(_customAttributesDisplayInstances);
-		close(_friendlyURLMapperTracker);
-		close(_indexerInstances);
-		close(_openSearchInstances);
-		close(_permissionPropagatorInstances);
-		close(_pollerProcessorInstances);
-		close(_popMessageListenerInstances);
-		close(_portletDataHandlerInstances);
-		close(_portletLayoutListenerInstances);
-		close(_preferencesValidatorInstances);
-		close(_schedulerEventMessageListeners);
-		close(_socialActivityInterpreterInstances);
-		close(_socialRequestInterpreterInstances);
-		close(_stagedModelDataHandlerInstances);
-		close(_templateHandlerInstances);
-		close(_trashHandlerInstances);
-		close(_urlEncoderInstances);
-		close(_userNotificationDefinitionInstances);
-		close(_userNotificationHandlerInstances);
-		close(_webDAVStorageInstances);
-		close(_workflowHandlerInstances);
-		close(_xmlRpcMethodInstances);
+		for (ServiceRegistration<?> serviceRegistration :
+				_serviceRegistrations) {
+
+			serviceRegistration.unregister();
+		}
+
+		_serviceRegistrations.clear();
 	}
 
 	@Override
@@ -375,18 +357,6 @@ public class PortletBagImpl implements PortletBag {
 		_portletName = portletName;
 	}
 
-	protected void close(Object object) {
-		try {
-			Closeable closeable = (Closeable)object;
-
-			closeable.close();
-		}
-		catch (Exception e) {
-			throw new RuntimeException(
-				"Unable to close " + ClassUtil.getClassName(object), e);
-		}
-	}
-
 	private final List<AssetRendererFactory<?>> _assetRendererFactoryInstances;
 	private final List<AtomCollectionAdapter<?>>
 		_atomCollectionAdapterInstances;
@@ -409,6 +379,7 @@ public class PortletBagImpl implements PortletBag {
 	private volatile ResourceBundleLoader _resourceBundleLoader;
 	private final List<SchedulerEventMessageListener>
 		_schedulerEventMessageListeners;
+	private final List<ServiceRegistration<?>> _serviceRegistrations;
 	private final ServletContext _servletContext;
 	private final List<SocialActivityInterpreter>
 		_socialActivityInterpreterInstances;
