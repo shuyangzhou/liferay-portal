@@ -12,12 +12,14 @@
  * details.
  */
 
-package com.liferay.portal.search.web.facet.util;
+package com.liferay.map.internal.util;
 
-import com.liferay.portal.search.web.facet.SearchFacet;
+import com.liferay.map.MapProvider;
+import com.liferay.map.util.MapProviderTracker;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -26,15 +28,19 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
- * @author Eudaldo Alonso
- * @deprecated As of 1.0.0, with no direct replacement
+ * @author Jürgen Kappler
  */
-@Component(immediate = true, service = SearchFacetTracker.class)
-@Deprecated
-public class SearchFacetTracker {
+@Component(immediate = true, service = MapProviderTracker.class)
+public class MapProviderTrackerImpl implements MapProviderTracker {
 
-	public static List<SearchFacet> getSearchFacets() {
-		return _searchFacets;
+	@Override
+	public MapProvider getMapProvider(String mapProviderKey) {
+		return _mapProviders.get(mapProviderKey);
+	}
+
+	@Override
+	public Collection<MapProvider> getMapProviders() {
+		return _mapProviders.values();
 	}
 
 	@Reference(
@@ -42,15 +48,15 @@ public class SearchFacetTracker {
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY
 	)
-	protected void addSearchFacet(SearchFacet searchFacet) {
-		_searchFacets.add(searchFacet);
+	protected synchronized void registerMapProvider(MapProvider mapProvider) {
+		_mapProviders.put(mapProvider.getKey(), mapProvider);
 	}
 
-	protected void removeSearchFacet(SearchFacet searchFacet) {
-		_searchFacets.remove(searchFacet);
+	protected synchronized void unregisterMapProvider(MapProvider mapProvider) {
+		_mapProviders.remove(mapProvider.getKey());
 	}
 
-	private static final List<SearchFacet> _searchFacets =
-		new CopyOnWriteArrayList<>();
+	private final Map<String, MapProvider> _mapProviders =
+		new ConcurrentHashMap<>();
 
 }

@@ -17,43 +17,14 @@ package com.liferay.map.util;
 import com.liferay.map.MapProvider;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
- * @author Jürgen Kappler
+ * @author Lance Ji
  */
-@Component(immediate = true, service = MapProviderTracker.class)
-public class MapProviderTracker {
+public interface MapProviderTracker {
 
-	public MapProvider getMapProvider(String mapProviderKey) {
-		return _mapProviders.get(mapProviderKey);
-	}
+	public MapProvider getMapProvider(String mapProviderKey);
 
-	public Collection<MapProvider> getMapProviders() {
-		return _mapProviders.values();
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected synchronized void registerMapProvider(MapProvider mapProvider) {
-		_mapProviders.put(mapProvider.getKey(), mapProvider);
-	}
-
-	protected synchronized void unregisterMapProvider(MapProvider mapProvider) {
-		_mapProviders.remove(mapProvider.getKey());
-	}
-
-	private final Map<String, MapProvider> _mapProviders =
-		new ConcurrentHashMap<>();
+	public Collection<MapProvider> getMapProviders();
 
 }
