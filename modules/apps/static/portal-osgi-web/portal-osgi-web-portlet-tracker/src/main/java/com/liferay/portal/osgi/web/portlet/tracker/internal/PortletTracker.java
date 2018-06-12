@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.model.EventDefinition;
 import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.model.PortletCategory;
 import com.liferay.portal.kernel.model.PortletInfo;
+import com.liferay.portal.kernel.model.PortletURLListener;
 import com.liferay.portal.kernel.model.PublicRenderParameter;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.portlet.InvokerPortlet;
@@ -55,6 +56,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.xml.QName;
 import com.liferay.portal.kernel.xml.SAXReader;
+import com.liferay.portal.model.impl.PortletURLListenerImpl;
 import com.liferay.portal.model.impl.PublicRenderParameterImpl;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistration;
@@ -68,6 +70,8 @@ import java.io.IOException;
 import java.net.URL;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -323,15 +327,14 @@ public class PortletTracker
 			PortletContextBagPool.put(
 				bundlePortletApp.getServletContextName(), portletContextBag);
 
-			PortletBagFactory portletBagFactory = new BundlePortletBagFactory(
-				portlet);
+			PortletBagFactory portletBagFactory = new PortletBagFactory();
 
 			portletBagFactory.setClassLoader(bundleClassLoader);
 			portletBagFactory.setServletContext(
 				bundlePortletApp.getServletContext());
 			portletBagFactory.setWARFile(true);
 
-			portletBagFactory.create(portletModel, true);
+			portletBagFactory.create(portletModel, portlet, true);
 
 			List<Company> companies = _companyLocalService.getCompanies();
 
@@ -465,6 +468,7 @@ public class PortletTracker
 		collectCacheScope(serviceReference, portletModel);
 		collectExpirationCache(serviceReference, portletModel);
 		collectInitParams(serviceReference, portletModel);
+		collectListeners(serviceReference, portletModel);
 		collectMultipartConfig(serviceReference, portletModel);
 		collectPortletInfo(serviceReference, portletModel);
 		collectPortletModes(serviceReference, portletModel);
@@ -542,6 +546,13 @@ public class PortletTracker
 		portletModel.setHeaderPortletJavaScript(
 			StringPlus.asList(
 				get(serviceReference, "header-portlet-javascript")));
+		portletModel.setHeaderRequestAttributePrefixes(
+			StringPlus.asList(
+				get(serviceReference, "header-request-attribute-prefix")));
+		portletModel.setHeaderTimeout(
+			GetterUtil.getInteger(
+				get(serviceReference, "header-timeout"),
+				portletModel.getHeaderTimeout()));
 		portletModel.setIcon(
 			GetterUtil.getString(
 				get(serviceReference, "icon"), portletModel.getIcon()));
@@ -655,6 +666,42 @@ public class PortletTracker
 			GetterUtil.getString(
 				get(serviceReference, "virtual-path"),
 				portletModel.getVirtualPath()));
+	}
+
+	protected void collectListeners(
+		ServiceReference<Portlet> serviceReference,
+		com.liferay.portal.kernel.model.Portlet portletModel) {
+
+		PortletApp portletApp = portletModel.getPortletApp();
+
+		List<String> listenerClassNames = StringPlus.asList(
+			serviceReference.getProperty("javax.portlet.listener"));
+
+		List<PortletURLListener> portletURLListeners = new ArrayList<>();
+
+		for (String listenerClassName : listenerClassNames) {
+			int ordinal = 0;
+
+			String[] parts = StringUtil.split(
+				listenerClassName, CharPool.SEMICOLON);
+
+			if (parts.length == 2) {
+				listenerClassName = parts[0];
+				ordinal = GetterUtil.getInteger(parts[1]);
+			}
+
+			portletURLListeners.add(
+				new PortletURLListenerImpl(
+					listenerClassName, ordinal, portletApp));
+		}
+
+		Collections.sort(
+			portletURLListeners,
+			Comparator.comparingInt(PortletURLListener::getOrdinal));
+
+		for (PortletURLListener portletURLListener : portletURLListeners) {
+			portletApp.addPortletURLListener(portletURLListener);
+		}
 	}
 
 	protected void collectMultipartConfig(

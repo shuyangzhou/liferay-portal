@@ -65,9 +65,11 @@ public class FragmentEntryCacheModel implements CacheModel<FragmentEntry>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(41);
 
-		sb.append("{fragmentEntryId=");
+		sb.append("{uuid=");
+		sb.append(uuid);
+		sb.append(", fragmentEntryId=");
 		sb.append(fragmentEntryId);
 		sb.append(", groupId=");
 		sb.append(groupId);
@@ -95,6 +97,8 @@ public class FragmentEntryCacheModel implements CacheModel<FragmentEntry>,
 		sb.append(js);
 		sb.append(", previewFileEntryId=");
 		sb.append(previewFileEntryId);
+		sb.append(", lastPublishDate=");
+		sb.append(lastPublishDate);
 		sb.append(", status=");
 		sb.append(status);
 		sb.append(", statusByUserId=");
@@ -111,6 +115,13 @@ public class FragmentEntryCacheModel implements CacheModel<FragmentEntry>,
 	@Override
 	public FragmentEntry toEntityModel() {
 		FragmentEntryImpl fragmentEntryImpl = new FragmentEntryImpl();
+
+		if (uuid == null) {
+			fragmentEntryImpl.setUuid("");
+		}
+		else {
+			fragmentEntryImpl.setUuid(uuid);
+		}
 
 		fragmentEntryImpl.setFragmentEntryId(fragmentEntryId);
 		fragmentEntryImpl.setGroupId(groupId);
@@ -176,6 +187,14 @@ public class FragmentEntryCacheModel implements CacheModel<FragmentEntry>,
 		}
 
 		fragmentEntryImpl.setPreviewFileEntryId(previewFileEntryId);
+
+		if (lastPublishDate == Long.MIN_VALUE) {
+			fragmentEntryImpl.setLastPublishDate(null);
+		}
+		else {
+			fragmentEntryImpl.setLastPublishDate(new Date(lastPublishDate));
+		}
+
 		fragmentEntryImpl.setStatus(status);
 		fragmentEntryImpl.setStatusByUserId(statusByUserId);
 
@@ -200,6 +219,8 @@ public class FragmentEntryCacheModel implements CacheModel<FragmentEntry>,
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
+		uuid = objectInput.readUTF();
+
 		fragmentEntryId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -219,6 +240,7 @@ public class FragmentEntryCacheModel implements CacheModel<FragmentEntry>,
 		js = objectInput.readUTF();
 
 		previewFileEntryId = objectInput.readLong();
+		lastPublishDate = objectInput.readLong();
 
 		status = objectInput.readInt();
 
@@ -230,6 +252,13 @@ public class FragmentEntryCacheModel implements CacheModel<FragmentEntry>,
 	@Override
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
+		if (uuid == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(uuid);
+		}
+
 		objectOutput.writeLong(fragmentEntryId);
 
 		objectOutput.writeLong(groupId);
@@ -286,6 +315,7 @@ public class FragmentEntryCacheModel implements CacheModel<FragmentEntry>,
 		}
 
 		objectOutput.writeLong(previewFileEntryId);
+		objectOutput.writeLong(lastPublishDate);
 
 		objectOutput.writeInt(status);
 
@@ -301,6 +331,7 @@ public class FragmentEntryCacheModel implements CacheModel<FragmentEntry>,
 		objectOutput.writeLong(statusDate);
 	}
 
+	public String uuid;
 	public long fragmentEntryId;
 	public long groupId;
 	public long companyId;
@@ -315,6 +346,7 @@ public class FragmentEntryCacheModel implements CacheModel<FragmentEntry>,
 	public String html;
 	public String js;
 	public long previewFileEntryId;
+	public long lastPublishDate;
 	public int status;
 	public long statusByUserId;
 	public String statusByUserName;

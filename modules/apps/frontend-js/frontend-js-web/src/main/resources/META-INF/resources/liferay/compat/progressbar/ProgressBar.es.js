@@ -6,7 +6,9 @@ import templates from './ProgressBar.soy';
 /**
  * UI Component that renders a progress bar.
  */
+
 class ProgressBar extends Component {
+
 	/**
 	 * Setter function for the `value` state key. Makes sure the value
 	 * is between the current `min` and `max` state keys.
@@ -14,6 +16,7 @@ class ProgressBar extends Component {
 	 * @return {number}
 	 * @protected
 	 */
+
 	setterValueFn_(value) {
 		if (value < this.min) {
 			value = this.min;
@@ -28,6 +31,7 @@ class ProgressBar extends Component {
 	 * Synchronization logic for the `max` state.
 	 * @param {number} max
 	 */
+
 	syncMax(max) {
 		if (max < this.value) {
 			this.value = max;
@@ -38,6 +42,7 @@ class ProgressBar extends Component {
 	 * Synchronization logic for the `min` state.
 	 * @param {number} min
 	 */
+
 	syncMin(min) {
 		if (min > this.value) {
 			this.value = min;
@@ -50,12 +55,15 @@ class ProgressBar extends Component {
  * @type {!Object}
  * @static
  */
+
 ProgressBar.STATE = {
+
 	/**
 	 * Optional CSS classes to be added to the inner progress bar element,
 	 * like 'progress-bar-danger'.
 	 * @type {string}
 	 */
+
 	barClass: {
 		validator: core.isString
 	},
@@ -65,6 +73,7 @@ ProgressBar.STATE = {
 	 * a string (with raw text or html) or an incremental dom function.
 	 * @type {function()|string?}
 	 */
+
 	label: {
 		validator: label => {
 			return !core.isDefAndNotNull(label) ||
@@ -78,6 +87,7 @@ ProgressBar.STATE = {
 	 * max, the bar will be fully extended.
 	 * @type {number}
 	 */
+
 	max: {
 		validator: core.isNumber,
 		value: 100
@@ -88,6 +98,7 @@ ProgressBar.STATE = {
 	 * max, the bar will be fully collapsed.
 	 * @type {number}
 	 */
+
 	min: {
 		validator: core.isNumber,
 		value: 0
@@ -97,6 +108,7 @@ ProgressBar.STATE = {
 	 * The current value of the progress bar.
 	 * @type {number}
 	 */
+
 	value: {
 		setter: 'setterValueFn_',
 		validator: core.isNumber,
@@ -105,5 +117,5 @@ ProgressBar.STATE = {
 };
 Soy.register(ProgressBar, templates);
 
-export { ProgressBar };
+export {ProgressBar};
 export default ProgressBar;

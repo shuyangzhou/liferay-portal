@@ -9,12 +9,15 @@ import templates from './List.soy';
 /**
  * List component.
  */
+
 class List extends Component {
+
 	/**
 	 * Handles click event on the list. The function fires an
 	 * {@code itemSelected} event.
 	 * @param {!Event} event The native click event
 	 */
+
 	handleClick(event) {
 		var target = event.target;
 		while (target) {
@@ -33,12 +36,15 @@ Soy.register(List, templates);
  * @type {!Object}
  * @static
  */
+
 List.STATE = {
+
 	/**
 	 * A unique identifier for the component. It's also used to compound the
 	 * items' ID attribute unless if itemsHtml attribute is used.
 	 * @type {string}
 	 */
+
 	id: {
 		valueFn: () => 'list-component-' + core.getUid()
 	},
@@ -54,6 +60,7 @@ List.STATE = {
 	 * @type {!Array<!Object>}
 	 * @default []
 	 */
+
 	items: {
 		validator: Array.isArray,
 		valueFn: function() {
@@ -65,10 +72,11 @@ List.STATE = {
 	 * The list items as HTML to be added directly to the list.
 	 * @type {string}
 	 */
+
 	itemsHtml: {
 		isHtml: true
 	}
 };
 
-export { List };
+export {List};
 export default List;

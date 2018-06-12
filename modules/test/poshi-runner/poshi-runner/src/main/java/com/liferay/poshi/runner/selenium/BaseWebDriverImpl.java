@@ -577,6 +577,26 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
+	public void assertNotVisibleInPage(String locator) throws Exception {
+		assertElementPresent(locator);
+
+		if (isVisibleInPage(locator)) {
+			throw new Exception(
+				"Element is visible in page at \"" + locator + "\"");
+		}
+	}
+
+	@Override
+	public void assertNotVisibleInViewport(String locator) throws Exception {
+		assertElementPresent(locator);
+
+		if (isVisibleInViewport(locator)) {
+			throw new Exception(
+				"Element is visible in viewport at \"" + locator + "\"");
+		}
+	}
+
+	@Override
 	public void assertPartialConfirmation(String pattern) throws Exception {
 		String confirmation = getConfirmation();
 
@@ -717,6 +737,26 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		if (isNotVisible(locator)) {
 			throw new Exception(
 				"Element is not visible at \"" + locator + "\"");
+		}
+	}
+
+	@Override
+	public void assertVisibleInPage(String locator) throws Exception {
+		assertElementPresent(locator);
+
+		if (isNotVisibleInPage(locator)) {
+			throw new Exception(
+				"Element is not visible in page at \"" + locator + "\"");
+		}
+	}
+
+	@Override
+	public void assertVisibleInViewport(String locator) throws Exception {
+		assertElementPresent(locator);
+
+		if (isNotVisibleInViewport(locator)) {
+			throw new Exception(
+				"Element is not visible in viewport at \"" + locator + "\"");
 		}
 	}
 
@@ -1592,6 +1632,16 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
+	public boolean isNotVisibleInPage(String locator) {
+		return !isVisibleInPage(locator);
+	}
+
+	@Override
+	public boolean isNotVisibleInViewport(String locator) {
+		return !isVisibleInViewport(locator);
+	}
+
+	@Override
 	public boolean isPartialText(String locator, String value) {
 		WebElement webElement = getWebElement(locator, "1");
 
@@ -1686,9 +1736,21 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public boolean isVisible(String locator) {
+		return isVisibleInPage(locator);
+	}
+
+	@Override
+	public boolean isVisibleInPage(String locator) {
 		WebElement webElement = getWebElement(locator, "1");
 
 		scrollWebElementIntoView(webElement);
+
+		return webElement.isDisplayed();
+	}
+
+	@Override
+	public boolean isVisibleInViewport(String locator) {
+		WebElement webElement = getWebElement(locator, "1");
 
 		return webElement.isDisplayed();
 	}
@@ -3186,6 +3248,44 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
+	public void waitForNotVisibleInPage(String locator) throws Exception {
+		for (int second = 0;; second++) {
+			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
+				assertNotVisibleInPage(locator);
+			}
+
+			try {
+				if (isNotVisibleInPage(locator)) {
+					break;
+				}
+			}
+			catch (Exception e) {
+			}
+
+			Thread.sleep(1000);
+		}
+	}
+
+	@Override
+	public void waitForNotVisibleInViewport(String locator) throws Exception {
+		for (int second = 0;; second++) {
+			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
+				assertNotVisibleInViewport(locator);
+			}
+
+			try {
+				if (isNotVisibleInViewport(locator)) {
+					break;
+				}
+			}
+			catch (Exception e) {
+			}
+
+			Thread.sleep(1000);
+		}
+	}
+
+	@Override
 	public void waitForPartialText(String locator, String value)
 		throws Exception {
 
@@ -3425,6 +3525,44 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 			try {
 				if (isVisible(locator)) {
+					break;
+				}
+			}
+			catch (Exception e) {
+			}
+
+			Thread.sleep(1000);
+		}
+	}
+
+	@Override
+	public void waitForVisibleInPage(String locator) throws Exception {
+		for (int second = 0;; second++) {
+			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
+				assertVisibleInPage(locator);
+			}
+
+			try {
+				if (isVisibleInPage(locator)) {
+					break;
+				}
+			}
+			catch (Exception e) {
+			}
+
+			Thread.sleep(1000);
+		}
+	}
+
+	@Override
+	public void waitForVisibleInViewport(String locator) throws Exception {
+		for (int second = 0;; second++) {
+			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
+				assertVisibleInViewport(locator);
+			}
+
+			try {
+				if (isVisibleInViewport(locator)) {
 					break;
 				}
 			}

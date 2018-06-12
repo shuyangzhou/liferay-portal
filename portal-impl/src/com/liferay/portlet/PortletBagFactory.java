@@ -67,20 +67,26 @@ import com.liferay.portal.kernel.xmlrpc.Method;
 import com.liferay.portal.notifications.UserNotificationHandlerImpl;
 import com.liferay.portal.util.JavaFieldsParser;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.registry.Filter;
+import com.liferay.portlet.internal.FriendlyURLMapperTrackerImpl;
+import com.liferay.portlet.internal.PortletBagImpl;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
-import com.liferay.registry.collections.ServiceTrackerCollections;
-import com.liferay.registry.collections.ServiceTrackerList;
+import com.liferay.registry.ServiceReference;
+import com.liferay.registry.ServiceRegistration;
+import com.liferay.registry.ServiceTracker;
+import com.liferay.registry.ServiceTrackerCustomizer;
 import com.liferay.social.kernel.model.SocialActivityInterpreter;
 import com.liferay.social.kernel.model.SocialRequestInterpreter;
 import com.liferay.social.kernel.model.impl.SocialActivityInterpreterImpl;
 import com.liferay.social.kernel.model.impl.SocialRequestInterpreterImpl;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.portlet.PreferencesValidator;
 
@@ -91,6 +97,7 @@ import javax.servlet.ServletContext;
  * @author Brian Myunghun Kim
  * @author Ivica Cardic
  * @author Raymond Augé
+ * @author Preston Crary
  */
 public class PortletBagFactory {
 
@@ -101,97 +108,117 @@ public class PortletBagFactory {
 	public PortletBag create(Portlet portlet, boolean destroyPrevious)
 		throws Exception {
 
-		validate();
+		_validate();
 
-		javax.portlet.Portlet portletInstance = getPortletInstance(portlet);
+		javax.portlet.Portlet portletInstance = _getPortletInstance(portlet);
 
-		Registry registry = RegistryUtil.getRegistry();
+		return create(portlet, portletInstance, destroyPrevious);
+	}
 
-		Filter filter = registry.getFilter(
-			"(|(javax.portlet.name=" + portlet.getPortletId() +
-				")(javax.portlet.name=ALL))");
+	public PortletBag create(
+			Portlet portlet, javax.portlet.Portlet portletInstance,
+			boolean destroyPrevious)
+		throws Exception {
 
-		Map<String, Object> properties =
-			Collections.<String, Object>singletonMap(
-				"javax.portlet.name", portlet.getPortletId());
+		_validate();
+
+		Map<String, Object> properties = new HashMap<>();
+
+		properties.put("javax.portlet.name", portlet.getPortletId());
+
+		List<ServiceRegistration<?>> serviceRegistrations = new ArrayList<>();
 
 		List<ConfigurationAction> configurationActionInstances =
-			newConfigurationActions(portlet, filter, properties);
+			_newConfigurationActions(portlet, properties, serviceRegistrations);
 
-		List<Indexer<?>> indexerInstances = newIndexers(
-			portlet, filter, properties);
+		List<Indexer<?>> indexerInstances = _newIndexers(
+			portlet, properties, serviceRegistrations);
 
-		List<OpenSearch> openSearchInstances = newOpenSearches(
-			portlet, filter, properties);
+		List<OpenSearch> openSearchInstances = _newOpenSearches(
+			portlet, properties, serviceRegistrations);
 
 		List<SchedulerEventMessageListener> schedulerEventMessageListeners =
-			newSchedulerEventMessageListeners(portlet, filter, properties);
+			_newSchedulerEventMessageListeners(
+				portlet, properties, serviceRegistrations);
 
 		FriendlyURLMapperTracker friendlyURLMapperTracker =
-			newFriendlyURLMappers(portlet);
+			_newFriendlyURLMappers(portlet);
 
-		List<URLEncoder> urlEncoderInstances = newURLEncoders(
-			portlet, filter, properties);
+		List<URLEncoder> urlEncoderInstances = _newURLEncoders(
+			portlet, properties, serviceRegistrations);
 
 		List<PortletDataHandler> portletDataHandlerInstances =
-			newPortletDataHandlers(portlet, filter, properties);
+			_newPortletDataHandlers(portlet, properties, serviceRegistrations);
 
 		List<StagedModelDataHandler<?>> stagedModelDataHandlerInstances =
-			newStagedModelDataHandler(portlet, filter, properties);
+			_newStagedModelDataHandler(
+				portlet, properties, serviceRegistrations);
 
-		List<TemplateHandler> templateHandlerInstances = newTemplateHandlers(
-			portlet, filter, properties);
+		List<TemplateHandler> templateHandlerInstances = _newTemplateHandlers(
+			portlet, properties, serviceRegistrations);
 
 		List<PortletLayoutListener> portletLayoutListenerInstances =
-			newPortletLayoutListeners(portlet, filter, properties);
+			_newPortletLayoutListeners(
+				portlet, properties, serviceRegistrations);
 
-		List<PollerProcessor> pollerProcessorInstances = newPollerProcessors(
-			portlet, filter, properties);
+		List<PollerProcessor> pollerProcessorInstances = _newPollerProcessors(
+			portlet, properties, serviceRegistrations);
 
 		List<MessageListener> popMessageListenerInstances =
-			newPOPMessageListeners(portlet, filter, properties);
+			_newPOPMessageListeners(portlet, properties, serviceRegistrations);
 
 		List<SocialActivityInterpreter> socialActivityInterpreterInstances =
-			newSocialActivityInterpreterInstances(portlet, filter, properties);
+			_newSocialActivityInterpreterInstances(
+				portlet, properties, serviceRegistrations);
 
 		List<SocialRequestInterpreter> socialRequestInterpreterInstances =
-			newSocialRequestInterpreterInstances(portlet, filter, properties);
+			_newSocialRequestInterpreterInstances(
+				portlet, properties, serviceRegistrations);
 
 		List<UserNotificationDefinition> userNotificationDefinitionInstances =
-			newUserNotificationDefinitionInstances(portlet, filter, properties);
+			_newUserNotificationDefinitionInstances(
+				portlet, properties, serviceRegistrations);
 
 		List<UserNotificationHandler> userNotificationHandlerInstances =
-			newUserNotificationHandlerInstances(portlet, filter, properties);
+			_newUserNotificationHandlerInstances(
+				portlet, properties, serviceRegistrations);
 
-		List<WebDAVStorage> webDAVStorageInstances = newWebDAVStorageInstances(
-			portlet, filter, properties);
+		List<WebDAVStorage> webDAVStorageInstances = _newWebDAVStorageInstances(
+			portlet);
 
-		List<Method> xmlRpcMethodInstances = newXmlRpcMethodInstances(
-			portlet, filter, properties);
+		List<Method> xmlRpcMethodInstances = _newXmlRpcMethodInstances(
+			portlet, properties, serviceRegistrations);
 
 		List<ControlPanelEntry> controlPanelEntryInstances =
-			newControlPanelEntryInstances(portlet, filter, properties);
+			_newControlPanelEntryInstances(
+				portlet, properties, serviceRegistrations);
 
 		List<AssetRendererFactory<?>> assetRendererFactoryInstances =
-			newAssetRendererFactoryInstances(portlet, filter, properties);
+			_newAssetRendererFactoryInstances(
+				portlet, properties, serviceRegistrations);
 
 		List<AtomCollectionAdapter<?>> atomCollectionAdapterInstances =
-			newAtomCollectionAdapterInstances(portlet, filter, properties);
+			_newAtomCollectionAdapterInstances(
+				portlet, properties, serviceRegistrations);
 
 		List<CustomAttributesDisplay> customAttributesDisplayInstances =
-			newCustomAttributesDisplayInstances(portlet, filter, properties);
+			_newCustomAttributesDisplayInstances(
+				portlet, properties, serviceRegistrations);
 
 		List<PermissionPropagator> permissionPropagatorInstances =
-			newPermissionPropagators(portlet, filter, properties);
+			_newPermissionPropagators(
+				portlet, properties, serviceRegistrations);
 
-		List<TrashHandler> trashHandlerInstances = newTrashHandlerInstances(
-			portlet, filter, properties);
+		List<TrashHandler> trashHandlerInstances = _newTrashHandlerInstances(
+			portlet, properties, serviceRegistrations);
 
 		List<WorkflowHandler<?>> workflowHandlerInstances =
-			newWorkflowHandlerInstances(portlet, filter, properties);
+			_newWorkflowHandlerInstances(
+				portlet, properties, serviceRegistrations);
 
 		List<PreferencesValidator> preferencesValidatorInstances =
-			newPreferencesValidatorInstances(portlet, filter, properties);
+			_newPreferencesValidatorInstances(
+				portlet, properties, serviceRegistrations);
 
 		PortletBag portletBag = new PortletBagImpl(
 			portlet.getPortletId(), _servletContext, portletInstance,
@@ -209,7 +236,7 @@ public class PortletBagFactory {
 			assetRendererFactoryInstances, atomCollectionAdapterInstances,
 			customAttributesDisplayInstances, permissionPropagatorInstances,
 			trashHandlerInstances, workflowHandlerInstances,
-			preferencesValidatorInstances);
+			preferencesValidatorInstances, serviceRegistrations);
 
 		PortletBagPool.put(portlet.getRootPortletId(), portletBag);
 
@@ -239,7 +266,7 @@ public class PortletBagFactory {
 	/**
 	 * @see FriendlyURLMapperTrackerImpl#getContent(ClassLoader, String)
 	 */
-	protected String getContent(String fileName) throws Exception {
+	private String _getContent(String fileName) throws Exception {
 		String queryString = HttpUtil.getQueryString(fileName);
 
 		if (Validator.isNull(queryString)) {
@@ -272,7 +299,7 @@ public class PortletBagFactory {
 		return xml;
 	}
 
-	protected String getPluginPropertyValue(String propertyKey)
+	private String _getPluginPropertyValue(String propertyKey)
 		throws Exception {
 
 		if (_configuration == null) {
@@ -283,7 +310,7 @@ public class PortletBagFactory {
 		return _configuration.get(propertyKey);
 	}
 
-	protected javax.portlet.Portlet getPortletInstance(Portlet portlet)
+	private javax.portlet.Portlet _getPortletInstance(Portlet portlet)
 		throws IllegalAccessException, InstantiationException {
 
 		Class<?> portletClass = null;
@@ -302,15 +329,14 @@ public class PortletBagFactory {
 		return (javax.portlet.Portlet)portletClass.newInstance();
 	}
 
-	protected List<AssetRendererFactory<?>> newAssetRendererFactoryInstances(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	@SuppressWarnings("unchecked")
+	private List<AssetRendererFactory<?>> _newAssetRendererFactoryInstances(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<AssetRendererFactory<?>>
-			assetRendererFactoryInstances = ServiceTrackerCollections.openList(
-				(Class<AssetRendererFactory<?>>)(Class<?>)
-					AssetRendererFactory.class,
-				filter, properties);
+		List<AssetRendererFactory<?>> assetRendererFactoryInstances =
+			_assetRendererFactories.get(portlet.getPortletId());
 
 		for (String assetRendererFactoryClass :
 				portlet.getAssetRendererFactoryClasses()) {
@@ -321,7 +347,7 @@ public class PortletBagFactory {
 			String assetRendererEnabledPropertyValue = null;
 
 			if (_warFile) {
-				assetRendererEnabledPropertyValue = getPluginPropertyValue(
+				assetRendererEnabledPropertyValue = _getPluginPropertyValue(
 					assetRendererEnabledPropertyKey);
 			}
 			else {
@@ -334,7 +360,7 @@ public class PortletBagFactory {
 
 			if (assetRendererEnabledValue) {
 				AssetRendererFactory<?> assetRendererFactoryInstance =
-					(AssetRendererFactory<?>)newInstance(
+					(AssetRendererFactory<?>)_newInstance(
 						AssetRendererFactory.class, assetRendererFactoryClass);
 
 				assetRendererFactoryInstance.setClassName(
@@ -342,90 +368,117 @@ public class PortletBagFactory {
 				assetRendererFactoryInstance.setPortletId(
 					portlet.getPortletId());
 
-				assetRendererFactoryInstances.add(assetRendererFactoryInstance);
+				Registry registry = RegistryUtil.getRegistry();
+
+				ServiceRegistration<?> serviceRegistration =
+					registry.registerService(
+						AssetRendererFactory.class,
+						assetRendererFactoryInstance, properties);
+
+				serviceRegistrations.add(serviceRegistration);
 			}
 		}
 
 		return assetRendererFactoryInstances;
 	}
 
-	protected List<AtomCollectionAdapter<?>> newAtomCollectionAdapterInstances(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	@SuppressWarnings("unchecked")
+	private List<AtomCollectionAdapter<?>> _newAtomCollectionAdapterInstances(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<AtomCollectionAdapter<?>>
-			atomCollectionAdapterInstances = ServiceTrackerCollections.openList(
-				(Class<AtomCollectionAdapter<?>>)(Class<?>)
-					AtomCollectionAdapter.class,
-				filter, properties);
+		List<AtomCollectionAdapter<?>> atomCollectionAdapterInstances =
+			_atomCollectionAdapters.get(portlet.getPortletId());
+
+		Registry registry = RegistryUtil.getRegistry();
 
 		for (String atomCollectionAdapterClass :
 				portlet.getAtomCollectionAdapterClasses()) {
 
 			AtomCollectionAdapter<?> atomCollectionAdapterInstance =
-				(AtomCollectionAdapter<?>)newInstance(
+				(AtomCollectionAdapter<?>)_newInstance(
 					AtomCollectionAdapter.class, atomCollectionAdapterClass);
 
-			atomCollectionAdapterInstances.add(atomCollectionAdapterInstance);
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					AtomCollectionAdapter.class, atomCollectionAdapterInstance,
+					properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return atomCollectionAdapterInstances;
 	}
 
-	protected List<ConfigurationAction> newConfigurationActions(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<ConfigurationAction> _newConfigurationActions(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<ConfigurationAction> configurationActionInstances =
-			ServiceTrackerCollections.openList(
-				ConfigurationAction.class, filter, properties);
+		List<ConfigurationAction> configurationActionInstances =
+			_configurationActions.get(portlet.getPortletId());
 
 		if (Validator.isNotNull(portlet.getConfigurationActionClass())) {
 			ConfigurationAction configurationAction =
-				(ConfigurationAction)newInstance(
+				(ConfigurationAction)_newInstance(
 					ConfigurationAction.class,
 					portlet.getConfigurationActionClass());
 
-			configurationActionInstances.add(configurationAction);
+			Registry registry = RegistryUtil.getRegistry();
+
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					ConfigurationAction.class, configurationAction, properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return configurationActionInstances;
 	}
 
-	protected List<ControlPanelEntry> newControlPanelEntryInstances(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<ControlPanelEntry> _newControlPanelEntryInstances(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<ControlPanelEntry> controlPanelEntryInstances =
-			ServiceTrackerCollections.openList(
-				ControlPanelEntry.class, filter, properties);
+		List<ControlPanelEntry> controlPanelEntryInstances =
+			_controlPanelEntries.get(portlet.getPortletId());
 
 		if (Validator.isNotNull(portlet.getControlPanelEntryClass())) {
 			ControlPanelEntry controlPanelEntryInstance =
-				(ControlPanelEntry)newInstance(
+				(ControlPanelEntry)_newInstance(
 					ControlPanelEntry.class,
 					portlet.getControlPanelEntryClass());
 
-			controlPanelEntryInstances.add(controlPanelEntryInstance);
+			Registry registry = RegistryUtil.getRegistry();
+
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					ControlPanelEntry.class, controlPanelEntryInstance,
+					properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return controlPanelEntryInstances;
 	}
 
-	protected List<CustomAttributesDisplay> newCustomAttributesDisplayInstances(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<CustomAttributesDisplay> _newCustomAttributesDisplayInstances(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<CustomAttributesDisplay>
-			customAttributesDisplayInstances =
-				ServiceTrackerCollections.openList(
-					CustomAttributesDisplay.class, filter, properties);
+		List<CustomAttributesDisplay> customAttributesDisplayInstances =
+			_customAttributesDisplay.get(portlet.getPortletId());
+
+		Registry registry = RegistryUtil.getRegistry();
 
 		for (String customAttributesDisplayClass :
 				portlet.getCustomAttributesDisplayClasses()) {
 
 			CustomAttributesDisplay customAttributesDisplayInstance =
-				(CustomAttributesDisplay)newInstance(
+				(CustomAttributesDisplay)_newInstance(
 					CustomAttributesDisplay.class,
 					customAttributesDisplayClass);
 
@@ -435,14 +488,18 @@ public class PortletBagFactory {
 			customAttributesDisplayInstance.setPortletId(
 				portlet.getPortletId());
 
-			customAttributesDisplayInstances.add(
-				customAttributesDisplayInstance);
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					CustomAttributesDisplay.class,
+					customAttributesDisplayInstance, properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return customAttributesDisplayInstances;
 	}
 
-	protected FriendlyURLMapperTracker newFriendlyURLMappers(Portlet portlet)
+	private FriendlyURLMapperTracker _newFriendlyURLMappers(Portlet portlet)
 		throws Exception {
 
 		FriendlyURLMapperTracker friendlyURLMapperTracker =
@@ -450,7 +507,7 @@ public class PortletBagFactory {
 
 		if (Validator.isNotNull(portlet.getFriendlyURLMapperClass())) {
 			FriendlyURLMapper friendlyURLMapper =
-				(FriendlyURLMapper)newInstance(
+				(FriendlyURLMapper)_newInstance(
 					FriendlyURLMapper.class,
 					portlet.getFriendlyURLMapperClass());
 
@@ -460,33 +517,38 @@ public class PortletBagFactory {
 		return friendlyURLMapperTracker;
 	}
 
-	protected List<Indexer<?>> newIndexers(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	@SuppressWarnings("unchecked")
+	private List<Indexer<?>> _newIndexers(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<Indexer<?>> indexerInstances =
-			ServiceTrackerCollections.openList(
-				(Class<Indexer<?>>)(Class<?>)Indexer.class, filter, properties);
+		List<Indexer<?>> indexerInstances = _indexers.get(
+			portlet.getPortletId());
 
-		List<String> indexerClasses = portlet.getIndexerClasses();
+		Registry registry = RegistryUtil.getRegistry();
 
-		for (String indexerClass : indexerClasses) {
-			Indexer<?> indexerInstance = (Indexer<?>)newInstance(
+		for (String indexerClass : portlet.getIndexerClasses()) {
+			Indexer<?> indexerInstance = (Indexer<?>)_newInstance(
 				Indexer.class, indexerClass);
 
-			indexerInstances.add(indexerInstance);
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					Indexer.class, indexerInstance, properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return indexerInstances;
 	}
 
-	protected Object newInstance(Class<?> interfaceClass, String implClassName)
+	private Object _newInstance(Class<?> interfaceClass, String implClassName)
 		throws Exception {
 
-		return newInstance(new Class<?>[] {interfaceClass}, implClassName);
+		return _newInstance(new Class<?>[] {interfaceClass}, implClassName);
 	}
 
-	protected Object newInstance(
+	private Object _newInstance(
 			Class<?>[] interfaceClasses, String implClassName)
 		throws Exception {
 
@@ -501,136 +563,176 @@ public class PortletBagFactory {
 		}
 	}
 
-	protected List<OpenSearch> newOpenSearches(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<OpenSearch> _newOpenSearches(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<OpenSearch> openSearchInstances =
-			ServiceTrackerCollections.openList(
-				OpenSearch.class, filter, properties);
+		List<OpenSearch> openSearchInstances = _openSearches.get(
+			portlet.getPortletId());
 
 		if (Validator.isNotNull(portlet.getOpenSearchClass())) {
-			OpenSearch openSearch = (OpenSearch)newInstance(
+			OpenSearch openSearch = (OpenSearch)_newInstance(
 				OpenSearch.class, portlet.getOpenSearchClass());
 
-			openSearchInstances.add(openSearch);
+			Registry registry = RegistryUtil.getRegistry();
+
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					OpenSearch.class, openSearch, properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return openSearchInstances;
 	}
 
-	protected List<PermissionPropagator> newPermissionPropagators(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<PermissionPropagator> _newPermissionPropagators(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<PermissionPropagator> permissionPropagatorInstances =
-			ServiceTrackerCollections.openList(
-				PermissionPropagator.class, filter, properties);
+		List<PermissionPropagator> permissionPropagatorInstances =
+			_permissionPropagator.get(portlet.getPortletId());
 
 		if (Validator.isNotNull(portlet.getPermissionPropagatorClass())) {
 			PermissionPropagator permissionPropagatorInstance =
-				(PermissionPropagator)newInstance(
+				(PermissionPropagator)_newInstance(
 					PermissionPropagator.class,
 					portlet.getPermissionPropagatorClass());
 
-			permissionPropagatorInstances.add(permissionPropagatorInstance);
+			Registry registry = RegistryUtil.getRegistry();
+
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					PermissionPropagator.class, permissionPropagatorInstance,
+					properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return permissionPropagatorInstances;
 	}
 
-	protected List<PollerProcessor> newPollerProcessors(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<PollerProcessor> _newPollerProcessors(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<PollerProcessor> pollerProcessorInstances =
-			ServiceTrackerCollections.openList(
-				PollerProcessor.class, filter, properties);
+		List<PollerProcessor> pollerProcessorInstances = _pollerProcessors.get(
+			portlet.getPortletId());
 
 		if (Validator.isNotNull(portlet.getPollerProcessorClass())) {
 			PollerProcessor pollerProcessorInstance =
-				(PollerProcessor)newInstance(
+				(PollerProcessor)_newInstance(
 					PollerProcessor.class, portlet.getPollerProcessorClass());
 
-			pollerProcessorInstances.add(pollerProcessorInstance);
+			Registry registry = RegistryUtil.getRegistry();
+
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					PollerProcessor.class, pollerProcessorInstance, properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return pollerProcessorInstances;
 	}
 
-	protected List<MessageListener> newPOPMessageListeners(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<MessageListener> _newPOPMessageListeners(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<MessageListener> messageListenerInstances =
-			ServiceTrackerCollections.openList(
-				MessageListener.class, filter, properties);
+		List<MessageListener> messageListenerInstances = _messageListeners.get(
+			portlet.getPortletId());
 
 		if (Validator.isNotNull(portlet.getPopMessageListenerClass())) {
 			MessageListener popMessageListenerInstance =
-				(MessageListener)newInstance(
+				(MessageListener)_newInstance(
 					MessageListener.class,
 					portlet.getPopMessageListenerClass());
 
-			messageListenerInstances.add(popMessageListenerInstance);
+			Registry registry = RegistryUtil.getRegistry();
+
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					MessageListener.class, popMessageListenerInstance,
+					properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return messageListenerInstances;
 	}
 
-	protected List<PortletDataHandler> newPortletDataHandlers(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<PortletDataHandler> _newPortletDataHandlers(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<PortletDataHandler> portletDataHandlerInstances =
-			ServiceTrackerCollections.openList(
-				PortletDataHandler.class, filter, properties);
+		List<PortletDataHandler> portletDataHandlerInstances =
+			_portletDataHandlers.get(portlet.getPortletId());
 
 		if (Validator.isNotNull(portlet.getPortletDataHandlerClass())) {
 			PortletDataHandler portletDataHandlerInstance =
-				(PortletDataHandler)newInstance(
+				(PortletDataHandler)_newInstance(
 					PortletDataHandler.class,
 					portlet.getPortletDataHandlerClass());
 
 			portletDataHandlerInstance.setPortletId(portlet.getPortletId());
 
-			portletDataHandlerInstances.add(portletDataHandlerInstance);
+			Registry registry = RegistryUtil.getRegistry();
+
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					PortletDataHandler.class, portletDataHandlerInstance,
+					properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return portletDataHandlerInstances;
 	}
 
-	protected List<PortletLayoutListener> newPortletLayoutListeners(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<PortletLayoutListener> _newPortletLayoutListeners(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<PortletLayoutListener>
-			portletLayoutListenerInstances = ServiceTrackerCollections.openList(
-				PortletLayoutListener.class, filter, properties);
+		List<PortletLayoutListener> portletLayoutListenerInstances =
+			_portletLayoutListeners.get(portlet.getPortletId());
 
 		if (Validator.isNotNull(portlet.getPortletLayoutListenerClass())) {
 			PortletLayoutListener portletLayoutListener =
-				(PortletLayoutListener)newInstance(
+				(PortletLayoutListener)_newInstance(
 					PortletLayoutListener.class,
 					portlet.getPortletLayoutListenerClass());
 
-			portletLayoutListenerInstances.add(portletLayoutListener);
+			Registry registry = RegistryUtil.getRegistry();
+
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					PortletLayoutListener.class, portletLayoutListener,
+					properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return portletLayoutListenerInstances;
 	}
 
-	protected List<PreferencesValidator> newPreferencesValidatorInstances(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<PreferencesValidator> _newPreferencesValidatorInstances(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<PreferencesValidator> preferencesValidatorInstances =
-			ServiceTrackerCollections.openList(
-				PreferencesValidator.class, filter, properties);
+		List<PreferencesValidator> preferencesValidatorInstances =
+			_preferencesValidators.get(portlet.getPortletId());
 
 		if (Validator.isNotNull(portlet.getPreferencesValidator())) {
 			PreferencesValidator preferencesValidatorInstance =
-				(PreferencesValidator)newInstance(
+				(PreferencesValidator)_newInstance(
 					PreferencesValidator.class,
 					portlet.getPreferencesValidator());
 
@@ -649,24 +751,31 @@ public class PortletBagFactory {
 				}
 			}
 
-			preferencesValidatorInstances.add(preferencesValidatorInstance);
+			Registry registry = RegistryUtil.getRegistry();
+
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					PreferencesValidator.class, preferencesValidatorInstance,
+					properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return preferencesValidatorInstances;
 	}
 
-	protected List<SchedulerEventMessageListener>
-			newSchedulerEventMessageListeners(
-				Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<SchedulerEventMessageListener>
+			_newSchedulerEventMessageListeners(
+				Portlet portlet, Map<String, Object> properties,
+				List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<SchedulerEventMessageListener>
-			schedulerEventMessageListeners = ServiceTrackerCollections.openList(
-				SchedulerEventMessageListener.class, filter, properties);
+		List<SchedulerEventMessageListener> schedulerEventMessageListeners =
+			_schedulerEventMessageListeners.get(portlet.getPortletId());
 
-		List<SchedulerEntry> schedulerEntries = portlet.getSchedulerEntries();
+		Registry registry = RegistryUtil.getRegistry();
 
-		for (SchedulerEntry schedulerEntry : schedulerEntries) {
+		for (SchedulerEntry schedulerEntry : portlet.getSchedulerEntries()) {
 			SchedulerEventMessageListenerWrapper
 				schedulerEventMessageListenerWrapper =
 					new SchedulerEventMessageListenerWrapper();
@@ -684,28 +793,33 @@ public class PortletBagFactory {
 			schedulerEventMessageListenerWrapper.setSchedulerEntry(
 				schedulerEntry);
 
-			schedulerEventMessageListeners.add(
-				schedulerEventMessageListenerWrapper);
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					SchedulerEventMessageListener.class,
+					schedulerEventMessageListenerWrapper, properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return schedulerEventMessageListeners;
 	}
 
-	protected List<SocialActivityInterpreter>
-			newSocialActivityInterpreterInstances(
-				Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<SocialActivityInterpreter>
+			_newSocialActivityInterpreterInstances(
+				Portlet portlet, Map<String, Object> properties,
+				List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<SocialActivityInterpreter>
-			socialActivityInterpreterInstances =
-				ServiceTrackerCollections.openList(
-					SocialActivityInterpreter.class, filter, properties);
+		List<SocialActivityInterpreter> socialActivityInterpreterInstances =
+			_socialActivityInterpreters.get(portlet.getPortletId());
+
+		Registry registry = RegistryUtil.getRegistry();
 
 		for (String socialActivityInterpreterClass :
 				portlet.getSocialActivityInterpreterClasses()) {
 
 			SocialActivityInterpreter socialActivityInterpreterInstance =
-				(SocialActivityInterpreter)newInstance(
+				(SocialActivityInterpreter)_newInstance(
 					SocialActivityInterpreter.class,
 					socialActivityInterpreterClass);
 
@@ -713,141 +827,171 @@ public class PortletBagFactory {
 				new SocialActivityInterpreterImpl(
 					portlet.getPortletId(), socialActivityInterpreterInstance);
 
-			socialActivityInterpreterInstances.add(
-				socialActivityInterpreterInstance);
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					SocialActivityInterpreter.class,
+					socialActivityInterpreterInstance, properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return socialActivityInterpreterInstances;
 	}
 
-	protected List<SocialRequestInterpreter>
-			newSocialRequestInterpreterInstances(
-				Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<SocialRequestInterpreter>
+			_newSocialRequestInterpreterInstances(
+				Portlet portlet, Map<String, Object> properties,
+				List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<SocialRequestInterpreter>
-			socialRequestInterpreterInstances =
-				ServiceTrackerCollections.openList(
-					SocialRequestInterpreter.class, filter, properties);
+		List<SocialRequestInterpreter> socialRequestInterpreterInstances =
+			_socialRequestInterpreters.get(portlet.getPortletId());
 
 		if (Validator.isNotNull(portlet.getSocialRequestInterpreterClass())) {
 			SocialRequestInterpreter socialRequestInterpreterInstance =
-				(SocialRequestInterpreter)newInstance(
+				(SocialRequestInterpreter)_newInstance(
 					SocialRequestInterpreter.class,
 					portlet.getSocialRequestInterpreterClass());
 
 			socialRequestInterpreterInstance = new SocialRequestInterpreterImpl(
 				portlet.getPortletId(), socialRequestInterpreterInstance);
 
-			socialRequestInterpreterInstances.add(
-				socialRequestInterpreterInstance);
+			Registry registry = RegistryUtil.getRegistry();
+
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					SocialRequestInterpreter.class,
+					socialRequestInterpreterInstance, properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return socialRequestInterpreterInstances;
 	}
 
-	protected List<StagedModelDataHandler<?>> newStagedModelDataHandler(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	@SuppressWarnings("unchecked")
+	private List<StagedModelDataHandler<?>> _newStagedModelDataHandler(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<StagedModelDataHandler<?>>
-			stagedModelDataHandlerInstances =
-				ServiceTrackerCollections.openList(
-					(Class<StagedModelDataHandler<?>>)(Class<?>)
-						StagedModelDataHandler.class,
-					filter, properties);
+		List<StagedModelDataHandler<?>> stagedModelDataHandlerInstances =
+			_stagedModelDataHandlers.get(portlet.getPortletId());
 
-		List<String> stagedModelDataHandlerClasses =
-			portlet.getStagedModelDataHandlerClasses();
+		Registry registry = RegistryUtil.getRegistry();
 
 		for (String stagedModelDataHandlerClass :
-				stagedModelDataHandlerClasses) {
+				portlet.getStagedModelDataHandlerClasses()) {
 
 			StagedModelDataHandler<?> stagedModelDataHandler =
-				(StagedModelDataHandler<?>)newInstance(
+				(StagedModelDataHandler<?>)_newInstance(
 					StagedModelDataHandler.class, stagedModelDataHandlerClass);
 
-			stagedModelDataHandlerInstances.add(stagedModelDataHandler);
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					StagedModelDataHandler.class, stagedModelDataHandler,
+					properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return stagedModelDataHandlerInstances;
 	}
 
-	protected List<TemplateHandler> newTemplateHandlers(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<TemplateHandler> _newTemplateHandlers(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<TemplateHandler> templateHandlerInstances =
-			ServiceTrackerCollections.openList(
-				TemplateHandler.class, filter, properties);
+		List<TemplateHandler> templateHandlerInstances = _templateHandlers.get(
+			portlet.getPortletId());
 
 		if (Validator.isNotNull(portlet.getTemplateHandlerClass())) {
-			TemplateHandler templateHandler = (TemplateHandler)newInstance(
+			TemplateHandler templateHandler = (TemplateHandler)_newInstance(
 				TemplateHandler.class, portlet.getTemplateHandlerClass());
 
-			templateHandlerInstances.add(templateHandler);
+			Registry registry = RegistryUtil.getRegistry();
+
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					TemplateHandler.class, templateHandler, properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return templateHandlerInstances;
 	}
 
-	protected List<TrashHandler> newTrashHandlerInstances(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<TrashHandler> _newTrashHandlerInstances(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<TrashHandler> trashHandlerInstances =
-			ServiceTrackerCollections.openList(
-				TrashHandler.class, filter, properties);
+		List<TrashHandler> trashHandlerInstances = _trashHandlers.get(
+			portlet.getPortletId());
+
+		Registry registry = RegistryUtil.getRegistry();
 
 		for (String trashHandlerClass : portlet.getTrashHandlerClasses()) {
-			TrashHandler trashHandlerInstance = (TrashHandler)newInstance(
+			TrashHandler trashHandlerInstance = (TrashHandler)_newInstance(
 				TrashHandler.class, trashHandlerClass);
 
-			trashHandlerInstances.add(trashHandlerInstance);
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					TrashHandler.class, trashHandlerInstance, properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return trashHandlerInstances;
 	}
 
-	protected List<URLEncoder> newURLEncoders(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<URLEncoder> _newURLEncoders(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<URLEncoder> urlEncoderInstances =
-			ServiceTrackerCollections.openList(
-				URLEncoder.class, filter, properties);
+		List<URLEncoder> urlEncoderInstances = _urlEncoders.get(
+			portlet.getPortletId());
 
 		if (Validator.isNotNull(portlet.getURLEncoderClass())) {
-			URLEncoder urlEncoder = (URLEncoder)newInstance(
+			URLEncoder urlEncoder = (URLEncoder)_newInstance(
 				URLEncoder.class, portlet.getURLEncoderClass());
 
-			urlEncoderInstances.add(urlEncoder);
+			Registry registry = RegistryUtil.getRegistry();
+
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					URLEncoder.class, urlEncoder, properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return urlEncoderInstances;
 	}
 
-	protected List<UserNotificationDefinition>
-			newUserNotificationDefinitionInstances(
-				Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<UserNotificationDefinition>
+			_newUserNotificationDefinitionInstances(
+				Portlet portlet, Map<String, Object> properties,
+				List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<UserNotificationDefinition>
-			userNotificationDefinitionInstances =
-				ServiceTrackerCollections.openList(
-					UserNotificationDefinition.class, filter, properties);
+		List<UserNotificationDefinition> userNotificationDefinitionInstances =
+			_userNotificationDefinitions.get(portlet.getPortletId());
 
 		if (Validator.isNull(portlet.getUserNotificationDefinitions())) {
 			return userNotificationDefinitionInstances;
 		}
 
-		String xml = getContent(portlet.getUserNotificationDefinitions());
+		String xml = _getContent(portlet.getUserNotificationDefinitions());
 
 		xml = JavaFieldsParser.parse(_classLoader, xml);
 
 		Document document = UnsecureSAXReaderUtil.read(xml);
 
 		Element rootElement = document.getRootElement();
+
+		Registry registry = RegistryUtil.getRegistry();
 
 		for (Element definitionElement : rootElement.elements("definition")) {
 			String modelName = definitionElement.elementText("model-name");
@@ -885,49 +1029,57 @@ public class PortletBagFactory {
 						name, type, defaultValue, modifiable));
 			}
 
-			userNotificationDefinitionInstances.add(userNotificationDefinition);
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					UserNotificationDefinition.class,
+					userNotificationDefinition, properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return userNotificationDefinitionInstances;
 	}
 
-	protected List<UserNotificationHandler> newUserNotificationHandlerInstances(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<UserNotificationHandler> _newUserNotificationHandlerInstances(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<UserNotificationHandler>
-			userNotificationHandlerInstances =
-				ServiceTrackerCollections.openList(
-					UserNotificationHandler.class, filter, properties);
+		List<UserNotificationHandler> userNotificationHandlerInstances =
+			_userNotificationHandlers.get(portlet.getPortletId());
+
+		Registry registry = RegistryUtil.getRegistry();
 
 		for (String userNotificationHandlerClass :
 				portlet.getUserNotificationHandlerClasses()) {
 
 			UserNotificationHandler userNotificationHandlerInstance =
-				(UserNotificationHandler)newInstance(
+				(UserNotificationHandler)_newInstance(
 					UserNotificationHandler.class,
 					userNotificationHandlerClass);
 
 			userNotificationHandlerInstance = new UserNotificationHandlerImpl(
 				userNotificationHandlerInstance);
 
-			userNotificationHandlerInstances.add(
-				userNotificationHandlerInstance);
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					UserNotificationHandler.class,
+					userNotificationHandlerInstance, properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return userNotificationHandlerInstances;
 	}
 
-	protected List<WebDAVStorage> newWebDAVStorageInstances(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<WebDAVStorage> _newWebDAVStorageInstances(Portlet portlet)
 		throws Exception {
 
-		ServiceTrackerList<WebDAVStorage> webDAVStorageInstances =
-			ServiceTrackerCollections.openList(
-				WebDAVStorage.class, filter, properties);
+		List<WebDAVStorage> webDAVStorageInstances = _webDAVStorage.get(
+			portlet.getPortletId());
 
 		if (Validator.isNotNull(portlet.getWebDAVStorageClass())) {
-			WebDAVStorage webDAVStorageInstance = (WebDAVStorage)newInstance(
+			WebDAVStorage webDAVStorageInstance = (WebDAVStorage)_newInstance(
 				WebDAVStorage.class, portlet.getWebDAVStorageClass());
 
 			Map<String, Object> webDAVProperties = new HashMap<>();
@@ -936,53 +1088,68 @@ public class PortletBagFactory {
 			webDAVProperties.put(
 				"webdav.storage.token", portlet.getWebDAVStorageToken());
 
-			webDAVStorageInstances.add(webDAVStorageInstance, webDAVProperties);
+			Registry registry = RegistryUtil.getRegistry();
+
+			registry.registerService(
+				WebDAVStorage.class, webDAVStorageInstance, webDAVProperties);
 		}
 
 		return webDAVStorageInstances;
 	}
 
-	protected List<WorkflowHandler<?>> newWorkflowHandlerInstances(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	@SuppressWarnings("unchecked")
+	private List<WorkflowHandler<?>> _newWorkflowHandlerInstances(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<WorkflowHandler<?>> workflowHandlerInstances =
-			ServiceTrackerCollections.openList(
-				(Class<WorkflowHandler<?>>)(Class<?>)WorkflowHandler.class,
-				filter, properties);
+		List<WorkflowHandler<?>> workflowHandlerInstances =
+			_workflowHandlers.get(portlet.getPortletId());
+
+		Registry registry = RegistryUtil.getRegistry();
 
 		for (String workflowHandlerClass :
 				portlet.getWorkflowHandlerClasses()) {
 
 			WorkflowHandler<?> workflowHandlerInstance =
-				(WorkflowHandler<?>)newInstance(
+				(WorkflowHandler<?>)_newInstance(
 					WorkflowHandler.class, workflowHandlerClass);
 
-			workflowHandlerInstances.add(workflowHandlerInstance);
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					WorkflowHandler.class, workflowHandlerInstance, properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return workflowHandlerInstances;
 	}
 
-	protected List<Method> newXmlRpcMethodInstances(
-			Portlet portlet, Filter filter, Map<String, Object> properties)
+	private List<Method> _newXmlRpcMethodInstances(
+			Portlet portlet, Map<String, Object> properties,
+			List<ServiceRegistration<?>> serviceRegistrations)
 		throws Exception {
 
-		ServiceTrackerList<Method> xmlRpcMethodInstances =
-			ServiceTrackerCollections.openList(
-				Method.class, filter, properties);
+		List<Method> xmlRpcMethodInstances = _methods.get(
+			portlet.getPortletId());
 
 		if (Validator.isNotNull(portlet.getXmlRpcMethodClass())) {
-			Method xmlRpcMethodInstance = (Method)newInstance(
+			Method xmlRpcMethodInstance = (Method)_newInstance(
 				Method.class, portlet.getXmlRpcMethodClass());
 
-			xmlRpcMethodInstances.add(xmlRpcMethodInstance);
+			Registry registry = RegistryUtil.getRegistry();
+
+			ServiceRegistration<?> serviceRegistration =
+				registry.registerService(
+					Method.class, xmlRpcMethodInstance, properties);
+
+			serviceRegistrations.add(serviceRegistration);
 		}
 
 		return xmlRpcMethodInstances;
 	}
 
-	protected void validate() {
+	private void _validate() {
 		if (_classLoader == null) {
 			throw new IllegalStateException("Class loader is null");
 		}
@@ -999,9 +1166,206 @@ public class PortletBagFactory {
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletBagFactory.class);
 
+	private static final PortletServiceTrackerMap _assetRendererFactories =
+		PortletServiceTrackerMap.create(AssetRendererFactory.class);
+	private static final PortletServiceTrackerMap _atomCollectionAdapters =
+		PortletServiceTrackerMap.create(AtomCollectionAdapter.class);
+	private static final PortletServiceTrackerMap<ConfigurationAction>
+		_configurationActions = PortletServiceTrackerMap.create(
+			ConfigurationAction.class);
+	private static final PortletServiceTrackerMap<ControlPanelEntry>
+		_controlPanelEntries = PortletServiceTrackerMap.create(
+			ControlPanelEntry.class);
+	private static final PortletServiceTrackerMap<CustomAttributesDisplay>
+		_customAttributesDisplay = PortletServiceTrackerMap.create(
+			CustomAttributesDisplay.class);
+	private static final PortletServiceTrackerMap _indexers =
+		PortletServiceTrackerMap.create(Indexer.class);
+	private static final PortletServiceTrackerMap<MessageListener>
+		_messageListeners = PortletServiceTrackerMap.create(
+			MessageListener.class);
+	private static final PortletServiceTrackerMap<Method> _methods =
+		PortletServiceTrackerMap.create(Method.class);
+	private static final PortletServiceTrackerMap<OpenSearch> _openSearches =
+		PortletServiceTrackerMap.create(OpenSearch.class);
+	private static final PortletServiceTrackerMap<PermissionPropagator>
+		_permissionPropagator = PortletServiceTrackerMap.create(
+			PermissionPropagator.class);
+	private static final PortletServiceTrackerMap<PollerProcessor>
+		_pollerProcessors = PortletServiceTrackerMap.create(
+			PollerProcessor.class);
+	private static final PortletServiceTrackerMap<PortletDataHandler>
+		_portletDataHandlers = PortletServiceTrackerMap.create(
+			PortletDataHandler.class);
+	private static final PortletServiceTrackerMap<PortletLayoutListener>
+		_portletLayoutListeners = PortletServiceTrackerMap.create(
+			PortletLayoutListener.class);
+	private static final PortletServiceTrackerMap<PreferencesValidator>
+		_preferencesValidators = PortletServiceTrackerMap.create(
+			PreferencesValidator.class);
+	private static final PortletServiceTrackerMap<SchedulerEventMessageListener>
+		_schedulerEventMessageListeners = PortletServiceTrackerMap.create(
+			SchedulerEventMessageListener.class);
+	private static final PortletServiceTrackerMap<SocialActivityInterpreter>
+		_socialActivityInterpreters = PortletServiceTrackerMap.create(
+			SocialActivityInterpreter.class);
+	private static final PortletServiceTrackerMap<SocialRequestInterpreter>
+		_socialRequestInterpreters = PortletServiceTrackerMap.create(
+			SocialRequestInterpreter.class);
+	private static final PortletServiceTrackerMap _stagedModelDataHandlers =
+		PortletServiceTrackerMap.create(StagedModelDataHandler.class);
+	private static final PortletServiceTrackerMap<TemplateHandler>
+		_templateHandlers = PortletServiceTrackerMap.create(
+			TemplateHandler.class);
+	private static final PortletServiceTrackerMap<TrashHandler> _trashHandlers =
+		PortletServiceTrackerMap.create(TrashHandler.class);
+	private static final PortletServiceTrackerMap<URLEncoder> _urlEncoders =
+		PortletServiceTrackerMap.create(URLEncoder.class);
+	private static final PortletServiceTrackerMap<UserNotificationDefinition>
+		_userNotificationDefinitions = PortletServiceTrackerMap.create(
+			UserNotificationDefinition.class);
+	private static final PortletServiceTrackerMap<UserNotificationHandler>
+		_userNotificationHandlers = PortletServiceTrackerMap.create(
+			UserNotificationHandler.class);
+	private static final PortletServiceTrackerMap<WebDAVStorage>
+		_webDAVStorage = PortletServiceTrackerMap.create(WebDAVStorage.class);
+	private static final PortletServiceTrackerMap _workflowHandlers =
+		PortletServiceTrackerMap.create(WorkflowHandler.class);
+
 	private ClassLoader _classLoader;
 	private Configuration _configuration;
 	private ServletContext _servletContext;
 	private Boolean _warFile;
+
+	private static class PortletServiceTrackerMap<T> {
+
+		public static <T> PortletServiceTrackerMap<T> create(
+			Class<T> serviceClass) {
+
+			PortletServiceTrackerMap<T> portletServiceTrackerMap =
+				new PortletServiceTrackerMap<>();
+
+			portletServiceTrackerMap._open(serviceClass);
+
+			return portletServiceTrackerMap;
+		}
+
+		public void close() {
+			_serviceTracker.close();
+		}
+
+		public List<T> get(Object portletName) {
+			List<T> services = _portletServices.get(portletName);
+
+			if (services == null) {
+				if (_SHARED_PORTLET_SERVICE_KEY.equals(portletName)) {
+					return _sharedPortletServices;
+				}
+
+				services = new CopyOnWriteArrayList<>(_sharedPortletServices);
+
+				List<T> oldServices = _portletServices.putIfAbsent(
+					portletName, services);
+
+				if (oldServices != null) {
+					services = oldServices;
+				}
+			}
+
+			return services;
+		}
+
+		private PortletServiceTrackerMap() {
+		}
+
+		private void _open(Class<T> serviceClass) {
+			Registry registry = RegistryUtil.getRegistry();
+
+			_serviceTracker = registry.trackServices(
+				serviceClass,
+				new ServiceTrackerCustomizer<T, ServiceAndProperty<T>>() {
+
+					@Override
+					public ServiceAndProperty<T> addingService(
+						ServiceReference<T> serviceReference) {
+
+						Object property = serviceReference.getProperty(
+							"javax.portlet.name");
+
+						if (property == null) {
+							return null;
+						}
+
+						T service = registry.getService(serviceReference);
+
+						List<T> services = get(property);
+
+						services.add(service);
+
+						if (_SHARED_PORTLET_SERVICE_KEY.equals(property)) {
+							for (List<T> portletServices :
+									_portletServices.values()) {
+
+								portletServices.add(service);
+							}
+						}
+
+						return new ServiceAndProperty<>(service, property);
+					}
+
+					@Override
+					public void modifiedService(
+						ServiceReference<T> serviceReference,
+						ServiceAndProperty<T> serviceAndProperty) {
+					}
+
+					@Override
+					public void removedService(
+						ServiceReference<T> serviceReference,
+						ServiceAndProperty<T> serviceAndProperty) {
+
+						T service = serviceAndProperty._service;
+						Object property = serviceAndProperty._property;
+
+						List<T> services = get(property);
+
+						services.remove(service);
+
+						if (_SHARED_PORTLET_SERVICE_KEY.equals(property)) {
+							for (List<T> portletServices :
+									_portletServices.values()) {
+
+								portletServices.add(service);
+							}
+						}
+
+						registry.ungetService(serviceReference);
+					}
+
+				});
+
+			_serviceTracker.open();
+		}
+
+		private static final Object _SHARED_PORTLET_SERVICE_KEY = "ALL";
+
+		private ConcurrentMap<Object, List<T>> _portletServices =
+			new ConcurrentHashMap<>();
+		private ServiceTracker<T, ServiceAndProperty<T>> _serviceTracker;
+		private List<T> _sharedPortletServices = new CopyOnWriteArrayList<>();
+
+	}
+
+	private static class ServiceAndProperty<T> {
+
+		private ServiceAndProperty(T service, Object property) {
+			_service = service;
+			_property = property;
+		}
+
+		private final Object _property;
+		private final T _service;
+
+	}
 
 }
