@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.model.PublicRenderParameter;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
+import com.liferay.portal.kernel.model.portlet.PortletDependencyFactoryUtil;
 import com.liferay.portal.kernel.plugin.PluginPackage;
 import com.liferay.portal.kernel.portlet.FriendlyURLMapper;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
@@ -2025,6 +2026,19 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 		portletModel.setFooterPortletJavaScript(footerPortletJavaScriptList);
 
+		portletModel.setPartialActionServeResource(
+			GetterUtil.getBoolean(
+				portletElement.elementText("partial-action-serve-resource"),
+				portletModel.isPartialActionServeResource()));
+		portletModel.setPortletDependencyCssEnabled(
+			GetterUtil.getBoolean(
+				portletElement.elementText("portlet-dependency-css-enabled"),
+				portletModel.isPortletDependencyCssEnabled()));
+		portletModel.setPortletDependencyJavaScriptEnabled(
+			GetterUtil.getBoolean(
+				portletElement.elementText(
+					"portlet-dependency-javascript-enabled"),
+				portletModel.isPortletDependencyJavaScriptEnabled()));
 		portletModel.setCssClassWrapper(
 			GetterUtil.getString(
 				portletElement.elementText("css-class-wrapper"),
@@ -2433,6 +2447,21 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 			containerRuntimeOptions.put(
 				containerRuntimeOptionPrefix.concat(name),
 				values.toArray(new String[values.size()]));
+		}
+
+		for (Element dependencyElement :
+				portletElement.elements("dependency")) {
+
+			String name = GetterUtil.getString(
+				dependencyElement.elementText("name"));
+			String scope = GetterUtil.getString(
+				dependencyElement.elementText("scope"));
+			String version = GetterUtil.getString(
+				dependencyElement.elementText("version"));
+
+			portletModel.addPortletDependency(
+				PortletDependencyFactoryUtil.createPortletDependency(
+					name, scope, version));
 		}
 
 		portletModel.setAsyncSupported(

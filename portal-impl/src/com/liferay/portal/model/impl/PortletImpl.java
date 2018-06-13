@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.model.PortletFilter;
 import com.liferay.portal.kernel.model.PortletInfo;
 import com.liferay.portal.kernel.model.PublicRenderParameter;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.portlet.PortletDependency;
 import com.liferay.portal.kernel.notifications.UserNotificationHandler;
 import com.liferay.portal.kernel.plugin.PluginPackage;
 import com.liferay.portal.kernel.poller.PollerProcessor;
@@ -133,6 +134,9 @@ public class PortletImpl extends PortletBaseImpl {
 		_headerRequestAttributePrefixes = new ArrayList<>();
 		_indexerClasses = new ArrayList<>();
 		_initParams = new HashMap<>();
+		_portletDependencies = new ArrayList<>();
+		_portletDependencyCssEnabled = true;
+		_portletDependencyJavaScriptEnabled = true;
 		_portletFilters = new LinkedHashMap<>();
 		_portletModes = new HashMap<>();
 		_roleMappers = new LinkedHashMap<>();
@@ -192,7 +196,10 @@ public class PortletImpl extends PortletBaseImpl {
 		List<String> headerRequestAttributePrefixes, int headerTimeout,
 		List<String> footerPortalCss, List<String> footerPortletCss,
 		List<String> footerPortalJavaScript,
-		List<String> footerPortletJavaScript, String cssClassWrapper,
+		List<String> footerPortletJavaScript,
+		boolean partialActionServeResource, boolean portletDependencyCssEnabled,
+		boolean portletDependencyJavaScriptEnabled,
+		List<PortletDependency> portletDependencies, String cssClassWrapper,
 		boolean addDefaultResource, String roles, Set<String> unlinkedRoles,
 		Map<String, String> roleMappers, boolean system, boolean active,
 		boolean include, Map<String, String> initParams, Integer expCache,
@@ -291,6 +298,11 @@ public class PortletImpl extends PortletBaseImpl {
 		_footerPortletCss = footerPortletCss;
 		_footerPortalJavaScript = footerPortalJavaScript;
 		_footerPortletJavaScript = footerPortletJavaScript;
+		_partialActionServeResource = partialActionServeResource;
+		_portletDependencyCssEnabled = portletDependencyCssEnabled;
+		_portletDependencyJavaScriptEnabled =
+			portletDependencyJavaScriptEnabled;
+		_portletDependencies = portletDependencies;
 		_cssClassWrapper = cssClassWrapper;
 		_addDefaultResource = addDefaultResource;
 		_unlinkedRoles = unlinkedRoles;
@@ -321,6 +333,16 @@ public class PortletImpl extends PortletBaseImpl {
 	@Override
 	public void addApplicationType(ApplicationType applicationType) {
 		_applicationTypes.add(applicationType);
+	}
+
+	/**
+	 * Adds a portlet CSS/JS resource dependency.
+	 *
+	 * @param portletDependency a portlet CSS/JS resource dependency
+	 */
+	@Override
+	public void addPortletDependency(PortletDependency portletDependency) {
+		_portletDependencies.add(portletDependency);
 	}
 
 	/**
@@ -422,6 +444,8 @@ public class PortletImpl extends PortletBaseImpl {
 			getHeaderRequestAttributePrefixes(), getHeaderTimeout(),
 			getFooterPortalCss(), getFooterPortletCss(),
 			getFooterPortalJavaScript(), getFooterPortletJavaScript(),
+			isPartialActionServeResource(), isPortletDependencyCssEnabled(),
+			isPortletDependencyJavaScriptEnabled(), getPortletDependencies(),
 			getCssClassWrapper(), isAddDefaultResource(), getRoles(),
 			getUnlinkedRoles(), getRoleMappers(), isSystem(), isActive(),
 			isInclude(), getInitParams(), getExpCache(), isAsyncSupported(),
@@ -1415,6 +1439,16 @@ public class PortletImpl extends PortletBaseImpl {
 		}
 
 		return portletDataHandlerInstances.get(0);
+	}
+
+	/**
+	 * Returns the list of portlet CSS/JS resource dependencies.
+	 *
+	 * @return the list of portlet CSS/JS resource dependencies
+	 */
+	@Override
+	public List<PortletDependency> getPortletDependencies() {
+		return _portletDependencies;
 	}
 
 	/**
@@ -2596,6 +2630,21 @@ public class PortletImpl extends PortletBaseImpl {
 	}
 
 	/**
+	 * Returns <code>true</code> if the portlet's
+	 * serveResource(ResourceRequest,ResourceResponse) method should be invoked
+	 * during a partial action triggered by a different portlet on the same
+	 * portal page.
+	 *
+	 * @return <code>true</code> if the portlet's
+	 *         serveResource(ResourceRequest,ResourceResponse) method should be
+	 *         invoked during a partial action triggered by a different portlet
+	 *         on the same portal page
+	 */
+	public boolean isPartialActionServeResource() {
+		return _partialActionServeResource;
+	}
+
+	/**
 	 * Returns <code>true</code> if the portlet goes into the pop up state when
 	 * the user goes into the print mode.
 	 *
@@ -2605,6 +2654,32 @@ public class PortletImpl extends PortletBaseImpl {
 	@Override
 	public boolean isPopUpPrint() {
 		return _popUpPrint;
+	}
+
+	/**
+	 * Returns <code>true</code> if CSS resource dependencies added via
+	 * portlet.xml, @Dependency, or HeaderResponse.addDependency are to be added
+	 * to the head of the portal page.
+	 *
+	 * @return <code>true</code> if CSS resource dependencies added via
+	 * portlet.xml, @Dependency, or HeaderResponse.addDependency are to be added
+	 * to the head of the portal page
+	 */
+	public boolean isPortletDependencyCssEnabled() {
+		return _portletDependencyCssEnabled;
+	}
+
+	/**
+	 * Returns <code>true</code> if JavaScript resource dependencies added via
+	 * portlet.xml, @Dependency, or HeaderResponse.addDependency are to be added
+	 * to the head of the portal page.
+	 *
+	 * @return <code>true</code> if JavaScript resource dependencies added via
+	 * portlet.xml, @Dependency, or HeaderResponse.addDependency are to be added
+	 * to the head of the portal page
+	 */
+	public boolean isPortletDependencyJavaScriptEnabled() {
+		return _portletDependencyJavaScriptEnabled;
 	}
 
 	/**
@@ -3415,6 +3490,24 @@ public class PortletImpl extends PortletBaseImpl {
 	}
 
 	/**
+	 * Set to <code>true</code> if the portlet's
+	 * serveResource(ResourceRequest,ResourceResponse) method should be invoked
+	 * during a partial action triggered by a different portlet on the same
+	 * portal page.
+	 *
+	 * @param partialActionServeResource boolean value for whether the portlet's
+	 *        serveResource(ResourceRequest,ResourceResponse) method should be
+	 *        invoked during a partial action triggered by a different portlet
+	 *        on the same portal page
+	 */
+	@Override
+	public void setPartialActionServeResource(
+		boolean partialActionServeResource) {
+
+		_partialActionServeResource = partialActionServeResource;
+	}
+
+	/**
 	 * Sets the name of the permission propagator class of the portlet.
 	 */
 	@Override
@@ -3497,6 +3590,39 @@ public class PortletImpl extends PortletBaseImpl {
 	@Override
 	public void setPortletDataHandlerClass(String portletDataHandlerClass) {
 		_portletDataHandlerClass = portletDataHandlerClass;
+	}
+
+	/**
+	 * Set to <code>true</code> if the CSS resource dependencies added via
+	 * portlet.xml, @Dependency, or HeaderResponse.addDependency are to be added
+	 * to the head of the portal page.
+	 *
+	 * @param portletDependencyCssEnabled boolean value for whether the
+	 *        CSS resource dependencies added via portlet.xml, @Dependency, or
+	 *        HeaderResponse.addDependency are to be added to the head of the
+	 *        portal page
+	 */
+	public void setPortletDependencyCssEnabled(
+		boolean portletDependencyCssEnabled) {
+
+		_portletDependencyCssEnabled = portletDependencyCssEnabled;
+	}
+
+	/**
+	 * Set to <code>true</code> if the JavaScript resource dependencies added
+	 * via portlet.xml, @Dependency, or HeaderResponse.addDependency are to be
+	 * added to the head of the portal page.
+	 *
+	 * @param portletDependencyJavaScriptEnabled boolean value for whether
+	 *        the JavaScript resource dependencies added via portlet.xml,
+	 *        @Dependency, or HeaderResponse.addDependency are to be added to
+	 *        the head of the portal page
+	 */
+	public void setPortletDependencyJavaScriptEnabled(
+		boolean portletDependencyJavaScriptEnabled) {
+
+		_portletDependencyJavaScriptEnabled =
+			portletDependencyJavaScriptEnabled;
 	}
 
 	/**
@@ -4461,6 +4587,14 @@ public class PortletImpl extends PortletBaseImpl {
 	private String _parentStrutsPath;
 
 	/**
+	 * <code>True</code> if the portlet's
+	 * serveResource(ResourceRequest,ResourceResponse) method should be invoked
+	 * during a partial action triggered by a different portlet on the same
+	 * portal page.
+	 */
+	private boolean _partialActionServeResource;
+
+	/**
 	 * The name of the permission propagator class of the portlet.
 	 */
 	private String _permissionPropagatorClass;
@@ -4500,6 +4634,25 @@ public class PortletImpl extends PortletBaseImpl {
 	 * The name of the portlet data handler class of the portlet.
 	 */
 	private String _portletDataHandlerClass;
+
+	/**
+	 * The client-side dependencies associated with the portlet.
+	 */
+	private List<PortletDependency> _portletDependencies;
+
+	/**
+	 * <code>True</code> if CSS resource dependencies added via portlet.xml,
+	 * @Dependency, or HeaderResponse.addDependency are to be added to the head
+	 * of the portal page.
+	 */
+	private boolean _portletDependencyCssEnabled;
+
+	/**
+	 * <code>True</code> if JavaScript resource dependencies added via
+	 * portlet.xml, @Dependency, or HeaderResponse.addDependency are to be added
+	 * to the head of the portal page.
+	 */
+	private boolean _portletDependencyJavaScriptEnabled;
 
 	/**
 	 * The filters of the portlet.

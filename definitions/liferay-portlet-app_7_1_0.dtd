@@ -38,8 +38,9 @@ render-timeout?, render-weight?, ajaxable?, header-portal-css*,
 header-portlet-css*, header-portal-javascript*, header-portlet-javascript*,
 header-request-attribute-prefix*, header-timeout?, footer-portal-css*,
 footer-portlet-css*, footer-portal-javascript*, footer-portlet-javascript*,
-css-class-wrapper?, facebook-integration?,
-add-default-resource?, system?, active?, include?)>
+partial-action-serve-resource?, portlet-dependency-css-enabled?,
+portlet-dependency-javascript-enabled? css-class-wrapper?,
+facebook-integration?, add-default-resource?, system?, active?, include?,)>
 
 <!--
 The portlet-name element contains the unique name of the portlet. This name must
@@ -755,6 +756,29 @@ Set the path of JavaScript that will be referenced in the page's footer relative
 to the portlet's context path.
 -->
 <!ELEMENT footer-portlet-javascript (#PCDATA)>
+
+<!--
+The default value of partial-action-serve-resource is false. If set to true,
+then the portlet's serveResource(ResourceRequest, ResourceResponse) method will
+be invoked during a partial action triggered by a different portlet on the same
+portal page.
+-->
+<!ELEMENT partial-action-serve-resource (#PCDATA)>
+
+<!--
+The default value of portlet-dependency-css-enabled is true. If set to false,
+then CSS resource dependencies added via portlet.xml, @Dependency, or
+HeaderResponse#addDependency will not be added to the head of the portal page.
+-->
+<!ELEMENT portlet-dependency-css-enabled (#PCDATA)>
+
+<!--
+The default value of portlet-dependency-javascript-enabled is true. If set to
+false, then JavaScript resource dependencies added via portlet.xml,
+@Dependency, or HeaderResponse#addDependency will not be added to the head of
+the portal page.
+-->
+<!ELEMENT portlet-dependency-javascript-enabled (#PCDATA)>
 
 <!--
 Set name of the CSS class that will be injected in the DIV that wraps this
