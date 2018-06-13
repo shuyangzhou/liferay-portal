@@ -119,6 +119,7 @@ import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
+import org.dom4j.DocumentType;
 import org.dom4j.Element;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
@@ -596,6 +597,20 @@ public class ServiceBuilder {
 			Document document = saxReader.read(
 				new XMLSafeReader(
 					ToolsUtil.getContent(_normalize(inputFileName))));
+
+			DocumentType documentType = document.getDocType();
+
+			Matcher matcher = _dtdVersionPattern.matcher(
+				documentType.getSystemID());
+
+			if (matcher.matches()) {
+				_dtdVersion = Version.getInstance(
+					StringUtil.replace(matcher.group(1), '_', '.'));
+			}
+			else {
+				throw new IllegalArgumentException(
+					"Unable to parse DTD version for " + inputFileName);
+			}
 
 			Element rootElement = document.getRootElement();
 
@@ -1840,6 +1855,16 @@ public class ServiceBuilder {
 		}
 
 		if (txRequiredMethodNames.contains(javaMethod.getName())) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isVersionGTE_7_1_0() {
+		if (_dtdVersion.isSameVersionAs("7.1.0") ||
+			_dtdVersion.isLaterVersionThan("7.1.0")) {
+
 			return true;
 		}
 
@@ -7021,6 +7046,8 @@ public class ServiceBuilder {
 		"\\s+([^=]*)=\\s*\"([^\"]*)\"");
 	private static Pattern _beansPattern = Pattern.compile("<beans[^>]*>");
 	private static Configuration _configuration;
+	private static final Pattern _dtdVersionPattern = Pattern.compile(
+		".*service-builder_([^\\.]+)\\.dtd");
 	private static Pattern _getterPattern = Pattern.compile(
 		StringBundler.concat(
 			"public .* get.*", Pattern.quote("("), "|public boolean is.*",
@@ -7045,6 +7072,7 @@ public class ServiceBuilder {
 	private boolean _commercialPlugin;
 	private String _currentTplName;
 	private int _databaseNameMaxLength = 30;
+	private Version _dtdVersion;
 	private List<Entity> _entities;
 	private Map<String, EntityMapping> _entityMappings;
 	private Map<String, Entity> _entityPool = new HashMap<>();
