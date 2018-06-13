@@ -156,7 +156,6 @@
 					<include name="apps/*" />
 					<include name="private/apps/*" />
 					<exclude name="${build.exclude.dirs}" />
-					<exclude name="apps/static/*" />
 					<present targetdir="${modules.dir}">
 						<mapper
 							from="*"
