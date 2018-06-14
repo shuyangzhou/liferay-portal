@@ -14,12 +14,15 @@
 
 package com.liferay.apio.architect.form;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * @author Alejandro Hernández
  */
+@ProviderType
 public enum FieldType {
 
 	BOOLEAN, BOOLEAN_LIST, DATE, DATE_LIST, DOUBLE, DOUBLE_LIST, FILE,
-	FILE_LIST, LONG, LONG_LIST, STRING, STRING_LIST
+	FILE_LIST, LINKED_MODEL, LONG, LONG_LIST, STRING, STRING_LIST
 
 }

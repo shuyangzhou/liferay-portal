@@ -643,8 +643,7 @@ public class BlogsEntryLocalServiceWrapper implements BlogsEntryLocalService,
 	}
 
 	@Override
-	public String getUniqueUrlTitle(com.liferay.blogs.model.BlogsEntry entry)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public String getUniqueUrlTitle(com.liferay.blogs.model.BlogsEntry entry) {
 		return _blogsEntryLocalService.getUniqueUrlTitle(entry);
 	}
 

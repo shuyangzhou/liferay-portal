@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.consumer.throwable;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.Objects;
 
 /**
@@ -36,6 +38,7 @@ import java.util.Objects;
  * @param  <J> the type of the tenth argument of the consumer
  * @param  <K> the type of the eleventh argument of the consumer
  */
+@ConsumerType
 @FunctionalInterface
 public interface ThrowableUndecaConsumer<A, B, C, D, E, F, G, H, I, J, K> {
 

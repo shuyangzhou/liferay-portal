@@ -19,16 +19,19 @@ import static com.liferay.apio.architect.test.util.writer.MockWriterUtil.getRequ
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import com.liferay.apio.architect.documentation.Documentation;
-import com.liferay.apio.architect.message.json.DocumentationMessageMapper;
+import com.liferay.apio.architect.impl.internal.documentation.Documentation;
+import com.liferay.apio.architect.impl.internal.message.json.DocumentationMessageMapper;
+import com.liferay.apio.architect.impl.internal.request.RequestInfo;
+import com.liferay.apio.architect.impl.internal.routes.CollectionRoutesImpl;
+import com.liferay.apio.architect.impl.internal.routes.ItemRoutesImpl;
+import com.liferay.apio.architect.impl.internal.routes.NestedCollectionRoutesImpl;
+import com.liferay.apio.architect.impl.internal.writer.DocumentationWriter;
 import com.liferay.apio.architect.representor.Representor;
-import com.liferay.apio.architect.request.RequestInfo;
 import com.liferay.apio.architect.routes.CollectionRoutes;
 import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.apio.architect.routes.NestedCollectionRoutes;
 import com.liferay.apio.architect.test.util.model.RootModel;
 import com.liferay.apio.architect.test.util.representor.MockRepresentorCreator;
-import com.liferay.apio.architect.writer.DocumentationWriter;
 
 import java.util.Collections;
 import java.util.Map;
@@ -61,21 +64,24 @@ public class MockDocumentationWriter {
 		RequestInfo requestInfo = getRequestInfo(httpHeaders);
 
 		CollectionRoutes.Builder<String, Object> collectionBuilder =
-			new CollectionRoutes.Builder<>(
+			new CollectionRoutesImpl.BuilderImpl<>(
 				"name", null,
 				__ -> {
-				});
+				},
+				__ -> null);
 
-		ItemRoutes.Builder itemBuilder = new ItemRoutes.Builder<>(
+		ItemRoutes.Builder itemBuilder = new ItemRoutesImpl.BuilderImpl<>(
 			"name", null,
 			__ -> {
-			});
+			},
+			__ -> null);
 
 		NestedCollectionRoutes.Builder nestedBuilder =
-			new NestedCollectionRoutes.Builder(
+			new NestedCollectionRoutesImpl.BuilderImpl<>(
 				"name", null, __ -> null,
 				__ -> {
-				});
+				},
+				__ -> null);
 
 		Representor<RootModel> rootModelRepresentor =
 			MockRepresentorCreator.createRootModelRepresentor(false);

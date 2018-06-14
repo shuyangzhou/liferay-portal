@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.single.model;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.apio.architect.operation.Operation;
 
 import java.util.List;
@@ -24,45 +26,28 @@ import java.util.List;
  * @author Alejandro Hernández
  * @param  <T> the model's type
  */
-public class SingleModel<T> {
-
-	public SingleModel(
-		T model, String resourceName, List<Operation> operations) {
-
-		_model = model;
-		_resourceName = resourceName;
-		_operations = operations;
-	}
+@ProviderType
+public interface SingleModel<T> {
 
 	/**
 	 * Returns the model.
 	 *
 	 * @return the model
 	 */
-	public T getModel() {
-		return _model;
-	}
+	public T getModel();
 
 	/**
 	 * Returns the list of operations for the model.
 	 *
 	 * @return the list of operations
 	 */
-	public List<Operation> getOperations() {
-		return _operations;
-	}
+	public List<Operation> getOperations();
 
 	/**
 	 * Returns the resource's name.
 	 *
 	 * @return the resource's name
 	 */
-	public String getResourceName() {
-		return _resourceName;
-	}
-
-	private final T _model;
-	private final List<Operation> _operations;
-	private final String _resourceName;
+	public String getResourceName();
 
 }

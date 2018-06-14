@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.consumer.throwable;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.Objects;
 
 /**
@@ -29,6 +31,7 @@ import java.util.Objects;
  * @param  <C> the type of the third argument of the consumer
  * @param  <D> the type of the fourth argument of the consumer
  */
+@ConsumerType
 @FunctionalInterface
 public interface ThrowableTetraConsumer<A, B, C, D> {
 

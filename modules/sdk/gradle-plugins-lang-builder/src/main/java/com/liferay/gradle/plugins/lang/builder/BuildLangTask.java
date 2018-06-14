@@ -31,7 +31,6 @@ import java.util.Set;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
 import org.gradle.api.tasks.Input;
-import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.JavaExec;
 import org.gradle.api.tasks.Optional;
 import org.gradle.util.GUtil;
@@ -78,21 +77,10 @@ public class BuildLangTask extends JavaExec {
 		return GradleUtil.toString(_langFileName);
 	}
 
-	@InputFile
-	@Optional
-	public File getPortalLanguagePropertiesFile() {
-		return GradleUtil.toFile(getProject(), _portalLanguagePropertiesFile);
-	}
-
 	@Input
 	@Optional
 	public String getTranslateSubscriptionKey() {
 		return GradleUtil.toString(_translateSubscriptionKey);
-	}
-
-	@Input
-	public boolean isPlugin() {
-		return _plugin;
 	}
 
 	@Input
@@ -123,16 +111,6 @@ public class BuildLangTask extends JavaExec {
 		_langFileName = langFileName;
 	}
 
-	public void setPlugin(boolean plugin) {
-		_plugin = plugin;
-	}
-
-	public void setPortalLanguagePropertiesFile(
-		Object portalLanguagePropertiesFile) {
-
-		_portalLanguagePropertiesFile = portalLanguagePropertiesFile;
-	}
-
 	public void setTitleCapitalization(boolean titleCapitalization) {
 		_titleCapitalization = titleCapitalization;
 	}
@@ -154,17 +132,7 @@ public class BuildLangTask extends JavaExec {
 			"lang.excluded.language.ids=" +
 				StringUtil.merge(getExcludedLanguageIds(), ","));
 		args.add("lang.file=" + getLangFileName());
-		args.add("lang.plugin=" + isPlugin());
 		args.add("lang.title.capitalization=" + isTitleCapitalization());
-
-		File portalLanguagePropertiesFile = getPortalLanguagePropertiesFile();
-
-		if (portalLanguagePropertiesFile != null) {
-			args.add(
-				"lang.portal.language.properties.file=" +
-					FileUtil.relativize(
-						getPortalLanguagePropertiesFile(), getWorkingDir()));
-		}
 
 		boolean translate = isTranslate();
 
@@ -198,8 +166,6 @@ public class BuildLangTask extends JavaExec {
 	private Set<Object> _excludedLanguageIds = new LinkedHashSet<>();
 	private Object _langDir;
 	private Object _langFileName = LangBuilderArgs.LANG_FILE_NAME;
-	private boolean _plugin = LangBuilderArgs.PLUGIN;
-	private Object _portalLanguagePropertiesFile;
 	private boolean _titleCapitalization = LangBuilderArgs.TITLE_CAPITALIZATION;
 	private boolean _translate = LangBuilderArgs.TRANSLATE;
 	private Object _translateSubscriptionKey;

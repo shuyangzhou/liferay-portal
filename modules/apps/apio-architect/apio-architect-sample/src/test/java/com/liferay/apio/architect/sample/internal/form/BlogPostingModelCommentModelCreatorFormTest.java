@@ -14,12 +14,16 @@
 
 package com.liferay.apio.architect.sample.internal.form;
 
-import static com.liferay.apio.architect.form.Form.Builder.empty;
 import static com.liferay.apio.architect.sample.internal.form.BlogPostingCommentCreatorForm.buildForm;
 import static com.liferay.apio.architect.test.util.form.FormMatchers.isAFormWithConditions;
 import static com.liferay.apio.architect.test.util.form.FormMatchers.isReturnedIn;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import com.liferay.apio.architect.form.Form.Builder;
+import com.liferay.apio.architect.impl.internal.form.FormImpl.BuilderImpl;
+
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -30,11 +34,14 @@ public class BlogPostingModelCommentModelCreatorFormTest {
 
 	@Test
 	public void test() {
+		Builder<BlogPostingCommentCreatorForm> formBuilder = new BuilderImpl<>(
+			Collections.emptyList(), __ -> 42L);
+
 		assertThat(
-			buildForm(empty()),
+			buildForm(formBuilder),
 			isAFormWithConditions(
-				builder -> builder.whereLong(
-					"author",
+				builder -> builder.whereIdentifier(
+					"author", 42L,
 					isReturnedIn(BlogPostingCommentCreatorForm::getAuthor)
 				).whereString(
 					"text", isReturnedIn(BlogPostingCommentCreatorForm::getText)

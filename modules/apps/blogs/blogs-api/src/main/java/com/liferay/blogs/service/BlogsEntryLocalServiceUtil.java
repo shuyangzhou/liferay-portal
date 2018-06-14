@@ -605,8 +605,7 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static String getUniqueUrlTitle(
-		com.liferay.blogs.model.BlogsEntry entry)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		com.liferay.blogs.model.BlogsEntry entry) {
 		return getService().getUniqueUrlTitle(entry);
 	}
 

@@ -14,16 +14,18 @@
 
 package com.liferay.apio.architect.test.util.writer;
 
-import static com.liferay.apio.architect.operation.Method.DELETE;
+import static com.liferay.apio.architect.operation.HTTPMethod.DELETE;
 import static com.liferay.apio.architect.test.util.representor.MockRepresentorCreator.createFirstEmbeddedModelRepresentor;
 import static com.liferay.apio.architect.test.util.representor.MockRepresentorCreator.createRootModelRepresentor;
 import static com.liferay.apio.architect.test.util.representor.MockRepresentorCreator.createSecondEmbeddedModelRepresentor;
 import static com.liferay.apio.architect.test.util.representor.MockRepresentorCreator.createThirdEmbeddedModelRepresentor;
 
 import com.liferay.apio.architect.identifier.Identifier;
+import com.liferay.apio.architect.impl.internal.operation.OperationImpl;
+import com.liferay.apio.architect.impl.internal.request.RequestInfo;
+import com.liferay.apio.architect.impl.internal.single.model.SingleModelImpl;
 import com.liferay.apio.architect.operation.Operation;
 import com.liferay.apio.architect.representor.Representor;
-import com.liferay.apio.architect.request.RequestInfo;
 import com.liferay.apio.architect.single.model.SingleModel;
 import com.liferay.apio.architect.test.util.identifier.FirstEmbeddedId;
 import com.liferay.apio.architect.test.util.identifier.SecondEmbeddedId;
@@ -78,8 +80,7 @@ public class MockWriterUtil {
 
 	/**
 	 * Returns a {@link RequestInfo} with the provided {@code HttpHeaders}, a
-	 * mock {@link com.liferay.apio.architect.url.ServerURL}, a mock {@link
-	 * com.liferay.apio.architect.response.control.Embedded} request, and a mock
+	 * mock {@code ServerURL}, a mock {@code Embedded} request, and a mock
 	 * {@link com.liferay.apio.architect.language.Language} with {@code
 	 * Locale#getDefault()}.
 	 *
@@ -120,24 +121,24 @@ public class MockWriterUtil {
 
 		if (identifierClass.equals(FirstEmbeddedId.class)) {
 			List<Operation> operations = Collections.singletonList(
-				new Operation(DELETE, "delete-operation"));
+				new OperationImpl(DELETE, "delete-operation"));
 
 			return Optional.of(
-				new SingleModel<>(
+				new SingleModelImpl<>(
 					(FirstEmbeddedModel)() -> (String)identifier, "first",
 					operations));
 		}
 
 		if (identifierClass.equals(SecondEmbeddedId.class)) {
 			return Optional.of(
-				new SingleModel<>(
+				new SingleModelImpl<>(
 					(SecondEmbeddedModel)() -> (String)identifier, "second",
 					Collections.emptyList()));
 		}
 
 		if (identifierClass.equals(ThirdEmbeddedId.class)) {
 			return Optional.of(
-				new SingleModel<>(
+				new SingleModelImpl<>(
 					(ThirdEmbeddedModel)() -> (String)identifier, "third",
 					Collections.emptyList()));
 		}

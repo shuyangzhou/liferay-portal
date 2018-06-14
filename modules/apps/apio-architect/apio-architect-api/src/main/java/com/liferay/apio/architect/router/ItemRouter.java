@@ -48,7 +48,6 @@ import com.liferay.apio.architect.routes.ItemRoutes.Builder;
  *         {@code Identifier<S>}.
  */
 @ConsumerType
-@SuppressWarnings("unused")
 public interface ItemRouter<T, S, U extends Identifier<S>> {
 
 	/**

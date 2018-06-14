@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.consumer.throwable;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.Objects;
 
 /**
@@ -30,6 +32,7 @@ import java.util.Objects;
  * @param  <D> the type of the fourth argument of the consumer
  * @param  <E> the type of the fifth argument of the consumer
  */
+@ConsumerType
 @FunctionalInterface
 public interface ThrowablePentaConsumer<A, B, C, D, E> {
 

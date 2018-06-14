@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.consumer;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.Objects;
 
 /**
@@ -31,6 +33,7 @@ import java.util.Objects;
  * @param  <D> the type of the fourth argument of the consumer
  * @param  <E> the type of the fifth argument of the consumer
  */
+@ConsumerType
 @FunctionalInterface
 public interface PentaConsumer<A, B, C, D, E> {
 

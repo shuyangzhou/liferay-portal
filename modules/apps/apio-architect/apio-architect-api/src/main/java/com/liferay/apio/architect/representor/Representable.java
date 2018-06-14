@@ -49,7 +49,6 @@ import com.liferay.apio.architect.representor.Representor.Builder;
  *         {@code Identifier<S>}.
  */
 @ConsumerType
-@SuppressWarnings("unused")
 public interface Representable<T, S, U extends Identifier<S>> {
 
 	/**
@@ -61,18 +60,17 @@ public interface Representable<T, S, U extends Identifier<S>> {
 
 	/**
 	 * Creates a {@link Representor} for a certain domain model from the
-	 * provided {@link Representor.Builder}.
+	 * provided {@link Builder}.
 	 *
 	 * <p>
 	 * To construct a representor, you must call {@link
-	 * Representor.Builder.FirstStep#build()} ()}. Before calling this method,
-	 * you must call the other representor builder methods to populate the
-	 * builder with data. This ensures that the resulting representor contains
-	 * the data.
+	 * Representor.FirstStep#build()} ()}. Before calling this method, you must
+	 * call the other representor builder methods to populate the builder with
+	 * data. This ensures that the resulting representor contains the data.
 	 * </p>
 	 *
 	 * @param builder the representor builder used to create the representor
-	 * @see   Representor.Builder
+	 * @see   Builder
 	 */
 	public Representor<T> representor(Builder<T, S> builder);
 

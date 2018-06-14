@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.alias;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import com.liferay.apio.architect.file.BinaryFile;
 
 import java.util.function.Function;
@@ -25,6 +27,7 @@ import java.util.function.Function;
  * @author Alejandro Hernández
  * @param  <T> the model's type
  */
+@ConsumerType
 @FunctionalInterface
 public interface BinaryFunction<T> extends Function<T, BinaryFile> {
 }

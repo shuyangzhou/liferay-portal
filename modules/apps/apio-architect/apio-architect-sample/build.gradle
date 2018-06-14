@@ -16,6 +16,7 @@ dependencies {
 
 	testCompile group: "com.github.stefanbirkner", name: "system-rules", version: "1.17.0"
 	testCompile group: "org.hamcrest", name: "java-hamcrest", version: "2.0.0.0"
+	testCompile project(":apps:apio-architect:apio-architect-impl")
 	testCompile project(":apps:apio-architect:apio-architect-test-util")
 }
 

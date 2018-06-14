@@ -16,6 +16,7 @@ package com.liferay.apio.architect.sample.internal.form;
 
 import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.form.Form.Builder;
+import com.liferay.apio.architect.sample.internal.identifier.PersonIdentifier;
 
 /**
  * Represents the values extracted from a blog posting comment creator form.
@@ -40,10 +41,11 @@ public class BlogPostingCommentCreatorForm {
 			__ -> "This form can be used to create a blog posting comment"
 		).constructor(
 			BlogPostingCommentCreatorForm::new
+		).addRequiredLinkedModel(
+			"author", PersonIdentifier.class,
+			BlogPostingCommentCreatorForm::_setAuthor
 		).addRequiredString(
 			"text", BlogPostingCommentCreatorForm::_setText
-		).addRequiredLong(
-			"author", BlogPostingCommentCreatorForm::_setAuthor
 		).build();
 	}
 

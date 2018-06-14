@@ -14,12 +14,15 @@
 
 package com.liferay.apio.architect.supplier;
 
+import aQute.bnd.annotation.ConsumerType;
+
 /**
  * Defines a {@code java.util.function.Supplier} that can throw an exception.
  *
  * @author Alejandro Hernández
  * @param  <R> the type of the result of the supplier
  */
+@ConsumerType
 @FunctionalInterface
 public interface ThrowableSupplier<R> {
 

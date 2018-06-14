@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.credentials;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.function.Supplier;
 
 /**
@@ -23,5 +25,7 @@ import java.util.function.Supplier;
  *
  * @author Alejandro Hernández
  */
+@ConsumerType
+@FunctionalInterface
 public interface Credentials extends Supplier<Object> {
 }

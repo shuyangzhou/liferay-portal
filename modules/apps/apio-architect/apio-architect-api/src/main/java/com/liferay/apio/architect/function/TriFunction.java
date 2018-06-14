@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.function;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -33,6 +35,7 @@ import java.util.function.Function;
  * @param  <C> the type of the third argument of the function
  * @param  <R> the type of the result of the function
  */
+@ConsumerType
 @FunctionalInterface
 public interface TriFunction<A, B, C, R> {
 

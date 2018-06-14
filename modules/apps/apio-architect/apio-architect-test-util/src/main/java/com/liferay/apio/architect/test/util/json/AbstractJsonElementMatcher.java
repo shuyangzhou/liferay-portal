@@ -14,7 +14,7 @@
 
 package com.liferay.apio.architect.test.util.json;
 
-import static com.liferay.apio.architect.unsafe.Unsafe.unsafeCast;
+import static com.liferay.apio.architect.impl.internal.unsafe.Unsafe.unsafeCast;
 
 import com.google.gson.JsonElement;
 

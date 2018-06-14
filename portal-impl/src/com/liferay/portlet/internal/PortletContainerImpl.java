@@ -48,6 +48,7 @@ import com.liferay.portal.kernel.portlet.WindowStateFactory;
 import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIconMenu;
 import com.liferay.portal.kernel.portlet.toolbar.PortletToolbar;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
@@ -393,8 +394,17 @@ public class PortletContainerImpl implements PortletContainer {
 		}
 		finally {
 			if (themeDisplay != null) {
-				themeDisplay.setScopeGroupId(previousScopeGroupId);
-				themeDisplay.setSiteGroupId(previousSiteGroupId);
+				if (GroupLocalServiceUtil.fetchGroup(previousScopeGroupId) !=
+						null) {
+
+					themeDisplay.setScopeGroupId(previousScopeGroupId);
+				}
+
+				if (GroupLocalServiceUtil.fetchGroup(previousSiteGroupId) !=
+						null) {
+
+					themeDisplay.setSiteGroupId(previousSiteGroupId);
+				}
 			}
 		}
 	}

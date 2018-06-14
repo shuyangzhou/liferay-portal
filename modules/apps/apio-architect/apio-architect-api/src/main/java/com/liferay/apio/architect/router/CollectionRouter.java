@@ -44,7 +44,6 @@ import com.liferay.apio.architect.routes.CollectionRoutes.Builder;
  * @see    CollectionRoutes.Builder
  */
 @ConsumerType
-@SuppressWarnings("unused")
 public interface CollectionRouter<T, S, U extends Identifier<S>> {
 
 	/**

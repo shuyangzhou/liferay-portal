@@ -53,7 +53,6 @@ import com.liferay.apio.architect.routes.NestedCollectionRoutes.Builder;
  * @see    NestedCollectionRoutes.Builder
  */
 @ConsumerType
-@SuppressWarnings("unused")
 public interface NestedCollectionRouter
 	<T, S, U extends Identifier<S>, V, W extends Identifier<V>> {
 

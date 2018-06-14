@@ -25,6 +25,5 @@ package com.liferay.apio.architect.identifier;
  *
  * @author Alejandro Hernández
  */
-@SuppressWarnings("unused")
 public interface Identifier<T> {
 }

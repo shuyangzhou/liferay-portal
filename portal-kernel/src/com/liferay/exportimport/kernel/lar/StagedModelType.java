@@ -16,6 +16,7 @@ package com.liferay.exportimport.kernel.lar;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -36,6 +37,34 @@ public class StagedModelType {
 	public static final int REFERRER_CLASS_NAME_ID_ALL = -1;
 
 	public static final int REFERRER_CLASS_NAME_ID_ANY = -2;
+
+	public static StagedModelType parse(String stagedModelTypeString) {
+		if (Validator.isNull(stagedModelTypeString)) {
+			return null;
+		}
+
+		try {
+			int index = stagedModelTypeString.indexOf(CharPool.POUND);
+
+			if (index == -1) {
+				return new StagedModelType(stagedModelTypeString);
+			}
+
+			String className = stagedModelTypeString.substring(0, index);
+
+			if (Validator.isNull(className)) {
+				return null;
+			}
+
+			String referrerClassName = stagedModelTypeString.substring(
+				index + 1);
+
+			return new StagedModelType(className, referrerClassName);
+		}
+		catch (Exception e) {
+			return null;
+		}
+	}
 
 	public StagedModelType(Class<?> clazz) {
 		setClassName(clazz.getName());
@@ -126,13 +155,13 @@ public class StagedModelType {
 			return StringPool.BLANK;
 		}
 
-		int pos = className.lastIndexOf(StringPool.PERIOD) + 1;
+		int index = className.lastIndexOf(StringPool.PERIOD) + 1;
 
-		if (pos <= 0) {
+		if (index <= 0) {
 			return className;
 		}
 
-		return className.substring(pos);
+		return className.substring(index);
 	}
 
 	protected void setClassName(String className) {

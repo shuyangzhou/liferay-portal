@@ -14,6 +14,7 @@
 
 package com.liferay.apio.architect.test.util.form;
 
+import static com.liferay.apio.architect.impl.internal.form.FormImpl.BuilderImpl.empty;
 import static com.liferay.apio.architect.test.util.form.FormMatchers.isReturnedIn;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -37,7 +38,7 @@ public class FormConditionsTest {
 
 	@Test
 	public void testFormWithInvalidDescriptionUpdatesDescription() {
-		Form.Builder<Map<String, Object>> builder = Form.Builder.empty();
+		Form.Builder<Map<String, Object>> builder = empty();
 
 		Form<Map<String, Object>> form = builder.title(
 			__ -> "title"
@@ -68,7 +69,7 @@ public class FormConditionsTest {
 
 	@Test
 	public void testFormWithInvalidFieldsUpdatesDescription() {
-		Form.Builder<Map<String, Object>> builder = Form.Builder.empty();
+		Form.Builder<Map<String, Object>> builder = empty();
 
 		Form<Map<String, Object>> form = builder.title(
 			__ -> "title"
@@ -98,7 +99,7 @@ public class FormConditionsTest {
 
 	@Test
 	public void testFormWithInvalidTitleUpdatesDescription() {
-		Form.Builder<Map<String, Object>> builder = Form.Builder.empty();
+		Form.Builder<Map<String, Object>> builder = empty();
 
 		Form<Map<String, Object>> form = builder.title(
 			__ -> ""
@@ -168,7 +169,7 @@ public class FormConditionsTest {
 
 		Description description = new StringDescription();
 
-		Form.Builder<Map<String, Object>> formBuilder = Form.Builder.empty();
+		Form.Builder<Map<String, Object>> formBuilder = empty();
 
 		Form<Map<String, Object>> form = formBuilder.title(
 			__ -> "title"

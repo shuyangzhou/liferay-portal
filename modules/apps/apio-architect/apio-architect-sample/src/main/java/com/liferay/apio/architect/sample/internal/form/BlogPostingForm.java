@@ -16,6 +16,7 @@ package com.liferay.apio.architect.sample.internal.form;
 
 import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.form.Form.Builder;
+import com.liferay.apio.architect.sample.internal.identifier.PersonIdentifier;
 
 /**
  * Represents the values extracted from a blog posting form.
@@ -40,14 +41,14 @@ public class BlogPostingForm {
 			__ -> "This form can be used to create or update a blog posting"
 		).constructor(
 			BlogPostingForm::new
-		).addRequiredString(
-			"headline", BlogPostingForm::_setHeadline
+		).addRequiredLinkedModel(
+			"creator", PersonIdentifier.class, BlogPostingForm::_setCreator
 		).addRequiredString(
 			"articleBody", BlogPostingForm::_setArticleBody
-		).addRequiredLong(
-			"creator", BlogPostingForm::_setCreator
 		).addRequiredString(
 			"alternativeHeadline", BlogPostingForm::_setAlternativeHeadline
+		).addRequiredString(
+			"headline", BlogPostingForm::_setHeadline
 		).build();
 	}
 

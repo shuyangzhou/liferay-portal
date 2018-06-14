@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.consumer.throwable;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.Objects;
 
 /**
@@ -26,6 +28,7 @@ import java.util.Objects;
  * @author Alejandro Hernández
  * @param  <A> the type of the first argument of the consumer
  */
+@ConsumerType
 @FunctionalInterface
 public interface ThrowableConsumer<A> {
 

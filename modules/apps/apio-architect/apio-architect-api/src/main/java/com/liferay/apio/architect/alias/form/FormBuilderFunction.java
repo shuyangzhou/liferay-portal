@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.alias.form;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.form.Form.Builder;
 
@@ -26,5 +28,6 @@ import java.util.function.Function;
  * @author Alejandro Hernández
  * @param  <T> the form's type
  */
+@ConsumerType
 public interface FormBuilderFunction<T> extends Function<Builder<T>, Form<T>> {
 }

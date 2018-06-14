@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.alias.routes.permission;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import com.liferay.apio.architect.credentials.Credentials;
 import com.liferay.apio.architect.function.throwable.ThrowableBiFunction;
 
@@ -25,6 +27,7 @@ import com.liferay.apio.architect.function.throwable.ThrowableBiFunction;
  * @param  <T> the type of the model's identifier (e.g., {@code Long}, {@code
  *         String}, etc.)
  */
+@ConsumerType
 @FunctionalInterface
 public interface HasUpdatePermissionFunction<T>
 	extends ThrowableBiFunction<Credentials, T, Boolean> {

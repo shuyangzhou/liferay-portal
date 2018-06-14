@@ -913,7 +913,7 @@ public class OrganizationFinderImpl
 
 			Object value = entry.getValue();
 
-			if (value != null) {
+			if (Validator.isNotNull(value)) {
 				sb.append(getJoin(key));
 			}
 		}
@@ -982,7 +982,7 @@ public class OrganizationFinderImpl
 
 			Object value = entry.getValue();
 
-			if (value != null) {
+			if (Validator.isNotNull(value)) {
 				sb.append(getWhere(key, value));
 			}
 		}
@@ -1129,13 +1129,12 @@ public class OrganizationFinderImpl
 
 				if (!organizationsTree.isEmpty()) {
 					for (Organization organization : organizationsTree) {
-						StringBundler sb = new StringBundler(5);
+						StringBundler sb = new StringBundler(4);
 
 						sb.append(StringPool.PERCENT);
 						sb.append(StringPool.SLASH);
 						sb.append(organization.getOrganizationId());
 						sb.append(StringPool.SLASH);
-						sb.append(StringPool.PERCENT);
 
 						qPos.add(sb.toString());
 					}

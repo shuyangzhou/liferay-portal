@@ -38,28 +38,30 @@ public class UpgradeDDLRecordSetSettings extends UpgradeProcess {
 	protected String addRequireAuthenticationSetting(
 		JSONObject settingsJSONObject) {
 
-		JSONArray fieldValues = settingsJSONObject.getJSONArray("fieldValues");
+		JSONArray fieldValuesJSONArray = settingsJSONObject.getJSONArray(
+			"fieldValues");
 
-		JSONObject requireAuthenticationSetting =
-			createRequireAuthenticationSetting();
+		JSONObject requireAuthenticationSettingJSONObject =
+			createRequireAuthenticationSettingJSONObject();
 
-		fieldValues.put(requireAuthenticationSetting);
+		fieldValuesJSONArray.put(requireAuthenticationSettingJSONObject);
 
-		settingsJSONObject.put("fieldValues", fieldValues);
+		settingsJSONObject.put("fieldValues", fieldValuesJSONArray);
 
 		return settingsJSONObject.toJSONString();
 	}
 
-	protected JSONObject createRequireAuthenticationSetting() {
-		JSONObject requireAuthenticationSetting =
+	protected JSONObject createRequireAuthenticationSettingJSONObject() {
+		JSONObject requireAuthenticationSettingJSONObject =
 			_jsonFactory.createJSONObject();
 
-		requireAuthenticationSetting.put(
+		requireAuthenticationSettingJSONObject.put(
 			"instanceId", StringUtil.randomString());
-		requireAuthenticationSetting.put("name", "requireAuthentication");
-		requireAuthenticationSetting.put("value", "false");
+		requireAuthenticationSettingJSONObject.put(
+			"name", "requireAuthentication");
+		requireAuthenticationSettingJSONObject.put("value", "false");
 
-		return requireAuthenticationSetting;
+		return requireAuthenticationSettingJSONObject;
 	}
 
 	@Override
