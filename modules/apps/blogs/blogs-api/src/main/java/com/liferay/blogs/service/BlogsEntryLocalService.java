@@ -446,7 +446,7 @@ public interface BlogsEntryLocalService extends BaseLocalService,
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public String getUniqueUrlTitle(BlogsEntry entry) throws PortalException;
+	public String getUniqueUrlTitle(BlogsEntry entry);
 
 	public void moveEntriesToTrash(long groupId, long userId)
 		throws PortalException;

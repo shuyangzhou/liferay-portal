@@ -31,13 +31,15 @@ public interface ApioLogger {
 	 *
 	 * @param apiError the error
 	 */
-	public void error(APIError apiError);
+	public default void error(APIError apiError) {
+	}
 
 	/**
 	 * Logs a warning message.
 	 *
 	 * @param message the message
 	 */
-	public void warning(String message);
+	public default void warning(String message) {
+	}
 
 }

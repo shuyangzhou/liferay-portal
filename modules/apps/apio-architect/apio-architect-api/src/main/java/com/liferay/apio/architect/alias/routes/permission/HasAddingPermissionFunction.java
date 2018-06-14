@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.alias.routes.permission;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import com.liferay.apio.architect.credentials.Credentials;
 import com.liferay.apio.architect.function.throwable.ThrowableFunction;
 
@@ -23,6 +25,7 @@ import com.liferay.apio.architect.function.throwable.ThrowableFunction;
  *
  * @author Alejandro Hernández
  */
+@ConsumerType
 @FunctionalInterface
 public interface HasAddingPermissionFunction
 	extends ThrowableFunction<Credentials, Boolean> {

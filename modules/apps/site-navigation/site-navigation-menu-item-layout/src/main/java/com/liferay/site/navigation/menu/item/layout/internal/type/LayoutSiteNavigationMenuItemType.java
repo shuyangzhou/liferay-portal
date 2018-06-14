@@ -247,7 +247,7 @@ public class LayoutSiteNavigationMenuItemType
 			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
 				Layout.class);
 
-		Layout layout = _getLayout(siteNavigationMenuItem);
+		Layout layout = _getLayout(importedSiteNavigationMenuItem);
 
 		long plid = MapUtil.getLong(
 			layoutPlids, layout.getPlid(), layout.getPlid());
@@ -347,13 +347,12 @@ public class LayoutSiteNavigationMenuItemType
 			siteNavigationMenuItem.getTypeSettings());
 
 		String layoutUuid = typeSettingsProperties.get("layoutUuid");
-		long groupId = GetterUtil.getLong(
-			typeSettingsProperties.get("groupId"));
+
 		boolean privateLayout = GetterUtil.getBoolean(
 			typeSettingsProperties.get("privateLayout"));
 
 		return _layoutLocalService.fetchLayoutByUuidAndGroupId(
-			layoutUuid, groupId, privateLayout);
+			layoutUuid, siteNavigationMenuItem.getGroupId(), privateLayout);
 	}
 
 	@Reference

@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.consumer;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.Objects;
 
 /**
@@ -34,6 +36,7 @@ import java.util.Objects;
  * @param  <G> the type of the seventh argument of the consumer
  * @param  <H> the type of the eighth argument of the consumer
  */
+@ConsumerType
 @FunctionalInterface
 public interface OctaConsumer<A, B, C, D, E, F, G, H> {
 

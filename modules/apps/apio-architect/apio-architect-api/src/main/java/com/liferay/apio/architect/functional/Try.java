@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.functional;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import com.liferay.apio.architect.consumer.throwable.ThrowableConsumer;
 import com.liferay.apio.architect.exception.FalsePredicateException;
 import com.liferay.apio.architect.function.throwable.ThrowableFunction;
@@ -44,7 +46,7 @@ import java.util.function.Supplier;
  * @author Alejandro Hernández
  * @param  <T> the possible value type
  */
-@SuppressWarnings("unused")
+@ConsumerType
 public abstract class Try<T> {
 
 	/**

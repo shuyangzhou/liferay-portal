@@ -14,23 +14,26 @@
 
 package com.liferay.apio.architect.test.util.internal.writer;
 
-import static com.liferay.apio.architect.operation.Method.POST;
+import static com.liferay.apio.architect.operation.HTTPMethod.POST;
 import static com.liferay.apio.architect.test.util.form.MockFormCreator.createForm;
 import static com.liferay.apio.architect.test.util.writer.MockWriterUtil.getRequestInfo;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import com.liferay.apio.architect.message.json.PageMessageMapper;
+import com.liferay.apio.architect.impl.internal.message.json.PageMessageMapper;
+import com.liferay.apio.architect.impl.internal.operation.OperationImpl;
+import com.liferay.apio.architect.impl.internal.pagination.PageImpl;
+import com.liferay.apio.architect.impl.internal.pagination.PaginationImpl;
+import com.liferay.apio.architect.impl.internal.request.RequestInfo;
+import com.liferay.apio.architect.impl.internal.writer.PageWriter;
 import com.liferay.apio.architect.operation.Operation;
 import com.liferay.apio.architect.pagination.Page;
 import com.liferay.apio.architect.pagination.PageItems;
 import com.liferay.apio.architect.pagination.Pagination;
-import com.liferay.apio.architect.request.RequestInfo;
 import com.liferay.apio.architect.test.util.model.RootModel;
 import com.liferay.apio.architect.test.util.writer.MockWriterUtil;
 import com.liferay.apio.architect.uri.Path;
-import com.liferay.apio.architect.writer.PageWriter;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -70,14 +73,14 @@ public class MockPageWriter {
 
 		PageItems<RootModel> pageItems = new PageItems<>(items, 9);
 
-		Pagination pagination = new Pagination(3, 2);
+		Pagination pagination = new PaginationImpl(3, 2);
 
 		Path path = new Path("name", "id");
 
 		List<Operation> operations = Collections.singletonList(
-			new Operation(createForm("c", "p"), POST, "create-operation"));
+			new OperationImpl(createForm("c", "p"), POST, "create-operation"));
 
-		Page<RootModel> page = new Page<>(
+		Page<RootModel> page = new PageImpl<>(
 			"root", pageItems, pagination, path, operations);
 
 		PageWriter<RootModel> pageWriter = PageWriter.create(

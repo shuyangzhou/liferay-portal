@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.exception;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * Defines the exception returned inside {@link
  * com.liferay.apio.architect.functional.Try} when {@link
@@ -22,6 +24,7 @@ package com.liferay.apio.architect.exception;
  *
  * @author Alejandro Hernández
  */
+@ProviderType
 public class FalsePredicateException extends Exception {
 
 	public FalsePredicateException(Object value) {

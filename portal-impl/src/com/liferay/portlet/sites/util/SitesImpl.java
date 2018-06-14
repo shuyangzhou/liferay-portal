@@ -100,6 +100,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -1309,41 +1310,11 @@ public class SitesImpl implements Sites {
 		int mergeFailCount = GetterUtil.getInteger(
 			layoutSetPrototypeSettingsProperties.getProperty(MERGE_FAIL_COUNT));
 
-		String owner = PortalUUIDUtil.generate();
+		String owner = _acquireLock(
+			LayoutSet.class.getName(), layoutSet.getLayoutSetId(),
+			PropsValues.LAYOUT_SET_PROTOTYPE_MERGE_LOCK_MAX_TIME * Time.SECOND);
 
-		try {
-			Lock lock = LockManagerUtil.lock(
-				SitesImpl.class.getName(),
-				String.valueOf(layoutSet.getLayoutSetId()), owner);
-
-			// Double deep check
-
-			if (!owner.equals(lock.getOwner())) {
-				Date createDate = lock.getCreateDate();
-
-				if ((System.currentTimeMillis() - createDate.getTime()) >=
-						PropsValues.LAYOUT_SET_PROTOTYPE_MERGE_LOCK_MAX_TIME) {
-
-					// Acquire lock if the lock is older than the lock max time
-
-					lock = LockManagerUtil.lock(
-						SitesImpl.class.getName(),
-						String.valueOf(layoutSet.getLayoutSetId()),
-						lock.getOwner(), owner);
-
-					// Check if acquiring the lock succeeded or if another
-					// process has the lock
-
-					if (!owner.equals(lock.getOwner())) {
-						return;
-					}
-				}
-				else {
-					return;
-				}
-			}
-		}
-		catch (Exception e) {
+		if (owner == null) {
 			return;
 		}
 
@@ -1397,9 +1368,8 @@ public class SitesImpl implements Sites {
 		finally {
 			MergeLayoutPrototypesThreadLocal.setInProgress(false);
 
-			LockManagerUtil.unlock(
-				SitesImpl.class.getName(),
-				String.valueOf(layoutSet.getLayoutSetId()), owner);
+			_releaseLock(
+				LayoutSet.class.getName(), layoutSet.getLayoutSetId(), owner);
 		}
 	}
 
@@ -1673,39 +1643,11 @@ public class SitesImpl implements Sites {
 			return;
 		}
 
-		String owner = PortalUUIDUtil.generate();
+		String owner = _acquireLock(
+			Layout.class.getName(), layout.getPlid(),
+			PropsValues.LAYOUT_PROTOTYPE_MERGE_LOCK_MAX_TIME * Time.SECOND);
 
-		try {
-			Lock lock = LockManagerUtil.lock(
-				SitesImpl.class.getName(), String.valueOf(layout.getPlid()),
-				owner);
-
-			if (!owner.equals(lock.getOwner())) {
-				Date createDate = lock.getCreateDate();
-
-				if ((System.currentTimeMillis() - createDate.getTime()) >=
-						PropsValues.LAYOUT_PROTOTYPE_MERGE_LOCK_MAX_TIME) {
-
-					// Acquire lock if the lock is older than the lock max time
-
-					lock = LockManagerUtil.lock(
-						SitesImpl.class.getName(),
-						String.valueOf(layout.getPlid()), lock.getOwner(),
-						owner);
-
-					// Check if acquiring the lock succeeded or if another
-					// process has the lock
-
-					if (!owner.equals(lock.getOwner())) {
-						return;
-					}
-				}
-				else {
-					return;
-				}
-			}
-		}
-		catch (Exception e) {
+		if (owner == null) {
 			return;
 		}
 
@@ -1727,9 +1669,7 @@ public class SitesImpl implements Sites {
 		finally {
 			MergeLayoutPrototypesThreadLocal.setInProgress(false);
 
-			LockManagerUtil.unlock(
-				SitesImpl.class.getName(), String.valueOf(layout.getPlid()),
-				owner);
+			_releaseLock(Layout.class.getName(), layout.getPlid(), owner);
 		}
 	}
 
@@ -1872,32 +1812,26 @@ public class SitesImpl implements Sites {
 			boolean importData)
 		throws PortalException {
 
+		File cacheFile = null;
 		File file = null;
 
-		StringBundler sb = new StringBundler(importData ? 4 : 3);
+		if (!importData) {
+			cacheFile = new File(
+				StringBundler.concat(
+					_TEMP_DIR, layoutSetPrototype.getUuid(), StringPool.DASH,
+					String.valueOf(layoutSetPrototype.getMvccVersion()),
+					".lar"));
 
-		sb.append(_TEMP_DIR);
-		sb.append(layoutSetPrototype.getUuid());
+			synchronized (this) {
+				if (cacheFile.exists()) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							"Using cached layout set prototype LAR file " +
+								cacheFile.getAbsolutePath());
+					}
 
-		if (importData) {
-			sb.append("-data");
-		}
-
-		sb.append(".lar");
-
-		File cacheFile = new File(sb.toString());
-
-		if (cacheFile.exists() && !importData) {
-			Date modifiedDate = layoutSetPrototype.getModifiedDate();
-
-			if (cacheFile.lastModified() >= modifiedDate.getTime()) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Using cached layout set prototype LAR file " +
-							cacheFile.getAbsolutePath());
+					file = cacheFile;
 				}
-
-				file = cacheFile;
 			}
 		}
 
@@ -1950,15 +1884,19 @@ public class SitesImpl implements Sites {
 		ExportImportLocalServiceUtil.importLayouts(
 			exportImportConfiguration, file);
 
-		if (newFile) {
+		if (!importData && newFile) {
 			try {
-				FileUtil.copyFile(file, cacheFile);
+				synchronized (this) {
+					if (!cacheFile.exists()) {
+						FileUtil.copyFile(file, cacheFile);
 
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						StringBundler.concat(
-							"Copied ", file.getAbsolutePath(), " to ",
-							cacheFile.getAbsolutePath()));
+						if (_log.isDebugEnabled()) {
+							_log.debug(
+								StringBundler.concat(
+									"Copied ", file.getAbsolutePath(), " to ",
+									cacheFile.getAbsolutePath()));
+						}
+					}
 				}
 			}
 			catch (Exception e) {
@@ -2061,6 +1999,67 @@ public class SitesImpl implements Sites {
 			groupId, privateLayout);
 
 		mergeLayoutSetPrototypeLayouts(group, layoutSet);
+	}
+
+	private String _acquireLock(
+		String className, long classPK, long mergeLockMaxTime) {
+
+		String owner = PortalUUIDUtil.generate();
+
+		try {
+			Lock lock = LockManagerUtil.lock(
+				SitesImpl.class.getName(), String.valueOf(classPK), owner);
+
+			// Double deep check
+
+			if (!owner.equals(lock.getOwner())) {
+				Date createDate = lock.getCreateDate();
+
+				if ((System.currentTimeMillis() - createDate.getTime()) >=
+						mergeLockMaxTime) {
+
+					// Acquire lock if the lock is older than the lock max time
+
+					lock = LockManagerUtil.lock(
+						SitesImpl.class.getName(), String.valueOf(classPK),
+						lock.getOwner(), owner);
+
+					// Check if acquiring the lock succeeded or if another
+					// process has the lock
+
+					if (!owner.equals(lock.getOwner())) {
+						return null;
+					}
+				}
+				else {
+					return null;
+				}
+			}
+		}
+		catch (Exception e) {
+			return null;
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				StringBundler.concat(
+					"Acquired lock for ", className, StringPool.SPACE,
+					String.valueOf(classPK)));
+		}
+
+		return owner;
+	}
+
+	private void _releaseLock(String className, long classPK, String owner) {
+		LockManagerUtil.unlock(
+			SitesImpl.class.getName(), String.valueOf(classPK), owner);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				StringBundler.concat(
+					"Released lock for ", className, StringPool.SPACE,
+					String.valueOf(classPK)));
+		}
 	}
 
 	private static final String _TEMP_DIR =

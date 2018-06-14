@@ -14,16 +14,18 @@
 
 package com.liferay.apio.architect.pagination;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.Collection;
 
 /**
- * Provides the information needed by {@link
- * com.liferay.apio.architect.endpoint.RootEndpoint} to construct a valid {@link
+ * Provides the information needed by Apio Architect to construct a valid {@link
  * Page}.
  *
  * @author Alejandro Hernández
  * @param  <T> the model's type
  */
+@ConsumerType
 public class PageItems<T> {
 
 	public PageItems(Collection<T> items, int totalCount) {

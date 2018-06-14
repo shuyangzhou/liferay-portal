@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.related;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.apio.architect.identifier.Identifier;
 
 /**
@@ -23,32 +25,21 @@ import com.liferay.apio.architect.identifier.Identifier;
  * @author Alejandro Hernández
  * @param  <T> the type of the resource's identifier
  */
-public class RelatedCollection<T extends Identifier> {
-
-	public RelatedCollection(String key, Class<T> identifierClass) {
-		_key = key;
-		_identifierClass = identifierClass;
-	}
+@ProviderType
+public interface RelatedCollection<T extends Identifier> {
 
 	/**
 	 * Returns the class of the collection items' identifier.
 	 *
 	 * @return the class of the collection items' identifier
 	 */
-	public Class<T> getIdentifierClass() {
-		return _identifierClass;
-	}
+	public Class<T> getIdentifierClass();
 
 	/**
 	 * Returns the relation's key.
 	 *
 	 * @return the relation's key
 	 */
-	public String getKey() {
-		return _key;
-	}
-
-	private final Class<T> _identifierClass;
-	private final String _key;
+	public String getKey();
 
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.consumer;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.Objects;
 
 /**
@@ -36,6 +38,7 @@ import java.util.Objects;
  * @param  <I> the type of the ninth argument of the consumer
  * @param  <J> the type of the tenth argument of the consumer
  */
+@ConsumerType
 @FunctionalInterface
 public interface DecaConsumer<A, B, C, D, E, F, G, H, I, J> {
 

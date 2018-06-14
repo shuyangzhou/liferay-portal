@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.function;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -38,6 +40,7 @@ import java.util.function.Function;
  * @param  <H> the type of the eighth argument of the function
  * @param  <R> the type of the result of the function
  */
+@ConsumerType
 @FunctionalInterface
 public interface OctaFunction<A, B, C, D, E, F, G, H, R> {
 

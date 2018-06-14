@@ -14,17 +14,12 @@
 
 package com.liferay.apio.architect.representor;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.apio.architect.identifier.Identifier;
 import com.liferay.apio.architect.related.RelatedCollection;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
@@ -39,7 +34,8 @@ import java.util.stream.Stream;
  * @param  <T> the model's type
  * @see    Representor.Builder
  */
-public class Representor<T> extends BaseRepresentor<T> {
+@ProviderType
+public interface Representor<T> extends BaseRepresentor<T> {
 
 	/**
 	 * Returns the model's identifier.
@@ -47,9 +43,7 @@ public class Representor<T> extends BaseRepresentor<T> {
 	 * @param  model the model instance
 	 * @return the model's identifier
 	 */
-	public Object getIdentifier(T model) {
-		return _identifierFunction.apply(model);
-	}
+	public Object getIdentifier(T model);
 
 	/**
 	 * Returns the related collections.
@@ -57,48 +51,18 @@ public class Representor<T> extends BaseRepresentor<T> {
 	 * @return the related collections
 	 */
 	public Stream<RelatedCollection<? extends Identifier>>
-		getRelatedCollections() {
-
-		return Stream.of(
-			_relatedCollections, _supplier.get()
-		).filter(
-			Objects::nonNull
-		).flatMap(
-			Collection::stream
-		);
-	}
-
-	@Override
-	public boolean isNested() {
-		return false;
-	}
+		getRelatedCollections();
 
 	/**
 	 * Creates generic representations of your domain models that Apio
 	 * hypermedia writers can understand.
 	 *
 	 * @param <T> the model's type
+	 * @param <S> the type of the model's identifier (e.g., {@code Long}, {@code
+	 *        String}, etc.)
 	 */
-	public static class Builder<T, U> extends BaseBuilder<T, Representor<T>> {
-
-		public Builder(Class<? extends Identifier<U>> identifierClass) {
-			this(
-				identifierClass,
-				(clazz, relatedCollection) -> {
-				},
-				Collections::emptyList);
-		}
-
-		public Builder(
-			Class<? extends Identifier<U>> identifierClass,
-			BiConsumer<Class<?>, RelatedCollection<?>> biConsumer,
-			Supplier<List<RelatedCollection<?>>> supplier) {
-
-			super(new Representor<>(supplier));
-
-			_identifierClass = identifierClass;
-			_biConsumer = biConsumer;
-		}
+	@ProviderType
+	public interface Builder<T, S> {
 
 		/**
 		 * Adds a type for the model.
@@ -107,112 +71,57 @@ public class Representor<T> extends BaseRepresentor<T> {
 		 * @param  types the rest of the types
 		 * @return the builder's step
 		 */
-		public IdentifierStep types(String type, String... types) {
-			baseRepresentor.addTypes(type, types);
-
-			return new IdentifierStep();
-		}
-
-		public class FirstStep extends BaseFirstStep<FirstStep> {
-
-			/**
-			 * Adds information about the bidirectional relation of a linked
-			 * resource in the actual resource and a collection of items in the
-			 * related resource.
-			 *
-			 * @param  key the relation's name in the resource
-			 * @param  relatedKey the relation's name in the related resource
-			 * @param  identifierClass the related resource identifier's class
-			 * @param  identifierFunction the function used to get the related
-			 *         resource's identifier
-			 * @return the builder's step
-			 */
-			public <S> FirstStep addBidirectionalModel(
-				String key, String relatedKey,
-				Class<? extends Identifier<S>> identifierClass,
-				Function<T, S> identifierFunction) {
-
-				RelatedCollection<?> relatedCollection =
-					new RelatedCollection<>(relatedKey, _identifierClass);
-
-				_biConsumer.accept(identifierClass, relatedCollection);
-
-				baseRepresentor.addRelatedModel(
-					key, identifierClass, identifierFunction);
-
-				return this;
-			}
-
-			/**
-			 * Adds information about a related collection.
-			 *
-			 * @param  key the relation's name
-			 * @param  itemIdentifierClass the class of the collection items'
-			 *         identifier
-			 * @return the builder's step
-			 */
-			public <S extends Identifier> FirstStep addRelatedCollection(
-				String key, Class<S> itemIdentifierClass) {
-
-				baseRepresentor._addRelatedCollection(key, itemIdentifierClass);
-
-				return this;
-			}
-
-			@Override
-			public FirstStep getThis() {
-				return this;
-			}
-
-		}
-
-		public class IdentifierStep {
-
-			/**
-			 * Provides a lambda function that can be used to obtain a model's
-			 * identifier.
-			 *
-			 * @param  identifierFunction lambda function used to obtain a
-			 *         model's identifier
-			 * @return the builder's next step
-			 */
-			public FirstStep identifier(Function<T, U> identifierFunction) {
-				baseRepresentor._setIdentifierFunction(identifierFunction);
-
-				return new FirstStep();
-			}
-
-			private IdentifierStep() {
-			}
-
-		}
-
-		private final BiConsumer<Class<?>, RelatedCollection<?>> _biConsumer;
-		private final Class<? extends Identifier> _identifierClass;
+		public IdentifierStep<T, S> types(String type, String... types);
 
 	}
 
-	private Representor(Supplier<List<RelatedCollection<?>>> supplier) {
-		_supplier = supplier;
+	@ProviderType
+	public interface FirstStep<T>
+		extends BaseFirstStep<T, Representor<T>, FirstStep<T>> {
 
-		_relatedCollections = new ArrayList<>();
+		/**
+		 * Adds information about the bidirectional relation of a linked
+		 * resource in the actual resource and a collection of items in the
+		 * related resource.
+		 *
+		 * @param  key the relation's name in the resource
+		 * @param  relatedKey the relation's name in the related resource
+		 * @param  identifierClass the related resource identifier's class
+		 * @param  identifierFunction the function used to get the related
+		 *         resource's identifier
+		 * @return the builder's step
+		 */
+		public <S> FirstStep<T> addBidirectionalModel(
+			String key, String relatedKey,
+			Class<? extends Identifier<S>> identifierClass,
+			Function<T, S> identifierFunction);
+
+		/**
+		 * Adds information about a related collection.
+		 *
+		 * @param  key the relation's name
+		 * @param  itemIdentifierClass the class of the collection items'
+		 *         identifier
+		 * @return the builder's step
+		 */
+		public <S extends Identifier> FirstStep<T> addRelatedCollection(
+			String key, Class<S> itemIdentifierClass);
+
 	}
 
-	private <S extends Identifier> void _addRelatedCollection(
-		String key, Class<S> itemIdentifierClass) {
+	@ProviderType
+	public interface IdentifierStep<T, U> {
 
-		RelatedCollection<S> relatedCollection = new RelatedCollection<>(
-			key, itemIdentifierClass);
+		/**
+		 * Provides a lambda function that can be used to obtain a model's
+		 * identifier.
+		 *
+		 * @param  identifierFunction lambda function used to obtain a model's
+		 *         identifier
+		 * @return the builder's next step
+		 */
+		public FirstStep<T> identifier(Function<T, U> identifierFunction);
 
-		_relatedCollections.add(relatedCollection);
 	}
-
-	private void _setIdentifierFunction(Function<T, ?> identifierFunction) {
-		_identifierFunction = identifierFunction;
-	}
-
-	private Function<T, ?> _identifierFunction;
-	private final List<RelatedCollection<?>> _relatedCollections;
-	private final Supplier<List<RelatedCollection<?>>> _supplier;
 
 }

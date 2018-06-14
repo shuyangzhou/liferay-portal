@@ -14,12 +14,15 @@
 
 package com.liferay.apio.architect.file;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.io.InputStream;
 
 /**
  * @author Javier Gamarra
  * @review
  */
+@ConsumerType
 public class BinaryFile {
 
 	public BinaryFile(InputStream inputStream, Long size, String mimeType) {

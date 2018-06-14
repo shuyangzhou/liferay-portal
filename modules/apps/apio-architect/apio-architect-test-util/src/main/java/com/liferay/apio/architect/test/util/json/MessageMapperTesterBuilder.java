@@ -25,18 +25,18 @@ import com.google.gson.JsonObject;
 
 import com.liferay.apio.architect.error.APIError;
 import com.liferay.apio.architect.functional.Try;
-import com.liferay.apio.architect.message.json.DocumentationMessageMapper;
-import com.liferay.apio.architect.message.json.ErrorMessageMapper;
-import com.liferay.apio.architect.message.json.FormMessageMapper;
-import com.liferay.apio.architect.message.json.MessageMapper;
-import com.liferay.apio.architect.message.json.PageMessageMapper;
-import com.liferay.apio.architect.message.json.SingleModelMessageMapper;
+import com.liferay.apio.architect.impl.internal.message.json.DocumentationMessageMapper;
+import com.liferay.apio.architect.impl.internal.message.json.ErrorMessageMapper;
+import com.liferay.apio.architect.impl.internal.message.json.FormMessageMapper;
+import com.liferay.apio.architect.impl.internal.message.json.MessageMapper;
+import com.liferay.apio.architect.impl.internal.message.json.PageMessageMapper;
+import com.liferay.apio.architect.impl.internal.message.json.SingleModelMessageMapper;
+import com.liferay.apio.architect.impl.internal.writer.ErrorWriter;
 import com.liferay.apio.architect.test.util.internal.writer.MockDocumentationWriter;
 import com.liferay.apio.architect.test.util.internal.writer.MockFormWriter;
 import com.liferay.apio.architect.test.util.internal.writer.MockPageWriter;
 import com.liferay.apio.architect.test.util.internal.writer.MockSingleModelWriter;
 import com.liferay.apio.architect.test.util.model.RootModel;
-import com.liferay.apio.architect.writer.ErrorWriter;
 
 import java.io.File;
 import java.io.IOException;
@@ -356,8 +356,13 @@ public class MessageMapperTesterBuilder {
 
 			String file = fileName + ".json";
 
+			String stringPath = _path.toString();
+
+			String folder = stringPath.substring(
+				stringPath.lastIndexOf('/') + 1);
+
 			String expected = Try.success(
-				_path.toString()
+				stringPath
 			).map(
 				path -> Paths.get(path, file)
 			).map(
@@ -368,7 +373,7 @@ public class MessageMapperTesterBuilder {
 				).map(
 					Class::getClassLoader
 				).map(
-					classLoader -> classLoader.getResource(file)
+					classLoader -> classLoader.getResource(folder + "/" + file)
 				).map(
 					URL::getPath
 				).map(

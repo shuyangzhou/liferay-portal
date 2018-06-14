@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.consumer.throwable;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.Objects;
 
 /**
@@ -27,6 +29,7 @@ import java.util.Objects;
  * @param  <A> the type of the first argument of the consumer
  * @param  <B> the type of the second argument of the consumer
  */
+@ConsumerType
 @FunctionalInterface
 public interface ThrowableBiConsumer<A, B> {
 

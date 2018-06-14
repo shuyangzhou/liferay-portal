@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.consumer;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.Objects;
 
 /**
@@ -33,6 +35,7 @@ import java.util.Objects;
  * @param  <F> the type of the sixth argument of the consumer
  * @param  <G> the type of the seventh argument of the consumer
  */
+@ConsumerType
 @FunctionalInterface
 public interface HeptaConsumer<A, B, C, D, E, F, G> {
 

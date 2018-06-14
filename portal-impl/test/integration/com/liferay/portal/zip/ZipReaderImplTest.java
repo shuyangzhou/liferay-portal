@@ -19,8 +19,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.zip.ZipReader;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
-import de.schlichtherle.io.FileInputStream;
-
 import java.io.InputStream;
 
 import java.nio.charset.Charset;
@@ -164,19 +162,27 @@ public class ZipReaderImplTest {
 
 		InputStream is = zipReader.getEntryAsInputStream(_FILE_PATH_0);
 
-		Assert.assertTrue(is instanceof FileInputStream);
+		String content0 = StringUtil.read(is);
+
+		Assert.assertEquals(_expectedContent0, content0);
 
 		is = zipReader.getEntryAsInputStream(_FILE_PATH_1);
 
-		Assert.assertTrue(is instanceof FileInputStream);
+		String content1 = StringUtil.read(is);
+
+		Assert.assertEquals(_expectedContent1, content1);
 
 		is = zipReader.getEntryAsInputStream(_FILE_PATH_2);
 
-		Assert.assertTrue(is instanceof FileInputStream);
+		String content2 = StringUtil.read(is);
+
+		Assert.assertEquals(_expectedContent2, content2);
 
 		is = zipReader.getEntryAsInputStream(_FILE_PATH_3);
 
-		Assert.assertTrue(is instanceof FileInputStream);
+		String content3 = StringUtil.read(is);
+
+		Assert.assertEquals(_expectedContent3, content3);
 
 		zipReader.close();
 	}

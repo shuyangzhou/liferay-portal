@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.related;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.apio.architect.identifier.Identifier;
 
 import java.util.function.Function;
@@ -28,25 +30,15 @@ import java.util.function.Function;
  * @param  <S> the model identifier's type (e.g., {@code Long}, {@code String},
  *         etc.)
  */
-public class RelatedModel<T, S> {
-
-	public RelatedModel(
-		String key, Class<? extends Identifier<S>> identifierClass,
-		Function<T, S> identifierFunction) {
-
-		_key = key;
-		_identifierClass = identifierClass;
-		_identifierFunction = identifierFunction;
-	}
+@ProviderType
+public interface RelatedModel<T, S> {
 
 	/**
 	 * Returns the related resource identifier's class.
 	 *
 	 * @return the related resource identifier's class
 	 */
-	public Class<? extends Identifier<S>> getIdentifierClass() {
-		return _identifierClass;
-	}
+	public Class<? extends Identifier<S>> getIdentifierClass();
 
 	/**
 	 * Returns the function you can use to retrieve the related resource's
@@ -54,21 +46,13 @@ public class RelatedModel<T, S> {
 	 *
 	 * @return the function that calculates the related resource's identifier.
 	 */
-	public Function<T, S> getIdentifierFunction() {
-		return _identifierFunction;
-	}
+	public Function<T, S> getIdentifierFunction();
 
 	/**
 	 * Returns the relation's key.
 	 *
 	 * @return the relation's key
 	 */
-	public String getKey() {
-		return _key;
-	}
-
-	private final Class<? extends Identifier<S>> _identifierClass;
-	private final Function<T, S> _identifierFunction;
-	private final String _key;
+	public String getKey();
 
 }

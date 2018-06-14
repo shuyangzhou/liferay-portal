@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.consumer.throwable;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.Objects;
 
 /**
@@ -34,6 +36,7 @@ import java.util.Objects;
  * @param  <H> the type of the eighth argument of the consumer
  * @param  <I> the type of the ninth argument of the consumer
  */
+@ConsumerType
 @FunctionalInterface
 public interface ThrowableEnneaConsumer<A, B, C, D, E, F, G, H, I> {
 

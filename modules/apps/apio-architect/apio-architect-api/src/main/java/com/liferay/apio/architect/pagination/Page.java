@@ -33,77 +33,42 @@ import java.util.Optional;
  * @param  <T> the model's type
  */
 @ProviderType
-public class Page<T> {
-
-	public Page(
-		String resourceName, PageItems<T> pageItems, Pagination pagination,
-		List<Operation> operations) {
-
-		this(resourceName, pageItems, pagination, null, operations);
-	}
-
-	public Page(
-		String resourceName, PageItems<T> pageItems, Pagination pagination,
-		Path path, List<Operation> operations) {
-
-		_resourceName = resourceName;
-
-		_items = pageItems.getItems();
-		_itemsPerPage = pagination.getItemsPerPage();
-		_pageNumber = pagination.getPageNumber();
-		_totalCount = pageItems.getTotalCount();
-		_path = path;
-		_operations = operations;
-	}
+public interface Page<T> {
 
 	/**
 	 * Returns the page's items.
 	 *
 	 * @return the page's items
 	 */
-	public Collection<T> getItems() {
-		return _items;
-	}
+	public Collection<T> getItems();
 
 	/**
 	 * Returns the number of items the user selected on the page.
 	 *
 	 * @return the number of items the user selected on the page
 	 */
-	public int getItemsPerPage() {
-		return _itemsPerPage;
-	}
+	public int getItemsPerPage();
 
 	/**
 	 * Returns the number of the collection's last page.
 	 *
 	 * @return the number of the collection's last page
 	 */
-	public int getLastPageNumber() {
-		if (_totalCount == 0) {
-			return 1;
-		}
-
-		return -Math.floorDiv(-_totalCount, _itemsPerPage);
-	}
+	public int getLastPageNumber();
 
 	/**
 	 * Returns the list of operations for the page.
 	 *
 	 * @return the list of operations
 	 */
-	public List<Operation> getOperations() {
-		return _operations;
-	}
+	public List<Operation> getOperations();
 
 	/**
 	 * Returns the page number in the collection.
 	 *
 	 * @return the page number in the collection
 	 */
-	public int getPageNumber() {
-		return _pageNumber;
-	}
+	public int getPageNumber();
 
 	/**
 	 * Returns the page path, if present. Returns {@code Optional#empty()}
@@ -111,27 +76,21 @@ public class Page<T> {
 	 *
 	 * @return the path, if present; {@code Optional#empty()} otherwise
 	 */
-	public Optional<Path> getPathOptional() {
-		return Optional.ofNullable(_path);
-	}
+	public Optional<Path> getPathOptional();
 
 	/**
 	 * Returns the resource's name.
 	 *
 	 * @return the resource's name
 	 */
-	public String getResourceName() {
-		return _resourceName;
-	}
+	public String getResourceName();
 
 	/**
 	 * Returns the total number of elements in the collection.
 	 *
 	 * @return the total number of elements in the collection
 	 */
-	public int getTotalCount() {
-		return _totalCount;
-	}
+	public int getTotalCount();
 
 	/**
 	 * Returns {@code true} if another page follows this page in the collection.
@@ -139,13 +98,7 @@ public class Page<T> {
 	 * @return {@code true} if another page follows this page in the collection;
 	 *         {@code false} otherwise
 	 */
-	public boolean hasNext() {
-		if (getLastPageNumber() > _pageNumber) {
-			return true;
-		}
-
-		return false;
-	}
+	public boolean hasNext();
 
 	/**
 	 * Returns {@code true} if another page precedes this page in the
@@ -154,20 +107,6 @@ public class Page<T> {
 	 * @return {@code true} if another page precedes this page in the
 	 *         collection; {@code false} otherwise
 	 */
-	public boolean hasPrevious() {
-		if (_pageNumber > 1) {
-			return true;
-		}
-
-		return false;
-	}
-
-	private final Collection<T> _items;
-	private final int _itemsPerPage;
-	private final List<Operation> _operations;
-	private final int _pageNumber;
-	private final Path _path;
-	private final String _resourceName;
-	private final int _totalCount;
+	public boolean hasPrevious();
 
 }

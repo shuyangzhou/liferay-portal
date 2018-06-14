@@ -16,6 +16,7 @@ package com.liferay.apio.architect.test.util.form;
 
 import com.liferay.apio.architect.form.Form;
 import com.liferay.apio.architect.form.Form.Builder;
+import com.liferay.apio.architect.impl.internal.form.FormImpl.BuilderImpl;
 
 import java.util.Arrays;
 import java.util.function.BiConsumer;
@@ -38,7 +39,8 @@ public class MockFormCreator {
 	 * @return the mock {@code Form}
 	 */
 	public static Form createForm(String... paths) {
-		Builder<Object> builder = new Builder<>(Arrays.asList(paths));
+		Builder<Object> builder = new BuilderImpl<>(
+			Arrays.asList(paths), __ -> null);
 
 		return builder.title(
 			__ -> "title"

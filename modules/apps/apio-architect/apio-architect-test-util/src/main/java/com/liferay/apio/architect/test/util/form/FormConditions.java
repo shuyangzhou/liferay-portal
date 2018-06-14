@@ -14,7 +14,7 @@
 
 package com.liferay.apio.architect.test.util.form;
 
-import static com.liferay.apio.architect.date.DateTransformer.asDate;
+import static com.liferay.apio.architect.impl.internal.date.DateTransformer.asDate;
 
 import static org.hamcrest.text.IsEmptyString.emptyOrNullString;
 
@@ -171,6 +171,32 @@ public class FormConditions<T> extends TypeSafeDiagnosingMatcher<Form<T>> {
 			String key, Function<Object, Matcher<T>> function) {
 
 			_add(key, function, "21.2", 21.2);
+
+			return this;
+		}
+
+		/**
+		 * Adds a new {@code Matcher} for an identifier part of the form.
+		 *
+		 * <p>
+		 * The form function should return the provided identifier.
+		 * </p>
+		 *
+		 * <p>
+		 * To provide information about the form method to call, use the method
+		 * {@link FormMatchers#isReturnedIn(Function)}.
+		 * </p>
+		 *
+		 * @param  key the name of the field read from the HTTP body
+		 * @param  function the function that takes the field value and returns
+		 *         a {@code Matcher} for the {@code Form}. Use the method {@link
+		 *         FormMatchers#isReturnedIn(Function)}.
+		 * @return the builder's next step
+		 */
+		public Builder<T> whereIdentifier(
+			String key, Object value, Function<Object, Matcher<T>> function) {
+
+			_add(key, function, "", value);
 
 			return this;
 		}

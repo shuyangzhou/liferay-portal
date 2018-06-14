@@ -14,8 +14,8 @@
 
 package com.liferay.apio.architect.test.util.internal.writer;
 
-import static com.liferay.apio.architect.operation.Method.DELETE;
-import static com.liferay.apio.architect.operation.Method.PUT;
+import static com.liferay.apio.architect.operation.HTTPMethod.DELETE;
+import static com.liferay.apio.architect.operation.HTTPMethod.PUT;
 import static com.liferay.apio.architect.test.util.form.MockFormCreator.createForm;
 import static com.liferay.apio.architect.test.util.writer.MockWriterUtil.getRequestInfo;
 
@@ -24,13 +24,15 @@ import static java.util.Arrays.asList;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import com.liferay.apio.architect.message.json.SingleModelMessageMapper;
+import com.liferay.apio.architect.impl.internal.message.json.SingleModelMessageMapper;
+import com.liferay.apio.architect.impl.internal.operation.OperationImpl;
+import com.liferay.apio.architect.impl.internal.request.RequestInfo;
+import com.liferay.apio.architect.impl.internal.single.model.SingleModelImpl;
+import com.liferay.apio.architect.impl.internal.writer.SingleModelWriter;
 import com.liferay.apio.architect.operation.Operation;
-import com.liferay.apio.architect.request.RequestInfo;
 import com.liferay.apio.architect.single.model.SingleModel;
 import com.liferay.apio.architect.test.util.model.RootModel;
 import com.liferay.apio.architect.test.util.writer.MockWriterUtil;
-import com.liferay.apio.architect.writer.SingleModelWriter;
 
 import java.util.Optional;
 
@@ -61,11 +63,12 @@ public class MockSingleModelWriter {
 
 		RequestInfo requestInfo = getRequestInfo(httpHeaders);
 
-		Operation deleteOperation = new Operation(DELETE, "delete-operation");
-		Operation putOperation = new Operation(
+		Operation deleteOperation = new OperationImpl(
+			DELETE, "delete-operation");
+		Operation putOperation = new OperationImpl(
 			createForm("u", "r"), PUT, "update-operation");
 
-		SingleModel<RootModel> singleModel = new SingleModel<>(
+		SingleModel<RootModel> singleModel = new SingleModelImpl<>(
 			() -> "first", "root", asList(deleteOperation, putOperation));
 
 		SingleModelWriter<RootModel> singleModelWriter =

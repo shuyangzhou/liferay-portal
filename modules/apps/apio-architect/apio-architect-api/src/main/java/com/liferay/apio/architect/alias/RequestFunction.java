@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.alias;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.function.Function;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Alejandro Hernández
  * @param  <T> the type of the function's result
  */
+@ConsumerType
 @FunctionalInterface
 public interface RequestFunction<T> extends Function<HttpServletRequest, T> {
 }

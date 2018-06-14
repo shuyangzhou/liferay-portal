@@ -14,62 +14,37 @@
 
 package com.liferay.apio.architect.form;
 
-import java.util.Objects;
+import aQute.bnd.annotation.ProviderType;
 
 /**
  * Represents the field of a {@link Form}.
  *
  * @author Alejandro Hernández
  */
-public final class FormField {
-
-	public FormField(String name, boolean required, FieldType fieldType) {
-		this.name = name;
-		this.required = required;
-		this.fieldType = fieldType;
-	}
-
-	@Override
-	public boolean equals(Object object) {
-		if (object == this) {
-			return true;
-		}
-
-		if (!(object instanceof FormField)) {
-			return false;
-		}
-
-		FormField formField = (FormField)object;
-
-		if (Objects.equals(fieldType, formField.fieldType) &&
-			Objects.equals(name, formField.name) &&
-			Objects.equals(required, formField.required)) {
-
-			return true;
-		}
-
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(name, required, fieldType);
-	}
+@ProviderType
+public interface FormField {
 
 	/**
-	 * The type of this field.
+	 * Returns the type of this field.
+	 *
+	 * @return the type of this field
 	 */
-	public final FieldType fieldType;
+	public FieldType getFieldType();
 
 	/**
-	 * The name of the field.
+	 * Returns the name of the field.
+	 *
+	 * @return the name of the field
 	 */
-	public final String name;
+	public String getName();
 
 	/**
-	 * {@code true} if the field is required in this {@code Form}; {@code false}
-	 * otherwise.
+	 * Returns {@code true} if the field is required in this {@code Form};
+	 * {@code false} otherwise.
+	 *
+	 * @return @code <code>true</code>} if the field is required in the {@code
+	 *         Form}; {@code false} otherwise
 	 */
-	public final boolean required;
+	public boolean isRequired();
 
 }

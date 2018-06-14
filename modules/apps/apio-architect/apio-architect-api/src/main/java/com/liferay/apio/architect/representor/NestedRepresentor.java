@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.representor;
 
+import aQute.bnd.annotation.ProviderType;
+
 /**
  * Holds information about the metadata supported for a nested resource.
  *
@@ -26,12 +28,8 @@ package com.liferay.apio.architect.representor;
  * @param  <T> the model's type
  * @see    NestedRepresentor.Builder
  */
-public class NestedRepresentor<T> extends BaseRepresentor<T> {
-
-	@Override
-	public boolean isNested() {
-		return true;
-	}
+@ProviderType
+public interface NestedRepresentor<T> extends BaseRepresentor<T> {
 
 	/**
 	 * Creates generic representations of your domain models that Apio
@@ -39,12 +37,8 @@ public class NestedRepresentor<T> extends BaseRepresentor<T> {
 	 *
 	 * @param <T> the model's type
 	 */
-	public static class Builder<T>
-		extends BaseBuilder<T, NestedRepresentor<T>> {
-
-		public Builder() {
-			super(new NestedRepresentor<>());
-		}
+	@ProviderType
+	public interface Builder<T> {
 
 		/**
 		 * Adds a type for the model.
@@ -53,24 +47,13 @@ public class NestedRepresentor<T> extends BaseRepresentor<T> {
 		 * @param  types the rest of the types
 		 * @return the builder's step
 		 */
-		public FirstStep types(String type, String... types) {
-			baseRepresentor.addTypes(type, types);
-
-			return new FirstStep();
-		}
-
-		public class FirstStep extends BaseFirstStep<FirstStep> {
-
-			@Override
-			public FirstStep getThis() {
-				return this;
-			}
-
-		}
+		public FirstStep<T> types(String type, String... types);
 
 	}
 
-	private NestedRepresentor() {
+	@ProviderType
+	public interface FirstStep<T>
+		extends BaseFirstStep<T, NestedRepresentor<T>, FirstStep<T>> {
 	}
 
 }

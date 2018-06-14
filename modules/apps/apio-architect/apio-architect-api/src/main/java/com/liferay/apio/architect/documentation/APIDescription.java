@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.documentation;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.function.Supplier;
 
 /**
@@ -21,5 +23,7 @@ import java.util.function.Supplier;
  *
  * @author Alejandro Hernández
  */
+@ConsumerType
+@FunctionalInterface
 public interface APIDescription extends Supplier<String> {
 }

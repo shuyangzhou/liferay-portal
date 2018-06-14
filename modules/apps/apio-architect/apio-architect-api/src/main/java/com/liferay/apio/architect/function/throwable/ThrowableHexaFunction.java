@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.function.throwable;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.Objects;
 
 /**
@@ -28,6 +30,7 @@ import java.util.Objects;
  * @param  <F> the type of the sixth argument of the function
  * @param  <R> the type of the result of the function
  */
+@ConsumerType
 @FunctionalInterface
 public interface ThrowableHexaFunction<A, B, C, D, E, F, R> {
 

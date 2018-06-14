@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.language;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.Locale;
 import java.util.stream.Stream;
 
@@ -22,6 +24,8 @@ import java.util.stream.Stream;
  *
  * @author Alejandro Hernández
  */
+@ConsumerType
+@FunctionalInterface
 public interface Language {
 
 	/**

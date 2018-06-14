@@ -14,6 +14,8 @@
 
 package com.liferay.apio.architect.function;
 
+import aQute.bnd.annotation.ConsumerType;
+
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -39,6 +41,7 @@ import java.util.function.Function;
  * @param  <I> the type of the ninth argument of the function
  * @param  <R> the type of the result of the function
  */
+@ConsumerType
 @FunctionalInterface
 public interface EnneaFunction<A, B, C, D, E, F, G, H, I, R> {
 

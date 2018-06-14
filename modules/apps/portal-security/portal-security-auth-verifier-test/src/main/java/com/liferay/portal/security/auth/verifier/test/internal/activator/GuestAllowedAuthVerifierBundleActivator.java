@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
+import org.osgi.service.jaxrs.whiteboard.JaxrsWhiteboardConstants;
 
 /**
  * @author Marta Medio
@@ -38,6 +39,8 @@ public class GuestAllowedAuthVerifierBundleActivator
 	public void doStart(BundleContext bundleContext) {
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
+		properties.put(
+			JaxrsWhiteboardConstants.JAX_RS_NAME, "guest-no-allowed");
 		properties.put("auth.verifier.guest.allowed", false);
 
 		registerServletContextHelper(
@@ -45,6 +48,7 @@ public class GuestAllowedAuthVerifierBundleActivator
 
 		properties = new HashMapDictionary<>();
 
+		properties.put(JaxrsWhiteboardConstants.JAX_RS_NAME, "guest-allowed");
 		properties.put("auth.verifier.guest.allowed", true);
 
 		registerServletContextHelper(
@@ -52,11 +56,16 @@ public class GuestAllowedAuthVerifierBundleActivator
 
 		properties = new HashMapDictionary<>();
 
+		properties.put(JaxrsWhiteboardConstants.JAX_RS_NAME, "guest-default");
+
 		registerServletContextHelper(
 			"auth-verifier-guest-allowed-default-test", properties);
 
 		properties = new HashMapDictionary<>();
 
+		properties.put(
+			HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_NAME,
+			"cxf-servlet");
 		properties.put(
 			HttpWhiteboardConstants.HTTP_WHITEBOARD_SERVLET_PATTERN,
 			"/guestAllowed");
@@ -87,7 +96,6 @@ public class GuestAllowedAuthVerifierBundleActivator
 
 		properties.put(
 			"auth-verifier-guest-allowed-test-servlet-context-helper", true);
-		properties.put("com.liferay.auth.verifier.filter.enabled", true);
 
 		super.registerServletContextHelper(servletContextName, properties);
 	}
