@@ -2670,21 +2670,16 @@ public class PortalImpl implements Portal {
 	public String getI18nPathLanguageId(
 		Locale locale, String defaultI18nPathLanguageId) {
 
-		String i18nPathLanguageId = defaultI18nPathLanguageId;
-
-		if (!LanguageUtil.isDuplicateLanguageCode(locale.getLanguage())) {
-			i18nPathLanguageId = LocaleUtil.toLanguageId(locale);
-		}
-		else {
+		if (LanguageUtil.isDuplicateLanguageCode(locale.getLanguage())) {
 			Locale priorityLocale = LanguageUtil.getLocale(
 				locale.getLanguage());
 
-			if (locale.equals(priorityLocale)) {
-				i18nPathLanguageId = LocaleUtil.toLanguageId(locale);
+			if (!locale.equals(priorityLocale)) {
+				return defaultI18nPathLanguageId;
 			}
 		}
 
-		return i18nPathLanguageId;
+		return LocaleUtil.toLanguageId(locale);
 	}
 
 	/**
