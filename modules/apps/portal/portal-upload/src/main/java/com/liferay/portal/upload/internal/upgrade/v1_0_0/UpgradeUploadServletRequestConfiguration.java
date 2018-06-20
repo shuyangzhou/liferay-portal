@@ -14,20 +14,10 @@
 
 package com.liferay.portal.upload.internal.upgrade.v1_0_0;
 
-import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.upgrade.PrefsPropsToConfigurationUpgradeHelper;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.kernel.util.HashMapDictionary;
-import com.liferay.portal.kernel.util.PrefsProps;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.upload.constants.LegacyUploadServletRequestPropsKeys;
 import com.liferay.portal.upload.internal.configuration.UploadServletRequestConfiguration;
-
-import java.util.Dictionary;
-
-import javax.portlet.PortletPreferences;
-
-import org.osgi.service.cm.Configuration;
-import org.osgi.service.cm.ConfigurationAdmin;
 
 /**
  * @author Pei-Jung Lan
@@ -35,61 +25,32 @@ import org.osgi.service.cm.ConfigurationAdmin;
 public class UpgradeUploadServletRequestConfiguration extends UpgradeProcess {
 
 	public UpgradeUploadServletRequestConfiguration(
-		ConfigurationAdmin configurationAdmin, PrefsProps prefsProps) {
+		PrefsPropsToConfigurationUpgradeHelper
+			prefsPropsToConfigurationUpgradeHelper) {
 
-		_configurationAdmin = configurationAdmin;
-		_prefsProps = prefsProps;
+		_prefsPropsToConfigurationUpgradeHelper =
+			prefsPropsToConfigurationUpgradeHelper;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		Configuration configuration = _configurationAdmin.getConfiguration(
-			UploadServletRequestConfiguration.class.getName(),
-			StringPool.QUESTION);
-
-		Dictionary properties = configuration.getProperties();
-
-		if (properties == null) {
-			properties = new HashMapDictionary();
-		}
-
-		if (Validator.isNotNull(
-				_prefsProps.getString(
+		_prefsPropsToConfigurationUpgradeHelper.mapConfigurations(
+			UploadServletRequestConfiguration.class,
+			(
+				uploadServletRequestConfiguration,
+				configurationMappingCollector) -> {
+				configurationMappingCollector.mapConfiguration(
 					LegacyUploadServletRequestPropsKeys.
-						UPLOAD_SERVLET_REQUEST_IMPL_MAX_SIZE))) {
-
-			properties.put(
-				"maxSize",
-				_prefsProps.getLong(
+						UPLOAD_SERVLET_REQUEST_IMPL_MAX_SIZE,
+					"maxSize", uploadServletRequestConfiguration.maxSize());
+				configurationMappingCollector.mapConfiguration(
 					LegacyUploadServletRequestPropsKeys.
-						UPLOAD_SERVLET_REQUEST_IMPL_MAX_SIZE));
-		}
-
-		if (Validator.isNotNull(
-				_prefsProps.getString(
-					LegacyUploadServletRequestPropsKeys.
-						UPLOAD_SERVLET_REQUEST_IMPL_TEMP_DIR))) {
-
-			properties.put(
-				"tempDir",
-				_prefsProps.getString(
-					LegacyUploadServletRequestPropsKeys.
-						UPLOAD_SERVLET_REQUEST_IMPL_TEMP_DIR));
-		}
-
-		configuration.update(properties);
-
-		PortletPreferences portletPreferences = _prefsProps.getPreferences();
-
-		for (String key :
-				LegacyUploadServletRequestPropsKeys.
-					UPLOAD_SERVLET_REQUEST_IMPL_KEYS) {
-
-			portletPreferences.reset(key);
-		}
+						UPLOAD_SERVLET_REQUEST_IMPL_TEMP_DIR,
+					"tempDir", uploadServletRequestConfiguration.tempDir());
+			});
 	}
 
-	private final ConfigurationAdmin _configurationAdmin;
-	private final PrefsProps _prefsProps;
+	private final PrefsPropsToConfigurationUpgradeHelper
+		_prefsPropsToConfigurationUpgradeHelper;
 
 }
