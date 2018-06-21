@@ -68,7 +68,21 @@ public class WebBundleDeployer {
 	}
 
 	public ServiceRegistration<PortalProfile> doStart(Bundle bundle) {
-		_eventUtil.sendEvent(bundle, EventUtil.DEPLOYING, null, true);
+		Set<String> portalProfileNames = null;
+
+		try {
+			portalProfileNames = _getPortalProfileNames(bundle);
+		}
+		catch (IOException ioe) {
+			_eventUtil.sendEvent(bundle, EventUtil.FAILED, ioe, false);
+		}
+
+		if (portalProfileNames == null) {
+			_eventUtil.sendEvent(bundle, EventUtil.DEPLOYING, null, true);
+		}
+		else {
+			_eventUtil.sendEvent(bundle, EventUtil.DEPLOYING, null, false);
+		}
 
 		String contextPath = WabUtil.getWebContextPath(bundle);
 
@@ -84,37 +98,11 @@ public class WebBundleDeployer {
 			return null;
 		}
 
-		Enumeration<URL> enumeration = bundle.findEntries(
-			"/WEB-INF", "liferay-plugin-package.properties", false);
-
-		if ((enumeration == null) || !enumeration.hasMoreElements()) {
+		if (portalProfileNames == null) {
 			_initWabBundle(bundle);
 
 			return null;
 		}
-
-		URL url = enumeration.nextElement();
-
-		Properties properties = new Properties();
-
-		try (InputStream inputStream = url.openStream()) {
-			properties.load(inputStream);
-		}
-		catch (IOException ioe) {
-			_eventUtil.sendEvent(bundle, EventUtil.FAILED, ioe, false);
-		}
-
-		Set<String> portalProfileNames = SetUtil.fromArray(
-			StringUtil.split(
-				properties.getProperty("liferay-portal-profile-names")));
-
-		if (portalProfileNames.isEmpty()) {
-			_initWabBundle(bundle);
-
-			return null;
-		}
-
-		portalProfileNames.add(bundle.getSymbolicName());
 
 		return _bundleContext.registerService(
 			PortalProfile.class,
@@ -173,6 +161,37 @@ public class WebBundleDeployer {
 				break;
 			}
 		}
+	}
+
+	private Set<String> _getPortalProfileNames(Bundle bundle)
+		throws IOException {
+
+		Enumeration<URL> enumeration = bundle.findEntries(
+			"/WEB-INF", "liferay-plugin-package.properties", false);
+
+		if ((enumeration == null) || !enumeration.hasMoreElements()) {
+			return null;
+		}
+
+		URL url = enumeration.nextElement();
+
+		Properties properties = new Properties();
+
+		try (InputStream inputStream = url.openStream()) {
+			properties.load(inputStream);
+		}
+
+		Set<String> portalProfileNames = SetUtil.fromArray(
+			StringUtil.split(
+				properties.getProperty("liferay-portal-profile-names")));
+
+		if (portalProfileNames.isEmpty()) {
+			return null;
+		}
+
+		portalProfileNames.add(bundle.getSymbolicName());
+
+		return portalProfileNames;
 	}
 
 	private void _initWabBundle(Bundle bundle) {
