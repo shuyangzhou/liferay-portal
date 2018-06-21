@@ -230,7 +230,7 @@ public class PoshiRunner {
 		List<Element> varElements = rootElement.elements("var");
 
 		for (Element varElement : varElements) {
-			PoshiRunnerExecutor.runVarElement(varElement, false, false);
+			PoshiRunnerExecutor.runRootVarElement(varElement, false);
 		}
 
 		PoshiRunnerVariablesUtil.pushCommandMap();

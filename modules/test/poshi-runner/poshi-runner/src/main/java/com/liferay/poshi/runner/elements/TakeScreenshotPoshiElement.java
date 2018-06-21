@@ -15,6 +15,7 @@
 package com.liferay.poshi.runner.elements;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.dom4j.Attribute;
 import org.dom4j.Element;
@@ -90,17 +91,18 @@ public class TakeScreenshotPoshiElement extends PoshiElement {
 
 	@Override
 	protected String getBlockName() {
-		return "takeScreenshot";
+		return _POSHI_SCRIPT_KEYWORD;
 	}
 
 	private boolean _isElementType(String poshiScript) {
-		if (poshiScript.startsWith(getBlockName())) {
-			return true;
-		}
-
-		return false;
+		return isValidPoshiScriptStatement(_statementPattern, poshiScript);
 	}
 
 	private static final String _ELEMENT_NAME = "take-screenshot";
+
+	private static final String _POSHI_SCRIPT_KEYWORD = "takeScreenshot";
+
+	private static final Pattern _statementPattern = Pattern.compile(
+		"^" + _POSHI_SCRIPT_KEYWORD + PARAMETER_REGEX + STATEMENT_END_REGEX);
 
 }

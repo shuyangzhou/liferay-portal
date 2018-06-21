@@ -65,6 +65,14 @@
 	.ddm-form-settings-modal-content {
 		.modal-body {
 			padding: 0;
+
+			.tab-pane.active {
+				padding: 24px 24px 0;
+			}
+
+			.tab a {
+				outline: none;
+			}
 		}
 	}
 

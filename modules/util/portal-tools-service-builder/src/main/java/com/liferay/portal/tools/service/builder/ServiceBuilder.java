@@ -1035,7 +1035,7 @@ public class ServiceBuilder {
 		int pos = name.lastIndexOf(".");
 
 		if (pos == -1) {
-			pos = _entities.indexOf(new Entity(name));
+			pos = _entities.indexOf(new Entity(this, name));
 
 			if (pos == -1) {
 				throw new ServiceBuilderException(
@@ -1055,7 +1055,7 @@ public class ServiceBuilder {
 		String refEntity = name.substring(pos + 1);
 
 		if (refPackage.equals(_packagePath)) {
-			pos = _entities.indexOf(new Entity(refEntity));
+			pos = _entities.indexOf(new Entity(this, refEntity));
 
 			if (pos == -1) {
 				throw new ServiceBuilderException(
@@ -1862,8 +1862,18 @@ public class ServiceBuilder {
 	}
 
 	public boolean isVersionGTE_7_1_0() {
-		if (_dtdVersion.isSameVersionAs("7.1.0") ||
-			_dtdVersion.isLaterVersionThan("7.1.0")) {
+		if (_dtdVersion.isLaterVersionThan("7.1.0") ||
+			_dtdVersion.isSameVersionAs("7.1.0")) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isVersionLTE_7_1_0() {
+		if (_dtdVersion.isPreviousVersionThan("7.1.0") ||
+			_dtdVersion.isSameVersionAs("7.1.0")) {
 
 			return true;
 		}
@@ -6088,7 +6098,7 @@ public class ServiceBuilder {
 			_apiPackagePath + ".model." + entityName);
 
 		Entity entity = new Entity(
-			_packagePath, _apiPackagePath, _portletShortName, entityName,
+			this, _packagePath, _apiPackagePath, _portletShortName, entityName,
 			humanName, tableName, alias, uuid, uuidAccessor,
 			externalReferenceCode, localService, remoteService,
 			persistenceClassName, finderClassName, dataSource, sessionFactory,
