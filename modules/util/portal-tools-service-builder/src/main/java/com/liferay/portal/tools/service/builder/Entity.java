@@ -91,17 +91,18 @@ public class Entity implements Comparable<Entity> {
 		return false;
 	}
 
-	public Entity(String name) {
+	public Entity(ServiceBuilder serviceBuilder, String name) {
 		this(
-			null, null, null, name, null, null, null, false, false, false,
-			false, true, null, null, null, null, null, true, false, false,
-			false, false, null, false, null, null, false, null, null, null,
-			null, null, null, null, null, null, null, false);
+			serviceBuilder, null, null, null, name, null, null, null, false,
+			false, false, false, true, null, null, null, null, null, true,
+			false, false, false, false, null, false, null, null, false, null,
+			null, null, null, null, null, null, null, null, null, false);
 	}
 
 	public Entity(
-		String packagePath, String apiPackagePath, String portletShortName,
-		String name, String humanName, String table, String alias, boolean uuid,
+		ServiceBuilder serviceBuilder, String packagePath,
+		String apiPackagePath, String portletShortName, String name,
+		String humanName, String table, String alias, boolean uuid,
 		boolean uuidAccessor, boolean externalReferenceCode,
 		boolean localService, boolean remoteService, String persistenceClass,
 		String finderClassName, String dataSource, String sessionFactory,
@@ -118,6 +119,7 @@ public class Entity implements Comparable<Entity> {
 		List<String> unresolvedReferenceEntityNames,
 		List<String> txRequiredMethodNames, boolean resourceActionModel) {
 
+		_serviceBuilder = serviceBuilder;
 		_packagePath = packagePath;
 		_apiPackagePath = apiPackagePath;
 		_portletShortName = portletShortName;
@@ -1021,11 +1023,26 @@ public class Entity implements Comparable<Entity> {
 	}
 
 	public boolean isPermissionCheckEnabled(EntityFinder entityFinder) {
+		boolean resourceActionModel = _resourceActionModel;
+
+		if (_serviceBuilder.isVersionLTE_7_1_0()) {
+
+			// See LPS-82433. Add this hack to prevent
+			// 4d29a89578e0a712ddcb6793d93c8fc9128c3b03 in 7.1.x from requring
+			// a major breaking change in portal-kernel.
+
+			if (_packagePath.equals("com.liferay.portlet.asset") &&
+				_name.equals("AssetTag")) {
+
+				resourceActionModel = true;
+			}
+		}
+
 		String entityFinderName = entityFinder.getName();
 
 		if (_name.equals("Group") || _name.equals("User") ||
 			entityFinderName.equals("UUID_G") || !entityFinder.isCollection() ||
-			!hasPrimitivePK() || !_resourceActionModel) {
+			!hasPrimitivePK() || !resourceActionModel) {
 
 			return false;
 		}
@@ -1252,6 +1269,7 @@ public class Entity implements Comparable<Entity> {
 	private final List<EntityColumn> _regularEntityColumns;
 	private final boolean _remoteService;
 	private final boolean _resourceActionModel;
+	private ServiceBuilder _serviceBuilder;
 	private final String _sessionFactory;
 	private final String _table;
 	private List<String> _transients;
