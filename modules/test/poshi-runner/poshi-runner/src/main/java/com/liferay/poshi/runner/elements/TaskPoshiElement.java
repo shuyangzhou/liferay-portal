@@ -14,7 +14,6 @@
 
 package com.liferay.poshi.runner.elements;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -49,18 +48,17 @@ public class TaskPoshiElement extends PoshiElement {
 
 	@Override
 	public void parsePoshiScript(String poshiScript) {
-		for (String poshiScriptSnippet : getPoshiScriptSnippets(poshiScript)) {
-			if (poshiScriptSnippet.startsWith("task (")) {
-				String parentheticalContent = getParentheticalContent(
-					poshiScriptSnippet);
+		String blockName = getBlockName(poshiScript);
 
-				String summary = getQuotedContent(parentheticalContent);
+		String parentheticalContent = getParentheticalContent(blockName);
 
-				addAttribute("summary", summary);
+		String summary = getQuotedContent(parentheticalContent);
 
-				continue;
-			}
+		addAttribute("summary", summary);
 
+		String blockContent = getBlockContent(poshiScript);
+
+		for (String poshiScriptSnippet : getPoshiScriptSnippets(blockContent)) {
 			add(PoshiNodeFactory.newPoshiNode(this, poshiScriptSnippet));
 		}
 	}
@@ -115,44 +113,6 @@ public class TaskPoshiElement extends PoshiElement {
 
 	protected String getPoshiScriptKeyword() {
 		return getName();
-	}
-
-	protected List<String> getPoshiScriptSnippets(String poshiScript) {
-		StringBuilder sb = new StringBuilder();
-
-		List<String> poshiScriptSnippets = new ArrayList<>();
-
-		for (String line : poshiScript.split("\n")) {
-			String trimmedLine = line.trim();
-
-			String poshiScriptSnippet = sb.toString();
-
-			poshiScriptSnippet = poshiScriptSnippet.trim();
-
-			if (trimmedLine.startsWith(getPoshiScriptKeyword() + " (") &&
-				trimmedLine.endsWith("{") &&
-				(poshiScriptSnippet.length() == 0)) {
-
-				poshiScriptSnippets.add(line);
-
-				continue;
-			}
-
-			if (trimmedLine.endsWith("{") && poshiScriptSnippets.isEmpty()) {
-				continue;
-			}
-
-			if (isValidPoshiScriptSnippet(poshiScriptSnippet)) {
-				poshiScriptSnippets.add(poshiScriptSnippet);
-
-				sb.setLength(0);
-			}
-
-			sb.append(line);
-			sb.append("\n");
-		}
-
-		return poshiScriptSnippets;
 	}
 
 	private boolean _isElementType(String poshiScript) {

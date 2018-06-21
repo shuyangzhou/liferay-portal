@@ -5,6 +5,9 @@ Feature: This is a feature
 	This is a feature section
 
 Setup:
+	This is a description
+	for the setup section
+
 	* I visit the URL "https://www.google.com"
 
 Teardown:
@@ -12,6 +15,10 @@ Teardown:
 
 Scenario: catSearch
 	@ priority = "3"
+	This section is a
+	description unique
+	to this scenario
+
 	When I visit the URL "https://www.yahoo.com"
 	And I issue a search for "cats"
 	Then I should see "stray cat" and "domestic cat" and "kitten" and "lion"
@@ -81,5 +88,29 @@ Scenario: multiLineString
 Scenario: commentTest
 	@priority = "0"
 	# @ignore = "true"
+	This is a test for including comments
+	in a prose file
+
 	When I visit the URL "https://www.google.com"
 	# Then I should close the window
+
+Scenario: tableTest
+	This is a test for using a table
+	in a prose file
+
+	* I have a lot to say:
+		| 1 | 2 | 3 |
+		| 4 | 5 | 6 |
+		| 7 | 8 | 9 |
+	* I should close the window
+
+Scenario: Alternate and Optional Text Test
+	@priority = "1"
+	Searches for a specific animal and dogs and cats
+
+	* I search for a "dragon" and "1" dog and "1" cat
+	* I search for an "eagle" and "1" dog and "1" cat
+	* I search for a "dragon" and "2" dogs and "1" cat
+	* I search for a "dragon" and "2" dogs and "2" cats
+	* I search for a "dragon" or "2" dogs and "2" cats
+	* I search for a "dragon" and "2" dogs or "2" cats
