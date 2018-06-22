@@ -15,12 +15,10 @@
 package com.liferay.portal.language.extender.internal;
 
 import com.liferay.portal.kernel.util.AggregateResourceBundle;
-import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.CacheResourceBundleLoader;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
-import com.liferay.portal.kernel.util.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
@@ -111,10 +109,7 @@ public class LanguageExtension implements Extension {
 			}
 			else if (baseName instanceof String) {
 				resourceBundleLoader = processBaseName(
-					bundleWiring.getClassLoader(), (String)baseName,
-					GetterUtil.getBoolean(
-						attributes.getOrDefault(
-							"exclude.portal.resources", "false")));
+					bundleWiring.getClassLoader(), (String)baseName);
 			}
 
 			if (resourceBundleLoader != null) {
@@ -170,22 +165,10 @@ public class LanguageExtension implements Extension {
 	}
 
 	protected ResourceBundleLoader processBaseName(
-		ClassLoader classLoader, String baseName,
-		boolean excludePortalResource) {
+		ClassLoader classLoader, String baseName) {
 
-		CacheResourceBundleLoader cacheResourceBundleLoader =
-			new CacheResourceBundleLoader(
-				ResourceBundleUtil.getResourceBundleLoader(
-					baseName, classLoader));
-
-		if (excludePortalResource) {
-			return cacheResourceBundleLoader;
-		}
-		else {
-			return new AggregateResourceBundleLoader(
-				cacheResourceBundleLoader,
-				ResourceBundleLoaderUtil.getPortalResourceBundleLoader());
-		}
+		return new CacheResourceBundleLoader(
+			ResourceBundleUtil.getResourceBundleLoader(baseName, classLoader));
 	}
 
 	protected void registerResourceBundleLoader(
