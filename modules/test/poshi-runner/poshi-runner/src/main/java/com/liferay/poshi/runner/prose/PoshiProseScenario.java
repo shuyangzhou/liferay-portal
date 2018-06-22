@@ -86,6 +86,14 @@ public class PoshiProseScenario extends BasePoshiProse {
 			_scenarioContent, PoshiProseStatement.KEYWORDS);
 
 		for (String poshiProseStatementString : poshiProseStatementStrings) {
+			if ((scenarioDescription == null) &&
+				!_startsWithProseStatementKeyword(poshiProseStatementString)) {
+
+				scenarioDescription = poshiProseStatementString;
+
+				continue;
+			}
+
 			_poshiProseStatements.add(
 				new PoshiProseStatement(poshiProseStatementString));
 		}
@@ -121,10 +129,24 @@ public class PoshiProseScenario extends BasePoshiProse {
 	protected static final String[] KEYWORDS =
 		{"Setup", "Scenario", "Teardown"};
 
+	protected String scenarioDescription;
+
 	protected enum Type {
 
 		Scenario, Setup, Teardown
 
+	}
+
+	private boolean _startsWithProseStatementKeyword(
+		String poshiProseStatement) {
+
+		for (String statementKeyWord : PoshiProseStatement.KEYWORDS) {
+			if (poshiProseStatement.startsWith(statementKeyWord)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private final List<PoshiProseStatement> _poshiProseStatements =

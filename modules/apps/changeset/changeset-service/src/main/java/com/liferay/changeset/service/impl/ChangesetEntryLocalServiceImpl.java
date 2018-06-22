@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.SetUtil;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -82,6 +83,31 @@ public class ChangesetEntryLocalServiceImpl
 	}
 
 	@Override
+	public void deleteChangesetEntries(Set<Long> changesetEntryIds)
+		throws PortalException {
+
+		if (SetUtil.isEmpty(changesetEntryIds)) {
+			return;
+		}
+
+		ActionableDynamicQuery actionableDynamicQuery =
+			getActionableDynamicQuery();
+
+		actionableDynamicQuery.setAddCriteriaMethod(
+			dynamicQuery -> dynamicQuery.add(
+				RestrictionsFactoryUtil.in(
+					"changesetEntryId", changesetEntryIds)));
+
+		actionableDynamicQuery.setPerformActionMethod(
+			(ActionableDynamicQuery.PerformActionMethod<ChangesetEntry>)
+				changesetEntry ->
+					changesetEntryLocalService.deleteChangesetEntry(
+						changesetEntry));
+
+		actionableDynamicQuery.performActions();
+	}
+
+	@Override
 	public void deleteEntry(long changesetId, long classNameId, long classPK) {
 		ChangesetEntry changesetEntry =
 			changesetEntryLocalService.fetchChangesetEntry(
@@ -122,6 +148,13 @@ public class ChangesetEntryLocalServiceImpl
 
 		return changesetEntryLocalService.addChangesetEntry(
 			user.getUserId(), changesetCollectionId, classNameId, classPK);
+	}
+
+	public List<ChangesetEntry> getChangesetEntries(
+		long changesetCollectionId, long classNameId) {
+
+		return changesetEntryPersistence.findByC_C(
+			changesetCollectionId, classNameId);
 	}
 
 	@Override
