@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.exportimport.kernel.lar.MissingReference;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -328,6 +329,13 @@ public class StagingUtil {
 		return _staging.getRecentLayoutSetBranchId(user, layoutSetId);
 	}
 
+	public static long getRemoteLayoutPlid(
+			long userId, long stagingGroupId, long plid)
+		throws PortalException {
+
+		return _staging.getRemoteLayoutPlid(userId, stagingGroupId, plid);
+	}
+
 	public static String getRemoteSiteURL(
 			Group stagingGroup, boolean privateLayout)
 		throws PortalException {
@@ -429,6 +437,13 @@ public class StagingUtil {
 		return _staging.isIncomplete(layout, layoutSetBranchId);
 	}
 
+	public static boolean isRemoteLayoutHasPortletId(
+		long userId, long stagingGroupId, long plid, String portletId) {
+
+		return _staging.isRemoteLayoutHasPortletId(
+			userId, stagingGroupId, plid, portletId);
+	}
+
 	/**
 	 * @deprecated As of 7.0.0, see {@link
 	 *             com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor#getIsolationLevel(
@@ -439,6 +454,15 @@ public class StagingUtil {
 		throws PortalException {
 
 		_staging.lockGroup(userId, groupId);
+	}
+
+	public static void populateLastPublishDateCounts(
+			PortletDataContext portletDataContext,
+			StagedModelType[] stagedModelTypes)
+		throws PortalException {
+
+		_staging.populateLastPublishDateCounts(
+			portletDataContext, stagedModelTypes);
 	}
 
 	public static void populateLastPublishDateCounts(

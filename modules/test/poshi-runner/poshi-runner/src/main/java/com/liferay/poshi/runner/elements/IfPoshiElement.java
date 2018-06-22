@@ -14,7 +14,6 @@
 
 package com.liferay.poshi.runner.elements;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -40,7 +39,7 @@ public class IfPoshiElement extends PoshiElement {
 	public PoshiElement clone(
 		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(poshiScript)) {
+		if (_isElementType(parentPoshiElement, poshiScript)) {
 			return new IfPoshiElement(parentPoshiElement, poshiScript);
 		}
 
@@ -49,11 +48,19 @@ public class IfPoshiElement extends PoshiElement {
 
 	@Override
 	public void parsePoshiScript(String poshiScript) {
-		for (String poshiScriptSnippet : getPoshiScriptSnippets(poshiScript)) {
-			if (poshiScriptSnippet.startsWith(getName() + " (")) {
+		for (String poshiScriptSnippet :
+				getPoshiScriptSnippets(poshiScript, false)) {
+
+			String trimmedPoshiScriptSnippet = poshiScriptSnippet.trim();
+
+			if (trimmedPoshiScriptSnippet.startsWith(getPoshiScriptKeyword())) {
+				String blockName = getBlockName(poshiScriptSnippet);
+
 				add(
 					PoshiNodeFactory.newPoshiNode(
-						this, getCondition(poshiScriptSnippet)));
+						this, getCondition(blockName)));
+
+				add(new ThenPoshiElement(this, poshiScriptSnippet));
 
 				continue;
 			}
@@ -150,59 +157,29 @@ public class IfPoshiElement extends PoshiElement {
 		return getName();
 	}
 
-	protected List<String> getPoshiScriptSnippets(String poshiScript) {
-		StringBuilder sb = new StringBuilder();
+	protected static final Pattern blockNamePattern;
 
-		List<String> poshiScriptSnippets = new ArrayList<>();
+	private boolean _isElementType(
+		PoshiElement parentPoshiElement, String poshiScript) {
 
-		for (String line : poshiScript.split("\n")) {
-			String trimmedLine = line.trim();
-
-			String poshiScriptSnippet = sb.toString();
-
-			poshiScriptSnippet = poshiScriptSnippet.trim();
-
-			if (trimmedLine.startsWith(getPoshiScriptKeyword() + " (") &&
-				trimmedLine.endsWith("{") &&
-				(poshiScriptSnippet.length() == 0)) {
-
-				poshiScriptSnippets.add(line);
-
-				sb.append("{\n");
-
-				continue;
-			}
-
-			sb.append(line);
-			sb.append("\n");
-
-			poshiScriptSnippet = sb.toString();
-
-			poshiScriptSnippet = poshiScriptSnippet.trim();
-
-			if (isValidPoshiScriptSnippet(poshiScriptSnippet)) {
-				poshiScriptSnippets.add(poshiScriptSnippet);
-
-				sb.setLength(0);
-			}
+		if (IfPoshiElement.class.equals(parentPoshiElement.getClass())) {
+			return false;
 		}
 
-		return poshiScriptSnippets;
-	}
-
-	private boolean _isElementType(String poshiScript) {
-		return isValidPoshiScriptBlock(_blockNamePattern, poshiScript);
+		return isValidPoshiScriptBlock(blockNamePattern, poshiScript);
 	}
 
 	private static final String[] _CONDITION_NAMES =
-		{"and", "condition", "equals", "isset", "not", "or"};
+		{"and", "condition", "contains", "equals", "isset", "not", "or"};
 
 	private static final String _ELEMENT_NAME = "if";
 
 	private static final String _POSHI_SCRIPT_KEYWORD = _ELEMENT_NAME;
 
-	private static final Pattern _blockNamePattern = Pattern.compile(
-		"^" + _POSHI_SCRIPT_KEYWORD + BLOCK_NAME_PARAMETER_REGEX,
-		Pattern.DOTALL);
+	static {
+		blockNamePattern = Pattern.compile(
+			"^" + _POSHI_SCRIPT_KEYWORD + BLOCK_NAME_PARAMETER_REGEX,
+			Pattern.DOTALL);
+	}
 
 }
