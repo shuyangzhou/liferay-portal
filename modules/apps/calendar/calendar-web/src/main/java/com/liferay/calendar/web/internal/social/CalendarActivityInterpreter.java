@@ -39,8 +39,6 @@ import javax.portlet.WindowState;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Marcellus Tavares
@@ -54,6 +52,15 @@ public class CalendarActivityInterpreter extends BaseSocialActivityInterpreter {
 	@Override
 	public String[] getClassNames() {
 		return _CLASS_NAMES;
+	}
+
+	@Reference(
+		target = "(bundle.symbolic.name=com.liferay.calendar.web)", unbind = "-"
+	)
+	public void setResourceBundleLoader(
+		ResourceBundleLoader resourceBundleLoader) {
+
+		_resourceBundleLoader = resourceBundleLoader;
 	}
 
 	@Override
@@ -167,11 +174,6 @@ public class CalendarActivityInterpreter extends BaseSocialActivityInterpreter {
 	@Reference
 	private Portal _portal;
 
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(bundle.symbolic.name=com.liferay.calendar.web)"
-	)
-	private volatile ResourceBundleLoader _resourceBundleLoader;
+	private ResourceBundleLoader _resourceBundleLoader;
 
 }

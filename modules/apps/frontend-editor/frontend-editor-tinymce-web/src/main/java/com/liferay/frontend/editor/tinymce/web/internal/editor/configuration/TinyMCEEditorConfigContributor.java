@@ -34,8 +34,6 @@ import java.util.ResourceBundle;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Ambrin Chaudhary
@@ -306,17 +304,22 @@ public class TinyMCEEditorConfigContributor
 		return jsonArray;
 	}
 
+	@Reference(
+		target = "(bundle.symbolic.name=com.liferay.frontend.editor.lang)",
+		unbind = "-"
+	)
+	protected void setResourceBundleLoader(
+		ResourceBundleLoader resourceBundleLoader) {
+
+		_resourceBundleLoader = resourceBundleLoader;
+	}
+
 	@Reference
 	private BrowserSniffer _browserSniffer;
 
 	@Reference
 	private ItemSelector _itemSelector;
 
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(bundle.symbolic.name=com.liferay.frontend.editor.lang)"
-	)
 	private volatile ResourceBundleLoader _resourceBundleLoader;
 
 }

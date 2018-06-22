@@ -33,8 +33,6 @@ import javax.portlet.PortletURL;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * Defines the icon triggering the deactivation of a workflow definition.
@@ -102,14 +100,19 @@ public class UnpublishDefinitionPortletConfigurationIcon
 		return false;
 	}
 
+	@Reference(
+		target = "(bundle.symbolic.name=com.liferay.portal.workflow.web)",
+		unbind = "-"
+	)
+	protected void setResourceBundleLoader(
+		ResourceBundleLoader resourceBundleLoader) {
+
+		_resourceBundleLoader = resourceBundleLoader;
+	}
+
 	@Reference
 	private Portal _portal;
 
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(bundle.symbolic.name=com.liferay.portal.workflow.web)"
-	)
-	private volatile ResourceBundleLoader _resourceBundleLoader;
+	private ResourceBundleLoader _resourceBundleLoader;
 
 }

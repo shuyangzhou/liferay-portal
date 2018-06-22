@@ -27,8 +27,6 @@ import javax.portlet.RenderRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Adam Brandizzi
@@ -82,10 +80,15 @@ public class ControlPanelWorkflowPortlet extends BaseWorkflowPortlet {
 	}
 
 	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(bundle.symbolic.name=com.liferay.portal.workflow.web)"
+		target = "(bundle.symbolic.name=com.liferay.portal.workflow.web)",
+		unbind = "-"
 	)
-	protected volatile ResourceBundleLoader resourceBundleLoader;
+	protected void setResourceBundleLoader(
+		ResourceBundleLoader resourceBundleLoader) {
+
+		this.resourceBundleLoader = resourceBundleLoader;
+	}
+
+	protected ResourceBundleLoader resourceBundleLoader;
 
 }

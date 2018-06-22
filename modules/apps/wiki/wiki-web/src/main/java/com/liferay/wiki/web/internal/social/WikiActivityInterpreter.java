@@ -42,8 +42,6 @@ import com.liferay.wiki.social.WikiActivityKeys;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Samuel Kong
@@ -276,6 +274,15 @@ public class WikiActivityInterpreter extends BaseSocialActivityInterpreter {
 		return true;
 	}
 
+	@Reference(
+		target = "(bundle.symbolic.name=com.liferay.wiki.web)", unbind = "-"
+	)
+	protected void setResourceBundleLoader(
+		ResourceBundleLoader resourceBundleLoader) {
+
+		_resourceBundleLoader = resourceBundleLoader;
+	}
+
 	@Reference(unbind = "-")
 	protected void setWikiPageLocalService(
 		WikiPageLocalService wikiPageLocalService) {
@@ -295,13 +302,7 @@ public class WikiActivityInterpreter extends BaseSocialActivityInterpreter {
 	private static final Log _log = LogFactoryUtil.getLog(
 		WikiActivityInterpreter.class);
 
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(bundle.symbolic.name=com.liferay.wiki.web)"
-	)
-	private volatile ResourceBundleLoader _resourceBundleLoader;
-
+	private ResourceBundleLoader _resourceBundleLoader;
 	private WikiPageLocalService _wikiPageLocalService;
 
 	@Reference(target = "(model.class.name=com.liferay.wiki.model.WikiPage)")
