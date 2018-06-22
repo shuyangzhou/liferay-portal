@@ -46,6 +46,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -65,10 +67,6 @@ public abstract class BaseSourceCheck implements SourceCheck {
 		}
 
 		return Collections.emptySet();
-	}
-
-	@Override
-	public void init() throws Exception {
 	}
 
 	@Override
@@ -399,21 +397,27 @@ public abstract class BaseSourceCheck implements SourceCheck {
 		return null;
 	}
 
-	protected Document getPortalCustomSQLDocument() throws Exception {
+	protected synchronized Document getPortalCustomSQLDocument()
+		throws Exception {
+
+		if (_portalCustomSQLDocument != null) {
+			return _portalCustomSQLDocument;
+		}
+
+		_portalCustomSQLDocument = DocumentHelper.createDocument();
+
 		if (!isPortalSource()) {
-			return null;
+			return _portalCustomSQLDocument;
 		}
 
 		String portalCustomSQLDefaultContent = getPortalContent(
 			"portal-impl/src/custom-sql/default.xml");
 
 		if (portalCustomSQLDefaultContent == null) {
-			return null;
+			return _portalCustomSQLDocument;
 		}
 
-		Document document = DocumentHelper.createDocument();
-
-		Element rootElement = document.addElement("custom-sql");
+		Element rootElement = _portalCustomSQLDocument.addElement("custom-sql");
 
 		Document customSQLDefaultDocument = SourceUtil.readXML(
 			portalCustomSQLDefaultContent);
@@ -443,7 +447,7 @@ public abstract class BaseSourceCheck implements SourceCheck {
 			}
 		}
 
-		return document;
+		return _portalCustomSQLDocument;
 	}
 
 	protected File getPortalDir() {
@@ -505,6 +509,31 @@ public abstract class BaseSourceCheck implements SourceCheck {
 
 	protected SourceFormatterExcludes getSourceFormatterExcludes() {
 		return _sourceFormatterExcludes;
+	}
+
+	protected String getVariableTypeName(
+		String content, String fileContent, String variableName) {
+
+		if (variableName == null) {
+			return null;
+		}
+
+		Pattern pattern = Pattern.compile(
+			"\\W(\\w+)\\s+" + variableName + "\\W");
+
+		Matcher matcher = pattern.matcher(content);
+
+		if (matcher.find()) {
+			return matcher.group(1);
+		}
+
+		matcher = pattern.matcher(fileContent);
+
+		if (matcher.find()) {
+			return matcher.group(1);
+		}
+
+		return null;
 	}
 
 	protected boolean isExcludedPath(
@@ -733,6 +762,7 @@ public abstract class BaseSourceCheck implements SourceCheck {
 	private boolean _enabled = true;
 	private int _maxLineLength;
 	private List<String> _pluginsInsideModulesDirectoryNames;
+	private Document _portalCustomSQLDocument;
 	private boolean _portalSource;
 	private String _projectName;
 	private String _projectPathPrefix;

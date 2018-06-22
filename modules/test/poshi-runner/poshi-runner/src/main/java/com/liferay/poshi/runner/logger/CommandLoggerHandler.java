@@ -465,7 +465,7 @@ public final class CommandLoggerHandler {
 			message = element.getText();
 		}
 
-		return PoshiRunnerVariablesUtil.replaceCommandVars(message);
+		return (String)PoshiRunnerVariablesUtil.replaceCommandVars(message);
 	}
 
 	private static LoggerElement _getMessageGroupLoggerElement(Element element)
