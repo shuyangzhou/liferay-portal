@@ -48,7 +48,7 @@ public class PoshiRunnerVariablesUtil {
 	}
 
 	public static String getStringFromCommandMap(String key) throws Exception {
-		if (containsKeyInCommandMap(replaceCommandVars(key))) {
+		if (containsKeyInCommandMap((String)replaceCommandVars(key))) {
 			Object object = getValueFromCommandMap(key);
 
 			return object.toString();
@@ -58,7 +58,17 @@ public class PoshiRunnerVariablesUtil {
 	}
 
 	public static String getStringFromExecuteMap(String key) throws Exception {
-		if (containsKeyInExecuteMap(replaceCommandVars(key))) {
+		if (containsKeyInExecuteMap((String)replaceCommandVars(key))) {
+			Object object = getValueFromExecuteMap(key);
+
+			return object.toString();
+		}
+
+		return null;
+	}
+
+	public static String getStringFromStaticMap(String key) throws Exception {
+		if (containsKeyInStaticMap((String)replaceStaticVars(key))) {
 			Object object = getValueFromExecuteMap(key);
 
 			return object.toString();
@@ -73,6 +83,10 @@ public class PoshiRunnerVariablesUtil {
 
 	public static Object getValueFromExecuteMap(String key) throws Exception {
 		return _executeMap.get(replaceCommandVars(key));
+	}
+
+	public static Object getValueFromStaticMap(String key) throws Exception {
+		return _staticMap.get(replaceCommandVars(key));
 	}
 
 	public static void popCommandMap() {
@@ -98,10 +112,11 @@ public class PoshiRunnerVariablesUtil {
 
 		if (value instanceof String) {
 			_commandMap.put(
-				replaceCommandVars(key), replaceCommandVars((String)value));
+				(String)replaceCommandVars(key),
+				replaceCommandVars((String)value));
 		}
 		else {
-			_commandMap.put(replaceCommandVars(key), value);
+			_commandMap.put((String)replaceCommandVars(key), value);
 		}
 	}
 
@@ -110,10 +125,11 @@ public class PoshiRunnerVariablesUtil {
 
 		if (value instanceof String) {
 			_executeMap.put(
-				replaceCommandVars(key), replaceCommandVars((String)value));
+				(String)replaceCommandVars(key),
+				replaceCommandVars((String)value));
 		}
 		else {
-			_executeMap.put(replaceCommandVars(key), value);
+			_executeMap.put((String)replaceCommandVars(key), value);
 		}
 	}
 
@@ -122,15 +138,22 @@ public class PoshiRunnerVariablesUtil {
 
 		if (value instanceof String) {
 			_staticMap.put(
-				replaceCommandVars(key), replaceCommandVars((String)value));
+				(String)replaceCommandVars(key),
+				replaceCommandVars((String)value));
 		}
 		else {
-			_staticMap.put(replaceCommandVars(key), value);
+			_staticMap.put((String)replaceCommandVars(key), value);
 		}
 	}
 
-	public static String replaceCommandVars(String token) throws Exception {
+	public static Object replaceCommandVars(String token) throws Exception {
 		Matcher matcher = _pattern.matcher(token);
+
+		if (matcher.matches() && _commandMap.containsKey(matcher.group(1))) {
+			return getValueFromCommandMap(matcher.group(1));
+		}
+
+		matcher.reset();
 
 		while (matcher.find() && _commandMap.containsKey(matcher.group(1))) {
 			String varValue = getStringFromCommandMap(matcher.group(1));
@@ -141,11 +164,35 @@ public class PoshiRunnerVariablesUtil {
 		return token;
 	}
 
-	public static String replaceExecuteVars(String token) throws Exception {
+	public static Object replaceExecuteVars(String token) throws Exception {
 		Matcher matcher = _pattern.matcher(token);
+
+		if (matcher.matches() && _executeMap.containsKey(matcher.group(1))) {
+			return getValueFromExecuteMap(matcher.group(1));
+		}
+
+		matcher.reset();
 
 		while (matcher.find() && _executeMap.containsKey(matcher.group(1))) {
 			String varValue = getStringFromExecuteMap(matcher.group(1));
+
+			token = StringUtil.replace(token, matcher.group(), varValue);
+		}
+
+		return token;
+	}
+
+	public static Object replaceStaticVars(String token) throws Exception {
+		Matcher matcher = _pattern.matcher(token);
+
+		if (matcher.matches() && _staticMap.containsKey(matcher.group(1))) {
+			return getValueFromStaticMap(matcher.group(1));
+		}
+
+		matcher.reset();
+
+		while (matcher.find() && _staticMap.containsKey(matcher.group(1))) {
+			String varValue = getStringFromStaticMap(matcher.group(1));
 
 			token = StringUtil.replace(token, matcher.group(), varValue);
 		}
