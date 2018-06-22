@@ -58,7 +58,10 @@ import com.liferay.exportimport.kernel.service.StagingLocalService;
 import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
 import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.exportimport.kernel.staging.StagingConstants;
+import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
 import com.liferay.exportimport.staged.model.repository.StagedModelRepositoryHelper;
+import com.liferay.exportimport.staged.model.repository.StagedModelRepositoryRegistryUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
@@ -90,6 +93,8 @@ import com.liferay.portal.kernel.model.RecentLayoutBranch;
 import com.liferay.portal.kernel.model.RecentLayoutRevision;
 import com.liferay.portal.kernel.model.RecentLayoutSetBranch;
 import com.liferay.portal.kernel.model.StagedGroupedModel;
+import com.liferay.portal.kernel.model.StagedModel;
+import com.liferay.portal.kernel.model.TypedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.WorkflowInstanceLink;
 import com.liferay.portal.kernel.model.WorkflowedModel;
@@ -130,7 +135,6 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.Tuple;
@@ -142,6 +146,7 @@ import com.liferay.portal.kernel.workflow.WorkflowTask;
 import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.service.http.GroupServiceHttp;
+import com.liferay.portal.service.http.LayoutServiceHttp;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.exportimport.service.http.StagingServiceHttp;
 import com.liferay.portlet.exportimport.staging.ProxiedLayoutsThreadLocal;
@@ -164,6 +169,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -1859,6 +1865,24 @@ public class StagingImpl implements Staging {
 	}
 
 	@Override
+	public long getRemoteLayoutPlid(long userId, long stagingGroupId, long plid)
+		throws PortalException {
+
+		Group stagingGroup = _groupLocalService.fetchGroup(stagingGroupId);
+		User user = _userLocalService.fetchUser(userId);
+
+		HttpPrincipal httpPrincipal = new HttpPrincipal(
+			buildRemoteURL(stagingGroup.getTypeSettingsProperties()),
+			user.getLogin(), user.getPassword(), user.isPasswordEncrypted());
+
+		Layout layout = _layoutLocalService.fetchLayout(plid);
+
+		return LayoutServiceHttp.getLayoutPlid(
+			httpPrincipal, layout.getUuid(),
+			stagingGroup.getRemoteLiveGroupId(), layout.isPrivateLayout());
+	}
+
+	@Override
 	public String getRemoteSiteURL(Group stagingGroup, boolean privateLayout)
 		throws PortalException {
 
@@ -2139,6 +2163,35 @@ public class StagingImpl implements Staging {
 			layout.getPlid(), layoutRevision, layoutSetBranchId);
 	}
 
+	@Override
+	public boolean isRemoteLayoutHasPortletId(
+		long userId, long stagingGroupId, long plid, String portletId) {
+
+		Group stagingGroup = _groupLocalService.fetchGroup(stagingGroupId);
+		User user = _userLocalService.fetchUser(userId);
+
+		try {
+			HttpPrincipal httpPrincipal = new HttpPrincipal(
+				buildRemoteURL(stagingGroup.getTypeSettingsProperties()),
+				user.getLogin(), user.getPassword(),
+				user.isPasswordEncrypted());
+
+			return LayoutServiceHttp.hasPortletId(
+				httpPrincipal, plid, portletId);
+		}
+		catch (PortalException pe) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					StringBundler.concat(
+						"Unable to determine if remote layout ", plid,
+						" contains portlet ", portletId),
+					pe);
+			}
+		}
+
+		return false;
+	}
+
 	/**
 	 * @deprecated As of 3.0.0, see {@link
 	 *             com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor#getIsolationLevel(
@@ -2161,7 +2214,8 @@ public class StagingImpl implements Staging {
 
 	@Override
 	public void populateLastPublishDateCounts(
-			PortletDataContext portletDataContext, String[] classNames)
+			PortletDataContext portletDataContext,
+			StagedModelType[] stagedModelTypes)
 		throws PortalException {
 
 		ManifestSummary manifestSummary =
@@ -2172,9 +2226,7 @@ public class StagingImpl implements Staging {
 				portletDataContext.getScopeGroupId(),
 				StagingConstants.RANGE_FROM_LAST_PUBLISH_DATE_CHANGESET_NAME);
 
-		for (String className : classNames) {
-			StagedModelType stagedModelType = new StagedModelType(className);
-
+		for (StagedModelType stagedModelType : stagedModelTypes) {
 			long modelAdditionCount = manifestSummary.getModelAdditionCount(
 				stagedModelType);
 
@@ -2183,10 +2235,47 @@ public class StagingImpl implements Staging {
 			}
 
 			if (changesetCollection != null) {
-				modelAdditionCount =
-					_changesetEntryLocalService.getChangesetEntriesCount(
-						changesetCollection.getChangesetCollectionId(),
-						_portal.getClassNameId(className));
+				if (stagedModelType.getReferrerClassName() == null) {
+					modelAdditionCount =
+						_changesetEntryLocalService.getChangesetEntriesCount(
+							changesetCollection.getChangesetCollectionId(),
+							stagedModelType.getClassNameId());
+				}
+				else {
+					StagedModelRepository<?> stagedModelRepository =
+						StagedModelRepositoryRegistryUtil.
+							getStagedModelRepository(
+								stagedModelType.getClassName());
+
+					if (stagedModelRepository != null) {
+						List<ChangesetEntry> changesetEntries =
+							_changesetEntryLocalService.getChangesetEntries(
+								changesetCollection.getChangesetCollectionId(),
+								stagedModelType.getClassNameId());
+
+						modelAdditionCount = 0;
+
+						for (ChangesetEntry changesetEntry : changesetEntries) {
+							StagedModel stagedModel =
+								stagedModelRepository.getStagedModel(
+									changesetEntry.getClassPK());
+
+							if (stagedModel instanceof TypedModel) {
+								TypedModel typedModel = (TypedModel)stagedModel;
+
+								String className = typedModel.getClassName();
+
+								if (Objects.equals(
+										className,
+										stagedModelType.
+											getReferrerClassName())) {
+
+									modelAdditionCount++;
+								}
+							}
+						}
+					}
+				}
 
 				manifestSummary.addModelAdditionCount(
 					stagedModelType, modelAdditionCount);
@@ -2198,6 +2287,25 @@ public class StagingImpl implements Staging {
 			manifestSummary.addModelDeletionCount(
 				stagedModelType, modelDeletionCount);
 		}
+	}
+
+	@Override
+	public void populateLastPublishDateCounts(
+			PortletDataContext portletDataContext, String[] classNames)
+		throws PortalException {
+
+		if (ArrayUtil.isEmpty(classNames)) {
+			return;
+		}
+
+		StagedModelType[] stagedModelTypes =
+			new StagedModelType[classNames.length];
+
+		for (int i = 0; i < classNames.length; i++) {
+			stagedModelTypes[i] = new StagedModelType(classNames[i]);
+		}
+
+		populateLastPublishDateCounts(portletDataContext, stagedModelTypes);
 	}
 
 	@Override
@@ -3684,21 +3792,26 @@ public class StagingImpl implements Staging {
 			Map<String, String[]> parameterMap, boolean copyFromLive)
 		throws PortalException {
 
+		User user = _userLocalService.getUser(userId);
+
 		Layout sourceLayout = _layoutLocalService.getLayout(plid);
 
 		Group scopeGroup = sourceLayout.getScopeGroup();
 
-		Group stagingGroup = null;
 		Group liveGroup = null;
+		Group stagingGroup = null;
 
-		Layout targetLayout = null;
+		long targetGroupId = 0L;
+		long targetLayoutPlid = 0L;
 
 		if (sourceLayout.isTypeControlPanel()) {
 			stagingGroup = _groupLocalService.fetchGroup(scopeGroupId);
 
 			liveGroup = stagingGroup.getLiveGroup();
 
-			targetLayout = sourceLayout;
+			targetGroupId = liveGroup.getGroupId();
+
+			targetLayoutPlid = sourceLayout.getPlid();
 		}
 		else if (sourceLayout.hasScopeGroup() &&
 				 (scopeGroup.getGroupId() == scopeGroupId)) {
@@ -3707,39 +3820,52 @@ public class StagingImpl implements Staging {
 
 			liveGroup = stagingGroup.getLiveGroup();
 
-			targetLayout = _layoutLocalService.getLayout(
+			targetGroupId = liveGroup.getGroupId();
+
+			Layout layout = _layoutLocalService.getLayout(
 				liveGroup.getClassPK());
+
+			targetLayoutPlid = layout.getPlid();
 		}
 		else {
 			stagingGroup = sourceLayout.getGroup();
 
-			liveGroup = stagingGroup.getLiveGroup();
+			if (stagingGroup.isStagedRemotely()) {
+				targetGroupId = stagingGroup.getRemoteLiveGroupId();
 
-			targetLayout = _layoutLocalService.fetchLayoutByUuidAndGroupId(
-				sourceLayout.getUuid(), liveGroup.getGroupId(),
-				sourceLayout.isPrivateLayout());
+				HttpPrincipal httpPrincipal = new HttpPrincipal(
+					buildRemoteURL(stagingGroup.getTypeSettingsProperties()),
+					user.getLogin(), user.getPassword(),
+					user.isPasswordEncrypted());
+
+				targetLayoutPlid = LayoutServiceHttp.getLayoutPlid(
+					httpPrincipal, sourceLayout.getUuid(),
+					stagingGroup.getRemoteLiveGroupId(),
+					sourceLayout.isPrivateLayout());
+			}
+			else {
+				liveGroup = stagingGroup.getLiveGroup();
+
+				targetGroupId = liveGroup.getGroupId();
+
+				Layout layout = _layoutLocalService.fetchLayoutByUuidAndGroupId(
+					sourceLayout.getUuid(), liveGroup.getGroupId(),
+					sourceLayout.isPrivateLayout());
+
+				targetLayoutPlid = layout.getPlid();
+			}
 		}
 
 		if (copyFromLive) {
 			return publishPortlet(
 				userId, liveGroup.getGroupId(), stagingGroup.getGroupId(),
-				targetLayout.getPlid(), sourceLayout.getPlid(), portletId,
+				targetLayoutPlid, sourceLayout.getPlid(), portletId,
 				parameterMap);
-		}
-
-		long targetGroupId = 0;
-
-		if (stagingGroup.isStagedRemotely()) {
-			targetGroupId = stagingGroup.getRemoteLiveGroupId();
-		}
-		else {
-			targetGroupId = liveGroup.getGroupId();
 		}
 
 		return publishPortlet(
 			userId, stagingGroup.getGroupId(), targetGroupId,
-			sourceLayout.getPlid(), targetLayout.getPlid(), portletId,
-			parameterMap);
+			sourceLayout.getPlid(), targetLayoutPlid, portletId, parameterMap);
 	}
 
 	/**
@@ -3908,10 +4034,9 @@ public class StagingImpl implements Staging {
 				_log.warn(
 					StringBundler.concat(
 						"Unable to set recent layout revision ID",
-						"with layout set branch ",
-						String.valueOf(layoutSetBranchId), " and PLID ",
-						String.valueOf(plid), " and layout branch ",
-						String.valueOf(layoutBranchId)),
+						"with layout set branch ", layoutSetBranchId,
+						" and PLID ", plid, " and layout branch ",
+						layoutBranchId),
 					pe);
 			}
 		}
