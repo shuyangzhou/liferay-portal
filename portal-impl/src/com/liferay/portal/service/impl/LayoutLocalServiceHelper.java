@@ -404,21 +404,19 @@ public class LayoutLocalServiceHelper implements IdentifiableOSGiService {
 			String languageId = StringUtil.toLowerCase(
 				LocaleUtil.toLanguageId(locale));
 
-			String i18nPathLanguageId =
-				StringPool.SLASH +
-					PortalUtil.getI18nPathLanguageId(locale, languageId);
+			String language = StringPool.SLASH.concat(locale.getLanguage());
 
-			if (friendlyURL.startsWith(i18nPathLanguageId + StringPool.SLASH) ||
+			if (friendlyURL.startsWith(language + StringPool.SLASH) ||
 				friendlyURL.startsWith(
 					StringPool.SLASH + languageId + StringPool.SLASH) ||
-				friendlyURL.equals(i18nPathLanguageId) ||
+				friendlyURL.equals(language) ||
 				friendlyURL.equals(StringPool.SLASH + languageId)) {
 
 				LayoutFriendlyURLException lfurle =
 					new LayoutFriendlyURLException(
 						LayoutFriendlyURLException.KEYWORD_CONFLICT);
 
-				lfurle.setKeywordConflict(i18nPathLanguageId);
+				lfurle.setKeywordConflict(language);
 
 				throw lfurle;
 			}

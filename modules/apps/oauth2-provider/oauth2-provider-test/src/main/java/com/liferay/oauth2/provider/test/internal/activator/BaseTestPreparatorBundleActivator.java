@@ -226,7 +226,7 @@ public abstract class BaseTestPreparatorBundleActivator
 			Arrays.asList(
 				GrantType.CLIENT_CREDENTIALS,
 				GrantType.RESOURCE_OWNER_PASSWORD),
-			Arrays.asList("everything", "everything.readonly"));
+			Arrays.asList("everything", "everything.read"));
 	}
 
 	protected OAuth2Application createOAuth2Application(
@@ -591,7 +591,7 @@ public abstract class BaseTestPreparatorBundleActivator
 				previousAutoCloseable.close();
 			}
 			catch (Exception e) {
-				_log.error(e);
+				_log.error(e, e);
 			}
 		}
 	}

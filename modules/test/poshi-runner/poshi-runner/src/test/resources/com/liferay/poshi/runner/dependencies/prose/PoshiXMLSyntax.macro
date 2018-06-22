@@ -26,4 +26,8 @@
     <command prose="I have a lot to say: ${text}" name="sayALot">
         <echo>${text}</echo>
     </command>
+
+    <command prose="I search for a(n) ${animalName} and/or ${numberDogs} dog(s) and/or ${numberCats} cat(s)" name="searchForPets">
+		<echo>Search initiated for ${animal} and dog(s) and cat(s)</echo>
+    </command>
 </definition>
