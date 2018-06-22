@@ -203,14 +203,19 @@
 			</elseif>
 		</if>
 
+		<if>
+			<contains string="testing" substring="test" />
+			<then>
+				<echo message="String contains substring" />
+			</then>
+		</if>
+
 		<execute macro="TestCase#getSiteName">
 			<return name="siteName" />
 			<var name="siteName" value="${siteName}" />
 		</execute>
 
 		<var name="testCDATA"><![CDATA['alert(0)'"alert(0)"><img src=x onerror=alert(0)><script>alert(0)</script>]]></var>
-
-		<var name="testCDATA"><![CDATA[']]></var>
 
 		<var name="wikiPageContent"><![CDATA[<p id='demo'>PASS</p>
 
@@ -319,15 +324,5 @@
 
 	<command ignore="true" name="GotoLinkToPageChildPages">
 		<var name="key_pageName" value="${parentPage}" />
-
-		<toggle name="LPS-68869">
-			<on>
-				<execute function="Click" locator1="DDLEditRecord#LINK_TO_PAGE_PAGE_TOGGLER" />
-			</on>
-
-			<off>
-				<execute function="Click" locator1="DDLEditRecord#LINK_TO_PAGE_PAGE_CARET" />
-			</off>
-		</toggle>
 	</command>
 </definition>

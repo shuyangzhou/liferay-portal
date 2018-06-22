@@ -85,4 +85,44 @@ Six]]></var>
 			<var name="url" value="https://www.google.com"/>
 		</execute>
 	</command>
+	<command name="tableTest">
+		<execute macro="LocalFile.PoshiXMLSyntax#sayALot">
+			<var name="text" type="Table"><![CDATA[| 1 | 2 | 3 |
+| 4 | 5 | 6 |
+| 7 | 8 | 9 |]]></var>
+		</execute>
+		<execute macro="LocalFile.PoshiXMLSyntax#closeWindow"/>
+	</command>
+	<command name="Alternate and Optional Text Test" priority="1">
+		<execute macro="LocalFile.PoshiXMLSyntax#searchForPets">
+			<var name="animalName" value="dragon"/>
+			<var name="numberDogs" value="1"/>
+			<var name="numberCats" value="1"/>
+		</execute>
+		<execute macro="LocalFile.PoshiXMLSyntax#searchForPets">
+			<var name="animalName" value="eagle"/>
+			<var name="numberDogs" value="1"/>
+			<var name="numberCats" value="1"/>
+		</execute>
+		<execute macro="LocalFile.PoshiXMLSyntax#searchForPets">
+			<var name="animalName" value="dragon"/>
+			<var name="numberDogs" value="2"/>
+			<var name="numberCats" value="1"/>
+		</execute>
+		<execute macro="LocalFile.PoshiXMLSyntax#searchForPets">
+			<var name="animalName" value="dragon"/>
+			<var name="numberDogs" value="2"/>
+			<var name="numberCats" value="2"/>
+		</execute>
+		<execute macro="LocalFile.PoshiXMLSyntax#searchForPets">
+			<var name="animalName" value="dragon"/>
+			<var name="numberDogs" value="2"/>
+			<var name="numberCats" value="2"/>
+		</execute>
+		<execute macro="LocalFile.PoshiXMLSyntax#searchForPets">
+			<var name="animalName" value="dragon"/>
+			<var name="numberDogs" value="2"/>
+			<var name="numberCats" value="2"/>
+		</execute>
+	</command>
 </definition>

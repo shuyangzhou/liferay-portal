@@ -35,10 +35,12 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
+import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -48,6 +50,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portlet.configuration.kernel.util.PortletConfigurationApplicationType;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -343,8 +346,18 @@ public class PortletFragmentEntryProcessor implements FragmentEntryProcessor {
 			String instanceId, String defaultPreferences)
 		throws PortalException {
 
-		Group group = _groupLocalService.getGroup(
-			fragmentEntryLink.getGroupId());
+		long groupId = fragmentEntryLink.getGroupId();
+
+		if (groupId == 0) {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			if (serviceContext != null) {
+				groupId = serviceContext.getScopeGroupId();
+			}
+		}
+
+		Group group = _groupLocalService.getGroup(groupId);
 
 		long defaultPlid = _portal.getControlPanelPlid(group.getCompanyId());
 
@@ -352,17 +365,56 @@ public class PortletFragmentEntryProcessor implements FragmentEntryProcessor {
 			PortletIdCodec.decodePortletName(portletName),
 			PortletIdCodec.decodeUserId(portletName), instanceId);
 
-		PortletPreferences portletPreferences =
-			PortletPreferencesFactoryUtil.getLayoutPortletSetup(
-				group.getCompanyId(), 0, PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
-				defaultPlid, portletId, defaultPreferences);
+		PortletPreferences jxPortletPreferences =
+			PortletPreferencesFactoryUtil.fromDefaultXML(defaultPreferences);
+
+		List<com.liferay.portal.kernel.model.PortletPreferences>
+			portletPreferencesList =
+				_portletPreferencesLocalService.getPortletPreferences(
+					group.getCompanyId(), PortletKeys.PREFS_OWNER_ID_DEFAULT,
+					PortletKeys.PREFS_OWNER_TYPE_LAYOUT, portletId);
+
+		if (ListUtil.isNotEmpty(portletPreferencesList)) {
+			jxPortletPreferences =
+				PortletPreferencesFactoryUtil.getLayoutPortletSetup(
+					group.getCompanyId(), PortletKeys.PREFS_OWNER_ID_DEFAULT,
+					PortletKeys.PREFS_OWNER_TYPE_LAYOUT, defaultPlid, portletId,
+					defaultPreferences);
+
+			_updateLayoutPortletSetup(
+				portletPreferencesList, jxPortletPreferences);
+		}
 
 		Document preferencesDocument = _getDocument(
-			PortletPreferencesFactoryUtil.toXML(portletPreferences));
+			PortletPreferencesFactoryUtil.toXML(jxPortletPreferences));
 
 		Element preferencesBody = preferencesDocument.body();
 
 		return preferencesBody.html();
+	}
+
+	private void _updateLayoutPortletSetup(
+		List<com.liferay.portal.kernel.model.PortletPreferences>
+			portletPreferencesList, PortletPreferences jxPortletPreferences) {
+
+		String portletPreferencesXml = PortletPreferencesFactoryUtil.toXML(
+			jxPortletPreferences);
+
+		for (com.liferay.portal.kernel.model.PortletPreferences
+				portletPreferences : portletPreferencesList) {
+
+			if (Objects.equals(
+					portletPreferences.getPreferences(),
+					portletPreferencesXml)) {
+
+				continue;
+			}
+
+			portletPreferences.setPreferences(portletPreferencesXml);
+
+			_portletPreferencesLocalService.updatePortletPreferences(
+				portletPreferences);
+		}
 	}
 
 	@Reference
@@ -379,6 +431,9 @@ public class PortletFragmentEntryProcessor implements FragmentEntryProcessor {
 
 	@Reference
 	private PortletLocalService _portletLocalService;
+
+	@Reference
+	private PortletPreferencesLocalService _portletPreferencesLocalService;
 
 	@Reference
 	private PortletRegistry _portletRegistry;
