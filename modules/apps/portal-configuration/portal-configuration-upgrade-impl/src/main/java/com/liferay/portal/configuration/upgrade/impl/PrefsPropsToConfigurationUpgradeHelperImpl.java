@@ -65,8 +65,7 @@ public class PrefsPropsToConfigurationUpgradeHelperImpl
 
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
 
-		PortletPreferences portletPreferences = _prefsProps.getPreferences(
-			true);
+		PortletPreferences portletPreferences = _prefsProps.getPreferences();
 
 		T defaultConfiguration = ConfigurableUtil.createConfigurable(
 			configurationClass, new HashMapDictionary<>());
