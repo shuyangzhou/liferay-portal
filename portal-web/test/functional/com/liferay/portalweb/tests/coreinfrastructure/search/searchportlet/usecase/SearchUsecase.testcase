@@ -39,6 +39,7 @@
 	<command name="NavigateToSearchResultsViaURL" priority="4">
 		<property name="osgi.module.configuration.file.names" value="com.liferay.portal.search.web.internal.configuration.SearchWebConfiguration.config" />
 		<property name="osgi.module.configurations" value="classicSearchPortletInFrontPage=&quot;false&quot;" />
+		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Content" />
@@ -210,6 +211,7 @@
 	<command name="SearchAssetsViaSearchBarWithDifferentScopes" priority="4">
 		<property name="osgi.module.configuration.file.names" value="com.liferay.portal.search.web.internal.configuration.SearchWebConfiguration.config" />
 		<property name="osgi.module.configurations" value="classicSearchPortletInFrontPage=&quot;false&quot;" />
+		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Sites" />
@@ -275,6 +277,14 @@
 			</execute>
 		</for>
 
+		<execute macro="SearchPortlet#configureScope">
+			<var name="searchScope" value="Let the User Choose" />
+		</execute>
+
+		<execute macro="SearchPortlet#selectScopeInput">
+			<var name="searchScope" value="Everything" />
+		</execute>
+
 		<execute macro="SearchBarPortlet#configureScope">
 			<var name="searchScope" value="Let the User Choose" />
 		</execute>
@@ -300,6 +310,10 @@
 			<var name="searchAssetTitle" value="Potato Document" />
 			<var name="searchAssetType" value="Document" />
 			<var name="searchTerm" value="Potato" />
+		</execute>
+
+		<execute macro="SearchPortlet#selectScopeInput">
+			<var name="searchScope" value="This Site" />
 		</execute>
 
 		<execute macro="SearchBarPortlet#selectScopeInput">
@@ -738,6 +752,64 @@
 		</for>
 	</command>
 
+	<command name="SearchGlobalTemplateSmoke" priority="5">
+		<description message="This is a use case for LPS-81931" />
+
+		<property name="portal.acceptance" value="true" />
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Content" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Blogs" />
+		</execute>
+
+		<execute macro="Blogs#addEntry">
+			<var name="entryContent" value="Blogs Entry 1 Content" />
+			<var name="entryTitle" value="Blogs Entry 1 Title" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
+		<execute macro="SitePages#addPublicPage">
+			<var name="inheritChanges" value="disable" />
+			<var name="pageName" value="Search Global Template Page" />
+			<var name="pageTemplateName" value="Search" />
+		</execute>
+
+		<execute macro="Navigator#gotoPage">
+			<var name="pageName" value="Search Global Template Page" />
+		</execute>
+
+		<for list="Category Facet,Folder Facet,Modified Facet,Search Bar,Search Options,Search Results,Tag Facet,Type Facet,User Facet" param="portlet">
+			<execute function="AssertElementPresent" locator1="Portlet#BODY">
+				<var name="key_portletName" value="${portlet}" />
+			</execute>
+		</for>
+
+		<execute macro="Portlet#deletePG">
+			<var name="portletName" value="Type Facet" />
+		</execute>
+
+		<for list="Category Facet,Folder Facet,Modified Facet,Search Bar,Search Options,Search Results,Tag Facet,User Facet" param="portlet">
+			<execute function="AssertElementPresent" locator1="Portlet#BODY">
+				<var name="key_portletName" value="${portlet}" />
+			</execute>
+		</for>
+
+		<execute macro="SearchBarPortlet#searchPG">
+			<var name="searchTerm" value="Blogs" />
+		</execute>
+
+		<execute macro="SearchPortlet#viewSearchResultsPG">
+			<var name="searchAssetTitle" value="Blogs Entry 1 Title" />
+			<var name="searchAssetType" value="Blogs Entry" />
+		</execute>
+	</command>
+
 	<command name="SearchPortletIdAfterLogout" priority="5">
 		<description message="This is a use case for LPS-25877." />
 
@@ -815,6 +887,10 @@
 
 		<execute macro="Navigator#openSpecificURL">
 			<var name="url" value="${portalURL}/web/guest/search" />
+		</execute>
+
+		<execute macro="SearchPortlet#configureScope">
+			<var name="searchScope" value="Everything" />
 		</execute>
 
 		<execute macro="SearchBarPortlet#configureScope">
@@ -1020,6 +1096,7 @@
 	<command name="SearchUsingCustomFacet">
 		<property name="osgi.module.configuration.file.names" value="com.liferay.portal.search.web.internal.configuration.SearchWebConfiguration.config" />
 		<property name="osgi.module.configurations" value="classicSearchPortletInFrontPage=&quot;false&quot;" />
+		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Content" />
@@ -1346,7 +1423,7 @@
 			<var name="pageName" value="${searchPage}" />
 		</execute>
 
-		<for list="Category Facet,Folder Facet,Site Facet,Tag Facet,Type Facet,User Facet,Search Results,Search Bar" param="portletName">
+		<for list="Search Options,Category Facet,Folder Facet,Site Facet,Tag Facet,Type Facet,User Facet,Search Results,Search Bar" param="portletName">
 			<execute macro="Navigator#gotoPage">
 				<var name="pageName" value="${searchPage}" />
 			</execute>
@@ -1362,6 +1439,11 @@
 
 		<execute macro="SearchBarPortlet#configureScope">
 			<var name="searchScope" value="Everything" />
+		</execute>
+
+		<execute macro="SearchFacetPortlet#configureSearchOptions">
+			<var name="allowEmptySearches" value="true" />
+			<var name="basicFacetSelection" value="true" />
 		</execute>
 
 		<execute macro="SearchBarPortlet#searchPG">
@@ -1586,6 +1668,22 @@
 			<var name="facetClass" value="folder" />
 			<var name="facetValue" value="${webContentFolderId2}" />
 			<var name="facetValueName" value="WC Folder Name 2" />
+			<var name="searchURL" value="${testSearchURL}" />
+		</execute>
+
+		<execute macro="SearchResultPortlet#viewMultipleSearchResults">
+			<var name="resultsList" value="orange/Web Content Article" />
+			<var name="searchTerm" value="test" />
+		</execute>
+
+		<execute macro="SearchResultPortlet#viewMultipleSearchResultsNotPresent">
+			<var name="noResultsList" value="apple/Blogs Entry,apple/Web Content Article,banana/Bookmarks" />
+		</execute>
+
+		<execute macro="SearchFacetPortlet#checkFacetAndViewURL">
+			<return from="updatedSearchURL" name="testSearchURL" />
+			<var name="facetClass" value="tag" />
+			<var name="facetValueName" value="ripe" />
 			<var name="searchURL" value="${testSearchURL}" />
 		</execute>
 

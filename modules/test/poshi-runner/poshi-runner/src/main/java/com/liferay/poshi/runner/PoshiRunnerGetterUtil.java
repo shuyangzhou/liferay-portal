@@ -531,7 +531,7 @@ public class PoshiRunnerGetterUtil {
 	private static final Pattern _namespacedClassCommandNamePattern =
 		Pattern.compile(
 			"((?<namespace>\\w+)\\.)?(?<className>\\w+)(\\#(?<commandName>" +
-				"(\\w+(\\-\\w+)*|\\$\\{\\w+\\}|\\w+)*))?");
+				"(\\w+(\\-\\w+)*|\\$\\{\\w+\\}|\\w+|\\s*\\w+)*))?");
 	private static final Pattern _parameterPattern = Pattern.compile(
 		"('([^'\\\\]|\\\\.)*'|[^',\\s]+)");
 	private static final List<String> _reservedTags = Arrays.asList(
