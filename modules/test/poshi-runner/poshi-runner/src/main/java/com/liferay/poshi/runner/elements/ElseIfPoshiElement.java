@@ -39,26 +39,11 @@ public class ElseIfPoshiElement extends IfPoshiElement {
 	public PoshiElement clone(
 		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (_isElementType(poshiScript)) {
+		if (_isElementType(parentPoshiElement, poshiScript)) {
 			return new ElseIfPoshiElement(parentPoshiElement, poshiScript);
 		}
 
 		return null;
-	}
-
-	@Override
-	public void parsePoshiScript(String poshiScript) {
-		for (String poshiScriptSnippet : getPoshiScriptSnippets(poshiScript)) {
-			if (poshiScriptSnippet.startsWith("else if (")) {
-				add(
-					PoshiNodeFactory.newPoshiNode(
-						this, getParentheticalContent(poshiScriptSnippet)));
-
-				continue;
-			}
-
-			add(PoshiNodeFactory.newPoshiNode(this, poshiScriptSnippet));
-		}
 	}
 
 	@Override
@@ -96,19 +81,31 @@ public class ElseIfPoshiElement extends IfPoshiElement {
 		return "else if";
 	}
 
-	private boolean _isElementType(String poshiScript) {
-		return isValidPoshiScriptBlock(_blockNamePattern, poshiScript);
+	protected static final Pattern blockNamePattern;
+
+	private boolean _isElementType(
+		PoshiElement parentPoshiElement, String poshiScript) {
+
+		if (ElseIfPoshiElement.class.equals(parentPoshiElement.getClass())) {
+			return false;
+		}
+
+		return isValidPoshiScriptBlock(blockNamePattern, poshiScript);
 	}
 
 	private static final String _ELEMENT_NAME = "elseif";
 
 	private static final String _POSHI_SCRIPT_KEYWORD = "else if";
 
-	private static final String _POSHI_SCRIPT_KEYWORD_REGEX =
-		_POSHI_SCRIPT_KEYWORD.replace(" ", "[\\s]*");
+	private static final String _POSHI_SCRIPT_KEYWORD_REGEX;
 
-	private static final Pattern _blockNamePattern = Pattern.compile(
-		"^" + _POSHI_SCRIPT_KEYWORD_REGEX + BLOCK_NAME_PARAMETER_REGEX,
-		Pattern.DOTALL);
+	static {
+		_POSHI_SCRIPT_KEYWORD_REGEX = _POSHI_SCRIPT_KEYWORD.replace(
+			" ", "[\\s]*");
+
+		blockNamePattern = Pattern.compile(
+			"^" + _POSHI_SCRIPT_KEYWORD_REGEX + BLOCK_NAME_PARAMETER_REGEX,
+			Pattern.DOTALL);
+	}
 
 }
