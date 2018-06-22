@@ -42,6 +42,9 @@ public interface PrefsPropsToConfigurationUpgradeHelper {
 			String oldKey, String newKey, double defaultValue);
 
 		public void mapConfiguration(
+			String oldKey, String newKey, float defaultValue);
+
+		public void mapConfiguration(
 			String oldKey, String newKey, int defaultValue);
 
 		public void mapConfiguration(

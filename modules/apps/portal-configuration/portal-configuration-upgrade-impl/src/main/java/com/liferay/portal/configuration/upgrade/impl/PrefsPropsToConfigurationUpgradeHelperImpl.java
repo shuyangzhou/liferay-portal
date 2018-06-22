@@ -92,6 +92,14 @@ public class PrefsPropsToConfigurationUpgradeHelperImpl
 
 				@Override
 				public void mapConfiguration(
+					String oldKey, String newKey, float defaultValue) {
+
+					_mapConfiguration(
+						oldKey, newKey, defaultValue, GetterUtil::getFloat);
+				}
+
+				@Override
+				public void mapConfiguration(
 					String oldKey, String newKey, int defaultValue) {
 
 					_mapConfiguration(
