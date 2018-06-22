@@ -36,6 +36,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import org.w3c.dom.Document;
@@ -83,6 +84,7 @@ public class PortalLogAssertorTest {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testScanXMLLog() throws IOException {
 		Files.walkFileTree(
