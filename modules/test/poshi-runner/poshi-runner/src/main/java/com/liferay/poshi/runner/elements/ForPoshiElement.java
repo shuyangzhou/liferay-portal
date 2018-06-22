@@ -14,8 +14,12 @@
 
 package com.liferay.poshi.runner.elements;
 
-import java.util.ArrayList;
+import com.liferay.poshi.runner.util.Dom4JUtil;
+
+import java.io.IOException;
+
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.dom4j.Attribute;
@@ -49,34 +53,26 @@ public class ForPoshiElement extends PoshiElement {
 
 	@Override
 	public void parsePoshiScript(String poshiScript) {
-		for (String poshiScriptSnippet : getPoshiScriptSnippets(poshiScript)) {
-			if (poshiScriptSnippet.startsWith("for (") &&
-				!poshiScriptSnippet.endsWith("}")) {
+		String blockName = getBlockName(poshiScript);
 
-				String parentheticalContent = getParentheticalContent(
-					poshiScriptSnippet);
+		String parentheticalContent = getParentheticalContent(blockName);
 
-				int index = parentheticalContent.indexOf(":");
+		Matcher matcher = _blockParameterPattern.matcher(parentheticalContent);
 
-				String param = parentheticalContent.substring(0, index);
+		if (matcher.find()) {
+			addAttribute("param", matcher.group(1));
 
-				addAttribute("param", param.trim());
+			addAttribute(matcher.group(2), matcher.group(3));
+		}
+		else {
+			throw new RuntimeException(
+				"Invalid parameter syntax:\n" + parentheticalContent);
+		}
 
-				String list = getQuotedContent(
-					parentheticalContent.substring(index + 1));
+		String blockContent = getBlockContent(poshiScript);
 
-				addAttribute("list", list.trim());
-
-				continue;
-			}
-
-			if (isPoshiScriptComment(poshiScriptSnippet)) {
-				add(PoshiNodeFactory.newPoshiNode(this, poshiScriptSnippet));
-
-				continue;
-			}
-
-			add(PoshiNodeFactory.newPoshiNode(this, poshiScriptSnippet));
+		for (String poshiScriptSnippet : getPoshiScriptSnippets(blockContent)) {
+			add(PoshiNodeFactory.newPoshiNode(this, poshiScriptSnippet.trim()));
 		}
 	}
 
@@ -92,6 +88,8 @@ public class ForPoshiElement extends PoshiElement {
 
 	protected ForPoshiElement(Element element) {
 		super(_ELEMENT_NAME, element);
+
+		initTypeAttributeName(element);
 	}
 
 	protected ForPoshiElement(List<Attribute> attributes, List<Node> nodes) {
@@ -108,51 +106,40 @@ public class ForPoshiElement extends PoshiElement {
 	protected String getBlockName() {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("for (");
+		sb.append("for (var ");
 		sb.append(attributeValue("param"));
-		sb.append(" : \"");
-		sb.append(attributeValue("list"));
+		sb.append(" : ");
+		sb.append(typeAttributeName);
+		sb.append(" \"");
+		sb.append(attributeValue(typeAttributeName));
 		sb.append("\")");
 
 		return sb.toString();
 	}
 
-	protected List<String> getPoshiScriptSnippets(String poshiScript) {
-		StringBuilder sb = new StringBuilder();
+	protected void initTypeAttributeName(Element element) {
+		if (element.attribute("list") != null) {
+			typeAttributeName = "list";
 
-		List<String> poshiScriptSnippets = new ArrayList<>();
-
-		for (String line : poshiScript.split("\n")) {
-			String trimmedLine = line.trim();
-
-			if (poshiScript.startsWith(line) &&
-				trimmedLine.startsWith("for (")) {
-
-				poshiScriptSnippets.add(line);
-
-				continue;
-			}
-
-			if (!trimmedLine.startsWith("else if (") &&
-				!trimmedLine.startsWith("else {")) {
-
-				String poshiScriptSnippet = sb.toString();
-
-				poshiScriptSnippet = poshiScriptSnippet.trim();
-
-				if (isValidPoshiScriptSnippet(poshiScriptSnippet)) {
-					poshiScriptSnippets.add(poshiScriptSnippet);
-
-					sb.setLength(0);
-				}
-			}
-
-			sb.append(line);
-			sb.append("\n");
+			return;
 		}
 
-		return poshiScriptSnippets;
+		if (element.attribute("table") != null) {
+			typeAttributeName = "table";
+
+			return;
+		}
+
+		try {
+			throw new IllegalArgumentException(
+				"Invalid 'for' element " + Dom4JUtil.format(element));
+		}
+		catch (IOException ioe) {
+			throw new IllegalArgumentException("Invalid 'for' element", ioe);
+		}
 	}
+
+	protected String typeAttributeName;
 
 	private boolean _isElementType(String poshiScript) {
 		return isValidPoshiScriptBlock(_blockNamePattern, poshiScript);
@@ -165,5 +152,7 @@ public class ForPoshiElement extends PoshiElement {
 	private static final Pattern _blockNamePattern = Pattern.compile(
 		"^" + _POSHI_SCRIPT_KEYWORD + BLOCK_NAME_PARAMETER_REGEX,
 		Pattern.DOTALL);
+	private static final Pattern _blockParameterPattern = Pattern.compile(
+		"var[\\s]*([\\w]*)[\\s]*:[\\s]*([\\w]*)[\\s]*\"(.*)\"");
 
 }

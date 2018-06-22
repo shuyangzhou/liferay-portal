@@ -27,7 +27,7 @@
 		</sequential>
 	</macrodef>
 
-	<target depends="dist-module-artifacts,update-app-marketplace-verson,write-app-change-log,zip-app-sources" name="build-app">
+	<target depends="dist-module-artifacts,update-app-marketplace-version,write-app-change-log,zip-app-sources" name="build-app">
 		<delete file="${dist.dir}/ticket.list.tmp" />
 
 		<antcall target="git-finalize" />
@@ -60,19 +60,19 @@
 		<if>
 			<resourcecount count="0" when="greater">
 				<fileset
-					dir="${osgi.dir}/marketplace"
+					dir="${output.dir}"
 					includes="*.jar,*.war"
 				/>
 			</resourcecount>
 			<then>
 				<antcall target="write-lpkg-marketplace-properties">
-					<param name="lpkg.dir" value="${osgi.dir}/marketplace" />
+					<param name="lpkg.dir" value="${output.dir}" />
 					<param name="title" value="${Liferay-Releng-App-Title}" />
 				</antcall>
 
 				<zip
-					basedir="${osgi.dir}/marketplace"
-					destfile="${osgi.dir}/marketplace/${Liferay-Releng-App-Title}.lpkg"
+					basedir="${output.dir}"
+					destfile="${output.dir}/${Liferay-Releng-App-Title}.lpkg"
 					includes="*.jar,*.war,liferay-marketplace.properties"
 				/>
 			</then>
@@ -81,7 +81,7 @@
 		<for param="lpkg.dir">
 			<path>
 				<dirset
-					dir="${osgi.dir}/marketplace"
+					dir="${output.dir}"
 				>
 					<include name="*/**" />
 					<exclude name="override" />
@@ -99,7 +99,7 @@
 
 				<zip
 					basedir="@{lpkg.dir}"
-					destfile="${osgi.dir}/marketplace/${lpkg.dir.name}.lpkg"
+					destfile="${output.dir}/${lpkg.dir.name}.lpkg"
 					includes="*.jar,*.war,liferay-marketplace.properties"
 				/>
 			</sequential>
@@ -107,7 +107,7 @@
 
 		<delete includeemptydirs="true">
 			<fileset
-				dir="${osgi.dir}/marketplace"
+				dir="${output.dir}"
 				excludes="override, *.lpkg"
 				includes="**/*"
 			/>
@@ -140,6 +140,7 @@
 			<sequential>
 				<antcall inheritall="false" target="build-app-lpkg">
 					<param name="app.name" value="@{app.name}" />
+					<param name="output.dir" value="${osgi.dir}/marketplace" />
 				</antcall>
 			</sequential>
 		</for>
@@ -156,28 +157,40 @@
 					<include name="apps/*" />
 					<include name="private/apps/*" />
 					<exclude name="${build.exclude.dirs}" />
-					<exclude name="apps/static/*" />
+					<present targetdir="${modules.dir}">
+						<mapper
+							from="*"
+							to="*/app.bnd"
+							type="glob"
+						/>
+					</present>
 				</dirset>
 			</path>
 
 			<sequential>
 				<local name="app.name" />
+				<local name="app.suite" />
 				<local name="Liferay-Releng-Suite" />
 
 				<basename file="@{app.dir}" property="app.name" />
 
 				<property file="@{app.dir}/app.bnd" />
 
+				<condition else="${app.name}" property="app.suite" value="${Liferay-Releng-Suite}">
+					<isset property="Liferay-Releng-Suite" />
+				</condition>
+
 				<if>
 					<or>
-						<equals arg1="${Liferay-Releng-Suite}" arg2="collaboration" />
-						<equals arg1="${Liferay-Releng-Suite}" arg2="forms-and-workflow" />
-						<equals arg1="${Liferay-Releng-Suite}" arg2="foundation" />
-						<equals arg1="${Liferay-Releng-Suite}" arg2="web-experience" />
+						<equals arg1="${app.suite}" arg2="collaboration" />
+						<equals arg1="${app.suite}" arg2="forms-and-workflow" />
+						<equals arg1="${app.suite}" arg2="foundation" />
+						<equals arg1="${app.suite}" arg2="web-experience" />
 					</or>
 					<then>
 						<ant inheritAll="false" target="build-app-lpkg">
 							<property name="app.name" value="${app.name}" />
+							<property name="output.dir" value="${osgi.dir}/marketplace" />
 						</ant>
 					</then>
 				</if>
@@ -186,6 +199,7 @@
 
 		<ant inheritAll="false" target="build-app-lpkg">
 			<property name="app.name" value="static" />
+			<property name="output.dir" value="${osgi.dir}/marketplace" />
 		</ant>
 	</target>
 
@@ -214,6 +228,7 @@
 					<then>
 						<ant inheritAll="false" target="build-app-lpkg">
 							<property name="app.name" value="${app.name}" />
+							<property name="output.dir" value="${osgi.dir}/marketplace" />
 						</ant>
 					</then>
 				</if>
@@ -360,6 +375,7 @@
 			<property name="lpkg.title.prefix" value="${lpkg.title.prefix}" />
 			<property name="osgi.dir" value="${osgi.dir}" />
 			<property name="osgi.static.modules" value="${osgi.static.modules}" />
+			<property name="output.dir" value="${output.dir}" />
 			<property name="project.dir" value="${project.dir}" />
 		</subant>
 	</target>
@@ -433,7 +449,7 @@
 		<property name="app.version.previous.release" value="${app.marketplace.version}" />
 	</target>
 
-	<target depends="get-app-properties" name="get-app-version" unless="build.app.from.changelog">
+	<target depends="get-app-properties" name="get-app-version" unless="${build.app.from.changelog}">
 		<loadfile
 			property="app.major.minor.version.previous.release"
 		>
@@ -462,7 +478,9 @@
 			result="app.bug.fix.version"
 		/>
 
-		<property name="app.version" value="${app.major.minor.version.previous.release}.${app.bug.fix.version}" />
+		<condition else="${app.version.previous.release}" property="app.version" value="${app.major.minor.version.previous.release}.${app.bug.fix.version}">
+			<available file="${releng.app.dir}/app.changelog" />
+		</condition>
 	</target>
 
 	<target depends="get-app-properties" name="get-artifact-versions-previous-release">
@@ -824,7 +842,7 @@
 		</subant>
 	</target>
 
-	<target depends="get-app-version,get-artifact-versions-previous-release" name="update-app-marketplace-verson" unless="build.app.from.changelog">
+	<target depends="get-app-version,get-artifact-versions-previous-release" name="update-app-marketplace-version" unless="${build.app.from.changelog}">
 		<echo message="app.version.previous.release = ${app.version.previous.release}" />
 
 		<echo message="app.version = ${app.version}" />
@@ -838,7 +856,7 @@
 		/>
 	</target>
 
-	<target depends="dist-module-artifacts,get-app-artifacts,get-app-change-log,get-app-change-log-header,get-app-git-id,release-tool-dependencies" name="write-app-change-log" unless="build.app.from.changelog">
+	<target depends="dist-module-artifacts,get-app-artifacts,get-app-change-log,get-app-change-log-header,get-app-git-id,release-tool-dependencies" name="write-app-change-log" unless="${build.app.from.changelog}">
 		<property name="double.space" value="${line.separator}${line.separator}" />
 
 		<echo append="true" file="${releng.app.dir}/app.changelog" message="${app.change.log.header}" />

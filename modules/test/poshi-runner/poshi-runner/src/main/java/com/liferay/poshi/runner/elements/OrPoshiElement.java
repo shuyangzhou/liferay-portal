@@ -109,9 +109,7 @@ public class OrPoshiElement extends PoshiElement {
 			return false;
 		}
 
-		if (poshiScript.contains(" && ") ||
-			poshiScript.startsWith("else if (")) {
-
+		if (poshiScript.startsWith("!")) {
 			return false;
 		}
 
