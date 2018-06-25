@@ -166,7 +166,7 @@ public class JournalArticleAssetRenderer
 	}
 
 	/**
-	 * @deprecated As of 1.4.0, with no direct replacement
+	 * @deprecated As of Judson, with no direct replacement
 	 */
 	@Deprecated
 	@Override
@@ -273,10 +273,8 @@ public class JournalArticleAssetRenderer
 			LiferayPortletResponse liferayPortletResponse)
 		throws Exception {
 
-		Group group = GroupLocalServiceUtil.fetchGroup(_article.getGroupId());
-
 		PortletURL portletURL = PortalUtil.getControlPanelPortletURL(
-			liferayPortletRequest, group, JournalPortletKeys.JOURNAL, 0, 0,
+			liferayPortletRequest, JournalPortletKeys.JOURNAL,
 			PortletRequest.RENDER_PHASE);
 
 		portletURL.setParameter("mvcPath", "/edit_article.jsp");
@@ -381,9 +379,9 @@ public class JournalArticleAssetRenderer
 			JournalArticle.class.getName(), getClassPK());
 
 		AssetDisplayPageEntry assetDisplayPageEntry =
-			AssetDisplayPageEntryLocalServiceUtil.
-				fetchAssetDisplayPageEntryByAssetEntryId(
-					assetEntry.getEntryId());
+			AssetDisplayPageEntryLocalServiceUtil.fetchAssetDisplayPageEntry(
+				assetEntry.getGroupId(), assetEntry.getClassNameId(),
+				getClassPK());
 
 		Group group = themeDisplay.getScopeGroup();
 
@@ -599,7 +597,7 @@ public class JournalArticleAssetRenderer
 	}
 
 	/**
-	 * @deprecated As of 1.7.0, with no direct replacement
+	 * @deprecated As of Judson, with no direct replacement
 	 */
 	@Deprecated
 	protected void setJournalServiceConfiguration() {

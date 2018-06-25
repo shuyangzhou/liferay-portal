@@ -678,12 +678,19 @@ public class PoshiRunnerValidation {
 	}
 
 	protected static void validateForElement(Element element, String filePath) {
-		List<String> attributeNames = Arrays.asList(
-			"line-number", "list", "param");
-
 		validateHasChildElements(element, filePath);
-		validatePossibleAttributeNames(element, attributeNames, filePath);
-		validateRequiredAttributeNames(element, attributeNames, filePath);
+
+		List<String> possibleAttributeNames = Arrays.asList(
+			"line-number", "list", "param", "table");
+
+		validatePossibleAttributeNames(
+			element, possibleAttributeNames, filePath);
+
+		List<String> requiredAttributeNames = Arrays.asList(
+			"line-number", "param");
+
+		validateRequiredAttributeNames(
+			element, requiredAttributeNames, filePath);
 
 		parseElements(element, filePath);
 	}
@@ -846,7 +853,7 @@ public class PoshiRunnerValidation {
 						element.attributeValue("line-number")));
 		}
 		else if (attributeNames.size() > 1) {
-			if (Validator.isNull(multiplePrimaryAttributeNames)) {
+			if (multiplePrimaryAttributeNames == null) {
 				_exceptions.add(
 					new Exception(
 						"Too many attributes\n" + filePath + ":" +
@@ -1224,7 +1231,7 @@ public class PoshiRunnerValidation {
 
 		List<Element> trElements = tBodyElement.elements();
 
-		if (Validator.isNotNull(trElements)) {
+		if (trElements != null) {
 			for (Element trElement : trElements) {
 				validateHasChildElements(trElement, filePath);
 				validateNumberOfChildElements(trElement, 3, filePath);
@@ -1641,8 +1648,9 @@ public class PoshiRunnerValidation {
 		Collections.addAll(
 			possibleAttributeNames,
 			new String[] {
-				"attribute", "group", "input", "line-number", "locator",
-				"method", "name", "pattern", "property-value", "value"
+				"attribute", "from", "group", "hash", "index", "input",
+				"line-number", "locator", "method", "name", "pattern",
+				"property-value", "type", "value"
 			});
 
 		if (filePath.contains(".macro")) {
