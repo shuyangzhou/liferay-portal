@@ -250,7 +250,7 @@ renderResponse.setTitle((formInstance == null) ? LanguageUtil.get(request, "new-
 				{
 					dialog: {
 						cssClass: 'ddm-form-settings-modal',
-						height: 620,
+						height: 700,
 						resizable: false,
 						'toolbars.footer': [
 							{

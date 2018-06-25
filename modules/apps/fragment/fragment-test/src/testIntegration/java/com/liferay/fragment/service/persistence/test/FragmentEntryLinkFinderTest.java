@@ -81,11 +81,10 @@ public class FragmentEntryLinkFinderTest {
 			_fragmentEntryLinkPersistence.create(
 				_counterLocalService.increment());
 
-		fragmentEntryLink.setClassNameId(classNameId);
-		fragmentEntryLink.setClassPK(classPK);
-
 		fragmentEntryLink.setGroupId(_GROUP_ID);
 		fragmentEntryLink.setFragmentEntryId(_FRAGMENT_ENTRY_ID);
+		fragmentEntryLink.setClassNameId(classNameId);
+		fragmentEntryLink.setClassPK(classPK);
 
 		_fragmentEntryLinks.add(
 			_fragmentEntryLinkPersistence.update(fragmentEntryLink));

@@ -13,8 +13,6 @@ AUI.add(
 
 		var STR_UNTITLED_FORM = Liferay.Language.get('untitled-form');
 
-		var TPL_BUTTON_SPINNER = '<span aria-hidden="true"><span class="icon-spinner icon-spin"></span></span>';
-
 		var FormPortlet = A.Component.create(
 			{
 				ATTRS: {
@@ -983,8 +981,6 @@ AUI.add(
 
 						saveButton.html(Liferay.Language.get('saving'));
 
-						saveButton.append(TPL_BUTTON_SPINNER);
-
 						instance.submitForm();
 					},
 
@@ -1063,6 +1059,8 @@ AUI.add(
 
 					_showFormBuilder: function() {
 						var instance = this;
+
+						Liferay.fire('showFormBuilder');
 
 						instance.one('#formBuilder').show();
 
