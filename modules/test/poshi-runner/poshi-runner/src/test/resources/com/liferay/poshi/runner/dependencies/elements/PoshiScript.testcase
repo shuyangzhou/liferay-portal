@@ -47,14 +47,14 @@ definition {
 
 		echo("This is a message.");
 
-		for (breadcrumbName : "${breadcrumbListVisible}") {
+		for (var breadcrumbName : list "${breadcrumbListVisible}") {
 			var key_breadcrumbName = "${breadcrumbName}";
 			var breadcrumbNameUppercase = StringUtil.upperCase('${breadcrumbName}');
 			var historyVersion = selenium.getText('Staging#HISTORY_VERSION');
 
 			AssertTextEquals(locator1 = "Breadcrumb#BREADCRUMB_ENTRY", value1 = "${breadcrumbNameUppercase}");
 
-			for (breadcrumbName : "${breadcrumbListVisible}") {
+			for (var breadcrumbName : list "${breadcrumbListVisible}") {
 				AssertTextEquals(locator1 = "Breadcrumb#BREADCRUMB_ENTRY", value1 = "${breadcrumbNameUppercase}");
 			}
 
@@ -76,7 +76,7 @@ definition {
 			// This is a comment
 		}
 
-		for (breadcrumbName : "Breadcrumb: 1, Breadcrumb: 2") {
+		for (var breadcrumbName : list "Breadcrumb: 1, Breadcrumb: 2") {
 			AssertTextEquals(locator1 = "Breadcrumb#BREADCRUMB_ENTRY", value1 = "${breadcrumbNameUppercase}");
 		}
 
@@ -152,11 +152,14 @@ definition {
 			Alert.viewErrorMessage();
 		}
 
+		if (contains("testing", "test")) {
+			echo("String contains substring");
+		}
+
 		var siteName = TestCase.getSiteName(
 			siteName = "${siteName}"
 		);
 		var testCDATA = ''''alert(0)'"alert(0)"><img src=x onerror=alert(0)><script>alert(0)</script>''';
-		var testCDATA = ''''''';
 		var wikiPageContent = '''<p id='demo'>PASS</p>
 
 <script type='text/javascript'>
@@ -253,14 +256,5 @@ definition {
 	@ignore = "true"
 	test GotoLinkToPageChildPages {
 		var key_pageName = "${parentPage}";
-
-		toggle ("LPS-68869") {
-			on {
-				Click(locator1 = "DDLEditRecord#LINK_TO_PAGE_PAGE_TOGGLER");
-			}
-			off {
-				Click(locator1 = "DDLEditRecord#LINK_TO_PAGE_PAGE_CARET");
-			}
-		}
 	}
 }

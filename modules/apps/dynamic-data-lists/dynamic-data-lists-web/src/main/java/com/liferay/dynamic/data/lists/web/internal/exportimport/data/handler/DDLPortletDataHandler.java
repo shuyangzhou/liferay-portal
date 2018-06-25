@@ -81,7 +81,7 @@ public class DDLPortletDataHandler extends BasePortletDataHandler {
 	}
 
 	/**
-	 * @deprecated As of 1.1.0
+	 * @deprecated As of Judson
 	 */
 	@Deprecated
 	protected DynamicQuery createRecordSetDynamicQuery() {
@@ -89,7 +89,7 @@ public class DDLPortletDataHandler extends BasePortletDataHandler {
 	}
 
 	/**
-	 * @deprecated As of 1.1.0
+	 * @deprecated As of Judson
 	 */
 	@Deprecated
 	protected DynamicQuery createRecordVersionDynamicQuery() {
@@ -97,7 +97,7 @@ public class DDLPortletDataHandler extends BasePortletDataHandler {
 	}
 
 	/**
-	 * @deprecated As of 1.1.0
+	 * @deprecated As of Judson
 	 */
 	@Deprecated
 	protected void deleteDDMStructures(Set<Long> ddmStructureIds)
@@ -105,7 +105,7 @@ public class DDLPortletDataHandler extends BasePortletDataHandler {
 	}
 
 	/**
-	 * @deprecated As of 1.1.0
+	 * @deprecated As of Judson
 	 */
 	@Deprecated
 	protected void deleteRecordSets(PortletDataContext portletDataContext)
@@ -231,8 +231,9 @@ public class DDLPortletDataHandler extends BasePortletDataHandler {
 
 			_staging.populateLastPublishDateCounts(
 				portletDataContext,
-				new String[] {
-					DDLRecord.class.getName(), DDLRecordSet.class.getName()
+				new StagedModelType[] {
+					new StagedModelType(DDLRecord.class.getName()),
+					new StagedModelType(DDLRecordSet.class.getName())
 				});
 
 			return;
@@ -252,7 +253,7 @@ public class DDLPortletDataHandler extends BasePortletDataHandler {
 	}
 
 	/**
-	 * @deprecated As of 1.1.0
+	 * @deprecated As of Judson
 	 */
 	@Deprecated
 	protected ActionableDynamicQuery getRecordActionableDynamicQuery(
@@ -263,7 +264,7 @@ public class DDLPortletDataHandler extends BasePortletDataHandler {
 	}
 
 	/**
-	 * @deprecated As of 1.1.0
+	 * @deprecated As of Judson
 	 */
 	@Deprecated
 	protected ActionableDynamicQuery getRecordSetActionableDynamicQuery(
@@ -274,7 +275,7 @@ public class DDLPortletDataHandler extends BasePortletDataHandler {
 	}
 
 	/**
-	 * @deprecated As of 1.1.0
+	 * @deprecated As of Judson
 	 */
 	@Deprecated
 	protected void setDDLRecordLocalService(
@@ -282,7 +283,7 @@ public class DDLPortletDataHandler extends BasePortletDataHandler {
 	}
 
 	/**
-	 * @deprecated As of 1.1.0
+	 * @deprecated As of Judson
 	 */
 	@Deprecated
 	protected void setDDLRecordSetLocalService(
@@ -310,7 +311,7 @@ public class DDLPortletDataHandler extends BasePortletDataHandler {
 	}
 
 	/**
-	 * @deprecated As of 1.1.0
+	 * @deprecated As of Judson
 	 */
 	@Deprecated
 	protected void setDDMStructureLocalService(

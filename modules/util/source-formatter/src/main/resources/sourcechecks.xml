@@ -108,7 +108,9 @@
 		<check name="JavaConfigurationCategoryCheck" />
 		<check name="JavaConstructorParametersCheck" />
 		<check name="JavaConstructorSuperCallCheck" />
-		<check name="JavaDeprecatedJavadocCheck" />
+		<check name="JavaDeprecatedJavadocCheck">
+			<property name="enabled" value="false" />
+		</check>
 		<check name="JavaDiamondOperatorCheck" />
 		<check name="JavaDeserializationSecurityCheck" />
 		<check name="JavaEmptyLineAfterSuperCallCheck" />
@@ -141,6 +143,9 @@
 		<check name="JavaSignatureStylingCheck" />
 		<check name="JavaStaticBlockCheck" />
 		<check name="JavaStaticImportsCheck" />
+		<check name="JavaStaticVariableDependencyCheck">
+			<property name="enabled" value="false" />
+		</check>
 		<check name="JavaStopWatchCheck" />
 		<check name="JavaStringBundlerConcatCheck">
 			<property name="enabled" value="false" />
@@ -210,7 +215,9 @@
 		<check name="JavaFinderImplCustomSQLCheck" />
 		<check name="JavaLogClassNameCheck" />
 		<check name="JavaLogLevelCheck" />
-		<check name="JavaLogStringBundlerCheck" />
+		<check name="JavaLogParametersCheck">
+			<property name="enabled" value="false" />
+		</check>
 		<check name="JavaMultiPlusConcatCheck" />
 		<check name="JavaProviderTypeAnnotationCheck" />
 		<check name="JavaServiceObjectCheck" />

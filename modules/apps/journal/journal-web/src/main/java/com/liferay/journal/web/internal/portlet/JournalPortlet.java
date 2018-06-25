@@ -72,6 +72,7 @@ import com.liferay.journal.web.configuration.JournalWebConfiguration;
 import com.liferay.journal.web.internal.portlet.action.ActionUtil;
 import com.liferay.journal.web.util.JournalPortletUtil;
 import com.liferay.journal.web.util.JournalUtil;
+import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.diff.CompareVersionsException;
@@ -923,7 +924,12 @@ public class JournalPortlet extends MVCPortlet {
 
 		// Asset display page
 
-		_updateAssetDisplayPage(article, assetDisplayPageId, displayPageType);
+		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		_updateAssetDisplayPage(
+			themeDisplay.getUserId(), groupId, article, assetDisplayPageId,
+			displayPageType, serviceContext);
 
 		sendEditArticleRedirect(
 			actionRequest, actionResponse, article, oldUrlTitle);
@@ -1471,26 +1477,34 @@ public class JournalPortlet extends MVCPortlet {
 	}
 
 	private void _updateAssetDisplayPage(
-			JournalArticle article, long assetDisplayPageId,
-			int displayPageType)
+			long userId, long groupId, JournalArticle article,
+			long assetDisplayPageId, int displayPageType,
+			ServiceContext serviceContext)
 		throws PortalException {
 
-		AssetEntry assetEntry = _assetEntryLocalService.fetchEntry(
-			JournalArticle.class.getName(), article.getResourcePrimKey());
+		long classNameId = _portal.getClassNameId(JournalArticle.class);
+		long classPK = article.getResourcePrimKey();
 
 		AssetDisplayPageEntry assetDisplayPageEntry =
-			_assetDisplayPageEntryLocalService.
-				fetchAssetDisplayPageEntryByAssetEntryId(
-					assetEntry.getEntryId());
+			_assetDisplayPageEntryLocalService.fetchAssetDisplayPageEntry(
+				groupId, classNameId, classPK);
 
-		if (assetDisplayPageEntry != null) {
-			_assetDisplayPageEntryLocalService.
-				deleteAssetDisplayPageEntryByAssetEntryId(
-					assetEntry.getEntryId());
+		if (displayPageType == AssetDisplayPageConstants.TYPE_NONE) {
+			if (assetDisplayPageEntry != null) {
+				_assetDisplayPageEntryLocalService.deleteAssetDisplayPageEntry(
+					groupId, classNameId, classPK);
+			}
 		}
-
-		_assetDisplayPageEntryLocalService.addAssetDisplayPageEntry(
-			assetEntry.getEntryId(), assetDisplayPageId, displayPageType);
+		else if (assetDisplayPageEntry == null) {
+			_assetDisplayPageEntryLocalService.addAssetDisplayPageEntry(
+				userId, groupId, classNameId, classPK, assetDisplayPageId,
+				displayPageType, serviceContext);
+		}
+		else {
+			_assetDisplayPageEntryLocalService.updateAssetDisplayPageEntry(
+				assetDisplayPageEntry.getAssetDisplayPageEntryId(),
+				assetDisplayPageId, displayPageType);
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(JournalPortlet.class);
@@ -1536,6 +1550,10 @@ public class JournalPortlet extends MVCPortlet {
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private LayoutPageTemplateEntryLocalService
+		_layoutPageTemplateEntryLocalService;
 
 	@Reference
 	private Portal _portal;
