@@ -110,9 +110,9 @@ public class EditArticleDisplayPageDisplayContext {
 		}
 
 		AssetDisplayPageEntry assetDisplayPageEntry =
-			AssetDisplayPageEntryLocalServiceUtil.
-				fetchAssetDisplayPageEntryByAssetEntryId(
-					assetEntry.getEntryId());
+			AssetDisplayPageEntryLocalServiceUtil.fetchAssetDisplayPageEntry(
+				assetEntry.getGroupId(), assetEntry.getClassNameId(),
+				assetEntry.getClassPK());
 
 		if (assetDisplayPageEntry != null) {
 			_assetDisplayPageEntry = assetDisplayPageEntry;
