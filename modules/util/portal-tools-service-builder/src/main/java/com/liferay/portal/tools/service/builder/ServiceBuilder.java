@@ -1035,7 +1035,7 @@ public class ServiceBuilder {
 		int pos = name.lastIndexOf(".");
 
 		if (pos == -1) {
-			pos = _entities.indexOf(new Entity(name));
+			pos = _entities.indexOf(new Entity(this, name));
 
 			if (pos == -1) {
 				throw new ServiceBuilderException(
@@ -1055,7 +1055,7 @@ public class ServiceBuilder {
 		String refEntity = name.substring(pos + 1);
 
 		if (refPackage.equals(_packagePath)) {
-			pos = _entities.indexOf(new Entity(refEntity));
+			pos = _entities.indexOf(new Entity(this, refEntity));
 
 			if (pos == -1) {
 				throw new ServiceBuilderException(
@@ -1862,8 +1862,18 @@ public class ServiceBuilder {
 	}
 
 	public boolean isVersionGTE_7_1_0() {
-		if (_dtdVersion.isSameVersionAs("7.1.0") ||
-			_dtdVersion.isLaterVersionThan("7.1.0")) {
+		if (_dtdVersion.isLaterVersionThan("7.1.0") ||
+			_dtdVersion.isSameVersionAs("7.1.0")) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isVersionLTE_7_1_0() {
+		if (_dtdVersion.isPreviousVersionThan("7.1.0") ||
+			_dtdVersion.isSameVersionAs("7.1.0")) {
 
 			return true;
 		}
@@ -3598,29 +3608,35 @@ public class ServiceBuilder {
 			List<EntityFinder> entityFinders = entity.getEntityFinders();
 
 			for (EntityFinder entityFinder : entityFinders) {
-				if (entityFinder.isDBIndex()) {
-					List<String> dbNames = new ArrayList<>();
-
-					List<EntityColumn> entityColumns =
-						entityFinder.getEntityColumns();
-
-					for (EntityColumn entityColumn : entityColumns) {
-						dbNames.add(entityColumn.getDBName());
-					}
-
-					if (dbNames.isEmpty()) {
-						continue;
-					}
-
-					IndexMetadata indexMetadata =
-						IndexMetadataFactoryUtil.createIndexMetadata(
-							entityFinder.isUnique(), entity.getTable(),
-							dbNames.toArray(new String[dbNames.size()]));
-
-					_addIndexMetadata(
-						indexMetadatasMap, indexMetadata.getTableName(),
-						indexMetadata);
+				if (!entityFinder.isDBIndex()) {
+					continue;
 				}
+
+				List<EntityColumn> entityColumns =
+					entityFinder.getEntityColumns();
+
+				if (entityColumns.equals(entity.getPKEntityColumns())) {
+					continue;
+				}
+
+				List<String> dbNames = new ArrayList<>();
+
+				for (EntityColumn entityColumn : entityColumns) {
+					dbNames.add(entityColumn.getDBName());
+				}
+
+				if (dbNames.isEmpty()) {
+					continue;
+				}
+
+				IndexMetadata indexMetadata =
+					IndexMetadataFactoryUtil.createIndexMetadata(
+						entityFinder.isUnique(), entity.getTable(),
+						dbNames.toArray(new String[dbNames.size()]));
+
+				_addIndexMetadata(
+					indexMetadatasMap, indexMetadata.getTableName(),
+					indexMetadata);
 			}
 		}
 
@@ -6058,7 +6074,24 @@ public class ServiceBuilder {
 
 			for (String referenceEntityName : referenceEntityNames) {
 				try {
-					referenceEntities.add(getEntity(referenceEntityName));
+					Entity entity = getEntity(referenceEntityName);
+
+					if (_dtdVersion.isPreviousVersionThan("7.1.0")) {
+
+						// See LPS-76509. Added this hack for
+						// c9c1fcef14c5cdc1325ae97fee79dbc138728c3c in 7.1.x.
+
+						String apiPackagePath = entity.getApiPackagePath();
+
+						if (apiPackagePath.equals(
+								"com.liferay.message.boards")) {
+
+							entity.setApiPackagePath(
+								apiPackagePath + ".kernel");
+						}
+					}
+
+					referenceEntities.add(entity);
 				}
 				catch (RuntimeException re) {
 					unresolvedReferenceEntityNames.add(referenceEntityName);
@@ -6088,7 +6121,7 @@ public class ServiceBuilder {
 			_apiPackagePath + ".model." + entityName);
 
 		Entity entity = new Entity(
-			_packagePath, _apiPackagePath, _portletShortName, entityName,
+			this, _packagePath, _apiPackagePath, _portletShortName, entityName,
 			humanName, tableName, alias, uuid, uuidAccessor,
 			externalReferenceCode, localService, remoteService,
 			persistenceClassName, finderClassName, dataSource, sessionFactory,

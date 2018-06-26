@@ -20,12 +20,12 @@
 				<plugin>
 					<groupId>com.liferay</groupId>
 					<artifactId>com.liferay.javadoc.formatter</artifactId>
-					<version>1.0.26</version>
+					<version>1.0.27</version>
 				</plugin>
 				<plugin>
 					<groupId>com.liferay</groupId>
 					<artifactId>com.liferay.source.formatter</artifactId>
-					<version>1.0.664</version>
+					<version>1.0.670</version>
 				</plugin>
 				<plugin>
 					<groupId>com.liferay</groupId>

@@ -424,7 +424,6 @@ public interface UserService extends BaseService {
 	* @param obc the comparator to order the users by (optionally
 	<code>null</code>)
 	* @return the matching users
-	* @return the users who belong to a group
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<User> getGroupUsers(long groupId, int status,
@@ -485,7 +484,6 @@ public interface UserService extends BaseService {
 	* @param obc the comparator to order the users by (optionally
 	<code>null</code>)
 	* @return the matching users
-	* @return the users who belong to a group
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<User> getOrganizationUsers(long organizationId, int status,
@@ -552,6 +550,18 @@ public interface UserService extends BaseService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<User> getUserGroupUsers(long userGroupId)
+		throws PortalException;
+
+	/**
+	* Returns the users belonging to the user group with the status.
+	*
+	* @param userGroupId the primary key of the user group
+	* @param start the lower bound of the range of users
+	* @param end the upper bound of the range of users (not inclusive)
+	* @return the matching users
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<User> getUserGroupUsers(long userGroupId, int start, int end)
 		throws PortalException;
 
 	/**
@@ -920,8 +930,8 @@ public interface UserService extends BaseService {
 	* @param userId the primary key of the user
 	* @param status the user's new workflow status
 	* @return the user
-	* @deprecated As of 7.0.0, replaced by {@link #updateStatus(long, int,
-	ServiceContext)}
+	* @deprecated As of Wilberforce, replaced by {@link #updateStatus(long,
+	int, ServiceContext)}
 	*/
 	@Deprecated
 	public User updateStatus(long userId, int status) throws PortalException;
@@ -1063,13 +1073,13 @@ public interface UserService extends BaseService {
 	<code>uuid</code> attribute), asset category IDs, asset tag
 	names, and expando bridge attributes for the user.
 	* @return the user
-	* @deprecated As of 7.0.0, replaced by {@link #updateUser(long, String,
-	String, String, boolean, String, String, String, String,
-	long, String, boolean, byte[], String, String, String,
-	String, String, String, String, long, long, boolean, int,
-	int, int, String, String, String, String, String, String,
-	long[], long[], long[], List, long[], List, List, List, List,
-	List, ServiceContext)}
+	* @deprecated As of Wilberforce, replaced by {@link #updateUser(long,
+	String, String, String, boolean, String, String, String,
+	String, long, String, boolean, byte[], String, String,
+	String, String, String, String, String, long, long, boolean,
+	int, int, int, String, String, String, String, String,
+	String, long[], long[], long[], List, long[], List, List,
+	List, List, List, ServiceContext)}
 	*/
 	@Deprecated
 	public User updateUser(long userId, String oldPassword,

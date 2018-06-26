@@ -17,10 +17,13 @@ package com.liferay.exportimport.data.handler.base;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.changeset.model.ChangesetCollection;
+import com.liferay.changeset.model.ChangesetEntry;
 import com.liferay.changeset.service.ChangesetCollectionLocalServiceUtil;
 import com.liferay.changeset.service.ChangesetEntryLocalServiceUtil;
+import com.liferay.changeset.util.ChangesetThreadLocal;
 import com.liferay.exportimport.content.processor.ExportImportContentProcessor;
 import com.liferay.exportimport.content.processor.ExportImportContentProcessorRegistryUtil;
+import com.liferay.exportimport.kernel.lar.ExportImportClassedModelUtil;
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataException;
@@ -106,11 +109,17 @@ public abstract class BaseStagedModelDataHandler<T extends StagedModel>
 
 			if (changesetCollection != null) {
 				long classNameId = ClassNameLocalServiceUtil.getClassNameId(
-					stagedModel.getModelClassName());
+					ExportImportClassedModelUtil.getClassName(stagedModel));
 
-				ChangesetEntryLocalServiceUtil.deleteEntry(
-					changesetCollection.getChangesetCollectionId(), classNameId,
-					(long)stagedModel.getPrimaryKeyObj());
+				ChangesetEntry changesetEntry =
+					ChangesetEntryLocalServiceUtil.fetchChangesetEntry(
+						changesetCollection.getChangesetCollectionId(),
+						classNameId, (long)stagedModel.getPrimaryKeyObj());
+
+				if (changesetEntry != null) {
+					ChangesetThreadLocal.addExportedChangesetEntryId(
+						changesetEntry.getChangesetEntryId());
+				}
 			}
 		}
 	}
