@@ -100,9 +100,9 @@ public class PortletURLImpl
 	implements LiferayPortletURL, PortletURL, ResourceURL, Serializable {
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #PortletURLImpl(
-	 * 		   HttpServletRequest, Portlet, Layout, String,
-	 * 		   MimeResponse.Copy)}
+	 * @deprecated As of Judson, replaced by {@link
+	 *             #PortletURLImpl(HttpServletRequest, Portlet, Layout, String,
+	 *             MimeResponse.Copy)}
 	 */
 	@Deprecated
 	public PortletURLImpl(
@@ -120,8 +120,9 @@ public class PortletURLImpl
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #PortletURLImpl(
-	 * 		   PortletRequest, Portlet, Layout, String, MimeResponse.Copy)}
+	 * @deprecated As of Judson, replaced by {@link
+	 *             #PortletURLImpl(PortletRequest, Portlet, Layout, String,
+	 *             MimeResponse.Copy)}
 	 */
 	@Deprecated
 	public PortletURLImpl(
@@ -795,7 +796,7 @@ public class PortletURLImpl
 			}
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 		}
 
 		Key key = _getKey();

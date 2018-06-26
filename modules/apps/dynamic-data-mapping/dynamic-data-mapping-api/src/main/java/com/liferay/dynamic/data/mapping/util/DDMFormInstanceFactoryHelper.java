@@ -33,7 +33,7 @@ import java.util.Map;
 
 /**
  * @author     Marcellus Tavares
- * @deprecated As of 3.5.0, with no direct replacement
+ * @deprecated As of Judson, with no direct replacement
  */
 @Deprecated
 public class DDMFormInstanceFactoryHelper {
@@ -83,7 +83,7 @@ public class DDMFormInstanceFactoryHelper {
 
 		for (Method method : ddmFormFactoryHelper.getDDMFormFieldMethods()) {
 			DDMFormFieldFactoryHelper ddmFormFieldFactoryHelper =
-				new DDMFormFieldFactoryHelper(method);
+				new DDMFormFieldFactoryHelper(ddmFormFactoryHelper, method);
 
 			_ddmFormFieldMethodNameMap.put(
 				ddmFormFieldFactoryHelper.getDDMFormFieldName(),

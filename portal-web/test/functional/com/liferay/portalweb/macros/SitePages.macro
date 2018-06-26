@@ -16,11 +16,24 @@
 			</then>
 		</if>
 
-		<for list="1,2" param="iteration">
-			<execute macro="Button#click">
-				<var name="button" value="Save" />
-			</execute>
-		</for>
+		<execute macro="Button#click">
+			<var name="button" value="Save" />
+		</execute>
+
+		<if>
+			<isset var="inheritChanges" />
+			<then>
+				<execute macro="Page#togglePageTemplateInheritChanges">
+					<var name="toggleValue" value="${inheritChanges}" />
+				</execute>
+			</then>
+		</if>
+
+		<execute macro="Button#click">
+			<var name="button" value="Save" />
+		</execute>
+
+		<execute function="WaitForSPARefresh" />
 	</command>
 
 	<command name="_clickAddPage">
@@ -166,6 +179,7 @@
 
 		<execute macro="SitePages#_addPage">
 			<var name="hideFromNavMenu" value="${hideFromNavMenu}" />
+			<var name="inheritChanges" value="${inheritChanges}" />
 			<var name="pageName" value="${pageName}" />
 			<var name="pageTemplateName" value="${pageTemplateName}" />
 			<var name="pageTypeURL" value="${pageTypeURL}" />
@@ -174,6 +188,12 @@
 	</command>
 
 	<command name="configurePage">
+		<execute macro="ProductMenu#gotoPortlet">
+			<var name="category" value="Build" />
+			<var name="panel" value="Site Administration" />
+			<var name="portlet" value="Pages" />
+		</execute>
+
 		<execute macro="SitePages#togglePrivacy">
 			<var name="privacy" value="${privacy}" />
 		</execute>

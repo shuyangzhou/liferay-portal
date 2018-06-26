@@ -116,6 +116,10 @@ for (int i = 0; i < controls.length; i++) {
 					for (int j = 0; j < choices.length; j++) {
 						String choice = choices[j];
 
+						String defaultChoice = (choices != null) ? choices[control.getDefaultChoiceIndex()] : "";
+
+						String controlValue = MapUtil.getString(parameterMap, control.getNamespacedControlName(), defaultChoice);
+
 						Map<String, Object> data = new HashMap<String, Object>();
 
 						String controlName = LanguageUtil.get(request, resourceBundle, choice);
@@ -123,7 +127,7 @@ for (int i = 0; i < controls.length; i++) {
 						data.put("name", controlName);
 					%>
 
-						<aui:input checked="<%= MapUtil.getBoolean(parameterMap, control.getNamespacedControlName(), control.getDefaultChoiceIndex() == j) %>" data="<%= data %>" disabled="<%= disableInputs %>" helpMessage="<%= control.getHelpMessage(locale, action) %>" label="<%= choice %>" name="<%= control.getNamespacedControlName() %>" type="radio" value="<%= choices[j] %>" />
+						<aui:input checked="<%= controlValue.equals(choices[j]) %>" data="<%= data %>" disabled="<%= disableInputs %>" helpMessage="<%= control.getHelpMessage(locale, action) %>" label="<%= choice %>" name="<%= control.getNamespacedControlName() %>" type="radio" value="<%= choices[j] %>" />
 
 					<%
 					}

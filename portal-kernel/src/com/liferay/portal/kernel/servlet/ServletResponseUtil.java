@@ -429,7 +429,7 @@ public class ServletResponseUtil {
 				isClientAbortException(ioe)) {
 
 				if (_log.isWarnEnabled()) {
-					_log.warn(ioe);
+					_log.warn(ioe, ioe);
 				}
 			}
 			else {
@@ -469,7 +469,7 @@ public class ServletResponseUtil {
 				isClientAbortException(ioe)) {
 
 				if (_log.isWarnEnabled()) {
-					_log.warn(ioe);
+					_log.warn(ioe, ioe);
 				}
 			}
 			else {
@@ -597,7 +597,7 @@ public class ServletResponseUtil {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of Judson, with no direct replacement
 	 */
 	@Deprecated
 	protected static InputStream copyRange(
@@ -690,7 +690,7 @@ public class ServletResponseUtil {
 
 				contentDispositionType = HttpHeaders.CONTENT_DISPOSITION_INLINE;
 
-				contentType = MimeTypesUtil.getContentType(fileName);
+				contentType = MimeTypesUtil.getExtensionContentType(extension);
 
 				response.setContentType(contentType);
 			}

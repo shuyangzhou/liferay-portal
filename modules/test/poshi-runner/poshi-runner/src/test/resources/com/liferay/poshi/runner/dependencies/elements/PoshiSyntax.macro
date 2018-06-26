@@ -12,4 +12,24 @@
 
 		<return value="${breadcrumbNameUppercase}" />
 	</command>
+
+	<command name="echoRowsHashTable" prose="I want to print rows-hash table: ${table}">
+		<var name="rowsHashTable" type="RowsHashTable" from="${table}" />
+
+		<for param="row" table="${rowsHashTable}" >
+			<execute macro="TableEcho#echoTwoVars" >
+				<var from="${row}" name="v0" hash="project_id" />
+				<var from="${row}" name="v1" hash="status" />
+			</execute>
+		</for>
+
+		<var name="rawTable" type="RawTable" from="${table}" />
+
+		<for param="row" table="${rawTable}" >
+			<execute macro="TableEcho#echoTwoVars" >
+				<var name="v0" index="0" from="${row}" />
+				<var name="v1" index="1" from="${row}" />
+			</execute>
+		</for>
+	</command>
 </definition>
