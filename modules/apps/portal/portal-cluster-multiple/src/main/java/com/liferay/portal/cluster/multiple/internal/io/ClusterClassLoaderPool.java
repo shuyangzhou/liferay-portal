@@ -66,4 +66,32 @@ public class ClusterClassLoaderPool {
 			ClassLoaderUtil.getPortalClassLoader());
 	}
 
+	private static class VersionedClassLoader
+		implements Comparable<VersionedClassLoader> {
+
+		@Override
+		public int compareTo(VersionedClassLoader versionedClassLoader) {
+			Version comparedVersion = versionedClassLoader.getVersion();
+
+			return comparedVersion.compareTo(getVersion());
+		}
+
+		public ClassLoader getClassLoader() {
+			return _classLoader;
+		}
+
+		public Version getVersion() {
+			return _version;
+		}
+
+		private VersionedClassLoader(ClassLoader classLoader, Version version) {
+			_classLoader = classLoader;
+			_version = version;
+		}
+
+		private final ClassLoader _classLoader;
+		private final Version _version;
+
+	}
+
 }
