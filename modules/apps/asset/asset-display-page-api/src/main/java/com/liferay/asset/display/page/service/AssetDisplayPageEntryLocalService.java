@@ -18,17 +18,23 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.asset.display.page.model.AssetDisplayPageEntry;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -71,11 +77,15 @@ public interface AssetDisplayPageEntryLocalService extends BaseLocalService,
 	public AssetDisplayPageEntry addAssetDisplayPageEntry(
 		AssetDisplayPageEntry assetDisplayPageEntry);
 
-	public AssetDisplayPageEntry addAssetDisplayPageEntry(long assetEntryId,
-		long layoutPageTemplateEntryId);
+	public AssetDisplayPageEntry addAssetDisplayPageEntry(long userId,
+		long groupId, long classNameId, long classPK,
+		long layoutPageTemplateEntryId, int type, ServiceContext serviceContext)
+		throws PortalException;
 
-	public AssetDisplayPageEntry addAssetDisplayPageEntry(long assetEntryId,
-		long layoutPageTemplateEntryId, int type);
+	public AssetDisplayPageEntry addAssetDisplayPageEntry(long userId,
+		long groupId, long classNameId, long classPK,
+		long layoutPageTemplateEntryId, ServiceContext serviceContext)
+		throws PortalException;
 
 	/**
 	* Creates a new asset display page entry with the primary key. Does not add the asset display page entry to the database.
@@ -108,8 +118,9 @@ public interface AssetDisplayPageEntryLocalService extends BaseLocalService,
 	public AssetDisplayPageEntry deleteAssetDisplayPageEntry(
 		long assetDisplayPageEntryId) throws PortalException;
 
-	public void deleteAssetDisplayPageEntryByAssetEntryId(long assetEntryId)
-		throws PortalException;
+	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
+	public void deleteAssetDisplayPageEntry(long groupId, long classNameId,
+		long classPK) throws PortalException;
 
 	/**
 	* @throws PortalException
@@ -182,8 +193,19 @@ public interface AssetDisplayPageEntryLocalService extends BaseLocalService,
 		long assetDisplayPageEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AssetDisplayPageEntry fetchAssetDisplayPageEntryByAssetEntryId(
-		long assetEntryId);
+	public AssetDisplayPageEntry fetchAssetDisplayPageEntry(long groupId,
+		long classNameId, long classPK);
+
+	/**
+	* Returns the asset display page entry matching the UUID and group.
+	*
+	* @param uuid the asset display page entry's UUID
+	* @param groupId the primary key of the group
+	* @return the matching asset display page entry, or <code>null</code> if a matching asset display page entry could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AssetDisplayPageEntry fetchAssetDisplayPageEntryByUuidAndGroupId(
+		String uuid, long groupId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -202,6 +224,36 @@ public interface AssetDisplayPageEntryLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AssetDisplayPageEntry> getAssetDisplayPageEntries(int start,
 		int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetDisplayPageEntry> getAssetDisplayPageEntriesByLayoutPageTemplateEntryId(
+		long layoutPageTemplateEntryId);
+
+	/**
+	* Returns all the asset display page entries matching the UUID and company.
+	*
+	* @param uuid the UUID of the asset display page entries
+	* @param companyId the primary key of the company
+	* @return the matching asset display page entries, or an empty list if no matches were found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetDisplayPageEntry> getAssetDisplayPageEntriesByUuidAndCompanyId(
+		String uuid, long companyId);
+
+	/**
+	* Returns a range of asset display page entries matching the UUID and company.
+	*
+	* @param uuid the UUID of the asset display page entries
+	* @param companyId the primary key of the company
+	* @param start the lower bound of the range of asset display page entries
+	* @param end the upper bound of the range of asset display page entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the range of matching asset display page entries, or an empty list if no matches were found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AssetDisplayPageEntry> getAssetDisplayPageEntriesByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<AssetDisplayPageEntry> orderByComparator);
 
 	/**
 	* Returns the number of asset display page entries.
@@ -225,6 +277,22 @@ public interface AssetDisplayPageEntryLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AssetDisplayPageEntry getAssetDisplayPageEntry(
 		long assetDisplayPageEntryId) throws PortalException;
+
+	/**
+	* Returns the asset display page entry matching the UUID and group.
+	*
+	* @param uuid the asset display page entry's UUID
+	* @param groupId the primary key of the group
+	* @return the matching asset display page entry
+	* @throws PortalException if a matching asset display page entry could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AssetDisplayPageEntry getAssetDisplayPageEntryByUuidAndGroupId(
+		String uuid, long groupId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		PortletDataContext portletDataContext);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
@@ -250,4 +318,8 @@ public interface AssetDisplayPageEntryLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public AssetDisplayPageEntry updateAssetDisplayPageEntry(
 		AssetDisplayPageEntry assetDisplayPageEntry);
+
+	public AssetDisplayPageEntry updateAssetDisplayPageEntry(
+		long assetDisplayPageEntryId, long layoutPageTemplateEntryId, int type)
+		throws PortalException;
 }

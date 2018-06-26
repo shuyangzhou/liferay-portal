@@ -81,6 +81,8 @@ public class DDMFormAdminPortletDataHandler extends BasePortletDataHandler {
 				NAMESPACE, "forms", true, false,
 				formsPortletDataHandlerControlChildren,
 				DDMFormInstance.class.getName()));
+
+		setStagingControls(getExportControls());
 	}
 
 	@Override
@@ -207,9 +209,9 @@ public class DDMFormAdminPortletDataHandler extends BasePortletDataHandler {
 
 			_staging.populateLastPublishDateCounts(
 				portletDataContext,
-				new String[] {
-					DDMFormInstance.class.getName(),
-					DDMFormInstanceRecord.class.getName()
+				new StagedModelType[] {
+					new StagedModelType(DDMFormInstance.class.getName()),
+					new StagedModelType(DDMFormInstanceRecord.class.getName())
 				});
 
 			return;

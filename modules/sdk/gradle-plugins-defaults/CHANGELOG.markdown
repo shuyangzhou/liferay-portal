@@ -3854,6 +3854,62 @@ of a module includes transitive dependencies.
 - [LPS-77143]: Update the [Liferay Gradle Plugins] dependency to version
 3.12.47.
 
+## 5.4.47 - 2018-06-18
+
+### Changed
+- [LPS-74544]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.48.
+
+## 5.4.48 - 2018-06-19
+
+### Changed
+- [LPS-82420]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.49.
+
+## 5.4.49 - 2018-06-20
+
+### Changed
+- [LPS-79679]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.50.
+
+## 5.4.50 - 2018-06-20
+
+### Changed
+- [LPS-82433]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.51.
+
+## 5.4.51 - 2018-06-20
+
+### Changed
+- [LPS-74544]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.52.
+
+## 5.4.52 - 2018-06-21
+
+### Changed
+- [LPS-79679]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.53.
+
+## 5.4.52 - 2018-06-21
+
+### Added
+- [LPS-82568]: Set the `npmRunBuild` task's `environment` property to
+`LIFERAY_NPM_BUNDLER_NO_TRACKING=1` by default to disable a prompt from
+[`liferay-npm-bundler`](https://github.com/liferay/liferay-npm-build-tools)
+about tracking data.
+
+### Changed
+- [LPS-82568]: Update the [Liferay Gradle Plugins JSDoc] dependency to version
+2.0.8.
+- [LPS-82815]: Update the [Liferay Gradle Plugins] dependency to version
+3.12.54.
+
+## 5.4.55 - 2018-06-25
+
+### Changed
+- [LPS-82857]: Update the [Liferay Gradle Plugins Change Log Builder] dependency
+to version 1.1.0.
+
 [Find Security Bugs]: https://github.com/liferay/liferay-portal/tree/master/modules/third-party/com-h3xstream-findsecbugs
 [Gradle License Report]: https://github.com/jk1/Gradle-License-Report
 [Liferay CDN]: https://repository-cdn.liferay.com/nexus/content/groups/public
@@ -3865,6 +3921,7 @@ of a module includes transitive dependencies.
 [Liferay Gradle Plugins JSDoc]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-jsdoc
 [Liferay Gradle Plugins Lang Merger]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-lang-merger
 [Liferay Gradle Plugins Node]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-node
+[Liferay Gradle Plugins Patcher]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-patcher
 [Liferay Gradle Plugins Poshi Runner]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-poshi-runner
 [Liferay Gradle Plugins Source Formatter]: https://github.com/liferay/liferay-portal/tree/master/modules/sdk/gradle-plugins-source-formatter
 [Liferay Source Formatter]: https://github.com/liferay/liferay-portal/tree/master/modules/util/source-formatter
@@ -4279,7 +4336,12 @@ of a module includes transitive dependencies.
 [LPS-82209]: https://issues.liferay.com/browse/LPS-82209
 [LPS-82261]: https://issues.liferay.com/browse/LPS-82261
 [LPS-82343]: https://issues.liferay.com/browse/LPS-82343
+[LPS-82420]: https://issues.liferay.com/browse/LPS-82420
+[LPS-82433]: https://issues.liferay.com/browse/LPS-82433
 [LPS-82534]: https://issues.liferay.com/browse/LPS-82534
+[LPS-82568]: https://issues.liferay.com/browse/LPS-82568
+[LPS-82815]: https://issues.liferay.com/browse/LPS-82815
+[LPS-82857]: https://issues.liferay.com/browse/LPS-82857
 [LRDOCS-2594]: https://issues.liferay.com/browse/LRDOCS-2594
 [LRDOCS-2841]: https://issues.liferay.com/browse/LRDOCS-2841
 [LRDOCS-2981]: https://issues.liferay.com/browse/LRDOCS-2981
