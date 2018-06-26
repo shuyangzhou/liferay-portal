@@ -231,11 +231,16 @@ public class SitemapImpl implements Sitemap {
 			}
 		}
 
+		if (!rootElement.hasContent()) {
+			return StringPool.BLANK;
+		}
+
 		return document.asXML();
 	}
 
 	protected void visitLayoutSet(
-		Element element, LayoutSet layoutSet, ThemeDisplay themeDisplay) {
+			Element element, LayoutSet layoutSet, ThemeDisplay themeDisplay)
+		throws PortalException {
 
 		if (layoutSet.isPrivateLayout()) {
 			return;

@@ -260,7 +260,7 @@ public class LayoutServiceSoap {
 	}
 
 	/**
-	* @deprecated As of 7.0.0, replaced by {@link
+	* @deprecated As of Wilberforce, replaced by {@link
 	com.liferay.exportimport.kernel.service.ExportImportService#exportLayoutsAsFileInBackground(
 	ExportImportConfiguration)}
 	*/
@@ -282,7 +282,7 @@ public class LayoutServiceSoap {
 	}
 
 	/**
-	* @deprecated As of 7.0.0, replaced by {@link
+	* @deprecated As of Wilberforce, replaced by {@link
 	com.liferay.exportimport.kernel.service.ExportImportService#exportLayoutsAsFileInBackground(
 	long)}
 	*/
@@ -314,6 +314,25 @@ public class LayoutServiceSoap {
 			java.util.List<com.liferay.portal.kernel.model.Layout> returnValue = LayoutServiceUtil.getAncestorLayouts(plid);
 
 			return com.liferay.portal.kernel.model.LayoutSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	/**
+	* Returns the control panel layout's plid.
+	*
+	* @return the control panel layout's plid
+	* @throws PortalException if a portal exception is occured
+	*/
+	public static long getControlPanelLayoutPlid() throws RemoteException {
+		try {
+			long returnValue = LayoutServiceUtil.getControlPanelLayoutPlid();
+
+			return returnValue;
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -428,6 +447,30 @@ public class LayoutServiceSoap {
 		try {
 			String returnValue = LayoutServiceUtil.getLayoutName(groupId,
 					privateLayout, layoutId, languageId);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	/**
+	* Returns the layout's plid that matches the parameters.
+	*
+	* @param uuid the layout's UUID
+	* @param groupId the primary key of the group
+	* @param privateLayout whether the layout is private to the group
+	* @return the matching layout's plid
+	* @throws PortalException if a portal exception occurred
+	*/
+	public static long getLayoutPlid(String uuid, long groupId,
+		boolean privateLayout) throws RemoteException {
+		try {
+			long returnValue = LayoutServiceUtil.getLayoutPlid(uuid, groupId,
+					privateLayout);
 
 			return returnValue;
 		}
@@ -632,6 +675,20 @@ public class LayoutServiceSoap {
 		try {
 			boolean returnValue = LayoutServiceUtil.hasLayout(uuid, groupId,
 					privateLayout);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static boolean hasPortletId(long plid, String portletId)
+		throws RemoteException {
+		try {
+			boolean returnValue = LayoutServiceUtil.hasPortletId(plid, portletId);
 
 			return returnValue;
 		}

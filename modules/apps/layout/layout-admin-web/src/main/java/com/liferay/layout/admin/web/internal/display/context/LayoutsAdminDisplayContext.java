@@ -69,8 +69,6 @@ import com.liferay.portal.util.LayoutTypeControllerTracker;
 import com.liferay.portlet.layoutsadmin.display.context.GroupDisplayContextHelper;
 import com.liferay.site.navigation.model.SiteNavigationMenu;
 import com.liferay.site.navigation.service.SiteNavigationMenuLocalServiceUtil;
-import com.liferay.staging.StagingGroupHelper;
-import com.liferay.staging.StagingGroupHelperUtil;
 import com.liferay.taglib.security.PermissionsURLTag;
 
 import java.util.Collections;
@@ -395,6 +393,20 @@ public class LayoutsAdminDisplayContext {
 		return _groupDisplayContextHelper.getLiveGroupId();
 	}
 
+	public String getMarkAsHomePageLayoutURL(Layout layout) {
+		PortletURL markAsHomePageLayoutURL =
+			_liferayPortletResponse.createActionURL();
+
+		markAsHomePageLayoutURL.setParameter(
+			ActionRequest.ACTION_NAME, "/layout/mark_as_home_page_layout");
+		markAsHomePageLayoutURL.setParameter(
+			"redirect", _themeDisplay.getURLCurrent());
+		markAsHomePageLayoutURL.setParameter(
+			"selPlid", String.valueOf(layout.getPlid()));
+
+		return markAsHomePageLayoutURL.toString();
+	}
+
 	public String getNavigation() {
 		if (_navigation != null) {
 			return _navigation;
@@ -415,9 +427,6 @@ public class LayoutsAdminDisplayContext {
 	public List<NavigationItem> getNavigationItems() {
 		Group group = _themeDisplay.getScopeGroup();
 
-		StagingGroupHelper stagingGroupHelper =
-			StagingGroupHelperUtil.getStagingGroupHelper();
-
 		return new NavigationItemList() {
 			{
 				if (!group.isCompany()) {
@@ -432,7 +441,7 @@ public class LayoutsAdminDisplayContext {
 						});
 				}
 
-				if (!stagingGroupHelper.isLocalStagingGroup(group)) {
+				if (!(group.isStaged() && !group.isStagingGroup())) {
 					add(
 						navigationItem -> {
 							navigationItem.setActive(
@@ -445,7 +454,7 @@ public class LayoutsAdminDisplayContext {
 				}
 
 				if (!group.isCompany() &&
-					!stagingGroupHelper.isLocalStagingGroup(group)) {
+					!(group.isStaged() && !group.isStagingGroup())) {
 
 					add(
 						navigationItem -> {
@@ -930,6 +939,14 @@ public class LayoutsAdminDisplayContext {
 
 		if (isShowConfigureAction(layout)) {
 			jsonObject.put("editLayoutURL", getEditLayoutURL(layout));
+
+			if (layout.getParentLayoutId() ==
+					LayoutConstants.DEFAULT_PARENT_LAYOUT_ID) {
+
+				jsonObject.put(
+					"markAsHomePageLayoutURL",
+					getMarkAsHomePageLayoutURL(layout));
+			}
 		}
 
 		if (isShowOrphanPortletsAction(layout)) {
@@ -968,6 +985,16 @@ public class LayoutsAdminDisplayContext {
 		List<LayoutSetBranch> layoutSetBranches =
 			LayoutSetBranchLocalServiceUtil.getLayoutSetBranches(
 				_themeDisplay.getScopeGroupId(), isPrivatePages());
+
+		if ((_activeLayoutSetBranchId == 0) && !layoutSetBranches.isEmpty()) {
+			LayoutSetBranch currentUserLayoutSetBranch =
+				LayoutSetBranchLocalServiceUtil.getUserLayoutSetBranch(
+					_themeDisplay.getUserId(), _themeDisplay.getScopeGroupId(),
+					isPrivateLayout(), 0, 0);
+
+			_activeLayoutSetBranchId =
+				currentUserLayoutSetBranch.getLayoutSetBranchId();
+		}
 
 		if ((_activeLayoutSetBranchId == 0) && !layoutSetBranches.isEmpty()) {
 			LayoutSetBranch layoutSetBranch =
@@ -1046,6 +1073,30 @@ public class LayoutsAdminDisplayContext {
 		}
 
 		return jsonObject;
+	}
+
+	private long _getHomePagePlid(boolean privateLayout) {
+		if (_homePagePlid != null) {
+			return _homePagePlid;
+		}
+
+		_homePagePlid = LayoutLocalServiceUtil.getDefaultPlid(
+			getSelGroupId(), privateLayout);
+
+		return _homePagePlid;
+	}
+
+	private String _getHomePageTitle(boolean privateLayout) {
+		if (_homePageTitle != null) {
+			return _homePageTitle;
+		}
+
+		Layout defaultLayout = LayoutLocalServiceUtil.fetchDefaultLayout(
+			getSelGroupId(), privateLayout);
+
+		_homePageTitle = defaultLayout.getName(_themeDisplay.getLocale());
+
+		return _homePageTitle;
 	}
 
 	private JSONArray _getLayoutColumnsJSONArray() throws Exception {
@@ -1184,11 +1235,17 @@ public class LayoutsAdminDisplayContext {
 					_request, layoutTypeResourceBundle,
 					"layout.types." + layout.getType()));
 
+			layoutJSONObject.put(
+				"homePage",
+				_getHomePagePlid(privateLayout) == layout.getPlid());
+
 			int childLayoutsCount = LayoutLocalServiceUtil.getLayoutsCount(
 				getSelGroup(), isPrivatePages(), layout.getLayoutId());
 
 			layoutJSONObject.put("hasChild", childLayoutsCount > 0);
 
+			layoutJSONObject.put(
+				"homePageTitle", _getHomePageTitle(privateLayout));
 			layoutJSONObject.put("plid", layout.getPlid());
 
 			if (childLayoutsCount > 0) {
@@ -1249,6 +1306,8 @@ public class LayoutsAdminDisplayContext {
 
 	private Long _activeLayoutSetBranchId;
 	private final GroupDisplayContextHelper _groupDisplayContextHelper;
+	private Long _homePagePlid;
+	private String _homePageTitle;
 	private List<LayoutDescription> _layoutDescriptions;
 	private Long _layoutId;
 	private final LiferayPortletRequest _liferayPortletRequest;
