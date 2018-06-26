@@ -149,6 +149,7 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 				DLFileShortcutConstants.getClassName()));
 		setPublishToLiveByDefault(PropsValues.DL_PUBLISH_TO_LIVE_BY_DEFAULT);
 		setRank(90);
+		setStagingControls(getExportControls());
 
 		_dlExportableRepositoryPublishers = ServiceTrackerListFactory.open(
 			bundleContext, DLExportableRepositoryPublisher.class);
@@ -334,11 +335,12 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 
 			_staging.populateLastPublishDateCounts(
 				portletDataContext,
-				new String[] {
-					DLFileEntry.class.getName(),
-					DLFileEntryType.class.getName(),
-					DLFileShortcut.class.getName(), DLFolder.class.getName(),
-					Repository.class.getName()
+				new StagedModelType[] {
+					new StagedModelType(DLFileEntry.class.getName()),
+					new StagedModelType(DLFileEntryType.class.getName()),
+					new StagedModelType(DLFileShortcut.class.getName()),
+					new StagedModelType(DLFolder.class.getName()),
+					new StagedModelType(Repository.class.getName())
 				});
 
 			return;

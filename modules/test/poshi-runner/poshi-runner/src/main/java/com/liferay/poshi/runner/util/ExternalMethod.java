@@ -17,7 +17,11 @@ package com.liferay.poshi.runner.util;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Kevin Yen
@@ -92,12 +96,16 @@ public class ExternalMethod {
 	}
 
 	public static Method getMethod(
-		Class clazz, String methodName, Object[] parameters) {
+		Class<?> clazz, String methodName, Object[] parameters) {
+
+		List<Method> filteredMethods = new ArrayList<>();
 
 		for (Method method : clazz.getMethods()) {
 			if (!methodName.equals(method.getName())) {
 				continue;
 			}
+
+			filteredMethods.add(method);
 
 			Class<?>[] methodParameterTypes = method.getParameterTypes();
 
@@ -134,21 +142,41 @@ public class ExternalMethod {
 		sb.append(methodName);
 		sb.append("' of class '");
 		sb.append(clazz.getCanonicalName());
+		sb.append("'");
 
 		if ((parameters != null) && (parameters.length != 0)) {
-			sb.append("' with parameters types: (");
+			sb.append(" with parameter types: (");
+
+			String[] parameterClassNames = new String[parameters.length];
+
+			int i = 0;
 
 			for (Object parameter : parameters) {
-				Class<?> parameterType = parameter.getClass();
+				Class<?> parameterClass = parameter.getClass();
 
-				sb.append(parameterType.toString());
+				parameterClassNames[i] = parameterClass.toString();
 
-				sb.append(", ");
+				i++;
 			}
 
-			sb.delete(sb.length() - 2, sb.length());
+			sb.append(StringUtils.join(parameterClassNames, ", "));
 
 			sb.append(")");
+		}
+
+		sb.append("\nValid methods with the same name:\n");
+
+		if (filteredMethods.isEmpty()) {
+			sb.append("NONE\n");
+		}
+
+		for (Method filteredMethod : filteredMethods) {
+			sb.append("* ");
+			sb.append(methodName);
+			sb.append("(");
+			sb.append(
+				StringUtils.join(filteredMethod.getParameterTypes(), ", "));
+			sb.append(")\n");
 		}
 
 		throw new IllegalArgumentException(sb.toString());

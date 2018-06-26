@@ -64,10 +64,7 @@ public class PrefixHandlerFactoryImpl implements PrefixHandlerFactory {
 		List<String> strings = new ArrayList<>(_serviceProperties.size() + 1);
 
 		if (_includeBundleSymbolicName) {
-			long bundleId = GetterUtil.getLong(
-				propertyAccessorFunction.apply("service.bundleid"));
-
-			Bundle bundle = _bundleContext.getBundle(bundleId);
+			Bundle bundle = getBundle(propertyAccessorFunction);
 
 			if (bundle != null) {
 				strings.add(bundle.getSymbolicName());
@@ -138,6 +135,21 @@ public class PrefixHandlerFactoryImpl implements PrefixHandlerFactory {
 		}
 	}
 
+	protected Bundle getBundle(
+		Function<String, Object> propertyAccessorFunction) {
+
+		long bundleId = GetterUtil.getLong(
+			propertyAccessorFunction.apply("original.service.bundleid"),
+			GetterUtil.getLong(
+				propertyAccessorFunction.apply("service.bundleid"), -1L));
+
+		if (bundleId == -1) {
+			return null;
+		}
+
+		return _bundleContext.getBundle(bundleId);
+	}
+
 	protected String initializeServiceProperty(String serviceProperty) {
 		int indexOfSpace = serviceProperty.indexOf(StringPool.SPACE);
 
@@ -146,6 +158,7 @@ public class PrefixHandlerFactoryImpl implements PrefixHandlerFactory {
 		}
 		else {
 			String defaultsKey = serviceProperty.substring(0, indexOfSpace);
+
 			Properties modifiers = new Properties();
 
 			try {

@@ -352,11 +352,7 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 
 	@Override
 	public PortletDataHandlerControl[] getStagingControls() {
-		if (ArrayUtil.isNotEmpty(_stagingControls)) {
-			return _stagingControls;
-		}
-
-		return _exportControls;
+		return _stagingControls;
 	}
 
 	@Override
@@ -480,7 +476,7 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0
+	 * @deprecated As of Judson
 	 */
 	@Deprecated
 	@Override
@@ -502,7 +498,7 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0
+	 * @deprecated As of Judson
 	 */
 	@Deprecated
 	@Override
@@ -844,7 +840,7 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0
+	 * @deprecated As of Judson
 	 */
 	@Deprecated
 	protected void setSupportsDataStrategyCopyAsNew(

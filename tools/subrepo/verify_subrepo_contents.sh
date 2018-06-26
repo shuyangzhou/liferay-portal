@@ -223,6 +223,15 @@ do
 
 	CENTRAL_TREE=$(git -C "${CENTRAL_PATH}" ls-tree --full-tree -r "refs/remotes/upstream/${SUBREPO_BRANCH}" "${GITREPO_PATH%/.gitrepo}" | sed "s@${GITREPO_PATH%/.gitrepo}/@@" | grep -v '.gitrepo' | sort -k 4)
 
+	if [[ -z $(git -C "${SUBREPO_PATH}" ls-remote "git@github.com:liferay/${SUBREPO_NAME}.git" 2>/dev/null | grep "refs/heads/${SUBREPO_BRANCH}\$") ]]
+	then
+		warn "Skipping ${SUBREPO_NAME}:${SUBREPO_BRANCH}, ref not found in subrepo remote."
+
+		let BRANCH_COUNTER++
+
+		continue
+	fi
+
 	if [[ -z $(git -C "${SUBREPO_PATH}" show "${SUBREPO_COMMIT}" 2>/dev/null) ]]
 	then
 		git -C "${SUBREPO_PATH}" fetch -q "git@github.com:liferay/${SUBREPO_NAME}.git" "${SUBREPO_BRANCH}"

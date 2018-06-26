@@ -20,6 +20,7 @@ import com.liferay.jenkins.results.parser.PortalTestClassJob;
 import java.io.File;
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,22 +59,43 @@ public abstract class ModulesBatchTestClassGroup extends BatchTestClassGroup {
 			File modulesDir = new File(
 				portalGitWorkingDirectory.getWorkingDirectory(), "modules");
 
-			excludesPathMatchers.addAll(
-				getPathMatchers(
-					getFirstPropertyValue("modules.excludes"), modulesDir));
+			String upstreamBranchName =
+				portalGitWorkingDirectory.getUpstreamBranchName();
 
-			includesPathMatchers.addAll(
-				getPathMatchers(
-					getFirstPropertyValue("modules.includes"), modulesDir));
+			if (upstreamBranchName.startsWith("ee-") ||
+				upstreamBranchName.endsWith("-private")) {
+
+				excludesPathMatchers.addAll(
+					getPathMatchers(
+						getFirstPropertyValue("modules.excludes.private"),
+						modulesDir));
+
+				includesPathMatchers.addAll(
+					getPathMatchers(
+						getFirstPropertyValue("modules.includes.private"),
+						modulesDir));
+			}
+			else {
+				excludesPathMatchers.addAll(
+					getPathMatchers(
+						getFirstPropertyValue("modules.excludes.public"),
+						modulesDir));
+
+				includesPathMatchers.addAll(
+					getPathMatchers(
+						getFirstPropertyValue("modules.includes.public"),
+						modulesDir));
+			}
 
 			String includedModulesRequired = getFirstPropertyValue(
 				"modules.includes.required");
 
 			if (includedModulesRequired != null) {
-				includesPathMatchers.addAll(
-					getPathMatchers(
-						getFirstPropertyValue(includedModulesRequired),
-						modulesDir));
+				for (String requiredModule :
+						includedModulesRequired.split(",")) {
+
+					moduleDirsList.add(new File(modulesDir, requiredModule));
+				}
 			}
 
 			setTestClasses();
@@ -86,5 +108,7 @@ public abstract class ModulesBatchTestClassGroup extends BatchTestClassGroup {
 	}
 
 	protected abstract void setTestClasses() throws IOException;
+
+	protected List<File> moduleDirsList = new ArrayList<>();
 
 }

@@ -29,7 +29,7 @@ public class ElasticsearchCountTest extends BaseCountTestCase {
 	@Override
 	protected IndexingFixture createIndexingFixture() {
 		ElasticsearchFixture elasticsearchFixture = new ElasticsearchFixture(
-			ElasticsearchCountTest.class.getSimpleName());
+			getClass());
 
 		return new ElasticsearchIndexingFixture(
 			elasticsearchFixture, BaseIndexingTestCase.COMPANY_ID,
