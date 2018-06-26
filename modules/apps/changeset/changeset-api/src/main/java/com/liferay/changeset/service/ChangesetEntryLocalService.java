@@ -88,6 +88,9 @@ public interface ChangesetEntryLocalService extends BaseLocalService,
 	public void deleteChangesetEntries(long changesetCollectionId)
 		throws PortalException;
 
+	public void deleteChangesetEntries(Set<Long> changesetEntryIds)
+		throws PortalException;
+
 	/**
 	* Deletes the changeset entry from the database. Also notifies the appropriate model listeners.
 	*
@@ -203,6 +206,10 @@ public interface ChangesetEntryLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ChangesetEntry> getChangesetEntries(int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ChangesetEntry> getChangesetEntries(
+		long changesetCollectionId, long classNameId);
 
 	/**
 	* Returns the number of changeset entries.

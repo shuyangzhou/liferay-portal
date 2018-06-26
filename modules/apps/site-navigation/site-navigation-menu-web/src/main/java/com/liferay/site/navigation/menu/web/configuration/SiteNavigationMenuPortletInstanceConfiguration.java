@@ -45,7 +45,7 @@ public interface SiteNavigationMenuPortletInstanceConfiguration {
 	public String rootMenuItemType();
 
 	/**
-	 * @deprecated As of 2.0.0, replaced by {@link #rootMenuItemType()}
+	 * @deprecated As of Judson, replaced by {@link #rootMenuItemType()}
 	 */
 	@Deprecated
 	@Meta.AD(name = "root-layout-type", required = false)
@@ -55,7 +55,7 @@ public interface SiteNavigationMenuPortletInstanceConfiguration {
 	public int rootMenuItemLevel();
 
 	/**
-	 * @deprecated As of 2.0.0, replaced by {@link #rootMenuItemLevel()}
+	 * @deprecated As of Judson, replaced by {@link #rootMenuItemLevel()}
 	 */
 	@Deprecated
 	@Meta.AD(deflt = "0", name = "root-layout-level", required = false)
@@ -65,20 +65,14 @@ public interface SiteNavigationMenuPortletInstanceConfiguration {
 	public String rootMenuItemId();
 
 	/**
-	 * @deprecated As of 2.0.0, with no direct replacement
+	 * @deprecated As of Judson, with no direct replacement
 	 */
 	@Deprecated
 	@Meta.AD(name = "root-layout-uuid", required = false)
 	public String rootLayoutUuid();
 
-	@Meta.AD(deflt = "1", name = "site-navigation-menu-type", required = false)
+	@Meta.AD(deflt = "-1", name = "site-navigation-menu-type", required = false)
 	public int siteNavigationMenuType();
-
-	@Meta.AD(
-		deflt = "4", name = "site-navigation-private-menu-type",
-		required = false
-	)
-	public int siteNavigationPrivateMenuType();
 
 	@Meta.AD(deflt = "0", name = "display-depth", required = false)
 	public int displayDepth();
@@ -87,7 +81,7 @@ public interface SiteNavigationMenuPortletInstanceConfiguration {
 	public String expandedLevels();
 
 	/**
-	 * @deprecated As of 2.0.0, replaced by {@link #expandedLevels()}
+	 * @deprecated As of Judson, replaced by {@link #expandedLevels()}
 	 */
 	@Deprecated
 	@Meta.AD(name = "included-layouts", required = false)

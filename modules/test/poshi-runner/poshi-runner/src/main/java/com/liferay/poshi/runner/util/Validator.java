@@ -279,18 +279,14 @@ public class Validator {
 
 	/**
 	 * Returns <code>true</code> if the object is <code>null</code>, using the
-	 * rules from {@link #isNull(Long)} or {@link #isNull(String)} if the object
-	 * is one of these types.
+	 * rules from {@link #isNull(String)} if the object is one of these types.
 	 *
 	 * @param  obj the object to check
 	 * @return <code>true</code> if the object is <code>null</code>;
 	 *         <code>false</code> otherwise
 	 */
 	public static boolean isNull(Object obj) {
-		if (obj instanceof Long) {
-			return isNull(obj);
-		}
-		else if (obj instanceof String) {
+		if (obj instanceof String) {
 			return isNull((String)obj);
 		}
 		else if (obj == null) {

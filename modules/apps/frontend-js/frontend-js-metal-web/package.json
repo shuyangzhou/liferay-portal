@@ -30,12 +30,12 @@
 		"metal-structs": "1.0.1",
 		"metal-toggler": "2.3.0",
 		"metal-uri": "2.4.0",
-		"metal-useragent": "2.1.3",
+		"metal-useragent": "3.0.0",
 		"metal-web-component": "^2.16.5"
 	},
 	"devDependencies": {
 		"liferay-npm-bridge-generator": "^2.0.0",
-		"liferay-npm-bundler": "^2.0.0"
+		"liferay-npm-bundler": "^2.1.0"
 	},
 	"name": "frontend-js-metal-web",
 	"scripts": {
