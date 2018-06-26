@@ -600,7 +600,10 @@ public class PortletPermissionImpl implements PortletPermission {
 			return false;
 		}
 
-		if (portlet.isPreferencesUniquePerLayout()) {
+		if (portlet.isPreferencesUniquePerLayout() &&
+			(layout.isTypeEmbedded() || layout.isTypePanel() ||
+			 layout.isTypePortlet())) {
+
 			return LayoutPermissionUtil.contains(
 				permissionChecker, layout, ActionKeys.CONFIGURE_PORTLETS);
 		}
@@ -611,7 +614,7 @@ public class PortletPermissionImpl implements PortletPermission {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of Judson, replaced by {@link
 	 *             #hasConfigurePermission(PermissionChecker, Layout, Portlet,
 	 *             String)}
 	 */
@@ -657,7 +660,7 @@ public class PortletPermissionImpl implements PortletPermission {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link
+	 * @deprecated As of Judson, replaced by {@link
 	 *             #hasCustomizePermission(PermissionChecker, Layout, Portlet,
 	 *             String)}
 	 */

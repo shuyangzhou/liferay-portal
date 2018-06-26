@@ -116,7 +116,7 @@ public class WikiPortletDataHandler extends BasePortletDataHandler {
 						NAMESPACE, "referenced-content")
 				},
 				WikiPage.class.getName()));
-		setImportControls(getExportControls());
+		setStagingControls(getExportControls());
 
 		_portalCache = _multiVMPool.getPortalCache(
 			WikiPageDisplay.class.getName());
@@ -218,8 +218,9 @@ public class WikiPortletDataHandler extends BasePortletDataHandler {
 
 			_staging.populateLastPublishDateCounts(
 				portletDataContext,
-				new String[] {
-					WikiNode.class.getName(), WikiPage.class.getName()
+				new StagedModelType[] {
+					new StagedModelType(WikiNode.class.getName()),
+					new StagedModelType(WikiPage.class.getName())
 				});
 
 			return;

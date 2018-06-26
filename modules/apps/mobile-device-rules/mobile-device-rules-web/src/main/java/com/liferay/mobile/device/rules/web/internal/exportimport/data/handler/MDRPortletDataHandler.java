@@ -82,9 +82,9 @@ public class MDRPortletDataHandler extends BasePortletDataHandler {
 			new PortletDataHandlerBoolean(
 				NAMESPACE, "actions", true, false, null,
 				MDRAction.class.getName(), Layout.class.getName()));
-		setImportControls(getExportControls());
 		setPublishToLiveByDefault(
 			PropsValues.MOBILE_DEVICE_RULES_PUBLISH_TO_LIVE_BY_DEFAULT);
+		setStagingControls(getExportControls());
 	}
 
 	@Override
@@ -185,10 +185,14 @@ public class MDRPortletDataHandler extends BasePortletDataHandler {
 
 			_staging.populateLastPublishDateCounts(
 				portletDataContext,
-				new String[] {
-					MDRAction.class.getName(), MDRRule.class.getName(),
-					MDRRuleGroup.class.getName(),
-					MDRRuleGroupInstance.class.getName()
+				new StagedModelType[] {
+					new StagedModelType(
+						MDRAction.class.getName(), Layout.class.getName()),
+					new StagedModelType(MDRRule.class.getName()),
+					new StagedModelType(MDRRuleGroup.class.getName()),
+					new StagedModelType(
+						MDRRuleGroupInstance.class.getName(),
+						Layout.class.getName())
 				});
 
 			return;
