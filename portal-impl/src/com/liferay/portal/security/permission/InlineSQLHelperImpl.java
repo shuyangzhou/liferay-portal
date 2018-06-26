@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.permission;
 
+import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -38,6 +39,7 @@ import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -48,21 +50,21 @@ import java.util.Set;
 public class InlineSQLHelperImpl implements InlineSQLHelper {
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of Judson, with no direct replacement
 	 */
 	@Deprecated
 	public static final String FILTER_BY_RESOURCE_BLOCK_ID =
 		InlineSQLHelper.class.getName() + ".filterByResourceBlockId";
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of Judson, with no direct replacement
 	 */
 	@Deprecated
 	public static final String FILTER_BY_RESOURCE_BLOCK_ID_OWNER =
 		InlineSQLHelper.class.getName() + ".filterByResourceBlockIdOwner";
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of Judson, with no direct replacement
 	 */
 	@Deprecated
 	public static final String FIND_BY_RESOURCE_BLOCK_ID =
@@ -245,6 +247,13 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 			throw new IllegalArgumentException("className is null");
 		}
 
+		if (Objects.equals(className, AssetTag.class.getName())) {
+			throw new IllegalArgumentException(
+				StringBundler.concat(
+					"Class ", className,
+					" does  not support inline permissions. See LPS-82433."));
+		}
+
 		if (Validator.isNull(sql)) {
 			return sql;
 		}
@@ -255,7 +264,7 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of Judson, with no direct replacement
 	 */
 	@Deprecated
 	protected Set<Long> getOwnerResourceBlockIds(
@@ -265,7 +274,7 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of Judson, with no direct replacement
 	 */
 	@Deprecated
 	protected String getOwnerResourceBlockIdsSQL(
@@ -276,7 +285,7 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of Judson, with no direct replacement
 	 */
 	@Deprecated
 	protected Set<Long> getResourceBlockIds(
@@ -373,7 +382,7 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of Judson, with no direct replacement
 	 */
 	@Deprecated
 	protected String getUserResourceBlockIdsSQL(
@@ -384,7 +393,7 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of Judson, with no direct replacement
 	 */
 	@Deprecated
 	protected String replacePermissionCheckBlocks(

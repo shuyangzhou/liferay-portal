@@ -1,6 +1,7 @@
 <definition component-name="portal-knowledge-base">
 	<property name="custom.properties" value="default.layout.template.id=1_column" />
 	<property name="osgi.app.includes" value="knowledge-base" />
+	<property name="portal.release" value="true" />
 	<property name="portal.upstream" value="true" />
 	<property name="testray.main.component.name" value="Knowledge Base" />
 
@@ -1420,7 +1421,7 @@
 
 		<execute macro="SystemSettings#gotoConfiguration">
 			<var name="configurationCategory" value="Knowledge Base" />
-			<var name="configurationName" value="Knowledge Base Service" />
+			<var name="configurationName" value="Service" />
 			<var name="configurationScope" value="Site Scope" />
 		</execute>
 
@@ -1555,7 +1556,7 @@
 
 		<execute macro="SystemSettings#gotoConfiguration">
 			<var name="configurationCategory" value="Knowledge Base" />
-			<var name="configurationName" value="Knowledge Base Service" />
+			<var name="configurationName" value="Service" />
 			<var name="configurationScope" value="Site Scope" />
 		</execute>
 

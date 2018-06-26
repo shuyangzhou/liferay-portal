@@ -119,8 +119,6 @@ else {
 
 String defaultLanguageId = LocaleUtil.toLanguageId(LocaleUtil.getSiteDefault());
 
-Locale[] availableLocales = DLFileEntryTypeUtil.getDLFileEntryTypeAvailableLocales(fileVersion, dlFileEntryType, dlEditFileEntryDisplayContext, defaultLanguageId);
-
 String headerTitle = LanguageUtil.get(request, "new-document");
 
 if (fileVersion != null) {
@@ -382,11 +380,8 @@ if (portletTitleBasedNavigation) {
 							<%
 							if (fileEntryTypeId > 0) {
 								try {
-							%>
+									boolean localizable = true;
 
-									<aui:translation-manager availableLocales="<%= availableLocales %>" defaultLanguageId="<%= defaultLanguageId %>" id="translationManager" />
-
-							<%
 									List<DDMStructure> ddmStructures = dlFileEntryType.getDDMStructures();
 
 									for (DDMStructure ddmStructure : ddmStructures) {
@@ -410,6 +405,7 @@ if (portletTitleBasedNavigation) {
 											classPK="<%= ddmStructure.getPrimaryKey() %>"
 											ddmFormValues="<%= ddmFormValues %>"
 											fieldsNamespace="<%= String.valueOf(ddmStructure.getPrimaryKey()) %>"
+											localizable="<%= localizable %>"
 											requestedLocale="<%= locale %>"
 										/>
 
@@ -418,6 +414,7 @@ if (portletTitleBasedNavigation) {
 										</c:if>
 
 							<%
+										localizable = false;
 									}
 								}
 								catch (Exception e) {
@@ -598,7 +595,7 @@ if (portletTitleBasedNavigation) {
 					callback: function(event) {
 						var $ = AUI.$;
 
-						var majorVersionNode = $("input:radio[name='<portlet:namespace />versionDetailsMajorVersion']:checked");
+						var majorVersionNode = $('input:radio[name="<portlet:namespace />versionDetailsMajorVersion"]:checked');
 
 						form.fm('majorVersion').val(majorVersionNode.val());
 
